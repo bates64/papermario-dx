@@ -5,45 +5,15 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
 
-extern NpcSettings N(NpcSettings_Merlee);
-extern EvtScript N(EVS_NpcInit_Merlee);
-
 extern EvtScript N(EVS_NpcInit_Moustafa);
 extern EvtScript N(EVS_NpcInit_DisguisedMoustafa);
 
-MobileAISettings N(AISettings_Archeologist) = {
-    .moveSpeed = 1.5f,
-    .moveTime = 60,
-    .waitTime = 30,
-    .playerSearchInterval = -1,
-    .loiterMode = 1,
-};
-
-EvtScript N(EVS_NpcAI_Archeologist) = {
-    Call(BasicAI_Main, Ref(N(AISettings_Archeologist)))
-    Return
-    End
-};
-
-NpcSettings N(NpcSettings_Archeologist_Wander) = {
-    .height = 35,
-    .radius = 24,
-    .doAI = &N(EVS_NpcAI_Archeologist),
-    .level = ACTOR_LEVEL_NONE,
-    .actionFlags = AI_FLAG_SKIP_IDLE_ANIM_AFTER_FLEE,
-};
-
-NpcSettings N(NpcSettings_Archeologist) = {
-    .height = 42,
-    .radius = 24,
-    .doAI = &N(EVS_NpcAI_Archeologist),
-    .level = ACTOR_LEVEL_NONE,
-};
-
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/Dryite_Wander.inc.c"
-#include "world/common/npc/Dryite_Stationary.inc.c"
-#include "world/common/npc/Mouser.inc.c"
+#include "world/common/npc/Archeologist/wander.inc.c"
+#include "world/common/npc/Merlee/idle.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Dryite/wander.inc.c"
+#include "world/common/npc/Dryite/idle.inc.c"
+#include "world/common/npc/Mouser/idle.inc.c"
 
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
@@ -355,27 +325,10 @@ NpcData N(PassiveNPCs)[] = {
             }
         },
         .init = &N(EVS_NpcInit_Archeologist),
-        .settings = &N(NpcSettings_Archeologist),
+        .settings = &N(NpcSettings_Archeologist_Wander),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Archeologist_Idle,
-            .walk   = ANIM_Archeologist_Walk,
-            .run    = ANIM_Archeologist_Run,
-            .chase  = ANIM_Archeologist_Run,
-            .anim_4 = ANIM_Archeologist_Idle,
-            .anim_5 = ANIM_Archeologist_Idle,
-            .death  = ANIM_Archeologist_Idle,
-            .hit    = ANIM_Archeologist_Idle,
-            .anim_8 = ANIM_Archeologist_Idle,
-            .anim_9 = ANIM_Archeologist_Idle,
-            .anim_A = ANIM_Archeologist_Idle,
-            .anim_B = ANIM_Archeologist_Idle,
-            .anim_C = ANIM_Archeologist_Idle,
-            .anim_D = ANIM_Archeologist_Idle,
-            .anim_E = ANIM_Archeologist_Idle,
-            .anim_F = ANIM_Archeologist_Idle,
-        },
+        .animations = ARCHEOLOGIST_ANIMS,
         .tattle = MSG_NpcTattle_Archeologist,
     },
     {
@@ -431,24 +384,7 @@ NpcData N(PassiveNPCs)[] = {
         .settings = &N(NpcSettings_Merlee),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldMerlee_Idle,
-            .walk   = ANIM_WorldMerlee_Walk,
-            .run    = ANIM_WorldMerlee_Run,
-            .chase  = ANIM_WorldMerlee_Run,
-            .anim_4 = ANIM_WorldMerlee_Idle,
-            .anim_5 = ANIM_WorldMerlee_Idle,
-            .death  = ANIM_WorldMerlee_Idle,
-            .hit    = ANIM_WorldMerlee_Idle,
-            .anim_8 = ANIM_WorldMerlee_Idle,
-            .anim_9 = ANIM_WorldMerlee_Idle,
-            .anim_A = ANIM_WorldMerlee_Idle,
-            .anim_B = ANIM_WorldMerlee_Idle,
-            .anim_C = ANIM_WorldMerlee_Idle,
-            .anim_D = ANIM_WorldMerlee_Idle,
-            .anim_E = ANIM_WorldMerlee_Idle,
-            .anim_F = ANIM_WorldMerlee_Idle,
-        },
+        .animations = MERLEE_ANIMS,
         .tattle = MSG_NpcTattle_Merlee,
     },
     {

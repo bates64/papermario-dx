@@ -13,7 +13,7 @@ API_CALLABLE(N(DrawAppearSparkles)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 EvtScript N(EVS_MuteMusicOnPlayerApproach) = {
     Set(LVarA, 0)

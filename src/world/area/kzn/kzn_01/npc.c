@@ -1,6 +1,6 @@
 #include "kzn_01.h"
 
-#include "world/common/enemy/PutridPiranhaSentinel.inc.c"
+#include "world/common/enemy/PutridPiranhaSentinel/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_PutridPiranha) = {
     Label(0)

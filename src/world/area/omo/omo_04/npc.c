@@ -1,9 +1,9 @@
 #include "omo_04.h"
 
-#include "world/common/enemy/SkyGuy.inc.c"
-#include "world/common/enemy/ShyGuy_Wander.inc.c"
+#include "world/common/enemy/SkyGuy/idle.inc.c"
+#include "world/common/enemy/ShyGuy/wander.inc.c"
 
-#include "world/common/enemy/Goomba.h"
+#include "world/common/enemy/Goomba/base.h"
 
 // level changed from 5 -> 14
 NpcSettings N(NpcSettings_Goomba) = {
@@ -15,8 +15,8 @@ NpcSettings N(NpcSettings_Goomba) = {
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
 };
 
-#include "world/common/enemy/Clubba.inc.c"
-#include "world/common/enemy/Kammy_Flying.inc.c"
+#include "world/common/enemy/Clubba/idle.inc.c"
+#include "world/common/enemy/Kammy/flying.inc.c"
 
 EvtScript N(EVS_NpcIdle_Goomba) = {
     Label(0)
@@ -105,7 +105,7 @@ NpcData N(NpcData_Clubba) = {
     .settings = &N(NpcSettings_Clubba),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
-    .animations = CLUBBA_ANIMS_ALT,
+    .animations = CLUBBA_ANIMS,
 };
 
 NpcData N(NpcData_ShyGuy) = {

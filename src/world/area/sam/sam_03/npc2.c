@@ -1,6 +1,6 @@
 #include "sam_03.h"
 
-#include "world/common/enemy/Gulpit.inc.c"
+#include "world/common/enemy/Gulpit/idle.inc.c"
 
 NpcData N(NpcData_Gulpit_01)[] = {
     {

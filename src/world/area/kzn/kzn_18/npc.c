@@ -1,7 +1,7 @@
 #include "kzn_18.h"
 
-#include "world/common/npc/Kolorado.inc.c"
-#include "world/common/enemy/PutridPiranhaSentinel.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/enemy/PutridPiranhaSentinel/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_Kolorado) = {
     IfLt(GB_StoryProgress, STORY_CH5_KOLORADO_RAN_AHEAD)

@@ -25,11 +25,6 @@ API_CALLABLE(N(ManageBigPalmTreeVisibility)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(SpawnSunEffect)) {
-    fx_sun(FX_SUN_FROM_LEFT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_ExitWalk_jan_01_1) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(N(ClearTrackVols))

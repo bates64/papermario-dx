@@ -1,6 +1,6 @@
 #include "trd_06.h"
 
-#include "world/common/npc/KoopaBros.h"
+#include "world/common/npc/KoopaBros/base.h"
 
 MobileAISettings N(AISettings_KoopaBros) = {
     .moveSpeed = 1.5f,

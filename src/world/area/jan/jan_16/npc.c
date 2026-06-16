@@ -2,8 +2,8 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/RaphaelRaven.inc.c"
-#include "world/common/npc/Raven.inc.c"
+#include "world/common/npc/RaphaelRaven/idle.inc.c"
+#include "world/common/npc/Raven/idle.inc.c"
 
 EvtScript N(EVS_Scene_ReachedRaphaelsTree) = {
     Call(DisablePlayerInput, true)

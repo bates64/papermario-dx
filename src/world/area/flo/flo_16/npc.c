@@ -1,7 +1,7 @@
 #include "flo_16.h"
 #include "entity.h"
 
-#include "world/common/enemy/RuffPuff.inc.c"
+#include "world/common/enemy/RuffPuff/idle.inc.c"
 
 NpcData N(NpcData_RuffPuff_01) = {
     .id = NPC_RuffPuff_01,

@@ -1,9 +1,9 @@
 #include "jan_04.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Sushie.inc.c"
-#include "world/common/npc/Bubulb.inc.c"
-#include "world/common/npc/YoshiKid.inc.c"
+#include "world/common/npc/Sushie/idle.inc.c"
+#include "world/common/npc/Bubulb/idle.inc.c"
+#include "world/common/npc/YoshiKid/idle.inc.c"
 
 EvtScript N(EVS_ShakeTree_Sushie) = {
     Call(GetNpcVar, NPC_Sushie, 0, LVar0)

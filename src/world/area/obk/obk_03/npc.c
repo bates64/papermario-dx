@@ -1,6 +1,6 @@
 #include "obk_03.h"
 
-#include "world/common/npc/Boo.inc.c"
+#include "world/common/npc/Boo/idle.inc.c"
 
 ITEM_LIST(N(LetterList), ITEM_LETTER_TO_IGOR);
 

@@ -29,4 +29,4 @@ extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(EarlyNPCs);
 extern NpcGroupList N(LaterNPCs);
 
-extern NpcSettings N(NpcSettings_Koopatrol_Stationary);
+#include "world/common/enemy/Koopatrol/idle.h"

@@ -1,7 +1,7 @@
 
 #include "osr_01.h"
 
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
 EvtScript N(EVS_Scene_Wishing) = {
     Call(DisablePlayerInput, true)

@@ -1,10 +1,10 @@
 #include "omo_17.h"
 
-#include "world/common/enemy/ShyGuy_Wander.inc.c"
-#include "world/common/enemy/PyroGuy.inc.c"
-#include "world/common/enemy/GrooveGuy.inc.c"
-#include "world/common/enemy/SkyGuy.inc.c"
-#include "world/common/enemy/SpyGuy.inc.c"
+#include "world/common/enemy/ShyGuy/wander.inc.c"
+#include "world/common/enemy/PyroGuy/idle.inc.c"
+#include "world/common/enemy/GrooveGuy/idle.inc.c"
+#include "world/common/enemy/SkyGuy/idle.inc.c"
+#include "world/common/enemy/SpyGuy/idle.inc.c"
 
 EvtScript N(EVS_NpcCreate_Conductor) = {
     Return

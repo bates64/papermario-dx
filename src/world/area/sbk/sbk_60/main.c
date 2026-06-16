@@ -1,4 +1,5 @@
 #include "sbk_60.h"
+#include "effects.h"
 
 extern EvtScript N(EVS_Main);
 extern NpcGroupList N(DefaultNPCs);
@@ -18,8 +19,6 @@ export MapSettings N(settings) = {
     .tattle = { MSG_MapTattle_sbk_60 },
 };
 
-#include "world/common/todo/SpawnSunEffect.inc.c"
-
 EvtScript N(EVS_ExitWalk_sbk_61_0) = EVT_EXIT_WALK(60, sbk_60_ENTRY_1, "sbk_61", sbk_61_ENTRY_0);
 EvtScript N(EVS_ExitWalk_sbk_50_3) = EVT_EXIT_WALK(60, sbk_60_ENTRY_2, "sbk_50", sbk_50_ENTRY_3);
 
@@ -38,7 +37,7 @@ EvtScript N(EVS_Main) = {
     EndIf
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
-    Call(N(SpawnSunEffect))
+    Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     Call(SetMusic, 0, SONG_DRY_DRY_DESERT, 0, VOL_LEVEL_FULL)
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))
     Exec(EnterWalk)

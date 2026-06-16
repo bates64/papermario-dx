@@ -1,8 +1,8 @@
 #include "nok_15.h"
 
-#include "world/common/enemy/KoopaTroopa_Wander.inc.c"
-#include "world/common/enemy/Paratroopa.inc.c"
-#include "world/common/enemy/SpikedGoomba_Wander.inc.c"
+#include "world/common/enemy/KoopaTroopa/wander.inc.c"
+#include "world/common/enemy/Paratroopa/idle.inc.c"
+#include "world/common/enemy/SpikedGoomba/wander.inc.c"
 
 NpcData N(NpcData_KoopaTroopa) = {
     .id = NPC_KoopaTroopa,

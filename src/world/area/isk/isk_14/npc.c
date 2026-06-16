@@ -2,7 +2,7 @@
 #include "sprite.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/StoneChomp.inc.c"
+#include "world/common/enemy/StoneChomp/idle.inc.c"
 
 typedef struct StoneChompAmbushIsk14 {
     /* 0x00 */ s32 imgfxIdx;

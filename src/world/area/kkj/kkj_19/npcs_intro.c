@@ -1,6 +1,6 @@
 #include "kkj_19.h"
 
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
 EvtScript N(EVS_NpcInteract_TayceT) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_Intro_0031)

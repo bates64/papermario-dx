@@ -1,7 +1,7 @@
 #include "flo_15.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Sun.inc.c"
+#include "world/common/npc/Sun/idle.inc.c"
 
 EvtScript N(EVS_Sun_AnimateBobbing) = {
     IfLt(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)

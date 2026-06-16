@@ -1,7 +1,7 @@
 #include "kkj_03.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Peach.inc.c"
+#include "world/common/npc/Peach/idle.inc.c"
 
 NpcData N(NpcData_Peach) = {
     .id = NPC_Peach,

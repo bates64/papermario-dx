@@ -1,17 +1,17 @@
 #include "kpa_82.h"
 
-#include "world/common/enemy/Goomba.h"
-#include "world/common/enemy/KoopaTroopa.h"
-#include "world/common/enemy/DarkTroopa.h"
-#include "world/common/enemy/ShyGuy.h"
-#include "world/common/npc/Bobomb.h"
+#include "world/common/enemy/Goomba/base.h"
+#include "world/common/enemy/KoopaTroopa/base.h"
+#include "world/common/enemy/DarkTroopa/base.h"
+#include "world/common/enemy/ShyGuy/base.h"
+#include "world/common/npc/Bobomb/base.h"
 
 enum {
     ANSWER_CORRECT  = 0,
     ANSWER_WRONG  = 1,
 };
 
-#include "world/common/enemy/ShyGuy_Stationary.inc.c"
+#include "world/common/enemy/ShyGuy/idle.inc.c"
 
 MobileAISettings N(AISettings_Short) = {
     .moveSpeed = 5.0f,

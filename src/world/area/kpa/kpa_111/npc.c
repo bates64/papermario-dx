@@ -1,6 +1,6 @@
 #include "kpa_111.h"
 
-#include "world/common/enemy/DryBones.inc.c"
+#include "world/common/enemy/DryBones/idle.inc.c"
 
 NpcData N(NpcData_DryBones)[] = {
     {

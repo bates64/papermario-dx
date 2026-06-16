@@ -13,7 +13,7 @@ NpcSettings N(NpcSettings_Lakilester) = {
 
 #define AI_LAKITU_FIRST_SPINY_ID    NPC_Spiny_01
 #define AI_LAKITU_LAST_SPINY_ID     NPC_Spiny_06
-#include "world/common/enemy/Lakitu_SpinySpawner.inc.c"
+#include "world/common/enemy/Lakitu/spiny_spawner.inc.c"
 
 API_CALLABLE(N(PlayLakiluluFlightSounds)) {
     Npc* npc = get_npc_unsafe(NPC_Lakilulu);
@@ -604,8 +604,8 @@ NpcData N(NpcData_Lakilester) = {
         .walk   = ANIM_WorldLakilester_Idle,
         .run    = ANIM_WorldLakilester_Idle,
         .chase  = ANIM_WorldLakilester_Idle,
-        .anim_4 = ANIM_WorldLakilester_Idle,
-        .anim_5 = ANIM_WorldLakilester_Idle,
+        .alert  = ANIM_WorldLakilester_Idle,
+        .unused = ANIM_WorldLakilester_Idle,
         .death  = ANIM_WorldLakilester_Idle,
         .hit    = ANIM_WorldLakilester_Idle,
         .anim_8 = ANIM_WorldLakilester_Idle,
@@ -632,8 +632,8 @@ NpcData N(NpcData_Lakilulu) = {
         .walk   = ANIM_Lakilulu_Idle,
         .run    = ANIM_Lakilulu_Idle,
         .chase  = ANIM_Lakilulu_Idle,
-        .anim_4 = ANIM_Lakilulu_Idle,
-        .anim_5 = ANIM_Lakilulu_Idle,
+        .alert  = ANIM_Lakilulu_Idle,
+        .unused = ANIM_Lakilulu_Idle,
         .death  = ANIM_Lakilulu_Idle,
         .hit    = ANIM_Lakilulu_Idle,
         .anim_8 = ANIM_Lakilulu_Idle,
@@ -661,8 +661,8 @@ NpcData N(NpcData_Lakilulu_Spiny) = {
         .walk   = ANIM_Lakilulu_Idle,
         .run    = ANIM_Lakilulu_Idle,
         .chase  = ANIM_Lakilulu_Idle,
-        .anim_4 = ANIM_Lakilulu_Idle,
-        .anim_5 = ANIM_Lakilulu_Idle,
+        .alert  = ANIM_Lakilulu_Idle,
+        .unused = ANIM_Lakilulu_Idle,
         .death  = ANIM_Lakilulu_Idle,
         .hit    = ANIM_Lakilulu_Idle,
         .anim_8 = ANIM_Lakilulu_Idle,

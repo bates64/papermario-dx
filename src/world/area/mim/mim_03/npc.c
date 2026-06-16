@@ -1,6 +1,6 @@
 #include "mim_03.h"
 
-#include "world/common/npc/Oaklie.inc.c"
+#include "world/common/npc/Oaklie/idle.inc.c"
 
 EvtScript N(EVS_NpcInteract_Oaklie) = {
     Call(DisablePlayerInput, true)

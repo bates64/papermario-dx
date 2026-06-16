@@ -89,13 +89,8 @@ extern NpcGroupList N(IntroNPCs);
 extern NpcGroupList N(EpilogueNPCs);
 extern NpcGroupList N(DefaultNPCs);
 
-#include "world/common/npc/Toad_Collection.h"
-extern NpcSettings N(NpcSettings_Toad_Wander);
-extern NpcSettings N(NpcSettings_Toad_Patrol);
-extern NpcSettings N(NpcSettings_Toad_Stationary);
-
-#include "world/common/npc/GoombaFamily.h"
-extern NpcSettings N(NpcSettings_GoombaFamily);
-
-#include "world/common/npc/Luigi.h"
-extern NpcSettings N(NpcSettings_Luigi);
+#include "world/common/npc/Toad/wander.h"
+#include "world/common/npc/Toad/patrol.h"
+#include "world/common/npc/Toad/idle.h"
+#include "world/common/npc/GoombaFamily/idle.h"
+#include "world/common/npc/Luigi/idle.h"

@@ -5,10 +5,10 @@
 extern EvtScript N(EVS_NpcAI_Tubba_Chase);
 extern EvtScript N(EVS_NpcAI_Tubba_WakeUp);
 
-#include "world/common/npc/Yakkey.inc.c"
+#include "world/common/npc/Yakkey/idle.inc.c"
 
-#include "world/common/enemy/TubbaBlubba_Patrol.inc.c"
-#include "world/common/enemy/TubbaBlubba.inc.c"
+#include "world/common/enemy/TubbaBlubba/patrol.inc.c"
+#include "world/common/enemy/TubbaBlubba/idle.inc.c"
 
 API_CALLABLE(N(UnusedChasePlayer)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -331,10 +331,15 @@ EvtScript N(EVS_NpcAI_Tubba_Chase) = {
     End
 };
 
-#include "world/common/todo/UnkFunc1.inc.c"
+API_CALLABLE(N(PostBattleHideWorld)) {
+    increment_status_bar_disabled();
+    set_screen_overlay_params_back(OVERLAY_SCREEN_COLOR, 255.0f);
+    return ApiStatus_DONE2;
+}
 
+// failsafe if the player somehow defeats Tubba
 EvtScript N(EVS_NpcDefeat_Tubba) = {
-    Call(N(UnkFunc1))
+    Call(N(PostBattleHideWorld))
     Call(GotoMap, Ref("dgb_01"), dgb_01_ENTRY_6)
     Wait(100)
     Return
@@ -524,8 +529,8 @@ NpcData N(NpcData_Yakkey) = {
         .walk   = ANIM_Yakkey_Idle,
         .run    = ANIM_Yakkey_Idle,
         .chase  = ANIM_Yakkey_Idle,
-        .anim_4 = ANIM_Yakkey_Idle,
-        .anim_5 = ANIM_Yakkey_Idle,
+        .alert  = ANIM_Yakkey_Idle,
+        .unused = ANIM_Yakkey_Idle,
         .death  = ANIM_Yakkey_Idle,
         .hit    = ANIM_Yakkey_Idle,
         .anim_8 = ANIM_Yakkey_Idle,

@@ -3,8 +3,8 @@
 #include "sprite/player.h"
 #include "inventory.h"
 
-#include "world/common/npc/StarSpirit.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_Mamar) = {
     Loop(0)

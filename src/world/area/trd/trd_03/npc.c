@@ -4,7 +4,7 @@ extern EvtScript N(EVS_StartKoopaBrosTheme);
 extern EvtScript N(EVS_EndKoopaBrosTheme);
 extern EvtScript N(EVS_EnterMap);
 
-#include "world/common/enemy/KoopaTroopa_Wander.inc.c"
+#include "world/common/enemy/KoopaTroopa/wander.inc.c"
 
 NpcSettings N(NpcSettings_KoopaBros) = {
     .height = 34,
@@ -14,7 +14,7 @@ NpcSettings N(NpcSettings_KoopaBros) = {
     .onDefeat = &EnemyNpcDefeat,
 };
 
-#include "world/common/enemy/Bobomb_Wander.inc.c"
+#include "world/common/enemy/Bobomb/wander.inc.c"
 
 EvtScript N(EVS_Scene_GreenKoopaBros) = {
     Call(DisablePlayerInput, true)
@@ -193,8 +193,8 @@ NpcData N(NpcData_KoopaBros) = {
         .walk   = ANIM_KoopaBros_Green_Walk,
         .run    = ANIM_KoopaBros_Green_Run,
         .chase  = ANIM_KoopaBros_Green_Run,
-        .anim_4 = ANIM_KoopaBros_Green_Idle,
-        .anim_5 = ANIM_KoopaBros_Green_Idle,
+        .alert  = ANIM_KoopaBros_Green_Idle,
+        .unused = ANIM_KoopaBros_Green_Idle,
         .death  = ANIM_KoopaBros_Green_HurtStill,
         .hit    = ANIM_KoopaBros_Green_HurtStill,
         .anim_8 = ANIM_KoopaBros_Green_Run,

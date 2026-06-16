@@ -15,8 +15,8 @@
     .walk   = ANIM_ChuckQuizmo_Walk, \
     .run    = ANIM_ChuckQuizmo_Run, \
     .chase  = ANIM_ChuckQuizmo_Run, \
-    .anim_4 = ANIM_ChuckQuizmo_Idle, \
-    .anim_5 = ANIM_ChuckQuizmo_Idle, \
+    .alert  = ANIM_ChuckQuizmo_Idle, \
+    .unused = ANIM_ChuckQuizmo_Idle, \
     .death  = ANIM_ChuckQuizmo_Still, \
     .hit    = ANIM_ChuckQuizmo_Still, \
     .anim_8 = ANIM_ChuckQuizmo_Run, \

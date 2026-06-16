@@ -1,15 +1,15 @@
 #include "nok_01.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/ai/GuardAI.inc.c"
+#include "world/common/ai/GuardAI.inc.c"
 
-#include "world/common/npc/KoopaWithoutShell_Wander.inc.c"
-#include "world/common/npc/Koopa_Wander.inc.c"
+#include "world/common/npc/KoopaWithoutShell/wander.inc.c"
+#include "world/common/npc/Koopa/wander.inc.c"
 
-#include "world/common/npc/Koopa.inc.c"
-#include "world/common/enemy/Fuzzy.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/Bobomb.inc.c"
+#include "world/common/npc/Koopa/idle.inc.c"
+#include "world/common/enemy/Fuzzy/idle.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Bobomb/idle.inc.c"
 
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"

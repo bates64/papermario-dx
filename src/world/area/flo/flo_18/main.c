@@ -1,11 +1,6 @@
 #include "flo_18.h"
 #include "effects.h"
 
-API_CALLABLE(N(SpawnSunEffect)) {
-    fx_sun(FX_SUN_FROM_RIGHT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_ExitWalk_flo_17_1) = EVT_EXIT_WALK(60, flo_18_ENTRY_0, "flo_17", flo_17_ENTRY_1);
 
 EvtScript N(EVS_BindExitTriggers) = {
@@ -69,7 +64,7 @@ EvtScript N(EVS_Main) = {
     EndIf
     ExecWait(N(EVS_SetupMusic))
     IfGe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
-        Call(N(SpawnSunEffect))
+        Call(SpawnSunEffect, FX_SUN_FROM_RIGHT)
     EndIf
     Return
     End

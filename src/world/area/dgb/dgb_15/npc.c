@@ -1,10 +1,8 @@
 #include "dgb_15.h"
 
-#include "world/common/npc/Yakkey.inc.c"
-
-#include "world/common/enemy/Clubba_Wander.inc.c"
-
-#include "world/common/enemy/TubbaBlubba.inc.c"
+#include "world/common/npc/Yakkey/idle.inc.c"
+#include "world/common/enemy/Clubba/wander.inc.c"
+#include "world/common/enemy/TubbaBlubba/idle.inc.c"
 
 extern EvtScript N(EVS_NpcAI_Tubba);
 
@@ -118,7 +116,7 @@ MobileAISettings N(AISettings_Tubba) = {
     .loiterMode = 1,
 };
 
-#include "world/common/enemy/ai/PatrolNoAttackAI.inc.c"
+#include "world/common/ai/PatrolNoAttackAI.inc.c"
 
 EvtScript N(EVS_NpcAI_Tubba) = {
     Exec(N(EVS_WaitForCloseCall))
@@ -130,10 +128,15 @@ EvtScript N(EVS_NpcAI_Tubba) = {
     End
 };
 
-#include "world/common/todo/UnkFunc1.inc.c"
+API_CALLABLE(N(PostBattleHideWorld)) {
+    increment_status_bar_disabled();
+    set_screen_overlay_params_back(OVERLAY_SCREEN_COLOR, 255.0f);
+    return ApiStatus_DONE2;
+}
 
+// failsafe if the player somehow defeats Tubba
 EvtScript N(EVS_NpcDefeat_Tubba) = {
-    Call(N(UnkFunc1))
+    Call(N(PostBattleHideWorld))
     Call(GotoMap, Ref("dgb_14"), dgb_14_ENTRY_1)
     Wait(100)
     Return

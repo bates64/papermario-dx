@@ -1,8 +1,8 @@
 #include "omo_07.h"
 
-#include "world/common/enemy/ShyGuy_Wander.inc.c"
-#include "world/common/enemy/ShyGuy_Patrol.inc.c"
-#include "world/common/enemy/SkyGuy.inc.c"
+#include "world/common/enemy/ShyGuy/wander.inc.c"
+#include "world/common/enemy/ShyGuy/patrol.inc.c"
+#include "world/common/enemy/SkyGuy/idle.inc.c"
 
 NpcSettings N(NpcSettings_Fuzzy) = {
     .height = 23,
@@ -19,7 +19,7 @@ NpcSettings N(NpcSettings_HammerBros) = {
     .level = ACTOR_LEVEL_HAMMER_BROS,
 };
 
-#include "world/common/enemy/Kammy_Flying.inc.c"
+#include "world/common/enemy/Kammy/flying.inc.c"
 
 // an 'unlimited' number of shy guys walk along the path and emerge from the playhouse
 // they are drawn from a pool of 4 NPCs, with their lifecycle tracked via these states
@@ -469,8 +469,8 @@ NpcData N(NpcData_Fuzzy) = {
         .walk   = ANIM_Fuzzy_Walk,
         .run    = ANIM_Fuzzy_Run,
         .chase  = ANIM_Fuzzy_Run,
-        .anim_4 = ANIM_Fuzzy_Idle,
-        .anim_5 = ANIM_Fuzzy_Idle,
+        .alert  = ANIM_Fuzzy_Idle,
+        .unused = ANIM_Fuzzy_Idle,
         .death  = ANIM_Fuzzy_Hurt,
         .hit    = ANIM_Fuzzy_Hurt,
         .anim_8 = ANIM_Fuzzy_Run,
@@ -497,8 +497,8 @@ NpcData N(NpcData_HammerBros) = {
         .walk   = ANIM_HammerBros_Anim04,
         .run    = ANIM_HammerBros_Anim07,
         .chase  = ANIM_HammerBros_Anim07,
-        .anim_4 = ANIM_HammerBros_Anim02,
-        .anim_5 = ANIM_HammerBros_Anim02,
+        .alert  = ANIM_HammerBros_Anim02,
+        .unused = ANIM_HammerBros_Anim02,
         .death  = ANIM_HammerBros_Anim0E,
         .hit    = ANIM_HammerBros_Anim0E,
         .anim_8 = ANIM_HammerBros_Anim18,

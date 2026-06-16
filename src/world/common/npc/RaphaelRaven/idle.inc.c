@@ -1,0 +1,14 @@
+#include "idle.h"
+
+EvtScript N(EVS_NpcCreate_RaphaelRaven) = {
+    Call(SetNpcScale, NPC_SELF, Float(1.5), Float(1.5), Float(1.5))
+    Return
+    End
+};
+
+NpcSettings N(NpcSettings_RaphaelRaven) = {
+    .height = 98,
+    .radius = 80,
+    .level = ACTOR_LEVEL_NONE,
+    .onCreate = &N(EVS_NpcCreate_RaphaelRaven),
+};

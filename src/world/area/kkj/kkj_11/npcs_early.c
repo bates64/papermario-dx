@@ -4,7 +4,7 @@
 #include "../common/Searchlights.inc.c"
 #include "../common/ApproachPlayer100Units.inc.c"
 
-#include "world/common/enemy/Koopatrol_Stationary.inc.c"
+#include "world/common/enemy/Koopatrol/idle.inc.c"
 
 EvtScript N(EVS_NpcAI_Koopatrol_01_Early) = {
     Call(DisablePlayerInput, true)

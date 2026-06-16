@@ -1,6 +1,6 @@
 #include "sam_10.h"
 
-#include "world/common/enemy/FrostClubba_Wander.inc.c"
+#include "world/common/enemy/FrostClubba/wander.inc.c"
 
 NpcData N(NpcData_Clubba)[] = {
     {

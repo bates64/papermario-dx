@@ -7,8 +7,8 @@ NpcSettings N(NpcSettings_Dummy) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/npc/Twink.h"
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/Twink/base.h"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 EvtScript N(EVS_NpcInit_Peach) = {
     Call(SetNpcPos, NPC_Peach, -100, 200, 1300)
@@ -136,8 +136,8 @@ NpcData N(NpcData_Spirits_Descent)[] = {
             .walk   = ANIM_Peach1_Still,
             .run    = ANIM_Peach1_Still,
             .chase  = ANIM_Peach1_Still,
-            .anim_4 = ANIM_Peach1_Still,
-            .anim_5 = ANIM_Peach1_Still,
+            .alert  = ANIM_Peach1_Still,
+            .unused = ANIM_Peach1_Still,
             .death  = ANIM_Peach1_Still,
             .hit    = ANIM_Peach1_Still,
             .anim_8 = ANIM_Peach1_Still,

@@ -1,15 +1,15 @@
 #include "dgb_08.h"
 
-#include "world/common/npc/Yakkey.inc.c"
+#include "world/common/npc/Yakkey/idle.inc.c"
 
-#include "world/common/enemy/TubbaBlubba_Patrol.inc.c"
-#include "world/common/enemy/TubbaBlubba.inc.c"
+#include "world/common/enemy/TubbaBlubba/patrol.inc.c"
+#include "world/common/enemy/TubbaBlubba/idle.inc.c"
 
-#include "world/common/enemy/Clubba_Wander.inc.c"
+#include "world/common/enemy/Clubba/wander.inc.c"
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel_01
 #define AI_SENTINEL_LAST_NPC  NPC_Sentinel_02
-#include "world/common/enemy/Sentinel.inc.c"
+#include "world/common/enemy/Sentinel/idle.inc.c"
 
 NpcSettings N(NpcSettings_LastClubba) = {
     .height = 24,
@@ -120,10 +120,15 @@ EvtScript N(EVS_NpcAI_Tubba) = {
     End
 };
 
-#include "world/common/todo/UnkFunc1.inc.c"
+API_CALLABLE(N(PostBattleHideWorld)) {
+    increment_status_bar_disabled();
+    set_screen_overlay_params_back(OVERLAY_SCREEN_COLOR, 255.0f);
+    return ApiStatus_DONE2;
+}
 
+// failsafe if the player somehow defeats Tubba
 EvtScript N(EVS_NpcDefeat_Tubba) = {
-    Call(N(UnkFunc1))
+    Call(N(PostBattleHideWorld))
     Call(GotoMap, Ref("dgb_01"), dgb_01_ENTRY_2)
     Wait(100)
     Return

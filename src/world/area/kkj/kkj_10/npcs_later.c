@@ -1,6 +1,6 @@
 #include "kkj_10.h"
 #include "sprite/player.h"
-#include "world/common/enemy/Koopatrol.h"
+#include "world/common/enemy/Koopatrol/base.h"
 
 #include "../common/Searchlights.inc.c"
 #include "../common/ApproachPlayer100Units.inc.c"

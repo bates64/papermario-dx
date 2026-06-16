@@ -2,11 +2,11 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/HyperParagoomba.inc.c"
-#include "world/common/enemy/TubbaBlubba.inc.c"
-#include "world/common/npc/TubbasHeart.inc.c"
-#include "world/common/npc/Boo.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/enemy/HyperParagoomba/idle.inc.c"
+#include "world/common/enemy/TubbaBlubba/idle.inc.c"
+#include "world/common/npc/TubbasHeart/idle.inc.c"
+#include "world/common/npc/Boo/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 API_CALLABLE(N(UpgradeStarPowerCh3)) {
     set_max_star_power(3);
@@ -665,8 +665,8 @@ NpcData N(NpcData_Bow) = {
         .walk   = ANIM_WorldBow_Walk,
         .run    = ANIM_WorldBow_Run,
         .chase  = ANIM_WorldBow_Run,
-        .anim_4 = ANIM_WorldBow_Idle,
-        .anim_5 = ANIM_WorldBow_Idle,
+        .alert  = ANIM_WorldBow_Idle,
+        .unused = ANIM_WorldBow_Idle,
         .death  = ANIM_WorldBow_Still,
         .hit    = ANIM_WorldBow_Still,
         .anim_8 = ANIM_WorldBow_Run,
@@ -693,8 +693,8 @@ NpcData N(NpcData_Bootler) = {
         .walk   = ANIM_Bootler_Walk,
         .run    = ANIM_Bootler_Run,
         .chase  = ANIM_Bootler_Run,
-        .anim_4 = ANIM_Bootler_Idle,
-        .anim_5 = ANIM_Bootler_Idle,
+        .alert  = ANIM_Bootler_Idle,
+        .unused = ANIM_Bootler_Idle,
         .death  = ANIM_Bootler_Still,
         .hit    = ANIM_Bootler_Still,
         .anim_8 = ANIM_Bootler_Shock,

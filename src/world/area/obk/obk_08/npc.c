@@ -10,7 +10,7 @@ enum {
     RING_STATE_PAUSED               = 13, // not moving
 };
 
-#include "world/common/npc/Boo.inc.c"
+#include "world/common/npc/Boo/idle.inc.c"
 
 API_CALLABLE(N(InitHiddenBoo)) {
     Npc* hiddenBoo = get_npc_unsafe(script->owner2.npcID);

@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Parakarry.inc.c"
+#include "world/common/npc/Parakarry/idle.inc.c"
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 

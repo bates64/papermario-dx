@@ -1,7 +1,7 @@
 #include "kkj_19.h"
 
-#include "world/common/npc/StarSpirit.inc.c"
-#include "world/common/npc/Twink.h"
+#include "world/common/npc/StarSpirit/idle.inc.c"
+#include "world/common/npc/Twink/base.h"
 
 EvtScript N(EVS_NpcInteract_Twink) = {
     Call(SetSelfVar, 0, 0)

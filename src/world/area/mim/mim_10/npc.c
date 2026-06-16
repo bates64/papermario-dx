@@ -62,8 +62,8 @@ API_CALLABLE(N(DarkenBackground)) {
     return retVal;
 }
 
-#include "world/common/npc/Bootler.inc.c"
-#include "world/common/npc/JrTroopa.inc.c"
+#include "world/common/npc/Bootler/idle.inc.c"
+#include "world/common/npc/JrTroopa/idle.inc.c"
 
 EvtScript N(EVS_Bootler_SpookPlayer) = {
     ChildThread

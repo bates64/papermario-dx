@@ -1,9 +1,9 @@
 #include "omo_03.h"
 
-#include "world/common/npc/TrainToad.inc.c"
-#include "world/common/npc/Parakarry.inc.c"
+#include "world/common/npc/TrainToad/idle.inc.c"
+#include "world/common/npc/Parakarry/idle.inc.c"
 
-#include "world/common/enemy/ShyGuy_Stationary.inc.c"
+#include "world/common/enemy/ShyGuy/idle.inc.c"
 
 EvtScript N(EVS_ItemPrompt_ToyTrain) = {
     Call(DisablePlayerInput, true)
@@ -165,8 +165,8 @@ NpcData N(NpcData_Epilogue)[] = {
             .walk   = ANIM_WorldWatt_Idle,
             .run    = ANIM_WorldWatt_Idle,
             .chase  = ANIM_WorldWatt_Idle,
-            .anim_4 = ANIM_WorldWatt_Idle,
-            .anim_5 = ANIM_WorldWatt_Idle,
+            .alert  = ANIM_WorldWatt_Idle,
+            .unused = ANIM_WorldWatt_Idle,
             .death  = ANIM_WorldWatt_Idle,
             .hit    = ANIM_WorldWatt_Idle,
             .anim_8 = ANIM_WorldWatt_Idle,

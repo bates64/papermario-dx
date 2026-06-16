@@ -3,13 +3,13 @@
 
 #define NAME_SUFFIX _Npc2
 
-#include "world/common/npc/Bowser.inc.c"
-#include "world/common/npc/Dummy.inc.c"
-#include "world/common/enemy/Kammy_Flying.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/Bowser/idle.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
+#include "world/common/enemy/Kammy/flying.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
-#include "world/common/npc/Peach.h"
-#include "world/common/npc/Twink.h"
+#include "world/common/npc/Peach/base.h"
+#include "world/common/npc/Twink/base.h"
 
 EvtScript N(EVS_NpcIdle_Bowser) = {
     Label(0)
@@ -37,11 +37,15 @@ EvtScript N(EVS_NpcIdle_Bowser) = {
     End
 };
 
-#include "world/common/todo/UnkFunc1.inc.c"
+API_CALLABLE(N(PostBattleHideWorld)) {
+    increment_status_bar_disabled();
+    set_screen_overlay_params_back(OVERLAY_SCREEN_COLOR, 255.0f);
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_NpcDefeat_Bowser) = {
     Call(SetEncounterStatusFlags, ENCOUNTER_FLAG_CANT_SKIP_WIN_DELAY, true)
-    Call(N(UnkFunc1))
+    Call(N(PostBattleHideWorld))
     Set(GF_KKJ25_Defeated_Bowser, true)
     // reload the map in the 'final' configuration
     Call(GotoMap, Ref("kkj_25"), kkj_25_ENTRY_2)
@@ -274,8 +278,8 @@ NpcData N(NpcData_Kammy)[] = {
             .walk   = ANIM_BattleKammy_Anim00,
             .run    = ANIM_BattleKammy_Anim00,
             .chase  = ANIM_BattleKammy_Anim00,
-            .anim_4 = ANIM_BattleKammy_Anim00,
-            .anim_5 = ANIM_BattleKammy_Anim00,
+            .alert  = ANIM_BattleKammy_Anim00,
+            .unused = ANIM_BattleKammy_Anim00,
             .death  = ANIM_BattleKammy_Anim00,
             .hit    = ANIM_BattleKammy_Anim00,
             .anim_8 = ANIM_BattleKammy_Anim00,
@@ -302,8 +306,8 @@ NpcData N(NpcData_Kammy)[] = {
             .walk   = ANIM_BattleKammy_Anim00,
             .run    = ANIM_BattleKammy_Anim00,
             .chase  = ANIM_BattleKammy_Anim00,
-            .anim_4 = ANIM_BattleKammy_Anim00,
-            .anim_5 = ANIM_BattleKammy_Anim00,
+            .alert  = ANIM_BattleKammy_Anim00,
+            .unused = ANIM_BattleKammy_Anim00,
             .death  = ANIM_BattleKammy_Anim00,
             .hit    = ANIM_BattleKammy_Anim00,
             .anim_8 = ANIM_BattleKammy_Anim00,

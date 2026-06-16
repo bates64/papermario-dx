@@ -1,8 +1,8 @@
 #include "hos_03.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/StarSpirit.inc.c"
-#include "world/common/npc/StarSpirit_Wander.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
+#include "world/common/npc/StarSpirit/wander.inc.c"
 
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouseHos.data.inc.c"

@@ -1,6 +1,6 @@
 #include "dgb_06.h"
 
-#include "world/common/npc/Boo.inc.c"
+#include "world/common/npc/Boo/idle.inc.c"
 
 EvtScript N(EVS_NpcInteract_Boo) = {
     IfEq(AF_DGB06_ToggleDialogue_Boo, false)

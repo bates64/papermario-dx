@@ -2,8 +2,8 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/HuffNPuff.h"
-#include "world/common/enemy/RuffPuff.h"
+#include "world/common/enemy/HuffNPuff/base.h"
+#include "world/common/enemy/RuffPuff/base.h"
 
 NpcSettings N(NpcSettings_RuffPuff) = {
     .height = 24,
@@ -19,7 +19,7 @@ NpcSettings N(NpcSettings_HuffNPuff) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 Vec3f N(Path_JumpOut)[] = {
     {  600.0,   104.0,    0.0 },

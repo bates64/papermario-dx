@@ -4,11 +4,6 @@
 #define STAR_SPIRIT_DATA_VAR MV_SpiritCardData
 #include "world/common/atomic/StarSpiritCard.inc.c"
 
-API_CALLABLE(N(SpawnSunEffect)) {
-    fx_sun(FX_SUN_FROM_RIGHT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_TrySpawningStarCard) = {
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH6_GREW_MAGIC_BEANSTALK)
@@ -106,7 +101,7 @@ EvtScript N(EVS_Main) = {
     Exec(EnterWalk)
     ExecWait(N(EVS_SetupMusic))
     IfGe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
-        Call(N(SpawnSunEffect))
+        Call(SpawnSunEffect, FX_SUN_FROM_RIGHT)
     EndIf
     Exec(N(EVS_TrySpawningStarCard))
     Return

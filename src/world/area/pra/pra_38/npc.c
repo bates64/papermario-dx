@@ -1,6 +1,6 @@
 #include "pra_38.h"
 
-#include "world/common/enemy/Swooper.inc.c"
+#include "world/common/enemy/Swooper/idle.inc.c"
 
 EvtScript N(EVS_NpcInit_Swoopula) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)

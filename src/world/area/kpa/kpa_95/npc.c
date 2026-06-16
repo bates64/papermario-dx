@@ -1,10 +1,11 @@
 #include "kpa_95.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/Penguin.inc.c"
+#include "world/common/npc/ToadGuard/base.h"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Penguin/idle.inc.c"
 
-#include "world/common/enemy/Koopatrol_Patrol.inc.c"
+#include "world/common/enemy/Koopatrol/patrol.inc.c"
 
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"

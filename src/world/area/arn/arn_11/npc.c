@@ -1,6 +1,6 @@
 #include "arn_11.h"
 
-#include "world/common/npc/TubbasHeart.inc.c"
+#include "world/common/npc/TubbasHeart/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_TubbasHeart) = {
     Loop(0)

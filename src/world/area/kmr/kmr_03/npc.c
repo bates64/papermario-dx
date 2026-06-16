@@ -4,7 +4,7 @@
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 #include "world/common/util/CheckPositionRelativeToPlane.inc.c"
 
-#include "world/common/npc/GoombaFamily.inc.c"
+#include "world/common/npc/GoombaFamily/idle.inc.c"
 
 EvtScript N(EVS_NpcAI_Goompa) = {
     Switch(GB_StoryProgress)

@@ -1,8 +1,8 @@
 #include "kmr_09.h"
 #include "entity.h"
 
-#include "world/common/enemy/Goomba_Wander.inc.c"
-#include "world/common/enemy/Paragoomba_Wander.inc.c"
+#include "world/common/enemy/Goomba/wander.inc.c"
+#include "world/common/enemy/Paragoomba/wander.inc.c"
 
 NpcData N(NpcData_Goomba_01) = {
     .id = NPC_Goomba_01,

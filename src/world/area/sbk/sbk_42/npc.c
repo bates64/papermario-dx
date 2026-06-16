@@ -1,6 +1,6 @@
 #include "sbk_42.h"
 
-#include "world/common/enemy/Bandit.inc.c"
+#include "world/common/enemy/Bandit/idle.inc.c"
 
 NpcData N(NpcData_Bandit_01) = {
     .id = NPC_Bandit_01,

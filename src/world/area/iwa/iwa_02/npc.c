@@ -1,9 +1,9 @@
 #include "iwa_02.h"
 
-#include "world/common/enemy/MontyMole_GroundAmbush.inc.c"
-#include "world/common/enemy/MontyMole_WallAmbush.inc.c"
-#include "world/common/enemy/Cleft.inc.c"
-#include "world/common/npc/Bubulb.inc.c"
+#include "world/common/enemy/MontyMole/ground_ambush.inc.c"
+#include "world/common/enemy/MontyMole/wall_ambush.inc.c"
+#include "world/common/enemy/Cleft/idle.inc.c"
+#include "world/common/npc/Bubulb/idle.inc.c"
 
 NpcData N(NpcData_Cleft_01) = {
     .id = NPC_Cleft_01,

@@ -1,6 +1,6 @@
 #include "isk_02.h"
 
-#include "world/common/enemy/PokeyMummy.inc.c"
+#include "world/common/enemy/PokeyMummy/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_Pokey_01) = {
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_IGNORE_PARTNER, true)

@@ -19,8 +19,7 @@ export MapSettings N(settings) = {
     .bgName = "sbk_bg",
     .tattle = { MSG_MapTattle_sbk_56 },
 };
-
-#include "world/common/todo/SpawnSunEffect.inc.c"
+#include "effects.h"
 
 API_CALLABLE(N(StartOasisTracks)) {
     bgm_set_linked_mode(0, 1);
@@ -81,7 +80,7 @@ EvtScript N(EVS_Main) = {
     EndIf
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(N(EVS_MakeEntities))
-    Call(N(SpawnSunEffect))
+    Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     Call(MakeTransformGroup, MODEL_sui)
     Call(SetMusic, 0, SONG_DRY_DRY_DESERT, 0, VOL_LEVEL_FULL)
     Call(N(StartOasisTracks))

@@ -17,7 +17,7 @@ typedef struct EndChapter {
     /* 0x24 */ EffectInstance* chapterChangeEffect;
 } EndChapter; // size = 0x28
 
-#include "world/common/npc/StarSpirit.h"
+#include "world/common/npc/StarSpirit/base.h"
 
 NpcSettings N(NpcSettings_StarSpirit) = {
     .height = 24,

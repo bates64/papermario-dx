@@ -1,7 +1,8 @@
 #include "kpa_11.h"
 
-#include "world/common/enemy/Koopatrol_Wander.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/ToadGuard/base.h"
+#include "world/common/enemy/Koopatrol/wander.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
 EvtScript N(EVS_NpcDefeat_Koopatrol) = {
     Call(GetBattleOutcome, LVar0)

@@ -1,11 +1,11 @@
 #include "omo_05.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/ShyGuy_Wander.inc.c"
-#include "world/common/enemy/GrooveGuy.inc.c"
-#include "world/common/enemy/SkyGuy.inc.c"
+#include "world/common/enemy/ShyGuy/wander.inc.c"
+#include "world/common/enemy/GrooveGuy/idle.inc.c"
+#include "world/common/enemy/SkyGuy/idle.inc.c"
 
-#include "world/common/npc/GourmetGuy.inc.c"
+#include "world/common/npc/GourmetGuy/idle.inc.c"
 
 API_CALLABLE(N(JudgeFoodQuality)) {
     Bytecode* args = script->ptrReadPos;

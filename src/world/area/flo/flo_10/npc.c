@@ -1,7 +1,7 @@
 #include "flo_10.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Lily.inc.c"
+#include "world/common/npc/Lily/idle.inc.c"
 
 EvtScript N(EVS_Scene_SunReturns) = {
     Call(DisablePlayerInput, true)

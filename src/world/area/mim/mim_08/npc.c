@@ -1,8 +1,8 @@
 #include "mim_08.h"
 
-#include "world/common/enemy/Bzzap.inc.c"
+#include "world/common/enemy/Bzzap/idle.inc.c"
 
-#include "world/common/enemy/PiranhaPlant.inc.c"
+#include "world/common/enemy/PiranhaPlant/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_Bzzap) = {
     Label(100)

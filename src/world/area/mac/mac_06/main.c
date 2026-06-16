@@ -1,4 +1,5 @@
 #include "mac_06.h"
+#include "effects.h"
 
 API_CALLABLE(N(GetWaveAmplitude)) {
     Bytecode* args = script->ptrReadPos;
@@ -24,8 +25,6 @@ API_CALLABLE(N(GetWaveAmplitude)) {
         - diff * cos_deg(((time * 180.0f) / duration) + phaseOffset));
     return ApiStatus_DONE2;
 }
-
-#include "world/common/todo/SpawnSunEffect.inc.c"
 
 EvtScript N(EVS_AnimateWaves) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
@@ -54,7 +53,7 @@ EvtScript N(EVS_Main) = {
     Call(PlayAmbientSounds, AMBIENT_BEACH)
     Exec(N(EVS_AnimateWaves))
     Call(SetTexPanner, MODEL_o214, TEX_PANNER_1)
-    Call(N(SpawnSunEffect))
+    Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, mac_06_ENTRY_0)
         Thread

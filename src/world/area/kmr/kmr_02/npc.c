@@ -18,7 +18,7 @@ BSS u8 oldEnvR, oldEnvG, oldEnvB;
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
 
-#include "world/common/npc/Toad_Guard.inc.c"
+#include "world/common/npc/Toad/guard.inc.c"
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 
@@ -30,10 +30,10 @@ API_CALLABLE(N(AwaitPartnerGrounded)) {
     }
 }
 
-#include "world/common/npc/GoombaFamily_Wander.inc.c"
-#include "world/common/npc/GoombaFamily.inc.c"
-#include "world/common/enemy/Kammy_Guard.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/GoombaFamily/wander.inc.c"
+#include "world/common/npc/GoombaFamily/idle.inc.c"
+#include "world/common/enemy/Kammy/guard.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 #include "world/common/atomic/MarioSalute.inc.c"
 
@@ -2186,8 +2186,8 @@ NpcData N(NpcData_Epilogue)[] = {
             .walk   = ANIM_WorldParakarry_Walk,
             .run    = ANIM_WorldParakarry_Run,
             .chase  = ANIM_WorldParakarry_Run,
-            .anim_4 = ANIM_WorldParakarry_Idle,
-            .anim_5 = ANIM_WorldParakarry_Idle,
+            .alert  = ANIM_WorldParakarry_Idle,
+            .unused = ANIM_WorldParakarry_Idle,
             .death  = ANIM_WorldParakarry_Still,
             .hit    = ANIM_WorldParakarry_Still,
             .anim_8 = ANIM_WorldParakarry_Idle,

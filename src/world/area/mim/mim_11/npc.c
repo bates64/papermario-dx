@@ -1,7 +1,7 @@
 #include "mim_11.h"
 
-#include "world/common/npc/Boo.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/Boo/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 API_CALLABLE(N(AnimateStarSpiritBobbing)) {
     Npc* npc;
@@ -60,8 +60,8 @@ NpcData N(NpcData_Bootler)[] = {
             .walk   = ANIM_Bootler_Walk,
             .run    = ANIM_Bootler_Run,
             .chase  = ANIM_Bootler_Run,
-            .anim_4 = ANIM_Bootler_Idle,
-            .anim_5 = ANIM_Bootler_Idle,
+            .alert  = ANIM_Bootler_Idle,
+            .unused = ANIM_Bootler_Idle,
             .death  = ANIM_Bootler_Still,
             .hit    = ANIM_Bootler_Still,
             .anim_8 = ANIM_Bootler_Shock,
@@ -87,8 +87,8 @@ NpcData N(NpcData_Bootler)[] = {
             .walk   = ANIM_WorldSkolar_Idle,
             .run    = ANIM_WorldSkolar_Idle,
             .chase  = ANIM_WorldSkolar_Idle,
-            .anim_4 = ANIM_WorldSkolar_Idle,
-            .anim_5 = ANIM_WorldSkolar_Idle,
+            .alert  = ANIM_WorldSkolar_Idle,
+            .unused = ANIM_WorldSkolar_Idle,
             .death  = ANIM_WorldSkolar_Idle,
             .hit    = ANIM_WorldSkolar_Idle,
             .anim_8 = ANIM_WorldSkolar_Still,

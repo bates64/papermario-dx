@@ -1,6 +1,6 @@
 #include "sam_12.h"
 
-#include "world/common/npc/Merlar.inc.c"
+#include "world/common/npc/Merlar/idle.inc.c"
 
 EvtScript N(EVS_NpcInit_Merlar) = {
     Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Merlar)))

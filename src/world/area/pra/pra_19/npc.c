@@ -10,9 +10,9 @@ NpcSettings N(NpcSettings_Kooper) = {
     .onDefeat = &EnemyNpcDefeat,
 };
 
-#include "world/common/npc/GoombaFamily.inc.c"
-#include "world/common/npc/KoopaKoot.inc.c"
-#include "world/common/npc/Kolorado.inc.c"
+#include "world/common/npc/GoombaFamily/idle.inc.c"
+#include "world/common/npc/KoopaKoot/idle.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
 
 NpcSettings N(NpcSettings_Duplighost) = {
     .height = 30,
@@ -20,7 +20,7 @@ NpcSettings N(NpcSettings_Duplighost) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/npc/Luigi.h"
+#include "world/common/npc/Luigi/base.h"
 
 #include "world/common/todo/PlayBigSmokePuff.inc.c"
 
@@ -1037,8 +1037,8 @@ NpcData N(NpcData_Imposters)[] = {
             .walk   = ANIM_WorldKooper_Walk,
             .run    = ANIM_WorldKooper_Walk,
             .chase  = ANIM_WorldKooper_Walk,
-            .anim_4 = ANIM_WorldKooper_Walk,
-            .anim_5 = ANIM_WorldKooper_Walk,
+            .alert  = ANIM_WorldKooper_Walk,
+            .unused = ANIM_WorldKooper_Walk,
             .death  = ANIM_WorldKooper_Still,
             .hit    = ANIM_WorldKooper_Still,
             .anim_8 = ANIM_WorldKooper_Still,
@@ -1108,8 +1108,8 @@ NpcData N(NpcData_Imposters)[] = {
             .walk   = ANIM_Duplighost_Anim03,
             .run    = ANIM_Duplighost_Anim04,
             .chase  = ANIM_Duplighost_Anim04,
-            .anim_4 = ANIM_Duplighost_Anim02,
-            .anim_5 = ANIM_Duplighost_Anim02,
+            .alert  = ANIM_Duplighost_Anim02,
+            .unused = ANIM_Duplighost_Anim02,
             .death  = ANIM_Duplighost_Anim0A,
             .hit    = ANIM_Duplighost_Anim0A,
             .anim_8 = ANIM_Duplighost_Anim02,
@@ -1136,8 +1136,8 @@ NpcData N(NpcData_Imposters)[] = {
             .walk   = ANIM_WorldKooper_Walk,
             .run    = ANIM_WorldKooper_Walk,
             .chase  = ANIM_WorldKooper_Walk,
-            .anim_4 = ANIM_WorldKooper_Walk,
-            .anim_5 = ANIM_WorldKooper_Walk,
+            .alert  = ANIM_WorldKooper_Walk,
+            .unused = ANIM_WorldKooper_Walk,
             .death  = ANIM_WorldKooper_Still,
             .hit    = ANIM_WorldKooper_Still,
             .anim_8 = ANIM_WorldKooper_Still,
@@ -1166,8 +1166,8 @@ NpcData N(NpcData_Duplighosts)[] = {
             .walk   = ANIM_Duplighost_Anim03,
             .run    = ANIM_Duplighost_Anim04,
             .chase  = ANIM_Duplighost_Anim04,
-            .anim_4 = ANIM_Duplighost_Anim02,
-            .anim_5 = ANIM_Duplighost_Anim02,
+            .alert  = ANIM_Duplighost_Anim02,
+            .unused = ANIM_Duplighost_Anim02,
             .death  = ANIM_Duplighost_Anim0A,
             .hit    = ANIM_Duplighost_Anim0A,
             .anim_8 = ANIM_Duplighost_Anim02,
@@ -1194,8 +1194,8 @@ NpcData N(NpcData_Duplighosts)[] = {
             .walk   = ANIM_Duplighost_Anim03,
             .run    = ANIM_Duplighost_Anim04,
             .chase  = ANIM_Duplighost_Anim04,
-            .anim_4 = ANIM_Duplighost_Anim02,
-            .anim_5 = ANIM_Duplighost_Anim02,
+            .alert  = ANIM_Duplighost_Anim02,
+            .unused = ANIM_Duplighost_Anim02,
             .death  = ANIM_Duplighost_Anim0A,
             .hit    = ANIM_Duplighost_Anim0A,
             .anim_8 = ANIM_Duplighost_Anim02,
@@ -1222,8 +1222,8 @@ NpcData N(NpcData_Duplighosts)[] = {
             .walk   = ANIM_Duplighost_Anim03,
             .run    = ANIM_Duplighost_Anim04,
             .chase  = ANIM_Duplighost_Anim04,
-            .anim_4 = ANIM_Duplighost_Anim02,
-            .anim_5 = ANIM_Duplighost_Anim02,
+            .alert  = ANIM_Duplighost_Anim02,
+            .unused = ANIM_Duplighost_Anim02,
             .death  = ANIM_Duplighost_Anim0A,
             .hit    = ANIM_Duplighost_Anim0A,
             .anim_8 = ANIM_Duplighost_Anim02,
@@ -1250,8 +1250,8 @@ NpcData N(NpcData_Duplighosts)[] = {
             .walk   = ANIM_Duplighost_Anim03,
             .run    = ANIM_Duplighost_Anim04,
             .chase  = ANIM_Duplighost_Anim04,
-            .anim_4 = ANIM_Duplighost_Anim02,
-            .anim_5 = ANIM_Duplighost_Anim02,
+            .alert  = ANIM_Duplighost_Anim02,
+            .unused = ANIM_Duplighost_Anim02,
             .death  = ANIM_Duplighost_Anim0A,
             .hit    = ANIM_Duplighost_Anim0A,
             .anim_8 = ANIM_Duplighost_Anim02,
@@ -1278,8 +1278,8 @@ NpcData N(NpcData_Duplighosts)[] = {
             .walk   = ANIM_Duplighost_Anim03,
             .run    = ANIM_Duplighost_Anim04,
             .chase  = ANIM_Duplighost_Anim04,
-            .anim_4 = ANIM_Duplighost_Anim02,
-            .anim_5 = ANIM_Duplighost_Anim02,
+            .alert  = ANIM_Duplighost_Anim02,
+            .unused = ANIM_Duplighost_Anim02,
             .death  = ANIM_Duplighost_Anim0A,
             .hit    = ANIM_Duplighost_Anim0A,
             .anim_8 = ANIM_Duplighost_Anim02,
@@ -1449,8 +1449,8 @@ NpcData N(NpcData_Targets)[] = {
             .walk   = ANIM_WorldKooper_Walk,
             .run    = ANIM_WorldKooper_Walk,
             .chase  = ANIM_WorldKooper_Walk,
-            .anim_4 = ANIM_WorldKooper_Walk,
-            .anim_5 = ANIM_WorldKooper_Walk,
+            .alert  = ANIM_WorldKooper_Walk,
+            .unused = ANIM_WorldKooper_Walk,
             .death  = ANIM_WorldKooper_Still,
             .hit    = ANIM_WorldKooper_Still,
             .anim_8 = ANIM_WorldKooper_Still,

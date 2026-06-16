@@ -1,6 +1,6 @@
 #include "jan_12.h"
 
-#include "world/common/enemy/SpearGuy_Wander.inc.c"
+#include "world/common/enemy/SpearGuy/wander.inc.c"
 
 NpcData N(NpcData_SpearGuy)[] = {
     {

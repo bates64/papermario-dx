@@ -1,12 +1,15 @@
 #include "kkj_01.h"
 
-#include "world/common/npc/Toad_Wander.inc.c"
-#include "world/common/npc/Toad_Patrol.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/Dryite_Stationary.inc.c"
-#include "world/common/npc/Mouser.inc.c"
-#include "world/common/npc/Penguin.inc.c"
-#include "world/common/npc/Koopa.inc.c"
+#include "world/common/npc/ToadGuard/base.h"
+#include "world/common/npc/ToadMinister/base.h"
+#include "world/common/npc/Toadette/base.h"
+#include "world/common/npc/Toad/wander.inc.c"
+#include "world/common/npc/Toad/patrol.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Dryite/idle.inc.c"
+#include "world/common/npc/Mouser/idle.inc.c"
+#include "world/common/npc/Penguin/idle.inc.c"
+#include "world/common/npc/Koopa/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_Dryite) = {
     Loop(0)

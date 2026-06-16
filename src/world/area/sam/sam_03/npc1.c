@@ -1,6 +1,6 @@
 #include "sam_03.h"
 
-#include "world/common/npc/JrTroopa.inc.c"
+#include "world/common/npc/JrTroopa/idle.inc.c"
 
 API_CALLABLE(N(GetAngleToPlayer)) {
     Npc* npc = get_npc_unsafe(NPC_JrTroopa);

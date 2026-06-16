@@ -1,6 +1,6 @@
 #include "hos_02.h"
 
-#include "world/common/enemy/Ember.inc.c"
+#include "world/common/enemy/Ember/idle.inc.c"
 
 NpcData N(NpcData_Ember) = {
     .id = NPC_Ember_01,

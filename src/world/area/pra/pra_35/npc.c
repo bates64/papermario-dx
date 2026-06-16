@@ -1,7 +1,7 @@
 #include "pra_35.h"
 
-#include "world/common/enemy/FrostClubba_Patrol.inc.c"
-#include "world/common/enemy/Duplighost_Patrol.inc.c"
+#include "world/common/enemy/FrostClubba/patrol.inc.c"
+#include "world/common/enemy/Duplighost/patrol.inc.c"
 
 EvtScript N(EVS_NpcInit_EnableReflection) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)

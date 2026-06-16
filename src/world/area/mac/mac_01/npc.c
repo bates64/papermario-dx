@@ -6,10 +6,10 @@
 extern IconHudScriptPair gItemHudScripts[];
 extern EvtScript N(EVS_MerlonBargeOut);
 
-#include "world/common/npc/Toad_Wander.inc.c"
-#include "world/common/npc/Toad_Patrol.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/enemy/ShyGuy_Stationary.inc.c"
+#include "world/common/npc/Toad/wander.inc.c"
+#include "world/common/npc/Toad/patrol.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/enemy/ShyGuy/idle.inc.c"
 
 NpcSettings N(NpcSettings_Ninji) = {
     .height = 24,
@@ -17,9 +17,9 @@ NpcSettings N(NpcSettings_Ninji) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/npc/Twink.inc.c"
-#include "world/common/npc/Kolorado.inc.c"
-#include "world/common/npc/Bubulb.inc.c"
+#include "world/common/npc/Twink/idle.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/npc/Bubulb/idle.inc.c"
 
 NpcSettings N(NpcSettings_Parakarry) = {
     .height = 24,
@@ -1139,8 +1139,8 @@ NpcData N(NpcData_KoopaBros)[] = {
             .walk   = ANIM_KoopaBros_Black_Walk,
             .run    = ANIM_KoopaBros_Black_Run,
             .chase  = ANIM_KoopaBros_Black_Run,
-            .anim_4 = ANIM_KoopaBros_Black_Idle,
-            .anim_5 = ANIM_KoopaBros_Black_Idle,
+            .alert  = ANIM_KoopaBros_Black_Idle,
+            .unused = ANIM_KoopaBros_Black_Idle,
             .death  = ANIM_KoopaBros_Black_HurtStill,
             .hit    = ANIM_KoopaBros_Black_HurtStill,
             .anim_8 = ANIM_KoopaBros_Black_Run,
@@ -1166,8 +1166,8 @@ NpcData N(NpcData_KoopaBros)[] = {
             .walk   = ANIM_KoopaBros_Red_Walk,
             .run    = ANIM_KoopaBros_Red_Run,
             .chase  = ANIM_KoopaBros_Red_Run,
-            .anim_4 = ANIM_KoopaBros_Red_Idle,
-            .anim_5 = ANIM_KoopaBros_Red_Idle,
+            .alert  = ANIM_KoopaBros_Red_Idle,
+            .unused = ANIM_KoopaBros_Red_Idle,
             .death  = ANIM_KoopaBros_Red_HurtStill,
             .hit    = ANIM_KoopaBros_Red_HurtStill,
             .anim_8 = ANIM_KoopaBros_Red_Run,
@@ -1193,8 +1193,8 @@ NpcData N(NpcData_KoopaBros)[] = {
             .walk   = ANIM_KoopaBros_Yellow_Walk,
             .run    = ANIM_KoopaBros_Yellow_Run,
             .chase  = ANIM_KoopaBros_Yellow_Run,
-            .anim_4 = ANIM_KoopaBros_Yellow_Idle,
-            .anim_5 = ANIM_KoopaBros_Yellow_Idle,
+            .alert  = ANIM_KoopaBros_Yellow_Idle,
+            .unused = ANIM_KoopaBros_Yellow_Idle,
             .death  = ANIM_KoopaBros_Yellow_HurtStill,
             .hit    = ANIM_KoopaBros_Yellow_HurtStill,
             .anim_8 = ANIM_KoopaBros_Yellow_Run,
@@ -1220,8 +1220,8 @@ NpcData N(NpcData_KoopaBros)[] = {
             .walk   = ANIM_KoopaBros_Green_Walk,
             .run    = ANIM_KoopaBros_Green_Run,
             .chase  = ANIM_KoopaBros_Green_Run,
-            .anim_4 = ANIM_KoopaBros_Green_Idle,
-            .anim_5 = ANIM_KoopaBros_Green_Idle,
+            .alert  = ANIM_KoopaBros_Green_Idle,
+            .unused = ANIM_KoopaBros_Green_Idle,
             .death  = ANIM_KoopaBros_Green_HurtStill,
             .hit    = ANIM_KoopaBros_Green_HurtStill,
             .anim_8 = ANIM_KoopaBros_Green_Run,
@@ -1249,8 +1249,8 @@ NpcData N(NpcData_Ninji) = {
         .walk   = ANIM_Ninji_Walk,
         .run    = ANIM_Ninji_Idle,
         .chase  = ANIM_Ninji_Idle,
-        .anim_4 = ANIM_Ninji_Idle,
-        .anim_5 = ANIM_Ninji_Idle,
+        .alert  = ANIM_Ninji_Idle,
+        .unused = ANIM_Ninji_Idle,
         .death  = ANIM_Ninji_Idle,
         .hit    = ANIM_Ninji_Idle,
         .anim_8 = ANIM_Ninji_Idle,
@@ -2273,8 +2273,8 @@ NpcData N(NpcData_Parakarry) = {
         .walk   = ANIM_WorldParakarry_Walk,
         .run    = ANIM_WorldParakarry_Run,
         .chase  = ANIM_WorldParakarry_Run,
-        .anim_4 = ANIM_WorldParakarry_Idle,
-        .anim_5 = ANIM_WorldParakarry_Idle,
+        .alert  = ANIM_WorldParakarry_Idle,
+        .unused = ANIM_WorldParakarry_Idle,
         .death  = ANIM_WorldParakarry_Still,
         .hit    = ANIM_WorldParakarry_Still,
         .anim_8 = ANIM_WorldParakarry_Idle,

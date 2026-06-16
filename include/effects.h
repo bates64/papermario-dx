@@ -2344,7 +2344,7 @@ typedef struct IcePillarFXData {
 } IcePillarFXData; // size = 0x2C
 
 // sun shine directions
-enum {
+enum SunFXDir {
     FX_SUN_FROM_LEFT    = 0,
     FX_SUN_FROM_RIGHT   = 1,
 };

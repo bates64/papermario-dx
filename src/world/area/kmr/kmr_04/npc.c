@@ -1,7 +1,7 @@
 #include "kmr_04.h"
 #include "effects.h"
 
-#include "world/common/npc/JrTroopa.inc.c"
+#include "world/common/npc/JrTroopa/idle.inc.c"
 
 EvtScript N(EVS_NpcCreate_Goompa) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)

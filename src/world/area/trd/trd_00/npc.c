@@ -25,7 +25,7 @@ NpcSettings N(NpcSettings_KoopaBros) = {
     .onDefeat = &EnemyNpcDefeat,
 };
 
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_KoopaBros) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
@@ -321,8 +321,8 @@ NpcData N(NpcData_KoopaBros) = {
         .walk   = ANIM_KoopaBros_Green_Walk,
         .run    = ANIM_KoopaBros_Green_Run,
         .chase  = ANIM_KoopaBros_Green_Run,
-        .anim_4 = ANIM_KoopaBros_Green_Idle,
-        .anim_5 = ANIM_KoopaBros_Green_Idle,
+        .alert  = ANIM_KoopaBros_Green_Idle,
+        .unused = ANIM_KoopaBros_Green_Idle,
         .death  = ANIM_KoopaBros_Green_HurtStill,
         .hit    = ANIM_KoopaBros_Green_HurtStill,
         .anim_8 = ANIM_KoopaBros_Green_Run,

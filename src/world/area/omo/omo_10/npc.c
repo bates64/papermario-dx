@@ -1,6 +1,6 @@
 #include "omo_10.h"
 
-#include "world/common/npc/TrainToad.inc.c"
+#include "world/common/npc/TrainToad/idle.inc.c"
 
 EvtScript N(EVS_NpcInteract_Conductor) = {
     Call(DisablePlayerInput, true)

@@ -78,7 +78,7 @@ API_CALLABLE(N(IsPartnerWatt)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/enemy/ShyGuy_Stationary.inc.c"
+#include "world/common/enemy/ShyGuy/idle.inc.c"
 
 Vec2i N(CrowdChaseGoalPositions)[] = {
     { 200,   0 },

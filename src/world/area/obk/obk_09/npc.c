@@ -48,10 +48,10 @@ API_CALLABLE(N(ImprisonedCardUpdate)) {
     return ApiStatus_BLOCK;
 }
 
-#include "world/common/npc/Bow.h"
-#include "world/common/npc/Bootler.h"
-#include "world/common/npc/Dummy.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/Bow/base.h"
+#include "world/common/npc/Bootler/base.h"
+#include "world/common/npc/Dummy/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 EvtScript N(EVS_NpcInit_Bow) = {
     Return

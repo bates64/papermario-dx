@@ -1,12 +1,12 @@
 #include "jan_22.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Kolorado.inc.c"
-#include "world/common/enemy/SpearGuy_Patrol.inc.c"
-#include "world/common/npc/RaphaelRaven.inc.c"
-#include "world/common/npc/Raven.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
-#include "world/common/npc/Dummy.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/enemy/SpearGuy/patrol.inc.c"
+#include "world/common/npc/RaphaelRaven/idle.inc.c"
+#include "world/common/npc/Raven/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
 
 enum {
     RAVEN_SCENE_AWAITING_COMMAND    = 0,

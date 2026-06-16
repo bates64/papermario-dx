@@ -2,8 +2,8 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/KoopaBros.h"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/KoopaBros/base.h"
 
 NpcSettings N(NpcSettings_KoopaBros) = {
     .height = 35,
@@ -13,7 +13,7 @@ NpcSettings N(NpcSettings_KoopaBros) = {
     .onDefeat = &EnemyNpcDefeat,
 };
 
-#include "world/common/npc/JrTroopa.inc.c"
+#include "world/common/npc/JrTroopa/idle.inc.c"
 
 API_CALLABLE(N(SetPlayerSpriteFacingAngle)) {
     gPlayerStatus.spriteFacingAngle = script->varTable[0];

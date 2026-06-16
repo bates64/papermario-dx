@@ -1,7 +1,7 @@
 #include "trd_09.h"
 #include "effects.h"
 
-#include "world/common/enemy/BulletBill.h"
+#include "world/common/enemy/BulletBill/base.h"
 
 API_CALLABLE(N(GetBulletBillVar)) {
     Bytecode* args = script->ptrReadPos;
@@ -726,8 +726,8 @@ NpcData N(NpcData_BulletBill_Demo1) = {
         .walk   = ANIM_BulletBill_TenseCopy,
         .run    = ANIM_BulletBill_Tense,
         .chase  = ANIM_BulletBill_Tense,
-        .anim_4 = ANIM_BulletBill_Idle,
-        .anim_5 = ANIM_BulletBill_Fire,
+        .alert  = ANIM_BulletBill_Idle,
+        .unused = ANIM_BulletBill_Fire,
         .death  = ANIM_BulletBill_Hurt,
         .hit    = ANIM_BulletBill_Hurt,
         .anim_8 = ANIM_BulletBill_Idle,
@@ -776,8 +776,8 @@ NpcData N(NpcData_BulletBill_Demo2) = {
         .walk   = ANIM_BulletBill_TenseCopy,
         .run    = ANIM_BulletBill_Tense,
         .chase  = ANIM_BulletBill_Tense,
-        .anim_4 = ANIM_BulletBill_Idle,
-        .anim_5 = ANIM_BulletBill_Fire,
+        .alert  = ANIM_BulletBill_Idle,
+        .unused = ANIM_BulletBill_Fire,
         .death  = ANIM_BulletBill_Hurt,
         .hit    = ANIM_BulletBill_Hurt,
         .anim_8 = ANIM_BulletBill_Idle,
@@ -826,8 +826,8 @@ NpcData N(NpcData_BulletBill_Demo3) = {
         .walk   = ANIM_BulletBill_TenseCopy,
         .run    = ANIM_BulletBill_Tense,
         .chase  = ANIM_BulletBill_Tense,
-        .anim_4 = ANIM_BulletBill_Idle,
-        .anim_5 = ANIM_BulletBill_Fire,
+        .alert  = ANIM_BulletBill_Idle,
+        .unused = ANIM_BulletBill_Fire,
         .death  = ANIM_BulletBill_Hurt,
         .hit    = ANIM_BulletBill_Hurt,
         .anim_8 = ANIM_BulletBill_Idle,
@@ -876,8 +876,8 @@ NpcData N(NpcData_BulletBill_Demo4) = {
         .walk   = ANIM_BulletBill_TenseCopy,
         .run    = ANIM_BulletBill_Tense,
         .chase  = ANIM_BulletBill_Tense,
-        .anim_4 = ANIM_BulletBill_Idle,
-        .anim_5 = ANIM_BulletBill_Fire,
+        .alert  = ANIM_BulletBill_Idle,
+        .unused = ANIM_BulletBill_Fire,
         .death  = ANIM_BulletBill_Hurt,
         .hit    = ANIM_BulletBill_Hurt,
         .anim_8 = ANIM_BulletBill_Idle,
@@ -926,8 +926,8 @@ NpcData N(NpcData_BulletBill_Demo5) = {
         .walk   = ANIM_BulletBill_TenseCopy,
         .run    = ANIM_BulletBill_Tense,
         .chase  = ANIM_BulletBill_Tense,
-        .anim_4 = ANIM_BulletBill_Idle,
-        .anim_5 = ANIM_BulletBill_Fire,
+        .alert  = ANIM_BulletBill_Idle,
+        .unused = ANIM_BulletBill_Fire,
         .death  = ANIM_BulletBill_Hurt,
         .hit    = ANIM_BulletBill_Hurt,
         .anim_8 = ANIM_BulletBill_Idle,

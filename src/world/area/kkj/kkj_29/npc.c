@@ -1,8 +1,8 @@
 #include "kkj_29.h"
 
-#include "world/common/npc/Bowser.inc.c"
-#include "world/common/enemy/Koopatrol_Stationary.inc.c"
-#include "world/common/enemy/HammerBros.inc.c"
+#include "world/common/npc/Bowser/idle.inc.c"
+#include "world/common/enemy/Koopatrol/idle.inc.c"
+#include "world/common/enemy/HammerBros/idle.inc.c"
 
 EvtScript N(EVS_NpcInit_HammerBros) = {
     Call(SetNpcPos, NPC_SELF, 0, 0, -25)

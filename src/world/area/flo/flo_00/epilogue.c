@@ -6,7 +6,7 @@ NpcSettings N(NpcSettings_Lakilester_Epilogue) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/npc/Parakarry.inc.c"
+#include "world/common/npc/Parakarry/idle.inc.c"
 
 Vec3f N(D_80245E88_CA3DA8)[] = {
     { 266.0f,  20.0f, 322.0f },
@@ -89,8 +89,8 @@ NpcData N(NpcData_Lakilester_Epilogue)[] = {
             .walk   = ANIM_WorldLakilester_Idle,
             .run    = ANIM_WorldLakilester_Idle,
             .chase  = ANIM_WorldLakilester_Idle,
-            .anim_4 = ANIM_WorldLakilester_Idle,
-            .anim_5 = ANIM_WorldLakilester_Idle,
+            .alert  = ANIM_WorldLakilester_Idle,
+            .unused = ANIM_WorldLakilester_Idle,
             .death  = ANIM_WorldLakilester_Idle,
             .hit    = ANIM_WorldLakilester_Idle,
             .anim_8 = ANIM_WorldLakilester_Idle,
@@ -116,8 +116,8 @@ NpcData N(NpcData_Lakilester_Epilogue)[] = {
             .walk   = ANIM_Lakilulu_Idle,
             .run    = ANIM_Lakilulu_Idle,
             .chase  = ANIM_Lakilulu_Idle,
-            .anim_4 = ANIM_Lakilulu_Idle,
-            .anim_5 = ANIM_Lakilulu_Idle,
+            .alert  = ANIM_Lakilulu_Idle,
+            .unused = ANIM_Lakilulu_Idle,
             .death  = ANIM_Lakilulu_Idle,
             .hit    = ANIM_Lakilulu_Idle,
             .anim_8 = ANIM_Lakilulu_Idle,

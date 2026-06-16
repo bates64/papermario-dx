@@ -139,12 +139,11 @@ API_CALLABLE(DismissItemOutline) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_802D7B74) {
+API_CALLABLE(SpawnSunEffect) {
     Bytecode* args = script->ptrReadPos;
-    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, *args++);
+    s32 direction = evt_get_variable(script, *args++);
 
-    // function is never called, so the effect type can't be inferred
-    effect->data.any[12] = 5;
+    fx_sun(direction, 0.0f, 0.0f, 0.0f, 0.0f, 0);
     return ApiStatus_DONE2;
 }
 

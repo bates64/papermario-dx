@@ -1,7 +1,7 @@
 #include "jan_11.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/YoshiKid.inc.c"
+#include "world/common/npc/YoshiKid/idle.inc.c"
 
 EvtScript N(EVS_YoshiKid_CryForHelp) = {
     Set(AF_JAN_SavedCurrentYoshiKid, false)

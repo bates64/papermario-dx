@@ -1,7 +1,7 @@
 #include "obk_01.h"
 
-#include "world/common/npc/Boo_Wander.inc.c"
-#include "world/common/npc/Boo.inc.c"
+#include "world/common/npc/Boo/wander.inc.c"
+#include "world/common/npc/Boo/idle.inc.c"
 
 #include "world/common/atomic/MarioSalute.inc.c"
 

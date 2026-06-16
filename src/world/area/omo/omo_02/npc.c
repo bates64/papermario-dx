@@ -1,9 +1,9 @@
 #include "omo_02.h"
 
-#include "world/common/enemy/ShyGuy_Wander.inc.c"
-#include "world/common/enemy/ShyGuy_Guard.inc.c"
-#include "world/common/enemy/ShyGuy_Stationary.inc.c"
-#include "world/common/enemy/SpyGuy.inc.c"
+#include "world/common/enemy/ShyGuy/wander.inc.c"
+#include "world/common/enemy/ShyGuy/guard.inc.c"
+#include "world/common/enemy/ShyGuy/idle.inc.c"
+#include "world/common/enemy/SpyGuy/idle.inc.c"
 
 EvtScript N(EVS_RestrictCamFromBarricade) = {
     Label(0)

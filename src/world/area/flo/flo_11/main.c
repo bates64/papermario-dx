@@ -5,11 +5,6 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-API_CALLABLE(N(SpawnSunEffect)) {
-    fx_sun(FX_SUN_FROM_LEFT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_ExitWalk_flo_23_1) = EVT_EXIT_WALK(60, flo_11_ENTRY_0, "flo_23", flo_23_ENTRY_1);
 EvtScript N(EVS_ExitWalk_flo_12_0) = EVT_EXIT_WALK(60, flo_11_ENTRY_1, "flo_12", flo_12_ENTRY_0);
 
@@ -80,7 +75,7 @@ EvtScript N(EVS_Main) = {
     EndIf
     ExecWait(N(EVS_SetupMusic))
     IfGe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
-        Call(N(SpawnSunEffect))
+        Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     EndIf
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o90, SURFACE_TYPE_HEDGES)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o104, SURFACE_TYPE_HEDGES)

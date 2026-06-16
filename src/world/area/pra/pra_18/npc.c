@@ -1,7 +1,7 @@
 #include "pra_18.h"
 #include "effects.h"
 
-#include "world/common/enemy/FrostClubba.h"
+#include "world/common/enemy/FrostClubba/base.h"
 
 NpcSettings N(NpcSettings_Clubba) = {
     .height = 70,

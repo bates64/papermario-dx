@@ -1,0 +1,19 @@
+#include "idle.h"
+
+EvtScript N(EVS_NpcCreate_TubbasHeart) = {
+    Return
+    End
+};
+
+EvtScript N(EVS_NpcDefeat_TubbasHeart) = {
+    Return
+    End
+};
+
+NpcSettings N(NpcSettings_TubbasHeart) = {
+    .height = 24,
+    .radius = 24,
+    .level = ACTOR_LEVEL_CLUBBA,
+    .onCreate = &N(EVS_NpcCreate_TubbasHeart),
+    .onDefeat = &N(EVS_NpcDefeat_TubbasHeart),
+};

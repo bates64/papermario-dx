@@ -1,8 +1,7 @@
 #include "sbk_30.h"
 
 #include "world/common/atomic/ApplyTint.inc.c"
-
-#include "world/common/todo/SpawnSunEffect.inc.c"
+#include "effects.h"
 
 EvtScript N(EVS_ExitWalk_sbk_99_1) = EVT_EXIT_WALK(60, sbk_30_ENTRY_0, "sbk_99", sbk_99_ENTRY_1);
 EvtScript N(EVS_ExitWalk_sbk_31_0) = EVT_EXIT_WALK(60, sbk_30_ENTRY_1, "sbk_31", sbk_31_ENTRY_0);
@@ -91,7 +90,7 @@ EvtScript N(EVS_Main) = {
             ExecWait(N(EVS_Scene_RuinsRising))
         EndCaseGroup
         CaseDefault
-            Call(N(SpawnSunEffect))
+            Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     EndSwitch
     Return
     End

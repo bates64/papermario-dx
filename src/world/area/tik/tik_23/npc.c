@@ -1,6 +1,6 @@
 #include "tik_23.h"
 
-#include "world/common/enemy/Spiny.inc.c"
+#include "world/common/enemy/Spiny/idle.inc.c"
 
 NpcData N(NpcData_Spiny_01) = {
     .id = NPC_Spiny_01,

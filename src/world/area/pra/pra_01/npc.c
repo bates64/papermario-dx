@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 API_CALLABLE(N(UpgradeStarPowerCh7)) {
     set_max_star_power(7);

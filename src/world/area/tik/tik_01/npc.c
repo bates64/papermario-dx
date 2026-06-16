@@ -1,6 +1,6 @@
 #include "tik_01.h"
 
-#include "world/common/enemy/Blooper.inc.c"
+#include "world/common/enemy/Blooper/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_Blooper) = {
     Loop(0)

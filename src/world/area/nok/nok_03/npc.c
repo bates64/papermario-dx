@@ -1,8 +1,8 @@
 #include "nok_03.h"
 
-#include "world/common/enemy/Fuzzy_Wander.inc.c"
-#include "world/common/enemy/Fuzzy.inc.c"
-#include "world/common/npc/Koopa.inc.c"
+#include "world/common/enemy/Fuzzy/wander.inc.c"
+#include "world/common/enemy/Fuzzy/idle.inc.c"
+#include "world/common/npc/Koopa/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_FuzzyBoss) = {
     Thread

@@ -1,8 +1,8 @@
 #include "mim_07.h"
 
-#include "world/common/enemy/ForestFuzzy_Wander.inc.c"
+#include "world/common/enemy/ForestFuzzy/wander.inc.c"
 
-#include "world/common/npc/JrTroopa.inc.c"
+#include "world/common/npc/JrTroopa/idle.inc.c"
 
 s32 N(D_80242944_BACA84)[] = {
     0, -350,

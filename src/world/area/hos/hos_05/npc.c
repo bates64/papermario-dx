@@ -11,12 +11,12 @@ API_CALLABLE(N(UnlockStarBeam)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/npc/StarSpirit.inc.c"
-#include "world/common/npc/Bowser.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
+#include "world/common/npc/Bowser/idle.inc.c"
 
-#include "world/common/enemy/Kammy_Flying.inc.c"
+#include "world/common/enemy/Kammy/flying.inc.c"
 
-#include "world/common/npc/StarRod.inc.c"
+#include "world/common/npc/StarRod/idle.inc.c"
 
 EvtScript N(EVS_StarSpirit_HoverBobbing) = {
     Call(SetNpcVar, NPC_Eldstar, 0, 0)

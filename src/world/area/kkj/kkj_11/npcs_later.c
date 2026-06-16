@@ -6,7 +6,7 @@
 #include "../common/PreventNextPeachDisguise.inc.c"
 #include "../common/ApproachPlayer100Units.inc.c"
 
-#include "world/common/enemy/Koopatrol_Stationary.inc.c"
+#include "world/common/enemy/Koopatrol/idle.inc.c"
 
 AnimID N(LimitAnims_Koopatrol)[] = {
     ANIM_WorldKoopatrol_Anim00,

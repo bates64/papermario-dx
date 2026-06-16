@@ -1,7 +1,7 @@
 #include "sam_04.h"
 #include "effects.h"
 
-#include "world/common/npc/Penguin.h"
+#include "world/common/npc/Penguin/base.h"
 
 NpcSettings N(NpcSettings_Snowman) = {
     .height = 60,

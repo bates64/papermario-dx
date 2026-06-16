@@ -1,8 +1,8 @@
 #include "jan_10.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/JungleFuzzy_Wander.inc.c"
-#include "world/common/npc/YoshiKid.inc.c"
+#include "world/common/enemy/JungleFuzzy/wander.inc.c"
+#include "world/common/npc/YoshiKid/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_JungleFuzzy) = {
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)

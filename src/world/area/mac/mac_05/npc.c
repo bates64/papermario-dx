@@ -4,11 +4,11 @@
 
 #include "world/common/atomic/Whale.h"
 
-#include "world/common/npc/Whale.inc.c"
-#include "world/common/npc/Kolorado.inc.c"
-#include "world/common/npc/JrTroopa.inc.c"
-#include "world/common/npc/Toad_Patrol.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Whale/idle.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/npc/JrTroopa/idle.inc.c"
+#include "world/common/npc/Toad/patrol.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
@@ -2279,8 +2279,8 @@ NpcData N(NpcData_Bartender)[] = {
             .walk   = ANIM_Bartender_Idle,
             .run    = ANIM_Bartender_Idle,
             .chase  = ANIM_Bartender_Idle,
-            .anim_4 = ANIM_Bartender_Idle,
-            .anim_5 = ANIM_Bartender_Idle,
+            .alert  = ANIM_Bartender_Idle,
+            .unused = ANIM_Bartender_Idle,
             .death  = ANIM_Bartender_Idle,
             .hit    = ANIM_Bartender_Idle,
             .anim_8 = ANIM_Bartender_Idle,
@@ -2318,8 +2318,8 @@ NpcData N(NpcData_Bartender)[] = {
             .walk   = ANIM_Chanterelle_Still,
             .run    = ANIM_Chanterelle_Still,
             .chase  = ANIM_Chanterelle_Still,
-            .anim_4 = ANIM_Chanterelle_Still,
-            .anim_5 = ANIM_Chanterelle_Still,
+            .alert  = ANIM_Chanterelle_Still,
+            .unused = ANIM_Chanterelle_Still,
             .death  = ANIM_Chanterelle_Still,
             .hit    = ANIM_Chanterelle_Still,
             .anim_8 = ANIM_Chanterelle_Still,
@@ -2346,8 +2346,8 @@ NpcData N(NpcData_Bartender)[] = {
             .walk   = ANIM_Musician_Poet_Idle,
             .run    = ANIM_Musician_Poet_Idle,
             .chase  = ANIM_Musician_Poet_Idle,
-            .anim_4 = ANIM_Musician_Poet_Idle,
-            .anim_5 = ANIM_Musician_Poet_Idle,
+            .alert  = ANIM_Musician_Poet_Idle,
+            .unused = ANIM_Musician_Poet_Idle,
             .death  = ANIM_Musician_Poet_Idle,
             .hit    = ANIM_Musician_Poet_Idle,
             .anim_8 = ANIM_Musician_Poet_Idle,

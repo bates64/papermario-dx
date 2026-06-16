@@ -1,9 +1,9 @@
 #include "kzn_11.h"
 
-#include "world/common/enemy/LavaBubble.inc.c"
+#include "world/common/enemy/LavaBubble/idle.inc.c"
 
 #include "sprite/npc/Fire.h"
-#include "world/common/enemy/ai/FireBarAI.inc.c"
+#include "world/common/ai/FireBarAI.inc.c"
 
 EvtScript N(EVS_FireBar_Defeated) = {
     Set(LVarA, LVar0)

@@ -2,8 +2,6 @@
 
 #include "../common/FlowerSpawnRegion.inc.c"
 
-#include "world/common/todo/SpawnSunEffect.inc.c"
-
 EvtScript N(EVS_ExitWalk_flo_25_1) = EVT_EXIT_WALK(60, flo_07_ENTRY_0, "flo_25", flo_25_ENTRY_1);
 
 EvtScript N(EVS_BindExitTriggers) = {
@@ -67,7 +65,7 @@ EvtScript N(EVS_Main) = {
     EndIf
     ExecWait(N(EVS_SetupMusic))
     IfGe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
-        Call(N(SpawnSunEffect))
+        Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     EndIf
     Call(N(CreateCrystalTreeSparkles))
     Return

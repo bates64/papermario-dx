@@ -1,7 +1,7 @@
 #include "sam_01.h"
 
-#include "world/common/npc/Penguin_Wander.inc.c"
-#include "world/common/npc/Penguin.inc.c"
+#include "world/common/npc/Penguin/wander.inc.c"
+#include "world/common/npc/Penguin/idle.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"

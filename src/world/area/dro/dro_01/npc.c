@@ -2,12 +2,14 @@
 #include "sprite/npc/Musician.h"
 #include "sprite/npc/ChuckQuizmo.h"
 
-#include "world/common/npc/Dryite_Wander.inc.c"
-#include "world/common/npc/Dryite_Patrol.inc.c"
-#include "world/common/npc/Dryite_Stationary.inc.c"
+#include "world/common/npc/ToadKid/base.h"
+#include "world/common/npc/Toadette/base.h"
+#include "world/common/npc/Dryite/wander.inc.c"
+#include "world/common/npc/Dryite/patrol.inc.c"
+#include "world/common/npc/Dryite/idle.inc.c"
 
-#include "world/common/npc/Mouser.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Mouser/idle.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
@@ -247,8 +249,8 @@ NpcData N(PassiveNPCs)[] = {
             .walk   = ANIM_Musician_Composer_Still,
             .run    = ANIM_Musician_Composer_Still,
             .chase  = ANIM_Musician_Composer_Still,
-            .anim_4 = ANIM_Musician_Composer_Still,
-            .anim_5 = ANIM_Musician_Composer_Still,
+            .alert  = ANIM_Musician_Composer_Still,
+            .unused = ANIM_Musician_Composer_Still,
             .death  = ANIM_Musician_Composer_Still,
             .hit    = ANIM_Musician_Composer_Still,
             .anim_8 = ANIM_Musician_Composer_Still,
@@ -287,8 +289,8 @@ NpcData N(PassiveNPCs)[] = {
             .walk   = ANIM_ChuckQuizmo_Walk,
             .run    = ANIM_ChuckQuizmo_Run,
             .chase  = ANIM_ChuckQuizmo_Run,
-            .anim_4 = ANIM_ChuckQuizmo_Idle,
-            .anim_5 = ANIM_ChuckQuizmo_Idle,
+            .alert  = ANIM_ChuckQuizmo_Idle,
+            .unused = ANIM_ChuckQuizmo_Idle,
             .death  = ANIM_ChuckQuizmo_Still,
             .hit    = ANIM_ChuckQuizmo_Still,
             .anim_8 = ANIM_ChuckQuizmo_Run,

@@ -1,8 +1,8 @@
 #include "trd_02.h"
 
-#include "world/common/enemy/Bobomb_Wander.inc.c"
-#include "world/common/enemy/KoopaTroopa_Wander.inc.c"
-#include "world/common/enemy/KoopaTroopa_Patrol.inc.c"
+#include "world/common/enemy/Bobomb/wander.inc.c"
+#include "world/common/enemy/KoopaTroopa/wander.inc.c"
+#include "world/common/enemy/KoopaTroopa/patrol.inc.c"
 
 NpcData N(NpcData_Bobomb_01) = {
     .id = NPC_Bobomb_01,

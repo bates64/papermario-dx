@@ -7,9 +7,9 @@ NpcSettings N(NpcSettings_Dummy) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/npc/Bubulb_Patrol.inc.c"
-#include "world/common/npc/Tolielup.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/Bubulb/patrol.inc.c"
+#include "world/common/npc/Tolielup/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 API_CALLABLE(N(UpgradeStarPowerCh6)) {
     set_max_star_power(6);
@@ -769,8 +769,8 @@ NpcData N(NpcData_Lakilulu) = {
         .walk   = ANIM_Lakilulu_Idle,
         .run    = ANIM_Lakilulu_Idle,
         .chase  = ANIM_Lakilulu_Idle,
-        .anim_4 = ANIM_Lakilulu_Idle,
-        .anim_5 = ANIM_Lakilulu_Idle,
+        .alert  = ANIM_Lakilulu_Idle,
+        .unused = ANIM_Lakilulu_Idle,
         .death  = ANIM_Lakilulu_Idle,
         .hit    = ANIM_Lakilulu_Idle,
         .anim_8 = ANIM_Lakilulu_Idle,

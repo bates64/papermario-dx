@@ -2,8 +2,8 @@
 
 #define NAME_SUFFIX _Ch1
 
-#include "world/common/npc/Bowser.inc.c"
-#include "world/common/enemy/Koopatrol_Stationary.inc.c"
+#include "world/common/npc/Bowser/idle.inc.c"
+#include "world/common/enemy/Koopatrol/idle.inc.c"
 
 AnimID N(LimitAnims_Bowser)[] = {
     ANIM_WorldBowser_Still,

@@ -1,9 +1,9 @@
 #include "jan_01.h"
 #include "effects.h"
 
-#include "world/common/enemy/JungleFuzzy_Wander.inc.c"
-#include "world/common/enemy/JungleFuzzy.inc.c"
-#include "world/common/npc/Kolorado.inc.c"
+#include "world/common/enemy/JungleFuzzy/wander.inc.c"
+#include "world/common/enemy/JungleFuzzy/idle.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
 
 EvtScript N(EVS_PlayerWatchKolorado) = {
     Loop(0)

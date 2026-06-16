@@ -1,9 +1,9 @@
 #include "iwa_00.h"
 #include "effects.h"
 
-#include "world/common/enemy/MontyMole_GroundAmbush.inc.c"
-#include "world/common/enemy/MontyMole_WallAmbush.inc.c"
-#include "world/common/enemy/Whacka.inc.c"
+#include "world/common/enemy/MontyMole/ground_ambush.inc.c"
+#include "world/common/enemy/MontyMole/wall_ambush.inc.c"
+#include "world/common/enemy/Whacka/idle.inc.c"
 
 API_CALLABLE(N(func_80240118_90CD58)) {
     Enemy* enemy = script->owner1.enemy;

@@ -1,7 +1,7 @@
 #include "flo_07.h"
 #include "foliage.h"
 
-#include "world/common/npc/Posie.inc.c"
+#include "world/common/npc/Posie/idle.inc.c"
 
 EvtScript N(EVS_Scene_SunReturns) = {
     Call(DisablePlayerInput, true)

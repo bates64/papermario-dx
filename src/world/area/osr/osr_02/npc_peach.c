@@ -2,7 +2,7 @@
 
 #include "world/common/todo/GetPeachDisguise.inc.c"
 
-#include "world/common/enemy/Clubba.inc.c"
+#include "world/common/enemy/Clubba/idle.inc.c"
 
 AnimID N(LimitAnims_Clubba)[] = {
     ANIM_WorldClubba_Anim00,

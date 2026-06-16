@@ -1,9 +1,9 @@
 #include "kzn_17.h"
 
-#include "world/common/npc/Kolorado.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
 
-#include "world/common/enemy/PutridPiranha.inc.c"
-#include "world/common/enemy/SpikeTop.inc.c"
+#include "world/common/enemy/PutridPiranha/idle.inc.c"
+#include "world/common/enemy/SpikeTop/idle.inc.c"
 
 ITEM_LIST(N(LetterList), ITEM_LETTER_TO_KOLORADO);
 

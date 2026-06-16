@@ -1,6 +1,6 @@
 #include "sbk_60.h"
 
-#include "world/common/enemy/Pokey.inc.c"
+#include "world/common/enemy/Pokey/idle.inc.c"
 
 NpcData N(NpcData_Pokey) = {
     .id = NPC_Pokey,

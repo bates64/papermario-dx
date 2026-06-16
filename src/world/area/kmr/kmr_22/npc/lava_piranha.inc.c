@@ -2,7 +2,7 @@
 
 #include "include_asset.h"
 
-#include "world/common/enemy/LavaPiranha.h"
+#include "world/common/enemy/LavaPiranha/base.h"
 
 #include "world/common/lava_piranha/part1.inc.c"
 

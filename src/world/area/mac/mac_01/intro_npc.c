@@ -1,9 +1,9 @@
 #include "mac_01.h"
 
 #define NAME_SUFFIX _Intro
-#include "world/common/npc/Luigi.inc.c"
-#include "world/common/npc/Toad_Patrol.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Luigi/idle.inc.c"
+#include "world/common/npc/Toad/patrol.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 #define NAME_SUFFIX
 
 NpcData N(NpcData_IntroNPCs)[] = {

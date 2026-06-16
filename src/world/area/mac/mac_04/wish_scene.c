@@ -1,10 +1,11 @@
 #include "mac_04.h"
 
+#include "world/common/npc/ToadKid/base.h"
 #define NAME_SUFFIX _Wish
-#include "world/common/npc/Toad_Wander.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/GoombaFamily.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/Toad/wander.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/GoombaFamily/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 #define NAME_SUFFIX
 
 EvtScript N(EVS_Scene_WishingToadKid) = {

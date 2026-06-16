@@ -1,8 +1,8 @@
 #include "jan_02.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Yoshi.inc.c"
-#include "world/common/npc/Yoshi_Patrol.inc.c"
+#include "world/common/npc/Yoshi/idle.inc.c"
+#include "world/common/npc/Yoshi/patrol.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"

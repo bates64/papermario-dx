@@ -2,14 +2,17 @@
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel_01
 #define AI_SENTINEL_LAST_NPC  NPC_Sentinel_04
-#include "world/common/enemy/Sentinel.inc.c"
+#include "world/common/enemy/Sentinel/idle.inc.c"
 
-#include "world/common/enemy/Clubba.h"
-#include "world/common/enemy/TubbaBlubba_Patrol.inc.c"
-#include "world/common/enemy/TubbaBlubba.inc.c"
-#include "world/common/npc/Yakkey.inc.c"
+#include "world/common/enemy/TubbaBlubba/patrol.inc.c"
+#include "world/common/enemy/TubbaBlubba/idle.inc.c"
+#include "world/common/npc/Yakkey/idle.inc.c"
 
-#include "world/common/todo/UnkFunc1.inc.c"
+API_CALLABLE(N(PostBattleHideWorld)) {
+    increment_status_bar_disabled();
+    set_screen_overlay_params_back(OVERLAY_SCREEN_COLOR, 255.0f);
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_NpcIdle_Tubba_Floor3) = {
     Loop(0)
@@ -83,8 +86,9 @@ EvtScript N(EVS_NpcInit_Tubba_Floor3) = {
     End
 };
 
+// failsafe if the player somehow defeats Tubba
 EvtScript N(EVS_NpcDefeat_Tubba_Floor2) = {
-    Call(N(UnkFunc1))
+    Call(N(PostBattleHideWorld))
     Call(GotoMap, Ref("dgb_08"), dgb_08_ENTRY_1)
     Wait(100)
     Return
@@ -167,8 +171,9 @@ EvtScript N(EVS_NpcIdle_Tubba_Floor1) = {
     End
 };
 
+// failsafe if the player somehow defeats Tubba
 EvtScript N(EVS_NpcDefeat_Tubba_Floor1) = {
-    Call(N(UnkFunc1))
+    Call(N(PostBattleHideWorld))
     Call(GotoMap, Ref("dgb_00"), dgb_00_ENTRY_1)
     Wait(100)
     Return
@@ -383,7 +388,7 @@ NpcData N(NpcData_Tubba_Floor2) = {
     .init = &N(EVS_NpcInit_Tubba_Floor2),
     .settings = &N(NpcSettings_TubbaBlubba_Patrol),
     .flags = ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
-    .drops = CLUBBA_DROPS,
+    .drops = TUBBA_DROPS,
     .animations = TUBBA_ANGRY_ANIMS,
     .limitAnimations = N(LimitAnims_Tubba),
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
@@ -416,7 +421,7 @@ NpcData N(NpcData_Tubba_Floor1) = {
     .init = &N(EVS_NpcInit_Tubba_Floor1),
     .settings = &N(NpcSettings_TubbaBlubba_Patrol),
     .flags = ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
-    .drops = CLUBBA_DROPS,
+    .drops = TUBBA_DROPS,
     .animations = TUBBA_ANGRY_ANIMS,
     .limitAnimations = N(LimitAnims_Tubba),
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,

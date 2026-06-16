@@ -1,8 +1,8 @@
 #include "omo_13.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/ShyGuy_Wander.inc.c"
-#include "world/common/enemy/GrooveGuy.inc.c"
+#include "world/common/enemy/ShyGuy/wander.inc.c"
+#include "world/common/enemy/GrooveGuy/idle.inc.c"
 
 NpcSettings N(NpcSettings_AntiGuy) = {
     .height = 23,
@@ -218,8 +218,8 @@ NpcData N(NpcData_AntiGuy) = {
         .walk   = ANIM_ShyGuy_Black_Anim02,
         .run    = ANIM_ShyGuy_Black_Anim03,
         .chase  = ANIM_ShyGuy_Black_Anim02,
-        .anim_4 = ANIM_ShyGuy_Black_Anim01,
-        .anim_5 = ANIM_ShyGuy_Black_Anim01,
+        .alert  = ANIM_ShyGuy_Black_Anim01,
+        .unused = ANIM_ShyGuy_Black_Anim01,
         .death  = ANIM_ShyGuy_Black_Anim0C,
         .hit    = ANIM_ShyGuy_Black_Anim0C,
         .anim_8 = ANIM_ShyGuy_Black_Anim15,

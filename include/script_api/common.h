@@ -2177,8 +2177,8 @@ API_CALLABLE(DismissEffect);
 API_CALLABLE(DismissItemOutline);
 
 /// @evtapi
-/// @param effectPtr
-API_CALLABLE(func_802D7B74);
+/// @param direction (see: `SunFXDir`)
+API_CALLABLE(SpawnSunEffect);
 
 /// @evtapi
 API_CALLABLE(InterpMotionBlurParams);

@@ -1,7 +1,7 @@
 #include "iwa_04.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/Cleft.inc.c"
+#include "world/common/enemy/Cleft/idle.inc.c"
 
 API_CALLABLE(N(func_80241060_91C940)) {
     gCameras[CAM_DEFAULT].yinterpAlpha = 1.0f;
@@ -319,8 +319,8 @@ NpcData N(NpcData_Buzzar) = {
         .walk   = ANIM_Buzzar_Anim01,
         .run    = ANIM_Buzzar_Anim01,
         .chase  = ANIM_Buzzar_Anim01,
-        .anim_4 = ANIM_Buzzar_Anim01,
-        .anim_5 = ANIM_Buzzar_Anim01,
+        .alert  = ANIM_Buzzar_Anim01,
+        .unused = ANIM_Buzzar_Anim01,
         .death  = ANIM_Buzzar_Anim0B,
         .hit    = ANIM_Buzzar_Anim0B,
         .anim_8 = ANIM_Buzzar_Anim01,

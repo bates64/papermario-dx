@@ -1,8 +1,8 @@
 #include "kpa_130.h"
 
-#include "world/common/enemy/BombshellBill.h"
+#include "world/common/enemy/BombshellBill/base.h"
 
-#include "world/common/enemy/ai/BulletBillAI.inc.c"
+#include "world/common/ai/BulletBillAI.inc.c"
 
 GuardAISettings N(AISettings_BillBlaster) = {
     .playerSearchInterval = 30,

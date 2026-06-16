@@ -1,11 +1,6 @@
 #include "jan_01.h"
 #include "effects.h"
 
-API_CALLABLE(N(SpawnSunEffect)) {
-    fx_sun(FX_SUN_FROM_LEFT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_ExitWalk_jan_00_1) = EVT_EXIT_WALK(60, jan_01_ENTRY_0, "jan_00", jan_00_ENTRY_1);
 EvtScript N(EVS_ExitWalk_jan_02_0) = EVT_EXIT_WALK(60, jan_01_ENTRY_1, "jan_02", jan_02_ENTRY_0);
 
@@ -51,7 +46,7 @@ EvtScript N(EVS_Main) = {
     EndThread
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o144, SURFACE_TYPE_WATER)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o145, SURFACE_TYPE_WATER)
-    Call(N(SpawnSunEffect))
+    Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     Return
     End
 };

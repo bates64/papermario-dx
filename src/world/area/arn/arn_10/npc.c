@@ -1,7 +1,7 @@
 #include "arn_10.h"
 
-#include "world/common/npc/TubbasHeart.inc.c"
-#include "world/common/enemy/HyperGoomba_Wander.inc.c"
+#include "world/common/npc/TubbasHeart/idle.inc.c"
+#include "world/common/enemy/HyperGoomba/wander.inc.c"
 
 EvtScript N(EVS_NpcIdle_TubbasHeart) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_Anim13)

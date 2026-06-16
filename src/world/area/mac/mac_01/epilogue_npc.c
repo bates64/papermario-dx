@@ -1,14 +1,14 @@
 #include "mac_01.h"
 #define NAME_SUFFIX _Epilogue
 
-#include "world/common/npc/Dummy.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/Kolorado.inc.c"
-#include "world/common/npc/KoloradoWife.inc.c"
-#include "world/common/npc/KoopaKoot.inc.c"
-#include "world/common/npc/Koopa.inc.c"
-#include "world/common/npc/Bobomb.inc.c"
-#include "world/common/npc/Dryite_Stationary.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/npc/KoloradoWife/idle.inc.c"
+#include "world/common/npc/KoopaKoot/idle.inc.c"
+#include "world/common/npc/Koopa/idle.inc.c"
+#include "world/common/npc/Bobomb/idle.inc.c"
+#include "world/common/npc/Dryite/idle.inc.c"
 
 EvtScript N(EVS_NpcInteract_Kolorado) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_Outro_003C)
@@ -352,8 +352,8 @@ NpcData N(NpcData_Artists)[] = {
             .walk   = ANIM_Chanterelle_Still,
             .run    = ANIM_Chanterelle_Still,
             .chase  = ANIM_Chanterelle_Still,
-            .anim_4 = ANIM_Chanterelle_Still,
-            .anim_5 = ANIM_Chanterelle_Still,
+            .alert  = ANIM_Chanterelle_Still,
+            .unused = ANIM_Chanterelle_Still,
             .death  = ANIM_Chanterelle_Still,
             .hit    = ANIM_Chanterelle_Still,
             .anim_8 = ANIM_Chanterelle_Still,
@@ -381,8 +381,8 @@ NpcData N(NpcData_Artists)[] = {
             .walk   = ANIM_Musician_Poet_Idle,
             .run    = ANIM_Musician_Poet_Idle,
             .chase  = ANIM_Musician_Poet_Idle,
-            .anim_4 = ANIM_Musician_Poet_Idle,
-            .anim_5 = ANIM_Musician_Poet_Idle,
+            .alert  = ANIM_Musician_Poet_Idle,
+            .unused = ANIM_Musician_Poet_Idle,
             .death  = ANIM_Musician_Poet_Idle,
             .hit    = ANIM_Musician_Poet_Idle,
             .anim_8 = ANIM_Musician_Poet_Idle,
@@ -410,8 +410,8 @@ NpcData N(NpcData_Artists)[] = {
             .walk   = ANIM_Musician_Composer_Still,
             .run    = ANIM_Musician_Composer_Still,
             .chase  = ANIM_Musician_Composer_Still,
-            .anim_4 = ANIM_Musician_Composer_Still,
-            .anim_5 = ANIM_Musician_Composer_Still,
+            .alert  = ANIM_Musician_Composer_Still,
+            .unused = ANIM_Musician_Composer_Still,
             .death  = ANIM_Musician_Composer_Still,
             .hit    = ANIM_Musician_Composer_Still,
             .anim_8 = ANIM_Musician_Composer_Still,

@@ -1,6 +1,8 @@
 #include "mac_00.h"
 #include "sprite/player.h"
 
+#include "world/common/npc/Toadette/base.h"
+
 ITEM_LIST(N(LetterList_MissT), ITEM_LETTER_CHAIN_MISS_T);
 
 EvtScript N(EVS_LetterPrompt_MissT) = {

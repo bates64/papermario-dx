@@ -1,18 +1,18 @@
 #include "jan_03.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
-#include "world/common/npc/Yoshi.inc.c"
-#include "world/common/npc/Yoshi_Patrol.inc.c"
+#include "world/common/npc/Yoshi/idle.inc.c"
+#include "world/common/npc/Yoshi/patrol.inc.c"
 
-#include "world/common/npc/YoshiKid.inc.c"
-#include "world/common/npc/YoshiKid_Patrol.inc.c"
+#include "world/common/npc/YoshiKid/idle.inc.c"
+#include "world/common/npc/YoshiKid/patrol.inc.c"
 
-#include "world/common/npc/Raven.inc.c"
+#include "world/common/npc/Raven/idle.inc.c"
 
-#include "world/common/npc/Sushie.inc.c"
-#include "world/common/npc/Kolorado.inc.c"
+#include "world/common/npc/Sushie/idle.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
 
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"

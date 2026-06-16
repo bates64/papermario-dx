@@ -40,9 +40,9 @@ extern StaticAnimatorNode* N(AnimModel_MainHeadVine)[];
 extern StaticAnimatorNode* N(AnimModel_SideHeadVine)[];
 extern StaticAnimatorNode* N(AnimModel_ExtraVine)[];
 
-extern NpcSettings N(NpcSettings_Kolorado);
-extern NpcSettings N(NpcSettings_StarSpirit);
-extern NpcSettings N(NpcSettings_LavaPiranhaHead);
+#include "world/common/npc/Kolorado/idle.h"
+#include "world/common/npc/StarSpirit/idle.h"
+#include "world/common/enemy/LavaPiranha/idle.h"
 
 extern API_CALLABLE(SetAnimatorFlags);
 extern API_CALLABLE(GetAnimatedPositionByTreeIndex);

@@ -2,10 +2,10 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Peach.inc.c"
-#include "world/common/npc/Twink.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
-#include "world/common/npc/StarRod.inc.c"
+#include "world/common/npc/Peach/idle.inc.c"
+#include "world/common/npc/Twink/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
+#include "world/common/npc/StarRod/idle.inc.c"
 
 Vec3f N(FlightPath_TwinkStepForward)[] = {
     {  -10.0,    40.0,   10.0 },

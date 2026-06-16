@@ -50,3 +50,4 @@ extern EvtScript N(EVS_PlayRestMusic);
 extern EvtScript N(EVS_PlayMoustafaMusic);
 
 extern EvtScript N(EVS_SetupRooms);
+extern EvtScript N(EVS_NpcInteract_Merlee);

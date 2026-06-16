@@ -1,7 +1,7 @@
 #include "mgm_00.h"
 
-#include "world/common/npc/Toad_Patrol.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Toad/patrol.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
 API_CALLABLE(N(GetAvailableGamesCount)) {
     s32 numGames = 0;

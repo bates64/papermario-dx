@@ -1,7 +1,7 @@
 #include "arn_02.h"
 
-#include "world/common/enemy/HyperGoomba_Wander.inc.c"
-#include "world/common/enemy/HyperCleft.inc.c"
+#include "world/common/enemy/HyperGoomba/wander.inc.c"
+#include "world/common/enemy/HyperCleft/idle.inc.c"
 
 NpcData N(NpcData_HyperCleft_01) = {
     .id = NPC_HyperCleft_01,

@@ -1,8 +1,8 @@
 #include "kpa_03.h"
 
-#include "world/common/enemy/Koopatrol_Wander.inc.c"
-#include "world/common/enemy/SpikeTop.inc.c"
-#include "world/common/enemy/Magikoopa.inc.c"
+#include "world/common/enemy/Koopatrol/wander.inc.c"
+#include "world/common/enemy/SpikeTop/idle.inc.c"
+#include "world/common/enemy/Magikoopa/idle.inc.c"
 
 AnimID N(LimitAnims_Koopatrol)[] = {
     ANIM_WorldKoopatrol_Anim01,

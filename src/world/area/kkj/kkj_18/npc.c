@@ -1,10 +1,10 @@
 #include "kkj_18.h"
 
-#include "world/common/npc/GourmetGuy.inc.c"
-#include "world/common/npc/Dummy.inc.c"
+#include "world/common/npc/GourmetGuy/idle.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
 
-#include "world/common/enemy/Kammy.inc.c"
-#include "world/common/enemy/Koopatrol_Stationary.inc.c"
+#include "world/common/enemy/Kammy/idle.inc.c"
+#include "world/common/enemy/Koopatrol/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_GourmetGuy) = {
     Call(WaitForPlayerInputEnabled)

@@ -1,6 +1,6 @@
 #include "kpa_08.h"
 
-#include "world/common/enemy/Magikoopa.inc.c"
+#include "world/common/enemy/Magikoopa/idle.inc.c"
 
 NpcData N(NpcData_Magikoopa)[] = {
     {

@@ -27,7 +27,7 @@ API_CALLABLE(N(UpdateFollowerPosition)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/npc/Peach.inc.c"
+#include "world/common/npc/Peach/idle.inc.c"
 
 NpcSettings N(NpcSettings_Duplighost) = {
     .height = 30,
@@ -389,8 +389,8 @@ NpcData N(NpcData_Imposter)[] = {
             .walk   = ANIM_Duplighost_Anim03,
             .run    = ANIM_Duplighost_Anim04,
             .chase  = ANIM_Duplighost_Anim04,
-            .anim_4 = ANIM_Duplighost_Anim02,
-            .anim_5 = ANIM_Duplighost_Anim02,
+            .alert  = ANIM_Duplighost_Anim02,
+            .unused = ANIM_Duplighost_Anim02,
             .death  = ANIM_Duplighost_Anim0A,
             .hit    = ANIM_Duplighost_Anim0A,
             .anim_8 = ANIM_Duplighost_Anim02,

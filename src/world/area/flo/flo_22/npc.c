@@ -1,9 +1,9 @@
 #include "flo_22.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Dummy.inc.c"
-#include "world/common/enemy/Bzzap.h"
-#include "world/common/enemy/CrazyDayzee.h"
+#include "world/common/npc/Dummy/idle.inc.c"
+#include "world/common/enemy/Bzzap/base.h"
+#include "world/common/enemy/CrazyDayzee/base.h"
 
 EvtScript N(EVS_NpcIdle_Bzzap) = {
     Set(MV_Bzzap_State, 0)

@@ -4,7 +4,7 @@
 
 extern AnimScript Entity_ScriptSpring_AnimLaunch;
 
-#include "world/common/npc/TubbasHeart.inc.c"
+#include "world/common/npc/TubbasHeart/idle.inc.c"
 
 API_CALLABLE(N(PlaySpringAnimation)) {
     Entity* entity = get_entity_by_index(0);

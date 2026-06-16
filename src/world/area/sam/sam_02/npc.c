@@ -6,10 +6,10 @@
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 
-#include "world/common/npc/Penguin_Wander.inc.c"
-#include "world/common/npc/Penguin.inc.c"
+#include "world/common/npc/Penguin/wander.inc.c"
+#include "world/common/npc/Penguin/idle.inc.c"
 
-#include "world/common/npc/ShiverToad.inc.c"
+#include "world/common/npc/ShiverToad/idle.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"

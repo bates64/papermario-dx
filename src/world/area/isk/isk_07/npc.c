@@ -1,6 +1,6 @@
 #include "isk_07.h"
 
-#include "world/common/enemy/PokeyMummy.inc.c"
+#include "world/common/enemy/PokeyMummy/idle.inc.c"
 
 API_CALLABLE(N(IsLastEnemy)) {
     EncounterStatus* encounterStatus = &gCurrentEncounter;

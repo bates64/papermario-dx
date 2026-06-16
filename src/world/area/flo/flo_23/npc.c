@@ -1,9 +1,9 @@
 #include "flo_23.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/Spiny.inc.c"
+#include "world/common/enemy/Spiny/idle.inc.c"
 
-#include "world/common/npc/GateFlower.inc.c"
+#include "world/common/npc/GateFlower/idle.inc.c"
 
 API_CALLABLE(N(JudgeItemTastiness)) {
     s32 itemId = evt_get_variable(script, *script->ptrReadPos);

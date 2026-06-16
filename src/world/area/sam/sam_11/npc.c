@@ -1,10 +1,11 @@
 #include "sam_11.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Penguin_Wander.inc.c"
-#include "world/common/npc/Penguin.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/Kolorado.inc.c"
+#include "world/common/npc/Toadette/base.h"
+#include "world/common/npc/Penguin/wander.inc.c"
+#include "world/common/npc/Penguin/idle.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
 
 NpcSettings N(NpcSettings_Kooper) = {
     .height = 35,
@@ -1024,8 +1025,8 @@ NpcData N(NpcData_Epilogue)[] = {
             .walk   = ANIM_WorldKooper_Walk,
             .run    = ANIM_WorldKooper_Walk,
             .chase  = ANIM_WorldKooper_Walk,
-            .anim_4 = ANIM_WorldKooper_Walk,
-            .anim_5 = ANIM_WorldKooper_Walk,
+            .alert  = ANIM_WorldKooper_Walk,
+            .unused = ANIM_WorldKooper_Walk,
             .death  = ANIM_WorldKooper_Still,
             .hit    = ANIM_WorldKooper_Still,
             .anim_8 = ANIM_WorldKooper_Still,
@@ -1051,8 +1052,8 @@ NpcData N(NpcData_Epilogue)[] = {
             .walk   = ANIM_WorldParakarry_Walk,
             .run    = ANIM_WorldParakarry_Run,
             .chase  = ANIM_WorldParakarry_Run,
-            .anim_4 = ANIM_WorldParakarry_Idle,
-            .anim_5 = ANIM_WorldParakarry_Idle,
+            .alert  = ANIM_WorldParakarry_Idle,
+            .unused = ANIM_WorldParakarry_Idle,
             .death  = ANIM_WorldParakarry_Still,
             .hit    = ANIM_WorldParakarry_Still,
             .anim_8 = ANIM_WorldParakarry_Idle,

@@ -1,8 +1,8 @@
 #include "arn_03.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Boo_Patrol.inc.c"
-#include "world/common/npc/Boo.inc.c"
+#include "world/common/npc/Boo/patrol.inc.c"
+#include "world/common/npc/Boo/idle.inc.c"
 
 #include "world/common/atomic/MarioSalute.inc.c"
 

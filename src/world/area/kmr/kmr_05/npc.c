@@ -1,8 +1,8 @@
 #include "kmr_05.h"
 
-#include "world/common/enemy/Goomba_Wander.inc.c"
-#include "world/common/enemy/Paragoomba_Wander.inc.c"
-#include "world/common/enemy/SpikedGoomba_Wander.inc.c"
+#include "world/common/enemy/Goomba/wander.inc.c"
+#include "world/common/enemy/Paragoomba/wander.inc.c"
+#include "world/common/enemy/SpikedGoomba/wander.inc.c"
 
 EvtScript N(EVS_GoompaRemark) = {
     Call(DisablePlayerInput, true)

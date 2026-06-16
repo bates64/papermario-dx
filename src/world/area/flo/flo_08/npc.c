@@ -1,10 +1,10 @@
 #include "flo_08.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/AmazyDayzee.inc.c"
-#include "world/common/enemy/CrazyDayzee.inc.c"
+#include "world/common/enemy/AmazyDayzee/idle.inc.c"
+#include "world/common/enemy/CrazyDayzee/idle.inc.c"
 
-#include "world/common/npc/GateFlower.inc.c"
+#include "world/common/npc/GateFlower/idle.inc.c"
 
 API_CALLABLE(N(JudgeItemTastiness)) {
     s32 itemId = evt_get_variable(script, *script->ptrReadPos);

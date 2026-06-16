@@ -1,6 +1,6 @@
 #include "osr_03.h"
 
-#include "world/common/enemy/Kammy.inc.c"
+#include "world/common/enemy/Kammy/idle.inc.c"
 
 AnimID N(LimitAnims_Kammy)[] = {
     ANIM_WorldKammy_Anim09,

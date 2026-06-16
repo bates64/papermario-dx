@@ -1,14 +1,14 @@
 #include "nok_02.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Koopa_Wander.inc.c"
-#include "world/common/npc/KoopaWithoutShell_Patrol.inc.c"
-#include "world/common/npc/Koopa.inc.c"
-#include "world/common/npc/Kolorado.inc.c"
-#include "world/common/npc/KoloradoWife.inc.c"
-#include "world/common/enemy/Fuzzy.inc.c"
-#include "world/common/npc/KoopaKoot.inc.c"
-#include "world/common/npc/Bobomb.inc.c"
+#include "world/common/npc/Koopa/wander.inc.c"
+#include "world/common/npc/KoopaWithoutShell/patrol.inc.c"
+#include "world/common/npc/Koopa/idle.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/npc/KoloradoWife/idle.inc.c"
+#include "world/common/enemy/Fuzzy/idle.inc.c"
+#include "world/common/npc/KoopaKoot/idle.inc.c"
+#include "world/common/npc/Bobomb/idle.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
@@ -946,8 +946,8 @@ NpcData N(NpcData_Epilogue)[] = {
             .walk   = ANIM_WorldParakarry_Walk,
             .run    = ANIM_WorldParakarry_Run,
             .chase  = ANIM_WorldParakarry_Run,
-            .anim_4 = ANIM_WorldParakarry_Idle,
-            .anim_5 = ANIM_WorldParakarry_Idle,
+            .alert  = ANIM_WorldParakarry_Idle,
+            .unused = ANIM_WorldParakarry_Idle,
             .death  = ANIM_WorldParakarry_Still,
             .hit    = ANIM_WorldParakarry_Still,
             .anim_8 = ANIM_WorldParakarry_Idle,
@@ -973,8 +973,8 @@ NpcData N(NpcData_Epilogue)[] = {
             .walk   = ANIM_WorldBombette_Walk,
             .run    = ANIM_WorldBombette_Walk,
             .chase  = ANIM_WorldBombette_Walk,
-            .anim_4 = ANIM_WorldBombette_Walk,
-            .anim_5 = ANIM_WorldBombette_Walk,
+            .alert  = ANIM_WorldBombette_Walk,
+            .unused = ANIM_WorldBombette_Walk,
             .death  = ANIM_WorldBombette_Still,
             .hit    = ANIM_WorldBombette_Still,
             .anim_8 = ANIM_WorldBombette_Still,

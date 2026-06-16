@@ -1,6 +1,6 @@
 #include "obk_02.h"
 
-#include "world/common/npc/Boo.inc.c"
+#include "world/common/npc/Boo/idle.inc.c"
 
 #define TRAFFIC_BOO_START_Y 80.0f
 #define TRAFFIC_BOO_START_Z -300.0f

@@ -1,11 +1,11 @@
 #include "dgb_09.h"
 
-#include "world/common/enemy/Clubba_Wander.inc.c"
-#include "world/common/enemy/Clubba_Napping.inc.c"
+#include "world/common/enemy/Clubba/wander.inc.c"
+#include "world/common/enemy/Clubba/napping.inc.c"
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel
 #define AI_SENTINEL_LAST_NPC  NPC_Sentinel
-#include "world/common/enemy/Sentinel.inc.c"
+#include "world/common/enemy/Sentinel/idle.inc.c"
 
 NpcData N(NpcData_Clubba_Wander)[] = {
     {

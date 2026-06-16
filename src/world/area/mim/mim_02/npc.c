@@ -5,9 +5,9 @@ EvtScript N(EVS_Unused_DoNothing) = {
     End
 };
 
-#include "world/common/npc/Oaklie.inc.c"
+#include "world/common/npc/Oaklie/idle.inc.c"
 
-#include "world/common/enemy/ForestFuzzy_Wander.inc.c"
+#include "world/common/enemy/ForestFuzzy/wander.inc.c"
 
 ITEM_LIST(N(KeyList), ITEM_FOREST_PASS);
 

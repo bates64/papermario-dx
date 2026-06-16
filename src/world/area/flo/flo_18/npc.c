@@ -1,8 +1,8 @@
 #include "flo_18.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/Lakitu.h"
-#include "world/common/enemy/YMagikoopa.h"
+#include "world/common/enemy/Lakitu/base.h"
+#include "world/common/enemy/YMagikoopa/base.h"
 
 NpcSettings N(NpcSettings_Lakitu) = {
     .height = 32,

@@ -1,6 +1,6 @@
 #include "kmr_11.h"
 
-#include "world/common/enemy/GoombaBros_Guard.inc.c"
+#include "world/common/enemy/GoombaBros/guard.inc.c"
 
 EvtScript N(EVS_NpcIdle_GoombaBros_01) = {
     Return
@@ -317,8 +317,8 @@ NpcData N(NpcData_Enemies)[] = {
             .walk   = ANIM_GoombaBros_Blue_Walk,
             .run    = ANIM_GoombaBros_Blue_Run,
             .chase  = ANIM_GoombaBros_Blue_Run,
-            .anim_4 = ANIM_GoombaBros_Blue_Idle,
-            .anim_5 = ANIM_GoombaBros_Blue_Idle,
+            .alert  = ANIM_GoombaBros_Blue_Idle,
+            .unused = ANIM_GoombaBros_Blue_Idle,
             .death  = ANIM_GoombaBros_Blue_Hurt,
             .hit    = ANIM_GoombaBros_Blue_Hurt,
             .anim_8 = ANIM_GoombaBros_Blue_Run,
@@ -356,8 +356,8 @@ NpcData N(NpcData_Enemies)[] = {
             .walk   = ANIM_GoombaBros_Red_Walk,
             .run    = ANIM_GoombaBros_Red_Run,
             .chase  = ANIM_GoombaBros_Red_Run,
-            .anim_4 = ANIM_GoombaBros_Red_Idle,
-            .anim_5 = ANIM_GoombaBros_Red_Idle,
+            .alert  = ANIM_GoombaBros_Red_Idle,
+            .unused = ANIM_GoombaBros_Red_Idle,
             .death  = ANIM_GoombaBros_Red_Hurt,
             .hit    = ANIM_GoombaBros_Red_Hurt,
             .anim_8 = ANIM_GoombaBros_Red_Run,
@@ -395,8 +395,8 @@ NpcData N(NpcData_Enemies)[] = {
             .walk   = ANIM_GoombaKing_Walk,
             .run    = ANIM_GoombaKing_Run,
             .chase  = ANIM_GoombaKing_Run,
-            .anim_4 = ANIM_GoombaKing_Idle,
-            .anim_5 = ANIM_GoombaKing_Idle,
+            .alert  = ANIM_GoombaKing_Idle,
+            .unused = ANIM_GoombaKing_Idle,
             .death  = ANIM_GoombaKing_Dead,
             .hit    = ANIM_GoombaKing_Dead,
             .anim_8 = ANIM_GoombaKing_Run,

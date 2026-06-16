@@ -1,11 +1,12 @@
 #include "osr_00.h"
 
-#include "world/common/npc/Yoshi.inc.c"
-#include "world/common/npc/YoshiKid.inc.c"
-#include "world/common/npc/Penguin.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/Boo.inc.c"
-#include "world/common/npc/Mouser.inc.c"
+#include "world/common/npc/ToadGuard/base.h"
+#include "world/common/npc/Yoshi/idle.inc.c"
+#include "world/common/npc/YoshiKid/idle.inc.c"
+#include "world/common/npc/Penguin/idle.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Boo/idle.inc.c"
+#include "world/common/npc/Mouser/idle.inc.c"
 
 EvtScript N(EVS_NpcInteract_LeaderYoshi) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_Talk, ANIM_VillageLeader_Idle, 0, MSG_Outro_0055)

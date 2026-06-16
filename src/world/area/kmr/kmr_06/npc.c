@@ -1,7 +1,7 @@
 #include "kmr_06.h"
 
-#include "world/common/enemy/SpikedGoomba_Wander.inc.c"
-#include "world/common/enemy/Paragoomba_Wander.inc.c"
+#include "world/common/enemy/SpikedGoomba/wander.inc.c"
+#include "world/common/enemy/Paragoomba/wander.inc.c"
 
 NpcData N(NpcData_SpikedGoomba) = {
     .id = NPC_SpikedGoomba,

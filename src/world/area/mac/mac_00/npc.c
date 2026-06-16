@@ -1,14 +1,16 @@
 #include "mac_00.h"
 #include "effects.h"
 
-#include "world/common/npc/Toad_Wander.inc.c"
-#include "world/common/npc/Toad_Patrol.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/GoombaFamily.inc.c"
-#include "world/common/npc/Luigi.inc.c"
-#include "world/common/npc/Dummy.inc.c"
+#include "world/common/npc/ToadKid/base.h"
+#include "world/common/npc/Toadette/base.h"
+#include "world/common/npc/Toad/wander.inc.c"
+#include "world/common/npc/Toad/patrol.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/GoombaFamily/idle.inc.c"
+#include "world/common/npc/Luigi/idle.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
 
-#include "world/common/enemy/ShyGuy_Stationary.inc.c"
+#include "world/common/enemy/ShyGuy/idle.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
@@ -230,8 +232,8 @@ NpcData N(NpcData_RussT) = {
         .walk   = ANIM_RussT_Idle,
         .run    = ANIM_RussT_Idle,
         .chase  = ANIM_RussT_Idle,
-        .anim_4 = ANIM_RussT_Idle,
-        .anim_5 = ANIM_RussT_Idle,
+        .alert  = ANIM_RussT_Idle,
+        .unused = ANIM_RussT_Idle,
         .death  = ANIM_RussT_Idle,
         .hit    = ANIM_RussT_Idle,
         .anim_8 = ANIM_RussT_Idle,
@@ -260,7 +262,7 @@ NpcData N(NpcData_Toad_01)[] = {
             .walk   = ANIM_HarryT_Walk,
             .run    = ANIM_HarryT_Run,
             .chase  = ANIM_HarryT_Run,
-            .anim_4 = ANIM_HarryT_Idle,
+            .alert  = ANIM_HarryT_Idle,
         },
         .tattle = MSG_NpcTattle_MAC00_ShopOwner,
     },
@@ -277,7 +279,7 @@ NpcData N(NpcData_Toad_01)[] = {
             .walk   = ANIM_HarryT_Walk,
             .run    = ANIM_HarryT_Run,
             .chase  = ANIM_HarryT_Run,
-            .anim_4 = ANIM_HarryT_Idle,
+            .alert  = ANIM_HarryT_Idle,
         },
         .tattle = MSG_NpcTattle_MAC00_ShopOwner,
     },
@@ -321,8 +323,8 @@ NpcData N(NpcData_Toad_03)[] = {
             .walk   = ANIM_TheMaster_Still,
             .run    = ANIM_TheMaster_Still,
             .chase  = ANIM_TheMaster_Still,
-            .anim_4 = ANIM_TheMaster_Still,
-            .anim_5 = ANIM_TheMaster_Still,
+            .alert  = ANIM_TheMaster_Still,
+            .unused = ANIM_TheMaster_Still,
             .death  = ANIM_TheMaster_Still,
             .hit    = ANIM_TheMaster_Still,
             .anim_8 = ANIM_TheMaster_Still,

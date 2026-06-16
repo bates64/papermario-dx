@@ -14,8 +14,8 @@ API_CALLABLE(N(func_8024036C_C9A56C)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/npc/Kolorado.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 EvtScript N(EVS_ShakeScreen) = {
     Loop(0)

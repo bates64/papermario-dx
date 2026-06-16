@@ -1,7 +1,7 @@
 #include "trd_08.h"
 #include "effects.h"
 
-#include "world/common/enemy/ai/FireBarAI.inc.c"
+#include "world/common/ai/FireBarAI.inc.c"
 
 EvtScript N(EVS_FireBar_Defeated) = {
     Set(LVarA, LVar0)

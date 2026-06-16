@@ -10,10 +10,10 @@ NpcSettings N(NpcSettings_Monstar) = {
     .onDefeat = &EnemyNpcDefeat,
 };
 
-#include "world/common/npc/Twink.inc.c"
+#include "world/common/npc/Twink/idle.inc.c"
 
-#include "world/common/enemy/Gulpit.inc.c"
-#include "world/common/enemy/FrostPiranha.inc.c"
+#include "world/common/enemy/Gulpit/idle.inc.c"
+#include "world/common/enemy/FrostPiranha/idle.inc.c"
 
 EvtScript N(EVS_NpcAI_Monstar) = {
     Label(0)
@@ -170,8 +170,8 @@ NpcData N(NpcData_Monstar) = {
         .walk   = ANIM_Monstar_Idle1,
         .run    = ANIM_Monstar_Idle1,
         .chase  = ANIM_Monstar_Idle1,
-        .anim_4 = ANIM_Monstar_Idle1,
-        .anim_5 = ANIM_Monstar_Idle1,
+        .alert  = ANIM_Monstar_Idle1,
+        .unused = ANIM_Monstar_Idle1,
         .death  = ANIM_Monstar_Idle1,
         .hit    = ANIM_Monstar_Idle1,
         .anim_8 = ANIM_Monstar_Idle1,

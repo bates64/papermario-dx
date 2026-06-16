@@ -1,7 +1,7 @@
 #include "arn_08.h"
 
-#include "world/common/npc/TubbasHeart.inc.c"
-#include "world/common/npc/Yakkey.inc.c"
+#include "world/common/npc/TubbasHeart/idle.inc.c"
+#include "world/common/npc/Yakkey/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_TubbasHeart) = {
     Return

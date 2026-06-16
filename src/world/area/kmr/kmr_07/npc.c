@@ -2,7 +2,7 @@
 #include "animation_script.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/GoombaBros_Guard.inc.c"
+#include "world/common/enemy/GoombaBros/guard.inc.c"
 
 extern AnimScript Entity_SimpleSpring_AnimLaunch;
 

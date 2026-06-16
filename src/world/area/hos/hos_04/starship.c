@@ -23,8 +23,8 @@ API_CALLABLE(N(ScreenOverlayFadeIn)) {
 // TODO: this was moved from the end of intro.c. This is a possible indication that
 // file spitting in other versions might be off.
 #if VERSION_JP
-#include "world/common/npc/StarSpirit.inc.c"
-#include "world/common/npc/Twink.h"
+#include "world/common/npc/StarSpirit/idle.inc.c"
+#include "world/common/npc/Twink/base.h"
 
 EvtScript N(EVS_NpcInit_Twink) = {
     Return

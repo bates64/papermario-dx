@@ -1,7 +1,7 @@
 #include "omo_12.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/BigLanternGhost.inc.c"
+#include "world/common/npc/BigLanternGhost/idle.inc.c"
 
 NpcSettings N(NpcSettings_Watt) = {
     .height = 23,
@@ -641,8 +641,8 @@ NpcData N(NpcData_Watt) = {
         .walk   = ANIM_WorldWatt_Idle,
         .run    = ANIM_WorldWatt_Idle,
         .chase  = ANIM_WorldWatt_Idle,
-        .anim_4 = ANIM_WorldWatt_Idle,
-        .anim_5 = ANIM_WorldWatt_Idle,
+        .alert  = ANIM_WorldWatt_Idle,
+        .unused = ANIM_WorldWatt_Idle,
         .death  = ANIM_WorldWatt_Idle,
         .hit    = ANIM_WorldWatt_Idle,
         .anim_8 = ANIM_WorldWatt_Idle,

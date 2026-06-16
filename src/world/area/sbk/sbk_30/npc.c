@@ -1,13 +1,8 @@
 
 #include "sbk_30.h"
 
-#include "world/common/npc/Kolorado.inc.c"
-
-NpcSettings N(NpcSettings_Archeologist_01) = {
-    .height = 42,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/npc/Archeologist/idle.inc.c"
 
 ITEM_LIST(N(LetterList), ITEM_LETTER_TO_KOLORADO);
 
@@ -302,7 +297,7 @@ NpcData N(NpcData_Archeologist_02)[] = {
             }
         },
         .init = &N(EVS_NpcInit_Archeologist_01),
-        .settings = &N(NpcSettings_Archeologist_01),
+        .settings = &N(NpcSettings_Archeologist),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = ARCHEOLOGIST_ANIMS,
@@ -325,7 +320,7 @@ NpcData N(NpcData_Archeologist_02)[] = {
             }
         },
         .init = &N(EVS_NpcInit_Archeologist_02),
-        .settings = &N(NpcSettings_Archeologist_01),
+        .settings = &N(NpcSettings_Archeologist),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = ARCHEOLOGIST_ANIMS,

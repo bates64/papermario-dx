@@ -2,9 +2,9 @@
 
 #include "sprite/npc/WorldBow.h"
 
-#include "world/common/enemy/TubbaBlubba.inc.c"
-#include "world/common/npc/Boo_Patrol.inc.c"
-#include "world/common/npc/Boo.inc.c"
+#include "world/common/enemy/TubbaBlubba/idle.inc.c"
+#include "world/common/npc/Boo/patrol.inc.c"
+#include "world/common/npc/Boo/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_Boo_01) = {
     Return

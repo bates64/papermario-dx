@@ -1,8 +1,8 @@
 #include "flo_12.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Rosie.inc.c"
-#include "world/common/npc/Dummy.inc.c"
+#include "world/common/npc/Rosie/idle.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
 
 #include "foliage.h"
 

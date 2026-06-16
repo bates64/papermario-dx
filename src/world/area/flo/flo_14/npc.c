@@ -1,8 +1,8 @@
 #include "flo_14.h"
 
-#include "world/common/enemy/Bzzap.inc.c"
+#include "world/common/enemy/Bzzap/idle.inc.c"
 
-#include "world/common/npc/Bubulb.h"
+#include "world/common/npc/Bubulb/base.h"
 
 NpcSettings N(NpcSettings_BubbleFlower) = {
     .height = 56,
@@ -10,7 +10,7 @@ NpcSettings N(NpcSettings_BubbleFlower) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/npc/Dummy.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
 
 ITEM_LIST(N(KeyList), ITEM_BUBBLE_BERRY);
 

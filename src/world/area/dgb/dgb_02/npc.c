@@ -1,7 +1,7 @@
 #include "dgb_02.h"
 
-#include "world/common/enemy/Clubba_Wander.inc.c"
-#include "world/common/enemy/Clubba_Napping.inc.c"
+#include "world/common/enemy/Clubba/wander.inc.c"
+#include "world/common/enemy/Clubba/napping.inc.c"
 
 NpcData N(NpcData_Clubba_01)[] = {
     {

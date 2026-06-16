@@ -2,10 +2,10 @@
 
 #define NAME_SUFFIX _Ch0
 
-#include "world/common/npc/Bowser.inc.c"
-#include "world/common/enemy/Kammy.inc.c"
+#include "world/common/npc/Bowser/idle.inc.c"
+#include "world/common/enemy/Kammy/idle.inc.c"
 
-#include "world/common/npc/KoopaBros.h"
+#include "world/common/npc/KoopaBros/base.h"
 
 NpcSettings N(NpcSettings_KoopaBros) = {
     .height = 34,

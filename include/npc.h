@@ -242,8 +242,8 @@ typedef struct NpcData {
         /* 0x04 */ s32 walk;
         /* 0x08 */ s32 run;
         /* 0x0C */ s32 chase;
-        /* 0x10 */ s32 anim_4;
-        /* 0x14 */ s32 anim_5;
+        /* 0x10 */ s32 alert;
+        /* 0x14 */ s32 unused;
         /* 0x18 */ s32 death;
         /* 0x1C */ s32 hit;
         /* 0x20 */ s32 anim_8;

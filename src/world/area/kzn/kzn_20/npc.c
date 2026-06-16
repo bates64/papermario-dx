@@ -16,8 +16,8 @@ enum {
     SCENE_STATE_DONE                    = -1,
 };
 
-#include "world/common/npc/Kolorado.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 ITEM_LIST(N(LetterList), ITEM_LETTER_TO_KOLORADO);
 

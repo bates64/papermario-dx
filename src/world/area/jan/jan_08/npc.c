@@ -1,12 +1,12 @@
 #include "jan_08.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/YoshiKid.inc.c"
-#include "world/common/enemy/MBush.inc.c"
-#include "world/common/enemy/HeartPlant.inc.c"
+#include "world/common/npc/YoshiKid/idle.inc.c"
+#include "world/common/enemy/MBush/idle.inc.c"
+#include "world/common/enemy/HeartPlant/idle.inc.c"
 
-#include "world/common/enemy/HurtPlant.inc.c"
-#include "world/common/enemy/SpearGuy_Wander.inc.c"
+#include "world/common/enemy/HurtPlant/idle.inc.c"
+#include "world/common/enemy/SpearGuy/wander.inc.c"
 
 EvtScript N(EVS_YoshiKid_CryForHelp) = {
     Set(AF_JAN_SavedCurrentYoshiKid, false)

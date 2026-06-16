@@ -1,9 +1,9 @@
 #include "kzn_02.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/LavaBubble.inc.c"
+#include "world/common/enemy/LavaBubble/idle.inc.c"
 
-#include "world/common/npc/Kolorado.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
 
 ITEM_LIST(N(LetterList), ITEM_LETTER_TO_KOLORADO);
 

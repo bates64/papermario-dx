@@ -1,9 +1,11 @@
 #include "hos_00.h"
 
-#include "world/common/npc/Twink.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/ToadKid/base.h"
+#include "world/common/npc/Toadette/base.h"
+#include "world/common/npc/Twink/idle.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
-#include "world/common/enemy/FlyingMagikoopa.h"
+#include "world/common/enemy/FlyingMagikoopa/base.h"
 
 NpcSettings N(NpcSettings_FlyingMagikoopa) = {
     .height = 34,

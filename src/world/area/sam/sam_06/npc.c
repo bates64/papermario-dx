@@ -2,7 +2,7 @@
 #include "model.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Toad_Wander.inc.c"
+#include "world/common/npc/Toad/wander.inc.c"
 
 MobileAISettings N(AISettings_Ninji_Wander) = {
     .moveSpeed = 1.5f,
@@ -46,10 +46,10 @@ NpcSettings N(NpcSettings_ShiverToad_Wander) = {
     .doAI = &N(EVS_NpcAI_ShiverToad_Wander),
 };
 
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
-#include "world/common/npc/StarSpirit_Wander.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/StarSpirit/wander.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 NpcSettings N(NpcSettings_Ninji_Stationary) = {
     .height = 24,
@@ -893,8 +893,8 @@ NpcData N(NpcData_Merle)[] = {
             .walk   = ANIM_Merle_Idle,
             .run    = ANIM_Merle_Idle,
             .chase  = ANIM_Merle_Idle,
-            .anim_4 = ANIM_Merle_Idle,
-            .anim_5 = ANIM_Merle_Idle,
+            .alert  = ANIM_Merle_Idle,
+            .unused = ANIM_Merle_Idle,
             .death  = ANIM_Merle_Idle,
             .hit    = ANIM_Merle_Idle,
             .anim_8 = ANIM_Merle_Idle,
@@ -921,8 +921,8 @@ NpcData N(NpcData_Merle)[] = {
             .walk   = ANIM_ShiverToad_Red_Walk,
             .run    = ANIM_ShiverToad_Red_Idle,
             .chase  = ANIM_ShiverToad_Red_Idle,
-            .anim_4 = ANIM_ShiverToad_Red_Idle,
-            .anim_5 = ANIM_ShiverToad_Red_Idle,
+            .alert  = ANIM_ShiverToad_Red_Idle,
+            .unused = ANIM_ShiverToad_Red_Idle,
             .death  = ANIM_ShiverToad_Red_Idle,
             .hit    = ANIM_ShiverToad_Red_Idle,
             .anim_8 = ANIM_ShiverToad_Red_Idle,
@@ -961,8 +961,8 @@ NpcData N(NpcData_Merle)[] = {
             .walk   = ANIM_ShiverToad_Blue_Walk,
             .run    = ANIM_ShiverToad_Blue_Idle,
             .chase  = ANIM_ShiverToad_Blue_Idle,
-            .anim_4 = ANIM_ShiverToad_Blue_Idle,
-            .anim_5 = ANIM_ShiverToad_Blue_Idle,
+            .alert  = ANIM_ShiverToad_Blue_Idle,
+            .unused = ANIM_ShiverToad_Blue_Idle,
             .death  = ANIM_ShiverToad_Blue_Idle,
             .hit    = ANIM_ShiverToad_Blue_Idle,
             .anim_8 = ANIM_ShiverToad_Blue_Idle,
@@ -989,8 +989,8 @@ NpcData N(NpcData_Merle)[] = {
             .walk   = ANIM_ShiverToad_Green_Walk,
             .run    = ANIM_ShiverToad_Green_Idle,
             .chase  = ANIM_ShiverToad_Green_Idle,
-            .anim_4 = ANIM_ShiverToad_Green_Idle,
-            .anim_5 = ANIM_ShiverToad_Green_Idle,
+            .alert  = ANIM_ShiverToad_Green_Idle,
+            .unused = ANIM_ShiverToad_Green_Idle,
             .death  = ANIM_ShiverToad_Green_Idle,
             .hit    = ANIM_ShiverToad_Green_Idle,
             .anim_8 = ANIM_ShiverToad_Green_Idle,
@@ -1029,8 +1029,8 @@ NpcData N(NpcData_Merle)[] = {
             .walk   = ANIM_Ninji_Walk,
             .run    = ANIM_Ninji_Idle,
             .chase  = ANIM_Ninji_Idle,
-            .anim_4 = ANIM_Ninji_Idle,
-            .anim_5 = ANIM_Ninji_Idle,
+            .alert  = ANIM_Ninji_Idle,
+            .unused = ANIM_Ninji_Idle,
             .death  = ANIM_Ninji_Idle,
             .hit    = ANIM_Ninji_Idle,
             .anim_8 = ANIM_Ninji_Idle,
@@ -1069,8 +1069,8 @@ NpcData N(NpcData_Merle)[] = {
             .walk   = ANIM_Ninji_Walk,
             .run    = ANIM_Ninji_Idle,
             .chase  = ANIM_Ninji_Idle,
-            .anim_4 = ANIM_Ninji_Idle,
-            .anim_5 = ANIM_Ninji_Idle,
+            .alert  = ANIM_Ninji_Idle,
+            .unused = ANIM_Ninji_Idle,
             .death  = ANIM_Ninji_Idle,
             .hit    = ANIM_Ninji_Idle,
             .anim_8 = ANIM_Ninji_Idle,
@@ -1097,8 +1097,8 @@ NpcData N(NpcData_Merle)[] = {
             .walk   = ANIM_Ninji_Walk,
             .run    = ANIM_Ninji_Idle,
             .chase  = ANIM_Ninji_Idle,
-            .anim_4 = ANIM_Ninji_Idle,
-            .anim_5 = ANIM_Ninji_Idle,
+            .alert  = ANIM_Ninji_Idle,
+            .unused = ANIM_Ninji_Idle,
             .death  = ANIM_Ninji_Idle,
             .hit    = ANIM_Ninji_Idle,
             .anim_8 = ANIM_Ninji_Idle,
@@ -1125,8 +1125,8 @@ NpcData N(NpcData_Merle)[] = {
             .walk   = ANIM_Ninji_Walk,
             .run    = ANIM_Ninji_Idle,
             .chase  = ANIM_Ninji_Idle,
-            .anim_4 = ANIM_Ninji_Idle,
-            .anim_5 = ANIM_Ninji_Idle,
+            .alert  = ANIM_Ninji_Idle,
+            .unused = ANIM_Ninji_Idle,
             .death  = ANIM_Ninji_Idle,
             .hit    = ANIM_Ninji_Idle,
             .anim_8 = ANIM_Ninji_Idle,
@@ -1231,8 +1231,8 @@ NpcData N(NpcData_Merle)[] = {
             .walk   = ANIM_ShiverToad_Red_Walk,
             .run    = ANIM_ShiverToad_Red_Idle,
             .chase  = ANIM_ShiverToad_Red_Idle,
-            .anim_4 = ANIM_ShiverToad_Red_Idle,
-            .anim_5 = ANIM_ShiverToad_Red_Idle,
+            .alert  = ANIM_ShiverToad_Red_Idle,
+            .unused = ANIM_ShiverToad_Red_Idle,
             .death  = ANIM_ShiverToad_Red_Idle,
             .hit    = ANIM_ShiverToad_Red_Idle,
             .anim_8 = ANIM_ShiverToad_Red_Idle,

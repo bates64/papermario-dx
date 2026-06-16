@@ -675,7 +675,7 @@ API_CALLABLE(N(HideCoinCounter)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
 s8 N(BlockPosX)[NUM_BLOCKS] = {
     -125, -100, -75, -50, -25, 0, 25, 50, 75, 100, 125

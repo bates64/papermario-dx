@@ -3,7 +3,7 @@
 
 #define NAME_SUFFIX _Later
 
-#include "world/common/enemy/HammerBros.inc.c"
+#include "world/common/enemy/HammerBros/idle.inc.c"
 
 AnimID N(LimitAnims_HammerBros)[] = {
     ANIM_HammerBros_Anim00,

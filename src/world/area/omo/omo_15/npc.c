@@ -1,6 +1,6 @@
 #include "omo_15.h"
 
-#include "world/common/enemy/ShyGuy_Stationary.inc.c"
+#include "world/common/enemy/ShyGuy/idle.inc.c"
 
 enum {
     MANAGER_IDLE_STATE      = 0,
@@ -451,8 +451,8 @@ NpcData N(NpcData_GeneralGuy)[] = {
             .walk   = ANIM_GeneralGuy_Anim02,
             .run    = ANIM_GeneralGuy_Anim02,
             .chase  = ANIM_GeneralGuy_Anim02,
-            .anim_4 = ANIM_GeneralGuy_Anim02,
-            .anim_5 = ANIM_GeneralGuy_Anim02,
+            .alert  = ANIM_GeneralGuy_Anim02,
+            .unused = ANIM_GeneralGuy_Anim02,
             .death  = ANIM_GeneralGuy_Anim02,
             .hit    = ANIM_GeneralGuy_Anim02,
             .anim_8 = ANIM_GeneralGuy_Anim02,

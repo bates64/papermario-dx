@@ -2,9 +2,9 @@
 
 extern EvtScript N(EVS_DropSwitch);
 
-#include "world/common/enemy/KoopaTroopa_Wander.inc.c"
-#include "world/common/enemy/KoopaTroopa_Patrol.inc.c"
-#include "world/common/enemy/Paratroopa.inc.c"
+#include "world/common/enemy/KoopaTroopa/wander.inc.c"
+#include "world/common/enemy/KoopaTroopa/patrol.inc.c"
+#include "world/common/enemy/Paratroopa/idle.inc.c"
 
 EvtScript N(EVS_NpcDefeat_KoopaTroopa) = {
     Call(GetBattleOutcome, LVar0)

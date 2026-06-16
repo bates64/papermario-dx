@@ -1,7 +1,7 @@
 #include "jan_09.h"
 
-#include "world/common/enemy/MBush.inc.c"
-#include "world/common/enemy/SpearGuy_Wander.inc.c"
+#include "world/common/enemy/MBush/idle.inc.c"
+#include "world/common/enemy/SpearGuy/wander.inc.c"
 
 NpcData N(NpcData_SpearGuy)[] = {
     {

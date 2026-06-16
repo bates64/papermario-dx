@@ -1,9 +1,9 @@
 #include "iwa_01.h"
 
-#include "world/common/enemy/MontyMole_StoneThrower.inc.c"
-#include "world/common/enemy/MontyMole_GroundAmbush.inc.c"
-#include "world/common/enemy/MontyMole_WallAmbush.inc.c"
-#include "world/common/enemy/Cleft.inc.c"
+#include "world/common/enemy/MontyMole/stone_thrower.inc.c"
+#include "world/common/enemy/MontyMole/ground_ambush.inc.c"
+#include "world/common/enemy/MontyMole/wall_ambush.inc.c"
+#include "world/common/enemy/Cleft/idle.inc.c"
 
 NpcData N(NpcData_MontyMole_WallAmbush)[] = {
     {

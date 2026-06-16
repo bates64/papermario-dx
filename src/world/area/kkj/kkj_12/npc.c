@@ -12,9 +12,11 @@ API_CALLABLE(N(DisableLightSource1)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/enemy/Clubba.h"
-#include "world/common/enemy/Koopatrol_Stationary.inc.c"
-#include "world/common/npc/Dummy.inc.c"
+#include "world/common/enemy/Koopatrol/idle.inc.c"
+
+// create a skinny clubba using Dummy
+#include "world/common/enemy/Clubba/base.h"
+#include "world/common/npc/Dummy/idle.inc.c"
 
 AnimID N(LimitAnims_Koopatrol)[] = {
     ANIM_WorldKoopatrol_Anim00,

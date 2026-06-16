@@ -1,9 +1,11 @@
 #include "kkj_00.h"
 
-#include "world/common/npc/Luigi.inc.c"
-#include "world/common/npc/Toad_Patrol.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/Penguin.inc.c"
+#include "world/common/npc/ToadGuard/base.h"
+#include "world/common/npc/Toadette/base.h"
+#include "world/common/npc/Luigi/idle.inc.c"
+#include "world/common/npc/Toad/patrol.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Penguin/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_RussT) = {
     Loop(0)
@@ -352,8 +354,8 @@ NpcData N(NpcData_Characters_Intro)[] = {
             .walk   = ANIM_RussT_Idle,
             .run    = ANIM_RussT_Idle,
             .chase  = ANIM_RussT_Idle,
-            .anim_4 = ANIM_RussT_Idle,
-            .anim_5 = ANIM_RussT_Idle,
+            .alert  = ANIM_RussT_Idle,
+            .unused = ANIM_RussT_Idle,
             .death  = ANIM_RussT_Idle,
             .hit    = ANIM_RussT_Idle,
             .anim_8 = ANIM_RussT_Idle,
@@ -379,8 +381,8 @@ NpcData N(NpcData_Characters_Intro)[] = {
             .walk   = ANIM_ShiverToad_Green_Walk,
             .run    = ANIM_ShiverToad_Green_Idle,
             .chase  = ANIM_ShiverToad_Green_Idle,
-            .anim_4 = ANIM_ShiverToad_Green_Idle,
-            .anim_5 = ANIM_ShiverToad_Green_Idle,
+            .alert  = ANIM_ShiverToad_Green_Idle,
+            .unused = ANIM_ShiverToad_Green_Idle,
             .death  = ANIM_ShiverToad_Green_Idle,
             .hit    = ANIM_ShiverToad_Green_Idle,
             .anim_8 = ANIM_ShiverToad_Green_Idle,

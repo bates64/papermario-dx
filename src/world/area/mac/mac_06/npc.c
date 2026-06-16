@@ -5,9 +5,9 @@
 
 #define CLONED_MODEL_GULL   CLONED_MODEL(1000)
 
-#include "world/common/npc/Whale.inc.c"
-#include "world/common/npc/Kolorado.inc.c"
-#include "world/common/npc/JrTroopa.inc.c"
+#include "world/common/npc/Whale/idle.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/npc/JrTroopa/idle.inc.c"
 
 enum WhaleRider {
     WHALE_RIDER_PLAYER      = 0,

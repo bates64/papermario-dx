@@ -1,8 +1,10 @@
 #include "mac_04.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Toad_Wander.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/ToadKid/base.h"
+#include "world/common/npc/Toadette/base.h"
+#include "world/common/npc/Toad/wander.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
 NpcSettings N(NpcSettings_ChetRippo) = {
     .height = 24,
@@ -10,9 +12,9 @@ NpcSettings N(NpcSettings_ChetRippo) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/npc/GoombaFamily.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
-#include "world/common/npc/Twink.inc.c"
+#include "world/common/npc/GoombaFamily/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
+#include "world/common/npc/Twink/idle.inc.c"
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
 
@@ -194,7 +196,7 @@ NpcData N(NpcData_Townsfolk)[] = {
             .walk   = ANIM_HarryT_Walk,
             .run    = ANIM_HarryT_Run,
             .chase  = ANIM_HarryT_Run,
-            .anim_4 = ANIM_HarryT_Idle,
+            .alert  = ANIM_HarryT_Idle,
         },
         .tattle = MSG_NpcTattle_HarryT_ShopOwner,
     },
@@ -375,8 +377,8 @@ NpcData N(NpcData_Chapter4)[] = {
             .walk   = ANIM_ShyGuy_Red_Anim02,
             .run    = ANIM_ShyGuy_Red_Anim03,
             .chase  = ANIM_ShyGuy_Red_Anim03,
-            .anim_4 = ANIM_ShyGuy_Red_Anim01,
-            .anim_5 = ANIM_ShyGuy_Red_Anim01,
+            .alert  = ANIM_ShyGuy_Red_Anim01,
+            .unused = ANIM_ShyGuy_Red_Anim01,
             .death  = ANIM_ShyGuy_Red_Anim0C,
             .hit    = ANIM_ShyGuy_Red_Anim0C,
             .anim_8 = ANIM_ShyGuy_Red_Anim15,
@@ -402,8 +404,8 @@ NpcData N(NpcData_Chapter4)[] = {
             .walk   = ANIM_ShyGuy_Red_Anim02,
             .run    = ANIM_ShyGuy_Red_Anim03,
             .chase  = ANIM_ShyGuy_Red_Anim03,
-            .anim_4 = ANIM_ShyGuy_Red_Anim01,
-            .anim_5 = ANIM_ShyGuy_Red_Anim01,
+            .alert  = ANIM_ShyGuy_Red_Anim01,
+            .unused = ANIM_ShyGuy_Red_Anim01,
             .death  = ANIM_ShyGuy_Red_Anim0C,
             .hit    = ANIM_ShyGuy_Red_Anim0C,
             .anim_8 = ANIM_ShyGuy_Red_Anim15,

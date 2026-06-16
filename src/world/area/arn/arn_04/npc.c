@@ -1,8 +1,8 @@
 #include "arn_04.h"
 
-#include "world/common/enemy/HyperGoomba_Patrol.inc.c"
-#include "world/common/enemy/HyperParagoomba.inc.c"
-#include "world/common/enemy/HyperCleft.inc.c"
+#include "world/common/enemy/HyperGoomba/patrol.inc.c"
+#include "world/common/enemy/HyperParagoomba/idle.inc.c"
+#include "world/common/enemy/HyperCleft/idle.inc.c"
 
 NpcData N(NpcData_HyperParagoomba) = {
     .id = NPC_HyperParagoomba,

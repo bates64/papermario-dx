@@ -1,7 +1,7 @@
 #include "kmr_00.h"
 
-#include "world/common/npc/StarSpirit.inc.c"
-#include "world/common/npc/Goombaria_Stationary.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
+#include "world/common/npc/Goombaria/idle.inc.c"
 
 // initial delay to start bobbing, ensuring star spirits motions are desync'd from one another
 s16 N(StarSpiritBobDelays)[] = {

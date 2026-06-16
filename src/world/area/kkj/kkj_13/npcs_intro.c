@@ -3,11 +3,11 @@
 
 #define NAME_SUFFIX _Intro
 
-#include "world/common/npc/Bowser.inc.c"
-#include "world/common/npc/Dummy.inc.c"
-#include "world/common/enemy/Kammy.inc.c"
-#include "world/common/enemy/Koopatrol_Stationary.inc.c"
-#include "world/common/npc/Peach.inc.c"
+#include "world/common/npc/Bowser/idle.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
+#include "world/common/enemy/Kammy/idle.inc.c"
+#include "world/common/enemy/Koopatrol/idle.inc.c"
+#include "world/common/npc/Peach/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_BowserAwaitBattle) = {
     Call(SetSelfVar, 0, 1)

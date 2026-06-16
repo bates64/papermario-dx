@@ -1,6 +1,7 @@
 #include "kpa_10.h"
 
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/ToadGuard/base.h"
+#include "world/common/npc/Toad/idle.inc.c"
 
 NpcData N(NpcData_Prisoners)[] = {
     {

@@ -9,9 +9,9 @@ API_CALLABLE(N(PlaySentinelSounds)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/npc/Boo.inc.c"
-#include "world/common/npc/Dummy.inc.c"
-#include "world/common/enemy/Sentinel.h"
+#include "world/common/npc/Boo/idle.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
+#include "world/common/enemy/Sentinel/base.h"
 
 EvtScript N(EVS_SetDoorRots) = {
     Set(LVar3, 0)

@@ -1,8 +1,8 @@
 #include "mim_04.h"
 
-#include "world/common/enemy/ForestFuzzy_Wander.inc.c"
+#include "world/common/enemy/ForestFuzzy/wander.inc.c"
 
-#include "world/common/npc/Bubulb.inc.c"
+#include "world/common/npc/Bubulb/idle.inc.c"
 
 EvtScript N(EVS_NpcInteract_Bubulb) = {
     IfEq(GF_MIM04_Gift_MagicalSeed3, false)

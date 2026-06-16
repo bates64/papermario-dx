@@ -1,6 +1,6 @@
 #include "omo_09.h"
 
-#include "world/common/enemy/ShyGuy_Wander.inc.c"
+#include "world/common/enemy/ShyGuy/wander.inc.c"
 
 MobileAISettings N(AISettings_ShyGuy_Wander_NoReaction) = {
     .moveSpeed = 2.0f,
@@ -33,11 +33,11 @@ NpcSettings N(NpcSettings_ShyGuy_Wander_NoReaction) = {
     .actionFlags = 0,
 };
 
-#include "world/common/enemy/ShyGuy_Patrol.inc.c"
-#include "world/common/enemy/SpyGuy.inc.c"
-#include "world/common/enemy/Koopatrol_Stationary.inc.c"
-#include "world/common/enemy/Pokey.inc.c"
-#include "world/common/enemy/Kammy_Flying.inc.c"
+#include "world/common/enemy/ShyGuy/patrol.inc.c"
+#include "world/common/enemy/SpyGuy/idle.inc.c"
+#include "world/common/enemy/Koopatrol/idle.inc.c"
+#include "world/common/enemy/Pokey/idle.inc.c"
+#include "world/common/enemy/Kammy/flying.inc.c"
 
 EvtScript N(EVS_ShyGuy_CarryItem) = {
     Set(LVarA, LVar0) // npcID

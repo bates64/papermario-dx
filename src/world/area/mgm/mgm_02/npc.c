@@ -1025,10 +1025,10 @@ EvtScript N(EVS_Dummy) = {
     End
 };
 
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/Luigi.inc.c"
-#include "world/common/enemy/Fuzzy.inc.c"
-#include "world/common/enemy/Bobomb.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Luigi/idle.inc.c"
+#include "world/common/enemy/Fuzzy/idle.inc.c"
+#include "world/common/enemy/Bobomb/idle.inc.c"
 
 s32 N(InitialConfigurations)[3][NUM_BOXES] = {
     { 2, 0, 2, 0, 2, 3, 3, 3, 3, 3, 2, 3, 2, 1, 3, 3, 2, 3, 0, 3, 3, 2, 3, 3, 1, 2, 3, 3, 2, 3, 3, 1, 3, 3, 2 },

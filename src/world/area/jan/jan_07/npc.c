@@ -1,9 +1,9 @@
 #include "jan_07.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/YoshiKid.inc.c"
+#include "world/common/npc/YoshiKid/idle.inc.c"
 
-#include "world/common/enemy/PutridPiranha.h"
+#include "world/common/enemy/PutridPiranha/base.h"
 
 NpcSettings N(NpcSettings_PutridPiranha) = {
     .height = 24,
@@ -11,7 +11,7 @@ NpcSettings N(NpcSettings_PutridPiranha) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/enemy/SpearGuy_Wander.inc.c"
+#include "world/common/enemy/SpearGuy/wander.inc.c"
 
 EvtScript N(EVS_YoshiKid_CryForHelp) = {
     Set(AF_JAN_SavedCurrentYoshiKid, false)

@@ -69,8 +69,8 @@ API_CALLABLE(N(AnimateChestSize)) {
     }
 }
 
-#include "world/common/npc/Kolorado.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_Kolorado) = {
     Wait(30)

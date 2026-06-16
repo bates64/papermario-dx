@@ -6,8 +6,8 @@ NpcSettings N(NpcSettings_Dummy) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/npc/Twink.h"
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/Twink/base.h"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 EvtScript N(EVS_NpcInit_Twink) = {
     Call(SetNpcPos, NPC_Twink, 0, 0, -400)

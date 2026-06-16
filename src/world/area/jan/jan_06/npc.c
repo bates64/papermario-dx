@@ -1,9 +1,9 @@
 #include "jan_06.h"
 
-#include "world/common/enemy/JungleFuzzy_Wander.inc.c"
-#include "world/common/enemy/HeartPlant.inc.c"
-#include "world/common/enemy/HurtPlant.inc.c"
-#include "world/common/enemy/SpearGuy_Wander.inc.c"
+#include "world/common/enemy/JungleFuzzy/wander.inc.c"
+#include "world/common/enemy/HeartPlant/idle.inc.c"
+#include "world/common/enemy/HurtPlant/idle.inc.c"
+#include "world/common/enemy/SpearGuy/wander.inc.c"
 
 AnimID N(LimitAnims_JungleFuzzy)[] = {
     ANIM_Fuzzy_Blue_Idle,
