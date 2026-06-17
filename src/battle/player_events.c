@@ -300,12 +300,11 @@ API_CALLABLE(RestorePreDefeatState) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_80261388) {
-    s32 partnerActorExists = gBattleStatus.partnerActor != nullptr;
-
-    script->varTable[0] = false;
-    if (partnerActorExists) {
+API_CALLABLE(DoesPartnerActorExist) {
+    if (gBattleStatus.partnerActor != nullptr) {
         script->varTable[0] = true;
+    } else {
+        script->varTable[0] = false;
     }
     return ApiStatus_DONE2;
 }
@@ -1435,8 +1434,8 @@ EvtScript EVS_Unused_DrinkItem = {
 EvtScript EVS_UseLifeShroom = {
     Call(UseIdleAnimation, ACTOR_PLAYER, false)
     ChildThread
-        Call(func_80261388)
-        IfEq(LVar0, 1)
+        Call(DoesPartnerActorExist)
+        IfEq(LVar0, true)
             Call(DispatchEvent, ACTOR_PARTNER, EVENT_LIFE_SHROOM_PROC)
             Call(SetActorFlagBits, ACTOR_PARTNER, ACTOR_FLAG_NO_SHADOW, 1)
             Set(LVar0, 255)
@@ -1532,8 +1531,8 @@ EvtScript EVS_UseLifeShroom = {
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 15)
     ChildThread
-        Call(func_80261388)
-        IfEq(LVar0, 1)
+        Call(DoesPartnerActorExist)
+        IfEq(LVar0, true)
             Call(SetActorFlagBits, ACTOR_PARTNER, ACTOR_FLAG_NO_SHADOW, 0)
             Set(LVar0, 0)
             Loop(10)

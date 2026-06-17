@@ -2339,10 +2339,10 @@ void render_with_static_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matr
         decorations->adjustedPalettes[i] = decorations->copiedPalettes[0][i];
     }
 
-    if (!isNpcSprite) {
-        func_unkB_draw_player(part, yaw, mtx);
-    } else {
+    if (isNpcSprite) {
         func_unkB_draw_npc(part, yaw, mtx);
+    } else {
+        func_unkB_draw_player(part, yaw, mtx);
     }
 
     if (!skipAnimation) {
@@ -2357,15 +2357,15 @@ void render_with_fear_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix
     s32 i, j;
 
     if (decorations->resetPalAdjust) {
-        if (!isNpcSprite) {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
-            decorations->originalPalettesCount = 2;
+        if (isNpcSprite) {
+            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesCount = 0;
             while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
                 decorations->originalPalettesCount++;
             }
         } else {
-            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
-            decorations->originalPalettesCount = 0;
+            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesCount = 2;
             while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
                 decorations->originalPalettesCount++;
             }
@@ -2412,10 +2412,10 @@ void render_with_fear_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix
         decorations->nextPalTime--;
     }
 
-    if (!isNpcSprite) {
-        func_unkB_draw_player(part, yaw, mtx);
-    } else {
+    if (isNpcSprite) {
         func_unkB_draw_npc(part, yaw, mtx);
+    } else {
+        func_unkB_draw_player(part, yaw, mtx);
     }
 }
 
@@ -2426,20 +2426,20 @@ void render_with_poison_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matr
     s32 i, j;
 
     if (decorations->resetPalAdjust) {
-        if (!isNpcSprite) {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
-            decorations->originalPalettesCount = 0;
-            while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
-                decorations->originalPalettesCount++;
-            }
-            decorations->spriteColorVariations = SPR_PLAYER_COLOR_VARIATIONS;
-        } else {
+        if (isNpcSprite) {
             decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
             decorations->originalPalettesCount = 0;
             while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
                 decorations->originalPalettesCount++;
             }
             decorations->spriteColorVariations = spr_get_npc_color_variations(part->curAnimation >> 16);
+        } else {
+            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesCount = 0;
+            while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
+                decorations->originalPalettesCount++;
+            }
+            decorations->spriteColorVariations = SPR_PLAYER_COLOR_VARIATIONS;
         }
 
         decorations->palAnimState = 0;
@@ -2470,10 +2470,10 @@ void render_with_poison_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matr
         decorations->adjustedPalettes[i] = decorations->copiedPalettes[0][i];
     }
 
-    if (!isNpcSprite) {
-        func_unkB_draw_player(part, yaw, mtx);
-    } else {
+    if (isNpcSprite) {
         func_unkB_draw_npc(part, yaw, mtx);
+    } else {
+        func_unkB_draw_player(part, yaw, mtx);
     }
 }
 
@@ -2484,14 +2484,14 @@ void render_with_paralyze_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Ma
     s32 i, j;
 
     if (decorations->resetPalAdjust) {
-        if (!isNpcSprite) {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+        if (isNpcSprite) {
+            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
             decorations->originalPalettesCount = 0;
             while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
                 decorations->originalPalettesCount++;
             }
         } else {
-            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
             decorations->originalPalettesCount = 0;
             while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
                 decorations->originalPalettesCount++;
@@ -2554,20 +2554,20 @@ void render_with_paralyze_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Ma
             switch (decorations->palBlendAlpha) {
                 case 10:
                 case 12:
-                    if (!isNpcSprite) {
-                        func_unkB_draw_player(part, yaw, mtx);
-                    } else {
+                    if (isNpcSprite) {
                         func_unkB_draw_npc(part, yaw, mtx);
+                    } else {
+                        func_unkB_draw_player(part, yaw, mtx);
                     }
                     break;
                 case 13:
                     decorations->palBlendAlpha = 0;
                     // fallthrough
                 default:
-                    if (!isNpcSprite) {
-                        func_unkA_draw_player(part, yaw, mtx);
-                    } else {
+                    if (isNpcSprite) {
                         func_unkA_draw_npc(part, yaw, mtx);
+                    } else {
+                        func_unkA_draw_player(part, yaw, mtx);
                     }
                     break;
             }
@@ -2584,15 +2584,15 @@ void render_with_berserk_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Mat
     s32 i, j;
 
     if (decorations->resetPalAdjust) {
-        if (!isNpcSprite) {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+        if (isNpcSprite) {
+            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
             decorations->originalPalettesCount = 0;
             while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
                 decorations->originalPalettesCount++;
             }
             decorations->palAnimState = 0;
         } else {
-            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
             decorations->originalPalettesCount = 0;
             while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
                 decorations->originalPalettesCount++;
@@ -2630,10 +2630,10 @@ void render_with_berserk_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Mat
         decorations->adjustedPalettes[i] = decorations->copiedPalettes[0][i];
     }
 
-    if (!isNpcSprite) {
-        func_unkB_draw_player(part, yaw, mtx);
-    } else {
+    if (isNpcSprite) {
         func_unkB_draw_npc(part, yaw, mtx);
+    } else {
+        func_unkB_draw_player(part, yaw, mtx);
     }
 }
 
@@ -2646,20 +2646,20 @@ void render_with_watt_idle_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, M
     s32 brightnessLevel;
 
     if (decorations->resetPalAdjust) {
-        if (!isNpcSprite) {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
-            decorations->originalPalettesCount = 0;
-            while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
-                decorations->originalPalettesCount++;
-            }
-            decorations->spriteColorVariations = SPR_PLAYER_COLOR_VARIATIONS;
-        } else {
+        if (isNpcSprite) {
             decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
             decorations->originalPalettesCount = 0;
             while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
                 decorations->originalPalettesCount++;
             }
             decorations->spriteColorVariations = spr_get_npc_color_variations(part->curAnimation >> 16);
+        } else {
+            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesCount = 0;
+            while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
+                decorations->originalPalettesCount++;
+            }
+            decorations->spriteColorVariations = SPR_PLAYER_COLOR_VARIATIONS;
         }
 
         for (i = 0; i < decorations->originalPalettesCount; i++) {
@@ -2738,10 +2738,10 @@ void render_with_watt_idle_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, M
         decorations->adjustedPalettes[i] = decorations->copiedPalettes[0][i];
     }
 
-    if (!isNpcSprite) {
-        func_unkB_draw_player(part, yaw, mtx);
-    } else {
+    if (isNpcSprite) {
         func_unkB_draw_npc(part, yaw, mtx);
+    } else {
+        func_unkB_draw_player(part, yaw, mtx);
     }
 
     if (!skipAnimation) {
@@ -2758,20 +2758,20 @@ void render_with_watt_attack_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw,
     s32 brightness;
 
     if (decorations->resetPalAdjust) {
-        if (!isNpcSprite) {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
-            decorations->originalPalettesCount = 0;
-            while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
-                decorations->originalPalettesCount++;
-            }
-            decorations->spriteColorVariations = SPR_PLAYER_COLOR_VARIATIONS;
-        } else {
+        if (isNpcSprite) {
             decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
             decorations->originalPalettesCount = 0;
             while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
                 decorations->originalPalettesCount++;
             }
             decorations->spriteColorVariations = spr_get_npc_color_variations(part->curAnimation >> 16);
+        } else {
+            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesCount = 0;
+            while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
+                decorations->originalPalettesCount++;
+            }
+            decorations->spriteColorVariations = SPR_PLAYER_COLOR_VARIATIONS;
         }
 
         for (i = 0; i < decorations->originalPalettesCount; i++) {
@@ -2849,10 +2849,10 @@ void render_with_watt_attack_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw,
         decorations->adjustedPalettes[i] = decorations->copiedPalettes[0][i];
     }
 
-    if (!isNpcSprite) {
-        func_unkB_draw_player(part, yaw, mtx);
-    } else {
+    if (isNpcSprite) {
         func_unkB_draw_npc(part, yaw, mtx);
+    } else {
+        func_unkB_draw_player(part, yaw, mtx);
     }
 
     if (!skipAnimation) {
@@ -2869,7 +2869,14 @@ void render_with_player_debuff_palettes(b32 isNpcSprite, ActorPart* part, s32 ya
     u8 blendAlpha;
 
     if (decorations->resetPalAdjust) {
-        if (!isNpcSprite) {
+        if (isNpcSprite) {
+            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesCount = 0;
+            while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
+                decorations->originalPalettesCount++;
+            }
+            decorations->spriteColorVariations = spr_get_npc_color_variations(part->curAnimation >> 16);
+        } else {
             decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
             decorations->originalPalettesCount = 0;
             while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
@@ -2881,13 +2888,6 @@ void render_with_player_debuff_palettes(b32 isNpcSprite, ActorPart* part, s32 ya
             } else {
                 decorations->spriteColorVariations = SPR_PLAYER_COLOR_VARIATIONS;
             }
-        } else {
-            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
-            decorations->originalPalettesCount = 0;
-            while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
-                decorations->originalPalettesCount++;
-            }
-            decorations->spriteColorVariations = spr_get_npc_color_variations(part->curAnimation >> 16);
         }
 
         if (decorations->resetPalAdjust == true) {
@@ -2976,10 +2976,10 @@ void render_with_player_debuff_palettes(b32 isNpcSprite, ActorPart* part, s32 ya
     switch (decorations->palAnimState) {
         case 0:
         case 1:
-            if (!isNpcSprite) {
-                func_unkB_draw_player(part, yaw, mtx);
-            } else {
+            if (isNpcSprite) {
                 func_unkB_draw_npc(part, yaw, mtx);
+            } else {
+                func_unkB_draw_player(part, yaw, mtx);
             }
             break;
     }
@@ -2996,14 +2996,14 @@ void render_with_pal_blending(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 has
     u8 r1, g1, b1;
 
     if (decorations->resetPalAdjust != 0) {
-        if (!isNpcSprite) {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+        if (isNpcSprite) {
+            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
             decorations->originalPalettesCount = 0;
             while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
                 decorations->originalPalettesCount++;
             }
         } else {
-            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
             decorations->originalPalettesCount = 0;
             while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
                 decorations->originalPalettesCount++;
@@ -3149,10 +3149,10 @@ void render_with_pal_blending(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 has
         case PAL_SWAP_A_TO_B:
         case PAL_SWAP_HOLD_B:
         case PAL_SWAP_B_TO_A:
-            if (!isNpcSprite) {
-                func_unkB_draw_player(part, yaw, mtx);
-            } else {
+            if (isNpcSprite) {
                 func_unkB_draw_npc(part, yaw, mtx);
+            } else {
+                func_unkB_draw_player(part, yaw, mtx);
             }
             break;
     }
@@ -3170,19 +3170,19 @@ void render_with_palset_blending(b32 isNpcSprite, ActorPart* part, s32 yaw, Matr
 
     // copy palettes from sprite data
     if (decorations->resetPalAdjust != 0) {
-        if (!isNpcSprite) {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
-            decorations->originalPalettesCount = 0;
-            while (decorations->originalPalettesList[decorations->originalPalettesCount] != (PAL_PTR) -1) {
-                decorations->originalPalettesCount++;
-            }
-        } else {
+        if (isNpcSprite) {
             decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
             decorations->originalPalettesCount = 0;
             while (decorations->originalPalettesList[decorations->originalPalettesCount] != (PAL_PTR) -1) {
                 decorations->originalPalettesCount++;
             }
             decorations->spriteColorVariations = spr_get_npc_color_variations(part->curAnimation >> 16);
+        } else {
+            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesCount = 0;
+            while (decorations->originalPalettesList[decorations->originalPalettesCount] != (PAL_PTR) -1) {
+                decorations->originalPalettesCount++;
+            }
         }
 
         if (decorations->resetPalAdjust == 1) {
@@ -3320,10 +3320,10 @@ void render_with_palset_blending(b32 isNpcSprite, ActorPart* part, s32 yaw, Matr
         case PAL_SWAP_A_TO_B:
         case PAL_SWAP_HOLD_B:
         case PAL_SWAP_B_TO_A:
-            if (!isNpcSprite) {
-                func_unkB_draw_player(part, yaw, mtx);
-            } else {
+            if (isNpcSprite) {
                 func_unkB_draw_npc(part, yaw, mtx);
+            } else {
+                func_unkB_draw_player(part, yaw, mtx);
             }
             break;
     }
@@ -3346,10 +3346,10 @@ s32 update_part_glow(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 isReflection
 void part_glow_off(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 isReflection) {
     if (part->decorationTable->glowStateChanged) {
         part->decorationTable->glowStateChanged = false;
-        if (!isNpcSprite) {
-            set_player_imgfx_all(PLAYER_SPRITE_MAIN, IMGFX_CLEAR, 0, 0, 0, 0, 0);
-        } else {
+        if (isNpcSprite) {
             set_npc_imgfx_all(part->spriteInstanceID, IMGFX_CLEAR, 0, 0, 0, 0, 0);
+        } else {
+            set_player_imgfx_all(PLAYER_SPRITE_MAIN, IMGFX_CLEAR, 0, 0, 0, 0, 0);
         }
     }
 }
@@ -3368,10 +3368,10 @@ void part_glow_on(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 isReflection) {
         decorations->glowUnk3 = 0;
         decorations->glowStateChanged = false;
         decorations->glowUnk2 = 0;
-        if (!isNpcSprite) {
-            set_player_imgfx_all(PLAYER_SPRITE_MAIN, IMGFX_ALLOC_COLOR_BUF, 20, 0, 0, 255, 0);
-        } else {
+        if (isNpcSprite) {
             set_npc_imgfx_all(part->spriteInstanceID, IMGFX_ALLOC_COLOR_BUF, 20, 0, 0, 255, 0);
+        } else {
+            set_player_imgfx_all(PLAYER_SPRITE_MAIN, IMGFX_ALLOC_COLOR_BUF, 20, 0, 0, 255, 0);
         }
     }
 
@@ -3397,10 +3397,10 @@ void part_glow_on(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 isReflection) {
 
     for (i = 0; i < ARRAY_COUNT(rbuf); i++) {
         color = (rbuf[i] << 0x18) | (gbuf[i] << 0x10) | (bbuf[i] << 8) | alpha;
-        if (!isNpcSprite) {
-            set_player_imgfx_all(PLAYER_SPRITE_MAIN, IMGFX_COLOR_BUF_SET_MODULATE, i, color, 0, 255, 0);
-        } else {
+        if (isNpcSprite) {
             set_npc_imgfx_all(part->spriteInstanceID, IMGFX_COLOR_BUF_SET_MODULATE, i, color, 0, 255, 0);
+        } else {
+            set_player_imgfx_all(PLAYER_SPRITE_MAIN, IMGFX_COLOR_BUF_SET_MODULATE, i, color, 0, 255, 0);
         }
     }
 
