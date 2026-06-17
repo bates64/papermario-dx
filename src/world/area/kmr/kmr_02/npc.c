@@ -3,6 +3,7 @@
 #include "model.h"
 #include "game_modes.h"
 #include "sprite/player.h"
+#include "world/common/npc/Parakarry/base.h"
 
 extern EvtScript N(EVS_NpcAI_Eldstar_02);
 extern EvtScript N(EVS_NpcAI_Eldstar_02_NoAI);
@@ -21,14 +22,6 @@ BSS u8 oldEnvR, oldEnvG, oldEnvB;
 #include "world/common/npc/Toad/guard.inc.c"
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
-
-API_CALLABLE(N(AwaitPartnerGrounded)) {
-    if (get_npc_unsafe(NPC_PARTNER)->flags & NPC_FLAG_GROUNDED) {
-        return ApiStatus_DONE2;
-    } else {
-        return ApiStatus_BLOCK;
-    }
-}
 
 #include "world/common/npc/GoombaFamily/wander.inc.c"
 #include "world/common/npc/GoombaFamily/idle.inc.c"
@@ -345,6 +338,14 @@ EvtScript N(EVS_PromptForBadgeTutorial) = {
     Return
     End
 };
+
+API_CALLABLE(N(AwaitPartnerGrounded)) {
+    if (get_npc_unsafe(NPC_PARTNER)->flags & NPC_FLAG_GROUNDED) {
+        return ApiStatus_DONE2;
+    } else {
+        return ApiStatus_BLOCK;
+    }
+}
 
 EvtScript N(EVS_ReturnToVillage) = {
     Call(DisablePlayerInput, true)
@@ -2153,24 +2154,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .settings = &N(NpcSettings_GoombaFamily),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldParakarry_Idle,
-            .walk   = ANIM_WorldParakarry_Walk,
-            .run    = ANIM_WorldParakarry_Run,
-            .chase  = ANIM_WorldParakarry_Run,
-            .alert  = ANIM_WorldParakarry_Idle,
-            .unused = ANIM_WorldParakarry_Idle,
-            .death  = ANIM_WorldParakarry_Still,
-            .hit    = ANIM_WorldParakarry_Still,
-            .anim_8 = ANIM_WorldParakarry_Idle,
-            .anim_9 = ANIM_WorldParakarry_Idle,
-            .anim_A = ANIM_WorldParakarry_Idle,
-            .anim_B = ANIM_WorldParakarry_Idle,
-            .anim_C = ANIM_WorldParakarry_Idle,
-            .anim_D = ANIM_WorldParakarry_Idle,
-            .anim_E = ANIM_WorldParakarry_Idle,
-            .anim_F = ANIM_WorldParakarry_Idle,
-        },
+        .animations = PARAKARRY_ANIMS,
     },
     {
         .id = NPC_Goombario,

@@ -1,8 +1,6 @@
 #include "sam_02.h"
 #include "sprite/player.h"
 
-#include "sprite/npc/ShiverToad.h"
-
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 

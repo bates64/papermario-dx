@@ -1,5 +1,7 @@
 #include "nok_02.h"
 #include "sprite/player.h"
+#include "world/common/npc/Parakarry/base.h"
+#include "world/common/enemy/Bombette/base.h"
 
 #include "world/common/npc/Koopa/wander.inc.c"
 #include "world/common/npc/KoopaWithoutShell/patrol.inc.c"
@@ -928,24 +930,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .settings = &N(NpcSettings_Koopa),
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldParakarry_Idle,
-            .walk   = ANIM_WorldParakarry_Walk,
-            .run    = ANIM_WorldParakarry_Run,
-            .chase  = ANIM_WorldParakarry_Run,
-            .alert  = ANIM_WorldParakarry_Idle,
-            .unused = ANIM_WorldParakarry_Idle,
-            .death  = ANIM_WorldParakarry_Still,
-            .hit    = ANIM_WorldParakarry_Still,
-            .anim_8 = ANIM_WorldParakarry_Idle,
-            .anim_9 = ANIM_WorldParakarry_Idle,
-            .anim_A = ANIM_WorldParakarry_Idle,
-            .anim_B = ANIM_WorldParakarry_Idle,
-            .anim_C = ANIM_WorldParakarry_Idle,
-            .anim_D = ANIM_WorldParakarry_Idle,
-            .anim_E = ANIM_WorldParakarry_Idle,
-            .anim_F = ANIM_WorldParakarry_Idle,
-        },
+        .animations = PARAKARRY_ANIMS,
     },
     {
         .id = NPC_Bombette,
@@ -955,24 +940,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .settings = &N(NpcSettings_Koopa),
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldBombette_Idle,
-            .walk   = ANIM_WorldBombette_Walk,
-            .run    = ANIM_WorldBombette_Walk,
-            .chase  = ANIM_WorldBombette_Walk,
-            .alert  = ANIM_WorldBombette_Walk,
-            .unused = ANIM_WorldBombette_Walk,
-            .death  = ANIM_WorldBombette_Still,
-            .hit    = ANIM_WorldBombette_Still,
-            .anim_8 = ANIM_WorldBombette_Still,
-            .anim_9 = ANIM_WorldBombette_Still,
-            .anim_A = ANIM_WorldBombette_Still,
-            .anim_B = ANIM_WorldBombette_Still,
-            .anim_C = ANIM_WorldBombette_Still,
-            .anim_D = ANIM_WorldBombette_Still,
-            .anim_E = ANIM_WorldBombette_Still,
-            .anim_F = ANIM_WorldBombette_Still,
-        },
+        .animations = BOMBETTE_ANIMS,
     },
     {
         .id = NPC_KoloradoWife_Epilogue,

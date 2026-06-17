@@ -1,6 +1,8 @@
 #include "arn_07.h"
 #include "effects.h"
 #include "sprite/player.h"
+#include "world/common/npc/Bootler/base.h"
+#include "world/common/npc/Bow/base.h"
 
 #include "world/common/enemy/HyperParagoomba/idle.inc.c"
 #include "world/common/enemy/TubbaBlubba/idle.inc.c"
@@ -660,24 +662,7 @@ NpcData N(NpcData_Bow) = {
     .settings = &N(NpcSettings_Boo),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_WorldBow_Idle,
-        .walk   = ANIM_WorldBow_Walk,
-        .run    = ANIM_WorldBow_Run,
-        .chase  = ANIM_WorldBow_Run,
-        .alert  = ANIM_WorldBow_Idle,
-        .unused = ANIM_WorldBow_Idle,
-        .death  = ANIM_WorldBow_Still,
-        .hit    = ANIM_WorldBow_Still,
-        .anim_8 = ANIM_WorldBow_Run,
-        .anim_9 = ANIM_WorldBow_Run,
-        .anim_A = ANIM_WorldBow_Run,
-        .anim_B = ANIM_WorldBow_Run,
-        .anim_C = ANIM_WorldBow_Run,
-        .anim_D = ANIM_WorldBow_Run,
-        .anim_E = ANIM_WorldBow_Run,
-        .anim_F = ANIM_WorldBow_Run,
-    },
+    .animations = BOW_ANIMS,
 };
 
 NpcData N(NpcData_Bootler) = {
@@ -688,24 +673,7 @@ NpcData N(NpcData_Bootler) = {
     .settings = &N(NpcSettings_Boo),
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL  | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Bootler_Idle,
-        .walk   = ANIM_Bootler_Walk,
-        .run    = ANIM_Bootler_Run,
-        .chase  = ANIM_Bootler_Run,
-        .alert  = ANIM_Bootler_Idle,
-        .unused = ANIM_Bootler_Idle,
-        .death  = ANIM_Bootler_Still,
-        .hit    = ANIM_Bootler_Still,
-        .anim_8 = ANIM_Bootler_Shock,
-        .anim_9 = ANIM_Bootler_Panic,
-        .anim_A = ANIM_Bootler_Dejected,
-        .anim_B = ANIM_Bootler_Quaver,
-        .anim_C = ANIM_Bootler_Shock,
-        .anim_D = ANIM_Bootler_Panic,
-        .anim_E = ANIM_Bootler_Dejected,
-        .anim_F = ANIM_Bootler_Quaver,
-    },
+    .animations = BOOTLER_ANIMS,
     .limitAnimations = N(LimitAnims_Bootler),
 };
 

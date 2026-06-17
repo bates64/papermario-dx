@@ -1,5 +1,6 @@
 #include "flo_03.h"
 #include "sprite/player.h"
+#include "world/common/enemy/CrazyDayzee/base.h"
 
 NpcSettings N(NpcSettings_Dayzee) = {
     .height = 24,
@@ -812,24 +813,7 @@ NpcData N(NpcData_Dayzee) = {
     .settings = &N(NpcSettings_Dayzee),
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Dayzee_Anim01,
-        .walk   = ANIM_Dayzee_Anim02,
-        .run    = ANIM_Dayzee_Anim03,
-        .chase  = ANIM_Dayzee_Anim03,
-        .alert  = ANIM_Dayzee_Anim01,
-        .unused = ANIM_Dayzee_Anim01,
-        .death  = ANIM_Dayzee_Anim08,
-        .hit    = ANIM_Dayzee_Anim08,
-        .anim_8 = ANIM_Dayzee_Anim06,
-        .anim_9 = ANIM_Dayzee_Anim07,
-        .anim_A = ANIM_Dayzee_Anim01,
-        .anim_B = ANIM_Dayzee_Anim01,
-        .anim_C = ANIM_Dayzee_Anim01,
-        .anim_D = ANIM_Dayzee_Anim01,
-        .anim_E = ANIM_Dayzee_Anim01,
-        .anim_F = ANIM_Dayzee_Anim01,
-    },
+    .animations = CRAZY_DAYZEE_ANIMS,
 };
 
 NpcData N(NpcData_MontyMole_01) = {

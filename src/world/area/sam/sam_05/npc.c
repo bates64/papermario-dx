@@ -2,45 +2,11 @@
 #include "sprite.h"
 #include "include_asset.h"
 
-NpcSettings N(NpcSettings_Monstar) = {
-    .height = 150,
-    .radius = 150,
-    .level = ACTOR_LEVEL_NONE,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
-
+#include "world/common/npc/Monstar/idle.inc.c"
 #include "world/common/npc/Twink/idle.inc.c"
 
 #include "world/common/enemy/Gulpit/idle.inc.c"
 #include "world/common/enemy/FrostPiranha/idle.inc.c"
-
-EvtScript N(EVS_NpcAI_Monstar) = {
-    Label(0)
-        Call(GetSelfVar, 0, LVar0)
-        Wait(1)
-        IfEq(LVar0, 0)
-            Goto(0)
-        EndIf
-    Call(StartBossBattle, SONG_SPECIAL_BATTLE)
-    Return
-    End
-};
-
-extern EvtScript N(EVS_NpcAux_Monstar);
-
-EvtScript N(EVS_NpcDefeat_Monstar) = {
-    Call(GetBattleOutcome, LVar0)
-    Switch(LVar0)
-        CaseEq(OUTCOME_PLAYER_WON)
-            Call(SetNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Monstar)))
-            ExecWait(N(EVS_Scene_MonstarDefeated))
-        CaseEq(OUTCOME_PLAYER_FLED)
-    EndSwitch
-    Call(ClearDefeatedEnemies)
-    Return
-    End
-};
 
 INCLUDE_IMG("world/area/sam/sam_05/monstar.png", sam_05_monstar_png);
 INCLUDE_IMG("world/area/sam/sam_05/monstar_blank1.png", D_80242970);
@@ -116,8 +82,33 @@ API_CALLABLE(N(CheckSkipInput)) {
     }
 }
 
+EvtScript N(EVS_NpcAI_Monstar) = {
+    Label(0)
+        Call(GetSelfVar, 0, LVar0)
+        Wait(1)
+        IfEq(LVar0, 0)
+            Goto(0)
+        EndIf
+    Call(StartBossBattle, SONG_SPECIAL_BATTLE)
+    Return
+    End
+};
+
 EvtScript N(EVS_NpcAux_Monstar) = {
     Call(N(UpdateMonstarSpriteEffects))
+    Return
+    End
+};
+
+EvtScript N(EVS_NpcDefeat_Monstar) = {
+    Call(GetBattleOutcome, LVar0)
+    Switch(LVar0)
+        CaseEq(OUTCOME_PLAYER_WON)
+            Call(SetNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Monstar)))
+            ExecWait(N(EVS_Scene_MonstarDefeated))
+        CaseEq(OUTCOME_PLAYER_FLED)
+    EndSwitch
+    Call(ClearDefeatedEnemies)
     Return
     End
 };
@@ -165,24 +156,7 @@ NpcData N(NpcData_Monstar) = {
     .settings = &N(NpcSettings_Monstar),
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Monstar_Idle1,
-        .walk   = ANIM_Monstar_Idle1,
-        .run    = ANIM_Monstar_Idle1,
-        .chase  = ANIM_Monstar_Idle1,
-        .alert  = ANIM_Monstar_Idle1,
-        .unused = ANIM_Monstar_Idle1,
-        .death  = ANIM_Monstar_Idle1,
-        .hit    = ANIM_Monstar_Idle1,
-        .anim_8 = ANIM_Monstar_Idle1,
-        .anim_9 = ANIM_Monstar_Idle1,
-        .anim_A = ANIM_Monstar_Idle1,
-        .anim_B = ANIM_Monstar_Idle1,
-        .anim_C = ANIM_Monstar_Idle1,
-        .anim_D = ANIM_Monstar_Idle1,
-        .anim_E = ANIM_Monstar_Idle1,
-        .anim_F = ANIM_Monstar_Idle1,
-    },
+    .animations = MONSTAR_ANIMS,
     .limitAnimations = N(LimitAnims_Monstar),
 };
 

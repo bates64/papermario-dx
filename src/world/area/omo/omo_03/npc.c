@@ -1,4 +1,5 @@
 #include "omo_03.h"
+#include "world/common/npc/Watt/base.h"
 
 #include "world/common/npc/TrainToad/idle.inc.c"
 #include "world/common/npc/Parakarry/idle.inc.c"
@@ -160,24 +161,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .settings = &N(NpcSettings_ShyGuy_Stationary),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldWatt_Idle,
-            .walk   = ANIM_WorldWatt_Idle,
-            .run    = ANIM_WorldWatt_Idle,
-            .chase  = ANIM_WorldWatt_Idle,
-            .alert  = ANIM_WorldWatt_Idle,
-            .unused = ANIM_WorldWatt_Idle,
-            .death  = ANIM_WorldWatt_Idle,
-            .hit    = ANIM_WorldWatt_Idle,
-            .anim_8 = ANIM_WorldWatt_Idle,
-            .anim_9 = ANIM_WorldWatt_Idle,
-            .anim_A = ANIM_WorldWatt_Idle,
-            .anim_B = ANIM_WorldWatt_Idle,
-            .anim_C = ANIM_WorldWatt_Idle,
-            .anim_D = ANIM_WorldWatt_Idle,
-            .anim_E = ANIM_WorldWatt_Idle,
-            .anim_F = ANIM_WorldWatt_Idle,
-        },
+        .animations = WATT_ANIMS,
     },
     {
         .id = NPC_ShyGuy_01,

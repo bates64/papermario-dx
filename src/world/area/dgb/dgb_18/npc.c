@@ -524,24 +524,7 @@ NpcData N(NpcData_Yakkey) = {
     .settings = &N(NpcSettings_Yakkey),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Yakkey_Idle,
-        .walk   = ANIM_Yakkey_Idle,
-        .run    = ANIM_Yakkey_Idle,
-        .chase  = ANIM_Yakkey_Idle,
-        .alert  = ANIM_Yakkey_Idle,
-        .unused = ANIM_Yakkey_Idle,
-        .death  = ANIM_Yakkey_Idle,
-        .hit    = ANIM_Yakkey_Idle,
-        .anim_8 = ANIM_Yakkey_Idle,
-        .anim_9 = ANIM_Yakkey_Idle,
-        .anim_A = ANIM_Yakkey_Idle,
-        .anim_B = ANIM_Yakkey_Idle,
-        .anim_C = ANIM_Yakkey_Idle,
-        .anim_D = ANIM_Yakkey_Idle,
-        .anim_E = ANIM_Yakkey_Idle,
-        .anim_F = ANIM_Yakkey_Idle,
-    },
+    .animations = YAKKEY_ANIMS,
 };
 
 NpcGroupList N(DefaultNPCs) = {

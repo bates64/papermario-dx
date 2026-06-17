@@ -1,4 +1,5 @@
 #include "kmr_11.h"
+#include "world/common/enemy/GoombaBros/base.h"
 
 #include "world/common/enemy/GoombaBros/guard.inc.c"
 
@@ -312,24 +313,7 @@ NpcData N(NpcData_Enemies)[] = {
         .settings = &N(NpcSettings_GoombaBros_Guard),
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_GoombaBros_Blue_Idle,
-            .walk   = ANIM_GoombaBros_Blue_Walk,
-            .run    = ANIM_GoombaBros_Blue_Run,
-            .chase  = ANIM_GoombaBros_Blue_Run,
-            .alert  = ANIM_GoombaBros_Blue_Idle,
-            .unused = ANIM_GoombaBros_Blue_Idle,
-            .death  = ANIM_GoombaBros_Blue_Hurt,
-            .hit    = ANIM_GoombaBros_Blue_Hurt,
-            .anim_8 = ANIM_GoombaBros_Blue_Run,
-            .anim_9 = ANIM_GoombaBros_Blue_Run,
-            .anim_A = ANIM_GoombaBros_Blue_Run,
-            .anim_B = ANIM_GoombaBros_Blue_Run,
-            .anim_C = ANIM_GoombaBros_Blue_Run,
-            .anim_D = ANIM_GoombaBros_Blue_Run,
-            .anim_E = ANIM_GoombaBros_Blue_Run,
-            .anim_F = ANIM_GoombaBros_Blue_Run,
-        },
+        .animations = GOOMBA_BROS_BLUE_ANIMS,
     },
     {
         .id = NPC_RedGoombaBro,
@@ -351,24 +335,7 @@ NpcData N(NpcData_Enemies)[] = {
         .settings = &N(NpcSettings_GoombaBros_Guard),
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_GoombaBros_Red_Idle,
-            .walk   = ANIM_GoombaBros_Red_Walk,
-            .run    = ANIM_GoombaBros_Red_Run,
-            .chase  = ANIM_GoombaBros_Red_Run,
-            .alert  = ANIM_GoombaBros_Red_Idle,
-            .unused = ANIM_GoombaBros_Red_Idle,
-            .death  = ANIM_GoombaBros_Red_Hurt,
-            .hit    = ANIM_GoombaBros_Red_Hurt,
-            .anim_8 = ANIM_GoombaBros_Red_Run,
-            .anim_9 = ANIM_GoombaBros_Red_Run,
-            .anim_A = ANIM_GoombaBros_Red_Run,
-            .anim_B = ANIM_GoombaBros_Red_Run,
-            .anim_C = ANIM_GoombaBros_Red_Run,
-            .anim_D = ANIM_GoombaBros_Red_Run,
-            .anim_E = ANIM_GoombaBros_Red_Run,
-            .anim_F = ANIM_GoombaBros_Red_Run,
-        },
+        .animations = GOOMBA_BROS_RED_ANIMS,
     },
     {
         .id = NPC_GoombaKing,

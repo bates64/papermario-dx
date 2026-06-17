@@ -1,5 +1,6 @@
 #include "hos_10.h"
 #include "sprite/player.h"
+#include "world/common/npc/Peach/base.h"
 
 NpcSettings N(NpcSettings_Dummy) = {
     .height = 24,
@@ -131,24 +132,7 @@ NpcData N(NpcData_Spirits_Descent)[] = {
         .settings = &N(NpcSettings_Dummy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Peach1_Still,
-            .walk   = ANIM_Peach1_Still,
-            .run    = ANIM_Peach1_Still,
-            .chase  = ANIM_Peach1_Still,
-            .alert  = ANIM_Peach1_Still,
-            .unused = ANIM_Peach1_Still,
-            .death  = ANIM_Peach1_Still,
-            .hit    = ANIM_Peach1_Still,
-            .anim_8 = ANIM_Peach1_Still,
-            .anim_9 = ANIM_Peach1_Still,
-            .anim_A = ANIM_Peach1_Still,
-            .anim_B = ANIM_Peach1_Still,
-            .anim_C = ANIM_Peach1_Still,
-            .anim_D = ANIM_Peach1_Still,
-            .anim_E = ANIM_Peach1_Still,
-            .anim_F = ANIM_Peach1_Still,
-        },
+        .animations = PEACH_ANIMS,
         .limitAnimations = N(LimitAnims_Peach),
     },
     {

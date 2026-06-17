@@ -1,5 +1,7 @@
 #include "sam_11.h"
 #include "sprite/player.h"
+#include "world/common/npc/Kooper/base.h"
+#include "world/common/npc/Parakarry/base.h"
 
 #include "world/common/npc/Toadette/base.h"
 #include "world/common/npc/Penguin/wander.inc.c"
@@ -1020,24 +1022,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .settings = &N(NpcSettings_Kooper),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldKooper_Idle,
-            .walk   = ANIM_WorldKooper_Walk,
-            .run    = ANIM_WorldKooper_Walk,
-            .chase  = ANIM_WorldKooper_Walk,
-            .alert  = ANIM_WorldKooper_Walk,
-            .unused = ANIM_WorldKooper_Walk,
-            .death  = ANIM_WorldKooper_Still,
-            .hit    = ANIM_WorldKooper_Still,
-            .anim_8 = ANIM_WorldKooper_Still,
-            .anim_9 = ANIM_WorldKooper_Still,
-            .anim_A = ANIM_WorldKooper_Still,
-            .anim_B = ANIM_WorldKooper_Still,
-            .anim_C = ANIM_WorldKooper_Still,
-            .anim_D = ANIM_WorldKooper_Still,
-            .anim_E = ANIM_WorldKooper_Still,
-            .anim_F = ANIM_WorldKooper_Still,
-        },
+        .animations = KOOPER_ANIMS,
     },
     {
         .id = NPC_Parakarry,
@@ -1047,24 +1032,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .settings = &N(NpcSettings_Kooper),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldParakarry_Idle,
-            .walk   = ANIM_WorldParakarry_Walk,
-            .run    = ANIM_WorldParakarry_Run,
-            .chase  = ANIM_WorldParakarry_Run,
-            .alert  = ANIM_WorldParakarry_Idle,
-            .unused = ANIM_WorldParakarry_Idle,
-            .death  = ANIM_WorldParakarry_Still,
-            .hit    = ANIM_WorldParakarry_Still,
-            .anim_8 = ANIM_WorldParakarry_Idle,
-            .anim_9 = ANIM_WorldParakarry_Idle,
-            .anim_A = ANIM_WorldParakarry_Idle,
-            .anim_B = ANIM_WorldParakarry_Idle,
-            .anim_C = ANIM_WorldParakarry_Idle,
-            .anim_D = ANIM_WorldParakarry_Idle,
-            .anim_E = ANIM_WorldParakarry_Idle,
-            .anim_F = ANIM_WorldParakarry_Idle,
-        },
+        .animations = PARAKARRY_ANIMS,
     },
 };
 

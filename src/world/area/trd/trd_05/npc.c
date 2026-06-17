@@ -1,5 +1,6 @@
 #include "trd_05.h"
 #include "effects.h"
+#include "world/common/npc/KoopaBros/base.h"
 
 extern EvtScript N(EVS_StartKoopaBrosTheme);
 extern EvtScript N(EVS_EndKoopaBrosTheme);
@@ -210,24 +211,7 @@ NpcData N(NpcData_KoopaBros)[] = {
         .settings = &N(NpcSettings_KoopaBros),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_KoopaBros_Yellow_Idle,
-            .walk   = ANIM_KoopaBros_Yellow_Walk,
-            .run    = ANIM_KoopaBros_Yellow_Run,
-            .chase  = ANIM_KoopaBros_Yellow_Run,
-            .alert  = ANIM_KoopaBros_Yellow_Idle,
-            .unused = ANIM_KoopaBros_Yellow_Idle,
-            .death  = ANIM_KoopaBros_Yellow_HurtStill,
-            .hit    = ANIM_KoopaBros_Yellow_HurtStill,
-            .anim_8 = ANIM_KoopaBros_Yellow_Run,
-            .anim_9 = ANIM_KoopaBros_Yellow_Run,
-            .anim_A = ANIM_KoopaBros_Yellow_Run,
-            .anim_B = ANIM_KoopaBros_Yellow_Run,
-            .anim_C = ANIM_KoopaBros_Yellow_Run,
-            .anim_D = ANIM_KoopaBros_Yellow_Run,
-            .anim_E = ANIM_KoopaBros_Yellow_Run,
-            .anim_F = ANIM_KoopaBros_Yellow_Run,
-        },
+        .animations = YELLOW_KOOPA_BROS_ANIMS,
     },
     {
         .id = NPC_KoopaBros_02,
@@ -237,24 +221,7 @@ NpcData N(NpcData_KoopaBros)[] = {
         .settings = &N(NpcSettings_KoopaBros),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_KoopaBros_Yellow_Idle,
-            .walk   = ANIM_KoopaBros_Yellow_Walk,
-            .run    = ANIM_KoopaBros_Yellow_Run,
-            .chase  = ANIM_KoopaBros_Yellow_Run,
-            .alert  = ANIM_KoopaBros_Yellow_Idle,
-            .unused = ANIM_KoopaBros_Yellow_Idle,
-            .death  = ANIM_KoopaBros_Yellow_HurtStill,
-            .hit    = ANIM_KoopaBros_Yellow_HurtStill,
-            .anim_8 = ANIM_KoopaBros_Yellow_Run,
-            .anim_9 = ANIM_KoopaBros_Yellow_Run,
-            .anim_A = ANIM_KoopaBros_Yellow_Run,
-            .anim_B = ANIM_KoopaBros_Yellow_Run,
-            .anim_C = ANIM_KoopaBros_Yellow_Run,
-            .anim_D = ANIM_KoopaBros_Yellow_Run,
-            .anim_E = ANIM_KoopaBros_Yellow_Run,
-            .anim_F = ANIM_KoopaBros_Yellow_Run,
-        },
+        .animations = YELLOW_KOOPA_BROS_ANIMS,
     },
 };
 

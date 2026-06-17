@@ -1,6 +1,7 @@
 #include "trd_00.h"
 #include "effects.h"
 #include "sprite/player.h"
+#include "world/common/npc/KoopaBros/base.h"
 
 extern EvtScript N(EVS_SetupMusic);
 
@@ -316,24 +317,7 @@ NpcData N(NpcData_KoopaBros) = {
     .settings = &N(NpcSettings_KoopaBros),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_KoopaBros_Green_Idle,
-        .walk   = ANIM_KoopaBros_Green_Walk,
-        .run    = ANIM_KoopaBros_Green_Run,
-        .chase  = ANIM_KoopaBros_Green_Run,
-        .alert  = ANIM_KoopaBros_Green_Idle,
-        .unused = ANIM_KoopaBros_Green_Idle,
-        .death  = ANIM_KoopaBros_Green_HurtStill,
-        .hit    = ANIM_KoopaBros_Green_HurtStill,
-        .anim_8 = ANIM_KoopaBros_Green_Run,
-        .anim_9 = ANIM_KoopaBros_Green_Run,
-        .anim_A = ANIM_KoopaBros_Green_Run,
-        .anim_B = ANIM_KoopaBros_Green_Run,
-        .anim_C = ANIM_KoopaBros_Green_Run,
-        .anim_D = ANIM_KoopaBros_Green_Run,
-        .anim_E = ANIM_KoopaBros_Green_Run,
-        .anim_F = ANIM_KoopaBros_Green_Run,
-    },
+    .animations = GREEN_KOOPA_BROS_ANIMS,
 };
 
 NpcData N(NpcData_Eldstar) = {

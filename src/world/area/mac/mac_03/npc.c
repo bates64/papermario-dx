@@ -1,5 +1,6 @@
 #include "mac_03.h"
 #include "effects.h"
+#include "world/common/enemy/ShyGuy/base.h"
 
 #include "world/common/npc/ToadKid/base.h"
 #include "world/common/npc/Toadette/base.h"
@@ -774,24 +775,7 @@ NpcData N(NpcData_ShyGuy) = {
     .settings = &N(NpcSettings_ShyGuy),
     .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_ShyGuy_Red_Anim01,
-        .walk   = ANIM_ShyGuy_Red_Anim02,
-        .run    = ANIM_ShyGuy_Red_Anim03,
-        .chase  = ANIM_ShyGuy_Red_Anim03,
-        .alert  = ANIM_ShyGuy_Red_Anim01,
-        .unused = ANIM_ShyGuy_Red_Anim01,
-        .death  = ANIM_ShyGuy_Red_Anim0C,
-        .hit    = ANIM_ShyGuy_Red_Anim0C,
-        .anim_8 = ANIM_ShyGuy_Red_Anim15,
-        .anim_9 = ANIM_ShyGuy_Red_Anim12,
-        .anim_A = ANIM_ShyGuy_Red_Anim11,
-        .anim_B = ANIM_ShyGuy_Red_Anim10,
-        .anim_C = ANIM_ShyGuy_Red_Anim05,
-        .anim_D = ANIM_ShyGuy_Red_Anim01,
-        .anim_E = ANIM_ShyGuy_Red_Anim01,
-        .anim_F = ANIM_ShyGuy_Red_Anim01,
-    },
+    .animations = RED_SHY_GUY_ANIMS,
 };
 
 NpcData N(NpcData_LilOinks)[] = {

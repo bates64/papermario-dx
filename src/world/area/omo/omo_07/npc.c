@@ -1,4 +1,6 @@
 #include "omo_07.h"
+#include "world/common/enemy/Fuzzy/base.h"
+#include "world/common/enemy/HammerBros/base.h"
 
 #include "world/common/enemy/ShyGuy/wander.inc.c"
 #include "world/common/enemy/ShyGuy/patrol.inc.c"
@@ -464,24 +466,7 @@ NpcData N(NpcData_Fuzzy) = {
     .settings = &N(NpcSettings_Fuzzy),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Fuzzy_Walk,
-        .walk   = ANIM_Fuzzy_Walk,
-        .run    = ANIM_Fuzzy_Run,
-        .chase  = ANIM_Fuzzy_Run,
-        .alert  = ANIM_Fuzzy_Idle,
-        .unused = ANIM_Fuzzy_Idle,
-        .death  = ANIM_Fuzzy_Hurt,
-        .hit    = ANIM_Fuzzy_Hurt,
-        .anim_8 = ANIM_Fuzzy_Run,
-        .anim_9 = ANIM_Fuzzy_Run,
-        .anim_A = ANIM_Fuzzy_Run,
-        .anim_B = ANIM_Fuzzy_Run,
-        .anim_C = ANIM_Fuzzy_Run,
-        .anim_D = ANIM_Fuzzy_Run,
-        .anim_E = ANIM_Fuzzy_Run,
-        .anim_F = ANIM_Fuzzy_Run,
-    },
+    .animations = FUZZY_ANIMS,
 };
 
 NpcData N(NpcData_HammerBros) = {
@@ -492,24 +477,7 @@ NpcData N(NpcData_HammerBros) = {
     .settings = &N(NpcSettings_HammerBros),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_HammerBros_Anim02,
-        .walk   = ANIM_HammerBros_Anim04,
-        .run    = ANIM_HammerBros_Anim07,
-        .chase  = ANIM_HammerBros_Anim07,
-        .alert  = ANIM_HammerBros_Anim02,
-        .unused = ANIM_HammerBros_Anim02,
-        .death  = ANIM_HammerBros_Anim0E,
-        .hit    = ANIM_HammerBros_Anim0E,
-        .anim_8 = ANIM_HammerBros_Anim18,
-        .anim_9 = ANIM_HammerBros_Anim19,
-        .anim_A = ANIM_HammerBros_Anim02,
-        .anim_B = ANIM_HammerBros_Anim02,
-        .anim_C = ANIM_HammerBros_Anim02,
-        .anim_D = ANIM_HammerBros_Anim02,
-        .anim_E = ANIM_HammerBros_Anim02,
-        .anim_F = ANIM_HammerBros_Anim02,
-    },
+    .animations = HAMMER_BROS_ANIMS,
 };
 
 NpcData N(NpcData_SkyGuy_01) = {
