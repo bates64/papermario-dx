@@ -1,7 +1,7 @@
 #include "iwa_04.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/Cleft/idle.inc.c"
+#include "world/common/enemy/Cleft/wander.inc.c"
 
 API_CALLABLE(N(func_80241060_91C940)) {
     gCameras[CAM_DEFAULT].yinterpAlpha = 1.0f;
@@ -294,7 +294,7 @@ NpcData N(NpcData_Cleft) = {
             .detectSize = { 175, 195 },
         }
     },
-    .settings = &N(NpcSettings_Cleft),
+    .settings = &N(NpcSettings_Cleft_Wander),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,

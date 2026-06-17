@@ -1,6 +1,6 @@
 #include "sam_03.h"
 
-#include "world/common/enemy/Gulpit/idle.inc.c"
+#include "world/common/enemy/Gulpit/wander.inc.c"
 
 NpcData N(NpcData_Gulpit_01)[] = {
     {
@@ -19,7 +19,7 @@ NpcData N(NpcData_Gulpit_01)[] = {
                 .detectSize = { 250 },
             }
         },
-        .settings = &N(NpcSettings_Gulpit),
+        .settings = &N(NpcSettings_Gulpit_Wander),
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = GULPIT_DROPS,
         .animations = GULPIT_ANIMS,
@@ -46,7 +46,7 @@ NpcData N(NpcData_Gulpit_02)[] = {
                 .detectSize = { 250 },
             }
         },
-        .settings = &N(NpcSettings_Gulpit),
+        .settings = &N(NpcSettings_Gulpit_Wander),
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = GULPIT_DROPS,
         .animations = GULPIT_ANIMS,

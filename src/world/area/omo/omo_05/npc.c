@@ -2,8 +2,8 @@
 #include "sprite/player.h"
 
 #include "world/common/enemy/ShyGuy/wander.inc.c"
-#include "world/common/enemy/GrooveGuy/idle.inc.c"
-#include "world/common/enemy/SkyGuy/idle.inc.c"
+#include "world/common/enemy/GrooveGuy/wander.inc.c"
+#include "world/common/enemy/SkyGuy/wander.inc.c"
 
 #include "world/common/npc/GourmetGuy/idle.inc.c"
 
@@ -424,7 +424,7 @@ NpcData N(NpcData_GrooveGuy) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_GrooveGuy),
+    .settings = &N(NpcSettings_GrooveGuy_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = GROOVE_GUY_DROPS_A,
     .animations = GROOVE_GUY_ANIMS,

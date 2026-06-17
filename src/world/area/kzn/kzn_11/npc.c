@@ -1,6 +1,6 @@
 #include "kzn_11.h"
 
-#include "world/common/enemy/LavaBubble/idle.inc.c"
+#include "world/common/enemy/LavaBubble/wander.inc.c"
 
 #include "sprite/npc/Fire.h"
 #include "world/common/ai/FireBarAI.inc.c"
@@ -270,7 +270,7 @@ NpcData N(NpcData_Bubble_01) = {
             .detectSize = { 150 },
         }
     },
-    .settings = &N(NpcSettings_LavaBubble),
+    .settings = &N(NpcSettings_LavaBubble_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = LAVA_BUBBLE_DROPS,
     .animations = LAVA_BUBBLE_ANIMS,
@@ -293,7 +293,7 @@ NpcData N(NpcData_Bubble_02) = {
             .detectSize = { 150 },
         }
     },
-    .settings = &N(NpcSettings_LavaBubble),
+    .settings = &N(NpcSettings_LavaBubble_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = LAVA_BUBBLE_DROPS,
     .animations = LAVA_BUBBLE_ANIMS,

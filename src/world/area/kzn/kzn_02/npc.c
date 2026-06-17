@@ -1,7 +1,7 @@
 #include "kzn_02.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/LavaBubble/idle.inc.c"
+#include "world/common/enemy/LavaBubble/wander.inc.c"
 
 #include "world/common/npc/Kolorado/idle.inc.c"
 
@@ -190,7 +190,7 @@ NpcData N(NpcData_LavaBubble) = {
             .detectSize = { 70, 200 },
         }
     },
-    .settings = &N(NpcSettings_LavaBubble),
+    .settings = &N(NpcSettings_LavaBubble_Wander),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = LAVA_BUBBLE_DROPS,
     .animations = LAVA_BUBBLE_ANIMS,

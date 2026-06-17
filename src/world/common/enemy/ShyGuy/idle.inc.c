@@ -1,6 +1,6 @@
 #include "idle.h"
 
-NpcSettings N(NpcSettings_ShyGuy_Stationary) = {
+NpcSettings N(NpcSettings_ShyGuy) = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,

@@ -1,6 +1,6 @@
 #include "kzn_03.h"
 
-#include "world/common/enemy/SpikeTop/idle.inc.c"
+#include "world/common/enemy/SpikeTop/wander.inc.c"
 #include "world/common/enemy/PutridPiranha/idle.inc.c"
 #include "world/common/npc/Dummy/idle.inc.c"
 #include "world/common/npc/Kolorado/idle.inc.c"
@@ -209,7 +209,7 @@ NpcData N(NpcData_SpikeTop_01) = {
             .detectSize = { 240, 115 },
         }
     },
-    .settings = &N(NpcSettings_SpikeTop),
+    .settings = &N(NpcSettings_SpikeTop_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKE_TOP_DROPS,
     .animations = SPIKE_TOP_ANIMS,
@@ -232,7 +232,7 @@ NpcData N(NpcData_SpikeTop_02) = {
             .detectSize = { 240, 115 },
         }
     },
-    .settings = &N(NpcSettings_SpikeTop),
+    .settings = &N(NpcSettings_SpikeTop_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKE_TOP_DROPS,
     .animations = SPIKE_TOP_ANIMS,
@@ -255,7 +255,7 @@ NpcData N(NpcData_SpikeTop_03) = {
             .detectSize = { 180, 95 },
         }
     },
-    .settings = &N(NpcSettings_SpikeTop),
+    .settings = &N(NpcSettings_SpikeTop_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKE_TOP_DROPS,
     .animations = SPIKE_TOP_ANIMS,

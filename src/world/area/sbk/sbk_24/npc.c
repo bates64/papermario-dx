@@ -1,3 +1,3 @@
 #include "sbk_24.h"
 
-#include "world/common/enemy/Bandit/idle.inc.c"
+#include "world/common/enemy/Bandit/wander.inc.c"

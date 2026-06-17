@@ -3,7 +3,7 @@
 #include "world/common/npc/Kolorado/idle.inc.c"
 
 #include "world/common/enemy/PutridPiranha/idle.inc.c"
-#include "world/common/enemy/SpikeTop/idle.inc.c"
+#include "world/common/enemy/SpikeTop/wander.inc.c"
 
 LetterDelivery N(LetterDelivery_Kolorado1) = {
     .recipientID = NPC_Kolorado,
@@ -192,7 +192,7 @@ NpcData N(NpcData_SpikeTop) = {
             .detectSize = { 270, 130 },
         }
     },
-    .settings = &N(NpcSettings_SpikeTop),
+    .settings = &N(NpcSettings_SpikeTop_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SPIKE_TOP_DROPS,
     .animations = SPIKE_TOP_ANIMS,

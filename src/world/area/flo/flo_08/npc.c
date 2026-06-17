@@ -1,8 +1,8 @@
 #include "flo_08.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/AmazyDayzee/idle.inc.c"
-#include "world/common/enemy/CrazyDayzee/idle.inc.c"
+#include "world/common/enemy/AmazyDayzee/wander.inc.c"
+#include "world/common/enemy/CrazyDayzee/wander.inc.c"
 
 #include "world/common/npc/GateFlower/idle.inc.c"
 
@@ -196,7 +196,7 @@ NpcData N(NpcData_Dayzee_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee),
+    .settings = &N(NpcSettings_CrazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -219,7 +219,7 @@ NpcData N(NpcData_Dayzee_02) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee),
+    .settings = &N(NpcSettings_CrazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -242,7 +242,7 @@ NpcData N(NpcData_Dayzee_03) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee),
+    .settings = &N(NpcSettings_CrazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -265,7 +265,7 @@ NpcData N(NpcData_Dayzee_04) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee),
+    .settings = &N(NpcSettings_CrazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -288,7 +288,7 @@ NpcData N(NpcData_Dayzee_05) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee),
+    .settings = &N(NpcSettings_CrazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -311,7 +311,7 @@ NpcData N(NpcData_Dayzee_06) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee),
+    .settings = &N(NpcSettings_CrazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -334,7 +334,7 @@ NpcData N(NpcData_Dayzee_07) = {
             .detectSize = { 150 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee),
+    .settings = &N(NpcSettings_CrazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -379,7 +379,7 @@ NpcData N(NpcData_AmazyDayzee) = {
         }
     },
     .init = &N(EVS_NpcInit_AmazyDayzee),
-    .settings = &N(NpcSettings_AmazyDayzee),
+    .settings = &N(NpcSettings_AmazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = AMAZY_DAYZEE_DROPS,
     .animations = AMAZY_DAYZEE_ANIMS,

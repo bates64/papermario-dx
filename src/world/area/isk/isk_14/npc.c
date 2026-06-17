@@ -2,7 +2,7 @@
 #include "sprite.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/StoneChomp/idle.inc.c"
+#include "world/common/enemy/StoneChomp/wander.inc.c"
 
 typedef struct StoneChompAmbushIsk14 {
     /* 0x00 */ s32 imgfxIdx;
@@ -182,7 +182,7 @@ EvtScript N(EVS_NpcIdle_StoneChomp) = {
     Call(DisablePlayerInput, false)
     Call(StartBossBattle, SONG_SPECIAL_BATTLE)
     Wait(15)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_StoneChomp)))
+    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_StoneChomp_Wander)))
     Return
     End
 };
@@ -235,7 +235,7 @@ NpcData N(NpcData_StoneChomp) = {
     .init = &N(EVS_NpcInit_StoneChomp),
     .initVarCount = 1,
     .initVar = { .value = -780 },
-    .settings = &N(NpcSettings_StoneChomp),
+    .settings = &N(NpcSettings_StoneChomp_Wander),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = STONE_CHOMP_DROPS,
     .animations = STONE_CHOMP_ANIMS,

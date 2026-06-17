@@ -9,7 +9,7 @@
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel_01
 #define AI_SENTINEL_LAST_NPC  NPC_Sentinel_02
-#include "world/common/enemy/Sentinel/idle.inc.c"
+#include "world/common/enemy/Sentinel/wander.inc.c"
 
 NpcSettings N(NpcSettings_LastClubba) = {
     .height = 24,
@@ -301,7 +301,7 @@ NpcData N(NpcData_Sentinel_01) = {
             .detectSize = { 250, 55 },
         }
     },
-    .settings = &N(NpcSettings_Sentinel),
+    .settings = &N(NpcSettings_Sentinel_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
@@ -323,7 +323,7 @@ NpcData N(NpcData_Sentinel_02) = {
             .detectSize = { 250, 145 },
         }
     },
-    .settings = &N(NpcSettings_Sentinel),
+    .settings = &N(NpcSettings_Sentinel_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,

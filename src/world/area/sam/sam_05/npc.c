@@ -5,7 +5,7 @@
 #include "world/common/npc/Monstar/idle.inc.c"
 #include "world/common/npc/Twink/idle.inc.c"
 
-#include "world/common/enemy/Gulpit/idle.inc.c"
+#include "world/common/enemy/Gulpit/wander.inc.c"
 #include "world/common/enemy/FrostPiranha/idle.inc.c"
 
 INCLUDE_IMG("world/area/sam/sam_05/monstar.png", sam_05_monstar_png);
@@ -364,7 +364,7 @@ NpcData N(NpcData_Gulpit)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_Gulpit),
+        .settings = &N(NpcSettings_Gulpit_Wander),
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = GULPIT_DROPS,
         .animations = GULPIT_ANIMS,

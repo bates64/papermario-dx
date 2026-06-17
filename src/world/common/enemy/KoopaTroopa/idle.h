@@ -1,4 +1,4 @@
 #pragma once
 #include "base.h"
 
-extern NpcSettings N(NpcSettings_KoopaTroopa_Stationary);
+extern NpcSettings N(NpcSettings_KoopaTroopa);

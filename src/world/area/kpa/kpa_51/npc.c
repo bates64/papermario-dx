@@ -1,7 +1,7 @@
 
 #include "kpa_51.h"
 
-#include "world/common/enemy/Magikoopa/idle.inc.c"
+#include "world/common/enemy/Magikoopa/wander.inc.c"
 #include "world/common/enemy/Koopatrol/wander.inc.c"
 
 NpcData N(NpcData_Magikoopa_01)[] = {
@@ -21,7 +21,7 @@ NpcData N(NpcData_Magikoopa_01)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_Magikoopa),
+        .settings = &N(NpcSettings_Magikoopa_Wander),
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = MAGINO_DROPS,
         .animations = MAGIKOOPA_ANIMS,
@@ -48,7 +48,7 @@ NpcData N(NpcData_Magikoopa_02)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_Magikoopa),
+        .settings = &N(NpcSettings_Magikoopa_Wander),
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = MAGINO_DROPS,
         .animations = MAGIKOOPA_ANIMS,

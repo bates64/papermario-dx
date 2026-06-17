@@ -50,20 +50,20 @@ MobileAISettings N(AISettings_Koopa) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_KoopaTroopa) = {
+EvtScript N(EVS_NpcAI_KoopaTroopa_Wander) = {
     Call(BasicAI_Main, Ref(N(AISettings_Koopa)))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_KoopaTroopa) = {
+NpcSettings N(NpcSettings_KoopaTroopa_Wander) = {
     .height = 35,
     .radius = 24,
     .level = ACTOR_LEVEL_DARK_KOOPA,
-    .doAI = &N(EVS_NpcAI_KoopaTroopa),
+    .doAI = &N(EVS_NpcAI_KoopaTroopa_Wander),
 };
 
-MobileAISettings N(AISettings_ShyGuy) = {
+MobileAISettings N(AISettings_ShyGuy_Wander) = {
     .moveSpeed = 5.0f,
     .moveTime = 1,
     .alertRadius = 1.0f,
@@ -75,17 +75,17 @@ MobileAISettings N(AISettings_ShyGuy) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_ShyGuy) = {
-    Call(BasicAI_Main, Ref(N(AISettings_ShyGuy)))
+EvtScript N(EVS_NpcAI_ShyGuy_Wander) = {
+    Call(BasicAI_Main, Ref(N(AISettings_ShyGuy_Wander)))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_ShyGuy) = {
+NpcSettings N(NpcSettings_ShyGuy_Wander) = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
-    .doAI = &N(EVS_NpcAI_ShyGuy),
+    .doAI = &N(EVS_NpcAI_ShyGuy_Wander),
 };
 
 EvtScript N(EVS_SetCam_MeetingDoor) = {
@@ -334,7 +334,7 @@ EvtScript N(EVS_NpcIdle_ShyGuy) = {
 EvtScript N(EVS_Release_RedShyGuy) = {
     Set(LVar3, ANIM_ShyGuy_Red_Anim04)
     Set(LVar4, ANIM_ShyGuy_Red_Anim01)
-    Set(LVar5, Ref(N(EVS_NpcAI_ShyGuy)))
+    Set(LVar5, Ref(N(EVS_NpcAI_ShyGuy_Wander)))
     ExecWait(N(EVS_ReleaseFrom_RandomDoor))
     Return
     End
@@ -350,7 +350,7 @@ EvtScript N(EVS_Withdraw_RedShyGuy) = {
 EvtScript N(EVS_Release_RedShyGuy_Door_1) = {
     Set(LVar3, ANIM_ShyGuy_Red_Anim04)
     Set(LVar4, ANIM_ShyGuy_Red_Anim01)
-    Set(LVar5, Ref(N(EVS_NpcAI_ShyGuy)))
+    Set(LVar5, Ref(N(EVS_NpcAI_ShyGuy_Wander)))
     ExecWait(N(EVS_ReleaseFrom_Door_1))
     Return
     End
@@ -366,7 +366,7 @@ EvtScript N(EVS_Withdraw_RedShyGuy_Door_1) = {
 EvtScript N(EVS_Release_BlueShyGuy) = {
     Set(LVar3, ANIM_ShyGuy_Blue_Anim04)
     Set(LVar4, ANIM_ShyGuy_Blue_Anim01)
-    Set(LVar5, Ref(N(EVS_NpcAI_ShyGuy)))
+    Set(LVar5, Ref(N(EVS_NpcAI_ShyGuy_Wander)))
     ExecWait(N(EVS_ReleaseFrom_RandomDoor))
     Return
     End
@@ -382,7 +382,7 @@ EvtScript N(EVS_Withdraw_BlueShyGuy) = {
 EvtScript N(EVS_Release_BlueShyGuy_Door_2) = {
     Set(LVar3, ANIM_ShyGuy_Blue_Anim04)
     Set(LVar4, ANIM_ShyGuy_Blue_Anim01)
-    Set(LVar5, Ref(N(EVS_NpcAI_ShyGuy)))
+    Set(LVar5, Ref(N(EVS_NpcAI_ShyGuy_Wander)))
     ExecWait(N(EVS_ReleaseFrom_Door_2))
     Return
     End
@@ -398,7 +398,7 @@ EvtScript N(EVS_Withdraw_BlueShyGuy_Door_2) = {
 EvtScript N(EVS_Release_GreenShyGuy) = {
     Set(LVar3, ANIM_ShyGuy_Green_Anim04)
     Set(LVar4, ANIM_ShyGuy_Green_Anim01)
-    Set(LVar5, Ref(N(EVS_NpcAI_ShyGuy)))
+    Set(LVar5, Ref(N(EVS_NpcAI_ShyGuy_Wander)))
     ExecWait(N(EVS_ReleaseFrom_RandomDoor))
     Return
     End
@@ -419,7 +419,7 @@ EvtScript N(EVS_NpcIdle_KoopaTroopa) = {
 EvtScript N(EVS_Release_DarkTroopa) = {
     Set(LVar3, ANIM_KoopaTroopa_Dark_Run)
     Set(LVar4, ANIM_KoopaTroopa_Dark_Idle)
-    Set(LVar5, Ref(N(EVS_NpcAI_KoopaTroopa)))
+    Set(LVar5, Ref(N(EVS_NpcAI_KoopaTroopa_Wander)))
     ExecWait(N(EVS_ReleaseFrom_RandomDoor))
     Return
     End
@@ -435,7 +435,7 @@ EvtScript N(EVS_Withdraw_DarkTroopa) = {
 EvtScript N(EVS_Release_KoopaTroopa) = {
     Set(LVar3, ANIM_KoopaTroopa_Run)
     Set(LVar4, ANIM_KoopaTroopa_Idle)
-    Set(LVar5, Ref(N(EVS_NpcAI_KoopaTroopa)))
+    Set(LVar5, Ref(N(EVS_NpcAI_KoopaTroopa_Wander)))
     ExecWait(N(EVS_ReleaseFrom_RandomDoor))
     Return
     End
@@ -1298,7 +1298,7 @@ NpcData N(NpcData_AntiGuys)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_Door),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = QUIZ_DOOR_ENEMY_FLAGS,
         .drops = NO_DROPS,
         .animations = ANTI_GUY_ANIMS,
@@ -1308,7 +1308,7 @@ NpcData N(NpcData_AntiGuys)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_AntiGuy),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = QUIZ_ANTI_GUY_ENEMY_FLAGS,
         .drops = NO_DROPS,
         .animations = ANTI_GUY_ANIMS,
@@ -1318,7 +1318,7 @@ NpcData N(NpcData_AntiGuys)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_AntiGuy),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = QUIZ_ANTI_GUY_ENEMY_FLAGS,
         .drops = NO_DROPS,
         .animations = ANTI_GUY_ANIMS,
@@ -1328,7 +1328,7 @@ NpcData N(NpcData_AntiGuys)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_AntiGuy),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = QUIZ_ANTI_GUY_ENEMY_FLAGS,
         .drops = NO_DROPS,
         .animations = ANTI_GUY_ANIMS,
@@ -1481,7 +1481,7 @@ NpcData N(NpcData_RedShyGuys)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &N(NpcSettings_ShyGuy_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -1503,7 +1503,7 @@ NpcData N(NpcData_RedShyGuys)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &N(NpcSettings_ShyGuy_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -1525,7 +1525,7 @@ NpcData N(NpcData_RedShyGuys)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &N(NpcSettings_ShyGuy_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -1547,7 +1547,7 @@ NpcData N(NpcData_RedShyGuys)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &N(NpcSettings_ShyGuy_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -1569,7 +1569,7 @@ NpcData N(NpcData_RedShyGuys)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &N(NpcSettings_ShyGuy_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -1594,7 +1594,7 @@ NpcData N(NpcData_BlueShyGuys)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &N(NpcSettings_ShyGuy_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = BLUE_SHY_GUY_ANIMS,
@@ -1616,7 +1616,7 @@ NpcData N(NpcData_BlueShyGuys)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &N(NpcSettings_ShyGuy_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = BLUE_SHY_GUY_ANIMS,
@@ -1638,7 +1638,7 @@ NpcData N(NpcData_BlueShyGuys)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &N(NpcSettings_ShyGuy_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = BLUE_SHY_GUY_ANIMS,
@@ -1660,7 +1660,7 @@ NpcData N(NpcData_BlueShyGuys)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &N(NpcSettings_ShyGuy_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = BLUE_SHY_GUY_ANIMS,
@@ -1682,7 +1682,7 @@ NpcData N(NpcData_BlueShyGuys)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &N(NpcSettings_ShyGuy_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = BLUE_SHY_GUY_ANIMS,
@@ -1707,7 +1707,7 @@ NpcData N(NpcData_GreenShyGuys)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &N(NpcSettings_ShyGuy_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = GREEN_SHY_GUY_ANIMS,
@@ -1729,7 +1729,7 @@ NpcData N(NpcData_GreenShyGuys)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &N(NpcSettings_ShyGuy_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = GREEN_SHY_GUY_ANIMS,
@@ -1751,7 +1751,7 @@ NpcData N(NpcData_GreenShyGuys)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &N(NpcSettings_ShyGuy_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = GREEN_SHY_GUY_ANIMS,
@@ -1773,7 +1773,7 @@ NpcData N(NpcData_GreenShyGuys)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &N(NpcSettings_ShyGuy_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = GREEN_SHY_GUY_ANIMS,
@@ -1795,7 +1795,7 @@ NpcData N(NpcData_GreenShyGuys)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &N(NpcSettings_ShyGuy_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = GREEN_SHY_GUY_ANIMS,
@@ -1820,7 +1820,7 @@ NpcData N(NpcData_DarkTroopas)[] = {
             }
         },
         .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa),
+        .settings = &N(NpcSettings_KoopaTroopa_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = DARK_TROOPA_ANIMS,
@@ -1842,7 +1842,7 @@ NpcData N(NpcData_DarkTroopas)[] = {
             }
         },
         .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa),
+        .settings = &N(NpcSettings_KoopaTroopa_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = DARK_TROOPA_ANIMS,
@@ -1864,7 +1864,7 @@ NpcData N(NpcData_DarkTroopas)[] = {
             }
         },
         .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa),
+        .settings = &N(NpcSettings_KoopaTroopa_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = DARK_TROOPA_ANIMS,
@@ -1886,7 +1886,7 @@ NpcData N(NpcData_DarkTroopas)[] = {
             }
         },
         .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa),
+        .settings = &N(NpcSettings_KoopaTroopa_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = DARK_TROOPA_ANIMS,
@@ -1908,7 +1908,7 @@ NpcData N(NpcData_DarkTroopas)[] = {
             }
         },
         .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa),
+        .settings = &N(NpcSettings_KoopaTroopa_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = DARK_TROOPA_ANIMS,
@@ -1933,7 +1933,7 @@ NpcData N(NpcData_KoopaTroopas)[] = {
             }
         },
         .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa),
+        .settings = &N(NpcSettings_KoopaTroopa_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = KOOPA_TROOPA_ANIMS,
@@ -1955,7 +1955,7 @@ NpcData N(NpcData_KoopaTroopas)[] = {
             }
         },
         .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa),
+        .settings = &N(NpcSettings_KoopaTroopa_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = KOOPA_TROOPA_ANIMS,
@@ -1977,7 +1977,7 @@ NpcData N(NpcData_KoopaTroopas)[] = {
             }
         },
         .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa),
+        .settings = &N(NpcSettings_KoopaTroopa_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = KOOPA_TROOPA_ANIMS,
@@ -1999,7 +1999,7 @@ NpcData N(NpcData_KoopaTroopas)[] = {
             }
         },
         .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa),
+        .settings = &N(NpcSettings_KoopaTroopa_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = KOOPA_TROOPA_ANIMS,
@@ -2021,7 +2021,7 @@ NpcData N(NpcData_KoopaTroopas)[] = {
             }
         },
         .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa),
+        .settings = &N(NpcSettings_KoopaTroopa_Wander),
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = KOOPA_TROOPA_ANIMS,

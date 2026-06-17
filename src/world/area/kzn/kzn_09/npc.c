@@ -4,7 +4,7 @@
 #include "world/common/npc/Kolorado/idle.inc.c"
 
 #include "world/common/enemy/PutridPiranha/idle.inc.c"
-#include "world/common/enemy/SpikeTop/idle.inc.c"
+#include "world/common/enemy/SpikeTop/wander.inc.c"
 
 NpcSettings N(NpcSettings_Zipline) = {
     .height = 24,
@@ -267,7 +267,7 @@ NpcData N(NpcData_SpikeTop) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_SpikeTop),
+    .settings = &N(NpcSettings_SpikeTop_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKE_TOP_DROPS,
     .animations = SPIKE_TOP_ANIMS,

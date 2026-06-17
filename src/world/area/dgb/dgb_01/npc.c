@@ -2,7 +2,7 @@
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel_01
 #define AI_SENTINEL_LAST_NPC  NPC_Sentinel_04
-#include "world/common/enemy/Sentinel/idle.inc.c"
+#include "world/common/enemy/Sentinel/wander.inc.c"
 
 #include "world/common/enemy/TubbaBlubba/patrol.inc.c"
 #include "world/common/enemy/TubbaBlubba/idle.inc.c"
@@ -265,7 +265,7 @@ NpcData N(NpcData_Sentinel_01) = {
         }
     },
     .init = &N(EVS_NpcInit_Sentinel_01),
-    .settings = &N(NpcSettings_Sentinel),
+    .settings = &N(NpcSettings_Sentinel_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
@@ -288,7 +288,7 @@ NpcData N(NpcData_Sentinel_02) = {
         }
     },
     .init = &N(EVS_NpcInit_Sentinel_02),
-    .settings = &N(NpcSettings_Sentinel),
+    .settings = &N(NpcSettings_Sentinel_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
@@ -311,7 +311,7 @@ NpcData N(NpcData_Sentinel_03) = {
         }
     },
     .init = &N(EVS_NpcInit_Sentinel_03),
-    .settings = &N(NpcSettings_Sentinel),
+    .settings = &N(NpcSettings_Sentinel_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
@@ -334,7 +334,7 @@ NpcData N(NpcData_Sentinel_04) = {
         }
     },
     .init = &N(EVS_NpcInit_Sentinel_04),
-    .settings = &N(NpcSettings_Sentinel),
+    .settings = &N(NpcSettings_Sentinel_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,

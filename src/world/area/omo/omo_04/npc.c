@@ -1,6 +1,6 @@
 #include "omo_04.h"
 
-#include "world/common/enemy/SkyGuy/idle.inc.c"
+#include "world/common/enemy/SkyGuy/wander.inc.c"
 #include "world/common/enemy/ShyGuy/wander.inc.c"
 
 #include "world/common/enemy/Goomba/base.h"
@@ -147,7 +147,7 @@ NpcData N(NpcData_SkyGuy) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_SkyGuy),
+    .settings = &N(NpcSettings_SkyGuy_Wander),
     .flags = ENEMY_FLAG_FLYING,
     .drops = SKY_GUY_DROPS,
     .animations = SKY_GUY_ANIMS,

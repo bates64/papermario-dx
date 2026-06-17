@@ -5,7 +5,7 @@
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel
 #define AI_SENTINEL_LAST_NPC  NPC_Sentinel
-#include "world/common/enemy/Sentinel/idle.inc.c"
+#include "world/common/enemy/Sentinel/wander.inc.c"
 
 NpcData N(NpcData_Clubba_Wander)[] = {
     {
@@ -88,7 +88,7 @@ NpcData N(NpcData_Sentinel) = {
             .detectSize = { 250 },
         }
     },
-    .settings = &N(NpcSettings_Sentinel),
+    .settings = &N(NpcSettings_Sentinel_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,

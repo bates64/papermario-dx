@@ -1,8 +1,8 @@
 #include "kpa_03.h"
 
 #include "world/common/enemy/Koopatrol/wander.inc.c"
-#include "world/common/enemy/SpikeTop/idle.inc.c"
-#include "world/common/enemy/Magikoopa/idle.inc.c"
+#include "world/common/enemy/SpikeTop/wander.inc.c"
+#include "world/common/enemy/Magikoopa/wander.inc.c"
 
 AnimID N(LimitAnims_Koopatrol)[] = {
     ANIM_WorldKoopatrol_Anim01,
@@ -77,7 +77,7 @@ NpcData N(NpcData_BonyBeetle_01) = {
             .detectSize = { 300 },
         }
     },
-    .settings = &N(NpcSettings_BonyBeetle),
+    .settings = &N(NpcSettings_BonyBeetle_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BONY_BEETLE_DROPS_ALT,
     .animations = BONY_BEETLE_ANIMS,
@@ -100,7 +100,7 @@ NpcData N(NpcData_BonyBeetle_02) = {
             .detectSize = { 300 },
         }
     },
-    .settings = &N(NpcSettings_BonyBeetle),
+    .settings = &N(NpcSettings_BonyBeetle_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BONY_BEETLE_DROPS,
     .animations = BONY_BEETLE_ANIMS,
@@ -124,7 +124,7 @@ NpcData N(NpcData_Magikoopa_01)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_Magikoopa),
+        .settings = &N(NpcSettings_Magikoopa_Wander),
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = MAGINO_DROPS,
         .animations = MAGIKOOPA_ANIMS,

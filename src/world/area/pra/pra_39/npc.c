@@ -1,6 +1,6 @@
 #include "pra_39.h"
 
-#include "world/common/enemy/Swooper/idle.inc.c"
+#include "world/common/enemy/Swooper/wander.inc.c"
 #include "world/common/enemy/Duplighost/wander.inc.c"
 
 EvtScript N(EVS_NpcInit_Duplighost) = {

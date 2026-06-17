@@ -4,7 +4,7 @@
 #include "world/common/npc/Bootler/base.h"
 #include "world/common/npc/Bow/base.h"
 
-#include "world/common/enemy/HyperParagoomba/idle.inc.c"
+#include "world/common/enemy/HyperParagoomba/wander.inc.c"
 #include "world/common/enemy/TubbaBlubba/idle.inc.c"
 #include "world/common/npc/TubbasHeart/idle.inc.c"
 #include "world/common/npc/Boo/idle.inc.c"
@@ -704,7 +704,7 @@ NpcData N(NpcData_HyperParagoomba_01) = {
         }
     },
     .init = &N(EVS_NpcInit_HyperParagoomba),
-    .settings = &N(NpcSettings_HyperParagoomba),
+    .settings = &N(NpcSettings_HyperParagoomba_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = HYPER_PARAGOOMBA_DROPS,
     .animations = HYPER_PARAGOOMBA_ANIMS,
@@ -728,7 +728,7 @@ NpcData N(NpcData_HyperParagoomba_02) = {
         }
     },
     .init = &N(EVS_NpcInit_HyperParagoomba),
-    .settings = &N(NpcSettings_HyperParagoomba),
+    .settings = &N(NpcSettings_HyperParagoomba_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = HYPER_PARAGOOMBA_DROPS,
     .animations = HYPER_PARAGOOMBA_ANIMS,
@@ -752,7 +752,7 @@ NpcData N(NpcData_HyperParagoomba_03) = {
         }
     },
     .init = &N(EVS_NpcInit_HyperParagoomba),
-    .settings = &N(NpcSettings_HyperParagoomba),
+    .settings = &N(NpcSettings_HyperParagoomba_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = HYPER_PARAGOOMBA_DROPS,
     .animations = HYPER_PARAGOOMBA_ANIMS,

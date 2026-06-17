@@ -1,7 +1,7 @@
 #include "flo_23.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/Spiny/idle.inc.c"
+#include "world/common/enemy/Spiny/wander.inc.c"
 
 #include "world/common/npc/GateFlower/idle.inc.c"
 
@@ -195,7 +195,7 @@ NpcData N(NpcData_Spiny_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Spiny),
+    .settings = &N(NpcSettings_Spiny_Wander),
     .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPINY_DROPS,
     .animations = SPINY_ANIMS,
@@ -217,7 +217,7 @@ NpcData N(NpcData_Spiny_02) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Spiny),
+    .settings = &N(NpcSettings_Spiny_Wander),
     .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPINY_DROPS,
     .animations = SPINY_ANIMS,

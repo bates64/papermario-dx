@@ -1,6 +1,6 @@
 #include "flo_14.h"
 
-#include "world/common/enemy/Bzzap/idle.inc.c"
+#include "world/common/enemy/Bzzap/wander.inc.c"
 
 #include "world/common/npc/Bubulb/base.h"
 
@@ -101,7 +101,7 @@ NpcData N(NpcData_Bzzap) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Bzzap),
+    .settings = &N(NpcSettings_Bzzap_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = BZZAP_DROPS,
     .animations = BZZAP_ANIMS,

@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/HammerBros/wander.inc.c"
 #include "world/common/enemy/Koopatrol/wander.inc.c"
-#include "world/common/enemy/FlyingMagikoopa/idle.inc.c"
+#include "world/common/enemy/FlyingMagikoopa/wander.inc.c"
 
 NpcData N(NpcData_Koopatrol) = {
     .id = NPC_Koopatrol,
@@ -43,7 +43,7 @@ NpcData N(NpcData_FlyingMagikoopa)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_FlyingMagikoopa),
+        .settings = &N(NpcSettings_FlyingMagikoopa_Wander),
         .flags = ENEMY_FLAG_FLYING,
         .drops = FLYING_MAGINO_DROPS,
         .animations = FLYING_MAGIKOOPA_ANIMS,

@@ -3,7 +3,7 @@
 extern EvtScript N(EVS_RestoreMagicDoors);
 
 #include "world/common/enemy/KoopaTroopa/wander.inc.c"
-#include "world/common/enemy/Paratroopa/idle.inc.c"
+#include "world/common/enemy/Paratroopa/wander.inc.c"
 
 #include "world/common/util/GetDefeatedEnemyCount.inc.c"
 
@@ -77,7 +77,7 @@ NpcData N(NpcData_ParaTroopa_01) = {
         }
     },
     .init = &N(EVS_NpcInit_KoopaTroopa),
-    .settings = &N(NpcSettings_ParaTroopa),
+    .settings = &N(NpcSettings_ParaTroopa_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = PARATROOPA_DROPS,
     .animations = PARATROOPA_ANIMS,
@@ -100,7 +100,7 @@ NpcData N(NpcData_ParaTroopa_02) = {
         }
     },
     .init = &N(EVS_NpcInit_KoopaTroopa),
-    .settings = &N(NpcSettings_ParaTroopa),
+    .settings = &N(NpcSettings_ParaTroopa_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = PARATROOPA_DROPS,
     .animations = PARATROOPA_ANIMS,

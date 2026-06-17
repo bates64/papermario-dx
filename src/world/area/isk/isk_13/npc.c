@@ -2,7 +2,7 @@
 #include "sprite.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/StoneChomp/idle.inc.c"
+#include "world/common/enemy/StoneChomp/wander.inc.c"
 
 typedef struct StoneChompAmbushIsk13 {
     /* 0x00 */ s32 useBitingAnim;
@@ -315,7 +315,7 @@ NpcData N(NpcData_StoneChomp) = {
     .init = &N(EVS_NpcInit_StoneChomp),
     .initVarCount = 1,
     .initVar = { .value = -650 },
-    .settings = &N(NpcSettings_StoneChomp),
+    .settings = &N(NpcSettings_StoneChomp_Wander),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE,
     .drops = STONE_CHOMP_DROPS,
     .animations = STONE_CHOMP_ANIMS,

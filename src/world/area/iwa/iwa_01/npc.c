@@ -3,7 +3,7 @@
 #include "world/common/enemy/MontyMole/stone_thrower.inc.c"
 #include "world/common/enemy/MontyMole/ground_ambush.inc.c"
 #include "world/common/enemy/MontyMole/wall_ambush.inc.c"
-#include "world/common/enemy/Cleft/idle.inc.c"
+#include "world/common/enemy/Cleft/wander.inc.c"
 
 NpcData N(NpcData_MontyMole_WallAmbush)[] = {
     {
@@ -146,7 +146,7 @@ NpcData N(NpcData_Cleft) = {
             .detectSize = { 125 },
         }
     },
-    .settings = &N(NpcSettings_Cleft),
+    .settings = &N(NpcSettings_Cleft_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,

@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/MontyMole/ground_ambush.inc.c"
 #include "world/common/enemy/MontyMole/wall_ambush.inc.c"
-#include "world/common/enemy/Cleft/idle.inc.c"
+#include "world/common/enemy/Cleft/wander.inc.c"
 #include "world/common/npc/Bubulb/idle.inc.c"
 
 NpcData N(NpcData_Cleft_01) = {
@@ -21,7 +21,7 @@ NpcData N(NpcData_Cleft_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Cleft),
+    .settings = &N(NpcSettings_Cleft_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,
@@ -44,7 +44,7 @@ NpcData N(NpcData_Cleft_02) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Cleft),
+    .settings = &N(NpcSettings_Cleft_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,
@@ -67,7 +67,7 @@ NpcData N(NpcData_Cleft_03) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Cleft),
+    .settings = &N(NpcSettings_Cleft_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,

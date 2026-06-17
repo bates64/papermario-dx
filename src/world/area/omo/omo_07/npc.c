@@ -4,7 +4,7 @@
 
 #include "world/common/enemy/ShyGuy/wander.inc.c"
 #include "world/common/enemy/ShyGuy/patrol.inc.c"
-#include "world/common/enemy/SkyGuy/idle.inc.c"
+#include "world/common/enemy/SkyGuy/wander.inc.c"
 
 NpcSettings N(NpcSettings_Fuzzy) = {
     .height = 23,
@@ -496,7 +496,7 @@ NpcData N(NpcData_SkyGuy_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_SkyGuy),
+    .settings = &N(NpcSettings_SkyGuy_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SKY_GUY_DROPS,
     .animations = SKY_GUY_ANIMS,
@@ -519,7 +519,7 @@ NpcData N(NpcData_SkyGuy_02) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_SkyGuy),
+    .settings = &N(NpcSettings_SkyGuy_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SKY_GUY_DROPS,
     .animations = SKY_GUY_ANIMS,
