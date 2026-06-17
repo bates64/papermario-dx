@@ -1,6 +1,7 @@
 #include "flo_13.h"
 #include "sprite/player.h"
 #include "world/common/npc/Lakilester/base.h"
+#include "world/common/npc/Lakilulu/base.h"
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 
@@ -611,24 +612,7 @@ NpcData N(NpcData_Lakilulu) = {
     .settings = &N(NpcSettings_Lakilester),
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Lakilulu_Idle,
-        .walk   = ANIM_Lakilulu_Idle,
-        .run    = ANIM_Lakilulu_Idle,
-        .chase  = ANIM_Lakilulu_Idle,
-        .alert  = ANIM_Lakilulu_Idle,
-        .unused = ANIM_Lakilulu_Idle,
-        .death  = ANIM_Lakilulu_Idle,
-        .hit    = ANIM_Lakilulu_Idle,
-        .anim_8 = ANIM_Lakilulu_Idle,
-        .anim_9 = ANIM_Lakilulu_Idle,
-        .anim_A = ANIM_Lakilulu_Idle,
-        .anim_B = ANIM_Lakilulu_Idle,
-        .anim_C = ANIM_Lakilulu_Idle,
-        .anim_D = ANIM_Lakilulu_Idle,
-        .anim_E = ANIM_Lakilulu_Idle,
-        .anim_F = ANIM_Lakilulu_Idle,
-    },
+    .animations = LAKILULU_ANIMS,
     .tattle = MSG_NpcTattle_Lakilulu,
 };
 
@@ -640,24 +624,7 @@ NpcData N(NpcData_Lakilulu_Spiny) = {
     .settings = &N(NpcSettings_Lakilester),
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Lakilulu_Idle,
-        .walk   = ANIM_Lakilulu_Idle,
-        .run    = ANIM_Lakilulu_Idle,
-        .chase  = ANIM_Lakilulu_Idle,
-        .alert  = ANIM_Lakilulu_Idle,
-        .unused = ANIM_Lakilulu_Idle,
-        .death  = ANIM_Lakilulu_Idle,
-        .hit    = ANIM_Lakilulu_Idle,
-        .anim_8 = ANIM_Lakilulu_Idle,
-        .anim_9 = ANIM_Lakilulu_Idle,
-        .anim_A = ANIM_Lakilulu_Idle,
-        .anim_B = ANIM_Lakilulu_Idle,
-        .anim_C = ANIM_Lakilulu_Idle,
-        .anim_D = ANIM_Lakilulu_Idle,
-        .anim_E = ANIM_Lakilulu_Idle,
-        .anim_F = ANIM_Lakilulu_Idle,
-    },
+    .animations = LAKILULU_ANIMS,
 };
 
 NpcData N(NpcData_Lakitu_01) = {

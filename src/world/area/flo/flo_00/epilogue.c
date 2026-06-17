@@ -1,20 +1,8 @@
 #include "flo_00.h"
-#include "world/common/npc/Lakilester/base.h"
 
-NpcSettings N(NpcSettings_Lakilester_Epilogue) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
+#include "world/common/npc/Lakilester/idle.inc.c"
+#include "world/common/npc/Lakilulu/idle.inc.c"
 #include "world/common/npc/Parakarry/idle.inc.c"
-
-Vec3f N(D_80245E88_CA3DA8)[] = {
-    { 266.0f,  20.0f, 322.0f },
-    { 310.0f,  30.0f, 312.0f },
-    { 346.0f,  90.0f, 300.0f },
-    { 400.0f, 200.0f, 287.0f },
-};
 
 EvtScript N(EVS_Scene_Epilogue) = {
     Call(SetPlayerPos, -400, 0, 200)
@@ -82,7 +70,7 @@ NpcData N(NpcData_Lakilester_Epilogue)[] = {
         .pos = { 144.0f, 0.0f, 374.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Lakilester_Epilogue),
-        .settings = &N(NpcSettings_Lakilester_Epilogue),
+        .settings = &N(NpcSettings_Lakilester),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = LAKILESTER_ANIMS,
@@ -92,27 +80,10 @@ NpcData N(NpcData_Lakilester_Epilogue)[] = {
         .pos = { 198.0f, 0.0f, 363.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Lakilulu_Epilogue),
-        .settings = &N(NpcSettings_Lakilester_Epilogue),
+        .settings = &N(NpcSettings_Lakilulu),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Lakilulu_Idle,
-            .walk   = ANIM_Lakilulu_Idle,
-            .run    = ANIM_Lakilulu_Idle,
-            .chase  = ANIM_Lakilulu_Idle,
-            .alert  = ANIM_Lakilulu_Idle,
-            .unused = ANIM_Lakilulu_Idle,
-            .death  = ANIM_Lakilulu_Idle,
-            .hit    = ANIM_Lakilulu_Idle,
-            .anim_8 = ANIM_Lakilulu_Idle,
-            .anim_9 = ANIM_Lakilulu_Idle,
-            .anim_A = ANIM_Lakilulu_Idle,
-            .anim_B = ANIM_Lakilulu_Idle,
-            .anim_C = ANIM_Lakilulu_Idle,
-            .anim_D = ANIM_Lakilulu_Idle,
-            .anim_E = ANIM_Lakilulu_Idle,
-            .anim_F = ANIM_Lakilulu_Idle,
-        },
+        .animations = LAKILULU_ANIMS,
     },
     {
         .id = NPC_Parakarry_Epilogue,

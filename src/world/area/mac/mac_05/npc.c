@@ -9,6 +9,8 @@
 #include "world/common/npc/JrTroopa/idle.inc.c"
 #include "world/common/npc/Toad/patrol.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Chanterelle/idle.inc.c"
+#include "world/common/npc/Bartender/idle.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
@@ -2250,27 +2252,10 @@ NpcData N(NpcData_Bartender)[] = {
         .pos = { -85.0f, 0.0f, -520.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Bartender),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Bartender_Idle),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Bartender_Idle,
-            .walk   = ANIM_Bartender_Idle,
-            .run    = ANIM_Bartender_Idle,
-            .chase  = ANIM_Bartender_Idle,
-            .alert  = ANIM_Bartender_Idle,
-            .unused = ANIM_Bartender_Idle,
-            .death  = ANIM_Bartender_Idle,
-            .hit    = ANIM_Bartender_Idle,
-            .anim_8 = ANIM_Bartender_Idle,
-            .anim_9 = ANIM_Bartender_Idle,
-            .anim_A = ANIM_Bartender_Idle,
-            .anim_B = ANIM_Bartender_Idle,
-            .anim_C = ANIM_Bartender_Idle,
-            .anim_D = ANIM_Bartender_Idle,
-            .anim_E = ANIM_Bartender_Idle,
-            .anim_F = ANIM_Bartender_Idle,
-        },
+        .animations = BARTENDER_ANIMS,
         .tattle = MSG_NpcTattle_Club64_Bartender,
     },
     {
@@ -2289,27 +2274,10 @@ NpcData N(NpcData_Bartender)[] = {
         .pos = { 208.0f, 0.0f, -530.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Chanterelle),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Chanterelle_Idle),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Chanterelle_Idle,
-            .walk   = ANIM_Chanterelle_Still,
-            .run    = ANIM_Chanterelle_Still,
-            .chase  = ANIM_Chanterelle_Still,
-            .alert  = ANIM_Chanterelle_Still,
-            .unused = ANIM_Chanterelle_Still,
-            .death  = ANIM_Chanterelle_Still,
-            .hit    = ANIM_Chanterelle_Still,
-            .anim_8 = ANIM_Chanterelle_Still,
-            .anim_9 = ANIM_Chanterelle_Still,
-            .anim_A = ANIM_Chanterelle_Still,
-            .anim_B = ANIM_Chanterelle_Still,
-            .anim_C = ANIM_Chanterelle_Still,
-            .anim_D = ANIM_Chanterelle_Still,
-            .anim_E = ANIM_Chanterelle_Still,
-            .anim_F = ANIM_Chanterelle_Still,
-        },
+        .animations = CHANTERELLE_ANIMS,
         .tattle = MSG_NpcTattle_PopDiva_CantSing,
     },
     {

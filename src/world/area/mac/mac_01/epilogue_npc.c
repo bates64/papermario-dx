@@ -9,6 +9,7 @@
 #include "world/common/npc/Koopa/idle.inc.c"
 #include "world/common/npc/Bobomb/idle.inc.c"
 #include "world/common/npc/Dryite/idle.inc.c"
+#include "world/common/npc/Chanterelle/idle.inc.c"
 
 EvtScript N(EVS_NpcInteract_Kolorado) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_Outro_003C)
@@ -344,27 +345,10 @@ NpcData N(NpcData_Artists)[] = {
         .pos = { 260.0f, 20.0f, 560.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Chanterelle),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Chanterelle_Idle),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Chanterelle_Idle,
-            .walk   = ANIM_Chanterelle_Still,
-            .run    = ANIM_Chanterelle_Still,
-            .chase  = ANIM_Chanterelle_Still,
-            .alert  = ANIM_Chanterelle_Still,
-            .unused = ANIM_Chanterelle_Still,
-            .death  = ANIM_Chanterelle_Still,
-            .hit    = ANIM_Chanterelle_Still,
-            .anim_8 = ANIM_Chanterelle_Still,
-            .anim_9 = ANIM_Chanterelle_Still,
-            .anim_A = ANIM_Chanterelle_Still,
-            .anim_B = ANIM_Chanterelle_Still,
-            .anim_C = ANIM_Chanterelle_Still,
-            .anim_D = ANIM_Chanterelle_Still,
-            .anim_E = ANIM_Chanterelle_Still,
-            .anim_F = ANIM_Chanterelle_Still,
-        },
+        .animations = CHANTERELLE_ANIMS,
         .limitAnimations = N(LimitAnims_Chanterelle),
         .tattle = MSG_NpcTattle_PopDiva_CantSing,
     },

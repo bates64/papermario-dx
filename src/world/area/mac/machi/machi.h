@@ -11,11 +11,6 @@
 #include "mapfs/machi_shape.h"
 #include "mapfs/machi_hit.h"
 
-#include "sprite/npc/StarRod.h"
-#include "sprite/npc/Koopa.h"
-#include "sprite/npc/Kolorado.h"
-#include "sprite/npc/Goompa.h"
-#include "sprite/npc/Goombaria.h"
 #include "sprite/npc/GoombaKing.h"
 #include "sprite/npc/WorldMisstar.h"
 

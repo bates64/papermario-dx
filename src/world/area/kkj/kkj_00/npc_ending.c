@@ -20,6 +20,7 @@
 #include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/npc/Peach/idle.inc.c"
 #include "world/common/npc/Dummy/idle.inc.c"
+#include "world/common/npc/Lakilulu/idle.inc.c"
 
 EvtScript N(EVS_NpcInit_RussT) = {
     Call(SetNpcPos, NPC_SELF, -300, 0, 295)
@@ -505,27 +506,10 @@ NpcData N(NpcData_PartyFamily)[] = {
         .id = NPC_Lakilulu,
         .pos = { -365.0f, 0.0f, -60.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_Dummy),
+        .settings = &N(NpcSettings_Lakilulu),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Lakilulu_Idle,
-            .walk   = ANIM_Lakilulu_Idle,
-            .run    = ANIM_Lakilulu_Idle,
-            .chase  = ANIM_Lakilulu_Idle,
-            .alert  = ANIM_Lakilulu_Idle,
-            .unused = ANIM_Lakilulu_Idle,
-            .death  = ANIM_Lakilulu_Idle,
-            .hit    = ANIM_Lakilulu_Idle,
-            .anim_8 = ANIM_Lakilulu_Idle,
-            .anim_9 = ANIM_Lakilulu_Idle,
-            .anim_A = ANIM_Lakilulu_Idle,
-            .anim_B = ANIM_Lakilulu_Idle,
-            .anim_C = ANIM_Lakilulu_Idle,
-            .anim_D = ANIM_Lakilulu_Idle,
-            .anim_E = ANIM_Lakilulu_Idle,
-            .anim_F = ANIM_Lakilulu_Idle,
-        },
+        .animations = LAKILULU_ANIMS,
         .limitAnimations = N(LimitAnims_Lakilulu),
     },
     {

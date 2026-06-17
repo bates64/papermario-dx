@@ -1,13 +1,10 @@
 #include "flo_03.h"
 #include "sprite/player.h"
 #include "world/common/enemy/CrazyDayzee/base.h"
+#include "world/common/enemy/MontyMole/base.h"
 #include "world/common/npc/Petunia/idle.inc.c"
 
-NpcSettings N(NpcSettings_Dayzee) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/npc/Dummy/idle.inc.c"
 
 Vec3i N(BurrowLocations_Mole_01)[] = {
     { -100, 0, 210 },
@@ -788,7 +785,7 @@ NpcData N(NpcData_Dayzee) = {
     .pos = { -233.0f, 0.0f, -217.0f },
     .yaw = 90,
     .init = &N(EVS_NpcInit_Dayzee),
-    .settings = &N(NpcSettings_Dayzee),
+    .settings = &N(NpcSettings_Dummy),
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -799,27 +796,10 @@ NpcData N(NpcData_MontyMole_01) = {
     .pos = { -100.0f, 0.0f, 210.0f },
     .yaw = 90,
     .init = &N(EVS_NpcInit_MontyMole_01),
-    .settings = &N(NpcSettings_Dayzee),
+    .settings = &N(NpcSettings_Dummy),
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_MontyMole_Dark_Anim01,
-        .walk   = ANIM_MontyMole_Dark_Anim02,
-        .run    = ANIM_MontyMole_Dark_Anim03,
-        .chase  = ANIM_MontyMole_Dark_Anim03,
-        .alert  = ANIM_MontyMole_Dark_Anim01,
-        .unused = ANIM_MontyMole_Dark_Anim01,
-        .death  = ANIM_MontyMole_Dark_Anim05,
-        .hit    = ANIM_MontyMole_Dark_Anim05,
-        .anim_8 = ANIM_MontyMole_Dark_Anim00,
-        .anim_9 = ANIM_MontyMole_Dark_Anim00,
-        .anim_A = ANIM_MontyMole_Dark_Anim00,
-        .anim_B = ANIM_MontyMole_Dark_Anim00,
-        .anim_C = ANIM_MontyMole_Dark_Anim00,
-        .anim_D = ANIM_MontyMole_Dark_Anim00,
-        .anim_E = ANIM_MontyMole_Dark_Anim00,
-        .anim_F = ANIM_MontyMole_Dark_Anim00,
-    },
+    .animations = MONTY_MOLE_DARK_ANIMS,
 };
 
 NpcData N(NpcData_MontyMole_02) = {
@@ -827,27 +807,10 @@ NpcData N(NpcData_MontyMole_02) = {
     .pos = { -130.0f, 0.0f, 0.0f },
     .yaw = 90,
     .init = &N(EVS_NpcInit_MontyMole_02),
-    .settings = &N(NpcSettings_Dayzee),
+    .settings = &N(NpcSettings_Dummy),
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_MontyMole_Dark_Anim01,
-        .walk   = ANIM_MontyMole_Dark_Anim02,
-        .run    = ANIM_MontyMole_Dark_Anim03,
-        .chase  = ANIM_MontyMole_Dark_Anim03,
-        .alert  = ANIM_MontyMole_Dark_Anim01,
-        .unused = ANIM_MontyMole_Dark_Anim01,
-        .death  = ANIM_MontyMole_Dark_Anim05,
-        .hit    = ANIM_MontyMole_Dark_Anim05,
-        .anim_8 = ANIM_MontyMole_Dark_Anim00,
-        .anim_9 = ANIM_MontyMole_Dark_Anim00,
-        .anim_A = ANIM_MontyMole_Dark_Anim00,
-        .anim_B = ANIM_MontyMole_Dark_Anim00,
-        .anim_C = ANIM_MontyMole_Dark_Anim00,
-        .anim_D = ANIM_MontyMole_Dark_Anim00,
-        .anim_E = ANIM_MontyMole_Dark_Anim00,
-        .anim_F = ANIM_MontyMole_Dark_Anim00,
-    },
+    .animations = MONTY_MOLE_DARK_ANIMS,
 };
 
 NpcData N(NpcData_MontyMole_03) = {
@@ -855,27 +818,10 @@ NpcData N(NpcData_MontyMole_03) = {
     .pos = { 75.0f, 0.0f, 20.0f },
     .yaw = 270,
     .init = &N(EVS_NpcInit_MontyMole_03),
-    .settings = &N(NpcSettings_Dayzee),
+    .settings = &N(NpcSettings_Dummy),
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_MontyMole_Dark_Anim01,
-        .walk   = ANIM_MontyMole_Dark_Anim02,
-        .run    = ANIM_MontyMole_Dark_Anim03,
-        .chase  = ANIM_MontyMole_Dark_Anim03,
-        .alert  = ANIM_MontyMole_Dark_Anim01,
-        .unused = ANIM_MontyMole_Dark_Anim01,
-        .death  = ANIM_MontyMole_Dark_Anim05,
-        .hit    = ANIM_MontyMole_Dark_Anim05,
-        .anim_8 = ANIM_MontyMole_Dark_Anim00,
-        .anim_9 = ANIM_MontyMole_Dark_Anim00,
-        .anim_A = ANIM_MontyMole_Dark_Anim00,
-        .anim_B = ANIM_MontyMole_Dark_Anim00,
-        .anim_C = ANIM_MontyMole_Dark_Anim00,
-        .anim_D = ANIM_MontyMole_Dark_Anim00,
-        .anim_E = ANIM_MontyMole_Dark_Anim00,
-        .anim_F = ANIM_MontyMole_Dark_Anim00,
-    },
+    .animations = MONTY_MOLE_DARK_ANIMS,
 };
 
 NpcData N(NpcData_MontyMole_04) = {
@@ -883,27 +829,10 @@ NpcData N(NpcData_MontyMole_04) = {
     .pos = { 71.0f, 0.0f, 200.0f },
     .yaw = 270,
     .init = &N(EVS_NpcInit_MontyMole_04),
-    .settings = &N(NpcSettings_Dayzee),
+    .settings = &N(NpcSettings_Dummy),
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_MontyMole_Dark_Anim01,
-        .walk   = ANIM_MontyMole_Dark_Anim02,
-        .run    = ANIM_MontyMole_Dark_Anim03,
-        .chase  = ANIM_MontyMole_Dark_Anim03,
-        .alert  = ANIM_MontyMole_Dark_Anim01,
-        .unused = ANIM_MontyMole_Dark_Anim01,
-        .death  = ANIM_MontyMole_Dark_Anim05,
-        .hit    = ANIM_MontyMole_Dark_Anim05,
-        .anim_8 = ANIM_MontyMole_Dark_Anim00,
-        .anim_9 = ANIM_MontyMole_Dark_Anim00,
-        .anim_A = ANIM_MontyMole_Dark_Anim00,
-        .anim_B = ANIM_MontyMole_Dark_Anim00,
-        .anim_C = ANIM_MontyMole_Dark_Anim00,
-        .anim_D = ANIM_MontyMole_Dark_Anim00,
-        .anim_E = ANIM_MontyMole_Dark_Anim00,
-        .anim_F = ANIM_MontyMole_Dark_Anim00,
-    },
+    .animations = MONTY_MOLE_DARK_ANIMS,
 };
 
 NpcGroupList N(DefaultNPCs) = {

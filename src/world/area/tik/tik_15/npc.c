@@ -1,5 +1,6 @@
 #include "tik_15.h"
 #include "inventory.h"
+#include "world/common/npc/RipCheato/idle.inc.c"
 
 #define RIP_CHEATO_COST 64
 
@@ -7,12 +8,6 @@ enum {
     CHEATO_TYPE_STAR_PIECE  = 0,
     CHEATO_TYPE_BADGE       = 1,
     CHEATO_TYPE_CONSUMABLE  = 2,
-};
-
-NpcSettings N(NpcSettings_RipCheato) = {
-    .height = 30,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
 };
 
 s32 N(CheatoItems)[][2] = {
@@ -124,27 +119,10 @@ NpcData N(NpcData_RipCheato) = {
     .pos = { -80.0f, -10.0f, 0.0f },
     .yaw = 270,
     .init = &N(EVS_NpcInit_RipCheato),
-    .settings = &N(NpcSettings_RipCheato),
+    .settings = &N(NpcSettings_RipCheato_Idle),
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_RipCheato_Idle,
-        .walk   = ANIM_RipCheato_Idle,
-        .run    = ANIM_RipCheato_Idle,
-        .chase  = ANIM_RipCheato_Idle,
-        .alert  = ANIM_RipCheato_Idle,
-        .unused = ANIM_RipCheato_Idle,
-        .death  = ANIM_RipCheato_Idle,
-        .hit    = ANIM_RipCheato_Idle,
-        .anim_8 = ANIM_RipCheato_Idle,
-        .anim_9 = ANIM_RipCheato_Idle,
-        .anim_A = ANIM_RipCheato_Idle,
-        .anim_B = ANIM_RipCheato_Idle,
-        .anim_C = ANIM_RipCheato_Idle,
-        .anim_D = ANIM_RipCheato_Idle,
-        .anim_E = ANIM_RipCheato_Idle,
-        .anim_F = ANIM_RipCheato_Idle,
-    },
+    .animations = RIP_CHEATO_ANIMS,
     .tattle = MSG_NpcTattle_RipCheato,
 };
 

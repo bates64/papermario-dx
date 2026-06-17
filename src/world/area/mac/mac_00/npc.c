@@ -7,7 +7,6 @@
 #include "world/common/npc/Toad/patrol.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/npc/GoombaFamily/idle.inc.c"
-#include "world/common/npc/Luigi/idle.inc.c"
 #include "world/common/npc/Dummy/idle.inc.c"
 
 #include "world/common/enemy/ShyGuy/idle.inc.c"

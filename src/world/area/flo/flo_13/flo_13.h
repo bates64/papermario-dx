@@ -11,7 +11,6 @@
 #include "mapfs/flo_13_shape.h"
 #include "mapfs/flo_13_hit.h"
 
-#include "sprite/npc/Lakilulu.h"
 #include "sprite/npc/WorldLakilester.h"
 #include "sprite/npc/Lakitu.h"
 #include "sprite/npc/Spiny.h"

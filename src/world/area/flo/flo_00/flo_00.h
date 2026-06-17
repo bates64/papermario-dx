@@ -11,7 +11,6 @@
 #include "mapfs/flo_00_shape.h"
 #include "mapfs/flo_00_hit.h"
 
-#include "sprite/npc/Lakilulu.h"
 #include "sprite/npc/WorldLakilester.h"
 #include "sprite/npc/WorldParakarry.h"
 

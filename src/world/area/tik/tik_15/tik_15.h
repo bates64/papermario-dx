@@ -11,8 +11,6 @@
 #include "mapfs/tik_15_shape.h"
 #include "mapfs/tik_15_hit.h"
 
-#include "sprite/npc/RipCheato.h"
-
 enum {
     NPC_RipCheato               = 1,
 };

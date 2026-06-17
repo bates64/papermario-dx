@@ -23,9 +23,7 @@
 #include "sprite/npc/JrTroopa.h"
 #include "sprite/npc/Fishmael.h"
 #include "sprite/npc/Toad.h"
-#include "sprite/npc/Bartender.h"
 #include "sprite/npc/Musician.h"
-#include "sprite/npc/Chanterelle.h"
 
 enum {
     NPC_Whale                   = 0,

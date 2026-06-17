@@ -33,7 +33,6 @@
 #include "sprite/npc/Merlow.h"
 #include "sprite/npc/WorldMerlee.h"
 #include "sprite/npc/Merle.h"
-#include "sprite/npc/Lakilulu.h"
 #include "sprite/npc/Bootler.h"
 #include "sprite/npc/Goompa.h"
 #include "sprite/npc/Goombaria.h"

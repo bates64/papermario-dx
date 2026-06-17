@@ -10,6 +10,7 @@ NpcSettings N(NpcSettings_Dummy) = {
 #include "world/common/npc/Bubulb/patrol.inc.c"
 #include "world/common/npc/Tolielup/idle.inc.c"
 #include "world/common/npc/StarSpirit/idle.inc.c"
+#include "world/common/npc/Lakilulu/idle.inc.c"
 
 API_CALLABLE(N(UpgradeStarPowerCh6)) {
     set_max_star_power(6);
@@ -761,27 +762,10 @@ NpcData N(NpcData_Lakilulu) = {
     .pos = { 198.0f, 0.0f, 363.0f },
     .yaw = 270,
     .init = &N(EVS_NpcInit_Lakilulu),
-    .settings = &N(NpcSettings_Dummy),
+    .settings = &N(NpcSettings_Lakilulu),
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Lakilulu_Idle,
-        .walk   = ANIM_Lakilulu_Idle,
-        .run    = ANIM_Lakilulu_Idle,
-        .chase  = ANIM_Lakilulu_Idle,
-        .alert  = ANIM_Lakilulu_Idle,
-        .unused = ANIM_Lakilulu_Idle,
-        .death  = ANIM_Lakilulu_Idle,
-        .hit    = ANIM_Lakilulu_Idle,
-        .anim_8 = ANIM_Lakilulu_Idle,
-        .anim_9 = ANIM_Lakilulu_Idle,
-        .anim_A = ANIM_Lakilulu_Idle,
-        .anim_B = ANIM_Lakilulu_Idle,
-        .anim_C = ANIM_Lakilulu_Idle,
-        .anim_D = ANIM_Lakilulu_Idle,
-        .anim_E = ANIM_Lakilulu_Idle,
-        .anim_F = ANIM_Lakilulu_Idle,
-    },
+    .animations = LAKILULU_ANIMS,
     .tattle = MSG_NpcTattle_Lakilulu,
 };
 

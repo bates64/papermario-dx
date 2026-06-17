@@ -1,8 +1,6 @@
 #include "mac_00.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Toadette/base.h"
-
 LetterDelivery N(LetterDelivery_MissT) = {
     .recipientID = NPC_MissT,
     .recipientTalk = ANIM_Toadette_Orange_Talk,

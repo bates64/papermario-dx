@@ -54,3 +54,23 @@
     .anim_E = ANIM_MontyMole_Anim00, \
     .anim_F = ANIM_MontyMole_Anim00, \
 }
+
+#define MONTY_MOLE_DARK_ANIMS \
+{ \
+    .idle   = ANIM_MontyMole_Dark_Anim01, \
+    .walk   = ANIM_MontyMole_Dark_Anim02, \
+    .run    = ANIM_MontyMole_Dark_Anim03, \
+    .chase  = ANIM_MontyMole_Dark_Anim03, \
+    .alert  = ANIM_MontyMole_Dark_Anim01, \
+    .unused = ANIM_MontyMole_Dark_Anim01, \
+    .death  = ANIM_MontyMole_Dark_Anim05, \
+    .hit    = ANIM_MontyMole_Dark_Anim05, \
+    .anim_8 = ANIM_MontyMole_Dark_Anim00, \
+    .anim_9 = ANIM_MontyMole_Dark_Anim00, \
+    .anim_A = ANIM_MontyMole_Dark_Anim00, \
+    .anim_B = ANIM_MontyMole_Dark_Anim00, \
+    .anim_C = ANIM_MontyMole_Dark_Anim00, \
+    .anim_D = ANIM_MontyMole_Dark_Anim00, \
+    .anim_E = ANIM_MontyMole_Dark_Anim00, \
+    .anim_F = ANIM_MontyMole_Dark_Anim00, \
+}
