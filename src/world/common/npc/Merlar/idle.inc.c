@@ -1,6 +1,7 @@
+#pragma once
 #include "idle.h"
 
-API_CALLABLE(N(AddMerlarHoverMotion)) {
+API_CALLABLE(N(AddMerlarHoverMotion_Idle)) {
     Npc* npc;
 
     if (isInitialCall) {
@@ -13,25 +14,25 @@ API_CALLABLE(N(AddMerlarHoverMotion)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_NpcCreate_Merlar) = {
+EvtScript N(EVS_NpcCreate_Merlar_Idle) = {
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Merlar) = {
+NpcSettings N(NpcSettings_Merlar_Idle) = {
     .height = 60,
     .radius = 60,
     .level = ACTOR_LEVEL_NONE,
-    .onCreate = &N(EVS_NpcCreate_Merlar),
+    .onCreate = &N(EVS_NpcCreate_Merlar_Idle),
 };
 
-EvtScript N(EVS_NpcAux_Merlar) = {
+EvtScript N(EVS_NpcAux_Merlar_Idle) = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Merlar) = {
-    Call(N(AddMerlarHoverMotion))
+EvtScript N(EVS_NpcIdle_Merlar_Idle) = {
+    Call(N(AddMerlarHoverMotion_Idle))
     Return
     End
 };

@@ -1,6 +1,7 @@
+#pragma once
 #include "idle.h"
 
-NpcSettings N(NpcSettings_Yakkey) = {
+NpcSettings N(NpcSettings_Yakkey_Idle) = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_CLUBBA,

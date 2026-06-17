@@ -1,4 +1,4 @@
 #pragma once
 #include "base.h"
 
-extern NpcSettings N(NpcSettings_Whale);
+extern NpcSettings N(NpcSettings_Whale_Idle);

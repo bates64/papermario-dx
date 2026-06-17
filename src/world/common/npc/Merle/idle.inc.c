@@ -1,3 +1,4 @@
+#pragma once
 #include "idle.h"
 
 NpcSettings N(NpcSettings_Merle_Idle) = {

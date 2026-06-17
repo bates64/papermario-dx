@@ -1,19 +1,20 @@
+#pragma once
 #include "idle.h"
 
-EvtScript N(EVS_NpcCreate_TubbasHeart) = {
+EvtScript N(EVS_NpcCreate_TubbasHeart_Idle) = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_TubbasHeart) = {
+EvtScript N(EVS_NpcDefeat_TubbasHeart_Idle) = {
     Return
     End
 };
 
-NpcSettings N(NpcSettings_TubbasHeart) = {
+NpcSettings N(NpcSettings_TubbasHeart_Idle) = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_CLUBBA,
-    .onCreate = &N(EVS_NpcCreate_TubbasHeart),
-    .onDefeat = &N(EVS_NpcDefeat_TubbasHeart),
+    .onCreate = &N(EVS_NpcCreate_TubbasHeart_Idle),
+    .onDefeat = &N(EVS_NpcDefeat_TubbasHeart_Idle),
 };

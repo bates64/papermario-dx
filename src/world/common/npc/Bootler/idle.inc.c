@@ -1,6 +1,7 @@
+#pragma once
 #include "idle.h"
 
-NpcSettings N(NpcSettings_Bootler) = {
+NpcSettings N(NpcSettings_Bootler_Idle) = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,

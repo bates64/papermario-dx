@@ -1,6 +1,7 @@
+#pragma once
 #include "idle.h"
 
-NpcSettings N(NpcSettings_GourmetGuy) = {
+NpcSettings N(NpcSettings_GourmetGuy_Idle) = {
     .height = 68,
     .radius = 60,
     .level = ACTOR_LEVEL_NONE,

@@ -1,4 +1,4 @@
 #pragma once
 #include "base.h"
 
-extern NpcSettings N(NpcSettings_Penguin);
+extern NpcSettings N(NpcSettings_Penguin_Idle);

@@ -1,4 +1,4 @@
 #pragma once
 #include "base.h"
 
-extern NpcSettings N(NpcSettings_Bootler);
+extern NpcSettings N(NpcSettings_Bootler_Idle);

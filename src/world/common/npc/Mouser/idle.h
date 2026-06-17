@@ -1,4 +1,4 @@
 #pragma once
 #include "base.h"
 
-extern NpcSettings N(NpcSettings_Mouser);
+extern NpcSettings N(NpcSettings_Mouser_Idle);

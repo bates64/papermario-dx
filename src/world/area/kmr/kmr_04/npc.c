@@ -259,13 +259,13 @@ NpcData N(NpcData_JrTroopa) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
     .init = &N(EVS_NpcInit_JrTroopa),
-    .settings = &N(NpcSettings_JrTroopa),
+    .settings = &N(NpcSettings_JrTroopa_Idle),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = JR_TROOPA_ANIMS,
 };
 
-NpcData N(NpcData_GoombaFamily) = {
+NpcData N(NpcData_Goompa) = {
     .id = NPC_Goompa,
     .pos = { -58.0f, 0.0f, 130.0f },
     .yaw = 0,
@@ -278,6 +278,6 @@ NpcData N(NpcData_GoombaFamily) = {
 
 NpcGroupList N(DefaultNPCs) = {
     NPC_GROUP(N(NpcData_JrTroopa), BTL_KMR_3_FORMATION_02),
-    NPC_GROUP(N(NpcData_GoombaFamily)),
+    NPC_GROUP(N(NpcData_Goompa)),
     {}
 };

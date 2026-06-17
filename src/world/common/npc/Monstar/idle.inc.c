@@ -1,6 +1,7 @@
+#pragma once
 #include "idle.h"
 
-NpcSettings N(NpcSettings_Monstar) = {
+NpcSettings N(NpcSettings_Monstar_Idle) = {
     .height = 150,
     .radius = 150,
     .level = ACTOR_LEVEL_NONE,

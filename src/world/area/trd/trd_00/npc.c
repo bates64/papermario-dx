@@ -337,7 +337,7 @@ NpcData N(NpcData_Eldstar) = {
         }
     },
     .init = &N(EVS_NpcInit_Eldstar),
-    .settings = &N(NpcSettings_StarSpirit),
+    .settings = &N(NpcSettings_StarSpirit_Idle),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = ELDSTAR_ANIMS,

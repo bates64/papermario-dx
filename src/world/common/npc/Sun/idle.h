@@ -1,4 +1,4 @@
 #pragma once
 #include "base.h"
 
-extern NpcSettings N(NpcSettings_Sun);
+extern NpcSettings N(NpcSettings_Sun_Idle);

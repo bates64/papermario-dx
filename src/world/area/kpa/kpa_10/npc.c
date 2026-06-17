@@ -12,7 +12,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { 845.0f, 30.0f, -285.0f },
 #endif
         .yaw = 0,
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad_Idle),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -26,7 +26,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { 872.0f, 30.0f, -315.0f },
 #endif
         .yaw = 0,
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad_Idle),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
@@ -40,7 +40,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { 900.0f, 30.0f, -285.0f },
 #endif
         .yaw = 0,
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad_Idle),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_YELLOW_ANIMS,
