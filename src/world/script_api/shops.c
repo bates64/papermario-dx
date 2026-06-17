@@ -261,7 +261,7 @@ API_CALLABLE(ShowShopPurchaseDialog) {
     ItemData* shopItem = &gItemTable[shopInventory->itemID];
     s32 bpCost;
 
-    static MessagePrintState* D_80286528;
+    static MessagePrintState* ShopChoicePrintState;
     static Evt* wShopBuyCallbackScript;
     static s32 wShopSelectedItem;
     static s32 wShopBuyResult;
@@ -292,12 +292,12 @@ API_CALLABLE(ShowShopPurchaseDialog) {
             if (!does_script_exist(script->functionTemp[1])) {
                 script->functionTemp[0] = PURCHASE_DIALOG_STATE_WAIT_FOR_SPEECH;
                 script->functionTemp[2] = false;
-                D_80286528 = msg_get_printer_for_msg(MSG_Choice_0001, &script->functionTemp[2]);
+                ShopChoicePrintState = msg_get_printer_for_msg(MSG_Choice_0001, &script->functionTemp[2]);
             }
             break;
         case PURCHASE_DIALOG_STATE_WAIT_FOR_SPEECH:
             if (script->functionTemp[2] == true) {
-                if (D_80286528->curOption == 0) {
+                if (ShopChoicePrintState->curOption == 0) {
                     if (gPlayerData.coins < shopInventory->price) {
                         script->functionTemp[1] = shop_owner_continue_speech(SHOP_MSG_NOT_ENOUGH_COINS);
                         script->functionTemp[0] = PURCHASE_DIALOG_STATE_NOT_ENOUGH_COINS;

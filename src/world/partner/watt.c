@@ -17,7 +17,6 @@ BSS s32 N(AbilityState);
 BSS b32 N(D_802BE308);
 BSS b32 N(IsPlayerHolding);
 BSS EffectInstance* N(StaticEffect);
-BSS s32 N(D_802BE314); // unused (padding?)
 
 enum {
     // next two states lock input for a few frames, during which the ability can be canceled

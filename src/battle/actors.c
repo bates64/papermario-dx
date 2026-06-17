@@ -27,7 +27,7 @@ CelebrationAnimOptions bPlayerCelebrations = {
 
 #include "battle/actor_types.inc.c"
 
-u32 bMarioIdleAnims[] = {
+s32 bMarioIdleAnims[] = {
     STATUS_KEY_NORMAL,            ANIM_Mario1_Walk,
     STATUS_KEY_DANGER,            ANIM_Mario1_TiredIdle,
     STATUS_KEY_STONE,             ANIM_MarioB3_Petrified,

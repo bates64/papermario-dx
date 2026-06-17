@@ -17,7 +17,6 @@ BSS s32 N(MoveSoundsTime);
 BSS s32 N(MovePitchAdjustment);
 BSS s32 N(MountingDeltaY);
 BSS f32 N(CurrentGroundPitch);
-BSS s32 N(D_802BFF2C); // unused (padding?)
 
 enum {
     RIDE_STATE_BEGIN            = 40,

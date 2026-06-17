@@ -50,14 +50,13 @@ void btl_set_player_idle_anims(void) {
 }
 
 API_CALLABLE(IsPlayerImmobile) {
-    BattleStatus* battleStatus = &gBattleStatus;
-    Actor* playerActor = battleStatus->playerActor;
+    Actor* playerActor = gBattleStatus.playerActor;
     s32 isImmobile = playerActor->debuff == STATUS_KEY_UNUSED
-                     || playerActor->debuff == STATUS_KEY_DIZZY
-                     || playerActor->debuff == STATUS_KEY_PARALYZE
-                     || playerActor->debuff == STATUS_KEY_SLEEP
-                     || playerActor->debuff == STATUS_KEY_FROZEN
-                     || playerActor->debuff == STATUS_KEY_STOP;
+        || playerActor->debuff == STATUS_KEY_DIZZY
+        || playerActor->debuff == STATUS_KEY_PARALYZE
+        || playerActor->debuff == STATUS_KEY_SLEEP
+        || playerActor->debuff == STATUS_KEY_FROZEN
+        || playerActor->debuff == STATUS_KEY_STOP;
 
     if (playerActor->stoneStatus == STATUS_KEY_STONE) {
         isImmobile = true;

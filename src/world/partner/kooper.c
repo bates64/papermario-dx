@@ -22,7 +22,6 @@ BSS s32 N(HasItem);
 BSS f32 N(ShellTossPosX);
 BSS f32 N(ShellTossPosY);
 BSS f32 N(ShellTossPosZ);
-BSS s32 D_802BEC7C; // padding?
 
 enum {
     SHELL_TOSS_HITBOX_DISABLED      = 0,

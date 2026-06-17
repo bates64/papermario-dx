@@ -911,7 +911,7 @@ API_CALLABLE(N(CleanupGame)) {
     Enemy* enemy = get_enemy(SCOREKEEPER_ENEMY_IDX);
     SmashGameData* data = enemy->varTablePtr[SMASH_DATA_VAR_IDX];
     Npc* npc;
-    u32 screenX, screenY,screenZ;
+    s32 screenX, screenY, screenZ;
     EffectInstance* writeback;
     s32 i;
 
@@ -927,7 +927,7 @@ API_CALLABLE(N(CleanupGame)) {
             }
 
             get_screen_coords(CAM_DEFAULT, npc->pos.x, npc->pos.y, npc->pos.z, &screenX, &screenY, &screenZ);
-            if (screenX - 1 < SCREEN_WIDTH - 1) {
+            if (screenX >= 0 && screenX < SCREEN_WIDTH) {
                 fx_walking_dust(1, npc->pos.x, npc->pos.y, npc->pos.z, 0, 0);
                 sfx_play_sound(SOUND_KOOPER_SHELL_KICK);
             }

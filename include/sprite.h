@@ -33,12 +33,6 @@ enum {
     PLAYER_SPRITE_AUX2      = 2,
 };
 
-//TODO this is just a boolean isNpcSprite, using a temp enum for documenting
-enum {
-    SPRITE_MODE_PLAYER  = 0,
-    SPRITE_MODE_NPC     = 1,
-};
-
 typedef struct SpriteComponent {
     /* 0x00 */ s32 initialized;
     /* 0x04 */ s32 properties; ///< AABBCCCC : AA = unused?, BB = parent, CCCC = notify value

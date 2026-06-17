@@ -76,6 +76,8 @@ extern "C" {
 #define OVERRIDE_MOVEMENT_SPEED(speed) ((s32)(speed * 32767))
 #define NO_OVERRIDE_MOVEMENT_SPEED OVERRIDE_MOVEMENT_SPEED(-1.0f)
 
+#define ANIM_LIST_END -1
+
 typedef struct QuizRequirement {
     s32 requiredStoryProgress;
     s32 numQuestionsUnlocked;

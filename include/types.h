@@ -8,7 +8,4 @@
 /// Linker symbol address, as in `ld_addrs.h`.
 typedef u8 Addr[];
 
-/// Terminates an extraAnimationList
-#define ANIM_LIST_END -1
-
 #endif

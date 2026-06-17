@@ -1,6 +1,9 @@
 #include "hos_04.h"
 #include "nu/nusys.h"
 
+#include "world/common/npc/StarSpirit/idle.inc.c"
+#include "world/common/npc/Twink/base.h"
+
 Vec3f N(TwinkFlightPath)[] = {
     { -669.0,    98.0,  -34.0 },
     { -669.0,    68.0,  -34.0 },
@@ -11,8 +14,6 @@ Vec3f N(TwinkFlightPath)[] = {
     {  205.0,   111.0,    0.0 },
     {  305.0,   101.0,    0.0 },
 };
-
-s32 N(Unused) = 0;
 
 CameraControlSettings N(CamSettings_PreHeist) = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
@@ -111,24 +112,6 @@ API_CALLABLE(N(AnimateViewPitchPostHeist)) {
     return ApiStatus_BLOCK;
 }
 
-extern EvtScript N(EVS_ControlTwink);
-
-EvtScript N(EVS_Intro_PostHeist) = {
-    Call(DisablePlayerInput, true)
-    Call(DisablePlayerPhysics, true)
-    Call(SetCamLeadPlayer, CAM_DEFAULT, false)
-    Call(N(SetCamVfov), CAM_DEFAULT, 75)
-    Call(SetPanTarget, CAM_DEFAULT, 0, 30, 0)
-    Call(LoadSettings, CAM_DEFAULT, Ref(N(CamSettings_PostHeist)))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Thread
-        Exec(N(EVS_ControlTwink))
-    EndThread
-    Return
-    End
-};
-
 EvtScript N(EVS_ControlTwink) = {
     Call(SetNpcAnimation, NPC_Twink, ANIM_Twink_Back)
     Call(SetNpcYaw, NPC_Twink, 180)
@@ -171,6 +154,22 @@ EvtScript N(EVS_ControlTwink) = {
     End
 };
 
+EvtScript N(EVS_Intro_PostHeist) = {
+    Call(DisablePlayerInput, true)
+    Call(DisablePlayerPhysics, true)
+    Call(SetCamLeadPlayer, CAM_DEFAULT, false)
+    Call(N(SetCamVfov), CAM_DEFAULT, 75)
+    Call(SetPanTarget, CAM_DEFAULT, 0, 30, 0)
+    Call(LoadSettings, CAM_DEFAULT, Ref(N(CamSettings_PostHeist)))
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+    Thread
+        Exec(N(EVS_ControlTwink))
+    EndThread
+    Return
+    End
+};
+
 // establishing shot of the star shrine; camera slowly moves along the path toward it
 EvtScript N(EVS_Intro_PreHeist_Unused) = {
     Call(DisablePlayerInput, true)
@@ -192,12 +191,6 @@ EvtScript N(EVS_Intro_PreHeist_Unused) = {
     End
 };
 
-// TODO: this has moved to starship.c in JP. This is a possible indication that
-// file spitting in other versions might be off.
-#if !VERSION_JP
-#include "world/common/npc/StarSpirit/idle.inc.c"
-#include "world/common/npc/Twink/base.h"
-
 EvtScript N(EVS_NpcInit_Twink) = {
     Return
     End
@@ -218,4 +211,3 @@ NpcGroupList N(DefaultNPCs) = {
     NPC_GROUP(N(NpcData_Twink)),
     {}
 };
-#endif

@@ -11,12 +11,8 @@
 #include "sprite/npc/WorldClubba.h"
 #include "sprite/npc/WorldKoopatrol.h"
 #include "sprite/npc/HammerBros.h"
-#ifdef SHIFT
+
 extern Addr world_action_CLASS_VRAM;
-#define PLAYER_ACTION_VRAM_DEF world_action_CLASS_VRAM
-#else
-#define PLAYER_ACTION_VRAM_DEF (void*) 0x802B6000
-#endif
 
 void* LastLoadedActionOffset;
 s32 PeachDisguiseReapplyDelay;
@@ -172,7 +168,7 @@ void phys_update_action_state(void) {
         if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
             if (action->dmaStart != nullptr && action->dmaStart != LastLoadedActionOffset) {
                 LastLoadedActionOffset = action->dmaStart;
-                dma_copy(action->dmaStart, action->dmaEnd, PLAYER_ACTION_VRAM_DEF);
+                dma_copy(action->dmaStart, action->dmaEnd, world_action_CLASS_VRAM);
             }
         }
         action->update();
@@ -193,7 +189,7 @@ void phys_peach_update(void) {
             if (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED) {
                 if (action->dmaStart != nullptr && action->dmaStart != LastLoadedActionOffset) {
                     LastLoadedActionOffset = action->dmaStart;
-                    dma_copy(action->dmaStart, action->dmaEnd, PLAYER_ACTION_VRAM_DEF);
+                    dma_copy(action->dmaStart, action->dmaEnd, world_action_CLASS_VRAM);
                 }
             }
             action->update();

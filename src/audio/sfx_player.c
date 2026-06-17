@@ -459,7 +459,7 @@ f32 AlTuneScaling[] = {
     0.00014023f, 0.00013024f, 0.00012096f, 0.00011234f, 0.00010433f, 0.00009689f, 0.00008999f, 0.00008358f
 };
 
-extern s32* AU_FX_CUSTOM_PARAMS[0]; // points to 80078290
+extern s32* AU_FX_CUSTOM_PARAMS[0];
 
 void (*CurrentSefCmdHandler)(SoundManager*, SoundPlayer*);
 

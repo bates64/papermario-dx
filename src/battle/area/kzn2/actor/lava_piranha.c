@@ -132,7 +132,7 @@ extern StaticAnimatorNode* N(anim1)[];
 extern StaticAnimatorNode* N(AnimModel_MainHeadVine)[];
 extern StaticAnimatorNode* N(AnimModel_SideHeadVine)[];
 extern StaticAnimatorNode* N(AnimModel_ExtraVine)[];
-extern AnimScript N(anim1_8021A364);
+extern AnimScript N(anim1_AS_ShatterGround);
 
 extern s32 A(lava_bud_FieryAnims)[];
 extern s32 A(lava_bud_FieryDefense)[];
@@ -289,7 +289,6 @@ enum {
     VINE_RENDER_STATE_OK        = 1,
 };
 
-#ifdef SHIFT
 extern Addr Vine3Base;
 extern Addr Vine2Base;
 extern Addr Vine1Base;
@@ -298,12 +297,6 @@ extern Addr Vine0Base;
 #define VINE_1_BASE (s32) Vine1Base
 #define VINE_2_BASE (s32) Vine2Base
 #define VINE_3_BASE (s32) Vine3Base
-#else
-#define VINE_0_BASE 0x80234000
-#define VINE_1_BASE 0x80231000
-#define VINE_2_BASE 0x8022E000
-#define VINE_3_BASE 0x8022C000
-#endif
 
 BSS LavaPiranhaVine N(VineData)[NUM_VINES];
 BSS s32 N(VineRenderState);
@@ -1645,7 +1638,7 @@ EvtScript N(EVS_Death) = {
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LAVA_PIRANHA_EMERGE)
         PlayEffect(EFFECT_EMBERS, 0, 100, 0, 0, 70, 80, Float(2.5), 80, 55, Float(2.0), Float(2.0), 0)
         Call(LoadAnimatedModel, SHATTER_GROUND, Ref(N(anim1)))
-        Call(PlayModelAnimation, SHATTER_GROUND, Ref(N(anim1_8021A364)))
+        Call(PlayModelAnimation, SHATTER_GROUND, Ref(N(anim1_AS_ShatterGround)))
         Call(SetAnimatedModelRootPosition, SHATTER_GROUND, 0, 0, 0)
         Call(EnableGroup, MODEL_mae, false)
         Call(EnableGroup, MODEL_ato, true)

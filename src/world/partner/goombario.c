@@ -12,9 +12,7 @@ extern SpeechBubbleData* SpeechBubblePtr;
 BSS s32 N(HadSpeechPrompt);
 BSS s32 N(HadInteractPrompt);
 BSS Npc* N(InteractNpc);
-BSS s32 N(D_802BDF3C); // unused (padding?)
 BSS TweesterPhysics N(TweesterPhysicsData);
-BSS s32 N(D_802BDF5C); // unused (padding?)
 BSS s32 WorldTattleInteractionID;
 BSS s32 N(IsTattleActive);
 

@@ -4,16 +4,6 @@
 #include "ld_addrs.h"
 #include "sprite/player.h"
 
-#ifdef SHIFT
-#define SPRITE_ROM_START (u32) sprites_ROM_START + 0x10
-#elif VERSION_US || VERSION_IQUE
-#define SPRITE_ROM_START 0x1943000 + 0x10
-#elif VERSION_PAL
-#define SPRITE_ROM_START 0x1DF0000 + 0x10
-#elif VERSION_JP
-#define SPRITE_ROM_START 0x1A40000 + 0x10
-#endif
-
 extern b32 SpriteUseGeneralHeap;
 extern HeapNode heap_generalHead;
 extern HeapNode heap_spriteHead;
@@ -150,15 +140,16 @@ SpriteAnimData* spr_load_sprite(s32 idx, s32 isPlayerSprite, s32 useTailAlloc) {
 }
 
 void spr_init_player_raster_cache(s32 cacheSize, s32 maxRasterSize) {
+    u32 headerRomPos = (u32) sprites_ROM_START + 0x10;
     void* raster;
     s32 i;
 
-    nuPiReadRom(SPRITE_ROM_START, &SpriteDataHeader, sizeof(SpriteDataHeader));
+    nuPiReadRom(headerRomPos, &SpriteDataHeader, sizeof(SpriteDataHeader));
     PlayerRasterCacheSize = cacheSize;
     PlayerRasterMaxSize = maxRasterSize;
-    SpriteDataHeader[0] += SPRITE_ROM_START;
-    SpriteDataHeader[1] += SPRITE_ROM_START;
-    SpriteDataHeader[2] += SPRITE_ROM_START;
+    SpriteDataHeader[0] += headerRomPos;
+    SpriteDataHeader[1] += headerRomPos;
+    SpriteDataHeader[2] += headerRomPos;
     raster = _heap_malloc(&heap_spriteHead, maxRasterSize * cacheSize);
 
     for (i = 0; i < ARRAY_COUNT(PlayerRasterCache); i++) {

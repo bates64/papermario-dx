@@ -13,7 +13,6 @@ BSS b32 N(LockingPlayerInput);
 BSS b32 N(MaintainPosAfterBlast);
 BSS b32 N(TriggeredEarlyDetonation);
 BSS b32 N(MovementBlocked);
-BSS s32 N(D_802BE93C); // unused (padding?)
 
 void entity_try_partner_interaction_trigger(s32 arg0);
 

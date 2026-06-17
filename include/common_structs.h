@@ -1594,7 +1594,7 @@ typedef struct ActorPart {
     /* 0x88 */ u32 curAnimation;
     /* 0x8C */ s32 animNotifyValue;
     /* 0x90 */ f32 animationRate;
-    /* 0x94 */ u32* idleAnimations;
+    /* 0x94 */ s32* idleAnimations;
     /* 0x98 */ s16 opacity;
     /* 0x9A */ PAD(2);
     /* 0x9C */ s32 shadowIndex;
