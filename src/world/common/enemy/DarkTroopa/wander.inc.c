@@ -1,5 +1,5 @@
+#pragma once
 #include "wander.h"
-#include "base.h"
 
 #include "world/common/ai/TackleWanderAI.inc.c"
 

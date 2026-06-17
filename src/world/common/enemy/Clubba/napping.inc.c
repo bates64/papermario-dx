@@ -1,5 +1,5 @@
-#include "napping.h"
 #pragma once
+#include "napping.h"
 #include "world/common/enemy/Clubba/hitbox.inc.c"
 #include "world/common/ai/ClubbaNappingAI.inc.c"
 

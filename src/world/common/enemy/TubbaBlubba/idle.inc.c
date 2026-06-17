@@ -1,5 +1,5 @@
+#pragma once
 #include "idle.h"
-#include "base.h"
 
 NpcSettings N(NpcSettings_TubbaBlubba) = {
     .height = 90,

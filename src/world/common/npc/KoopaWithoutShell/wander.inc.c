@@ -1,5 +1,5 @@
+#pragma once
 #include "wander.h"
-#include "base.h"
 
 MobileAISettings N(AISettings_KoopaWithoutShell_Wander) = {
     .moveSpeed = 1.0f,

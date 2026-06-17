@@ -1,6 +1,5 @@
 #pragma once
 #include "idle.h"
-#include "base.h"
 #include "world/common/npc/Kooper/base.h"
 
 NpcSettings N(NpcSettings_Koopa_Idle) = {

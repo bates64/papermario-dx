@@ -1,7 +1,6 @@
-#include "idle.h"
 #pragma once
-
 #include "idle.h"
+
 #include "sprite/player.h"
 
 #define EVAR_INTERACTED 0

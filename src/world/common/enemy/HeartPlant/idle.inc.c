@@ -1,6 +1,4 @@
-#include "idle.h"
 #pragma once
-
 #include "idle.h"
 
 #define EVAR_USE_COUNT 0

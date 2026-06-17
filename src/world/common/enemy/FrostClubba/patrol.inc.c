@@ -1,5 +1,5 @@
-#include "patrol.h"
 #pragma once
+#include "patrol.h"
 #include "world/common/enemy/FrostClubba/hitbox.inc.c"
 #include "world/common/ai/ClubbaPatrolAI.inc.c"
 

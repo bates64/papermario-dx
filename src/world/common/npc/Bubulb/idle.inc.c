@@ -1,6 +1,5 @@
 #pragma once
 #include "idle.h"
-#include "base.h"
 
 EvtScript N(EVS_NpcCreate_Bubulb_Idle) = {
     Return

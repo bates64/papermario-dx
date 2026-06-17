@@ -1,4 +1,3 @@
-#include "wander.h"
 #pragma once
 #include "wander.h"
 #include "world/area/sbk/sbk.h"

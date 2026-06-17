@@ -1,6 +1,5 @@
 #pragma once
 #include "idle.h"
-#include "base.h"
 
 NpcSettings N(NpcSettings_JrTroopa_Idle) = {
     .height = 32,

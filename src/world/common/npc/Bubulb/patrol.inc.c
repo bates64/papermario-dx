@@ -1,5 +1,5 @@
+#pragma once
 #include "patrol.h"
-#include "base.h"
 
 #include "world/common/ai/PatrolNoAttackAI.inc.c"
 

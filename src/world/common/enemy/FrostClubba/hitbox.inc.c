@@ -1,4 +1,3 @@
-#include "hitbox.h"
 #pragma once
 #include "hitbox.h"
 

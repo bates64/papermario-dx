@@ -1,5 +1,5 @@
+#pragma once
 #include "wander.h"
-#include "base.h"
 
 MobileAISettings N(AISettings_Bobomb) = {
     .moveSpeed = 1.5f,

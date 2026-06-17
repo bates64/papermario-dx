@@ -1,6 +1,5 @@
 #pragma once
 #include "idle.h"
-#include "base.h"
 
 NpcSettings N(NpcSettings_Sushie_Idle) = {
     .height = 23,

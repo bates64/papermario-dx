@@ -1,5 +1,4 @@
-#include "wander.h"
-
+#pragma once
 #include "wander.h"
 
 #include "world/common/ai/StoneChompAI.inc.c"

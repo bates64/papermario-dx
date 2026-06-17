@@ -2,18 +2,18 @@
 #include "effects.h"
 #include "script_api/battle.h"
 
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/atomic/Quizmo.inc.c"
-
 extern EvtScript N(EVS_NpcInit_Moustafa);
 extern EvtScript N(EVS_NpcInit_DisguisedMoustafa);
 
+#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
+#include "world/common/atomic/Quizmo.inc.c"
+
 #include "world/common/npc/Archeologist/wander.inc.c"
-#include "world/common/npc/Merlee/idle.inc.c"
-#include "world/common/npc/Toad/idle.inc.c"
-#include "world/common/npc/Dryite/wander.inc.c"
 #include "world/common/npc/Dryite/idle.inc.c"
+#include "world/common/npc/Dryite/wander.inc.c"
+#include "world/common/npc/Merlee/idle.inc.c"
 #include "world/common/npc/Mouser/idle.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
@@ -303,6 +303,12 @@ EvtScript N(EVS_NpcInit_ToadHouseKeeper) = {
     End
 };
 
+EvtScript N(EVS_NpcInit_Merlee) = {
+    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Merlee)))
+    Return
+    End
+};
+
 NpcData N(PassiveNPCs)[] = {
     {
         .id = NPC_Archeologist,
@@ -376,7 +382,7 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_Merlee,
         .pos = { -130.0f, 0.0f, -400.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcInit_Merlee_Idle),
+        .init = &N(EVS_NpcInit_Merlee),
         .settings = &N(NpcSettings_Merlee_Idle),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,

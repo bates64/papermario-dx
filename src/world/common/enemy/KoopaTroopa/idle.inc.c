@@ -1,5 +1,4 @@
 #include "idle.h"
-#include "base.h"
 
 NpcSettings N(NpcSettings_KoopaTroopa) = {
     .height = 35,

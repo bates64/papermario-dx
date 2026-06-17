@@ -1,5 +1,5 @@
-#include "wander.h"
 #pragma once
+#include "wander.h"
 #include "world/common/enemy/Clubba/hitbox.inc.c"
 #include "world/common/ai/WanderMeleeAI.inc.c"
 
