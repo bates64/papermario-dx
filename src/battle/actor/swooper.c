@@ -245,7 +245,7 @@ EvtScript N(EVS_Flying_HandleEvent) = {
     End
 };
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 EvtScript N(EVS_FallFromCeiling) = {
     Call(HideHealthBar, ACTOR_SELF)

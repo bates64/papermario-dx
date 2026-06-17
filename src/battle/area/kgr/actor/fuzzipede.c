@@ -143,7 +143,7 @@ ActorBlueprint NAMESPACE = {
     .statusTextOffset = { 10, 20 },
 };
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 EvtScript N(EVS_Init) = {
     Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
@@ -713,7 +713,7 @@ EvtScript N(EVS_Attack_Leap) = {
 #include "common/ItemEntityJumpToPos.inc.c"
 #include "common/DisableRandomAbility.inc.c"
 #include "common/StartRumbleWithParams.inc.c"
-#include "common/battle/CheckPlayerCanLoseCommand.inc.c"
+#include "battle/common/CheckPlayerCanLoseCommand.inc.c"
 
 EvtScript N(EVS_ManageCommandLoss) = {
     Label(0)

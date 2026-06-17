@@ -225,11 +225,11 @@ s32 N(IdleAnimations_80223E08)[] = {
 
 #include "common/GetSelectedMoveID.inc.c"
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 #include "common/StartRumbleWithParams.inc.c"
 
-#include "common/battle/CheckMagikoopaCastTarget.inc.c"
+#include "battle/common/CheckMagikoopaCastTarget.inc.c"
 
 API_CALLABLE(N(GetBootsHammerLevel)) {
     Bytecode* args = script->ptrReadPos;

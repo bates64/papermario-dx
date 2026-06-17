@@ -22,7 +22,7 @@ extern EvtScript N(EVS_Downed_TakeTurn);
 extern EvtScript N(EVS_Downed_HandleEvent);
 
 #include "common/StartRumbleWithParams.inc.c"
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 enum N(ActorPartIDs) {
     PRT_DOWNED          = 1,

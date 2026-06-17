@@ -1134,7 +1134,7 @@ EvtScript N(EVS_ShyGuy_Init) = {
     End
 };
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 EvtScript N(EVS_ShyGuy_Idle) = {
     Label(0)

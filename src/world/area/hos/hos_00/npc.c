@@ -1,7 +1,7 @@
 #include "hos_00.h"
 
 #include "world/common/npc/ToadKid/base.h"
-#include "world/common/npc/Toadette/base.h"
+#include "world/common/npc/Toadette/idle.inc.c"
 #include "world/common/npc/Twink/idle.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
 
@@ -152,7 +152,7 @@ NpcData N(NpcData_Wishing)[] = {
         .id = NPC_Toadette,
         .pos = { 280.0f, -10.0f, -50.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = ENEMY_FLAG_PASSIVE,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,

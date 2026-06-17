@@ -1,6 +1,6 @@
 #include "iwa_10.h"
 
-#include "world/common/npc/Toadette/base.h"
+#include "world/common/npc/Toadette/idle.inc.c"
 #include "world/common/npc/TrainToad/idle.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/npc/Dryite/idle.inc.c"
@@ -163,7 +163,7 @@ NpcData N(NpcData_Toadette)[] = {
         .pos = { -562.0f, 0.0f, 384.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toadette_02),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -174,7 +174,7 @@ NpcData N(NpcData_Toadette)[] = {
         .pos = { -582.0f, 0.0f, 406.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toadette_02),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -185,7 +185,7 @@ NpcData N(NpcData_Toadette)[] = {
         .pos = { -524.0f, 0.0f, 411.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Toadette_02),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -210,7 +210,7 @@ NpcData N(NpcData_Dryite)[] = {
         .pos = { -760.0f, 0.0f, 160.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toadette_01),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_GREEN_ANIMS,

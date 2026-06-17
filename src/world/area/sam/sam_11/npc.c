@@ -3,7 +3,7 @@
 #include "world/common/npc/Kooper/base.h"
 #include "world/common/npc/Parakarry/base.h"
 
-#include "world/common/npc/Toadette/base.h"
+#include "world/common/npc/Toadette/idle.inc.c"
 #include "world/common/npc/Penguin/wander.inc.c"
 #include "world/common/npc/Penguin/idle.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
@@ -730,7 +730,7 @@ NpcData N(NpcData_Tourists)[] = {
         .pos = { -400.0f, 0.0f, 230.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toadette_01),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -741,7 +741,7 @@ NpcData N(NpcData_Tourists)[] = {
         .pos = { -350.0f, 0.0f, 230.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toadette_02),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -752,7 +752,7 @@ NpcData N(NpcData_Tourists)[] = {
         .pos = { -375.0f, 0.0f, 220.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toadette_03),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,

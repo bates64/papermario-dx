@@ -6,9 +6,3 @@ NpcSettings N(NpcSettings_Toad) = {
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
 };
-
-NpcSettings N(NpcSettings_ToadKid) = {
-    .height = 23,
-    .radius = 19,
-    .level = ACTOR_LEVEL_NONE,
-};

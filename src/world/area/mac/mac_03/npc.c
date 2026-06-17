@@ -1,12 +1,16 @@
 #include "mac_03.h"
 #include "effects.h"
-#include "world/common/enemy/ShyGuy/base.h"
 
-#include "world/common/npc/ToadKid/base.h"
-#include "world/common/npc/Toadette/base.h"
-#include "world/common/npc/TrainToad/idle.inc.c"
-#include "world/common/npc/Toad/wander.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
+
 #include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Toad/wander.inc.c"
+#include "world/common/npc/Toadette/idle.inc.c"
+#include "world/common/npc/ToadKid/wander.inc.c"
+#include "world/common/npc/TrainToad/idle.inc.c"
+
+
+#include "world/common/enemy/ShyGuy/base.h"
 
 NpcSettings N(NpcSettings_ShyGuy) = {
     .height = 23,
@@ -16,8 +20,6 @@ NpcSettings N(NpcSettings_ShyGuy) = {
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
 };
-
-#include "world/common/npc/Dummy/idle.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
@@ -737,7 +739,7 @@ NpcData N(NpcData_Toadette)[] = {
         .pos = { -130.0f, 0.0f, 220.0f },
         .yaw = 0,
         .init = &N(EVS_NpcInit_Toadette_02),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -748,7 +750,7 @@ NpcData N(NpcData_Toadette)[] = {
         .pos = { -100.0f, 0.0f, 220.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toadette_02),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -759,7 +761,7 @@ NpcData N(NpcData_Toadette)[] = {
         .pos = { -70.0f, 0.0f, 220.0f },
         .yaw = 180,
         .init = &N(EVS_NpcInit_Toadette_02),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,

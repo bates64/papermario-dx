@@ -435,7 +435,7 @@ EvtScript N(EVS_Attack_Slingshot) = {
 
 #include "common/DisableRandomAbility.inc.c"
 
-#include "common/battle/CheckPlayerCanLoseCommand.inc.c"
+#include "battle/common/CheckPlayerCanLoseCommand.inc.c"
 
 #include "common/StartRumbleWithParams.inc.c"
 

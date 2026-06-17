@@ -25,7 +25,7 @@ extern EvtScript N(EVS_Attack_MagicSpell);
 extern EvtScript N(EVS_Attack_LightningBolt);
 extern EvtScript N(EVS_Move_HealSelf);
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 enum N(ActorPartIDs) {
     PRT_BASE        = 1,

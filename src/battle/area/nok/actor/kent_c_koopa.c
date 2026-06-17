@@ -506,7 +506,7 @@ EvtScript N(EVS_HandleEvent) = {
 };
 
 #include "common/StartRumbleWithParams.inc.c"
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 EvtScript N(EVS_TakeTurn) = {
     Call(SetActorVar, ACTOR_SELF, AVAR_FlipResistance, 2)

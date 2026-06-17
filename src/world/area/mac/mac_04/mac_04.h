@@ -12,7 +12,6 @@
 #include "mapfs/mac_04_hit.h"
 
 #include "sprite/npc/ShyGuy.h"
-#include "sprite/npc/HarryT.h"
 #include "sprite/npc/ChetRippo.h"
 #include "sprite/npc/WorldGoombario.h"
 

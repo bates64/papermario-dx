@@ -118,7 +118,7 @@ EvtScript N(EVS_Init) = {
     End
 };
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 EvtScript N(EVS_Idle) = {
     Label(0)

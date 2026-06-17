@@ -54,7 +54,7 @@ API_CALLABLE(N(SetActorLevelToZero)) {
     return ApiStatus_DONE2;
 }
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 s32 N(StiltAnims)[] = {
     STATUS_KEY_NORMAL,    ANIM_StiltGuy_Anim01,

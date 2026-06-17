@@ -862,7 +862,7 @@ EvtScript N(EVS_Attack_SpikeBounce) = {
     End
 };
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 // unused
 EvtScript N(EVS_FallFromCeiling) = {

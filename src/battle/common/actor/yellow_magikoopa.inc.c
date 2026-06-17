@@ -346,7 +346,7 @@ EvtScript N(EVS_KnockDownCheck) = {
     End
 };
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 #include "common/StartRumbleWithParams.inc.c"
 
 EvtScript N(EVS_KnockDown) = {
@@ -795,7 +795,7 @@ EvtScript N(EVS_Init_Flying) = {
     End
 };
 
-#include "common/battle/CheckMagikoopaCastTarget.inc.c"
+#include "battle/common/CheckMagikoopaCastTarget.inc.c"
 
 EvtScript N(EVS_TakeTurn) = {
     Set(LFlag0, false)

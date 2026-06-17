@@ -37,7 +37,7 @@ EvtScript N(EVS_AnimateVines) = {
     End
 };
 
-#include "common/MakeSun.inc.c"
+#include "battle/common/stage/lib/MakeSun.inc.c"
 
 EvtScript N(EVS_AnimateSmokePuff) = {
     Call(EnableModel, LVarF, true)

@@ -20,7 +20,7 @@ EvtScript N(EVS_AnimateCloud) = {
     End
 };
 
-#include "common/MakeSun.inc.c"
+#include "battle/common/stage/lib/MakeSun.inc.c"
 
 EvtScript N(EVS_PreBattle) = {
     Call(SetSpriteShading, SHADING_NONE)

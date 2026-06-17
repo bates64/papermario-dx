@@ -1,5 +1,7 @@
 #include "mac_04.h"
 
+#include "world/common/npc/HarryT/base.h"
+
 s32 N(ShopMessages)[] = {
     [SHOP_MSG_BUY_CONFIRM      ] MSG_Shop_00_MAC04,
     [SHOP_MSG_NOT_ENOUGH_COINS ] MSG_Shop_01_MAC04,

@@ -6,9 +6,11 @@
 #include "world/common/npc/Toad/wander.inc.c"
 #include "world/common/npc/Toad/patrol.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/HarryT/idle.inc.c"
 #include "world/common/npc/GoombaFamily/idle.inc.c"
 #include "world/common/npc/Dummy/idle.inc.c"
 #include "world/common/npc/RussT/idle.inc.c"
+#include "world/common/npc/TheMaster/idle.inc.c"
 
 #include "world/common/enemy/ShyGuy/idle.inc.c"
 
@@ -237,16 +239,10 @@ NpcData N(NpcData_Toad_01)[] = {
         .pos = { 430.0f, 20.0f, -373.0f },
         .yaw = 223,
         .init = &N(EVS_NpcInit_Toad_01),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_HarryT),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_HarryT_Idle,
-            .walk   = ANIM_HarryT_Walk,
-            .run    = ANIM_HarryT_Run,
-            .chase  = ANIM_HarryT_Run,
-            .alert  = ANIM_HarryT_Idle,
-        },
+        .animations = HARRY_T_ANIMS,
         .tattle = MSG_NpcTattle_MAC00_ShopOwner,
     },
     {
@@ -254,16 +250,10 @@ NpcData N(NpcData_Toad_01)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 223,
         .init = &N(EVS_NpcInit_Toad_02),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_HarryT),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_HarryT_Idle,
-            .walk   = ANIM_HarryT_Walk,
-            .run    = ANIM_HarryT_Run,
-            .chase  = ANIM_HarryT_Run,
-            .alert  = ANIM_HarryT_Idle,
-        },
+        .animations = HARRY_T_ANIMS,
         .tattle = MSG_NpcTattle_MAC00_ShopOwner,
     },
 };
@@ -298,27 +288,10 @@ NpcData N(NpcData_Toad_03)[] = {
         .pos = { 375.0f, 115.0f, -440.0f },
         .yaw = 225,
         .init = &N(EVS_NpcInit_TheMaster),
-        .settings = &N(NpcSettings_Dummy),
+        .settings = &N(NpcSettings_TheMaster),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_TheMaster_Idle,
-            .walk   = ANIM_TheMaster_Still,
-            .run    = ANIM_TheMaster_Still,
-            .chase  = ANIM_TheMaster_Still,
-            .alert  = ANIM_TheMaster_Still,
-            .unused = ANIM_TheMaster_Still,
-            .death  = ANIM_TheMaster_Still,
-            .hit    = ANIM_TheMaster_Still,
-            .anim_8 = ANIM_TheMaster_Still,
-            .anim_9 = ANIM_TheMaster_Still,
-            .anim_A = ANIM_TheMaster_Still,
-            .anim_B = ANIM_TheMaster_Still,
-            .anim_C = ANIM_TheMaster_Still,
-            .anim_D = ANIM_TheMaster_Still,
-            .anim_E = ANIM_TheMaster_Still,
-            .anim_F = ANIM_TheMaster_Still,
-        },
+        .animations = THE_MASTER_ANIMS,
         .limitAnimations = N(LimitAnims_TheMaster),
         .tattle = MSG_NpcTattle_TheMaster,
     },

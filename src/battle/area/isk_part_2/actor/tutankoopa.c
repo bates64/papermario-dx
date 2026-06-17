@@ -258,7 +258,7 @@ ActorBlueprint NAMESPACE = {
     .statusTextOffset = { 10, 35 },
 };
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 API_CALLABLE(SpawnFallingRock) {
     Bytecode* args = script->ptrReadPos;

@@ -231,9 +231,9 @@ EvtScript N(EVS_Idle) = {
 
 #include "common/ShrinkActor.inc.c"
 #include "common/GetSelectedMoveID.inc.c"
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 #include "common/StartRumbleWithParams.inc.c"
-#include "common/battle/CheckMagikoopaCastTarget.inc.c"
+#include "battle/common/CheckMagikoopaCastTarget.inc.c"
 
 EvtScript N(EVS_HandleEvent) = {
     Call(UseIdleAnimation, ACTOR_SELF, false)

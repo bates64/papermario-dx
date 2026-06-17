@@ -293,7 +293,7 @@ EvtScript N(EVS_KnockDownCheck) = {
     End
 };
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 #include "common/StartRumbleWithParams.inc.c"
 
 EvtScript N(EVS_KnockDown) = {
@@ -1493,7 +1493,7 @@ EvtScript N(EVS_Move_MakeClone) = {
     End
 };
 
-#include "common/battle/CheckMagikoopaCastTarget.inc.c"
+#include "battle/common/CheckMagikoopaCastTarget.inc.c"
 
 EvtScript N(EVS_Move_TryBoostAttack) = {
     Set(LFlag0, false)

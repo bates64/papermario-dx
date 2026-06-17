@@ -1,7 +1,7 @@
 #include "mac_02.h"
 
 #include "world/common/npc/ToadKid/base.h"
-#include "world/common/npc/Toadette/base.h"
+#include "world/common/npc/Toadette/idle.inc.c"
 #include "world/common/npc/Toad/wander.inc.c"
 #include "world/common/npc/Toad/patrol.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
@@ -116,7 +116,7 @@ NpcData N(NpcData_TayceT)[] = {
         .pos = { -26.0f, 0.0f, -220.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_CookingApprentice),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PURPLE_ANIMS,

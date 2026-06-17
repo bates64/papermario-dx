@@ -1196,7 +1196,7 @@ EvtScript N(EVS_Pokey_SpinSmashHit) = {
     End
 };
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 // set actor vars for new size one unit smaller than previous
 EvtScript N(EVS_DecrementSize) = {

@@ -272,7 +272,7 @@ ActorBlueprint NAMESPACE = {
 #define CHOMP_CHAIN_LAST_PART_IDX   PRT_CHAIN_8
 #define CHOMP_CHAIN_AVAR_SOUNDS     AVAR_EnableChainSounds
 #define CHOMP_CHAIN_UPDATE_Z        true
-#include "common/battle/ChompChainSupport.inc.c"
+#include "battle/common/ChompChainSupport.inc.c"
 
 API_CALLABLE(func_8021866C_4EFB0C) {
     Bytecode* args = script->ptrReadPos;

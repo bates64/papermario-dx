@@ -3,9 +3,10 @@
 #include "world/common/enemy/ShyGuy/base.h"
 
 #include "world/common/npc/ToadKid/base.h"
-#include "world/common/npc/Toadette/base.h"
+#include "world/common/npc/Toadette/idle.inc.c"
 #include "world/common/npc/Toad/wander.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/HarryT/idle.inc.c"
 
 NpcSettings N(NpcSettings_ChetRippo) = {
     .height = 24,
@@ -134,7 +135,6 @@ s32 N(get_total_equipped_bp_cost)(void) {
 }
 
 API_CALLABLE(N(EnforceNewStatLimits)) {
-    PlayerData* playerData = &gPlayerData;
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
     s32 bpCost = N(get_total_equipped_bp_cost)();
@@ -189,16 +189,10 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { 310.0f, 20.0f, -430.0f },
         .yaw = 230,
         .init = &N(EVS_NpcInit_HarryT),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_HarryT),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_HarryT_Idle,
-            .walk   = ANIM_HarryT_Walk,
-            .run    = ANIM_HarryT_Run,
-            .chase  = ANIM_HarryT_Run,
-            .alert  = ANIM_HarryT_Idle,
-        },
+        .animations = HARRY_T_ANIMS,
         .tattle = MSG_NpcTattle_HarryT_ShopOwner,
     },
     {
@@ -206,7 +200,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { -80.0f, 20.0f, -100.0f },
         .yaw = 133,
         .init = &N(EVS_NpcInit_NewResident1),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_GREEN_ANIMS,
@@ -217,7 +211,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { -133.0f, 20.0f, -82.0f },
         .yaw = 133,
         .init = &N(EVS_NpcInit_NewResident2),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PURPLE_ANIMS,
@@ -295,7 +289,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { -274.0f, 0.0f, 400.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toadette_03),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_ORANGE_ANIMS,

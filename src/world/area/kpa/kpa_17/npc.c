@@ -2,9 +2,9 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/ToadGuard/base.h"
-#include "world/common/npc/ToadMinister/base.h"
 #include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/ToadGuard/idle.inc.c"
+#include "world/common/npc/ToadMinister/idle.inc.c"
 
 EvtScript N(EVS_Scene_FallIntoCell) = {
     Call(UseSettingsFrom, CAM_DEFAULT, 1042, 30, -496)
@@ -127,11 +127,11 @@ EvtScript N(EVS_NpcInteract_ToadGuard) = {
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Yellow_Talk, ANIM_Toad_Yellow_Idle, 0, MSG_CH8_000F)
                     Set(AB_KPA17_DialogueState_ToadGuard, 1)
                 CaseEq(1)
-                    Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Yellow_Talk, ANIM_Toad_Yellow_Idle, 0, MSG_CH8_0010)
+                    Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Yellow_Talk, ANIM_ToadGuard_Yellow_Idle, 0, MSG_CH8_0010)
                     Set(AB_KPA17_DialogueState_ToadGuard, 0)
             EndSwitch
         CaseEq(1)
-            Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Yellow_Talk, ANIM_Toad_Yellow_Idle, 0, MSG_CH8_0011)
+            Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Yellow_Talk, ANIM_ToadGuard_Yellow_Idle, 0, MSG_CH8_0011)
     EndSwitch
     Return
     End
@@ -218,7 +218,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_ToadGuard),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadGuard),
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_YELLOW_ANIMS,
@@ -229,7 +229,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_ToadMinister),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadMinister),
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_MINISTER_ANIMS,

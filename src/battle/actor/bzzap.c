@@ -164,7 +164,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 20 },
 };
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 API_CALLABLE(N(AddVecXZ)) {
     Bytecode* args = script->ptrReadPos;

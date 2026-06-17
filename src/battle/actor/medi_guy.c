@@ -19,7 +19,7 @@ enum N(ActorParams) {
     DMG_SWOOP       = 1,
 };
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 #include "common/MediGuySpriteRotationFunc.inc.c"
 
 s32 N(DefaultAnims)[] = {

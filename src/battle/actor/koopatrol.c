@@ -185,7 +185,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 5, 32 },
 };
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 #include "common/StartRumbleWithParams.inc.c"
 
 EvtScript N(EVS_Init) = {

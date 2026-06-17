@@ -2,6 +2,8 @@
 #include "entity.h"
 #include "sprite.h"
 
+#include "world/common/npc/HarryT/base.h"
+
 void N(render_shrunk_player)(void);
 void N(appendGfx_shrunk_player)(void*);
 

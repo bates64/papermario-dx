@@ -2,32 +2,23 @@
 #include "effects.h"
 #include "hud_element.h"
 #include "sprite/player.h"
-#include "world/common/npc/KoopaBros/base.h"
-#include "world/common/npc/Parakarry/base.h"
 
 extern IconHudScriptPair gItemHudScripts[];
 extern EvtScript N(EVS_MerlonBargeOut);
+
+#include "world/common/npc/Dummy/idle.inc.c"
+#include "world/common/npc/KoopaBros/base.h"
+#include "world/common/npc/Parakarry/base.h"
 
 #include "world/common/npc/Toad/wander.inc.c"
 #include "world/common/npc/Toad/patrol.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/enemy/ShyGuy/idle.inc.c"
 
-NpcSettings N(NpcSettings_Ninji) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
+#include "world/common/npc/Ninji/idle.inc.c"
 #include "world/common/npc/Twink/idle.inc.c"
 #include "world/common/npc/Kolorado/idle.inc.c"
 #include "world/common/npc/Bubulb/idle.inc.c"
-
-NpcSettings N(NpcSettings_Parakarry) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
@@ -1145,24 +1136,7 @@ NpcData N(NpcData_Ninji) = {
     .settings = &N(NpcSettings_Ninji),
     .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Ninji_Idle,
-        .walk   = ANIM_Ninji_Walk,
-        .run    = ANIM_Ninji_Idle,
-        .chase  = ANIM_Ninji_Idle,
-        .alert  = ANIM_Ninji_Idle,
-        .unused = ANIM_Ninji_Idle,
-        .death  = ANIM_Ninji_Idle,
-        .hit    = ANIM_Ninji_Idle,
-        .anim_8 = ANIM_Ninji_Idle,
-        .anim_9 = ANIM_Ninji_Idle,
-        .anim_A = ANIM_Ninji_Idle,
-        .anim_B = ANIM_Ninji_Idle,
-        .anim_C = ANIM_Ninji_Idle,
-        .anim_D = ANIM_Ninji_Idle,
-        .anim_E = ANIM_Ninji_Idle,
-        .anim_F = ANIM_Ninji_Idle,
-    },
+    .animations = NINJI_ANIMS,
     .tattle = MSG_NpcTattle_MAC_PowerHungryToadKid,
 };
 
@@ -2165,7 +2139,7 @@ NpcData N(NpcData_Parakarry) = {
     .pos = { 145.0f, 20.0f, -472.0f },
     .yaw = 120,
     .init = &N(EVS_NpcInit_Parakarry),
-    .settings = &N(NpcSettings_Parakarry),
+    .settings = &N(NpcSettings_Dummy),
     .flags = COMMON_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = PARAKARRY_ANIMS,
