@@ -143,7 +143,7 @@ f32 player_check_collision_below(f32, s32* colliderID);
 b32 can_trigger_loading_zone(void);
 void update_damage_popups(void);
 void show_action_rating(s32, Actor*, f32, f32, f32);
-s32 render_with_adjusted_palettes(s32, ActorPart*, s32, Matrix4f, s32);
+void render_with_adjusted_palettes(s32, ActorPart*, s32, Matrix4f, s32);
 
 HeapNode* general_heap_create(void);
 void* general_heap_malloc(s32 size);
