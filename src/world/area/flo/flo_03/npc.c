@@ -1,16 +1,11 @@
 #include "flo_03.h"
 #include "sprite/player.h"
 #include "world/common/enemy/CrazyDayzee/base.h"
+#include "world/common/npc/Petunia/idle.inc.c"
 
 NpcSettings N(NpcSettings_Dayzee) = {
     .height = 24,
     .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
-NpcSettings N(NpcSettings_Petunia) = {
-    .height = 56,
-    .radius = 40,
     .level = ACTOR_LEVEL_NONE,
 };
 
@@ -781,27 +776,10 @@ NpcData N(NpcData_Petunia) = {
     .pos = { -30.0f, 0.0f, 100.0f },
     .yaw = 270,
     .init = &N(EVS_NpcInit_Petunia),
-    .settings = &N(NpcSettings_Petunia),
+    .settings = &N(NpcSettings_Petunia_Idle),
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Petunia_Idle,
-        .walk   = ANIM_Petunia_Idle,
-        .run    = ANIM_Petunia_Idle,
-        .chase  = ANIM_Petunia_Idle,
-        .alert  = ANIM_Petunia_Idle,
-        .unused = ANIM_Petunia_Idle,
-        .death  = ANIM_Petunia_Idle,
-        .hit    = ANIM_Petunia_Idle,
-        .anim_8 = ANIM_Petunia_Idle,
-        .anim_9 = ANIM_Petunia_Idle,
-        .anim_A = ANIM_Petunia_Idle,
-        .anim_B = ANIM_Petunia_Idle,
-        .anim_C = ANIM_Petunia_Idle,
-        .anim_D = ANIM_Petunia_Idle,
-        .anim_E = ANIM_Petunia_Idle,
-        .anim_F = ANIM_Petunia_Idle,
-    },
+    .animations = PETUNIA_ANIMS,
     .tattle = MSG_NpcTattle_Petunia,
 };
 

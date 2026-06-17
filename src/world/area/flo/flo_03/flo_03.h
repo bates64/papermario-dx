@@ -11,7 +11,6 @@
 #include "mapfs/flo_03_shape.h"
 #include "mapfs/flo_03_hit.h"
 
-#include "sprite/npc/Petunia.h"
 #include "sprite/npc/MontyMole.h"
 #include "sprite/npc/Dayzee.h"
 
