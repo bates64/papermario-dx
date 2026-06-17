@@ -19,9 +19,11 @@ EvtScript N(EVS_NpcInteract_Koover_Normal) = {
         CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0008)
     EndSwitch
-    ExecWait(N(EVS_LetterPrompt_Koover1))
+    Set(LVar0, Ref(N(LetterDelivery_Koover1)))
+    ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
-    ExecWait(N(EVS_LetterPrompt_Koover2))
+    Set(LVar0, Ref(N(LetterDelivery_Koover2)))
+    ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
     Return
     End

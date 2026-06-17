@@ -2,28 +2,16 @@
 
 #include "world/common/npc/Boo/idle.inc.c"
 
-ITEM_LIST(N(LetterList), ITEM_LETTER_TO_IGOR);
-
-EvtScript N(EVS_LetterPrompt_Igor) = {
-    Call(LetterDelivery_Init,
-        NPC_Igor, ANIM_Boo_Talk, ANIM_Boo_Idle,
-        ITEM_LETTER_TO_IGOR, ITEM_NONE,
-        MSG_CH3_005D,
-        MSG_CH3_005E,
-        MSG_CH3_005F,
-        MSG_CH3_0060,
-        Ref(N(LetterList)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_Igor) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_Igor) = {
+    .recipientID = NPC_Igor,
+    .recipientTalk = ANIM_Boo_Talk,
+    .recipientIdle = ANIM_Boo_Idle,
+    .msgGreeting = MSG_CH3_005D,
+    .msgCancelled = MSG_CH3_005E,
+    .msgDelivered = MSG_CH3_005F,
+    .msgRecieved = MSG_CH3_0060,
+    .letters = { ITEM_LETTER_TO_IGOR },
+    .reward = ITEM_STAR_PIECE,
 };
 
 EvtScript N(EVS_NpcInteract_Igor) = {
@@ -32,9 +20,8 @@ EvtScript N(EVS_NpcInteract_Igor) = {
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_005C)
     EndIf
-    ExecWait(N(EVS_LetterPrompt_Igor))
-    ExecWait(N(EVS_LetterReward_Igor))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_Igor)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

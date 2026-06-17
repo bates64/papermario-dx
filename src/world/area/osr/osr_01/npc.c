@@ -24,20 +24,16 @@ EvtScript N(EVS_Scene_Wishing) = {
     End
 };
 
-ITEM_LIST(N(LetterList), ITEM_LETTER_CHAIN_MUSS_T);
-
-EvtScript N(EVS_LetterPrompt_MussT) = {
-    Call(LetterDelivery_Init,
-        NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle,
-        ITEM_LETTER_CHAIN_MUSS_T, ITEM_LETTER_CHAIN_KOOVER_1,
-        MSG_OSR_0010,
-        MSG_OSR_0011,
-        MSG_OSR_0012,
-        MSG_OSR_0013,
-        Ref(N(LetterList)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
+LetterDelivery N(LetterDelivery_MussT) = {
+    .recipientID = NPC_Toad,
+    .recipientTalk = ANIM_Toad_Red_Talk,
+    .recipientIdle = ANIM_Toad_Red_Idle,
+    .msgGreeting = MSG_OSR_0010,
+    .msgCancelled = MSG_OSR_0011,
+    .msgDelivered = MSG_OSR_0012,
+    .msgRecieved = MSG_OSR_0013,
+    .letters = { ITEM_LETTER_CHAIN_MUSS_T },
+    .reward = ITEM_LETTER_CHAIN_KOOVER_1,
 };
 
 EvtScript N(EVS_NpcInteract_Toad) = {
@@ -82,10 +78,8 @@ EvtScript N(EVS_NpcInteract_Toad) = {
             Set(LVar0, MSG_OSR_000F)
     EndSwitch
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, LVar0)
-    ExecWait(N(EVS_LetterPrompt_MussT))
-    IfEq(LVarC, DELIVERY_REJECTED)
-        Return
-    EndIf
+    Set(LVar0, Ref(N(LetterDelivery_MussT)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

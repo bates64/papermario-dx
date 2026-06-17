@@ -1,27 +1,15 @@
 #include "../mac_00.h"
 
-ITEM_LIST(N(LetterList_RussT), ITEM_LETTER_TO_RUSS_T);
-
-EvtScript N(EVS_LetterPrompt_RussT) = {
-    Call(LetterDelivery_Init,
-        NPC_RussT, ANIM_RussT_Talk, ANIM_RussT_Idle,
-        ITEM_LETTER_TO_RUSS_T, ITEM_NONE,
-        MSG_MAC_Gate_0011,
-        MSG_MAC_Gate_0012,
-        MSG_MAC_Gate_0013,
-        MSG_MAC_Gate_0014,
-        Ref(N(LetterList_RussT)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_RussT) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_RussT) = {
+    .recipientID = NPC_RussT,
+    .recipientTalk = ANIM_RussT_Talk,
+    .recipientIdle = ANIM_RussT_Idle,
+    .msgGreeting = MSG_MAC_Gate_0011,
+    .msgCancelled = MSG_MAC_Gate_0012,
+    .msgDelivered = MSG_MAC_Gate_0013,
+    .msgRecieved = MSG_MAC_Gate_0014,
+    .letters = { ITEM_LETTER_TO_RUSS_T },
+    .reward = ITEM_STAR_PIECE,
 };
 
 EvtScript N(EVS_ShyGuy_PlayRunningSounds) = {
@@ -292,7 +280,7 @@ EvtScript N(EVS_ItemPrompt_Dictionary) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000D)
             Set(GF_MAC00_DictionaryReturned, true)
             Wait(10)
-            EVT_GIVE_STAR_PIECE()
+            EVT_GIVE_REWARD(ITEM_STAR_PIECE)
             Wait(10)
             IfEq(GF_MAC00_TranslatedMysteryNote, true)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_0010)
@@ -360,9 +348,8 @@ EvtScript N(EVS_NpcInteract_RussT) = {
     IfGe(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
         IfEq(GF_MAC00_DictionaryReturned, false)
             ExecWait(N(EVS_ItemPrompt_Dictionary))
-            ExecWait(N(EVS_LetterPrompt_RussT))
-            ExecWait(N(EVS_LetterReward_RussT))
-            EVT_RETURN_IF_DELIVERED()
+            Set(LVar0, Ref(N(LetterDelivery_RussT)))
+            ExecWait(EVS_TryLetterDelivery)
             Return
         EndIf
         ExecWait(N(EVS_ItemPrompt_Documents))
@@ -371,9 +358,8 @@ EvtScript N(EVS_NpcInteract_RussT) = {
         EndIf
     EndIf
     ExecWait(N(EVS_RussT_GetHint))
-    ExecWait(N(EVS_LetterPrompt_RussT))
-    ExecWait(N(EVS_LetterReward_RussT))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_RussT)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

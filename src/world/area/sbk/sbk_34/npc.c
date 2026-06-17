@@ -6,28 +6,16 @@ NpcSettings N(NpcSettings_Nomadimouse) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-ITEM_LIST(N(LetterList), ITEM_LETTER_TO_NOMADIMOUSE);
-
-EvtScript N(EVS_Nomadimouse_LetterDelivery) = {
-    Call(LetterDelivery_Init,
-        NPC_Nomadimouse, ANIM_Nomadimouse_Talk, ANIM_Nomadimouse_Idle,
-        ITEM_LETTER_TO_NOMADIMOUSE, ITEM_NONE,
-        MSG_CH2_005B,
-        MSG_CH2_005C,
-        MSG_CH2_005D,
-        MSG_CH2_005E,
-        Ref(N(LetterList)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_Nomadimouse) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_Nomadimouse) = {
+    .recipientID = NPC_Nomadimouse,
+    .recipientTalk = ANIM_Nomadimouse_Talk,
+    .recipientIdle = ANIM_Nomadimouse_Idle,
+    .msgGreeting = MSG_CH2_005B,
+    .msgCancelled = MSG_CH2_005C,
+    .msgDelivered = MSG_CH2_005D,
+    .msgRecieved = MSG_CH2_005E,
+    .letters = { ITEM_LETTER_TO_NOMADIMOUSE },
+    .reward = ITEM_STAR_PIECE,
 };
 
 EvtScript N(EVS_NpcInteract_Nomadimouse) = {
@@ -53,9 +41,8 @@ EvtScript N(EVS_NpcInteract_Nomadimouse) = {
         CaseGe(STORY_CH2_UNCOVERED_DRY_DRY_RUINS)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Nomadimouse_Talk, ANIM_Nomadimouse_Idle, 0, MSG_CH2_005A)
     EndSwitch
-    ExecWait(N(EVS_Nomadimouse_LetterDelivery))
-    ExecWait(N(EVS_LetterReward_Nomadimouse))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_Nomadimouse)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

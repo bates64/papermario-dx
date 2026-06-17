@@ -33,55 +33,35 @@ enum WhaleTravelMode {
     WHALE_TRAVEL_ARRIVE     = 2,
 };
 
-s32 N(Fishmael_LetterList)[] = {
-    ITEM_LETTER_CHAIN_FISHMAEL, ITEM_NONE
+LetterDelivery N(LetterDelivery_Fishmael) = {
+    .recipientID = NPC_Fishmael,
+    .recipientTalk = ANIM_Fishmael_Talk,
+    .recipientIdle = ANIM_Fishmael_Idle,
+    .msgGreeting = MSG_MAC_Port_0064,
+    .msgCancelled = MSG_MAC_Port_0065,
+    .msgDelivered = MSG_MAC_Port_0066,
+    .msgRecieved = MSG_MAC_Port_0067,
+    .letters = { ITEM_LETTER_CHAIN_FISHMAEL },
+    .reward = ITEM_LETTER_CHAIN_KOOVER_2,
 };
 
-EvtScript N(EVS_LetterPrompt_Fishmael) = {
-    Call(LetterDelivery_Init, NPC_Fishmael,
-        ANIM_Fishmael_Talk, ANIM_Fishmael_Idle,
-        ITEM_LETTER_CHAIN_FISHMAEL, ITEM_LETTER_CHAIN_KOOVER_2,
-        MSG_MAC_Port_0064,
-        MSG_MAC_Port_0065,
-        MSG_MAC_Port_0066,
-        MSG_MAC_Port_0067,
-        Ref(N(Fishmael_LetterList)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
-
-s32 N(Kolorado_LetterList)[] = {
-    ITEM_LETTER_TO_KOLORADO, ITEM_NONE
-};
-
-EvtScript N(EVS_LetterPrompt_Kolorado) = {
-    Call(LetterDelivery_Init, NPC_Kolorado,
-        ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
-        ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
-        MSG_MAC_Port_0085,
-        MSG_MAC_Port_0086,
-        MSG_MAC_Port_0087,
-        MSG_MAC_Port_0088,
-        Ref(N(Kolorado_LetterList)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_Kolorado) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_Kolorado) = {
+    .recipientID = NPC_Kolorado,
+    .recipientTalk = ANIM_Kolorado_Talk,
+    .recipientIdle = ANIM_Kolorado_Idle,
+    .msgGreeting = MSG_MAC_Port_0085,
+    .msgCancelled = MSG_MAC_Port_0086,
+    .msgDelivered = MSG_MAC_Port_0087,
+    .msgRecieved = MSG_MAC_Port_0088,
+    .letters = { ITEM_LETTER_TO_KOLORADO },
+    .reward = ITEM_STAR_PIECE,
 };
 
 ITEM_LIST(N(ItemList_Artifact), ITEM_ARTIFACT);
 
 EvtScript N(EVS_ArtifactReward_Kolorado) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_008E)
-    EVT_GIVE_STAR_PIECE()
+    EVT_GIVE_REWARD(ITEM_STAR_PIECE)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_008F)
     Set(GF_SBK_GaveArtifactToKolorado, true)
     Return
@@ -1152,9 +1132,8 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
             Call(SpeakToPlayer, NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_00AC)
     EndSwitch
     ExecWait(N(EVS_ArtifactPrompt_Kolorado))
-    ExecWait(N(EVS_LetterPrompt_Kolorado))
-    ExecWait(N(EVS_LetterReward_Kolorado))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
@@ -1389,8 +1368,8 @@ EvtScript N(EVS_NpcInteract_Fuzzipede1) = {
     EndSwitch
     Call(SpeakToNpc, NPC_Fishmael, ANIM_Fishmael_Talk, ANIM_Fishmael_Idle, 0, NPC_Fuzzipede, LVar0)
     Call(SpeakToNpc, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 0, NPC_Fishmael, LVar1)
-    ExecWait(N(EVS_LetterPrompt_Fishmael))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_Fishmael)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
@@ -1421,8 +1400,8 @@ EvtScript N(EVS_NpcInteract_Fishmael) = {
             Set(LVar0, MSG_MAC_Port_005A)
     EndSwitch
     Call(SpeakToPlayer, NPC_SELF, ANIM_Fishmael_Talk, ANIM_Fishmael_Idle, 0, LVar0)
-    ExecWait(N(EVS_LetterPrompt_Fishmael))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_Fishmael)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

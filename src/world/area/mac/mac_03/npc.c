@@ -48,54 +48,30 @@ API_CALLABLE(N(func_80241BD8_8333D8)) {
     return ApiStatus_DONE2;
 }
 
-ITEM_LIST(N(LetterList_A), ITEM_LETTER_CHAIN_DANE_T_1);
-
-EvtScript N(EVS_LetterPrompt_ToadKid1A) = {
-    Call(LetterDelivery_Init, NPC_ToadKid_01,
-        ANIM_ToadKid_Red_Talk, ANIM_ToadKid_Red_Idle,
-        ITEM_LETTER_CHAIN_DANE_T_1, ITEM_NONE,
-        MSG_MAC_Station_0049,
-        MSG_MAC_Station_004A,
-        MSG_MAC_Station_004B,
-        MSG_MAC_Station_004C,
-        Ref(N(LetterList_A)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
+LetterDelivery N(LetterDelivery_ToadKid1A) = {
+    .recipientID = NPC_ToadKid_01,
+    .recipientTalk = ANIM_ToadKid_Red_Talk,
+    .recipientIdle = ANIM_ToadKid_Red_Idle,
+    .msgGreeting = MSG_MAC_Station_0049,
+    .msgCancelled = MSG_MAC_Station_004A,
+    .msgDelivered = MSG_MAC_Station_004B,
+    .msgRecieved = MSG_MAC_Station_004C,
+    .letters = { ITEM_LETTER_CHAIN_DANE_T_1 },
+    .reward = ITEM_LETTER_CHAIN_YOSHI_KID,
+    .deferReward = true,
 };
 
-EvtScript N(EVS_LetterReward_ToadKid1A) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        Call(SpeakToPlayer, NPC_ToadKid_02, ANIM_ToadKid_Yellow_Talk, ANIM_ToadKid_Yellow_Idle, 0, MSG_MAC_Station_004D)
-        EVT_GIVE_REWARD(ITEM_LETTER_CHAIN_YOSHI_KID)
-    EndIf
-    Return
-    End
-};
-
-ITEM_LIST(N(LetterList_B), ITEM_LETTER_CHAIN_DANE_T_2);
-
-EvtScript N(EVS_LetterPrompt_ToadKid1B) = {
-    Call(LetterDelivery_Init, NPC_ToadKid_01,
-        ANIM_ToadKid_Red_Talk, ANIM_ToadKid_Red_Idle,
-        ITEM_LETTER_CHAIN_DANE_T_2, ITEM_NONE,
-        MSG_MAC_Station_004E,
-        MSG_MAC_Station_004F,
-        MSG_MAC_Station_0050,
-        MSG_MAC_Station_0051,
-        Ref(N(LetterList_B)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_ToadKid1B) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        Call(SpeakToPlayer, NPC_ToadKid_02, ANIM_ToadKid_Yellow_Talk, ANIM_ToadKid_Yellow_Idle, 0, MSG_MAC_Station_0052)
-        EVT_GIVE_REWARD(ITEM_LETTER_CHAIN_FROST_T)
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_ToadKid1B) = {
+    .recipientID = NPC_ToadKid_01,
+    .recipientTalk = ANIM_ToadKid_Red_Talk,
+    .recipientIdle = ANIM_ToadKid_Red_Idle,
+    .msgGreeting = MSG_MAC_Station_004E,
+    .msgCancelled = MSG_MAC_Station_004F,
+    .msgDelivered = MSG_MAC_Station_0050,
+    .msgRecieved = MSG_MAC_Station_0051,
+    .letters = { ITEM_LETTER_CHAIN_DANE_T_2 },
+    .reward = ITEM_LETTER_CHAIN_FROST_T,
+    .deferReward = true,
 };
 
 EvtScript N(EVS_NpcInteract_TrainToad_01) = {
@@ -393,12 +369,19 @@ EvtScript N(EVS_NpcInteract_ToadKid_02) = {
 
 EvtScript N(EVS_NpcInteract_ToadKid_01) = {
     ExecWait(N(EVS_NpcInteract_ToadKid_02))
-    ExecWait(N(EVS_LetterPrompt_ToadKid1A))
-    ExecWait(N(EVS_LetterReward_ToadKid1A))
+    Set(LVar0, Ref(N(LetterDelivery_ToadKid1A)))
+    ExecWait(EVS_TryLetterDelivery)
+    IfEq(LVar0, DELIVERY_ACCEPTED)
+        Call(SpeakToPlayer, NPC_ToadKid_02, ANIM_ToadKid_Yellow_Talk, ANIM_ToadKid_Yellow_Idle, 0, MSG_MAC_Station_004D)
+        EVT_GIVE_REWARD(LVar1)
+    EndIf
     EVT_RETURN_IF_DELIVERED()
-    ExecWait(N(EVS_LetterPrompt_ToadKid1B))
-    ExecWait(N(EVS_LetterReward_ToadKid1B))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_ToadKid1B)))
+    ExecWait(EVS_TryLetterDelivery)
+    IfEq(LVar0, DELIVERY_ACCEPTED)
+        Call(SpeakToPlayer, NPC_ToadKid_02, ANIM_ToadKid_Yellow_Talk, ANIM_ToadKid_Yellow_Idle, 0, MSG_MAC_Station_0052)
+        EVT_GIVE_REWARD(LVar1)
+    EndIf
     Return
     End
 };

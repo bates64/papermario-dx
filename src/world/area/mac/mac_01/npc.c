@@ -40,84 +40,48 @@ API_CALLABLE(N(GetPlayerCoins)) {
     return ApiStatus_DONE2;
 }
 
-ITEM_LIST(N(LetterList_Merlon), ITEM_LETTER_TO_MERLON);
-
-EvtScript N(EVS_LetterPrompt_Merlon) = {
-    Call(LetterDelivery_Init,
-        NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle,
-        ITEM_LETTER_TO_MERLON, ITEM_NONE,
-        MSG_MAC_Plaza_0043,
-        MSG_MAC_Plaza_0044,
-        MSG_MAC_Plaza_0045,
-        MSG_MAC_Plaza_0046,
-        Ref(N(LetterList_Merlon)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
+LetterDelivery N(LetterDelivery_Merlon) = {
+    .recipientID = NPC_Merlon,
+    .recipientTalk = ANIM_Merlon_Talk,
+    .recipientIdle = ANIM_Merlon_Idle,
+    .msgGreeting = MSG_MAC_Plaza_0043,
+    .msgCancelled = MSG_MAC_Plaza_0044,
+    .msgDelivered = MSG_MAC_Plaza_0045,
+    .msgRecieved = MSG_MAC_Plaza_0046,
+    .letters = { ITEM_LETTER_TO_MERLON },
+    .reward = ITEM_STAR_PIECE,
+    .deferReward = true,
 };
 
-EvtScript N(EVS_LetterReward_Merlon) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-        Call(InterpNpcYaw, NPC_Merlon, 135, 0)
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_MinhT) = {
+    .recipientID = NPC_MinhT,
+    .recipientTalk = ANIM_MinhT_Talk,
+    .recipientIdle = ANIM_MinhT_Idle,
+    .msgGreeting = MSG_MAC_Plaza_0078,
+    .msgCancelled = MSG_MAC_Plaza_0079,
+    .msgDelivered = MSG_MAC_Plaza_007A,
+    .msgRecieved = MSG_MAC_Plaza_007B,
+    .letters = { ITEM_LETTER_TO_MINH_T },
+    .reward = ITEM_STAR_PIECE,
 };
 
-ITEM_LIST(N(LetterList_MinhT), ITEM_LETTER_TO_MINH_T);
-
-EvtScript N(EVS_LetterPrompt_MinhT) = {
-    Call(LetterDelivery_Init,
-        NPC_MinhT, ANIM_MinhT_Talk, ANIM_MinhT_Idle,
-        ITEM_LETTER_TO_MINH_T, ITEM_NONE,
-        MSG_MAC_Plaza_0078,
-        MSG_MAC_Plaza_0079,
-        MSG_MAC_Plaza_007A,
-        MSG_MAC_Plaza_007B,
-        Ref(N(LetterList_MinhT)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_MinhT) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
-};
-
-ITEM_LIST(N(LetterList_Kolorado), ITEM_LETTER_TO_KOLORADO);
-
-EvtScript N(EVS_LetterPrompt_Kolorado) = {
-    Call(LetterDelivery_Init,
-        NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
-        ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
-        MSG_MAC_Plaza_00E0,
-        MSG_MAC_Plaza_00E1,
-        MSG_MAC_Plaza_00E2,
-        MSG_MAC_Plaza_00E3,
-        Ref(N(LetterList_Kolorado)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_Kolorado) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_Kolorado) = {
+    .recipientID = NPC_Kolorado,
+    .recipientTalk = ANIM_Kolorado_Talk,
+    .recipientIdle = ANIM_Kolorado_Idle,
+    .msgGreeting = MSG_MAC_Plaza_00E0,
+    .msgCancelled = MSG_MAC_Plaza_00E1,
+    .msgDelivered = MSG_MAC_Plaza_00E2,
+    .msgRecieved = MSG_MAC_Plaza_00E3,
+    .letters = { ITEM_LETTER_TO_KOLORADO },
+    .reward = ITEM_STAR_PIECE,
 };
 
 ITEM_LIST(N(ItemList_Artifact), ITEM_ARTIFACT);
 
 EvtScript N(EVS_ArtifactReward_Kolorado) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Plaza_00E8)
-    EVT_GIVE_STAR_PIECE()
+    EVT_GIVE_REWARD(ITEM_STAR_PIECE)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Plaza_00E9)
     Set(GF_SBK_GaveArtifactToKolorado, true)
     Return
@@ -879,9 +843,12 @@ EvtScript N(EVS_NpcInteract_Merlon) = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 16, MSG_MAC_Plaza_003B)
     EndSwitch
-    ExecWait(N(EVS_LetterPrompt_Merlon))
-    ExecWait(N(EVS_LetterReward_Merlon))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_Merlon)))
+    ExecWait(EVS_TryLetterDelivery)
+    IfEq(LVar0, DELIVERY_ACCEPTED)
+        EVT_GIVE_REWARD(LVar1)
+        Call(InterpNpcYaw, NPC_Merlon, 135, 0)
+    EndIf
     Return
     End
 };
@@ -2043,9 +2010,8 @@ EvtScript N(EVS_NpcInit_Twink) = {
 EvtScript N(EVS_NpcInteract_Kolorado) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Plaza_00DF)
     ExecWait(N(EVS_ArtifactPrompt_Kolorado))
-    ExecWait(N(EVS_LetterPrompt_Kolorado))
-    ExecWait(N(EVS_LetterReward_Kolorado))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

@@ -3,20 +3,16 @@
 
 #include "world/common/npc/Toadette/base.h"
 
-ITEM_LIST(N(LetterList_MissT), ITEM_LETTER_CHAIN_MISS_T);
-
-EvtScript N(EVS_LetterPrompt_MissT) = {
-    Call(LetterDelivery_Init,
-        NPC_MissT, ANIM_Toadette_Orange_Talk, ANIM_Toadette_Orange_Idle,
-        ITEM_LETTER_CHAIN_MISS_T, ITEM_LETTER_CHAIN_LITTLE_MOUSER,
-        MSG_MAC_Gate_00FF,
-        MSG_MAC_Gate_0100,
-        MSG_MAC_Gate_0101,
-        MSG_MAC_Gate_0102,
-        Ref(N(LetterList_MissT)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
+LetterDelivery N(LetterDelivery_MissT) = {
+    .recipientID = NPC_MissT,
+    .recipientTalk = ANIM_Toadette_Orange_Talk,
+    .recipientIdle = ANIM_Toadette_Orange_Idle,
+    .msgGreeting = MSG_MAC_Gate_00FF,
+    .msgCancelled = MSG_MAC_Gate_0100,
+    .msgDelivered = MSG_MAC_Gate_0101,
+    .msgRecieved = MSG_MAC_Gate_0102,
+    .letters = { ITEM_LETTER_CHAIN_MISS_T },
+    .reward = ITEM_LETTER_CHAIN_LITTLE_MOUSER,
 };
 
 EvtScript N(EVS_Scene_ToadTownGreeting) = {
@@ -375,8 +371,8 @@ EvtScript N(EVS_NpcInteract_Toadette) = {
 
 EvtScript N(EVS_NpcInteract_MissT) = {
     ExecWait(N(EVS_NpcInteract_Toadette))
-    ExecWait(N(EVS_LetterPrompt_MissT))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_MissT)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

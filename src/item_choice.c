@@ -7,6 +7,7 @@
 BSS s32 ChoiceList[NUM_ITEMS + 1];
 BSS s32 SelectedItemID;
 BSS b32 HasSelectedItem;
+BSS s32 DeferredLetterReward;
 
 static API_CALLABLE(ItemChoice_WaitForSelection) {
     Bytecode* args = script->ptrReadPos;
@@ -142,7 +143,13 @@ EvtScript EVS_ChooseItem = {
 };
 
 EvtScript EVS_GiveItemReward = {
-    Call(ShowGotItem, LVar0, true, 0)
+    IfEq(LVar0, ITEM_STAR_PIECE)
+        Call(ShowGotItem, ITEM_STAR_PIECE, true, 0)
+        Call(AddStarPieces, 1)
+    Else
+        Call(ShowGotItem, LVar0, true, 0)
+        Call(AddItem, LVar0, LVar1)
+    EndIf
     Return
     End
 };
@@ -156,7 +163,7 @@ EvtScript EVS_GiveCoinReward = {
 BSS s32 UnpackedLetterList[5]; // needs one more than LetterDelivery::letters for end-of-list sentinel
 BSS s32 DeliverySavedAnim;
 
-API_CALLABLE(UnpackLetterDelivery) {
+static API_CALLABLE(UnpackLetterDelivery) {
     Bytecode* args = script->ptrReadPos;
     LetterDelivery* delivery = (LetterDelivery*) evt_get_variable(script, *args++);
     s32* letterList;
@@ -184,7 +191,14 @@ API_CALLABLE(UnpackLetterDelivery) {
     script->varTable[4] = delivery->recipientIdle;
 
     script->varTable[5] = letterList[0]; // visual item to hand over
-    script->varTable[6] = ITEM_NONE; // unused?
+
+    if (delivery->deferReward) {
+        script->varTable[6] = ITEM_NONE;
+        DeferredLetterReward = delivery->reward;
+    } else {
+        script->varTable[6] = delivery->reward;
+        DeferredLetterReward = ITEM_NONE;
+    }
 
     script->varTable[7] = delivery->msgGreeting;
     script->varTable[8] = delivery->msgCancelled;
@@ -196,19 +210,10 @@ API_CALLABLE(UnpackLetterDelivery) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(LetterDelivery_Init) {
+static API_CALLABLE(LetterDelivery_GetDeferredReward) {
     Bytecode* args = script->ptrReadPos;
 
-    script->varTable[2] = evt_get_variable(script, *args++);
-    script->varTable[3] = evt_get_variable(script, *args++);
-    script->varTable[4] = evt_get_variable(script, *args++);
-    script->varTable[5] = evt_get_variable(script, *args++);
-    script->varTable[6] = evt_get_variable(script, *args++);
-    script->varTable[7] = evt_get_variable(script, *args++);
-    script->varTable[8] = evt_get_variable(script, *args++);
-    script->varTable[9] = evt_get_variable(script, *args++);
-    script->varTable[10] = evt_get_variable(script, *args++);
-    script->varTable[11] = evt_get_variable(script, *args++);
+    evt_set_variable(script, *args++, DeferredLetterReward);
     return ApiStatus_DONE2;
 }
 
@@ -322,7 +327,7 @@ static EvtScript N(EVS_ShowLetterChoice) = {
 };
 
 // returns DeliveryResult on LVarC
-EvtScript EVS_DoLetterDelivery = {
+static EvtScript EVS_DoLetterDelivery = {
     Set(LVarC, DELIVERY_NOT_POSSIBLE)
     IfLt(GB_StoryProgress, STORY_CH2_PARAKARRY_JOINED_PARTY)
         Return
@@ -358,9 +363,6 @@ EvtScript EVS_DoLetterDelivery = {
                         Call(SpeakToPlayer, LVar2, LVar3, LVar4, 0, LVarA)
                     EndIf
                     Call(EnablePartnerAI)
-                    IfNe(LVar6, ITEM_NONE)
-                        EVT_GIVE_REWARD(LVar6)
-                    EndIf
                     Set(LVarC, DELIVERY_ACCEPTED)
             EndSwitch
         EndIf
@@ -370,36 +372,18 @@ EvtScript EVS_DoLetterDelivery = {
     End
 };
 
-#define EVT_LETTER_PROMPT(npcName, npcID, animTalk, animIdle, msg1, msg2, ms3, msg4, itemID, itemList) \
-    EvtScript N(EVS_LetterPrompt_##npcName) = { \
-        Call(LetterDelivery_Init, \
-            npcID, animTalk, animIdle, \
-            itemID, ITEM_NONE, \
-            msg1, msg2, ms3, msg4, \
-            Ref(itemList)) \
-        ExecWait(EVS_DoLetterDelivery) \
-        Return \
-        End \
-    }
-
-#define EVT_LETTER_REWARD(npcName) \
-    EvtScript N(EVS_LetterReward_##npcName) = { \
-        IfEq(LVarC, DELIVERY_ACCEPTED) \
-            EVT_GIVE_STAR_PIECE() \
-        EndIf \
-        Return \
-        End \
-    }
-
 // expects LetterDelivery* on LVar0
-// returns a DeliveryResult on LVar0
-EvtScript EVS_LetterDelivery = {
+// returns DeliveryResult on LVar0 and accepted deferred reward item on LVar1, or ITEM_NONE
+EvtScript EVS_TryLetterDelivery = {
     Call(UnpackLetterDelivery, LVar0)
     ExecWait(EVS_DoLetterDelivery)
-    IfNe(LVar6, ITEM_NONE)
-        IfEq(LVarC, DELIVERY_ACCEPTED)
-            EVT_GIVE_STAR_PIECE()
+    IfEq(LVarC, DELIVERY_ACCEPTED)
+        IfNe(LVar6, ITEM_NONE)
+            EVT_GIVE_REWARD(LVar6)
         EndIf
+        Call(LetterDelivery_GetDeferredReward, LVar1)
+    Else
+        Set(LVar1, ITEM_NONE)
     EndIf
     Set(LVar0, LVarC)
     Return

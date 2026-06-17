@@ -4,28 +4,16 @@
 #include "world/common/npc/Kolorado/idle.inc.c"
 #include "world/common/npc/Archeologist/idle.inc.c"
 
-ITEM_LIST(N(LetterList), ITEM_LETTER_TO_KOLORADO);
-
-EvtScript N(EVS_DeliveryPrompt) = {
-    Call(LetterDelivery_Init,
-        NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
-        ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
-        MSG_CH2_004A,
-        MSG_CH2_004B,
-        MSG_CH2_004C,
-        MSG_CH2_004D,
-        Ref(N(LetterList)))
-        ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
-
-EvtScript N(EVS_DeliveryReward) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_Kolorado) = {
+    .recipientID = NPC_Kolorado,
+    .recipientTalk = ANIM_Kolorado_Talk,
+    .recipientIdle = ANIM_Kolorado_Idle,
+    .msgGreeting = MSG_CH2_004A,
+    .msgCancelled = MSG_CH2_004B,
+    .msgDelivered = MSG_CH2_004C,
+    .msgRecieved = MSG_CH2_004D,
+    .letters = { ITEM_LETTER_TO_KOLORADO },
+    .reward = ITEM_STAR_PIECE,
 };
 
 ITEM_LIST(N(ArtifactList), ITEM_ARTIFACT);
@@ -33,7 +21,7 @@ ITEM_LIST(N(ArtifactList), ITEM_ARTIFACT);
 EvtScript N(EVS_ArtifactPrompt) = {
     Set(GF_SBK_GaveArtifactToKolorado, true)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH2_0044)
-    EVT_GIVE_STAR_PIECE()
+    EVT_GIVE_REWARD(ITEM_STAR_PIECE)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH2_0045)
     Return
     End
@@ -130,9 +118,8 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
         EndIf
     EndIf
     Call(SetNpcAnimation, NPC_SELF, LVar9)
-    ExecWait(N(EVS_DeliveryPrompt))
-    ExecWait(N(EVS_DeliveryReward))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

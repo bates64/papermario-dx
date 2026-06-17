@@ -18,20 +18,16 @@ extern EvtScript N(EVS_NpcInit_DisguisedMoustafa);
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 
-ITEM_LIST(N(LetterList), ITEM_LETTER_CHAIN_MR_E);
-
-EvtScript N(EVS_LetterPrompt_MrE) = {
-    Call(LetterDelivery_Init,
-        NPC_Dryite_01, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle,
-        ITEM_LETTER_CHAIN_MR_E, ITEM_LETTER_CHAIN_MISS_T,
-        MSG_CH2_0095,
-        MSG_CH2_0096,
-        MSG_CH2_0097,
-        MSG_CH2_0098,
-        Ref(N(LetterList)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
+LetterDelivery N(LetterDelivery_MrE) = {
+    .recipientID = NPC_Dryite_01,
+    .recipientTalk = ANIM_Dryite_Blue_Talk,
+    .recipientIdle = ANIM_Dryite_Blue_Idle,
+    .msgGreeting = MSG_CH2_0095,
+    .msgCancelled = MSG_CH2_0096,
+    .msgDelivered = MSG_CH2_0097,
+    .msgRecieved = MSG_CH2_0098,
+    .letters = { ITEM_LETTER_CHAIN_MR_E },
+    .reward = ITEM_LETTER_CHAIN_MISS_T,
 };
 
 EvtScript N(EVS_NpcInteract_Archeologist) = {
@@ -81,8 +77,8 @@ EvtScript N(EVS_NpcInteract_MrE) = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_0094)
     EndSwitch
-    ExecWait(N(EVS_LetterPrompt_MrE))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_MrE)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

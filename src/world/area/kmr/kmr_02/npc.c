@@ -37,68 +37,40 @@ API_CALLABLE(N(AwaitPartnerGrounded)) {
 
 #include "world/common/atomic/MarioSalute.inc.c"
 
-ITEM_LIST(N(LetterList_GoompapaTrade), ITEM_LETTER_CHAIN_GOOMPAPA_1);
-
-EvtScript N(EVS_LetterTrade_Goompapa) = {
-    Call(LetterDelivery_Init,
-        NPC_Goompapa, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle,
-        ITEM_LETTER_CHAIN_GOOMPAPA_1, ITEM_LETTER_CHAIN_MUSS_T,
-        MSG_CH0_006F,
-        MSG_CH0_0070,
-        MSG_CH0_0071,
-        MSG_CH0_0072,
-        Ref(N(LetterList_GoompapaTrade)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
+LetterDelivery N(LetterDelivery_GoompapaTrade) = {
+    .recipientID = NPC_Goompapa,
+    .recipientTalk = ANIM_Goompapa_Talk,
+    .recipientIdle = ANIM_Goompapa_Idle,
+    .msgGreeting = MSG_CH0_006F,
+    .msgCancelled = MSG_CH0_0070,
+    .msgDelivered = MSG_CH0_0071,
+    .msgRecieved = MSG_CH0_0072,
+    .letters = { ITEM_LETTER_CHAIN_GOOMPAPA_1 },
+    .reward = ITEM_LETTER_CHAIN_MUSS_T,
 };
 
-ITEM_LIST(N(LetterList_Goompapa), ITEM_LETTER_CHAIN_GOOMPAPA_2);
-
-EvtScript N(EVS_LetterPrompt_Goompapa) = {
-    Call(LetterDelivery_Init,
-        NPC_Goompapa, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle,
-        ITEM_LETTER_CHAIN_GOOMPAPA_2, ITEM_NONE,
-        MSG_CH0_0073,
-        MSG_CH0_0074,
-        MSG_CH0_0075,
-        MSG_CH0_0076,
-        Ref(N(LetterList_Goompapa)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
+LetterDelivery N(LetterDelivery_Goompapa) = {
+    .recipientID = NPC_Goompapa,
+    .recipientTalk = ANIM_Goompapa_Talk,
+    .recipientIdle = ANIM_Goompapa_Idle,
+    .msgGreeting = MSG_CH0_0073,
+    .msgCancelled = MSG_CH0_0074,
+    .msgDelivered = MSG_CH0_0075,
+    .msgRecieved = MSG_CH0_0076,
+    .letters = { ITEM_LETTER_CHAIN_GOOMPAPA_2 },
+    .reward = ITEM_LUCKY_DAY,
 };
 
-EvtScript N(EVS_LetterReward_Goompapa) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_REWARD(ITEM_LUCKY_DAY)
-    EndIf
-    Return
-    End
-};
-
-ITEM_LIST(N(LetterList_Goompa), ITEM_LETTER_TO_GOOMPA);
-
-EvtScript N(EVS_LetterPrompt_Goompa) = {
-    Call(LetterDelivery_Init,
-        NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle,
-        ITEM_LETTER_TO_GOOMPA, ITEM_NONE,
-        MSG_CH0_0045,
-        MSG_CH0_0046,
-        MSG_CH0_0047,
-        MSG_CH0_0048,
-        Ref(N(LetterList_Goompa)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_Goompa) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_Goompa) = {
+    .recipientID = NPC_Goompa,
+    .recipientTalk = ANIM_Goompa_Talk,
+    .recipientIdle = ANIM_Goompa_Idle,
+    .msgGreeting = MSG_CH0_0045,
+    .msgCancelled = MSG_CH0_0046,
+    .msgDelivered = MSG_CH0_0047,
+    .msgRecieved = MSG_CH0_0048,
+    .letters = { ITEM_LETTER_TO_GOOMPA },
+    .reward = ITEM_STAR_PIECE,
 };
 
 EvtScript N(EVS_NpcAI_GoombaFamily_NoAI) = {
@@ -203,7 +175,7 @@ EvtScript N(EVS_Goombaria_RequestDolly) = {
         ExecWait(N(EVS_HandOverDolly))
         Call(ContinueSpeech, NPC_Goombaria, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_009A)
         Wait(10)
-        EVT_GIVE_STAR_PIECE()
+        EVT_GIVE_REWARD(ITEM_STAR_PIECE)
         Wait(10)
         Call(SpeakToPlayer, NPC_Goombaria, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_009B)
         Wait(10)
@@ -532,7 +504,7 @@ EvtScript N(EVS_ReturnToVillage) = {
                 Call(SetNpcAnimation, NPC_Goombaria, ANIM_Goombaria_Idle)
                 Call(SpeakToPlayer, NPC_Goombaria, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_0025)
                 Wait(10 * DT)
-                EVT_GIVE_STAR_PIECE()
+                EVT_GIVE_REWARD(ITEM_STAR_PIECE)
                 Call(SpeakToPlayer, NPC_Goombaria, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_0026)
                 Wait(10 * DT)
                 Exec(N(EVS_Goombaria_Kiss))
@@ -883,8 +855,8 @@ EvtScript N(EVS_NpcInteract_Goompa) = {
                 Call(EnablePartnerAI)
             EndIf
     EndSwitch
-    ExecWait(N(EVS_LetterPrompt_Goompa))
-    ExecWait(N(EVS_LetterReward_Goompa))
+    Set(LVar0, Ref(N(LetterDelivery_Goompa)))
+    ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
     ExecWait(N(EVS_KootFavorCheck_Goompa))
     Return
@@ -1029,11 +1001,11 @@ EvtScript N(EVS_NpcInteract_Goompapa) = {
                 Call(SpeakToPlayer, NPC_Goompapa, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle, 0, MSG_CH0_006E)
             EndIf
     EndSwitch
-    ExecWait(N(EVS_LetterTrade_Goompapa))
+    Set(LVar0, Ref(N(LetterDelivery_GoompapaTrade)))
+    ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
-    ExecWait(N(EVS_LetterPrompt_Goompapa))
-    ExecWait(N(EVS_LetterReward_Goompapa))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_Goompapa)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

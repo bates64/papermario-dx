@@ -5,19 +5,29 @@
 #include "world/common/enemy/PutridPiranha/idle.inc.c"
 #include "world/common/enemy/SpikeTop/idle.inc.c"
 
-ITEM_LIST(N(LetterList), ITEM_LETTER_TO_KOLORADO);
+LetterDelivery N(LetterDelivery_Kolorado1) = {
+    .recipientID = NPC_Kolorado,
+    .recipientTalk = ANIM_Kolorado_Talk,
+    .recipientIdle = ANIM_Kolorado_Idle,
+    .msgGreeting = MSG_CH5_00E4,
+    .msgCancelled = MSG_CH5_00E5,
+    .msgDelivered = MSG_CH5_00E6,
+    .msgRecieved = MSG_CH5_00E7,
+    .letters = { ITEM_LETTER_TO_KOLORADO },
+    .reward = ITEM_STAR_PIECE,
+};
 
-EVT_LETTER_PROMPT(Kolorado1, NPC_Kolorado,
-    ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
-    MSG_CH5_00E4, MSG_CH5_00E5, MSG_CH5_00E6, MSG_CH5_00E7,
-    ITEM_LETTER_TO_KOLORADO, N(LetterList));
-
-EVT_LETTER_PROMPT(Kolorado2, NPC_Kolorado,
-    ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
-    MSG_CH5_00E8, MSG_CH5_00E9, MSG_CH5_00EA, MSG_CH5_00EB,
-    ITEM_LETTER_TO_KOLORADO, N(LetterList));
-
-EVT_LETTER_REWARD(Kolorado);
+LetterDelivery N(LetterDelivery_Kolorado2) = {
+    .recipientID = NPC_Kolorado,
+    .recipientTalk = ANIM_Kolorado_Talk,
+    .recipientIdle = ANIM_Kolorado_Idle,
+    .msgGreeting = MSG_CH5_00E8,
+    .msgCancelled = MSG_CH5_00E9,
+    .msgDelivered = MSG_CH5_00EA,
+    .msgRecieved = MSG_CH5_00EB,
+    .letters = { ITEM_LETTER_TO_KOLORADO },
+    .reward = ITEM_STAR_PIECE,
+};
 
 Vec3f N(KoloradoThrownPath)[] = {
     {  447.0,     0.0,   39.0 },
@@ -96,12 +106,12 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
 EvtScript N(EVS_NpcInteract_Kolorado) = {
     IfLt(GB_StoryProgress, STORY_CH5_HIDDEN_PASSAGE_OPEN)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Shout, ANIM_Kolorado_Yell, 0, MSG_CH5_00FC)
-        ExecWait(N(EVS_LetterPrompt_Kolorado1))
-        ExecWait(N(EVS_LetterReward_Kolorado))
+        Set(LVar0, Ref(N(LetterDelivery_Kolorado1)))
+        ExecWait(EVS_TryLetterDelivery)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_HurtStill, 5, MSG_CH5_00FA)
-        ExecWait(N(EVS_LetterPrompt_Kolorado2))
-        ExecWait(N(EVS_LetterReward_Kolorado))
+        Set(LVar0, Ref(N(LetterDelivery_Kolorado2)))
+        ExecWait(EVS_TryLetterDelivery)
     EndIf
     Return
     End

@@ -20,44 +20,28 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
 
-ITEM_LIST(N(RedYoshiKidLetters), ITEM_LETTER_CHAIN_YOSHI_KID);
-
-EvtScript N(EVS_LetterPrompt_RedYoshiKid) = {
-    Call(LetterDelivery_Init,
-        NPC_YoshiKid_02, ANIM_YoshiKid_Red_Talk, ANIM_YoshiKid_Red_Idle,
-        ITEM_LETTER_CHAIN_YOSHI_KID, ITEM_LETTER_CHAIN_DANE_T_2,
-        MSG_CH5_0079,
-        MSG_CH5_007A,
-        MSG_CH5_007B,
-        MSG_CH5_007C,
-        Ref(N(RedYoshiKidLetters)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
+LetterDelivery N(LetterDelivery_RedYoshiKid) = {
+    .recipientID = NPC_YoshiKid_02,
+    .recipientTalk = ANIM_YoshiKid_Red_Talk,
+    .recipientIdle = ANIM_YoshiKid_Red_Idle,
+    .msgGreeting = MSG_CH5_0079,
+    .msgCancelled = MSG_CH5_007A,
+    .msgDelivered = MSG_CH5_007B,
+    .msgRecieved = MSG_CH5_007C,
+    .letters = { ITEM_LETTER_CHAIN_YOSHI_KID },
+    .reward = ITEM_LETTER_CHAIN_DANE_T_2,
 };
 
-ITEM_LIST(N(KoloradoLetters), ITEM_LETTER_TO_KOLORADO);
-
-EvtScript N(EVS_LetterPrompt_Kolorado) = {
-    Call(LetterDelivery_Init,
-        NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
-        ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
-        MSG_CH5_001D,
-        MSG_CH5_001E,
-        MSG_CH5_001F,
-        MSG_CH5_0020,
-        Ref(N(KoloradoLetters)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_Kolorado) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_Kolorado) = {
+    .recipientID = NPC_Kolorado,
+    .recipientTalk = ANIM_Kolorado_Talk,
+    .recipientIdle = ANIM_Kolorado_Idle,
+    .msgGreeting = MSG_CH5_001D,
+    .msgCancelled = MSG_CH5_001E,
+    .msgDelivered = MSG_CH5_001F,
+    .msgRecieved = MSG_CH5_0020,
+    .letters = { ITEM_LETTER_TO_KOLORADO },
+    .reward = ITEM_STAR_PIECE,
 };
 
 s32 N(FoodItemList)[] = {
@@ -430,8 +414,8 @@ EvtScript N(EVS_NpcInteract_YoshiKid_02) = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Red_Talk, ANIM_YoshiKid_Red_Idle, 0, MSG_CH5_0078)
     EndSwitch
-    ExecWait(N(EVS_LetterPrompt_RedYoshiKid))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_RedYoshiKid)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
@@ -620,12 +604,12 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0012)
-            ExecWait(N(EVS_LetterPrompt_Kolorado))
-            ExecWait(N(EVS_LetterReward_Kolorado))
+            Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+            ExecWait(EVS_TryLetterDelivery)
         CaseLt(STORY_CH5_GOT_JADE_RAVEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0013)
-            ExecWait(N(EVS_LetterPrompt_Kolorado))
-            ExecWait(N(EVS_LetterReward_Kolorado))
+            Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+            ExecWait(EVS_TryLetterDelivery)
         CaseLt(STORY_CH5_ZIP_LINE_READY)
             IfEq(AF_JAN03_KoloradoLocalsHint, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0014)
@@ -633,22 +617,22 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0015)
             EndIf
-            ExecWait(N(EVS_LetterPrompt_Kolorado))
-            ExecWait(N(EVS_LetterReward_Kolorado))
+            Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+            ExecWait(EVS_TryLetterDelivery)
         CaseEq(STORY_CH5_STAR_SPRIT_DEPARTED)
             Call(FindItem, ITEM_VOLCANO_VASE, LVar0)
             IfEq(LVar0, -1)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0016)
-                ExecWait(N(EVS_LetterPrompt_Kolorado))
-                ExecWait(N(EVS_LetterReward_Kolorado))
+                Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+                ExecWait(EVS_TryLetterDelivery)
             Else
                 Call(AdjustCam, CAM_DEFAULT, Float(5.0), 0, 325, Float(20.0), Float(-7.5))
                 EVT_CHOOSE_KEY_ITEM_FROM(N(VolcanoVaseList), NPC_Kolorado)
                 Switch(LVar0)
                     CaseEq(ITEM_CHOICE_CANCELED)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0017)
-                        ExecWait(N(EVS_LetterPrompt_Kolorado))
-                        ExecWait(N(EVS_LetterReward_Kolorado))
+                        Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+                        ExecWait(EVS_TryLetterDelivery)
                     CaseDefault
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0018)
                         Call(SetPlayerAnimation, ANIM_Mario1_NodYes)

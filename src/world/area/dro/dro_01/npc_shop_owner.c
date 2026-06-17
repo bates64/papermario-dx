@@ -96,34 +96,30 @@ EvtScript N(EVS_NpcIdle_ShopOwner) = {
     End
 };
 
-ITEM_LIST(N(LetterList), ITEM_LETTER_CHAIN_LITTLE_MOUSER);
-
-EvtScript N(EVS_LetterPrompt_ShopOwner) = {
-    Call(LetterDelivery_Init,
-        NPC_Mouser_ShopOwner, ANIM_Mouser_Purple_Talk, ANIM_Mouser_Purple_Idle,
-        ITEM_LETTER_CHAIN_LITTLE_MOUSER, ITEM_LETTER_CHAIN_FRANKY,
-        MSG_CH2_0089,
-        MSG_CH2_008A,
-        MSG_CH2_008B,
-        MSG_CH2_008C,
-        Ref(N(LetterList)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
+LetterDelivery N(LetterDelivery_ShopOwner) = {
+    .recipientID = NPC_Mouser_ShopOwner,
+    .recipientTalk = ANIM_Mouser_Purple_Talk,
+    .recipientIdle = ANIM_Mouser_Purple_Idle,
+    .msgGreeting = MSG_CH2_0089,
+    .msgCancelled = MSG_CH2_008A,
+    .msgDelivered = MSG_CH2_008B,
+    .msgRecieved = MSG_CH2_008C,
+    .letters = { ITEM_LETTER_CHAIN_LITTLE_MOUSER },
+    .reward = ITEM_LETTER_CHAIN_FRANKY,
 };
 
 EvtScript N(EVS_NpcInteract_ShopOwner) = {
     IfEq(AB_DRO_SHOP_PREV1, 4)
         IfEq(AB_DRO_SHOP_PREV2, 1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Purple_Talk, ANIM_Mouser_Purple_Idle, 0, MSG_CH2_0088)
-            ExecWait(N(EVS_LetterPrompt_ShopOwner))
-            EVT_RETURN_IF_DELIVERED()
+            Set(LVar0, Ref(N(LetterDelivery_ShopOwner)))
+            ExecWait(EVS_TryLetterDelivery)
             Return
         EndIf
     EndIf
     ExecWait(EVS_ShopOwnerDialog)
-    ExecWait(N(EVS_LetterPrompt_ShopOwner))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_ShopOwner)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

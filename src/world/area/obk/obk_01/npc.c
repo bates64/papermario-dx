@@ -5,20 +5,16 @@
 
 #include "world/common/atomic/MarioSalute.inc.c"
 
-ITEM_LIST(N(LetterList_Franky), ITEM_LETTER_CHAIN_FRANKY);
-
-EvtScript N(EVS_LetterPrompt_Franky) = {
-    Call(LetterDelivery_Init,
-        NPC_Franky, ANIM_Boo_Talk, ANIM_Boo_Idle,
-        ITEM_LETTER_CHAIN_FRANKY, ITEM_LETTER_CHAIN_DANE_T_1,
-        MSG_CH3_0067,
-        MSG_CH3_0068,
-        MSG_CH3_0069,
-        MSG_CH3_006A,
-        Ref(N(LetterList_Franky)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
+LetterDelivery N(LetterDelivery_Franky) = {
+    .recipientID = NPC_Franky,
+    .recipientTalk = ANIM_Boo_Talk,
+    .recipientIdle = ANIM_Boo_Idle,
+    .msgGreeting = MSG_CH3_0067,
+    .msgCancelled = MSG_CH3_0068,
+    .msgDelivered = MSG_CH3_0069,
+    .msgRecieved = MSG_CH3_006A,
+    .letters = { ITEM_LETTER_CHAIN_FRANKY },
+    .reward = ITEM_LETTER_CHAIN_DANE_T_1,
 };
 
 enum {
@@ -151,7 +147,8 @@ EvtScript N(EVS_NpcInteract_Franky) = {
         CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0066)
     EndSwitch
-    ExecWait(N(EVS_LetterPrompt_Franky))
+    Set(LVar0, Ref(N(LetterDelivery_Franky)))
+    ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
     IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH5_3)
         IfEq(GF_OBK01_Gift_OldPhoto, false)

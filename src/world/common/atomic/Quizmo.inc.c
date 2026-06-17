@@ -1075,7 +1075,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
                 Wait(1)
             EndLoop
             Call(SetNpcAnimation, CHUCK_QUIZMO_NPC_ID, ANIM_ChuckQuizmo_OpenHat)
-            EVT_GIVE_STAR_PIECE()
+            EVT_GIVE_REWARD(ITEM_STAR_PIECE)
             Call(N(Quizmo_SetStageLightsDelay), 15)
             Call(N(Quizmo_SetVannaAnim_Idle))
             Call(SetMessageValue, GB_CompletedQuizzes, 0)
@@ -1091,7 +1091,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
                 Wait(1)
             EndLoop
             Call(SetNpcAnimation, CHUCK_QUIZMO_NPC_ID, ANIM_ChuckQuizmo_OpenHat)
-            EVT_GIVE_STAR_PIECE()
+            EVT_GIVE_REWARD(ITEM_STAR_PIECE)
             Call(N(Quizmo_SetStageLightsDelay), 15)
             Call(N(Quizmo_SetVannaAnim_Idle))
             Call(SetMessageValue, GB_CompletedQuizzes, 0)

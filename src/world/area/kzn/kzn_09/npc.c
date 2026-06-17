@@ -12,13 +12,17 @@ NpcSettings N(NpcSettings_Zipline) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-ITEM_LIST(N(LetterList), ITEM_LETTER_TO_KOLORADO);
-
-EVT_LETTER_PROMPT(Kolorado, NPC_Kolorado, ANIM_Kolorado_Fallen, ANIM_Kolorado_Fallen,
-    MSG_CH5_00E8, MSG_CH5_00E9, MSG_CH5_00EA, MSG_CH5_00EB,
-    ITEM_LETTER_TO_KOLORADO, N(LetterList));
-
-EVT_LETTER_REWARD(Kolorado);
+LetterDelivery N(LetterDelivery_Kolorado) = {
+    .recipientID = NPC_Kolorado,
+    .recipientTalk = ANIM_Kolorado_Fallen,
+    .recipientIdle = ANIM_Kolorado_Fallen,
+    .msgGreeting = MSG_CH5_00E8,
+    .msgCancelled = MSG_CH5_00E9,
+    .msgDelivered = MSG_CH5_00EA,
+    .msgRecieved = MSG_CH5_00EB,
+    .letters = { ITEM_LETTER_TO_KOLORADO },
+    .reward = ITEM_STAR_PIECE,
+};
 
 EvtScript N(EVS_Scene_KoloradoFallsDown) = {
     Label(0)
@@ -88,11 +92,11 @@ EvtScript N(EVS_Scene_KoloradoFallsDown) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Shout, ANIM_Kolorado_Yell, 0, MSG_CH5_00F4)
     Call(SetSelfVar, 0, 1)
     Label(2)
-    Call(GetSelfVar, 0, LVar0)
-    IfNe(LVar0, 0)
-        Wait(1)
-        Goto(2)
-    EndIf
+        Call(GetSelfVar, 0, LVar0)
+        IfNe(LVar0, 0)
+            Wait(1)
+            Goto(2)
+        EndIf
     Call(UseSettingsFrom, CAM_DEFAULT, -310, 870, -15)
     Call(SetPanTarget, CAM_DEFAULT, -310, 870, -15)
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.0 / DT))
@@ -113,12 +117,12 @@ EvtScript N(EVS_Scene_KoloradoFallsDown) = {
     Call(SetSelfVar, 0, 1)
     Thread
         Label(3)
-        Call(ShowSweat, NPC_SELF, 1, -45, EMOTER_NPC, 0, 0, 0, 0, 20)
-        Call(GetSelfVar, 0, LVar0)
-        IfEq(LVar0, 1)
-            Wait(25)
-            Goto(3)
-        EndIf
+            Call(ShowSweat, NPC_SELF, 1, -45, EMOTER_NPC, 0, 0, 0, 0, 20)
+            Call(GetSelfVar, 0, LVar0)
+            IfEq(LVar0, 1)
+                Wait(25)
+                Goto(3)
+            EndIf
     EndThread
     Wait(10 * DT)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Walk)
@@ -161,11 +165,11 @@ EvtScript N(EVS_Scene_KoloradoFallsDown) = {
         Call(PlayerMoveTo, -360, 0, 0)
         Call(SetPlayerAnimation, ANIM_Mario1_SpinFall)
         Label(5)
-        Call(GetSelfVar, 0, LVar0)
-        IfEq(LVar0, 1)
-            Wait(1)
-            Goto(5)
-        EndIf
+            Call(GetSelfVar, 0, LVar0)
+            IfEq(LVar0, 1)
+                Wait(1)
+                Goto(5)
+            EndIf
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     EndThread
     Call(ShowMessageAtScreenPos, MSG_CH5_00F5, 160, 40)
@@ -182,7 +186,8 @@ EvtScript N(EVS_Scene_KoloradoFallsDown) = {
 
 EvtScript N(EVS_Kolorado_Interact) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Fallen, ANIM_Kolorado_Fallen, 0, MSG_CH5_00F6)
-    EVT_LETTER_CHECK(Kolorado)
+    Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

@@ -134,8 +134,8 @@ API_CALLABLE(N(IsDestCellUnavailable)) {
     s32 idx = evt_get_variable(script, *args++);
     DinoPuzzleData* puzzle = (DinoPuzzleData*) evt_get_variable(script, MV_PuzzleDataPtr);
     DinoData* dino = &puzzle->dinos[idx];
-    s32 ci;
-    s32 cj;
+    s32 ci = dino->ci;
+    s32 cj = dino->cj;
     s32 i;
 
     script->varTable[0] = 0;

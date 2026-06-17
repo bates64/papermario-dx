@@ -27,28 +27,16 @@ enum WhaleTravelMode {
     WHALE_TRAVEL_ARRIVE     = 1,
 };
 
-ITEM_LIST(N(LetterList), ITEM_LETTER_TO_KOLORADO);
-
-EvtScript N(EVS_LetterPrompt_Kolorado) = {
-    Call(LetterDelivery_Init,
-        NPC_Kolorado_02, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
-        ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
-        MSG_CH5_001D,
-        MSG_CH5_001E,
-        MSG_CH5_001F,
-        MSG_CH5_0020,
-        Ref(N(LetterList)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_Kolorado) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_Kolorado) = {
+    .recipientID = NPC_Kolorado_02,
+    .recipientTalk = ANIM_Kolorado_Talk,
+    .recipientIdle = ANIM_Kolorado_Idle,
+    .msgGreeting = MSG_CH5_001D,
+    .msgCancelled = MSG_CH5_001E,
+    .msgDelivered = MSG_CH5_001F,
+    .msgRecieved = MSG_CH5_0020,
+    .letters = { ITEM_LETTER_TO_KOLORADO },
+    .reward = ITEM_STAR_PIECE,
 };
 
 API_CALLABLE(N(GetWhaleRiderTargetPos)) {
@@ -539,8 +527,8 @@ EvtScript N(EVS_NpcInit_Kolorado_01) = {
 EvtScript N(EVS_NpcInteract_Kolorado_02) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0006)
-    ExecWait(N(EVS_LetterPrompt_Kolorado))
-    ExecWait(N(EVS_LetterReward_Kolorado))
+    Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

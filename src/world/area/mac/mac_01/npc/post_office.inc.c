@@ -240,7 +240,7 @@ EvtScript N(EVS_ItemPrompt_Mailbag) = {
                 Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0062)
                 Set(GF_MAC01_MailbagReturned, true)
                 Wait(10)
-                EVT_GIVE_STAR_PIECE()
+                EVT_GIVE_REWARD(ITEM_STAR_PIECE)
                 Wait(10)
         EndSwitch
     EndIf

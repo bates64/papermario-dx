@@ -17,66 +17,40 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
 
-s32 N(LettersKoover1)[] = {
-    ITEM_LETTER_CHAIN_KOOVER_1, ITEM_NONE
+LetterDelivery N(LetterDelivery_Koover1) = {
+    .recipientID = NPC_Koover,
+    .recipientTalk = ANIM_Koopa_Talk,
+    .recipientIdle = ANIM_Koopa_Idle,
+    .msgGreeting = MSG_CH1_0009,
+    .msgCancelled = MSG_CH1_000A,
+    .msgDelivered = MSG_CH1_000B,
+    .msgRecieved = MSG_CH1_000C,
+    .letters = { ITEM_LETTER_CHAIN_KOOVER_1 },
+    .reward = ITEM_LETTER_CHAIN_FISHMAEL,
 };
 
-EvtScript N(EVS_LetterPrompt_Koover1) = {
-    Call(LetterDelivery_Init,
-        NPC_Koover, ANIM_Koopa_Talk, ANIM_Koopa_Idle,
-        ITEM_LETTER_CHAIN_KOOVER_1, ITEM_LETTER_CHAIN_FISHMAEL,
-        MSG_CH1_0009,
-        MSG_CH1_000A,
-        MSG_CH1_000B,
-        MSG_CH1_000C,
-        Ref(N(LettersKoover1)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
+LetterDelivery N(LetterDelivery_Koover2) = {
+    .recipientID = NPC_Koover,
+    .recipientTalk = ANIM_Koopa_Talk,
+    .recipientIdle = ANIM_Koopa_Idle,
+    .msgGreeting = MSG_CH1_000D,
+    .msgCancelled = MSG_CH1_000E,
+    .msgDelivered = MSG_CH1_000F,
+    .msgRecieved = MSG_CH1_0010,
+    .letters = { ITEM_LETTER_CHAIN_KOOVER_2 },
+    .reward = ITEM_LETTER_CHAIN_MR_E,
 };
 
-s32 N(LettersKoover2)[] = {
-    ITEM_LETTER_CHAIN_KOOVER_2, ITEM_NONE
-};
-
-EvtScript N(EVS_LetterPrompt_Koover2) = {
-    Call(LetterDelivery_Init,
-        NPC_Koover, ANIM_Koopa_Talk, ANIM_Koopa_Idle,
-        ITEM_LETTER_CHAIN_KOOVER_2, ITEM_LETTER_CHAIN_MR_E,
-        MSG_CH1_000D,
-        MSG_CH1_000E,
-        MSG_CH1_000F,
-        MSG_CH1_0010,
-        Ref(N(LettersKoover2)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
-
-s32 N(LettersMortT)[] = {
-    ITEM_LETTER_TO_MORT_T, ITEM_NONE
-};
-
-EvtScript N(EVS_LetterPrompt_MortT) = {
-    Call(LetterDelivery_Init,
-        NPC_MortT, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle,
-        ITEM_LETTER_TO_MORT_T, ITEM_NONE,
-        MSG_CH1_0039,
-        MSG_CH1_003A,
-        MSG_CH1_003B,
-        MSG_CH1_003C,
-        Ref(N(LettersMortT)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_MortT) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_MortT) = {
+    .recipientID = NPC_MortT,
+    .recipientTalk = ANIM_Toad_Red_Talk,
+    .recipientIdle = ANIM_Toad_Red_Idle,
+    .msgGreeting = MSG_CH1_0039,
+    .msgCancelled = MSG_CH1_003A,
+    .msgDelivered = MSG_CH1_003B,
+    .msgRecieved = MSG_CH1_003C,
+    .letters = { ITEM_LETTER_TO_MORT_T },
+    .reward = ITEM_STAR_PIECE,
 };
 
 API_CALLABLE(N(IsNpcFacingRight)) {
@@ -354,8 +328,8 @@ EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
 };
 
 EvtScript N(EVS_NpcInteract_MortT) = {
-    ExecWait(N(EVS_LetterPrompt_MortT))
-    ExecWait(N(EVS_LetterReward_MortT))
+    Set(LVar0, Ref(N(LetterDelivery_MortT)))
+    ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
     ExecWait(N(EVS_NpcInteract_ToadHouseKeeper))
     Return

@@ -68,20 +68,16 @@ NpcSettings N(NpcSettings_ShiverToad_Stationary) = {
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 
-ITEM_LIST(N(LetterList_FrostT), ITEM_LETTER_CHAIN_FROST_T);
-
-EvtScript N(EVS_LetterPrompt_FrostT) = {
-    Call(LetterDelivery_Init,
-        NPC_ShiverToad_03, ANIM_ShiverToad_Green_Talk, ANIM_ShiverToad_Green_Idle,
-        ITEM_LETTER_CHAIN_FROST_T, ITEM_LETTER_CHAIN_GOOMPAPA_2,
-        MSG_CH7_00FE,
-        MSG_CH7_00FF,
-        MSG_CH7_0100,
-        MSG_CH7_0101,
-        Ref(N(LetterList_FrostT)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
+LetterDelivery N(LetterDelivery_FrostT) = {
+    .recipientID = NPC_ShiverToad_03,
+    .recipientTalk = ANIM_ShiverToad_Green_Talk,
+    .recipientIdle = ANIM_ShiverToad_Green_Idle,
+    .msgGreeting = MSG_CH7_00FE,
+    .msgCancelled = MSG_CH7_00FF,
+    .msgDelivered = MSG_CH7_0100,
+    .msgRecieved = MSG_CH7_0101,
+    .letters = { ITEM_LETTER_CHAIN_FROST_T },
+    .reward = ITEM_LETTER_CHAIN_GOOMPAPA_2,
 };
 
 EvtScript N(EVS_NpcInteract_Merle) = {
@@ -590,8 +586,8 @@ EvtScript N(EVS_NpcInteract_ShiverToad_03) = {
         CaseGe(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ShiverToad_Green_Talk, ANIM_ShiverToad_Green_Idle, 0, MSG_CH7_00FD)
     EndSwitch
-    ExecWait(N(EVS_LetterPrompt_FrostT))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_FrostT)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

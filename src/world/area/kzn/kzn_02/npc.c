@@ -5,14 +5,17 @@
 
 #include "world/common/npc/Kolorado/idle.inc.c"
 
-ITEM_LIST(N(LetterList), ITEM_LETTER_TO_KOLORADO);
-
-EVT_LETTER_PROMPT(Kolorado, NPC_Kolorado,
-    ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
-    MSG_CH5_00E4, MSG_CH5_00E5, MSG_CH5_00E6, MSG_CH5_00E7,
-    ITEM_LETTER_TO_KOLORADO, N(LetterList));
-
-EVT_LETTER_REWARD(Kolorado);
+LetterDelivery N(LetterDelivery_Kolorado) = {
+    .recipientID = NPC_Kolorado,
+    .recipientTalk = ANIM_Kolorado_Talk,
+    .recipientIdle = ANIM_Kolorado_Idle,
+    .msgGreeting = MSG_CH5_00E4,
+    .msgCancelled = MSG_CH5_00E5,
+    .msgDelivered = MSG_CH5_00E6,
+    .msgRecieved = MSG_CH5_00E7,
+    .letters = { ITEM_LETTER_TO_KOLORADO },
+    .reward = ITEM_STAR_PIECE,
+};
 
 EvtScript N(EVS_NpcIdle_Kolorado) = {
     Call(DisablePlayerInput, true)
@@ -134,7 +137,8 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
     Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 7)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Idle)
     Call(CloseMessage)
-    EVT_LETTER_CHECK(Kolorado)
+    Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

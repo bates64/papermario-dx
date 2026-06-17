@@ -155,7 +155,12 @@ EvtScript N(EVS_Scene_MeetParakarry) = {
     End
 };
 
-ITEM_LIST(N(LetterList), ITEM_LETTER_TO_MERLON, ITEM_LETTER_TO_KOLORADO, ITEM_LETTER_CHAIN_GOOMPAPA_1);
+s32 N(LetterList)[] = {
+    ITEM_LETTER_TO_MERLON,
+    ITEM_LETTER_TO_KOLORADO,
+    ITEM_LETTER_CHAIN_GOOMPAPA_1,
+    ITEM_NONE
+};
 
 EvtScript N(EVS_NpcInteract_Parakarry) = {
     Set(LFlag0, false)

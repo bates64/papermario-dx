@@ -335,7 +335,7 @@ ITEM_LIST(N(ItemList_Artifact), ITEM_ARTIFACT);
 
 EvtScript N(EVS_ArtifactReward_Kolorado) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH1_009F)
-    EVT_GIVE_STAR_PIECE()
+    EVT_GIVE_REWARD(ITEM_STAR_PIECE)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH1_00A0)
     Set(GF_SBK_GaveArtifactToKolorado, true)
     Return
@@ -392,9 +392,8 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
     Wait(15)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH1_0096)
     ExecWait(N(EVS_ArtifactPrompt_Kolorado))
-    ExecWait(N(EVS_LetterPrompt_Kolorado))
-    ExecWait(N(EVS_LetterReward_Kolorado))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

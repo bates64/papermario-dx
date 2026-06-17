@@ -6,28 +6,16 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
 
-ITEM_LIST(N(MayorLetterList), ITEM_LETTER_TO_MAYOR_PENGUIN);
-
-EvtScript N(EVS_LetterPrompt_Mayor) = {
-    Call(LetterDelivery_Init,
-        NPC_MayorPenguin, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle,
-        ITEM_LETTER_TO_MAYOR_PENGUIN, ITEM_NONE,
-        MSG_CH7_0041,
-        MSG_CH7_0042,
-        MSG_CH7_0043,
-        MSG_CH7_0044,
-        Ref(N(MayorLetterList)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_Mayor) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_Mayor) = {
+    .recipientID = NPC_MayorPenguin,
+    .recipientTalk = ANIM_MayorPenguin_Talk,
+    .recipientIdle = ANIM_MayorPenguin_Idle,
+    .msgGreeting = MSG_CH7_0041,
+    .msgCancelled = MSG_CH7_0042,
+    .msgDelivered = MSG_CH7_0043,
+    .msgRecieved = MSG_CH7_0044,
+    .letters = { ITEM_LETTER_TO_MAYOR_PENGUIN },
+    .reward = ITEM_STAR_PIECE,
 };
 
 EvtScript N(EVS_Mayor_CarryBucket) = {
@@ -161,9 +149,8 @@ EvtScript N(EVS_NpcInteract_MayorPenguin) = {
         CaseGe(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle, 0, MSG_CH7_0040)
     EndSwitch
-    ExecWait(N(EVS_LetterPrompt_Mayor))
-    ExecWait(N(EVS_LetterReward_Mayor))
-    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_Mayor)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };

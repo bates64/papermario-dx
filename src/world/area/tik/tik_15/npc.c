@@ -85,7 +85,7 @@ EvtScript N(EVS_NpcInteract_RipCheato) = {
             Call(AddCoin, -RIP_CHEATO_COST)
             Call(ShowCoinCounter, false)
             Call(EndSpeech, NPC_RipCheato, ANIM_RipCheato_Talk, ANIM_RipCheato_Idle, 0)
-            EVT_GIVE_STAR_PIECE()
+            EVT_GIVE_REWARD(ITEM_STAR_PIECE)
         CaseEq(CHEATO_TYPE_BADGE)
             Call(AddCoin, -RIP_CHEATO_COST)
             Call(ShowCoinCounter, false)

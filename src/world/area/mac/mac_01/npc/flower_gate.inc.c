@@ -325,8 +325,6 @@ EvtScript N(EVS_Scene_FlowerGateAppears) = {
     End
 };
 
-ITEM_LIST(N(LetterList_MinhT_Unused), ITEM_LETTER_TO_MINH_T);
-
 ITEM_LIST(N(ItemList_MagicalSeeds), ITEM_MAGICAL_SEED1, ITEM_MAGICAL_SEED2, ITEM_MAGICAL_SEED3, ITEM_MAGICAL_SEED4);
 
 EvtScript N(EVS_MinhT_PlantSeed) = {
@@ -446,8 +444,8 @@ EvtScript N(D_80258FFC_81987C) = {
 };
 
 EvtScript N(EVS_NpcInteract_MinhT) = {
-    ExecWait(N(EVS_LetterPrompt_MinhT))
-    ExecWait(N(EVS_LetterReward_MinhT))
+    Set(LVar0, Ref(N(LetterDelivery_MinhT)))
+    ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
     Set(LVar2, 0)
     Switch(GB_StoryProgress)
