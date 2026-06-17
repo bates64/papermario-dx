@@ -10,6 +10,8 @@
 #include "world/common/npc/Bobomb/idle.inc.c"
 #include "world/common/npc/Dryite/idle.inc.c"
 #include "world/common/npc/Chanterelle/idle.inc.c"
+#include "world/common/npc/MusicianPoet/idle.inc.c"
+#include "world/common/npc/MusicianComposer/idle.inc.c"
 
 EvtScript N(EVS_NpcInteract_Kolorado) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_Outro_003C)
@@ -357,27 +359,10 @@ NpcData N(NpcData_Artists)[] = {
         .pos = { 230.0f, 20.0f, 500.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Poet),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_MusicianPoet_Idle),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Musician_Poet_Idle,
-            .walk   = ANIM_Musician_Poet_Idle,
-            .run    = ANIM_Musician_Poet_Idle,
-            .chase  = ANIM_Musician_Poet_Idle,
-            .alert  = ANIM_Musician_Poet_Idle,
-            .unused = ANIM_Musician_Poet_Idle,
-            .death  = ANIM_Musician_Poet_Idle,
-            .hit    = ANIM_Musician_Poet_Idle,
-            .anim_8 = ANIM_Musician_Poet_Idle,
-            .anim_9 = ANIM_Musician_Poet_Idle,
-            .anim_A = ANIM_Musician_Poet_Idle,
-            .anim_B = ANIM_Musician_Poet_Idle,
-            .anim_C = ANIM_Musician_Poet_Idle,
-            .anim_D = ANIM_Musician_Poet_Idle,
-            .anim_E = ANIM_Musician_Poet_Idle,
-            .anim_F = ANIM_Musician_Poet_Idle,
-        },
+        .animations = MUSICIAN_POET_ANIMS,
         .limitAnimations = N(LimitAnims_Poet),
         .tattle = MSG_NpcTattle_MasterPoet,
     },
@@ -386,27 +371,10 @@ NpcData N(NpcData_Artists)[] = {
         .pos = { 300.0f, 20.0f, 500.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Composer),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_MusicianComposer),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Musician_Composer_Idle,
-            .walk   = ANIM_Musician_Composer_Still,
-            .run    = ANIM_Musician_Composer_Still,
-            .chase  = ANIM_Musician_Composer_Still,
-            .alert  = ANIM_Musician_Composer_Still,
-            .unused = ANIM_Musician_Composer_Still,
-            .death  = ANIM_Musician_Composer_Still,
-            .hit    = ANIM_Musician_Composer_Still,
-            .anim_8 = ANIM_Musician_Composer_Still,
-            .anim_9 = ANIM_Musician_Composer_Still,
-            .anim_A = ANIM_Musician_Composer_Still,
-            .anim_B = ANIM_Musician_Composer_Still,
-            .anim_C = ANIM_Musician_Composer_Still,
-            .anim_D = ANIM_Musician_Composer_Still,
-            .anim_E = ANIM_Musician_Composer_Still,
-            .anim_F = ANIM_Musician_Composer_Still,
-        },
+        .animations = MUSICIAN_COMPOSER_ANIMS,
         .limitAnimations = N(LimitAnims_Poet),
         .tattle = MSG_NpcTattle_Composer,
     },

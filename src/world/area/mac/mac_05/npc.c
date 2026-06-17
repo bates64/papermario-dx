@@ -11,6 +11,7 @@
 #include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/npc/Chanterelle/idle.inc.c"
 #include "world/common/npc/Bartender/idle.inc.c"
+#include "world/common/npc/MusicianPoet/idle.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
@@ -2109,7 +2110,7 @@ NpcData N(NpcData_Fishmael) = {
     .pos = { 370.0f, -10.0f, -115.0f },
     .yaw = 270,
     .init = &N(EVS_NpcInit_Fishmael),
-    .settings = &N(NpcSettings_Toad_Idle),
+    .settings = &N(NpcSettings_Toad),
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = {
@@ -2132,7 +2133,7 @@ NpcData N(NpcData_Fuzzipede) = {
     .pos = { 320.0f, -10.0f, -115.0f },
     .yaw = 90,
     .init = &N(EVS_NpcInit_Fuzzipede),
-    .settings = &N(NpcSettings_Toad_Idle),
+    .settings = &N(NpcSettings_Toad),
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = {
@@ -2191,7 +2192,7 @@ NpcData N(NpcData_Toads)[] = {
         .pos = { 320.0f, 0.0f, -300.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Toad_04),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
@@ -2202,7 +2203,7 @@ NpcData N(NpcData_Toads)[] = {
         .pos = { -330.0f, -10.0f, -90.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toad_05),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
@@ -2213,7 +2214,7 @@ NpcData N(NpcData_Toads)[] = {
         .pos = { -50.0f, 0.0f, -400.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Toad_06),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -2238,7 +2239,7 @@ NpcData N(NpcData_Toads)[] = {
             }
         },
         .init = &N(EVS_NpcInit_Toad_07),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_YELLOW_ANIMS,
@@ -2263,7 +2264,7 @@ NpcData N(NpcData_Bartender)[] = {
         .pos = { 30.0f, 0.0f, -570.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Toad_02),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -2285,27 +2286,10 @@ NpcData N(NpcData_Bartender)[] = {
         .pos = { 158.0f, 0.0f, -555.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_ArtistToad),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_MusicianPoet_Idle),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Musician_Poet_Idle,
-            .walk   = ANIM_Musician_Poet_Idle,
-            .run    = ANIM_Musician_Poet_Idle,
-            .chase  = ANIM_Musician_Poet_Idle,
-            .alert  = ANIM_Musician_Poet_Idle,
-            .unused = ANIM_Musician_Poet_Idle,
-            .death  = ANIM_Musician_Poet_Idle,
-            .hit    = ANIM_Musician_Poet_Idle,
-            .anim_8 = ANIM_Musician_Poet_Idle,
-            .anim_9 = ANIM_Musician_Poet_Idle,
-            .anim_A = ANIM_Musician_Poet_Idle,
-            .anim_B = ANIM_Musician_Poet_Idle,
-            .anim_C = ANIM_Musician_Poet_Idle,
-            .anim_D = ANIM_Musician_Poet_Idle,
-            .anim_E = ANIM_Musician_Poet_Idle,
-            .anim_F = ANIM_Musician_Poet_Idle,
-        },
+        .animations = MUSICIAN_POET_ANIMS,
         .tattle = MSG_NpcTattle_MasterPoet,
     },
     {
@@ -2313,7 +2297,7 @@ NpcData N(NpcData_Bartender)[] = {
         .pos = { 92.0f, 0.0f, -500.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_TradeEventToad),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = TOAD_PINK_ANIMS,

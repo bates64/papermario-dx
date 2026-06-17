@@ -1,5 +1,6 @@
 #include "dro_01.h"
 #include "sprite/player.h"
+#include "world/common/npc/MusicianComposer/base.h"
 
 ITEM_LIST(N(LyricsList), ITEM_LYRICS);
 

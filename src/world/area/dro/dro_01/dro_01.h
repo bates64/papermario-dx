@@ -15,7 +15,6 @@
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/npc/Mouser.h"
 #include "sprite/npc/Dryite.h"
-#include "sprite/npc/Musician.h"
 #include "sprite/npc/Toadette.h"
 
 enum {

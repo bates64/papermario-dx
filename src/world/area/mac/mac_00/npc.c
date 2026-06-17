@@ -8,6 +8,7 @@
 #include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/npc/GoombaFamily/idle.inc.c"
 #include "world/common/npc/Dummy/idle.inc.c"
+#include "world/common/npc/RussT/idle.inc.c"
 
 #include "world/common/enemy/ShyGuy/idle.inc.c"
 
@@ -223,27 +224,10 @@ NpcData N(NpcData_RussT) = {
     .pos = { -66.0f, 20.0f, -532.0f },
     .yaw = 119,
     .init = &N(EVS_NpcInit_RussT),
-    .settings = &N(NpcSettings_RussT),
+    .settings = &N(NpcSettings_RussT_Idle),
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_RussT_Idle,
-        .walk   = ANIM_RussT_Idle,
-        .run    = ANIM_RussT_Idle,
-        .chase  = ANIM_RussT_Idle,
-        .alert  = ANIM_RussT_Idle,
-        .unused = ANIM_RussT_Idle,
-        .death  = ANIM_RussT_Idle,
-        .hit    = ANIM_RussT_Idle,
-        .anim_8 = ANIM_RussT_Idle,
-        .anim_9 = ANIM_RussT_Idle,
-        .anim_A = ANIM_RussT_Idle,
-        .anim_B = ANIM_RussT_Idle,
-        .anim_C = ANIM_RussT_Idle,
-        .anim_D = ANIM_RussT_Idle,
-        .anim_E = ANIM_RussT_Idle,
-        .anim_F = ANIM_RussT_Idle,
-    },
+    .animations = RUSS_T_ANIMS,
     .tattle = MSG_NpcTattle_RussT,
 };
 
@@ -253,7 +237,7 @@ NpcData N(NpcData_Toad_01)[] = {
         .pos = { 430.0f, 20.0f, -373.0f },
         .yaw = 223,
         .init = &N(EVS_NpcInit_Toad_01),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = {
@@ -270,7 +254,7 @@ NpcData N(NpcData_Toad_01)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 223,
         .init = &N(EVS_NpcInit_Toad_02),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = {
@@ -387,7 +371,7 @@ NpcData N(NpcData_Waterfront_Family)[] = {
         .pos = { -496.0f, 20.0f, 218.0f },
         .yaw = 133,
         .init = &N(EVS_NpcInit_WaterfrontDad),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = TOAD_GREEN_ANIMS,
@@ -398,7 +382,7 @@ NpcData N(NpcData_Waterfront_Family)[] = {
         .pos = { -566.0f, 20.0f, 267.0f },
         .yaw = 133,
         .init = &N(EVS_NpcInit_WaterfrontMom),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = TOADETTE_ORANGE_ANIMS,
@@ -409,7 +393,7 @@ NpcData N(NpcData_Waterfront_Family)[] = {
         .pos = { -508.0f, 20.0f, 324.0f },
         .yaw = 313,
         .init = &N(EVS_NpcInit_WaterfrontKid1),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = TOAD_KID_GREEN_ANIMS,
@@ -420,7 +404,7 @@ NpcData N(NpcData_Waterfront_Family)[] = {
         .pos = { -480.0f, 20.0f, 329.0f },
         .yaw = 313,
         .init = &N(EVS_NpcInit_WaterfrontKid2),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = TOAD_KID_GREEN_ANIMS,
@@ -433,7 +417,7 @@ NpcData N(NpcData_PrizeToad) = {
     .pos = { -112.0f, 0.0f, -62.0f },
     .yaw = 90,
     .init = &N(EVS_NpcInit_TradingToad),
-    .settings = &N(NpcSettings_Toad_Idle),
+    .settings = &N(NpcSettings_Toad),
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
     .drops = NO_DROPS,
     .animations = TOAD_PINK_ANIMS,

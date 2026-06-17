@@ -14,7 +14,6 @@
 #include "sprite/npc/ChuckQuizmo.h"
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/npc/ShyGuy.h"
-#include "sprite/npc/RussT.h"
 #include "sprite/npc/HarryT.h"
 #include "sprite/npc/Toad.h"
 #include "sprite/npc/Chan.h"

@@ -235,7 +235,7 @@ EvtScript N(EVS_NpcInit_Merlow) = {
     End
 };
 
-NpcData N(NpcData_Merluvlee)[] = {
+NpcData N(NpcData_Family)[] = {
     {
         .id = NPC_Merluvlee,
         .pos = { 62.0f, 20.0f, 7.0f },
@@ -265,6 +265,6 @@ NpcData N(NpcData_Merluvlee)[] = {
 };
 
 NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Merluvlee)),
+    NPC_GROUP(N(NpcData_Family)),
     {}
 };

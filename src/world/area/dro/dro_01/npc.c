@@ -1,5 +1,4 @@
 #include "dro_01.h"
-#include "sprite/npc/Musician.h"
 #include "sprite/npc/ChuckQuizmo.h"
 
 #include "world/common/npc/ToadKid/base.h"
@@ -10,6 +9,7 @@
 
 #include "world/common/npc/Mouser/idle.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/MusicianComposer/base.h"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
@@ -244,24 +244,7 @@ NpcData N(PassiveNPCs)[] = {
         .settings = &N(NpcSettings_Dryite_Idle),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Musician_Composer_Idle,
-            .walk   = ANIM_Musician_Composer_Still,
-            .run    = ANIM_Musician_Composer_Still,
-            .chase  = ANIM_Musician_Composer_Still,
-            .alert  = ANIM_Musician_Composer_Still,
-            .unused = ANIM_Musician_Composer_Still,
-            .death  = ANIM_Musician_Composer_Still,
-            .hit    = ANIM_Musician_Composer_Still,
-            .anim_8 = ANIM_Musician_Composer_Still,
-            .anim_9 = ANIM_Musician_Composer_Still,
-            .anim_A = ANIM_Musician_Composer_Still,
-            .anim_B = ANIM_Musician_Composer_Still,
-            .anim_C = ANIM_Musician_Composer_Still,
-            .anim_D = ANIM_Musician_Composer_Still,
-            .anim_E = ANIM_Musician_Composer_Still,
-            .anim_F = ANIM_Musician_Composer_Still,
-        },
+        .animations = MUSICIAN_COMPOSER_ANIMS,
         .tattle = MSG_NpcTattle_Composer,
     },
     {
@@ -343,7 +326,7 @@ NpcData N(ThreeSisterNPCs)[] = {
         .pos = { -141.0f, 0.0f, -18.0f },
         .yaw = 62,
         .init = &N(EVS_NpcInit_Toadette),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Toad),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -354,7 +337,7 @@ NpcData N(ThreeSisterNPCs)[] = {
         .pos = { -124.0f, 0.0f, -61.0f },
         .yaw = 63,
         .init = &N(EVS_NpcInit_Toadette),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Toad),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -365,7 +348,7 @@ NpcData N(ThreeSisterNPCs)[] = {
         .pos = { -80.0f, 0.0f, -35.0f },
         .yaw = 244,
         .init = &N(EVS_NpcInit_Toadette),
-        .settings = &N(NpcSettings_Toad_Idle),
+        .settings = &N(NpcSettings_Toad),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,

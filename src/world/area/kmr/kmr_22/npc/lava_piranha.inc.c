@@ -220,18 +220,18 @@ EvtScript N(EVS_NpcInit_LavaPiranhaHead) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_LavaBud_01) = {
+EvtScript N(EVS_NpcInit_LavaBud) = {
     Return
     End
 };
 
-AnimID N(D_80243848_902EB8)[] = {
+AnimID N(LimitAnims_LavaPiranha)[] = {
     ANIM_LavaPiranha_Anim03,
     ANIM_LavaPiranha_Anim0E,
     ANIM_LIST_END
 };
 
-AnimID N(D_80243854_902EC4)[] = {
+AnimID N(LimitAnims_LavaBud)[] = {
     ANIM_LavaBud_Anim03,
     ANIM_LIST_END
 };

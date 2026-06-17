@@ -31,7 +31,6 @@
 #include "sprite/npc/WorldBobomb.h"
 #include "sprite/npc/Koopa.h"
 #include "sprite/npc/Dryite.h"
-#include "sprite/npc/Musician.h"
 
 enum {
     // intro NPCs

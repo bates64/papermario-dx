@@ -13,7 +13,6 @@
 
 #include "sprite/npc/Luigi.h"
 #include "sprite/npc/Toad.h"
-#include "sprite/npc/RussT.h"
 #include "sprite/npc/ShiverToad.h"
 #include "sprite/npc/Toadette.h"
 #include "sprite/npc/Penguin.h"
