@@ -1013,7 +1013,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
         Wait(20)
         ExecGetTID(N(EVS_Quizmo_RightAnswer), LVar1)
         Add(GB_CompletedQuizzes, 1)
-        IfGt(GB_CompletedQuizzes, 63)
+        IfGe(GB_CompletedQuizzes, 64)
             Call(ContinueSpeech, -1, -1, -1, 0, MSG_MGM_0010)
             Call(SetNpcAnimation, NPC_SELF, ANIM_ChuckQuizmo_CloseHat)
             Loop(0)
