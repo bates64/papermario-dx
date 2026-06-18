@@ -2,7 +2,7 @@
 #include "nu/nusys.h"
 
 #include "world/common/npc/StarSpirit/idle.inc.c"
-#include "world/common/npc/Twink/base.h"
+#include "world/common/npc/Twink/idle.inc.c"
 
 Vec3f N(TwinkFlightPath)[] = {
     { -669.0,    98.0,  -34.0 },
@@ -201,7 +201,7 @@ NpcData N(NpcData_Twink) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
     .init = &N(EVS_NpcInit_Twink),
-    .settings = &N(NpcSettings_StarSpirit_Idle),
+    .settings = &N(NpcSettings_Twink),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = TWINK_ANIMS,

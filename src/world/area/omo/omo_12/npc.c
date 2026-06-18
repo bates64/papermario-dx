@@ -619,7 +619,7 @@ NpcData N(NpcData_BigLanternGhost) = {
     .init = &N(EVS_NpcInit_BigLanternGhost),
     .initVarCount = 1,
     .initVar = { .value = 0 },
-    .settings = &N(NpcSettings_BigLanternGhost_Idle),
+    .settings = &N(NpcSettings_BigLanternGhost),
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = NO_DROPS,
     .animations = BIG_LANTERN_GHOST_ANIMS,

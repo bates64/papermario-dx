@@ -1,0 +1,29 @@
+#pragma once
+#include "wander.h"
+
+#include "world/common/ai/FlyingAI.inc.c"
+
+MobileAISettings N(AISettings_StarKid_Wander) = {
+    .moveSpeed = 1.2f,
+    .moveTime = 60,
+    .waitTime = 30,
+    .playerSearchInterval = -1,
+    .loiterMode = 1,
+};
+
+EvtScript N(EVS_NpcAI_StarKid_Wander) = {
+    Call(SetSelfVar, 0, 0)
+    Call(SetSelfVar, 5, 0)
+    Call(SetSelfVar, 6, 0)
+    Call(SetSelfVar, 1, 200)
+    Call(N(FlyingAI_Main), Ref(N(AISettings_StarKid_Wander)))
+    Return
+    End
+};
+
+NpcSettings N(NpcSettings_StarKid_Wander) = {
+    .height = 20,
+    .radius = 20,
+    .level = ACTOR_LEVEL_NONE,
+    .doAI = &N(EVS_NpcAI_StarKid_Wander),
+};

@@ -10,8 +10,10 @@
 
 #include "world/common/npc/Merle/idle.inc.c"
 
-#include "world/common/npc/StarSpirit/idle.inc.c"
-#include "world/common/npc/StarSpirit/wander.inc.c"
+#include "world/common/npc/StarKid/idle.inc.c"
+#include "world/common/npc/StarKid/wander.inc.c"
+#include "world/common/npc/StarMan/idle.inc.c"
+#include "world/common/npc/StarMan/wander.inc.c"
 
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
@@ -829,7 +831,7 @@ NpcData N(NpcData_Merle)[] = {
         .pos = { 0.0f, 90.0f, -300.0f },
         .yaw = 0,
         .init = &N(EVS_NpcInit_Merle),
-        .settings = &N(NpcSettings_Merle_Idle),
+        .settings = &N(NpcSettings_Merle),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = MERLE_ANIMS,
@@ -976,7 +978,7 @@ NpcData N(NpcData_Merle)[] = {
         .pos = { 3.0f, 60.0f, 137.0f },
         .yaw = 180,
         .init = &N(EVS_NpcInit_StarKid_02),
-        .settings = &N(NpcSettings_StarKid_Idle),
+        .settings = &N(NpcSettings_StarKid),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = STAR_KID_ANIMS,
@@ -987,7 +989,7 @@ NpcData N(NpcData_Merle)[] = {
         .pos = { 120.0f, 100.0f, -210.0f },
         .yaw = 0,
         .init = &N(EVS_NpcInit_StarKid_03),
-        .settings = &N(NpcSettings_StarKid_Idle),
+        .settings = &N(NpcSettings_StarKid),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = STAR_KID_ANIMS,
@@ -998,7 +1000,7 @@ NpcData N(NpcData_Merle)[] = {
         .pos = { 369.0f, 90.0f, 9.0f },
         .yaw = 180,
         .init = &N(EVS_NpcInit_StarKid_04),
-        .settings = &N(NpcSettings_StarKid_Idle),
+        .settings = &N(NpcSettings_StarKid),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = STAR_KID_ANIMS,
@@ -1009,7 +1011,7 @@ NpcData N(NpcData_Merle)[] = {
         .pos = { 405.0f, 90.0f, -19.0f },
         .yaw = 180,
         .init = &N(EVS_NpcInit_StarKid_05),
-        .settings = &N(NpcSettings_StarKid_Idle),
+        .settings = &N(NpcSettings_StarKid),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = STAR_KID_ANIMS,
@@ -1020,7 +1022,7 @@ NpcData N(NpcData_Merle)[] = {
         .pos = { 364.0f, 90.0f, -47.0f },
         .yaw = 180,
         .init = &N(EVS_NpcInit_StarKid_06),
-        .settings = &N(NpcSettings_StarKid_Idle),
+        .settings = &N(NpcSettings_StarKid),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = STAR_KID_ANIMS,

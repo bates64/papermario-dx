@@ -6,7 +6,7 @@ EvtScript N(EVS_NpcCreate_TrainToad_Idle) = {
     End
 };
 
-NpcSettings N(NpcSettings_TrainToad_Idle) = {
+NpcSettings N(NpcSettings_TrainToad) = {
     .height = 32,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,

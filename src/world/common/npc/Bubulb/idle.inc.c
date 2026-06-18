@@ -6,7 +6,7 @@ EvtScript N(EVS_NpcCreate_Bubulb_Idle) = {
     End
 };
 
-NpcSettings N(NpcSettings_Bubulb_Idle) = {
+NpcSettings N(NpcSettings_Bubulb) = {
     .height = 42,
     .radius = 26,
     .level = ACTOR_LEVEL_NONE,

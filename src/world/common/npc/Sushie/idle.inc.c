@@ -1,7 +1,7 @@
 #pragma once
 #include "idle.h"
 
-NpcSettings N(NpcSettings_Sushie_Idle) = {
+NpcSettings N(NpcSettings_Sushie) = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,

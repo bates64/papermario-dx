@@ -1,14 +1,10 @@
 #include "hos_10.h"
 #include "sprite/player.h"
+
 #include "world/common/npc/Peach/base.h"
+#include "world/common/npc/Dummy/idle.inc.c"
 
-NpcSettings N(NpcSettings_Dummy) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
-#include "world/common/npc/Twink/base.h"
+#include "world/common/npc/Twink/idle.inc.c"
 #include "world/common/npc/StarSpirit/idle.inc.c"
 
 EvtScript N(EVS_NpcInit_Peach) = {
@@ -140,7 +136,7 @@ NpcData N(NpcData_Spirits_Descent)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Twink),
-        .settings = &N(NpcSettings_Dummy),
+        .settings = &N(NpcSettings_Twink),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
@@ -151,7 +147,7 @@ NpcData N(NpcData_Spirits_Descent)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Eldstar),
-        .settings = &N(NpcSettings_StarSpirit_Idle),
+        .settings = &N(NpcSettings_StarSpirit),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = ELDSTAR_ANIMS,
@@ -162,7 +158,7 @@ NpcData N(NpcData_Spirits_Descent)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Mamar),
-        .settings = &N(NpcSettings_StarSpirit_Idle),
+        .settings = &N(NpcSettings_StarSpirit),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MAMAR_ANIMS,
@@ -173,7 +169,7 @@ NpcData N(NpcData_Spirits_Descent)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Skolar),
-        .settings = &N(NpcSettings_StarSpirit_Idle),
+        .settings = &N(NpcSettings_StarSpirit),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = SKOLAR_ANIMS,
@@ -184,7 +180,7 @@ NpcData N(NpcData_Spirits_Descent)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Muskular),
-        .settings = &N(NpcSettings_StarSpirit_Idle),
+        .settings = &N(NpcSettings_StarSpirit),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MUSKULAR_ANIMS,
@@ -195,7 +191,7 @@ NpcData N(NpcData_Spirits_Descent)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Misstar),
-        .settings = &N(NpcSettings_StarSpirit_Idle),
+        .settings = &N(NpcSettings_StarSpirit),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MISSTAR_ANIMS,
@@ -206,7 +202,7 @@ NpcData N(NpcData_Spirits_Descent)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Klevar),
-        .settings = &N(NpcSettings_StarSpirit_Idle),
+        .settings = &N(NpcSettings_StarSpirit),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KLEVAR_ANIMS,
@@ -217,7 +213,7 @@ NpcData N(NpcData_Spirits_Descent)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Kalmar),
-        .settings = &N(NpcSettings_StarSpirit_Idle),
+        .settings = &N(NpcSettings_StarSpirit),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KALMAR_ANIMS,

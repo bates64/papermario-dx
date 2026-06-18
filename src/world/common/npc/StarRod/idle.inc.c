@@ -6,7 +6,7 @@ EvtScript N(EVS_NpcCreate_StarRod_Idle) = {
     End
 };
 
-NpcSettings N(NpcSettings_StarRod_Idle) = {
+NpcSettings N(NpcSettings_StarRod) = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,

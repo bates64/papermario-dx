@@ -1,7 +1,7 @@
 #pragma once
 #include "idle.h"
 
-NpcSettings N(NpcSettings_Kooper_Idle) = {
+NpcSettings N(NpcSettings_Kooper) = {
     .height = 35,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,

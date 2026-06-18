@@ -11,7 +11,7 @@ EvtScript N(EVS_NpcDefeat_TubbasHeart_Idle) = {
     End
 };
 
-NpcSettings N(NpcSettings_TubbasHeart_Idle) = {
+NpcSettings N(NpcSettings_TubbasHeart) = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_CLUBBA,

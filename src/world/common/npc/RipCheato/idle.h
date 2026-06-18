@@ -1,4 +1,4 @@
 #pragma once
 #include "base.h"
 
-extern NpcSettings N(NpcSettings_RipCheato_Idle);
+extern NpcSettings N(NpcSettings_RipCheato);

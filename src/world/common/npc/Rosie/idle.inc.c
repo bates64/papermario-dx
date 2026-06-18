@@ -1,7 +1,7 @@
 #pragma once
 #include "idle.h"
 
-NpcSettings N(NpcSettings_Rosie_Idle) = {
+NpcSettings N(NpcSettings_Rosie) = {
     .height = 56,
     .radius = 40,
     .level = ACTOR_LEVEL_NONE,

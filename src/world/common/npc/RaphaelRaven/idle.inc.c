@@ -7,7 +7,7 @@ EvtScript N(EVS_NpcCreate_RaphaelRaven_Idle) = {
     End
 };
 
-NpcSettings N(NpcSettings_RaphaelRaven_Idle) = {
+NpcSettings N(NpcSettings_RaphaelRaven) = {
     .height = 98,
     .radius = 80,
     .level = ACTOR_LEVEL_NONE,

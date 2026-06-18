@@ -5,7 +5,6 @@
 #include "world/common/npc/Toad/wander.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/npc/GoombaFamily/idle.inc.c"
-#include "world/common/npc/StarSpirit/idle.inc.c"
 #define NAME_SUFFIX
 
 EvtScript N(EVS_Scene_WishingToadKid) = {

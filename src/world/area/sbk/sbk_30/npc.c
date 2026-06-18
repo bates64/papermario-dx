@@ -261,7 +261,7 @@ NpcData N(NpcData_Archeologist_02)[] = {
         .pos = { 200.0f, 0.0f, -100.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Kolorado),
-        .settings = &N(NpcSettings_Kolorado_Idle),
+        .settings = &N(NpcSettings_Kolorado),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = KOLORADO_ANIMS,
@@ -284,7 +284,7 @@ NpcData N(NpcData_Archeologist_02)[] = {
             }
         },
         .init = &N(EVS_NpcInit_Archeologist_01),
-        .settings = &N(NpcSettings_Archeologist_Idle),
+        .settings = &N(NpcSettings_Archeologist),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = ARCHEOLOGIST_ANIMS,
@@ -307,7 +307,7 @@ NpcData N(NpcData_Archeologist_02)[] = {
             }
         },
         .init = &N(EVS_NpcInit_Archeologist_02),
-        .settings = &N(NpcSettings_Archeologist_Idle),
+        .settings = &N(NpcSettings_Archeologist),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = ARCHEOLOGIST_ANIMS,

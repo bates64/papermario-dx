@@ -1,7 +1,7 @@
 #pragma once
 #include "idle.h"
 
-NpcSettings N(NpcSettings_RussT_Idle) = {
+NpcSettings N(NpcSettings_RussT) = {
     .defaultAnim = ANIM_RussT_Idle,
     .height = 30,
     .radius = 24,

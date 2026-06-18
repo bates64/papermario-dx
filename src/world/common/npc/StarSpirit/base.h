@@ -7,8 +7,6 @@
 #include "sprite/npc/WorldMisstar.h"
 #include "sprite/npc/WorldKlevar.h"
 #include "sprite/npc/WorldKalmar.h"
-#include "sprite/npc/StarMan.h"
-#include "sprite/npc/Twink.h"
 
 #define ELDSTAR_ANIMS \
 { \
@@ -148,44 +146,4 @@
     .anim_D = ANIM_WorldKalmar_Idle, \
     .anim_E = ANIM_WorldKalmar_Idle, \
     .anim_F = ANIM_WorldKalmar_Idle, \
-}
-
-#define STAR_MAN_ANIMS \
-{ \
-    .idle   = ANIM_StarMan_Idle, \
-    .walk   = ANIM_StarMan_Idle, \
-    .run    = ANIM_StarMan_Idle, \
-    .chase  = ANIM_StarMan_Idle, \
-    .alert  = ANIM_StarMan_Idle, \
-    .unused = ANIM_StarMan_Idle, \
-    .death  = ANIM_StarMan_Idle, \
-    .hit    = ANIM_StarMan_Idle, \
-    .anim_8 = ANIM_StarMan_Idle, \
-    .anim_9 = ANIM_StarMan_Idle, \
-    .anim_A = ANIM_StarMan_Idle, \
-    .anim_B = ANIM_StarMan_Idle, \
-    .anim_C = ANIM_StarMan_Idle, \
-    .anim_D = ANIM_StarMan_Idle, \
-    .anim_E = ANIM_StarMan_Idle, \
-    .anim_F = ANIM_StarMan_Idle, \
-}
-
-#define STAR_KID_ANIMS \
-{ \
-    .idle   = ANIM_Twink_Idle, \
-    .walk   = ANIM_Twink_Fly, \
-    .run    = ANIM_Twink_Angry, \
-    .chase  = ANIM_Twink_Angry, \
-    .alert  = ANIM_Twink_Idle, \
-    .unused = ANIM_Twink_Idle, \
-    .death  = ANIM_Twink_Idle, \
-    .hit    = ANIM_Twink_Idle, \
-    .anim_8 = ANIM_Twink_Idle, \
-    .anim_9 = ANIM_Twink_Idle, \
-    .anim_A = ANIM_Twink_Idle, \
-    .anim_B = ANIM_Twink_Idle, \
-    .anim_C = ANIM_Twink_Idle, \
-    .anim_D = ANIM_Twink_Idle, \
-    .anim_E = ANIM_Twink_Idle, \
-    .anim_F = ANIM_Twink_Idle, \
 }

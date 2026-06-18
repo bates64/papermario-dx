@@ -1,10 +1,8 @@
 #include "hos_03.h"
 #include "sprite/player.h"
 
-#include "sprite/npc/StarMan.h"
-
-#include "world/common/npc/StarSpirit/idle.inc.c"
-#include "world/common/npc/StarSpirit/wander.inc.c"
+#include "world/common/npc/StarMan/idle.inc.c"
+#include "world/common/npc/StarMan/wander.inc.c"
 
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouseHos.data.inc.c"
@@ -150,7 +148,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { -463.0f, 10.0f, 400.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_StarKid_01),
-        .settings = &N(NpcSettings_StarMan_Idle),
+        .settings = &N(NpcSettings_StarMan),
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = STAR_MAN_ANIMS,
@@ -161,7 +159,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { -325.0f, 10.0f, 600.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_StarKid_02),
-        .settings = &N(NpcSettings_StarMan_Idle),
+        .settings = &N(NpcSettings_StarMan),
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = STAR_MAN_ANIMS,
@@ -218,7 +216,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { -485.0f, 335.0f, -100.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_StarKid_05),
-        .settings = &N(NpcSettings_StarMan_Idle),
+        .settings = &N(NpcSettings_StarMan),
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = STAR_MAN_ANIMS,
@@ -229,7 +227,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { 458.0f, 35.0f, 233.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ToadHouseKeeper),
-        .settings = &N(NpcSettings_StarMan_Idle),
+        .settings = &N(NpcSettings_StarMan),
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = STAR_MAN_ANIMS,
@@ -240,7 +238,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { 140.0f, 285.0f, -315.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShopOwner),
-        .settings = &N(NpcSettings_StarMan_Idle),
+        .settings = &N(NpcSettings_StarMan),
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = STAR_MAN_ANIMS,

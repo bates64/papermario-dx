@@ -19,7 +19,7 @@ EvtScript N(EVS_NpcCreate_Merlar_Idle) = {
     End
 };
 
-NpcSettings N(NpcSettings_Merlar_Idle) = {
+NpcSettings N(NpcSettings_Merlar) = {
     .height = 60,
     .radius = 60,
     .level = ACTOR_LEVEL_NONE,
