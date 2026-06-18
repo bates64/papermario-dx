@@ -1,41 +1,12 @@
-#include "common.h"
+#include "base.h"
 #include "message_ids.h"
 #include "effects.h"
 #include "model.h"
-#include "sprite/npc/ChuckQuizmo.h"
+
 #include "sprite/player.h"
-
-#ifndef CHUCK_QUIZMO_NPC_ID
-    #define CHUCK_QUIZMO_NPC_ID 0
-    #error CHUCK_QUIZMO_NPC_ID must be defined for Quizmo.inc.c
-#endif
-
-#define QUIZMO_ANIMS \
-{ \
-    .idle   = ANIM_ChuckQuizmo_Idle, \
-    .walk   = ANIM_ChuckQuizmo_Walk, \
-    .run    = ANIM_ChuckQuizmo_Run, \
-    .chase  = ANIM_ChuckQuizmo_Run, \
-    .alert  = ANIM_ChuckQuizmo_Idle, \
-    .unused = ANIM_ChuckQuizmo_Idle, \
-    .death  = ANIM_ChuckQuizmo_Still, \
-    .hit    = ANIM_ChuckQuizmo_Still, \
-    .anim_8 = ANIM_ChuckQuizmo_Run, \
-    .anim_9 = ANIM_ChuckQuizmo_Run, \
-    .anim_A = ANIM_ChuckQuizmo_Run, \
-    .anim_B = ANIM_ChuckQuizmo_Run, \
-    .anim_C = ANIM_ChuckQuizmo_Run, \
-    .anim_D = ANIM_ChuckQuizmo_Run, \
-    .anim_E = ANIM_ChuckQuizmo_Run, \
-    .anim_F = ANIM_ChuckQuizmo_Run, \
-}
 
 extern s16 MessagePlural;
 extern s16 MessageSingular;
-
-#if VERSION_PAL
-extern u8 MessagePlural_de[];
-#endif
 
 BSS s32 N(Quizmo_Worker);
 BSS s32 N(Quizmo_ScriptArray)[5];
@@ -125,7 +96,6 @@ QuizRequirement N(Quizmo_Requirements)[] = {
     { STORY_CH6_BEGAN_PEACH_MISSION, 52 },
     { STORY_CH7_BEGAN_PEACH_MISSION, 60 },
     { STORY_EPILOGUE, 64 },
-    { 0, 64 }, // end of list
 };
 
 API_CALLABLE(N(Quizmo_HideEntities)) {
@@ -144,18 +114,17 @@ API_CALLABLE(N(Quizmo_ShouldAppear)) {
     u16 changedLocation = evt_get_variable(script, GF_Quizmo_ChangedLocation);
     u16 locTown = evt_get_variable(script, GB_ChuckQuizmo_Town);
     u16 locMap = evt_get_variable(script, GB_ChuckQuizmo_Map);
-    s32 var;
     s32 i;
 
-    s32 test2;
-    u16 curTown1 = (enemy->varTable[0] & 0xFF0000) >> 16;
-    u16 curTown2 = (enemy->varTable[0] & 0xFF0000) >> 16;
+    u16 curTown = (enemy->varTable[0] & 0xFF0000) >> 16;
     u16 numMaps = (enemy->varTable[0] & 0xFF00) >> 8;
     u16 curMap = (enemy->varTable[0] & 0xFF) >> 0;
     s32 progress;
     s32 numAnswered;
+    b32 hasQuestionAvailable;
+    b32 atQuizLocation;
 
-    if (curTown1 != locTown) {
+    if (curTown != locTown) {
         changedLocation = false;
         hasLocation = false;
     }
@@ -163,7 +132,7 @@ API_CALLABLE(N(Quizmo_ShouldAppear)) {
     if (!hasLocation) {
         if (rand_int(100) < 30) {
             locMap = rand_int(numMaps - 1);
-            locTown = curTown1;
+            locTown = curTown;
             evt_set_variable(script, GB_ChuckQuizmo_Town, locTown);
             evt_set_variable(script, GB_ChuckQuizmo_Map, locMap);
             hasLocation = true;
@@ -175,19 +144,16 @@ API_CALLABLE(N(Quizmo_ShouldAppear)) {
     numAnswered = evt_get_variable(nullptr, GB_CompletedQuizzes);
     progress = evt_get_variable(nullptr, GB_StoryProgress);
 
-    // vanilla bug? never checks the final requirement in the list
-    for (i = 0; i < 8; i++) {
+    for (i = 0; i < ARRAY_COUNT(N(Quizmo_Requirements)); i++) {
         if (progress < N(Quizmo_Requirements)[i].requiredStoryProgress) {
             break;
         }
     }
 
-    //TODO clean this up
-    progress = numAnswered < N(Quizmo_Requirements)[i].numQuestionsUnlocked;
-    test2 = var = progress;
+    hasQuestionAvailable = numAnswered < N(Quizmo_Requirements)[i].numQuestionsUnlocked;
+    atQuizLocation = (curTown == locTown) && (curMap == locMap) && !changedLocation;
 
-    if ((((curTown2 == locTown) && (curMap == locMap) && (changedLocation == 0) && test2)) ||
-        (gGameStatusPtr->debugQuizmo && var)) {
+    if (hasQuestionAvailable && (true || atQuizLocation || gGameStatusPtr->debugQuizmo)) {
         script->varTable[0] = true;
     } else {
         kill_enemy(enemy);
@@ -228,7 +194,7 @@ API_CALLABLE(N(Quizmo_HideWorld)) {
         for (i = 0; i < MAX_NPCS; i++) {
             Npc* npc = get_npc_by_index(i);
             if (npc != nullptr && npc->flags != 0) {
-                if (npc->npcID != NPC_PARTNER && npc->npcID != CHUCK_QUIZMO_NPC_ID) {
+                if (npc->npcID != NPC_PARTNER && npc->npcID != script->owner2.npcID) {
                     npc->flags |= NPC_FLAG_HIDING;
                 }
             }
@@ -282,7 +248,7 @@ API_CALLABLE(N(Quizmo_FadeInWorld)) {
         for (i = 0; i < MAX_NPCS; i++) {
             Npc* npc = get_npc_by_index(i);
             if (npc != nullptr && npc->flags != 0) {
-                if (npc->npcID != NPC_PARTNER && npc->npcID != CHUCK_QUIZMO_NPC_ID) {
+                if (npc->npcID != NPC_PARTNER && npc->npcID != script->owner2.npcID) {
                     npc->flags &= ~NPC_FLAG_HIDING;
                 }
             }
@@ -650,7 +616,7 @@ EvtScript N(EVS_Quizmo_MovePartnerToPodium) = {
 };
 
 EvtScript N(EVS_Quizmo_MoveQuizmoToMicrophone) = {
-    Call(GetNpcPos, CHUCK_QUIZMO_NPC_ID, LVarA, LVarB, LVarC)
+    Call(GetNpcPos, NPC_SELF, LVarA, LVarB, LVarC)
     Call(N(Quizmo_AddViewRelativeOffset), LVarA, LVarC, -70, LVar0, LVar1)
     Thread
         SetF(LVar2, 0)
@@ -663,14 +629,14 @@ EvtScript N(EVS_Quizmo_MoveQuizmoToMicrophone) = {
             DivF(LVar4, 60)
             AddF(LVar3, LVarA)
             AddF(LVar4, LVarC)
-            Call(SetNpcPos, CHUCK_QUIZMO_NPC_ID, LVar3, QUIZ_ARRAY_ORIGIN_Y, LVar4)
+            Call(SetNpcPos, NPC_SELF, LVar3, QUIZ_ARRAY_ORIGIN_Y, LVar4)
             AddF(LVar2, 1)
             Wait(1)
         EndLoop
     EndThread
     Wait(60)
-    Call(NpcFacePlayer, CHUCK_QUIZMO_NPC_ID, 0)
-    Call(SetNpcAnimation, CHUCK_QUIZMO_NPC_ID, ANIM_ChuckQuizmo_Idle)
+    Call(NpcFacePlayer, NPC_SELF, 0)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_ChuckQuizmo_Idle)
     Return
     End
 };
@@ -960,9 +926,9 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
     Exec(N(EVS_Quizmo_SetQuizCamera))
     Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
-    Call(SetNpcFlagBits, CHUCK_QUIZMO_NPC_ID, NPC_FLAG_GRAVITY, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, CHUCK_QUIZMO_NPC_ID, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     ExecGetTID(N(EVS_Quizmo_SetCharacterPositons), LVar1)
     Call(ContinueSpeech, -1, ANIM_ChuckQuizmo_Talk, ANIM_ChuckQuizmo_Idle, 0, MSG_MGM_000B)
@@ -1005,7 +971,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
         Set(QUIZ_ARRAY_ANSWER_RESULT, 0)
     EndThread
     IfEq(LVar0, 1)
-        Call(SetNpcAnimation, CHUCK_QUIZMO_NPC_ID, ANIM_ChuckQuizmo_OpenCorrect)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_ChuckQuizmo_OpenCorrect)
         Set(QUIZ_ARRAY_ANSWER_RESULT, 1)
         Thread
             Call(N(Quizmo_SetStageLightsDelay), 1)
@@ -1049,7 +1015,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
         Add(GB_CompletedQuizzes, 1)
         IfGt(GB_CompletedQuizzes, 63)
             Call(ContinueSpeech, -1, -1, -1, 0, MSG_MGM_0010)
-            Call(SetNpcAnimation, CHUCK_QUIZMO_NPC_ID, ANIM_ChuckQuizmo_CloseHat)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_ChuckQuizmo_CloseHat)
             Loop(0)
                 IsThreadRunning(LVar1, LVar0)
                 IfEq(LVar0, 0)
@@ -1057,7 +1023,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
                 EndIf
                 Wait(1)
             EndLoop
-            Call(SetNpcAnimation, CHUCK_QUIZMO_NPC_ID, ANIM_ChuckQuizmo_OpenHat)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_ChuckQuizmo_OpenHat)
             EVT_GIVE_REWARD(ITEM_STAR_PIECE)
             Call(N(Quizmo_SetStageLightsDelay), 15)
             Call(N(Quizmo_SetVannaAnim_Idle))
@@ -1065,7 +1031,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_ChuckQuizmo_Talk, ANIM_ChuckQuizmo_Idle, 0, MSG_MGM_0011)
         Else
             Call(ContinueSpeech, -1, -1, -1, 0, MSG_MGM_000E)
-            Call(SetNpcAnimation, CHUCK_QUIZMO_NPC_ID, ANIM_ChuckQuizmo_CloseHat)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_ChuckQuizmo_CloseHat)
             Loop(0)
                 IsThreadRunning(LVar1, LVar0)
                 IfEq(LVar0, 0)
@@ -1073,34 +1039,21 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
                 EndIf
                 Wait(1)
             EndLoop
-            Call(SetNpcAnimation, CHUCK_QUIZMO_NPC_ID, ANIM_ChuckQuizmo_OpenHat)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_ChuckQuizmo_OpenHat)
             EVT_GIVE_REWARD(ITEM_STAR_PIECE)
             Call(N(Quizmo_SetStageLightsDelay), 15)
             Call(N(Quizmo_SetVannaAnim_Idle))
             Call(SetMessageValue, GB_CompletedQuizzes, 0)
-#if VERSION_US || VERSION_IQUE
             IfEq(GB_CompletedQuizzes, 1)
                 Call(SetMessageText, Ref(MessageSingular), 1)
             Else
                 Call(SetMessageText, Ref(MessagePlural), 1)
             EndIf
-#elif VERSION_PAL
-            IfEq(GB_CompletedQuizzes, 1)
-                Call(SetMessageText, Ref(MessageSingular), 1)
-            Else
-                Call(GetLanguage, LVar0)
-                IfEq(LVar0, LANGUAGE_DE)
-                    Call(SetMessageText, Ref(MessagePlural_de), 1)
-                Else
-                    Call(SetMessageText, Ref(MessagePlural), 1)
-                EndIf
-            EndIf
-#endif
             Call(SpeakToPlayer, NPC_SELF, ANIM_ChuckQuizmo_Talk, ANIM_ChuckQuizmo_Idle, 0, MSG_MGM_000F)
         EndIf
         Set(LVar0, 1)
     Else
-        Call(SetNpcAnimation, CHUCK_QUIZMO_NPC_ID, ANIM_ChuckQuizmo_OpenWrong)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_ChuckQuizmo_OpenWrong)
         Set(QUIZ_ARRAY_ANSWER_RESULT, 2)
         Call(PlaySound, SOUND_MENU_ERROR)
         Call(PlaySound, SOUND_AUDIENCE_BOO)
@@ -1108,7 +1061,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         PlayEffect(EFFECT_WINDY_LEAVES, 0, LVar2, LVar3, LVar4)
         Call(ContinueSpeech, -1, -1, -1, 0, MSG_MGM_000D)
-        Call(SetNpcAnimation, CHUCK_QUIZMO_NPC_ID, ANIM_ChuckQuizmo_CloseWrong)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_ChuckQuizmo_CloseWrong)
         Loop(0)
             IsThreadRunning(LVar1, LVar0)
             IfEq(LVar0, 0)

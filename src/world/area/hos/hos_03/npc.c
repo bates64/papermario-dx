@@ -1,13 +1,14 @@
 #include "hos_03.h"
 #include "sprite/player.h"
 
+#include "sprite/npc/StarMan.h"
+
 #include "world/common/npc/StarSpirit/idle.inc.c"
 #include "world/common/npc/StarSpirit/wander.inc.c"
 
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouseHos.data.inc.c"
 
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
 EvtScript N(EVS_NpcInteract_StarKid_01) = {

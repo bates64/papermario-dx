@@ -12,7 +12,6 @@
 #include "mapfs/mac_05_hit.h"
 
 #include "sprite/npc/Kolorado.h"
-#include "sprite/npc/ChuckQuizmo.h"
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/npc/Fuzzipede.h"
 #include "sprite/npc/WorldGoombario.h"

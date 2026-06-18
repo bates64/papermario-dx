@@ -11,9 +11,6 @@
 #include "mapfs/hos_03_shape.h"
 #include "mapfs/hos_03_hit.h"
 
-#include "sprite/npc/StarMan.h"
-#include "sprite/npc/ChuckQuizmo.h"
-
 enum {
     NPC_StarMan_01              = 0,
     NPC_StarMan_02              = 1,

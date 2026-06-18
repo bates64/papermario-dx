@@ -4,7 +4,6 @@
 #include "world/common/npc/Yoshi/idle.inc.c"
 #include "world/common/npc/Yoshi/patrol.inc.c"
 
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
 EvtScript N(EVS_GetRescuedYoshiCount) = {

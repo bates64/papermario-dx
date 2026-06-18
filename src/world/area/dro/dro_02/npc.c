@@ -5,7 +5,6 @@
 extern EvtScript N(EVS_NpcInit_Moustafa);
 extern EvtScript N(EVS_NpcInit_DisguisedMoustafa);
 
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
 #include "world/common/npc/Archeologist/wander.inc.c"

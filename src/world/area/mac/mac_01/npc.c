@@ -19,8 +19,6 @@ extern EvtScript N(EVS_MerlonBargeOut);
 #include "world/common/npc/Twink/idle.inc.c"
 #include "world/common/npc/Kolorado/idle.inc.c"
 #include "world/common/npc/Bubulb/idle.inc.c"
-
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
 #include "world/common/atomic/KnockDownPlayer.inc.c"

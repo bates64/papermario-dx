@@ -11,11 +11,9 @@
 #include "world/common/npc/RussT/idle.inc.c"
 #include "world/common/npc/TheMaster/idle.inc.c"
 #include "world/common/npc/GoombaFamily/idle.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
 #include "world/common/enemy/ShyGuy/idle.inc.c"
-
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/npc/Quizmo/quiz.inc.c"
 
 #include "npc/russ_and_thief.inc.c"
 

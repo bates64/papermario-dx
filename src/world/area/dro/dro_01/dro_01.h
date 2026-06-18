@@ -11,7 +11,6 @@
 #include "mapfs/dro_01_shape.h"
 #include "mapfs/dro_01_hit.h"
 
-#include "sprite/npc/ChuckQuizmo.h"
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/npc/Mouser.h"
 #include "sprite/npc/Dryite.h"

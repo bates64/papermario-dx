@@ -9,7 +9,6 @@
 
 #include "world/common/npc/ShiverToad/idle.inc.c"
 
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
 EvtScript N(EVS_NpcInteract_Penguin_ShopOwner) = {

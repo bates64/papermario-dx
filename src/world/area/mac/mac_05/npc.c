@@ -12,8 +12,6 @@
 #include "world/common/npc/Chanterelle/idle.inc.c"
 #include "world/common/npc/Bartender/idle.inc.c"
 #include "world/common/npc/MusicianPoet/idle.inc.c"
-
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
 enum WhaleRider {

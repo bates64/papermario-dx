@@ -1,5 +1,4 @@
 #include "dro_01.h"
-#include "sprite/npc/ChuckQuizmo.h"
 
 #include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/npc/Toadette/idle.inc.c"
@@ -8,8 +7,6 @@
 #include "world/common/npc/Dryite/wander.inc.c"
 #include "world/common/npc/Dryite/patrol.inc.c"
 #include "world/common/npc/Mouser/idle.inc.c"
-
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
 EvtScript N(EVS_NpcInteract_Mouser_01) = {

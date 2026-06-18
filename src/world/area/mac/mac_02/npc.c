@@ -7,7 +7,6 @@
 #include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/npc/Bootler/idle.inc.c"
 #include "world/common/npc/Bubulb/idle.inc.c"
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
 #include "world/common/enemy/ShyGuy/base.h"

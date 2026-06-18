@@ -12,7 +12,6 @@
 #include "mapfs/mac_01_hit.h"
 
 #include "sprite/npc/Merlon.h"
-#include "sprite/npc/ChuckQuizmo.h"
 #include "sprite/npc/Toad.h"
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/npc/Kolorado.h"

@@ -12,7 +12,6 @@
 #include "mapfs/kmr_02_hit.h"
 
 #include "sprite/npc/Goompa.h"
-#include "sprite/npc/ChuckQuizmo.h"
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/npc/WorldGoombario.h"
 #include "sprite/npc/Goombaria.h"

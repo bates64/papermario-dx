@@ -11,7 +11,6 @@
 #include "mapfs/dro_02_shape.h"
 #include "mapfs/dro_02_hit.h"
 
-#include "sprite/npc/ChuckQuizmo.h"
 #include "sprite/npc/WorldMerlee.h"
 #include "sprite/npc/Toad.h"
 #include "sprite/npc/WorldParakarry.h"

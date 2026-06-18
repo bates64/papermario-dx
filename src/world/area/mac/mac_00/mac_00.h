@@ -11,7 +11,6 @@
 #include "mapfs/mac_00_shape.h"
 #include "mapfs/mac_00_hit.h"
 
-#include "sprite/npc/ChuckQuizmo.h"
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/npc/ShyGuy.h"
 #include "sprite/npc/Toad.h"

@@ -17,7 +17,6 @@
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
 LetterDelivery N(LetterDelivery_RedYoshiKid) = {

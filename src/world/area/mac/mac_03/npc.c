@@ -21,7 +21,6 @@ NpcSettings N(NpcSettings_ShyGuy) = {
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
 };
 
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
 API_CALLABLE(N(GetOinkCount)) {

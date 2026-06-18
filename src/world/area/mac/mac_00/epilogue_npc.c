@@ -3,6 +3,7 @@
 #include "world/common/npc/HarryT/idle.inc.c"
 #include "world/common/npc/TheMaster/idle.inc.c"
 #include "world/common/npc/VannaT/idle.inc.c"
+#include "world/common/npc/Quizmo/base.h"
 
 EvtScript N(EVS_NpcInteract_Goompapa_Epilogue) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle, 0, MSG_Outro_0024)
@@ -238,24 +239,7 @@ NpcData N(NpcData_ChuckQuizmo_Epilogue)[] = {
         .settings = &N(NpcSettings_Dummy),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_ChuckQuizmo_Idle,
-            .walk   = ANIM_ChuckQuizmo_Walk,
-            .run    = ANIM_ChuckQuizmo_Run,
-            .chase  = ANIM_ChuckQuizmo_Run,
-            .alert  = ANIM_ChuckQuizmo_Idle,
-            .unused = ANIM_ChuckQuizmo_Idle,
-            .death  = ANIM_ChuckQuizmo_Still,
-            .hit    = ANIM_ChuckQuizmo_Still,
-            .anim_8 = ANIM_ChuckQuizmo_Run,
-            .anim_9 = ANIM_ChuckQuizmo_Run,
-            .anim_A = ANIM_ChuckQuizmo_Run,
-            .anim_B = ANIM_ChuckQuizmo_Run,
-            .anim_C = ANIM_ChuckQuizmo_Run,
-            .anim_D = ANIM_ChuckQuizmo_Run,
-            .anim_E = ANIM_ChuckQuizmo_Run,
-            .anim_F = ANIM_ChuckQuizmo_Run,
-        },
+        .animations = QUIZMO_ANIMS,
         .limitAnimations = N(LimitAnims_Quizmo_Epilogue),
         .tattle = MSG_NpcTattle_ChuckQuizmo,
     },
