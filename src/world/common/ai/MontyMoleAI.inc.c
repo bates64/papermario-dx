@@ -165,8 +165,8 @@ void N(MontyMoleAI_ThrowRock)(Evt* script, MobileAISettings* settings, EnemyDete
     moleNpc->duration--;
     if (moleNpc->duration == 13) {
         rockEnemy = get_enemy(moleEnemy->npcID + 1);
-        rockEnemy->varTable[4] = moleEnemy->npcID;
-        rockEnemy->varTable[0] = 1;
+        rockEnemy->varTable[AI_VAR_MISSILE_OWNER] = moleEnemy->npcID;
+        rockEnemy->varTable[AI_VAR_MISSILE_STATUS] = MISSILE_STATUS_REQUESTED;
     }
     if (moleNpc->duration < 8) {
         if (dist2D(moleNpc->pos.x, moleNpc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z) > 100.0) {

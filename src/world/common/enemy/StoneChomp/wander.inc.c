@@ -46,7 +46,7 @@ API_CALLABLE(N(StoneChompFXB)) {
     f32 floorY;
     s32 i;
 
-    floorY = (f32) script->owner1.enemy->varTable[0];
+    floorY = (f32) script->owner1.enemy->varTable[EVAR_STONE_CHOMP_FLOOR_Y];
     ownerNpc = get_npc_safe(script->owner2.npcID);
     blurData = ownerNpc->userData.chomp;
     posX = ownerNpc->pos.x;
@@ -149,7 +149,6 @@ EvtScript N(EVS_NpcAI_StoneChomp_Wander) = {
             Wait(1)
         EndLoop
     EndChildThread
-    Call(GetSelfVar, 0, LVar0)
     Call(N(StoneChompAI_Main), Ref(N(AISettings_StoneChomp_Wander)))
     Return
     End

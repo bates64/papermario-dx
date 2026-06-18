@@ -234,8 +234,8 @@ typedef struct NpcData {
     /* 0x008 */ Vec3f pos;
     /* 0x014 */ s32 flags;
     /* 0x018 */ EvtScript* init;
-    /* 0x01C */ s32 initVarCount;
-    /* 0x020 */ NpcInitialVars initVar;
+    /* 0x01C */ s32 initVarCount; /// size of initVar in words. always 1 if using value/bytes, sizeof the array when using array.
+    /* 0x020 */ NpcInitialVars initVar; /// use this to initialize Enemy::varTable at the earliest possible moment, before onCreate is executed
     /* 0x024 */ s32 yaw;
     /* 0x028 */ EnemyDrops drops;
     /* 0x0E0 */ EnemyTerritory territory;

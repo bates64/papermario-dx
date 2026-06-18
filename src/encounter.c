@@ -2560,6 +2560,7 @@ void create_encounters(void) {
                         if (npcData->initVarCount == 1) {
                             enemy->varTable[0] = npcData->initVar.value;
                         } else {
+                            ASSERT(npcData->initVarCount <= ARRAY_COUNT(enemy->varTable));
                             s32* initialVars = npcData->initVar.array;
                             for (k = 0; k < npcData->initVarCount; k++) {
                                 enemy->varTable[k] = *initialVars++;
