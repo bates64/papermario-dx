@@ -588,7 +588,7 @@ EvtScript N(EVS_NpcInit_Spiny) = {
     IfEq(GB_StoryProgress, STORY_CH6_SPOKE_WITH_THE_SUN)
         Call(RemoveNpc, NPC_SELF)
     EndIf
-    Call(SetSelfVar, 13, 1)
+    Call(SetSelfVar, AI_VAR_SPINY_ZERO_FLOOR, true)
     Return
     End
 };
