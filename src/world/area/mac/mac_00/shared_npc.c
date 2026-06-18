@@ -1,6 +1,9 @@
 #include "mac_00.h"
 #include "sprite/player.h"
 
+#include "world/common/npc/Toad/idle.h"
+#include "world/common/npc/Toadette/idle.h"
+
 LetterDelivery N(LetterDelivery_MissT) = {
     .recipientID = NPC_MissT,
     .recipientTalk = ANIM_Toadette_Orange_Talk,
@@ -641,7 +644,7 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .pos = { -15.0f, 0.0f, 60.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShamelessLover),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -652,7 +655,7 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .pos = { 426.0f, 20.0f, 268.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_KrisT),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOADETTE_GREEN_ANIMS,
@@ -663,7 +666,7 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .pos = { 381.0f, 20.0f, 326.0f },
         .yaw = 180,
         .init = &N(EVS_NpcInit_MissT),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOADETTE_ORANGE_ANIMS,
@@ -674,7 +677,7 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .pos = { 476.0f, 20.0f, 326.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_FelissaT),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOADETTE_PURPLE_ANIMS,

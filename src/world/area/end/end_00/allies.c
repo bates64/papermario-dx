@@ -1,6 +1,8 @@
 #include "end_00.h"
 #include "effects.h"
 
+#include "world/common/npc/VannaT/base.h"
+
 EvtScript N(EVS_ParadePhase_Luigi) = {
     Call(PlaySound, SOUND_LRAW_AUDIENCE_MURMUR)
     Wait(80 * DT)

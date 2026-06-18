@@ -1,6 +1,6 @@
 #include "mac_02.h"
 
-#include "world/common/npc/ToadKid/base.h"
+#include "world/common/npc/ToadKid/wander.inc.c"
 #include "world/common/npc/Toadette/idle.inc.c"
 #include "world/common/npc/Toad/wander.inc.c"
 #include "world/common/npc/Toad/patrol.inc.c"
@@ -8,7 +8,7 @@
 #include "world/common/npc/Bootler/idle.inc.c"
 #include "world/common/npc/Bubulb/idle.inc.c"
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/atomic/Quizmo.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
 #include "world/common/enemy/ShyGuy/base.h"
 
@@ -150,7 +150,7 @@ NpcData N(NpcData_TayceT)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ToadKid),
-        .settings = &N(NpcSettings_Toad_Wander),
+        .settings = &N(NpcSettings_ToadKid_Wander),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_KID_YELLOW_ANIMS,

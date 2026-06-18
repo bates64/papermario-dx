@@ -1,8 +1,8 @@
 #include "kkj_01.h"
 
-#include "world/common/npc/ToadGuard/base.h"
-#include "world/common/npc/ToadMinister/base.h"
-#include "world/common/npc/Toadette/base.h"
+#include "world/common/npc/ToadGuard/idle.inc.c"
+#include "world/common/npc/ToadMinister/idle.inc.c"
+#include "world/common/npc/Toadette/wander.inc.c"
 #include "world/common/npc/Toad/wander.inc.c"
 #include "world/common/npc/Toad/patrol.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
@@ -295,7 +295,7 @@ NpcData N(NpcData_ToadMinister)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_ToadMinister),
         .drops  = NO_DROPS,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadMinister),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .animations = TOAD_MINISTER_ANIMS,
     },
@@ -327,7 +327,7 @@ NpcData N(NpcData_ToadMinister)[] = {
         },
         .init = &N(EVS_NpcInit_Toad_02),
         .drops  = NO_DROPS,
-        .settings = &N(NpcSettings_Toad_Wander),
+        .settings = &N(NpcSettings_Toadette_Wander),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .animations = TOAD_GREEN_ANIMS,
     },
@@ -373,7 +373,7 @@ NpcData N(NpcData_ToadMinister)[] = {
         },
         .init = &N(EVS_NpcInit_Toadette),
         .drops  = NO_DROPS,
-        .settings = &N(NpcSettings_Toad_Wander),
+        .settings = &N(NpcSettings_Toadette_Wander),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .animations = TOADETTE_ORANGE_ANIMS,
     },
@@ -383,7 +383,7 @@ NpcData N(NpcData_ToadMinister)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_ToadGuard_01),
         .drops  = NO_DROPS,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadGuard),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .animations = TOAD_GUARD_RED_ANIMS,
     },
@@ -393,7 +393,7 @@ NpcData N(NpcData_ToadMinister)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_ToadGuard_02),
         .drops  = NO_DROPS,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadGuard),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .animations = TOAD_GUARD_YELLOW_ANIMS,
     },

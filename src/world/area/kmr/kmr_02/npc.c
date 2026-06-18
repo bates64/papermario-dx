@@ -17,7 +17,7 @@ BSS u8 oldPrimR, oldPrimG, oldPrimB;
 BSS u8 oldEnvR, oldEnvG, oldEnvB;
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/atomic/Quizmo.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
 #include "world/common/npc/Toad/guard.inc.c"
 

@@ -14,7 +14,7 @@
 #include "world/common/npc/MusicianPoet/idle.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/atomic/Quizmo.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
 enum WhaleRider {
     WHALE_RIDER_PLAYER      = 0,

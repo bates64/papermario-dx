@@ -1,6 +1,6 @@
 #include "osr_00.h"
 
-#include "world/common/npc/ToadGuard/base.h"
+#include "world/common/npc/ToadGuard/idle.inc.c"
 #include "world/common/npc/Yoshi/idle.inc.c"
 #include "world/common/npc/YoshiKid/idle.inc.c"
 #include "world/common/npc/Penguin/idle.inc.c"
@@ -423,7 +423,7 @@ NpcData N(NpcData_Toads)[] = {
         .pos = { -50.0f, 0.0f, -200.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_ToadGuard_01),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadGuard),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_RED_ANIMS,
@@ -434,7 +434,7 @@ NpcData N(NpcData_Toads)[] = {
         .pos = { 560.0f, 20.0f, 100.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ToadGuard_02),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadGuard),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_YELLOW_ANIMS,

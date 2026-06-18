@@ -1,4 +1,6 @@
 #include "end_00.h"
+
+#include "world/common/npc/VannaT/base.h"
 #include "effects.h"
 
 extern HeapNode heap_spriteHead;

@@ -1,21 +1,21 @@
 #include "mac_00.h"
 #include "effects.h"
 
-#include "world/common/npc/ToadKid/base.h"
-#include "world/common/npc/Toadette/base.h"
+#include "world/common/npc/Dummy/idle.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/npc/Toad/wander.inc.c"
 #include "world/common/npc/Toad/patrol.inc.c"
-#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/ToadKid/idle.inc.c"
+#include "world/common/npc/Toadette/idle.inc.c"
 #include "world/common/npc/HarryT/idle.inc.c"
-#include "world/common/npc/GoombaFamily/idle.inc.c"
-#include "world/common/npc/Dummy/idle.inc.c"
 #include "world/common/npc/RussT/idle.inc.c"
 #include "world/common/npc/TheMaster/idle.inc.c"
+#include "world/common/npc/GoombaFamily/idle.inc.c"
 
 #include "world/common/enemy/ShyGuy/idle.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/atomic/Quizmo.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
 #include "npc/russ_and_thief.inc.c"
 
@@ -355,7 +355,7 @@ NpcData N(NpcData_Waterfront_Family)[] = {
         .pos = { -566.0f, 20.0f, 267.0f },
         .yaw = 133,
         .init = &N(EVS_NpcInit_WaterfrontMom),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = TOADETTE_ORANGE_ANIMS,
@@ -366,7 +366,7 @@ NpcData N(NpcData_Waterfront_Family)[] = {
         .pos = { -508.0f, 20.0f, 324.0f },
         .yaw = 313,
         .init = &N(EVS_NpcInit_WaterfrontKid1),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadKid),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = TOAD_KID_GREEN_ANIMS,
@@ -377,7 +377,7 @@ NpcData N(NpcData_Waterfront_Family)[] = {
         .pos = { -480.0f, 20.0f, 329.0f },
         .yaw = 313,
         .init = &N(EVS_NpcInit_WaterfrontKid2),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadKid),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = TOAD_KID_GREEN_ANIMS,

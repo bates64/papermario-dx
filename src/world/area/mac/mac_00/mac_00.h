@@ -23,7 +23,6 @@
 #include "sprite/npc/Goompapa.h"
 #include "sprite/npc/Goomama.h"
 #include "sprite/npc/Gooma.h"
-#include "sprite/npc/VannaT.h"
 
 enum {
     NPC_Luigi_Intro             = 0,

@@ -2,23 +2,18 @@
 #include "sprite/player.h"
 #include "world/common/enemy/ShyGuy/base.h"
 
-#include "world/common/npc/ToadKid/base.h"
-#include "world/common/npc/Toadette/idle.inc.c"
-#include "world/common/npc/Toad/wander.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Toad/wander.inc.c"
+#include "world/common/npc/ToadKid/idle.inc.c"
+#include "world/common/npc/Toadette/idle.inc.c"
 #include "world/common/npc/HarryT/idle.inc.c"
-
-NpcSettings N(NpcSettings_ChetRippo) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/npc/ChetRippo/idle.inc.c"
 
 #include "world/common/npc/GoombaFamily/idle.inc.c"
 #include "world/common/npc/StarSpirit/idle.inc.c"
 #include "world/common/npc/Twink/idle.inc.c"
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/atomic/Quizmo.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
 EvtScript N(EVS_TossTrainInToybox) = {
     Call(FacePlayerTowardPoint, -440, -150, 0)
@@ -179,9 +174,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .settings = &N(NpcSettings_ChetRippo),
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_ChetRippo_Idle,
-        },
+        .animations = CHET_RIPPO_ANIMS,
         .tattle = MSG_NpcTattle_ChetRippo,
     },
     {
@@ -256,7 +249,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { 254.0f, 20.0f, 436.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_ToadKid_01),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadKid),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_KID_RED_ANIMS,
@@ -267,7 +260,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { 304.0f, 20.0f, 410.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ToadKid_02),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadKid),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_KID_YELLOW_ANIMS,
@@ -278,7 +271,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { 345.0f, 20.0f, 438.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ToadKid_03),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadKid),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_KID_GREEN_ANIMS,

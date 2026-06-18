@@ -16,10 +16,10 @@
 #include "world/common/npc/Lakilester/base.h"
 #include "world/common/npc/Watt/base.h"
 
-#include "world/common/npc/ToadGuard/base.h"
-#include "world/common/npc/ToadMinister/base.h"
-#include "world/common/npc/Toadette/base.h"
-#include "world/common/npc/ShiverToad/base.h"
+#include "world/common/npc/ToadGuard/idle.inc.c"
+#include "world/common/npc/ToadMinister/idle.inc.c"
+#include "world/common/npc/Toadette/idle.inc.c"
+#include "world/common/npc/ShiverToad/idle.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/npc/Peach/idle.inc.c"
 #include "world/common/npc/Dummy/idle.inc.c"
@@ -268,7 +268,7 @@ NpcData N(NpcData_SpecialToads)[] = {
         .id = NPC_ToadMinister,
         .pos = { 100.0f, 0.0f, 250.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadMinister),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOAD_MINISTER_ANIMS,
@@ -302,7 +302,7 @@ NpcData N(NpcData_SpecialToads)[] = {
         .pos = { 330.0f, 0.0f, 135.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShiverToad_02),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ShiverToad),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = SHIVER_TOAD_GREEN_ANIMS,
@@ -599,7 +599,7 @@ NpcData N(NpcData_Toadettes)[] = {
         .pos = { -300.0f, 0.0f, 100.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toadette_03),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -610,7 +610,7 @@ NpcData N(NpcData_Toadettes)[] = {
         .pos = { -270.0f, 0.0f, 85.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Toadette_04),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOADETTE_GREEN_ANIMS,
@@ -620,7 +620,7 @@ NpcData N(NpcData_Toadettes)[] = {
         .id = NPC_Toadette_05,
         .pos = { -190.0f, 0.0f, 160.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOADETTE_ORANGE_ANIMS,
@@ -630,7 +630,7 @@ NpcData N(NpcData_Toadettes)[] = {
         .id = NPC_Toadette_06,
         .pos = { 190.0f, 0.0f, 300.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOADETTE_PURPLE_ANIMS,
@@ -644,7 +644,7 @@ NpcData N(NpcData_ToadGuards)[] = {
         .pos = { 100.0f, 0.0f, 150.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ToadGuard_03),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadGuard),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_RED_ANIMS,
@@ -654,7 +654,7 @@ NpcData N(NpcData_ToadGuards)[] = {
         .id = NPC_ToadGuard_04,
         .pos = { -50.0f, 100.0f, -365.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadGuard),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_BLUE_ANIMS,
@@ -664,7 +664,7 @@ NpcData N(NpcData_ToadGuards)[] = {
         .id = NPC_ToadGuard_05,
         .pos = { 225.0f, 0.0f, 125.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadGuard),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_RED_ANIMS,
@@ -674,7 +674,7 @@ NpcData N(NpcData_ToadGuards)[] = {
         .id = NPC_ToadGuard_06,
         .pos = { -392.0f, 40.0f, -230.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadGuard),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_GREEN_ANIMS,
@@ -684,7 +684,7 @@ NpcData N(NpcData_ToadGuards)[] = {
         .id = NPC_ToadGuard_07,
         .pos = { -392.0f, 40.0f, -230.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadGuard),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_YELLOW_ANIMS,

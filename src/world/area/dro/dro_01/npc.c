@@ -1,18 +1,16 @@
 #include "dro_01.h"
 #include "sprite/npc/ChuckQuizmo.h"
 
-#include "world/common/npc/ToadKid/base.h"
-#include "world/common/npc/Toadette/base.h"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Toadette/idle.inc.c"
+#include "world/common/npc/MusicianComposer/base.h"
+#include "world/common/npc/Dryite/idle.inc.c"
 #include "world/common/npc/Dryite/wander.inc.c"
 #include "world/common/npc/Dryite/patrol.inc.c"
-#include "world/common/npc/Dryite/idle.inc.c"
-
 #include "world/common/npc/Mouser/idle.inc.c"
-#include "world/common/npc/Toad/idle.inc.c"
-#include "world/common/npc/MusicianComposer/base.h"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/atomic/Quizmo.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
 EvtScript N(EVS_NpcInteract_Mouser_01) = {
     IfGe(GB_StoryProgress, STORY_CH2_STAR_SPRIT_DEPARTED)
@@ -326,7 +324,7 @@ NpcData N(ThreeSisterNPCs)[] = {
         .pos = { -141.0f, 0.0f, -18.0f },
         .yaw = 62,
         .init = &N(EVS_NpcInit_Toadette),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -337,7 +335,7 @@ NpcData N(ThreeSisterNPCs)[] = {
         .pos = { -124.0f, 0.0f, -61.0f },
         .yaw = 63,
         .init = &N(EVS_NpcInit_Toadette),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -348,7 +346,7 @@ NpcData N(ThreeSisterNPCs)[] = {
         .pos = { -80.0f, 0.0f, -35.0f },
         .yaw = 244,
         .init = &N(EVS_NpcInit_Toadette),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,

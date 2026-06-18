@@ -6,6 +6,7 @@
 #include "sprite/player.h"
 
 #ifndef CHUCK_QUIZMO_NPC_ID
+    #define CHUCK_QUIZMO_NPC_ID 0
     #error CHUCK_QUIZMO_NPC_ID must be defined for Quizmo.inc.c
 #endif
 
@@ -584,24 +585,6 @@ EvtScript N(EVS_Quizmo_SetQuizCamera) = {
     Call(SetCamPitch, CAM_DEFAULT, LVar0, LVar1)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
-    Return
-    End
-};
-
-EvtScript N(EVS_Quizmo_OtherCamScript) = {
-    Call(GetNpcPos, CHUCK_QUIZMO_NPC_ID, LVar0, LVar1, LVar2)
-    Add(LVar1, 30)
-    Call(SetPanTarget, 0, LVar0, LVar1, LVar2)
-    Call(GetCamDistance, 0, LVar0)
-    IfGt(LVar0, 0)
-        SetF(LVar0, 17)
-    Else
-        SetF(LVar0, -17)
-    EndIf
-    Call(SetCamDistance, 0, LVar0)
-    Call(SetCamSpeed, 0, Float(90.0))
-    Call(WaitForCam, 0, Float(1.0))
-    Call(SetCamSpeed, 0, 1)
     Return
     End
 };

@@ -1,6 +1,6 @@
 #include "kpa_11.h"
 
-#include "world/common/npc/ToadGuard/base.h"
+#include "world/common/npc/ToadGuard/idle.inc.c"
 #include "world/common/enemy/Koopatrol/wander.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
 
@@ -102,7 +102,7 @@ NpcData N(NpcData_Prisoners)[] = {
 #endif
         .yaw = 0,
         .init = &N(EVS_NpcInit_Prisoner),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadGuard),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_YELLOW_ANIMS,

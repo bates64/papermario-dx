@@ -10,7 +10,7 @@
 #include "world/common/npc/ShiverToad/idle.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/atomic/Quizmo.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
 EvtScript N(EVS_NpcInteract_Penguin_ShopOwner) = {
     Switch(GB_StoryProgress)
@@ -385,7 +385,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { 329.0f, 0.0f, -167.0f },
         .yaw = 180,
         .init = &N(EVS_NpcInit_ShiverToad),
-        .settings = &N(NpcSettings_ShiverToad_Idle),
+        .settings = &N(NpcSettings_ShiverToad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = SHIVER_TOAD_RED_ANIMS,

@@ -22,7 +22,7 @@ NpcSettings N(NpcSettings_ShyGuy) = {
 };
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/atomic/Quizmo.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
 API_CALLABLE(N(GetOinkCount)) {
     s32 oinkCount = evt_get_variable(script, GB_MAC03_LilOinkCount);
@@ -657,7 +657,7 @@ NpcData N(NpcData_Toads)[] = {
         .pos = { 85.0f, 0.0f, 235.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Toadette_01),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PURPLE_ANIMS,

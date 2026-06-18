@@ -1,7 +1,7 @@
 #include "kpa_91.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/ToadGuard/base.h"
+#include "world/common/npc/ToadGuard/idle.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/npc/Dryite/idle.inc.c"
 #include "world/common/enemy/Koopatrol/patrol.inc.c"
@@ -181,7 +181,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_ToadGuard),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_ToadGuard),
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_RED_ANIMS,

@@ -2,6 +2,7 @@
 
 #include "world/common/npc/HarryT/idle.inc.c"
 #include "world/common/npc/TheMaster/idle.inc.c"
+#include "world/common/npc/VannaT/idle.inc.c"
 
 EvtScript N(EVS_NpcInteract_Goompapa_Epilogue) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle, 0, MSG_Outro_0024)
@@ -263,27 +264,10 @@ NpcData N(NpcData_ChuckQuizmo_Epilogue)[] = {
         .pos = { 500.0f, 20.0f, -130.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_VannaT_Epilogue),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_VannaT),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_VannaT_Still,
-            .walk   = ANIM_VannaT_Walk,
-            .run    = ANIM_VannaT_Still,
-            .chase  = ANIM_VannaT_Still,
-            .alert  = ANIM_VannaT_Still,
-            .unused = ANIM_VannaT_Still,
-            .death  = ANIM_VannaT_Still,
-            .hit    = ANIM_VannaT_Still,
-            .anim_8 = ANIM_VannaT_Still,
-            .anim_9 = ANIM_VannaT_Still,
-            .anim_A = ANIM_VannaT_Still,
-            .anim_B = ANIM_VannaT_Still,
-            .anim_C = ANIM_VannaT_Still,
-            .anim_D = ANIM_VannaT_Still,
-            .anim_E = ANIM_VannaT_Still,
-            .anim_F = ANIM_VannaT_Still,
-        },
+        .animations = VANNA_T_ANIMS,
         .limitAnimations = N(LimitAnims_VannaT_Epilogue),
         .tattle = MSG_NpcTattle_MAC00_ShopOwner,
     },
