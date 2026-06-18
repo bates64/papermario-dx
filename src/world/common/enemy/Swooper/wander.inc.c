@@ -1,3 +1,4 @@
+#pragma once
 #include "wander.h"
 
 #include "world/common/ai/SwooperAI.inc.c"

@@ -1,3 +1,4 @@
+#pragma once
 #include "wander.h"
 
 NpcSettings N(NpcSettings_FlyingMagikoopa) = {

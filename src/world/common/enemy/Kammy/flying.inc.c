@@ -1,3 +1,4 @@
+#pragma once
 #include "flying.h"
 
 NpcSettings N(NpcSettings_Kammy_Flying) = {

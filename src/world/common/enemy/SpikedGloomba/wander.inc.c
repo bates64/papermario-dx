@@ -1,3 +1,4 @@
+#pragma once
 #include "wander.h"
 
 MobileAISettings N(AISettings_SpikedGloomba_Wander) = {

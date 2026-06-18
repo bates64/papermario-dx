@@ -1,3 +1,4 @@
+#pragma once
 #include "spiny_spawner.h"
 #include "world/common/enemy/Spiny/base.h"
 

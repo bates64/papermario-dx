@@ -4,9 +4,9 @@
 #include "sprite/player.h"
 
 #define EVAR_INTERACTED 0
-#define EVAR_SAVED_X 0
-#define EVAR_SAVED_Y 0
-#define EVAR_SAVED_Z 0
+#define EVAR_SAVED_X 10
+#define EVAR_SAVED_Y 11
+#define EVAR_SAVED_Z 12
 
 EvtScript N(EVS_NpcAI_MBush) = {
     Call(EnableNpcShadow, NPC_SELF, false)
@@ -103,6 +103,3 @@ NpcSettings N(NpcSettings_MBush) = {
     .onInteract = &N(EVS_NpcInteract_MBush),
     .onDefeat = &N(EVS_NpcDefeat_MBush),
 };
-
-#define MBUSH_FLAGS \
-    BASE_PASSIVE_FLAGS | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER

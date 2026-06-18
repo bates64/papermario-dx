@@ -1,3 +1,4 @@
+#pragma once
 #include "wander.h"
 
 API_CALLABLE(N(SetInstigatorValue)) {

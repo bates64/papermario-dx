@@ -1,12 +1,6 @@
 #include "hos_10.h"
 
-NpcSettings N(NpcSettings_Dummy) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
-#include "world/common/npc/Twink/base.h"
+#include "world/common/npc/Twink/idle.inc.c"
 #include "world/common/npc/StarSpirit/idle.inc.c"
 
 EvtScript N(EVS_NpcInit_Twink) = {
@@ -113,7 +107,7 @@ NpcData N(NpcData_Spirits_FlyAway)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Twink),
-        .settings = &N(NpcSettings_Dummy),
+        .settings = &N(NpcSettings_Twink),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,

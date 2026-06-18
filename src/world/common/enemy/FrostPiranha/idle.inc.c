@@ -1,3 +1,4 @@
+#pragma once
 #include "idle.h"
 
 #include "world/common/ai/PiranhaPlantAI.inc.c"

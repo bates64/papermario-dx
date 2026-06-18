@@ -4,11 +4,7 @@
 
 #include "world/common/enemy/Bzzap/wander.inc.c"
 
-NpcSettings N(NpcSettings_Bzzap_02) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/npc/Dummy/idle.inc.c"
 
 EvtScript N(EVS_NpcAI_Bzzap_02) = {
     Loop(0)
@@ -144,7 +140,7 @@ NpcData N(NpcData_Bzzap_02) = {
         }
     },
     .init = &N(EVS_NpcInit_Bzzap_02),
-    .settings = &N(NpcSettings_Bzzap_02),
+    .settings = &N(NpcSettings_Dummy),
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BZZAP_DROPS,
     .animations = BZZAP_ANIMS,

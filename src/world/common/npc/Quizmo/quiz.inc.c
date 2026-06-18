@@ -1,3 +1,4 @@
+#pragma once
 #include "base.h"
 #include "message_ids.h"
 #include "effects.h"

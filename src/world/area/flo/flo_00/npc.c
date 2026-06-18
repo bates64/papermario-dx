@@ -1,11 +1,7 @@
 #include "flo_00.h"
 #include "sprite/player.h"
 
-NpcSettings N(NpcSettings_Dummy) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/npc/Dummy/idle.inc.c"
 
 #include "world/common/npc/Bubulb/patrol.inc.c"
 #include "world/common/npc/Tolielup/idle.inc.c"

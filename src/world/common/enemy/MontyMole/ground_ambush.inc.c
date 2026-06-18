@@ -1,3 +1,4 @@
+#pragma once
 #include "ground_ambush.h"
 
 EvtScript N(EVS_NpcCreate_MontyMole_GroundAmbush) = {

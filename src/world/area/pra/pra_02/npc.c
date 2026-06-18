@@ -1,13 +1,4 @@
 #include "pra_02.h"
 
-EvtScript N(EVS_NpcCreate_Unused) = {
-    Return
-    End
-};
-
-NpcSettings N(NpcSettings_Unused) = {
-    .height = 70,
-    .radius = 25,
-    .level = ACTOR_LEVEL_NONE,
-    .onCreate = &N(EVS_NpcCreate_Unused),
-};
+// unused
+#include "world/common/enemy/AlbinoDino/idle.inc.c"

@@ -1,3 +1,4 @@
+#pragma once
 #include "wall_ambush.h"
 
 EvtScript N(EVS_NpcCreate_MontyMole_WallAmbush) = {

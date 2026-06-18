@@ -2,23 +2,8 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/HuffNPuff/base.h"
-#include "world/common/enemy/RuffPuff/base.h"
-
-NpcSettings N(NpcSettings_RuffPuff) = {
-    .height = 24,
-    .radius = 28,
-    .level = 16,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
-
-NpcSettings N(NpcSettings_HuffNPuff) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
+#include "world/common/enemy/HuffNPuff/idle.inc.c"
+#include "world/common/enemy/RuffPuff/idle.inc.c"
 #include "world/common/npc/StarSpirit/idle.inc.c"
 
 Vec3f N(Path_JumpOut)[] = {

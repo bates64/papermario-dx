@@ -1,3 +1,4 @@
+#pragma once
 #include "guard.h"
 
 #include "world/common/ai/GuardAI.inc.c"

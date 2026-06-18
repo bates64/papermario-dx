@@ -1,3 +1,4 @@
+#pragma once
 #include "avoid_player.h"
 
 #include "world/common/ai/AvoidPlayerAI.inc.c"

@@ -1,4 +1,7 @@
 #include "kmr_22.h"
+
+#include "world/common/npc/Dummy/idle.inc.c"
+
 #include "world/common/npc/Bowser/base.h"
 #include "world/common/enemy/CrystalKing/base.h"
 #include "world/common/enemy/HuffNPuff/base.h"
@@ -8,12 +11,6 @@
 #include "world/common/npc/StarSpirit/base.h"
 #include "world/common/npc/KoopaBros/base.h"
 #include "world/common/enemy/ShyGuy/base.h"
-
-NpcSettings N(NpcSettings_Dummy) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
 
 #include "npc/lava_piranha.inc.c"
 

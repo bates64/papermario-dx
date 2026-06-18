@@ -1,3 +1,4 @@
+#pragma once
 #include "patrol.h"
 
 #include "world/common/ai/ShyGuyPatrolAI.inc.c"

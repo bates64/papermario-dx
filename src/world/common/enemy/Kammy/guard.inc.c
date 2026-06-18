@@ -1,6 +1,5 @@
+#pragma once
 #include "guard.h"
-
-// odd enemy template used in kmr_02 for flying kammy
 
 #include "world/common/ai/GuardAI.inc.c"
 
