@@ -68,7 +68,7 @@ EvtScript N(EVS_GardenShyGuy_RunAway) = {
     Call(InterpNpcYaw, NPC_SELF, 270, 1)
     Set(LVar0, -1)
     Call(PlaySoundAtNpc, LVar0, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
-    ExecGetTID(N(D_8024E6F8_80EF78), LVar9)
+    ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVar9)
     Call(NpcMoveTo, NPC_SELF, 160, 400, 0)
     KillThread(LVar9)
     Call(DisablePlayerInput, false)

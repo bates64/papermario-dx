@@ -1,5 +1,6 @@
 #include "trd_10.h"
-#include "world/common/npc/KoopaBros/base.h"
+
+#include "world/common/enemy/KoopaBros/base.h"
 
 extern EvtScript N(EVS_BossDefeated);
 

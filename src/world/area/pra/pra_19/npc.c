@@ -2,7 +2,6 @@
 #include "sprite.h"
 #include "sprite/player.h"
 #include "world/common/npc/Kooper/base.h"
-#include "world/common/enemy/Duplighost/base.h"
 
 NpcSettings N(NpcSettings_Kooper) = {
     .height = 35,
@@ -12,17 +11,12 @@ NpcSettings N(NpcSettings_Kooper) = {
     .onDefeat = &EnemyNpcDefeat,
 };
 
+#include "world/common/npc/Luigi/base.h"
 #include "world/common/npc/Goompa/idle.inc.c"
 #include "world/common/npc/KoopaKoot/idle.inc.c"
 #include "world/common/npc/Kolorado/idle.inc.c"
 
-NpcSettings N(NpcSettings_Duplighost) = {
-    .height = 30,
-    .radius = 45,
-    .level = ACTOR_LEVEL_NONE,
-};
-
-#include "world/common/npc/Luigi/base.h"
+#include "world/common/enemy/Duplighost/disguised.inc.c"
 
 #include "world/common/todo/PlayBigSmokePuff.inc.c"
 

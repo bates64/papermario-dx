@@ -2,14 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/Duplighost/base.h"
-
-NpcSettings N(NpcSettings_Duplighost) = {
-    .height = 30,
-    .radius = 45,
-    .level = ACTOR_LEVEL_NONE,
-};
-
+#include "world/common/enemy/Duplighost/disguised.inc.c"
 #include "world/common/enemy/Bombette/idle.inc.c"
 
 #include "world/common/todo/PlayBigSmokePuff.inc.c"

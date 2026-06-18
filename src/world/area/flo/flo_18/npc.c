@@ -1,24 +1,10 @@
 #include "flo_18.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/Lakitu/base.h"
+#include "world/common/enemy/Lakitu/idle.inc.c"
+#include "world/common/enemy/Magikoopa/idle.inc.c"
+
 #include "world/common/enemy/YMagikoopa/base.h"
-
-NpcSettings N(NpcSettings_Lakitu) = {
-    .height = 32,
-    .radius = 24,
-    .level = ACTOR_LEVEL_LAKITU,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
-
-NpcSettings N(NpcSettings_Magikoopa) = {
-    .height = 34,
-    .radius = 24,
-    .level = ACTOR_LEVEL_MAGIKOOPA,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
 
 Vec3f N(RetreatPath_Magikoopa)[] = {
     {  -55.0,    15.0,   35.0 },

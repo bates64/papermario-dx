@@ -1,20 +1,11 @@
 #include "trd_03.h"
-#include "world/common/npc/KoopaBros/base.h"
 
 extern EvtScript N(EVS_StartKoopaBrosTheme);
 extern EvtScript N(EVS_EndKoopaBrosTheme);
 extern EvtScript N(EVS_EnterMap);
 
 #include "world/common/enemy/KoopaTroopa/wander.inc.c"
-
-NpcSettings N(NpcSettings_KoopaBros) = {
-    .height = 34,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
-
+#include "world/common/enemy/KoopaBros/idle.inc.c"
 #include "world/common/enemy/Bobomb/wander.inc.c"
 
 EvtScript N(EVS_Scene_GreenKoopaBros) = {

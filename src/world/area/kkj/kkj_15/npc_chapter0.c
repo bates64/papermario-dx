@@ -4,16 +4,7 @@
 
 #include "world/common/npc/Bowser/idle.inc.c"
 #include "world/common/enemy/Kammy/idle.inc.c"
-
-#include "world/common/npc/KoopaBros/base.h"
-
-NpcSettings N(NpcSettings_KoopaBros) = {
-    .height = 34,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
+#include "world/common/enemy/KoopaBros/idle.inc.c"
 
 AnimID N(LimitAnims_Bowser)[] = {
     ANIM_WorldBowser_Still,

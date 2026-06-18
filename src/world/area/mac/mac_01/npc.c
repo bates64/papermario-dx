@@ -1,13 +1,12 @@
 #include "mac_01.h"
 #include "effects.h"
-#include "hud_element.h"
 #include "sprite/player.h"
 
-extern IconHudScriptPair gItemHudScripts[];
 extern EvtScript N(EVS_MerlonBargeOut);
 
+#include "world/common/enemy/KoopaBros/base.h"
+
 #include "world/common/npc/Dummy/idle.inc.c"
-#include "world/common/npc/KoopaBros/base.h"
 #include "world/common/npc/Parakarry/base.h"
 
 #include "world/common/npc/Toad/wander.inc.c"
@@ -15,6 +14,7 @@ extern EvtScript N(EVS_MerlonBargeOut);
 #include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/enemy/ShyGuy/idle.inc.c"
 
+#include "world/common/npc/Merlon/idle.inc.c"
 #include "world/common/npc/Ninji/idle.inc.c"
 #include "world/common/npc/Twink/idle.inc.c"
 #include "world/common/npc/Kolorado/idle.inc.c"
@@ -117,7 +117,7 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
     End
 };
 
-EvtScript N(D_8024E6F8_80EF78) = {
+EvtScript N(EVS_PlayShyGuyRunSounds) = {
     Loop(0)
         Call(PlaySoundAtNpc, LVar0, SOUND_SEQ_SHY_GUY_STEP, SOUND_SPACE_DEFAULT)
         Wait(2)
@@ -126,7 +126,7 @@ EvtScript N(D_8024E6F8_80EF78) = {
     End
 };
 
-EvtScript N(D_8024E740_80EFC0) = {
+EvtScript N(EVS_MerlonDoor_Open) = {
     Call(PlaySoundAtCollider, COLLIDER_deilitd, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, -80, 30, EASING_COS_IN_OUT)
     Loop(0)
@@ -141,7 +141,7 @@ EvtScript N(D_8024E740_80EFC0) = {
     End
 };
 
-EvtScript N(D_8024E7F0_80F070) = {
+EvtScript N(EVS_MerlonDoor_Close) = {
     Call(MakeLerp, -80, 0, 30, EASING_COS_IN_OUT)
     Loop(0)
         Call(UpdateLerp)
@@ -160,7 +160,7 @@ EvtScript N(D_8024E7F0_80F070) = {
 
 #include "world/common/util/CheckPositionRelativeToPlane.inc.c"
 
-API_CALLABLE(N(func_802447E0_805060)) {
+API_CALLABLE(N(MerlonSceneFadeOut)) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
     }
@@ -179,7 +179,7 @@ API_CALLABLE(N(func_802447E0_805060)) {
     }
 }
 
-API_CALLABLE(N(func_80244848_8050C8)) {
+API_CALLABLE(N(MerlonSceneFadeIn)) {
     if (isInitialCall) {
         script->functionTemp[1] = 255;
     }
@@ -194,7 +194,7 @@ API_CALLABLE(N(func_80244848_8050C8)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_802448A0_805120)) {
+API_CALLABLE(N(MerlonSceneHideOutside)) {
     s32 alpha;
 
     if (isInitialCall) {
@@ -413,14 +413,14 @@ EvtScript N(EVS_MerlonBargeOut) = {
     EndThread
     Call(PlayerMoveTo, -168, -198, 20 * DT)
     Call(PlayerMoveTo, -275, -305, 30 * DT)
-    Exec(N(D_8024E7F0_80F070))
+    Exec(N(EVS_MerlonDoor_Close))
     Wait(5 * DT)
     Call(SetNpcPos, NPC_PARTNER, -240, 20, -284)
-    Call(N(func_802447E0_805060))
+    Call(N(MerlonSceneFadeOut))
     Thread
         Set(LVarF, 53)
         Set(LVar0, 0)
-        Call(N(func_802448A0_805120))
+        Call(N(MerlonSceneHideOutside))
     EndThread
     Call(RotateGroup, MODEL_off_kabe, 180, 0, 1, 0)
     Set(MF_MusicMixTrigger1, true)
@@ -429,14 +429,14 @@ EvtScript N(EVS_MerlonBargeOut) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(30 * DT)
-    Call(N(func_80244848_8050C8))
+    Call(N(MerlonSceneFadeIn))
     Call(InterpNpcYaw, NPC_Merlon, 135, 5)
     Call(SpeakToPlayer, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_0023)
-    Call(N(func_802447E0_805060))
+    Call(N(MerlonSceneFadeOut))
     Wait(60 * DT)
     Call(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
     Thread
-        Call(N(func_80244848_8050C8))
+        Call(N(MerlonSceneFadeIn))
     EndThread
     Wait(10 * DT)
     Call(ContinueSpeech, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_0024)
@@ -465,7 +465,7 @@ EvtScript N(EVS_MerlonBargeOut) = {
     End
 };
 
-EvtScript N(D_80250D14_811594) = {
+EvtScript N(EVS_Merlon_WalkToDarkToads) = {
     Call(AwaitPlayerApproach, -130, -110, 150)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
     Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_GRAVITY, true)
@@ -756,7 +756,7 @@ EvtScript N(EVS_NpcInteract_Merlon) = {
                 Call(PlaySoundAtCollider, COLLIDER_deilitud, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
                 Call(SetNpcPos, NPC_SELF, -150, 10, -160)
                 Call(SetNpcYaw, NPC_Merlon, 90)
-                Exec(N(D_80250D14_811594))
+                Exec(N(EVS_Merlon_WalkToDarkToads))
             EndIf
         CaseLt(STORY_CH1_MERLIN_REVEALED_KOOPA_BROS)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 16, MSG_MAC_Plaza_0028)
@@ -804,12 +804,12 @@ EvtScript N(EVS_NpcInteract_Merlon) = {
                 Call(NpcMoveTo, NPC_Merlon, -170, -225, 0)
                 Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Idle)
                 Call(SetGroupVisibility, MODEL_dr_in, MODEL_GROUP_VISIBLE)
-                ExecWait(N(D_8024E740_80EFC0))
+                ExecWait(N(EVS_MerlonDoor_Open))
                 Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Walk)
                 Call(SetNpcSpeed, NPC_Merlon, Float(3.0))
                 Call(NpcMoveTo, NPC_Merlon, -265, -300, 0)
                 Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Idle)
-                ExecWait(N(D_8024E7F0_80F070))
+                ExecWait(N(EVS_MerlonDoor_Close))
                 Call(SetGroupVisibility, MODEL_dr_in, MODEL_GROUP_HIDDEN)
                 Set(GF_MAC01_Merlon_HeardAboutDream, true)
                 Call(InterpNpcYaw, NPC_Merlon, 133, 0)
@@ -1000,13 +1000,6 @@ EvtScript N(EVS_Scene_MerlonAndNinji) = {
     End
 };
 
-NpcSettings N(NpcSettings_Merlon) = {
-    .defaultAnim = ANIM_Merlon_Idle,
-    .height = 36,
-    .radius = 32,
-    .level = ACTOR_LEVEL_NONE,
-};
-
 NpcData N(NpcData_Merlon) = {
     .id = NPC_Merlon,
     .pos = { -337.0f, 20.0f, -360.0f },
@@ -1015,9 +1008,7 @@ NpcData N(NpcData_Merlon) = {
     .settings = &N(NpcSettings_Merlon),
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Merlon_Idle,
-    },
+    .animations = MERLON_ANIMS,
     .tattle = MSG_NpcTattle_Merlon,
 };
 
@@ -1137,10 +1128,6 @@ NpcData N(NpcData_Ninji) = {
     .animations = NINJI_ANIMS,
     .tattle = MSG_NpcTattle_MAC_PowerHungryToadKid,
 };
-
-BSS PopupMenu D_80262C38;
-BSS s32 D_80262F68;
-BSS s32 D_80262F6C[13];
 
 #include "npc/rowf_and_rhuff.inc.c"
 #include "npc/post_office.inc.c"
@@ -1583,7 +1570,7 @@ EvtScript N(D_8025B854_81C0D4) = {
     Exec(N(D_8025B760_81BFE0))
     Set(LVar0, 6)
     Call(PlaySoundAtNpc, LVar0, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
-    ExecGetTID(N(D_8024E6F8_80EF78), LVarA)
+    ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVarA)
     Call(NpcMoveTo, NPC_PostOfficeShyGuy, -45, 330, 30)
     Call(NpcMoveTo, NPC_PostOfficeShyGuy, -45, 710, 30)
     KillThread(LVarA)
@@ -1761,7 +1748,7 @@ EvtScript N(EVS_NpcAI_ShyGuy_02) = {
     Call(ShowSweat, NPC_SELF, 1, -45, EMOTER_NPC, 0, 0, 0, 0, 20)
     Set(LVar0, -1)
     Call(PlaySoundAtNpc, LVar0, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
-    ExecGetTID(N(D_8024E6F8_80EF78), LVarA)
+    ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVarA)
     Call(NpcMoveTo, NPC_SELF, 420, -118, 0)
     KillThread(LVarA)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)

@@ -1,6 +1,5 @@
 #include "sam_08.h"
 #include "world/common/npc/Kooper/base.h"
-#include "world/common/enemy/Duplighost/base.h"
 
 NpcSettings N(NpcSettings_Kooper) = {
     .height = 35,
@@ -10,11 +9,7 @@ NpcSettings N(NpcSettings_Kooper) = {
     .onDefeat = &EnemyNpcDefeat,
 };
 
-NpcSettings N(NpcSettings_Duplighost) = {
-    .height = 30,
-    .radius = 45,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/enemy/Duplighost/disguised.inc.c"
 
 #include "world/common/enemy/FrostClubba/wander.inc.c"
 

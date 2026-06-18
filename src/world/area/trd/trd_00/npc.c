@@ -1,7 +1,6 @@
 #include "trd_00.h"
 #include "effects.h"
 #include "sprite/player.h"
-#include "world/common/npc/KoopaBros/base.h"
 
 extern EvtScript N(EVS_SetupMusic);
 
@@ -18,14 +17,7 @@ API_CALLABLE(N(SyncStatusBar)) {
     return ApiStatus_DONE2;
 }
 
-NpcSettings N(NpcSettings_KoopaBros) = {
-    .height = 34,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
-
+#include "world/common/enemy/KoopaBros/idle.inc.c"
 #include "world/common/npc/StarSpirit/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_KoopaBros) = {

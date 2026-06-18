@@ -2,16 +2,9 @@
 #include "sprite/player.h"
 #include "world/common/npc/Lakilester/base.h"
 #include "world/common/npc/Lakilulu/base.h"
+#include "world/common/enemy/Lakitu/idle.inc.c"
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
-
-NpcSettings N(NpcSettings_Lakilester) = {
-    .height = 32,
-    .radius = 24,
-    .level = ACTOR_LEVEL_LAKITU,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
 
 #define AI_LAKITU_FIRST_SPINY_ID    NPC_Spiny_01
 #define AI_LAKITU_LAST_SPINY_ID     NPC_Spiny_06
@@ -598,7 +591,7 @@ NpcData N(NpcData_Lakilester) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
     .init = &N(EVS_NpcInit_Lakilester),
-    .settings = &N(NpcSettings_Lakilester),
+    .settings = &N(NpcSettings_Lakitu),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = NO_DROPS,
     .animations = LAKILESTER_ANIMS,
@@ -609,7 +602,7 @@ NpcData N(NpcData_Lakilulu) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
     .init = &N(EVS_NpcInit_Lakilulu),
-    .settings = &N(NpcSettings_Lakilester),
+    .settings = &N(NpcSettings_Lakitu),
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = LAKILULU_ANIMS,
@@ -621,7 +614,7 @@ NpcData N(NpcData_Lakilulu_Spiny) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
     .init = &N(EVS_NpcInit_Lakilulu_Spiny),
-    .settings = &N(NpcSettings_Lakilester),
+    .settings = &N(NpcSettings_Lakitu),
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
     .drops = NO_DROPS,
     .animations = LAKILULU_ANIMS,

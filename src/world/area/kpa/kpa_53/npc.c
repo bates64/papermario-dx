@@ -1,7 +1,9 @@
 #include "kpa_53.h"
 #include "effects.h"
 #include "sprite/player.h"
-#include "world/common/enemy/Duplighost/base.h"
+
+#include "world/common/npc/Peach/idle.inc.c"
+#include "world/common/enemy/Duplighost/disguised.inc.c"
 
 API_CALLABLE(N(UpdateFollowerPosition)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -27,14 +29,6 @@ API_CALLABLE(N(UpdateFollowerPosition)) {
     evt_set_variable(script, outVar, playerStatus->targetYaw);
     return ApiStatus_DONE2;
 }
-
-#include "world/common/npc/Peach/idle.inc.c"
-
-NpcSettings N(NpcSettings_Duplighost) = {
-    .height = 30,
-    .radius = 45,
-    .level = ACTOR_LEVEL_NONE,
-};
 
 EvtScript N(EVS_NpcAI_Duplighost_Flee) = {
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)

@@ -1,4 +1,10 @@
 #include "../mac_01.h"
+#include "hud_element.h"
+
+extern IconHudScriptPair gItemHudScripts[];
+
+BSS PopupMenu D_80262C38;
+BSS s32 D_80262F68;
 
 typedef struct PostOfficeEntry {
     /* 0x00 */ s32 partnerID;
@@ -444,7 +450,7 @@ EvtScript N(EVS_PostOfficeShyGuy_Escape) = {
     Call(NpcJump0, NPC_PostOfficeShyGuy, 247, 20, -440, 20)
     Set(LVar0, 6)
     Call(PlaySoundAtNpc, LVar0, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
-    ExecGetTID(N(D_8024E6F8_80EF78), LVarA)
+    ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVarA)
     Call(NpcMoveTo, NPC_PostOfficeShyGuy, 180, -410, 20)
     Call(NpcMoveTo, NPC_PostOfficeShyGuy, 150, -333, 8)
     KillThread(LVarA)

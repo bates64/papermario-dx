@@ -134,3 +134,5 @@ extern NpcGroupList N(NinjiMeetingNPCs);
 extern NpcGroupList N(DefaultNPCs);
 
 extern ShopItemData N(RowfBadgeInventory)[16];
+
+extern EvtScript N(EVS_PlayShyGuyRunSounds);

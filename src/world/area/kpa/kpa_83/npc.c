@@ -3,16 +3,7 @@
 #include "sprite/player.h"
 
 #include "world/common/npc/Toad/idle.inc.c"
-#include "world/common/npc/KoopaBros/base.h"
-
-NpcSettings N(NpcSettings_KoopaBros) = {
-    .height = 35,
-    .radius = 24,
-    .level = ACTOR_LEVEL_KOOPA_TROOPA,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
-
+#include "world/common/enemy/KoopaBros/idle.inc.c"
 #include "world/common/npc/JrTroopa/idle.inc.c"
 
 API_CALLABLE(N(SetPlayerSpriteFacingAngle)) {

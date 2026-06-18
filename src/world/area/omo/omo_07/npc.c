@@ -1,6 +1,6 @@
 #include "omo_07.h"
 #include "world/common/enemy/Fuzzy/base.h"
-#include "world/common/enemy/HammerBros/base.h"
+#include "world/common/enemy/HammerBros/idle.inc.c"
 
 #include "world/common/enemy/ShyGuy/wander.inc.c"
 #include "world/common/enemy/ShyGuy/patrol.inc.c"
@@ -13,12 +13,6 @@ NpcSettings N(NpcSettings_Fuzzy) = {
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
-};
-
-NpcSettings N(NpcSettings_HammerBros) = {
-    .height = 36,
-    .radius = 24,
-    .level = ACTOR_LEVEL_HAMMER_BROS,
 };
 
 #include "world/common/enemy/Kammy/flying.inc.c"

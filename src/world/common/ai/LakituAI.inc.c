@@ -97,7 +97,7 @@ void N(LakituAI_Wander)(Evt* script, MobileAISettings* settings, EnemyDetectVolu
                 npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &hitDepth);
 
                 targetY = y + hoverHeight;
-                deltaY = deltaY - smoothY;
+                deltaY = targetY - smoothY;
 
                 if (deltaY > 2.0) {
                     smoothY += 2.0;

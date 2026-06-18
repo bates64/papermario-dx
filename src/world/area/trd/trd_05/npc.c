@@ -1,23 +1,16 @@
 #include "trd_05.h"
 #include "effects.h"
-#include "world/common/npc/KoopaBros/base.h"
 
 extern EvtScript N(EVS_StartKoopaBrosTheme);
 extern EvtScript N(EVS_EndKoopaBrosTheme);
 extern EvtScript N(EVS_EnterMap);
 
+#include "world/common/enemy/KoopaBros/idle.inc.c"
+
 API_CALLABLE(N(MakeHammerDust)) {
     fx_walking_dust(2, script->varTable[0], script->varTable[1], script->varTable[2], 0, 0);
     return ApiStatus_DONE2;
 }
-
-NpcSettings N(NpcSettings_KoopaBros) = {
-    .height = 34,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
 
 EvtScript N(EVS_KoopaBros_SetTrap) = {
     Exec(N(EVS_StartKoopaBrosTheme))
