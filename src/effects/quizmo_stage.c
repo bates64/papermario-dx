@@ -107,17 +107,34 @@ void quizmo_stage_render(EffectInstance* effect) {
 
 void quizmo_stage_appendGfx(void* effect) {
     QuizmoStageFXData* data = ((EffectInstance*)effect)->data.quizmoStage;
+    Camera* camera = &gCameras[gCurrentCameraID];
     s32 microphoneRaiseAmt = data->microphoneRaiseAmt;
     Matrix4f sp18;
     Matrix4f sp58;
+    Matrix4f sp98;
+    f32 yawSin;
+    f32 yawCos;
 
     gDPPipeSync(gMainGfxPos++);
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
 
     guTranslateF(sp18, data->origin.x, data->origin.y, data->origin.z);
-    guRotateF(sp58, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
-    guMtxCatF(sp58, sp18, sp18);
-    guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
+
+    //TODO the shim generated for guRotateF seems broken using gcc
+    // the final argument seems to be mishandled and the resulting matrix is an invalid
+    // rotation matrix. the result is a skewed stage on maps like dro_01. this temp fix
+    // manually computes the matrix using sin and cos. migrating effects to dx overlays
+    // will remove the need for this workaround.
+    guTranslateF(sp58, 0.0f, 0.0f, 0.0f);
+    yawSin = sin_deg(-camera->curYaw);
+    yawCos = cos_deg(-camera->curYaw);
+    sp58[0][0] = yawCos;
+    sp58[0][2] = -yawSin;
+    sp58[2][0] = yawSin;
+    sp58[2][2] = yawCos;
+
+    guMtxCatF(sp58, sp18, sp98);
+    guMtxF2L(sp98, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, microphoneRaiseAmt, microphoneRaiseAmt, microphoneRaiseAmt, 255);
