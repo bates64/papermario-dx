@@ -74,7 +74,13 @@ extern NpcGroupList N(DefaultNPCs);
 extern API_CALLABLE(N(SetWanderTerritory));
 extern EvtScript N(EVS_NpcIdle_SwitchedWander);
 
-#include "world/common/npc/GoombaFamily/wander.h"
+
+#include "world/common/npc/Goombaria/wander.h"
+#include "world/common/npc/Goombario/wander.h"
+#include "world/common/npc/Gooma/wander.h"
+#include "world/common/npc/Goompa/wander.h"
+#include "world/common/npc/Goomama/wander.h"
+#include "world/common/npc/Goompapa/wander.h"
 
 extern IMG_BIN N(heart_block_img)[];
 extern PAL_BIN N(heart_block_pal)[];

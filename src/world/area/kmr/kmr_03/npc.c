@@ -4,7 +4,7 @@
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 #include "world/common/util/CheckPositionRelativeToPlane.inc.c"
 
-#include "world/common/npc/GoombaFamily/idle.inc.c"
+#include "world/common/npc/Goompa/idle.inc.c"
 
 EvtScript N(EVS_NpcAI_Goompa) = {
     Switch(GB_StoryProgress)
@@ -120,7 +120,7 @@ NpcData N(NpcData_GoombaFamily) = {
     .pos = { -50.0f, 0.0f, 80.0f },
     .yaw = 45,
     .init = &N(EVS_NpcInit_Goompa),
-    .settings = &N(NpcSettings_GoombaFamily),
+    .settings = &N(NpcSettings_Goompa),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = GOOMPA_ANIMS,

@@ -12,7 +12,7 @@ NpcSettings N(NpcSettings_Kooper) = {
     .onDefeat = &EnemyNpcDefeat,
 };
 
-#include "world/common/npc/GoombaFamily/idle.inc.c"
+#include "world/common/npc/Goompa/idle.inc.c"
 #include "world/common/npc/KoopaKoot/idle.inc.c"
 #include "world/common/npc/Kolorado/idle.inc.c"
 
@@ -1041,7 +1041,7 @@ NpcData N(NpcData_Imposters)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
         .init = &N(EVS_NpcInit_FakeGoompa),
-        .settings = &N(NpcSettings_GoombaFamily),
+        .settings = &N(NpcSettings_Goompa),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = GOOMPA_ANIMS,
@@ -1317,7 +1317,7 @@ NpcData N(NpcData_Targets)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
         .init = &N(EVS_NpcInit_TargetGoompa),
-        .settings = &N(NpcSettings_GoombaFamily),
+        .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = GOOMPA_ANIMS,
@@ -1364,4 +1364,3 @@ NpcGroupList N(DefaultNPCs) = {
     NPC_GROUP(N(NpcData_Targets), BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_01),
     {}
 };
-

@@ -87,7 +87,9 @@ extern NpcGroupList N(DefaultNPCs);
 #include "world/common/npc/Toad/wander.h"
 #include "world/common/npc/Toad/patrol.h"
 #include "world/common/npc/Toad/idle.h"
-#include "world/common/npc/GoombaFamily/idle.h"
+#include "world/common/npc/Goompapa/idle.h"
+#include "world/common/npc/Goomama/idle.h"
+#include "world/common/npc/Gooma/idle.h"
 #include "world/common/npc/Dummy/idle.h"
 
 #include "world/common/npc/Toadette/base.h"

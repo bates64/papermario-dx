@@ -3,4 +3,4 @@
 
 #include "world/common/npc/GoombaFamily/idle.inc.c"
 
-#define NpcSettings_Goombaria NpcSettings_GoombaFamily
+#define NpcSettings_Goompapa NpcSettings_GoombaFamily

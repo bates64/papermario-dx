@@ -1,5 +1,5 @@
 #pragma once
-#include "npc.h"
+#include "world/common/npc/GoombaFamily/base.h"
 #include "sprite/npc/Goombaria.h"
 
 #define GOOMBARIA_ANIMS \

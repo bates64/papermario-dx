@@ -1,5 +1,6 @@
 #include "machi.h"
-#include "world/common/npc/GoombaFamily/base.h"
+#include "world/common/npc/Goompa/base.h"
+#include "world/common/npc/Goombaria/base.h"
 #include "world/common/npc/Kolorado/base.h"
 #include "world/common/npc/Koopa/base.h"
 #include "world/common/npc/StarRod/base.h"

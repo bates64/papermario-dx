@@ -3,7 +3,6 @@
 #include "model.h"
 #include "game_modes.h"
 #include "sprite/player.h"
-#include "world/common/npc/Parakarry/base.h"
 
 extern EvtScript N(EVS_NpcAI_Eldstar_02);
 extern EvtScript N(EVS_NpcAI_Eldstar_02_NoAI);
@@ -16,18 +15,26 @@ BSS u8 N(savedColA); // a
 BSS u8 oldPrimR, oldPrimG, oldPrimB;
 BSS u8 oldEnvR, oldEnvG, oldEnvB;
 
+#include "world/common/util/ChangeNpcToPartner.inc.c"
+#include "world/common/atomic/MarioSalute.inc.c"
+
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
 #include "world/common/npc/Toad/guard.inc.c"
 
-#include "world/common/util/ChangeNpcToPartner.inc.c"
+#include "world/common/npc/Goombaria/wander.inc.c"
+#include "world/common/npc/Goombario/wander.inc.c"
+#include "world/common/npc/Gooma/wander.inc.c"
+#include "world/common/npc/Goompa/wander.inc.c"
+#include "world/common/npc/Goomama/wander.inc.c"
+#include "world/common/npc/Goompapa/wander.inc.c"
 
-#include "world/common/npc/GoombaFamily/wander.inc.c"
-#include "world/common/npc/GoombaFamily/idle.inc.c"
+#include "world/common/npc/Goombario/idle.inc.c"
+#include "world/common/npc/Goombaria/idle.inc.c"
+
 #include "world/common/enemy/Kammy/guard.inc.c"
 #include "world/common/npc/StarSpirit/idle.inc.c"
-
-#include "world/common/atomic/MarioSalute.inc.c"
+#include "world/common/npc/Parakarry/idle.inc.c"
 
 LetterDelivery N(LetterDelivery_GoompapaTrade) = {
     .recipientID = NPC_Goompapa,
@@ -1684,7 +1691,7 @@ NpcData N(NpcData_GoombaFamily)[] = {
             }
         },
         .init = &N(EVS_NpcInit_Goompa),
-        .settings = &N(NpcSettings_GoombaFamily_Wander),
+        .settings = &N(NpcSettings_Goompa_Wander),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = GOOMPA_ANIMS,
@@ -1707,7 +1714,7 @@ NpcData N(NpcData_GoombaFamily)[] = {
             }
         },
         .init = &N(EVS_NpcInit_Goombaria),
-        .settings = &N(NpcSettings_GoombaFamily_Wander),
+        .settings = &N(NpcSettings_Goombaria_Wander),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = GOOMBARIA_ANIMS,
@@ -1730,7 +1737,7 @@ NpcData N(NpcData_GoombaFamily)[] = {
             }
         },
         .init = &N(EVS_NpcInit_Goombario),
-        .settings = &N(NpcSettings_GoombaFamily_Wander),
+        .settings = &N(NpcSettings_Goombario_Wander),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = GOOMBARIO_ANIMS,
@@ -1752,7 +1759,7 @@ NpcData N(NpcData_GoombaFamily)[] = {
             }
         },
         .init = &N(EVS_NpcInit_Gooma),
-        .settings = &N(NpcSettings_GoombaFamily_Wander),
+        .settings = &N(NpcSettings_Gooma_Wander),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = GOOMA_ANIMS,
@@ -1775,7 +1782,7 @@ NpcData N(NpcData_GoombaFamily)[] = {
             }
         },
         .init = &N(EVS_NpcInit_Goompapa),
-        .settings = &N(NpcSettings_GoombaFamily_Wander),
+        .settings = &N(NpcSettings_Goompapa_Wander),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = GOOMPAPA_ANIMS,
@@ -1800,7 +1807,7 @@ NpcData N(NpcData_Goomama) = {
         }
     },
     .init = &N(EVS_NpcInit_Goomama),
-    .settings = &N(NpcSettings_GoombaFamily_Wander),
+    .settings = &N(NpcSettings_Goomama_Wander),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = GOOMAMA_ANIMS,
@@ -2150,7 +2157,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_Parakarry_Epilogue),
-        .settings = &N(NpcSettings_GoombaFamily),
+        .settings = &N(NpcSettings_Parakarry),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = PARAKARRY_ANIMS,
@@ -2160,7 +2167,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_Goombario_Epilogue),
-        .settings = &N(NpcSettings_GoombaFamily),
+        .settings = &N(NpcSettings_Goombario),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = GOOMBARIO_ANIMS,
@@ -2170,7 +2177,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_Goombaria_Epilogue),
-        .settings = &N(NpcSettings_GoombaFamily),
+        .settings = &N(NpcSettings_Goombaria),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = GOOMBARIA_ANIMS,

@@ -9,7 +9,8 @@
 #include "world/common/npc/HarryT/idle.inc.c"
 #include "world/common/npc/ChetRippo/idle.inc.c"
 
-#include "world/common/npc/GoombaFamily/idle.inc.c"
+#include "world/common/npc/Goomama/idle.inc.c"
+#include "world/common/npc/Goombaria/idle.inc.c"
 #include "world/common/npc/StarSpirit/idle.inc.c"
 #include "world/common/npc/Twink/idle.inc.c"
 #include "world/common/npc/Quizmo/quiz.inc.c"
@@ -402,7 +403,7 @@ NpcData N(NpcData_GoombaFamily)[] = {
         .pos = { -126.0f, 0.0f, 329.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Goomama),
-        .settings = &N(NpcSettings_GoombaFamily),
+        .settings = &N(NpcSettings_Goomama),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = GOOMAMA_ANIMS,
@@ -413,7 +414,7 @@ NpcData N(NpcData_GoombaFamily)[] = {
         .pos = { -117.0f, 0.0f, 305.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Goombaria),
-        .settings = &N(NpcSettings_GoombaFamily),
+        .settings = &N(NpcSettings_Goombaria),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = GOOMBARIA_ANIMS,
