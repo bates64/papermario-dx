@@ -3,6 +3,8 @@
 #include "world/common/npc/HarryT/idle.inc.c"
 #include "world/common/npc/TheMaster/idle.inc.c"
 #include "world/common/npc/VannaT/idle.inc.c"
+#include "world/common/npc/Chan/idle.inc.c"
+#include "world/common/npc/Lee/idle.inc.c"
 #include "world/common/npc/Quizmo/base.h"
 
 EvtScript N(EVS_NpcInteract_Goompapa_Epilogue) = {
@@ -296,12 +298,10 @@ NpcData N(NpcData_DojoMembers_Epilogue)[] = {
         .pos = { 310.0f, 115.0f, -390.0f },
         .yaw = 45,
         .init = &N(EVS_NpcInit_Chan_Epilogue),
-        .settings = &N(NpcSettings_Dummy),
+        .settings = &N(NpcSettings_Chan),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Chan_Idle,
-        },
+        .animations = CHAN_ANIMS,
         .limitAnimations = N(LimitAnims_Chan_Epilogue),
         .tattle = MSG_NpcTattle_Chan,
     },
@@ -310,12 +310,10 @@ NpcData N(NpcData_DojoMembers_Epilogue)[] = {
         .pos = { 330.0f, 115.0f, -410.0f },
         .yaw = 45,
         .init = &N(EVS_NpcInit_Lee_Epilogue),
-        .settings = &N(NpcSettings_Dummy),
+        .settings = &N(NpcSettings_Lee),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Lee_Idle,
-        },
+        .animations = LEE_ANIMS,
         .limitAnimations = N(LimitAnims_Lee_Epilogue),
         .tattle = MSG_NpcTattle_Lee,
     },

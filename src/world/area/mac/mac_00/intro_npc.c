@@ -1,5 +1,8 @@
 #include "mac_00.h"
 
+#include "world/common/npc/Chan/idle.inc.c"
+#include "world/common/npc/Lee/idle.inc.c"
+
 EvtScript N(EVS_NpcInit_Chan_Intro) = {
     Call(SetNpcPos, NPC_SELF, 570, 20, -150)
     Call(SetNpcYaw, NPC_SELF, 270)
@@ -90,12 +93,10 @@ NpcData N(NpcData_IntroNPCs)[] = {
         .pos = { 310.0f, 115.0f, -390.0f },
         .yaw = 45,
         .init = &N(EVS_NpcInit_Chan_Intro),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Chan),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Chan_Idle,
-        },
+        .animations = CHAN_ANIMS,
         .limitAnimations = N(LimitAnims_Chan_Intro),
         .tattle = MSG_NpcTattle_Chan,
     },
@@ -104,12 +105,10 @@ NpcData N(NpcData_IntroNPCs)[] = {
         .pos = { 330.0f, 115.0f, -410.0f },
         .yaw = 45,
         .init = &N(EVS_NpcInit_Lee_Intro),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Lee),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Lee_Idle,
-        },
+        .animations = LEE_ANIMS,
         .limitAnimations = N(LimitAnims_Lee_Intro),
         .tattle = MSG_NpcTattle_Lee,
     },

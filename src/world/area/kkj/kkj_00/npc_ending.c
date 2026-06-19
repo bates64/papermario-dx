@@ -27,6 +27,7 @@
 #include "world/common/npc/Dummy/idle.inc.c"
 #include "world/common/npc/Lakilulu/idle.inc.c"
 #include "world/common/npc/RussT/idle.inc.c"
+#include "world/common/npc/TayceT/idle.inc.c"
 
 EvtScript N(EVS_NpcInit_RussT) = {
     Call(SetNpcPos, NPC_SELF, -300, 0, 295)
@@ -280,12 +281,10 @@ NpcData N(NpcData_SpecialToads)[] = {
         .id = NPC_TayceT,
         .pos = { -200.0f, 0.0f, 260.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_TayceT),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_TayceT_Idle,
-        },
+        .animations = TAYCE_T_ANIMS,
         .limitAnimations = N(LimitAnims_TayceT),
     },
     {

@@ -9,6 +9,7 @@
 #include "world/common/npc/JrTroopa/idle.inc.c"
 #include "world/common/npc/Toad/patrol.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Fishmael/idle.inc.c"
 #include "world/common/npc/Chanterelle/idle.inc.c"
 #include "world/common/npc/Bartender/idle.inc.c"
 #include "world/common/npc/MusicianPoet/idle.inc.c"
@@ -2108,12 +2109,10 @@ NpcData N(NpcData_Fishmael) = {
     .pos = { 370.0f, -10.0f, -115.0f },
     .yaw = 270,
     .init = &N(EVS_NpcInit_Fishmael),
-    .settings = &N(NpcSettings_Toad),
+    .settings = &N(NpcSettings_Fishmael),
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Fishmael_Idle,
-    },
+    .animations = FISHMAEL_ANIMS,
     .tattle = MSG_NpcTattle_Fishmael,
 };
 

@@ -10,6 +10,8 @@
 #include "world/common/npc/HarryT/idle.inc.c"
 #include "world/common/npc/RussT/idle.inc.c"
 #include "world/common/npc/TheMaster/idle.inc.c"
+#include "world/common/npc/Chan/idle.inc.c"
+#include "world/common/npc/Lee/idle.inc.c"
 #include "world/common/npc/Goompapa/idle.inc.c"
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
@@ -298,12 +300,10 @@ NpcData N(NpcData_Toad_03)[] = {
         .pos = { 310.0f, 115.0f, -390.0f },
         .yaw = 45,
         .init = &N(EVS_NpcInit_Chan),
-        .settings = &N(NpcSettings_Dummy),
+        .settings = &N(NpcSettings_Chan),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Chan_Idle,
-        },
+        .animations = CHAN_ANIMS,
         .limitAnimations = N(LimitAnims_Chan),
         .tattle = MSG_NpcTattle_Chan,
     },
@@ -312,12 +312,10 @@ NpcData N(NpcData_Toad_03)[] = {
         .pos = { 330.0f, 115.0f, -410.0f },
         .yaw = 45,
         .init = &N(EVS_NpcInit_Lee),
-        .settings = &N(NpcSettings_Dummy),
+        .settings = &N(NpcSettings_Lee),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Lee_Idle,
-        },
+        .animations = LEE_ANIMS,
         .limitAnimations = N(LimitAnims_Lee),
         .tattle = MSG_NpcTattle_Lee,
     },

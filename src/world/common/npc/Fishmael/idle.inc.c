@@ -3,4 +3,4 @@
 
 #include "world/common/npc/Toad/idle.inc.c"
 
-#define NpcSettings_RipCheato NpcSettings_Toad
+#define NpcSettings_Fishmael NpcSettings_Toad

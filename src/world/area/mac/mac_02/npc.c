@@ -5,6 +5,8 @@
 #include "world/common/npc/Toad/wander.inc.c"
 #include "world/common/npc/Toad/patrol.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/TayceT/idle.inc.c"
+#include "world/common/npc/FiceT/idle.inc.c"
 #include "world/common/npc/Bootler/idle.inc.c"
 #include "world/common/npc/Bubulb/idle.inc.c"
 #include "world/common/npc/Quizmo/quiz.inc.c"
@@ -53,12 +55,10 @@ NpcData N(NpcData_TayceT)[] = {
         .pos = { -217.0f, 20.0f, -434.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_TayceT),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_TayceT),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_TayceT_Idle,
-        },
+        .animations = TAYCE_T_ANIMS,
         .limitAnimations = N(LimitAnims_TayceT),
         .tattle = MSG_NpcTattle_TayceT,
     },
@@ -67,12 +67,10 @@ NpcData N(NpcData_TayceT)[] = {
         .pos = { 389.0f, 0.0f, -90.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_FiceT),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_FiceT),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_FiceT_Idle,
-        },
+        .animations = FICE_T_ANIMS,
         .tattle = MSG_NpcTattle_FiceT,
     },
     {

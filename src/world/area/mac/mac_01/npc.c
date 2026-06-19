@@ -12,6 +12,9 @@ extern EvtScript N(EVS_MerlonBargeOut);
 #include "world/common/npc/Toad/wander.inc.c"
 #include "world/common/npc/Toad/patrol.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/DarkToad/idle.inc.c"
+#include "world/common/npc/MinhT/idle.inc.c"
+#include "world/common/npc/Postmaster/idle.inc.c"
 #include "world/common/enemy/ShyGuy/idle.inc.c"
 
 #include "world/common/npc/Merlon/idle.inc.c"
@@ -1018,12 +1021,10 @@ NpcData N(NpcData_DarkToads)[] = {
         .pos = { 505.0f, 0.0f, 5.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_DarkToad_01),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_DarkToad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_DarkToad_Red_Idle,
-        },
+        .animations = DARK_TOAD_RED_ANIMS,
         .tattle = MSG_NpcTattle_DarkToadA,
     },
     {
@@ -1031,12 +1032,10 @@ NpcData N(NpcData_DarkToads)[] = {
         .pos = { 530.0f, 0.0f, -35.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_DarkToad_02),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_DarkToad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_DarkToad_Black_Idle,
-        },
+        .animations = DARK_TOAD_BLACK_ANIMS,
         .tattle = MSG_NpcTattle_DarkToadB,
     },
     {
@@ -1044,12 +1043,10 @@ NpcData N(NpcData_DarkToads)[] = {
         .pos = { 540.0f, 0.0f, 0.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_DarkToad_02),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_DarkToad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_DarkToad_Yellow_Idle,
-        },
+        .animations = DARK_TOAD_YELLOW_ANIMS,
         .tattle = MSG_NpcTattle_DarkToadC,
     },
     {
@@ -1057,12 +1054,10 @@ NpcData N(NpcData_DarkToads)[] = {
         .pos = { 550.0f, 0.0f, 35.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_DarkToad_02),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_DarkToad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_DarkToad_Green_Idle,
-        },
+        .animations = DARK_TOAD_GREEN_ANIMS,
         .tattle = MSG_NpcTattle_DarkToadD,
     },
 };
@@ -2096,12 +2091,10 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { 150.0f, 20.0f, 485.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_MinhT),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_MinhT),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_MinhT_Idle,
-        },
+        .animations = MINH_T_ANIMS,
         .tattle = MSG_NpcTattle_MinhT,
     },
     {
@@ -2109,12 +2102,10 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { 312.0f, 30.0f, -438.0f },
         .yaw = 300,
         .init = &N(EVS_NpcInit_Postmaster),
-        .settings = &N(NpcSettings_Toad),
+        .settings = &N(NpcSettings_Postmaster),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Postmaster_Idle,
-        },
+        .animations = POSTMASTER_ANIMS,
         .tattle = MSG_NpcTattle_Postmaster,
     },
 };
