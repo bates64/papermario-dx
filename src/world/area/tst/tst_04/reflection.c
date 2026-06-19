@@ -89,7 +89,7 @@ void N(worker_update_animator)(void) {
     update_model_animator(N(Animator));
 }
 
-void N(worker_render_animator)(void) {
+void N(worker_draw_animator)(void) {
     Matrix4f tempMtx;
     Mtx transformMtx;
 
@@ -99,7 +99,7 @@ void N(worker_render_animator)(void) {
 }
 
 API_CALLABLE(N(SetupAnimatedModel)) {
-    create_worker_scene(N(worker_update_animator), N(worker_render_animator));
+    create_worker_scene(N(worker_update_animator), N(worker_draw_animator));
     return ApiStatus_DONE2;
 }
 

@@ -1358,8 +1358,8 @@ extern Addr BattleEntityHeapBottom; // todo ???
 
 void func_80117D00(Model* model);
 void appendGfx_model_group(void* model);
-void render_transform_group_node(ModelNode* node);
-void render_transform_group(void* group);
+void appendGfx_transform_group_node(ModelNode* node);
+void appendGfx_transform_group(void* group);
 void make_texture_gfx(TextureHeader*, Gfx**, IMG_PTR raster, PAL_PTR palette, IMG_PTR auxRaster, PAL_PTR auxPalette, u8, u8, u16, u16);
 void load_model_transforms(ModelNode* model, ModelNode* parent, Matrix4f mdlTxMtx, s32 treeDepth);
 s32 is_identity_fixed_mtx(Mtx* mtx);
@@ -2912,7 +2912,7 @@ void render_models(void) {
         distance = ((outZ / outW) * 10000.0f);
 
         if (!(transformGroup->flags & TRANSFORM_GROUP_FLAG_HIDDEN)) {
-            rtPtr->appendGfx = render_transform_group;
+            rtPtr->appendGfx = appendGfx_transform_group;
             rtPtr->appendGfxArg = transformGroup;
             rtPtr->dist = -distance;
             rtPtr->renderMode = transformGroup->renderMode;
@@ -2981,7 +2981,7 @@ void func_80117D00(Model* model) {
 }
 
 // this looks like a switch, but I can't figure it out
-void render_transform_group_node(ModelNode* node) {
+void appendGfx_transform_group_node(ModelNode* node) {
     Gfx** gfx = &gMainGfxPos;
     Model* model;
 
@@ -3010,7 +3010,7 @@ void render_transform_group_node(ModelNode* node) {
                 numChildren = node->groupData->numChildren;
                 if (numChildren != 0) {
                     for (i = 0; i < numChildren; i++) {
-                        render_transform_group_node(node->groupData->childList[i]);
+                        appendGfx_transform_group_node(node->groupData->childList[i]);
                     }
                 }
 
@@ -3030,7 +3030,7 @@ void render_transform_group_node(ModelNode* node) {
 }
 
 // gfx temps needed
-void render_transform_group(void* data) {
+void appendGfx_transform_group(void* data) {
     ModelTransformGroup* group = data;
     Gfx** gfx = &gMainGfxPos;
 
@@ -3040,7 +3040,7 @@ void render_transform_group(void* data) {
             gSPMatrix((*gfx)++, group->finalMtx, (G_MTX_PUSH | G_MTX_LOAD) | G_MTX_MODELVIEW);
         }
 
-        render_transform_group_node(group->baseModelNode);
+        appendGfx_transform_group_node(group->baseModelNode);
 
         if (!(group->flags & TRANSFORM_GROUP_FLAG_IGNORE_MATRIX)) {
             gSPPopMatrix((*gfx)++, G_MTX_MODELVIEW);

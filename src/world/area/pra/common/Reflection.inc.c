@@ -18,14 +18,14 @@ enum ReflectMode {
 extern u8 ReflectWallPrevAlpha; // player alpha1 copy?
 extern u8 ReflectFloorPrevAlpha; // player alpha2 copy?
 
-void N(worker_reflect_player_wall)(void);
-void N(worker_reflect_player_floor)(void);
+void N(worker_render_player_reflection_wall)(void);
+void N(worker_render_player_reflection_floor)(void);
 void N(appendGfx_reflect_player_wall)(PlayerStatus* playerStatus);
 void N(appendGfx_reflect_player_floor_fancy)(PlayerStatus* playerStatus);
 void N(appendGfx_reflect_player_floor_basic)(PlayerStatus* playerStatus);
-void N(worker_reflect_partner_all)(void);
-void N(worker_reflect_partner_floor)(void);
-void N(worker_reflect_partner_wall)(void);
+void N(worker_update_partner_reflection_all)(void);
+void N(worker_update_partner_reflection_floor)(void);
+void N(worker_update_partner_reflection_wall)(void);
 
 s32 N(reflection_unk_resolve_anim)(s32 playerAnim) {
     AnimID temp;
@@ -69,11 +69,11 @@ s32 N(reflection_unk_change_anim_facing)(s32 playerAnim) {
 }
 
 API_CALLABLE(N(EnableWallReflection)){
-    script->array[0] = (s32) create_worker_scene(nullptr, N(worker_reflect_player_wall));
+    script->array[0] = (s32) create_worker_scene(nullptr, N(worker_render_player_reflection_wall));
     return ApiStatus_DONE2;
 }
 
-void N(worker_reflect_player_wall)(void) {
+void N(worker_render_player_reflection_wall)(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 anim;
     EntityModel* entityModel;
@@ -146,7 +146,7 @@ API_CALLABLE(N(EnableFloorReflection)){
     switch (script->varTable[0]) {
         case REFLECTION_FLOOR_WALL:
         case REFLECTION_FLOOR_ONLY:
-            script->array[0] = create_worker_scene(nullptr, N(worker_reflect_player_floor));
+            script->array[0] = create_worker_scene(nullptr, N(worker_render_player_reflection_floor));
             gOverrideFlags |= GLOBAL_OVERRIDES_ENABLE_FLOOR_REFLECTION;
             break;
         case REFLECTION_WALL_ONLY:
@@ -156,7 +156,7 @@ API_CALLABLE(N(EnableFloorReflection)){
     return ApiStatus_DONE2;
 }
 
-void N(worker_reflect_player_floor)(void) {
+void N(worker_render_player_reflection_floor)(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 renderMode = playerStatus->renderMode;
     RenderTask renderTask;
@@ -323,20 +323,20 @@ API_CALLABLE(N(EnablePartnerReflection)){
     if (script->varTable[1] == false) {
         switch (script->varTable[0]) {
             case REFLECTION_FLOOR_WALL:
-                script->array[1] = create_worker_scene(N(worker_reflect_partner_all), nullptr);
+                script->array[1] = create_worker_scene(N(worker_update_partner_reflection_all), nullptr);
                 break;
             case REFLECTION_FLOOR_ONLY:
-                script->array[1] = create_worker_scene(N(worker_reflect_partner_floor), nullptr);
+                script->array[1] = create_worker_scene(N(worker_update_partner_reflection_floor), nullptr);
                 break;
             case REFLECTION_WALL_ONLY:
-                script->array[1] = create_worker_scene(N(worker_reflect_partner_wall), nullptr);
+                script->array[1] = create_worker_scene(N(worker_update_partner_reflection_wall), nullptr);
                 break;
         }
     } else {
         switch (script->varTable[0]) {
             case REFLECTION_FLOOR_WALL:
             case REFLECTION_FLOOR_ONLY:
-                script->array[1] = create_worker_scene(N(worker_reflect_partner_floor), nullptr);
+                script->array[1] = create_worker_scene(N(worker_update_partner_reflection_floor), nullptr);
                 break;
             case REFLECTION_WALL_ONLY:
                 break;
@@ -375,7 +375,7 @@ API_CALLABLE(N(EnablePartnerReflection)){
     return ApiStatus_DONE2;
 }
 
-void N(worker_reflect_partner_all)(void) {
+void N(worker_update_partner_reflection_all)(void) {
     Npc* partner = get_npc_safe(NPC_PARTNER);
 
     if (partner != nullptr) {
@@ -383,7 +383,7 @@ void N(worker_reflect_partner_all)(void) {
     }
 }
 
-void N(worker_reflect_partner_floor)(void) {
+void N(worker_update_partner_reflection_floor)(void) {
     Npc* partner = get_npc_safe(NPC_PARTNER);
 
     if (partner != nullptr) {
@@ -391,7 +391,7 @@ void N(worker_reflect_partner_floor)(void) {
     }
 }
 
-void N(worker_reflect_partner_wall)(void) {
+void N(worker_update_partner_reflection_wall)(void) {
     Npc* partner = get_npc_safe(NPC_PARTNER);
 
     if (partner != nullptr) {

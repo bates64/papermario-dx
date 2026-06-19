@@ -152,16 +152,16 @@ glabel mgm_02_SetBoxContents
 /* E831C8 802409D8 1440FFFA */  bnez       $v0, .Lmgm_02_802409C4
 /* E831CC 802409DC 00000000 */   nop
 /* E831D0 802409E0 24100009 */  addiu      $s0, $zero, 0x9
-/* E831D4 802409E4 3C028025 */  lui        $v0, %hi(D_80248600 + 0x24)
-/* E831D8 802409E8 24428704 */  addiu      $v0, $v0, %lo(D_80248600 + 0x24)
+/* E831D4 802409E4 3C028025 */  lui        $v0, %hi(mgm_02_PanelModelsAssigned + 0x24)
+/* E831D8 802409E8 24428704 */  addiu      $v0, $v0, %lo(mgm_02_PanelModelsAssigned + 0x24)
 .Lmgm_02_802409EC:
 /* E831DC 802409EC AC400000 */  sw         $zero, 0x0($v0)
 /* E831E0 802409F0 2610FFFF */  addiu      $s0, $s0, -0x1
 /* E831E4 802409F4 0601FFFD */  bgez       $s0, .Lmgm_02_802409EC
 /* E831E8 802409F8 2442FFFC */   addiu     $v0, $v0, -0x4
 /* E831EC 802409FC 24140001 */  addiu      $s4, $zero, 0x1
-/* E831F0 80240A00 3C168025 */  lui        $s6, %hi(D_80248600)
-/* E831F4 80240A04 26D686E0 */  addiu      $s6, $s6, %lo(D_80248600)
+/* E831F0 80240A00 3C168025 */  lui        $s6, %hi(mgm_02_PanelModelsAssigned)
+/* E831F4 80240A04 26D686E0 */  addiu      $s6, $s6, %lo(mgm_02_PanelModelsAssigned)
 /* E831F8 80240A08 02A0982D */  daddu      $s3, $s5, $zero
 .Lmgm_02_80240A0C:
 /* E831FC 80240A0C 8E630034 */  lw         $v1, 0x34($s3)

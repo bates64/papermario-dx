@@ -3,7 +3,7 @@
 
 BSS KnockdownData* N(KnockDownDataPtr);
 
-void N(gfx_build_knocked_down_player)(void) {
+void N(worker_draw_knocked_down_player)(void) {
     KnockdownData* data = N(KnockDownDataPtr);
     ImgFXTexture ifxImg;
     SpriteRasterInfo rasterInfo;
@@ -72,7 +72,7 @@ API_CALLABLE(N(KnockdownCreate)) {
     N(KnockDownDataPtr)->scale.y = SPRITE_WORLD_SCALE_F;
     N(KnockDownDataPtr)->scale.z = SPRITE_WORLD_SCALE_F;
     N(KnockDownDataPtr)->imgfxIdx = imgfx_get_free_instances(1);
-    N(KnockDownDataPtr)->workerID = create_worker_scene(nullptr, N(gfx_build_knocked_down_player));
+    N(KnockDownDataPtr)->workerID = create_worker_scene(nullptr, N(worker_draw_knocked_down_player));
     return ApiStatus_DONE2;
 }
 

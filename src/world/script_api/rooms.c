@@ -252,7 +252,7 @@ API_CALLABLE(SaveUseDoorScript) {
 }
 
 API_CALLABLE(RoomVisibilityToggleImpl) {
-    MapRoom* door = script->varTablePtr[1];
+    MapRoom* room = script->varTablePtr[1];
     s32 alpha, r, g, b;
 
     if (isInitialCall) {
@@ -271,9 +271,9 @@ API_CALLABLE(RoomVisibilityToggleImpl) {
         alpha = 255 - script->functionTemp[1];
     }
     mdl_set_shroud_tint_params(0, 0, 0, alpha);
-    r = door->bgColor[0] * (255 - alpha) / 255;
-    g = door->bgColor[1] * (255 - alpha) / 255;
-    b = door->bgColor[2] * (255 - alpha) / 255;
+    r = room->bgColor[0] * (255 - alpha) / 255;
+    g = room->bgColor[1] * (255 - alpha) / 255;
+    b = room->bgColor[2] * (255 - alpha) / 255;
     gCameras[CAM_DEFAULT].bgColor[0] = r;
     gCameras[CAM_DEFAULT].bgColor[1] = g;
     gCameras[CAM_DEFAULT].bgColor[2] = b;

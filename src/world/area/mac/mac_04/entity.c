@@ -4,12 +4,12 @@
 
 #include "world/common/npc/HarryT/base.h"
 
-void N(render_shrunk_player)(void);
+void N(worker_render_shrunk_player)(void);
 void N(appendGfx_shrunk_player)(void*);
 
 API_CALLABLE(N(CreateShrinkingWorker)) {
     gPlayerStatus.animFlags |= PA_FLAG_INVISIBLE;
-    evt_set_variable(script, MV_DrawShinkingPlayerWorker, create_worker_scene(nullptr, N(render_shrunk_player)));
+    evt_set_variable(script, MV_DrawShinkingPlayerWorker, create_worker_scene(nullptr, N(worker_render_shrunk_player)));
 
     return ApiStatus_DONE2;
 }
@@ -22,7 +22,7 @@ API_CALLABLE(N(DestroyShrinkingWorker)) {
     return ApiStatus_DONE2;
 }
 
-void N(render_shrunk_player)(void) {
+void N(worker_render_shrunk_player)(void) {
     RenderTask renderTask;
     s32 screenX, screenY, screenZ;
 

@@ -7,7 +7,7 @@ static s32 ScreenBlurWorkerID;
 
 #include "battle/common/move/ItemRefund.inc.c"
 
-void N(worker_render_screen_blur)(void) {
+void N(worker_draw_screen_blur)(void) {
     draw_prev_frame_buffer_at_screen_pos(0, 0, 320, 240, 160.0f);
 }
 
@@ -25,7 +25,7 @@ API_CALLABLE(N(AnimateDizzyDialCameraFX)) {
             script->functionTemp[2] = 0;
             sfx_play_sound(SOUND_DIZZY_DIAL);
             camera->params.basic.skipRecalc = false;
-            ScreenBlurWorkerID = create_worker_frontUI(nullptr, N(worker_render_screen_blur));
+            ScreenBlurWorkerID = create_worker_frontUI(nullptr, N(worker_draw_screen_blur));
             script->functionTemp[0] = 1;
         case 1:
             camera->flags |= CAMERA_FLAG_SHAKING;

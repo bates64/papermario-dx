@@ -77,9 +77,7 @@ extern f32 N(TallyPosY)[NUM_BLOCKS];
 
 extern s32 N(PanelModelIDs)[NUM_BLOCKS];
 extern JumpGamePanelType N(PanelTypes)[NUM_BLOCKS];
-
 extern JumpGamePanelType N(InitialConfigurations)[4][NUM_BLOCKS];
-extern EvtScript* D_802435E8_E15D48[NUM_BLOCKS];
 
 extern EvtScript N(EVS_OnBreakBlock_0);
 extern EvtScript N(EVS_OnBreakBlock_1);
@@ -150,7 +148,7 @@ void N(appendGfx_score_display) (void* renderData) {
     }
 }
 
-void N(worker_draw_score)(void) {
+void N(worker_render_score)(void) {
     RenderTask task;
 
     task.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
@@ -627,7 +625,7 @@ API_CALLABLE(N(CreateMinigame)) {
     HudElemID hid;
 
     scorekeeper->varTablePtr[JUMP_DATA_VAR_IDX] = data;
-    data->workerID = create_worker_scene(nullptr, &mgm_01_worker_draw_score);
+    data->workerID = create_worker_scene(nullptr, &mgm_01_worker_render_score);
 
     hid = hud_element_create(&HES_StatusCoin);
     data->hudElemID = hid;

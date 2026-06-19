@@ -62,14 +62,14 @@ API_CALLABLE(N(ChooseImposterBattleFormation)) {
 }
 
 void N(appendGfx_example_player)(void* data);
-void N(worker_draw_example_player)(void);
+void N(worker_render_example_player)(void);
 
 API_CALLABLE(N(CreateExamplePlayerRenderer)) {
-    script->array[0] = create_worker_scene(nullptr, N(worker_draw_example_player));
+    script->array[0] = create_worker_scene(nullptr, N(worker_render_example_player));
     return ApiStatus_DONE2;
 }
 
-void N(worker_draw_example_player)(void) {
+void N(worker_render_example_player)(void) {
     RenderTask rt;
     RenderTask* rtPtr = &rt;
     Npc* npc = get_npc_safe(NPC_ExamplePlayer);

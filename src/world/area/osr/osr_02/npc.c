@@ -385,7 +385,7 @@ API_CALLABLE(N(AnimateSpiritHover)) {
     if (isInitialCall) {
         script->functionTemp[1] = 0.0f;
         script->functionTempPtr[2] = get_npc_safe(script->owner2.npcID);
-        script->functionTemp[3] = N(SpiritHoverOffsets)[script->owner2.npcID - 2];
+        script->functionTemp[3] = N(SpiritHoverOffsets)[script->owner2.npcID - NPC_Eldstar];
     }
 
     if (script->functionTemp[3] != 0) {

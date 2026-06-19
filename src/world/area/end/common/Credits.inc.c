@@ -723,7 +723,7 @@ void N(credits_update_line)(CreditsLine* line) {
     line->time++;
 }
 
-void N(credits_worker_render)(void) {
+void N(worker_draw_credits)(void) {
     Mtx* projMtx = &N(CreditsProjMatrices)[gCurrentDisplayContextIndex];
     CreditsData* data = N(CreditsDataPtr);
     s32 i;
@@ -795,7 +795,7 @@ void N(init_credits)(void) {
     s32 i;
 
     N(CreditsDataPtr) = &N(CreditsData);
-    N(CreditsData).workerID = create_worker_frontUI(nullptr, N(credits_worker_render));
+    N(CreditsData).workerID = create_worker_frontUI(nullptr, N(worker_draw_credits));
 
     for (i = 0; i < ARRAY_COUNT(N(CreditsData).lines); i++) {
         N(CreditsData).lines[i].flags = 0;

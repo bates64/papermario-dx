@@ -10,11 +10,6 @@ extern EvtScript N(EVS_MakeEntities);
 extern EvtScript N(EVS_SetupWhale);
 extern EvtScript N(EVS_SetupFoliage);
 
-API_CALLABLE(func_8024030C_B2084C) {
-    fx_sun(FX_SUN_FROM_LEFT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_ExitWalk_jan_01_0) = EVT_EXIT_WALK(60, jan_00_ENTRY_1, "jan_01", jan_01_ENTRY_0);
 EvtScript N(EVS_ExitWalk_jan_08_0) = EVT_EXIT_WALK(60, jan_00_ENTRY_2, "jan_08", jan_08_ENTRY_0);
 
@@ -62,7 +57,7 @@ EvtScript N(EVS_Main) = {
         Set(LVar0, Ref(N(EVS_BindExitTriggers)))
         Exec(EnterWalk)
     EndIf
-    Call(func_8024030C_B2084C)
+    Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     ExecWait(N(EVS_80241C10))
     Call(PlaySound, SOUND_LOOP_JAN_BEACH_WAVES)
     Return

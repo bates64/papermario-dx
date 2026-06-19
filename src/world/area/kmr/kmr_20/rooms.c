@@ -88,7 +88,7 @@ EvtScript N(EVS_SetupRooms) = {
             Call(EnableGroup, MODEL_g49, true)
             Call(EnableModel, MODEL_g56, true)
             Call(EnableGroup, MODEL_g72, false)
-            Call(N(func_80241C9C_8EDABC))
+            Call(N(HideWorldOutsideMariosHouse))
             Call(RotateGroup, MODEL_g60, 90, 1, 0, 0)
             Call(RotateGroup, MODEL_g34, 90, -1, 0, 0)
             Call(EnableGroup, MODEL_g60, false)

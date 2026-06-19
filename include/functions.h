@@ -445,7 +445,7 @@ s32 make_item_entity_nodelay(s32 itemID, f32 x, f32 y, f32 z, s32 itemSpawnMode,
 void set_item_entity_flags(s32 itemEntityIndex, s32 flag);
 void clear_item_entity_flags(s32 index, s32 flags);
 
-s32 create_worker_frontUI(void (*updateFunc)(void), void (*drawFunc)(void));
+s32 create_worker_frontUI(VoidCallback updateFunc, VoidCallback drawFunc);
 Worker* get_worker(s32 idx);
 Trigger* bind_trigger_1(EvtScript* script, s32 flags, s32 triggerFlagIndex, s32 triggerVar0, s32 triggerVar1, s32 priority);
 

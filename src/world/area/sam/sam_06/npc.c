@@ -214,7 +214,7 @@ EvtScript N(EVS_Scene_Merle_WaitingOnHill) = {
     End
 };
 
-API_CALLABLE(N(func_80242538_D223C8)) {
+API_CALLABLE(N(MerleSceneHideOutside)) {
     s32 alpha;
 
     if (isInitialCall) {
@@ -296,11 +296,11 @@ EvtScript N(EVS_Scene_Merle_EnterHouse) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_k_d2, COLLIDER_FLAGS_UPPER_MASK)
     Call(PlayerMoveTo, 0, -200, 0)
     Thread
-        Set(LVar0, 0)
+        Set(LVar0, 3)
         Set(LVarF, MODEL_k)
         Call(SetNpcFlagBits, NPC_Merle, NPC_FLAG_HIDING, false)
         Call(SetNpcFlagBits, NPC_StarKid_03, NPC_FLAG_HIDING, true)
-        Call(N(func_80242538_D223C8))
+        Call(N(MerleSceneHideOutside))
     EndThread
     Thread
         Call(MakeLerp, 0, 90, 10, EASING_QUADRATIC_IN)

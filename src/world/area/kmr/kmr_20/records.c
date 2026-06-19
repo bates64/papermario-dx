@@ -233,7 +233,7 @@ void N(appendGfx_records)(void* data) {
     N(appendGfx_records_impl)(records, records->alpha);
 }
 
-void N(worker_draw_game_records)(void) {
+void N(worker_render_game_records)(void) {
     RenderTask rt;
 
     rt.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
@@ -280,7 +280,7 @@ API_CALLABLE(N(ShowGameRecords)) {
         records = script->functionTempPtr[0] = heap_malloc(sizeof(*records));
         records->state = RECORDS_STATE_BEGIN_FADE_IN;
         records->alpha = 255;
-        records->workerID = create_worker_scene(nullptr, N(worker_draw_game_records));
+        records->workerID = create_worker_scene(nullptr, N(worker_render_game_records));
         evt_set_variable(script, MV_RecordsDataPtr, (s32) records);
         N(calculate_records)(records);
     }

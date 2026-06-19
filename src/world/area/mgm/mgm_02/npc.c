@@ -33,14 +33,14 @@ extern s32 N(BoxModelIDs)[NUM_BOXES];
 extern s32 N(BoxColliderIDs)[NUM_BOXES];
 extern s32 N(PanelModelIDs)[NUM_PANELS];
 
-BSS s32 D_80248600[NUM_PANELS]; //TODO set name: PanelModelsAssigned
+BSS b32 N(PanelModelsAssigned)[NUM_PANELS];
 
 extern IMG_BIN N(panel_peach_img);
 extern PAL_BIN N(panel_peach_pal);
 
 API_CALLABLE(N(SetMsgImgs_Panel));
 
-extern EvtScript N(read_sign_instructions); // EVT_ReadSign
+extern EvtScript N(EVS_ReadSign_Instructions);
 
 typedef enum SmashGameBoxCotent {
     BOX_CONTENT_FUZZY       = 0,
@@ -191,7 +191,7 @@ void N(appendGfx_score_display)(void* renderData) {
     draw_msg(MSG_MGM_0024, data->windowB_posX + 30, 29, 255, MSG_PAL_WHITE, 0);
 }
 
-void N(worker_draw_score)(void) {
+void N(worker_render_score)(void) {
     RenderTask task;
 
     task.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
@@ -208,7 +208,7 @@ API_CALLABLE(N(CreateScoreDisplay)) {
     HudElemID hidMeter;
 
     if (isInitialCall) {
-        data->workerID = create_worker_scene(nullptr, &N(worker_draw_score));
+        data->workerID = create_worker_scene(nullptr, &N(worker_render_score));
 
         hidButton = hud_element_create(&HES_AButton);
         data->buttonHID = hidButton;
@@ -248,7 +248,7 @@ API_CALLABLE(N(CreateSignpost)) {
     SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
     s32 entityIndex = create_entity(&Entity_Signpost, 355, 20, -180, 0, 0, 0, 0, MAKE_ENTITY_END);
     data->signpostEntity = entityIndex;
-    get_entity_by_index(entityIndex)->boundScriptBytecode = &N(read_sign_instructions);
+    get_entity_by_index(entityIndex)->boundScriptBytecode = &N(EVS_ReadSign_Instructions);
 
     return ApiStatus_DONE2;
 }
@@ -352,8 +352,8 @@ API_CALLABLE(N(SetBoxContents)) {
         enemy->varTable[0] = 0;
     }
 
-    for (i = 0; i < ARRAY_COUNT(D_80248600); i++) {
-        D_80248600[i] = false;
+    for (i = 0; i < ARRAY_COUNT(N(PanelModelsAssigned)); i++) {
+        N(PanelModelsAssigned)[i] = false;
     }
 
     for (i = 0; i < NUM_BOXES; i++) {
@@ -399,10 +399,9 @@ API_CALLABLE(N(SetBoxContents)) {
                         break;
                     }
                 }
-                // ARRAY BOUNDS ERROR IN ORIGINAL CODE!
-                for (j = 0; j <= ARRAY_COUNT(D_80248600); j++) {
-                    if (!D_80248600[j]) {
-                        D_80248600[j] = true;
+                for (j = 0; j < ARRAY_COUNT(N(PanelModelsAssigned)); j++) {
+                    if (!N(PanelModelsAssigned)[j]) {
+                        N(PanelModelsAssigned)[j] = true;
                         data->box[i].peachPanelModelID = N(PanelModelIDs[j]);
                         break;
                     }
@@ -1057,17 +1056,13 @@ s32 N(PanelModelIDs)[NUM_PANELS] = {
     MODEL_o55, MODEL_o56, MODEL_o57, MODEL_o58, MODEL_o59
 };
 
-#if VERSION_PAL
-s32 N(pal_variable) = 0;
-#endif
-
 EvtScript N(EVS_CreateScoreDisplay) = {
     Call(N(CreateScoreDisplay))
     Return
     End
 };
 
-EvtScript N(read_sign_instructions) = {
+EvtScript N(EVS_ReadSign_Instructions) = {
     Call(DisablePlayerInput, true)
     Call(N(SetMsgImgs_Panel))
     Call(ShowMessageAtScreenPos, MSG_MGM_0046, 160, 40)

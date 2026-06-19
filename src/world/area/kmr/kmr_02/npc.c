@@ -1263,7 +1263,7 @@ API_CALLABLE(N(SyncStatusBar)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_8024295C_8B29CC)) {
+API_CALLABLE(N(UpdateModelShroudTintParams)) {
     Bytecode* args = script->ptrReadPos;
     s32 targetColR = evt_get_variable(script, *args++);
     s32 targetColG = evt_get_variable(script, *args++);
@@ -1276,74 +1276,73 @@ API_CALLABLE(N(func_8024295C_8B29CC)) {
         script->functionTemp[0] = 0;
     }
 
-    if (duration > 0) {
-        mdl_set_shroud_tint_params(
-            N(savedColR) + (((targetColR - N(savedColR)) * script->functionTemp[0]) / duration),
-            N(savedColG) + (((targetColG - N(savedColG)) * script->functionTemp[0]) / duration),
-            N(savedColB) + (((targetColB - N(savedColB)) * script->functionTemp[0]) / duration),
-            N(savedColA) + (((targetColA - N(savedColA)) * script->functionTemp[0]) / duration)
-        );
-
-        script->functionTemp[0]++;
-        if (duration < script->functionTemp[0]) {
-            return ApiStatus_DONE2;
-        }
-    } else {
+    if (duration <= 0) {
         mdl_set_shroud_tint_params(targetColR, targetColG, targetColB, targetColA);
         return ApiStatus_DONE2;
     }
-    return ApiStatus_BLOCK;
+
+    mdl_set_shroud_tint_params(
+        N(savedColR) + (((targetColR - N(savedColR)) * script->functionTemp[0]) / duration),
+        N(savedColG) + (((targetColG - N(savedColG)) * script->functionTemp[0]) / duration),
+        N(savedColB) + (((targetColB - N(savedColB)) * script->functionTemp[0]) / duration),
+        N(savedColA) + (((targetColA - N(savedColA)) * script->functionTemp[0]) / duration)
+    );
+
+    script->functionTemp[0]++;
+    if (duration < script->functionTemp[0]) {
+        return ApiStatus_DONE2;
+    } else {
+        return ApiStatus_BLOCK;
+    }
 }
 
-API_CALLABLE(N(func_80242BA8_8B2C18)) {
+API_CALLABLE(N(EnableBackgroundShroud)) {
     *gBackgroundTintModePtr = ENV_TINT_SHROUD;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80242BC0_8B2C30)) {
-    Bytecode* args;
+API_CALLABLE(N(UpdateModelRemapTintParams)) {
+    Bytecode* args = script->ptrReadPos;
+    s32 newPrimR = evt_get_variable(script, *args++);
+    s32 newPrimG = evt_get_variable(script, *args++);
+    s32 newPrimB = evt_get_variable(script, *args++);
+    s32 newEnvR = evt_get_variable(script, *args++);
+    s32 newEnvG = evt_get_variable(script, *args++);
+    s32 newEnvB = evt_get_variable(script, *args++);
+    s32 duration = evt_get_variable(script, *args++);
 
-    s32 newEnvR, newEnvB, newEnvG;
-    s32 newPrimR, newPrimG, newPrimB;
-    s32 duration;
-
-    args = script->ptrReadPos;
-    newPrimR = evt_get_variable(script, *args++);
-    newPrimG = evt_get_variable(script, *args++);
-    newPrimB = evt_get_variable(script, *args++);
-    newEnvR = evt_get_variable(script, *args++);
-    newEnvG = evt_get_variable(script, *args++);
-    newEnvB = evt_get_variable(script, *args++);
-    duration = evt_get_variable(script, *args++);
     if (isInitialCall) {
         mdl_get_remap_tint_params(&oldPrimR, &oldPrimG, &oldPrimB, &oldEnvR, &oldEnvG, &oldEnvB);
         script->functionTemp[0] = 0;
     }
-    if (duration > 0) {
-        mdl_set_remap_tint_params(
-            oldPrimR + ((newPrimR - oldPrimR) * script->functionTemp[0]) / duration,
-            oldPrimG + ((newPrimG - oldPrimG) * script->functionTemp[0]) / duration,
-            oldPrimB + ((newPrimB - oldPrimB) * script->functionTemp[0]) / duration,
-            oldEnvR  + ( (newEnvR - oldEnvR) * script->functionTemp[0]) / duration,
-            oldEnvG  + ( (newEnvG - oldEnvG) * script->functionTemp[0]) / duration,
-            oldEnvB  + ( (newEnvB - oldEnvB) * script->functionTemp[0]) / duration);
-            script->functionTemp[0]++;
-        if (duration < script->functionTemp[0]) {
-            return 2;
-        }
-    } else {
+
+    if (duration <= 0) {
         mdl_set_remap_tint_params(newPrimR, newPrimG, newPrimB, newEnvR, newEnvG, newEnvB);
-        return 2;
+        return ApiStatus_DONE2;
     }
-    return 0;
+
+    mdl_set_remap_tint_params(
+        oldPrimR + ((newPrimR - oldPrimR) * script->functionTemp[0]) / duration,
+        oldPrimG + ((newPrimG - oldPrimG) * script->functionTemp[0]) / duration,
+        oldPrimB + ((newPrimB - oldPrimB) * script->functionTemp[0]) / duration,
+        oldEnvR  + ( (newEnvR - oldEnvR) * script->functionTemp[0]) / duration,
+        oldEnvG  + ( (newEnvG - oldEnvG) * script->functionTemp[0]) / duration,
+        oldEnvB  + ( (newEnvB - oldEnvB) * script->functionTemp[0]) / duration);
+        script->functionTemp[0]++;
+
+    if (duration < script->functionTemp[0]) {
+        return ApiStatus_DONE2;
+    } else {
+        return ApiStatus_BLOCK;
+    }
 }
 
-API_CALLABLE(N(func_80242F08_8B2F78)) {
+API_CALLABLE(N(EnableModelRemapTint)) {
     mdl_set_all_tint_type(ENV_TINT_REMAP);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80242F28_8B2F98)) {
+API_CALLABLE(N(HideWorldOutsideToadHouse)) {
     mdl_group_set_custom_gfx(MODEL_kinopi, CUSTOM_GFX_NONE, ENV_TINT_SHROUD, true);
     mdl_set_shroud_tint_params(0, 0, 0, 255);
     gCameras[CAM_DEFAULT].bgColor[0] = 0;
@@ -1367,10 +1366,10 @@ EvtScript N(EVS_Scene_EldstarsPlea) = {
     Call(SetCamPitch, CAM_DEFAULT, Float(20.0), Float(-9.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(N(func_80242BA8_8B2C18))
-    Call(N(func_8024295C_8B29CC), 0, 0, 0, 255, 0)
-    Call(N(func_80242F08_8B2F78))
-    Call(N(func_80242BC0_8B2C30), 30, 30, 30, 0, 0, 0, 0)
+    Call(N(EnableBackgroundShroud))
+    Call(N(UpdateModelShroudTintParams), 0, 0, 0, 255, 0)
+    Call(N(EnableModelRemapTint))
+    Call(N(UpdateModelRemapTintParams), 30, 30, 30, 0, 0, 0, 0)
     Call(SetGroupVisibility, MODEL_Root, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_kinopi, MODEL_GROUP_VISIBLE)
     Call(EnableModel, MODEL_o561, false)
@@ -1467,14 +1466,14 @@ EvtScript N(EVS_Scene_EldstarsPlea) = {
     Wait(60 * DT)
     Exec(N(EVS_FadeOutMusic))
     Thread
-        Call(N(func_80242F08_8B2F78))
-        Call(N(func_80242BC0_8B2C30), 255, 255, 255, 0, 0, 0, 50 * DT)
+        Call(N(EnableModelRemapTint))
+        Call(N(UpdateModelRemapTintParams), 255, 255, 255, 0, 0, 0, 50 * DT)
     EndThread
     Wait(110 * DT)
     Call(SetPlayerAnimation, ANIM_MarioW2_SitIdle)
     Wait(30 * DT)
     Call(SetGroupVisibility, MODEL_Root, MODEL_GROUP_VISIBLE)
-    Call(N(func_80242F28_8B2F98))
+    Call(N(HideWorldOutsideToadHouse))
     Call(EnableModel, MODEL_o561, false)
     Call(EnableGroup, MODEL_2, false)
     Call(EnableGroup, MODEL_4, false)
@@ -1586,17 +1585,17 @@ EvtScript N(EVS_Scene_EldstarsPlea) = {
     End
 };
 
-s16 N(D_8024E538_8BE5A8)[] = {
+s16 N(StarSpiritHoverStartDelays)[] = {
     1, 3, 5, 7, 7, 5, 3
 };
 
-API_CALLABLE(N(UpdateEldstarHoverOffset)) {
+API_CALLABLE(N(AnimateSpiritHover)) {
     Npc* npc;
 
     if (isInitialCall) {
         script->functionTemp[1] = 0.0f;
         script->functionTempPtr[2] = get_npc_safe(script->owner2.npcID);
-        script->functionTemp[3] = N(D_8024E538_8BE5A8)[script->owner2.npcID];
+        script->functionTemp[3] = N(StarSpiritHoverStartDelays)[script->owner2.npcID - NPC_Eldstar_02];
     }
 
     if (script->functionTemp[3] != 0) {
@@ -1616,7 +1615,7 @@ EvtScript N(EVS_NpcAI_Eldstar_02_NoAI) = {
 
 EvtScript N(EVS_NpcAI_Eldstar_02) = {
     Thread
-        Call(N(UpdateEldstarHoverOffset))
+        Call(N(AnimateSpiritHover))
     EndThread
     Call(RandInt, 100, LVar0)
     Add(LVar0, 1)

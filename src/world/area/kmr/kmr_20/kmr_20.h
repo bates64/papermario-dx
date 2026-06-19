@@ -59,5 +59,5 @@ extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(SceneNPCs);
 extern NpcGroupList N(DefaultNPCs);
 
-API_CALLABLE(N(func_80241C9C_8EDABC));
+API_CALLABLE(N(HideWorldOutsideMariosHouse));
 void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 palette, s32 fading, s32 bgAlpha, s32 frameAlpha);

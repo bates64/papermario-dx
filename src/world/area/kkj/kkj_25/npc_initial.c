@@ -77,7 +77,7 @@ EvtScript N(EVS_NpcIdle_Kammy_Broom) = {
     End
 };
 
-API_CALLABLE(N(func_80240020_B06A20)) {
+API_CALLABLE(N(PostBattleHideWorld)) {
     increment_status_bar_disabled();
     set_screen_overlay_params_back(OVERLAY_SCREEN_COLOR, 255.0f);
 
@@ -86,7 +86,7 @@ API_CALLABLE(N(func_80240020_B06A20)) {
 
 EvtScript N(EVS_NpcDefeat_Kammy_Broom) = {
     Call(GetBattleOutcome, LVar0)
-    Call(N(func_80240020_B06A20))
+    Call(N(PostBattleHideWorld))
     Set(GF_KKJ25_Defeated_Kammy, true)
     // reload the map in the 'midpoint' configuration
     Call(GotoMap, Ref("kkj_25"), kkj_25_ENTRY_1)

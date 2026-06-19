@@ -3,7 +3,7 @@
 #include "model.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(func_80240000_8ABF90)) {
+API_CALLABLE(N(AdjustWorldRemapTint)) {
     Bytecode* args;
     static u8 oldPrimR, oldPrimG, oldPrimB;
     static u8 oldEnvR, oldEnvG, oldEnvB;
@@ -43,25 +43,25 @@ API_CALLABLE(N(func_80240000_8ABF90)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_80240388_8AC318)) {
+API_CALLABLE(N(EnableWorldRemapTint)) {
     mdl_set_all_tint_type(ENV_TINT_REMAP);
     *gBackgroundTintModePtr = ENV_TINT_REMAP;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802403B8_8AC348)) {
+API_CALLABLE(N(SpawnSparklesAtPos)) {
     Bytecode* args = script->ptrReadPos;
-    s32 var0 = evt_get_variable(script, *args++);
-    s32 var1 = evt_get_variable(script, *args++);
-    s32 var2 = evt_get_variable(script, *args++);
-    s32 var3 = evt_get_variable(script, *args++);
-    s32 var4 = evt_get_variable(script, *args++);
+    s32 type = evt_get_variable(script, *args++);
+    s32 x = evt_get_variable(script, *args++);
+    s32 y = evt_get_variable(script, *args++);
+    s32 z = evt_get_variable(script, *args++);
+    s32 size = evt_get_variable(script, *args++);
 
-    fx_sparkles(var0, var1, var2, var3, var4);
+    fx_sparkles(type, x, y, z, size);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802404A0_8AC430)) {
+API_CALLABLE(N(SpawnEnergyWave)) {
     fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_PALE_WAVE, 0.0f, 0.0f, 0.0f, 0.3f, 30);
     return ApiStatus_DONE2;
 }
@@ -72,7 +72,7 @@ API_CALLABLE(N(func_802404E8_8AC478)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80240530_8AC4C0)) {
+API_CALLABLE(N(SpawnSparklesAtNpc)) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
     Npc* npc = get_npc_unsafe(npcID);
@@ -81,17 +81,17 @@ API_CALLABLE(N(func_80240530_8AC4C0)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80240584_8AC514)) {
+API_CALLABLE(N(PauseAmbientSounds)) {
     snd_ambient_pause(0, 2000);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802405A8_8AC538)) {
+API_CALLABLE(N(ResumeAmbientSounds)) {
     snd_ambient_resume(0, 2000);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802405CC_8AC55C)) {
+API_CALLABLE(N(SlowlyStopAmbientSounds)) {
     snd_ambient_stop_slow(0, 1000);
     return ApiStatus_DONE2;
 }
@@ -260,8 +260,8 @@ EvtScript N(EVS_Scene_MarioRevived) = {
         Return
     EndIf
     SetF(MV_SpiritHologramOffset, Float(0.0))
-    Call(N(func_80240388_8AC318))
-    Call(N(func_80240000_8ABF90), 255, 255, 255, 60, 60, 60, 0)
+    Call(N(EnableWorldRemapTint))
+    Call(N(AdjustWorldRemapTint), 255, 255, 255, 60, 60, 60, 0)
     Call(FadeOutMusic, 0, 500)
     Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, true)
     Call(InterpPlayerYaw, 90, 0)
@@ -327,11 +327,11 @@ EvtScript N(EVS_Scene_MarioRevived) = {
         EndLoop
     EndThread
     Wait(140 * DT)
-    Call(N(func_80240584_8AC514))
+    Call(N(PauseAmbientSounds))
     Wait(30 * DT)
     Call(SetMusic, 0, SONG_STAR_SPIRIT_THEME, 0, VOL_LEVEL_FULL)
     Thread
-        Call(N(func_80240000_8ABF90), 50, 50, 50, 0, 0, 0, 50 * DT)
+        Call(N(AdjustWorldRemapTint), 50, 50, 50, 0, 0, 0, 50 * DT)
     EndThread
     Wait(90 * DT)
     Call(func_802D4D88)
@@ -393,13 +393,13 @@ EvtScript N(EVS_Scene_MarioRevived) = {
     EndThread
     Thread
         Loop(3)
-            Call(N(func_80240530_8AC4C0), NPC_Kalmar)
+            Call(N(SpawnSparklesAtNpc), NPC_Kalmar)
             Wait(6 * DT)
         EndLoop
     EndThread
     Wait(10 * DT)
     Thread
-        Call(N(func_80240530_8AC4C0), NPC_Mamar)
+        Call(N(SpawnSparklesAtNpc), NPC_Mamar)
         Call(SetNpcAnimation, NPC_Mamar, ANIM_WorldMamar_LeanLeft)
         Call(NpcFlyTo, NPC_Mamar, -20, 10, -5, 25 * DT, -10, EASING_QUADRATIC_OUT)
         Wait(5 * DT)
@@ -409,7 +409,7 @@ EvtScript N(EVS_Scene_MarioRevived) = {
     EndThread
     Thread
         Loop(3)
-            Call(N(func_80240530_8AC4C0), NPC_Mamar)
+            Call(N(SpawnSparklesAtNpc), NPC_Mamar)
             Wait(6 * DT)
         EndLoop
     EndThread
@@ -432,7 +432,7 @@ EvtScript N(EVS_Scene_MarioRevived) = {
         Call(SetCamDistance, CAM_DEFAULT, -350)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Loop(3)
-            Call(N(func_80240530_8AC4C0), NPC_Kalmar)
+            Call(N(SpawnSparklesAtNpc), NPC_Kalmar)
             Wait(4)
         EndLoop
     EndThread
@@ -447,7 +447,7 @@ EvtScript N(EVS_Scene_MarioRevived) = {
     Thread
         Wait(40 * DT)
         Loop(3)
-            Call(N(func_80240530_8AC4C0), NPC_Mamar)
+            Call(N(SpawnSparklesAtNpc), NPC_Mamar)
             Wait(4)
         EndLoop
     EndThread
@@ -462,7 +462,7 @@ EvtScript N(EVS_Scene_MarioRevived) = {
         Call(NpcJump0, NPC_Eldstar, LVar6, LVar7, LVar8, 5 * DT)
         Call(SetNpcAnimation, NPC_Eldstar, ANIM_WorldEldstar_Idle)
         Call(PlaySoundAtPlayer, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT)
-        Call(N(func_802403B8_8AC348), 0, 0, 0, 3, 10)
+        Call(N(SpawnSparklesAtPos), 0, 0, 0, 3, 10)
     EndThread
     Thread
         Wait(20)
@@ -522,29 +522,29 @@ EvtScript N(EVS_Scene_MarioRevived) = {
     Thread
         Wait(45 * DT)
         Call(PlaySoundAtPlayer, SOUND_GET_STAR_POWER_WAVE, SOUND_SPACE_DEFAULT)
-        Call(N(func_802404A0_8AC430))
+        Call(N(SpawnEnergyWave))
     EndThread
     Call(PlaySoundAtPlayer, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT)
-    Call(N(func_802403B8_8AC348), 0, 10, 10, 3, 10)
+    Call(N(SpawnSparklesAtPos), 0, 10, 10, 3, 10)
     Wait(6 * DT)
     Call(PlaySoundAtPlayer, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT)
-    Call(N(func_802403B8_8AC348), 0, 0, 10, 3, 15)
+    Call(N(SpawnSparklesAtPos), 0, 0, 10, 3, 15)
     Wait(6 * DT)
     Call(PlaySoundAtPlayer, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT)
-    Call(N(func_802403B8_8AC348), 0, -10, 10, 3, 20)
+    Call(N(SpawnSparklesAtPos), 0, -10, 10, 3, 20)
     Wait(6 * DT)
     Call(PlaySoundAtPlayer, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT)
-    Call(N(func_802403B8_8AC348), 0, 10, 10, 3, 25)
+    Call(N(SpawnSparklesAtPos), 0, 10, 10, 3, 25)
     Wait(6 * DT)
     Loop(3)
         Call(PlaySoundAtPlayer, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT)
-        Call(N(func_802403B8_8AC348), 0, 0, 10, 3, 30)
+        Call(N(SpawnSparklesAtPos), 0, 0, 10, 3, 30)
         Wait(6 * DT)
         Call(PlaySoundAtPlayer, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT)
-        Call(N(func_802403B8_8AC348), 0, -10, 10, 3, 30)
+        Call(N(SpawnSparklesAtPos), 0, -10, 10, 3, 30)
         Wait(6 * DT)
         Call(PlaySoundAtPlayer, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT)
-        Call(N(func_802403B8_8AC348), 0, 10, 10, 3, 30)
+        Call(N(SpawnSparklesAtPos), 0, 10, 10, 3, 30)
         Wait(6 * DT)
     EndLoop
     Wait(40 * DT)
@@ -568,10 +568,10 @@ EvtScript N(EVS_Scene_MarioRevived) = {
     Call(FadeOutMusic, 0, 5000 * DT)
     Thread
         Wait(90 * DT)
-        Call(N(func_802405A8_8AC538))
+        Call(N(ResumeAmbientSounds))
     EndThread
     Wait(60 * DT)
-    Call(N(func_80240000_8ABF90), 255, 255, 255, 0, 0, 0, 50 * DT)
+    Call(N(AdjustWorldRemapTint), 255, 255, 255, 0, 0, 0, 50 * DT)
     Call(SetNpcSpeed, NPC_Goombaria, Float(3.0 / DT))
     Call(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_GRAVITY, true)
     Call(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION, false)
@@ -654,7 +654,7 @@ EvtScript N(EVS_Scene_MarioRevived) = {
     Wait(30 * DT)
     Set(GB_StoryProgress, STORY_CH0_WAKE_UP)
     Call(DisablePlayerPhysics, false)
-    Call(N(func_802405CC_8AC55C))
+    Call(N(SlowlyStopAmbientSounds))
     Call(GotoMapSpecial, Ref("kmr_02"), kmr_02_ENTRY_5, TRANSITION_MARIO_BLACK)
     Return
     End

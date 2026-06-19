@@ -4,10 +4,9 @@
 
 #define NAME_SUFFIX _Intro
 #include "world/common/entity/Pipe.inc.c"
-#include "foliage.h"
 #define NAME_SUFFIX
 
-API_CALLABLE(N(func_80241C9C_8EDABC)) {
+API_CALLABLE(N(HideWorldOutsideMariosHouse)) {
     mdl_group_set_custom_gfx(MODEL_g62, CUSTOM_GFX_NONE, ENV_TINT_SHROUD, true);
     mdl_set_shroud_tint_params(0, 0, 0, 255);
 
@@ -159,23 +158,6 @@ EvtScript N(EVS_OpenAndCloseDoor_Intro) = {
     End
 };
 
-s32 N(D_8024FD28_8FBB48)[] = {
-    3,
-    34, 35, 36,
-};
-
-s32 N(D_8024FD38_8FBB58)[] = {
-    3,
-    422, 37, -195,
-    422, 48, -195,
-    422, 12, -195,
-};
-
-s32* N(UnknownLists)[] = {
-    N(D_8024FD28_8FBB48), 0,
-    N(D_8024FD38_8FBB58), 0,
-};
-
 EvtScript N(EVS_Scene_BeginGame) = {
     Call(DisablePlayerInput, true)
     Thread
@@ -325,7 +307,7 @@ EvtScript N(EVS_Scene_BeginGame) = {
     Call(EnableGroup, MODEL_g21, true)
     Call(EnableGroup, MODEL_g49, true)
     Call(EnableModel, MODEL_g56, true)
-    Call(N(func_80241C9C_8EDABC))
+    Call(N(HideWorldOutsideMariosHouse))
     Call(RotateGroup, MODEL_g60, 90, 1, 0, 0)
     Call(RotateGroup, MODEL_g34, 90, -1, 0, 0)
     Call(EnableGroup, MODEL_g60, false)

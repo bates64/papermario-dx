@@ -14,14 +14,12 @@ EvtScript N(EVS_OnSmashBlock2) = {
     End
 };
 
-API_CALLABLE(func_80240358_8C82E8) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
+API_CALLABLE(N(GetPlayerForwardPosition)) {
+    f32 dx = gPlayerStatus.curSpeed * 5.0f * sin_deg(gPlayerStatus.targetYaw);
+    f32 dy = gPlayerStatus.curSpeed * 5.0f * -cos_deg(gPlayerStatus.targetYaw);
 
-    f32 xDelta = playerStatus->curSpeed * 5.0f * sin_deg(playerStatus->targetYaw);
-    f32 zDelta = playerStatus->curSpeed * 5.0f * -cos_deg(playerStatus->targetYaw);
-
-    script->varTable[0] = playerStatus->pos.x + xDelta;
-    script->varTable[1] = playerStatus->pos.z + zDelta;
+    script->varTable[0] = gPlayerStatus.pos.x + dx;
+    script->varTable[1] = gPlayerStatus.pos.z + dy;
 
     return ApiStatus_DONE2;
 }

@@ -2187,7 +2187,7 @@ void init_encounter_status(void) {
 
     func_80045AC0();
     gEncounterState = ENCOUNTER_STATE_NONE;
-    create_worker_scene(nullptr, npc_render_worker_do_nothing);
+    create_worker_scene(nullptr, worker_draw_npc_do_nothing);
 }
 
 void clear_encounter_status(void) {
@@ -2225,7 +2225,7 @@ void clear_encounter_status(void) {
 
     func_80045AC0();
     gEncounterState = ENCOUNTER_STATE_NONE;
-    create_worker_scene(nullptr, npc_render_worker_do_nothing);
+    create_worker_scene(nullptr, worker_draw_npc_do_nothing);
 }
 
 void func_8003E50C(void) {
@@ -2293,7 +2293,7 @@ void draw_first_strike_ui(void) {
     }
 }
 
-void npc_render_worker_do_nothing(void) {
+void worker_draw_npc_do_nothing(void) {
 }
 
 void make_npcs(s32 flags, s32 mapID, s32* npcGroupList) {

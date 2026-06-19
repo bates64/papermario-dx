@@ -216,7 +216,7 @@ API_CALLABLE(N(UpdateWhaleTravel)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(func_80241134_B21674) {
+API_CALLABLE(N(UpdateJrTroopaBubbles)) {
     Npc* npc = get_npc_safe(NPC_JrTroopa);
     f32 x = npc->pos.x;
     f32 y = npc->pos.y;
@@ -566,7 +566,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa) = {
     Call(SetMusic, 0, SONG_JR_TROOPA_THEME, 0, VOL_LEVEL_FULL)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_LOOP_JR_TROOPA_SWIM, SOUND_SPACE_DEFAULT)
     Thread
-        Call(func_80241134_B21674)
+        Call(N(UpdateJrTroopaBubbles))
     EndThread
     Call(UseSettingsFrom, CAM_DEFAULT, 85, 0, 320)
     Call(SetPanTarget, CAM_DEFAULT, 85, 0, 320)

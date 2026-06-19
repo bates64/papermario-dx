@@ -8,14 +8,14 @@
 #include "world/common/todo/PlayBigSmokePuff.inc.c"
 
 void N(appendGfx_fake_player)(void* data);
-void N(worker_draw_fake_player)(void);
+void N(worker_render_fake_player)(void);
 
 API_CALLABLE(N(CreateFakePlayerRenderer)) {
-    script->array[0] = create_worker_scene(nullptr, N(worker_draw_fake_player));
+    script->array[0] = create_worker_scene(nullptr, N(worker_render_fake_player));
     return ApiStatus_DONE2;
 }
 
-void N(worker_draw_fake_player)(void) {
+void N(worker_render_fake_player)(void) {
     RenderTask rt;
     RenderTask* rtPtr = &rt;
     Npc* npc = get_npc_safe(NPC_FakeMario);

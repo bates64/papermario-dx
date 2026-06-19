@@ -3,18 +3,6 @@
 
 #include "world/common/enemy/Cleft/wander.inc.c"
 
-API_CALLABLE(N(func_80241060_91C940)) {
-    gCameras[CAM_DEFAULT].yinterpAlpha = 1.0f;
-    return ApiStatus_BLOCK;
-}
-
-API_CALLABLE(N(func_8024107C_91C95C)) {
-    Bytecode* args = script->ptrReadPos;
-    Npc* npc = resolve_npc(script, NPC_SELF);
-    npc->renderYaw = (f32) evt_get_variable(script, *args++);
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_FlapWingSounds) = {
     Loop(0)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_BUZZAR_FLAP, SOUND_SPACE_DEFAULT)

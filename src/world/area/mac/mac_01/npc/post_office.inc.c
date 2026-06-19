@@ -42,9 +42,9 @@ PostOfficeEntry N(PostOfficeLetters)[] = {
 };
 
 enum HasLetterResult {
-    HAS_LETTER_NONE   = -1,
-    HAS_LETTER_READ   = 0,
-    HAS_LETTER_UNREAD = 1,
+    HAS_LETTER_NONE     = -1,
+    HAS_LETTER_READ     = 0,
+    HAS_LETTER_UNREAD   = 1,
 };
 
 API_CALLABLE(N(CheckForUnreadLetters)) {
@@ -56,9 +56,11 @@ API_CALLABLE(N(CheckForUnreadLetters)) {
             && evt_get_variable(nullptr, GF_MAC01_UnlockedLetter_00 + i)
         ) {
             if (!evt_get_variable(nullptr, GF_MAC01_ReadLetter_00 + i)) {
+                // at least one partner has a letter available
                 result = HAS_LETTER_UNREAD;
                 break;
             } else {
+                // at least one partner has a letter unread
                 result = HAS_LETTER_READ;
             }
         }
@@ -67,19 +69,27 @@ API_CALLABLE(N(CheckForUnreadLetters)) {
     return ApiStatus_DONE2;
 }
 
-s32 func_80244F5C_8057DC(s32 partner) {
-    s32 ret = 0;
-    u32 i;
+enum PartnerLetterStatus {
+    PARTNER_LETTER_NONE     = 0,
+    PARTNER_LETTER_READ     = 1,
+    PARTNER_LETTER_UNREAD   = 2,
+};
+
+s32 N(get_partner_letter_status)(s32 partner) {
+    s32 ret = PARTNER_LETTER_NONE;
+    s32 i;
 
     for (i = 0; i < ARRAY_COUNT(N(PostOfficeLetters)); i++) {
-        if (N(PostOfficeLetters)[i].partnerID == partner &&
-            evt_get_variable(nullptr, GF_MAC01_UnlockedLetter_00 + i))
-        {
-            if (ret == 0) {
-                ret = 1;
+        if (N(PostOfficeLetters)[i].partnerID == partner
+            && evt_get_variable(nullptr, GF_MAC01_UnlockedLetter_00 + i)
+        ) {
+            if (ret == PARTNER_LETTER_NONE) {
+                // at least one letter for this partner is available
+                ret = PARTNER_LETTER_READ;
             }
             if (!evt_get_variable(nullptr, GF_MAC01_ReadLetter_00 + i)) {
-                ret = 2;
+                // at least one letter for this partner is unread
+                ret = PARTNER_LETTER_UNREAD;
                 break;
             }
         }
@@ -94,10 +104,9 @@ API_CALLABLE(N(ResetLetterMenuSelection)) {
 
 API_CALLABLE(N(ShowLetterPartnerMenu)) {
     PopupMenu* menu = &LetterSelectMenu;
-    PartnerPopupProperties* temp_s2;
     PlayerData* playerData = &gPlayerData;
     s32 partnerID;
-    s32 cond;
+    s32 hasLetterStatus;
     s32 numEntries;
     s32 i;
 
@@ -107,16 +116,15 @@ API_CALLABLE(N(ShowLetterPartnerMenu)) {
         for (i = 1; i < ARRAY_COUNT(PartnerIDFromMenuIndex); i++) {
             partnerID = PartnerIDFromMenuIndex[i];
             if (playerData->partners[partnerID].enabled && partnerID != PARTNER_GOOMPA) {
-                temp_s2 = &gPartnerPopupProperties[partnerID];
-                cond = func_80244F5C_8057DC(partnerID);
-                if (cond) {
+                hasLetterStatus = N(get_partner_letter_status)(partnerID);
+                if (hasLetterStatus != PARTNER_LETTER_NONE) {
                     menu->ptrIcon[numEntries] = wPartnerHudScripts[partnerID];
                     menu->userIndex[numEntries] = partnerID;
                     menu->enabled[numEntries] = true;
-                    menu->nameMsg[numEntries] = temp_s2->nameMsg;
-                    menu->descMsg[numEntries] = temp_s2->worldDescMsg;
+                    menu->nameMsg[numEntries] = gPartnerPopupProperties[partnerID].nameMsg;
+                    menu->descMsg[numEntries] = gPartnerPopupProperties[partnerID].worldDescMsg;
                     menu->value[numEntries] = playerData->partners[partnerID].level;
-                    if (cond == true) {
+                    if (hasLetterStatus == PARTNER_LETTER_READ) {
                         menu->enabled[numEntries] = false;
                         menu->ptrIcon[numEntries] = wDisabledPartnerHudScripts[partnerID];
                     }
@@ -162,7 +170,7 @@ API_CALLABLE(N(ShowLetterListMenu)) {
     PopupMenu* menu = &LetterSelectMenu;
     IconHudScriptPair* scriptPair;
     s32 letterIdx;
-    s32 hasRead;
+    b32 hasRead;
     s32 isUnlocked;
     s32 numEntries;
     u32 i;
