@@ -1,6 +1,9 @@
 #include "kzn_22.h"
 #include "sprite/player.h"
 
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
+
 API_CALLABLE(N(GetPlayerFloorCollider2)) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
@@ -9,13 +12,10 @@ API_CALLABLE(N(GetPlayerFloorCollider2)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_8024036C_C9A56C)) {
+API_CALLABLE(N(FadeOutAmbientSounds)) {
     snd_ambient_fade_out(0, true);
     return ApiStatus_DONE2;
 }
-
-#include "world/common/npc/Kolorado/idle.inc.c"
-#include "world/common/npc/StarSpirit/idle.inc.c"
 
 EvtScript N(EVS_ShakeScreen) = {
     Loop(0)
@@ -219,7 +219,7 @@ EvtScript N(EVS_Scene_Misstar) = {
     Thread
         Wait(25)
         Set(AF_KZN22_FlewAway, true)
-        Call(N(func_8024036C_C9A56C))
+        Call(N(FadeOutAmbientSounds))
     EndThread
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Call(LoadPath, 70, Ref(N(FlightPath3)), ARRAY_COUNT(N(FlightPath3)), EASING_LINEAR)

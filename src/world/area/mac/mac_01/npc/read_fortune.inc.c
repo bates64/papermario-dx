@@ -1,6 +1,6 @@
 #include "../mac_01.h"
 
-API_CALLABLE(N(func_802440FC_80497C)) {
+API_CALLABLE(N(FortuneRitualDarkenModels)) {
     if (isInitialCall) {
         set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o283)), CUSTOM_GFX_NONE, ENV_TINT_REMAP);
         set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o279)), CUSTOM_GFX_NONE, ENV_TINT_REMAP);
@@ -19,7 +19,7 @@ API_CALLABLE(N(func_802440FC_80497C)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_802441EC_804A6C)) {
+API_CALLABLE(N(FortuneRitualPulseModels)) {
     if (isInitialCall) {
         script->functionTemp[0] = 64;
         script->functionTemp[2] = 64;
@@ -57,7 +57,7 @@ API_CALLABLE(N(func_802441EC_804A6C)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_80244308_804B88)) {
+API_CALLABLE(N(FortuneRitualRestoreModels)) {
     if (isInitialCall) {
         script->functionTemp[0] = 64;
     }
@@ -77,7 +77,7 @@ API_CALLABLE(N(func_80244308_804B88)) {
 
 // identical to hos_06 func
 // TODO may not be motionBlurFlame
-API_CALLABLE(N(func_802443E0_804C60)) {
+API_CALLABLE(N(AnimateRitualOrbEffects)) {
     EffectInstance* effects[3];
     Matrix4f sp28, sp68;
     f32 tx;
@@ -216,7 +216,7 @@ EvtScript N(EVS_Merlon_ReadFortuneFX) = {
     Exec(N(EVS_Merlon_AnimateDiscoBall))
     Wait(30)
     Thread
-        Call(N(func_802440FC_80497C))
+        Call(N(FortuneRitualDarkenModels))
     EndThread
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -244,7 +244,7 @@ EvtScript N(EVS_Merlon_ReadFortuneFX) = {
     PlayEffect(EFFECT_MOTION_BLUR_FLAME, 0, LVar0, LVar1, LVar2, 1, -1)
     Set(ArrayVar(5), LVarF)
     Thread
-        Call(N(func_802443E0_804C60))
+        Call(N(AnimateRitualOrbEffects))
     EndThread
     Wait(50)
     Call(GetModelCenter, MODEL_tama)
@@ -256,7 +256,7 @@ EvtScript N(EVS_Merlon_ReadFortuneFX) = {
     PlayEffect(EFFECT_ENERGY_ORB_WAVE, 3, LVar0, LVar1, LVar2, Float(0.5), 20)
     Wait(30)
     Thread
-        Call(N(func_802441EC_804A6C))
+        Call(N(FortuneRitualPulseModels))
     EndThread
     Call(GetModelCenter, MODEL_tama)
     Call(PlaySoundAt, SOUND_CRYSTAL_BALL_WAVE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
@@ -269,7 +269,7 @@ EvtScript N(EVS_Merlon_ReadFortuneFX) = {
     Wait(15)
     Call(DismissEffect, ArrayVar(1))
     Thread
-        Call(N(func_80244308_804B88))
+        Call(N(FortuneRitualRestoreModels))
     EndThread
     Wait(46)
     Set(ArrayVar(6), 2)

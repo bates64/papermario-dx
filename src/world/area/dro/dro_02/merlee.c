@@ -147,7 +147,11 @@ API_CALLABLE(N(DarkenWorld)) {
     }
     mdl_set_shroud_tint_params(0, 0, 0, script->functionTemp[0]);
 
-    return (script->functionTemp[0] == 255) * ApiStatus_DONE2;
+    if (script->functionTemp[0] == 255) {
+        return ApiStatus_DONE2;
+    } else {
+        return ApiStatus_BLOCK;
+    }
 }
 
 API_CALLABLE(N(UndarkenWorld)) {

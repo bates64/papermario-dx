@@ -19,7 +19,7 @@ FollowAnims N(GoombariaAnims) = {
     ANIM_Goombaria_Run,
 };
 
-API_CALLABLE(N(func_802401B0_7E7550)) {
+API_CALLABLE(N(InitNpcFollowTest)) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     if (rand_int(1000) < 500) {
@@ -42,14 +42,14 @@ API_CALLABLE(N(func_802401B0_7E7550)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802402EC_7E768C)) {
+API_CALLABLE(N(UpdateNpcTracking)) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     npc_update_npc_tracking(npc);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80240318_7E76B8)) {
+API_CALLABLE(N(UpdateNpcFollow)) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     npc_follow_npc(npc);
@@ -121,11 +121,11 @@ EvtScript N(EVS_NpcCreate_Goompa) = {
     End
 };
 
-EvtScript N(EVS_802411A8) = {
-    Call(N(func_802401B0_7E7550))
+EvtScript N(EVS_NpcFollowTest) = {
+    Call(N(InitNpcFollowTest))
     Label(0)
-        Call(N(func_802402EC_7E768C))
-        Call(N(func_80240318_7E76B8))
+        Call(N(UpdateNpcTracking))
+        Call(N(UpdateNpcFollow))
         Wait(1)
         Goto(0)
     Return

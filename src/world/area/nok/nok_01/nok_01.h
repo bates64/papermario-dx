@@ -62,4 +62,3 @@ API_CALLABLE(N(SetRadioVolumeMax));
 API_CALLABLE(N(SetRadioVolumeMute));
 API_CALLABLE(N(MuteAllRadioStations));
 API_CALLABLE(N(StopAllRadioStations));
-API_CALLABLE(N(func_802428D8_9C7CB8));

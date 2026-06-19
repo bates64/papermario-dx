@@ -408,7 +408,7 @@ EvtScript N(EVS_MinhT_PlantSeed) = {
     End
 };
 
-EvtScript N(D_80258FFC_81987C) = {
+EvtScript N(EVS_MinhT_ChooseMagicalSeed) = {
     IfNe(LVar5, 0)
         Call(SpeakToPlayer, NPC_MinhT, ANIM_MinhT_Talk, ANIM_MinhT_Idle, 0, MSG_MAC_Plaza_0075)
     EndIf
@@ -499,7 +499,7 @@ EvtScript N(EVS_NpcInteract_MinhT) = {
                     Set(GF_MAC01_HeardAboutBubulbs, true)
                 EndIf
                 IfNe(LVar4, 0)
-                    ExecWait(N(D_80258FFC_81987C))
+                    ExecWait(N(EVS_MinhT_ChooseMagicalSeed))
                     Return
                 EndIf
                 Call(SpeakToPlayer, NPC_MinhT, ANIM_MinhT_Talk, ANIM_MinhT_Idle, 0, MSG_MAC_Plaza_0075)

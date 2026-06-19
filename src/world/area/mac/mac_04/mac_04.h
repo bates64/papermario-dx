@@ -65,7 +65,6 @@ extern EvtScript N(EVS_OnEnterShop);
 extern EvtScript N(EVS_HiddenRoom_WaitForOuttaSight);
 extern EvtScript N(EVS_ExitToybox);
 extern EvtScript N(EVS_Toybox_SetupTrainPrompt);
-extern EvtScript N(D_8024697C_84954C);
 extern EvtScript N(EVS_ForceStoreroomUnlock);
 extern EvtScript N(EVS_Scene_WishingToadKid);
 

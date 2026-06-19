@@ -1251,7 +1251,7 @@ EvtScript N(EVS_NpcIdle_Toad_05) = {
     End
 };
 
-EvtScript N(D_8025AA78_81B2F8) = {
+EvtScript N(EVS_Toad_05_BlockSouthExit) = {
     Call(DisablePlayerInput, true)
     Call(NpcFacePlayer, NPC_Toad_05, 0)
     Wait(5)
@@ -1270,7 +1270,7 @@ EvtScript N(EVS_NpcInit_Toad_05) = {
         Call(SetNpcPos, NPC_SELF, -50, 0, 580)
         Call(SetNpcYaw, NPC_SELF, 90)
         Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Toad_05)))
-        BindTrigger(Ref(N(D_8025AA78_81B2F8)), TRIGGER_FLOOR_TOUCH, COLLIDER_deilis, 1, 0)
+        BindTrigger(Ref(N(EVS_Toad_05_BlockSouthExit)), TRIGGER_FLOOR_TOUCH, COLLIDER_deilis, 1, 0)
     EndIf
     Return
     End
@@ -1393,7 +1393,7 @@ EvtScript N(EVS_NpcIdle_Toad_07) = {
     End
 };
 
-EvtScript N(D_8025B110_81B990) = {
+EvtScript N(EVS_Toad_07_BlockEastExit) = {
     Call(DisablePlayerInput, true)
     Call(NpcFacePlayer, NPC_Toad_07, 0)
     Wait(5)
@@ -1412,7 +1412,7 @@ EvtScript N(EVS_NpcInit_Toad_07) = {
         Call(SetNpcPos, NPC_SELF, 530, 0, -50)
         Call(SetNpcYaw, NPC_SELF, 270)
         Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Toad_07)))
-        BindTrigger(Ref(N(D_8025B110_81B990)), TRIGGER_FLOOR_TOUCH, COLLIDER_deilie, 1, 0)
+        BindTrigger(Ref(N(EVS_Toad_07_BlockEastExit)), TRIGGER_FLOOR_TOUCH, COLLIDER_deilie, 1, 0)
     EndIf
     Return
     End
@@ -1530,7 +1530,7 @@ EvtScript N(EVS_NpcInit_Toad_09) = {
     End
 };
 
-EvtScript N(D_8025B760_81BFE0) = {
+EvtScript N(EVS_CarryStolenCalculator) = {
     Call(GetNpcPos, NPC_PostOfficeShyGuy, LVar2, LVar3, LVar4)
     Add(LVar3, 20)
     Call(MakeItemEntity, ITEM_CALCULATOR, LVar2, LVar3, LVar4, ITEM_SPAWN_MODE_DECORATION, 0)
@@ -1547,7 +1547,7 @@ EvtScript N(D_8025B760_81BFE0) = {
     End
 };
 
-EvtScript N(D_8025B854_81C0D4) = {
+EvtScript N(EVS_Scene_CalculatorStolen) = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfGt(LVar2, 200)
@@ -1562,7 +1562,7 @@ EvtScript N(D_8025B854_81C0D4) = {
     Wait(21)
     Call(DisablePlayerInput, true)
     Call(SpeakToPlayer, NPC_Rowf, ANIM_Rowf_Talk, ANIM_Rowf_Idle, 0, MSG_MAC_Plaza_0007)
-    Exec(N(D_8025B760_81BFE0))
+    Exec(N(EVS_CarryStolenCalculator))
     Set(LVar0, 6)
     Call(PlaySoundAtNpc, LVar0, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
     ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVarA)
@@ -1586,7 +1586,7 @@ EvtScript N(EVS_NpcInit_ShyGuy_01) = {
         Return
     EndIf
     Set(GF_MAC01_CalculatorStolen, true)
-    Exec(N(D_8025B854_81C0D4))
+    Exec(N(EVS_Scene_CalculatorStolen))
     Return
     End
 };

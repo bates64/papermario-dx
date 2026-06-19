@@ -51,7 +51,7 @@ EvtScript N(EVS_SpinyTromp_ManageCamera) = {
     End
 };
 
-EvtScript N(D_80241224_C7F3A4) = {
+EvtScript N(EVS_SpinyTromp_Dust) = {
     SetGroup(EVT_GROUP_PASSIVE_NPC)
     Loop(5)
         PlayEffect(EFFECT_DUST, 1, -430, 100, 0, 30)
@@ -127,7 +127,7 @@ EvtScript N(EVS_SetupSpinyTromp) = {
     EndIf
     Sub(LVar2, SPINY_TROMP_RADIUS)
     PlayEffect(EFFECT_LANDING_DUST, 4, SPINY_TROMP_START_X, LVar2, 0)
-    Exec(N(D_80241224_C7F3A4))
+    Exec(N(EVS_SpinyTromp_Dust))
     Thread
         Call(GetPartnerInUse, LVar0)
         Switch(LVar0)

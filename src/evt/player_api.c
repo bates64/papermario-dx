@@ -181,7 +181,11 @@ API_CALLABLE(func_802D1270) {
 
     // functionTemp 0 is the time left
     script->functionTemp[0]--;
-    return (script->functionTemp[0] < 0) * ApiStatus_DONE2;
+    if (script->functionTemp[0] < 0) {
+        return ApiStatus_DONE2;
+    } else {
+        return ApiStatus_BLOCK;
+    }
 }
 
 API_CALLABLE(func_802D1380) {

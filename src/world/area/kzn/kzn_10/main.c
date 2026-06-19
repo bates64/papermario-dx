@@ -10,7 +10,7 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-API_CALLABLE(N(func_8024030C_C7E48C)) {
+API_CALLABLE(N(AwaitCameraFollowEnabled)) {
     if (gPlayerStatus.flags & PS_FLAG_CAMERA_DOESNT_FOLLOW) {
         return ApiStatus_BLOCK;
     } else {
@@ -48,7 +48,7 @@ EvtScript N(EVS_Main) = {
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Wait(2)
-        Call(N(func_8024030C_C7E48C))
+        Call(N(AwaitCameraFollowEnabled))
         Call(PanToTarget, CAM_DEFAULT, 0, false)
     EndThread
     Set(LVar0, N(EVS_BindExitTriggers))

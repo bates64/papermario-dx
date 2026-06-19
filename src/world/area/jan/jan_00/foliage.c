@@ -24,16 +24,16 @@ ShakeTreeConfig N(ShakeTree_Tree1) = {
     .drops = &N(Tree1_Drops),
 };
 
-BombTrigger N(D_80247A1C_B27F5C) = {
+BombTrigger N(BombPos_Tree1) = {
     .pos = { 481.0f, 0.0f, -165.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_80247A2C) = {
+EvtScript N(EVS_SetupFoliage) = {
     Set(AF_JAN00_TreeDrop1, false)
     Set(LVar0, Ref(N(ShakeTree_Tree1)))
     BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o282, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(D_80247A1C_B27F5C)), 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
     Return
     End
 };

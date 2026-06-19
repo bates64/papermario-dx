@@ -50,6 +50,5 @@ extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_PlayRestingSong);
 extern EvtScript N(EVS_SetupRooms);
 extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(D_802443D4_D24264);
 extern EvtScript N(EVS_Scene_Merle_OneLastThing);
 extern NpcGroupList N(DefaultNPCs);

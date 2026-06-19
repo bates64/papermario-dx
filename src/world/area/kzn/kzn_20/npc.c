@@ -162,7 +162,7 @@ EvtScript N(EVS_KoloradoBurned_PlayerReaction) = {
     End
 };
 
-API_CALLABLE(N(func_80240A68_C96998)) {
+API_CALLABLE(N(FadeOutAmbientSounds)) {
     snd_ambient_fade_out(0, true);
     return ApiStatus_DONE2;
 }
@@ -260,7 +260,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
                 Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
                 Call(NpcJump0, NPC_SELF, 35, 50, 120, 10)
             CaseEq(SCENE_STATE_KOLORADO_WARNED)
-                Call(N(func_80240A68_C96998))
+                Call(N(FadeOutAmbientSounds))
                 Exec(N(EVS_KoloradoBurned_PlayerReaction))
                 Thread
                     Call(PlayerFaceNpc, NPC_SELF, false)

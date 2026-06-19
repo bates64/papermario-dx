@@ -8,7 +8,7 @@ extern NpcGroupList N(DefaultNPCs);
 extern EvtScript N(EVS_MakeEntities);
 
 extern EvtScript N(EVS_SetupWhale);
-extern EvtScript N(EVS_80247A2C);
+extern EvtScript N(EVS_SetupFoliage);
 
 API_CALLABLE(func_8024030C_B2084C) {
     fx_sun(FX_SUN_FROM_LEFT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
@@ -52,7 +52,7 @@ EvtScript N(EVS_Main) = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     Exec(N(EVS_SetupWhale))
-    Exec(N(EVS_80247A2C))
+    Exec(N(EVS_SetupFoliage))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitne, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitse, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetEntryID, LVar0)

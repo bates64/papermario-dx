@@ -99,28 +99,32 @@ EvtScript N(EVS_MonitorDemoState) = {
     End
 };
 
-API_CALLABLE(N(func_802400F4_BF4894)) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
+API_CALLABLE(N(AwaitPlayerFallBelowFloor)) {
+    f32 fallDist;
+    s32 colliderID;
 
     if (isInitialCall) {
         script->functionTemp[0] = 0;
     }
 
-    if (!(playerStatus->pos.y > -10.0f)) {
-        f32 temp_f20 = player_fall_distance();
-        s32 colliderID;
-
-        playerStatus->pos.y = player_check_collision_below(temp_f20, &colliderID);
-        script->functionTemp[0] += fabsf(temp_f20);
-
-        return (script->functionTemp[0] > 50) * ApiStatus_DONE2;
+    if (gPlayerStatus.pos.y > -10.0f) {
+        return ApiStatus_BLOCK;
     }
 
-    return ApiStatus_BLOCK;
+    fallDist = player_fall_distance();
+    gPlayerStatus.pos.y = player_check_collision_below(fallDist, &colliderID);
+    script->functionTemp[0] += fabsf(fallDist);
+
+    if (script->functionTemp[0] > 50) {
+        return ApiStatus_DONE2;
+    } else {
+        return ApiStatus_BLOCK;
+    }
 }
 
+
 EvtScript N(EVS_8024116C) = {
-    Call(N(func_802400F4_BF4894))
+    Call(N(AwaitPlayerFallBelowFloor))
     Return
     End
 };
