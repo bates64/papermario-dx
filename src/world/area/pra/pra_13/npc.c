@@ -7,14 +7,6 @@
 
 #include "world/common/todo/PlayBigSmokePuff.inc.c"
 
-API_CALLABLE(N(DoNothingWithNpcID)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 npcID = evt_get_variable(script, *args++);
-
-    get_npc_safe(npcID);
-    return ApiStatus_DONE2;
-}
-
 void N(appendGfx_fake_player)(void* data);
 void N(worker_draw_fake_player)(void);
 

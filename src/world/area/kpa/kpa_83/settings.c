@@ -1,4 +1,4 @@
-#include "kpa_83.h";
+#include "kpa_83.h"
 
 EntryList N(Entrances) = {
     [kpa_83_ENTRY_0]    { -210.0,    0.0,  150.0,   90.0 },

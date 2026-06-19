@@ -24,7 +24,7 @@ API_CALLABLE(N(StartFightingRumble)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_TwoKoopesFightingFX) = {
+EvtScript N(EVS_TwoKoopersFightingFX) = {
     Call(PlaySoundAtNpc, NPC_Kooper_01A, SOUND_LOOP_FIGHTING, SOUND_SPACE_DEFAULT)
     Loop(0)
         Call(N(StartFightingRumble), 80, 10)
@@ -286,7 +286,7 @@ EvtScript N(EVS_Scene_HitTrueKooper) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    ExecGetTID(N(EVS_TwoKoopesFightingFX), MV_KoopersFightingScript)
+    ExecGetTID(N(EVS_TwoKoopersFightingFX), MV_KoopersFightingScript)
     Thread
         Call(SetPlayerSpeed, Float(3.0 / DT))
         Call(PlayerMoveTo, LVar6, LVar8, 0)

@@ -208,7 +208,6 @@ void N(gfx_build_big_bubble)(void) {
     Vtx* src;
     Vtx* dest;
     s32 copyCount;
-    s32 new_var;
 
     guMtxIdentF(matrix);
 
@@ -226,9 +225,6 @@ void N(gfx_build_big_bubble)(void) {
 
     guMtxF2L(matrix, &gDisplayContext->matrixStack[gMatrixListPos]);
     mdl_get_copied_vertices(VTX_COPY_0, &src, &dest, &copyCount);
-
-    new_var = 0;
-    while (new_var); // TODO required to match
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
               G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);

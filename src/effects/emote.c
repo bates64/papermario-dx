@@ -98,7 +98,7 @@ void emote_compute_world_rotpos(EmoteFXData* part, s32 index) {
     cosCam = cos_deg(gCameras[gCurrentCameraID].curYaw);
     guRotateF(rotMtx, -part->rotAngle, sinCam, 0.0f, -cosCam);
 
-    if (npc == -1) {
+    if (npc == (Npc*) -1) {
         part->pos.x = gPlayerStatus.pos.x + part->offset.x + rotMtx[1][0] * (radius + 16.0f);
         part->pos.y = gPlayerStatus.pos.y + part->offset.y + rotMtx[1][1] * (radius + 16.0f);
         part->pos.z = gPlayerStatus.pos.z + part->offset.z + rotMtx[1][2] * (radius + 16.0f);
