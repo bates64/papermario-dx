@@ -1,8 +1,6 @@
 #pragma once
 #include "idle.h"
 
-NpcSettings N(NpcSettings_Bartender) = {
-    .height = 30,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/npc/Toad/idle.inc.c"
+
+#define NpcSettings_Bartender NpcSettings_Toad
