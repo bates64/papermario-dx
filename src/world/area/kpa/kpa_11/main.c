@@ -16,9 +16,9 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-EvtScript N(D_80240F04_A537C4) = {
+EvtScript N(EVS_EnterMap) = {
     Call(GetLoadType, LVar0)
-    IfEq(LVar0, 1)
+    IfEq(LVar0, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
         Exec(N(EVS_BindExitTriggers))
         Return
@@ -30,7 +30,7 @@ EvtScript N(D_80240F04_A537C4) = {
     End
 };
 
-EvtScript N(D_80240F84_A53844) = {
+EvtScript N(EVS_StartLavaTexPanners) = {
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
         TEX_PAN_PARAMS_STEP( -400,    0, -800,    0)
@@ -69,12 +69,12 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
-    Exec(N(D_80240F84_A53844))
+    Exec(N(EVS_StartLavaTexPanners))
     IfEq(GF_KPA17_BombedWall, true)
         Call(EnableGroup, MODEL_g301, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittne, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
-    Exec(N(D_80240F04_A537C4))
+    Exec(N(EVS_EnterMap))
     Exec(N(EVS_SetupMusic))
     IfEq(GF_KPA16_ShutOffLava, false)
         Thread

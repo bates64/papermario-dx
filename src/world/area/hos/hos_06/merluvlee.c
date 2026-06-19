@@ -557,8 +557,7 @@ API_CALLABLE(N(func_80241F98_A3B478)) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
-    // TODO effect may be wrong
-    effect->data.energyOrbWave->unk_1C++;
+    effect->data.energyOrbWave->mode++;
     return ApiStatus_DONE2;
 }
 
@@ -568,7 +567,7 @@ EvtScript N(EVS_PerformHintRitual) = {
     Call(GetModelCenter, MODEL_o100)
     Add(LVar1, 20)
     Call(PlaySoundAt, SOUND_LRAW_CRYSTAL_BALL_GLOW, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 1, LVar0, LVar1, LVar2, Float(1.0), -1)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PINK_ORB, LVar0, LVar1, LVar2, Float(1.0), -1)
     Set(ArrayVar(1), LVarF)
     Call(EnableModel, MODEL_o185, false)
     Call(EnableModel, MODEL_o186, false)
@@ -610,12 +609,12 @@ EvtScript N(EVS_PerformHintRitual) = {
     Call(GetModelCenter, MODEL_o100)
     Add(LVar1, 20)
     Call(PlaySoundAt, SOUND_CRYSTAL_BALL_WAVE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 5, LVar0, LVar1, LVar2, Float(0.5), 20)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PINK_WAVE, LVar0, LVar1, LVar2, Float(0.5), 20)
     Wait(30)
     Call(GetModelCenter, MODEL_o100)
     Add(LVar1, 20)
     Call(PlaySoundAt, SOUND_CRYSTAL_BALL_WAVE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 5, LVar0, LVar1, LVar2, Float(0.5), 20)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PINK_WAVE, LVar0, LVar1, LVar2, Float(0.5), 20)
     Wait(30)
     Thread
         Call(N(func_80241A58_A3AF38))
@@ -623,7 +622,7 @@ EvtScript N(EVS_PerformHintRitual) = {
     Call(GetModelCenter, MODEL_o100)
     Add(LVar1, 20)
     Call(PlaySoundAt, SOUND_CRYSTAL_BALL_WAVE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 6, LVar0, LVar1, LVar2, Float(0.5), 20)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_GRAY_WAVE, LVar0, LVar1, LVar2, Float(0.5), 20)
     Wait(70)
     Call(DismissEffect, ArrayVar(2))
     Wait(40)

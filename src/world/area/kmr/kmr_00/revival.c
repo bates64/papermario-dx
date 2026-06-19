@@ -62,7 +62,7 @@ API_CALLABLE(N(func_802403B8_8AC348)) {
 }
 
 API_CALLABLE(N(func_802404A0_8AC430)) {
-    fx_energy_orb_wave(4, 0.0f, 0.0f, 0.0f, 0.3f, 30);
+    fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_PALE_WAVE, 0.0f, 0.0f, 0.0f, 0.3f, 30);
     return ApiStatus_DONE2;
 }
 

@@ -540,7 +540,7 @@ EvtScript N(EVS_Scene_KoopaBrosUnmasked) = {
     Wait(60 * DT)
     Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_RaiseArms)
     Wait(5 * DT)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 6, LVar0, LVar1, LVar2, 1, 20)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_GRAY_WAVE, LVar0, LVar1, LVar2, 1, 20)
     Add(LVar1, 180)
     Call(PlayerFaceNpc, NPC_DarkToad_01, false)
     Call(SetCamProperties, CAM_DEFAULT, Float(4.0 / DT), 480, 0, 0, 320, 15, -6)

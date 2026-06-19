@@ -22,7 +22,7 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-EvtScript N(D_80240B34_99A7A4) = {
+EvtScript N(EVS_Scene_ArriveAtFortress) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerPos,NPC_DISPOSE_LOCATION)
@@ -70,7 +70,7 @@ EvtScript N(EVS_EnterMap) = {
         CaseEq(trd_00_ENTRY_0)
             IfLt(GB_StoryProgress, STORY_CH1_ARRIVED_AT_KOOPA_FORTRESS)
                 Set(GB_StoryProgress, STORY_CH1_ARRIVED_AT_KOOPA_FORTRESS)
-                ExecWait(N(D_80240B34_99A7A4))
+                ExecWait(N(EVS_Scene_ArriveAtFortress))
                 Exec(N(EVS_BindExitTriggers))
             Else
                 Set(LVar0, Ref(N(EVS_BindExitTriggers)))

@@ -921,6 +921,8 @@ void func_80045AC0(void);
 void npc_follow_init(Npc*, s32, FollowAnims*, f32, f32, s32, s32);
 void npc_update_npc_tracking(Npc*);
 void npc_follow_npc(Npc*);
+b32 get_defeated(s32 mapID, s32 encounterID);
+void set_defeated(s32 mapID, s32 encounterID);
 void create_encounters(void);
 void update_encounters_neutral(void);
 void update_encounters_pre_battle(void);

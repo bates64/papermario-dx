@@ -30,7 +30,6 @@ BSS s32 N(MixingGameUIRenderer);
 BSS u32 N(MixingGameState);
 BSS s32 N(MixingGameUIBaseX);
 BSS s32 N(MixingGameUIBaseY);
-BSS s32 N(D_80246564); // unused? related to missing gauge hud element?
 BSS s32 N(MixingGameHudElems)[4];
 BSS s32 N(MixingGameInputBuffer)[10];
 BSS s32 N(MixingGameInputBufferPos);

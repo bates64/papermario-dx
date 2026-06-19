@@ -48,7 +48,7 @@ EvtScript N(EVS_UpdateSpotlight) = {
     End
 };
 
-EvtScript N(D_8024189C_E13FFC) = {
+EvtScript N(EVS_HideCardModels) = {
     Call(EnableModel, MODEL_o64, false)
     Call(EnableModel, MODEL_o65, false)
     Call(EnableModel, MODEL_o66, false)
@@ -71,7 +71,7 @@ EvtScript N(EVS_Main) = {
     Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_UpdateSpotlight))
-    Exec(N(D_8024189C_E13FFC))
+    Exec(N(EVS_HideCardModels))
     Exec(N(EVS_802424A4))
     Return
     End

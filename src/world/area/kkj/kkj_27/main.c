@@ -27,7 +27,7 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-EvtScript N(D_80240778_B144E8) = {
+EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kkj_27_ENTRY_0)
@@ -44,7 +44,7 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Exec(N(EVS_SetupRotatingWall))
     Exec(N(EVS_SetupMusic))
-    Exec(N(D_80240778_B144E8))
+    Exec(N(EVS_EnterMap))
     Call(SetTexPanner, MODEL_o207, TEX_PANNER_0)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)

@@ -1,9 +1,9 @@
 #include "isk_14.h"
 
-EvtScript N(D_80241DB0_9944E0) = EVT_EXIT_WALK(40, isk_14_ENTRY_0, "isk_10", isk_10_ENTRY_1);
+EvtScript N(EVS_ExitWalk_isk_10_1) = EVT_EXIT_WALK(40, isk_14_ENTRY_0, "isk_10", isk_10_ENTRY_1);
 
 EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(D_80241DB0_9944E0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(N(EVS_ExitWalk_isk_10_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     Return
     End
 };

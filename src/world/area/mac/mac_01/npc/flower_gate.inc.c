@@ -304,7 +304,7 @@ EvtScript N(EVS_Scene_FlowerGateAppears) = {
     Call(DismissEffect, LVar9)
     Call(PlaySoundAt, SOUND_WOODEN_DOOR_WAVES, SOUND_SPACE_DEFAULT, 266, 50, 338)
     Loop(3)
-        PlayEffect(EFFECT_ENERGY_ORB_WAVE, 5, 266, 50, 338, 1, 20)
+        PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PINK_WAVE, 266, 50, 338, 1, 20)
         Wait(5)
     EndLoop
     Loop(0)

@@ -333,7 +333,7 @@ EvtScript N(EVS_HandleEvent) = {
             EndIf
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar1, LVar3)
-            PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, Float(1.5), 20, 0)
+            PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, Float(1.5), 20, 0)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_RearUpLaugh)
             Wait(30)
             Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
@@ -536,7 +536,7 @@ EvtScript N(EVS_StarRodCast) = {
     Else
         Add(LVar1, 24)
     EndIf
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, Float(1.5), 15, 0)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, Float(1.5), 15, 0)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_SHOCKWAVE)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 39)

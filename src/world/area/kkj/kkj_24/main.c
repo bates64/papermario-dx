@@ -1,6 +1,6 @@
 #include "kkj_24.h"
 
-API_CALLABLE(N(func_80240000_B06570)) {
+API_CALLABLE(N(EnableWorldFog)) {
     enable_world_fog();
     return ApiStatus_DONE2;
 }
@@ -43,7 +43,7 @@ EvtScript N(EVS_Main) = {
     Call(SetSpriteShading, SHADING_KKJ_24)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(N(EVS_MakeEntities))
-    Call(N(func_80240000_B06570))
+    Call(N(EnableWorldFog))
     Exec(N(EVS_SetupMusic))
     Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
     Exec(N(EVS_EnterMap))

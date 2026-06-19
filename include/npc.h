@@ -547,9 +547,6 @@ void spawn_hedge_surface_effects(Npc* npc, SurfaceInteractMode mode);
 
 void spawn_water_surface_effects(Npc* npc, SurfaceInteractMode mode);
 
-/// Duplicate of set_defeated().
-void COPY_set_defeated(s32 mapID, s32 encounterID);
-
 void init_encounter_status(void);
 
 void clear_encounter_status(void);

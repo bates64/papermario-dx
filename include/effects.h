@@ -1368,19 +1368,30 @@ typedef struct MotionBlurFlameFXData {
     /* 0x64 */ Color3i color;
 } MotionBlurFlameFXData; // size = 0x70
 
+enum EnergyOrbWaveFXTypes {
+    FX_ENERGY_ORB_WAVE_GREEN_ORB    = 0,
+    FX_ENERGY_ORB_WAVE_PINK_ORB     = 1,
+    FX_ENERGY_ORB_WAVE_PALE_ORB     = 2,
+    FX_ENERGY_ORB_WAVE_GREEN_WAVE   = 3,
+    FX_ENERGY_ORB_WAVE_PALE_WAVE    = 4,
+    FX_ENERGY_ORB_WAVE_PINK_WAVE    = 5,
+    FX_ENERGY_ORB_WAVE_GRAY_WAVE    = 6,
+    FX_ENERGY_ORB_WAVE_UNUSED_7     = 7,
+    FX_ENERGY_ORB_WAVE_UNUSED_8     = 8,
+    FX_ENERGY_ORB_WAVE_BLUE_SHRINK  = 9,
+};
+
 typedef struct EnergyOrbWaveFXData {
-    /* 0x00 */ s32 unk_00;
+    /* 0x00 */ s32 type;
     /* 0x04 */ Vec3f pos;
-    /* 0x10 */ s32 unk_10;
-    /* 0x14 */ s32 unk_14;
-    /* 0x18 */ s32 unk_18;
-    /* 0x1C */ s32 unk_1C;
-    /* 0x20 */ s32 unk_20;
-    /* 0x24 */ s32 unk_24;
-    /* 0x28 */ s32 unk_28;
-    /* 0x2C */ s32 unk_2C;
+    /* 0x10 */ s32 timeLeft;
+    /* 0x14 */ s32 lifetime;
+    /* 0x18 */ PAD(4);
+    /* 0x1C */ s32 mode;
+    /* 0x20 */ Color3i color;
+    /* 0x2C */ s32 alpha;
     /* 0x30 */ f32 scale;
-    /* 0x34 */ f32 unk_34;
+    /* 0x34 */ f32 scaleDelta;
 } EnergyOrbWaveFXData; // size = 0x38
 
 typedef struct MerlinHouseStarsFXData {

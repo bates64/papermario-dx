@@ -45,7 +45,7 @@ EvtScript N(EVS_GotoMap_jan_09_3) = {
 
 EvtScript N(EVS_ExitPipe_jan_09_3) = EVT_EXIT_PIPE_HORIZONTAL(jan_11_ENTRY_0, COLLIDER_o10, N(EVS_GotoMap_jan_09_3));
 
-EvtScript N(D_80241F38_B72798) = {
+EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitPipe_jan_09_3)), TRIGGER_WALL_PUSH, COLLIDER_o10, 1, 0)
     Return
     End
@@ -57,7 +57,7 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     Exec(N(EVS_CreateDarkness))
-    Set(LVar0, Ref(N(D_80241F38_B72798)))
+    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
     Exec(EnterWalk)
     Exec(N(EVS_SetupMusic))
     ExecWait(N(EVS_SetupDrips))

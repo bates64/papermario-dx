@@ -366,7 +366,7 @@ EvtScript N(EVS_Scene_ArriveByWhale) = {
     Else
         SetF(LVar9, Float(1.0))
     EndIf
-    Exec(N(D_80245860_B25DA0))
+    Exec(N(EVS_MakeFlowerCoins))
     Call(DisablePlayerPhysics, false)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
@@ -543,7 +543,7 @@ EvtScript N(EVS_NpcInit_Kolorado_02) = {
     End
 };
 
-EvtScript N(D_802441C8_B24708) = {
+EvtScript N(EVS_FaceJrTroopa) = {
     Loop(0)
         Call(PlayerFaceNpc, NPC_JrTroopa, false)
         Call(NpcFaceNpc, NPC_Kolorado_02, NPC_JrTroopa, 0)
@@ -561,8 +561,8 @@ EvtScript N(EVS_NpcIdle_JrTroopa) = {
         Wait(1)
         Goto(0)
     EndIf
-    Call(SpeakToPlayer, NPC_SELF, 0xFFFFFFFF, 0xFFFFFFFF, 5, MSG_CH5_0008)
-    ExecGetTID(N(D_802441C8_B24708), LVar9)
+    Call(SpeakToPlayer, NPC_SELF, -1, -1, 5, MSG_CH5_0008)
+    ExecGetTID(N(EVS_FaceJrTroopa), LVar9)
     Call(SetMusic, 0, SONG_JR_TROOPA_THEME, 0, VOL_LEVEL_FULL)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_LOOP_JR_TROOPA_SWIM, SOUND_SPACE_DEFAULT)
     Thread

@@ -375,7 +375,7 @@ EvtScript N(EVS_UpdateRhuffAnims) = {
     End
 };
 
-s32 N(D_802555AC_815E2C)[] = {
+s32 N(RugUnfurlFrames)[] = {
     600,   0, 598,   0,
     595,   0, 590,   0,
     583,   0, 574,   0,
@@ -443,7 +443,7 @@ EvtScript N(EVS_Rhuff_RevealBadges) = {
     Call(EnableModel, MODEL_ju_1, true)
     Call(N(RevealRowfBadges))
     Call(PlaySoundAtCollider, COLLIDER_o295, SOUND_ROWF_PULL_RUG_OUT, SOUND_SPACE_DEFAULT)
-    UseBuf(Ref(N(D_802555AC_815E2C)))
+    UseBuf(Ref(N(RugUnfurlFrames)))
     Loop(50)
         BufRead2(LVar0, MV_RowfRugRippleAmount)
         Call(RotateGroup, MODEL_jutan2, LVar0, 0, 1, 0)

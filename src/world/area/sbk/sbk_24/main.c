@@ -36,7 +36,7 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-EvtScript N(D_80240600_93B230) = {
+EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(sbk_24_ENTRY_4)
@@ -59,7 +59,7 @@ EvtScript N(EVS_Main) = {
     ExecWait(N(EVS_MakeEntities))
     Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     Call(SetMusic, 0, SONG_DRY_DRY_DESERT, 0, VOL_LEVEL_FULL)
-    Exec(N(D_80240600_93B230))
+    Exec(N(EVS_EnterMap))
     Wait(1)
     Exec(N(EVS_SetupFoliage))
     Return

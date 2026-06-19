@@ -670,7 +670,7 @@ EvtScript N(EVS_Scene_RaphaelComingThrough) = {
     End
 };
 
-EvtScript N(D_8024511C_B8929C) = {
+EvtScript N(EVS_Kolorado_RunPastPlayer) = {
     ChildThread
         Loop(0)
             Call(PlayerFaceNpc, NPC_SELF, false)
@@ -773,7 +773,7 @@ EvtScript N(EVS_NpcIdle_Kolorado_HeldCaptive) = {
                 Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
                 Set(GB_StoryProgress, STORY_CH5_KOLORADO_ESCAPED_SPEAR_GUYS)
             EndThread
-            ExecGetTID(N(D_8024511C_B8929C), LVar9)
+            ExecGetTID(N(EVS_Kolorado_RunPastPlayer), LVar9)
             Wait(35)
             Call(EnableCameraLeadingPlayer)
             Call(ResetCam, CAM_DEFAULT, Float(5.0))
@@ -1316,7 +1316,7 @@ EvtScript N(EVS_Scene_Misstar) = {
     Call(PlaySoundAtPlayer, SOUND_GET_STAR_POWER_WAVE, SOUND_SPACE_DEFAULT)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, 1, 30)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, 1, 30)
     Wait(30 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldMisstar_Idle)

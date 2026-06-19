@@ -79,7 +79,7 @@ EvtScript N(EVS_Main) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_ttae, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     Exec(N(EVS_SetWaterLevel))
-    BindTrigger(Ref(N(D_80241A90_AA8F10)), TRIGGER_AREA_FLAG_SET, AF_KPA133_HitWaterSwitch, 1, 0)
+    BindTrigger(Ref(N(EVS_OnHitSwitch)), TRIGGER_AREA_FLAG_SET, AF_KPA133_HitWaterSwitch, 1, 0)
     // water edge
     Call(SetTexPanner, MODEL_s_sui, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_sui, TEX_PANNER_1)

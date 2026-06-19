@@ -131,7 +131,7 @@ EvtScript N(EVS_NpcDefeat_Eldstar) = {
     End
 };
 
-EvtScript N(D_80241DA4_99BA14) = {
+EvtScript N(EVS_Scene_RescuedEldstar) = {
     Call(DisablePartnerAI, false)
     Call(func_802CF56C, 2)
     Call(SetNpcPos, NPC_Eldstar, -567, 26, 236)
@@ -182,7 +182,7 @@ EvtScript N(D_80241DA4_99BA14) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
     Call(PlaySoundAtPlayer, SOUND_GET_STAR_POWER_WAVE, SOUND_SPACE_DEFAULT)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, 1, 30)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, 1, 30)
     Wait(40 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_Eldstar, ANIM_WorldEldstar_Idle)
@@ -292,7 +292,7 @@ EvtScript N(EVS_NpcInit_Eldstar) = {
         Else
             Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Eldstar)))
             Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Eldstar)))
-            Exec(N(D_80241DA4_99BA14))
+            Exec(N(EVS_Scene_RescuedEldstar))
         EndIf
     Else
         Call(RemoveNpc, NPC_SELF)

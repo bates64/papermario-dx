@@ -90,7 +90,7 @@ EvtScript N(EVS_Scene_RescuedMuskular) = {
     Call(PlaySoundAtPlayer, SOUND_GET_STAR_POWER_WAVE, SOUND_SPACE_DEFAULT)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, 1, 30)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, 1, 30)
     Wait(30 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_Muskular, ANIM_WorldMuskular_Idle)

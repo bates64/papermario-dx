@@ -24,7 +24,7 @@ typedef struct RecordDisplayData {
     /* 0x14 */ s32 workerID;
 } RecordDisplayData; /* size = 0x18 */
 
-EvtScript N(D_80243C40_E123E0) = {
+EvtScript N(EVS_SetupScoreboard) = {
     Return
     End
 };

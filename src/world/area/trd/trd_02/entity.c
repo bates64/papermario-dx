@@ -3,7 +3,7 @@
 
 extern EvtScript N(EVS_ExitDoors_trd_01_2);
 
-EvtScript N(D_80242890_9A3870) = {
+EvtScript N(EVS_UnlockFortressDoor) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(ShowKeyChoicePopup)

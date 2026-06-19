@@ -28,7 +28,7 @@ EvtScript N(EVS_Main) = {
     Exec(EnterWalk)
     Wait(1)
     Exec(N(EVS_SetupMusic))
-    ExecWait(N(D_802439F8_BA8178))
+    ExecWait(N(EVS_SetupFlowerHints))
     Call(N(SetForeverForestFog))
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
     Return

@@ -615,7 +615,7 @@ EvtScript N(EVS_StarRodCast) = {
     Else
         Add(LVar1, 16)
     EndIf
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, Float(1.0), 15, 0)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, Float(1.0), 15, 0)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_SHOCKWAVE)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)

@@ -201,7 +201,7 @@ API_CALLABLE(N(SuperBlock_StartGlowEffect)) {
     s32 entityIdx = evt_get_variable(script, *args++);
     Entity* entity = get_entity_by_index(entityIdx);
     s32 effectPtrOutVar = *args++;
-    EffectInstance* effectInst = fx_energy_orb_wave(0, entity->pos.x, entity->pos.y + 12.5f, entity->pos.z, 0.7f, 0);
+    EffectInstance* effectInst = fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_GREEN_ORB, entity->pos.x, entity->pos.y + 12.5f, entity->pos.z, 0.7f, 0);
 
     evt_set_variable(script, effectPtrOutVar, (s32) effectInst);
     return ApiStatus_DONE2;

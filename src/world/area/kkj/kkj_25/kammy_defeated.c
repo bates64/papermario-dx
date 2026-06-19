@@ -345,7 +345,7 @@ EvtScript N(EVS_Scene_KammyDefeated) = {
         Wait(115)
         Add(LVar1, 20)
         Call(PlaySoundAt, SOUND_GET_STAR_POWER_WAVE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-        PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, Float(0.3), 30)
+        PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, Float(0.3), 30)
     EndThread
     Wait(40)
     Call(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, 110, 20, 3)

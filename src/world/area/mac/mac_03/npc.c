@@ -34,7 +34,7 @@ API_CALLABLE(N(GetOinkCount)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80241BD8_8333D8)) {
+API_CALLABLE(N(SetLilOinkTransform)) {
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, MV_LilOinkEffect);
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
@@ -480,7 +480,7 @@ EvtScript N(EVS_NpcInit_Toad_03) = {
     End
 };
 
-EvtScript N(D_8024A7F4_83BFF4) = {
+EvtScript N(EVS_PlayShyGuyRunSounds) = {
     Loop(0)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_SEQ_SHY_GUY_STEP, SOUND_SPACE_DEFAULT)
         Wait(2)
@@ -516,7 +516,7 @@ EvtScript N(EVS_NpcAI_ShyGuy) = {
     Call(SetNpcSpeed, NPC_SELF, Float(8.0))
     Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim03)
     Call(InterpNpcYaw, NPC_SELF, 90, 1)
-    ExecGetTID(N(D_8024A7F4_83BFF4), LVarA)
+    ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVarA)
     Call(NpcMoveTo, NPC_SELF, -100, 0, 0)
     KillThread(LVarA)
     Call(ShowSweat, NPC_SELF, 1, 45, EMOTER_NPC, 0, 0, 0, 0, 20)
@@ -525,7 +525,7 @@ EvtScript N(EVS_NpcAI_ShyGuy) = {
     Call(NpcJump0, NPC_SELF, -30, 0, 0, 20)
     Call(ShowSweat, NPC_SELF, 1, 45, EMOTER_NPC, 0, 0, 0, 0, 20)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
-    ExecGetTID(N(D_8024A7F4_83BFF4), LVarA)
+    ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVarA)
     Call(SetNpcSpeed, NPC_SELF, Float(8.0))
     Call(NpcMoveTo, NPC_SELF, 30, -200, 0)
     Call(ShowSweat, NPC_SELF, 1, -45, EMOTER_NPC, 0, 0, 0, 0, 20)
@@ -594,7 +594,7 @@ EvtScript N(EVS_NpcIdle_Toad_14) = {
             CaseEq(2)
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                 Call(GetNpcYaw, NPC_SELF, LVar3)
-                Call(N(func_80241BD8_8333D8), 10, LVar0, LVar1, LVar2, LVar3)
+                Call(N(SetLilOinkTransform), 10, LVar0, LVar1, LVar2, LVar3)
         EndSwitch
         Wait(1)
     EndLoop

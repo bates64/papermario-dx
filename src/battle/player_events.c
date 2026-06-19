@@ -330,7 +330,7 @@ API_CALLABLE(PlayBattleMerleeOrbFX) {
     s32 var2 = evt_get_variable(script, *args++);
     s32 var3 = evt_get_variable(script, *args++);
 
-    fx_energy_orb_wave(9, var1, var2 + 15, var3, 5.0f, 15);
+    fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_BLUE_SHRINK, var1, var2 + 15, var3, 5.0f, 15);
     return ApiStatus_DONE2;
 }
 
@@ -404,8 +404,8 @@ API_CALLABLE(BattleMerleeUpdateFX) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
         BattleMerleeBasePosY = merlee->pos.y;
-        BattleMerleeOrbEffect = fx_energy_orb_wave(0, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.4f, 0);
-        BattleMerleeWaveEffect = fx_energy_orb_wave(3, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.00001f, 0);
+        BattleMerleeOrbEffect = fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_GREEN_ORB, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.4f, 0);
+        BattleMerleeWaveEffect = fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_GREEN_WAVE, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.00001f, 0);
         BattleMerleeEffectsState = MERLEE_EFFECTS_HOLD;
         BattleMerleeEffectsTime = 12;
         sfx_play_sound(SOUND_MAGIC_ASCENDING);

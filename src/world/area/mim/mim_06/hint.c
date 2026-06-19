@@ -190,7 +190,7 @@ EvtScript N(EVS_InspectFlowers_East) = {
     End
 };
 
-EvtScript N(D_802439F8_BA8178) = {
+EvtScript N(EVS_SetupFlowerHints) = {
     Call(SetTexPanner, MODEL_sa_2, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_sb_2, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_sc_2, TEX_PANNER_0)

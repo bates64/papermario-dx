@@ -1886,7 +1886,7 @@ void npc_update_decoration_glow_in_front(Npc* npc, s32 idx) {
 
     switch (npc->decorationInitialized[idx]) {
         case 0:
-            npc->decorations[idx] = fx_energy_orb_wave(2, npc->pos.x, npc->pos.y + npc->collisionHeight * 0.5, npc->pos.z, npc->scale.x * 0.8 + 0.2f, -1);
+            npc->decorations[idx] = fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_PALE_ORB, npc->pos.x, npc->pos.y + npc->collisionHeight * 0.5, npc->pos.z, npc->scale.x * 0.8 + 0.2f, -1);
             npc->decorationInitialized[idx] = 1;
             break;
         case 1:
@@ -1908,7 +1908,7 @@ void npc_update_decoration_glow_behind(Npc* npc, s32 idx) {
 
     switch (npc->decorationInitialized[idx]) {
         case 0:
-            npc->decorations[idx] = fx_energy_orb_wave(2, npc->pos.x, npc->pos.y + npc->collisionHeight * 0.5, npc->pos.z - 5.0f, 1.0f, 0);
+            npc->decorations[idx] = fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_PALE_ORB, npc->pos.x, npc->pos.y + npc->collisionHeight * 0.5, npc->pos.z - 5.0f, 1.0f, 0);
             npc->decorationInitialized[idx] = 1;
             break;
         case 1:
@@ -2158,29 +2158,9 @@ void npc_set_imgfx_params(Npc* npc, s32 imgfxType, s32 arg2, s32 arg3, s32 arg4,
     npc_imgfx_update(npc);
 }
 
-void COPY_set_defeated(s32 mapID, s32 encounterID) {
-    EncounterStatus* currentEncounter = &gCurrentEncounter;
-    s32 encounterIdx = encounterID / 32;
-    s32 encounterShift;
-    s32 flag;
-
-    flag = encounterID % 32;
-    encounterShift = flag;
-    flag = currentEncounter->defeatFlags[mapID][encounterIdx];
-    currentEncounter->defeatFlags[mapID][encounterIdx] = flag | (1 << encounterShift);
-
-    // TODO: The below should work but has regalloc issues:
-    /*EncounterStatus *currentEncounter = &gCurrentEncounter;
-    s32 encounterIdx = encounterID / 32;
-    s32 encounterShift = encounterID % 32;
-
-    currentEncounter->defeatFlags[mapID][encounterIdx] |= (1 << encounterShift);*/
-}
-
 void init_encounter_status(void) {
     EncounterStatus* currentEncounter = &gCurrentEncounter;
-    s32 i;
-    s32 j;
+    s32 i, j;
 
     for (i = 0; i < ARRAY_COUNT(currentEncounter->encounterList); i++) {
         currentEncounter->encounterList[i] = 0;
@@ -2212,8 +2192,7 @@ void init_encounter_status(void) {
 
 void clear_encounter_status(void) {
     EncounterStatus* currentEncounter = &gCurrentEncounter;
-    s32 i;
-    s32 j;
+    s32 i, j;
 
     for (i = 0; i < ARRAY_COUNT(currentEncounter->encounterList); i++) {
         currentEncounter->encounterList[i] = 0;
@@ -2417,7 +2396,7 @@ void kill_enemy(Enemy* enemy) {
         && !(enemy->flags & ENEMY_FLAG_PASSIVE)
         && !(enemy->flags & ENEMY_FLAG_FLED)
     ) {
-        COPY_set_defeated(encounterStatus->mapID, encounter->encounterID + i);
+        set_defeated(encounterStatus->mapID, encounter->encounterID + i);
     }
 
     heap_free(enemy);
@@ -2466,12 +2445,10 @@ s32 bind_enemy_interact(Enemy* enemy, EvtScript* interactScriptBytecode) {
 }
 
 void bind_npc_ai(s32 npcID, EvtScript* npcAiBytecode) {
-    EncounterStatus* currentEncounterStatus = &gCurrentEncounter;
-    s32 i;
-    s32 j;
+    s32 i, j;
 
-    for (i = 0; i < currentEncounterStatus->numEncounters; i++) {
-        Encounter* currentEncounter = currentEncounterStatus->encounterList[i];
+    for (i = 0; i < gCurrentEncounter.numEncounters; i++) {
+        Encounter* currentEncounter = gCurrentEncounter.encounterList[i];
         if (currentEncounter != nullptr) {
             for (j = 0; j < currentEncounter->count; j++) {
                 Enemy* currentEnemy = currentEncounter->enemy[j];
@@ -2485,12 +2462,10 @@ void bind_npc_ai(s32 npcID, EvtScript* npcAiBytecode) {
 }
 
 void bind_npc_aux(s32 npcID, EvtScript* npcAuxBytecode) {
-    EncounterStatus* currentEncounterStatus = &gCurrentEncounter;
-    s32 i;
-    s32 j;
+    s32 i, j;
 
-    for (i = 0; i < currentEncounterStatus->numEncounters; i++) {
-        Encounter* currentEncounter = currentEncounterStatus->encounterList[i];
+    for (i = 0; i < gCurrentEncounter.numEncounters; i++) {
+        Encounter* currentEncounter = gCurrentEncounter.encounterList[i];
         if (currentEncounter != nullptr) {
             for (j = 0; j < currentEncounter->count; j++) {
                 Enemy* currentEnemy = currentEncounter->enemy[j];
@@ -2504,12 +2479,10 @@ void bind_npc_aux(s32 npcID, EvtScript* npcAuxBytecode) {
 }
 
 void bind_npc_interact(s32 npcID, EvtScript* npcInteractBytecode) {
-    EncounterStatus* currentEncounterStatus = &gCurrentEncounter;
-    s32 i;
-    s32 j;
+    s32 i, j;
 
-    for (i = 0; i < currentEncounterStatus->numEncounters; i++) {
-        Encounter* currentEncounter = currentEncounterStatus->encounterList[i];
+    for (i = 0; i < gCurrentEncounter.numEncounters; i++) {
+        Encounter* currentEncounter = gCurrentEncounter.encounterList[i];
         if (currentEncounter != nullptr) {
             for (j = 0; j < currentEncounter->count; j++) {
                 Enemy* currentEnemy = currentEncounter->enemy[j];
@@ -2523,12 +2496,10 @@ void bind_npc_interact(s32 npcID, EvtScript* npcInteractBytecode) {
 }
 
 Enemy* get_enemy(s32 npcID) {
-    EncounterStatus* currentEncounterStatus = &gCurrentEncounter;
-    s32 i;
-    s32 j;
+    s32 i, j;
 
-    for (i = 0; i < currentEncounterStatus->numEncounters; i++) {
-        Encounter* currentEncounter = currentEncounterStatus->encounterList[i];
+    for (i = 0; i < gCurrentEncounter.numEncounters; i++) {
+        Encounter* currentEncounter = gCurrentEncounter.encounterList[i];
         if (currentEncounter != nullptr) {
             for (j = 0; j < currentEncounter->count; j++) {
                 Enemy* currentEnemy = currentEncounter->enemy[j];
@@ -2542,12 +2513,10 @@ Enemy* get_enemy(s32 npcID) {
 }
 
 Enemy* get_enemy_safe(s32 npcID) {
-    EncounterStatus* currentEncounterStatus = &gCurrentEncounter;
-    s32 i;
-    s32 j;
+    s32 i, j;
 
-    for (i = 0; i < currentEncounterStatus->numEncounters; i++) {
-        Encounter* currentEncounter = currentEncounterStatus->encounterList[i];
+    for (i = 0; i < gCurrentEncounter.numEncounters; i++) {
+        Encounter* currentEncounter = gCurrentEncounter.encounterList[i];
 
         if (currentEncounter != nullptr) {
             for (j = 0; j < currentEncounter->count; j++) {

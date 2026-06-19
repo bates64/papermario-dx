@@ -18,7 +18,7 @@ API_CALLABLE(MerleeStopFX);
 API_CALLABLE(PlayMerleeGatherFX);
 API_CALLABLE(PlayMerleeOrbFX);
 
-b32 D_80077C40 = false;
+b32 SkipPartnerPostBattleCleanup = false;
 
 b32 EncounterStateChanged;
 
@@ -198,7 +198,7 @@ void setup_status_bar_for_world(void);
 void partner_handle_after_battle(void);
 s32 get_coin_drop_amount(Enemy* enemy);
 
-s32 get_defeated(s32 mapID, s32 encounterID) {
+b32 get_defeated(s32 mapID, s32 encounterID) {
     EncounterStatus* currentEncounter = &gCurrentEncounter;
     s32 encounterIdx = encounterID / 32;
     s32 encounterShift = encounterID % 32;
@@ -309,8 +309,8 @@ API_CALLABLE(MerleeUpdateFX) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
         WorldMerleeBasePosY = merlee->pos.y;
-        WorldMerleeOrbEffect = fx_energy_orb_wave(0, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.4f, 0);
-        WorldMerleeWaveEffect = fx_energy_orb_wave(3, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.00001f, 0);
+        WorldMerleeOrbEffect = fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_GREEN_ORB, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.4f, 0);
+        WorldMerleeWaveEffect = fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_GREEN_WAVE, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.00001f, 0);
         WorldMerleeEffectsState = MERLEE_EFFECTS_HOLD;
         WorldMerleeEffectsTime = 12;
         sfx_play_sound(SOUND_MAGIC_ASCENDING);
@@ -397,7 +397,7 @@ API_CALLABLE(PlayMerleeOrbFX) {
     s32 var1 = evt_get_variable(script, *args++);
     s32 var2 = evt_get_variable(script, *args++);
 
-    fx_energy_orb_wave(9, var0, var1, var2, 5.0f, 15);
+    fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_BLUE_SHRINK, var0, var1, var2, 5.0f, 15);
     return ApiStatus_DONE2;
 }
 
@@ -1249,7 +1249,7 @@ void update_encounters_pre_battle(void) {
             currentEncounter->fadeOutAccel = 1;
             currentEncounter->unk_08 = -1;
             HasPreBattleSongPushed = false;
-            D_80077C40 = false;
+            SkipPartnerPostBattleCleanup = false;
             suspend_all_group(EVT_GROUP_FLAG_BATTLE);
 
             // suspend all ai scripts
@@ -1301,7 +1301,7 @@ void update_encounters_pre_battle(void) {
             ) {
                 currentEncounter->substateDelay = 0;
                 currentEncounter->battleStartCountdown = 10;
-                D_80077C40 = true;
+                SkipPartnerPostBattleCleanup = true;
                 gEncounterSubState = ENCOUNTER_SUBSTATE_PRE_BATTLE_AUTO_WIN;
                 return;
             }
@@ -1315,7 +1315,7 @@ void update_encounters_pre_battle(void) {
             ) {
                 currentEncounter->substateDelay = 0;
                 currentEncounter->battleStartCountdown = 10;
-                D_80077C40 = true;
+                SkipPartnerPostBattleCleanup = true;
                 gEncounterSubState = ENCOUNTER_SUBSTATE_PRE_BATTLE_AUTO_WIN;
                 return;
             }
@@ -1330,7 +1330,7 @@ void update_encounters_pre_battle(void) {
             ) {
                 currentEncounter->substateDelay = 0;
                 currentEncounter->battleStartCountdown = 10;
-                D_80077C40 = true;
+                SkipPartnerPostBattleCleanup = true;
                 gEncounterSubState = ENCOUNTER_SUBSTATE_PRE_BATTLE_AUTO_WIN;
                 return;
             }
@@ -1633,7 +1633,7 @@ void update_encounters_post_battle(void) {
                 LastBattleStartedBySpin = true;
             }
             currentEncounter->hitType = 0;
-            if (!D_80077C40) {
+            if (!SkipPartnerPostBattleCleanup) {
                 partner_handle_after_battle();
             }
             PendingPartnerAbilityResume = false;

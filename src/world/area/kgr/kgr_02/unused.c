@@ -1,15 +1,15 @@
 #include "kgr_02.h"
 #include "nu/nusys.h"
 
-s32 N(D_80240970_8AADC0) = 0;
+s32 N(UnusedDistortionPhase) = 0;
 
-void N(func_80240160_8AA5B0)(s32 x1, s32 y1, s32 x2, s32 y2, s32 arg4) {
+void N(draw_unused_screen_distortion)(s32 x1, s32 y1, s32 x2, s32 y2, s32 arg4) {
     s32 i;
     f32 f0;
     s32 n, m;
     u16* img;
 
-    N(D_80240970_8AADC0) += 5;
+    N(UnusedDistortionPhase) += 5;
 
     if (x1 >= x2 || y1 >= y2) {
         return;
@@ -59,7 +59,7 @@ void N(func_80240160_8AA5B0)(s32 x1, s32 y1, s32 x2, s32 y2, s32 arg4) {
                            SCREEN_WIDTH, 6,
                            x1, y1 + 6 * i, x2 - 1, y1 + 6 * i + 5, 0,
                            G_TX_WRAP, G_TX_WRAP, 9, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        f0 = sin_deg(N(D_80240970_8AADC0) + i * 30);
+        f0 = sin_deg(N(UnusedDistortionPhase) + i * 30);
         gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, (x1 + 512) * 4 + arg4 * (s32)(f0 * 4),
                                                           (y1 + i * 6) * 4,
                                                           (x1 + 512) * 4 + arg4 * (s32)(f0 * 4) + 512 * 4,

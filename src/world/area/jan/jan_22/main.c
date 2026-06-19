@@ -20,7 +20,7 @@ LavaReset N(SafeFloorColliders)[] = {
     { .colliderID = NO_COLLIDER }
 };
 
-EvtScript N(D_8024202C_B861AC) = {
+EvtScript N(EVS_EnterMap) = {
     IfLt(GB_StoryProgress, STORY_CH5_ZIP_LINE_READY)
         Call(SetGroupVisibility, MODEL_g39, MODEL_GROUP_HIDDEN)
         Call(SetGroupVisibility, MODEL_g52, MODEL_GROUP_HIDDEN)
@@ -113,7 +113,7 @@ EvtScript N(EVS_Main) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitn, COLLIDER_FLAGS_UPPER_MASK)
-    Exec(N(D_8024202C_B861AC))
+    Exec(N(EVS_EnterMap))
     IfEq(GB_StoryProgress, STORY_CH5_BEGAN_PEACH_MISSION)
         Wait(65)
     EndIf

@@ -61,7 +61,7 @@ void action_update_use_tweester(void) {
                 PlayerTweesterPhysicsPtr->angularVel = 40.0f;
             }
             if (--PlayerTweesterPhysicsPtr->countdown == 0) {
-                playerStatus->actionSubstate++; // SUBSTATE_DONE
+                playerStatus->actionSubstate = SUBSTATE_DONE;
                 entity_start_script(entity);
             }
             break;

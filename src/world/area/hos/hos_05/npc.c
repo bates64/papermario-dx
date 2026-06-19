@@ -212,7 +212,7 @@ EvtScript N(EVS_Scene_RecieveStarBeam) = {
         Wait(115)
         Call(PlaySoundAtPlayer, SOUND_GET_STAR_POWER_WAVE, SOUND_SPACE_DEFAULT)
         Add(LVar7, 20)
-        PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar6, LVar7, LVar8, Float(0.3), 30)
+        PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar6, LVar7, LVar8, Float(0.3), 30)
     EndThread
     Wait(40)
     Call(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, 10, 154, 88)

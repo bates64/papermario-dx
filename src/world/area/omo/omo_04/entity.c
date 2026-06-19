@@ -108,7 +108,7 @@ EvtScript N(EVS_StarBoxLaunch7) = {
     End
 };
 
-API_CALLABLE(N(func_802402F4_DAD6F4)) {
+API_CALLABLE(N(GetPlayerForwardPos)) {
     f32 playerVx = gPlayerStatus.curSpeed * 5.0f * sin_deg(gPlayerStatus.targetYaw);
     f32 playerVz = gPlayerStatus.curSpeed * 5.0f * -cos_deg(gPlayerStatus.targetYaw);
     script->varTable[0] = (gPlayerStatus.pos.x + playerVx);

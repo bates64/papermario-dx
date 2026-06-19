@@ -6,7 +6,7 @@
 
 #include "world/common/atomic/ApplyTint.inc.c"
 
-API_CALLABLE(N(func_80240678_AACEA8)) {
+API_CALLABLE(N(SetModelRemapTint)) {
     Bytecode* args = script->ptrReadPos;
     s32 primR = *args++;
     s32 primG = *args++;
@@ -23,7 +23,7 @@ BSS PAL_BIN N(PeachLetterPal)[0x100];
 
 BSS MessageImageData N(MsgImage);
 
-API_CALLABLE(N(func_802406E0_AACF10)) {
+API_CALLABLE(N(LoadPeachLetterImage)) {
     s8* romStart = charset_ROM_START;
     u8* rasterOffset = charset_peach_letter_OFFSET;
     u16* paletteOffset = charset_peach_letter_pal_OFFSET;
@@ -51,8 +51,8 @@ EvtScript N(EVS_Scene_ShowInvitation) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(N(SetModelTintMode), APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
     Call(N(SetModelTintMode), APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
-    Call(N(func_80240678_AACEA8), 200, 200, 200, 40, 40, 40)
-    Call(N(func_802406E0_AACF10))
+    Call(N(SetModelRemapTint), 200, 200, 200, 40, 40, 40)
+    Call(N(LoadPeachLetterImage))
     Wait(15 * DT)
     Call(ShowMessageAtScreenPos, MSG_Intro_0022, 160, 40)
     Wait(12 * DT)
