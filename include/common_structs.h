@@ -16,23 +16,6 @@ typedef Bytecode EvtScript[];
 typedef void (*VoidCallback)(void);
 typedef void (*AuCallback)(void);
 
-#define MSG_PTR u8*
-#define IMG_PTR u8*
-#define PAL_PTR u16*
-
-#define MSG_BIN u8
-#define IMG_BIN u8
-#define PAL_BIN u16
-
-typedef s32 b32;
-typedef s16 b16;
-typedef s8 b8;
-
-typedef s32 HitID;
-typedef u32 AnimID;
-typedef s32 HudElemID;
-typedef s32 MsgID;
-
 typedef struct {
     u8 r, g, b, a;
 } Color_RGBA8;
@@ -513,14 +496,20 @@ typedef struct DmaEntry {
 
 typedef s32 EntityScript[];
 typedef s32 EntityModelScript[];
+typedef s32* EntityScriptPtr;
+typedef s32* EntityModelScriptPtr;
+typedef s16* AnimScriptPtr;
 
 typedef struct EntityBlueprint {
     /* 0x00 */ u16 flags;
     /* 0x02 */ u16 typeDataSize;
-    /* 0x04 */ UNK_PTR renderCommandList;
-    /* 0x08 */ UNK_PTR modelAnimationNodes;
+    /* 0x04 */ union {
+                EntityModelScriptPtr renderCommandList;
+                AnimScriptPtr animScript;
+               };
+    /* 0x08 */ struct StaticAnimatorNode** modelAnimationNodes;
     /* 0x0C */ void (*fpInit)(struct Entity*);
-    /* 0x10 */ EntityScript* updateEntityScript;
+    /* 0x10 */ EntityScriptPtr updateEntityScript;
     /* 0x14 */ EntityCallback fpHandleCollision;
     /* 0x18 */ union {
                 DmaEntry dma;
@@ -601,7 +590,10 @@ typedef void (*ShadowCallback)(struct Shadow*);
 typedef struct ShadowBlueprint {
     /* 0x00 */ u16 flags;
     /* 0x02 */ s16 typeDataSize;
-    /* 0x04 */ UNK_PTR renderCommandList;
+    /* 0x04 */ union {
+                EntityModelScriptPtr renderCommandList;
+                AnimScriptPtr animScript;
+               };
     /* 0x08 */ struct StaticAnimatorNode** animModelNode;
     /* 0x0C */ ShadowCallback onCreateCallback;
     /* 0x10 */ PAD(0x10);

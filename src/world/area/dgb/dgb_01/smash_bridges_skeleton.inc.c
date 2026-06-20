@@ -5,36 +5,36 @@ StaticAnimatorNode N(SmashBridgesNode121) = {
 };
 
 StaticAnimatorNode N(SmashBridgesNode120) = {
-    .displayList = N(D_8024C098_C09918),
+    .displayList = N(Gfx_DrawMesh_BridgeFragmentFloorTileNode120),
     .pos = { 0.0f, -500.0f, 0.0f },
 };
 
 StaticAnimatorNode N(SmashBridgesNode119) = {
-    .displayList = N(D_8024C030_C098B0),
+    .displayList = N(Gfx_DrawMesh_BridgeFragmentFloorTileNode119),
     .pos = { 0.0f, -500.0f, 0.0f },
     .sibling = &N(SmashBridgesNode120),
 };
 
 StaticAnimatorNode N(SmashBridgesNode118) = {
-    .displayList = N(D_8024BFC8_C09848),
+    .displayList = N(Gfx_DrawMesh_BridgeFragmentFloorTileNode118),
     .pos = { 0.0f, -500.0f, 0.0f },
     .sibling = &N(SmashBridgesNode119),
 };
 
 StaticAnimatorNode N(SmashBridgesNode117) = {
-    .displayList = N(D_8024C2E0_C09B60),
+    .displayList = N(Gfx_DrawMesh_BridgeFragmentWoodNode117),
     .pos = { 0.0f, -500.0f, 0.0f },
     .sibling = &N(SmashBridgesNode118),
 };
 
 StaticAnimatorNode N(SmashBridgesNode116) = {
-    .displayList = N(D_8024C1F0_C09A70),
+    .displayList = N(Gfx_DrawMesh_BridgeFragmentWoodNode116),
     .pos = { 0.0f, -500.0f, 0.0f },
     .sibling = &N(SmashBridgesNode117),
 };
 
 StaticAnimatorNode N(SmashBridgesNode115) = {
-    .displayList = N(D_8024C100_C09980),
+    .displayList = N(Gfx_DrawMesh_BridgeFragmentWoodNode115),
     .pos = { 0.0f, -500.0f, 0.0f },
     .sibling = &N(SmashBridgesNode116),
 };
@@ -44,18 +44,18 @@ StaticAnimatorNode N(SmashBridgesNode114) = {
 };
 
 StaticAnimatorNode N(SmashBridgesNode113) = {
-    .displayList = N(D_8024C560_C09DE0),
+    .displayList = N(Gfx_DrawMesh_BridgeFragmentWoodNode113),
     .pos = { 0.0f, -500.0f, 0.0f },
 };
 
 StaticAnimatorNode N(SmashBridgesNode112) = {
-    .displayList = N(D_8024C4C0_C09D40),
+    .displayList = N(Gfx_DrawMesh_BridgeFragmentWoodNode112),
     .pos = { 0.0f, -500.0f, 0.0f },
     .sibling = &N(SmashBridgesNode113),
 };
 
 StaticAnimatorNode N(SmashBridgesNode111) = {
-    .displayList = N(D_8024C420_C09CA0),
+    .displayList = N(Gfx_DrawMesh_BridgeFragmentWoodNode111),
     .pos = { 0.0f, -500.0f, 0.0f },
     .sibling = &N(SmashBridgesNode112),
 };
@@ -66,71 +66,71 @@ StaticAnimatorNode N(SmashBridgesNode110) = {
 };
 
 StaticAnimatorNode N(SmashBridgesNode109) = {
-    .displayList = N(D_8024B770_C08FF0),
+    .displayList = N(Gfx_DrawMesh_WoodBridgeStructure3),
 };
 
 StaticAnimatorNode N(SmashBridgesNode108) = {
-    .displayList = N(D_8024B8F8_C09178),
+    .displayList = N(Gfx_DrawMesh_WoodBridgeStructure2),
     .sibling = &N(SmashBridgesNode109),
 };
 
 StaticAnimatorNode N(SmashBridgesNode107) = {
-    .displayList = N(D_8024BAA0_C09320),
+    .displayList = N(Gfx_DrawMesh_WoodBridgeStructure1),
     .sibling = &N(SmashBridgesNode108),
 };
 
 StaticAnimatorNode N(SmashBridgesNode106) = {
-    .displayList = N(D_802515B0_C0EE30),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeRailingPostNode106),
     .sibling = &N(SmashBridgesNode107),
 };
 
 StaticAnimatorNode N(SmashBridgesNode105) = {
-    .displayList = N(D_80250168_C0D9E8),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeFloorSmoothNode105),
     .sibling = &N(SmashBridgesNode106),
 };
 
 StaticAnimatorNode N(SmashBridgesNode104) = {
-    .displayList = N(D_80250108_C0D988),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeRailingPostDestroyedNode104),
     .sibling = &N(SmashBridgesNode105),
 };
 
 StaticAnimatorNode N(SmashBridgesNode103) = {
-    .displayList = N(D_80251798_C0F018),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeWoodNode103),
     .sibling = &N(SmashBridgesNode104),
 };
 
 StaticAnimatorNode N(SmashBridgesNode102) = {
-    .displayList = N(D_80250360_C0DBE0),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeWoodNode102),
     .sibling = &N(SmashBridgesNode103),
 };
 
 StaticAnimatorNode N(SmashBridgesNode101) = {
-    .displayList = N(D_80251710_C0EF90),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeWoodPanelTrimNode101),
     .sibling = &N(SmashBridgesNode102),
 };
 
 StaticAnimatorNode N(SmashBridgesNode100) = {
-    .displayList = N(D_802502F8_C0DB78),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeWoodPanelTrimNode100),
     .sibling = &N(SmashBridgesNode101),
 };
 
 StaticAnimatorNode N(SmashBridgesNode099) = {
-    .displayList = N(D_802516A8_C0EF28),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeRailingPostDamagedNode099),
     .sibling = &N(SmashBridgesNode100),
 };
 
 StaticAnimatorNode N(SmashBridgesNode098) = {
-    .displayList = N(D_80250290_C0DB10),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeRailingPostDamagedNode098),
     .sibling = &N(SmashBridgesNode099),
 };
 
 StaticAnimatorNode N(SmashBridgesNode097) = {
-    .displayList = N(D_80251638_C0EEB8),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeFloorTileNode097),
     .sibling = &N(SmashBridgesNode098),
 };
 
 StaticAnimatorNode N(SmashBridgesNode096) = {
-    .displayList = N(D_80250220_C0DAA0),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeFloorTileNode096),
     .sibling = &N(SmashBridgesNode097),
 };
 
@@ -140,76 +140,76 @@ StaticAnimatorNode N(SmashBridgesNode095) = {
 };
 
 StaticAnimatorNode N(SmashBridgesNode094) = {
-    .displayList = N(D_8024FAB0_C0D330),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeRailingPostDamagedNode094),
     .rot = { 0x0000, 0x1FFF, 0x8001 },
     .pos = { -315.0f, 2.0f, -139.0f },
 };
 
 StaticAnimatorNode N(SmashBridgesNode093) = {
-    .displayList = N(D_8024FA18_C0D298),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeRailingPostDamagedNode093),
     .rot = { 0x8001, 0x2AAA, 0x8001 },
     .pos = { -455.0f, 421.0f, -20.0f },
     .sibling = &N(SmashBridgesNode094),
 };
 
 StaticAnimatorNode N(SmashBridgesNode092) = {
-    .displayList = N(D_8024F980_C0D200),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeRailingPostDamagedNode092),
     .rot = { 0x8001, 0xE001, 0x0000 },
     .pos = { -385.0f, 2.0f, 169.0f },
     .sibling = &N(SmashBridgesNode093),
 };
 
 StaticAnimatorNode N(SmashBridgesNode091) = {
-    .displayList = N(D_8024F8E8_C0D168),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeRailingPostDamagedNode091),
     .rot = { 0x0000, 0x2AAA, 0x8001 },
     .pos = { -105.0f, 2.0f, -210.0f },
     .sibling = &N(SmashBridgesNode092),
 };
 
 StaticAnimatorNode N(SmashBridgesNode090) = {
-    .displayList = N(D_8024F850_C0D0D0),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeRailingPostDamagedNode090),
     .rot = { 0x0000, 0xEAAB, 0x8001 },
     .pos = { -5.0f, 2.0f, -180.0f },
     .sibling = &N(SmashBridgesNode091),
 };
 
 StaticAnimatorNode N(SmashBridgesNode089) = {
-    .displayList = N(D_8024F7B8_C0D038),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeRailingPostDamagedNode089),
     .rot = { 0x8001, 0x0AAA, 0x0000 },
     .pos = { -195.0f, 2.0f, 259.0f },
     .sibling = &N(SmashBridgesNode090),
 };
 
 StaticAnimatorNode N(SmashBridgesNode088) = {
-    .displayList = N(D_8024F720_C0CFA0),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeRailingPostDamagedNode088),
     .rot = { 0x8001, 0xD556, 0x8001 },
     .pos = { -65.0f, 2.0f, 189.0f },
     .sibling = &N(SmashBridgesNode089),
 };
 
 StaticAnimatorNode N(SmashBridgesNode087) = {
-    .displayList = N(D_8024F688_C0CF08),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeRailingPostDamagedNode087),
     .rot = { 0x8001, 0x0000, 0x0000 },
     .pos = { 275.0f, 2.0f, -129.0f },
     .sibling = &N(SmashBridgesNode088),
 };
 
 StaticAnimatorNode N(SmashBridgesNode086) = {
-    .displayList = N(D_8024F5F0_C0CE70),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeRailingPostDamagedNode086),
     .rot = { 0x0000, 0xF556, 0x8001 },
     .pos = { 195.0f, 421.0f, -40.0f },
     .sibling = &N(SmashBridgesNode087),
 };
 
 StaticAnimatorNode N(SmashBridgesNode085) = {
-    .displayList = N(D_8024F558_C0CDD8),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeRailingPostDamagedNode085),
     .rot = { 0x8001, 0x1555, 0x8001 },
     .pos = { 85.0f, 2.0f, 329.0f },
     .sibling = &N(SmashBridgesNode086),
 };
 
 StaticAnimatorNode N(SmashBridgesNode084) = {
-    .displayList = N(D_8024F4C0_C0CD40),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeRailingPostDamagedNode084),
     .rot = { 0x8001, 0x1555, 0x0000 },
     .pos = { 215.0f, 421.0f, 29.0f },
     .sibling = &N(SmashBridgesNode085),
@@ -221,27 +221,27 @@ StaticAnimatorNode N(SmashBridgesNode083) = {
 };
 
 StaticAnimatorNode N(SmashBridgesNode082) = {
-    .displayList = N(D_8024F328_C0CBA8),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode082),
     .rot = { 0x8001, 0x0000, 0x0000 },
     .pos = { 8.0f, -23.0f, -49.0f },
 };
 
 StaticAnimatorNode N(SmashBridgesNode081) = {
-    .displayList = N(D_8024F160_C0C9E0),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode081),
     .rot = { 0x0000, 0xF8E4, 0x8001 },
     .pos = { 73.0f, -23.0f, 20.0f },
     .sibling = &N(SmashBridgesNode082),
 };
 
 StaticAnimatorNode N(SmashBridgesNode080) = {
-    .displayList = N(D_8024F1F8_C0CA78),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode080),
     .rot = { 0x8001, 0x0000, 0x0000 },
     .pos = { -1.0f, -23.0f, 49.0f },
     .sibling = &N(SmashBridgesNode081),
 };
 
 StaticAnimatorNode N(SmashBridgesNode079) = {
-    .displayList = N(D_8024F290_C0CB10),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode079),
     .rot = { 0x8001, 0x0000, 0x8001 },
     .pos = { 18.0f, -23.0f, 0.0f },
     .sibling = &N(SmashBridgesNode080),
@@ -254,35 +254,35 @@ StaticAnimatorNode N(SmashBridgesNode078) = {
 };
 
 StaticAnimatorNode N(SmashBridgesNode077) = {
-    .displayList = N(D_8024F3C0_C0CC40),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode077),
     .rot = { 0x8001, 0x0AAA, 0x0000 },
     .pos = { -415.0f, 21.0f, 20.0f },
     .sibling = &N(SmashBridgesNode078),
 };
 
 StaticAnimatorNode N(SmashBridgesNode076) = {
-    .displayList = N(D_8024F0C8_C0C948),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode076),
     .rot = { 0x8001, 0xF8E4, 0x8001 },
     .pos = { 195.0f, 211.0f, -39.0f },
     .sibling = &N(SmashBridgesNode077),
 };
 
 StaticAnimatorNode N(SmashBridgesNode075) = {
-    .displayList = N(D_8024F030_C0C8B0),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode075),
     .rot = { 0x8001, 0xF1C8, 0x8001 },
     .pos = { 95.0f, 210.0f, -30.0f },
     .sibling = &N(SmashBridgesNode076),
 };
 
 StaticAnimatorNode N(SmashBridgesNode074) = {
-    .displayList = N(D_8024EF98_C0C818),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode074),
     .rot = { 0x8001, 0x1555, 0x8001 },
     .pos = { 115.0f, 211.0f, 39.0f },
     .sibling = &N(SmashBridgesNode075),
 };
 
 StaticAnimatorNode N(SmashBridgesNode073) = {
-    .displayList = N(D_8024EF00_C0C780),
+    .displayList = N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode073),
     .rot = { 0x8001, 0x0AAA, 0x8001 },
     .pos = { 215.0f, 211.0f, 39.0f },
     .sibling = &N(SmashBridgesNode074),
@@ -294,20 +294,20 @@ StaticAnimatorNode N(SmashBridgesNode072) = {
 };
 
 StaticAnimatorNode N(SmashBridgesNode071) = {
-    .displayList = N(D_8024BEF8_C09778),
+    .displayList = N(Gfx_DrawQuad_LowerBridgeWoodPanelTrimNode071),
     .rot = { 0x0000, 0x0AAA, 0x0000 },
     .pos = { -375.0f, 2.0f, 0.0f },
 };
 
 StaticAnimatorNode N(SmashBridgesNode070) = {
-    .displayList = N(D_8024BE60_C096E0),
+    .displayList = N(Gfx_DrawQuad_LowerBridgeWoodPanelTrimNode070),
     .rot = { 0x0000, 0xEAAB, 0x8001 },
     .pos = { -175.0f, 2.0f, -49.0f },
     .sibling = &N(SmashBridgesNode071),
 };
 
 StaticAnimatorNode N(SmashBridgesNode069) = {
-    .displayList = N(D_8024BDC8_C09648),
+    .displayList = N(Gfx_DrawQuad_LowerBridgeWoodPanelTrimNode069),
     .rot = { 0x8001, 0x0000, 0x8001 },
     .pos = { 75.0f, 2.0f, -49.0f },
     .sibling = &N(SmashBridgesNode070),
@@ -324,41 +324,41 @@ StaticAnimatorNode N(SmashBridgesNode067) = {
 };
 
 StaticAnimatorNode N(SmashBridgesNode066) = {
-    .displayList = N(D_8024DEF8_dgb_01),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeRailingPostNode066),
 };
 
 StaticAnimatorNode N(SmashBridgesNode065) = {
-    .displayList = N(D_8024E120_C0B9A0),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodPanelTrimNode065),
     .sibling = &N(SmashBridgesNode066),
 };
 
 StaticAnimatorNode N(SmashBridgesNode064) = {
-    .displayList = N(D_8024E0A8_C0B928),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeRailingPostDamagedNode064),
     .sibling = &N(SmashBridgesNode065),
 };
 
 StaticAnimatorNode N(SmashBridgesNode063) = {
-    .displayList = N(D_8024E020_C0B8A0),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeFloorTileNode063),
     .sibling = &N(SmashBridgesNode064),
 };
 
 StaticAnimatorNode N(SmashBridgesNode062) = {
-    .displayList = N(D_8024DFA0_C0B820),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode062),
     .sibling = &N(SmashBridgesNode063),
 };
 
 StaticAnimatorNode N(SmashBridgesNode061) = {
-    .displayList = N(D_8024E1A8_C0BA28),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodNode061),
     .sibling = &N(SmashBridgesNode062),
 };
 
 StaticAnimatorNode N(SmashBridgesNode060) = {
-    .displayList = N(D_8024DD60_C0B5E0),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodNode060),
     .sibling = &N(SmashBridgesNode061),
 };
 
 StaticAnimatorNode N(SmashBridgesNode059) = {
-    .displayList = N(D_8024DC50_C0B4D0),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodNode059),
     .sibling = &N(SmashBridgesNode060),
 };
 
@@ -369,11 +369,11 @@ StaticAnimatorNode N(SmashBridgesNode058) = {
 };
 
 StaticAnimatorNode N(SmashBridgesNode057) = {
-    .displayList = N(D_8024ECB0_C0C530),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeWoodNode057),
 };
 
 StaticAnimatorNode N(SmashBridgesNode056) = {
-    .displayList = N(D_8024EE18_C0C698),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeRailingPostDestroyedNode056),
     .sibling = &N(SmashBridgesNode057),
 };
 
@@ -385,31 +385,31 @@ StaticAnimatorNode N(SmashBridgesNode055) = {
 };
 
 StaticAnimatorNode N(SmashBridgesNode054) = {
-    .displayList = N(D_80250720_C0DFA0),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeFloorSmoothNode054),
 };
 
 StaticAnimatorNode N(SmashBridgesNode053) = {
-    .displayList = N(D_80250910_C0E190),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeWoodNode053),
     .sibling = &N(SmashBridgesNode054),
 };
 
 StaticAnimatorNode N(SmashBridgesNode052) = {
-    .displayList = N(D_80250698_C0DF18),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeRailingPostDestroyedNode052),
     .sibling = &N(SmashBridgesNode053),
 };
 
 StaticAnimatorNode N(SmashBridgesNode051) = {
-    .displayList = N(D_80250798_C0E018),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeFloorTileNode051),
     .sibling = &N(SmashBridgesNode052),
 };
 
 StaticAnimatorNode N(SmashBridgesNode050) = {
-    .displayList = N(D_80250820_C0E0A0),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeRailingPostDamagedNode050),
     .sibling = &N(SmashBridgesNode051),
 };
 
 StaticAnimatorNode N(SmashBridgesNode049) = {
-    .displayList = N(D_80250898_C0E118),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeWoodPanelTrimNode049),
     .sibling = &N(SmashBridgesNode050),
 };
 
@@ -421,18 +421,18 @@ StaticAnimatorNode N(SmashBridgesNode048) = {
 };
 
 StaticAnimatorNode N(SmashBridgesNode047) = {
-    .displayList = N(D_8024C918_C0A198),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeRailingPostDestroyedNode047),
     .pos = { 252.0f, 0.0f, 0.0f },
 };
 
 StaticAnimatorNode N(SmashBridgesNode046) = {
-    .displayList = N(D_8024C998_C0A218),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodNode046),
     .pos = { 252.0f, 0.0f, 0.0f },
     .sibling = &N(SmashBridgesNode047),
 };
 
 StaticAnimatorNode N(SmashBridgesNode045) = {
-    .displayList = N(D_8024C808_C0A088),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodNode045),
     .pos = { 252.0f, 0.0f, 0.0f },
     .sibling = &N(SmashBridgesNode046),
 };
@@ -454,43 +454,43 @@ StaticAnimatorNode N(SmashBridgesNode042) = {
 };
 
 StaticAnimatorNode N(SmashBridgesNode041) = {
-    .displayList = N(D_8024CAF0_C0A370),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeRailingPostDestroyedNode041),
     .sibling = &N(SmashBridgesNode042),
 };
 
 StaticAnimatorNode N(SmashBridgesNode040) = {
-    .displayList = N(D_8024CC28_C0A4A8),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode040),
     .pos = { 0.0f, -500.0f, 0.0f },
     .sibling = &N(SmashBridgesNode041),
 };
 
 StaticAnimatorNode N(SmashBridgesNode039) = {
-    .displayList = N(D_8024CB68_C0A3E8),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode039),
     .sibling = &N(SmashBridgesNode040),
 };
 
 StaticAnimatorNode N(SmashBridgesNode038) = {
-    .displayList = N(D_8024CD98_C0A618),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodPanelTrimNode038),
     .sibling = &N(SmashBridgesNode039),
 };
 
 StaticAnimatorNode N(SmashBridgesNode037) = {
-    .displayList = N(D_8024CD10_C0A590),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeRailingPostDamagedNode037),
     .sibling = &N(SmashBridgesNode038),
 };
 
 StaticAnimatorNode N(SmashBridgesNode036) = {
-    .displayList = N(D_8024CCA0_C0A520),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeFloorTileNode036),
     .sibling = &N(SmashBridgesNode037),
 };
 
 StaticAnimatorNode N(SmashBridgesNode035) = {
-    .displayList = N(D_8024CE08_C0A688),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodNode035),
     .sibling = &N(SmashBridgesNode036),
 };
 
 StaticAnimatorNode N(SmashBridgesNode034) = {
-    .displayList = N(D_8024C670_C09EF0),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodNode034),
     .sibling = &N(SmashBridgesNode035),
 };
 
@@ -500,16 +500,16 @@ StaticAnimatorNode N(SmashBridgesNode033) = {
 };
 
 StaticAnimatorNode N(SmashBridgesNode032) = {
-    .displayList = N(D_8024D2B8_C0AB38),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodNode032),
 };
 
 StaticAnimatorNode N(SmashBridgesNode031) = {
-    .displayList = N(D_8024D448_C0ACC8),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodNode031),
     .sibling = &N(SmashBridgesNode032),
 };
 
 StaticAnimatorNode N(SmashBridgesNode030) = {
-    .displayList = N(D_8024D3C8_C0AC48),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeRailingPostDestroyedNode030),
     .sibling = &N(SmashBridgesNode031),
 };
 
@@ -519,37 +519,37 @@ StaticAnimatorNode N(SmashBridgesNode029) = {
 };
 
 StaticAnimatorNode N(SmashBridgesNode028) = {
-    .displayList = N(D_8024D580_C0AE00),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeRailingPostDestroyedNode028),
     .sibling = &N(SmashBridgesNode029),
 };
 
 StaticAnimatorNode N(SmashBridgesNode027) = {
-    .displayList = N(D_8024D680_C0AF00),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode027),
     .sibling = &N(SmashBridgesNode028),
 };
 
 StaticAnimatorNode N(SmashBridgesNode026) = {
-    .displayList = N(D_8024D828_C0B0A8),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodPanelTrimNode026),
     .sibling = &N(SmashBridgesNode027),
 };
 
 StaticAnimatorNode N(SmashBridgesNode025) = {
-    .displayList = N(D_8024D788_C0B008),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeRailingPostDamagedNode025),
     .sibling = &N(SmashBridgesNode026),
 };
 
 StaticAnimatorNode N(SmashBridgesNode024) = {
-    .displayList = N(D_8024D700_C0AF80),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeFloorTileNode024),
     .sibling = &N(SmashBridgesNode025),
 };
 
 StaticAnimatorNode N(SmashBridgesNode023) = {
-    .displayList = N(D_8024D8D0_C0B150),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodNode023),
     .sibling = &N(SmashBridgesNode024),
 };
 
 StaticAnimatorNode N(SmashBridgesNode022) = {
-    .displayList = N(D_8024D060_C0A8E0),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodNode022),
     .sibling = &N(SmashBridgesNode023),
 };
 
@@ -561,51 +561,51 @@ StaticAnimatorNode N(SmashBridgesNode021) = {
 };
 
 StaticAnimatorNode N(SmashBridgesNode020) = {
-    .displayList = N(D_8024E6D8_C0BF58),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodNode020),
     .rot = { 0x038E, 0x0000, 0x18E3 },
     .pos = { -465.0f, 210.0f, -90.0f },
 };
 
 StaticAnimatorNode N(SmashBridgesNode019) = {
-    .displayList = N(D_8024E5B0_C0BE30),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodNode019),
     .rot = { 0x0000, 0x18E3, 0x1555 },
     .pos = { -465.0f, 210.0f, 90.0f },
     .sibling = &N(SmashBridgesNode020),
 };
 
 StaticAnimatorNode N(SmashBridgesNode018) = {
-    .displayList = N(D_8024E800_C0C080),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeRailingPostNode018),
     .sibling = &N(SmashBridgesNode019),
 };
 
 StaticAnimatorNode N(SmashBridgesNode017) = {
-    .displayList = N(D_8024EA60_C0C2E0),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodPanelTrimNode017),
     .sibling = &N(SmashBridgesNode018),
 };
 
 StaticAnimatorNode N(SmashBridgesNode016) = {
-    .displayList = N(D_8024E9D8_C0C258),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeRailingPostDamagedNode016),
     .sibling = &N(SmashBridgesNode017),
 };
 
 StaticAnimatorNode N(SmashBridgesNode015) = {
-    .displayList = N(D_8024E968_C0C1E8),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeFloorTileNode015),
     .sibling = &N(SmashBridgesNode016),
 };
 
 StaticAnimatorNode N(SmashBridgesNode014) = {
-    .displayList = N(D_8024E8C0_C0C140),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode014),
     .pos = { 0.0f, -500.0f, 0.0f },
     .sibling = &N(SmashBridgesNode015),
 };
 
 StaticAnimatorNode N(SmashBridgesNode013) = {
-    .displayList = N(D_8024EAD0_C0C350),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodNode013),
     .sibling = &N(SmashBridgesNode014),
 };
 
 StaticAnimatorNode N(SmashBridgesNode012) = {
-    .displayList = N(D_8024E4D8_C0BD58),
+    .displayList = N(Gfx_DrawMesh_LowerBridgeWoodNode012),
     .sibling = &N(SmashBridgesNode013),
 };
 
@@ -616,36 +616,36 @@ StaticAnimatorNode N(SmashBridgesNode011) = {
 };
 
 StaticAnimatorNode N(SmashBridgesNode010) = {
-    .displayList = N(D_802510C8_C0E948),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeWoodNode010),
     .pos = { -179.0f, 34.0f, 98.0f },
 };
 
 StaticAnimatorNode N(SmashBridgesNode009) = {
-    .displayList = N(D_80250E88_C0E708),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeFloorSmoothNode009),
     .pos = { -179.0f, 34.0f, 98.0f },
     .sibling = &N(SmashBridgesNode010),
 };
 
 StaticAnimatorNode N(SmashBridgesNode008) = {
-    .displayList = N(D_80251050_C0E8D0),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeWoodPanelTrimNode008),
     .pos = { -179.0f, 34.0f, 98.0f },
     .sibling = &N(SmashBridgesNode009),
 };
 
 StaticAnimatorNode N(SmashBridgesNode007) = {
-    .displayList = N(D_80250FC8_C0E848),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeRailingPostDamagedNode007),
     .pos = { -179.0f, 34.0f, 98.0f },
     .sibling = &N(SmashBridgesNode008),
 };
 
 StaticAnimatorNode N(SmashBridgesNode006) = {
-    .displayList = N(D_80250F40_C0E7C0),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeFloorTileNode006),
     .pos = { -179.0f, 34.0f, 98.0f },
     .sibling = &N(SmashBridgesNode007),
 };
 
 StaticAnimatorNode N(SmashBridgesNode005) = {
-    .displayList = N(D_80250DE0_C0E660),
+    .displayList = N(Gfx_DrawMesh_UpperBridgeRailingPostNode005),
     .pos = { -179.0f, 34.0f, 98.0f },
     .sibling = &N(SmashBridgesNode006),
 };

@@ -22,7 +22,7 @@ export MapSettings N(settings) = {
     .tattle = { .get = &N(get_tattle) },
 #else
     .tattle = { MSG_MapTattle_kpa_15 },
-#endif,
+#endif
     .songVariation = 1,
     .sfxReverb = 3,
 };

@@ -1124,12 +1124,12 @@ void load_split_entity_data(Entity* entity, EntityBlueprint* entityData, s32 lis
             get_entity_type(entity->listIndex);
         }
     } else {
-        entity->virtualModelIndex = create_model_animator(entityData->renderCommandList);
+        entity->virtualModelIndex = create_model_animator(entityData->animScript);
         load_model_animator_tree(entity->virtualModelIndex, entityData->modelAnimationNodes);
         update_model_animator(entity->virtualModelIndex);
         return;
     }
-    animationScript = entityData->renderCommandList;
+    animationScript = entityData->animScript;
     animationNodes = (StaticAnimatorNode**)((s32)animBaseAddr + (s32)entityData->modelAnimationNodes);
     if (swizzlePointers) {
         entity_swizzle_anim_pointers(entityData, animBaseAddr, entity->gfxBaseAddr);
@@ -1275,7 +1275,7 @@ s32 create_entity(EntityBlueprint* bp, ...) {
             load_simple_entity_data(entity, bp, listIndex);
         }
         if (bp->renderCommandList != nullptr) {
-            entity->virtualModelIndex = load_entity_model(bp->renderCommandList);
+            entity->virtualModelIndex = load_entity_model((EntityModelScript*)bp->renderCommandList);
             exec_entity_model_commandlist(entity->virtualModelIndex);
         }
     } else {
@@ -1332,10 +1332,10 @@ s32 create_shadow_from_data(ShadowBlueprint* bp, f32 x, f32 y, f32 z) {
 
     if (bp->animModelNode != nullptr) {
         shadow->flags |= ENTITY_FLAG_HAS_ANIMATED_MODEL;
-        shadow->entityModelID = create_model_animator(bp->renderCommandList);
+        shadow->entityModelID = create_model_animator(bp->animScript);
         load_model_animator_tree(shadow->entityModelID, bp->animModelNode);
     } else {
-        shadow->entityModelID = load_entity_model(bp->renderCommandList);
+        shadow->entityModelID = load_entity_model((EntityModelScript*)bp->renderCommandList);
     }
 
     if (bp->onCreateCallback != nullptr) {
