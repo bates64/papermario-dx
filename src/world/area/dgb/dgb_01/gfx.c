@@ -1,12 +1,6 @@
 #include "dgb_01.h"
 #include "../dgb_vtx.h"
 
-#ifdef DEBUG_DGB_01_MESH_COLORS
-#define DEBUG_MESH_COLOR(r, g, b) gsDPSetPrimColor(0, 0, r, g, b, 255),
-#else
-#define DEBUG_MESH_COLOR(r, g, b)
-#endif
-
 Lights1 N(SmashBridgesLights) = gdSPDefLights1(0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 Mtx N(UpperBridgeLeftMtx) = RDP_MATRIX(
@@ -37,126 +31,126 @@ Mtx N(UpperRailingDebris10Mtx) = RDP_MATRIX(
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(UpperRailingDebris9Mtx) = RDP_MATRIX(
+Mtx N(UpperRailingDebris09Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, -425.0,
     0.0, 1.0, 0.0, 420.0,
     0.0, 0.0, 1.0, 49.72808837890625,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(UpperRailingDebris8Mtx) = RDP_MATRIX(
+Mtx N(UpperRailingDebris08Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, -375.0,
     0.0, 1.0, 0.0, 420.0,
     0.0, 0.0, 1.0, 49.72808837890625,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(UpperRailingDebris7Mtx) = RDP_MATRIX(
+Mtx N(UpperRailingDebris07Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, -75.0,
     0.0, 1.0, 0.0, 420.0,
     0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(UpperRailingDebris6Mtx) = RDP_MATRIX(
+Mtx N(UpperRailingDebris06Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, -75.0,
     0.0, 1.0, 0.0, 420.0,
     0.0, 0.0, 1.0, 49.72808837890625,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(UpperRailingDebris5Mtx) = RDP_MATRIX(
+Mtx N(UpperRailingDebris05Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, -25.0,
     0.0, 1.0, 0.0, 420.0,
     0.0, 0.0, 1.0, 49.72808837890625,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(UpperRailingDebris4Mtx) = RDP_MATRIX(
+Mtx N(UpperRailingDebris04Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, 175.0,
     0.0, 1.0, 0.0, 420.0,
     0.0, 0.0, 1.0, -48.72808837890625,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(UpperRailingDebris3Mtx) = RDP_MATRIX(
+Mtx N(UpperRailingDebris03Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, 125.0,
     0.0, 1.0, 0.0, 420.0,
     0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(UpperRailingDebris2Mtx) = RDP_MATRIX(
+Mtx N(UpperRailingDebris02Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, 125.0,
     0.0, 1.0, 0.0, 420.0,
     0.0, 0.0, 1.0, 49.72808837890625,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(UpperRailingDebris1Mtx) = RDP_MATRIX(
+Mtx N(UpperRailingDebris01Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, 175.0,
     0.0, 1.0, 0.0, 420.0,
     0.0, 0.0, 1.0, 49.72808837890625,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(SmashBridgesNode077Mtx) = RDP_MATRIX(
+Mtx N(UpperTrimDebris5Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, -375.0,
     0.0, 1.0, 0.0, 400.0,
     0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(SmashBridgesNode082Mtx) = RDP_MATRIX(
+Mtx N(UpperTrimDebris9Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, -75.0,
     0.0, 1.0, 0.0, 400.0,
     0.0, 0.0, 1.0, -48.72808837890625,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(SmashBridgesNode079Mtx) = RDP_MATRIX(
+Mtx N(UpperTrimDebris6Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, -75.0,
     0.0, 1.0, 0.0, 400.0,
     0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(SmashBridgesNode080Mtx) = RDP_MATRIX(
+Mtx N(UpperTrimDebris7Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, -75.0,
     0.0, 1.0, 0.0, 400.0,
     0.0, 0.0, 1.0, 49.72808837890625,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(SmashBridgesNode081Mtx) = RDP_MATRIX(
+Mtx N(UpperTrimDebris8Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, -25.0,
     0.0, 1.0, 0.0, 400.0,
     0.0, 0.0, 1.0, 49.72808837890625,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(SmashBridgesNode076Mtx) = RDP_MATRIX(
+Mtx N(UpperTrimDebris4Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, 175.0,
     0.0, 1.0, 0.0, 400.0,
     0.0, 0.0, 1.0, -48.72808837890625,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(SmashBridgesNode075Mtx) = RDP_MATRIX(
+Mtx N(UpperTrimDebris3Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, 125.0,
     0.0, 1.0, 0.0, 400.0,
     0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(SmashBridgesNode074Mtx) = RDP_MATRIX(
+Mtx N(UpperTrimDebris2Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, 125.0,
     0.0, 1.0, 0.0, 400.0,
     0.0, 0.0, 1.0, 49.72808837890625,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(SmashBridgesNode073Mtx) = RDP_MATRIX(
+Mtx N(UpperTrimDebris1Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, 175.0,
     0.0, 1.0, 0.0, 400.0,
     0.0, 0.0, 1.0, 49.72808837890625,
@@ -177,14 +171,14 @@ Mtx N(SmashBridgesIdentityMtx) = RDP_MATRIX(
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(SmashBridgesNode020Mtx) = RDP_MATRIX(
+Mtx N(LowerLeftAttachWood4Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, -500.0,
     0.0, 1.0, 0.0, 210.0,
     0.0, 0.0, 1.0, -90.0,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(SmashBridgesNode019Mtx) = RDP_MATRIX(
+Mtx N(LowerLeftAttachWood3Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, -500.0,
     0.0, 1.0, 0.0, 210.0,
     0.0, 0.0, 1.0, 90.0,
@@ -205,48 +199,47 @@ Mtx N(LowerBridgeCenterCollapseMtx) = RDP_MATRIX(
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(SmashBridgesNode029Mtx) = RDP_MATRIX(
+Mtx N(LowerRailingSplitLeftMtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, 95.1289825439453125,
     0.0, 1.0, 0.0, 49.319000244140625,
     0.0, 0.0, 1.0, 87.041900634765625,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(SmashBridgesNode043Mtx) = RDP_MATRIX(
+Mtx N(LowerRailingSplitRightHingeMtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, 253.643310546875,
     0.0, 1.0, 0.0, 285.0,
     0.0, 0.0, 1.0, 86.9561920166015625,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(SmashBridgesNode071Mtx) = RDP_MATRIX(
+Mtx N(LowerTrimDebris3Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, -425.0,
     0.0, 1.0, 0.0, 190.0,
     0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(SmashBridgesNode070Mtx) = RDP_MATRIX(
+Mtx N(LowerTrimDebris2Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, -175.0,
     0.0, 1.0, 0.0, 190.0,
     0.0, 0.0, 1.0, -48.72808837890625,
     0.0, 0.0, 0.0, 1.0
 );
 
-Mtx N(SmashBridgesNode069Mtx) = RDP_MATRIX(
+Mtx N(LowerTrimDebris1Mtx) = RDP_MATRIX(
     1.0, 0.0, 0.0, 75.0,
     0.0, 1.0, 0.0, 190.0,
     0.0, 0.0, 1.0, -48.72808837890625,
     0.0, 0.0, 0.0, 1.0
 );
 
-Gfx N(Gfx_DrawMesh_WoodBridgeStructure3)[] = {
+Gfx N(Gfx_DrawMesh_BridgeSupportArch3)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(0, 128, 48)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2E620, 32, 0),
@@ -291,13 +284,12 @@ Gfx N(Gfx_DrawMesh_WoodBridgeStructure3)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_WoodBridgeStructure2)[] = {
+Gfx N(Gfx_DrawMesh_BridgeSupportArch2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(0, 128, 48)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2E020, 30, 0),
@@ -346,13 +338,12 @@ Gfx N(Gfx_DrawMesh_WoodBridgeStructure2)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_WoodBridgeStructure1)[] = {
+Gfx N(Gfx_DrawMesh_BridgeSupportArch1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(0, 128, 48)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2DA20, 30, 0),
@@ -407,7 +398,6 @@ Gfx N(Gfx_DrawMesh_SmashBridgesStaticPart01)[] = {
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(0, 128, 48)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2D830, 12, 0),
@@ -431,7 +421,6 @@ Gfx N(Gfx_DrawMesh_StaticWoodPanelCeiling)[] = {
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelCeiling)),
-    DEBUG_MESH_COLOR(0, 128, 48)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2D6E0, 21, 0),
@@ -448,19 +437,18 @@ Gfx N(Gfx_DrawGroup_BridgeSupportArches)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsSPDisplayList(N(Gfx_DrawMesh_StaticWoodPanelCeiling)),
     gsSPDisplayList(N(Gfx_DrawMesh_SmashBridgesStaticPart01)),
-    gsSPDisplayList(N(Gfx_DrawMesh_WoodBridgeStructure1)),
-    gsSPDisplayList(N(Gfx_DrawMesh_WoodBridgeStructure2)),
-    gsSPDisplayList(N(Gfx_DrawMesh_WoodBridgeStructure3)),
+    gsSPDisplayList(N(Gfx_DrawMesh_BridgeSupportArch1)),
+    gsSPDisplayList(N(Gfx_DrawMesh_BridgeSupportArch2)),
+    gsSPDisplayList(N(Gfx_DrawMesh_BridgeSupportArch3)),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_LowerBridgeWoodPanelTrimNode069)[] = {
+Gfx N(Gfx_DrawQuad_LowerTrimDebris1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(24, 48, 160)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2D6A0, 4, 0),
@@ -468,21 +456,20 @@ Gfx N(Gfx_DrawQuad_LowerBridgeWoodPanelTrimNode069)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode069)[] = {
+Gfx N(Gfx_Transform_LowerTrimDebris1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(SmashBridgesNode069Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_LowerBridgeWoodPanelTrimNode069)),
+    gsSPMatrix(&N(LowerTrimDebris1Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_LowerTrimDebris1)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_LowerBridgeWoodPanelTrimNode070)[] = {
+Gfx N(Gfx_DrawQuad_LowerTrimDebris2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(24, 48, 160)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2D660, 4, 0),
@@ -490,21 +477,20 @@ Gfx N(Gfx_DrawQuad_LowerBridgeWoodPanelTrimNode070)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode070)[] = {
+Gfx N(Gfx_Transform_LowerTrimDebris2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(SmashBridgesNode070Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_LowerBridgeWoodPanelTrimNode070)),
+    gsSPMatrix(&N(LowerTrimDebris2Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_LowerTrimDebris2)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_LowerBridgeWoodPanelTrimNode071)[] = {
+Gfx N(Gfx_DrawQuad_LowerTrimDebris3)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(24, 48, 160)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2D620, 4, 0),
@@ -512,29 +498,28 @@ Gfx N(Gfx_DrawQuad_LowerBridgeWoodPanelTrimNode071)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode071)[] = {
+Gfx N(Gfx_Transform_LowerTrimDebris3)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(SmashBridgesNode071Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_LowerBridgeWoodPanelTrimNode071)),
+    gsSPMatrix(&N(LowerTrimDebris3Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_LowerTrimDebris3)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
 Gfx N(Gfx_DrawGroup_LowerBridgeWoodPanelTrimDebris)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode071)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode070)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode069)),
+    gsSPDisplayList(N(Gfx_Transform_LowerTrimDebris3)),
+    gsSPDisplayList(N(Gfx_Transform_LowerTrimDebris2)),
+    gsSPDisplayList(N(Gfx_Transform_LowerTrimDebris1)),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_BridgeFragmentFloorTileNode118)[] = {
+Gfx N(Gfx_DrawMesh_BridgeFragmentFloor1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorTile)),
-    DEBUG_MESH_COLOR(160, 255, 32)
     gsSPClearGeometryMode(G_LIGHTING | G_SHADING_SMOOTH),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSPVertex(vtx_C2D5C0, 6, 0),
@@ -543,13 +528,12 @@ Gfx N(Gfx_DrawMesh_BridgeFragmentFloorTileNode118)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_BridgeFragmentFloorTileNode119)[] = {
+Gfx N(Gfx_DrawMesh_BridgeFragmentFloor2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorTile)),
-    DEBUG_MESH_COLOR(160, 255, 32)
     gsSPClearGeometryMode(G_LIGHTING | G_SHADING_SMOOTH),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSPVertex(vtx_C2D560, 6, 0),
@@ -558,13 +542,12 @@ Gfx N(Gfx_DrawMesh_BridgeFragmentFloorTileNode119)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_BridgeFragmentFloorTileNode120)[] = {
+Gfx N(Gfx_DrawMesh_BridgeFragmentFloor3)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorTile)),
-    DEBUG_MESH_COLOR(160, 255, 32)
     gsSPClearGeometryMode(G_LIGHTING | G_SHADING_SMOOTH),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSPVertex(vtx_C2D500, 6, 0),
@@ -573,13 +556,12 @@ Gfx N(Gfx_DrawMesh_BridgeFragmentFloorTileNode120)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_BridgeFragmentWoodNode115)[] = {
+Gfx N(Gfx_DrawMesh_BridgeFragmentWood1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(160, 255, 32)
     gsSPClearGeometryMode(G_LIGHTING | G_SHADING_SMOOTH),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSPVertex(vtx_C2D260, 30, 0),
@@ -605,13 +587,12 @@ Gfx N(Gfx_DrawMesh_BridgeFragmentWoodNode115)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_BridgeFragmentWoodNode116)[] = {
+Gfx N(Gfx_DrawMesh_BridgeFragmentWood2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(160, 255, 32)
     gsSPClearGeometryMode(G_LIGHTING | G_SHADING_SMOOTH),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSPVertex(vtx_C2CFC0, 30, 0),
@@ -637,13 +618,12 @@ Gfx N(Gfx_DrawMesh_BridgeFragmentWoodNode116)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_BridgeFragmentWoodNode117)[] = {
+Gfx N(Gfx_DrawMesh_BridgeFragmentWood3)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(160, 255, 32)
     gsSPClearGeometryMode(G_LIGHTING | G_SHADING_SMOOTH),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSPVertex(vtx_C2CD20, 30, 0),
@@ -671,22 +651,21 @@ Gfx N(Gfx_DrawMesh_BridgeFragmentWoodNode117)[] = {
 
 Gfx N(Gfx_DrawGroup_WoodAndFloorTileDebris)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPDisplayList(N(Gfx_DrawMesh_BridgeFragmentWoodNode117)),
-    gsSPDisplayList(N(Gfx_DrawMesh_BridgeFragmentWoodNode116)),
-    gsSPDisplayList(N(Gfx_DrawMesh_BridgeFragmentWoodNode115)),
-    gsSPDisplayList(N(Gfx_DrawMesh_BridgeFragmentFloorTileNode120)),
-    gsSPDisplayList(N(Gfx_DrawMesh_BridgeFragmentFloorTileNode119)),
-    gsSPDisplayList(N(Gfx_DrawMesh_BridgeFragmentFloorTileNode118)),
+    gsSPDisplayList(N(Gfx_DrawMesh_BridgeFragmentWood3)),
+    gsSPDisplayList(N(Gfx_DrawMesh_BridgeFragmentWood2)),
+    gsSPDisplayList(N(Gfx_DrawMesh_BridgeFragmentWood1)),
+    gsSPDisplayList(N(Gfx_DrawMesh_BridgeFragmentFloor3)),
+    gsSPDisplayList(N(Gfx_DrawMesh_BridgeFragmentFloor2)),
+    gsSPDisplayList(N(Gfx_DrawMesh_BridgeFragmentFloor1)),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_BridgeFragmentWoodNode111)[] = {
+Gfx N(Gfx_DrawMesh_WoodDebris1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(0, 160, 128)
     gsSPClearGeometryMode(G_LIGHTING | G_SHADING_SMOOTH),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSPVertex(vtx_C2CBA0, 24, 0),
@@ -702,13 +681,12 @@ Gfx N(Gfx_DrawMesh_BridgeFragmentWoodNode111)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_BridgeFragmentWoodNode112)[] = {
+Gfx N(Gfx_DrawMesh_WoodDebris2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(0, 160, 128)
     gsSPClearGeometryMode(G_LIGHTING | G_SHADING_SMOOTH),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSPVertex(vtx_C2CA20, 24, 0),
@@ -724,13 +702,12 @@ Gfx N(Gfx_DrawMesh_BridgeFragmentWoodNode112)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_BridgeFragmentWoodNode113)[] = {
+Gfx N(Gfx_DrawMesh_WoodDebris3)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(0, 160, 128)
     gsSPClearGeometryMode(G_LIGHTING | G_SHADING_SMOOTH),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSPVertex(vtx_C2C8A0, 24, 0),
@@ -748,9 +725,9 @@ Gfx N(Gfx_DrawMesh_BridgeFragmentWoodNode113)[] = {
 
 Gfx N(Gfx_DrawGroup_WoodDebris)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPDisplayList(N(Gfx_DrawMesh_BridgeFragmentWoodNode113)),
-    gsSPDisplayList(N(Gfx_DrawMesh_BridgeFragmentWoodNode112)),
-    gsSPDisplayList(N(Gfx_DrawMesh_BridgeFragmentWoodNode111)),
+    gsSPDisplayList(N(Gfx_DrawMesh_WoodDebris3)),
+    gsSPDisplayList(N(Gfx_DrawMesh_WoodDebris2)),
+    gsSPDisplayList(N(Gfx_DrawMesh_WoodDebris1)),
     gsSPEndDisplayList(),
 };
 
@@ -762,13 +739,12 @@ Gfx N(Gfx_DrawGroup_BridgeDebris)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode034)[] = {
+Gfx N(Gfx_DrawMesh_LowerRightWood1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(255, 128, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2C4E0, 30, 0),
@@ -808,21 +784,20 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode034)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode034)[] = {
+Gfx N(Gfx_Transform_LowerRightWood1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsSPMatrix(&N(SmashBridgesIdentityMtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodNode034)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerRightWood1)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode045)[] = {
+Gfx N(Gfx_DrawMesh_LowerRailingSplitRightWood1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(255, 128, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2C300, 30, 0),
@@ -845,21 +820,20 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode045)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode045)[] = {
+Gfx N(Gfx_Transform_LowerRailingSplitRightWood1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsSPMatrix(&N(SmashBridgesIdentityMtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodNode045)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerRailingSplitRightWood1)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostDestroyedNode047)[] = {
+Gfx N(Gfx_DrawMesh_LowerRailingSplitRightBrokenRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDestroyed)),
-    DEBUG_MESH_COLOR(255, 128, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2C1C0, 20, 0),
@@ -871,13 +845,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostDestroyedNode047)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode046)[] = {
+Gfx N(Gfx_DrawMesh_LowerRailingSplitRightWood2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(255, 128, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2BF50, 30, 0),
@@ -907,23 +880,22 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode046)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode043)[] = {
+Gfx N(Gfx_Transform_LowerRailingSplitRightHinge)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(SmashBridgesNode043Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodNode046)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeRailingPostDestroyedNode047)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode045)),
+    gsSPMatrix(&N(LowerRailingSplitRightHingeMtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerRailingSplitRightWood2)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerRailingSplitRightBrokenRailing)),
+    gsSPDisplayList(N(Gfx_Transform_LowerRailingSplitRightWood1)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostDestroyedNode041)[] = {
+Gfx N(Gfx_DrawMesh_LowerRightBrokenRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDestroyed)),
-    DEBUG_MESH_COLOR(255, 128, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2BE50, 16, 0),
@@ -934,13 +906,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostDestroyedNode041)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode039)[] = {
+Gfx N(Gfx_DrawMesh_LowerRightSmoothFloor1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorSmooth)),
-    DEBUG_MESH_COLOR(255, 128, 0)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2BB50, 32, 0),
@@ -960,13 +931,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode039)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode040)[] = {
+Gfx N(Gfx_DrawMesh_LowerRightSmoothFloor2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorSmooth)),
-    DEBUG_MESH_COLOR(255, 128, 0)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2BA50, 16, 0),
@@ -977,13 +947,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode040)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeFloorTileNode036)[] = {
+Gfx N(Gfx_DrawMesh_LowerRightFloor)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorTile)),
-    DEBUG_MESH_COLOR(255, 128, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2B9B0, 10, 0),
@@ -993,13 +962,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeFloorTileNode036)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostDamagedNode037)[] = {
+Gfx N(Gfx_DrawMesh_LowerRightDamagedRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(255, 128, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2B8E0, 13, 0),
@@ -1012,13 +980,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostDamagedNode037)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodPanelTrimNode038)[] = {
+Gfx N(Gfx_DrawMesh_LowerRightTrim)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(255, 128, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2B850, 9, 0),
@@ -1028,13 +995,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodPanelTrimNode038)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode035)[] = {
+Gfx N(Gfx_DrawMesh_LowerRightWood2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(255, 128, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2B050, 32, 0),
@@ -1094,25 +1060,24 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode035)[] = {
 
 Gfx N(Gfx_DrawGroup_LowerBridgeRightFixed)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodNode035)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodPanelTrimNode038)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeRailingPostDamagedNode037)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeFloorTileNode036)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode040)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode039)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeRailingPostDestroyedNode041)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode043)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode034)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerRightWood2)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerRightTrim)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerRightDamagedRailing)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerRightFloor)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerRightSmoothFloor2)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerRightSmoothFloor1)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerRightBrokenRailing)),
+    gsSPDisplayList(N(Gfx_Transform_LowerRailingSplitRightHinge)),
+    gsSPDisplayList(N(Gfx_Transform_LowerRightWood1)),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode022)[] = {
+Gfx N(Gfx_DrawMesh_LowerCenterWood1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(255, 80, 160)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2AAB0, 30, 0),
@@ -1176,21 +1141,20 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode022)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode022)[] = {
+Gfx N(Gfx_Transform_LowerCenterWood1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsSPMatrix(&N(SmashBridgesIdentityMtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodNode022)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerCenterWood1)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode032)[] = {
+Gfx N(Gfx_DrawMesh_LowerRailingSplitLeftWood2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(255, 80, 160)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2A8D0, 30, 0),
@@ -1213,21 +1177,20 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode032)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode032)[] = {
+Gfx N(Gfx_Transform_LowerRailingSplitLeftWood2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsSPMatrix(&N(SmashBridgesIdentityMtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodNode032)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerRailingSplitLeftWood2)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostDestroyedNode030)[] = {
+Gfx N(Gfx_DrawMesh_LowerRailingSplitLeftBrokenRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDestroyed)),
-    DEBUG_MESH_COLOR(255, 80, 160)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2A790, 20, 0),
@@ -1239,13 +1202,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostDestroyedNode030)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode031)[] = {
+Gfx N(Gfx_DrawMesh_LowerRailingSplitLeftWood1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(255, 80, 160)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2A540, 32, 0),
@@ -1271,23 +1233,22 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode031)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode029)[] = {
+Gfx N(Gfx_Transform_LowerRailingSplitLeft)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(SmashBridgesNode029Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodNode031)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeRailingPostDestroyedNode030)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode032)),
+    gsSPMatrix(&N(LowerRailingSplitLeftMtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerRailingSplitLeftWood1)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerRailingSplitLeftBrokenRailing)),
+    gsSPDisplayList(N(Gfx_Transform_LowerRailingSplitLeftWood2)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostDestroyedNode028)[] = {
+Gfx N(Gfx_DrawMesh_LowerCenterBrokenRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDestroyed)),
-    DEBUG_MESH_COLOR(255, 80, 160)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2A3C0, 24, 0),
@@ -1306,7 +1267,6 @@ Gfx N(Gfx_DrawMesh_StaticFloorSmooth)[] = {
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorSmooth)),
-    DEBUG_MESH_COLOR(255, 80, 160)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2A2C0, 16, 0),
@@ -1317,13 +1277,12 @@ Gfx N(Gfx_DrawMesh_StaticFloorSmooth)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode027)[] = {
+Gfx N(Gfx_DrawMesh_LowerCenterSmoothFloor)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorSmooth)),
-    DEBUG_MESH_COLOR(255, 80, 160)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2A180, 20, 0),
@@ -1335,13 +1294,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode027)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeFloorTileNode024)[] = {
+Gfx N(Gfx_DrawMesh_LowerCenterFloor)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorTile)),
-    DEBUG_MESH_COLOR(255, 80, 160)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C2A080, 16, 0),
@@ -1354,13 +1312,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeFloorTileNode024)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostDamagedNode025)[] = {
+Gfx N(Gfx_DrawMesh_LowerCenterDamagedRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(255, 80, 160)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C29F50, 19, 0),
@@ -1376,13 +1333,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostDamagedNode025)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodPanelTrimNode026)[] = {
+Gfx N(Gfx_DrawMesh_LowerCenterTrim)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(255, 80, 160)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C29E00, 21, 0),
@@ -1399,13 +1355,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodPanelTrimNode026)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode023)[] = {
+Gfx N(Gfx_DrawMesh_LowerCenterWood2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(255, 80, 160)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C29330, 30, 0),
@@ -1495,15 +1450,15 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode023)[] = {
 
 Gfx N(Gfx_DrawGroup_LowerBridgeCenterCollapse)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodNode023)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodPanelTrimNode026)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeRailingPostDamagedNode025)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeFloorTileNode024)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode027)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerCenterWood2)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerCenterTrim)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerCenterDamagedRailing)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerCenterFloor)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerCenterSmoothFloor)),
     gsSPDisplayList(N(Gfx_DrawMesh_StaticFloorSmooth)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeRailingPostDestroyedNode028)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode029)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode022)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerCenterBrokenRailing)),
+    gsSPDisplayList(N(Gfx_Transform_LowerRailingSplitLeft)),
+    gsSPDisplayList(N(Gfx_Transform_LowerCenterWood1)),
     gsSPEndDisplayList(),
 };
 
@@ -1515,13 +1470,12 @@ Gfx N(Gfx_Transform_LowerBridgeCenterCollapse)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode059)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftCollapseWood1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(128, 64, 16)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C29150, 30, 0),
@@ -1544,21 +1498,20 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode059)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode059)[] = {
+Gfx N(Gfx_Transform_LowerLeftCollapseWood1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsSPMatrix(&N(SmashBridgesIdentityMtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodNode059)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftCollapseWood1)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode060)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftCollapseWood2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(128, 64, 16)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C28D90, 30, 0),
@@ -1598,21 +1551,20 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode060)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode060)[] = {
+Gfx N(Gfx_Transform_LowerLeftCollapseWood2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsSPMatrix(&N(SmashBridgesIdentityMtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodNode060)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftCollapseWood2)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostNode066)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftCollapseRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPost)),
-    DEBUG_MESH_COLOR(128, 64, 16)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C28BB0, 30, 0),
@@ -1629,13 +1581,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostNode066)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode062)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftCollapseSmoothFloor)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorSmooth)),
-    DEBUG_MESH_COLOR(128, 64, 16)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C28A70, 20, 0),
@@ -1647,13 +1598,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode062)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeFloorTileNode063)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftCollapseFloor)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorTile)),
-    DEBUG_MESH_COLOR(128, 64, 16)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C28970, 16, 0),
@@ -1666,13 +1616,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeFloorTileNode063)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostDamagedNode064)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftCollapseDamagedRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(128, 64, 16)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C28890, 14, 0),
@@ -1683,13 +1632,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostDamagedNode064)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodPanelTrimNode065)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftCollapseTrim)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(128, 64, 16)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C287A0, 15, 0),
@@ -1702,13 +1650,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodPanelTrimNode065)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode061)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftCollapseWood3)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(128, 64, 16)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C27D60, 31, 0),
@@ -1789,14 +1736,14 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode061)[] = {
 
 Gfx N(Gfx_DrawGroup_LowerBridgeLeftCollapse)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodNode061)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodPanelTrimNode065)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeRailingPostDamagedNode064)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeFloorTileNode063)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode062)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeRailingPostNode066)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode060)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode059)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftCollapseWood3)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftCollapseTrim)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftCollapseDamagedRailing)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftCollapseFloor)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftCollapseSmoothFloor)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftCollapseRailing)),
+    gsSPDisplayList(N(Gfx_Transform_LowerLeftCollapseWood2)),
+    gsSPDisplayList(N(Gfx_Transform_LowerLeftCollapseWood1)),
     gsSPEndDisplayList(),
 };
 
@@ -1808,13 +1755,12 @@ Gfx N(Gfx_Transform_LowerBridgeLeftCollapse)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode012)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftAttachWood1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(255, 32, 32)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C27B80, 30, 0),
@@ -1837,13 +1783,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode012)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode019)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftAttachWood3)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(255, 32, 32)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C27880, 31, 0),
@@ -1869,21 +1814,20 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode019)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode019)[] = {
+Gfx N(Gfx_Transform_LowerLeftAttachWood3)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(SmashBridgesNode019Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodNode019)),
+    gsSPMatrix(&N(LowerLeftAttachWood3Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftAttachWood3)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode020)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftAttachWood4)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(255, 32, 32)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C27580, 31, 0),
@@ -1909,21 +1853,20 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode020)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode020)[] = {
+Gfx N(Gfx_Transform_LowerLeftAttachWood4)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(SmashBridgesNode020Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodNode020)),
+    gsSPMatrix(&N(LowerLeftAttachWood4Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftAttachWood4)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostNode018)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftAttachRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPost)),
-    DEBUG_MESH_COLOR(255, 32, 32)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C27460, 18, 0),
@@ -1936,21 +1879,20 @@ Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostNode018)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode018)[] = {
+Gfx N(Gfx_Transform_LowerLeftAttachRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsSPMatrix(&N(SmashBridgesIdentityMtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeRailingPostNode018)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftAttachRailing)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode014)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftAttachSmoothFloor)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorSmooth)),
-    DEBUG_MESH_COLOR(255, 32, 32)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C273A0, 12, 0),
@@ -1960,21 +1902,20 @@ Gfx N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode014)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode014)[] = {
+Gfx N(Gfx_Transform_LowerLeftAttachSmoothFloor)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsSPMatrix(&N(SmashBridgesIdentityMtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeFloorSmoothNode014)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftAttachSmoothFloor)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeFloorTileNode015)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftAttachFloor)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorTile)),
-    DEBUG_MESH_COLOR(255, 32, 32)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C27300, 10, 0),
@@ -1984,13 +1925,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeFloorTileNode015)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostDamagedNode016)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftAttachDamagedRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(255, 32, 32)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C27220, 14, 0),
@@ -2003,13 +1943,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeRailingPostDamagedNode016)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodPanelTrimNode017)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftAttachTrim)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(255, 32, 32)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C27180, 10, 0),
@@ -2019,13 +1958,12 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodPanelTrimNode017)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode013)[] = {
+Gfx N(Gfx_DrawMesh_LowerLeftAttachWood2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(255, 32, 32)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26CC0, 31, 0),
@@ -2061,15 +1999,15 @@ Gfx N(Gfx_DrawMesh_LowerBridgeWoodNode013)[] = {
 
 Gfx N(Gfx_DrawGroup_LowerBridgeLeftAttachment)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodNode013)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodPanelTrimNode017)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeRailingPostDamagedNode016)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeFloorTileNode015)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode014)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode018)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode020)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode019)),
-    gsSPDisplayList(N(Gfx_DrawMesh_LowerBridgeWoodNode012)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftAttachWood2)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftAttachTrim)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftAttachDamagedRailing)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftAttachFloor)),
+    gsSPDisplayList(N(Gfx_Transform_LowerLeftAttachSmoothFloor)),
+    gsSPDisplayList(N(Gfx_Transform_LowerLeftAttachRailing)),
+    gsSPDisplayList(N(Gfx_Transform_LowerLeftAttachWood4)),
+    gsSPDisplayList(N(Gfx_Transform_LowerLeftAttachWood3)),
+    gsSPDisplayList(N(Gfx_DrawMesh_LowerLeftAttachWood1)),
     gsSPEndDisplayList(),
 };
 
@@ -2083,13 +2021,12 @@ Gfx N(Gfx_DrawGroup_BridgeSectionsAndDebris)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeWoodNode057)[] = {
+Gfx N(Gfx_DrawMesh_UpperRearRailingWood)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(192, 48, 255)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26890, 32, 0),
@@ -2130,13 +2067,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeWoodNode057)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeRailingPostDestroyedNode056)[] = {
+Gfx N(Gfx_DrawMesh_UpperRearBrokenRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDestroyed)),
-    DEBUG_MESH_COLOR(192, 48, 255)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26750, 20, 0),
@@ -2150,8 +2086,8 @@ Gfx N(Gfx_DrawMesh_UpperBridgeRailingPostDestroyedNode056)[] = {
 
 Gfx N(Gfx_DrawGroup_UpperBridgeRearRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeRailingPostDestroyedNode056)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeWoodNode057)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperRearBrokenRailing)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperRearRailingWood)),
     gsSPEndDisplayList(),
 };
 
@@ -2163,13 +2099,12 @@ Gfx N(Gfx_Transform_UpperBridgeRearRailing)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode073)[] = {
+Gfx N(Gfx_DrawQuad_UpperTrimDebris1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(32, 96, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26710, 4, 0),
@@ -2177,21 +2112,20 @@ Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode073)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode073)[] = {
+Gfx N(Gfx_Transform_UpperTrimDebris1)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(SmashBridgesNode073Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode073)),
+    gsSPMatrix(&N(UpperTrimDebris1Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperTrimDebris1)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode074)[] = {
+Gfx N(Gfx_DrawQuad_UpperTrimDebris2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(32, 96, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C266D0, 4, 0),
@@ -2199,21 +2133,20 @@ Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode074)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode074)[] = {
+Gfx N(Gfx_Transform_UpperTrimDebris2)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(SmashBridgesNode074Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode074)),
+    gsSPMatrix(&N(UpperTrimDebris2Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperTrimDebris2)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode075)[] = {
+Gfx N(Gfx_DrawQuad_UpperTrimDebris3)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(32, 96, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26690, 4, 0),
@@ -2221,21 +2154,20 @@ Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode075)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode075)[] = {
+Gfx N(Gfx_Transform_UpperTrimDebris3)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(SmashBridgesNode075Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode075)),
+    gsSPMatrix(&N(UpperTrimDebris3Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperTrimDebris3)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode076)[] = {
+Gfx N(Gfx_DrawQuad_UpperTrimDebris4)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(32, 96, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26650, 4, 0),
@@ -2243,21 +2175,20 @@ Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode076)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode076)[] = {
+Gfx N(Gfx_Transform_UpperTrimDebris4)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(SmashBridgesNode076Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode076)),
+    gsSPMatrix(&N(UpperTrimDebris4Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperTrimDebris4)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode081)[] = {
+Gfx N(Gfx_DrawQuad_UpperTrimDebris8)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(32, 96, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26610, 4, 0),
@@ -2265,21 +2196,20 @@ Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode081)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode081)[] = {
+Gfx N(Gfx_Transform_UpperTrimDebris8)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(SmashBridgesNode081Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode081)),
+    gsSPMatrix(&N(UpperTrimDebris8Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperTrimDebris8)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode080)[] = {
+Gfx N(Gfx_DrawQuad_UpperTrimDebris7)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(32, 96, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C265D0, 4, 0),
@@ -2287,21 +2217,20 @@ Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode080)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode080)[] = {
+Gfx N(Gfx_Transform_UpperTrimDebris7)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(SmashBridgesNode080Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode080)),
+    gsSPMatrix(&N(UpperTrimDebris7Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperTrimDebris7)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode079)[] = {
+Gfx N(Gfx_DrawQuad_UpperTrimDebris6)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(32, 96, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26590, 4, 0),
@@ -2309,21 +2238,20 @@ Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode079)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode079)[] = {
+Gfx N(Gfx_Transform_UpperTrimDebris6)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(SmashBridgesNode079Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode079)),
+    gsSPMatrix(&N(UpperTrimDebris6Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperTrimDebris6)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode082)[] = {
+Gfx N(Gfx_DrawQuad_UpperTrimDebris9)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(32, 96, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26550, 4, 0),
@@ -2331,21 +2259,20 @@ Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode082)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode082)[] = {
+Gfx N(Gfx_Transform_UpperTrimDebris9)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(SmashBridgesNode082Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode082)),
+    gsSPMatrix(&N(UpperTrimDebris9Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperTrimDebris9)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode077)[] = {
+Gfx N(Gfx_DrawQuad_UpperTrimDebris5)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(32, 96, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26510, 4, 0),
@@ -2353,35 +2280,34 @@ Gfx N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode077)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_SmashBridgesNode077)[] = {
+Gfx N(Gfx_Transform_UpperTrimDebris5)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(SmashBridgesNode077Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperBridgeWoodPanelTrimNode077)),
+    gsSPMatrix(&N(UpperTrimDebris5Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperTrimDebris5)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
 Gfx N(Gfx_DrawGroup_UpperBridgeWoodPanelTrimDebris)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode077)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode082)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode079)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode080)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode081)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode076)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode075)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode074)),
-    gsSPDisplayList(N(Gfx_Transform_SmashBridgesNode073)),
+    gsSPDisplayList(N(Gfx_Transform_UpperTrimDebris5)),
+    gsSPDisplayList(N(Gfx_Transform_UpperTrimDebris9)),
+    gsSPDisplayList(N(Gfx_Transform_UpperTrimDebris6)),
+    gsSPDisplayList(N(Gfx_Transform_UpperTrimDebris7)),
+    gsSPDisplayList(N(Gfx_Transform_UpperTrimDebris8)),
+    gsSPDisplayList(N(Gfx_Transform_UpperTrimDebris4)),
+    gsSPDisplayList(N(Gfx_Transform_UpperTrimDebris3)),
+    gsSPDisplayList(N(Gfx_Transform_UpperTrimDebris2)),
+    gsSPDisplayList(N(Gfx_Transform_UpperTrimDebris1)),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperRailingDebris1)[] = {
+Gfx N(Gfx_DrawQuad_UpperRailingDebris01)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(32, 208, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C264D0, 4, 0),
@@ -2389,21 +2315,20 @@ Gfx N(Gfx_DrawQuad_UpperRailingDebris1)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_UpperRailingDebris1)[] = {
+Gfx N(Gfx_Transform_UpperRailingDebris01)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(UpperRailingDebris1Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris1)),
+    gsSPMatrix(&N(UpperRailingDebris01Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris01)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperRailingDebris2)[] = {
+Gfx N(Gfx_DrawQuad_UpperRailingDebris02)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(32, 208, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26490, 4, 0),
@@ -2411,21 +2336,20 @@ Gfx N(Gfx_DrawQuad_UpperRailingDebris2)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_UpperRailingDebris2)[] = {
+Gfx N(Gfx_Transform_UpperRailingDebris02)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(UpperRailingDebris2Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris2)),
+    gsSPMatrix(&N(UpperRailingDebris02Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris02)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperRailingDebris3)[] = {
+Gfx N(Gfx_DrawQuad_UpperRailingDebris03)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(32, 208, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26450, 4, 0),
@@ -2433,21 +2357,20 @@ Gfx N(Gfx_DrawQuad_UpperRailingDebris3)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_UpperRailingDebris3)[] = {
+Gfx N(Gfx_Transform_UpperRailingDebris03)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(UpperRailingDebris3Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris3)),
+    gsSPMatrix(&N(UpperRailingDebris03Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris03)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperRailingDebris4)[] = {
+Gfx N(Gfx_DrawQuad_UpperRailingDebris04)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(32, 208, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26410, 4, 0),
@@ -2455,21 +2378,20 @@ Gfx N(Gfx_DrawQuad_UpperRailingDebris4)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_UpperRailingDebris4)[] = {
+Gfx N(Gfx_Transform_UpperRailingDebris04)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(UpperRailingDebris4Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris4)),
+    gsSPMatrix(&N(UpperRailingDebris04Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris04)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperRailingDebris5)[] = {
+Gfx N(Gfx_DrawQuad_UpperRailingDebris05)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(32, 208, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C263D0, 4, 0),
@@ -2477,21 +2399,20 @@ Gfx N(Gfx_DrawQuad_UpperRailingDebris5)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_UpperRailingDebris5)[] = {
+Gfx N(Gfx_Transform_UpperRailingDebris05)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(UpperRailingDebris5Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris5)),
+    gsSPMatrix(&N(UpperRailingDebris05Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris05)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperRailingDebris6)[] = {
+Gfx N(Gfx_DrawQuad_UpperRailingDebris06)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(32, 208, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26390, 4, 0),
@@ -2499,21 +2420,20 @@ Gfx N(Gfx_DrawQuad_UpperRailingDebris6)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_UpperRailingDebris6)[] = {
+Gfx N(Gfx_Transform_UpperRailingDebris06)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(UpperRailingDebris6Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris6)),
+    gsSPMatrix(&N(UpperRailingDebris06Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris06)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperRailingDebris7)[] = {
+Gfx N(Gfx_DrawQuad_UpperRailingDebris07)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(32, 208, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26350, 4, 0),
@@ -2521,21 +2441,20 @@ Gfx N(Gfx_DrawQuad_UpperRailingDebris7)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_UpperRailingDebris7)[] = {
+Gfx N(Gfx_Transform_UpperRailingDebris07)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(UpperRailingDebris7Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris7)),
+    gsSPMatrix(&N(UpperRailingDebris07Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris07)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperRailingDebris8)[] = {
+Gfx N(Gfx_DrawQuad_UpperRailingDebris08)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(32, 208, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26310, 4, 0),
@@ -2543,21 +2462,20 @@ Gfx N(Gfx_DrawQuad_UpperRailingDebris8)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_UpperRailingDebris8)[] = {
+Gfx N(Gfx_Transform_UpperRailingDebris08)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(UpperRailingDebris8Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris8)),
+    gsSPMatrix(&N(UpperRailingDebris08Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris08)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperRailingDebris9)[] = {
+Gfx N(Gfx_DrawQuad_UpperRailingDebris09)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(32, 208, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C262D0, 4, 0),
@@ -2565,10 +2483,10 @@ Gfx N(Gfx_DrawQuad_UpperRailingDebris9)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_Transform_UpperRailingDebris9)[] = {
+Gfx N(Gfx_Transform_UpperRailingDebris09)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPMatrix(&N(UpperRailingDebris9Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris9)),
+    gsSPMatrix(&N(UpperRailingDebris09Mtx), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperRailingDebris09)),
     gsSPPopMatrix(G_MTX_MODELVIEW),
     gsSPEndDisplayList(),
 };
@@ -2579,7 +2497,6 @@ Gfx N(Gfx_DrawQuad_UpperRailingDebris10)[] = {
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(32, 208, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26290, 4, 0),
@@ -2601,7 +2518,6 @@ Gfx N(Gfx_DrawQuad_UpperRailingDebris11)[] = {
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(32, 208, 255)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C26250, 4, 0),
@@ -2621,15 +2537,15 @@ Gfx N(Gfx_DrawGroup_UpperBridgeRailingDebris)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris11)),
     gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris10)),
-    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris9)),
-    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris8)),
-    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris7)),
-    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris6)),
-    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris5)),
-    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris4)),
-    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris3)),
-    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris2)),
-    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris1)),
+    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris09)),
+    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris08)),
+    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris07)),
+    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris06)),
+    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris05)),
+    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris04)),
+    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris03)),
+    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris02)),
+    gsSPDisplayList(N(Gfx_Transform_UpperRailingDebris01)),
     gsSPEndDisplayList(),
 };
 
@@ -2639,7 +2555,6 @@ Gfx N(Gfx_DrawMesh_StaticFloorTile)[] = {
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorTile)),
-    DEBUG_MESH_COLOR(32, 208, 255)
     gsSPClearGeometryMode(G_LIGHTING | G_SHADING_SMOOTH),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSPVertex(vtx_C26130, 18, 0),
@@ -2658,7 +2573,6 @@ Gfx N(Gfx_DrawMesh_StaticWood01)[] = {
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(32, 208, 255)
     gsSPClearGeometryMode(G_LIGHTING | G_SHADING_SMOOTH),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSPVertex(vtx_C25950, 30, 0),
@@ -2744,7 +2658,6 @@ Gfx N(Gfx_DrawMesh_StaticWood02)[] = {
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(32, 96, 255)
     gsSPClearGeometryMode(G_LIGHTING | G_SHADING_SMOOTH),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSPVertex(vtx_C25350, 32, 0),
@@ -2811,13 +2724,12 @@ Gfx N(Gfx_DrawGroup_UpperBridgeTrimAndRailingDebris)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawQuad_UpperBridgeRailingPostDestroyedNode104)[] = {
+Gfx N(Gfx_DrawQuad_UpperRightFixedBrokenRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDestroyed)),
-    DEBUG_MESH_COLOR(32, 224, 64)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C25310, 4, 0),
@@ -2825,13 +2737,12 @@ Gfx N(Gfx_DrawQuad_UpperBridgeRailingPostDestroyedNode104)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeFloorSmoothNode105)[] = {
+Gfx N(Gfx_DrawMesh_UpperRightFixedSmoothFloor)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorSmooth)),
-    DEBUG_MESH_COLOR(32, 224, 64)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C25050, 32, 0),
@@ -2850,13 +2761,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeFloorSmoothNode105)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeFloorTileNode096)[] = {
+Gfx N(Gfx_DrawMesh_UpperRightFixedFloor)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorTile)),
-    DEBUG_MESH_COLOR(32, 224, 64)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C24FB0, 10, 0),
@@ -2866,13 +2776,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeFloorTileNode096)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeRailingPostDamagedNode098)[] = {
+Gfx N(Gfx_DrawMesh_UpperRightFixedDamagedRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(32, 224, 64)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C24F30, 8, 0),
@@ -2881,13 +2790,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeRailingPostDamagedNode098)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeWoodPanelTrimNode100)[] = {
+Gfx N(Gfx_DrawMesh_UpperRightFixedTrim)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(32, 224, 64)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C24EB0, 8, 0),
@@ -2896,13 +2804,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeWoodPanelTrimNode100)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeWoodNode102)[] = {
+Gfx N(Gfx_DrawMesh_UpperRightFixedWood)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(32, 224, 64)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C24350, 32, 0),
@@ -2993,22 +2900,21 @@ Gfx N(Gfx_DrawMesh_UpperBridgeWoodNode102)[] = {
 
 Gfx N(Gfx_DrawGroup_UpperBridgeRightFixed)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeWoodNode102)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeWoodPanelTrimNode100)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeRailingPostDamagedNode098)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeFloorTileNode096)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeFloorSmoothNode105)),
-    gsSPDisplayList(N(Gfx_DrawQuad_UpperBridgeRailingPostDestroyedNode104)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperRightFixedWood)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperRightFixedTrim)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperRightFixedDamagedRailing)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperRightFixedFloor)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperRightFixedSmoothFloor)),
+    gsSPDisplayList(N(Gfx_DrawQuad_UpperRightFixedBrokenRailing)),
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeRailingPostDestroyedNode052)[] = {
+Gfx N(Gfx_DrawMesh_UpperRightCollapseBrokenRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDestroyed)),
-    DEBUG_MESH_COLOR(255, 224, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C241D0, 24, 0),
@@ -3021,13 +2927,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeRailingPostDestroyedNode052)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeFloorSmoothNode054)[] = {
+Gfx N(Gfx_DrawMesh_UpperRightCollapseSmoothFloor)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorSmooth)),
-    DEBUG_MESH_COLOR(255, 224, 0)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C240D0, 16, 0),
@@ -3038,13 +2943,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeFloorSmoothNode054)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeFloorTileNode051)[] = {
+Gfx N(Gfx_DrawMesh_UpperRightCollapseFloor)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorTile)),
-    DEBUG_MESH_COLOR(255, 224, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C23FD0, 16, 0),
@@ -3057,13 +2961,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeFloorTileNode051)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeRailingPostDamagedNode050)[] = {
+Gfx N(Gfx_DrawMesh_UpperRightCollapseDamagedRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(255, 224, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C23F10, 12, 0),
@@ -3074,13 +2977,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeRailingPostDamagedNode050)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeWoodPanelTrimNode049)[] = {
+Gfx N(Gfx_DrawMesh_UpperRightCollapseTrim)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(255, 224, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C23E50, 12, 0),
@@ -3091,13 +2993,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeWoodPanelTrimNode049)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeWoodNode053)[] = {
+Gfx N(Gfx_DrawMesh_UpperRightCollapseWood)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(255, 224, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C230A0, 32, 0),
@@ -3232,12 +3133,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeWoodNode053)[] = {
 
 Gfx N(Gfx_DrawGroup_UpperBridgeRightCollapse)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeWoodNode053)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeWoodPanelTrimNode049)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeRailingPostDamagedNode050)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeFloorTileNode051)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeFloorSmoothNode054)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeRailingPostDestroyedNode052)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperRightCollapseWood)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperRightCollapseTrim)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperRightCollapseDamagedRailing)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperRightCollapseFloor)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperRightCollapseSmoothFloor)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperRightCollapseBrokenRailing)),
     gsSPEndDisplayList(),
 };
 
@@ -3249,13 +3150,12 @@ Gfx N(Gfx_Transform_UpperBridgeRightCollapse)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeRailingPostNode005)[] = {
+Gfx N(Gfx_DrawMesh_UpperLeftRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPost)),
-    DEBUG_MESH_COLOR(144, 0, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C22EC0, 30, 0),
@@ -3272,13 +3172,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeRailingPostNode005)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeFloorSmoothNode009)[] = {
+Gfx N(Gfx_DrawMesh_UpperLeftSmoothFloor)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorSmooth)),
-    DEBUG_MESH_COLOR(144, 0, 0)
     gsSPClearGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADING_SMOOTH),
     gsSPVertex(vtx_C22C00, 32, 0),
@@ -3297,13 +3196,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeFloorSmoothNode009)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeFloorTileNode006)[] = {
+Gfx N(Gfx_DrawMesh_UpperLeftFloor)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorTile)),
-    DEBUG_MESH_COLOR(144, 0, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C22B00, 16, 0),
@@ -3316,13 +3214,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeFloorTileNode006)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeRailingPostDamagedNode007)[] = {
+Gfx N(Gfx_DrawMesh_UpperLeftDamagedRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(144, 0, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C229F0, 17, 0),
@@ -3335,13 +3232,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeRailingPostDamagedNode007)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeWoodPanelTrimNode008)[] = {
+Gfx N(Gfx_DrawMesh_UpperLeftTrim)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(144, 0, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C22950, 10, 0),
@@ -3352,13 +3248,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeWoodPanelTrimNode008)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeWoodNode010)[] = {
+Gfx N(Gfx_DrawMesh_UpperLeftWood)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(144, 0, 0)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C21930, 31, 0),
@@ -3496,12 +3391,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeWoodNode010)[] = {
 
 Gfx N(Gfx_DrawGroup_UpperBridgeLeft)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeWoodNode010)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeWoodPanelTrimNode008)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeRailingPostDamagedNode007)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeFloorTileNode006)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeFloorSmoothNode009)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeRailingPostNode005)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperLeftWood)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperLeftTrim)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperLeftDamagedRailing)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperLeftFloor)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperLeftSmoothFloor)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperLeftRailing)),
     gsSPEndDisplayList(),
 };
 
@@ -3513,13 +3408,12 @@ Gfx N(Gfx_Transform_UpperBridgeLeft)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeRailingPostNode106)[] = {
+Gfx N(Gfx_DrawMesh_UpperLeftFixedRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPost)),
-    DEBUG_MESH_COLOR(128, 255, 96)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C21810, 18, 0),
@@ -3532,13 +3426,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeRailingPostNode106)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeFloorTileNode097)[] = {
+Gfx N(Gfx_DrawMesh_UpperLeftFixedFloor)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_FloorTile)),
-    DEBUG_MESH_COLOR(128, 255, 96)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C21770, 10, 0),
@@ -3548,13 +3441,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeFloorTileNode097)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeRailingPostDamagedNode099)[] = {
+Gfx N(Gfx_DrawMesh_UpperLeftFixedDamagedRailing)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_RailingPostDamaged)),
-    DEBUG_MESH_COLOR(128, 255, 96)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C21700, 7, 0),
@@ -3563,13 +3455,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeRailingPostDamagedNode099)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeWoodPanelTrimNode101)[] = {
+Gfx N(Gfx_DrawMesh_UpperLeftFixedTrim)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_WoodPanelTrim)),
-    DEBUG_MESH_COLOR(128, 255, 96)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C215A0, 22, 0),
@@ -3582,13 +3473,12 @@ Gfx N(Gfx_DrawMesh_UpperBridgeWoodPanelTrimNode101)[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx N(Gfx_DrawMesh_UpperBridgeWoodNode103)[] = {
+Gfx N(Gfx_DrawMesh_UpperLeftFixedWood)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPDisplayList(N(Gfx_SetupTex_Wood)),
-    DEBUG_MESH_COLOR(128, 255, 96)
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPVertex(vtx_C20F40, 32, 0),
@@ -3642,11 +3532,11 @@ Gfx N(Gfx_DrawMesh_UpperBridgeWoodNode103)[] = {
 
 Gfx N(Gfx_DrawGroup_UpperBridgeLeftFixed)[] = {
     gsSPSetLights1(N(SmashBridgesLights)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeWoodNode103)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeWoodPanelTrimNode101)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeRailingPostDamagedNode099)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeFloorTileNode097)),
-    gsSPDisplayList(N(Gfx_DrawMesh_UpperBridgeRailingPostNode106)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperLeftFixedWood)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperLeftFixedTrim)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperLeftFixedDamagedRailing)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperLeftFixedFloor)),
+    gsSPDisplayList(N(Gfx_DrawMesh_UpperLeftFixedRailing)),
     gsSPEndDisplayList(),
 };
 

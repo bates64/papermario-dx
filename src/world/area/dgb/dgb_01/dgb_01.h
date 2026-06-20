@@ -29,9 +29,6 @@ enum {
 
 #define NAMESPACE dgb_01
 
-// Temporary visualization aid for identifying animated bridge meshes.
-#define DEBUG_DGB_01_MESH_COLORS
-
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_ExitDoors_dgb_08_0);
@@ -65,32 +62,32 @@ extern Mtx N(UpperBridgeLeftMtx);
 extern Mtx N(UpperBridgeRightCollapseMtx);
 extern Mtx N(UpperRailingDebris11Mtx);
 extern Mtx N(UpperRailingDebris10Mtx);
-extern Mtx N(UpperRailingDebris9Mtx);
-extern Mtx N(UpperRailingDebris8Mtx);
-extern Mtx N(UpperRailingDebris7Mtx);
-extern Mtx N(UpperRailingDebris6Mtx);
-extern Mtx N(UpperRailingDebris5Mtx);
-extern Mtx N(UpperRailingDebris4Mtx);
-extern Mtx N(UpperRailingDebris3Mtx);
-extern Mtx N(UpperRailingDebris2Mtx);
-extern Mtx N(UpperRailingDebris1Mtx);
-extern Mtx N(SmashBridgesNode077Mtx);
-extern Mtx N(SmashBridgesNode082Mtx);
-extern Mtx N(SmashBridgesNode079Mtx);
-extern Mtx N(SmashBridgesNode081Mtx);
-extern Mtx N(SmashBridgesNode076Mtx);
-extern Mtx N(SmashBridgesNode075Mtx);
-extern Mtx N(SmashBridgesNode074Mtx);
-extern Mtx N(SmashBridgesNode080Mtx);
-extern Mtx N(SmashBridgesNode073Mtx);
+extern Mtx N(UpperRailingDebris09Mtx);
+extern Mtx N(UpperRailingDebris08Mtx);
+extern Mtx N(UpperRailingDebris07Mtx);
+extern Mtx N(UpperRailingDebris06Mtx);
+extern Mtx N(UpperRailingDebris05Mtx);
+extern Mtx N(UpperRailingDebris04Mtx);
+extern Mtx N(UpperRailingDebris03Mtx);
+extern Mtx N(UpperRailingDebris02Mtx);
+extern Mtx N(UpperRailingDebris01Mtx);
+extern Mtx N(UpperTrimDebris5Mtx);
+extern Mtx N(UpperTrimDebris9Mtx);
+extern Mtx N(UpperTrimDebris6Mtx);
+extern Mtx N(UpperTrimDebris8Mtx);
+extern Mtx N(UpperTrimDebris4Mtx);
+extern Mtx N(UpperTrimDebris3Mtx);
+extern Mtx N(UpperTrimDebris2Mtx);
+extern Mtx N(UpperTrimDebris7Mtx);
+extern Mtx N(UpperTrimDebris1Mtx);
 extern Mtx N(UpperBridgeRearRailingMtx);
 extern Mtx N(SmashBridgesIdentityMtx);
-extern Mtx N(SmashBridgesNode020Mtx);
-extern Mtx N(SmashBridgesNode019Mtx);
+extern Mtx N(LowerLeftAttachWood4Mtx);
+extern Mtx N(LowerLeftAttachWood3Mtx);
 extern Mtx N(LowerBridgeLeftCollapseMtx);
 extern Mtx N(LowerBridgeCenterCollapseMtx);
-extern Mtx N(SmashBridgesNode029Mtx);
-extern Mtx N(SmashBridgesNode043Mtx);
-extern Mtx N(SmashBridgesNode071Mtx);
-extern Mtx N(SmashBridgesNode070Mtx);
-extern Mtx N(SmashBridgesNode069Mtx);
+extern Mtx N(LowerRailingSplitLeftMtx);
+extern Mtx N(LowerRailingSplitRightHingeMtx);
+extern Mtx N(LowerTrimDebris3Mtx);
+extern Mtx N(LowerTrimDebris2Mtx);
+extern Mtx N(LowerTrimDebris1Mtx);
