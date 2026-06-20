@@ -42,7 +42,7 @@ EvtScript N(EVS_NpcIdle_Koopatrol_02) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim04)
     Thread
         Loop(0)
-            Call(N(UnkPhysicsFunc), LVar0, 85, 60, 38)
+            Call(N(CheckPlayerInSight), LVar0, 85, 60, 38)
             IfEq(LVar0, 1)
                 Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach)))
                 Return
@@ -71,7 +71,7 @@ EvtScript N(EVS_NpcIdle_Koopatrol_03) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim04)
     Thread
         Loop(0)
-            Call(N(UnkPhysicsFunc), LVar0, 85, 60, 38)
+            Call(N(CheckPlayerInSight), LVar0, 85, 60, 38)
             IfEq(LVar0, 1)
                 Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach)))
                 Return
@@ -98,7 +98,7 @@ EvtScript N(EVS_NpcIdle_Koopatrol_04) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim04)
     Thread
         Loop(0)
-            Call(N(UnkPhysicsFunc), LVar0, 85, 60, 38)
+            Call(N(CheckPlayerInSight), LVar0, 85, 60, 38)
             IfEq(LVar0, 1)
                 Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach)))
                 Return

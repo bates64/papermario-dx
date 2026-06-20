@@ -101,7 +101,7 @@ EvtScript N(EVS_WatchForPlayer) = {
         Call(N(GetPeachDisguise), LVar1)
         IfEq(LVar1, PEACH_DISGUISE_NONE)
             Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
-            Call(N(UnkPhysicsFunc), LVar0, 85, 60, 38)
+            Call(N(CheckPlayerInSight), LVar0, 85, 60, 38)
             IfNe(LVar0, 0)
                 Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach)))
                 Return

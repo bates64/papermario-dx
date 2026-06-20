@@ -71,8 +71,7 @@ enum {
 typedef struct ChandelierControlData {
     /* 0x00 */ Chandelier* chandelier;
     /* 0x04 */ s32 controlState;
-    /* 0x08 */ s32 unk_08;
-} ChandelierControlData; // size = 0xC;
+} ChandelierControlData; // size = 0x8;
 
 // script array mapping for ChandelierControlData struct
 enum {

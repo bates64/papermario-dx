@@ -55,7 +55,7 @@ typedef struct JumpGamePanel {
 typedef struct JumpGameData {
     /* 0x000 */ s32 workerID;
     /* 0x004 */ HudElemID hudElemID;
-    /* 0x008 */ s32 unk_08; // unused -- likely hudElemID for an unused/removed hud element
+    /* 0x008 */ PAD(4);
     /* 0x00C */ s32 curScore;
     /* 0x010 */ s32 targetScore;
     /* 0x014 */ s32 scoreWindowPosX;
