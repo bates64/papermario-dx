@@ -31,7 +31,7 @@ typedef struct HudComplexStatusIcon {
     /* 0x1 */ s8 removing;
     /* 0x2 */ s8 activeTask;
     /* 0x3 */ s8 removingTask;
-    /* 0x4 */ s8 unk_04;
+    /* 0x4 */ PAD(1);
     /* 0x5 */ s8 frameCounter;
     /* 0x8 */ HudElemID activeElementHID;
     /* 0xC */ HudElemID removingElementHID;

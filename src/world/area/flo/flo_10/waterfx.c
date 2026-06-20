@@ -2,113 +2,113 @@
 #include "nu/nusys.h"
 #include "model.h"
 
-s32 N(WavePhase) = {
+s32 N(ReflectionWavePhase) = {
     0
 };
 
-// unused wavy distortion effect for edge water -- unclear how it would have been used
-EvtScript N(EVS_SetupWaterEffect) = {
-    Return
-    End
-};
-
-void N(UnkModelFunc000)(s32 x1, s32 y1, s32 x2, s32 y2) {
+/// Reflects the framebuffer above the waterline into the given screen region.
+/// The reflection is drawn in horizontal strips which fade out and ripple with distance from the waterline.
+void N(draw_wavy_water_reflection)(s32 left, s32 top, s32 right, s32 bottom) {
     s32 i;
-    f32 f0;
-    s32 n, m;
-    u16* img;
+    s32 numStrips;
+    s32 remainder;
+    u16* framebuffer;
     s32 alpha;
 
-    N(WavePhase) += 5;
+    N(ReflectionWavePhase) += 5;
 
-    if (x1 >= x2 || y1 >= y2) {
+    if (left >= right || top >= bottom) {
         return;
     }
 
-    if (x1 < 0) {
-        x1 = 0;
+    if (left < 0) {
+        left = 0;
     }
-    if (y1 < 0) {
-        y1 = 0;
+    if (top < 0) {
+        top = 0;
     }
-    if (x2 < 0) {
-        x2 = 0;
+    if (right < 0) {
+        right = 0;
     }
-    if (y2 < 0) {
-        y2 = 0;
-    }
-
-    if (x1 >= SCREEN_WIDTH) {
-        x1 = SCREEN_WIDTH - 1;
-    }
-    if (y1 >= SCREEN_HEIGHT) {
-        y1 = SCREEN_HEIGHT - 1;
-    }
-    if (x2 >= SCREEN_WIDTH) {
-        x2 = SCREEN_WIDTH - 1;
-    }
-    if (y2 >= SCREEN_HEIGHT) {
-        y2 = SCREEN_HEIGHT - 1;
+    if (bottom < 0) {
+        bottom = 0;
     }
 
-    if (x1 == x2 || y1 == y2) {
+    if (left >= SCREEN_WIDTH) {
+        left = SCREEN_WIDTH - 1;
+    }
+    if (top >= SCREEN_HEIGHT) {
+        top = SCREEN_HEIGHT - 1;
+    }
+    if (right >= SCREEN_WIDTH) {
+        right = SCREEN_WIDTH - 1;
+    }
+    if (bottom >= SCREEN_HEIGHT) {
+        bottom = SCREEN_HEIGHT - 1;
+    }
+
+    if (left == right || top == bottom) {
         return;
     }
 
-    x1 = x1 / 4 * 4;
-    x2 = x2 / 4 * 4 + 4;
+    left = left / 4 * 4;
+    right = right / 4 * 4 + 4;
 
-    n = (y2 - y1) / 6;
-    m = (y2 - y1) % 6;
-    img = nuGfxCfb_ptr;
+    numStrips = (bottom - top) / 6;
+    remainder = (bottom - top) % 6;
+    framebuffer = nuGfxCfb_ptr;
 
-    for (i = 0; i < n; i++) {
-        alpha = (y1 - 6 * i - 6) * 2;
-        if (y1 - 6 * i - 6 >= 0) {
+    for (i = 0; i < numStrips; i++) {
+        alpha = (top - 6 * i - 6) * 2;
+        if (top - 6 * i - 6 >= 0) {
             if (alpha > 255) {
                 alpha = 255;
             }
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, alpha);
-            gDPLoadTextureTile(gMainGfxPos++, osVirtualToPhysical(img), G_IM_FMT_RGBA, G_IM_SIZ_16b,
+            gDPLoadTextureTile(gMainGfxPos++, osVirtualToPhysical(framebuffer), G_IM_FMT_RGBA, G_IM_SIZ_16b,
                             SCREEN_WIDTH, 6,
-                            x1, y1 - 6 * i - 6, x2 - 1, y1 - 6 * i - 1, 0,
+                            left, top - 6 * i - 6, right - 1, top - 6 * i - 1, 0,
                             G_TX_WRAP, G_TX_WRAP, 9, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gSPTextureRectangle(gMainGfxPos++, x1 * 4, (y1 + i * 6) * 4, x2 * 4, (y1 + i * 6 + 6) * 4,
-                                G_TX_RENDERTILE, x1 * 32, (y1 - i * 6) * 32, 1024, (s32)(sin_deg(N(WavePhase) + i * 30) * 500.0f) - 500);
+            gSPTextureRectangle(gMainGfxPos++, left * 4, (top + i * 6) * 4, right * 4, (top + i * 6 + 6) * 4,
+                                G_TX_RENDERTILE, left * 32, (top - i * 6) * 32, 1024,
+                                (s32)(sin_deg(N(ReflectionWavePhase) + i * 30) * 500.0f) - 500);
         }
     }
 
-    if (m != 0) {
-        alpha = (y1 - 6 * i - 6) * 2;
-        if (y1 - 6 * i - 6 >= 0) {
+    if (remainder != 0) {
+        alpha = (top - 6 * i - 6) * 2;
+        if (top - 6 * i - 6 >= 0) {
             if (alpha > 255) {
                 alpha = 255;
             }
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, alpha);
-            gDPLoadTextureTile(gMainGfxPos++, osVirtualToPhysical(img), G_IM_FMT_RGBA, G_IM_SIZ_16b,
+            gDPLoadTextureTile(gMainGfxPos++, osVirtualToPhysical(framebuffer), G_IM_FMT_RGBA, G_IM_SIZ_16b,
                             SCREEN_WIDTH, 6,
-                            x1, y1 - 6 * i - m, x2 - 1, y1 - 6 * i - 1, 0,
+                            left, top - 6 * i - remainder, right - 1, top - 6 * i - 1, 0,
                             G_TX_WRAP, G_TX_WRAP, 9, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gSPTextureRectangle(gMainGfxPos++, x1 * 4, (y1 + i * 6) * 4, x2 * 4, (y1 + i * 6 + m) * 4,
-                                G_TX_RENDERTILE, x1 * 32, (y1 - i * 6) * 32, 1024, -1024);
+            gSPTextureRectangle(gMainGfxPos++, left * 4, (top + i * 6) * 4, right * 4,
+                                (top + i * 6 + remainder) * 4,
+                                G_TX_RENDERTILE, left * 32, (top - i * 6) * 32, 1024, -1024);
         }
     }
 }
 
-void N(UnkModelFunc001)(void) {
+/// Projects the water-edge model onto the screen and masks a wavy reflection to its shape.
+void N(build_gfx_water_reflection)(void) {
     Camera* camera = &gCameras[gCurrentCameraID];
-    Model* model = get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o40));
-    ModelBoundingBox* bb = (ModelBoundingBox*) model->modelNode->propertyList;
-    f32 bbHalfX = bb->halfSizeX;
-    f32 bbHalfZ = bb->halfSizeZ;
+    Model* waterEdge = get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o40));
+    ModelBoundingBox* bounds = (ModelBoundingBox*) waterEdge->modelNode->propertyList;
+    f32 bbHalfX = bounds->halfSizeX;
+    f32 bbHalfZ = bounds->halfSizeZ;
     f32 outX, outY, outZ, outW;
-    f32 temp_f24;
-    f32 temp_f26;
-    f32 temp_f20;
-    f32 temp_f22;
+    f32 minScreenX;
+    f32 minScreenY;
+    f32 maxScreenX;
+    f32 maxScreenY;
 
+    // find the screen bounds of the water-edge model
     transform_point(camera->mtxPerspective,
-                    model->center.x - bbHalfX, model->center.y, model->center.z - bbHalfZ, 1.0f,
+                    waterEdge->center.x - bbHalfX, waterEdge->center.y, waterEdge->center.z - bbHalfZ, 1.0f,
                     &outX, &outY, &outZ, &outW);
 
     outX *= 1.0f / outW;
@@ -120,11 +120,11 @@ void N(UnkModelFunc001)(void) {
         outX = 0.0f;
         outY = 1.0f;
     }
-    temp_f20 = outX;
-    temp_f22 = outY;
+    maxScreenX = outX;
+    maxScreenY = outY;
 
     transform_point(camera->mtxPerspective,
-                    model->center.x - bbHalfX, model->center.y, model->center.z + bbHalfZ, 1.0f,
+                    waterEdge->center.x - bbHalfX, waterEdge->center.y, waterEdge->center.z + bbHalfZ, 1.0f,
                     &outX, &outY, &outZ, &outW);
 
     outX *= 1.0f / outW;
@@ -132,31 +132,31 @@ void N(UnkModelFunc001)(void) {
     outZ *= 1.0f / outW;
     outW = 1.0f / outW;
 
-    temp_f24 = temp_f20;
-    temp_f26 = temp_f22;
+    minScreenX = maxScreenX;
+    minScreenY = maxScreenY;
     if (outW < 0.0f) {
         outX = 0.0f;
         outY = 1.0f;
     }
 
-    if (temp_f24 > outX) {
-        temp_f24 = outX;
+    if (minScreenX > outX) {
+        minScreenX = outX;
     }
 
-    if (temp_f26 > outY) {
-        temp_f26 = outY;
+    if (minScreenY > outY) {
+        minScreenY = outY;
     }
 
-    if (temp_f20 < outX) {
-        temp_f20 = outX;
+    if (maxScreenX < outX) {
+        maxScreenX = outX;
     }
 
-    if (temp_f22 < outY) {
-        temp_f22 = outY;
+    if (maxScreenY < outY) {
+        maxScreenY = outY;
     }
 
     transform_point(camera->mtxPerspective,
-                    model->center.x + bbHalfX, model->center.y, model->center.z + bbHalfZ, 1.0f,
+                    waterEdge->center.x + bbHalfX, waterEdge->center.y, waterEdge->center.z + bbHalfZ, 1.0f,
                     &outX, &outY, &outZ, &outW);
 
     outX *= 1.0f / outW;
@@ -169,24 +169,24 @@ void N(UnkModelFunc001)(void) {
         outY = 1.0f;
     }
 
-    if (temp_f24 > outX) {
-        temp_f24 = outX;
+    if (minScreenX > outX) {
+        minScreenX = outX;
     }
 
-    if (temp_f26 > outY) {
-        temp_f26 = outY;
+    if (minScreenY > outY) {
+        minScreenY = outY;
     }
 
-    if (temp_f20 < outX) {
-        temp_f20 = outX;
+    if (maxScreenX < outX) {
+        maxScreenX = outX;
     }
 
-    if (temp_f22 < outY) {
-        temp_f22 = outY;
+    if (maxScreenY < outY) {
+        maxScreenY = outY;
     }
 
     transform_point(camera->mtxPerspective,
-                    model->center.x + bbHalfX, model->center.y, model->center.z - bbHalfZ, 1.0f,
+                    waterEdge->center.x + bbHalfX, waterEdge->center.y, waterEdge->center.z - bbHalfZ, 1.0f,
                     &outX, &outY, &outZ, &outW);
 
     outX *= 1.0f / outW;
@@ -199,33 +199,34 @@ void N(UnkModelFunc001)(void) {
         outY = 1.0f;
     }
 
-    if (temp_f24 > outX) {
-        temp_f24 = outX;
+    if (minScreenX > outX) {
+        minScreenX = outX;
     }
 
-    if (temp_f26 > outY) {
-        temp_f26 = outY;
+    if (minScreenY > outY) {
+        minScreenY = outY;
     }
 
-    if (temp_f20 < outX) {
-        temp_f20 = outX;
+    if (maxScreenX < outX) {
+        maxScreenX = outX;
     }
 
-    if (temp_f22 < outY) {
-        temp_f22 = outY;
+    if (maxScreenY < outY) {
+        maxScreenY = outY;
     }
 
-    if (temp_f24 != temp_f20 || temp_f26 != temp_f22) {
-        temp_f24 = ((temp_f24 * camera->viewportW) + camera->viewportW) * 0.5f;
-        temp_f26 = ((temp_f26 * camera->viewportH) + camera->viewportH) * 0.5f;
-        temp_f20 = ((temp_f20 * camera->viewportW) + camera->viewportW) * 0.5f;
-        temp_f22 = ((temp_f22 * camera->viewportH) + camera->viewportH) * 0.5f;
+    if (minScreenX != maxScreenX || minScreenY != maxScreenY) {
+        minScreenX = ((minScreenX * camera->viewportW) + camera->viewportW) * 0.5f;
+        minScreenY = ((minScreenY * camera->viewportH) + camera->viewportH) * 0.5f;
+        maxScreenX = ((maxScreenX * camera->viewportW) + camera->viewportW) * 0.5f;
+        maxScreenY = ((maxScreenY * camera->viewportH) + camera->viewportH) * 0.5f;
 
-        temp_f24 += camera->viewportStartX;
-        temp_f26 += camera->viewportStartY;
-        temp_f20 += camera->viewportStartX;
-        temp_f22 += camera->viewportStartY;
+        minScreenX += camera->viewportStartX;
+        minScreenY += camera->viewportStartY;
+        maxScreenX += camera->viewportStartX;
+        maxScreenY += camera->viewportStartY;
 
+        // draw the water edge into the depth buffer to use as a mask
         gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
         gDPSetRenderMode(gMainGfxPos++, Z_CMP | CVG_DST_CLAMP | ZMODE_OPA | FORCE_BL | G_RM_PASS,
                          Z_CMP | CVG_DST_CLAMP | ZMODE_OPA | FORCE_BL | GBL_c2(G_BL_CLR_IN, G_BL_0, G_BL_CLR_IN, G_BL_1));
@@ -234,7 +235,7 @@ void N(UnkModelFunc001)(void) {
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 248, 240, 240, 0);
         gDPPipeSync(gMainGfxPos++);
 
-        gSPDisplayList(gMainGfxPos++, model->modelNode->displayData->displayList);
+        gSPDisplayList(gMainGfxPos++, waterEdge->modelNode->displayData->displayList);
         gDPPipeSync(gMainGfxPos++);
 
         gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxCfb_ptr));
@@ -250,7 +251,8 @@ void N(UnkModelFunc001)(void) {
         gDPSetCombineMode(gMainGfxPos++, PM_CC_10, PM_CC_10);
         gDPPipeSync(gMainGfxPos++);
 
-        N(UnkModelFunc000)(temp_f24, temp_f26, temp_f20, temp_f22);
+        // draw the reflection over the model's screen bounds
+        N(draw_wavy_water_reflection)(minScreenX, minScreenY, maxScreenX, maxScreenY);
 
         gDPPipeSync(gMainGfxPos++);
         gDPSetCycleType(gMainGfxPos++, G_CYC_2CYCLE);
@@ -258,3 +260,10 @@ void N(UnkModelFunc001)(void) {
     }
 }
 
+EvtScript N(EVS_SetupWaterEffect) = {
+    // assumed method to get these working, doesn't seem to work though?
+    //Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(build_gfx_water_reflection)), nullptr)
+    //Call(SetModelCustomGfx, MODEL_o40, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
+    Return
+    End
+};
