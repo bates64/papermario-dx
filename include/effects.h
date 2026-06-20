@@ -2090,34 +2090,28 @@ typedef struct MovingCloudFXData {
     /* 0x44 */ f32 unk_44;
 } MovingCloudFXData; // size = 0x48
 
-typedef struct Effect75FXData {
+typedef struct StarWarpFXData {
     /* 0x00 */ s32 type;
     /* 0x04 */ Vec3f pos;
-    /* 0x10 */ s32 unk_10;
-    /* 0x14 */ s32 unk_14;
+    /* 0x10 */ s32 timeLeft;
+    /* 0x14 */ s32 lifetime;
     /* 0x18 */ Color3i primCol;
-    /* 0x24 */ s32 unk_24;
+    /* 0x24 */ s32 fadeAlpha;
     /* 0x28 */ Color3i envCol;
-    /* 0x34 */ s32 unk_34;
+    /* 0x34 */ s32 curPrimAlpha;
     /* 0x38 */ s32 masterAlpha;
     /* 0x3C */ f32 scale;
-    /* 0x40 */ f32 unk_40;
-    /* 0x44 */ f32 unk_44;
-    /* 0x48 */ f32 unk_48;
-    /* 0x4C */ f32 unk_4C;
-    /* 0x50 */ f32 unk_50;
-    /* 0x54 */ f32 unk_54;
-    /* 0x58 */ f32 unk_58;
-    /* 0x5C */ f32 unk_5C;
-    /* 0x60 */ f32 unk_60;
-    /* 0x64 */ f32 unk_64;
-    /* 0x68 */ f32 unk_68;
-    /* 0x6C */ f32 unk_6C;
-    /* 0x70 */ f32 unk_70;
-    /* 0x74 */ f32 unk_74;
-    /* 0x78 */ f32 unk_78;
-    /* 0x7C */ f32 unk_7C;
-} Effect75FXData; // size = 0x80
+    /* 0x40 */ Vec2f texPanMain;
+    /* 0x48 */ Vec2f texVelMain;
+    /* 0x50 */ Vec2f texPanAux;
+    /* 0x58 */ Vec2f texVelAux;
+    /* 0x60 */ f32 minPrimAlpha;
+    /* 0x64 */ f32 maxPrimAlpha;
+    /* 0x68 */ Vec2f targetTexVelMain;
+    /* 0x70 */ Vec2f targetTexVelAux;
+    /* 0x78 */ f32 targetMinPrimAlpha;
+    /* 0x7C */ f32 targetMaxPrimAlpha;
+} StarWarpFXData; // size = 0x80
 
 #define ROCKET_BUF_SIZE 4
 
@@ -2570,7 +2564,7 @@ typedef union {
     struct MiscParticlesFXData*         miscParticles;
     struct StaticStatusFXData*          staticStatus;
     struct MovingCloudFXData*           movingCloud;
-    struct Effect75FXData*              unk_75;
+    struct StarWarpFXData*              starWarp;
     struct Effect76FXData*              unk_76;
     struct FireworkRocketFXData*        fireworkRocket;
     struct PeachStarBeamFXData*         peachStarBeam;

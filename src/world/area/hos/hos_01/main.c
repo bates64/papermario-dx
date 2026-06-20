@@ -12,7 +12,7 @@ EvtScript N(EVS_GotoMap_kmr_24_0) = {
 
 EvtScript N(EVS_ExitWalk_hos_00_1) = EVT_EXIT_WALK(60, hos_01_ENTRY_0, "hos_00", hos_00_ENTRY_1);
 
-EvtScript N(EVS_ExitStarBeam) = {
+EvtScript N(EVS_ExitStarWarp) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     IfLt(GB_StoryProgress, STORY_CH8_OPENED_PATH_TO_STAR_WAY)
         Return
@@ -32,7 +32,7 @@ EvtScript N(EVS_ExitStarBeam) = {
     EndIf
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
-    ExecWait(N(EVS_AscendStarBeam))
+    ExecWait(N(EVS_AscendStarWarp))
     Call(GotoMap, Ref("hos_02"), hos_02_ENTRY_0)
     Wait(100)
     Return
@@ -43,13 +43,13 @@ EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_hos_00_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
     Call(GetEntryID, LVar0)
     IfNe(LVar0, hos_01_ENTRY_1)
-        BindTrigger(Ref(N(EVS_ExitStarBeam)), TRIGGER_FLOOR_TOUCH, COLLIDER_deilin, 1, 0)
+        BindTrigger(Ref(N(EVS_ExitStarWarp)), TRIGGER_FLOOR_TOUCH, COLLIDER_deilin, 1, 0)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_EnterStarBeam) = {
+EvtScript N(EVS_EnterStarWarp) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -93,7 +93,7 @@ EvtScript N(EVS_EnterStarBeam) = {
             Goto(10)
         EndIf
     Call(SetNpcRotation, NPC_PARTNER, 0, 0, 0)
-    Call(N(func_80240AAC_A1132C), MV_StarBeamFXPtr)
+    Call(N(SetStarWarpIdleParams), MV_StarWarpFXPtr)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, true)
     Call(EnablePartnerAI)
     Call(DisablePlayerPhysics, false)
@@ -106,7 +106,7 @@ EvtScript N(EVS_EnterStarBeam) = {
             Wait(1)
             Goto(20)
         EndIf
-    BindTrigger(Ref(N(EVS_ExitStarBeam)), TRIGGER_FLOOR_TOUCH, COLLIDER_deilin, 1, 0)
+    BindTrigger(Ref(N(EVS_ExitStarWarp)), TRIGGER_FLOOR_TOUCH, COLLIDER_deilin, 1, 0)
     Return
     End
 };
@@ -137,7 +137,7 @@ EvtScript N(EVS_Main) = {
             Wait(1)
         CaseEq(hos_01_ENTRY_1)
             Thread
-                ExecWait(N(EVS_EnterStarBeam))
+                ExecWait(N(EVS_EnterStarWarp))
                 Exec(N(EVS_BindExitTriggers))
             EndThread
     EndSwitch

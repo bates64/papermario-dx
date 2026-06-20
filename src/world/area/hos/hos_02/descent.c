@@ -1,8 +1,8 @@
 #include "hos_02.h"
 
-EvtScript N(EVS_DescendStarBeam) = {
+EvtScript N(EVS_DescendStarWarp) = {
     Call(SetMusic, 0, SONG_STAR_WAY_OPENS, BGM_VARIATION_2, VOL_LEVEL_FULL)
-    Call(N(func_80240F68_A17188), MV_StarBeamEffect)
+    Call(N(SetStarWarpTravelParams), MV_StarWarpEffect)
     Call(SetPlayerSpeed, Float(3.0))
     Call(PlayerMoveTo, -1105, 230, 0)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)

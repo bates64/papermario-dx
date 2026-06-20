@@ -32,9 +32,9 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
     Wait(10)
 #endif
     Call(EnableModel, MODEL_power, true)
-    Set(MV_StarBeamState, 1)
+    Set(MV_StarWarpState, 1)
         Label(10)
-        IfNe(MV_StarBeamState, 2)
+        IfNe(MV_StarWarpState, 2)
             Wait(1)
             Goto(10)
         EndIf
@@ -46,12 +46,12 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     PlayEffect(EFFECT_75, 0, -30, 250, -160, 1, -1)
-    Set(MV_StarBeamFXPtr, LVarF)
-    Call(N(func_80240AAC_A1132C), MV_StarBeamFXPtr)
+    Set(MV_StarWarpFXPtr, LVarF)
+    Call(N(SetStarWarpIdleParams), MV_StarWarpFXPtr)
     Call(MakeLerp, 1, 255, 55, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetStarBeamMasterAlpha), MV_StarBeamFXPtr, LVar0)
+        Call(N(SetStarWarpMasterAlpha), MV_StarWarpFXPtr, LVar0)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -79,8 +79,8 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
     End
 };
 
-EvtScript N(EVS_AscendStarBeam) = {
-    Call(N(func_80240B10_A11390), MV_StarBeamFXPtr)
+EvtScript N(EVS_AscendStarWarp) = {
+    Call(N(SetStarWarpTravelParams), MV_StarWarpFXPtr)
     Call(UseSettingsFrom, CAM_DEFAULT, -30, 250, -160)
     Call(SetPanTarget, CAM_DEFAULT, -30, 250, -160)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))

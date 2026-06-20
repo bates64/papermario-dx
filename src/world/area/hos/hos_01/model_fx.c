@@ -4,31 +4,31 @@
 s32 N(GlowingStarAlpha) = 255;
 s32 N(GivingPowerAlpha) = 255;
 
-API_CALLABLE(N(func_80240AAC_A1132C)) {
+API_CALLABLE(N(SetStarWarpIdleParams)) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
-    effect->data.unk_75->unk_78 = 190.0f;
-    effect->data.unk_75->unk_7C = 220.0f;
-    effect->data.unk_75->unk_68 = 0.7f;
+    effect->data.starWarp->targetMinPrimAlpha = 190.0f;
+    effect->data.starWarp->targetMaxPrimAlpha = 220.0f;
+    effect->data.starWarp->targetTexVelMain.x = 0.7f;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80240B10_A11390)) {
+API_CALLABLE(N(SetStarWarpTravelParams)) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
-    effect->data.unk_75->unk_78 = 170.0f;
-    effect->data.unk_75->unk_7C = 170.0f;
-    effect->data.unk_75->unk_68 = 2.0f;
+    effect->data.starWarp->targetMinPrimAlpha = 170.0f;
+    effect->data.starWarp->targetMaxPrimAlpha = 170.0f;
+    effect->data.starWarp->targetTexVelMain.x = 2.0f;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetStarBeamMasterAlpha)) {
+API_CALLABLE(N(SetStarWarpMasterAlpha)) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
-    effect->data.unk_75->masterAlpha = evt_get_variable(script, *args++);
+    effect->data.starWarp->masterAlpha = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
@@ -125,14 +125,14 @@ EvtScript N(EVS_SetupModelFX) = {
         Call(EnableModel, MODEL_power, false)
     Else
         PlayEffect(EFFECT_75, 0, -30, 250, -160, 1, -1)
-        Set(MV_StarBeamFXPtr, LVarF)
+        Set(MV_StarWarpFXPtr, LVarF)
         Set(LVar0, 255)
-        Call(N(SetStarBeamMasterAlpha), MV_StarBeamFXPtr, LVar0)
+        Call(N(SetStarWarpMasterAlpha), MV_StarWarpFXPtr, LVar0)
         Call(GetEntryID, LVar0)
         IfEq(LVar0, hos_01_ENTRY_1)
-            Call(N(func_80240B10_A11390), MV_StarBeamFXPtr)
+            Call(N(SetStarWarpTravelParams), MV_StarWarpFXPtr)
         Else
-            Call(N(func_80240AAC_A1132C), MV_StarBeamFXPtr)
+            Call(N(SetStarWarpIdleParams), MV_StarWarpFXPtr)
         EndIf
     EndIf
     Call(SetRenderMode, MODEL_1, RENDER_MODE_SURFACE_XLU_LAYER2)
@@ -181,7 +181,7 @@ EvtScript N(EVS_SetupModelFX) = {
         Else
             Call(N(SetGivingPowerAlpha), 0)
             Label(10)
-                IfNe(MV_StarBeamState, 1)
+                IfNe(MV_StarWarpState, 1)
                     Wait(1)
                     Goto(10)
                 EndIf
@@ -194,7 +194,7 @@ EvtScript N(EVS_SetupModelFX) = {
                     BreakLoop
                 EndIf
             EndLoop
-            Set(MV_StarBeamState, 2)
+            Set(MV_StarWarpState, 2)
             ExecWait(N(EVS_UpdateGivingPower))
         EndIf
     EndThread

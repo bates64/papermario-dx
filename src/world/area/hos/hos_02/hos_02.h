@@ -18,7 +18,7 @@ enum {
 };
 
 enum {
-    MV_StarBeamEffect   = MapVar(10),
+    MV_StarWarpEffect   = MapVar(10),
 };
 
 #define NAMESPACE hos_02
@@ -26,9 +26,9 @@ enum {
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_SetupModelFX);
-extern EvtScript N(EVS_DescendStarBeam);
+extern EvtScript N(EVS_DescendStarWarp);
 extern EvtScript N(EVS_SetupUnused);
 extern NpcGroupList N(DefaultNPCs);
 
-API_CALLABLE(N(func_80240EF4_A17114));
-API_CALLABLE(N(func_80240F68_A17188));
+API_CALLABLE(N(SetStarWarpIdleParams));
+API_CALLABLE(N(SetStarWarpTravelParams));
