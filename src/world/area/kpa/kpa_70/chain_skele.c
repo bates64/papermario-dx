@@ -1,83 +1,83 @@
 #include "kpa_70.h"
 
-StaticAnimatorNode N(D_802417D0_A76040) = {
+StaticAnimatorNode N(ChainDriveNode_m03) = {
     .pos = { 0.0f, 150.0f, 0.0f },
     .modelID = AS_MODEL_ID(MODEL_m03),
     .vtxList = 0,
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(D_802417FC_A7606C) = {
+StaticAnimatorNode N(ChainDriveNode_m02) = {
     .pos = { 69.0f, 250.0f, 0.0f },
-    .sibling = &N(D_802417D0_A76040),
+    .sibling = &N(ChainDriveNode_m03),
     .modelID = AS_MODEL_ID(MODEL_m02),
     .vtxList = 0,
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(D_80241828_A76098) = {
+StaticAnimatorNode N(ChainDriveNode_m01) = {
     .pos = { 106.0f, 9.0f, 0.0f },
-    .sibling = &N(D_802417FC_A7606C),
+    .sibling = &N(ChainDriveNode_m02),
     .modelID = AS_MODEL_ID(MODEL_m01),
     .vtxList = 0,
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(D_80241854_A760C4) = {
+StaticAnimatorNode N(ChainDriveNode_b03) = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .sibling = &N(D_80241828_A76098),
+    .sibling = &N(ChainDriveNode_m01),
     .modelID = AS_MODEL_ID(MODEL_b03),
     .vtxList = 0,
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(D_80241880_A760F0) = {
+StaticAnimatorNode N(ChainDriveNode_b02) = {
     .pos = { 0.0f, 150.0f, 0.0f },
-    .sibling = &N(D_80241854_A760C4),
+    .sibling = &N(ChainDriveNode_b03),
     .modelID = AS_MODEL_ID(MODEL_b02),
     .vtxList = 0,
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(D_802418AC_A7611C) = {
+StaticAnimatorNode N(ChainDriveNode_b01) = {
     .pos = { 30.0f, 180.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .sibling = &N(D_80241880_A760F0),
+    .sibling = &N(ChainDriveNode_b02),
     .modelID = AS_MODEL_ID(MODEL_b01),
     .vtxList = 0,
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(D_802418D8_A76148) = {
+StaticAnimatorNode N(ChainDriveNode_k02) = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .sibling = &N(D_802418AC_A7611C),
+    .sibling = &N(ChainDriveNode_b01),
     .modelID = AS_MODEL_ID(MODEL_k02),
     .vtxList = 0,
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(D_80241904_A76174) = {
+StaticAnimatorNode N(ChainDriveNode_k01) = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .sibling = &N(D_802418D8_A76148),
+    .sibling = &N(ChainDriveNode_k02),
     .modelID = AS_MODEL_ID(MODEL_k01),
     .vtxList = 0,
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(D_80241930_A761A0) = {
+StaticAnimatorNode N(ChainDriveRoot) = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .child = &N(D_80241904_A76174),
+    .child = &N(ChainDriveNode_k01),
 };
 
 StaticAnimatorNode* N(ChainDriveSkeleton)[] = {
-    &N(D_80241930_A761A0),
-    &N(D_80241904_A76174),
-    &N(D_802418D8_A76148),
-    &N(D_802418AC_A7611C),
-    &N(D_80241880_A760F0),
-    &N(D_80241854_A760C4),
-    &N(D_80241828_A76098),
-    &N(D_802417FC_A7606C),
-    &N(D_802417D0_A76040),
+    &N(ChainDriveRoot),
+        &N(ChainDriveNode_k01),
+        &N(ChainDriveNode_k02),
+        &N(ChainDriveNode_b01),
+        &N(ChainDriveNode_b02),
+        &N(ChainDriveNode_b03),
+        &N(ChainDriveNode_m01),
+        &N(ChainDriveNode_m02),
+        &N(ChainDriveNode_m03),
     nullptr
 };

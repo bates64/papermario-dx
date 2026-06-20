@@ -38,227 +38,245 @@
 // 0x10 long, doesnt seem to indicate a split
 s32 N(post_gfx_pad)[] = { 0, 0, 0, 0 };
 
-StaticAnimatorNode N(D_80245A90_D847F0) = {
+StaticAnimatorNode N(StairsNode35) = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .displayList = &N(unk_29_gfx),
 };
 
-StaticAnimatorNode N(D_80245ABC_D8481C) = {
+StaticAnimatorNode N(StairsNode34) = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .child = &N(D_80245A90_D847F0),
+    .child = &N(StairsNode35),
 };
 
-StaticAnimatorNode N(D_80245AE8_D84848) = {
+StaticAnimatorNode N(StairsNode33) = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .displayList = &N(unk_28_gfx),
 };
 
-StaticAnimatorNode N(D_80245B14_D84874) = {
+StaticAnimatorNode N(StairsNode32) = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .child = &N(D_80245AE8_D84848),
-    .sibling = &N(D_80245ABC_D8481C),
+    .child = &N(StairsNode33),
+    .sibling = &N(StairsNode34),
 };
 
-StaticAnimatorNode N(D_80245B40_D848A0) = {
+StaticAnimatorNode N(StairsNode31) = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .displayList = &N(unk_27_gfx),
 };
 
-StaticAnimatorNode N(D_80245B6C_D848CC) = {
+StaticAnimatorNode N(StairsNode30) = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .child = &N(D_80245B40_D848A0),
-    .sibling = &N(D_80245B14_D84874),
+    .child = &N(StairsNode31),
+    .sibling = &N(StairsNode32),
 };
 
-StaticAnimatorNode N(D_80245B98_D848F8) = {
+StaticAnimatorNode N(StairsNode29) = {
     .pos = { 500.0f, 50.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(89.99725f) },
-    .child = &N(D_80245B6C_D848CC),
+    .child = &N(StairsNode30),
 };
 
-StaticAnimatorNode N(D_80245BC4_D84924) = {
+StaticAnimatorNode N(StairsNode28) = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .displayList = &N(unk_25_gfx),
 };
 
-StaticAnimatorNode N(D_80245BF0_D84950) = {
+StaticAnimatorNode N(StairsNode27) = {
     .pos = { 420.0f, 50.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .child = &N(D_80245BC4_D84924),
-    .sibling = &N(D_80245B98_D848F8),
+    .child = &N(StairsNode28),
+    .sibling = &N(StairsNode29),
 };
 
-StaticAnimatorNode N(D_80245C1C_D8497C) = {
+StaticAnimatorNode N(StairsNode26) = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .displayList = &N(unk_21_gfx),
 };
 
-StaticAnimatorNode N(D_80245C48_D849A8) = {
+StaticAnimatorNode N(StairsNode25) = {
     .pos = { 410.0f, 40.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-180.0f) },
-    .child = &N(D_80245C1C_D8497C),
-    .sibling = &N(D_80245BF0_D84950),
+    .child = &N(StairsNode26),
+    .sibling = &N(StairsNode27),
 };
 
-StaticAnimatorNode N(D_80245C74_D849D4) = {
+StaticAnimatorNode N(StairsNode24) = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .displayList = &N(unk_19_gfx),
 };
 
-StaticAnimatorNode N(D_80245CA0_D84A00) = {
+StaticAnimatorNode N(StairsNode23) = {
     .pos = { 400.0f, 40.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .child = &N(D_80245C74_D849D4),
-    .sibling = &N(D_80245C48_D849A8),
+    .child = &N(StairsNode24),
+    .sibling = &N(StairsNode25),
 };
 
-StaticAnimatorNode N(D_80245CCC_D84A2C) = {
+StaticAnimatorNode N(StairsNode22) = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .displayList = &N(unk_15_gfx),
 };
 
-StaticAnimatorNode N(D_80245CF8_D84A58) = {
+StaticAnimatorNode N(StairsNode21) = {
     .pos = { 390.0f, 30.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-180.0f) },
-    .child = &N(D_80245CCC_D84A2C),
-    .sibling = &N(D_80245CA0_D84A00),
+    .child = &N(StairsNode22),
+    .sibling = &N(StairsNode23),
 };
 
-StaticAnimatorNode N(D_80245D24_D84A84) = {
+StaticAnimatorNode N(StairsNode20) = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .displayList = &N(unk_13_gfx),
 };
 
-StaticAnimatorNode N(D_80245D50_D84AB0) = {
+StaticAnimatorNode N(StairsNode19) = {
     .pos = { 380.0f, 30.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .child = &N(D_80245D24_D84A84),
-    .sibling = &N(D_80245CF8_D84A58),
+    .child = &N(StairsNode20),
+    .sibling = &N(StairsNode21),
 };
 
-StaticAnimatorNode N(D_80245D7C_D84ADC) = {
+StaticAnimatorNode N(StairsNode18) = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .displayList = &N(unk_11_gfx),
 };
 
-StaticAnimatorNode N(D_80245DA8_D84B08) = {
+StaticAnimatorNode N(StairsNode17) = {
     .pos = { 380.0f, 20.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(89.99725f) },
-    .child = &N(D_80245D7C_D84ADC),
-    .sibling = &N(D_80245D50_D84AB0),
+    .child = &N(StairsNode18),
+    .sibling = &N(StairsNode19),
 };
 
-StaticAnimatorNode N(D_80245DD4_D84B34) = {
+StaticAnimatorNode N(StairsNode16) = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .displayList = &N(unk_09_gfx),
 };
 
-StaticAnimatorNode N(D_80245E00_D84B60) = {
+StaticAnimatorNode N(StairsNode15) = {
     .pos = { 370.0f, 20.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-180.0f) },
-    .child = &N(D_80245DD4_D84B34),
-    .sibling = &N(D_80245DA8_D84B08),
+    .child = &N(StairsNode16),
+    .sibling = &N(StairsNode17),
 };
 
-StaticAnimatorNode N(D_80245E2C_D84B8C) = {
+StaticAnimatorNode N(StairsNode14) = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .displayList = &N(unk_07_gfx),
 };
 
-StaticAnimatorNode N(D_80245E58_D84BB8) = {
+StaticAnimatorNode N(StairsNode13) = {
     .pos = { 360.0f, 20.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .child = &N(D_80245E2C_D84B8C),
-    .sibling = &N(D_80245E00_D84B60),
+    .child = &N(StairsNode14),
+    .sibling = &N(StairsNode15),
 };
 
-StaticAnimatorNode N(D_80245E84_D84BE4) = {
+StaticAnimatorNode N(StairsNode12) = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .displayList = &N(unk_05_gfx),
 };
 
-StaticAnimatorNode N(D_80245EB0_D84C10) = {
+StaticAnimatorNode N(StairsNode11) = {
     .pos = { 360.0f, 10.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(89.99725f) },
-    .child = &N(D_80245E84_D84BE4),
-    .sibling = &N(D_80245E58_D84BB8),
+    .child = &N(StairsNode12),
+    .sibling = &N(StairsNode13),
 };
 
-StaticAnimatorNode N(D_80245EDC_D84C3C) = {
+StaticAnimatorNode N(StairsNode10) = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .displayList = &N(unk_03_gfx),
 };
 
-StaticAnimatorNode N(D_80245F08_D84C68) = {
+StaticAnimatorNode N(StairsNode09) = {
     .pos = { 350.0f, 10.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-180.0f) },
-    .child = &N(D_80245EDC_D84C3C),
-    .sibling = &N(D_80245EB0_D84C10),
+    .child = &N(StairsNode10),
+    .sibling = &N(StairsNode11),
 };
 
-StaticAnimatorNode N(D_80245F34_D84C94) = {
+StaticAnimatorNode N(StairsNode08) = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .displayList = &N(unk_01_gfx),
 };
 
-StaticAnimatorNode N(D_80245F60_D84CC0) = {
+StaticAnimatorNode N(StairsNode07) = {
     .pos = { 340.0f, 10.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .child = &N(D_80245F34_D84C94),
-    .sibling = &N(D_80245F08_D84C68),
+    .child = &N(StairsNode08),
+    .sibling = &N(StairsNode09),
 };
 
-StaticAnimatorNode N(D_80245F8C_D84CEC) = {
+StaticAnimatorNode N(StairsNode06) = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .displayList = &N(unk_17_gfx),
 };
 
-StaticAnimatorNode N(D_80245FB8_D84D18) = {
+StaticAnimatorNode N(StairsNode05) = {
     .pos = { 400.0f, 30.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(89.99725f) },
-    .child = &N(D_80245F8C_D84CEC),
-    .sibling = &N(D_80245F60_D84CC0),
+    .child = &N(StairsNode06),
+    .sibling = &N(StairsNode07),
 };
 
-StaticAnimatorNode N(D_80245FE4_D84D44) = {
+StaticAnimatorNode N(StairsNode04) = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .displayList = &N(unk_23_gfx),
 };
 
-StaticAnimatorNode N(D_80246010_D84D70) = {
+StaticAnimatorNode N(StairsNode03) = {
     .pos = { 420.0f, 40.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(89.99725f) },
-    .child = &N(D_80245FE4_D84D44),
-    .sibling = &N(D_80245FB8_D84D18),
+    .child = &N(StairsNode04),
+    .sibling = &N(StairsNode05),
 };
 
-StaticAnimatorNode N(D_8024603C_D84D9C) = {
+StaticAnimatorNode N(StairsNode02) = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .child = &N(D_80246010_D84D70),
+    .child = &N(StairsNode03),
 };
 
-StaticAnimatorNode N(D_80246068_D84DC8) = {
+StaticAnimatorNode N(StairsNode01) = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .child = &N(D_8024603C_D84D9C),
+    .child = &N(StairsNode02),
 };
 
 StaticAnimatorNode* N(AS_Stairs_Skeleton)[] = {
-    &N(D_80246068_D84DC8), &N(D_8024603C_D84D9C),
-    &N(D_80246010_D84D70), &N(D_80245FE4_D84D44),
-    &N(D_80245FB8_D84D18), &N(D_80245F8C_D84CEC),
-    &N(D_80245F60_D84CC0), &N(D_80245F34_D84C94),
-    &N(D_80245F08_D84C68), &N(D_80245EDC_D84C3C),
-    &N(D_80245EB0_D84C10), &N(D_80245E84_D84BE4),
-    &N(D_80245E58_D84BB8), &N(D_80245E2C_D84B8C),
-    &N(D_80245E00_D84B60), &N(D_80245DD4_D84B34),
-    &N(D_80245DA8_D84B08), &N(D_80245D7C_D84ADC),
-    &N(D_80245D50_D84AB0), &N(D_80245D24_D84A84),
-    &N(D_80245CF8_D84A58), &N(D_80245CCC_D84A2C),
-    &N(D_80245CA0_D84A00), &N(D_80245C74_D849D4),
-    &N(D_80245C48_D849A8), &N(D_80245C1C_D8497C),
-    &N(D_80245BF0_D84950), &N(D_80245BC4_D84924),
-    &N(D_80245B98_D848F8), &N(D_80245B6C_D848CC),
-    &N(D_80245B40_D848A0), &N(D_80245B14_D84874),
-    &N(D_80245AE8_D84848), &N(D_80245ABC_D8481C),
-    &N(D_80245A90_D847F0), nullptr
+    &N(StairsNode01),
+        &N(StairsNode02),
+            &N(StairsNode03),
+                &N(StairsNode04),
+            &N(StairsNode05),
+                &N(StairsNode06),
+            &N(StairsNode07),
+                &N(StairsNode08),
+            &N(StairsNode09),
+                &N(StairsNode10),
+            &N(StairsNode11),
+                &N(StairsNode12),
+            &N(StairsNode13),
+                &N(StairsNode14),
+            &N(StairsNode15),
+                &N(StairsNode16),
+            &N(StairsNode17),
+                &N(StairsNode18),
+            &N(StairsNode19),
+                &N(StairsNode20),
+            &N(StairsNode21),
+                &N(StairsNode22),
+            &N(StairsNode23),
+                &N(StairsNode24),
+            &N(StairsNode25),
+                &N(StairsNode26),
+            &N(StairsNode27),
+                &N(StairsNode28),
+            &N(StairsNode29),
+                &N(StairsNode30),
+                    &N(StairsNode31),
+                &N(StairsNode32),
+                    &N(StairsNode33),
+                &N(StairsNode34),
+                    &N(StairsNode35),
+    nullptr
 };
