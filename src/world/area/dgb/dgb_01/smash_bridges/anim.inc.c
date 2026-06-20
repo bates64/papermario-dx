@@ -1,4 +1,4 @@
-#include "dgb_01.h"
+#include "break_bridges.h"
 
 AnimScript N(AS_SmashBridges) = {
     as_DisableMirroring

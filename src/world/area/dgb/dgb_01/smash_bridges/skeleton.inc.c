@@ -1,4 +1,4 @@
-#include "dgb_01.h"
+#include "break_bridges.h"
 
 StaticAnimatorNode N(UnusedAnimMarker) = {
     .pos = { 225.0f, 255.0f, 0.0f },
@@ -141,76 +141,76 @@ StaticAnimatorNode N(BridgeFixedStructures) = {
 
 StaticAnimatorNode N(UpperRailingDebris11) = {
     .displayList = N(Gfx_DrawQuad_UpperRailingDebris11),
-    .rot = { 0x0000, 0x1FFF, 0x8001 },
+    .rot = { AS_F(0.000000f), AS_F(44.995880f), AS_F(-180.000000f) },
     .pos = { -315.0f, 2.0f, -139.0f },
 };
 
 StaticAnimatorNode N(UpperRailingDebris10) = {
     .displayList = N(Gfx_DrawQuad_UpperRailingDebris10),
-    .rot = { 0x8001, 0x2AAA, 0x8001 },
+    .rot = { AS_F(-180.000000f), AS_F(59.998169f), AS_F(-180.000000f) },
     .pos = { -455.0f, 421.0f, -20.0f },
     .sibling = &N(UpperRailingDebris11),
 };
 
 StaticAnimatorNode N(UpperRailingDebris09) = {
     .displayList = N(Gfx_DrawQuad_UpperRailingDebris09),
-    .rot = { 0x8001, 0xE001, 0x0000 },
+    .rot = { AS_F(-180.000000f), AS_F(-44.995880f), AS_F(0.000000f) },
     .pos = { -385.0f, 2.0f, 169.0f },
     .sibling = &N(UpperRailingDebris10),
 };
 
 StaticAnimatorNode N(UpperRailingDebris08) = {
     .displayList = N(Gfx_DrawQuad_UpperRailingDebris08),
-    .rot = { 0x0000, 0x2AAA, 0x8001 },
+    .rot = { AS_F(0.000000f), AS_F(59.998169f), AS_F(-180.000000f) },
     .pos = { -105.0f, 2.0f, -210.0f },
     .sibling = &N(UpperRailingDebris09),
 };
 
 StaticAnimatorNode N(UpperRailingDebris07) = {
     .displayList = N(Gfx_DrawQuad_UpperRailingDebris07),
-    .rot = { 0x0000, 0xEAAB, 0x8001 },
+    .rot = { AS_F(0.000000f), AS_F(-29.999084f), AS_F(-180.000000f) },
     .pos = { -5.0f, 2.0f, -180.0f },
     .sibling = &N(UpperRailingDebris08),
 };
 
 StaticAnimatorNode N(UpperRailingDebris06) = {
     .displayList = N(Gfx_DrawQuad_UpperRailingDebris06),
-    .rot = { 0x8001, 0x0AAA, 0x0000 },
+    .rot = { AS_F(-180.000000f), AS_F(14.996796f), AS_F(0.000000f) },
     .pos = { -195.0f, 2.0f, 259.0f },
     .sibling = &N(UpperRailingDebris07),
 };
 
 StaticAnimatorNode N(UpperRailingDebris05) = {
     .displayList = N(Gfx_DrawQuad_UpperRailingDebris05),
-    .rot = { 0x8001, 0xD556, 0x8001 },
+    .rot = { AS_F(-180.000000f), AS_F(-59.998169f), AS_F(-180.000000f) },
     .pos = { -65.0f, 2.0f, 189.0f },
     .sibling = &N(UpperRailingDebris06),
 };
 
 StaticAnimatorNode N(UpperRailingDebris04) = {
     .displayList = N(Gfx_DrawQuad_UpperRailingDebris04),
-    .rot = { 0x8001, 0x0000, 0x0000 },
+    .rot = { AS_F(-180.000000f), AS_F(0.000000f), AS_F(0.000000f) },
     .pos = { 275.0f, 2.0f, -129.0f },
     .sibling = &N(UpperRailingDebris05),
 };
 
 StaticAnimatorNode N(UpperRailingDebris03) = {
     .displayList = N(Gfx_DrawQuad_UpperRailingDebris03),
-    .rot = { 0x0000, 0xF556, 0x8001 },
+    .rot = { AS_F(0.000000f), AS_F(-14.996796f), AS_F(-180.000000f) },
     .pos = { 195.0f, 421.0f, -40.0f },
     .sibling = &N(UpperRailingDebris04),
 };
 
 StaticAnimatorNode N(UpperRailingDebris02) = {
     .displayList = N(Gfx_DrawQuad_UpperRailingDebris02),
-    .rot = { 0x8001, 0x1555, 0x8001 },
+    .rot = { AS_F(-180.000000f), AS_F(29.999084f), AS_F(-180.000000f) },
     .pos = { 85.0f, 2.0f, 329.0f },
     .sibling = &N(UpperRailingDebris03),
 };
 
 StaticAnimatorNode N(UpperRailingDebris01) = {
     .displayList = N(Gfx_DrawQuad_UpperRailingDebris01),
-    .rot = { 0x8001, 0x1555, 0x0000 },
+    .rot = { AS_F(-180.000000f), AS_F(29.999084f), AS_F(0.000000f) },
     .pos = { 215.0f, 421.0f, 29.0f },
     .sibling = &N(UpperRailingDebris02),
 };
@@ -222,68 +222,68 @@ StaticAnimatorNode N(UpperBridgeRailingDebris) = {
 
 StaticAnimatorNode N(UpperTrimDebris9) = {
     .displayList = N(Gfx_DrawQuad_UpperTrimDebris9),
-    .rot = { 0x8001, 0x0000, 0x0000 },
+    .rot = { AS_F(-180.000000f), AS_F(0.000000f), AS_F(0.000000f) },
     .pos = { 8.0f, -23.0f, -49.0f },
 };
 
 StaticAnimatorNode N(UpperTrimDebris8) = {
     .displayList = N(Gfx_DrawQuad_UpperTrimDebris8),
-    .rot = { 0x0000, 0xF8E4, 0x8001 },
+    .rot = { AS_F(0.000000f), AS_F(-9.997864f), AS_F(-180.000000f) },
     .pos = { 73.0f, -23.0f, 20.0f },
     .sibling = &N(UpperTrimDebris9),
 };
 
 StaticAnimatorNode N(UpperTrimDebris7) = {
     .displayList = N(Gfx_DrawQuad_UpperTrimDebris7),
-    .rot = { 0x8001, 0x0000, 0x0000 },
+    .rot = { AS_F(-180.000000f), AS_F(0.000000f), AS_F(0.000000f) },
     .pos = { -1.0f, -23.0f, 49.0f },
     .sibling = &N(UpperTrimDebris8),
 };
 
 StaticAnimatorNode N(UpperTrimDebris6) = {
     .displayList = N(Gfx_DrawQuad_UpperTrimDebris6),
-    .rot = { 0x8001, 0x0000, 0x8001 },
+    .rot = { AS_F(-180.000000f), AS_F(0.000000f), AS_F(-180.000000f) },
     .pos = { 18.0f, -23.0f, 0.0f },
     .sibling = &N(UpperTrimDebris7),
 };
 
 StaticAnimatorNode N(UpperTrimDebrisCluster) = {
-    .rot = { 0x0000, 0x1FFF, 0x0000 },
+    .rot = { AS_F(0.000000f), AS_F(44.995880f), AS_F(0.000000f) },
     .pos = { 61.0f, 47.0f, -31.0f },
     .child = &N(UpperTrimDebris6),
 };
 
 StaticAnimatorNode N(UpperTrimDebris5) = {
     .displayList = N(Gfx_DrawQuad_UpperTrimDebris5),
-    .rot = { 0x8001, 0x0AAA, 0x0000 },
+    .rot = { AS_F(-180.000000f), AS_F(14.996796f), AS_F(0.000000f) },
     .pos = { -415.0f, 21.0f, 20.0f },
     .sibling = &N(UpperTrimDebrisCluster),
 };
 
 StaticAnimatorNode N(UpperTrimDebris4) = {
     .displayList = N(Gfx_DrawQuad_UpperTrimDebris4),
-    .rot = { 0x8001, 0xF8E4, 0x8001 },
+    .rot = { AS_F(-180.000000f), AS_F(-9.997864f), AS_F(-180.000000f) },
     .pos = { 195.0f, 211.0f, -39.0f },
     .sibling = &N(UpperTrimDebris5),
 };
 
 StaticAnimatorNode N(UpperTrimDebris3) = {
     .displayList = N(Gfx_DrawQuad_UpperTrimDebris3),
-    .rot = { 0x8001, 0xF1C8, 0x8001 },
+    .rot = { AS_F(-180.000000f), AS_F(-19.995727f), AS_F(-180.000000f) },
     .pos = { 95.0f, 210.0f, -30.0f },
     .sibling = &N(UpperTrimDebris4),
 };
 
 StaticAnimatorNode N(UpperTrimDebris2) = {
     .displayList = N(Gfx_DrawQuad_UpperTrimDebris2),
-    .rot = { 0x8001, 0x1555, 0x8001 },
+    .rot = { AS_F(-180.000000f), AS_F(29.999084f), AS_F(-180.000000f) },
     .pos = { 115.0f, 211.0f, 39.0f },
     .sibling = &N(UpperTrimDebris3),
 };
 
 StaticAnimatorNode N(UpperTrimDebris1) = {
     .displayList = N(Gfx_DrawQuad_UpperTrimDebris1),
-    .rot = { 0x8001, 0x0AAA, 0x8001 },
+    .rot = { AS_F(-180.000000f), AS_F(14.996796f), AS_F(-180.000000f) },
     .pos = { 215.0f, 211.0f, 39.0f },
     .sibling = &N(UpperTrimDebris2),
 };
@@ -295,20 +295,20 @@ StaticAnimatorNode N(UpperBridgeWoodPanelTrimDebris) = {
 
 StaticAnimatorNode N(LowerTrimDebris3) = {
     .displayList = N(Gfx_DrawQuad_LowerTrimDebris3),
-    .rot = { 0x0000, 0x0AAA, 0x0000 },
+    .rot = { AS_F(0.000000f), AS_F(14.996796f), AS_F(0.000000f) },
     .pos = { -375.0f, 2.0f, 0.0f },
 };
 
 StaticAnimatorNode N(LowerTrimDebris2) = {
     .displayList = N(Gfx_DrawQuad_LowerTrimDebris2),
-    .rot = { 0x0000, 0xEAAB, 0x8001 },
+    .rot = { AS_F(0.000000f), AS_F(-29.999084f), AS_F(-180.000000f) },
     .pos = { -175.0f, 2.0f, -49.0f },
     .sibling = &N(LowerTrimDebris3),
 };
 
 StaticAnimatorNode N(LowerTrimDebris1) = {
     .displayList = N(Gfx_DrawQuad_LowerTrimDebris1),
-    .rot = { 0x8001, 0x0000, 0x8001 },
+    .rot = { AS_F(-180.000000f), AS_F(0.000000f), AS_F(-180.000000f) },
     .pos = { 75.0f, 2.0f, -49.0f },
     .sibling = &N(LowerTrimDebris2),
 };
@@ -363,7 +363,7 @@ StaticAnimatorNode N(LowerLeftCollapseWood1) = {
 };
 
 StaticAnimatorNode N(LowerBridgeLeftCollapse) = {
-    .rot = { 0x0000, 0x0000, 0xEA9F },
+    .rot = { AS_F(0.000000f), AS_F(0.000000f), AS_F(-30.065004f) },
     .pos = { -360.0f, 85.0f, -1.0f },
     .child = &N(LowerLeftCollapseWood1),
 };
@@ -378,7 +378,7 @@ StaticAnimatorNode N(UpperRearBrokenRailing) = {
 };
 
 StaticAnimatorNode N(UpperBridgeRearRailing) = {
-    .rot = { 0xEAAB, 0x2E87, 0xF02E },
+    .rot = { AS_F(-29.999084f), AS_F(65.431074f), AS_F(-22.247993f) },
     .pos = { 35.0f, 316.0f, 36.0f },
     .sibling = &N(LowerBridgeLeftCollapse),
     .child = &N(UpperRearBrokenRailing),
@@ -414,7 +414,7 @@ StaticAnimatorNode N(UpperRightCollapseTrim) = {
 };
 
 StaticAnimatorNode N(UpperBridgeRightCollapse) = {
-    .rot = { 0xFC72, 0xFE27, 0x0000 },
+    .rot = { AS_F(-4.998932f), AS_F(-2.598346f), AS_F(0.000000f) },
     .pos = { 133.0f, 271.0f, 30.0f },
     .sibling = &N(UpperBridgeRearRailing),
     .child = &N(UpperRightCollapseTrim),
@@ -442,13 +442,13 @@ StaticAnimatorNode N(LowerRailingSplitRightParts) = {
 };
 
 StaticAnimatorNode N(LowerRailingSplitRightHinge) = {
-    .rot = { 0x0000, 0x0000, 0xF60C },
+    .rot = { AS_F(0.000000f), AS_F(0.000000f), AS_F(-13.997009f) },
     .pos = { -252.0f, 0.0f, 0.0f },
     .child = &N(LowerRailingSplitRightParts),
 };
 
 StaticAnimatorNode N(LowerRailingSplitRight) = {
-    .rot = { 0x0000, 0x0000, 0x09F4 },
+    .rot = { AS_F(0.000000f), AS_F(0.000000f), AS_F(13.997009f) },
     .pos = { 253.0f, 285.0f, 86.0f },
     .child = &N(LowerRailingSplitRightHinge),
 };
@@ -554,7 +554,7 @@ StaticAnimatorNode N(LowerCenterWood1) = {
 };
 
 StaticAnimatorNode N(LowerBridgeCenterCollapse) = {
-    .rot = { 0x0000, 0x1FFF, 0x0000 },
+    .rot = { AS_F(0.000000f), AS_F(44.995880f), AS_F(0.000000f) },
     .pos = { 61.0f, 47.0f, -31.0f },
     .sibling = &N(LowerBridgeRightFixed),
     .child = &N(LowerCenterWood1),
@@ -562,13 +562,13 @@ StaticAnimatorNode N(LowerBridgeCenterCollapse) = {
 
 StaticAnimatorNode N(LowerLeftAttachWood4) = {
     .displayList = N(Gfx_DrawMesh_LowerLeftAttachWood4),
-    .rot = { 0x038E, 0x0000, 0x18E3 },
+    .rot = { AS_F(4.998932f), AS_F(0.000000f), AS_F(34.998016f) },
     .pos = { -465.0f, 210.0f, -90.0f },
 };
 
 StaticAnimatorNode N(LowerLeftAttachWood3) = {
     .displayList = N(Gfx_DrawMesh_LowerLeftAttachWood3),
-    .rot = { 0x0000, 0x18E3, 0x1555 },
+    .rot = { AS_F(0.000000f), AS_F(34.998016f), AS_F(29.999084f) },
     .pos = { -465.0f, 210.0f, 90.0f },
     .sibling = &N(LowerLeftAttachWood4),
 };
@@ -651,13 +651,13 @@ StaticAnimatorNode N(UpperLeftRailing) = {
 };
 
 StaticAnimatorNode N(UpperBridgeLeft) = {
-    .rot = { 0xFB06, 0xC60C, 0 },
+    .rot = { AS_F(-6.998505f), AS_F(-81.499069f), AS_F(0.000000f) },
     .pos = { 179.0f, -34.0f, -98.0f },
     .child = &N(UpperLeftRailing),
 };
 
 StaticAnimatorNode N(UpperBridgeLeftCollapse) = {
-    .rot = { 0, 0xFA06, 0xC464 },
+    .rot = { AS_F(0.000000f), AS_F(-8.404798f), AS_F(-83.828242f) },
     .pos = { -245.0f, 196.0f, 21.0f },
     .sibling = &N(LowerBridgeLeftAttachment),
     .child = &N(UpperBridgeLeft),
