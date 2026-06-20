@@ -66,7 +66,7 @@ API_CALLABLE(N(SpawnEnergyWave)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802404E8_8AC478)) {
+API_CALLABLE(N(ForceCamBoomPitch)) {
     s32 pitch = evt_get_variable(script, script->varTable[0]);
     gCameras[CAM_DEFAULT].overrideSettings.boomPitch = pitch * 0.001f;
     return ApiStatus_DONE2;
@@ -364,7 +364,7 @@ EvtScript N(EVS_Scene_MarioRevived) = {
         Call(MakeLerp, 6000, 12000, 120 * DT, EASING_LINEAR)
         Label(25)
         Call(UpdateLerp)
-        Call(N(func_802404E8_8AC478))
+        Call(N(ForceCamBoomPitch))
         Wait(1)
         IfNe(LVar1, 0)
             Goto(25)

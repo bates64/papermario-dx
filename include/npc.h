@@ -343,7 +343,7 @@ typedef struct EncounterStatus {
     /* 0x005 */ s8 hitType; // see enum: EncounterTriggers
     /* 0x006 */ s8 hitTier; // 0 = normal, 1 = super, 2 = ultra
     /* 0x007 */ s8 unk_07;
-    /* 0x008 */ s8 unk_08;
+    /* 0x008 */ s8 battleTransitionState; // see enum: BattleTransitionStates
     /* 0x009 */ s8 battleOutcome; // see enum: EncounterOutcomes
     /* 0x00A */ s8 battleTriggerCooldown; ///< set to 15 after victory, 45 after fleeing
     /* 0x00B */ b8 hasMerleeCoinBonus; /* triple coins when true */
@@ -553,7 +553,7 @@ void clear_encounter_status(void);
 
 void func_8003E50C(void);
 
-void func_8003E514(s8 arg0);
+void set_battle_transition_state(s8 state);
 
 void update_encounters(void);
 

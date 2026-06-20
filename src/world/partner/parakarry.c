@@ -195,7 +195,7 @@ API_CALLABLE(N(UseAbility)) {
     s32 hitCount;
     b32 hitAbove;
 
-    if (gCurrentEncounter.unk_08 != 0) {
+    if (gCurrentEncounter.battleTransitionState != BATTLE_TRANSITION_STATE_STARTED) {
          return ApiStatus_BLOCK;
     }
 

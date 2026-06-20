@@ -76,7 +76,6 @@ API_CALLABLE(N(FortuneRitualRestoreModels)) {
     return ApiStatus_BLOCK;
 }
 
-// identical to hos_06 func
 API_CALLABLE(N(AnimateRitualOrbEffects)) {
     EffectInstance* effects[3];
     Matrix4f sp28, sp68;
@@ -130,7 +129,6 @@ API_CALLABLE(N(AnimateRitualOrbEffects)) {
     return ApiStatus_BLOCK;
 }
 
-// identical to hos_06 func
 API_CALLABLE(N(SetEnergyOrbBright)) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);

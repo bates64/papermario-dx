@@ -221,7 +221,7 @@ API_CALLABLE(N(UseAbility)) {
         SHELL_TOSS_STATE_FINISH     = 0,
     };
 
-    if (currentEncounter->unk_08 != 0) {
+    if (currentEncounter->battleTransitionState != BATTLE_TRANSITION_STATE_STARTED) {
         return ApiStatus_BLOCK;
     }
 

@@ -12000,7 +12000,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
     - [auto, c, npc]
-    - [auto, c, extra]
+    - [auto, c, darkness]
   - name: kzn_09
     dir: world/area/kzn/kzn_09
     type: code

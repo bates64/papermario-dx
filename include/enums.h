@@ -5814,12 +5814,18 @@ enum BackgroundFlags {
 };
 
 enum EncounterStates {
-    ENCOUNTER_STATE_NONE            = 0,
-    ENCOUNTER_STATE_CREATE          = 1,
-    ENCOUNTER_STATE_NEUTRAL         = 2,
-    ENCOUNTER_STATE_PRE_BATTLE      = 3,
-    ENCOUNTER_STATE_CONVERSATION    = 4,
-    ENCOUNTER_STATE_POST_BATTLE     = 5,
+    ENCOUNTER_STATE_NONE                = 0,
+    ENCOUNTER_STATE_CREATE              = 1,
+    ENCOUNTER_STATE_NEUTRAL             = 2,
+    ENCOUNTER_STATE_PRE_BATTLE          = 3,
+    ENCOUNTER_STATE_CONVERSATION        = 4,
+    ENCOUNTER_STATE_POST_BATTLE         = 5,
+};
+
+enum BattleTransitionStates {
+    BATTLE_TRANSITION_STATE_LOADING     = -1,
+    BATTLE_TRANSITION_STATE_STARTED     = 0,
+    BATTLE_TRANSITION_STATE_COMPLETE    = 1,
 };
 
 enum EncounterCreateSubStates {

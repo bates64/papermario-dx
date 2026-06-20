@@ -6,7 +6,7 @@
 #include "world/common/entity/Pipe.inc.c"
 #define NAME_SUFFIX
 
-API_CALLABLE(N(func_80242030_8EDE50)) {
+API_CALLABLE(N(RemoveOutsideShroud)) {
     mdl_group_set_custom_gfx(MODEL_g62, CUSTOM_GFX_NONE, ENV_TINT_NONE, true);
     mdl_set_shroud_tint_params(0, 0, 0, 0);
 
@@ -17,7 +17,7 @@ API_CALLABLE(N(func_80242030_8EDE50)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80242084_8EDEA4)) {
+API_CALLABLE(N(FadeToBlack)) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
     }
@@ -37,7 +37,7 @@ API_CALLABLE(N(func_80242084_8EDEA4)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_802420EC_8EDF0C)) {
+API_CALLABLE(N(FadeFromBlack)) {
     if (isInitialCall) {
         script->functionTemp[1] = 255;
     }
@@ -267,12 +267,12 @@ EvtScript N(EVS_Scene_EpilogueGetLetter) = {
     Wait(10)
     Call(SpeakToPlayer, NPC_Luigi_1, ANIM_Luigi_TalkLetter, ANIM_Luigi_IdleLetter, 0, MSG_Outro_0022)
     Wait(30)
-    Call(N(func_80242084_8EDEA4))
+    Call(N(FadeToBlack))
     Call(EnableGroup, MODEL_g20, false)
     Call(EnableGroup, MODEL_g21, false)
     Call(EnableGroup, MODEL_g49, false)
     Call(EnableModel, MODEL_g56, false)
-    Call(N(func_80242030_8EDE50))
+    Call(N(RemoveOutsideShroud))
     Call(RotateGroup, MODEL_g60, 0, 1, 0, 0)
     Call(RotateGroup, MODEL_g34, 0, -1, 0, 0)
     Call(EnableGroup, MODEL_g60, true)
@@ -285,7 +285,7 @@ EvtScript N(EVS_Scene_EpilogueGetLetter) = {
     Call(SetNpcAnimation, NPC_Luigi_1, ANIM_Luigi_Idle)
     Call(SetNpcPos, NPC_Luigi_1, 200, 30, -75)
     Wait(30)
-    Call(N(func_802420EC_8EDF0C))
+    Call(N(FadeFromBlack))
     Call(N(SetAmbienceVolumeFull_Epilogue))
     Wait(30)
     Call(SetMusic, 0, SONG_PEACHS_CASTLE_PARTY, 0, VOL_LEVEL_FULL)

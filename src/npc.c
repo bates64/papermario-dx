@@ -2172,7 +2172,7 @@ void init_encounter_status(void) {
     currentEncounter->hitType = 0;
     currentEncounter->battleTriggerCooldown = 0;
     currentEncounter->npcGroupList = 0;
-    currentEncounter->unk_08 = 0;
+    currentEncounter->battleTransitionState = BATTLE_TRANSITION_STATE_STARTED;
     currentEncounter->dropWhackaBump = false;
 
     for (i = 0; i < ARRAY_COUNT(currentEncounter->defeatFlags); i++) {
@@ -2220,7 +2220,7 @@ void clear_encounter_status(void) {
     currentEncounter->curMapIndex = gGameStatusPtr->mapID;
     currentEncounter->curEntryIndex = gGameStatusPtr->entryID;
     currentEncounter->npcGroupList = 0;
-    currentEncounter->unk_08 = 0;
+    currentEncounter->battleTransitionState = BATTLE_TRANSITION_STATE_STARTED;
     currentEncounter->scriptedBattle = false;
 
     func_80045AC0();
@@ -2231,8 +2231,8 @@ void clear_encounter_status(void) {
 void func_8003E50C(void) {
 }
 
-void func_8003E514(s8 arg0) {
-    gCurrentEncounter.unk_08 = arg0;
+void set_battle_transition_state(s8 state) {
+    gCurrentEncounter.battleTransitionState = state;
 }
 
 void update_encounters(void) {

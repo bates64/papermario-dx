@@ -66,7 +66,6 @@ LavaReset N(SafeFloorColliders)[] = {
     { .colliderID = NO_COLLIDER }
 };
 
-// unused
 EvtScript N(EVS_AnimateLavaScale) = {
     Call(DisablePlayerInput, true)
     Call(MakeLerp, 1, 100, 200, EASING_LINEAR)
@@ -114,7 +113,7 @@ EvtScript N(EVS_Main) = {
     Set(LVar0, N(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Wait(1)
-    Exec(N(EVS_802455A0))
+    Exec(N(EVS_UpdateLavaRoomDarkness))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_yougan_atari, SURFACE_TYPE_LAVA)
     Thread
         Call(ResetFromLava, Ref(N(SafeFloorColliders)))

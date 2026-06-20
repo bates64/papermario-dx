@@ -26,7 +26,7 @@ extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_MakeEntities);
 
 extern NpcGroupList N(DefaultNPCs);
-extern EvtScript N(EVS_802455A0);
+extern EvtScript N(EVS_UpdateLavaRoomDarkness);
 extern API_CALLABLE(N(ApplyLavaGlowLighting));
 extern API_CALLABLE(N(ClearLavaGlowLighting));
 

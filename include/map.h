@@ -57,6 +57,5 @@ extern char wMapBgName[];
 extern AreaConfig gAreas[];
 
 extern EvtScript EVS_NpcHitRecoil;
-extern EvtScript EVS_800936C0;
 
 #endif

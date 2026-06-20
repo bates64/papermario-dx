@@ -1247,7 +1247,7 @@ void update_encounters_pre_battle(void) {
             currentEncounter->fadeOutAmount = 0;
             currentEncounter->substateDelay = 1;
             currentEncounter->fadeOutAccel = 1;
-            currentEncounter->unk_08 = -1;
+            currentEncounter->battleTransitionState = BATTLE_TRANSITION_STATE_LOADING;
             HasPreBattleSongPushed = false;
             SkipPartnerPostBattleCleanup = false;
             suspend_all_group(EVT_GROUP_FLAG_BATTLE);
@@ -1402,7 +1402,7 @@ void update_encounters_pre_battle(void) {
             set_battle_stage(encounter->stage);
             load_battle(encounter->battle);
             currentEncounter->unk_07 = 1;
-            currentEncounter->unk_08 = 0;
+            currentEncounter->battleTransitionState = BATTLE_TRANSITION_STATE_STARTED;
             currentEncounter->hasMerleeCoinBonus = false;
             currentEncounter->damageTaken = 0;
             currentEncounter->coinsEarned = 0;
@@ -1434,7 +1434,7 @@ void update_encounters_pre_battle(void) {
                 }
             }
 
-            currentEncounter->unk_08 = 1;
+            currentEncounter->battleTransitionState = BATTLE_TRANSITION_STATE_COMPLETE;
             currentEncounter->unk_07 = 1;
             currentEncounter->battleOutcome = OUTCOME_PLAYER_WON;
             currentEncounter->hasMerleeCoinBonus = false;
@@ -1449,7 +1449,7 @@ void update_encounters_pre_battle(void) {
             break;
         case ENCOUNTER_SUBSTATE_PRE_BATTLE_SKIP:
             currentEncounter->battleOutcome = OUTCOME_SKIP;
-            currentEncounter->unk_08 = 1;
+            currentEncounter->battleTransitionState = BATTLE_TRANSITION_STATE_COMPLETE;
 
             currentEncounter->fadeOutAmount = 0;
             currentEncounter->fadeOutAccel = 0;
@@ -1606,11 +1606,11 @@ void update_encounters_post_battle(void) {
 
     switch (gEncounterSubState) {
         case ENCOUNTER_SUBSTATE_POST_BATTLE_INIT:
-            if (currentEncounter->unk_08 == 0) {
+            if (currentEncounter->battleTransitionState == BATTLE_TRANSITION_STATE_STARTED) {
                 return;
             }
 
-            currentEncounter->unk_08 = 0;
+            currentEncounter->battleTransitionState = BATTLE_TRANSITION_STATE_STARTED;
             gPlayerStatus.blinkTimer = 0;
             currentEncounter->scriptedBattle = false;
             setup_status_bar_for_world();
