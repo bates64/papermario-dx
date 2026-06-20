@@ -40,10 +40,17 @@ EvtScript N(EVS_Scene_TubbaSmashBridges) = {
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 60, Float(1.0))
     EndThread
+#ifdef DEBUG_DGB_01_MESH_COLORS
+    Call(UseSettingsFrom, CAM_DEFAULT, 0, 300, 0)
+    Call(SetPanTarget, CAM_DEFAULT, 0, 300, 0)
+    Call(SetCamDistance, CAM_DEFAULT, Float(2000.0))
+    Call(SetCamPitch, CAM_DEFAULT, Float(0.0), Float(3.0))
+#else
     Call(UseSettingsFrom, CAM_DEFAULT, 400, 420, 0)
     Call(SetPanTarget, CAM_DEFAULT, 400, 420, 0)
     Call(SetCamDistance, CAM_DEFAULT, Float(450.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(20.0), Float(-11.0))
+#endif
     Call(SetCamPosB, CAM_DEFAULT, Float(500.0), Float(0.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
@@ -57,12 +64,21 @@ EvtScript N(EVS_Scene_TubbaSmashBridges) = {
         EndIf
         Wait(1)
     EndLoop
+#ifdef DEBUG_DGB_01_MESH_COLORS
+    Call(UseSettingsFrom, CAM_DEFAULT, 0, 300, 0)
+    Call(SetPanTarget, CAM_DEFAULT, 0, 300, 0)
+#else
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, -50)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
+#endif
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
+#ifdef DEBUG_DGB_01_MESH_COLORS
+    Call(SetCamDistance, CAM_DEFAULT, Float(2000.0))
+#else
     Call(SetCamDistance, CAM_DEFAULT, Float(750.0))
+#endif
     Call(SetCamPitch, CAM_DEFAULT, Float(0.0), Float(3.0))
     Call(DisablePartnerAI, false)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)

@@ -64,7 +64,7 @@ s32 N(check_for_item_collision)(Npc* kooper) {
 
     N(HasItem) = true;
     gOverrideFlags |= GLOBAL_OVERRIDES_40;
-    set_item_entity_flags(N(HeldItemIdx), ITEM_ENTITY_FLAG_CANT_COLLECT);
+    set_item_entity_flags(N(HeldItemIdx), ITEM_ENTITY_FLAG_PARTNER_COLLECTING);
     return true;
 }
 

@@ -403,11 +403,6 @@ PartnerPopupProperties gPartnerPopupProperties[] = {
     }
 };
 
-//TODO padding
-s32 pad8[] = {
-    0x00000000, 0x00000000
-};
-
 extern HudScript HES_Partner0;
 extern HudScript HES_Goombario;
 extern HudScript HES_Kooper;
@@ -450,11 +445,6 @@ IconHudScriptPair gPartnerIconHudScripts[] = {
 };
 
 #include "move_data.inc.c"
-
-//TODO padding
-s32 pad_after_move_table[] = {
-    0x00000000, 0x00000000, 0x00000000
-};
 
 extern IMG_BIN ui_msg_frame_a_1_1_png[];
 extern IMG_BIN ui_msg_frame_a_1_2_png[];
