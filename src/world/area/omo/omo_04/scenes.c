@@ -35,8 +35,14 @@ EvtScript N(EVS_NpcIdle_Kammy) = {
     End
 };
 
-#define KAMMY_NPC NPC_Kammy
-#include "world/common/util/GetKammyBroomEmitterPos.inc.c"
+API_CALLABLE(N(GetKammyBroomEmitterPos)) {
+    Npc* npc = get_npc_unsafe(NPC_Kammy);
+
+    script->varTable[0] = npc->pos.x + (sin_deg(npc->yaw + gCameras[CAM_DEFAULT].curYaw + 180.0f) * 40.0f);
+    script->varTable[1] = npc->pos.y + 8.0f;
+    script->varTable[2] = npc->pos.z - (cos_deg(npc->yaw + gCameras[CAM_DEFAULT].curYaw + 180.0f) * 40.0f);
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_NpcAux_Kammy) = {
     Set(MF_KammyFlying, false)

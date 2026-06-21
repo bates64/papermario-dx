@@ -13,26 +13,26 @@
 
 EvtScript N(EVS_NpcIdle_Bowser) = {
     Label(0)
-    Call(SetSelfVar, 0, 0)
-    Loop(0)
-        Call(GetSelfVar, 0, LVar0)
-        IfNe(LVar0, 0)
-            BreakLoop
-        EndIf
-        Wait(1)
-    EndLoop
-    Thread
-        Call(GetNpcPos, NPC_Bowser_02, LVar0, LVar1, LVar2)
-        Add(LVar0, -75)
-        Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
-        Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-        Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
-        Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-7.0))
-        Call(SetCamDistance, CAM_DEFAULT, 1000)
-        Call(PanToTarget, CAM_DEFAULT, 0, true)
-    EndThread
-    Call(StartBossBattle, SONG_FINAL_BOWSER_BATTLE)
-    Goto(0)
+        Call(SetSelfVar, 0, 0)
+        Loop(0)
+            Call(GetSelfVar, 0, LVar0)
+            IfNe(LVar0, 0)
+                BreakLoop
+            EndIf
+            Wait(1)
+        EndLoop
+        Thread
+            Call(GetNpcPos, NPC_Bowser_02, LVar0, LVar1, LVar2)
+            Add(LVar0, -75)
+            Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
+            Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
+            Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
+            Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-7.0))
+            Call(SetCamDistance, CAM_DEFAULT, 1000)
+            Call(PanToTarget, CAM_DEFAULT, 0, true)
+        EndThread
+        Call(StartBossBattle, SONG_FINAL_BOWSER_BATTLE)
+        Goto(0)
     Return
     End
 };

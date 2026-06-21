@@ -2,7 +2,6 @@
 #include "sprite/player.h"
 
 #include "world/common/npc/Peach/base.h"
-
 #include "world/common/npc/Bowser/idle.inc.c"
 #include "world/common/npc/Dummy/idle.inc.c"
 

@@ -720,6 +720,29 @@ API_CALLABLE(ClearDefeatedEnemies) {
     return ApiStatus_DONE2;
 }
 
+API_CALLABLE(GetRemainingEnemyCount) {
+    EncounterStatus* encounterStatus = &gCurrentEncounter;
+    Bytecode* args = script->ptrReadPos;
+    s32 outVar = *args++;
+    s32 count = 0;
+    s32 i, j;
+
+    for (i = 0; i < encounterStatus->numEncounters; i++) {
+        Encounter* encounter = encounterStatus->encounterList[i];
+        if (encounter == nullptr) {
+            continue;
+        }
+        for (j = 0; j < encounter->count; j++) {
+            if (encounter->enemy[j] != nullptr) {
+                count++;
+            }
+        }
+    }
+
+    evt_set_variable(script, outVar, count);
+    return ApiStatus_DONE2;
+}
+
 API_CALLABLE(SetEnemyFlagBits) {
     Bytecode* args = script->ptrReadPos;
     Enemy* enemy = script->owner1.enemy;

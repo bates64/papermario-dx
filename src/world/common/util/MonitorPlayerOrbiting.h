@@ -1,6 +1,4 @@
-#ifndef _PLAYER_ORBITING_H_
-#define _PLAYER_ORBITING_H_
-
+#pragma once
 #include "common.h"
 
 typedef struct PlayerOrbitState {
@@ -44,5 +42,3 @@ enum {
     ORBIT_STATE_MAINTAIN_ORBIT    = 3,
     ORBIT_STATE_BREAK_ORBIT       = 4,
 };
-
-#endif

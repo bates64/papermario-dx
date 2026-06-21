@@ -1,28 +1,13 @@
 #include "mim_06.h"
-#include "model.h"
 
-#include "world/common/util/GetFirstTriangleNormal.inc.c"
-
-API_CALLABLE(N(GetFlowerNormal)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 modelID = evt_get_variable(script, *args++);
-    s32 treeIndex = get_model_list_index_from_tree_index(modelID);
-    Model* mdl = get_model_from_list_index(treeIndex);
-    f32 x, y, z;
-
-    N(GetFirstTriangleNormal)(mdl->modelNode->displayData->displayList, &x, &y, &z);
-
-    evt_set_variable(script, *args++, FLOAT_TO_FIXED(x));
-    evt_set_variable(script, *args++, FLOAT_TO_FIXED(y));
-    evt_set_variable(script, *args++, FLOAT_TO_FIXED(z));
-    return ApiStatus_DONE2;
-}
+#include "world/area/mim/common/GetFlowerNormal.inc.c"
 
 API_CALLABLE(N(GetWitherTranslation)) {
     Bytecode* args = script->ptrReadPos;
     s32 angle = evt_get_variable(script, *args++);
+    s32 outVar = *args++;
 
-    evt_set_variable(script, *args++, sin_deg(angle) * 10.0f);
+    evt_set_variable(script, outVar, sin_deg(angle) * 10.0f);
     return ApiStatus_DONE2;
 }
 

@@ -1,9 +1,21 @@
 #include "battle/battle.h"
 #include "mapfs/kkj_bt02_shape.h"
+#include "effects.h"
 
 #define NAMESPACE A(kkj_02)
 
-#include "world/common/util/SetLightningBoltPurple.inc.c"
+API_CALLABLE(N(SetLightningBoltPurple)) {
+    EffectInstance* effect = (EffectInstance*)script->varTable[15];
+
+    effect->data.lightningBolt->outerColor.r = 85;
+    effect->data.lightningBolt->outerColor.g = 42;
+    effect->data.lightningBolt->outerColor.b = 255;
+    effect->data.lightningBolt->innerColor.r = 255;
+    effect->data.lightningBolt->innerColor.g = 175;
+    effect->data.lightningBolt->innerColor.b = 239;
+
+    return ApiStatus_DONE2;
+}
 
 s32 N(RandomBoltPositions)[][7] = {
     { -22, 190, -91,  -88, 21, -91, 60 },

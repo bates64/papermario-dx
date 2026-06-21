@@ -1106,6 +1106,10 @@ API_CALLABLE(GetSelfNpcID);
 API_CALLABLE(ClearDefeatedEnemies);
 
 /// @evtapi
+/// @param outCount
+API_CALLABLE(GetRemainingEnemyCount);
+
+/// @evtapi
 /// @param npcID
 /// @param flags
 /// @param mode

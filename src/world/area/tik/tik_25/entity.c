@@ -1,13 +1,14 @@
 #include "tik_25.h"
 #include "entity.h"
+#include "animation_script.h"
+
+extern AnimScript Entity_SimpleSpring_AnimLaunch;
 
 API_CALLABLE(N(DismissGotItem)) {
     Entity* bigChest = get_entity_by_index(script->varTable[0]);
     bigChest->dataBuf.chest->gotItemDone = true;
     return ApiStatus_DONE2;
 }
-
-#include "world/common/util/PlaySpringReboundAnimation.inc.c"
 
 EvtScript N(EVS_SetupGiantChest_UltraBoots) = {
     IfEq(GF_TIK25_GiantChest, false)
@@ -24,6 +25,18 @@ EvtScript N(EVS_SetupGiantChest_UltraBoots) = {
     Return
     End
 };
+
+API_CALLABLE(N(PlaySpringReboundAnimation)) {
+    Bytecode* args = script->ptrReadPos;
+    Entity* entity = get_entity_by_index(evt_get_variable(script, *args++));
+
+    if (entity == nullptr) {
+        return ApiStatus_BLOCK;
+    }
+
+    play_model_animation(entity->virtualModelIndex, Entity_SimpleSpring_AnimLaunch);
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_OnBreakBlock_SpringR) = {
     IfEq(GF_TIK25_SpringBrickA, true)

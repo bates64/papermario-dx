@@ -1,6 +1,7 @@
 #include "common.h"
+#include "model.h"
 
-static Vtx_t* N(TriNormVertexBuffer)[32]; // unk length
+static Vtx_t* N(TriNormVertexBuffer)[32];
 
 enum {
     READ_STATE_CONTINUE    = 0,
@@ -97,4 +98,19 @@ void N(GetFirstTriangleNormal)(Gfx* inGfx, f32* outNx, f32* outNy, f32* outNz) {
         *outNy = ny / norm;
         *outNz = nz / norm;
     }
+}
+
+API_CALLABLE(N(GetFlowerNormal)) {
+    Bytecode* args = script->ptrReadPos;
+    s32 modelID = evt_get_variable(script, *args++);
+    s32 treeIndex = get_model_list_index_from_tree_index(modelID);
+    Model* mdl = get_model_from_list_index(treeIndex);
+    f32 x, y, z;
+
+    N(GetFirstTriangleNormal)(mdl->modelNode->displayData->displayList, &x, &y, &z);
+
+    evt_set_variable(script, *args++, FLOAT_TO_FIXED(x));
+    evt_set_variable(script, *args++, FLOAT_TO_FIXED(y));
+    evt_set_variable(script, *args++, FLOAT_TO_FIXED(z));
+    return ApiStatus_DONE2;
 }

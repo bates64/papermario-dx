@@ -1,6 +1,6 @@
 #include "mac_04.h"
 
-#include "world/common/npc/ToadKid/base.h"
+#include "world/common/npc/ToadKid/idle.h"
 #define NAME_SUFFIX _Wish
 #include "world/common/npc/Toad/wander.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"

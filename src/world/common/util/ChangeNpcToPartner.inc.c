@@ -20,12 +20,12 @@ API_CALLABLE(N(ChangeNpcToPartner)) {
     }
 
     switch (script->functionTemp[0]) {
-        case 0:
-            switch_to_partner(0);
+        case 0: // begin
+            switch_to_partner(PARTNER_NONE);
             script->functionTemp[1] = 30;
             script->functionTemp[0] = 1;
             break;
-        case 1:
+        case 1: // putting away current
             script->functionTemp[1]--;
             if (script->functionTemp[1] == -1) {
                 script->functionTemp[0] = 2;

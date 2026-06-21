@@ -5,14 +5,12 @@ extern EvtScript N(EVS_RestoreMagicDoors);
 #include "world/common/enemy/KoopaTroopa/wander.inc.c"
 #include "world/common/enemy/Paratroopa/wander.inc.c"
 
-#include "world/common/util/GetDefeatedEnemyCount.inc.c"
-
 EvtScript N(EVS_NpcDefeat_KoopaTroopa) = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Call(N(GetDefeatedEnemyCount), LVar0)
-            IfEq(LVar0, 1) // ???
+            Call(GetRemainingEnemyCount, LVar0)
+            IfEq(LVar0, 1)
                 Set(GF_TRD07_Defeated_DungeonAmbush, true)
                 Exec(N(EVS_RestoreMagicDoors))
             EndIf
