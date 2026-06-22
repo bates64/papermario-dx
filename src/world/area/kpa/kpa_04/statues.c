@@ -1,6 +1,6 @@
 #include "kpa_04.h"
 
-#include "world/common/todo/PushObjectSupport.inc.c"
+#include "world/common/util/PushObjectSupport.inc.c"
 
 EvtScript N(EVS_PushStatue_Impl) = {
     Loop(20)

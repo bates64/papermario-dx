@@ -1,6 +1,6 @@
 #include "common.h"
 #include "effects.h"
-#include "world/common/atomic/Whale.h"
+#include "world/common/prefab/Whale.h"
 
 #ifndef WHALE_NPC_ID
 #define WHALE_NPC_ID 0

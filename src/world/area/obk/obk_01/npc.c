@@ -3,7 +3,7 @@
 #include "world/common/npc/Boo/wander.inc.c"
 #include "world/common/npc/Boo/idle.inc.c"
 
-#include "world/common/atomic/MarioSalute.inc.c"
+#include "world/common/util/MarioSalute.inc.c"
 
 LetterDelivery N(LetterDelivery_Franky) = {
     .recipientID = NPC_Franky,

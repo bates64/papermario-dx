@@ -1,6 +1,6 @@
 #include "kpa_01.h"
 
-#include "world/common/atomic/CreateDarkness.inc.c"
+#include "world/common/util/CreateDarkness.inc.c"
 
 EvtScript N(EVS_ExitDoor_kpa_14_1) = EVT_EXIT_SINGLE_DOOR(kpa_01_ENTRY_0, "kpa_14", kpa_14_ENTRY_1,
     COLLIDER_tte, MODEL_o205, DOOR_SWING_IN);

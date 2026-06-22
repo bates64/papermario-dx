@@ -16,7 +16,7 @@ NpcSettings N(NpcSettings_Watt) = {
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 #include "world/common/util/LoadPartyImage.inc.c"
 
-#include "world/common/atomic/CreateDarkness.inc.c"
+#include "world/common/util/CreateDarkness.inc.c"
 
 API_CALLABLE(N(SetLightOriginAndPower)) {
     Bytecode* args = script->ptrReadPos;

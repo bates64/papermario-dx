@@ -83,6 +83,28 @@ API_CALLABLE(SetCustomGfxEnabled);
 /// @param fogType
 API_CALLABLE(SetModelCustomGfx);
 
+/// Applies a tint mode to a list of models, a list of model groups, or the background.
+/// Pass `PTR_LIST_END` for the list to apply the tint to all models or groups.
+/// @evtapi
+/// @param target APPLY_TINT_MODELS, APPLY_TINT_GROUPS, or APPLY_TINT_BG
+/// @param modelIDList
+/// @param tintType
+API_CALLABLE(SetModelTintMode);
+
+/// Sets the parameters for the specified environment tint mode.
+/// @evtapi
+/// @param tintType
+/// @param arg0
+/// @param arg1
+/// @param arg2
+/// @param arg3
+/// @param arg4
+/// @param arg5
+/// @param arg6
+/// @param arg7
+/// @param arg8
+API_CALLABLE(SetModelTintParams);
+
 /// @evtapi
 /// @param modelID
 /// @param variation
@@ -1411,6 +1433,18 @@ API_CALLABLE(SetPlayerFlagBits);
 API_CALLABLE(GetPlayerActionState);
 
 /// @evtapi
+/// @param outDisguise
+API_CALLABLE(GetPeachDisguise);
+
+/// @evtapi
+/// @param disguise
+API_CALLABLE(SetAvailableDisguise);
+
+/// Prevents Peach's next Sneaky Parasol disguise attempt from succeeding.
+/// @evtapi
+API_CALLABLE(PreventNextPeachDisguise);
+
+/// @evtapi
 /// @param outX
 /// @param outY
 /// @param outZ
@@ -1799,6 +1833,12 @@ API_CALLABLE(EnableMusicProximityMix);
 /// @param mix
 /// @param state
 API_CALLABLE(AdjustMusicProximityMix);
+
+/// Adjusts the proximity mix as the player enters or leaves a configured area.
+/// This function runs indefinitely and should be called from a thread.
+/// @evtapi
+/// @param trigger MusicProximityTrigger*
+API_CALLABLE(MonitorMusicProximityTrigger);
 
 /// @evtapi
 /// @param trackVolSet

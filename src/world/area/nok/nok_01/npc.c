@@ -11,8 +11,8 @@
 #include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/npc/Bobomb/idle.inc.c"
 
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
 #include "world/common/npc/Quizmo/quiz.inc.c"
 

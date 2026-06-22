@@ -437,7 +437,7 @@ EvtScript N(EVS_UpdateStatuePositions) = {
     End
 };
 
-#include "world/common/todo/PushObjectSupport.inc.c"
+#include "world/common/util/PushObjectSupport.inc.c"
 
 EvtScript N(EVS_PushStatue_Impl) = {
     Call(N(GetPlayerPushDirection), LVarA)

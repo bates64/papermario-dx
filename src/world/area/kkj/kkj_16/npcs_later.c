@@ -20,9 +20,7 @@ AnimID N(LimitAnims_HammerBros)[] = {
 };
 
 #include "../common/Searchlights.inc.c"
-#include "world/common/todo/GetPeachDisguise.inc.c"
-#include "../common/PreventNextPeachDisguise.inc.c"
-#include "../common/ApproachPlayer50Units.inc.c"
+#include "../common/GetApproachPeachPos.inc.c"
 
 EvtScript N(EVS_NpcInteract_HammerBros_01) = {
     IfEq(GF_KKJ16_Gift_ShootingStar, false)
@@ -68,7 +66,7 @@ EvtScript N(EVS_NpcInteract_HammerBros_03) = {
 
 EvtScript N(EVS_CapturePeach) = {
     Call(DisablePlayerInput, true)
-    Call(N(PreventNextPeachDisguise))
+    Call(PreventNextPeachDisguise)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
@@ -79,7 +77,7 @@ EvtScript N(EVS_CapturePeach) = {
     Call(SetPlayerAnimation, ANIM_Peach2_Gasp)
     Call(SetNpcAnimation, NPC_SELF, ANIM_HammerBros_Anim02)
     Call(SpeakToPlayer, NPC_SELF, ANIM_HammerBros_Anim0A, ANIM_HammerBros_Anim02, 0, MSG_Peach_0174)
-    Call(N(ApproachPlayer50Units), -1, LVar3, LVar0, LVar2)
+    Call(N(GetApproachPeachPos), NPC_SELF, 50, LVar3, LVar0, LVar2)
     IfNe(LVar3, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_HammerBros_Anim07)
         Call(SetNpcSpeed, NPC_SELF, Float(5.0))
@@ -98,7 +96,7 @@ EvtScript N(EVS_CapturePeach) = {
 
 EvtScript N(EVS_WatchForPlayer) = {
     Loop(0)
-        Call(N(GetPeachDisguise), LVar1)
+        Call(GetPeachDisguise, LVar1)
         IfEq(LVar1, PEACH_DISGUISE_NONE)
             Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
             Call(N(CheckPlayerInSight), LVar0, 85, 60, 38)

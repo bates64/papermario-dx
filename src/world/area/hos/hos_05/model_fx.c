@@ -4,7 +4,6 @@
 
 u16 StarShrineLightBeamAlpha = 255;
 
-#include "world/common/atomic/ApplyTint.inc.c"
 
 API_CALLABLE(N(SetWorldColorParams)) {
     Bytecode* args;
@@ -163,8 +162,8 @@ EvtScript N(EVS_SetupLightBeam) = {
 EvtScript N(EVS_Starship_Summon) = {
     Call(DisablePlayerInput, true)
     Thread
-        Call(N(SetModelTintMode), 2, nullptr, ENV_TINT_REMAP)
-        Call(N(SetModelTintMode), 1, Ref(N(MostSolidGeometry)), ENV_TINT_REMAP)
+        Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
+        Call(SetModelTintMode, APPLY_TINT_GROUPS, Ref(N(MostSolidGeometry)), ENV_TINT_REMAP)
         Call(N(SetWorldColorParams), 255, 255, 255, 0, 0, 0, 0)
         Wait(1)
         Call(N(SetWorldColorParams), 102, 102, 102, 0, 0, 0, 60)

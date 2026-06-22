@@ -3,9 +3,7 @@
 
 #include "../common/Searchlights.inc.c"
 
-#include "world/common/todo/GetPeachDisguise.inc.c"
-#include "../common/PreventNextPeachDisguise.inc.c"
-#include "../common/ApproachPlayer50Units.inc.c"
+#include "../common/GetApproachPeachPos.inc.c"
 
 #include "world/common/enemy/Kammy/idle.inc.c"
 #include "world/common/enemy/Koopatrol/idle.inc.c"
@@ -44,7 +42,7 @@ EvtScript N(EVS_NpcInteract_Koopatrol_01) = {
 
 EvtScript N(EVS_CapturePeach) = {
     Call(DisablePlayerInput, true)
-    Call(N(PreventNextPeachDisguise))
+    Call(PreventNextPeachDisguise)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
@@ -55,7 +53,7 @@ EvtScript N(EVS_CapturePeach) = {
     Call(SetPlayerAnimation, ANIM_Peach2_Gasp)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim01)
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Anim08, ANIM_WorldKoopatrol_Anim01, 0, MSG_Peach_0174)
-    Call(N(ApproachPlayer50Units), -1, LVar3, LVar0, LVar2)
+    Call(N(GetApproachPeachPos), NPC_SELF, 50, LVar3, LVar0, LVar2)
     IfNe(LVar3, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim06)
         Call(SetNpcSpeed, NPC_SELF, Float(5.0))
@@ -74,7 +72,7 @@ EvtScript N(EVS_CapturePeach) = {
 
 EvtScript N(EVS_Koopatrol_WatchForPeach) = {
     Loop(0)
-        Call(N(GetPeachDisguise), LVar1)
+        Call(GetPeachDisguise, LVar1)
         IfEq(LVar1, PEACH_DISGUISE_NONE)
             Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
             Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach)))

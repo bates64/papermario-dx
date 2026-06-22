@@ -7,7 +7,7 @@
 #include "world/common/enemy/Koopatrol/idle.inc.c"
 
 #include "../common/Searchlights.inc.c"
-#include "../common/ApproachPlayer50Units.inc.c"
+#include "../common/GetApproachPeachPos.inc.c"
 
 EvtScript N(EVS_CapturePeach) = {
     Call(DisablePlayerInput, true)
@@ -21,7 +21,7 @@ EvtScript N(EVS_CapturePeach) = {
     Call(SetPlayerAnimation, ANIM_Peach2_Gasp)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim01)
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Anim08, ANIM_WorldKoopatrol_Anim01, 0, MSG_Peach_0174)
-    Call(N(ApproachPlayer50Units), -1, LVar3, LVar0, LVar2)
+    Call(N(GetApproachPeachPos), NPC_SELF, 50, LVar3, LVar0, LVar2)
     IfNe(LVar3, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim06)
         Call(SetNpcSpeed, NPC_SELF, Float(5.0))

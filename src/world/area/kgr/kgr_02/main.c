@@ -18,7 +18,7 @@ export MapSettings N(settings) = {
     .sfxReverb = 1,
 };
 
-#include "world/common/atomic/CreateDarkness.inc.c"
+#include "world/common/util/CreateDarkness.inc.c"
 
 EvtScript N(EVS_ExitWalk_kgr_01_1) = EVT_EXIT_WALK(60, kgr_02_ENTRY_0, "kgr_01", kgr_01_ENTRY_1);
 

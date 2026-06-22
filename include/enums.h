@@ -3960,6 +3960,12 @@ enum ModelGroupVisibility {
     MODEL_GROUP_OTHERS_VISIBLE  = 3,
 };
 
+enum ApplyTintTarget {
+    APPLY_TINT_MODELS = 0,
+    APPLY_TINT_GROUPS = 1,
+    APPLY_TINT_BG     = 2,
+};
+
 enum TintMode {
     ENV_TINT_UNCHANGED  = -1,
     // no additional tint is applied (model is still be affected by world fog)

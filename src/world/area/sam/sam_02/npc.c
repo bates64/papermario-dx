@@ -1,8 +1,8 @@
 #include "sam_02.h"
 #include "sprite/player.h"
 
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
 #include "world/common/npc/Penguin/wander.inc.c"
 #include "world/common/npc/Penguin/idle.inc.c"

@@ -1,18 +1,34 @@
 #include "pra_13.h"
+#include "effects.h"
 #include "sprite.h"
 #include "sprite/player.h"
 
 #include "world/common/enemy/Bombette/base.h"
 #include "world/common/enemy/Duplighost/disguised.inc.c"
 
-#include "world/common/todo/PlayBigSmokePuff.inc.c"
+API_CALLABLE(N(PlayBigSmokePuff)) {
+    Bytecode* args = script->ptrReadPos;
+    s32 x = evt_get_variable(script, *args++);
+    s32 y = evt_get_variable(script, *args++);
+    s32 z = evt_get_variable(script, *args++);
 
-void N(appendGfx_fake_player)(void* data);
-void N(worker_render_fake_player)(void);
+    fx_big_smoke_puff(x, y, z);
 
-API_CALLABLE(N(CreateFakePlayerRenderer)) {
-    script->array[0] = create_worker_scene(nullptr, N(worker_render_fake_player));
     return ApiStatus_DONE2;
+}
+
+void N(appendGfx_fake_player)(void* data) {
+    Npc* npc = data;
+    Matrix4f mtxTransform, mtxTranslate, sp98, mtxScale;
+
+    npc_get_render_yaw(npc);
+    guRotateF(mtxTransform, npc->renderYaw + gCameras[gCurrentCamID].curYaw, 0.0f, 1.0f, 0.0f);
+    guScaleF(mtxScale, SPRITE_WORLD_SCALE_F, SPRITE_WORLD_SCALE_F, SPRITE_WORLD_SCALE_F);
+    guMtxCatF(mtxTransform, mtxScale, mtxTransform);
+    guTranslateF(mtxTranslate, npc->pos.x, npc->pos.y, npc->pos.z);
+    guMtxCatF(mtxTransform, mtxTranslate, mtxTransform);
+    spr_update_player_sprite(PLAYER_SPRITE_AUX2, npc->curAnim, 1.0f);
+    spr_draw_player_sprite(PLAYER_SPRITE_AUX2, 0, 0, 0, mtxTransform);
 }
 
 void N(worker_render_fake_player)(void) {
@@ -32,18 +48,9 @@ void N(worker_render_fake_player)(void) {
     }
 }
 
-void N(appendGfx_fake_player)(void* data) {
-    Npc* npc = data;
-    Matrix4f mtxTransform, mtxTranslate, sp98, mtxScale;
-
-    npc_get_render_yaw(npc);
-    guRotateF(mtxTransform, npc->renderYaw + gCameras[gCurrentCamID].curYaw, 0.0f, 1.0f, 0.0f);
-    guScaleF(mtxScale, SPRITE_WORLD_SCALE_F, SPRITE_WORLD_SCALE_F, SPRITE_WORLD_SCALE_F);
-    guMtxCatF(mtxTransform, mtxScale, mtxTransform);
-    guTranslateF(mtxTranslate, npc->pos.x, npc->pos.y, npc->pos.z);
-    guMtxCatF(mtxTransform, mtxTranslate, mtxTransform);
-    spr_update_player_sprite(PLAYER_SPRITE_AUX2, npc->curAnim, 1.0f);
-    spr_draw_player_sprite(PLAYER_SPRITE_AUX2, 0, 0, 0, mtxTransform);
+API_CALLABLE(N(CreateFakePlayerRenderer)) {
+    script->array[0] = create_worker_scene(nullptr, N(worker_render_fake_player));
+    return ApiStatus_DONE2;
 }
 
 EvtScript N(EVS_ImposterSpin) = {

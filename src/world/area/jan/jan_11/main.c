@@ -1,6 +1,6 @@
 #include "jan_11.h"
 
-#include "world/common/atomic/CreateDarkness.inc.c"
+#include "world/common/util/CreateDarkness.inc.c"
 
 #include "world/common/entity/Pipe.inc.c"
 

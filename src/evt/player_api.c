@@ -458,8 +458,28 @@ API_CALLABLE(SetPlayerFlagBits) {
 }
 
 API_CALLABLE(GetPlayerActionState) {
-    Bytecode outVar = *script->ptrReadPos;
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+
     evt_set_variable(script, outVar, gPlayerStatus.actionState);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(GetPeachDisguise) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+
+    evt_set_variable(script, outVar, gPlayerStatus.peachDisguise);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(SetAvailableDisguise) {
+    gPlayerStatus.availableDisguiseType = evt_get_variable(script, *script->ptrReadPos);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(PreventNextPeachDisguise) {
+    gGameStatus.peachFlags |= PEACH_FLAG_BLOCK_NEXT_DISGUISE;
     return ApiStatus_DONE2;
 }
 
@@ -477,24 +497,21 @@ API_CALLABLE(GetPlayerPos) {
 }
 
 API_CALLABLE(GetPlayerAnimation) {
-    Bytecode outVar = *script->ptrReadPos;
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
 
     evt_set_variable(script, outVar, gPlayerStatus.anim);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(FullyRestoreHPandFP) {
-    PlayerData* playerData = &gPlayerData;
-
-    playerData->curHP = playerData->curMaxHP;
-    playerData->curFP = playerData->curMaxFP;
+    gPlayerData.curHP = gPlayerData.curMaxHP;
+    gPlayerData.curFP = gPlayerData.curMaxFP;
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(FullyRestoreSP) {
-    PlayerData* playerData = &gPlayerData;
-
-    playerData->starPower = playerData->maxStarPower * SP_PER_BAR;
+    gPlayerData.starPower = gPlayerData.maxStarPower * SP_PER_BAR;
     return ApiStatus_DONE2;
 }
 

@@ -229,8 +229,8 @@ EvtScript N(EVS_SetupRooms) = {
     End
 };
 
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
 EvtScript N(EVS_ToadHouse_SetDialogue) = {
     IfEq(GF_KMR02_ToadHouse_Intro, false)

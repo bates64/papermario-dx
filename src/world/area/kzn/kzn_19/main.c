@@ -1,7 +1,7 @@
 #include "kzn_19.h"
 #include "sprite/player.h"
 
-#include "world/common/atomic/StarSpiritCard.inc.c"
+#include "world/common/prefab/StarSpiritCard.inc.c"
 
 EvtScript N(EVS_TrySpawningStarCard) = {
     // determine if card should be spawned

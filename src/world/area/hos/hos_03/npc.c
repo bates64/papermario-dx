@@ -4,8 +4,8 @@
 #include "world/common/npc/StarMan/idle.inc.c"
 #include "world/common/npc/StarMan/wander.inc.c"
 
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouseHos.data.inc.c"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouseHos.data.inc.c"
 
 #include "world/common/npc/Quizmo/quiz.inc.c"
 

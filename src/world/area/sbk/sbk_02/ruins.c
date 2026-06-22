@@ -2,7 +2,6 @@
 #include "effects.h"
 #include "model.h"
 
-#include "world/common/atomic/ApplyTint.inc.c"
 
 API_CALLABLE(N(HideSun)) {
     EffectInstance* effect = (EffectInstance*)evt_get_variable(script, MV_Effect_Sun);
@@ -90,10 +89,10 @@ s32 N(ModelList_Translucent)[] = {
 };
 
 EvtScript N(EVS_DarkenEnvironment) = {
-    Call(N(SetModelTintMode), APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
-    Call(N(SetModelTintMode), APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
-    Call(N(SetModelTintMode), APPLY_TINT_GROUPS, Ref(N(ModelList_Solid)), ENV_TINT_NONE)
-    Call(N(SetModelTintMode), APPLY_TINT_MODELS, Ref(N(ModelList_Translucent)), ENV_TINT_NONE)
+    Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
+    Call(SetModelTintMode, APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
+    Call(SetModelTintMode, APPLY_TINT_GROUPS, Ref(N(ModelList_Solid)), ENV_TINT_NONE)
+    Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(N(ModelList_Translucent)), ENV_TINT_NONE)
     Call(N(InterpWorldEnvColor), 255, 255, 255, 0, 0, 0, 0)
     Wait(1)
     Call(N(InterpWorldEnvColor), 44, 32, 177, 0, 0, 0, 60)
@@ -692,10 +691,10 @@ EvtScript N(EVS_Ruins_Arise_Continued) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(N(SetModelTintMode), APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
-    Call(N(SetModelTintMode), APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
-    Call(N(SetModelTintMode), APPLY_TINT_GROUPS, Ref(N(ModelList_Solid)), ENV_TINT_NONE)
-    Call(N(SetModelTintMode), APPLY_TINT_MODELS, Ref(N(ModelList_Translucent)), ENV_TINT_NONE)
+    Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
+    Call(SetModelTintMode, APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
+    Call(SetModelTintMode, APPLY_TINT_GROUPS, Ref(N(ModelList_Solid)), ENV_TINT_NONE)
+    Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(N(ModelList_Translucent)), ENV_TINT_NONE)
     Call(N(InterpWorldEnvColor), 44, 32, 177, 0, 0, 0, 0)
     Exec(N(EVS_Ruins_FinishRising))
     Exec(N(EVS_Steps_FinishRising))

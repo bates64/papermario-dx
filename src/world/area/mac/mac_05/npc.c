@@ -2,7 +2,7 @@
 #include "sprite/player.h"
 #include "inventory.h"
 
-#include "world/common/atomic/Whale.h"
+#include "world/common/prefab/Whale.h"
 
 #include "world/common/npc/Whale/idle.inc.c"
 #include "world/common/npc/Kolorado/idle.inc.c"

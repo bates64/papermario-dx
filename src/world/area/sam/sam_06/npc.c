@@ -15,8 +15,8 @@
 #include "world/common/npc/StarMan/idle.inc.c"
 #include "world/common/npc/StarMan/wander.inc.c"
 
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
 LetterDelivery N(LetterDelivery_FrostT) = {
     .recipientID = NPC_ShiverToad_03,

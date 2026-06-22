@@ -745,7 +745,7 @@ EvtScript N(EVS_TwinkFollowPath) = {
     End
 };
 
-EvtScript N(EVS_ApproachPeach) = {
+EvtScript N(EVS_GetApproachPeachPos) = {
     Call(SetNpcVar, NPC_HammerBros, 0, 1)
     Thread
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -1286,7 +1286,7 @@ EvtScript N(EVS_ManageQuizGame) = {
     Call(SetNpcAnimation, NPC_Bowser, ANIM_WorldBowser_Idle)
     Call(EndSpeech, NPC_Bowser, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 5)
     Call(SpeakToPlayer, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Anim08, ANIM_WorldKoopatrol_Anim01, 5, MSG_Peach_012C)
-    ExecWait(N(EVS_ApproachPeach))
+    ExecWait(N(EVS_GetApproachPeachPos))
     Call(SpeakToPlayer, NPC_HammerBros, ANIM_HammerBros_Anim0B, ANIM_HammerBros_Anim03, 5, MSG_Peach_012D)
     ExecWait(N(EVS_PickUpPeach))
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Carried, ANIM_Peach2_Carried, 5, MSG_Peach_012E)

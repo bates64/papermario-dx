@@ -17,4 +17,4 @@
 #define WHALE_COLLIDER_SPEAK    COLLIDER_tt9
 #define WHALE_COLLIDER_SIDES    COLLIDER_kujira_atari
 
-#include "world/common/atomic/Whale.inc.c"
+#include "world/common/prefab/Whale.inc.c"

@@ -2,7 +2,6 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/todo/GetPeachDisguise.inc.c"
 
 EvtScript N(EVS_Inspect_Fireplace) = {
     Call(DisablePlayerInput, true)
@@ -75,7 +74,7 @@ EvtScript N(EVS_Inspect_Vanity) = {
     Call(DisablePlayerInput, true)
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH1_BEGAN_PEACH_MISSION, STORY_CH7_BEGAN_PEACH_MISSION)
-            Call(N(GetPeachDisguise), LVar0)
+            Call(GetPeachDisguise, LVar0)
             IfEq(LVar0, 0)
                 Call(InterpPlayerYaw, 45, 10)
                 Wait(10)

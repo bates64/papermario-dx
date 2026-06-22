@@ -14,7 +14,7 @@
 
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
-#include "world/common/atomic/MarioSalute.inc.c"
+#include "world/common/util/MarioSalute.inc.c"
 
 LetterDelivery N(LetterDelivery_Kolorado) = {
     .recipientID = NPC_Kolorado,

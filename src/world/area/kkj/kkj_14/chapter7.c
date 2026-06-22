@@ -16,7 +16,7 @@ Vec3f N(TwinkAttackPath)[] = {
     {  390.0,    90.0,   10.0 },
 };
 
-EvtScript N(EVS_ApproachPeach) = {
+EvtScript N(EVS_GetApproachPeachPos) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -360,7 +360,7 @@ EvtScript N(EVS_Scene_Chapter7) = {
     Call(SetNpcFlagBits, NPC_Ch7_Koopatrol_01, NPC_FLAG_GRAVITY, true)
     Call(SetNpcFlagBits, NPC_Ch7_Koopatrol_02, NPC_FLAG_GRAVITY, true)
     Wait(10 * DT)
-    ExecWait(N(EVS_ApproachPeach))
+    ExecWait(N(EVS_GetApproachPeachPos))
     ExecWait(N(EVS_TiePeachUp))
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Angry)
     Call(LoadPath, 15, Ref(N(TwinkAttackPath)), ARRAY_COUNT(N(TwinkAttackPath)), EASING_LINEAR)

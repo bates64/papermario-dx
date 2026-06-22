@@ -23,7 +23,7 @@ API_CALLABLE(N(ForceDisguiseLoss)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ApproachPeach) = {
+EvtScript N(EVS_GetApproachPeachPos) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -331,7 +331,7 @@ EvtScript N(EVS_Scene_KammyUnmasksPeach) = {
         EndLoop
         Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
     EndThread
-    ExecWait(N(EVS_ApproachPeach))
+    ExecWait(N(EVS_GetApproachPeachPos))
     ExecWait(N(EVS_PickUpPeach))
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Carried, ANIM_Peach2_Carried, 5, MSG_Peach_0158)
     ExecWait(N(EVS_CarryPeachAway))

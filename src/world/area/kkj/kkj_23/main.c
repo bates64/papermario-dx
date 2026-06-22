@@ -1,7 +1,6 @@
 #include "kkj_23.h"
 
 #include "../common/RestoreFromPeachState.inc.c"
-#include "../common/SetAvailableDisguise.inc.c"
 
 EvtScript N(EVS_EndPeachChapter6) = {
     Set(LVar0, GB_KKJ_LastPartner)
@@ -44,7 +43,7 @@ EvtScript N(EVS_Main) = {
     Call(SetSpriteShading, SHADING_KKJ_23)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
-        Call(N(SetAvailableDisguise), PEACH_DISGUISE_KOOPATROL)
+        Call(SetAvailableDisguise, PEACH_DISGUISE_KOOPATROL)
         Call(MakeNpcs, false, Ref(N(PeachNPCs)))
     Else
         Call(MakeNpcs, false, Ref(N(FinaleNPCs)))

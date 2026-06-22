@@ -6,8 +6,8 @@
 #include "world/common/npc/Dryite/idle.inc.c"
 #include "world/common/enemy/Koopatrol/patrol.inc.c"
 
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
 EvtScript N(EVS_ToadHouse_SetDialogue) = {
     Set(LVar0, MSG_CH8_0044)

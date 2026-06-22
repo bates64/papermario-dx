@@ -1,7 +1,7 @@
 #include "arn_07.h"
 #include "sprite/player.h"
 
-#include "world/common/atomic/StarSpiritCard.inc.c"
+#include "world/common/prefab/StarSpiritCard.inc.c"
 
 ITEM_LIST(N(KeyList), ITEM_MYSTICAL_KEY);
 

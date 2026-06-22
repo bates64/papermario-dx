@@ -17,4 +17,4 @@
 #define WHALE_COLLIDER_SPEAK    NO_COLLIDER
 #define WHALE_COLLIDER_SIDES    NO_COLLIDER
 
-#include "world/common/atomic/Whale.inc.c"
+#include "world/common/prefab/Whale.inc.c"

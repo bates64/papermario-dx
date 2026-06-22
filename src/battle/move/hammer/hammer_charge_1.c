@@ -6,7 +6,7 @@
 
 #include "battle/common/move/HammerSupport.inc.c"
 
-#include "world/common/todo/IsHammerMaxCharged.inc.c"
+#include "battle/common/IsHammerMaxCharged.inc.c"
 
 BSS s32 D_802A43D0;
 
@@ -38,7 +38,7 @@ API_CALLABLE(func_802A10C8_759678) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/UnkMoveFunc2.inc.c"
+#include "battle/common/UnkMoveFunc2.inc.c"
 
 API_CALLABLE(func_802A12FC_7598AC) {
     if (D_802A43D0 == 0) {

@@ -16,7 +16,7 @@ export MapSettings N(settings) = {
     .bgName = "nok_bg",
 };
 
-#include "world/common/atomic/BetaFloorPanels.inc.c"
+#include "world/common/prefab/BetaFloorPanels.inc.c"
 
 EvtScript N(EVS_NpcCreate_00) = {
     Return

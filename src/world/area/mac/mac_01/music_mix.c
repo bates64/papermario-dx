@@ -1,6 +1,5 @@
 #include "mac_01.h"
 
-#include "world/common/atomic/MonitorMusicProximityTrigger.inc.c"
 
 MusicProximityTrigger N(MusicMixTrigger1) = {
     .pos = { -190.0f, -210.0f },
@@ -32,13 +31,13 @@ EvtScript N(EVS_SetupMusicMix) = {
     IfEq(MF_SetupMusicMixes, false)
         Set(MF_SetupMusicMixes, true)
         Thread
-            Call(N(MonitorMusicProximityTrigger), Ref(N(MusicMixTrigger1)))
+            Call(MonitorMusicProximityTrigger, Ref(N(MusicMixTrigger1)))
         EndThread
         Thread
-            Call(N(MonitorMusicProximityTrigger), Ref(N(MusicMixTrigger2)))
+            Call(MonitorMusicProximityTrigger, Ref(N(MusicMixTrigger2)))
         EndThread
         Thread
-            Call(N(MonitorMusicProximityTrigger), Ref(N(MusicMixTrigger3)))
+            Call(MonitorMusicProximityTrigger, Ref(N(MusicMixTrigger3)))
         EndThread
     EndIf
     Return

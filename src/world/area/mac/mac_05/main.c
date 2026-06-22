@@ -1,5 +1,5 @@
 #include "mac_05.h"
-#include "world/common/atomic/Whale.h"
+#include "world/common/prefab/Whale.h"
 
 API_CALLABLE(N(WaveScaleInterp)) {
     Bytecode* args = script->ptrReadPos;

@@ -1,7 +1,7 @@
 #include "isk_16.h"
 #include "sprite/player.h"
 
-#include "world/common/atomic/StarSpiritCard.inc.c"
+#include "world/common/prefab/StarSpiritCard.inc.c"
 
 EvtScript N(EVS_SpawnStarCard) = {
     Switch(GB_StoryProgress)

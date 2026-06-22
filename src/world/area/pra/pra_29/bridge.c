@@ -1,4 +1,5 @@
 #include "pra_29.h"
+#include "effects.h"
 
 void N(set_bride_vertex_positions)(Vtx* arg0, Vtx* arg1, Vtx* dest, s32 numVerticies, s32 extendAmt) {
     s32 temp_t3;
@@ -43,10 +44,18 @@ void N(setup_gfx_bridge)(s32 index) {
         N(set_bride_vertex_positions)(srcVtx1, srcVtx2, dest1, numVertices, extendAmt - 256);
         gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(index * 3));
     }
-
 }
 
-#include "world/common/todo/PlayRisingBubble.inc.c"
+API_CALLABLE(N(PlayRisingBubble)) {
+    Bytecode* args = script->ptrReadPos;
+    s32 x = evt_get_variable(script, *args++);
+    s32 y = evt_get_variable(script, *args++);
+    s32 z = evt_get_variable(script, *args++);
+
+    fx_rising_bubble(0, x, y, z, 0);
+
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_ExtendBridgeFromMirror) = {
     Wait(40)

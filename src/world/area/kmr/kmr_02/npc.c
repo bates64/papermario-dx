@@ -17,7 +17,7 @@ BSS u8 oldEnvR, oldEnvG, oldEnvB;
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 #include "world/common/util/LoadPartyImage.inc.c"
-#include "world/common/atomic/MarioSalute.inc.c"
+#include "world/common/util/MarioSalute.inc.c"
 
 #include "world/common/npc/Quizmo/quiz.inc.c"
 

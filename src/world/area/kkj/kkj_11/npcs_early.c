@@ -2,7 +2,7 @@
 #include "sprite/player.h"
 
 #include "../common/Searchlights.inc.c"
-#include "../common/ApproachPlayer100Units.inc.c"
+#include "../common/GetApproachPeachPos.inc.c"
 
 #include "world/common/enemy/Koopatrol/idle.inc.c"
 
@@ -18,7 +18,7 @@ EvtScript N(EVS_NpcAI_Koopatrol_01_Early) = {
     Call(SetPlayerAnimation, ANIM_Peach2_Gasp)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim02)
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Anim09, ANIM_WorldKoopatrol_Anim02, 0, MSG_Peach_0174)
-    Call(N(ApproachPlayer100Units), -1, LVar3, LVar0, LVar2)
+    Call(N(GetApproachPeachPos), NPC_SELF, 100, LVar3, LVar0, LVar2)
     IfNe(LVar3, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim07)
         Call(SetNpcSpeed, NPC_SELF, Float(5.0))

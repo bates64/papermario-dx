@@ -127,6 +127,55 @@ API_CALLABLE(AdjustMusicProximityMix) {
     return ApiStatus_DONE2;
 }
 
+API_CALLABLE(MonitorMusicProximityTrigger) {
+    Bytecode* args = script->ptrReadPos;
+    MusicProximityTrigger* trigger;
+    s32 stateChanged = false;
+    f32 dist;
+
+    if (isInitialCall) {
+        script->functionTemp[0] = evt_get_variable(script, *args);
+        script->functionTemp[1] = MUSIC_PROXIMITY_FAR;
+        script->functionTemp[2] = ((MusicProximityTrigger*) script->functionTemp[0])->manualActivationFlag;
+    }
+
+    trigger = script->functionTempPtr[0];
+
+    if (evt_get_variable(script, script->functionTemp[2])) {
+        if (script->functionTemp[1] != MUSIC_PROXIMITY_FULL) {
+            script->functionTemp[1] = MUSIC_PROXIMITY_FULL;
+            stateChanged = true;
+        }
+    } else {
+        dist = dist2D(gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z, trigger->pos.x, trigger->pos.z);
+
+        switch (script->functionTemp[1]) {
+            case MUSIC_PROXIMITY_FAR:
+                if (dist < trigger->innerDist) {
+                    script->functionTemp[1] = MUSIC_PROXIMITY_NEAR;
+                    stateChanged = true;
+                }
+                break;
+            case MUSIC_PROXIMITY_NEAR:
+                if (dist > trigger->outerDist) {
+                    script->functionTemp[1] = MUSIC_PROXIMITY_FAR;
+                    stateChanged = true;
+                }
+                break;
+            case MUSIC_PROXIMITY_FULL:
+                script->functionTemp[1] = MUSIC_PROXIMITY_NEAR;
+                stateChanged = true;
+                break;
+        }
+    }
+
+    if (stateChanged) {
+        bgm_adjust_proximity(0, trigger->unk, script->functionTemp[1]);
+    }
+
+    return ApiStatus_BLOCK;
+}
+
 API_CALLABLE(SetTrackVolumes) {
     Bytecode* args = script->ptrReadPos;
     s16 trackVolSet = evt_get_variable(script, *args++);

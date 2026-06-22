@@ -14,8 +14,8 @@ extern EvtScript N(EVS_NpcInit_DisguisedMoustafa);
 #include "world/common/npc/Mouser/idle.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
 
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
 LetterDelivery N(LetterDelivery_MrE) = {
     .recipientID = NPC_Dryite_01,

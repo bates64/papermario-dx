@@ -1,7 +1,7 @@
 #include "pra_32.h"
 #include "sprite/player.h"
 
-#include "world/common/atomic/StarSpiritCard.inc.c"
+#include "world/common/prefab/StarSpiritCard.inc.c"
 
 API_CALLABLE(N(DisableFloorReflections)) {
     gOverrideFlags &= ~GLOBAL_OVERRIDES_ENABLE_FLOOR_REFLECTION;

@@ -3,10 +3,9 @@
 
 #include "world/common/npc/Toad/idle.inc.c"
 
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
-#include "world/common/todo/GetPeachDisguise.inc.c"
 
 EvtScript N(EVS_OpenDresserDoors) = {
     Call(PlaySoundAtCollider, COLLIDER_o80, SOUND_WOODEN_DOOR_OPEN, 0)
@@ -58,7 +57,7 @@ EvtScript N(EVS_ShakeDresser) = {
 };
 
 EvtScript N(EVS_Inspect_Dresser_Peach) = {
-    Call(N(GetPeachDisguise), LVar0)
+    Call(GetPeachDisguise, LVar0)
     IfNe(LVar0, PEACH_DISGUISE_NONE)
         Call(DisablePlayerInput, true)
         Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_Peach_0185)

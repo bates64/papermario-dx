@@ -2,7 +2,6 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-#include "world/common/atomic/ApplyTint.inc.c"
 
 EvtScript N(EVS_ExitWalk_sbk_36_1) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
@@ -30,9 +29,9 @@ EvtScript N(EVS_Scene_RuinsRising) = {
     Call(SetPanTarget, CAM_DEFAULT, 175, 0, -201)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(N(SetModelTintMode), APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
-    Call(N(SetModelTintMode), APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
-    Call(N(SetModelTintParams), ENV_TINT_REMAP, 44, 32, 177, 0, 0, 0, 0, 0, 0)
+    Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
+    Call(SetModelTintMode, APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
+    Call(SetModelTintParams, ENV_TINT_REMAP, 44, 32, 177, 0, 0, 0, 0, 0, 0)
     Call(DisablePlayerInput, true)
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 300, Float(0.2))

@@ -1,6 +1,5 @@
 #include "osr_02.h"
 
-#include "world/common/todo/GetPeachDisguise.inc.c"
 
 #include "world/common/enemy/Clubba/idle.inc.c"
 
@@ -24,7 +23,7 @@ EvtScript N(EVS_NpcInteract_Clubba) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldClubba_Anim08)
     Wait(10)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldClubba_Anim02)
-    Call(N(GetPeachDisguise), LVar0)
+    Call(GetPeachDisguise, LVar0)
     Switch(LVar0)
         CaseEq(0)
             Set(LVar1, MSG_Peach_014A)

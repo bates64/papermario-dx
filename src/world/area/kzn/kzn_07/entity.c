@@ -2,7 +2,6 @@
 #include "effects.h"
 #include "entity.h"
 
-#include "world/common/atomic/PushBlockGravity.inc.c"
 
 API_CALLABLE(N(NotifyChestDone)) {
     get_entity_by_index(script->varTable[0])->dataBuf.chest->gotItemDone = true;
@@ -43,7 +42,7 @@ EvtScript N(EVS_MakeEntities) = {
         Call(AssignScript, Ref(N(EVS_OnBreakBlock)))
     EndIf
     Call(CreatePushBlockGrid, 0, 15, 5, -62, 0, 35, 0)
-    Call(SetPushBlockFallEffect, 0, Ref(N(push_block_handle_fall)))
+    Call(SetPushBlockFallEffect, 0, Ref(PushBlockFallCallback_Gravity))
     Call(SetPushBlock, 0, 8, 1, PUSH_GRID_BLOCK)
     Call(SetPushBlock, 0, 11, 4, PUSH_GRID_BLOCK)
     Return

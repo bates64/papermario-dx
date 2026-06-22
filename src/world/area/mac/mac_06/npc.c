@@ -1,7 +1,7 @@
 #include "mac_06.h"
 #include "model.h"
 #include "effects.h"
-#include "world/common/atomic/Whale.h"
+#include "world/common/prefab/Whale.h"
 
 #define CLONED_MODEL_GULL   CLONED_MODEL(1000)
 

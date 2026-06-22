@@ -10,7 +10,6 @@ API_CALLABLE(N(DisableAllLightSources)) {
     return ApiStatus_DONE2;
 }
 
-#include "../common/SetAvailableDisguise.inc.c"
 
 EvtScript N(EVS_ExitDoors_kkj_10_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_11_ENTRY_0, "kkj_10", kkj_10_ENTRY_1,
     COLLIDER_tts, MODEL_door2, MODEL_door1, DOOR_SOUNDS_LARGE);
@@ -103,7 +102,7 @@ EvtScript N(EVS_Main) = {
             Call(MakeNpcs, false, Ref(N(EarlyNPCs)))
         EndCaseGroup
         CaseEq(STORY_CH6_BEGAN_PEACH_MISSION)
-            Call(N(SetAvailableDisguise), PEACH_DISGUISE_KOOPATROL)
+            Call(SetAvailableDisguise, PEACH_DISGUISE_KOOPATROL)
             Call(EnableModel, MODEL_o364, false)
             Call(EnableModel, MODEL_o365, false)
             Call(EnableModel, MODEL_o366, false)

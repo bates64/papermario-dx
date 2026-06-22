@@ -19,7 +19,7 @@ API_CALLABLE(N(PlaySpringLaunchAnimation)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/atomic/MarioSalute.inc.c"
+#include "world/common/util/MarioSalute.inc.c"
 
 EvtScript N(EVS_KootFavorCheck_Luigi) = {
     IfNe(GB_KootFavor_Current, KOOT_FAVOR_CH3_1)

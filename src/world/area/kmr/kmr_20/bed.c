@@ -1,8 +1,8 @@
 #include "kmr_20.h"
 #include "sprite/player.h"
 
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
 API_CALLABLE(N(MuteAmbienceVolume_Bed)) {
     snd_ambient_set_volume(0, 1000, 1);

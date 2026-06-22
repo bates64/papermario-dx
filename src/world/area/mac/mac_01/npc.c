@@ -24,10 +24,10 @@ extern EvtScript N(EVS_MerlonBargeOut);
 #include "world/common/npc/Bubulb/idle.inc.c"
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
-#include "world/common/atomic/KnockDownPlayer.inc.c"
+#include "world/common/util/KnockDownPlayer.inc.c"
 
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
 API_CALLABLE(N(GetPlayerCoins)) {
     script->varTable[0] = gPlayerData.coins;

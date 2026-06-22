@@ -1,6 +1,5 @@
 #include "hos_05.h"
 
-#include "world/common/atomic/ApplyTint.inc.c"
 
 API_CALLABLE(N(AwaitScriptComplete)) {
     Bytecode* args = script->ptrReadPos;

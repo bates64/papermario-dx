@@ -1,6 +1,6 @@
 #include "kpa_113.h"
 
-#include "world/common/todo/PushObjectSupport.inc.c"
+#include "world/common/util/PushObjectSupport.inc.c"
 
 EvtScript N(EVS_PushLeftStatue_Impl) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)

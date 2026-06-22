@@ -125,7 +125,6 @@ EvtScript N(EVS_EnterFalling) = {
     End
 };
 
-#include "world/common/atomic/ApplyTint.inc.c"
 
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
@@ -147,9 +146,9 @@ EvtScript N(EVS_Main) = {
     ExecWait(N(EVS_SetupMusic))
     Exec(N(EVS_SetupBushes))
     Exec(N(EVS_SpawnButterflies))
-    Call(N(SetModelTintMode), APPLY_TINT_MODELS, -1, 3)
-    Call(N(SetModelTintMode), APPLY_TINT_BG, nullptr, 3)
-    Call(N(SetModelTintParams), ENV_TINT_REMAP, 255, 255, 255, 0, 0, 25, 0, 0, 0)
+    Call(SetModelTintMode, APPLY_TINT_MODELS, -1, ENV_TINT_REMAP)
+    Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
+    Call(SetModelTintParams, ENV_TINT_REMAP, 255, 255, 255, 0, 0, 25, 0, 0, 0)
     Return
     End
 };

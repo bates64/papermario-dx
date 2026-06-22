@@ -1,7 +1,7 @@
 #include "common.h"
 
 // unused early(?) versions of both flippable and breakable floor panels.
-// unlike those fpund in the final game, models and colliders for these panels must be
+// unlike those found in the final game, models and colliders for these panels must be
 // manually set up by the map author. a usable flip panel example is found in tst_13.
 
 extern EvtScript N(EVS_BetaBreakFloor_Touch);

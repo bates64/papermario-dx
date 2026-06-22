@@ -33,7 +33,7 @@ Vec3f N(TwinkFollowCh3Path2)[] = {
     {  250.0,    40.0,  -70.0 },
 };
 
-EvtScript N(EVS_ApproachPeach_Ch3) = {
+EvtScript N(EVS_GetApproachPeachPos_Ch3) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Sub(LVar0, 10)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
@@ -298,7 +298,7 @@ EvtScript N(EVS_Scene_Chapter3) = {
     Call(SpeakToNpc, NPC_Koopatrol_03, ANIM_WorldKoopatrol_Anim08, ANIM_WorldKoopatrol_Anim01, 0, NPC_Bowser, MSG_Peach_0095)
     Call(InterpPlayerYaw, 90, 0)
     Call(SetPlayerAnimation, ANIM_Peach1_Idle)
-    ExecWait(N(EVS_ApproachPeach_Ch3))
+    ExecWait(N(EVS_GetApproachPeachPos_Ch3))
     ExecWait(N(EVS_PickUpPeach_Ch3))
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Carried, ANIM_Peach2_Carried, 5, MSG_Peach_0096)
     ExecWait(N(EVS_CarryPeachAway_Ch3))

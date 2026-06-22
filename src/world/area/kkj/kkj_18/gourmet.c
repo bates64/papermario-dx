@@ -37,7 +37,7 @@ Vec3f N(TwinkDepartPath)[] = {
     {  160.0,    60.0,  -25.0 },
 };
 
-EvtScript N(EVS_ApproachPeach) = {
+EvtScript N(EVS_GetApproachPeachPos) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, 16)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -628,7 +628,7 @@ EvtScript N(EVS_Scene_JudgeCake) = {
     Call(SpeakToNpc, NPC_Kammy, ANIM_WorldKammy_Anim05, ANIM_WorldKammy_Anim01, 0, NPC_Koopatrol_01, MSG_Peach_00B5)
     KillThread(LVarA)
     Call(DisablePlayerPhysics, true)
-    ExecWait(N(EVS_ApproachPeach))
+    ExecWait(N(EVS_GetApproachPeachPos))
     ExecWait(N(EVS_PickUpPeach))
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Carried, ANIM_Peach2_Carried, 5, MSG_Peach_00B6)
     Thread

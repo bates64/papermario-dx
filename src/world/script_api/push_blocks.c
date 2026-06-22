@@ -1,10 +1,10 @@
 #include "common.h"
 #include "entity.h"
+#include "effects.h"
 
 extern PushBlockGrid* wPushBlockGrids[8];
 
 // outVars for values returned by FetchPushedBlockProperties
-// TODO fix ordering (swap XYZ, IJK)
 enum {
     BLOCK_PROP_X    = LVar0,
     BLOCK_PROP_Y    = LVar1,
@@ -28,6 +28,30 @@ enum {
 f32 PushBlockMovePositions[] = {
     0.04, 0.04, 0.08, 0.16, 0.21, 0.4, 0.6, 0.72, 0.84, 0.92, 0.96, 0.96, 1.0,
 };
+
+static f32 PushBlockFallPositions[] = {
+    0.02, 0.02, 0.04, 0.08, 0.11, 0.2, 0.3, 0.31,
+    0.42, 0.46, 0.5, 0.53, 0.56, 0.59, 0.62, 0.65,
+    0.68, 0.71, 0.74, 0.77, 0.8, 0.83, 0.86, 0.89,
+    0.92, 0.95, 0.98, 1.0,
+};
+
+s32 PushBlockFallCallback_Gravity(Entity* block, Evt* source) {
+    block->pos.y = source->varTable[0] - (PushBlockFallPositions[source->functionTemp[0]] * BLOCK_GRID_SIZE);
+
+    if (source->functionTemp[0] == 0) {
+        sfx_play_sound_at_position(SOUND_PUSH_BLOCK_FALL, SOUND_SPACE_DEFAULT,
+                                   block->pos.x, block->pos.y, block->pos.z);
+    }
+
+    if ((source->functionTemp[0] > 4) && (source->functionTemp[0] & 1)) {
+        fx_smoke_burst(1, block->pos.x, block->pos.y, block->pos.z, 1.0f, 20);
+    }
+
+    source->functionTemp[0]++;
+
+    return source->functionTemp[0] == ARRAY_COUNT(PushBlockFallPositions);
+}
 
 API_CALLABLE(MovePlayerTowardBlock) {
     PlayerStatus* playerStatus = &gPlayerStatus;
