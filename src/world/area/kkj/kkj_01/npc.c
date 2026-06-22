@@ -154,10 +154,10 @@ EvtScript N(EVS_NpcInteract_ToadGuard_02) = {
             Else
                 Set(LVar3, 50)
             EndIf
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetNpcSpeed, NPC_SELF, Float(2.0))
             Call(NpcMoveTo, NPC_SELF, LVar3, -245, 0)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Call(SetNpcAnimation, NPC_ToadGuard_02, ANIM_ToadGuard_Yellow_Idle)
             Call(InterpNpcYaw, NPC_SELF, 180, 5)
             Set(AF_KKJ01_MarioLetIntoBedroom, true)

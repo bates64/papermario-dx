@@ -421,8 +421,8 @@ EvtScript N(EVS_LowerCameraBeforeTrainRide) = {
 };
 
 EvtScript N(EVS_BoardTrain) = {
-    Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Thread
         UseBuf(LVar0)
         BufRead3(LVar1, LVar2, LVar3)
@@ -480,8 +480,8 @@ EvtScript N(EVS_BoardTrain) = {
 EvtScript N(EVS_DisembarkTrain) = {
     Call(StopSound, SOUND_LRAW_TOYBOX_TRAIN_GEAR)
     Call(SetMusic, 0, SONG_SHY_GUY_TOYBOX, 0, VOL_LEVEL_FULL)
-    Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     SetF(LVar0, MV_TrainPosX)
     SetF(LVar1, MV_TrainPosZ)
     SetF(LVar2, MV_TrainYaw)
@@ -501,7 +501,7 @@ EvtScript N(EVS_DisembarkTrain) = {
         Call(NpcMoveTo, NPC_Conductor, LVar3, LVar4, 0)
         Call(SetNpcAnimation, NPC_Conductor, ANIM_TrainToad_Idle)
         Call(InterpNpcYaw, NPC_Conductor, 270, 15)
-        Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     EndThread
     Wait(10)
     Thread
@@ -518,7 +518,7 @@ EvtScript N(EVS_DisembarkTrain) = {
     Call(SetNpcSpeed, NPC_PARTNER, Float(2.5))
     Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar1, 0)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };

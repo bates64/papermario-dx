@@ -136,7 +136,7 @@ EvtScript N(EVS_Scene_Merle_Greeting) = {
     Set(MF_MerleReady, false)
     Thread
         Call(BindNpcInteract, NPC_Merle, 0)
-        Call(SetNpcFlagBits, NPC_Merle, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_Merle, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Walk)
         Call(SetNpcSpeed, NPC_Merle, Float(2.0 / DT))
         Call(NpcMoveTo, NPC_Merle, -78, 287, 0)
@@ -386,7 +386,7 @@ EvtScript N(EVS_Scene_Merle_EnterHouse) = {
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(BindNpcInteract, NPC_Merle, Ref(N(EVS_NpcInteract_Merle)))
-    Call(SetNpcFlagBits, NPC_Merle, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Merle, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(DisablePlayerInput, false)
     Return
     End

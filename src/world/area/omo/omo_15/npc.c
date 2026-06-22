@@ -30,7 +30,7 @@ EvtScript N(EVS_Scene_MeetingGeneralGuy) = {
             Call(InterruptUsePartner)
             Wait(30 * DT)
             Call(func_802D2C14, 1)
-            Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Wait(45 * DT)
             Call(func_802D2C14, 0)
         EndIf

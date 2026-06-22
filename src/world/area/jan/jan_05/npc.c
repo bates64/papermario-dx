@@ -139,17 +139,17 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
         Set(LVar2, -27)
     EndIf
     Thread
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Purple_Walk)
         Call(NpcMoveTo, NPC_SELF, -270, -248, 30)
         Call(NpcFacePlayer, NPC_SELF, 0)
     EndThread
     Thread
         Call(DisablePartnerAI, false)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
         Call(NpcMoveTo, NPC_PARTNER, LVar1, -250, 30)
         Call(NpcFaceNpc, NPC_PARTNER, NPC_YoshiKid, 0)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, false)
         Call(EnablePartnerAI)
     EndThread
     Thread

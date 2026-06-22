@@ -59,7 +59,7 @@ EvtScript N(EVS_Scene_StarSpiritsPlea) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.5 / DT))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(func_802D2C14, 2)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Thread
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Add(LVar2, 30)
@@ -72,7 +72,7 @@ EvtScript N(EVS_Scene_StarSpiritsPlea) = {
     Wait(10 * DT)
     Wait(1)
     Call(PlayerFaceNpc, NPC_Eldstar, true)
-    Call(SetNpcFlagBits, NPC_Eldstar, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Eldstar, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcJumpscale, NPC_Eldstar, 0)
     Call(NpcJump0, NPC_Eldstar, 21, 260, -277, 30 * DT)
     Call(EnableModel, MODEL_1, true)

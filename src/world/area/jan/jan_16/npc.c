@@ -72,7 +72,7 @@ EvtScript N(EVS_NpcInit_Raven) = {
 EvtScript N(EVS_NpcInteract_RaphaelRaven) = {
     Call(DisablePlayerInput, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o130, COLLIDER_FLAGS_UPPER_MASK)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_RaphaelRaven_Idle)
     Call(NpcFacePlayer, NPC_SELF, 4)
     Wait(5 * DT)
@@ -190,7 +190,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven) = {
 
 EvtScript N(EVS_NpcInit_RaphaelRaven) = {
     IfEq(GB_StoryProgress, STORY_CH5_RAPHAEL_LEFT_NEST)
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(SetNpcPos, NPC_SELF, 85, 0, 410)
         Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_RaphaelRaven)))
         Return

@@ -175,7 +175,7 @@ Npc* peach_make_disguise_npc(s32 peachDisguise) {
     playerStatus->peachDisguise = peachDisguise;
     gGameStatusPtr->peachDisguise = peachDisguise;
 
-    bpPtr->flags = NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
+    bpPtr->flags = NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
     bpPtr->initialAnim = BasicPeachDisguiseAnims[playerStatus->peachDisguise].idle;
     bpPtr->onUpdate = nullptr;
     bpPtr->onRender = nullptr;

@@ -146,7 +146,7 @@ EvtScript N(EVS_NpcIdle_AntiGuy) = {
                 EndIf
             Goto(0)
         Else
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Black_Anim02)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
             IfLt(LVar2, -60)
@@ -166,7 +166,7 @@ EvtScript N(EVS_NpcIdle_AntiGuy) = {
             Call(NpcMoveTo, NPC_SELF, LVar0, -100, 0)
             Call(InterpNpcYaw, NPC_SELF, 90, 0)
             Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Black_Anim15)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Label(9)
                 Wait(1)
                 Goto(9)

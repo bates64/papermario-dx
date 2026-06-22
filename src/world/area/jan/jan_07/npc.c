@@ -63,12 +63,12 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
         Call(DisablePartnerAI, false)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_WALK)
         Call(NpcMoveTo, NPC_PARTNER, -55, 5, 30)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
         Call(NpcFaceNpc, NPC_PARTNER, NPC_SELF, 0)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, false)
         Call(EnablePartnerAI)
     EndThread
     Call(PlayerMoveTo, -20, 10, 25)
@@ -95,7 +95,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     EndIf
     Call(EndSpeech, NPC_SELF, ANIM_YoshiKid_Yellow_Talk, ANIM_YoshiKid_Yellow_Idle, 0)
     Thread
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Yellow_Run)
         Call(SetNpcSpeed, NPC_SELF, Float(5.0))
         Call(NpcMoveTo, NPC_SELF, -150, 15, 0)

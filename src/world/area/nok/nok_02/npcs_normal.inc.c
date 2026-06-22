@@ -79,7 +79,7 @@ EvtScript N(EVS_NpcInit_Koopa_02_Normal) = {
 };
 
 EvtScript N(EVS_Koopa_03_CircleSprint) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Koopa_Run)
     Call(EnableNpcBlur, NPC_Koopa_03, true)
     Call(GetNpcPointer, NPC_Koopa_03, LVarF)
@@ -88,7 +88,7 @@ EvtScript N(EVS_Koopa_03_CircleSprint) = {
     Call(NpcFacePlayer, NPC_SELF, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Koopa_Idle)
     Wait(5)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };

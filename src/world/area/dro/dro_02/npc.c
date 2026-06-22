@@ -212,7 +212,7 @@ EvtScript N(EVS_NpcIdle_Mouser_03) = {
     Label(20)
     Call(SetNpcAnimation, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Idle)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Mouser_Purple_Run)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Mouser_Purple_Run)
     Call(NpcMoveTo, NPC_SELF, 150, 18, 20)
     Call(EnableNpcBlur, NPC_SELF, true)

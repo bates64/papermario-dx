@@ -78,13 +78,13 @@ EvtScript N(EVS_RoomListener_MayorOffice) = {
             IfEq(GB_StoryProgress, STORY_CH7_HERRINGWAY_AT_MAYORS_HOUSE)
                 Thread
                     Call(BindNpcInteract, NPC_Herringway, 0)
-                    Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                    Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                     Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
                     Call(SetNpcAnimation, NPC_Herringway, ANIM_Penguin_Walk)
                     Call(SetNpcSpeed, NPC_Herringway, Float(1.5 / DT))
                     Call(NpcMoveTo, NPC_Herringway, -252, -55, 0)
                     Call(SetNpcAnimation, NPC_Herringway, ANIM_Penguin_Idle)
-                    Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                    Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
                     Call(BindNpcInteract, NPC_Herringway, Ref(N(EVS_NpcInteract_Herringway)))
                 EndThread
             EndIf

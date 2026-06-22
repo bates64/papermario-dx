@@ -87,7 +87,7 @@ EvtScript N(EVS_RideZipline) = {
         Wait(7)
         Call(DisablePartnerAI, false)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION, true)
         Set(LVar0, ArrayVar(4))
         Sub(LVar0, 10)
         Set(LVar1, ArrayVar(5))

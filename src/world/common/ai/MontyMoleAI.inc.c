@@ -85,7 +85,7 @@ void N(MontyMoleAI_Wander)(Evt* script, MobileAISettings* settings, EnemyDetectV
     if (npc_raycast_down_sides(0, &posX, &posY, &posZ, &hitDepth) && (hitDepth < 5.0f)) {
         npc_move_heading(npc, npc->moveSpeed, npc->yaw);
     }
-    if (npc->flags & NPC_FLAG_COLLDING_FORWARD_WITH_WORLD) {
+    if (npc->flags & NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD) {
         script->AI_TEMP_STATE = AI_STATE_MOLE_INIT;
     }
     if (settings->playerSearchInterval >= 0) {

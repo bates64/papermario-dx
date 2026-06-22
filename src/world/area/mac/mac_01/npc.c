@@ -471,13 +471,13 @@ EvtScript N(EVS_MerlonBargeOut) = {
 EvtScript N(EVS_Merlon_WalkToDarkToads) = {
     Call(AwaitPlayerApproach, -130, -110, 150)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
-    Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_GRAVITY, true)
+    Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_GRAVITY, true)
     Call(NpcMoveTo, NPC_Merlon, 0, 0, 0)
     Call(NpcMoveTo, NPC_Merlon, 410, 0, 0)
     Call(SetNpcPos, NPC_Merlon, 410, 0, 0)
     Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Idle)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, false)
-    Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_GRAVITY, false)
+    Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_GRAVITY, false)
     Return
     End
 };
@@ -726,13 +726,13 @@ EvtScript N(EVS_NpcInteract_Merlon) = {
                         Wait(1)
                     EndLoop
                 EndChildThread
-                Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Walk)
                 Call(SetNpcSpeed, NPC_Merlon, Float(4.0 / DT))
                 Call(NpcMoveTo, NPC_Merlon, -350, -280, 0)
                 Call(NpcMoveTo, NPC_Merlon, -230, -270, 0)
                 Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Idle)
-                Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
                 Call(PlaySoundAtCollider, COLLIDER_deilitud, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
                 Call(MakeLerp, 0, -80, 15, EASING_LINEAR)
                 Loop(0)
@@ -801,7 +801,7 @@ EvtScript N(EVS_NpcInteract_Merlon) = {
                         Wait(1)
                     EndLoop
                 EndThread
-                Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Walk)
                 Call(SetNpcSpeed, NPC_Merlon, Float(3.0))
                 Call(NpcMoveTo, NPC_Merlon, -170, -225, 0)
@@ -817,7 +817,7 @@ EvtScript N(EVS_NpcInteract_Merlon) = {
                 Set(GF_MAC01_Merlon_HeardAboutDream, true)
                 Call(InterpNpcYaw, NPC_Merlon, 133, 0)
                 Call(SetNpcPos, NPC_Merlon, -337, 20, -360)
-                Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o335, COLLIDER_FLAGS_UPPER_MASK)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o336, COLLIDER_FLAGS_UPPER_MASK)
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)

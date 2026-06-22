@@ -87,7 +87,7 @@ EvtScript N(EVS_NpcInteract_MayorPenguin) = {
                 Set(MV_PlayerLeftOfMayor, 1)
             EndIf
             Call(SpeakToPlayer, NPC_SELF, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle, 0, MSG_CH7_003A)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetNpcAnimation, NPC_SELF, ANIM_MayorPenguin_Walk)
             Call(NpcMoveTo, NPC_SELF, -338, -247, 20)
             Call(PlaySoundAtCollider, COLLIDER_yana, SOUND_WOODEN_DOOR_OPEN, 0)
@@ -138,7 +138,7 @@ EvtScript N(EVS_NpcInteract_MayorPenguin) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle, 0, MSG_CH7_003D)
             Call(ResetCam, CAM_DEFAULT, Float(3.0 / DT))
             Call(PanToTarget, CAM_DEFAULT, 0, false)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Set(GB_StoryProgress, STORY_CH7_GOT_SNOWMAN_BUCKET)
         CaseLt(STORY_CH7_UNLOCKED_SHIVER_MOUNTAIN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle, 0, MSG_CH7_003E)
@@ -360,10 +360,10 @@ EvtScript N(EVS_NpcInteract_Penguin_04) = {
 };
 
 EvtScript N(EVS_PenguinCrowd_Leave) = {
-    Call(SetNpcFlagBits, NPC_Penguin_05, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Penguin_06, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Penguin_07, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Penguin_08, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Penguin_05, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Penguin_06, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Penguin_07, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Penguin_08, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(BindNpcInteract, NPC_Penguin_05, 0)
     Call(BindNpcInteract, NPC_Penguin_06, 0)
     Call(BindNpcInteract, NPC_Penguin_07, 0)

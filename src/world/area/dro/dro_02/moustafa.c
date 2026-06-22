@@ -41,8 +41,8 @@ EvtScript N(EVS_Moustafa_ResetCam) = {
 
 EvtScript N(EVS_Moustafa_Unveiling) = {
     Call(SetNpcYaw, NPC_Moustafa, 270)
-    Call(SetNpcFlagBits, NPC_DisguisedMoustafa, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Moustafa, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_DisguisedMoustafa, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Moustafa, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_GrabCloak)
     Wait(30 * DT)
     Call(SetNpcAnimation, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_ThrownCloak)
@@ -61,11 +61,11 @@ EvtScript N(EVS_Moustafa_Unveiling) = {
     IfEq(LVar1, 1)
         Goto(10)
     EndIf
-    Call(SetNpcFlagBits, NPC_DisguisedMoustafa, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_DisguisedMoustafa, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetNpcPos, NPC_DisguisedMoustafa, 0, NPC_DISPOSE_POS_Y, -250)
     Call(SetNpcAnimation, NPC_Moustafa, ANIM_Moustafa_Idle)
-    Call(SetNpcFlagBits, NPC_DisguisedMoustafa, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-    Call(SetNpcFlagBits, NPC_Moustafa, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_DisguisedMoustafa, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Moustafa, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Wait(30 * DT)
     Return
     End
@@ -188,13 +188,13 @@ EvtScript N(EVS_NpcInteract_Moustafa) = {
                 Wait(10 * DT)
                 Call(func_802D2C14, 1)
             EndThread
-            Call(SetNpcFlagBits, NPC_DisguisedMoustafa, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_DisguisedMoustafa, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetPlayerSpeed, Float(3.0 / DT))
             Call(PlayerMoveTo, -391, -260, 0)
             Call(InterpPlayerYaw, 90, 3)
-            Call(SetNpcFlagBits, NPC_DisguisedMoustafa, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_DisguisedMoustafa, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             ExecGetTID(N(EVS_PartyFaceMoustafa ), LVarA)
-            Call(SetNpcFlagBits, NPC_Moustafa, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_Moustafa, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(FadeOutMusic, 0, 500)
             IfEq(GF_DRO02_Sheek_AskedAboutMoustafa, true)
                 Call(SpeakToPlayer, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00C3)

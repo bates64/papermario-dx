@@ -80,7 +80,7 @@ EvtScript N(EVS_NpcHit_MontyMole_Stone) = {
         Return
     EndIf
     Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcHit_MontyMole_Stone_DoNothing)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseOrEq(ENCOUNTER_TRIGGER_HAMMER)

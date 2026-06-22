@@ -76,7 +76,7 @@ EvtScript N(EVS_NpcInteract_Kooper) = {
             Call(NpcFaceNpc, NPC_PARTNER, NPC_Kooper, 0)
             Call(EnablePartnerAI)
         EndThread
-        Call(SetNpcFlagBits, NPC_Kooper, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_Kooper, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcPos, NPC_Kooper, 0, 0, -207)
         Call(SetNpcAnimation, NPC_Kooper, ANIM_KooperWithoutShell_Idle)
         Wait(35 * DT)
@@ -103,7 +103,7 @@ EvtScript N(EVS_NpcInteract_Kooper) = {
         Call(NpcMoveTo, NPC_Kooper, 25, -130, 10 * DT)
         Call(SetNpcAnimation, NPC_Kooper, ANIM_KooperWithoutShell_Idle)
         Call(NpcFacePlayer, NPC_Kooper, 0)
-        Call(SetNpcFlagBits, NPC_Kooper, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_Kooper, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Wait(10 * DT)
         Call(SpeakToPlayer, NPC_Kooper, ANIM_KooperWithoutShell_Celebrate, ANIM_KooperWithoutShell_Idle, 0, MSG_CH1_00B5)
         Call(SetPlayerAnimation, ANIM_Mario1_NodYes)
@@ -400,7 +400,7 @@ EvtScript N(EVS_BreakBlock_DropShell) = {
     Call(PlaySoundAtNpc, NPC_KoopaShell_02, SOUND_ITEM_BOUNCE, SOUND_SPACE_DEFAULT)
     Call(PlayerFaceNpc, NPC_KoopaShell_02, false)
     Call(NpcFaceNpc, NPC_Koopa_02, NPC_KoopaShell_02, 0)
-    Call(SetNpcFlagBits, NPC_Koopa_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Koopa_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Add(LVar0, -1)
     Add(LVar2, -1)
     Call(GetNpcPos, NPC_Koopa_02, LVar0, LVar1, LVar2)
@@ -433,7 +433,7 @@ EvtScript N(EVS_BreakBlock_DropShell) = {
     Call(NpcJump0, NPC_KoopaShell_02, LVar0, LVar1, LVar2, 30)
     Call(SetNpcPos, NPC_KoopaShell_02, NPC_DISPOSE_LOCATION)
     Call(SetNpcSprite, NPC_Koopa_02, ANIM_Koopa_Idle)
-    Call(SetNpcFlagBits, NPC_Koopa_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Koopa_02, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetNpcAnimation, NPC_Koopa_02, ANIM_Koopa_Still)
     Wait(4)
     Call(EnableNpcBlur, NPC_KoopaShell_02, true)
@@ -522,7 +522,7 @@ EvtScript N(EVS_KoloradoWife_FetchFromOffice) = {
 };
 
 EvtScript N(EVS_KoloradoWife_FetchKoopaLegends) = {
-    Call(SetNpcFlagBits, NPC_KoloradoWife, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_KoloradoWife, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_0090)
     Call(SetNpcAnimation, NPC_KoloradoWife, ANIM_KoloradoWife_Walk)
     IfGe(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
@@ -537,7 +537,7 @@ EvtScript N(EVS_KoloradoWife_FetchKoopaLegends) = {
     Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_0091)
     EVT_GIVE_REWARD(ITEM_KOOT_KOOPA_LEGENDS)
     Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_0092)
-    Call(SetNpcFlagBits, NPC_KoloradoWife, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_KoloradoWife, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };

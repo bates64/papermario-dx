@@ -74,7 +74,7 @@ EvtScript N(EVS_Scene_LakilesterLikesBeingGood) = {
 EvtScript N(EVS_GangRetreat) = {
     Thread
         Call(PlaySoundAtNpc, NPC_FlyingMagikoopa, SOUND_FLO_MAGIKOOPA_FLY_AWAY, SOUND_SPACE_DEFAULT)
-        Call(SetNpcFlagBits, NPC_FlyingMagikoopa, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_FlyingMagikoopa, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(InterpNpcYaw, NPC_FlyingMagikoopa, 270, 0)
         Call(LoadPath, 60 * DT, Ref(N(RetreatPath_Magikoopa)), ARRAY_COUNT(N(RetreatPath_Magikoopa)), EASING_LINEAR)
         Loop(0)
@@ -89,7 +89,7 @@ EvtScript N(EVS_GangRetreat) = {
     Wait(15 * DT)
     Thread
         Call(PlaySoundAtNpc, NPC_Lakitu_01, SOUND_FLO_LAKITU_FLY_AWAY, SOUND_SPACE_DEFAULT)
-        Call(SetNpcFlagBits, NPC_Lakitu_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_Lakitu_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(InterpNpcYaw, NPC_Lakitu_01, 270, 0)
         Call(LoadPath, 60 * DT, Ref(N(RetreatPath_Lakitu_01)), ARRAY_COUNT(N(RetreatPath_Lakitu_01)), EASING_LINEAR)
         Loop(0)
@@ -102,7 +102,7 @@ EvtScript N(EVS_GangRetreat) = {
         EndLoop
     EndThread
     Thread
-        Call(SetNpcFlagBits, NPC_Lakitu_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_Lakitu_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(InterpNpcYaw, NPC_Lakitu_02, 270, 0)
         Call(LoadPath, 70 * DT, Ref(N(RetreatPath_Lakitu_02)), ARRAY_COUNT(N(RetreatPath_Lakitu_02)), EASING_LINEAR)
         Loop(0)
@@ -115,7 +115,7 @@ EvtScript N(EVS_GangRetreat) = {
         EndLoop
     EndThread
     Call(PlaySoundAtNpc, NPC_Lakitu_03, SOUND_FLO_LAKITU_FLY_AWAY, SOUND_SPACE_DEFAULT)
-    Call(SetNpcFlagBits, NPC_Lakitu_03, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Lakitu_03, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(InterpNpcYaw, NPC_Lakitu_03, 270, 0)
     Call(LoadPath, 80 * DT, Ref(N(RetreatPath_Lakitu_03)), ARRAY_COUNT(N(RetreatPath_Lakitu_03)), EASING_LINEAR)
     Loop(0)
@@ -143,15 +143,15 @@ EvtScript N(EVS_ChargeAtPlayer) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfGt(LVar2, -61)
         ChildThread
-            Call(SetNpcFlagBits, NPC_Lakitu_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_Lakitu_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(NpcMoveTo, NPC_Lakitu_01, LVar0, 55, LVar3)
         EndChildThread
         ChildThread
-            Call(SetNpcFlagBits, NPC_Lakitu_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_Lakitu_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(NpcMoveTo, NPC_Lakitu_02, LVar0, 55, LVar3)
         EndChildThread
         ChildThread
-            Call(SetNpcFlagBits, NPC_Lakitu_03, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_Lakitu_03, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(NpcMoveTo, NPC_Lakitu_03, LVar0, 55, LVar3)
         EndChildThread
         Wait(LVar4)
@@ -323,7 +323,7 @@ EvtScript N(EVS_GenericHitReaction) = {
     EndIf
     Call(DisablePlayerInput, true)
     Call(func_802D2C14, 1)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(AdjustCam, CAM_DEFAULT, Float(8.0 / DT), 0, 300, Float(17.0), Float(-6.0))
     ExecWait(N(EVS_ReactionFacePlayer))
     Switch(AB_FLO_GuardedMachineHitCount)

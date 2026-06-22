@@ -574,7 +574,7 @@ s32 partner_is_flying(void) {
 }
 
 void func_800EA5B8(Npc* partner) {
-    partner->flags &= ~(NPC_FLAG_COLLIDING_WITH_NPC | NPC_FLAG_COLLDING_FORWARD_WITH_WORLD | NPC_FLAG_COLLDING_WITH_WORLD | NPC_FLAG_GROUNDED |
+    partner->flags &= ~(NPC_FLAG_COLLIDING_WITH_NPC | NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD | NPC_FLAG_COLLIDING_WITH_WORLD | NPC_FLAG_GROUNDED |
                           NPC_FLAG_JUMPING);
 }
 
@@ -590,7 +590,7 @@ void create_partner_npc(void) {
     blueprintPtr = &blueprint;
     dma_copy(partnerEntry->dmaStart, partnerEntry->dmaEnd, partnerEntry->dmaDest);
 
-    blueprint.flags = NPC_FLAG_PARTNER | NPC_FLAG_IGNORE_PLAYER_COLLISION;
+    blueprint.flags = NPC_FLAG_PARTNER | NPC_FLAG_IGNORE_CHAR_COLLISION;
     blueprint.initialAnim = (*partner)->idle;
     blueprint.onUpdate = nullptr;
     blueprint.onRender = nullptr;
@@ -1167,7 +1167,7 @@ void partner_walking_enable(Npc* partner, s32 val) {
     func_800EA5B8(partner);
     partner->collisionChannel = COLLIDER_FLAG_IGNORE_PLAYER;
     partner->jumpVel = 0.0f;
-    partner->flags |= NPC_FLAG_TOUCHES_GROUND | NPC_FLAG_GRAVITY | NPC_FLAG_IGNORE_PLAYER_COLLISION;
+    partner->flags |= NPC_FLAG_TOUCHES_GROUND | NPC_FLAG_GRAVITY | NPC_FLAG_IGNORE_CHAR_COLLISION;
     partner->jumpScale = 1.8f;
 }
 
@@ -1321,7 +1321,7 @@ void partner_walking_follow_player(Npc* partner) {
             surfaceType = get_collider_flags(partner->curFloor);
             if (surfaceType == SURFACE_TYPE_SPIKES
                 || surfaceType == SURFACE_TYPE_LAVA
-                || ((partner->flags & NPC_FLAG_GROUNDED) && (partner->flags & NPC_FLAG_COLLDING_FORWARD_WITH_WORLD))
+                || ((partner->flags & NPC_FLAG_GROUNDED) && (partner->flags & NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD))
             ) {
                 if (!func_800EA4B0(partner->curWall)) {
                     D_8010CFBC++;
@@ -1483,7 +1483,7 @@ void partner_walking_follow_player(Npc* partner) {
                     if (distance > 2.0f) {
                         partner->yaw = yaw;
                         partner->curAnim = gPartnerAnimations[wCurrentPartnerId].run;
-                        if (!(partner->flags & NPC_FLAG_COLLDING_FORWARD_WITH_WORLD)) {
+                        if (!(partner->flags & NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD)) {
                             D_800F803A = 0;
                         } else {
                             D_800F803A++;
@@ -1740,7 +1740,7 @@ void partner_flying_enable(Npc* partner, s32 val) {
     partner->curAnim = gPartnerAnimations[wCurrentPartnerId].idle;
     func_800EA5B8(partner);
     partner->collisionChannel = COLLIDER_FLAG_IGNORE_PLAYER;
-    partner->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+    partner->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
     partner->flags &= ~NPC_FLAG_GRAVITY;
 }
 
@@ -2052,7 +2052,7 @@ void partner_flying_follow_player(Npc* partner) {
                     if (distance > 2.0f) {
                         partner->yaw = yaw;
                         partner->curAnim = gPartnerAnimations[wCurrentPartnerId].run;
-                        if (!(partner->flags & NPC_FLAG_COLLDING_FORWARD_WITH_WORLD)) {
+                        if (!(partner->flags & NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD)) {
                             D_800F803A = 0;
                         } else {
                             D_800F803A++;
@@ -2174,7 +2174,7 @@ void partner_flying_follow_player(Npc* partner) {
 s32 partner_init_put_away(Npc* partner) {
     partner->collisionChannel = COLLIDER_FLAG_IGNORE_PLAYER;
     wPartnerFollowState = 0;
-    partner->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+    partner->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
     return wPartnerFollowState;
 }
 
@@ -2248,7 +2248,7 @@ s32 partner_put_away(Npc* partner) {
 s32 partner_init_get_out(Npc* npc) {
     npc->collisionChannel = COLLIDER_FLAG_IGNORE_PLAYER;
     wPartnerFollowState = 0;
-    npc->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+    npc->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
     return wPartnerFollowState;
 }
 

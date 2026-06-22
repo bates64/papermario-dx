@@ -3030,18 +3030,18 @@ enum NpcFlags {
     NPC_FLAG_ENABLED                        = 0x00000001, // Does nothing aside from making npc->flags != 0
     NPC_FLAG_INVISIBLE                      = 0x00000002, // NPC will not be drawn or cause surface effects while moving
     NPC_FLAG_INACTIVE                       = 0x00000004, // NPC will not render, move, or have collisions with other NPCs. They may still be interacted with.
-    NPC_FLAG_FLYING                         = 0x00000008,
+    NPC_FLAG_FLYING                         = 0x00000008, // Not really flying, disables snap-to-group collision check and enabled terrain height following in FlyingAI.
     NPC_FLAG_HAS_SHADOW                     = 0x00000010, // Set by default and by enable_npc_shadow
     NPC_FLAG_NO_SHADOW_RAYCAST              = 0x00000020, // Shadows are tied to NPC position instead of raycasting below the NPC
     NPC_FLAG_IGNORE_WORLD_COLLISION         = 0x00000040,
     NPC_FLAG_UPSIDE_DOWN                    = 0x00000080, // Render NPCs upside-down
-    NPC_FLAG_IGNORE_PLAYER_COLLISION        = 0x00000100,
+    NPC_FLAG_IGNORE_CHAR_COLLISION          = 0x00000100, // Ignores collision with player and other NPCs.
     NPC_FLAG_GRAVITY                        = 0x00000200, // Enables gravity. Does nothing if NPC_FLAG_JUMPING is set.
     NPC_FLAG_DONT_UPDATE_SHADOW_Y           = 0x00000400, // When shadow raycasting is off, only X and Z update as NPC moves
     NPC_FLAG_JUMPING                        = 0x00000800,
     NPC_FLAG_GROUNDED                       = 0x00001000, // Touching the ground
-    NPC_FLAG_COLLDING_WITH_WORLD            = 0x00002000, // Colliding with world in front or to the sides of the NPC
-    NPC_FLAG_COLLDING_FORWARD_WITH_WORLD    = 0x00004000, // Colliding with world directly in front of NPC
+    NPC_FLAG_COLLIDING_WITH_WORLD           = 0x00002000, // Colliding with world in front or to the sides of the NPC
+    NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD   = 0x00004000, // Colliding with world directly in front of NPC
     NPC_FLAG_IGNORE_ENTITY_COLLISION        = 0x00008000,
     NPC_FLAG_DIRTY_SHADOW                   = 0x00010000, // Set if shadow is dirty (needs to be repositioned etc.)
     NPC_FLAG_REFLECT_WALL                   = 0x00020000, // Mirror rendering across z=0
@@ -3057,7 +3057,7 @@ enum NpcFlags {
     NPC_FLAG_WORLD_COLLISION_DIRTY          = 0x08000000,
     NPC_FLAG_USE_INSPECT_ICON               = 0x10000000, // Approaching this NPC will cause a red ! to appear.
     NPC_FLAG_RAYCAST_TO_INTERACT            = 0x20000000, // Intended to require a line of sight raycast before conversations can be triggered. Seems bugged.
-    NPC_FLAG_NO_ANIMS_LOADED                = 0x40000000, // Npc has no animations loaded
+    NPC_FLAG_USES_PLAYER_AUX_SPRITE         = 0x40000000, // This NPC uses the player sprite system, rather than NPC. Used for Peach as an NPC.
     NPC_FLAG_SUSPENDED                      = 0x80000000,
 };
 

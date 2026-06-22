@@ -328,7 +328,7 @@ EvtScript N(EVS_Scene_FlowerGateAppears) = {
 ITEM_LIST(N(ItemList_MagicalSeeds), ITEM_MAGICAL_SEED1, ITEM_MAGICAL_SEED2, ITEM_MAGICAL_SEED3, ITEM_MAGICAL_SEED4);
 
 EvtScript N(EVS_MinhT_PlantSeed) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SpeakToPlayer, NPC_MinhT, ANIM_MinhT_Talk, ANIM_MinhT_Idle, 0, LVar4)
     Wait(10 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 266, 27, 373)
@@ -397,7 +397,7 @@ EvtScript N(EVS_MinhT_PlantSeed) = {
     Call(NpcJump0, NPC_SELF, 175, 20, 444, 0)
     Call(NpcMoveTo, NPC_SELF, 150, 480, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_MinhT_Idle)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     IfEq(LVar3, 3)
         Call(InterpNpcYaw, NPC_MinhT, 90, 0)
         ExecWait(N(EVS_Scene_FlowerGateAppears))

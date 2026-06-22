@@ -63,7 +63,7 @@ EvtScript N(EVS_Kolorado_Escape) = {
         EndIf
     Call(DisablePlayerInput, true)
     Wait(60 * DT)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcPos, NPC_SELF, 70, 25, 60)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Panic)
     Call(SetNpcSpeed, NPC_SELF, Float(4.0 / DT))

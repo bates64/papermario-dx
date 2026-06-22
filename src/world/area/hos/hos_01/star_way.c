@@ -90,7 +90,7 @@ EvtScript N(EVS_AscendStarWarp) = {
     Call(InterpPlayerYaw, 90, 0)
     Call(SetMusic, 0, SONG_STAR_WAY_OPENS, BGM_VARIATION_1, VOL_LEVEL_FULL)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcJumpscale, NPC_PARTNER, Float(1.0))
     Call(NpcJump0, NPC_PARTNER, -30, 250, -170, 15)
     Thread

@@ -61,7 +61,7 @@ EvtScript N(EVS_NpcDefeat_Duplighost) = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Call(SetNpcFlagBits, NPC_Duplighost, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_Duplighost, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetNpcSpeed, NPC_Duplighost, Float(3.0 / DT))
             Call(SetNpcJumpscale, NPC_Duplighost, Float(1.5))
             Call(SetNpcAnimation, NPC_Duplighost, ANIM_Duplighost_Anim04)
@@ -163,7 +163,7 @@ EvtScript N(EVS_NpcIdle_TrueKooperB) = {
 };
 
 EvtScript N(EVS_NpcInit_TrueKooperB) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_PASSIVE, false)
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TrueKooperB)))
     Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TrueKooperB)))
@@ -185,7 +185,7 @@ EvtScript N(EVS_NpcIdle_FakeKooperB) = {
 };
 
 EvtScript N(EVS_NpcInit_FakeKooperB) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_PASSIVE, false)
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_FakeKooperB)))
     Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_FakeKooperB)))

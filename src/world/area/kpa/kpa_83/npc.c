@@ -468,7 +468,7 @@ EvtScript N(EVS_NpcInit_Door) = {
     IfEq(GB_KPA83_BowserDoorState, 0)
         Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Door)))
         Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Door)))
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
         Call(SetNpcPos, NPC_SELF, 184, 20, 150)
         Call(EnableNpcShadow, NPC_SELF, false)
     EndIf

@@ -12,7 +12,7 @@ API_CALLABLE(N(SurroundPlayer)) {
     f32 dist = dist2D(npc->pos.x, npc->pos.z, goalPosX, goalPosZ);
 
     if (npc->moveSpeed < dist) {
-        if (npc->flags & NPC_FLAG_COLLDING_WITH_WORLD) {
+        if (npc->flags & NPC_FLAG_COLLIDING_WITH_WORLD) {
             if (npc->yaw < 180.0f) {
                 npc->yaw = npc->pos.z > 0.0f ? 45.0f : 135.0f;
             } else {
@@ -46,7 +46,7 @@ API_CALLABLE(N(SimpleMoveNPC)) {
     f32 z = evt_get_float_variable(script, *args++);
 
     if (npc->moveSpeed < dist2D(npc->pos.x, npc->pos.z, x, z)) {
-        if (npc->flags & NPC_FLAG_COLLDING_WITH_WORLD) {
+        if (npc->flags & NPC_FLAG_COLLIDING_WITH_WORLD) {
             if (npc->yaw < 180.0f) {
                 npc->yaw = npc->pos.z > 0.0f ? 45.0f : 135.0f;
             } else {

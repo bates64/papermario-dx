@@ -220,7 +220,7 @@ EvtScript N(EVS_NpcInit_CrystalKing) = {
             Exec(N(EVS_RespawnStarCard))
         CaseGt(STORY_CH7_DEFEATED_CRYSTAL_KING)
     EndSwitch
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, false)
     Call(SetNpcYaw, NPC_CrystalKing_01, 270)
     Return

@@ -357,7 +357,7 @@ EvtScript N(EVS_Scene_CaughtLuigiInBasement) = {
     Wait(5)
     Call(SpeakToPlayer, NPC_Luigi_0, ANIM_Luigi_Talk, ANIM_Luigi_Idle, 5, MSG_CH0_00EB)
     Wait(3)
-    Call(SetNpcFlagBits, NPC_Luigi_0, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Luigi_0, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_Luigi_0, ANIM_Luigi_Run)
     Call(NpcMoveTo, NPC_Luigi_0, -130, -17, 15)
     Call(NpcJump0, NPC_Luigi_0, -145, -54, -45, 10)
@@ -369,7 +369,7 @@ EvtScript N(EVS_Scene_CaughtLuigiInBasement) = {
     EndThread
     Call(NpcJump0, NPC_Luigi_0, -145, 30, -45, 20)
     Thread
-        Call(SetNpcFlagBits, NPC_Luigi_0, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_Luigi_0, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(NpcMoveTo, NPC_Luigi_0, 20, -80, 15)
         Call(SetNpcAnimation, NPC_Luigi_0, ANIM_Luigi_Idle)
         Call(SetNpcPos, NPC_Luigi_0, 48, 30, -5)
@@ -409,7 +409,7 @@ EvtScript N(EVS_NpcIdle_Luigi_ReadingMail) = {
     Wait(15)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Luigi_Idle)
     Wait(10)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Luigi_Run)
     Call(NpcMoveTo, NPC_SELF, 37, -72, 16)
     Call(InterpPlayerYaw, 90, 0)
@@ -417,7 +417,7 @@ EvtScript N(EVS_NpcIdle_Luigi_ReadingMail) = {
     Call(NpcMoveTo, NPC_SELF, 42, -6, 10)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Luigi_Idle)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };

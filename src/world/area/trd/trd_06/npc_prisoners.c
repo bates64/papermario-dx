@@ -87,11 +87,11 @@ EvtScript N(EVS_NpcInteract_Bombette) = {
         EndIf
     EndIf
     IfEq(LVar0, 0)
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcJumpscale, NPC_SELF, Float(0.8))
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 15 * DT)
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(ContinueSpeech, NPC_SELF, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH1_00DE)
         Call(N(ChangeNpcToPartner), NPC_Bombette, PARTNER_BOMBETTE)
         Set(GB_StoryProgress, STORY_CH1_BOMBETTE_JOINED_PARTY)
@@ -155,9 +155,9 @@ EvtScript N(EVS_NpcIdle_KoopaTroopa) = {
     Call(SetNpcAnimation, NPC_Jailer_KoopaTroopa, ANIM_KoopaTroopa_Run)
     Call(SetNpcAnimation, NPC_Jailer_Bobomb_01, ANIM_Bobomb_Run)
     Call(SetNpcAnimation, NPC_Jailer_Bobomb_02, ANIM_Bobomb_Run)
-    Call(SetNpcFlagBits, NPC_Jailer_KoopaTroopa, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Jailer_Bobomb_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Jailer_Bobomb_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Jailer_KoopaTroopa, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Jailer_Bobomb_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Jailer_Bobomb_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Thread
         Call(NpcMoveTo, NPC_Jailer_KoopaTroopa, -237, 0, 0)
     EndThread

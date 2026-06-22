@@ -228,7 +228,7 @@ API_CALLABLE(N(MissileAI_Main)) {
     if (isInitialCall || (missile->aiFlags & AI_FLAG_SUSPEND)) {
         script->AI_TEMP_STATE = AI_STATE_MISSILE_INIT;
         npc->duration = 0;
-        npc->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_INVISIBLE;
+        npc->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_INVISIBLE;
         disable_npc_shadow(npc);
         npc->flags &= ~NPC_FLAG_JUMPING;
         missile->varTable[AI_VAR_MISSILE_STATUS] = MISSILE_STATUS_IDLE;

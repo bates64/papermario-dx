@@ -36,8 +36,8 @@ EvtScript N(EVS_Scene_KoloradoFallsDown) = {
         Call(InterruptUsePartner)
     EndIf
     Call(DisablePlayerInput, true)
-    Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(AdjustCam, CAM_DEFAULT, Float(3.0), 0, 400, Float(15.0), Float(-7.0))
     Call(SetSelfVar, 1, 1)
     Thread
@@ -58,7 +58,7 @@ EvtScript N(EVS_Scene_KoloradoFallsDown) = {
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetNpcSpeed, NPC_PARTNER, Float(2.0))
         Add(LVar0, 20)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 0)
         Call(NpcFacePlayer, NPC_PARTNER, 0)
         Call(EnablePartnerAI)
@@ -152,7 +152,7 @@ EvtScript N(EVS_Scene_KoloradoFallsDown) = {
     Call(NpcJump0, NPC_SELF, LVar3, 700, LVar5, 5)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_PLAYER_LONG_FALL, SOUND_SPACE_DEFAULT)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetSelfVar, 0, 0)
     Call(SetSelfVar, 1, 0)
     Wait(5 * DT)

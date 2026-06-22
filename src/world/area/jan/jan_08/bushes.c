@@ -44,10 +44,10 @@ EvtScript N(EVS_Inspect_FlipBush) = {
             Call(GetPlayerPos, LVar3, LVar4, LVar5)
             Thread
                 Call(DisablePartnerAI, false)
-                Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
                 Call(NpcMoveTo, NPC_PARTNER, -315, LVar5, 20)
                 Call(NpcFaceNpc, NPC_PARTNER, NPC_YoshiKid, 0)
-                Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, false)
+                Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, false)
                 Call(EnablePartnerAI)
             EndThread
             Call(PlayerMoveTo, -340, LVar5, 20)
@@ -63,7 +63,7 @@ EvtScript N(EVS_Inspect_FlipBush) = {
             Set(LVar4, 270)
             Call(SetNpcRotation, NPC_YoshiKid, 0, LVar4, 0)
             Call(SetNpcPos, NPC_YoshiKid, -391, 0, -144)
-            Call(SetNpcFlagBits, NPC_YoshiKid, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_YoshiKid, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Loop(10)
                 Add(LVar3, 9)
                 Call(RotateModel, LVar1, LVar3, 0, 1, 0)

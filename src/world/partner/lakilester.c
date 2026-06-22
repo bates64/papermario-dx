@@ -145,7 +145,7 @@ API_CALLABLE(N(Update)) {
             N(TweesterPhysicsPtr)->angularVel = 6.0f;
             N(TweesterPhysicsPtr)->liftoffVelPhase = 50.0f;
             N(TweesterPhysicsPtr)->countdown = 120;
-            lakilester->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
+            lakilester->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
             lakilester->flags &= ~NPC_FLAG_GRAVITY;
         case TWEESTER_PARTNER_ATTRACT:
             sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
@@ -323,44 +323,44 @@ void N(apply_riding_static_collisions)(Npc* lakilester) {
     )
 
     if (TEST_MOVE_AT_ANGLE(npc_test_move_complex_with_slipping, lakilester->yaw)) {
-        lakilester->flags |= (NPC_FLAG_COLLDING_FORWARD_WITH_WORLD | NPC_FLAG_COLLDING_WITH_WORLD);
+        lakilester->flags |= (NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD | NPC_FLAG_COLLIDING_WITH_WORLD);
         lakilester->curWall = NpcHitQueryColliderID;
         lakilester->pos.x = x;
         lakilester->pos.z = z;
     } else {
-        lakilester->flags &= ~(NPC_FLAG_COLLDING_FORWARD_WITH_WORLD | NPC_FLAG_COLLDING_WITH_WORLD);
+        lakilester->flags &= ~(NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD | NPC_FLAG_COLLIDING_WITH_WORLD);
     }
 
     if (TEST_MOVE_AT_ANGLE(npc_test_move_taller_with_slipping, lakilester->yaw + 45.0f)) {
         lakilester->pos.x = x;
         lakilester->pos.z = z;
-        lakilester->flags |= NPC_FLAG_COLLDING_WITH_WORLD;
+        lakilester->flags |= NPC_FLAG_COLLIDING_WITH_WORLD;
     } else {
-        lakilester->flags &= ~NPC_FLAG_COLLDING_WITH_WORLD;
+        lakilester->flags &= ~NPC_FLAG_COLLIDING_WITH_WORLD;
     }
 
     if (TEST_MOVE_AT_ANGLE(npc_test_move_taller_with_slipping, lakilester->yaw - 45.0f)) {
         lakilester->pos.x = x;
         lakilester->pos.z = z;
-        lakilester->flags |= NPC_FLAG_COLLDING_WITH_WORLD;
+        lakilester->flags |= NPC_FLAG_COLLIDING_WITH_WORLD;
     } else {
-        lakilester->flags &= ~NPC_FLAG_COLLDING_WITH_WORLD;
+        lakilester->flags &= ~NPC_FLAG_COLLIDING_WITH_WORLD;
     }
 
     if (TEST_MOVE_AT_ANGLE(npc_test_move_simple_with_slipping, lakilester->yaw + 45.0f + 180.0f)) {
-        lakilester->flags |= NPC_FLAG_COLLDING_WITH_WORLD;
+        lakilester->flags |= NPC_FLAG_COLLIDING_WITH_WORLD;
         lakilester->pos.x = x;
         lakilester->pos.z = z;
     } else {
-        lakilester->flags &= ~NPC_FLAG_COLLDING_WITH_WORLD;
+        lakilester->flags &= ~NPC_FLAG_COLLIDING_WITH_WORLD;
     }
 
     if (TEST_MOVE_AT_ANGLE(npc_test_move_simple_with_slipping, lakilester->yaw - 45.0f + 180.0f)) {
-        lakilester->flags |= NPC_FLAG_COLLDING_WITH_WORLD;
+        lakilester->flags |= NPC_FLAG_COLLIDING_WITH_WORLD;
         lakilester->pos.x = x;
         lakilester->pos.z = z;
     } else {
-        lakilester->flags &= ~NPC_FLAG_COLLDING_WITH_WORLD;
+        lakilester->flags &= ~NPC_FLAG_COLLIDING_WITH_WORLD;
     }
 }
 
@@ -635,13 +635,13 @@ API_CALLABLE(N(UseAbility)) {
                 partnerStatus->shouldResumeAbility = false;
                 playerStatus->flags &= ~PS_FLAG_PAUSE_DISABLED;
                 lakilester->flags &= ~(NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING);
-                lakilester->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+                lakilester->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
                 set_action_state(ACTION_STATE_RIDE);
                 suggest_player_anim_always_forward(ANIM_MarioW2_RideLaki);
                 lakilester->curAnim = ANIM_WorldLakilester_Walk;
                 N(MountState) = MOUNT_STATE_IN_PROGRESS; // unexpected
                 lakilester->flags &= ~(NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING);
-                lakilester->flags |= (NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_TOUCHES_GROUND);
+                lakilester->flags |= (NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_TOUCHES_GROUND);
                 partnerStatus->actingPartner = PARTNER_LAKILESTER;
                 partnerStatus->partnerActionState = PARTNER_ACTION_LAKILESTER_1;
                 gGameStatusPtr->keepUsingPartnerOnMapChange = false;
@@ -733,7 +733,7 @@ API_CALLABLE(N(UseAbility)) {
             }
 
             lakilester->flags &= ~NPC_FLAG_FLYING;
-            lakilester->flags |= (NPC_FLAG_TOUCHES_GROUND | NPC_FLAG_IGNORE_PLAYER_COLLISION);
+            lakilester->flags |= (NPC_FLAG_TOUCHES_GROUND | NPC_FLAG_IGNORE_CHAR_COLLISION);
             set_action_state(ACTION_STATE_RIDE);
             N(MountState) = MOUNT_STATE_IN_PROGRESS;
             partner_force_player_flip_done();
@@ -1220,7 +1220,7 @@ API_CALLABLE(N(EnterMap)) {
             playerStatus->flags |= PS_FLAG_FACE_FORWARD;
             N(offset_player_from_camera)(2.0f);
             gGameStatusPtr->keepUsingPartnerOnMapChange = true;
-            lakilester->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+            lakilester->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
             lakilester->moveSpeed = *temp_s0_2;
             lakilester->jumpScale = 0.0f;
             N(UpdatePushingWall) = false;

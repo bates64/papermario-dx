@@ -207,7 +207,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
 
 EvtScript N(EVS_NpcInit_Door) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Door)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcPos, NPC_SELF, 184, 20, 150)
     Return

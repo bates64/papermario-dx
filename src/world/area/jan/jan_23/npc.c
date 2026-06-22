@@ -229,7 +229,7 @@ EvtScript N(EVS_Raven5_MoveToMeetingPos) = {
 
 EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
     Call(DisablePlayerInput, true)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)

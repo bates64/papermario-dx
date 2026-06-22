@@ -125,7 +125,7 @@ API_CALLABLE(N(Update)) {
             N(TweesterPhysicsPtr)->angularVel = 6.0f;
             N(TweesterPhysicsPtr)->liftoffVelPhase = 50.0f;
             N(TweesterPhysicsPtr)->countdown = 120;
-            bombette->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
+            bombette->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
             bombette->flags &= ~NPC_FLAG_GRAVITY;
         case TWEESTER_PARTNER_ATTRACT:
             sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
@@ -320,7 +320,7 @@ API_CALLABLE(N(UseAbility)) {
             npc->jumpVel = 0.0f;
             N(MovementBlocked) = false;
             npc->flags |= NPC_FLAG_GRAVITY;
-            npc->flags &= ~NPC_FLAG_IGNORE_PLAYER_COLLISION;
+            npc->flags &= ~NPC_FLAG_IGNORE_CHAR_COLLISION;
             npc->moveSpeed = 1.0f;
             script->USE_STATE = BLAST_STATE_DEPLOY;
             script->functionTemp[1] = 50;
@@ -331,7 +331,7 @@ API_CALLABLE(N(UseAbility)) {
                 break;
             }
             if (script->functionTemp[1] < 45) {
-                if (!(npc->flags & NPC_FLAG_COLLDING_WITH_WORLD) && !N(MovementBlocked)) {
+                if (!(npc->flags & NPC_FLAG_COLLIDING_WITH_WORLD) && !N(MovementBlocked)) {
                     npc_move_heading(npc, npc->moveSpeed, npc->yaw);
                     npc_surface_spawn_fx(npc, SURFACE_INTERACT_WALK);
                 } else {

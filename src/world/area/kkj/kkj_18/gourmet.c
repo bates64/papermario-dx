@@ -294,7 +294,7 @@ EvtScript N(EVS_GourmetGuy_RunAround) = {
     Call(GetNpcPos, NPC_GourmetGuy, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_GourmetGuy, LVar0, 200, LVar2, 15 * DT)
     Call(SetNpcAnimation, NPC_GourmetGuy, ANIM_GourmetGuy_Panic)
-    Call(SetNpcFlagBits, NPC_GourmetGuy, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_GourmetGuy, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcSpeed, NPC_GourmetGuy, Float(20.0 / DT))
     Call(PlaySoundAtNpc, NPC_GourmetGuy, SOUND_GOURMET_GUY_RUN, SOUND_SPACE_DEFAULT)
     Call(SetNpcRotation, NPC_GourmetGuy, 0, 0, -45)

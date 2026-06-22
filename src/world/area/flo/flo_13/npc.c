@@ -307,7 +307,7 @@ EvtScript N(EVS_Lakilulu_FlyAway) = {
     Thread
         Call(N(PlayLakiluluFlightSounds), 55 * DT)
     EndThread
-    Call(SetNpcFlagBits, NPC_Lakilulu, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Lakilulu, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     ExecGetTID(N(EVS_Laklilulu_ManageYaw), LVar9)
     Call(LoadPath, 55 * DT, Ref(N(FlightPath_LakiluluDeparts)), ARRAY_COUNT(N(FlightPath_LakiluluDeparts)), EASING_LINEAR)
     Label(20)

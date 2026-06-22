@@ -113,7 +113,7 @@ EvtScript N(EVS_Starship_Depart) = {
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
     Add(LVar2, 10)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcJumpscale, NPC_PARTNER, 1)
     Call(NpcJump0, NPC_PARTNER, LVar0, LVar1, LVar2, 15)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)

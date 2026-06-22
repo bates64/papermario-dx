@@ -412,7 +412,7 @@ API_CALLABLE(N(UseAbility)) {
                 N(IsRiding) = true;
                 sushie->flags |= NPC_FLAG_FLYING;
                 sushie->flags &= ~NPC_FLAG_GRAVITY;
-                sushie->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+                sushie->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
                 suggest_player_anim_always_forward(ANIM_MarioW2_RideSushie);
                 disable_player_shadow();
                 disable_npc_shadow(sushie);
@@ -805,7 +805,7 @@ API_CALLABLE(N(Update)) {
             N(TweesterPhysicsPtr)->angularVel = 6.0f;
             N(TweesterPhysicsPtr)->liftoffVelPhase = 50.0f;
             N(TweesterPhysicsPtr)->countdown = 120;
-            sushie->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
+            sushie->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
             sushie->flags &= ~NPC_FLAG_GRAVITY;
         case TWEESTER_PARTNER_ATTRACT:
             sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
@@ -940,7 +940,7 @@ API_CALLABLE(N(EnterMap)) {
             partnerNPC->moveToPos.x = partnerNPC->pos.x;
             partnerNPC->moveToPos.y = partnerNPC->pos.y;
             partnerNPC->moveToPos.z = partnerNPC->pos.z;
-            partnerNPC->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_FLYING;
+            partnerNPC->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_FLYING;
             partnerNPC->flags &= ~NPC_FLAG_GRAVITY;
             disable_npc_shadow(partnerNPC);
             disable_player_shadow();

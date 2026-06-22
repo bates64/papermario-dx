@@ -336,7 +336,7 @@ EvtScript N(EVS_NpcIdle_KentCKoopa_01) = {
     Wait(20)
     Call(SetNpcAnimation, NPC_KentCKoopa_02, ANIM_KentCKoopa_Anim03)
     Call(NpcMoveTo, NPC_KentCKoopa_02, -167, -100, 20)
-    Call(SetNpcFlagBits, NPC_KentCKoopa_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_KentCKoopa_02, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(BindNpcInteract, NPC_KentCKoopa_02, Ref(N(EVS_NpcInteract_KentCKoopa_02)))
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Call(SetNpcAnimation, NPC_KentCKoopa_02, ANIM_KentCKoopa_Anim01)
@@ -561,7 +561,7 @@ EvtScript N(EVS_NpcInit_KentCKoopa_01) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_KentCKoopa_01)))
     Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_KentCKoopa_01)))
     Call(EnableNpcShadow, NPC_SELF, false)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetEntryID, AB_NOK11_KentEntryID)
     Return
     End
@@ -569,7 +569,7 @@ EvtScript N(EVS_NpcInit_KentCKoopa_01) = {
 
 EvtScript N(EVS_NpcInit_KentCKoopa_02) = {
     Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_KentCKoopa_02)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetEntryID, LVar3)
     IfEq(LVar3, nok_11_ENTRY_0)
         Call(SetNpcYaw, NPC_SELF, 270)

@@ -23,7 +23,7 @@ EvtScript N(EVS_NpcIdle_ShopOwner) = {
         CaseLt(STORY_CH2_SHADY_MOUSE_LEFT_SHOP)
             Call(N(AwaitPlayerApproachShop), 16, 190, -134, -131)
             Call(DisablePlayerInput, true)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetNpcPos, NPC_SELF, 0, 0, -180)
             ExecWait(N(EVS_OpenShopDoor))
             Wait(10 * DT)

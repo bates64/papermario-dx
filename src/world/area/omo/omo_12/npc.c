@@ -243,7 +243,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
         Set(LVar2, -50)
     EndIf
     Call(func_802D2C14, 1)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetPlayerSpeed, Float(3.0 / DT))
     Call(PlayerMoveTo, LVar1, 0, 0)
     Call(PlayerFaceNpc, NPC_LaternTop, 3)
@@ -324,7 +324,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
         Call(NpcFacePlayer, NPC_PARTNER, 3)
         Call(EnablePartnerAI)
     EndThread
-    Call(SetNpcFlagBits, NPC_Watt, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Watt, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetNpcPos, NPC_Watt, LVar7, LVar8, LVar9)
     Call(GetAngleToPlayer, NPC_Watt, LVar0)
     IfLt(LVar0, 180)

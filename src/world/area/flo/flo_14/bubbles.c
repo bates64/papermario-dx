@@ -117,7 +117,7 @@ EvtScript N(EVS_RideBigBubble) = {
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetModelCenter, MODEL_o167)
     Thread
         Add(LVar2, -10)

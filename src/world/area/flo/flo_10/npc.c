@@ -93,10 +93,10 @@ EvtScript N(EVS_MovePlayerToTalk) = {
                 Else
                     Add(LVar0, 40)
                 EndIf
-                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Call(PlayerMoveTo, LVar0, LVar5, 15 * DT)
                 Call(PlayerFaceNpc, NPC_Lily, true)
-                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             EndThread
     EndSwitch
     Return

@@ -299,7 +299,7 @@ EvtScript N(EVS_Scene_ArriveByWhale) = {
     Wait(1)
     IfLt(GB_StoryProgress, STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
         Call(N(GetWhaleRiderTargetPos), WHALE_TARGET_BOARDING, LVar0, LVar1, LVar2)
-        Call(SetNpcFlagBits, NPC_Kolorado_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_Kolorado_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_Kolorado_02, ANIM_Kolorado_Walk)
         Call(NpcMoveTo, NPC_Kolorado_02, LVar0, LVar2, 10)
         Call(SetNpcAnimation, NPC_Kolorado_02, ANIM_Kolorado_Thrown)
@@ -309,7 +309,7 @@ EvtScript N(EVS_Scene_ArriveByWhale) = {
         Call(SetNpcAnimation, NPC_Kolorado_02, ANIM_Kolorado_Walk)
         Call(NpcMoveTo, NPC_Kolorado_02, 290, 20, 20)
         Call(SetNpcAnimation, NPC_Kolorado_02, ANIM_Kolorado_Idle)
-        Call(SetNpcFlagBits, NPC_Kolorado_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_Kolorado_02, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(InterpNpcYaw, NPC_Kolorado_02, 270, 0)
     EndIf
     Call(N(GetWhaleRiderTargetPos), WHALE_TARGET_BOARDING, LVar0, LVar1, LVar2)
@@ -525,7 +525,7 @@ EvtScript N(EVS_NpcInit_Kolorado_01) = {
 };
 
 EvtScript N(EVS_NpcInteract_Kolorado_02) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0006)
     Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
     ExecWait(EVS_TryLetterDelivery)

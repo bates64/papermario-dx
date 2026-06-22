@@ -244,7 +244,7 @@ EvtScript N(EVS_NpcDefeat_ShyGuy) = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetSelfEnemyFlagBits, ENEMY_FLAG_PASSIVE, true)
             Call(EnableNpcShadow, NPC_SELF, false)
             Call(SetSelfVar, SHYGUY_VAR_STATE, SHYGUY_STATE_RECYCLE)

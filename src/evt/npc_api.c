@@ -805,7 +805,7 @@ API_CALLABLE(BringPartnerOut) {
         partner = get_npc_unsafe(NPC_PARTNER);
         partner->npcID = -5;
 
-        bpPointer->flags = NPC_FLAG_IGNORE_PLAYER_COLLISION;
+        bpPointer->flags = NPC_FLAG_IGNORE_CHAR_COLLISION;
         bpPointer->initialAnim = gPartnerAnimations[wExtraPartnerID].fly;
         bpPointer->onUpdate = nullptr;
         bpPointer->onRender = nullptr;

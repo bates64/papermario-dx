@@ -147,7 +147,7 @@ API_CALLABLE(N(Update)) {
                 N(TweesterPhysicsPtr)->angularVel = 6.0f;
                 N(TweesterPhysicsPtr)->liftoffVelPhase = 50.0f;
                 N(TweesterPhysicsPtr)->countdown = 120;
-                watt->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
+                watt->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
                 watt->flags &= ~NPC_FLAG_GRAVITY;
             case TWEESTER_PARTNER_ATTRACT:
                 sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
@@ -288,7 +288,7 @@ API_CALLABLE(N(UseAbility)) {
             if (gGameStatusPtr->keepUsingPartnerOnMapChange) {
                 playerStatus->animFlags |= PA_FLAG_USING_WATT;
                 N(IsPlayerHolding) = true;
-                npc->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_FLYING;
+                npc->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_FLYING;
                 npc->flags &= ~(NPC_FLAG_JUMPING | NPC_FLAG_GRAVITY);
                 gGameStatusPtr->keepUsingPartnerOnMapChange = false;
                 partnerStatus->partnerActionState = PARTNER_ACTION_USE;
@@ -510,7 +510,7 @@ API_CALLABLE(N(EnterMap)) {
             move_player(script->functionTemp[1], playerStatus->heading, script->varTableF[5]);
             N(sync_held_position)();
             watt->flags &= ~NPC_FLAG_GRAVITY;
-            watt->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+            watt->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
             playerStatus->animFlags |= (PA_FLAG_WATT_IN_HANDS | PA_FLAG_USING_WATT);
             gGameStatusPtr->keepUsingPartnerOnMapChange = true;
             partnerStatus->partnerActionState = PARTNER_ACTION_WATT_SHINE;

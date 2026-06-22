@@ -375,7 +375,7 @@ EvtScript N(EVS_Scene_YakkeyShouts) = {
     EndLoop
     Call(DisablePlayerInput, true)
     Wait(40)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcPos, NPC_SELF, 845, 0, 140)
     Call(SetNpcJumpscale, NPC_SELF, Float(0.8))
     Call(NpcJump1, NPC_SELF, 845, 35, 145, 15)
@@ -471,7 +471,7 @@ EvtScript N(EVS_Scene_YakkeyShouts) = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Sub(LVar1, 10)
     Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 10)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)

@@ -35,9 +35,9 @@ EvtScript N(EVS_NpcInteract_BubbleFlower) = {
         Else
             Call(SpeakToPlayer, NPC_SELF, -1, -1, 0, MSG_CH6_0061)
             Set(AF_FLO_BlowingBigBubble, true)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(PlayerMoveTo, 555, 110, 20)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Call(InterpPlayerYaw, 90, 0)
             Call(func_802CF56C, 2)
             Wait(5)

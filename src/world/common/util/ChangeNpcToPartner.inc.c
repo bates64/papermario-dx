@@ -2,7 +2,7 @@
 #include "map.h"
 #include "npc.h"
 
-void func_800EB2A4(s32 arg0);
+void func_800EB2A4(s32 partnerID);
 
 API_CALLABLE(N(ChangeNpcToPartner)) {
     Bytecode* args = script->ptrReadPos;

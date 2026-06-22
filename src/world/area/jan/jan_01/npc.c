@@ -16,7 +16,7 @@ EvtScript N(EVS_PlayerWatchKolorado) = {
 
 EvtScript N(EVS_Kolorado_RunToVillage) = {
     ExecGetTID(N(EVS_PlayerWatchKolorado), LVar9)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Run)
     Call(SetNpcSpeed, NPC_SELF, Float(4.5 / DT))
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -140,7 +140,7 @@ EvtScript N(EVS_NpcHit_Kolorado) = {
 
 EvtScript N(EVS_NpcInit_Kolorado) = {
     IfLt(GB_StoryProgress, STORY_CH5_KOLORADO_ESCAPED_FUZZIES)
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kolorado)))
         Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_Kolorado)))
     Else
@@ -214,7 +214,7 @@ EvtScript N(EVS_NpcDefeat_JungleFuzzyBoss) = {
             IfNe(LVar0, PARTNER_NONE)
                 Call(InterruptUsePartner)
             EndIf
-            Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Thread
                 Wait(30)
                 Call(GetNpcPos, NPC_Kolorado, LVar3, LVar1, LVar2)
@@ -235,7 +235,7 @@ EvtScript N(EVS_NpcDefeat_JungleFuzzyBoss) = {
                 Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
                 Call(DisableCameraLeadingPlayer)
                 Call(PanToTarget, CAM_DEFAULT, 0, true)
-                Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Call(SetNpcAnimation, NPC_Kolorado, ANIM_Kolorado_Run)
                 Call(SetNpcSpeed, NPC_Kolorado, Float(3.0))
                 IfLt(LVar2, -45)

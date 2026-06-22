@@ -29,7 +29,7 @@ API_CALLABLE(N(CreateParadeNPC)) {
     NpcBlueprint bp;
     Npc* npc;
 
-    bp.flags = NPC_FLAG_IGNORE_PLAYER_COLLISION;
+    bp.flags = NPC_FLAG_IGNORE_CHAR_COLLISION;
     bp.initialAnim = npcInfo->initialAnim;
     bp.onUpdate = nullptr;
     bp.onRender = nullptr;

@@ -15,8 +15,8 @@
 #include "../common/TrainStationSwitches.inc.c"
 
 EvtScript N(EVS_BoardTrainFromBlockage) = {
-    Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Set(AF_OMO03_TrainStuck, false)
     Call(GetPlayerPos, LVar1, LVar2, LVar3)
     IfLt(LVar2, 50)
@@ -80,8 +80,8 @@ EvtScript N(EVS_BoardTrainFromBlockage) = {
 EvtScript N(EVS_DisembarkTrainAtBlockage) = {
     Call(StopSound, SOUND_LRAW_TOYBOX_TRAIN_GEAR)
     Call(SetMusic, 0, SONG_SHY_GUY_TOYBOX, 0, VOL_LEVEL_FULL)
-    Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Set(AF_OMO03_TrainStuck, true)
     SetF(LVar0, MV_TrainPosX)
     SetF(LVar1, MV_TrainPosZ)
@@ -94,7 +94,7 @@ EvtScript N(EVS_DisembarkTrainAtBlockage) = {
         Call(NpcMoveTo, NPC_Conductor, LVar3, LVar4, 0)
         Call(SetNpcAnimation, NPC_Conductor, ANIM_TrainToad_SadIdle)
         Call(InterpNpcYaw, NPC_Conductor, 90, 0)
-        Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     EndThread
     Wait(10)
     Thread
@@ -112,7 +112,7 @@ EvtScript N(EVS_DisembarkTrainAtBlockage) = {
     Call(SetNpcSpeed, NPC_PARTNER, Float(2.5))
     Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar1, 0)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };
@@ -158,13 +158,13 @@ EvtScript N(EVS_Conductor_ResumeStuckTrain) = {
         Call(DisablePlayerPhysics, true)
         Call(DisablePartnerAI, false)
         Thread
-            Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetNpcJumpscale, NPC_Conductor, Float(1.0))
             Call(GetNpcPos, NPC_Conductor, LVar0, LVar1, LVar2)
             Loop(2)
                 Call(NpcJump1, NPC_Conductor, LVar0, LVar1, LVar2, 15)
             EndLoop
-            Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         EndThread
         Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0015)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o939, COLLIDER_FLAGS_UPPER_MASK)

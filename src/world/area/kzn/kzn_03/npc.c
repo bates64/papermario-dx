@@ -54,7 +54,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Idle)
     Call(NpcFacePlayer, NPC_SELF, 0)
     Wait(10)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetSelfVar, 0, 1)
     Thread
         Call(GetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
@@ -71,14 +71,14 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Shout, ANIM_Kolorado_Panic, 512, MSG_CH5_00F3)
     Call(SetSelfVar, 0, 0)
     Wait(18)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInteract_Kolorado) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     IfLt(GB_StoryProgress, STORY_CH5_SMASHED_ULTRA_BLOCK)
         IfEq(GF_KZN03_SpokeWithKolorado, false)
             Call(AdjustCam, CAM_DEFAULT, Float(3.3), 0, 350, Float(15.0), Float(-7.0))
@@ -106,7 +106,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
         Call(SetSelfVar, 0, 0)
         Wait(18)
     EndIf
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
     ExecWait(EVS_TryLetterDelivery)
     Return

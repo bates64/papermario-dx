@@ -183,7 +183,7 @@ EvtScript N(EVS_NpcInit_Boo_03) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Boo_03)))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_SAW_TUBBA_EAT_BOO)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
             Call(RemoveNpc, NPC_SELF)
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)

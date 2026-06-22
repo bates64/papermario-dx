@@ -262,7 +262,7 @@ EvtScript N(EVS_FlyDownToGate) = {
 
 EvtScript N(EVS_HaveBoosOpenGate) = {
     Thread
-        Call(SetNpcFlagBits, NPC_GateBoo_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_GateBoo_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Set(LVar0, NPC_GateBoo_02)
         Set(LVar1, -66)
         Set(LVar2, -66)
@@ -271,7 +271,7 @@ EvtScript N(EVS_HaveBoosOpenGate) = {
         Set(LVar5, 30)
         Call(N(MoveNpcAlongArc))
     EndThread
-    Call(SetNpcFlagBits, NPC_GateBoo_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_GateBoo_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Set(LVar0, NPC_GateBoo_01)
     Set(LVar1, -135)
     Set(LVar2, 59)
@@ -285,7 +285,7 @@ EvtScript N(EVS_HaveBoosOpenGate) = {
 
 EvtScript N(EVS_HaveBoosCloseGate) = {
     Thread
-        Call(SetNpcFlagBits, NPC_GateBoo_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_GateBoo_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Set(LVar0, NPC_GateBoo_02)
         Set(LVar1, -66)
         Set(LVar2, -66)
@@ -294,7 +294,7 @@ EvtScript N(EVS_HaveBoosCloseGate) = {
         Set(LVar5, 30)
         Call(N(MoveNpcAlongArc))
     EndThread
-    Call(SetNpcFlagBits, NPC_GateBoo_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_GateBoo_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Set(LVar0, NPC_GateBoo_01)
     Set(LVar1, -135)
     Set(LVar2, 59)

@@ -167,7 +167,7 @@ EvtScript N(EVS_NpcDefeat_GoombaBros_Red) = {
 EvtScript N(EVS_NpcInit_GoombaBros_Red) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_GoombaBros_Red)))
     Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_GoombaBros_Red)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Set(MV_GoombaBrosDefeated, false)
     IfGe(GB_StoryProgress, STORY_CH0_DEFEATED_GOOMBA_BROS)
         Call(RemoveNpc, NPC_SELF)
@@ -198,7 +198,7 @@ EvtScript N(EVS_NpcDefeat_GoombaBros_Blue) = {
 EvtScript N(EVS_NpcInit_GoombaBros_Blue) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_GoombaBros_Blue)))
     Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_GoombaBros_Blue)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     IfGe(GB_StoryProgress, STORY_CH0_DEFEATED_GOOMBA_BROS)
         Call(RemoveNpc, NPC_SELF)
         Return

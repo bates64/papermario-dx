@@ -129,7 +129,7 @@ API_CALLABLE(N(Update)) {
             N(TweesterPhysicsPtr)->angularVel = 6.0f;
             N(TweesterPhysicsPtr)->liftoffVelPhase = 50.0f;
             N(TweesterPhysicsPtr)->countdown = 120;
-            kooper->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
+            kooper->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
             kooper->flags &= ~NPC_FLAG_GRAVITY;
         case TWEESTER_PARTNER_ATTRACT:
             sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
@@ -265,7 +265,7 @@ API_CALLABLE(N(UseAbility)) {
             ShellTossHitboxState = SHELL_TOSS_HITBOX_DISABLED;
             N(HasItem) = false;
             kooper->flags &= ~(NPC_FLAG_GRAVITY | NPC_FLAG_JUMPING | NPC_FLAG_FLYING);
-            kooper->flags |= (NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION);
+            kooper->flags |= (NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION);
             partnerStatus->actingPartner = PARTNER_KOOPER;
             partnerStatus->partnerActionState = PARTNER_ACTION_KOOPER_GATHER;
             N(PlayerWasFacingLeft) = partner_force_player_flip_done();
@@ -372,7 +372,7 @@ API_CALLABLE(N(UseAbility)) {
 
             if (!(kooper->jumpVel > 0.0f) && (playerStatus->pos.y < kooper->moveToPos.z)) {
                 N(D_802BEC5C) = 0;
-                kooper->flags &= ~NPC_FLAG_IGNORE_PLAYER_COLLISION;
+                kooper->flags &= ~NPC_FLAG_IGNORE_CHAR_COLLISION;
                 partnerStatus->actingPartner = PARTNER_KOOPER;
                 partnerStatus->partnerActionState = PARTNER_ACTION_KOOPER_TOSS;
                 kooper->rot.z = 0.0f;
@@ -546,7 +546,7 @@ API_CALLABLE(N(UseAbility)) {
         }
 
     if (script->USE_STATE == SHELL_TOSS_STATE_RETURN) {
-        kooper->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+        kooper->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
         if (playerStatus->actionState == ACTION_STATE_HIT_FIRE
             || playerStatus->actionState == ACTION_STATE_KNOCKBACK
         ) {
@@ -617,7 +617,7 @@ API_CALLABLE(N(UseAbility)) {
         }
 
         ShellTossHitboxState = SHELL_TOSS_HITBOX_DISABLED;
-        kooper->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+        kooper->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
         kooper->flags &= ~(NPC_FLAG_JUMPING | NPC_FLAG_IGNORE_WORLD_COLLISION);
         partnerStatus->actingPartner = PARTNER_NONE;
         partnerStatus->partnerActionState = PARTNER_ACTION_NONE;

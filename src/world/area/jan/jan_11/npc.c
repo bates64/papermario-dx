@@ -66,7 +66,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Green_SadTalk, ANIM_YoshiKid_Green_SadIdle, 0, MSG_CH5_00AE)
     Call(EndSpeech, NPC_SELF, ANIM_YoshiKid_Green_Talk, ANIM_YoshiKid_Green_Idle, 0)
     Thread
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_GRAVITY, true)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_GRAVITY, true)
         Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Green_Run)
         Call(SetNpcSpeed, NPC_SELF, Float(5.0))
         Call(NpcMoveTo, NPC_SELF, -100, 50, 0)

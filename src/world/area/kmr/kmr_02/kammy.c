@@ -69,8 +69,8 @@ EvtScript N(EVS_UpdateKammyTracking) = {
 
 EvtScript N(EVS_Scene_KammyCrushesGate) = {
     Call(DisablePlayerInput, true)
-    Call(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Goompapa, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Goompapa, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(DisablePlayerPhysics, true)
     Call(EnableNpcAI, NPC_Goombario, false)
     Call(SetNpcAnimation, NPC_Goombario, ANIM_WorldGoombario_Idle)
@@ -336,8 +336,8 @@ EvtScript N(EVS_Scene_KammyCrushesGate) = {
     Call(BindNpcAI, NPC_Goombario, Ref(N(EVS_NpcIdle_SwitchedWander)))
     Call(N(SetWanderTerritory), NPC_Goombaria, 3)
     Call(BindNpcAI, NPC_Goombaria, Ref(N(EVS_NpcIdle_SwitchedWander)))
-    Call(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-    Call(SetNpcFlagBits, NPC_Goompapa, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Goompapa, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };

@@ -26,13 +26,13 @@ EvtScript N(EVS_ItemPrompt_ToyTrain) = {
         IfEq(GF_OMO03_LearnedAboutTrainSwitches, false)
             IfEq(AF_OMO03_ToggleDialogue_Conductor, false)
                 Thread
-                    Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                    Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                     Call(SetNpcJumpscale, NPC_Conductor, Float(1.0))
                     Call(GetNpcPos, NPC_Conductor, LVar0, LVar1, LVar2)
                     Loop(2)
                         Call(NpcJump1, NPC_Conductor, LVar0, LVar1, LVar2, 15)
                     EndLoop
-                    Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                    Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
                 EndThread
                 Wait(10)
                 IfEq(MF_EitherSwitchPressed, false)

@@ -479,7 +479,7 @@ EvtScript N(SuperBlock_OnHit) = {
     Call(N(SuperBlock_SetOverride40))
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(N(SuperBlock_StartGlowEffect), SUPER_BLOCK_MAPVAR, LVar9)
     Call(FindItem, ITEM_ULTRA_STONE, LVarC)
     Call(N(SuperBlock_CountEligiblePartners))

@@ -80,7 +80,7 @@ EvtScript N(EVS_NpcInteract_Koopatrol_02) = {
                 EndIf
             EndLoop
         EndThread
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim05)
         Call(SetNpcSpeed, NPC_SELF, Float(2.0 / DT))
         Call(NpcMoveTo, NPC_SELF, 1050, 0, 0)

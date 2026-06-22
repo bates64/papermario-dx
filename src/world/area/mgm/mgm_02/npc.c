@@ -1632,7 +1632,7 @@ EvtScript N(EVS_Toad_GovernGame) = {
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     EndThread
-    Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(N(CreateSignpost))
     PlayEffect(EFFECT_WALKING_DUST, 1, 355, 45, -175)
     Thread
@@ -1650,7 +1650,7 @@ EvtScript N(EVS_Toad_GovernGame) = {
     EndIf
     Call(PlayerMoveTo, 330, 185, LVarA)
     Call(WaitForPlayerMoveToComplete)
-    Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Wait(5)
     Call(SetSelfVar, 3, 5)
     Call(N(UpdateRecords))

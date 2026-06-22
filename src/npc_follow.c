@@ -61,7 +61,7 @@ void npc_follow_init(Npc* npc, s32 targetNpcID, FollowAnims* anims, f32 walkSpee
     npc->curAnim = followData->anims->idle;
     npc->jumpVel = 0.0f;
     npc->flags |= NPC_FLAG_GRAVITY;
-    npc->flags &= ~NPC_FLAG_IGNORE_PLAYER_COLLISION;
+    npc->flags &= ~NPC_FLAG_IGNORE_CHAR_COLLISION;
     npc->collisionChannel = COLLIDER_FLAG_IGNORE_PLAYER;
 }
 
@@ -189,7 +189,7 @@ void npc_follow_npc(Npc* npc) {
             }
             npc->yaw = yaw;
             npc_move_heading(npc, npc->moveSpeed, yaw);
-            if ((npc->flags & NPC_FLAG_COLLDING_FORWARD_WITH_WORLD) && (npc->flags & NPC_FLAG_GROUNDED)) {
+            if ((npc->flags & NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD) && (npc->flags & NPC_FLAG_GROUNDED)) {
                 followData->followState = NPC_FOLLOW_STATE_JUMP;
             }
             break;

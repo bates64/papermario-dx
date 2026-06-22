@@ -49,7 +49,7 @@ EvtScript N(EVS_NpcAI_MBush) = {
         Wait(6)
         Call(InterpPlayerYaw, 90, 0)
     EndThread
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(EnableNpcShadow, NPC_SELF, true)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, 25)
@@ -85,7 +85,7 @@ EvtScript N(EVS_NpcDefeat_MBush) = {
             Call(NpcJump1, NPC_SELF, LVar0, LVar1, LVar2, 8)
             Call(EnableNpcShadow, NPC_SELF, false)
             Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Anim00)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_MBush)))
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_FLED, true)

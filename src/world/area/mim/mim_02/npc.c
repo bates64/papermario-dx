@@ -17,7 +17,7 @@ EvtScript N(EVS_NpcInteract_Oaklie) = {
         Return
     EndIf
     Call(SpeakToPlayer, NPC_Oaklie, ANIM_Oaklie_Talk, ANIM_Oaklie_Idle, 0, MSG_CH3_0007)
-    Call(SetNpcFlagBits, NPC_Oaklie, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Oaklie, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Wait(5 * DT)
     Thread
         Call(SetNpcAnimation, NPC_Oaklie, ANIM_Oaklie_Jump)

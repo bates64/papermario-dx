@@ -76,7 +76,7 @@ EvtScript N(EVS_Scene_HuffNPuffAmbush) = {
     Call(InterpPlayerYaw, 90, 1)
     Wait(5)
     Call(SetPlayerAnimation, ANIM_Mario1_Flail)
-    Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetPlayerPos, LVar2, LVar3, LVar4)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
     Call(SetPanTarget, CAM_DEFAULT, LVar2, LVar3, LVar4)
@@ -101,7 +101,7 @@ EvtScript N(EVS_Scene_HuffNPuffAmbush) = {
     EndLoop
     Call(func_802D2C14, 1)
     Call(SetPlayerPos, LVar0, LVar2, LVar4)
-    Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(DisablePlayerPhysics, false)
     Wait(10)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)

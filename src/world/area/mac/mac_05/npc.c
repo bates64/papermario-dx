@@ -1077,7 +1077,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
         EndIf
         Wait(1)
     EndLoop
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Walk)
     Call(SetNpcSpeed, NPC_SELF, Float(1.5))
     Call(NpcMoveTo, NPC_SELF, -335, 400, 10)
@@ -1840,7 +1840,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
                 Call(SpeakToPlayer, NPC_Chanterelle, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_007C)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_007D)
                 Call(SpeakToPlayer, NPC_Chanterelle, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_007E)
-                Call(SetNpcFlagBits, NPC_Chanterelle, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_Chanterelle, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Thread
                     Call(PlayerMoveTo, 167, -513, 20)
                     Call(InterpPlayerYaw, 270, 0)
@@ -1906,7 +1906,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
                     Call(InterpPlayerYaw, 90, 0)
                     Wait(10)
                     Call(func_802CF56C, 2)
-                    Call(SetNpcFlagBits, NPC_Chanterelle, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                    Call(SetNpcFlagBits, NPC_Chanterelle, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
                 EndThread
                 Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
                 Call(PanToTarget, CAM_DEFAULT, 0, false)

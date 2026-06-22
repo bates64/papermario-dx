@@ -146,7 +146,7 @@ API_CALLABLE(N(MeleeHitbox_Main)) {
     if (isInitialCall || (hitboxEnemy->aiFlags & AI_FLAG_SUSPEND)) {
         script->AI_TEMP_STATE = AI_STATE_HITBOX_IDLE;
         hitboxNpc->duration = 0;
-        hitboxNpc->flags |= (NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION);
+        hitboxNpc->flags |= (NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION);
         hitboxEnemy->flags |= ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN;
         hitboxEnemy->flags |= ENEMY_INTANGIBLE_FLAGS;
         hitboxNpc->pos.x = NPC_DISPOSE_POS_X;

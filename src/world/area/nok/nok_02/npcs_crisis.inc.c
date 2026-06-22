@@ -202,10 +202,10 @@ EvtScript N(EVS_FuzzyThief_AvoidCapture) = {
         IfNe(LVar0, 0)
             Label(1)
             Call(N(ChooseSafeJumpLocation), LVarF, LVarE)
-            Call(SetNpcFlagBits, NPC_FuzzyThief, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_FuzzyThief, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZY_HOP_A, SOUND_SPACE_DEFAULT)
             Call(NpcJump0, NPC_FuzzyThief, LVarA, 0, LVarB, LVarC)
-            Call(SetNpcFlagBits, NPC_FuzzyThief, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_FuzzyThief, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Call(N(IsPlayerOrKoopaNearby), LVarF, LVarE)
             Set(MV_IsPlayerNearbyThief, LVar0)
             IfNe(LVar0, 0)
@@ -338,7 +338,7 @@ EvtScript N(EVS_NpcIdle_Koopa_01_Crisis) = {
         EndIf
         Call(DisablePlayerInput, true)
         Thread
-            Call(SetNpcFlagBits, NPC_FuzzyThief, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_FuzzyThief, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(GetNpcPos, NPC_KoopaShell_01, LVar0, LVar1, LVar2)
             Call(SetNpcAnimation, NPC_FuzzyThief, ANIM_Fuzzy_Hurt)
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZY_HOP_A, SOUND_SPACE_DEFAULT)
@@ -408,7 +408,7 @@ EvtScript N(EVS_NpcIdle_Koopa_01_Crisis) = {
         Call(NpcJump0, NPC_KoopaShell_01, LVar0, LVar1, LVar2, 30)
         Call(SetNpcPos, NPC_KoopaShell_01, NPC_DISPOSE_LOCATION)
         Call(SetNpcSprite, NPC_Koopa_01, ANIM_Koopa_Idle)
-        Call(SetNpcFlagBits, NPC_Koopa_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_Koopa_01, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(SetNpcAnimation, NPC_Koopa_01, ANIM_Koopa_Still)
         Wait(4)
         Call(EnableNpcBlur, NPC_KoopaShell_01, true)
@@ -448,7 +448,7 @@ EvtScript N(EVS_NpcInit_Koopa_01_Crisis) = {
     IfEq(GF_NOK02_RecoveredShellA, true)
         Return
     EndIf
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcSprite, NPC_SELF, ANIM_KoopaWithoutShell_CryIdle)
     Return
     End

@@ -94,7 +94,7 @@ EvtScript N(EVS_NpcHit_Goompa) = {
         Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, true)
         Call(SetNpcPos, NPC_Goompa, NPC_DISPOSE_LOCATION)
-        Call(SetNpcFlagBits, NPC_Goompa, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_Goompa, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(EnablePartnerAI)
         Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_Goompa)))
     EndIf

@@ -55,7 +55,7 @@ EvtScript N(EVS_EnterStarWarp) = {
     Call(SetPlayerActionState, ACTION_STATE_LAND)
     Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(UseSettingsFrom, CAM_DEFAULT, -30, 250, -160)
     Call(SetPanTarget, CAM_DEFAULT, -30, 250, -160)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))

@@ -273,7 +273,7 @@ EvtScript N(EVS_NpcInteract_GourmetGuy) = {
             EndThread
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_GOURMET_GUY_RUN, SOUND_SPACE_DEFAULT)
             Call(SetNpcAnimation, NPC_SELF, ANIM_GourmetGuy_Panic)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetNpcSpeed, NPC_SELF, Float(20.0 / DT))
             Call(NpcMoveTo, NPC_SELF, 0, 110, 0)
             Wait(20 * DT)

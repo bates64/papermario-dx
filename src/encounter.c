@@ -27,7 +27,7 @@ EvtScript EVS_MerleeDropCoins = {
     Call(FadeBackgroundDarken)
     Wait(10)
     Call(CreateNpc, NPC_BTL_MERLEE, ANIM_BattleMerlee_Gather)
-    Call(SetNpcFlagBits, NPC_BTL_MERLEE, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_BTL_MERLEE, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcYaw, NPC_BTL_MERLEE, 0)
     Call(GetCamLookAtObjVector)
     Call(SetNpcPos, NPC_BTL_MERLEE, LVar0, LVar1, LVar2)
@@ -2605,7 +2605,7 @@ void create_encounters(void) {
                         newNpc->flags |= NPC_FLAG_IGNORE_WORLD_COLLISION;
                     }
                     if (enemy->flags & ENEMY_FLAG_IGNORE_PLAYER_COLLISION) {
-                        newNpc->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+                        newNpc->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
                     }
                     if (enemy->flags & ENEMY_FLAG_IGNORE_ENTITY_COLLISION) {
                         newNpc->flags |= NPC_FLAG_IGNORE_ENTITY_COLLISION;
@@ -2617,7 +2617,7 @@ void create_encounters(void) {
                         newNpc->flags |= NPC_FLAG_GRAVITY;
                     }
                     if (!(enemy->flags & ENEMY_FLAG_PASSIVE)) {
-                        newNpc->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+                        newNpc->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
                     }
                     if (enemy->flags & ENEMY_FLAG_HAS_NO_SPRITE) {
                         newNpc->flags |= NPC_FLAG_HAS_NO_SPRITE;

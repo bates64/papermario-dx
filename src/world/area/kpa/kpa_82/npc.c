@@ -1217,7 +1217,7 @@ EvtScript N(EVS_NpcInit_Door) = {
         Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Door)))
     EndIf
     Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Door)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcPos, NPC_SELF, 184, 20, 150)
     Return
@@ -1226,7 +1226,7 @@ EvtScript N(EVS_NpcInit_Door) = {
 
 EvtScript N(EVS_NpcInit_Goomba) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Goomba)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Return
     End
@@ -1234,7 +1234,7 @@ EvtScript N(EVS_NpcInit_Goomba) = {
 
 EvtScript N(EVS_NpcInit_ShyGuy) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_ShyGuy)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Return
     End
@@ -1242,7 +1242,7 @@ EvtScript N(EVS_NpcInit_ShyGuy) = {
 
 EvtScript N(EVS_NpcInit_KoopaTroopa) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_KoopaTroopa)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Return
     End
@@ -1250,7 +1250,7 @@ EvtScript N(EVS_NpcInit_KoopaTroopa) = {
 
 EvtScript N(EVS_NpcInit_Bobomb) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Bobomb)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Return
     End

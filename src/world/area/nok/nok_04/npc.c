@@ -938,7 +938,7 @@ EvtScript N(EVS_Scene_KooperArrives) = {
     Call(NpcJump0, NPC_KoopersShell, LVar0, LVar1, LVar2, 30 * DT)
     Call(SetNpcPos, NPC_KoopersShell, NPC_DISPOSE_LOCATION)
     Call(SetNpcSprite, NPC_Kooper, ANIM_WorldKooper_Idle)
-    Call(SetNpcFlagBits, NPC_Kooper, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Kooper, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetNpcSprite, NPC_Kooper, ANIM_WorldKooper_Still)
     Wait(4 * DT)
     Call(EnableNpcBlur, NPC_KoopersShell, true)

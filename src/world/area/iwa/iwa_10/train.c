@@ -390,7 +390,7 @@ EvtScript N(EVS_ArriveFromToadTown) = {
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Call(PlayerJump, LVar0, LVar1, LVar2, 15)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcSpeed, NPC_PARTNER, Float(3.0))
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_WALK)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)

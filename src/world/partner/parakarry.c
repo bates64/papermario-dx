@@ -93,7 +93,7 @@ API_CALLABLE(N(Update)) {
             N(TweesterPhysicsPtr)->angularVel = 6.0f;
             N(TweesterPhysicsPtr)->liftoffVelPhase = 50.0f;
             N(TweesterPhysicsPtr)->countdown = 120;
-            parakarry->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
+            parakarry->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
             parakarry->flags &= ~NPC_FLAG_GRAVITY;
         case TWEESTER_PARTNER_ATTRACT:
             sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
@@ -210,8 +210,8 @@ API_CALLABLE(N(UseAbility)) {
                 return ApiStatus_DONE2;
             }
             N(AbilityState) = AIR_LIFT_INIT;
-            parakarry->flags &= ~NPC_FLAG_COLLDING_FORWARD_WITH_WORLD;
-            parakarry->flags |= NPC_FLAG_COLLDING_WITH_WORLD;
+            parakarry->flags &= ~NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD;
+            parakarry->flags |= NPC_FLAG_COLLIDING_WITH_WORLD;
         } else {
             partnerStatus->shouldResumeAbility = false;
             set_action_state(ACTION_STATE_RIDE);
@@ -221,8 +221,8 @@ API_CALLABLE(N(UseAbility)) {
             parakarry->curAnim = ANIM_WorldParakarry_CarryLight;
             partnerStatus->actingPartner = PARTNER_PARAKARRY;
             partnerStatus->partnerActionState = PARTNER_ACTION_PARAKARRY_HOVER;
-            parakarry->flags &= ~NPC_FLAG_COLLDING_FORWARD_WITH_WORLD;
-            parakarry->flags |= NPC_FLAG_COLLDING_WITH_WORLD;
+            parakarry->flags &= ~NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD;
+            parakarry->flags |= NPC_FLAG_COLLIDING_WITH_WORLD;
         }
     }
 
@@ -417,7 +417,7 @@ API_CALLABLE(N(UseAbility)) {
                 parakarry->pos.y = playerStatus->pos.y + 32.0f;
             }
 
-            if (parakarry->flags & NPC_FLAG_COLLDING_FORWARD_WITH_WORLD) {
+            if (parakarry->flags & NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD) {
                 suggest_player_anim_allow_backward(ANIM_Mario1_Idle);
                 N(AbilityState) = AIR_LIFT_DROP;
                 break;
@@ -550,7 +550,7 @@ API_CALLABLE(N(UseAbility)) {
                         gCameras[CAM_DEFAULT].targetPos.x = playerStatus->pos.x;
                         gCameras[CAM_DEFAULT].targetPos.y = playerStatus->pos.y;
                         gCameras[CAM_DEFAULT].targetPos.z = playerStatus->pos.z;
-                        if (!(parakarry->flags & NPC_FLAG_COLLDING_FORWARD_WITH_WORLD)) {
+                        if (!(parakarry->flags & NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD)) {
                             parakarry->duration++;
                             if (!(parakarry->planarFlyDist < 100.0f)) {
                                 N(AbilityStateTime) = 5;
