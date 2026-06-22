@@ -1,11 +1,6 @@
 #include "common.h"
 #include "npc.h"
 
-#ifndef PARTY_IMAGE
-#error "Define PARTY_IMAGE to the asset name to use LoadPartyImage."
-#define PARTY_IMAGE
-#endif
-
 #define PARTY_IMAGE_PALETTE_SIZE 256
 #define PARTY_IMAGE_WIDTH 150
 #define PARTY_IMAGE_HEIGHT 105
@@ -20,8 +15,9 @@ API_CALLABLE(N(LoadPartyImage)) {
     static PartyImage img;
     static MessageImageData image;
 
+    const char* assetName = (const char*)evt_get_variable(script, *script->ptrReadPos);
     u32 decompressedSize;
-    void* compressed = load_asset_by_name(PARTY_IMAGE, &decompressedSize);
+    void* compressed = load_asset_by_name(assetName, &decompressedSize);
 
     decode_yay0(compressed, &img);
     general_heap_free(compressed);
@@ -36,5 +32,3 @@ API_CALLABLE(N(LoadPartyImage)) {
     set_message_images(&image);
     return ApiStatus_DONE2;
 }
-
-#undef PARTY_IMAGE

@@ -16,6 +16,7 @@ BSS u8 oldPrimR, oldPrimG, oldPrimB;
 BSS u8 oldEnvR, oldEnvG, oldEnvB;
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
+#include "world/common/util/LoadPartyImage.inc.c"
 #include "world/common/atomic/MarioSalute.inc.c"
 
 #include "world/common/npc/Quizmo/quiz.inc.c"
@@ -645,7 +646,7 @@ EvtScript N(EVS_ReturnToVillage) = {
     Call(GetNpcPos, NPC_Goombario, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_Goombario, LVar0, LVar1, LVar2, 7 * DT)
     Call(SpeakToNpc, NPC_Goombario, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, NPC_PARTNER, MSG_CH0_0038)
-    Call(N(LoadPartyImage))
+    Call(N(LoadPartyImage), Ref("party_kurio"))
     Exec(N(EVS_PushNewPartnerSong))
     Wait(10 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_0189, 160, 40)

@@ -23,6 +23,7 @@ typedef struct FuzzyThread {
 } FuzzyThread; //size = 0x48
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
+#include "world/common/util/LoadPartyImage.inc.c"
 
 #include "world/common/enemy/Fuzzy/idle.inc.c"
 #include "world/common/npc/Koopa/idle.inc.c"
@@ -980,7 +981,7 @@ EvtScript N(EVS_Scene_KooperArrives) = {
             Set(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         EndIf
     Call(N(ChangeNpcToPartner), NPC_Kooper, PARTNER_KOOPER)
-    Call(N(LoadPartyImage))
+    Call(N(LoadPartyImage), Ref("party_kameki"))
     Exec(N(EVS_PushPartnerSong))
     Wait(15 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_018A, 160, 40)

@@ -108,6 +108,3 @@ NpcGroupList N(NpcGroup_KoopaBros) = {
     NPC_GROUP(N(NpcData_KoopaBros)),
     {}
 };
-
-#define PARTY_IMAGE "party_pinki"
-#include "world/common/todo/LoadPartyImage.inc.c"

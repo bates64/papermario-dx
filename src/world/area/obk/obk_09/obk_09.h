@@ -31,5 +31,3 @@ extern EvtScript N(EVS_Scene_Epilogue);
 extern EvtScript N(EVS_Scene_MeetBow);
 extern NpcGroupList N(DefaultNPCs);
 extern NpcGroupList N(EpilogueNPCs);
-
-API_CALLABLE(N(LoadPartyImage));

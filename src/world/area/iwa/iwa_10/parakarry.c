@@ -4,6 +4,7 @@
 
 #include "world/common/npc/Parakarry/idle.inc.c"
 
+#include "world/common/util/LoadPartyImage.inc.c"
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 
 EvtScript N(EVS_Scene_MeetParakarry) = {
@@ -244,7 +245,7 @@ EvtScript N(EVS_NpcInteract_Parakarry) = {
         Call(ContinueSpeech, NPC_Parakarry, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, MSG_CH2_001D)
         Call(N(ChangeNpcToPartner), NPC_Parakarry, PARTNER_PARAKARRY)
         Set(GB_StoryProgress, STORY_CH2_PARAKARRY_JOINED_PARTY)
-        Call(N(LoadPartyImage))
+        Call(N(LoadPartyImage), Ref("party_pareta"))
         Exec(N(EVS_PushSong))
         Wait(15 * DT)
         Call(ShowMessageAtScreenPos, MSG_Menus_018C, 160, 40)

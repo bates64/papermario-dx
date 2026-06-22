@@ -14,6 +14,7 @@ NpcSettings N(NpcSettings_Watt) = {
 };
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
+#include "world/common/util/LoadPartyImage.inc.c"
 
 #include "world/common/atomic/CreateDarkness.inc.c"
 
@@ -360,7 +361,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
     Set(AB_OMO12_LightSource, LIGHT_FROM_NO_CHANGE)
     Wait(1)
     Call(N(ChangeNpcToPartner), NPC_Watt, PARTNER_WATT)
-    Call(N(LoadPartyImage))
+    Call(N(LoadPartyImage), Ref("party_akari"))
     Exec(N(EVS_PushPartnerSong))
     Wait(15 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_018E, 160, 40)

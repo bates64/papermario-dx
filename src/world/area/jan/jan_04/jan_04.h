@@ -44,5 +44,3 @@ extern EvtScript N(EVS_PlayDemoScene);
 
 extern NpcGroupList N(DefaultNPCs);
 extern NpcGroupList N(EpilogueNPCs);
-
-API_CALLABLE(N(LoadPartyImage));

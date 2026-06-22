@@ -84,5 +84,3 @@ extern EvtScript N(EVS_NpcIdle_SwitchedWander);
 
 extern IMG_BIN N(heart_block_img)[];
 extern PAL_BIN N(heart_block_pal)[];
-
-API_CALLABLE(N(LoadPartyImage));

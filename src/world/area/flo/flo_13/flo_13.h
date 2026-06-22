@@ -41,5 +41,3 @@ extern EvtScript N(EVS_PushPartnerSong);
 extern EvtScript N(EVS_PopSong);
 extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(DefaultNPCs);
-
-API_CALLABLE(N(LoadPartyImage));

@@ -8,9 +8,9 @@
 
 extern EvtScript N(EVS_PushSong);
 extern EvtScript N(EVS_PopSong);
-API_CALLABLE(N(LoadPartyImage));
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
+#include "world/common/util/LoadPartyImage.inc.c"
 
 NpcSettings N(NpcSettings_KoopaTroopa) = {
     .height = 34,
@@ -95,7 +95,7 @@ EvtScript N(EVS_NpcInteract_Bombette) = {
         Call(ContinueSpeech, NPC_SELF, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH1_00DE)
         Call(N(ChangeNpcToPartner), NPC_Bombette, PARTNER_BOMBETTE)
         Set(GB_StoryProgress, STORY_CH1_BOMBETTE_JOINED_PARTY)
-        Call(N(LoadPartyImage))
+        Call(N(LoadPartyImage), Ref("party_pinki"))
         Exec(N(EVS_PushSong))
         Wait(15 * DT)
         Call(ShowMessageAtScreenPos, MSG_Menus_018B, 160, 40)

@@ -5,6 +5,8 @@
 #include "world/common/npc/Bubulb/idle.inc.c"
 #include "world/common/npc/YoshiKid/idle.inc.c"
 
+#include "world/common/util/LoadPartyImage.inc.c"
+
 EvtScript N(EVS_ShakeTree_Sushie) = {
     Call(GetNpcVar, NPC_Sushie, 0, LVar0)
     IfEq(LVar0, 2)
@@ -171,7 +173,7 @@ EvtScript N(EVS_NpcIdle_Sushie) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 0, MSG_CH5_00A7)
     Call(CloseMessage)
     Call(N(ChangeNpcToPartner), NPC_Sushie, PARTNER_SUSHIE)
-    Call(N(LoadPartyImage))
+    Call(N(LoadPartyImage), Ref("party_opuku"))
     Exec(N(EVS_PushNewPartnerSong))
     Wait(15 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_018F, 160, 40)

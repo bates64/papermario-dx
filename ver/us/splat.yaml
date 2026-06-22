@@ -8731,7 +8731,6 @@ segments:
     - [auto, c, train]
     - [auto, c, entity]
     - [auto, c, parakarry]
-    - [auto, c, new_partner]
     - [auto, c, foliage]
   - name: iwa_11
     dir: world/area/iwa/iwa_11
@@ -9579,7 +9578,6 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
     - [auto, c, npc]
-    - [auto, c, new_partner]
   - name: nok_11
     dir: world/area/nok/nok_11
     type: code
@@ -11226,7 +11224,6 @@ segments:
     - [auto, c, main]
     - [auto, c, meet_bow]
     - [auto, c, npc]
-    - [auto, c, new_partner]
     - [auto, c, epilogue]
   - name: arn_02
     dir: world/area/arn/arn_02
@@ -12211,7 +12208,6 @@ segments:
     - [auto, c, entity]
     - [auto, c, main]
     - [auto, c, npc]
-    - [auto, c, new_partner]
   - name: flo_14
     dir: world/area/flo/flo_14
     type: code
@@ -13072,7 +13068,6 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
     - [auto, c, npc]
-    - [auto, c, new_partner]
   - name: omo_13
     dir: world/area/omo/omo_13
     type: code

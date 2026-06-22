@@ -5,6 +5,7 @@
 #include "world/common/enemy/Lakitu/idle.inc.c"
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
+#include "world/common/util/LoadPartyImage.inc.c"
 
 #define AI_LAKITU_FIRST_SPINY_ID    NPC_Spiny_01
 #define AI_LAKITU_LAST_SPINY_ID     NPC_Spiny_06
@@ -484,7 +485,7 @@ EvtScript N(EVS_Scene_LakilesterDefeated) = {
     Call(SetNpcSpeed, NPC_Lakilester, Float(3.5 / DT))
     Call(NpcMoveTo, NPC_Lakilester, LVar0, 60, 0)
     Call(N(ChangeNpcToPartner), NPC_Lakilester, PARTNER_LAKILESTER)
-    Call(N(LoadPartyImage))
+    Call(N(LoadPartyImage), Ref("party_pokopi"))
     Exec(N(EVS_PushPartnerSong))
     Wait(15 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_0190, 160, 40)

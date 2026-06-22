@@ -34,5 +34,3 @@ extern EvtScript N(EVS_PopSong);
 extern EvtScript N(EVS_SetupLightSource);
 extern EvtScript N(EVS_EnterScene);
 extern NpcGroupList N(DefaultNPCs);
-
-API_CALLABLE(N(LoadPartyImage));
