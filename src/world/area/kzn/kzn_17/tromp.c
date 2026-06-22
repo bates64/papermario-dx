@@ -88,7 +88,7 @@ EvtScript N(EVS_SetupSpinyTromp) = {
         Call(RotateModel, MODEL_me, LVar3, 0, 0, 1)
         Call(N(SpinyTromp_UpdateRollWobble))
         Call(TranslateModel, MODEL_me, LVar5, LVar6, 30)
-        Call(N(SpinyTromp_UpdateRollAngle))
+        Call(N(SpinyTromp_UpdateRollAngle), SPINY_TROMP_START_X, SPINY_TROMP_START_Y)
         IfEq(AF_KZN_Tromp2_StopPlayer, false)
             Thread
                 Call(GetPlayerPos, LVar3, LVar1, LVar2)

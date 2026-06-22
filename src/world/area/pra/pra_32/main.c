@@ -1,7 +1,6 @@
 #include "pra_32.h"
 #include "sprite/player.h"
 
-#define STAR_SPIRIT_DATA_VAR MV_SpiritCardData
 #include "world/common/atomic/StarSpiritCard.inc.c"
 
 API_CALLABLE(N(DisableFloorReflections)) {
@@ -18,7 +17,7 @@ EvtScript N(EVS_SpawnStarCard) = {
         Call(SetPanTarget, CAM_DEFAULT, 595, 130, 116)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(N(InitSpiritCardSpawn), 6, 180, 590, 120, 116, 595, 185, 116, 130, 100)
+        Call(N(InitSpiritCardSpawn), MV_SpiritCardData, 6, 180, 590, 120, 116, 595, 185, 116, 130, 100)
         Thread
             Call(N(UpdateSpiritCardSpawn))
         EndThread
@@ -80,7 +79,7 @@ EvtScript N(EVS_RespawnStarCard) = {
         Call(SetPanTarget, CAM_DEFAULT, 595, 130, 116)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(N(InitSpiritCardSpawn), 6, 180, 590, 120, 116, 595, 185, 116, 130, 100)
+        Call(N(InitSpiritCardSpawn), MV_SpiritCardData, 6, 180, 590, 120, 116, 595, 185, 116, 130, 100)
         Thread
             Call(N(UpdateSpiritCardSpawn))
         EndThread

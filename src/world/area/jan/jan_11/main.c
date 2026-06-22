@@ -4,7 +4,6 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-#define DROPLET_MODEL MODEL_o140
 #include "world/area/tik/common/DripVolumes.inc.c"
 
 DripVolumeList N(DripVolumes) = {
@@ -31,6 +30,7 @@ DripVolumeList N(DripVolumes) = {
 
 EvtScript N(EVS_SetupDrips) = {
     Set(LVar0, Ref(N(DripVolumes)))
+    Set(LVar1, MODEL_o140)
     Exec(N(EVS_CreateDripVolumes))
     Return
     End

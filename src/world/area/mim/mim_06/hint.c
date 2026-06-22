@@ -1,6 +1,6 @@
 #include "mim_06.h"
 
-#include "world/area/mim/common/GetFlowerNormal.inc.c"
+#include "../common/GetFlowerNormal.inc.c"
 
 API_CALLABLE(N(GetWitherTranslation)) {
     Bytecode* args = script->ptrReadPos;

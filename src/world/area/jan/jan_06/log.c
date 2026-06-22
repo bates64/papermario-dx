@@ -42,7 +42,7 @@ EvtScript N(EVS_LogAnim_RiseUp) = {
     End
 };
 
-#include "world/area/jan/common/UpdateLogShadow.inc.c"
+#include "../common/UpdateLogShadow.inc.c"
 
 EvtScript N(EVS_LogAnim_FallDown) = {
     Thread

@@ -5,7 +5,6 @@
 
 #include "battle/common/stage/lib/TexturePanner.inc.c"
 
-#define DROPLET_MODEL MODEL_o351
 #include "battle/common/stage/lib/DripVolumes.inc.c"
 
 DripVolumeList N(DripVolumes) = {
@@ -31,6 +30,7 @@ EvtScript N(EVS_PreBattle) = {
     Set(LVar3, -500)
     Exec(N(EVS_TexturePanMain))
     Set(LVar0, Ref(N(DripVolumes)))
+    Set(LVar1, MODEL_o351)
     Exec(N(EVS_CreateDripVolumes))
     Return
     End

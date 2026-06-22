@@ -1,7 +1,6 @@
 #include "flo_21.h"
 #include "sprite/player.h"
 
-#define STAR_SPIRIT_DATA_VAR MV_SpiritCardData
 #include "world/common/atomic/StarSpiritCard.inc.c"
 
 EvtScript N(EVS_TrySpawningStarCard) = {
@@ -24,7 +23,7 @@ EvtScript N(EVS_TrySpawningStarCard) = {
         Call(SetPanTarget, CAM_DEFAULT, 650, 150, 0)
         EVT_SPIRIT_ADJUST_CAM(Float(-5.5))
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(N(InitSpiritCardSpawn), 5, 180, 650, 170, 0, 650, 205, 0, 150, 120)
+        Call(N(InitSpiritCardSpawn), MV_SpiritCardData, 5, 180, 650, 170, 0, 650, 205, 0, 150, 120)
         Thread
             Call(N(UpdateSpiritCardSpawn))
         EndThread

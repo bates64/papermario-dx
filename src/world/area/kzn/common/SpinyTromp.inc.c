@@ -4,24 +4,6 @@
 
 #define SPINY_TROMP_RADIUS 55
 
-#ifndef SPINY_TROMP_START_X
-#error  SPINY_TROMP_START_X must be defined for SpinyTromp
-#define SPINY_TROMP_START_X 0
-#endif
-
-#ifndef SPINY_TROMP_START_Y
-#error  SPINY_TROMP_START_Y must be defined for SpinyTromp
-#define SPINY_TROMP_START_Y 0
-#endif
-
-enum {
-    VAR_TROMP_0             = 0,
-    VAR_TROMP_1             = 1,
-    VAR_TROMP_2             = 2,
-    VAR_TROMP_ROLL_ANGLE    = 3,
-    VAR_TROMP_5             = 5,
-};
-
 API_CALLABLE(N(SpinyTromp_DamagePlayer)) {
     subtract_hp(1);
     return ApiStatus_DONE2;
@@ -74,8 +56,11 @@ API_CALLABLE(N(SpinyTromp_UpdateRollWobble)) {
 }
 
 API_CALLABLE(N(SpinyTromp_UpdateRollAngle)) {
-    f32 dx = SPINY_TROMP_START_X - script->varTable[0];
-    f32 dy = SPINY_TROMP_START_Y - script->varTable[2];
+    Bytecode* args = script->ptrReadPos;
+    f32 startX = evt_get_float_variable(script, *args++);
+    f32 startY = evt_get_float_variable(script, *args++);
+    f32 dx = startX - script->varTable[0];
+    f32 dy = startY - script->varTable[2];
 
     script->varTable[3] = -sqrtf(SQ(dx) + SQ(dy));
 

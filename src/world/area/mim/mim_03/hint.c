@@ -1,6 +1,6 @@
 #include "mim_03.h"
 
-#include "world/area/mim/common/GetFlowerNormal.inc.c"
+#include "../common/GetFlowerNormal.inc.c"
 
 s32 N(FlowerModels_North)[] = {
     MODEL_o1, MODEL_o2,

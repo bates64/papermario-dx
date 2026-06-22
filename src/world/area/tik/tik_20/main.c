@@ -28,7 +28,6 @@ LavaReset N(SafeFloorColliders)[] = {
     { .colliderID = NO_COLLIDER }
 };
 
-#define DROPLET_MODEL MODEL_sizuku
 #include "../common/DripVolumes.inc.c"
 
 DripVolumeList N(DripVolumes) = {
@@ -55,6 +54,7 @@ DripVolumeList N(DripVolumes) = {
 
 EvtScript N(EVS_SetupDrips) = {
     Set(LVar0, Ref(N(DripVolumes)))
+    Set(LVar1, MODEL_sizuku)
     Exec(N(EVS_CreateDripVolumes))
     Return
     End

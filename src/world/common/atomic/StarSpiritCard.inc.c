@@ -2,11 +2,6 @@
 #include "npc.h"
 #include "effects.h"
 
-#ifndef STAR_SPIRIT_DATA_VAR
-    #define STAR_SPIRIT_DATA_VAR 0
-    #error STAR_SPIRIT_DATA_VAR is not defined!
-#endif
-
 // seems to be a macro in the original based on usage
 #define EVT_SPIRIT_ADJUST_CAM(pitch) \
     Call(GetCamDistance, CAM_DEFAULT, LVar1) \
@@ -79,30 +74,29 @@ API_CALLABLE(N(AwaitSpiritOrbBurst)) {
 }
 
 API_CALLABLE(N(InitSpiritCardSpawn)) {
+    StarSpiritData* ptr = heap_malloc(sizeof(*ptr));
     Bytecode* args = script->ptrReadPos;
 
-    if (isInitialCall) {
-        StarSpiritData* ptr = heap_malloc(sizeof(*ptr));
+    evt_set_variable(script, *args++, script->varTable[0]);
+    ptr->chapter = evt_get_variable(script, *args++);
+    ptr->riseTime = evt_get_variable(script, *args++);
+    ptr->lowPos.x = evt_get_float_variable(script, *args++);
+    ptr->lowPos.y = evt_get_float_variable(script, *args++);
+    ptr->lowPos.z = evt_get_float_variable(script, *args++);
+    ptr->highPos.x = evt_get_float_variable(script, *args++);
+    ptr->highPos.y = evt_get_float_variable(script, *args++);
+    ptr->highPos.z = evt_get_float_variable(script, *args++);
+    ptr->cardHoverY = evt_get_float_variable(script, *args++);
+    ptr->shadowY = evt_get_float_variable(script, *args++);
 
-        script->varTablePtr[0] = ptr;
-        evt_set_variable(nullptr, STAR_SPIRIT_DATA_VAR, script->varTable[0]);
-        ptr->chapter = evt_get_variable(script, *args++);
-        ptr->riseTime = evt_get_variable(script, *args++);
-        ptr->lowPos.x = evt_get_float_variable(script, *args++);
-        ptr->lowPos.y = evt_get_float_variable(script, *args++);
-        ptr->lowPos.z = evt_get_float_variable(script, *args++);
-        ptr->highPos.x = evt_get_float_variable(script, *args++);
-        ptr->highPos.y = evt_get_float_variable(script, *args++);
-        ptr->highPos.z = evt_get_float_variable(script, *args++);
-        ptr->cardHoverY = evt_get_float_variable(script, *args++);
-        ptr->shadowY = evt_get_float_variable(script, *args++);
-        ptr->energyEffect = fx_star_spirits_energy(2, ptr->lowPos.x, ptr->lowPos.y, ptr->lowPos.z, 1.0f, 0);
-        ptr->state = SPIRIT_CARD_STATE_ORB_RISE;
-        ptr->spinMode = SPIRIT_CARD_SPIN_OFF;
-        ptr->cardFloatState = SPIRIT_CARD_FLOAT_INIT;
-        ptr->notifyValue = SPIRIT_CARD_NOTIFY_NONE;
-        ptr->stateTime = 0;
-    }
+    ptr->energyEffect = fx_star_spirits_energy(2, ptr->lowPos.x, ptr->lowPos.y, ptr->lowPos.z, 1.0f, 0);
+    ptr->state = SPIRIT_CARD_STATE_ORB_RISE;
+    ptr->spinMode = SPIRIT_CARD_SPIN_OFF;
+    ptr->cardFloatState = SPIRIT_CARD_FLOAT_INIT;
+    ptr->notifyValue = SPIRIT_CARD_NOTIFY_NONE;
+    ptr->stateTime = 0;
+
+    script->varTablePtr[0] = ptr;
 
     return ApiStatus_DONE2;
 }

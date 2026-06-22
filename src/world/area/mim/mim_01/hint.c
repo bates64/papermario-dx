@@ -1,6 +1,6 @@
 #include "mim_01.h"
 
-#include "world/area/mim/common/GetFlowerNormal.inc.c"
+#include "../common/GetFlowerNormal.inc.c"
 
 EvtScript N(EVS_LaughingFlowers) = {
     Call(PlaySoundAt, SOUND_CHECK_LAUGHING_FLOWERS, SOUND_SPACE_DEFAULT, 301, 0, -27)

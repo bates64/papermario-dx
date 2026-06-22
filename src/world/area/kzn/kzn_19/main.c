@@ -1,7 +1,6 @@
 #include "kzn_19.h"
 #include "sprite/player.h"
 
-#define STAR_SPIRIT_DATA_VAR MV_SpiritCardData
 #include "world/common/atomic/StarSpiritCard.inc.c"
 
 EvtScript N(EVS_TrySpawningStarCard) = {
@@ -30,7 +29,7 @@ EvtScript N(EVS_TrySpawningStarCard) = {
         Call(SetPanTarget, CAM_DEFAULT, 185, 55, -30)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(N(InitSpiritCardSpawn), 4, 180, 304, 15, -54, 185, 110, -30, 55, 25)
+        Call(N(InitSpiritCardSpawn), MV_SpiritCardData, 4, 180, 304, 15, -54, 185, 110, -30, 55, 25)
         Thread
             Call(N(UpdateSpiritCardSpawn))
         EndThread

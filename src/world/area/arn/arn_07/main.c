@@ -1,7 +1,6 @@
 #include "arn_07.h"
 #include "sprite/player.h"
 
-#define STAR_SPIRIT_DATA_VAR MV_SpiritCardData
 #include "world/common/atomic/StarSpiritCard.inc.c"
 
 ITEM_LIST(N(KeyList), ITEM_MYSTICAL_KEY);
@@ -16,7 +15,7 @@ EvtScript N(EVS_SpawnStarCard) = {
         Call(SetPanTarget, CAM_DEFAULT, 145, 30, 0)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(N(InitSpiritCardSpawn), 2, 50, 100, 31, -6, 145, 65, 0, 30, 0)
+        Call(N(InitSpiritCardSpawn), MV_SpiritCardData, 2, 50, 100, 31, -6, 145, 65, 0, 30, 0)
         Thread
             Call(N(UpdateSpiritCardSpawn))
         EndThread
@@ -78,7 +77,7 @@ EvtScript N(EVS_RespawnStarCard) = {
         Call(SetPanTarget, CAM_DEFAULT, 145, 30, 0)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(N(InitSpiritCardSpawn), 2, 50, 100, 31, -6, 145, 65, 0, 30, 0)
+        Call(N(InitSpiritCardSpawn), MV_SpiritCardData, 2, 50, 100, 31, -6, 145, 65, 0, 30, 0)
         Thread
             Call(N(UpdateSpiritCardSpawn))
         EndThread

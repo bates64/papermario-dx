@@ -6,7 +6,6 @@ extern EvtScript N(EVS_InitFakeBowser);
 extern EvtScript N(EVS_SetupFakeBowser);
 extern NpcGroupList N(DefaultNPCs);
 
-#define STAR_SPIRIT_DATA_VAR MV_SpiritCardData
 #include "world/common/atomic/StarSpiritCard.inc.c"
 
 API_CALLABLE(N(SetMapChangeFadeRate)) {
@@ -37,7 +36,7 @@ EvtScript N(EVS_BossDefeated) = {
         Call(SetPanTarget, CAM_DEFAULT, -135, 30, 0)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(N(InitSpiritCardSpawn), 0, 180, -135, 10, 0, -135, 85, 0, 30, 0)
+        Call(N(InitSpiritCardSpawn), MV_SpiritCardData, 0, 180, -135, 10, 0, -135, 85, 0, 30, 0)
         Thread
             Call(N(UpdateSpiritCardSpawn))
         EndThread

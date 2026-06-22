@@ -534,17 +534,19 @@ NpcData N(NpcData_KeepAwayBoo8) = {
     .animations = NORMAL_BOO_ANIMS,
 };
 
-#define TRAFFIC_BOO_START_Y 40.0f
-#define TRAFFIC_BOO_START_Z -430.0f
 #include "../common/TrafficBoos.inc.c"
 
 EvtScript N(EVS_NpcInit_TrafficBoo1) = {
+    Call(SetNpcVar, NPC_SELF, NPC_VAR_TRAFFIC_BOO_START_Y, 40)
+    Call(SetNpcVar, NPC_SELF, NPC_VAR_TRAFFIC_BOO_START_Z, -430)
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TrafficBoo)))
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_TrafficBoo2) = {
+    Call(SetNpcVar, NPC_SELF, NPC_VAR_TRAFFIC_BOO_START_Y, 40)
+    Call(SetNpcVar, NPC_SELF, NPC_VAR_TRAFFIC_BOO_START_Z, -430)
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TrafficBoo)))
     Return
     End

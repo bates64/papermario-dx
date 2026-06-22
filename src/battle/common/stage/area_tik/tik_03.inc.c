@@ -3,7 +3,6 @@
 
 #define NAMESPACE A(tik_03)
 
-#define DROPLET_MODEL MODEL_o371
 #include "battle/common/stage/lib/DripVolumes.inc.c"
 
 DripVolumeList N(DripVolumes) = {
@@ -24,6 +23,7 @@ EvtScript N(EVS_PreBattle) = {
     Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Set(LVar0, Ref(N(DripVolumes)))
+    Set(LVar1, MODEL_o371)
     Exec(N(EVS_CreateDripVolumes))
     Return
     End

@@ -170,7 +170,7 @@ EvtScript N(EVS_SetupSpinyTromp) = {
         Call(RotateModel, MODEL_me, LVar3, 0, 0, 1)
         Call(N(SpinyTromp_UpdateRollWobble))
         Call(TranslateModel, MODEL_me, LVar5, LVar6, 0)
-        Call(N(SpinyTromp_UpdateRollAngle))
+        Call(N(SpinyTromp_UpdateRollAngle), SPINY_TROMP_START_X, SPINY_TROMP_START_Y)
         Wait(1)
         Call(N(SpinyTromp_GetPlayerDist))
         IfLt(LVar4, 80)
