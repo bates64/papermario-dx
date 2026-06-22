@@ -14,6 +14,8 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfEq(GF_OMO04_SpawnedPeachChoice1, false)
         Call(MakeNpcs, true, Ref(N(KammySceneNPCs)))
+        Call(EnableNpcShadow, NPC_Goomba, false)
+        Call(EnableNpcShadow, NPC_Clubba, false)
     Else
         IfEq(GF_OMO04_Item_Mushroom, false)
             Switch(GB_OMO_PeachChoice1)

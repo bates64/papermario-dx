@@ -25,6 +25,8 @@ EvtScript N(EVS_Main) = {
 #endif
     IfEq(GF_OMO09_SpawnedPeachChoice3, false)
         Call(MakeNpcs, true, Ref(N(KammySceneNPCs)))
+        Call(EnableNpcShadow, NPC_Pokey, false)
+        Call(EnableNpcShadow, NPC_Koopatrol, false)
     Else
         IfEq(GF_OMO09_Item_SuperSoda, false)
             Switch(GB_OMO_PeachChoice3)

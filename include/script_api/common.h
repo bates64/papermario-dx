@@ -1661,14 +1661,10 @@ API_CALLABLE(AddVectorPolar);
 
 /// @evtapi
 /// @param value
-API_CALLABLE(func_802D4CC4);
+API_CALLABLE(EnableScreenMotionBlur);
 
 /// @evtapi
-/// @param value
-API_CALLABLE(func_802D4D14);
-
-/// @evtapi
-API_CALLABLE(func_802D4D88);
+API_CALLABLE(DisableScreenMotionBlur);
 
 /// @evtapi
 /// @param time

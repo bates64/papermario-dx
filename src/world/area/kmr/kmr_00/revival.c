@@ -275,7 +275,7 @@ EvtScript N(EVS_Scene_MarioRevived) = {
     Call(SetPanTarget, CAM_DEFAULT, 0, 15, 0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(1)
-    Call(func_802D4D14, 180)
+    Call(EnableScreenMotionBlur, 180)
     Call(SetPlayerPos, 0, 2, 0)
     Call(SetPlayerAnimation, ANIM_Mario1_Fallen)
     Wait(60 * DT)
@@ -334,7 +334,7 @@ EvtScript N(EVS_Scene_MarioRevived) = {
         Call(N(AdjustWorldRemapTint), 50, 50, 50, 0, 0, 0, 50 * DT)
     EndThread
     Wait(90 * DT)
-    Call(func_802D4D88)
+    Call(DisableScreenMotionBlur)
 #if VERSION_PAL
     Set(MV_SpiritArrivalCount, 0)
 #endif

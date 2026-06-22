@@ -129,20 +129,7 @@ API_CALLABLE(AwaitPlayerLeave) {
     }
 }
 
-API_CALLABLE(func_802D4CC4) {
-    Bytecode* args = script->ptrReadPos;
-    s32 value = evt_get_variable(script, *args++);
-
-    if (value < 0) {
-        set_screen_overlay_params_back(OVERLAY_NONE, -1.0f);
-    } else {
-        set_screen_overlay_params_back(OVERLAY_START_BATTLE, value);
-    }
-
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(func_802D4D14) {
+API_CALLABLE(EnableScreenMotionBlur) {
     Bytecode* args = script->ptrReadPos;
     s32 value = evt_get_float_variable(script, *args++);
 
@@ -153,7 +140,7 @@ API_CALLABLE(func_802D4D14) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_802D4D88) {
+API_CALLABLE(DisableScreenMotionBlur) {
     set_screen_overlay_params_front(OVERLAY_BLUR, 0);
     return ApiStatus_DONE2;
 }

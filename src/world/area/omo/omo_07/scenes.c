@@ -105,6 +105,7 @@ EvtScript N(EVS_Scene_KammySetAmbush) = {
     Wait(5 * DT)
     IfNe(AB_OMO_CurrentPeachChoice, 2)
         Call(SetNpcPos, MV_AmbushID, LVar0, 0, 0)
+        Call(EnableNpcShadow, MV_AmbushID, true)
     Else
         Call(MakeItemEntity, MV_AmbushID, LVar0, 0, 0, ITEM_SPAWN_MODE_DECORATION, 0)
     EndIf

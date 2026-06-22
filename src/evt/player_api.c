@@ -5,6 +5,8 @@
 #include "world/surfaces.h"
 #include "sprite/player.h"
 
+void suppress_current_interact_prompt(void);
+
 extern Npc playerNpcData;
 extern u16 PlayerImgFXFlags;
 
@@ -51,7 +53,7 @@ API_CALLABLE(DisablePlayerInput) {
     } else {
         enable_player_input();
         partner_enable_input();
-        func_800E01DC();
+        suppress_current_interact_prompt();
         gOverrideFlags &= ~GLOBAL_OVERRIDES_40;
         enable_status_bar_input();
     }

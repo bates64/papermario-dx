@@ -1,6 +1,16 @@
 #include "nok_14.h"
 #include "entity.h"
 
+API_CALLABLE(N(CheckItemExists)) {
+    Bytecode* args = script->ptrReadPos;
+    s32 itemIdx = evt_get_variable(script, *args++);
+    s32 outVar = *args++;
+    ItemEntity* itemEntity = get_item_entity(itemIdx);
+
+    evt_set_variable(script, outVar, (s32)itemEntity);
+    return ApiStatus_DONE2;
+}
+
 EvtScript N(EVS_ReadSign_NoEntry) = {
     Call(IsStartingConversation, LVar0)
     IfEq(LVar0, true)
@@ -25,6 +35,11 @@ EvtScript N(EVS_BreakBlock_ThunderBolt) = {
         Loop(25)
             Wait(1)
             Call(GetNpcPos, NPC_KoopaTroopa_02, LVar0, LVar1, LVar2)
+            Call(N(CheckItemExists), MV_Item_ThunderBolt, LVarA)
+            IfEq(LVarA, 0)
+                // prevent crash from player picking up the item before the loop ends
+                BreakLoop
+            EndIf
             Call(SetItemPos, MV_Item_ThunderBolt, LVar0, LVar1, LVar2)
         EndLoop
         Call(SetNpcPos, NPC_KoopaTroopa_02, NPC_DISPOSE_LOCATION)

@@ -831,7 +831,6 @@ void player_reset_data(void);
 void partner_reset_data(void);
 s32 has_valid_conversation_npc(void);
 s32 func_800E06D8(void);
-void func_800E01DC(void);
 void collision_lateral_peach(void);
 void func_800E5520(void);
 void clear_world_menus(void);

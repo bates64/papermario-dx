@@ -67,7 +67,6 @@ void reset_player_status(void) {
     PrevPlayerDirection = 0;
     PlayerRunStateTime = 0;
     PrevPlayerCamRelativeYaw = 0;
-    D_800F7B44 = 0;
     PlayerNormalYaw = 0;
     PlayerNormalPitch = 0.0f;
     playerStatus->availableDisguiseType = 1;
