@@ -1,7 +1,7 @@
 #include "common.h"
 #include "model.h"
 
-void func_800EF414(s32, s32);
+void partner_move_to_pos(s32, s32);
 void get_flat_collider_normal(s32, f32*, f32*, f32*);
 s32 get_current_item_entity_render_group(void);
 void set_current_item_entity_render_group(s32);
@@ -70,13 +70,13 @@ API_CALLABLE(MovePartnerThroughDoor) {
     s32 posX = evt_get_variable(script, *args++);
     s32 posZ = evt_get_variable(script, *args++);
 
-    func_800EF414(posX, posZ);
+    partner_move_to_pos(posX, posZ);
     partner_set_tether_distance(0.0f);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(ResetPartnerMovement) {
-    func_800EF3E4();
+    partner_move_to_player_side();
     partner_reset_tether_distance();
     return ApiStatus_DONE2;
 }

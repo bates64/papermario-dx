@@ -86,7 +86,7 @@ void btl_state_update_first_strike(void) {
                 }
             }
 
-            func_80263230(player, enemy);
+            create_single_actor_target_list(player, enemy);
             battleStatus->stateFreezeCount = 0;
             battleStatus->lastAttackDamage = 0;
             battleStatus->curDamageSource = DMG_SRC_DEFAULT;

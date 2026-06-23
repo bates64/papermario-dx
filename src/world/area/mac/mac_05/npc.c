@@ -1846,7 +1846,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
                     Call(InterpPlayerYaw, 270, 0)
                     Wait(10)
                     Call(EnablePartnerAI)
-                    Call(func_802CF56C, 2)
+                    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
                 EndThread
                 Thread
                     Call(SetNpcAnimation, NPC_Chanterelle, ANIM_Chanterelle_Walk)
@@ -1905,7 +1905,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
                     Call(InterpNpcYaw, NPC_ArtistToad, 90, 0)
                     Call(InterpPlayerYaw, 90, 0)
                     Wait(10)
-                    Call(func_802CF56C, 2)
+                    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
                     Call(SetNpcFlagBits, NPC_Chanterelle, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
                 EndThread
                 Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))

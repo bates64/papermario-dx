@@ -322,7 +322,7 @@ EvtScript N(EVS_GenericHitReaction) = {
         Return
     EndIf
     Call(DisablePlayerInput, true)
-    Call(func_802D2C14, 1)
+    Call(SetPartnerForcedFollowMode, 1)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(AdjustCam, CAM_DEFAULT, Float(8.0 / DT), 0, 300, Float(17.0), Float(-6.0))
     ExecWait(N(EVS_ReactionFacePlayer))
@@ -334,7 +334,7 @@ EvtScript N(EVS_GenericHitReaction) = {
         CaseEq(1)
             ExecWait(N(EVS_SecondReactionDialogue))
     EndSwitch
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     Call(DisablePlayerInput, false)
     Return
     End

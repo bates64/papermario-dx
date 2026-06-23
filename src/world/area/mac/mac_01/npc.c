@@ -484,7 +484,7 @@ EvtScript N(EVS_Merlon_WalkToDarkToads) = {
 
 EvtScript N(EVS_Scene_KoopaBrosUnmasked) = {
     Call(SetNpcVar, NPC_Merlon, 0, 0)
-    Call(func_802CF56C, 2)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Thread
         Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Walk)
         Call(SetNpcSpeed, NPC_Merlon, Float(4.0 / DT))

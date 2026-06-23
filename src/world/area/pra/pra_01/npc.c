@@ -33,7 +33,7 @@ EvtScript N(EVS_NpcIdle_Kalmar) = {
 
 EvtScript N(EVS_Scene_RescuedKalmar) = {
     Call(DisablePartnerAI, false)
-    Call(func_802CF56C, 2)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Set(LVar3, LVar0)
     Add(LVar3, -50)

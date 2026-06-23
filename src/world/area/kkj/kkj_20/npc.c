@@ -77,7 +77,7 @@ EvtScript N(EVS_Inspect_Dresser_Peach) = {
         Call(SetPlayerSpeed, Float(2.0))
         Call(PlayerMoveTo, -50, 0, 0)
         Call(InterpPlayerYaw, 90, 5)
-        Call(func_802CF56C, 2)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     EndThread
     Wait(10)
     Exec(N(EVS_OpenDresserDoors))
@@ -270,7 +270,7 @@ EvtScript N(EVS_Inspect_Dresser_Mario) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(func_802D1270, -50, 0, Float(2.5))
     Call(InterpPlayerYaw, 90, 5)
-    Call(func_802CF56C, 2)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Wait(10)
     Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_Peach_0186)
     Call(GetNpcPos, NPC_Toad, LVar0, LVar1, LVar2)

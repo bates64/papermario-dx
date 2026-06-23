@@ -58,7 +58,7 @@ EvtScript N(EVS_Scene_StarSpiritsPlea) = {
     Call(SetCamPitch, CAM_DEFAULT, Float(20.0), Float(-5.5))
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.5 / DT))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(func_802D2C14, 2)
+    Call(SetPartnerForcedFollowMode, 2)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Thread
         Call(GetPlayerPos, LVar0, LVar1, LVar2)

@@ -300,7 +300,7 @@ API_CALLABLE(N(LoadHeartBlockMsgImg)) {
 
 API_CALLABLE(N(RemoveGoompaPartner)) {
     gPlayerData.partners[PARTNER_GOOMPA].enabled = false;
-    func_800EB2A4(PARTNER_NONE);
+    partner_switch_to_partner_instant(PARTNER_NONE);
     return ApiStatus_DONE1;
 }
 

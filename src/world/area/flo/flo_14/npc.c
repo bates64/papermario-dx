@@ -39,7 +39,7 @@ EvtScript N(EVS_NpcInteract_BubbleFlower) = {
             Call(PlayerMoveTo, 555, 110, 20)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Call(InterpPlayerYaw, 90, 0)
-            Call(func_802CF56C, 2)
+            Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
             Wait(5)
             Call(AdjustCam, CAM_DEFAULT, Float(1.0), 0, 350, Float(17.0), Float(-6.0))
             Exec(N(EVS_BlowBigBubble))

@@ -584,7 +584,7 @@ EvtScript N(EVS_OnInteract_Pedestal) = {
         Return
     EndIf
     Call(DisablePlayerInput, true)
-    Call(func_802CF56C, 1)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_HOLD)
     Call(RemoveKeyItemAt, LVar1)
     Call(CloseChoicePopup)
     Set(GB_StoryProgress, STORY_CH2_UNCOVERED_DRY_DRY_RUINS)
@@ -675,7 +675,7 @@ EvtScript N(EVS_SetupRuins) = {
 EvtScript N(EVS_Ruins_Arise_Continued) = {
     Call(PlaySound, SOUND_SBK_RUINS_FINISH_RISING)
     Call(DisablePlayerInput, true)
-    Call(func_802CF56C, 1)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_HOLD)
     Call(FacePlayerTowardPoint, 0, 0, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_iwa, COLLIDER_FLAGS_UPPER_MASK)
     Call(EnableModel, MODEL_point_iwa, false)
@@ -724,7 +724,7 @@ EvtScript N(EVS_Ruins_Arise_Continued) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Call(func_802CF56C, 0)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
     Call(DisablePlayerInput, false)
     Return
     End

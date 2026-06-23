@@ -18,9 +18,9 @@ EvtScript N(EVS_Wisterwood_Exit) = {
             BreakLoop
         EndIf
     EndLoop
-    Call(func_802D2C14, 1)
+    Call(SetPartnerForcedFollowMode, 1)
     Call(PlayerMoveTo, 0, -310, 30)
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     IfEq(GB_StoryProgress, STORY_CH6_STAR_SPRIT_DEPARTED)
         Set(GB_StoryProgress, STORY_CH6_RETURNED_TO_TOAD_TOWN)
     EndIf
@@ -54,9 +54,9 @@ EvtScript N(EVS_Wisterwood_Enter) = {
             BreakLoop
         EndIf
     EndLoop
-    Call(func_802D2C14, 1)
+    Call(SetPartnerForcedFollowMode, 1)
     Call(PlayerMoveTo, 0, -135, 30)
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     Call(MakeLerp, -100, 0, 30, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)

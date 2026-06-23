@@ -75,7 +75,7 @@ EvtScript N(EVS_Wisterwood_Introduction) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(EnablePartnerAI)
-    Call(func_802D2C14, 1)
+    Call(SetPartnerForcedFollowMode, 1)
     Wait(10 * DT)
     Call(ShowMessageAtWorldPos, MSG_CH6_0003, 0, 70, -200)
     Call(SetCamPitch, CAM_DEFAULT, Float(16.5), Float(-11.8))
@@ -97,7 +97,7 @@ EvtScript N(EVS_Wisterwood_Introduction) = {
     Call(ShowMessageAtWorldPos, MSG_CH6_0005, 0, 70, -200)
     Call(ResetCam, CAM_DEFAULT, Float(90.0))
     Set(GB_StoryProgress, STORY_CH6_ARRIVED_AT_FLOWER_FIELDS)
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     Call(DisablePlayerInput, false)
     Return
     End
@@ -436,7 +436,7 @@ EvtScript N(EVS_NpcIdle_Klevar) = {
 
 EvtScript N(EVS_Scene_RescuedKlevar) = {
     Call(DisablePartnerAI, false)
-    Call(func_802CF56C, 2)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Set(LVar3, LVar0)
     Add(LVar3, -50)

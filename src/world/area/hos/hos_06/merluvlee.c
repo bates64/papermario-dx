@@ -696,7 +696,7 @@ EvtScript N(EVS_KootCheckBall_Merluvlee) = {
 
 EvtScript N(EVS_AskForHint) = {
     Call(DisablePlayerInput, true)
-    Call(func_802CF56C, 1)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_HOLD)
     Call(PlayerMoveTo, -49, 0, 6)
     Call(PlayerFaceNpc, NPC_Merluvlee, false)
     IfEq(MV_RitualFXArrayPtr, 0)
@@ -718,7 +718,7 @@ EvtScript N(EVS_AskForHint) = {
     Call(ShowChoice, MSG_Choice_0011)
     IfNe(LVar0, 0)
         Call(ContinueSpeech, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, MSG_HOS_003C)
-        Call(func_802CF56C, 0)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
         Call(DisablePlayerInput, false)
         Return
     EndIf
@@ -727,14 +727,14 @@ EvtScript N(EVS_AskForHint) = {
     Call(ShowCoinCounter, false)
     IfEq(LVar0, 4)
         Call(ContinueSpeech, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, MSG_HOS_003C)
-        Call(func_802CF56C, 0)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
         Call(DisablePlayerInput, false)
         Return
     EndIf
     Call(N(HasEnoughCoinsForHint), LVar0, LVar1)
     IfNe(LVar1, 0)
         Call(ContinueSpeech, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, MSG_HOS_003D)
-        Call(func_802CF56C, 0)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
         Call(DisablePlayerInput, false)
         Return
     EndIf
@@ -778,7 +778,7 @@ EvtScript N(EVS_AskForHint) = {
             Goto(99)
     EndSwitch
     Label(99)
-    Call(func_802CF56C, 0)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
     Call(DisablePlayerInput, false)
     Return
     End

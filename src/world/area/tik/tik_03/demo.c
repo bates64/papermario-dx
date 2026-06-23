@@ -2,7 +2,7 @@
 #include "world/partners.h"
 
 API_CALLABLE(N(ChangePartnerFollowState)) {
-    func_800EF300();
+    partner_disable_ai_soon();
     return ApiStatus_DONE2;
 }
 
@@ -64,10 +64,10 @@ API_CALLABLE(N(SetupDemoScene)) {
             N(DemoInitState)++;
             break;
         case 3:
-            partner_clear_player_tracking(wPartnerNpc);
+            partner_clear_player_tracking(gPartnerNpc);
             partner_set_goal_pos(player->pos.x, player->pos.z);
-            func_800EF3D4(0);
-            wPartnerNpc->yaw = 270.0f;
+            partner_set_forced_follow_mode(0);
+            gPartnerNpc->yaw = 270.0f;
             gPlayerStatus.targetYaw = 270.0f;
             gPlayerStatus.curYaw = 270.0f;
             gPlayerStatus.spriteFacingAngle = 180.0f;

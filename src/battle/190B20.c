@@ -478,21 +478,22 @@ void create_home_target_list(Actor* actor) {
     create_target_list(actor, true);
 }
 
-s32 func_80263064(Actor* actor, Actor* targetActor, b32 unused) {
-    s32 count = 0;
+s32 create_single_actor_target_list(Actor* actor, Actor* targetActor) {
     SelectableTarget* target = actor->targetData;
     ActorPartBlueprint* partData;
     s32 numParts;
     ActorPart* part;
     f32 x, y, z;
+    s32 count;
     s32 i;
 
     if (targetActor == nullptr) {
-        return count;
+        return 0;
     }
 
     numParts = targetActor->numParts;
     part = targetActor->partsTable;
+    count = 0;
 
     for (i = 0; i < numParts; i++) {
         if (part->flags & ACTOR_PART_FLAG_NO_TARGET) {
@@ -508,36 +509,29 @@ s32 func_80263064(Actor* actor, Actor* targetActor, b32 unused) {
 
         partData = part->staticData;
 
-        if (!(part->flags & ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION)) {
+        if (part->flags & ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION) {
+            x = part->absolutePos.x;
+            y = part->absolutePos.y;
+            z = part->absolutePos.z;
+        } else {
             x = targetActor->curPos.x;
             y = targetActor->curPos.y;
             z = targetActor->curPos.z;
 
             x += part->partOffset.x;
-            if (!(targetActor->flags & ACTOR_FLAG_UPSIDE_DOWN)) {
-                y += part->partOffset.y;
-            } else {
+            if (targetActor->flags & ACTOR_FLAG_UPSIDE_DOWN) {
                 y -= part->partOffset.y;
+            } else {
+                y += part->partOffset.y;
             }
             z += part->partOffset.z;
+        }
 
-            x += part->targetOffset.x;
-            if (!(targetActor->flags & ACTOR_FLAG_UPSIDE_DOWN)) {
-                y += part->targetOffset.y;
-            } else {
-                y -= part->targetOffset.y;
-            }
+        x += part->targetOffset.x;
+        if (targetActor->flags & ACTOR_FLAG_UPSIDE_DOWN) {
+            y -= part->targetOffset.y;
         } else {
-            x = part->absolutePos.x;
-            y = part->absolutePos.y;
-            z = part->absolutePos.z;
-
-            x += part->targetOffset.x;
-            if (!(targetActor->flags & ACTOR_FLAG_UPSIDE_DOWN)) {
-                y += part->targetOffset.y;
-            } else {
-                y -= part->targetOffset.y;
-            }
+            y += part->targetOffset.y;
         }
 
         actor->targetActorID = target->actorID = targetActor->actorID;
@@ -554,14 +548,6 @@ s32 func_80263064(Actor* actor, Actor* targetActor, b32 unused) {
 
     actor->targetListLength = count;
     return count;
-}
-
-s32 func_80263230(Actor* actor, Actor* targetActor) {
-    return func_80263064(actor, targetActor, false);
-}
-
-s32 func_8026324C(Actor* actor, Actor* targetActor) {
-    return func_80263064(actor, targetActor, true);
 }
 
 void btl_check_can_change_partner(void) {

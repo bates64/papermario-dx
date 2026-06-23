@@ -106,7 +106,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
         EndLoop
     EndThread
     Thread
-        Call(func_802CF56C, 2)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
         Loop(45 * DT)
             Call(PlayerFaceNpc, NPC_SELF, true)
         EndLoop
@@ -123,7 +123,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     Call(GetCurrentPartnerID, LVar6)
     IfEq(LVar6, PARTNER_BOW)
         Set(LVar5, -4)
-        Call(func_802CF56C, 0)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
         Call(DisablePartnerAI, false)
         Call(SetNpcPos, NPC_PARTNER, 257, 25, 0)
     EndIf
@@ -147,7 +147,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
                 BreakLoop
             EndIf
         EndLoop
-        Call(func_802CF56C, 0)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
     EndIf
     Wait(10 * DT)
     Thread
@@ -234,7 +234,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
             Call(EnablePartnerAI)
         EndIf
         Wait(8 * DT)
-        Call(func_802CF56C, 2)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     EndThread
     Wait(20 * DT)
     Call(DisablePlayerInput, false)
@@ -415,7 +415,7 @@ EvtScript N(EVS_NpcIdle_Skolar) = {
 
 EvtScript N(EVS_Scene_SkolarRescued) = {
     Call(DisablePartnerAI, false)
-    Call(func_802CF56C, 2)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Set(LVar3, LVar0)
     Add(LVar3, -50)

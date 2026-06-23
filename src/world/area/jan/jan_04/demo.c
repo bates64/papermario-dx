@@ -123,7 +123,7 @@ API_CALLABLE(N(SetupDemoScene)) {
             N(DemoInitState)++;
             break;
         case 3:
-            wPartnerNpc->yaw = 270.0f;
+            gPartnerNpc->yaw = 270.0f;
             playerStatus->targetYaw = 270.0f;
             playerStatus->curYaw = 270.0f;
             playerStatus->spriteFacingAngle = 180.0f;

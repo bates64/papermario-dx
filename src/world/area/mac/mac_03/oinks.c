@@ -533,7 +533,7 @@ EvtScript N(EVS_LilOinkFlee) = {
 
 EvtScript N(EVS_EnterPen) = {
     Call(DisablePlayerInput, true)
-    Call(func_802D2C14, 1)
+    Call(SetPartnerForcedFollowMode, 1)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deili, COLLIDER_FLAGS_UPPER_MASK)
@@ -560,7 +560,7 @@ EvtScript N(EVS_EnterPen) = {
     Call(PlaySoundAtCollider, COLLIDER_deili, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deili, COLLIDER_FLAGS_UPPER_MASK)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     Call(DisablePlayerInput, false)
     IfEq(GB_MAC03_LilOinkCount, 0)
         Return
@@ -589,7 +589,7 @@ EvtScript N(EVS_EnterPen) = {
 EvtScript N(EVS_ExitPen) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(DisablePlayerInput, true)
-    Call(func_802D2C14, 1)
+    Call(SetPartnerForcedFollowMode, 1)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deiliu, COLLIDER_FLAGS_UPPER_MASK)
     Call(PlaySoundAtCollider, COLLIDER_deiliu, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, 80, 10, EASING_LINEAR)
@@ -613,7 +613,7 @@ EvtScript N(EVS_ExitPen) = {
     EndLoop
     Call(PlaySoundAtCollider, COLLIDER_deiliu, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deiliu, COLLIDER_FLAGS_UPPER_MASK)
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     Call(DisablePlayerInput, false)
     Return
     End

@@ -507,13 +507,13 @@ s32 npc_do_player_collision(Npc* npc) {
         if (fabsf(get_clamped_angle_diff(yaw, playerYaw)) < 45.0f) {
             playerStatus->pos.x -= deltaX;
             playerStatus->pos.z -= deltaZ;
-            wPartnerNpc->pos.x -= deltaX;
-            wPartnerNpc->pos.z -= deltaZ;
+            gPartnerNpc->pos.x -= deltaX;
+            gPartnerNpc->pos.z -= deltaZ;
         } else {
             playerStatus->pos.x -= deltaX * 0.5f;
             playerStatus->pos.z -= deltaZ * 0.5f;
-            wPartnerNpc->pos.x -= deltaX * 0.5f;
-            wPartnerNpc->pos.z -= deltaZ * 0.5f;
+            gPartnerNpc->pos.x -= deltaX * 0.5f;
+            gPartnerNpc->pos.z -= deltaZ * 0.5f;
         }
     } else {
         if (playerStatus->flags & (PS_FLAG_JUMPING | PS_FLAG_FALLING)) {
@@ -2234,9 +2234,6 @@ void clear_encounter_status(void) {
     func_80045AC0();
     gEncounterState = ENCOUNTER_STATE_NONE;
     create_worker_scene(nullptr, worker_draw_npc_do_nothing);
-}
-
-void func_8003E50C(void) {
 }
 
 void set_battle_transition_state(s8 state) {

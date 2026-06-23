@@ -888,11 +888,11 @@ API_CALLABLE(DisablePartnerAI);
 API_CALLABLE(EnablePartnerAI);
 
 /// @evtapi
-API_CALLABLE(func_802CF54C);
+API_CALLABLE(ResetPartnerAIState);
 
 /// @evtapi
-/// @param value
-API_CALLABLE(func_802CF56C);
+/// @param mode
+API_CALLABLE(SetPartnerFollowMode);
 
 /// @evtapi
 /// @param partnerID
@@ -1567,7 +1567,7 @@ API_CALLABLE(Disable8bitMario);
 
 /// @evtapi
 /// @param value
-API_CALLABLE(func_802D2C14);
+API_CALLABLE(SetPartnerForcedFollowMode);
 
 /// @evtapi
 /// @param x

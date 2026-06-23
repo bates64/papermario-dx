@@ -104,7 +104,7 @@ EvtScript N(EVS_NpcAI_Buzzar) = {
         EndIf
     EndLoop
     Call(SetPlayerPos, 430, 0, -25)
-    Call(func_802CF56C, 2)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(SetNpcPos, NPC_SELF, 538, 200, -25)
     Call(EnableNpcShadow, NPC_SELF, true)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -125,7 +125,7 @@ EvtScript N(EVS_NpcAI_Buzzar) = {
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
         Call(PanToTarget, CAM_DEFAULT, Float(0.5), true)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-        Call(func_802CF56C, 2)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     EndThread
     Call(PlayerFaceNpc, NPC_SELF, false)
     Call(SetPlayerAnimation, ANIM_Mario1_LookUp)

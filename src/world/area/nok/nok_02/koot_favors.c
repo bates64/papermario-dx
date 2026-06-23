@@ -344,7 +344,7 @@ API_CALLABLE(N(MakeFavorItemList)) {
 }
 
 EvtScript N(EVS_NpcInteract_KoopaKoot) = {
-    Call(func_802CF56C, 1)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_HOLD)
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00A2)
         Goto(90)

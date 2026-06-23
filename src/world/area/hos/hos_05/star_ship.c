@@ -76,7 +76,7 @@ EvtScript N(EVS_Starship_Depart) = {
         Thread
             Set(MV_PartnerOnBoard, false)
             Call(PartnerIsFlying, LVar0)
-            IfEq(LVar0, true)
+            IfEq(LVar0, false)
                 Wait(10)
                 Call(SetNpcJumpscale, NPC_PARTNER, 1)
                 Call(NpcJump0, NPC_PARTNER, 45, 162, 25, 10)

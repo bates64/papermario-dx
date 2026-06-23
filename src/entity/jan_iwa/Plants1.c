@@ -276,7 +276,7 @@ void entity_CymbalPlant_idle(Entity* entity) {
                 if (partnerStatus->actingPartner != 0) {
                     playerStatus->animFlags |= PA_FLAG_INTERRUPT_USE_PARTNER;
                 }
-                func_800EF300();
+                partner_disable_ai_soon();
                 playerStatus->animFlags |= PA_FLAG_INTERRUPT_SPIN;
                 data->timer = 4;
                 data->unk_01++;

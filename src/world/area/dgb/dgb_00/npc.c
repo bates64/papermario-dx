@@ -543,7 +543,7 @@ EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
         Call(InterpNpcYaw, NPC_PARTNER, 270, 0)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_RUN)
         Wait(85)
-        Call(func_802CF56C, 2)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
         Wait(1)
         Call(EnablePartnerAI)
     EndThread

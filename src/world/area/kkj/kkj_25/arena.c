@@ -291,7 +291,7 @@ EvtScript N(EVS_Scene_ActivateMachine) = {
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetPlayerPos, 100, 0, 0)
     Call(PartnerIsFlying, LVar0)
-    IfEq(LVar0, false)
+    IfEq(LVar0, true)
         Call(SetNpcPos, NPC_PARTNER, 60, 10, 0)
     Else
         Call(SetNpcPos, NPC_PARTNER, 60, 0, 0)

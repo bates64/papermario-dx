@@ -2973,18 +2973,10 @@ enum PartnerActions {
     PARTNER_ACTION_LAKILESTER_1     = 1,
 };
 
-enum PartnerStates {
-    PARTNER_CMD_NONE                = 0,
-    PARTNER_CMD_INIT                = 1,
-    PARTNER_CMD_INSTA_SWITCH        = 2, // skips put away / take out scripts. assumes valid current partner.
-    PARTNER_CMD_SWITCH              = 3, // assumes valid current partner.
-    PARTNER_CMD_PUT_AWAY            = 4, // switches to null partner.
-    PARTNER_CMD_INSTA_PUT_AWAY      = 5,
-    PARTNER_CMD_TAKE_OUT            = 6, // assumes no current partner.
-    PARTNER_CMD_INSTA_TAKE_OUT      = 7,
-    PARTNER_CMD_USE_ABILITY         = 8,
-    PARTNER_CMD_RESET               = 9,
-    PARTNER_CMD_ABORT               = 10,
+enum PartnerForcedFollowModes {
+    PARTNER_FORCED_FOLLOW_NONE      = 0,
+    PARTNER_FORCED_FOLLOW_HOLD      = 1,
+    PARTNER_FORCED_FOLLOW_ONCE      = 2,
 };
 
 /// See [`gAreas`].

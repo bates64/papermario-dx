@@ -362,9 +362,7 @@ block_17:
                         break;
                     case WORLD_MENU_USE_ITEM:
                         use_consumable(popup->userIndex[WorldPopupResult - 1]);
-#ifndef VERSION_JP
                         gOverrideFlags |= GLOBAL_OVERRIDES_CANT_PICK_UP_ITEMS;
-#endif
                         break;
                 }
             }
@@ -404,26 +402,18 @@ void check_input_status_bar(void) {
                 && can_control_status_bar()
             ) {
                 open_status_bar_slowly();
-#if VERSION_JP
-                sfx_play_sound(SOUND_LOWER_STATUS_BAR);
-#else
                 if (!is_picking_up_item()) {
                     sfx_play_sound(SOUND_LOWER_STATUS_BAR);
                 }
-#endif
             }
         } else if (!(playerStatus->curButtons & (Z_TRIG | R_TRIG))
             && (pressedButtons & BUTTON_C_UP)
             && can_control_status_bar()
         ) {
             close_status_bar();
-#if VERSION_JP
-            sfx_play_sound(SOUND_RAISE_STATUS_BAR);
-#else
             if (!is_picking_up_item()) {
                 sfx_play_sound(SOUND_RAISE_STATUS_BAR);
             }
-#endif
         }
     }
 }

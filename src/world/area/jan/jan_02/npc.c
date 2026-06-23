@@ -40,7 +40,7 @@ EvtScript N(EVS_Scene_GetJadeRaven) = {
     Wait(5 * DT)
     Call(PlayerMoveTo, 58, -140, 25)
     Call(PlayerFaceNpc, NPC_SELF, false)
-    Call(func_802D2C14, 1)
+    Call(SetPartnerForcedFollowMode, 1)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Wait(30 * DT)
     Call(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_Rummage)
@@ -60,7 +60,7 @@ EvtScript N(EVS_Scene_GetJadeRaven) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     Call(GetCurrentPartnerID, LVar0)
     IfEq(LVar0, PARTNER_SUSHIE)
         Thread

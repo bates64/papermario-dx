@@ -100,7 +100,7 @@ EvtScript N(EVS_Scene_RecieveStarBeam) = {
     EndLoop
     Call(DisablePlayerInput, true)
     Thread
-        Call(func_802D2C14, 1)
+        Call(SetPartnerForcedFollowMode, 1)
         Wait(30 * DT)
         Call(PlayerMoveTo, 0, 80, 10)
         Call(PlayerFaceNpc, NPC_Eldstar, false)
@@ -122,7 +122,7 @@ EvtScript N(EVS_Scene_RecieveStarBeam) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Eldstar, ANIM_WorldEldstar_Wave, ANIM_WorldEldstar_Idle, 512, MSG_HOS_0069)
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     Wait(30 * DT)
     Call(SetSelfVar, 0, 1)
     Call(SetPanTarget, CAM_DEFAULT, 0, 136, 80)

@@ -242,7 +242,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
         Set(LVar1, -27)
         Set(LVar2, -50)
     EndIf
-    Call(func_802D2C14, 1)
+    Call(SetPartnerForcedFollowMode, 1)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetPlayerSpeed, Float(3.0 / DT))
     Call(PlayerMoveTo, LVar1, 0, 0)
@@ -295,7 +295,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
         Call(SpeakToPlayer, NPC_Watt, ANIM_WorldWatt_Celebrate, ANIM_WorldWatt_Idle, 0, MSG_CH4_0057)
         Call(SetPlayerAnimation, ANIM_Mario1_NodYes)
     EndIf
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     Wait(20 * DT)
     Call(SetNpcAnimation, NPC_Watt, ANIM_WorldWatt_Idle)
     Call(PlaySoundAtNpc, NPC_Watt, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)

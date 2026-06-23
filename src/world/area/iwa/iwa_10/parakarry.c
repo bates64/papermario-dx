@@ -187,7 +187,7 @@ EvtScript N(EVS_NpcInteract_Parakarry) = {
             Call(PlayerMoveTo, LVar4, LVar6, 20 * DT)
             Call(PlayerFaceNpc, NPC_Parakarry, false)
             Wait(10 * DT)
-            Call(func_802CF56C, 2)
+            Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
             Call(AdjustCam, CAM_DEFAULT, Float(4.0 / DT), Float(0.0), Float(300.0), Float(17.5), Float(-10.0))
         EndIf
     EndIf

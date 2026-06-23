@@ -193,7 +193,6 @@ void gfx_draw_frame(void) {
     }
 
     player_render_interact_prompts();
-    func_802C3EE4();
 
     GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_HUD_ELEMENTS, PROFILER_TIME_SUB_GFX_BACK_UI);
     render_screen_overlay_backUI();

@@ -206,7 +206,7 @@ API_CALLABLE(N(UseAbility)) {
         }
 
         if (!partnerStatus->shouldResumeAbility) {
-            if (!func_800EA52C(PARTNER_PARAKARRY)) {
+            if (!partner_can_continue_ability(PARTNER_PARAKARRY)) {
                 return ApiStatus_DONE2;
             }
             N(AbilityState) = AIR_LIFT_INIT;
@@ -237,7 +237,7 @@ API_CALLABLE(N(UseAbility)) {
             // fallthrough
         case AIR_LIFT_DELAY:
             if (N(AbilityStateTime) == 0) {
-                if (script->functionTemp[2] < playerStatus->inputDisabledCount || !func_800EA52C(PARTNER_PARAKARRY)) {
+                if (script->functionTemp[2] < playerStatus->inputDisabledCount || !partner_can_continue_ability(PARTNER_PARAKARRY)) {
                     return ApiStatus_DONE2;
                 }
                 N(AbilityState) = AIR_LIFT_BEGIN;

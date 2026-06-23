@@ -50,7 +50,7 @@ void action_update_use_spinning_flower(void) {
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
         playerStatus->flags &= ~PS_FLAG_ACTION_STATE_CHANGED;
         gOverrideFlags |= GLOBAL_OVERRIDES_40;
-        func_800EF300();
+        partner_disable_ai_soon();
         playerStatus->actionSubstate = SUBSTATE_ATTRACT;
         playerStatus->curStateTime = 0;
         D_802B6EE4 = 0.0f;

@@ -1167,7 +1167,7 @@ START_BATTLE:
             set_action_state(ACTION_STATE_TALK);
             currentEncounter->fadeOutAmount = 0;
             currentEncounter->substateDelay = 0;
-            func_800EF3D4(1);
+            partner_set_forced_follow_mode(1);
             gEncounterState = ENCOUNTER_STATE_CONVERSATION;
             EncounterStateChanged = true;
             gEncounterSubState = ENCOUNTER_SUBSTATE_CONVERSATION_INIT;
@@ -2282,7 +2282,7 @@ void update_encounters_conversation(void) {
                 set_action_state(ACTION_STATE_IDLE);
             }
 
-            func_800EF3D4(0);
+            partner_set_forced_follow_mode(0);
             encounter->hitType = 0;
             resume_all_group(EVT_GROUP_FLAG_BATTLE);
             gEncounterState = ENCOUNTER_STATE_NEUTRAL;

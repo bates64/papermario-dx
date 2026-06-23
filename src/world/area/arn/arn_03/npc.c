@@ -86,7 +86,7 @@ EvtScript N(EVS_NpcIdle_Boo_01) = {
         Call(NpcMoveTo, NPC_SELF, 30, 125, 30 * DT)
         Call(InterpNpcYaw, NPC_SELF, 270, 0)
     EndThread
-    Call(func_802CF56C, 2)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Wait(15 * DT)
     Set(GB_StoryProgress, STORY_CH3_ARRIVED_AT_GHOST_TOWN)
     Call(DisablePlayerInput, false)

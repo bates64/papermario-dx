@@ -606,20 +606,6 @@ void update_scripts(void) {
     IsUpdatingScripts = false;
 }
 
-// Does nothing, is cursed
-void func_802C3EE4(void) {
-    s32 temp;
-    s32 i;
-
-    for (i = 0; i < gScriptListCount; i++) {
-        temp = (s32) (*gCurrentScriptListPtr)[gScriptIndexList[i]];
-        temp = *((s32*) temp);
-        if (temp == gScriptIdList[i]) {
-            temp = 1;
-        }
-    }
-}
-
 void kill_script(Evt* instanceToKill) {
     Evt* childScript;
     Evt* blockingParent;

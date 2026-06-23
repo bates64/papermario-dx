@@ -61,7 +61,7 @@ void entity_HiddenPanel_idle(Entity* entity) {
     if (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) {
         if (!data->unk_04) {
             data->unk_04 = true;
-            func_800EF3D4(1);
+            partner_set_forced_follow_mode(1);
         }
     } else {
         data->unk_04 = false;

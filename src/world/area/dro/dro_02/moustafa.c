@@ -186,7 +186,7 @@ EvtScript N(EVS_NpcInteract_Moustafa) = {
         CaseLt(STORY_CH2_GOT_PULSE_STONE)
             Thread
                 Wait(10 * DT)
-                Call(func_802D2C14, 1)
+                Call(SetPartnerForcedFollowMode, 1)
             EndThread
             Call(SetNpcFlagBits, NPC_DisguisedMoustafa, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetPlayerSpeed, Float(3.0 / DT))
@@ -199,14 +199,14 @@ EvtScript N(EVS_NpcInteract_Moustafa) = {
             IfEq(GF_DRO02_Sheek_AskedAboutMoustafa, true)
                 Call(SpeakToPlayer, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00C3)
                 ExecWait(N(EVS_Moustafa_Unveiling))
-                Call(func_802D2C14, 0)
+                Call(SetPartnerForcedFollowMode, 0)
                 Call(SetNpcJumpscale, NPC_Moustafa, Float(1.0))
                 Call(NpcJump0, NPC_Moustafa, -425, 140, -206, 20 * DT)
                 Call(SpeakToPlayer, NPC_Moustafa, ANIM_Moustafa_Shout, ANIM_Moustafa_Idle, 0, MSG_CH2_00C4)
             Else
                 Call(SpeakToPlayer, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00C5)
                 ExecWait(N(EVS_Moustafa_Unveiling))
-                Call(func_802D2C14, 0)
+                Call(SetPartnerForcedFollowMode, 0)
                 Call(SetNpcJumpscale, NPC_Moustafa, Float(1.0))
                 Call(NpcJump0, NPC_Moustafa, -425, 140, -206, 20 * DT)
                 Call(SpeakToPlayer, NPC_Moustafa, ANIM_Moustafa_Shout, ANIM_Moustafa_Idle, 0, MSG_CH2_00C6)

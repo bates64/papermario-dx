@@ -252,7 +252,7 @@ EvtScript N(EVS_Scene_BowserDefeated) = {
     Call(SetPlayerPos, 150, 0, 0)
     Call(InterpPlayerYaw, 90, 0)
     Call(PartnerIsFlying, LVar0)
-    IfEq(LVar0, false)
+    IfEq(LVar0, true)
         Call(SetNpcPos, NPC_PARTNER, 110, 10, 0)
     Else
         Call(SetNpcPos, NPC_PARTNER, 110, 0, 0)

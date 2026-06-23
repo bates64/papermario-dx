@@ -99,7 +99,7 @@ EvtScript N(EVS_Scene_HuffNPuffAmbush) = {
         EndIf
         Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar2, LVar4)
     EndLoop
-    Call(func_802D2C14, 1)
+    Call(SetPartnerForcedFollowMode, 1)
     Call(SetPlayerPos, LVar0, LVar2, LVar4)
     Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(DisablePlayerPhysics, false)
@@ -124,7 +124,7 @@ EvtScript N(EVS_Scene_HuffNPuffAmbush) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-9.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     Wait(10)
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, PARTNER_LAKILESTER)

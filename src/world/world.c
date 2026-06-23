@@ -9,16 +9,8 @@
 #include "world/surfaces.h"
 #include "dx/overlay.h"
 
-#ifdef SHIFT
-#define ASSET_TABLE_ROM_START (s32) mapfs_ROM_START
-#elif VERSION_JP
-#define ASSET_TABLE_ROM_START 0x1E00000
-#else
-#define ASSET_TABLE_ROM_START 0x1E40000
-#endif
-
 #define ASSET_TABLE_HEADER_SIZE 0x20
-#define ASSET_TABLE_FIRST_ENTRY (ASSET_TABLE_ROM_START + ASSET_TABLE_HEADER_SIZE)
+#define ASSET_TABLE_FIRST_ENTRY (mapfs_ROM_START + ASSET_TABLE_HEADER_SIZE)
 
 BSS const char* gMapId;
 BSS MapSettings gMapSettings;

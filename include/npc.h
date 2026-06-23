@@ -551,8 +551,6 @@ void init_encounter_status(void);
 
 void clear_encounter_status(void);
 
-void func_8003E50C(void);
-
 void set_battle_transition_state(s8 state);
 
 void update_encounters(void);

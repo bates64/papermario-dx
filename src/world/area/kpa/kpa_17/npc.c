@@ -18,10 +18,10 @@ EvtScript N(EVS_Scene_FallIntoCell) = {
     Call(InterpPlayerYaw, 270, 0)
     Wait(60)
     Call(PartnerIsFlying, LVar0)
-    IfEq(LVar0, true)
+    IfEq(LVar0, false)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, true)
     Else
-        Call(func_802CF56C, 1)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_HOLD)
     EndIf
     Call(PlaySoundAtPlayer, SOUND_PLAYER_LONG_FALL, SOUND_SPACE_DEFAULT)
     Call(SetPlayerAnimation, ANIM_MarioW2_PanicStill)
@@ -59,7 +59,7 @@ EvtScript N(EVS_Scene_FallIntoCell) = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(DisablePlayerInput, false)
     Call(ClearPartnerMoveHistory, NPC_PARTNER)
-    Call(func_802CF56C, 0)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
     Return
     End
 };

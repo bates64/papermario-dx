@@ -339,6 +339,7 @@ void set_actor_glow_pal(Actor* actor, s32 arg1);
 
 void btl_set_popup_duration(s32 duration);
 void switch_to_partner(s32 partnerID);
+void partner_switch_to_partner_instant(s32 partnerID);
 s8 get_current_partner_id(void);
 
 void delete_trigger(Trigger* toDelete);
@@ -523,7 +524,6 @@ void bgm_update_music_control(void);
 void update_ambient_sounds(void);
 void update_windows(void);
 void player_render_interact_prompts(void);
-void func_802C3EE4(void);
 void render_screen_overlay_backUI(void);
 void render_workers_backUI(void);
 void render_effects_UI(void);
@@ -702,7 +702,7 @@ void imgfx_update_cache(void);
 s32 imgfx_get_free_instances(s32);
 void free_worker(s32);
 
-s32 func_80263230(Actor*, Actor*);
+s32 create_single_actor_target_list(Actor* actor, Actor* targetActor);
 void set_part_glow_pal(ActorPart*, s32);
 void clear_actor_static_pal_adjustments(Actor*);
 void set_actor_flash_mode(Actor* actor, s32 arg1);
@@ -745,10 +745,10 @@ void load_map_script_lib(void);
 void remove_item_entity_by_index(s32 index);
 void set_entity_commandlist(Entity* entity, s32* entityScript);
 s32 is_player_dismounted(void);
-void func_800EF300(void);
-void func_800EF314(void);
-void func_800EF43C(void);
-void func_800EF3E4(void);
+void partner_disable_ai_soon(void);
+void partner_disable_ai(void);
+void partner_reset_ai_state(void);
+void partner_move_to_player_side(void);
 void enable_player_shadow(void);
 s32 get_msg_lines(s32 messageID);
 void set_window_properties(s32 panelID, s32 posX, s32 posY, s32 width, s32 height, u8, void* drawContents, void* drawContentsArg, s8 parent);
@@ -757,6 +757,7 @@ void set_windows_visible(s32 groupIdx);
 
 void partner_disable_input(void);
 void partner_set_goal_pos(s32 x, s32 z);
+void partner_move_to_goal_pos(s32 x, s32 z);
 void close_message(MessagePrintState* msgPrintState);
 void show_foreground_models_unchecked(void);
 void hide_foreground_models_unchecked(void);
@@ -832,7 +833,6 @@ void partner_reset_data(void);
 s32 has_valid_conversation_npc(void);
 s32 func_800E06D8(void);
 void collision_lateral_peach(void);
-void func_800E5520(void);
 void clear_world_menus(void);
 void setup_status_bar_for_battle(void);
 void enable_status_bar_input(void);
@@ -976,7 +976,7 @@ void clear_area_flags(void);
 
 f32 get_player_normal_pitch(void);
 void partner_kill_ability_script(void);
-void func_800EF3D4(s32);
+void partner_set_forced_follow_mode(s32);
 
 void mdl_update_transform_matrices(void);
 void mdl_group_set_custom_gfx(u16, s32, s32, b32);

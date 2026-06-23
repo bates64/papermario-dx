@@ -325,7 +325,7 @@ EvtScript N(EVS_Scene_ArriveByWhale) = {
     Call(SetNpcJumpscale, NPC_PARTNER, Float(1.0))
     Call(NpcJump0, NPC_PARTNER, 224, 0, 20, 20)
     Call(PartnerIsFlying, LVar0)
-    IfEq(LVar0, false)
+    IfEq(LVar0, true)
         Call(EnablePartnerAI)
         Wait(10)
         Call(DisablePartnerAI, false)

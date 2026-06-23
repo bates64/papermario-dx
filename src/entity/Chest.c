@@ -146,7 +146,7 @@ void entity_Chest_idle(Entity* entity) {
             if (data->itemID != 0) {
                 disable_player_input();
             }
-            func_800EF3E4();
+            partner_move_to_player_side();
         }
     } else {
         entity->flags &= ~ENTITY_FLAG_SHOWS_INSPECT_PROMPT;

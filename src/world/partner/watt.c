@@ -232,7 +232,7 @@ API_CALLABLE(N(UseAbility)) {
         }
         if (!partnerStatus->shouldResumeAbility) {
             if (partnerStatus->partnerActionState == ACTION_STATE_IDLE
-                && (!func_800EA52C(PARTNER_WATT) || is_starting_conversation()))
+                && (!partner_can_continue_ability(PARTNER_WATT) || is_starting_conversation()))
             {
                 return ApiStatus_DONE2;
             }
@@ -271,7 +271,7 @@ API_CALLABLE(N(UseAbility)) {
             if (script->functionTemp[1] == 0) {
                 if (script->functionTemp[2] < playerStatus->inputDisabledCount
                     || playerStatus->animFlags & PA_FLAG_CHANGING_MAP
-                    || !func_800EA52C(PARTNER_WATT)
+                    || !partner_can_continue_ability(PARTNER_WATT)
                     || is_starting_conversation()
                 ) {
                     return ApiStatus_DONE2;
@@ -580,16 +580,16 @@ void N(sync_held_position)(void) {
         angle = DEG_TO_RAD(camera->curYaw + 270.0f - gPlayerStatusPtr->spriteFacingAngle + angleOffset);
 
         playerStatus = gPlayerStatusPtr;
-        partnerNPC = wPartnerNpc;
+        partnerNPC = gPartnerNpc;
         partnerNPC->pos.x = playerStatus->pos.x + (sin_rad(angle) * gPlayerStatusPtr->colliderDiameter * offsetScale);
 
-        new_var2 = wPartnerNpc;
+        new_var2 = gPartnerNpc;
         playerStatus = gPlayerStatusPtr;
         partnerNPC = new_var2;
         partnerNPC->pos.z = playerStatus->pos.z - (cos_rad(angle) * gPlayerStatusPtr->colliderDiameter * offsetScale);
 
-        wPartnerNpc->yaw = gPlayerStatusPtr->targetYaw;
-        wPartnerNpc->pos.y = gPlayerStatusPtr->pos.y + 5.0f;
+        gPartnerNpc->yaw = gPlayerStatusPtr->targetYaw;
+        gPartnerNpc->pos.y = gPlayerStatusPtr->pos.y + 5.0f;
     }
 }
 

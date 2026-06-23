@@ -97,7 +97,7 @@ void func_802BC050_E2E980(Entity* entity) {
     if (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) {
         Entity* resetMunchlesia;
         gPlayerStatus.animFlags |= PA_FLAG_INTERRUPT_USE_PARTNER;
-        func_800EF300();
+        partner_disable_ai_soon();
         resetMunchlesia = get_entity_by_index(entity->dataBuf.munchlesia->unk_00);
         exec_entity_commandlist(entity);
         exec_entity_commandlist(resetMunchlesia);

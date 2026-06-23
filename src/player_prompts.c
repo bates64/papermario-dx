@@ -284,13 +284,13 @@ void check_for_interactables(void) {
         if (!collidingWithEntity || (curInteraction > NO_COLLIDER && get_entity_by_index(curInteraction)->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT)) {
             if (playerStatus->actionState == ACTION_STATE_IDLE || playerStatus->actionState == ACTION_STATE_WALK || playerStatus->actionState == ACTION_STATE_RUN) {
                 playerStatus->animFlags |= PA_FLAG_INTERACT_PROMPT_AVAILABLE;
-                func_800EF3D4(2);
+                partner_set_forced_follow_mode(2);
             }
         }
     }
 
     if (!(playerStatus->animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE)) {
-        func_800EF3D4(0);
+        partner_set_forced_follow_mode(0);
         partner_reset_tether_distance();
         return;
     }

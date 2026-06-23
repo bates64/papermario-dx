@@ -459,7 +459,7 @@ ITEM_LIST(N(BeanstalkIngredients), ITEM_FERTILE_SOIL, ITEM_MAGICAL_BEAN, ITEM_MI
 EvtScript N(EVS_BeanPatch_ItemPrompt) = {
     Call(DisablePlayerInput, true)
     Call(FacePlayerTowardPoint, -85, 85, 0)
-    Call(func_802CF56C, 2)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(DisablePlayerInput, false)
     IfEq(GF_FLO00_PlacedFertileSoil, false)
         SetGroup(EVT_GROUP_NEVER_PAUSE)
@@ -564,7 +564,7 @@ EvtScript N(EVS_BeanPatch_ItemPrompt) = {
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o261, COLLIDER_FLAGS_UPPER_MASK)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o351, COLLIDER_FLAGS_UPPER_MASK)
                 Call(InterpPlayerYaw, 200, 0)
-                Call(func_802CF56C, 2)
+                Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
                 Wait(60)
                 Call(FadeInMusic, 1, SONG_MAGIC_BEANSTALK, 0, 3000, 0, 127)
                 Call(FadeOutMusic, 0, 3000)

@@ -850,7 +850,7 @@ s32 dispatch_damage_event_actor(Actor* actor, s32 damageAmount, s32 originalEven
     if (!stopMotion) {
         s32 savedTargetActorID = actor->targetActorID;
 
-        if (func_80263230(actor, actor) != 0) {
+        if (create_single_actor_target_list(actor, actor) != 0) {
             show_next_damage_popup(actor->targetData[0].truePos.x, actor->targetData[0].truePos.y, actor->targetData[0].truePos.z, battleStatus->lastAttackDamage, 0);
             show_damage_fx(actor, actor->targetData[0].truePos.x, actor->targetData[0].truePos.y, actor->targetData[0].truePos.z, battleStatus->lastAttackDamage);
         }

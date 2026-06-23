@@ -777,7 +777,7 @@ EvtScript N(EVS_EndMerleeCamera) = {
 };
 
 EvtScript N(EVS_NpcInteract_Merlee) = {
-    Call(func_802D2C14, 1)
+    Call(SetPartnerForcedFollowMode, 1)
     ExecWait(N(EVS_BeginMerleeCamera))
     Set(LVar0, 0)
     IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH4_1)
@@ -794,7 +794,7 @@ EvtScript N(EVS_NpcInteract_Merlee) = {
         EVT_GIVE_REWARD(ITEM_CRYSTAL_BALL)
         Set(GF_DRO01_Gift_CrystalBall, 1)
         Wait(20)
-        Call(func_802D2C14, 0)
+        Call(SetPartnerForcedFollowMode, 0)
         ExecWait(N(EVS_EndMerleeCamera))
         Return
     EndIf
@@ -802,7 +802,7 @@ EvtScript N(EVS_NpcInteract_Merlee) = {
     Call(ShowChoice, MSG_Choice_0011)
     IfNe(LVar0, 0)
         Call(ContinueSpeech, -1, ANIM_WorldMerlee_Talk, ANIM_WorldMerlee_Idle, 0, MSG_CH2_00D7)
-        Call(func_802D2C14, 0)
+        Call(SetPartnerForcedFollowMode, 0)
         ExecWait(N(EVS_EndMerleeCamera))
         Return
     EndIf
@@ -812,14 +812,14 @@ EvtScript N(EVS_NpcInteract_Merlee) = {
     Call(ShowCoinCounter, 0)
     IfEq(LVar0, 3)
         Call(ContinueSpeech, -1, ANIM_WorldMerlee_Talk, ANIM_WorldMerlee_Idle, 0, MSG_CH2_00D7)
-        Call(func_802D2C14, 0)
+        Call(SetPartnerForcedFollowMode, 0)
         ExecWait(N(EVS_EndMerleeCamera))
         Return
     EndIf
     Call(N(TryEnchantPlayer), LVar0, LVar1)
     IfNe(LVar1, 0)
         Call(ContinueSpeech, -1, ANIM_WorldMerlee_Talk, ANIM_WorldMerlee_Idle, 0, MSG_CH2_00D9)
-        Call(func_802D2C14, 0)
+        Call(SetPartnerForcedFollowMode, 0)
         ExecWait(N(EVS_EndMerleeCamera))
         Return
     EndIf
@@ -841,7 +841,7 @@ EvtScript N(EVS_NpcInteract_Merlee) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldMerlee_Talk, ANIM_WorldMerlee_Idle, 0, MSG_CH2_00DB)
     Exec(N(EVS_SetupMusic))
     Call(EnablePartnerAI)
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     ExecWait(N(EVS_EndMerleeCamera))
     Return
     End

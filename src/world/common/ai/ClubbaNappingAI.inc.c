@@ -78,7 +78,7 @@ void N(ClubbaNappingAI_Sleep)(Evt* script, MobileAISettings* settings, EnemyDete
     if (((gPlayerData.curPartner == PARTNER_GOOMBARIO) && (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE)) ||
         ((gPlayerData.curPartner == PARTNER_BOMBETTE) && (gPartnerStatus.partnerActionState == PARTNER_ACTION_BOMBETTE_BLAST))
     ) {
-        if (dist2D(npc->pos.x, npc->pos.z, wPartnerNpc->pos.x, wPartnerNpc->pos.z) <= 80.0f) {
+        if (dist2D(npc->pos.x, npc->pos.z, gPartnerNpc->pos.x, gPartnerNpc->pos.z) <= 80.0f) {
             shouldWakeUp = true;
         }
     }

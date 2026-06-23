@@ -32,7 +32,7 @@ API_CALLABLE(TeleportPartnerToPlayer) {
     partner->pos.x = playerStatus->pos.x;
     partner->pos.z = playerStatus->pos.z;
 
-    if (partner_is_flying()) {
+    if (!partner_is_flying()) {
         partner->pos.y = playerStatus->pos.y;
     }
 

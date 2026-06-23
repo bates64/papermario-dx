@@ -128,7 +128,7 @@ EvtScript N(EVS_UseBasketElevator) = {
         Call(PlayerMoveTo, 285, 15, 0)
     EndThread
     Call(PartnerIsFlying, LVar0)
-    IfEq(LVar0, true)
+    IfEq(LVar0, false)
         Wait(10)
         Call(SetNpcJumpscale, NPC_PARTNER, Float(1.0))
         Call(NpcJump0, NPC_PARTNER, 260, 205, 15, 15)
@@ -715,7 +715,7 @@ EvtScript N(EVS_NpcIdle_Kolorado_HeldCaptive) = {
                     Call(InterruptUsePartner)
                 EndIf
                 Call(DisablePlayerInput, true)
-                Call(func_802D2C14, 1)
+                Call(SetPartnerForcedFollowMode, 1)
                 Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Call(RemoveNpc, NPC_SpearGuy)
                 Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
@@ -740,13 +740,13 @@ EvtScript N(EVS_NpcIdle_Kolorado_HeldCaptive) = {
                 Wait(10 * DT)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_00C1)
                 Call(SetSelfVar, 0, 2)
-                Call(func_802D2C14, 0)
+                Call(SetPartnerForcedFollowMode, 0)
                 Call(DisablePlayerInput, false)
             EndIf
         CaseEq(1)
             SetGroup(EVT_GROUP_NEVER_PAUSE)
             Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
-            Call(func_802D2C14, 1)
+            Call(SetPartnerForcedFollowMode, 1)
             Wait(10 * DT)
             IfEq(GF_JAN01_SavedKolorado, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Shout, ANIM_Kolorado_Idle, 0, MSG_CH5_00BE)
@@ -754,7 +754,7 @@ EvtScript N(EVS_NpcIdle_Kolorado_HeldCaptive) = {
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Shout, ANIM_Kolorado_Idle, 0, MSG_CH5_00BF)
             EndIf
             Call(SetSelfVar, 0, 2)
-            Call(func_802D2C14, 0)
+            Call(SetPartnerForcedFollowMode, 0)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             SetGroup(EVT_GROUP_HOSTILE_NPC)
             Call(DisablePlayerInput, false)

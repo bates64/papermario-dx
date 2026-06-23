@@ -185,7 +185,7 @@ API_CALLABLE(N(UseAbility)) {
 
     if (isInitialCall) {
         N(try_cancel_tweester)(bow);
-        if (playerStatus->animFlags & PA_FLAG_CHANGING_MAP || !func_800EA52C(PARTNER_BOW)) {
+        if (playerStatus->animFlags & PA_FLAG_CHANGING_MAP || !partner_can_continue_ability(PARTNER_BOW)) {
             return ApiStatus_DONE2;
         }
         if (playerStatus->animFlags & PA_FLAG_PARTNER_USAGE_FORCED) {
@@ -211,7 +211,7 @@ API_CALLABLE(N(UseAbility)) {
             script->USE_STATE++; // OUTTA_SIGHT_DELAY
             break;
         case OUTTA_SIGHT_DELAY:
-            if ((!func_800EA52C(PARTNER_BOW) || is_starting_conversation())
+            if ((!partner_can_continue_ability(PARTNER_BOW) || is_starting_conversation())
                 && script->functionTemp[2] < playerStatus->inputDisabledCount
                 && N(LockingPlayerInput)
             ) {

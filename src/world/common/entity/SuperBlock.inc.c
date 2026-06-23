@@ -515,7 +515,7 @@ EvtScript N(SuperBlock_OnHit) = {
     IfNe(LVar0, LVarB)
         Call(SwitchToPartner, LVarB)
     Else
-        Call(func_802CF56C, 2)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     EndIf
     Wait(10 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_00DF, 160, 40)

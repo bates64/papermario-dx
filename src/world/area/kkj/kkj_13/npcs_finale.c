@@ -127,7 +127,7 @@ EvtScript N(EVS_Scene_MarioConfrontsBowser) = {
     Wait(20)
     Call(SetPlayerPos, 400, 0, -15)
     Call(PartnerIsFlying, LVar0)
-    IfEq(LVar0, false)
+    IfEq(LVar0, true)
         Call(SetNpcPos, NPC_PARTNER, 370, 20, -15)
     Else
         Call(SetNpcPos, NPC_PARTNER, 370, 0, -15)
@@ -141,9 +141,6 @@ EvtScript N(EVS_Scene_MarioConfrontsBowser) = {
     Call(SetNpcVar, NPC_Bowser_Body, 0, 1)
     Wait(10)
     Thread
-#if VERSION_JP
-        Call(DisablePartnerAI, false)
-#endif
         Call(PlayerMoveTo, 580, 0, 25)
     EndThread
     Thread
@@ -248,7 +245,7 @@ EvtScript N(EVS_Scene_BowserDefeated) = {
     Call(SetPlayerPos, 525, 0, 0)
 #if !VERSION_JP
     Call(PartnerIsFlying, LVar0)
-    IfEq(LVar0, false)
+    IfEq(LVar0, true)
         Set(LVar1, 10)
     Else
         Set(LVar1, 0)

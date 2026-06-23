@@ -44,11 +44,11 @@ EvtScript N(EVS_NpcAI_Chan) = {
     Wait(10)
     Thread
         Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-        Call(func_802D2C14, 1)
+        Call(SetPartnerForcedFollowMode, 1)
         Call(PlayerMoveTo, 348, -364, 20)
         Call(InterpPlayerYaw, 20, 0)
         Wait(20)
-        Call(func_802D2C14, 0)
+        Call(SetPartnerForcedFollowMode, 0)
         Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     EndThread
     Call(SetNpcAnimation, NPC_SELF, ANIM_Chan_Walk)
@@ -112,11 +112,11 @@ EvtScript N(EVS_NpcAI_Lee) = {
     Wait(10)
     Thread
         Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-        Call(func_802D2C14, 1)
+        Call(SetPartnerForcedFollowMode, 1)
         Call(PlayerMoveTo, 348, -364, 20)
         Call(InterpPlayerYaw, 20, 0)
         Wait(20)
-        Call(func_802D2C14, 0)
+        Call(SetPartnerForcedFollowMode, 0)
         Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     EndThread
     Call(SetNpcAnimation, NPC_SELF, ANIM_Lee_Walk)
@@ -300,11 +300,11 @@ EvtScript N(EVS_TheMaster_InteractImpl) = {
     Wait(10)
     Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Thread
-        Call(func_802D2C14, 1)
+        Call(SetPartnerForcedFollowMode, 1)
         Call(PlayerMoveTo, 348, -364, 20)
         Call(InterpPlayerYaw, 20, 0)
         Wait(20)
-        Call(func_802D2C14, 0)
+        Call(SetPartnerForcedFollowMode, 0)
     EndThread
     Call(NpcMoveTo, NPC_SELF, 375, -400, 30)
     Call(InterpNpcYaw, NPC_TheMaster, 225, 0)

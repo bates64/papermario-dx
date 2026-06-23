@@ -980,7 +980,7 @@ API_CALLABLE(N(UseAbility)) {
 
             gGameStatusPtr->keepUsingPartnerOnMapChange = false;
             partner_clear_player_tracking(lakilester);
-            func_800EF3D4(2);
+            partner_set_forced_follow_mode(2);
             return ApiStatus_DONE1;
         }
 

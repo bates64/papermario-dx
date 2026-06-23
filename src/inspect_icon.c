@@ -270,6 +270,6 @@ void interact_inspect_dismiss(void) {
     InteractNotificationCallback = nullptr;
     gPlayerStatusPtr->encounteredNPC = nullptr;
     gPlayerStatusPtr->animFlags &= ~PA_FLAG_INTERACT_PROMPT_AVAILABLE;
-    func_800EF3D4(0);
+    partner_set_forced_follow_mode(0);
     partner_reset_tether_distance();
 }

@@ -43,7 +43,7 @@ EvtScript N(EVS_NpcAI_Goompa) = {
                 EndIf
             EndLoop
             Call(DisablePlayerInput, true)
-            Call(func_802CF56C, 0)
+            Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Add(LVar0, 30)
             Call(SetNpcSpeed, NPC_PARTNER, Float(2.0 / DT))

@@ -19,10 +19,10 @@ EvtScript N(EVS_Scene_TreeOrbitReaction) = {
         Wait(1)
     EndLoop
     Call(DisablePlayerInput, true)
-    Call(func_802CF56C, 1)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_HOLD)
     Thread
         Wait(20)
-        Call(func_802CF56C, 0)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
         Call(NpcFacePlayer, NPC_PARTNER, 0)
     EndThread
     Call(PlayerFaceNpc, NPC_Dryite_03, false)

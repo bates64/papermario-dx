@@ -234,7 +234,7 @@ EvtScript N(EVS_NpcIdle_Lakilester) = {
     Call(InterpPlayerYaw, 90, 1)
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Still)
-    Call(func_802CF56C, 2)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(SetNpcAnimation, NPC_Lakilester, ANIM_WorldLakilester_Run)
     Thread
         Call(N(PlayLakilesterFlightSounds))

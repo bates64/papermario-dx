@@ -180,7 +180,7 @@ EvtScript N(EVS_Scene_MeetingTwink) = {
         EndIf
     EndLoop
     Call(DisablePlayerInput, true)
-    Call(func_802CF56C, 2)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Thread
         Add(LVar0, -20)
         Call(PlayerMoveTo, LVar0, LVar2, 10 * DT)

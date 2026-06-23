@@ -29,10 +29,10 @@ EvtScript N(EVS_Scene_MeetingGeneralGuy) = {
         IfNe(LVar0, PARTNER_NONE)
             Call(InterruptUsePartner)
             Wait(30 * DT)
-            Call(func_802D2C14, 1)
+            Call(SetPartnerForcedFollowMode, 1)
             Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Wait(45 * DT)
-            Call(func_802D2C14, 0)
+            Call(SetPartnerForcedFollowMode, 0)
         EndIf
     EndThread
     Call(SpeakToPlayer, NPC_GeneralGuy, ANIM_GeneralGuy_Anim0A, ANIM_GeneralGuy_Anim02, 0, MSG_CH4_005F)

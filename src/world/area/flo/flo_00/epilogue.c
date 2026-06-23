@@ -7,7 +7,7 @@
 EvtScript N(EVS_Scene_Epilogue) = {
     Call(SetPlayerPos, -400, 0, 200)
     Call(SetNpcPos, NPC_PARTNER, -380, 0, 200)
-    Call(func_802CF56C, 2)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(DisablePartnerAI, false)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)

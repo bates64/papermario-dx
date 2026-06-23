@@ -66,7 +66,7 @@ EvtScript N(EVS_Scene_CrystalKingAppears) = {
     Call(SetPlayerPos, 475, 100, 116)
     Call(DisablePartnerAI, false)
     Call(PartnerIsFlying, LVar4)
-    IfEq(LVar4, false)
+    IfEq(LVar4, true)
         Call(SetNpcPos, NPC_PARTNER, 452, 116, 120)
     Else
         Call(SetNpcPos, NPC_PARTNER, 452, 100, 120)

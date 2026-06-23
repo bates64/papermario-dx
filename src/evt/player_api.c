@@ -860,10 +860,10 @@ API_CALLABLE(Disable8bitMario) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_802D2C14) {
+API_CALLABLE(SetPartnerForcedFollowMode) {
     Bytecode* args = script->ptrReadPos;
 
-    func_800EF3D4(evt_get_variable(script, *args++));
+    partner_set_forced_follow_mode(evt_get_variable(script, *args++));
     return ApiStatus_DONE2;
 }
 

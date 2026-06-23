@@ -133,7 +133,7 @@ EvtScript N(EVS_NpcDefeat_Eldstar) = {
 
 EvtScript N(EVS_Scene_RescuedEldstar) = {
     Call(DisablePartnerAI, false)
-    Call(func_802CF56C, 2)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(SetNpcPos, NPC_Eldstar, -567, 26, 236)
     Call(PlayerFaceNpc, NPC_Eldstar, false)
     Call(NpcFaceNpc, NPC_PARTNER, NPC_Eldstar, 0)

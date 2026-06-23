@@ -1744,12 +1744,6 @@ typedef struct DecorationTable {
     /* 0x8C6 */ DecorationData decorData[MAX_ACTOR_DECORATIONS];
 } DecorationTable; // size = 0x8E8
 
-typedef struct PlayerPathElement {
-    /* 0x00 */ b8 isJumping;
-    /* 0x01 */ PAD(3);
-    /* 0x04 */ Vec3f pos;
-} PlayerPathElement; // size = 0x10
-
 typedef struct LavaReset {
     /* 0x00 */ s32 colliderID;
     /* 0x04 */ Vec3f pos;
@@ -2222,7 +2216,7 @@ typedef struct TweesterPhysics {
 typedef struct PartnerStatus {
     /* 0x000 */ s8 partnerActionState;
     /* 0x001 */ b8 shouldResumeAbility;
-    /* 0x002 */ b8 partnerAction_unk_2;
+    /* 0x002 */ b8 moveWithoutInput;   // part of the scrapped multiplayer, lets the partner be auto-controlled until player 2 presses a button
     /* 0x003 */ s8 actingPartner;
     /* 0x004 */ s16 stickX;
     /* 0x006 */ s16 stickY;

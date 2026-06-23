@@ -46,7 +46,7 @@ EvtScript N(EVS_OnInteract_WaterStoneSocket) = {
             CaseDefault
                 Call(GetPlayerPos, LVar3, LVar4, LVar5)
                 Call(PlayerMoveTo, -17, -17, 20)
-                Call(func_802CF56C, 2)
+                Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
                 Call(InterpPlayerYaw, 100, 1)
                 Wait(10 * DT)
                 Call(AdjustCam, CAM_DEFAULT, Float(1.0 / DT), 0, 450, Float(25.0), Float(-6.0))
