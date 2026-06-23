@@ -3,7 +3,20 @@
 #include "world/partners_internal.h"
 #include "macros.h"
 
-BSS s32 PartnerCommandState;
+enum PartnerCommands {
+    PARTNER_CMD_NONE                = 0,
+    PARTNER_CMD_CLEAR               = 1,
+    PARTNER_CMD_INSTA_SWITCH        = 2, // skips put away / take out scripts. assumes valid current partner.
+    PARTNER_CMD_SWITCH              = 3, // assumes valid current partner.
+    PARTNER_CMD_PUT_AWAY            = 4, // switches to null partner.
+    PARTNER_CMD_INSTA_PUT_AWAY      = 5,
+    PARTNER_CMD_TAKE_OUT            = 6, // assumes no current partner.
+    PARTNER_CMD_INSTA_TAKE_OUT      = 7,
+    PARTNER_CMD_USE_ABILITY         = 8,
+    PARTNER_CMD_RESET               = 9,
+    PARTNER_CMD_ABORT               = 10,
+};
+
 BSS s32 PartnerSpawnMode;
 BSS Evt* PartnerCurrentScript;
 BSS s32 PartnerCurrentScriptID;
@@ -11,6 +24,32 @@ BSS b32 PartnerCommandPending;
 BSS s32 NextPartnerID;
 BSS s32 NextPartnerCommand;
 BSS s32 CurPartnerCommand;
+
+BSS s32 CommandSubstate;
+
+void init_partner_commands(void) {
+    PartnerCommandPending = false;
+    NextPartnerCommand = PARTNER_CMD_NONE;
+}
+
+void suspend_partner_commands(void) {
+    if (does_script_exist(PartnerCurrentScriptID)) {
+        kill_script_by_ID(PartnerCurrentScriptID);
+    }
+}
+
+void resume_partner_commands(void) {
+    if (does_script_exist(PartnerCurrentScriptID)) {
+        kill_script_by_ID(PartnerCurrentScriptID);
+    }
+
+    PartnerCurrentScript = start_script(ActivePartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+    PartnerCurrentScript->owner2.npc = gPartnerNpc;
+    PartnerCurrentScriptID = PartnerCurrentScript->id;
+    PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
+
+    NextPartnerCommand = PARTNER_CMD_CLEAR;
+}
 
 void process_partner_commands(void) {
     PlayerData* playerData = &gPlayerData;
@@ -39,7 +78,7 @@ void process_partner_commands(void) {
 
     if (NextPartnerCommand != PARTNER_CMD_NONE) {
         CurPartnerCommand = NextPartnerCommand;
-        PartnerCommandState = 0;
+        CommandSubstate = 0;
         NextPartnerCommand = PARTNER_CMD_NONE;
     }
 
@@ -54,7 +93,7 @@ void process_partner_commands(void) {
             break;
         case PARTNER_CMD_SWITCH:
             PartnerSpawnMode = PARTNER_SPAWN_SWITCH;
-            switch (PartnerCommandState) {
+            switch (CommandSubstate) {
                 case 0: // put away current partner
                     disable_player_input();
                     sfx_play_sound(SOUND_PARTNER_PUT_AWAY);
@@ -63,7 +102,7 @@ void process_partner_commands(void) {
                     PartnerCurrentScript->owner2.npc = gPartnerNpc;
                     PartnerCurrentScriptID = PartnerCurrentScript->id;
                     PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
-                    PartnerCommandState = 1;
+                    CommandSubstate = 1;
                     set_time_freeze_mode(TIME_FREEZE_PARTIAL);
                     break;
                 case 1: // free old partner and create new one
@@ -76,14 +115,14 @@ void process_partner_commands(void) {
                     create_partner_npc();
                     sfx_play_sound(SOUND_PARTNER_GET_OUT);
                     ActivePartner->init(gPartnerNpc);
-                    PartnerCommandState = 2;
+                    CommandSubstate = 2;
                     // fallthrough
                 case 2: // take out new partner
                     PartnerCurrentScript = start_script(ActivePartner->takeOut, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     PartnerCurrentScript->owner2.npc = gPartnerNpc;
                     PartnerCurrentScriptID = PartnerCurrentScript->id;
                     PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
-                    PartnerCommandState = 3;
+                    CommandSubstate = 3;
                     set_time_freeze_mode(TIME_FREEZE_PARTIAL);
                     break;
                 case 3: // resume normal partner behaviour
@@ -102,10 +141,11 @@ void process_partner_commands(void) {
             break;
         case PARTNER_CMD_INSTA_SWITCH:
             PartnerSpawnMode = PARTNER_SPAWN_SWITCH;
-            switch (PartnerCommandState) {
+            switch (CommandSubstate) {
                 case 0:
                     kill_script_by_ID(PartnerCurrentScriptID);
-                    PartnerCommandState++;
+                    CommandSubstate = 1;
+                    // fallthrough
                 case 1:
                     partner_free_npc();
                     playerData->curPartner = CurrentPartnerID = NextPartnerID;
@@ -118,10 +158,10 @@ void process_partner_commands(void) {
                     gPartnerNpc->scale.y = 1.0f;
                     gPartnerNpc->scale.z = 1.0f;
                     ActivePartner->init(gPartnerNpc);
-                    PartnerCommandState++;
+                    CommandSubstate = 2;
                     // fallthrough
                 case 2:
-                    PartnerCommandState++;
+                    CommandSubstate = 3;
                     break;
                 case 3:
                     PartnerCurrentScript = start_script(ActivePartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
@@ -133,7 +173,7 @@ void process_partner_commands(void) {
             }
             break;
         case PARTNER_CMD_PUT_AWAY:
-            switch (PartnerCommandState) {
+            switch (CommandSubstate) {
                 case 0: // put away current partner
                     disable_player_input();
                     sfx_play_sound(SOUND_PARTNER_PUT_AWAY);
@@ -142,7 +182,7 @@ void process_partner_commands(void) {
                     PartnerCurrentScript->owner2.npc = gPartnerNpc;
                     PartnerCurrentScriptID = PartnerCurrentScript->id;
                     PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
-                    PartnerCommandState++;
+                    CommandSubstate = 1;
                     break;
                 case 1: // free old partner and resume game
                     if (does_script_exist(PartnerCurrentScriptID)) {
@@ -156,7 +196,7 @@ void process_partner_commands(void) {
             }
             break;
         case PARTNER_CMD_INSTA_PUT_AWAY:
-            if (PartnerCommandState == 0) {
+            if (CommandSubstate == 0) {
                 kill_script_by_ID(PartnerCurrentScriptID);
                 partner_free_npc();
                 CurPartnerCommand = PARTNER_CMD_CLEAR;
@@ -165,20 +205,20 @@ void process_partner_commands(void) {
             }
             break;
         case PARTNER_CMD_TAKE_OUT:
-            switch (PartnerCommandState) {
+            switch (CommandSubstate) {
                 case 0: // create the new partner
                     disable_player_input();
                     playerData->curPartner = CurrentPartnerID = NextPartnerID;
                     create_partner_npc();
                     ActivePartner->init(gPartnerNpc);
-                    PartnerCommandState++;
+                    CommandSubstate = 1;
                     // fallthrough
                 case 1: // take out new partner
                     PartnerCurrentScript = start_script(ActivePartner->takeOut, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     PartnerCurrentScript->owner2.npc = gPartnerNpc;
                     PartnerCurrentScriptID = PartnerCurrentScript->id;
                     PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
-                    PartnerCommandState++;
+                    CommandSubstate = 2;
                     break;
                 case 2: // resume standard partner behaviour
                     if (does_script_exist(PartnerCurrentScriptID)) {
@@ -195,7 +235,7 @@ void process_partner_commands(void) {
             break;
         case PARTNER_CMD_INSTA_TAKE_OUT:
             PartnerSpawnMode = PARTNER_SPAWN_INSTA;
-            switch (PartnerCommandState) {
+            switch (CommandSubstate) {
                 case 0:
                     disable_player_input();
                     playerData->curPartner = CurrentPartnerID = NextPartnerID;
@@ -208,7 +248,7 @@ void process_partner_commands(void) {
                     gPartnerNpc->scale.y = 1.0f;
                     gPartnerNpc->scale.z = 1.0f;
                     ActivePartner->init(gPartnerNpc);
-                    PartnerCommandState++;
+                    CommandSubstate = 1;
                     break;
                 case 1:
                     PartnerCurrentScript = start_script(ActivePartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
@@ -222,14 +262,14 @@ void process_partner_commands(void) {
             }
             break;
         case PARTNER_CMD_USE_ABILITY:
-            switch (PartnerCommandState) {
+            switch (CommandSubstate) {
                 case 0:
                     kill_script_by_ID(PartnerCurrentScriptID);
                     PartnerCurrentScript = start_script(ActivePartner->useAbility, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     PartnerCurrentScript->owner2.npc = gPartnerNpc;
                     PartnerCurrentScriptID = PartnerCurrentScript->id;
                     PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
-                    PartnerCommandState++;
+                    CommandSubstate = 1;
                     break;
                 case 1:
                     if (does_script_exist(PartnerCurrentScriptID)) {
@@ -245,14 +285,14 @@ void process_partner_commands(void) {
             break;
         case PARTNER_CMD_RESET:
             PartnerSpawnMode = PARTNER_SPAWN_RESET;
-            switch (PartnerCommandState) {
+            switch (CommandSubstate) {
                 case 0:
                     disable_player_input();
                     ActivePartner->init(gPartnerNpc);
-                    PartnerCommandState++;
+                    CommandSubstate = 1;
                     // fallthrough
                 case 1:
-                    PartnerCommandState++;
+                    CommandSubstate = 2;
                     break;
                 case 2:
                     if (partnerStatus->partnerActionState != 1) {
@@ -270,11 +310,11 @@ void process_partner_commands(void) {
             }
             break;
         case PARTNER_CMD_ABORT:
-            if (PartnerCommandState == 0) {
+            if (CommandSubstate == 0) {
                 if (does_script_exist(PartnerCurrentScriptID)) {
                     kill_script_by_ID(PartnerCurrentScriptID);
                 }
-                PartnerCommandState++;
+                CommandSubstate = 1;
             }
             break;
         case PARTNER_CMD_CLEAR:
@@ -382,15 +422,12 @@ s32 partner_can_use_ability(void) {
 }
 
 void partner_reset_data(void) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-    s32 currentPartner = gPlayerData.curPartner;
-
     mem_clear(&gPartnerStatus, sizeof(gPartnerStatus));
     get_worker(create_worker_frontUI(process_partner_commands, nullptr));
 
     PartnerCommandPending = true;
     NextPartnerCommand = PARTNER_CMD_RESET;
-    CurrentPartnerID = currentPartner;
+    CurrentPartnerID = gPlayerData.curPartner;
 
     if (gGameStatusPtr->keepUsingPartnerOnMapChange) {
         gPartnerStatus.partnerActionState = PARTNER_ACTION_USE;
@@ -398,9 +435,9 @@ void partner_reset_data(void) {
     }
 
     ActivePartner = nullptr;
-    SavedPartnerPos.x = playerStatus->pos.x;
-    SavedPartnerPos.y = playerStatus->pos.y;
-    SavedPartnerPos.z = playerStatus->pos.z;
+    SavedPartnerPos.x = gPlayerStatus.pos.x;
+    SavedPartnerPos.y = gPlayerStatus.pos.y;
+    SavedPartnerPos.z = gPlayerStatus.pos.z;
 
     if (CurrentPartnerID == PARTNER_NONE) {
         NextPartnerCommand = PARTNER_CMD_CLEAR;

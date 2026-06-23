@@ -880,7 +880,11 @@ API_CALLABLE(N(PutAway)) {
         gPlayerStatusPtr->animFlags &= ~PA_FLAG_RIDING_PARTNER;
     }
 
-    return partner_put_away(sushie) ? ApiStatus_DONE1 : ApiStatus_BLOCK;
+    if (partner_put_away(sushie)) {
+        return ApiStatus_DONE1;
+    } else {
+        return ApiStatus_BLOCK;
+    }
 }
 
 EvtScript EVS_WorldSushie_PutAway = {

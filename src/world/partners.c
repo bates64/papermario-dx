@@ -117,12 +117,16 @@ HudScript* DigitHudScripts[] = {
     &HES_StatusDigit0, &HES_StatusDigit1, &HES_StatusDigit2, &HES_StatusDigit3, &HES_StatusDigit4,
     &HES_StatusDigit5, &HES_StatusDigit6, &HES_StatusDigit7, &HES_StatusDigit8, &HES_StatusDigit9,
 };
+
 HudScript* TimesHudScript = &HES_StatusTimes;
+
 HudScript* SlashHudScript = &HES_StatusSlash;
+
 HudScript* SPIncrementHudScripts[] = {
     &HES_StatusSPIncrement1, &HES_StatusSPIncrement3, &HES_StatusSPIncrement2,
     &HES_StatusSPIncrement4, &HES_StatusSPIncrement5, &HES_StatusSPIncrement6, &HES_StatusSPIncrement7
 };
+
 HudScript* SPStarHudScripts[] = { &HES_StatusStar1, &HES_StatusStar3, &HES_StatusStar2, &HES_StatusStar4,
     &HES_StatusStar5, &HES_StatusStar6, &HES_StatusStar7
 };
@@ -518,8 +522,9 @@ void partner_initialize_data(void) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
 
     CurrentPartnerID = 0;
-    PartnerCommandPending = false;
-    NextPartnerCommand = PARTNER_CMD_NONE;
+
+    init_partner_commands();
+
     PartnerSpawnMode = PARTNER_SPAWN_NONE;
     partnerStatus->actingPartner = 0;
     partnerStatus->inputDisabledCount = 0;
@@ -550,11 +555,7 @@ EvtScript* partner_get_enter_map_script(void) {
 
 void partner_handle_before_battle(void) {
     if (CurrentPartnerID != PARTNER_NONE) {
-        s32* scriptID = &PartnerCurrentScriptID;
-
-        if (does_script_exist(*scriptID)) {
-            kill_script_by_ID(*scriptID);
-        }
+        suspend_partner_commands();
 
         if (ActivePartner->preBattle != nullptr) {
             ActivePartner->preBattle(gPartnerNpc);
@@ -567,16 +568,7 @@ void partner_handle_after_battle(void) {
     PlayerData* playerData = &gPlayerData;
 
     if (CurrentPartnerID != PARTNER_NONE) {
-        if (does_script_exist(PartnerCurrentScriptID) != 0) {
-            kill_script_by_ID(PartnerCurrentScriptID);
-        }
-
-        PartnerCurrentScript = start_script(ActivePartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
-        PartnerCurrentScript->owner2.npc = gPartnerNpc;
-        PartnerCurrentScriptID = PartnerCurrentScript->id;
-        PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
-
-        NextPartnerCommand = PARTNER_CMD_CLEAR;
+        resume_partner_commands();
 
         if (playerData->curPartner != PARTNER_WATT && partnerStatus->actingPartner == PARTNER_WATT) {
             gPlayerStatusPtr->animFlags &= ~PA_FLAG_USING_WATT;

@@ -653,7 +653,11 @@ API_CALLABLE(N(PutAway)) {
         partner_init_put_away(kooper);
     }
 
-    return partner_put_away(kooper) ? ApiStatus_DONE1 : ApiStatus_BLOCK;
+    if (partner_put_away(kooper)) {
+        return ApiStatus_DONE1;
+    } else {
+        return ApiStatus_BLOCK;
+    }
 }
 
 EvtScript EVS_WorldKooper_PutAway = {

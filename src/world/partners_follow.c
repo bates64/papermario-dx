@@ -1,11 +1,20 @@
-#include "common_structs.h"
+#include "common.h"
 #include "world/partners.h"
 #include "world/partners_internal.h"
-#include "macros.h"
-#include "npc.h"
 
 void partner_flying_follow_player(Npc* partner);
 void partner_move_to_goal(Npc* partner, s32 isFlying);
+
+enum PartnerMovementStates {
+    PARTNER_MOVE_FOLLOW_PLAYER      = 0,
+    PARTNER_MOVE_BEGIN_JUMP         = 1,
+    PARTNER_MOVE_JUMPING            = 2,
+    PARTNER_MOVE_IDLE_NEAR_PLAYER   = 5,
+    PARTNER_MOVE_TO_SIDE            = 15,
+    PARTNER_MOVE_TO_GOAL            = 20,
+    PARTNER_MOVE_DISABLE_ASAP       = 40,
+    PARTNER_MOVE_DISABLED           = 50,
+};
 
 typedef struct PlayerPathElement {
     /* 0x00 */ b8 isJumping;
