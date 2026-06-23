@@ -307,7 +307,7 @@ s32 get_asset_offset(char* assetName, u32* compressedSize) {
         curAsset++;
     }
     *compressedSize = curAsset->compressedLength;
-    ret = ASSET_TABLE_FIRST_ENTRY + curAsset->offset;
+    ret = (s32) ASSET_TABLE_FIRST_ENTRY + curAsset->offset;
     heap_free(assetTableBuffer);
     return ret;
 }
