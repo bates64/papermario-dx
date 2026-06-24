@@ -86,10 +86,10 @@ Vec3f BonkAnimScale[] = {
 
 extern EntityModelScript EMS_BonkIcon;
 
-EntityModelScript* BonkModelScripts[] = {
+EntityModelScriptList BonkModelScripts = {
     nullptr,
-    &EMS_BonkIcon, &EMS_BonkIcon, &EMS_BonkIcon, &EMS_BonkIcon, &EMS_BonkIcon,
-    &EMS_BonkIcon, &EMS_BonkIcon, &EMS_BonkIcon, &EMS_BonkIcon, &EMS_BonkIcon,
+    EMS_BonkIcon, EMS_BonkIcon, EMS_BonkIcon, EMS_BonkIcon, EMS_BonkIcon,
+    EMS_BonkIcon, EMS_BonkIcon, EMS_BonkIcon, EMS_BonkIcon, EMS_BonkIcon,
 };
 
 s32 BattleMessages[] = {

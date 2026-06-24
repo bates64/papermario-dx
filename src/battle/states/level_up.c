@@ -195,20 +195,20 @@ s32 D_80284154[] = {
     [PARTNER_TWINK]         = 0,
 };
 
-EntityModelScript* starpoint_digit_scripts[] = {
-    &EMS_starpoint_digit_0,
-    &EMS_starpoint_digit_1,
-    &EMS_starpoint_digit_2,
-    &EMS_starpoint_digit_3,
-    &EMS_starpoint_digit_4,
-    &EMS_starpoint_digit_5,
-    &EMS_starpoint_digit_6,
-    &EMS_starpoint_digit_7,
-    &EMS_starpoint_digit_8,
-    &EMS_starpoint_digit_9,
+EntityModelScriptList starpoint_digit_scripts = {
+    EMS_starpoint_digit_0,
+    EMS_starpoint_digit_1,
+    EMS_starpoint_digit_2,
+    EMS_starpoint_digit_3,
+    EMS_starpoint_digit_4,
+    EMS_starpoint_digit_5,
+    EMS_starpoint_digit_6,
+    EMS_starpoint_digit_7,
+    EMS_starpoint_digit_8,
+    EMS_starpoint_digit_9,
 };
 
-EntityModelScript* starpoint_space_script = &EMS_starpoint_dummy;
+EntityModelCode* starpoint_space_script = EMS_starpoint_dummy;
 
 HudScript* levelup_stat_scripts[3] = {
     &HES_level_up_FP,

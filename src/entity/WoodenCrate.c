@@ -236,7 +236,7 @@ s32 entity_WoodenCrate_idle(Entity* entity) {
 
     if (shouldBreak) {
         entity_WoodenCrate_reset_fragments(entity);
-        entity_set_render_script(entity, &Entity_WoodenCrate_RenderShatteredScript);
+        entity_set_render_script(entity, Entity_WoodenCrate_RenderShatteredScript);
         entity_start_script(entity);
         exec_entity_commandlist(entity);
         sfx_play_sound(SOUND_BREAK_CRATE);
@@ -283,7 +283,7 @@ EntityBlueprint Entity_WoodenCrate = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(WoodenCrateData),
     .renderCommandList = Entity_WoodenCrate_RenderScript,
-    .modelAnimationNodes = 0,
+    .modelAnimationNodes = nullptr,
     .fpInit = entity_WoodenCrate_init,
     .updateEntityScript = Entity_WoodenCrate_Script,
     .fpHandleCollision = nullptr,

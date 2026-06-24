@@ -24,7 +24,7 @@ BSS PAL_BIN N(PeachLetterPal)[0x100];
 BSS MessageImageData N(MsgImage);
 
 API_CALLABLE(N(LoadPeachLetterImage)) {
-    s8* romStart = charset_ROM_START;
+    u8* romStart = charset_ROM_START;
     u8* rasterOffset = charset_peach_letter_OFFSET;
     u16* paletteOffset = charset_peach_letter_pal_OFFSET;
 

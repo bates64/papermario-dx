@@ -142,7 +142,7 @@ s32 setup_partner_popup(PopupMenu* menu) {
         if (playerData->partners[partnerID].enabled && partnerID != PARTNER_GOOMPA) {
             PartnerPopupProperties* properties = &gPartnerPopupProperties[partnerID];
 
-            menu->ptrIcon[optionCount] = wPartnerHudScripts[partnerID];
+            menu->ptrIcon[optionCount] = wPartnerHudScripts[partnerID].enabled;
             menu->userIndex[optionCount] = partnerID;
             menu->enabled[optionCount] = true;
             menu->nameMsg[optionCount] = properties->nameMsg;
@@ -150,7 +150,7 @@ s32 setup_partner_popup(PopupMenu* menu) {
             menu->value[optionCount] = playerData->partners[partnerID].level;
             if (playerData->curPartner == partnerID) {
                 menu->enabled[optionCount] = false;
-                menu->ptrIcon[optionCount] = wDisabledPartnerHudScripts[partnerID];
+                menu->ptrIcon[optionCount] = wPartnerHudScripts[partnerID].disabled;
             }
             optionCount++;
         }

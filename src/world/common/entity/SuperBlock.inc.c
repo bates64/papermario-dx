@@ -143,11 +143,11 @@ API_CALLABLE(N(SuperBlock_ShowSelectPartnerMenu)) {
                 popupMenu->nameMsg[entryIndex] = gPartnerPopupProperties[partnerID].nameMsg;
                 canUpgradePartner = N(SuperBlock_get_partner_rank)(partnerID, hasUltraStone);
                 if (canUpgradePartner >= 0) {
-                    popupMenu->ptrIcon[entryIndex] = wPartnerHudScripts[partnerID];
+                    popupMenu->ptrIcon[entryIndex] = wPartnerHudScripts[partnerID].enabled;
                     popupMenu->enabled[entryIndex] = true;
                     popupMenu->descMsg[entryIndex] = N(SuperBlock_UpgradeDescMessages)[i][canUpgradePartner];
                 } else {
-                    popupMenu->ptrIcon[entryIndex] = wDisabledPartnerHudScripts[partnerID];
+                    popupMenu->ptrIcon[entryIndex] = wPartnerHudScripts[partnerID].disabled;
                     popupMenu->enabled[entryIndex] = false;
                     popupMenu->descMsg[entryIndex] = N(SuperBlock_CantUpgradeMessages)[hasUltraStone];
                 }

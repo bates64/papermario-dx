@@ -327,7 +327,7 @@ void entity_HiddenPanel_init(Entity* entity) {
 
     if (gCurrentHiddenPanels.panelsCount & 1) {
         dlist = Gfx_AltHiddenPanel_RenderTop;
-        entity_set_render_script(entity, &ERS_AltHiddenPanel);
+        entity_set_render_script(entity, ERS_AltHiddenPanel);
     } else {
         dlist = Gfx_HiddenPanel_RenderTop;
     }
@@ -367,7 +367,7 @@ EntityBlueprint Entity_HiddenPanel = {
     .flags = ENTITY_FLAG_HIDDEN,
     .typeDataSize = sizeof(HiddenPanelData),
     .renderCommandList = ERS_HiddenPanel,
-    .modelAnimationNodes = 0,
+    .modelAnimationNodes = nullptr,
     .fpInit = entity_HiddenPanel_init,
     .updateEntityScript = Entity_HiddenPanel_Script,
     .fpHandleCollision = nullptr,
@@ -375,5 +375,4 @@ EntityBlueprint Entity_HiddenPanel = {
     .entityType = ENTITY_TYPE_HIDDEN_PANEL,
     .aabbSize = { 60, 0, 60 }
 };
-
 

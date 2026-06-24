@@ -3,8 +3,6 @@
 
 #include "common.h"
 
-typedef s16 AnimScript[];
-
 enum {
     AS_END,
     AS_WAIT,

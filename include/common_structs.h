@@ -14,6 +14,7 @@ typedef ApiStatus(*ApiFunc)(struct Evt*, s32);
 typedef Bytecode EvtScript[];
 
 typedef void (*VoidCallback)(void);
+typedef void (*DataCallback)(void* data);
 typedef void (*AuCallback)(void);
 
 typedef struct {
@@ -496,12 +497,15 @@ typedef struct DmaEntry {
 
 typedef s32 EntityCode;
 typedef EntityCode EntityScript[];
+typedef EntityCode* EntityScriptList[];
 
 typedef s32 EntityModelCode;
 typedef EntityModelCode EntityModelScript[];
+typedef EntityModelCode* EntityModelScriptList[];
 
 typedef s16 AnimScriptCode;
 typedef AnimScriptCode AnimScript[];
+typedef AnimScriptCode* AnimScriptList[];
 
 typedef struct EntityBlueprint {
     /* 0x00 */ u16 flags;
@@ -563,12 +567,12 @@ typedef struct Entity {
     /* 0x12 */ s16 vertexSegment;
     /* 0x14 */ s16 virtualModelIndex;
     /* 0x16 */ s16 shadowIndex;
-    /* 0x18 */ s32* scriptReadPos;
+    /* 0x18 */ EntityCode* scriptReadPos;
     /* 0x1C */ EntityCallback updateScriptCallback;
     /* 0x20 */ EntityCallback updateMatrixOverride;
     /* 0x24 */ Evt* boundScript;
     /* 0x28 */ EvtScript* boundScriptBytecode;
-    /* 0x2C */ s32* savedReadPos[3];
+    /* 0x2C */ EntityCode* savedReadPos[3];
     /* 0x38 */ EntityBlueprint* blueprint;
     /* 0x3C */ void (*renderSetupFunc)(s32);
     /* 0x40 */ EntityData dataBuf;
@@ -1096,8 +1100,8 @@ typedef struct ModelAnimator {
     /* 0x000 */ u32 flags;
     /* 0x004 */ s8 renderMode;
     /* 0x005 */ PAD(3);
-    /* 0x008 */ s16* animReadPos;
-    /* 0x00C */ s16* savedReadPos;
+    /* 0x008 */ AnimScriptCode* animReadPos;
+    /* 0x00C */ AnimScriptCode* savedReadPos;
     /* 0x010 */ AnimatorNode* rootNode;
     /* 0x014 */ AnimatorNode* nodeCache[0x7A];
     /* 0x1FC */ u8 nextUniqueID;
@@ -1107,7 +1111,7 @@ typedef struct ModelAnimator {
     /* 0x27C */ f32 timeScale;
     /* 0x280 */ Mtx mtx;
     /* 0x2C0 */ void* baseAddr;
-    /* 0x2C4 */ s16* animationBuffer;
+    /* 0x2C4 */ AnimScriptCode* animationBuffer;
     /* 0x2C8 */ StaticAnimatorNode* staticNodes[0x7A];
     /* 0x4B0 */ StaticAnimatorNode** staticRoot;
     /* 0x4B4 */ s32 treeIndexPos;
@@ -1763,7 +1767,7 @@ typedef struct AnimatedModel {
     /* 0x10 */ Vec3f rot;
     /* 0x1C */ Vec3f scale;
     /* 0x28 */ Mtx mtx;
-    /* 0x68 */ s16* curAnimData;
+    /* 0x68 */ AnimScriptCode* curAnimData;
     /* 0x6C */ PAD(4);
 } AnimatedModel; // size = 0x70
 

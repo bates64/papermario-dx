@@ -373,7 +373,7 @@ static EvtScript EVS_DoLetterDelivery = {
 };
 
 // expects LetterDelivery* on LVar0
-// returns DeliveryResult on LVar0 and accepted deferred reward item on LVar1, or ITEM_NONE
+// returns DeliveryResult on LVar0 and deferred reward item on LVar1, or ITEM_NONE if not deferred
 EvtScript EVS_TryLetterDelivery = {
     Call(UnpackLetterDelivery, LVar0)
     ExecWait(EVS_DoLetterDelivery)

@@ -572,6 +572,8 @@ API_CALLABLE(N(RunMinigame)) {
                     break;
                 case BOX_STATE_FUZZY_DONE:
                     break;
+                case BOX_STATE_FUZZY_END:
+                    break;
 
                 case BOX_STATE_BOMB_INIT:
                     data->box[i].state = BOX_STATE_BOMB_IDLE;

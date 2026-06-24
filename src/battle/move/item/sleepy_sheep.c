@@ -10,13 +10,13 @@
 
 #include "battle/common/move/ItemRefund.inc.c"
 
-s32 virtual_entity_create(EntityModelScript*);
+s32 virtual_entity_create(EntityModelCode*);
 void virtual_entity_set_pos(s32, s32, s32, s32);
 void virtual_entity_set_scale(s32, f32, f32, f32);
 void virtual_entity_delete_by_index(s32);
 
 extern s32 D_802A3E88_7214D8[];
-extern EntityModelScript* D_802A3F28_721578[10];
+extern EntityModelScriptList D_802A3F28_721578;
 extern f32 D_802A3F00_721550[];
 
 BSS s32 D_802A3F54; // unused?
@@ -451,15 +451,15 @@ s32 D_802A3E88_7214D8[] = {
 
 f32 D_802A3F00_721550[] = { 1.0f, 1.0f, 0.75f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.75f, 0.75f };
 
-EntityModelScript* D_802A3F28_721578[] = {
-    &N(modelCommandList),
-    &N(modelCommandList2),
-    &N(modelCommandList3),
-    &N(modelCommandList),
-    &N(modelCommandList2),
-    &N(modelCommandList3),
-    &N(modelCommandList),
-    &N(modelCommandList2),
-    &N(modelCommandList3),
-    &N(modelCommandList)
+EntityModelScriptList D_802A3F28_721578 = {
+    N(modelCommandList),
+    N(modelCommandList2),
+    N(modelCommandList3),
+    N(modelCommandList),
+    N(modelCommandList2),
+    N(modelCommandList3),
+    N(modelCommandList),
+    N(modelCommandList2),
+    N(modelCommandList3),
+    N(modelCommandList)
 };

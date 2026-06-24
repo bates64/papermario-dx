@@ -100,19 +100,25 @@ extern HudScript HES_StatusSPIncrement7;
 s32 partner_is_idle(Npc* partner);
 b32 world_partner_can_open_menus_default(Npc* partner);
 
-// Partner icons
-HudScript* wPartnerHudScripts[] = {
-    &HES_Partner0, &HES_Goombario, &HES_Kooper, &HES_Bombette,
-    &HES_Parakarry, &HES_Partner0, &HES_Watt, &HES_Sushie,
-    &HES_Lakilester, &HES_Bow, &HES_PartnerA, &HES_PartnerA,
-    &HES_PartnerA, &HES_PartnerA, &HES_PartnerA, &HES_PartnerA,
+IconHudScriptPair wPartnerHudScripts[] = {
+    { &HES_Partner0,    &HES_Partner0Disabled    },
+    { &HES_Goombario,   &HES_GoombarioDisabled   },
+    { &HES_Kooper,      &HES_KooperDisabled      },
+    { &HES_Bombette,    &HES_BombetteDisabled    },
+    { &HES_Parakarry,   &HES_ParakarryDisabled   },
+    { &HES_Partner0,    &HES_Partner0Disabled    },
+    { &HES_Watt,        &HES_WattDisabled        },
+    { &HES_Sushie,      &HES_SushieDisabled      },
+    { &HES_Lakilester,  &HES_LakilesterDisabled  },
+    { &HES_Bow,         &HES_BowDisabled         },
+    { &HES_PartnerA,    &HES_PartnerADisabled    },
+    { &HES_PartnerA,    &HES_PartnerADisabled    },
+    { &HES_PartnerA,    &HES_PartnerADisabled    },
+    { &HES_PartnerA,    &HES_PartnerADisabled    },
+    { &HES_PartnerA,    &HES_PartnerADisabled    },
+    { &HES_PartnerA,    &HES_PartnerADisabled    },
 };
-HudScript* wDisabledPartnerHudScripts[] = {
-    &HES_Partner0Disabled, &HES_GoombarioDisabled, &HES_KooperDisabled, &HES_BombetteDisabled,
-    &HES_ParakarryDisabled, &HES_Partner0Disabled, &HES_WattDisabled, &HES_SushieDisabled,
-    &HES_LakilesterDisabled, &HES_BowDisabled, &HES_PartnerADisabled, &HES_PartnerADisabled,
-    &HES_PartnerADisabled, &HES_PartnerADisabled, &HES_PartnerADisabled, &HES_PartnerADisabled,
-};
+
 HudScript* DigitHudScripts[] = {
     &HES_StatusDigit0, &HES_StatusDigit1, &HES_StatusDigit2, &HES_StatusDigit3, &HES_StatusDigit4,
     &HES_StatusDigit5, &HES_StatusDigit6, &HES_StatusDigit7, &HES_StatusDigit8, &HES_StatusDigit9,

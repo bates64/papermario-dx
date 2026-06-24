@@ -118,7 +118,7 @@ API_CALLABLE(N(ShowLetterPartnerMenu)) {
             if (playerData->partners[partnerID].enabled && partnerID != PARTNER_GOOMPA) {
                 hasLetterStatus = N(get_partner_letter_status)(partnerID);
                 if (hasLetterStatus != PARTNER_LETTER_NONE) {
-                    menu->ptrIcon[numEntries] = wPartnerHudScripts[partnerID];
+                    menu->ptrIcon[numEntries] = wPartnerHudScripts[partnerID].enabled;
                     menu->userIndex[numEntries] = partnerID;
                     menu->enabled[numEntries] = true;
                     menu->nameMsg[numEntries] = gPartnerPopupProperties[partnerID].nameMsg;
@@ -126,7 +126,7 @@ API_CALLABLE(N(ShowLetterPartnerMenu)) {
                     menu->value[numEntries] = playerData->partners[partnerID].level;
                     if (hasLetterStatus == PARTNER_LETTER_READ) {
                         menu->enabled[numEntries] = false;
-                        menu->ptrIcon[numEntries] = wDisabledPartnerHudScripts[partnerID];
+                        menu->ptrIcon[numEntries] = wPartnerHudScripts[partnerID].disabled;
                     }
                     numEntries++;
                 }

@@ -222,8 +222,7 @@ typedef struct PartnerPopupProperties {
 } PartnerPopupProperties; // size = 0x10
 
 extern PartnerPopupProperties gPartnerPopupProperties[13];
-extern HudScript* wDisabledPartnerHudScripts[];
-extern HudScript* wPartnerHudScripts[];
+extern IconHudScriptPair wPartnerHudScripts[];
 
 #define HS_PTR(sym)         (s32)&sym
 
