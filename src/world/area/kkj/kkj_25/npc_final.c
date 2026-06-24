@@ -1,13 +1,13 @@
 #include "kkj_25.h"
 #include "sprite/player.h"
 
-s32 N(FlyingKammyHoverOffsets)[] = {
+s32 N(FlyingKammyHoverOffsets_Npc3)[] = {
     1, 2, 3, 2, 1, -1, -2, -3, -2, -1,
 };
 
 EvtScript N(EVS_NpcAux_Kammy_Broom_Npc3) = {
     Label(0)
-        UseBuf(Ref(N(FlyingKammyHoverOffsets)))
+        UseBuf(Ref(N(FlyingKammyHoverOffsets_Npc3)))
         Loop(10)
             BufRead1(LVar1)
             Call(GetNpcPos, NPC_Kammy_05, LVar2, LVar3, LVar4)

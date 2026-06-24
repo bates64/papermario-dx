@@ -11,8 +11,6 @@
 #include "mapfs/kkj_11_shape.h"
 #include "mapfs/kkj_11_hit.h"
 
-#include "sprite/npc/WorldKoopatrol.h"
-
 enum {
     NPC_Koopatrol_01        = 0,
     NPC_Koopatrol_02        = 1,
@@ -27,6 +25,10 @@ enum {
 
 #define NAMESPACE kkj_11
 
+#include "sprite/player.h"
+
+#include "world/common/enemy/Koopatrol/idle.h"
+
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_PlayDemoScene);
 extern EvtScript N(EVS_FirstTimeEnterHall);
@@ -37,3 +39,7 @@ extern EvtScript N(EVS_MakeEntities);
 
 extern NpcGroupList N(EarlyNPCs);
 extern NpcGroupList N(LaterNPCs);
+
+API_CALLABLE(N(CheckPlayerInSight));
+API_CALLABLE(N(GetApproachPeachPos));
+API_CALLABLE(N(UpdateSearchlight));

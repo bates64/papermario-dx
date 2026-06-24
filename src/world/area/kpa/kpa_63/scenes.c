@@ -8,18 +8,17 @@ API_CALLABLE(N(SetPassengerPos)) {
     f32 angle;
     f32 radius;
 
-    if (isInitialCall) {
-        script->functionTemp[0] = evt_get_variable(script, *args++);
-        yBase = evt_get_variable(script, *args++);
-        angle = evt_get_variable(script, *args++);
-        switch (script->functionTemp[0]) {
-            case 0:
-                radius = 0.0f;
-                break;
-            case 1:
-                radius = 5.0f;
-                break;
-        }
+    script->functionTemp[0] = evt_get_variable(script, *args++);
+    yBase = evt_get_variable(script, *args++);
+    angle = evt_get_variable(script, *args++);
+    switch (script->functionTemp[0]) {
+        default:
+        case 0:
+            radius = 0.0f;
+            break;
+        case 1:
+            radius = 5.0f;
+            break;
     }
 
     x = (sin_deg(angle) * radius) + -120.0f;
@@ -44,8 +43,6 @@ API_CALLABLE(N(SetPassengerPos)) {
                 partner->flags |= NPC_FLAG_DIRTY_SHADOW;
             }
             break;
-        default:
-            return ApiStatus_DONE2;
     }
     return ApiStatus_DONE2;
 }

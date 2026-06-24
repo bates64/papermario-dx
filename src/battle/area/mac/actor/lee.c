@@ -552,6 +552,7 @@ Vec3i A(Lee_SummonPos) = { NPC_DISPOSE_LOCATION };
 #include "lee_watt.inc.c"
 #include "lee_sushie.inc.c"
 #include "lee_lakilester.inc.c"
+#undef NAMESPACE
 #define NAMESPACE A(lee)
 
 API_CALLABLE(N(GetPartnerAndLevel)) {

@@ -1,10 +1,4 @@
 #include "kkj_11.h"
-#include "sprite/player.h"
-
-#include "../common/Searchlights.inc.c"
-#include "../common/GetApproachPeachPos.inc.c"
-
-#include "world/common/enemy/Koopatrol/idle.inc.c"
 
 EvtScript N(EVS_NpcAI_Koopatrol_01_Early) = {
     Call(DisablePlayerInput, true)

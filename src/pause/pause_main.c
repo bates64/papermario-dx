@@ -26,7 +26,6 @@ BSS s32 gPauseCurrentDescMsg;
 BSS HudScript* gPauseCurrentDescIconScript;
 BSS HudElemID gPauseCursorHID;
 BSS s8 gPauseMenuCurrentTab;
-BSS s8 D_802700D[7]; //padding
 
 static s32 gPauseTutorialFrameCounter;
 static HudElemID gPauseCommonHIDs[8];

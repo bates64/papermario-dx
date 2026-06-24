@@ -44,13 +44,13 @@ EvtScript N(EVS_NpcDefeat_Bowser_Npc2) = {
     End
 };
 
-s32 N(FlyingKammyHoverOffsets)[] = {
+s32 N(FlyingKammyHoverOffsets_Npc2)[] = {
     1, 2, 3, 2, 1, -1, -2, -3, -2, -1,
 };
 
 EvtScript N(EVS_NpcAux_Kammy_Broom_Npc2) = {
     Label(0)
-        UseBuf(Ref(N(FlyingKammyHoverOffsets)))
+        UseBuf(Ref(N(FlyingKammyHoverOffsets_Npc2)))
         Loop(10)
             BufRead1(LVar1)
             Call(GetNpcPos, NPC_Kammy_03, LVar2, LVar3, LVar4)

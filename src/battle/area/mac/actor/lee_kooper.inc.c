@@ -1,3 +1,4 @@
+#undef NAMESPACE
 #define NAMESPACE A(kooper_lee)
 
 extern EvtScript N(EVS_Init);

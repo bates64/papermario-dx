@@ -559,11 +559,13 @@ EvtScript N(EVS_KnockDown) = {
 
 // downed paragoombas are handled via a special nested goomba import
 #define NESTED_GOOMBA_INCLUDE
+#undef NAMESPACE
 #define NAMESPACE A(downed_goomba_tutorial)
 #include "battle/common/actor/goomba.inc.c"
 
 // everything above this point is identical to paragoomba
 
+#undef NAMESPACE
 #define NAMESPACE A(tutorial_paragoomba)
 extern EvtScript N(EVS_HandlePhase);
 

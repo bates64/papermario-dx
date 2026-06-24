@@ -1,10 +1,4 @@
 #include "kkj_10.h"
-#include "sprite/player.h"
-#include "world/common/enemy/Koopatrol/base.h"
-
-#include "../common/Searchlights.inc.c"
-#include "../common/GetApproachPeachPos.inc.c"
-
 
 AnimID N(LimitAnims_Koopatrol_Later)[] = {
     ANIM_WorldKoopatrol_Anim00,

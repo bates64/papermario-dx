@@ -104,3 +104,17 @@ extern EvtScript N(EVS_Scene_Ending);
 
 extern NpcGroupList N(IntroNPCs);
 extern NpcGroupList N(EndingNPCs);
+
+#include "world/common/npc/ToadGuard/idle.h"
+#include "world/common/npc/ToadMinister/idle.h"
+#include "world/common/npc/Toadette/idle.h"
+#include "world/common/npc/ShiverToad/idle.h"
+#include "world/common/npc/Luigi/idle.h"
+#include "world/common/npc/Toad/patrol.h"
+#include "world/common/npc/Toad/idle.h"
+#include "world/common/npc/Penguin/idle.h"
+#include "world/common/npc/RussT/idle.h"
+#include "world/common/npc/Peach/idle.h"
+#include "world/common/npc/Dummy/idle.h"
+#include "world/common/npc/Lakilulu/idle.h"
+#include "world/common/npc/TayceT/idle.h"

@@ -1,3 +1,4 @@
+#undef NAMESPACE
 #define NAMESPACE A(goombario_lee)
 
 extern EvtScript N(EVS_Init);

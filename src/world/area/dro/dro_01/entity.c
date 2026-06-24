@@ -1,10 +1,6 @@
 #include "dro_01.h"
 #include "entity.h"
 
-#define NAMESPACE dro_01_Entity
-#include "world/common/entity/Pipe.inc.c"
-#define NAMESPACE dro_01
-
 EvtScript N(EVS_WarpPipeExit) = {
     Set(GF_DRO01_HeardHintAboutSpinningRoof, false)
     Call(GotoMap, Ref("tik_01"), tik_01_ENTRY_4)

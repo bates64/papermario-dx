@@ -1,3 +1,4 @@
+#undef NAMESPACE
 #define NAMESPACE A(watt_lee)
 
 extern EvtScript N(EVS_Init);

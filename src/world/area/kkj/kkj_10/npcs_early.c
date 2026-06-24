@@ -1,10 +1,4 @@
 #include "kkj_10.h"
-#include "sprite/player.h"
-
-#include "world/common/enemy/Koopatrol/idle.inc.c"
-
-#include "../common/Searchlights.inc.c"
-#include "../common/GetApproachPeachPos.inc.c"
 
 EvtScript N(EVS_CapturePeach_Early) = {
     Call(DisablePlayerInput, true)

@@ -11,8 +11,6 @@
 #include "mapfs/hos_10_shape.h"
 #include "mapfs/hos_10_hit.h"
 
-#include "sprite/npc/Twink.h"
-
 enum {
     NPC_Peach       = 0,
     NPC_Twink       = 1,
@@ -31,6 +29,13 @@ enum {
 };
 
 #define NAMESPACE hos_10
+
+#include "sprite/player.h"
+
+#include "world/common/npc/Dummy/idle.h"
+#include "world/common/npc/Peach/base.h"
+#include "world/common/npc/Twink/idle.h"
+#include "world/common/npc/StarSpirit/idle.h"
 
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupMusic);

@@ -19,7 +19,6 @@ BSS f32 N(InertialMoveAngle);
 BSS f32 N(UnusedMoveX);
 BSS f32 N(UnusedMoveZ);
 BSS f32 N(ResurfaceVelY);
-BSS s32 N(bss_802BFF0C); // unused (padding?)
 BSS TweesterPhysics N(TweesterPhysicsData);
 
 enum {
