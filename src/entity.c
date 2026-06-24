@@ -1275,7 +1275,7 @@ s32 create_entity(EntityBlueprint* bp, ...) {
             load_simple_entity_data(entity, bp, listIndex);
         }
         if (bp->renderCommandList != nullptr) {
-            entity->virtualModelIndex = load_entity_model((EntityModelScript*)bp->renderCommandList);
+            entity->virtualModelIndex = load_entity_model(bp->renderCommandList);
             exec_entity_model_commandlist(entity->virtualModelIndex);
         }
     } else {

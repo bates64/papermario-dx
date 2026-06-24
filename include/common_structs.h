@@ -494,22 +494,25 @@ typedef struct DmaEntry {
     void* end;
 } DmaEntry;
 
-typedef s32 EntityScript[];
-typedef s32 EntityModelScript[];
-typedef s32* EntityScriptPtr;
-typedef s32* EntityModelScriptPtr;
-typedef s16* AnimScriptPtr;
+typedef s32 EntityCode;
+typedef EntityCode EntityScript[];
+
+typedef s32 EntityModelCode;
+typedef EntityModelCode EntityModelScript[];
+
+typedef s16 AnimScriptCode;
+typedef AnimScriptCode AnimScript[];
 
 typedef struct EntityBlueprint {
     /* 0x00 */ u16 flags;
     /* 0x02 */ u16 typeDataSize;
     /* 0x04 */ union {
-                EntityModelScriptPtr renderCommandList;
-                AnimScriptPtr animScript;
+                EntityModelCode* renderCommandList;
+                AnimScriptCode* animScript;
                };
     /* 0x08 */ struct StaticAnimatorNode** modelAnimationNodes;
     /* 0x0C */ void (*fpInit)(struct Entity*);
-    /* 0x10 */ EntityScriptPtr updateEntityScript;
+    /* 0x10 */ EntityCode* updateEntityScript;
     /* 0x14 */ EntityCallback fpHandleCollision;
     /* 0x18 */ union {
                 DmaEntry dma;
@@ -591,8 +594,8 @@ typedef struct ShadowBlueprint {
     /* 0x00 */ u16 flags;
     /* 0x02 */ s16 typeDataSize;
     /* 0x04 */ union {
-                EntityModelScriptPtr renderCommandList;
-                AnimScriptPtr animScript;
+                EntityModelCode* renderCommandList;
+                AnimScriptCode* animScript;
                };
     /* 0x08 */ struct StaticAnimatorNode** animModelNode;
     /* 0x0C */ ShadowCallback onCreateCallback;

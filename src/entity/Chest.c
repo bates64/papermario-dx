@@ -480,6 +480,7 @@ EntityScript Entity_Chest_ScriptOpened = {
     es_SetCallback(nullptr, 0)
     es_End
 };
+
 EntityScript Entity_Chest_Script = {
     es_Call(entity_Chest_check_opened)
     es_SetCallback(entity_Chest_idle, 0)
