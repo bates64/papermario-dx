@@ -25,15 +25,14 @@
 #define EXTERN_C extern
 #endif
 
-#define NAME_SUFFIX
 #define NAME_PREFIX
 #ifdef _LANGUAGE_C_PLUS_PLUS
 // use C++ namespaces instead of these macros!
 #define A(sym) sym
 #define N(sym) sym
 #else
-#define A(sym) NS(AREA, NAME_PREFIX, sym, NAME_SUFFIX)
-#define N(sym) NS(NAMESPACE, NAME_PREFIX, sym, NAME_SUFFIX)
+#define A(sym) NS(AREA, NAME_PREFIX, sym, )
+#define N(sym) NS(NAMESPACE, NAME_PREFIX, sym, )
 #endif
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))

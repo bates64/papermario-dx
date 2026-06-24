@@ -101,6 +101,20 @@ enum {
 
 #define NAMESPACE mac_01
 
+#include "world/common/npc/Luigi/idle.h"
+#include "world/common/npc/Dummy/idle.h"
+#include "world/common/npc/Toad/idle.h"
+#include "world/common/npc/Toad/patrol.h"
+#include "world/common/npc/Kolorado/idle.h"
+#include "world/common/npc/KoloradoWife/idle.h"
+#include "world/common/npc/KoopaKoot/idle.h"
+#include "world/common/npc/Koopa/idle.h"
+#include "world/common/npc/Bobomb/idle.h"
+#include "world/common/npc/Dryite/idle.h"
+#include "world/common/npc/Chanterelle/idle.h"
+#include "world/common/npc/MusicianPoet/idle.h"
+#include "world/common/npc/MusicianComposer/idle.h"
+
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_SetupMusicMix);
@@ -132,6 +146,8 @@ extern NpcGroupList N(TwinkMeetingNPCs);
 extern NpcGroupList N(Chapter4NPCs);
 extern NpcGroupList N(NinjiMeetingNPCs);
 extern NpcGroupList N(DefaultNPCs);
+
+extern NpcData N(NpcData_Townsfolk)[10];
 
 extern ShopItemData N(RowfBadgeInventory)[16];
 

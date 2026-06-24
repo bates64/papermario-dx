@@ -546,6 +546,7 @@ Vec3i A(DuplighostSummonPos) = { NPC_DISPOSE_LOCATION };
 #include "duplighost/ghost_watt.inc.c"
 #include "duplighost/ghost_sushie.inc.c"
 #include "duplighost/ghost_lakilester.inc.c"
+#undef NAMESPACE
 #define NAMESPACE A(duplighost)
 
 API_CALLABLE(N(GetPartnerAndLevel)) {

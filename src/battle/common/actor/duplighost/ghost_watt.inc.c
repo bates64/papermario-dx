@@ -3,6 +3,7 @@
 #include "sprite/npc/BattleWatt.h"
 #include "effects.h"
 
+#undef NAMESPACE
 #define NAMESPACE A(watt_clone)
 
 extern EvtScript N(EVS_Init);

@@ -1,10 +1,6 @@
 #include "kkj_13.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Peach/base.h"
-#include "world/common/npc/Bowser/idle.inc.c"
-#include "world/common/npc/Dummy/idle.inc.c"
-
 API_CALLABLE(N(UpdatePropellerSoundPos)) {
     Npc* npc = get_npc_safe(NPC_Bowser_Prop);
     f32 x = npc->pos.x;

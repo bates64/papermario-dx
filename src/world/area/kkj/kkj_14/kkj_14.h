@@ -32,6 +32,10 @@ enum {
 
 #define NAMESPACE kkj_14
 
+#include "world/common/npc/Bowser/idle.h"
+#include "world/common/enemy/Kammy/idle.h"
+#include "world/common/enemy/Koopatrol/idle.h"
+
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_SetupInteractables);

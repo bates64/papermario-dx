@@ -2,6 +2,7 @@
 #include "script_api/battle.h"
 #include "sprite/npc/BattleGoombario.h"
 
+#undef NAMESPACE
 #define NAMESPACE A(goombario_clone)
 
 extern EvtScript N(EVS_Init);

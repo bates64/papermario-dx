@@ -1,11 +1,7 @@
 #include "kkj_16.h"
 #include "sprite/player.h"
 
-#define NAME_SUFFIX _Later
-
-#include "world/common/enemy/HammerBros/idle.inc.c"
-
-AnimID N(LimitAnims_HammerBros)[] = {
+AnimID N(LimitAnims_HammerBros_Later)[] = {
     ANIM_HammerBros_Anim00,
     ANIM_HammerBros_Anim02,
     ANIM_HammerBros_Anim03,
@@ -19,10 +15,7 @@ AnimID N(LimitAnims_HammerBros)[] = {
     ANIM_LIST_END
 };
 
-#include "../common/Searchlights.inc.c"
-#include "../common/GetApproachPeachPos.inc.c"
-
-EvtScript N(EVS_NpcInteract_HammerBros_01) = {
+EvtScript N(EVS_NpcInteract_HammerBros_01_Later) = {
     IfEq(GF_KKJ16_Gift_ShootingStar, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_HammerBros_Anim0A, ANIM_HammerBros_Anim02, 16, MSG_Peach_013A)
         Call(ShowGotItem, ITEM_SHOOTING_STAR, true, ITEM_PICKUP_FLAG_NO_ANIMS)
@@ -34,7 +27,7 @@ EvtScript N(EVS_NpcInteract_HammerBros_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_HammerBros_02) = {
+EvtScript N(EVS_NpcInteract_HammerBros_02_Later) = {
     Call(DisablePlayerInput, true)
     Call(GetSelfVar, 0, LVar0)
     IfEq(LVar0, 0)
@@ -49,7 +42,7 @@ EvtScript N(EVS_NpcInteract_HammerBros_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_HammerBros_03) = {
+EvtScript N(EVS_NpcInteract_HammerBros_03_Later) = {
     Call(DisablePlayerInput, true)
     Call(GetSelfVar, 0, LVar0)
     IfEq(LVar0, 0)
@@ -64,7 +57,7 @@ EvtScript N(EVS_NpcInteract_HammerBros_03) = {
     End
 };
 
-EvtScript N(EVS_CapturePeach) = {
+EvtScript N(EVS_CapturePeach_Later) = {
     Call(DisablePlayerInput, true)
     Call(PreventNextPeachDisguise)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
@@ -94,14 +87,14 @@ EvtScript N(EVS_CapturePeach) = {
     End
 };
 
-EvtScript N(EVS_WatchForPlayer) = {
+EvtScript N(EVS_WatchForPlayer_Later) = {
     Loop(0)
         Call(GetPeachDisguise, LVar1)
         IfEq(LVar1, PEACH_DISGUISE_NONE)
             Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
             Call(N(CheckPlayerInSight), LVar0, 85, 60, 38)
             IfNe(LVar0, 0)
-                Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach)))
+                Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach_Later)))
                 Return
             EndIf
         Else
@@ -113,14 +106,14 @@ EvtScript N(EVS_WatchForPlayer) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_HammerBros_01) = {
-    Exec(N(EVS_WatchForPlayer))
+EvtScript N(EVS_NpcIdle_HammerBros_01_Later) = {
+    Exec(N(EVS_WatchForPlayer_Later))
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_HammerBros_02) = {
-    Exec(N(EVS_WatchForPlayer))
+EvtScript N(EVS_NpcIdle_HammerBros_02_Later) = {
+    Exec(N(EVS_WatchForPlayer_Later))
     Call(SetNpcAnimation, NPC_SELF, ANIM_HammerBros_Anim04)
     Call(SetNpcSpeed, NPC_SELF, Float(1.7))
     Loop(0)
@@ -139,8 +132,8 @@ EvtScript N(EVS_NpcIdle_HammerBros_02) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_HammerBros_03) = {
-    Exec(N(EVS_WatchForPlayer))
+EvtScript N(EVS_NpcIdle_HammerBros_03_Later) = {
+    Exec(N(EVS_WatchForPlayer_Later))
     Call(SetNpcAnimation, NPC_SELF, ANIM_HammerBros_Anim04)
     Call(SetNpcSpeed, NPC_SELF, Float(1.7))
     Loop(0)
@@ -159,68 +152,66 @@ EvtScript N(EVS_NpcIdle_HammerBros_03) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_HammerBros_01) = {
+EvtScript N(EVS_NpcInit_HammerBros_01_Later) = {
     Call(SetNpcPos, NPC_SELF, -700, 0, 50)
     Call(SetNpcYaw, NPC_SELF, 90)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_HammerBros_01)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_HammerBros_01)))
+    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_HammerBros_01_Later)))
+    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_HammerBros_01_Later)))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_HammerBros_02) = {
+EvtScript N(EVS_NpcInit_HammerBros_02_Later) = {
     Call(SetNpcPos, NPC_SELF, 180, 0, 50)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_HammerBros_02)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_HammerBros_02)))
+    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_HammerBros_02_Later)))
+    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_HammerBros_02_Later)))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_HammerBros_03) = {
+EvtScript N(EVS_NpcInit_HammerBros_03_Later) = {
     Call(SetNpcPos, NPC_SELF, -510, 0, 50)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_HammerBros_03)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_HammerBros_03)))
+    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_HammerBros_03_Later)))
+    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_HammerBros_03_Later)))
     Return
     End
 };
 
-NpcData N(NpcData_Minions)[] = {
+NpcData N(NpcData_Minions_Later)[] = {
     {
         .id = NPC_HammerBros_01,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_HammerBros_01),
+        .init = &N(EVS_NpcInit_HammerBros_01_Later),
         .settings = &N(NpcSettings_HammerBros),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = HAMMER_BROS_ANIMS,
-        .limitAnimations = N(LimitAnims_HammerBros),
+        .limitAnimations = N(LimitAnims_HammerBros_Later),
     },
     {
         .id = NPC_HammerBros_02,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_HammerBros_02),
+        .init = &N(EVS_NpcInit_HammerBros_02_Later),
         .settings = &N(NpcSettings_HammerBros),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = HAMMER_BROS_ANIMS,
-        .limitAnimations = N(LimitAnims_HammerBros),
+        .limitAnimations = N(LimitAnims_HammerBros_Later),
     },
     {
         .id = NPC_HammerBros_03,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_HammerBros_03),
+        .init = &N(EVS_NpcInit_HammerBros_03_Later),
         .settings = &N(NpcSettings_HammerBros),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = HAMMER_BROS_ANIMS,
-        .limitAnimations = N(LimitAnims_HammerBros),
+        .limitAnimations = N(LimitAnims_HammerBros_Later),
     },
 };
-
-#define NAME_SUFFIX
 
 NpcGroupList N(LaterNPCs) = {
     NPC_GROUP(N(NpcData_Minions_Later)),

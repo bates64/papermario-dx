@@ -82,6 +82,14 @@ enum {
 
 #define NAMESPACE kkj_25
 
+#include "world/common/npc/Bowser/idle.h"
+#include "world/common/npc/Dummy/idle.h"
+#include "world/common/enemy/Kammy/flying.h"
+#include "world/common/npc/StarSpirit/idle.h"
+#include "world/common/npc/StarRod/idle.h"
+#include "world/common/npc/Peach/base.h"
+#include "world/common/npc/Twink/base.h"
+
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_ManageArenaEffects);
 extern EvtScript N(EVS_Scene_BowserTrapsMario);

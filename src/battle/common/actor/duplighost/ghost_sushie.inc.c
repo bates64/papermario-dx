@@ -2,6 +2,7 @@
 #include "script_api/battle.h"
 #include "sprite/npc/BattleSushie.h"
 
+#undef NAMESPACE
 #define NAMESPACE A(sushie_clone)
 
 extern EvtScript N(EVS_Init);

@@ -2,6 +2,7 @@
 #include "script_api/battle.h"
 #include "sprite/npc/BattleKooper.h"
 
+#undef NAMESPACE
 #define NAMESPACE A(kooper_clone)
 
 extern EvtScript N(EVS_Init);

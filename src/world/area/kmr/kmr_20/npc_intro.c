@@ -2,10 +2,6 @@
 #include "model.h"
 #include "sprite/player.h"
 
-#define NAME_SUFFIX _Intro
-#include "world/common/entity/Pipe.inc.c"
-#define NAME_SUFFIX
-
 API_CALLABLE(N(HideWorldOutsideMariosHouse)) {
     mdl_group_set_custom_gfx(MODEL_g62, CUSTOM_GFX_NONE, ENV_TINT_SHROUD, true);
     mdl_set_shroud_tint_params(0, 0, 0, 255);
@@ -54,10 +50,10 @@ EvtScript N(EVS_Player_EnterPipe_Intro) = {
     Call(DisablePlayerPhysics, true)
     Call(HidePlayerShadow, true)
     Set(LVar0, kmr_20_ENTRY_4)
-    Call(N(Pipe_GetEntryPos_Intro))
+    Call(N(Pipe_GetEntryPos))
     Call(PlayerMoveTo, LVar1, LVar3, 3)
     Set(LVar0, kmr_20_ENTRY_4)
-    Call(N(Pipe_GetEntryPos_Intro))
+    Call(N(Pipe_GetEntryPos))
     Call(SetPlayerPos, LVar1, LVar2, LVar3)
     Wait(2)
     Call(PlaySoundAtPlayer, SOUND_ENTER_PIPE, SOUND_SPACE_DEFAULT)
@@ -82,10 +78,10 @@ EvtScript N(EVS_Luigi_EnterPipe_Intro) = {
     Call(SetNpcFlagBits, NPC_Scene_Luigi, NPC_FLAG_FLYING, true)
     Call(EnableNpcShadow, NPC_Scene_Luigi, false)
     Set(LVar0, kmr_20_ENTRY_4)
-    Call(N(Pipe_GetEntryPos_Intro))
+    Call(N(Pipe_GetEntryPos))
     Call(NpcMoveTo, NPC_Scene_Luigi, LVar1, LVar3, 3)
     Set(LVar0, kmr_20_ENTRY_4)
-    Call(N(Pipe_GetEntryPos_Intro))
+    Call(N(Pipe_GetEntryPos))
     Call(SetNpcPos, NPC_Scene_Luigi, LVar1, LVar2, LVar3)
     Wait(2)
     Call(PlaySoundAtNpc, NPC_Scene_Luigi, SOUND_ENTER_PIPE, SOUND_SPACE_DEFAULT)

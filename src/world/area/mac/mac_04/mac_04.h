@@ -51,6 +51,10 @@ enum {
 
 #define NAMESPACE mac_04
 
+#include "world/common/npc/Toad/idle.h"
+#include "world/common/npc/Toad/wander.h"
+#include "world/common/npc/ToadKid/idle.h"
+
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_SetupMusicTriggers);

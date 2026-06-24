@@ -24,6 +24,16 @@ extern EvtScript N(EVS_MerlonBargeOut);
 #include "world/common/npc/Bubulb/idle.inc.c"
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
+#include "world/common/npc/Luigi/idle.inc.c"
+#include "world/common/npc/KoloradoWife/idle.inc.c"
+#include "world/common/npc/KoopaKoot/idle.inc.c"
+#include "world/common/npc/Koopa/idle.inc.c"
+#include "world/common/npc/Bobomb/idle.inc.c"
+#include "world/common/npc/Dryite/idle.inc.c"
+#include "world/common/npc/Chanterelle/idle.inc.c"
+#include "world/common/npc/MusicianPoet/idle.inc.c"
+#include "world/common/npc/MusicianComposer/idle.inc.c"
+
 #include "world/common/util/KnockDownPlayer.inc.c"
 
 #include "world/common/prefab/ToadHouse.inc.c"

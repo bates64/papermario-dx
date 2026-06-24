@@ -192,8 +192,6 @@ EvtScript N(EVS_Scene_TossedBackInRoom) = {
     End
 };
 
-#include "world/common/enemy/Koopatrol/idle.inc.c"
-
 AnimID N(LimitAnims_Koopatrol)[] = {
     ANIM_WorldKoopatrol_Anim01,
     ANIM_WorldKoopatrol_Anim06,

@@ -1,15 +1,7 @@
 #include "kkj_13.h"
 #include "sprite/player.h"
 
-#define NAME_SUFFIX _Intro
-
-#include "world/common/npc/Bowser/idle.inc.c"
-#include "world/common/npc/Dummy/idle.inc.c"
-#include "world/common/enemy/Kammy/idle.inc.c"
-#include "world/common/enemy/Koopatrol/idle.inc.c"
-#include "world/common/npc/Peach/idle.inc.c"
-
-EvtScript N(EVS_NpcIdle_BowserAwaitBattle) = {
+EvtScript N(EVS_NpcIdle_BowserAwaitBattle_Intro) = {
     Call(SetSelfVar, 0, 1)
     Loop(0)
         Wait(1)
@@ -24,20 +16,20 @@ EvtScript N(EVS_NpcIdle_BowserAwaitBattle) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Bowser_Body) = {
+EvtScript N(EVS_NpcDefeat_Bowser_Body_Intro) = {
     Call(SetSelfVar, 0, 1)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bowser_Body) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_BowserAwaitBattle)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Bowser_Body)))
+EvtScript N(EVS_NpcInit_Bowser_Body_Intro) = {
+    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_BowserAwaitBattle_Intro)))
+    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Bowser_Body_Intro)))
     Return
     End
 };
 
-AnimID N(LimitAnims_Bowser)[] = {
+AnimID N(LimitAnims_Bowser_Intro)[] = {
     ANIM_WorldBowser_Still,
     ANIM_WorldBowser_Idle,
     ANIM_WorldBowser_BrandishIdle,
@@ -57,7 +49,7 @@ AnimID N(LimitAnims_Bowser)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Kammy)[] = {
+AnimID N(LimitAnims_Kammy_Intro)[] = {
     ANIM_WorldKammy_Anim01,
     ANIM_WorldKammy_Anim02,
     ANIM_WorldKammy_Anim04,
@@ -67,7 +59,7 @@ AnimID N(LimitAnims_Kammy)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Koopatrol)[] = {
+AnimID N(LimitAnims_Koopatrol_Intro)[] = {
     ANIM_WorldKoopatrol_Anim00,
     ANIM_WorldKoopatrol_Anim01,
     ANIM_WorldKoopatrol_Anim04,
@@ -75,19 +67,19 @@ AnimID N(LimitAnims_Koopatrol)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Bowser) = {
+NpcData N(NpcData_Bowser_Intro) = {
     .id = NPC_Bowser_Body,
     .pos = { 0.0f, -500.0f, 0.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Bowser_Body),
+    .init = &N(EVS_NpcInit_Bowser_Body_Intro),
     .settings = &N(NpcSettings_Bowser),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = BOWSER_ANIMS,
-    .limitAnimations = N(LimitAnims_Bowser),
+    .limitAnimations = N(LimitAnims_Bowser_Intro),
 };
 
-NpcData N(NpcData_Characters)[] = {
+NpcData N(NpcData_Characters_Intro)[] = {
     {
         .id = NPC_Bowser_Prop,
         .pos = { 0.0f, -500.0f, 0.0f },
@@ -96,7 +88,7 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = BOWSER_ANIMS,
-        .limitAnimations = N(LimitAnims_Bowser),
+        .limitAnimations = N(LimitAnims_Bowser_Intro),
     },
     {
         .id = NPC_Koopatrol_01,
@@ -106,7 +98,7 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .limitAnimations = N(LimitAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol_Intro),
     },
     {
         .id = NPC_Koopatrol_02,
@@ -116,7 +108,7 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .limitAnimations = N(LimitAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol_Intro),
     },
     {
         .id = NPC_Kammy,
@@ -126,7 +118,7 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KAMMY_ANIMS,
-        .limitAnimations = N(LimitAnims_Kammy),
+        .limitAnimations = N(LimitAnims_Kammy_Intro),
     },
     {
         .id = NPC_Peach,
@@ -138,8 +130,6 @@ NpcData N(NpcData_Characters)[] = {
         .animations = PEACH_ANIMS,
     },
 };
-
-#define NAME_SUFFIX
 
 NpcGroupList N(IntroNPCs) = {
     NPC_GROUP(N(NpcData_Bowser_Intro), BTL_KPA2_FORMATION_01),

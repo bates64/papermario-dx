@@ -2,10 +2,6 @@
 #include "model.h"
 #include "sprite/player.h"
 
-#define NAME_SUFFIX _Epilogue
-#include "world/common/entity/Pipe.inc.c"
-#define NAME_SUFFIX
-
 API_CALLABLE(N(RemoveOutsideShroud)) {
     mdl_group_set_custom_gfx(MODEL_g62, CUSTOM_GFX_NONE, ENV_TINT_NONE, true);
     mdl_set_shroud_tint_params(0, 0, 0, 0);
@@ -134,10 +130,10 @@ EvtScript N(EVS_Player_EnterPipe_Epilogue) = {
     Call(DisablePlayerPhysics, true)
     Call(HidePlayerShadow, true)
     Set(LVar0, 4)
-    Call(N(Pipe_GetEntryPos_Epilogue))
+    Call(N(Pipe_GetEntryPos))
     Call(PlayerMoveTo, LVar1, LVar3, 3)
     Set(LVar0, 4)
-    Call(N(Pipe_GetEntryPos_Epilogue))
+    Call(N(Pipe_GetEntryPos))
     Call(SetPlayerPos, LVar1, LVar2, LVar3)
     Wait(2)
     Call(PlaySoundAtPlayer, SOUND_ENTER_PIPE, SOUND_SPACE_DEFAULT)
@@ -162,10 +158,10 @@ EvtScript N(EVS_Luigi_EnterPipe_Epilogue) = {
     Call(SetNpcFlagBits, NPC_Luigi_1, NPC_FLAG_FLYING, true)
     Call(EnableNpcShadow, NPC_Luigi_1, false)
     Set(LVar0, 4)
-    Call(N(Pipe_GetEntryPos_Epilogue))
+    Call(N(Pipe_GetEntryPos))
     Call(NpcMoveTo, NPC_Luigi_1, LVar1, LVar3, 3)
     Set(LVar0, 4)
-    Call(N(Pipe_GetEntryPos_Epilogue))
+    Call(N(Pipe_GetEntryPos))
     Call(SetNpcPos, NPC_Luigi_1, LVar1, LVar2, LVar3)
     Wait(2)
     Call(PlaySoundAtNpc, NPC_Luigi_1, SOUND_ENTER_PIPE, SOUND_SPACE_DEFAULT)
