@@ -59,7 +59,7 @@ void action_update_state_23(void) {
 
     switch (playerStatus->actionSubstate) {
         case 0:
-            playerStatus->actionSubstate++;
+            playerStatus->actionSubstate = 1;
         case 1:
             break;
         default:

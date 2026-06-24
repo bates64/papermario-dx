@@ -122,7 +122,7 @@ void ispy_notification_update(void) {
             }
 
             if (!cond) {
-                ISpyPtr->state++;
+                ISpyPtr->state = I_SPY_APPEAR;
             }
             break;
         case I_SPY_APPEAR:
@@ -133,12 +133,12 @@ void ispy_notification_update(void) {
 
             if (ISpyPtr->time++ >= 16) {
                 ISpyPtr->scale = 0.36f;
-                ISpyPtr->state++;
+                ISpyPtr->state = I_SPY_OVERSHOOT;
             }
             break;
         case I_SPY_OVERSHOOT:
             ISpyPtr->scale = 0.57f;
-            ISpyPtr->state++;
+            ISpyPtr->state = I_SPY_ANIMATE;
             sfx_play_sound_at_player(SOUND_ISPY, SOUND_SPACE_DEFAULT);
             break;
         case I_SPY_ANIMATE:

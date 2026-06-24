@@ -99,7 +99,7 @@ void interact_speech_update(void) {
             SpeechBubblePtr->scale += 0.05;
             if (SpeechBubblePtr->scale >= 0.55) {
                 SpeechBubblePtr->scale = 0.55f;
-                SpeechBubblePtr->state++;
+                SpeechBubblePtr->state = SPEECH_BUBBLE_HOLD;
                 SpeechBubblePtr->holdTime = 12;
             }
             break;
@@ -107,7 +107,7 @@ void interact_speech_update(void) {
             SpeechBubblePtr->yaw = 0.0f;
             SpeechBubblePtr->holdTime--;
             if (SpeechBubblePtr->holdTime <= 0) {
-                SpeechBubblePtr->state++;
+                SpeechBubblePtr->state = SPEECH_BUBBLE_IDLE;
             }
             break;
         case SPEECH_BUBBLE_IDLE:

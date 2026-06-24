@@ -207,7 +207,7 @@ void interact_inspect_update(void) {
             InspectIconPtr->scale += 0.05;
             if (InspectIconPtr->scale >= 0.55) {
                 InspectIconPtr->scale = 0.55f;
-                InspectIconPtr->state++;
+                InspectIconPtr->state = INSPECT_ICON_APPEAR;
                 InspectIconPtr->holdTime = 12;
             }
             break;
@@ -215,7 +215,7 @@ void interact_inspect_update(void) {
             InspectIconPtr->yaw = 0.0f;
             InspectIconPtr->holdTime--;
             if (InspectIconPtr->holdTime <= 0) {
-                InspectIconPtr->state++;
+                InspectIconPtr->state = INSPECT_ICON_IDLE;
             }
             break;
         case INSPECT_ICON_IDLE:

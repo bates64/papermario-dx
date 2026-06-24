@@ -121,7 +121,7 @@ API_CALLABLE(N(Update)) {
 
     switch (N(TweesterPhysicsPtr)->state) {
         case TWEESTER_PARTNER_INIT:
-            N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_ATTRACT;
             N(TweesterPhysicsPtr)->prevFlags = kooper->flags;
             N(TweesterPhysicsPtr)->radius = fabsf(dist2D(kooper->pos.x, kooper->pos.z,
                                                      entity->pos.x, entity->pos.z));
@@ -159,20 +159,22 @@ API_CALLABLE(N(Update)) {
                 N(TweesterPhysicsPtr)->angularVel = 40.0f;
             }
 
-            if (--N(TweesterPhysicsPtr)->countdown == 0) {
-                N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->countdown--;
+            if (N(TweesterPhysicsPtr)->countdown == 0) {
+                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_HOLD;
             }
             break;
         case TWEESTER_PARTNER_HOLD:
             kooper->flags = N(TweesterPhysicsPtr)->prevFlags;
             N(TweesterPhysicsPtr)->countdown = 30;
-            N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_RELEASE;
             break;
         case TWEESTER_PARTNER_RELEASE:
             partner_walking_update_player_tracking(kooper);
             partner_walking_update_motion(kooper);
 
-            if (--N(TweesterPhysicsPtr)->countdown == 0) {
+            N(TweesterPhysicsPtr)->countdown--;
+            if (N(TweesterPhysicsPtr)->countdown == 0) {
                 N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
                 TweesterTouchingPartner = nullptr;
             }

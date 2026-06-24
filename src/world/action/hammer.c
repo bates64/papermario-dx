@@ -393,7 +393,7 @@ void action_hammer_end_swing(void) {
     }
 
     if (playerStatus->actionSubstate == SUBSTATE_HAMMER_0 && result > NO_COLLIDER && HammerHit->unk_14 == 0) {
-        playerStatus->actionSubstate++;
+        playerStatus->actionSubstate = SUBSTATE_HAMMER_1;
     }
     if (playerStatus->actionSubstate == SUBSTATE_HAMMER_1 && result <= NO_COLLIDER) {
         playerStatus->actionSubstate = SUBSTATE_HAMMER_2;

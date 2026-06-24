@@ -123,8 +123,8 @@ API_CALLABLE(N(Update)) {
     }
 
     switch (N(TweesterPhysicsPtr)->state) {
-        case 0:
-            N(TweesterPhysicsPtr)->state = 1;
+        case TWEESTER_PARTNER_INIT:
+            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_ATTRACT;
             N(TweesterPhysicsPtr)->prevFlags = npc->flags;
             N(TweesterPhysicsPtr)->radius = fabsf(dist2D(npc->pos.x, npc->pos.z, entity->pos.x, entity->pos.z));
             N(TweesterPhysicsPtr)->angle = atan2(entity->pos.x, entity->pos.z, npc->pos.x, npc->pos.z);
@@ -133,7 +133,7 @@ API_CALLABLE(N(Update)) {
             N(TweesterPhysicsPtr)->countdown = 120;
             npc->flags |= NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
             npc->flags &= ~NPC_FLAG_GRAVITY;
-        case 1:
+        case TWEESTER_PARTNER_ATTRACT:
             sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
 
             npc->pos.x = entity->pos.x + (sinAngle * N(TweesterPhysicsPtr)->radius);
@@ -162,20 +162,22 @@ API_CALLABLE(N(Update)) {
                 N(TweesterPhysicsPtr)->angularVel = 40.0f;
             }
 
-            if (--N(TweesterPhysicsPtr)->countdown == 0) {
-                N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->countdown--;
+            if (N(TweesterPhysicsPtr)->countdown == 0) {
+                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_HOLD;
             }
             break;
-        case 2:
+        case TWEESTER_PARTNER_HOLD:
             npc->flags = N(TweesterPhysicsPtr)->prevFlags;
             N(TweesterPhysicsPtr)->countdown = 30;
-            N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_RELEASE;
             break;
-        case 3:
+        case TWEESTER_PARTNER_RELEASE:
             partner_walking_update_player_tracking(npc);
             partner_walking_update_motion(npc);
 
-            if (--N(TweesterPhysicsPtr)->countdown == 0) {
+            N(TweesterPhysicsPtr)->countdown--;
+            if (N(TweesterPhysicsPtr)->countdown == 0) {
                 N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
                 TweesterTouchingPartner = nullptr;
             }

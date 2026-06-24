@@ -35,7 +35,7 @@ API_CALLABLE(N(MonitorPlayerOrbiting)) {
             if (dist < orbit->startRadius) {
                 orbit->firstPlayerX = playerStatus->pos.x;
                 orbit->firstPlayerZ = playerStatus->pos.z;
-                orbit->state++;
+                orbit->state = ORBIT_STATE_SECOND_FRAME;
             }
             break;
 
@@ -47,7 +47,7 @@ API_CALLABLE(N(MonitorPlayerOrbiting)) {
                 curAngle = atan2(orbit->pos.x, orbit->pos.z, playerStatus->pos.x, playerStatus->pos.z);
                 deltaAngle = get_clamped_angle_diff(prevAngle, curAngle);
                 orbit->direction = signF(deltaAngle);
-                orbit->state++;
+                orbit->state = ORBIT_STATE_STARTING_ORBIT;
                 break;
             }
             orbit->state = ORBIT_STATE_FIRST_FRAME;
@@ -68,7 +68,7 @@ API_CALLABLE(N(MonitorPlayerOrbiting)) {
                             orbit->eventListener(orbit, PLAYER_ORBIT_BEGIN);
                         }
                         orbit->totalOrbitAngle += fabsf(deltaAngle);
-                        orbit->state++;
+                        orbit->state = ORBIT_STATE_MAINTAIN_ORBIT;
                     }
                     break;
                 }
@@ -86,7 +86,7 @@ API_CALLABLE(N(MonitorPlayerOrbiting)) {
                     if (orbit->eventListener != nullptr) {
                         orbit->eventListener(orbit, PLAYER_ORBIT_CHANGE_DIRECTION);
                     }
-                    orbit->state++;
+                    orbit->state = ORBIT_STATE_BREAK_ORBIT;
                 } else {
                     orbit->totalOrbitAngle = orbit->totalOrbitAngle + fabsf(deltaAngle);
                     orbit->numRotations = orbit->totalOrbitAngle / 360;
@@ -104,7 +104,7 @@ API_CALLABLE(N(MonitorPlayerOrbiting)) {
                 if (orbit->eventListener != nullptr) {
                     orbit->eventListener(orbit, PLAYER_ORBIT_LEFT_REGION);
                 }
-                orbit->state++;
+                orbit->state = ORBIT_STATE_BREAK_ORBIT;
             }
             break;
 

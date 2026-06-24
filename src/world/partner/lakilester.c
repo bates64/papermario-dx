@@ -138,7 +138,7 @@ API_CALLABLE(N(Update)) {
 
     switch (N(TweesterPhysicsPtr)->state) {
         case TWEESTER_PARTNER_INIT:
-            N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_ATTRACT;
             N(TweesterPhysicsPtr)->prevFlags = lakilester->flags;
             N(TweesterPhysicsPtr)->radius = fabsf(dist2D(lakilester->pos.x, lakilester->pos.z, entity->pos.x, entity->pos.z));
             N(TweesterPhysicsPtr)->angle = atan2(entity->pos.x, entity->pos.z, lakilester->pos.x, lakilester->pos.z);
@@ -174,20 +174,22 @@ API_CALLABLE(N(Update)) {
                 N(TweesterPhysicsPtr)->angularVel = 40.0f;
             }
 
-            if (--N(TweesterPhysicsPtr)->countdown == 0) {
-                N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->countdown--;
+            if (N(TweesterPhysicsPtr)->countdown == 0) {
+                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_HOLD;
             }
             break;
         case TWEESTER_PARTNER_HOLD:
             lakilester->flags = N(TweesterPhysicsPtr)->prevFlags;
             N(TweesterPhysicsPtr)->countdown = 30;
-            N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_RELEASE;
             break;
         case TWEESTER_PARTNER_RELEASE:
             partner_flying_update_player_tracking(lakilester);
             partner_flying_update_motion(lakilester);
 
-            if (--N(TweesterPhysicsPtr)->countdown == 0) {
+            N(TweesterPhysicsPtr)->countdown--;
+            if (N(TweesterPhysicsPtr)->countdown == 0) {
                 N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
                 TweesterTouchingPartner = nullptr;
             }
