@@ -31,7 +31,7 @@ void partner_init_put_away(Npc* partner);
 s32 partner_put_away(Npc* partner);
 s32 partner_can_use_ability(void);
 s32 partner_use_ability(void);
-void partner_do_player_collision(Npc* partner);
+void partner_resolve_player_screen_overlap(Npc* partner);
 void partner_walking_follow_player(Npc* partner);
 b32 partner_can_continue_ability(s32);
 s32 partner_force_player_flip_done(void);

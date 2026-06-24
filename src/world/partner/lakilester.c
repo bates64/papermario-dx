@@ -121,7 +121,7 @@ API_CALLABLE(N(Update)) {
     Entity* entity;
 
     if (isInitialCall) {
-        partner_flying_enable(lakilester, 1);
+        partner_flying_enable(lakilester, true);
         mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
         TweesterTouchingPartner = nullptr;
     }

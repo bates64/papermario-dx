@@ -105,7 +105,7 @@ API_CALLABLE(N(Update)) {
 
     if (!gPartnerStatus.shouldResumeAbility) {
         if (isInitialCall) {
-            partner_flying_enable(watt, 1);
+            partner_flying_enable(watt, true);
             mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
             TweesterTouchingPartner = nullptr;
         }

@@ -108,7 +108,7 @@ API_CALLABLE(N(Update)) {
     Entity* entity;
 
     if (isInitialCall) {
-        partner_walking_enable(npc, 1);
+        partner_walking_enable(npc, true);
         mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
         TweesterTouchingPartner = nullptr;
     }
