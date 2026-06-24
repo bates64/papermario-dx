@@ -188,7 +188,8 @@ void tattle_window_fill_clipped_quad(s32 l, s32 t, s32 r, s32 b) {
     gDPFillRectangle(gMainGfxPos++, l, t, r, b);
 }
 
-void func_E00D8334(TattleWindowFXData* data, s32 left, s32 top, s32 right, s32 bottom) {
+void func_E00D8334(void* arg, s32 left, s32 top, s32 right, s32 bottom) {
+    TattleWindowFXData* data = (TattleWindowFXData*)arg;
     f32 closeFracX = data->closeAmt.x / 255.0f;
     f32 closeFracY = data->closeAmt.y / 255.0f;
     s32 xMid, yMid;

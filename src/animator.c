@@ -929,7 +929,9 @@ void appendGfx_animator_node(ModelAnimator* animator, AnimatorNode* node, Matrix
     }
     gDPPipeSync(gMainGfxPos++);
 
-    if (animator->fpRenderCallback != nullptr) animator->fpRenderCallback(animator->renderCallbackArg);
+    if (animator->fpRenderCallback != nullptr) {
+        animator->fpRenderCallback(animator->renderCallbackArg);
+    }
 
     gDPPipeSync(gMainGfxPos++);
 

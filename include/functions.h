@@ -131,7 +131,7 @@ void appendGfx_partner_actor(void*);
 void appendGfx_partner_actor_blur(void*);
 void appendGfx_partner_actor_reflection(void*);
 void appendGfx_player_actor(void*);
-void appendGfx_player_actor_blur(Actor*);
+void appendGfx_player_actor_blur(void*);
 void appendGfx_player_actor_reflection(void*);
 
 void force_disable_actor_blur(Actor*);

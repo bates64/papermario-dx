@@ -377,7 +377,8 @@ void update_player_actor_blur_history(Actor* actor) {
     }
 }
 
-void appendGfx_player_actor_blur(Actor* actor) {
+void appendGfx_player_actor_blur(void* data) {
+    Actor* actor = (Actor*)data;
     Matrix4f mtxRotX, mtxRotY, mtxRotZ, mtxRotation;
     Matrix4f mtxScale;
     Matrix4f mtxPivotOn, mtxPivotOff, mtxTranslate;

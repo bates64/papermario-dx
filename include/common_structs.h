@@ -13,9 +13,13 @@ typedef ApiStatus(*ApiFunc)(struct Evt*, s32);
 
 typedef Bytecode EvtScript[];
 
+// generic callback signatures
 typedef void (*VoidCallback)(void);
 typedef void (*DataCallback)(void* data);
+
+// domain-specific callback signatures
 typedef void (*AuCallback)(void);
+typedef void (*AppendGfxCallback)(void* data);
 
 typedef struct {
     u8 r, g, b, a;
@@ -1514,7 +1518,7 @@ typedef struct RenderTask {
     /* 0x00 */ s32 renderMode;
     /* 0x04 */ s32 dist; /* value between 0 and -10k */
     /* 0x08 */ void* appendGfxArg;
-    /* 0x0C */ void (*appendGfx)(void*);
+    /* 0x0C */ AppendGfxCallback appendGfx;
 } RenderTask; // size = 0x10
 
 typedef struct SelectableTarget {

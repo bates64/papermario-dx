@@ -628,7 +628,7 @@ void btl_render_actors(void) {
 
                     if (actor->flags & ACTOR_FLAG_BLUR_ENABLED) {
                         renderTaskPtr->appendGfxArg = actor;
-                        renderTaskPtr->appendGfx = (void (*) (void*)) appendGfx_player_actor_blur;
+                        renderTaskPtr->appendGfx = appendGfx_player_actor_blur;
                         renderTaskPtr->dist = actor->curPos.z;
                         renderTaskPtr->renderMode = RENDER_MODE_SURFACE_XLU_LAYER3;
                         queue_render_task(renderTaskPtr);

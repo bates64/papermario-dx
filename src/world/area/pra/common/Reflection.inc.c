@@ -20,9 +20,9 @@ extern u8 ReflectFloorPrevAlpha; // player alpha2 copy?
 
 void N(worker_render_player_reflection_wall)(void);
 void N(worker_render_player_reflection_floor)(void);
-void N(appendGfx_reflect_player_wall)(PlayerStatus* playerStatus);
-void N(appendGfx_reflect_player_floor_fancy)(PlayerStatus* playerStatus);
-void N(appendGfx_reflect_player_floor_basic)(PlayerStatus* playerStatus);
+void N(appendGfx_reflect_player_wall)(void*);
+void N(appendGfx_reflect_player_floor_fancy)(void*);
+void N(appendGfx_reflect_player_floor_basic)(void*);
 void N(worker_update_partner_reflection_all)(void);
 void N(worker_update_partner_reflection_floor)(void);
 void N(worker_update_partner_reflection_wall)(void);
@@ -115,13 +115,14 @@ void N(worker_render_player_reflection_wall)(void) {
 
         renderTaskPtr->renderMode = renderMode;
         renderTaskPtr->appendGfxArg = playerStatus;
-        renderTaskPtr->appendGfx = (void(*))N(appendGfx_reflect_player_wall);
+        renderTaskPtr->appendGfx = N(appendGfx_reflect_player_wall);
         renderTaskPtr->dist = -screenZ;
         queue_render_task(renderTaskPtr);
     }
 }
 
-void N(appendGfx_reflect_player_wall)(PlayerStatus* playerStatus) {
+void N(appendGfx_reflect_player_wall)(void* data) {
+    PlayerStatus* playerStatus = (PlayerStatus*)data;
     f32 yaw = -gCameras[gCurrentCamID].curYaw;
     Matrix4f main;
     Matrix4f translation;
@@ -188,16 +189,18 @@ void N(worker_render_player_reflection_floor)(void) {
         renderTaskPtr->renderMode = renderMode;
         renderTaskPtr->appendGfxArg = playerStatus;
         renderTaskPtr->dist = -screenZ;
-        renderTaskPtr->appendGfx = (void (*)(void*)) (
-            !(playerStatus->flags & PS_FLAG_SPINNING)
-                ? N(appendGfx_reflect_player_floor_basic)
-                : N(appendGfx_reflect_player_floor_fancy)
-        );
+
+        if (playerStatus->flags & PS_FLAG_SPINNING) {
+            renderTaskPtr->appendGfx = N(appendGfx_reflect_player_floor_fancy);
+        } else {
+            renderTaskPtr->appendGfx = N(appendGfx_reflect_player_floor_basic);
+        }
         queue_render_task(renderTaskPtr);
     }
 }
 
-void N(appendGfx_reflect_player_floor_basic)(PlayerStatus* playerStatus) {
+void N(appendGfx_reflect_player_floor_basic)(void* data) {
+    PlayerStatus* playerStatus = (PlayerStatus*)data;
     f32 yaw = -gCameras[gCurrentCamID].curYaw;
     Matrix4f main;
     Matrix4f translation;
@@ -226,7 +229,8 @@ void N(appendGfx_reflect_player_floor_basic)(PlayerStatus* playerStatus) {
     spr_draw_player_sprite(spriteIdx, 0, 0, nullptr, main);
 }
 
-void N(appendGfx_reflect_player_floor_fancy)(PlayerStatus* playerStatus) {
+void N(appendGfx_reflect_player_floor_fancy)(void* data) {
+    PlayerStatus* playerStatus = (PlayerStatus*)data;
     Matrix4f mtx;
     Matrix4f translation;
     Matrix4f rotation;
