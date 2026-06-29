@@ -319,7 +319,7 @@ NpcData N(NpcData_Guards)[] = {
         .yaw = 270,
         .settings = &N(NpcSettings_Dummy),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
-        .drops = MAGINO_DROPS,
+        .drops = MAGIKOOPA_DROPS,
         .animations = MAGIKOOPA_ANIMS,
     },
 };

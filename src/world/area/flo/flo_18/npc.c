@@ -2,9 +2,7 @@
 #include "sprite/player.h"
 
 #include "world/common/enemy/Lakitu/idle.inc.c"
-#include "world/common/enemy/Magikoopa/idle.inc.c"
-
-#include "world/common/enemy/YMagikoopa/base.h"
+#include "world/common/enemy/YMagikoopa/idle.inc.c"
 
 Vec3f N(RetreatPath_Magikoopa)[] = {
     {  -55.0,    15.0,   35.0 },
@@ -621,10 +619,10 @@ NpcData N(NpcData_MachineGang)[] = {
         .pos = { -60.0f, 0.0f, 50.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Magikoopa),
-        .settings = &N(NpcSettings_Magikoopa),
+        .settings = &N(NpcSettings_YMagikoopa),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
-        .drops = MAGINO_DROPS,
-        .animations = MAGIKOOPA_YELLOW_ANIMS,
+        .drops = YELLOW_MAGIKOOPA_DROPS,
+        .animations = YELLOW_MAGIKOOPA_ANIMS,
         .tattle = MSG_NpcTattle_PuffPuffOperator,
     },
     {
@@ -632,10 +630,10 @@ NpcData N(NpcData_MachineGang)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_FlyingMagikoopa),
-        .settings = &N(NpcSettings_Magikoopa),
+        .settings = &N(NpcSettings_YMagikoopa),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
-        .drops = MAGINO_DROPS,
-        .animations = FLYING_MAGIKOOPA_YELLOW_ANIMS,
+        .drops = YELLOW_MAGIKOOPA_DROPS,
+        .animations = FLYING_YELLOW_MAGIKOOPA_ANIMS,
         .tattle = MSG_NpcTattle_PuffPuffOperator,
     },
 };

@@ -45,7 +45,7 @@ NpcData N(NpcData_FlyingMagikoopa)[] = {
         },
         .settings = &N(NpcSettings_FlyingMagikoopa_Wander),
         .flags = ENEMY_FLAG_FLYING,
-        .drops = FLYING_MAGINO_DROPS,
+        .drops = FLYING_MAGIKOOPA_DROPS,
         .animations = FLYING_MAGIKOOPA_ANIMS,
         .limitAnimations = N(LimitAnims_FlyingMagikoopa),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,

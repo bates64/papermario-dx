@@ -158,7 +158,7 @@ NpcData N(NpcData_Piranha) = {
     .init = &N(EVS_NpcInit_Piranha),
     .settings = &N(NpcSettings_PutridPiranhaSentinel),
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
-    .drops = PIRANHA_NO_DROPS,
+    .drops = PIRANHA_SENTINEL_DROPS,
     .animations = PIRANHA_SENTINEL_ANIMS,
 };
 

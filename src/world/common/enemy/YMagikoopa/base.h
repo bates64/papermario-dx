@@ -3,7 +3,7 @@
 #include "sprite/npc/Magikoopa.h"
 #include "sprite/npc/FlyingMagikoopa.h"
 
-#define MAGINO_DROPS \
+#define YELLOW_MAGIKOOPA_DROPS \
 { \
     .dropFlags = NPC_DROP_FLAG_80, \
     .itemDropChance = 25, \
@@ -19,7 +19,7 @@
     .maxCoinBonus = 2, \
 }
 
-#define MAGIKOOPA_YELLOW_ANIMS \
+#define YELLOW_MAGIKOOPA_ANIMS \
 { \
     .idle   = ANIM_Magikoopa_Yellow_Anim01, \
     .walk   = ANIM_Magikoopa_Yellow_Anim01, \
@@ -39,7 +39,7 @@
     .anim_F = ANIM_Magikoopa_Yellow_Anim01, \
 }
 
-#define FLYING_MAGIKOOPA_YELLOW_ANIMS \
+#define FLYING_YELLOW_MAGIKOOPA_ANIMS \
 { \
     .idle   = ANIM_FlyingMagikoopa_Yellow_Anim01, \
     .walk   = ANIM_FlyingMagikoopa_Yellow_Anim01, \

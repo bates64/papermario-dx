@@ -622,15 +622,7 @@ NpcData N(NpcData_BulletBill_Demo1) = {
     .initVar = { .value = 0 },
     .settings = &N(NpcSettings_BulletBill),
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DONT_SUSPEND_SCRIPTS,
-    .drops = {
-        .dropFlags = NPC_DROP_FLAG_80,
-        .itemDropChance = 3,
-        .itemDrops = {
-            { ITEM_MUSHROOM, 10, 0 },
-        },
-        .heartDrops  = STANDARD_HEART_DROPS(2),
-        .flowerDrops = STANDARD_FLOWER_DROPS(2),
-    },
+    .drops = BULLET_BILL_DROPS,
     .animations = BULLET_BILL_ANIMS,
 };
 
@@ -655,15 +647,7 @@ NpcData N(NpcData_BulletBill_Demo2) = {
     .initVar = { .value = 0 },
     .settings = &N(NpcSettings_BulletBill),
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DONT_SUSPEND_SCRIPTS,
-    .drops = {
-        .dropFlags = NPC_DROP_FLAG_80,
-        .itemDropChance = 3,
-        .itemDrops = {
-            { ITEM_MUSHROOM, 10, 0 },
-        },
-        .heartDrops  = STANDARD_HEART_DROPS(2),
-        .flowerDrops = STANDARD_FLOWER_DROPS(2),
-    },
+    .drops = BULLET_BILL_DROPS,
     .animations = BULLET_BILL_ANIMS,
 };
 
@@ -688,15 +672,7 @@ NpcData N(NpcData_BulletBill_Demo3) = {
     .initVar = { .value = 0 },
     .settings = &N(NpcSettings_BulletBill),
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DONT_SUSPEND_SCRIPTS,
-    .drops = {
-        .dropFlags = NPC_DROP_FLAG_80,
-        .itemDropChance = 3,
-        .itemDrops = {
-            { ITEM_MUSHROOM, 10, 0 },
-        },
-        .heartDrops  = STANDARD_HEART_DROPS(2),
-        .flowerDrops = STANDARD_FLOWER_DROPS(2),
-    },
+    .drops = BULLET_BILL_DROPS,
     .animations = BULLET_BILL_ANIMS,
 };
 
@@ -721,15 +697,7 @@ NpcData N(NpcData_BulletBill_Demo4) = {
     .initVar = { .value = 0 },
     .settings = &N(NpcSettings_BulletBill),
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DONT_SUSPEND_SCRIPTS,
-    .drops = {
-        .dropFlags = NPC_DROP_FLAG_80,
-        .itemDropChance = 3,
-        .itemDrops = {
-            { ITEM_MUSHROOM, 10, 0 },
-        },
-        .heartDrops  = STANDARD_HEART_DROPS(2),
-        .flowerDrops = STANDARD_FLOWER_DROPS(2),
-    },
+    .drops = BULLET_BILL_DROPS,
     .animations = BULLET_BILL_ANIMS,
 };
 
@@ -754,15 +722,7 @@ NpcData N(NpcData_BulletBill_Demo5) = {
     .initVar = { .value = 0 },
     .settings = &N(NpcSettings_BulletBill),
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DONT_SUSPEND_SCRIPTS,
-    .drops = {
-        .dropFlags = NPC_DROP_FLAG_80,
-        .itemDropChance = 3,
-        .itemDrops = {
-            { ITEM_MUSHROOM, 10, 0 },
-        },
-        .heartDrops  = STANDARD_HEART_DROPS(2),
-        .flowerDrops = STANDARD_FLOWER_DROPS(2),
-    },
+    .drops = BULLET_BILL_DROPS,
     .animations = BULLET_BILL_ANIMS,
 };
 

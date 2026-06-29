@@ -21,7 +21,7 @@ NpcData N(NpcData_Magikoopa)[] = {
         },
         .settings = &N(NpcSettings_Magikoopa_Wander),
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
-        .drops = MAGINO_DROPS,
+        .drops = MAGIKOOPA_DROPS,
         .animations = MAGIKOOPA_ANIMS,
         .limitAnimations = N(LimitAnims_Magikoopa),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,

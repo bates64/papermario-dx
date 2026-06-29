@@ -182,7 +182,7 @@ NpcData N(NpcData_Piranhas)[] = {
         .init = &N(EVS_NpcInit_PutridPiranha),
         .settings = &N(NpcSettings_PutridPiranhaSentinel),
         .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
-        .drops = PIRANHA_NO_DROPS,
+        .drops = PIRANHA_SENTINEL_DROPS,
         .animations = PIRANHA_SENTINEL_ANIMS,
     },
     {
@@ -191,7 +191,7 @@ NpcData N(NpcData_Piranhas)[] = {
         .yaw = 270,
         .settings = &N(NpcSettings_PutridPiranhaSentinel),
         .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
-        .drops = PIRANHA_NO_DROPS,
+        .drops = PIRANHA_SENTINEL_DROPS,
         .animations = PIRANHA_SENTINEL_ANIMS,
     },
     {
@@ -200,7 +200,7 @@ NpcData N(NpcData_Piranhas)[] = {
         .yaw = 270,
         .settings = &N(NpcSettings_PutridPiranhaSentinel),
         .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
-        .drops = PIRANHA_NO_DROPS,
+        .drops = PIRANHA_SENTINEL_DROPS,
         .animations = PIRANHA_SENTINEL_ANIMS,
     },
 };
