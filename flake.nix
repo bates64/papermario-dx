@@ -62,18 +62,6 @@
           src = self;
         };
         pythonDeps = windowsToolchain.passthru.pythonDeps;
-        requirementsExtra = ./requirements_extra.txt;
-        pythonDepsExtra = pkgs.stdenvNoCC.mkDerivation {
-          name = "papermario-python-deps-extra";
-          outputHashMode = "recursive";
-          outputHashAlgo = "sha256";
-          outputHash = "sha256-UpAKsz4JCCWJHl6hTpIi/dzLISDF7RcGuY/hFjAMex8=";
-          nativeBuildInputs = [ pkgs.python3 pkgs.python3Packages.pip pkgs.cacert ];
-          buildCommand = ''
-            export SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
-            pip download -r ${./requirements.txt} -r ${requirementsExtra} setuptools wheel -d $out
-          '';
-        };
         linuxRom = pkgs.runCommand "papermario-linux-rom" {
           nativeBuildInputs = [
             pkgsCross.stdenv.cc
@@ -215,10 +203,9 @@
             rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64
             export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
 
-            # Install python packages from cached wheels (offline)
             virtualenv venv --quiet
             source venv/bin/activate
-            pip install --no-index --find-links=${pythonDepsExtra} -r ${./requirements.txt} -r ${./requirements_extra.txt} --quiet
+            pip install -r ${./requirements.txt} -r ${./requirements_extra.txt} --quiet
           '';
         };
       }
