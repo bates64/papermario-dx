@@ -393,7 +393,8 @@ class SBNFile:
 
         size = self.decode(data, ident)
 
-        assert size == len(data), "File size mismatch"
+        # Mamar may place data after the 'end' of the file, resulting in this assertion failing
+        #assert size == len(data), "File size mismatch"
 
     def file_name(self) -> str:
         if self.ident is None:
