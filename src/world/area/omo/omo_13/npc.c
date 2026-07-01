@@ -13,11 +13,6 @@ NpcSettings N(NpcSettings_AntiGuy) = {
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
 };
 
-s32 N(BribeItemList)[] = {
-    ITEM_LEMON_CANDY,
-    -1
-};
-
 EvtScript N(EVS_NpcInteract_AntiGuy) = {
     IfEq(GF_OMO13_Defeated_AntiGuy, true)
         Call(SpeakToPlayer, NPC_SELF, ANIM_ShyGuy_Black_Anim15, ANIM_ShyGuy_Black_Anim15, 5, MSG_CH4_004D)
@@ -60,7 +55,7 @@ EvtScript N(EVS_NpcInteract_AntiGuy) = {
         Call(SetPlayerAnimation, ANIM_Mario1_NodYes)
         Wait(15)
         Call(EndSpeech, NPC_SELF, ANIM_ShyGuy_Black_Anim11, ANIM_ShyGuy_Black_Anim01, 0)
-        EVT_CHOOSE_CONSUMABLE_FROM(N(BribeItemList), NPC_SELF)
+        EVT_CHOOSE_CONSUMABLE_ONLY(ITEM_LEMON_CANDY, NPC_SELF)
         IfEq(LVar0, ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ShyGuy_Black_Anim11, ANIM_ShyGuy_Black_Anim01, 0, MSG_CH4_004B)
             Call(ShowChoice, MSG_Choice_0044)

@@ -35,23 +35,32 @@ static API_CALLABLE(ItemChoice_SaveSelected) {
 
 static API_CALLABLE(BuildKeyItemChoiceList) {
     Bytecode* args = script->ptrReadPos;
-    s32* allowedItemList = (s32*)evt_get_variable(script, *args++);
+    s32 choiceArg = evt_get_variable(script, *args++);
+    s32* allowedItemList = (s32*)choiceArg;
+    s32 pos = 0;
     s32 i;
 
-    if (allowedItemList != nullptr) {
-        for (i = 0; allowedItemList[i] != ITEM_NONE; i++) {
-            ChoiceList[i] = allowedItemList[i];
-        }
-        ChoiceList[i] = ITEM_NONE;
-    } else {
-        s32 pos = 0;
+    if (choiceArg > ITEM_NONE && choiceArg < NUM_ITEMS) {
+        // accept literal itemIDs as a trivial list
+        ASSERT(item_is_key(choiceArg));
+        ChoiceList[pos++] = choiceArg;
+    } else if (allowedItemList == nullptr) {
+        // null pointers are wildcard lists
         for (i = 0; i < NUM_ITEMS; i++) {
             if (item_is_key(i)) {
                 ChoiceList[pos++] = i;
             }
         }
-        ChoiceList[pos] = ITEM_NONE;
+    } else {
+        // normal key item list
+        for (i = 0; allowedItemList[i] != ITEM_NONE; i++) {
+            ASSERT(item_is_key(allowedItemList[i]));
+            ChoiceList[pos++] = allowedItemList[i];
+        }
     }
+    // write list terminator
+    ChoiceList[pos] = ITEM_NONE;
+
     return ApiStatus_DONE2;
 }
 
@@ -90,23 +99,32 @@ EvtScript EVS_ChooseKeyItem = {
 
 static API_CALLABLE(BuildItemChoiceList) {
     Bytecode* args = script->ptrReadPos;
-    s32* allowedItemList = (s32*)evt_get_variable(script, *args++);
+    s32 choiceArg = evt_get_variable(script, *args++);
+    s32* allowedItemList = (s32*)choiceArg;
+    s32 pos = 0;
     s32 i;
 
-    if (allowedItemList != nullptr) {
-        for (i = 0; allowedItemList[i] != ITEM_NONE; i++) {
-            ChoiceList[i] = allowedItemList[i];
-        }
-        ChoiceList[i] = ITEM_NONE;
-    } else {
-        s32 pos = 0;
+    if (choiceArg > ITEM_NONE && choiceArg < NUM_ITEMS) {
+        // accept literal itemIDs as a trivial list
+        ASSERT(item_is_consumable(choiceArg));
+        ChoiceList[pos++] = choiceArg;
+    } else if (allowedItemList == nullptr) {
+        // null pointers are wildcard lists
         for (i = 0; i < NUM_ITEMS; i++) {
             if (item_is_consumable(i)) {
                 ChoiceList[pos++] = i;
             }
         }
-        ChoiceList[pos] = ITEM_NONE;
+    } else {
+        // normal consumable list
+        for (i = 0; allowedItemList[i] != ITEM_NONE; i++) {
+            ASSERT(item_is_consumable(allowedItemList[i]));
+            ChoiceList[pos++] = allowedItemList[i];
+        }
     }
+    // write list terminator
+    ChoiceList[pos] = ITEM_NONE;
+
     return ApiStatus_DONE2;
 }
 

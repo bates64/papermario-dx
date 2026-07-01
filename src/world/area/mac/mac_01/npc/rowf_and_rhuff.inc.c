@@ -154,15 +154,13 @@ EvtScript N(EVS_NpcInteract_Rowf_B) = {
     End
 };
 
-ITEM_LIST(N(ItemList_Calculator), ITEM_CALCULATOR);
-
 EvtScript N(EVS_NpcInteract_Rowf_C) = {
     IfEq(GF_MAC01_CalculatorReturned, true)
         Call(SpeakToPlayer, NPC_Rowf, ANIM_Rowf_Talk, ANIM_Rowf_Cheer, 0, MSG_MAC_Plaza_000A)
         Return
     EndIf
     Call(SpeakToPlayer, NPC_Rowf, ANIM_Rowf_Talk, ANIM_Rowf_Cheer, 0, MSG_MAC_Plaza_0008)
-    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Calculator), NPC_Rowf)
+    EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_CALCULATOR, NPC_Rowf)
     Switch(LVar0)
         CaseEq(ITEM_CHOICE_NONE)
         CaseEq(ITEM_CHOICE_CANCELED)

@@ -242,15 +242,13 @@ API_CALLABLE(N(GetLetterPartnerOut)) {
     return ApiStatus_DONE2;
 }
 
-ITEM_LIST(N(ItemList_Mailbag), ITEM_MAILBAG);
-
 EvtScript N(EVS_ItemPrompt_Mailbag) = {
     Call(FindItem, ITEM_MAILBAG, LVar0)
     IfEq(LVar0, -1)
         Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0060)
     Else
         Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0061)
-        EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Mailbag), NPC_Postmaster)
+        EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_MAILBAG, NPC_Postmaster)
         Switch(LVar0)
             CaseEq(ITEM_CHOICE_CANCELED)
                 Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0063)

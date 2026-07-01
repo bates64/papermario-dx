@@ -50,6 +50,11 @@ typedef struct LetterDelivery {
     Set(LVar1, recipientNpc) \
     ExecWait(EVS_ChooseItem)
 
+#define EVT_CHOOSE_CONSUMABLE_ONLY(itemID, recipientNpc) \
+    Set(LVar0, itemID) \
+    Set(LVar1, recipientNpc) \
+    ExecWait(EVS_ChooseItem)
+
 #define EVT_CHOOSE_ANY_KEY_ITEM(recipientNpc) \
     Set(LVar0, nullptr) \
     Set(LVar1, recipientNpc) \
@@ -57,6 +62,11 @@ typedef struct LetterDelivery {
 
 #define EVT_CHOOSE_KEY_ITEM_FROM(itemList, recipientNpc) \
     Set(LVar0, Ref(itemList)) \
+    Set(LVar1, recipientNpc) \
+    ExecWait(EVS_ChooseKeyItem)
+
+#define EVT_CHOOSE_KEY_ITEM_ONLY(itemID, recipientNpc) \
+    Set(LVar0, itemID) \
     Set(LVar1, recipientNpc) \
     ExecWait(EVS_ChooseKeyItem)
 

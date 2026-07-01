@@ -1,7 +1,5 @@
 #include "mac_04.h"
 
-ITEM_LIST(N(ItemList_StoreroomKey), ITEM_STOREROOM_KEY);
-
 EvtScript N(EVS_NpcInteract_HarryT) = {
     Set(LVar9, 0)
     IfGe(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
@@ -11,7 +9,7 @@ EvtScript N(EVS_NpcInteract_HarryT) = {
     EndIf
     IfEq(LVar9, 1)
         Call(SpeakToPlayer, NPC_HarryT, ANIM_HarryT_Talk, ANIM_HarryT_Idle, 0, MSG_MAC_Housing_0001)
-        EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_StoreroomKey), NPC_HarryT)
+        EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_STOREROOM_KEY, NPC_HarryT)
         Switch(LVar0)
             CaseEq(ITEM_CHOICE_CANCELED)
                 Call(SpeakToPlayer, NPC_HarryT, ANIM_HarryT_Talk, ANIM_HarryT_Idle, 0, MSG_MAC_Housing_0002)

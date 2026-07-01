@@ -16,8 +16,6 @@ LetterDelivery N(LetterDelivery_Kolorado) = {
     .reward = ITEM_STAR_PIECE,
 };
 
-ITEM_LIST(N(ArtifactList), ITEM_ARTIFACT);
-
 EvtScript N(EVS_ArtifactPrompt) = {
     Set(GF_SBK_GaveArtifactToKolorado, true)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH2_0044)
@@ -49,14 +47,14 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
             Set(GF_SBK_KeptArtifactFromKolorado, true)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH2_0040)
         EndIf
-        EVT_CHOOSE_KEY_ITEM_FROM(N(ArtifactList), NPC_Kolorado)
+        EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_ARTIFACT, NPC_Kolorado)
         Switch(LVar0)
             CaseGe(1)
                 ExecWait(N(EVS_ArtifactPrompt))
                 Goto(50)
             CaseDefault
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH2_0041)
-                EVT_CHOOSE_KEY_ITEM_FROM(N(ArtifactList), NPC_Kolorado)
+                EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_ARTIFACT, NPC_Kolorado)
                 Switch(LVar0)
                     CaseGe(1)
                         ExecWait(N(EVS_ArtifactPrompt))

@@ -10,10 +10,6 @@ NpcSettings N(NpcSettings_BubbleFlower) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/npc/Dummy/idle.inc.c"
-
-ITEM_LIST(N(KeyList), ITEM_BUBBLE_BERRY);
-
 EvtScript N(EVS_NpcInteract_BubbleFlower) = {
     IfEq(AF_FLO_BigBubbleReady, true)
         Set(AF_FLO_PauseBlowingBubbles, true)
@@ -29,7 +25,7 @@ EvtScript N(EVS_NpcInteract_BubbleFlower) = {
     EndIf
     Call(FindItem, ITEM_BUBBLE_BERRY, LVar0)
     IfNe(LVar0, -1)
-        EVT_CHOOSE_CONSUMABLE_FROM(N(KeyList), NPC_BubbleFlower)
+        EVT_CHOOSE_CONSUMABLE_ONLY(ITEM_BUBBLE_BERRY, NPC_BubbleFlower)
         IfEq(LVar0, ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_SELF, -1, -1, 0, MSG_CH6_0064)
         Else

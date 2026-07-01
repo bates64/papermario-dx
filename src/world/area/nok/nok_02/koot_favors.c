@@ -326,12 +326,10 @@ API_CALLABLE(N(SetFavorComplete)) {
     return ApiStatus_DONE2;
 }
 
-s32 N(FavorItemList)[] = {
-    ITEM_NONE,
-    ITEM_NONE,
-};
+// initially empty list, mutable through AdjustFavorItemList
+ITEM_LIST(N(FavorItemList), ITEM_NONE);
 
-API_CALLABLE(N(MakeFavorItemList)) {
+API_CALLABLE(N(AdjustFavorItemList)) {
     Bytecode *args = script->ptrReadPos;
     s32 favorIdx = evt_get_variable(script, *args++) - 1;
     s32 itemID = N(KootFavorData)[favorIdx].requiredItem;
@@ -351,7 +349,7 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
     EndIf
     IfEq(GB_KootFavor_State, KOOT_FAVOR_STATE_2)
         IfEq(GF_MAC02_KootFavor_CurrentComplete, false)
-            Call(N(MakeFavorItemList), GB_KootFavor_Current)
+            Call(N(AdjustFavorItemList), GB_KootFavor_Current)
             IfEq(LVar0, 0)
                 EVT_CHOOSE_CONSUMABLE_FROM(N(FavorItemList), NPC_KoopaKoot)
                 Switch(LVar0)

@@ -81,8 +81,6 @@ LetterDelivery N(LetterDelivery_Kolorado) = {
     .reward = ITEM_STAR_PIECE,
 };
 
-ITEM_LIST(N(ItemList_Artifact), ITEM_ARTIFACT);
-
 EvtScript N(EVS_ArtifactReward_Kolorado) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Plaza_00E8)
     EVT_GIVE_REWARD(ITEM_STAR_PIECE)
@@ -111,14 +109,14 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
         Set(LVar0, MSG_MAC_Plaza_00E5)
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, LVar0)
-    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Artifact), NPC_Kolorado)
+    EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_ARTIFACT, NPC_Kolorado)
     Switch(LVar0)
         CaseGe(1)
             ExecWait(N(EVS_ArtifactReward_Kolorado))
             BreakSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Plaza_00E6)
-            EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Artifact), NPC_Kolorado)
+            EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_ARTIFACT, NPC_Kolorado)
             Switch(LVar0)
                 CaseGe(1)
                     ExecWait(N(EVS_ArtifactReward_Kolorado))

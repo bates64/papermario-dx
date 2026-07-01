@@ -331,8 +331,6 @@ EvtScript N(EVS_NpcInit_Bobomb_03) = {
     End
 };
 
-ITEM_LIST(N(ItemList_Artifact), ITEM_ARTIFACT);
-
 EvtScript N(EVS_ArtifactReward_Kolorado) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH1_009F)
     EVT_GIVE_REWARD(ITEM_STAR_PIECE)
@@ -362,14 +360,14 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
         Set(LVar0, MSG_CH1_009C)
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, LVar0)
-    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Artifact), NPC_Kolorado)
+    EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_ARTIFACT, NPC_Kolorado)
     Switch(LVar0)
         CaseGe(1)
             ExecWait(N(EVS_ArtifactReward_Kolorado))
             BreakSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH1_009D)
-            EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Artifact), NPC_Kolorado)
+            EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_ARTIFACT, NPC_Kolorado)
             Switch(LVar0)
                 CaseGe(1)
                     ExecWait(N(EVS_ArtifactReward_Kolorado))

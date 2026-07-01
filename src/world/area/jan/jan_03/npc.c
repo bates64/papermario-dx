@@ -43,7 +43,7 @@ LetterDelivery N(LetterDelivery_Kolorado) = {
     .reward = ITEM_STAR_PIECE,
 };
 
-s32 N(FoodItemList)[] = {
+ITEM_LIST(N(FoodItemList),
     ITEM_FRIED_SHROOM,
     ITEM_SPICY_SOUP,
     ITEM_NUTTY_CAKE,
@@ -81,9 +81,7 @@ s32 N(FoodItemList)[] = {
     ITEM_APPLE_PIE,
     ITEM_KOOPASTA,
     ITEM_KOOKY_COOKIE,
-    ITEM_YOSHI_COOKIE,
-    ITEM_NONE
-};
+    ITEM_YOSHI_COOKIE);
 
 API_CALLABLE(N(CountFoodItems)) {
     Bytecode* args = script->ptrReadPos;
@@ -594,11 +592,6 @@ EvtScript N(EVS_NpcInit_Raven) = {
     End
 };
 
-s32 N(VolcanoVaseList)[] = {
-    ITEM_VOLCANO_VASE,
-    -1
-};
-
 EvtScript N(EVS_NpcInteract_Kolorado) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
@@ -626,7 +619,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
                 ExecWait(EVS_TryLetterDelivery)
             Else
                 Call(AdjustCam, CAM_DEFAULT, Float(5.0), 0, 325, Float(20.0), Float(-7.5))
-                EVT_CHOOSE_KEY_ITEM_FROM(N(VolcanoVaseList), NPC_Kolorado)
+                EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_VOLCANO_VASE, NPC_Kolorado)
                 Switch(LVar0)
                     CaseEq(ITEM_CHOICE_CANCELED)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0017)

@@ -2,8 +2,6 @@
 #include "sprite/player.h"
 #include "world/common/npc/MusicianComposer/base.h"
 
-ITEM_LIST(N(LyricsList), ITEM_LYRICS);
-
 EvtScript N(EVS_NpcInteract_Composer) = {
     IfEq(GF_DRO01_Gift_Melody, true)
         Call(FindItem, ITEM_MELODY, LVar0)
@@ -50,7 +48,7 @@ EvtScript N(EVS_NpcInteract_Composer) = {
                 Set(AF_DRO01_ToggleDialogue_Composer, false)
             EndIf
     EndSwitch
-    EVT_CHOOSE_KEY_ITEM_FROM(N(LyricsList), NPC_ArtistToad)
+    EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_LYRICS, NPC_ArtistToad)
     Switch(LVar0)
         CaseEq(ITEM_CHOICE_NONE)
         CaseEq(ITEM_CHOICE_CANCELED)

@@ -59,8 +59,6 @@ LetterDelivery N(LetterDelivery_Kolorado) = {
     .reward = ITEM_STAR_PIECE,
 };
 
-ITEM_LIST(N(ItemList_Artifact), ITEM_ARTIFACT);
-
 EvtScript N(EVS_ArtifactReward_Kolorado) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_008E)
     EVT_GIVE_REWARD(ITEM_STAR_PIECE)
@@ -89,14 +87,14 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
         Set(LVar0, MSG_MAC_Port_008B)
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, LVar0)
-    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Artifact), NPC_Kolorado)
+    EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_ARTIFACT, NPC_Kolorado)
     Switch(LVar0)
         CaseGe(1)
             ExecWait(N(EVS_ArtifactReward_Kolorado))
             BreakSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_008C)
-            EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Artifact), NPC_Kolorado)
+            EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_ARTIFACT, NPC_Kolorado)
             Switch(LVar0)
                 CaseGe(1)
                     ExecWait(N(EVS_ArtifactReward_Kolorado))
@@ -1768,8 +1766,6 @@ EvtScript N(EVS_NpcInit_Toad_02) = {
     End
 };
 
-ITEM_LIST(N(ItemList_Melody), ITEM_MELODY);
-
 EvtScript N(EVS_NpcInteract_ArtistToad) = {
     Set(GF_MAC05_Met_Simon, true)
     Set(LVarA, 0)
@@ -1829,7 +1825,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
         Else
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0079)
         EndIf
-        EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Melody), NPC_ArtistToad)
+        EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_MELODY, NPC_ArtistToad)
         Switch(LVar0)
             CaseEq(ITEM_CHOICE_CANCELED)
                 Call(EnablePartnerAI)
