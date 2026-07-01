@@ -186,6 +186,12 @@ def write_ninja_rules(
     )
 
     ninja.rule(
+        "evt_validate_obj",
+        description="Validating EvtScript bytecode",
+        command=f"$python {BUILD_TOOLS}/evt_validate_obj.py $in --out $out",
+    )
+
+    ninja.rule(
         "dead_cc_fix",
         description="Fixing dead code symbols in $in",
         command=f"{cross}objcopy --redefine-sym sqrtf=dead_sqrtf $in $out",
@@ -589,10 +595,12 @@ class Configure:
         skip_outputs: Set[str],
         non_matching: bool,
         c_maps: bool = False,
+        evt_validation: bool = True,
     ):
         assert self.linker_entries is not None
 
         built_objects = set()
+        evt_validation_stamps = []
         generated_code = []
         inc_img_bins = []
         precompiled_header_path = Path("include/common.h.gch")
@@ -660,6 +668,18 @@ class Configure:
                     variables={"version": self.version, **variables},
                     implicit_outputs=implicit_outputs,
                 )
+
+                if evt_validation and task in ["cc_modern", "cxx_modern"]:
+                    for object_path in object_paths:
+                        if object_path.suffixes[-1] == ".o":
+                            stamp = posix(Path(posix(object_path) + ".evtcheck"))
+                            evt_validation_stamps.append(stamp)
+                            ninja.build(
+                                outputs=stamp,
+                                rule="evt_validate_obj",
+                                inputs=posix(object_path),
+                                implicit=[posix(BUILD_TOOLS / "evt_validate_obj.py")],
+                            )
 
         # Effect data includes
         effect_yaml = ROOT / "src/effects.yaml"
@@ -1451,7 +1471,7 @@ class Configure:
             posix(self.elf_path()),
             "ld",
             posix(self.linker_script_path()),
-            implicit=list(built_objects) + additional_objects,
+            implicit=list(built_objects) + additional_objects + evt_validation_stamps,
             variables={"version": self.version, "mapfile": posix(self.map_path())},
         )
 
@@ -1506,6 +1526,7 @@ class Configure:
 
         ninja.build("generated_code_" + self.version, "phony", generated_code)
         ninja.build("inc_img_bins_" + self.version, "phony", inc_img_bins)
+        ninja.build("validate_evt_" + self.version, "phony", evt_validation_stamps)
 
     def get_segment_max_sizes(self):
         assert self.linker_entries is not None
@@ -1560,7 +1581,7 @@ class Configure:
 
         return sorted(found.values(), key=lambda x: x[0].stem)
 
-    def write_overlays(self, ninja: ninja_syntax.Writer) -> str:
+    def write_overlays(self, ninja: ninja_syntax.Writer, evt_validation: bool = True) -> str:
         """Write overlay build statements. Returns the final ROM path."""
         import json
 
@@ -1569,6 +1590,7 @@ class Configure:
         cxx_precompiled_header_path = Path("include/common.hpp.gch")
 
         manifest_entries = []
+        evt_validation_stamps = []
         implicit_deps = [posix(self.syms_path())]
         if CRC_TOOL != "n64crc":
             implicit_deps.append(CRC_TOOL)
@@ -1579,6 +1601,7 @@ class Configure:
             ovl_path = build_dir / f"{name}.ovl"
             debug_syms_path = build_dir / f"{name}.ovl.debug_syms"
             objects = []
+            object_evt_validation_stamps = []
 
             c_files = []
             if src_path.is_dir():
@@ -1614,6 +1637,16 @@ class Configure:
                         "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
                     },
                 )
+                if evt_validation:
+                    stamp = posix(Path(posix(obj_path) + ".evtcheck"))
+                    evt_validation_stamps.append(stamp)
+                    object_evt_validation_stamps.append(stamp)
+                    ninja.build(
+                        stamp,
+                        "evt_validate_obj",
+                        posix(obj_path),
+                        implicit=[posix(BUILD_TOOLS / "evt_validate_obj.py")],
+                    )
                 objects.append(posix(obj_path))
 
             if len(objects) == 0:
@@ -1627,7 +1660,7 @@ class Configure:
                 posix(ovl_path),
                 "ovl_link_convert",
                 objects,
-                implicit=[posix(self.syms_path())],
+                implicit=[posix(self.syms_path())] + object_evt_validation_stamps,
                 implicit_outputs=[posix(debug_syms_path)],
                 variables={
                     "syms": posix(self.syms_path()),
@@ -1652,6 +1685,7 @@ class Configure:
             json.dump(manifest_entries, f)
 
         implicit_deps.append(posix(BUILD_TOOLS / "overlay.py"))
+        ninja.build("validate_evt_overlays_" + self.version, "phony", evt_validation_stamps)
         ninja.build(
             posix(self.rom_path()),
             "ovl_apply",
@@ -1737,10 +1771,16 @@ if __name__ == "__main__":
         action="store_true",
         help="Convert map binaries to C as part of the build process",
     )
+    parser.add_argument(
+        "--no-evt-validation",
+        action="store_true",
+        help="Disable static EvtScript bytecode validation",
+    )
     args = parser.parse_args()
     args.shift = not args.no_shift
     args.non_matching = not args.no_non_matching
     args.ccache = not args.no_ccache
+    args.evt_validation = not args.no_evt_validation
 
     if args.incremental:
         stamp = ROOT / "build" / "source_files.stamp"
@@ -1838,7 +1878,7 @@ if __name__ == "__main__":
     # add splat to python import path
     sys.path.insert(0, str((ROOT / args.splat / "src").resolve()))
 
-    ninja = ninja_syntax.Writer(open(str(ROOT / "build.ninja"), "w"), width=9999)
+    ninja = ninja_syntax.Writer(open(str(ROOT / "build.ninja"), "w"), width=120)
 
     non_matching = args.non_matching or True or args.shift
 
@@ -1877,11 +1917,15 @@ if __name__ == "__main__":
         configure.split(
             not args.no_split_assets, args.split_code, args.shift, args.debug
         )
-        configure.write_ninja(ninja, skip_files, non_matching, args.c_maps)
+        configure.write_ninja(
+            ninja, skip_files, non_matching, args.c_maps, args.evt_validation
+        )
 
         all.append(posix(configure.rom_ok_path()))
         all.append(posix(configure.syms_path()))
-        all.append(configure.write_overlays(ninja))
+        all.append("validate_evt_" + version)
+        all.append(configure.write_overlays(ninja, args.evt_validation))
+        all.append("validate_evt_overlays_" + version)
 
     assert first_configure, "no versions configured"
     first_configure.make_current(ninja)

@@ -157,13 +157,12 @@ EvtScript N(EVS_NpcIdle_Snowman_06) = {
 };
 
 EvtScript N(EVS_NpcInit_Snowman_01) = {
-EndIf
-Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_01)))
-Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_01)))
-Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
-Call(EnableNpcShadow, NPC_SELF, false)
-Return
-End
+    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_01)))
+    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_01)))
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(EnableNpcShadow, NPC_SELF, false)
+    Return
+    End
 };
 
 EvtScript N(EVS_NpcInit_Snowman_02) = {

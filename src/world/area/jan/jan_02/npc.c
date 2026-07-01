@@ -207,7 +207,6 @@ EvtScript N(EVS_NpcInit_Councillor) = {
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SetNpcAnimation, NPC_SELF, ANIM_LeadersFriend_BowSit)
-        EndIf
     EndSwitch
     Call(BindNpcIdle, NPC_SELF, 0)
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Councillor)))

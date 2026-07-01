@@ -265,7 +265,6 @@ EvtScript N(EVS_Interact_ItemSockets) = {
         CaseDefault
             ExecWait(N(EVS_UseSocket3))
     EndSwitch
-    EndIf
     Call(DisablePlayerInput, false)
     Return
     End

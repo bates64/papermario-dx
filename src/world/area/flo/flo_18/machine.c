@@ -266,25 +266,23 @@ EvtScript N(EVS_DamagedLeftOnce) = {
             SetF(LVar3, Float(0.0))
             SetF(LVar4, Float(0.0))
             IfGe(LVar2, 80)
-                Goto(0)
+                BreakLoop
             EndIf
         EndIf
-    EndIf
-    Call(TranslateModel, MODEL_o115, -78, 19, 2)
-    Call(TranslateModel, MODEL_o116, -78, 19, 2)
-    Call(TranslateModel, MODEL_o115, LVar0, LVar1, 0)
-    Call(TranslateModel, MODEL_o116, LVar0, LVar1, 0)
-    Call(RotateModel, MODEL_o115, LVar2, 0, 0, 1)
-    Call(RotateModel, MODEL_o116, LVar2, 0, 0, 1)
-    Call(TranslateModel, MODEL_o115, 78, -19, -2)
-    Call(TranslateModel, MODEL_o116, 78, -19, -2)
-    Wait(1)
-EndLoop
-Label(0)
-Wait(30)
-Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o130, COLLIDER_FLAGS_UPPER_MASK)
-Return
-End
+        Call(TranslateModel, MODEL_o115, -78, 19, 2)
+        Call(TranslateModel, MODEL_o116, -78, 19, 2)
+        Call(TranslateModel, MODEL_o115, LVar0, LVar1, 0)
+        Call(TranslateModel, MODEL_o116, LVar0, LVar1, 0)
+        Call(RotateModel, MODEL_o115, LVar2, 0, 0, 1)
+        Call(RotateModel, MODEL_o116, LVar2, 0, 0, 1)
+        Call(TranslateModel, MODEL_o115, 78, -19, -2)
+        Call(TranslateModel, MODEL_o116, 78, -19, -2)
+        Wait(1)
+    EndLoop
+    Wait(30)
+    Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o130, COLLIDER_FLAGS_UPPER_MASK)
+    Return
+    End
 };
 
 EvtScript N(EVS_DamagedRightOnce) = {
@@ -430,19 +428,17 @@ EvtScript N(EVS_BreakSmokestack) = {
             SetF(LVar3, Float(0.0))
             SetF(LVar4, Float(0.0))
             IfGe(LVar2, 80)
-                Goto(0)
+                BreakLoop
             EndIf
         EndIf
-    EndIf
-    Call(TranslateModel, MODEL_o100, 124, 17, 3)
-    Call(TranslateModel, MODEL_o100, LVar0, LVar1, 0)
-    Call(RotateModel, MODEL_o100, LVar2, 0, 0, -1)
-    Call(TranslateModel, MODEL_o100, -124, -17, -3)
-    Wait(1)
-EndLoop
-Label(0)
-Return
-End
+        Call(TranslateModel, MODEL_o100, 124, 17, 3)
+        Call(TranslateModel, MODEL_o100, LVar0, LVar1, 0)
+        Call(RotateModel, MODEL_o100, LVar2, 0, 0, -1)
+        Call(TranslateModel, MODEL_o100, -124, -17, -3)
+        Wait(1)
+    EndLoop
+    Return
+    End
 };
 
 EvtScript N(EVS_BreakAntenna) = {
@@ -466,7 +462,7 @@ EvtScript N(EVS_BreakAntenna) = {
             SetF(LVar1, -40)
             MulF(LVar4, Float(-0.5))
             IfLe(LVar4, 1)
-                Goto(1)
+                BreakLoop
             EndIf
         EndIf
         IfGe(LVar2, 60)
@@ -483,7 +479,6 @@ EvtScript N(EVS_BreakAntenna) = {
         Call(TranslateModel, MODEL_o125, 34, -50, -10)
         Wait(1)
     EndLoop
-    Label(1)
     Wait(30)
     Return
     End

@@ -18,13 +18,13 @@ EvtScript N(D_80245CEC_DF4B8C) = {
     End
 };
 
-s32 N(EVS_TrainPath_LeftToRight)[] = {
+s32 N(TrainPath_LeftToRight)[] = {
     Float(-720.0), Float(0.0), Float(90.0),
     Float(720.0), Float(0.0),
     -1, -1, -1,
 };
 
-s32 N(EVS_TrainPath_RightToLeft)[] = {
+s32 N(TrainPath_RightToLeft)[] = {
     Float(720.0), Float(0.0), Float(270.0),
     Float(-720.0), Float(0.0),
     -1, -1, -1,
@@ -41,7 +41,7 @@ EvtScript N(EVS_EnterTrain) = {
     Switch(LVar0)
         CaseEq(omo_17_ENTRY_4)
             Set(MV_TrainUnk_00, 0)
-            Set(MV_TrainUnk_01, Ref(N(EVS_TrainPath_LeftToRight)))
+            Set(MV_TrainUnk_01, Ref(N(TrainPath_LeftToRight)))
             Set(MV_TrainUnk_02, 0)
             Exec(N(EVS_Scene_RideTrain))
             Set(MF_TrainUnk_00, true)
@@ -56,7 +56,7 @@ EvtScript N(EVS_EnterTrain) = {
             EndThread
         CaseEq(omo_17_ENTRY_5)
             Set(MV_TrainUnk_00, 0)
-            Set(MV_TrainUnk_01, Ref(N(EVS_TrainPath_RightToLeft)))
+            Set(MV_TrainUnk_01, Ref(N(TrainPath_RightToLeft)))
             Set(MV_TrainUnk_02, 0)
             Exec(N(EVS_Scene_RideTrain))
             Set(MF_TrainUnk_00, true)

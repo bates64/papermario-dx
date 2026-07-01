@@ -86,8 +86,6 @@ extern s32 PartnerIDFromMenuIndex[12]; // partner IDs
 
 // Scripts
 extern EvtScript EVS_NpcDefeat;
-extern EvtScript ShakeCam1;
-extern EvtScript ShakeCamX;
 
 extern MusicControlData gMusicControlData[2];
 
