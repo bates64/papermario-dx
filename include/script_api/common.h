@@ -84,9 +84,9 @@ API_CALLABLE(SetCustomGfxEnabled);
 API_CALLABLE(SetModelCustomGfx);
 
 /// Applies a tint mode to a list of models, a list of model groups, or the background.
-/// Pass `PTR_LIST_END` for the list to apply the tint to all models or groups.
+/// `target`: see `ApplyTintTarget`.
 /// @evtapi
-/// @param target APPLY_TINT_MODELS, APPLY_TINT_GROUPS, or APPLY_TINT_BG
+/// @param target
 /// @param modelIDList
 /// @param tintType
 API_CALLABLE(SetModelTintMode);
@@ -1229,11 +1229,12 @@ API_CALLABLE(OnFleeBattleDrops);
 /// @{
 /// @name Message
 
+/// `flags`: see `SpeechFlags`.
 /// @evtapi
 /// @param npcID
 /// @param talkAnim
 /// @param idleAnim
-/// @param flags -- see SpeechFlags
+/// @param flags
 /// @param messageID
 API_CALLABLE(SpeakToPlayer);
 
@@ -1709,10 +1710,11 @@ API_CALLABLE(GetFloatAngleClamped);
 ///   180 = -Z direction
 ///   270 = +X direction
 ///
-/// If the start and end points are identical, outAngle is left unchanged.
+/// If the start and end points are identical, `outAngle` is left unchanged.
+/// `outAngle` only supports integer values.
 ///
 /// @evtapi
-/// @param outAngle integer values only
+/// @param outAngle
 /// @param x1
 /// @param z1
 /// @param x2
@@ -1832,8 +1834,9 @@ API_CALLABLE(AdjustMusicProximityMix);
 
 /// Adjusts the proximity mix as the player enters or leaves a configured area.
 /// This function runs indefinitely and should be called from a thread.
+/// `trigger` points to a `MusicProximityTrigger`.
 /// @evtapi
-/// @param trigger MusicProximityTrigger*
+/// @param trigger
 API_CALLABLE(MonitorMusicProximityTrigger);
 
 /// @evtapi
@@ -2045,18 +2048,21 @@ API_CALLABLE(CloseChoicePopup);
 /// @param outHasItem
 API_CALLABLE(HasItem);
 
+/// `outName` receives either a `MsgID` or a message pointer from `gItemTable`.
 /// @evtapi
 /// @param itemID
-/// @param outName msgID or msg pointer from gItemTable
+/// @param outName
 API_CALLABLE(GetItemName);
 
-/// @evtapi
 /// Converts a player's position to the corresponding hand position used when
 /// holding, giving, or receiving an item.
+/// Each parameter is both input and output: pass the player position in and get
+/// the corresponding hand position back.
 ///
-/// @param posX  (in) Player X position; (out) hand X position.
-/// @param posY  (in) Player Y position; (out) hand Y position.
-/// @param posZ  (in) Player Z position; (out) hand Z position.
+/// @evtapi
+/// @param posX
+/// @param posY
+/// @param posZ
 API_CALLABLE(AddPlayerHandsOffset);
 
 /// @evtapi
@@ -2216,8 +2222,9 @@ API_CALLABLE(DismissEffect);
 /// @param effectPtr
 API_CALLABLE(DismissItemOutline);
 
+/// `direction`: see `SunFXDir`.
 /// @evtapi
-/// @param direction (see: `SunFXDir`)
+/// @param direction
 API_CALLABLE(SpawnSunEffect);
 
 /// @evtapi
