@@ -117,7 +117,7 @@ void sort_scripts(void) {
 void find_script_labels(Evt* script) {
     Bytecode* curLine;
     s32 type;
-    s32 label;
+    Bytecode label;
     s32 numArgs;
     s32 i;
     s32 j;
@@ -247,6 +247,8 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
     newScript->ptrFirstLine = (Bytecode*)source;
     newScript->ptrCurLine = (Bytecode*)source;
     newScript->userData = nullptr;
+    newScript->argVars = nullptr;
+    newScript->argCount = 0;
     newScript->blockingParent = nullptr;
     newScript->childScript = nullptr;
     newScript->parentScript = nullptr;
@@ -315,6 +317,8 @@ Evt* start_script_in_group(EvtScript* source, u8 priority, u8 flags, u8 groupFla
     newScript->ptrFirstLine = (Bytecode*)source;
     newScript->ptrCurLine = (Bytecode*)source;
     newScript->userData = nullptr;
+    newScript->argVars = nullptr;
+    newScript->argCount = 0;
     newScript->blockingParent = nullptr;
     newScript->childScript = nullptr;
     newScript->parentScript = nullptr;
@@ -381,6 +385,8 @@ Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 flags) {
 
     child->curOpcode = EVT_OP_INTERNAL_FETCH;
     child->userData = nullptr;
+    child->argVars = nullptr;
+    child->argCount = 0;
     child->blockingParent = parentScript;
     child->childScript = nullptr;
     child->parentScript = nullptr;
@@ -450,6 +456,8 @@ Evt* start_child_thread(Evt* parentScript, Bytecode* nextLine, s32 newState) {
     child->ptrCurLine = nextLine;
     child->curOpcode = EVT_OP_INTERNAL_FETCH;
     child->userData = nullptr;
+    child->argVars = nullptr;
+    child->argCount = 0;
     child->blockingParent = nullptr;
     child->parentScript = parentScript;
     child->childScript = nullptr;
@@ -512,6 +520,12 @@ Evt* func_802C3C10(Evt* script, Bytecode* line, s32 arg2) {
     if (script->userData != nullptr) {
         heap_free(script->userData);
         script->userData = nullptr;
+    }
+
+    if (script->argVars != nullptr) {
+        heap_free(script->argVars);
+        script->argVars = nullptr;
+        script->argCount = 0;
     }
 
     if (script->childScript != 0) {
@@ -672,6 +686,12 @@ void kill_script(Evt* instanceToKill) {
     if (instanceToKill->userData != nullptr) {
         heap_free(instanceToKill->userData);
         instanceToKill->userData = nullptr;
+    }
+
+    if (instanceToKill->argVars != nullptr) {
+        heap_free(instanceToKill->argVars);
+        instanceToKill->argVars = nullptr;
+        instanceToKill->argCount = 0;
     }
 
     heap_free((*gCurrentScriptListPtr)[i]);

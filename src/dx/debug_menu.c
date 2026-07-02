@@ -2126,7 +2126,7 @@ DebugOpcode DebugOps[] = {
     [EVT_OP_END_CHILD_THREAD]   { "EndChildThread" },
     [EVT_OP_DEBUG_LOG]          { "Log" },
     [EVT_OP_DEBUG_PRINT_VAR]    { "PrintVar" },
-    [EVT_OP_92]                 { "Op92" },
+    [EVT_OP_EXPECT_ARGS]        { "ExpectArgs" },
     [EVT_OP_93]                 { "Op93" },
     [EVT_OP_94]                 { "Op94" },
     [EVT_OP_DEBUG_BREAKPOINT]   { "Breakpoint" },

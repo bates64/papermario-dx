@@ -104,7 +104,7 @@ enum {
     EVT_OP_END_CHILD_THREAD,
     EVT_OP_DEBUG_LOG,
     EVT_OP_DEBUG_PRINT_VAR, ///< Args: expression
-    EVT_OP_92,
+    EVT_OP_EXPECT_ARGS,
     EVT_OP_93,
     EVT_OP_94,
     EVT_OP_DEBUG_BREAKPOINT,

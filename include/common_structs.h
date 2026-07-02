@@ -427,54 +427,55 @@ typedef struct Evt {
     /* 0x007 */ s8 switchDepth; /* how many nested switches we are in, max = 8 */
     /* 0x008 */ Bytecode* ptrNextLine;
     /* 0x00C */ Bytecode* ptrReadPos;
-    /* 0x010 */ s8 labelIndices[16];
-    /* 0x020 */ UNK_PTR labelPositions[16];
-    /* 0x060 */ UNK_PTR userData; /* unknown pointer; allocated on the heap, free'd in kill_script() */
-    /* 0x064 */ struct Evt* blockingParent; /* parent? */
-    /* 0x068 */ struct Evt* childScript;
-    /* 0x06C */ struct Evt* parentScript; /* brother? */
-    /* 0x070 */ union {
+    /* 0x010 */ Bytecode labelIndices[16];
+    /* 0x050 */ Bytecode* labelPositions[16];
+    /* 0x090 */ void* userData; /* unknown pointer; allocated on the heap, free'd in kill_script() */
+    /* 0x094 */ struct Evt* blockingParent; /* parent? */
+    /* 0x098 */ struct Evt* childScript;
+    /* 0x09C */ struct Evt* parentScript; /* brother? */
+    /* 0x0A0 */ union {
     /*       */     s32 functionTemp[4];
     /*       */     f32 functionTempF[4];
     /*       */     void* functionTempPtr[4];
     /*       */ };
-    /* 0x080 */ ApiFunc callFunction;
-    /* 0x084 */ union {
+    /* 0x0B0 */ ApiFunc callFunction;
+    /* 0x0B4 */ union {
     /*       */     s32 varTable[16];
     /*       */     f32 varTableF[16];
     /*       */     void* varTablePtr[16];
     /*       */ };
-    /* 0x0C4 */ s32 varFlags[3];
-    /* 0x0D0 */ s32 loopStartTable[8];
-    /* 0x0F0 */ s32 loopCounterTable[8];
-    /* 0x110 */ s8 switchBlockState[8];
-    /* 0x118 */ s32 switchBlockValue[8];
-    /* 0x138 */ s32* buffer;
-    /* 0x13C */ s32* array;
-    /* 0x140 */ s32* flagArray;
-    /* 0x144 */ s32 id;
-    /* 0x148 */ union {
-        s32 enemyID;
-        s32 actorID;
-        struct Enemy* enemy; ///< For overworld scripts owned by an Npc
-        struct Actor* actor; ///< For battle scripts
-    } owner1;                ///< Initially -1
-    /* 0x14C */ union {
-        s32 npcID;
-        s32 triggerID;
-        struct Npc* npc;            ///< For overworld scripts owned by an Npc
-        struct Trigger* trigger;
-    } owner2;                       ///< Initially -1
-    /* 0x150 */ f32 timeScale;
-    /* 0x154 */ f32 frameCounter;
-    /* 0x158 */ s32 unk_158;
-    /* 0x15C */ Bytecode* ptrFirstLine;
-    /* 0x160 */ Bytecode* ptrSavedPos;
-    /* 0x164 */ Bytecode* ptrCurLine;
-    /* 0x168 */ b8 debugPaused;
-    /* 0x169 */ s8 debugStep;
-    /* 0x16A */ u16 curLine;
-} Evt; // size = 0x16C
+    /* 0x0F4 */ s32 varFlags[3];
+    /* 0x100 */ s32 loopStartTable[8];
+    /* 0x120 */ s32 loopCounterTable[8];
+    /* 0x140 */ s8 switchBlockState[8];
+    /* 0x148 */ s32 switchBlockValue[8];
+    /* 0x168 */ s32* buffer;
+    /* 0x16C */ s32* array;
+    /* 0x170 */ s32* flagArray;
+    /* 0x174 */ s32 id;
+    /* 0x178 */ union {
+    /*       */     s32 enemyID;
+    /*       */     s32 actorID;
+    /*       */     struct Enemy* enemy; ///< For overworld scripts owned by an Enemy AI
+    /*       */     struct Actor* actor; ///< For battle scripts
+    /* 0x178 */ } owner1;                ///< Initially -1
+    /* 0x17C */ union {
+    /*       */     s32 npcID;
+    /*       */     s32 triggerID;
+    /*       */     struct Npc* npc;            ///< For overworld scripts owned by an Npc
+    /*       */     struct Trigger* trigger;    ///< For overworld scripts bound to a Trigger
+    /* 0x17C */ } owner2;                       ///< Initially -1
+    /* 0x180 */ f32 timeScale;
+    /* 0x184 */ f32 frameCounter;
+    /* 0x188 */ s32 unk_158;
+    /* 0x18C */ Bytecode* ptrFirstLine;
+    /* 0x190 */ Bytecode* ptrSavedPos;
+    /* 0x194 */ Bytecode* ptrCurLine;
+    /* 0x198 */ b8 debugPaused;
+    /* 0x199 */ s8 debugStep;
+    /* 0x19C */ Bytecode* argVars;
+    /* 0x1A0 */ s32 argCount;
+} Evt; // size = 0x1A4
 
 typedef Evt* ScriptList[MAX_SCRIPTS];
 

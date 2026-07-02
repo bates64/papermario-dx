@@ -23,6 +23,8 @@ extern "C" {
 
 #define EVT_LOCAL_VAR_CUTOFF     -20000000
 #define EVT_LOCAL_VAR_OFFSET      30000000
+#define EVT_ARG_VAR_CUTOFF      -34000000
+#define EVT_ARG_VAR_OFFSET       35000000
 #define EVT_MAP_VAR_CUTOFF       -40000000
 #define EVT_MAP_VAR_OFFSET        50000000
 #define EVT_LOCAL_FLAG_CUTOFF    -60000000
@@ -128,6 +130,10 @@ extern "C" {
 /// Range: `0 <= v`
 #define ArrayFlag(INDEX) ((INDEX) - EVT_ARRAY_FLAG_OFFSET)
 
+/// Argument Word. A variable parameter to this script execution.
+/// Args are set by Exec/ExecGetTID/ExecWait and are not inherited by child scripts or thread blocks.
+#define ArgVar(INDEX) ((INDEX) - EVT_ARG_VAR_OFFSET)
+
 /// An entity index. Entities are assigned indices in the order they are created with Call(MakeEntity, ...).
 /// Supported in BindTrigger and BindPadlock only.
 #define EVT_ENTITY_ID_BIT 0x4000
@@ -144,6 +150,7 @@ extern "C" {
 #define EVT_INDEX_OF_GAME_BYTE(v)   ((v) + EVT_GAME_BYTE_OFFSET)
 #define EVT_INDEX_OF_ARRAY_FLAG(v)  ((v) + EVT_ARRAY_FLAG_OFFSET)
 #define EVT_INDEX_OF_ARRAY_VAR(v)   ((v) + EVT_ARRAY_VAR_OFFSET)
+#define EVT_INDEX_OF_ARG_VAR(v)     ((v) + EVT_ARG_VAR_OFFSET)
 
 // shorthand names for LocalVar
 #define LVar0 LocalVar(0)
@@ -162,6 +169,16 @@ extern "C" {
 #define LVarD LocalVar(13)
 #define LVarE LocalVar(14)
 #define LVarF LocalVar(15)
+
+// shorthand names for ArgVar
+#define ArgVar0 ArgVar(0)
+#define ArgVar1 ArgVar(1)
+#define ArgVar2 ArgVar(2)
+#define ArgVar3 ArgVar(3)
+#define ArgVar4 ArgVar(4)
+#define ArgVar5 ArgVar(5)
+#define ArgVar6 ArgVar(6)
+#define ArgVar7 ArgVar(7)
 
 // shorthand names for common LocalFlags
 // these actually run all the way up to LocalFlag(96), but nothing past 15 is ever used
@@ -225,12 +242,12 @@ extern "C" {
 /// Marks this point in the script as a Goto target.
 ///
 /// Range: `0 <= LABEL_ID <= 0x16`
-#define Label(LABEL_ID)                     EVT_CMD(EVT_OP_LABEL, LABEL_ID),
+#define Label(LABEL_ID)                     EVT_CMD(EVT_OP_LABEL, (Bytecode) LABEL_ID),
 
 /// Moves execution to the given label.
 ///
 /// Range: `0 <= LABEL_ID <= 0x16`
-#define Goto(LABEL_ID)                      EVT_CMD(EVT_OP_GOTO, LABEL_ID),
+#define Goto(LABEL_ID)                      EVT_CMD(EVT_OP_GOTO, (Bytecode) LABEL_ID),
 
 /// Marks the beginning of a loop.
 ///
@@ -374,7 +391,7 @@ extern "C" {
 #define SetF(VAR, FLOAT_VALUE)              EVT_CMD(EVT_OP_SETF, VAR, FLOAT_VALUE),
 
 // Basic arithmetic operations.
-#define Add(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_ADD, VAR, INT_VALUE),
+#define Add(VAR, INT_VALUE, REST...)        EVT_CMD(EVT_OP_ADD, VAR, INT_VALUE, ##REST),
 #define Sub(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_SUB, VAR, INT_VALUE),
 #define Mul(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_MUL, VAR, INT_VALUE),
 #define Div(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_DIV, VAR, INT_VALUE),
@@ -427,7 +444,7 @@ extern "C" {
 
 /// Loads an s32 array pointer into the current thread for use with `UF(INDEX)`.
 /// Flags are stored in a 'packed' structure where indices refer to bits.
-#define UseFlagArray(PACKED_FLAGS_PTR)    EVT_CMD(EVT_OP_USE_FLAG_ARRAY, (Bytecode) PACKED_FLAGS_PTR),
+#define UseFlagArray(PACKED_FLAGS_PTR)    EVT_CMD(EVT_OP_USE_FLAGS, (Bytecode) PACKED_FLAGS_PTR),
 
 /// Allocates a new array of the given size for use with `ArrayVar(INDEX)`.
 /// EVT scripts do not have to worry about freeing this array.
@@ -453,12 +470,13 @@ extern "C" {
 /// - Flag array pointer
 /// - Priority
 /// - Group
-#define Exec(EVT_SOURCE)                    EVT_CMD(EVT_OP_EXEC, (Bytecode) EVT_SOURCE),
+#define Exec(EVT_SOURCE, ARGS...)           EVT_CMD(EVT_OP_EXEC, (Bytecode) EVT_SOURCE, ##ARGS),
 
 /// Identical to Exec, but the newly-launched thread ID is stored in OUTVAR.
 /// The other thread may be interacted with using KillThread, SuspendThread, ResumeThread, and
 /// IsThreadRunning.
-#define ExecGetTID(EVT_SOURCE, OUTVAR)    EVT_CMD(EVT_OP_EXEC_GET_TID, (Bytecode) EVT_SOURCE, OUTVAR),
+#define ExecGetTID(EVT_SOURCE, OUTVAR, ARGS...) \
+    EVT_CMD(EVT_OP_EXEC_GET_TID, (Bytecode) EVT_SOURCE, OUTVAR, ##ARGS),
 
 /// Launches a new child thread.
 /// Blocks for at least one frame unless the child thread is made to have a higher priority than the parent.
@@ -473,7 +491,10 @@ extern "C" {
 ///
 /// Child threads are killed, suspended, and resumed as their parents are, for example, a different thread using
 /// KillThread to kill a parent thread would also kill its child thread(s) launched by this command.
-#define ExecWait(EVT_SOURCE)               EVT_CMD(EVT_OP_EXEC_WAIT, (Bytecode) EVT_SOURCE),
+#define ExecWait(EVT_SOURCE, ARGS...)      EVT_CMD(EVT_OP_EXEC_WAIT, (Bytecode) EVT_SOURCE, ##ARGS),
+
+/// Assert that this script invocation received exactly NUM_ARGS arguments.
+#define ExpectArgs(NUM_ARGS)               EVT_CMD(EVT_OP_EXPECT_ARGS, NUM_ARGS),
 
 /// Sets up a script to launch when a particular event is triggered.
 ///
