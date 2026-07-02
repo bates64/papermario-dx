@@ -9,10 +9,8 @@ EvtScript N(EVS_SetupMusic) = {
     Switch(GB_StoryProgress)
         CaseEq(STORY_INTRO)
             Call(FadeOutMusic, 0, 500)
-        EndCaseGroup
         CaseGe(STORY_EPILOGUE)
             Call(FadeOutMusic, 0, 500)
-        EndCaseGroup
         CaseDefault
             Call(SetMusic, 0, SONG_MARIO_BROS_HOUSE, 0, VOL_LEVEL_FULL)
     EndSwitch

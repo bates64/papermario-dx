@@ -246,7 +246,6 @@ EvtScript N(EVS_NpcHit_KeepAwayBoo1) = {
         CaseEq(ENCOUNTER_TRIGGER_JUMP)
             Set(LVar0, NPC_KeepAwayBoo1)
             ExecWait(N(EVS_OnHit_KeepAwayBoo))
-        EndCaseGroup
     EndSwitch
     Return
     End
@@ -261,7 +260,6 @@ EvtScript N(EVS_NpcHit_KeepAwayBoo2) = {
         CaseEq(ENCOUNTER_TRIGGER_JUMP)
             Set(LVar0, NPC_KeepAwayBoo2)
             ExecWait(N(EVS_OnHit_KeepAwayBoo))
-        EndCaseGroup
     EndSwitch
     Return
     End
@@ -276,7 +274,6 @@ EvtScript N(EVS_NpcHit_KeepAwayBoo3) = {
         CaseEq(ENCOUNTER_TRIGGER_JUMP)
             Set(LVar0, NPC_KeepAwayBoo3)
             ExecWait(N(EVS_OnHit_KeepAwayBoo))
-        EndCaseGroup
     EndSwitch
     Return
     End
@@ -291,7 +288,6 @@ EvtScript N(EVS_NpcHit_KeepAwayBoo4) = {
         CaseEq(ENCOUNTER_TRIGGER_JUMP)
             Set(LVar0, NPC_KeepAwayBoo4)
             ExecWait(N(EVS_OnHit_KeepAwayBoo))
-        EndCaseGroup
     EndSwitch
     Return
     End
@@ -306,7 +302,6 @@ EvtScript N(EVS_NpcHit_KeepAwayBoo5) = {
         CaseEq(ENCOUNTER_TRIGGER_JUMP)
             Set(LVar0, NPC_KeepAwayBoo5)
             ExecWait(N(EVS_OnHit_KeepAwayBoo))
-        EndCaseGroup
     EndSwitch
     Return
     End
@@ -321,7 +316,6 @@ EvtScript N(EVS_NpcHit_KeepAwayBoo6) = {
         CaseEq(ENCOUNTER_TRIGGER_JUMP)
             Set(LVar0, NPC_KeepAwayBoo6)
             ExecWait(N(EVS_OnHit_KeepAwayBoo))
-        EndCaseGroup
     EndSwitch
     Return
     End
@@ -336,7 +330,6 @@ EvtScript N(EVS_NpcHit_KeepAwayBoo7) = {
         CaseEq(ENCOUNTER_TRIGGER_JUMP)
             Set(LVar0, NPC_KeepAwayBoo7)
             ExecWait(N(EVS_OnHit_KeepAwayBoo))
-        EndCaseGroup
     EndSwitch
     Return
     End
@@ -351,7 +344,6 @@ EvtScript N(EVS_NpcHit_KeepAwayBoo8) = {
         CaseEq(ENCOUNTER_TRIGGER_JUMP)
             Set(LVar0, NPC_KeepAwayBoo8)
             ExecWait(N(EVS_OnHit_KeepAwayBoo))
-        EndCaseGroup
     EndSwitch
     Return
     End

@@ -111,8 +111,10 @@ EvtScript N(EVS_Main) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(trd_00_ENTRY_0)
+            // do nothing
         CaseOrEq(trd_00_ENTRY_1)
         CaseOrEq(trd_00_ENTRY_4)
+    EndCaseGroup
     EndSwitch
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))

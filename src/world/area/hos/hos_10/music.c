@@ -3,11 +3,10 @@
 EvtScript N(EVS_SetupMusic) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseOrEq(hos_10_ENTRY_1)
+        CaseEq(hos_10_ENTRY_1)
             Call(SetMusic, 0, SONG_INTRO_STORY, BGM_VARIATION_3, VOL_LEVEL_FULL)
-        EndCaseGroup
-        CaseOrEq(hos_10_ENTRY_2)
-        EndCaseGroup
+        CaseEq(hos_10_ENTRY_2)
+            // do nothing
         CaseOrEq(hos_10_ENTRY_3)
         CaseOrEq(hos_10_ENTRY_4)
         EndCaseGroup

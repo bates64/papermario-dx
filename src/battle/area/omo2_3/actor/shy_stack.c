@@ -839,6 +839,7 @@ EvtScript N(EVS_HandleEvent) = {
             ExecWait(N(EVS_SpinSmashDeath))
             Return
         CaseEq(EVENT_SHOCK_HIT)
+            // do nothing
         CaseOrEq(EVENT_ZERO_DAMAGE)
         CaseOrEq(EVENT_IMMUNE)
         CaseOrEq(EVENT_SPIKE_TAUNT)

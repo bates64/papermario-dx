@@ -99,7 +99,6 @@ EvtScript N(EVS_NpcHit_ThrownBone) = {
         EndCaseGroup
         CaseDefault
             Call(SetBattleAsScripted)
-        EndCaseGroup
     EndSwitch
     Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_ThrownBone)))
     Return

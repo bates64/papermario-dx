@@ -109,7 +109,6 @@ EvtScript N(EVS_NpcHit_SpyGuyRock) = {
         EndCaseGroup
         CaseDefault
             Call(SetBattleAsScripted)
-        EndCaseGroup
     EndSwitch
     Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_SpyGuyRock)))
     Return

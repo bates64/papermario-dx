@@ -181,6 +181,7 @@ EvtScript N(EVS_NpcHit_JrTroopa_02) = {
             Call(DisablePlayerInput, true)
             Call(SpeakToPlayer, NPC_SELF, ANIM_JrTroopa_Defeated, ANIM_JrTroopa_Defeated, 5, MSG_CH1_012B)
             Call(DisablePlayerInput, false)
+    EndCaseGroup
     EndSwitch
     Return
     End

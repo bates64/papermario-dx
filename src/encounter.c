@@ -131,11 +131,13 @@ EvtScript EnemyNpcHit = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseEq(ENCOUNTER_TRIGGER_NONE)
+            // do nothing
         CaseOrEq(ENCOUNTER_TRIGGER_JUMP)
         CaseOrEq(ENCOUNTER_TRIGGER_HAMMER)
         CaseOrEq(ENCOUNTER_TRIGGER_PARTNER)
             Call(GetSelfAnimationFromTable, ENEMY_ANIM_INDEX_HIT, LVar0)
             ExecWait(EVS_NpcHitRecoil)
+        EndCaseGroup
         CaseEq(ENCOUNTER_TRIGGER_SPIN)
             Thread
                 Call(EnemyHasNoSpinReaction, LVar0)
@@ -148,7 +150,6 @@ EvtScript EnemyNpcHit = {
                     EndLoop
                 EndIf
             EndThread
-        EndCaseGroup
     EndSwitch
     Return
     End

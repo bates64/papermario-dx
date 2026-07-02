@@ -992,6 +992,7 @@ EvtScript N(EVS_Attack_IcyBreath) = {
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
             Return
+    EndCaseGroup
     EndSwitch
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
@@ -1101,6 +1102,7 @@ EvtScript N(EVS_Attack_IceBolt) = {
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
             Return
+    EndCaseGroup
     EndSwitch
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(GetStatusFlags, ACTOR_SELF, LVar3)
@@ -1672,6 +1674,7 @@ EvtScript N(EVS_Attack_CloneBreath) = {
             Call(UseIdleAnimation, LVarA, true)
             Call(UseIdleAnimation, LVarB, true)
             Return
+    EndCaseGroup
     EndSwitch
     Call(GetActorFlags, ACTOR_SELF, LVar0)
     IfFlag(LVar0, ACTOR_FLAG_FLYING)
@@ -1935,6 +1938,7 @@ EvtScript N(EVS_Attack_SpitBits) = {
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
             Return
+    EndCaseGroup
     EndSwitch
     Call(GetActorVar, ACTOR_SELF, AVAR_King_CubeBitID, LVar0)
     Call(ActorExists, LVar0, LVar1)

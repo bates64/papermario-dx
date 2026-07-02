@@ -241,7 +241,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_GrooveGuy_Anim04)
             ExecWait(EVS_Enemy_AirLift)
-        CaseOrEq(EVENT_BLOW_AWAY)
+        CaseEq(EVENT_BLOW_AWAY)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_GrooveGuy_Anim04)
             ExecWait(EVS_Enemy_BlowAway)

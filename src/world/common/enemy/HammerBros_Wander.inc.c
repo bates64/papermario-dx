@@ -99,7 +99,6 @@ EvtScript N(EVS_NpcHit_HammerBros_Hammer) = {
         EndCaseGroup
         CaseDefault
             Call(SetBattleAsScripted)
-        EndCaseGroup
     EndSwitch
     Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_HammerBros_Hammer)))
     Return

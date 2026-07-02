@@ -105,7 +105,6 @@ EvtScript N(EVS_Main) = {
         EndCaseGroup
         CaseEq(tik_20_ENTRY_2)
             EVT_ENTER_PIPE_VERTICAL(N(EVS_BindExitTriggers))
-        EndCaseGroup
     EndSwitch
     Wait(1)
     Return

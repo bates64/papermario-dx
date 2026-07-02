@@ -14,15 +14,13 @@ Validation currently catches:
 - mismatched or unclosed Loop/EndLoop blocks;
 - mismatched or unclosed Switch/EndSwitch blocks;
 - Loop and Switch nesting deeper than the runtime supports;
+- CaseOrEq/CaseAndEq groups missing an EndCaseGroup;
+- CaseOrEq and CaseAndEq mixed within the same case group;
+- EndCaseGroup without an active CaseOrEq/CaseAndEq group;
 - mismatched or unclosed Thread/EndThread and ChildThread/EndChildThread blocks;
 - BreakLoop outside a Loop;
 - BreakSwitch or Case commands outside a Switch;
 - constant Goto(label) commands with no matching Label(label).
-
-TODO:
-- writable destination operands
-- obvious zero-divides
-- nonblocking infinite loops
 """
 
 from __future__ import annotations
@@ -177,6 +175,11 @@ CASE_OPS = {
     Opcode.EVT_OP_CASE_RANGE,
 }
 
+CASE_GROUP_OPS = {
+    Opcode.EVT_OP_CASE_OR_EQ,
+    Opcode.EVT_OP_CASE_AND_EQ,
+}
+
 
 @dataclass(frozen=True)
 class Section:
@@ -210,6 +213,12 @@ class ScriptSymbol:
 @dataclass(frozen=True)
 class Block:
     kind: str
+    start_pos: int
+
+
+@dataclass(frozen=True)
+class CaseGroup:
+    opcode: Opcode
     start_pos: int
 
 
@@ -384,6 +393,7 @@ class ScriptWalkContext:
         self.gotos: list[tuple[int, int]] = []
         self.cur_loop_depth = 0
         self.cur_switch_depth = 0
+        self.case_group_stack: list[CaseGroup | None] = []
 
     def error_at(self, op_pos: int, message: str) -> ValidationError:
         return ValidationError(f"{self.symbol.name}+0x{op_pos * 4:X}: {message}")
@@ -443,16 +453,52 @@ class ScriptWalkContext:
                 f"Switch nesting depth {self.cur_switch_depth} exceeds runtime limit of {MAX_SWITCH_DEPTH}",
             )
         self.push("switch", op_pos)
+        self.case_group_stack.append(None)
 
     def exit_switch(self, op_pos: int) -> None:
         if not self.top_is("switch"):
             raise self.error_at(op_pos, "EndSwitch without matching Switch")
+        self.check_no_open_case_group(op_pos, "EndSwitch")
         self.pop()
+        self.case_group_stack.pop()
         self.cur_switch_depth -= 1
 
     def check_inside_switch(self, op_pos: int, name: str) -> None:
         if not self.contains("switch"):
             raise self.error_at(op_pos, f"{name} outside Switch")
+
+    def active_case_group(self) -> CaseGroup | None:
+        if not self.case_group_stack:
+            return None
+        return self.case_group_stack[-1]
+
+    def check_no_open_case_group(self, op_pos: int, name: str) -> None:
+        group = self.active_case_group()
+        if group is not None:
+            raise self.error_at(
+                op_pos,
+                f"{name} reached before EndCaseGroup for {group.opcode.name} group opened at +0x{group.start_pos * 4:X}",
+            )
+
+    def enter_case(self, op_pos: int, opcode: Opcode) -> None:
+        self.check_inside_switch(op_pos, opcode.name)
+        if opcode in CASE_GROUP_OPS:
+            group = self.active_case_group()
+            if group is None:
+                self.case_group_stack[-1] = CaseGroup(opcode, op_pos)
+            elif group.opcode != opcode:
+                raise self.error_at(
+                    op_pos,
+                    f"{opcode.name} cannot continue {group.opcode.name} group opened at +0x{group.start_pos * 4:X}",
+                )
+        else:
+            self.check_no_open_case_group(op_pos, opcode.name)
+
+    def end_case_group(self, op_pos: int) -> None:
+        self.check_inside_switch(op_pos, Opcode.EVT_OP_END_CASE_GROUP.name)
+        if self.active_case_group() is None:
+            raise self.error_at(op_pos, "EndCaseGroup without active CaseOrEq/CaseAndEq group")
+        self.case_group_stack[-1] = None
 
     def enter_thread(self, op_pos: int) -> None:
         self.push("thread", op_pos)
@@ -533,8 +579,10 @@ def validate_script(script: ScriptSymbol, data: bytes) -> None:
             ctx.check_inside_loop(op_pos)
         elif opcode in {Opcode.EVT_OP_SWITCH, Opcode.EVT_OP_SWITCH_CONST}:
             ctx.enter_switch(op_pos)
-        elif opcode in CASE_OPS or opcode == Opcode.EVT_OP_END_CASE_GROUP:
-            ctx.check_inside_switch(op_pos, opcode.name)
+        elif opcode in CASE_OPS:
+            ctx.enter_case(op_pos, opcode)
+        elif opcode == Opcode.EVT_OP_END_CASE_GROUP:
+            ctx.end_case_group(op_pos)
         elif opcode == Opcode.EVT_OP_BREAK_SWITCH:
             ctx.check_inside_switch(op_pos, "BreakSwitch")
         elif opcode == Opcode.EVT_OP_END_SWITCH:

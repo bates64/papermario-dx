@@ -8,7 +8,6 @@ EvtScript N(EVS_SetupMusic) = {
         EndCaseGroup
         CaseDefault
             Call(SetMusic, 0, SONG_DRY_DRY_OUTPOST, 0, VOL_LEVEL_FULL)
-        EndCaseGroup
     EndSwitch
     Return
     End

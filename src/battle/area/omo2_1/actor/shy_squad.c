@@ -828,6 +828,7 @@ EvtScript N(EVS_HandleEvent) = {
     Call(GetLastEvent, ACTOR_SELF, LVarF)
     Switch(LVarF)
         CaseEq(EVENT_BEGIN_FIRST_STRIKE)
+            // do nothing
         CaseOrEq(EVENT_HIT_COMBO)
         CaseOrEq(EVENT_HIT)
             Call(SetActorVar, ACTOR_SELF, AVAR_HasBeenAttacked, 1)
