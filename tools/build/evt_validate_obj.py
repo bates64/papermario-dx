@@ -13,20 +13,16 @@ Validation currently catches:
 - mismatched or unclosed If/Else/EndIf blocks;
 - mismatched or unclosed Loop/EndLoop blocks;
 - mismatched or unclosed Switch/EndSwitch blocks;
+- Loop and Switch nesting deeper than the runtime supports;
 - mismatched or unclosed Thread/EndThread and ChildThread/EndChildThread blocks;
 - BreakLoop outside a Loop;
 - BreakSwitch or Case commands outside a Switch;
 - constant Goto(label) commands with no matching Label(label).
 
 TODO:
-- opcode and argument counts
-- matching If/Switch/Loop structures
-- valid labels
-- nesting limits
 - writable destination operands
 - obvious zero-divides
 - nonblocking infinite loops
-- malformed script termination
 """
 
 from __future__ import annotations
@@ -36,6 +32,7 @@ import re
 import struct
 import sys
 from dataclasses import dataclass
+from enum import IntEnum
 from pathlib import Path
 from typing import Iterable
 
@@ -46,209 +43,139 @@ SHN_UNDEF = 0
 
 BYTECODE_SIZE = 4
 ARGC_MASK = 0xFFFF
+MAX_LOOP_DEPTH = 8
+MAX_SWITCH_DEPTH = 8
 
 
-OPCODES = {
-    0: "EVT_OP_INTERNAL_FETCH",
-    1: "EVT_OP_END",
-    2: "EVT_OP_RETURN",
-    3: "EVT_OP_LABEL",
-    4: "EVT_OP_GOTO",
-    5: "EVT_OP_LOOP",
-    6: "EVT_OP_END_LOOP",
-    7: "EVT_OP_BREAK_LOOP",
-    8: "EVT_OP_WAIT_FRAMES",
-    9: "EVT_OP_WAIT_SECS",
-    10: "EVT_OP_IF_EQ",
-    11: "EVT_OP_IF_NE",
-    12: "EVT_OP_IF_LT",
-    13: "EVT_OP_IF_GT",
-    14: "EVT_OP_IF_LE",
-    15: "EVT_OP_IF_GE",
-    16: "EVT_OP_IF_FLAG",
-    17: "EVT_OP_IF_NOT_FLAG",
-    18: "EVT_OP_ELSE",
-    19: "EVT_OP_END_IF",
-    20: "EVT_OP_SWITCH",
-    21: "EVT_OP_SWITCH_CONST",
-    22: "EVT_OP_CASE_EQ",
-    23: "EVT_OP_CASE_NE",
-    24: "EVT_OP_CASE_LT",
-    25: "EVT_OP_CASE_GT",
-    26: "EVT_OP_CASE_LE",
-    27: "EVT_OP_CASE_GE",
-    28: "EVT_OP_CASE_DEFAULT",
-    29: "EVT_OP_CASE_OR_EQ",
-    30: "EVT_OP_CASE_AND_EQ",
-    31: "EVT_OP_CASE_FLAG",
-    32: "EVT_OP_END_CASE_GROUP",
-    33: "EVT_OP_CASE_RANGE",
-    34: "EVT_OP_BREAK_SWITCH",
-    35: "EVT_OP_END_SWITCH",
-    36: "EVT_OP_SET",
-    37: "EVT_OP_SET_CONST",
-    38: "EVT_OP_SETF",
-    39: "EVT_OP_ADD",
-    40: "EVT_OP_SUB",
-    41: "EVT_OP_MUL",
-    42: "EVT_OP_DIV",
-    43: "EVT_OP_MOD",
-    44: "EVT_OP_ADDF",
-    45: "EVT_OP_SUBF",
-    46: "EVT_OP_MULF",
-    47: "EVT_OP_DIVF",
-    48: "EVT_OP_USE_BUF",
-    49: "EVT_OP_BUF_READ1",
-    50: "EVT_OP_BUF_READ2",
-    51: "EVT_OP_BUF_READ3",
-    52: "EVT_OP_BUF_READ4",
-    53: "EVT_OP_BUF_PEEK",
-    54: "EVT_OP_USE_FBUF",
-    55: "EVT_OP_FBUF_READ1",
-    56: "EVT_OP_FBUF_READ2",
-    57: "EVT_OP_FBUF_READ3",
-    58: "EVT_OP_FBUF_READ4",
-    59: "EVT_OP_FBUF_PEEK",
-    60: "EVT_OP_USE_ARRAY",
-    61: "EVT_OP_USE_FLAGS",
-    62: "EVT_OP_MALLOC_ARRAY",
-    63: "EVT_OP_BITWISE_AND",
-    64: "EVT_OP_BITWISE_AND_CONST",
-    65: "EVT_OP_BITWISE_OR",
-    66: "EVT_OP_BITWISE_OR_CONST",
-    67: "EVT_OP_CALL",
-    68: "EVT_OP_EXEC",
-    69: "EVT_OP_EXEC_GET_TID",
-    70: "EVT_OP_EXEC_WAIT",
-    71: "EVT_OP_BIND_TRIGGER",
-    72: "EVT_OP_UNBIND",
-    73: "EVT_OP_KILL_THREAD",
-    74: "EVT_OP_JUMP",
-    75: "EVT_OP_SET_PRIORITY",
-    76: "EVT_OP_SET_TIMESCALE",
-    77: "EVT_OP_SET_GROUP",
-    78: "EVT_OP_BIND_PADLOCK",
-    79: "EVT_OP_SUSPEND_GROUP",
-    80: "EVT_OP_RESUME_GROUP",
-    81: "EVT_OP_SUSPEND_OTHERS",
-    82: "EVT_OP_RESUME_OTHERS",
-    83: "EVT_OP_SUSPEND_THREAD",
-    84: "EVT_OP_RESUME_THREAD",
-    85: "EVT_OP_IS_THREAD_RUNNING",
-    86: "EVT_OP_THREAD",
-    87: "EVT_OP_END_THREAD",
-    88: "EVT_OP_CHILD_THREAD",
-    89: "EVT_OP_END_CHILD_THREAD",
-    90: "EVT_OP_DEBUG_LOG",
-    91: "EVT_OP_DEBUG_PRINT_VAR",
-    92: "EVT_OP_92",
-    93: "EVT_OP_93",
-    94: "EVT_OP_94",
-    95: "EVT_OP_DEBUG_BREAKPOINT",
+class Opcode(IntEnum):
+    def __new__(cls, opcode: int, argc: int | None):
+        obj = int.__new__(cls, opcode)
+        obj._value_ = opcode
+        obj.argc = argc
+        return obj
+
+    EVT_OP_INTERNAL_FETCH = (0x00, None)
+    EVT_OP_END = (0x01, 0)
+    EVT_OP_RETURN = (0x02, 0)
+    EVT_OP_LABEL = (0x03, 1)
+    EVT_OP_GOTO = (0x04, 1)
+    EVT_OP_LOOP = (0x05, 1)
+    EVT_OP_END_LOOP = (0x06, 0)
+    EVT_OP_BREAK_LOOP = (0x07, 0)
+    EVT_OP_WAIT_FRAMES = (0x08, 1)
+    EVT_OP_WAIT_SECS = (0x09, 1)
+    EVT_OP_IF_EQ = (0x0A, 2)
+    EVT_OP_IF_NE = (0x0B, 2)
+    EVT_OP_IF_LT = (0x0C, 2)
+    EVT_OP_IF_GT = (0x0D, 2)
+    EVT_OP_IF_LE = (0x0E, 2)
+    EVT_OP_IF_GE = (0x0F, 2)
+    EVT_OP_IF_FLAG = (0x10, 2)
+    EVT_OP_IF_NOT_FLAG = (0x11, 2)
+    EVT_OP_ELSE = (0x12, 0)
+    EVT_OP_END_IF = (0x13, 0)
+    EVT_OP_SWITCH = (0x14, 1)
+    EVT_OP_SWITCH_CONST = (0x15, 1)
+    EVT_OP_CASE_EQ = (0x16, 1)
+    EVT_OP_CASE_NE = (0x17, 1)
+    EVT_OP_CASE_LT = (0x18, 1)
+    EVT_OP_CASE_GT = (0x19, 1)
+    EVT_OP_CASE_LE = (0x1A, 1)
+    EVT_OP_CASE_GE = (0x1B, 1)
+    EVT_OP_CASE_DEFAULT = (0x1C, 0)
+    EVT_OP_CASE_OR_EQ = (0x1D, 1)
+    EVT_OP_CASE_AND_EQ = (0x1E, 1)
+    EVT_OP_CASE_FLAG = (0x1F, 1)
+    EVT_OP_END_CASE_GROUP = (0x20, 0)
+    EVT_OP_CASE_RANGE = (0x21, 2)
+    EVT_OP_BREAK_SWITCH = (0x22, 0)
+    EVT_OP_END_SWITCH = (0x23, 0)
+    EVT_OP_SET = (0x24, 2)
+    EVT_OP_SET_CONST = (0x25, 2)
+    EVT_OP_SETF = (0x26, 2)
+    EVT_OP_ADD = (0x27, 2)
+    EVT_OP_SUB = (0x28, 2)
+    EVT_OP_MUL = (0x29, 2)
+    EVT_OP_DIV = (0x2A, 2)
+    EVT_OP_MOD = (0x2B, 2)
+    EVT_OP_ADDF = (0x2C, 2)
+    EVT_OP_SUBF = (0x2D, 2)
+    EVT_OP_MULF = (0x2E, 2)
+    EVT_OP_DIVF = (0x2F, 2)
+    EVT_OP_USE_BUF = (0x30, 1)
+    EVT_OP_BUF_READ1 = (0x31, 1)
+    EVT_OP_BUF_READ2 = (0x32, 2)
+    EVT_OP_BUF_READ3 = (0x33, 3)
+    EVT_OP_BUF_READ4 = (0x34, 4)
+    EVT_OP_BUF_PEEK = (0x35, 2)
+    EVT_OP_USE_FBUF = (0x36, 1)
+    EVT_OP_FBUF_READ1 = (0x37, 1)
+    EVT_OP_FBUF_READ2 = (0x38, 2)
+    EVT_OP_FBUF_READ3 = (0x39, 3)
+    EVT_OP_FBUF_READ4 = (0x3A, 4)
+    EVT_OP_FBUF_PEEK = (0x3B, 2)
+    EVT_OP_USE_ARRAY = (0x3C, 1)
+    EVT_OP_USE_FLAGS = (0x3D, 1)
+    EVT_OP_MALLOC_ARRAY = (0x3E, 2)
+    EVT_OP_BITWISE_AND = (0x3F, 2)
+    EVT_OP_BITWISE_AND_CONST = (0x40, 2)
+    EVT_OP_BITWISE_OR = (0x41, 2)
+    EVT_OP_BITWISE_OR_CONST = (0x42, 2)
+    EVT_OP_CALL = (0x43, None)
+    EVT_OP_EXEC = (0x44, 1)
+    EVT_OP_EXEC_GET_TID = (0x45, 2)
+    EVT_OP_EXEC_WAIT = (0x46, 1)
+    EVT_OP_BIND_TRIGGER = (0x47, 5)
+    EVT_OP_UNBIND = (0x48, 0)
+    EVT_OP_KILL_THREAD = (0x49, 1)
+    EVT_OP_JUMP = (0x4A, 1)
+    EVT_OP_SET_PRIORITY = (0x4B, 1)
+    EVT_OP_SET_TIMESCALE = (0x4C, 1)
+    EVT_OP_SET_GROUP = (0x4D, 1)
+    EVT_OP_BIND_PADLOCK = (0x4E, 6)
+    EVT_OP_SUSPEND_GROUP = (0x4F, 1)
+    EVT_OP_RESUME_GROUP = (0x50, 1)
+    EVT_OP_SUSPEND_OTHERS = (0x51, 1)
+    EVT_OP_RESUME_OTHERS = (0x52, 1)
+    EVT_OP_SUSPEND_THREAD = (0x53, 1)
+    EVT_OP_RESUME_THREAD = (0x54, 1)
+    EVT_OP_IS_THREAD_RUNNING = (0x55, 2)
+    EVT_OP_THREAD = (0x56, 0)
+    EVT_OP_END_THREAD = (0x57, 0)
+    EVT_OP_CHILD_THREAD = (0x58, 0)
+    EVT_OP_END_CHILD_THREAD = (0x59, 0)
+    EVT_OP_DEBUG_LOG = (0x5A, 1)
+    EVT_OP_DEBUG_PRINT_VAR = (0x5B, 1)
+    EVT_OP_92 = (0x5C, 1)
+    EVT_OP_93 = (0x5D, 0)
+    EVT_OP_94 = (0x5E, 0)
+    EVT_OP_DEBUG_BREAKPOINT = (0x5F, 1)
+
+
+IF_OPS = {
+    Opcode.EVT_OP_IF_EQ,
+    Opcode.EVT_OP_IF_NE,
+    Opcode.EVT_OP_IF_LT,
+    Opcode.EVT_OP_IF_GT,
+    Opcode.EVT_OP_IF_LE,
+    Opcode.EVT_OP_IF_GE,
+    Opcode.EVT_OP_IF_FLAG,
+    Opcode.EVT_OP_IF_NOT_FLAG,
 }
 
-
-FIXED_ARGC = {
-    1: 0,
-    2: 0,
-    3: 1,
-    4: 1,
-    5: 1,
-    6: 0,
-    7: 0,
-    8: 1,
-    9: 1,
-    10: 2,
-    11: 2,
-    12: 2,
-    13: 2,
-    14: 2,
-    15: 2,
-    16: 2,
-    17: 2,
-    18: 0,
-    19: 0,
-    20: 1,
-    21: 1,
-    22: 1,
-    23: 1,
-    24: 1,
-    25: 1,
-    26: 1,
-    27: 1,
-    28: 0,
-    29: 1,
-    30: 1,
-    31: 1,
-    32: 0,
-    33: 2,
-    34: 0,
-    35: 0,
-    36: 2,
-    37: 2,
-    38: 2,
-    39: 2,
-    40: 2,
-    41: 2,
-    42: 2,
-    43: 2,
-    44: 2,
-    45: 2,
-    46: 2,
-    47: 2,
-    48: 1,
-    49: 1,
-    50: 2,
-    51: 3,
-    52: 4,
-    53: 2,
-    54: 1,
-    55: 1,
-    56: 2,
-    57: 3,
-    58: 4,
-    59: 2,
-    60: 1,
-    61: 1,
-    62: 2,
-    63: 2,
-    64: 2,
-    65: 2,
-    66: 2,
-    # 67 EVT_OP_CALL is variadic.
-    68: 1,
-    69: 2,
-    70: 1,
-    71: 5,
-    72: 0,
-    73: 1,
-    74: 1,
-    75: 1,
-    76: 1,
-    77: 1,
-    78: 6,
-    79: 1,
-    80: 1,
-    81: 1,
-    82: 1,
-    83: 1,
-    84: 1,
-    85: 2,
-    86: 0,
-    87: 0,
-    88: 0,
-    89: 0,
-    90: 1,
-    91: 1,
-    92: 1,
-    93: 0,
-    94: 0,
-    95: 1,
+CASE_OPS = {
+    Opcode.EVT_OP_CASE_EQ,
+    Opcode.EVT_OP_CASE_NE,
+    Opcode.EVT_OP_CASE_LT,
+    Opcode.EVT_OP_CASE_GT,
+    Opcode.EVT_OP_CASE_LE,
+    Opcode.EVT_OP_CASE_GE,
+    Opcode.EVT_OP_CASE_DEFAULT,
+    Opcode.EVT_OP_CASE_OR_EQ,
+    Opcode.EVT_OP_CASE_AND_EQ,
+    Opcode.EVT_OP_CASE_FLAG,
+    Opcode.EVT_OP_CASE_RANGE,
 }
-
-
-IF_OPS = set(range(10, 18))
-CASE_OPS = {22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 33}
 
 
 @dataclass(frozen=True)
@@ -278,6 +205,12 @@ class Symbol:
 class ScriptSymbol:
     symbol: Symbol
     section: Section
+
+
+@dataclass(frozen=True)
+class Block:
+    kind: str
+    start_pos: int
 
 
 class ElfError(Exception):
@@ -427,20 +360,115 @@ def line_from_raw_argc(raw_argc: int) -> int:
     return (raw_argc >> 16) & 0xFFFF
 
 
-def validate_argc(symbol: Symbol, word_pc: int, opcode: int, argc: int) -> None:
-    if opcode == 67:
+def validate_argc(symbol: Symbol, op_pos: int, opcode: Opcode, argc: int) -> None:
+    if opcode == Opcode.EVT_OP_CALL:
         if argc < 1:
-            raise ValidationError(f"{symbol.name}+0x{word_pc * 4:X}: EVT_OP_CALL has no function argument")
+            raise ValidationError(f"{symbol.name}+0x{op_pos * 4:X}: EVT_OP_CALL has no function argument")
         return
-    expected = FIXED_ARGC.get(opcode)
+    expected = opcode.argc
     if expected is None:
         raise ValidationError(
-            f"{symbol.name}+0x{word_pc * 4:X}: {OPCODES.get(opcode, opcode)} is not valid in script bytecode"
+            f"{symbol.name}+0x{op_pos * 4:X}: {opcode.name} is not valid in script bytecode"
         )
     if argc != expected:
         raise ValidationError(
-            f"{symbol.name}+0x{word_pc * 4:X}: {OPCODES[opcode]} has argc {argc}, expected {expected}"
+            f"{symbol.name}+0x{op_pos * 4:X}: {opcode.name} has argc {argc}, expected {expected}"
         )
+
+
+class ScriptWalkContext:
+    def __init__(self, symbol: Symbol):
+        self.symbol = symbol
+        self.stack: list[Block] = []
+        self.labels: dict[int, int] = {}
+        self.gotos: list[tuple[int, int]] = []
+        self.cur_loop_depth = 0
+        self.cur_switch_depth = 0
+
+    def error_at(self, op_pos: int, message: str) -> ValidationError:
+        return ValidationError(f"{self.symbol.name}+0x{op_pos * 4:X}: {message}")
+
+    def push(self, kind: str, op_pos: int) -> None:
+        self.stack.append(Block(kind, op_pos))
+
+    def pop(self) -> Block:
+        return self.stack.pop()
+
+    def top_is(self, kind: str) -> bool:
+        return bool(self.stack and self.stack[-1].kind == kind)
+
+    def top_is_any(self, kinds: set[str]) -> bool:
+        return bool(self.stack and self.stack[-1].kind in kinds)
+
+    def contains(self, kind: str) -> bool:
+        return any(block.kind == kind for block in self.stack)
+
+    def enter_if(self, op_pos: int) -> None:
+        self.push("if", op_pos)
+
+    def enter_else(self, op_pos: int) -> None:
+        if not self.top_is("if"):
+            raise self.error_at(op_pos, "Else without matching If")
+        self.stack[-1] = Block("else", self.stack[-1].start_pos)
+
+    def exit_if(self, op_pos: int) -> None:
+        if not self.top_is_any({"if", "else"}):
+            raise self.error_at(op_pos, "EndIf without matching If")
+        self.pop()
+
+    def enter_loop(self, op_pos: int) -> None:
+        self.cur_loop_depth += 1
+        if self.cur_loop_depth > MAX_LOOP_DEPTH:
+            raise self.error_at(
+                op_pos,
+                f"Loop nesting depth {self.cur_loop_depth} exceeds runtime limit of {MAX_LOOP_DEPTH}",
+            )
+        self.push("loop", op_pos)
+
+    def exit_loop(self, op_pos: int) -> None:
+        if not self.top_is("loop"):
+            raise self.error_at(op_pos, "EndLoop without matching Loop")
+        self.pop()
+        self.cur_loop_depth -= 1
+
+    def check_inside_loop(self, op_pos: int) -> None:
+        if not self.contains("loop"):
+            raise self.error_at(op_pos, "BreakLoop outside Loop")
+
+    def enter_switch(self, op_pos: int) -> None:
+        self.cur_switch_depth += 1
+        if self.cur_switch_depth > MAX_SWITCH_DEPTH:
+            raise self.error_at(
+                op_pos,
+                f"Switch nesting depth {self.cur_switch_depth} exceeds runtime limit of {MAX_SWITCH_DEPTH}",
+            )
+        self.push("switch", op_pos)
+
+    def exit_switch(self, op_pos: int) -> None:
+        if not self.top_is("switch"):
+            raise self.error_at(op_pos, "EndSwitch without matching Switch")
+        self.pop()
+        self.cur_switch_depth -= 1
+
+    def check_inside_switch(self, op_pos: int, name: str) -> None:
+        if not self.contains("switch"):
+            raise self.error_at(op_pos, f"{name} outside Switch")
+
+    def enter_thread(self, op_pos: int) -> None:
+        self.push("thread", op_pos)
+
+    def exit_thread(self, op_pos: int) -> None:
+        if not self.top_is("thread"):
+            raise self.error_at(op_pos, "EndThread without matching Thread")
+        self.pop()
+
+    def enter_child_thread(self, op_pos: int) -> None:
+        self.push("child_thread", op_pos)
+
+    def exit_child_thread(self, op_pos: int) -> None:
+        if not self.top_is("child_thread"):
+            raise self.error_at(op_pos, "EndChildThread without matching ChildThread")
+        self.pop()
 
 
 def validate_script(script: ScriptSymbol, data: bytes) -> None:
@@ -449,113 +477,97 @@ def validate_script(script: ScriptSymbol, data: bytes) -> None:
         raise ValidationError(f"{symbol.name}: size 0x{len(data):X} is not word-aligned")
 
     words = len(data) // BYTECODE_SIZE
-    pc = 0
-    end_pc = None
-    stack: list[tuple[str, int]] = []
-    labels: dict[int, int] = {}
-    gotos: list[tuple[int, int]] = []
+    read_pos = 0
+    end_pos = None
+    ctx = ScriptWalkContext(symbol)
 
-    while pc < words:
-        inst_pc = pc
-        if pc + 2 > words:
-            raise ValidationError(f"{symbol.name}+0x{inst_pc * 4:X}: truncated command header")
+    while read_pos < words:
+        op_pos = read_pos
+        if read_pos + 2 > words:
+            raise ValidationError(f"{symbol.name}+0x{op_pos * 4:X}: truncated command header")
 
-        opcode = word_at(data, pc)
-        raw_argc = unsigned_word(data, (pc + 1) * BYTECODE_SIZE)
+        opcode_value = word_at(data, read_pos)
+        raw_argc = unsigned_word(data, (read_pos + 1) * BYTECODE_SIZE)
         argc = raw_argc & ARGC_MASK
         line = line_from_raw_argc(raw_argc)
-        pc += 2
+        read_pos += 2
 
-        if opcode not in OPCODES:
+        try:
+            opcode = Opcode(opcode_value)
+        except ValueError:
             raise ValidationError(
-                f"{symbol.name}+0x{inst_pc * 4:X}: unknown opcode {opcode}"
+                f"{symbol.name}+0x{op_pos * 4:X}: unknown opcode 0x{opcode_value:X}"
                 + (f" (source line {line})" if line else "")
             )
-        if opcode == 0:
-            raise ValidationError(f"{symbol.name}+0x{inst_pc * 4:X}: EVT_OP_INTERNAL_FETCH appears in script data")
-        if pc + argc > words:
+        if opcode == Opcode.EVT_OP_INTERNAL_FETCH:
+            raise ValidationError(f"{symbol.name}+0x{op_pos * 4:X}: EVT_OP_INTERNAL_FETCH appears in script data")
+        if read_pos + argc > words:
             raise ValidationError(
-                f"{symbol.name}+0x{inst_pc * 4:X}: {OPCODES[opcode]} argc {argc} runs past symbol boundary"
+                f"{symbol.name}+0x{op_pos * 4:X}: {opcode.name} argc {argc} runs past symbol boundary"
             )
 
-        args = [word_at(data, pc + i) for i in range(argc)]
-        validate_argc(symbol, inst_pc, opcode, argc)
-        pc += argc
+        args = [word_at(data, read_pos + i) for i in range(argc)]
+        validate_argc(symbol, op_pos, opcode, argc)
+        read_pos += argc
 
-        if opcode == 1:
-            end_pc = pc
+        if opcode == Opcode.EVT_OP_END:
+            end_pos = read_pos
             break
 
-        if opcode == 3:
+        if opcode == Opcode.EVT_OP_LABEL:
             label = args[0]
-            labels.setdefault(label, inst_pc)
-        elif opcode == 4:
-            gotos.append((inst_pc, args[0]))
+            ctx.labels.setdefault(label, op_pos)
+        elif opcode == Opcode.EVT_OP_GOTO:
+            ctx.gotos.append((op_pos, args[0]))
         elif opcode in IF_OPS:
-            stack.append(("if", inst_pc))
-        elif opcode == 18:
-            if not stack or stack[-1][0] != "if":
-                raise ValidationError(f"{symbol.name}+0x{inst_pc * 4:X}: Else without matching If")
-            stack[-1] = ("else", stack[-1][1])
-        elif opcode == 19:
-            if not stack or stack[-1][0] not in {"if", "else"}:
-                raise ValidationError(f"{symbol.name}+0x{inst_pc * 4:X}: EndIf without matching If")
-            stack.pop()
-        elif opcode == 5:
-            stack.append(("loop", inst_pc))
-        elif opcode == 6:
-            if not stack or stack[-1][0] != "loop":
-                raise ValidationError(f"{symbol.name}+0x{inst_pc * 4:X}: EndLoop without matching Loop")
-            stack.pop()
-        elif opcode == 7:
-            if not any(kind == "loop" for kind, _ in stack):
-                raise ValidationError(f"{symbol.name}+0x{inst_pc * 4:X}: BreakLoop outside Loop")
-        elif opcode in {20, 21}:
-            stack.append(("switch", inst_pc))
-        elif opcode in CASE_OPS or opcode == 32:
-            if not any(kind == "switch" for kind, _ in stack):
-                raise ValidationError(f"{symbol.name}+0x{inst_pc * 4:X}: {OPCODES[opcode]} outside Switch")
-        elif opcode == 34:
-            if not any(kind == "switch" for kind, _ in stack):
-                raise ValidationError(f"{symbol.name}+0x{inst_pc * 4:X}: BreakSwitch outside Switch")
-        elif opcode == 35:
-            if not stack or stack[-1][0] != "switch":
-                raise ValidationError(f"{symbol.name}+0x{inst_pc * 4:X}: EndSwitch without matching Switch")
-            stack.pop()
-        elif opcode == 86:
-            stack.append(("thread", inst_pc))
-        elif opcode == 87:
-            if not stack or stack[-1][0] != "thread":
-                raise ValidationError(f"{symbol.name}+0x{inst_pc * 4:X}: EndThread without matching Thread")
-            stack.pop()
-        elif opcode == 88:
-            stack.append(("child_thread", inst_pc))
-        elif opcode == 89:
-            if not stack or stack[-1][0] != "child_thread":
-                raise ValidationError(
-                    f"{symbol.name}+0x{inst_pc * 4:X}: EndChildThread without matching ChildThread"
-                )
-            stack.pop()
+            ctx.enter_if(op_pos)
+        elif opcode == Opcode.EVT_OP_ELSE:
+            ctx.enter_else(op_pos)
+        elif opcode == Opcode.EVT_OP_END_IF:
+            ctx.exit_if(op_pos)
+        elif opcode == Opcode.EVT_OP_LOOP:
+            ctx.enter_loop(op_pos)
+        elif opcode == Opcode.EVT_OP_END_LOOP:
+            ctx.exit_loop(op_pos)
+        elif opcode == Opcode.EVT_OP_BREAK_LOOP:
+            ctx.check_inside_loop(op_pos)
+        elif opcode in {Opcode.EVT_OP_SWITCH, Opcode.EVT_OP_SWITCH_CONST}:
+            ctx.enter_switch(op_pos)
+        elif opcode in CASE_OPS or opcode == Opcode.EVT_OP_END_CASE_GROUP:
+            ctx.check_inside_switch(op_pos, opcode.name)
+        elif opcode == Opcode.EVT_OP_BREAK_SWITCH:
+            ctx.check_inside_switch(op_pos, "BreakSwitch")
+        elif opcode == Opcode.EVT_OP_END_SWITCH:
+            ctx.exit_switch(op_pos)
+        elif opcode == Opcode.EVT_OP_THREAD:
+            ctx.enter_thread(op_pos)
+        elif opcode == Opcode.EVT_OP_END_THREAD:
+            ctx.exit_thread(op_pos)
+        elif opcode == Opcode.EVT_OP_CHILD_THREAD:
+            ctx.enter_child_thread(op_pos)
+        elif opcode == Opcode.EVT_OP_END_CHILD_THREAD:
+            ctx.exit_child_thread(op_pos)
 
-    if end_pc is None:
+    if end_pos is None:
         raise ValidationError(f"{symbol.name}: missing End before symbol boundary 0x{len(data):X}")
 
-    if stack:
-        kind, start_pc = stack[-1]
+    if ctx.stack:
+        block = ctx.stack[-1]
         raise ValidationError(
-            f"{symbol.name}: unclosed {kind} block opened at +0x{start_pc * 4:X} before End at +0x{(end_pc - 3) * 4:X}"
+            f"{symbol.name}: unclosed {block.kind} block opened at +0x{block.start_pos * 4:X} "
+            f"before End at +0x{(end_pos - 3) * 4:X}"
         )
 
-    trailing_words = words - end_pc
+    trailing_words = words - end_pos
     if trailing_words:
         raise ValidationError(
-            f"{symbol.name}: {trailing_words * BYTECODE_SIZE} unreachable byte(s) after End at +0x{(end_pc - 3) * 4:X}"
+            f"{symbol.name}: {trailing_words * BYTECODE_SIZE} unreachable byte(s) after End at +0x{(end_pos - 3) * 4:X}"
         )
 
-    for goto_pc, label in gotos:
+    for goto_pos, label in ctx.gotos:
         # Runtime accepts expressions here, but constant labels are nonnegative.
-        if label >= 0 and label not in labels:
-            raise ValidationError(f"{symbol.name}+0x{goto_pc * 4:X}: Goto({label}) has no matching Label")
+        if label >= 0 and label not in ctx.labels:
+            raise ValidationError(f"{symbol.name}+0x{goto_pos * 4:X}: Goto({label}) has no matching Label")
 
 
 def find_scripts(elf: Elf32, regex: re.Pattern[str]) -> Iterable[ScriptSymbol]:

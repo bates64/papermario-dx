@@ -187,7 +187,7 @@ def write_ninja_rules(
 
     ninja.rule(
         "evt_validate_obj",
-        description="Validating EvtScript bytecode",
+        description="Validating EvtScript bytecode in $in",
         command=f"$python {BUILD_TOOLS}/evt_validate_obj.py $in --out $out",
     )
 
