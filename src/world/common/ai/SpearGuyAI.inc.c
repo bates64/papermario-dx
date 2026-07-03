@@ -48,7 +48,7 @@ void N(SpearGuyAI_Loiter)(Evt* script, MobileAISettings* settings, EnemyDetectVo
         case SPEAR_DANCE_PHASE_CHANT_INIT:
             enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE] = SPEAR_DANCE_PHASE_CHANT;
             enemy->varTable[AI_VAR_SPEAR_DANCE_TIME] = 0;
-            npc->curAnim = ANIM_SpearGuy_Anim0F;
+            npc->curAnim = ANIM_SpearGuy_Dizzy;
             // fallthrough
         case SPEAR_DANCE_PHASE_CHANT:
             enemy->varTable[AI_VAR_SPEAR_DANCE_TIME]++;
@@ -60,7 +60,7 @@ void N(SpearGuyAI_Loiter)(Evt* script, MobileAISettings* settings, EnemyDetectVo
         case SPEAR_DANCE_PHASE_SHAKE_INIT:
             enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE] = SPEAR_DANCE_PHASE_SHAKE;
             enemy->varTable[AI_VAR_SPEAR_DANCE_TIME] = 0;
-            npc->curAnim = ANIM_SpearGuy_Anim10;
+            npc->curAnim = ANIM_SpearGuy_ShakeSpear;
             // fallthrough
         case SPEAR_DANCE_PHASE_SHAKE:
             enemy->varTable[AI_VAR_SPEAR_DANCE_TIME]++;
@@ -75,7 +75,7 @@ void N(SpearGuyAI_Loiter)(Evt* script, MobileAISettings* settings, EnemyDetectVo
         case SPEAR_DANCE_PHASE_SWEAT_INIT:
             enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE] = SPEAR_DANCE_PHASE_SWEAT;
             enemy->varTable[AI_VAR_SPEAR_DANCE_TIME] = 0;
-            npc->curAnim = ANIM_SpearGuy_Anim03;
+            npc->curAnim = ANIM_SpearGuy_IdleUp;
             fx_sweat(0, npc->pos.x, npc->pos.y, npc->pos.z, npc->collisionHeight, 0, 10);
             // fallthrough
         case SPEAR_DANCE_PHASE_SWEAT:

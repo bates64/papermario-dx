@@ -422,9 +422,9 @@ EvtScript N(EVS_HuffNPuff_Defeat_BlowUp) = {
 };
 
 EvtScript N(EVS_Scene_BossDefeated) = {
-    Call(SetNpcAnimation, NPC_HuffNPuff_02, ANIM_HuffNPuff_Anim04)
-    Call(SetNpcAnimation, NPC_HuffNPuff_01, ANIM_HuffNPuff_Anim05)
-    Call(SetNpcAnimation, NPC_HuffNPuff_03, ANIM_HuffNPuff_Anim06)
+    Call(SetNpcAnimation, NPC_HuffNPuff_02, ANIM_HuffNPuff_IdleSadBody)
+    Call(SetNpcAnimation, NPC_HuffNPuff_01, ANIM_HuffNPuff_IdleSadFace)
+    Call(SetNpcAnimation, NPC_HuffNPuff_03, ANIM_HuffNPuff_IdleSadArms)
     Call(GetNpcPos, NPC_HuffNPuff_01, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Add(LVar0, -15)
@@ -435,7 +435,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(SpeakToPlayer, NPC_HuffNPuff_01, ANIM_HuffNPuff_Anim30, ANIM_HuffNPuff_Anim05, 256, -30, 30, MSG_CH6_00CE)
+    Call(SpeakToPlayer, NPC_HuffNPuff_01, ANIM_HuffNPuff_TalkSadFace, ANIM_HuffNPuff_IdleSadFace, 256, -30, 30, MSG_CH6_00CE)
     Call(FadeOutMusic, 0, 1500)
     Set(MV_BossFightState, 2)
     Call(GetNpcPos, NPC_HuffNPuff_01, LVar0, LVar1, LVar2)
@@ -518,7 +518,7 @@ EvtScript N(EVS_NpcInit_HuffNPuff_Face) = {
         Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
         Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_HuffNPuff_01)))
         Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_HuffNPuff_Main)))
-        Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim02)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_IdleFace)
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -530,7 +530,7 @@ EvtScript N(EVS_NpcInit_HuffNPuff_Body) = {
     IfLt(GB_StoryProgress, STORY_CH6_DEFEATED_HUFF_N_PUFF)
         Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
         Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_HuffNPuff_Aux)))
-        Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim01)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_IdleBody)
         Exec(N(EVS_HuffNPuff_AnimateBodyScale))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
@@ -543,7 +543,7 @@ EvtScript N(EVS_NpcInit_HuffNPuff_Arms) = {
     IfLt(GB_StoryProgress, STORY_CH6_DEFEATED_HUFF_N_PUFF)
         Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
         Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_HuffNPuff_Aux)))
-        Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim19)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_BragArms)
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -559,14 +559,14 @@ EvtScript N(EVS_NpcInit_RuffPuff) = {
 };
 
 AnimID N(LimitAnims_HuffNPuff)[] = {
-    ANIM_HuffNPuff_Anim00,
-    ANIM_HuffNPuff_Anim01,
-    ANIM_HuffNPuff_Anim02,
-    ANIM_HuffNPuff_Anim04,
-    ANIM_HuffNPuff_Anim05,
-    ANIM_HuffNPuff_Anim31,
-    ANIM_HuffNPuff_Anim19,
-    ANIM_HuffNPuff_Anim2D,
+    ANIM_HuffNPuff_WholeIdle,
+    ANIM_HuffNPuff_IdleBody,
+    ANIM_HuffNPuff_IdleFace,
+    ANIM_HuffNPuff_IdleSadBody,
+    ANIM_HuffNPuff_IdleSadFace,
+    ANIM_HuffNPuff_TalkSadArms,
+    ANIM_HuffNPuff_BragArms,
+    ANIM_HuffNPuff_TalkFace,
     ANIM_LIST_END
 };
 

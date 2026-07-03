@@ -10,16 +10,16 @@ EvtScript N(EVS_CapturePeach_Early) = {
     Wait(20)
     Call(PlayerFaceNpc, NPC_SELF, false)
     Call(SetPlayerAnimation, ANIM_Peach2_Gasp)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim02)
-    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Anim09, ANIM_WorldKoopatrol_Anim02, 0, MSG_Peach_0174)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_IdleFlashlight)
+    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_TalkFlashlight, ANIM_WorldKoopatrol_IdleFlashlight, 0, MSG_Peach_0174)
     Call(N(GetApproachPeachPos), NPC_SELF, 100, LVar3, LVar0, LVar2)
     IfNe(LVar3, 0)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim07)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_RunFlashlight)
         Call(SetNpcSpeed, NPC_SELF, Float(5.0))
         Call(NpcMoveTo, NPC_SELF, LVar0, LVar2, 0)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim02)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_IdleFlashlight)
     EndIf
-    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Anim09, ANIM_WorldKoopatrol_Anim02, 0, MSG_Peach_0175)
+    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_TalkFlashlight, ANIM_WorldKoopatrol_IdleFlashlight, 0, MSG_Peach_0175)
     Call(SetPlayerAnimation, ANIM_Peach2_ForwardSad)
     Wait(20)
     Call(GotoMapSpecial, Ref("kkj_14"), kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
@@ -97,7 +97,7 @@ EvtScript N(EVS_NpcIdle_Koopatrol_02_Early) = {
 };
 
 EvtScript N(EVS_NpcInit_Koopatrol_01_Early) = {
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim05)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_WalkFlashlight)
     Call(SetNpcPos, NPC_SELF, -240, 0, 0)
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopatrol_01_Early)))
     Return
@@ -105,7 +105,7 @@ EvtScript N(EVS_NpcInit_Koopatrol_01_Early) = {
 };
 
 EvtScript N(EVS_NpcInit_Koopatrol_02_Early) = {
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim05)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_WalkFlashlight)
     Call(SetNpcPos, NPC_SELF, 0, 0, 240)
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopatrol_02_Early)))
     Return
@@ -113,10 +113,10 @@ EvtScript N(EVS_NpcInit_Koopatrol_02_Early) = {
 };
 
 AnimID N(LimitAnims_Koopatrol_Early)[] = {
-    ANIM_WorldKoopatrol_Anim02,
-    ANIM_WorldKoopatrol_Anim05,
-    ANIM_WorldKoopatrol_Anim07,
-    ANIM_WorldKoopatrol_Anim09,
+    ANIM_WorldKoopatrol_IdleFlashlight,
+    ANIM_WorldKoopatrol_WalkFlashlight,
+    ANIM_WorldKoopatrol_RunFlashlight,
+    ANIM_WorldKoopatrol_TalkFlashlight,
     ANIM_LIST_END
 };
 

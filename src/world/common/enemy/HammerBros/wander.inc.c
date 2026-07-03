@@ -117,6 +117,6 @@ NpcSettings N(NpcSettings_HammerBros_Hammer) = {
 };
 
 AnimID N(LimitAnims_HammerBros_Hammer)[] = {
-    ANIM_HammerBros_Anim0D,
+    ANIM_HammerBros_Hammer,
     ANIM_LIST_END
 };

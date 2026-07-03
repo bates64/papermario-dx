@@ -211,7 +211,7 @@ API_CALLABLE(N(LakituAI_Main)) {
             spinyEnemy->varTable[AI_VAR_SPINY_STATUS] = SPINY_STATUS_RESERVED;
             spinyEnemy->varTable[AI_VAR_SPINY_THROWER] = enemy->npcID;
             npc->duration = 15;
-            npc->curAnim = ANIM_Lakitu_Anim14;
+            npc->curAnim = ANIM_Lakitu_GetSpiny;
             script->AI_TEMP_STATE = AI_STATE_LAKITU_HOLD_INIT;
         }
     }
@@ -244,7 +244,7 @@ API_CALLABLE(N(LakituAI_Main)) {
             if (npc->duration > 0) {
                 break;
             }
-            npc->curAnim = ANIM_Lakitu_Anim15;
+            npc->curAnim = ANIM_Lakitu_ThrowSpiny;
             spinyEnemy = get_enemy(enemy->varTable[AI_VAR_LAKITU_HELD_SPINY]);
             spinyEnemy->varTable[AI_VAR_SPINY_STATUS] = SPINY_STATUS_THROW_REQUEST;
             npc->duration = 10;

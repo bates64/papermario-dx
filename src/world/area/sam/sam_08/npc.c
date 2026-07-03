@@ -64,7 +64,7 @@ EvtScript N(EVS_NpcDefeat_Duplighost) = {
             Call(SetNpcFlagBits, NPC_Duplighost, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetNpcSpeed, NPC_Duplighost, Float(3.0 / DT))
             Call(SetNpcJumpscale, NPC_Duplighost, Float(1.5))
-            Call(SetNpcAnimation, NPC_Duplighost, ANIM_Duplighost_Anim04)
+            Call(SetNpcAnimation, NPC_Duplighost, ANIM_Duplighost_Run)
             Call(GetNpcPos, NPC_Duplighost, LVar0, LVar1, LVar2)
             Add(LVar0, 50)
             Call(PlaySoundAtNpc, NPC_Duplighost, SOUND_DUPLIGHOST_STEP, SOUND_SPACE_DEFAULT)

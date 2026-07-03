@@ -35,20 +35,20 @@
 
 #define GROOVE_GUY_ANIMS \
 { \
-    .idle   = ANIM_GrooveGuy_Anim01, \
-    .walk   = ANIM_GrooveGuy_Anim03, \
-    .run    = ANIM_GrooveGuy_Anim04, \
-    .chase  = ANIM_GrooveGuy_Anim03, \
-    .alert  = ANIM_GrooveGuy_Anim01, \
-    .unused = ANIM_GrooveGuy_Anim01, \
-    .death  = ANIM_GrooveGuy_Anim08, \
-    .hit    = ANIM_GrooveGuy_Anim08, \
-    .anim_8 = ANIM_GrooveGuy_Anim01, \
-    .anim_9 = ANIM_GrooveGuy_Anim01, \
-    .anim_A = ANIM_GrooveGuy_Anim01, \
-    .anim_B = ANIM_GrooveGuy_Anim01, \
-    .anim_C = ANIM_GrooveGuy_Anim01, \
-    .anim_D = ANIM_GrooveGuy_Anim01, \
-    .anim_E = ANIM_GrooveGuy_Anim01, \
-    .anim_F = ANIM_GrooveGuy_Anim01, \
+    .idle   = ANIM_GrooveGuy_Idle, \
+    .walk   = ANIM_GrooveGuy_Walk, \
+    .run    = ANIM_GrooveGuy_Run, \
+    .chase  = ANIM_GrooveGuy_Walk, \
+    .alert  = ANIM_GrooveGuy_Idle, \
+    .unused = ANIM_GrooveGuy_Idle, \
+    .death  = ANIM_GrooveGuy_Hurt, \
+    .hit    = ANIM_GrooveGuy_Hurt, \
+    .anim_8 = ANIM_GrooveGuy_Idle, \
+    .anim_9 = ANIM_GrooveGuy_Idle, \
+    .anim_A = ANIM_GrooveGuy_Idle, \
+    .anim_B = ANIM_GrooveGuy_Idle, \
+    .anim_C = ANIM_GrooveGuy_Idle, \
+    .anim_D = ANIM_GrooveGuy_Idle, \
+    .anim_E = ANIM_GrooveGuy_Idle, \
+    .anim_F = ANIM_GrooveGuy_Idle, \
 }

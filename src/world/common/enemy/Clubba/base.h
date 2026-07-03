@@ -17,22 +17,22 @@
 
 #define CLUBBA_ANIMS \
 { \
-    .idle   = ANIM_WorldClubba_Anim02, \
-    .walk   = ANIM_WorldClubba_Anim03, \
-    .run    = ANIM_WorldClubba_Anim04, \
-    .chase  = ANIM_WorldClubba_Anim04, \
-    .alert  = ANIM_WorldClubba_Anim02, \
-    .unused = ANIM_WorldClubba_Anim02, \
-    .death  = ANIM_WorldClubba_Anim0C, \
-    .hit    = ANIM_WorldClubba_Anim0C, \
-    .anim_8 = ANIM_WorldClubba_Anim11, \
-    .anim_9 = ANIM_WorldClubba_Anim12, \
-    .anim_A = ANIM_WorldClubba_Anim07, \
-    .anim_B = ANIM_WorldClubba_Anim08, \
-    .anim_C = ANIM_WorldClubba_Anim01, \
-    .anim_D = ANIM_WorldClubba_Anim02, \
-    .anim_E = ANIM_WorldClubba_Anim02, \
-    .anim_F = ANIM_WorldClubba_Anim02, \
+    .idle   = ANIM_WorldClubba_Idle, \
+    .walk   = ANIM_WorldClubba_Walk, \
+    .run    = ANIM_WorldClubba_Run, \
+    .chase  = ANIM_WorldClubba_Run, \
+    .alert  = ANIM_WorldClubba_Idle, \
+    .unused = ANIM_WorldClubba_Idle, \
+    .death  = ANIM_WorldClubba_Hurt, \
+    .hit    = ANIM_WorldClubba_Hurt, \
+    .anim_8 = ANIM_WorldClubba_RaiseClub, \
+    .anim_9 = ANIM_WorldClubba_SwingClub, \
+    .anim_A = ANIM_WorldClubba_Sleep, \
+    .anim_B = ANIM_WorldClubba_WakeUp, \
+    .anim_C = ANIM_WorldClubba_StillSleep, \
+    .anim_D = ANIM_WorldClubba_Idle, \
+    .anim_E = ANIM_WorldClubba_Idle, \
+    .anim_F = ANIM_WorldClubba_Idle, \
 }
 
 #define CLUBBA_MACE_HITBOX(npcID) \

@@ -53,7 +53,7 @@ EvtScript N(EVS_NpcAI_Sentinel_Wander) = {
     Add(LVar2, 2)
     Call(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(PlaySoundAtEnemy, NPC_SELF, SOUND_SENTINEL_PICKUP, SOUND_SPACE_DEFAULT)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_Sentinel_Anim08)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_Sentinel_Grab)
     Wait(10)
     Call(SetPlayerAnimation, ANIM_MarioW2_Flail)
     Wait(10)

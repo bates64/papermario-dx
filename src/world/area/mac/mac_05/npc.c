@@ -423,7 +423,7 @@ EvtScript N(EVS_Scene_FuzzipedeDefeated) = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 400)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(SpeakToPlayer, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 5, MSG_MAC_Port_00A0)
+    Call(SpeakToPlayer, NPC_Fuzzipede, ANIM_Fuzzipede_Talk, ANIM_Fuzzipede_Idle, 5, MSG_MAC_Port_00A0)
     Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00A1)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_Whale, LVar3, LVar4, LVar5)
@@ -437,10 +437,10 @@ EvtScript N(EVS_Scene_FuzzipedeDefeated) = {
     Call(SetCamDistance, CAM_DEFAULT, 475)
     Call(SetCamPosA, CAM_DEFAULT, Float(-63.5), 0)
     Call(SetCamPitch, CAM_DEFAULT, Float(18.5), Float(-5.0))
-    Call(SpeakToNpc, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 0, NPC_Whale, MSG_MAC_Port_00A2)
+    Call(SpeakToNpc, NPC_Fuzzipede, ANIM_Fuzzipede_Talk, ANIM_Fuzzipede_Idle, 0, NPC_Whale, MSG_MAC_Port_00A2)
     Call(NpcFacePlayer, NPC_Fuzzipede, 0)
     Wait(10)
-    Call(EndSpeech, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 0)
+    Call(EndSpeech, NPC_Fuzzipede, ANIM_Fuzzipede_Talk, ANIM_Fuzzipede_Idle, 0)
     Wait(10)
     Call(SetNpcJumpscale, NPC_Fuzzipede, 1)
     Call(GetNpcPos, NPC_Fuzzipede, LVar0, LVar1, LVar2)
@@ -1367,7 +1367,7 @@ EvtScript N(EVS_NpcInteract_Fuzzipede1) = {
             Set(LVar1, MSG_MAC_Port_005D)
     EndSwitch
     Call(SpeakToNpc, NPC_Fishmael, ANIM_Fishmael_Talk, ANIM_Fishmael_Idle, 0, NPC_Fuzzipede, LVar0)
-    Call(SpeakToNpc, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 0, NPC_Fishmael, LVar1)
+    Call(SpeakToNpc, NPC_Fuzzipede, ANIM_Fuzzipede_Talk, ANIM_Fuzzipede_Idle, 0, NPC_Fishmael, LVar1)
     Set(LVar0, Ref(N(LetterDelivery_Fishmael)))
     ExecWait(EVS_TryLetterDelivery)
     Return
@@ -1421,7 +1421,7 @@ EvtScript N(EVS_NpcInteract_Fuzzipede2) = {
         CaseLt(STORY_EPILOGUE)
             Set(LVar0, MSG_MAC_Port_0063)
     EndSwitch
-    Call(SpeakToPlayer, NPC_SELF, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 0, LVar0)
+    Call(SpeakToPlayer, NPC_SELF, ANIM_Fuzzipede_Talk, ANIM_Fuzzipede_Idle, 0, LVar0)
     Return
     End
 };
@@ -2113,11 +2113,11 @@ NpcData N(NpcData_Fishmael) = {
 };
 
 AnimID N(LimitAnims_Fuzzipede)[] = {
-    ANIM_Fuzzipede_Anim00,
-    ANIM_Fuzzipede_Anim04,
-    ANIM_Fuzzipede_Anim08,
-    ANIM_Fuzzipede_Anim0A,
-    ANIM_Fuzzipede_Anim24,
+    ANIM_Fuzzipede_Still,
+    ANIM_Fuzzipede_Idle,
+    ANIM_Fuzzipede_Walk,
+    ANIM_Fuzzipede_Run,
+    ANIM_Fuzzipede_Talk,
     ANIM_LIST_END
 };
 
@@ -2130,7 +2130,7 @@ NpcData N(NpcData_Fuzzipede) = {
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = {
-        .idle   = ANIM_Fuzzipede_Anim04,
+        .idle   = ANIM_Fuzzipede_Idle,
     },
     .limitAnimations = N(LimitAnims_Fuzzipede),
     .tattle = MSG_NpcTattle_Fuzzipede,

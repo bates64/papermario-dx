@@ -289,7 +289,7 @@ EvtScript N(EVS_NpcInit_GoombaKing) = {
 };
 
 NpcSettings N(NpcSettings_Kammy) = {
-    .defaultAnim = ANIM_WorldKammy_Anim0A,
+    .defaultAnim = ANIM_WorldKammy_FlyIdle,
     .height = 24,
     .radius = 24,
     .doAux = &N(EVS_NpcAux_Kammy),
@@ -393,7 +393,7 @@ NpcData N(NpcData_Kammy) = {
     .settings = &N(NpcSettings_Kammy),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .animations = {
-        .idle = ANIM_WorldKammy_Anim0A,
+        .idle = ANIM_WorldKammy_FlyIdle,
     },
 };
 

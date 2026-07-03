@@ -109,11 +109,11 @@ API_CALLABLE(N(BuzzyBeetle_AwaitLanding)) {
 
 EvtScript N(EVS_NpcAI_BuzzyBeetle_Ceiling) = {
     Call(N(BuzzyBeetle_OffsetHeight))
-    Call(SetNpcAnimation, NPC_SELF, ANIM_BuzzyBeetle_Anim0F)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_BuzzyBeetle_CeilingIdle)
     Call(N(BuzzyBeetle_AwaitPlayerNear))
     Call(EnemyEnableFirstStrike, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_BuzzyBeetle_Anim00)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_BuzzyBeetle_Still)
     Call(N(BuzzyBeetle_AwaitLanding))
     Call(EnemyEnableFirstStrike, false)
     Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 5)

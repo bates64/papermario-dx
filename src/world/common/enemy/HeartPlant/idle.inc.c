@@ -38,16 +38,16 @@ EvtScript N(EVS_NpcInteract_HeartPlant) = {
     IfEq(LVar0, false)
         Call(SetSelfVar, EVAR_IN_USE, true)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_HEART_PLANT, SOUND_SPACE_DEFAULT)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_HeartPlant_Anim00)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_HeartPlant_Idle)
         Wait(1)
         Call(N(HeartPlant_SpawnHeart))
-        Call(SetNpcAnimation, NPC_SELF, ANIM_HeartPlant_Anim01)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_HeartPlant_Interact)
         Thread
             Call(BindNpcInteract, NPC_SELF, nullptr)
             Exec(N(EVS_HeartPlant_RebindInteractAfterDelay))
             Wait(45)
             Call(SetSelfVar, EVAR_IN_USE, false)
-            Call(SetNpcAnimation, NPC_SELF, ANIM_HeartPlant_Anim00)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_HeartPlant_Idle)
         EndThread
     EndIf
     Return

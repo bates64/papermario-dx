@@ -50,20 +50,20 @@ AnimID N(LimitAnims_Bowser_Intro)[] = {
 };
 
 AnimID N(LimitAnims_Kammy_Intro)[] = {
-    ANIM_WorldKammy_Anim01,
-    ANIM_WorldKammy_Anim02,
-    ANIM_WorldKammy_Anim04,
-    ANIM_WorldKammy_Anim09,
-    ANIM_WorldKammy_Anim0A,
-    ANIM_WorldKammy_Anim0B,
+    ANIM_WorldKammy_Idle,
+    ANIM_WorldKammy_Walk,
+    ANIM_WorldKammy_Talk,
+    ANIM_WorldKammy_FlyStill,
+    ANIM_WorldKammy_FlyIdle,
+    ANIM_WorldKammy_FlySlow,
     ANIM_LIST_END
 };
 
 AnimID N(LimitAnims_Koopatrol_Intro)[] = {
-    ANIM_WorldKoopatrol_Anim00,
-    ANIM_WorldKoopatrol_Anim01,
-    ANIM_WorldKoopatrol_Anim04,
-    ANIM_WorldKoopatrol_Anim06,
+    ANIM_WorldKoopatrol_Still,
+    ANIM_WorldKoopatrol_Idle,
+    ANIM_WorldKoopatrol_Walk,
+    ANIM_WorldKoopatrol_Run,
     ANIM_LIST_END
 };
 

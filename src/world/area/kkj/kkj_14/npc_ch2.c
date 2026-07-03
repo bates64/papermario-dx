@@ -13,10 +13,10 @@ AnimID N(LimitAnims_Bowser_Ch2)[] = {
 };
 
 AnimID N(LimitAnims_Kammy_Ch2)[] = {
-    ANIM_WorldKammy_Anim01,
-    ANIM_WorldKammy_Anim02,
-    ANIM_WorldKammy_Anim03,
-    ANIM_WorldKammy_Anim04,
+    ANIM_WorldKammy_Idle,
+    ANIM_WorldKammy_Walk,
+    ANIM_WorldKammy_Run,
+    ANIM_WorldKammy_Talk,
     ANIM_LIST_END
 };
 

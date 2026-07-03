@@ -12,4 +12,4 @@ typedef struct DisguiseAnims {
 } DisguiseAnims; // size = 0x18
 
 extern DisguiseAnims BasicPeachDisguiseAnims[4];
-extern AnimID* PeachDisguiseExtraAnims[4];
+extern AnimID* PeachDisguiseLimitAnims[4];

@@ -37,20 +37,20 @@ void N(GrooveGuyAI_Dance)(Evt* script, MobileAISettings* settings, EnemyDetectVo
         case DANCE_PHASE_POINT_INIT:
             enemy->varTable[AI_VAR_GROOVE_DANCE_PHASE] = DANCE_PHASE_POINT;
             enemy->varTable[AI_VAR_GROOVE_DANCE_TIME] = 0;
-            npc->curAnim = ANIM_GrooveGuy_Anim0C;
+            npc->curAnim = ANIM_GrooveGuy_Forward;
             set_npc_yaw(npc, 270.0f);
             npc->rot.y = 0.0f;
             // fallthrough
         case DANCE_PHASE_POINT:
             animPart = enemy->varTable[AI_VAR_GROOVE_DANCE_TIME] % 16;
             if (animPart < 4) {
-                npc->curAnim = ANIM_GrooveGuy_Anim0C;
+                npc->curAnim = ANIM_GrooveGuy_Forward;
             } else if (animPart < 8) {
-                npc->curAnim = ANIM_GrooveGuy_Anim0B;
+                npc->curAnim = ANIM_GrooveGuy_LeanLeft;
             } else if (animPart < 12) {
-                npc->curAnim = ANIM_GrooveGuy_Anim0C;
+                npc->curAnim = ANIM_GrooveGuy_Forward;
             } else {
-                npc->curAnim = ANIM_GrooveGuy_Anim0D;
+                npc->curAnim = ANIM_GrooveGuy_LeanRight;
             }
             enemy->varTable[AI_VAR_GROOVE_DANCE_TIME]++;
             if (enemy->varTable[AI_VAR_GROOVE_DANCE_TIME] > 64) {
@@ -61,7 +61,7 @@ void N(GrooveGuyAI_Dance)(Evt* script, MobileAISettings* settings, EnemyDetectVo
             enemy->varTable[AI_VAR_GROOVE_DANCE_PHASE] = DANCE_PHASE_SPIN;
             enemy->varTable[AI_VAR_GROOVE_DANCE_TIME] = 0;
             npc->rot.y = 0.0f;
-            npc->curAnim = ANIM_GrooveGuy_Anim0C;
+            npc->curAnim = ANIM_GrooveGuy_Forward;
             // fallthrough
         case DANCE_PHASE_SPIN:
             npc->rot.y += 35.0;

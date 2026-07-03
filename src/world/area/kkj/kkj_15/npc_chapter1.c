@@ -11,11 +11,11 @@ AnimID N(LimitAnims_Bowser_Ch1)[] = {
 };
 
 AnimID N(LimitAnims_Koopatrol_Ch1)[] = {
-    ANIM_WorldKoopatrol_Anim01,
-    ANIM_WorldKoopatrol_Anim06,
-    ANIM_WorldKoopatrol_Anim08,
-    ANIM_WorldKoopatrol_Anim12,
-    ANIM_WorldKoopatrol_Anim14,
+    ANIM_WorldKoopatrol_Idle,
+    ANIM_WorldKoopatrol_Run,
+    ANIM_WorldKoopatrol_Talk,
+    ANIM_WorldKoopatrol_Lift,
+    ANIM_WorldKoopatrol_CarryFast,
     ANIM_LIST_END
 };
 

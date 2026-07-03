@@ -299,67 +299,67 @@ API_CALLABLE(N(UpdateLerp)) {
 s32 N(RuffPuffDataBuffer)[32] = {};
 
 s32 N(BodyAnims)[] = {
-    STATUS_KEY_NORMAL,    ANIM_HuffNPuff_Anim01,
-    STATUS_KEY_STONE,     ANIM_HuffNPuff_Anim01,
-    STATUS_KEY_SLEEP,     ANIM_HuffNPuff_Anim01,
-    STATUS_KEY_POISON,    ANIM_HuffNPuff_Anim01,
-    STATUS_KEY_STOP,      ANIM_HuffNPuff_Anim01,
-    STATUS_KEY_STATIC,    ANIM_HuffNPuff_Anim01,
-    STATUS_KEY_PARALYZE,  ANIM_HuffNPuff_Anim01,
-    STATUS_KEY_PARALYZE,  ANIM_HuffNPuff_Anim01,
-    STATUS_KEY_DIZZY,     ANIM_HuffNPuff_Anim01,
-    STATUS_KEY_DIZZY,     ANIM_HuffNPuff_Anim01,
-    STATUS_KEY_UNUSED,    ANIM_HuffNPuff_Anim01,
+    STATUS_KEY_NORMAL,    ANIM_HuffNPuff_IdleBody,
+    STATUS_KEY_STONE,     ANIM_HuffNPuff_IdleBody,
+    STATUS_KEY_SLEEP,     ANIM_HuffNPuff_IdleBody,
+    STATUS_KEY_POISON,    ANIM_HuffNPuff_IdleBody,
+    STATUS_KEY_STOP,      ANIM_HuffNPuff_IdleBody,
+    STATUS_KEY_STATIC,    ANIM_HuffNPuff_IdleBody,
+    STATUS_KEY_PARALYZE,  ANIM_HuffNPuff_IdleBody,
+    STATUS_KEY_PARALYZE,  ANIM_HuffNPuff_IdleBody,
+    STATUS_KEY_DIZZY,     ANIM_HuffNPuff_IdleBody,
+    STATUS_KEY_DIZZY,     ANIM_HuffNPuff_IdleBody,
+    STATUS_KEY_UNUSED,    ANIM_HuffNPuff_IdleBody,
     STATUS_END,
 };
 
 s32 N(FaceAnims)[] = {
-    STATUS_KEY_NORMAL,    ANIM_HuffNPuff_Anim02,
-    STATUS_KEY_STONE,     ANIM_HuffNPuff_Anim02,
-    STATUS_KEY_SLEEP,     ANIM_HuffNPuff_Anim02,
-    STATUS_KEY_POISON,    ANIM_HuffNPuff_Anim02,
-    STATUS_KEY_STOP,      ANIM_HuffNPuff_Anim02,
-    STATUS_KEY_STATIC,    ANIM_HuffNPuff_Anim02,
-    STATUS_KEY_PARALYZE,  ANIM_HuffNPuff_Anim02,
-    STATUS_KEY_PARALYZE,  ANIM_HuffNPuff_Anim02,
-    STATUS_KEY_DIZZY,     ANIM_HuffNPuff_Anim02,
-    STATUS_KEY_DIZZY,     ANIM_HuffNPuff_Anim02,
-    STATUS_KEY_UNUSED,    ANIM_HuffNPuff_Anim02,
+    STATUS_KEY_NORMAL,    ANIM_HuffNPuff_IdleFace,
+    STATUS_KEY_STONE,     ANIM_HuffNPuff_IdleFace,
+    STATUS_KEY_SLEEP,     ANIM_HuffNPuff_IdleFace,
+    STATUS_KEY_POISON,    ANIM_HuffNPuff_IdleFace,
+    STATUS_KEY_STOP,      ANIM_HuffNPuff_IdleFace,
+    STATUS_KEY_STATIC,    ANIM_HuffNPuff_IdleFace,
+    STATUS_KEY_PARALYZE,  ANIM_HuffNPuff_IdleFace,
+    STATUS_KEY_PARALYZE,  ANIM_HuffNPuff_IdleFace,
+    STATUS_KEY_DIZZY,     ANIM_HuffNPuff_IdleFace,
+    STATUS_KEY_DIZZY,     ANIM_HuffNPuff_IdleFace,
+    STATUS_KEY_UNUSED,    ANIM_HuffNPuff_IdleFace,
     STATUS_END,
 };
 
 s32 N(ArmAnims)[] = {
-    STATUS_KEY_NORMAL,    ANIM_HuffNPuff_Anim03,
-    STATUS_KEY_STONE,     ANIM_HuffNPuff_Anim03,
-    STATUS_KEY_SLEEP,     ANIM_HuffNPuff_Anim03,
-    STATUS_KEY_POISON,    ANIM_HuffNPuff_Anim03,
-    STATUS_KEY_STOP,      ANIM_HuffNPuff_Anim03,
-    STATUS_KEY_STATIC,    ANIM_HuffNPuff_Anim03,
-    STATUS_KEY_PARALYZE,  ANIM_HuffNPuff_Anim03,
-    STATUS_KEY_PARALYZE,  ANIM_HuffNPuff_Anim03,
-    STATUS_KEY_DIZZY,     ANIM_HuffNPuff_Anim03,
-    STATUS_KEY_DIZZY,     ANIM_HuffNPuff_Anim03,
-    STATUS_KEY_UNUSED,    ANIM_HuffNPuff_Anim03,
+    STATUS_KEY_NORMAL,    ANIM_HuffNPuff_IdleArms,
+    STATUS_KEY_STONE,     ANIM_HuffNPuff_IdleArms,
+    STATUS_KEY_SLEEP,     ANIM_HuffNPuff_IdleArms,
+    STATUS_KEY_POISON,    ANIM_HuffNPuff_IdleArms,
+    STATUS_KEY_STOP,      ANIM_HuffNPuff_IdleArms,
+    STATUS_KEY_STATIC,    ANIM_HuffNPuff_IdleArms,
+    STATUS_KEY_PARALYZE,  ANIM_HuffNPuff_IdleArms,
+    STATUS_KEY_PARALYZE,  ANIM_HuffNPuff_IdleArms,
+    STATUS_KEY_DIZZY,     ANIM_HuffNPuff_IdleArms,
+    STATUS_KEY_DIZZY,     ANIM_HuffNPuff_IdleArms,
+    STATUS_KEY_UNUSED,    ANIM_HuffNPuff_IdleArms,
     STATUS_END,
 };
 
 s32 N(ChargedBodyAnims)[] = {
-    STATUS_KEY_NORMAL,    ANIM_HuffNPuff_Anim11,
+    STATUS_KEY_NORMAL,    ANIM_HuffNPuff_IdleChargedBody,
     STATUS_END,
 };
 
 s32 N(ChargedFaceAnims)[] = {
-    STATUS_KEY_NORMAL,    ANIM_HuffNPuff_Anim12,
+    STATUS_KEY_NORMAL,    ANIM_HuffNPuff_IdleChargedFace,
     STATUS_END,
 };
 
 s32 N(ChargedArmAnims)[] = {
-    STATUS_KEY_NORMAL,    ANIM_HuffNPuff_Anim13,
+    STATUS_KEY_NORMAL,    ANIM_HuffNPuff_IdleChargedArms,
     STATUS_END,
 };
 
 s32 N(DummyAnims)[] = {
-    STATUS_KEY_NORMAL,    ANIM_TuffPuff_Anim02,
+    STATUS_KEY_NORMAL,    ANIM_TuffPuff_IdleSmall,
     STATUS_END,
 };
 
@@ -740,14 +740,14 @@ EvtScript N(EVS_HuffNPuff_Hit) = {
         CaseOrEq(AVAL_Move_Charged_1)
         CaseOrEq(AVAL_Move_Charged_2)
         CaseOrEq(AVAL_Move_Charged_3)
-            SetConst(LVar2, ANIM_HuffNPuff_Anim11)
-            SetConst(LVar3, ANIM_HuffNPuff_Anim12)
-            SetConst(LVar4, ANIM_HuffNPuff_Anim13)
+            SetConst(LVar2, ANIM_HuffNPuff_IdleChargedBody)
+            SetConst(LVar3, ANIM_HuffNPuff_IdleChargedFace)
+            SetConst(LVar4, ANIM_HuffNPuff_IdleChargedArms)
         EndCaseGroup
         CaseDefault
-            SetConst(LVar2, ANIM_HuffNPuff_Anim07)
-            SetConst(LVar3, ANIM_HuffNPuff_Anim08)
-            SetConst(LVar4, ANIM_HuffNPuff_Anim09)
+            SetConst(LVar2, ANIM_HuffNPuff_HurtBody)
+            SetConst(LVar3, ANIM_HuffNPuff_HurtFace)
+            SetConst(LVar4, ANIM_HuffNPuff_HurtArms)
     EndSwitch
     Thread
         Set(LVar0, PRT_MAIN)
@@ -800,10 +800,10 @@ EvtScript N(EVS_HuffNPuff_Death) = {
             Call(StopSound, SOUND_CHARGE_LIGHTNING)
         EndCaseGroup
     EndSwitch
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim08)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim09)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_HurtFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_HurtArms)
     Set(LVar0, PRT_MAIN)
-    Set(LVar1, ANIM_HuffNPuff_Anim07)
+    Set(LVar1, ANIM_HuffNPuff_HurtBody)
     ExecWait(EVS_Enemy_Death)
     Return
     End
@@ -816,14 +816,14 @@ EvtScript N(EVS_HuffNPuff_BurnHit) = {
         CaseOrEq(AVAL_Move_Charged_1)
         CaseOrEq(AVAL_Move_Charged_2)
         CaseOrEq(AVAL_Move_Charged_3)
-            SetConst(LVar2, ANIM_HuffNPuff_Anim11)
-            SetConst(LVar3, ANIM_HuffNPuff_Anim12)
-            SetConst(LVar4, ANIM_HuffNPuff_Anim13)
+            SetConst(LVar2, ANIM_HuffNPuff_IdleChargedBody)
+            SetConst(LVar3, ANIM_HuffNPuff_IdleChargedFace)
+            SetConst(LVar4, ANIM_HuffNPuff_IdleChargedArms)
         EndCaseGroup
         CaseDefault
-            SetConst(LVar2, ANIM_HuffNPuff_Anim23)
-            SetConst(LVar3, ANIM_HuffNPuff_Anim24)
-            SetConst(LVar4, ANIM_HuffNPuff_Anim25)
+            SetConst(LVar2, ANIM_HuffNPuff_PanicBody)
+            SetConst(LVar3, ANIM_HuffNPuff_PanicFace)
+            SetConst(LVar4, ANIM_HuffNPuff_PanicArms)
     EndSwitch
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, LVar2)
     Call(SetAnimation, ACTOR_SELF, PRT_FACE, LVar3)
@@ -834,14 +834,14 @@ EvtScript N(EVS_HuffNPuff_BurnHit) = {
         CaseOrEq(AVAL_Move_Charged_1)
         CaseOrEq(AVAL_Move_Charged_2)
         CaseOrEq(AVAL_Move_Charged_3)
-            SetConst(LVar2, ANIM_HuffNPuff_Anim11)
-            SetConst(LVar3, ANIM_HuffNPuff_Anim12)
-            SetConst(LVar4, ANIM_HuffNPuff_Anim13)
+            SetConst(LVar2, ANIM_HuffNPuff_IdleChargedBody)
+            SetConst(LVar3, ANIM_HuffNPuff_IdleChargedFace)
+            SetConst(LVar4, ANIM_HuffNPuff_IdleChargedArms)
         EndCaseGroup
         CaseDefault
-            SetConst(LVar2, ANIM_HuffNPuff_Anim26)
-            SetConst(LVar3, ANIM_HuffNPuff_Anim27)
-            SetConst(LVar4, ANIM_HuffNPuff_Anim28)
+            SetConst(LVar2, ANIM_HuffNPuff_FrownBody)
+            SetConst(LVar3, ANIM_HuffNPuff_FrownFace)
+            SetConst(LVar4, ANIM_HuffNPuff_FrownArms)
     EndSwitch
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, LVar2)
     Call(SetAnimation, ACTOR_SELF, PRT_FACE, LVar3)
@@ -881,10 +881,10 @@ EvtScript N(EVS_HuffNPuff_BurnDeath) = {
             Call(StopSound, SOUND_CHARGE_LIGHTNING)
         EndCaseGroup
     EndSwitch
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim27)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim28)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_FrownFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_FrownArms)
     Set(LVar0, PRT_MAIN)
-    Set(LVar1, ANIM_HuffNPuff_Anim26)
+    Set(LVar1, ANIM_HuffNPuff_FrownBody)
     ExecWait(EVS_Enemy_Death)
     Return
     End
@@ -896,14 +896,14 @@ EvtScript N(EVS_HuffNPuff_NoDamage) = {
         CaseOrEq(AVAL_Move_Charged_1)
         CaseOrEq(AVAL_Move_Charged_2)
         CaseOrEq(AVAL_Move_Charged_3)
-            SetConst(LVar2, ANIM_HuffNPuff_Anim11)
-            SetConst(LVar3, ANIM_HuffNPuff_Anim12)
-            SetConst(LVar4, ANIM_HuffNPuff_Anim13)
+            SetConst(LVar2, ANIM_HuffNPuff_IdleChargedBody)
+            SetConst(LVar3, ANIM_HuffNPuff_IdleChargedFace)
+            SetConst(LVar4, ANIM_HuffNPuff_IdleChargedArms)
         EndCaseGroup
         CaseDefault
-            SetConst(LVar2, ANIM_HuffNPuff_Anim01)
-            SetConst(LVar3, ANIM_HuffNPuff_Anim02)
-            SetConst(LVar4, ANIM_HuffNPuff_Anim03)
+            SetConst(LVar2, ANIM_HuffNPuff_IdleBody)
+            SetConst(LVar3, ANIM_HuffNPuff_IdleFace)
+            SetConst(LVar4, ANIM_HuffNPuff_IdleArms)
     EndSwitch
     Thread
         Set(LVar0, PRT_MAIN)
@@ -1017,10 +1017,10 @@ EvtScript N(EVS_Dialogue_PummelPermission) = {
     Call(UseIdleAnimation, LVar0, false)
     Call(GetActorVar, LVar0, AVAR_TuffPuff_IsLarge, LVar1)
     IfEq(LVar1, 0)
-        Call(SetAnimation, LVar0, 1, ANIM_TuffPuff_Anim09)
-        Call(ActorSpeak, MSG_CH6_00CF, LVar0, 1, ANIM_TuffPuff_Anim14, ANIM_TuffPuff_Anim02)
+        Call(SetAnimation, LVar0, 1, ANIM_TuffPuff_GrinSmall)
+        Call(ActorSpeak, MSG_CH6_00CF, LVar0, 1, ANIM_TuffPuff_TalkSmall, ANIM_TuffPuff_IdleSmall)
     Else
-        Call(ActorSpeak, MSG_CH6_00CF, LVar0, 1, ANIM_TuffPuff_Anim15, ANIM_TuffPuff_Anim03)
+        Call(ActorSpeak, MSG_CH6_00CF, LVar0, 1, ANIM_TuffPuff_TalkLarge, ANIM_TuffPuff_IdleLarge)
     EndIf
     Call(UseIdleAnimation, LVar0, true)
     Wait(20)
@@ -1033,11 +1033,11 @@ EvtScript N(EVS_Dialogue_PummelPermission) = {
     Call(MoveBattleCamOver, 30)
     Wait(30)
     Call(UseIdleAnimation, ACTOR_SELF, false)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim2D)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim2E)
-    Call(ActorSpeak, MSG_CH6_00D0, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim2C, ANIM_HuffNPuff_Anim01)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim02)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim03)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_TalkFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_TalkArms)
+    Call(ActorSpeak, MSG_CH6_00D0, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_TalkBody, ANIM_HuffNPuff_IdleBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleArms)
     Call(UseIdleAnimation, ACTOR_SELF, true)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Return
@@ -1053,11 +1053,11 @@ EvtScript N(EVS_Dialogue_FullPower) = {
     Call(MoveBattleCamOver, 30)
     Wait(30)
     Call(UseIdleAnimation, ACTOR_SELF, false)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim2D)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim2E)
-    Call(ActorSpeak, MSG_CH6_00D1, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim2C, ANIM_HuffNPuff_Anim01)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim02)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim03)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_TalkFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_TalkArms)
+    Call(ActorSpeak, MSG_CH6_00D1, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_TalkBody, ANIM_HuffNPuff_IdleBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleArms)
     Call(UseIdleAnimation, ACTOR_SELF, true)
     Call(GetActorVar, ACTOR_SELF, AVAR_ChildBits, LVar0)
 
@@ -1091,10 +1091,10 @@ EvtScript N(EVS_Dialogue_FullPower) = {
     Call(UseIdleAnimation, LVar0, false)
     Call(GetActorVar, LVar0, AVAR_TuffPuff_IsLarge, LVar1)
     IfEq(LVar1, 0)
-        Call(SetAnimation, LVar0, 1, ANIM_TuffPuff_Anim09)
-        Call(ActorSpeak, MSG_CH6_00D2, LVar0, 1, ANIM_TuffPuff_Anim14, ANIM_TuffPuff_Anim02)
+        Call(SetAnimation, LVar0, 1, ANIM_TuffPuff_GrinSmall)
+        Call(ActorSpeak, MSG_CH6_00D2, LVar0, 1, ANIM_TuffPuff_TalkSmall, ANIM_TuffPuff_IdleSmall)
     Else
-        Call(ActorSpeak, MSG_CH6_00D2, LVar0, 1, ANIM_TuffPuff_Anim15, ANIM_TuffPuff_Anim03)
+        Call(ActorSpeak, MSG_CH6_00D2, LVar0, 1, ANIM_TuffPuff_TalkLarge, ANIM_TuffPuff_IdleLarge)
     EndIf
     Call(UseIdleAnimation, LVar0, true)
     Call(GetActorPos, LVar0, LVar1, LVar2, LVar3)
@@ -1123,11 +1123,11 @@ EvtScript N(EVS_Dialogue_PraiseHuff) = {
     Call(MoveBattleCamOver, 30)
     Wait(30)
     Call(UseIdleAnimation, ACTOR_SELF, false)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim18)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim19)
-    Call(ActorSpeak, MSG_CH6_00D3, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim17, ANIM_HuffNPuff_Anim17)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim02)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim03)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_BragFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_BragArms)
+    Call(ActorSpeak, MSG_CH6_00D3, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_BragBody, ANIM_HuffNPuff_BragBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleArms)
     Call(UseIdleAnimation, ACTOR_SELF, true)
     Call(GetActorVar, ACTOR_SELF, AVAR_ChildBits, LVar0)
 
@@ -1161,9 +1161,9 @@ EvtScript N(EVS_Dialogue_PraiseHuff) = {
     Call(UseIdleAnimation, LVar0, false)
     Call(GetActorVar, LVar0, AVAR_TuffPuff_IsLarge, LVar1)
     IfEq(LVar1, 0)
-        Call(ActorSpeak, MSG_CH6_00D4, LVar0, 1, ANIM_TuffPuff_Anim14, ANIM_TuffPuff_Anim02)
+        Call(ActorSpeak, MSG_CH6_00D4, LVar0, 1, ANIM_TuffPuff_TalkSmall, ANIM_TuffPuff_IdleSmall)
     Else
-        Call(ActorSpeak, MSG_CH6_00D4, LVar0, 1, ANIM_TuffPuff_Anim15, ANIM_TuffPuff_Anim03)
+        Call(ActorSpeak, MSG_CH6_00D4, LVar0, 1, ANIM_TuffPuff_TalkLarge, ANIM_TuffPuff_IdleLarge)
     EndIf
     Call(UseIdleAnimation, LVar0, true)
     Call(GetActorPos, LVar0, LVar1, LVar2, LVar3)
@@ -1192,11 +1192,11 @@ EvtScript N(EVS_Dialogue_Concerned) = {
     Call(MoveBattleCamOver, 30)
     Wait(30)
     Call(UseIdleAnimation, ACTOR_SELF, false)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim24)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim25)
-    Call(ActorSpeak, MSG_CH6_00D5, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim23, ANIM_HuffNPuff_Anim23)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim02)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim03)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_PanicFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_PanicArms)
+    Call(ActorSpeak, MSG_CH6_00D5, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_PanicBody, ANIM_HuffNPuff_PanicBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleArms)
     Call(UseIdleAnimation, ACTOR_SELF, true)
     Call(GetActorVar, ACTOR_SELF, AVAR_ChildBits, LVar0)
 
@@ -1220,9 +1220,9 @@ EvtScript N(EVS_Dialogue_Concerned) = {
     Call(UseIdleAnimation, LVar0, false)
     Call(GetActorVar, LVar0, AVAR_TuffPuff_IsLarge, LVar1)
     IfEq(LVar1, 0)
-        Call(ActorSpeak, MSG_CH6_00D6, LVar0, 1, ANIM_TuffPuff_Anim14, ANIM_TuffPuff_Anim02)
+        Call(ActorSpeak, MSG_CH6_00D6, LVar0, 1, ANIM_TuffPuff_TalkSmall, ANIM_TuffPuff_IdleSmall)
     Else
-        Call(ActorSpeak, MSG_CH6_00D6, LVar0, 1, ANIM_TuffPuff_Anim15, ANIM_TuffPuff_Anim03)
+        Call(ActorSpeak, MSG_CH6_00D6, LVar0, 1, ANIM_TuffPuff_TalkLarge, ANIM_TuffPuff_IdleLarge)
     EndIf
     Call(UseIdleAnimation, LVar0, true)
     // Huff N Puff replies
@@ -1234,11 +1234,11 @@ EvtScript N(EVS_Dialogue_Concerned) = {
     Call(MoveBattleCamOver, 30)
     Wait(30)
     Call(UseIdleAnimation, ACTOR_SELF, false)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim24)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim25)
-    Call(ActorSpeak, MSG_CH6_00D7, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim23, ANIM_HuffNPuff_Anim23)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim02)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim03)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_PanicFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_PanicArms)
+    Call(ActorSpeak, MSG_CH6_00D7, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_PanicBody, ANIM_HuffNPuff_PanicBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleArms)
     Call(UseIdleAnimation, ACTOR_SELF, true)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Return
@@ -1391,9 +1391,9 @@ EvtScript N(EVS_Attack_BodySlam) = {
         CaseOrEq(HIT_RESULT_MISS)
         CaseOrEq(HIT_RESULT_LUCKY)
             Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
-            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim0B)
-            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim0C)
-            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim0D)
+            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_JumpBody)
+            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_JumpFace)
+            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_JumpArms)
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(GetGoalPos, ACTOR_SELF, LVar5, LVar6, LVar7)
             Call(SetGoalPos, ACTOR_SELF, LVar5, LVar3, LVar7)
@@ -1405,9 +1405,9 @@ EvtScript N(EVS_Attack_BodySlam) = {
             IfEq(LVar0, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
             EndIf
-            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim04)
-            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim05)
-            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim06)
+            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleSadBody)
+            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleSadFace)
+            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleSadArms)
             Call(SetActorJumpGravity, ACTOR_SELF, Float(0.5))
             Call(AddGoalPos, ACTOR_SELF, -80, 0, 0)
             Call(JumpToGoal, ACTOR_SELF, 25, false, false, false)
@@ -1427,9 +1427,9 @@ EvtScript N(EVS_Attack_BodySlam) = {
             Call(AddGoalPos, ACTOR_SELF, -20, 0, 0)
             Call(JumpToGoal, ACTOR_SELF, 10, false, false, false)
             Wait(30)
-            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim01)
-            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim02)
-            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim03)
+            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleBody)
+            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleFace)
+            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleArms)
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(SetGoalToHome, ACTOR_SELF)
             Call(FlyToGoal, ACTOR_SELF, 80, -20, EASING_SIN_OUT)
@@ -1437,9 +1437,9 @@ EvtScript N(EVS_Attack_BodySlam) = {
             Return
         EndCaseGroup
     EndSwitch
-    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim0B)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim0C)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim0D)
+    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_JumpBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_JumpFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_JumpArms)
     Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, 0, LVar3, 5)
@@ -1488,9 +1488,9 @@ EvtScript N(EVS_Attack_BodySlam) = {
             Call(AddGoalPos, ACTOR_SELF, 30, 0, 0)
             Call(JumpWithBounce, ACTOR_SELF, 20, Float(4.0))
             Wait(20)
-            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim01)
-            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim02)
-            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim03)
+            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleBody)
+            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleFace)
+            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleArms)
             Call(SetGoalToHome, ACTOR_SELF)
             Call(FlyToGoal, ACTOR_SELF, 40, -20, EASING_SIN_OUT)
         EndCaseGroup
@@ -1516,9 +1516,9 @@ EvtScript N(EVS_RuffPuff_Inhale) = {
         Call(SetActorVar, ACTOR_SELF, AVAR_TuffPuff_WobbleMode, 2)
         Call(GetActorVar, ACTOR_SELF, AVAR_TuffPuff_IsLarge, LVar0)
         IfEq(LVar0, 0)
-            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_TuffPuff_Anim12)
+            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_TuffPuff_ShockSmall)
         Else
-            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_TuffPuff_Anim13)
+            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_TuffPuff_ShockLarge)
         EndIf
     EndThread
     Wait(15)
@@ -1604,9 +1604,9 @@ EvtScript N(EVS_Move_HealOrSlam) = {
     EndIf
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HUFF_N_PUFF_INHALE)
-    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim1A)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim1B)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim1C)
+    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_InhaleBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_InhaleFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_InhaleArms)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, -13)
     Add(LVar1, 0)
@@ -1640,9 +1640,9 @@ EvtScript N(EVS_Move_HealOrSlam) = {
     Call(RemoveEffect, LVar8)
     Call(StopSound, SOUND_HUFF_N_PUFF_INHALE)
     Call(StopSound, SOUND_BIG_POWER_UP)
-    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim17)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim18)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim19)
+    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_BragBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_BragFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_BragArms)
     Thread
         Wait(5)
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_RECOVER_HEART)
@@ -1670,9 +1670,9 @@ EvtScript N(EVS_Move_HealOrSlam) = {
 EvtScript N(EVS_Move_HurricaneBreath) = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
-    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim1A)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim1B)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim1C)
+    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_InhaleBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_InhaleFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_InhaleArms)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar3)
     Call(GetActorVar, ACTOR_SELF, AVAR_ScaleY, LVar4)
@@ -1727,13 +1727,13 @@ EvtScript N(EVS_Move_HurricaneBreath) = {
     Call(MoveBattleCamOver, 180)
     Wait(90)
     Call(StopSound, SOUND_HUFF_N_PUFF_INHALE)
-    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim1D)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim1D)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim1E)
+    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_HoldBreathBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_HoldBreathBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_HoldBreathFace)
     Wait(60)
-    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim20)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim21)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim22)
+    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_BlowBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_BlowFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_BlowArms)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEAVY_WIND_LOOP)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 15)
@@ -1804,9 +1804,9 @@ EvtScript N(EVS_Move_HurricaneBreath) = {
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
             EndIf
-            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim04)
-            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim05)
-            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim06)
+            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleSadBody)
+            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleSadFace)
+            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleSadArms)
             Wait(20)
             Call(UseIdleAnimation, ACTOR_SELF, true)
             Return
@@ -1974,9 +1974,9 @@ EvtScript N(EVS_Move_HurricaneBreath) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim01)
-            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim02)
-            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim03)
+            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleBody)
+            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleFace)
+            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleArms)
             Wait(20)
         EndCaseGroup
     EndSwitch
@@ -1996,9 +1996,9 @@ EvtScript N(EVS_Move_ChargeForGround) = {
     Call(SetBattleCamDist, 400)
     Call(SetBattleCamOffsetY, 5)
     Call(MoveBattleCamOver, 60)
-    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim11)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim12)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim13)
+    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleChargedBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleChargedFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleChargedArms)
     Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ChargedBodyAnims)))
     Call(SetIdleAnimations, ACTOR_SELF, PRT_FACE, Ref(N(ChargedFaceAnims)))
     Call(SetIdleAnimations, ACTOR_SELF, PRT_ARMS, Ref(N(ChargedArmAnims)))
@@ -2055,9 +2055,9 @@ EvtScript N(EVS_Attack_GroundLightning) = {
     Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(BodyAnims)))
     Call(SetIdleAnimations, ACTOR_SELF, PRT_FACE, Ref(N(FaceAnims)))
     Call(SetIdleAnimations, ACTOR_SELF, PRT_ARMS, Ref(N(ArmAnims)))
-    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim0E)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim0F)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim10)
+    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_UnleashBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_UnleashFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_UnleashArms)
     Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ELECTRIFIED, false)
     Thread
         Wait(20)
@@ -2100,9 +2100,9 @@ EvtScript N(EVS_Attack_GroundLightning) = {
             IfEq(LVar0, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
             EndIf
-            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim04)
-            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim05)
-            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim06)
+            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleSadBody)
+            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleSadFace)
+            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleSadArms)
             Wait(20)
             Call(UseIdleAnimation, ACTOR_SELF, true)
             Return
@@ -2140,9 +2140,9 @@ EvtScript N(EVS_Move_ChargeForDirect) = {
     Call(SetBattleCamDist, 400)
     Call(SetBattleCamOffsetY, 5)
     Call(MoveBattleCamOver, 60)
-    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim11)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim12)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim13)
+    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleChargedBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleChargedFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleChargedArms)
     Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ChargedBodyAnims)))
     Call(SetIdleAnimations, ACTOR_SELF, PRT_FACE, Ref(N(ChargedFaceAnims)))
     Call(SetIdleAnimations, ACTOR_SELF, PRT_ARMS, Ref(N(ChargedArmAnims)))
@@ -2219,9 +2219,9 @@ EvtScript N(EVS_Attack_DirectLightning) = {
     Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(BodyAnims)))
     Call(SetIdleAnimations, ACTOR_SELF, PRT_FACE, Ref(N(FaceAnims)))
     Call(SetIdleAnimations, ACTOR_SELF, PRT_ARMS, Ref(N(ArmAnims)))
-    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim0E)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim0F)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim10)
+    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_UnleashBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_UnleashFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_UnleashArms)
     Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ELECTRIFIED, false)
     Thread
         Wait(20)
@@ -2246,9 +2246,9 @@ EvtScript N(EVS_Attack_DirectLightning) = {
             Sub(LVarD, 100)
             PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVarA, LVarB, LVarC, LVarD, 0, LVarF, Float(1.5), 20, 0)
             Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
-            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim04)
-            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim05)
-            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim06)
+            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleSadBody)
+            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleSadFace)
+            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleSadArms)
             Wait(20)
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(SetGoalToHome, ACTOR_SELF)
@@ -2296,9 +2296,9 @@ EvtScript N(EVS_Attack_DirectLightning) = {
                 PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar9, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.2), 10, 0)
             EndThread
             Wait(2)
-            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim04)
-            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim05)
-            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim06)
+            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleSadBody)
+            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleSadFace)
+            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleSadArms)
             Wait(20)
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(SetGoalToHome, ACTOR_SELF)
@@ -2355,9 +2355,9 @@ EvtScript N(EVS_Attack_DirectLightning) = {
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Wait(30)
-            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim01)
-            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim02)
-            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim03)
+            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleBody)
+            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleFace)
+            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleArms)
             Call(SetGoalToHome, ACTOR_SELF)
             Call(FlyToGoal, ACTOR_SELF, 40, -20, EASING_SIN_OUT)
         EndCaseGroup
@@ -2379,13 +2379,13 @@ EvtScript N(EVS_Attack_GroupSlam) = {
     Call(MoveBattleCamOver, 30)
     Wait(30)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HUFF_N_PUFF_REAR_UP)
-    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim1A)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim1B)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim1C)
+    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_InhaleBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_InhaleFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_InhaleArms)
     Wait(8)
-    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim1D)
-    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim1E)
-    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim1F)
+    Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_HoldBreathBody)
+    Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_HoldBreathFace)
+    Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_HoldBreathArms)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HUFF_N_PUFF_JIGGLE)
     Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar0)
     Call(GetActorVar, ACTOR_SELF, AVAR_ScaleY, LVar1)
@@ -2423,9 +2423,9 @@ EvtScript N(EVS_Attack_GroupSlam) = {
             Call(UseIdleAnimation, ArrayVar(idx), false) \
             Call(GetActorVar, ArrayVar(idx), AVAR_TuffPuff_IsLarge, LVar1) \
             IfEq(LVar1, 0) \
-                Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_Anim09) \
+                Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_GrinSmall) \
             Else \
-                Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_Anim0B) \
+                Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_GrinLarge) \
             EndIf \
             Thread \
                 Mod(LVar9, 2) \
@@ -2604,9 +2604,9 @@ EvtScript N(EVS_Attack_GroupSlam) = {
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
             EndIf
-            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim04)
-            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim05)
-            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim06)
+            Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_IdleSadBody)
+            Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_IdleSadFace)
+            Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_IdleSadArms)
             Wait(20)
             Set(LVarA, 0)
             Call(GetActorVar, ACTOR_SELF, AVAR_ChildBits, LVar0)
@@ -2804,9 +2804,9 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
             Call(SetPartAlpha, ArrayVar(idx), 1, 254) \
             Call(GetActorVar, ArrayVar(idx), AVAR_TuffPuff_IsLarge, LVar1) \
             IfEq(LVar1, 0) \
-                Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_Anim09) \
+                Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_GrinSmall) \
             Else \
-                Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_Anim0B) \
+                Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_GrinLarge) \
             EndIf \
             Thread \
                 Call(GetActorPos, ACTOR_PLAYER, LVar1, LVar2, LVar3) \
@@ -2889,9 +2889,9 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
                     KillThread(ArrayVar(idx + MAX_RUFF_PUFFS)) \
                     Call(GetActorVar, ArrayVar(idx), AVAR_TuffPuff_IsLarge, LVar1) \
                     IfEq(LVar1, 0) \
-                        Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_Anim12) \
+                        Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_ShockSmall) \
                     Else \
-                        Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_Anim13) \
+                        Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_ShockLarge) \
                     EndIf \
                     Thread \
                         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2) \
@@ -2921,9 +2921,9 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
                 IfFlag(LVar0, 1 << idx) \
                     Call(GetActorVar, ArrayVar(idx), AVAR_TuffPuff_IsLarge, LVar1) \
                     IfEq(LVar1, 0) \
-                        Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_Anim06) \
+                        Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_FlyFastSmall) \
                     Else \
-                        Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_Anim07) \
+                        Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_FlyFastLarge) \
                     EndIf \
                     Thread \
                         Call(SetActorVar, ArrayVar(idx), AVAR_TuffPuff_WobbleMode, 0) \
@@ -2939,9 +2939,9 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
                         Call(SetActorYaw, ArrayVar(idx), 0) \
                         Call(GetActorVar, ArrayVar(idx), AVAR_TuffPuff_IsLarge, LVar1) \
                         IfEq(LVar1, 0) \
-                            Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_Anim02) \
+                            Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_IdleSmall) \
                         Else \
-                            Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_Anim03) \
+                            Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_IdleLarge) \
                         EndIf \
                     EndThread \
                     Add(LVarA, 1) \
@@ -3039,9 +3039,9 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
                     KillThread(ArrayVar(idx + MAX_RUFF_PUFFS)) \
                     Call(GetActorVar, ArrayVar(idx), AVAR_TuffPuff_IsLarge, LVar1) \
                     IfEq(LVar1, 0) \
-                        Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_Anim12) \
+                        Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_ShockSmall) \
                     Else \
-                        Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_Anim13) \
+                        Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_ShockLarge) \
                     EndIf \
                     Thread \
                         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2) \
@@ -3095,9 +3095,9 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
                 IfFlag(LVar0, 1 << idx) \
                     Call(GetActorVar, ArrayVar(idx), AVAR_TuffPuff_IsLarge, LVar1) \
                     IfEq(LVar1, 0) \
-                        Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_Anim06) \
+                        Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_FlyFastSmall) \
                     Else \
-                        Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_Anim07) \
+                        Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_FlyFastLarge) \
                     EndIf \
                     Thread \
                         Call(SetActorVar, ArrayVar(idx), AVAR_TuffPuff_WobbleMode, 0) \
@@ -3113,9 +3113,9 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
                         Call(SetActorYaw, ArrayVar(idx), 0) \
                         Call(GetActorVar, ArrayVar(idx), AVAR_TuffPuff_IsLarge, LVar1) \
                         IfEq(LVar1, 0) \
-                            Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_Anim02) \
+                            Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_IdleSmall) \
                         Else \
-                            Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_Anim03) \
+                            Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_IdleLarge) \
                         EndIf \
                     EndThread \
                     Add(LVarA, 1) \

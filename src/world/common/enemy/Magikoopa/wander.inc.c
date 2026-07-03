@@ -61,13 +61,13 @@ NpcSettings N(NpcSettings_Magikoopa_Wander) = {
 };
 
 AnimID N(LimitAnims_Magikoopa)[] = {
-    ANIM_Magikoopa_Anim00,
-    ANIM_Magikoopa_Anim01,
-    ANIM_Magikoopa_Anim01,
-    ANIM_Magikoopa_Anim01,
-    ANIM_Magikoopa_Anim02,
-    ANIM_Magikoopa_Anim03,
-    ANIM_Magikoopa_Anim04,
+    ANIM_Magikoopa_Still,
+    ANIM_Magikoopa_Idle,
+    ANIM_Magikoopa_Idle,
+    ANIM_Magikoopa_Idle,
+    ANIM_Magikoopa_Shout,
+    ANIM_Magikoopa_CastSpell,
+    ANIM_Magikoopa_Hurt,
     ANIM_LIST_END
 };
 
@@ -119,7 +119,7 @@ EvtScript N(EVS_NpcDefeat_Magikoopa_Hitbox) = {
 };
 
 NpcSettings N(NpcSettings_Magikoopa_GroundHitbox) = {
-    .defaultAnim = ANIM_Magikoopa_Anim00,
+    .defaultAnim = ANIM_Magikoopa_Still,
     .doAI = &N(EVS_NpcAI_Magikoopa_Hitbox),
     .onCreate = &N(EVS_NpcCreate_Magikoopa_GroundHitbox),
     .onHit = &N(EVS_NpcHit_Magikoopa_Hitbox),
@@ -127,7 +127,7 @@ NpcSettings N(NpcSettings_Magikoopa_GroundHitbox) = {
 };
 
 NpcSettings N(NpcSettings_Magikoopa_FlyingHitbox) = {
-    .defaultAnim = ANIM_FlyingMagikoopa_Anim00,
+    .defaultAnim = ANIM_FlyingMagikoopa_Still,
     .doAI = &N(EVS_NpcAI_Magikoopa_Hitbox),
     .onCreate = &N(EVS_NpcCreate_Magikoopa_FlyingHitbox),
     .onHit = &N(EVS_NpcHit_Magikoopa_Hitbox),

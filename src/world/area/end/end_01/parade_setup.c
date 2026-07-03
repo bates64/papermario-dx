@@ -199,14 +199,14 @@ AnimID N(LimitAnims_Kalmar)[] = {
 };
 
 AnimID N(LimitAnims_PyroGuy)[] = {
-    ANIM_PyroGuy_Anim03,
+    ANIM_PyroGuy_Run,
     ANIM_LIST_END
 };
 
 AnimID N(LimitAnims_ShyGuy)[] = {
-    ANIM_ShyGuy_Red_Anim04,
-    ANIM_ShyGuy_Red_Anim10,
-    ANIM_ShyGuy_Red_Anim01,
+    ANIM_ShyGuy_Red_Dash,
+    ANIM_ShyGuy_Red_Crashed,
+    ANIM_ShyGuy_Red_Idle,
     ANIM_LIST_END
 };
 
@@ -299,12 +299,12 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
         .yaw = 270.0f
     },
     [NPC_AmayzeDayzee1] {
-        .initialAnim = ANIM_Dayzee_Amazy_Anim02,
+        .initialAnim = ANIM_Dayzee_Amazy_Walk,
         .pos = { -2210.0f, 0.0f, -20.0f },
         .yaw = 270.0f
     },
     [NPC_AmayzeDayzee2] {
-        .initialAnim = ANIM_Dayzee_Amazy_Anim02,
+        .initialAnim = ANIM_Dayzee_Amazy_Walk,
         .pos = { -2210.0f, 0.0f, 20.0f },
         .yaw = 270.0f
     },
@@ -399,13 +399,13 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
         .yaw = 90.0f
     },
     [NPC_PyroGuy1] {
-        .initialAnim = ANIM_PyroGuy_Anim03,
+        .initialAnim = ANIM_PyroGuy_Run,
         .animList = N(LimitAnims_PyroGuy),
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
     [NPC_PyroGuy2] {
-        .initialAnim = ANIM_PyroGuy_Anim03,
+        .initialAnim = ANIM_PyroGuy_Run,
         .animList = N(LimitAnims_PyroGuy),
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 270.0f
@@ -471,7 +471,7 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
         .yaw = 270.0f
     },
     [NPC_Pratfaller] {
-        .initialAnim = ANIM_ShyGuy_Red_Anim04,
+        .initialAnim = ANIM_ShyGuy_Red_Dash,
         .animList = N(LimitAnims_ShyGuy),
         .pos = { -788.0f, 0.0f, 0.0f },
         .yaw = 270.0f

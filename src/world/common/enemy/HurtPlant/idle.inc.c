@@ -7,7 +7,7 @@
 
 EvtScript N(EVS_NpcAI_HurtPlant) = {
     Call(EnableNpcShadow, NPC_SELF, false)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_HurtPlant_Anim01)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_HurtPlant_Hiding)
     Call(SetSelfVar, EVAR_INTERACTED, false)
     Label(0)
         Call(GetSelfVar, EVAR_INTERACTED, LVar0)
@@ -19,13 +19,13 @@ EvtScript N(EVS_NpcAI_HurtPlant) = {
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(DisablePlayerInput, true)
     Call(NpcFacePlayer, NPC_SELF, 0)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_HurtPlant_Anim08)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_HurtPlant_Reveal)
     Wait(15)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_HURT_PLANT_SHRIEK, SOUND_SPACE_DEFAULT)
     Wait(10)
     Call(SetPlayerAnimation, ANIM_Mario1_Flail)
     Wait(5)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_HurtPlant_Anim02)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_HurtPlant_Idle)
     Call(DisablePlayerInput, false)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
     Call(StartBattle)
@@ -64,9 +64,9 @@ NpcSettings N(NpcSettings_HurtPlant) = {
 };
 
 AnimID N(LimitAnims_HurtPlant)[] = {
-    ANIM_HurtPlant_Anim00,
-    ANIM_HurtPlant_Anim01,
-    ANIM_HurtPlant_Anim02,
-    ANIM_HurtPlant_Anim08,
+    ANIM_HurtPlant_Still,
+    ANIM_HurtPlant_Hiding,
+    ANIM_HurtPlant_Idle,
+    ANIM_HurtPlant_Reveal,
     ANIM_LIST_END
 };

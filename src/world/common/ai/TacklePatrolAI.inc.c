@@ -63,10 +63,10 @@ API_CALLABLE(N(TacklePatrolAI_Main)) {
     if (enemy->varTable[AI_VAR_TACKLE_CHANGE_TIME] > 0) {
         enemy->varTable[AI_VAR_TACKLE_CHANGE_TIME]--;
         if (enemy->varTable[AI_VAR_TACKLE_CHANGE_TIME] == 0) {
-            if (npc->curAnim == ANIM_BonyBeetle_Anim2E ||
-                npc->curAnim == ANIM_BonyBeetle_Anim2F)
+            if (npc->curAnim == ANIM_BonyBeetle_ExtendSpikes ||
+                npc->curAnim == ANIM_BonyBeetle_RetractSpikes)
             {
-                npc->curAnim = ANIM_BonyBeetle_Anim0C;
+                npc->curAnim = ANIM_BonyBeetle_Walk;
             }
         } else {
             return ApiStatus_BLOCK;
@@ -88,11 +88,11 @@ API_CALLABLE(N(TacklePatrolAI_Main)) {
                     if (enemy->varTable[AI_VAR_TACKLE_SPIKY]) {
                         enemy->varTable[AI_VAR_TACKLE_SPIKY] = false;
                         enemy->instigatorValue = 0;
-                        npc->curAnim = ANIM_BonyBeetle_Anim2F;
+                        npc->curAnim = ANIM_BonyBeetle_RetractSpikes;
                     } else {
                         enemy->varTable[AI_VAR_TACKLE_SPIKY] = true;
                         enemy->instigatorValue = 1;
-                        npc->curAnim = ANIM_BonyBeetle_Anim2E;
+                        npc->curAnim = ANIM_BonyBeetle_ExtendSpikes;
                     }
                     enemy->varTable[AI_VAR_TACKLE_CHANGE_TIME] = 7;
                     return ApiStatus_BLOCK;
@@ -130,13 +130,13 @@ API_CALLABLE(N(TacklePatrolAI_Main)) {
         }
         if (enemy->varTable[AI_VAR_TACKLE_SPIKY]) {
             switch (npc->curAnim) {
-                case ANIM_BonyBeetle_Anim04:
-                case ANIM_BonyBeetle_Anim0C:
-                case ANIM_BonyBeetle_Anim0E:
-                case ANIM_BonyBeetle_Anim10:
-                case ANIM_BonyBeetle_Anim12:
-                case ANIM_BonyBeetle_Anim16:
-                case ANIM_BonyBeetle_Anim18:
+                case ANIM_BonyBeetle_Idle:
+                case ANIM_BonyBeetle_Walk:
+                case ANIM_BonyBeetle_Run:
+                case ANIM_BonyBeetle_ShellEnter:
+                case ANIM_BonyBeetle_ShellExit:
+                case ANIM_BonyBeetle_ShellSpin:
+                case ANIM_BonyBeetle_Hurt:
                     npc->curAnim++;
                     break;
             }

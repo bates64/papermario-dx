@@ -492,7 +492,7 @@ EvtScript N(EVS_PlayShyGuyRunSounds) = {
 EvtScript N(EVS_NpcIdle_ShyGuy) = {
     Call(SetNpcPos, NPC_SELF, -100, 0, -25)
     Call(InterpNpcYaw, NPC_SELF, 270, 1)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim03)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
     Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
     Loop(0)
         Call(NpcMoveTo, NPC_SELF, -250, -25, 30)
@@ -510,11 +510,11 @@ EvtScript N(EVS_NpcIdle_ShyGuy) = {
 
 EvtScript N(EVS_NpcAI_ShyGuy) = {
     Call(DisablePlayerInput, true)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim0C)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Hurt)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 10)
     Call(SetNpcSpeed, NPC_SELF, Float(8.0))
-    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim03)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
     Call(InterpNpcYaw, NPC_SELF, 90, 1)
     ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVarA)
     Call(NpcMoveTo, NPC_SELF, -100, 0, 0)

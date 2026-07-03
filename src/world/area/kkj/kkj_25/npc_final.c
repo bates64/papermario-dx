@@ -44,7 +44,7 @@ EvtScript N(EVS_NpcInit_Peach_Npc3) = {
 EvtScript N(EVS_NpcInit_Kammy_Broom_Npc3) = {
     Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Kammy_Broom_Npc3)))
     Call(SetNpcPos, NPC_Kammy_05, 525, 10, 0)
-    Call(SetNpcAnimation, NPC_Kammy_05, ANIM_BattleKammy_Anim04)
+    Call(SetNpcAnimation, NPC_Kammy_05, ANIM_BattleKammy_FlyStill)
     Call(InterpNpcYaw, NPC_Kammy_05, 270, 0)
     Return
     End
@@ -74,8 +74,8 @@ AnimID N(LimitAnims_Peach_Npc3)[] = {
 };
 
 AnimID N(LimitAnims_Kammy_Npc3)[] = {
-    ANIM_BattleKammy_Anim04,
-    ANIM_BattleKammy_Anim06,
+    ANIM_BattleKammy_FlyStill,
+    ANIM_BattleKammy_FlyTalk,
     ANIM_LIST_END
 };
 
@@ -119,22 +119,22 @@ NpcData N(NpcData_Kammy_Npc3) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = {
-        .idle   = ANIM_BattleKammy_Anim00,
-        .walk   = ANIM_BattleKammy_Anim00,
-        .run    = ANIM_BattleKammy_Anim00,
-        .chase  = ANIM_BattleKammy_Anim00,
-        .alert  = ANIM_BattleKammy_Anim00,
-        .unused = ANIM_BattleKammy_Anim00,
-        .death  = ANIM_BattleKammy_Anim00,
-        .hit    = ANIM_BattleKammy_Anim00,
-        .anim_8 = ANIM_BattleKammy_Anim00,
-        .anim_9 = ANIM_BattleKammy_Anim00,
-        .anim_A = ANIM_BattleKammy_Anim00,
-        .anim_B = ANIM_BattleKammy_Anim00,
-        .anim_C = ANIM_BattleKammy_Anim00,
-        .anim_D = ANIM_BattleKammy_Anim00,
-        .anim_E = ANIM_BattleKammy_Anim00,
-        .anim_F = ANIM_BattleKammy_Anim00,
+        .idle   = ANIM_BattleKammy_Idle,
+        .walk   = ANIM_BattleKammy_Idle,
+        .run    = ANIM_BattleKammy_Idle,
+        .chase  = ANIM_BattleKammy_Idle,
+        .alert  = ANIM_BattleKammy_Idle,
+        .unused = ANIM_BattleKammy_Idle,
+        .death  = ANIM_BattleKammy_Idle,
+        .hit    = ANIM_BattleKammy_Idle,
+        .anim_8 = ANIM_BattleKammy_Idle,
+        .anim_9 = ANIM_BattleKammy_Idle,
+        .anim_A = ANIM_BattleKammy_Idle,
+        .anim_B = ANIM_BattleKammy_Idle,
+        .anim_C = ANIM_BattleKammy_Idle,
+        .anim_D = ANIM_BattleKammy_Idle,
+        .anim_E = ANIM_BattleKammy_Idle,
+        .anim_F = ANIM_BattleKammy_Idle,
     },
     .limitAnimations = N(LimitAnims_Kammy_Npc3),
 };

@@ -10,7 +10,7 @@
 
 EvtScript N(EVS_NpcAI_MBush) = {
     Call(EnableNpcShadow, NPC_SELF, false)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Anim00)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Hidden)
     Call(SetSelfVar, EVAR_INTERACTED, false)
     Label(0)
         Call(GetSelfVar, EVAR_INTERACTED, LVar0)
@@ -43,7 +43,7 @@ EvtScript N(EVS_NpcAI_MBush) = {
     Wait(1)
     Thread
         Wait(10)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Anim03)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Reveal)
     EndThread
     Thread
         Wait(6)
@@ -56,7 +56,7 @@ EvtScript N(EVS_NpcAI_MBush) = {
     Sub(LVar2, 5)
     Call(NpcJump1, NPC_SELF, LVar0, LVar1, LVar2, 15)
     Wait(4)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Anim07)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Hurt)
     Wait(2)
     Call(SetPlayerAnimation, ANIM_Mario1_Flail)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
@@ -78,13 +78,13 @@ EvtScript N(EVS_NpcDefeat_MBush) = {
         CaseEq(OUTCOME_PLAYER_WON)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
-            Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Anim05)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Run)
             Call(GetSelfVar, EVAR_SAVED_X, LVar0)
             Call(GetSelfVar, EVAR_SAVED_Y, LVar1)
             Call(GetSelfVar, EVAR_SAVED_Z, LVar2)
             Call(NpcJump1, NPC_SELF, LVar0, LVar1, LVar2, 8)
             Call(EnableNpcShadow, NPC_SELF, false)
-            Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Anim00)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Hidden)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_MBush)))
         CaseEq(OUTCOME_ENEMY_FLED)

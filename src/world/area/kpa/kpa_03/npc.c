@@ -5,11 +5,11 @@
 #include "world/common/enemy/Magikoopa/wander.inc.c"
 
 AnimID N(LimitAnims_Koopatrol)[] = {
-    ANIM_WorldKoopatrol_Anim01,
-    ANIM_WorldKoopatrol_Anim04,
-    ANIM_WorldKoopatrol_Anim06,
-    ANIM_WorldKoopatrol_Anim10,
-    ANIM_WorldKoopatrol_Anim0B,
+    ANIM_WorldKoopatrol_Idle,
+    ANIM_WorldKoopatrol_Walk,
+    ANIM_WorldKoopatrol_Run,
+    ANIM_WorldKoopatrol_Hurt,
+    ANIM_WorldKoopatrol_ShellSpin,
     ANIM_LIST_END
 };
 

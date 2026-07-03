@@ -245,8 +245,8 @@ AnimID N(LimitAnims_Mouser)[] = {
 };
 
 AnimID N(LimitAnims_Buzzar)[] = {
-    ANIM_Buzzar_Anim05,
-    ANIM_Buzzar_Anim03,
+    ANIM_Buzzar_Roost,
+    ANIM_Buzzar_Talk,
     ANIM_LIST_END
 };
 
@@ -263,20 +263,20 @@ AnimID N(LimitAnims_RaphaelRaven)[] = {
 };
 
 AnimID N(LimitAnims_LavaPiranha)[] = {
-    ANIM_LavaPiranha_Anim04,
+    ANIM_LavaPiranha_TongueWag,
     ANIM_LIST_END
 };
 
 AnimID N(LimitAnims_HuffNPuff)[] = {
-    ANIM_HuffNPuff_Anim01,
-    ANIM_HuffNPuff_Anim02,
-    ANIM_HuffNPuff_Anim03,
-    ANIM_HuffNPuff_Anim07,
-    ANIM_HuffNPuff_Anim08,
-    ANIM_HuffNPuff_Anim09,
-    ANIM_HuffNPuff_Anim26,
-    ANIM_HuffNPuff_Anim27,
-    ANIM_HuffNPuff_Anim28,
+    ANIM_HuffNPuff_IdleBody,
+    ANIM_HuffNPuff_IdleFace,
+    ANIM_HuffNPuff_IdleArms,
+    ANIM_HuffNPuff_HurtBody,
+    ANIM_HuffNPuff_HurtFace,
+    ANIM_HuffNPuff_HurtArms,
+    ANIM_HuffNPuff_FrownBody,
+    ANIM_HuffNPuff_FrownFace,
+    ANIM_HuffNPuff_FrownArms,
     ANIM_LIST_END
 };
 
@@ -308,12 +308,12 @@ AnimID N(LimitAnims_MageJrTroopa)[] = {
 };
 
 AnimID N(LimitAnims_Kammy)[] = {
-    ANIM_WorldKammy_Anim14,
-    ANIM_WorldKammy_Anim0C,
-    ANIM_WorldKammy_Anim0E,
-    ANIM_WorldKammy_Anim0F,
-    ANIM_WorldKammy_Anim12,
-    ANIM_WorldKammy_Anim07,
+    ANIM_WorldKammy_FlySlowSly,
+    ANIM_WorldKammy_FlyFast,
+    ANIM_WorldKammy_FlyRodTalk,
+    ANIM_WorldKammy_FlyRodCast,
+    ANIM_WorldKammy_FlyLaugh,
+    ANIM_WorldKammy_BurnSlump,
     ANIM_LIST_END
 };
 
@@ -525,7 +525,7 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
         .yaw = 270.0f
     },
     [NPC_Buzzar] {
-        .initialAnim = ANIM_Buzzar_Anim05,
+        .initialAnim = ANIM_Buzzar_Roost,
         .animList = N(LimitAnims_Buzzar),
         .pos = { -855.0f, 70.0f, -140.0f },
         .yaw = 270.0f
@@ -592,7 +592,7 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
         .yaw = 90.0f
     },
     [NPC_TubbasHeart] {
-        .initialAnim = ANIM_TubbasHeart_Anim01,
+        .initialAnim = ANIM_TubbasHeart_Idle,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 270.0f
     },
@@ -644,7 +644,7 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
         .yaw = 90.0f
     },
     [NPC_LavaPiranha] {
-        .initialAnim = ANIM_LavaPiranha_Anim04,
+        .initialAnim = ANIM_LavaPiranha_TongueWag,
         .animList = N(LimitAnims_LavaPiranha),
         .pos = { 507.0f, 50.0f, -5.0f },
         .yaw = 90.0f
@@ -675,19 +675,19 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
         .yaw = 90.0f
     },
     [NPC_HuffNPuffBody] {
-        .initialAnim = ANIM_HuffNPuff_Anim01,
+        .initialAnim = ANIM_HuffNPuff_IdleBody,
         .animList = N(LimitAnims_HuffNPuff),
         .pos = { 1060.0f, 80.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_HuffNPuffFace] {
-        .initialAnim = ANIM_HuffNPuff_Anim02,
+        .initialAnim = ANIM_HuffNPuff_IdleFace,
         .animList = N(LimitAnims_HuffNPuff),
         .pos = { 1060.0f, 80.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_HuffNPuffArms] {
-        .initialAnim = ANIM_HuffNPuff_Anim03,
+        .initialAnim = ANIM_HuffNPuff_IdleArms,
         .animList = N(LimitAnims_HuffNPuff),
         .pos = { 1060.0f, 80.0f, 0.0f },
         .yaw = 270.0f
@@ -711,42 +711,42 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
         .yaw = 270.0f
     },
     [NPC_Duplighost1] {
-        .initialAnim = ANIM_Duplighost_Anim0A,
+        .initialAnim = ANIM_Duplighost_Hurt,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
     [NPC_Duplighost2] {
-        .initialAnim = ANIM_Duplighost_Anim0A,
+        .initialAnim = ANIM_Duplighost_Hurt,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
     [NPC_TrueCrystalKing] {
-        .initialAnim = ANIM_CrystalKing_Anim0E,
+        .initialAnim = ANIM_CrystalKing_Walk,
         .pos = { 1440.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_FakeCrystalKing] {
-        .initialAnim = ANIM_CrystalKing_Anim0E,
+        .initialAnim = ANIM_CrystalKing_Walk,
         .pos = { 1600.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_CrystalBit1] {
-        .initialAnim = ANIM_CrystalKing_Anim0A,
+        .initialAnim = ANIM_CrystalKing_CubeIdle,
         .pos = { 2000.0f, 100.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_CrystalBit2] {
-        .initialAnim = ANIM_CrystalKing_Anim0B,
+        .initialAnim = ANIM_CrystalKing_SphereIdle,
         .pos = { 2050.0f, 100.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_CrystalBit3] {
-        .initialAnim = ANIM_CrystalKing_Anim0C,
+        .initialAnim = ANIM_CrystalKing_PrismIdle,
         .pos = { 2100.0f, 100.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_Kammy] {
-        .initialAnim = ANIM_WorldKammy_Anim14,
+        .initialAnim = ANIM_WorldKammy_FlySlowSly,
         .animList = N(LimitAnims_Kammy),
         .pos = { 2160.0f, 60.0f, 0.0f },
         .yaw = 270.0f

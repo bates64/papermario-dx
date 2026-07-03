@@ -18,22 +18,22 @@
 
 #define GULPIT_ANIMS \
 { \
-    .idle   = ANIM_Gulpit_Anim01, \
-    .walk   = ANIM_Gulpit_Anim02, \
-    .run    = ANIM_Gulpit_Anim03, \
-    .chase  = ANIM_Gulpit_Anim03, \
-    .alert  = ANIM_Gulpit_Anim01, \
-    .unused = ANIM_Gulpit_Anim01, \
-    .death  = ANIM_Gulpit_Anim0B, \
-    .hit    = ANIM_Gulpit_Anim0B, \
-    .anim_8 = ANIM_Gulpit_Anim04, \
-    .anim_9 = ANIM_Gulpit_Anim04, \
-    .anim_A = ANIM_Gulpit_Anim01, \
-    .anim_B = ANIM_Gulpit_Anim01, \
-    .anim_C = ANIM_Gulpit_Anim01, \
-    .anim_D = ANIM_Gulpit_Anim01, \
-    .anim_E = ANIM_Gulpit_Anim01, \
-    .anim_F = ANIM_Gulpit_Anim01, \
+    .idle   = ANIM_Gulpit_Idle, \
+    .walk   = ANIM_Gulpit_Walk, \
+    .run    = ANIM_Gulpit_Run, \
+    .chase  = ANIM_Gulpit_Run, \
+    .alert  = ANIM_Gulpit_Idle, \
+    .unused = ANIM_Gulpit_Idle, \
+    .death  = ANIM_Gulpit_Hurt, \
+    .hit    = ANIM_Gulpit_Hurt, \
+    .anim_8 = ANIM_Gulpit_Lick, \
+    .anim_9 = ANIM_Gulpit_Lick, \
+    .anim_A = ANIM_Gulpit_Idle, \
+    .anim_B = ANIM_Gulpit_Idle, \
+    .anim_C = ANIM_Gulpit_Idle, \
+    .anim_D = ANIM_Gulpit_Idle, \
+    .anim_E = ANIM_Gulpit_Idle, \
+    .anim_F = ANIM_Gulpit_Idle, \
 }
 
 #define GULPIT_HITBOX(npcID) \
