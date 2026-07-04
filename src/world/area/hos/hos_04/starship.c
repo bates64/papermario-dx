@@ -20,42 +20,11 @@ API_CALLABLE(N(ScreenOverlayFadeIn)) {
     }
 }
 
-// TODO: this was moved from the end of intro.c. This is a possible indication that
-// file spitting in other versions might be off.
-#if VERSION_JP
-#include "world/common/npc/StarSpirit.inc.c"
-#include "world/common/npc/Twink.h"
-
-EvtScript N(EVS_NpcInit_Twink) = {
-    Return
-    End
-};
-
-NpcData N(NpcData_Twink) = {
-    .id = NPC_Twink,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
-    .init = &N(EVS_NpcInit_Twink),
-    .settings = &N(NpcSettings_StarSpirit),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
-    .drops = NO_DROPS,
-    .animations = TWINK_ANIMS,
-};
-
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Twink)),
-    {}
-};
-
-// TODO: required. File splitting?
-u8 N(D_802422CC)[4] = { 0 };
-#endif
-
 EvtScript N(EVS_Starship_FlyingAway) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 45, 16, 4096)
     Call(UseSettingsFrom, CAM_DEFAULT, -280, 0, 0)
@@ -121,7 +90,7 @@ EvtScript N(EVS_BetaStarship_Flight1) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g1, COLLIDER_FLAGS_UPPER_MASK)
     Call(InterpPlayerYaw, 90, 0)
@@ -202,7 +171,7 @@ EvtScript N(EVS_BetaStarship_Flight2) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g1, COLLIDER_FLAGS_UPPER_MASK)
     Call(UseSettingsFrom, CAM_DEFAULT, -500, 0, 0)
@@ -266,7 +235,7 @@ EvtScript N(EVS_BetaStarship_Return) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g1, COLLIDER_FLAGS_UPPER_MASK)
     Call(SetNpcYaw, NPC_PARTNER, 90)

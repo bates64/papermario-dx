@@ -1,10 +1,13 @@
 #include "sam_11.h"
 #include "sprite/player.h"
+#include "world/common/npc/Kooper/base.h"
+#include "world/common/npc/Parakarry/base.h"
 
-#include "world/common/npc/Penguin_Wander.inc.c"
-#include "world/common/npc/Penguin.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/Kolorado.inc.c"
+#include "world/common/npc/Toadette/idle.inc.c"
+#include "world/common/npc/Penguin/wander.inc.c"
+#include "world/common/npc/Penguin/idle.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
 
 NpcSettings N(NpcSettings_Kooper) = {
     .height = 35,
@@ -14,8 +17,7 @@ NpcSettings N(NpcSettings_Kooper) = {
     .onDefeat = &EnemyNpcDefeat,
 };
 
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
 API_CALLABLE(N(SetInitialSentryPosition)) {
     Npc* npc = get_npc_safe(NPC_PenguinSentry);
@@ -187,12 +189,12 @@ EvtScript N(EVS_NpcInteract_Herringway) = {
                 EndLoop
             EndThread
             Call(PanToTarget, CAM_DEFAULT, 0, false)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetNpcSpeed, NPC_SELF, Float(3.0 / DT))
             Call(SetNpcAnimation, NPC_SELF, ANIM_Herringway_Walk)
             Call(NpcMoveTo, NPC_SELF, -235, -355, 0)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Herringway_Idle)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Wait(20 * DT)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Herringway_Talk, ANIM_Herringway_Idle, 0, MSG_CH7_00D1)
             Wait(15 * DT)
@@ -727,7 +729,7 @@ NpcData N(NpcData_Tourists)[] = {
         .pos = { -400.0f, 0.0f, 230.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toadette_01),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -738,7 +740,7 @@ NpcData N(NpcData_Tourists)[] = {
         .pos = { -350.0f, 0.0f, 230.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toadette_02),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -749,7 +751,7 @@ NpcData N(NpcData_Tourists)[] = {
         .pos = { -375.0f, 0.0f, 220.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toadette_03),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -957,11 +959,11 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
     Call(SetNpcPos, NPC_Kolorado, 120, 0, 70)
     Call(SetNpcPos, NPC_Archeologist_01, 120, 0, 70)
     Call(SetNpcPos, NPC_Archeologist_02, 120, 0, 70)
-    Call(SetNpcFlagBits, NPC_Parakarry, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Kooper, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Archeologist_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Archeologist_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Parakarry, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Kooper, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Archeologist_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Archeologist_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_Parakarry, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_Kooper, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_GRAVITY, false)
@@ -1019,24 +1021,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .settings = &N(NpcSettings_Kooper),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldKooper_Idle,
-            .walk   = ANIM_WorldKooper_Walk,
-            .run    = ANIM_WorldKooper_Walk,
-            .chase  = ANIM_WorldKooper_Walk,
-            .anim_4 = ANIM_WorldKooper_Walk,
-            .anim_5 = ANIM_WorldKooper_Walk,
-            .death  = ANIM_WorldKooper_Still,
-            .hit    = ANIM_WorldKooper_Still,
-            .anim_8 = ANIM_WorldKooper_Still,
-            .anim_9 = ANIM_WorldKooper_Still,
-            .anim_A = ANIM_WorldKooper_Still,
-            .anim_B = ANIM_WorldKooper_Still,
-            .anim_C = ANIM_WorldKooper_Still,
-            .anim_D = ANIM_WorldKooper_Still,
-            .anim_E = ANIM_WorldKooper_Still,
-            .anim_F = ANIM_WorldKooper_Still,
-        },
+        .animations = KOOPER_ANIMS,
     },
     {
         .id = NPC_Parakarry,
@@ -1046,24 +1031,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .settings = &N(NpcSettings_Kooper),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldParakarry_Idle,
-            .walk   = ANIM_WorldParakarry_Walk,
-            .run    = ANIM_WorldParakarry_Run,
-            .chase  = ANIM_WorldParakarry_Run,
-            .anim_4 = ANIM_WorldParakarry_Idle,
-            .anim_5 = ANIM_WorldParakarry_Idle,
-            .death  = ANIM_WorldParakarry_Still,
-            .hit    = ANIM_WorldParakarry_Still,
-            .anim_8 = ANIM_WorldParakarry_Idle,
-            .anim_9 = ANIM_WorldParakarry_Idle,
-            .anim_A = ANIM_WorldParakarry_Idle,
-            .anim_B = ANIM_WorldParakarry_Idle,
-            .anim_C = ANIM_WorldParakarry_Idle,
-            .anim_D = ANIM_WorldParakarry_Idle,
-            .anim_E = ANIM_WorldParakarry_Idle,
-            .anim_F = ANIM_WorldParakarry_Idle,
-        },
+        .animations = PARAKARRY_ANIMS,
     },
 };
 

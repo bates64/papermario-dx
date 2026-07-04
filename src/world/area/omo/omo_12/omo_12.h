@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file omo_12.h
 /// @brief Shy Guy's Toybox - RED Lantern Ghost
 
@@ -32,5 +34,3 @@ extern EvtScript N(EVS_PopSong);
 extern EvtScript N(EVS_SetupLightSource);
 extern EvtScript N(EVS_EnterScene);
 extern NpcGroupList N(DefaultNPCs);
-
-API_CALLABLE(N(LoadPartyImage));

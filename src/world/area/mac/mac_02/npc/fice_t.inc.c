@@ -1,29 +1,16 @@
-s32 N(LetterList_FiceT)[] = {
-    ITEM_LETTER_TO_FICE_T,
-    ITEM_NONE
-};
+#include "../mac_02.h"
 
-EvtScript N(EVS_LetterPrompt_FiceT) = {
-    Call(N(LetterDelivery_Init),
-        NPC_FiceT, ANIM_FiceT_Talk, ANIM_FiceT_Idle,
-        ITEM_LETTER_TO_FICE_T, ITEM_NONE,
-        MSG_MAC_Bridge_0036, MSG_MAC_Bridge_0037, MSG_MAC_Bridge_0038, 0,
-        Ref(N(LetterList_FiceT)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_FiceT) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        Call(SpeakToPlayer, NPC_FiceT, ANIM_FiceT_Talk, ANIM_FiceT_Idle, 0, MSG_MAC_Bridge_0039)
-        Call(SetNpcAnimation, NPC_FiceT, ANIM_FiceT_Afraid)
-        Call(EndSpeech, NPC_FiceT, ANIM_FiceT_Afraid, ANIM_FiceT_Afraid, 0)
-        EVT_GIVE_STAR_PIECE()
-        Call(SetNpcAnimation, NPC_FiceT, ANIM_FiceT_Idle)
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_FiceT) = {
+    .recipientID = NPC_FiceT,
+    .recipientTalk = ANIM_FiceT_Talk,
+    .recipientIdle = ANIM_FiceT_Idle,
+    .msgGreeting = MSG_MAC_Bridge_0036,
+    .msgCancelled = MSG_MAC_Bridge_0037,
+    .msgDelivered = MSG_MAC_Bridge_0038,
+    .msgRecieved = MSG_NONE,
+    .letters = { ITEM_LETTER_TO_FICE_T },
+    .reward = ITEM_STAR_PIECE,
+    .deferReward = true,
 };
 
 EvtScript N(EVS_NpcInteract_FiceT) = {
@@ -67,10 +54,14 @@ EvtScript N(EVS_NpcInteract_FiceT) = {
             Call(SpeakToPlayer, NPC_FiceT, ANIM_FiceT_Afraid, ANIM_FiceT_Afraid, 0, LVar0)
         EndIf
     EndIf
-    ExecWait(N(EVS_LetterPrompt_FiceT))
-    ExecWait(N(EVS_LetterReward_FiceT))
-    IfNe(LVarC, DELIVERY_NOT_POSSIBLE)
-        Return
+    Set(LVar0, Ref(N(LetterDelivery_FiceT)))
+    ExecWait(EVS_TryLetterDelivery)
+    IfEq(LVar0, DELIVERY_ACCEPTED)
+        Call(SpeakToPlayer, NPC_FiceT, ANIM_FiceT_Talk, ANIM_FiceT_Idle, 0, MSG_MAC_Bridge_0039)
+        Call(SetNpcAnimation, NPC_FiceT, ANIM_FiceT_Afraid)
+        Call(EndSpeech, NPC_FiceT, ANIM_FiceT_Afraid, ANIM_FiceT_Afraid, 0)
+        EVT_GIVE_REWARD(LVar1)
+        Call(SetNpcAnimation, NPC_FiceT, ANIM_FiceT_Idle)
     EndIf
     Return
     End

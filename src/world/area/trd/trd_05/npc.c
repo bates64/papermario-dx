@@ -5,23 +5,17 @@ extern EvtScript N(EVS_StartKoopaBrosTheme);
 extern EvtScript N(EVS_EndKoopaBrosTheme);
 extern EvtScript N(EVS_EnterMap);
 
+#include "world/common/enemy/KoopaBros/idle.inc.c"
+
 API_CALLABLE(N(MakeHammerDust)) {
     fx_walking_dust(2, script->varTable[0], script->varTable[1], script->varTable[2], 0, 0);
     return ApiStatus_DONE2;
 }
 
-NpcSettings N(NpcSettings_KoopaBros) = {
-    .height = 34,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
-
 EvtScript N(EVS_KoopaBros_SetTrap) = {
     Exec(N(EVS_StartKoopaBrosTheme))
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerPos, -350, 0, 0)
     Call(SetNpcPos, NPC_PARTNER, -350, 0, 0)
     Call(UseSettingsFrom, CAM_DEFAULT, -70, 240, -10)
@@ -210,24 +204,7 @@ NpcData N(NpcData_KoopaBros)[] = {
         .settings = &N(NpcSettings_KoopaBros),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_KoopaBros_Yellow_Idle,
-            .walk   = ANIM_KoopaBros_Yellow_Walk,
-            .run    = ANIM_KoopaBros_Yellow_Run,
-            .chase  = ANIM_KoopaBros_Yellow_Run,
-            .anim_4 = ANIM_KoopaBros_Yellow_Idle,
-            .anim_5 = ANIM_KoopaBros_Yellow_Idle,
-            .death  = ANIM_KoopaBros_Yellow_HurtStill,
-            .hit    = ANIM_KoopaBros_Yellow_HurtStill,
-            .anim_8 = ANIM_KoopaBros_Yellow_Run,
-            .anim_9 = ANIM_KoopaBros_Yellow_Run,
-            .anim_A = ANIM_KoopaBros_Yellow_Run,
-            .anim_B = ANIM_KoopaBros_Yellow_Run,
-            .anim_C = ANIM_KoopaBros_Yellow_Run,
-            .anim_D = ANIM_KoopaBros_Yellow_Run,
-            .anim_E = ANIM_KoopaBros_Yellow_Run,
-            .anim_F = ANIM_KoopaBros_Yellow_Run,
-        },
+        .animations = YELLOW_KOOPA_BROS_ANIMS,
     },
     {
         .id = NPC_KoopaBros_02,
@@ -237,24 +214,7 @@ NpcData N(NpcData_KoopaBros)[] = {
         .settings = &N(NpcSettings_KoopaBros),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_KoopaBros_Yellow_Idle,
-            .walk   = ANIM_KoopaBros_Yellow_Walk,
-            .run    = ANIM_KoopaBros_Yellow_Run,
-            .chase  = ANIM_KoopaBros_Yellow_Run,
-            .anim_4 = ANIM_KoopaBros_Yellow_Idle,
-            .anim_5 = ANIM_KoopaBros_Yellow_Idle,
-            .death  = ANIM_KoopaBros_Yellow_HurtStill,
-            .hit    = ANIM_KoopaBros_Yellow_HurtStill,
-            .anim_8 = ANIM_KoopaBros_Yellow_Run,
-            .anim_9 = ANIM_KoopaBros_Yellow_Run,
-            .anim_A = ANIM_KoopaBros_Yellow_Run,
-            .anim_B = ANIM_KoopaBros_Yellow_Run,
-            .anim_C = ANIM_KoopaBros_Yellow_Run,
-            .anim_D = ANIM_KoopaBros_Yellow_Run,
-            .anim_E = ANIM_KoopaBros_Yellow_Run,
-            .anim_F = ANIM_KoopaBros_Yellow_Run,
-        },
+        .animations = YELLOW_KOOPA_BROS_ANIMS,
     },
 };
 

@@ -182,7 +182,7 @@ EvtScript N(EVS_Transform) = {
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_JR_TROOPA_NEW_POWER)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, 1, 40, 0)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, 1, 40, 0)
     PlayEffect(EFFECT_WALKING_DUST, 0, LVar0, LVar1, LVar2, -4, 0, 0)
     PlayEffect(EFFECT_WALKING_DUST, 0, LVar0, LVar1, LVar2, -4, 4, 0)
     PlayEffect(EFFECT_WALKING_DUST, 0, LVar0, LVar1, LVar2, 4, 0, 0)
@@ -232,7 +232,7 @@ EvtScript N(EVS_Init) = {
     End
 };
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 EvtScript N(EVS_Idle) = {
     Label(0)

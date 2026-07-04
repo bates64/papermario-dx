@@ -1,30 +1,35 @@
 #include "mac_00.h"
 #include "effects.h"
 
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/enemy/ShyGuy_Stationary.inc.c"
-#include "world/common/npc/Dummy.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Toad/wander.inc.c"
+#include "world/common/npc/Toad/patrol.inc.c"
+#include "world/common/npc/ToadKid/idle.inc.c"
+#include "world/common/npc/Toadette/idle.inc.c"
+#include "world/common/npc/HarryT/idle.inc.c"
+#include "world/common/npc/RussT/idle.inc.c"
+#include "world/common/npc/TheMaster/idle.inc.c"
+#include "world/common/npc/Chan/idle.inc.c"
+#include "world/common/npc/Lee/idle.inc.c"
+#include "world/common/npc/Goompapa/idle.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
-
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/enemy/ShyGuy/idle.inc.c"
 
 #include "npc/russ_and_thief.inc.c"
 
 EvtScript N(EVS_NpcAI_ShyGuy_03) = {
     Call(DisablePlayerInput, true)
-    Call(SetNpcAnimation, NPC_ShyGuy_02, ANIM_ShyGuy_Red_Anim0C)
+    Call(SetNpcAnimation, NPC_ShyGuy_02, ANIM_ShyGuy_Red_Hurt)
     Wait(10)
-    Call(SetNpcAnimation, NPC_ShyGuy_02, ANIM_ShyGuy_Red_Anim03)
+    Call(SetNpcAnimation, NPC_ShyGuy_02, ANIM_ShyGuy_Red_Run)
     Call(SetNpcJumpscale, NPC_ShyGuy_02, Float(1.0))
     Call(PlaySoundAtNpc, NPC_ShyGuy_02, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_ShyGuy_02, 400, 20, -300, 20)
     Call(NpcFacePlayer, NPC_ShyGuy_02, 0)
     Wait(10)
-    Call(SpeakToPlayer, NPC_ShyGuy_02, ANIM_ShyGuy_Red_Anim11, ANIM_ShyGuy_Red_Anim01, 0, MSG_MAC_Gate_0002)
+    Call(SpeakToPlayer, NPC_ShyGuy_02, ANIM_ShyGuy_Red_Excited, ANIM_ShyGuy_Red_Idle, 0, MSG_MAC_Gate_0002)
     Call(ShowSweat, NPC_ShyGuy_02, 1, 45, EMOTER_NPC, 0, 0, 0, 0, 20)
     Wait(10)
     Call(ShowSweat, NPC_ShyGuy_02, 1, 45, EMOTER_NPC, 0, 0, 0, 0, 20)
@@ -42,13 +47,13 @@ EvtScript N(EVS_NpcAI_ShyGuy_03) = {
     Call(SetNpcPos, NPC_ShyGuy_02, NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_Toad_02, NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_Toad_01, 170, 20, -140)
-    Call(SetNpcFlagBits, NPC_Toad_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Toad_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcSpeed, NPC_Toad_01, Float(8.0))
     Call(SetNpcAnimation, NPC_Toad_01, ANIM_HarryT_Run)
     Call(NpcMoveTo, NPC_Toad_01, 430, -373, 0)
     Call(SetNpcPos, NPC_Toad_01, 430, 20, -373)
     Call(SetNpcAnimation, NPC_Toad_01, ANIM_HarryT_Idle)
-    Call(SetNpcFlagBits, NPC_Toad_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Toad_01, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(NpcFacePlayer, NPC_Toad_01, 0)
     Wait(10)
     Call(SpeakToPlayer, NPC_Toad_01, ANIM_HarryT_Talk, ANIM_HarryT_Idle, 0, MSG_MAC_Gate_0003)
@@ -96,7 +101,7 @@ EvtScript N(EVS_NpcHit_ShyGuy_03) = {
 };
 
 EvtScript N(EVS_NpcInteract_ShyGuy_02) = {
-    Call(SpeakToPlayer, NPC_ShyGuy_02, ANIM_ShyGuy_Red_Anim11, ANIM_ShyGuy_Red_Anim01, 0, MSG_MAC_Gate_0001)
+    Call(SpeakToPlayer, NPC_ShyGuy_02, ANIM_ShyGuy_Red_Excited, ANIM_ShyGuy_Red_Idle, 0, MSG_MAC_Gate_0001)
     Return
     End
 };
@@ -127,7 +132,7 @@ EvtScript N(EVS_NpcInit_GardenShyGuy1) = {
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mono5, COLLIDER_FLAGS_UPPER_MASK)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mono6, COLLIDER_FLAGS_UPPER_MASK)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_dummy, COLLIDER_FLAGS_UPPER_MASK)
-                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
                 Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
                 Call(SetNpcPos, NPC_SELF, 430, 20, -373)
                 Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_ShyGuy_03)))
@@ -187,7 +192,7 @@ NpcData N(NpcData_ShyGuy_01)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuyThief),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -197,7 +202,7 @@ NpcData N(NpcData_ShyGuy_01)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy_02),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -208,7 +213,7 @@ NpcData N(NpcData_ShyGuy_01)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_GardenShyGuy1),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -224,24 +229,7 @@ NpcData N(NpcData_RussT) = {
     .settings = &N(NpcSettings_RussT),
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_RussT_Idle,
-        .walk   = ANIM_RussT_Idle,
-        .run    = ANIM_RussT_Idle,
-        .chase  = ANIM_RussT_Idle,
-        .anim_4 = ANIM_RussT_Idle,
-        .anim_5 = ANIM_RussT_Idle,
-        .death  = ANIM_RussT_Idle,
-        .hit    = ANIM_RussT_Idle,
-        .anim_8 = ANIM_RussT_Idle,
-        .anim_9 = ANIM_RussT_Idle,
-        .anim_A = ANIM_RussT_Idle,
-        .anim_B = ANIM_RussT_Idle,
-        .anim_C = ANIM_RussT_Idle,
-        .anim_D = ANIM_RussT_Idle,
-        .anim_E = ANIM_RussT_Idle,
-        .anim_F = ANIM_RussT_Idle,
-    },
+    .animations = RUSS_T_ANIMS,
     .tattle = MSG_NpcTattle_RussT,
 };
 
@@ -251,16 +239,10 @@ NpcData N(NpcData_Toad_01)[] = {
         .pos = { 430.0f, 20.0f, -373.0f },
         .yaw = 223,
         .init = &N(EVS_NpcInit_Toad_01),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_HarryT),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_HarryT_Idle,
-            .walk   = ANIM_HarryT_Walk,
-            .run    = ANIM_HarryT_Run,
-            .chase  = ANIM_HarryT_Run,
-            .anim_4 = ANIM_HarryT_Idle,
-        },
+        .animations = HARRY_T_ANIMS,
         .tattle = MSG_NpcTattle_MAC00_ShopOwner,
     },
     {
@@ -268,21 +250,15 @@ NpcData N(NpcData_Toad_01)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 223,
         .init = &N(EVS_NpcInit_Toad_02),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_HarryT),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_HarryT_Idle,
-            .walk   = ANIM_HarryT_Walk,
-            .run    = ANIM_HarryT_Run,
-            .chase  = ANIM_HarryT_Run,
-            .anim_4 = ANIM_HarryT_Idle,
-        },
+        .animations = HARRY_T_ANIMS,
         .tattle = MSG_NpcTattle_MAC00_ShopOwner,
     },
 };
 
-AnimID N(ExtraAnims_TheMaster)[] = {
+AnimID N(LimitAnims_TheMaster)[] = {
     ANIM_TheMaster_Still,
     ANIM_TheMaster_Idle,
     ANIM_TheMaster_Walk,
@@ -290,7 +266,7 @@ AnimID N(ExtraAnims_TheMaster)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Chan)[] = {
+AnimID N(LimitAnims_Chan)[] = {
     ANIM_Chan_Still,
     ANIM_Chan_Idle,
     ANIM_Chan_Walk,
@@ -298,7 +274,7 @@ AnimID N(ExtraAnims_Chan)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Lee)[] = {
+AnimID N(LimitAnims_Lee)[] = {
     ANIM_Lee_Still,
     ANIM_Lee_Idle,
     ANIM_Lee_Walk,
@@ -312,28 +288,11 @@ NpcData N(NpcData_Toad_03)[] = {
         .pos = { 375.0f, 115.0f, -440.0f },
         .yaw = 225,
         .init = &N(EVS_NpcInit_TheMaster),
-        .settings = &N(NpcSettings_Dummy),
+        .settings = &N(NpcSettings_TheMaster),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_TheMaster_Idle,
-            .walk   = ANIM_TheMaster_Still,
-            .run    = ANIM_TheMaster_Still,
-            .chase  = ANIM_TheMaster_Still,
-            .anim_4 = ANIM_TheMaster_Still,
-            .anim_5 = ANIM_TheMaster_Still,
-            .death  = ANIM_TheMaster_Still,
-            .hit    = ANIM_TheMaster_Still,
-            .anim_8 = ANIM_TheMaster_Still,
-            .anim_9 = ANIM_TheMaster_Still,
-            .anim_A = ANIM_TheMaster_Still,
-            .anim_B = ANIM_TheMaster_Still,
-            .anim_C = ANIM_TheMaster_Still,
-            .anim_D = ANIM_TheMaster_Still,
-            .anim_E = ANIM_TheMaster_Still,
-            .anim_F = ANIM_TheMaster_Still,
-        },
-        .extraAnimations = N(ExtraAnims_TheMaster),
+        .animations = THE_MASTER_ANIMS,
+        .limitAnimations = N(LimitAnims_TheMaster),
         .tattle = MSG_NpcTattle_TheMaster,
     },
     {
@@ -341,13 +300,11 @@ NpcData N(NpcData_Toad_03)[] = {
         .pos = { 310.0f, 115.0f, -390.0f },
         .yaw = 45,
         .init = &N(EVS_NpcInit_Chan),
-        .settings = &N(NpcSettings_Dummy),
+        .settings = &N(NpcSettings_Chan),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Chan_Idle,
-        },
-        .extraAnimations = N(ExtraAnims_Chan),
+        .animations = CHAN_ANIMS,
+        .limitAnimations = N(LimitAnims_Chan),
         .tattle = MSG_NpcTattle_Chan,
     },
     {
@@ -355,13 +312,11 @@ NpcData N(NpcData_Toad_03)[] = {
         .pos = { 330.0f, 115.0f, -410.0f },
         .yaw = 45,
         .init = &N(EVS_NpcInit_Lee),
-        .settings = &N(NpcSettings_Dummy),
+        .settings = &N(NpcSettings_Lee),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Lee_Idle,
-        },
-        .extraAnimations = N(ExtraAnims_Lee),
+        .animations = LEE_ANIMS,
+        .limitAnimations = N(LimitAnims_Lee),
         .tattle = MSG_NpcTattle_Lee,
     },
 };
@@ -385,7 +340,7 @@ NpcData N(NpcData_Waterfront_Family)[] = {
         .pos = { -496.0f, 20.0f, 218.0f },
         .yaw = 133,
         .init = &N(EVS_NpcInit_WaterfrontDad),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = TOAD_GREEN_ANIMS,
@@ -396,7 +351,7 @@ NpcData N(NpcData_Waterfront_Family)[] = {
         .pos = { -566.0f, 20.0f, 267.0f },
         .yaw = 133,
         .init = &N(EVS_NpcInit_WaterfrontMom),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = TOADETTE_ORANGE_ANIMS,
@@ -407,7 +362,7 @@ NpcData N(NpcData_Waterfront_Family)[] = {
         .pos = { -508.0f, 20.0f, 324.0f },
         .yaw = 313,
         .init = &N(EVS_NpcInit_WaterfrontKid1),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_ToadKid),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = TOAD_KID_GREEN_ANIMS,
@@ -418,7 +373,7 @@ NpcData N(NpcData_Waterfront_Family)[] = {
         .pos = { -480.0f, 20.0f, 329.0f },
         .yaw = 313,
         .init = &N(EVS_NpcInit_WaterfrontKid2),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_ToadKid),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = TOAD_KID_GREEN_ANIMS,
@@ -427,31 +382,14 @@ NpcData N(NpcData_Waterfront_Family)[] = {
 };
 
 NpcData N(NpcData_PrizeToad) = {
-    .id = NPC_Toad_11,
+    .id = NPC_Toad_PrizeToad,
     .pos = { -112.0f, 0.0f, -62.0f },
     .yaw = 90,
     .init = &N(EVS_NpcInit_TradingToad),
-    .settings = &N(NpcSettings_Toad_Stationary),
+    .settings = &N(NpcSettings_Toad),
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Toad_Pink_Idle,
-        .walk   = ANIM_Toad_Pink_Walk,
-        .run    = ANIM_Toad_Pink_Run,
-        .chase  = ANIM_Toad_Pink_Run,
-        .anim_4 = ANIM_Toad_Pink_Idle,
-        .anim_5 = ANIM_Toad_Pink_Idle,
-        .death  = ANIM_Toad_Pink_Idle,
-        .hit    = ANIM_Toad_Pink_Disappointed,
-        .anim_8 = ANIM_Toad_Pink_Run,
-        .anim_9 = ANIM_Toad_Pink_Run,
-        .anim_A = ANIM_Toad_Pink_Run,
-        .anim_B = ANIM_Toad_Pink_Run,
-        .anim_C = ANIM_Toad_Pink_Run,
-        .anim_D = ANIM_Toad_Pink_Run,
-        .anim_E = ANIM_Toad_Pink_Run,
-        .anim_F = ANIM_Toad_Pink_Run,
-    },
+    .animations = TOAD_PINK_ANIMS,
     .tattle = MSG_NpcTattle_PrizeToad,
 };
 

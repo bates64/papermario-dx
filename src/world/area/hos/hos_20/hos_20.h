@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file hos_20.h
 /// @brief Shooting Star Summit - Riding Star Ship Scene
 

@@ -143,11 +143,11 @@ API_CALLABLE(N(SuperBlock_ShowSelectPartnerMenu)) {
                 popupMenu->nameMsg[entryIndex] = gPartnerPopupProperties[partnerID].nameMsg;
                 canUpgradePartner = N(SuperBlock_get_partner_rank)(partnerID, hasUltraStone);
                 if (canUpgradePartner >= 0) {
-                    popupMenu->ptrIcon[entryIndex] = wPartnerHudScripts[partnerID];
+                    popupMenu->ptrIcon[entryIndex] = wPartnerHudScripts[partnerID].enabled;
                     popupMenu->enabled[entryIndex] = true;
                     popupMenu->descMsg[entryIndex] = N(SuperBlock_UpgradeDescMessages)[i][canUpgradePartner];
                 } else {
-                    popupMenu->ptrIcon[entryIndex] = wDisabledPartnerHudScripts[partnerID];
+                    popupMenu->ptrIcon[entryIndex] = wPartnerHudScripts[partnerID].disabled;
                     popupMenu->enabled[entryIndex] = false;
                     popupMenu->descMsg[entryIndex] = N(SuperBlock_CantUpgradeMessages)[hasUltraStone];
                 }
@@ -191,11 +191,6 @@ API_CALLABLE(N(SuperBlock_ShowSelectPartnerMenu)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SuperBlock_SwitchToPartner)) {
-    switch_to_partner(evt_get_variable(script, *script->ptrReadPos));
-    return ApiStatus_DONE2;
-}
-
 API_CALLABLE(N(SuperBlock_LoadCurrentPartnerName)) {
     set_message_text_var(gPartnerPopupProperties[gPlayerData.curPartner].nameMsg, 0);
     return ApiStatus_DONE2;
@@ -206,7 +201,7 @@ API_CALLABLE(N(SuperBlock_StartGlowEffect)) {
     s32 entityIdx = evt_get_variable(script, *args++);
     Entity* entity = get_entity_by_index(entityIdx);
     s32 effectPtrOutVar = *args++;
-    EffectInstance* effectInst = fx_energy_orb_wave(0, entity->pos.x, entity->pos.y + 12.5f, entity->pos.z, 0.7f, 0);
+    EffectInstance* effectInst = fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_GREEN_ORB, entity->pos.x, entity->pos.y + 12.5f, entity->pos.z, 0.7f, 0);
 
     evt_set_variable(script, effectPtrOutVar, (s32) effectInst);
     return ApiStatus_DONE2;
@@ -361,9 +356,9 @@ API_CALLABLE(N(SuperBlock_AnimateEnergyOrbs)) {
     }
 
     for (i = 0; i < SUPER_BLOCK_NUM_ORBS; i++) {
-        userData->orbEffects[i]->data.motionBlurFlame->pos.x = userData->posX[i];
-        userData->orbEffects[i]->data.motionBlurFlame->pos.y = userData->posY[i];
-        userData->orbEffects[i]->data.motionBlurFlame->pos.z = userData->posZ[i];
+        userData->orbEffects[i]->data.motionBlurFlame->posOffset.x = userData->posX[i];
+        userData->orbEffects[i]->data.motionBlurFlame->posOffset.y = userData->posY[i];
+        userData->orbEffects[i]->data.motionBlurFlame->posOffset.z = userData->posZ[i];
     }
 
     return ApiStatus_BLOCK;
@@ -483,8 +478,8 @@ EvtScript N(SuperBlock_OnHit) = {
     Call(ModifyGlobalOverrideFlags, 1, GLOBAL_OVERRIDES_CANT_PICK_UP_ITEMS)
     Call(N(SuperBlock_SetOverride40))
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(DisablePartnerAI, false)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(N(SuperBlock_StartGlowEffect), SUPER_BLOCK_MAPVAR, LVar9)
     Call(FindItem, ITEM_ULTRA_STONE, LVarC)
     Call(N(SuperBlock_CountEligiblePartners))
@@ -518,9 +513,9 @@ EvtScript N(SuperBlock_OnHit) = {
     Call(EnablePartnerAI)
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, LVarB)
-        Call(N(SuperBlock_SwitchToPartner), LVarB)
+        Call(SwitchToPartner, LVarB)
     Else
-        Call(func_802CF56C, 2)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     EndIf
     Wait(10 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_00DF, 160, 40)

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file arn_03.h
 /// @brief Gusty Gulch - Ghost Town 1
 
@@ -17,7 +19,7 @@ enum {
     NPC_Boo_02          = 1,
     NPC_Boo_03          = 2,
     NPC_Boo_04          = 3,
-    NPC_Boo_05          = 4,
+    NPC_Boo_Prankster   = 4,
     NPC_Boo_06          = 5,
     NPC_Boo_07          = 6,
     NPC_Boo_08          = 7,
@@ -25,10 +27,9 @@ enum {
 };
 
 enum {
-    MV_Unk_00           = MapVar(0),
-    MV_Unk_01           = MapVar(1),
-    MV_Unk_02           = MapVar(2),
-    MV_Unk_03           = MapVar(3),
+    MV_Koot_Time        = MapVar(0),
+    MV_Koot_WaitLength  = MapVar(1),
+    MV_PrankDone        = MapVar(2),
 };
 
 #define NAMESPACE arn_03

@@ -15,17 +15,13 @@ EvtScript N(EVS_EnterMap) = {
             IfEq(GF_KKJ25_Visited, false)
                 Call(DisablePlayerInput, true)
                 Call(SetPlayerPos, -645, 0, 0)
-#if VERSION_JP
-                Call(SetNpcPos, NPC_PARTNER, -645, 0, 0)
-#else
                 Call(GetPartnerInUse, LVar0)
                 IfEq(LVar0, 0)
-                    Call(DisablePartnerAI, 0)
+                    Call(DisablePartnerAI, false)
                     Call(SetNpcPos, NPC_PARTNER, -660, 0, 0)
                     Wait(1)
                     Call(EnablePartnerAI)
                 EndIf
-#endif
                 Wait(150)
                 Call(PlaySoundAtCollider, COLLIDER_ttw, SOUND_LARGE_DOOR_OPEN, 0)
                 Call(MakeLerp, 0, 80, 10, EASING_LINEAR)
@@ -39,9 +35,6 @@ EvtScript N(EVS_EnterMap) = {
                     EndIf
                 EndLoop
                 Call(SetPlayerPos, -605, 0, 0)
-#if VERSION_JP
-                Call(SetNpcPos, NPC_PARTNER, -605, 0, 0)
-#endif
                 Call(DisablePlayerInput, false)
                 Call(SetZoneEnabled, ZONE_o15, false)
                 Call(ResetCam, CAM_DEFAULT, Float(90.0))

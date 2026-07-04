@@ -26,7 +26,6 @@ u8 filemenu_info_gridData[] = {
 MenuWindowBP filemenu_info_windowBPs[] = {
     {
         .windowID = WIN_FILES_MESSAGE,
-        .unk_01 = 0,
         .pos = { .x = 0, .y = 0 },
         .width = 0,
         .height = 0,

@@ -3,9 +3,6 @@
 #include "model.h"
 #include "sprite/player.h"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/GiveReward.inc.c"
-
 u8 N(HintPrices)[] = {
     5, 20, 30
 };
@@ -416,7 +413,7 @@ API_CALLABLE(N(RefundHintCoins)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802418E8_A3ADC8)) {
+API_CALLABLE(N(FortuneRitualDarkenModels)) {
     if (isInitialCall) {
         set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o98)),  CUSTOM_GFX_NONE, ENV_TINT_REMAP);
         set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o76)),  CUSTOM_GFX_NONE, ENV_TINT_REMAP);
@@ -440,7 +437,7 @@ API_CALLABLE(N(func_802418E8_A3ADC8)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_80241A58_A3AF38)) {
+API_CALLABLE(N(FortuneRitualPulseModels)) {
     if (isInitialCall) {
         script->functionTemp[0] = 64;
         script->functionTemp[2] = 64;
@@ -478,7 +475,7 @@ API_CALLABLE(N(func_80241A58_A3AF38)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_80241B74_A3B054)) {
+API_CALLABLE(N(FortuneRitualRestoreModels)) {
     if (isInitialCall) {
         script->functionTemp[0] = 64;
     }
@@ -502,8 +499,7 @@ API_CALLABLE(N(func_80241B74_A3B054)) {
     return ApiStatus_BLOCK;
 }
 
-// TODO may not be motionBlurFlame
-API_CALLABLE(N(func_80241CCC_A3B1AC)) {
+API_CALLABLE(N(AnimateRitualOrbEffects)) {
     EffectInstance* effects[3];
     Matrix4f sp28, sp68;
     f32 tx;
@@ -535,15 +531,15 @@ API_CALLABLE(N(func_80241CCC_A3B1AC)) {
         ty = temp_f28 * cos_deg(temp_f24);
         guTranslateF(sp68, tx, ty, 0.0f);
         guMtxCatF(sp68, sp28, sp28);
-        effects[i]->data.motionBlurFlame->pos.x = sp28[3][0];
-        effects[i]->data.motionBlurFlame->pos.y = sp28[3][1];
-        effects[i]->data.motionBlurFlame->pos.z = sp28[3][2];
+        effects[i]->data.motionBlurFlame->posOffset.x = sp28[3][0];
+        effects[i]->data.motionBlurFlame->posOffset.y = sp28[3][1];
+        effects[i]->data.motionBlurFlame->posOffset.z = sp28[3][2];
     }
 
     script->functionTemp[0]--;
     if (script->functionTemp[0] < 16) {
         for (i = 0; i < ARRAY_COUNT(effects); i++) {
-            effects[i]->data.motionBlurFlame->unk_4C = script->functionTemp[0];
+            effects[i]->data.motionBlurFlame->alpha = script->functionTemp[0];
         }
     }
 
@@ -556,12 +552,11 @@ API_CALLABLE(N(func_80241CCC_A3B1AC)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_80241F98_A3B478)) {
+API_CALLABLE(N(SetEnergyOrbBright)) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
-    // TODO effect may be wrong
-    effect->data.energyOrbWave->unk_1C++;
+    effect->data.energyOrbWave->mode++;
     return ApiStatus_DONE2;
 }
 
@@ -571,13 +566,13 @@ EvtScript N(EVS_PerformHintRitual) = {
     Call(GetModelCenter, MODEL_o100)
     Add(LVar1, 20)
     Call(PlaySoundAt, SOUND_LRAW_CRYSTAL_BALL_GLOW, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 1, LVar0, LVar1, LVar2, Float(1.0), -1)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PINK_ORB, LVar0, LVar1, LVar2, Float(1.0), -1)
     Set(ArrayVar(1), LVarF)
     Call(EnableModel, MODEL_o185, false)
     Call(EnableModel, MODEL_o186, false)
     Wait(30)
     Thread
-        Call(N(func_802418E8_A3ADC8))
+        Call(N(FortuneRitualDarkenModels))
     EndThread
     Call(GetModelCenter, MODEL_o100)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -607,37 +602,37 @@ EvtScript N(EVS_PerformHintRitual) = {
     PlayEffect(EFFECT_MOTION_BLUR_FLAME, 0, LVar0, LVar1, LVar2, 1, -1)
     Set(ArrayVar(5), LVarF)
     Thread
-        Call(N(func_80241CCC_A3B1AC))
+        Call(N(AnimateRitualOrbEffects))
     EndThread
     Wait(50)
     Call(GetModelCenter, MODEL_o100)
     Add(LVar1, 20)
     Call(PlaySoundAt, SOUND_CRYSTAL_BALL_WAVE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 5, LVar0, LVar1, LVar2, Float(0.5), 20)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PINK_WAVE, LVar0, LVar1, LVar2, Float(0.5), 20)
     Wait(30)
     Call(GetModelCenter, MODEL_o100)
     Add(LVar1, 20)
     Call(PlaySoundAt, SOUND_CRYSTAL_BALL_WAVE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 5, LVar0, LVar1, LVar2, Float(0.5), 20)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PINK_WAVE, LVar0, LVar1, LVar2, Float(0.5), 20)
     Wait(30)
     Thread
-        Call(N(func_80241A58_A3AF38))
+        Call(N(FortuneRitualPulseModels))
     EndThread
     Call(GetModelCenter, MODEL_o100)
     Add(LVar1, 20)
     Call(PlaySoundAt, SOUND_CRYSTAL_BALL_WAVE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 6, LVar0, LVar1, LVar2, Float(0.5), 20)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_GRAY_WAVE, LVar0, LVar1, LVar2, Float(0.5), 20)
     Wait(70)
     Call(DismissEffect, ArrayVar(2))
     Wait(40)
     Call(PlaySoundAt, SOUND_LRAW_CRYSTAL_BALL_GLOW | SOUND_ID_TRIGGER_CHANGE_SOUND, 0, LVar0, LVar1, LVar2)
-    Call(N(func_80241F98_A3B478), ArrayVar(1))
+    Call(N(SetEnergyOrbBright), ArrayVar(1))
     Wait(15)
     Call(EnableModel, MODEL_o185, true)
     Call(EnableModel, MODEL_o186, true)
     Call(DismissEffect, ArrayVar(1))
     Thread
-        Call(N(func_80241B74_A3B054))
+        Call(N(FortuneRitualRestoreModels))
     EndThread
     Wait(46)
     Call(ResetCam, CAM_DEFAULT, Float(5.0))
@@ -670,11 +665,6 @@ EvtScript N(EVS_KootRequestBall_Merluvlee) = {
     End
 };
 
-s32 N(CrystalBallItems)[] = {
-    ITEM_CRYSTAL_BALL,
-    -1
-};
-
 EvtScript N(EVS_KootCheckBall_Merluvlee) = {
     IfEq(GF_HOS06_MerluvleeRequestedCrystalBall, false)
         Return
@@ -686,8 +676,8 @@ EvtScript N(EVS_KootCheckBall_Merluvlee) = {
     IfEq(LVar0, -1)
         Call(SpeakToPlayer, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, MSG_HOS_0048)
     Else
-        EVT_CHOOSE_KEY_ITEM_FROM(N(CrystalBallItems))
-        IfNe(LVar0, -1)
+        EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_CRYSTAL_BALL, NPC_Merluvlee)
+        IfNe(LVar0, ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, MSG_HOS_0049)
             EVT_GIVE_REWARD(ITEM_KOOT_MERLUVLEE_AUTOGRAPH)
             Set(GF_HOS06_Gift_MerluvleesAutograph, true)
@@ -701,7 +691,7 @@ EvtScript N(EVS_KootCheckBall_Merluvlee) = {
 
 EvtScript N(EVS_AskForHint) = {
     Call(DisablePlayerInput, true)
-    Call(func_802CF56C, 1)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_HOLD)
     Call(PlayerMoveTo, -49, 0, 6)
     Call(PlayerFaceNpc, NPC_Merluvlee, false)
     IfEq(MV_RitualFXArrayPtr, 0)
@@ -723,7 +713,7 @@ EvtScript N(EVS_AskForHint) = {
     Call(ShowChoice, MSG_Choice_0011)
     IfNe(LVar0, 0)
         Call(ContinueSpeech, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, MSG_HOS_003C)
-        Call(func_802CF56C, 0)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
         Call(DisablePlayerInput, false)
         Return
     EndIf
@@ -732,14 +722,14 @@ EvtScript N(EVS_AskForHint) = {
     Call(ShowCoinCounter, false)
     IfEq(LVar0, 4)
         Call(ContinueSpeech, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, MSG_HOS_003C)
-        Call(func_802CF56C, 0)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
         Call(DisablePlayerInput, false)
         Return
     EndIf
     Call(N(HasEnoughCoinsForHint), LVar0, LVar1)
     IfNe(LVar1, 0)
         Call(ContinueSpeech, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, MSG_HOS_003D)
-        Call(func_802CF56C, 0)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
         Call(DisablePlayerInput, false)
         Return
     EndIf
@@ -783,7 +773,7 @@ EvtScript N(EVS_AskForHint) = {
             Goto(99)
     EndSwitch
     Label(99)
-    Call(func_802CF56C, 0)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
     Call(DisablePlayerInput, false)
     Return
     End

@@ -1,15 +1,15 @@
 #include "kmr_05.h"
 
-#include "world/common/enemy/Goomba_Wander.inc.c"
-#include "world/common/enemy/Paragoomba_Wander.inc.c"
-#include "world/common/enemy/SpikedGoomba_Wander.inc.c"
+#include "world/common/enemy/Goomba/wander.inc.c"
+#include "world/common/enemy/Paragoomba/wander.inc.c"
+#include "world/common/enemy/SpikedGoomba/wander.inc.c"
 
 EvtScript N(EVS_GoompaRemark) = {
     Call(DisablePlayerInput, true)
     Wait(10 * DT)
     Call(SetPlayerSpeed, Float(3.0 / DT))
     Call(PlayerMoveTo, -60, -19, 0)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_00B7)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)

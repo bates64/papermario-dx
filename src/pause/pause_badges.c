@@ -3,7 +3,7 @@
 
 extern Gfx PauseGfxOrbs[];
 
-void pause_badges_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
+MenuPanelDrawContentFunc pause_badges_draw_contents;
 void pause_badges_init(MenuPanel* panel);
 void pause_badges_handle_input(MenuPanel* panel);
 void pause_badges_update(MenuPanel* panel);
@@ -95,7 +95,6 @@ extern u8 D_PAL_80271B2C[];
 MenuWindowBP gPauseBadgesWindowBPs[] = {
     {
         .windowID = WIN_PAUSE_BADGES,
-        .unk_01 = 0,
         .pos = { .x = 3, .y = 16 },
         .width = 289,
         .height = 154,

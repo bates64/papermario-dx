@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file trd_10.h
 /// @brief Koopa Bros Fortress - Boss Battle Room
 
@@ -19,7 +21,7 @@ enum {
 };
 
 enum {
-    MV_Unk_01               = MapVar(1),
+    MV_SpiritCardData           = MapVar(1),
 };
 
 #define NAMESPACE trd_10

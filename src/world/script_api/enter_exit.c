@@ -32,7 +32,7 @@ API_CALLABLE(TeleportPartnerToPlayer) {
     partner->pos.x = playerStatus->pos.x;
     partner->pos.z = playerStatus->pos.z;
 
-    if (partner_is_flying()) {
+    if (!partner_is_flying()) {
         partner->pos.y = playerStatus->pos.y;
     }
 
@@ -211,7 +211,7 @@ EvtScript EnterWalk = {
         Set(LVar0, LVarF)
     EndIf
     Exec(LVar0)
-    Call(func_802D2148)
+    Call(RestorePlayerCameraFollow)
     Call(ResetPartnerTetherDistance)
     Return
     End
@@ -233,7 +233,7 @@ EvtScript EnterWalkShort = {
         Set(LVar0, LVarF)
     EndIf
     Exec(LVar0)
-    Call(func_802D2148)
+    Call(RestorePlayerCameraFollow)
     Call(ResetPartnerTetherDistance)
     Return
     End
@@ -254,7 +254,7 @@ EvtScript EnterWalkCustom = {
         Set(LVar0, LVarF)
     EndIf
     Exec(LVar0)
-    Call(func_802D2148)
+    Call(RestorePlayerCameraFollow)
     Call(ResetPartnerTetherDistance)
     Return
     End

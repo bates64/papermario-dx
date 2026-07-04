@@ -1,7 +1,7 @@
 #include "mim_09.h"
 
-#include "world/common/npc/Oaklie.inc.c"
-#include "world/common/enemy/ForestFuzzy_Wander.inc.c"
+#include "world/common/npc/Oaklie/idle.inc.c"
+#include "world/common/enemy/ForestFuzzy/wander.inc.c"
 
 NpcData N(NpcData_Fuzzy) = {
     .id = NPC_Fuzzy,

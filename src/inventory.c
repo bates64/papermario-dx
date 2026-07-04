@@ -1294,7 +1294,7 @@ void update_status_bar(void) {
     star_power_shimmer_draw();
 }
 
-void coin_counter_draw_content(UNK_TYPE arg0, s32 posX, s32 posY) {
+void coin_counter_draw_content(void* data, s32 posX, s32 posY) {
     StatusBar* statusBar = &gStatusBar;
     s32 iconIndex;
 
@@ -2129,11 +2129,6 @@ s32 add_star_pieces(s32 amt) {
     }
 
     return playerData->starPieces;
-}
-
-void increment_max_star_power(void) {
-    gPlayerData.maxStarPower++;
-    gPlayerData.starPower = gPlayerData.maxStarPower * SP_PER_BAR;
 }
 
 void set_max_star_power(s8 newMax) {

@@ -1,45 +1,33 @@
 #include "nok_02.h"
 #include "sprite/player.h"
+#include "world/common/npc/Parakarry/base.h"
+#include "world/common/enemy/Bombette/base.h"
 
-#include "world/common/npc/Koopa_Wander.inc.c"
-#include "world/common/npc/KoopaWithoutShell_Patrol.inc.c"
-#include "world/common/npc/Koopa.inc.c"
-#include "world/common/npc/Kolorado.inc.c"
-#include "world/common/npc/KoloradoWife.inc.c"
-#include "world/common/enemy/Fuzzy.inc.c"
-#include "world/common/npc/KoopaKoot.inc.c"
-#include "world/common/npc/Bobomb.inc.c"
+#include "world/common/npc/Koopa/wander.inc.c"
+#include "world/common/npc/KoopaWithoutShell/patrol.inc.c"
+#include "world/common/npc/Koopa/idle.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/npc/KoloradoWife/idle.inc.c"
+#include "world/common/enemy/Fuzzy/idle.inc.c"
+#include "world/common/npc/KoopaKoot/idle.inc.c"
+#include "world/common/npc/Bobomb/idle.inc.c"
 
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
-#include "world/common/atomic/MarioSalute.inc.c"
+#include "world/common/util/MarioSalute.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/LetterDelivery.inc.c"
-
-s32 N(LetterList_Kolorado)[] = {
-    ITEM_LETTER_TO_KOLORADO, ITEM_NONE
+LetterDelivery N(LetterDelivery_Kolorado) = {
+    .recipientID = NPC_Kolorado,
+    .recipientTalk = ANIM_Kolorado_Talk,
+    .recipientIdle = ANIM_Kolorado_Idle,
+    .msgGreeting = MSG_CH1_0097,
+    .msgCancelled = MSG_CH1_0098,
+    .msgDelivered = MSG_CH1_0099,
+    .msgRecieved = MSG_CH1_009A,
+    .letters = { ITEM_LETTER_TO_KOLORADO },
+    .reward = ITEM_STAR_PIECE,
 };
 
-EvtScript N(EVS_LetterPrompt_Kolorado) = {
-    Call(N(LetterDelivery_Init),
-        NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
-        ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
-        MSG_CH1_0097, MSG_CH1_0098, MSG_CH1_0099, MSG_CH1_009A,
-        Ref(N(LetterList_Kolorado)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_Kolorado) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
-};
 
 EvtScript N(EVS_DoNothing) = {
     Return
@@ -47,8 +35,6 @@ EvtScript N(EVS_DoNothing) = {
 };
 
 #include "../common/GetIntoShell.inc.c"
-
-#include "world/common/todo/SwitchToPartner.inc.c"
 
 EvtScript N(EVS_NpcInteract_Kooper) = {
     IfLt(GB_StoryProgress, STORY_CH1_PROMISED_TO_HELP_KOOPER)
@@ -84,13 +70,13 @@ EvtScript N(EVS_NpcInteract_Kooper) = {
             Call(PlayerFaceNpc, NPC_Kooper, false)
         EndThread
         Thread
-            Call(N(SwitchToPartner), 1)
-            Call(DisablePartnerAI, 0)
+            Call(SwitchToPartner, PARTNER_GOOMBARIO)
+            Call(DisablePartnerAI, false)
             Call(NpcMoveTo, NPC_PARTNER, -55, -130, 15 * DT)
             Call(NpcFaceNpc, NPC_PARTNER, NPC_Kooper, 0)
             Call(EnablePartnerAI)
         EndThread
-        Call(SetNpcFlagBits, NPC_Kooper, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_Kooper, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcPos, NPC_Kooper, 0, 0, -207)
         Call(SetNpcAnimation, NPC_Kooper, ANIM_KooperWithoutShell_Idle)
         Wait(35 * DT)
@@ -117,7 +103,7 @@ EvtScript N(EVS_NpcInteract_Kooper) = {
         Call(NpcMoveTo, NPC_Kooper, 25, -130, 10 * DT)
         Call(SetNpcAnimation, NPC_Kooper, ANIM_KooperWithoutShell_Idle)
         Call(NpcFacePlayer, NPC_Kooper, 0)
-        Call(SetNpcFlagBits, NPC_Kooper, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_Kooper, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Wait(10 * DT)
         Call(SpeakToPlayer, NPC_Kooper, ANIM_KooperWithoutShell_Celebrate, ANIM_KooperWithoutShell_Idle, 0, MSG_CH1_00B5)
         Call(SetPlayerAnimation, ANIM_Mario1_NodYes)
@@ -149,7 +135,7 @@ EvtScript N(EVS_NpcInteract_Kooper) = {
             Wait(3 * DT)
             Call(PlayerFaceNpc, NPC_PARTNER, false)
         EndThread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, MSG_CH1_00B7)
         Call(EnablePartnerAI)
         Call(AdjustCam, CAM_DEFAULT, Float(90.0), 0, Float(375.0), Float(17.0), Float(-5.5))
@@ -191,7 +177,7 @@ EvtScript N(EVS_FuzzyBoss_PlayerEntersKoopersHouse) = {
     EndIf
     Set(MF_FuzzyBossTaunt, true)
     Call(DisablePlayerInput, true)
-    Call(SpeakToPlayer, NPC_FuzzyBoss, ANIM_Fuzzy_Anim0C, ANIM_Fuzzy_Idle, 0, MSG_CH1_00B9)
+    Call(SpeakToPlayer, NPC_FuzzyBoss, ANIM_Fuzzy_Shout, ANIM_Fuzzy_Idle, 0, MSG_CH1_00B9)
     Call(DisablePlayerInput, false)
     Call(SetNpcAnimation, NPC_FuzzyBoss, ANIM_Fuzzy_Walk)
     Call(GetNpcPos, NPC_FuzzyBoss, LVarA, LVarB, LVarC)
@@ -313,7 +299,7 @@ EvtScript N(EVS_MiscFuzzyFlee) = {
     Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 15)
     Add(LVar0, 30)
     Add(LVar2, -30)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_Fuzzy_Anim09)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_Fuzzy_Confused)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZY_HOP_B, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 13)
     Add(LVar0, 20)
@@ -347,7 +333,7 @@ EvtScript N(EVS_NpcIdle_MiscFuzzy2) = {
         Return
     EndIf
     Label(100)
-        IfEq(AF_NOK_13, false)
+        IfEq(AF_NOK02_FuzzyTreeHit, false)
             Wait(1)
             Goto(100)
         EndIf
@@ -414,7 +400,7 @@ EvtScript N(EVS_BreakBlock_DropShell) = {
     Call(PlaySoundAtNpc, NPC_KoopaShell_02, SOUND_ITEM_BOUNCE, SOUND_SPACE_DEFAULT)
     Call(PlayerFaceNpc, NPC_KoopaShell_02, false)
     Call(NpcFaceNpc, NPC_Koopa_02, NPC_KoopaShell_02, 0)
-    Call(SetNpcFlagBits, NPC_Koopa_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Koopa_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Add(LVar0, -1)
     Add(LVar2, -1)
     Call(GetNpcPos, NPC_Koopa_02, LVar0, LVar1, LVar2)
@@ -447,7 +433,7 @@ EvtScript N(EVS_BreakBlock_DropShell) = {
     Call(NpcJump0, NPC_KoopaShell_02, LVar0, LVar1, LVar2, 30)
     Call(SetNpcPos, NPC_KoopaShell_02, NPC_DISPOSE_LOCATION)
     Call(SetNpcSprite, NPC_Koopa_02, ANIM_Koopa_Idle)
-    Call(SetNpcFlagBits, NPC_Koopa_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Koopa_02, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetNpcAnimation, NPC_Koopa_02, ANIM_Koopa_Still)
     Wait(4)
     Call(EnableNpcBlur, NPC_KoopaShell_02, true)
@@ -536,7 +522,7 @@ EvtScript N(EVS_KoloradoWife_FetchFromOffice) = {
 };
 
 EvtScript N(EVS_KoloradoWife_FetchKoopaLegends) = {
-    Call(SetNpcFlagBits, NPC_KoloradoWife, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_KoloradoWife, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_0090)
     Call(SetNpcAnimation, NPC_KoloradoWife, ANIM_KoloradoWife_Walk)
     IfGe(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
@@ -551,7 +537,7 @@ EvtScript N(EVS_KoloradoWife_FetchKoopaLegends) = {
     Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_0091)
     EVT_GIVE_REWARD(ITEM_KOOT_KOOPA_LEGENDS)
     Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_0092)
-    Call(SetNpcFlagBits, NPC_KoloradoWife, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_KoloradoWife, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };
@@ -943,24 +929,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .settings = &N(NpcSettings_Koopa),
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldParakarry_Idle,
-            .walk   = ANIM_WorldParakarry_Walk,
-            .run    = ANIM_WorldParakarry_Run,
-            .chase  = ANIM_WorldParakarry_Run,
-            .anim_4 = ANIM_WorldParakarry_Idle,
-            .anim_5 = ANIM_WorldParakarry_Idle,
-            .death  = ANIM_WorldParakarry_Still,
-            .hit    = ANIM_WorldParakarry_Still,
-            .anim_8 = ANIM_WorldParakarry_Idle,
-            .anim_9 = ANIM_WorldParakarry_Idle,
-            .anim_A = ANIM_WorldParakarry_Idle,
-            .anim_B = ANIM_WorldParakarry_Idle,
-            .anim_C = ANIM_WorldParakarry_Idle,
-            .anim_D = ANIM_WorldParakarry_Idle,
-            .anim_E = ANIM_WorldParakarry_Idle,
-            .anim_F = ANIM_WorldParakarry_Idle,
-        },
+        .animations = PARAKARRY_ANIMS,
     },
     {
         .id = NPC_Bombette,
@@ -970,24 +939,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .settings = &N(NpcSettings_Koopa),
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldBombette_Idle,
-            .walk   = ANIM_WorldBombette_Walk,
-            .run    = ANIM_WorldBombette_Walk,
-            .chase  = ANIM_WorldBombette_Walk,
-            .anim_4 = ANIM_WorldBombette_Walk,
-            .anim_5 = ANIM_WorldBombette_Walk,
-            .death  = ANIM_WorldBombette_Still,
-            .hit    = ANIM_WorldBombette_Still,
-            .anim_8 = ANIM_WorldBombette_Still,
-            .anim_9 = ANIM_WorldBombette_Still,
-            .anim_A = ANIM_WorldBombette_Still,
-            .anim_B = ANIM_WorldBombette_Still,
-            .anim_C = ANIM_WorldBombette_Still,
-            .anim_D = ANIM_WorldBombette_Still,
-            .anim_E = ANIM_WorldBombette_Still,
-            .anim_F = ANIM_WorldBombette_Still,
-        },
+        .animations = BOMBETTE_ANIMS,
     },
     {
         .id = NPC_KoloradoWife_Epilogue,

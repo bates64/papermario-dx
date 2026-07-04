@@ -69,8 +69,8 @@ API_CALLABLE(N(AnimateChestSize)) {
     }
 }
 
-#include "world/common/npc/Kolorado.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_Kolorado) = {
     Wait(30)
@@ -203,7 +203,7 @@ EvtScript N(EVS_Scene_Misstar) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(N(AllowCameraInterpY))
     Exec(N(EVS_CameraFollowMisstar))

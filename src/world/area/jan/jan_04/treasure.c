@@ -2,9 +2,6 @@
 #include "entity.h"
 #include "effects.h"
 
-#include "world/common/todo/SetEntityPositionF.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-
 API_CALLABLE(N(AnimateFlyingChestRotScale)) {
     Entity* entity = get_entity_by_index(script->varTable[10]);
 
@@ -86,7 +83,7 @@ EvtScript N(EVS_Scene_TreasureChest) = {
             Call(LoadPath, 70, Ref(N(ChestFlightArc)), ARRAY_COUNT(N(ChestFlightArc)), EASING_QUADRATIC_OUT)
             Loop(0)
                 Call(GetNextPathPos)
-                Call(N(SetEntityPositionF), LVar9, LVar1, LVar2, LVar3)
+                Call(SetEntityPosition, LVar9, LVar1, LVar2, LVar3)
                 Wait(1)
                 IfEq(LVar0, 0)
                     BreakLoop
@@ -118,7 +115,7 @@ EvtScript N(EVS_Scene_TreasureChest) = {
         Call(LoadPath, 12, Ref(N(ChestFallPath)), ARRAY_COUNT(N(ChestFallPath)), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
-            Call(N(SetEntityPositionF), LVar9, LVar1, LVar2, LVar3)
+            Call(SetEntityPosition, LVar9, LVar1, LVar2, LVar3)
             Wait(1)
             IfEq(LVar0, 0)
                 BreakLoop
@@ -134,7 +131,7 @@ EvtScript N(EVS_Scene_TreasureChest) = {
         Call(LoadPath, 10, Ref(N(ChestBouncePath)), ARRAY_COUNT(N(ChestBouncePath)), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
-            Call(N(SetEntityPositionF), LVar9, LVar1, LVar2, LVar3)
+            Call(SetEntityPosition, LVar9, LVar1, LVar2, LVar3)
             Wait(1)
             IfEq(LVar0, 0)
                 BreakLoop

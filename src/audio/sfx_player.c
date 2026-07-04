@@ -47,7 +47,7 @@ typedef struct MusicTriggeredSound {
     /* 0x00 */ u16 sound;
     /* 0x02 */ u16 prereq; // when nonzero, sound may only play if this is already playing
     /* 0x04 */ u8 flags;
-} MusicTriggeredSound; // size = 0x5
+} MusicTriggeredSound; // size = 0x6
 
 // This flag field prefixes every SEF stream: two low bits choose a mode
 // (BASIC vs SEQUENCE vs COMPACT) and extra bits lock parameters while playing.
@@ -459,7 +459,7 @@ f32 AlTuneScaling[] = {
     0.00014023f, 0.00013024f, 0.00012096f, 0.00011234f, 0.00010433f, 0.00009689f, 0.00008999f, 0.00008358f
 };
 
-extern s32* AU_FX_CUSTOM_PARAMS[0]; // points to 80078290
+extern s32* AU_FX_CUSTOM_PARAMS[0];
 
 void (*CurrentSefCmdHandler)(SoundManager*, SoundPlayer*);
 

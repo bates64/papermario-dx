@@ -1,32 +1,31 @@
-#ifndef _WORLD_AREA_SAM_SAM_H_
-#define _WORLD_AREA_SAM_SAM_H_
+#pragma once
 
-enum {
-    AB_SAM_Unused_0     = AreaByte(0),
-    AB_SAM_Unused_1     = AreaByte(1),
-    AB_SAM_Unused_2     = AreaByte(2),
-    AB_SAM_Unused_3     = AreaByte(3),
-    AB_SAM_Unused_4     = AreaByte(4),
-    AB_SAM_Unused_5     = AreaByte(5),
-    AB_SAM_Unused_6     = AreaByte(6),
-    AB_SAM_Unused_7     = AreaByte(7),
-    AB_SAM_Unused_8     = AreaByte(8),
-    AB_SAM_Unused_9     = AreaByte(9),
-    AB_SAM_Unused_A     = AreaByte(10),
-    AB_SAM_Unused_B     = AreaByte(11),
-    AB_SAM_Unused_C     = AreaByte(12),
-    AB_SAM_Unused_D     = AreaByte(13),
-    AB_SAM_Unused_E     = AreaByte(14),
-    AB_SAM_Unused_F     = AreaByte(15),
+enum AreaBytesSAM {
+    AB_SAM_Unused_0                         = AreaByte(0x0),
+    AB_SAM_Unused_1                         = AreaByte(0x1),
+    AB_SAM_Unused_2                         = AreaByte(0x2),
+    AB_SAM_Unused_3                         = AreaByte(0x3),
+    AB_SAM_Unused_4                         = AreaByte(0x4),
+    AB_SAM_Unused_5                         = AreaByte(0x5),
+    AB_SAM_Unused_6                         = AreaByte(0x6),
+    AB_SAM_Unused_7                         = AreaByte(0x7),
+    AB_SAM_Unused_8                         = AreaByte(0x8),
+    AB_SAM_Unused_9                         = AreaByte(0x9),
+    AB_SAM_Unused_A                         = AreaByte(0xA),
+    AB_SAM_Unused_B                         = AreaByte(0xB),
+    AB_SAM_Unused_C                         = AreaByte(0xC),
+    AB_SAM_Unused_D                         = AreaByte(0xD),
+    AB_SAM_Unused_E                         = AreaByte(0xE),
+    AB_SAM_Unused_F                         = AreaByte(0xF),
 };
 
-enum {
-    AF_SAM_Snowing      = AreaFlag(1),
-    AF_SAM_LastSnowing  = AreaFlag(2),
-    AF_SAM_03           = AreaFlag(3),
-    AF_SAM_04           = AreaFlag(4),
-    AF_SAM_05           = AreaFlag(5),
-    AF_SAM_06           = AreaFlag(6),
+enum AreaFlagsSAM {
+    // AF_SAM_00 unused
+    AF_SAM_Snowing                          = AreaFlag(0x01),
+    AF_SAM_LastSnowing                      = AreaFlag(0x02),
+    AF_SAM01_InsideMayorOffice              = AreaFlag(0x03),
+    AF_SAM01_InsideMayorFoyer               = AreaFlag(0x04),
+    AF_SAM06_MeetingWithMerle               = AreaFlag(0x05),
+    AF_SAM08_ImposterSwitchPressed          = AreaFlag(0x06),
+    // AF_SAM_07 - AF_SAM_FF unused
 };
-
-#endif

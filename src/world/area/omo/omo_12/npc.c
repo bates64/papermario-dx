@@ -1,7 +1,8 @@
 #include "omo_12.h"
 #include "sprite/player.h"
+#include "world/common/npc/Watt/base.h"
 
-#include "world/common/npc/BigLanternGhost.inc.c"
+#include "world/common/npc/BigLanternGhost/idle.inc.c"
 
 NpcSettings N(NpcSettings_Watt) = {
     .height = 23,
@@ -13,8 +14,9 @@ NpcSettings N(NpcSettings_Watt) = {
 };
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
+#include "world/common/util/LoadPartyImage.inc.c"
 
-#include "world/common/atomic/CreateDarkness.inc.c"
+#include "world/common/util/CreateDarkness.inc.c"
 
 API_CALLABLE(N(SetLightOriginAndPower)) {
     Bytecode* args = script->ptrReadPos;
@@ -124,22 +126,22 @@ EvtScript N(EVS_EnterScene) = {
         IfEq(LVar1, 1)
             Goto(0)
         EndIf
-    Call(SpeakToPlayer, NPC_BigLanternGhost, ANIM_BigLanternGhost_Anim05, ANIM_BigLanternGhost_Anim01, 0, MSG_CH4_004F)
+    Call(SpeakToPlayer, NPC_BigLanternGhost, ANIM_BigLanternGhost_Talk, ANIM_BigLanternGhost_Idle, 0, MSG_CH4_004F)
     Call(SetPanTarget, CAM_DEFAULT, 50, 0, 20)
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.7 / DT))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Set(AB_OMO12_LightSource, LIGHT_FROM_GHOST)
     Set(AB_OMO12_LightPowerMod, -28)
-    Call(SetNpcAnimation, NPC_BigLanternGhost, ANIM_BigLanternGhost_Anim06)
+    Call(SetNpcAnimation, NPC_BigLanternGhost, ANIM_BigLanternGhost_Walk)
     Call(SetNpcSpeed, NPC_BigLanternGhost, Float(3.0 / DT))
     Call(NpcMoveTo, NPC_BigLanternGhost, 0, 20, 0)
-    Call(SetNpcAnimation, NPC_BigLanternGhost, ANIM_BigLanternGhost_Anim01)
+    Call(SetNpcAnimation, NPC_BigLanternGhost, ANIM_BigLanternGhost_Idle)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(SpeakToPlayer, NPC_BigLanternGhost, ANIM_BigLanternGhost_Anim05, ANIM_BigLanternGhost_Anim01, 0, MSG_CH4_0050)
+    Call(SpeakToPlayer, NPC_BigLanternGhost, ANIM_BigLanternGhost_Talk, ANIM_BigLanternGhost_Idle, 0, MSG_CH4_0050)
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(0.5))
     EndThread
-    Call(SetNpcAnimation, NPC_BigLanternGhost, ANIM_BigLanternGhost_Anim0F)
+    Call(SetNpcAnimation, NPC_BigLanternGhost, ANIM_BigLanternGhost_Reveal)
     Wait(5 * DT)
     Call(SetPlayerAnimation, ANIM_MarioW2_Shocked)
     Wait(15 * DT)
@@ -161,7 +163,7 @@ EvtScript N(EVS_UseWattTutorial) = {
         Wait(1)
     EndLoop
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldWatt_Celebrate, ANIM_WorldWatt_Idle, 5, MSG_CH4_005C)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
@@ -211,15 +213,15 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
         EndSwitch
     EndIf
     Call(PlaySound, SOUND_OMO_LANTERN_BREAK)
-    Set(AF_OMO_10, false)
+    Set(AF_OMO12_StopLanternFlicker, false)
     Loop(8)
         Call(SetNpcFlagBits, NPC_LaternTop, NPC_FLAG_INVISIBLE, true)
         Wait(3)
         Call(SetNpcFlagBits, NPC_LaternTop, NPC_FLAG_INVISIBLE, false)
         Wait(3)
     EndLoop
-    Call(SetNpcAnimation, NPC_LaternTop, ANIM_BigLanternGhost_Anim03)
-    Call(SetNpcAnimation, NPC_LaternBottom, ANIM_BigLanternGhost_Anim04)
+    Call(SetNpcAnimation, NPC_LaternTop, ANIM_BigLanternGhost_LanternTop)
+    Call(SetNpcAnimation, NPC_LaternBottom, ANIM_BigLanternGhost_LanternBottom)
     Thread
         Label(10)
             Call(SetNpcFlagBits, NPC_LaternTop, NPC_FLAG_INVISIBLE, true)
@@ -228,7 +230,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
             Call(SetNpcFlagBits, NPC_LaternTop, NPC_FLAG_INVISIBLE, false)
             Call(SetNpcFlagBits, NPC_LaternBottom, NPC_FLAG_INVISIBLE, false)
             Wait(2)
-            IfEq(AF_OMO_10, false)
+            IfEq(AF_OMO12_StopLanternFlicker, false)
                 Goto(10)
             EndIf
     EndThread
@@ -240,8 +242,8 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
         Set(LVar1, -27)
         Set(LVar2, -50)
     EndIf
-    Call(func_802D2C14, 1)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetPartnerForcedFollowMode, 1)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetPlayerSpeed, Float(3.0 / DT))
     Call(PlayerMoveTo, LVar1, 0, 0)
     Call(PlayerFaceNpc, NPC_LaternTop, 3)
@@ -265,7 +267,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
     Set(AB_OMO12_LightSource, LIGHT_FROM_WATT)
     Set(AB_OMO12_LightPowerMod, 72)
     Wait(40 * DT)
-    Set(AF_OMO_10, true)
+    Set(AF_OMO12_StopLanternFlicker, true)
     Call(SetNpcPos, NPC_LaternTop, NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_LaternBottom, NPC_DISPOSE_LOCATION)
     Wait(25)
@@ -293,7 +295,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
         Call(SpeakToPlayer, NPC_Watt, ANIM_WorldWatt_Celebrate, ANIM_WorldWatt_Idle, 0, MSG_CH4_0057)
         Call(SetPlayerAnimation, ANIM_Mario1_NodYes)
     EndIf
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     Wait(20 * DT)
     Call(SetNpcAnimation, NPC_Watt, ANIM_WorldWatt_Idle)
     Call(PlaySoundAtNpc, NPC_Watt, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
@@ -314,7 +316,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
     EndIf
     Call(GetPlayerPos, LVar2, LVar3, LVar4)
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Add(LVar1, LVar2)
         Call(SetNpcSpeed, NPC_PARTNER, Float(3.0 / DT))
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_WALK)
@@ -322,7 +324,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
         Call(NpcFacePlayer, NPC_PARTNER, 3)
         Call(EnablePartnerAI)
     EndThread
-    Call(SetNpcFlagBits, NPC_Watt, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Watt, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetNpcPos, NPC_Watt, LVar7, LVar8, LVar9)
     Call(GetAngleToPlayer, NPC_Watt, LVar0)
     IfLt(LVar0, 180)
@@ -359,7 +361,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
     Set(AB_OMO12_LightSource, LIGHT_FROM_NO_CHANGE)
     Wait(1)
     Call(N(ChangeNpcToPartner), NPC_Watt, PARTNER_WATT)
-    Call(N(LoadPartyImage))
+    Call(N(LoadPartyImage), Ref("party_akari"))
     Exec(N(EVS_PushPartnerSong))
     Wait(15 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_018E, 160, 40)
@@ -424,7 +426,7 @@ EvtScript N(EVS_NpcDefeat_BigLanternGhost) = {
             Call(N(SetLightOriginAndPower), LVar0, LVar1, LVar2, 100)
             Thread
                 Set(MF_LanternGhost_DoneSpeaking, false)
-                Call(SpeakToPlayer, NPC_BigLanternGhost, ANIM_BigLanternGhost_Anim08, ANIM_BigLanternGhost_Anim08, 0, MSG_CH4_0054)
+                Call(SpeakToPlayer, NPC_BigLanternGhost, ANIM_BigLanternGhost_Flee, ANIM_BigLanternGhost_Flee, 0, MSG_CH4_0054)
                 Set(MF_LanternGhost_DoneSpeaking, true)
             EndThread
             Thread
@@ -434,7 +436,7 @@ EvtScript N(EVS_NpcDefeat_BigLanternGhost) = {
                 Call(NpcJump0, NPC_LaternTop, 0, 0, 20, 10)
                 Call(SetNpcPos, NPC_LaternBottom, 0, 0, 20)
             EndThread
-            Call(SetNpcAnimation, NPC_SELF, ANIM_BigLanternGhost_Anim07)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_BigLanternGhost_Run)
             Call(SetNpcSpeed, NPC_SELF, Float(10.0))
             Call(NpcMoveTo, NPC_SELF, 400, 0, 0)
             Label(0)
@@ -507,7 +509,7 @@ EvtScript N(EVS_NpcInteract_LanternTop) = {
         Wait(2)
         Call(SetNpcRotation, NPC_SELF, 0, 0, 0)
     EndThread
-    Call(SpeakToPlayer, NPC_SELF, ANIM_BigLanternGhost_Anim02, ANIM_BigLanternGhost_Anim02, 5, MSG_CH4_0055)
+    Call(SpeakToPlayer, NPC_SELF, ANIM_BigLanternGhost_Lantern, ANIM_BigLanternGhost_Lantern, 5, MSG_CH4_0055)
     Return
     End
 };
@@ -530,7 +532,7 @@ EvtScript N(EVS_NpcIdle_LanternTop) = {
                         Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 8)
                         Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 4)
                     EndThread
-                    Call(SpeakToPlayer, NPC_SELF, ANIM_BigLanternGhost_Anim02, ANIM_BigLanternGhost_Anim02, 0, MSG_CH4_0056)
+                    Call(SpeakToPlayer, NPC_SELF, ANIM_BigLanternGhost_Lantern, ANIM_BigLanternGhost_Lantern, 0, MSG_CH4_0056)
                     Call(DisablePlayerInput, false)
                 EndIf
                 Call(GetSelfVar, 0, LVar0)
@@ -554,9 +556,9 @@ EvtScript N(EVS_NpcIdle_LanternTop) = {
 EvtScript N(EVS_NpcInit_LanternTop) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_DEFEATED_LANTERN_GHOST)
-            Call(SetNpcAnimation, NPC_SELF, ANIM_BigLanternGhost_Anim02)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_BigLanternGhost_Lantern)
         CaseLt(STORY_CH4_WATT_JOINED_PARTY)
-            Call(SetNpcAnimation, NPC_SELF, ANIM_BigLanternGhost_Anim02)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_BigLanternGhost_Lantern)
             Call(SetNpcPos, NPC_SELF, 0, 0, 20)
             Call(SetSelfVar, 0, 2)
         CaseGe(STORY_CH4_WATT_JOINED_PARTY)
@@ -572,9 +574,9 @@ EvtScript N(EVS_NpcInit_LanternTop) = {
 EvtScript N(EVS_NpcInit_LanternBottom) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_DEFEATED_LANTERN_GHOST)
-            Call(SetNpcAnimation, NPC_SELF, ANIM_BigLanternGhost_Anim02)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_BigLanternGhost_Lantern)
         CaseLt(STORY_CH4_WATT_JOINED_PARTY)
-            Call(SetNpcAnimation, NPC_SELF, ANIM_BigLanternGhost_Anim02)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_BigLanternGhost_Lantern)
             Call(SetNpcPos, NPC_SELF, 0, 0, 20)
         CaseGe(STORY_CH4_WATT_JOINED_PARTY)
             Call(RemoveNpc, NPC_SELF)
@@ -598,16 +600,16 @@ EvtScript N(EVS_NpcInit_Watt) = {
     End
 };
 
-AnimID N(ExtraAnims_LanternGhost)[] = {
-    ANIM_BigLanternGhost_Anim01,
-    ANIM_BigLanternGhost_Anim06,
-    ANIM_BigLanternGhost_Anim07,
-    ANIM_BigLanternGhost_Anim08,
-    ANIM_BigLanternGhost_Anim0F,
-    ANIM_BigLanternGhost_Anim05,
-    ANIM_BigLanternGhost_Anim02,
-    ANIM_BigLanternGhost_Anim03,
-    ANIM_BigLanternGhost_Anim04,
+AnimID N(LimitAnims_LanternGhost)[] = {
+    ANIM_BigLanternGhost_Idle,
+    ANIM_BigLanternGhost_Walk,
+    ANIM_BigLanternGhost_Run,
+    ANIM_BigLanternGhost_Flee,
+    ANIM_BigLanternGhost_Reveal,
+    ANIM_BigLanternGhost_Talk,
+    ANIM_BigLanternGhost_Lantern,
+    ANIM_BigLanternGhost_LanternTop,
+    ANIM_BigLanternGhost_LanternBottom,
     ANIM_LIST_END
 };
 
@@ -622,7 +624,7 @@ NpcData N(NpcData_BigLanternGhost) = {
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = NO_DROPS,
     .animations = BIG_LANTERN_GHOST_ANIMS,
-    .extraAnimations = N(ExtraAnims_LanternGhost),
+    .limitAnimations = N(LimitAnims_LanternGhost),
     .tattle = MSG_NpcTattle_OMO_Lantern,
 };
 
@@ -636,24 +638,7 @@ NpcData N(NpcData_Watt) = {
     .settings = &N(NpcSettings_Watt),
     .flags = COMMON_PASSIVE_FLAGS,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_WorldWatt_Idle,
-        .walk   = ANIM_WorldWatt_Idle,
-        .run    = ANIM_WorldWatt_Idle,
-        .chase  = ANIM_WorldWatt_Idle,
-        .anim_4 = ANIM_WorldWatt_Idle,
-        .anim_5 = ANIM_WorldWatt_Idle,
-        .death  = ANIM_WorldWatt_Idle,
-        .hit    = ANIM_WorldWatt_Idle,
-        .anim_8 = ANIM_WorldWatt_Idle,
-        .anim_9 = ANIM_WorldWatt_Idle,
-        .anim_A = ANIM_WorldWatt_Idle,
-        .anim_B = ANIM_WorldWatt_Idle,
-        .anim_C = ANIM_WorldWatt_Idle,
-        .anim_D = ANIM_WorldWatt_Idle,
-        .anim_E = ANIM_WorldWatt_Idle,
-        .anim_F = ANIM_WorldWatt_Idle,
-    },
+    .animations = WATT_ANIMS,
     .tattle = MSG_NpcTattle_OMO_Lantern,
 };
 
@@ -668,7 +653,7 @@ NpcData N(NpcData_LanternTop) = {
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = BIG_LANTERN_GHOST_ANIMS,
-    .extraAnimations = N(ExtraAnims_LanternGhost),
+    .limitAnimations = N(LimitAnims_LanternGhost),
     .tattle = MSG_NpcTattle_OMO_Lantern,
 };
 
@@ -683,7 +668,7 @@ NpcData N(NpcData_LanternBottom) = {
     .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_CANT_INTERACT,
     .drops = NO_DROPS,
     .animations = BIG_LANTERN_GHOST_ANIMS,
-    .extraAnimations = N(ExtraAnims_LanternGhost),
+    .limitAnimations = N(LimitAnims_LanternGhost),
     .tattle = MSG_NpcTattle_OMO_Lantern,
 };
 

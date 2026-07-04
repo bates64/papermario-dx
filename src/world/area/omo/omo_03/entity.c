@@ -17,7 +17,7 @@ EvtScript N(EVS_UseSpring_Exit) = {
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
     ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
-    IfEq(AF_OMO_04, false)
+    IfEq(AF_OMO03_EnteringViaSpring, false)
         Call(EnableCameraFollowPlayerY)
         Thread
             Wait(6)
@@ -29,7 +29,7 @@ EvtScript N(EVS_UseSpring_Exit) = {
     Else
         Call(SetPlayerJumpscale, Float(1.0))
         Call(PlayerJump, -95, 0, 250, 25)
-        Set(AF_OMO_04, false)
+        Set(AF_OMO03_EnteringViaSpring, false)
     EndIf
     KillThread(LVarA)
     Call(DisablePlayerPhysics, false)
@@ -43,7 +43,7 @@ EvtScript N(EVS_Scene_EnterSpring) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar1, 100)

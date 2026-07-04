@@ -11,8 +11,7 @@
 #include "sprite/npc/WorldSushie.h"
 #include "sprite/npc/WorldLakilester.h"
 
-#define KNOCK_DOWN_MAP_VAR MV_Knockdown
-#include "world/common/complete/KnockDownPlayer.inc.c"
+#include "world/common/util/KnockDownPlayer.inc.c"
 
 API_CALLABLE(N(DamagePlayer1HP)) {
     if (gPlayerData.curHP <= 1) {
@@ -56,8 +55,8 @@ EvtScript N(EVS_GetPartnerInUseAnims) = {
 
 EvtScript N(EVS_CrushPlayer) = {
     Thread
-        Call(DisablePartnerAI, 0)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(DisablePartnerAI, false)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
         ExecWait(N(EVS_GetPartnerInUseAnims))
         Call(SetNpcAnimation, NPC_PARTNER, LVarA)
@@ -65,7 +64,7 @@ EvtScript N(EVS_CrushPlayer) = {
         ExecWait(N(EVS_GetPartnerInUseAnims))
         Call(SetNpcAnimation, NPC_PARTNER, LVarB)
         Wait(15)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(InterpNpcYaw, NPC_PARTNER, 270, 0)
     EndThread
     Call(DisablePlayerPhysics, true)

@@ -1,7 +1,5 @@
 #include "tik_25.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_tik_24_0) = EVT_EXIT_WALK(60, tik_25_ENTRY_0, "tik_24", tik_24_ENTRY_0);
 
 EvtScript N(EVS_BindExitTriggers) = {
@@ -10,7 +8,6 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-#define DROPLET_MODEL MODEL_sizuku
 #include "../common/DripVolumes.inc.c"
 
 DripVolumeList N(DripVolumes) = {
@@ -37,6 +34,7 @@ DripVolumeList N(DripVolumes) = {
 
 EvtScript N(EVS_SetupDrips) = {
     Set(LVar0, Ref(N(DripVolumes)))
+    Set(LVar1, MODEL_sizuku)
     Exec(N(EVS_CreateDripVolumes))
     Return
     End
@@ -55,7 +53,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0, -200, -100, -500)
         TEX_PAN_PARAMS_FREQ(    0,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))
     Exec(EnterWalk)

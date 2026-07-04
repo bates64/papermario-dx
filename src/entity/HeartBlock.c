@@ -202,7 +202,7 @@ void entity_HeartBlockContent__anim_heal(Entity* entity, s32 arg1) {
                 data->state++;
                 entity->flags &= ~ENTITY_FLAG_ALWAYS_FACE_CAMERA;
                 data->rotRate = -10.0f;
-                entity_set_render_script(entity, &Entity_HeartBlockContent_RenderScriptHit);
+                entity_set_render_script(entity, Entity_HeartBlockContent_RenderScriptHit);
                 entity->renderSetupFunc = entity_HeartBlockContent_setupGfx;
             }
             break;
@@ -350,7 +350,7 @@ void entity_HeartBlockContent_init(Entity* entity) {
 
 void entity_HeartBlockContent_reset(Entity* entity) {
     entity_HeartBlockContent__reset(entity);
-    entity_set_render_script(entity, &Entity_HeartBlockContent_RenderScriptIdle);
+    entity_set_render_script(entity, Entity_HeartBlockContent_RenderScriptIdle);
 }
 
 void entity_HeartBlockContent_idle(Entity* entity) {
@@ -363,7 +363,7 @@ void entity_HeartBlockContent_anim_heal(Entity* entity) {
 }
 
 void entity_HeartBlock_change_render_script(Entity* entity) {
-    entity_set_render_script(entity, &Entity_HeartBlockContent_RenderScriptAfterHit);
+    entity_set_render_script(entity, Entity_HeartBlockContent_RenderScriptAfterHit);
 }
 
 void entity_HeartBlock_show_tutorial_message(Entity* entity) {
@@ -442,7 +442,7 @@ EntityBlueprint Entity_HeartBlockFrame = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_HeartBlock_RenderScript,
-    .modelAnimationNodes = 0,
+    .modelAnimationNodes = nullptr,
     .fpInit = entity_base_block_init,
     .updateEntityScript = Entity_InertBlock_Script,
     .fpHandleCollision = entity_block_handle_collision,
@@ -455,7 +455,7 @@ EntityBlueprint Entity_HeartBlockContent = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION,
     .typeDataSize = sizeof(HeartBlockContentData),
     .renderCommandList = Entity_HeartBlockContent_RenderScriptIdle,
-    .modelAnimationNodes = 0,
+    .modelAnimationNodes = nullptr,
     .fpInit = entity_HeartBlockContent_init,
     .updateEntityScript = Entity_HeartBlockContent_Script,
     .fpHandleCollision = nullptr,
@@ -468,7 +468,7 @@ EntityBlueprint Entity_HeartBlock = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_HeartBlock_RenderScript,
-    .modelAnimationNodes = 0,
+    .modelAnimationNodes = nullptr,
     .fpInit = entity_HeartBlock_init,
     .updateEntityScript = Entity_HeartBlock_Script,
     .fpHandleCollision = entity_block_handle_collision,

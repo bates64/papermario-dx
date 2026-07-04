@@ -2,93 +2,32 @@
 #include "model.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Toad_Wander.inc.c"
+#include "world/common/npc/Ninji/idle.inc.c"
+#include "world/common/npc/Ninji/wander.inc.c"
 
-MobileAISettings N(AISettings_Ninji_Wander) = {
-    .moveSpeed = 1.5f,
-    .moveTime = 60,
-    .waitTime = 30,
-    .playerSearchInterval = -1,
-    .loiterMode = 1,
-};
+#include "world/common/npc/ShiverToad/idle.inc.c"
+#include "world/common/npc/ShiverToad/wander.inc.c"
 
-EvtScript N(EVS_NpcAI_Ninji_Wander) = {
-    Call(BasicAI_Main, Ref(N(AISettings_Ninji_Wander)))
-    Return
-    End
-};
+#include "world/common/npc/Merle/idle.inc.c"
 
-NpcSettings N(NpcSettings_Ninji_Wander) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-    .doAI = &N(EVS_NpcAI_Ninji_Wander),
-};
+#include "world/common/npc/StarKid/idle.inc.c"
+#include "world/common/npc/StarKid/wander.inc.c"
+#include "world/common/npc/StarMan/idle.inc.c"
+#include "world/common/npc/StarMan/wander.inc.c"
 
-MobileAISettings N(AISettings_ShiverToad_Wander) = {
-    .moveSpeed = 1.5f,
-    .moveTime = 60,
-    .waitTime = 30,
-    .playerSearchInterval = -1,
-    .loiterMode = 1,
-};
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
-EvtScript N(EVS_NpcAI_ShiverToad_Wander) = {
-    Call(BasicAI_Main, Ref(N(AISettings_ShiverToad_Wander)))
-    Return
-    End
-};
-
-NpcSettings N(NpcSettings_ShiverToad_Wander) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-    .doAI = &N(EVS_NpcAI_ShiverToad_Wander),
-};
-
-#include "world/common/npc/Toad_Stationary.inc.c"
-
-#include "world/common/npc/StarSpirit_Wander.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
-
-NpcSettings N(NpcSettings_Ninji_Stationary) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
-NpcSettings N(NpcSettings_ShiverToad_Stationary) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
-#include "world/common/complete/GiveReward.inc.c"
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
-#include "sprite/npc/ShiverToad.h"
-
-#include "world/common/complete/ToadHouseBlanketAnim.inc.c"
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
-
-#include "world/common/complete/LetterDelivery.inc.c"
-
-s32 N(LetterList_FrostT)[] = {
-    ITEM_LETTER_CHAIN_FROST_T,
-    ITEM_NONE
-};
-
-EvtScript N(EVS_LetterPrompt_FrostT) = {
-    Call(N(LetterDelivery_Init),
-        NPC_ShiverToad_03, ANIM_ShiverToad_Green_Talk, ANIM_ShiverToad_Green_Idle,
-        ITEM_LETTER_CHAIN_FROST_T, ITEM_LETTER_CHAIN_GOOMPAPA_2,
-        MSG_CH7_00FE, MSG_CH7_00FF, MSG_CH7_0100, MSG_CH7_0101,
-        Ref(N(LetterList_FrostT)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
+LetterDelivery N(LetterDelivery_FrostT) = {
+    .recipientID = NPC_ShiverToad_03,
+    .recipientTalk = ANIM_ShiverToad_Green_Talk,
+    .recipientIdle = ANIM_ShiverToad_Green_Idle,
+    .msgGreeting = MSG_CH7_00FE,
+    .msgCancelled = MSG_CH7_00FF,
+    .msgDelivered = MSG_CH7_0100,
+    .msgRecieved = MSG_CH7_0101,
+    .letters = { ITEM_LETTER_CHAIN_FROST_T },
+    .reward = ITEM_LETTER_CHAIN_GOOMPAPA_2,
 };
 
 EvtScript N(EVS_NpcInteract_Merle) = {
@@ -161,7 +100,7 @@ EvtScript N(EVS_Scene_Merle_Greeting) = {
     Call(GetPartnerInUse, LVar0)
     IfEq(LVar0, PARTNER_LAKILESTER)
         Call(InterruptUsePartner)
-        Call(WaitForPlayerTouchingFloor)
+        Call(AwaitPlayerTouchingFloor)
     EndIf
     Call(DisablePlayerInput, true)
     Call(SetPlayerSpeed, Float(3.0 / DT))
@@ -191,13 +130,13 @@ EvtScript N(EVS_Scene_Merle_Greeting) = {
     Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00EB)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Set(AF_SAM_05, true)
+    Set(AF_SAM06_MeetingWithMerle, true)
     Set(GB_StoryProgress, STORY_CH7_ARRIVED_AT_STARBORN_VALLEY)
     Call(DisablePlayerInput, false)
     Set(MF_MerleReady, false)
     Thread
         Call(BindNpcInteract, NPC_Merle, 0)
-        Call(SetNpcFlagBits, NPC_Merle, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_Merle, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Walk)
         Call(SetNpcSpeed, NPC_Merle, Float(2.0 / DT))
         Call(NpcMoveTo, NPC_Merle, -78, 287, 0)
@@ -241,7 +180,7 @@ EvtScript N(EVS_Scene_Merle_WaitingOnHill) = {
     Call(GetPartnerInUse, LVar0)
     IfEq(LVar0, PARTNER_LAKILESTER)
         Call(InterruptUsePartner)
-        Call(WaitForPlayerTouchingFloor)
+        Call(AwaitPlayerTouchingFloor)
     EndIf
     Call(DisablePlayerInput, true)
     Loop(0)
@@ -275,7 +214,7 @@ EvtScript N(EVS_Scene_Merle_WaitingOnHill) = {
     End
 };
 
-API_CALLABLE(N(func_80242538_D223C8)) {
+API_CALLABLE(N(MerleSceneHideOutside)) {
     s32 alpha;
 
     if (isInitialCall) {
@@ -315,9 +254,9 @@ EvtScript N(EVS_Scene_Merle_EnterHouse) = {
     Call(GetPartnerInUse, LVar0)
     IfEq(LVar0, PARTNER_LAKILESTER)
         Call(InterruptUsePartner)
-        Call(WaitForPlayerTouchingFloor)
+        Call(AwaitPlayerTouchingFloor)
     EndIf
-    Call(WaitForPlayerTouchingFloor)
+    Call(AwaitPlayerTouchingFloor)
     Call(DisablePlayerInput, true)
     Loop(0)
         Wait(1)
@@ -357,11 +296,11 @@ EvtScript N(EVS_Scene_Merle_EnterHouse) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_k_d2, COLLIDER_FLAGS_UPPER_MASK)
     Call(PlayerMoveTo, 0, -200, 0)
     Thread
-        Set(LVar0, 0)
+        Set(LVar0, 3)
         Set(LVarF, MODEL_k)
         Call(SetNpcFlagBits, NPC_Merle, NPC_FLAG_HIDING, false)
         Call(SetNpcFlagBits, NPC_StarKid_03, NPC_FLAG_HIDING, true)
-        Call(N(func_80242538_D223C8))
+        Call(N(MerleSceneHideOutside))
     EndThread
     Thread
         Call(MakeLerp, 0, 90, 10, EASING_QUADRATIC_IN)
@@ -447,7 +386,7 @@ EvtScript N(EVS_Scene_Merle_EnterHouse) = {
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(BindNpcInteract, NPC_Merle, Ref(N(EVS_NpcInteract_Merle)))
-    Call(SetNpcFlagBits, NPC_Merle, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Merle, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(DisablePlayerInput, false)
     Return
     End
@@ -482,7 +421,7 @@ EvtScript N(EVS_NpcIdle_Merle) = {
 
 EvtScript N(EVS_Scene_Merle_OneLastThing) = {
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcSpeed, NPC_PARTNER, Float(3.0 / DT))
         Call(NpcMoveTo, NPC_PARTNER, -28, -80, 0)
         Call(EnablePartnerAI)
@@ -517,7 +456,7 @@ EvtScript N(EVS_Scene_Merle_OneLastThing) = {
     Call(SetGroupVisibility, MODEL_k_naiso, MODEL_GROUP_HIDDEN)
     Call(GetNpcPos, NPC_Merle, LVar0, LVar1, LVar2)
     Call(PlayerFaceNpc, NPC_Merle, false)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(NpcFaceNpc, NPC_PARTNER, NPC_Merle, 0)
     Call(EnablePartnerAI)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -562,7 +501,7 @@ EvtScript N(EVS_Scene_Merle_OneLastThing) = {
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(DisablePlayerInput, false)
-    Set(AF_SAM_05, false)
+    Set(AF_SAM06_MeetingWithMerle, false)
     Set(GB_StoryProgress, STORY_CH7_GOT_SNOWMAN_SCARF)
     Return
     End
@@ -597,10 +536,8 @@ EvtScript N(EVS_NpcInteract_ShiverToad_03) = {
         CaseGe(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ShiverToad_Green_Talk, ANIM_ShiverToad_Green_Idle, 0, MSG_CH7_00FD)
     EndSwitch
-    ExecWait(N(EVS_LetterPrompt_FrostT))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    Set(LVar0, Ref(N(LetterDelivery_FrostT)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
@@ -757,7 +694,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Call(InterpPlayerYaw, 229, 1)
     Call(HidePlayerShadow, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     Thread
         Wait(60)
@@ -894,27 +831,10 @@ NpcData N(NpcData_Merle)[] = {
         .pos = { 0.0f, 90.0f, -300.0f },
         .yaw = 0,
         .init = &N(EVS_NpcInit_Merle),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Merle),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Merle_Idle,
-            .walk   = ANIM_Merle_Idle,
-            .run    = ANIM_Merle_Idle,
-            .chase  = ANIM_Merle_Idle,
-            .anim_4 = ANIM_Merle_Idle,
-            .anim_5 = ANIM_Merle_Idle,
-            .death  = ANIM_Merle_Idle,
-            .hit    = ANIM_Merle_Idle,
-            .anim_8 = ANIM_Merle_Idle,
-            .anim_9 = ANIM_Merle_Idle,
-            .anim_A = ANIM_Merle_Idle,
-            .anim_B = ANIM_Merle_Idle,
-            .anim_C = ANIM_Merle_Idle,
-            .anim_D = ANIM_Merle_Idle,
-            .anim_E = ANIM_Merle_Idle,
-            .anim_F = ANIM_Merle_Idle,
-        },
+        .animations = MERLE_ANIMS,
         .tattle = MSG_NpcTattle_Merle,
     },
     {
@@ -922,27 +842,10 @@ NpcData N(NpcData_Merle)[] = {
         .pos = { -376.0f, 60.0f, 112.0f },
         .yaw = 0,
         .init = &N(EVS_NpcInit_ShiverToad_01),
-        .settings = &N(NpcSettings_ShiverToad_Stationary),
+        .settings = &N(NpcSettings_ShiverToad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_ShiverToad_Red_Idle,
-            .walk   = ANIM_ShiverToad_Red_Walk,
-            .run    = ANIM_ShiverToad_Red_Idle,
-            .chase  = ANIM_ShiverToad_Red_Idle,
-            .anim_4 = ANIM_ShiverToad_Red_Idle,
-            .anim_5 = ANIM_ShiverToad_Red_Idle,
-            .death  = ANIM_ShiverToad_Red_Idle,
-            .hit    = ANIM_ShiverToad_Red_Idle,
-            .anim_8 = ANIM_ShiverToad_Red_Idle,
-            .anim_9 = ANIM_ShiverToad_Red_Idle,
-            .anim_A = ANIM_ShiverToad_Red_Idle,
-            .anim_B = ANIM_ShiverToad_Red_Idle,
-            .anim_C = ANIM_ShiverToad_Red_Idle,
-            .anim_D = ANIM_ShiverToad_Red_Idle,
-            .anim_E = ANIM_ShiverToad_Red_Idle,
-            .anim_F = ANIM_ShiverToad_Red_Idle,
-        },
+        .animations = SHIVER_TOAD_RED_ANIMS,
         .tattle = MSG_NpcTattle_SAM_ShiverToadA,
     },
     {
@@ -965,24 +868,7 @@ NpcData N(NpcData_Merle)[] = {
         .settings = &N(NpcSettings_ShiverToad_Wander),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_ShiverToad_Blue_Idle,
-            .walk   = ANIM_ShiverToad_Blue_Walk,
-            .run    = ANIM_ShiverToad_Blue_Idle,
-            .chase  = ANIM_ShiverToad_Blue_Idle,
-            .anim_4 = ANIM_ShiverToad_Blue_Idle,
-            .anim_5 = ANIM_ShiverToad_Blue_Idle,
-            .death  = ANIM_ShiverToad_Blue_Idle,
-            .hit    = ANIM_ShiverToad_Blue_Idle,
-            .anim_8 = ANIM_ShiverToad_Blue_Idle,
-            .anim_9 = ANIM_ShiverToad_Blue_Idle,
-            .anim_A = ANIM_ShiverToad_Blue_Idle,
-            .anim_B = ANIM_ShiverToad_Blue_Idle,
-            .anim_C = ANIM_ShiverToad_Blue_Idle,
-            .anim_D = ANIM_ShiverToad_Blue_Idle,
-            .anim_E = ANIM_ShiverToad_Blue_Idle,
-            .anim_F = ANIM_ShiverToad_Blue_Idle,
-        },
+        .animations = SHIVER_TOAD_BLUE_ANIMS,
         .tattle = MSG_NpcTattle_SAM_ShiverToadB,
     },
     {
@@ -990,27 +876,10 @@ NpcData N(NpcData_Merle)[] = {
         .pos = { 127.0f, 0.0f, 445.0f },
         .yaw = 180,
         .init = &N(EVS_NpcInit_ShiverToad_03),
-        .settings = &N(NpcSettings_ShiverToad_Stationary),
+        .settings = &N(NpcSettings_ShiverToad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_ShiverToad_Green_Idle,
-            .walk   = ANIM_ShiverToad_Green_Walk,
-            .run    = ANIM_ShiverToad_Green_Idle,
-            .chase  = ANIM_ShiverToad_Green_Idle,
-            .anim_4 = ANIM_ShiverToad_Green_Idle,
-            .anim_5 = ANIM_ShiverToad_Green_Idle,
-            .death  = ANIM_ShiverToad_Green_Idle,
-            .hit    = ANIM_ShiverToad_Green_Idle,
-            .anim_8 = ANIM_ShiverToad_Green_Idle,
-            .anim_9 = ANIM_ShiverToad_Green_Idle,
-            .anim_A = ANIM_ShiverToad_Green_Idle,
-            .anim_B = ANIM_ShiverToad_Green_Idle,
-            .anim_C = ANIM_ShiverToad_Green_Idle,
-            .anim_D = ANIM_ShiverToad_Green_Idle,
-            .anim_E = ANIM_ShiverToad_Green_Idle,
-            .anim_F = ANIM_ShiverToad_Green_Idle,
-        },
+        .animations = SHIVER_TOAD_GREEN_ANIMS,
         .tattle = MSG_NpcTattle_SAM_ShiverToadC,
     },
     {
@@ -1033,24 +902,7 @@ NpcData N(NpcData_Merle)[] = {
         .settings = &N(NpcSettings_Ninji_Wander),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Ninji_Idle,
-            .walk   = ANIM_Ninji_Walk,
-            .run    = ANIM_Ninji_Idle,
-            .chase  = ANIM_Ninji_Idle,
-            .anim_4 = ANIM_Ninji_Idle,
-            .anim_5 = ANIM_Ninji_Idle,
-            .death  = ANIM_Ninji_Idle,
-            .hit    = ANIM_Ninji_Idle,
-            .anim_8 = ANIM_Ninji_Idle,
-            .anim_9 = ANIM_Ninji_Idle,
-            .anim_A = ANIM_Ninji_Idle,
-            .anim_B = ANIM_Ninji_Idle,
-            .anim_C = ANIM_Ninji_Idle,
-            .anim_D = ANIM_Ninji_Idle,
-            .anim_E = ANIM_Ninji_Idle,
-            .anim_F = ANIM_Ninji_Idle,
-        },
+        .animations = NINJI_ANIMS,
         .tattle = MSG_NpcTattle_SAM_NinjiA,
     },
     {
@@ -1073,24 +925,7 @@ NpcData N(NpcData_Merle)[] = {
         .settings = &N(NpcSettings_Ninji_Wander),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Ninji_Idle,
-            .walk   = ANIM_Ninji_Walk,
-            .run    = ANIM_Ninji_Idle,
-            .chase  = ANIM_Ninji_Idle,
-            .anim_4 = ANIM_Ninji_Idle,
-            .anim_5 = ANIM_Ninji_Idle,
-            .death  = ANIM_Ninji_Idle,
-            .hit    = ANIM_Ninji_Idle,
-            .anim_8 = ANIM_Ninji_Idle,
-            .anim_9 = ANIM_Ninji_Idle,
-            .anim_A = ANIM_Ninji_Idle,
-            .anim_B = ANIM_Ninji_Idle,
-            .anim_C = ANIM_Ninji_Idle,
-            .anim_D = ANIM_Ninji_Idle,
-            .anim_E = ANIM_Ninji_Idle,
-            .anim_F = ANIM_Ninji_Idle,
-        },
+        .animations = NINJI_ANIMS,
         .tattle = MSG_NpcTattle_SAM_NinjiB,
     },
     {
@@ -1098,27 +933,10 @@ NpcData N(NpcData_Merle)[] = {
         .pos = { 239.0f, 50.0f, 315.0f },
         .yaw = 180,
         .init = &N(EVS_NpcInit_Ninji_03),
-        .settings = &N(NpcSettings_Ninji_Stationary),
+        .settings = &N(NpcSettings_Ninji),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Ninji_Idle,
-            .walk   = ANIM_Ninji_Walk,
-            .run    = ANIM_Ninji_Idle,
-            .chase  = ANIM_Ninji_Idle,
-            .anim_4 = ANIM_Ninji_Idle,
-            .anim_5 = ANIM_Ninji_Idle,
-            .death  = ANIM_Ninji_Idle,
-            .hit    = ANIM_Ninji_Idle,
-            .anim_8 = ANIM_Ninji_Idle,
-            .anim_9 = ANIM_Ninji_Idle,
-            .anim_A = ANIM_Ninji_Idle,
-            .anim_B = ANIM_Ninji_Idle,
-            .anim_C = ANIM_Ninji_Idle,
-            .anim_D = ANIM_Ninji_Idle,
-            .anim_E = ANIM_Ninji_Idle,
-            .anim_F = ANIM_Ninji_Idle,
-        },
+        .animations = NINJI_ANIMS,
         .tattle = MSG_NpcTattle_SAM_NinjiC,
     },
     {
@@ -1126,27 +944,10 @@ NpcData N(NpcData_Merle)[] = {
         .pos = { 390.0f, 80.0f, 50.0f },
         .yaw = 0,
         .init = &N(EVS_NpcInit_Ninji_04),
-        .settings = &N(NpcSettings_Ninji_Stationary),
+        .settings = &N(NpcSettings_Ninji),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Ninji_Idle,
-            .walk   = ANIM_Ninji_Walk,
-            .run    = ANIM_Ninji_Idle,
-            .chase  = ANIM_Ninji_Idle,
-            .anim_4 = ANIM_Ninji_Idle,
-            .anim_5 = ANIM_Ninji_Idle,
-            .death  = ANIM_Ninji_Idle,
-            .hit    = ANIM_Ninji_Idle,
-            .anim_8 = ANIM_Ninji_Idle,
-            .anim_9 = ANIM_Ninji_Idle,
-            .anim_A = ANIM_Ninji_Idle,
-            .anim_B = ANIM_Ninji_Idle,
-            .anim_C = ANIM_Ninji_Idle,
-            .anim_D = ANIM_Ninji_Idle,
-            .anim_E = ANIM_Ninji_Idle,
-            .anim_F = ANIM_Ninji_Idle,
-        },
+        .animations = NINJI_ANIMS,
         .tattle = MSG_NpcTattle_SAM_NinjiD,
     },
     {
@@ -1232,27 +1033,10 @@ NpcData N(NpcData_Merle)[] = {
         .pos = { -274.0f, 60.0f, -28.0f },
         .yaw = 180,
         .init = &N(EVS_NpcInit_ShiverToad_04),
-        .settings = &N(NpcSettings_ShiverToad_Stationary),
+        .settings = &N(NpcSettings_ShiverToad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_ShiverToad_Red_Idle,
-            .walk   = ANIM_ShiverToad_Red_Walk,
-            .run    = ANIM_ShiverToad_Red_Idle,
-            .chase  = ANIM_ShiverToad_Red_Idle,
-            .anim_4 = ANIM_ShiverToad_Red_Idle,
-            .anim_5 = ANIM_ShiverToad_Red_Idle,
-            .death  = ANIM_ShiverToad_Red_Idle,
-            .hit    = ANIM_ShiverToad_Red_Idle,
-            .anim_8 = ANIM_ShiverToad_Red_Idle,
-            .anim_9 = ANIM_ShiverToad_Red_Idle,
-            .anim_A = ANIM_ShiverToad_Red_Idle,
-            .anim_B = ANIM_ShiverToad_Red_Idle,
-            .anim_C = ANIM_ShiverToad_Red_Idle,
-            .anim_D = ANIM_ShiverToad_Red_Idle,
-            .anim_E = ANIM_ShiverToad_Red_Idle,
-            .anim_F = ANIM_ShiverToad_Red_Idle,
-        },
+        .animations = SHIVER_TOAD_RED_ANIMS,
         .tattle = MSG_NpcTattle_SAM06_ToadHouseToad,
     },
 };

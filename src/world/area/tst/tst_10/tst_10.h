@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tst_10.h
 /// @brief Testing - Entry and Camera Test
 

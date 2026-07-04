@@ -63,7 +63,7 @@ EvtScript N(EVS_Scene_FallingDown) = {
         Call(SetCamSpeed, CAM_DEFAULT, Float(0.2 / DT))
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_2000 | IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_USE_LIGHTING | IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_FLUTTER_DOWN, 1, 1, 0)
     Wait(100 * DT)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))

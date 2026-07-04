@@ -1,7 +1,7 @@
 #include "jan_05.h"
 #include "foliage.h"
 
-API_CALLABLE(N(func_8024268C_B4D0FC)) {
+API_CALLABLE(N(IsJungleFuzzyPresent)) {
     if (get_enemy_safe(NPC_JungleFuzzy) == nullptr) {
         script->varTable[0] = false;
     } else {
@@ -12,8 +12,8 @@ API_CALLABLE(N(func_8024268C_B4D0FC)) {
 
 EvtScript N(EVS_OnShakeTree1) = {
     Wait(15)
-    Call(N(func_8024268C_B4D0FC))
-    IfEq(LVar0, 1)
+    Call(N(IsJungleFuzzyPresent))
+    IfEq(LVar0, true)
         Call(SetNpcVar, NPC_JungleFuzzy, 7, 1)
     EndIf
     Return

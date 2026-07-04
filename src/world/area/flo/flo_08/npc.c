@@ -1,12 +1,25 @@
 #include "flo_08.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/AmazyDayzee.inc.c"
-#include "world/common/enemy/CrazyDayzee.inc.c"
+#include "world/common/enemy/AmazyDayzee/wander.inc.c"
+#include "world/common/enemy/CrazyDayzee/wander.inc.c"
 
-#include "world/common/npc/GateFlower.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-#include "../common/ItemChoice_FlowerGuard.inc.c"
+#include "world/common/npc/GateFlower/idle.inc.c"
+
+API_CALLABLE(N(JudgeItemTastiness)) {
+    s32 itemId = evt_get_variable(script, *script->ptrReadPos);
+    ItemData* item = &gItemTable[itemId];
+
+    if (itemId == ITEM_YUMMY_MEAL) {
+        script->varTable[9] = 2;
+    } else if (item->typeFlags & ITEM_TYPE_FLAG_FOOD_OR_DRINK) {
+        script->varTable[9] = 1;
+    } else {
+        script->varTable[9] = 0;
+    }
+
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_NpcInteract_GateFlower) = {
     Call(DisablePlayerInput, true)
@@ -21,15 +34,14 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         Call(SpeakToPlayer, NPC_SELF, ANIM_GateFlower_Yellow_Talk, ANIM_GateFlower_Yellow_Idle, 0, MSG_CH6_0042)
         Call(SetPlayerAnimation, ANIM_Mario1_Thinking)
-        Call(N(FlowerGuard_MakeItemList))
-        EVT_CHOOSE_CONSUMABLE_FROM(N(FlowerGuard_ItemChoiceList), 0)
+        EVT_CHOOSE_ANY_CONSUMABLE(NPC_GateFlower)
         Switch(LVar0)
             CaseLe(0)
                 Call(SetPlayerAnimation, ANIM_Mario1_Still)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_GateFlower_Yellow_Talk, ANIM_GateFlower_Yellow_Idle, 0, MSG_CH6_0043)
             CaseDefault
                 Set(LVar8, LVar0)
-                Call(N(FlowerGuard_JudgeItemTastiness), LVar0)
+                Call(N(JudgeItemTastiness), LVar0)
                 Call(MakeItemEntity, LVar8, -695, 20, -29, ITEM_SPAWN_MODE_DECORATION, 0)
                 Set(LVar7, LVar0)
                 Call(PlaySoundAtNpc, NPC_SELF, SOUND_EAT_OR_DRINK, SOUND_SPACE_DEFAULT)
@@ -91,7 +103,7 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
                                 AddF(LVar2, Float(-700.0))
                                 AddF(LVar3, Float(15.0))
                                 AddF(LVar4, Float(-25.0))
-                                Call(N(FlowerGuard_SetItemEntityPosition), LVar7, LVar2, LVar3, LVar4)
+                                Call(SetItemPos, LVar7, LVar2, LVar3, LVar4)
                                 Wait(1)
                                 IfEq(LVar1, 0)
                                     BreakLoop
@@ -110,7 +122,7 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
                                 AddF(LVar2, Float(-690.0))
                                 AddF(LVar3, Float(15.0))
                                 AddF(LVar4, Float(-25.0))
-                                Call(N(FlowerGuard_SetItemEntityPosition), LVar7, LVar2, LVar3, LVar4)
+                                Call(SetItemPos, LVar7, LVar2, LVar3, LVar4)
                                 Wait(1)
                                 IfEq(LVar1, 0)
                                     BreakLoop
@@ -184,7 +196,7 @@ NpcData N(NpcData_Dayzee_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee),
+    .settings = &N(NpcSettings_CrazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -207,7 +219,7 @@ NpcData N(NpcData_Dayzee_02) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee),
+    .settings = &N(NpcSettings_CrazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -230,7 +242,7 @@ NpcData N(NpcData_Dayzee_03) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee),
+    .settings = &N(NpcSettings_CrazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -253,7 +265,7 @@ NpcData N(NpcData_Dayzee_04) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee),
+    .settings = &N(NpcSettings_CrazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -276,7 +288,7 @@ NpcData N(NpcData_Dayzee_05) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee),
+    .settings = &N(NpcSettings_CrazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -299,7 +311,7 @@ NpcData N(NpcData_Dayzee_06) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee),
+    .settings = &N(NpcSettings_CrazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -322,7 +334,7 @@ NpcData N(NpcData_Dayzee_07) = {
             .detectSize = { 150 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee),
+    .settings = &N(NpcSettings_CrazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -367,7 +379,7 @@ NpcData N(NpcData_AmazyDayzee) = {
         }
     },
     .init = &N(EVS_NpcInit_AmazyDayzee),
-    .settings = &N(NpcSettings_AmazyDayzee),
+    .settings = &N(NpcSettings_AmazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = AMAZY_DAYZEE_DROPS,
     .animations = AMAZY_DAYZEE_ANIMS,

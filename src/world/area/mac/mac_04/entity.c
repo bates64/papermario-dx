@@ -2,12 +2,14 @@
 #include "entity.h"
 #include "sprite.h"
 
-void N(render_shrunk_player)(void);
+#include "world/common/npc/HarryT/base.h"
+
+void N(worker_render_shrunk_player)(void);
 void N(appendGfx_shrunk_player)(void*);
 
 API_CALLABLE(N(CreateShrinkingWorker)) {
     gPlayerStatus.animFlags |= PA_FLAG_INVISIBLE;
-    evt_set_variable(script, MV_DrawShinkingPlayerWorker, create_worker_scene(nullptr, N(render_shrunk_player)));
+    evt_set_variable(script, MV_DrawShinkingPlayerWorker, create_worker_scene(nullptr, N(worker_render_shrunk_player)));
 
     return ApiStatus_DONE2;
 }
@@ -20,7 +22,7 @@ API_CALLABLE(N(DestroyShrinkingWorker)) {
     return ApiStatus_DONE2;
 }
 
-void N(render_shrunk_player)(void) {
+void N(worker_render_shrunk_player)(void) {
     RenderTask renderTask;
     s32 screenX, screenY, screenZ;
 
@@ -152,7 +154,7 @@ EvtScript N(EVS_EnterToybox) = {
 };
 
 EvtScript N(EVS_ExitToybox) = {
-    Set(AF_ExitingToybox, true)
+    Set(AF_MAC_ExitingToybox, true)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     ExecWait(N(EVS_UnshrinkPlayer))
@@ -195,7 +197,7 @@ EvtScript N(EVS_BounceOffSpring) = {
     ExecGetTID(N(EVS_FocusCameraOnPlayer), LVarA)
     Call(SetPlayerJumpscale, Float(0.7))
     Call(PlayerJump, -430, 20, -45, 15)
-    Set(AF_ExitingToybox, false)
+    Set(AF_MAC_ExitingToybox, false)
     KillThread(LVarA)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
@@ -205,7 +207,7 @@ EvtScript N(EVS_BounceOffSpring) = {
 };
 
 EvtScript N(EVS_UseSpring_Toybox) = {
-    IfEq(AF_ExitingToybox, false)
+    IfEq(AF_MAC_ExitingToybox, false)
         Exec(N(EVS_EnterToybox))
     Else
         Exec(N(EVS_BounceOffSpring))
@@ -220,41 +222,35 @@ EvtScript N(EVS_UnlockStoreroom) = {
     End
 };
 
-#include "world/common/todo/RemovePadlock.inc.c"
-
-s32 N(StoreroomKeyList)[] = {
-    ITEM_STOREROOM_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(StoreroomKeyList), ITEM_STOREROOM_KEY);
 
 EvtScript N(EVS_ItemPrompt_StoreroomKey) = {
     Call(ShowKeyChoicePopup)
-    IfEq(LVar0, 0)
+    IfEq(LVar0, ITEM_CHOICE_NONE)
         Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
         Call(CloseChoicePopup)
         Return
     EndIf
-    IfEq(LVar0, -1)
+    IfEq(LVar0, ITEM_CHOICE_CANCELED)
         Call(CloseChoicePopup)
         Return
     EndIf
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, 155, 48, -480)
-    Set(LVar0, MV_StoreroomLockEntityID)
-    Call(N(RemovePadlock))
+    Call(SetEntityUsed, MV_StoreroomLockEntityID)
     Wait(5)
     Call(RemoveKeyItemAt, LVar1)
     Call(CloseChoicePopup)
     Unbind
     Call(DisablePlayerInput, true)
     Call(SpeakToPlayer, NPC_HarryT, ANIM_HarryT_Talk, ANIM_HarryT_Idle, 0, MSG_MAC_Housing_0004)
-    Call(SetNpcFlagBits, NPC_HarryT, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_HarryT, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_HarryT, ANIM_HarryT_Run)
     Call(NpcMoveTo, NPC_HarryT, 295, -460, 0)
     Call(NpcMoveTo, NPC_HarryT, 230, -480, 0)
     Call(NpcJump0, NPC_HarryT, 200, 30, -524, 0)
     Call(SetNpcPos, NPC_HarryT, 200, 30, -524)
     Call(SetNpcAnimation, NPC_HarryT, ANIM_HarryT_Idle)
-    Call(SetNpcFlagBits, NPC_HarryT, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_HarryT, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SpeakToPlayer, NPC_HarryT, ANIM_HarryT_Talk, ANIM_HarryT_Idle, 0, MSG_MAC_Housing_0005)
     Set(GB_StoryProgress, STORY_CH4_RETURNED_STOREROOM_KEY)
     Call(DisablePlayerInput, false)
@@ -263,8 +259,7 @@ EvtScript N(EVS_ItemPrompt_StoreroomKey) = {
 };
 
 EvtScript N(EVS_ForceStoreroomUnlock) = {
-    Set(LVar0, MV_StoreroomLockEntityID)
-    Call(N(RemovePadlock))
+    Call(SetEntityUsed, MV_StoreroomLockEntityID)
     Return
     End
 };

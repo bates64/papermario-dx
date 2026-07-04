@@ -1,4 +1,5 @@
 #include "sbk_24.h"
+#include "effects.h"
 #include "entity.h"
 
 extern EvtScript N(EVS_Main);
@@ -21,8 +22,6 @@ export MapSettings N(settings) = {
     .tattle = { MSG_MapTattle_sbk_24 },
 };
 
-#include "world/common/todo/SpawnSunEffect.inc.c"
-
 EvtScript N(EVS_ExitWalk_sbk_23_1) = EVT_EXIT_WALK(60, sbk_24_ENTRY_0, "sbk_23", sbk_23_ENTRY_1);
 EvtScript N(EVS_ExitWalk_sbk_25_0) = EVT_EXIT_WALK(60, sbk_24_ENTRY_1, "sbk_25", sbk_25_ENTRY_0);
 EvtScript N(EVS_ExitWalk_sbk_14_3) = EVT_EXIT_WALK(60, sbk_24_ENTRY_2, "sbk_14", sbk_14_ENTRY_3);
@@ -37,7 +36,7 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-EvtScript N(D_80240600_93B230) = {
+EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(sbk_24_ENTRY_4)
@@ -58,9 +57,9 @@ EvtScript N(EVS_Main) = {
     EndIf
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(N(EVS_MakeEntities))
-    Call(N(SpawnSunEffect))
+    Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     Call(SetMusic, 0, SONG_DRY_DRY_DESERT, 0, VOL_LEVEL_FULL)
-    Exec(N(D_80240600_93B230))
+    Exec(N(EVS_EnterMap))
     Wait(1)
     Exec(N(EVS_SetupFoliage))
     Return

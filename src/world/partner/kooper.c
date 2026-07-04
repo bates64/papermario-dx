@@ -22,7 +22,6 @@ BSS s32 N(HasItem);
 BSS f32 N(ShellTossPosX);
 BSS f32 N(ShellTossPosY);
 BSS f32 N(ShellTossPosZ);
-BSS s32 D_802BEC7C; // padding?
 
 enum {
     SHELL_TOSS_HITBOX_DISABLED      = 0,
@@ -65,7 +64,7 @@ s32 N(check_for_item_collision)(Npc* kooper) {
 
     N(HasItem) = true;
     gOverrideFlags |= GLOBAL_OVERRIDES_40;
-    set_item_entity_flags(N(HeldItemIdx), ITEM_ENTITY_FLAG_CANT_COLLECT);
+    set_item_entity_flags(N(HeldItemIdx), ITEM_ENTITY_FLAG_PARTNER_COLLECTING);
     return true;
 }
 
@@ -106,7 +105,7 @@ API_CALLABLE(N(Update)) {
     Entity* entity;
 
     if (isInitialCall) {
-        partner_walking_enable(kooper, 1);
+        partner_walking_enable(kooper, true);
         mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
         TweesterTouchingPartner = nullptr;
     }
@@ -122,7 +121,7 @@ API_CALLABLE(N(Update)) {
 
     switch (N(TweesterPhysicsPtr)->state) {
         case TWEESTER_PARTNER_INIT:
-            N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_ATTRACT;
             N(TweesterPhysicsPtr)->prevFlags = kooper->flags;
             N(TweesterPhysicsPtr)->radius = fabsf(dist2D(kooper->pos.x, kooper->pos.z,
                                                      entity->pos.x, entity->pos.z));
@@ -130,7 +129,7 @@ API_CALLABLE(N(Update)) {
             N(TweesterPhysicsPtr)->angularVel = 6.0f;
             N(TweesterPhysicsPtr)->liftoffVelPhase = 50.0f;
             N(TweesterPhysicsPtr)->countdown = 120;
-            kooper->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
+            kooper->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
             kooper->flags &= ~NPC_FLAG_GRAVITY;
         case TWEESTER_PARTNER_ATTRACT:
             sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
@@ -160,20 +159,22 @@ API_CALLABLE(N(Update)) {
                 N(TweesterPhysicsPtr)->angularVel = 40.0f;
             }
 
-            if (--N(TweesterPhysicsPtr)->countdown == 0) {
-                N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->countdown--;
+            if (N(TweesterPhysicsPtr)->countdown == 0) {
+                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_HOLD;
             }
             break;
         case TWEESTER_PARTNER_HOLD:
             kooper->flags = N(TweesterPhysicsPtr)->prevFlags;
             N(TweesterPhysicsPtr)->countdown = 30;
-            N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_RELEASE;
             break;
         case TWEESTER_PARTNER_RELEASE:
             partner_walking_update_player_tracking(kooper);
             partner_walking_update_motion(kooper);
 
-            if (--N(TweesterPhysicsPtr)->countdown == 0) {
+            N(TweesterPhysicsPtr)->countdown--;
+            if (N(TweesterPhysicsPtr)->countdown == 0) {
                 N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
                 TweesterTouchingPartner = nullptr;
             }
@@ -222,7 +223,7 @@ API_CALLABLE(N(UseAbility)) {
         SHELL_TOSS_STATE_FINISH     = 0,
     };
 
-    if (currentEncounter->unk_08 != 0) {
+    if (currentEncounter->battleTransitionState != BATTLE_TRANSITION_STATE_STARTED) {
         return ApiStatus_BLOCK;
     }
 
@@ -266,7 +267,7 @@ API_CALLABLE(N(UseAbility)) {
             ShellTossHitboxState = SHELL_TOSS_HITBOX_DISABLED;
             N(HasItem) = false;
             kooper->flags &= ~(NPC_FLAG_GRAVITY | NPC_FLAG_JUMPING | NPC_FLAG_FLYING);
-            kooper->flags |= (NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION);
+            kooper->flags |= (NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION);
             partnerStatus->actingPartner = PARTNER_KOOPER;
             partnerStatus->partnerActionState = PARTNER_ACTION_KOOPER_GATHER;
             N(PlayerWasFacingLeft) = partner_force_player_flip_done();
@@ -373,7 +374,7 @@ API_CALLABLE(N(UseAbility)) {
 
             if (!(kooper->jumpVel > 0.0f) && (playerStatus->pos.y < kooper->moveToPos.z)) {
                 N(D_802BEC5C) = 0;
-                kooper->flags &= ~NPC_FLAG_IGNORE_PLAYER_COLLISION;
+                kooper->flags &= ~NPC_FLAG_IGNORE_CHAR_COLLISION;
                 partnerStatus->actingPartner = PARTNER_KOOPER;
                 partnerStatus->partnerActionState = PARTNER_ACTION_KOOPER_TOSS;
                 kooper->rot.z = 0.0f;
@@ -547,7 +548,7 @@ API_CALLABLE(N(UseAbility)) {
         }
 
     if (script->USE_STATE == SHELL_TOSS_STATE_RETURN) {
-        kooper->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+        kooper->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
         if (playerStatus->actionState == ACTION_STATE_HIT_FIRE
             || playerStatus->actionState == ACTION_STATE_KNOCKBACK
         ) {
@@ -618,7 +619,7 @@ API_CALLABLE(N(UseAbility)) {
         }
 
         ShellTossHitboxState = SHELL_TOSS_HITBOX_DISABLED;
-        kooper->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+        kooper->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
         kooper->flags &= ~(NPC_FLAG_JUMPING | NPC_FLAG_IGNORE_WORLD_COLLISION);
         partnerStatus->actingPartner = PARTNER_NONE;
         partnerStatus->partnerActionState = PARTNER_ACTION_NONE;
@@ -654,7 +655,11 @@ API_CALLABLE(N(PutAway)) {
         partner_init_put_away(kooper);
     }
 
-    return partner_put_away(kooper) ? ApiStatus_DONE1 : ApiStatus_BLOCK;
+    if (partner_put_away(kooper)) {
+        return ApiStatus_DONE1;
+    } else {
+        return ApiStatus_BLOCK;
+    }
 }
 
 EvtScript EVS_WorldKooper_PutAway = {

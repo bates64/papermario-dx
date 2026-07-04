@@ -5,9 +5,9 @@
 typedef struct PulseStoneData {
     /* 0x00 */ Vec3f pos;
     /* 0x0C */ f32 scale;
-    /* 0x10 */ char unk_10[0x8];
+    /* 0x10 */ PAD(8);
     /* 0x18 */ s32 appearDelay;
-    /* 0x1C */ char unk_1C[0x4];
+    /* 0x1C */ PAD(4);
     /* 0x20 */ s32 pingTime;
     /* 0x24 */ s32 state;
 } PulseStoneData; // size = 0x28
@@ -16,6 +16,7 @@ enum {
     PULSE_STONE_APPEAR     = 0, // icon appears
     PULSE_STONE_OVERSHOOT  = 1, // icon scale overshoots
     PULSE_STONE_HOLD       = 2, // icon reaches final size
+    PULSE_STONE_DONE        = 3,
 };
 
 #include "pulse_stone_icon.png.h"
@@ -172,15 +173,15 @@ void pulse_stone_notification_update(void) {
                 break;
             }
             PulseStonePtr->scale = 0.36f;
-            PulseStonePtr->state++;
+            PulseStonePtr->state = PULSE_STONE_OVERSHOOT;
             break;
         case PULSE_STONE_OVERSHOOT:
             PulseStonePtr->scale = 0.57f;
-            PulseStonePtr->state++;
+            PulseStonePtr->state = PULSE_STONE_HOLD;
             break;
         case PULSE_STONE_HOLD:
             PulseStonePtr->scale = 0.53f;
-            PulseStonePtr->state++;
+            PulseStonePtr->state = PULSE_STONE_DONE;
             break;
     }
 }

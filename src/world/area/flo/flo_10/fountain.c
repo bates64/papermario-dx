@@ -2,10 +2,6 @@
 #include "sprite/npc/Lily.h"
 #include "sprite/player.h"
 
-#include "world/common/complete/GiveReward.inc.c"
-
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_RaiseFountain) = {
     Call(MakeLerp, -50, 170, 385, EASING_LINEAR)
     Label(1)
@@ -44,7 +40,7 @@ EvtScript N(EVS_TexPan_Rainbow) = {
         TEX_PAN_PARAMS_STEP( -150,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End
@@ -124,7 +120,7 @@ EvtScript N(EVS_RaiseCamera) = {
 };
 
 EvtScript N(EVS_UnleashFountain) = {
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Exec(N(EVS_RaiseFountain))
     Exec(N(EVS_GrowFountain))
     Exec(N(EVS_EnableRainbow))
@@ -266,7 +262,7 @@ EvtScript N(EVS_SetupFountain) = {
         TEX_PAN_PARAMS_STEP(    0,-2000,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water edge
     Call(SetTexPanner, MODEL_o40, TEX_PANNER_3)
@@ -275,7 +271,7 @@ EvtScript N(EVS_SetupFountain) = {
         TEX_PAN_PARAMS_STEP( -100,   80,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // fountain mist
     Call(SetTexPanner, MODEL_o78, TEX_PANNER_5)
@@ -284,7 +280,7 @@ EvtScript N(EVS_SetupFountain) = {
         TEX_PAN_PARAMS_STEP(-1000, 2000,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // surface spread
     Call(SetTexPanner, MODEL_o77, TEX_PANNER_6)
@@ -293,7 +289,7 @@ EvtScript N(EVS_SetupFountain) = {
         TEX_PAN_PARAMS_STEP(    0,-2000,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // small fountain
     Call(SetTexPanner, MODEL_o118, TEX_PANNER_8)
@@ -302,7 +298,7 @@ EvtScript N(EVS_SetupFountain) = {
         TEX_PAN_PARAMS_STEP(    0,-1500,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // surface spread
     Call(SetTexPanner, MODEL_o119, TEX_PANNER_9)
@@ -311,7 +307,7 @@ EvtScript N(EVS_SetupFountain) = {
         TEX_PAN_PARAMS_STEP(    0,-1000,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     IfGe(GB_StoryProgress, STORY_CH6_FILLED_SPRING_WITH_WATER)
         Exec(N(EVS_TexPan_Rainbow))

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file end_00.h
 /// @brief Ending - Parade (Day)
 
@@ -13,7 +15,6 @@
 #include "sprite/npc/ParadePartner.h"
 #include "sprite/npc/ParadeToad.h"
 #include "sprite/npc/ChuckQuizmo.h"
-#include "sprite/npc/VannaT.h"
 #include "sprite/npc/KoopaBros.h"
 #include "sprite/npc/Bobomb.h"
 #include "sprite/npc/ParadeKolorado.h"
@@ -109,7 +110,7 @@ enum {
     NPC_Yoshi3                  = 59,
     NPC_Yoshi4                  = 60,
     NPC_YoshiChief              = 61,
-    NPC_RaphaelRaven             = 62,
+    NPC_RaphaelRaven            = 62,
     NPC_LavaPiranha             = 63,
     NPC_YoshiKidGreen           = 64,
     NPC_YoshiKidBlue            = 65,
@@ -168,4 +169,3 @@ extern EvtScript N(EVS_ManageParade);
 extern EvtScript N(EVS_OffsetNpcScroll);
 
 API_CALLABLE(N(AddScrollToNpcPos));
-

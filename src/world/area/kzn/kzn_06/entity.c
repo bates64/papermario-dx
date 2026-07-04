@@ -2,7 +2,6 @@
 #include "effects.h"
 #include "entity.h"
 
-#include "world/common/atomic/PushBlockGravity.inc.c"
 
 EvtScript N(EVS_OnBreakBlock) = {
     Set(GF_KZN06_Hammer3Block, true)
@@ -19,7 +18,7 @@ EvtScript N(EVS_MakeEntities) = {
     EndIf
     IfLt(GB_StoryProgress, STORY_CH5_LAVA_STREAM_BLOCKED)
         Call(CreatePushBlockGrid, 0, 12, 1, -330, 145, -90, 0)
-        Call(SetPushBlockFallEffect, 0, Ref(N(push_block_handle_fall)))
+        Call(SetPushBlockFallEffect, 0, Ref(PushBlockFallCallback_Gravity))
         Call(SetPushBlock, 0, 4, 0, PUSH_GRID_BLOCK)
         Call(SetPushBlock, 0, 6, 0, PUSH_GRID_BLOCK)
         Call(SetPushBlock, 0, 8, 0, PUSH_GRID_BLOCK)

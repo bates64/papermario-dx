@@ -82,9 +82,9 @@ EvtScript N(EVS_Main) = {
     EndIf
     ExecWait(N(EVS_SetupMusic))
     IfEq(GB_StoryProgress, STORY_CH0_BEGAN_PEACH_MISSION)
-        IfEq(AF_HOS_B4, false)
+        IfEq(AF_HOS00_SkipTwinkMeetingDelay, false)
             Wait(50)
-            Set(AF_HOS_B4, true)
+            Set(AF_HOS00_SkipTwinkMeetingDelay, true)
         EndIf
         Exec(N(EVS_Scene_MeetingTwink))
     EndIf

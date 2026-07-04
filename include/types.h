@@ -1,24 +1,23 @@
-#ifndef _TYPES_H_
-#define _TYPES_H_
+#pragma once
 
 #include "ultra64.h"
-
-#define UNK_TYPE s32
-#define UNK_PTR void*
-#define UNK_RET void
-#define UNK_FUN_ARG void(*)(void)
-#define UNK_FUN_PTR(name) void(*name)(void)
-#define UNK_ARGS
-
-typedef char* (*PrintCallback)(void*, const char*, u32);
 
 /// Linker symbol address, as in `ld_addrs.h`.
 typedef u8 Addr[];
 
-#define BTL_NONE 0
-#define BTL_DEFAULT_STAGE -1
+#define MSG_PTR u8*
+#define IMG_PTR u8*
+#define PAL_PTR u16*
 
-/// Terminates an extraAnimationList
-#define ANIM_LIST_END -1
+#define MSG_BIN u8
+#define IMG_BIN u8
+#define PAL_BIN u16
 
-#endif
+typedef s32 b32;
+typedef s16 b16;
+typedef s8 b8;
+
+typedef s32 HitID;
+typedef u32 AnimID;
+typedef s32 HudElemID;
+typedef s32 MsgID;

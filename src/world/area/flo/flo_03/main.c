@@ -3,11 +3,6 @@
 
 #include "../common/FlowerSpawnRegion.inc.c"
 
-API_CALLABLE(N(SpawnSunEffect)) {
-    fx_sun(FX_SUN_FROM_RIGHT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_ExitWalk_flo_09_1) = EVT_EXIT_WALK(60, flo_03_ENTRY_0, "flo_09", flo_09_ENTRY_1);
 EvtScript N(EVS_ExitWalk_flo_22_0) = EVT_EXIT_WALK(60, flo_03_ENTRY_1, "flo_22", flo_22_ENTRY_0);
 
@@ -24,7 +19,7 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(AF_FLO_TreeDrop_RedBerry1, false)
     Set(AF_FLO_TreeDrop_RedBerry2, false)
-    Set(AB_FLO_PetuniaDialogue, 0)
+    Set(AB_FLO03_DialogueState_Petunia, 0)
     Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     ExecWait(N(EVS_SetupMoles))
@@ -43,7 +38,7 @@ EvtScript N(EVS_Main) = {
     EndIf
     ExecWait(N(EVS_SetupMusic))
     IfGe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
-        Call(N(SpawnSunEffect))
+        Call(SpawnSunEffect, FX_SUN_FROM_RIGHT)
     EndIf
     Return
     End

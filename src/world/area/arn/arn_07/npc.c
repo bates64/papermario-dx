@@ -1,12 +1,14 @@
 #include "arn_07.h"
 #include "effects.h"
 #include "sprite/player.h"
+#include "world/common/npc/Bootler/base.h"
+#include "world/common/npc/Bow/base.h"
 
-#include "world/common/enemy/HyperParagoomba.inc.c"
-#include "world/common/npc/TubbasHeart.inc.c"
-#include "world/common/enemy/TubbaBlubba.inc.c"
-#include "world/common/npc/Boo.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/enemy/HyperParagoomba/wander.inc.c"
+#include "world/common/enemy/TubbaBlubba/idle.inc.c"
+#include "world/common/npc/TubbasHeart/idle.inc.c"
+#include "world/common/npc/Boo/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 API_CALLABLE(N(UpgradeStarPowerCh3)) {
     set_max_star_power(3);
@@ -32,14 +34,14 @@ EvtScript N(EVS_Scene_TubbaRelents) = {
     Call(SetPanTarget, CAM_DEFAULT, 250, 0, -46)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim08)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_IdleSad)
     Call(SetNpcYaw, NPC_SELF, 90)
     Wait(10 * DT)
-    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldTubba_Anim12, ANIM_WorldTubba_Anim08, 5, MSG_CH3_00CA)
+    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldTubba_TalkSad, ANIM_WorldTubba_IdleSad, 5, MSG_CH3_00CA)
     Wait(10 * DT)
     Call(InterpNpcYaw, NPC_SELF, 270, 0)
     Wait(10 * DT)
-    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldTubba_Anim12, ANIM_WorldTubba_Anim08, 5, MSG_CH3_00CB)
+    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldTubba_TalkSad, ANIM_WorldTubba_IdleSad, 5, MSG_CH3_00CB)
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(5.0), Float(-16.0))
@@ -52,7 +54,7 @@ EvtScript N(EVS_Scene_TubbaRelents) = {
 
 EvtScript N(EVS_Scene_BossDefeated) = {
     Wait(10 * DT)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim22)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_OpenWide)
     Wait(15 * DT)
     Loop(4)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_SEQ_BOO_APPEAR, SOUND_SPACE_DEFAULT)
@@ -75,14 +77,14 @@ EvtScript N(EVS_Scene_BossDefeated) = {
         Wait(6 * DT)
     EndLoop
     Wait(10 * DT)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim23)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Chew)
     Wait(30 * DT)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim22)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_OpenWide)
     Wait(10 * DT)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SEQ_BOO_APPEAR, SOUND_SPACE_DEFAULT)
     Call(SetNpcVar, NPC_Boo_02, 0, 1)
     Wait(15 * DT)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim21)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Burp)
     Wait(45 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 236, 0, -46)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
@@ -92,8 +94,8 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(5 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Still)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim0F)
-    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldTubba_Anim12, ANIM_WorldTubba_Anim08, 0, MSG_CH3_00CC)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_SprintCry)
+    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldTubba_TalkSad, ANIM_WorldTubba_IdleSad, 0, MSG_CH3_00CC)
     Thread
         Wait(5 * DT)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
@@ -104,7 +106,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
         EndLoop
     EndThread
     Thread
-        Call(func_802CF56C, 2)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
         Loop(45 * DT)
             Call(PlayerFaceNpc, NPC_SELF, true)
         EndLoop
@@ -121,8 +123,8 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     Call(GetCurrentPartnerID, LVar6)
     IfEq(LVar6, PARTNER_BOW)
         Set(LVar5, -4)
-        Call(func_802CF56C, 0)
-        Call(DisablePartnerAI, 0)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
+        Call(DisablePartnerAI, false)
         Call(SetNpcPos, NPC_PARTNER, 257, 25, 0)
     EndIf
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
@@ -145,12 +147,12 @@ EvtScript N(EVS_Scene_BossDefeated) = {
                 BreakLoop
             EndIf
         EndLoop
-        Call(func_802CF56C, 0)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
     EndIf
     Wait(10 * DT)
     Thread
         IfNe(LVar6, PARTNER_BOW)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Wait(1)
             Call(NpcFaceNpc, NPC_PARTNER, NPC_Bow, 0)
             Wait(5 * DT)
@@ -232,7 +234,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
             Call(EnablePartnerAI)
         EndIf
         Wait(8 * DT)
-        Call(func_802CF56C, 2)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     EndThread
     Wait(20 * DT)
     Call(DisablePlayerInput, false)
@@ -365,29 +367,29 @@ EvtScript N(EVS_NpcInit_Bootler) = {
     End
 };
 
-AnimID N(ExtraAnims_Tubba)[] = {
-    ANIM_WorldTubba_Anim00,
-    ANIM_WorldTubba_Anim22,
-    ANIM_WorldTubba_Anim23,
-    ANIM_WorldTubba_Anim06,
-    ANIM_WorldTubba_Anim10,
-    ANIM_WorldTubba_Anim08,
-    ANIM_WorldTubba_Anim0F,
-    ANIM_WorldTubba_Anim12,
+AnimID N(LimitAnims_Tubba)[] = {
+    ANIM_WorldTubba_Still,
+    ANIM_WorldTubba_OpenWide,
+    ANIM_WorldTubba_Chew,
+    ANIM_WorldTubba_Idle,
+    ANIM_WorldTubba_Talk,
+    ANIM_WorldTubba_IdleSad,
+    ANIM_WorldTubba_SprintCry,
+    ANIM_WorldTubba_TalkSad,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Boo)[] = {
+AnimID N(LimitAnims_Boo)[] = {
     ANIM_Boo_Still,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_GustyBoo)[] = {
+AnimID N(LimitAnims_GustyBoo)[] = {
     ANIM_Boo_Tan_Still,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Bootler)[] = {
+AnimID N(LimitAnims_Bootler)[] = {
     ANIM_Bootler_Idle,
     ANIM_LIST_END
 };
@@ -412,8 +414,8 @@ EvtScript N(EVS_NpcIdle_Skolar) = {
 };
 
 EvtScript N(EVS_Scene_SkolarRescued) = {
-    Call(DisablePartnerAI, 0)
-    Call(func_802CF56C, 2)
+    Call(DisablePartnerAI, false)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Set(LVar3, LVar0)
     Add(LVar3, -50)
@@ -468,7 +470,7 @@ EvtScript N(EVS_Scene_SkolarRescued) = {
     Call(PlaySoundAtPlayer, SOUND_GET_STAR_POWER_WAVE, SOUND_SPACE_DEFAULT)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, 1, 30)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, 1, 30)
     Wait(30 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_Skolar, ANIM_WorldSkolar_Idle)
@@ -569,7 +571,7 @@ NpcData N(NpcData_Tubba)[] = {
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = TUBBA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Tubba),
+        .limitAnimations = N(LimitAnims_Tubba),
     },
     {
         .id = NPC_TubbasHeart,
@@ -593,7 +595,7 @@ NpcData N(NpcData_Boos)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
-        .extraAnimations = N(ExtraAnims_GustyBoo),
+        .limitAnimations = N(LimitAnims_GustyBoo),
     },
     {
         .id = NPC_Boo_02,
@@ -604,7 +606,7 @@ NpcData N(NpcData_Boos)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
-        .extraAnimations = N(ExtraAnims_GustyBoo),
+        .limitAnimations = N(LimitAnims_GustyBoo),
     },
     {
         .id = NPC_Boo_03,
@@ -615,7 +617,7 @@ NpcData N(NpcData_Boos)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
-        .extraAnimations = N(ExtraAnims_GustyBoo),
+        .limitAnimations = N(LimitAnims_GustyBoo),
     },
     {
         .id = NPC_Boo_04,
@@ -626,7 +628,7 @@ NpcData N(NpcData_Boos)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
-        .extraAnimations = N(ExtraAnims_GustyBoo),
+        .limitAnimations = N(LimitAnims_GustyBoo),
     },
     {
         .id = NPC_Boo_05,
@@ -637,7 +639,7 @@ NpcData N(NpcData_Boos)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = NORMAL_BOO_ANIMS,
-        .extraAnimations = N(ExtraAnims_Boo),
+        .limitAnimations = N(LimitAnims_Boo),
     },
     {
         .id = NPC_Boo_06,
@@ -648,7 +650,7 @@ NpcData N(NpcData_Boos)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = NORMAL_BOO_ANIMS,
-        .extraAnimations = N(ExtraAnims_Boo),
+        .limitAnimations = N(LimitAnims_Boo),
     },
 };
 
@@ -660,24 +662,7 @@ NpcData N(NpcData_Bow) = {
     .settings = &N(NpcSettings_Boo),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_WorldBow_Idle,
-        .walk   = ANIM_WorldBow_Walk,
-        .run    = ANIM_WorldBow_Run,
-        .chase  = ANIM_WorldBow_Run,
-        .anim_4 = ANIM_WorldBow_Idle,
-        .anim_5 = ANIM_WorldBow_Idle,
-        .death  = ANIM_WorldBow_Still,
-        .hit    = ANIM_WorldBow_Still,
-        .anim_8 = ANIM_WorldBow_Run,
-        .anim_9 = ANIM_WorldBow_Run,
-        .anim_A = ANIM_WorldBow_Run,
-        .anim_B = ANIM_WorldBow_Run,
-        .anim_C = ANIM_WorldBow_Run,
-        .anim_D = ANIM_WorldBow_Run,
-        .anim_E = ANIM_WorldBow_Run,
-        .anim_F = ANIM_WorldBow_Run,
-    },
+    .animations = BOW_ANIMS,
 };
 
 NpcData N(NpcData_Bootler) = {
@@ -688,25 +673,8 @@ NpcData N(NpcData_Bootler) = {
     .settings = &N(NpcSettings_Boo),
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL  | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Bootler_Idle,
-        .walk   = ANIM_Bootler_Walk,
-        .run    = ANIM_Bootler_Run,
-        .chase  = ANIM_Bootler_Run,
-        .anim_4 = ANIM_Bootler_Idle,
-        .anim_5 = ANIM_Bootler_Idle,
-        .death  = ANIM_Bootler_Still,
-        .hit    = ANIM_Bootler_Still,
-        .anim_8 = ANIM_Bootler_Shock,
-        .anim_9 = ANIM_Bootler_Panic,
-        .anim_A = ANIM_Bootler_Dejected,
-        .anim_B = ANIM_Bootler_Quaver,
-        .anim_C = ANIM_Bootler_Shock,
-        .anim_D = ANIM_Bootler_Panic,
-        .anim_E = ANIM_Bootler_Dejected,
-        .anim_F = ANIM_Bootler_Quaver,
-    },
-    .extraAnimations = N(ExtraAnims_Bootler),
+    .animations = BOOTLER_ANIMS,
+    .limitAnimations = N(LimitAnims_Bootler),
 };
 
 EvtScript N(EVS_NpcInit_HyperParagoomba) = {
@@ -736,7 +704,7 @@ NpcData N(NpcData_HyperParagoomba_01) = {
         }
     },
     .init = &N(EVS_NpcInit_HyperParagoomba),
-    .settings = &N(NpcSettings_HyperParagoomba),
+    .settings = &N(NpcSettings_HyperParagoomba_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = HYPER_PARAGOOMBA_DROPS,
     .animations = HYPER_PARAGOOMBA_ANIMS,
@@ -760,7 +728,7 @@ NpcData N(NpcData_HyperParagoomba_02) = {
         }
     },
     .init = &N(EVS_NpcInit_HyperParagoomba),
-    .settings = &N(NpcSettings_HyperParagoomba),
+    .settings = &N(NpcSettings_HyperParagoomba_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = HYPER_PARAGOOMBA_DROPS,
     .animations = HYPER_PARAGOOMBA_ANIMS,
@@ -784,7 +752,7 @@ NpcData N(NpcData_HyperParagoomba_03) = {
         }
     },
     .init = &N(EVS_NpcInit_HyperParagoomba),
-    .settings = &N(NpcSettings_HyperParagoomba),
+    .settings = &N(NpcSettings_HyperParagoomba_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = HYPER_PARAGOOMBA_DROPS,
     .animations = HYPER_PARAGOOMBA_ANIMS,

@@ -2,8 +2,6 @@
 
 #define NAMESPACE A(lava_piranha_AnimModel_SideHeadVine)
 
-s32 N(padding) = 0;
-
 StaticAnimatorNode N(Node07) = {
     .displayList = &N(Node07),
     .rot = { 0, 0, 13020 },

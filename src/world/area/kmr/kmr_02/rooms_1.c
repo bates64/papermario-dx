@@ -1,10 +1,6 @@
 #include "kmr_02.h"
 #include "sprite/player.h"
 
-#define NAME_SUFFIX _Rooms1
-#include "world/common/npc/GoombaFamily_Wander.inc.c"
-#define NAME_SUFFIX
-
 EvtScript N(EVS_SetDoorRot_House) = {
     Call(RotateModel, MODEL_syoumen_enter, LVar0, 0, 1, 0)
     Return
@@ -47,7 +43,7 @@ EvtScript N(EVS_NpcAI_Goombario_NoAI) = {
 };
 
 EvtScript N(EVS_NpcAI_Goombario) = {
-    ExecWait(N(EVS_NpcAI_GoombaFamily_Wander_Rooms1))
+    ExecWait(N(EVS_NpcAI_GoombaFamily_Wander))
     Return
     End
 };
@@ -167,7 +163,7 @@ EvtScript N(EVS_RoomListener_Verdana) = {
                     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
                     Call(PlaySoundAtPlayer, SOUND_PLAYER_LONG_FALL, SOUND_SPACE_DEFAULT)
                     Call(DisablePlayerPhysics, true)
-                    Call(DisablePartnerAI, 0)
+                    Call(DisablePartnerAI, false)
                     Call(SetPlayerAnimation, ANIM_MarioW2_Panic)
                     Call(GetPlayerPos, LVar0, LVar1, LVar2)
                     Thread
@@ -233,9 +229,8 @@ EvtScript N(EVS_SetupRooms) = {
     End
 };
 
-#include "world/common/complete/ToadHouseBlanketAnim.inc.c"
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
 EvtScript N(EVS_ToadHouse_SetDialogue) = {
     IfEq(GF_KMR02_ToadHouse_Intro, false)
@@ -275,7 +270,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Call(InterpPlayerYaw, 114, 1)
     Call(HidePlayerShadow, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     Wait(61)
     Call(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)

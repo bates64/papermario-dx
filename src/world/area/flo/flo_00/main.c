@@ -3,11 +3,6 @@
 
 #include "../common/FlowerSpawnRegion.inc.c"
 
-API_CALLABLE(N(SpawnSunEffect)) {
-    fx_sun(FX_SUN_FROM_LEFT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_Wisterwood_Exit) = {
     Call(DisablePlayerInput, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittn, COLLIDER_FLAGS_UPPER_MASK)
@@ -23,9 +18,9 @@ EvtScript N(EVS_Wisterwood_Exit) = {
             BreakLoop
         EndIf
     EndLoop
-    Call(func_802D2C14, 1)
+    Call(SetPartnerForcedFollowMode, 1)
     Call(PlayerMoveTo, 0, -310, 30)
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     IfEq(GB_StoryProgress, STORY_CH6_STAR_SPRIT_DEPARTED)
         Set(GB_StoryProgress, STORY_CH6_RETURNED_TO_TOAD_TOWN)
     EndIf
@@ -59,9 +54,9 @@ EvtScript N(EVS_Wisterwood_Enter) = {
             BreakLoop
         EndIf
     EndLoop
-    Call(func_802D2C14, 1)
+    Call(SetPartnerForcedFollowMode, 1)
     Call(PlayerMoveTo, 0, -135, 30)
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     Call(MakeLerp, -100, 0, 30, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
@@ -179,7 +174,7 @@ EvtScript N(EVS_Main) = {
     EndIf
     ExecWait(N(EVS_SetupMusic))
     IfGe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
-        Call(N(SpawnSunEffect))
+        Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     EndIf
     // thread to manage wisterwood blinking
     Thread

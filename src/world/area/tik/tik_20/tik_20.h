@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tik_20.h
 /// @brief Toad Town Tunnels - Room with Spikes (B2)
 

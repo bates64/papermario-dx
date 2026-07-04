@@ -1,6 +1,6 @@
 #include "omo_14.h"
 
-#include "world/common/atomic/CreateDarkness.inc.c"
+#include "world/common/util/CreateDarkness.inc.c"
 
 EvtScript N(EVS_ExitWalk_omo_02_1) = EVT_EXIT_WALK(60, omo_14_ENTRY_0, "omo_02", omo_02_ENTRY_1);
 EvtScript N(EVS_ExitWalk_omo_15_0) = EVT_EXIT_WALK(60, omo_14_ENTRY_1, "omo_15", omo_15_ENTRY_0);

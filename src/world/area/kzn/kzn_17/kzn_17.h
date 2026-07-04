@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kzn_17.h
 /// @brief Mt Lavalava - Spike Roller Trap
 

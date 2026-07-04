@@ -1,14 +1,8 @@
 #include "mim_11.h"
+#include "world/common/npc/Bootler/base.h"
 
-void increment_max_star_power(void);
-
-#include "world/common/npc/Boo.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
-
-API_CALLABLE(N(IncreaseMaxSP)) {
-    increment_max_star_power();
-    return ApiStatus_DONE2;
-}
+#include "world/common/npc/Boo/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 API_CALLABLE(N(AnimateStarSpiritBobbing)) {
     Npc* npc;
@@ -62,24 +56,7 @@ NpcData N(NpcData_Bootler)[] = {
         .settings = &N(NpcSettings_Boo),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Bootler_Idle,
-            .walk   = ANIM_Bootler_Walk,
-            .run    = ANIM_Bootler_Run,
-            .chase  = ANIM_Bootler_Run,
-            .anim_4 = ANIM_Bootler_Idle,
-            .anim_5 = ANIM_Bootler_Idle,
-            .death  = ANIM_Bootler_Still,
-            .hit    = ANIM_Bootler_Still,
-            .anim_8 = ANIM_Bootler_Shock,
-            .anim_9 = ANIM_Bootler_Panic,
-            .anim_A = ANIM_Bootler_Dejected,
-            .anim_B = ANIM_Bootler_Quaver,
-            .anim_C = ANIM_Bootler_Shock,
-            .anim_D = ANIM_Bootler_Panic,
-            .anim_E = ANIM_Bootler_Dejected,
-            .anim_F = ANIM_Bootler_Quaver,
-        },
+        .animations = BOOTLER_ANIMS,
     },
     {
         .id = NPC_Skolar,
@@ -89,24 +66,7 @@ NpcData N(NpcData_Bootler)[] = {
         .settings = &N(NpcSettings_StarSpirit),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldSkolar_Idle,
-            .walk   = ANIM_WorldSkolar_Idle,
-            .run    = ANIM_WorldSkolar_Idle,
-            .chase  = ANIM_WorldSkolar_Idle,
-            .anim_4 = ANIM_WorldSkolar_Idle,
-            .anim_5 = ANIM_WorldSkolar_Idle,
-            .death  = ANIM_WorldSkolar_Idle,
-            .hit    = ANIM_WorldSkolar_Idle,
-            .anim_8 = ANIM_WorldSkolar_Still,
-            .anim_9 = ANIM_WorldSkolar_Idle,
-            .anim_A = ANIM_WorldSkolar_Idle,
-            .anim_B = ANIM_WorldSkolar_Idle,
-            .anim_C = ANIM_WorldSkolar_Idle,
-            .anim_D = ANIM_WorldSkolar_Idle,
-            .anim_E = ANIM_WorldSkolar_Idle,
-            .anim_F = ANIM_WorldSkolar_Idle,
-        },
+        .animations = SKOLAR_ANIMS,
     },
 };
 

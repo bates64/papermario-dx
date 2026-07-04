@@ -1,11 +1,5 @@
 #include "nok_02.h"
 
-#define NAME_SUFFIX _Koot
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-#include "world/common/complete/GiveReward.inc.c"
-#define NAME_SUFFIX
-
 typedef struct KootFavor {
     /* 0x00 */ s32 requestMsg;
     /* 0x04 */ s32 minorRewardMsg;
@@ -332,12 +326,10 @@ API_CALLABLE(N(SetFavorComplete)) {
     return ApiStatus_DONE2;
 }
 
-s32 N(FavorItemList)[] = {
-    ITEM_NONE,
-    ITEM_NONE,
-};
+// initially empty list, mutable through AdjustFavorItemList
+ITEM_LIST(N(FavorItemList), ITEM_NONE);
 
-API_CALLABLE(N(MakeFavorItemList)) {
+API_CALLABLE(N(AdjustFavorItemList)) {
     Bytecode *args = script->ptrReadPos;
     s32 favorIdx = evt_get_variable(script, *args++) - 1;
     s32 itemID = N(KootFavorData)[favorIdx].requiredItem;
@@ -350,31 +342,27 @@ API_CALLABLE(N(MakeFavorItemList)) {
 }
 
 EvtScript N(EVS_NpcInteract_KoopaKoot) = {
-    Call(func_802CF56C, 1)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_HOLD)
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00A2)
         Goto(90)
     EndIf
     IfEq(GB_KootFavor_State, KOOT_FAVOR_STATE_2)
         IfEq(GF_MAC02_KootFavor_CurrentComplete, false)
-            Call(N(MakeFavorItemList), GB_KootFavor_Current)
+            Call(N(AdjustFavorItemList), GB_KootFavor_Current)
             IfEq(LVar0, 0)
-                Set(LVar0, Ref(N(FavorItemList)))
-                Set(LVar1, 9)
-                ExecWait(N(EVS_ChooseKeyItem_Koot))
+                EVT_CHOOSE_CONSUMABLE_FROM(N(FavorItemList), NPC_KoopaKoot)
                 Switch(LVar0)
-                    CaseEq(-1)
-                    CaseEq(0)
+                    CaseEq(ITEM_CHOICE_CANCELED)
+                    CaseEq(ITEM_CHOICE_NONE)
                     CaseDefault
                         Set(GF_MAC02_KootFavor_CurrentComplete, true)
                 EndSwitch
             Else
-                Set(LVar0, Ref(N(FavorItemList)))
-                Set(LVar1, 9)
-                ExecWait(N(EVS_ChooseItem_Koot))
+                EVT_CHOOSE_CONSUMABLE_FROM(N(FavorItemList), NPC_KoopaKoot)
                 Switch(LVar0)
-                    CaseEq(-1)
-                    CaseEq(0)
+                    CaseEq(ITEM_CHOICE_CANCELED)
+                    CaseEq(ITEM_CHOICE_NONE)
                     CaseDefault
                         Set(GF_MAC02_KootFavor_CurrentComplete, true)
                 EndSwitch
@@ -388,11 +376,9 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
                 Call(N(GetFavorMessages), GB_KootFavor_Current)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, LVar1)
                 Call(ContinueSpeech, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00B1)
-                #define NAME_SUFFIX _Koot
                 Set(LVar0, ITEM_COIN)
-                ExecWait(N(GiveCoinReward))
+                ExecWait(EVS_GiveCoinReward)
                 Call(AddCoin, 1)
-                #define NAME_SUFFIX
             Else
                 Call(N(GetFavorMessages), GB_KootFavor_Current)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, LVar2)
@@ -401,7 +387,6 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
                 Call(AddStarPieces, 3)
             EndIf
             Switch(GB_KootFavor_Completed)
-                #define NAME_SUFFIX _Koot
                 CaseEq(1 + KOOT_FAVOR_CH1_2)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00B2)
                     EVT_GIVE_REWARD(ITEM_SILVER_CREDIT)
@@ -409,7 +394,6 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
                     Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00B3)
                     EVT_GIVE_REWARD(ITEM_GOLD_CREDIT)
                     Call(RemoveItem, ITEM_SILVER_CREDIT)
-                #define NAME_SUFFIX
             EndSwitch
             Set(GB_KootFavor_State, KOOT_FAVOR_STATE_0)
             Goto(90)

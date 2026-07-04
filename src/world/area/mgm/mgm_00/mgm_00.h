@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mgm_00.h
 /// @brief Minigame - Playroom Lobby
 
@@ -24,7 +26,7 @@ enum {
 #define NAMESPACE mgm_00
 
 extern EvtScript N(EVS_Main);
-extern EvtScript N(D_80243C40_E123E0);
+extern EvtScript N(EVS_SetupScoreboard);
 extern EvtScript N(EVS_BindInteractTriggers);
 extern EvtScript N(EVS_OnEnterPipe_JumpAttack);
 extern EvtScript N(EVS_OnEnterPipe_SmashAttack);

@@ -1,9 +1,9 @@
 #include "flo_22.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Dummy.inc.c"
-#include "world/common/enemy/Bzzap.h"
-#include "world/common/enemy/CrazyDayzee.h"
+#include "world/common/npc/Dummy/idle.inc.c"
+#include "world/common/enemy/Bzzap/base.h"
+#include "world/common/enemy/CrazyDayzee/base.h"
 
 EvtScript N(EVS_NpcIdle_Bzzap) = {
     Set(MV_Bzzap_State, 0)
@@ -34,7 +34,7 @@ EvtScript N(EVS_NpcDefeat_Bzzap) = {
         CaseEq(OUTCOME_PLAYER_LOST)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         CaseEq(OUTCOME_PLAYER_FLED)
-            Call(SetNpcAnimation, NPC_SELF, ANIM_Bzzap_Anim01)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_Bzzap_Idle)
             Call(SetNpcPos, NPC_SELF, 30, 60, 0)
             Wait(10)
             Call(SetNpcJumpscale, NPC_SELF, 0)
@@ -81,13 +81,13 @@ EvtScript N(EVS_NpcDefeat_Dayzee) = {
         CaseEq(OUTCOME_PLAYER_LOST)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         CaseEq(OUTCOME_ENEMY_FLED)
-            Call(SetNpcAnimation, NPC_SELF, ANIM_Dayzee_Anim01)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_Dayzee_Idle)
             Wait(10)
             Call(SetNpcJumpscale, NPC_SELF, Float(2.0))
             Call(NpcJump0, NPC_SELF, 30, 0, 0, 15)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         CaseEq(OUTCOME_PLAYER_FLED)
-            Call(SetNpcAnimation, NPC_SELF, ANIM_Dayzee_Anim01)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_Dayzee_Idle)
             Wait(10)
             Call(SetNpcJumpscale, NPC_SELF, Float(2.0))
             Call(NpcJump0, NPC_SELF, 30, 0, 0, 15)

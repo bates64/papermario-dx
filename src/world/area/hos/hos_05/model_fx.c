@@ -4,9 +4,6 @@
 
 u16 StarShrineLightBeamAlpha = 255;
 
-#define NAME_SUFFIX _Starship
-#include "world/common/atomic/ApplyTint.inc.c"
-#include "world/common/atomic/TexturePan.inc.c"
 
 API_CALLABLE(N(SetWorldColorParams)) {
     Bytecode* args;
@@ -48,8 +45,6 @@ API_CALLABLE(N(SetWorldColorParams)) {
     return ApiStatus_BLOCK;
 }
 
-#define NAME_SUFFIX
-
 void N(setup_gfx_light_beam)(void) {
     gDPSetCombineMode(gMainGfxPos++, PM_CC_05, PM_CC_05);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, StarShrineLightBeamAlpha & 0xFF);
@@ -73,20 +68,6 @@ API_CALLABLE(N(SetStarshipShimmerAmt)) {
     Bytecode* args = script->ptrReadPos;
 
     N(StarshipShimmerAmt) = evt_get_variable(script, *args++);
-    return ApiStatus_DONE2;
-}
-
-s32 N(UnusedAlphaParam) = 255;
-
-void N(setup_gfx_unused)(void) {
-    gDPSetCombineMode(gMainGfxPos++, PM_CC_05, PM_CC_05);
-    gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, N(UnusedAlphaParam));
-}
-
-API_CALLABLE(N(SetUnusedAlphaParam)) {
-    Bytecode* args = script->ptrReadPos;
-
-    N(UnusedAlphaParam) = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
@@ -181,11 +162,11 @@ EvtScript N(EVS_SetupLightBeam) = {
 EvtScript N(EVS_Starship_Summon) = {
     Call(DisablePlayerInput, true)
     Thread
-        Call(N(SetModelTintMode_Starship), 2, nullptr, ENV_TINT_REMAP)
-        Call(N(SetModelTintMode_Starship), 1, Ref(N(MostSolidGeometry)), ENV_TINT_REMAP)
-        Call(N(SetWorldColorParams_Starship), 255, 255, 255, 0, 0, 0, 0)
+        Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
+        Call(SetModelTintMode, APPLY_TINT_GROUPS, Ref(N(MostSolidGeometry)), ENV_TINT_REMAP)
+        Call(N(SetWorldColorParams), 255, 255, 255, 0, 0, 0, 0)
         Wait(1)
-        Call(N(SetWorldColorParams_Starship), 102, 102, 102, 0, 0, 0, 60)
+        Call(N(SetWorldColorParams), 102, 102, 102, 0, 0, 0, 60)
     EndThread
     Exec(N(EVS_UpdateStarshipCollision))
     Set(MV_Starship_Yaw, 0)
@@ -196,7 +177,7 @@ EvtScript N(EVS_Starship_Summon) = {
         TEX_PAN_PARAMS_STEP(  -90,   70,  -60,   90)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan_Starship))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o646, TEX_PANNER_9)
     Call(PlaySoundAt, SOUND_STARSHIP_APPEARS, SOUND_SPACE_DEFAULT, 0, 250, 0)
@@ -264,7 +245,7 @@ EvtScript N(EVS_Starship_Summon) = {
         EndIf
     EndLoop
     Wait(30)
-    Call(N(SetWorldColorParams_Starship), 255, 255, 255, 0, 0, 0, 60)
+    Call(N(SetWorldColorParams), 255, 255, 255, 0, 0, 0, 60)
     Call(DisablePlayerInput, false)
     Return
     End

@@ -1,16 +1,16 @@
 #include "kmr_23.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(func_80240010_907A40)) {
+API_CALLABLE(N(DrawBackCurtains)) {
     set_curtain_scale_goal(2.0f);
     set_curtain_draw_callback(nullptr);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(D_80241190_908BC0) = {
-    Set(AF_JAN01_TreeDrop_StarPiece, false)
+EvtScript N(EVS_GotoNextAfterSceneEnd) = {
+    Set(MF_EndChapterSceneDone, false)
         Loop(0)
-            IfNe(AF_JAN01_TreeDrop_StarPiece, false)
+            IfNe(MF_EndChapterSceneDone, false)
                 BreakLoop
             EndIf
             Wait(1)
@@ -22,7 +22,7 @@ EvtScript N(D_80241190_908BC0) = {
         Call(GotoMapSpecial, Ref("kzn_19"), kzn_19_ENTRY_3, TRANSITION_END_CHAPTER_INTERRUPTED)
     EndIf
     Call(FadeOutMusic, 0, 2000)
-    Call(N(func_80240010_907A40))
+    Call(N(DrawBackCurtains))
     Wait(100)
     Return
     End
@@ -73,7 +73,7 @@ EvtScript N(EVS_Main) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Wait(1)
-    Exec(N(D_80241190_908BC0))
+    Exec(N(EVS_GotoNextAfterSceneEnd))
     Thread
         Call(FadeOutMusic, 0, 150)
         Call(ClearAmbientSounds, 150)

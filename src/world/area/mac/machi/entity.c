@@ -13,7 +13,7 @@ API_CALLABLE(N(DoNothing3)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_80240048_7E73E8)) {
+API_CALLABLE(N(FadeToBlack)) {
     if (isInitialCall) {
         script->functionTemp[0] = 0;
         script->functionTemp[1] = 0;
@@ -34,7 +34,7 @@ API_CALLABLE(N(func_80240048_7E73E8)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_802400C8_7E7468)) {
+API_CALLABLE(N(UpgradePartnerRankDebug)) {
     gPlayerData.partners[script->varTable[0] + 1].level++;
     script->varTable[0] = PARTNER_NONE;
     if (gPlayerData.partners[PARTNER_GOOMBARIO].level > PARTNER_RANK_ULTRA) {
@@ -45,7 +45,7 @@ API_CALLABLE(N(func_802400C8_7E7468)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80240114_7E74B4)) {
+API_CALLABLE(N(FadeFromBlack)) {
     if (isInitialCall) {
         script->functionTemp[0] = 0;
         script->functionTemp[1] = 255;

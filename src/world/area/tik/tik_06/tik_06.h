@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tik_06.h
 /// @brief Toad Town Tunnels - Sewer Entrance (B1)
 

@@ -1,13 +1,6 @@
 #include "osr_02.h"
 #include "effects.h"
 
-API_CALLABLE(N(SetAvailableDisguise)) {
-    Bytecode* args = script->ptrReadPos;
-
-    gPlayerStatus.availableDisguiseType = evt_get_float_variable(script, *args++);
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_ExitDoor_kpa_121_1) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(osr_02_ENTRY_0, "kpa_121", kpa_121_ENTRY_1,
     COLLIDER_tt1, MODEL_o570, DOOR_SWING_IN, DOOR_SOUNDS_METAL);
 
@@ -16,7 +9,7 @@ EvtScript N(EVS_ExitDoor_kkj_10_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(osr_02_ENTR
 
 EvtScript N(EVS_KeepPeachFromBowsersCastle) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 1)
+    Call(DisablePartnerAI, true)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_0180)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
@@ -70,7 +63,7 @@ EvtScript N(EVS_Main) = {
     Call(SetSpriteShading, SHADING_OSR_02)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
-        Call(N(SetAvailableDisguise), PEACH_DISGUISE_CLUBBA)
+        Call(SetAvailableDisguise, PEACH_DISGUISE_CLUBBA)
         Call(MakeNpcs, false, Ref(N(PeachNPCs)))
     EndIf
     Call(GetEntryID, LVar0)

@@ -169,7 +169,7 @@ API_CALLABLE(N(UpdateMonstarImgFX)) {
         script->functionTemp[1] = 0;
         script->functionTemp[2] = 0;
         script->functionTemp[0] = 0;
-        set_npc_imgfx_comp(part->spriteInstanceID, 0, IMGFX_ALLOC_COLOR_BUF, 20, 0, 0, 255, 0);
+        set_npc_imgfx_comp(part->spriteInstanceID, 0, IMGFX_ALLOC_COLOR_BUF, RGBA_BUF_SIZE, 0, 0, 255, 0);
     }
 
     set_npc_imgfx_comp(part->spriteInstanceID, 1, IMGFX_OVERLAY, (s32)&N(MonstarDetailTexture), 255, 0, 255, 0);
@@ -192,8 +192,6 @@ API_CALLABLE(N(UpdateMonstarImgFX)) {
 
     #undef RGBA_BUF_SIZE
 }
-
-#include "common/Dist3D.inc.c"
 
 #include "common/UnkBackgroundFunc3.inc.c"
 

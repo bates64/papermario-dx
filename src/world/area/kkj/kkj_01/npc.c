@@ -1,12 +1,15 @@
 #include "kkj_01.h"
 
-#include "world/common/npc/Toad_Wander.inc.c"
-#include "world/common/npc/Toad_Patrol.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/Dryite_Stationary.inc.c"
-#include "world/common/npc/Mouser.inc.c"
-#include "world/common/npc/Penguin.inc.c"
-#include "world/common/npc/Koopa.inc.c"
+#include "world/common/npc/ToadGuard/idle.inc.c"
+#include "world/common/npc/ToadMinister/idle.inc.c"
+#include "world/common/npc/Toadette/wander.inc.c"
+#include "world/common/npc/Toad/wander.inc.c"
+#include "world/common/npc/Toad/patrol.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Dryite/idle.inc.c"
+#include "world/common/npc/Mouser/idle.inc.c"
+#include "world/common/npc/Penguin/idle.inc.c"
+#include "world/common/npc/Koopa/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_Dryite) = {
     Loop(0)
@@ -78,7 +81,7 @@ EvtScript N(EVS_NpcIdle_Toad_01) = {
 };
 
 EvtScript N(EVS_NpcIdle_ToadGuard_02) = {
-    IfEq(AF_KKJ_02, true)
+    IfEq(AF_KKJ01_GuardAskedAboutBedroom, true)
         Return
     EndIf
     Call(GetEntryID, LVar0)
@@ -88,7 +91,7 @@ EvtScript N(EVS_NpcIdle_ToadGuard_02) = {
     Call(WaitForPlayerInputEnabled)
     Call(DisablePlayerInput, true)
     Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Yellow_Talk, ANIM_ToadGuard_Yellow_Idle, 16, MSG_Intro_0042)
-    Set(AF_KKJ_02, true)
+    Set(AF_KKJ01_GuardAskedAboutBedroom, true)
     Call(DisablePlayerInput, false)
     Return
     End
@@ -151,13 +154,13 @@ EvtScript N(EVS_NpcInteract_ToadGuard_02) = {
             Else
                 Set(LVar3, 50)
             EndIf
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetNpcSpeed, NPC_SELF, Float(2.0))
             Call(NpcMoveTo, NPC_SELF, LVar3, -245, 0)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Call(SetNpcAnimation, NPC_ToadGuard_02, ANIM_ToadGuard_Yellow_Idle)
             Call(InterpNpcYaw, NPC_SELF, 180, 5)
-            Set(AF_KKJ_01, true)
+            Set(AF_KKJ01_MarioLetIntoBedroom, true)
             BindTrigger(Ref(N(EVS_ExitDoors_kkj_14_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Yellow_Talk, ANIM_ToadGuard_Yellow_Idle, 16, MSG_Intro_0041)
@@ -247,7 +250,7 @@ EvtScript N(EVS_NpcInit_ToadGuard_01) = {
 };
 
 EvtScript N(EVS_NpcInit_ToadGuard_02) = {
-    IfEq(AF_KKJ_01, true)
+    IfEq(AF_KKJ01_MarioLetIntoBedroom, true)
         Call(SetNpcPos, NPC_SELF, -50, 0, -245)
         Call(SetSelfVar, 0, 5)
     Else
@@ -292,7 +295,7 @@ NpcData N(NpcData_ToadMinister)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_ToadMinister),
         .drops  = NO_DROPS,
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_ToadMinister),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .animations = TOAD_MINISTER_ANIMS,
     },
@@ -302,7 +305,7 @@ NpcData N(NpcData_ToadMinister)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Toad_01),
         .drops  = NO_DROPS,
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .animations = TOAD_BLUE_ANIMS,
     },
@@ -324,7 +327,7 @@ NpcData N(NpcData_ToadMinister)[] = {
         },
         .init = &N(EVS_NpcInit_Toad_02),
         .drops  = NO_DROPS,
-        .settings = &N(NpcSettings_Toad_Wander),
+        .settings = &N(NpcSettings_Toadette_Wander),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .animations = TOAD_GREEN_ANIMS,
     },
@@ -370,7 +373,7 @@ NpcData N(NpcData_ToadMinister)[] = {
         },
         .init = &N(EVS_NpcInit_Toadette),
         .drops  = NO_DROPS,
-        .settings = &N(NpcSettings_Toad_Wander),
+        .settings = &N(NpcSettings_Toadette_Wander),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .animations = TOADETTE_ORANGE_ANIMS,
     },
@@ -380,7 +383,7 @@ NpcData N(NpcData_ToadMinister)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_ToadGuard_01),
         .drops  = NO_DROPS,
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_ToadGuard),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .animations = TOAD_GUARD_RED_ANIMS,
     },
@@ -390,7 +393,7 @@ NpcData N(NpcData_ToadMinister)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_ToadGuard_02),
         .drops  = NO_DROPS,
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_ToadGuard),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .animations = TOAD_GUARD_YELLOW_ANIMS,
     },

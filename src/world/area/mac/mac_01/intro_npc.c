@@ -1,17 +1,11 @@
 #include "mac_01.h"
 
-#define NAME_SUFFIX _Intro
-#include "world/common/npc/Luigi.inc.c"
-#include "world/common/npc/Toad_Patrol.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#define NAME_SUFFIX
-
 NpcData N(NpcData_IntroNPCs)[] = {
     {
         .id = NPC_Luigi,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .settings = &N(NpcSettings_Luigi_Intro),
+        .settings = &N(NpcSettings_Luigi),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
@@ -20,7 +14,7 @@ NpcData N(NpcData_IntroNPCs)[] = {
         .id = NPC_IntroToad1,
         .pos = { -94.0f, 0.0f, -117.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_Toad_Stationary_Intro),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -44,7 +38,7 @@ NpcData N(NpcData_IntroNPCs)[] = {
                 .detectSize = { 10 },
             }
         },
-        .settings = &N(NpcSettings_Toad_Stationary_Intro),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_YELLOW_ANIMS,
@@ -54,7 +48,7 @@ NpcData N(NpcData_IntroNPCs)[] = {
         .id = NPC_IntroToad3,
         .pos = { -380.0f, 20.0f, -100.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_Toad_Stationary_Intro),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_GREEN_ANIMS,

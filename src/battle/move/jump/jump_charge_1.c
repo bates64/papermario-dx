@@ -8,7 +8,7 @@
 
 #include "battle/common/move/JumpSupport.inc.c"
 
-#include "world/common/todo/IsJumpMaxCharged.inc.c"
+#include "battle/common/IsJumpMaxCharged.inc.c"
 
 BSS b32 N(HasCharged);
 
@@ -39,7 +39,7 @@ API_CALLABLE(N(func_802A1108_74D678)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/UnkMoveFunc2.inc.c"
+#include "battle/common/UnkMoveFunc2.inc.c"
 
 API_CALLABLE(N(GetChargeMessage)) {
     if (!N(HasCharged)) {

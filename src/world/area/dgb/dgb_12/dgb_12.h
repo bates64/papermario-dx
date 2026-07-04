@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file dgb_12.h
 /// @brief Tubba's Castle - Spike Trap Room (2F)
 

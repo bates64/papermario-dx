@@ -1,7 +1,5 @@
 #include "tik_22.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 #include "world/common/entity/Pipe.inc.c"
 
 API_CALLABLE(N(ResetTrackVolumes)) {
@@ -57,7 +55,6 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-#define DROPLET_MODEL MODEL_sizuku
 #include "../common/DripVolumes.inc.c"
 
 DripVolumeList N(DripVolumes) = {
@@ -84,6 +81,7 @@ DripVolumeList N(DripVolumes) = {
 
 EvtScript N(EVS_SetupDrips) = {
     Set(LVar0, Ref(N(DripVolumes)))
+    Set(LVar1, MODEL_sizuku)
     Exec(N(EVS_CreateDripVolumes))
     Return
     End
@@ -102,7 +100,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0, -200, -100, -500)
         TEX_PAN_PARAMS_FREQ(    0,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Wait(1)
     Exec(N(EVS_EnterMap))

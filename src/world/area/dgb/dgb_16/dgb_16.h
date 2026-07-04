@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file dgb_16.h
 /// @brief Tubba's Castle - Sleeping Clubbas Room (3F)
 

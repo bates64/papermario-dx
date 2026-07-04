@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file flo_00.h
 /// @brief Flower Fields - Center
 
@@ -9,7 +11,6 @@
 #include "mapfs/flo_00_shape.h"
 #include "mapfs/flo_00_hit.h"
 
-#include "sprite/npc/Lakilulu.h"
 #include "sprite/npc/WorldLakilester.h"
 #include "sprite/npc/WorldParakarry.h"
 
@@ -29,7 +30,7 @@ enum {
 
 enum {
     MV_BeanstalkSceneSync       = MapVar(10),
-    MV_BeanstalkItemEntity      = MapVar(11),
+    MV_ItemEntity_Beanstalk     = MapVar(11),
 };
 
 #define NAMESPACE flo_00

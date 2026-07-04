@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file omo_15.h
 /// @brief Shy Guy's Toybox - RED General Guy Room
 
@@ -25,7 +27,7 @@ enum {
 };
 
 enum {
-    MV_Unk_01           = MapVar(1),
+    MV_SpiritCardData   = MapVar(1),
 };
 
 #define NAMESPACE omo_15

@@ -3,8 +3,6 @@
 
 #include "../common/LavaGlowLighting.inc.c"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_StartTexPanners) = {
     // background lava fall
     Call(SetTexPanner, MODEL_yougan1, TEX_PANNER_0)
@@ -13,7 +11,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP(   0, -800,   0,   0)
         TEX_PAN_PARAMS_FREQ(   0,    1,   0,   0)
         TEX_PAN_PARAMS_INIT(   0,    0,   0,   0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // lava channel
     Call(SetTexPanner, MODEL_yougan, TEX_PANNER_1)
@@ -23,7 +21,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( 800,   0, 1600,   0)
         TEX_PAN_PARAMS_FREQ(   1,   0,    1,   0)
         TEX_PAN_PARAMS_INIT(   0,   0,    0,   0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // smoke
     Call(SetTexPanner, MODEL_kem1, TEX_PANNER_3)
@@ -32,7 +30,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( -200,    0,  600, -400)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_kem2, TEX_PANNER_4)
     Thread
@@ -40,7 +38,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( 500,    0,    0, -400)
         TEX_PAN_PARAMS_FREQ(   1,    0,    0,    1)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End
@@ -68,7 +66,6 @@ LavaReset N(SafeFloorColliders)[] = {
     { .colliderID = NO_COLLIDER }
 };
 
-// unused
 EvtScript N(EVS_AnimateLavaScale) = {
     Call(DisablePlayerInput, true)
     Call(MakeLerp, 1, 100, 200, EASING_LINEAR)
@@ -116,7 +113,7 @@ EvtScript N(EVS_Main) = {
     Set(LVar0, N(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Wait(1)
-    Exec(N(EVS_802455A0))
+    Exec(N(EVS_UpdateLavaRoomDarkness))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_yougan_atari, SURFACE_TYPE_LAVA)
     Thread
         Call(ResetFromLava, Ref(N(SafeFloorColliders)))

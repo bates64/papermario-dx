@@ -1,9 +1,9 @@
 #include "kkj_15.h"
 
 EvtScript N(EVS_ExtiDoor_Chapter2) = {
-    IfEq(AF_KKJ_06, false)
+    IfEq(AF_KKJ_PeachSawGrandHall, false)
         Call(DisablePlayerInput, true)
-        Call(DisablePartnerAI, 1)
+        Call(DisablePartnerAI, true)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_006B)
         Call(EnablePartnerAI)
         Call(DisablePlayerInput, false)
@@ -14,7 +14,7 @@ EvtScript N(EVS_ExtiDoor_Chapter2) = {
     Set(LVar3, DOOR_SWING_IN)
     Exec(ExitSingleDoor)
     Wait(17)
-    IfEq(AF_KKJ_06, false)
+    IfEq(AF_KKJ_PeachSawGrandHall, false)
         Call(GotoMap, Ref("kkj_11"), kkj_11_ENTRY_7)
     Else
         Call(GotoMap, Ref("kkj_11"), kkj_11_ENTRY_3)

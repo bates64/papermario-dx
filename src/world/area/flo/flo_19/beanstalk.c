@@ -49,8 +49,6 @@ API_CALLABLE(N(SetScreenFadeAmount)) {
     return ApiStatus_DONE2;
 }
 
-#include "common/CosInterpMinMax.inc.c"
-
 EvtScript N(EVS_FadeOutToBlack) = {
     Set(LVar0, 0)
     Label(10)
@@ -106,8 +104,8 @@ EvtScript N(EVS_SetInteriorVineGrowth) = {
 EvtScript N(EVS_Enter_Beanstalk) = {
     Call(DisablePlayerInput, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Call(DisablePartnerAI, 0)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(DisablePartnerAI, false)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o108, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o122, COLLIDER_FLAGS_UPPER_MASK)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_LOOK_AT_POINT, false)
@@ -175,7 +173,7 @@ EvtScript N(EVS_Enter_Beanstalk) = {
     Set(LVarF, 0)
     Loop(344)
         Add(LVarF, 1)
-        Call(N(CosInterpMinMax), LVarF, LVar0, -210, 0, 344, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar0, -210, 0, 344, 0, 0)
         SetF(LVar1, LVar0)
         MulF(LVar1, Float(-3.0))
         Call(TranslateModel, MODEL_o142, Float(1.313), LVar0, Float(-0.56640625))
@@ -215,7 +213,7 @@ EvtScript N(EVS_Exit_Beanstalk) = {
         Call(DisablePlayerInput, true)
         Call(InterruptUsePartner)
         Wait(15)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Set(AF_FLO_RidingBeanstalk, true)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o108, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o122, COLLIDER_FLAGS_UPPER_MASK)
@@ -275,7 +273,7 @@ EvtScript N(EVS_Exit_Beanstalk) = {
             Set(LVarF, 0)
             Loop(344)
                 Add(LVarF, 1)
-                Call(N(CosInterpMinMax), LVarF, LVar0, 0, -210, 344, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar0, 0, -210, 344, 0, 0)
                 SetF(LVar1, LVar0)
                 MulF(LVar1, Float(-3.0))
                 Call(TranslateModel, MODEL_o142, Float(1.313), LVar0, Float(-0.56640625))
@@ -366,7 +364,7 @@ EvtScript N(EVS_Scene_BeanstalkGrowing) = {
             EndIf
         EndIf
         Add(LVarF, 1)
-        Call(N(CosInterpMinMax), LVarF, LVar0, -350, 0, 400, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar0, -350, 0, 400, 0, 0)
         SetF(MV_BeanstalkGrowthProgress, LVarF)
         MulF(MV_BeanstalkGrowthProgress, Float(1.6))
         SetF(LVar2, LVar0)

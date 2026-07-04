@@ -3,12 +3,8 @@
 #include "sprite/player.h"
 #include "inventory.h"
 
-#include "world/common/npc/StarSpirit.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
-#include "world/common/complete/GiveReward.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_Mamar) = {
     Loop(0)
@@ -38,8 +34,8 @@ API_CALLABLE(N(UpgradeStarPowerCh2)) {
 }
 
 EvtScript N(EVS_Scene_RescuedMamar) = {
-    Call(DisablePartnerAI, 0)
-    Call(func_802CF56C, 2)
+    Call(DisablePartnerAI, false)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Set(LVar3, LVar0)
     Add(LVar3, -50)
@@ -96,7 +92,7 @@ EvtScript N(EVS_Scene_RescuedMamar) = {
     Call(PlaySoundAtPlayer, SOUND_GET_STAR_POWER_WAVE, SOUND_SPACE_DEFAULT)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, 1, 30)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, 1, 30)
     Wait(30 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_Mamar, ANIM_WorldMamar_Idle)
@@ -219,9 +215,9 @@ EvtScript N(EVS_NpcInteract_TradingToad) = {
         Return
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_CH2_00F0)
-    EVT_CHOOSE_ANY_CONSUMABLE(2)
+    EVT_CHOOSE_ANY_CONSUMABLE(NPC_TradingToad)
     Switch(LVar0)
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_CH2_00F4)
             Return
         CaseEq(ITEM_NUTTY_CAKE)
@@ -269,27 +265,10 @@ NpcData N(NpcData_TradingToad) = {
     .pos = { 0.0f, 2.0f, 150.0f },
     .yaw = 90,
     .init = &N(EVS_NpcInit_TradingToad),
-    .settings = &N(NpcSettings_Toad_Stationary),
+    .settings = &N(NpcSettings_Toad),
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Toad_Pink_Idle,
-        .walk   = ANIM_Toad_Pink_Walk,
-        .run    = ANIM_Toad_Pink_Run,
-        .chase  = ANIM_Toad_Pink_Run,
-        .anim_4 = ANIM_Toad_Pink_Idle,
-        .anim_5 = ANIM_Toad_Pink_Idle,
-        .death  = ANIM_Toad_Pink_Idle,
-        .hit    = ANIM_Toad_Pink_Disappointed,
-        .anim_8 = ANIM_Toad_Pink_Run,
-        .anim_9 = ANIM_Toad_Pink_Run,
-        .anim_A = ANIM_Toad_Pink_Run,
-        .anim_B = ANIM_Toad_Pink_Run,
-        .anim_C = ANIM_Toad_Pink_Run,
-        .anim_D = ANIM_Toad_Pink_Run,
-        .anim_E = ANIM_Toad_Pink_Run,
-        .anim_F = ANIM_Toad_Pink_Run,
-    },
+    .animations = TOAD_PINK_ANIMS,
     .tattle = MSG_NpcTattle_PrizeToad,
 };
 

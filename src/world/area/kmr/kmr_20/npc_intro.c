@@ -2,12 +2,7 @@
 #include "model.h"
 #include "sprite/player.h"
 
-#define NAME_SUFFIX _Intro
-#include "world/common/entity/Pipe.inc.c"
-#include "foliage.h"
-#define NAME_SUFFIX
-
-API_CALLABLE(N(func_80241C9C_8EDABC)) {
+API_CALLABLE(N(HideWorldOutsideMariosHouse)) {
     mdl_group_set_custom_gfx(MODEL_g62, CUSTOM_GFX_NONE, ENV_TINT_SHROUD, true);
     mdl_set_shroud_tint_params(0, 0, 0, 255);
 
@@ -15,13 +10,6 @@ API_CALLABLE(N(func_80241C9C_8EDABC)) {
     gCameras[CAM_DEFAULT].bgColor[1] = 0;
     gCameras[CAM_DEFAULT].bgColor[2] = 0;
 
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(N(func_80241CF0_8EDB10)) {
-    Bytecode* args = script->ptrReadPos;
-
-    gCameras[CAM_DEFAULT].moveSpeed = evt_get_float_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
@@ -62,10 +50,10 @@ EvtScript N(EVS_Player_EnterPipe_Intro) = {
     Call(DisablePlayerPhysics, true)
     Call(HidePlayerShadow, true)
     Set(LVar0, kmr_20_ENTRY_4)
-    Call(N(Pipe_GetEntryPos_Intro))
+    Call(N(Pipe_GetEntryPos))
     Call(PlayerMoveTo, LVar1, LVar3, 3)
     Set(LVar0, kmr_20_ENTRY_4)
-    Call(N(Pipe_GetEntryPos_Intro))
+    Call(N(Pipe_GetEntryPos))
     Call(SetPlayerPos, LVar1, LVar2, LVar3)
     Wait(2)
     Call(PlaySoundAtPlayer, SOUND_ENTER_PIPE, SOUND_SPACE_DEFAULT)
@@ -78,7 +66,7 @@ EvtScript N(EVS_Player_EnterPipe_Intro) = {
             Wait(1)
         EndLoop
     EndThread
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_VERTICAL_PIPE_CURL, 1, 1, 0)
     Wait(25)
     Return
@@ -90,10 +78,10 @@ EvtScript N(EVS_Luigi_EnterPipe_Intro) = {
     Call(SetNpcFlagBits, NPC_Scene_Luigi, NPC_FLAG_FLYING, true)
     Call(EnableNpcShadow, NPC_Scene_Luigi, false)
     Set(LVar0, kmr_20_ENTRY_4)
-    Call(N(Pipe_GetEntryPos_Intro))
+    Call(N(Pipe_GetEntryPos))
     Call(NpcMoveTo, NPC_Scene_Luigi, LVar1, LVar3, 3)
     Set(LVar0, kmr_20_ENTRY_4)
-    Call(N(Pipe_GetEntryPos_Intro))
+    Call(N(Pipe_GetEntryPos))
     Call(SetNpcPos, NPC_Scene_Luigi, LVar1, LVar2, LVar3)
     Wait(2)
     Call(PlaySoundAtNpc, NPC_Scene_Luigi, SOUND_ENTER_PIPE, SOUND_SPACE_DEFAULT)
@@ -108,19 +96,9 @@ EvtScript N(EVS_Luigi_EnterPipe_Intro) = {
             Wait(1)
         EndLoop
     EndThread
-    Call(SetNpcImgFXFlags, NPC_Scene_Luigi, IMGFX_FLAG_800)
+    Call(SetNpcImgFXFlags, NPC_Scene_Luigi, IMGFX_FLAG_HOLD_DONE)
     Call(SetNpcImgFXParams, NPC_Scene_Luigi, IMGFX_SET_ANIM, IMGFX_ANIM_VERTICAL_PIPE_CURL, 1, 1, 0)
     Wait(25)
-    Return
-    End
-};
-
-EvtScript N(EVS_FocusCam_Unused) = {
-    Call(UseSettingsFrom, CAM_DEFAULT, 250, 30, -80)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(N(func_80241CF0_8EDB10), Float(1.8))
-    Call(InterpCamTargetPos, 0, 1, 250, 30, -80, 10)
-    Call(N(func_80241CF0_8EDB10), 1)
     Return
     End
 };
@@ -174,23 +152,6 @@ EvtScript N(EVS_OpenAndCloseDoor_Intro) = {
     Call(EnableGroup, MODEL_g72, false)
     Return
     End
-};
-
-s32 N(D_8024FD28_8FBB48)[] = {
-    3,
-    34, 35, 36,
-};
-
-s32 N(D_8024FD38_8FBB58)[] = {
-    3,
-    422, 37, -195,
-    422, 48, -195,
-    422, 12, -195,
-};
-
-s32* N(UnknownLists)[] = {
-    N(D_8024FD28_8FBB48), 0,
-    N(D_8024FD38_8FBB58), 0,
 };
 
 EvtScript N(EVS_Scene_BeginGame) = {
@@ -342,7 +303,7 @@ EvtScript N(EVS_Scene_BeginGame) = {
     Call(EnableGroup, MODEL_g21, true)
     Call(EnableGroup, MODEL_g49, true)
     Call(EnableModel, MODEL_g56, true)
-    Call(N(func_80241C9C_8EDABC))
+    Call(N(HideWorldOutsideMariosHouse))
     Call(RotateGroup, MODEL_g60, 90, 1, 0, 0)
     Call(RotateGroup, MODEL_g34, 90, -1, 0, 0)
     Call(EnableGroup, MODEL_g60, false)

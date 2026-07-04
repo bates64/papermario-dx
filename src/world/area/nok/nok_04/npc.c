@@ -23,9 +23,10 @@ typedef struct FuzzyThread {
 } FuzzyThread; //size = 0x48
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
+#include "world/common/util/LoadPartyImage.inc.c"
 
-#include "world/common/enemy/Fuzzy.inc.c"
-#include "world/common/npc/Koopa.inc.c"
+#include "world/common/enemy/Fuzzy/idle.inc.c"
+#include "world/common/npc/Koopa/idle.inc.c"
 
 #include "../common/GetIntoShell.inc.c"
 
@@ -37,8 +38,6 @@ s32 N(TreeHidingSpotPositions)[] = {
     158, 135, 157,
     281, 156, 202,
 };
-
-#include "common/CosInterpMinMax.inc.c"
 
 EvtScript N(EVS_AnimBranch_JumpTo) = {
     Set(LVar2, LVar0)
@@ -58,7 +57,7 @@ EvtScript N(EVS_AnimBranch_JumpTo) = {
         Add(LVar6, 1)
         SetF(LVar9, LVar8)
         MulF(LVar9, Float(-1.0))
-        Call(N(CosInterpMinMax), LVar6, LVar7, LVar9, LVar8, 3, 0, 0)
+        Call(CosInterpMinMax, LVar6, LVar7, LVar9, LVar8, 3, 0, 0)
         MulF(LVar8, Float(0.90625))
         Call(TranslateModel, LVar2, LVar7, LVar0, 0)
         IfEq(LVar1, 1)
@@ -563,7 +562,7 @@ EvtScript N(EVS_FuzzyBoss_TauntFromTree) = {
     EndIf
     Call(N(AnimateTreeBranch), 2, 0)
     Call(PlaySound, SOUND_SHAKE_TREE_LEAVES)
-    Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Anim0B)
+    Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Talk)
     Call(N(GetTreeHidingSpotPos), 2, LVar0, LVar1, LVar2)
     Call(N(SetThreadAnchorPos), LVar0, LVar1, LVar2)
     Call(N(SetThreadTargetLengthAngle), 50, 0, 0)
@@ -578,7 +577,7 @@ EvtScript N(EVS_FuzzyBoss_TauntFromTree) = {
     Else
         Set(LVar0, MSG_CH1_00BD)
     EndIf
-    Call(SpeakToPlayer, NPC_BossFuzzy, ANIM_Fuzzy_Anim0C, ANIM_Fuzzy_Idle, 5, LVar0)
+    Call(SpeakToPlayer, NPC_BossFuzzy, ANIM_Fuzzy_Shout, ANIM_Fuzzy_Idle, 5, LVar0)
     Call(SetMusic, 0, SONG_PLAYROOM, 0, VOL_LEVEL_FULL)
     Call(N(SetThreadTargetLengthAngle), 0, 0, 30 * DT)
     Wait(30 * DT)
@@ -723,7 +722,7 @@ EvtScript N(EVS_Unused_RandomlyReveal) = {
 
 EvtScript N(EVS_NpcDefeat_WrongFuzzy) = {
     Call(N(InitThreadData))
-    Call(SetNpcAnimation, NPC_AmbushFuzzy, ANIM_Fuzzy_Anim0B)
+    Call(SetNpcAnimation, NPC_AmbushFuzzy, ANIM_Fuzzy_Talk)
     Call(N(GetTreeHidingSpotPos), MV_LastWrongTreeIndex, LVar0, LVar1, LVar2)
     Call(N(SetThreadAnchorPos), LVar0, LVar1, LVar2)
     Sub(LVar1, 50)
@@ -851,10 +850,7 @@ EvtScript N(EVS_ShellPrompt) = {
     End
 };
 
-s32 N(ShellList)[] = {
-    ITEM_KOOPER_SHELL,
-    ITEM_NONE
-};
+ITEM_LIST(N(ShellList), ITEM_KOOPER_SHELL);
 
 EvtScript N(EVS_ChooseShell) = {
     BindPadlock(Ref(N(EVS_ShellPrompt)), TRIGGER_FORCE_ACTIVATE, 0, Ref(N(ShellList)), 0, 1)
@@ -898,7 +894,7 @@ EvtScript N(EVS_Scene_KooperArrives) = {
     Call(SetNpcAnimation, NPC_Kooper, ANIM_KooperWithoutShell_IdleAngry)
     Wait(20 * DT)
     Call(SpeakToPlayer, NPC_Kooper, ANIM_KooperWithoutShell_TalkAngry, ANIM_KooperWithoutShell_IdleAngry, 0, MSG_CH1_00C3)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(NpcFaceNpc, NPC_PARTNER, NPC_Kooper, 0)
     Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, NPC_Kooper, MSG_CH1_00C4)
     Call(SetNpcAnimation, NPC_Kooper, ANIM_KooperWithoutShell_Idle)
@@ -942,7 +938,7 @@ EvtScript N(EVS_Scene_KooperArrives) = {
     Call(NpcJump0, NPC_KoopersShell, LVar0, LVar1, LVar2, 30 * DT)
     Call(SetNpcPos, NPC_KoopersShell, NPC_DISPOSE_LOCATION)
     Call(SetNpcSprite, NPC_Kooper, ANIM_WorldKooper_Idle)
-    Call(SetNpcFlagBits, NPC_Kooper, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Kooper, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetNpcSprite, NPC_Kooper, ANIM_WorldKooper_Still)
     Wait(4 * DT)
     Call(EnableNpcBlur, NPC_KoopersShell, true)
@@ -985,7 +981,7 @@ EvtScript N(EVS_Scene_KooperArrives) = {
             Set(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         EndIf
     Call(N(ChangeNpcToPartner), NPC_Kooper, PARTNER_KOOPER)
-    Call(N(LoadPartyImage))
+    Call(N(LoadPartyImage), Ref("party_kameki"))
     Exec(N(EVS_PushPartnerSong))
     Wait(15 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_018A, 160, 40)
@@ -1262,11 +1258,11 @@ EvtScript N(EVS_HitTree_Correct) = {
             Call(SetNpcJumpscale, NPC_BossFuzzy, 0)
             Call(PlaySoundAtNpc, NPC_BossFuzzy, SOUND_SEQ_FUZZY_HOP, SOUND_SPACE_DEFAULT)
             Call(NpcJump0, NPC_BossFuzzy, LVarA, LVarD, LVarC, 30)
-            Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Anim09)
+            Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Confused)
             Set(LVar9, LVarC)
-            Call(SpeakToPlayer, NPC_BossFuzzy, ANIM_Fuzzy_Anim0C, ANIM_Fuzzy_Idle, 5, MSG_CH1_00BF)
+            Call(SpeakToPlayer, NPC_BossFuzzy, ANIM_Fuzzy_Shout, ANIM_Fuzzy_Idle, 5, MSG_CH1_00BF)
             Call(N(SetThreadTargetLengthAngle), 0, 0, 30)
-            Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Anim0B)
+            Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Talk)
             Set(LVarC, LVar9)
             Call(PlaySoundAtNpc, NPC_BossFuzzy, SOUND_SEQ_FUZZY_HOP, SOUND_SPACE_DEFAULT)
             Call(NpcJump0, NPC_BossFuzzy, LVarA, LVarB, LVarC, 30)
@@ -1300,11 +1296,11 @@ EvtScript N(EVS_HitTree_Correct) = {
             Call(SetNpcJumpscale, NPC_BossFuzzy, 0)
             Call(PlaySoundAtNpc, NPC_BossFuzzy, SOUND_SEQ_FUZZY_HOP, SOUND_SPACE_DEFAULT)
             Call(NpcJump0, NPC_BossFuzzy, LVarA, LVarD, LVarC, 30)
-            Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Anim09)
+            Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Confused)
             Set(LVar9, LVarC)
-            Call(SpeakToPlayer, NPC_BossFuzzy, ANIM_Fuzzy_Anim0C, ANIM_Fuzzy_Idle, 5, MSG_CH1_00C0)
+            Call(SpeakToPlayer, NPC_BossFuzzy, ANIM_Fuzzy_Shout, ANIM_Fuzzy_Idle, 5, MSG_CH1_00C0)
             Call(N(SetThreadTargetLengthAngle), 0, 0, 30)
-            Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Anim0B)
+            Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Talk)
             Set(LVarC, LVar9)
             Call(PlaySoundAtNpc, NPC_BossFuzzy, SOUND_SEQ_FUZZY_HOP, SOUND_SPACE_DEFAULT)
             Call(NpcJump0, NPC_BossFuzzy, LVarA, LVarB, LVarC, 30)
@@ -1325,8 +1321,8 @@ EvtScript N(EVS_HitTree_Correct) = {
             Call(N(AttachThreadBackNpc), LVarE)
             Call(SetModelFlags, MODEL_o177, MODEL_FLAG_USES_CUSTOM_GFX, true)
             Wait(20)
-            Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Anim09)
-            Call(SpeakToPlayer, NPC_BossFuzzy, ANIM_Fuzzy_Anim0C, ANIM_Fuzzy_Idle, 5, MSG_CH1_00C1)
+            Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Confused)
+            Call(SpeakToPlayer, NPC_BossFuzzy, ANIM_Fuzzy_Shout, ANIM_Fuzzy_Idle, 5, MSG_CH1_00C1)
             Wait(10 * DT)
             Call(N(AttachThreadFrontNpc), nullptr)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -1350,8 +1346,8 @@ EvtScript N(EVS_HitTree_Correct) = {
             Call(SetPlayerAnimation, ANIM_Mario1_Idle)
             Call(AddItem, ITEM_KOOPER_SHELL, EVT_IGNORE_ARG)
             Wait(10 * DT)
-            Call(SpeakToPlayer, NPC_BossFuzzy, ANIM_Fuzzy_Anim0C, ANIM_Fuzzy_Idle, 5, MSG_CH1_00C2)
-            Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Anim0B)
+            Call(SpeakToPlayer, NPC_BossFuzzy, ANIM_Fuzzy_Shout, ANIM_Fuzzy_Idle, 5, MSG_CH1_00C2)
+            Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Talk)
             Call(N(SetThreadTargetLengthAngle), 0, 0, 20 * DT)
             Wait(20 * DT)
             Call(SetModelFlags, MODEL_o177, MODEL_FLAG_USES_CUSTOM_GFX, false)
@@ -1406,7 +1402,7 @@ EvtScript N(EVS_HitTree_Wrong) = {
             Call(MakeItemEntity, ITEM_COIN, LVar0, 200, LVar2, ITEM_SPAWN_MODE_FALL_SPAWN_ALWAYS, 0)
             Wait(30)
         CaseLt(1000)
-            Call(SetNpcAnimation, NPC_AmbushFuzzy, ANIM_Fuzzy_Anim06)
+            Call(SetNpcAnimation, NPC_AmbushFuzzy, ANIM_Fuzzy_Ambush)
             Call(SetNpcJumpscale, NPC_AmbushFuzzy, 1)
             Call(SetNpcPos, NPC_AmbushFuzzy, LVarA, LVarB, LVarC)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)

@@ -109,7 +109,7 @@ EvtScript N(EVS_Scene_TheEnd) = {
     Call(SetNpcAnimation, NPC_ParadePeach, ANIM_ParadePeach_ShadeIdle)
     Call(SetNpcYaw, NPC_ParadePeach, 270)
     Call(SetNpcPos, NPC_ParadePeach, 560, 0, -180)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetNpcPos, NPC_PARTNER, 0, -500, 0)
     Call(EnableGroup, MODEL_the_end, false)

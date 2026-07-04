@@ -1,25 +1,28 @@
 #include "common.h"
 #include "model.h"
 
-#ifndef ROCKING_CHAIR_CENTER_X
-#error ROCKING_CHAIR_CENTER_X is not defined!
-#endif
-
 /*
-    Also assumes the following are defined:
-    MODEL_i1, MODEL_i2, MODEL_i3
-    COLLIDER_i1, COLLIDER_i2, COLLIDER_i3
-*/
-
+ *  Nonphysical rocking-chair oscillator state.
+ *
+ *  The chair does not compute real torque, inertia, or damping. Instead,
+ *  leftAccum and rightAccum are opposing accumulators. Their difference is used
+ *  as the per-frame angular velocity:
+ *
+ *      rockAngle += (leftAccum - rightAccum);
+ *
+ *  thresholdAngle is a switching threshold, not a true physical equilibrium.
+ *  Once rockAngle crosses it, the opposite accumulator is advanced more strongly
+ *  by counterWeight to reverse the rocking direction.
+ */
 typedef struct RockingChairPhysics {
-    /* 0x00 */ f32 angleDelta;
-    /* 0x04 */ f32 angularAccel;
-    /* 0x08 */ f32 rotAngle;
+    /* 0x00 */ f32 angularVel;
+    /* 0x04 */ f32 accumRate;
+    /* 0x08 */ f32 rockAngle;
     /* 0x0C */ f32 verticalOffset;
-    /* 0x10 */ f32 angleB;
-    /* 0x14 */ f32 angleA;
-    /* 0x18 */ f32 mass;
-    /* 0x1C */ f32 equilibriumAngle;
+    /* 0x10 */ f32 leftAccum;
+    /* 0x14 */ f32 rightAccum;
+    /* 0x18 */ f32 counterWeight;
+    /* 0x1C */ f32 thresholdAngle;
 } RockingChairPhysics; // size = 0x20
 
 enum RockingChairState {
@@ -31,22 +34,29 @@ enum RockingChairState {
 API_CALLABLE(N(UpdateRockingChair)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     CollisionStatus* collisionStatus = &gCollisionStatus;
+    Bytecode* args = script->ptrReadPos;
+    f32 chairCenterX = evt_get_float_variable(script, *args++);
+    s32 modelA = evt_get_variable(script, *args++);
+    s32 modelB = evt_get_variable(script, *args++);
+    s32 modelC = evt_get_variable(script, *args++);
+    s32 colliderA = evt_get_variable(script, *args++);
+    s32 colliderB = evt_get_variable(script, *args++);
+    s32 colliderC = evt_get_variable(script, *args++);
     RockingChairPhysics* physics;
     f32 centerX, centerY, centerZ;
     Matrix4f tempMtx;
     Model* model;
-    s16 currentFloor;
 
     if (isInitialCall) {
         physics = heap_malloc(sizeof(*physics));
         script->functionTempPtr[1] = physics;
-        physics->angleDelta = 0;
+        physics->angularVel = 0;
         physics->verticalOffset = 0;
-        physics->rotAngle = 0;
-        physics->angleB = 0;
-        physics->angleA = 0;
-        physics->angularAccel = 0.1f;
-        physics->mass = 3.0f;
+        physics->rockAngle = 0;
+        physics->leftAccum = 0;
+        physics->rightAccum = 0;
+        physics->accumRate = 0.1f;
+        physics->counterWeight = 3.0f;
         script->functionTemp[0] = CHAIR_STATE_INITIAL;
         script->functionTemp[2] = 0;
         script->functionTemp[3] = 0;
@@ -55,112 +65,118 @@ API_CALLABLE(N(UpdateRockingChair)) {
     physics = script->functionTempPtr[1];
     switch (script->functionTemp[0]) {
         case CHAIR_STATE_INITIAL:
-            if (collisionStatus->curFloor == COLLIDER_i3) {
+            if (collisionStatus->curFloor == colliderC) {
                 script->functionTemp[0] = CHAIR_STATE_PLAYER_TOUCHING;
             }
-            if (collisionStatus->curFloor == COLLIDER_i2) {
+            if (collisionStatus->curFloor == colliderB) {
                 script->functionTemp[0] = CHAIR_STATE_PLAYER_TOUCHING;
             }
-            physics->angleDelta = 0.0f;
+            physics->angularVel = 0.0f;
             physics->verticalOffset = 0.0f;
-            physics->angleB = 0.0f;
-            physics->angleA = 0.0f;
-            physics->rotAngle = 0.0f;
-            physics->angularAccel = 0.1f;
-            physics->mass = 3.0f;
-            physics->equilibriumAngle = 20.0f;
+            physics->leftAccum = 0.0f;
+            physics->rightAccum = 0.0f;
+            physics->rockAngle = 0.0f;
+            physics->accumRate = 0.1f;
+            physics->counterWeight = 3.0f;
+            physics->thresholdAngle = 20.0f;
             break;
         case CHAIR_STATE_PLAYER_TOUCHING:
-            //TODO odd match
-            currentFloor = collisionStatus->curFloor;
-            if (currentFloor != COLLIDER_i3 && collisionStatus->curFloor != COLLIDER_i2) {
+            if (collisionStatus->curFloor != colliderC && collisionStatus->curFloor != colliderB) {
                 script->functionTemp[3] = 120; // settle time
                 script->functionTemp[0] = CHAIR_STATE_PLAYER_NOT_TOUCHING;
             }
-            if (fabsf(physics->rotAngle) < 5.0f) {
-                physics->angularAccel = fabsf(ROCKING_CHAIR_CENTER_X - playerStatus->pos.x) / 200.0f;
+            if (fabsf(physics->rockAngle) < 5.0f) {
+                physics->accumRate = fabsf(chairCenterX - playerStatus->pos.x) / 200.0f;
             } else {
-                physics->angularAccel = 0.1f;
+                physics->accumRate = 0.1f;
             }
-            if (playerStatus->pos.x <= ROCKING_CHAIR_CENTER_X) {
-                physics->angleB += physics->angularAccel;
-                physics->equilibriumAngle = SQ(fabsf(ROCKING_CHAIR_CENTER_X - playerStatus->pos.x)) / 50.0f;
-                if (physics->equilibriumAngle > 15.0f) {
-                    physics->equilibriumAngle = 15.0f;
+            if (playerStatus->pos.x <= chairCenterX) {
+                // increase accumulator
+                physics->leftAccum += physics->accumRate;
+                // calculate player position dependent threshold angle
+                physics->thresholdAngle = SQ(fabsf(chairCenterX - playerStatus->pos.x)) / 50.0f;
+                if (physics->thresholdAngle > 15.0f) {
+                    physics->thresholdAngle = 15.0f;
                 }
-                if (physics->rotAngle > physics->equilibriumAngle) {
-                    physics->angleA += physics->angularAccel * physics->mass;
+                // when over threshold, increase the OTHER accumulator
+                if (physics->rockAngle > physics->thresholdAngle) {
+                    physics->rightAccum += physics->accumRate * physics->counterWeight;
                 }
             } else {
-                physics->angleA += physics->angularAccel;
-                physics->equilibriumAngle = -SQ(-fabsf(ROCKING_CHAIR_CENTER_X - playerStatus->pos.x) * 0.5f) / 50.0f;
-                if (physics->equilibriumAngle < -5.0f) {
-                    physics->equilibriumAngle = -5.0f;
+                // increase accumulator
+                physics->rightAccum += physics->accumRate;
+                // calculate player position dependent threshold angle
+                physics->thresholdAngle = -SQ(fabsf(chairCenterX - playerStatus->pos.x)) / 200.0f;
+                if (physics->thresholdAngle < -5.0f) {
+                    physics->thresholdAngle = -5.0f;
                 }
-                if (physics->rotAngle < physics->equilibriumAngle) {
-                    physics->angleB += physics->angularAccel * physics->mass;
+                // when under threshold, increase the OTHER accumulator
+                if (physics->rockAngle < physics->thresholdAngle) {
+                    physics->leftAccum += physics->accumRate * physics->counterWeight;
                 }
             }
-            if ((physics->angleB > 100.0) && (physics->angleA > 100.0)) {
-                physics->angleB -= 100.0;
-                physics->angleA -= 100.0;
+            // mitigate accumulator secular drift
+            if ((physics->leftAccum > 100.0f) && (physics->rightAccum > 100.0f)) {
+                physics->leftAccum -= 100.0f;
+                physics->rightAccum -= 100.0f;
             }
-            // clamp difference to 1.5 degrees
-            if (fabsf(physics->angleB - physics->angleA) > 1.5) {
-                if (physics->angleA > physics->angleB) {
-                    physics->angleA = physics->angleB + 1.5;
+            // clamp accumulator difference to 1.5
+            if (fabsf(physics->leftAccum - physics->rightAccum) > 1.5f) {
+                if (physics->rightAccum > physics->leftAccum) {
+                    physics->rightAccum = physics->leftAccum + 1.5f;
                 } else {
-                    physics->angleB = physics->angleA + 1.5;
+                    physics->leftAccum = physics->rightAccum + 1.5f;
                 }
             }
-            physics->angleDelta = physics->angleB - physics->angleA;
-            physics->rotAngle += physics->angleDelta;
+            physics->angularVel = physics->leftAccum - physics->rightAccum;
+            physics->rockAngle += physics->angularVel;
             break;
         case CHAIR_STATE_PLAYER_NOT_TOUCHING:
-            if (collisionStatus->curFloor == COLLIDER_i3) {
+            if (collisionStatus->curFloor == colliderC) {
                 script->functionTemp[0] = CHAIR_STATE_PLAYER_TOUCHING;
             }
-            if (collisionStatus->curFloor == COLLIDER_i2) {
+            if (collisionStatus->curFloor == colliderB) {
                 script->functionTemp[0] = CHAIR_STATE_PLAYER_TOUCHING;
             }
-
-            physics->angularAccel = 0.1f;
-            physics->equilibriumAngle = 0;
-            physics->angleB += physics->angularAccel;
-
-            if (physics->rotAngle > physics->equilibriumAngle) {
-                physics->angleA += physics->angularAccel * physics->mass;
+            // accumulate slowly
+            physics->accumRate = 0.1f;
+            physics->leftAccum += physics->accumRate;
+            // add counter-accumulation when above threshold
+            physics->thresholdAngle = 0.0f;
+            if (physics->rockAngle > physics->thresholdAngle) {
+                physics->rightAccum += physics->accumRate * physics->counterWeight;
             }
-            if ((physics->angleB > 100.0) && ( physics->angleA > 100.0)) {
-                physics->angleB -= 100.0;
-                physics->angleA -= 100.0;
+            // mitigate accumulator secular drift
+            if ((physics->leftAccum > 100.0f) && ( physics->rightAccum > 100.0f)) {
+                physics->leftAccum -= 100.0f;
+                physics->rightAccum -= 100.0f;
             }
-
-            if (fabsf(physics->angleB - physics->angleA) > 0.5) {
-                if (physics->angleA > physics->angleB) {
-                    physics->angleA = physics->angleB + 0.5;
+            // clamp accumulator difference to 0.5
+            if (fabsf(physics->leftAccum - physics->rightAccum) > 0.5f) {
+                if (physics->rightAccum > physics->leftAccum) {
+                    physics->rightAccum = physics->leftAccum + 0.5f;
                 } else {
-                    physics->angleB = physics->angleA + 0.5;
+                    physics->leftAccum = physics->rightAccum + 0.5f;
                 }
             }
             if (script->functionTemp[3] < 0) {
-                f32 zero = 0.0f;
-                physics->angleA = zero;
-                physics->angleB = zero;
-                physics->angleDelta = zero;
-                physics->rotAngle = zero;
+                // snap to neutral after settling period
+                physics->rightAccum = 0.0f;
+                physics->leftAccum = 0.0f;
+                physics->angularVel = 0.0f;
+                physics->rockAngle = 0.0f;
             } else {
                 script->functionTemp[3]--;
             }
-            physics->angleDelta = physics->angleB - physics->angleA;
-            physics->rotAngle += physics->angleDelta;
+            physics->angularVel = physics->leftAccum - physics->rightAccum;
+            physics->rockAngle += physics->angularVel;
             break;
     }
 
     // play creak sound once per cycle
-    if (physics->rotAngle <= -7.0f) {
+    if (physics->rockAngle <= -7.0f) {
         if (script->functionTemp[2] != -1) {
-            get_collider_center(COLLIDER_i3, &centerX, &centerY, &centerZ);
+            get_collider_center(colliderC, &centerX, &centerY, &centerZ);
             sfx_play_sound_at_position(SOUND_CREAKY_ROCKING, SOUND_SPACE_DEFAULT, centerX, centerY, centerZ);
             script->functionTemp[2] = -1;
         }
@@ -168,28 +184,28 @@ API_CALLABLE(N(UpdateRockingChair)) {
         script->functionTemp[2] = 0;
     }
 
-    physics->verticalOffset = SQ(physics->rotAngle) / 90.0f;
+    physics->verticalOffset = SQ(physics->rockAngle) / 90.0f;
 
-    model = get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_i3));
+    model = get_model_from_list_index(get_model_list_index_from_tree_index(modelC));
     model->flags |= (MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM);
     guTranslateF(model->userTransformMtx, 0.0f, physics->verticalOffset, 0.0f);
-    guRotateF(tempMtx, physics->rotAngle, 0.0f, 0.0f, 1.0f);
+    guRotateF(tempMtx, physics->rockAngle, 0.0f, 0.0f, 1.0f);
     guMtxCatF(model->userTransformMtx, tempMtx, model->userTransformMtx);
-    update_collider_transform(COLLIDER_i3);
-    update_collider_transform(COLLIDER_i2);
+    update_collider_transform(colliderC);
+    update_collider_transform(colliderB);
 
-    model = get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_i2));
+    model = get_model_from_list_index(get_model_list_index_from_tree_index(modelB));
     model->flags |= (MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM);
     guTranslateF(model->userTransformMtx, 0.0f, physics->verticalOffset, 0.0f);
-    guRotateF(tempMtx, physics->rotAngle, 0.0f, 0.0f, 1.0f);
+    guRotateF(tempMtx, physics->rockAngle, 0.0f, 0.0f, 1.0f);
     guMtxCatF(model->userTransformMtx, tempMtx, model->userTransformMtx);
 
-    model = get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_i1));
+    model = get_model_from_list_index(get_model_list_index_from_tree_index(modelA));
     model->flags |= (MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM);
     guTranslateF(model->userTransformMtx, 0.0f, physics->verticalOffset, 0.0f);
-    guRotateF(tempMtx, physics->rotAngle, 0.0f, 0.0f, 1.0f);
+    guRotateF(tempMtx, physics->rockAngle, 0.0f, 0.0f, 1.0f);
     guMtxCatF(model->userTransformMtx, tempMtx, model->userTransformMtx);
-    update_collider_transform(COLLIDER_i1);
+    update_collider_transform(colliderA);
 
     return ApiStatus_BLOCK;
 }

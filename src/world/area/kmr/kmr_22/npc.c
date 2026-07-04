@@ -1,14 +1,15 @@
 #include "kmr_22.h"
 
-#include "world/common/npc/StarSpirit.h"
-#include "world/common/npc/KoopaBros.h"
-#include "world/common/enemy/ShyGuy.h"
+#include "world/common/npc/Dummy/idle.inc.c"
+#include "world/common/npc/StarSpirit/base.h"
 
-NpcSettings N(NpcSettings_Dummy) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/enemy/KoopaBros/base.h"
+#include "world/common/enemy/TubbaBlubba/base.h"
+#include "world/common/enemy/ShyGuy/base.h"
+#include "world/common/enemy/HuffNPuff/base.h"
+#include "world/common/enemy/RuffPuff/base.h"
+#include "world/common/enemy/CrystalKing/base.h"
+#include "world/common/npc/Bowser/base.h"
 
 #include "npc/lava_piranha.inc.c"
 
@@ -24,11 +25,7 @@ NpcSettings N(NpcSettings_Dummy) = {
 NpcData N(NpcData_Chapter1)[] = {
     {
         .id = NPC_Eldstar,
-#if VERSION_JP
-        .pos = { -40.0f, 96.0f, 0.0f },
-#else
         .pos = { -62.0f, 96.0f, 0.0f },
-#endif
         .yaw = 270,
         .init = &N(EVS_NpcInit_Eldstar),
         .settings = &N(NpcSettings_Dummy),
@@ -81,11 +78,7 @@ NpcData N(NpcData_Chapter1)[] = {
 NpcData N(NpcData_Chapter2)[] = {
     {
         .id = NPC_Mamar,
-#if VERSION_JP
-        .pos = { -40.0f, 96.0f, 0.0f },
-#else
         .pos = { -62.0f, 96.0f, 0.0f },
-#endif
         .yaw = 270,
         .init = &N(EVS_NpcInit_Mamar),
         .settings = &N(NpcSettings_Dummy),
@@ -106,8 +99,8 @@ NpcData N(NpcData_Chapter2)[] = {
             .walk   = ANIM_Tutankoopa_Idle,
             .run    = ANIM_Tutankoopa_Idle,
             .chase  = ANIM_Tutankoopa_Idle,
-            .anim_4 = ANIM_Tutankoopa_Idle,
-            .anim_5 = ANIM_Tutankoopa_Idle,
+            .alert  = ANIM_Tutankoopa_Idle,
+            .unused = ANIM_Tutankoopa_Idle,
             .death  = ANIM_Tutankoopa_Hurt,
             .hit    = ANIM_Tutankoopa_Hurt,
             .anim_8 = ANIM_Tutankoopa_Idle,
@@ -133,8 +126,8 @@ NpcData N(NpcData_Chapter2)[] = {
             .walk   = ANIM_ChainChomp_Still,
             .run    = ANIM_ChainChomp_Still,
             .chase  = ANIM_ChainChomp_Still,
-            .anim_4 = ANIM_ChainChomp_Still,
-            .anim_5 = ANIM_ChainChomp_Still,
+            .alert  = ANIM_ChainChomp_Still,
+            .unused = ANIM_ChainChomp_Still,
             .death  = ANIM_ChainChomp_Still,
             .hit    = ANIM_ChainChomp_Still,
             .anim_8 = ANIM_ChainChomp_Still,
@@ -159,8 +152,8 @@ NpcData N(NpcData_Chapter2)[] = {
             .walk   = ANIM_ChainChomp_Still,
             .run    = ANIM_ChainChomp_Still,
             .chase  = ANIM_ChainChomp_Still,
-            .anim_4 = ANIM_ChainChomp_Still,
-            .anim_5 = ANIM_ChainChomp_Still,
+            .alert  = ANIM_ChainChomp_Still,
+            .unused = ANIM_ChainChomp_Still,
             .death  = ANIM_ChainChomp_Still,
             .hit    = ANIM_ChainChomp_Still,
             .anim_8 = ANIM_ChainChomp_Still,
@@ -185,8 +178,8 @@ NpcData N(NpcData_Chapter2)[] = {
             .walk   = ANIM_ChainChomp_Still,
             .run    = ANIM_ChainChomp_Still,
             .chase  = ANIM_ChainChomp_Still,
-            .anim_4 = ANIM_ChainChomp_Still,
-            .anim_5 = ANIM_ChainChomp_Still,
+            .alert  = ANIM_ChainChomp_Still,
+            .unused = ANIM_ChainChomp_Still,
             .death  = ANIM_ChainChomp_Still,
             .hit    = ANIM_ChainChomp_Still,
             .anim_8 = ANIM_ChainChomp_Still,
@@ -211,8 +204,8 @@ NpcData N(NpcData_Chapter2)[] = {
             .walk   = ANIM_ChainChomp_Still,
             .run    = ANIM_ChainChomp_Still,
             .chase  = ANIM_ChainChomp_Still,
-            .anim_4 = ANIM_ChainChomp_Still,
-            .anim_5 = ANIM_ChainChomp_Still,
+            .alert  = ANIM_ChainChomp_Still,
+            .unused = ANIM_ChainChomp_Still,
             .death  = ANIM_ChainChomp_Still,
             .hit    = ANIM_ChainChomp_Still,
             .anim_8 = ANIM_ChainChomp_Still,
@@ -237,8 +230,8 @@ NpcData N(NpcData_Chapter2)[] = {
             .walk   = ANIM_ChainChomp_Still,
             .run    = ANIM_ChainChomp_Still,
             .chase  = ANIM_ChainChomp_Still,
-            .anim_4 = ANIM_ChainChomp_Still,
-            .anim_5 = ANIM_ChainChomp_Still,
+            .alert  = ANIM_ChainChomp_Still,
+            .unused = ANIM_ChainChomp_Still,
             .death  = ANIM_ChainChomp_Still,
             .hit    = ANIM_ChainChomp_Still,
             .anim_8 = ANIM_ChainChomp_Still,
@@ -256,11 +249,7 @@ NpcData N(NpcData_Chapter2)[] = {
 NpcData N(NpcData_Chapter3)[] = {
     {
         .id = NPC_Skolar,
-#if VERSION_JP
-        .pos = { -40.0f, 96.0f, 0.0f },
-#else
         .pos = { -62.0f, 96.0f, 0.0f },
-#endif
         .yaw = 270,
         .init = &N(EVS_NpcInit_Skolar),
         .settings = &N(NpcSettings_Dummy),
@@ -276,35 +265,14 @@ NpcData N(NpcData_Chapter3)[] = {
         .settings = &N(NpcSettings_Dummy),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldTubba_Anim06,
-            .walk   = ANIM_WorldTubba_Anim09,
-            .run    = ANIM_WorldTubba_Anim0C,
-            .chase  = ANIM_WorldTubba_Anim0C,
-            .anim_4 = ANIM_WorldTubba_Anim00,
-            .anim_5 = ANIM_WorldTubba_Anim00,
-            .death  = ANIM_WorldTubba_Anim00,
-            .hit    = ANIM_WorldTubba_Anim00,
-            .anim_8 = ANIM_WorldTubba_Anim00,
-            .anim_9 = ANIM_WorldTubba_Anim00,
-            .anim_A = ANIM_WorldTubba_Anim00,
-            .anim_B = ANIM_WorldTubba_Anim00,
-            .anim_C = ANIM_WorldTubba_Anim00,
-            .anim_D = ANIM_WorldTubba_Anim00,
-            .anim_E = ANIM_WorldTubba_Anim00,
-            .anim_F = ANIM_WorldTubba_Anim00,
-        },
+        .animations = TUBBA_ANIMS,
     },
 };
 
 NpcData N(NpcData_Chapter4)[] = {
     {
         .id = NPC_Muskular,
-#if VERSION_JP
-        .pos = { -40.0f, 96.0f, 0.0f },
-#else
         .pos = { -62.0f, 96.0f, 0.0f },
-#endif
         .yaw = 270,
         .init = &N(EVS_NpcInit_Muskular),
         .settings = &N(NpcSettings_Dummy),
@@ -321,22 +289,22 @@ NpcData N(NpcData_Chapter4)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = {
-            .idle   = ANIM_GeneralGuy_Anim02,
-            .walk   = ANIM_GeneralGuy_Anim02,
-            .run    = ANIM_GeneralGuy_Anim02,
-            .chase  = ANIM_GeneralGuy_Anim02,
-            .anim_4 = ANIM_GeneralGuy_Anim02,
-            .anim_5 = ANIM_GeneralGuy_Anim02,
-            .death  = ANIM_GeneralGuy_Anim02,
-            .hit    = ANIM_GeneralGuy_Anim02,
-            .anim_8 = ANIM_GeneralGuy_Anim02,
-            .anim_9 = ANIM_GeneralGuy_Anim02,
-            .anim_A = ANIM_GeneralGuy_Anim02,
-            .anim_B = ANIM_GeneralGuy_Anim02,
-            .anim_C = ANIM_GeneralGuy_Anim02,
-            .anim_D = ANIM_GeneralGuy_Anim02,
-            .anim_E = ANIM_GeneralGuy_Anim02,
-            .anim_F = ANIM_GeneralGuy_Anim02,
+            .idle   = ANIM_GeneralGuy_Idle,
+            .walk   = ANIM_GeneralGuy_Idle,
+            .run    = ANIM_GeneralGuy_Idle,
+            .chase  = ANIM_GeneralGuy_Idle,
+            .alert  = ANIM_GeneralGuy_Idle,
+            .unused = ANIM_GeneralGuy_Idle,
+            .death  = ANIM_GeneralGuy_Idle,
+            .hit    = ANIM_GeneralGuy_Idle,
+            .anim_8 = ANIM_GeneralGuy_Idle,
+            .anim_9 = ANIM_GeneralGuy_Idle,
+            .anim_A = ANIM_GeneralGuy_Idle,
+            .anim_B = ANIM_GeneralGuy_Idle,
+            .anim_C = ANIM_GeneralGuy_Idle,
+            .anim_D = ANIM_GeneralGuy_Idle,
+            .anim_E = ANIM_GeneralGuy_Idle,
+            .anim_F = ANIM_GeneralGuy_Idle,
         },
     },
     {
@@ -364,11 +332,7 @@ NpcData N(NpcData_Chapter4)[] = {
 NpcData N(NpcData_Chapter5)[] = {
     {
         .id = NPC_Misstar,
-#if VERSION_JP
-        .pos = { -40.0f, 96.0f, 0.0f },
-#else
         .pos = { -62.0f, 96.0f, 0.0f },
-#endif
         .yaw = 270,
         .init = &N(EVS_NpcInit_Misstar),
         .settings = &N(NpcSettings_Dummy),
@@ -385,40 +349,36 @@ NpcData N(NpcData_Chapter5)[] = {
         .flags = ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = LAVA_PIRANHA_HEAD_ANIMS,
-        .extraAnimations = N(D_80243848_902EB8),
+        .limitAnimations = N(LimitAnims_LavaPiranha),
     },
     {
         .id = NPC_LavaBud_01,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_LavaBud_01),
+        .init = &N(EVS_NpcInit_LavaBud),
         .settings = &N(NpcSettings_Dummy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = LAVA_PIRANHA_BUD_ANIMS,
-        .extraAnimations = N(D_80243854_902EC4),
+        .limitAnimations = N(LimitAnims_LavaBud),
     },
     {
         .id = NPC_LavaBud_02,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_LavaBud_01),
+        .init = &N(EVS_NpcInit_LavaBud),
         .settings = &N(NpcSettings_Dummy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = LAVA_PIRANHA_BUD_ANIMS,
-        .extraAnimations = N(D_80243854_902EC4),
+        .limitAnimations = N(LimitAnims_LavaBud),
     },
 };
 
 NpcData N(NpcData_Chapter6)[] = {
     {
         .id = NPC_Klevar,
-#if VERSION_JP
-        .pos = { -40.0f, 96.0f, 0.0f },
-#else
         .pos = { -62.0f, 96.0f, 0.0f },
-#endif
         .yaw = 270,
         .init = &N(EVS_NpcInit_Klevar),
         .settings = &N(NpcSettings_Dummy),
@@ -434,24 +394,7 @@ NpcData N(NpcData_Chapter6)[] = {
         .settings = &N(NpcSettings_Dummy),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_HuffNPuff_Anim01,
-            .walk   = ANIM_HuffNPuff_Anim01,
-            .run    = ANIM_HuffNPuff_Anim01,
-            .chase  = ANIM_HuffNPuff_Anim01,
-            .anim_4 = ANIM_HuffNPuff_Anim01,
-            .anim_5 = ANIM_HuffNPuff_Anim01,
-            .death  = ANIM_HuffNPuff_Anim01,
-            .hit    = ANIM_HuffNPuff_Anim01,
-            .anim_8 = ANIM_HuffNPuff_Anim01,
-            .anim_9 = ANIM_HuffNPuff_Anim01,
-            .anim_A = ANIM_HuffNPuff_Anim01,
-            .anim_B = ANIM_HuffNPuff_Anim01,
-            .anim_C = ANIM_HuffNPuff_Anim01,
-            .anim_D = ANIM_HuffNPuff_Anim01,
-            .anim_E = ANIM_HuffNPuff_Anim01,
-            .anim_F = ANIM_HuffNPuff_Anim01,
-        },
+        .animations = HUFF_N_PUFF_ANIMS,
     },
     {
         .id = NPC_HuffNPuff_Face,
@@ -461,24 +404,7 @@ NpcData N(NpcData_Chapter6)[] = {
         .settings = &N(NpcSettings_Dummy),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_HuffNPuff_Anim01,
-            .walk   = ANIM_HuffNPuff_Anim01,
-            .run    = ANIM_HuffNPuff_Anim01,
-            .chase  = ANIM_HuffNPuff_Anim01,
-            .anim_4 = ANIM_HuffNPuff_Anim01,
-            .anim_5 = ANIM_HuffNPuff_Anim01,
-            .death  = ANIM_HuffNPuff_Anim01,
-            .hit    = ANIM_HuffNPuff_Anim01,
-            .anim_8 = ANIM_HuffNPuff_Anim01,
-            .anim_9 = ANIM_HuffNPuff_Anim01,
-            .anim_A = ANIM_HuffNPuff_Anim01,
-            .anim_B = ANIM_HuffNPuff_Anim01,
-            .anim_C = ANIM_HuffNPuff_Anim01,
-            .anim_D = ANIM_HuffNPuff_Anim01,
-            .anim_E = ANIM_HuffNPuff_Anim01,
-            .anim_F = ANIM_HuffNPuff_Anim01,
-        },
+        .animations = HUFF_N_PUFF_ANIMS,
     },
     {
         .id = NPC_HuffNPuff_Arms,
@@ -488,24 +414,7 @@ NpcData N(NpcData_Chapter6)[] = {
         .settings = &N(NpcSettings_Dummy),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_HuffNPuff_Anim01,
-            .walk   = ANIM_HuffNPuff_Anim01,
-            .run    = ANIM_HuffNPuff_Anim01,
-            .chase  = ANIM_HuffNPuff_Anim01,
-            .anim_4 = ANIM_HuffNPuff_Anim01,
-            .anim_5 = ANIM_HuffNPuff_Anim01,
-            .death  = ANIM_HuffNPuff_Anim01,
-            .hit    = ANIM_HuffNPuff_Anim01,
-            .anim_8 = ANIM_HuffNPuff_Anim01,
-            .anim_9 = ANIM_HuffNPuff_Anim01,
-            .anim_A = ANIM_HuffNPuff_Anim01,
-            .anim_B = ANIM_HuffNPuff_Anim01,
-            .anim_C = ANIM_HuffNPuff_Anim01,
-            .anim_D = ANIM_HuffNPuff_Anim01,
-            .anim_E = ANIM_HuffNPuff_Anim01,
-            .anim_F = ANIM_HuffNPuff_Anim01,
-        },
+        .animations = HUFF_N_PUFF_ANIMS,
     },
     {
         .id = NPC_RuffPuff_01,
@@ -515,24 +424,7 @@ NpcData N(NpcData_Chapter6)[] = {
         .settings = &N(NpcSettings_Dummy),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_RuffPuff_Still,
-            .walk   = ANIM_RuffPuff_Still,
-            .run    = ANIM_RuffPuff_Grin,
-            .chase  = ANIM_RuffPuff_Grin,
-            .anim_4 = ANIM_RuffPuff_Still,
-            .anim_5 = ANIM_RuffPuff_Still,
-            .death  = ANIM_RuffPuff_Hurt,
-            .hit    = ANIM_RuffPuff_Hurt,
-            .anim_8 = ANIM_RuffPuff_Grin,
-            .anim_9 = ANIM_RuffPuff_Idle,
-            .anim_A = ANIM_RuffPuff_Idle,
-            .anim_B = ANIM_RuffPuff_Idle,
-            .anim_C = ANIM_RuffPuff_Idle,
-            .anim_D = ANIM_RuffPuff_Idle,
-            .anim_E = ANIM_RuffPuff_Idle,
-            .anim_F = ANIM_RuffPuff_Idle,
-        },
+        .animations = RUFF_PUFF_ANIMS,
     },
     {
         .id = NPC_RuffPuff_02,
@@ -541,35 +433,14 @@ NpcData N(NpcData_Chapter6)[] = {
         .settings = &N(NpcSettings_Dummy),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_RuffPuff_Still,
-            .walk   = ANIM_RuffPuff_Still,
-            .run    = ANIM_RuffPuff_Grin,
-            .chase  = ANIM_RuffPuff_Grin,
-            .anim_4 = ANIM_RuffPuff_Still,
-            .anim_5 = ANIM_RuffPuff_Still,
-            .death  = ANIM_RuffPuff_Hurt,
-            .hit    = ANIM_RuffPuff_Hurt,
-            .anim_8 = ANIM_RuffPuff_Grin,
-            .anim_9 = ANIM_RuffPuff_Idle,
-            .anim_A = ANIM_RuffPuff_Idle,
-            .anim_B = ANIM_RuffPuff_Idle,
-            .anim_C = ANIM_RuffPuff_Idle,
-            .anim_D = ANIM_RuffPuff_Idle,
-            .anim_E = ANIM_RuffPuff_Idle,
-            .anim_F = ANIM_RuffPuff_Idle,
-        },
+        .animations = RUFF_PUFF_ANIMS,
     },
 };
 
 NpcData N(NpcData_Chapter7)[] = {
     {
         .id = NPC_Kalmar,
-#if VERSION_JP
-        .pos = { -40.0f, 96.0f, 0.0f },
-#else
         .pos = { -62.0f, 96.0f, 0.0f },
-#endif
         .yaw = 270,
         .init = &N(EVS_NpcInit_Kalmar),
         .settings = &N(NpcSettings_Dummy),
@@ -585,24 +456,7 @@ NpcData N(NpcData_Chapter7)[] = {
         .settings = &N(NpcSettings_Dummy),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_CrystalKing_Anim09,
-            .walk   = ANIM_CrystalKing_Anim09,
-            .run    = ANIM_CrystalKing_Anim09,
-            .chase  = ANIM_CrystalKing_Anim09,
-            .anim_4 = ANIM_CrystalKing_Anim09,
-            .anim_5 = ANIM_CrystalKing_Anim09,
-            .death  = ANIM_CrystalKing_Anim09,
-            .hit    = ANIM_CrystalKing_Anim09,
-            .anim_8 = ANIM_CrystalKing_Anim09,
-            .anim_9 = ANIM_CrystalKing_Anim09,
-            .anim_A = ANIM_CrystalKing_Anim09,
-            .anim_B = ANIM_CrystalKing_Anim09,
-            .anim_C = ANIM_CrystalKing_Anim09,
-            .anim_D = ANIM_CrystalKing_Anim09,
-            .anim_E = ANIM_CrystalKing_Anim09,
-            .anim_F = ANIM_CrystalKing_Anim09,
-        },
+        .animations = CRYSTAL_KING_ANIMS,
     },
     {
         .id = NPC_IceCube,
@@ -612,24 +466,7 @@ NpcData N(NpcData_Chapter7)[] = {
         .settings = &N(NpcSettings_Dummy),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_CrystalKing_Anim09,
-            .walk   = ANIM_CrystalKing_Anim09,
-            .run    = ANIM_CrystalKing_Anim09,
-            .chase  = ANIM_CrystalKing_Anim09,
-            .anim_4 = ANIM_CrystalKing_Anim09,
-            .anim_5 = ANIM_CrystalKing_Anim09,
-            .death  = ANIM_CrystalKing_Anim09,
-            .hit    = ANIM_CrystalKing_Anim09,
-            .anim_8 = ANIM_CrystalKing_Anim09,
-            .anim_9 = ANIM_CrystalKing_Anim09,
-            .anim_A = ANIM_CrystalKing_Anim09,
-            .anim_B = ANIM_CrystalKing_Anim09,
-            .anim_C = ANIM_CrystalKing_Anim09,
-            .anim_D = ANIM_CrystalKing_Anim09,
-            .anim_E = ANIM_CrystalKing_Anim09,
-            .anim_F = ANIM_CrystalKing_Anim09,
-        },
+        .animations = CRYSTAL_KING_ANIMS,
     },
     {
         .id = NPC_IceSphere,
@@ -639,24 +476,7 @@ NpcData N(NpcData_Chapter7)[] = {
         .settings = &N(NpcSettings_Dummy),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_CrystalKing_Anim09,
-            .walk   = ANIM_CrystalKing_Anim09,
-            .run    = ANIM_CrystalKing_Anim09,
-            .chase  = ANIM_CrystalKing_Anim09,
-            .anim_4 = ANIM_CrystalKing_Anim09,
-            .anim_5 = ANIM_CrystalKing_Anim09,
-            .death  = ANIM_CrystalKing_Anim09,
-            .hit    = ANIM_CrystalKing_Anim09,
-            .anim_8 = ANIM_CrystalKing_Anim09,
-            .anim_9 = ANIM_CrystalKing_Anim09,
-            .anim_A = ANIM_CrystalKing_Anim09,
-            .anim_B = ANIM_CrystalKing_Anim09,
-            .anim_C = ANIM_CrystalKing_Anim09,
-            .anim_D = ANIM_CrystalKing_Anim09,
-            .anim_E = ANIM_CrystalKing_Anim09,
-            .anim_F = ANIM_CrystalKing_Anim09,
-        },
+        .animations = CRYSTAL_KING_ANIMS,
     },
     {
         .id = NPC_IceSpike,
@@ -666,24 +486,7 @@ NpcData N(NpcData_Chapter7)[] = {
         .settings = &N(NpcSettings_Dummy),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_CrystalKing_Anim09,
-            .walk   = ANIM_CrystalKing_Anim09,
-            .run    = ANIM_CrystalKing_Anim09,
-            .chase  = ANIM_CrystalKing_Anim09,
-            .anim_4 = ANIM_CrystalKing_Anim09,
-            .anim_5 = ANIM_CrystalKing_Anim09,
-            .death  = ANIM_CrystalKing_Anim09,
-            .hit    = ANIM_CrystalKing_Anim09,
-            .anim_8 = ANIM_CrystalKing_Anim09,
-            .anim_9 = ANIM_CrystalKing_Anim09,
-            .anim_A = ANIM_CrystalKing_Anim09,
-            .anim_B = ANIM_CrystalKing_Anim09,
-            .anim_C = ANIM_CrystalKing_Anim09,
-            .anim_D = ANIM_CrystalKing_Anim09,
-            .anim_E = ANIM_CrystalKing_Anim09,
-            .anim_F = ANIM_CrystalKing_Anim09,
-        },
+        .animations = CRYSTAL_KING_ANIMS,
     },
 };
 
@@ -695,24 +498,7 @@ NpcData N(NpcData_Chapter8) = {
     .settings = &N(NpcSettings_Dummy),
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_WorldBowser_Idle,
-        .walk   = ANIM_WorldBowser_Idle,
-        .run    = ANIM_WorldBowser_Idle,
-        .chase  = ANIM_WorldBowser_Idle,
-        .anim_4 = ANIM_WorldBowser_Idle,
-        .anim_5 = ANIM_WorldBowser_Idle,
-        .death  = ANIM_WorldBowser_Idle,
-        .hit    = ANIM_WorldBowser_Idle,
-        .anim_8 = ANIM_WorldBowser_Idle,
-        .anim_9 = ANIM_WorldBowser_Idle,
-        .anim_A = ANIM_WorldBowser_Idle,
-        .anim_B = ANIM_WorldBowser_Idle,
-        .anim_C = ANIM_WorldBowser_Idle,
-        .anim_D = ANIM_WorldBowser_Idle,
-        .anim_E = ANIM_WorldBowser_Idle,
-        .anim_F = ANIM_WorldBowser_Idle,
-    },
+    .animations = BOWSER_ANIMS,
 };
 
 NpcGroupList N(NpcGroup_Chapter1) = {

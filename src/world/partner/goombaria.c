@@ -45,7 +45,11 @@ API_CALLABLE(N(PutAway)) {
         partner_init_put_away(goombaria);
     }
 
-    return partner_put_away(goombaria) ? ApiStatus_DONE1 : ApiStatus_BLOCK;
+    if (partner_put_away(goombaria)) {
+        return ApiStatus_DONE1;
+    } else {
+        return ApiStatus_BLOCK;
+    }
 }
 
 EvtScript EVS_WorldGoombaria_TakeOut = {

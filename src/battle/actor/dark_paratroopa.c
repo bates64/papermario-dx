@@ -235,7 +235,7 @@ EvtScript N(EVS_Init_Flying) = {
 };
 
 #include "common/StartRumbleWithParams.inc.c"
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 EvtScript N(EVS_UpdateOffsets_Flying) = {
     IfFlag(LVar1, STATUS_FLAG_SLEEP | STATUS_FLAG_DIZZY)

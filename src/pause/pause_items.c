@@ -1,7 +1,7 @@
 #include "pause/pause_common.h"
 #include "message_ids.h"
 
-void pause_items_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
+MenuPanelDrawContentFunc pause_items_draw_contents;
 void pause_items_init(MenuPanel* panel);
 void pause_items_handle_input(MenuPanel* panel);
 void pause_items_update(MenuPanel* panel);
@@ -35,7 +35,6 @@ HudScript* gPauseItemsHudScripts[] = {
 MenuWindowBP gPauseItemsWindowBPs[] = {
     {
         .windowID = WIN_PAUSE_ITEMS,
-        .unk_01 = 0,
         .pos = { .x = 3, .y = 16 },
         .width = 289,
         .height = 154,

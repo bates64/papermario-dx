@@ -1,12 +1,25 @@
 #include "flo_25.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/RuffPuff.inc.c"
-#include "world/common/enemy/Bzzap.inc.c"
+#include "world/common/enemy/RuffPuff/wander.inc.c"
+#include "world/common/enemy/Bzzap/wander.inc.c"
 
-#include "world/common/npc/GateFlower.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-#include "../common/ItemChoice_FlowerGuard.inc.c"
+#include "world/common/npc/GateFlower/idle.inc.c"
+
+API_CALLABLE(N(JudgeItemTastiness)) {
+    s32 itemId = evt_get_variable(script, *script->ptrReadPos);
+    ItemData* item = &gItemTable[itemId];
+
+    if (itemId == ITEM_YUMMY_MEAL) {
+        script->varTable[9] = 2;
+    } else if (item->typeFlags & ITEM_TYPE_FLAG_FOOD_OR_DRINK) {
+        script->varTable[9] = 1;
+    } else {
+        script->varTable[9] = 0;
+    }
+
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_NpcInteract_GateFlower) = {
     Call(DisablePlayerInput, true)
@@ -21,15 +34,14 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         Call(SpeakToPlayer, NPC_SELF, ANIM_GateFlower_Red_Talk, ANIM_GateFlower_Red_Idle, 0, MSG_CH6_003B)
         Call(SetPlayerAnimation, ANIM_Mario1_Thinking)
-        Call(N(FlowerGuard_MakeItemList))
-        EVT_CHOOSE_CONSUMABLE_FROM(N(FlowerGuard_ItemChoiceList), 0)
+        EVT_CHOOSE_ANY_CONSUMABLE(NPC_GateFlower)
         Switch(LVar0)
             CaseLe(0)
                 Call(SetPlayerAnimation, ANIM_Mario1_Still)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_GateFlower_Red_Talk, ANIM_GateFlower_Red_Idle, 0, MSG_CH6_003C)
             CaseDefault
                 Set(LVar8, LVar0)
-                Call(N(FlowerGuard_JudgeItemTastiness), LVar0)
+                Call(N(JudgeItemTastiness), LVar0)
                 Call(MakeItemEntity, LVar8, 505, 20, -24, ITEM_SPAWN_MODE_DECORATION, 0)
                 Set(LVar7, LVar0)
                 Call(PlaySoundAtNpc, NPC_SELF, SOUND_EAT_OR_DRINK, SOUND_SPACE_DEFAULT)
@@ -91,7 +103,7 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
                                 AddF(LVar2, Float(500.0))
                                 AddF(LVar3, Float(15.0))
                                 AddF(LVar4, Float(-20.0))
-                                Call(N(FlowerGuard_SetItemEntityPosition), LVar7, LVar2, LVar3, LVar4)
+                                Call(SetItemPos, LVar7, LVar2, LVar3, LVar4)
                                 Wait(1)
                                 IfNe(LVar1, 1)
                                     BreakLoop
@@ -110,7 +122,7 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
                                 AddF(LVar2, Float(510.0))
                                 AddF(LVar3, Float(15.0))
                                 AddF(LVar4, Float(-20.0))
-                                Call(N(FlowerGuard_SetItemEntityPosition), LVar7, LVar2, LVar3, LVar4)
+                                Call(SetItemPos, LVar7, LVar2, LVar3, LVar4)
                                 Wait(1)
                                 IfNe(LVar1, 1)
                                     BreakLoop
@@ -184,7 +196,7 @@ NpcData N(NpcData_RuffPuff) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_RuffPuff),
+    .settings = &N(NpcSettings_RuffPuff_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = RUFF_PUFF_DROPS,
     .animations = RUFF_PUFF_ANIMS,
@@ -207,7 +219,7 @@ NpcData N(NpcData_Bzzap) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Bzzap),
+    .settings = &N(NpcSettings_Bzzap_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = BZZAP_DROPS,
     .animations = BZZAP_ANIMS,

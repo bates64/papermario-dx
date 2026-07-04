@@ -1,7 +1,7 @@
 #include "kzn_08.h"
 
-#include "world/common/enemy/LavaBubble.inc.c"
-#include "world/common/enemy/PutridPiranha.inc.c"
+#include "world/common/enemy/LavaBubble/wander.inc.c"
+#include "world/common/enemy/PutridPiranha/idle.inc.c"
 
 NpcData N(NpcData_PutridPiranha)[] = {
     {

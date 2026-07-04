@@ -5,11 +5,6 @@
 
 #define NAMESPACE A(final_jr_troopa)
 
-// Invalid value used in some scripts here == -91,999,590
-// The closest evt variable for this is MapFlag(-1999590), which is way out of range.
-// Looks like it was supposed to be a value for Float(), but its likewise out of range.
-#define INVALID_VAR 0xFA84329A
-
 extern EvtScript N(EVS_Init);
 extern EvtScript N(EVS_Idle);
 extern EvtScript N(EVS_TakeTurn);
@@ -30,9 +25,7 @@ extern EvtScript N(EVS_Attack_MagicSpell);
 extern EvtScript N(EVS_Attack_LightningBolt);
 extern EvtScript N(EVS_Move_HealSelf);
 
-API_CALLABLE(N(CalculateArcsinDeg));
-
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 enum N(ActorPartIDs) {
     PRT_BASE        = 1,
@@ -308,7 +301,7 @@ EvtScript N(EVS_TransformFX) = {
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_JR_TROOPA_NEW_POWER)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, 1, 40, 0)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, 1, 40, 0)
     PlayEffect(EFFECT_WALKING_DUST, 0, LVar0, LVar1, LVar2, -4, 0, 0)
     PlayEffect(EFFECT_WALKING_DUST, 0, LVar0, LVar1, LVar2, -4, 4, 0)
     PlayEffect(EFFECT_WALKING_DUST, 0, LVar0, LVar1, LVar2, 4, 0, 0)
@@ -985,7 +978,7 @@ EvtScript N(EVS_Attack_SpikeDive) = {
             Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
             Loop(20)
                 Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
-                Call(N(CalculateArcsinDeg), LVar1, LVar2, LVar4, LVar5, LVar0)
+                Call(CalcActorRotation, LVar0, LVar1, LVar2, LVar4, LVar5)
                 Call(SetPartRotation, ACTOR_SELF, PRT_FLYING, 0, 0, LVar0)
                 Set(LVar1, LVar4)
                 Set(LVar2, LVar5)
@@ -1006,7 +999,7 @@ EvtScript N(EVS_Attack_SpikeDive) = {
             Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
             Loop(14)
                 Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
-                Call(N(CalculateArcsinDeg), LVar1, LVar2, LVar4, LVar5, LVar0)
+                Call(CalcActorRotation, LVar0, LVar1, LVar2, LVar4, LVar5)
                 Set(LVar7, LVar0)
                 Add(LVar7, 180)
                 Call(SetPartRotation, ACTOR_SELF, PRT_FLYING, 0, 0, LVar7)
@@ -1045,7 +1038,7 @@ EvtScript N(EVS_Attack_SpikeDive) = {
     Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
     Loop(20)
         Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
-        Call(N(CalculateArcsinDeg), LVar1, LVar2, LVar4, LVar5, LVar0)
+        Call(CalcActorRotation, LVar0, LVar1, LVar2, LVar4, LVar5)
         Call(SetPartRotation, ACTOR_SELF, PRT_FLYING, 0, 0, LVar0)
         Set(LVar1, LVar4)
         Set(LVar2, LVar5)
@@ -1066,7 +1059,7 @@ EvtScript N(EVS_Attack_SpikeDive) = {
     Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
     Loop(14)
         Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
-        Call(N(CalculateArcsinDeg), LVar1, LVar2, LVar4, LVar5, LVar0)
+        Call(CalcActorRotation, LVar0, LVar1, LVar2, LVar4, LVar5)
         Set(LVar7, LVar0)
         Add(LVar7, 180)
         Call(SetPartRotation, ACTOR_SELF, PRT_FLYING, 0, 0, LVar7)
@@ -1090,8 +1083,6 @@ EvtScript N(EVS_Attack_SpikeDive) = {
     End
 };
 
-#include "common/CalculateArcsinDeg.inc.c"
-
 EvtScript N(EVS_Attack_MagicSpell) = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
@@ -1110,7 +1101,7 @@ EvtScript N(EVS_Attack_MagicSpell) = {
     Else
         Set(LVar3, 0)
         Set(LVar4, 14)
-        SetF(LVar5, INVALID_VAR)
+        SetF(LVar5, Float(0.4))
     EndIf
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, LVar3)
@@ -1133,7 +1124,7 @@ EvtScript N(EVS_Attack_MagicSpell) = {
             Else
                 Set(LVar6, -3)
                 Set(LVar7, 8)
-                SetF(LVar8, INVALID_VAR)
+                SetF(LVar8, Float(0.4))
             EndIf
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar0, LVar6)
@@ -1176,7 +1167,7 @@ EvtScript N(EVS_Attack_MagicSpell) = {
     Else
         Set(LVar6, -3)
         Set(LVar7, 8)
-        SetF(LVar8, INVALID_VAR)
+        SetF(LVar8, Float(0.4))
     EndIf
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, LVar6)
@@ -1190,8 +1181,6 @@ EvtScript N(EVS_Attack_MagicSpell) = {
     Return
     End
 };
-
-#include "common/Dist3D.inc.c" // Not used?
 
 #include "common/UnkBackgroundFunc3.inc.c"
 
@@ -1213,7 +1202,7 @@ EvtScript N(EVS_Attack_LightningBolt) = {
     Else
         Set(LVar3, 0)
         Set(LVar4, 14)
-        SetF(LVar5, INVALID_VAR)
+        SetF(LVar5, Float(0.4))
     EndIf
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, LVar3)
@@ -1338,7 +1327,7 @@ EvtScript N(EVS_Move_HealSelf) = {
     Else
         Set(LVar3, 0)
         Set(LVar4, 14)
-        SetF(LVar5, INVALID_VAR)
+        SetF(LVar5, Float(0.4))
     EndIf
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, LVar3)

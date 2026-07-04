@@ -1,17 +1,14 @@
 #include "common.h"
 
-#ifndef TRAFFIC_BOO_START_Y
-#error TRAFFIC_BOO_START_Y must be defined!
-#endif
-
-#ifndef TRAFFIC_BOO_START_Z
-#error TRAFFIC_BOO_START_Z must be defined!
-#endif
-
 enum {
     TRAFFIC_BOO_INIT    = 0,
     TRAFFIC_BOO_WAIT    = 1,
     TRAFFIC_BOO_MOVE    = 2,
+};
+
+enum {
+    NPC_VAR_TRAFFIC_BOO_START_Y = 0,
+    NPC_VAR_TRAFFIC_BOO_START_Z = 1,
 };
 
 s16 N(TrafficBooAlphas)[] = {
@@ -24,6 +21,7 @@ API_CALLABLE(N(TrafficBooInit)) {
 }
 
 API_CALLABLE(N(UpdateTrafficBooMotion)) {
+    Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_safe(script->owner2.npcID);
 
     switch (script->functionTemp[1]) {
@@ -31,8 +29,8 @@ API_CALLABLE(N(UpdateTrafficBooMotion)) {
             // choose random wait time
             npc->duration = rand_int(180) + 30;
             // choose random position offset
-            npc->pos.z = TRAFFIC_BOO_START_Z;
-            npc->pos.y = rand_int(50) + TRAFFIC_BOO_START_Y;
+            npc->pos.z = enemy->varTable[NPC_VAR_TRAFFIC_BOO_START_Z];
+            npc->pos.y = rand_int(50) + enemy->varTable[NPC_VAR_TRAFFIC_BOO_START_Y];
             // choose random speed
             npc->moveSpeed = (2.0f * rand_float()) + 2.0f;
             // chose random direction

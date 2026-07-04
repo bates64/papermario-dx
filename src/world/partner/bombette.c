@@ -13,7 +13,6 @@ BSS b32 N(LockingPlayerInput);
 BSS b32 N(MaintainPosAfterBlast);
 BSS b32 N(TriggeredEarlyDetonation);
 BSS b32 N(MovementBlocked);
-BSS s32 N(D_802BE93C); // unused (padding?)
 
 void entity_try_partner_interaction_trigger(s32 arg0);
 
@@ -100,7 +99,7 @@ API_CALLABLE(N(Update)) {
     Entity* entity;
 
     if (isInitialCall) {
-        partner_walking_enable(bombette, 1);
+        partner_walking_enable(bombette, true);
         mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
         TweesterTouchingPartner = nullptr;
     }
@@ -117,7 +116,7 @@ API_CALLABLE(N(Update)) {
 
     switch (N(TweesterPhysicsPtr)->state) {
         case TWEESTER_PARTNER_INIT:
-            N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_ATTRACT;
             N(TweesterPhysicsPtr)->prevFlags = bombette->flags;
             N(TweesterPhysicsPtr)->radius = fabsf(dist2D(bombette->pos.x, bombette->pos.z,
                                                      entity->pos.x, entity->pos.z));
@@ -126,7 +125,7 @@ API_CALLABLE(N(Update)) {
             N(TweesterPhysicsPtr)->angularVel = 6.0f;
             N(TweesterPhysicsPtr)->liftoffVelPhase = 50.0f;
             N(TweesterPhysicsPtr)->countdown = 120;
-            bombette->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
+            bombette->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
             bombette->flags &= ~NPC_FLAG_GRAVITY;
         case TWEESTER_PARTNER_ATTRACT:
             sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
@@ -155,20 +154,22 @@ API_CALLABLE(N(Update)) {
                 N(TweesterPhysicsPtr)->angularVel = 40.0f;
             }
 
-            if (--N(TweesterPhysicsPtr)->countdown == 0) {
-                N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->countdown--;
+            if (N(TweesterPhysicsPtr)->countdown == 0) {
+                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_HOLD;
             }
             break;
         case TWEESTER_PARTNER_HOLD:
             bombette->flags = N(TweesterPhysicsPtr)->prevFlags;
             N(TweesterPhysicsPtr)->countdown = 30;
-            N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_RELEASE;
             break;
         case TWEESTER_PARTNER_RELEASE:
             partner_walking_update_player_tracking(bombette);
             partner_walking_update_motion(bombette);
 
-            if (--N(TweesterPhysicsPtr)->countdown == 0) {
+            N(TweesterPhysicsPtr)->countdown--;
+            if (N(TweesterPhysicsPtr)->countdown == 0) {
                 N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
                 TweesterTouchingPartner = nullptr;
             }
@@ -230,7 +231,7 @@ API_CALLABLE(N(UseAbility)) {
         BLAST_STATE_FINISH      = 8,
     };
 
-    if (gCurrentEncounter.unk_08 != 0) {
+    if (gCurrentEncounter.battleTransitionState != BATTLE_TRANSITION_STATE_STARTED) {
         return ApiStatus_BLOCK;
     }
 
@@ -321,7 +322,7 @@ API_CALLABLE(N(UseAbility)) {
             npc->jumpVel = 0.0f;
             N(MovementBlocked) = false;
             npc->flags |= NPC_FLAG_GRAVITY;
-            npc->flags &= ~NPC_FLAG_IGNORE_PLAYER_COLLISION;
+            npc->flags &= ~NPC_FLAG_IGNORE_CHAR_COLLISION;
             npc->moveSpeed = 1.0f;
             script->USE_STATE = BLAST_STATE_DEPLOY;
             script->functionTemp[1] = 50;
@@ -332,7 +333,7 @@ API_CALLABLE(N(UseAbility)) {
                 break;
             }
             if (script->functionTemp[1] < 45) {
-                if (!(npc->flags & NPC_FLAG_COLLDING_WITH_WORLD) && !N(MovementBlocked)) {
+                if (!(npc->flags & NPC_FLAG_COLLIDING_WITH_WORLD) && !N(MovementBlocked)) {
                     npc_move_heading(npc, npc->moveSpeed, npc->yaw);
                     npc_surface_spawn_fx(npc, SURFACE_INTERACT_WALK);
                 } else {

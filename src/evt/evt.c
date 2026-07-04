@@ -1209,7 +1209,7 @@ ApiStatus evt_handle_thread(Evt* script) {
 
     script->ptrNextLine = endLine;
     newScript = start_script_in_group((EvtScript*)startLine, script->priority, EVT_FLAG_RUN_IMMEDIATELY | EVT_FLAG_THREAD, script->groupFlags);
-    newScript->owner1.enemyID = script->owner1.enemyID;
+    newScript->owner1.actorID = script->owner1.actorID;
     newScript->owner2.npcID = script->owner2.npcID;
     newScript->array = script->array;
     newScript->flagArray = script->flagArray;
@@ -1245,7 +1245,7 @@ ApiStatus evt_handle_child_thread(Evt* script) {
 
     script->ptrNextLine = endLine;
     newScript = start_child_thread(script, startLine, EVT_FLAG_RUN_IMMEDIATELY | EVT_FLAG_THREAD);
-    newScript->owner1.enemyID = script->owner1.enemyID;
+    newScript->owner1.actorID = script->owner1.actorID;
     newScript->owner2.npcID = script->owner2.npcID;
     newScript->groupFlags = script->groupFlags;
     newScript->array = script->array;

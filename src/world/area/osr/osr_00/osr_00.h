@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file osr_00.h
 /// @brief Peach's Castle Grounds - Intro Castle Grounds
 

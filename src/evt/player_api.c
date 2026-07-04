@@ -5,9 +5,10 @@
 #include "world/surfaces.h"
 #include "sprite/player.h"
 
+void suppress_current_interact_prompt(void);
+
 extern Npc playerNpcData;
 extern u16 PlayerImgFXFlags;
-extern s32 D_802DB5B4[3]; // unused
 
 Npc* playerNpc = &playerNpcData;
 
@@ -52,7 +53,7 @@ API_CALLABLE(DisablePlayerInput) {
     } else {
         enable_player_input();
         partner_enable_input();
-        func_800E01DC();
+        suppress_current_interact_prompt();
         gOverrideFlags &= ~GLOBAL_OVERRIDES_40;
         enable_status_bar_input();
     }
@@ -181,7 +182,11 @@ API_CALLABLE(func_802D1270) {
 
     // functionTemp 0 is the time left
     script->functionTemp[0]--;
-    return (script->functionTemp[0] < 0) * ApiStatus_DONE2;
+    if (script->functionTemp[0] < 0) {
+        return ApiStatus_DONE2;
+    } else {
+        return ApiStatus_BLOCK;
+    }
 }
 
 API_CALLABLE(func_802D1380) {
@@ -455,8 +460,28 @@ API_CALLABLE(SetPlayerFlagBits) {
 }
 
 API_CALLABLE(GetPlayerActionState) {
-    Bytecode outVar = *script->ptrReadPos;
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+
     evt_set_variable(script, outVar, gPlayerStatus.actionState);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(GetPeachDisguise) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+
+    evt_set_variable(script, outVar, gPlayerStatus.peachDisguise);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(SetAvailableDisguise) {
+    gPlayerStatus.availableDisguiseType = evt_get_variable(script, *script->ptrReadPos);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(PreventNextPeachDisguise) {
+    gGameStatus.peachFlags |= PEACH_FLAG_BLOCK_NEXT_DISGUISE;
     return ApiStatus_DONE2;
 }
 
@@ -474,24 +499,21 @@ API_CALLABLE(GetPlayerPos) {
 }
 
 API_CALLABLE(GetPlayerAnimation) {
-    Bytecode outVar = *script->ptrReadPos;
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
 
     evt_set_variable(script, outVar, gPlayerStatus.anim);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(FullyRestoreHPandFP) {
-    PlayerData* playerData = &gPlayerData;
-
-    playerData->curHP = playerData->curMaxHP;
-    playerData->curFP = playerData->curMaxFP;
+    gPlayerData.curHP = gPlayerData.curMaxHP;
+    gPlayerData.curFP = gPlayerData.curMaxFP;
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(FullyRestoreSP) {
-    PlayerData* playerData = &gPlayerData;
-
-    playerData->starPower = playerData->maxStarPower * SP_PER_BAR;
+    gPlayerData.starPower = gPlayerData.maxStarPower * SP_PER_BAR;
     return ApiStatus_DONE2;
 }
 
@@ -514,28 +536,28 @@ API_CALLABLE(DisablePartner) {
 API_CALLABLE(UseEntryHeading) {
     Bytecode* args = script->ptrReadPos;
     MapSettings* mapSettings = get_current_map_settings();
-    s32 var1 = evt_get_variable(script, *args++);
-    s32 var2 = evt_get_variable(script, *args++);
+    s32 walkDistance = evt_get_variable(script, *args++);
+    s32 walkTime = evt_get_variable(script, *args++);
+    f32 entryYaw = (*mapSettings->entryList)[gGameStatusPtr->entryID].yaw;
     f32 entryX = script->varTable[1] = (*mapSettings->entryList)[gGameStatusPtr->entryID].x;
     f32 entryY = script->varTable[2] = (*mapSettings->entryList)[gGameStatusPtr->entryID].y;
     f32 entryZ = script->varTable[3] = (*mapSettings->entryList)[gGameStatusPtr->entryID].z;
-    f32 cosTheta;
-    f32 sinTheta;
-    f32 exitTangentFrac;
+    f32 sinTheta, cosTheta;
+    f32 exitTangentOffset;
 
-    sin_cos_deg(clamp_angle((*mapSettings->entryList)[gGameStatusPtr->entryID].yaw + 180.0f), &sinTheta, &cosTheta);
+    sin_cos_deg(clamp_angle(entryYaw + 180.0f), &sinTheta, &cosTheta);
 
-    exitTangentFrac = gGameStatusPtr->exitTangent * 0.3f;
-    gPlayerStatus.pos.x = (entryX + (var1 * sinTheta)) - (exitTangentFrac * cosTheta);
-    gPlayerStatus.pos.z = (entryZ - (var1 * cosTheta)) - (exitTangentFrac * sinTheta);
+    exitTangentOffset = gGameStatusPtr->exitTangent * 0.3f;
+    gPlayerStatus.pos.x = (entryX + (walkDistance * sinTheta)) - (exitTangentOffset * cosTheta);
+    gPlayerStatus.pos.z = (entryZ - (walkDistance * cosTheta)) - (exitTangentOffset * sinTheta);
 
-    script->varTableF[5] = dist2D(gPlayerStatus.pos.x, gPlayerStatus.pos.z, entryX, entryZ) / var2;
+    script->varTableF[5] = dist2D(gPlayerStatus.pos.x, gPlayerStatus.pos.z, entryX, entryZ) / walkTime;
     gPlayerStatus.flags |= PS_FLAG_CAMERA_DOESNT_FOLLOW;
 
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_802D2148) {
+API_CALLABLE(RestorePlayerCameraFollow) {
     gPlayerStatus.flags &= ~PS_FLAG_CAMERA_DOESNT_FOLLOW;
     return ApiStatus_DONE2;
 }
@@ -544,33 +566,33 @@ API_CALLABLE(UseExitHeading) {
     Bytecode* args = script->ptrReadPos;
     PlayerStatus* playerStatus = &gPlayerStatus;
     MapSettings* mapSettings = get_current_map_settings();
-    f32* varTableVar5 = &script->varTableF[5];
 
     if (can_trigger_loading_zone()) {
-        s32 var1 = evt_get_variable(script, *args++);
+        s32 walkDistance = evt_get_variable(script, *args++);
         s32 entryID = evt_get_variable(script, *args++);
+        f32 entryYaw = (*mapSettings->entryList)[entryID].yaw;
         f32 entryX = (*mapSettings->entryList)[entryID].x;
+        f32 entryY = (*mapSettings->entryList)[entryID].y;
         f32 entryZ = (*mapSettings->entryList)[entryID].z;
-        f32 temp = (var1 + 10.0f) / 2;
+        f32 temp = (walkDistance + 10.0f) / 2;
         f32 temp_f2 = dist2D(entryX, entryZ, playerStatus->pos.x, playerStatus->pos.z) - temp;
-        f32 sinTheta;
-        f32 cosTheta;
-        f32 exitTangentFrac;
+        f32 sinTheta, cosTheta;
+        f32 exitTangentOffset;
 
         if (temp_f2 > 0.0f) {
-            if (temp_f2 > var1 + 10.0f) {
-                temp_f2 = var1 + 10.0f;
+            if (temp_f2 > walkDistance + 10.0f) {
+                temp_f2 = walkDistance + 10.0f;
             }
-            var1 -= temp_f2 / 2;
+            walkDistance -= temp_f2 / 2;
         }
 
-        sin_cos_deg(clamp_angle((*mapSettings->entryList)[entryID].yaw + 180.0f), &sinTheta, &cosTheta);
+        sin_cos_deg(clamp_angle(entryYaw + 180.0f), &sinTheta, &cosTheta);
         gGameStatusPtr->exitTangent = (cosTheta * (playerStatus->pos.x - entryX)) - (sinTheta * (entryZ - playerStatus->pos.z));
-        exitTangentFrac = gGameStatusPtr->exitTangent * 0.3f;
-        script->varTable[1] = (playerStatus->pos.x + (var1 * sinTheta)) - (exitTangentFrac * cosTheta);
-        script->varTable[3] = (playerStatus->pos.z - (var1 * cosTheta)) - (exitTangentFrac * sinTheta);
-        script->varTable[2] = (*mapSettings->entryList)[entryID].y;
-        *varTableVar5 = var1 / 15;
+        exitTangentOffset = gGameStatusPtr->exitTangent * 0.3f;
+        script->varTable[1] = (playerStatus->pos.x + (walkDistance * sinTheta)) - (exitTangentOffset * cosTheta);
+        script->varTable[3] = (playerStatus->pos.z - (walkDistance * cosTheta)) - (exitTangentOffset * sinTheta);
+        script->varTable[2] = entryY;
+        script->varTableF[5] = walkDistance / 15;
         playerStatus->animFlags |= PA_FLAG_CHANGING_MAP;
         playerStatus->flags |= PS_FLAG_CAMERA_DOESNT_FOLLOW;
         return ApiStatus_DONE2;
@@ -579,26 +601,33 @@ API_CALLABLE(UseExitHeading) {
     return ApiStatus_BLOCK;
 }
 
-s32 func_802D23F8(void) {
-    if (gPlayerStatus.actionState == ACTION_STATE_IDLE || gPlayerStatus.actionState == ACTION_STATE_WALK ||
-        gPlayerStatus.actionState == ACTION_STATE_RUN || gPlayerStatus.actionState == ACTION_STATE_LAND ||
-        gPlayerStatus.actionState == ACTION_STATE_STEP_DOWN_LAND || gPlayerStatus.actionState == ACTION_STATE_SPIN_POUND ||
-        gPlayerStatus.actionState == ACTION_STATE_TORNADO_POUND || gPlayerStatus.actionState == ACTION_STATE_SPIN) {
-        return true;
+b32 player_touching_floor_action_filter(void) {
+    switch (gPlayerStatus.actionState) {
+        case ACTION_STATE_IDLE:
+        case ACTION_STATE_WALK:
+        case ACTION_STATE_RUN:
+        case ACTION_STATE_LAND:
+        case ACTION_STATE_STEP_DOWN_LAND:
+        case ACTION_STATE_SPIN_POUND:
+        case ACTION_STATE_TORNADO_POUND:
+        case ACTION_STATE_SPIN:
+            return true;
+
+        default:
+            return false;
     }
-    return false;
 }
 
-API_CALLABLE(WaitForPlayerTouchingFloor) {
-    if ((gCollisionStatus.curFloor >= 0) && func_802D23F8()) {
+API_CALLABLE(AwaitPlayerTouchingFloor) {
+    if ((gCollisionStatus.curFloor > NO_COLLIDER) && player_touching_floor_action_filter()) {
         return ApiStatus_DONE2;
     } else {
         return ApiStatus_BLOCK;
     }
 }
 
-API_CALLABLE(func_802D2484) {
-    if (gCollisionStatus.curFloor >= 0) {
+API_CALLABLE(AwaitAnyPlayerFloorTouch) {
+    if (gCollisionStatus.curFloor > NO_COLLIDER) {
         return ApiStatus_DONE2;
     } else {
         return ApiStatus_BLOCK;
@@ -607,13 +636,22 @@ API_CALLABLE(func_802D2484) {
 
 API_CALLABLE(IsPlayerOnValidFloor) {
     Bytecode* args = script->ptrReadPos;
+    s32 outVar = *args++;
     s32 result = false;
 
-    if (gCollisionStatus.curFloor >= 0) {
-        result = (func_802D23F8() != 0);
+    if (gCollisionStatus.curFloor > NO_COLLIDER) {
+        result = player_touching_floor_action_filter();
     }
-    evt_set_variable(script, *args++, result);
+    evt_set_variable(script, outVar, result);
 
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(GetPlayerFloorCollider) {
+    Bytecode* args = script->ptrReadPos;
+    s32 outVar = *args++;
+
+    evt_set_variable(script, outVar, gCollisionStatus.curFloor);
     return ApiStatus_DONE2;
 }
 
@@ -636,41 +674,41 @@ API_CALLABLE(WaitForPlayerInputEnabled) {
 API_CALLABLE(UpdatePlayerImgFX) {
     Bytecode* args = script->ptrReadPos;
     PlayerStatus* playerStatus = &gPlayerStatus;
-    s32 a0 = *args++;
+    s32 index = *args++;
     s32 imgfxType = evt_get_variable(script, *args++);
     s32 a2, a3, a4, a5;
 
-    set_player_imgfx_all(a0, IMGFX_CLEAR, 0, 0, 0, 0, 0);
+    set_player_imgfx_all(index, IMGFX_CLEAR, 0, 0, 0, 0, 0);
 
     switch (imgfxType) {
         case IMGFX_CLEAR:
             playerStatus->renderMode = RENDER_MODE_ALPHATEST;
-            set_player_imgfx_all(a0, IMGFX_CLEAR, 0, 0, 0, 0, PlayerImgFXFlags);
+            set_player_imgfx_all(index, IMGFX_CLEAR, 0, 0, 0, 0, PlayerImgFXFlags);
             break;
         case IMGFX_UNK_2:
         case IMGFX_RESET:
             playerStatus->renderMode = RENDER_MODE_ALPHATEST;
         case IMGFX_UNK_1:
-            set_player_imgfx_all(a0, imgfxType, 0, 0, 0, 0, PlayerImgFXFlags);
+            set_player_imgfx_all(index, imgfxType, 0, 0, 0, 0, PlayerImgFXFlags);
             break;
         case IMGFX_SET_WAVY:
             playerStatus->renderMode = RENDER_MODE_ALPHATEST;
             a2 = evt_get_variable(script, *args++);
             a3 = evt_get_variable(script, *args++);
             a4 = evt_get_variable(script, *args++);
-            set_player_imgfx_all(a0, IMGFX_SET_WAVY, a2, a3, a4, 0, PlayerImgFXFlags);
+            set_player_imgfx_all(index, IMGFX_SET_WAVY, a2, a3, a4, 0, PlayerImgFXFlags);
             break;
         case IMGFX_SET_COLOR:
             playerStatus->renderMode = RENDER_MODE_ALPHATEST;
             a2 = evt_get_variable(script, *args++);
             a3 = evt_get_variable(script, *args++);
             a4 = evt_get_variable(script, *args++);
-            set_player_imgfx_all(a0, IMGFX_SET_COLOR, a2, a3, a4, 255, PlayerImgFXFlags);
+            set_player_imgfx_all(index, IMGFX_SET_COLOR, a2, a3, a4, 255, PlayerImgFXFlags);
             break;
         case IMGFX_SET_ALPHA:
             playerStatus->renderMode = RENDER_MODE_SURFACE_XLU_LAYER2;
             a5 = evt_get_variable(script, *args++);
-            set_player_imgfx_all(a0, IMGFX_SET_ALPHA, 255, 255, 255, a5, PlayerImgFXFlags);
+            set_player_imgfx_all(index, IMGFX_SET_ALPHA, 255, 255, 255, a5, PlayerImgFXFlags);
             break;
         case IMGFX_SET_TINT:
             playerStatus->renderMode = RENDER_MODE_SURFACE_XLU_LAYER2;
@@ -678,14 +716,14 @@ API_CALLABLE(UpdatePlayerImgFX) {
             a3 = evt_get_variable(script, *args++);
             a4 = evt_get_variable(script, *args++);
             a5 = evt_get_variable(script, *args++);
-            set_player_imgfx_all(a0, IMGFX_SET_TINT, a2, a3, a4, a5, PlayerImgFXFlags);
+            set_player_imgfx_all(index, IMGFX_SET_TINT, a2, a3, a4, a5, PlayerImgFXFlags);
             break;
         case IMGFX_SET_ANIM:
             playerStatus->renderMode = RENDER_MODE_ALPHATEST;
             a2 = evt_get_variable(script, *args++);
             a3 = evt_get_variable(script, *args++);
             a4 = evt_get_variable(script, *args++);
-            set_player_imgfx_all(a0, IMGFX_SET_ANIM, a2, a3, a4, 0, PlayerImgFXFlags);
+            set_player_imgfx_all(index, IMGFX_SET_ANIM, a2, a3, a4, 0, PlayerImgFXFlags);
             break;
         case IMGFX_HOLOGRAM:
             playerStatus->renderMode = RENDER_MODE_SURFACE_XLU_LAYER2;
@@ -693,7 +731,7 @@ API_CALLABLE(UpdatePlayerImgFX) {
             a3 = evt_get_variable(script, *args++);
             a4 = evt_get_variable(script, *args++);
             a5 = evt_get_variable(script, *args++);
-            set_player_imgfx_all(a0, IMGFX_HOLOGRAM, a2, a3, a4, a5, PlayerImgFXFlags);
+            set_player_imgfx_all(index, IMGFX_HOLOGRAM, a2, a3, a4, a5, PlayerImgFXFlags);
             break;
     }
 
@@ -768,18 +806,24 @@ API_CALLABLE(DisablePulseStone) {
     return ApiStatus_DONE2;
 }
 
-// returns partnerID of current partner if using their ability, otherwise PARTNER_NONE
 API_CALLABLE(GetPartnerInUse) {
     Bytecode* args = script->ptrReadPos;
     Bytecode outVar = *args++;
-    PlayerData* playerData = &gPlayerData;
-    s32 currentPartner = PARTNER_NONE;
+    s32 actingPartner = PARTNER_NONE;
 
     if (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) {
-        currentPartner = playerData->curPartner;
+        actingPartner = gPlayerData.curPartner;
     }
 
-    evt_set_variable(script, outVar, currentPartner);
+    evt_set_variable(script, outVar, actingPartner);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(SwitchToPartner) {
+    Bytecode* args = script->ptrReadPos;
+    s32 partnerID = evt_get_variable(script, *args++);
+
+    switch_to_partner(partnerID);
     return ApiStatus_DONE2;
 }
 
@@ -816,10 +860,10 @@ API_CALLABLE(Disable8bitMario) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_802D2C14) {
+API_CALLABLE(SetPartnerForcedFollowMode) {
     Bytecode* args = script->ptrReadPos;
 
-    func_800EF3D4(evt_get_variable(script, *args++));
+    partner_set_forced_follow_mode(evt_get_variable(script, *args++));
     return ApiStatus_DONE2;
 }
 

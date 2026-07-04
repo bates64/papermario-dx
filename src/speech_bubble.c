@@ -68,10 +68,10 @@ void appendGfx_speech_bubble(void) {
         ifxImg.xOffset = -16;
         ifxImg.yOffset = 26;
         ifxImg.alpha = 255;
-        imgfx_update(0, IMGFX_CLEAR, 0, 0, 0, 0, IMGFX_FLAG_400 | IMGFX_FLAG_40);
+        imgfx_update(0, IMGFX_CLEAR, 0, 0, 0, 0, IMGFX_FLAG_ALPHA_CVG | IMGFX_FLAG_NO_ZBUFFER);
         imgfx_update(0, IMGFX_SET_COLOR,
                     SpeechBubblePtr->brightness, SpeechBubblePtr->brightness, SpeechBubblePtr->brightness, 255, 0x440);
-        imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_40, mtxTransform);
+        imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_NO_ZBUFFER, mtxTransform);
 
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }
@@ -99,7 +99,7 @@ void interact_speech_update(void) {
             SpeechBubblePtr->scale += 0.05;
             if (SpeechBubblePtr->scale >= 0.55) {
                 SpeechBubblePtr->scale = 0.55f;
-                SpeechBubblePtr->state++;
+                SpeechBubblePtr->state = SPEECH_BUBBLE_HOLD;
                 SpeechBubblePtr->holdTime = 12;
             }
             break;
@@ -107,7 +107,7 @@ void interact_speech_update(void) {
             SpeechBubblePtr->yaw = 0.0f;
             SpeechBubblePtr->holdTime--;
             if (SpeechBubblePtr->holdTime <= 0) {
-                SpeechBubblePtr->state++;
+                SpeechBubblePtr->state = SPEECH_BUBBLE_IDLE;
             }
             break;
         case SPEECH_BUBBLE_IDLE:

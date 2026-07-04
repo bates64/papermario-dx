@@ -12,21 +12,17 @@ enum {
 };
 
 typedef struct GameRecords {
-    /* 0x00 */ u16 state;
-    /* 0x02 */ char unk_02[0x2];
+    /* 0x00 */ s16 state;
+    /* 0x02 */ PAD(2);
     /* 0x04 */ s32 lerpTime;
-    /* 0x08 */ s16 unk_08;
-    /* 0x0A */ s16 unk_0A;
-    /* 0x0C */ char unk_0C[0xC];
-    /* 0x18 */ s16 unk_18;
-    /* 0x1A */ s16 alpha;
-    /* 0x1C */ s16 lastAlpha;
-    /* 0x1E */ char unk_1E[0x2];
-    /* 0x20 */ s32 workerID;
-    /* 0x24 */ u16 equippedBadges;
-    /* 0x26 */ s16 recipesFoundCount;
-    /* 0x28 */ s16 totalRecipesCount;
-} GameRecords;
+    /* 0x08 */ s16 alpha;
+    /* 0x0A */ s16 lastAlpha;
+    /* 0x0C */ s32 workerID;
+    /* 0x10 */ s16 equippedBadges;
+    /* 0x12 */ s16 recipesFoundCount;
+    /* 0x14 */ s16 totalRecipesCount;
+    /* 0x16 */ PAD(2);
+} GameRecords; // size = 0x18
 
 s32 N(RecipeFoundVars)[] = {
     GF_MAC02_DiscoveredRecipe_00, GF_MAC02_DiscoveredRecipe_01,
@@ -198,9 +194,6 @@ void N(appendGfx_records)(void* data) {
 
     switch (records->state) {
         case RECORDS_STATE_BEGIN_FADE_IN:
-            records->unk_18 = 0;
-            records->unk_08 = 0;
-            records->unk_0A = 0;
             records->lerpTime = 0;
             records->state = RECORDS_STATE_FADING_IN;
             snd_start_sound(SOUND_APPROVE, 0, 0);
@@ -240,7 +233,7 @@ void N(appendGfx_records)(void* data) {
     N(appendGfx_records_impl)(records, records->alpha);
 }
 
-void N(worker_draw_game_records)(void) {
+void N(worker_render_game_records)(void) {
     RenderTask rt;
 
     rt.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
@@ -287,7 +280,7 @@ API_CALLABLE(N(ShowGameRecords)) {
         records = script->functionTempPtr[0] = heap_malloc(sizeof(*records));
         records->state = RECORDS_STATE_BEGIN_FADE_IN;
         records->alpha = 255;
-        records->workerID = create_worker_scene(nullptr, N(worker_draw_game_records));
+        records->workerID = create_worker_scene(nullptr, N(worker_render_game_records));
         evt_set_variable(script, MV_RecordsDataPtr, (s32) records);
         N(calculate_records)(records);
     }

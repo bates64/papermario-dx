@@ -26,18 +26,18 @@ s16 N(AnimTextOffsets)[CHUNK_SIZE * 2] = {
 };
 
 API_CALLABLE(N(ManageEffects)) {
-    s32 var_s0 = script->varTable[0];
+    s32 type = script->varTable[0];
     s32 x, y;
     s32 xOffset = 0;
 
-    if (var_s0 == 0) {
-        var_s0 = 9;
+    if (type == 0) {
+        type = 9;
         xOffset = 38;
     }
 
     if (isInitialCall) {
         set_curtain_scale_goal(1.0f);
-        N(ChapterEffect) = fx_chapter_change(var_s0, 100.0f, 100.0f, 0.0f, 1.0f, 0);
+        N(ChapterEffect) = fx_chapter_change(type, 100.0f, 100.0f, 0.0f, 1.0f, 0);
         N(ChapterEffectTime) = 0;
     }
 
@@ -73,8 +73,8 @@ API_CALLABLE(N(ManageEffects)) {
         x = 590;
     }
     y = 90;
-    N(ChapterEffect)->data.chapterChange->unk_40 = x;
-    N(ChapterEffect)->data.chapterChange->unk_44 = y;
+    N(ChapterEffect)->data.chapterChange->msgPos.x = x;
+    N(ChapterEffect)->data.chapterChange->msgPos.y = y;
     N(ChapterEffectTime)++;
 
     return ApiStatus_BLOCK;
@@ -152,7 +152,7 @@ EvtScript N(EVS_Main) = {
     Call(SetPlayerAnimation, ANIM_Mario1_BeforeJump)
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, PARTNER_NONE)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
         Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
     EndIf

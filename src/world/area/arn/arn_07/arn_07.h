@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file arn_07.h
 /// @brief Gusty Gulch - Windmill Exterior
 
@@ -33,8 +35,8 @@ enum {
 };
 
 enum {
-    MV_Unk_00               = MapVar(0),
-    MV_Unk_01               = MapVar(1),
+    MV_EntityID_Padlock     = MapVar(0),
+    MV_SpiritCardData       = MapVar(1),
 };
 
 #define NAMESPACE arn_07

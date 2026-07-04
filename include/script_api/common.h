@@ -83,6 +83,28 @@ API_CALLABLE(SetCustomGfxEnabled);
 /// @param fogType
 API_CALLABLE(SetModelCustomGfx);
 
+/// Applies a tint mode to a list of models, a list of model groups, or the background.
+/// `target`: see `ApplyTintTarget`.
+/// @evtapi
+/// @param target
+/// @param modelIDList
+/// @param tintType
+API_CALLABLE(SetModelTintMode);
+
+/// Sets the parameters for the specified environment tint mode.
+/// @evtapi
+/// @param tintType
+/// @param arg0
+/// @param arg1
+/// @param arg2
+/// @param arg3
+/// @param arg4
+/// @param arg5
+/// @param arg6
+/// @param arg7
+/// @param arg8
+API_CALLABLE(SetModelTintParams);
+
 /// @evtapi
 /// @param modelID
 /// @param variation
@@ -866,11 +888,11 @@ API_CALLABLE(DisablePartnerAI);
 API_CALLABLE(EnablePartnerAI);
 
 /// @evtapi
-API_CALLABLE(func_802CF54C);
+API_CALLABLE(ResetPartnerAIState);
 
 /// @evtapi
-/// @param value
-API_CALLABLE(func_802CF56C);
+/// @param mode
+API_CALLABLE(SetPartnerFollowMode);
 
 /// @evtapi
 /// @param partnerID
@@ -1106,6 +1128,10 @@ API_CALLABLE(GetSelfNpcID);
 API_CALLABLE(ClearDefeatedEnemies);
 
 /// @evtapi
+/// @param outCount
+API_CALLABLE(GetRemainingEnemyCount);
+
+/// @evtapi
 /// @param npcID
 /// @param flags
 /// @param mode
@@ -1203,6 +1229,7 @@ API_CALLABLE(OnFleeBattleDrops);
 /// @{
 /// @name Message
 
+/// `flags`: see `SpeechFlags`.
 /// @evtapi
 /// @param npcID
 /// @param talkAnim
@@ -1407,6 +1434,18 @@ API_CALLABLE(SetPlayerFlagBits);
 API_CALLABLE(GetPlayerActionState);
 
 /// @evtapi
+/// @param outDisguise
+API_CALLABLE(GetPeachDisguise);
+
+/// @evtapi
+/// @param disguise
+API_CALLABLE(SetAvailableDisguise);
+
+/// Prevents Peach's next Sneaky Parasol disguise attempt from succeeding.
+/// @evtapi
+API_CALLABLE(PreventNextPeachDisguise);
+
+/// @evtapi
 /// @param outX
 /// @param outY
 /// @param outZ
@@ -1444,7 +1483,7 @@ API_CALLABLE(DisablePartner);
 API_CALLABLE(UseEntryHeading);
 
 /// @evtapi
-API_CALLABLE(func_802D2148);
+API_CALLABLE(RestorePlayerCameraFollow);
 
 /// @evtapi
 /// @param moveDist
@@ -1454,15 +1493,22 @@ API_CALLABLE(func_802D2148);
 /// @evtout LVar3 goalPosZ
 API_CALLABLE(UseExitHeading);
 
+/// Block the script until the player is touching a floor in a controllable action state
+/// (idle, walk, spin, etc)
 /// @evtapi
-API_CALLABLE(WaitForPlayerTouchingFloor);
+API_CALLABLE(AwaitPlayerTouchingFloor);
 
+/// Block the script until the player is touching a floor regardless of action state
 /// @evtapi
-API_CALLABLE(func_802D2484);
+API_CALLABLE(AwaitAnyPlayerFloorTouch);
 
 /// @evtapi
 /// @param outResult
 API_CALLABLE(IsPlayerOnValidFloor);
+
+/// @evtapi
+/// @param outResult
+API_CALLABLE(GetPlayerFloorCollider);
 
 /// @evtapi
 API_CALLABLE(WaitForPlayerMoveToComplete);
@@ -1490,9 +1536,14 @@ API_CALLABLE(FacePlayerTowardPoint);
 /// @param disabled
 API_CALLABLE(DisablePulseStone);
 
+/// returns partnerID of current partner if using their ability, otherwise PARTNER_NONE
 /// @evtapi
 /// @param outPartnerID
 API_CALLABLE(GetPartnerInUse);
+
+/// @evtapi partnerID
+/// @param outPartnerID
+API_CALLABLE(SwitchToPartner);
 
 /// @evtapi
 API_CALLABLE(ForceUsePartner);
@@ -1517,7 +1568,7 @@ API_CALLABLE(Disable8bitMario);
 
 /// @evtapi
 /// @param value
-API_CALLABLE(func_802D2C14);
+API_CALLABLE(SetPartnerForcedFollowMode);
 
 /// @evtapi
 /// @param x
@@ -1546,6 +1597,21 @@ API_CALLABLE(MakeLerp);
 /// @evtout LVar0 currentValue
 /// @evtout LVar1 done
 API_CALLABLE(UpdateLerp);
+
+/// Computes a cosine interpolation between `min` and `max` using the current value of `time`.
+/// The caller owns and advances `time`; this only reads it, except that `onlyOnce` clamps
+/// `time` to `duration` after the interpolation completes.
+///
+/// `phaseOffset` is measured in degrees.
+/// @evtapi
+/// @param time
+/// @param outValue
+/// @param min
+/// @param max
+/// @param duration
+/// @param onlyOnce
+/// @param phaseOffset
+API_CALLABLE(CosInterpMinMax);
 
 /// @evtapi
 /// @param max
@@ -1595,21 +1661,11 @@ API_CALLABLE(AwaitPlayerLeave);
 API_CALLABLE(AddVectorPolar);
 
 /// @evtapi
-API_CALLABLE(func_802D4BDC);
-
-/// @evtapi
-API_CALLABLE(func_802D4C4C);
-
-/// @evtapi
 /// @param value
-API_CALLABLE(func_802D4CC4);
+API_CALLABLE(EnableScreenMotionBlur);
 
 /// @evtapi
-/// @param value
-API_CALLABLE(func_802D4D14);
-
-/// @evtapi
-API_CALLABLE(func_802D4D88);
+API_CALLABLE(DisableScreenMotionBlur);
 
 /// @evtapi
 /// @param time
@@ -1628,12 +1684,49 @@ API_CALLABLE(LoadPath);
 /// See [`LoadPath`].
 API_CALLABLE(GetNextPathPos);
 
+/// Calculates a clockwise yaw angle from (x1, z1) to (x2, z2) in the XZ plane.
+///
+/// Angle convention:
+///   0   = -Z direction
+///   90  = +X direction
+///   180 = +Z direction
+///   270 = -X direction
+///
+/// @evtapi
+/// @param outAngle
+/// @param x1
+/// @param z1
+/// @param x2
+/// @param z2
+API_CALLABLE(GetAngleBetweenPoints);
+
+API_CALLABLE(GetFloatAngleClamped);
+
+/// Calculates a counter-clockwise rotation angle from (x1, z1) to (x2, z2) in the XZ plane.
+///
+/// Angle convention:
+///   0   = +Z direction
+///   90  = -X direction
+///   180 = -Z direction
+///   270 = +X direction
+///
+/// If the start and end points are identical, `outAngle` is left unchanged.
+/// `outAngle` only supports integer values.
+///
+/// @evtapi
+/// @param outAngle
+/// @param x1
+/// @param z1
+/// @param x2
+/// @param z2
+API_CALLABLE(CalcActorRotation);
+
 /// @evtapi
 /// @param outDist
-/// @param X1
-/// @param Y1
-/// @param X2
-/// @param Y2
+/// @param x1
+/// @param y1
+/// @param x2
+/// @param y2
 API_CALLABLE(GetDist2D);
 
 /// @evtapi
@@ -1738,6 +1831,13 @@ API_CALLABLE(EnableMusicProximityMix);
 /// @param mix
 /// @param state
 API_CALLABLE(AdjustMusicProximityMix);
+
+/// Adjusts the proximity mix as the player enters or leaves a configured area.
+/// This function runs indefinitely and should be called from a thread.
+/// `trigger` points to a `MusicProximityTrigger`.
+/// @evtapi
+/// @param trigger
+API_CALLABLE(MonitorMusicProximityTrigger);
 
 /// @evtapi
 /// @param trackVolSet
@@ -1948,6 +2048,23 @@ API_CALLABLE(CloseChoicePopup);
 /// @param outHasItem
 API_CALLABLE(HasItem);
 
+/// `outName` receives either a `MsgID` or a message pointer from `gItemTable`.
+/// @evtapi
+/// @param itemID
+/// @param outName
+API_CALLABLE(GetItemName);
+
+/// Converts a player's position to the corresponding hand position used when
+/// holding, giving, or receiving an item.
+/// Each parameter is both input and output: pass the player position in and get
+/// the corresponding hand position back.
+///
+/// @evtapi
+/// @param posX
+/// @param posY
+/// @param posZ
+API_CALLABLE(AddPlayerHandsOffset);
+
 /// @evtapi
 /// @param itemID
 /// @param outItemSlot
@@ -2006,6 +2123,13 @@ API_CALLABLE(RemoveItemEntity);
 /// @param Y
 /// @param Z
 API_CALLABLE(SetItemPos);
+
+/// @evtapi
+/// @param itemEntityIndex
+/// @param outX
+/// @param outY
+/// @param outZ
+API_CALLABLE(GetItemPos);
 
 /// @evtapi
 /// @param itemEntityIndex
@@ -2098,9 +2222,10 @@ API_CALLABLE(DismissEffect);
 /// @param effectPtr
 API_CALLABLE(DismissItemOutline);
 
+/// `direction`: see `SunFXDir`.
 /// @evtapi
-/// @param effectPtr
-API_CALLABLE(func_802D7B74);
+/// @param direction
+API_CALLABLE(SpawnSunEffect);
 
 /// @evtapi
 API_CALLABLE(InterpMotionBlurParams);
@@ -2197,6 +2322,26 @@ API_CALLABLE(AssignPanelFlag);
 /// @evtapi
 /// @param flagVar
 API_CALLABLE(AssignCrateFlag);
+
+/// @evtapi
+/// @param entityID
+/// @param x
+/// @param y
+/// @param z
+API_CALLABLE(GetEntityPosition);
+
+/// @evtapi
+/// @param entityID
+/// @param x
+/// @param y
+/// @param z
+API_CALLABLE(SetEntityPosition);
+
+/// Sets ENTITY_FLAG_USED for a given entity. Use this to open padlocks and remotely
+/// trigger item blocks.
+/// @evtapi
+/// @param entityID
+API_CALLABLE(SetEntityUsed);
 
 /// Removes a trigger previously bound with [`BindTrigger`].
 /// @evtapi

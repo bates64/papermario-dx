@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file obk_06.h
 /// @brief Boo's Mansion - Library
 

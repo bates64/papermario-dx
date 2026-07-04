@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file hos_01.h
 /// @brief Shooting Star Summit - Shooting Star Summit
 
@@ -24,8 +26,8 @@ enum {
 enum {
     MV_AlphaAmt_Eldstar = MapVar(0),
     MV_AlphaAmt_Others  = MapVar(1),
-    MV_StarBeamFXPtr    = MapVar(10),
-    MV_StarBeamState    = MapVar(11),
+    MV_StarWarpFXPtr    = MapVar(10),
+    MV_StarWarpState    = MapVar(11),
 };
 
 enum {
@@ -38,10 +40,10 @@ extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_SetupModelFX);
 extern EvtScript N(EVS_Scene_StarWayOpened);
-extern EvtScript N(EVS_AscendStarBeam);
+extern EvtScript N(EVS_AscendStarWarp);
 extern NpcGroupList N(DefaultNPCs);
 extern EvtScript N(EVS_MakeEntities);
 
-API_CALLABLE(N(func_80240AAC_A1132C));
-API_CALLABLE(N(func_80240B10_A11390));
-API_CALLABLE(N(SetStarBeamMasterAlpha));
+API_CALLABLE(N(SetStarWarpIdleParams));
+API_CALLABLE(N(SetStarWarpTravelParams));
+API_CALLABLE(N(SetStarWarpMasterAlpha));

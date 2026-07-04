@@ -1,7 +1,6 @@
 #include "kkj_19.h"
 
-#include "world/common/npc/StarSpirit.inc.c"
-#include "world/common/npc/Twink.h"
+#include "world/common/npc/Twink/idle.inc.c"
 
 EvtScript N(EVS_NpcInteract_Twink) = {
     Call(SetSelfVar, 0, 0)
@@ -41,7 +40,7 @@ NpcData N(NpcData_Twink) = {
     .pos = { 0.0f, -500.0f, 0.0f },
     .yaw = 0,
     .init = &N(EVS_NpcInit_Twink),
-    .settings = &N(NpcSettings_StarSpirit),
+    .settings = &N(NpcSettings_Twink),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_CANT_INTERACT,
     .drops = NO_DROPS,
     .animations = TWINK_ANIMS,

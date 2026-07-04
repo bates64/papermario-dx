@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_52.h
 /// @brief Bowser's Castle - Split Level Hall
 
@@ -29,7 +31,7 @@ enum {
 };
 
 enum {
-    MV_PadlockEntityID  = MapVar(0),
+    MV_EntityID_Padlock  = MapVar(0),
 };
 
 #define NAMESPACE kpa_52

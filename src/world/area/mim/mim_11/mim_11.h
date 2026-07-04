@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mim_11.h
 /// @brief Forever Forest - Outside Boo's Mansion
 
@@ -22,14 +24,14 @@ enum {
 };
 
 enum {
-    AF_JAN01_TreeDrop_StarPiece           = MapFlag(10),
+    MF_Drop_Bush1       = MapFlag(10),
 };
 
 #define NAMESPACE mim_11
 
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(D_802430E0_BBA150);
+extern EvtScript N(EVS_SetupMansionGate);
 extern EvtScript N(EVS_SetupFoliage);
 extern EvtScript N(EVS_SetupMusic);
 

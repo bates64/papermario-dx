@@ -1,7 +1,6 @@
 #include "dgb_03.h"
 
-#include "world/common/todo/UnkFunc11.inc.c"
-#include "world/common/todo/UnkFunc12.inc.c"
+#include "world/common/util/PushObjectSupport.inc.c"
 
 EvtScript N(EVS_PushClock_Impl) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
@@ -11,7 +10,7 @@ EvtScript N(EVS_PushClock_Impl) = {
             Set(LVar8, -1)
             Return
         EndIf
-        Call(N(UnkFunc11), LVar9)
+        Call(N(IsPlayerPushingCollider), LVar9)
         IfEq(LVar0, 0)
             Set(LVar8, -1)
             Return
@@ -45,7 +44,7 @@ EvtScript N(EVS_PushClock_Impl) = {
         Loop(0)
             Call(SetPlayerActionState, ACTION_STATE_PUSHING_BLOCK)
             Call(UpdateLerp)
-            Call(N(UnkFunc12))
+            Call(N(UpdatePlayerPushPosition))
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop

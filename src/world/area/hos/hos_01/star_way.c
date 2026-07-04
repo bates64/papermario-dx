@@ -1,13 +1,9 @@
 #include "hos_01.h"
 #include "effects.h"
 
-#define NAME_SUFFIX _StarWay
-#include "world/common/todo/GetFloorCollider.inc.c"
-#define NAME_SUFFIX
-
 EvtScript N(EVS_Scene_StarWayOpened) = {
     Label(0)
-        Call(N(GetFloorCollider_StarWay), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         IfNe(LVar0, COLLIDER_o234)
             Wait(1)
             Goto(0)
@@ -36,9 +32,9 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
     Wait(10)
 #endif
     Call(EnableModel, MODEL_power, true)
-    Set(MV_StarBeamState, 1)
+    Set(MV_StarWarpState, 1)
         Label(10)
-        IfNe(MV_StarBeamState, 2)
+        IfNe(MV_StarWarpState, 2)
             Wait(1)
             Goto(10)
         EndIf
@@ -50,12 +46,12 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     PlayEffect(EFFECT_75, 0, -30, 250, -160, 1, -1)
-    Set(MV_StarBeamFXPtr, LVarF)
-    Call(N(func_80240AAC_A1132C), MV_StarBeamFXPtr)
+    Set(MV_StarWarpFXPtr, LVarF)
+    Call(N(SetStarWarpIdleParams), MV_StarWarpFXPtr)
     Call(MakeLerp, 1, 255, 55, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetStarBeamMasterAlpha), MV_StarBeamFXPtr, LVar0)
+        Call(N(SetStarWarpMasterAlpha), MV_StarWarpFXPtr, LVar0)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -83,8 +79,8 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
     End
 };
 
-EvtScript N(EVS_AscendStarBeam) = {
-    Call(N(func_80240B10_A11390), MV_StarBeamFXPtr)
+EvtScript N(EVS_AscendStarWarp) = {
+    Call(N(SetStarWarpTravelParams), MV_StarWarpFXPtr)
     Call(UseSettingsFrom, CAM_DEFAULT, -30, 250, -160)
     Call(SetPanTarget, CAM_DEFAULT, -30, 250, -160)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
@@ -94,7 +90,7 @@ EvtScript N(EVS_AscendStarBeam) = {
     Call(InterpPlayerYaw, 90, 0)
     Call(SetMusic, 0, SONG_STAR_WAY_OPENS, BGM_VARIATION_1, VOL_LEVEL_FULL)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcJumpscale, NPC_PARTNER, Float(1.0))
     Call(NpcJump0, NPC_PARTNER, -30, 250, -170, 15)
     Thread

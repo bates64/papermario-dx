@@ -147,7 +147,7 @@ s32 N(ToppledAnims)[] = {
     STATUS_END,
 };
 
-#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
+#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 
 // seems to be copied directly from buzzy_beetle.c
 EvtScript N(EVS_SetInitialState) = {

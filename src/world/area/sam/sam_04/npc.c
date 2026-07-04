@@ -1,7 +1,7 @@
 #include "sam_04.h"
 #include "effects.h"
 
-#include "world/common/npc/Penguin.h"
+#include "world/common/npc/Penguin/base.h"
 
 NpcSettings N(NpcSettings_Snowman) = {
     .height = 60,
@@ -9,18 +9,9 @@ NpcSettings N(NpcSettings_Snowman) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
+ITEM_LIST(N(BucketList), ITEM_SNOWMAN_BUCKET);
 
-s32 N(BucketList)[] = {
-    ITEM_SNOWMAN_BUCKET,
-    ITEM_NONE
-};
-
-s32 N(ScarfList)[] = {
-    ITEM_SNOWMAN_SCARF,
-    ITEM_NONE
-};
+ITEM_LIST(N(ScarfList), ITEM_SNOWMAN_SCARF);
 
 EvtScript N(EVS_NpcInteract_Snowman_01) = {
     Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_Snowman, 160, 40)
@@ -53,8 +44,8 @@ EvtScript N(EVS_ItemPrompt_Scarf) = {
         Call(ShowKeyChoicePopup)
         Call(CloseChoicePopup)
         Switch(LVar0)
-            CaseEq(0)
-            CaseEq(-1)
+            CaseEq(ITEM_CHOICE_NONE)
+            CaseEq(ITEM_CHOICE_CANCELED)
             CaseDefault
                 Set(GF_SAM04_PlacedScarf, true)
                 Call(RemoveKeyItemAt, LVar1)
@@ -93,8 +84,8 @@ EvtScript N(EVS_ItemPrompt_Bucket) = {
         Call(ShowKeyChoicePopup)
         Call(CloseChoicePopup)
         Switch(LVar0)
-            CaseEq(0)
-            CaseEq(-1)
+            CaseEq(ITEM_CHOICE_NONE)
+            CaseEq(ITEM_CHOICE_CANCELED)
             CaseDefault
                 Set(GF_SAM04_PlacedBucket, true)
                 Call(RemoveKeyItemAt, LVar1)

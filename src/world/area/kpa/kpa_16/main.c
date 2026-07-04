@@ -1,7 +1,5 @@
 #include "kpa_16.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_kpa_14_2) = EVT_EXIT_WALK(40, kpa_16_ENTRY_0, "kpa_14", kpa_14_ENTRY_2);
 
 EvtScript N(EVS_BindExitTriggers) = {
@@ -23,7 +21,7 @@ EvtScript N(EVS_TexPan_Steam) = {
         TEX_PAN_PARAMS_STEP(    0,  400,    0,  800)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o1157, TEX_PANNER_2)
     Call(SetTexPanner, MODEL_o1158, TEX_PANNER_2)
@@ -41,42 +39,42 @@ EvtScript N(EVS_TexPan_Lava) = {
         TEX_PAN_PARAMS_STEP(-1200,    0, -600,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP( 6144,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP( -800,    0, -400,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_3)
         TEX_PAN_PARAMS_STEP(    0, 3000,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_4)
         TEX_PAN_PARAMS_STEP(    0, 3200,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_5)
         TEX_PAN_PARAMS_STEP(    0, 2800,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o1282, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o1283, TEX_PANNER_0)

@@ -1,8 +1,6 @@
 #include "sam_01.h"
 #include "effects.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_sam_02_0) = EVT_EXIT_WALK(60, sam_01_ENTRY_0, "sam_02", sam_02_ENTRY_0);
 
 EvtScript N(EVS_BindExitTriggers) = {
@@ -51,7 +49,7 @@ EvtScript N(EVS_SetupHerringway) = {
                 BreakLoop
             EndIf
         EndLoop
-        Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_Herringway, ANIM_Herringway_Walk)
         Call(NpcMoveTo, NPC_Herringway, -265, 275, 20 * DT)
         Exec(N(EVS_OpenAndCloseMayorsDoor))
@@ -62,7 +60,7 @@ EvtScript N(EVS_SetupHerringway) = {
             Call(NpcMoveTo, NPC_Herringway, -228, 91, 20 * DT)
             Call(SetNpcAnimation, NPC_Herringway, ANIM_Herringway_Idle)
             Call(InterpNpcYaw, NPC_Herringway, 270, 0)
-            Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         EndThread
         Set(GB_StoryProgress, STORY_CH7_HERRINGWAY_AT_MAYORS_HOUSE)
         Call(BindNpcInteract, NPC_Herringway, Ref(N(EVS_NpcInteract_Herringway)))

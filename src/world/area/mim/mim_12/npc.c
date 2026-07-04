@@ -1,6 +1,6 @@
 #include "mim_12.h"
 
-#include "world/common/npc/Boo.inc.c"
+#include "world/common/npc/Boo/idle.inc.c"
 
 EvtScript N(EVS_NpcInit_GateBoo_01) = {
     Return

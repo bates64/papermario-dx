@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mac_04.h
 /// @brief Toad Town - Residental District
 
@@ -10,8 +12,6 @@
 #include "mapfs/mac_04_hit.h"
 
 #include "sprite/npc/ShyGuy.h"
-#include "sprite/npc/HarryT.h"
-#include "sprite/npc/ChetRippo.h"
 #include "sprite/npc/WorldGoombario.h"
 
 enum {
@@ -51,6 +51,10 @@ enum {
 
 #define NAMESPACE mac_04
 
+#include "world/common/npc/Toad/idle.h"
+#include "world/common/npc/Toad/wander.h"
+#include "world/common/npc/ToadKid/idle.h"
+
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_SetupMusicTriggers);
@@ -65,7 +69,6 @@ extern EvtScript N(EVS_OnEnterShop);
 extern EvtScript N(EVS_HiddenRoom_WaitForOuttaSight);
 extern EvtScript N(EVS_ExitToybox);
 extern EvtScript N(EVS_Toybox_SetupTrainPrompt);
-extern EvtScript N(D_8024697C_84954C);
 extern EvtScript N(EVS_ForceStoreroomUnlock);
 extern EvtScript N(EVS_Scene_WishingToadKid);
 

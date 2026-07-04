@@ -26,25 +26,30 @@ EvtScript N(EVS_SpawnButterflies) = {
     End
 };
 
-EvtScript N(EVS_AnimateFallBreakingBranch) = {
-    Set(LVarF, 0)
+// represent branch wobble with a damped spring system
+// provide impulses with MV_BranchWobbleVel and the scale of MODEL_g47 with be
+// modulated by the displacement of the 'spring'
+EvtScript N(EVS_UpdateBranchWobble) = {
+    SetF(LVarA, Float(0.0)) // system "displacement"
     Loop(0)
-        SetF(LVar0, MV_Unk_0A)
-        SetF(LVar1, MV_Unk_0A)
+        // scaleX = 1.0 - 0.02 * vel
+        // scaleY = 1.0 + 0.04 * vel
+        SetF(LVar0, MV_BranchWobbleVel)
+        SetF(LVar1, MV_BranchWobbleVel)
         MulF(LVar0, Float(-0.02))
         MulF(LVar1, Float(0.04))
         AddF(LVar0, 1)
         AddF(LVar1, 1)
         Call(ScaleGroup, MODEL_g47, LVar0, LVar1, 1)
-        Add(LVarF, 1)
-        IfGe(LVarF, 600)
-            Set(LVarF, 0)
-        EndIf
+        // Damped spring update, with units of dt = 1 and mass = 1:
+        // accel = -(54/64) * (3/64) * X_n
+        // V_n+1 = (54/64) * V_n - (81/2048) * X_n
+        // X_n+1 = X_n + V_n+1
         SetF(LVar0, LVarA)
-        MulF(LVar0, Float(-0.046875))
-        AddF(MV_Unk_0A, LVar0)
-        MulF(MV_Unk_0A, Float(0.84375))
-        AddF(LVarA, MV_Unk_0A)
+        MulF(LVar0, Float(-0.046875)) // accel = (-3/64) * displacement, multiplied by (54/64) shortly
+        AddF(MV_BranchWobbleVel, LVar0)
+        MulF(MV_BranchWobbleVel, Float(0.84375)) // damping = (54/64)
+        AddF(LVarA, MV_BranchWobbleVel)
         Wait(1)
     EndLoop
     Return
@@ -52,11 +57,11 @@ EvtScript N(EVS_AnimateFallBreakingBranch) = {
 };
 
 EvtScript N(EVS_EnterFalling) = {
-    Exec(N(EVS_AnimateFallBreakingBranch))
+    Exec(N(EVS_UpdateBranchWobble))
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(UseSettingsFrom, CAM_DEFAULT, 35, 100, 330)
     Call(SetPanTarget, CAM_DEFAULT, 35, 100, 330)
@@ -88,7 +93,7 @@ EvtScript N(EVS_EnterFalling) = {
     EndLoop
     PlayEffect(EFFECT_DROP_LEAVES, 0, 35, 120, 340, 100)
     PlayEffect(EFFECT_DROP_LEAVES, 0, 55, 120, 330, 100)
-    AddF(MV_Unk_0A, Float(-7.5))
+    AddF(MV_BranchWobbleVel, Float(-7.5))
     Call(SetPanTarget, CAM_DEFAULT, 0, 190, 350)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.2))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
@@ -107,7 +112,7 @@ EvtScript N(EVS_EnterFalling) = {
             Wait(5)
         EndLoop
     EndThread
-    AddF(MV_Unk_0A, Float(-7.5))
+    AddF(MV_BranchWobbleVel, Float(-7.5))
     Call(SetPanTarget, CAM_DEFAULT, -35, 0, 385)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.8))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
@@ -120,7 +125,6 @@ EvtScript N(EVS_EnterFalling) = {
     End
 };
 
-#include "world/common/atomic/ApplyTint.inc.c"
 
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
@@ -128,7 +132,7 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
-    Exec(N(D_802412D4_B812D4))
+    Exec(N(EVS_Scene_ReachedRaphaelsTree))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetEntryID, LVar0)
@@ -142,9 +146,9 @@ EvtScript N(EVS_Main) = {
     ExecWait(N(EVS_SetupMusic))
     Exec(N(EVS_SetupBushes))
     Exec(N(EVS_SpawnButterflies))
-    Call(N(SetModelTintMode), APPLY_TINT_MODELS, -1, 3)
-    Call(N(SetModelTintMode), APPLY_TINT_BG, nullptr, 3)
-    Call(N(SetModelTintParams), ENV_TINT_REMAP, 255, 255, 255, 0, 0, 25, 0, 0, 0)
+    Call(SetModelTintMode, APPLY_TINT_MODELS, -1, ENV_TINT_REMAP)
+    Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
+    Call(SetModelTintParams, ENV_TINT_REMAP, 255, 255, 255, 0, 0, 25, 0, 0, 0)
     Return
     End
 };

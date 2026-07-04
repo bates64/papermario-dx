@@ -1,17 +1,11 @@
 #include "hos_00.h"
 
-#include "world/common/npc/Twink.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/ToadKid/idle.inc.c"
+#include "world/common/npc/Toadette/idle.inc.c"
+#include "world/common/npc/Twink/idle.inc.c"
 
-#include "world/common/enemy/FlyingMagikoopa.h"
-
-NpcSettings N(NpcSettings_FlyingMagikoopa) = {
-    .height = 34,
-    .radius = 24,
-    .level = ACTOR_LEVEL_MAGIKOOPA,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
+#include "world/common/enemy/FlyingMagikoopa/idle.inc.c"
 
 EvtScript N(EVS_Scene_Wishing) = {
     Call(DisablePlayerInput, true)
@@ -150,7 +144,7 @@ NpcData N(NpcData_Wishing)[] = {
         .id = NPC_Toadette,
         .pos = { 280.0f, -10.0f, -50.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toadette),
         .flags = ENEMY_FLAG_PASSIVE,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -159,7 +153,7 @@ NpcData N(NpcData_Wishing)[] = {
         .id = NPC_ToadKid,
         .pos = { 330.0f, -10.0f, -40.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_ToadKid),
         .flags = ENEMY_FLAG_PASSIVE,
         .drops = NO_DROPS,
         .animations = TOAD_KID_RED_ANIMS,

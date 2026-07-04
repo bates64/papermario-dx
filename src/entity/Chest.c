@@ -146,7 +146,7 @@ void entity_Chest_idle(Entity* entity) {
             if (data->itemID != 0) {
                 disable_player_input();
             }
-            func_800EF3E4();
+            partner_move_to_player_side();
         }
     } else {
         entity->flags &= ~ENTITY_FLAG_SHOWS_INSPECT_PROMPT;
@@ -480,6 +480,7 @@ EntityScript Entity_Chest_ScriptOpened = {
     es_SetCallback(nullptr, 0)
     es_End
 };
+
 EntityScript Entity_Chest_Script = {
     es_Call(entity_Chest_check_opened)
     es_SetCallback(entity_Chest_idle, 0)
@@ -499,7 +500,7 @@ EntityBlueprint Entity_GiantChest = {
     .flags = ENTITY_FLAG_4000,
     .typeDataSize = sizeof(ChestData),
     .renderCommandList = Entity_Chest_RenderScript,
-    .modelAnimationNodes = 0,
+    .modelAnimationNodes = nullptr,
     .fpInit = entity_GiantChest_init,
     .updateEntityScript = Entity_GiantChest_Script,
     .fpHandleCollision = nullptr,
@@ -511,7 +512,7 @@ EntityBlueprint Entity_Chest = {
     .flags = ENTITY_FLAG_8000 | ENTITY_FLAG_4000,
     .typeDataSize = sizeof(ChestData),
     .renderCommandList = Entity_Chest_RenderScript,
-    .modelAnimationNodes = 0,
+    .modelAnimationNodes = nullptr,
     .fpInit = entity_Chest_init,
     .updateEntityScript = Entity_Chest_Script,
     .fpHandleCollision = nullptr,

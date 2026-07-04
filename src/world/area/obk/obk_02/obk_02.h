@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file obk_02.h
 /// @brief Boo's Mansion - Basement Stairs
 

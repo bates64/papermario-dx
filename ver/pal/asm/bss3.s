@@ -461,7 +461,7 @@ dlabel isPickingUpItem
 dlabel ItemSpawnWithinPlayerPickupDelay
 .space 2
 
-dlabel D_801565A8
+dlabel isPartnerPickingUpItem
 .space 4
 
 dlabel D_801565AC

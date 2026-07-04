@@ -1,7 +1,6 @@
 #include "mgm_00.h"
 
-// probably a blank EVS_SetupMusic
-EvtScript N(D_80241850_E0FFF0) = {
+EvtScript N(EVS_SetupMusic) = {
     Return
     End
 };
@@ -94,9 +93,9 @@ EvtScript N(EVS_EnterMap) = {
 
 EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    ExecWait(N(D_80243C40_E123E0))
+    ExecWait(N(EVS_SetupScoreboard))
     Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
-    ExecWait(N(D_80241850_E0FFF0))
+    ExecWait(N(EVS_SetupMusic))
     Exec(N(EVS_BindInteractTriggers))
     Exec(N(EVS_EnterMap))
     Wait(1)

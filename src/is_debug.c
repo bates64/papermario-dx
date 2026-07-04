@@ -6,9 +6,9 @@ void crash_screen_set_assert_info(const char* message);
 typedef struct {
     /* 0x00 */ u32 magic;
     /* 0x04 */ u32 get;
-    /* 0x08 */ char unk_08[0x14-0x08];
+    /* 0x08 */ PAD(12);
     /* 0x14 */ u32 put;
-    /* 0x18 */ char unk_18[0x20-0x18];
+    /* 0x18 */ PAD(8);
     /* 0x20 */ char data[0x10000-0x20];
 } ISVDbg;
 

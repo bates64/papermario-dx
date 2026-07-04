@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sbk_20.h
 /// @brief Dry Dry Desert - N1W3 Special Block
 

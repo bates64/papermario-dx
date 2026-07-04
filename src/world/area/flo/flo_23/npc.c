@@ -1,11 +1,24 @@
 #include "flo_23.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/Spiny.inc.c"
+#include "world/common/enemy/Spiny/wander.inc.c"
 
-#include "world/common/npc/GateFlower.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-#include "../common/ItemChoice_FlowerGuard.inc.c"
+#include "world/common/npc/GateFlower/idle.inc.c"
+
+API_CALLABLE(N(JudgeItemTastiness)) {
+    s32 itemId = evt_get_variable(script, *script->ptrReadPos);
+    ItemData* item = &gItemTable[itemId];
+
+    if (itemId == ITEM_YUMMY_MEAL) {
+        script->varTable[9] = 2;
+    } else if (item->typeFlags & ITEM_TYPE_FLAG_FOOD_OR_DRINK) {
+        script->varTable[9] = 1;
+    } else {
+        script->varTable[9] = 0;
+    }
+
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_NpcInteract_GateFlower) = {
     Call(DisablePlayerInput, true)
@@ -20,15 +33,14 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         Call(SpeakToPlayer, NPC_SELF, ANIM_GateFlower_Blue_Talk, ANIM_GateFlower_Blue_Idle, 0, MSG_CH6_0049)
         Call(SetPlayerAnimation, ANIM_Mario1_Thinking)
-        Call(N(FlowerGuard_MakeItemList))
-        EVT_CHOOSE_CONSUMABLE_FROM(N(FlowerGuard_ItemChoiceList), 2)
+        EVT_CHOOSE_ANY_CONSUMABLE(NPC_GateFlower)
         Switch(LVar0)
             CaseLe(0)
                 Call(SetPlayerAnimation, ANIM_Mario1_Still)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_GateFlower_Blue_Talk, ANIM_GateFlower_Blue_Idle, 0, MSG_CH6_004A)
             CaseDefault
                 Set(LVar8, LVar0)
-                Call(N(FlowerGuard_JudgeItemTastiness), LVar0)
+                Call(N(JudgeItemTastiness), LVar0)
                 Call(MakeItemEntity, LVar8, 385, 20, -34, ITEM_SPAWN_MODE_DECORATION, 0)
                 Set(LVar7, LVar0)
                 Call(PlaySoundAtNpc, NPC_SELF, SOUND_EAT_OR_DRINK, SOUND_SPACE_DEFAULT)
@@ -90,7 +102,7 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
                                 AddF(LVar2, Float(380.0))
                                 AddF(LVar3, Float(15.0))
                                 AddF(LVar4, Float(-30.0))
-                                Call(N(FlowerGuard_SetItemEntityPosition), LVar7, LVar2, LVar3, LVar4)
+                                Call(SetItemPos, LVar7, LVar2, LVar3, LVar4)
                                 Wait(1)
                                 IfNe(LVar1, 1)
                                     BreakLoop
@@ -109,7 +121,7 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
                                 AddF(LVar2, Float(390.0))
                                 AddF(LVar3, Float(15.0))
                                 AddF(LVar4, Float(-30.0))
-                                Call(N(FlowerGuard_SetItemEntityPosition), LVar7, LVar2, LVar3, LVar4)
+                                Call(SetItemPos, LVar7, LVar2, LVar3, LVar4)
                                 Wait(1)
                                 IfNe(LVar1, 1)
                                     BreakLoop
@@ -183,7 +195,7 @@ NpcData N(NpcData_Spiny_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Spiny),
+    .settings = &N(NpcSettings_Spiny_Wander),
     .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPINY_DROPS,
     .animations = SPINY_ANIMS,
@@ -205,7 +217,7 @@ NpcData N(NpcData_Spiny_02) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Spiny),
+    .settings = &N(NpcSettings_Spiny_Wander),
     .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPINY_DROPS,
     .animations = SPINY_ANIMS,

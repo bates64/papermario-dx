@@ -1,0 +1,105 @@
+#pragma once
+#include "idle.h"
+
+#include "sprite/player.h"
+
+#define EVAR_INTERACTED 0
+#define EVAR_SAVED_X 10
+#define EVAR_SAVED_Y 11
+#define EVAR_SAVED_Z 12
+
+EvtScript N(EVS_NpcAI_MBush) = {
+    Call(EnableNpcShadow, NPC_SELF, false)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Hidden)
+    Call(SetSelfVar, EVAR_INTERACTED, false)
+    Label(0)
+        Call(GetSelfVar, EVAR_INTERACTED, LVar0)
+        IfEq(LVar0, false)
+            Wait(1)
+            Goto(0)
+        EndIf
+    SetGroup(EVT_GROUP_NEVER_PAUSE)
+    Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
+    Call(DisablePlayerInput, true)
+    Call(PlaySoundAtNpc, NPC_SELF, SOUND_SEARCH_BUSH, SOUND_SPACE_DEFAULT)
+    Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+    Call(SetSelfVar, EVAR_SAVED_X, LVar0)
+    Call(SetSelfVar, EVAR_SAVED_Y, LVar1)
+    Call(SetSelfVar, EVAR_SAVED_Z, LVar2)
+    Add(LVar0, 2)
+    Call(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+    Wait(1)
+    Sub(LVar0, 3)
+    Call(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+    Wait(1)
+    Add(LVar0, 2)
+    Call(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+    Wait(1)
+    Sub(LVar0, 3)
+    Call(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+    Wait(1)
+    Add(LVar0, 2)
+    Call(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
+    Wait(1)
+    Thread
+        Wait(10)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Reveal)
+    EndThread
+    Thread
+        Wait(6)
+        Call(InterpPlayerYaw, 90, 0)
+    EndThread
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(EnableNpcShadow, NPC_SELF, true)
+    Call(GetPlayerPos, LVar0, LVar1, LVar2)
+    Add(LVar0, 25)
+    Sub(LVar2, 5)
+    Call(NpcJump1, NPC_SELF, LVar0, LVar1, LVar2, 15)
+    Wait(4)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Hurt)
+    Wait(2)
+    Call(SetPlayerAnimation, ANIM_Mario1_Flail)
+    Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
+    Call(DisablePlayerInput, false)
+    Call(StartBattle)
+    Return
+    End
+};
+
+EvtScript N(EVS_NpcInteract_MBush) = {
+    Call(SetSelfVar, EVAR_INTERACTED, true)
+    Return
+    End
+};
+
+EvtScript N(EVS_NpcDefeat_MBush) = {
+    Call(GetBattleOutcome, LVar0)
+    Switch(LVar0)
+        CaseEq(OUTCOME_PLAYER_WON)
+            Call(DoNpcDefeat)
+        CaseEq(OUTCOME_PLAYER_FLED)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Run)
+            Call(GetSelfVar, EVAR_SAVED_X, LVar0)
+            Call(GetSelfVar, EVAR_SAVED_Y, LVar1)
+            Call(GetSelfVar, EVAR_SAVED_Z, LVar2)
+            Call(NpcJump1, NPC_SELF, LVar0, LVar1, LVar2, 8)
+            Call(EnableNpcShadow, NPC_SELF, false)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Hidden)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
+            Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_MBush)))
+        CaseEq(OUTCOME_ENEMY_FLED)
+            Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_FLED, true)
+            Call(RemoveNpc, NPC_SELF)
+    EndSwitch
+    Return
+    End
+};
+
+NpcSettings N(NpcSettings_MBush) = {
+    .height = 30,
+    .radius = 30,
+    .level = ACTOR_LEVEL_M_BUSH,
+    .doAI = &N(EVS_NpcAI_MBush),
+    .onInteract = &N(EVS_NpcInteract_MBush),
+    .onDefeat = &N(EVS_NpcDefeat_MBush),
+};

@@ -4,10 +4,7 @@
 
 extern EvtScript N(EVS_LaunchFromCouch_Crash);
 
-s32 N(ItemList_BooWeight)[] = {
-    ITEM_BOO_WEIGHT,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_BooWeight), ITEM_BOO_WEIGHT);
 
 s32 N(ChandelierModels)[] = {
     MODEL_kusari_1,
@@ -74,8 +71,7 @@ enum {
 typedef struct ChandelierControlData {
     /* 0x00 */ Chandelier* chandelier;
     /* 0x04 */ s32 controlState;
-    /* 0x08 */ s32 unk_08;
-} ChandelierControlData; // size = 0xC;
+} ChandelierControlData; // size = 0x8;
 
 // script array mapping for ChandelierControlData struct
 enum {
@@ -401,7 +397,7 @@ EvtScript N(EVS_Couch_AnimateSpring) = {
 
 EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(InterruptUsePartner)
     Loop(0)
         Wait(1)
@@ -476,10 +472,10 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
     EndChildThread
     Call(N(ChandelierTryRelease), LVarA)
     Call(ShowKeyChoicePopup)
-    IfEq(LVar0, 0)
+    IfEq(LVar0, ITEM_CHOICE_NONE)
         Goto(35)
     EndIf
-    IfNe(LVar0, -1)
+    IfNe(LVar0, ITEM_CHOICE_CANCELED)
         Goto(40)
     EndIf
     Label(35)
@@ -539,7 +535,7 @@ EvtScript N(EVS_TetherCameraToPlayer) = {
 EvtScript N(EVS_LaunchFromCouch_Crash) = {
     Call(DisablePlayerInput, true)
     Call(InterruptUsePartner)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Loop(0)
         Wait(1)
         Call(GetPlayerActionState, LVar0)

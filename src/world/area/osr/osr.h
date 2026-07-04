@@ -1,27 +1,25 @@
-#ifndef _WORLD_AREA_OSR_OSR_H_
-#define _WORLD_AREA_OSR_OSR_H_
+#pragma once
 
-enum {
-    AB_OSR_Unused_0     = AreaByte(0),
-    AB_OSR_Unused_1     = AreaByte(1),
-    AB_OSR_Unused_2     = AreaByte(2),
-    AB_OSR_Unused_3     = AreaByte(3),
-    AB_OSR_Unused_4     = AreaByte(4),
-    AB_OSR_Unused_5     = AreaByte(5),
-    AB_OSR_Unused_6     = AreaByte(6),
-    AB_OSR_Unused_7     = AreaByte(7),
-    AB_OSR_Unused_8     = AreaByte(8),
-    AB_OSR_Unused_9     = AreaByte(9),
-    AB_OSR_Unused_A     = AreaByte(10),
-    AB_OSR_Unused_B     = AreaByte(11),
-    AB_OSR_Unused_C     = AreaByte(12),
-    AB_OSR_Unused_D     = AreaByte(13),
-    AB_OSR_Unused_E     = AreaByte(14),
-    AB_OSR_Unused_F     = AreaByte(15),
+enum AreaBytesOSR {
+    AB_OSR_Unused_0                         = AreaByte(0x0),
+    AB_OSR_Unused_1                         = AreaByte(0x1),
+    AB_OSR_Unused_2                         = AreaByte(0x2),
+    AB_OSR_Unused_3                         = AreaByte(0x3),
+    AB_OSR_Unused_4                         = AreaByte(0x4),
+    AB_OSR_Unused_5                         = AreaByte(0x5),
+    AB_OSR_Unused_6                         = AreaByte(0x6),
+    AB_OSR_Unused_7                         = AreaByte(0x7),
+    AB_OSR_Unused_8                         = AreaByte(0x8),
+    AB_OSR_Unused_9                         = AreaByte(0x9),
+    AB_OSR_Unused_A                         = AreaByte(0xA),
+    AB_OSR_Unused_B                         = AreaByte(0xB),
+    AB_OSR_Unused_C                         = AreaByte(0xC),
+    AB_OSR_Unused_D                         = AreaByte(0xD),
+    AB_OSR_Unused_E                         = AreaByte(0xE),
+    AB_OSR_Unused_F                         = AreaByte(0xF),
 };
 
-enum {
-    AF_OSR_01       = AreaFlag(1),
+enum AreaFlagsOSR {
+    AF_OSR_Unused_00                        = AreaFlag(0x00),
+    // AF_OSR_00 - AF_OSR_FF unused
 };
-
-#endif

@@ -1,9 +1,9 @@
 #include "kzn_11.h"
 
-#include "world/common/enemy/LavaBubble.inc.c"
+#include "world/common/enemy/LavaBubble/wander.inc.c"
 
 #include "sprite/npc/Fire.h"
-#include "world/common/enemy/ai/FireBarAI.inc.c"
+#include "world/common/ai/FireBarAI.inc.c"
 
 EvtScript N(EVS_FireBar_Defeated) = {
     Set(LVarA, LVar0)
@@ -142,7 +142,6 @@ NpcData N(NpcData_FireBar_01)[] = {
         .id = NPC_FireBar_1A,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_01),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -152,7 +151,6 @@ NpcData N(NpcData_FireBar_01)[] = {
         .id = NPC_FireBar_1B,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_Extra),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -162,7 +160,6 @@ NpcData N(NpcData_FireBar_01)[] = {
         .id = NPC_FireBar_1C,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_Extra),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -172,7 +169,6 @@ NpcData N(NpcData_FireBar_01)[] = {
         .id = NPC_FireBar_1D,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_Extra),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -185,7 +181,6 @@ NpcData N(NpcData_FireBar_02)[] = {
         .id = NPC_FireBar_2A,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_02),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -195,7 +190,6 @@ NpcData N(NpcData_FireBar_02)[] = {
         .id = NPC_FireBar_2B,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_Extra),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -205,7 +199,6 @@ NpcData N(NpcData_FireBar_02)[] = {
         .id = NPC_FireBar_2C,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_Extra),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -215,7 +208,6 @@ NpcData N(NpcData_FireBar_02)[] = {
         .id = NPC_FireBar_2D,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_Extra),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -228,7 +220,6 @@ NpcData N(NpcData_FireBar_03)[] = {
         .id = NPC_FireBar_3A,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_03),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -238,7 +229,6 @@ NpcData N(NpcData_FireBar_03)[] = {
         .id = NPC_FireBar_3B,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_Extra),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -248,7 +238,6 @@ NpcData N(NpcData_FireBar_03)[] = {
         .id = NPC_FireBar_3C,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_Extra),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -258,7 +247,6 @@ NpcData N(NpcData_FireBar_03)[] = {
         .id = NPC_FireBar_3D,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_Extra),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -282,7 +270,7 @@ NpcData N(NpcData_Bubble_01) = {
             .detectSize = { 150 },
         }
     },
-    .settings = &N(NpcSettings_LavaBubble),
+    .settings = &N(NpcSettings_LavaBubble_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = LAVA_BUBBLE_DROPS,
     .animations = LAVA_BUBBLE_ANIMS,
@@ -305,7 +293,7 @@ NpcData N(NpcData_Bubble_02) = {
             .detectSize = { 150 },
         }
     },
-    .settings = &N(NpcSettings_LavaBubble),
+    .settings = &N(NpcSettings_LavaBubble_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = LAVA_BUBBLE_DROPS,
     .animations = LAVA_BUBBLE_ANIMS,

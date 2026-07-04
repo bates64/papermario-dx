@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kkj_19.h
 /// @brief Peach's Castle - Kitchen (1F)
 
@@ -29,4 +31,4 @@ extern EvtScript N(EVS_ManageBaking);
 extern NpcGroupList N(IntroNPCs);
 extern NpcGroupList N(PeachNPCs);
 
-extern unsigned char ui_box_corners5_png[];
+extern IMG_BIN ui_box_corners5_png[];

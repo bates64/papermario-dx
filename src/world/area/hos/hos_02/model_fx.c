@@ -1,8 +1,6 @@
 #include "hos_02.h"
 #include "effects.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 u16 N(HaloScalePhaseAngle) = 0;
 
 void N(build_gfx_lamp_halos)(void) {
@@ -114,37 +112,37 @@ void N(build_gfx_pink_stars)(void) {
     N(PinkStarPhaseAngle) += (s32)RAD_TO_BINANG(25.1898);
 }
 
-API_CALLABLE(N(func_80240EF4_A17114)) {
+API_CALLABLE(N(SetStarWarpIdleParams)) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
-    effect->data.unk_75->unk_78 = 190.0f;
-    effect->data.unk_75->unk_7C = 220.0f;
-    effect->data.unk_75->unk_68 = 0.7f;
-    effect->data.unk_75->masterAlpha = 255;
+    effect->data.starWarp->targetMinPrimAlpha = 190.0f;
+    effect->data.starWarp->targetMaxPrimAlpha = 220.0f;
+    effect->data.starWarp->targetTexVelMain.x = 0.7f;
+    effect->data.starWarp->masterAlpha = 255;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80240F68_A17188)) {
+API_CALLABLE(N(SetStarWarpTravelParams)) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
-    effect->data.unk_75->unk_78 = 170.0f;
-    effect->data.unk_75->unk_7C = 170.0f;
-    effect->data.unk_75->unk_68 = 2.0f;
-    effect->data.unk_75->masterAlpha = 255;
+    effect->data.starWarp->targetMinPrimAlpha = 170.0f;
+    effect->data.starWarp->targetMaxPrimAlpha = 170.0f;
+    effect->data.starWarp->targetTexVelMain.x = 2.0f;
+    effect->data.starWarp->masterAlpha = 255;
     return ApiStatus_DONE2;
 }
 
 EvtScript N(EVS_SetupModelFX) = {
     PlayEffect(EFFECT_75, 1, -1105, -86, 230, 1, -1)
-    Set(MV_StarBeamEffect, LVarF)
+    Set(MV_StarWarpEffect, LVarF)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(hos_02_ENTRY_0)
-            Call(N(func_80240F68_A17188), MV_StarBeamEffect)
+            Call(N(SetStarWarpTravelParams), MV_StarWarpEffect)
         CaseEq(hos_02_ENTRY_1)
-            Call(N(func_80240EF4_A17114), MV_StarBeamEffect)
+            Call(N(SetStarWarpIdleParams), MV_StarWarpEffect)
     EndSwitch
     // star shimmer floor
     Call(SetTexPanner, MODEL_o380, TEX_PANNER_1)
@@ -156,7 +154,7 @@ EvtScript N(EVS_SetupModelFX) = {
         TEX_PAN_PARAMS_STEP(   80, -200,  -50,  100)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // custom gfx for lantern glow halos, flags for the entire lamp posts
     Call(SetModelCustomGfx, MODEL_o414, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)

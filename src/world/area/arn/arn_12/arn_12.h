@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file arn_12.h
 /// @brief Gusty Gulch - Tunnel 2
 

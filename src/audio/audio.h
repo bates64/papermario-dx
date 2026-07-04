@@ -1,5 +1,6 @@
 #ifndef _AUDIO_INTERNAL_H_
 #define _AUDIO_INTERNAL_H_
+
 #include "nu/nusys.h"
 #include "nu/nualsgi.h"
 #include "PR/n_abi.h"
@@ -511,7 +512,7 @@ typedef struct Fade {
     /* 0x14 */ s32 envelopeStep;
     /* 0x18 */ s16 envelopeTarget;
     /* 0x1A */ s16 envelopeTicks;
-} Fade; // size = 0x10
+} Fade; // size = 0x1C
 
 typedef struct AuDelay {
     /* 0x00 */ u32 input;
@@ -519,7 +520,7 @@ typedef struct AuDelay {
     /* 0x08 */ s16 ffcoef; // feedforward coef
     /* 0x0A */ s16 fbcoef; // feedback coef
     /* 0x0C */ s16 gain;
-    /* 0x0E */ char pad_0E[2];
+    /* 0x0E */ PAD(2);
     /* 0x10 */ f32 rsinc;
     /* 0x14 */ f32 rsval;
     /* 0x18 */ s32 rsdelta;
@@ -541,7 +542,7 @@ typedef struct AuFX {
 typedef struct AuLowPass {
     /* 0x00 */ s16 fc;
     /* 0x02 */ s16 fgain;
-    /* 0x04 */ char pad_04[4];
+    /* 0x04 */ PAD(4);
     /* 0x08 */ s16 fccoef[16];
     /* 0x28 */ POLEF_STATE* fstate;
     /* 0x2C */ s32 first;
@@ -549,21 +550,21 @@ typedef struct AuLowPass {
 
 typedef struct AuFilter {
     /* 0x00 */ s16* base; // (unused) buffer for filter history
-    /* 0x04 */ char pad_04[2];
+    /* 0x04 */ PAD(2);
     /* 0x06 */ s16 unused_06;
     /* 0x08 */ s16 unused_08;
-    /* 0x0A */ char pad_0A[2];
+    /* 0x0A */ PAD(2);
     /* 0x0C */ AuLowPass* activeLowpass;
     /* 0x10 */ AuLowPass* lowpassTemplate;
 } AuFilter; // size = 0x14
 
 typedef struct AuFxBus {
     /* 0x00 */ u16 gain;
-    /* 0x02 */ char pad_02[2];
+    /* 0x02 */ PAD(2);
     /* 0x04 */ AuFX* fxL;
     /* 0x08 */ AuFX* fxR;
     /* 0x0C */ u8 curEffectType;
-    /* 0x0D */ char pad_0D[3];
+    /* 0x0D */ PAD(3);
     /* 0x10 */ struct AuPVoice* head;
     /* 0x14 */ struct AuPVoice* tail;
 } AuFxBus; // size = 0x18
@@ -624,10 +625,10 @@ typedef struct AuPVoice {
     /* 0x38 */ AuResampler resampler;
     /* 0x48 */ AuEnvMixer envMixer;
     /* 0x74 */ s16 unused_74;
-    /* 0x76 */ char pad_76[2];
+    /* 0x76 */ PAD(2);
     /* 0x78 */ u8 busID;
     /* 0x79 */ u8 index;
-    /* 0x7A */ char pad_7A[2];
+    /* 0x7A */ PAD(2);
 } AuPVoice; // size = 0x7C
 
 // based on N_ALSynth
@@ -651,7 +652,7 @@ typedef struct SoundRequest {
     /* 0x4 */ s16 volume;
     /* 0x6 */ s16 pitchShift;
     /* 0x8 */ s8 pan;
-    /* 0x9 */ char pad_9[1];
+    /* 0x9 */ PAD(1);
 } SoundRequest; // size = 0xA
 
 typedef struct EnvelopeData {
@@ -666,7 +667,7 @@ typedef struct EnvelopeOffset {
 
 typedef struct EnvelopePreset {
     /* 0x00 */ u8 count;
-    /* 0x01 */ char pad_01[3];
+    /* 0x01 */ PAD(3);
     /* 0x04 */ EnvelopeOffset offsets[1]; // variable size
 } EnvelopePreset;
 
@@ -701,8 +702,8 @@ typedef Instrument* InstrumentBank[16];
 typedef struct SoundLerp {
     /* 0x0 */ s16_16 current;
     /* 0x4 */ s16_16 step;
-    /* 0xA */ s16 time;
-    /* 0x8 */ s16 goal;
+    /* 0x8 */ s16 time;
+    /* 0xA */ s16 goal;
 } SoundLerp; // size = 0xC
 
 typedef struct SoundPlayChange {
@@ -719,7 +720,7 @@ typedef struct SoundPlayChange {
 
 typedef struct SoundPlayer {
     /* 0x00 */ AuFilePos sefDataReadPos;
-    /* 0x04 */ char pad_4[0xC];
+    /* 0x04 */ PAD(12);
     /* 0x10 */ EnvelopeData envelope;
     /* 0x18 */ u8* envelopCustomPressProfile;
     /* 0x1C */ Instrument* sfxInstrumentRef;
@@ -735,15 +736,15 @@ typedef struct SoundPlayer {
     /* 0x80 */ AuFilePos alternativeDataPos;
     /* 0x84 */ s8 alternativeType;
     /* 0x85 */ u8 triggers;
-    /* 0x86 */ char pad_86[2];
+    /* 0x86 */ PAD(2);
     /* 0x88 */ s8* loopStartPos;
     /* 0x8C */ u8 loopIterCount; // loopIterCount = 0 for infinite loop
-    /* 0x8D */ char pad_8D[1];
+    /* 0x8D */ PAD(1);
     /* 0x8E */ u16 delay;
     /* 0x90 */ u16 playLength;
     /* 0x92 */ s16 coarseTune;
     /* 0x94 */ s8 fineTune;
-    /* 0x95 */ char pad_95[1];
+    /* 0x95 */ PAD(1);
     /* 0x96 */ u16 curSoundID;
     /* 0x98 */ u8 priority;
     /* 0x99 */ u8 exclusiveID;
@@ -760,8 +761,8 @@ typedef struct SoundPlayer {
     /* 0xA4 */ s16 masterPitchShift;
     /* 0xA6 */ s16 masterVolume;
     /* 0xA8 */ u8 masterPan;
-    /* 0xA8 */ u8 state;
-    /* 0xA9 */ char pad_AA[2];
+    /* 0xA9 */ u8 state;
+    /* 0xAA */ PAD(2);
 } SoundPlayer; // size = 0xAC
 
 typedef struct SoundManagerMusicEvent {
@@ -769,7 +770,7 @@ typedef struct SoundManagerMusicEvent {
     /* 0x0 */ s32 raw;
         struct {
     /* 0x0 */ u8 index;
-    /* 0x1 */ char pad_01[0x2];
+    /* 0x1 */ PAD(2);
     /* 0x3 */ u8 volume;
         };
     };
@@ -796,7 +797,7 @@ typedef struct SoundManager {
     /* 0x084 */ s8 customReverbAmounts[8];
     /* 0x08C */ u8 lastCustomEffectIdx;
     /* 0x08D */ s8 defaultReverbAmt;
-    /* 0x08E */ char pad_8E[2];
+    /* 0x08E */ PAD(2);
     /* 0x090 */ SoundManagerMusicEvent bgmSounds[4];
     /* 0x0A0 */ SoundManagerCustomCmdList customCmdList[4];
     /* 0x0B8 */ u16 baseVolume;
@@ -806,13 +807,13 @@ typedef struct SoundManager {
     /* 0x0BE */ u8 busID;
     /* 0x0BF */ u8 curVoiceIndex;
     /* 0x0C0 */ u8 state;
-    /* 0x0C1 */ char pad_C1[1];
+    /* 0x0C1 */ PAD(1);
     /* 0x0C2 */ SoundRequest soundQueue[SFX_QUEUE_SIZE]; ///< Lock-free ring buffer for queueing sound effects from game thread
     /* 0x162 */ s8 unused_162;
     /* 0x163 */ u8 sfxQueueReadPos; ///< Read index for the soundQueue ring buffer (audio thread)
     /* 0x164 */ u8 sfxQueueWritePos; ///< Write index for the soundQueue ring buffer (game thread)
     /* 0x165 */ s8 unused_165;
-    /* 0x166 */ char pad_166[2];
+    /* 0x166 */ PAD(2);
     /* 0x168 */ s32 resetPending;
     /* 0x16C */ SoundPlayer players[8];
 } SoundManager; // size = 0x6CC
@@ -841,7 +842,7 @@ typedef struct AuVoice {
     /* 0x0E */ u8 pan;
     /* 0x0F */ u8 reverb;
     /* 0x10 */ u8 busID;
-    /* 0x11 */ char pad_11[3];
+    /* 0x11 */ PAD(3);
     /* 0x14 */ EnvelopeData envelope;
     /* 0x1C */ u8* cmdPtr;
     /* 0x20 */ s32 unused_20;
@@ -863,24 +864,24 @@ typedef struct AuVoice {
     /* 0x43 */ u8 syncFlags;
     /* 0x44 */ s8 clientPriority;
     /* 0x45 */ u8 priority;
-    /* 0x46 */ char pad_46[2];
+    /* 0x46 */ PAD(2);
 } AuVoice; // size = 0x48
 
 typedef struct BGMFileInfo {
-    /* 0x10 */ u8 timingPreset;
-    /* 0x11 */ char pad_11[3];
-    /* 0x14 */ u16 compositions[4];
-    /* 0x1C */ u16 drums;
-    /* 0x1E */ u16 drumCount;
-    /* 0x20 */ u16 instruments;
-    /* 0x22 */ u16 instrumentCount;
+    /* 0x00 */ u8 timingPreset;
+    /* 0x01 */ PAD(3);
+    /* 0x04 */ u16 compositions[4];
+    /* 0x0C */ u16 drums;
+    /* 0x0E */ u16 drumCount;
+    /* 0x10 */ u16 instruments;
+    /* 0x12 */ u16 instrumentCount;
 } BGMFileInfo; // size = 0x14
 
 typedef struct BGMHeader {
     /* 0x00 */ s32 signature; // 'BGM '
     /* 0x04 */ s32 size; // including header
     /* 0x08 */ s32 name;
-    /* 0x0C */ char pad_C[4];
+    /* 0x0C */ PAD(4);
     /* 0x10 */ BGMFileInfo info;
 } BGMHeader; // size = 0x24
 
@@ -894,7 +895,7 @@ typedef struct BGMDrumInfo {
     /* 0x8 */ u8 randVolume;
     /* 0x9 */ u8 randPan;
     /* 0xA */ u8 randReverb;
-    /* 0xB */ char pad_B[1];
+    /* 0xB */ PAD(1);
 } BGMDrumInfo; // size = 0xC
 
 typedef struct BGMInstrumentInfo {
@@ -904,7 +905,7 @@ typedef struct BGMInstrumentInfo {
     /* 0x04 */ u8 reverb;
     /* 0x05 */ s8 coarseTune;
     /* 0x06 */ s8 fineTune;
-    /* 0x07 */ char pad_7[1];
+    /* 0x07 */ PAD(1);
 } BGMInstrumentInfo; // size = 0x8
 
 typedef struct AUFileMetadata {
@@ -919,7 +920,7 @@ typedef struct SBNFileEntry {
     //TODO try replacing the data field with these
     struct {
     /* 0x4 */ s8 fmt;
-    /* 0x5 */ char pad_05[1];
+    /* 0x5 */ PAD(1);
     /* 0x6 */ s16 size;
     };
     };
@@ -927,26 +928,26 @@ typedef struct SBNFileEntry {
 
 typedef struct SBNHeader {
     /* 0x00 */ AUFileMetadata mdata; // uses identifer 'SBN '
-    /* 0x08 */ char unused_08[8];
+    /* 0x08 */ PAD(8);
     /* 0x10 */ s32 fileListOffset; // offset in the SBN file of the file table (== sizeof(SBNHeader))
     /* 0x14 */ s32 numEntries; // number of entries in the SBN file table
     /* 0x18 */ s32 fullFileSize; // full size of the SBN file (unread)
     /* 0x1C */ s32 versionOffset;
-    /* 0x20 */ char unused_04[4];
+    /* 0x20 */ PAD(4);
     /* 0x24 */ s32 INIToffset;
-    /* 0x28 */ char unused_28[24];
+    /* 0x28 */ PAD(0x18);
     /* 0x40 */ SBNFileEntry entries[0];
 } SBNHeader; // size = 0x40
 
 typedef struct SEFHeader {
     /* 0x00 */ AUFileMetadata mdata; // uses identifer 'SEF '
     /* 0x08 */ s32 name;
-    /* 0x0C */ char unused_0C[2]; // always 0
+    /* 0x0C */ PAD(2);
     /* 0x0E */ u8 hasExtraSection; // always 1
-    /* 0x0F */ char unused_0F[1]; // always 0
+    /* 0x0F */ PAD(1);
     /* 0x10 */ u16 sections[8];
     /* 0x20 */ u16 section2000;
-} SEFHeader; // size = 0x22
+} SEFHeader; // size = 0x24
 
 typedef struct INITHeader {
     /* 0x00 */ AUFileMetadata mdata; // uses identifer 'INIT'
@@ -956,7 +957,7 @@ typedef struct INITHeader {
     /* 0x0E */ u16 songListSize;
     /* 0x10 */ u16 mseqListOffset;
     /* 0x12 */ u16 mseqListSize;
-    /* 0x14 */ char pad_14[0xC];
+    /* 0x14 */ PAD(12);
 } INITHeader; // size = 0x20
 
 typedef struct InitSongEntry {
@@ -974,7 +975,7 @@ typedef struct InitBankEntry {
 
 typedef struct PERHeader {
     /* 0x00 */ AUFileMetadata mdata; // uses identifer 'PER ' or 'PRG '
-    /* 0x08 */ char pad_08[8];
+    /* 0x08 */ PAD(8);
 } PERHeader; // size = 0x10
 
 typedef struct PEREntry {
@@ -983,12 +984,12 @@ typedef struct PEREntry {
 
 typedef struct BKHeader {
     /* 0x00 */ u16 signature; // 'BK'
-    /* 0x02 */ char pad_02[2];
+    /* 0x02 */ PAD(2);
     /* 0x04 */ s32 size;
     /* 0x08 */ s32 name;
     /* 0x0C */ u16 format; // 'CR', 'DR', 'SR'
     /* 0x0E */ u8 swizzled;
-    /* 0x0E */ char pad_0E[3];
+    /* 0x0F */ PAD(3);
     /* 0x12 */ u16 instruments[16];
     /* 0x32 */ u16 instrumetsLength;
     /* 0x34 */ u16 loopStatesStart;
@@ -1013,7 +1014,7 @@ typedef struct BKFileBuffer {
 typedef struct AuEffectChange {
     /* 0x0 */ u8 type;
     /* 0x1 */ u8 changed;
-    /* 0x2 */ char pad_02[2];
+    /* 0x2 */ PAD(2);
 } AuEffectChange;
 
 typedef struct BGMPlayerSnapshot {
@@ -1031,7 +1032,7 @@ typedef struct AuGlobals {
     /* 0x001C */ s32 baseRomOffset;
     /* 0x0020 */ SBNFileEntry* sbnFileList; /// copied from SBN to the audio heap
     /* 0x0024 */ s32 fileListLength;
-    /* 0x0028 */ char pad_28[4];
+    /* 0x0028 */ PAD(4);
     /* 0x002C */ InitSongEntry* songList; /// copied from INIT to the audio heap
     /* 0x0030 */ s32 songListLength;
     /* 0x0034 */ s32 bkFileListOffset;
@@ -1069,9 +1070,9 @@ typedef struct AuGlobals {
     /* 0x11EC */ InstrumentBank bankSet6[4];
     /* 0x12EC */ InstrumentBank* bankSets[8];
     /* 0x130C */ u8 channelDelayState;
-    /* 0x130D */ char pad_130D[3];
+    /* 0x130D */ PAD(3);
     /* 0x1310 */ BKFileBuffer* auxBanks[3];
-    /* 0x131C */ char pad_131C[4];
+    /* 0x131C */ PAD(4);
     /* 0x1320 */ AuVoice voices[24];
 } AuGlobals; // size = 0x19E0
 
@@ -1092,7 +1093,7 @@ typedef struct BGMPlayerTrack {
     /* 0x36 */ s16 proxVolumeTicks;
     /* 0x38 */ s16 detune; /// live track detune, independent of instrument, instantly affects all active voices and subsequent notes played
     /* 0x3A */ s16 tremoloDelay;
-    /* 0x3C */ char pad_3C[2];
+    /* 0x3C */ PAD(2);
     /* 0x3E */ s16 detourLength;
     /* 0x40 */ SoundPlayChange changed;
     /* 0x44 */ u16 patch;
@@ -1118,18 +1119,18 @@ typedef struct BGMPlayerTrack {
     /* 0x5A */ u8 muted; /// prevents notes from this track from being assigned voices, implemented for linked track pairs
     /* 0x5B */ s8 busID;
     /* 0x5C */ u8 index;
-    /* 0x5D */ char pad_5D[3];
+    /* 0x5D */ PAD(3);
 } BGMPlayerTrack; // size = 0x60;
 
 typedef struct SeqNote {
     /* 0x00 */ Instrument* ins;
-    /* 0x00 */ f32 pitchRatio;
+    /* 0x04 */ f32 pitchRatio;
     /* 0x08 */ s16 volume;
     /* 0x0A */ s16 detune;
     /* 0x0C */ s32 length; /// attack + sustain time
     /* 0x10 */ u16 tremoloDelay;
     /* 0x12 */ u8 tremoloDepth;
-    /* 0x12 */ u8 tremoloPhase;
+    /* 0x13 */ u8 tremoloPhase;
     /* 0x14 */ s16 randDetune;
     /* 0x16 */ u8 velocity;
     /* 0x17 */ u8 pendingTick;
@@ -1155,7 +1156,7 @@ typedef struct BGMPlayer {
     /* 0x058 */ u16 unk_58; // related to legacy command system, unused
     /* 0x05A */ u16 unk_5A; // related to legacy command system, unused
     /* 0x05C */ s16 prevUpdateResult; // unused, may indicate error status
-    /* 0x05E */ char pad_5E[2];
+    /* 0x05E */ PAD(2);
     /* 0x060 */ s32 curVariation;
     /* 0x064 */ struct BGMHeader* bgmFile;
     /* 0x068 */ SegData* compReadPos;
@@ -1181,7 +1182,7 @@ typedef struct BGMPlayer {
     /* 0x16C */ s32 proxMixValue;
     /* 0x170 */ u8 proxMixID;
     /* 0x171 */ u8 proxMixVolume;
-    /* 0x172 */ char pad_172[2];
+    /* 0x172 */ PAD(2);
     /* 0x174 */ s16 customPressEnvelopes[8][9]; /// Dynamically customizable press envelopes
     /* 0x204 */ u8* trackVolsConfig;
     /* 0x208 */ u16 masterTempoBPM;
@@ -1196,19 +1197,19 @@ typedef struct BGMPlayer {
     /* 0x21C */ u8 bgmDrumCount;
     /* 0x21D */ u8 bgmInstrumentCount;
     /* 0x21E */ u8 unused_21E;
-    /* 0x21F */ char pad_21F[1];
+    /* 0x21F */ PAD(1);
     /* 0x220 */ u8 paused;
     /* 0x221 */ u8 masterState;
     /* 0x222 */ u8 unused_222;
     /* 0x223 */ u8 conditionalLoopFlags; /// No means to modify value is implemented
     /* 0x224 */ u8 effectValues[4];
-    /* 0x227 */ char pad_228[2];
+    /* 0x228 */ PAD(2);
     /* 0x22A */ u8 polyphonyCounts[8];
     /* 0x232 */ u8 bFadeConfigSetsVolume;
     /* 0x233 */ u8 initLinkMute; /// Used to mute any linked tracks after the first one encountered.
     /* 0x234 */ u8 priority;
     /* 0x235 */ u8 busID;
-    /* 0x236 */ char pad_236[2];
+    /* 0x236 */ PAD(2);
     /* 0x238 */ s32 cmdBufData[8]; /// Buffer for an unused (legacy) system for controlling the BGMPlayer from the main thread
     /* 0x258 */ u8 cmdBufPending;
     /* 0x259 */ u8 cmdBufReadPos;
@@ -1228,8 +1229,8 @@ typedef struct SongStartRequest {
     /* 0x0C */ s32 finalVolume;
     /* 0x10 */ s32 variation;
     /* 0x14 */ s32 unused_14;
-    /* 0x18 */ char pad_18[8];
-} SongStartRequest; // size = 0x1C or 0x20
+    /* 0x18 */ PAD(8);
+} SongStartRequest; // size = 0x20
 
 typedef struct SongFadeOutRequest {
     /* 0x00 */ s32 songName;
@@ -1238,8 +1239,8 @@ typedef struct SongFadeOutRequest {
     /* 0x0C */ s32 finalVolume;
     /* 0x10 */ AuCallback doneCallback;
     /* 0x14 */ s32 onPush;
-    /* 0x18 */ char pad_18[8];
-} SongFadeOutRequest; // size = 0x1C or 0x20
+    /* 0x18 */ PAD(8);
+} SongFadeOutRequest; // size = 0x20
 
 typedef struct SongSuspendRequest {
     /* 0x00 */ s32 songName;
@@ -1248,8 +1249,8 @@ typedef struct SongSuspendRequest {
     /* 0x0C */ s32 finalVolume;
     /* 0x10 */ s32 index;
     /* 0x14 */ s32 pauseMode; /// if true, the player is paused, else it will be saved to a snapshot
-    /* 0x18 */ char pad_18[8];
-} SongSuspendRequest; // size = 0x1C or 0x20
+    /* 0x18 */ PAD(8);
+} SongSuspendRequest; // size = 0x20
 
 typedef struct SongResumeRequest {
     /* 0x00 */ s32 songName;
@@ -1258,17 +1259,15 @@ typedef struct SongResumeRequest {
     /* 0x0C */ s32 finalVolume;
     /* 0x10 */ s32 index;
     /* 0x14 */ s32 pauseMode;
-    /* 0x18 */ char pad_18[8];
-} SongResumeRequest; // size = 0x1C or 0x20
+    /* 0x18 */ PAD(8);
+} SongResumeRequest; // size = 0x20
 
 typedef struct SongSwapLinkedRequest {
     /* 0x00 */ s32 songName;
-    /* 0x04 */ char unused_04[4];
-    /* 0x08 */ char unused_08[4];
-    /* 0x0C */ char unused_0C[4];
-    /* 0x10 */ b32 enabled; // 0 or 1
-    /* 0x18 */ char pad_14[0xC];
-} SongSwapLinkedRequest; // size = 0x1C or 0x20
+    /* 0x04 */ PAD(12);
+    /* 0x10 */ b32 enabled;
+    /* 0x14 */ PAD(12);
+} SongSwapLinkedRequest; // size = 0x20
 
 typedef struct MSEQTrackData {
     /* 0x0 */ u8 trackIndex;
@@ -1286,7 +1285,7 @@ typedef struct MSEQHeader {
     /* 0x0D */ u8 trackSettingsCount;
     /* 0x0E */ u16 trackSettingsOffset;
     /* 0x10 */ u16 dataStart;
-    /* 0x12 */ char pad_12[6];
+    /* 0x12 */ PAD(6);
 } MSEQHeader; // size = 0x18
 
 typedef struct AmbienceTrack {
@@ -1297,14 +1296,14 @@ typedef struct AmbienceTrack {
     /* 0x24 */ s8 pan;
     /* 0x25 */ s8 reverb;
     /* 0x26 */ u8 flags;
-    /* 0x27 */ char pad_27[1];
+    /* 0x27 */ PAD(1);
 } AmbienceTrack; // size = 0x28
 
 typedef struct AmbienceSavedVoice {
     /* 0x0 */ u8 trackIndex;
     /* 0x1 */ u8 tune;
     /* 0x2 */ s8 volume;
-    /* 0x4 */ char pad_03[1];
+    /* 0x3 */ PAD(1);
 } AmbienceSavedVoice; // size = 0x4
 
 /**
@@ -1341,17 +1340,17 @@ typedef struct AmbiencePlayer {
     /* 0x00C */ AuFilePos loopStartPos[2];
     /* 0x014 */ AmbVoiceStateInfo id;
     /* 0x018 */ s32 delay;
-    /* 0x01C */ char pad_1C[4];
+    /* 0x01C */ PAD(4);
     /* 0x020 */ s32 mseqName;
     /* 0x024 */ u8 mode;
     /* 0x025 */ u8 playState;
     /* 0x026 */ u8 fadeSettingsType;
-    /* 0x027 */ char pad_27[1];
+    /* 0x027 */ PAD(1);
     /* 0x028 */ u16 fadeSettingsTime;
     /* 0x02A */ u8 fadeSettingsInitial; // 255 means from current volume
     /* 0x02B */ u8 fadeSettingsGoal;
     /* 0x02C */ u8 loopCount[2];
-    /* 0x02E */ char pad_2E[2];
+    /* 0x02E */ PAD(2);
     /* 0x030 */ u32 firstVoiceIdx;
     /* 0x034 */ u32 lastVoiceIdx;
     /* 0x038 */ s8_24 fadeVolume;
@@ -1382,7 +1381,7 @@ typedef struct ALConfig {
     /* 0x04 */ s32 num_bus;
     /* 0x08 */ s32 outputRate; /// hardware sample output rate
     /* 0x0C */ u8 unused_0C;
-    /* 0x0D */ char pad_0D[3];
+    /* 0x0D */ PAD(3);
     /* 0x10 */ void* dmaNew;
     /* 0x14 */ ALHeap* heap;
 } ALConfig; // size = 0x18;

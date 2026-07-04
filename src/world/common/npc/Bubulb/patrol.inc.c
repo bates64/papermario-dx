@@ -1,0 +1,25 @@
+#pragma once
+#include "patrol.h"
+
+#include "world/common/ai/PatrolNoAttackAI.inc.c"
+
+MobileAISettings N(AISettings_Bubulb_Patrol) = {
+    .moveSpeed = 1.5f,
+    .moveTime = 30,
+    .waitTime = 30,
+    .playerSearchInterval = -1,
+    .loiterMode = 1,
+};
+
+EvtScript N(EVS_NpcAI_Bubulb_Patrol) = {
+    Call(N(PatrolNoAttackAI_Main), Ref(N(AISettings_Bubulb_Patrol)))
+    Return
+    End
+};
+
+NpcSettings N(NpcSettings_Bubulb_Patrol) = {
+    .height = 42,
+    .radius = 28,
+    .level = ACTOR_LEVEL_NONE,
+    .doAI = &N(EVS_NpcAI_Bubulb_Patrol),
+};

@@ -15,17 +15,17 @@ typedef struct ModelBoundingBox {
     /* 0x00 */ s32 key; // MODEL_PROP_KEY_BOUNDING_BOX
     /* 0x04 */ s32 halfSizeX;
     /* 0x08 */ f32 minX;
-    /* 0x0C */ char unk_0C[0x04];
+    /* 0x0C */ PAD(4);
     /* 0x10 */ s32 halfSizeY;
     /* 0x14 */ f32 minY;
-    /* 0x18 */ char unk_18[0x04];
+    /* 0x18 */ PAD(4);
     /* 0x1C */ s32 halfSizeZ;
     /* 0x20 */ f32 minZ;
-    /* 0x24 */ char unk_24[0x8];
+    /* 0x24 */ PAD(8);
     /* 0x2C */ f32 maxX;
-    /* 0x30 */ char unk_30[0x8];
+    /* 0x30 */ PAD(8);
     /* 0x38 */ f32 maxY;
-    /* 0x3C */ char unk_3C[0x8];
+    /* 0x3C */ PAD(8);
     /* 0x44 */ f32 maxZ;
 } ModelBoundingBox; // size = 0x48?
 
@@ -45,7 +45,7 @@ typedef struct ModelGroupData {
 
 typedef struct ModelDisplayData {
     /* 0x0 */ Gfx* displayList;
-    /* 0x4 */ char unk_04[0x4];
+    /* 0x4 */ PAD(4);
 } ModelDisplayData; // size = 0x8
 
 typedef struct ModelNode {
@@ -63,7 +63,7 @@ typedef struct Model {
     /* 0x08 */ ModelNode* modelNode;
     /* 0x0C */ ModelGroupData* groupData;
     /* 0x10 */ Mtx* finalMtx; // the matrix actually used while building the display list
-    /* 0x14 */ char unk_14[4];
+    /* 0x14 */ PAD(4);
     /* 0x18 */ Mtx savedMtx;
     /* 0x58 */ Matrix4f userTransformMtx; // provided for user code to apply an additional multiplicative transformation
     /* 0x98 */ Vec3f center;
@@ -73,7 +73,7 @@ typedef struct Model {
     /* 0xA7 */ u8 matrixFreshness;
     /* 0xA8 */ u8 textureID;
     /* 0xA9 */ s8 textureVariation;
-    /* 0xAA */ char unk_AA[6];
+    /* 0xAA */ PAD(6);
 } Model; // size = 0xB0
 
 typedef struct ModelTransformGroup {
@@ -113,7 +113,7 @@ typedef struct ModelTreeInfo {
     /* 0x00 */ u8 modelIndex;
     /* 0x01 */ u8 treeDepth;
     /* 0x02 */ u8 textureID;
-    /* 0x03 */ char unk_03;
+    /* 0x03 */ PAD(1);
 } ModelTreeInfo; // size = 0x04
 
 typedef struct TextureHandle {
@@ -127,7 +127,7 @@ typedef struct TextureHandle {
 
 typedef struct ModelBlueprint {
     /* 0x0 */ s16 flags;
-    /* 0x2 */ char unk_02[0x2];
+    /* 0x2 */ PAD(2);
     /* 0x4 */ ModelNode* mdlNode;
     /* 0x8 */ ModelGroupData* groupData;
     /* 0xC */ Mtx* mtx;
@@ -176,7 +176,7 @@ typedef struct ShapeFileHeader {
     /* 0x08 */ char** modelNames;
     /* 0x0C */ char** colliderNames;
     /* 0x10 */ char** zoneNames;
-    /* 0x14 */ unsigned char pad_14[0xC];
+    /* 0x14 */ PAD(12);
 } ShapeFileHeader; // size = 0x20
 
 typedef struct ShapeFile {
@@ -224,7 +224,7 @@ s32 step_mesh_animator(ModelAnimator* animator);
 
 void set_custom_gfx_builders(s32 customGfxIndex, ModelCustomGfxBuilderFunc pre, ModelCustomGfxBuilderFunc post);
 void mdl_make_local_vertex_copy(s32 arg0, u16 treeIdx, s32);
-void play_model_animation_starting_from(s32 index, s16* animPos, s32 framesToSkip);
+void play_model_animation_starting_from(s32 index, AnimScriptCode* animPos, s32 framesToSkip);
 
 void mdl_set_shroud_tint_params(u8 r, u8 g, u8 b, u8 a);
 

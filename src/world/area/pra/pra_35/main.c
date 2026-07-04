@@ -72,12 +72,12 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-BombTrigger N(D_802432A8_D904F8) = {
+BombTrigger N(BombPos_Wall) = {
     .pos = { 13.0f, 0.0f, -80.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(D_802432B8_D90508) = {
+EvtScript N(EVS_BlastBombableWall) = {
     Call(EnableGroup, MODEL_g297, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittnw, COLLIDER_FLAGS_UPPER_MASK)
     Unbind
@@ -98,7 +98,7 @@ EvtScript N(EVS_Main) = {
     Exec(N(EVS_EnterMap))
     Wait(1)
     IfEq(GF_PRA33_BombedWall, false)
-        BindTrigger(Ref(N(D_802432B8_D90508)), TRIGGER_POINT_BOMB, Ref(N(D_802432A8_D904F8)), 1, 0)
+        BindTrigger(Ref(N(EVS_BlastBombableWall)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Wall)), 1, 0)
     Else
         Call(EnableGroup, MODEL_g297, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittnw, COLLIDER_FLAGS_UPPER_MASK)

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tst_11.h
 /// @brief Testing - Reflection Test
 

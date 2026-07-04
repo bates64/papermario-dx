@@ -1,8 +1,7 @@
 #include "sbk_33.h"
+#include "effects.h"
 
 extern EvtScript N(EVS_MakeEntities);
-
-#include "world/common/todo/SpawnSunEffect.inc.c"
 
 EvtScript N(EVS_ExitWalk_sbk_32_1) = EVT_EXIT_WALK(60, sbk_33_ENTRY_0, "sbk_32", sbk_32_ENTRY_1);
 EvtScript N(EVS_ExitWalk_sbk_34_0) = EVT_EXIT_WALK(60, sbk_33_ENTRY_1, "sbk_34", sbk_34_ENTRY_0);
@@ -26,7 +25,7 @@ EvtScript N(EVS_Main) = {
     EndIf
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(N(EVS_MakeEntities))
-    Call(N(SpawnSunEffect))
+    Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     Call(SetMusic, 0, SONG_DRY_DRY_DESERT, 0, VOL_LEVEL_FULL)
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))
     Exec(EnterWalk)

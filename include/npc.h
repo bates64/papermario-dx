@@ -76,6 +76,8 @@ extern "C" {
 #define OVERRIDE_MOVEMENT_SPEED(speed) ((s32)(speed * 32767))
 #define NO_OVERRIDE_MOVEMENT_SPEED OVERRIDE_MOVEMENT_SPEED(-1.0f)
 
+#define ANIM_LIST_END -1
+
 typedef struct QuizRequirement {
     s32 requiredStoryProgress;
     s32 numQuestionsUnlocked;
@@ -188,7 +190,7 @@ typedef struct EnemyDrops {
     /* 0x72 */ StatDrop flowerDrops[8];
     /* 0xB2 */ s16 minCoinBonus;
     /* 0xB4 */ s16 maxCoinBonus;
-    /* 0xB6 */ char unk_DE[2];
+    /* 0xB6 */ PAD(2);
 } EnemyDrops; // size = 0xB8
 
 enum TerritoryShape { SHAPE_CYLINDER, SHAPE_RECT };
@@ -217,7 +219,7 @@ typedef struct {
 typedef union {
     EnemyTerritoryWander wander;
     EnemyTerritoryPatrol patrol;
-    char PADDING[0xC0];
+    PAD(0xC0); // force size
 } EnemyTerritory; // size = 0xC0
 
 typedef union NpcInitialVars {
@@ -232,8 +234,8 @@ typedef struct NpcData {
     /* 0x008 */ Vec3f pos;
     /* 0x014 */ s32 flags;
     /* 0x018 */ EvtScript* init;
-    /* 0x01C */ s32 initVarCount;
-    /* 0x020 */ NpcInitialVars initVar;
+    /* 0x01C */ s32 initVarCount; /// size of initVar in words. always 1 if using value/bytes, sizeof the array when using array.
+    /* 0x020 */ NpcInitialVars initVar; /// use this to initialize Enemy::varTable at the earliest possible moment, before onCreate is executed
     /* 0x024 */ s32 yaw;
     /* 0x028 */ EnemyDrops drops;
     /* 0x0E0 */ EnemyTerritory territory;
@@ -242,8 +244,8 @@ typedef struct NpcData {
         /* 0x04 */ s32 walk;
         /* 0x08 */ s32 run;
         /* 0x0C */ s32 chase;
-        /* 0x10 */ s32 anim_4;
-        /* 0x14 */ s32 anim_5;
+        /* 0x10 */ s32 alert;
+        /* 0x14 */ s32 unused;
         /* 0x18 */ s32 death;
         /* 0x1C */ s32 hit;
         /* 0x20 */ s32 anim_8;
@@ -255,10 +257,10 @@ typedef struct NpcData {
         /* 0x38 */ s32 anim_E;
         /* 0x3C */ s32 anim_F;
     } animations;
-    /* 0x1E0 */ char pad_1E0[3];
+    /* 0x1E0 */ PAD(3);
     /* 0x1E3 */ u8 aiDetectFlags;
     /* 0x1E4 */ u32 aiFlags;
-    /* 0x1E8 */ AnimID* extraAnimations;
+    /* 0x1E8 */ AnimID* limitAnimations;
     /* 0x1EC */ s32 tattle;
 } NpcData; // size = 0x1F0
 
@@ -281,7 +283,7 @@ typedef struct Enemy {
     /* 0x08 */ s16 npcID;
     /* 0x0A */ Vec3s spawnPos;
     /* 0x10 */ Vec3s attackOriginPos; // intial position when firstStrikeActive is set
-    /* 0x16 */ char unk_16[2];
+    /* 0x16 */ PAD(2);
     /* 0x18 */ NpcSettings* npcSettings;
     /* 0x1C */ EvtScript* initSource; // from Npc::init
     /* 0x20 */ EvtScript* interactSource;
@@ -307,17 +309,17 @@ typedef struct Enemy {
     /*      */      void* varTablePtr[16];
     /*      */ };
     /* 0xA4 */ u8 aiDetectFlags; // see: EnemyDetectFlags
-    /* 0xA5 */ char unk_AD[3];
+    /* 0xA5 */ PAD(3);
     /* 0xA8 */ u32 aiFlags; // see: EnemyAIFlags
     /* 0xAC */ s8 aiSuspendTime;
     /* 0xAD */ s8 instigatorValue; // value is passed to first actor in formation if a battle is triggered with this enemy
-    /* 0xAE */ char unk_B6[2];
+    /* 0xAE */ PAD(2);
     /* 0xB0 */ s32* animList;
     /* 0xB4 */ EnemyTerritory* territory;
     /* 0xB8 */ EnemyDrops* drops;
     /* 0xBC */ u32 tattleMsg;
     /* 0xD0 */ s16 savedNpcYaw;
-    /* 0xD2 */ char unk_E2[2];
+    /* 0xD2 */ PAD(2);
 } Enemy; // size = 0xD4
 
 typedef struct Encounter {
@@ -326,12 +328,12 @@ typedef struct Encounter {
     /* 0x44 */ s16 battle;
     /* 0x46 */ s16 stage;
     /* 0x48 */ s16 encounterID;
-    /* 0x4A */ char unk_4C[2];
+    /* 0x4A */ PAD(2);
 } Encounter; // size = 0x4C
 
 typedef struct FieldStatus {
     /* 0x00 */ s8 status;
-    /* 0x01 */ char pad_01;
+    /* 0x01 */ PAD(1);
     /* 0x02 */ s16 duration;
 } FieldStatus;
 
@@ -340,13 +342,13 @@ typedef struct EncounterStatus {
     /* 0x004 */ s8 firstStrikeType; // see enum: FirstStrikeType
     /* 0x005 */ s8 hitType; // see enum: EncounterTriggers
     /* 0x006 */ s8 hitTier; // 0 = normal, 1 = super, 2 = ultra
-    /* 0x007 */ char unk_07;
-    /* 0x008 */ s8 unk_08;
+    /* 0x007 */ s8 unk_07;
+    /* 0x008 */ s8 battleTransitionState; // see enum: BattleTransitionStates
     /* 0x009 */ s8 battleOutcome; // see enum: EncounterOutcomes
     /* 0x00A */ s8 battleTriggerCooldown; ///< set to 15 after victory, 45 after fleeing
     /* 0x00B */ b8 hasMerleeCoinBonus; /* triple coins when true */
     /* 0x00C */ u8 damageTaken; /* valid after battle */
-    /* 0x00D */ char unk_0D;
+    /* 0x00D */ PAD(1);
     /* 0x00E */ s16 coinsEarned; /* valid after battle */
     /* 0x010 */ s8 instigatorValue;
     /* 0x011 */ s8 forbidFleeing;
@@ -360,7 +362,7 @@ typedef struct EncounterStatus {
     /* 0x01F */ u8 curEntryIndex;
     /* 0x020 */ s8 mapID;
     /* 0x021 */ s8 resetMapEncounterFlags;
-    /* 0x022 */ char unk_22[2];
+    /* 0x022 */ PAD(2);
     /* 0x024 */ s32* npcGroupList;
     /* 0x028 */ Encounter* encounterList[24];
     /* 0x088 */ Encounter* curEncounter;
@@ -545,16 +547,11 @@ void spawn_hedge_surface_effects(Npc* npc, SurfaceInteractMode mode);
 
 void spawn_water_surface_effects(Npc* npc, SurfaceInteractMode mode);
 
-/// Duplicate of set_defeated().
-void COPY_set_defeated(s32 mapID, s32 encounterID);
-
 void init_encounter_status(void);
 
 void clear_encounter_status(void);
 
-void func_8003E50C(void);
-
-void func_8003E514(s8 arg0);
+void set_battle_transition_state(s8 state);
 
 void update_encounters(void);
 
@@ -562,7 +559,7 @@ void draw_encounter_ui(void);
 
 void draw_first_strike_ui(void);
 
-void npc_render_worker_do_nothing(void);
+void worker_draw_npc_do_nothing(void);
 
 void make_npcs(s32 flags, s32 mapID, s32* npcGroupList);
 
@@ -598,7 +595,7 @@ Enemy* get_enemy(s32 npcID);
 /// otherwise.
 Enemy* get_enemy_safe(s32 npcID);
 
-void set_npc_sprite(Npc* npc, s32 anim, AnimID* extraAnimList);
+void set_npc_sprite(Npc* npc, s32 anim, AnimID* limitAnimList);
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 } // extern "C"

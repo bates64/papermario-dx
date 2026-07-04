@@ -1,8 +1,6 @@
 #include "hos_01.h"
 #include "effects.h"
 
-#include "world/common/todo/SwitchToPartner.inc.c"
-
 API_CALLABLE(N(DrawAppearSparkles)) {
     Bytecode* args = script->ptrReadPos;
     s32 type = evt_get_variable(script, *args++);
@@ -15,7 +13,7 @@ API_CALLABLE(N(DrawAppearSparkles)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 EvtScript N(EVS_MuteMusicOnPlayerApproach) = {
     Set(LVarA, 0)
@@ -53,15 +51,15 @@ EvtScript N(EVS_MuteMusicOnPlayerApproach) = {
 
 EvtScript N(EVS_Scene_StarSpiritsPlea) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(UseSettingsFrom, CAM_DEFAULT, -35, 250, -145)
     Call(SetPanTarget, CAM_DEFAULT, -35, 250, -145)
     Call(SetCamDistance, CAM_DEFAULT, 450)
     Call(SetCamPitch, CAM_DEFAULT, Float(20.0), Float(-5.5))
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.5 / DT))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(func_802D2C14, 2)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetPartnerForcedFollowMode, 2)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Thread
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Add(LVar2, 30)
@@ -74,7 +72,7 @@ EvtScript N(EVS_Scene_StarSpiritsPlea) = {
     Wait(10 * DT)
     Wait(1)
     Call(PlayerFaceNpc, NPC_Eldstar, true)
-    Call(SetNpcFlagBits, NPC_Eldstar, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Eldstar, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcJumpscale, NPC_Eldstar, 0)
     Call(NpcJump0, NPC_Eldstar, 21, 260, -277, 30 * DT)
     Call(EnableModel, MODEL_1, true)
@@ -211,8 +209,8 @@ EvtScript N(EVS_Scene_StarSpiritsPlea) = {
         Wait(1)
     EndLoop
 #if VERSION_PAL
-    SetF(MapVar(0), Float(-80.0))
-    SetF(MapVar(1), Float(-80.0))
+    SetF(MV_AlphaAmt_Eldstar, Float(-80.0))
+    SetF(MV_AlphaAmt_Others, Float(-80.0))
 #endif
     Set(MF_SpiritsGone, true)
     Set(AB_HOS_StatcAmt_Eldstar,  0)
@@ -229,14 +227,14 @@ EvtScript N(EVS_Scene_StarSpiritsPlea) = {
     Call(EnableModel, MODEL_5, false)
     Call(EnableModel, MODEL_6, false)
     Call(EnableModel, MODEL_7, false)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Wait(10 * DT)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, 20)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
-    Call(N(SwitchToPartner), PARTNER_GOOMBARIO)
+    Call(SwitchToPartner, PARTNER_GOOMBARIO)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, 30)
     Add(LVar2, 30)

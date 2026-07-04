@@ -1,22 +1,20 @@
 #include "jan_11.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/YoshiKid.inc.c"
+#include "world/common/npc/YoshiKid/idle.inc.c"
 
 EvtScript N(EVS_YoshiKid_CryForHelp) = {
-    Set(AF_JAN_02, false)
+    Set(AF_JAN_SavedCurrentYoshiKid, false)
     Loop(0)
         Call(PlaySoundAtNpc, NPC_YoshiKid, SOUND_YOSHI_KID_CRY, SOUND_SPACE_DEFAULT)
         Wait(20)
-        IfEq(AF_JAN_02, true)
+        IfEq(AF_JAN_SavedCurrentYoshiKid, true)
             BreakLoop
         EndIf
     EndLoop
     Return
     End
 };
-
-#include "world/common/todo/GetFloorCollider.inc.c"
 
 API_CALLABLE(N(IsPartnerWatt)) {
     if (gPartnerStatus.actingPartner == PARTNER_WATT) {
@@ -30,7 +28,7 @@ API_CALLABLE(N(IsPartnerWatt)) {
 EvtScript N(EVS_NpcIdle_YoshiKid) = {
     Label(0)
         Wait(1)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         IfNe(LVar0, 10)
             Goto(0)
         EndIf
@@ -58,7 +56,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     Div(LVar4, 2)
     Add(LVar1, LVar4)
     Call(AdjustCam, CAM_DEFAULT, Float(4.0), LVar4, 350, Float(17.0), Float(-7.0))
-    Set(AF_JAN_02, true)
+    Set(AF_JAN_SavedCurrentYoshiKid, true)
     Wait(15)
     Call(NpcFacePlayer, NPC_SELF, 0)
     Thread
@@ -68,7 +66,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Green_SadTalk, ANIM_YoshiKid_Green_SadIdle, 0, MSG_CH5_00AE)
     Call(EndSpeech, NPC_SELF, ANIM_YoshiKid_Green_Talk, ANIM_YoshiKid_Green_Idle, 0)
     Thread
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_GRAVITY, true)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_GRAVITY, true)
         Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Green_Run)
         Call(SetNpcSpeed, NPC_SELF, Float(5.0))
         Call(NpcMoveTo, NPC_SELF, -100, 50, 0)

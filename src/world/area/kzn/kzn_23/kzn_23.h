@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kzn_23.h
 /// @brief Mt Lavalava - Volcano Escape
 

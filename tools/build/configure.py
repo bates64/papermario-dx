@@ -1787,7 +1787,27 @@ if __name__ == "__main__":
         file_list = _walk_source_file_list()
         new_content = "\n".join(file_list) + "\n"
         if stamp.exists() and stamp.read_text() == new_content:
-            exit(0)
+            build_ninja = ROOT / "build.ninja"
+            configure_inputs = [ROOT / BUILD_TOOLS / "configure.py"]
+            for version in VERSIONS:
+                configure_inputs.append(ROOT / f"ver/{version}/splat.yaml")
+                if args.debug:
+                    configure_inputs.append(ROOT / f"ver/{version}/splat-debug.yaml")
+                if args.shift:
+                    configure_inputs.append(ROOT / f"ver/{version}/splat-shift.yaml")
+            newest_config_input = max(
+                p.stat().st_mtime_ns for p in configure_inputs if p.exists()
+            )
+            if (
+                build_ninja.exists()
+                and build_ninja.stat().st_mtime_ns >= newest_config_input
+            ):
+                # Generated files can refresh source-directory mtimes after
+                # build.ninja is written. If the source list and real configure
+                # inputs are unchanged, refresh the manifest timestamp so ninja
+                # does not rebuild it until hitting its 100-try dirty limit.
+                os.utime(build_ninja, None)
+                exit(0)
 
     version_err_msg = ""
     missing_tools = []
@@ -1869,7 +1889,7 @@ if __name__ == "__main__":
     if args.shift:
         extra_cppflags += " -DSHIFT"
 
-    extra_cflags += " -Wall -Wno-narrowing -Winline"
+    extra_cflags += " -Wall -Wno-unused-variable -Wno-narrowing -Winline"
 
     # Warnings made into errors by default in GCC 14
     # https://gcc.gnu.org/gcc-14/porting_to.html#warnings-as-errors

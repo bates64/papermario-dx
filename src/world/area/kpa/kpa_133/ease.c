@@ -1,6 +1,6 @@
 #include "kpa_133.h"
 
-EvtScript N(D_80241A90_AA8F10) = {
+EvtScript N(EVS_OnHitSwitch) = {
     Call(MakeLerp, 0, 90, 45, EASING_COS_FAST_OVERSHOOT)
     Label(10)
         Call(UpdateLerp)

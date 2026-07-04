@@ -1,7 +1,5 @@
 #include "iwa_01.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 b32 N(should_player_be_sliding)(void) {
     Shadow* shadow = get_shadow_by_index(gPlayerStatus.shadowID);
     f32 angle = shadow->rot.z + 180.0;
@@ -28,7 +26,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP(    0, -3000,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,     1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,     0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // foam and splashes
     Call(SetTexPanner, MODEL_o952, TEX_PANNER_C)
@@ -39,7 +37,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP(0x8000,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(     4,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(     0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

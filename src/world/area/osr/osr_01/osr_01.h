@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file osr_01.h
 /// @brief Peach's Castle Grounds - Ruined Castle Grounds
 

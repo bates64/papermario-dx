@@ -2,26 +2,6 @@
 
 #include "foliage.h"
 
-API_CALLABLE(N(func_8024173C_8CF7AC)) {
-    if (get_enemy_safe(NPC_06) == nullptr) {
-        script->varTable[0] = false;
-    } else {
-        script->varTable[0] = true;
-    }
-
-    return ApiStatus_DONE2;
-}
-
-EvtScript N(EVS_80243234) = {
-    Wait(15)
-    Call(N(func_8024173C_8CF7AC))
-    IfEq(LVar0, 1)
-        Call(SetNpcVar, NPC_06, 4, 1)
-    EndIf
-    Return
-    End
-};
-
 FoliageModelList N(Tree1_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_ha2_1, MODEL_ha2_2, MODEL_ha2_3);
 FoliageModelList N(Tree1_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o1065, MODEL_miki2_1, MODEL_miki2_2);
 
@@ -37,7 +17,7 @@ EvtScript N(EVS_OnShakeTree1) = {
     IfEq(GF_KMR05_Tree1_Coin, true)
         Return
     EndIf
-    IfEq(AF_JAN01_TreeDrop_StarPiece, true)
+    IfEq(MF_Tree1CoinDropped, true)
         Return
     EndIf
     Wait(10)
@@ -47,7 +27,7 @@ EvtScript N(EVS_OnShakeTree1) = {
     Else
         Call(MakeItemEntity, ITEM_COIN, 436, 300, -180, ITEM_SPAWN_MODE_FALL, GF_KMR05_Tree1_Coin)
     EndIf
-    Set(AF_JAN01_TreeDrop_StarPiece, true)
+    Set(MF_Tree1CoinDropped, true)
     Return
     End
 };

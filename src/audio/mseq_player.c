@@ -363,7 +363,7 @@ void au_mseq_player_update(AmbienceManager* manager, AmbiencePlayer* player) {
 
     globals = manager->globals;
     fadeVolChanged = false;
-    for (i = 0; i < 16U; i++) { // required to use unsigned literal
+    for (i = 0; i < 16; i++) {
         isVolumeChanged[i] = false;
         isPitchChanged[i] = false;
     }

@@ -108,7 +108,7 @@ FoliageModelList N(Tree1_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o283);
 
 EvtScript N(EVS_OnShakeTree1) = {
     Wait(15)
-    Set(AF_NOK_13, true)
+    Set(AF_NOK02_FuzzyTreeHit, true)
     Return
     End
 };

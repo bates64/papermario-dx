@@ -1,14 +1,14 @@
 #include "dgb_06.h"
 
-#include "world/common/npc/Boo.inc.c"
+#include "world/common/npc/Boo/idle.inc.c"
 
 EvtScript N(EVS_NpcInteract_Boo) = {
-    IfEq(AF_DGB06_Boo_Dialogue, false)
+    IfEq(AF_DGB06_ToggleDialogue_Boo, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00F0)
-        Set(AF_DGB06_Boo_Dialogue, true)
+        Set(AF_DGB06_ToggleDialogue_Boo, true)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00F1)
-        Set(AF_DGB06_Boo_Dialogue, false)
+        Set(AF_DGB06_ToggleDialogue_Boo, false)
     EndIf
     Return
     End

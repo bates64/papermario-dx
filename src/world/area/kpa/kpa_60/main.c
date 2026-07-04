@@ -1,7 +1,5 @@
 #include "kpa_60.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_OpenAirshipDockDoor) = {
     Call(PlaySoundAtCollider, COLLIDER_deilitts, SOUND_AIRSHIP_DOCK_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     Call(EnableModel, MODEL_o1616, false)
@@ -98,7 +96,7 @@ EvtScript N(EVS_ExitDoor_kpa_63_0) = {
 
 EvtScript N(EVS_EnterFromAirshipDock) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerPos, -30, 21, 590)
     Call(SetNpcPos, NPC_PARTNER, -30, 21, 590)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
@@ -172,7 +170,7 @@ EvtScript N(EVS_TexPan_Lava) = {
         TEX_PAN_PARAMS_STEP( -400,    0, -800,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o1508, TEX_PANNER_0)
     Return

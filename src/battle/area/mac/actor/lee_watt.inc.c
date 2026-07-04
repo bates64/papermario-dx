@@ -1,3 +1,4 @@
+#undef NAMESPACE
 #define NAMESPACE A(watt_lee)
 
 extern EvtScript N(EVS_Init);
@@ -111,7 +112,7 @@ EvtScript N(EVS_Init) = {
 };
 
 API_CALLABLE(N(WattFXUpdate)) {
-    Actor* actor = get_actor(script->owner1.enemyID);
+    Actor* actor = get_actor(script->owner1.actorID);
     ActorState* state = &actor->state;
     WattEffectData* wattEffectData;
     f32 x, y, z;
@@ -222,7 +223,7 @@ API_CALLABLE(N(WattFXRemove)) {
 
 API_CALLABLE(N(WattFXSetBouncing)) {
     Bytecode* args = script->ptrReadPos;
-    WattEffectData* wattEffects = (WattEffectData*)get_actor(script->owner1.enemyID)->state.varTable[3];
+    WattEffectData* wattEffects = (WattEffectData*)get_actor(script->owner1.actorID)->state.varTable[3];
 
     wattEffects->isBouncing = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
@@ -230,7 +231,7 @@ API_CALLABLE(N(WattFXSetBouncing)) {
 
 API_CALLABLE(N(WattFXSetActive)) {
     Bytecode* args = script->ptrReadPos;
-    WattEffectData* wattEffects = (WattEffectData*)get_actor(script->owner1.enemyID)->state.varTable[3];
+    WattEffectData* wattEffects = (WattEffectData*)get_actor(script->owner1.actorID)->state.varTable[3];
 
     wattEffects->isActive = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
@@ -238,7 +239,7 @@ API_CALLABLE(N(WattFXSetActive)) {
 
 API_CALLABLE(N(WattFXSetEffect)) {
     Bytecode* args = script->ptrReadPos;
-    WattEffectData* wattEffects = (WattEffectData*)get_actor(script->owner1.enemyID)->state.varTable[3];
+    WattEffectData* wattEffects = (WattEffectData*)get_actor(script->owner1.actorID)->state.varTable[3];
 
     wattEffects->currentEffectIndex = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;

@@ -6,8 +6,6 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 s32 N(DropLetterYCurve)[] = {
     200, 170, 140, 110, 80, 50, 20, 10,
     26, 29, 30, 29, 26, 10, 0, 12,
@@ -162,7 +160,7 @@ EvtScript N(EVS_Main) = {
     Thread
         Call(GetCurrentPartnerID, LVar0)
         IfNe(LVar0, PARTNER_NONE)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
             Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
         EndIf

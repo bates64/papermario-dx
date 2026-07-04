@@ -1,6 +1,6 @@
 #include "mim_11.h"
 
-EvtScript N(D_80242560_BB95D0) = {
+EvtScript N(EVS_Scene_FirstUseMansionGate) = {
     Wait(30 * DT)
     Call(PlaySoundAtCollider, COLLIDER_mon, SOUND_METAL_GATE_OPEN, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, 80, 30, EASING_LINEAR)
@@ -84,7 +84,7 @@ EvtScript N(D_80242560_BB95D0) = {
     End
 };
 
-EvtScript N(D_80242B90_BB9C00) = {
+EvtScript N(EVS_EnterMansionGate) = {
     Call(PlaySoundAtCollider, COLLIDER_mon, SOUND_METAL_GATE_OPEN, SOUND_SPACE_DEFAULT)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mon, COLLIDER_FLAGS_UPPER_MASK)
     Thread
@@ -121,7 +121,7 @@ EvtScript N(D_80242B90_BB9C00) = {
     End
 };
 
-EvtScript N(D_80242DC8_BB9E38) = {
+EvtScript N(EVS_ExitMansionGate) = {
     Call(PlaySoundAtCollider, COLLIDER_mon, SOUND_METAL_GATE_OPEN, SOUND_SPACE_DEFAULT)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mon, COLLIDER_FLAGS_UPPER_MASK)
     Thread
@@ -157,21 +157,21 @@ EvtScript N(D_80242DC8_BB9E38) = {
     End
 };
 
-EvtScript N(D_80242FF4_BBA064) = {
+EvtScript N(EVS_UseMansionGate) = {
     Call(DisablePlayerInput, true)
     Call(InterruptUsePartner)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_OPENED_BOOS_MANSION_GATE)
             Set(GB_StoryProgress, STORY_CH3_OPENED_BOOS_MANSION_GATE)
-            Set(AF_MIM_01, true)
-            ExecWait(N(D_80242560_BB95D0))
+            Set(AF_MIM11_MansionGateOpen, true)
+            ExecWait(N(EVS_Scene_FirstUseMansionGate))
         CaseGe(STORY_CH3_OPENED_BOOS_MANSION_GATE)
-            IfEq(AF_MIM_01, false)
-                ExecWait(N(D_80242B90_BB9C00))
-                Set(AF_MIM_01, true)
+            IfEq(AF_MIM11_MansionGateOpen, false)
+                ExecWait(N(EVS_EnterMansionGate))
+                Set(AF_MIM11_MansionGateOpen, true)
             Else
-                ExecWait(N(D_80242DC8_BB9E38))
-                Set(AF_MIM_01, false)
+                ExecWait(N(EVS_ExitMansionGate))
+                Set(AF_MIM11_MansionGateOpen, false)
             EndIf
     EndSwitch
     Call(DisablePlayerInput, false)
@@ -179,8 +179,8 @@ EvtScript N(D_80242FF4_BBA064) = {
     End
 };
 
-EvtScript N(D_802430E0_BBA150) = {
-    BindTrigger(Ref(N(D_80242FF4_BBA064)), TRIGGER_WALL_PRESS_A, COLLIDER_mon, 1, 0)
+EvtScript N(EVS_SetupMansionGate) = {
+    BindTrigger(Ref(N(EVS_UseMansionGate)), TRIGGER_WALL_PRESS_A, COLLIDER_mon, 1, 0)
     Return
     End
 };

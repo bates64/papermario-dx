@@ -76,18 +76,18 @@ EvtScript N(EVS_UseGate) = {
         Wait(19)
         Call(PlaySoundAtCollider, LVar9, SOUND_FOREST_GATE_CLOSE, SOUND_SPACE_DEFAULT)
     EndThread
-    Switch(AB_MIM_1)
-        CaseEq(0)
+    Switch(AB_MIM_GateTraversal)
+        CaseEq(MIM_USEGATE_SIDE_A)
             Thread
                 Call(MakeLerp, 10, 90, 10, EASING_QUADRATIC_IN)
                 Label(10)
-                Call(UpdateLerp)
-                Call(RotateGroup, LVarA, LVar0, 0, 1, 0)
-                Call(UpdateColliderTransform, LVar9)
-                Wait(1)
-                IfEq(LVar1, 1)
-                    Goto(10)
-                EndIf
+                    Call(UpdateLerp)
+                    Call(RotateGroup, LVarA, LVar0, 0, 1, 0)
+                    Call(UpdateColliderTransform, LVar9)
+                    Wait(1)
+                    IfEq(LVar1, 1)
+                        Goto(10)
+                    EndIf
             EndThread
             Wait(15)
             Thread
@@ -100,17 +100,17 @@ EvtScript N(EVS_UseGate) = {
             Exec(N(EVS_SetGateCameraZones))
             Call(MakeLerp, 90, 360, 30, EASING_LINEAR)
             Label(20)
-            Call(UpdateLerp)
-            Call(RotateGroup, LVarA, LVar0, 0, 1, 0)
-            Call(UpdateColliderTransform, LVar9)
-            Wait(1)
-            IfEq(LVar1, 1)
-                Goto(20)
-            EndIf
+                Call(UpdateLerp)
+                Call(RotateGroup, LVarA, LVar0, 0, 1, 0)
+                Call(UpdateColliderTransform, LVar9)
+                Wait(1)
+                IfEq(LVar1, 1)
+                    Goto(20)
+                EndIf
             Exec(N(EVS_ResetGates))
-            Set(AB_MIM_1, 1)
+            Set(AB_MIM_GateTraversal, MIM_USEGATE_INNER)
             Set(GF_MIM_ChoosingPath, true)
-        CaseEq(1)
+        CaseEq(MIM_USEGATE_INNER)
             Thread
                 Call(MakeLerp, 360, 270, 10, EASING_QUADRATIC_IN)
                 Label(30)
@@ -133,15 +133,15 @@ EvtScript N(EVS_UseGate) = {
             Exec(N(EVS_SetGateCameraZones))
             Call(MakeLerp, 270, -10, 30, EASING_LINEAR)
             Label(40)
-            Call(UpdateLerp)
-            Call(RotateGroup, LVarA, LVar0, 0, 1, 0)
-            Call(UpdateColliderTransform, LVar9)
-            Wait(1)
-            IfEq(LVar1, 1)
-                Goto(40)
-            EndIf
-            Set(AB_MIM_1, 2)
-        CaseEq(2)
+                Call(UpdateLerp)
+                Call(RotateGroup, LVarA, LVar0, 0, 1, 0)
+                Call(UpdateColliderTransform, LVar9)
+                Wait(1)
+                IfEq(LVar1, 1)
+                    Goto(40)
+                EndIf
+            Set(AB_MIM_GateTraversal, MIM_USEGATE_SIDE_B)
+        CaseEq(MIM_USEGATE_SIDE_B)
             Thread
                 Call(MakeLerp, -10, 90, 10, EASING_QUADRATIC_IN)
                 Label(50)
@@ -164,15 +164,15 @@ EvtScript N(EVS_UseGate) = {
             Exec(N(EVS_SetGateCameraZones))
             Call(MakeLerp, 90, 360, 30, EASING_LINEAR)
             Label(60)
-            Call(UpdateLerp)
-            Call(RotateGroup, LVarA, LVar0, 0, 1, 0)
-            Call(UpdateColliderTransform, LVar9)
-            Wait(1)
-            IfEq(LVar1, 1)
-                Goto(60)
-            EndIf
+                Call(UpdateLerp)
+                Call(RotateGroup, LVarA, LVar0, 0, 1, 0)
+                Call(UpdateColliderTransform, LVar9)
+                Wait(1)
+                IfEq(LVar1, 1)
+                    Goto(60)
+                EndIf
             Exec(N(EVS_ResetGates))
-            Set(AB_MIM_1, 1)
+            Set(AB_MIM_GateTraversal, MIM_USEGATE_INNER)
     EndSwitch
     Return
     End
@@ -237,12 +237,12 @@ EvtScript N(EVS_UseGate_West) = {
 EvtScript N(EVS_SetupGates) = {
     IfEq(GF_MIM_ChoosingPath, false)
         Set(GF_MIM_ChoosingPath, true)
-        Set(AB_MIM_1, 2)
+        Set(AB_MIM_GateTraversal, MIM_USEGATE_SIDE_B)
         Set(LVar1, 2)
         Set(LVar2, -10)
     Else
         Set(GF_MIM_ChoosingPath, false)
-        Set(AB_MIM_1, 0)
+        Set(AB_MIM_GateTraversal, MIM_USEGATE_SIDE_A)
         Set(LVar1, 0)
         Set(LVar2, 10)
     EndIf

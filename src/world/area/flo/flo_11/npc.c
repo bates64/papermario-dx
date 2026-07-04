@@ -1,6 +1,6 @@
 #include "flo_11.h"
 
-#include "world/common/enemy/Lakitu_Stationary.inc.c"
+#include "world/common/enemy/Lakitu/idle.inc.c"
 
 Vec3f N(FlightPath_Lakitu_01_Search)[] = {
     {  460.0,   200.0, -240.0 },
@@ -249,13 +249,13 @@ EvtScript N(EVS_Scene_LakituAmbush) = {
     Call(NpcFaceNpc, NPC_Lakitu_02, NPC_Lakitu_01, 1)
     Exec(N(EVS_LakitusFlying_Gather))
     Wait(30)
-    Call(SpeakToPlayer, NPC_Lakitu_01, ANIM_Lakitu_Anim16, ANIM_Lakitu_Anim01, 0, MSG_CH6_0088)
+    Call(SpeakToPlayer, NPC_Lakitu_01, ANIM_Lakitu_Talk, ANIM_Lakitu_Idle, 0, MSG_CH6_0088)
     Call(NpcFaceNpc, NPC_Lakitu_02, NPC_Lakitu_01, 1)
-    Call(SpeakToPlayer, NPC_Lakitu_02, ANIM_Lakitu_Anim16, ANIM_Lakitu_Anim01, 0, MSG_CH6_0089)
+    Call(SpeakToPlayer, NPC_Lakitu_02, ANIM_Lakitu_Talk, ANIM_Lakitu_Idle, 0, MSG_CH6_0089)
     Call(InterpNpcYaw, NPC_Lakitu_01, 0, 1)
     Wait(20 * DT)
-    Call(SpeakToPlayer, NPC_Lakitu_01, ANIM_Lakitu_Anim16, ANIM_Lakitu_Anim01, 0, MSG_CH6_008A)
-    Call(SpeakToPlayer, NPC_Lakitu_02, ANIM_Lakitu_Anim16, ANIM_Lakitu_Anim01, 0, MSG_CH6_008B)
+    Call(SpeakToPlayer, NPC_Lakitu_01, ANIM_Lakitu_Talk, ANIM_Lakitu_Idle, 0, MSG_CH6_008A)
+    Call(SpeakToPlayer, NPC_Lakitu_02, ANIM_Lakitu_Talk, ANIM_Lakitu_Idle, 0, MSG_CH6_008B)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_LOOK_AT_POINT, false)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)

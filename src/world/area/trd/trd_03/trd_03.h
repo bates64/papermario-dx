@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file trd_03.h
 /// @brief Koopa Bros Fortress - Central Hall
 

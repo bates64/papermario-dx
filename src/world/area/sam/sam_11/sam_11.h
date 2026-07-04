@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sam_11.h
 /// @brief Mt Shiver - Shiver City Pond Area
 
@@ -30,7 +32,7 @@ enum {
     NPC_Toadette_01             = 8,
     NPC_Toadette_02             = 9,
     NPC_Toadette_03             = 10,
-    NPC_0B                      = 11,
+    NPC_Unassigned_0B           = 11,
     NPC_Kolorado                = 12,
     NPC_Archeologist_01         = 13,
     NPC_Archeologist_02         = 14,
@@ -46,16 +48,16 @@ enum {
     MV_DialogueState_Penguin5   = MapVar(3),
     MV_DialogueState_Penguin6   = MapVar(4),
     MV_DialogueState_Patrol     = MapVar(5),
-    MV_PadlockEntityID          = MapVar(6),
-    MV_CantDamagePond           = MapVar(7),
-    MV_CurrentFloor             = MapVar(7),
+    MV_EntityID_Padlock         = MapVar(6),
+    MV_PondDamageInProgress     = MapVar(7),
+    MV_CurrentFloor             = MapVar(8),
     MV_ThrownOut                = MapVar(9),
 };
 
 enum {
-    MF_Unk_00       = MapFlag(0),
-    MF_Unk_01       = MapFlag(1),
-    MF_UsingSpring  = MapFlag(2),
+    MF_RoofLandTriggerGuard     = MapFlag(0),
+    MF_PenguinDragDone          = MapFlag(1),
+    MF_UsingSpring              = MapFlag(2),
 };
 
 #define NAMESPACE sam_11

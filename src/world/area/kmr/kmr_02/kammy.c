@@ -1,13 +1,6 @@
 #include "kmr_02.h"
 #include "sprite/player.h"
 
-#define NAME_SUFFIX _6
-#include "world/common/npc/GoombaFamily_Wander.inc.c"
-#include "wander_territories.inc.c"
-#define NAME_SUFFIX
-
-#include "world/common/todo/UnkFunc42.inc.c"
-
 Vec3f N(FlightPath_KammyAppear)[] = {
     {  473.0,   150.0,  301.0 },
     {  234.0,    80.0,  200.0 },
@@ -50,11 +43,11 @@ EvtScript N(EVS_PlayKammyFlightSounds) = {
     End
 };
 
-EvtScript N(EVS_MakeNpcsFaceKammy) = {
+EvtScript N(EVS_UpdateKammyTracking) = {
     Call(GetNpcPos, NPC_Kammy, LVar0, LVar1, LVar2)
     Label(0)
         Call(GetNpcPos, NPC_Kammy, LVar3, LVar4, LVar5)
-        Call(N(UnkFunc42))
+        Call(GetAngleBetweenPoints, LVarA, LVar0, LVar2, LVar3, LVar5)
         Call(InterpNpcYaw, NPC_Kammy, LVarA, 0)
         Set(LVar0, LVar3)
         Set(LVar1, LVar4)
@@ -74,10 +67,10 @@ EvtScript N(EVS_MakeNpcsFaceKammy) = {
     End
 };
 
-EvtScript N(EVS_Scene_KammyStrikes) = {
+EvtScript N(EVS_Scene_KammyCrushesGate) = {
     Call(DisablePlayerInput, true)
-    Call(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Goompapa, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Goompapa, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(DisablePlayerPhysics, true)
     Call(EnableNpcAI, NPC_Goombario, false)
     Call(SetNpcAnimation, NPC_Goombario, ANIM_WorldGoombario_Idle)
@@ -86,10 +79,10 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
     Call(EnableNpcAI, NPC_Kammy, true)
     Call(SetNpcAux, NPC_Kammy, Ref(N(EVS_NpcAux_Kammy)))
     Call(ShowMessageAtScreenPos, MSG_CH0_0059, 160, 40)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim15)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyFastSly)
     Thread
-        ExecGetTID(N(EVS_PlayKammyFlightSounds), MV_Unk_04)
-        ExecGetTID(N(EVS_MakeNpcsFaceKammy), MV_Unk_05)
+        ExecGetTID(N(EVS_PlayKammyFlightSounds), MV_KammySoundsTID)
+        ExecGetTID(N(EVS_UpdateKammyTracking), MV_TrackKammyTID)
         Call(LoadPath, 40 * DT, Ref(N(FlightPath_KammyAppear)), ARRAY_COUNT(N(FlightPath_KammyAppear)), EASING_LINEAR)
         Label(10)
             Call(GetNextPathPos)
@@ -145,11 +138,11 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
         IfEq(LVar0, 1)
             Goto(30)
         EndIf
-    KillThread(MV_Unk_04)
-    KillThread(MV_Unk_05)
+    KillThread(MV_KammySoundsTID)
+    KillThread(MV_TrackKammyTID)
     Call(PlaySoundAtNpc, NPC_Kammy, SOUND_SKID, SOUND_SPACE_DEFAULT)
     Thread
-        Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim10)
+        Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyBrake)
         Wait(1)
         Call(SetNpcRotation, NPC_Kammy, 0, 0, -5)
         Wait(1)
@@ -180,8 +173,8 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
             Goto(40)
         EndIf
     Wait(30 * DT)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim13)
-    Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Anim16, ANIM_WorldKammy_Anim13, 512, MSG_CH0_005A)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyIdleSly)
+    Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_FlyTalkSly, ANIM_WorldKammy_FlyIdleSly, 512, MSG_CH0_005A)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamPitch, CAM_DEFAULT, 7, -10)
     Call(SetCamPosA, CAM_DEFAULT, 41, 729)
@@ -200,7 +193,7 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(1)
-    Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Anim16, ANIM_WorldKammy_Anim13, 512, MSG_CH0_005C)
+    Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_FlyTalkSly, ANIM_WorldKammy_FlyIdleSly, 512, MSG_CH0_005C)
     Call(SetNpcAnimation, NPC_Goombaria, ANIM_Goombaria_LookUp)
     Call(SetNpcAnimation, NPC_Goompapa, ANIM_Goompapa_LookUp)
     Call(SetCamDistance, CAM_DEFAULT, Float(600.0))
@@ -208,7 +201,7 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
     Call(SetCamPosC, CAM_DEFAULT, 0, Float(10.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim0E)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyRodTalk)
     Wait(10 * DT)
     Call(GetNpcPos, NPC_Kammy, LVar0, LVar1, LVar2)
     Wait(10 * DT)
@@ -250,7 +243,7 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
     Call(SetNpcAnimation, NPC_Goompapa, ANIM_Goompapa_LookUp)
     Call(SetNpcImgFXParams, NPC_Goompapa, IMGFX_CLEAR, 0, 0, 0, 0)
     Wait(10 * DT)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim13)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyIdleSly)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamPitch, CAM_DEFAULT, Float(6.0), Float(-6.0))
     Call(SetCamPosA, CAM_DEFAULT, Float(-1731.4), Float(974.9))
@@ -260,7 +253,7 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(5 * DT)
-    Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Anim16, ANIM_WorldKammy_Anim13, 512, MSG_CH0_005D)
+    Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_FlyTalkSly, ANIM_WorldKammy_FlyIdleSly, 512, MSG_CH0_005D)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamPitch, CAM_DEFAULT, 3, 0)
     Call(SetCamPosA, CAM_DEFAULT, 166, 756)
@@ -279,12 +272,12 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
             Wait(1)
         EndLoop
     EndThread
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim15)
-    ExecGetTID(N(EVS_MakeNpcsFaceKammy), MV_Unk_05)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyFastSly)
+    ExecGetTID(N(EVS_UpdateKammyTracking), MV_TrackKammyTID)
     Wait(40 * DT)
-    Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Anim16, ANIM_WorldKammy_Anim13, 0x200, MSG_CH0_005E)
+    Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_FlyTalkSly, ANIM_WorldKammy_FlyIdleSly, 0x200, MSG_CH0_005E)
     Call(FadeOutMusic, 0, 3000 * DT)
-    ExecGetTID(N(EVS_PlayKammyFlightSounds), MV_Unk_04)
+    ExecGetTID(N(EVS_PlayKammyFlightSounds), MV_KammySoundsTID)
     Call(LoadPath, 90 * DT, Ref(N(FlightPath_KammyDepart)), ARRAY_COUNT(N(FlightPath_KammyDepart)), EASING_QUADRATIC_IN)
     Label(70)
         Call(GetNextPathPos)
@@ -293,8 +286,8 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
         IfEq(LVar0, 1)
             Goto(70)
         EndIf
-    KillThread(MV_Unk_04)
-    KillThread(MV_Unk_05)
+    KillThread(MV_KammySoundsTID)
+    KillThread(MV_TrackKammyTID)
     Wait(20 * DT)
     Exec(N(EVS_SetupMusic))
     Call(SetNpcAnimation, NPC_Goompapa, ANIM_Goompapa_Angry)
@@ -337,14 +330,14 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
     Call(SetNpcAnimation, NPC_Goompapa, ANIM_Goompapa_Idle)
-    Call(N(SetWanderTerritory_6), NPC_Goomama, 1)
-    Call(BindNpcAI, NPC_Goomama, Ref(N(EVS_NpcIdle_SwitchedWander_6)))
-    Call(N(SetWanderTerritory_6), NPC_Goombario, 2)
-    Call(BindNpcAI, NPC_Goombario, Ref(N(EVS_NpcIdle_SwitchedWander_6)))
-    Call(N(SetWanderTerritory_6), NPC_Goombaria, 3)
-    Call(BindNpcAI, NPC_Goombaria, Ref(N(EVS_NpcIdle_SwitchedWander_6)))
-    Call(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-    Call(SetNpcFlagBits, NPC_Goompapa, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(N(SetWanderTerritory), NPC_Goomama, 1)
+    Call(BindNpcAI, NPC_Goomama, Ref(N(EVS_NpcIdle_SwitchedWander)))
+    Call(N(SetWanderTerritory), NPC_Goombario, 2)
+    Call(BindNpcAI, NPC_Goombario, Ref(N(EVS_NpcIdle_SwitchedWander)))
+    Call(N(SetWanderTerritory), NPC_Goombaria, 3)
+    Call(BindNpcAI, NPC_Goombaria, Ref(N(EVS_NpcIdle_SwitchedWander)))
+    Call(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Goompapa, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };

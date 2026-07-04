@@ -1,8 +1,6 @@
 #include "jan_02.h"
 #include "effects.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 extern s32 N(PrevPalmTreeVisibility);
 
 API_CALLABLE(N(ClearTrackVols)) {
@@ -25,11 +23,6 @@ API_CALLABLE(N(ManageBigPalmTreeVisibility)) {
         }
     }
     return ApiStatus_BLOCK;
-}
-
-API_CALLABLE(N(SpawnSunEffect)) {
-    fx_sun(FX_SUN_FROM_LEFT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
-    return ApiStatus_DONE2;
 }
 
 EvtScript N(EVS_ExitWalk_jan_01_1) = {
@@ -82,7 +75,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0,  400,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water surface
     Call(SetTexPanner, MODEL_o103, TEX_PANNER_2)
@@ -91,7 +84,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP( -100,  200,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         Call(N(ManageBigPalmTreeVisibility))

@@ -1,5 +1,6 @@
 #include "tik_15.h"
 #include "inventory.h"
+#include "world/common/npc/RipCheato/idle.inc.c"
 
 #define RIP_CHEATO_COST 64
 
@@ -8,14 +9,6 @@ enum {
     CHEATO_TYPE_BADGE       = 1,
     CHEATO_TYPE_CONSUMABLE  = 2,
 };
-
-NpcSettings N(NpcSettings_RipCheato) = {
-    .height = 30,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
-#include "world/common/complete/GiveReward.inc.c"
 
 s32 N(CheatoItems)[][2] = {
     { CHEATO_TYPE_STAR_PIECE, ITEM_NONE },
@@ -54,14 +47,14 @@ API_CALLABLE(N(CheckPlayerHasEnoughCoins)) {
 }
 
 EvtScript N(EVS_NpcInteract_RipCheato) = {
-    IfEq(AF_TIK_02, false)
+    IfEq(AF_TIK15_RipCheatoRepeatVisit, false)
         IfEq(GF_TIK15_Met_RipCheato, false)
             Set(LVar0, MSG_MGM_0001)
             Set(GF_TIK15_Met_RipCheato, true)
         Else
             Set(LVar0, MSG_MGM_0002)
         EndIf
-        Set(AF_TIK_02, true)
+        Set(AF_TIK15_RipCheatoRepeatVisit, true)
     Else
         Set(LVar0, MSG_MGM_0003)
     EndIf
@@ -87,7 +80,7 @@ EvtScript N(EVS_NpcInteract_RipCheato) = {
             Call(AddCoin, -RIP_CHEATO_COST)
             Call(ShowCoinCounter, false)
             Call(EndSpeech, NPC_RipCheato, ANIM_RipCheato_Talk, ANIM_RipCheato_Idle, 0)
-            EVT_GIVE_STAR_PIECE()
+            EVT_GIVE_REWARD(ITEM_STAR_PIECE)
         CaseEq(CHEATO_TYPE_BADGE)
             Call(AddCoin, -RIP_CHEATO_COST)
             Call(ShowCoinCounter, false)
@@ -116,7 +109,7 @@ EvtScript N(EVS_NpcInteract_RipCheato) = {
 
 EvtScript N(EVS_NpcInit_RipCheato) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_RipCheato)))
-    Set(AF_TIK_02, false)
+    Set(AF_TIK15_RipCheatoRepeatVisit, false)
     Return
     End
 };
@@ -129,24 +122,7 @@ NpcData N(NpcData_RipCheato) = {
     .settings = &N(NpcSettings_RipCheato),
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_RipCheato_Idle,
-        .walk   = ANIM_RipCheato_Idle,
-        .run    = ANIM_RipCheato_Idle,
-        .chase  = ANIM_RipCheato_Idle,
-        .anim_4 = ANIM_RipCheato_Idle,
-        .anim_5 = ANIM_RipCheato_Idle,
-        .death  = ANIM_RipCheato_Idle,
-        .hit    = ANIM_RipCheato_Idle,
-        .anim_8 = ANIM_RipCheato_Idle,
-        .anim_9 = ANIM_RipCheato_Idle,
-        .anim_A = ANIM_RipCheato_Idle,
-        .anim_B = ANIM_RipCheato_Idle,
-        .anim_C = ANIM_RipCheato_Idle,
-        .anim_D = ANIM_RipCheato_Idle,
-        .anim_E = ANIM_RipCheato_Idle,
-        .anim_F = ANIM_RipCheato_Idle,
-    },
+    .animations = RIP_CHEATO_ANIMS,
     .tattle = MSG_NpcTattle_RipCheato,
 };
 

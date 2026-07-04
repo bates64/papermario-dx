@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file trd_02.h
 /// @brief Koopa Bros Fortress - Left Stairway
 
@@ -19,7 +21,7 @@ enum {
 };
 
 enum {
-    MV_Padlock_EntityIndex      = MapVar(0),
+    MV_EntityID_Padlock         = MapVar(0),
 };
 
 #define NAMESPACE trd_02

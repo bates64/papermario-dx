@@ -33,7 +33,6 @@ int _Printf(outfun prout, char *arg, const char *fmt, va_list args);
 
 f32 signF(f32 val);
 
-s32 func_8002ACDC(void);
 void load_obfuscation_shims(void);
 
 void* heap_malloc(s32 size);
@@ -88,7 +87,7 @@ void clear_entity_model_flags(s32 idx, s32 newFlags);
 void exec_entity_model_commandlist(s32 idx);
 RenderTask* queue_render_task(RenderTask* task);
 
-s32 create_mesh_animator(s16* animPos, s16* animBuffer);
+s32 create_mesh_animator(AnimScriptCode* animPos, AnimScriptCode* animBuffer);
 void load_mesh_animator_tree(s32 index, StaticAnimatorNode** tree);
 
 void setup_pause_menu_tab(MenuWindowBP* bpArray, s32 arraySize);
@@ -132,7 +131,7 @@ void appendGfx_partner_actor(void*);
 void appendGfx_partner_actor_blur(void*);
 void appendGfx_partner_actor_reflection(void*);
 void appendGfx_player_actor(void*);
-void appendGfx_player_actor_blur(Actor*);
+void appendGfx_player_actor_blur(void*);
 void appendGfx_player_actor_reflection(void*);
 
 void force_disable_actor_blur(Actor*);
@@ -144,7 +143,7 @@ f32 player_check_collision_below(f32, s32* colliderID);
 b32 can_trigger_loading_zone(void);
 void update_damage_popups(void);
 void show_action_rating(s32, Actor*, f32, f32, f32);
-s32 render_with_adjusted_palettes(s32, ActorPart*, s32, Matrix4f, s32);
+void render_with_adjusted_palettes(s32, ActorPart*, s32, Matrix4f, s32);
 
 HeapNode* general_heap_create(void);
 void* general_heap_malloc(s32 size);
@@ -196,7 +195,7 @@ void get_screen_coords(s32 camID, f32 x, f32 y, f32 z, s32* screenX, s32* screen
 void parent_collider_to_model(s16 colliderID, s16 modelIndex);
 void clone_model(u16 srcModelID, u16 newModelID);
 struct Model* get_model_from_list_index(s32 listIndex);
-s32 create_model_animator(s16* animPos);
+s32 create_model_animator(AnimScriptCode* animPos);
 s32 get_model_list_index_from_tree_index(s32 treeIndex);
 s32 get_transform_group_index(s32);
 void get_model_center_and_size(u16 modelID, f32* centerX, f32* centerY, f32* centerZ, f32* sizeX, f32* sizeY,
@@ -274,7 +273,20 @@ f32 cos_deg(f32 x);
 f32 sin_rad(f32 x);
 f32 cos_rad(f32 x);
 s32 round(f32);
+
+/// Calculates a clockwise yaw angle in degrees from (startX, startZ) to (endX, endZ).
+/// Convention: 0 = -Z, 90 = +X, 180 = +Z, 270 = -X.
+/// Returns 0.0f if the points are identical.
 f32 atan2(f32 startX, f32 startZ, f32 endX, f32 endZ);
+
+/// Given a body moving under constant downward acceleration `accel`, calculates the
+/// initial velocity necessary to move from `startY` to `targetY` over `duration`.
+/// This motion is governed by the projectile motion equation given by:
+/// y(t) = startY + v0 * t - 0.5 * accel * t^2
+ALWAYS_INLINE f32 calc_projectile_v0(f32 startY, f32 targetY, f32 accel, f32 duration) {
+    return (targetY - startY + (0.5f * accel * SQ(duration))) / duration;
+}
+
 f32 clamp_angle(f32 theta);
 s32 sign(s32 value);
 
@@ -315,7 +327,7 @@ void clear_virtual_entity_list(void);
 void reset_model_animators(void);
 void init_virtual_entity_list(void);
 void init_model_animators(void);
-void play_model_animation(s32, s16*);
+void play_model_animation(s32, AnimScriptCode*);
 s32 heap_free(void* ptr);
 
 void load_battle_hit_asset(const char* hitName);
@@ -334,7 +346,8 @@ void func_80255FD8(void);
 void set_actor_glow_pal(Actor* actor, s32 arg1);
 
 void btl_set_popup_duration(s32 duration);
-void switch_to_partner(s32 arg0);
+void switch_to_partner(s32 partnerID);
+void partner_switch_to_partner_instant(s32 partnerID);
 s8 get_current_partner_id(void);
 
 void delete_trigger(Trigger* toDelete);
@@ -365,8 +378,8 @@ void partner_handle_before_battle(void);
 void partner_walking_update_player_tracking(Npc* partner);
 void partner_walking_update_motion(Npc* partner);
 void enable_partner_ai(void);
-void partner_walking_enable(Npc* partner, s32 val);
-void partner_flying_enable(Npc* partner, s32 val);
+void partner_walking_enable(Npc* partner, b32 val);
+void partner_flying_enable(Npc* partner, b32 val);
 void partner_flying_update_player_tracking(Npc* partner);
 s32 partner_is_flying(void);
 void partner_flying_update_motion(Npc* partner);
@@ -441,7 +454,7 @@ s32 make_item_entity_nodelay(s32 itemID, f32 x, f32 y, f32 z, s32 itemSpawnMode,
 void set_item_entity_flags(s32 itemEntityIndex, s32 flag);
 void clear_item_entity_flags(s32 index, s32 flags);
 
-s32 create_worker_frontUI(void (*updateFunc)(void), void (*drawFunc)(void));
+s32 create_worker_frontUI(VoidCallback updateFunc, VoidCallback drawFunc);
 Worker* get_worker(s32 idx);
 Trigger* bind_trigger_1(EvtScript* script, s32 flags, s32 triggerFlagIndex, s32 triggerVar0, s32 triggerVar1, s32 priority);
 
@@ -488,7 +501,7 @@ s32 player_team_is_ability_active(Actor* actor, s32 ability);
 
 void create_part_shadow(s32 actorID, s32 partID);
 void remove_part_shadow(s32 actorID, s32 partID);
-void create_part_shadow_by_ref(s32 arg0, ActorPart* part);
+void create_part_shadow_by_ref(ActorPart* part);
 
 void spawn_drops(struct Enemy* enemy);
 
@@ -519,7 +532,6 @@ void bgm_update_music_control(void);
 void update_ambient_sounds(void);
 void update_windows(void);
 void player_render_interact_prompts(void);
-void func_802C3EE4(void);
 void render_screen_overlay_backUI(void);
 void render_workers_backUI(void);
 void render_effects_UI(void);
@@ -566,7 +578,7 @@ void add_xz_vec3f_copy2(Vec3f* vector, f32 speed, f32 angleDeg);
 void play_movement_dust_effects(s32 var0, f32 xPos, f32 yPos, f32 zPos, f32 angleDeg);
 
 void draw_prev_frame_buffer_at_screen_pos(s32, s32, s32, s32, f32);
-void func_8013A4D0(void);
+void imgfx_begin_frame(void);
 
 void btl_draw_ui(void);
 void btl_restore_world_cameras(void);
@@ -681,24 +693,24 @@ void update_curtains(void);
 // render_curtains
 void set_curtain_scale_goal(f32 scale);
 void set_curtain_scale(f32 scale);
-void set_curtain_draw_callback(UNK_FUN_PTR(callback));
+void set_curtain_draw_callback(VoidCallback callback);
 void set_curtain_fade_goal(f32 fade);
 void set_curtain_fade(f32 fade);
 
 void crash_screen_init(void);
 void crash_screen_set_draw_info(u16* frameBufPtr, s16 width, s16 height);
 
-s32 create_worker_scene(void (*updateFunc)(void), void (*renderFunc)(void));
+s32 create_worker_scene(VoidCallback updateFunc, VoidCallback renderFunc);
 
 void init_entity_models(void);
 f32 phys_get_spin_history(s32 lag, s32* x, s32* y, s32* z);
-void imgfx_update(u32, ImgFXType, s32, s32, s32, s32, s32);
+void imgfx_update(s32, ImgFXType, s32, s32, s32, s32, s32);
 s32 imgfx_appendGfx_component(s32, ImgFXTexture*, u32, Matrix4f);
 void imgfx_update_cache(void);
 s32 imgfx_get_free_instances(s32);
 void free_worker(s32);
 
-s32 func_80263230(Actor*, Actor*);
+s32 create_single_actor_target_list(Actor* actor, Actor* targetActor);
 void set_part_glow_pal(ActorPart*, s32);
 void clear_actor_static_pal_adjustments(Actor*);
 void set_actor_flash_mode(Actor* actor, s32 arg1);
@@ -739,20 +751,21 @@ void init_trigger_list(void);
 void partner_init_after_battle(s32 arg0);
 void load_map_script_lib(void);
 void remove_item_entity_by_index(s32 index);
-void set_entity_commandlist(Entity* entity, s32* entityScript);
+void set_entity_commandlist(Entity* entity, EntityCode* entityScript);
 s32 is_player_dismounted(void);
-void func_800EF300(void);
-void func_800EF314(void);
-void func_800EF43C(void);
-void func_800EF3E4(void);
+void partner_disable_ai_soon(void);
+void partner_disable_ai(void);
+void partner_reset_ai_state(void);
+void partner_move_to_player_side(void);
 void enable_player_shadow(void);
 s32 get_msg_lines(s32 messageID);
 void set_window_properties(s32 panelID, s32 posX, s32 posY, s32 width, s32 height, u8, void* drawContents, void* drawContentsArg, s8 parent);
-void set_window_update(s32 panelID, s32);
+void set_window_update(s32 panelID, s32 func);
 void set_windows_visible(s32 groupIdx);
 
 void partner_disable_input(void);
 void partner_set_goal_pos(s32 x, s32 z);
+void partner_move_to_goal_pos(s32 x, s32 z);
 void close_message(MessagePrintState* msgPrintState);
 void show_foreground_models_unchecked(void);
 void hide_foreground_models_unchecked(void);
@@ -827,9 +840,7 @@ void player_reset_data(void);
 void partner_reset_data(void);
 s32 has_valid_conversation_npc(void);
 s32 func_800E06D8(void);
-void func_800E01DC(void);
 void collision_lateral_peach(void);
-void func_800E5520(void);
 void clear_world_menus(void);
 void setup_status_bar_for_battle(void);
 void enable_status_bar_input(void);
@@ -872,7 +883,7 @@ void remove_part_decor_sparkles(ActorPart*, s32);
 void remove_part_decor_bowser_aura(ActorPart*, s32);
 void remove_part_decor_radiating_stars(ActorPart*, s32);
 void status_bar_ignore_changes(void);
-void imgfx_release_instance(u32);
+void imgfx_release_instance(s32);
 
 void set_script_flags(Evt* script, s32 flags);
 void clear_script_flags(Evt* script, s32 flags);
@@ -894,7 +905,7 @@ void render_entities(void);
 void render_player(void);
 void render_workers_scene(void);
 void render_effects_scene(void);
-s32 get_asset_offset(char*, s32*);
+s32 get_asset_offset(char*, u32*);
 void initialize_status_bar(void);
 void status_bar_start_blinking_fp(void);
 s32 is_status_bar_visible(void);
@@ -914,10 +925,11 @@ void set_max_star_power(s8);
 void sync_status_bar(void);
 void create_cameras(void);
 void func_80045AC0(void);
-void func_8005AF84(void);
 void npc_follow_init(Npc*, s32, FollowAnims*, f32, f32, s32, s32);
 void npc_update_npc_tracking(Npc*);
 void npc_follow_npc(Npc*);
+b32 get_defeated(s32 mapID, s32 encounterID);
+void set_defeated(s32 mapID, s32 encounterID);
 void create_encounters(void);
 void update_encounters_neutral(void);
 void update_encounters_pre_battle(void);
@@ -972,7 +984,7 @@ void clear_area_flags(void);
 
 f32 get_player_normal_pitch(void);
 void partner_kill_ability_script(void);
-void func_800EF3D4(s32);
+void partner_set_forced_follow_mode(s32);
 
 void mdl_update_transform_matrices(void);
 void mdl_group_set_custom_gfx(u16, s32, s32, b32);

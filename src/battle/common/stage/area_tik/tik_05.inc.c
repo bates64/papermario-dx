@@ -3,8 +3,6 @@
 
 #define NAMESPACE A(tik_05)
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_PreBattle) = {
     Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
@@ -15,7 +13,7 @@ EvtScript N(EVS_PreBattle) = {
         TEX_PAN_PARAMS_STEP(   0, -2700,   0, -3000)
         TEX_PAN_PARAMS_FREQ(   1,     1,   1,     1)
         TEX_PAN_PARAMS_INIT(   0,     0,   0,     0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_taki2, TEX_PANNER_2)
     Call(EnableTexPanning, MODEL_taki2, true)
@@ -24,7 +22,7 @@ EvtScript N(EVS_PreBattle) = {
         TEX_PAN_PARAMS_STEP(   50, -200,  110, -500)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

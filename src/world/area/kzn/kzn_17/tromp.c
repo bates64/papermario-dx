@@ -1,8 +1,9 @@
 #include "kzn_17.h"
 #include "effects.h"
 
-#define UNK_FUNC_50_LVar1 -583.0
-#define UNK_FUNC_50_LVar2 165.0
+#define SPINY_TROMP_START_Y     165
+#define SPINY_TROMP_START_X    -583
+#define SPINY_TROMP_END_X       750
 
 #include "../common/SpinyTromp.inc.c"
 
@@ -23,10 +24,10 @@ EvtScript N(EVS_SpinyTromp_ManageCamera) = {
                 Else
                     Set(LVar0, MV_TrompPosX)
                 EndIf
-                Add(LVar1, 55)
+                Add(LVar1, SPINY_TROMP_RADIUS)
                 Set(LVar2, LVar1)
-                Call(N(UnkFunc46))
-                Sub(LVar2, 55)
+                Call(N(SpinyTromp_SnapToGround))
+                Sub(LVar2, SPINY_TROMP_RADIUS)
                 Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar2, 30)
                 Call(PanToTarget, CAM_DEFAULT, 0, true)
             EndIf
@@ -60,8 +61,8 @@ EvtScript N(EVS_SetupSpinyTromp) = {
     Set(AF_KZN_TrompHitPlayer, false)
     Set(AF_KZN_TrompRollingDone, false)
     Set(AF_KZN_Tromp2_StopPlayer, false)
-    Set(LVar0, -583)
-    Set(LVar2, 165)
+    Set(LVar0, SPINY_TROMP_START_X)
+    Set(LVar2, SPINY_TROMP_START_Y)
     Call(TranslateGroup, MODEL_goron, LVar0, LVar2, 30)
     Call(TranslateModel, MODEL_me, LVar0, LVar2, 30)
     Label(0)
@@ -74,20 +75,20 @@ EvtScript N(EVS_SetupSpinyTromp) = {
     ExecGetTID(N(EVS_SpinyTromp_ShakeCam), MV_ScreenShakeTID)
     Call(PlaySound, SOUND_LOOP_TROMP_ROLL)
     Set(LVar3, 0)
-    Call(MakeLerp, -583, 750, 270, EASING_QUADRATIC_IN)
+    Call(MakeLerp, SPINY_TROMP_START_X, SPINY_TROMP_END_X, 270, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(UnkFunc46))
-        Call(N(UnkFunc51), LVar0, LVar1, LVar2)
+        Call(N(SpinyTromp_SnapToGround))
+        Call(N(SpinyTromp_UpdateSoundPos), LVar0, LVar1, LVar2)
         Set(MV_TrompPosX, LVar0)
         Add(MV_TrompPosX, 20)
         Call(TranslateGroup, MODEL_goron, LVar0, LVar2, 30)
         Call(TranslateModel, MODEL_me, LVar0, LVar2, 30)
         Call(RotateGroup, MODEL_goron, LVar3, 0, 0, 1)
         Call(RotateModel, MODEL_me, LVar3, 0, 0, 1)
-        Call(N(UnkFunc49))
+        Call(N(SpinyTromp_UpdateRollWobble))
         Call(TranslateModel, MODEL_me, LVar5, LVar6, 30)
-        Call(N(UnkFunc50))
+        Call(N(SpinyTromp_UpdateRollAngle), SPINY_TROMP_START_X, SPINY_TROMP_START_Y)
         IfEq(AF_KZN_Tromp2_StopPlayer, false)
             Thread
                 Call(GetPlayerPos, LVar3, LVar1, LVar2)
@@ -127,13 +128,13 @@ EvtScript N(EVS_SetupSpinyTromp) = {
             EndIf
         EndIf
         Wait(1)
-        Call(N(SpinyTromp_CheckDist))
+        Call(N(SpinyTromp_GetPlayerDist))
         IfLt(LVar4, 80)
             IfEq(AF_KZN_TrompHitPlayer, false)
                 Call(N(SpinyTromp_GetActingPartner))
                 IfNe(LVar0, PARTNER_BOW)
                     Set(AF_KZN_TrompHitPlayer, true)
-                    Exec(N(D_80240D10_C7EE90))
+                    Exec(N(EVS_SpinyTromp_HitPlayer))
                 EndIf
             EndIf
         EndIf

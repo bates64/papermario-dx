@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_134.h
 /// @brief Bowser's Castle - Right Water Puzzle
 
@@ -17,7 +19,7 @@ enum {
 
 enum {
     MV_SwitchEntityID   = MapVar(0),
-    MV_PadlockEntityID  = MapVar(1),
+    MV_EntityID_Padlock  = MapVar(1),
 };
 
 #define NAMESPACE kpa_134

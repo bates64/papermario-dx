@@ -1,15 +1,7 @@
 #include "flo_21.h"
 #include "sprite/player.h"
 
-#define STAR_SPIRIT_DATA_VAR MV_Unk_01
-#include "world/common/todo/StarSpiritEffectFunc.inc.c"
-
-#include "world/common/atomic/TexturePan.inc.c"
-
-API_CALLABLE(N(SpawnSunEffect)) {
-    fx_sun(FX_SUN_FROM_RIGHT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
-    return ApiStatus_DONE2;
-}
+#include "world/common/prefab/StarSpiritCard.inc.c"
 
 EvtScript N(EVS_TrySpawningStarCard) = {
     Switch(GB_StoryProgress)
@@ -31,14 +23,14 @@ EvtScript N(EVS_TrySpawningStarCard) = {
         Call(SetPanTarget, CAM_DEFAULT, 650, 150, 0)
         EVT_SPIRIT_ADJUST_CAM(Float(-5.5))
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(N(StarSpiritEffectFunc2), 5, 180, 650, 170, 0, 650, 205, 0, 150, 120)
+        Call(N(InitSpiritCardSpawn), MV_SpiritCardData, 5, 180, 650, 170, 0, 650, 205, 0, 150, 120)
         Thread
-            Call(N(StarSpiritEffectFunc3))
+            Call(N(UpdateSpiritCardSpawn))
         EndThread
         Thread
             Wait(1)
             Call(PlaySound, SOUND_LOOP_STAR_ORB_RISING)
-            Call(N(StarSpiritEffectFunc1))
+            Call(N(AwaitSpiritOrbBurst))
             Call(StopSound, SOUND_LOOP_STAR_ORB_RISING)
             Call(PlaySoundAt, SOUND_STAR_ORB_BURST, SOUND_SPACE_DEFAULT, 650, 205, 0)
         EndThread
@@ -51,7 +43,7 @@ EvtScript N(EVS_TrySpawningStarCard) = {
             Wait(115)
             Call(PlaySoundAt, SOUND_STAR_CARD_APPEARS, SOUND_SPACE_DEFAULT, 650, 205, 0)
         EndThread
-        Call(N(StarSpiritEffectFunc4), 1)
+        Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_FALLING)
         Thread
             Wait(80)
             Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -59,7 +51,7 @@ EvtScript N(EVS_TrySpawningStarCard) = {
         Add(LVar1, 100)
         Call(SetCamDistance, CAM_DEFAULT, LVar1)
         Call(SetPanTarget, CAM_DEFAULT, 650, 120, 0)
-        Call(N(StarSpiritEffectFunc4), 2)
+        Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_DONE_FALLING)
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
@@ -68,13 +60,13 @@ EvtScript N(EVS_TrySpawningStarCard) = {
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(DisablePlayerInput, false)
     Else
-        Call(N(StarSpiritEffectFunc5), 5, 650, 150, 0, 120)
+        Call(N(SpawnExistingSpiritCard), 5, 650, 150, 0, 120)
         Thread
-            Call(N(StarSpiritEffectFunc6))
+            Call(N(UpdateExistingSpiritCard))
         EndThread
         Wait(1)
     EndIf
-    Call(N(StarSpiritEffectFunc4), 3)
+    Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_PLAYER_TOUCH)
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH6_STAR_SPIRIT_RESCUED)
@@ -108,7 +100,7 @@ EvtScript N(EVS_Main) = {
     Exec(EnterWalk)
     ExecWait(N(EVS_SetupMusic))
     IfGe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
-        Call(N(SpawnSunEffect))
+        Call(SpawnSunEffect, FX_SUN_FROM_RIGHT)
     EndIf
     Exec(N(EVS_TrySpawningStarCard))
     Return

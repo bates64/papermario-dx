@@ -53,7 +53,7 @@ API_CALLABLE(N(Update)) {
     Entity* entity;
 
     if (isInitialCall) {
-        partner_flying_enable(bow, 1);
+        partner_flying_enable(bow, true);
         mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
         TweesterTouchingPartner = nullptr;
     }
@@ -69,14 +69,14 @@ API_CALLABLE(N(Update)) {
 
     switch (N(TweesterPhysicsPtr)->state){
         case TWEESTER_PARTNER_INIT:
-            N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_ATTRACT;
             N(TweesterPhysicsPtr)->prevFlags = bow->flags;
             N(TweesterPhysicsPtr)->radius = fabsf(dist2D(bow->pos.x, bow->pos.z, entity->pos.x, entity->pos.z));
             N(TweesterPhysicsPtr)->angle = atan2(entity->pos.x, entity->pos.z, bow->pos.x, bow->pos.z);
             N(TweesterPhysicsPtr)->angularVel = 6.0f;
             N(TweesterPhysicsPtr)->liftoffVelPhase = 50.0f;
             N(TweesterPhysicsPtr)->countdown = 120;
-            bow->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
+            bow->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
             bow->flags &= ~NPC_FLAG_GRAVITY;
         case TWEESTER_PARTNER_ATTRACT:
             sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
@@ -103,20 +103,22 @@ API_CALLABLE(N(Update)) {
             if (N(TweesterPhysicsPtr)->angularVel > 40.0f) {
                 N(TweesterPhysicsPtr)->angularVel = 40.0f;
             }
-            if (--N(TweesterPhysicsPtr)->countdown == 0) {
-                N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->countdown--;
+            if (N(TweesterPhysicsPtr)->countdown == 0) {
+                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_HOLD;
             }
             break;
         case TWEESTER_PARTNER_HOLD:
             bow->flags = N(TweesterPhysicsPtr)->prevFlags;
             N(TweesterPhysicsPtr)->countdown = 30;
-            N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_RELEASE;
             break;
         case TWEESTER_PARTNER_RELEASE:
             partner_flying_update_player_tracking(bow);
             partner_flying_update_motion(bow);
 
-            if (--N(TweesterPhysicsPtr)->countdown == 0) {
+            N(TweesterPhysicsPtr)->countdown--;
+            if (N(TweesterPhysicsPtr)->countdown == 0) {
                 N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
                 TweesterTouchingPartner = nullptr;
             }
@@ -185,7 +187,7 @@ API_CALLABLE(N(UseAbility)) {
 
     if (isInitialCall) {
         N(try_cancel_tweester)(bow);
-        if (playerStatus->animFlags & PA_FLAG_CHANGING_MAP || !func_800EA52C(PARTNER_BOW)) {
+        if (playerStatus->animFlags & PA_FLAG_CHANGING_MAP || !partner_can_continue_ability(PARTNER_BOW)) {
             return ApiStatus_DONE2;
         }
         if (playerStatus->animFlags & PA_FLAG_PARTNER_USAGE_FORCED) {
@@ -211,7 +213,7 @@ API_CALLABLE(N(UseAbility)) {
             script->USE_STATE++; // OUTTA_SIGHT_DELAY
             break;
         case OUTTA_SIGHT_DELAY:
-            if ((!func_800EA52C(PARTNER_BOW) || is_starting_conversation())
+            if ((!partner_can_continue_ability(PARTNER_BOW) || is_starting_conversation())
                 && script->functionTemp[2] < playerStatus->inputDisabledCount
                 && N(LockingPlayerInput)
             ) {

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mac_00.h
 /// @brief Toad Town - Gate District
 
@@ -9,14 +11,10 @@
 #include "mapfs/mac_00_shape.h"
 #include "mapfs/mac_00_hit.h"
 
-#include "sprite/npc/ChuckQuizmo.h"
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/npc/ShyGuy.h"
-#include "sprite/npc/RussT.h"
-#include "sprite/npc/HarryT.h"
 #include "sprite/npc/Toad.h"
 #include "sprite/npc/Chan.h"
-#include "sprite/npc/TheMaster.h"
 #include "sprite/npc/Lee.h"
 #include "sprite/npc/Toadette.h"
 #include "sprite/npc/ToadKid.h"
@@ -24,7 +22,6 @@
 #include "sprite/npc/Goompapa.h"
 #include "sprite/npc/Goomama.h"
 #include "sprite/npc/Gooma.h"
-#include "sprite/npc/VannaT.h"
 
 enum {
     NPC_Luigi_Intro             = 0,
@@ -53,7 +50,7 @@ enum {
     NPC_ShyGuyThief             = 21,
     NPC_ShyGuy_02               = 22,
     NPC_GardenShyGuy1           = 23,
-    NPC_Toad_11                 = 24,
+    NPC_Toad_PrizeToad          = 24,
     NPC_Luigi_Epilogue          = 25,
     NPC_Goompapa_Epilogue       = 26,
     NPC_Goomama_Epilogue        = 27,
@@ -86,3 +83,14 @@ extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(IntroNPCs);
 extern NpcGroupList N(EpilogueNPCs);
 extern NpcGroupList N(DefaultNPCs);
+
+#include "world/common/npc/Toad/wander.h"
+#include "world/common/npc/Toad/patrol.h"
+#include "world/common/npc/Toad/idle.h"
+#include "world/common/npc/Goompapa/idle.h"
+#include "world/common/npc/Goomama/idle.h"
+#include "world/common/npc/Gooma/idle.h"
+#include "world/common/npc/Dummy/idle.h"
+
+#include "world/common/npc/Toadette/base.h"
+#include "world/common/npc/Luigi/base.h"

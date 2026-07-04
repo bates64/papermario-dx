@@ -29,7 +29,7 @@ API_CALLABLE(N(CreateParadeNPC)) {
     NpcBlueprint bp;
     Npc* npc;
 
-    bp.flags = NPC_FLAG_IGNORE_PLAYER_COLLISION;
+    bp.flags = NPC_FLAG_IGNORE_CHAR_COLLISION;
     bp.initialAnim = npcInfo->initialAnim;
     bp.onUpdate = nullptr;
     bp.onRender = nullptr;
@@ -163,93 +163,93 @@ EvtScript N(EVS_OffsetNpcScroll) = {
     End
 };
 
-AnimID N(ExtraAnims_Eldstar)[] = {
+AnimID N(LimitAnims_Eldstar)[] = {
     ANIM_BattleEldstar_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Mamar)[] = {
+AnimID N(LimitAnims_Mamar)[] = {
     ANIM_BattleMamar_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Skolar)[] = {
+AnimID N(LimitAnims_Skolar)[] = {
     ANIM_BattleSkolar_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Muskular)[] = {
+AnimID N(LimitAnims_Muskular)[] = {
     ANIM_BattleMuskular_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Misstar)[] = {
+AnimID N(LimitAnims_Misstar)[] = {
     ANIM_BattleMisstar_Still,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Klevar)[] = {
+AnimID N(LimitAnims_Klevar)[] = {
     ANIM_BattleKlevar_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Kalmar)[] = {
+AnimID N(LimitAnims_Kalmar)[] = {
     ANIM_BattleKalmar_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_PyroGuy)[] = {
-    ANIM_PyroGuy_Anim03,
+AnimID N(LimitAnims_PyroGuy)[] = {
+    ANIM_PyroGuy_Run,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_ShyGuy)[] = {
-    ANIM_ShyGuy_Red_Anim04,
-    ANIM_ShyGuy_Red_Anim10,
-    ANIM_ShyGuy_Red_Anim01,
+AnimID N(LimitAnims_ShyGuy)[] = {
+    ANIM_ShyGuy_Red_Dash,
+    ANIM_ShyGuy_Red_Crashed,
+    ANIM_ShyGuy_Red_Idle,
     ANIM_LIST_END
 };
 
 ParadeNpcInfo N(ParadeNpcsTable)[] = {
     [NPC_Eldstar] {
         .initialAnim = ANIM_BattleEldstar_Idle,
-        .animList = N(ExtraAnims_Eldstar),
+        .animList = N(LimitAnims_Eldstar),
         .pos = { -3135.0f, 210.0f, -120.0f },
         .yaw = 270.0f
     },
     [NPC_Mamar] {
         .initialAnim = ANIM_BattleMamar_Idle,
-        .animList = N(ExtraAnims_Mamar),
+        .animList = N(LimitAnims_Mamar),
         .pos = { -3195.0f, 200.0f, -120.0f },
         .yaw = 270.0f
     },
     [NPC_Skolar] {
         .initialAnim = ANIM_BattleSkolar_Idle,
-        .animList = N(ExtraAnims_Skolar),
+        .animList = N(LimitAnims_Skolar),
         .pos = { -3075.0f, 195.0f, -120.0f },
         .yaw = 270.0f
     },
     [NPC_Muskular] {
         .initialAnim = ANIM_BattleMuskular_Idle,
-        .animList = N(ExtraAnims_Muskular),
+        .animList = N(LimitAnims_Muskular),
         .pos = { -3045.0f, 148.0f, -104.0f },
         .yaw = 270.0f
     },
     [NPC_Misstar] {
         .initialAnim = ANIM_BattleMisstar_Still,
-        .animList = N(ExtraAnims_Misstar),
+        .animList = N(LimitAnims_Misstar),
         .pos = { -3105.0f, 158.0f, -104.0f },
         .yaw = 270.0f
     },
     [NPC_Klevar] {
         .initialAnim = ANIM_BattleKlevar_Idle,
-        .animList = N(ExtraAnims_Klevar),
+        .animList = N(LimitAnims_Klevar),
         .pos = { -3165.0f, 158.0f, -104.0f },
         .yaw = 270.0f
     },
     [NPC_Kalmar] {
         .initialAnim = ANIM_BattleKalmar_Idle,
-        .animList = N(ExtraAnims_Kalmar),
+        .animList = N(LimitAnims_Kalmar),
         .pos = { -3225.0f, 148.0f, -104.0f },
         .yaw = 270.0f
     },
@@ -299,12 +299,12 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
         .yaw = 270.0f
     },
     [NPC_AmayzeDayzee1] {
-        .initialAnim = ANIM_Dayzee_Amazy_Anim02,
+        .initialAnim = ANIM_Dayzee_Amazy_Walk,
         .pos = { -2210.0f, 0.0f, -20.0f },
         .yaw = 270.0f
     },
     [NPC_AmayzeDayzee2] {
-        .initialAnim = ANIM_Dayzee_Amazy_Anim02,
+        .initialAnim = ANIM_Dayzee_Amazy_Walk,
         .pos = { -2210.0f, 0.0f, 20.0f },
         .yaw = 270.0f
     },
@@ -399,14 +399,14 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
         .yaw = 90.0f
     },
     [NPC_PyroGuy1] {
-        .initialAnim = ANIM_PyroGuy_Anim03,
-        .animList = N(ExtraAnims_PyroGuy),
+        .initialAnim = ANIM_PyroGuy_Run,
+        .animList = N(LimitAnims_PyroGuy),
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
     [NPC_PyroGuy2] {
-        .initialAnim = ANIM_PyroGuy_Anim03,
-        .animList = N(ExtraAnims_PyroGuy),
+        .initialAnim = ANIM_PyroGuy_Run,
+        .animList = N(LimitAnims_PyroGuy),
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 270.0f
     },
@@ -471,8 +471,8 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
         .yaw = 270.0f
     },
     [NPC_Pratfaller] {
-        .initialAnim = ANIM_ShyGuy_Red_Anim04,
-        .animList = N(ExtraAnims_ShyGuy),
+        .initialAnim = ANIM_ShyGuy_Red_Dash,
+        .animList = N(LimitAnims_ShyGuy),
         .pos = { -788.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },

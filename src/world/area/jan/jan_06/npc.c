@@ -1,11 +1,11 @@
 #include "jan_06.h"
 
-#include "world/common/enemy/JungleFuzzy_Wander.inc.c"
-#include "world/common/enemy/HeartPlant.inc.c"
-#include "world/common/enemy/HurtPlant.inc.c"
-#include "world/common/enemy/SpearGuy_Wander.inc.c"
+#include "world/common/enemy/JungleFuzzy/wander.inc.c"
+#include "world/common/enemy/HeartPlant/idle.inc.c"
+#include "world/common/enemy/HurtPlant/idle.inc.c"
+#include "world/common/enemy/SpearGuy/wander.inc.c"
 
-AnimID N(ExtraAnims_JungleFuzzy)[] = {
+AnimID N(LimitAnims_JungleFuzzy)[] = {
     ANIM_Fuzzy_Blue_Idle,
     ANIM_Fuzzy_Blue_Walk,
     ANIM_Fuzzy_Blue_Run,
@@ -33,23 +33,23 @@ NpcData N(NpcData_JungleFuzzy) = {
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = JUNGLE_FUZZY_DROPS,
     .animations = JUNGLE_FUZZY_ANIMS,
-    .extraAnimations = N(ExtraAnims_JungleFuzzy),
+    .limitAnimations = N(LimitAnims_JungleFuzzy),
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-AnimID N(ExtraAnims_SpearGuy_Custom)[] = {
-    ANIM_SpearGuy_Anim03,
-    ANIM_SpearGuy_Anim04,
-    ANIM_SpearGuy_Anim05,
-    ANIM_SpearGuy_Anim06,
-    ANIM_SpearGuy_Anim0F,
-    ANIM_SpearGuy_Anim10,
-    ANIM_SpearGuy_Anim07,
-    ANIM_SpearGuy_Anim08,
-    ANIM_SpearGuy_Anim09,
-    ANIM_SpearGuy_Anim0D,
-    ANIM_SpearGuy_Anim1A,
-    ANIM_SpearGuy_Anim1B,
+AnimID N(LimitAnims_SpearGuy_Custom)[] = {
+    ANIM_SpearGuy_IdleUp,
+    ANIM_SpearGuy_IdleFwd,
+    ANIM_SpearGuy_Walk,
+    ANIM_SpearGuy_Run,
+    ANIM_SpearGuy_Dizzy,
+    ANIM_SpearGuy_ShakeSpear,
+    ANIM_SpearGuy_HurtUp,
+    ANIM_SpearGuy_HurtFwd,
+    ANIM_SpearGuy_HurtStill,
+    ANIM_SpearGuy_Sleep,
+    ANIM_SpearGuy_StabWindup,
+    ANIM_SpearGuy_StabThrust,
     ANIM_LIST_END
 };
 
@@ -74,7 +74,7 @@ NpcData N(NpcData_SpearGuy)[] = {
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = SPEAR_GUY_DROPS,
         .animations = SPEAR_GUY_ANIMS,
-        .extraAnimations = N(ExtraAnims_SpearGuy_Custom),
+        .limitAnimations = N(LimitAnims_SpearGuy_Custom),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     SPEAR_GUY_HITBOX(NPC_SpearGuy_Hitbox),

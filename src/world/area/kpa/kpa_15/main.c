@@ -1,29 +1,27 @@
 #include "kpa_15.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
-EvtScript N(D_8024074C_A59ADC) = EVT_EXIT_WALK(40, kpa_15_ENTRY_0, "kpa_13", kpa_13_ENTRY_2);
+EvtScript N(EVS_ExitWalk_kpa_13_2) = EVT_EXIT_WALK(40, kpa_15_ENTRY_0, "kpa_13", kpa_13_ENTRY_2);
 
 EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(D_8024074C_A59ADC)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(N(EVS_ExitWalk_kpa_13_2)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     Return
     End
 };
 
-EvtScript N(D_802407D4_A59B64) = {
+EvtScript N(EVS_EnterMap) = {
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))
     Exec(EnterWalk)
     Return
     End
 };
 
-EvtScript N(D_80240800_A59B90) = {
+EvtScript N(EVS_SetupTexPanners) = {
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
         TEX_PAN_PARAMS_STEP( -400,    0, -800,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o811, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o813, TEX_PANNER_0)
@@ -39,11 +37,11 @@ EvtScript N(EVS_Main) = {
     ExecWait(N(EVS_MakeEntities))
     IfEq(GF_KPA16_ShutOffLava, false)
         Call(EnableGroup, MODEL_after, false)
-        Exec(N(D_80240800_A59B90))
+        Exec(N(EVS_SetupTexPanners))
     Else
         Call(EnableGroup, MODEL_before, false)
     EndIf
-    Exec(N(D_802407D4_A59B64))
+    Exec(N(EVS_EnterMap))
     Exec(N(EVS_SetupMusic))
     IfEq(GF_KPA16_ShutOffLava, false)
         Thread

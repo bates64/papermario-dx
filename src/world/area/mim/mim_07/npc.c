@@ -1,46 +1,42 @@
 #include "mim_07.h"
 
-#include "world/common/enemy/ForestFuzzy_Wander.inc.c"
+#include "world/common/enemy/ForestFuzzy/wander.inc.c"
 
-NpcSettings N(NpcSettings_JrTroopa) = {
-    .height = 32,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/npc/JrTroopa/idle.inc.c"
 
-s32 N(D_80242944_BACA84)[] = {
+s32 N(JrTroopa_TriggerPos_South)[] = {
     0, -350,
 };
 
-s32 N(D_8024294C_BACA8C)[] = {
+s32 N(JrTroopa_TriggerPos_North)[] = {
     0, 350,
 };
 
-s32 N(D_80242954_BACA94)[] = {
+s32 N(JrTroopa_TriggerPos_East)[] = {
     350, 0,
 };
 
-s32 N(D_8024295C_BACA9C)[] = {
+s32 N(JrTroopaPath_SouthFromWest)[] = {
     -270, -245, -150, -310,
 };
 
-s32 N(D_8024296C_BACAAC)[] = {
+s32 N(JrTroopaPath_SouthFromEast)[] = {
     270, -245, 150, -310,
 };
 
-s32 N(D_8024297C_BACABC)[] = {
+s32 N(JrTroopaPath_NorthFromWest)[] = {
     -270, 245, -150, 310,
 };
 
-s32 N(D_8024298C_BACACC)[] = {
+s32 N(JrTroopaPath_NorthFromEast)[] = {
     270, 245, 150, 310,
 };
 
-s32 N(D_8024299C_BACADC)[] = {
+s32 N(JrTroopaPath_EastFromSouth)[] = {
     245, -270, 310, -150,
 };
 
-s32 N(D_802429AC_BACAEC)[] = {
+s32 N(JrTroopaPath_EastFromNorth)[] = {
     245, 270, 310, 150,
 };
 
@@ -48,13 +44,13 @@ EvtScript N(EVS_NpcIdle_JrTroopa) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(mim_07_ENTRY_0)
-            UseBuf(Ref(N(D_80242944_BACA84)))
+            UseBuf(Ref(N(JrTroopa_TriggerPos_South)))
         CaseEq(mim_07_ENTRY_1)
-            UseBuf(Ref(N(D_80242944_BACA84)))
+            UseBuf(Ref(N(JrTroopa_TriggerPos_South)))
         CaseEq(mim_07_ENTRY_2)
-            UseBuf(Ref(N(D_8024294C_BACA8C)))
+            UseBuf(Ref(N(JrTroopa_TriggerPos_North)))
         CaseEq(mim_07_ENTRY_3)
-            UseBuf(Ref(N(D_80242954_BACA94)))
+            UseBuf(Ref(N(JrTroopa_TriggerPos_East)))
     EndSwitch
     BufRead2(LVar1, LVar2)
     Call(AwaitPlayerApproach, LVar1, LVar2, 80)
@@ -66,34 +62,32 @@ EvtScript N(EVS_NpcIdle_JrTroopa) = {
         Goto(10)
     EndIf
     Call(DisablePlayerInput, true)
-#if !VERSION_JP
     Call(GetPartnerInUse, LVar0)
     IfNe(LVar0, PARTNER_NONE)
         Call(InterruptUsePartner)
         Wait(20)
     EndIf
-#endif
     ExecWait(N(EVS_JrTroopaMusic))
     Call(GetPlayerPos, LVar1, LVar2, LVar3)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(mim_07_ENTRY_0)
             IfLt(LVar1, 0)
-                UseBuf(Ref(N(D_8024295C_BACA9C)))
+                UseBuf(Ref(N(JrTroopaPath_SouthFromWest)))
             Else
-                UseBuf(Ref(N(D_8024296C_BACAAC)))
+                UseBuf(Ref(N(JrTroopaPath_SouthFromEast)))
             EndIf
         CaseEq(mim_07_ENTRY_2)
             IfLt(LVar1, 0)
-                UseBuf(Ref(N(D_8024297C_BACABC)))
+                UseBuf(Ref(N(JrTroopaPath_NorthFromWest)))
             Else
-                UseBuf(Ref(N(D_8024298C_BACACC)))
+                UseBuf(Ref(N(JrTroopaPath_NorthFromEast)))
             EndIf
         CaseEq(mim_07_ENTRY_3)
             IfLt(LVar3, 0)
-                UseBuf(Ref(N(D_8024299C_BACADC)))
+                UseBuf(Ref(N(JrTroopaPath_EastFromSouth)))
             Else
-                UseBuf(Ref(N(D_802429AC_BACAEC)))
+                UseBuf(Ref(N(JrTroopaPath_EastFromNorth)))
             EndIf
     EndSwitch
     BufRead4(LVar2, LVar3, LVar4, LVar5)
@@ -118,7 +112,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa) = {
     Call(NpcMoveTo, NPC_SELF, LVar4, LVar5, 30)
     Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_Idle)
     Call(SpeakToPlayer, NPC_SELF, ANIM_JrTroopa_Talk, ANIM_JrTroopa_Idle, 0, MSG_CH3_0019)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetCurrentPartnerID, LVar0)
     Switch(LVar0)
         CaseEq(PARTNER_GOOMBARIO)
@@ -240,24 +234,7 @@ NpcData N(NpcData_JrTroopa) = {
     .settings = &N(NpcSettings_JrTroopa),
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_JrTroopa_Idle,
-        .walk   = ANIM_JrTroopa_Walk,
-        .run    = ANIM_JrTroopa_Walk,
-        .chase  = ANIM_JrTroopa_Walk,
-        .anim_4 = ANIM_JrTroopa_Idle,
-        .anim_5 = ANIM_JrTroopa_Idle,
-        .death  = ANIM_JrTroopa_Idle,
-        .hit    = ANIM_JrTroopa_Idle,
-        .anim_8 = ANIM_JrTroopa_Idle,
-        .anim_9 = ANIM_JrTroopa_Idle,
-        .anim_A = ANIM_JrTroopa_Idle,
-        .anim_B = ANIM_JrTroopa_Idle,
-        .anim_C = ANIM_JrTroopa_Idle,
-        .anim_D = ANIM_JrTroopa_Idle,
-        .anim_E = ANIM_JrTroopa_Idle,
-        .anim_F = ANIM_JrTroopa_Idle,
-    },
+    .animations = JR_TROOPA_ANIMS,
 };
 
 NpcGroupList N(DefaultNPCs) = {

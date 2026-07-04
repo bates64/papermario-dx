@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file hos_04.h
 /// @brief Shooting Star Summit - Outside the Sanctuary
 

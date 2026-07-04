@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tik_04.h
 /// @brief Toad Town Tunnels - Scales Room (B2)
 
@@ -15,7 +17,7 @@ enum {
 };
 
 enum {
-    MV_Unk_00       = MapVar(0),
+    MV_PlatformShadowsArray     = MapVar(0),
 };
 
 #define NAMESPACE tik_04

@@ -1,0 +1,76 @@
+#pragma once
+#include "npc.h"
+#include "sprite/npc/DryBones.h"
+
+#define DRY_BONES_DROPS \
+{ \
+    .dropFlags = NPC_DROP_FLAG_80, \
+    .itemDropChance = 5, \
+    .itemDrops = { \
+        { ITEM_SUPER_SHROOM, 10, 0 }, \
+    }, \
+    .heartDrops  = STANDARD_HEART_DROPS(2), \
+    .flowerDrops = STANDARD_FLOWER_DROPS(4), \
+    .minCoinBonus = 0, \
+    .maxCoinBonus = 4, \
+}
+
+#define DRY_BONES_ANIMS \
+{ \
+    .idle   = ANIM_DryBones_Idle, \
+    .walk   = ANIM_DryBones_Walk, \
+    .run    = ANIM_DryBones_Run, \
+    .chase  = ANIM_DryBones_Run, \
+    .alert  = ANIM_DryBones_Idle, \
+    .unused = ANIM_DryBones_Idle, \
+    .death  = ANIM_DryBones_Hurt, \
+    .hit    = ANIM_DryBones_Hurt, \
+    .anim_8 = ANIM_DryBones_AimBone, \
+    .anim_9 = ANIM_DryBones_ThrowBone, \
+    .anim_A = ANIM_DryBones_Idle, \
+    .anim_B = ANIM_DryBones_Idle, \
+    .anim_C = ANIM_DryBones_Idle, \
+    .anim_D = ANIM_DryBones_Idle, \
+    .anim_E = ANIM_DryBones_Idle, \
+    .anim_F = ANIM_DryBones_Idle, \
+}
+
+#define DRY_BONES_BONE_HITBOX(npcID) \
+{ \
+    .id = npcID, \
+    .settings = &N(NpcSettings_ThrownBone), \
+    .pos = { NPC_DISPOSE_LOCATION }, \
+    .yaw = 90, \
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DROPS, \
+    .drops = NO_DROPS, \
+    .territory = { \
+        .wander = { \
+            .isFlying = true, \
+            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED, \
+            .wanderShape = SHAPE_CYLINDER, \
+            .centerPos  = { NPC_DISPOSE_LOCATION }, \
+            .wanderSize = { 0 }, \
+            .detectShape = SHAPE_CYLINDER, \
+            .detectPos  = { NPC_DISPOSE_LOCATION }, \
+            .detectSize = { 0 }, \
+        } \
+    }, \
+    .animations = { \
+        .idle   = ANIM_ThrownBone_Still, \
+        .walk   = ANIM_ThrownBone_Still, \
+        .run    = ANIM_ThrownBone_Still, \
+        .chase  = ANIM_ThrownBone_Still, \
+        .alert  = ANIM_ThrownBone_Still, \
+        .unused = ANIM_ThrownBone_Still, \
+        .death  = ANIM_ThrownBone_Still, \
+        .hit    = ANIM_ThrownBone_Still, \
+        .anim_8 = ANIM_ThrownBone_Still, \
+        .anim_9 = ANIM_ThrownBone_Still, \
+        .anim_A = ANIM_ThrownBone_Still, \
+        .anim_B = ANIM_ThrownBone_Still, \
+        .anim_C = ANIM_ThrownBone_Still, \
+        .anim_D = ANIM_ThrownBone_Still, \
+        .anim_E = ANIM_ThrownBone_Still, \
+        .anim_F = ANIM_ThrownBone_Still, \
+    }, \
+}

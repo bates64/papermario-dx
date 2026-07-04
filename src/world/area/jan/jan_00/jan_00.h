@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file jan_00.h
 /// @brief Jade Jungle - Whale Cove
 
@@ -22,4 +24,4 @@ enum {
 
 #define NAMESPACE jan_00
 
-extern EvtScript N(D_80245860_B25DA0);
+extern EvtScript N(EVS_MakeFlowerCoins);

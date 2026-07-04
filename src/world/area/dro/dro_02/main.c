@@ -1,7 +1,5 @@
 #include "dro_02.h"
 
-#include "world/common/atomic/ApplyTint.inc.c"
-#include "world/common/atomic/TexturePan.inc.c"
 
 EvtScript N(EVS_ExitWalk_dro_01_1) = EVT_EXIT_WALK(60, dro_02_ENTRY_0, "dro_01", dro_01_ENTRY_1);
 
@@ -27,9 +25,9 @@ EvtScript N(EVS_EnterScene) = {
     Call(SetCamPitch, CAM_DEFAULT, Float(13.0), Float(-10.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(N(SetModelTintMode), APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
-    Call(N(SetModelTintMode), APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
-    Call(N(SetModelTintParams), ENV_TINT_REMAP, 44, 32, 177, 0, 0, 0, 0, 0, 0)
+    Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
+    Call(SetModelTintMode, APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
+    Call(SetModelTintParams, ENV_TINT_REMAP, 44, 32, 177, 0, 0, 0, 0, 0, 0)
     Call(DisablePlayerInput, true)
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 300, Float(0.2))
@@ -74,9 +72,9 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0,  420,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
-    Set(MF_Unk_00, false)
+    Set(MF_SheekTauntPending, false)
     BindTrigger(Ref(N(EVS_OnReadPoster)), TRIGGER_WALL_PRESS_A, COLLIDER_poster, 1, 0)
     Thread
         Loop(0)

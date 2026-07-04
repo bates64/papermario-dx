@@ -1,72 +1,49 @@
 #include "jan_03.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
-#include "world/common/npc/Yoshi.inc.c"
-#include "world/common/npc/Yoshi_Patrol.inc.c"
+#include "world/common/npc/Yoshi/idle.inc.c"
+#include "world/common/npc/Yoshi/patrol.inc.c"
 
-#include "world/common/npc/YoshiKid.inc.c"
-#include "world/common/npc/YoshiKid_Patrol.inc.c"
+#include "world/common/npc/YoshiKid/idle.inc.c"
+#include "world/common/npc/YoshiKid/patrol.inc.c"
 
-#include "world/common/npc/Raven.inc.c"
+#include "world/common/npc/Raven/idle.inc.c"
 
-#include "world/common/npc/Sushie.inc.c"
-#include "world/common/npc/Kolorado.inc.c"
+#include "world/common/npc/Sushie/idle.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
 
-#include "world/common/complete/ToadHouseBlanketAnim.inc.c"
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
-
-#include "world/common/complete/LetterDelivery.inc.c"
-
-s32 N(RedYoshiKidLetters)[] = {
-    ITEM_LETTER_CHAIN_YOSHI_KID,
-    ITEM_NONE
+LetterDelivery N(LetterDelivery_RedYoshiKid) = {
+    .recipientID = NPC_YoshiKid_02,
+    .recipientTalk = ANIM_YoshiKid_Red_Talk,
+    .recipientIdle = ANIM_YoshiKid_Red_Idle,
+    .msgGreeting = MSG_CH5_0079,
+    .msgCancelled = MSG_CH5_007A,
+    .msgDelivered = MSG_CH5_007B,
+    .msgRecieved = MSG_CH5_007C,
+    .letters = { ITEM_LETTER_CHAIN_YOSHI_KID },
+    .reward = ITEM_LETTER_CHAIN_DANE_T_2,
 };
 
-EvtScript N(EVS_LetterPrompt_RedYoshiKid) = {
-    Call(N(LetterDelivery_Init),
-        NPC_YoshiKid_02, ANIM_YoshiKid_Red_Talk, ANIM_YoshiKid_Red_Idle,
-        ITEM_LETTER_CHAIN_YOSHI_KID, ITEM_LETTER_CHAIN_DANE_T_2,
-        MSG_CH5_0079, MSG_CH5_007A, MSG_CH5_007B, MSG_CH5_007C,
-        Ref(N(RedYoshiKidLetters)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
+LetterDelivery N(LetterDelivery_Kolorado) = {
+    .recipientID = NPC_Kolorado,
+    .recipientTalk = ANIM_Kolorado_Talk,
+    .recipientIdle = ANIM_Kolorado_Idle,
+    .msgGreeting = MSG_CH5_001D,
+    .msgCancelled = MSG_CH5_001E,
+    .msgDelivered = MSG_CH5_001F,
+    .msgRecieved = MSG_CH5_0020,
+    .letters = { ITEM_LETTER_TO_KOLORADO },
+    .reward = ITEM_STAR_PIECE,
 };
 
-s32 N(KoloradoLetters)[] = {
-    ITEM_LETTER_TO_KOLORADO,
-    ITEM_NONE
-};
-
-EvtScript N(EVS_LetterPrompt_Kolorado) = {
-    Call(N(LetterDelivery_Init),
-        NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
-        ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
-        MSG_CH5_001D, MSG_CH5_001E, MSG_CH5_001F, MSG_CH5_0020,
-        Ref(N(KoloradoLetters)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_Kolorado) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
-};
-
-s32 N(FoodItemList)[] = {
+ITEM_LIST(N(FoodItemList),
     ITEM_FRIED_SHROOM,
     ITEM_SPICY_SOUP,
     ITEM_NUTTY_CAKE,
@@ -104,9 +81,7 @@ s32 N(FoodItemList)[] = {
     ITEM_APPLE_PIE,
     ITEM_KOOPASTA,
     ITEM_KOOKY_COOKIE,
-    ITEM_YOSHI_COOKIE,
-    ITEM_NONE
-};
+    ITEM_YOSHI_COOKIE);
 
 API_CALLABLE(N(CountFoodItems)) {
     Bytecode* args = script->ptrReadPos;
@@ -171,7 +146,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Call(InterpPlayerYaw, 229, 1)
     Call(HidePlayerShadow, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     Thread
         Wait(60)
@@ -326,8 +301,8 @@ EvtScript N(EVS_NpcInteract_Yoshi_03) = {
         Call(N(CountFoodItems), LVar0)
         IfNe(LVar0, 0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_006C)
-            EVT_CHOOSE_CONSUMABLE_FROM(N(FoodItemList), 4)
-            IfLe(LVar0, 0)
+            EVT_CHOOSE_CONSUMABLE_FROM(N(FoodItemList), NPC_Yoshi_03)
+            IfLe(LVar0, ITEM_CHOICE_NONE)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_006E)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_006D)
@@ -436,10 +411,8 @@ EvtScript N(EVS_NpcInteract_YoshiKid_02) = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Red_Talk, ANIM_YoshiKid_Red_Idle, 0, MSG_CH5_0078)
     EndSwitch
-    ExecWait(N(EVS_LetterPrompt_RedYoshiKid))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    Set(LVar0, Ref(N(LetterDelivery_RedYoshiKid)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
@@ -619,46 +592,39 @@ EvtScript N(EVS_NpcInit_Raven) = {
     End
 };
 
-s32 N(VolcanoVaseList)[] = {
-    ITEM_VOLCANO_VASE,
-    -1
-};
-
 EvtScript N(EVS_NpcInteract_Kolorado) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0012)
-            ExecWait(N(EVS_LetterPrompt_Kolorado))
-            ExecWait(N(EVS_LetterReward_Kolorado))
+            Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+            ExecWait(EVS_TryLetterDelivery)
         CaseLt(STORY_CH5_GOT_JADE_RAVEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0013)
-            ExecWait(N(EVS_LetterPrompt_Kolorado))
-            ExecWait(N(EVS_LetterReward_Kolorado))
+            Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+            ExecWait(EVS_TryLetterDelivery)
         CaseLt(STORY_CH5_ZIP_LINE_READY)
-            IfEq(AF_JAN_06, false)
+            IfEq(AF_JAN03_KoloradoLocalsHint, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0014)
-                Set(AF_JAN_06, true)
+                Set(AF_JAN03_KoloradoLocalsHint, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0015)
             EndIf
-            ExecWait(N(EVS_LetterPrompt_Kolorado))
-            ExecWait(N(EVS_LetterReward_Kolorado))
+            Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+            ExecWait(EVS_TryLetterDelivery)
         CaseEq(STORY_CH5_STAR_SPRIT_DEPARTED)
             Call(FindItem, ITEM_VOLCANO_VASE, LVar0)
             IfEq(LVar0, -1)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0016)
-                ExecWait(N(EVS_LetterPrompt_Kolorado))
-                ExecWait(N(EVS_LetterReward_Kolorado))
+                Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+                ExecWait(EVS_TryLetterDelivery)
             Else
                 Call(AdjustCam, CAM_DEFAULT, Float(5.0), 0, 325, Float(20.0), Float(-7.5))
-                Set(LVar0, Ref(N(VolcanoVaseList)))
-                Set(LVar1, 15)
-                ExecWait(N(EVS_ChooseKeyItem))
+                EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_VOLCANO_VASE, NPC_Kolorado)
                 Switch(LVar0)
-                    CaseEq(-1)
+                    CaseEq(ITEM_CHOICE_CANCELED)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0017)
-                        ExecWait(N(EVS_LetterPrompt_Kolorado))
-                        ExecWait(N(EVS_LetterReward_Kolorado))
+                        Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+                        ExecWait(EVS_TryLetterDelivery)
                     CaseDefault
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0018)
                         Call(SetPlayerAnimation, ANIM_Mario1_NodYes)
@@ -675,7 +641,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
                         EVT_GIVE_REWARD(ITEM_MAGICAL_SEED4)
                         Set(GF_JAN03_Gift_MagicalSeed4, true)
                         Wait(20)
-                        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_001B)
                         Wait(10)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_001C)
@@ -713,9 +679,9 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
 };
 
 EvtScript N(EVS_NpcInteract_Sushie) = {
-    IfEq(AF_JAN_07, false)
+    IfEq(AF_JAN03_MetSushieDialogue, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 0, MSG_CH5_0058)
-        Set(AF_JAN_07, true)
+        Set(AF_JAN03_MetSushieDialogue, true)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 0, MSG_CH5_0059)
     EndIf
@@ -743,7 +709,7 @@ EvtScript N(EVS_NpcInit_Sushie) = {
     End
 };
 
-AnimID N(ExtraAnims_VillageLeader)[] = {
+AnimID N(LimitAnims_VillageLeader)[] = {
     ANIM_VillageLeader_Idle,
     ANIM_VillageLeader_IdleSad,
     ANIM_VillageLeader_Walk,
@@ -765,11 +731,11 @@ NpcData N(NpcData_VillageLeader) = {
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = YOSHI_LEADER_ANIMS,
-    .extraAnimations = N(ExtraAnims_VillageLeader),
+    .limitAnimations = N(LimitAnims_VillageLeader),
     .tattle = MSG_NpcTattle_VillageLeader,
 };
 
-AnimID N(ExtraAnims_Sushie)[] = {
+AnimID N(LimitAnims_Sushie)[] = {
     ANIM_WorldSushie_Idle,
     ANIM_WorldSushie_Run,
     ANIM_WorldSushie_Talk,
@@ -785,11 +751,11 @@ NpcData N(NpcData_Sushie) = {
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = SUSHIE_ANIMS,
-    .extraAnimations = N(ExtraAnims_Sushie),
+    .limitAnimations = N(LimitAnims_Sushie),
     .tattle = MSG_NpcTattle_Sushie,
 };
 
-AnimID N(ExtraAnims_Kolorado)[] = {
+AnimID N(LimitAnims_Kolorado)[] = {
     ANIM_Kolorado_Idle,
     ANIM_Kolorado_IdleSad,
     ANIM_Kolorado_Walk,
@@ -806,7 +772,7 @@ NpcData N(NpcData_Kolorado) = {
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = KOLORADO_ANIMS,
-    .extraAnimations = N(ExtraAnims_Kolorado),
+    .limitAnimations = N(LimitAnims_Kolorado),
     .tattle = MSG_NpcTattle_Kolorado,
 };
 
@@ -816,7 +782,7 @@ NpcData N(NpcData_Toad)[] = {
         .pos = { 275.0f, 0.0f, -70.0f },
         .yaw = 0,
         .init = &N(EVS_NpcInit_Toad),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -1017,7 +983,7 @@ NpcData N(NpcData_Toad)[] = {
     },
 };
 
-AnimID N(ExtraAnims_Raven)[] = {
+AnimID N(LimitAnims_Raven)[] = {
     ANIM_Raven_Still,
     ANIM_Raven_Idle,
     ANIM_Raven_Talk,
@@ -1034,7 +1000,7 @@ NpcData N(NpcData_Ravens)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
-        .extraAnimations = N(ExtraAnims_Raven),
+        .limitAnimations = N(LimitAnims_Raven),
         .tattle = MSG_NpcTattle_RavenA,
     },
     {

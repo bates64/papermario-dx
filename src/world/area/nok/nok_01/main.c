@@ -1,7 +1,5 @@
 #include "nok_01.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_nok_13_1) = {
     IfEq(GB_KootFavor_State, KOOT_FAVOR_STATE_2)
         Set(GF_KootFavor_LeftKoopaVillage, true)
@@ -77,7 +75,7 @@ EvtScript N(EVS_TexPan_Flowers) = {
         TEX_PAN_PARAMS_STEP(0x4000,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    12,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(     0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End
@@ -92,10 +90,10 @@ EvtScript N(EVS_Main) = {
     Call(SetModelTexVariant, MODEL_o340, LVar0)
 #endif
     Set(GF_MAP_KoopaVillage, true)
-    Set(AF_NOK01_Dialogue_RelaxedKoopa, false)
-    Set(AF_NOK01_Dialogue_Bobomb_01_Crisis, false)
-    Set(AF_NOK01_Dialogue_Bobomb_02, false)
-    Set(AF_NOK_0E, false)
+    Set(AF_NOK01_ToggleDialogue_RelaxedKoopa, false)
+    Set(AF_NOK01_ToggleDialogue_Bobomb1Crisis, false)
+    Set(AF_NOK01_ToggleDialogue_Bobomb2, false)
+    Set(AF_NOK01_RecievedBobombSalute, false)
     Set(GF_NOK01_Bush4_KoopaLeaf, false)
     IfGe(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Set(GF_NOK01_RecoveredShellA, true)
@@ -116,7 +114,7 @@ EvtScript N(EVS_Main) = {
     Wait(1)
     ExecWait(N(EVS_SetupFoliage))
     Exec(N(EVS_SetupMusic))
-    Set(AB_NOK_0, 0)
+    Set(AB_NOK01_RadioStation, 0)
     Exec(N(EVS_EnterMap))
     Return
     End

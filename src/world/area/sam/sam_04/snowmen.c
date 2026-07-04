@@ -2,8 +2,6 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "common/SetAngleClamped.inc.c"
-
 s32 N(CloneSet1)[] = {
     CLONED_MODEL(0), CLONED_MODEL(1), CLONED_MODEL(2), CLONED_MODEL(3)
 };
@@ -154,19 +152,19 @@ EvtScript N(EVS_Scene_SnowmenSpeak) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(ShowMessageAtScreenPos, MSG_CH7_011D, 160, 40)
-    Call(SetNpcFlagBits, NPC_Snowman_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Snowman_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Snowman_03, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Snowman_04, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Snowman_05, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Snowman_06, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Snowman_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Snowman_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Snowman_03, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Snowman_04, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Snowman_05, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Snowman_06, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Wait(1)
     Thread
         Wait(22 * DT)
         Call(DisablePlayerPhysics, true)
         Call(SetPlayerAnimation, ANIM_Mario1_Flail)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
-        Call(N(SetAngleClamped), LVar3, LVar0, LVar2, 0, 0)
+        Call(GetFloatAngleClamped, LVar3, LVar0, LVar2, 0, 0)
         Call(GetDist2D, LVar4, LVar0, LVar2, 0, 0)
         SetF(LVar5, LVar4)
         DivF(LVar5, Float(5.0))
@@ -190,7 +188,7 @@ EvtScript N(EVS_Scene_SnowmenSpeak) = {
     EndThread
     Thread
         Wait(110 * DT)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_WALK)
         Call(SetNpcJumpscale, NPC_PARTNER, Float(0.0))
         Call(NpcJump1, NPC_PARTNER, 50, 0, 0, 22)
@@ -307,12 +305,12 @@ EvtScript N(EVS_Scene_SnowmenSpeak) = {
     Call(UpdateColliderTransform, COLLIDER_o78)
     Call(UpdateColliderTransform, COLLIDER_o79)
     Call(UpdateColliderTransform, COLLIDER_o80)
-    Call(SetNpcFlagBits, NPC_Snowman_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-    Call(SetNpcFlagBits, NPC_Snowman_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-    Call(SetNpcFlagBits, NPC_Snowman_03, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-    Call(SetNpcFlagBits, NPC_Snowman_04, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-    Call(SetNpcFlagBits, NPC_Snowman_05, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-    Call(SetNpcFlagBits, NPC_Snowman_06, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Snowman_01, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Snowman_02, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Snowman_03, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Snowman_04, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Snowman_05, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Snowman_06, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(BindNpcInteract, NPC_Snowman_01, nullptr)
     Call(BindNpcInteract, NPC_Snowman_02, nullptr)
     Call(BindNpcInteract, NPC_Snowman_03, nullptr)

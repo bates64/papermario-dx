@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_20.h
 /// @brief Goomba Region - Mario's House
 
@@ -24,14 +26,14 @@ enum {
 };
 
 enum {
-    MV_RecordsDataPtr       = MapVar(10),
+    MV_RecordsDataPtr           = MapVar(10),
 };
 
 enum {
-    MF_LuigiWaiting         = MapFlag(10),
-    MF_ReadyForPlayerEntry  = MapFlag(11),
-    MF_Unk_0C               = MapFlag(12),
-    MF_LuigiInBasement      = MapFlag(13),
+    MF_LuigiWaiting             = MapFlag(10),
+    MF_ReadyForPlayerEntry      = MapFlag(11),
+    MF_HouseInteriorVisible     = MapFlag(12),
+    MF_LuigiInBasement          = MapFlag(13),
 };
 
 #define NAMESPACE kmr_20
@@ -57,5 +59,6 @@ extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(SceneNPCs);
 extern NpcGroupList N(DefaultNPCs);
 
-API_CALLABLE(N(func_80241C9C_8EDABC));
+API_CALLABLE(N(HideWorldOutsideMariosHouse));
+API_CALLABLE(N(Pipe_GetEntryPos));
 void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 palette, s32 fading, s32 bgAlpha, s32 frameAlpha);

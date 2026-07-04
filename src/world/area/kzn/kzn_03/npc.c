@@ -1,22 +1,21 @@
 #include "kzn_03.h"
 
-#include "world/common/enemy/SpikeTop.inc.c"
-#include "world/common/enemy/PutridPiranha.inc.c"
-#include "world/common/npc/Dummy.inc.c"
-#include "world/common/npc/Kolorado.inc.c"
+#include "world/common/enemy/SpikeTop/wander.inc.c"
+#include "world/common/enemy/PutridPiranha/idle.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
 
-#include "world/common/complete/LetterDelivery.inc.c"
-
-s32 N(LetterList)[] = {
-    ITEM_LETTER_TO_KOLORADO,
-    ITEM_NONE
+LetterDelivery N(LetterDelivery_Kolorado) = {
+    .recipientID = NPC_Kolorado,
+    .recipientTalk = ANIM_Kolorado_Talk,
+    .recipientIdle = ANIM_Kolorado_Idle,
+    .msgGreeting = MSG_CH5_00E4,
+    .msgCancelled = MSG_CH5_00E5,
+    .msgDelivered = MSG_CH5_00E6,
+    .msgRecieved = MSG_CH5_00E7,
+    .letters = { ITEM_LETTER_TO_KOLORADO },
+    .reward = ITEM_STAR_PIECE,
 };
-
-EVT_LETTER_PROMPT(Kolorado, NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
-    MSG_CH5_00E4, MSG_CH5_00E5, MSG_CH5_00E6, MSG_CH5_00E7,
-    ITEM_LETTER_TO_KOLORADO, N(LetterList));
-
-EVT_LETTER_REWARD(Kolorado);
 
 EvtScript N(EVS_NpcIdle_Kolorado) = {
     Call(SetNpcSpeed, NPC_SELF, Float(2.0))
@@ -55,7 +54,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Idle)
     Call(NpcFacePlayer, NPC_SELF, 0)
     Wait(10)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetSelfVar, 0, 1)
     Thread
         Call(GetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
@@ -72,14 +71,14 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Shout, ANIM_Kolorado_Panic, 512, MSG_CH5_00F3)
     Call(SetSelfVar, 0, 0)
     Wait(18)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInteract_Kolorado) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     IfLt(GB_StoryProgress, STORY_CH5_SMASHED_ULTRA_BLOCK)
         IfEq(GF_KZN03_SpokeWithKolorado, false)
             Call(AdjustCam, CAM_DEFAULT, Float(3.3), 0, 350, Float(15.0), Float(-7.0))
@@ -107,8 +106,9 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
         Call(SetSelfVar, 0, 0)
         Wait(18)
     EndIf
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-    EVT_LETTER_CHECK(Kolorado)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
+    Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
@@ -209,7 +209,7 @@ NpcData N(NpcData_SpikeTop_01) = {
             .detectSize = { 240, 115 },
         }
     },
-    .settings = &N(NpcSettings_SpikeTop),
+    .settings = &N(NpcSettings_SpikeTop_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKE_TOP_DROPS,
     .animations = SPIKE_TOP_ANIMS,
@@ -232,7 +232,7 @@ NpcData N(NpcData_SpikeTop_02) = {
             .detectSize = { 240, 115 },
         }
     },
-    .settings = &N(NpcSettings_SpikeTop),
+    .settings = &N(NpcSettings_SpikeTop_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKE_TOP_DROPS,
     .animations = SPIKE_TOP_ANIMS,
@@ -255,7 +255,7 @@ NpcData N(NpcData_SpikeTop_03) = {
             .detectSize = { 180, 95 },
         }
     },
-    .settings = &N(NpcSettings_SpikeTop),
+    .settings = &N(NpcSettings_SpikeTop_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKE_TOP_DROPS,
     .animations = SPIKE_TOP_ANIMS,

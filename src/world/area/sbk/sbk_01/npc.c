@@ -1,7 +1,7 @@
 #include "sbk_01.h"
 #include "sprite/npc/Pokey.h"
 
-#include "world/common/enemy/Pokey.inc.c"
+#include "world/common/enemy/Pokey/wander.inc.c"
 
 NpcData N(NpcData_Pokey_01) = {
     .id = NPC_Pokey_01,
@@ -19,7 +19,7 @@ NpcData N(NpcData_Pokey_01) = {
             .detectSize = { 1000 },
         }
     },
-    .settings = &N(NpcSettings_Pokey),
+    .settings = &N(NpcSettings_Pokey_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = POKEY_DROPS,
     .animations = POKEY_ANIMS,
@@ -42,7 +42,7 @@ NpcData N(NpcData_Pokey_02) = {
             .detectSize = { 1000 },
         }
     },
-    .settings = &N(NpcSettings_Pokey),
+    .settings = &N(NpcSettings_Pokey_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = POKEY_DROPS,
     .animations = POKEY_ANIMS,

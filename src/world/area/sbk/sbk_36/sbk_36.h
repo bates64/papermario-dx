@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sbk_36.h
 /// @brief Dry Dry Desert - E3 Outside Outpost
 

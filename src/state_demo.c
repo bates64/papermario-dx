@@ -7,10 +7,10 @@
 typedef struct DemoSceneData {
     /* 0x0 */ s16 sceneType;
     /* 0x2 */ u16 index; // entryID for WORLD, battle index for BATTLE
-    /* 0x4 */ char unk_4;
+    /* 0x4 */ PAD(1);
     /* 0x5 */ s8 partnerID;
     /* 0x6 */ s8 storyProgress;
-    /* 0x7 */ char unk_7;
+    /* 0x7 */ PAD(1);
     /* 0x8 */ char* mapName;
 } DemoSceneData; // size = 0xC;
 

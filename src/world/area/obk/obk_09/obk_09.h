@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file obk_09.h
 /// @brief Boo's Mansion - Lady Bow's Room
 
@@ -29,8 +31,3 @@ extern EvtScript N(EVS_Scene_Epilogue);
 extern EvtScript N(EVS_Scene_MeetBow);
 extern NpcGroupList N(DefaultNPCs);
 extern NpcGroupList N(EpilogueNPCs);
-
-API_CALLABLE(N(LoadPartyImage));
-
-//TODO awkward
-extern const char NEXT_EPILOGUE_MAP[];

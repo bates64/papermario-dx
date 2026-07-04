@@ -2,7 +2,9 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/ToadGuard/idle.inc.c"
+#include "world/common/npc/ToadMinister/idle.inc.c"
 
 EvtScript N(EVS_Scene_FallIntoCell) = {
     Call(UseSettingsFrom, CAM_DEFAULT, 1042, 30, -496)
@@ -16,10 +18,10 @@ EvtScript N(EVS_Scene_FallIntoCell) = {
     Call(InterpPlayerYaw, 270, 0)
     Wait(60)
     Call(PartnerIsFlying, LVar0)
-    IfEq(LVar0, true)
+    IfEq(LVar0, false)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, true)
     Else
-        Call(func_802CF56C, 1)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_HOLD)
     EndIf
     Call(PlaySoundAtPlayer, SOUND_PLAYER_LONG_FALL, SOUND_SPACE_DEFAULT)
     Call(SetPlayerAnimation, ANIM_MarioW2_PanicStill)
@@ -57,7 +59,7 @@ EvtScript N(EVS_Scene_FallIntoCell) = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(DisablePlayerInput, false)
     Call(ClearPartnerMoveHistory, NPC_PARTNER)
-    Call(func_802CF56C, 0)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
     Return
     End
 };
@@ -70,7 +72,7 @@ EvtScript N(EVS_BlastWall) = {
     Call(WaitForPlayerInputEnabled)
     Call(DisablePlayerInput, true)
     Wait(80 * DT)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Wait(5 * DT)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH8_0016)
     Call(EnablePartnerAI)
@@ -84,13 +86,13 @@ EvtScript N(EVS_BlastWall) = {
 EvtScript N(EVS_NpcInteract_Toad_01) = {
     Switch(GF_KPA17_BombedWall)
         CaseEq(0)
-            Switch(AB_KPA17_Toad1_Dialogue)
+            Switch(AB_KPA17_DialogueState_Toad1)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_CH8_0009)
-                    Set(AB_KPA17_Toad1_Dialogue, 1)
+                    Set(AB_KPA17_DialogueState_Toad1, 1)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_CH8_000A)
-                    Set(AB_KPA17_Toad1_Dialogue, 0)
+                    Set(AB_KPA17_DialogueState_Toad1, 0)
             EndSwitch
         CaseEq(1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_CH8_000B)
@@ -102,13 +104,13 @@ EvtScript N(EVS_NpcInteract_Toad_01) = {
 EvtScript N(EVS_NpcInteract_Toad_02) = {
     Switch(GF_KPA17_BombedWall)
         CaseEq(0)
-            Switch(AB_KPA17_Toad2_Dialogue)
+            Switch(AB_KPA17_DialogueState_Toad2)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Blue_Talk, ANIM_Toad_Blue_Idle, 0, MSG_CH8_000C)
-                    Set(AB_KPA17_Toad2_Dialogue, 1)
+                    Set(AB_KPA17_DialogueState_Toad2, 1)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Blue_Talk, ANIM_Toad_Blue_Idle, 0, MSG_CH8_000D)
-                    Set(AB_KPA17_Toad2_Dialogue, 0)
+                    Set(AB_KPA17_DialogueState_Toad2, 0)
             EndSwitch
         CaseEq(1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Blue_Talk, ANIM_Toad_Blue_Idle, 0, MSG_CH8_000E)
@@ -120,16 +122,16 @@ EvtScript N(EVS_NpcInteract_Toad_02) = {
 EvtScript N(EVS_NpcInteract_ToadGuard) = {
     Switch(GF_KPA17_BombedWall)
         CaseEq(0)
-            Switch(AB_KPA17_Toad3_Dialogue)
+            Switch(AB_KPA17_DialogueState_ToadGuard)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Yellow_Talk, ANIM_Toad_Yellow_Idle, 0, MSG_CH8_000F)
-                    Set(AB_KPA17_Toad3_Dialogue, 1)
+                    Set(AB_KPA17_DialogueState_ToadGuard, 1)
                 CaseEq(1)
-                    Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Yellow_Talk, ANIM_Toad_Yellow_Idle, 0, MSG_CH8_0010)
-                    Set(AB_KPA17_Toad3_Dialogue, 0)
+                    Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Yellow_Talk, ANIM_ToadGuard_Yellow_Idle, 0, MSG_CH8_0010)
+                    Set(AB_KPA17_DialogueState_ToadGuard, 0)
             EndSwitch
         CaseEq(1)
-            Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Yellow_Talk, ANIM_Toad_Yellow_Idle, 0, MSG_CH8_0011)
+            Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Yellow_Talk, ANIM_ToadGuard_Yellow_Idle, 0, MSG_CH8_0011)
     EndSwitch
     Return
     End
@@ -138,16 +140,16 @@ EvtScript N(EVS_NpcInteract_ToadGuard) = {
 EvtScript N(EVS_NpcInteract_ToadMinister) = {
     Switch(GF_KPA17_BombedWall)
         CaseEq(0)
-            Switch(AB_KPA17_Toad4_Dialogue)
+            Switch(AB_KPA17_DialogueState_ToadMinister)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_ToadMinister_Talk, ANIM_ToadMinister_Idle, 0, MSG_CH8_0012)
-                    Set(AB_KPA17_Toad4_Dialogue, 1)
+                    Set(AB_KPA17_DialogueState_ToadMinister, 1)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_ToadMinister_Talk, ANIM_ToadMinister_Idle, 0, MSG_CH8_0013)
-                    Set(AB_KPA17_Toad4_Dialogue, 2)
+                    Set(AB_KPA17_DialogueState_ToadMinister, 2)
                 CaseEq(2)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_ToadMinister_Talk, ANIM_ToadMinister_Idle, 0, MSG_CH8_0014)
-                    Set(AB_KPA17_Toad4_Dialogue, 1)
+                    Set(AB_KPA17_DialogueState_ToadMinister, 1)
             EndSwitch
         CaseEq(1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ToadMinister_Talk, ANIM_ToadMinister_Idle, 0, MSG_CH8_0015)
@@ -194,7 +196,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_Toad_01),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -205,7 +207,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_Toad_02),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
@@ -216,7 +218,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_ToadGuard),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_ToadGuard),
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_YELLOW_ANIMS,
@@ -227,7 +229,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_ToadMinister),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_ToadMinister),
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_MINISTER_ANIMS,

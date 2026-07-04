@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sbk_33.h
 /// @brief Dry Dry Desert - Center (Tweester C)
 

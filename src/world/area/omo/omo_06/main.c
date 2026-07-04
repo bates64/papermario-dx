@@ -54,7 +54,7 @@ EvtScript N(EVS_Main) = {
     ExecWait(N(EVS_MakeEntities))
     ExecWait(N(EVS_SetupGizmos))
     ExecWait(N(EVS_SetupMusic))
-    ExecWait(N(EVS_80244F40))
+    ExecWait(N(EVS_SetupTrain))
     Exec(N(EVS_EnterMap))
     Wait(1)
     Return

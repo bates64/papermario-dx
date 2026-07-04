@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mac_03.h
 /// @brief Toad Town - Station District
 
@@ -47,9 +49,9 @@ enum {
     MF_TrainArrivePlayerDisembark   = MapFlag(3),
     MF_TrainMoving                  = MapFlag(4),
     MF_TrainReverseDir              = MapFlag(5),
-    MF_Unk_06                       = MapFlag(6),
-    MF_Unk_07                       = MapFlag(7),
-    MF_Unk_08                       = MapFlag(8),
+    MF_CanUseOinkMachine            = MapFlag(6),
+    MF_OinkCapsuleOpened            = MapFlag(7),
+    MF_HeardOinkExplanation         = MapFlag(8),
 };
 
 enum {

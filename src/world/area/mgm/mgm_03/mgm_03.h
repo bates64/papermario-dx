@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mgm_03.h
 /// @brief Minigame - Large empty test room
 

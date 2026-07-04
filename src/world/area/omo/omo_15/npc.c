@@ -1,6 +1,6 @@
 #include "omo_15.h"
 
-#include "world/common/enemy/ShyGuy_Stationary.inc.c"
+#include "world/common/enemy/ShyGuy/idle.inc.c"
 
 enum {
     MANAGER_IDLE_STATE      = 0,
@@ -29,13 +29,13 @@ EvtScript N(EVS_Scene_MeetingGeneralGuy) = {
         IfNe(LVar0, PARTNER_NONE)
             Call(InterruptUsePartner)
             Wait(30 * DT)
-            Call(func_802D2C14, 1)
-            Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetPartnerForcedFollowMode, 1)
+            Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Wait(45 * DT)
-            Call(func_802D2C14, 0)
+            Call(SetPartnerForcedFollowMode, 0)
         EndIf
     EndThread
-    Call(SpeakToPlayer, NPC_GeneralGuy, ANIM_GeneralGuy_Anim0A, ANIM_GeneralGuy_Anim02, 0, MSG_CH4_005F)
+    Call(SpeakToPlayer, NPC_GeneralGuy, ANIM_GeneralGuy_Whistle, ANIM_GeneralGuy_Idle, 0, MSG_CH4_005F)
     Wait(10 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 250, -50, 10)
     Call(SetPanTarget, CAM_DEFAULT, 250, -50, 10)
@@ -43,28 +43,28 @@ EvtScript N(EVS_Scene_MeetingGeneralGuy) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(20 * DT)
-    Call(SpeakToPlayer, NPC_GeneralGuy, ANIM_GeneralGuy_Anim0A, ANIM_GeneralGuy_Anim02, 0, MSG_CH4_0060)
+    Call(SpeakToPlayer, NPC_GeneralGuy, ANIM_GeneralGuy_Whistle, ANIM_GeneralGuy_Idle, 0, MSG_CH4_0060)
     Wait(20 * DT)
-    Call(SpeakToPlayer, NPC_GeneralGuy, ANIM_GeneralGuy_Anim0A, ANIM_GeneralGuy_Anim02, 0, MSG_CH4_0061)
+    Call(SpeakToPlayer, NPC_GeneralGuy, ANIM_GeneralGuy_Whistle, ANIM_GeneralGuy_Idle, 0, MSG_CH4_0061)
     Wait(20 * DT)
-    Call(SpeakToPlayer, NPC_GeneralGuy, ANIM_GeneralGuy_Anim0A, ANIM_GeneralGuy_Anim02, 0, MSG_CH4_0062)
+    Call(SpeakToPlayer, NPC_GeneralGuy, ANIM_GeneralGuy_Whistle, ANIM_GeneralGuy_Idle, 0, MSG_CH4_0062)
     Call(SetPlayerSpeed, Float(3.0 / DT))
     Call(PlayerMoveTo, -200, 0, 0)
     Set(LVar0, NPC_ShyGuy_01)
     Loop(9)
-        Call(SetNpcAnimation, LVar0, ANIM_ShyGuy_Red_Anim02)
+        Call(SetNpcAnimation, LVar0, ANIM_ShyGuy_Red_Walk)
         Add(LVar0, 1)
     EndLoop
-    Call(SetNpcAnimation, NPC_GeneralGuy, ANIM_GeneralGuy_Anim0C)
+    Call(SetNpcAnimation, NPC_GeneralGuy, ANIM_GeneralGuy_Talk)
     Call(ShowMessageAtScreenPos, MSG_CH4_0063, 160, 40)
-    Call(SetNpcAnimation, NPC_GeneralGuy, ANIM_GeneralGuy_Anim02)
+    Call(SetNpcAnimation, NPC_GeneralGuy, ANIM_GeneralGuy_Idle)
     Wait(20 * DT)
     Set(LVar0, NPC_ShyGuy_01)
     Loop(9)
-        Call(SetNpcAnimation, LVar0, ANIM_ShyGuy_Red_Anim01)
+        Call(SetNpcAnimation, LVar0, ANIM_ShyGuy_Red_Idle)
         Add(LVar0, 1)
     EndLoop
-    Call(SpeakToPlayer, NPC_GeneralGuy, ANIM_GeneralGuy_Anim02, ANIM_GeneralGuy_Anim0A, 0, MSG_CH4_0064)
+    Call(SpeakToPlayer, NPC_GeneralGuy, ANIM_GeneralGuy_Idle, ANIM_GeneralGuy_Whistle, 0, MSG_CH4_0064)
     Thread
         Wait(10 * DT)
         Call(PlaySound, SOUND_LOOP_SHY_GUY_CROWD_2)
@@ -100,7 +100,7 @@ EvtScript N(EVS_Scene_MeetingGeneralGuy) = {
         EndIf
     Call(GetCurrentPartnerID, LVar0)
     IfEq(LVar0, PARTNER_WATT)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SpeakToPlayer, NPC_PARTNER, PARTNER_ANIM_TALK, PARTNER_ANIM_IDLE, 0, MSG_CH4_0075)
         Call(EnablePartnerAI)
     EndIf
@@ -250,7 +250,7 @@ EvtScript N(EVS_NpcIdle_ShyGuy) = {
                     Loop(LVar0)
                         BufRead3(LVar1, LVar2, LVar3)
                     EndLoop
-                    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim03)
+                    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
                     Call(SetNpcSpeed, NPC_SELF, Float(3.0))
                     Call(NpcMoveTo, NPC_SELF, LVar1, LVar2, LVar3)
                 EndThread
@@ -278,7 +278,7 @@ EvtScript N(EVS_BossDefeated_RunAway) = {
         UseBuf(Ref(N(GeneralGuyFleeScripts)))
         BufRead1(LVar1)
         UseBuf(LVar1)
-        Call(SetNpcAnimation, LVar9, ANIM_GeneralGuy_Anim0E)
+        Call(SetNpcAnimation, LVar9, ANIM_GeneralGuy_Panic)
         Loop(0)
             BufRead1(LVar2)
             Switch(LVar2)
@@ -310,7 +310,7 @@ EvtScript N(EVS_BossDefeated_RunAway) = {
             Switch(LVar2)
                 CaseEq(op_CS_MOVE)
                     BufRead2(LVar3, LVar4)
-                    Call(SetNpcAnimation, LVar9, ANIM_ShyGuy_Red_Anim04)
+                    Call(SetNpcAnimation, LVar9, ANIM_ShyGuy_Red_Dash)
                     Call(SetNpcSpeed, LVar9, Float(8.0))
                     Call(NpcMoveTo, LVar9, LVar3, LVar4, 0)
                 CaseEq(op_CS_JUMP)
@@ -331,7 +331,7 @@ EvtScript N(EVS_BossDefeated_RunAway) = {
                     Thread
                         Wait(10)
                         Call(SetNpcRotation, LVar9, 0, 0, 0)
-                        Call(SetNpcAnimation, LVar9, ANIM_ShyGuy_Red_Anim10)
+                        Call(SetNpcAnimation, LVar9, ANIM_ShyGuy_Red_Crashed)
                         Call(PlayerFaceNpc, LVar9, 3)
                         Call(NpcFaceNpc, NPC_PARTNER, LVar9, 3)
                     EndThread
@@ -345,7 +345,7 @@ EvtScript N(EVS_BossDefeated_RunAway) = {
                     EndLoop
                     Wait(6)
                     Call(SetNpcRotationPivot, LVar9, 0)
-                    Call(SetNpcAnimation, LVar9, ANIM_ShyGuy_Red_Anim01)
+                    Call(SetNpcAnimation, LVar9, ANIM_ShyGuy_Red_Idle)
                     Call(NpcJump0, LVar9, -230, 0, 63, 10)
                     Call(InterpNpcYaw, LVar9, 90, 0)
                     Wait(20)
@@ -443,26 +443,26 @@ NpcData N(NpcData_GeneralGuy)[] = {
         .pos = { 187.0f, 38.0f, 20.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_GeneralGuy),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_GRAVITY | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = {
-            .idle   = ANIM_GeneralGuy_Anim02,
-            .walk   = ANIM_GeneralGuy_Anim02,
-            .run    = ANIM_GeneralGuy_Anim02,
-            .chase  = ANIM_GeneralGuy_Anim02,
-            .anim_4 = ANIM_GeneralGuy_Anim02,
-            .anim_5 = ANIM_GeneralGuy_Anim02,
-            .death  = ANIM_GeneralGuy_Anim02,
-            .hit    = ANIM_GeneralGuy_Anim02,
-            .anim_8 = ANIM_GeneralGuy_Anim02,
-            .anim_9 = ANIM_GeneralGuy_Anim02,
-            .anim_A = ANIM_GeneralGuy_Anim02,
-            .anim_B = ANIM_GeneralGuy_Anim02,
-            .anim_C = ANIM_GeneralGuy_Anim02,
-            .anim_D = ANIM_GeneralGuy_Anim02,
-            .anim_E = ANIM_GeneralGuy_Anim02,
-            .anim_F = ANIM_GeneralGuy_Anim02,
+            .idle   = ANIM_GeneralGuy_Idle,
+            .walk   = ANIM_GeneralGuy_Idle,
+            .run    = ANIM_GeneralGuy_Idle,
+            .chase  = ANIM_GeneralGuy_Idle,
+            .alert  = ANIM_GeneralGuy_Idle,
+            .unused = ANIM_GeneralGuy_Idle,
+            .death  = ANIM_GeneralGuy_Idle,
+            .hit    = ANIM_GeneralGuy_Idle,
+            .anim_8 = ANIM_GeneralGuy_Idle,
+            .anim_9 = ANIM_GeneralGuy_Idle,
+            .anim_A = ANIM_GeneralGuy_Idle,
+            .anim_B = ANIM_GeneralGuy_Idle,
+            .anim_C = ANIM_GeneralGuy_Idle,
+            .anim_D = ANIM_GeneralGuy_Idle,
+            .anim_E = ANIM_GeneralGuy_Idle,
+            .anim_F = ANIM_GeneralGuy_Idle,
         },
     },
     {
@@ -470,7 +470,7 @@ NpcData N(NpcData_GeneralGuy)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_GRAVITY | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -480,7 +480,7 @@ NpcData N(NpcData_GeneralGuy)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_GRAVITY | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -490,7 +490,7 @@ NpcData N(NpcData_GeneralGuy)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_GRAVITY | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -500,7 +500,7 @@ NpcData N(NpcData_GeneralGuy)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_GRAVITY | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -510,7 +510,7 @@ NpcData N(NpcData_GeneralGuy)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_GRAVITY | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -520,7 +520,7 @@ NpcData N(NpcData_GeneralGuy)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_GRAVITY | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -530,7 +530,7 @@ NpcData N(NpcData_GeneralGuy)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_GRAVITY | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -540,7 +540,7 @@ NpcData N(NpcData_GeneralGuy)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_GRAVITY | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -550,7 +550,7 @@ NpcData N(NpcData_GeneralGuy)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_GRAVITY | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,

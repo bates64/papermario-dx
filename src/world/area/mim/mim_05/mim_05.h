@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mim_05.h
 /// @brief Forever Forest - Mushrooms (HP Plus)
 

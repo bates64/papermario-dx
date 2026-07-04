@@ -2,45 +2,11 @@
 #include "sprite.h"
 #include "include_asset.h"
 
-NpcSettings N(NpcSettings_Monstar) = {
-    .height = 150,
-    .radius = 150,
-    .level = ACTOR_LEVEL_NONE,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
+#include "world/common/npc/Monstar/idle.inc.c"
+#include "world/common/npc/Twink/idle.inc.c"
 
-#include "world/common/npc/Twink.inc.c"
-
-#include "world/common/enemy/Gulpit.inc.c"
-#include "world/common/enemy/FrostPiranha.inc.c"
-
-EvtScript N(EVS_NpcAI_Monstar) = {
-    Label(0)
-        Call(GetSelfVar, 0, LVar0)
-        Wait(1)
-        IfEq(LVar0, 0)
-            Goto(0)
-        EndIf
-    Call(StartBossBattle, SONG_SPECIAL_BATTLE)
-    Return
-    End
-};
-
-extern EvtScript N(EVS_NpcAux_Monstar);
-
-EvtScript N(EVS_NpcDefeat_Monstar) = {
-    Call(GetBattleOutcome, LVar0)
-    Switch(LVar0)
-        CaseEq(OUTCOME_PLAYER_WON)
-            Call(SetNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Monstar)))
-            ExecWait(N(EVS_Scene_MonstarDefeated))
-        CaseEq(OUTCOME_PLAYER_FLED)
-    EndSwitch
-    Call(ClearDefeatedEnemies)
-    Return
-    End
-};
+#include "world/common/enemy/Gulpit/wander.inc.c"
+#include "world/common/enemy/FrostPiranha/idle.inc.c"
 
 INCLUDE_IMG("world/area/sam/sam_05/monstar.png", sam_05_monstar_png);
 INCLUDE_IMG("world/area/sam/sam_05/monstar_blank1.png", D_80242970);
@@ -79,7 +45,7 @@ API_CALLABLE(N(UpdateMonstarSpriteEffects)) {
         return ApiStatus_BLOCK;
     }
 
-    set_npc_imgfx_comp(npc->spriteInstanceID, 0, IMGFX_ALLOC_COLOR_BUF, 20, 0, 0, 255, 0);
+    set_npc_imgfx_comp(npc->spriteInstanceID, 0, IMGFX_ALLOC_COLOR_BUF, RGBA_BUF_SIZE, 0, 0, 255, 0);
     script->functionTemp[0] += 10;
     if (script->functionTemp[0] >= 360) {
         script->functionTemp[0] %= 360;
@@ -116,8 +82,33 @@ API_CALLABLE(N(CheckSkipInput)) {
     }
 }
 
+EvtScript N(EVS_NpcAI_Monstar) = {
+    Label(0)
+        Call(GetSelfVar, 0, LVar0)
+        Wait(1)
+        IfEq(LVar0, 0)
+            Goto(0)
+        EndIf
+    Call(StartBossBattle, SONG_SPECIAL_BATTLE)
+    Return
+    End
+};
+
 EvtScript N(EVS_NpcAux_Monstar) = {
     Call(N(UpdateMonstarSpriteEffects))
+    Return
+    End
+};
+
+EvtScript N(EVS_NpcDefeat_Monstar) = {
+    Call(GetBattleOutcome, LVar0)
+    Switch(LVar0)
+        CaseEq(OUTCOME_PLAYER_WON)
+            Call(SetNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Monstar)))
+            ExecWait(N(EVS_Scene_MonstarDefeated))
+        CaseEq(OUTCOME_PLAYER_FLED)
+    EndSwitch
+    Call(ClearDefeatedEnemies)
     Return
     End
 };
@@ -145,7 +136,7 @@ EvtScript N(EVS_NpcInit_StarKid) = {
     End
 };
 
-AnimID N(ExtraAnims_Monstar)[] = {
+AnimID N(LimitAnims_Monstar)[] = {
     ANIM_Monstar_Still,
     ANIM_Monstar_Idle1,
     ANIM_Monstar_Hurt,
@@ -165,28 +156,11 @@ NpcData N(NpcData_Monstar) = {
     .settings = &N(NpcSettings_Monstar),
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Monstar_Idle1,
-        .walk   = ANIM_Monstar_Idle1,
-        .run    = ANIM_Monstar_Idle1,
-        .chase  = ANIM_Monstar_Idle1,
-        .anim_4 = ANIM_Monstar_Idle1,
-        .anim_5 = ANIM_Monstar_Idle1,
-        .death  = ANIM_Monstar_Idle1,
-        .hit    = ANIM_Monstar_Idle1,
-        .anim_8 = ANIM_Monstar_Idle1,
-        .anim_9 = ANIM_Monstar_Idle1,
-        .anim_A = ANIM_Monstar_Idle1,
-        .anim_B = ANIM_Monstar_Idle1,
-        .anim_C = ANIM_Monstar_Idle1,
-        .anim_D = ANIM_Monstar_Idle1,
-        .anim_E = ANIM_Monstar_Idle1,
-        .anim_F = ANIM_Monstar_Idle1,
-    },
-    .extraAnimations = N(ExtraAnims_Monstar),
+    .animations = MONSTAR_ANIMS,
+    .limitAnimations = N(LimitAnims_Monstar),
 };
 
-AnimID N(ExtraAnims_StarKid)[] = {
+AnimID N(LimitAnims_StarKid)[] = {
     ANIM_Twink_Idle,
     ANIM_Twink_Fly,
     ANIM_Twink_Angry,
@@ -204,7 +178,7 @@ NpcData N(NpcData_StarKids)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_StarKid),
+        .limitAnimations = N(LimitAnims_StarKid),
     },
     {
         .id = NPC_StarKid_02,
@@ -215,7 +189,7 @@ NpcData N(NpcData_StarKids)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_StarKid),
+        .limitAnimations = N(LimitAnims_StarKid),
     },
     {
         .id = NPC_StarKid_03,
@@ -226,7 +200,7 @@ NpcData N(NpcData_StarKids)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_StarKid),
+        .limitAnimations = N(LimitAnims_StarKid),
     },
     {
         .id = NPC_StarKid_04,
@@ -237,7 +211,7 @@ NpcData N(NpcData_StarKids)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_StarKid),
+        .limitAnimations = N(LimitAnims_StarKid),
     },
     {
         .id = NPC_StarKid_05,
@@ -248,7 +222,7 @@ NpcData N(NpcData_StarKids)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_StarKid),
+        .limitAnimations = N(LimitAnims_StarKid),
     },
     {
         .id = NPC_StarKid_06,
@@ -259,7 +233,7 @@ NpcData N(NpcData_StarKids)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_StarKid),
+        .limitAnimations = N(LimitAnims_StarKid),
     },
     {
         .id = NPC_StarKid_07,
@@ -270,7 +244,7 @@ NpcData N(NpcData_StarKids)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_StarKid),
+        .limitAnimations = N(LimitAnims_StarKid),
     },
     {
         .id = NPC_StarKid_08,
@@ -281,7 +255,7 @@ NpcData N(NpcData_StarKids)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_StarKid),
+        .limitAnimations = N(LimitAnims_StarKid),
     },
     {
         .id = NPC_StarKid_09,
@@ -292,7 +266,7 @@ NpcData N(NpcData_StarKids)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_StarKid),
+        .limitAnimations = N(LimitAnims_StarKid),
     },
     {
         .id = NPC_StarKid_10,
@@ -303,7 +277,7 @@ NpcData N(NpcData_StarKids)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_StarKid),
+        .limitAnimations = N(LimitAnims_StarKid),
     },
     {
         .id = NPC_StarKid_11,
@@ -314,7 +288,7 @@ NpcData N(NpcData_StarKids)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_StarKid),
+        .limitAnimations = N(LimitAnims_StarKid),
     },
     {
         .id = NPC_StarKid_12,
@@ -325,7 +299,7 @@ NpcData N(NpcData_StarKids)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_StarKid),
+        .limitAnimations = N(LimitAnims_StarKid),
     },
     {
         .id = NPC_StarKid_13,
@@ -336,7 +310,7 @@ NpcData N(NpcData_StarKids)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_StarKid),
+        .limitAnimations = N(LimitAnims_StarKid),
     },
     {
         .id = NPC_StarKid_14,
@@ -347,7 +321,7 @@ NpcData N(NpcData_StarKids)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_StarKid),
+        .limitAnimations = N(LimitAnims_StarKid),
     },
     {
         .id = NPC_StarKid_15,
@@ -358,7 +332,7 @@ NpcData N(NpcData_StarKids)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_StarKid),
+        .limitAnimations = N(LimitAnims_StarKid),
     },
     {
         .id = NPC_StarKid_16,
@@ -369,7 +343,7 @@ NpcData N(NpcData_StarKids)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_StarKid),
+        .limitAnimations = N(LimitAnims_StarKid),
     },
 };
 
@@ -390,11 +364,11 @@ NpcData N(NpcData_Gulpit)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_Gulpit),
+        .settings = &N(NpcSettings_Gulpit_Wander),
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = GULPIT_DROPS,
         .animations = GULPIT_ANIMS,
-        .extraAnimations = N(ExtraAnims_Gulpit),
+        .limitAnimations = N(LimitAnims_Gulpit),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     GULPIT_HITBOX(NPC_Gulpit_Hitbox),
@@ -421,7 +395,7 @@ NpcData N(NpcData_FrostPiranha_01)[] = {
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = FROST_PIRANHA_DROPS,
         .animations = FROST_PIRANHA_ANIMS,
-        .extraAnimations = N(ExtraAnims_FrostPiranha),
+        .limitAnimations = N(LimitAnims_FrostPiranha),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     FROST_PIRANHA_HITBOX(NPC_FrostPiranha_01_Hitbox),
@@ -448,7 +422,7 @@ NpcData N(NpcData_FrostPiranha_02)[] = {
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = FROST_PIRANHA_DROPS,
         .animations = FROST_PIRANHA_ANIMS,
-        .extraAnimations = N(ExtraAnims_FrostPiranha),
+        .limitAnimations = N(LimitAnims_FrostPiranha),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     FROST_PIRANHA_HITBOX(NPC_FrostPiranha_02_Hitbox),

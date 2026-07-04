@@ -1,16 +1,9 @@
 #include "iwa_02.h"
 
-#include "world/common/enemy/MontyMole_GroundAmbush.inc.c"
-#include "world/common/enemy/MontyMole_WallAmbush.inc.c"
-#include "world/common/enemy/Cleft.inc.c"
-#include "world/common/npc/Bubulb.inc.c"
-
-#include "world/common/complete/GiveReward.inc.c"
-#if VERSION_JP
-#include "world/common/todo/SomeItemEntityFunc.inc.c"
-#include "world/common/todo/IsItemBadge.inc.c"
-#include "world/area/iwa/common/UnkScriptJP00.inc.c"
-#endif
+#include "world/common/enemy/MontyMole/ground_ambush.inc.c"
+#include "world/common/enemy/MontyMole/wall_ambush.inc.c"
+#include "world/common/enemy/Cleft/wander.inc.c"
+#include "world/common/npc/Bubulb/idle.inc.c"
 
 NpcData N(NpcData_Cleft_01) = {
     .id = NPC_Cleft_01,
@@ -28,7 +21,7 @@ NpcData N(NpcData_Cleft_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Cleft),
+    .settings = &N(NpcSettings_Cleft_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,
@@ -51,7 +44,7 @@ NpcData N(NpcData_Cleft_02) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Cleft),
+    .settings = &N(NpcSettings_Cleft_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,
@@ -74,7 +67,7 @@ NpcData N(NpcData_Cleft_03) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Cleft),
+    .settings = &N(NpcSettings_Cleft_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,

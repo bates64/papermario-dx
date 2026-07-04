@@ -7,13 +7,15 @@
 #endif
 
 extern MenuPanel* gPausePanels[];
-void pause_tabs_draw_stats(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
-void pause_tabs_draw_badges(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
-void pause_tabs_draw_items(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
-void pause_tabs_draw_party(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
-void pause_tabs_draw_spirits(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
-void pause_tabs_draw_map(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
-void pause_tabs_draw_invis(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
+
+MenuPanelDrawContentFunc pause_tabs_draw_stats;
+MenuPanelDrawContentFunc pause_tabs_draw_badges;
+MenuPanelDrawContentFunc pause_tabs_draw_items;
+MenuPanelDrawContentFunc pause_tabs_draw_party;
+MenuPanelDrawContentFunc pause_tabs_draw_spirits;
+MenuPanelDrawContentFunc pause_tabs_draw_map;
+MenuPanelDrawContentFunc pause_tabs_draw_invis;
+
 void pause_tabs_init(MenuPanel* tab);
 void pause_tabs_handle_input(MenuPanel* tab);
 void pause_tabs_update(MenuPanel* tab);
@@ -67,14 +69,13 @@ HudScript* gPauseTabsHudScripts[][6] = {
 #endif
 };
 
-s8 gPauseTabsGridData[] = { 0, 1, 2, 3, 4, 5 };
+u8 gPauseTabsGridData[] = { 0, 1, 2, 3, 4, 5 };
 u8 gPauseTabsPanelIDs[] = { 1, 2, 3, 4, 5, 6 };
 u8 gPauseTabsWindowIDs[] = { WIN_PAUSE_TAB_STATS, WIN_PAUSE_TAB_BADGES, WIN_PAUSE_TAB_ITEMS, WIN_PAUSE_TAB_PARTY, WIN_PAUSE_TAB_SPIRITS, WIN_PAUSE_TAB_MAP };
 u8 gPauseTabsPageWindowIDs[] = { WIN_PAUSE_STATS, WIN_PAUSE_BADGES, WIN_PAUSE_ITEMS, WIN_PAUSE_PARTNERS, WIN_PAUSE_SPIRITS, WIN_PAUSE_MAP };
 MenuWindowBP gPauseTabsWindowBPs[] = {
     {
         .windowID = WIN_PAUSE_TAB_STATS,
-        .unk_01 = 0,
         .pos = { .x = 0, .y = 7 },
         .width = 43,
         .height = 15,
@@ -88,7 +89,6 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
     },
     {
         .windowID = WIN_PAUSE_TAB_BADGES,
-        .unk_01 = 0,
         .pos = { .x = 0, .y = 7 },
         .width = 43,
         .height = 15,
@@ -102,7 +102,6 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
     },
     {
         .windowID = WIN_PAUSE_TAB_ITEMS,
-        .unk_01 = 0,
         .pos = { .x = 0, .y = 7 },
         .width = 43,
         .height = 15,
@@ -116,7 +115,6 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
     },
     {
         .windowID = WIN_PAUSE_TAB_PARTY,
-        .unk_01 = 0,
         .pos = { .x = 0, .y = 7 },
         .width = 43,
         .height = 15,
@@ -130,7 +128,6 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
     },
     {
         .windowID = WIN_PAUSE_TAB_SPIRITS,
-        .unk_01 = 0,
         .pos = { .x = 0, .y = 7 },
         .width = 43,
         .height = 15,
@@ -144,7 +141,6 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
     },
     {
         .windowID = WIN_PAUSE_TAB_MAP,
-        .unk_01 = 0,
         .pos = { .x = 0, .y = 7 },
         .width = 43,
         .height = 15,
@@ -158,7 +154,6 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
     },
     {
         .windowID = WIN_PAUSE_TAB_INVIS,
-        .unk_01 = 0,
         .pos = { .x = 8, .y = 8 },
         .width = 16,
         .height = 16,
@@ -380,10 +375,8 @@ void pause_tabs_update(MenuPanel* tab) {
     s32 absValue;
     f32 delta;
     f32 deltaBefore;
-    void (*fpUpdateInactive)(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                                 f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
-    void (*fpUpdateActive)(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                                 f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
+    WindowUpdateCallback* fpUpdateInactive;
+    WindowUpdateCallback* fpUpdateActive;
     WindowUpdateFunc fpUpdate;
     s32 i;
     s32 flag;

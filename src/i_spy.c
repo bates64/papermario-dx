@@ -4,9 +4,9 @@
 typedef struct ISpyNotification {
     /* 0x00 */ Vec3f pos;
     /* 0x0C */ f32 scale;
-    /* 0x10 */ char unk_10[8];
+    /* 0x10 */ PAD(8);
     /* 0x18 */ s32 time;
-    /* 0x1C */ char unk_1C[4];
+    /* 0x1C */ PAD(4);
     /* 0x20 */ s32 flashCount;
     /* 0x24 */ s32 state;
     /* 0x28 */ s32 alpha;
@@ -122,7 +122,7 @@ void ispy_notification_update(void) {
             }
 
             if (!cond) {
-                ISpyPtr->state++;
+                ISpyPtr->state = I_SPY_APPEAR;
             }
             break;
         case I_SPY_APPEAR:
@@ -133,12 +133,12 @@ void ispy_notification_update(void) {
 
             if (ISpyPtr->time++ >= 16) {
                 ISpyPtr->scale = 0.36f;
-                ISpyPtr->state++;
+                ISpyPtr->state = I_SPY_OVERSHOOT;
             }
             break;
         case I_SPY_OVERSHOOT:
             ISpyPtr->scale = 0.57f;
-            ISpyPtr->state++;
+            ISpyPtr->state = I_SPY_ANIMATE;
             sfx_play_sound_at_player(SOUND_ISPY, SOUND_SPACE_DEFAULT);
             break;
         case I_SPY_ANIMATE:

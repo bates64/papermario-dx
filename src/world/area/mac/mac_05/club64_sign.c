@@ -30,6 +30,7 @@ void N(hsl_to_rgb)(f32 hue, f32 saturation, f32 lightness, f32* outR, f32* outG,
     t = q - m;
 
     switch ((s32) hueSector) {
+        default:
         case 0:
             *outR = q;
             *outG = s;
@@ -75,7 +76,7 @@ void N(gfx_build_club_64)(s32 index) {
     for (i = 0; i < numCopied; i++) {
         u8* colors = copied[i].v.cn;
         f32 hue = N(Club64SignAlphaModulus) + (f32)i / (f32)numCopied;
-        if (hue > 1.0) {
+        if (hue >= 1.0) {
             hue -= 1.0;
         }
         N(hsl_to_rgb)(hue, 1.0f, 0.5f, &colR, &colG, &colB);

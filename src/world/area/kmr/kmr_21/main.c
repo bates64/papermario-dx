@@ -4,7 +4,7 @@ typedef struct TitleDataFile {
     /* 0x00 */ s32 img_offset_title;
     /* 0x04 */ s32 img_offset_copyright;
     /* 0x08 */ s32 img_offset_press_start;
-    /* 0x0C */ unsigned char unk_0C[4];
+    /* 0x0C */ PAD(4);
     // end of header
     /* 0x10 */ s8 data[VLA];
 } TitleDataFile; // size may vary
@@ -39,7 +39,7 @@ Gfx N(Gfx_TexSetup_TitleImage)[] = {
     gsSPEndDisplayList(),
 };
 
-void worker_render_title_image(void) {
+void worker_draw_title_image(void) {
     s32 i;
 
     gSPDisplayList(gMainGfxPos++, N(Gfx_TexSetup_TitleImage));
@@ -82,7 +82,7 @@ API_CALLABLE(N(LoadTitleImage)) {
     decode_yay0(compressed, TitleData);
     general_heap_free(compressed);
     TitleImage = (IMG_PTR)(TitleData->img_offset_title + (s32)TitleData);
-    create_worker_frontUI(nullptr, worker_render_title_image);
+    create_worker_frontUI(nullptr, worker_draw_title_image);
     return ApiStatus_DONE2;
 }
 
@@ -158,7 +158,7 @@ EvtScript N(EVS_Main) = {
     Wait(1)
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, PARTNER_NONE)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
         Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
     EndIf

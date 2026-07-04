@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kzn_03.h
 /// @brief Mt Lavalava - Central Cavern
 

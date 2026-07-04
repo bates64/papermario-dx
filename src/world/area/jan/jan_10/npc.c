@@ -1,8 +1,8 @@
 #include "jan_10.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/JungleFuzzy_Wander.inc.c"
-#include "world/common/npc/YoshiKid.inc.c"
+#include "world/common/enemy/JungleFuzzy/wander.inc.c"
+#include "world/common/npc/YoshiKid/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_JungleFuzzy) = {
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
@@ -12,7 +12,7 @@ EvtScript N(EVS_NpcIdle_JungleFuzzy) = {
         IfEq(LVar0, false)
             Goto(0)
         EndIf
-    Call(SetNpcAnimation, NPC_SELF, ANIM_Fuzzy_Jungle_Anim09)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_Fuzzy_Jungle_Confused)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING, false)
     Call(SetNpcPos, NPC_SELF, -566, 100, 65)
@@ -36,11 +36,11 @@ EvtScript N(EVS_NpcInit_JungleFuzzy) = {
 };
 
 EvtScript N(EVS_YoshiKid_CryForHelp) = {
-    Set(AF_JAN_02, false)
+    Set(AF_JAN_SavedCurrentYoshiKid, false)
     Loop(0)
         Call(PlaySoundAtNpc, NPC_YoshiKid, SOUND_YOSHI_KID_CRY, SOUND_SPACE_DEFAULT)
         Wait(20)
-        IfEq(AF_JAN_02, true)
+        IfEq(AF_JAN_SavedCurrentYoshiKid, true)
             BreakLoop
         EndIf
     EndLoop
@@ -50,7 +50,7 @@ EvtScript N(EVS_YoshiKid_CryForHelp) = {
 
 EvtScript N(EVS_NpcInteract_YoshiKid) = {
     Call(AdjustCam, CAM_DEFAULT, Float(4.0), 0, 350, Float(17.0), Float(-7.0))
-    Set(AF_JAN_02, true)
+    Set(AF_JAN_SavedCurrentYoshiKid, true)
     Wait(15)
     Call(GetCurrentPartnerID, LVar0)
     IfEq(LVar0, PARTNER_SUSHIE)
@@ -60,7 +60,7 @@ EvtScript N(EVS_NpcInteract_YoshiKid) = {
     EndIf
     Call(EndSpeech, NPC_SELF, ANIM_YoshiKid_Blue_Talk, ANIM_YoshiKid_Blue_Idle, 0)
     Thread
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Blue_Run)
         Call(SetNpcSpeed, NPC_SELF, Float(5.0))
         Call(NpcMoveTo, NPC_SELF, -240, 10, 0)

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_04.h
 /// @brief Goomba Region - Jr. Troopa's Playground
 
@@ -18,13 +20,13 @@ enum {
 };
 
 enum {
-    AF_JAN01_TreeDrop_StarPiece           = MapFlag(10),
-    MF_Unk_0B           = MapFlag(11),
-    MF_Unk_0C           = MapFlag(12),
-    MF_Unk_0D           = MapFlag(13),
-    MF_Unk_0E           = MapFlag(14),
-    MF_Unk_0F           = MapFlag(15),
-    MF_Unk_12           = MapFlag(18),
+    MF_Drop_Bush1       = MapFlag(10),
+    MF_Drop_Bush2       = MapFlag(11),
+    MF_Drop_Bush3A      = MapFlag(12),
+    MF_Drop_Bush3B      = MapFlag(13),
+    MF_Drop_Bush4       = MapFlag(14),
+    MF_Drop_Bush5       = MapFlag(15),
+    MF_GotHammerDone    = MapFlag(18),
 };
 
 #define NAMESPACE kmr_04

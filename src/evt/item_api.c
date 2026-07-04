@@ -260,6 +260,45 @@ API_CALLABLE(HasItem) {
     return ApiStatus_DONE2;
 }
 
+API_CALLABLE(GetItemName) {
+    Bytecode* args = script->ptrReadPos;
+    s32 itemID = evt_get_variable(script, *args++);
+    Bytecode outVar = *args++;
+    MsgID name = gItemTable[itemID & ITEM_ID_MASK].nameMsg;
+
+    evt_set_variable(script, outVar, name);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(AddPlayerHandsOffset) {
+    Bytecode* args = script->ptrReadPos;
+    s32 xVar = *args++;
+    s32 yVar = *args++;
+    s32 zVar = *args++;
+
+    f32 x = evt_get_variable(script, xVar);
+    f32 y = evt_get_variable(script, yVar);
+    f32 z = evt_get_variable(script, zVar);
+    f32 cameraYaw = gCameras[gCurrentCameraID].curYaw;
+
+    if (gPlayerStatus.spriteFacingAngle == 0.0f) {
+        cameraYaw -= 100.0f;
+    } else {
+        cameraYaw += 100.0f;
+    }
+    cameraYaw = clamp_angle(cameraYaw);
+
+    x += sin_deg(cameraYaw) * 15.0f;
+    y += gPlayerStatus.colliderHeight * 0.5f;
+    z -= cos_deg(cameraYaw) * 15.0f;
+
+    evt_set_variable(script, xVar, x);
+    evt_set_variable(script, yVar, y);
+    evt_set_variable(script, zVar, z);
+
+    return ApiStatus_DONE2;
+}
+
 API_CALLABLE(MakeItemEntity) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);
@@ -310,7 +349,7 @@ API_CALLABLE(RemoveItemEntity) {
 
 API_CALLABLE(SetItemPos) {
     Bytecode* args = script->ptrReadPos;
-    ItemEntity* ptrItemEntity;
+    ItemEntity* itemEntity;
     s32 itemEntityIndex;
     s32 x, y, z;
 
@@ -319,10 +358,28 @@ API_CALLABLE(SetItemPos) {
     y = evt_get_variable(script, *args++);
     z = evt_get_variable(script, *args++);
 
-    ptrItemEntity = (ItemEntity*) get_item_entity(itemEntityIndex);
-    ptrItemEntity->pos.x = x;
-    ptrItemEntity->pos.y = y;
-    ptrItemEntity->pos.z = z;
+    itemEntity = (ItemEntity*) get_item_entity(itemEntityIndex);
+    itemEntity->pos.x = x;
+    itemEntity->pos.y = y;
+    itemEntity->pos.z = z;
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(GetItemPos) {
+    Bytecode* args = script->ptrReadPos;
+    ItemEntity* itemEntity;
+    s32 itemEntityIndex;
+    Bytecode outX, outY, outZ;
+
+    itemEntityIndex = evt_get_variable(script, *args++);
+    outX = *args++;
+    outY = *args++;
+    outZ = *args++;
+
+    itemEntity = (ItemEntity*) get_item_entity(itemEntityIndex);
+    evt_set_variable(script, outX, itemEntity->pos.x);
+    evt_set_variable(script, outY, itemEntity->pos.y);
+    evt_set_variable(script, outZ, itemEntity->pos.z);
     return ApiStatus_DONE2;
 }
 

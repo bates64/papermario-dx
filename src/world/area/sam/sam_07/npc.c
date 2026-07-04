@@ -1,7 +1,7 @@
 #include "sam_07.h"
 
-#include "world/common/enemy/Gulpit.inc.c"
-#include "world/common/enemy/FrostPiranha.inc.c"
+#include "world/common/enemy/Gulpit/wander.inc.c"
+#include "world/common/enemy/FrostPiranha/idle.inc.c"
 
 NpcData N(NpcData_Gulpit)[] = {
     {
@@ -20,7 +20,7 @@ NpcData N(NpcData_Gulpit)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_Gulpit),
+        .settings = &N(NpcSettings_Gulpit_Wander),
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = GULPIT_DROPS,
         .animations = GULPIT_ANIMS,

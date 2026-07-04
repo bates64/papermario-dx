@@ -2,11 +2,10 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Parakarry.inc.c"
+#include "world/common/npc/Parakarry/idle.inc.c"
 
+#include "world/common/util/LoadPartyImage.inc.c"
 #include "world/common/util/ChangeNpcToPartner.inc.c"
-
-#include "world/common/complete/KeyItemChoice.inc.c"
 
 EvtScript N(EVS_Scene_MeetParakarry) = {
     Label(0)
@@ -157,12 +156,10 @@ EvtScript N(EVS_Scene_MeetParakarry) = {
     End
 };
 
-s32 N(LetterList)[] = {
+ITEM_LIST(N(LetterList),
     ITEM_LETTER_TO_MERLON,
     ITEM_LETTER_TO_KOLORADO,
-    ITEM_LETTER_CHAIN_GOOMPAPA_1,
-    ITEM_NONE
-};
+    ITEM_LETTER_CHAIN_GOOMPAPA_1);
 
 EvtScript N(EVS_NpcInteract_Parakarry) = {
     Set(LFlag0, false)
@@ -188,15 +185,13 @@ EvtScript N(EVS_NpcInteract_Parakarry) = {
             Call(PlayerMoveTo, LVar4, LVar6, 20 * DT)
             Call(PlayerFaceNpc, NPC_Parakarry, false)
             Wait(10 * DT)
-            Call(func_802CF56C, 2)
+            Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
             Call(AdjustCam, CAM_DEFAULT, Float(4.0 / DT), Float(0.0), Float(300.0), Float(17.5), Float(-10.0))
         EndIf
     EndIf
-    Set(LVar0, Ref(N(LetterList)))
-    Set(LVar1, 4)
-    ExecWait(N(EVS_ChooseKeyItem))
+    EVT_CHOOSE_KEY_ITEM_FROM(N(LetterList), NPC_Parakarry)
     Switch(LVar0)
-        CaseEq(0)
+        CaseEq(ITEM_CHOICE_NONE)
             Switch(GB_IWA10_ReturnedLetterCount)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_Parakarry, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, MSG_CH2_0012)
@@ -214,7 +209,7 @@ EvtScript N(EVS_NpcInteract_Parakarry) = {
                     EndIf
                     Set(LFlag0, true)
             EndSwitch
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_Parakarry, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, MSG_CH2_0013)
         CaseDefault
             Call(RemoveKeyItemAt, LVar0)
@@ -244,11 +239,11 @@ EvtScript N(EVS_NpcInteract_Parakarry) = {
             EndSwitch
     EndSwitch
     IfEq(LFlag0, true)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(ContinueSpeech, NPC_Parakarry, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, MSG_CH2_001D)
-        Call(N(ChangeNpcToPartner), 4, 4)
+        Call(N(ChangeNpcToPartner), NPC_Parakarry, PARTNER_PARAKARRY)
         Set(GB_StoryProgress, STORY_CH2_PARAKARRY_JOINED_PARTY)
-        Call(N(LoadPartyImage))
+        Call(N(LoadPartyImage), Ref("party_pareta"))
         Exec(N(EVS_PushSong))
         Wait(15 * DT)
         Call(ShowMessageAtScreenPos, MSG_Menus_018C, 160, 40)

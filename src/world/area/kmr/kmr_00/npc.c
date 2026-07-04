@@ -1,17 +1,18 @@
 #include "kmr_00.h"
 
-#include "world/common/npc/StarSpirit.inc.c"
-#include "world/common/npc/Goombaria_Stationary.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
+#include "world/common/npc/Goombaria/idle.inc.c"
 
 // initial delay to start bobbing, ensuring star spirits motions are desync'd from one another
 s16 N(StarSpiritBobDelays)[] = {
-    [NPC_Eldstar  - 1]   1,
-    [NPC_Mamar    - 1]   3,
-    [NPC_Skolar   - 1]   5,
-    [NPC_Muskular - 1]   7,
-    [NPC_Misstar  - 1]   7,
-    [NPC_Klevar   - 1]   5,
-    [NPC_Kalmar   - 1]   3,
+    [NPC_Goombaria]     0, // ignored
+    [NPC_Eldstar]       1,
+    [NPC_Mamar]         3,
+    [NPC_Skolar]        5,
+    [NPC_Muskular]      7,
+    [NPC_Misstar]       7,
+    [NPC_Klevar]        5,
+    [NPC_Kalmar]        3,
 };
 
 API_CALLABLE(N(UpdateStarSpiritBobbing)) {
@@ -19,7 +20,7 @@ API_CALLABLE(N(UpdateStarSpiritBobbing)) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
         script->functionTempPtr[2] = get_npc_safe(script->owner2.npcID);
-        script->functionTemp[3] = N(StarSpiritBobDelays)[script->owner2.npcID - 1];
+        script->functionTemp[3] = N(StarSpiritBobDelays)[script->owner2.npcID];
     }
     if (script->functionTemp[3] == 0) {
         Npc* npc = script->functionTempPtr[2];
@@ -75,12 +76,12 @@ EvtScript N(EVS_NpcAux_StarSpirit) = {
     Label(1)
     Loop(50)
         AddF(LVar0, Float(0.8))
-        Call(SetNpcImgFXParams, NPC_SELF, IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, ArrayVar(0), MV_Unk_01, LVar0)
+        Call(SetNpcImgFXParams, NPC_SELF, IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, ArrayVar(0), MV_SpiritHologramOffset, LVar0)
         Wait(1)
     EndLoop
     Loop(50)
         AddF(LVar0, Float(-0.8))
-        Call(SetNpcImgFXParams, NPC_SELF, IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, ArrayVar(0), MV_Unk_01, LVar0)
+        Call(SetNpcImgFXParams, NPC_SELF, IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, ArrayVar(0), MV_SpiritHologramOffset, LVar0)
         Wait(1)
     EndLoop
     Goto(1)
@@ -111,7 +112,7 @@ NpcData N(NpcData_Goombaria) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
     .init = &N(EVS_NpcInit_Goombaria),
-    .settings = &N(NpcSettings_Goombaria_Stationary),
+    .settings = &N(NpcSettings_Goombaria),
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
     .drops = NO_DROPS,
     .animations = GOOMBARIA_ANIMS,

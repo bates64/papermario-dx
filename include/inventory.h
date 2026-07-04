@@ -1,7 +1,9 @@
-#ifndef _INVENTORY_H_
-#define _INVENTORY_H_
+#pragma once
 
 #include "common.h"
+
+#define ITEM_ID_MASK  0x0000FFFF
+#define ITEM_VIS_MASK 0x000F0000
 
 /// Add `itemID` to player inventory and return inventory slot in which it was placed.
 /// Returns the index of the new item in the player's inventory, or -1 if there was no room.
@@ -64,5 +66,3 @@ s32 recover_hp(s32 amt);
 /// Recover player FP. `amt` is the amount to recover, -1 for full, or -2 for full and increase
 /// max by 1 (unused). Returns the new FP value, after recovery has been applied.
 s32 recover_fp(s32 amt);
-
-#endif

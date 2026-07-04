@@ -1,5 +1,4 @@
-#ifndef _DISGUISE_H_
-#define _DISGUISE_H_
+#pragma once
 
 #include "common.h"
 
@@ -13,6 +12,4 @@ typedef struct DisguiseAnims {
 } DisguiseAnims; // size = 0x18
 
 extern DisguiseAnims BasicPeachDisguiseAnims[4];
-extern AnimID* PeachDisguiseExtraAnims[4];
-
-#endif
+extern AnimID* PeachDisguiseLimitAnims[4];

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kkj_00.h
 /// @brief Peach's Castle - Intro Entry Hall (1F)
 
@@ -11,7 +13,6 @@
 
 #include "sprite/npc/Luigi.h"
 #include "sprite/npc/Toad.h"
-#include "sprite/npc/RussT.h"
 #include "sprite/npc/ShiverToad.h"
 #include "sprite/npc/Toadette.h"
 #include "sprite/npc/Penguin.h"
@@ -31,7 +32,6 @@
 #include "sprite/npc/Merlow.h"
 #include "sprite/npc/WorldMerlee.h"
 #include "sprite/npc/Merle.h"
-#include "sprite/npc/Lakilulu.h"
 #include "sprite/npc/Bootler.h"
 #include "sprite/npc/Goompa.h"
 #include "sprite/npc/Goombaria.h"
@@ -104,3 +104,17 @@ extern EvtScript N(EVS_Scene_Ending);
 
 extern NpcGroupList N(IntroNPCs);
 extern NpcGroupList N(EndingNPCs);
+
+#include "world/common/npc/ToadGuard/idle.h"
+#include "world/common/npc/ToadMinister/idle.h"
+#include "world/common/npc/Toadette/idle.h"
+#include "world/common/npc/ShiverToad/idle.h"
+#include "world/common/npc/Luigi/idle.h"
+#include "world/common/npc/Toad/patrol.h"
+#include "world/common/npc/Toad/idle.h"
+#include "world/common/npc/Penguin/idle.h"
+#include "world/common/npc/RussT/idle.h"
+#include "world/common/npc/Peach/idle.h"
+#include "world/common/npc/Dummy/idle.h"
+#include "world/common/npc/Lakilulu/idle.h"
+#include "world/common/npc/TayceT/idle.h"

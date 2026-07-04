@@ -1496,7 +1496,7 @@ EvtScript N(EVS_Move_Charge) = {
         Add(LVar1, 15)
         Add(LVar2, -5)
         Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_GOOMBARIO_GATHERING)
-        PlayEffect(EFFECT_ENERGY_ORB_WAVE, 9, LVar0, LVar1, LVar2, Float(2.0), 20, 0)
+        PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_BLUE_SHRINK, LVar0, LVar1, LVar2, Float(2.0), 20, 0)
     EndThread
     Wait(30)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleGoombario_Idle)

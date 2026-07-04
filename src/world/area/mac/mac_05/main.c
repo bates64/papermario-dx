@@ -1,6 +1,5 @@
 #include "mac_05.h"
-
-#include "world/common/atomic/TexturePan.inc.c"
+#include "world/common/prefab/Whale.h"
 
 API_CALLABLE(N(WaveScaleInterp)) {
     Bytecode* args = script->ptrReadPos;
@@ -99,10 +98,10 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar0, Ref(N(EVS_BindExitTriggers)))
             Exec(EnterWalk)
         CaseEq(mac_05_ENTRY_1)
-            Exec(N(EVS_802496FC))
+            Exec(N(EVS_Scene_ArriveByWhale))
             Exec(N(EVS_BindExitTriggers))
         CaseEq(mac_05_ENTRY_2)
-            Exec(N(EVS_80248878))
+            Exec(N(EVS_Scene_FuzzipedeDefeated))
             Exec(N(EVS_BindExitTriggers))
         CaseEq(mac_05_ENTRY_3)
             Call(DisablePlayerInput, true)
@@ -110,7 +109,7 @@ EvtScript N(EVS_EnterMap) = {
             Call(SetPlayerPos, -160, -10, 371)
             Call(SetNpcPos, NPC_PARTNER, -160, -10, 371)
             Call(SetEnemyFlagBits, NPC_Whale, ENEMY_FLAG_CANT_INTERACT, true)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(InterruptUsePartner)
             Wait(10)
             Thread
@@ -125,7 +124,7 @@ EvtScript N(EVS_EnterMap) = {
                     EndIf
                 EndLoop
             EndThread
-            Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Yell)
+            Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_OpenMouth)
             Wait(30)
             Call(SetPlayerPos, -280, -10, 371)
             Call(EnablePartnerAI)
@@ -181,7 +180,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(  100,  100,  -70,  -50)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Exec(N(EVS_AnimateFish))
     Exec(N(EVS_AnimateClub64Sign))

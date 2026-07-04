@@ -3,8 +3,6 @@
 
 #include "../common/LavaGlowLighting.inc.c"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 ModelIDList N(LavaModelIDs) = {
     .count = 1,
     .list = { MODEL_yougan }
@@ -31,14 +29,14 @@ EvtScript N(EVS_SetupTexPanners) = {
         TEX_PAN_PARAMS_STEP( -400,    0, -800,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(    0, -400,    0, -800)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

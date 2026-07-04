@@ -182,7 +182,7 @@ Vec3f N(TwinkPath)[] = {
 EvtScript N(EVS_Scene_CastleDescending) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(PlaySound, SOUND_KPA_LIGHT_RAYS | SOUND_ID_TRIGGER_CHANGE_SOUND)
     Call(SetPlayerPos, -130, 200, 1300)
@@ -197,12 +197,12 @@ EvtScript N(EVS_Scene_CastleDescending) = {
     PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 35, 70, Float(7.0), MV_BubbleFXPtr)
     Call(N(SetHaloAlpha), MV_BubbleFXPtr, 128)
     ChildThread
-        PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 0, 0, Float(10.0), MV_Unk_01)
+        PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 0, 0, Float(10.0), MV_HaloFXPtr)
         Loop(0)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Add(LVar1, 12)
             Add(LVar2, 60)
-            Call(N(SetHaloPos), MV_Unk_01, LVar0, LVar1, LVar2)
+            Call(N(SetHaloPos), MV_HaloFXPtr, LVar0, LVar1, LVar2)
             Wait(1)
         EndLoop
     EndChildThread
@@ -342,7 +342,7 @@ EvtScript N(EVS_Scene_CastleDescending) = {
         Loop(0)
             Call(UpdateLerp)
             DivF(LVar0, 100)
-            Call(N(SetHaloScale), MV_Unk_01, LVar0)
+            Call(N(SetHaloScale), MV_HaloFXPtr, LVar0)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -386,7 +386,7 @@ EvtScript N(EVS_MakeNpcSparkleTrail) = {
 EvtScript N(EVS_Scene_SpiritsFlyingAway) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetPlayerPos, NPC_DISPOSE_LOCATION)
     Call(EnableModel, MODEL_o2, false)

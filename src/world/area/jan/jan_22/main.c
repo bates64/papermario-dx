@@ -1,7 +1,5 @@
 #include "jan_22.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_jan_03_2) = EVT_EXIT_WALK(60, jan_22_ENTRY_0, "jan_03", jan_03_ENTRY_2);
 EvtScript N(EVS_ExitWalk_jan_16_1) = EVT_EXIT_WALK(60, jan_22_ENTRY_1, "jan_16", jan_16_ENTRY_1);
 EvtScript N(EVS_ExitWalk_kzn_01_0) = EVT_EXIT_WALK(60, jan_22_ENTRY_2, "kzn_01", kzn_01_ENTRY_0);
@@ -22,7 +20,7 @@ LavaReset N(SafeFloorColliders)[] = {
     { .colliderID = NO_COLLIDER }
 };
 
-EvtScript N(D_8024202C_B861AC) = {
+EvtScript N(EVS_EnterMap) = {
     IfLt(GB_StoryProgress, STORY_CH5_ZIP_LINE_READY)
         Call(SetGroupVisibility, MODEL_g39, MODEL_GROUP_HIDDEN)
         Call(SetGroupVisibility, MODEL_g52, MODEL_GROUP_HIDDEN)
@@ -83,7 +81,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0,  -300,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,     1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,     0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o275, TEX_PANNER_2)
     Call(SetTexPanner, MODEL_o274, TEX_PANNER_2)
@@ -92,7 +90,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0,  -300,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,     1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,     0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o263, TEX_PANNER_3)
     Call(SetTexPanner, MODEL_o271, TEX_PANNER_3)
@@ -101,7 +99,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0,  -170,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,     1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,     0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o267, TEX_PANNER_4)
     Call(SetTexPanner, MODEL_o272, TEX_PANNER_4)
@@ -110,12 +108,12 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0,  -300,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,     1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,     0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitn, COLLIDER_FLAGS_UPPER_MASK)
-    Exec(N(D_8024202C_B861AC))
+    Exec(N(EVS_EnterMap))
     IfEq(GB_StoryProgress, STORY_CH5_BEGAN_PEACH_MISSION)
         Wait(65)
     EndIf

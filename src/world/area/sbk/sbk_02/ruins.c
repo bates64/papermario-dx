@@ -2,10 +2,9 @@
 #include "effects.h"
 #include "model.h"
 
-#include "world/common/atomic/ApplyTint.inc.c"
 
 API_CALLABLE(N(HideSun)) {
-    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, MV_Unk_00);
+    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, MV_Effect_Sun);
 
     effect->data.sun->targetAlpha = 0;
     return ApiStatus_DONE2;
@@ -55,10 +54,7 @@ API_CALLABLE(N(InterpWorldEnvColor)) {
     return ApiStatus_BLOCK;
 }
 
-s32 N(PedestalKeyList)[] = {
-    ITEM_PULSE_STONE,
-    ITEM_NONE
-};
+ITEM_LIST(N(PedestalKeyList), ITEM_PULSE_STONE);
 
 EvtScript N(EVS_Pedestal_Sink) = {
     PlayEffect(EFFECT_SMOKE_IMPACT, 0, 0, 0, 0, 20, 10, 0, 60)
@@ -93,10 +89,10 @@ s32 N(ModelList_Translucent)[] = {
 };
 
 EvtScript N(EVS_DarkenEnvironment) = {
-    Call(N(SetModelTintMode), APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
-    Call(N(SetModelTintMode), APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
-    Call(N(SetModelTintMode), APPLY_TINT_GROUPS, Ref(N(ModelList_Solid)), ENV_TINT_NONE)
-    Call(N(SetModelTintMode), APPLY_TINT_MODELS, Ref(N(ModelList_Translucent)), ENV_TINT_NONE)
+    Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
+    Call(SetModelTintMode, APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
+    Call(SetModelTintMode, APPLY_TINT_GROUPS, Ref(N(ModelList_Solid)), ENV_TINT_NONE)
+    Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(N(ModelList_Translucent)), ENV_TINT_NONE)
     Call(N(InterpWorldEnvColor), 255, 255, 255, 0, 0, 0, 0)
     Wait(1)
     Call(N(InterpWorldEnvColor), 44, 32, 177, 0, 0, 0, 60)
@@ -582,13 +578,13 @@ EvtScript N(EVS_Steps_Unfold) = {
 EvtScript N(EVS_OnInteract_Pedestal) = {
     Call(DisablePulseStone, true)
     Call(ShowKeyChoicePopup)
-    IfLe(LVar0, 0)
+    IfLe(LVar0, ITEM_CHOICE_NONE)
         Call(CloseChoicePopup)
         Call(DisablePulseStone, false)
         Return
     EndIf
     Call(DisablePlayerInput, true)
-    Call(func_802CF56C, 1)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_HOLD)
     Call(RemoveKeyItemAt, LVar1)
     Call(CloseChoicePopup)
     Set(GB_StoryProgress, STORY_CH2_UNCOVERED_DRY_DRY_RUINS)
@@ -679,7 +675,7 @@ EvtScript N(EVS_SetupRuins) = {
 EvtScript N(EVS_Ruins_Arise_Continued) = {
     Call(PlaySound, SOUND_SBK_RUINS_FINISH_RISING)
     Call(DisablePlayerInput, true)
-    Call(func_802CF56C, 1)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_HOLD)
     Call(FacePlayerTowardPoint, 0, 0, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_iwa, COLLIDER_FLAGS_UPPER_MASK)
     Call(EnableModel, MODEL_point_iwa, false)
@@ -695,10 +691,10 @@ EvtScript N(EVS_Ruins_Arise_Continued) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(N(SetModelTintMode), APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
-    Call(N(SetModelTintMode), APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
-    Call(N(SetModelTintMode), APPLY_TINT_GROUPS, Ref(N(ModelList_Solid)), ENV_TINT_NONE)
-    Call(N(SetModelTintMode), APPLY_TINT_MODELS, Ref(N(ModelList_Translucent)), ENV_TINT_NONE)
+    Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
+    Call(SetModelTintMode, APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
+    Call(SetModelTintMode, APPLY_TINT_GROUPS, Ref(N(ModelList_Solid)), ENV_TINT_NONE)
+    Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(N(ModelList_Translucent)), ENV_TINT_NONE)
     Call(N(InterpWorldEnvColor), 44, 32, 177, 0, 0, 0, 0)
     Exec(N(EVS_Ruins_FinishRising))
     Exec(N(EVS_Steps_FinishRising))
@@ -728,7 +724,7 @@ EvtScript N(EVS_Ruins_Arise_Continued) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Call(func_802CF56C, 0)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
     Call(DisablePlayerInput, false)
     Return
     End

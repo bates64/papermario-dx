@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file dgb_07.h
 /// @brief Tubba's Castle - Study (1F)
 

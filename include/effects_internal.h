@@ -15,4 +15,6 @@ s32 effect_simple_rand(s32, s32);
 
 #include "effect_shims.h"
 
+#define FX_TIME_FOREVER (1000)
+
 #endif

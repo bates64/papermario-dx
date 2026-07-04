@@ -7,8 +7,6 @@ extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(DefaultNPCs);
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_EnterMap) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
@@ -71,19 +69,19 @@ EvtScript N(EVS_Scene_RaiseStairs) = {
         TEX_PAN_PARAMS_STEP( -600, -600, -300, -300)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
         Call(SetTexPanner, MODEL_sui2, TEX_PANNER_3)
         TEX_PAN_PARAMS_ID(TEX_PANNER_3)
         TEX_PAN_PARAMS_STEP(  140, -600,  -30, -600)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
         Call(SetTexPanner, MODEL_o145, TEX_PANNER_4)
         TEX_PAN_PARAMS_ID(TEX_PANNER_4)
         TEX_PAN_PARAMS_STEP(  100, -600, -100, -300)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         Call(PlaySound, SOUND_LOOP_TRD_RAISE_STAIRS)
@@ -263,10 +261,7 @@ EvtScript N(EVS_Scene_RaiseStairs) = {
     End
 };
 
-s32 N(KeyList)[] = {
-    ITEM_KOOPA_FORTRESS_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_KOOPA_FORTRESS_KEY);
 
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
@@ -308,7 +303,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0,   90,  -60,  -70)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

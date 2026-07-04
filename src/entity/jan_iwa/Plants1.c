@@ -276,7 +276,7 @@ void entity_CymbalPlant_idle(Entity* entity) {
                 if (partnerStatus->actingPartner != 0) {
                     playerStatus->animFlags |= PA_FLAG_INTERRUPT_USE_PARTNER;
                 }
-                func_800EF300();
+                partner_disable_ai_soon();
                 playerStatus->animFlags |= PA_FLAG_INTERRUPT_SPIN;
                 data->timer = 4;
                 data->unk_01++;
@@ -379,7 +379,7 @@ DmaEntry Entity_PinkFlower_dma[] = { ENTITY_ROM(PinkFlower_gfx), ENTITY_ROM(Pink
 EntityBlueprint Entity_CymbalPlant = {
     .flags = ENTITY_FLAG_CIRCULAR_SHADOW | ENTITY_FLAG_400 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(CymbalPlantData),
-    .renderCommandList = Entity_CymbalPlant_AnimationIdle,
+    .animScript = Entity_CymbalPlant_AnimationIdle,
     .modelAnimationNodes = Entity_CymbalPlant_Mesh,
     .fpInit = nullptr,
     .updateEntityScript = Entity_CymbalPlant_Update,
@@ -392,7 +392,7 @@ EntityBlueprint Entity_CymbalPlant = {
 EntityBlueprint Entity_PinkFlower = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_CIRCULAR_SHADOW | ENTITY_FLAG_400 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(PinkFlowerData),
-    .renderCommandList = Entity_PinkFlower_AnimationIdle,
+    .animScript = Entity_PinkFlower_AnimationIdle,
     .modelAnimationNodes = Entity_PinkFlower_Mesh,
     .fpInit = entity_PinkFlower_init,
     .updateEntityScript = Entity_PinkFlower_Script,
@@ -406,7 +406,7 @@ EntityBlueprint Entity_PinkFlowerLight = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_DISABLE_COLLISION,
     .typeDataSize = sizeof(PinkFlowerData),
     .renderCommandList = Entity_PinkFlowerLight_RenderScript,
-    .modelAnimationNodes = 0,
+    .modelAnimationNodes = nullptr,
     .fpInit = entity_PinkFlowerLight_init,
     .updateEntityScript = Entity_PinkFlowerLight_Script,
     .fpHandleCollision = nullptr,
@@ -419,7 +419,7 @@ EntityBlueprint Entity_SpinningFlower = {
     .flags = 0,
     .typeDataSize = sizeof(SpinningFlowerData),
     .renderCommandList = Entity_SpinningFlower_RenderScript,
-    .modelAnimationNodes = 0,
+    .modelAnimationNodes = nullptr,
     .fpInit = entity_SpinningFlower_init,
     .updateEntityScript = Entity_SpinningFlower_Script,
     .fpHandleCollision = nullptr,

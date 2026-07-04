@@ -1,4 +1,14 @@
 #include "machi.h"
+#include "world/common/npc/Goompa/base.h"
+#include "world/common/npc/Goombaria/base.h"
+#include "world/common/npc/Kolorado/base.h"
+#include "world/common/npc/Koopa/base.h"
+#include "world/common/npc/StarRod/base.h"
+
+#define NPC_SINGLE_ANIM(anim) \
+{ \
+    .idle = anim, \
+}
 
 FollowAnims N(GoombariaAnims) = {
     ANIM_Goombaria_Walk,
@@ -9,7 +19,7 @@ FollowAnims N(GoombariaAnims) = {
     ANIM_Goombaria_Run,
 };
 
-API_CALLABLE(N(func_802401B0_7E7550)) {
+API_CALLABLE(N(InitNpcFollowTest)) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     if (rand_int(1000) < 500) {
@@ -32,14 +42,14 @@ API_CALLABLE(N(func_802401B0_7E7550)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802402EC_7E768C)) {
+API_CALLABLE(N(UpdateNpcTracking)) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     npc_update_npc_tracking(npc);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80240318_7E76B8)) {
+API_CALLABLE(N(UpdateNpcFollow)) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     npc_follow_npc(npc);
@@ -111,11 +121,11 @@ EvtScript N(EVS_NpcCreate_Goompa) = {
     End
 };
 
-EvtScript N(EVS_802411A8) = {
-    Call(N(func_802401B0_7E7550))
+EvtScript N(EVS_NpcFollowTest) = {
+    Call(N(InitNpcFollowTest))
     Label(0)
-        Call(N(func_802402EC_7E768C))
-        Call(N(func_80240318_7E76B8))
+        Call(N(UpdateNpcTracking))
+        Call(N(UpdateNpcFollow))
         Wait(1)
         Goto(0)
     Return
@@ -254,34 +264,25 @@ NpcData N(NpcData_05)[] = {
         .id = NPC_05,
         .pos = { 16.0f, 0.0f, -411.0f },
         .yaw = 0,
-        .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_StarRod),
         .flags = 0,
-        .animations = {
-            .idle = ANIM_StarRod_Still,
-        },
+        .animations = NPC_SINGLE_ANIM(ANIM_StarRod_Still),
     },
     {
         .id = NPC_06,
         .pos = { 389.0f, 0.0f, -278.0f },
         .yaw = 0,
-        .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Koopa),
         .flags = 0,
-        .animations = {
-            .idle = ANIM_Koopa_Walk,
-        },
+        .animations = NPC_SINGLE_ANIM(ANIM_Koopa_Walk),
     },
     {
         .id = NPC_07,
         .pos = { 481.0f, 0.0f, -44.0f },
         .yaw = 0,
-        .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Kolorado),
         .flags = 0,
-        .animations = {
-            .idle = ANIM_Kolorado_Walk,
-        },
+        .animations = NPC_SINGLE_ANIM(ANIM_Kolorado_Walk),
     },
 };
 
@@ -289,113 +290,83 @@ NpcData N(NpcData_GoombaFamily) = {
     .id = NPC_Goompa,
     .pos = { 0.0f, 0.0f, 0.0f },
     .yaw = 0,
-    .init = (void*) 0x1F64,
     .settings = &N(NpcSettings_Goompa),
     .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-    .animations = {
-        .idle = ANIM_Goompa_Walk,
-    },
+    .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
 };
 
-NpcData N(NpcData_0B)[] = {
+NpcData N(NpcData_GoompaClones)[] = {
     {
         .id = NPC_0B,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {
-            .idle = ANIM_Goompa_Walk,
-        },
+        .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
     {
         .id = NPC_0C,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {
-            .idle = ANIM_Goompa_Walk,
-        },
+        .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
     {
         .id = NPC_0D,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {
-            .idle = ANIM_Goompa_Walk,
-        },
+        .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
     {
         .id = NPC_0E,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {
-            .idle = ANIM_Goompa_Walk,
-        },
+        .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
     {
         .id = NPC_0F,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {
-            .idle = ANIM_Goompa_Walk,
-        },
+        .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
     {
         .id = NPC_10,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {
-            .idle = ANIM_Goompa_Walk,
-        },
+        .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
     {
         .id = NPC_11,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {
-            .idle = ANIM_Goompa_Walk,
-        },
+        .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
     {
         .id = NPC_12,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {
-            .idle = ANIM_Goompa_Walk,
-        },
+        .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
     {
         .id = NPC_13,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {
-            .idle = ANIM_Goompa_Walk,
-        },
+        .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
 };
 
@@ -403,12 +374,9 @@ NpcData N(NpcData_GoombaKing) = {
     .id = NPC_GoombaKing,
     .pos = { 12.0f, 0.0f, -13.0f },
     .yaw = 0,
-    .init = (void*) 0x4003,
     .settings = &N(NpcSettings_GoombaKing),
     .flags = 0,
-    .animations = {
-        .idle = ANIM_GoombaKing_Idle,
-    }
+    .animations = NPC_SINGLE_ANIM(ANIM_GoombaKing_Idle),
 };
 
 NpcGroupList N(DefaultNPCs) = {

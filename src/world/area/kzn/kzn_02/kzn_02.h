@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kzn_02.h
 /// @brief Mt Lavalava - First Lava Lake
 

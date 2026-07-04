@@ -9,8 +9,6 @@ extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_Scene_FallIntoCell);
 extern EvtScript N(EVS_Scene_ImprisonedKoopaBros);
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitDoors_trd_04_5) = EVT_EXIT_DOUBLE_DOOR(trd_06_ENTRY_1, "trd_04", trd_04_ENTRY_5,
     COLLIDER_ttw, MODEL_o93, MODEL_o94);
 
@@ -26,7 +24,7 @@ EvtScript N(EVS_EnterMap) = {
         CaseLe(trd_06_ENTRY_3)
             Call(DisablePlayerInput, true)
             Call(DisablePlayerPhysics, true)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SetPlayerPos, NPC_DISPOSE_LOCATION)
             Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
             Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INACTIVE, true)
@@ -65,21 +63,21 @@ EvtScript N(EVS_BombWall_Cell) = {
         IfLt(LVar0, 110)
             IfLt(LVar2, 140)
                 Wait(25 * DT)
-                Call(SetNpcFlagBits, NPC_Bobomb_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-                Call(SetNpcFlagBits, NPC_Bobomb_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-                Call(SetNpcFlagBits, NPC_Bobomb_03, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-                Call(SetNpcFlagBits, NPC_Bobomb_04, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_Bobomb_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_Bobomb_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_Bobomb_03, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_Bobomb_04, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Call(SetPlayerSpeed, Float(3.0))
                 Call(PlayerMoveTo, 110, 140, 0)
                 Call(PlayerFaceNpc, NPC_PARTNER, false)
-                Call(SetNpcFlagBits, NPC_Bobomb_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-                Call(SetNpcFlagBits, NPC_Bobomb_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-                Call(SetNpcFlagBits, NPC_Bobomb_03, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-                Call(SetNpcFlagBits, NPC_Bobomb_04, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                Call(SetNpcFlagBits, NPC_Bobomb_01, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
+                Call(SetNpcFlagBits, NPC_Bobomb_02, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
+                Call(SetNpcFlagBits, NPC_Bobomb_03, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
+                Call(SetNpcFlagBits, NPC_Bobomb_04, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             EndIf
         EndIf
     EndThread
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_WorldBombette_Walk)
     Call(SetNpcSpeed, NPC_PARTNER, Float(3.5 / DT))
 #if !VERSION_PAL
@@ -160,7 +158,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(  100,    0, -100,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

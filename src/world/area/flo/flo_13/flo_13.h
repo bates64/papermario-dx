@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file flo_13.h
 /// @brief Flower Fields - (NW) Lakilester
 
@@ -9,7 +11,6 @@
 #include "mapfs/flo_13_shape.h"
 #include "mapfs/flo_13_hit.h"
 
-#include "sprite/npc/Lakilulu.h"
 #include "sprite/npc/WorldLakilester.h"
 #include "sprite/npc/Lakitu.h"
 #include "sprite/npc/Spiny.h"
@@ -40,5 +41,3 @@ extern EvtScript N(EVS_PushPartnerSong);
 extern EvtScript N(EVS_PopSong);
 extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(DefaultNPCs);
-
-API_CALLABLE(N(LoadPartyImage));

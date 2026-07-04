@@ -1,15 +1,10 @@
 #include "tik_24.h"
 
 export s32 N(map_init)(void) {
-    sprintf((s8*) &wMapShapeName, "tik_18_shape");
-    sprintf((s8*) &wMapHitName, "tik_18_hit");
+    sprintf(wMapShapeName, "tik_18_shape");
+    sprintf(wMapHitName, "tik_18_hit");
     return false;
 }
-
-//TODO these shouldnt need to be declared outside of tik_24_2_main
-//however, doing so creates extra rodata padding (not OK)
-const char STR_TIK_25[] = "tik_25";
-const char STR_TIK_23[] = "tik_23";
 
 EntryList N(Entrances) = {
     [tik_24_ENTRY_0]    { -220.0,  -10.0,    0.0,   90.0 },

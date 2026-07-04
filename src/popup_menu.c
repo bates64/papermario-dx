@@ -595,13 +595,13 @@ s32 popup_menu_update(void) {
             if (gPopupMenu->unk_338 == 0) {
                 set_window_properties(WIN_POPUP_TITLE_A, posX2, -6, width2, 16, WINDOW_PRIORITY_21,
                                       popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
-                set_window_update(WIN_POPUP_TITLE_A, 1);
-                set_window_update(WIN_POPUP_TITLE_B, 2);
+                set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_SHOW);
+                set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_HIDE);
             } else {
                 set_window_properties(WIN_POPUP_TITLE_B, posX2, -6, width2, 16, WINDOW_PRIORITY_21,
                                       popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
-                set_window_update(WIN_POPUP_TITLE_A, 2);
-                set_window_update(WIN_POPUP_TITLE_B, 1);
+                set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_HIDE);
+                set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_SHOW);
             }
 #elif VERSION_JP
             switch (gPopupMenu->popupType) {

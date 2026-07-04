@@ -10,14 +10,14 @@ typedef struct InspectIconData {
     /* 0x0C */ f32 yaw;
     /* 0x10 */ f32 scale;
     /* 0x14 */ s32 holdTime;
-    /* 0x18 */ char unk_18[0x4];
+    /* 0x18 */ PAD(4);
     /* 0x1C */ s32 alpha; // unused
-    /* 0x20 */ char unk_20[0x1];
+    /* 0x20 */ PAD(1);
     /* 0x21 */ s8 iconBounceVel;
     /* 0x22 */ s8 iconBounceDir;
     /* 0x23 */ u8 state;
     /* 0x24 */ u8 brightness;
-    /* 0x25 */ char unk_25[0x3];
+    /* 0x25 */ PAD(3);
 } InspectIconData; // size = 0x28
 
 enum {
@@ -82,10 +82,10 @@ void appendGfx_interact_prompt(void) {
         ifxImg.xOffset = -16;
         ifxImg.yOffset = 26;
         ifxImg.alpha = 255;
-        imgfx_update(0, IMGFX_CLEAR, 0, 0, 0, 0, IMGFX_FLAG_400 | IMGFX_FLAG_40);
+        imgfx_update(0, IMGFX_CLEAR, 0, 0, 0, 0, IMGFX_FLAG_ALPHA_CVG | IMGFX_FLAG_NO_ZBUFFER);
         imgfx_update(0, IMGFX_SET_COLOR,
                     InspectIconPtr->brightness, InspectIconPtr->brightness, InspectIconPtr->brightness, 255,
-                    IMGFX_FLAG_400 | IMGFX_FLAG_40 | IMGFX_FLAG_8);
+                    IMGFX_FLAG_ALPHA_CVG | IMGFX_FLAG_NO_ZBUFFER);
         imgfx_appendGfx_component(0, &ifxImg, 0, sp78);
 
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
@@ -207,7 +207,7 @@ void interact_inspect_update(void) {
             InspectIconPtr->scale += 0.05;
             if (InspectIconPtr->scale >= 0.55) {
                 InspectIconPtr->scale = 0.55f;
-                InspectIconPtr->state++;
+                InspectIconPtr->state = INSPECT_ICON_APPEAR;
                 InspectIconPtr->holdTime = 12;
             }
             break;
@@ -215,7 +215,7 @@ void interact_inspect_update(void) {
             InspectIconPtr->yaw = 0.0f;
             InspectIconPtr->holdTime--;
             if (InspectIconPtr->holdTime <= 0) {
-                InspectIconPtr->state++;
+                InspectIconPtr->state = INSPECT_ICON_IDLE;
             }
             break;
         case INSPECT_ICON_IDLE:
@@ -270,6 +270,6 @@ void interact_inspect_dismiss(void) {
     InteractNotificationCallback = nullptr;
     gPlayerStatusPtr->encounteredNPC = nullptr;
     gPlayerStatusPtr->animFlags &= ~PA_FLAG_INTERACT_PROMPT_AVAILABLE;
-    func_800EF3D4(0);
+    partner_set_forced_follow_mode(0);
     partner_reset_tether_distance();
 }

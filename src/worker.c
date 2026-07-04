@@ -29,7 +29,7 @@ void init_worker_list(void) {
     }
 }
 
-s32 create_worker_scene(void (*updateFunc)(void), void (*renderFunc)(void)) {
+s32 create_worker_scene(VoidCallback updateFunc, VoidCallback renderFunc) {
     Worker* worker;
     s32 i;
 
@@ -60,7 +60,7 @@ s32 create_worker_scene(void (*updateFunc)(void), void (*renderFunc)(void)) {
     return i;
 }
 
-s32 create_worker_frontUI(void (*updateFunc)(void), void (*drawFunc)(void)) {
+s32 create_worker_frontUI(VoidCallback updateFunc, VoidCallback drawFunc) {
     Worker* worker;
     s32 i;
 
@@ -91,7 +91,7 @@ s32 create_worker_frontUI(void (*updateFunc)(void), void (*drawFunc)(void)) {
     return i;
 }
 
-s32 create_worker_backUI(void (*updateFunc)(void), void (*drawFunc)(void)) {
+s32 create_worker_backUI(VoidCallback updateFunc, VoidCallback drawFunc) {
     Worker* worker;
     s32 i;
 

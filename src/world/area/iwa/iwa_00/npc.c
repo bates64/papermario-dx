@@ -1,21 +1,13 @@
 #include "iwa_00.h"
 #include "effects.h"
 
-#include "world/common/enemy/MontyMole_GroundAmbush.inc.c"
-#include "world/common/enemy/MontyMole_WallAmbush.inc.c"
-#include "world/common/enemy/Whacka.inc.c"
+#include "world/common/enemy/MontyMole/ground_ambush.inc.c"
+#include "world/common/enemy/MontyMole/wall_ambush.inc.c"
+#include "world/common/enemy/Whacka/idle.inc.c"
 
-#include "world/common/complete/GiveReward.inc.c"
-#if VERSION_JP
-#include "world/common/todo/SomeItemEntityFunc.inc.c"
-#include "world/common/todo/IsItemBadge.inc.c"
-#include "world/area/iwa/common/UnkScriptJP00.inc.c"
-#endif
-
-API_CALLABLE(N(func_80240118_90CD58)) {
+API_CALLABLE(N(AnimateWhackaDefeat)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    s32 temp;
 
     if (isInitialCall) {
         script->functionTemp[0] = 0;
@@ -31,13 +23,9 @@ API_CALLABLE(N(func_80240118_90CD58)) {
         fx_damage_stars(FX_DAMAGE_STARS_1, npc->pos.x, npc->pos.y + (npc->collisionHeight / 2), npc->pos.z, 0.0f, -1.0f, 0.0f, 10);
     }
 
-    temp = script->functionTemp[1];
     if (script->functionTemp[1] == 10) {
         fx_big_smoke_puff(npc->pos.x, npc->pos.y + 10.0f, npc->pos.z + 10.0f);
-        // odd logic needed to match
-        if (script->functionTemp[1] == temp) {
-            spawn_drops(enemy);
-        }
+        spawn_drops(enemy);
     }
 
     script->functionTemp[1]--;
@@ -302,7 +290,7 @@ EvtScript N(EVS_NpcHit_Whacka_02) = {
         Wait(2)
     EndIf
     IfGe(GB_IWA00_Whacka_HitCount, 8)
-        Call(N(func_80240118_90CD58))
+        Call(N(AnimateWhackaDefeat))
     EndIf
     Call(SetNpcPos, NPC_Whacka_01, NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_Whacka_02, NPC_DISPOSE_LOCATION)

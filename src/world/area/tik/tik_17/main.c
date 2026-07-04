@@ -2,8 +2,6 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_GotoMap_sam_02_2) = {
     IfEq(GF_StartedChapter7, false)
         Set(GF_StartedChapter7, true)
@@ -56,7 +54,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP( -300,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

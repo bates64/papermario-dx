@@ -1,22 +1,19 @@
 #include "mac_04.h"
 #include "sprite/player.h"
+#include "world/common/enemy/ShyGuy/base.h"
 
-#include "world/common/npc/Toad_Wander.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Toad/wander.inc.c"
+#include "world/common/npc/ToadKid/idle.inc.c"
+#include "world/common/npc/Toadette/idle.inc.c"
+#include "world/common/npc/HarryT/idle.inc.c"
+#include "world/common/npc/ChetRippo/idle.inc.c"
 
-NpcSettings N(NpcSettings_ChetRippo) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
-#include "world/common/npc/GoombaFamily.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
-#include "world/common/npc/Twink.inc.c"
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
-
-#include "world/common/complete/KeyItemChoice.inc.c"
+#include "world/common/npc/Goomama/idle.inc.c"
+#include "world/common/npc/Goombaria/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
+#include "world/common/npc/Twink/idle.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
 EvtScript N(EVS_TossTrainInToybox) = {
     Call(FacePlayerTowardPoint, -440, -150, 0)
@@ -57,14 +54,17 @@ EvtScript N(EVS_ItemPrompt_ToyTrain) = {
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(ShowKeyChoicePopup)
     Set(LVar2, LVar0)
-    IfLe(LVar2, 0)
-        IfEq(LVar2, 0)
+    Switch(LVar2)
+        CaseEq(ITEM_CHOICE_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_Toybox, 160, 40)
-        EndIf
-        Call(CloseChoicePopup)
-        Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
-        Return
-    EndIf
+            Call(CloseChoicePopup)
+            Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
+            Return
+        CaseEq(ITEM_CHOICE_CANCELED)
+            Call(CloseChoicePopup)
+            Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
+            Return
+    EndSwitch
     Call(DisablePlayerInput, true)
     Call(RemoveKeyItemAt, LVar1)
     Call(PlaySoundAtCollider, COLLIDER_omo_ent, SOUND_OMO_TOYBOX_LID, SOUND_SPACE_DEFAULT)
@@ -104,10 +104,7 @@ EvtScript N(EVS_ItemPrompt_ToyTrain) = {
     End
 };
 
-s32 N(ItemList_ToyTrain)[] = {
-    ITEM_TOY_TRAIN,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_ToyTrain), ITEM_TOY_TRAIN);
 
 EvtScript N(EVS_Toybox_SetupTrainPrompt) = {
     IfLt(GB_StoryProgress, STORY_CH4_RETURNED_TOY_TRAIN)
@@ -133,7 +130,6 @@ s32 N(get_total_equipped_bp_cost)(void) {
 }
 
 API_CALLABLE(N(EnforceNewStatLimits)) {
-    PlayerData* playerData = &gPlayerData;
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
     s32 bpCost = N(get_total_equipped_bp_cost)();
@@ -178,9 +174,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .settings = &N(NpcSettings_ChetRippo),
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_ChetRippo_Idle,
-        },
+        .animations = CHET_RIPPO_ANIMS,
         .tattle = MSG_NpcTattle_ChetRippo,
     },
     {
@@ -188,16 +182,10 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { 310.0f, 20.0f, -430.0f },
         .yaw = 230,
         .init = &N(EVS_NpcInit_HarryT),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_HarryT),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_HarryT_Idle,
-            .walk   = ANIM_HarryT_Walk,
-            .run    = ANIM_HarryT_Run,
-            .chase  = ANIM_HarryT_Run,
-            .anim_4 = ANIM_HarryT_Idle,
-        },
+        .animations = HARRY_T_ANIMS,
         .tattle = MSG_NpcTattle_HarryT_ShopOwner,
     },
     {
@@ -205,7 +193,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { -80.0f, 20.0f, -100.0f },
         .yaw = 133,
         .init = &N(EVS_NpcInit_NewResident1),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_GREEN_ANIMS,
@@ -216,7 +204,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { -133.0f, 20.0f, -82.0f },
         .yaw = 133,
         .init = &N(EVS_NpcInit_NewResident2),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PURPLE_ANIMS,
@@ -250,7 +238,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { -239.0f, 20.0f, 105.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toad_02),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
@@ -261,7 +249,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { 254.0f, 20.0f, 436.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_ToadKid_01),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_ToadKid),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_KID_RED_ANIMS,
@@ -272,7 +260,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { 304.0f, 20.0f, 410.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ToadKid_02),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_ToadKid),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_KID_YELLOW_ANIMS,
@@ -283,7 +271,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { 345.0f, 20.0f, 438.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ToadKid_03),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_ToadKid),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_KID_GREEN_ANIMS,
@@ -294,7 +282,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { -274.0f, 0.0f, 400.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toadette_03),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_ORANGE_ANIMS,
@@ -305,7 +293,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { 500.0f, 20.0f, -160.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Toad_03),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_GREEN_ANIMS,
@@ -316,7 +304,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { -110.0f, 0.0f, 568.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_GossipTrio1),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_GREEN_ANIMS,
@@ -327,7 +315,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { -114.0f, 0.0f, 498.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_GossipTrio2),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -338,7 +326,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .pos = { -52.0f, 0.0f, 525.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_GossipTrio3),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_YELLOW_ANIMS,
@@ -346,7 +334,7 @@ NpcData N(NpcData_Townsfolk)[] = {
     },
 };
 
-AnimID N(ExtraAnims_Twink)[] = {
+AnimID N(LimitAnims_Twink)[] = {
     ANIM_Twink_Idle,
     ANIM_Twink_Fly,
     ANIM_Twink_Talk,
@@ -363,60 +351,26 @@ NpcData N(NpcData_Chapter4)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_Twink),
+        .limitAnimations = N(LimitAnims_Twink),
     },
     {
         .id = NPC_ShyGuy_01,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_ShyGuy_Red_Anim01,
-            .walk   = ANIM_ShyGuy_Red_Anim02,
-            .run    = ANIM_ShyGuy_Red_Anim03,
-            .chase  = ANIM_ShyGuy_Red_Anim03,
-            .anim_4 = ANIM_ShyGuy_Red_Anim01,
-            .anim_5 = ANIM_ShyGuy_Red_Anim01,
-            .death  = ANIM_ShyGuy_Red_Anim0C,
-            .hit    = ANIM_ShyGuy_Red_Anim0C,
-            .anim_8 = ANIM_ShyGuy_Red_Anim15,
-            .anim_9 = ANIM_ShyGuy_Red_Anim12,
-            .anim_A = ANIM_ShyGuy_Red_Anim11,
-            .anim_B = ANIM_ShyGuy_Red_Anim10,
-            .anim_C = ANIM_ShyGuy_Red_Anim05,
-            .anim_D = ANIM_ShyGuy_Red_Anim01,
-            .anim_E = ANIM_ShyGuy_Red_Anim01,
-            .anim_F = ANIM_ShyGuy_Red_Anim01,
-        },
+        .animations = RED_SHY_GUY_ANIMS,
     },
     {
         .id = NPC_ShyGuy_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy_02),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_ShyGuy_Red_Anim01,
-            .walk   = ANIM_ShyGuy_Red_Anim02,
-            .run    = ANIM_ShyGuy_Red_Anim03,
-            .chase  = ANIM_ShyGuy_Red_Anim03,
-            .anim_4 = ANIM_ShyGuy_Red_Anim01,
-            .anim_5 = ANIM_ShyGuy_Red_Anim01,
-            .death  = ANIM_ShyGuy_Red_Anim0C,
-            .hit    = ANIM_ShyGuy_Red_Anim0C,
-            .anim_8 = ANIM_ShyGuy_Red_Anim15,
-            .anim_9 = ANIM_ShyGuy_Red_Anim12,
-            .anim_A = ANIM_ShyGuy_Red_Anim11,
-            .anim_B = ANIM_ShyGuy_Red_Anim10,
-            .anim_C = ANIM_ShyGuy_Red_Anim05,
-            .anim_D = ANIM_ShyGuy_Red_Anim01,
-            .anim_E = ANIM_ShyGuy_Red_Anim01,
-            .anim_F = ANIM_ShyGuy_Red_Anim01,
-        },
+        .animations = RED_SHY_GUY_ANIMS,
     },
 };
 
@@ -449,7 +403,7 @@ NpcData N(NpcData_GoombaFamily)[] = {
         .pos = { -126.0f, 0.0f, 329.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Goomama),
-        .settings = &N(NpcSettings_GoombaFamily),
+        .settings = &N(NpcSettings_Goomama),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = GOOMAMA_ANIMS,
@@ -460,7 +414,7 @@ NpcData N(NpcData_GoombaFamily)[] = {
         .pos = { -117.0f, 0.0f, 305.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Goombaria),
-        .settings = &N(NpcSettings_GoombaFamily),
+        .settings = &N(NpcSettings_Goombaria),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = GOOMBARIA_ANIMS,

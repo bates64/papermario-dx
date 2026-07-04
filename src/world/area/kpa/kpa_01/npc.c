@@ -1,6 +1,6 @@
 #include "kpa_01.h"
 
-#include "world/common/enemy/SpikeTop.inc.c"
+#include "world/common/enemy/SpikeTop/wander.inc.c"
 
 NpcData N(NpcData_BonyBeetle_01) = {
     .id = NPC_BonyBeetle_01,
@@ -18,7 +18,7 @@ NpcData N(NpcData_BonyBeetle_01) = {
             .detectSize = { 300 },
         }
     },
-    .settings = &N(NpcSettings_BonyBeetle),
+    .settings = &N(NpcSettings_BonyBeetle_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BONY_BEETLE_DROPS,
     .animations = BONY_BEETLE_ANIMS,
@@ -40,7 +40,7 @@ NpcData N(NpcData_BonyBeetle_02) = {
             .detectSize = { 300 },
         }
     },
-    .settings = &N(NpcSettings_BonyBeetle),
+    .settings = &N(NpcSettings_BonyBeetle_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BONY_BEETLE_DROPS,
     .animations = BONY_BEETLE_ANIMS,

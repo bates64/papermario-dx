@@ -1,7 +1,7 @@
 #include "common.h"
 #include "model.h"
 
-void func_800EF414(s32, s32);
+void partner_move_to_pos(s32, s32);
 void get_flat_collider_normal(s32, f32*, f32*, f32*);
 s32 get_current_item_entity_render_group(void);
 void set_current_item_entity_render_group(s32);
@@ -25,9 +25,9 @@ typedef struct MapRoom {
     /* 0x1C */ VecXZf posExitA;
     /* 0x24 */ VecXZf posExitB;
     /* 0x2C */ EvtScript* overrideOpenDoor;
-    /* 0x2C */ EvtScript* overrideMoveWall;
-    /* 0x2C */ EvtScript* overrideDropDoor;
-    /* 0x2C */ EvtScript* stateListenerScript;
+    /* 0x30 */ EvtScript* overrideMoveWall;
+    /* 0x34 */ EvtScript* overrideDropDoor;
+    /* 0x38 */ EvtScript* stateListenerScript;
     /* 0x3C */ s32 modelID;
     /* 0x40 */ s32 bgColor[3];
     /* 0x4C */ s32 scriptIDs[4];
@@ -70,13 +70,13 @@ API_CALLABLE(MovePartnerThroughDoor) {
     s32 posX = evt_get_variable(script, *args++);
     s32 posZ = evt_get_variable(script, *args++);
 
-    func_800EF414(posX, posZ);
+    partner_move_to_pos(posX, posZ);
     partner_set_tether_distance(0.0f);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(ResetPartnerMovement) {
-    func_800EF3E4();
+    partner_move_to_player_side();
     partner_reset_tether_distance();
     return ApiStatus_DONE2;
 }
@@ -252,7 +252,7 @@ API_CALLABLE(SaveUseDoorScript) {
 }
 
 API_CALLABLE(RoomVisibilityToggleImpl) {
-    MapRoom* door = script->varTablePtr[1];
+    MapRoom* room = script->varTablePtr[1];
     s32 alpha, r, g, b;
 
     if (isInitialCall) {
@@ -271,9 +271,9 @@ API_CALLABLE(RoomVisibilityToggleImpl) {
         alpha = 255 - script->functionTemp[1];
     }
     mdl_set_shroud_tint_params(0, 0, 0, alpha);
-    r = door->bgColor[0] * (255 - alpha) / 255;
-    g = door->bgColor[1] * (255 - alpha) / 255;
-    b = door->bgColor[2] * (255 - alpha) / 255;
+    r = room->bgColor[0] * (255 - alpha) / 255;
+    g = room->bgColor[1] * (255 - alpha) / 255;
+    b = room->bgColor[2] * (255 - alpha) / 255;
     gCameras[CAM_DEFAULT].bgColor[0] = r;
     gCameras[CAM_DEFAULT].bgColor[1] = g;
     gCameras[CAM_DEFAULT].bgColor[2] = b;

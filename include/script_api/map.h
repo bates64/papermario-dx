@@ -100,6 +100,8 @@ API_CALLABLE(GetGridIndexFromPos);
 /// @param fallCallback
 API_CALLABLE(SetPushBlockFallEffect);
 
+s32 PushBlockFallCallback_Gravity(Entity* block, Evt* source);
+
 /// @evtapi
 API_CALLABLE(TeleportPartnerToPlayer);
 

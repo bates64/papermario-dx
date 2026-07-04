@@ -2,19 +2,19 @@
 #include "entity.h"
 #include "sprite.h"
 
-void N(test_reflection_worker_render_wall)(void);
+void N(worker_render_test_reflection_wall)(void);
 void N(appendGfx_test_reflection_wall)(void*);
-void N(test_reflection_worker_render_floor)(void);
+void N(worker_render_test_reflection_floor)(void);
 void N(appendGfx_test_reflection_floor)(void*);
-void N(test_reflection_worker_partner)(void);
+void N(worker_update_test_partner_reflection)(void);
 
 // identical to final version
 API_CALLABLE(N(EnableWallReflectionTest)) {
-    script->array[0] = (s32) create_worker_frontUI(nullptr, N(test_reflection_worker_render_wall));
+    script->array[0] = (s32) create_worker_frontUI(nullptr, N(worker_render_test_reflection_wall));
     return ApiStatus_DONE2;
 }
 
-void N(test_reflection_worker_render_wall)(void) {
+void N(worker_render_test_reflection_wall)(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     EntityModel* entityModel;
     RenderTask renderTask;
@@ -61,11 +61,11 @@ void N(appendGfx_test_reflection_wall)(void* data) {
 }
 
 API_CALLABLE(N(EnableFloorReflectionTest)) {
-    script->array[0] = (s32) create_worker_frontUI(nullptr, &N(test_reflection_worker_render_floor));
+    script->array[0] = (s32) create_worker_frontUI(nullptr, &N(worker_render_test_reflection_floor));
     return ApiStatus_DONE2;
 }
 
-void N(test_reflection_worker_render_floor)(void) {
+void N(worker_render_test_reflection_floor)(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     EntityModel* entityModel;
     RenderTask renderTask;
@@ -128,7 +128,7 @@ void N(appendGfx_test_reflection_floor)(void* data) {
 API_CALLABLE(N(PartnerReflectTest)) {
     Npc* partner;
 
-    script->array[1] = create_worker_scene(N(test_reflection_worker_partner), nullptr);
+    script->array[1] = create_worker_scene(N(worker_update_test_partner_reflection), nullptr);
     partner = get_npc_safe(NPC_PARTNER);
 
     if (partner == nullptr) {
@@ -139,7 +139,7 @@ API_CALLABLE(N(PartnerReflectTest)) {
     return ApiStatus_DONE2;
 }
 
-void N(test_reflection_worker_partner)(void) {
+void N(worker_update_test_partner_reflection)(void) {
     Npc* partner = get_npc_safe(NPC_PARTNER);
 
     if (partner != nullptr) {

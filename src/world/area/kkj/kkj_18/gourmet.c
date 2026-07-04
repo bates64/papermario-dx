@@ -1,9 +1,6 @@
 #include "kkj_18.h"
 #include "sprite/player.h"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
 API_CALLABLE(N(SetHeldBakingItem)) {
     Bytecode* args = script->ptrReadPos;
 
@@ -40,7 +37,7 @@ Vec3f N(TwinkDepartPath)[] = {
     {  160.0,    60.0,  -25.0 },
 };
 
-EvtScript N(EVS_ApproachPeach) = {
+EvtScript N(EVS_GetApproachPeachPos) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, 16)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -51,13 +48,13 @@ EvtScript N(EVS_ApproachPeach) = {
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Sub(LVar0, 26)
         Add(LVar2, 2)
-        Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Anim06)
+        Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Run)
         Call(SetNpcSpeed, NPC_Koopatrol_01, Float(5.0))
         Wait(10)
         Call(NpcMoveTo, NPC_Koopatrol_01, -130, -30, 0)
         Call(NpcMoveTo, NPC_Koopatrol_01, -130, 30, 0)
         Call(NpcMoveTo, NPC_Koopatrol_01, LVar0, LVar2, 0)
-        Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Anim01)
+        Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Idle)
         Call(NpcFacePlayer, NPC_Koopatrol_01, 5)
         Call(SetNpcVar, NPC_Koopatrol_01, 0, 0)
     EndThread
@@ -65,13 +62,13 @@ EvtScript N(EVS_ApproachPeach) = {
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Add(LVar0, 26)
         Sub(LVar2, 2)
-        Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Anim06)
+        Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Run)
         Call(SetNpcSpeed, NPC_Koopatrol_02, Float(5.0))
         Call(NpcMoveTo, NPC_Koopatrol_02, -130, -30, 0)
         Call(NpcMoveTo, NPC_Koopatrol_02, -130, 30, 0)
         Call(NpcMoveTo, NPC_Koopatrol_02, -100, 30, 0)
         Call(NpcMoveTo, NPC_Koopatrol_02, LVar0, LVar2, 0)
-        Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Anim01)
+        Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Idle)
         Call(NpcFacePlayer, NPC_Koopatrol_02, 5)
     EndThread
     Call(InterpPlayerYaw, 270, 0)
@@ -92,7 +89,7 @@ EvtScript N(EVS_PickUpPeach) = {
         Call(GetNpcPos, NPC_Koopatrol_01, LVar0, LVar1, LVar2)
         Add(LVar0, 5)
         Call(NpcMoveTo, NPC_Koopatrol_01, LVar0, LVar2, 5)
-        Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Anim12)
+        Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Lift)
         Add(LVar0, 5)
         Call(NpcMoveTo, NPC_Koopatrol_01, LVar0, LVar2, 5)
     EndThread
@@ -100,7 +97,7 @@ EvtScript N(EVS_PickUpPeach) = {
         Call(GetNpcPos, NPC_Koopatrol_02, LVar0, LVar1, LVar2)
         Sub(LVar0, 5)
         Call(NpcMoveTo, NPC_Koopatrol_02, LVar0, LVar2, 5)
-        Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Anim12)
+        Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Lift)
         Sub(LVar0, 5)
         Call(NpcMoveTo, NPC_Koopatrol_02, LVar0, LVar2, 5)
     EndThread
@@ -137,7 +134,7 @@ EvtScript N(EVS_CarryPeachAway) = {
     EndThread
     Call(SetNpcVar, NPC_Koopatrol_01, 0, 1)
     Thread
-        Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Anim14)
+        Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_CarryFast)
         Call(SetNpcSpeed, NPC_Koopatrol_01, Float(5.0))
         Call(NpcMoveTo, NPC_Koopatrol_01, -136, 32, 0)
         Call(NpcMoveTo, NPC_Koopatrol_01, -136, -28, 0)
@@ -145,7 +142,7 @@ EvtScript N(EVS_CarryPeachAway) = {
         Call(SetNpcVar, NPC_Koopatrol_01, 0, 0)
     EndThread
     Thread
-        Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Anim14)
+        Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_CarryFast)
         Call(SetNpcSpeed, NPC_Koopatrol_02, Float(5.0))
         Call(NpcMoveTo, NPC_Koopatrol_02, -104, 28, 0)
         Call(NpcMoveTo, NPC_Koopatrol_02, -104, -32, 0)
@@ -297,7 +294,7 @@ EvtScript N(EVS_GourmetGuy_RunAround) = {
     Call(GetNpcPos, NPC_GourmetGuy, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_GourmetGuy, LVar0, 200, LVar2, 15 * DT)
     Call(SetNpcAnimation, NPC_GourmetGuy, ANIM_GourmetGuy_Panic)
-    Call(SetNpcFlagBits, NPC_GourmetGuy, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_GourmetGuy, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcSpeed, NPC_GourmetGuy, Float(20.0 / DT))
     Call(PlaySoundAtNpc, NPC_GourmetGuy, SOUND_GOURMET_GUY_RUN, SOUND_SPACE_DEFAULT)
     Call(SetNpcRotation, NPC_GourmetGuy, 0, 0, -45)
@@ -463,12 +460,12 @@ EvtScript N(EVS_Scene_GiveKitchenKey) = {
 
 EvtScript N(EVS_Scene_JudgeCake) = {
     Call(DisablePlayerInput, true)
-    IfEq(AB_KKJ19_AddedBerries, false)
+    IfEq(AF_KKJ19_AddedBerries, false)
         Set(MV_CakeItemIdx, ITEM_CAKE_WITH_ICING)
         Set(LVar0, ANIM_Peach3_PresentBerryCake)
         Set(LVar1, ANIM_Peach1_HoldIcingCake)
     Else
-        IfEq(AB_KKJ19_AddedIcing, false)
+        IfEq(AF_KKJ19_AddedIcing, false)
             Set(MV_CakeItemIdx, ITEM_CAKE_WITH_BERRIES)
             Set(LVar0, ANIM_Peach3_PresentIcingCake)
             Set(LVar1, ANIM_Peach1_HoldBerryCake)
@@ -495,7 +492,7 @@ EvtScript N(EVS_Scene_JudgeCake) = {
     Set(AF_KKJ_FinishedBakingCake, false)
     Call(N(SetHeldBakingItem), PEACH_BAKING_NONE)
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(NpcFlyTo, NPC_PARTNER, -23, 30, 36, 5 * DT, 0, EASING_LINEAR)
         Call(InterpNpcYaw, NPC_PARTNER, 90, 5)
     EndThread
@@ -592,7 +589,7 @@ EvtScript N(EVS_Scene_JudgeCake) = {
     Call(SetNpcPos, NPC_Koopatrol_01, -250, 0, -30)
     Call(SetNpcPos, NPC_Koopatrol_02, -250, 0, -30)
     Call(SetNpcPos, NPC_Kammy, -250, 0, -30)
-    Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Anim04, ANIM_WorldKammy_Anim01, 0, MSG_Peach_00B3)
+    Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Talk, ANIM_WorldKammy_Idle, 0, MSG_Peach_00B3)
     Call(SetMusic, 0, SONG_KAMMY_KOOPA_THEME, 0, VOL_LEVEL_FULL)
     Call(UseSettingsFrom, CAM_DEFAULT, -180, 0, -30)
     Call(SetPanTarget, CAM_DEFAULT, -180, 0, -30)
@@ -619,19 +616,19 @@ EvtScript N(EVS_Scene_JudgeCake) = {
         Call(SetCamDistance, CAM_DEFAULT, 400)
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
     EndThread
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim02)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Walk)
     Call(SetNpcSpeed, NPC_Kammy, Float(2.0 / DT))
     Call(NpcMoveTo, NPC_Kammy, -130, -30, 0)
     Call(NpcMoveTo, NPC_Kammy, -120, 80, 0)
     Call(NpcMoveTo, NPC_Kammy, -70, 80, 0)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim01)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Idle)
     ExecGetTID(N(EVS_SweatyPeach), LVarA)
-    Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Anim04, ANIM_WorldKammy_Anim01, 0, MSG_Peach_00B4)
-    Call(EndSpeech, NPC_Kammy, ANIM_WorldKammy_Anim05, ANIM_WorldKammy_Anim05, 5)
-    Call(SpeakToNpc, NPC_Kammy, ANIM_WorldKammy_Anim05, ANIM_WorldKammy_Anim01, 0, NPC_Koopatrol_01, MSG_Peach_00B5)
+    Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Talk, ANIM_WorldKammy_Idle, 0, MSG_Peach_00B4)
+    Call(EndSpeech, NPC_Kammy, ANIM_WorldKammy_Shout, ANIM_WorldKammy_Shout, 5)
+    Call(SpeakToNpc, NPC_Kammy, ANIM_WorldKammy_Shout, ANIM_WorldKammy_Idle, 0, NPC_Koopatrol_01, MSG_Peach_00B5)
     KillThread(LVarA)
     Call(DisablePlayerPhysics, true)
-    ExecWait(N(EVS_ApproachPeach))
+    ExecWait(N(EVS_GetApproachPeachPos))
     ExecWait(N(EVS_PickUpPeach))
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Carried, ANIM_Peach2_Carried, 5, MSG_Peach_00B6)
     Thread

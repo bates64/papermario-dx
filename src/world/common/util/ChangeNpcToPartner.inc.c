@@ -2,8 +2,6 @@
 #include "map.h"
 #include "npc.h"
 
-void func_800EB2A4(s32 arg0);
-
 API_CALLABLE(N(ChangeNpcToPartner)) {
     Bytecode* args = script->ptrReadPos;
     PlayerData* playerData = &gPlayerData;
@@ -20,12 +18,12 @@ API_CALLABLE(N(ChangeNpcToPartner)) {
     }
 
     switch (script->functionTemp[0]) {
-        case 0:
-            switch_to_partner(0);
+        case 0: // begin
+            switch_to_partner(PARTNER_NONE);
             script->functionTemp[1] = 30;
             script->functionTemp[0] = 1;
             break;
-        case 1:
+        case 1: // putting away current
             script->functionTemp[1]--;
             if (script->functionTemp[1] == -1) {
                 script->functionTemp[0] = 2;
@@ -35,7 +33,7 @@ API_CALLABLE(N(ChangeNpcToPartner)) {
             playerData->curPartner = partnerID;
             playerData->partners[partnerID].enabled = true;
             partner_clear_player_tracking(npc);
-            func_800EB2A4(playerData->curPartner);
+            partner_switch_to_partner_instant(playerData->curPartner);
             script->functionTemp[0] = 3;
             break;
         case 3:

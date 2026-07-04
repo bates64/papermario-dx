@@ -41,7 +41,7 @@ EvtScript N(EVS_ExitWell) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(N(AwaitPlayerFallDist))
-    Set(AF_ARN_01, true)
+    Set(AF_ARN_UsingWellSpring, true)
     IfLt(GB_StoryProgress, STORY_CH3_WENT_DOWN_THE_WELL)
         Set(GB_StoryProgress, STORY_CH3_WENT_DOWN_THE_WELL)
     EndIf

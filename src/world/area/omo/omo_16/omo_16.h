@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file omo_16.h
 /// @brief Shy Guy's Toybox - Riding the Train
 
@@ -12,24 +14,24 @@
 #include "sprite/npc/TrainToad.h"
 
 enum {
-    NPC_Conductor       = 0,
+    NPC_Conductor           = 0,
 };
 
 enum {
-    MV_TrainUnk_00          = MapVar(0),
-    MV_TrainUnk_01          = MapVar(1),
-    MV_TrainUnk_02          = MapVar(2),
-    MV_TrainPos             = MapVar(11),
-    MV_TrainUnk_0C          = MapVar(12),
-    MV_TrainUnk_0D          = MapVar(13),
+    MV_TrainRideState       = MapVar(0),
+    MV_TrainPath            = MapVar(1),
+    MV_TrainSpeedMode       = MapVar(2),
+    MV_TrainPosX            = MapVar(11),
+    MV_TrainPosZ            = MapVar(12),
+    MV_TrainYaw             = MapVar(13),
 };
 
 enum {
-    MF_TrainUnk_00          = MapFlag(0),
+    MF_TrainRideActive      = MapFlag(0),
 };
 
 #define NAMESPACE omo_16
 
 extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_802429C4);
+extern EvtScript N(EVS_Scene_TrainTraveling);
 extern NpcGroupList N(DefaultNPCs);

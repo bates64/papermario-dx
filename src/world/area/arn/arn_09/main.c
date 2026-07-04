@@ -32,7 +32,7 @@ EvtScript N(EVS_Main) = {
     Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_EnterMap))
-    Exec(N(EVS_LaunchPlayer))
+    Exec(N(EVS_LandFromWell))
     Exec(N(EVS_SetupMusic))
     Return
     End

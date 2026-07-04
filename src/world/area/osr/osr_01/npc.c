@@ -1,9 +1,7 @@
 
 #include "osr_01.h"
 
-#include "world/common/npc/Toad_Stationary.inc.c"
-
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
 EvtScript N(EVS_Scene_Wishing) = {
     Call(DisablePlayerInput, true)
@@ -26,9 +24,16 @@ EvtScript N(EVS_Scene_Wishing) = {
     End
 };
 
-s32 N(LetterList)[] = {
-    ITEM_LETTER_CHAIN_MUSS_T,
-    ITEM_NONE
+LetterDelivery N(LetterDelivery_MussT) = {
+    .recipientID = NPC_Toad,
+    .recipientTalk = ANIM_Toad_Red_Talk,
+    .recipientIdle = ANIM_Toad_Red_Idle,
+    .msgGreeting = MSG_OSR_0010,
+    .msgCancelled = MSG_OSR_0011,
+    .msgDelivered = MSG_OSR_0012,
+    .msgRecieved = MSG_OSR_0013,
+    .letters = { ITEM_LETTER_CHAIN_MUSS_T },
+    .reward = ITEM_LETTER_CHAIN_KOOVER_1,
 };
 
 EvtScript N(EVS_NpcInteract_Toad) = {
@@ -73,15 +78,8 @@ EvtScript N(EVS_NpcInteract_Toad) = {
             Set(LVar0, MSG_OSR_000F)
     EndSwitch
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, LVar0)
-    Call(N(LetterDelivery_Init),
-        NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle,
-        ITEM_LETTER_CHAIN_MUSS_T, ITEM_LETTER_CHAIN_KOOVER_1,
-        MSG_OSR_0010, MSG_OSR_0011, MSG_OSR_0012, MSG_OSR_0013,
-        Ref(N(LetterList)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    IfEq(LVarC, 1)
-        Return
-    EndIf
+    Set(LVar0, Ref(N(LetterDelivery_MussT)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
@@ -104,7 +102,7 @@ NpcData N(NpcData_Toad) = {
     .pos = { 25.0f, 0.0f, 130.0f },
     .yaw = 270,
     .init = &N(EVS_NpcInit_Toad),
-    .settings = &N(NpcSettings_Toad_Stationary),
+    .settings = &N(NpcSettings_Toad),
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
     .drops = NO_DROPS,
     .animations = TOAD_RED_ANIMS,

@@ -1,3 +1,4 @@
+#undef NAMESPACE
 #define NAMESPACE A(goombario_lee)
 
 extern EvtScript N(EVS_Init);
@@ -205,7 +206,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-#include "world/common/todo/UnkFunc62.inc.c"
+#include "battle/common/FakeGoombarioJumpOnTarget.inc.c"
 #include "common/ActorJumpToPos.inc.c"
 
 EvtScript N(EVS_HeadbonkFollowthrough) = {
@@ -327,7 +328,7 @@ EvtScript N(EVS_Attack_Headbonk) = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, 0, 0, 5)
     Call(SetJumpAnimations, ACTOR_SELF, PRT_MAIN, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk)
-    Call(N(UnkFunc62), LVarA, 0)
+    Call(N(FakeGoombarioJumpOnTarget), LVarA, 0)
     Call(EnemyTestTarget, ACTOR_SELF, LVar0, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_MISS)
@@ -386,7 +387,7 @@ EvtScript N(EVS_Attack_Headbonk) = {
             EndThread
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(SetJumpAnimations, ACTOR_SELF, PRT_MAIN, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk)
-            Call(N(UnkFunc62), LVarA, 3)
+            Call(N(FakeGoombarioJumpOnTarget), LVarA, 3)
         CaseEq(PARTNER_RANK_SUPER)
             Thread
                 Wait(4)
@@ -400,7 +401,7 @@ EvtScript N(EVS_Attack_Headbonk) = {
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(EnableActorBlur, ACTOR_SELF, ACTOR_BLUR_ENABLE)
             Call(SetJumpAnimations, ACTOR_SELF, PRT_MAIN, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk)
-            Call(N(UnkFunc62), LVarA, 3)
+            Call(N(FakeGoombarioJumpOnTarget), LVarA, 3)
             Call(EnableActorBlur, ACTOR_SELF, ACTOR_BLUR_DISABLE)
         CaseEq(PARTNER_RANK_ULTRA)
             Thread
@@ -424,7 +425,7 @@ EvtScript N(EVS_Attack_Headbonk) = {
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(EnableActorBlur, ACTOR_SELF, ACTOR_BLUR_ENABLE)
             Call(SetJumpAnimations, ACTOR_SELF, PRT_MAIN, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk)
-            Call(N(UnkFunc62), LVarA, 3)
+            Call(N(FakeGoombarioJumpOnTarget), LVarA, 3)
             Call(EnableActorBlur, ACTOR_SELF, ACTOR_BLUR_DISABLE)
     EndSwitch
     ChildThread

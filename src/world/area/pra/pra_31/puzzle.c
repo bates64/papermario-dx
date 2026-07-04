@@ -19,7 +19,7 @@ typedef struct DinoData {
 typedef struct DinoPuzzleData {
     /* 0x00 */ DinoData dinos[DINO_COUNT];
     /* 0x48 */ s16 cells[GRID_SIZE_Z][GRID_SIZE_X];
-    /* 0x7E */ char unk_7E[0x2];
+    /* 0x7E */ PAD(2);
 } DinoPuzzleData; // size = 0x80
 
 enum {
@@ -40,9 +40,9 @@ s32 N(InitialConfigurationAfter)[DINO_COUNT][3]= {
 };
 
 s16 N(PuzzleSolution)[GRID_SIZE_Z][GRID_SIZE_X] = {
-    {  CELL_EMPTY, CELL_EMPTY,  CELL_EMPTY,  CELL_EMPTY, CELL_EMPTY,  CELL_EMPTY,  CELL_EMPTY, CELL_EMPTY,  CELL_EMPTY },
-    {  CELL_EMPTY, CELL_DINO,   CELL_EMPTY,  CELL_EMPTY, CELL_DINO,   CELL_EMPTY,  CELL_EMPTY, CELL_DINO,   CELL_EMPTY },
-    {  CELL_EMPTY, CELL_EMPTY,  CELL_EMPTY,  CELL_EMPTY, CELL_EMPTY,  CELL_EMPTY,  CELL_EMPTY, CELL_EMPTY,  CELL_EMPTY },
+    { CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY },
+    { CELL_EMPTY, CELL_DINO,  CELL_EMPTY, CELL_EMPTY, CELL_DINO,  CELL_EMPTY, CELL_EMPTY, CELL_DINO,  CELL_EMPTY },
+    { CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY },
 };
 
 API_CALLABLE(N(EVS_ManagePuzzle)) {
@@ -134,8 +134,8 @@ API_CALLABLE(N(IsDestCellUnavailable)) {
     s32 idx = evt_get_variable(script, *args++);
     DinoPuzzleData* puzzle = (DinoPuzzleData*) evt_get_variable(script, MV_PuzzleDataPtr);
     DinoData* dino = &puzzle->dinos[idx];
-    s32 ci;
-    s32 cj;
+    s32 ci = dino->ci;
+    s32 cj = dino->cj;
     s32 i;
 
     script->varTable[0] = 0;
@@ -270,8 +270,6 @@ API_CALLABLE(N(GetPlayerPushLerpValues)) {
     }
     return ApiStatus_DONE2;
 }
-
-#include "world/common/todo/UnkFunc12.inc.c"
 
 API_CALLABLE(N(GetDinoStatuePosRot)) {
     Bytecode* args = script->ptrReadPos;
@@ -439,13 +437,13 @@ EvtScript N(EVS_UpdateStatuePositions) = {
     End
 };
 
-#include "world/common/todo/UnkFunc11.inc.c"
+#include "world/common/util/PushObjectSupport.inc.c"
 
 EvtScript N(EVS_PushStatue_Impl) = {
     Call(N(GetPlayerPushDirection), LVarA)
     Call(InterpPlayerYaw, LVar0, 0)
     Loop(20)
-        Call(N(UnkFunc11), LVar9)
+        Call(N(IsPlayerPushingCollider), LVar9)
         IfEq(LVar0, 0)
             Return
         Else
@@ -460,7 +458,7 @@ EvtScript N(EVS_PushStatue_Impl) = {
         Loop(0)
             Call(SetPlayerActionState, ACTION_STATE_PUSHING_BLOCK)
             Call(UpdateLerp)
-            Call(N(UnkFunc12))
+            Call(N(UpdatePlayerPushPosition))
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -479,10 +477,10 @@ EvtScript N(EVS_PushStatue_Impl) = {
     Thread
         Call(DisablePlayerInput, false)
         Wait(2)
-        Call(N(UnkFunc11), LVar9)
+        Call(N(IsPlayerPushingCollider), LVar9)
         IfEq(LVar0, 0)
             Wait(2)
-            Call(N(UnkFunc11), LVar9)
+            Call(N(IsPlayerPushingCollider), LVar9)
             IfEq(LVar0, 0)
                 Call(SetPlayerActionState, ACTION_STATE_IDLE)
             EndIf

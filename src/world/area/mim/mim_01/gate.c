@@ -80,8 +80,8 @@ EvtScript N(EVS_PlayGateSounds) = {
 
 EvtScript N(EVS_UseGate) = {
     Exec(N(EVS_PlayGateSounds))
-    Switch(AB_MIM_1)
-        CaseEq(0)
+    Switch(AB_MIM_GateTraversal)
+        CaseEq(MIM_USEGATE_SIDE_A)
             Thread
                 Call(MakeLerp, 10, 90, 10, EASING_QUADRATIC_IN)
                 Label(10)
@@ -112,9 +112,9 @@ EvtScript N(EVS_UseGate) = {
                 Goto(20)
             EndIf
             Exec(N(EVS_ResetGates))
-            Set(AB_MIM_1, 1)
+            Set(AB_MIM_GateTraversal, MIM_USEGATE_INNER)
             Set(GF_MIM_ChoosingPath, true)
-        CaseEq(1)
+        CaseEq(MIM_USEGATE_INNER)
             Thread
                 Call(MakeLerp, 360, 270, 10, EASING_QUADRATIC_IN)
                 Label(30)
@@ -144,8 +144,8 @@ EvtScript N(EVS_UseGate) = {
             IfEq(LVar1, 1)
                 Goto(40)
             EndIf
-            Set(AB_MIM_1, 2)
-        CaseEq(2)
+            Set(AB_MIM_GateTraversal, MIM_USEGATE_SIDE_B)
+        CaseEq(MIM_USEGATE_SIDE_B)
             Thread
                 Call(MakeLerp, -10, 90, 10, EASING_QUADRATIC_IN)
                 Label(50)
@@ -176,7 +176,7 @@ EvtScript N(EVS_UseGate) = {
                 Goto(60)
             EndIf
             Exec(N(EVS_ResetGates))
-            Set(AB_MIM_1, 1)
+            Set(AB_MIM_GateTraversal, MIM_USEGATE_INNER)
     EndSwitch
     Return
     End
@@ -222,7 +222,7 @@ EvtScript N(EVS_UseGate_West) = {
     Set(LVar9, 32)
     Exec(N(EVS_PlayGateSounds))
     Call(DisablePlayerInput, true)
-    IfNe(AB_MIM_1, 1)
+    IfNe(AB_MIM_GateTraversal, MIM_USEGATE_INNER)
         Thread
             Call(MakeLerp, 10, 90, 10, EASING_QUADRATIC_IN)
             Label(10)
@@ -244,15 +244,15 @@ EvtScript N(EVS_UseGate_West) = {
         Exec(N(EVS_SetGateCameraZones))
         Call(MakeLerp, 90, 360, 30, EASING_LINEAR)
         Label(20)
-        Call(UpdateLerp)
-        Call(RotateGroup, MODEL_monw, LVar0, 0, 1, 0)
-        Call(UpdateColliderTransform, COLLIDER_monw)
-        Wait(1)
-        IfEq(LVar1, 1)
-            Goto(20)
-        EndIf
+            Call(UpdateLerp)
+            Call(RotateGroup, MODEL_monw, LVar0, 0, 1, 0)
+            Call(UpdateColliderTransform, COLLIDER_monw)
+            Wait(1)
+            IfEq(LVar1, 1)
+                Goto(20)
+            EndIf
         Exec(N(EVS_ResetGates))
-        Set(AB_MIM_1, 1)
+        Set(AB_MIM_GateTraversal, MIM_USEGATE_INNER)
         Set(GF_MIM_ChoosingPath, true)
     Else
         Thread
@@ -276,14 +276,14 @@ EvtScript N(EVS_UseGate_West) = {
         Exec(N(EVS_SetGateCameraZones))
         Call(MakeLerp, 270, 10, 30, EASING_LINEAR)
         Label(40)
-        Call(UpdateLerp)
-        Call(RotateGroup, MODEL_monw, LVar0, 0, 1, 0)
-        Call(UpdateColliderTransform, COLLIDER_monw)
-        Wait(1)
-        IfEq(LVar1, 1)
-            Goto(40)
-        EndIf
-        Set(AB_MIM_1, 0)
+            Call(UpdateLerp)
+            Call(RotateGroup, MODEL_monw, LVar0, 0, 1, 0)
+            Call(UpdateColliderTransform, COLLIDER_monw)
+            Wait(1)
+            IfEq(LVar1, 1)
+                Goto(40)
+            EndIf
+        Set(AB_MIM_GateTraversal, MIM_USEGATE_SIDE_A)
     EndIf
     Call(DisablePlayerInput, false)
     Return

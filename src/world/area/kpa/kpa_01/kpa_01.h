@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_01.h
 /// @brief Bowser's Castle - Dark Cave 1
 

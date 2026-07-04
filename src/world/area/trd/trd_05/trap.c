@@ -14,7 +14,7 @@ typedef struct FallingSprite {
 
 BSS FallingSprite N(Falling);
 
-void N(appendGfx_FallingSprite)(void) {
+void N(worker_draw_falling_sprite)(void) {
     FallingSprite* falling = &N(Falling);
     ImgFXTexture ifxImg;
     SpriteRasterInfo info;
@@ -88,7 +88,7 @@ API_CALLABLE(N(InitializeFallingSprite)) {
     falling->scale.y = SPRITE_WORLD_SCALE_F;
     falling->scale.z = SPRITE_WORLD_SCALE_F;
     falling->imgfxIdx = imgfx_get_free_instances(1);
-    falling->workerID = create_worker_scene(nullptr, &N(appendGfx_FallingSprite));
+    falling->workerID = create_worker_scene(nullptr, &N(worker_draw_falling_sprite));
     return ApiStatus_DONE2;
 }
 
@@ -271,7 +271,7 @@ EvtScript N(EVS_OnHitTrapTrigger) = {
     EndLoop
     Wait(10)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Thread
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_WALK)

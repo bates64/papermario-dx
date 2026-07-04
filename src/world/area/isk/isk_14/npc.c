@@ -2,7 +2,7 @@
 #include "sprite.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/StoneChomp.inc.c"
+#include "world/common/enemy/StoneChomp/wander.inc.c"
 
 typedef struct StoneChompAmbushIsk14 {
     /* 0x00 */ s32 imgfxIdx;
@@ -19,7 +19,7 @@ typedef struct StoneChompAmbushIsk14 {
 
 static StoneChompAmbushIsk14 N(ChompAmbush);
 
-void N(func_80241610_993D40)(void) {
+void N(worker_draw_chomp_ambush)(void) {
     StoneChompAmbushIsk14* ambush = &N(ChompAmbush);
     Camera* cam = &gCameras[gCurrentCameraID];
     ImgFXTexture ifxImg;
@@ -75,7 +75,7 @@ void N(func_80241610_993D40)(void) {
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
-API_CALLABLE(N(func_80241AF0_994220)) {
+API_CALLABLE(N(LaunchChompAmbushWorker)) {
     StoneChompAmbushIsk14* ambush = &N(ChompAmbush);
     SpriteRasterInfo rasterInfo;
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
@@ -98,7 +98,7 @@ API_CALLABLE(N(func_80241AF0_994220)) {
     ambush->renderYaw = 270.0f;
 
     ambush->imgfxIdx = 0;
-    ambush->workerID = create_worker_frontUI(nullptr, N(func_80241610_993D40));
+    ambush->workerID = create_worker_frontUI(nullptr, N(worker_draw_chomp_ambush));
     return ApiStatus_DONE2;
 }
 
@@ -109,7 +109,7 @@ API_CALLABLE(N(DestroyAmbushWorker)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80241BEC_99431C)) {
+API_CALLABLE(N(SetChompAmbushPos)) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_float_variable(script, *args++);
     s32 y = evt_get_float_variable(script, *args++);
@@ -122,7 +122,7 @@ API_CALLABLE(N(func_80241BEC_99431C)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80241CA0_9943D0)) {
+API_CALLABLE(N(SetChompAmbushRot)) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_float_variable(script, *args++);
     s32 y = evt_get_float_variable(script, *args++);
@@ -145,14 +145,14 @@ EvtScript N(EVS_NpcIdle_StoneChomp) = {
     Call(DisablePlayerInput, true)
     Wait(5)
     Call(SetNpcPos, NPC_SELF, -517, -780, -402)
-    Call(N(func_80241AF0_994220))
-    Call(N(func_80241BEC_99431C), -517, -780, -402)
-    Call(N(func_80241CA0_9943D0), 85, 20, 0)
+    Call(N(LaunchChompAmbushWorker))
+    Call(N(SetChompAmbushPos), -517, -780, -402)
+    Call(N(SetChompAmbushRot), 85, 20, 0)
     Wait(5)
     Call(MakeLerp, 85, 0, 20, EASING_COS_FAST_OVERSHOOT)
     Label(1)
     Call(UpdateLerp)
-    Call(N(func_80241CA0_9943D0), LVar0, 20, 0)
+    Call(N(SetChompAmbushRot), LVar0, 20, 0)
     Wait(1)
     IfEq(LVar1, 1)
         Goto(1)
@@ -182,7 +182,7 @@ EvtScript N(EVS_NpcIdle_StoneChomp) = {
     Call(DisablePlayerInput, false)
     Call(StartBossBattle, SONG_SPECIAL_BATTLE)
     Wait(15)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_StoneChomp)))
+    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_StoneChomp_Wander)))
     Return
     End
 };
@@ -235,7 +235,7 @@ NpcData N(NpcData_StoneChomp) = {
     .init = &N(EVS_NpcInit_StoneChomp),
     .initVarCount = 1,
     .initVar = { .value = -780 },
-    .settings = &N(NpcSettings_StoneChomp),
+    .settings = &N(NpcSettings_StoneChomp_Wander),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = STONE_CHOMP_DROPS,
     .animations = STONE_CHOMP_ANIMS,

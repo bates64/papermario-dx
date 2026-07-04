@@ -1,7 +1,5 @@
 #include "isk_01.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 Gfx N(HazePreGfx)[] = {
     gsDPSetAlphaDither(G_AD_NOISE),
     gsSPEndDisplayList(),
@@ -16,7 +14,7 @@ EvtScript N(EVS_SetupHaze) = {
         TEX_PAN_PARAMS_STEP(   70,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

@@ -1,7 +1,7 @@
 #include "jan_04.h"
 #include "world/partners.h"
 
-extern Evt* D_8024A290;
+Evt* N(DemoRideScript);
 
 EvtScript N(EVS_ProvideDemoInputs) = {
     Call(DemoJoystickXY, -40, 30)
@@ -115,7 +115,7 @@ API_CALLABLE(N(SetupDemoScene)) {
                 newScript->varTable[2] = playerStatus->pos.y;
                 newScript->varTable[3] = playerStatus->pos.z;
                 newScript->varTable[12] = 1;
-                D_8024A290 = newScript;
+                N(DemoRideScript) = newScript;
             }
             break;
         case 1:
@@ -123,11 +123,11 @@ API_CALLABLE(N(SetupDemoScene)) {
             N(DemoInitState)++;
             break;
         case 3:
-            wPartnerNpc->yaw = 270.0f;
+            gPartnerNpc->yaw = 270.0f;
             playerStatus->targetYaw = 270.0f;
             playerStatus->curYaw = 270.0f;
             playerStatus->spriteFacingAngle = 180.0f;
-            D_8024A290->functionTemp[1] = 1;
+            N(DemoRideScript)->functionTemp[1] = 1;
             return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;

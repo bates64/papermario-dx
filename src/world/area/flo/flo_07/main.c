@@ -1,10 +1,6 @@
 #include "flo_07.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 #include "../common/FlowerSpawnRegion.inc.c"
-
-#include "world/common/todo/SpawnSunEffect.inc.c"
 
 EvtScript N(EVS_ExitWalk_flo_25_1) = EVT_EXIT_WALK(60, flo_07_ENTRY_0, "flo_25", flo_25_ENTRY_1);
 
@@ -46,7 +42,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP( -100,  100,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water fall
     Call(SetTexPanner, MODEL_o36, TEX_PANNER_3)
@@ -56,7 +52,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0,-1200,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(GetEntryID, LVar0)
     IfEq(LVar0, flo_07_ENTRY_1)
@@ -69,7 +65,7 @@ EvtScript N(EVS_Main) = {
     EndIf
     ExecWait(N(EVS_SetupMusic))
     IfGe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
-        Call(N(SpawnSunEffect))
+        Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     EndIf
     Call(N(CreateCrystalTreeSparkles))
     Return

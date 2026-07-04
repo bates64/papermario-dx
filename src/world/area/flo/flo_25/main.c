@@ -3,11 +3,6 @@
 
 #include "../common/FlowerSpawnRegion.inc.c"
 
-API_CALLABLE(N(SpawnSunEffect)) {
-    fx_sun(FX_SUN_FROM_LEFT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_ExitWalk_flo_00_3) = EVT_EXIT_WALK(60, flo_25_ENTRY_0, "flo_00", flo_00_ENTRY_3);
 EvtScript N(EVS_ExitWalk_flo_07_0) = EVT_EXIT_WALK(60, flo_25_ENTRY_1, "flo_07", flo_07_ENTRY_0);
 
@@ -33,7 +28,7 @@ EvtScript N(EVS_Main) = {
     Exec(EnterWalk)
     ExecWait(N(EVS_SetupMusic))
     IfGe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
-        Call(N(SpawnSunEffect))
+        Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     EndIf
     Return
     End

@@ -1,10 +1,10 @@
 #include "kkj_18.h"
 
-#include "world/common/npc/GourmetGuy.inc.c"
-#include "world/common/npc/Dummy.inc.c"
+#include "world/common/npc/GourmetGuy/idle.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
 
-#include "world/common/enemy/Kammy.inc.c"
-#include "world/common/enemy/Koopatrol_Stationary.inc.c"
+#include "world/common/enemy/Kammy/idle.inc.c"
+#include "world/common/enemy/Koopatrol/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_GourmetGuy) = {
     Call(WaitForPlayerInputEnabled)
@@ -50,7 +50,7 @@ EvtScript N(EVS_NpcInit_GourmetGuy) = {
     End
 };
 
-AnimID N(ExtraAnims_GourmetGuy)[] = {
+AnimID N(LimitAnims_GourmetGuy)[] = {
     ANIM_GourmetGuy_Idle,
     ANIM_GourmetGuy_Walk,
     ANIM_GourmetGuy_Panic,
@@ -66,20 +66,20 @@ AnimID N(ExtraAnims_GourmetGuy)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Kammy)[] = {
-    ANIM_WorldKammy_Anim01,
-    ANIM_WorldKammy_Anim02,
-    ANIM_WorldKammy_Anim04,
-    ANIM_WorldKammy_Anim05,
+AnimID N(LimitAnims_Kammy)[] = {
+    ANIM_WorldKammy_Idle,
+    ANIM_WorldKammy_Walk,
+    ANIM_WorldKammy_Talk,
+    ANIM_WorldKammy_Shout,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Koopatrol)[] = {
-    ANIM_WorldKoopatrol_Anim01,
-    ANIM_WorldKoopatrol_Anim06,
-    ANIM_WorldKoopatrol_Anim08,
-    ANIM_WorldKoopatrol_Anim12,
-    ANIM_WorldKoopatrol_Anim14,
+AnimID N(LimitAnims_Koopatrol)[] = {
+    ANIM_WorldKoopatrol_Idle,
+    ANIM_WorldKoopatrol_Run,
+    ANIM_WorldKoopatrol_Talk,
+    ANIM_WorldKoopatrol_Lift,
+    ANIM_WorldKoopatrol_CarryFast,
     ANIM_LIST_END
 };
 
@@ -92,27 +92,27 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KAMMY_ANIMS,
-        .extraAnimations = N(ExtraAnims_Kammy),
+        .limitAnimations = N(LimitAnims_Kammy),
     },
     {
         .id = NPC_Koopatrol_01,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Koopatrol_Stationary),
+        .settings = &N(NpcSettings_Koopatrol),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol),
     },
     {
         .id = NPC_Koopatrol_02,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Koopatrol_Stationary),
+        .settings = &N(NpcSettings_Koopatrol),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol),
     },
     {
         .id = NPC_GourmetGuy,
@@ -123,7 +123,7 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = GOURMET_GUY_ANIMS,
-        .extraAnimations = N(ExtraAnims_GourmetGuy),
+        .limitAnimations = N(LimitAnims_GourmetGuy),
     },
     {
         .id = NPC_GourmetGuy_Knife,
@@ -133,7 +133,7 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = GOURMET_GUY_ANIMS,
-        .extraAnimations = N(ExtraAnims_GourmetGuy),
+        .limitAnimations = N(LimitAnims_GourmetGuy),
     },
     {
         .id = NPC_GourmetGuy_Fork,
@@ -143,7 +143,7 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = GOURMET_GUY_ANIMS,
-        .extraAnimations = N(ExtraAnims_GourmetGuy),
+        .limitAnimations = N(LimitAnims_GourmetGuy),
     },
 };
 

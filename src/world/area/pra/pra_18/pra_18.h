@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_18.h
 /// @brief Crystal Palace - Bridge Mirror Hall
 

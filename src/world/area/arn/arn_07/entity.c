@@ -1,20 +1,17 @@
 #include "arn_07.h"
 #include "entity.h"
 
-#include "world/common/todo/RemovePadlock.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-
 EvtScript N(EVS_UnlockDoor) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(ShowKeyChoicePopup)
-    IfEq(LVar0, 0)
+    IfEq(LVar0, ITEM_CHOICE_NONE)
         Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
         Call(CloseChoicePopup)
         Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
         Return
     EndIf
-    IfEq(LVar0, -1)
+    IfEq(LVar0, ITEM_CHOICE_CANCELED)
         Call(CloseChoicePopup)
         Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
         Return
@@ -22,10 +19,9 @@ EvtScript N(EVS_UnlockDoor) = {
     Call(RemoveItem, ITEM_MYSTICAL_KEY)
     Call(CloseChoicePopup)
     Set(GB_StoryProgress, STORY_CH3_UNLOCKED_WINDY_MILL)
-    Call(N(GetEntityPosition), MV_Unk_00, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_EntityID_Padlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Set(LVar0, MV_Unk_00)
-    Call(N(RemovePadlock))
+    Call(SetEntityUsed, MV_EntityID_Padlock)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
     Unbind
     Return
@@ -42,7 +38,7 @@ EvtScript N(EVS_MakeEntities) = {
     IfLt(GB_StoryProgress, STORY_CH3_UNLOCKED_WINDY_MILL)
         Call(MakeEntity, Ref(Entity_Padlock), 10, 30, -155, 0, MAKE_ENTITY_END)
         Call(AssignScript, Ref(N(EVS_BindLockTrigger)))
-        Set(MV_Unk_00, LVar0)
+        Set(MV_EntityID_Padlock, LVar0)
     EndIf
     Return
     End

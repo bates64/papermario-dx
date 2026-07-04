@@ -3,6 +3,7 @@
 #include "sprite/npc/BattleWatt.h"
 #include "effects.h"
 
+#undef NAMESPACE
 #define NAMESPACE A(watt_clone)
 
 extern EvtScript N(EVS_Init);
@@ -113,7 +114,7 @@ EvtScript N(EVS_Init) = {
 };
 
 API_CALLABLE(N(WattFXUpdate)) {
-    Actor* actor = get_actor(script->owner1.enemyID);
+    Actor* actor = get_actor(script->owner1.actorID);
     ActorState* state = &actor->state;
     WattEffectData* wattEffectData;
     f32 x, y, z;
@@ -205,7 +206,7 @@ EvtScript N(EVS_Idle) = {
 };
 
 API_CALLABLE(N(WattFXRemove)) {
-    WattEffectData* wattEffectData = get_actor(script->owner1.enemyID)->state.varTablePtr[2];
+    WattEffectData* wattEffectData = get_actor(script->owner1.actorID)->state.varTablePtr[2];
 
     wattEffectData->initialized = false;
 
@@ -222,7 +223,7 @@ API_CALLABLE(N(WattFXRemove)) {
 
 API_CALLABLE(N(WattFXSetBouncing)) {
     Bytecode* args = script->ptrReadPos;
-    WattEffectData* wattEffectData = get_actor(script->owner1.enemyID)->state.varTablePtr[2];
+    WattEffectData* wattEffectData = get_actor(script->owner1.actorID)->state.varTablePtr[2];
 
     wattEffectData->isBouncing = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
@@ -230,7 +231,7 @@ API_CALLABLE(N(WattFXSetBouncing)) {
 
 API_CALLABLE(N(WattFXSetActive)) {
     Bytecode* args = script->ptrReadPos;
-    WattEffectData* wattEffectData = get_actor(script->owner1.enemyID)->state.varTablePtr[2];
+    WattEffectData* wattEffectData = get_actor(script->owner1.actorID)->state.varTablePtr[2];
 
     wattEffectData->isActive = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
@@ -238,7 +239,7 @@ API_CALLABLE(N(WattFXSetActive)) {
 
 API_CALLABLE(N(WattFXSetEffect)) {
     Bytecode* args = script->ptrReadPos;
-    WattEffectData* wattEffectData = get_actor(script->owner1.enemyID)->state.varTablePtr[2];
+    WattEffectData* wattEffectData = get_actor(script->owner1.actorID)->state.varTablePtr[2];
 
     wattEffectData->currentEffectIndex = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;

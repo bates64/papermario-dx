@@ -2,8 +2,6 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_mac_04_0) = EVT_EXIT_WALK(60, mac_02_ENTRY_0, "mac_04", mac_04_ENTRY_0);
 EvtScript N(EVS_ExitWalk_mim_10_0) = EVT_EXIT_WALK(60, mac_02_ENTRY_1, "mim_10", mim_10_ENTRY_0);
 EvtScript N(EVS_ExitWalk_mac_01_3) = EVT_EXIT_WALK(60, mac_02_ENTRY_2, "mac_01", mac_01_ENTRY_3);
@@ -57,15 +55,15 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Set(AF_MAC_16, false)
-    Set(AF_MAC_17, false)
-    Set(AF_MAC_18, false)
-    Set(AF_MAC_19, false)
-    Set(AF_MAC_1A, false)
-    Set(AF_MAC_1B, false)
-    Set(AF_MAC_1C, false)
-    Set(AF_MAC_1D, false)
-    Set(AF_MAC_1E, false)
+    Set(AF_MAC02_Unread_16, false)
+    Set(AF_MAC02_Unread_17, false)
+    Set(AF_MAC02_Unread_18, false)
+    Set(AF_MAC02_Unread_19, false)
+    Set(AF_MAC02_Unread_1A, false)
+    Set(AF_MAC02_Unread_1B, false)
+    Set(AF_MAC02_Unread_1C, false)
+    Set(AF_MAC02_Unread_1D, false)
+    Set(AF_MAC02_Unread_1E, false)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
             Call(MakeNpcs, false, Ref(N(NpcGroup4)))
@@ -98,7 +96,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(  100,   40,  200,  -40)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Exec(N(EVS_SetupRooms))
     Exec(N(EVS_SetupFoliage))

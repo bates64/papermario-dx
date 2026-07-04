@@ -46,9 +46,10 @@ API_CALLABLE(N(PartnerRideBeanstalk)) {
     return ApiStatus_DONE2;
 }
 
-#include "common/CosInterpMinMax.inc.c"
-
-#include "world/common/todo/SyncStatusBar.inc.c"
+API_CALLABLE(N(SyncStatusBar)) {
+    sync_status_bar();
+    return ApiStatus_DONE2;
+}
 
 API_CALLABLE(N(DisableStatusBar)) {
     increment_status_bar_disabled();
@@ -243,7 +244,7 @@ EvtScript N(EVS_Exit_Beanstalk) = {
         Call(DisablePlayerInput, true)
         Call(InterruptUsePartner)
         Wait(15)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Set(AF_FLO_RidingBeanstalk, true)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o261, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o351, COLLIDER_FLAGS_UPPER_MASK)
@@ -274,7 +275,7 @@ EvtScript N(EVS_Exit_Beanstalk) = {
             Set(LVarF, 0)
             Loop(0)
                 Add(LVarF, 1)
-                Call(N(CosInterpMinMax), LVarF, LVar0, 0, 700, 800, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar0, 0, 700, 800, 0, 0)
                 Exec(N(EVS_SetBigLeafPosition))
                 SetF(LVar2, LVar0)
                 MulF(LVar2, Float(-3.0))
@@ -333,7 +334,7 @@ EvtScript N(EVS_Enter_Beanstalk) = {
     Set(LVarF, 0)
     Loop(120)
         Add(LVarF, 1)
-        Call(N(CosInterpMinMax), LVarF, LVar0, 70, 0, 120, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar0, 70, 0, 120, 0, 0)
         Exec(N(EVS_SetBigLeafPosition))
         SetF(LVar2, LVar0)
         MulF(LVar2, Float(-3.0))
@@ -365,7 +366,7 @@ EvtScript N(EVS_Scene_BeanstalkGrowing) = {
     Set(LVarF, 0)
     Loop(100)
         Add(LVarF, 1)
-        Call(N(CosInterpMinMax), LVarF, LVar0, 0, Float(1.0), 100, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar0, 0, Float(1.0), 100, 0, 0)
         Exec(N(EVS_SetSproutGrowth))
         Wait(1)
     EndLoop
@@ -374,7 +375,7 @@ EvtScript N(EVS_Scene_BeanstalkGrowing) = {
         Set(LVarF, 0)
         Loop(1200)
             Add(LVarF, 1)
-            Call(N(CosInterpMinMax), LVarF, LVar0, -700, 0, 1200, 0, 0)
+            Call(CosInterpMinMax, LVarF, LVar0, -700, 0, 1200, 0, 0)
             SetF(LVar2, LVar0)
             MulF(LVar2, Float(1.0))
             SetF(LVar0, LVar2)
@@ -441,7 +442,7 @@ EvtScript N(EVS_Scene_BeanstalkGrewRemark) = {
     Set(LVarF, 0)
     Loop(5)
         Add(LVarF, 20)
-        Call(N(CosInterpMinMax), LVarF, LVar0, Float(0.0), Float(1.0), 100, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar0, Float(0.0), Float(1.0), 100, 0, 0)
         Exec(N(EVS_SetBigLeafGrowth))
         Wait(1)
     EndLoop
@@ -453,17 +454,12 @@ EvtScript N(EVS_Scene_BeanstalkGrewRemark) = {
     End
 };
 
-s32 N(BeanstalkIngredients)[] = {
-    ITEM_FERTILE_SOIL,
-    ITEM_MAGICAL_BEAN,
-    ITEM_MIRACLE_WATER,
-    ITEM_NONE
-};
+ITEM_LIST(N(BeanstalkIngredients), ITEM_FERTILE_SOIL, ITEM_MAGICAL_BEAN, ITEM_MIRACLE_WATER);
 
 EvtScript N(EVS_BeanPatch_ItemPrompt) = {
     Call(DisablePlayerInput, true)
     Call(FacePlayerTowardPoint, -85, 85, 0)
-    Call(func_802CF56C, 2)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(DisablePlayerInput, false)
     IfEq(GF_FLO00_PlacedFertileSoil, false)
         SetGroup(EVT_GROUP_NEVER_PAUSE)
@@ -482,7 +478,7 @@ EvtScript N(EVS_BeanPatch_ItemPrompt) = {
                     Wait(5)
                     Call(RemoveKeyItemAt, LVar1)
                     Call(MakeItemEntity, ITEM_FERTILE_SOIL, BEANSTALK_BASE_X, 0, BEANSTALK_BASE_Z, ITEM_SPAWN_MODE_DECORATION, 0)
-                    Set(MV_BeanstalkItemEntity, LVar0)
+                    Set(MV_ItemEntity_Beanstalk, LVar0)
                     Call(SetPlayerAnimation, ANIM_Mario1_Still)
                     Wait(20)
                 CaseDefault
@@ -514,13 +510,13 @@ EvtScript N(EVS_BeanPatch_ItemPrompt) = {
                     Call(AwaitPlayerLeave, -85, 85, 28)
                     Return
                 CaseEq(ITEM_MAGICAL_BEAN)
-                    Call(RemoveItemEntity, MV_BeanstalkItemEntity)
+                    Call(RemoveItemEntity, MV_ItemEntity_Beanstalk)
                     Wait(5)
                     Call(SetPlayerAnimation, ANIM_MarioW1_PlaceItem)
                     Wait(5)
                     Call(RemoveKeyItemAt, LVar1)
                     Call(MakeItemEntity, ITEM_MAGICAL_BEAN, BEANSTALK_BASE_X, 0, BEANSTALK_BASE_Z, ITEM_SPAWN_MODE_DECORATION, 0)
-                    Set(MV_BeanstalkItemEntity, LVar0)
+                    Set(MV_ItemEntity_Beanstalk, LVar0)
                     Call(SetPlayerAnimation, ANIM_Mario1_Still)
                     Wait(20)
                 CaseDefault
@@ -551,24 +547,24 @@ EvtScript N(EVS_BeanPatch_ItemPrompt) = {
                 Call(AwaitPlayerLeave, -85, 85, 28)
                 Return
             CaseEq(ITEM_MIRACLE_WATER)
-                Call(RemoveItemEntity, MV_BeanstalkItemEntity)
+                Call(RemoveItemEntity, MV_ItemEntity_Beanstalk)
                 Wait(5)
                 Call(SetPlayerAnimation, ANIM_MarioW1_PlaceItem)
                 Wait(5)
                 Call(RemoveKeyItemAt, LVar1)
                 Call(N(SyncStatusBar))
                 Call(MakeItemEntity, ITEM_MIRACLE_WATER, BEANSTALK_BASE_X, 0, BEANSTALK_BASE_Z, ITEM_SPAWN_MODE_DECORATION, 0)
-                Set(MV_BeanstalkItemEntity, LVar0)
+                Set(MV_ItemEntity_Beanstalk, LVar0)
                 Call(SetPlayerAnimation, ANIM_Mario1_Still)
                 Wait(30)
-                Call(RemoveItemEntity, MV_BeanstalkItemEntity)
+                Call(RemoveItemEntity, MV_ItemEntity_Beanstalk)
                 Wait(30)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o261, COLLIDER_FLAGS_UPPER_MASK)
                 Call(PlayerMoveTo, -60, 30, 20)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o261, COLLIDER_FLAGS_UPPER_MASK)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o351, COLLIDER_FLAGS_UPPER_MASK)
                 Call(InterpPlayerYaw, 200, 0)
-                Call(func_802CF56C, 2)
+                Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
                 Wait(60)
                 Call(FadeInMusic, 1, SONG_MAGIC_BEANSTALK, 0, 3000, 0, 127)
                 Call(FadeOutMusic, 0, 3000)
@@ -625,7 +621,7 @@ EvtScript N(EVS_SetupBeanPatch) = {
             Else
                 Call(MakeItemEntity, ITEM_MAGICAL_BEAN, BEANSTALK_BASE_X, 0, BEANSTALK_BASE_Z, ITEM_SPAWN_MODE_DECORATION, 0)
             EndIf
-            Set(MV_BeanstalkItemEntity, LVar0)
+            Set(MV_ItemEntity_Beanstalk, LVar0)
         EndIf
         BindPadlock(Ref(N(EVS_BeanPatch_TryInteract)), TRIGGER_FORCE_ACTIVATE, 0, Ref(N(BeanstalkIngredients)), 0, 1)
     EndIf

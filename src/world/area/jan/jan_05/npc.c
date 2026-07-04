@@ -1,12 +1,12 @@
 #include "jan_05.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/MBush.inc.c"
-#include "world/common/npc/YoshiKid.inc.c"
-#include "world/common/enemy/HeartPlant.inc.c"
-#include "world/common/enemy/HurtPlant.inc.c"
-#include "world/common/enemy/JungleFuzzy_Wander.inc.c"
-#include "world/common/enemy/SpearGuy_Wander.inc.c"
+#include "world/common/enemy/MBush/idle.inc.c"
+#include "world/common/npc/YoshiKid/idle.inc.c"
+#include "world/common/enemy/HeartPlant/idle.inc.c"
+#include "world/common/enemy/HurtPlant/idle.inc.c"
+#include "world/common/enemy/JungleFuzzy/wander.inc.c"
+#include "world/common/enemy/SpearGuy/wander.inc.c"
 
 EvtScript N(EVS_NpcIdle_JungleFuzzy) = {
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
@@ -16,7 +16,7 @@ EvtScript N(EVS_NpcIdle_JungleFuzzy) = {
         IfEq(LVar0, 0)
             Goto(0)
         EndIf
-    Call(SetNpcAnimation, NPC_SELF, ANIM_Fuzzy_Jungle_Anim09)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_Fuzzy_Jungle_Confused)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING, false)
     Call(SetNpcPos, NPC_SELF, 125, 100, -392)
@@ -139,17 +139,17 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
         Set(LVar2, -27)
     EndIf
     Thread
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Purple_Walk)
         Call(NpcMoveTo, NPC_SELF, -270, -248, 30)
         Call(NpcFacePlayer, NPC_SELF, 0)
     EndThread
     Thread
-        Call(DisablePartnerAI, 0)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
+        Call(DisablePartnerAI, false)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
         Call(NpcMoveTo, NPC_PARTNER, LVar1, -250, 30)
         Call(NpcFaceNpc, NPC_PARTNER, NPC_YoshiKid, 0)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, false)
         Call(EnablePartnerAI)
     EndThread
     Thread
@@ -232,7 +232,7 @@ NpcData N(NpcData_YoshiKid) = {
     .tattle = MSG_NpcTattle_PurpleYoshiKid,
 };
 
-AnimID N(ExtraAnims_JungleFuzzy)[] = {
+AnimID N(LimitAnims_JungleFuzzy)[] = {
     ANIM_Fuzzy_Jungle_Idle,
     ANIM_Fuzzy_Jungle_Walk,
     ANIM_Fuzzy_Jungle_Run,
@@ -261,7 +261,7 @@ NpcData N(NpcData_JungleFuzzy) = {
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = JUNGLE_FUZZY_DROPS,
     .animations = JUNGLE_FUZZY_ANIMS,
-    .extraAnimations = N(ExtraAnims_JungleFuzzy),
+    .limitAnimations = N(LimitAnims_JungleFuzzy),
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
@@ -286,7 +286,7 @@ NpcData N(NpcData_SpearGuy)[] = {
         .settings = &N(NpcSettings_SpearGuy_Wander),
         .drops = SPEAR_GUY_DROPS,
         .animations = SPEAR_GUY_ANIMS,
-        .extraAnimations = N(ExtraAnims_SpearGuy),
+        .limitAnimations = N(LimitAnims_SpearGuy),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     SPEAR_GUY_HITBOX(NPC_SpearGuy_Hitbox)
@@ -311,7 +311,7 @@ NpcData N(NpcData_HurtPlant) = {
     .flags = HURT_PLANT_FLAGS,
     .drops = HURT_PLANT_DROPS,
     .animations = HURT_PLANT_ANIMS,
-    .extraAnimations = N(ExtraAnims_HurtPlant),
+    .limitAnimations = N(LimitAnims_HurtPlant),
     .tattle = MSG_NpcTattle_HeartPlant,
 };
 

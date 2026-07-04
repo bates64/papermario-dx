@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file jan_12.h
 /// @brief Jade Jungle - Deep Jungle 1
 
@@ -17,7 +19,6 @@ enum {
 enum {
     MV_BushOffsetL      = MapVar(0),
     MV_BushOffsetR      = MapVar(1),
-    MV_PullVineCallback = MapVar(10),
 };
 
 #define NAMESPACE jan_12

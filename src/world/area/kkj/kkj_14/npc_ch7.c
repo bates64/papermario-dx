@@ -1,12 +1,6 @@
 #include "kkj_14.h"
 
-#define NAME_SUFFIX _Ch7
-
-#include "world/common/npc/Bowser.inc.c"
-#include "world/common/enemy/Kammy.inc.c"
-#include "world/common/enemy/Koopatrol_Stationary.inc.c"
-
-AnimID N(ExtraAnims_Bowser)[] = {
+AnimID N(LimitAnims_Bowser_Ch7)[] = {
     ANIM_WorldBowser_Still,
     ANIM_WorldBowser_Idle,
     ANIM_WorldBowser_Walk,
@@ -19,27 +13,27 @@ AnimID N(ExtraAnims_Bowser)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Kammy)[] = {
-    ANIM_WorldKammy_Anim00,
-    ANIM_WorldKammy_Anim01,
-    ANIM_WorldKammy_Anim02,
-    ANIM_WorldKammy_Anim03,
-    ANIM_WorldKammy_Anim04,
+AnimID N(LimitAnims_Kammy_Ch7)[] = {
+    ANIM_WorldKammy_Still,
+    ANIM_WorldKammy_Idle,
+    ANIM_WorldKammy_Walk,
+    ANIM_WorldKammy_Run,
+    ANIM_WorldKammy_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Koopatrol)[] = {
-    ANIM_WorldKoopatrol_Anim00,
-    ANIM_WorldKoopatrol_Anim01,
-    ANIM_WorldKoopatrol_Anim04,
-    ANIM_WorldKoopatrol_Anim06,
-    ANIM_WorldKoopatrol_Anim12,
-    ANIM_WorldKoopatrol_Anim14,
-    ANIM_WorldKoopatrol_Anim18,
+AnimID N(LimitAnims_Koopatrol_Ch7)[] = {
+    ANIM_WorldKoopatrol_Still,
+    ANIM_WorldKoopatrol_Idle,
+    ANIM_WorldKoopatrol_Walk,
+    ANIM_WorldKoopatrol_Run,
+    ANIM_WorldKoopatrol_Lift,
+    ANIM_WorldKoopatrol_CarryFast,
+    ANIM_WorldKoopatrol_Panic,
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Characters)[] = {
+NpcData N(NpcData_Characters_Ch7)[] = {
     {
         .id = NPC_Ch7_Bowser,
         .pos = { 0.0f, -500.0f, 0.0f },
@@ -48,27 +42,27 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = BOWSER_ANIMS,
-        .extraAnimations = N(ExtraAnims_Bowser),
+        .limitAnimations = N(LimitAnims_Bowser_Ch7),
     },
     {
         .id = NPC_Ch7_Koopatrol_01,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Koopatrol_Stationary),
+        .settings = &N(NpcSettings_Koopatrol),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol_Ch7),
     },
     {
         .id = NPC_Ch7_Koopatrol_02,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Koopatrol_Stationary),
+        .settings = &N(NpcSettings_Koopatrol),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol_Ch7),
     },
     {
         .id = NPC_Ch7_Kammy,
@@ -78,11 +72,9 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = KAMMY_ANIMS,
-        .extraAnimations = N(ExtraAnims_Kammy),
+        .limitAnimations = N(LimitAnims_Kammy_Ch7),
     },
 };
-
-#define NAME_SUFFIX
 
 NpcGroupList N(Chapter7NPCs) = {
     NPC_GROUP(N(NpcData_Characters_Ch7)),

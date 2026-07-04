@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sbk_99.h
 /// @brief Dry Dry Desert - Entrance
 

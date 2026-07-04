@@ -1,15 +1,8 @@
 #include "kkj_16.h"
 #include "sprite/player.h"
 
-#define NAME_SUFFIX _Early
 
-#include "world/common/enemy/HammerBros.inc.c"
-#include "world/common/enemy/Koopatrol_Stationary.inc.c"
-
-#include "../common/Searchlights.inc.c"
-#include "../common/ApproachPlayer50Units.inc.c"
-
-EvtScript N(EVS_CapturePeach) = {
+EvtScript N(EVS_CapturePeach_Early) = {
     Call(DisablePlayerInput, true)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
@@ -19,16 +12,16 @@ EvtScript N(EVS_CapturePeach) = {
     Wait(20)
     Call(PlayerFaceNpc, NPC_SELF, false)
     Call(SetPlayerAnimation, ANIM_Peach2_Gasp)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim01)
-    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Anim08, ANIM_WorldKoopatrol_Anim01, 0, MSG_Peach_0174)
-    Call(N(ApproachPlayer50Units), -1, LVar3, LVar0, LVar2)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
+    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 0, MSG_Peach_0174)
+    Call(N(GetApproachPeachPos), NPC_SELF, 50, LVar3, LVar0, LVar2)
     IfNe(LVar3, 0)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim06)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Run)
         Call(SetNpcSpeed, NPC_SELF, Float(5.0))
         Call(NpcMoveTo, NPC_SELF, LVar0, LVar2, 0)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim01)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
     EndIf
-    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Anim08, ANIM_WorldKoopatrol_Anim01, 0, MSG_Peach_0175)
+    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 0, MSG_Peach_0175)
     Call(SetPlayerAnimation, ANIM_Peach2_ForwardSad)
     Wait(20)
     Call(GotoMapSpecial, Ref("kkj_14"), kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
@@ -38,13 +31,13 @@ EvtScript N(EVS_CapturePeach) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Koopatrol_02) = {
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim04)
+EvtScript N(EVS_NpcIdle_Koopatrol_02_Early) = {
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Walk)
     Thread
         Loop(0)
-            Call(N(UnkPhysicsFunc), LVar0, 85, 60, 38)
+            Call(N(CheckPlayerInSight), LVar0, 85, 60, 38)
             IfEq(LVar0, 1)
-                Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach)))
+                Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach_Early)))
                 Return
             EndIf
             Wait(1)
@@ -52,28 +45,28 @@ EvtScript N(EVS_NpcIdle_Koopatrol_02) = {
     EndThread
     Call(SetNpcSpeed, NPC_SELF, Float(1.7))
     Loop(0)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim01)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
         Wait(20)
         Call(InterpNpcYaw, NPC_SELF, 90, 15)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim04)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Walk)
         Call(NpcMoveTo, NPC_SELF, 280, 50, 0)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim01)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
         Wait(20)
         Call(InterpNpcYaw, NPC_SELF, 270, 15)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim04)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Walk)
         Call(NpcMoveTo, NPC_SELF, 80, 50, 0)
     EndLoop
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Koopatrol_03) = {
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim04)
+EvtScript N(EVS_NpcIdle_Koopatrol_03_Early) = {
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Walk)
     Thread
         Loop(0)
-            Call(N(UnkPhysicsFunc), LVar0, 85, 60, 38)
+            Call(N(CheckPlayerInSight), LVar0, 85, 60, 38)
             IfEq(LVar0, 1)
-                Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach)))
+                Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach_Early)))
                 Return
             EndIf
             Wait(1)
@@ -94,13 +87,13 @@ EvtScript N(EVS_NpcIdle_Koopatrol_03) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Koopatrol_04) = {
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim04)
+EvtScript N(EVS_NpcIdle_Koopatrol_04_Early) = {
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Walk)
     Thread
         Loop(0)
-            Call(N(UnkPhysicsFunc), LVar0, 85, 60, 38)
+            Call(N(CheckPlayerInSight), LVar0, 85, 60, 38)
             IfEq(LVar0, 1)
-                Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach)))
+                Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach_Early)))
                 Return
             EndIf
             Wait(1)
@@ -108,22 +101,22 @@ EvtScript N(EVS_NpcIdle_Koopatrol_04) = {
     EndThread
     Call(SetNpcSpeed, NPC_SELF, Float(1.7))
     Loop(0)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim01)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
         Wait(30)
         Call(InterpNpcYaw, NPC_SELF, 270, 15)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim04)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Walk)
         Call(NpcMoveTo, NPC_SELF, -600, 50, 0)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim01)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
         Wait(30)
         Call(InterpNpcYaw, NPC_SELF, 90, 15)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Anim04)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Walk)
         Call(NpcMoveTo, NPC_SELF, -420, 50, 0)
     EndLoop
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_HammerBros) = {
+EvtScript N(EVS_NpcInit_HammerBros_Early) = {
     IfNe(GB_StoryProgress, STORY_CH2_BEGAN_PEACH_MISSION)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -134,7 +127,7 @@ EvtScript N(EVS_NpcInit_HammerBros) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopatrol_01) = {
+EvtScript N(EVS_NpcInit_Koopatrol_01_Early) = {
     IfNe(GB_StoryProgress, STORY_CH2_BEGAN_PEACH_MISSION)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -145,109 +138,107 @@ EvtScript N(EVS_NpcInit_Koopatrol_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopatrol_02) = {
+EvtScript N(EVS_NpcInit_Koopatrol_02_Early) = {
     Call(SetNpcPos, NPC_SELF, 180, 0, 50)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopatrol_02)))
+    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopatrol_02_Early)))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopatrol_03) = {
+EvtScript N(EVS_NpcInit_Koopatrol_03_Early) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
     Call(SetNpcPos, NPC_SELF, -250, 0, -15)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopatrol_03)))
+    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopatrol_03_Early)))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopatrol_04) = {
+EvtScript N(EVS_NpcInit_Koopatrol_04_Early) = {
     Call(SetNpcPos, NPC_SELF, -510, 0, 50)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopatrol_04)))
+    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopatrol_04_Early)))
     Return
     End
 };
 
-AnimID N(ExtraAnims_HammerBros)[] = {
-    ANIM_HammerBros_Anim00,
-    ANIM_HammerBros_Anim02,
-    ANIM_HammerBros_Anim04,
-    ANIM_HammerBros_Anim08,
-    ANIM_HammerBros_Anim0A,
-    ANIM_HammerBros_Anim13,
+AnimID N(LimitAnims_HammerBros_Early)[] = {
+    ANIM_HammerBros_Still,
+    ANIM_HammerBros_Idle,
+    ANIM_HammerBros_Walk,
+    ANIM_HammerBros_CarryFast,
+    ANIM_HammerBros_Talk,
+    ANIM_HammerBros_Lift,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Koopatrol)[] = {
-    ANIM_WorldKoopatrol_Anim00,
-    ANIM_WorldKoopatrol_Anim01,
-    ANIM_WorldKoopatrol_Anim04,
-    ANIM_WorldKoopatrol_Anim06,
-    ANIM_WorldKoopatrol_Anim08,
-    ANIM_WorldKoopatrol_Anim12,
-    ANIM_WorldKoopatrol_Anim14,
+AnimID N(LimitAnims_Koopatrol_Early)[] = {
+    ANIM_WorldKoopatrol_Still,
+    ANIM_WorldKoopatrol_Idle,
+    ANIM_WorldKoopatrol_Walk,
+    ANIM_WorldKoopatrol_Run,
+    ANIM_WorldKoopatrol_Talk,
+    ANIM_WorldKoopatrol_Lift,
+    ANIM_WorldKoopatrol_CarryFast,
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Minions)[] = {
+NpcData N(NpcData_Minions_Early)[] = {
     {
         .id = NPC_HammerBros,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_HammerBros),
+        .init = &N(EVS_NpcInit_HammerBros_Early),
         .settings = &N(NpcSettings_HammerBros),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = HAMMER_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_HammerBros),
+        .limitAnimations = N(LimitAnims_HammerBros_Early),
     },
     {
         .id = NPC_Koopatrol_01,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Koopatrol_01),
-        .settings = &N(NpcSettings_Koopatrol_Stationary),
+        .init = &N(EVS_NpcInit_Koopatrol_01_Early),
+        .settings = &N(NpcSettings_Koopatrol),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol_Early),
     },
     {
         .id = NPC_Koopatrol_02,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Koopatrol_02),
-        .settings = &N(NpcSettings_Koopatrol_Stationary),
+        .init = &N(EVS_NpcInit_Koopatrol_02_Early),
+        .settings = &N(NpcSettings_Koopatrol),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol_Early),
     },
     {
         .id = NPC_Koopatrol_03,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Koopatrol_03),
-        .settings = &N(NpcSettings_Koopatrol_Stationary),
+        .init = &N(EVS_NpcInit_Koopatrol_03_Early),
+        .settings = &N(NpcSettings_Koopatrol),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol_Early),
     },
     {
         .id = NPC_Koopatrol_04,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Koopatrol_04),
-        .settings = &N(NpcSettings_Koopatrol_Stationary),
+        .init = &N(EVS_NpcInit_Koopatrol_04_Early),
+        .settings = &N(NpcSettings_Koopatrol),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol_Early),
     },
 };
-
-#define NAME_SUFFIX
 
 NpcGroupList N(EarlyNPCs) = {
     NPC_GROUP(N(NpcData_Minions_Early)),

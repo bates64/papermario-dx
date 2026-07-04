@@ -1,9 +1,6 @@
 #include "dgb_15.h"
 
-s32 N(KeyList)[] = {
-    ITEM_TUBBA_CASTLE_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_TUBBA_CASTLE_KEY);
 
 EvtScript N(EVS_ExitDoors_dgb_14_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_15_ENTRY_0, "dgb_14", dgb_14_ENTRY_1,
     COLLIDER_deilittw, MODEL_o135, MODEL_o136, DOOR_SOUNDS_CREAKY);
@@ -53,7 +50,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
     Call(SetSpriteShading, SHADING_NONE)
-    Set(AF_DGB_01, false)
+    Set(AF_DGB_CloseCallWithTubba, false)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfEq(GF_DGB16_EscapedFromTubba, false)
         Call(MakeNpcs, true, Ref(N(DefaultNPCs)))

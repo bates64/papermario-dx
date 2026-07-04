@@ -13,7 +13,7 @@ EvtScript N(EVS_PlayBeamFX) = {
         EndIf
     EndThread
     Wait(20)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, Float(1.0), 30, 0)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, Float(1.0), 30, 0)
     Return
     End
 };
@@ -49,7 +49,6 @@ enum {
 };
 
 BSS EffectInstance* N(BeamEffect);
-BSS char N(padding)[4];
 BSS s32 N(MiscParticlesTimeLeft)[8];
 BSS s32 N(SpiritsMoveTime)[8];
 BSS s32 N(StarBeamStage);

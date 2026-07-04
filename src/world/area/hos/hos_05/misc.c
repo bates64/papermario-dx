@@ -1,8 +1,5 @@
 #include "hos_05.h"
 
-#include "world/common/atomic/ApplyTint.inc.c"
-
-#include "world/common/atomic/TexturePan.inc.c"
 
 API_CALLABLE(N(AwaitScriptComplete)) {
     Bytecode* args = script->ptrReadPos;
@@ -23,7 +20,7 @@ API_CALLABLE(N(CastToLocalFloat)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80240690_A2A8D0)) {
+API_CALLABLE(N(InitFallingStarParams)) {
     f32 vt2 = script->varTable[2];
     f32 magnitude;
     f32 angle;
@@ -50,7 +47,7 @@ EvtScript N(EVS_SetupStarshipAndWater) = {
         TEX_PAN_PARAMS_STEP(  100,  -80,  -50,  120)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o33, TEX_PANNER_1)
     Thread
@@ -58,15 +55,15 @@ EvtScript N(EVS_SetupStarshipAndWater) = {
         TEX_PAN_PARAMS_STEP(  -80,  140,   80, -100)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o34, TEX_PANNER_C)
     Return
     End
 };
 
-EvtScript N(D_80246028_A30268) = {
-    Call(N(func_80240690_A2A8D0))
+EvtScript N(EVS_AnimateFallingStar) = {
+    Call(N(InitFallingStarParams))
     Label(0)
         AddF(LVarB, LVarD)
         AddF(LVar2, LVarA)
@@ -114,7 +111,7 @@ EvtScript N(D_80246028_A30268) = {
     End
 };
 
-EvtScript N(D_80246298_A304D8) = {
+EvtScript N(EVS_AnimateShrinkingStar) = {
     Set(LVarF, LVar2)
     Call(GetPlayerPos, LVar2, LVar3, LVar4)
     Call(RandInt, 40, LVar2)
@@ -149,14 +146,14 @@ EvtScript N(EVS_8024644C) = {
     Set(LVar2, 5)
     Loop(LVar2)
         Call(RandInt, 360, LVar1)
-        ExecGetTID(N(D_80246028_A30268), LVar3)
+        ExecGetTID(N(EVS_AnimateFallingStar), LVar3)
         IfNe(LVar3, 0)
             Call(N(AwaitScriptComplete), LVar3)
         EndIf
     EndLoop
     Label(0)
         Call(RandInt, 360, LVar1)
-        ExecGetTID(N(D_80246298_A304D8), LVar3)
+        ExecGetTID(N(EVS_AnimateShrinkingStar), LVar3)
         IfNe(LVar3, 0)
             Call(N(AwaitScriptComplete), LVar3)
         EndIf
@@ -169,7 +166,7 @@ EvtScript N(EVS_80246540) = {
     Set(LVar0, LVar3)
     Label(0)
         Call(RandInt, 360, LVar1)
-        ExecGetTID(N(D_80246298_A304D8), LVar3)
+        ExecGetTID(N(EVS_AnimateShrinkingStar), LVar3)
         IfNe(LVar3, 0)
             Call(N(AwaitScriptComplete), LVar3)
         EndIf

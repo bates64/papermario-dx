@@ -1,10 +1,10 @@
 #include "flo_17.h"
 
-#include "world/common/npc/Dummy.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
 
 #define AI_LAKITU_FIRST_SPINY_ID    NPC_Spiny_01
 #define AI_LAKITU_LAST_SPINY_ID     NPC_Spiny_04
-#include "world/common/enemy/Lakitu_SpinySpawner.inc.c"
+#include "world/common/enemy/Lakitu/spiny_spawner.inc.c"
 
 NpcData N(NpcData_Lakitu_01) = {
     .id = NPC_Lakitu_01,

@@ -13,9 +13,9 @@ BSS f32 gBackroundLastScrollValue;
 
 void load_map_bg(char* optAssetName) {
     if (optAssetName != nullptr) {
-        UNK_PTR compressedData;
-        u32 assetSize;
         char* assetName = optAssetName;
+        void* compressedData;
+        u32 assetSize;
 
         if (evt_get_variable(nullptr, GB_StoryProgress) >= STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE) {
             // Use sunny Flower Fields bg rather than cloudy

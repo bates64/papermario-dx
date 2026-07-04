@@ -163,10 +163,10 @@ API_CALLABLE(N(SetupDemoScene)) {
             N(DemoInitState)++;
             break;
         case 3:
-            partner_clear_player_tracking(wPartnerNpc);
+            partner_clear_player_tracking(gPartnerNpc);
             partner_set_goal_pos(playerStatus->pos.x, playerStatus->pos.z);
-            func_800EF3D4(0);
-            set_npc_yaw(wPartnerNpc, 90.0f);
+            partner_set_forced_follow_mode(0);
+            set_npc_yaw(gPartnerNpc, 90.0f);
             playerStatus->targetYaw = 90.0f;
             playerStatus->curYaw = 90.0f;
             playerStatus->spriteFacingAngle = 0.0f;

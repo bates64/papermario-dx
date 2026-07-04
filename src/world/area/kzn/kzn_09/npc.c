@@ -1,10 +1,10 @@
 #include "kzn_09.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Kolorado.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
 
-#include "world/common/enemy/PutridPiranha.inc.c"
-#include "world/common/enemy/SpikeTop.inc.c"
+#include "world/common/enemy/PutridPiranha/idle.inc.c"
+#include "world/common/enemy/SpikeTop/wander.inc.c"
 
 NpcSettings N(NpcSettings_Zipline) = {
     .height = 24,
@@ -12,18 +12,17 @@ NpcSettings N(NpcSettings_Zipline) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/complete/LetterDelivery.inc.c"
-
-s32 N(LetterList)[] = {
-    ITEM_LETTER_TO_KOLORADO,
-    ITEM_NONE
+LetterDelivery N(LetterDelivery_Kolorado) = {
+    .recipientID = NPC_Kolorado,
+    .recipientTalk = ANIM_Kolorado_Fallen,
+    .recipientIdle = ANIM_Kolorado_Fallen,
+    .msgGreeting = MSG_CH5_00E8,
+    .msgCancelled = MSG_CH5_00E9,
+    .msgDelivered = MSG_CH5_00EA,
+    .msgRecieved = MSG_CH5_00EB,
+    .letters = { ITEM_LETTER_TO_KOLORADO },
+    .reward = ITEM_STAR_PIECE,
 };
-
-EVT_LETTER_PROMPT(Kolorado, NPC_Kolorado, ANIM_Kolorado_Fallen, ANIM_Kolorado_Fallen,
-    MSG_CH5_00E8, MSG_CH5_00E9, MSG_CH5_00EA, MSG_CH5_00EB,
-    ITEM_LETTER_TO_KOLORADO, N(LetterList));
-
-EVT_LETTER_REWARD(Kolorado);
 
 EvtScript N(EVS_Scene_KoloradoFallsDown) = {
     Label(0)
@@ -37,8 +36,8 @@ EvtScript N(EVS_Scene_KoloradoFallsDown) = {
         Call(InterruptUsePartner)
     EndIf
     Call(DisablePlayerInput, true)
-    Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(AdjustCam, CAM_DEFAULT, Float(3.0), 0, 400, Float(15.0), Float(-7.0))
     Call(SetSelfVar, 1, 1)
     Thread
@@ -54,12 +53,12 @@ EvtScript N(EVS_Scene_KoloradoFallsDown) = {
         EndLoop
     EndThread
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Wait(30 * DT)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetNpcSpeed, NPC_PARTNER, Float(2.0))
         Add(LVar0, 20)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 0)
         Call(NpcFacePlayer, NPC_PARTNER, 0)
         Call(EnablePartnerAI)
@@ -93,11 +92,11 @@ EvtScript N(EVS_Scene_KoloradoFallsDown) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Shout, ANIM_Kolorado_Yell, 0, MSG_CH5_00F4)
     Call(SetSelfVar, 0, 1)
     Label(2)
-    Call(GetSelfVar, 0, LVar0)
-    IfNe(LVar0, 0)
-        Wait(1)
-        Goto(2)
-    EndIf
+        Call(GetSelfVar, 0, LVar0)
+        IfNe(LVar0, 0)
+            Wait(1)
+            Goto(2)
+        EndIf
     Call(UseSettingsFrom, CAM_DEFAULT, -310, 870, -15)
     Call(SetPanTarget, CAM_DEFAULT, -310, 870, -15)
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.0 / DT))
@@ -118,12 +117,12 @@ EvtScript N(EVS_Scene_KoloradoFallsDown) = {
     Call(SetSelfVar, 0, 1)
     Thread
         Label(3)
-        Call(ShowSweat, NPC_SELF, 1, -45, EMOTER_NPC, 0, 0, 0, 0, 20)
-        Call(GetSelfVar, 0, LVar0)
-        IfEq(LVar0, 1)
-            Wait(25)
-            Goto(3)
-        EndIf
+            Call(ShowSweat, NPC_SELF, 1, -45, EMOTER_NPC, 0, 0, 0, 0, 20)
+            Call(GetSelfVar, 0, LVar0)
+            IfEq(LVar0, 1)
+                Wait(25)
+                Goto(3)
+            EndIf
     EndThread
     Wait(10 * DT)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Walk)
@@ -153,7 +152,7 @@ EvtScript N(EVS_Scene_KoloradoFallsDown) = {
     Call(NpcJump0, NPC_SELF, LVar3, 700, LVar5, 5)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_PLAYER_LONG_FALL, SOUND_SPACE_DEFAULT)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetSelfVar, 0, 0)
     Call(SetSelfVar, 1, 0)
     Wait(5 * DT)
@@ -166,11 +165,11 @@ EvtScript N(EVS_Scene_KoloradoFallsDown) = {
         Call(PlayerMoveTo, -360, 0, 0)
         Call(SetPlayerAnimation, ANIM_Mario1_SpinFall)
         Label(5)
-        Call(GetSelfVar, 0, LVar0)
-        IfEq(LVar0, 1)
-            Wait(1)
-            Goto(5)
-        EndIf
+            Call(GetSelfVar, 0, LVar0)
+            IfEq(LVar0, 1)
+                Wait(1)
+                Goto(5)
+            EndIf
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     EndThread
     Call(ShowMessageAtScreenPos, MSG_CH5_00F5, 160, 40)
@@ -187,7 +186,8 @@ EvtScript N(EVS_Scene_KoloradoFallsDown) = {
 
 EvtScript N(EVS_Kolorado_Interact) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Fallen, ANIM_Kolorado_Fallen, 0, MSG_CH5_00F6)
-    EVT_LETTER_CHECK(Kolorado)
+    Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
@@ -267,7 +267,7 @@ NpcData N(NpcData_SpikeTop) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_SpikeTop),
+    .settings = &N(NpcSettings_SpikeTop_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKE_TOP_DROPS,
     .animations = SPIKE_TOP_ANIMS,

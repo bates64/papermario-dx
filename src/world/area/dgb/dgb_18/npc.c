@@ -5,12 +5,10 @@
 extern EvtScript N(EVS_NpcAI_Tubba_Chase);
 extern EvtScript N(EVS_NpcAI_Tubba_WakeUp);
 
-#include "world/common/npc/Yakkey.inc.c"
+#include "world/common/npc/Yakkey/idle.inc.c"
 
-#include "world/common/enemy/TubbaBlubba_Patrol.inc.c"
-#include "world/common/enemy/TubbaBlubba.inc.c"
-
-#include "world/common/todo/UnkFunc1.inc.c"
+#include "world/common/enemy/TubbaBlubba/patrol.inc.c"
+#include "world/common/enemy/TubbaBlubba/idle.inc.c"
 
 API_CALLABLE(N(UnusedChasePlayer)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -99,10 +97,10 @@ EvtScript N(EVS_Scene_TubbaFallsAsleep) = {
         EndLoop
     EndThread
     Call(SetMusic, 0, SONG_TUBBA_BLUBBA_THEME, 0, VOL_LEVEL_FULL)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim09)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Walk)
     Call(SetNpcPos, NPC_SELF, -210, 0, 180)
     Call(NpcMoveTo, NPC_SELF, -60, 180, 30)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim06)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Idle)
     Thread
         Call(MakeLerp, 80, 0, 10, EASING_LINEAR)
         Loop(0)
@@ -117,9 +115,9 @@ EvtScript N(EVS_Scene_TubbaFallsAsleep) = {
         Call(PlaySoundAtCollider, COLLIDER_deilittw, SOUND_CREAKY_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     EndThread
     Wait(20)
-    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldTubba_Anim10, ANIM_WorldTubba_Anim06, 5, MSG_CH3_00F4)
+    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldTubba_Talk, ANIM_WorldTubba_Idle, 5, MSG_CH3_00F4)
     Wait(20)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim09)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Walk)
     Call(SetSelfVar, 0, 0)
     Thread
         Loop(0)
@@ -155,17 +153,17 @@ EvtScript N(EVS_Scene_TubbaFallsAsleep) = {
     Call(NpcMoveTo, NPC_SELF, 140, 245, 0)
     Call(NpcMoveTo, NPC_SELF, 615, 245, 0)
     Call(SetSelfVar, 0, 1)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim06)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Idle)
     Wait(15)
     Wait(20)
-    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldTubba_Anim10, ANIM_WorldTubba_Anim06, 5, MSG_CH3_00F5)
+    Call(SpeakToPlayer, NPC_SELF, ANIM_WorldTubba_Talk, ANIM_WorldTubba_Idle, 5, MSG_CH3_00F5)
     Wait(20)
     Thread
-        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim14)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Lean)
         Wait(5)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim15)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Jump)
         Wait(5)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim16)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Fall)
         Wait(5)
     EndThread
     Wait(5)
@@ -174,7 +172,7 @@ EvtScript N(EVS_Scene_TubbaFallsAsleep) = {
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.3))
     EndThread
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim05)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_StillWake)
     Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.2), Float(1.25))
     Wait(1)
     Call(SetNpcScale, NPC_SELF, Float(1.35), Float(1.15), Float(1.25))
@@ -220,9 +218,9 @@ EvtScript N(EVS_Scene_TubbaFallsAsleep) = {
     Call(SetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
     Call(SetNpcRotationPivot, NPC_SELF, 0)
     Call(SetNpcRotation, NPC_SELF, 0, 0, 0)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim02)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_StillSleep)
     Wait(15)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim24)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Sleep)
     Wait(30)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_TUBBA_SNORE_INHALE, SOUND_SPACE_DEFAULT)
     Wait(30)
@@ -263,9 +261,9 @@ EvtScript N(EVS_NpcIdle_Tubba_Asleep) = {
     Call(SetNpcPos, NPC_SELF, 600, 50, 115)
     Call(SetNpcRotationPivot, NPC_SELF, 0)
     Call(SetNpcRotation, NPC_SELF, 0, 0, 0)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim02)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_StillSleep)
     Wait(15)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim24)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Sleep)
     Wait(30)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_TUBBA_SNORE_INHALE, SOUND_SPACE_DEFAULT)
     Wait(30)
@@ -301,16 +299,16 @@ EvtScript N(EVS_NpcAI_Tubba_WakeUp) = {
     Call(SetNpcVar, NPC_SELF, 1, 2)
     Wait(20)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SNAP_AWAKE_A, SOUND_SPACE_DEFAULT)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim19)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_LeanAngry)
     Wait(30)
     Thread
         Call(NpcJump0, NPC_SELF, 650, 0, 250, 25)
     EndThread
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim1A)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_JumpAngry)
     Wait(10)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim1B)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_FallAngry)
     Wait(12)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim1C)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_LandAngry)
     Wait(5)
     Call(BindNpcAI, NPC_Tubba, Ref(N(EVS_NpcAI_Tubba_Chase)))
     Return
@@ -319,7 +317,7 @@ EvtScript N(EVS_NpcAI_Tubba_WakeUp) = {
 
 EvtScript N(EVS_NpcAI_Tubba_Chase) = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
-    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim0D)
+    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_RunAngry)
     Thread
         Loop(0)
             Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(2.0))
@@ -333,8 +331,15 @@ EvtScript N(EVS_NpcAI_Tubba_Chase) = {
     End
 };
 
+API_CALLABLE(N(PostBattleHideWorld)) {
+    increment_status_bar_disabled();
+    set_screen_overlay_params_back(OVERLAY_SCREEN_COLOR, 255.0f);
+    return ApiStatus_DONE2;
+}
+
+// failsafe if the player somehow defeats Tubba
 EvtScript N(EVS_NpcDefeat_Tubba) = {
-    Call(N(UnkFunc1))
+    Call(N(PostBattleHideWorld))
     Call(GotoMap, Ref("dgb_01"), dgb_01_ENTRY_6)
     Wait(100)
     Return
@@ -370,7 +375,7 @@ EvtScript N(EVS_Scene_YakkeyShouts) = {
     EndLoop
     Call(DisablePlayerInput, true)
     Wait(40)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcPos, NPC_SELF, 845, 0, 140)
     Call(SetNpcJumpscale, NPC_SELF, Float(0.8))
     Call(NpcJump1, NPC_SELF, 845, 35, 145, 15)
@@ -422,7 +427,7 @@ EvtScript N(EVS_Scene_YakkeyShouts) = {
     Call(SetMusic, 0, SONG_TUBBA_ESCAPE, 0, VOL_LEVEL_FULL)
     Call(SetNpcVar, NPC_Tubba, 1, 1)
     Wait(15)
-    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim25)
+    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_WakeUp)
     Thread
         Loop(0)
             Call(GetNpcVar, NPC_Tubba, 1, LVar0)
@@ -438,10 +443,10 @@ EvtScript N(EVS_Scene_YakkeyShouts) = {
         EndLoop
     EndThread
     Wait(15)
-    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim05)
-    Call(SpeakToPlayer, NPC_Tubba, ANIM_WorldTubba_Anim13, ANIM_WorldTubba_Anim05, 5, MSG_CH3_00FB)
+    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_StillWake)
+    Call(SpeakToPlayer, NPC_Tubba, ANIM_WorldTubba_HalfAwake, ANIM_WorldTubba_StillWake, 5, MSG_CH3_00FB)
     Wait(15)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetCurrentPartnerID, LVar0)
     Switch(LVar0)
         CaseEq(PARTNER_GOOMBARIO)
@@ -466,7 +471,7 @@ EvtScript N(EVS_Scene_YakkeyShouts) = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Sub(LVar1, 10)
     Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 10)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
@@ -519,24 +524,7 @@ NpcData N(NpcData_Yakkey) = {
     .settings = &N(NpcSettings_Yakkey),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Yakkey_Idle,
-        .walk   = ANIM_Yakkey_Idle,
-        .run    = ANIM_Yakkey_Idle,
-        .chase  = ANIM_Yakkey_Idle,
-        .anim_4 = ANIM_Yakkey_Idle,
-        .anim_5 = ANIM_Yakkey_Idle,
-        .death  = ANIM_Yakkey_Idle,
-        .hit    = ANIM_Yakkey_Idle,
-        .anim_8 = ANIM_Yakkey_Idle,
-        .anim_9 = ANIM_Yakkey_Idle,
-        .anim_A = ANIM_Yakkey_Idle,
-        .anim_B = ANIM_Yakkey_Idle,
-        .anim_C = ANIM_Yakkey_Idle,
-        .anim_D = ANIM_Yakkey_Idle,
-        .anim_E = ANIM_Yakkey_Idle,
-        .anim_F = ANIM_Yakkey_Idle,
-    },
+    .animations = YAKKEY_ANIMS,
 };
 
 NpcGroupList N(DefaultNPCs) = {

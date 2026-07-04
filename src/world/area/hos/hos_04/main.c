@@ -25,28 +25,22 @@ EvtScript N(EVS_BindExitTriggers) = {
 };
 
 EvtScript N(EVS_EnterMap) = {
-    Set(AF_HOS_B5, false)
+    Set(AF_HOS05_SkipMusicChange, false)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(hos_04_ENTRY_0)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitnw, COLLIDER_FLAGS_UPPER_MASK)
             IfEq(GF_HOS04_Visited, false)
-#if VERSION_JP
-                Call(SetPlayerPos, -630, 0, 0)
-                Call(SetNpcPos, NPC_PARTNER, -630, 0, 0)
-#endif
                 Thread
                     Call(DisablePlayerInput, true)
-#if !VERSION_JP
                     Call(SetPlayerPos, -630, 0, 0)
                     Call(GetPartnerInUse, LVar0)
                     IfEq(LVar0, PARTNER_NONE)
-                        Call(DisablePartnerAI, 0)
+                        Call(DisablePartnerAI, false)
                         Call(SetNpcPos, NPC_PARTNER, -660, 0, 0)
                         Wait(1)
                         Call(EnablePartnerAI)
                     EndIf
-#endif
                     Call(UseSettingsFrom, CAM_DEFAULT, -565, 0, 0)
                     Call(SetPanTarget, CAM_DEFAULT, -565, 0, 0)
                     Call(SetCamDistance, CAM_DEFAULT, 1350)
@@ -73,7 +67,7 @@ EvtScript N(EVS_EnterMap) = {
                     Call(PanToTarget, CAM_DEFAULT, 0, true)
                     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
                     Call(PanToTarget, CAM_DEFAULT, 0, false)
-                    Set(AF_HOS_B5, true)
+                    Set(AF_HOS05_SkipMusicChange, true)
                     Call(DisablePlayerInput, false)
                 EndThread
             Else

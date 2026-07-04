@@ -31,7 +31,6 @@ GameStatus gGameStatus = {
 GameStatus* gGameStatusPtr = &gGameStatus;
 s16 SoftResetOverlayAlpha = 0;
 s16 SoftResetState = 0;
-s32 D_800741A4 = 0;
 
 Mtx MasterIdentityMtx = RDP_MATRIX(
     1.000000, 0.000000, 0.000000, 0.000000,
@@ -40,12 +39,9 @@ Mtx MasterIdentityMtx = RDP_MATRIX(
     0.000000, 0.000000, 0.000000, 1.000000
 );
 
-s32 D_800741E8[2] = {0, 0}; // padding?
 u16 gMatrixListPos = 0;
-u16 D_800741F2 = 0;
 s32 gCurrentDisplayContextIndex = 0;
 s32 gPauseBackgroundFade = 0;
-s32 D_800741FC = 0;
 
 void gfx_init_state(void);
 void gfx_draw_background(void);
@@ -56,10 +52,8 @@ void step_game_loop(void) {
     PlayerData* playerData = &gPlayerData;
     const int MAX_GAME_TIME = (1000*60*60*60) - 1; // 1000 hours minus one frame at 60 fps
 
-#if !VERSION_JP
     update_input();
     profiler_update(PROFILER_TIME_CONTROLLERS, 0);
-#endif
 
     gGameStatusPtr->frameCounter++;
 
@@ -67,11 +61,6 @@ void step_game_loop(void) {
     if (playerData->frameCounter > MAX_GAME_TIME) {
         playerData->frameCounter = MAX_GAME_TIME;
     }
-
-#if VERSION_JP
-    update_input();
-    profiler_update(PROFILER_TIME_CONTROLLERS, 0);
-#endif
 
     update_max_rumble_duration();
 
@@ -160,7 +149,7 @@ void step_game_loop(void) {
         gOverrideFlags &= ~GLOBAL_OVERRIDES_PREV_800;
     }
 
-    // Unused rand_int used to advance the global random seed each visual frame
+    // advance the global random seed each visual frame
     rand_int(1);
 }
 
@@ -204,7 +193,6 @@ void gfx_draw_frame(void) {
     }
 
     player_render_interact_prompts();
-    func_802C3EE4();
 
     GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_HUD_ELEMENTS, PROFILER_TIME_SUB_GFX_BACK_UI);
     render_screen_overlay_backUI();
@@ -296,7 +284,6 @@ void load_engine_data(void) {
     DMA_COPY_SEGMENT(font_width);
 
     gOverrideFlags = 0;
-    gGameStatusPtr->unk_79 = 0;
     gGameStatusPtr->backgroundFlags = 0;
     gGameStatusPtr->musicEnabled = true;
     gGameStatusPtr->healthBarsEnabled = true;
@@ -393,4 +380,3 @@ void set_time_freeze_mode(s32 mode) {
 s32 get_time_freeze_mode(void) {
     return gTimeFreezeMode;
 }
-

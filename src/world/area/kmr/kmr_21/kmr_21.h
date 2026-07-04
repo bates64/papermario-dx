@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_21.h
 /// @brief Goomba Region - Title Screen
 

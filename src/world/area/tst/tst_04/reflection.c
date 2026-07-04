@@ -89,20 +89,17 @@ void N(worker_update_animator)(void) {
     update_model_animator(N(Animator));
 }
 
-void N(worker_render_animator)(void) {
-    Matrix4f m0;
-    Matrix4f m1;
-    Matrix4f m2;
-    Matrix4f m3;
-    Mtx m4;
+void N(worker_draw_animator)(void) {
+    Matrix4f tempMtx;
+    Mtx transformMtx;
 
-    guTranslateF(m1, -484.0f, 25.0f, -40.0f);
-    guMtxF2L(m1, &m4);
-    render_animated_model(N(Animator), &m4);
+    guTranslateF(tempMtx, -484.0f, 25.0f, -40.0f);
+    guMtxF2L(tempMtx, &transformMtx);
+    render_animated_model(N(Animator), &transformMtx);
 }
 
 API_CALLABLE(N(SetupAnimatedModel)) {
-    create_worker_scene(N(worker_update_animator), N(worker_render_animator));
+    create_worker_scene(N(worker_update_animator), N(worker_draw_animator));
     return ApiStatus_DONE2;
 }
 

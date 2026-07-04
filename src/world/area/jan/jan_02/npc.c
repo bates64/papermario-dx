@@ -1,15 +1,10 @@
 #include "jan_02.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Yoshi.inc.c"
-#include "world/common/npc/Yoshi_Patrol.inc.c"
+#include "world/common/npc/Yoshi/idle.inc.c"
+#include "world/common/npc/Yoshi/patrol.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
-
-#include "world/common/todo/SwitchToPartner.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
 EvtScript N(EVS_GetRescuedYoshiCount) = {
     Set(LVar0, 0)
@@ -30,10 +25,10 @@ EvtScript N(EVS_Scene_GetJadeRaven) = {
         Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_Talk, ANIM_VillageLeader_Idle, 0, MSG_CH5_0024)
     EndIf
     Wait(5 * DT)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_Walk)
     Call(NpcMoveTo, NPC_SELF, 8, -140, 25)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_Idle)
     Wait(5 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 25, 15, -150)
@@ -45,8 +40,8 @@ EvtScript N(EVS_Scene_GetJadeRaven) = {
     Wait(5 * DT)
     Call(PlayerMoveTo, 58, -140, 25)
     Call(PlayerFaceNpc, NPC_SELF, false)
-    Call(func_802D2C14, 1)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetPartnerForcedFollowMode, 1)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Wait(30 * DT)
     Call(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_Rummage)
     Wait(30 * DT)
@@ -65,19 +60,19 @@ EvtScript N(EVS_Scene_GetJadeRaven) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     Call(GetCurrentPartnerID, LVar0)
     IfEq(LVar0, PARTNER_SUSHIE)
         Thread
             Wait(15 * DT)
             Call(PlayerFaceNpc, NPC_PARTNER, false)
         EndThread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 2, MSG_CH5_0028)
     Else
-        Call(N(SwitchToPartner), PARTNER_SUSHIE)
+        Call(SwitchToPartner, PARTNER_SUSHIE)
         Call(SpeakToPlayer, NPC_PARTNER, -1, -1, 5, MSG_CH5_0029)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Wait(15 * DT)
         Call(GetNpcPos, NPC_PARTNER, LVar2, LVar3, LVar4)
         Call(MakeLerp, LVar2, 85, 10 * DT, EASING_LINEAR)
@@ -95,7 +90,7 @@ EvtScript N(EVS_Scene_GetJadeRaven) = {
             Wait(10 * DT)
             Call(PlayerFaceNpc, NPC_PARTNER, false)
         EndThread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(ContinueSpeech, NPC_PARTNER, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 5, MSG_CH5_002A)
         Wait(10 * DT)
     EndIf
@@ -379,7 +374,7 @@ EvtScript N(EVS_NpcInit_Yoshi_03) = {
     End
 };
 
-AnimID N(ExtraAnims_Councillor)[] = {
+AnimID N(LimitAnims_Councillor)[] = {
     ANIM_LeadersFriend_TalkSit,
     ANIM_LeadersFriend_TalkSitSad,
     ANIM_LeadersFriend_IdleSit,
@@ -408,7 +403,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = YOSHI_COUNCILLOR_ANIMS,
-        .extraAnimations = N(ExtraAnims_Councillor),
+        .limitAnimations = N(LimitAnims_Councillor),
         .tattle = MSG_NpcTattle_LeadersFriend,
     },
     {

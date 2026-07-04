@@ -9,8 +9,6 @@
 INCLUDE_IMG("world/area/kmr/kmr_04/hammer_block_message.png", kmr_04_hammer_block_message_img);
 INCLUDE_PAL("world/area/kmr/kmr_04/hammer_block_message.pal", kmr_04_hammer_block_message_pal);
 
-#include "world/common/complete/GiveReward.inc.c"
-
 static MessageImageData MessageImage;
 
 API_CALLABLE(N(SetMessageImage_HammerBlock)) {
@@ -26,12 +24,6 @@ API_CALLABLE(N(SetMessageImage_HammerBlock)) {
 
 API_CALLABLE(N(GiveWoodenHammer)) {
     gPlayerData.hammerLevel = GEAR_RANK_NORMAL;
-
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(N(func_80240444_8CAD44)) {
-    exec_entity_commandlist(get_entity_by_index(script->varTable[0]));
 
     return ApiStatus_DONE2;
 }
@@ -58,7 +50,7 @@ EvtScript N(EVS_GotHammer) = {
     EndThread
     Loop(0)
         Wait(1)
-        IfEq(MF_Unk_12, true)
+        IfEq(MF_GotHammerDone, true)
             BreakLoop
         EndIf
     EndLoop
@@ -71,14 +63,14 @@ EvtScript N(EVS_GotHammer) = {
 
 EvtScript N(EVS_OnSearch_HammerBush) = {
     Call(AdjustCam, CAM_DEFAULT, Float(8.0), 0, Float(300.0), Float(19.0), Float(-9.0))
-    Set(MF_Unk_12, false)
+    Set(MF_GotHammerDone, false)
     Exec(N(EVS_GotHammer))
     Call(N(GiveWoodenHammer))
     Wait(30 * DT)
     Call(N(SetMessageImage_HammerBlock))
     Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_FoundHammer, 160, 40)
-    Set(MF_Unk_12, true)
-    Call(DisablePartnerAI, 0)
+    Set(MF_GotHammerDone, true)
+    Call(DisablePartnerAI, false)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_00AA)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Idle)
@@ -144,7 +136,7 @@ FoliageDropList N(Bush1_Drops) = {
             .pos = { 248, 17, 97 },
             .spawnMode = ITEM_SPAWN_MODE_TOSS_SPAWN_ONCE,
             .pickupFlag = GF_KMR04_Bush1_Coin,
-            .spawnFlag = AF_JAN01_TreeDrop_StarPiece,
+            .spawnFlag = MF_Drop_Bush1,
         },
     }
 };
@@ -172,7 +164,7 @@ FoliageDropList N(Bush2_Drops) = {
             .pos = { 99, 17, 237 },
             .spawnMode = ITEM_SPAWN_MODE_TOSS,
             .pickupFlag = GF_KMR04_Bush2_Coin,
-            .spawnFlag = MF_Unk_0B,
+            .spawnFlag = MF_Drop_Bush2,
         },
     }
 };
@@ -200,14 +192,14 @@ FoliageDropList N(Bush3_Drops) = {
             .pos = { 50, 18, -200 },
             .spawnMode = ITEM_SPAWN_MODE_TOSS_SPAWN_ONCE,
             .pickupFlag = GF_KMR04_Bush3_CoinA,
-            .spawnFlag = MF_Unk_0C,
+            .spawnFlag = MF_Drop_Bush3A,
         },
         {
             .itemID = ITEM_COIN,
             .pos = { 50, 18, -200 },
             .spawnMode = ITEM_SPAWN_MODE_TOSS_SPAWN_ONCE,
             .pickupFlag = GF_KMR04_Bush3_CoinB,
-            .spawnFlag = MF_Unk_0D,
+            .spawnFlag = MF_Drop_Bush3B,
         },
     }
 };
@@ -235,7 +227,7 @@ FoliageDropList N(Bush4_Drops) = {
             .pos = { -49, 20, 146 },
             .spawnMode = ITEM_SPAWN_MODE_TOSS_SPAWN_ONCE,
             .pickupFlag = GF_KMR04_Bush4_Coin,
-            .spawnFlag = MF_Unk_0E,
+            .spawnFlag = MF_Drop_Bush4,
         },
     }
 };
@@ -263,7 +255,7 @@ FoliageDropList N(Bush5_Drops) = {
             .pos = { -148, 16, -150 },
             .spawnMode = ITEM_SPAWN_MODE_TOSS_SPAWN_ONCE,
             .pickupFlag = GF_KMR04_Bush5_Coin,
-            .spawnFlag = MF_Unk_0F,
+            .spawnFlag = MF_Drop_Bush5,
         },
     }
 };
@@ -404,12 +396,12 @@ EvtScript N(EVS_OnShakeTree3) = {
     IfEq(GF_KMR04_Tree3_Dolly, true)
         Return
     EndIf
-    IfEq(AF_KMR_09, true)
+    IfEq(AF_KMR04_DollyDropped, true)
         Return
     EndIf
     Wait(15)
     Call(MakeItemEntity, ITEM_DOLLY, 250, 132, -100, ITEM_SPAWN_MODE_FALL_NEVER_VANISH, GF_KMR04_Tree3_Dolly)
-    Set(AF_KMR_09, true)
+    Set(AF_KMR04_DollyDropped, true)
     Thread
         Label(10)
         IfEq(GF_KMR04_Tree3_Dolly, false)
@@ -420,7 +412,7 @@ EvtScript N(EVS_OnShakeTree3) = {
         IfEq(LVar0, PARTNER_GOOMPA)
             Call(DisablePlayerInput, true)
             Wait(5)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_00AB)
             Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Idle)
             Call(EnablePartnerAI)

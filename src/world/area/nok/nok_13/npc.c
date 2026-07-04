@@ -1,6 +1,6 @@
 #include "nok_13.h"
 
-#include "world/common/enemy/Fuzzy_Wander.inc.c"
+#include "world/common/enemy/Fuzzy/wander.inc.c"
 
 NpcData N(NpcData_Fuzzy) = {
     .id = NPC_UnusedFuzzy,

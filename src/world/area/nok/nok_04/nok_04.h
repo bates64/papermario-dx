@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file nok_04.h
 /// @brief Koopa Region - Fuzzy Forest
 
@@ -49,5 +51,3 @@ extern EvtScript N(EVS_HitTree);
 extern EvtScript N(EVS_MakeEntities);
 
 extern NpcGroupList N(DefaultNPCs);
-
-API_CALLABLE(N(LoadPartyImage));

@@ -5,16 +5,11 @@ EvtScript N(EVS_Unused_DoNothing) = {
     End
 };
 
-#include "world/common/npc/Oaklie.inc.c"
+#include "world/common/npc/Oaklie/idle.inc.c"
 
-#include "world/common/enemy/ForestFuzzy_Wander.inc.c"
+#include "world/common/enemy/ForestFuzzy/wander.inc.c"
 
-s32 N(KeyList)[] = {
-    ITEM_FOREST_PASS,
-    ITEM_NONE
-};
-
-#include "world/common/complete/KeyItemChoice.inc.c"
+ITEM_LIST(N(KeyList), ITEM_FOREST_PASS);
 
 EvtScript N(EVS_NpcInteract_Oaklie) = {
     IfLt(GB_StoryProgress, STORY_CH3_INVITED_TO_BOOS_MANSION)
@@ -22,7 +17,7 @@ EvtScript N(EVS_NpcInteract_Oaklie) = {
         Return
     EndIf
     Call(SpeakToPlayer, NPC_Oaklie, ANIM_Oaklie_Talk, ANIM_Oaklie_Idle, 0, MSG_CH3_0007)
-    Call(SetNpcFlagBits, NPC_Oaklie, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Oaklie, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Wait(5 * DT)
     Thread
         Call(SetNpcAnimation, NPC_Oaklie, ANIM_Oaklie_Jump)

@@ -1,7 +1,7 @@
 #include "arn_02.h"
 
-#include "world/common/enemy/HyperGoomba_Wander.inc.c"
-#include "world/common/enemy/HyperCleft.inc.c"
+#include "world/common/enemy/HyperGoomba/wander.inc.c"
+#include "world/common/enemy/HyperCleft/wander.inc.c"
 
 NpcData N(NpcData_HyperCleft_01) = {
     .id = NPC_HyperCleft_01,
@@ -19,7 +19,7 @@ NpcData N(NpcData_HyperCleft_01) = {
             .detectSize = { 120 },
         }
     },
-    .settings = &N(NpcSettings_HyperCleft),
+    .settings = &N(NpcSettings_HyperCleft_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = HYPER_CLEFT_DROPS,
     .animations = HYPER_CLEFT_ANIMS,
@@ -42,7 +42,7 @@ NpcData N(NpcData_HyperCleft_02) = {
             .detectSize = { 120 },
         }
     },
-    .settings = &N(NpcSettings_HyperCleft),
+    .settings = &N(NpcSettings_HyperCleft_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = HYPER_CLEFT_DROPS,
     .animations = HYPER_CLEFT_ANIMS,
@@ -65,7 +65,7 @@ NpcData N(NpcData_HyperGoomba) = {
             .detectSize = { 120, 137 },
         }
     },
-    .settings = &N(NpcSettings_HyperGoomba),
+    .settings = &N(NpcSettings_HyperGoomba_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = HYPER_GOOMBA_DROPS,
     .animations = HYPER_GOOMBA_ANIMS,

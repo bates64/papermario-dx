@@ -25,18 +25,25 @@
 #define EXTERN_C extern
 #endif
 
-#define NAME_SUFFIX
 #define NAME_PREFIX
 #ifdef _LANGUAGE_C_PLUS_PLUS
 // use C++ namespaces instead of these macros!
 #define A(sym) sym
 #define N(sym) sym
 #else
-#define A(sym) NS(AREA, NAME_PREFIX, sym, NAME_SUFFIX)
-#define N(sym) NS(NAMESPACE, NAME_PREFIX, sym, NAME_SUFFIX)
+#define A(sym) NS(AREA, NAME_PREFIX, sym, )
+#define N(sym) NS(NAMESPACE, NAME_PREFIX, sym, )
 #endif
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
+
+#define _PAD_CONCAT_INNER(a, b) a ## b
+#define _PAD_CONCAT(a, b) _PAD_CONCAT_INNER(a, b)
+#ifdef __COUNTER__
+#define PAD(x) u8 _PAD_CONCAT(pad_, __COUNTER__)[x]
+#else
+#define PAD(x) u8 _PAD_CONCAT(pad_, __LINE__)[x]
+#endif
 
 #define PTR_LIST_END ((void*) -1)
 
@@ -54,7 +61,7 @@
 #define PANIC() IS_DEBUG_PANIC("Panic")
 #define PANIC_MSG(msg, args...) \
     do { \
-        char panicMsg[0x40]; \
+        char panicMsg[0x100]; \
         sprintf(panicMsg, msg, ##args); \
         IS_DEBUG_PANIC(msg); \
     } while (0)
@@ -64,7 +71,7 @@
     }
 #define ASSERT_MSG(condition, msg, args...) \
     if (!(condition)) { \
-        char assertMsg[0x40]; \
+        char assertMsg[0x100]; \
         sprintf(assertMsg, msg, ##args); \
         IS_DEBUG_PANIC(assertMsg); \
     }
@@ -253,7 +260,7 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
             _RDP_PACK_FRAC(Dz, Dw), \
         } \
     } \
-};
+}
 
 #define UNPACK_PAL_R(color) (((color) >> 11) & 0x1F)
 #define UNPACK_PAL_G(color) (((color) >> 6) & 0x1F)
@@ -501,6 +508,8 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
 #define PM_CC_CONST_ALPHA_1         0, 0, 0, 0, 0, 0, 0, 1
 #define PM_CC_CONST_0               0, 0, 0, 0, 0, 0, 0, 0
 #define PM_CC_CONST_1               0, 0, 0, 1, 0, 0, 0, 1
+
+#define	G_TX_EXTRA_TILE 1
 
 #ifdef OLD_GCC
 #define VLA 0

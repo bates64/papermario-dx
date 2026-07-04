@@ -23,7 +23,11 @@ BSS s32 SpriteCurBaseRot[3];
 BSS s32 SpriteUpdateNotifyValue;
 
 SpriteComponent** spr_allocate_components(s32);
-void spr_load_npc_extra_anims(SpriteAnimData*, u32*);
+
+/// Discards rasters not referenced by `limitAnimList` and compacts the sprite allocation.
+/// Animation data and palettes remain loaded.
+void spr_npc_unload_unused_assets(SpriteAnimData*, AnimID* limitAnimList);
+
 void spr_init_player_raster_cache(s32 cacheSize, s32 maxRasterSize);
 
 Quad SpriteQuadTemplate = {
@@ -312,11 +316,11 @@ void spr_appendGfx_component_flat(
 }
 
 void spr_appendGfx_component(
-    SpriteRasterCacheEntry* cache,
+    SpriteRasterEntry* cache,
     f32 dx, f32 dy, f32 dz,
     f32 rotX, f32 rotY, f32 rotZ,
     f32 scaleX, f32 scaleY, f32 scaleZ,
-    s32 opacity, PAL_PTR palette, Matrix4f mtx)
+    s32 drawOpts, PAL_PTR palette, Matrix4f mtx)
 {
     Matrix4f mtxTransform;
     Matrix4f mtxTemp;
@@ -325,6 +329,9 @@ void spr_appendGfx_component(
     Quad* quad;
     s32 width;
     s32 height;
+    s32 alpha;
+
+    alpha = drawOpts & DRAW_SPRITE_OPACITY_MASK;
 
     guTranslateF(mtxTemp, dx, dy, dz);
     guMtxCatF(mtxTemp, mtx, mtxTransform);
@@ -352,16 +359,16 @@ void spr_appendGfx_component(
               G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED) {
-        if ((u8) opacity == 255) {
+        if (alpha == 255) {
             gSPDisplayList(gMainGfxPos++, OpaqueShadedSpriteGfx);
         } else {
             gSPDisplayList(gMainGfxPos++, TranslucentShadedSpriteGfx);
         }
     } else {
-        if ((u8) opacity == 255) {
+        if (alpha == 255) {
             gSPDisplayList(gMainGfxPos++, OpaqueSpriteGfx);
         } else {
-            gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, (u8) opacity);
+            gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, alpha);
             gSPDisplayList(gMainGfxPos++, TranslucentSpriteGfx);
         }
     }
@@ -370,23 +377,25 @@ void spr_appendGfx_component(
     height = cache->height;
     quadIndex = cache->quadCacheIndex;
     quad = nullptr;
-    if (!(CurSpriteImgFX & SPR_IMGFX_FLAG_ALL)) {
+    if (!(CurSpriteImgFX & SPR_IMGFX_FLAG_MASK)) {
         quad = spr_get_quad_for_size(&quadIndex, width, height);
         cache->quadCacheIndex = quadIndex;
     }
 
     if (quad != nullptr) {
-        spr_appendGfx_component_flat(quad, cache->image, palette, width, height, rotY, mtxTransform, (u8) opacity);
+        spr_appendGfx_component_flat(quad, cache->image, palette, width, height, rotY, mtxTransform, (u8) drawOpts);
     } else {
+        s32 animResult;
         ifxImg.raster  = cache->image;
         ifxImg.palette = palette;
         ifxImg.width   = width;
         ifxImg.height  = height;
         ifxImg.xOffset = -(width / 2);
         ifxImg.yOffset = height;
-        ifxImg.alpha = opacity;
-        if (imgfx_appendGfx_component((u8) CurSpriteImgFX, &ifxImg, IMGFX_FLAG_80000, mtxTransform) == 1) {
-            CurSpriteImgFX &= ~SPR_IMGFX_FLAG_ALL;
+        ifxImg.alpha = drawOpts;
+        animResult = imgfx_appendGfx_component(CurSpriteImgFX & 0xFF, &ifxImg, IMGFX_FLAG_AS_SPRITE, mtxTransform);
+        if (animResult == IMGFX_RENDER_RESULT_DONE) {
+            CurSpriteImgFX &= ~SPR_IMGFX_FLAG_MASK;
         }
     }
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
@@ -424,8 +433,8 @@ void spr_transform_point(s32 rotX, s32 rotY, s32 rotZ, f32 inX, f32 inY, f32 inZ
 }
 
 void spr_draw_component(s32 drawOpts, SpriteComponent* component, SpriteAnimComponent* anim,
-        SpriteRasterCacheEntry** cache, PAL_PTR* palettes, f32 zscale, Matrix4f mtx) {
-    SpriteRasterCacheEntry* cacheEntry;
+        SpriteRasterEntry** cache, PAL_PTR* palettes, f32 zscale, Matrix4f mtx) {
+    SpriteRasterEntry* cacheEntry;
     s32 paletteIdx;
     PAL_PTR pal;
     f32 dx, dy, dz;
@@ -661,10 +670,10 @@ void spr_component_update_commands(SpriteComponent* comp, SpriteAnimComponent* a
 }
 
 void spr_component_update_finish(SpriteComponent* comp, SpriteComponent** compList,
-                                 SpriteRasterCacheEntry** rasterCacheEntry, s32 overridePalette)
+                                 SpriteRasterEntry** rasterCacheEntry, s32 overridePalette)
 {
     SpriteComponent* listComp;
-    SpriteRasterCacheEntry* cache;
+    SpriteRasterEntry* cache;
 
     if (comp->initialized) {
         comp->compPos.x = comp->posOffset.x;
@@ -691,7 +700,7 @@ void spr_component_update_finish(SpriteComponent* comp, SpriteComponent** compLi
 }
 
 s32 spr_component_update(s32 curNotifyValue, SpriteComponent** compList, SpriteAnimComponent** animList,
-        SpriteRasterCacheEntry** rasterCache, s32 overridePalette) {
+        SpriteRasterEntry** rasterCache, s32 overridePalette) {
     SpriteComponent** compListIt;
 
     SpriteUpdateNotifyValue = curNotifyValue;
@@ -813,6 +822,7 @@ void spr_init_sprites(s32 playerSpriteSet) {
 }
 
 void spr_render_init(void) {
+    imgfx_begin_frame();
     spr_update_player_raster_cache();
     spr_clear_quad_cache();
 }
@@ -822,7 +832,7 @@ s32 spr_update_player_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     SpriteComponent** compList;
     SpriteComponent* component;
     SpriteAnimComponent** animList;
-    SpriteRasterCacheEntry** rasterList;
+    SpriteRasterEntry** rasterList;
     s32 spriteID = SPR_UNPACK_SPR(animID);
     s32 instanceIdx = spriteInstanceID & 0xFF;
     CurPlayerSpriteIndex = spriteID - 1;
@@ -868,7 +878,7 @@ s32 spr_draw_player_sprite(s32 spriteInstanceID, s32 yaw, s32 alphaIn, PAL_PTR* 
     SpriteAnimData* spriteData;
     SpriteComponent** compList;
     SpriteAnimComponent** animList;
-    SpriteRasterCacheEntry** rasterList;
+    SpriteRasterEntry** rasterList;
     PAL_PTR* palettes;
     f32 zscale;
     u32 alpha;
@@ -956,25 +966,25 @@ s32 func_802DDEC4(s32 spriteIdx) {
 }
 
 void set_player_imgfx_comp(s32 spriteIdx, s32 compIdx, ImgFXType imgfx, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 flags) {
-    SpriteComponent* component;
-    SpriteComponent** componentListIt;
+    SpriteComponent** compList;
+    SpriteComponent* comp;
     s32 i;
 
     if (CurPlayerAnimInfo[spriteIdx].componentList != nullptr) {
-        componentListIt = CurPlayerAnimInfo[spriteIdx].componentList;
+        compList = CurPlayerAnimInfo[spriteIdx].componentList;
         i = 0;
 
-        while (*componentListIt != PTR_LIST_END) {
-            component = *componentListIt;
-            if (compIdx == -1 || i == compIdx) {
-                imgfx_update(component->imgfxIdx & 0xFF, imgfx, imgfxArg1, imgfxArg2, imgfxArg3, imgfxArg4, flags);
+        while (*compList != PTR_LIST_END) {
+            comp = *compList;
+            if (compIdx == -1 || compIdx == i) {
+                imgfx_update(comp->imgfxIdx & 0xFF, imgfx, imgfxArg1, imgfxArg2, imgfxArg3, imgfxArg4, flags);
                 if (imgfx != IMGFX_CLEAR) {
-                    component->imgfxIdx |= SPR_IMGFX_FLAG_10000000;
+                    comp->imgfxIdx |= SPR_IMGFX_FLAG_ENABLED;
                 } else {
-                    component->imgfxIdx &= ~SPR_IMGFX_FLAG_ALL;
+                    comp->imgfxIdx &= ~SPR_IMGFX_FLAG_MASK;
                 }
             }
-            componentListIt++;
+            compList++;
             i++;
         }
     }
@@ -987,7 +997,7 @@ void set_player_imgfx_all(s32 animID, ImgFXType imgfxType, s32 arg2, s32 arg3, s
 
 void spr_get_player_raster_info(SpriteRasterInfo* out, s32 playerSpriteID, s32 rasterIndex) {
     SpriteAnimData* sprite;
-    SpriteRasterCacheEntry* cache;
+    SpriteRasterEntry* cache;
     u16** paletteOffsetCopy;
 
     playerSpriteID--;
@@ -1012,7 +1022,7 @@ PAL_PTR* spr_get_player_palettes(s32 spriteIndex) {
     }
 }
 
-s32 spr_load_npc_sprite(s32 animID, u32* extraAnimList) {
+s32 spr_load_npc_sprite(s32 animID, AnimID* limitAnimList) {
     SpriteAnimData* header;
     SpriteComponent** compList;
     s32 listIndex;
@@ -1042,8 +1052,8 @@ s32 spr_load_npc_sprite(s32 animID, u32* extraAnimList) {
         header = spr_load_sprite(spriteIndex - 1, false, useTailAlloc);
         SpriteInstances[listIndex].spriteData = header;
         NpcSpriteData[spriteIndex] = header;
-        if (extraAnimList != nullptr) {
-            spr_load_npc_extra_anims(header, extraAnimList);
+        if (limitAnimList != nullptr) {
+            spr_npc_unload_unused_assets(header, limitAnimList);
         }
     }
     compList = spr_allocate_components(header->maxComponents);
@@ -1062,7 +1072,7 @@ s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     SpriteAnimData* spriteData;
     SpriteComponent** compList;
     SpriteAnimComponent** animList;
-    SpriteRasterCacheEntry** rasterList;
+    SpriteRasterEntry** rasterList;
 
     s32 palID;
     s32 i = spriteInstanceID & 0xFF;
@@ -1079,7 +1089,7 @@ s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     palID = SPR_UNPACK_PAL(animID);
     spr_set_anim_timescale(timeScale);
     if ((spriteInstanceID & DRAW_SPRITE_OVERRIDE_ALPHA) || (SPR_UNPACK_ANIM(SpriteInstances[i].curAnimID) != animIndex)) {
-        ASSERT_MSG(animList != -1, "Anim %lx is not loaded", animID);
+        ASSERT_MSG(animList != (SpriteComponent**) -1, "Anim %lx is not loaded", animID);
         spr_init_anim_state(compList, animList);
         SpriteInstances[i].curAnimID = (palID << 8) | animIndex;
         SpriteInstances[i].notifyValue = 0;
@@ -1095,7 +1105,7 @@ s32 spr_draw_npc_sprite(s32 spriteInstanceID, s32 yaw, s32 alphaIn, PAL_PTR* pal
     SpriteAnimData* spriteData;
     SpriteAnimComponent** animComps;
     SpriteComponent** components;
-    SpriteRasterCacheEntry** rasters;
+    SpriteRasterEntry** rasters;
     PAL_PTR* palettes;
     f32 zscale;
     u32 alpha;
@@ -1210,31 +1220,31 @@ s32 get_npc_comp_imgfx_idx(s32 spriteIdx, s32 compIdx) {
 }
 
 void set_npc_imgfx_comp(s32 spriteIdx, s32 compIdx, ImgFXType imgfx, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 imgfxArg5) {
-    SpriteInstance* sprite = &SpriteInstances[spriteIdx];
-    SpriteComponent** componentList;
+    SpriteComponent** compList;
+    SpriteComponent* comp;
     s32 i;
 
-    if (sprite->componentList != nullptr) {
-        componentList = sprite->componentList;
+    if (SpriteInstances[spriteIdx].componentList != nullptr) {
+        compList = SpriteInstances[spriteIdx].componentList;
         i = 0;
 
-        while (*componentList != PTR_LIST_END) {
-            SpriteComponent* comp = *componentList;
-
-            if (compIdx == -1 || i == compIdx) {
-                imgfx_update((u8)comp->imgfxIdx, imgfx, imgfxArg1, imgfxArg2, imgfxArg3, imgfxArg4, imgfxArg5);
+        while (*compList != PTR_LIST_END) {
+            comp = *compList;
+            if (compIdx == -1 || compIdx == i) {
+                imgfx_update(comp->imgfxIdx & 0xFF, imgfx, imgfxArg1, imgfxArg2, imgfxArg3, imgfxArg4, imgfxArg5);
                 if (imgfx != IMGFX_CLEAR) {
-                    comp->imgfxIdx |= SPR_IMGFX_FLAG_10000000;
+                    comp->imgfxIdx |= SPR_IMGFX_FLAG_ENABLED;
                 } else {
-                    comp->imgfxIdx &= ~SPR_IMGFX_FLAG_ALL;
+                    comp->imgfxIdx &= ~SPR_IMGFX_FLAG_MASK;
                 }
             }
-            componentList++;
+            compList++;
             i++;
         }
     }
 }
 
+// applied to all components
 void set_npc_imgfx_all(s32 spriteIdx, ImgFXType imgfxType, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 imgfxArg5) {
     set_npc_imgfx_comp(spriteIdx, -1, imgfxType, imgfxArg1, imgfxArg2, imgfxArg3, imgfxArg4, imgfxArg5);
 }
@@ -1278,7 +1288,7 @@ s32 spr_get_comp_position(s32 spriteIdx, s32 compListIdx, s32* outX, s32* outY, 
 
 s32 spr_get_npc_raster_info(SpriteRasterInfo* out, s32 npcSpriteID, s32 rasterIndex) {
     SpriteAnimData* sprite = NpcSpriteData[npcSpriteID];
-    SpriteRasterCacheEntry* cache;
+    SpriteRasterEntry* cache;
     PAL_PTR* paletteOffsetCopy;
 
     if (sprite != nullptr) {

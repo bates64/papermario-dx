@@ -1,6 +1,6 @@
 #include "kpa_115.h"
 
-#include "world/common/enemy/HammerBros_Wander.inc.c"
+#include "world/common/enemy/HammerBros/wander.inc.c"
 
 NpcData N(NpcData_HammerBros)[] = {
     {

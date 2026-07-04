@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file trd_06.h
 /// @brief Koopa Bros Fortress - Jail
 

@@ -1,39 +1,19 @@
 #include "sam_01.h"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-#include "world/common/complete/GiveReward.inc.c"
+#include "world/common/npc/Penguin/wander.inc.c"
+#include "world/common/npc/Penguin/idle.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
-#include "world/common/npc/Penguin_Wander.inc.c"
-#include "world/common/npc/Penguin.inc.c"
-
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
-
-#include "world/common/complete/LetterDelivery.inc.c"
-
-s32 N(MayorLetterList)[] = {
-    ITEM_LETTER_TO_MAYOR_PENGUIN,
-    ITEM_NONE
-};
-
-EvtScript N(EVS_LetterPrompt_Mayor) = {
-    Call(N(LetterDelivery_Init),
-        NPC_MayorPenguin, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle,
-        ITEM_LETTER_TO_MAYOR_PENGUIN, ITEM_NONE,
-        MSG_CH7_0041, MSG_CH7_0042, MSG_CH7_0043, MSG_CH7_0044,
-        Ref(N(MayorLetterList)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_Mayor) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_Mayor) = {
+    .recipientID = NPC_MayorPenguin,
+    .recipientTalk = ANIM_MayorPenguin_Talk,
+    .recipientIdle = ANIM_MayorPenguin_Idle,
+    .msgGreeting = MSG_CH7_0041,
+    .msgCancelled = MSG_CH7_0042,
+    .msgDelivered = MSG_CH7_0043,
+    .msgRecieved = MSG_CH7_0044,
+    .letters = { ITEM_LETTER_TO_MAYOR_PENGUIN },
+    .reward = ITEM_STAR_PIECE,
 };
 
 EvtScript N(EVS_Mayor_CarryBucket) = {
@@ -107,7 +87,7 @@ EvtScript N(EVS_NpcInteract_MayorPenguin) = {
                 Set(MV_PlayerLeftOfMayor, 1)
             EndIf
             Call(SpeakToPlayer, NPC_SELF, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle, 0, MSG_CH7_003A)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetNpcAnimation, NPC_SELF, ANIM_MayorPenguin_Walk)
             Call(NpcMoveTo, NPC_SELF, -338, -247, 20)
             Call(PlaySoundAtCollider, COLLIDER_yana, SOUND_WOODEN_DOOR_OPEN, 0)
@@ -158,7 +138,7 @@ EvtScript N(EVS_NpcInteract_MayorPenguin) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle, 0, MSG_CH7_003D)
             Call(ResetCam, CAM_DEFAULT, Float(3.0 / DT))
             Call(PanToTarget, CAM_DEFAULT, 0, false)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Set(GB_StoryProgress, STORY_CH7_GOT_SNOWMAN_BUCKET)
         CaseLt(STORY_CH7_UNLOCKED_SHIVER_MOUNTAIN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle, 0, MSG_CH7_003E)
@@ -167,11 +147,8 @@ EvtScript N(EVS_NpcInteract_MayorPenguin) = {
         CaseGe(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle, 0, MSG_CH7_0040)
     EndSwitch
-    ExecWait(N(EVS_LetterPrompt_Mayor))
-    ExecWait(N(EVS_LetterReward_Mayor))
-    IfNe(LVarC, DELIVERY_NOT_POSSIBLE)
-        Return
-    EndIf
+    Set(LVar0, Ref(N(LetterDelivery_Mayor)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
@@ -215,7 +192,7 @@ EvtScript N(EVS_NpcIdle_PenguinPatrol) = {
     Label(0)
         Switch(GB_StoryProgress)
             CaseEq(STORY_CH7_HERRINGWAY_AT_MAYORS_HOUSE)
-                IfEq(AF_SAM_03, true)
+                IfEq(AF_SAM01_InsideMayorOffice, true)
                     Call(GetPlayerPos, LVar0, LVar1, LVar2)
                     IfLt(LVar2, -130)
                         ExecWait(N(EVS_Scene_MysterySolved))
@@ -229,7 +206,7 @@ EvtScript N(EVS_NpcIdle_PenguinPatrol) = {
 };
 
 EvtScript N(EVS_NpcInteract_Herringway) = {
-    IfEq(AF_SAM_04, false)
+    IfEq(AF_SAM01_InsideMayorFoyer, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Herringway_Talk, ANIM_Herringway_Idle, 0, MSG_CH7_00D3)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_Herringway_Talk, ANIM_Herringway_Idle, 0, MSG_CH7_00D4)
@@ -383,10 +360,10 @@ EvtScript N(EVS_NpcInteract_Penguin_04) = {
 };
 
 EvtScript N(EVS_PenguinCrowd_Leave) = {
-    Call(SetNpcFlagBits, NPC_Penguin_05, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Penguin_06, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Penguin_07, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Penguin_08, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Penguin_05, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Penguin_06, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Penguin_07, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Penguin_08, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(BindNpcInteract, NPC_Penguin_05, 0)
     Call(BindNpcInteract, NPC_Penguin_06, 0)
     Call(BindNpcInteract, NPC_Penguin_07, 0)

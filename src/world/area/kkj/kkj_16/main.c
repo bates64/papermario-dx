@@ -1,7 +1,6 @@
 #include "kkj_16.h"
 
 #include "../common/RestoreFromPeachState.inc.c"
-#include "../common/SetAvailableDisguise.inc.c"
 
 EvtScript N(EVS_EndPeachChapter2) = {
     Set(LVar0, GB_KKJ_LastPartner)
@@ -42,7 +41,7 @@ EvtScript N(EVS_Main) = {
             Call(MakeNpcs, false, Ref(N(EarlyNPCs)))
         EndCaseGroup
         CaseEq(STORY_CH6_BEGAN_PEACH_MISSION)
-            Call(N(SetAvailableDisguise), PEACH_DISGUISE_HAMMER_BROS)
+            Call(SetAvailableDisguise, PEACH_DISGUISE_HAMMER_BROS)
             Call(MakeNpcs, false, Ref(N(LaterNPCs)))
     EndSwitch
     ExecWait(N(EVS_MakeEntities))

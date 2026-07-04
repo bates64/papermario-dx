@@ -29,7 +29,6 @@ extern u8 D_filemenu_80250960[];
 MenuWindowBP filemenu_createfile_windowBPs[] = {
     {
         .windowID = WIN_FILES_INPUT_FIELD,
-        .unk_01 = 0,
         .pos = { .x = 68, .y = WINDOW_1_Y },
         .width = 164,
         .height = 46,
@@ -43,7 +42,6 @@ MenuWindowBP filemenu_createfile_windowBPs[] = {
     },
     {
         .windowID = WIN_FILES_INPUT_KEYBOARD,
-        .unk_01 = 0,
         .pos = { .x = 12, .y = WINDOW_2_Y },
         .width = 262,
         .height = WINDOW_2_HEIGHT,

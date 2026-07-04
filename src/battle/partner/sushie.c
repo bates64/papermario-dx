@@ -39,7 +39,6 @@ API_CALLABLE(N(SetSquirtAngle)) {
 
     partner->state.goalPos.x += targetPart->projectileTargetOffset.x;
     partner->state.goalPos.y += targetPart->projectileTargetOffset.y;
-    partner->state.goalPos.z = partner->state.goalPos.z; // required to match
 
     partner->state.curPos.x = partner->curPos.x + 8.0f;
     partner->state.curPos.y = partner->curPos.y + 16.0f;
@@ -219,10 +218,10 @@ API_CALLABLE(N(ProcessTidalWave)) {
             state->speed = 32.0f;
             script->functionTemp[1] = 0;
             script->functionTemp[2] = 0;
-            sEffect = fx_water_fountain(1, state->curPos.x, state->curPos.y, state->curPos.z, 1.0f, 0);
-            sEffect->data.waterFountain->unk_38 = state->angle;
-            sEffect->data.waterFountain->unk_3C = partner->scale.x;
-            sEffect->data.waterFountain->unk_40 = partner->scale.x;
+            sEffect = fx_water_fountain(FX_FOUNTAIN_TYPE_WATER, state->curPos.x, state->curPos.y, state->curPos.z, 1.0f, 0);
+            sEffect->data.waterFountain->angle = state->angle;
+            sEffect->data.waterFountain->scaleX = partner->scale.x;
+            sEffect->data.waterFountain->scaleY = partner->scale.x;
             script->functionTemp[0] = 1;
             break;
         case 1:
@@ -328,9 +327,9 @@ API_CALLABLE(N(ProcessTidalWave)) {
             sEffect->data.waterFountain->pos.x = state->curPos.x + x;
             sEffect->data.waterFountain->pos.y = state->curPos.y + y;
             sEffect->data.waterFountain->pos.z = state->curPos.z + 5.0f;
-            sEffect->data.waterFountain->unk_38 = state->angle;
-            sEffect->data.waterFountain->unk_3C = partner->scale.x;
-            sEffect->data.waterFountain->unk_40 = partner->scale.x;
+            sEffect->data.waterFountain->angle = state->angle;
+            sEffect->data.waterFountain->scaleX = partner->scale.x;
+            sEffect->data.waterFountain->scaleY = partner->scale.x;
             if (state->moveTime == 70) {
                 sfx_play_sound_at_position(SOUND_TIDAL_WAVE_WATER, SOUND_SPACE_DEFAULT, 0.0f, 0.0f, 0.0f);
                 fx_underwater(0, -50.0f, 20.0f, 0.0f, 1.0f, 120);
@@ -353,9 +352,9 @@ API_CALLABLE(N(ProcessTidalWave)) {
             sEffect->data.waterFountain->pos.x = state->curPos.x;
             sEffect->data.waterFountain->pos.y = state->curPos.y;
             sEffect->data.waterFountain->pos.z = state->curPos.z;
-            sEffect->data.waterFountain->unk_38 = state->angle;
-            sEffect->data.waterFountain->unk_3C = partner->scale.x;
-            sEffect->data.waterFountain->unk_40 = partner->scale.x;
+            sEffect->data.waterFountain->angle = state->angle;
+            sEffect->data.waterFountain->scaleX = partner->scale.x;
+            sEffect->data.waterFountain->scaleY = partner->scale.x;
             if (state->moveTime == 0) {
                 partner->rot.z = 0.0f;
                 sEffect->flags |= FX_INSTANCE_FLAG_DISMISS;

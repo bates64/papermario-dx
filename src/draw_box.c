@@ -198,7 +198,6 @@ WindowBackground gBoxBackground[] = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 16,
         .height = 16,
-        .unk_07 = { 0, 0, 0, 0},
         .size = 128
     },
     {
@@ -207,7 +206,6 @@ WindowBackground gBoxBackground[] = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 16,
         .height = 1,
-        .unk_07 = { 0, 0, 0, 0},
         .size = 8
     }
 };
@@ -217,91 +215,82 @@ WindowCorners gBoxCorners[] = {
         .imgData = ui_box_corners1_png,
         .fmt = G_IM_FMT_IA,
         .bitDepth = G_IM_SIZ_8b,
-        .size1 = { 16, 16},
-        .size2 = { 16, 16},
-        .size3 = { 16, 16},
-        .size4 = { 16, 16},
-        .unk_0D = { 0, 0, 0}
+        .size1 = { 16, 16 },
+        .size2 = { 16, 16 },
+        .size3 = { 16, 16 },
+        .size4 = { 16, 16 },
     },
     {
         .imgData = ui_box_corners2_png,
         .fmt = G_IM_FMT_I,
         .bitDepth = G_IM_SIZ_4b,
-        .size1 = { 16, 16},
-        .size2 = { 16, 16},
-        .size3 = { 16, 16},
-        .size4 = { 16, 16},
-        .unk_0D = { 0, 0, 0}
+        .size1 = { 16, 16 },
+        .size2 = { 16, 16 },
+        .size3 = { 16, 16 },
+        .size4 = { 16, 16 },
     },
     {
         .imgData = ui_box_corners3_png,
         .fmt = G_IM_FMT_IA,
         .bitDepth = G_IM_SIZ_8b,
-        .size1 = { 16, 32},
-        .size2 = { 16, 32},
-        .size3 = { 16, 16},
-        .size4 = { 16, 16},
-        .unk_0D = { 0, 0, 0}
+        .size1 = { 16, 32 },
+        .size2 = { 16, 32 },
+        .size3 = { 16, 16 },
+        .size4 = { 16, 16 },
     },
     {
         .imgData = ui_box_corners4_png,
         .fmt = G_IM_FMT_IA,
         .bitDepth = G_IM_SIZ_8b,
-        .size1 = { 8, 8},
-        .size2 = { 8, 8},
-        .size3 = { 8, 8},
-        .size4 = { 8, 8},
-        .unk_0D = { 0, 0, 0}
+        .size1 = { 8, 8 },
+        .size2 = { 8, 8 },
+        .size3 = { 8, 8 },
+        .size4 = { 8, 8 },
     },
     {
         .imgData = ui_box_corners5_png,
         .fmt = G_IM_FMT_IA,
         .bitDepth = G_IM_SIZ_8b,
-        .size1 = { 16, 8},
-        .size2 = { 16, 8},
-        .size3 = { 16, 8},
-        .size4 = { 16, 8},
-        .unk_0D = { 0, 0, 0}
+        .size1 = { 16, 8 },
+        .size2 = { 16, 8 },
+        .size3 = { 16, 8 },
+        .size4 = { 16, 8 },
     },
     {
         .imgData = ui_box_corners6_png,
         .fmt = G_IM_FMT_IA,
         .bitDepth = G_IM_SIZ_8b,
-        .size1 = { 16, 8},
-        .size2 = { 16, 8},
-        .size3 = { 16, 8},
-        .size4 = { 16, 16},
-        .unk_0D = { 0, 0, 0}
+        .size1 = { 16, 8 },
+        .size2 = { 16, 8 },
+        .size3 = { 16, 8 },
+        .size4 = { 16, 16 },
     },
     {
         .imgData = ui_box_corners7_png,
         .fmt = G_IM_FMT_IA,
         .bitDepth = G_IM_SIZ_8b,
-        .size1 = { 16, 8},
-        .size2 = { 16, 8},
-        .size3 = { 16, 8},
-        .size4 = { 16, 8},
-        .unk_0D = { 0, 0, 0}
+        .size1 = { 16, 8 },
+        .size2 = { 16, 8 },
+        .size3 = { 16, 8 },
+        .size4 = { 16, 8 },
     },
     {
         .imgData = ui_box_corners8_png,
         .fmt = G_IM_FMT_IA,
         .bitDepth = G_IM_SIZ_8b,
-        .size1 = { 24, 24},
-        .size2 = { 24, 24},
-        .size3 = { 24, 24},
-        .size4 = { 24, 24},
-        .unk_0D = { 0, 0, 0}
+        .size1 = { 24, 24 },
+        .size2 = { 24, 24 },
+        .size3 = { 24, 24 },
+        .size4 = { 24, 24 },
     },
     {
         .imgData = ui_box_corners9_png,
         .fmt = G_IM_FMT_IA,
         .bitDepth = G_IM_SIZ_8b,
-        .size1 = { 16, 16},
-        .size2 = { 16, 16},
-        .size3 = { 16, 16},
-        .size4 = { 16, 16},
-        .unk_0D = { 0, 0, 0}
+        .size1 = { 16, 16 },
+        .size2 = { 16, 16 },
+        .size3 = { 16, 16 },
+        .size4 = { 16, 16 },
     }
 };
 

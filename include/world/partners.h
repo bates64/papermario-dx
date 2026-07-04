@@ -1,5 +1,4 @@
-#ifndef _WORLD_PARTNERS_H
-#define _WORLD_PARTNERS_H
+#pragma once
 
 typedef void (*PartnerFunc)(Npc* partner);
 typedef s32 (*PartnerBoolFunc)(Npc* partner);
@@ -24,20 +23,18 @@ typedef struct WorldPartner {
     /* 0x3C */ EvtScript* onEnterMap;
 } WorldPartner; // size = 0x40
 
-extern Npc* wPartnerNpc; // wPartnerNpc
+extern Npc* gPartnerNpc; // wPartnerNpc
 
-s32 partner_init_get_out(Npc*);
+void partner_init_get_out(Npc*);
 s32 partner_get_out(Npc*);
-s32 partner_init_put_away(Npc* partner);
+void partner_init_put_away(Npc* partner);
 s32 partner_put_away(Npc* partner);
 s32 partner_can_use_ability(void);
 s32 partner_use_ability(void);
-void partner_do_player_collision(Npc* partner);
+void partner_resolve_player_screen_overlap(Npc* partner);
 void partner_walking_follow_player(Npc* partner);
-s32 func_800EA52C(s32);
+b32 partner_can_continue_ability(s32);
 s32 partner_force_player_flip_done(void);
 void partner_suspend_ability_script(void);
 void partner_resume_ability_script(void);
 void partner_enable_input(void);
-
-#endif

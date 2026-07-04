@@ -151,7 +151,7 @@ void action_update_sliding(void) {
                 SlideLaunchSpeed = -1;
                 suggest_player_anim_always_forward(ANIM_MarioW2_Collapse);
                 sfx_play_sound_at_player(SOUND_TRIP, SOUND_SPACE_DEFAULT);
-                playerStatus->actionSubstate++; // SUBSTATE_CRASH
+                playerStatus->actionSubstate = SUBSTATE_CRASH;
             }
             break;
         case SUBSTATE_CRASH:
@@ -161,7 +161,7 @@ void action_update_sliding(void) {
             }
             if (playerStatus->animNotifyValue != 0) {
                 suggest_player_anim_always_forward(ANIM_Mario1_GetUp);
-                playerStatus->actionSubstate++; // SUBSTATE_GET_UP
+                playerStatus->actionSubstate = SUBSTATE_GET_UP;
             }
             break;
         case SUBSTATE_GET_UP:
@@ -173,7 +173,7 @@ void action_update_sliding(void) {
                 suggest_player_anim_always_forward(ANIM_Mario1_DustOff);
                 sfx_play_sound_at_player(SOUND_DUST_OFF, SOUND_SPACE_DEFAULT);
                 playerStatus->curStateTime = 15;
-                playerStatus->actionSubstate++; // SUBSTATE_DUST_OFF
+                playerStatus->actionSubstate = SUBSTATE_DUST_OFF;
             }
             break;
         case SUBSTATE_DUST_OFF:
@@ -182,7 +182,7 @@ void action_update_sliding(void) {
                 playerStatus->curSpeed = 0.0f;
             }
             if (--playerStatus->curStateTime == 0) {
-                playerStatus->actionSubstate++; // SUBSTATE_DONE
+                playerStatus->actionSubstate = SUBSTATE_DONE;
             }
             break;
         case SUBSTATE_DONE:

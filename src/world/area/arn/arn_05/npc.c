@@ -2,9 +2,9 @@
 
 #include "sprite/npc/WorldBow.h"
 
-#include "world/common/enemy/TubbaBlubba.inc.c"
-#include "world/common/npc/Boo_Patrol.inc.c"
-#include "world/common/npc/Boo.inc.c"
+#include "world/common/enemy/TubbaBlubba/idle.inc.c"
+#include "world/common/npc/Boo/patrol.inc.c"
+#include "world/common/npc/Boo/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_Boo_01) = {
     Return
@@ -19,17 +19,15 @@ API_CALLABLE(N(AwaitCDownPress)) {
     }
 }
 
-#include "world/common/todo/SwitchToPartner.inc.c"
-
 EvtScript N(EVS_NpcInteract_Boo_01) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
-            IfEq(AF_ARN_06, false)
+            IfEq(AF_ARN05_ToggleDialogue_Boo1, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0092)
-                Set(AF_ARN_06, true)
+                Set(AF_ARN05_ToggleDialogue_Boo1, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0093)
-                Set(AF_ARN_06, false)
+                Set(AF_ARN05_ToggleDialogue_Boo1, false)
             EndIf
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0095)
@@ -53,12 +51,12 @@ EvtScript N(EVS_NpcInteract_Boo_01_Mourning) = {
 EvtScript N(EVS_NpcInteract_Boo_02) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
-            IfEq(AF_ARN_07, false)
+            IfEq(AF_ARN05_ToggleDialogue_Boo2, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0099)
-                Set(AF_ARN_07, true)
+                Set(AF_ARN05_ToggleDialogue_Boo2, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_009A)
-                Set(AF_ARN_07, false)
+                Set(AF_ARN05_ToggleDialogue_Boo2, false)
             EndIf
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_009C)
@@ -88,7 +86,7 @@ EvtScript N(EVS_NpcInteract_Boo_03) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00A9)
         CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
             IfEq(GF_ARN05_GaveGiftAdvice, true)
-                IfEq(AF_ARN_09, true)
+                IfEq(AF_ARN05_Boo3GaveRecentAdvice, true)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Wave, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00AE)
                 Else
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00B0)
@@ -107,13 +105,13 @@ EvtScript N(EVS_NpcInteract_Boo_03) = {
                         Call(ContinueSpeech, NPC_SELF, ANIM_Boo_Tan_Wave, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00AD)
                         Call(SetNpcAnimation, NPC_SELF, ANIM_Boo_Tan_Idle)
                         Set(GF_ARN05_GaveGiftAdvice, true)
-                        Set(AF_ARN_09, true)
+                        Set(AF_ARN05_Boo3GaveRecentAdvice, true)
                     CaseEq(1)
                         Call(SetNpcAnimation, NPC_SELF, ANIM_Boo_Tan_Wave)
                         Call(ContinueSpeech, NPC_SELF, ANIM_Boo_Tan_Wave, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00AD)
                         Call(SetNpcAnimation, NPC_SELF, ANIM_Boo_Tan_Idle)
                         Set(GF_ARN05_GaveGiftAdvice, true)
-                        Set(AF_ARN_09, true)
+                        Set(AF_ARN05_Boo3GaveRecentAdvice, true)
                     CaseEq(2)
                         Call(ContinueSpeech, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00AF)
                 EndSwitch
@@ -140,12 +138,12 @@ EvtScript N(EVS_NpcInteract_Boo_04) = {
 EvtScript N(EVS_NpcInteract_Boo_05) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
-            IfEq(AF_ARN_08, false)
+            IfEq(AF_ARN05_ToggleDialogue_Boo5, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00B3)
-                Set(AF_ARN_08, true)
+                Set(AF_ARN05_ToggleDialogue_Boo5, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00B4)
-                Set(AF_ARN_08, false)
+                Set(AF_ARN05_ToggleDialogue_Boo5, false)
             EndIf
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00B6)
@@ -185,7 +183,7 @@ EvtScript N(EVS_NpcInit_Boo_03) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Boo_03)))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_SAW_TUBBA_EAT_BOO)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
             Call(RemoveNpc, NPC_SELF)
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
@@ -392,24 +390,24 @@ EvtScript N(EVS_Scene_TubbaRaid) = {
     Call(SpeakToPlayer, NPC_Boo_03, ANIM_Boo_Tan_Flail, ANIM_Boo_Tan_Flail, 0, MSG_CH3_00A1)
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, PARTNER_BOW)
-        Call(N(SwitchToPartner), PARTNER_BOW)
+        Call(SwitchToPartner, PARTNER_BOW)
         Thread
-            Set(MV_Unk_00, 0)
+            Set(MV_BowPromptDone, false)
             Call(ShowMessageAtScreenPos, MSG_CH3_00A2, 160, 40)
-            Set(MV_Unk_00, 1)
+            Set(MV_BowPromptDone, true)
         EndThread
         Wait(50 * DT)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcYaw, NPC_PARTNER, 90)
         Call(EnablePartnerAI)
         Loop(0)
             Wait(1)
-            IfEq(MV_Unk_00, 1)
+            IfEq(MV_BowPromptDone, true)
                 BreakLoop
             EndIf
         EndLoop
     EndIf
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldBow_Talk, ANIM_WorldBow_Idle, 0, MSG_CH3_00A3)
     Call(EnablePartnerAI)
     Call(InterpPlayerYaw, 90, 0)
@@ -455,9 +453,9 @@ EvtScript N(EVS_Scene_TubbaRaid) = {
     EndThread
     Set(LVar0, 4)
     Exec(N(EVS_TubbaWalking))
-    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim09)
+    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Walk)
     Call(NpcMoveTo, NPC_Tubba, 550, 196, 0)
-    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim06)
+    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Idle)
     Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-11.5))
     Call(SetCamDistance, CAM_DEFAULT, 375)
@@ -467,16 +465,16 @@ EvtScript N(EVS_Scene_TubbaRaid) = {
     Call(SetPanTarget, CAM_DEFAULT, 426, 190, 194)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(30 * DT)
-    Set(MV_Unk_01, 0)
+    Set(MV_TubbaApproachDone, false)
     Thread
         Set(LVar0, 7)
         Exec(N(EVS_TubbaWalking))
-        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim09)
+        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Walk)
         Call(NpcMoveTo, NPC_Tubba, 370, 220, 0)
         Call(GetNpcPos, NPC_Boo_03, LVar0, LVar1, LVar2)
         Call(NpcMoveTo, NPC_Tubba, 330, LVar2, 0)
-        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim06)
-        Set(MV_Unk_01, 1)
+        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Idle)
+        Set(MV_TubbaApproachDone, true)
     EndThread
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-11.5))
@@ -491,7 +489,7 @@ EvtScript N(EVS_Scene_TubbaRaid) = {
     Wait(15 * DT)
     Loop(0)
         Wait(1)
-        IfEq(MV_Unk_01, 1)
+        IfEq(MV_TubbaApproachDone, true)
             BreakLoop
         EndIf
     EndLoop
@@ -499,15 +497,15 @@ EvtScript N(EVS_Scene_TubbaRaid) = {
     Wait(30 * DT)
     Call(SpeakToPlayer, NPC_Boo_03, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_00A5)
     Call(SetNpcAnimation, NPC_Boo_03, ANIM_Boo_Tan_Cower)
-    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim1E)
+    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Reach)
     Call(SetNpcJumpscale, NPC_Boo_03, Float(0.0))
     Call(NpcJump1, NPC_Boo_03, 265, 206, 212, 3 * DT)
     Wait(20 * DT)
-    Call(SpeakToPlayer, NPC_Tubba, ANIM_WorldTubba_Anim1E, ANIM_WorldTubba_Anim1E, 5, MSG_CH3_00A6)
+    Call(SpeakToPlayer, NPC_Tubba, ANIM_WorldTubba_Reach, ANIM_WorldTubba_Reach, 5, MSG_CH3_00A6)
     Call(SetNpcPos, NPC_Boo_03, 303, 237, 228)
     Call(SetNpcAnimation, NPC_Boo_03, ANIM_Boo_Tan_Flail)
     Call(EnableNpcShadow, NPC_Boo_03, false)
-    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim1F)
+    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_OpenMouth)
     Call(SetCamSpeed, CAM_DEFAULT, Float(5.0 / DT))
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-17.0))
     Call(SetCamDistance, CAM_DEFAULT, 250)
@@ -522,7 +520,7 @@ EvtScript N(EVS_Scene_TubbaRaid) = {
     EndThread
     Wait(40 * DT)
     Call(SetNpcPos, NPC_Boo_03, NPC_DISPOSE_LOCATION)
-    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim20)
+    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Devour)
     Wait(80 * DT)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-11.5))
@@ -533,25 +531,25 @@ EvtScript N(EVS_Scene_TubbaRaid) = {
     Call(SetPanTarget, CAM_DEFAULT, 240, 169, 206)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim06)
+    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Idle)
     Wait(15 * DT)
-    Call(SpeakToPlayer, NPC_Tubba, ANIM_WorldTubba_Anim21, ANIM_WorldTubba_Anim06, 5, MSG_CH3_00A7)
-    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim21)
+    Call(SpeakToPlayer, NPC_Tubba, ANIM_WorldTubba_Burp, ANIM_WorldTubba_Idle, 5, MSG_CH3_00A7)
+    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Burp)
     Call(GetNpcPos, NPC_Tubba, LVar0, LVar1, LVar2)
     Add(LVar0, -50)
     Add(LVar1, 50)
     Add(LVar2, 10)
     PlayEffect(EFFECT_LANDING_DUST, 1, LVar0, LVar1, LVar2, 10)
     Wait(20 * DT)
-    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim06)
+    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Idle)
     Call(InterpNpcYaw, NPC_Tubba, 90, 1)
     Wait(30 * DT)
     Set(LVar0, 7)
     Exec(N(EVS_TubbaWalking))
-    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim09)
+    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Walk)
     Call(NpcMoveTo, NPC_Tubba, 370, 220, 0)
     Call(NpcMoveTo, NPC_Tubba, 550, 196, 0)
-    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim06)
+    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Idle)
     Call(SetNpcPos, NPC_Tubba, NPC_DISPOSE_LOCATION)
     Call(SetNpcFlagBits, NPC_Tubba, NPC_FLAG_GRAVITY, false)
     Call(NpcFacePlayer, NPC_Boo_01, 3)
@@ -624,13 +622,13 @@ EvtScript N(EVS_NpcInit_Tubba) = {
     End
 };
 
-AnimID N(ExtraAnims_Tubba)[] = {
-    ANIM_WorldTubba_Anim06,
-    ANIM_WorldTubba_Anim09,
-    ANIM_WorldTubba_Anim1E,
-    ANIM_WorldTubba_Anim1F,
-    ANIM_WorldTubba_Anim20,
-    ANIM_WorldTubba_Anim21,
+AnimID N(LimitAnims_Tubba)[] = {
+    ANIM_WorldTubba_Idle,
+    ANIM_WorldTubba_Walk,
+    ANIM_WorldTubba_Reach,
+    ANIM_WorldTubba_OpenMouth,
+    ANIM_WorldTubba_Devour,
+    ANIM_WorldTubba_Burp,
     ANIM_LIST_END
 };
 
@@ -643,7 +641,7 @@ NpcData N(NpcData_Tubba) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = TUBBA_ANIMS,
-    .extraAnimations = N(ExtraAnims_Tubba),
+    .limitAnimations = N(LimitAnims_Tubba),
 };
 
 EvtScript N(EVS_NpcIdle_Boo_06) = {

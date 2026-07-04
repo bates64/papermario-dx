@@ -1,72 +1,60 @@
 #include "hos_10.h"
-#include "sprite/player.h"
 
-#define NAME_SUFFIX _Descent
-
-NpcSettings N(NpcSettings_Dummy) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
-#include "world/common/npc/Twink.h"
-#include "world/common/npc/StarSpirit.inc.c"
-
-EvtScript N(EVS_NpcInit_Peach) = {
+EvtScript N(EVS_NpcInit_Peach_Descent) = {
     Call(SetNpcPos, NPC_Peach, -100, 200, 1300)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Twink) = {
+EvtScript N(EVS_NpcInit_Twink_Descent) = {
     Call(SetNpcPos, NPC_Twink, -130, 260, 1300)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Eldstar) = {
+EvtScript N(EVS_NpcInit_Eldstar_Descent) = {
     Call(SetNpcPos, NPC_Eldstar, -121, 200, 1369)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Mamar) = {
+EvtScript N(EVS_NpcInit_Mamar_Descent) = {
     Call(SetNpcPos, NPC_Mamar, -175, 200, 1342)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Skolar) = {
+EvtScript N(EVS_NpcInit_Skolar_Descent) = {
     Call(SetNpcPos, NPC_Skolar, -188, 200, 1284)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Muskular) = {
+EvtScript N(EVS_NpcInit_Muskular_Descent) = {
     Call(SetNpcPos, NPC_Muskular, -150, 200, 1237)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Misstar) = {
+EvtScript N(EVS_NpcInit_Misstar_Descent) = {
     Call(SetNpcPos, NPC_Misstar, -100, 200, 1237)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Klevar) = {
+EvtScript N(EVS_NpcInit_Klevar_Descent) = {
     Call(SetNpcPos, NPC_Klevar, -52, 200, 1284)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Kalmar) = {
+EvtScript N(EVS_NpcInit_Kalmar_Descent) = {
     Call(SetNpcPos, NPC_Kalmar, -65, 200, 1342)
     Return
     End
 };
 
-AnimID N(ExtraAnims_Peach)[] = {
+AnimID N(LimitAnims_Peach_Descent)[] = {
     ANIM_Peach1_Idle,
     ANIM_Peach1_Walk,
     ANIM_Peach2_RaiseArms,
@@ -76,174 +64,155 @@ AnimID N(ExtraAnims_Peach)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Twink)[] = {
+AnimID N(LimitAnims_Twink_Descent)[] = {
     ANIM_Twink_Idle,
     ANIM_Twink_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Eldstar)[] = {
+AnimID N(LimitAnims_Eldstar_Descent)[] = {
     ANIM_WorldEldstar_Idle,
     ANIM_WorldEldstar_Wave,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Mamar)[] = {
+AnimID N(LimitAnims_Mamar_Descent)[] = {
     ANIM_WorldMamar_Idle,
     ANIM_WorldMamar_TalkHappy,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Skolar)[] = {
+AnimID N(LimitAnims_Skolar_Descent)[] = {
     ANIM_WorldSkolar_Idle,
     ANIM_WorldSkolar_TalkAngry,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Muskular)[] = {
+AnimID N(LimitAnims_Muskular_Descent)[] = {
     ANIM_WorldMuskular_Idle,
     ANIM_WorldMuskular_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Misstar)[] = {
+AnimID N(LimitAnims_Misstar_Descent)[] = {
     ANIM_WorldMisstar_Idle,
     ANIM_WorldMisstar_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Klevar)[] = {
+AnimID N(LimitAnims_Klevar_Descent)[] = {
     ANIM_WorldKlevar_Idle,
     ANIM_WorldKlevar_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Kalmar)[] = {
+AnimID N(LimitAnims_Kalmar_Descent)[] = {
     ANIM_WorldKalmar_Idle,
     ANIM_WorldKalmar_Talk,
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Spirits)[] = {
+NpcData N(NpcData_Spirits_Descent)[] = {
     {
         .id = NPC_Peach,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Peach),
+        .init = &N(EVS_NpcInit_Peach_Descent),
         .settings = &N(NpcSettings_Dummy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Peach1_Still,
-            .walk   = ANIM_Peach1_Still,
-            .run    = ANIM_Peach1_Still,
-            .chase  = ANIM_Peach1_Still,
-            .anim_4 = ANIM_Peach1_Still,
-            .anim_5 = ANIM_Peach1_Still,
-            .death  = ANIM_Peach1_Still,
-            .hit    = ANIM_Peach1_Still,
-            .anim_8 = ANIM_Peach1_Still,
-            .anim_9 = ANIM_Peach1_Still,
-            .anim_A = ANIM_Peach1_Still,
-            .anim_B = ANIM_Peach1_Still,
-            .anim_C = ANIM_Peach1_Still,
-            .anim_D = ANIM_Peach1_Still,
-            .anim_E = ANIM_Peach1_Still,
-            .anim_F = ANIM_Peach1_Still,
-        },
-        .extraAnimations = N(ExtraAnims_Peach),
+        .animations = PEACH_ANIMS,
+        .limitAnimations = N(LimitAnims_Peach_Descent),
     },
     {
         .id = NPC_Twink,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Twink),
-        .settings = &N(NpcSettings_Dummy),
+        .init = &N(EVS_NpcInit_Twink_Descent),
+        .settings = &N(NpcSettings_Twink),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_Twink),
+        .limitAnimations = N(LimitAnims_Twink_Descent),
     },
     {
         .id = NPC_Eldstar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar),
+        .init = &N(EVS_NpcInit_Eldstar_Descent),
         .settings = &N(NpcSettings_StarSpirit),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = ELDSTAR_ANIMS,
-        .extraAnimations = N(ExtraAnims_Eldstar),
+        .limitAnimations = N(LimitAnims_Eldstar_Descent),
     },
     {
         .id = NPC_Mamar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Mamar),
+        .init = &N(EVS_NpcInit_Mamar_Descent),
         .settings = &N(NpcSettings_StarSpirit),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MAMAR_ANIMS,
-        .extraAnimations = N(ExtraAnims_Mamar),
+        .limitAnimations = N(LimitAnims_Mamar_Descent),
     },
     {
         .id = NPC_Skolar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Skolar),
+        .init = &N(EVS_NpcInit_Skolar_Descent),
         .settings = &N(NpcSettings_StarSpirit),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = SKOLAR_ANIMS,
-        .extraAnimations = N(ExtraAnims_Skolar),
+        .limitAnimations = N(LimitAnims_Skolar_Descent),
     },
     {
         .id = NPC_Muskular,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Muskular),
+        .init = &N(EVS_NpcInit_Muskular_Descent),
         .settings = &N(NpcSettings_StarSpirit),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MUSKULAR_ANIMS,
-        .extraAnimations = N(ExtraAnims_Muskular),
+        .limitAnimations = N(LimitAnims_Muskular_Descent),
     },
     {
         .id = NPC_Misstar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Misstar),
+        .init = &N(EVS_NpcInit_Misstar_Descent),
         .settings = &N(NpcSettings_StarSpirit),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MISSTAR_ANIMS,
-        .extraAnimations = N(ExtraAnims_Misstar),
+        .limitAnimations = N(LimitAnims_Misstar_Descent),
     },
     {
         .id = NPC_Klevar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Klevar),
+        .init = &N(EVS_NpcInit_Klevar_Descent),
         .settings = &N(NpcSettings_StarSpirit),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KLEVAR_ANIMS,
-        .extraAnimations = N(ExtraAnims_Klevar),
+        .limitAnimations = N(LimitAnims_Klevar_Descent),
     },
     {
         .id = NPC_Kalmar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Kalmar),
+        .init = &N(EVS_NpcInit_Kalmar_Descent),
         .settings = &N(NpcSettings_StarSpirit),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KALMAR_ANIMS,
-        .extraAnimations = N(ExtraAnims_Kalmar),
+        .limitAnimations = N(LimitAnims_Kalmar_Descent),
     },
 };
-
-#define NAME_SUFFIX
 
 NpcGroupList N(NpcGroup_Descent) = {
     NPC_GROUP(N(NpcData_Spirits_Descent)),

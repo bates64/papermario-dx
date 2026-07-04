@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mim_01.h
 /// @brief Forever Forest - Flower Sounds
 

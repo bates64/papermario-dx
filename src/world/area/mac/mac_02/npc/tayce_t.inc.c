@@ -1,11 +1,11 @@
+#include "../mac_02.h"
+
 // Tacye T cooking implementation.
 // Expects Tayce T's NPC ID to be available as enum member NPC_TayceT.
 
 #include "common.h"
 #include <string.h>
 #include "inventory.h"
-
-#include "world/common/todo/GetItemName.inc.c"
 
 typedef struct CookingResult {
     /* 00 */ s32 quality;
@@ -160,24 +160,8 @@ API_CALLABLE(N(CheckItemsHasRoom)) {
     return ApiStatus_DONE2;
 }
 
-static s32 N(TayceT_ItemChoiceList)[ITEM_NUM_CONSUMABLES + 1];
-
-API_CALLABLE(N(TayceT_MakeItemList)) {
-    s32 pos = 0;
-    s32 itemID;
-
-    for (itemID = 0; itemID < NUM_ITEMS; itemID++) {
-        if (item_is_consumable(itemID)) {
-            N(TayceT_ItemChoiceList)[pos++] = itemID;
-        }
-    }
-    N(TayceT_ItemChoiceList)[pos] = ITEM_NONE;
-
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_Scene_TayceTCooking) = {
-    Call(SetNpcFlagBits, NPC_TayceT, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_TayceT, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_TayceT, ANIM_TayceT_Walk)
     Call(NpcMoveTo, NPC_TayceT, -186, -381, 20 * DT)
     Call(NpcMoveTo, NPC_TayceT, -220, -425, 30 * DT)
@@ -192,14 +176,9 @@ EvtScript N(EVS_Scene_TayceTCooking) = {
     Call(NpcMoveTo, NPC_TayceT, -186, -381, 20 * DT)
     Call(NpcMoveTo, NPC_TayceT, -236, -318, 20 * DT)
     Call(SetNpcAnimation, NPC_TayceT, ANIM_TayceT_Idle)
-    Call(SetNpcFlagBits, NPC_TayceT, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_TayceT, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
-};
-
-s32 N(ItemList_FryingPan)[] = {
-    ITEM_FRYING_PAN,
-    ITEM_NONE
 };
 
 EvtScript N(EVS_TayceT_FryingPanAndCake) = {
@@ -217,10 +196,10 @@ EvtScript N(EVS_TayceT_FryingPanAndCake) = {
         Return
     EndIf
     Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_IdleSad, 0, MSG_MAC_Bridge_0017)
-    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_FryingPan))
+    EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_FRYING_PAN, NPC_TayceT)
     Switch(LVar0)
-        CaseEq(0)
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_NONE)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_IdleSad, 0, MSG_MAC_Bridge_0018)
         CaseDefault
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_TalkHappy, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0019)
@@ -240,24 +219,17 @@ EvtScript N(EVS_TayceT_FryingPanAndCake) = {
     End
 };
 
-s32 N(ItemList_Cookbook)[] = {
-    ITEM_COOKBOOK,
-    ITEM_NONE
-};
-
 EvtScript N(EVS_TayceT_RequestCookbook) = {
-    IfEq(AF_MAC_01, false)
+    IfEq(AF_MAC02_ToggleDialogue_TayceT, false)
         Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001D)
-        Set(AF_MAC_01, true)
+        Set(AF_MAC02_ToggleDialogue_TayceT, true)
     Else
         Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001E)
-        Set(AF_MAC_01, false)
+        Set(AF_MAC02_ToggleDialogue_TayceT, false)
     EndIf
-    Set(LVar0, Ref(N(ItemList_Cookbook)))
-    Set(LVar1, 0)
-    ExecWait(N(EVS_ChooseKeyItem))
+    EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_COOKBOOK, NPC_TayceT)
     Switch(LVar0)
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001F)
         CaseDefault
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0020)
@@ -278,12 +250,12 @@ EvtScript N(EVS_TayceT_Cook) = {
     Call(DisablePlayerInput, true)
     IfEq(GF_MAC02_Met_TayceT, false)
         Set(GF_MAC02_Met_TayceT, true)
-        Set(AF_MAC_01, true)
+        Set(AF_MAC02_ToggleDialogue_TayceT, true)
         Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0000)
     Else
-        IfEq(AF_MAC_01, false)
+        IfEq(AF_MAC02_ToggleDialogue_TayceT, false)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0001)
-            Set(AF_MAC_01, true)
+            Set(AF_MAC02_ToggleDialogue_TayceT, true)
         Else
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0002)
         EndIf
@@ -303,11 +275,10 @@ EvtScript N(EVS_TayceT_Cook) = {
    // choose the first ingredient
     Label(LABEL_CHOOSE_FIRST)
     Set(LVar3, 0)
-    Call(N(TayceT_MakeItemList))
-    EVT_CHOOSE_CONSUMABLE_FROM(N(TayceT_ItemChoiceList), 0)
+    EVT_CHOOSE_ANY_CONSUMABLE(NPC_TayceT)
     Switch(LVar0)
-        CaseEq(0)
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_NONE)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0006)
 #if VERSION_JP
             Call(ShowChoice, MSG_Choice_0010)
@@ -345,12 +316,11 @@ EvtScript N(EVS_TayceT_Cook) = {
     Label(LABEL_CHOOSE_SECOND)
     Call(RemoveItem, LVar8, LVar0)
     Set(LVar3, 0)
-    Call(N(TayceT_MakeItemList))
-    EVT_CHOOSE_CONSUMABLE_FROM(N(TayceT_ItemChoiceList), 0)
+    EVT_CHOOSE_ANY_CONSUMABLE(NPC_TayceT)
     Call(AddItem, LVar8, LVar1)
     Switch(LVar0)
-        CaseEq(0)
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_NONE)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0008)
             Call(ShowChoice, MSG_Choice_0008)
             IfEq(LVar0, 0)
@@ -377,11 +347,9 @@ EvtScript N(EVS_TayceT_Cook) = {
 
     // confirm cooking with two ingredients
     // no label here, but this position would be LABEL_CONFIRM_TWO
-    Set(LVar0, LVar8)
-    Call(N(GetItemName), LVar0)
+    Call(GetItemName, LVar8, LVar0)
     Call(SetMessageText, LVar0, 0)
-    Set(LVar1, LVar9)
-    Call(N(GetItemName), LVar1)
+    Call(GetItemName, LVar9, LVar1)
     Call(SetMessageText, LVar1, 1)
     Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_000B)
     Call(ShowChoice, MSG_Choice_0010)
@@ -396,8 +364,7 @@ EvtScript N(EVS_TayceT_Cook) = {
 
     // confirm cooking with one ingredient
     Label(LABEL_CONFIRM_ONE)
-    Set(LVar0, LVar8)
-    Call(N(GetItemName), LVar0)
+    Call(GetItemName, LVar8, LVar0)
     Call(SetMessageText, LVar0, 0)
     Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_000A)
     Call(ShowChoice, MSG_Choice_0010)
@@ -466,7 +433,7 @@ EvtScript N(EVS_NpcInit_TayceT) = {
             EndIf
         EndIf
     EndIf
-    Set(AF_MAC_01, false)
+    Set(AF_MAC02_ToggleDialogue_TayceT, false)
     Return
     End
 };

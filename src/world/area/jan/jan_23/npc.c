@@ -1,8 +1,8 @@
 #include "jan_23.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/RaphaelRaven.inc.c"
-#include "world/common/npc/Raven.inc.c"
+#include "world/common/npc/RaphaelRaven/idle.inc.c"
+#include "world/common/npc/Raven/idle.inc.c"
 
 EvtScript N(EVS_Ravens_Converse) = {
     Loop(4)
@@ -229,7 +229,7 @@ EvtScript N(EVS_Raven5_MoveToMeetingPos) = {
 
 EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
     Call(DisablePlayerInput, true)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -247,9 +247,9 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_RaphaelRaven_TalkNoFeet, ANIM_RaphaelRaven_IdleNoFeet, 5, MSG_CH5_00DB)
     Wait(20 * DT)
     Thread
-        Set(MF_Unk_00, false)
+        Set(MF_RaphaelShoutingDone, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_RaphaelRaven_TalkNoFeetAngry, ANIM_RaphaelRaven_TalkNoFeetAngry, 5, MSG_CH5_00DC)
-        Set(MF_Unk_00, true)
+        Set(MF_RaphaelShoutingDone, true)
     EndThread
     Call(SetMotionBlurParams, 0, 0, 0, 320, 240, 128, 10)
     Call(SetNpcAnimation, NPC_SELF, ANIM_RaphaelRaven_TalkNoFeetAngry)
@@ -268,7 +268,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
     EndLoop
     Call(SetMotionBlurParams, 0, 0, 0, 320, 240, 0, 10)
     Label(2)
-        IfEq(MF_Unk_00, false)
+        IfEq(MF_RaphaelShoutingDone, false)
             Wait(1)
             Goto(2)
         EndIf

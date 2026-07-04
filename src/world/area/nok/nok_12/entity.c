@@ -20,8 +20,6 @@ API_CALLABLE(N(SetNpcVarSafe)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/SetEntityPosition.inc.c"
-
 EvtScript N(EVS_BreakBlock_Ambush) = {
     Call(N(SetNpcVarSafe), NPC_SpikedGoomba, 0, 1)
     Return
@@ -38,7 +36,7 @@ EvtScript N(EVS_OnShakeTree_DropSwitch) = {
         Call(MakeLerp, 95, 0, 12, EASING_QUADRATIC_IN)
         Label(0)
             Call(UpdateLerp)
-            Call(N(SetEntityPosition), MV_SwitchEntityID, -470, LVar0, -150)
+            Call(SetEntityPosition, MV_SwitchEntityID, -470, LVar0, -150)
             Wait(1)
             IfEq(LVar1, 1)
                 Goto(0)

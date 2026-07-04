@@ -1,20 +1,16 @@
 #include "trd_06.h"
 #include "sprite.h"
 #include "sprite/player.h"
+#include "world/common/npc/Bobomb/idle.inc.c"
+#include "world/common/enemy/Bobomb/base.h"
+#include "world/common/enemy/Bombette/base.h"
+#include "world/common/enemy/KoopaTroopa/base.h"
 
 extern EvtScript N(EVS_PushSong);
 extern EvtScript N(EVS_PopSong);
-API_CALLABLE(N(LoadPartyImage));
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
-
-NpcSettings N(NpcSettings_Bobomb) = {
-    .height = 23,
-    .radius = 20,
-    .level = ACTOR_LEVEL_BOB_OMB,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
+#include "world/common/util/LoadPartyImage.inc.c"
 
 NpcSettings N(NpcSettings_KoopaTroopa) = {
     .height = 34,
@@ -28,7 +24,7 @@ EvtScript N(EVS_Bombette_DemonstrateAbility) = {
     Call(SetPanTarget, CAM_DEFAULT, 96, 0, 129)
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.6 / DT))
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Thread
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_WorldBombette_Walk)
         Call(SetNpcSpeed, NPC_PARTNER, Float(3.0 / DT))
@@ -91,15 +87,15 @@ EvtScript N(EVS_NpcInteract_Bombette) = {
         EndIf
     EndIf
     IfEq(LVar0, 0)
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcJumpscale, NPC_SELF, Float(0.8))
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 15 * DT)
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(ContinueSpeech, NPC_SELF, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH1_00DE)
         Call(N(ChangeNpcToPartner), NPC_Bombette, PARTNER_BOMBETTE)
         Set(GB_StoryProgress, STORY_CH1_BOMBETTE_JOINED_PARTY)
-        Call(N(LoadPartyImage))
+        Call(N(LoadPartyImage), Ref("party_pinki"))
         Exec(N(EVS_PushSong))
         Wait(15 * DT)
         Call(ShowMessageAtScreenPos, MSG_Menus_018B, 160, 40)
@@ -159,9 +155,9 @@ EvtScript N(EVS_NpcIdle_KoopaTroopa) = {
     Call(SetNpcAnimation, NPC_Jailer_KoopaTroopa, ANIM_KoopaTroopa_Run)
     Call(SetNpcAnimation, NPC_Jailer_Bobomb_01, ANIM_Bobomb_Run)
     Call(SetNpcAnimation, NPC_Jailer_Bobomb_02, ANIM_Bobomb_Run)
-    Call(SetNpcFlagBits, NPC_Jailer_KoopaTroopa, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Jailer_Bobomb_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Jailer_Bobomb_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Jailer_KoopaTroopa, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Jailer_Bobomb_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Jailer_Bobomb_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Thread
         Call(NpcMoveTo, NPC_Jailer_KoopaTroopa, -237, 0, 0)
     EndThread
@@ -371,24 +367,7 @@ NpcData N(NpcData_Bombette) = {
     .settings = &N(NpcSettings_Bobomb),
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_WorldBombette_Idle,
-        .walk   = ANIM_WorldBombette_Walk,
-        .run    = ANIM_WorldBombette_Walk,
-        .chase  = ANIM_WorldBombette_Walk,
-        .anim_4 = ANIM_WorldBombette_Walk,
-        .anim_5 = ANIM_WorldBombette_Walk,
-        .death  = ANIM_WorldBombette_Still,
-        .hit    = ANIM_WorldBombette_Still,
-        .anim_8 = ANIM_WorldBombette_Still,
-        .anim_9 = ANIM_WorldBombette_Still,
-        .anim_A = ANIM_WorldBombette_Still,
-        .anim_B = ANIM_WorldBombette_Still,
-        .anim_C = ANIM_WorldBombette_Still,
-        .anim_D = ANIM_WorldBombette_Still,
-        .anim_E = ANIM_WorldBombette_Still,
-        .anim_F = ANIM_WorldBombette_Still,
-    },
+    .animations = BOMBETTE_ANIMS,
     .tattle = MSG_NpcTattle_TRD_Bombette,
 };
 
@@ -410,24 +389,7 @@ NpcData N(NpcData_Jailers)[] = {
             .heartDrops  = STANDARD_HEART_DROPS(2),
             .flowerDrops = STANDARD_FLOWER_DROPS(2),
         },
-        .animations = {
-            .idle   = ANIM_KoopaTroopa_Idle,
-            .walk   = ANIM_KoopaTroopa_Walk,
-            .run    = ANIM_KoopaTroopa_Run,
-            .chase  = ANIM_KoopaTroopa_Run,
-            .anim_4 = ANIM_KoopaTroopa_Idle,
-            .anim_5 = ANIM_KoopaTroopa_Idle,
-            .death  = ANIM_KoopaTroopa_Hurt,
-            .hit    = ANIM_KoopaTroopa_Hurt,
-            .anim_8 = ANIM_KoopaTroopa_ShellEnter,
-            .anim_9 = ANIM_KoopaTroopa_ShellSpin,
-            .anim_A = ANIM_KoopaTroopa_ShellExit,
-            .anim_B = ANIM_KoopaTroopa_Run,
-            .anim_C = ANIM_KoopaTroopa_Run,
-            .anim_D = ANIM_KoopaTroopa_Run,
-            .anim_E = ANIM_KoopaTroopa_Run,
-            .anim_F = ANIM_KoopaTroopa_Run,
-        },
+        .animations = KOOPA_TROOPA_ANIMS,
     },
     {
         .id = NPC_Jailer_Bobomb_01,
@@ -437,24 +399,7 @@ NpcData N(NpcData_Jailers)[] = {
         .settings = &N(NpcSettings_Bobomb),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Bobomb_Idle,
-            .walk   = ANIM_Bobomb_Walk,
-            .run    = ANIM_Bobomb_Run,
-            .chase  = ANIM_Bobomb_Run,
-            .anim_4 = ANIM_Bobomb_Idle,
-            .anim_5 = ANIM_Bobomb_Idle,
-            .death  = ANIM_Bobomb_Hurt,
-            .hit    = ANIM_Bobomb_Hurt,
-            .anim_8 = ANIM_Bobomb_Run,
-            .anim_9 = ANIM_Bobomb_Run,
-            .anim_A = ANIM_Bobomb_Run,
-            .anim_B = ANIM_Bobomb_Run,
-            .anim_C = ANIM_Bobomb_Run,
-            .anim_D = ANIM_Bobomb_Run,
-            .anim_E = ANIM_Bobomb_Run,
-            .anim_F = ANIM_Bobomb_Run,
-        },
+        .animations = BOBOMB_ANIMS,
     },
     {
         .id = NPC_Jailer_Bobomb_02,
@@ -464,24 +409,7 @@ NpcData N(NpcData_Jailers)[] = {
         .settings = &N(NpcSettings_Bobomb),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Bobomb_Idle,
-            .walk   = ANIM_Bobomb_Walk,
-            .run    = ANIM_Bobomb_Run,
-            .chase  = ANIM_Bobomb_Run,
-            .anim_4 = ANIM_Bobomb_Idle,
-            .anim_5 = ANIM_Bobomb_Idle,
-            .death  = ANIM_Bobomb_Hurt,
-            .hit    = ANIM_Bobomb_Hurt,
-            .anim_8 = ANIM_Bobomb_Run,
-            .anim_9 = ANIM_Bobomb_Run,
-            .anim_A = ANIM_Bobomb_Run,
-            .anim_B = ANIM_Bobomb_Run,
-            .anim_C = ANIM_Bobomb_Run,
-            .anim_D = ANIM_Bobomb_Run,
-            .anim_E = ANIM_Bobomb_Run,
-            .anim_F = ANIM_Bobomb_Run,
-        },
+        .animations = BOBOMB_ANIMS,
     },
 };
 
@@ -493,36 +421,8 @@ NpcData N(NpcData_Inmates)[] = {
         .init = &N(EVS_NpcInit_Bobomb_01),
         .settings = &N(NpcSettings_Bobomb),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
-        .drops = {
-            .dropFlags = NPC_DROP_FLAG_80,
-            .itemDropChance = 5,
-            .itemDrops = {
-                { ITEM_HONEY_SYRUP, 5, 0 },
-                { ITEM_FIRE_FLOWER, 5, 0 },
-            },
-            .heartDrops  = STANDARD_HEART_DROPS(2),
-            .flowerDrops = STANDARD_FLOWER_DROPS(2),
-            .minCoinBonus = 0,
-            .maxCoinBonus = 1,
-        },
-        .animations = {
-            .idle   = ANIM_WorldBobomb_Red_Idle,
-            .walk   = ANIM_WorldBobomb_Red_Walk,
-            .run    = ANIM_WorldBobomb_Red_Run,
-            .chase  = ANIM_WorldBobomb_Red_Run,
-            .anim_4 = ANIM_WorldBobomb_Red_Idle,
-            .anim_5 = ANIM_WorldBobomb_Red_Idle,
-            .death  = ANIM_WorldBobomb_Red_Still,
-            .hit    = ANIM_WorldBobomb_Red_Still,
-            .anim_8 = ANIM_WorldBobomb_Red_Still,
-            .anim_9 = ANIM_WorldBobomb_Red_Still,
-            .anim_A = ANIM_WorldBobomb_Red_Still,
-            .anim_B = ANIM_WorldBobomb_Red_Still,
-            .anim_C = ANIM_WorldBobomb_Red_Still,
-            .anim_D = ANIM_WorldBobomb_Red_Still,
-            .anim_E = ANIM_WorldBobomb_Red_Still,
-            .anim_F = ANIM_WorldBobomb_Red_Still,
-        },
+        .drops = BOBOMB_DROPS,
+        .animations = BOBOMB_RED_ANIMS,
         .tattle = MSG_NpcTattle_TRD_BobombA,
     },
     {
@@ -532,36 +432,8 @@ NpcData N(NpcData_Inmates)[] = {
         .init = &N(EVS_NpcInit_Bobomb_02),
         .settings = &N(NpcSettings_Bobomb),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
-        .drops = {
-            .dropFlags = NPC_DROP_FLAG_80,
-            .itemDropChance = 5,
-            .itemDrops = {
-                { ITEM_HONEY_SYRUP, 5, 0 },
-                { ITEM_FIRE_FLOWER, 5, 0 },
-            },
-            .heartDrops  = STANDARD_HEART_DROPS(2),
-            .flowerDrops = STANDARD_FLOWER_DROPS(2),
-            .minCoinBonus = 0,
-            .maxCoinBonus = 1,
-        },
-        .animations = {
-            .idle   = ANIM_WorldBobomb_Blue_Idle,
-            .walk   = ANIM_WorldBobomb_Blue_Walk,
-            .run    = ANIM_WorldBobomb_Blue_Run,
-            .chase  = ANIM_WorldBobomb_Blue_Run,
-            .anim_4 = ANIM_WorldBobomb_Blue_Idle,
-            .anim_5 = ANIM_WorldBobomb_Blue_Idle,
-            .death  = ANIM_WorldBobomb_Blue_Still,
-            .hit    = ANIM_WorldBobomb_Blue_Still,
-            .anim_8 = ANIM_WorldBobomb_Blue_Still,
-            .anim_9 = ANIM_WorldBobomb_Blue_Still,
-            .anim_A = ANIM_WorldBobomb_Blue_Still,
-            .anim_B = ANIM_WorldBobomb_Blue_Still,
-            .anim_C = ANIM_WorldBobomb_Blue_Still,
-            .anim_D = ANIM_WorldBobomb_Blue_Still,
-            .anim_E = ANIM_WorldBobomb_Blue_Still,
-            .anim_F = ANIM_WorldBobomb_Blue_Still,
-        },
+        .drops = BOBOMB_DROPS,
+        .animations = BOBOMB_BLUE_ANIMS,
         .tattle = MSG_NpcTattle_TRD_BobombB,
     },
     {
@@ -571,36 +443,8 @@ NpcData N(NpcData_Inmates)[] = {
         .init = &N(EVS_NpcInit_Bobomb_03),
         .settings = &N(NpcSettings_Bobomb),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
-        .drops = {
-            .dropFlags = NPC_DROP_FLAG_80,
-            .itemDropChance = 5,
-            .itemDrops = {
-                { ITEM_HONEY_SYRUP, 5, 0 },
-                { ITEM_FIRE_FLOWER, 5, 0 },
-            },
-            .heartDrops  = STANDARD_HEART_DROPS(2),
-            .flowerDrops = STANDARD_FLOWER_DROPS(2),
-            .minCoinBonus = 0,
-            .maxCoinBonus = 1,
-        },
-        .animations = {
-            .idle   = ANIM_WorldBobomb_Green_Idle,
-            .walk   = ANIM_WorldBobomb_Green_Walk,
-            .run    = ANIM_WorldBobomb_Green_Run,
-            .chase  = ANIM_WorldBobomb_Green_Run,
-            .anim_4 = ANIM_WorldBobomb_Green_Idle,
-            .anim_5 = ANIM_WorldBobomb_Green_Idle,
-            .death  = ANIM_WorldBobomb_Green_Still,
-            .hit    = ANIM_WorldBobomb_Green_Still,
-            .anim_8 = ANIM_WorldBobomb_Green_Still,
-            .anim_9 = ANIM_WorldBobomb_Green_Still,
-            .anim_A = ANIM_WorldBobomb_Green_Still,
-            .anim_B = ANIM_WorldBobomb_Green_Still,
-            .anim_C = ANIM_WorldBobomb_Green_Still,
-            .anim_D = ANIM_WorldBobomb_Green_Still,
-            .anim_E = ANIM_WorldBobomb_Green_Still,
-            .anim_F = ANIM_WorldBobomb_Green_Still,
-        },
+        .drops = BOBOMB_DROPS,
+        .animations = BOBOMB_GREEN_ANIMS,
         .tattle = MSG_NpcTattle_TRD_BobombC,
     },
     {
@@ -610,36 +454,8 @@ NpcData N(NpcData_Inmates)[] = {
         .init = &N(EVS_NpcInit_Bobomb_04),
         .settings = &N(NpcSettings_Bobomb),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
-        .drops = {
-            .dropFlags = NPC_DROP_FLAG_80,
-            .itemDropChance = 5,
-            .itemDrops = {
-                { ITEM_HONEY_SYRUP, 5, 0 },
-                { ITEM_FIRE_FLOWER, 5, 0 },
-            },
-            .heartDrops  = STANDARD_HEART_DROPS(2),
-            .flowerDrops = STANDARD_FLOWER_DROPS(2),
-            .minCoinBonus = 0,
-            .maxCoinBonus = 1,
-        },
-        .animations = {
-            .idle   = ANIM_WorldBobomb_Green_Idle,
-            .walk   = ANIM_WorldBobomb_Green_Walk,
-            .run    = ANIM_WorldBobomb_Green_Run,
-            .chase  = ANIM_WorldBobomb_Green_Run,
-            .anim_4 = ANIM_WorldBobomb_Green_Idle,
-            .anim_5 = ANIM_WorldBobomb_Green_Idle,
-            .death  = ANIM_WorldBobomb_Green_Still,
-            .hit    = ANIM_WorldBobomb_Green_Still,
-            .anim_8 = ANIM_WorldBobomb_Green_Still,
-            .anim_9 = ANIM_WorldBobomb_Green_Still,
-            .anim_A = ANIM_WorldBobomb_Green_Still,
-            .anim_B = ANIM_WorldBobomb_Green_Still,
-            .anim_C = ANIM_WorldBobomb_Green_Still,
-            .anim_D = ANIM_WorldBobomb_Green_Still,
-            .anim_E = ANIM_WorldBobomb_Green_Still,
-            .anim_F = ANIM_WorldBobomb_Green_Still,
-        },
+        .drops = BOBOMB_DROPS,
+        .animations = BOBOMB_GREEN_ANIMS,
         .tattle = MSG_NpcTattle_TRD_BobombD,
     },
 };

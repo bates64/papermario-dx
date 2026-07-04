@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kzn_18.h
 /// @brief Mt Lavalava - Boss Antechamber
 

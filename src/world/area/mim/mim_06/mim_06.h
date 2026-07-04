@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mim_06.h
 /// @brief Forever Forest - Bee Hive (Path Splits)
 
@@ -25,6 +27,6 @@ enum {
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupGates);
 extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(D_802439F8_BA8178);
+extern EvtScript N(EVS_SetupFlowerHints);
 extern NpcGroupList N(DefaultNPCs);
 

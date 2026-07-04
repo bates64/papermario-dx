@@ -1,25 +1,25 @@
 #include "arn_10.h"
 
-#include "world/common/npc/TubbasHeart.inc.c"
-#include "world/common/enemy/HyperGoomba_Wander.inc.c"
+#include "world/common/npc/TubbasHeart/idle.inc.c"
+#include "world/common/enemy/HyperGoomba/wander.inc.c"
 
 EvtScript N(EVS_NpcIdle_TubbasHeart) = {
-    Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_Anim13)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_JumpSad)
     Call(SetNpcJumpscale, NPC_SELF, Float(3.0))
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Sub(LVar0, 30)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 8)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_Anim14)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_LandSad)
     Wait(1)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_Anim13)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_JumpSad)
     Sub(LVar0, 80)
     Call(SetNpcJumpscale, NPC_SELF, Float(2.5))
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 12)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_Anim14)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_LandSad)
     Wait(1)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_Anim13)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_JumpSad)
     Sub(LVar0, 80)
     Call(SetNpcJumpscale, NPC_SELF, Float(2.5))
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
@@ -87,7 +87,7 @@ NpcData N(NpcData_HyperGoomba) = {
         }
     },
     .init = &N(EVS_NpcInit_HyperGoomba),
-    .settings = &N(NpcSettings_HyperGoomba),
+    .settings = &N(NpcSettings_HyperGoomba_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = HYPER_GOOMBA_DROPS,
     .animations = HYPER_GOOMBA_ANIMS,

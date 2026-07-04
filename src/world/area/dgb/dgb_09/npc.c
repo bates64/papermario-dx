@@ -1,11 +1,11 @@
 #include "dgb_09.h"
 
-#include "world/common/enemy/Clubba_Wander.inc.c"
-#include "world/common/enemy/Clubba_Napping.inc.c"
+#include "world/common/enemy/Clubba/wander.inc.c"
+#include "world/common/enemy/Clubba/napping.inc.c"
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel
 #define AI_SENTINEL_LAST_NPC  NPC_Sentinel
-#include "world/common/enemy/Sentinel.inc.c"
+#include "world/common/enemy/Sentinel/wander.inc.c"
 
 NpcData N(NpcData_Clubba_Wander)[] = {
     {
@@ -28,7 +28,7 @@ NpcData N(NpcData_Clubba_Wander)[] = {
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Clubba),
+        .limitAnimations = N(LimitAnims_Clubba),
         .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_Wander_Hitbox),
@@ -66,7 +66,7 @@ NpcData N(NpcData_Clubba_Napping)[] = {
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Clubba),
+        .limitAnimations = N(LimitAnims_Clubba),
         .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_Napping_Hitbox),
@@ -88,7 +88,7 @@ NpcData N(NpcData_Sentinel) = {
             .detectSize = { 250 },
         }
     },
-    .settings = &N(NpcSettings_Sentinel),
+    .settings = &N(NpcSettings_Sentinel_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,

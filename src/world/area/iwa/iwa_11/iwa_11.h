@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file iwa_11.h
 /// @brief Mt Rugged - Train Ride Scene
 

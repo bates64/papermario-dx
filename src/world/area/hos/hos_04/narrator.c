@@ -14,39 +14,39 @@
 #endif
 
 #if VERSION_JP
-IntroMessage N(D_80241EFC_A321EC)[] = {
+IntroMessage N(JP_IntroMessages_0)[] = {
     { MSG_Intro_JP_0022, DURATION_INTRO_MSG },
     { MSG_Intro_JP_0023, DURATION_INTRO_MSG },
     { MSG_Intro_JP_0024, DURATION_INTRO_MSG },
     {}, // end of list
 };
 
-IntroMessage N(D_80241F1C_A3220C)[] = {
+IntroMessage N(JP_IntroMessages_1)[] = {
     { MSG_Intro_JP_0035, DURATION_INTRO_MSG },
     { MSG_Intro_JP_0036, DURATION_INTRO_MSG },
     { MSG_Intro_JP_0037, DURATION_INTRO_MSG },
     {}, // end of list
 };
 
-IntroMessage N(D_80241F3C_A3222C)[] = {
+IntroMessage N(JP_IntroMessages_2)[] = {
     { MSG_Intro_JP_0048, DURATION_INTRO_MSG },
     { MSG_Intro_JP_0049, DURATION_INTRO_MSG },
     { MSG_Intro_JP_004A, DURATION_INTRO_MSG },
     {}, // end of list
 };
 
-IntroMessage N(D_80241F5C_A3224C)[] = {
+IntroMessage N(JP_IntroMessages_3)[] = {
     { MSG_Intro_JP_005B, DURATION_INTRO_MSG },
     { MSG_Intro_JP_005C, DURATION_INTRO_MSG },
     { MSG_Intro_JP_005D, DURATION_INTRO_MSG },
     {}, // end of list
 };
 
-IntroMessage* N(func_80241F7C_A3226C)[] = {
-    N(D_80241EFC_A321EC),
-    N(D_80241F1C_A3220C),
-    N(D_80241F3C_A3222C),
-    N(D_80241F5C_A3224C)
+IntroMessage* N(JP_IntroMessageLists)[] = {
+    N(JP_IntroMessages_0),
+    N(JP_IntroMessages_1),
+    N(JP_IntroMessages_2),
+    N(JP_IntroMessages_3)
 };
 #endif
 
@@ -66,8 +66,8 @@ IntroMessage* N(IntroMessages)[] = {
 };
 
 #if VERSION_JP
-void N(func_80240DC8_A310B8)(void) {
-    N(UpdateIntroMessages)(N(func_80241F7C_A3226C));
+void N(curtain_callback_jp_narration)(void) {
+    N(UpdateIntroMessages)(N(JP_IntroMessageLists));
 }
 #endif
 
@@ -80,7 +80,7 @@ EvtScript N(EVS_SetupNarrator) = {
     Switch(LVar0)
 #if VERSION_JP
         CaseEq(hos_04_ENTRY_3)
-            Call(N(SetCurtainCallback), Ref(N(func_80240DC8_A310B8)))
+            Call(N(SetCurtainCallback), Ref(N(curtain_callback_jp_narration)))
 #endif
         CaseEq(hos_04_ENTRY_4)
             Call(N(SetCurtainCallback), Ref(N(curtain_callback_narration)))

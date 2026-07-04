@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mac_01.h
 /// @brief Toad Town - Plaza District
 
@@ -10,7 +12,6 @@
 #include "mapfs/mac_01_hit.h"
 
 #include "sprite/npc/Merlon.h"
-#include "sprite/npc/ChuckQuizmo.h"
 #include "sprite/npc/Toad.h"
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/npc/Kolorado.h"
@@ -29,8 +30,6 @@
 #include "sprite/npc/WorldBobomb.h"
 #include "sprite/npc/Koopa.h"
 #include "sprite/npc/Dryite.h"
-#include "sprite/npc/Chanterelle.h"
-#include "sprite/npc/Musician.h"
 
 enum {
     // intro NPCs
@@ -84,17 +83,16 @@ enum {
     MV_RowfRugRippleAmount  = MapVar(0),
     MV_RowfRugRotateAngle   = MapVar(1),
     MV_RowfShopBuyFlags     = MapVar(2),
-    MV_KnockdownWorker      = MapVar(10),
     MV_FortuneFXHandles     = MapVar(12),
     MV_BadgeShopOpenState   = MapVar(13),
     MV_BadgeShopCloseState  = MapVar(14),
 };
 
 enum {
-    MF_MusicMixTrigger1     = MapFlag(10),
-    MF_MusicMixTrigger2     = MapFlag(11),
-    MF_MusicMixTrigger3     = MapFlag(12),
     MF_BadgeShopOpen        = MapFlag(11),
+    MF_MusicMixTrigger1     = MapFlag(10),
+    MF_MusicMixTrigger2     = MF_BadgeShopOpen,
+    MF_MusicMixTrigger3     = MapFlag(12),
     MF_SpawnFlag_Tree1      = MapFlag(13),
     MF_SetupMusicMixes      = MapFlag(14),
     MF_InsideToadHouse      = MapFlag(15),
@@ -102,6 +100,20 @@ enum {
 };
 
 #define NAMESPACE mac_01
+
+#include "world/common/npc/Luigi/idle.h"
+#include "world/common/npc/Dummy/idle.h"
+#include "world/common/npc/Toad/idle.h"
+#include "world/common/npc/Toad/patrol.h"
+#include "world/common/npc/Kolorado/idle.h"
+#include "world/common/npc/KoloradoWife/idle.h"
+#include "world/common/npc/KoopaKoot/idle.h"
+#include "world/common/npc/Koopa/idle.h"
+#include "world/common/npc/Bobomb/idle.h"
+#include "world/common/npc/Dryite/idle.h"
+#include "world/common/npc/Chanterelle/idle.h"
+#include "world/common/npc/MusicianPoet/idle.h"
+#include "world/common/npc/MusicianComposer/idle.h"
 
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupMusic);
@@ -135,4 +147,8 @@ extern NpcGroupList N(Chapter4NPCs);
 extern NpcGroupList N(NinjiMeetingNPCs);
 extern NpcGroupList N(DefaultNPCs);
 
+extern NpcData N(NpcData_Townsfolk)[10];
+
 extern ShopItemData N(RowfBadgeInventory)[16];
+
+extern EvtScript N(EVS_PlayShyGuyRunSounds);

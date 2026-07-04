@@ -1,9 +1,9 @@
 #include "kkj_23.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Bowser.inc.c"
-#include "world/common/npc/Dummy.inc.c"
-#include "world/common/npc/Peach.h"
+#include "world/common/npc/Bowser/idle.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
+#include "world/common/npc/Peach/base.h"
 
 Vec3f N(FlyAwayPath)[] = {
     {  250.0,    10.0, -240.0 },

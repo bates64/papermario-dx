@@ -9,8 +9,10 @@ typedef struct LilOinkReward {
     /* 0x08 */ s32 chance;
 } LilOinkReward; // size = 0x0C
 
-#include "world/common/todo/GetFloorCollider.inc.c"
-#include "world/common/todo/GetPlayerCoins.inc.c"
+API_CALLABLE(N(GetPlayerCoins)) {
+    script->varTable[0] = gPlayerData.coins;
+    return ApiStatus_DONE2;
+}
 
 API_CALLABLE(N(DismissCoinCounter)) {
     hide_coin_counter_immediately();
@@ -165,7 +167,7 @@ EvtScript N(EVS_TurnCrank) = {
         Call(RotateModel, MODEL_handle1, -3, -1, 0, 0)
         Wait(1)
     EndLoop
-    IfEq(MF_Unk_06, false)
+    IfEq(MF_CanUseOinkMachine, false)
         Return
     EndIf
     IfNe(GB_MAC03_LilOinkCapsuleState, 0)
@@ -183,7 +185,7 @@ EvtScript N(EVS_TurnCrank) = {
     Call(AddCoin, -LIL_OINK_COIN_COST)
     Wait(20)
     Call(N(DismissCoinCounter))
-    Set(MF_Unk_06, false)
+    Set(MF_CanUseOinkMachine, false)
     Call(UseSettingsFrom, CAM_DEFAULT, 138, 25, -406)
     Call(SetPanTarget, CAM_DEFAULT, 138, 25, -406)
     Call(SetCamPitch, CAM_DEFAULT, 15, -13)
@@ -298,7 +300,7 @@ EvtScript N(EVS_LilOinkExplanation) = {
     EndIf
     Call(ContinueSpeech, NPC_Toad_03, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, LVar0)
     Wait(10)
-    Set(MF_Unk_08, true)
+    Set(MF_HeardOinkExplanation, true)
     Call(SetNpcAnimation, NPC_Toad_03, ANIM_Toad_Red_Run)
     Call(NpcMoveTo, NPC_Toad_03, 220, -160, 0)
     Call(SetNpcAnimation, NPC_Toad_03, ANIM_Toad_Red_Idle)
@@ -308,7 +310,7 @@ EvtScript N(EVS_LilOinkExplanation) = {
 
 EvtScript N(EVS_UseMachinePrompt) = {
     Call(DisablePlayerInput, true)
-    IfEq(MF_Unk_08, false)
+    IfEq(MF_HeardOinkExplanation, false)
         Exec(N(EVS_LilOinkExplanation))
         Call(GetPartnerInUse, LVar0)
         IfNe(LVar0, PARTNER_NONE)
@@ -318,17 +320,17 @@ EvtScript N(EVS_UseMachinePrompt) = {
         Call(PlayerMoveTo, 95, -365, 10)
     EndIf
     Loop(0)
-        IfNe(MF_Unk_08, false)
+        IfNe(MF_HeardOinkExplanation, false)
             BreakLoop
         EndIf
         Wait(1)
     EndLoop
     Call(ShowCoinCounter, true)
-    Set(MF_Unk_06, true)
+    Set(MF_CanUseOinkMachine, true)
     Call(DisablePlayerInput, false)
     Label(0)
         Wait(1)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         IfEq(LVar0, COLLIDER_step)
             Goto(0)
         EndIf
@@ -336,7 +338,7 @@ EvtScript N(EVS_UseMachinePrompt) = {
             Goto(0)
         EndIf
     Call(N(DismissCoinCounter))
-    Set(MF_Unk_06, false)
+    Set(MF_CanUseOinkMachine, false)
     Return
     End
 };
@@ -388,14 +390,14 @@ EvtScript N(EVS_SpawnLilOinkPrize) = {
 };
 
 EvtScript N(EVS_OpenCapsule) = {
-    Call(N(GetFloorCollider), LVar0)
+    Call(GetPlayerFloorCollider, LVar0)
     IfNe(LVar0, COLLIDER_hummer)
         Return
     EndIf
     Call(DisablePlayerInput, true)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
-    Set(MF_Unk_07, true)
+    Set(MF_OinkCapsuleOpened, true)
     SetF(LVar0, Float(1.0))
     Loop(5)
         SubF(LVar0, Float(0.03))
@@ -531,7 +533,7 @@ EvtScript N(EVS_LilOinkFlee) = {
 
 EvtScript N(EVS_EnterPen) = {
     Call(DisablePlayerInput, true)
-    Call(func_802D2C14, 1)
+    Call(SetPartnerForcedFollowMode, 1)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deili, COLLIDER_FLAGS_UPPER_MASK)
@@ -558,7 +560,7 @@ EvtScript N(EVS_EnterPen) = {
     Call(PlaySoundAtCollider, COLLIDER_deili, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deili, COLLIDER_FLAGS_UPPER_MASK)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     Call(DisablePlayerInput, false)
     IfEq(GB_MAC03_LilOinkCount, 0)
         Return
@@ -587,7 +589,7 @@ EvtScript N(EVS_EnterPen) = {
 EvtScript N(EVS_ExitPen) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(DisablePlayerInput, true)
-    Call(func_802D2C14, 1)
+    Call(SetPartnerForcedFollowMode, 1)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deiliu, COLLIDER_FLAGS_UPPER_MASK)
     Call(PlaySoundAtCollider, COLLIDER_deiliu, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, 80, 10, EASING_LINEAR)
@@ -611,7 +613,7 @@ EvtScript N(EVS_ExitPen) = {
     EndLoop
     Call(PlaySoundAtCollider, COLLIDER_deiliu, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deiliu, COLLIDER_FLAGS_UPPER_MASK)
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     Call(DisablePlayerInput, false)
     Return
     End
@@ -644,12 +646,12 @@ EvtScript N(EVS_InitializeLilOinks) = {
         Call(EnableModel, MODEL_capsule, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_capsule, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
-    Set(MF_Unk_06, false)
-    Set(MF_Unk_07, false)
+    Set(MF_CanUseOinkMachine, false)
+    Set(MF_OinkCapsuleOpened, false)
     IfEq(GB_MAC03_LilOinkCount, 0)
-        Set(MF_Unk_08, false)
+        Set(MF_HeardOinkExplanation, false)
     Else
-        Set(MF_Unk_08, true)
+        Set(MF_HeardOinkExplanation, true)
     EndIf
     Call(N(LoadLilOinks))
     IfNe(GB_MAC03_LilOinkCount, 0)

@@ -48,13 +48,60 @@ extern s16 MsgStyleVerticalLineOffsets[];
 
 extern MessageCharset* MsgCharsets[5];
 extern PAL_BIN D_802F4560[80][8];
-extern s32 gMessageBoxFrameParts[2][16];
 
 #if VERSION_IQUE
 static IMG_BIN D_801544A0[120][128];
 #endif
 static MessageDrawState D_80155D20;
 static MessageDrawState* msg_drawState;
+
+extern IMG_BIN ui_msg_frame_a_1_1_png[];
+extern IMG_BIN ui_msg_frame_a_1_2_png[];
+extern IMG_BIN ui_msg_frame_a_1_3_png[];
+extern IMG_BIN ui_msg_frame_a_1_4_png[];
+extern IMG_BIN ui_msg_frame_a_1_5_png[];
+extern IMG_BIN ui_msg_frame_a_2_1_png[];
+extern IMG_BIN ui_msg_frame_a_2_5_png[];
+extern IMG_BIN ui_msg_frame_a_3_1_png[];
+extern IMG_BIN ui_msg_frame_a_3_5_png[];
+extern IMG_BIN ui_msg_frame_a_4_1_png[];
+extern IMG_BIN ui_msg_frame_a_4_5_png[];
+extern IMG_BIN ui_msg_frame_a_5_1_png[];
+extern IMG_BIN ui_msg_frame_a_5_2_png[];
+extern IMG_BIN ui_msg_frame_a_5_3_png[];
+extern IMG_BIN ui_msg_frame_a_5_4_png[];
+extern IMG_BIN ui_msg_frame_a_5_5_png[];
+extern IMG_BIN ui_msg_frame_b_1_1_png[];
+extern IMG_BIN ui_msg_frame_b_1_2_png[];
+extern IMG_BIN ui_msg_frame_b_1_3_png[];
+extern IMG_BIN ui_msg_frame_b_1_4_png[];
+extern IMG_BIN ui_msg_frame_b_1_5_png[];
+extern IMG_BIN ui_msg_frame_b_2_1_png[];
+extern IMG_BIN ui_msg_frame_b_2_5_png[];
+extern IMG_BIN ui_msg_frame_b_3_1_png[];
+extern IMG_BIN ui_msg_frame_b_3_5_png[];
+extern IMG_BIN ui_msg_frame_b_4_1_png[];
+extern IMG_BIN ui_msg_frame_b_4_5_png[];
+extern IMG_BIN ui_msg_frame_b_5_1_png[];
+extern IMG_BIN ui_msg_frame_b_5_2_png[];
+extern IMG_BIN ui_msg_frame_b_5_3_png[];
+extern IMG_BIN ui_msg_frame_b_5_4_png[];
+extern IMG_BIN ui_msg_frame_b_5_5_png[];
+
+IMG_BIN* gMessageBoxFrameParts[2][16] = {
+    {
+        ui_msg_frame_a_1_1_png, ui_msg_frame_a_1_2_png, ui_msg_frame_a_1_3_png, ui_msg_frame_a_1_4_png,
+        ui_msg_frame_a_1_5_png, ui_msg_frame_a_2_1_png, ui_msg_frame_a_2_5_png, ui_msg_frame_a_3_1_png,
+        ui_msg_frame_a_3_5_png, ui_msg_frame_a_4_1_png, ui_msg_frame_a_4_5_png, ui_msg_frame_a_5_1_png,
+        ui_msg_frame_a_5_2_png, ui_msg_frame_a_5_3_png, ui_msg_frame_a_5_4_png, ui_msg_frame_a_5_5_png,
+    },
+    {
+        ui_msg_frame_b_1_1_png, ui_msg_frame_b_1_2_png, ui_msg_frame_b_1_3_png, ui_msg_frame_b_1_4_png,
+        ui_msg_frame_b_1_5_png, ui_msg_frame_b_2_1_png, ui_msg_frame_b_2_5_png, ui_msg_frame_b_3_1_png,
+        ui_msg_frame_b_3_5_png, ui_msg_frame_b_4_1_png, ui_msg_frame_b_4_5_png, ui_msg_frame_b_5_1_png,
+        ui_msg_frame_b_5_2_png, ui_msg_frame_b_5_3_png, ui_msg_frame_b_5_4_png, ui_msg_frame_b_5_5_png,
+    }
+};
 
 Vtx gMsgSpeechBoxLQuad[4] = {
     { .v = { .ob = {1, 0, 0},           .tc = {0, 0},           .cn = {255, 255, 248, 255} } },

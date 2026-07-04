@@ -17,7 +17,6 @@ BSS s32 N(AbilityState);
 BSS b32 N(D_802BE308);
 BSS b32 N(IsPlayerHolding);
 BSS EffectInstance* N(StaticEffect);
-BSS s32 N(D_802BE314); // unused (padding?)
 
 enum {
     // next two states lock input for a few frames, during which the ability can be canceled
@@ -106,7 +105,7 @@ API_CALLABLE(N(Update)) {
 
     if (!gPartnerStatus.shouldResumeAbility) {
         if (isInitialCall) {
-            partner_flying_enable(watt, 1);
+            partner_flying_enable(watt, true);
             mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
             TweesterTouchingPartner = nullptr;
         }
@@ -141,14 +140,14 @@ API_CALLABLE(N(Update)) {
 
         switch (N(TweesterPhysicsPtr)->state) {
             case TWEESTER_PARTNER_INIT:
-                N(TweesterPhysicsPtr)->state++;
+                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_ATTRACT;
                 N(TweesterPhysicsPtr)->prevFlags = watt->flags;
                 N(TweesterPhysicsPtr)->radius = fabsf(dist2D(watt->pos.x, watt->pos.z, entity->pos.x, entity->pos.z));
                 N(TweesterPhysicsPtr)->angle = atan2(entity->pos.x, entity->pos.z, watt->pos.x, watt->pos.z);
                 N(TweesterPhysicsPtr)->angularVel = 6.0f;
                 N(TweesterPhysicsPtr)->liftoffVelPhase = 50.0f;
                 N(TweesterPhysicsPtr)->countdown = 120;
-                watt->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
+                watt->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
                 watt->flags &= ~NPC_FLAG_GRAVITY;
             case TWEESTER_PARTNER_ATTRACT:
                 sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
@@ -177,19 +176,21 @@ API_CALLABLE(N(Update)) {
                     N(TweesterPhysicsPtr)->angularVel = 40.0f;
                 }
 
-                if (--N(TweesterPhysicsPtr)->countdown == 0) {
-                    N(TweesterPhysicsPtr)->state++;
+                N(TweesterPhysicsPtr)->countdown--;
+                if (N(TweesterPhysicsPtr)->countdown == 0) {
+                    N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_HOLD;
                 }
                 break;
             case TWEESTER_PARTNER_HOLD:
                 watt->flags = N(TweesterPhysicsPtr)->prevFlags;
                 N(TweesterPhysicsPtr)->countdown = 30;
-                N(TweesterPhysicsPtr)->state++;
+                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_RELEASE;
                 break;
             case TWEESTER_PARTNER_RELEASE:
                 partner_flying_update_player_tracking(watt);
                 partner_flying_update_motion(watt);
-                if (--N(TweesterPhysicsPtr)->countdown == 0) {
+                N(TweesterPhysicsPtr)->countdown--;
+                if (N(TweesterPhysicsPtr)->countdown == 0) {
                     N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
                     TweesterTouchingPartner = nullptr;
                 }
@@ -233,7 +234,7 @@ API_CALLABLE(N(UseAbility)) {
         }
         if (!partnerStatus->shouldResumeAbility) {
             if (partnerStatus->partnerActionState == ACTION_STATE_IDLE
-                && (!func_800EA52C(PARTNER_WATT) || is_starting_conversation()))
+                && (!partner_can_continue_ability(PARTNER_WATT) || is_starting_conversation()))
             {
                 return ApiStatus_DONE2;
             }
@@ -272,7 +273,7 @@ API_CALLABLE(N(UseAbility)) {
             if (script->functionTemp[1] == 0) {
                 if (script->functionTemp[2] < playerStatus->inputDisabledCount
                     || playerStatus->animFlags & PA_FLAG_CHANGING_MAP
-                    || !func_800EA52C(PARTNER_WATT)
+                    || !partner_can_continue_ability(PARTNER_WATT)
                     || is_starting_conversation()
                 ) {
                     return ApiStatus_DONE2;
@@ -289,7 +290,7 @@ API_CALLABLE(N(UseAbility)) {
             if (gGameStatusPtr->keepUsingPartnerOnMapChange) {
                 playerStatus->animFlags |= PA_FLAG_USING_WATT;
                 N(IsPlayerHolding) = true;
-                npc->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_FLYING;
+                npc->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_FLYING;
                 npc->flags &= ~(NPC_FLAG_JUMPING | NPC_FLAG_GRAVITY);
                 gGameStatusPtr->keepUsingPartnerOnMapChange = false;
                 partnerStatus->partnerActionState = PARTNER_ACTION_USE;
@@ -511,7 +512,7 @@ API_CALLABLE(N(EnterMap)) {
             move_player(script->functionTemp[1], playerStatus->heading, script->varTableF[5]);
             N(sync_held_position)();
             watt->flags &= ~NPC_FLAG_GRAVITY;
-            watt->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+            watt->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
             playerStatus->animFlags |= (PA_FLAG_WATT_IN_HANDS | PA_FLAG_USING_WATT);
             gGameStatusPtr->keepUsingPartnerOnMapChange = true;
             partnerStatus->partnerActionState = PARTNER_ACTION_WATT_SHINE;
@@ -581,16 +582,16 @@ void N(sync_held_position)(void) {
         angle = DEG_TO_RAD(camera->curYaw + 270.0f - gPlayerStatusPtr->spriteFacingAngle + angleOffset);
 
         playerStatus = gPlayerStatusPtr;
-        partnerNPC = wPartnerNpc;
+        partnerNPC = gPartnerNpc;
         partnerNPC->pos.x = playerStatus->pos.x + (sin_rad(angle) * gPlayerStatusPtr->colliderDiameter * offsetScale);
 
-        new_var2 = wPartnerNpc;
+        new_var2 = gPartnerNpc;
         playerStatus = gPlayerStatusPtr;
         partnerNPC = new_var2;
         partnerNPC->pos.z = playerStatus->pos.z - (cos_rad(angle) * gPlayerStatusPtr->colliderDiameter * offsetScale);
 
-        wPartnerNpc->yaw = gPlayerStatusPtr->targetYaw;
-        wPartnerNpc->pos.y = gPlayerStatusPtr->pos.y + 5.0f;
+        gPartnerNpc->yaw = gPlayerStatusPtr->targetYaw;
+        gPartnerNpc->pos.y = gPlayerStatusPtr->pos.y + 5.0f;
     }
 }
 

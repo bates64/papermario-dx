@@ -35,15 +35,12 @@ BSS s32 ItemEntityRenderGroup;
 BSS s16 CoinSparkleCenterX;
 BSS s16 CoinSparkleCenterY;
 BSS s16 CoinSparkleCenterZ;
-BSS s32 pad_ItemEntity[3];
 BSS ItemEntity* WorldItemEntities[MAX_ITEM_ENTITIES];
 BSS ItemEntity* BattleItemEntities[MAX_ITEM_ENTITIES];
 BSS ItemEntity** gCurrentItemEntities;
-BSS s16 isPickingUpItem;
+BSS b16 isPickingUpItem;
+BSS b16 isPartnerPickingUpItem;
 BSS s16 ItemSpawnWithinPlayerPickupDelay;
-#if !VERSION_JP
-BSS s16 D_801565A8;
-#endif
 BSS PopupMenu ItemPickupMenu;
 BSS HudElemID ItemPickupIconHID;
 BSS s32 ItemPickupStateDelay;
@@ -266,9 +263,7 @@ void clear_item_entity_data(void) {
     create_worker_scene(nullptr, draw_item_entities);
     create_worker_frontUI(nullptr, draw_ui_item_entities);
     isPickingUpItem = false;
-#if !VERSION_JP
-    D_801565A8 = false;
-#endif
+    isPartnerPickingUpItem = false;
 }
 
 void init_item_entity_list(void) {
@@ -279,9 +274,7 @@ void init_item_entity_list(void) {
     }
 
     isPickingUpItem = false;
-#if !VERSION_JP
-    D_801565A8 = false;
-#endif
+    isPartnerPickingUpItem = false;
     ItemEntitiesCreated = 0;
     ItemEntityAlternatingSpawn = 0;
 }
@@ -434,7 +427,7 @@ s32 make_item_entity(s32 itemID, f32 x, f32 y, f32 z, s32 itemSpawnMode, s32 pic
     ItemEntitiesCreated++;
     ASSERT(item != nullptr);
 
-    item->renderGroup = (itemID & 0xF0000) >> 16;
+    item->renderGroup = (itemID & ITEM_VIS_MASK) >> 16;
     if (item->renderGroup == VIS_GROUP_5) {
         item->renderGroup = -1;
     }
@@ -1357,7 +1350,7 @@ b32 test_item_player_collision(ItemEntity* item) {
         return false;
     }
 
-    if (item->flags & ITEM_ENTITY_FLAG_CANT_COLLECT) {
+    if (item->flags & ITEM_ENTITY_FLAG_PARTNER_COLLECTING) {
         return false;
     }
 
@@ -1513,7 +1506,7 @@ s32 test_item_entity_position(f32 x, f32 y, f32 z, f32 dist) {
             continue;
         }
 
-        if (item->flags & ITEM_ENTITY_FLAG_CANT_COLLECT) {
+        if (item->flags & ITEM_ENTITY_FLAG_PARTNER_COLLECTING) {
             continue;
         }
 
@@ -1531,11 +1524,9 @@ void set_item_entity_flags(s32 index, s32 flags) {
     ItemEntity* item = gCurrentItemEntities[index];
 
     item->flags |= flags;
-#if !VERSION_JP
-    if (item->flags & ITEM_ENTITY_FLAG_CANT_COLLECT) {
-        D_801565A8 = true;
+    if (item->flags & ITEM_ENTITY_FLAG_PARTNER_COLLECTING) {
+        isPartnerPickingUpItem = true;
     }
-#endif
 }
 
 void clear_item_entity_flags(s32 index, s32 flags) {
@@ -1552,16 +1543,7 @@ void auto_collect_item_entity(s32 index) {
 
 /// Returns true when "you got X" popup is on-screen.
 b32 is_picking_up_item(void) {
-#if VERSION_JP
-    return isPickingUpItem;
-#else
-    b32 ret = D_801565A8 != false;
-
-    if (isPickingUpItem) {
-        ret = true;
-    }
-    return ret;
-#endif
+    return isPickingUpItem || isPartnerPickingUpItem;
 }
 
 void set_item_entity_position(s32 itemEntityIndex, f32 x, f32 y, f32 z) {
@@ -1773,7 +1755,7 @@ void update_item_entity_collectable(ItemEntity* item) {
             // check for expiration
             if (!(item->flags & ITEM_ENTITY_FLAG_NEVER_VANISH)
                 && !(gOverrideFlags & (GLOBAL_OVERRIDES_200 | GLOBAL_OVERRIDES_DISABLE_BATTLES))
-                && !(item->flags & ITEM_ENTITY_FLAG_CANT_COLLECT)
+                && !(item->flags & ITEM_ENTITY_FLAG_PARTNER_COLLECTING)
             ) {
                 physData->timeLeft--;
                 if (physData->timeLeft < 0) {
@@ -1784,7 +1766,7 @@ void update_item_entity_collectable(ItemEntity* item) {
 
             // apply gravity
             if (!(item->flags & ITEM_ENTITY_FLAG_NO_GRAVITY)) {
-                if (!(item->flags & ITEM_ENTITY_FLAG_CANT_COLLECT)) {
+                if (!(item->flags & ITEM_ENTITY_FLAG_PARTNER_COLLECTING)) {
                     physData->verticalVel -= physData->gravity;
                     if (physData->verticalVel < -16.0) {
                         physData->verticalVel = -16.0f;
@@ -2011,9 +1993,7 @@ void update_item_entity_collectable(ItemEntity* item) {
                     sfx_play_sound_at_position(SOUND_HEART_PICKUP, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
                     break;
             }
-#if !VERSION_JP
-            D_801565A8 = false;
-#endif
+            isPartnerPickingUpItem = false;
             gOverrideFlags &= ~GLOBAL_OVERRIDES_40;
             remove_item_entity_by_reference(item);
         }
@@ -2023,9 +2003,7 @@ void update_item_entity_collectable(ItemEntity* item) {
     // when the script is done executing, destroy these items
     if (item->state == ITEM_PHYSICS_STATE_04) {
         if (!does_script_exist(UnusedItemPhysicsScriptID)) {
-#if !VERSION_JP
-            D_801565A8 = false;
-#endif
+            isPartnerPickingUpItem = false;
             remove_item_entity_by_reference(item);
             resume_all_group(EVT_GROUP_FLAG_MENUS);
         }
@@ -2033,11 +2011,9 @@ void update_item_entity_collectable(ItemEntity* item) {
 
     if (item->state == ITEM_PHYSICS_STATE_PICKUP) {
         isPickingUpItem = true;
+        isPartnerPickingUpItem = false;
         item->spawnType = ITEM_SPAWN_AT_PLAYER;
         item->state = ITEM_PICKUP_STATE_INIT;
-#if !VERSION_JP
-        D_801565A8 = false;
-#endif
         gOverrideFlags |= GLOBAL_OVERRIDES_40;
     }
 }
@@ -2050,7 +2026,7 @@ void draw_ui_item_entity_collectable(ItemEntity* item) {
         if (item->spawnType != ITEM_SPAWN_MODE_ITEM_BLOCK_SPAWN_ALWAYS) {
             if (item->spawnType != ITEM_SPAWN_MODE_TOSS_FADE1) {
                 if (physicsData->timeLeft < 60) {
-                    if ((item->flags & ITEM_ENTITY_FLAG_CANT_COLLECT) || ((gGameStatusPtr->frameCounter + flag) & 1)) {
+                    if ((item->flags & ITEM_ENTITY_FLAG_PARTNER_COLLECTING) || ((gGameStatusPtr->frameCounter + flag) & 1)) {
                         item->flags &= ~ITEM_ENTITY_FLAG_HIDDEN;
                     } else {
                         item->flags |= ITEM_ENTITY_FLAG_HIDDEN;
@@ -2071,11 +2047,9 @@ void update_item_entity_stationary(ItemEntity* item) {
         if (test_item_player_collision(item)) {
             // change spawn type to initiate pickup
             isPickingUpItem = true;
+            isPartnerPickingUpItem = false;
             item->spawnType = ITEM_SPAWN_AT_PLAYER;
             item->state = ITEM_PICKUP_STATE_INIT;
-#if !VERSION_JP
-            D_801565A8 = false;
-#endif
             gOverrideFlags |= GLOBAL_OVERRIDES_40;
         }
     }

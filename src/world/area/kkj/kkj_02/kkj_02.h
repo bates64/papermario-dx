@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kkj_02.h
 /// @brief Peach's Castle - Intro Stairs Hallway (3F)
 

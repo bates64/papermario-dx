@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file obk_04.h
 /// @brief Boo's Mansion - Super Boots Room
 
@@ -12,7 +14,7 @@
 #include "sprite/npc/Boo.h"
 
 enum {
-    NPC_Boo_01              = 0,
+    NPC_HiddenBoo           = 0,
     NPC_KeepAwayBoo1        = 1,
     NPC_KeepAwayBoo2        = 2,
     NPC_KeepAwayBoo3        = 3,
@@ -28,10 +30,10 @@ enum {
 
 enum {
     MV_KeepAwayItem         = MapVar(0), // item entity ID
-    MV_KeepAwayStarted      = MapVar(1), //
-    MV_Unk_02               = MapVar(2), //
-    MV_KeepAwayMovement     = MapVar(3), //
-    MV_KeepAwayTarget       = MapVar(4), // npcID to throw item to
+    MV_KeepAwayStarted      = MapVar(1), // set after the Super Boots are stolen
+    MV_KeepAwayRingReady    = MapVar(2), // set once the rotating Boo ring has descended into place
+    MV_KeepAwayMovement     = MapVar(3), // see KeepAwayMoveState
+    MV_KeepAwayTargetIdx    = MapVar(4), // index (0-7) of the next Boo to receive the item
     MV_ThrowTargetNpc       = MapVar(5), // npcID the item is thrown to (redundant)
     MV_KeepAwayResult       = MapVar(6), // did the player hit the correct boo?
     MV_ItemCarrierNpc       = MapVar(7), // npcID holding the item (also redundant)

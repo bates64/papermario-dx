@@ -92,7 +92,7 @@ EvtScript N(EVS_ForceMoveCliffTopBushes) = {
     End
 };
 
-EvtScript N(EVS_80243EC0) = {
+EvtScript N(EVS_ShakeBushAndDropCoin) = {
     Call(DisablePlayerInput, true)
     Loop(3)
         Call(N(MoveBush_AnimateShearing), LVar1, 1)
@@ -111,19 +111,19 @@ EvtScript N(EVS_80243EC0) = {
     End
 };
 
-EvtScript N(D_80243FC4_B69A74) = {
+EvtScript N(EVS_UpdatePlayerSpinAngle) = {
     Label(10)
         Label(0)
-            IfEq(MV_Unk_05, 0)
+            IfEq(MV_PlayerSpinAngle, 0)
                 Wait(1)
                 Goto(0)
             EndIf
-        Set(LVar3, MV_Unk_05)
-        Call(MakeLerp, 0, MV_Unk_05, 120, EASING_COS_IN_OUT)
+        Set(LVar3, MV_PlayerSpinAngle)
+        Call(MakeLerp, 0, MV_PlayerSpinAngle, 120, EASING_COS_IN_OUT)
         Loop(0)
             Call(UpdateLerp)
-            Set(MV_Unk_05, LVar3)
-            Sub(MV_Unk_05, LVar0)
+            Set(MV_PlayerSpinAngle, LVar3)
+            Sub(MV_PlayerSpinAngle, LVar0)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -134,14 +134,14 @@ EvtScript N(D_80243FC4_B69A74) = {
     End
 };
 
-EvtScript N(EVS_802440C0) = {
+EvtScript N(EVS_SpinLaunchPlayer) = {
     Call(DisablePlayerInput, true)
     Wait(20)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
-    Set(MV_Unk_05, 3600)
+    Set(MV_PlayerSpinAngle, 3600)
     Loop(60)
-        Call(InterpPlayerYaw, MV_Unk_05, 0)
+        Call(InterpPlayerYaw, MV_PlayerSpinAngle, 0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         AddF(LVar0, Float(6.0))
         AddF(LVar1, Float(3.0))
@@ -453,7 +453,7 @@ EvtScript N(EVS_SetupBushes) = {
     BindTrigger(Ref(N(EVS_Inspect_MoveBush_RightShore)), TRIGGER_WALL_PRESS_A, COLLIDER_o84, 1, 0)
     BindTrigger(Ref(N(EVS_Inspect_MoveBush_CliffTop1)), TRIGGER_WALL_PRESS_A, COLLIDER_o82, 1, 0)
     BindTrigger(Ref(N(EVS_Inspect_MoveBush_CliffTop2)), TRIGGER_WALL_PRESS_A, COLLIDER_o88, 1, 0)
-    Exec(N(D_80243FC4_B69A74))
+    Exec(N(EVS_UpdatePlayerSpinAngle))
     Set(LVar0, Ref(N(SearchBush_Bush1)))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o78, 1, 0)
     Set(LVar0, Ref(N(SearchBush_Bush2)))

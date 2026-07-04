@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_07.h
 /// @brief Goomba Region - Goomba Road 3
 
@@ -15,7 +17,7 @@ enum {
 };
 
 enum {
-    MV_SpringEntityIndex        = MapVar(0),
+    MV_EntityID_Spring          = MapVar(0),
     MV_GoombaBrosDefeated       = MapVar(0), // reused
 };
 

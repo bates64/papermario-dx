@@ -1,13 +1,7 @@
 #include "flo_22.h"
 #include "sprite/player.h"
 
-s32 N(BerryList)[] = {
-    ITEM_RED_BERRY,
-    ITEM_BLUE_BERRY,
-    ITEM_YELLOW_BERRY,
-    ITEM_BUBBLE_BERRY,
-    ITEM_NONE
-};
+ITEM_LIST(N(BerryList), ITEM_RED_BERRY, ITEM_BLUE_BERRY, ITEM_YELLOW_BERRY, ITEM_BUBBLE_BERRY);
 
 EvtScript N(EVS_SniffleHint) = {
     Call(DisablePlayerInput, true)
@@ -98,17 +92,17 @@ EvtScript N(EVS_OnInteract_Well) = {
                 Call(NpcFacePlayer, NPC_Bzzap, 0)
                 Wait(1)
                 Call(SetNpcPos, NPC_Bzzap, 30, 0, 0)
-                Call(SetNpcAnimation, NPC_Bzzap, ANIM_Bzzap_Anim01)
+                Call(SetNpcAnimation, NPC_Bzzap, ANIM_Bzzap_Idle)
                 Call(NpcJump0, NPC_Bzzap, 30, 60, 0, 20)
                 Wait(10)
-                Call(SetNpcAnimation, NPC_Bzzap, ANIM_Bzzap_Anim04)
+                Call(SetNpcAnimation, NPC_Bzzap, ANIM_Bzzap_Sting)
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
                 Add(LVar1, 20)
                 Call(NpcJump0, NPC_Bzzap, LVar0, LVar1, LVar2, 5)
                 Set(MV_Bzzap_State, 1)
             Else
                 Call(SetNpcPos, NPC_Dayzee, 30, 0, 0)
-                Call(SetNpcAnimation, NPC_Dayzee, ANIM_Dayzee_Anim0E)
+                Call(SetNpcAnimation, NPC_Dayzee, ANIM_Dayzee_Skip1)
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
                 Add(LVar1, 20)
                 Call(SetNpcJumpscale, NPC_Dayzee, Float(2.0))

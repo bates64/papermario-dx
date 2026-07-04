@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file iwa_00.h
 /// @brief Mt Rugged - Mt Rugged 1
 

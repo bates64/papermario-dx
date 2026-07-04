@@ -1,21 +1,15 @@
 #include "flo_13.h"
 #include "sprite/player.h"
+#include "world/common/npc/Lakilester/base.h"
+#include "world/common/npc/Lakilulu/base.h"
+#include "world/common/enemy/Lakitu/idle.inc.c"
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
-
-NpcSettings N(NpcSettings_Lakilester) = {
-    .height = 32,
-    .radius = 24,
-    .level = ACTOR_LEVEL_LAKITU,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
+#include "world/common/util/LoadPartyImage.inc.c"
 
 #define AI_LAKITU_FIRST_SPINY_ID    NPC_Spiny_01
 #define AI_LAKITU_LAST_SPINY_ID     NPC_Spiny_06
-#include "world/common/enemy/Lakitu_SpinySpawner.inc.c"
-
-#include "world/common/todo/UnkFunc42.inc.c"
+#include "world/common/enemy/Lakitu/spiny_spawner.inc.c"
 
 API_CALLABLE(N(PlayLakiluluFlightSounds)) {
     Npc* npc = get_npc_unsafe(NPC_Lakilulu);
@@ -97,7 +91,7 @@ EvtScript N(EVS_Lakliester_ManageYaw) = {
     Call(GetNpcPos, NPC_Lakilester, LVar0, LVar1, LVar2)
     Label(0)
         Call(GetNpcPos, NPC_Lakilester, LVar3, LVar4, LVar5)
-        Call(N(UnkFunc42))
+        Call(GetAngleBetweenPoints, LVarA, LVar0, LVar2, LVar3, LVar5)
         Call(InterpNpcYaw, NPC_Lakilester, LVarA, 0)
         Set(LVar0, LVar3)
         Set(LVar1, LVar4)
@@ -115,7 +109,7 @@ EvtScript N(EVS_Laklilulu_ManageYaw) = {
     Call(GetNpcPos, NPC_Lakilulu, LVar0, LVar1, LVar2)
     Label(0)
         Call(GetNpcPos, NPC_Lakilulu, LVar3, LVar4, LVar5)
-        Call(N(UnkFunc42))
+        Call(GetAngleBetweenPoints, LVarA, LVar0, LVar2, LVar3, LVar5)
         Call(InterpNpcYaw, NPC_Lakilulu, LVarA, 0)
         Set(LVar0, LVar3)
         Set(LVar1, LVar4)
@@ -240,7 +234,7 @@ EvtScript N(EVS_NpcIdle_Lakilester) = {
     Call(InterpPlayerYaw, 90, 1)
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Still)
-    Call(func_802CF56C, 2)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(SetNpcAnimation, NPC_Lakilester, ANIM_WorldLakilester_Run)
     Thread
         Call(N(PlayLakilesterFlightSounds))
@@ -313,7 +307,7 @@ EvtScript N(EVS_Lakilulu_FlyAway) = {
     Thread
         Call(N(PlayLakiluluFlightSounds), 55 * DT)
     EndThread
-    Call(SetNpcFlagBits, NPC_Lakilulu, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Lakilulu, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     ExecGetTID(N(EVS_Laklilulu_ManageYaw), LVar9)
     Call(LoadPath, 55 * DT, Ref(N(FlightPath_LakiluluDeparts)), ARRAY_COUNT(N(FlightPath_LakiluluDeparts)), EASING_LINEAR)
     Label(20)
@@ -334,7 +328,7 @@ EvtScript N(EVS_Lakilulu_FlyAway) = {
         Add(LVar3, 20)
         Call(NpcJump0, NPC_PARTNER, LVar1, LVar2, LVar3, 30 * DT)
     EndIf
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(InterpNpcYaw, NPC_PARTNER, 270, 0)
     Wait(5 * DT)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldLakilester_Talk, ANIM_WorldLakilester_Idle, 5, MSG_CH6_00B5)
@@ -490,8 +484,8 @@ EvtScript N(EVS_Scene_LakilesterDefeated) = {
     Add(LVar0, 30)
     Call(SetNpcSpeed, NPC_Lakilester, Float(3.5 / DT))
     Call(NpcMoveTo, NPC_Lakilester, LVar0, 60, 0)
-    Call(N(ChangeNpcToPartner), 0, 8)
-    Call(N(LoadPartyImage))
+    Call(N(ChangeNpcToPartner), NPC_Lakilester, PARTNER_LAKILESTER)
+    Call(N(LoadPartyImage), Ref("party_pokopi"))
     Exec(N(EVS_PushPartnerSong))
     Wait(15 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_0190, 160, 40)
@@ -588,7 +582,7 @@ EvtScript N(EVS_NpcInit_Spiny) = {
     IfEq(GB_StoryProgress, STORY_CH6_SPOKE_WITH_THE_SUN)
         Call(RemoveNpc, NPC_SELF)
     EndIf
-    Call(SetSelfVar, 13, 1)
+    Call(SetSelfVar, AI_VAR_SPINY_ZERO_FLOOR, true)
     Return
     End
 };
@@ -598,27 +592,10 @@ NpcData N(NpcData_Lakilester) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
     .init = &N(EVS_NpcInit_Lakilester),
-    .settings = &N(NpcSettings_Lakilester),
+    .settings = &N(NpcSettings_Lakitu),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_WorldLakilester_Idle,
-        .walk   = ANIM_WorldLakilester_Idle,
-        .run    = ANIM_WorldLakilester_Idle,
-        .chase  = ANIM_WorldLakilester_Idle,
-        .anim_4 = ANIM_WorldLakilester_Idle,
-        .anim_5 = ANIM_WorldLakilester_Idle,
-        .death  = ANIM_WorldLakilester_Idle,
-        .hit    = ANIM_WorldLakilester_Idle,
-        .anim_8 = ANIM_WorldLakilester_Idle,
-        .anim_9 = ANIM_WorldLakilester_Idle,
-        .anim_A = ANIM_WorldLakilester_Idle,
-        .anim_B = ANIM_WorldLakilester_Idle,
-        .anim_C = ANIM_WorldLakilester_Idle,
-        .anim_D = ANIM_WorldLakilester_Idle,
-        .anim_E = ANIM_WorldLakilester_Idle,
-        .anim_F = ANIM_WorldLakilester_Idle,
-    },
+    .animations = LAKILESTER_ANIMS,
 };
 
 NpcData N(NpcData_Lakilulu) = {
@@ -626,27 +603,10 @@ NpcData N(NpcData_Lakilulu) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
     .init = &N(EVS_NpcInit_Lakilulu),
-    .settings = &N(NpcSettings_Lakilester),
+    .settings = &N(NpcSettings_Lakitu),
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Lakilulu_Idle,
-        .walk   = ANIM_Lakilulu_Idle,
-        .run    = ANIM_Lakilulu_Idle,
-        .chase  = ANIM_Lakilulu_Idle,
-        .anim_4 = ANIM_Lakilulu_Idle,
-        .anim_5 = ANIM_Lakilulu_Idle,
-        .death  = ANIM_Lakilulu_Idle,
-        .hit    = ANIM_Lakilulu_Idle,
-        .anim_8 = ANIM_Lakilulu_Idle,
-        .anim_9 = ANIM_Lakilulu_Idle,
-        .anim_A = ANIM_Lakilulu_Idle,
-        .anim_B = ANIM_Lakilulu_Idle,
-        .anim_C = ANIM_Lakilulu_Idle,
-        .anim_D = ANIM_Lakilulu_Idle,
-        .anim_E = ANIM_Lakilulu_Idle,
-        .anim_F = ANIM_Lakilulu_Idle,
-    },
+    .animations = LAKILULU_ANIMS,
     .tattle = MSG_NpcTattle_Lakilulu,
 };
 
@@ -655,27 +615,10 @@ NpcData N(NpcData_Lakilulu_Spiny) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
     .init = &N(EVS_NpcInit_Lakilulu_Spiny),
-    .settings = &N(NpcSettings_Lakilester),
+    .settings = &N(NpcSettings_Lakitu),
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Lakilulu_Idle,
-        .walk   = ANIM_Lakilulu_Idle,
-        .run    = ANIM_Lakilulu_Idle,
-        .chase  = ANIM_Lakilulu_Idle,
-        .anim_4 = ANIM_Lakilulu_Idle,
-        .anim_5 = ANIM_Lakilulu_Idle,
-        .death  = ANIM_Lakilulu_Idle,
-        .hit    = ANIM_Lakilulu_Idle,
-        .anim_8 = ANIM_Lakilulu_Idle,
-        .anim_9 = ANIM_Lakilulu_Idle,
-        .anim_A = ANIM_Lakilulu_Idle,
-        .anim_B = ANIM_Lakilulu_Idle,
-        .anim_C = ANIM_Lakilulu_Idle,
-        .anim_D = ANIM_Lakilulu_Idle,
-        .anim_E = ANIM_Lakilulu_Idle,
-        .anim_F = ANIM_Lakilulu_Idle,
-    },
+    .animations = LAKILULU_ANIMS,
 };
 
 NpcData N(NpcData_Lakitu_01) = {

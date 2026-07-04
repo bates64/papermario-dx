@@ -2,10 +2,7 @@
 #include "sprite.h"
 #include "sprite/player.h"
 
-s32 N(JadeRavenList)[] = {
-    ITEM_JADE_RAVEN,
-    ITEM_NONE
-};
+ITEM_LIST(N(JadeRavenList), ITEM_JADE_RAVEN);
 
 EvtScript N(EVS_MoveStatue) = {
     Thread
@@ -108,13 +105,17 @@ EvtScript N(ItemPrompt_Statue) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(ShowKeyChoicePopup)
-    IfLe(LVar0, 0)
-        IfEq(LVar0, 0)
+    Switch(LVar0)
+        CaseEq(ITEM_CHOICE_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_RaphaelStatue, 160, 40)
-        EndIf
-        Call(CloseChoicePopup)
-        Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
-        Return
+            Call(CloseChoicePopup)
+            Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
+            Return
+        CaseEq(ITEM_CHOICE_CANCELED)
+            Call(CloseChoicePopup)
+            Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
+            Return
+    EndSwitch
     EndIf
     Call(DisablePlayerInput, true)
     Call(RemoveKeyItemAt, LVar1)

@@ -1,0 +1,32 @@
+#pragma once
+#include "patrol.h"
+
+#include "world/common/ai/PatrolNoAttackAI.inc.c"
+
+MobileAISettings N(AISettings_HyperGoomba_Patrol) = {
+    .moveSpeed = 1.5f,
+    .moveTime = 30,
+    .waitTime = 30,
+    .alertRadius = 130.0f,
+    .playerSearchInterval = 1,
+    .chaseSpeed = 2.5f,
+    .chaseTurnRate = 180,
+    .chaseUpdateInterval = 3,
+    .chaseRadius = 150.0f,
+    .loiterMode = 1,
+};
+
+EvtScript N(EVS_NpcAI_HyperGoomba_Patrol) = {
+    Call(N(PatrolNoAttackAI_Main), Ref(N(AISettings_HyperGoomba_Patrol)))
+    Return
+    End
+};
+
+NpcSettings N(NpcSettings_HyperGoomba_Patrol) = {
+    .height = 20,
+    .radius = 23,
+    .level = ACTOR_LEVEL_HYPER_GOOMBA,
+    .doAI = &N(EVS_NpcAI_HyperGoomba_Patrol),
+    .onHit = &EnemyNpcHit,
+    .onDefeat = &EnemyNpcDefeat,
+};

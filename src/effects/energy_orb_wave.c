@@ -7,12 +7,26 @@ extern Gfx D_090011D0_3A54F0[];
 extern Gfx D_090011F0_3A5510[];
 extern Gfx D_09001210_3A5530[];
 
+enum EnergyOrbWaveModes {
+    ENERGY_ORB_WAVE_MODE_GREEN_PULSE  = 0,
+    ENERGY_ORB_WAVE_MODE_GREEN_BRIGHT = 1,
+    ENERGY_ORB_WAVE_MODE_PINK_PULSE   = 2,
+    ENERGY_ORB_WAVE_MODE_PINK_BRIGHT  = 3,
+    ENERGY_ORB_WAVE_MODE_PALE_PULSE   = 4,
+    ENERGY_ORB_WAVE_MODE_PALE_BRIGHT  = 5,
+    ENERGY_ORB_WAVE_MODE_GREEN_WAVE   = 6,
+    ENERGY_ORB_WAVE_MODE_PALE_WAVE    = 7,
+    ENERGY_ORB_WAVE_MODE_PINK_WAVE    = 8,
+    ENERGY_ORB_WAVE_MODE_GRAY_WAVE    = 9,
+    ENERGY_ORB_WAVE_MODE_BLUE_SHRINK  = 10,
+};
+
 void energy_orb_wave_init(EffectInstance* effect);
 void energy_orb_wave_update(EffectInstance* effect);
 void energy_orb_wave_render(EffectInstance* effect);
 void energy_orb_wave_appendGfx(void* effect);
 
-EffectInstance* energy_orb_wave_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
+EffectInstance* energy_orb_wave_main(s32 type, f32 x, f32 y, f32 z, f32 scale, s32 duration) {
     EffectBlueprint bp;
     EffectInstance* effect;
     EnergyOrbWaveFXData* data;
@@ -30,45 +44,47 @@ EffectInstance* energy_orb_wave_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32
     data = effect->data.energyOrbWave = general_heap_malloc(numParts * sizeof(*data));
     ASSERT(effect->data.energyOrbWave != nullptr);
 
-    data->unk_00 = arg0;
-    data->unk_14 = 0;
-    if (arg5 <= 0) {
-        data->unk_10 = 100;
+    data->type = type;
+    data->lifetime = 0;
+    if (duration <= 0) {
+        data->timeLeft = 100;
     } else {
-        data->unk_10 = arg5;
+        data->timeLeft = duration;
     }
-    data->unk_2C = 0;
-    data->pos.x = arg1;
-    data->pos.y = arg2;
-    data->pos.z = arg3;
-    data->scale = arg4;
-    data->unk_18 = 0;
+    data->alpha = 0;
+    data->pos.x = x;
+    data->pos.y = y;
+    data->pos.z = z;
+    data->scale = scale;
 
-    switch (arg0) {
-        case 0:
-            data->unk_1C = 0;
+    switch (type) {
+        case FX_ENERGY_ORB_WAVE_GREEN_ORB:
+            data->mode = ENERGY_ORB_WAVE_MODE_GREEN_PULSE;
             break;
-        case 1:
-            data->unk_1C = 2;
+        case FX_ENERGY_ORB_WAVE_PINK_ORB:
+            data->mode = ENERGY_ORB_WAVE_MODE_PINK_PULSE;
             break;
-        case 2:
-            data->unk_1C = 4;
+        case FX_ENERGY_ORB_WAVE_PALE_ORB:
+            data->mode = ENERGY_ORB_WAVE_MODE_PALE_PULSE;
             break;
-        case 3:
-            data->unk_1C = 6;
+        case FX_ENERGY_ORB_WAVE_GREEN_WAVE:
+            data->mode = ENERGY_ORB_WAVE_MODE_GREEN_WAVE;
             break;
-        case 4:
-            data->unk_1C = 7;
+        case FX_ENERGY_ORB_WAVE_PALE_WAVE:
+            data->mode = ENERGY_ORB_WAVE_MODE_PALE_WAVE;
             break;
-        case 5:
-            data->unk_1C = 8;
+        case FX_ENERGY_ORB_WAVE_PINK_WAVE:
+            data->mode = ENERGY_ORB_WAVE_MODE_PINK_WAVE;
             break;
-        case 6:
-            data->unk_1C = 9;
+        case FX_ENERGY_ORB_WAVE_GRAY_WAVE:
+            data->mode = ENERGY_ORB_WAVE_MODE_GRAY_WAVE;
             break;
+        case FX_ENERGY_ORB_WAVE_UNUSED_7:
+        case FX_ENERGY_ORB_WAVE_UNUSED_8:
+        case FX_ENERGY_ORB_WAVE_BLUE_SHRINK:
         default:
-            data->unk_1C = 10;
-            data->unk_34 = -(arg4 - 0.1) / arg5;
+            data->mode = ENERGY_ORB_WAVE_MODE_BLUE_SHRINK;
+            data->scaleDelta = -(scale - 0.1) / duration;
             break;
     }
 
@@ -80,130 +96,131 @@ void energy_orb_wave_init(EffectInstance* effect) {
 
 void energy_orb_wave_update(EffectInstance* effect) {
     EnergyOrbWaveFXData* data = effect->data.energyOrbWave;
-    f32 var_float;
-    s32 unk_14;
-    s32 var_2;
-    s32 var_1;
-    s32 unk_1C;
-    u16 var_4;
-    s32 var_3;
+    f32 alphaPulse;
+    s32 lifetime;
+    s32 linearFadeAlpha;
+    s32 fadeAlpha;
+    s32 mode;
+    u16 baseAlpha;
+    s32 fullAlpha;
 
     if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
         effect->flags &= ~FX_INSTANCE_FLAG_DISMISS;
-        data->unk_10 = 30;
+        data->timeLeft = 30;
     }
 
-    if (data->unk_10 < 100) {
-        data->unk_10--;
+    if (data->timeLeft < 100) {
+        data->timeLeft--;
     }
-    data->unk_14++;
+    data->lifetime++;
 
-    if (data->unk_10 < 0) {
+    if (data->timeLeft < 0) {
         remove_effect(effect);
         return;
     }
 
-    unk_14 = data->unk_14;
-    unk_1C = data->unk_1C;
-    var_1 = 0xFF;
-    var_2 = 0xFF;
+    lifetime = data->lifetime;
+    mode = data->mode;
+    fadeAlpha = 0xFF;
+    linearFadeAlpha = 0xFF;
 
-    if (unk_14 < 16) {
-        var_1 = (unk_14 * 16) - 1;
+    if (lifetime < 16) {
+        fadeAlpha = (lifetime * 16) - 1;
     }
-    if (data->unk_10 < 16) {
-        var_1 = var_1 * data->unk_10 / 16;
-        var_2 = data->unk_10 * 16;
+    if (data->timeLeft < 16) {
+        fadeAlpha = fadeAlpha * data->timeLeft / 16;
+        linearFadeAlpha = data->timeLeft * 16;
     }
 
-    switch (unk_1C) {
-        case 0:
-            data->unk_20 = 70;
-            data->unk_24 = 180;
-            data->unk_28 = 120;
-            var_float = sin_deg(unk_14 * 2) * 10.0f + 190.0f;
-            data->unk_2C = ((s32) var_float * var_1) / 255;
+    switch (mode) {
+        case ENERGY_ORB_WAVE_MODE_GREEN_PULSE:
+            data->color.r = 70;
+            data->color.g = 180;
+            data->color.b = 120;
+            alphaPulse = sin_deg(lifetime * 2) * 10.0f + 190.0f;
+            data->alpha = ((s32) alphaPulse * fadeAlpha) / 255;
             break;
-        case 1:
-            var_3 = 255;
-            data->unk_20 = 70;
-            data->unk_24 = 255;
-            data->unk_28 = 230;
-            data->unk_2C = (var_1 * var_3) / 255;
+        case ENERGY_ORB_WAVE_MODE_GREEN_BRIGHT:
+            fullAlpha = 255;
+            data->color.r = 70;
+            data->color.g = 255;
+            data->color.b = 230;
+            data->alpha = (fadeAlpha * fullAlpha) / 255;
             break;
-        case 2:
-            data->unk_20 = 170;
-            data->unk_24 = 40;
-            data->unk_28 = 110;
-            var_float = sin_deg(unk_14 * 2) * 10.0f + 190.0f;
-            data->unk_2C = ((s32) var_float * var_1) / 255;
+        case ENERGY_ORB_WAVE_MODE_PINK_PULSE:
+            data->color.r = 170;
+            data->color.g = 40;
+            data->color.b = 110;
+            alphaPulse = sin_deg(lifetime * 2) * 10.0f + 190.0f;
+            data->alpha = ((s32) alphaPulse * fadeAlpha) / 255;
             break;
-        case 3:
-            var_4 = 255;
-            data->unk_20 = 220;
-            data->unk_24 = 40;
-            data->unk_28 = 170;
-            data->unk_2C = (var_1 * var_4) / 255;
+        case ENERGY_ORB_WAVE_MODE_PINK_BRIGHT:
+            baseAlpha = 255;
+            data->color.r = 220;
+            data->color.g = 40;
+            data->color.b = 170;
+            data->alpha = (fadeAlpha * baseAlpha) / 255;
             break;
-        case 4:
-            data->unk_20 = 235;
-            data->unk_24 = 235;
-            data->unk_28 = 200;
-            var_float = sin_deg(unk_14 * 2) * 15.0f + 215.0f;
-            data->unk_2C = ((s32) var_float * var_1) / 255;
+        case ENERGY_ORB_WAVE_MODE_PALE_PULSE:
+            data->color.r = 235;
+            data->color.g = 235;
+            data->color.b = 200;
+            alphaPulse = sin_deg(lifetime * 2) * 15.0f + 215.0f;
+            data->alpha = ((s32) alphaPulse * fadeAlpha) / 255;
             break;
-        case 5:
-            var_4 = 255;
-            data->unk_20 = 235;
-            data->unk_24 = 235;
-            data->unk_28 = 200;
-            data->unk_2C = (var_1 * var_4) / 255;
+        case ENERGY_ORB_WAVE_MODE_PALE_BRIGHT:
+            baseAlpha = 255;
+            data->color.r = 235;
+            data->color.g = 235;
+            data->color.b = 200;
+            data->alpha = (fadeAlpha * baseAlpha) / 255;
             break;
-        case 6:
-            var_4 = 127;
-            data->unk_20 = 70;
-            data->unk_24 = 180;
-            data->unk_28 = 120;
-            data->unk_2C = (var_2 * var_4) / 255;
+        case ENERGY_ORB_WAVE_MODE_GREEN_WAVE:
+            baseAlpha = 127;
+            data->color.r = 70;
+            data->color.g = 180;
+            data->color.b = 120;
+            data->alpha = (linearFadeAlpha * baseAlpha) / 255;
             data->scale *= 1.1;
             break;
-        case 7:
-            var_4 = 160;
-            data->unk_20 = 162;
-            data->unk_24 = 189;
-            data->unk_28 = 174;
-            data->unk_2C = (var_2 * var_4) / 255;
+        case ENERGY_ORB_WAVE_MODE_PALE_WAVE:
+            baseAlpha = 160;
+            data->color.r = 162;
+            data->color.g = 189;
+            data->color.b = 174;
+            data->alpha = (linearFadeAlpha * baseAlpha) / 255;
             data->scale *= 1.1;
             break;
-        case 8:
-            var_4 = 127;
-            data->unk_20 = 170;
-            data->unk_24 = 40;
-            data->unk_28 = 110;
-            data->unk_2C = (var_2 * var_4) / 255;
+        case ENERGY_ORB_WAVE_MODE_PINK_WAVE:
+            baseAlpha = 127;
+            data->color.r = 170;
+            data->color.g = 40;
+            data->color.b = 110;
+            data->alpha = (linearFadeAlpha * baseAlpha) / 255;
             data->scale *= 1.1;
             break;
-        case 9:
-            var_4 = 160;
-            data->unk_20 = 180;
-            data->unk_24 = 178;
-            data->unk_28 = 174;
-            data->unk_2C = (var_2 * var_4) / 255;
+        case ENERGY_ORB_WAVE_MODE_GRAY_WAVE:
+            baseAlpha = 160;
+            data->color.r = 180;
+            data->color.g = 178;
+            data->color.b = 174;
+            data->alpha = (linearFadeAlpha * baseAlpha) / 255;
             data->scale *= 1.1;
             break;
+        case ENERGY_ORB_WAVE_MODE_BLUE_SHRINK:
         default:
-            var_4 = 160;
-            data->unk_20 = 50;
-            data->unk_24 = 50;
-            data->unk_28 = 255;
-            data->unk_2C = (var_2 * var_4) / 255;
-            data->scale += data->unk_34;
+            baseAlpha = 160;
+            data->color.r = 50;
+            data->color.g = 50;
+            data->color.b = 255;
+            data->alpha = (linearFadeAlpha * baseAlpha) / 255;
+            data->scale += data->scaleDelta;
             break;
     }
 }
 
 void energy_orb_wave_render(EffectInstance* effect) {
-    EnergyOrbWaveFXData* effect82 = effect->data.energyOrbWave;
+    EnergyOrbWaveFXData* data = effect->data.energyOrbWave;
     RenderTask renderTask;
     RenderTask* retTask;
     RenderTask* renderTaskPointer = &renderTask;
@@ -212,7 +229,7 @@ void energy_orb_wave_render(EffectInstance* effect) {
     renderTask.dist = 10;
     renderTask.appendGfxArg = effect;
     renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
-    if (effect82->unk_00 >= 3) {
+    if (data->type >= FX_ENERGY_ORB_WAVE_GREEN_WAVE) {
         queue_render_task(renderTaskPointer);
         return;
     }
@@ -227,9 +244,9 @@ void func_E00A4648(void) {
 void energy_orb_wave_appendGfx(void* effect) {
     EnergyOrbWaveFXData* data = ((EffectInstance*)effect)->data.energyOrbWave;
     Camera* camera = &gCameras[gCurrentCameraID];
-    s32 unk_14 = data->unk_14;
-    s32 unk_2C = data->unk_2C;
-    s32 unk_00 = data->unk_00;
+    s32 lifetime = data->lifetime;
+    s32 alpha = data->alpha;
+    s32 type = data->type;
     Matrix4f sp18;
     Matrix4f sp58;
 
@@ -243,14 +260,14 @@ void energy_orb_wave_appendGfx(void* effect) {
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-    gDPSetPrimColor(gMainGfxPos++, 0, 0, data->unk_20, data->unk_24, data->unk_28, unk_2C);
+    gDPSetPrimColor(gMainGfxPos++, 0, 0, data->color.r, data->color.g, data->color.b, alpha);
     gDPSetColorDither(gMainGfxPos++, G_CD_BAYER);
     gDPSetAlphaDither(gMainGfxPos++, G_AD_PATTERN);
 
-    if (unk_00 < 3) {
+    if (type <= FX_ENERGY_ORB_WAVE_PALE_ORB) {
         gSPDisplayList(gMainGfxPos++, D_09001000_3A5320);
 
-        guRotateF(sp18, unk_14, 0.0f, 0.0f, 1.0f);
+        guRotateF(sp18, lifetime, 0.0f, 0.0f, 1.0f);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
         gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
@@ -258,7 +275,7 @@ void energy_orb_wave_appendGfx(void* effect) {
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         gDPSetColorDither(gMainGfxPos++, G_CD_MAGICSQ);
 
-        guRotateF(sp18, -unk_14 * 8, 0.0f, 0.0f, 1.0f);
+        guRotateF(sp18, -lifetime * 8, 0.0f, 0.0f, 1.0f);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
         gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);

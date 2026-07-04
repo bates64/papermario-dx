@@ -348,6 +348,9 @@ segments:
     - [auto, c, inventory]
     - [auto, c, world/actions] # DUMMY ROM
     - [auto, c, world/partners]
+    - [auto, c, world/partners_control]
+    - [auto, c, world/partners_follow]
+    - [auto, c, world/partners_swap]
     - [auto, c, global_hud_scripts]
     - [auto, c, world/surfaces]
     - [auto, c, status_star_shimmer]
@@ -10473,7 +10476,6 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
     - [auto, c, npc]
-    - [auto, c, unused]
     - [auto, c, trees]
     - [auto, c, scenes]
     - [auto, c, treasure]

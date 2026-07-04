@@ -6,10 +6,10 @@ void firework_rocket_render(EffectInstance* effect);
 void firework_rocket_update(EffectInstance* effect);
 void firework_rocket_appendGfx(void* effect);
 
-typedef struct FireworkRocketUnk {
+typedef struct FireworkSparkList {
     /* 0x00 */ Vec3b* sparks;
     /* 0x04 */ s32 num;
-} FireworkRocketUnk; // size = 0x8
+} FireworkSparkList; // size = 0x8
 
 extern Gfx D_09000080_3E53D0[];
 extern Gfx D_09000158_3E54A8[];
@@ -71,7 +71,7 @@ Vec3b D_E010AEC0[] = {
     {   70,  -92,    0 },
 };
 
-FireworkRocketUnk D_E010AF68[] = {
+FireworkSparkList D_E010AF68[] = {
     {D_E010ACD8, ARRAY_COUNT(D_E010ACD8)},
     {D_E010ADF8, ARRAY_COUNT(D_E010ADF8)},
     {D_E010AEC0, ARRAY_COUNT(D_E010AEC0)}
@@ -334,4 +334,3 @@ void firework_rocket_appendGfx(void* effect) {
         }
     }
 }
-

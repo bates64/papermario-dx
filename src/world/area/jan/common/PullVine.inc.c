@@ -1,17 +1,6 @@
 #include "common.h"
 #include "sprite/player.h"
 
-// ----------------------------------------------------------------
-// Requirements
-
-// Script to execute when a vine is pulled (can be a MapVar)
-#ifndef PULL_VINE_CALLBACK_SCRIPT
-    #error PULL_VINE_CALLBACK_SCRIPT is not defined!
-#endif
-
-// ----------------------------------------------------------------
-// Implementation
-
 API_CALLABLE(N(PullVine_WaitForPlayerGrab)) {
     Bytecode* args = script->ptrReadPos;
     f32 modelX, modelY, modelZ;
@@ -51,6 +40,8 @@ API_CALLABLE(N(PullVine_UpdatePosition)) {
 // LVarB  tree leaves modelID 3
 // LVarC  unique vine index
 // LVar5  drop delay
+// LVar4  callback script
+
 EvtScript N(EVS_PullVine_Manage) = {
     Call(GetModelCenter, LVarE)
     Set(LVar6, LVar0)
@@ -105,11 +96,11 @@ EvtScript N(EVS_PullVine_Manage) = {
                 EndIf
             EndThread
             IfEq(LVar5, 0)
-                Exec(PULL_VINE_CALLBACK_SCRIPT)
+                Exec(LVar4)
             Else
                 Thread
                     Wait(LVar5)
-                    Exec(PULL_VINE_CALLBACK_SCRIPT)
+                    Exec(LVar4)
                 EndThread
             EndIf
             Call(SetPlayerActionState, ACTION_STATE_LAND)

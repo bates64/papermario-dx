@@ -1,7 +1,7 @@
 #include "pra_22.h"
 #include "sprite/player.h"
 
-#include "world/common/todo/UnkFunc11.inc.c"
+#include "world/common/util/PushObjectSupport.inc.c"
 
 API_CALLABLE(N(PreventFalling)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -86,7 +86,7 @@ EvtScript N(EVS_PushRightStatue_Impl) = {
             Set(LVar8, -1)
             Return
         EndIf
-        Call(N(UnkFunc11), LVar9)
+        Call(N(IsPlayerPushingCollider), LVar9)
         IfEq(LVar0, 0)
             Set(LVar8, -1)
             Return

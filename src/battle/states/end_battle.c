@@ -18,6 +18,7 @@ void btl_state_update_end_battle(void) {
     Battle* battle = gCurrentBattlePtr;
     Stage* stage;
     Evt* script;
+    s16 areaID, mapID;
     s32 i;
 
     switch (gBattleSubState) {
@@ -98,12 +99,9 @@ void btl_state_update_end_battle(void) {
                 decrement_status_bar_disabled();
             }
 
-            if (encounterStatus->battleOutcome == OUTCOME_PLAYER_LOST &&
-                !(gBattleStatus.flags1 & BS_FLAGS1_NO_GAME_OVER))
-            {
-                s16 areaID;
-                s16 mapID;
-
+            if (encounterStatus->battleOutcome == OUTCOME_PLAYER_LOST
+                && !(gBattleStatus.flags1 & BS_FLAGS1_NO_GAME_OVER)
+            ) {
                 btl_set_state(BATTLE_STATE_NONE);
                 gLastDrawBattleState = gBattleState;
                 get_map_IDs_by_name_checked("gv_01", &areaID, &mapID);
@@ -114,7 +112,7 @@ void btl_state_update_end_battle(void) {
             } else {
                 btl_set_state(BATTLE_STATE_NONE);
                 gLastDrawBattleState = gBattleState;
-                func_8003E514(1);
+                set_battle_transition_state(BATTLE_TRANSITION_STATE_COMPLETE);
                 set_game_mode(GAME_MODE_END_BATTLE);
             }
             break;

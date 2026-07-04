@@ -29,7 +29,7 @@ API_CALLABLE(N(UpdateEnchantedBowserColors)) {
         script->functionTemp[0] = 0;
 
         for (i = 0; i < 10; i++) {
-            set_npc_imgfx_comp(part->spriteInstanceID, i, IMGFX_ALLOC_COLOR_BUF, 20, 0, 0, 255, 0);
+            set_npc_imgfx_comp(part->spriteInstanceID, i, IMGFX_ALLOC_COLOR_BUF, RGBA_BUF_SIZE, 0, 0, 255, 0);
         }
     }
 
@@ -67,6 +67,6 @@ API_CALLABLE(N(UpdateEnchantedBowserColors)) {
         script->functionTemp[0] = 0;
         return ApiStatus_BLOCK;
     }
-    
+
     #undef RGBA_BUF_SIZE
 }

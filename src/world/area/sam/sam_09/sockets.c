@@ -3,9 +3,6 @@
 #include "vars_access.h"
 #include "inventory.h"
 
-#include "world/common/complete/GiveReward.inc.c"
-#include "world/common/todo/GetItemName.inc.c"
-
 API_CALLABLE(N(GetItemIDFromItemEntity)) {
     Bytecode* args = script->ptrReadPos;
     s32 itemEntityIdx = evt_get_variable(script, *args++);
@@ -47,10 +44,20 @@ API_CALLABLE(N(DeserializeItemIDs)) {
 API_CALLABLE(N(CreateConsumableItemList)) {
     s32 itemID;
     s32* array;
+    s32 count = 0;
     s32 pos = 0;
 
-    script->varTablePtr[0] = array = heap_malloc((ITEM_NUM_CONSUMABLES + 1) * sizeof(*array));
+    // count number of consumables
+    for (itemID = 0; itemID < NUM_ITEMS; itemID++) {
+        if (item_is_consumable(itemID)) {
+           count++;
+        }
+    }
 
+    // allocate the list
+    array = heap_malloc((count + 1) * sizeof(*array));
+
+    // populate the array
     for (itemID = 0; itemID < NUM_ITEMS; itemID++) {
         if (item_is_consumable(itemID)) {
            array[pos++] = itemID;
@@ -58,6 +65,7 @@ API_CALLABLE(N(CreateConsumableItemList)) {
     }
     array[pos] = ITEM_NONE;
 
+    script->varTablePtr[0] = array;
     return ApiStatus_DONE2;
 }
 
@@ -105,11 +113,11 @@ EvtScript N(EVS_UseSocket1) = {
     IfEq(MV_Socket1_ItemID, -1)
         Call(ShowConsumableChoicePopup)
         Call(CloseChoicePopup)
-        IfEq(LVar0, 0)
+        IfEq(LVar0, ITEM_CHOICE_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_SAM09_PlaceItemTip, 160, 40)
             Return
         EndIf
-        IfEq(LVar0, -1)
+        IfEq(LVar0, ITEM_CHOICE_CANCELED)
             Return
         EndIf
         Set(MV_Socket1_ItemID, LVar0)
@@ -124,7 +132,7 @@ EvtScript N(EVS_UseSocket1) = {
     Else
         Set(LVar0, MV_Socket1_ItemEntityID)
         Call(N(GetItemIDFromItemEntity), LVar0)
-        Call(N(GetItemName), LVar0)
+        Call(GetItemName, LVar0, LVar0)
         Call(SetMessageText, LVar0, 0)
         Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_PickUpPrompt, 160, 40)
         Call(ShowChoice, MSG_Choice_000D)
@@ -154,11 +162,11 @@ EvtScript N(EVS_UseSocket2) = {
     IfEq(MV_Socket2_ItemID, -1)
         Call(ShowConsumableChoicePopup)
         Call(CloseChoicePopup)
-        IfEq(LVar0, 0)
+        IfEq(LVar0, ITEM_CHOICE_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_SAM09_PlaceItemTip, 160, 40)
             Return
         EndIf
-        IfEq(LVar0, -1)
+        IfEq(LVar0, ITEM_CHOICE_CANCELED)
             Return
         EndIf
         Set(MV_Socket2_ItemID, LVar0)
@@ -173,7 +181,7 @@ EvtScript N(EVS_UseSocket2) = {
     Else
         Set(LVar0, MV_Socket2_ItemEntityID)
         Call(N(GetItemIDFromItemEntity), LVar0)
-        Call(N(GetItemName), LVar0)
+        Call(GetItemName, LVar0, LVar0)
         Call(SetMessageText, LVar0, 0)
         Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_PickUpPrompt, 160, 40)
         Call(ShowChoice, MSG_Choice_000D)
@@ -203,11 +211,11 @@ EvtScript N(EVS_UseSocket3) = {
     IfEq(MV_Socket3_ItemID, -1)
         Call(ShowConsumableChoicePopup)
         Call(CloseChoicePopup)
-        IfEq(LVar0, 0)
+        IfEq(LVar0, ITEM_CHOICE_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_SAM09_PlaceItemTip, 160, 40)
             Return
         EndIf
-        IfEq(LVar0, -1)
+        IfEq(LVar0, ITEM_CHOICE_CANCELED)
             Return
         EndIf
         Set(MV_Socket3_ItemID, LVar0)
@@ -222,7 +230,7 @@ EvtScript N(EVS_UseSocket3) = {
     Else
         Set(LVar0, MV_Socket3_ItemEntityID)
         Call(N(GetItemIDFromItemEntity), LVar0)
-        Call(N(GetItemName), LVar0)
+        Call(GetItemName, LVar0, LVar0)
         Call(SetMessageText, LVar0, 0)
         Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_PickUpPrompt, 160, 40)
         Call(ShowChoice, MSG_Choice_000D)

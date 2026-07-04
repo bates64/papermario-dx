@@ -1,5 +1,4 @@
 #include "dro_01.h"
-#define NAMESPACE dro_01_Shop
 #include "sprite/player.h"
 
 s32 N(ShopMessages)[] = {
@@ -28,7 +27,7 @@ s32 N(ShopMessages)[] = {
     [SHOP_MSG_FAREWELL         ] MSG_Shop_16_DR001,
 };
 
-ShopItemData N(Inventory)[] = {
+ShopItemData N(ShopInventory)[] = {
     { .itemID = ITEM_THUNDER_BOLT, .price = 5, .descMsg = MSG_ItemShopDesc_ThunderBolt },
     { .itemID = ITEM_DUSTY_HAMMER, .price = 2, .descMsg = MSG_ItemShopDesc_DustyHammer },
     { .itemID = ITEM_HONEY_SYRUP,  .price = 5, .descMsg = MSG_ItemShopDesc_HoneySyrup },
@@ -38,7 +37,7 @@ ShopItemData N(Inventory)[] = {
     {},
 };
 
-ShopSellPriceData N(PriceList)[] = {
+ShopSellPriceData N(ShopPriceList)[] = {
     { .itemID = ITEM_SNOWMAN_DOLL,  .sellPrice = 12 },
     { .itemID = ITEM_MELON,         .sellPrice = 10 },
     { .itemID = ITEM_ICED_POTATO,   .sellPrice = 10 },
@@ -48,8 +47,6 @@ ShopSellPriceData N(PriceList)[] = {
     { .itemID = ITEM_DRIED_PASTA,   .sellPrice =  2 },
     {},
 };
-
-#include "world/common/complete/GiveReward.inc.c"
 
 API_CALLABLE(N(HideCoinCounter)) {
     hide_coin_counter_immediately();
@@ -72,7 +69,7 @@ EvtScript N(EVS_JumpAway) = {
 
 EvtScript N(EVS_SecretPurcahseOrder_Moustafa) = {
     Call(N(HideCoinCounter))
-    Call(func_802D2C14, 1)
+    Call(SetPartnerForcedFollowMode, 1)
     ExecWait(N(EVS_JumpToPlayer))
     IfLt(GB_StoryProgress, STORY_CH2_BOUGHT_SECRET_ITEMS)
         Call(SpeakToPlayer, NPC_Mouser_ShopOwner, ANIM_Mouser_Purple_Talk, ANIM_Mouser_Purple_Idle, 0, MSG_CH2_0087)
@@ -83,7 +80,7 @@ EvtScript N(EVS_SecretPurcahseOrder_Moustafa) = {
     EndIf
     Call(SpeakToPlayer, NPC_Mouser_ShopOwner, ANIM_Mouser_Purple_Talk, ANIM_Mouser_Purple_Idle, 0, MSG_CH2_0088)
     Set(GB_StoryProgress, STORY_CH2_BOUGHT_SECRET_ITEMS)
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     ExecWait(N(EVS_JumpAway))
     Return
     End
@@ -92,13 +89,13 @@ EvtScript N(EVS_SecretPurcahseOrder_Moustafa) = {
 EvtScript N(EVS_SecretPurcahseOrder_RedJar) = {
     IfEq(GF_DRO01_Gift_RedJar, false)
         Call(N(HideCoinCounter))
-        Call(func_802D2C14, 1)
+        Call(SetPartnerForcedFollowMode, 1)
         ExecWait(N(EVS_JumpToPlayer))
         Call(SpeakToPlayer, NPC_Mouser_ShopOwner, ANIM_Mouser_Purple_Talk, ANIM_Mouser_Purple_Idle, 0, MSG_CH2_008D)
         EVT_GIVE_REWARD(ITEM_KOOT_RED_JAR)
         Set(GF_DRO01_Gift_RedJar, true)
         Wait(20)
-        Call(func_802D2C14, 0)
+        Call(SetPartnerForcedFollowMode, 0)
         ExecWait(N(EVS_JumpAway))
     EndIf
     Return
@@ -154,7 +151,7 @@ EvtScript N(EVS_OnBuy) = {
     End
 };
 
-ShopItemLocation N(ItemPositions)[] = {
+ShopItemLocation N(ShopItemPositions)[] = {
     { .posModelID = MODEL_o741, .triggerColliderID = COLLIDER_mono1 },
     { .posModelID = MODEL_o740, .triggerColliderID = COLLIDER_mono2 },
     { .posModelID = MODEL_o738, .triggerColliderID = COLLIDER_mono3 },
@@ -163,12 +160,10 @@ ShopItemLocation N(ItemPositions)[] = {
     { .posModelID = MODEL_o736, .triggerColliderID = COLLIDER_mono6 },
 };
 
-ShopOwner N(Owner) = {
+ShopOwner N(MouserShopOwner) = {
     .npcID = NPC_Mouser_ShopOwner,
     .idleAnim = ANIM_Mouser_Purple_Idle,
     .talkAnim = ANIM_Mouser_Purple_Talk,
     .onBuyEvt = &N(EVS_OnBuy),
     .shopMsgIDs = N(ShopMessages),
 };
-
-#define NAMESPACE dro_01

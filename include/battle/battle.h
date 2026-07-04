@@ -133,7 +133,7 @@ typedef struct ActorBlueprint {
     /* 0x06 */ u8 type;
     /* 0x07 */ u8 level;
     /* 0x08 */ s16 partCount;
-    /* 0x0A */ char unk_0A[2];
+    /* 0x0A */ PAD(2);
     /* 0x0C */ struct ActorPartBlueprint* partsData;
     /* 0x10 */ EvtScript* initScript;
     /* 0x14 */ s32* statusTable;
@@ -166,18 +166,6 @@ typedef struct FormationRow {
 } FormationRow; // size = 0x20 * n
 
 typedef FormationRow Formation[];
-
-typedef struct StaticFormationActor {
-    /* 0x00 */ char unk_00[0x4];
-} StaticFormationActor; // size = ??
-
-typedef struct StaticFormationEntry {
-    /* 0x00 */ char* sjisName;
-    /* 0x04 */ s32 numActors;
-    /* 0x08 */ StaticFormationActor* actors;
-    /* 0x0C */ char* stageName;
-    /* 0x10 */ char unk_10[0x4];
-} StaticFormationEntry; // size = 0x20
 
 typedef struct Stage {
     /* 0x00 */ char* texture;

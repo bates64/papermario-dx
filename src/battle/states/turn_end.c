@@ -129,7 +129,7 @@ void btl_state_update_end_turn(void) {
                 script = start_script(actor->handlePhaseSource, EVT_PRIORITY_A, 0);
                 actor->handlePhaseScript = script;
                 actor->handlePhaseScriptID = script->id;
-                script->owner1.enemyID = i | ACTOR_ENEMY0;
+                script->owner1.actorID = i | ACTOR_ENEMY0;
             }
         }
 

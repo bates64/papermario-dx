@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kkj_28.h
 /// @brief Peach's Castle - Darkened Quiz-Off (1F)
 

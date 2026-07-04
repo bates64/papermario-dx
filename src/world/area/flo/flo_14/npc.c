@@ -1,22 +1,13 @@
 #include "flo_14.h"
 
-#include "world/common/enemy/Bzzap.inc.c"
+#include "world/common/enemy/Bzzap/wander.inc.c"
 
-#include "world/common/npc/Bubulb.h"
+#include "world/common/npc/Bubulb/base.h"
 
 NpcSettings N(NpcSettings_BubbleFlower) = {
     .height = 56,
     .radius = 40,
     .level = ACTOR_LEVEL_NONE,
-};
-
-#include "world/common/npc/Dummy.inc.c"
-
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
-s32 N(KeyList)[] = {
-    ITEM_BUBBLE_BERRY,
-    ITEM_NONE
 };
 
 EvtScript N(EVS_NpcInteract_BubbleFlower) = {
@@ -34,17 +25,17 @@ EvtScript N(EVS_NpcInteract_BubbleFlower) = {
     EndIf
     Call(FindItem, ITEM_BUBBLE_BERRY, LVar0)
     IfNe(LVar0, -1)
-        EVT_CHOOSE_CONSUMABLE_FROM(N(KeyList), 0)
-        IfEq(LVar0, -1)
+        EVT_CHOOSE_CONSUMABLE_ONLY(ITEM_BUBBLE_BERRY, NPC_BubbleFlower)
+        IfEq(LVar0, ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_SELF, -1, -1, 0, MSG_CH6_0064)
         Else
             Call(SpeakToPlayer, NPC_SELF, -1, -1, 0, MSG_CH6_0061)
             Set(AF_FLO_BlowingBigBubble, true)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(PlayerMoveTo, 555, 110, 20)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Call(InterpPlayerYaw, 90, 0)
-            Call(func_802CF56C, 2)
+            Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
             Wait(5)
             Call(AdjustCam, CAM_DEFAULT, Float(1.0), 0, 350, Float(17.0), Float(-6.0))
             Exec(N(EVS_BlowBigBubble))
@@ -106,7 +97,7 @@ NpcData N(NpcData_Bzzap) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Bzzap),
+    .settings = &N(NpcSettings_Bzzap_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = BZZAP_DROPS,
     .animations = BZZAP_ANIMS,

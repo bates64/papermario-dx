@@ -2,8 +2,6 @@
 
 #define NAMESPACE A(lava_piranha_AnimModel_ExtraVine)
 
-s32 N(padding) = 0;
-
 StaticAnimatorNode N(Node05) = {
     .displayList = &N(Node05),
     .rot = { 0, 0, AS_F(165.157) },

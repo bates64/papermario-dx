@@ -1,6 +1,6 @@
 #include "kpa_111.h"
 
-#include "world/common/enemy/DryBones.inc.c"
+#include "world/common/enemy/DryBones/wander.inc.c"
 
 NpcData N(NpcData_DryBones)[] = {
     {
@@ -19,7 +19,7 @@ NpcData N(NpcData_DryBones)[] = {
                 .detectSize = { 180 },
             }
         },
-        .settings = &N(NpcSettings_DryBones),
+        .settings = &N(NpcSettings_DryBones_Wander),
         .flags = ENEMY_FLAG_FLYING,
         .drops = DRY_BONES_DROPS,
         .animations = DRY_BONES_ANIMS,
@@ -46,7 +46,7 @@ NpcData N(NpcData_DryBones_02)[] = {
                 .detectSize = { 180 },
             }
         },
-        .settings = &N(NpcSettings_DryBones),
+        .settings = &N(NpcSettings_DryBones_Wander),
         .flags = ENEMY_FLAG_FLYING,
         .drops = DRY_BONES_DROPS,
         .animations = DRY_BONES_ANIMS,

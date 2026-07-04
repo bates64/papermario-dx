@@ -1,7 +1,5 @@
 #include "nok_12.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 API_CALLABLE(N(UpdateEnounterStages)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     EncounterStatus* encounterStatus = &gCurrentEncounter;
@@ -57,7 +55,7 @@ EvtScript N(EVS_SetupTexPan) = {
         TEX_PAN_PARAMS_STEP(0x4000,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    12,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(     0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water
     Call(SetTexPanner, MODEL_suimen1, TEX_PANNER_1)
@@ -66,7 +64,7 @@ EvtScript N(EVS_SetupTexPan) = {
         TEX_PAN_PARAMS_STEP( -100,    0,  600,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_kabemizu1, TEX_PANNER_2)
     Call(SetTexPanner, MODEL_kabemizu2, TEX_PANNER_2)
@@ -78,7 +76,7 @@ EvtScript N(EVS_SetupTexPan) = {
         TEX_PAN_PARAMS_STEP( -100,    0,  400,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

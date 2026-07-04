@@ -1,6 +1,8 @@
 #include "pra_19.h"
+#include "effects.h"
 #include "sprite.h"
 #include "sprite/player.h"
+#include "world/common/npc/Kooper/base.h"
 
 NpcSettings N(NpcSettings_Kooper) = {
     .height = 35,
@@ -10,33 +12,23 @@ NpcSettings N(NpcSettings_Kooper) = {
     .onDefeat = &EnemyNpcDefeat,
 };
 
-NpcSettings N(NpcSettings_Goompa) = {
-    .height = 22,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-    .actionFlags = AI_ACTION_LOOK_AROUND_DURING_LOITER,
-};
+#include "world/common/npc/Luigi/base.h"
+#include "world/common/npc/Goompa/idle.inc.c"
+#include "world/common/npc/KoopaKoot/idle.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
 
-NpcSettings N(NpcSettings_KoopaKoot) = {
-    .height = 32,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/enemy/Duplighost/disguised.inc.c"
 
-#include "world/common/npc/Kolorado.inc.c"
+API_CALLABLE(N(PlayBigSmokePuff)) {
+    Bytecode* args = script->ptrReadPos;
+    s32 x = evt_get_variable(script, *args++);
+    s32 y = evt_get_variable(script, *args++);
+    s32 z = evt_get_variable(script, *args++);
 
-NpcSettings N(NpcSettings_Duplighost) = {
-    .height = 30,
-    .radius = 45,
-    .level = ACTOR_LEVEL_NONE,
-};
+    fx_big_smoke_puff(x, y, z);
 
-#include "world/common/npc/Luigi.h"
-
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
-#include "world/common/todo/PlayBigSmokePuff.inc.c"
+    return ApiStatus_DONE2;
+}
 
 API_CALLABLE(N(ChooseImposterBattleFormation)) {
     EncounterStatus* currentEncounter = &gCurrentEncounter;
@@ -80,14 +72,14 @@ API_CALLABLE(N(ChooseImposterBattleFormation)) {
 }
 
 void N(appendGfx_example_player)(void* data);
-void N(worker_draw_example_player)(void);
+void N(worker_render_example_player)(void);
 
 API_CALLABLE(N(CreateExamplePlayerRenderer)) {
-    script->array[0] = create_worker_scene(nullptr, N(worker_draw_example_player));
+    script->array[0] = create_worker_scene(nullptr, N(worker_render_example_player));
     return ApiStatus_DONE2;
 }
 
-void N(worker_draw_example_player)(void) {
+void N(worker_render_example_player)(void) {
     RenderTask rt;
     RenderTask* rtPtr = &rt;
     Npc* npc = get_npc_safe(NPC_ExamplePlayer);
@@ -249,12 +241,12 @@ EvtScript N(EVS_FocusCam_OnPlayer) = {
 
 EvtScript N(EVS_Imposter_Unmask) = {
     Call(N(ChangeNpcCollisionRadius))
-    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SpeakToPlayer, LVar3, LVar6, LVar7, 0, LVar5)
     Call(GetNpcPos, LVar3, LVar0, LVar1, LVar2)
     Call(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
     Call(SetNpcPos, LVar3, NPC_DISPOSE_LOCATION)
-    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetNpcPos, LVar4, LVar0, LVar1, LVar2)
     Call(PlaySoundAtNpc, LVar4, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, 8 * 360, 40, EASING_QUADRATIC_OUT)
@@ -265,11 +257,11 @@ EvtScript N(EVS_Imposter_Unmask) = {
         IfEq(LVar1, 1)
             Goto(1)
         EndIf
-    Call(EndSpeech, LVar4, ANIM_Duplighost_Anim05, ANIM_Duplighost_Anim02, 0)
+    Call(EndSpeech, LVar4, ANIM_Duplighost_Talk, ANIM_Duplighost_Idle, 0)
     ExecWait(N(EVS_FocusCam_OnPlayer))
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Thread
-        Call(SetNpcAnimation, LVar4, ANIM_Duplighost_Anim04)
+        Call(SetNpcAnimation, LVar4, ANIM_Duplighost_Run)
         Call(InterpNpcYaw, LVar4, 90, 0)
         Call(SetNpcSpeed, LVar4, Float(6.5))
         Call(PlaySoundAtNpc, LVar4, SOUND_DUPLIGHOST_LEAP, SOUND_SPACE_DEFAULT)
@@ -342,7 +334,7 @@ EvtScript N(EVS_RevealEveryImposter) = {
 };
 
 EvtScript N(EVS_Imposter_ChaseDownPlayer) = {
-    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, LVar3, LVar4)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(NpcMoveTo, LVar3, LVar0, LVar2, 30)
@@ -367,7 +359,7 @@ EvtScript N(EVS_Imposter_CarryPlayerBack) = {
 EvtScript N(EVS_Imposter_ReturnToStation) = {
     Call(NpcMoveTo, LVar3, LVar0, LVar2, 20)
     Call(SetNpcAnimation, LVar3, LVar4)
-    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(InterpNpcYaw, LVar3, 90, 0)
     Return
     End
@@ -543,11 +535,11 @@ EvtScript N(EVS_Example_UseKooper) = {
 
 EvtScript N(EVS_Imposter_BurstFromWall) = {
     Call(SetNpcPos, LVar3, 533, 0, 77)
-    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcSpeed, LVar3, Float(6.0))
     Call(SetNpcAnimation, LVar3, LVar4)
     Call(NpcMoveTo, LVar3, LVar0, LVar2, 0)
-    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetNpcAnimation, LVar3, LVar5)
     Call(InterpNpcYaw, LVar3, 90, 0)
     Return
@@ -620,9 +612,9 @@ EvtScript N(EVS_ManageImpostersScene) = {
         IfLt(LVar3, LVar0)
             Goto(21)
         EndIf
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, true)
     Wait(60)
     Call(SetPlayerAnimation, ANIM_Mario1_Question)
@@ -753,7 +745,7 @@ EvtScript N(EVS_ManageImpostersScene) = {
                 IfEq(MV_RevealedFakeKoopaKoot, 1)
                     IfEq(MV_RevealedFakeKolorado, 1)
                         Call(DisablePlayerInput, true)
-                        Call(DisablePartnerAI, 0)
+                        Call(DisablePartnerAI, false)
                         Call(GetNpcPos, NPC_FakeKooper, LVar0, LVar1, LVar2)
                         Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
                         Call(SetNpcPos, NPC_FakeKooper, NPC_DISPOSE_LOCATION)
@@ -766,12 +758,12 @@ EvtScript N(EVS_ManageImpostersScene) = {
                             Add(LVar0, -50)
                         EndIf
                         Call(SetNpcAnimation, NPC_PARTNER, ANIM_WorldKooper_Walk)
-                        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                         Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 20)
                         Call(SetNpcAnimation, NPC_PARTNER, ANIM_WorldKooper_Idle)
                         Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldKooper_Talk, ANIM_WorldKooper_Idle, 0, MSG_CH7_0166)
                         Wait(10)
-                        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
                         Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, false)
                         Call(EnablePartnerAI)
                         Call(DisablePlayerInput, false)
@@ -870,7 +862,7 @@ EvtScript N(EVS_Scene_DefeatMiniboss) = {
     Call(GetNpcPos, NPC_FakeKooper, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_FakeKooper, NPC_DISPOSE_LOCATION)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, false)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
@@ -912,7 +904,7 @@ EvtScript N(EVS_NpcInteract_FakeKolorado) = {
 
 EvtScript N(EVS_NpcInit_Duplighost_Controller) = {
     Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_Scene_DefeatMiniboss)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Exec(N(EVS_ManageImpostersScene))
     Return
     End
@@ -921,7 +913,7 @@ EvtScript N(EVS_NpcInit_Duplighost_Controller) = {
 EvtScript N(EVS_NpcInit_FakeKooper) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_FakeKooper)))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };
@@ -929,7 +921,7 @@ EvtScript N(EVS_NpcInit_FakeKooper) = {
 EvtScript N(EVS_NpcInit_FakeGoompa) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_FakeGoompa)))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };
@@ -937,7 +929,7 @@ EvtScript N(EVS_NpcInit_FakeGoompa) = {
 EvtScript N(EVS_NpcInit_FakeLuigi) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_FakeLuigi)))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };
@@ -945,7 +937,7 @@ EvtScript N(EVS_NpcInit_FakeLuigi) = {
 EvtScript N(EVS_NpcInit_FakeKoopaKoot) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_FakeKoopaKoot)))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };
@@ -953,13 +945,13 @@ EvtScript N(EVS_NpcInit_FakeKoopaKoot) = {
 EvtScript N(EVS_NpcInit_FakeKolorado) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_FakeKolorado)))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_ExamplePlayer) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Mario1_Idle)
     MallocArray(16, LVarA)
     Call(N(CreateExamplePlayerRenderer))
@@ -968,7 +960,7 @@ EvtScript N(EVS_NpcInit_ExamplePlayer) = {
 };
 
 EvtScript N(EVS_NpcInit_ExampleKooper) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
@@ -997,7 +989,7 @@ EvtScript N(EVS_NpcInit_Duplighost_Kolorado) = {
     End
 };
 
-AnimID N(ExtraAnims_Goompa)[] = {
+AnimID N(LimitAnims_Goompa)[] = {
     ANIM_Goompa_Idle,
     ANIM_Goompa_Walk,
     ANIM_Goompa_Talk,
@@ -1005,7 +997,7 @@ AnimID N(ExtraAnims_Goompa)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Luigi)[] = {
+AnimID N(LimitAnims_Luigi)[] = {
     ANIM_Luigi_Idle,
     ANIM_Luigi_Walk,
     ANIM_Luigi_Talk,
@@ -1013,7 +1005,7 @@ AnimID N(ExtraAnims_Luigi)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_KoopaKoot)[] = {
+AnimID N(LimitAnims_KoopaKoot)[] = {
     ANIM_KoopaKoot_Idle,
     ANIM_KoopaKoot_Walk,
     ANIM_KoopaKoot_Talk,
@@ -1021,7 +1013,7 @@ AnimID N(ExtraAnims_KoopaKoot)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Kolorado)[] = {
+AnimID N(LimitAnims_Kolorado)[] = {
     ANIM_Kolorado_Idle,
     ANIM_Kolorado_Walk,
     ANIM_Kolorado_Talk,
@@ -1029,11 +1021,11 @@ AnimID N(ExtraAnims_Kolorado)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Duplighost)[] = {
-    ANIM_Duplighost_Anim02,
-    ANIM_Duplighost_Anim03,
-    ANIM_Duplighost_Anim05,
-    ANIM_Duplighost_Anim04,
+AnimID N(LimitAnims_Duplighost)[] = {
+    ANIM_Duplighost_Idle,
+    ANIM_Duplighost_Walk,
+    ANIM_Duplighost_Talk,
+    ANIM_Duplighost_Run,
     ANIM_LIST_END
 };
 
@@ -1046,24 +1038,7 @@ NpcData N(NpcData_Imposters)[] = {
         .settings = &N(NpcSettings_Kooper),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldKooper_Idle,
-            .walk   = ANIM_WorldKooper_Walk,
-            .run    = ANIM_WorldKooper_Walk,
-            .chase  = ANIM_WorldKooper_Walk,
-            .anim_4 = ANIM_WorldKooper_Walk,
-            .anim_5 = ANIM_WorldKooper_Walk,
-            .death  = ANIM_WorldKooper_Still,
-            .hit    = ANIM_WorldKooper_Still,
-            .anim_8 = ANIM_WorldKooper_Still,
-            .anim_9 = ANIM_WorldKooper_Still,
-            .anim_A = ANIM_WorldKooper_Still,
-            .anim_B = ANIM_WorldKooper_Still,
-            .anim_C = ANIM_WorldKooper_Still,
-            .anim_D = ANIM_WorldKooper_Still,
-            .anim_E = ANIM_WorldKooper_Still,
-            .anim_F = ANIM_WorldKooper_Still,
-        },
+        .animations = KOOPER_ANIMS,
     },
     {
         .id = NPC_FakeGoompa,
@@ -1073,25 +1048,8 @@ NpcData N(NpcData_Imposters)[] = {
         .settings = &N(NpcSettings_Goompa),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Goompa_Idle,
-            .walk   = ANIM_Goompa_Walk,
-            .run    = ANIM_Goompa_Run,
-            .chase  = ANIM_Goompa_Run,
-            .anim_4 = ANIM_Goompa_Idle,
-            .anim_5 = ANIM_Goompa_Idle,
-            .death  = ANIM_Goompa_Still,
-            .hit    = ANIM_Goompa_Still,
-            .anim_8 = ANIM_Goompa_Run,
-            .anim_9 = ANIM_Goompa_Run,
-            .anim_A = ANIM_Goompa_Run,
-            .anim_B = ANIM_Goompa_Run,
-            .anim_C = ANIM_Goompa_Run,
-            .anim_D = ANIM_Goompa_Run,
-            .anim_E = ANIM_Goompa_Run,
-            .anim_F = ANIM_Goompa_Run,
-        },
-        .extraAnimations = N(ExtraAnims_Goompa),
+        .animations = GOOMPA_ANIMS,
+        .limitAnimations = N(LimitAnims_Goompa),
     },
     {
         .id = NPC_FakeLuigi,
@@ -1102,7 +1060,7 @@ NpcData N(NpcData_Imposters)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
-        .extraAnimations = N(ExtraAnims_Luigi),
+        .limitAnimations = N(LimitAnims_Luigi),
     },
     {
         .id = NPC_FakeKoopaKoot,
@@ -1112,25 +1070,8 @@ NpcData N(NpcData_Imposters)[] = {
         .settings = &N(NpcSettings_KoopaKoot),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_KoopaKoot_Idle,
-            .walk   = ANIM_KoopaKoot_Idle,
-            .run    = ANIM_KoopaKoot_Idle,
-            .chase  = ANIM_KoopaKoot_Idle,
-            .anim_4 = ANIM_KoopaKoot_Idle,
-            .anim_5 = ANIM_KoopaKoot_Idle,
-            .death  = ANIM_KoopaKoot_Idle,
-            .hit    = ANIM_KoopaKoot_Idle,
-            .anim_8 = ANIM_KoopaKoot_Idle,
-            .anim_9 = ANIM_KoopaKoot_Idle,
-            .anim_A = ANIM_KoopaKoot_Idle,
-            .anim_B = ANIM_KoopaKoot_Idle,
-            .anim_C = ANIM_KoopaKoot_Idle,
-            .anim_D = ANIM_KoopaKoot_Idle,
-            .anim_E = ANIM_KoopaKoot_Idle,
-            .anim_F = ANIM_KoopaKoot_Idle,
-        },
-        .extraAnimations = N(ExtraAnims_KoopaKoot),
+        .animations = KOOPA_KOOT_ANIMS,
+        .limitAnimations = N(LimitAnims_KoopaKoot),
     },
     {
         .id = NPC_FakeKolorado,
@@ -1141,7 +1082,7 @@ NpcData N(NpcData_Imposters)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = KOLORADO_ANIMS,
-        .extraAnimations = N(ExtraAnims_Kolorado),
+        .limitAnimations = N(LimitAnims_Kolorado),
     },
     {
         .id = NPC_ExamplePlayer,
@@ -1151,25 +1092,8 @@ NpcData N(NpcData_Imposters)[] = {
         .settings = &N(NpcSettings_Duplighost),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Duplighost_Anim02,
-            .walk   = ANIM_Duplighost_Anim03,
-            .run    = ANIM_Duplighost_Anim04,
-            .chase  = ANIM_Duplighost_Anim04,
-            .anim_4 = ANIM_Duplighost_Anim02,
-            .anim_5 = ANIM_Duplighost_Anim02,
-            .death  = ANIM_Duplighost_Anim0A,
-            .hit    = ANIM_Duplighost_Anim0A,
-            .anim_8 = ANIM_Duplighost_Anim02,
-            .anim_9 = ANIM_Duplighost_Anim02,
-            .anim_A = ANIM_Duplighost_Anim02,
-            .anim_B = ANIM_Duplighost_Anim02,
-            .anim_C = ANIM_Duplighost_Anim02,
-            .anim_D = ANIM_Duplighost_Anim02,
-            .anim_E = ANIM_Duplighost_Anim02,
-            .anim_F = ANIM_Duplighost_Anim02,
-        },
-        .extraAnimations = N(ExtraAnims_Duplighost),
+        .animations = DUPLIGHOST_ANIMS,
+        .limitAnimations = N(LimitAnims_Duplighost),
     },
     {
         .id = NPC_ExampleKooper,
@@ -1179,24 +1103,7 @@ NpcData N(NpcData_Imposters)[] = {
         .settings = &N(NpcSettings_Kooper),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldKooper_Idle,
-            .walk   = ANIM_WorldKooper_Walk,
-            .run    = ANIM_WorldKooper_Walk,
-            .chase  = ANIM_WorldKooper_Walk,
-            .anim_4 = ANIM_WorldKooper_Walk,
-            .anim_5 = ANIM_WorldKooper_Walk,
-            .death  = ANIM_WorldKooper_Still,
-            .hit    = ANIM_WorldKooper_Still,
-            .anim_8 = ANIM_WorldKooper_Still,
-            .anim_9 = ANIM_WorldKooper_Still,
-            .anim_A = ANIM_WorldKooper_Still,
-            .anim_B = ANIM_WorldKooper_Still,
-            .anim_C = ANIM_WorldKooper_Still,
-            .anim_D = ANIM_WorldKooper_Still,
-            .anim_E = ANIM_WorldKooper_Still,
-            .anim_F = ANIM_WorldKooper_Still,
-        },
+        .animations = KOOPER_ANIMS,
     },
 };
 
@@ -1209,25 +1116,8 @@ NpcData N(NpcData_Duplighosts)[] = {
         .settings = &N(NpcSettings_Duplighost),
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Duplighost_Anim02,
-            .walk   = ANIM_Duplighost_Anim03,
-            .run    = ANIM_Duplighost_Anim04,
-            .chase  = ANIM_Duplighost_Anim04,
-            .anim_4 = ANIM_Duplighost_Anim02,
-            .anim_5 = ANIM_Duplighost_Anim02,
-            .death  = ANIM_Duplighost_Anim0A,
-            .hit    = ANIM_Duplighost_Anim0A,
-            .anim_8 = ANIM_Duplighost_Anim02,
-            .anim_9 = ANIM_Duplighost_Anim02,
-            .anim_A = ANIM_Duplighost_Anim02,
-            .anim_B = ANIM_Duplighost_Anim02,
-            .anim_C = ANIM_Duplighost_Anim02,
-            .anim_D = ANIM_Duplighost_Anim02,
-            .anim_E = ANIM_Duplighost_Anim02,
-            .anim_F = ANIM_Duplighost_Anim02,
-        },
-        .extraAnimations = N(ExtraAnims_Duplighost),
+        .animations = DUPLIGHOST_ANIMS,
+        .limitAnimations = N(LimitAnims_Duplighost),
     },
     {
         .id = NPC_LuigiGhost,
@@ -1237,25 +1127,8 @@ NpcData N(NpcData_Duplighosts)[] = {
         .settings = &N(NpcSettings_Duplighost),
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Duplighost_Anim02,
-            .walk   = ANIM_Duplighost_Anim03,
-            .run    = ANIM_Duplighost_Anim04,
-            .chase  = ANIM_Duplighost_Anim04,
-            .anim_4 = ANIM_Duplighost_Anim02,
-            .anim_5 = ANIM_Duplighost_Anim02,
-            .death  = ANIM_Duplighost_Anim0A,
-            .hit    = ANIM_Duplighost_Anim0A,
-            .anim_8 = ANIM_Duplighost_Anim02,
-            .anim_9 = ANIM_Duplighost_Anim02,
-            .anim_A = ANIM_Duplighost_Anim02,
-            .anim_B = ANIM_Duplighost_Anim02,
-            .anim_C = ANIM_Duplighost_Anim02,
-            .anim_D = ANIM_Duplighost_Anim02,
-            .anim_E = ANIM_Duplighost_Anim02,
-            .anim_F = ANIM_Duplighost_Anim02,
-        },
-        .extraAnimations = N(ExtraAnims_Duplighost),
+        .animations = DUPLIGHOST_ANIMS,
+        .limitAnimations = N(LimitAnims_Duplighost),
     },
     {
         .id = NPC_KoopaKootGhost,
@@ -1265,25 +1138,8 @@ NpcData N(NpcData_Duplighosts)[] = {
         .settings = &N(NpcSettings_Duplighost),
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Duplighost_Anim02,
-            .walk   = ANIM_Duplighost_Anim03,
-            .run    = ANIM_Duplighost_Anim04,
-            .chase  = ANIM_Duplighost_Anim04,
-            .anim_4 = ANIM_Duplighost_Anim02,
-            .anim_5 = ANIM_Duplighost_Anim02,
-            .death  = ANIM_Duplighost_Anim0A,
-            .hit    = ANIM_Duplighost_Anim0A,
-            .anim_8 = ANIM_Duplighost_Anim02,
-            .anim_9 = ANIM_Duplighost_Anim02,
-            .anim_A = ANIM_Duplighost_Anim02,
-            .anim_B = ANIM_Duplighost_Anim02,
-            .anim_C = ANIM_Duplighost_Anim02,
-            .anim_D = ANIM_Duplighost_Anim02,
-            .anim_E = ANIM_Duplighost_Anim02,
-            .anim_F = ANIM_Duplighost_Anim02,
-        },
-        .extraAnimations = N(ExtraAnims_Duplighost),
+        .animations = DUPLIGHOST_ANIMS,
+        .limitAnimations = N(LimitAnims_Duplighost),
     },
     {
         .id = NPC_KoloradoGhost,
@@ -1293,25 +1149,8 @@ NpcData N(NpcData_Duplighosts)[] = {
         .settings = &N(NpcSettings_Duplighost),
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Duplighost_Anim02,
-            .walk   = ANIM_Duplighost_Anim03,
-            .run    = ANIM_Duplighost_Anim04,
-            .chase  = ANIM_Duplighost_Anim04,
-            .anim_4 = ANIM_Duplighost_Anim02,
-            .anim_5 = ANIM_Duplighost_Anim02,
-            .death  = ANIM_Duplighost_Anim0A,
-            .hit    = ANIM_Duplighost_Anim0A,
-            .anim_8 = ANIM_Duplighost_Anim02,
-            .anim_9 = ANIM_Duplighost_Anim02,
-            .anim_A = ANIM_Duplighost_Anim02,
-            .anim_B = ANIM_Duplighost_Anim02,
-            .anim_C = ANIM_Duplighost_Anim02,
-            .anim_D = ANIM_Duplighost_Anim02,
-            .anim_E = ANIM_Duplighost_Anim02,
-            .anim_F = ANIM_Duplighost_Anim02,
-        },
-        .extraAnimations = N(ExtraAnims_Duplighost),
+        .animations = DUPLIGHOST_ANIMS,
+        .limitAnimations = N(LimitAnims_Duplighost),
     },
     {
         .id = NPC_Duplighost_Controller,
@@ -1321,25 +1160,8 @@ NpcData N(NpcData_Duplighosts)[] = {
         .settings = &N(NpcSettings_Duplighost),
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Duplighost_Anim02,
-            .walk   = ANIM_Duplighost_Anim03,
-            .run    = ANIM_Duplighost_Anim04,
-            .chase  = ANIM_Duplighost_Anim04,
-            .anim_4 = ANIM_Duplighost_Anim02,
-            .anim_5 = ANIM_Duplighost_Anim02,
-            .death  = ANIM_Duplighost_Anim0A,
-            .hit    = ANIM_Duplighost_Anim0A,
-            .anim_8 = ANIM_Duplighost_Anim02,
-            .anim_9 = ANIM_Duplighost_Anim02,
-            .anim_A = ANIM_Duplighost_Anim02,
-            .anim_B = ANIM_Duplighost_Anim02,
-            .anim_C = ANIM_Duplighost_Anim02,
-            .anim_D = ANIM_Duplighost_Anim02,
-            .anim_E = ANIM_Duplighost_Anim02,
-            .anim_F = ANIM_Duplighost_Anim02,
-        },
-        .extraAnimations = N(ExtraAnims_Duplighost),
+        .animations = DUPLIGHOST_ANIMS,
+        .limitAnimations = N(LimitAnims_Duplighost),
     },
 };
 
@@ -1446,7 +1268,7 @@ EvtScript N(EVS_NpcHit_TargetKolorado) = {
 EvtScript N(EVS_NpcInit_TargetKooper) = {
     Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TargetKooper)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TargetKooper)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
@@ -1454,7 +1276,7 @@ EvtScript N(EVS_NpcInit_TargetKooper) = {
 EvtScript N(EVS_NpcInit_TargetGoompa) = {
     Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TargetGoompa)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TargetGoompa)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
@@ -1462,7 +1284,7 @@ EvtScript N(EVS_NpcInit_TargetGoompa) = {
 EvtScript N(EVS_NpcInit_TargetLuigi) = {
     Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TargetLuigi)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TargetLuigi)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
@@ -1470,7 +1292,7 @@ EvtScript N(EVS_NpcInit_TargetLuigi) = {
 EvtScript N(EVS_NpcInit_TargetKoopaKoot) = {
     Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TargetKoopaKoot)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TargetKoopaKoot)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
@@ -1478,7 +1300,7 @@ EvtScript N(EVS_NpcInit_TargetKoopaKoot) = {
 EvtScript N(EVS_NpcInit_TargetKolorado) = {
     Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TargetKolorado)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TargetKolorado)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
@@ -1492,24 +1314,7 @@ NpcData N(NpcData_Targets)[] = {
         .settings = &N(NpcSettings_Kooper),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldKooper_Idle,
-            .walk   = ANIM_WorldKooper_Walk,
-            .run    = ANIM_WorldKooper_Walk,
-            .chase  = ANIM_WorldKooper_Walk,
-            .anim_4 = ANIM_WorldKooper_Walk,
-            .anim_5 = ANIM_WorldKooper_Walk,
-            .death  = ANIM_WorldKooper_Still,
-            .hit    = ANIM_WorldKooper_Still,
-            .anim_8 = ANIM_WorldKooper_Still,
-            .anim_9 = ANIM_WorldKooper_Still,
-            .anim_A = ANIM_WorldKooper_Still,
-            .anim_B = ANIM_WorldKooper_Still,
-            .anim_C = ANIM_WorldKooper_Still,
-            .anim_D = ANIM_WorldKooper_Still,
-            .anim_E = ANIM_WorldKooper_Still,
-            .anim_F = ANIM_WorldKooper_Still,
-        },
+        .animations = KOOPER_ANIMS,
     },
     {
         .id = NPC_TargetGoompa,
@@ -1519,25 +1324,8 @@ NpcData N(NpcData_Targets)[] = {
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Goompa_Idle,
-            .walk   = ANIM_Goompa_Walk,
-            .run    = ANIM_Goompa_Run,
-            .chase  = ANIM_Goompa_Run,
-            .anim_4 = ANIM_Goompa_Idle,
-            .anim_5 = ANIM_Goompa_Idle,
-            .death  = ANIM_Goompa_Still,
-            .hit    = ANIM_Goompa_Still,
-            .anim_8 = ANIM_Goompa_Run,
-            .anim_9 = ANIM_Goompa_Run,
-            .anim_A = ANIM_Goompa_Run,
-            .anim_B = ANIM_Goompa_Run,
-            .anim_C = ANIM_Goompa_Run,
-            .anim_D = ANIM_Goompa_Run,
-            .anim_E = ANIM_Goompa_Run,
-            .anim_F = ANIM_Goompa_Run,
-        },
-        .extraAnimations = N(ExtraAnims_Goompa),
+        .animations = GOOMPA_ANIMS,
+        .limitAnimations = N(LimitAnims_Goompa),
     },
     {
         .id = NPC_TargetLuigi,
@@ -1548,7 +1336,7 @@ NpcData N(NpcData_Targets)[] = {
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
-        .extraAnimations = N(ExtraAnims_Luigi),
+        .limitAnimations = N(LimitAnims_Luigi),
     },
     {
         .id = NPC_TargetKoopaKoot,
@@ -1558,25 +1346,8 @@ NpcData N(NpcData_Targets)[] = {
         .settings = &N(NpcSettings_KoopaKoot),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_KoopaKoot_Idle,
-            .walk   = ANIM_KoopaKoot_Idle,
-            .run    = ANIM_KoopaKoot_Idle,
-            .chase  = ANIM_KoopaKoot_Idle,
-            .anim_4 = ANIM_KoopaKoot_Idle,
-            .anim_5 = ANIM_KoopaKoot_Idle,
-            .death  = ANIM_KoopaKoot_Idle,
-            .hit    = ANIM_KoopaKoot_Idle,
-            .anim_8 = ANIM_KoopaKoot_Idle,
-            .anim_9 = ANIM_KoopaKoot_Idle,
-            .anim_A = ANIM_KoopaKoot_Idle,
-            .anim_B = ANIM_KoopaKoot_Idle,
-            .anim_C = ANIM_KoopaKoot_Idle,
-            .anim_D = ANIM_KoopaKoot_Idle,
-            .anim_E = ANIM_KoopaKoot_Idle,
-            .anim_F = ANIM_KoopaKoot_Idle,
-        },
-        .extraAnimations = N(ExtraAnims_KoopaKoot),
+        .animations = KOOPA_KOOT_ANIMS,
+        .limitAnimations = N(LimitAnims_KoopaKoot),
     },
     {
         .id = NPC_TargetKolorado,
@@ -1587,7 +1358,7 @@ NpcData N(NpcData_Targets)[] = {
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = KOLORADO_ANIMS,
-        .extraAnimations = N(ExtraAnims_Kolorado),
+        .limitAnimations = N(LimitAnims_Kolorado),
     },
 };
 
@@ -1597,4 +1368,3 @@ NpcGroupList N(DefaultNPCs) = {
     NPC_GROUP(N(NpcData_Targets), BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_01),
     {}
 };
-

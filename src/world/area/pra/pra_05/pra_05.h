@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_05.h
 /// @brief Crystal Palace - Blue Key Room
 

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file isk_03.h
 /// @brief Dry Dry Ruins - Sand Drainage Room 1
 

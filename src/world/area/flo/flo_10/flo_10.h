@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file flo_10.h
 /// @brief Flower Fields - (SE) Lily's Fountain
 

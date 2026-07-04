@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_04.h
 /// @brief Crystal Palace - Reflected Save Room
 

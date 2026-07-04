@@ -1,8 +1,18 @@
 #include "sam_01.h"
 #include "sprite/player.h"
 
-#include "common/GetItemEntityPosition.inc.c"
-#include "world/common/todo/GetLeftRightPoints.inc.c"
+API_CALLABLE(N(GetLeftRightPoints)) {
+    Bytecode* args = script->ptrReadPos;
+    s32 posX = evt_get_variable(script, *args++);
+    s32 posZ = evt_get_variable(script, *args++);
+    f32 dist = evt_get_variable(script, *args++);
+
+    script->varTable[0] = posX + (sin_deg(gCameras[CAM_DEFAULT].curYaw + 270.0f + dist) * 100.0f);
+    script->varTable[1] = posZ - (cos_deg(gCameras[CAM_DEFAULT].curYaw + 270.0f + dist) * 100.0f);
+    script->varTable[2] = posX + (sin_deg(gCameras[CAM_DEFAULT].curYaw + 90.0f + dist) * 100.0f);
+    script->varTable[3] = posZ - (cos_deg(gCameras[CAM_DEFAULT].curYaw + 90.0f + dist) * 100.0f);
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_MayorCarryGift) = {
     Call(GetNpcPos, NPC_MayorPenguin, LVar0, LVar1, LVar2)
@@ -28,7 +38,7 @@ EvtScript N(EVS_MayorCarryGift) = {
 };
 
 EvtScript N(EVS_HerringwayCarryPresent) = {
-    Call(N(GetItemEntityPosition), MV_PresentItemID, LVarA, LVarB, LVarC)
+    Call(GetItemPos, MV_PresentItemID, LVarA, LVarB, LVarC)
     Loop(6)
         Call(SetItemPos, MV_PresentItemID, LVarA, LVarB, LVarC)
         Add(LVarC, 10)
@@ -76,8 +86,8 @@ EvtScript N(EVS_CloseMayorsOfficeDoor) = {
 
 EvtScript N(EVS_Scene_MysteryBegins) = {
     Call(InterruptUsePartner)
-    Call(SetNpcFlagBits, NPC_MayorPenguin, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_MayorPenguinWife, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_MayorPenguin, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_MayorPenguinWife, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -104,7 +114,7 @@ EvtScript N(EVS_Scene_MysteryBegins) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.4 / DT))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerPos, -284, 0, -165)
     Call(InterpPlayerYaw, 180, 0)
     Call(SetNpcPos, NPC_PARTNER, -320, 0, -190)
@@ -330,8 +340,8 @@ EvtScript N(EVS_Scene_MysteryBegins) = {
     Call(InterpNpcYaw, NPC_Penguin_07, 180, 0)
     Call(SetNpcPos, NPC_Penguin_08, -120, 0, 30)
     Call(InterpNpcYaw, NPC_Penguin_08, 0, 0)
-    Call(SetNpcFlagBits, NPC_MayorPenguin, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-    Call(SetNpcFlagBits, NPC_MayorPenguinWife, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_MayorPenguin, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_MayorPenguinWife, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(EnablePartnerAI)
     Set(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_MYSTERY)
     Set(GB_SAM11_FrozenPondDamage, 0)
@@ -351,7 +361,7 @@ EvtScript N(EVS_Scene_MysterySolved) = {
         Wait(20)
     EndIf
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_WALK)
         Call(SetNpcSpeed, NPC_PARTNER, Float(3.0 / DT))
         Call(NpcMoveTo, NPC_PARTNER, -262, -103, 0)
@@ -573,10 +583,10 @@ EvtScript N(EVS_Scene_MysterySolved) = {
             Wait(1)
         EndLoop
     EndThread
-    Call(SetNpcFlagBits, NPC_Penguin_09, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Penguin_09, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcSpeed, NPC_MayorPenguin, Float(3.0 / DT))
     Call(SetNpcAnimation, NPC_MayorPenguin, ANIM_MayorPenguin_Walk)
-    Call(SetNpcFlagBits, NPC_MayorPenguin, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_MayorPenguin, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(NpcMoveTo, NPC_MayorPenguin, -320, -258, 0)
     Call(InterpNpcYaw, NPC_MayorPenguin, 180, 0)
     Call(SetNpcAnimation, NPC_MayorPenguin, ANIM_MayorPenguin_Idle)
@@ -627,7 +637,7 @@ EvtScript N(EVS_Scene_MysterySolved) = {
         EndLoop
     EndThread
     Wait(30 * DT)
-    Call(SetNpcFlagBits, NPC_MayorPenguin, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_MayorPenguin, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SpeakToNpc, NPC_MayorPenguin, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle, 0, NPC_Herringway, MSG_CH7_002D)
     Call(SetNpcAnimation, NPC_MayorPenguin, ANIM_MayorPenguin_Give)
@@ -656,7 +666,7 @@ EvtScript N(EVS_Scene_MysterySolved) = {
     Thread
         Wait(10 * DT)
         Call(SetNpcSpeed, NPC_MayorPenguin, Float(3.0 / DT))
-        Call(SetNpcFlagBits, NPC_MayorPenguin, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_MayorPenguin, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_MayorPenguin, ANIM_MayorPenguin_Walk)
         Call(NpcMoveTo, NPC_MayorPenguin, -249, -109, 0)
         Call(SetNpcAnimation, NPC_MayorPenguin, ANIM_MayorPenguin_Idle)
@@ -674,13 +684,13 @@ EvtScript N(EVS_Scene_MysterySolved) = {
             Wait(1)
         EndLoop
     EndThread
-    Call(SetNpcFlagBits, NPC_PenguinPatrol, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PenguinPatrol, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcSpeed, NPC_PenguinPatrol, Float(3.0 / DT))
     Call(SetNpcAnimation, NPC_PenguinPatrol, ANIM_PenguinPatrol_Walk)
     Call(NpcMoveTo, NPC_PenguinPatrol, -210, -80, 0)
     Call(NpcMoveTo, NPC_PenguinPatrol, -250, -10, 0)
     Call(SetNpcAnimation, NPC_PenguinPatrol, ANIM_PenguinPatrol_Idle)
-    Call(SetNpcFlagBits, NPC_PenguinPatrol, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_PenguinPatrol, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     ExecWait(N(EVS_OpenMayorsOfficeDoor))
     Call(SetNpcAnimation, NPC_PenguinPatrol, ANIM_PenguinPatrol_Walk)
     Call(NpcMoveTo, NPC_PenguinPatrol, -250, 50, 0)
@@ -712,7 +722,7 @@ EvtScript N(EVS_Scene_MysterySolved) = {
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Wait(1)
     Call(SpeakToPlayer, NPC_MayorPenguin, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle, 0, MSG_CH7_0034)
-    Call(SetNpcFlagBits, NPC_MayorPenguin, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_MayorPenguin, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetNpcPos, NPC_PenguinPatrol, NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_Herringway, NPC_DISPOSE_LOCATION)
     Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_INACTIVE, true)

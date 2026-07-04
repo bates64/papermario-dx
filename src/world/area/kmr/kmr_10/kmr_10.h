@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_10.h
 /// @brief Goomba Region - Toad Town Entrance
 
@@ -16,7 +18,7 @@ enum {
 };
 
 enum {
-    MV_SpringEntityIndex    = MapVar(0),
+    MV_EntityID_Spring      = MapVar(0),
 };
 
 #define NAMESPACE kmr_10

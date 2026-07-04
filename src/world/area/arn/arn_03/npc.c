@@ -1,23 +1,20 @@
 #include "arn_03.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Boo_Patrol.inc.c"
-#include "world/common/npc/Boo.inc.c"
+#include "world/common/npc/Boo/patrol.inc.c"
+#include "world/common/npc/Boo/idle.inc.c"
 
-#include "world/common/complete/GiveReward.inc.c"
-#include "world/common/complete/KeyItemChoice.inc.c"
-
-#include "world/common/atomic/MarioSalute.inc.c"
+#include "world/common/util/MarioSalute.inc.c"
 
 EvtScript N(EVS_NpcInteract_Boo_01) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
-            IfEq(AF_ARN_02, false)
+            IfEq(AF_ARN03_ToggleDialogue_Boo1, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0073)
-                Set(AF_ARN_02, true)
+                Set(AF_ARN03_ToggleDialogue_Boo1, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0074)
-                Set(AF_ARN_02, false)
+                Set(AF_ARN03_ToggleDialogue_Boo1, false)
             EndIf
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0075)
@@ -54,7 +51,7 @@ EvtScript N(EVS_NpcIdle_Boo_01) = {
         Call(GetCurrentPartnerID, LVar6)
         IfNe(LVar6, PARTNER_BOW)
             Call(BringPartnerOut, PARTNER_BOW)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Wait(1)
             Call(NpcFaceNpc, NPC_PARTNER, NPC_SELF, 0)
             Wait(5 * DT)
@@ -70,7 +67,7 @@ EvtScript N(EVS_NpcIdle_Boo_01) = {
     Call(SetNpcJumpscale, NPC_SELF, 0)
     Call(NpcJump0, NPC_SELF, -8, 186, 159, 60 * DT)
     Wait(15 * DT)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(InterpNpcYaw, NPC_SELF, -4, 0)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_006E)
     Call(InterpNpcYaw, NPC_PARTNER, -1, 0)
@@ -89,7 +86,7 @@ EvtScript N(EVS_NpcIdle_Boo_01) = {
         Call(NpcMoveTo, NPC_SELF, 30, 125, 30 * DT)
         Call(InterpNpcYaw, NPC_SELF, 270, 0)
     EndThread
-    Call(func_802CF56C, 2)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Wait(15 * DT)
     Set(GB_StoryProgress, STORY_CH3_ARRIVED_AT_GHOST_TOWN)
     Call(DisablePlayerInput, false)
@@ -118,11 +115,11 @@ EvtScript N(EVS_NpcInit_Boo_01) = {
 };
 
 EvtScript N(EVS_NpcInteract_Boo_02) = {
-    IfNe(MV_Unk_00, 0)
-        IfGe(MV_Unk_00, MV_Unk_01)
+    IfNe(MV_Koot_Time, 0)
+        IfGe(MV_Koot_Time, MV_Koot_WaitLength)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0081)
             EVT_GIVE_REWARD(ITEM_KOOT_PACKAGE)
-            Set(MV_Unk_00, 0)
+            Set(MV_Koot_Time, 0)
             Set(GF_ARN03_RecievedPackage, true)
             Set(GF_ARN03_WaitingForPackage, false)
             Return
@@ -133,12 +130,12 @@ EvtScript N(EVS_NpcInteract_Boo_02) = {
     EndIf
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
-            IfEq(AF_ARN_03, false)
+            IfEq(AF_ARN03_ToggleDialogue_Boo2, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0079)
-                Set(AF_ARN_03, true)
+                Set(AF_ARN03_ToggleDialogue_Boo2, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_007A)
-                Set(AF_ARN_03, false)
+                Set(AF_ARN03_ToggleDialogue_Boo2, false)
             EndIf
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_007B)
@@ -154,14 +151,14 @@ EvtScript N(EVS_NpcInteract_Boo_02) = {
             ExecWait(N(EVS_MarioSalute))
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_007F)
             Call(EndSpeech, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0)
-            Set(MV_Unk_00, 0)
-            Set(MV_Unk_01, 450 * DT)
+            Set(MV_Koot_Time, 0)
+            Set(MV_Koot_WaitLength, 450 * DT)
             Set(GF_ARN03_WaitingForPackage, true)
             Thread
                 Loop(0)
-                    Add(MV_Unk_00, 1)
+                    Add(MV_Koot_Time, 1)
                     Wait(1)
-                    IfGe(MV_Unk_00, MV_Unk_01)
+                    IfGe(MV_Koot_Time, MV_Koot_WaitLength)
                         BreakLoop
                     EndIf
                 EndLoop
@@ -178,25 +175,25 @@ EvtScript N(EVS_NpcInit_Boo_02) = {
     End
 };
 
-EvtScript N(802428CC) = {
+EvtScript N(EVS_PrankBoo_Setup) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
     IfGt(LVar0, LVar3)
         Add(LVar0, 60)
-        Call(SetNpcYaw, NPC_Boo_05, 90)
+        Call(SetNpcYaw, NPC_Boo_Prankster, 90)
     Else
         Sub(LVar0, 60)
-        Call(SetNpcYaw, NPC_Boo_05, 270)
+        Call(SetNpcYaw, NPC_Boo_Prankster, 270)
     EndIf
     Add(LVar1, 20)
-    Call(SetNpcPos, NPC_Boo_05, LVar0, LVar1, LVar2)
-    Call(SetNpcImgFXParams, NPC_Boo_05, IMGFX_SET_ALPHA, 0, 0, 0, 0)
+    Call(SetNpcPos, NPC_Boo_Prankster, LVar0, LVar1, LVar2)
+    Call(SetNpcImgFXParams, NPC_Boo_Prankster, IMGFX_SET_ALPHA, 0, 0, 0, 0)
     Wait(1)
     Return
     End
 };
 
-EvtScript N(802429D4) = {
+EvtScript N(EVS_PrankBoo_Appear) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
     IfGt(LVar0, LVar3)
@@ -208,18 +205,18 @@ EvtScript N(802429D4) = {
         Call(MakeLerp, 0, 255, 40, EASING_LINEAR)
         Label(10)
         Call(UpdateLerp)
-        Call(SetNpcImgFXParams, NPC_Boo_05, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        Call(SetNpcImgFXParams, NPC_Boo_Prankster, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(10)
         EndIf
     EndThread
-    Call(NpcMoveTo, NPC_Boo_05, LVar0, LVar2, 40)
+    Call(NpcMoveTo, NPC_Boo_Prankster, LVar0, LVar2, 40)
     Return
     End
 };
 
-EvtScript N(80242B0C) = {
+EvtScript N(EVS_PrankBoo_Vanish) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
     IfGt(LVar0, LVar3)
@@ -231,28 +228,27 @@ EvtScript N(80242B0C) = {
         Call(MakeLerp, 255, 0, 40, EASING_LINEAR)
         Label(10)
         Call(UpdateLerp)
-        Call(SetNpcImgFXParams, NPC_Boo_05, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        Call(SetNpcImgFXParams, NPC_Boo_Prankster, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(10)
         EndIf
     EndThread
-    Call(NpcMoveTo, NPC_Boo_05, LVar0, LVar2, 40)
-    Call(SetNpcPos, NPC_Boo_05, NPC_DISPOSE_LOCATION)
+    Call(NpcMoveTo, NPC_Boo_Prankster, LVar0, LVar2, 40)
+    Call(SetNpcPos, NPC_Boo_Prankster, NPC_DISPOSE_LOCATION)
     Return
     End
 };
 
-EvtScript N(80242C60) = {
-    ExecWait(N(802429D4))
-    Set(MV_Unk_02, 0)
-    Set(MV_Unk_03, 0)
+EvtScript N(EVS_PrankBoo_Scare) = {
+    ExecWait(N(EVS_PrankBoo_Appear))
+    Set(MV_PrankDone, false)
     Thread
         Wait(25)
         Call(SetPlayerAnimation, ANIM_MarioW2_Flail)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Boo_Tan_Cower)
         Loop(0)
-            IfEq(MV_Unk_02, 1)
+            IfEq(MV_PrankDone, true)
                 BreakLoop
             EndIf
             Wait(1)
@@ -260,13 +256,13 @@ EvtScript N(80242C60) = {
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Boo_Tan_Idle)
     EndThread
-    Call(SetNpcAnimation, NPC_Boo_05, ANIM_Boo_Tan_Spook)
-    Call(EndSpeech, NPC_Boo_05, ANIM_Boo_Tan_Spook, ANIM_Boo_Tan_Spook, 5)
+    Call(SetNpcAnimation, NPC_Boo_Prankster, ANIM_Boo_Tan_Spook)
+    Call(EndSpeech, NPC_Boo_Prankster, ANIM_Boo_Tan_Spook, ANIM_Boo_Tan_Spook, 5)
     Wait(30)
-    Call(SetNpcAnimation, NPC_Boo_05, ANIM_Boo_Tan_Idle)
+    Call(SetNpcAnimation, NPC_Boo_Prankster, ANIM_Boo_Tan_Idle)
     Wait(10)
-    ExecWait(N(80242B0C))
-    Set(MV_Unk_02, 1)
+    ExecWait(N(EVS_PrankBoo_Vanish))
+    Set(MV_PrankDone, true)
     Wait(15)
     Return
     End
@@ -275,19 +271,19 @@ EvtScript N(80242C60) = {
 EvtScript N(EVS_NpcInteract_Boo_03) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
-            IfEq(AF_ARN_04, false)
+            IfEq(AF_ARN03_ToggleDialogue_Boo3, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0082)
-                Set(AF_ARN_04, true)
+                Set(AF_ARN03_ToggleDialogue_Boo3, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0083)
-                Set(AF_ARN_04, false)
+                Set(AF_ARN03_ToggleDialogue_Boo3, false)
             EndIf
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0084)
         CaseLt(STORY_CH3_BEGAN_PEACH_MISSION)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0085)
         CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(DisablePlayerPhysics, true)
             Thread
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -297,16 +293,16 @@ EvtScript N(EVS_NpcInteract_Boo_03) = {
                 Call(NpcFaceNpc, NPC_PARTNER, NPC_SELF, 1)
             EndThread
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0086)
-            ExecWait(N(802428CC))
-            Call(PlayerFaceNpc, NPC_Boo_05, true)
-            Call(NpcFaceNpc, NPC_PARTNER, NPC_Boo_05, 1)
-            Call(SpeakToPlayer, NPC_Boo_05, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_0087)
-            ExecWait(N(80242C60))
+            ExecWait(N(EVS_PrankBoo_Setup))
+            Call(PlayerFaceNpc, NPC_Boo_Prankster, true)
+            Call(NpcFaceNpc, NPC_PARTNER, NPC_Boo_Prankster, 1)
+            Call(SpeakToPlayer, NPC_Boo_Prankster, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_0087)
+            ExecWait(N(EVS_PrankBoo_Scare))
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0088)
             Call(DisablePlayerPhysics, false)
             Call(EnablePartnerAI)
         CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(DisablePlayerPhysics, true)
             Thread
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -316,11 +312,11 @@ EvtScript N(EVS_NpcInteract_Boo_03) = {
                 Call(NpcFaceNpc, NPC_PARTNER, NPC_SELF, 1)
             EndThread
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0089)
-            ExecWait(N(802428CC))
-            Call(PlayerFaceNpc, NPC_Boo_05, true)
-            Call(NpcFaceNpc, NPC_PARTNER, NPC_Boo_05, 1)
-            Call(SpeakToPlayer, NPC_Boo_05, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_008A)
-            ExecWait(N(80242C60))
+            ExecWait(N(EVS_PrankBoo_Setup))
+            Call(PlayerFaceNpc, NPC_Boo_Prankster, true)
+            Call(NpcFaceNpc, NPC_PARTNER, NPC_Boo_Prankster, 1)
+            Call(SpeakToPlayer, NPC_Boo_Prankster, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_008A)
+            ExecWait(N(EVS_PrankBoo_Scare))
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_008B)
             Call(DisablePlayerPhysics, false)
             Call(EnablePartnerAI)
@@ -338,12 +334,12 @@ EvtScript N(EVS_NpcInit_Boo_03) = {
 EvtScript N(EVS_NpcInteract_Boo_04) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
-            IfEq(AF_ARN_05, false)
+            IfEq(AF_ARN03_ToggleDialogue_Boo4, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_008C)
-                Set(AF_ARN_05, true)
+                Set(AF_ARN03_ToggleDialogue_Boo4, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_008D)
-                Set(AF_ARN_05, false)
+                Set(AF_ARN03_ToggleDialogue_Boo4, false)
             EndIf
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_008E)
@@ -447,7 +443,7 @@ NpcData N(NpcData_Boo_04) = {
 };
 
 NpcData N(NpcData_Boo_05) = {
-    .id = NPC_Boo_05,
+    .id = NPC_Boo_Prankster,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
     .init = &N(EVS_NpcInit_Boo_05),

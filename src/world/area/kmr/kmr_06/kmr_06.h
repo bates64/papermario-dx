@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_06.h
 /// @brief Goomba Region - Goomba Road 2
 
@@ -18,13 +20,13 @@ enum {
 };
 
 enum {
-    AF_JAN01_TreeDrop_StarPiece           = MapFlag(10),
+    MF_SignDroppedMushroom  = MapFlag(10),
 };
 
 enum {
-    MV_StickerData      = MapVar(10),
-    MV_StickerImage     = MapVar(11),
-    MV_StickerPalette   = MapVar(12),
+    MV_StickerData          = MapVar(10),
+    MV_StickerImage         = MapVar(11),
+    MV_StickerPalette       = MapVar(12),
 };
 
 #define NAMESPACE kmr_06

@@ -1,9 +1,9 @@
 #include "nok_14.h"
 
-#include "world/common/enemy/KoopaTroopa_Wander.inc.c"
-#include "world/common/enemy/SpikedGoomba_Wander.inc.c"
-#include "world/common/enemy/Paratroopa.inc.c"
-#include "world/common/enemy/KoopaTroopa_Stationary.inc.c"
+#include "world/common/enemy/KoopaTroopa/wander.inc.c"
+#include "world/common/enemy/SpikedGoomba/wander.inc.c"
+#include "world/common/enemy/Paratroopa/wander.inc.c"
+#include "world/common/enemy/KoopaTroopa/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_KoopaTroopa_01) = {
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -91,7 +91,7 @@ NpcData N(NpcData_ParaTroopa) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_ParaTroopa),
+    .settings = &N(NpcSettings_ParaTroopa_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PARATROOPA_DROPS,
     .animations = PARATROOPA_ANIMS,
@@ -124,7 +124,7 @@ NpcData N(NpcData_KoopaTroopa_02) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
     .init = &N(EVS_NpcInit_KoopaTroopa_02),
-    .settings = &N(NpcSettings_KoopaTroopa_Stationary),
+    .settings = &N(NpcSettings_KoopaTroopa),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE,
     .drops = KOOPA_TROOPA_NOK_DROPS,
     .animations = KOOPA_TROOPA_ANIMS,

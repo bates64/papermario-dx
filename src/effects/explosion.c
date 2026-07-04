@@ -22,16 +22,6 @@ void explosion_main(s32 type, f32 x, f32 y, f32 z) {
     ExplosionFXData* data;
     s32 numParts = 3;
 
-    // TODO this terrible if-else required to match
-    s32 dumb;
-    s32 temp;
-    if (type != 0) {
-        dumb = 0;
-    } else {
-        temp = 0;
-        dumb = temp;
-    }
-
     bpPtr->unk_00 = 0;
     bpPtr->init = explosion_init;
     bpPtr->update = explosion_update;
@@ -215,8 +205,7 @@ void explosion_appendGfx(void* effect) {
             break;
     }
 
-    cond = (unk_34 < 3); // required to match
-    if (!cond && unk_34 < 8) {
+    if (unk_34 > 2 && unk_34 < 8) {
         primB = unk_34 * 16 + 128;
     } else {
         primB = 255;

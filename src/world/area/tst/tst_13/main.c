@@ -3,7 +3,6 @@
 void mdl_project_tex_coords(s32 modelID, Gfx* destGfx, Matrix4f destMtx, void* destVertices);
 
 extern EvtScript N(EVS_Main);
-extern EvtScript N(D_80240510_B1DC70);
 extern NpcGroupList N(DefaultNPCs);
 
 EntryList N(Entrances) = {
@@ -17,7 +16,7 @@ export MapSettings N(settings) = {
     .bgName = "nok_bg",
 };
 
-#include "world/common/atomic/BetaFloorPanels.inc.c"
+#include "world/common/prefab/BetaFloorPanels.inc.c"
 
 EvtScript N(EVS_NpcCreate_00) = {
     Return

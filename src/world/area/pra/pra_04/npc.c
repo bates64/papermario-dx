@@ -1,6 +1,6 @@
 #include "pra_04.h"
 
-#include "world/common/enemy/Swooper.inc.c"
+#include "world/common/enemy/Swooper/wander.inc.c"
 
 NpcData N(NpcData_Swoopula) = {
     .id = NPC_Swoopula,
@@ -18,7 +18,7 @@ NpcData N(NpcData_Swoopula) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Swoopula),
+    .settings = &N(NpcSettings_Swoopula_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = SWOOPULA_DROPS,
     .animations = SWOOPULA_ANIMS,

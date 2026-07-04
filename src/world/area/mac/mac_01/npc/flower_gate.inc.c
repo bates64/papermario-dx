@@ -1,3 +1,5 @@
+#include "../mac_01.h"
+
 EvtScript N(EVS_MinhThankYou) = {
     Call(DisablePlayerInput, true)
     Call(GetNpcPos, NPC_MinhT, LVar0, LVar1, LVar2)
@@ -11,7 +13,7 @@ EvtScript N(EVS_MinhThankYou) = {
 
 EvtScript N(EVS_NpcIdle_GardenShyGuy1) = {
     Call(SetNpcPos, NPC_SELF, 170, 27, 380)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim03)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
     Loop(0)
         Call(InterpNpcYaw, NPC_SELF, 90, 1)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
@@ -33,7 +35,7 @@ EvtScript N(EVS_NpcIdle_GardenShyGuy1) = {
 
 EvtScript N(EVS_NpcIdle_GardenShyGuy2) = {
     Call(SetNpcPos, NPC_SELF, 350, 27, 280)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim03)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
     Loop(0)
         Call(InterpNpcYaw, NPC_SELF, 270, 1)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
@@ -57,16 +59,16 @@ EvtScript N(EVS_GardenShyGuy_RunAway) = {
     Set(LVarA, GF_MAC01_ChasedShyGuysFromGardenA)
     Add(LVarA, GF_MAC01_ChasedShyGuysFromGardenB)
     Call(DisablePlayerInput, true)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim0C)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Hurt)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_SELF, LVar0, 27, LVar2, 10)
     Call(SetNpcSpeed, NPC_SELF, Float(8.0))
-    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim03)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
     Call(ShowSweat, NPC_SELF, 1, -45, EMOTER_NPC, 0, 0, 0, 0, 20)
     Call(InterpNpcYaw, NPC_SELF, 270, 1)
     Set(LVar0, -1)
     Call(PlaySoundAtNpc, LVar0, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
-    ExecGetTID(N(D_8024E6F8_80EF78), LVar9)
+    ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVar9)
     Call(NpcMoveTo, NPC_SELF, 160, 400, 0)
     KillThread(LVar9)
     Call(DisablePlayerInput, false)
@@ -302,7 +304,7 @@ EvtScript N(EVS_Scene_FlowerGateAppears) = {
     Call(DismissEffect, LVar9)
     Call(PlaySoundAt, SOUND_WOODEN_DOOR_WAVES, SOUND_SPACE_DEFAULT, 266, 50, 338)
     Loop(3)
-        PlayEffect(EFFECT_ENERGY_ORB_WAVE, 5, 266, 50, 338, 1, 20)
+        PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PINK_WAVE, 266, 50, 338, 1, 20)
         Wait(5)
     EndLoop
     Loop(0)
@@ -323,21 +325,10 @@ EvtScript N(EVS_Scene_FlowerGateAppears) = {
     End
 };
 
-s32 N(LetterList_MinhT_Unused)[] = {
-    ITEM_LETTER_TO_MINH_T,
-    ITEM_NONE
-};
-
-s32 N(ItemList_MagicalSeeds)[] = {
-    ITEM_MAGICAL_SEED1,
-    ITEM_MAGICAL_SEED2,
-    ITEM_MAGICAL_SEED3,
-    ITEM_MAGICAL_SEED4,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_MagicalSeeds), ITEM_MAGICAL_SEED1, ITEM_MAGICAL_SEED2, ITEM_MAGICAL_SEED3, ITEM_MAGICAL_SEED4);
 
 EvtScript N(EVS_MinhT_PlantSeed) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SpeakToPlayer, NPC_MinhT, ANIM_MinhT_Talk, ANIM_MinhT_Idle, 0, LVar4)
     Wait(10 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 266, 27, 373)
@@ -406,7 +397,7 @@ EvtScript N(EVS_MinhT_PlantSeed) = {
     Call(NpcJump0, NPC_SELF, 175, 20, 444, 0)
     Call(NpcMoveTo, NPC_SELF, 150, 480, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_MinhT_Idle)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     IfEq(LVar3, 3)
         Call(InterpNpcYaw, NPC_MinhT, 90, 0)
         ExecWait(N(EVS_Scene_FlowerGateAppears))
@@ -417,17 +408,15 @@ EvtScript N(EVS_MinhT_PlantSeed) = {
     End
 };
 
-EvtScript N(D_80258FFC_81987C) = {
+EvtScript N(EVS_MinhT_ChooseMagicalSeed) = {
     IfNe(LVar5, 0)
         Call(SpeakToPlayer, NPC_MinhT, ANIM_MinhT_Talk, ANIM_MinhT_Idle, 0, MSG_MAC_Plaza_0075)
     EndIf
-    Set(LVar0, Ref(N(ItemList_MagicalSeeds)))
-    Set(LVar1, 18)
-    ExecWait(N(EVS_ChooseKeyItem))
+    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_MagicalSeeds), NPC_MinhT)
     Switch(LVar0)
-        CaseEq(0)
+        CaseEq(ITEM_CHOICE_NONE)
             Return
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Return
         CaseEq(ITEM_MAGICAL_SEED1)
             Set(GF_MAC01_Planted_MagicalSeed1, true)
@@ -455,11 +444,9 @@ EvtScript N(D_80258FFC_81987C) = {
 };
 
 EvtScript N(EVS_NpcInteract_MinhT) = {
-    ExecWait(N(EVS_LetterPrompt_MinhT))
-    ExecWait(N(EVS_LetterReward_MinhT))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    Set(LVar0, Ref(N(LetterDelivery_MinhT)))
+    ExecWait(EVS_TryLetterDelivery)
+    EVT_RETURN_IF_DELIVERED()
     Set(LVar2, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
@@ -512,7 +499,7 @@ EvtScript N(EVS_NpcInteract_MinhT) = {
                     Set(GF_MAC01_HeardAboutBubulbs, true)
                 EndIf
                 IfNe(LVar4, 0)
-                    ExecWait(N(D_80258FFC_81987C))
+                    ExecWait(N(EVS_MinhT_ChooseMagicalSeed))
                     Return
                 EndIf
                 Call(SpeakToPlayer, NPC_MinhT, ANIM_MinhT_Talk, ANIM_MinhT_Idle, 0, MSG_MAC_Plaza_0075)
@@ -533,21 +520,19 @@ EvtScript N(EVS_NpcInteract_MinhT) = {
                 Set(LVar1, MSG_MAC_Plaza_006C)
         EndSwitch
     EndIf
-    IfEq(AF_MAC_14, false)
-        Set(AF_MAC_14, true)
+    IfEq(AF_MAC01_ToggleDialogue_MinhT, false)
+        Set(AF_MAC01_ToggleDialogue_MinhT, true)
     Else
         Set(LVar0, LVar1)
-        Set(AF_MAC_14, false)
+        Set(AF_MAC01_ToggleDialogue_MinhT, false)
     EndIf
     Call(SpeakToPlayer, NPC_MinhT, ANIM_MinhT_Talk, ANIM_MinhT_Idle, 0, LVar0)
     IfEq(LVar2, 1)
-        Set(LVar0, Ref(N(ItemList_MagicalSeeds)))
-        Set(LVar1, 18)
-        ExecWait(N(EVS_ChooseKeyItem))
+        EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_MagicalSeeds), NPC_MinhT)
         Switch(LVar0)
-            CaseEq(0)
+            CaseEq(ITEM_CHOICE_NONE)
                 Return
-            CaseEq(-1)
+            CaseEq(ITEM_CHOICE_CANCELED)
                 Return
             CaseEq(ITEM_MAGICAL_SEED1)
                 Set(GF_MAC01_Planted_MagicalSeed1, true)
@@ -691,7 +676,7 @@ EvtScript N(EVS_ExitFlowerGate) = {
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerPos, 0, -500, 0)
     Call(N(ResetPartnerTetherDist))
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, 0, -500, 0)
     Loop(0)
         Wait(1)
@@ -731,7 +716,7 @@ EvtScript N(EVS_EnterFlowerGate) = {
     Call(DisablePlayerInput, true)
     Call(InterpPlayerYaw, 180, 2)
     Call(SetPlayerPos, 264, 27, 320)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, 264, 27, 320)
     Call(PlaySoundAtCollider, COLLIDER_deilitf, SOUND_FLOWER_GATE, SOUND_SPACE_DEFAULT)
     ExecWait(N(EVS_FadeInFlowerGateGlowAlpha))

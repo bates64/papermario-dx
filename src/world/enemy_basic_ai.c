@@ -333,7 +333,7 @@ void basic_ai_wander(Evt* script, MobileAISettings* settings, EnemyDetectVolume*
     }
 
     // check if we've wandered beyond the boundary of the territory
-    if (is_point_outside_wander_territory(&wander, npc->pos.x, npc->pos.z)
+    if (is_point_outside_wander_territory(wander, npc->pos.x, npc->pos.z)
         && npc->moveSpeed < dist2D(wander->centerPos.x, wander->centerPos.z, npc->pos.x, npc->pos.z)
     ) {
         if (!(enemy->aiFlags & AI_FLAG_OUTSIDE_TERRITORY)) {

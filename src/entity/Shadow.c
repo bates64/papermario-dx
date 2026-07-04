@@ -76,9 +76,6 @@ EntityModelScript Entity_RenderNone_Script = {
     ems_End
 };
 
-//TODO split files
-s32 D_802E9844_padding[] = { 0, 0, 0};
-
 EntityModelScript Entity_CircularShadowA_Render = {
     ems_SetFlags(ENTITY_MODEL_FLAG_FOG_DISABLED)
     ems_SetRenderMode(RENDER_MODE_SHADOW)

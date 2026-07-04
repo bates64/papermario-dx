@@ -1,3 +1,5 @@
+#include "../kmr_22.h"
+
 EvtScript N(EVS_NpcInit_Mamar) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldMamar_Still)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_TINT, 0, 0, 0, 128)

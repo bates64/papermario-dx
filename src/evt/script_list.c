@@ -124,7 +124,7 @@ void find_script_labels(Evt* script) {
 
     for (i = 0; i < ARRAY_COUNT(script->labelIndices); i++) {
         script->labelIndices[i] = -1;
-        script->labelPositions[i] = 0;
+        script->labelPositions[i] = nullptr;
     }
 
     j = 0;
@@ -257,9 +257,7 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
     newScript->loopDepth = -1;
     newScript->switchDepth = -1;
     newScript->groupFlags = EVT_GROUP_NOT_BATTLE;
-    newScript->ptrSavedPos = nullptr;
     newScript->frameCounter = 0.0f;
-    newScript->unk_158 = 0;
     newScript->timeScale = GlobalTimeRate;
     newScript->debugPaused = false;
 
@@ -327,9 +325,7 @@ Evt* start_script_in_group(EvtScript* source, u8 priority, u8 flags, u8 groupFla
     newScript->loopDepth = -1;
     newScript->switchDepth = -1;
     newScript->groupFlags = groupFlags;
-    newScript->ptrSavedPos = nullptr;
     newScript->frameCounter = 0.0f;
-    newScript->unk_158 = 0;
     newScript->timeScale = GlobalTimeRate;
     newScript->debugPaused = false;
 
@@ -397,12 +393,10 @@ Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 flags) {
     child->loopDepth = -1;
     child->switchDepth = -1;
     child->groupFlags = parentScript->groupFlags;
-    child->ptrSavedPos = nullptr;
     child->array = parentScript->array;
     child->flagArray = parentScript->flagArray;
     child->timeScale = GlobalTimeRate;
     child->frameCounter = 0.0f;
-    child->unk_158 = 0;
     child->debugPaused = false;
 
     scriptListCount = 0;
@@ -468,12 +462,10 @@ Evt* start_child_thread(Evt* parentScript, Bytecode* nextLine, s32 newState) {
     child->loopDepth = -1;
     child->switchDepth = -1;
     child->groupFlags = parentScript->groupFlags;
-    child->ptrSavedPos = nullptr;
     child->array = parentScript->array;
     child->flagArray = parentScript->flagArray;
     child->timeScale = GlobalTimeRate;
     child->frameCounter = 0.0f;
-    child->unk_158 = 0;
     child->debugPaused = false;
 
     scriptListCount = 0;
@@ -544,7 +536,6 @@ Evt* func_802C3C10(Evt* script, Bytecode* line, s32 arg2) {
     script->parentScript = nullptr;
     script->childScript = nullptr;
     script->frameCounter = 0.0f;
-    script->unk_158 = 0;
     script->timeScale = GlobalTimeRate;
     find_script_labels(script);
     suspend_frozen_scripts(script);
@@ -565,7 +556,6 @@ Evt* restart_script(Evt* script) {
     script->ptrCurLine = ptrFirstLine;
     script->timeScale = 1.0f;
     script->frameCounter = 0;
-    script->unk_158 = 0;
 
     script->timeScale = GlobalTimeRate;
 
@@ -619,20 +609,6 @@ void update_scripts(void) {
     }
     IsUpdatingScripts = false;
     EvtCurrentScript = nullptr;
-}
-
-// Does nothing, is cursed
-void func_802C3EE4(void) {
-    s32 temp;
-    s32 i;
-
-    for (i = 0; i < gScriptListCount; i++) {
-        temp = (s32) (*gCurrentScriptListPtr)[gScriptIndexList[i]];
-        temp = *((s32*) temp);
-        if (temp == gScriptIdList[i]) {
-            temp = 1;
-        }
-    }
 }
 
 void kill_script(Evt* instanceToKill) {

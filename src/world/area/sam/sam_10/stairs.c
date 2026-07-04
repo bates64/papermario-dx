@@ -49,10 +49,10 @@ EvtScript N(EVS_ItemPrompt_StarStoneSocket) = {
         Call(ShowKeyChoicePopup)
         Call(CloseChoicePopup)
         Switch(LVar0)
-            CaseEq(0)
+            CaseEq(ITEM_CHOICE_NONE)
                 Call(DisablePlayerInput, false)
                 Return
-            CaseEq(-1)
+            CaseEq(ITEM_CHOICE_CANCELED)
                 Call(DisablePlayerInput, false)
                 Return
             CaseDefault
@@ -228,10 +228,7 @@ EvtScript N(EVS_BlastWall) = {
     End
 };
 
-s32 N(StarStoneList)[] = {
-    ITEM_STAR_STONE,
-    ITEM_NONE
-};
+ITEM_LIST(N(StarStoneList), ITEM_STAR_STONE);
 
 EvtScript N(EVS_SetupStairs) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_yuka, SURFACE_TYPE_SNOW)

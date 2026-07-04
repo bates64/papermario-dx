@@ -1,7 +1,5 @@
 #include "kpa_70.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_SetupChainDrive) = {
     Call(LoadAnimatedModel, 0, Ref(N(ChainDriveSkeleton)))
     Call(PlayModelAnimation, 0, Ref(N(AS_ChainDriveAnim)))
@@ -41,14 +39,14 @@ EvtScript N(EVS_TexPan_Lava) = {
         TEX_PAN_PARAMS_STEP( -400,    0, -800,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP( 1000,    0, 2000,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o1558, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o1825, TEX_PANNER_0)

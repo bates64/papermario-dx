@@ -14,7 +14,7 @@ export MapSettings N(settings) = {
     .bgName = "nok_bg",
 };
 
-EvtScript N(D_80240050_B1D340) = {
+EvtScript N(EVS_SpawnFloatingFlowers) = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Set(LVarA, LVar0)
     Set(LVarB, LVar1)
@@ -66,14 +66,14 @@ EvtScript N(EVS_Main) = {
     Set(LVar3, 386)
     Set(LVar4, 174)
     Set(LVar5, 40)
-    Exec(N(D_80240050_B1D340))
+    Exec(N(EVS_SpawnFloatingFlowers))
     Set(LVar0, 327)
     Set(LVar1, 0)
     Set(LVar2, 24)
     Set(LVar3, 89)
     Set(LVar4, 252)
     Set(LVar5, 40)
-    Exec(N(D_80240050_B1D340))
+    Exec(N(EVS_SpawnFloatingFlowers))
     Return
     End
 };

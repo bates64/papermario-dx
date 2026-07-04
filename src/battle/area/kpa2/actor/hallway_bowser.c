@@ -192,7 +192,6 @@ ActorBlueprint NAMESPACE = {
 #include "common/GetJumpHammerCharge.inc.c"
 #include "common/GetPlayerHpPercent.inc.c"
 #include "common/ItemEntityJumpToPos.inc.c"
-#include "common/GetItemEntityPosition.inc.c"
 
 EvtScript N(EVS_Init) = {
     Call(SetActorVar, ACTOR_SELF, AVAR_TurnCount, 0)
@@ -691,7 +690,7 @@ EvtScript N(EVS_StarRodCast) = {
     Else
         Add(LVar1, 16)
     EndIf
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, Float(1.0), 15, 0)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, Float(1.0), 15, 0)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_SHOCKWAVE)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 39)
@@ -1155,7 +1154,7 @@ EvtScript N(EVS_Attack_BodySlam) = {
         Call(SetActorYaw, ACTOR_SELF, 0)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Walk)
         Call(GetActorVar, ACTOR_SELF, AVAR_CommandLossItemIdx, LVar0)
-        Call(N(GetItemEntityPosition), LVar0, LVar1, LVar2, LVar3)
+        Call(GetItemPos, LVar0, LVar1, LVar2, LVar3)
         Add(LVar1, 30)
         Call(SetActorSpeed, ACTOR_SELF, Float(2.0))
         Call(SetGoalPos, ACTOR_SELF, LVar1, LVar2, LVar3)
@@ -1166,7 +1165,7 @@ EvtScript N(EVS_Attack_BodySlam) = {
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_StompOnce)
         Wait(2)
         Call(GetActorVar, ACTOR_SELF, AVAR_CommandLossItemIdx, LVar0)
-        Call(N(GetItemEntityPosition), LVar0, LVar1, LVar2, LVar3)
+        Call(GetItemPos, LVar0, LVar1, LVar2, LVar3)
         Call(SetActorVar, ACTOR_SELF, AVAR_CommandLossState, AVAL_LossState_ShowMessage)
         PlayEffect(EFFECT_FIREWORK, 0, LVar1, 0, LVar3, Float(0.5), 0, 0)
         PlayEffect(EFFECT_LANDING_DUST, 1, LVar1, 0, LVar3, Float(2.0), 0)

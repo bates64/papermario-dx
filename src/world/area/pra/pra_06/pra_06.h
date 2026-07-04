@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_06.h
 /// @brief Crystal Palace - Shooting Star Room
 

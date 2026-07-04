@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sbk_21.h
 /// @brief Dry Dry Desert - N1W2
 

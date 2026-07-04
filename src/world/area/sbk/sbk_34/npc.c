@@ -1,35 +1,16 @@
 #include "sbk_34.h"
+#include "world/common/npc/Nomadimouse/idle.inc.c"
 
-NpcSettings N(NpcSettings_Nomadimouse) = {
-    .height = 22,
-    .radius = 25,
-    .level = ACTOR_LEVEL_NONE,
-};
-
-#include "world/common/complete/LetterDelivery.inc.c"
-
-s32 N(LetterList_Nomadimouse)[] = {
-    ITEM_LETTER_TO_NOMADIMOUSE,
-    ITEM_NONE
-};
-
-EvtScript N(EVS_Nomadimouse_LetterDelivery) = {
-    Call(N(LetterDelivery_Init),
-        NPC_Nomadimouse, ANIM_Nomadimouse_Talk, ANIM_Nomadimouse_Idle,
-        ITEM_LETTER_TO_NOMADIMOUSE, ITEM_NONE,
-        MSG_CH2_005B, MSG_CH2_005C, MSG_CH2_005D, MSG_CH2_005E,
-        Ref(N(LetterList_Nomadimouse)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_Nomadimouse) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_Nomadimouse) = {
+    .recipientID = NPC_Nomadimouse,
+    .recipientTalk = ANIM_Nomadimouse_Talk,
+    .recipientIdle = ANIM_Nomadimouse_Idle,
+    .msgGreeting = MSG_CH2_005B,
+    .msgCancelled = MSG_CH2_005C,
+    .msgDelivered = MSG_CH2_005D,
+    .msgRecieved = MSG_CH2_005E,
+    .letters = { ITEM_LETTER_TO_NOMADIMOUSE },
+    .reward = ITEM_STAR_PIECE,
 };
 
 EvtScript N(EVS_NpcInteract_Nomadimouse) = {
@@ -55,11 +36,8 @@ EvtScript N(EVS_NpcInteract_Nomadimouse) = {
         CaseGe(STORY_CH2_UNCOVERED_DRY_DRY_RUINS)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Nomadimouse_Talk, ANIM_Nomadimouse_Idle, 0, MSG_CH2_005A)
     EndSwitch
-    ExecWait(N(EVS_Nomadimouse_LetterDelivery))
-    ExecWait(N(EVS_LetterReward_Nomadimouse))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    Set(LVar0, Ref(N(LetterDelivery_Nomadimouse)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
@@ -86,24 +64,7 @@ NpcData N(NpcData_Nomadimouse)[] = {
         .settings = &N(NpcSettings_Nomadimouse),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Nomadimouse_Idle,
-            .walk   = ANIM_Nomadimouse_Idle,
-            .run    = ANIM_Nomadimouse_Idle,
-            .chase  = ANIM_Nomadimouse_Idle,
-            .anim_4 = ANIM_Nomadimouse_Idle,
-            .anim_5 = ANIM_Nomadimouse_Idle,
-            .death  = ANIM_Nomadimouse_Idle,
-            .hit    = ANIM_Nomadimouse_Idle,
-            .anim_8 = ANIM_Nomadimouse_Idle,
-            .anim_9 = ANIM_Nomadimouse_Idle,
-            .anim_A = ANIM_Nomadimouse_Idle,
-            .anim_B = ANIM_Nomadimouse_Idle,
-            .anim_C = ANIM_Nomadimouse_Idle,
-            .anim_D = ANIM_Nomadimouse_Idle,
-            .anim_E = ANIM_Nomadimouse_Idle,
-            .anim_F = ANIM_Nomadimouse_Idle,
-        },
+        .animations = NOMADIMOUSE_ANIMS,
         .tattle = MSG_NpcTattle_SBK_Nomadimouse,
     },
     {
@@ -114,24 +75,7 @@ NpcData N(NpcData_Nomadimouse)[] = {
         .settings = &N(NpcSettings_Nomadimouse),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Nomadimouse_Idle,
-            .walk   = ANIM_Nomadimouse_Idle,
-            .run    = ANIM_Nomadimouse_Idle,
-            .chase  = ANIM_Nomadimouse_Idle,
-            .anim_4 = ANIM_Nomadimouse_Idle,
-            .anim_5 = ANIM_Nomadimouse_Idle,
-            .death  = ANIM_Nomadimouse_Idle,
-            .hit    = ANIM_Nomadimouse_Idle,
-            .anim_8 = ANIM_Nomadimouse_Idle,
-            .anim_9 = ANIM_Nomadimouse_Idle,
-            .anim_A = ANIM_Nomadimouse_Idle,
-            .anim_B = ANIM_Nomadimouse_Idle,
-            .anim_C = ANIM_Nomadimouse_Idle,
-            .anim_D = ANIM_Nomadimouse_Idle,
-            .anim_E = ANIM_Nomadimouse_Idle,
-            .anim_F = ANIM_Nomadimouse_Idle,
-        },
+        .animations = NOMADIMOUSE_ANIMS,
     },
 };
 

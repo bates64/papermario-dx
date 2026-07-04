@@ -15,33 +15,17 @@ NpcSettings N(NpcSettings_Merlow) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#define NAME_SUFFIX _Merlow
-#include "world/common/complete/LetterDelivery.inc.c"
-
-s32 N(LetterList)[] = {
-    ITEM_LETTER_TO_MERLOW,
-    ITEM_NONE
+LetterDelivery N(LetterDelivery_Merlow) = {
+    .recipientID = NPC_Merlow,
+    .recipientTalk = ANIM_Merlow_Talk,
+    .recipientIdle = ANIM_Merlow_Idle,
+    .msgGreeting = MSG_HOS_0058,
+    .msgCancelled = MSG_HOS_0059,
+    .msgDelivered = MSG_HOS_005A,
+    .msgRecieved = MSG_HOS_005B,
+    .letters = { ITEM_LETTER_TO_MERLOW },
+    .reward = ITEM_STAR_PIECE,
 };
-
-EvtScript N(EVS_LetterPrompt) = {
-    Call(N(LetterDelivery_Init),
-        NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle,
-        ITEM_LETTER_TO_MERLOW, ITEM_NONE,
-        MSG_HOS_0058, MSG_HOS_0059, MSG_HOS_005A, MSG_HOS_005B,
-        Ref(N(LetterList)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
-};
-#define NAME_SUFFIX
 
 EvtScript N(EVS_NpcInteract_Merluvlee_Passthrough) = {
     ExecWait(N(EVS_NpcInteract_Merluvlee))
@@ -151,11 +135,9 @@ API_CALLABLE(N(Merlow_ShopBadgesPopup)) {
 }
 
 EvtScript N(EVS_NpcInteract_Merlow) = {
-    ExecWait(N(EVS_LetterPrompt_Merlow))
-    ExecWait(N(EVS_LetterReward_Merlow))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    Set(LVar0, Ref(N(LetterDelivery_Merlow)))
+    ExecWait(EVS_TryLetterDelivery)
+    EVT_RETURN_IF_DELIVERED()
     IfGe(GB_HOS06_Merlow_PurchaseCount, MERLOW_BADGE_COUNT)
         Call(SpeakToPlayer, NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle, 0, MSG_HOS_004C)
         Return
@@ -217,10 +199,7 @@ EvtScript N(EVS_NpcInteract_Merlow) = {
     Add(GB_HOS06_Merlow_PurchaseCount, 1)
     Set(MF_PurchasedBadge, true)
     Call(N(Merlow_SetBadgePurchased), LVar2)
-    // awkward
-    #define NAME_SUFFIX _Merlow
     EVT_GIVE_REWARD(LVar3)
-    #define NAME_SUFFIX
     IfGe(GB_HOS06_Merlow_PurchaseCount, MERLOW_BADGE_COUNT)
         Call(SpeakToPlayer, NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle, 0, MSG_HOS_0055)
         Return
@@ -256,7 +235,7 @@ EvtScript N(EVS_NpcInit_Merlow) = {
     End
 };
 
-NpcData N(NpcData_Merluvlee)[] = {
+NpcData N(NpcData_Family)[] = {
     {
         .id = NPC_Merluvlee,
         .pos = { 62.0f, 20.0f, 7.0f },
@@ -286,6 +265,6 @@ NpcData N(NpcData_Merluvlee)[] = {
 };
 
 NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Merluvlee)),
+    NPC_GROUP(N(NpcData_Family)),
     {}
 };

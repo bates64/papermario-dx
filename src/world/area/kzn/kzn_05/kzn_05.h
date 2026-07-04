@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kzn_05.h
 /// @brief Mt Lavalava - Descent Toward Ultra Hammer
 

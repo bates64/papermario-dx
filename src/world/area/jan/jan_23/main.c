@@ -11,11 +11,11 @@ EvtScript N(EVS_ExitFall_jan_16_4) = {
         EndIf
     EndLoop
     Call(DisablePlayerInput, true)
-    SetF(MV_Unk_05, 0)
+    SetF(MV_NeedsCamMotion, true)
     Call(GetPartnerInUse, LVar0)
-    IfNe(LVar0, 8)
+    IfNe(LVar0, PARTNER_LAKILESTER)
         Thread
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
             IfEq(LVar0, 0)
                 Call(GetPlayerPos, LVar2, LVar3, LVar4)
@@ -39,16 +39,15 @@ EvtScript N(EVS_ExitFall_jan_16_4) = {
         Thread
             Call(GetPlayerActionState, LVar0)
             Switch(LVar0)
-                CaseEq(ACTION_STATE_SPIN_JUMP)
-                    Goto(11)
-                CaseEq(ACTION_STATE_TORNADO_JUMP)
-                    Label(11)
+                CaseOrEq(ACTION_STATE_SPIN_JUMP)
+                CaseOrEq(ACTION_STATE_TORNADO_JUMP)
                     Call(GetPlayerPos, LVar0, LVar1, LVar2)
                     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, 250, 100)
                     Call(SetPanTarget, CAM_DEFAULT, LVar0, -100, LVar2)
                     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
                     Call(PanToTarget, CAM_DEFAULT, 0, true)
-                    Set(MV_Unk_05, -1)
+                    Set(MV_NeedsCamMotion, false)
+                EndCaseGroup
                 CaseDefault
                     Wait(10)
             EndSwitch
@@ -74,7 +73,7 @@ EvtScript N(EVS_ExitFall_jan_16_4) = {
             BreakLoop
         EndIf
     EndLoop
-    IfEq(MV_Unk_05, 0)
+    IfEq(MV_NeedsCamMotion, true)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, 250, 100)
         Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))

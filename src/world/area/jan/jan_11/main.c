@@ -1,10 +1,9 @@
 #include "jan_11.h"
 
-#include "world/common/atomic/CreateDarkness.inc.c"
+#include "world/common/util/CreateDarkness.inc.c"
 
 #include "world/common/entity/Pipe.inc.c"
 
-#define DROPLET_MODEL MODEL_o140
 #include "world/area/tik/common/DripVolumes.inc.c"
 
 DripVolumeList N(DripVolumes) = {
@@ -31,6 +30,7 @@ DripVolumeList N(DripVolumes) = {
 
 EvtScript N(EVS_SetupDrips) = {
     Set(LVar0, Ref(N(DripVolumes)))
+    Set(LVar1, MODEL_o140)
     Exec(N(EVS_CreateDripVolumes))
     Return
     End
@@ -45,7 +45,7 @@ EvtScript N(EVS_GotoMap_jan_09_3) = {
 
 EvtScript N(EVS_ExitPipe_jan_09_3) = EVT_EXIT_PIPE_HORIZONTAL(jan_11_ENTRY_0, COLLIDER_o10, N(EVS_GotoMap_jan_09_3));
 
-EvtScript N(D_80241F38_B72798) = {
+EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitPipe_jan_09_3)), TRIGGER_WALL_PUSH, COLLIDER_o10, 1, 0)
     Return
     End
@@ -57,7 +57,7 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     Exec(N(EVS_CreateDarkness))
-    Set(LVar0, Ref(N(D_80241F38_B72798)))
+    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
     Exec(EnterWalk)
     Exec(N(EVS_SetupMusic))
     ExecWait(N(EVS_SetupDrips))

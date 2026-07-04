@@ -1,77 +1,55 @@
 #include "nok_01.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/ai/GuardAI.inc.c"
+#include "world/common/ai/GuardAI.inc.c"
 
-#include "world/common/npc/KoopaWithoutShell_Wander.inc.c"
-#include "world/common/npc/Koopa_Wander.inc.c"
+#include "world/common/npc/KoopaWithoutShell/wander.inc.c"
+#include "world/common/npc/Koopa/wander.inc.c"
 
-#include "world/common/npc/Koopa.inc.c"
-#include "world/common/enemy/Fuzzy.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/Bobomb.inc.c"
+#include "world/common/npc/Koopa/idle.inc.c"
+#include "world/common/enemy/Fuzzy/idle.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Bobomb/idle.inc.c"
 
-#include "world/common/complete/ToadHouseBlanketAnim.inc.c"
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/LetterDelivery.inc.c"
-
-s32 N(LettersKoover1)[] = {
-    ITEM_LETTER_CHAIN_KOOVER_1, ITEM_NONE
+LetterDelivery N(LetterDelivery_Koover1) = {
+    .recipientID = NPC_Koover,
+    .recipientTalk = ANIM_Koopa_Talk,
+    .recipientIdle = ANIM_Koopa_Idle,
+    .msgGreeting = MSG_CH1_0009,
+    .msgCancelled = MSG_CH1_000A,
+    .msgDelivered = MSG_CH1_000B,
+    .msgRecieved = MSG_CH1_000C,
+    .letters = { ITEM_LETTER_CHAIN_KOOVER_1 },
+    .reward = ITEM_LETTER_CHAIN_FISHMAEL,
 };
 
-EvtScript N(EVS_LetterPrompt_Koover1) = {
-    Call(N(LetterDelivery_Init),
-        NPC_Koover, ANIM_Koopa_Talk, ANIM_Koopa_Idle,
-        ITEM_LETTER_CHAIN_KOOVER_1, ITEM_LETTER_CHAIN_FISHMAEL,
-        MSG_CH1_0009, MSG_CH1_000A, MSG_CH1_000B, MSG_CH1_000C,
-        Ref(N(LettersKoover1)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
+LetterDelivery N(LetterDelivery_Koover2) = {
+    .recipientID = NPC_Koover,
+    .recipientTalk = ANIM_Koopa_Talk,
+    .recipientIdle = ANIM_Koopa_Idle,
+    .msgGreeting = MSG_CH1_000D,
+    .msgCancelled = MSG_CH1_000E,
+    .msgDelivered = MSG_CH1_000F,
+    .msgRecieved = MSG_CH1_0010,
+    .letters = { ITEM_LETTER_CHAIN_KOOVER_2 },
+    .reward = ITEM_LETTER_CHAIN_MR_E,
 };
 
-s32 N(LettersKoover2)[] = {
-    ITEM_LETTER_CHAIN_KOOVER_2, ITEM_NONE
-};
-
-EvtScript N(EVS_LetterPrompt_Koover2) = {
-    Call(N(LetterDelivery_Init),
-        NPC_Koover, ANIM_Koopa_Talk, ANIM_Koopa_Idle,
-        ITEM_LETTER_CHAIN_KOOVER_2, ITEM_LETTER_CHAIN_MR_E,
-        MSG_CH1_000D, MSG_CH1_000E, MSG_CH1_000F, MSG_CH1_0010,
-        Ref(N(LettersKoover2)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
-};
-
-s32 N(LettersMortT)[] = {
-    ITEM_LETTER_TO_MORT_T, ITEM_NONE
-};
-
-EvtScript N(EVS_LetterPrompt_MortT) = {
-    Call(N(LetterDelivery_Init),
-        NPC_MortT, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle,
-        ITEM_LETTER_TO_MORT_T, ITEM_NONE,
-        MSG_CH1_0039, MSG_CH1_003A, MSG_CH1_003B, MSG_CH1_003C,
-        Ref(N(LettersMortT)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_MortT) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_MortT) = {
+    .recipientID = NPC_MortT,
+    .recipientTalk = ANIM_Toad_Red_Talk,
+    .recipientIdle = ANIM_Toad_Red_Idle,
+    .msgGreeting = MSG_CH1_0039,
+    .msgCancelled = MSG_CH1_003A,
+    .msgDelivered = MSG_CH1_003B,
+    .msgRecieved = MSG_CH1_003C,
+    .letters = { ITEM_LETTER_TO_MORT_T },
+    .reward = ITEM_STAR_PIECE,
 };
 
 API_CALLABLE(N(IsNpcFacingRight)) {
@@ -90,8 +68,6 @@ API_CALLABLE(N(IsNpcFacingRight)) {
     evt_set_variable(script, outVar, outVal);
     return ApiStatus_DONE2;
 }
-
-#include "common/CosInterpMinMax.inc.c"
 
 API_CALLABLE(N(SpawnExplosionEffect)) {
     Bytecode* args = script->ptrReadPos;
@@ -205,7 +181,7 @@ EvtScript N(EVS_MiscFuzzyFlee) = {
     Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 15)
     Add(LVar0, 30)
     Add(LVar2, -30)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_Fuzzy_Anim09)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_Fuzzy_Confused)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZY_HOP_B, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 13)
     Add(LVar0, 20)
@@ -320,7 +296,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Call(InterpPlayerYaw, 160, 1)
     Call(HidePlayerShadow, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Still)
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     Thread
         Wait(60)
@@ -351,11 +327,9 @@ EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
 };
 
 EvtScript N(EVS_NpcInteract_MortT) = {
-    ExecWait(N(EVS_LetterPrompt_MortT))
-    ExecWait(N(EVS_LetterReward_MortT))
-    IfNe(LVarC, DELIVERY_NOT_POSSIBLE)
-        Return
-    EndIf
+    Set(LVar0, Ref(N(LetterDelivery_MortT)))
+    ExecWait(EVS_TryLetterDelivery)
+    EVT_RETURN_IF_DELIVERED()
     ExecWait(N(EVS_NpcInteract_ToadHouseKeeper))
     Return
     End
@@ -369,12 +343,12 @@ EvtScript N(EVS_NpcInit_MortT) = {
 
 EvtScript N(EVS_NpcInteract_RelaxedKoopa) = {
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
-        IfEq(AF_NOK01_Dialogue_RelaxedKoopa, false)
+        IfEq(AF_NOK01_ToggleDialogue_RelaxedKoopa, false)
             Call(SpeakToPlayer, NPC_RelaxedKoopa, ANIM_Koopa_LeanBackTalk, ANIM_Koopa_LeanBack, 5, MSG_CH1_0021)
-            Set(AF_NOK01_Dialogue_RelaxedKoopa, true)
+            Set(AF_NOK01_ToggleDialogue_RelaxedKoopa, true)
         Else
             Call(SpeakToPlayer, NPC_RelaxedKoopa, ANIM_Koopa_LeanBackTalk, ANIM_Koopa_LeanBack, 5, MSG_CH1_0022)
-            Set(AF_NOK01_Dialogue_RelaxedKoopa, false)
+            Set(AF_NOK01_ToggleDialogue_RelaxedKoopa, false)
         EndIf
         Return
     EndIf
@@ -382,7 +356,7 @@ EvtScript N(EVS_NpcInteract_RelaxedKoopa) = {
         Call(SpeakToPlayer, NPC_RelaxedKoopa, ANIM_Koopa_LeanBackTalk, ANIM_Koopa_LeanBack, 5, MSG_CH1_0023)
         Return
     EndIf
-    Switch(AB_NOK_0)
+    Switch(AB_NOK01_RadioStation)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_RelaxedKoopa, ANIM_Koopa_LeanBackTalk, ANIM_Koopa_LeanBack, 5, MSG_CH1_0024)
         CaseEq(1)
@@ -694,7 +668,7 @@ NpcData N(NpcData_Shared)[] = {
         .pos = { -268.0f, 10.0f, 68.0f },
         .yaw = 0,
         .init = &N(EVS_NpcInit_MortT),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,

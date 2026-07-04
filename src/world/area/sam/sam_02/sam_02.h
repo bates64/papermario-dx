@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sam_02.h
 /// @brief Mt Shiver - Shiver City Center
 
@@ -43,7 +45,6 @@ extern EvtScript N(EVS_PlayRestingSong);
 extern EvtScript N(EVS_SetupRooms);
 extern EvtScript N(EVS_SetupShop);
 extern EvtScript N(EVS_MakeToadHouseGifts);
-extern EvtScript N(D_8024B550_D10C80);
 extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(MysteryNPCs);
 extern NpcGroupList N(DefaultNPCs);

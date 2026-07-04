@@ -1,7 +1,7 @@
 #include "trd_02.h"
 #include "effects.h"
 
-extern EvtScript N(D_80242890_9A3870);
+extern EvtScript N(EVS_UnlockFortressDoor);
 extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(DefaultNPCs);
@@ -118,12 +118,12 @@ EvtScript N(EVS_Scene_LowerStairs) = {
     End
 };
 
-BombTrigger N(D_8024240C_9A33EC) = {
+BombTrigger N(BombPos_Wall) = {
     .pos = { 255.0f, 50.0f, -80.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(D_8024241C_9A33FC) = {
+EvtScript N(EVS_BlastBombableWall) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 17, 11, 1, 10, 30)
@@ -142,10 +142,7 @@ EvtScript N(D_8024241C_9A33FC) = {
     End
 };
 
-s32 N(D_8024252C_9A350C)[] = {
-    ITEM_KOOPA_FORTRESS_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_KOOPA_FORTRESS_KEY);
 
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
@@ -156,14 +153,14 @@ EvtScript N(EVS_Main) = {
     BindTrigger(Ref(N(EVS_ExitDoors_trd_01_1)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     BindTrigger(Ref(N(EVS_ExitDoors_trd_03_0)), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     IfEq(GF_TRD02_UnlockedDoor, false)
-        BindPadlock(Ref(N(D_80242890_9A3870)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(D_8024252C_9A350C)), 0, 1)
+        BindPadlock(Ref(N(EVS_UnlockFortressDoor)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(KeyList)), 0, 1)
     Else
         BindTrigger(Ref(N(EVS_ExitDoors_trd_01_2)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw2, 1, 0)
     EndIf
     BindTrigger(Ref(N(EVS_ExitDoors_trd_03_2)), TRIGGER_WALL_PRESS_A, COLLIDER_tte2, 1, 0)
     IfEq(GF_TRD02_BombedWall, false)
         Call(EnableModel, MODEL_anaaki, false)
-        BindTrigger(Ref(N(D_8024241C_9A33FC)), TRIGGER_POINT_BOMB, Ref(N(D_8024240C_9A33EC)), 1, 0)
+        BindTrigger(Ref(N(EVS_BlastBombableWall)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Wall)), 1, 0)
     Else
         Call(SetGroupVisibility, MODEL_g14, MODEL_GROUP_HIDDEN)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tta, COLLIDER_FLAGS_UPPER_MASK)

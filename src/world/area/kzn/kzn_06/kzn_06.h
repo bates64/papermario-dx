@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kzn_06.h
 /// @brief Mt Lavalava - Flowing Lava Puzzle
 

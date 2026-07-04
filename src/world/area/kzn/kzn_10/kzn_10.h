@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kzn_10.h
 /// @brief Mt Lavalava - Descent Toward Boss
 

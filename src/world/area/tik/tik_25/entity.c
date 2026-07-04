@@ -1,14 +1,14 @@
 #include "tik_25.h"
 #include "entity.h"
+#include "animation_script.h"
+
+extern AnimScript Entity_SimpleSpring_AnimLaunch;
 
 API_CALLABLE(N(DismissGotItem)) {
     Entity* bigChest = get_entity_by_index(script->varTable[0]);
     bigChest->dataBuf.chest->gotItemDone = true;
     return ApiStatus_DONE2;
 }
-
-#include "world/common/todo/SetEntityPosition.inc.c"
-#include "world/common/util/PlaySpringReboundAnimation.inc.c"
 
 EvtScript N(EVS_SetupGiantChest_UltraBoots) = {
     IfEq(GF_TIK25_GiantChest, false)
@@ -26,6 +26,18 @@ EvtScript N(EVS_SetupGiantChest_UltraBoots) = {
     End
 };
 
+API_CALLABLE(N(PlaySpringReboundAnimation)) {
+    Bytecode* args = script->ptrReadPos;
+    Entity* entity = get_entity_by_index(evt_get_variable(script, *args++));
+
+    if (entity == nullptr) {
+        return ApiStatus_BLOCK;
+    }
+
+    play_model_animation(entity->virtualModelIndex, Entity_SimpleSpring_AnimLaunch);
+    return ApiStatus_DONE2;
+}
+
 EvtScript N(EVS_OnBreakBlock_SpringR) = {
     IfEq(GF_TIK25_SpringBrickA, true)
         Return
@@ -36,7 +48,7 @@ EvtScript N(EVS_OnBreakBlock_SpringR) = {
     Call(MakeLerp, -50, -20, 8, EASING_QUADRATIC_OUT)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPosition), MV_EntityID_SpringR, LVar5, LVar0, 0)
+        Call(SetEntityPosition, MV_EntityID_SpringR, LVar5, LVar0, 0)
         Wait(1)
         Sub(LVar5, 2)
         IfEq(LVar1, 0)
@@ -46,7 +58,7 @@ EvtScript N(EVS_OnBreakBlock_SpringR) = {
     Call(MakeLerp, LVar0, -135, 22, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPosition), MV_EntityID_SpringR, LVar5, LVar0, 0)
+        Call(SetEntityPosition, MV_EntityID_SpringR, LVar5, LVar0, 0)
         Wait(1)
         Sub(LVar5, 2)
         IfEq(LVar1, 0)
@@ -71,7 +83,7 @@ EvtScript N(EVS_OnBreakBlock_SpringL) = {
     Call(MakeLerp, -20, 10, 8, EASING_QUADRATIC_OUT)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPosition), MV_EntityID_SpringL, LVar5, LVar0, 0)
+        Call(SetEntityPosition, MV_EntityID_SpringL, LVar5, LVar0, 0)
         Wait(1)
         Add(LVar5, 2)
         IfEq(LVar1, 0)
@@ -81,7 +93,7 @@ EvtScript N(EVS_OnBreakBlock_SpringL) = {
     Call(MakeLerp, LVar0, -135, 22, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPosition), MV_EntityID_SpringL, LVar5, LVar0, 0)
+        Call(SetEntityPosition, MV_EntityID_SpringL, LVar5, LVar0, 0)
         Wait(1)
         Add(LVar5, 2)
         IfEq(LVar1, 0)

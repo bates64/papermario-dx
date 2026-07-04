@@ -1,11 +1,6 @@
 #include "common.h"
 #include "model.h"
 
-#ifndef DROPLET_MODEL
-#error  DROPLET_MODEL must be defined for DripVolumes
-#define DROPLET_MODEL 0
-#endif
-
 API_CALLABLE(N(CheckDripCollisionWithActors)) {
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -152,7 +147,7 @@ EvtScript N(EVS_UpdateDripVolume) = {
     UseArray(LVarA)
     Set(LVar5, ArrayVar(5))
     Loop(5)
-        Call(CloneModel, DROPLET_MODEL, LVar5)
+        Call(CloneModel, ArrayVar(6), LVar5)
         Call(TranslateModel, LVar5, ArrayVar(0), ArrayVar(2), ArrayVar(1))
         Add(LVar5, 1)
     EndLoop
@@ -182,15 +177,16 @@ EvtScript N(EVS_UpdateDripVolume) = {
 };
 
 EvtScript N(EVS_CreateDripVolumes) = {
-    Set(LVarF, CLONED_MODEL(0))
+    Set(LVarF, LVar1)
     UseBuf(LVar0)
+    Set(LVar0, CLONED_MODEL(0))
     BufRead1(LVar1)
     Loop(LVar1)
         BufRead4(LVar2, LVar3, LVar4, LVar5)
         BufRead3(LVar6, LVar7, LVar8)
         BufRead1(LVar9)
         Loop(LVar9)
-            MallocArray(6, LVarA)
+            MallocArray(7, LVarA)
             UseArray(LVarA)
             Call(RandInt, LVar4, LVarB)
             Call(RandInt, LVar5, LVarC)
@@ -203,14 +199,15 @@ EvtScript N(EVS_CreateDripVolumes) = {
             Set(ArrayVar(2), LVar6)
             Set(ArrayVar(3), LVar7)
             Set(ArrayVar(4), LVar8)
-            Set(ArrayVar(5), LVarF)
+            Set(ArrayVar(5), LVar0)
+            Set(ArrayVar(6), LVarF)
             ChildThread
                 Exec(N(EVS_UpdateDripVolume))
             EndChildThread
-            Add(LVarF, 5)
+            Add(LVar0, 5)
         EndLoop
     EndLoop
-    Call(EnableModel, DROPLET_MODEL, false)
+    Call(EnableModel, LVarF, false)
     Return
     End
 };

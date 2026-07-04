@@ -2,7 +2,7 @@
 
 #include "../common/ToyTrain.inc.c"
 
-EvtScript N(D_80245CEC_DF4B8C) = {
+EvtScript N(EVS_UpdateCameraDuringTrainTransition) = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfLt(LVar0, -600)
@@ -18,16 +18,16 @@ EvtScript N(D_80245CEC_DF4B8C) = {
     End
 };
 
-s32 N(TrainPath_LeftToRight)[] = {
-    Float(-720.0), Float(0.0), Float(90.0),
-    Float(720.0), Float(0.0),
-    -1, -1, -1,
+TrainPath N(TrainPath_LeftToRight)[] = {
+    TRAIN_PATH_BEGIN(-720.0, 0.0, 90.0),
+    TRAIN_PATH_POINT(720.0, 0.0),
+    TRAIN_PATH_END,
 };
 
-s32 N(TrainPath_RightToLeft)[] = {
-    Float(720.0), Float(0.0), Float(270.0),
-    Float(-720.0), Float(0.0),
-    -1, -1, -1,
+TrainPath N(TrainPath_RightToLeft)[] = {
+    TRAIN_PATH_BEGIN(720.0, 0.0, 270.0),
+    TRAIN_PATH_POINT(-720.0, 0.0),
+    TRAIN_PATH_END,
 };
 
 EvtScript N(EVS_EnterTrain) = {
@@ -35,19 +35,19 @@ EvtScript N(EVS_EnterTrain) = {
     Call(ParentColliderToModel, COLLIDER_pp1, MODEL_o1)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
-    Exec(N(D_80245CEC_DF4B8C))
+    Call(DisablePartnerAI, false)
+    Exec(N(EVS_UpdateCameraDuringTrainTransition))
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(omo_17_ENTRY_4)
-            Set(MV_TrainUnk_00, 0)
-            Set(MV_TrainUnk_01, Ref(N(TrainPath_LeftToRight)))
-            Set(MV_TrainUnk_02, 0)
-            Exec(N(EVS_Scene_RideTrain))
-            Set(MF_TrainUnk_00, true)
+            Set(MV_TrainRideState, TRAIN_STATE_INIT)
+            Set(MV_TrainPath, Ref(N(TrainPath_LeftToRight)))
+            Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
+            Exec(N(EVS_UpdateTrain))
+            Set(MF_TrainRideActive, true)
             Thread
                 Label(10)
-                IfLt(MV_TrainPos, 600)
+                IfLt(MV_TrainPosX, 600)
                     Wait(1)
                     Goto(10)
                 EndIf
@@ -55,14 +55,14 @@ EvtScript N(EVS_EnterTrain) = {
                 Wait(100)
             EndThread
         CaseEq(omo_17_ENTRY_5)
-            Set(MV_TrainUnk_00, 0)
-            Set(MV_TrainUnk_01, Ref(N(TrainPath_RightToLeft)))
-            Set(MV_TrainUnk_02, 0)
-            Exec(N(EVS_Scene_RideTrain))
-            Set(MF_TrainUnk_00, true)
+            Set(MV_TrainRideState, TRAIN_STATE_INIT)
+            Set(MV_TrainPath, Ref(N(TrainPath_RightToLeft)))
+            Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
+            Exec(N(EVS_UpdateTrain))
+            Set(MF_TrainRideActive, true)
             Thread
                 Label(20)
-                IfGt(MV_TrainPos, -600)
+                IfGt(MV_TrainPosX, -600)
                     Wait(1)
                     Goto(20)
                 EndIf

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mim_10.h
 /// @brief Forever Forest - Exit to Toad Town
 
@@ -18,7 +20,7 @@ enum {
 };
 
 enum {
-    MV_Unk_00           = MapVar(0),
+    MV_ScenePlaying     = MapVar(0), // may be unread
 };
 
 #define NAMESPACE mim_10

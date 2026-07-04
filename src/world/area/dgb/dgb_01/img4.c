@@ -1,5 +1,5 @@
 #include "dgb_01.h"
 #include "include_asset.h"
 
-INCLUDE_IMG("world/area/dgb/dgb_01/img4.png", dgb_01_img4_png);
-#include "world/area/dgb/dgb_01/img4.gfx.inc.c"
+INCLUDE_IMG("world/area/dgb/dgb_01/tex_railing_post.png", dgb_01_tex_railing_post);
+#include "world/area/dgb/dgb_01/Gfx_SetupTex_RailingPost.gfx.inc.c"

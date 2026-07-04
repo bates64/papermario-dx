@@ -1,6 +1,6 @@
 #include "omo_11.h"
 
-#include "world/common/enemy/PyroGuy.inc.c"
+#include "world/common/enemy/PyroGuy/wander.inc.c"
 
 NpcData N(NpcData_PyroGuy_01) = {
     .id = NPC_PyroGuy_01,
@@ -18,7 +18,7 @@ NpcData N(NpcData_PyroGuy_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_PyroGuy),
+    .settings = &N(NpcSettings_PyroGuy_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PYRO_GUY_DROPS,
     .animations = PYRO_GUY_ANIMS,
@@ -41,7 +41,7 @@ NpcData N(NpcData_PyroGuy_02) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_PyroGuy),
+    .settings = &N(NpcSettings_PyroGuy_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PYRO_GUY_DROPS,
     .animations = PYRO_GUY_ANIMS,

@@ -2,6 +2,7 @@
 #include "script_api/battle.h"
 #include "sprite/npc/BattleLakilester.h"
 
+#undef NAMESPACE
 #define NAMESPACE A(lakilester_clone)
 
 extern EvtScript N(EVS_Init);

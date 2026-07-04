@@ -1,53 +1,29 @@
 #include "dro_01.h"
-#include "sprite/npc/Musician.h"
-#include "sprite/npc/ChuckQuizmo.h"
 
-#include "world/common/npc/Dryite_Wander.inc.c"
-#include "world/common/npc/Dryite_Patrol.inc.c"
-#include "world/common/npc/Dryite_Stationary.inc.c"
-
-#include "world/common/npc/Mouser.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
-
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/LetterDelivery.inc.c"
-
-#include "world/common/util/MonitorPlayerOrbiting.inc.c"
-
-s32 N(LetterList)[] = {
-    ITEM_LETTER_CHAIN_LITTLE_MOUSER,
-    ITEM_NONE
-};
-
-EvtScript N(EVS_LetterPrompt_ShopOwner) = {
-    Call(N(LetterDelivery_Init),
-        NPC_Mouser_ShopOwner, ANIM_Mouser_Purple_Talk, ANIM_Mouser_Purple_Idle,
-        ITEM_LETTER_CHAIN_LITTLE_MOUSER, ITEM_LETTER_CHAIN_FRANKY,
-        MSG_CH2_0089, MSG_CH2_008A, MSG_CH2_008B, MSG_CH2_008C,
-        Ref(N(LetterList)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
-};
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Toadette/idle.inc.c"
+#include "world/common/npc/MusicianComposer/base.h"
+#include "world/common/npc/Dryite/idle.inc.c"
+#include "world/common/npc/Dryite/wander.inc.c"
+#include "world/common/npc/Dryite/patrol.inc.c"
+#include "world/common/npc/Mouser/idle.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
 EvtScript N(EVS_NpcInteract_Mouser_01) = {
     IfGe(GB_StoryProgress, STORY_CH2_STAR_SPRIT_DEPARTED)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_0062)
         Return
     EndIf
-    Switch(AB_DRO_0)
+    Switch(AB_DRO01_DialogueState_Mouser1)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_005F)
-            Add(AB_DRO_0, 1)
+            Add(AB_DRO01_DialogueState_Mouser1, 1)
         CaseEq(1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_0060)
-            Add(AB_DRO_0, 1)
+            Add(AB_DRO01_DialogueState_Mouser1, 1)
         CaseEq(2)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_0061)
-            Sub(AB_DRO_0, 1)
+            Sub(AB_DRO01_DialogueState_Mouser1, 1)
     EndSwitch
     Return
     End
@@ -63,20 +39,20 @@ EvtScript N(EVS_NpcInteract_Dryite_01) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
             IfGe(GB_StoryProgress, STORY_CH2_BOUGHT_SECRET_ITEMS)
-                IfEq(AB_DRO_1, 2)
-                    Set(AB_DRO_1, 0)
+                IfEq(AB_DRO01_DialogueState_Dryite1, 2)
+                    Set(AB_DRO01_DialogueState_Dryite1, 0)
                 EndIf
             EndIf
-            Switch(AB_DRO_1)
+            Switch(AB_DRO01_DialogueState_Dryite1)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Yellow_Talk, ANIM_Dryite_Yellow_Idle, 0, MSG_CH2_0063)
-                    Add(AB_DRO_1, 1)
+                    Add(AB_DRO01_DialogueState_Dryite1, 1)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Yellow_Talk, ANIM_Dryite_Yellow_Idle, 0, MSG_CH2_0064)
-                    Add(AB_DRO_1, 1)
+                    Add(AB_DRO01_DialogueState_Dryite1, 1)
                 CaseEq(2)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Yellow_Talk, ANIM_Dryite_Yellow_Idle, 0, MSG_CH2_0065)
-                    Set(AB_DRO_1, 0)
+                    Set(AB_DRO01_DialogueState_Dryite1, 0)
             EndSwitch
         CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Yellow_Talk, ANIM_Dryite_Yellow_Idle, 0, MSG_CH2_0066)
@@ -95,19 +71,19 @@ EvtScript N(EVS_NpcInit_Dryite_01) = {
 
 EvtScript N(EVS_NpcInteract_Dryite_02) = {
      //@bug this dialogue was probably supposed to cycle 0 --> 1 --> 2 --> 3 --> 0 ...
-    Switch(AB_DRO_2)
+    Switch(AB_DRO01_DialogueState_Dryite2)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_0068)
-            Add(AB_DRO_2, 1)
+            Add(AB_DRO01_DialogueState_Dryite2, 1)
         CaseEq(1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_0069)
-            Add(AB_DRO_2, 1)
+            Add(AB_DRO01_DialogueState_Dryite2, 1)
         CaseEq(2)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_006A)
-            Add(AB_DRO_2, 1)
+            Add(AB_DRO01_DialogueState_Dryite2, 1)
         CaseEq(3)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_006B)
-            Set(AB_DRO_2, 0)
+            Set(AB_DRO01_DialogueState_Dryite2, 0)
     EndSwitch
     Return
     End
@@ -118,11 +94,6 @@ EvtScript N(EVS_NpcInit_Dryite_02) = {
     Return
     End
 };
-
-#include "npc_hint_dryite.inc.c"
-#include "npc_hint_dryite_companion.inc.c"
-#include "npc_composer.inc.c"
-#include "npc_shop_owner.inc.c"
 
 EvtScript N(EVS_NpcInteract_Toadette) = {
     Call(SpeakToPlayer, NPC_Toadette_01, ANIM_Toadette_Pink_Talk, ANIM_Toadette_Pink_Idle, 0, MSG_CH2_008E)
@@ -186,6 +157,11 @@ EvtScript N(EVS_NpcInit_Dryite_06) = {
     Return
     End
 };
+
+extern EvtScript N(EVS_NpcInit_HintDryite);
+extern EvtScript N(EVS_NpcInit_Dryite_04);
+extern EvtScript N(EVS_NpcInit_Composer);
+extern EvtScript N(EVS_NpcInit_ShopOwner);
 
 NpcData N(PassiveNPCs)[] = {
     {
@@ -263,24 +239,7 @@ NpcData N(PassiveNPCs)[] = {
         .settings = &N(NpcSettings_Dryite),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Musician_Composer_Idle,
-            .walk   = ANIM_Musician_Composer_Still,
-            .run    = ANIM_Musician_Composer_Still,
-            .chase  = ANIM_Musician_Composer_Still,
-            .anim_4 = ANIM_Musician_Composer_Still,
-            .anim_5 = ANIM_Musician_Composer_Still,
-            .death  = ANIM_Musician_Composer_Still,
-            .hit    = ANIM_Musician_Composer_Still,
-            .anim_8 = ANIM_Musician_Composer_Still,
-            .anim_9 = ANIM_Musician_Composer_Still,
-            .anim_A = ANIM_Musician_Composer_Still,
-            .anim_B = ANIM_Musician_Composer_Still,
-            .anim_C = ANIM_Musician_Composer_Still,
-            .anim_D = ANIM_Musician_Composer_Still,
-            .anim_E = ANIM_Musician_Composer_Still,
-            .anim_F = ANIM_Musician_Composer_Still,
-        },
+        .animations = MUSICIAN_COMPOSER_ANIMS,
         .tattle = MSG_NpcTattle_Composer,
     },
     {
@@ -303,24 +262,7 @@ NpcData N(PassiveNPCs)[] = {
         .settings = &N(NpcSettings_ChuckQuizmo),
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_ChuckQuizmo_Idle,
-            .walk   = ANIM_ChuckQuizmo_Walk,
-            .run    = ANIM_ChuckQuizmo_Run,
-            .chase  = ANIM_ChuckQuizmo_Run,
-            .anim_4 = ANIM_ChuckQuizmo_Idle,
-            .anim_5 = ANIM_ChuckQuizmo_Idle,
-            .death  = ANIM_ChuckQuizmo_Still,
-            .hit    = ANIM_ChuckQuizmo_Still,
-            .anim_8 = ANIM_ChuckQuizmo_Run,
-            .anim_9 = ANIM_ChuckQuizmo_Run,
-            .anim_A = ANIM_ChuckQuizmo_Run,
-            .anim_B = ANIM_ChuckQuizmo_Run,
-            .anim_C = ANIM_ChuckQuizmo_Run,
-            .anim_D = ANIM_ChuckQuizmo_Run,
-            .anim_E = ANIM_ChuckQuizmo_Run,
-            .anim_F = ANIM_ChuckQuizmo_Run,
-        },
+        .animations = QUIZMO_ANIMS,
         .tattle = MSG_NpcTattle_ChuckQuizmo,
     },
     {
@@ -379,7 +321,7 @@ NpcData N(ThreeSisterNPCs)[] = {
         .pos = { -141.0f, 0.0f, -18.0f },
         .yaw = 62,
         .init = &N(EVS_NpcInit_Toadette),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toadette),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -390,7 +332,7 @@ NpcData N(ThreeSisterNPCs)[] = {
         .pos = { -124.0f, 0.0f, -61.0f },
         .yaw = 63,
         .init = &N(EVS_NpcInit_Toadette),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toadette),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -401,7 +343,7 @@ NpcData N(ThreeSisterNPCs)[] = {
         .pos = { -80.0f, 0.0f, -35.0f },
         .yaw = 244,
         .init = &N(EVS_NpcInit_Toadette),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toadette),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,

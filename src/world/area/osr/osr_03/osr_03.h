@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file osr_03.h
 /// @brief Peach's Castle Grounds - Outside Hijacked Castle
 

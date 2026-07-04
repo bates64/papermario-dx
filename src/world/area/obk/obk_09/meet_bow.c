@@ -3,6 +3,7 @@
 #include "sprite/player.h"
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
+#include "world/common/util/LoadPartyImage.inc.c"
 
 EvtScript N(EVS_Scene_MeetBow) = {
     IfGe(GB_StoryProgress, STORY_CH3_BOW_JOINED_PARTY)
@@ -173,15 +174,15 @@ EvtScript N(EVS_Scene_MeetBow) = {
     Add(LVar2, 150)
     Call(NpcJump0, NPC_Bow, LVar0, LVar1, LVar2, 25 * DT)
     Call(SpeakToPlayer, NPC_Bow, ANIM_WorldBow_Talk, ANIM_WorldBow_Idle, 0, MSG_CH3_0053)
-    Call(N(ChangeNpcToPartner), 0, 9)
-    Call(N(LoadPartyImage))
+    Call(N(ChangeNpcToPartner), NPC_Bow, PARTNER_BOW)
+    Call(N(LoadPartyImage), Ref("party_resa"))
     Exec(N(EVS_PlayNewPartnerSong))
     Wait(15 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_018D, 160, 40)
     Exec(N(EVS_ResetMusic))
     Wait(10 * DT)
     Wait(10 * DT)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldBow_Celebrate, ANIM_WorldBow_Celebrate, 0, MSG_CH3_0054)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)

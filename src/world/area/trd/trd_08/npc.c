@@ -1,7 +1,7 @@
 #include "trd_08.h"
 #include "effects.h"
 
-#include "world/common/enemy/ai/FireBarAI.inc.c"
+#include "world/common/ai/FireBarAI.inc.c"
 
 EvtScript N(EVS_FireBar_Defeated) = {
     Set(LVarA, LVar0)
@@ -70,7 +70,7 @@ FireBarAISettings N(AISettings_FireBar_02) = {
     .callback = N(FireBarAI_Callback),
 };
 
-EvtScript N(EVS_NpcCreate_00) = {
+EvtScript N(EVS_NpcCreate_FireBar) = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcFlagBits, NPC_SELF, 0, true)
     Call(EnableNpcShadow, NPC_SELF, true)
@@ -103,7 +103,7 @@ NpcSettings N(NpcSettings_FireBar_01) = {
     .height = 12,
     .radius = 20,
     .doAI = &N(EVS_NpcAI_FireBar_01),
-    .onCreate = &N(EVS_NpcCreate_00),
+    .onCreate = &N(EVS_NpcCreate_FireBar),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
@@ -112,7 +112,7 @@ NpcSettings N(NpcSettings_FireBar_02) = {
     .height = 12,
     .radius = 20,
     .doAI = &N(EVS_NpcAI_FireBar_02),
-    .onCreate = &N(EVS_NpcCreate_00),
+    .onCreate = &N(EVS_NpcCreate_FireBar),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
@@ -120,16 +120,15 @@ NpcSettings N(NpcSettings_FireBar_Extra) = {
     .defaultAnim = ANIM_Fire_Brighest_Burn,
     .height = 12,
     .radius = 20,
-    .onCreate = &N(EVS_NpcCreate_00),
+    .onCreate = &N(EVS_NpcCreate_FireBar),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
-NpcData N(NpcData_00)[] = {
+NpcData N(NpcData_FireBar1)[] = {
     {
         .id = NPC_FireBar_1A,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_01),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -139,7 +138,6 @@ NpcData N(NpcData_00)[] = {
         .id = NPC_FireBar_1B,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_Extra),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -149,7 +147,6 @@ NpcData N(NpcData_00)[] = {
         .id = NPC_FireBar_1C,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_Extra),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -159,7 +156,6 @@ NpcData N(NpcData_00)[] = {
         .id = NPC_FireBar_1D,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_Extra),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -167,12 +163,11 @@ NpcData N(NpcData_00)[] = {
     },
 };
 
-NpcData N(NpcData_05)[] = {
+NpcData N(NpcData_FireBar2)[] = {
     {
         .id = NPC_FireBar_2A,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_02),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -182,7 +177,6 @@ NpcData N(NpcData_05)[] = {
         .id = NPC_FireBar_2B,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_Extra),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -192,7 +186,6 @@ NpcData N(NpcData_05)[] = {
         .id = NPC_FireBar_2C,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_Extra),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -202,7 +195,6 @@ NpcData N(NpcData_05)[] = {
         .id = NPC_FireBar_2D,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = (void*) 0x00004003,
         .settings = &N(NpcSettings_FireBar_Extra),
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
@@ -211,7 +203,7 @@ NpcData N(NpcData_05)[] = {
 };
 
 NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_00), BTL_KMR_1_FORMATION_06),
-    NPC_GROUP(N(NpcData_05), BTL_KMR_1_FORMATION_06),
+    NPC_GROUP(N(NpcData_FireBar1), BTL_KMR_1_FORMATION_06),
+    NPC_GROUP(N(NpcData_FireBar2), BTL_KMR_1_FORMATION_06),
     {}
 };

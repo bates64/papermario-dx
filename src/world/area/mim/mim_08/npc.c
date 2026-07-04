@@ -1,20 +1,20 @@
 #include "mim_08.h"
 
-#include "world/common/enemy/Bzzap.inc.c"
+#include "world/common/enemy/Bzzap/wander.inc.c"
 
-#include "world/common/enemy/PiranhaPlant.inc.c"
+#include "world/common/enemy/PiranhaPlant/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_Bzzap) = {
     Label(100)
-    Wait(1)
-    IfEq(MV_Unk_00, 0)
-        Goto(100)
-    EndIf
+        Wait(1)
+        IfEq(MV_HitHiveTree, false)
+            Goto(100)
+        EndIf
     Call(SetNpcPos, NPC_SELF, -280, 108, 0)
     Call(SetNpcJumpscale, NPC_SELF, Float(0.0))
     Call(NpcJump1, NPC_SELF, -280, 50, 10, 5)
     Wait(50)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_Bzzap)))
+    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_Bzzap_Wander)))
     Return
     End
 };
@@ -42,7 +42,7 @@ NpcData N(NpcData_Bzzap) = {
         }
     },
     .init = &N(EVS_NpcInit_Bzzap),
-    .settings = &N(NpcSettings_Bzzap),
+    .settings = &N(NpcSettings_Bzzap_Wander),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = BZZAP_ANIMS,

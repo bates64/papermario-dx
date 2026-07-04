@@ -1,7 +1,5 @@
 #include "iwa_11.h"
 
-#include "common/CosInterpMinMax.inc.c"
-
 API_CALLABLE(N(GetSmallWheelsAngle)) {
     f32 angle = clamp_angle(script->varTable[2] * -2.4f);
 
@@ -129,18 +127,18 @@ EvtScript N(EVS_AnimateTrain) = {
         Call(RotateModel, MODEL_13, LVar0, 0, 0, 1)
         Call(N(GetLargeWheelAngle))
         Call(RotateModel, MODEL_10, LVar0, 0, 0, 1)
-        Call(N(CosInterpMinMax), LVar2, LVar0, 0, -20, 75, 0, 0)
-        Call(N(CosInterpMinMax), LVar2, LVar1, -10, 10, 75, 0, -90)
+        Call(CosInterpMinMax, LVar2, LVar0, 0, -20, 75, 0, 0)
+        Call(CosInterpMinMax, LVar2, LVar1, -10, 10, 75, 0, -90)
         Call(TranslateModel, MODEL_14, LVar0, LVar1, 0)
-        Call(N(CosInterpMinMax), LVar2, LVar0, 0, -20, 75, 0, 0)
+        Call(CosInterpMinMax, LVar2, LVar0, 0, -20, 75, 0, 0)
         Add(LVar0, 5)
         Call(TranslateModel, MODEL_16, LVar0, -14, 0)
-        Call(N(CosInterpMinMax), LVar2, LVar0, 0, -20, 75, 0, 0)
-        Call(N(CosInterpMinMax), LVar2, LVar1, -10, 10, 75, 0, -90)
+        Call(CosInterpMinMax, LVar2, LVar0, 0, -20, 75, 0, 0)
+        Call(CosInterpMinMax, LVar2, LVar1, -10, 10, 75, 0, -90)
         Call(TranslateModel, MODEL_15, LVar0, LVar1, 0)
-        Call(N(CosInterpMinMax), LVar2, LVar0, -40, 40, 75, 0, 90)
+        Call(CosInterpMinMax, LVar2, LVar0, -40, 40, 75, 0, 90)
         Call(RotateModel, MODEL_15, LVar0, 0, 0, 1)
-        Call(N(CosInterpMinMax), LVarC, LVar0, -30, 30, 10, 0, 0)
+        Call(CosInterpMinMax, LVarC, LVar0, -30, 30, 10, 0, 0)
         Call(RotateModel, MODEL_09, LVar0, 0, 0, 1)
         IfNe(MV_TrainMoveSpeed, 0)
             IfEq(LVarD, 0)
@@ -151,8 +149,8 @@ EvtScript N(EVS_AnimateTrain) = {
             EndIf
         EndIf
         IfLe(LVarD, 20)
-            Call(N(CosInterpMinMax), LVarD, LVar0, Float(0.703), Float(1.0), 10, 0, 180)
-            Call(N(CosInterpMinMax), LVarD, LVar2, Float(0.0), Float(0.296), 10, 0, 180)
+            Call(CosInterpMinMax, LVarD, LVar0, Float(0.703), Float(1.0), 10, 0, 180)
+            Call(CosInterpMinMax, LVarD, LVar2, Float(0.0), Float(0.296), 10, 0, 180)
             SetF(LVar1, Float(0.296))
             SubF(LVar1, LVar2)
             AddF(LVar1, Float(1.0))
@@ -314,7 +312,7 @@ EvtScript N(EVS_FollowTrainCamera) = {
 EvtScript N(EVS_TravelToToadTown) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Call(InterpPlayerYaw, 270, 0)
@@ -350,7 +348,7 @@ EvtScript N(EVS_TravelToToadTown) = {
 EvtScript N(EVS_TravelToMtRugged) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Call(InterpPlayerYaw, 90, 0)

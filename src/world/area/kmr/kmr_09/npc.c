@@ -1,8 +1,8 @@
 #include "kmr_09.h"
 #include "entity.h"
 
-#include "world/common/enemy/Goomba_Wander.inc.c"
-#include "world/common/enemy/Paragoomba_Wander.inc.c"
+#include "world/common/enemy/Goomba/wander.inc.c"
+#include "world/common/enemy/Paragoomba/wander.inc.c"
 
 NpcData N(NpcData_Goomba_01) = {
     .id = NPC_Goomba_01,
@@ -88,10 +88,10 @@ EvtScript N(EVS_NpcIdle_Goomba_Ambush) = {
         Goto(0)
     EndIf
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_FLIP_PAGE, SOUND_SPACE_DEFAULT)
-    Call(SetNpcImgFXFlags, NPC_SELF, IMGFX_FLAG_2000)
+    Call(SetNpcImgFXFlags, NPC_SELF, IMGFX_FLAG_USE_LIGHTING)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ANIM, IMGFX_ANIM_UNFURL, 1, 1, 0)
     Wait(15)
-    Call(SetNpcImgFXFlags, NPC_SELF, IMGFX_FLAG_2000)
+    Call(SetNpcImgFXFlags, NPC_SELF, IMGFX_FLAG_USE_LIGHTING)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_RESET, 0, 0, 0, 0)
     Thread
         Wait(2)

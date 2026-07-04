@@ -1,34 +1,31 @@
-#ifndef _WORLD_AREA_DRO_DRO_H_
-#define _WORLD_AREA_DRO_DRO_H_
+#pragma once
 
-enum {
-    AB_DRO_0            = AreaByte(0),
-    AB_DRO_1            = AreaByte(1),
-    AB_DRO_2            = AreaByte(2),
-    AB_DRO_3            = AreaByte(3),
-    AB_DRO_SHOP_PREV1   = AreaByte(4),
-    AB_DRO_SHOP_PREV2   = AreaByte(5),
-    AB_DRO_SHOP_PREV3   = AreaByte(6),
-    AB_DRO_Unused_7            = AreaByte(7),
-    AB_DRO_Unused_8            = AreaByte(8),
-    AB_DRO_Unused_9            = AreaByte(9),
-    AB_DRO_Unused_A            = AreaByte(10),
-    AB_DRO_Unused_B            = AreaByte(11),
-    AB_DRO_Unused_C            = AreaByte(12),
-    AB_DRO_Unused_D            = AreaByte(13),
-    AB_DRO_Unused_E            = AreaByte(14),
-    AB_DRO_Unused_F            = AreaByte(15),
+enum AreaBytesDRO {
+    AB_DRO01_DialogueState_Mouser1          = AreaByte(0x0),
+    AB_DRO01_DialogueState_Dryite1          = AreaByte(0x1),
+    AB_DRO01_DialogueState_Dryite2          = AreaByte(0x2),
+    AB_DRO02_DialogueState_Archeologist     = AreaByte(0x3),
+    AB_DRO_SHOP_PREV1                       = AreaByte(0x4),
+    AB_DRO_SHOP_PREV2                       = AreaByte(0x5),
+    AB_DRO_SHOP_PREV3                       = AreaByte(0x6),
+    AB_DRO_Unused_7                         = AreaByte(0x7),
+    AB_DRO_Unused_8                         = AreaByte(0x8),
+    AB_DRO_Unused_9                         = AreaByte(0x9),
+    AB_DRO_Unused_A                         = AreaByte(0xA),
+    AB_DRO_Unused_B                         = AreaByte(0xB),
+    AB_DRO_Unused_C                         = AreaByte(0xC),
+    AB_DRO_Unused_D                         = AreaByte(0xD),
+    AB_DRO_Unused_E                         = AreaByte(0xE),
+    AB_DRO_Unused_F                         = AreaByte(0xF),
 };
 
-enum {
-    AF_DRO_01                       = AreaFlag(1),
-    AF_DRO_DialogueToggle_Composer  = AreaFlag(2),
-    AF_DRO_03                       = AreaFlag(3),
-    AF_DRO_04                       = AreaFlag(4),
-    AF_DRO_05                       = AreaFlag(5),
+enum AreaFlagsDRO {
+    // AF_DRO_00 unused
+    AF_DRO01_ToggleDialogue_HintDryite      = AreaFlag(0x01),
+    AF_DRO01_ToggleDialogue_Composer        = AreaFlag(0x02),
+    AF_DRO02_ToggleDialogue_Dryite2         = AreaFlag(0x03),
+    AF_DRO02_ToggleDialogue_Mouser1         = AreaFlag(0x04),
+    AF_DRO02_ToggleDialogue_Mouser2         = AreaFlag(0x05),
+    // AF_DRO_06 - AF_DRO_FF unused
 };
 
-extern MapSettings dro_01_settings;
-extern MapSettings dro_02_settings;
-
-#endif

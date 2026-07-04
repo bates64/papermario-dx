@@ -110,7 +110,7 @@ API_CALLABLE(LoadAnimatedMesh) {
 API_CALLABLE(PlayModelAnimation) {
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
-    s16* var2 = (s16*) evt_get_variable(script, *args++);
+    AnimScriptCode* var2 = (AnimScriptCode*) evt_get_variable(script, *args++);
     AnimatedModel* model = (*gCurrentMeshAnimationListPtr)[index];
 
     model->curAnimData = var2;
@@ -122,7 +122,7 @@ API_CALLABLE(PlayModelAnimation) {
 API_CALLABLE(PlayModelAnimationStartingFrom) {
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
-    s16* var2 = (s16*) evt_get_variable(script, *args++);
+    AnimScriptCode* var2 = (AnimScriptCode*) evt_get_variable(script, *args++);
     s32 var3 = evt_get_variable(script, *args++);
     AnimatedModel* model = (*gCurrentMeshAnimationListPtr)[index];
 
@@ -135,7 +135,7 @@ API_CALLABLE(PlayModelAnimationStartingFrom) {
 API_CALLABLE(ChangeModelAnimation) {
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
-    s16* var2 = (s16*) evt_get_variable(script, *args++);
+    AnimScriptCode* var2 = (AnimScriptCode*) evt_get_variable(script, *args++);
     AnimatedModel* model = (*gCurrentMeshAnimationListPtr)[index];
 
     if (model->curAnimData == var2) {

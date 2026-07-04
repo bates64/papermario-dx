@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file nok_03.h
 /// @brief Koopa Region - Behind Koopa Village
 

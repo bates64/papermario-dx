@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kzn_22.h
 /// @brief Mt Lavalava - Rising Lava 2
 

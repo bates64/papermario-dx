@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_62.h
 /// @brief Bowser's Castle - Front Door Exterior
 
@@ -10,7 +12,7 @@
 #include "mapfs/kpa_62_hit.h"
 
 enum {
-    MV_PadLockEntityID  = MapVar(0),
+    MV_EntityID_Padlock  = MapVar(0),
 };
 
 #define NAMESPACE kpa_62

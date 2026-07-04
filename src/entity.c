@@ -232,14 +232,14 @@ void update_shadows(void) {
     }
 }
 
-void set_entity_commandlist(Entity* entity, s32* entityScript) {
+void set_entity_commandlist(Entity* entity, EntityCode* entityScript) {
     entity->scriptReadPos = entityScript;
     entity->scriptDelay = 1;
     entity->savedReadPos[0] = entity->scriptReadPos;
 }
 
 s32 step_entity_commandlist(Entity* entity) {
-    s32* args = entity->scriptReadPos;
+    EntityCode* args = entity->scriptReadPos;
     s32 ret;
     s32 labelId;
     void (*tempfunc)(Entity*);
@@ -252,7 +252,7 @@ s32 step_entity_commandlist(Entity* entity) {
             ret = false;
             break;
         case ENTITY_SCRIPT_OP_Jump:
-            entity->scriptReadPos = (s32*)*args;
+            entity->scriptReadPos = (EntityCode*)*args;
             entity->scriptDelay = 1;
             entity->savedReadPos[0] = entity->scriptReadPos;
             ret = true;
@@ -758,7 +758,7 @@ s32 is_player_action_state(s8 actionState) {
     return actionState == gPlayerStatus.actionState;
 }
 
-void entity_set_render_script(Entity* entity, EntityModelScript* cmdList) {
+void entity_set_render_script(Entity* entity, EntityModelCode* cmdList) {
     if (!(entity->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL)) {
         set_entity_model_render_command_list(entity->virtualModelIndex, cmdList);
     }
@@ -1043,7 +1043,7 @@ void load_split_entity_data(Entity* entity, EntityBlueprint* entityData, s32 lis
     s32 swizzlePointers = false;
     s32 loadedStart, loadedEnd;
     void* animBaseAddr;
-    s16* animationScript;
+    AnimScriptCode* animationScript;
     StaticAnimatorNode** animationNodes;
     s32 specialSize;
     s32 dma1size;
@@ -1124,12 +1124,12 @@ void load_split_entity_data(Entity* entity, EntityBlueprint* entityData, s32 lis
             get_entity_type(entity->listIndex);
         }
     } else {
-        entity->virtualModelIndex = create_model_animator(entityData->renderCommandList);
+        entity->virtualModelIndex = create_model_animator(entityData->animScript);
         load_model_animator_tree(entity->virtualModelIndex, entityData->modelAnimationNodes);
         update_model_animator(entity->virtualModelIndex);
         return;
     }
-    animationScript = entityData->renderCommandList;
+    animationScript = entityData->animScript;
     animationNodes = (StaticAnimatorNode**)((s32)animBaseAddr + (s32)entityData->modelAnimationNodes);
     if (swizzlePointers) {
         entity_swizzle_anim_pointers(entityData, animBaseAddr, entity->gfxBaseAddr);
@@ -1332,7 +1332,7 @@ s32 create_shadow_from_data(ShadowBlueprint* bp, f32 x, f32 y, f32 z) {
 
     if (bp->animModelNode != nullptr) {
         shadow->flags |= ENTITY_FLAG_HAS_ANIMATED_MODEL;
-        shadow->entityModelID = create_model_animator(bp->renderCommandList);
+        shadow->entityModelID = create_model_animator(bp->animScript);
         load_model_animator_tree(shadow->entityModelID, bp->animModelNode);
     } else {
         shadow->entityModelID = load_entity_model(bp->renderCommandList);
@@ -1501,6 +1501,39 @@ API_CALLABLE(AssignCrateFlag) {
     }
 
     return ApiStatus_DONE1;
+}
+
+API_CALLABLE(GetEntityPosition) {
+    Bytecode* args = script->ptrReadPos;
+    Entity* entity = get_entity_by_index(evt_get_variable(script, *args++));
+
+    evt_set_variable(script, *args++, entity->pos.x);
+    evt_set_variable(script, *args++, entity->pos.y);
+    evt_set_variable(script, *args++, entity->pos.z);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(SetEntityPosition) {
+    Bytecode* args = script->ptrReadPos;
+    s32 entityIndex = evt_get_variable(script, *args++);
+    s32 x = evt_get_variable(script, *args++);
+    s32 y = evt_get_variable(script, *args++);
+    s32 z = evt_get_variable(script, *args++);
+    Entity* entity = get_entity_by_index(entityIndex);
+
+    entity->pos.x = x;
+    entity->pos.y = y;
+    entity->pos.z = z;
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(SetEntityUsed) {
+    Bytecode* args = script->ptrReadPos;
+    s32 entityIndex = evt_get_variable(script, *args++);
+    Entity* entity = get_entity_by_index(entityIndex);
+
+    entity->flags |= ENTITY_FLAG_USED;
+    return ApiStatus_DONE2;
 }
 
 s32 create_entity_shadow(Entity* entity, f32 x, f32 y, f32 z) {

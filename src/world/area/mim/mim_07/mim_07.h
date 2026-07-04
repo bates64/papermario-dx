@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mim_07.h
 /// @brief Forever Forest - Flowers Vanish
 

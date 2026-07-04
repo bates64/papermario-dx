@@ -154,10 +154,12 @@ segments:
     - [auto, c, audio/core/pull_voice]
     - [auto, c, audio/core/reverb]
     - [auto, c, effects]
-    - [auto, c, 5B320]
+    - [auto, c, item_move_tables]
+    - [auto, c, partner_menu_data]
+    - [auto, c, cursor_hud_scripts]
     - [auto, c, world/world]
     - [auto, c, collision]
-    - [auto, c, 38F00]
+    - [auto, c, npc_hit_reactions]
     - [auto, c, npc_follow]
     - [auto, c, os/nusys/nuboot]
     - [auto, c, os/nusys/nusched]
@@ -394,14 +396,22 @@ segments:
     vram_class: engine1
     subsegments:
     - [auto, c, npc_collision]
-    - [auto, c, 77480]
-    - [auto, c, 7B440]
-    - [auto, c, 7BB60]
-    - [auto, c, 7E9D0]
+    - [auto, c, player]
+    - [auto, c, player_collision]
+    - [auto, c, player_prompts]
+    - [auto, c, player_render]
+    - [auto, c, player_input]
+    - [auto, c, player_physics]
+    - [auto, c, player_actions]
+    - [auto, c, peach_disguise]
     - [auto, c, world/menus]
     - [auto, c, inventory]
     - [auto, c, world/actions]
     - [auto, c, world/partners]
+    - [auto, c, world/partners_control]
+    - [auto, c, world/partners_follow]
+    - [auto, c, world/partners_swap]
+    - [auto, c, world_use_item_wrapper]
     - [auto, c, global_hud_scripts]
     - [auto, c, world/surfaces]
     - [auto, c, status_star_shimmer]
@@ -829,6 +839,8 @@ segments:
     - [auto, c, model]
     - [auto, c, animator]
     - [auto, c, foliage]
+    - [auto, c, tex_pan]
+    - [auto, c, item_choice]
     - [auto, c, entity_model]
     - [auto, c, worker]
     - [auto, c, msg]
@@ -877,13 +889,14 @@ segments:
     - [auto, c, script_list]
     - [auto, c, evt]
     - [auto, c, map_api]
+    - [auto, c, math_api]
     - [auto, c, cam_api]
     - [auto, c, model_api]
     - [auto, c, npc_api]
     - [auto, c, msg_api]
     - [auto, c, player_api]
     - [auto, c, virtual_entity]
-    - [auto, c, f8f60_len_1560]
+    - [auto, c, misc_api]
     - [auto, c, audio_api]
     - [auto, c, item_api]
     - [auto, c, fx_api]
@@ -894,7 +907,7 @@ segments:
     vram_class: engine4
     subsegments:
     - [auto, c, sprite]
-    - [auto, c, 101b90_len_8f0]
+    - [auto, c, sprite_loading]
   - name: entity
     type: code
     start: 0x102610
@@ -8429,6 +8442,7 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
     - [auto, c, npc]
+    - [auto, c, wander_territories]
     - [auto, c, rooms_1]
     - [auto, c, entity]
     - [auto, c, rooms_2]
@@ -8727,7 +8741,6 @@ segments:
     - [auto, c, train]
     - [auto, c, entity]
     - [auto, c, parakarry]
-    - [auto, c, new_partner]
     - [auto, c, foliage]
   - name: iwa_11
     dir: world/area/iwa/iwa_11
@@ -9183,6 +9196,10 @@ segments:
     - [auto, c, rooms]
     - [auto, c, entity]
     - [auto, c, foliage]
+    - [auto, c, npc_composer]
+    - [auto, c, npc_shop_owner]
+    - [auto, c, npc_hint_dryite]
+    - [auto, c, npc_hint_dryite_companion]
   - name: dro_02
     dir: world/area/dro/dro_02
     type: code
@@ -9195,6 +9212,8 @@ segments:
     - [auto, c, main]
     - [auto, c, rooms]
     - [auto, c, npc]
+    - [auto, c, merlee]
+    - [auto, c, moustafa]
     - start: 0x96DFA0
       type: .data
       name: npc
@@ -9569,7 +9588,6 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
     - [auto, c, npc]
-    - [auto, c, new_partner]
   - name: nok_11
     dir: world/area/nok/nok_11
     type: code
@@ -10745,7 +10763,6 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
     - [auto, c, npc]
-    - [auto, c, unused]
     - [auto, c, trees]
     - [auto, c, scenes]
     - [auto, c, treasure]
@@ -11217,7 +11234,6 @@ segments:
     - [auto, c, main]
     - [auto, c, meet_bow]
     - [auto, c, npc]
-    - [auto, c, new_partner]
     - [auto, c, epilogue]
   - name: arn_02
     dir: world/area/arn/arn_02
@@ -11299,7 +11315,6 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
     - [auto, c, entity]
-    - [auto, c, launch]
     - [auto, c, npc]
   - name: arn_10
     dir: world/area/arn/arn_10
@@ -11380,50 +11395,50 @@ segments:
       type: .data
       name: img0
       subsegments:
-      - [0xC047F0, rgba16, img0, 64, 32]
-      - [0xC057F0, gfx, img0]
+      - [0xC047F0, rgba16, tex_wood, 64, 32]
+      - [0xC057F0, gfx, Gfx_SetupTex_Wood]
     - start: 0xC05870
       type: .data
       name: img1
       subsegments:
-      - [0xC05870, rgba16, img1, 64, 32]
-      - [0xC06870, gfx, img1]
+      - [0xC05870, rgba16, tex_floor_tile, 64, 32]
+      - [0xC06870, gfx, Gfx_SetupTex_FloorTile]
     - start: 0xC068F0
       type: .data
       name: img2
       subsegments:
-      - [0xC068F0, rgba16, img2, 32, 32]
-      - [0xC070F0, gfx, img2]
+      - [0xC068F0, rgba16, tex_wood_panel_trim, 32, 32]
+      - [0xC070F0, gfx, Gfx_SetupTex_WoodPanelTrim]
     - start: 0xC07170
       type: .data
       name: img3
       subsegments:
-      - [0xC07170, rgba16, img3, 16, 32]
-      - [0xC07570, gfx, img3]
+      - [0xC07170, rgba16, tex_floor_smooth, 16, 32]
+      - [0xC07570, gfx, Gfx_SetupTex_FloorSmooth]
     - start: 0xC075F0
       type: .data
       name: img4
       subsegments:
-      - [0xC075F0, rgba16, img4, 16, 32]
-      - [0xC079F0, gfx, img4]
+      - [0xC075F0, rgba16, tex_railing_post, 16, 32]
+      - [0xC079F0, gfx, Gfx_SetupTex_RailingPost]
     - start: 0xC07A70
       type: .data
       name: img5
       subsegments:
-      - [0xC07A70, rgba16, img5, 16, 32]
-      - [0xC07E70, gfx, img5]
+      - [0xC07A70, rgba16, tex_railing_post_destroyed, 16, 32]
+      - [0xC07E70, gfx, Gfx_SetupTex_RailingPostDestroyed]
     - start: 0xC07EF0
       type: .data
       name: img6
       subsegments:
-      - [0xC07EF0, rgba16, img6, 32, 32]
-      - [0xC086F0, gfx, img6]
+      - [0xC07EF0, rgba16, tex_wood_panel_ceiling, 32, 32]
+      - [0xC086F0, gfx, Gfx_SetupTex_WoodPanelCeiling]
     - start: 0xC08770
       type: .data
       name: img7
       subsegments:
-      - [0xC08770, rgba16, img7, 32, 32]
-      - [0xC08F70, gfx, img7]
+      - [0xC08770, rgba16, tex_railing_post_damaged, 32, 32]
+      - [0xC08F70, gfx, Gfx_SetupTex_RailingPostDamaged]
     - [0xC08FF0, .data, gfx] # TODO needs additioanl cleanup and gfx splitting
     - [0xC20C70]
   - name: dgb_01_smash_bridges # DMAd at the beginning of tubba blubba's castle (bridge cutscene)
@@ -11992,7 +12007,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
     - [auto, c, npc]
-    - [auto, c, extra]
+    - [auto, c, darkness]
   - name: kzn_09
     dir: world/area/kzn/kzn_09
     type: code
@@ -12203,7 +12218,6 @@ segments:
     - [auto, c, entity]
     - [auto, c, main]
     - [auto, c, npc]
-    - [auto, c, new_partner]
   - name: flo_14
     dir: world/area/flo/flo_14
     type: code
@@ -13064,7 +13078,6 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
     - [auto, c, npc]
-    - [auto, c, new_partner]
   - name: omo_13
     dir: world/area/omo/omo_13
     type: code

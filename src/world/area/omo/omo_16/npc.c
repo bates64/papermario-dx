@@ -1,6 +1,6 @@
 #include "omo_16.h"
 
-#include "world/common/npc/TrainToad.inc.c"
+#include "world/common/npc/TrainToad/idle.inc.c"
 
 NpcData N(NpcData_TrainToad) = {
     .id = NPC_Conductor,

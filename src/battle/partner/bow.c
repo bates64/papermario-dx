@@ -15,13 +15,15 @@ extern EvtScript N(EVS_TakeTurn);
 extern EvtScript N(EVS_Init);
 extern EvtScript N(EVS_ExecuteAction);
 extern EvtScript N(EVS_Celebrate);
-extern EvtScript N(runAway);
-extern EvtScript N(runAwayFail);
-extern EvtScript N(smack);
-extern EvtScript N(outtaSight);
-extern EvtScript N(spook);
-extern EvtScript N(fanSmack);
-extern EvtScript N(hidePlayer);
+extern EvtScript N(EVS_RunAway);
+extern EvtScript N(EVS_RunAwayFail);
+extern EvtScript N(EVS_Attack_Smack);
+extern EvtScript N(EVS_Move_OuttaSight);
+extern EvtScript N(EVS_Move_Spook);
+extern EvtScript N(EVS_Attack_FanSmack);
+extern EvtScript N(EVS_HidePlayer);
+
+extern API_CALLABLE(IsPlayerImmobile);
 
 extern s32 bMarioHideAnims[];
 
@@ -78,25 +80,6 @@ API_CALLABLE(N(ModifyBowPos)) {
     deltaY *= scalingFactor;
     script->varTable[1] += deltaY;
 
-    return ApiStatus_DONE2;
-}
-
-/// Duplicate of IsPlayerImmobile
-API_CALLABLE(N(IsPlayerImmobile)) {
-    BattleStatus* battleStatus = &gBattleStatus;
-    Actor* playerActor = battleStatus->playerActor;
-    s32 isImmobile = playerActor->debuff == STATUS_KEY_UNUSED
-                     || playerActor->debuff == STATUS_KEY_DIZZY
-                     || playerActor->debuff == STATUS_KEY_PARALYZE
-                     || playerActor->debuff == STATUS_KEY_SLEEP
-                     || playerActor->debuff == STATUS_KEY_FROZEN
-                     || playerActor->debuff == STATUS_KEY_STOP;
-
-    if (playerActor->stoneStatus == STATUS_KEY_STONE) {
-        isImmobile = true;
-    }
-
-    script->varTable[0] = isImmobile;
     return ApiStatus_DONE2;
 }
 
@@ -316,9 +299,9 @@ EvtScript N(EVS_TakeTurn) = {
         CaseEq(PHASE_CELEBRATE)
             ExecWait(N(EVS_Celebrate))
         CaseEq(PHASE_RUN_AWAY_START)
-            ExecWait(N(runAway))
+            ExecWait(N(EVS_RunAway))
         CaseEq(PHASE_RUN_AWAY_FAIL)
-            ExecWait(N(runAwayFail))
+            ExecWait(N(EVS_RunAwayFail))
     EndSwitch
     Return
     End
@@ -332,7 +315,7 @@ EvtScript N(EVS_Celebrate) = {
     End
 };
 
-EvtScript N(runAway) = {
+EvtScript N(EVS_RunAway) = {
     SetConst(LVar0, PRT_MAIN)
     SetConst(LVar1, ANIM_BattleBow_Run)
     ExecWait(EVS_Partner_RunAway)
@@ -340,7 +323,7 @@ EvtScript N(runAway) = {
     End
 };
 
-EvtScript N(runAwayFail) = {
+EvtScript N(EVS_RunAwayFail) = {
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(SetGoalToHome, ACTOR_PARTNER)
     Call(SetActorSpeed, ACTOR_PARTNER, Float(6.0))
@@ -359,7 +342,7 @@ EvtScript N(EVS_HandlePhase) = {
         CaseEq(PHASE_ENEMY_BEGIN)
             Call(N(IsOuttaSightActive))
             IfNe(LVar0, 0)
-                ExecWait(N(hidePlayer))
+                ExecWait(N(EVS_HidePlayer))
             EndIf
     EndSwitch
     Return
@@ -378,19 +361,19 @@ EvtScript N(EVS_ExecuteAction) = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar2)
         CaseEq(MOVE_SMACK1)
-            ExecWait(N(smack))
+            ExecWait(N(EVS_Attack_Smack))
         CaseEq(MOVE_SMACK2)
-            ExecWait(N(smack))
+            ExecWait(N(EVS_Attack_Smack))
         CaseEq(MOVE_SMACK3)
-            ExecWait(N(smack))
+            ExecWait(N(EVS_Attack_Smack))
         CaseEq(MOVE_OUTTA_SIGHT)
             Call(SetBattleFlagBits, BS_FLAGS1_4000, false)
-            ExecWait(N(outtaSight))
+            ExecWait(N(EVS_Move_OuttaSight))
         CaseEq(MOVE_SPOOK)
             Call(SetBattleFlagBits, BS_FLAGS1_4000, false)
-            ExecWait(N(spook))
+            ExecWait(N(EVS_Move_Spook))
         CaseEq(MOVE_FAN_SMACK)
-            ExecWait(N(fanSmack))
+            ExecWait(N(EVS_Attack_FanSmack))
     EndSwitch
     Return
     End
@@ -454,7 +437,7 @@ EvtScript N(EVS_ReturnHome_Miss) = {
     End
 };
 
-EvtScript N(80238EE0) = {
+EvtScript N(EVS_ReturnHome_Spook) = {
     Call(PartnerYieldTurn)
     Call(SetGoalToHome, ACTOR_PARTNER)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleBow_Run)
@@ -464,7 +447,7 @@ EvtScript N(80238EE0) = {
     End
 };
 
-EvtScript N(smack) = {
+EvtScript N(EVS_Attack_Smack) = {
     Call(LoadActionCommand, ACTION_COMMAND_SMACK)
     Call(action_command_smack_init)
     Call(SetActionHudPrepareTime, 0)
@@ -651,7 +634,7 @@ EvtScript N(smack) = {
     End
 };
 
-EvtScript N(outtaSight) = {
+EvtScript N(EVS_Move_OuttaSight) = {
     Call(SetActorFlagBits, ACTOR_PLAYER, ACTOR_FLAG_NO_INACTIVE_ANIM, true)
     Call(SetActorFlagBits, ACTOR_PLAYER, ACTOR_FLAG_USING_IDLE_ANIM, false)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
@@ -698,7 +681,7 @@ EvtScript N(outtaSight) = {
     Add(LVar2, 5)
     Call(SetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Call(FlyToGoal, ACTOR_PARTNER, 20, 0, EASING_LINEAR)
-    Call(N(IsPlayerImmobile))
+    Call(IsPlayerImmobile)
     IfEq(LVar0, 0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Crouch)
     EndIf
@@ -718,7 +701,7 @@ EvtScript N(outtaSight) = {
     End
 };
 
-EvtScript N(hidePlayer) = {
+EvtScript N(EVS_HidePlayer) = {
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Wait(20)
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_BOW_APPEAR)
@@ -750,7 +733,7 @@ EvtScript N(hidePlayer) = {
     End
 };
 
-EvtScript N(spook) = {
+EvtScript N(EVS_Move_Spook) = {
     Call(LoadActionCommand, ACTION_COMMAND_SPOOK)
     Call(action_command_spook_init)
     Call(SetupMashMeter, 1, 100, 0, 0, 0, 0)
@@ -983,12 +966,12 @@ EvtScript N(spook) = {
     EndLoop
     Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleBow_Idle)
-    ExecWait(N(80238EE0))
+    ExecWait(N(EVS_ReturnHome_Spook))
     Return
     End
 };
 
-EvtScript N(fanSmack) = {
+EvtScript N(EVS_Attack_FanSmack) = {
     Call(LoadActionCommand, ACTION_COMMAND_SMACK)
     Call(action_command_smack_init)
     Call(SetActionHudPrepareTime, 0)

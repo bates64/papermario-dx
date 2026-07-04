@@ -1,6 +1,6 @@
 #include "kzn_01.h"
 
-#include "world/common/enemy/PutridPiranhaSentinel.inc.c"
+#include "world/common/enemy/PutridPiranhaSentinel/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_PutridPiranha) = {
     Label(0)
@@ -19,13 +19,13 @@ EvtScript N(EVS_NpcIdle_PutridPiranha) = {
     Wait(10 * DT)
     Call(SetNpcPos, NPC_SELF, 320, -220, 0)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_BURROW_SURFACE, SOUND_SPACE_DEFAULT)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_LargePiranha_Putrid_Anim17)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_LargePiranha_Putrid_Emerge)
     Wait(30 * DT)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_LargePiranha_Putrid_Anim01)
-    Call(SpeakToPlayer, NPC_SELF, ANIM_LargePiranha_Putrid_Anim04, ANIM_LargePiranha_Putrid_Anim01, 0, MSG_CH5_00ED)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_LargePiranha_Putrid_Idle)
+    Call(SpeakToPlayer, NPC_SELF, ANIM_LargePiranha_Putrid_Talk, ANIM_LargePiranha_Putrid_Idle, 0, MSG_CH5_00ED)
     Wait(10 * DT)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_BURROW_DIG, SOUND_SPACE_DEFAULT)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_LargePiranha_Putrid_Anim18)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_LargePiranha_Putrid_Burrow)
     Wait(25 * DT)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Call(ResetCam, CAM_DEFAULT, Float(3.0 / DT))
@@ -52,7 +52,7 @@ NpcData N(NpcPutridPiranha) = {
     .init = &N(EVS_NpcInit_PutridPiranha),
     .settings = &N(NpcSettings_PutridPiranhaSentinel),
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
-    .drops = PIRANHA_NO_DROPS,
+    .drops = PIRANHA_SENTINEL_DROPS,
     .animations = PIRANHA_SENTINEL_ANIMS,
 };
 

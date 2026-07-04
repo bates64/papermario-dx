@@ -1,8 +1,6 @@
 #include "hos_10.h"
 #include "effects.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 API_CALLABLE(N(ResumeIntroState)) {
     if (gGameStatusPtr->introPart > INTRO_PART_NONE && gGameStatusPtr->introPart < INTRO_PART_5) {
         gGameStatusPtr->introPart++;
@@ -57,35 +55,35 @@ EvtScript N(EVS_Scene_Rising_Impl) = {
         TEX_PAN_PARAMS_STEP(  400,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_3)
         TEX_PAN_PARAMS_STEP(  600,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_4)
         TEX_PAN_PARAMS_STEP( 1000,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_F)
         TEX_PAN_PARAMS_STEP(    0, 1000,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_E)
         TEX_PAN_PARAMS_STEP(    0,  400,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(EnableTexPanning, MODEL_k2, true)
     Call(EnableTexPanning, MODEL_k7, true)

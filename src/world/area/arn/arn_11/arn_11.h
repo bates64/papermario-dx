@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file arn_11.h
 /// @brief Gusty Gulch - Tubba's Heart Chamber
 

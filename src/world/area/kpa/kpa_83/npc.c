@@ -2,22 +2,9 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/KoopaBros.h"
-
-NpcSettings N(NpcSettings_KoopaBros) = {
-    .height = 35,
-    .radius = 24,
-    .level = ACTOR_LEVEL_KOOPA_TROOPA,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
-
-NpcSettings N(NpcSettings_JrTroopa) = {
-    .height = 32,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/enemy/KoopaBros/idle.inc.c"
+#include "world/common/npc/JrTroopa/idle.inc.c"
 
 API_CALLABLE(N(SetPlayerSpriteFacingAngle)) {
     gPlayerStatus.spriteFacingAngle = script->varTable[0];
@@ -481,7 +468,7 @@ EvtScript N(EVS_NpcInit_Door) = {
     IfEq(GB_KPA83_BowserDoorState, 0)
         Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Door)))
         Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Door)))
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
         Call(SetNpcPos, NPC_SELF, 184, 20, 150)
         Call(EnableNpcShadow, NPC_SELF, false)
     EndIf
@@ -499,7 +486,7 @@ EvtScript N(EVS_NpcInit_JrTroopa) = {
     End
 };
 
-AnimID N(ExtraAnims_KoopaBros)[] = {
+AnimID N(LimitAnims_KoopaBros)[] = {
     ANIM_KoopaBros_Black_Shock,
     ANIM_KoopaBros_Black_Idle,
     ANIM_KoopaBros_Black_IdleCrouch,
@@ -521,7 +508,7 @@ NpcData N(NpcData_Enemies)[] = {
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = BLACK_KOOPA_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_KoopaBros),
+        .limitAnimations = N(LimitAnims_KoopaBros),
     },
     {
         .id = NPC_KoopaBrosRed,
@@ -532,7 +519,7 @@ NpcData N(NpcData_Enemies)[] = {
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = RED_KOOPA_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_KoopaBros),
+        .limitAnimations = N(LimitAnims_KoopaBros),
     },
     {
         .id = NPC_KoopaBrosYlw,
@@ -543,7 +530,7 @@ NpcData N(NpcData_Enemies)[] = {
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = YELLOW_KOOPA_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_KoopaBros),
+        .limitAnimations = N(LimitAnims_KoopaBros),
     },
     {
         .id = NPC_KoopaBrosGrn,
@@ -554,7 +541,7 @@ NpcData N(NpcData_Enemies)[] = {
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = GREEN_KOOPA_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_KoopaBros),
+        .limitAnimations = N(LimitAnims_KoopaBros),
     },
     {
         .id = NPC_JrTroopa,
@@ -564,31 +551,14 @@ NpcData N(NpcData_Enemies)[] = {
         .settings = &N(NpcSettings_JrTroopa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_JrTroopa_Idle,
-            .walk   = ANIM_JrTroopa_Walk,
-            .run    = ANIM_JrTroopa_Walk,
-            .chase  = ANIM_JrTroopa_Walk,
-            .anim_4 = ANIM_JrTroopa_Idle,
-            .anim_5 = ANIM_JrTroopa_Idle,
-            .death  = ANIM_JrTroopa_Idle,
-            .hit    = ANIM_JrTroopa_Idle,
-            .anim_8 = ANIM_JrTroopa_Idle,
-            .anim_9 = ANIM_JrTroopa_Idle,
-            .anim_A = ANIM_JrTroopa_Idle,
-            .anim_B = ANIM_JrTroopa_Idle,
-            .anim_C = ANIM_JrTroopa_Idle,
-            .anim_D = ANIM_JrTroopa_Idle,
-            .anim_E = ANIM_JrTroopa_Idle,
-            .anim_F = ANIM_JrTroopa_Idle,
-        },
+        .animations = JR_TROOPA_ANIMS,
     },
     {
         .id = NPC_Door,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_Door),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,

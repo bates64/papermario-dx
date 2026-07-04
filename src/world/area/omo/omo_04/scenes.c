@@ -35,8 +35,14 @@ EvtScript N(EVS_NpcIdle_Kammy) = {
     End
 };
 
-#define KAMMY_NPC NPC_Kammy
-#include "world/common/util/GetKammyBroomEmitterPos.inc.c"
+API_CALLABLE(N(GetKammyBroomEmitterPos)) {
+    Npc* npc = get_npc_unsafe(NPC_Kammy);
+
+    script->varTable[0] = npc->pos.x + (sin_deg(npc->yaw + gCameras[CAM_DEFAULT].curYaw + 180.0f) * 40.0f);
+    script->varTable[1] = npc->pos.y + 8.0f;
+    script->varTable[2] = npc->pos.z - (cos_deg(npc->yaw + gCameras[CAM_DEFAULT].curYaw + 180.0f) * 40.0f);
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_NpcAux_Kammy) = {
     Set(MF_KammyFlying, false)
@@ -111,7 +117,7 @@ EvtScript N(EVS_Scene_KammySetAmbush) = {
     EndSwitch
     Call(SetNpcPos, NPC_Kammy, 800, 140, -20)
     Call(SetNpcYaw, NPC_Kammy, 270)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim15)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyFastSly)
     IfNe(AB_OMO_CurrentPeachChoice, 2)
         Call(SetNpcPos, MV_AmbushID, NPC_DISPOSE_LOCATION)
     EndIf
@@ -148,7 +154,7 @@ EvtScript N(EVS_Scene_KammySetAmbush) = {
     KillThread(MV_FlightSoundsScriptID)
     Call(PlaySoundAtNpc, NPC_Kammy, SOUND_SKID, SOUND_SPACE_DEFAULT)
     Thread
-        Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim10)
+        Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyBrake)
         Wait(1)
         Call(SetNpcRotation, NPC_Kammy, 0, 0, -5)
         Wait(1)
@@ -181,41 +187,42 @@ EvtScript N(EVS_Scene_KammySetAmbush) = {
     EndLoop
     Wait(15 * DT)
     Call(SetNpcVar, NPC_Kammy, 0, 1)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim13)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyIdleSly)
     Wait(45 * DT)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim0E)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyRodTalk)
     Call(GetNpcPos, NPC_Kammy, LVar0, LVar1, LVar2)
     Add(LVar0, 25)
     Add(LVar1, 38)
     Call(PlaySoundAt, SOUND_KAMMY_SUMMON_MAGIC, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, LVar0, LVar1, LVar2, Float(1.0), 100)
     Wait(100 * DT)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim0F)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyRodCast)
     Add(LVar0, 55)
     Call(PlaySoundAt, SOUND_VANISH_IN_SMOKE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, 0, 0, 1, 15, 3, 8)
     Wait(5 * DT)
     IfNe(AB_OMO_CurrentPeachChoice, 2)
         Call(SetNpcPos, MV_AmbushID, LVar0, 0, 0)
+        Call(EnableNpcShadow, MV_AmbushID, true)
     Else
         Call(MakeItemEntity, MV_AmbushID, LVar0, 0, 0, ITEM_SPAWN_MODE_DECORATION, 0)
     EndIf
     Wait(10 * DT)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim13)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyIdleSly)
     Wait(45 * DT)
     Switch(AB_OMO_CurrentPeachChoice)
         CaseEq(0)
-            Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Anim16, ANIM_WorldKammy_Anim13, 517, MSG_CH4_0036)
+            Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_FlyTalkSly, ANIM_WorldKammy_FlyIdleSly, 517, MSG_CH4_0036)
             Wait(30 * DT)
-            Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Anim16, ANIM_WorldKammy_Anim13, 517, MSG_CH4_0037)
+            Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_FlyTalkSly, ANIM_WorldKammy_FlyIdleSly, 517, MSG_CH4_0037)
         CaseEq(1)
-            Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Anim16, ANIM_WorldKammy_Anim13, 517, MSG_CH4_0038)
+            Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_FlyTalkSly, ANIM_WorldKammy_FlyIdleSly, 517, MSG_CH4_0038)
             Wait(10 * DT)
-            Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Anim16, ANIM_WorldKammy_Anim13, 517, MSG_CH4_0039)
+            Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_FlyTalkSly, ANIM_WorldKammy_FlyIdleSly, 517, MSG_CH4_0039)
         CaseEq(2)
-            Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Anim16, ANIM_WorldKammy_Anim13, 517, MSG_CH4_0034)
+            Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_FlyTalkSly, ANIM_WorldKammy_FlyIdleSly, 517, MSG_CH4_0034)
             Wait(30 * DT)
-            Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Anim16, ANIM_WorldKammy_Anim13, 517, MSG_CH4_0035)
+            Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_FlyTalkSly, ANIM_WorldKammy_FlyIdleSly, 517, MSG_CH4_0035)
     EndSwitch
     Call(SetNpcVar, NPC_Kammy, 0, 0)
     Wait(5 * DT)

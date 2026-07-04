@@ -19,6 +19,7 @@ enum SpriteIDFields {
 };
 
 enum DrawSpriteOptions {
+    DRAW_SPRITE_OPACITY_MASK        = 0x000000FF,
     DRAW_SPRITE_USE_PLAYER_RASTERS  = 0x08000000,
     DRAW_SPRITE_UPSIDE_DOWN         = 0x10000000,
     DRAW_SPRITE_OVERRIDE_PALETTES   = 0x20000000,
@@ -30,12 +31,6 @@ enum {
     PLAYER_SPRITE_MAIN      = 0,
     PLAYER_SPRITE_AUX1      = 1,
     PLAYER_SPRITE_AUX2      = 2,
-};
-
-//TODO this is just a boolean isNpcSprite, using a temp enum for documenting
-enum {
-    SPRITE_MODE_PLAYER  = 0,
-    SPRITE_MODE_NPC     = 1,
 };
 
 typedef struct SpriteComponent {
@@ -66,22 +61,22 @@ typedef struct SpriteAnimComponent {
 } SpriteAnimComponent; // size = 0xC
 
 // TODO: consider moving to 101b90_len_8f0 (sprite_cache)
-typedef struct SpriteRasterCacheEntry {
+typedef struct SpriteRasterEntry {
     /* 0x00 */ IMG_PTR image;
     /* 0x04 */ u8 width;
     /* 0x05 */ u8 height;
     /* 0x06 */ s8 palette;
     /* 0x07 */ s8 quadCacheIndex;
-} SpriteRasterCacheEntry; // size = 0x8
+} SpriteRasterEntry; // size = 0x8
 
 /// Sprite data header.
 typedef struct SpriteAnimData {
-    /* 0x00 */ SpriteRasterCacheEntry** rastersOffset;
+    /* 0x00 */ SpriteRasterEntry** rastersOffset;
     /* 0x04 */ PAL_PTR* palettesOffset;
     /* 0x08 */ s32 maxComponents;
     /* 0x0C */ s32 colorVariations;
     /* 0x10 */ SpriteAnimComponent** animListStart[VLA];
-} SpriteAnimData; // size = 0x14
+} SpriteAnimData; // size = 0x10
 
 typedef struct SpriteInstance {
     /* 0x00 */ s32 spriteIndex;
@@ -149,7 +144,7 @@ void spr_get_player_raster_info(SpriteRasterInfo* out, s32 playerSpriteID, s32 r
 PAL_PTR* spr_get_player_palettes(s32 spriteIndex);
 
 /// Set MSB of `animID` for tail allocation (i.e. `0x80XXYYZZ`).
-s32 spr_load_npc_sprite(s32 animID, u32* extraAnimList);
+s32 spr_load_npc_sprite(s32 animID, AnimID* limitAnimList);
 
 s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale);
 

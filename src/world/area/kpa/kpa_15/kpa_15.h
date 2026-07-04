@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_15.h
 /// @brief Bowser's Castle - Lava Key Room
 

@@ -1,11 +1,12 @@
 #include "arn_09.h"
 #include "entity.h"
+#include "sprite/player.h"
 
 EvtScript N(EVS_UseSpring) = {
-    IfEq(AF_ARN_01, true)
+    IfEq(AF_ARN_UsingWellSpring, true)
         Return
     EndIf
-    Set(AF_ARN_01, true)
+    Set(AF_ARN_UsingWellSpring, true)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
@@ -16,6 +17,24 @@ EvtScript N(EVS_UseSpring) = {
     Wait(100)
     Call(DisablePlayerInput, false)
     Call(DisablePlayerPhysics, false)
+    Return
+    End
+};
+
+EvtScript N(EVS_LandFromWell) = {
+    IfEq(AF_ARN_UsingWellSpring, false)
+        Return
+    EndIf
+    Set(AF_ARN_UsingWellSpring, true)
+    Call(DisablePlayerInput, true)
+    Call(SetPlayerActionState, ACTION_STATE_FALLING)
+    Call(AwaitAnyPlayerFloorTouch)
+    Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
+    Call(SetPlayerJumpscale, Float(1.5))
+    Call(PlayerJump, 50, 0, 0, 16)
+    Call(SetPlayerAnimation, ANIM_Mario1_Idle)
+    Set(AF_ARN_UsingWellSpring, false)
+    Call(DisablePlayerInput, false)
     Return
     End
 };

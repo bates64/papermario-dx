@@ -10,7 +10,6 @@ API_CALLABLE(N(DisableSpotlightSources)) {
     return ApiStatus_DONE2;
 }
 
-#include "../common/SetAvailableDisguise.inc.c"
 
 EvtScript N(EVS_ExitDoors_kkj_11_1) = EVT_EXIT_DOUBLE_DOOR(kkj_12_ENTRY_0, "kkj_11", kkj_11_ENTRY_1,
     COLLIDER_deilit1, MODEL_door1, MODEL_door2);
@@ -50,7 +49,7 @@ EvtScript N(EVS_Main) = {
     Call(SetSpriteShading, SHADING_KKJ_12)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
-        Call(N(SetAvailableDisguise), PEACH_DISGUISE_KOOPATROL)
+        Call(SetAvailableDisguise, PEACH_DISGUISE_KOOPATROL)
         Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     Else
         Call(EnableModel, MODEL_o694, false)

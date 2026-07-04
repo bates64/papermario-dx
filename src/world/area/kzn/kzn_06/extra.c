@@ -56,7 +56,7 @@ API_CALLABLE(N(AdjustFog)) {
     }
 }
 
-API_CALLABLE(N(func_80240A44_C6D364)) {
+API_CALLABLE(N(FadeOutAmbientSounds)) {
     snd_ambient_fade_out(0, true);
     return ApiStatus_DONE2;
 }
@@ -70,7 +70,7 @@ EvtScript N(EVS_LowerMainLavaLevel) = {
     Call(DisablePlayerInput, true)
     Wait(3)
     Call(DisablePlayerPhysics, true)
-    Call(N(func_80240A44_C6D364))
+    Call(N(FadeOutAmbientSounds))
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, -20)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)

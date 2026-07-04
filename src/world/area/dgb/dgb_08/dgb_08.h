@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file dgb_08.h
 /// @brief Tubba's Castle - East Hall (1/2F)
 

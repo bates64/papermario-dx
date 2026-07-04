@@ -1,13 +1,11 @@
 #include "omo_05.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/ShyGuy_Wander.inc.c"
-#include "world/common/enemy/GrooveGuy.inc.c"
-#include "world/common/enemy/SkyGuy.inc.c"
+#include "world/common/enemy/ShyGuy/wander.inc.c"
+#include "world/common/enemy/GrooveGuy/wander.inc.c"
+#include "world/common/enemy/SkyGuy/wander.inc.c"
 
-#include "world/common/npc/GourmetGuy.inc.c"
-
-#include "world/common/complete/ConsumableItemChoice.inc.c"
+#include "world/common/npc/GourmetGuy/idle.inc.c"
 
 API_CALLABLE(N(JudgeFoodQuality)) {
     Bytecode* args = script->ptrReadPos;
@@ -41,23 +39,6 @@ API_CALLABLE(N(SpinCameraAround)) {
     }
 }
 
-BSS s32 N(AllConsumables)[ITEM_NUM_CONSUMABLES + 1];
-
-API_CALLABLE(N(MakeAllConsumablesItemList)) {
-    s32 pos = 0;
-    s32 itemID;
-
-    for (itemID = 0; itemID < NUM_ITEMS; itemID++) {
-        if (item_is_consumable(itemID)) {
-           N(AllConsumables)[pos++] = itemID;
-        }
-    }
-    N(AllConsumables)[pos] = ITEM_NONE;
-
-    return ApiStatus_DONE2;
-}
-
-
 EvtScript N(EVS_NpcInteract_GourmetGuy) = {
     Call(DisablePlayerInput, true)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -68,7 +49,6 @@ EvtScript N(EVS_NpcInteract_GourmetGuy) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(N(MakeAllConsumablesItemList))
     Call(NpcFacePlayer, NPC_SELF, 1)
     Call(SetNpcAnimation, NPC_SELF, ANIM_GourmetGuy_Idle)
     IfEq(GF_OMO01_Met_GourmetGuy, false)
@@ -77,8 +57,8 @@ EvtScript N(EVS_NpcInteract_GourmetGuy) = {
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_GourmetGuy_Talk, ANIM_GourmetGuy_Idle, 0, MSG_CH4_0041)
     EndIf
-    EVT_CHOOSE_CONSUMABLE_FROM(N(AllConsumables), -1)
-    IfLe(LVar0, 0)
+    EVT_CHOOSE_ANY_CONSUMABLE(NPC_SELF)
+    IfLe(LVar0, ITEM_CHOICE_NONE)
         Call(SetNpcAnimation, NPC_SELF, ANIM_GourmetGuy_SitIdle)
         Call(ResetCam, CAM_DEFAULT, Float(8.0 / DT))
         Call(DisablePlayerInput, false)
@@ -190,7 +170,7 @@ EvtScript N(EVS_NpcInteract_GourmetGuy) = {
             Thread
                 Call(ShowMessageAtScreenPos, MSG_CH4_0044, 160, 40)
             EndThread
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SetNpcAnimation, NPC_SELF, ANIM_GourmetGuy_Surprise)
             Thread
                 Call(SetNpcFlagBits, NPC_GourmetGuy_Fork, NPC_FLAG_INVISIBLE, false)
@@ -293,7 +273,7 @@ EvtScript N(EVS_NpcInteract_GourmetGuy) = {
             EndThread
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_GOURMET_GUY_RUN, SOUND_SPACE_DEFAULT)
             Call(SetNpcAnimation, NPC_SELF, ANIM_GourmetGuy_Panic)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetNpcSpeed, NPC_SELF, Float(20.0 / DT))
             Call(NpcMoveTo, NPC_SELF, 0, 110, 0)
             Wait(20 * DT)
@@ -444,7 +424,7 @@ NpcData N(NpcData_GrooveGuy) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_GrooveGuy),
+    .settings = &N(NpcSettings_GrooveGuy_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = GROOVE_GUY_DROPS_A,
     .animations = GROOVE_GUY_ANIMS,

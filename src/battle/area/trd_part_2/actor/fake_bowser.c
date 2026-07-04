@@ -69,7 +69,6 @@ enum N(AnimState) {
 
 #include "common/StartRumbleWithParams.inc.c"
 
-#include "world/common/atomic/ApplyTint.inc.c"
 
 s32 N(BowserDefense)[] = {
     ELEMENT_NORMAL,   1,
@@ -1408,13 +1407,13 @@ EvtScript N(EVS_FakeBowser_HandleEvent) = {
         CaseOrEq(EVENT_BURN_DEATH)
             Call(HideHealthBar, ACTOR_SELF)
             IfEq(LVar0, EVENT_BURN_DEATH)
-                Call(N(SetModelTintMode), APPLY_TINT_MODELS, Ref(N(BowserModels)), ENV_TINT_REMAP)
-                Call(N(SetModelTintParams), ENV_TINT_REMAP, 35, 35, 35, 0, 0, 0, 0, 0, 0)
+                Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(N(BowserModels)), ENV_TINT_REMAP)
+                Call(SetModelTintParams, ENV_TINT_REMAP, 35, 35, 35, 0, 0, 0, 0, 0, 0)
             EndIf
             Set(ArrayVar(0), ANIM_BEGIN_HURT)
             Wait(20)
             IfEq(LVar0, EVENT_BURN_DEATH)
-                Call(N(SetModelTintMode), APPLY_TINT_MODELS, Ref(N(BowserModels)), ENV_TINT_NONE)
+                Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(N(BowserModels)), ENV_TINT_NONE)
                 Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                 Call(GetActorSize, ACTOR_SELF, LVar3, LVar4)
                 DivF(LVar3, Float(2.0))
@@ -1442,12 +1441,12 @@ EvtScript N(EVS_FakeBowser_HandleEvent) = {
         EndCaseGroup
         CaseOrEq(EVENT_BURN_CONTACT)
         CaseOrEq(EVENT_BURN_HIT)
-            Call(N(SetModelTintMode), APPLY_TINT_MODELS, Ref(N(BowserModels)), ENV_TINT_REMAP)
-            Call(N(SetModelTintParams), ENV_TINT_REMAP, 35, 35, 35, 0, 0, 0, 0, 0, 0)
+            Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(N(BowserModels)), ENV_TINT_REMAP)
+            Call(SetModelTintParams, ENV_TINT_REMAP, 35, 35, 35, 0, 0, 0, 0, 0, 0)
             Set(ArrayVar(0), ANIM_BEGIN_HURT)
             Wait(20)
             Set(ArrayVar(0), ANIM_BEGIN_IDLE)
-            Call(N(SetModelTintMode), APPLY_TINT_MODELS, Ref(N(BowserModels)), ENV_TINT_NONE)
+            Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(N(BowserModels)), ENV_TINT_NONE)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(GetActorSize, ACTOR_SELF, LVar3, LVar4)
             DivF(LVar3, Float(2.0))

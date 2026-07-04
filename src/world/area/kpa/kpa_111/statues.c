@@ -1,21 +1,16 @@
 #include "kpa_111.h"
 
-#include "world/common/todo/UnkFunc11.inc.c"
-#include "world/common/todo/UnkFunc12.inc.c"
+#include "world/common/util/PushObjectSupport.inc.c"
 
 EvtScript N(EVS_PushRightStatue_Impl) = {
-#if !VERSION_JP
     SetGroup(EVT_GROUP_NEVER_PAUSE)
-#endif
     Loop(20)
-#if !VERSION_JP
         Call(GetPartnerInUse, LVarA)
         IfNe(LVarA, 0)
             Set(LVar8, -1)
             Return
         EndIf
-#endif
-        Call(N(UnkFunc11), LVar9)
+        Call(N(IsPlayerPushingCollider), LVar9)
         IfEq(LVar0, 0)
             Set(LVar8, -1)
             Return
@@ -24,13 +19,11 @@ EvtScript N(EVS_PushRightStatue_Impl) = {
         EndIf
         Wait(1)
     EndLoop
-#if !VERSION_JP
     Call(GetPartnerInUse, LVarA)
     IfNe(LVarA, 0)
         Set(LVar8, -1)
         Return
     EndIf
-#endif
     Call(DisablePlayerInput, true)
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 100, Float(0.6))
@@ -51,7 +44,7 @@ EvtScript N(EVS_PushRightStatue_Impl) = {
         Loop(0)
             Call(SetPlayerActionState, ACTION_STATE_PUSHING_BLOCK)
             Call(UpdateLerp)
-            Call(N(UnkFunc12))
+            Call(N(UpdatePlayerPushPosition))
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop

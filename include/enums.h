@@ -1,5 +1,4 @@
-#ifndef _ENUMS_H_
-#define _ENUMS_H_
+#pragma once
 
 #include "ultra64.h"
 #include "types.h"
@@ -2345,7 +2344,7 @@ enum Locations {
 
 typedef enum ScreenTransition {
     TRANSITION_STANDARD                 = 0,    // fade to/from black
-    TRANSITION_TOY_TRAIN                = 1,    // similar to TRANSITION_TOY_TRAIN, but fade applies to whole screen
+    TRANSITION_TOY_TRAIN                = 1,    // similar to TRANSITION_STANDARD, but fade applies to whole screen
     TRANSITION_END_DEMO_SCENE_BLACK     = 2,    // rapidly fade to black
     TRANSITION_END_DEMO_SCENE_WHITE     = 3,    // slow fade to white -> rapid fade in from white
     TRANSITION_BEGIN_OR_END_GAME        = 4,    // slow fade to/from black
@@ -2697,7 +2696,7 @@ enum ItemEntityFlags {
     ITEM_ENTITY_FLAG_FULLSIZE                   = 0x00040000,
     ITEM_ENTITY_FLAG_TRANSPARENT                = 0x00080000,
     ITEM_ENTITY_FLAG_INVISIBLE                  = 0x00100000, // spawned with ITEM_SPAWN_MODE_INVISIBLE
-    ITEM_ENTITY_FLAG_CANT_COLLECT               = 0x00200000,
+    ITEM_ENTITY_FLAG_PARTNER_COLLECTING         = 0x00200000,
     ITEM_ENTITY_FLAG_400000                     = 0x00400000,
     ITEM_ENTITY_FLAG_800000                     = 0x00800000,
     ITEM_ENTITY_FLAG_TOSS_HIGHER                = 0x01000000,
@@ -2974,18 +2973,10 @@ enum PartnerActions {
     PARTNER_ACTION_LAKILESTER_1     = 1,
 };
 
-enum PartnerStates {
-    PARTNER_CMD_NONE                = 0,
-    PARTNER_CMD_INIT                = 1,
-    PARTNER_CMD_INSTA_SWITCH        = 2, // skips put away / take out scripts. assumes valid current partner.
-    PARTNER_CMD_SWITCH              = 3, // assumes valid current partner.
-    PARTNER_CMD_PUT_AWAY            = 4, // switches to null partner.
-    PARTNER_CMD_INSTA_PUT_AWAY      = 5,
-    PARTNER_CMD_TAKE_OUT            = 6, // assumes no current partner.
-    PARTNER_CMD_INSTA_TAKE_OUT      = 7,
-    PARTNER_CMD_USE_ABILITY         = 8,
-    PARTNER_CMD_RESET               = 9,
-    PARTNER_CMD_ABORT               = 10,
+enum PartnerForcedFollowModes {
+    PARTNER_FORCED_FOLLOW_NONE      = 0,
+    PARTNER_FORCED_FOLLOW_HOLD      = 1,
+    PARTNER_FORCED_FOLLOW_ONCE      = 2,
 };
 
 /// See [`gAreas`].
@@ -3031,18 +3022,18 @@ enum NpcFlags {
     NPC_FLAG_ENABLED                        = 0x00000001, // Does nothing aside from making npc->flags != 0
     NPC_FLAG_INVISIBLE                      = 0x00000002, // NPC will not be drawn or cause surface effects while moving
     NPC_FLAG_INACTIVE                       = 0x00000004, // NPC will not render, move, or have collisions with other NPCs. They may still be interacted with.
-    NPC_FLAG_FLYING                         = 0x00000008,
+    NPC_FLAG_FLYING                         = 0x00000008, // Not really flying, disables snap-to-group collision check and enabled terrain height following in FlyingAI.
     NPC_FLAG_HAS_SHADOW                     = 0x00000010, // Set by default and by enable_npc_shadow
     NPC_FLAG_NO_SHADOW_RAYCAST              = 0x00000020, // Shadows are tied to NPC position instead of raycasting below the NPC
     NPC_FLAG_IGNORE_WORLD_COLLISION         = 0x00000040,
     NPC_FLAG_UPSIDE_DOWN                    = 0x00000080, // Render NPCs upside-down
-    NPC_FLAG_IGNORE_PLAYER_COLLISION        = 0x00000100,
+    NPC_FLAG_IGNORE_CHAR_COLLISION          = 0x00000100, // Ignores collision with player and other NPCs.
     NPC_FLAG_GRAVITY                        = 0x00000200, // Enables gravity. Does nothing if NPC_FLAG_JUMPING is set.
     NPC_FLAG_DONT_UPDATE_SHADOW_Y           = 0x00000400, // When shadow raycasting is off, only X and Z update as NPC moves
     NPC_FLAG_JUMPING                        = 0x00000800,
     NPC_FLAG_GROUNDED                       = 0x00001000, // Touching the ground
-    NPC_FLAG_COLLDING_WITH_WORLD            = 0x00002000, // Colliding with world in front or to the sides of the NPC
-    NPC_FLAG_COLLDING_FORWARD_WITH_WORLD    = 0x00004000, // Colliding with world directly in front of NPC
+    NPC_FLAG_COLLIDING_WITH_WORLD           = 0x00002000, // Colliding with world in front or to the sides of the NPC
+    NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD   = 0x00004000, // Colliding with world directly in front of NPC
     NPC_FLAG_IGNORE_ENTITY_COLLISION        = 0x00008000,
     NPC_FLAG_DIRTY_SHADOW                   = 0x00010000, // Set if shadow is dirty (needs to be repositioned etc.)
     NPC_FLAG_REFLECT_WALL                   = 0x00020000, // Mirror rendering across z=0
@@ -3058,7 +3049,7 @@ enum NpcFlags {
     NPC_FLAG_WORLD_COLLISION_DIRTY          = 0x08000000,
     NPC_FLAG_USE_INSPECT_ICON               = 0x10000000, // Approaching this NPC will cause a red ! to appear.
     NPC_FLAG_RAYCAST_TO_INTERACT            = 0x20000000, // Intended to require a line of sight raycast before conversations can be triggered. Seems bugged.
-    NPC_FLAG_NO_ANIMS_LOADED                = 0x40000000, // Npc has no animations loaded
+    NPC_FLAG_USES_PLAYER_AUX_SPRITE         = 0x40000000, // This NPC uses the player sprite system, rather than NPC. Used for Peach as an NPC.
     NPC_FLAG_SUSPENDED                      = 0x80000000,
 };
 
@@ -3461,7 +3452,7 @@ enum EnemyAnimIndices {
     ENEMY_ANIM_INDEX_RUN          = 2,
     ENEMY_ANIM_INDEX_CHASE        = 3,
     ENEMY_ANIM_INDEX_JUMP         = 4,
-    ENEMY_ANIM_INDEX_05           = 5,
+    ENEMY_ANIM_INDEX_UNUSED       = 5,
     ENEMY_ANIM_INDEX_DEATH        = 6,
     ENEMY_ANIM_INDEX_HIT          = 7,
 };
@@ -3959,6 +3950,12 @@ enum ModelGroupVisibility {
     MODEL_GROUP_VISIBLE         = 1,
     MODEL_GROUP_OTHERS_HIDDEN   = 2,
     MODEL_GROUP_OTHERS_VISIBLE  = 3,
+};
+
+enum ApplyTintTarget {
+    APPLY_TINT_MODELS = 0,
+    APPLY_TINT_GROUPS = 1,
+    APPLY_TINT_BG     = 2,
 };
 
 enum TintMode {
@@ -4610,28 +4607,34 @@ enum NpcDropFlags {
     NPC_DROP_FLAG_80                = 0x80,
 };
 
+enum ImgFXRenderResult {
+    IMGFX_RENDER_RESULT_NO          = 0,
+    IMGFX_RENDER_RESULT_DONE        = 1,
+    IMGFX_RENDER_RESULT_HOLDING     = 2,
+};
+
 enum ImgFXStateFlags {
     IMGFX_FLAG_VALID                = 0x00000001,
     IMGFX_FLAG_G_CULL_BACK          = 0x00000002,
     IMGFX_FLAG_G_CULL_FRONT         = 0x00000004,
-    IMGFX_FLAG_8                    = 0x00000008,
+    IMGFX_FLAG_UNUSED_A             = 0x00000008, // no remaining effect
     IMGFX_FLAG_SKIP_GFX_SETUP       = 0x00000010,
     IMGFX_FLAG_SKIP_TEX_SETUP       = 0x00000020,
-    IMGFX_FLAG_40                   = 0x00000040,
+    IMGFX_FLAG_NO_ZBUFFER           = 0x00000040,
     IMGFX_FLAG_LOOP_ANIM            = 0x00000080,
     IMGFX_FLAG_REVERSE_ANIM         = 0x00000100, // fold animation plays backwards (from end to start)
-    IMGFX_FLAG_200                  = 0x00000200,
-    IMGFX_FLAG_400                  = 0x00000400,
-    IMGFX_FLAG_800                  = 0x00000800,
+    IMGFX_FLAG_ANIM_INIT            = 0x00000200,
+    IMGFX_FLAG_ALPHA_CVG            = 0x00000400,
+    IMGFX_FLAG_HOLD_DONE            = 0x00000800, // hold on the final frame when finished, prevents auto-disposal
     IMGFX_FLAG_ANIM_DONE            = 0x00001000,
-    IMGFX_FLAG_2000                 = 0x00002000,
-    IMGFX_FLAG_4000                 = 0x00004000,
-    IMGFX_FLAG_8000                 = 0x00008000,
+    IMGFX_FLAG_USE_LIGHTING         = 0x00002000,
+    IMGFX_FLAG_HOLDING              = 0x00004000,
+    IMGFX_FLAG_UNUSED_B             = 0x00008000,
     IMGFX_FLAG_NO_FILTERING         = 0x00010000,
-    IMGFX_FLAG_20000                = 0x00020000,
-    IMGFX_FLAG_40000                = 0x00040000,
-    IMGFX_FLAG_80000                = 0x00080000,
-    IMGFX_FLAG_100000               = 0x00100000,
+    IMGFX_FLAG_FORCE_CLEAR          = 0x00020000,
+    IMGFX_FLAG_UNUSED_C             = 0x00040000,
+    IMGFX_FLAG_AS_SPRITE            = 0x00080000,
+    IMGFX_FLAG_SPRITE_SHADING       = 0x00100000, // allow sprite shading, even if for a non-sprite imgfx
 };
 
 typedef enum ImgFXType {
@@ -4717,11 +4720,8 @@ enum ImgFXHologramTypes {
 };
 
 enum SpriteCompImgFXFlags {
-    SPR_IMGFX_FLAG_10000000             = 0x10000000,
-    SPR_IMGFX_FLAG_20000000             = 0x20000000,
-    SPR_IMGFX_FLAG_40000000             = 0x40000000,
-    SPR_IMGFX_FLAG_80000000             = 0x80000000,
-    SPR_IMGFX_FLAG_ALL                  = 0xF0000000,
+    SPR_IMGFX_FLAG_ENABLED              = 0x10000000, // when set, sprites will render through ImgFx
+    SPR_IMGFX_FLAG_MASK                 = 0xF0000000,
 };
 
 enum SpriteShadingFlags {
@@ -5812,12 +5812,18 @@ enum BackgroundFlags {
 };
 
 enum EncounterStates {
-    ENCOUNTER_STATE_NONE            = 0,
-    ENCOUNTER_STATE_CREATE          = 1,
-    ENCOUNTER_STATE_NEUTRAL         = 2,
-    ENCOUNTER_STATE_PRE_BATTLE      = 3,
-    ENCOUNTER_STATE_CONVERSATION    = 4,
-    ENCOUNTER_STATE_POST_BATTLE     = 5,
+    ENCOUNTER_STATE_NONE                = 0,
+    ENCOUNTER_STATE_CREATE              = 1,
+    ENCOUNTER_STATE_NEUTRAL             = 2,
+    ENCOUNTER_STATE_PRE_BATTLE          = 3,
+    ENCOUNTER_STATE_CONVERSATION        = 4,
+    ENCOUNTER_STATE_POST_BATTLE         = 5,
+};
+
+enum BattleTransitionStates {
+    BATTLE_TRANSITION_STATE_LOADING     = -1,
+    BATTLE_TRANSITION_STATE_STARTED     = 0,
+    BATTLE_TRANSITION_STATE_COMPLETE    = 1,
 };
 
 enum EncounterCreateSubStates {
@@ -5947,5 +5953,3 @@ enum LandingCamAdjustMode {
     LANDING_CAM_CHECK_SURFACE = 1,  // allow landing cam unless the surface is lava
     LANDING_CAM_ALWAYS_ADJUST = 2,
 };
-
-#endif

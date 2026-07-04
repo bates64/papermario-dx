@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_23.h
 /// @brief Goomba Region - Chapter End
 
@@ -27,8 +29,8 @@ enum {
 };
 
 enum {
-    AF_JAN01_TreeDrop_StarPiece               = MapFlag(10),
-    MF_Unk_0B               = MapFlag(11),
+    MF_EndChapterSceneDone  = MapFlag(10),
+    MF_SpiritReleased       = MapFlag(11),
 };
 
 #define NAMESPACE kmr_23

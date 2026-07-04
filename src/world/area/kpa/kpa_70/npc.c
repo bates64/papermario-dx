@@ -1,6 +1,6 @@
 #include "kpa_70.h"
 
-#include "world/common/enemy/Koopatrol_Wander.inc.c"
+#include "world/common/enemy/Koopatrol/wander.inc.c"
 
 NpcData N(NpcData_Koopatrol_01) = {
     .id = NPC_Koopatrol_01,

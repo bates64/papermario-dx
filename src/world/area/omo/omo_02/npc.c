@@ -1,9 +1,9 @@
 #include "omo_02.h"
 
-#include "world/common/enemy/ShyGuy_Wander.inc.c"
-#include "world/common/enemy/ShyGuy_Guard.inc.c"
-#include "world/common/enemy/ShyGuy_Stationary.inc.c"
-#include "world/common/enemy/SpyGuy.inc.c"
+#include "world/common/enemy/ShyGuy/wander.inc.c"
+#include "world/common/enemy/ShyGuy/guard.inc.c"
+#include "world/common/enemy/ShyGuy/idle.inc.c"
+#include "world/common/enemy/SpyGuy/wander.inc.c"
 
 EvtScript N(EVS_RestrictCamFromBarricade) = {
     Label(0)
@@ -41,7 +41,7 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Loner) = {
         Call(SetCamSpeed, CAM_DEFAULT, Float(2.0 / DT))
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVarA)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim03)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
         Call(SetNpcSpeed, NPC_SELF, Float(6.0 / DT))
         Call(NpcMoveTo, NPC_SELF, -575, 0, 0)
         KillThread(LVarA)
@@ -232,7 +232,7 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Crowd) = {
                     Switch(LVar2)
                         CaseEq(op_CS_MOVE)
                             BufRead2(LVar3, LVar4)
-                            Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim04)
+                            Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Dash)
                             Call(SetNpcSpeed, NPC_SELF, Float(10.0))
                             Call(NpcMoveTo, NPC_SELF, LVar3, LVar4, 0)
                         CaseEq(op_CS_JUMP)
@@ -288,7 +288,7 @@ NpcData N(NpcData_ShyGuy_Loner) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
     .init = &N(EVS_NpcInit_ShyGuy_Loner),
-    .settings = &N(NpcSettings_ShyGuy_Stationary),
+    .settings = &N(NpcSettings_ShyGuy),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
@@ -300,7 +300,7 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -310,7 +310,7 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -320,7 +320,7 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -330,7 +330,7 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -340,7 +340,7 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -350,7 +350,7 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -360,7 +360,7 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -370,7 +370,7 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -380,7 +380,7 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -390,7 +390,7 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -414,7 +414,7 @@ NpcData N(NpcData_SpyGuy)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_SpyGuy),
+        .settings = &N(NpcSettings_SpyGuy_Wander),
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = SPY_GUY_DROPS,
         .animations = SPY_GUY_ANIMS,

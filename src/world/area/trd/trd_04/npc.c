@@ -2,9 +2,9 @@
 
 extern EvtScript N(EVS_DropSwitch);
 
-#include "world/common/enemy/KoopaTroopa_Wander.inc.c"
-#include "world/common/enemy/KoopaTroopa_Patrol.inc.c"
-#include "world/common/enemy/Paratroopa.inc.c"
+#include "world/common/enemy/KoopaTroopa/wander.inc.c"
+#include "world/common/enemy/KoopaTroopa/patrol.inc.c"
+#include "world/common/enemy/Paratroopa/wander.inc.c"
 
 EvtScript N(EVS_NpcDefeat_KoopaTroopa) = {
     Call(GetBattleOutcome, LVar0)
@@ -95,7 +95,7 @@ NpcData N(NpcData_ParaTroopa) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_ParaTroopa),
+    .settings = &N(NpcSettings_ParaTroopa_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PARATROOPA_DROPS,
     .animations = PARATROOPA_ANIMS,

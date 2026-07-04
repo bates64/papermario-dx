@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file trd_01.h
 /// @brief Koopa Bros Fortress - Left Tower
 
@@ -20,7 +22,7 @@ enum {
 };
 
 enum {
-    MV_Padlock_EntityIndex          = MapVar(0),
+    MV_EntityID_Padlock             = MapVar(0),
 };
 
 enum {

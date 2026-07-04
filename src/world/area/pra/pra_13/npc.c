@@ -1,38 +1,37 @@
 #include "pra_13.h"
+#include "effects.h"
 #include "sprite.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/Bombette.h"
-#include "world/common/enemy/Duplighost.h"
+#include "world/common/enemy/Bombette/base.h"
+#include "world/common/enemy/Duplighost/disguised.inc.c"
 
-NpcSettings N(NpcSettings_Player) = {
-    .height = 30,
-    .radius = 45,
-    .level = ACTOR_LEVEL_NONE,
-};
-
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
-#include "world/common/todo/PlayBigSmokePuff.inc.c"
-
-API_CALLABLE(N(DoNothingWithNpcID)) {
+API_CALLABLE(N(PlayBigSmokePuff)) {
     Bytecode* args = script->ptrReadPos;
-    s32 npcID = evt_get_variable(script, *args++);
+    s32 x = evt_get_variable(script, *args++);
+    s32 y = evt_get_variable(script, *args++);
+    s32 z = evt_get_variable(script, *args++);
 
-    get_npc_safe(npcID);
+    fx_big_smoke_puff(x, y, z);
+
     return ApiStatus_DONE2;
 }
 
-void N(appendGfx_fake_player)(void* data);
-void N(worker_draw_fake_player)(void);
+void N(appendGfx_fake_player)(void* data) {
+    Npc* npc = data;
+    Matrix4f mtxTransform, mtxTranslate, sp98, mtxScale;
 
-API_CALLABLE(N(CreateFakePlayerRenderer)) {
-    script->array[0] = create_worker_scene(nullptr, N(worker_draw_fake_player));
-    return ApiStatus_DONE2;
+    npc_get_render_yaw(npc);
+    guRotateF(mtxTransform, npc->renderYaw + gCameras[gCurrentCamID].curYaw, 0.0f, 1.0f, 0.0f);
+    guScaleF(mtxScale, SPRITE_WORLD_SCALE_F, SPRITE_WORLD_SCALE_F, SPRITE_WORLD_SCALE_F);
+    guMtxCatF(mtxTransform, mtxScale, mtxTransform);
+    guTranslateF(mtxTranslate, npc->pos.x, npc->pos.y, npc->pos.z);
+    guMtxCatF(mtxTransform, mtxTranslate, mtxTransform);
+    spr_update_player_sprite(PLAYER_SPRITE_AUX2, npc->curAnim, 1.0f);
+    spr_draw_player_sprite(PLAYER_SPRITE_AUX2, 0, 0, 0, mtxTransform);
 }
 
-void N(worker_draw_fake_player)(void) {
+void N(worker_render_fake_player)(void) {
     RenderTask rt;
     RenderTask* rtPtr = &rt;
     Npc* npc = get_npc_safe(NPC_FakeMario);
@@ -49,18 +48,9 @@ void N(worker_draw_fake_player)(void) {
     }
 }
 
-void N(appendGfx_fake_player)(void* data) {
-    Npc* npc = data;
-    Matrix4f mtxTransform, mtxTranslate, sp98, mtxScale;
-
-    npc_get_render_yaw(npc);
-    guRotateF(mtxTransform, npc->renderYaw + gCameras[gCurrentCamID].curYaw, 0.0f, 1.0f, 0.0f);
-    guScaleF(mtxScale, SPRITE_WORLD_SCALE_F, SPRITE_WORLD_SCALE_F, SPRITE_WORLD_SCALE_F);
-    guMtxCatF(mtxTransform, mtxScale, mtxTransform);
-    guTranslateF(mtxTranslate, npc->pos.x, npc->pos.y, npc->pos.z);
-    guMtxCatF(mtxTransform, mtxTranslate, mtxTransform);
-    spr_update_player_sprite(PLAYER_SPRITE_AUX2, npc->curAnim, 1.0f);
-    spr_draw_player_sprite(PLAYER_SPRITE_AUX2, 0, 0, 0, mtxTransform);
+API_CALLABLE(N(CreateFakePlayerRenderer)) {
+    script->array[0] = create_worker_scene(nullptr, N(worker_render_fake_player));
+    return ApiStatus_DONE2;
 }
 
 EvtScript N(EVS_ImposterSpin) = {
@@ -100,12 +90,12 @@ EvtScript N(EVS_Scene_ImpostersCaught) = {
                 Call(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
                 Call(SetNpcPos, NPC_Duplighost_01, LVar0, LVar1, LVar2)
                 Call(PlaySoundAtNpc, NPC_Duplighost_01, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
-                Call(SetNpcFlagBits, NPC_Duplighost_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_Duplighost_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Set(LVar4, 2)
                 Call(SetNpcYaw, NPC_Duplighost_01, 90)
                 ExecWait(N(EVS_ImposterSpin))
-                Call(SetNpcAnimation, NPC_Duplighost_01, ANIM_Duplighost_Anim04)
-                Call(SetNpcFlagBits, NPC_Duplighost_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                Call(SetNpcAnimation, NPC_Duplighost_01, ANIM_Duplighost_Run)
+                Call(SetNpcFlagBits, NPC_Duplighost_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Call(NpcMoveTo, NPC_Duplighost_01, 430, -70, 15)
             EndThread
             Thread
@@ -114,13 +104,13 @@ EvtScript N(EVS_Scene_ImpostersCaught) = {
                 Call(SetNpcPos, NPC_FakeBombette, 389, 0, -61)
                 Call(SetNpcPos, NPC_Duplighost_02, LVar0, LVar1, LVar2)
                 Call(PlaySoundAtNpc, NPC_Duplighost_02, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
-                Call(SetNpcFlagBits, NPC_FakeBombette, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_HAS_NO_SPRITE, true)
-                Call(SetNpcFlagBits, NPC_Duplighost_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_FakeBombette, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_HAS_NO_SPRITE, true)
+                Call(SetNpcFlagBits, NPC_Duplighost_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Set(LVar4, 3)
                 Call(SetNpcYaw, NPC_Duplighost_02, 90)
                 ExecWait(N(EVS_ImposterSpin))
-                Call(SetNpcAnimation, NPC_Duplighost_02, ANIM_Duplighost_Anim04)
-                Call(SetNpcFlagBits, NPC_Duplighost_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                Call(SetNpcAnimation, NPC_Duplighost_02, ANIM_Duplighost_Run)
+                Call(SetNpcFlagBits, NPC_Duplighost_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Call(NpcMoveTo, NPC_Duplighost_02, 420, -70, 15)
             EndThread
             Wait(35)
@@ -134,25 +124,25 @@ EvtScript N(EVS_Scene_ImpostersCaught) = {
 EvtScript N(EVS_Scene_DefeatImposters) = {
     Call(SetNpcPos, NPC_Duplighost_01, 400, 0, -70)
     Call(SetNpcPos, NPC_Duplighost_02, 370, 0, -70)
-    Call(SetNpcAnimation, NPC_Duplighost_01, ANIM_Duplighost_Anim02)
-    Call(SetNpcAnimation, NPC_Duplighost_02, ANIM_Duplighost_Anim02)
+    Call(SetNpcAnimation, NPC_Duplighost_01, ANIM_Duplighost_Idle)
+    Call(SetNpcAnimation, NPC_Duplighost_02, ANIM_Duplighost_Idle)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(SetNpcPos, NPC_FakeBombette, NPC_DISPOSE_LOCATION)
     Wait(10)
-    Call(SpeakToPlayer, NPC_Duplighost_01, ANIM_Duplighost_Anim05, ANIM_Duplighost_Anim02, 0, MSG_CH7_013B)
+    Call(SpeakToPlayer, NPC_Duplighost_01, ANIM_Duplighost_Talk, ANIM_Duplighost_Idle, 0, MSG_CH7_013B)
     Wait(10)
     Call(InterpNpcYaw, NPC_Duplighost_01, 270, 0)
     Call(InterpNpcYaw, NPC_Duplighost_02, 270, 0)
     Wait(15)
     Thread
         Call(PlaySoundAtNpc, NPC_Duplighost_01, SOUND_DUPLIGHOST_LEAP, SOUND_SPACE_DEFAULT)
-        Call(SetNpcAnimation, NPC_Duplighost_01, ANIM_Duplighost_Anim04)
+        Call(SetNpcAnimation, NPC_Duplighost_01, ANIM_Duplighost_Run)
         Call(NpcMoveTo, NPC_Duplighost_01, 0, -70, 45)
         Call(SetNpcPos, NPC_Duplighost_01, NPC_DISPOSE_LOCATION)
     EndThread
     Call(PlaySoundAtNpc, NPC_Duplighost_02, SOUND_DUPLIGHOST_LEAP, SOUND_SPACE_DEFAULT)
-    Call(SetNpcAnimation, NPC_Duplighost_02, ANIM_Duplighost_Anim04)
+    Call(SetNpcAnimation, NPC_Duplighost_02, ANIM_Duplighost_Run)
     Call(NpcMoveTo, NPC_Duplighost_02, -30, -70, 45)
     Call(SetNpcPos, NPC_Duplighost_02, -30, -1000, 0)
     Set(GB_StoryProgress, STORY_CH7_DEFEATED_MIRROR_DUPLIGHOSTS)
@@ -224,7 +214,7 @@ NpcData N(NpcData_FakeMario) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
     .init = &N(EVS_NpcInit_FakeMario),
-    .settings = &N(NpcSettings_Player),
+    .settings = &N(NpcSettings_Duplighost),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = BOMBETTE_ANIMS,
@@ -236,7 +226,7 @@ NpcData N(NpcData_Imposters)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
         .init = &N(EVS_NpcInit_FakeBombette),
-        .settings = &N(NpcSettings_Player),
+        .settings = &N(NpcSettings_Duplighost),
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = BOMBETTE_ANIMS,
@@ -246,7 +236,7 @@ NpcData N(NpcData_Imposters)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Duplighost_01),
-        .settings = &N(NpcSettings_Player),
+        .settings = &N(NpcSettings_Duplighost),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = DUPLIGHOST_ANIMS,
@@ -256,7 +246,7 @@ NpcData N(NpcData_Imposters)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Duplighost_02),
-        .settings = &N(NpcSettings_Player),
+        .settings = &N(NpcSettings_Duplighost),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = DUPLIGHOST_ANIMS,

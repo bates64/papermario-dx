@@ -1,6 +1,6 @@
 #include "pra_10.h"
 
-#include "world/common/enemy/Swooper.inc.c"
+#include "world/common/enemy/Swooper/wander.inc.c"
 
 EvtScript N(EVS_NpcInit_Swoopula) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
@@ -25,7 +25,7 @@ NpcData N(NpcData_Swoopula_01) = {
         }
     },
     .init = &N(EVS_NpcInit_Swoopula),
-    .settings = &N(NpcSettings_Swoopula),
+    .settings = &N(NpcSettings_Swoopula_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = SWOOPULA_DROPS,
     .animations = SWOOPULA_ANIMS,
@@ -48,7 +48,7 @@ NpcData N(NpcData_Swoopula_02) = {
         }
     },
     .init = &N(EVS_NpcInit_Swoopula),
-    .settings = &N(NpcSettings_Swoopula),
+    .settings = &N(NpcSettings_Swoopula_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = SWOOPULA_DROPS,
     .animations = SWOOPULA_ANIMS,

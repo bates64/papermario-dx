@@ -1,7 +1,7 @@
 #include "mgm_00.h"
 
-#include "world/common/npc/Toad_Patrol.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Toad/patrol.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
 API_CALLABLE(N(GetAvailableGamesCount)) {
     s32 numGames = 0;
@@ -170,7 +170,7 @@ NpcData N(NpcData_RedToad) = {
     .pos = { -213.0f, 12.0f, -180.0f },
     .yaw = 90,
     .init = &N(EVS_NpcInit_RedToad),
-    .settings = &N(NpcSettings_Toad_Stationary),
+    .settings = &N(NpcSettings_Toad),
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = TOAD_RED_ANIMS,

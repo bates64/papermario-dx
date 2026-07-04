@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_101.h
 /// @brief Bowser's Castle - Ultra Shroom Room
 

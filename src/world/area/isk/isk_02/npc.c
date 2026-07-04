@@ -1,6 +1,6 @@
 #include "isk_02.h"
 
-#include "world/common/enemy/PokeyMummy.inc.c"
+#include "world/common/enemy/PokeyMummy/wander.inc.c"
 
 EvtScript N(EVS_NpcIdle_Pokey_01) = {
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_IGNORE_PARTNER, true)
@@ -16,7 +16,7 @@ EvtScript N(EVS_NpcIdle_Pokey_01) = {
     Call(NpcMoveTo, NPC_SELF, -315, 455, 10)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_PokeyMummy)))
+    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_PokeyMummy_Wander)))
     Return
     End
 };
@@ -35,7 +35,7 @@ EvtScript N(EVS_NpcIdle_Pokey_02) = {
     Call(NpcMoveTo, NPC_SELF, -145, 535, 10)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_PokeyMummy)))
+    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_PokeyMummy_Wander)))
     Return
     End
 };
@@ -54,7 +54,7 @@ EvtScript N(EVS_NpcIdle_Pokey_03) = {
     Call(NpcMoveTo, NPC_SELF, 50, 550, 10)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_PokeyMummy)))
+    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_PokeyMummy_Wander)))
     Return
     End
 };
@@ -97,7 +97,7 @@ NpcData N(NpcData_Pokey_01) = {
         }
     },
     .init = &N(EVS_NpcInit_Pokey_01),
-    .settings = &N(NpcSettings_PokeyMummy),
+    .settings = &N(NpcSettings_PokeyMummy_Wander),
     .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = POKEY_MUMMY_DROPS,
     .animations = POKEY_MUMMY_ANIMS,
@@ -120,7 +120,7 @@ NpcData N(NpcData_Pokey_02) = {
         }
     },
     .init = &N(EVS_NpcInit_Pokey_02),
-    .settings = &N(NpcSettings_PokeyMummy),
+    .settings = &N(NpcSettings_PokeyMummy_Wander),
     .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = POKEY_MUMMY_DROPS,
     .animations = POKEY_MUMMY_ANIMS,
@@ -143,7 +143,7 @@ NpcData N(NpcData_Pokey_03) = {
         }
     },
     .init = &N(EVS_NpcInit_Pokey_03),
-    .settings = &N(NpcSettings_PokeyMummy),
+    .settings = &N(NpcSettings_PokeyMummy_Wander),
     .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = POKEY_MUMMY_DROPS,
     .animations = POKEY_MUMMY_ANIMS,

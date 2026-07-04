@@ -343,6 +343,10 @@ segments:
     - [auto, c, inventory]
     - [auto, c, world/actions]
     - [auto, c, world/partners]
+    - [auto, c, world/partners_control]
+    - [auto, c, world/partners_follow]
+    - [auto, c, world/partners_swap]
+    - [auto, c, world_use_item_wrapper]
     - [auto, c, global_hud_scripts]
     - [auto, c, world/surfaces]
     - [auto, c, status_star_shimmer]
@@ -10555,7 +10559,6 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
     - [auto, c, npc]
-    - [auto, c, unused]
     - [auto, c, trees]
     - [auto, c, scenes]
     - [auto, c, treasure]
@@ -11190,50 +11193,50 @@ segments:
       type: .data
       name: img0
       subsegments:
-      - [0xC4D220, rgba16, img0, 64, 32]
-      - [0xC4E220, gfx, img0]
+      - [0xC4D220, rgba16, tex_wood, 64, 32]
+      - [0xC4E220, gfx, Gfx_SetupTex_Wood]
     - start: 0xC4E2A0
       type: .data
       name: img1
       subsegments:
-      - [0xC4E2A0, rgba16, img1, 64, 32]
-      - [0xC4F2A0, gfx, img1]
+      - [0xC4E2A0, rgba16, tex_floor_tile, 64, 32]
+      - [0xC4F2A0, gfx, Gfx_SetupTex_FloorTile]
     - start: 0xC4F320
       type: .data
       name: img2
       subsegments:
-      - [0xC4F320, rgba16, img2, 32, 32]
-      - [0xC4FB20, gfx, img2]
+      - [0xC4F320, rgba16, tex_wood_panel_trim, 32, 32]
+      - [0xC4FB20, gfx, Gfx_SetupTex_WoodPanelTrim]
     - start: 0xC4FBA0
       type: .data
       name: img3
       subsegments:
-      - [0xC4FBA0, rgba16, img3, 16, 32]
-      - [0xC4FFA0, gfx, img3]
+      - [0xC4FBA0, rgba16, tex_floor_smooth, 16, 32]
+      - [0xC4FFA0, gfx, Gfx_SetupTex_FloorSmooth]
     - start: 0xC50020
       type: .data
       name: img4
       subsegments:
-      - [0xC50020, rgba16, img4, 16, 32]
-      - [0xC50420, gfx, img4]
+      - [0xC50020, rgba16, tex_railing_post, 16, 32]
+      - [0xC50420, gfx, Gfx_SetupTex_RailingPost]
     - start: 0xC504A0
       type: .data
       name: img5
       subsegments:
-      - [0xC504A0, rgba16, img5, 16, 32]
-      - [0xC508A0, gfx, img5]
+      - [0xC504A0, rgba16, tex_railing_post_destroyed, 16, 32]
+      - [0xC508A0, gfx, Gfx_SetupTex_RailingPostDestroyed]
     - start: 0xC50920
       type: .data
       name: img6
       subsegments:
-      - [0xC50920, rgba16, img6, 32, 32]
-      - [0xC51120, gfx, img6]
+      - [0xC50920, rgba16, tex_wood_panel_ceiling, 32, 32]
+      - [0xC51120, gfx, Gfx_SetupTex_WoodPanelCeiling]
     - start: 0xC511A0
       type: .data
       name: img7
       subsegments:
-      - [0xC511A0, rgba16, img7, 32, 32]
-      - [0xC519A0, gfx, img7]
+      - [0xC511A0, rgba16, tex_railing_post_damaged, 32, 32]
+      - [0xC519A0, gfx, Gfx_SetupTex_RailingPostDamaged]
     - [0xC51A20, .data, gfx] # TODO needs additioanl cleanup and gfx splitting
     - [0xC696A0]
   - name: dgb_01_smash_bridges # DMAd at the beginning of tubba blubba's castle (bridge cutscene)

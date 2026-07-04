@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_91.h
 /// @brief Bowser's Castle - East Upper Jail
 
@@ -20,7 +22,7 @@ enum {
 };
 
 enum {
-    MV_PadlockEntityID  = MapVar(0),
+    MV_EntityID_Padlock  = MapVar(0),
     MV_LastPlayerPosX   = MapVar(1),
     MV_LastPlayerPosY   = MapVar(2),
     MV_LastPlayerPosZ   = MapVar(3),

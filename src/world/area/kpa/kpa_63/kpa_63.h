@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_63.h
 /// @brief Bowser's Castle - Hanger
 

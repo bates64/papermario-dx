@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_102.h
 /// @brief Bowser's Castle - Blue Fire Bridge
 

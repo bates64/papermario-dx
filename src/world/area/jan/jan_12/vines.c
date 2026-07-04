@@ -1,6 +1,5 @@
 #include "jan_12.h"
 
-#define PULL_VINE_CALLBACK_SCRIPT MV_PullVineCallback
 #include "../common/PullVine.inc.c"
 
 #include "../common/MoveBush.inc.c"
@@ -43,7 +42,6 @@ EvtScript N(EVS_SetupVines) = {
     IfEq(LVar0, jan_12_ENTRY_1)
         Exec(N(EVS_Inspect_MoveBushes))
     EndIf
-    Set(MV_PullVineCallback, Ref(N(EVS_OnPullVine)))
     Set(LVarF, MODEL_o47)
     Set(LVarC, 0)
     Set(LVarD, MODEL_o76)
@@ -51,6 +49,7 @@ EvtScript N(EVS_SetupVines) = {
     Set(LVar9, MODEL_o6)
     Set(LVarA, MODEL_o62)
     Set(LVarB, MODEL_o63)
+    Set(LVar4, Ref(N(EVS_OnPullVine)))
     Set(LVar5, 15)
     Exec(N(EVS_PullVine_Manage))
     Return

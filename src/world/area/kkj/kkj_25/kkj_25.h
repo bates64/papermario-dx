@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kkj_25.h
 /// @brief Peach's Castle - Final Boss Arena (6F)
 
@@ -69,16 +71,24 @@ enum {
 };
 
 enum {
-    MV_SwitchEntityIdx      = MapVar(0),
-    MV_OrbitingEffectAIdx   = MapVar(0),
-    MV_OrbitingEffectBIdx   = MapVar(1),
-    MV_Unk_0A               = MapVar(10), // KNOCK_DOWN_MAP_VAR
+    MV_EntityID_Switch      = MapVar(0),
+    MV_OrbitingEffectAIdx   = MapVar(1),
+    MV_OrbitingEffectBIdx   = MapVar(2),
+    MV_BridgeCollapseState  = MapVar(10),
     MV_ArenaState           = MapVar(11),
     MV_DestructState        = MapVar(12),
     MV_PrevDestructState    = MapVar(13),
 };
 
 #define NAMESPACE kkj_25
+
+#include "world/common/npc/Bowser/idle.h"
+#include "world/common/npc/Dummy/idle.h"
+#include "world/common/enemy/Kammy/flying.h"
+#include "world/common/npc/StarSpirit/idle.h"
+#include "world/common/npc/StarRod/idle.h"
+#include "world/common/npc/Peach/base.h"
+#include "world/common/npc/Twink/base.h"
 
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_ManageArenaEffects);

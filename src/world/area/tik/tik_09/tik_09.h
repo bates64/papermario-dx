@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tik_09.h
 /// @brief Toad Town Tunnels - Warp Zone 2 (B2)
 
@@ -16,7 +18,7 @@ enum {
 };
 
 enum {
-    MV_Unk_00       = MapVar(0),
+    MV_EntityID_Switch          = MapVar(0),
 };
 
 #define NAMESPACE tik_09

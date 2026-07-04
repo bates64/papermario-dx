@@ -552,6 +552,7 @@ Vec3i A(Lee_SummonPos) = { NPC_DISPOSE_LOCATION };
 #include "lee_watt.inc.c"
 #include "lee_sushie.inc.c"
 #include "lee_lakilester.inc.c"
+#undef NAMESPACE
 #define NAMESPACE A(lee)
 
 API_CALLABLE(N(GetPartnerAndLevel)) {
@@ -565,7 +566,7 @@ API_CALLABLE(N(GetPartnerAndLevel)) {
 API_CALLABLE(N(AdjustFormationPriority)) {
     Bytecode* args = script->ptrReadPos;
     s32 partnerID = evt_get_variable(script, *args++);
-    Actor* actor = get_actor(script->owner1.enemyID);
+    Actor* actor = get_actor(script->owner1.actorID);
     FormationRow* formation = nullptr;
 
     switch (partnerID) {

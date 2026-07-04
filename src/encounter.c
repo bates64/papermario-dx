@@ -18,7 +18,7 @@ API_CALLABLE(MerleeStopFX);
 API_CALLABLE(PlayMerleeGatherFX);
 API_CALLABLE(PlayMerleeOrbFX);
 
-b32 D_80077C40 = false;
+b32 SkipPartnerPostBattleCleanup = false;
 
 b32 EncounterStateChanged;
 
@@ -27,7 +27,7 @@ EvtScript EVS_MerleeDropCoins = {
     Call(FadeBackgroundDarken)
     Wait(10)
     Call(CreateNpc, NPC_BTL_MERLEE, ANIM_BattleMerlee_Gather)
-    Call(SetNpcFlagBits, NPC_BTL_MERLEE, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_BTL_MERLEE, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcYaw, NPC_BTL_MERLEE, 0)
     Call(GetCamLookAtObjVector)
     Call(SetNpcPos, NPC_BTL_MERLEE, LVar0, LVar1, LVar2)
@@ -199,7 +199,7 @@ void setup_status_bar_for_world(void);
 void partner_handle_after_battle(void);
 s32 get_coin_drop_amount(Enemy* enemy);
 
-s32 get_defeated(s32 mapID, s32 encounterID) {
+b32 get_defeated(s32 mapID, s32 encounterID) {
     EncounterStatus* currentEncounter = &gCurrentEncounter;
     s32 encounterIdx = encounterID / 32;
     s32 encounterShift = encounterID % 32;
@@ -310,8 +310,8 @@ API_CALLABLE(MerleeUpdateFX) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
         WorldMerleeBasePosY = merlee->pos.y;
-        WorldMerleeOrbEffect = fx_energy_orb_wave(0, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.4f, 0);
-        WorldMerleeWaveEffect = fx_energy_orb_wave(3, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.00001f, 0);
+        WorldMerleeOrbEffect = fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_GREEN_ORB, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.4f, 0);
+        WorldMerleeWaveEffect = fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_GREEN_WAVE, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.00001f, 0);
         WorldMerleeEffectsState = MERLEE_EFFECTS_HOLD;
         WorldMerleeEffectsTime = 12;
         sfx_play_sound(SOUND_MAGIC_ASCENDING);
@@ -398,7 +398,7 @@ API_CALLABLE(PlayMerleeOrbFX) {
     s32 var1 = evt_get_variable(script, *args++);
     s32 var2 = evt_get_variable(script, *args++);
 
-    fx_energy_orb_wave(9, var0, var1, var2, 5.0f, 15);
+    fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_BLUE_SHRINK, var0, var1, var2, 5.0f, 15);
     return ApiStatus_DONE2;
 }
 
@@ -1168,7 +1168,7 @@ START_BATTLE:
             set_action_state(ACTION_STATE_TALK);
             currentEncounter->fadeOutAmount = 0;
             currentEncounter->substateDelay = 0;
-            func_800EF3D4(1);
+            partner_set_forced_follow_mode(1);
             gEncounterState = ENCOUNTER_STATE_CONVERSATION;
             EncounterStateChanged = true;
             gEncounterSubState = ENCOUNTER_SUBSTATE_CONVERSATION_INIT;
@@ -1248,9 +1248,9 @@ void update_encounters_pre_battle(void) {
             currentEncounter->fadeOutAmount = 0;
             currentEncounter->substateDelay = 1;
             currentEncounter->fadeOutAccel = 1;
-            currentEncounter->unk_08 = -1;
+            currentEncounter->battleTransitionState = BATTLE_TRANSITION_STATE_LOADING;
             HasPreBattleSongPushed = false;
-            D_80077C40 = false;
+            SkipPartnerPostBattleCleanup = false;
             suspend_all_group(EVT_GROUP_FLAG_BATTLE);
 
             // suspend all ai scripts
@@ -1302,7 +1302,7 @@ void update_encounters_pre_battle(void) {
             ) {
                 currentEncounter->substateDelay = 0;
                 currentEncounter->battleStartCountdown = 10;
-                D_80077C40 = true;
+                SkipPartnerPostBattleCleanup = true;
                 gEncounterSubState = ENCOUNTER_SUBSTATE_PRE_BATTLE_AUTO_WIN;
                 return;
             }
@@ -1316,7 +1316,7 @@ void update_encounters_pre_battle(void) {
             ) {
                 currentEncounter->substateDelay = 0;
                 currentEncounter->battleStartCountdown = 10;
-                D_80077C40 = true;
+                SkipPartnerPostBattleCleanup = true;
                 gEncounterSubState = ENCOUNTER_SUBSTATE_PRE_BATTLE_AUTO_WIN;
                 return;
             }
@@ -1331,7 +1331,7 @@ void update_encounters_pre_battle(void) {
             ) {
                 currentEncounter->substateDelay = 0;
                 currentEncounter->battleStartCountdown = 10;
-                D_80077C40 = true;
+                SkipPartnerPostBattleCleanup = true;
                 gEncounterSubState = ENCOUNTER_SUBSTATE_PRE_BATTLE_AUTO_WIN;
                 return;
             }
@@ -1403,7 +1403,7 @@ void update_encounters_pre_battle(void) {
             set_battle_stage(encounter->stage);
             load_battle(encounter->battle);
             currentEncounter->unk_07 = 1;
-            currentEncounter->unk_08 = 0;
+            currentEncounter->battleTransitionState = BATTLE_TRANSITION_STATE_STARTED;
             currentEncounter->hasMerleeCoinBonus = false;
             currentEncounter->damageTaken = 0;
             currentEncounter->coinsEarned = 0;
@@ -1435,7 +1435,7 @@ void update_encounters_pre_battle(void) {
                 }
             }
 
-            currentEncounter->unk_08 = 1;
+            currentEncounter->battleTransitionState = BATTLE_TRANSITION_STATE_COMPLETE;
             currentEncounter->unk_07 = 1;
             currentEncounter->battleOutcome = OUTCOME_PLAYER_WON;
             currentEncounter->hasMerleeCoinBonus = false;
@@ -1450,7 +1450,7 @@ void update_encounters_pre_battle(void) {
             break;
         case ENCOUNTER_SUBSTATE_PRE_BATTLE_SKIP:
             currentEncounter->battleOutcome = OUTCOME_SKIP;
-            currentEncounter->unk_08 = 1;
+            currentEncounter->battleTransitionState = BATTLE_TRANSITION_STATE_COMPLETE;
 
             currentEncounter->fadeOutAmount = 0;
             currentEncounter->fadeOutAccel = 0;
@@ -1607,11 +1607,11 @@ void update_encounters_post_battle(void) {
 
     switch (gEncounterSubState) {
         case ENCOUNTER_SUBSTATE_POST_BATTLE_INIT:
-            if (currentEncounter->unk_08 == 0) {
+            if (currentEncounter->battleTransitionState == BATTLE_TRANSITION_STATE_STARTED) {
                 return;
             }
 
-            currentEncounter->unk_08 = 0;
+            currentEncounter->battleTransitionState = BATTLE_TRANSITION_STATE_STARTED;
             gPlayerStatus.blinkTimer = 0;
             currentEncounter->scriptedBattle = false;
             setup_status_bar_for_world();
@@ -1634,7 +1634,7 @@ void update_encounters_post_battle(void) {
                 LastBattleStartedBySpin = true;
             }
             currentEncounter->hitType = 0;
-            if (!D_80077C40) {
+            if (!SkipPartnerPostBattleCleanup) {
                 partner_handle_after_battle();
             }
             PendingPartnerAbilityResume = false;
@@ -2283,7 +2283,7 @@ void update_encounters_conversation(void) {
                 set_action_state(ACTION_STATE_IDLE);
             }
 
-            func_800EF3D4(0);
+            partner_set_forced_follow_mode(0);
             encounter->hitType = 0;
             resume_all_group(EVT_GROUP_FLAG_BATTLE);
             gEncounterState = ENCOUNTER_STATE_NEUTRAL;
@@ -2561,6 +2561,7 @@ void create_encounters(void) {
                         if (npcData->initVarCount == 1) {
                             enemy->varTable[0] = npcData->initVar.value;
                         } else {
+                            ASSERT(npcData->initVarCount <= ARRAY_COUNT(enemy->varTable));
                             s32* initialVars = npcData->initVar.array;
                             for (k = 0; k < npcData->initVarCount; k++) {
                                 enemy->varTable[k] = *initialVars++;
@@ -2578,7 +2579,7 @@ void create_encounters(void) {
                     bp->onUpdate = nullptr;
                     bp->onRender = nullptr;
                     if (!(enemy->flags & ENEMY_FLAG_USE_PLAYER_SPRITE)) {
-                        newNpcIndex = create_standard_npc(bp, npcData->extraAnimations);
+                        newNpcIndex = create_standard_npc(bp, npcData->limitAnimations);
                     } else {
                         newNpcIndex = create_peach_npc(bp);
                     }
@@ -2605,7 +2606,7 @@ void create_encounters(void) {
                         newNpc->flags |= NPC_FLAG_IGNORE_WORLD_COLLISION;
                     }
                     if (enemy->flags & ENEMY_FLAG_IGNORE_PLAYER_COLLISION) {
-                        newNpc->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+                        newNpc->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
                     }
                     if (enemy->flags & ENEMY_FLAG_IGNORE_ENTITY_COLLISION) {
                         newNpc->flags |= NPC_FLAG_IGNORE_ENTITY_COLLISION;
@@ -2617,7 +2618,7 @@ void create_encounters(void) {
                         newNpc->flags |= NPC_FLAG_GRAVITY;
                     }
                     if (!(enemy->flags & ENEMY_FLAG_PASSIVE)) {
-                        newNpc->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+                        newNpc->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
                     }
                     if (enemy->flags & ENEMY_FLAG_HAS_NO_SPRITE) {
                         newNpc->flags |= NPC_FLAG_HAS_NO_SPRITE;

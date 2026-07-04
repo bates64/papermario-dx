@@ -1,7 +1,5 @@
 #include "kzn_06.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_kzn_05) = EVT_EXIT_WALK(60, kzn_06_ENTRY_0, "kzn_05", kzn_05_ENTRY_0);
 EvtScript N(EVS_ExitWalk_kzn_08) = EVT_EXIT_WALK(60, kzn_06_ENTRY_2, "kzn_08", kzn_08_ENTRY_0);
 EvtScript N(EVS_ExitWalk_kzn_07) = EVT_EXIT_WALK(60, kzn_06_ENTRY_1, "kzn_07", kzn_07_ENTRY_0);
@@ -23,7 +21,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP(   0, -400,   0,   0)
         TEX_PAN_PARAMS_FREQ(   0,    1,   0,   0)
         TEX_PAN_PARAMS_INIT(   0,    0,   0,   0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_yougan, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_spot, TEX_PANNER_1)
@@ -32,7 +30,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( 400,   0, 800,   0)
         TEX_PAN_PARAMS_FREQ(   1,   0,   1,   0)
         TEX_PAN_PARAMS_INIT(   0,   0,   0,   0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

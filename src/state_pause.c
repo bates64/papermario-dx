@@ -167,8 +167,6 @@ void state_step_unpause(void) {
                     mapSettings = get_current_map_settings();
                     gGameStatusPtr->context = CONTEXT_WORLD;
                     gGameStatusPtr->backgroundFlags &= ~BACKGROUND_RENDER_STATE_MASK;
-                    func_8005AF84();
-                    func_8002ACDC();
                     nuContRmbForceStopEnd();
                     sfx_clear_env_sounds(1);
                     spr_init_sprites(gGameStatusPtr->playerSpriteSet);

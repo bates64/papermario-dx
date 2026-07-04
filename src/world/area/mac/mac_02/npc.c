@@ -1,18 +1,17 @@
 #include "mac_02.h"
 
-#include "world/common/npc/Toad_Wander.inc.c"
-#include "world/common/npc/Toad_Patrol.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/Bootler.inc.c"
-#include "world/common/npc/Bubulb.inc.c"
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
+#include "world/common/npc/ToadKid/wander.inc.c"
+#include "world/common/npc/Toadette/idle.inc.c"
+#include "world/common/npc/Toad/wander.inc.c"
+#include "world/common/npc/Toad/patrol.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/TayceT/idle.inc.c"
+#include "world/common/npc/FiceT/idle.inc.c"
+#include "world/common/npc/Bootler/idle.inc.c"
+#include "world/common/npc/Bubulb/idle.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
-#include "world/common/enemy/ShyGuy.h"
-
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/enemy/ShyGuy/base.h"
 
 #include "npc/tayce_t.inc.c"
 
@@ -27,7 +26,7 @@
 #include "npc/toad_4.inc.c"
 #include "npc/bubulb.inc.c"
 
-AnimID N(ExtraAnims_TayceT)[] = {
+AnimID N(LimitAnims_TayceT)[] = {
     ANIM_TayceT_Still,
     ANIM_TayceT_Idle,
     ANIM_TayceT_Walk,
@@ -40,7 +39,7 @@ AnimID N(ExtraAnims_TayceT)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Bubulb)[] = {
+AnimID N(LimitAnims_Bubulb)[] = {
     ANIM_Bubulb_Pink_Still,
     ANIM_Bubulb_Pink_BuriedStill,
     ANIM_Bubulb_Pink_Idle,
@@ -56,13 +55,11 @@ NpcData N(NpcData_TayceT)[] = {
         .pos = { -217.0f, 20.0f, -434.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_TayceT),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_TayceT),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_TayceT_Idle,
-        },
-        .extraAnimations = N(ExtraAnims_TayceT),
+        .animations = TAYCE_T_ANIMS,
+        .limitAnimations = N(LimitAnims_TayceT),
         .tattle = MSG_NpcTattle_TayceT,
     },
     {
@@ -70,12 +67,10 @@ NpcData N(NpcData_TayceT)[] = {
         .pos = { 389.0f, 0.0f, -90.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_FiceT),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_FiceT),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_FiceT_Idle,
-        },
+        .animations = FICE_T_ANIMS,
         .tattle = MSG_NpcTattle_FiceT,
     },
     {
@@ -87,7 +82,7 @@ NpcData N(NpcData_TayceT)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = BUBULB_PINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_Bubulb),
+        .limitAnimations = N(LimitAnims_Bubulb),
         .tattle = MSG_NpcTattle_MAC_Bubulb_Revealed,
     },
     {
@@ -118,7 +113,7 @@ NpcData N(NpcData_TayceT)[] = {
         .pos = { -26.0f, 0.0f, -220.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_CookingApprentice),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PURPLE_ANIMS,
@@ -129,7 +124,7 @@ NpcData N(NpcData_TayceT)[] = {
         .pos = { -350.0f, 20.0f, -140.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toad_02),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_GREEN_ANIMS,
@@ -152,7 +147,7 @@ NpcData N(NpcData_TayceT)[] = {
             }
         },
         .init = &N(EVS_NpcInit_ToadKid),
-        .settings = &N(NpcSettings_Toad_Wander),
+        .settings = &N(NpcSettings_ToadKid_Wander),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_KID_YELLOW_ANIMS,
@@ -186,7 +181,7 @@ NpcData N(NpcData_TayceT)[] = {
         .pos = { -80.0f, 0.0f, 300.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toad_04),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -205,14 +200,14 @@ NpcData N(NpcData_Bootler) = {
     .animations = BOOTLER_ANIMS,
 };
 
-AnimID N(ExtraAnims_ShyGuy)[] = {
-    ANIM_ShyGuy_Red_Anim00,
-    ANIM_ShyGuy_Red_Anim01,
-    ANIM_ShyGuy_Red_Anim02,
-    ANIM_ShyGuy_Red_Anim03,
-    ANIM_ShyGuy_Red_Anim11,
-    ANIM_ShyGuy_Red_Anim02,
-    ANIM_ShyGuy_Red_Anim04,
+AnimID N(LimitAnims_ShyGuy)[] = {
+    ANIM_ShyGuy_Red_Still,
+    ANIM_ShyGuy_Red_Idle,
+    ANIM_ShyGuy_Red_Walk,
+    ANIM_ShyGuy_Red_Run,
+    ANIM_ShyGuy_Red_Excited,
+    ANIM_ShyGuy_Red_Walk,
+    ANIM_ShyGuy_Red_Dash,
     ANIM_LIST_END
 };
 
@@ -221,11 +216,11 @@ NpcData N(NpcData_ShyGuy) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
     .init = &N(EVS_NpcInit_ShyGuy),
-    .settings = &N(NpcSettings_Toad_Stationary),
+    .settings = &N(NpcSettings_Toad),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
-    .extraAnimations = N(ExtraAnims_ShyGuy),
+    .limitAnimations = N(LimitAnims_ShyGuy),
 };
 
 NpcGroupList N(NpcGroup4) = {

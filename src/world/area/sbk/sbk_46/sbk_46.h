@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sbk_46.h
 /// @brief Dry Dry Desert - S1E3 North of Oasis
 

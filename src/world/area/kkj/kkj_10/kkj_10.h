@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kkj_10.h
 /// @brief Peach's Castle - Entry Hall (1F)
 
@@ -15,10 +17,14 @@ enum {
 };
 
 enum {
-    MV_PadlockEntityIdx = MapVar(0),
+    MV_EntityID_Padlock = MapVar(0),
 };
 
 #define NAMESPACE kkj_10
+
+#include "sprite/player.h"
+
+#include "world/common/enemy/Koopatrol/idle.h"
 
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_ExitDoors_osr_02_1);
@@ -26,3 +32,7 @@ extern EvtScript N(EVS_MakeEntities);
 
 extern NpcGroupList N(EarlyNPCs);
 extern NpcGroupList N(LaterNPCs);
+
+API_CALLABLE(N(CheckPlayerInSight));
+API_CALLABLE(N(GetApproachPeachPos));
+API_CALLABLE(N(UpdateSearchlight));

@@ -33,14 +33,14 @@ extern s32 N(BoxModelIDs)[NUM_BOXES];
 extern s32 N(BoxColliderIDs)[NUM_BOXES];
 extern s32 N(PanelModelIDs)[NUM_PANELS];
 
-BSS s32 D_80248600[NUM_PANELS]; //TODO set name: PanelModelsAssigned
+BSS b32 N(PanelModelsAssigned)[NUM_PANELS];
 
 extern IMG_BIN N(panel_peach_img);
 extern PAL_BIN N(panel_peach_pal);
 
 API_CALLABLE(N(SetMsgImgs_Panel));
 
-extern EvtScript N(read_sign_instructions); // EVT_ReadSign
+extern EvtScript N(EVS_ReadSign_Instructions);
 
 typedef enum SmashGameBoxCotent {
     BOX_CONTENT_FUZZY       = 0,
@@ -191,7 +191,7 @@ void N(appendGfx_score_display)(void* renderData) {
     draw_msg(MSG_MGM_0024, data->windowB_posX + 30, 29, 255, MSG_PAL_WHITE, 0);
 }
 
-void N(worker_draw_score)(void) {
+void N(worker_render_score)(void) {
     RenderTask task;
 
     task.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
@@ -208,7 +208,7 @@ API_CALLABLE(N(CreateScoreDisplay)) {
     HudElemID hidMeter;
 
     if (isInitialCall) {
-        data->workerID = create_worker_scene(nullptr, &N(worker_draw_score));
+        data->workerID = create_worker_scene(nullptr, &N(worker_render_score));
 
         hidButton = hud_element_create(&HES_AButton);
         data->buttonHID = hidButton;
@@ -248,7 +248,7 @@ API_CALLABLE(N(CreateSignpost)) {
     SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
     s32 entityIndex = create_entity(&Entity_Signpost, 355, 20, -180, 0, 0, 0, 0, MAKE_ENTITY_END);
     data->signpostEntity = entityIndex;
-    get_entity_by_index(entityIndex)->boundScriptBytecode = &N(read_sign_instructions);
+    get_entity_by_index(entityIndex)->boundScriptBytecode = &N(EVS_ReadSign_Instructions);
 
     return ApiStatus_DONE2;
 }
@@ -352,8 +352,8 @@ API_CALLABLE(N(SetBoxContents)) {
         enemy->varTable[0] = 0;
     }
 
-    for (i = 0; i < ARRAY_COUNT(D_80248600); i++) {
-        D_80248600[i] = false;
+    for (i = 0; i < ARRAY_COUNT(N(PanelModelsAssigned)); i++) {
+        N(PanelModelsAssigned)[i] = false;
     }
 
     for (i = 0; i < NUM_BOXES; i++) {
@@ -399,10 +399,9 @@ API_CALLABLE(N(SetBoxContents)) {
                         break;
                     }
                 }
-                // ARRAY BOUNDS ERROR IN ORIGINAL CODE!
-                for (j = 0; j <= ARRAY_COUNT(D_80248600); j++) {
-                    if (!D_80248600[j]) {
-                        D_80248600[j] = true;
+                for (j = 0; j < ARRAY_COUNT(N(PanelModelsAssigned)); j++) {
+                    if (!N(PanelModelsAssigned)[j]) {
+                        N(PanelModelsAssigned)[j] = true;
                         data->box[i].peachPanelModelID = N(PanelModelIDs[j]);
                         break;
                     }
@@ -572,6 +571,8 @@ API_CALLABLE(N(RunMinigame)) {
                     }
                     break;
                 case BOX_STATE_FUZZY_DONE:
+                    break;
+                case BOX_STATE_FUZZY_END:
                     break;
 
                 case BOX_STATE_BOMB_INIT:
@@ -879,7 +880,7 @@ API_CALLABLE(N(UpdateRecords)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GiveCoinReward)) {
+API_CALLABLE(N(GiveCoinWinnings)) {
     SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
     s32 coinsLeft = data->curScore;
     s32 increment;
@@ -911,7 +912,7 @@ API_CALLABLE(N(CleanupGame)) {
     Enemy* enemy = get_enemy(SCOREKEEPER_ENEMY_IDX);
     SmashGameData* data = enemy->varTablePtr[SMASH_DATA_VAR_IDX];
     Npc* npc;
-    u32 screenX, screenY,screenZ;
+    s32 screenX, screenY, screenZ;
     EffectInstance* writeback;
     s32 i;
 
@@ -927,7 +928,7 @@ API_CALLABLE(N(CleanupGame)) {
             }
 
             get_screen_coords(CAM_DEFAULT, npc->pos.x, npc->pos.y, npc->pos.z, &screenX, &screenY, &screenZ);
-            if (screenX - 1 < SCREEN_WIDTH - 1) {
+            if (screenX >= 0 && screenX < SCREEN_WIDTH) {
                 fx_walking_dust(1, npc->pos.x, npc->pos.y, npc->pos.z, 0, 0);
                 sfx_play_sound(SOUND_KOOPER_SHELL_KICK);
             }
@@ -1025,10 +1026,10 @@ EvtScript N(EVS_Dummy) = {
     End
 };
 
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/Luigi.inc.c"
-#include "world/common/enemy/Fuzzy.inc.c"
-#include "world/common/enemy/Bobomb.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Luigi/idle.inc.c"
+#include "world/common/enemy/Fuzzy/idle.inc.c"
+#include "world/common/enemy/Bobomb/idle.inc.c"
 
 s32 N(InitialConfigurations)[3][NUM_BOXES] = {
     { 2, 0, 2, 0, 2, 3, 3, 3, 3, 3, 2, 3, 2, 1, 3, 3, 2, 3, 0, 3, 3, 2, 3, 3, 1, 2, 3, 3, 2, 3, 3, 1, 3, 3, 2 },
@@ -1057,17 +1058,13 @@ s32 N(PanelModelIDs)[NUM_PANELS] = {
     MODEL_o55, MODEL_o56, MODEL_o57, MODEL_o58, MODEL_o59
 };
 
-#if VERSION_PAL
-s32 N(pal_variable) = 0;
-#endif
-
 EvtScript N(EVS_CreateScoreDisplay) = {
     Call(N(CreateScoreDisplay))
     Return
     End
 };
 
-EvtScript N(read_sign_instructions) = {
+EvtScript N(EVS_ReadSign_Instructions) = {
     Call(DisablePlayerInput, true)
     Call(N(SetMsgImgs_Panel))
     Call(ShowMessageAtScreenPos, MSG_MGM_0046, 160, 40)
@@ -1637,7 +1634,7 @@ EvtScript N(EVS_Toad_GovernGame) = {
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     EndThread
-    Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(N(CreateSignpost))
     PlayEffect(EFFECT_WALKING_DUST, 1, 355, 45, -175)
     Thread
@@ -1655,7 +1652,7 @@ EvtScript N(EVS_Toad_GovernGame) = {
     EndIf
     Call(PlayerMoveTo, 330, 185, LVarA)
     Call(WaitForPlayerMoveToComplete)
-    Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Wait(5)
     Call(SetSelfVar, 3, 5)
     Call(N(UpdateRecords))
@@ -1671,7 +1668,7 @@ EvtScript N(EVS_Toad_GovernGame) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_PAL_MGM_0046)
             Call(ShowCoinCounter, true)
             Wait(10)
-            Call(N(GiveCoinReward))
+            Call(N(GiveCoinWinnings))
             Wait(15)
             Call(ShowCoinCounter, false)
             Call(SetSelfVar, 3, 0)
@@ -1682,7 +1679,7 @@ EvtScript N(EVS_Toad_GovernGame) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0042)
             Call(ShowCoinCounter, true)
             Wait(10)
-            Call(N(GiveCoinReward))
+            Call(N(GiveCoinWinnings))
             Wait(15)
             Call(ShowCoinCounter, false)
             Call(SetSelfVar, 3, 0)
@@ -1762,7 +1759,7 @@ EvtScript N(EVS_NpcInteract_Toad) = {
             Return
     EndSwitch
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Sub(LVar2, 3)
         Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 10)
@@ -1806,7 +1803,7 @@ NpcData N(NpcData_GuideToad) = {
     .pos = { 353.0f, -20.0f, 185.0f },
     .yaw = 270,
     .init = &N(EVS_NpcInit_Toad),
-    .settings = &N(NpcSettings_Toad_Stationary),
+    .settings = &N(NpcSettings_Toad),
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = TOAD_RED_ANIMS,

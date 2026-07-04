@@ -158,9 +158,9 @@ void entity_Tweester_select_target_point(Entity* entity) {
         data->curPath = paths[j];
     }
     pathPtr = &data->curPath[pathOffset];
-    if (*pathPtr != TWEESTER_PATH_STOP) {
+    if (*pathPtr != TWEESTER_PATH_STOP_SENTINEL) {
         pathOffset += 3;
-        if (*pathPtr == TWEESTER_PATH_LOOP){
+        if (*pathPtr == TWEESTER_PATH_LOOP_SENTINEL){
             pathOffset = 0;
             pathPtr = data->curPath;
             data->targetX = *pathPtr++;
@@ -316,7 +316,7 @@ EntityBlueprint Entity_Tweester = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION,
     .typeDataSize = sizeof(TweesterData),
     .renderCommandList = Entity_Tweester_RenderScript,
-    .modelAnimationNodes = 0,
+    .modelAnimationNodes = nullptr,
     .fpInit = entity_Tweester_init,
     .updateEntityScript = Entity_Tweester_Script,
     .fpHandleCollision = nullptr,

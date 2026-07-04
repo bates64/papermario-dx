@@ -53,7 +53,6 @@ s32 draw_image_with_clipping(IMG_PTR raster, u32 width, u32 height, s32 fmt, s32
     Rect2b drawRect;
     u8 stopDrawing;
     u8 stopDrawingLine;
-    s8 zero = 0; // required to match
 
     u16 texOffsetX, texOffsetY;
 
@@ -101,7 +100,7 @@ s32 draw_image_with_clipping(IMG_PTR raster, u32 width, u32 height, s32 fmt, s32
             stopDrawing = true;
         }
 
-        texRect.ulx = zero;
+        texRect.ulx = 0;
         drawRect.ulx = posX;
         stopDrawingLine = false;
 

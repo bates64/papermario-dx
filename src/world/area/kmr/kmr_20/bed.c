@@ -1,9 +1,8 @@
 #include "kmr_20.h"
 #include "sprite/player.h"
 
-#include "world/common/complete/ToadHouseBlanketAnim.inc.c"
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
 API_CALLABLE(N(MuteAmbienceVolume_Bed)) {
     snd_ambient_set_volume(0, 1000, 1);
@@ -15,7 +14,13 @@ API_CALLABLE(N(SetAmbienceVolumeHalf_Bed)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/WaitForPlayerToLand.inc.c"
+API_CALLABLE(N(WaitForPlayerToLand)) {
+    script->varTable[0] = false;
+    if ((gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) && (gPartnerStatus.actingPartner == PARTNER_BOMBETTE)) {
+        script->varTable[0] = true;
+    }
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_ToadHouse_SetDialogue) = {
     Set(LVar0, MSG_CH0_0106)
@@ -65,7 +70,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     EndLoop
     Call(HidePlayerShadow, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, 0x00010002, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     Thread
         Wait(60)
@@ -114,7 +119,7 @@ EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
 
 EvtScript N(EVS_UseBed) = {
     Call(N(WaitForPlayerToLand))
-    IfEq(LVar0, 1)
+    IfEq(LVar0, true)
         Return
     EndIf
     Call(DisablePlayerInput, true)
@@ -142,9 +147,9 @@ EvtScript N(EVS_UseBed) = {
     Call(CloseMessage)
     Call(SetPlayerJumpscale, 1)
     Call(DisablePlayerPhysics, true)
-    Call(N(ToadHouse_DisableStatusBar))
+    Call(N(ToadHouse_SuspendStatusBar))
     IfNe(LVar4, 0)
-        Exec(N(EVS_ToadHouse_Unk2))
+        Exec(N(EVS_ToadHouse_OpenBedCovers))
     EndIf
     Call(N(ToadHouse_PutPartnerAway), LVarA)
     Wait(20)
@@ -162,9 +167,9 @@ EvtScript N(EVS_UseBed) = {
         Call(FullyRestoreHPandFP)
         Call(FullyRestoreSP)
         IfNe(LVar4, 0)
-            Exec(N(EVS_ToadHouse_Unk1))
+            Exec(N(EVS_ToadHouse_ResetBedCovers))
         EndIf
-        Call(N(ToadHouse_GetPartnerBackOut), LVarA)
+        Call(N(ToadHouse_GetPartnerOut), LVarA)
         Wait(30)
         Call(MakeLerp, 255, 0, 30, EASING_LINEAR)
         Label(1)
@@ -179,7 +184,7 @@ EvtScript N(EVS_UseBed) = {
     ExecGetTID(N(EVS_ToadHouse_ReturnFromRest), LVar9)
     Call(N(ToadHouse_AwaitScriptComplete), LVar9)
     Call(DisablePlayerPhysics, false)
-    Call(N(ToadHouse_ShowWorldStatusBar))
+    Call(N(ToadHouse_ResumeStatusBar))
     Call(DisablePlayerInput, false)
     Return
     End

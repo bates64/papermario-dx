@@ -68,7 +68,7 @@ API_CALLABLE(N(Update)) {
     Entity* entity;
 
     if (isInitialCall) {
-        partner_flying_enable(parakarry, 1);
+        partner_flying_enable(parakarry, true);
         mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
         TweesterTouchingPartner = nullptr;
     }
@@ -84,7 +84,7 @@ API_CALLABLE(N(Update)) {
 
     switch (N(TweesterPhysicsPtr)->state) {
         case TWEESTER_PARTNER_INIT:
-            N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_ATTRACT;
             N(TweesterPhysicsPtr)->prevFlags = parakarry->flags;
             N(TweesterPhysicsPtr)->radius = fabsf(dist2D(parakarry->pos.x, parakarry->pos.z,
                                                      entity->pos.x, entity->pos.z));
@@ -93,7 +93,7 @@ API_CALLABLE(N(Update)) {
             N(TweesterPhysicsPtr)->angularVel = 6.0f;
             N(TweesterPhysicsPtr)->liftoffVelPhase = 50.0f;
             N(TweesterPhysicsPtr)->countdown = 120;
-            parakarry->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
+            parakarry->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
             parakarry->flags &= ~NPC_FLAG_GRAVITY;
         case TWEESTER_PARTNER_ATTRACT:
             sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
@@ -122,20 +122,22 @@ API_CALLABLE(N(Update)) {
                 N(TweesterPhysicsPtr)->angularVel = 40.0f;
             }
 
-            if (--N(TweesterPhysicsPtr)->countdown == 0) {
-                N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->countdown--;
+            if (N(TweesterPhysicsPtr)->countdown == 0) {
+                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_HOLD;
             }
             break;
         case TWEESTER_PARTNER_HOLD:
             parakarry->flags = N(TweesterPhysicsPtr)->prevFlags;
             N(TweesterPhysicsPtr)->countdown = 30;
-            N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_RELEASE;
             break;
         case TWEESTER_PARTNER_RELEASE:
             partner_flying_update_player_tracking(parakarry);
             partner_flying_update_motion(parakarry);
 
-            if (--N(TweesterPhysicsPtr)->countdown == 0) {
+            N(TweesterPhysicsPtr)->countdown--;
+            if (N(TweesterPhysicsPtr)->countdown == 0) {
                 N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
                 TweesterTouchingPartner = nullptr;
             }
@@ -195,7 +197,7 @@ API_CALLABLE(N(UseAbility)) {
     s32 hitCount;
     b32 hitAbove;
 
-    if (gCurrentEncounter.unk_08 != 0) {
+    if (gCurrentEncounter.battleTransitionState != BATTLE_TRANSITION_STATE_STARTED) {
          return ApiStatus_BLOCK;
     }
 
@@ -206,12 +208,12 @@ API_CALLABLE(N(UseAbility)) {
         }
 
         if (!partnerStatus->shouldResumeAbility) {
-            if (!func_800EA52C(PARTNER_PARAKARRY)) {
+            if (!partner_can_continue_ability(PARTNER_PARAKARRY)) {
                 return ApiStatus_DONE2;
             }
             N(AbilityState) = AIR_LIFT_INIT;
-            parakarry->flags &= ~NPC_FLAG_COLLDING_FORWARD_WITH_WORLD;
-            parakarry->flags |= NPC_FLAG_COLLDING_WITH_WORLD;
+            parakarry->flags &= ~NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD;
+            parakarry->flags |= NPC_FLAG_COLLIDING_WITH_WORLD;
         } else {
             partnerStatus->shouldResumeAbility = false;
             set_action_state(ACTION_STATE_RIDE);
@@ -221,8 +223,8 @@ API_CALLABLE(N(UseAbility)) {
             parakarry->curAnim = ANIM_WorldParakarry_CarryLight;
             partnerStatus->actingPartner = PARTNER_PARAKARRY;
             partnerStatus->partnerActionState = PARTNER_ACTION_PARAKARRY_HOVER;
-            parakarry->flags &= ~NPC_FLAG_COLLDING_FORWARD_WITH_WORLD;
-            parakarry->flags |= NPC_FLAG_COLLDING_WITH_WORLD;
+            parakarry->flags &= ~NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD;
+            parakarry->flags |= NPC_FLAG_COLLIDING_WITH_WORLD;
         }
     }
 
@@ -237,7 +239,7 @@ API_CALLABLE(N(UseAbility)) {
             // fallthrough
         case AIR_LIFT_DELAY:
             if (N(AbilityStateTime) == 0) {
-                if (script->functionTemp[2] < playerStatus->inputDisabledCount || !func_800EA52C(PARTNER_PARAKARRY)) {
+                if (script->functionTemp[2] < playerStatus->inputDisabledCount || !partner_can_continue_ability(PARTNER_PARAKARRY)) {
                     return ApiStatus_DONE2;
                 }
                 N(AbilityState) = AIR_LIFT_BEGIN;
@@ -417,7 +419,7 @@ API_CALLABLE(N(UseAbility)) {
                 parakarry->pos.y = playerStatus->pos.y + 32.0f;
             }
 
-            if (parakarry->flags & NPC_FLAG_COLLDING_FORWARD_WITH_WORLD) {
+            if (parakarry->flags & NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD) {
                 suggest_player_anim_allow_backward(ANIM_Mario1_Idle);
                 N(AbilityState) = AIR_LIFT_DROP;
                 break;
@@ -550,7 +552,7 @@ API_CALLABLE(N(UseAbility)) {
                         gCameras[CAM_DEFAULT].targetPos.x = playerStatus->pos.x;
                         gCameras[CAM_DEFAULT].targetPos.y = playerStatus->pos.y;
                         gCameras[CAM_DEFAULT].targetPos.z = playerStatus->pos.z;
-                        if (!(parakarry->flags & NPC_FLAG_COLLDING_FORWARD_WITH_WORLD)) {
+                        if (!(parakarry->flags & NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD)) {
                             parakarry->duration++;
                             if (!(parakarry->planarFlyDist < 100.0f)) {
                                 N(AbilityStateTime) = 5;

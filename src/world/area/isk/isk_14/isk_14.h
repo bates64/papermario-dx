@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file isk_14.h
 /// @brief Dry Dry Ruins - Diamond Stone Room
 

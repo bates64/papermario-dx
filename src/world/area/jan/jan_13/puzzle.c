@@ -3,7 +3,11 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
+enum LargeGeyserRockState {
+    LARGE_GEYSER_IDLE       = 0,
+    LARGE_GEYSER_RISING     = 1,
+    LARGE_GEYSER_LAUNCH     = 2,
+};
 
 // geyser positions in grid coordinates
 #define POS_0_I 28
@@ -134,7 +138,7 @@ EvtScript N(EVS_ManageLargeGeyser) = {
     EndIf
     Loop(0)
         IfEq(MV_PuzzleProgress, 5)
-            IfEq(AB_JAN_2, 1)
+            IfEq(AB_JAN13_LargeGeyserState, LARGE_GEYSER_RISING)
                 Add(LVar0, 10)
             Else
                 Add(LVar0, -10)
@@ -162,7 +166,7 @@ EvtScript N(EVS_ManageLargeGeyser) = {
             Call(EnableModel, LVarA, true)
             ExecWait(N(SetLargeGeyserScale))
         EndIf
-        IfEq(AB_JAN_2, 2)
+        IfEq(AB_JAN13_LargeGeyserState, LARGE_GEYSER_LAUNCH)
             BreakLoop
         EndIf
     EndLoop
@@ -264,7 +268,7 @@ EvtScript N(EVS_BoulderTremble) = {
 
 EvtScript N(EVS_ManagePuzzle) = {
     Set(LFlag0, false)
-    Set(AB_JAN_2, 0)
+    Set(AB_JAN13_LargeGeyserState, LARGE_GEYSER_IDLE)
     Set(AB_JAN13_LastPuzzleProgress, -1)
     Exec(N(EVS_ManageGeyserSounds))
     Label(0)
@@ -396,7 +400,7 @@ EvtScript N(EVS_ManagePuzzle) = {
                 Call(ShakeCam, CAM_DEFAULT, 0, 15, Float(0.4))
             EndThread
             Call(PlaySoundAt, SOUND_LOOP_JAN_LARGE_GEYSER, SOUND_SPACE_DEFAULT, 37, 0, -138)
-            Set(AB_JAN_2, 1)
+            Set(AB_JAN13_LargeGeyserState, LARGE_GEYSER_RISING)
             Thread
                 Loop(200)
                     Call(RotateModel, MODEL_o33, 10, 0, Float(0.2), 1)
@@ -415,7 +419,7 @@ EvtScript N(EVS_ManagePuzzle) = {
                 Call(TranslateModel, MODEL_o33, 0, LVar0, 0)
                 Wait(1)
             EndLoop
-            Set(AB_JAN_2, 2)
+            Set(AB_JAN13_LargeGeyserState, LARGE_GEYSER_LAUNCH)
             Loop(25)
                 Add(LVar0, 8)
                 Call(TranslateModel, MODEL_o33, 0, LVar0, 0)
@@ -622,7 +626,7 @@ EvtScript N(EVS_SetupPuzzle) = {
         TEX_PAN_PARAMS_STEP(    0, -2000,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,     1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,     0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_17.h
 /// @brief Bowser's Castle - Lower Jail
 
@@ -11,8 +13,6 @@
 
 #include "sprite/npc/WorldBombette.h"
 #include "sprite/npc/Toad.h"
-#include "sprite/npc/ToadMinister.h"
-#include "sprite/npc/ToadGuard.h"
 
 enum {
     NPC_Toad_01                 = 0,

@@ -85,13 +85,13 @@ EvtScript N(EVS_Inspect_Fireplace) = {
     EndThread
     Wait(10)
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Wait(1)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Sub(LVar0, 25)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 10)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(EnablePartnerAI)
         Call(InterpPlayerYaw, 90, 0)
         Call(InterpNpcYaw, NPC_PARTNER, 90, 0)

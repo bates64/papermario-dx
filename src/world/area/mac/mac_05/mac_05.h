@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mac_05.h
 /// @brief Toad Town - Port District
 
@@ -10,7 +12,6 @@
 #include "mapfs/mac_05_hit.h"
 
 #include "sprite/npc/Kolorado.h"
-#include "sprite/npc/ChuckQuizmo.h"
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/npc/Fuzzipede.h"
 #include "sprite/npc/WorldGoombario.h"
@@ -21,9 +22,6 @@
 #include "sprite/npc/JrTroopa.h"
 #include "sprite/npc/Fishmael.h"
 #include "sprite/npc/Toad.h"
-#include "sprite/npc/Bartender.h"
-#include "sprite/npc/Musician.h"
-#include "sprite/npc/Chanterelle.h"
 
 enum {
     NPC_Whale                   = 0,
@@ -45,15 +43,15 @@ enum {
 };
 
 enum {
-    MF_Unk_01       = MapFlag(1),
-    AF_JAN01_TreeDrop_StarPiece       = MapFlag(10),
+    MF_WhaleDepartureReady      = MapFlag(1),
+    MF_DivaSongPlaying          = MapFlag(10),
 };
 
 #define NAMESPACE mac_05
 
 extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_802496FC);
-extern EvtScript N(EVS_80248878);
+extern EvtScript N(EVS_Scene_ArriveByWhale);
+extern EvtScript N(EVS_Scene_FuzzipedeDefeated);
 extern EvtScript N(EVS_SetupWhale);
 extern EvtScript N(EVS_SetupRooms);
 extern EvtScript N(EVS_SetupMusic);

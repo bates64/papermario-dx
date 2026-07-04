@@ -1,6 +1,6 @@
 #include "mim_05.h"
 
-#include "world/common/enemy/PiranhaPlant.inc.c"
+#include "world/common/enemy/PiranhaPlant/idle.inc.c"
 
 NpcData N(NpcData_PiranhaPlant_01)[] = {
     {

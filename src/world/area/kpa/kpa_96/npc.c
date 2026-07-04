@@ -1,4 +1,5 @@
 #include "kpa_96.h"
+#include "world/common/enemy/SpikedGoomba/base.h"
 
 s32 N(ShopMessages)[] = {
     [SHOP_MSG_BUY_CONFIRM      ] MSG_Shop_00_KPA96,
@@ -147,24 +148,7 @@ NpcData N(NpcData_SpikedGoomba) = {
     .settings = &N(NpcSettings_SpikedGoomba),
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_SpikedGoomba_Idle,
-        .walk   = ANIM_SpikedGoomba_Walk,
-        .run    = ANIM_SpikedGoomba_Run,
-        .chase  = ANIM_SpikedGoomba_Run,
-        .anim_4 = ANIM_SpikedGoomba_Idle,
-        .anim_5 = ANIM_SpikedGoomba_Idle,
-        .death  = ANIM_SpikedGoomba_HurtStill,
-        .hit    = ANIM_SpikedGoomba_HurtStill,
-        .anim_8 = ANIM_SpikedGoomba_Run,
-        .anim_9 = ANIM_SpikedGoomba_Run,
-        .anim_A = ANIM_SpikedGoomba_Run,
-        .anim_B = ANIM_SpikedGoomba_Run,
-        .anim_C = ANIM_SpikedGoomba_Run,
-        .anim_D = ANIM_SpikedGoomba_Run,
-        .anim_E = ANIM_SpikedGoomba_Run,
-        .anim_F = ANIM_SpikedGoomba_Run,
-    },
+    .animations = SPIKED_GOOMBA_ANIMS,
     .tattle = MSG_NpcTattle_KPA_ShopOwner,
 };
 

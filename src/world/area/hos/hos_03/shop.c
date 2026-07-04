@@ -1,5 +1,7 @@
 #include "hos_03.h"
 
+#include "sprite/npc/StarMan.h"
+
 s32 N(ShopMessages)[] = {
     [SHOP_MSG_BUY_CONFIRM      ] MSG_Shop_00_HOS03,
     [SHOP_MSG_NOT_ENOUGH_COINS ] MSG_Shop_01_HOS03,

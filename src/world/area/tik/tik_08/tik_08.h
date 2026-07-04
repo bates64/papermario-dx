@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tik_08.h
 /// @brief Toad Town Tunnels - Second Level Entry (B2)
 

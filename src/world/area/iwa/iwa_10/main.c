@@ -1,7 +1,5 @@
 #include "iwa_10.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_iwa_00_0) = EVT_EXIT_WALK(60, iwa_10_ENTRY_1, "iwa_00", iwa_00_ENTRY_0);
 
 EvtScript N(EVS_BindExitTriggers) = {
@@ -73,7 +71,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(   0, -3000,    0,    0)
         TEX_PAN_PARAMS_FREQ(   0,     1,    0,    0)
         TEX_PAN_PARAMS_INIT(   0,     0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     IfLt(GB_StoryProgress, STORY_CH2_SPOKE_WITH_PARAKARRY)
         Exec(N(EVS_Scene_MeetParakarry))

@@ -1,7 +1,5 @@
 #include "iwa_00.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 b32 N(should_player_be_sliding)(void) {
     Shadow* shadow = get_shadow_by_index(gPlayerStatus.shadowID);
     f32 angle = shadow->rot.z + 180.0;
@@ -45,7 +43,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0, 3000,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

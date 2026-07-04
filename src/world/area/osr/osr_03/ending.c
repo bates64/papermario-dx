@@ -113,7 +113,7 @@ EvtScript N(EVS_PlayExplosionFX) = {
 
 EvtScript N(EVS_Scene_CastleDestruction) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
     Call(SetPlayerPos, 0, 0, 0)

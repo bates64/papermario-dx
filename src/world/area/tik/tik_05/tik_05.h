@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tik_05.h
 /// @brief Toad Town Tunnels - Spring Room (B2)
 
@@ -15,7 +17,7 @@ enum {
 };
 
 enum {
-    MV_Unk_00       = MapVar(0),
+    MV_EntityID_Spring          = MapVar(0),
 };
 
 #define NAMESPACE tik_05

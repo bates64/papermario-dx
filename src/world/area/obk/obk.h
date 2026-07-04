@@ -1,33 +1,33 @@
-#ifndef _WORLD_AREA_OBK_OBK_H_
-#define _WORLD_AREA_OBK_OBK_H_
+#pragma once
 
-enum {
-    AB_OBK_Unused_0     = AreaByte(0),
-    AB_OBK_Unused_1     = AreaByte(1),
-    AB_OBK_Unused_2     = AreaByte(2),
-    AB_OBK_Unused_3     = AreaByte(3),
-    AB_OBK_Unused_4     = AreaByte(4),
-    AB_OBK_Unused_5     = AreaByte(5),
-    AB_OBK_Unused_6     = AreaByte(6),
-    AB_OBK_Unused_7     = AreaByte(7),
-    AB_OBK_Unused_8     = AreaByte(8),
-    AB_OBK_Unused_9     = AreaByte(9),
-    AB_OBK_Unused_A     = AreaByte(10),
-    AB_OBK_Unused_B     = AreaByte(11),
-    AB_OBK_Unused_C     = AreaByte(12),
-    AB_OBK_Unused_D     = AreaByte(13),
-    AB_OBK_Unused_E     = AreaByte(14),
-    AB_OBK_Unused_F     = AreaByte(15),
+enum AreaBytesOBK {
+    AB_OBK_Unused_0                         = AreaByte(0x0),
+    AB_OBK_Unused_1                         = AreaByte(0x1),
+    AB_OBK_Unused_2                         = AreaByte(0x2),
+    AB_OBK_Unused_3                         = AreaByte(0x3),
+    AB_OBK_Unused_4                         = AreaByte(0x4),
+    AB_OBK_Unused_5                         = AreaByte(0x5),
+    AB_OBK_Unused_6                         = AreaByte(0x6),
+    AB_OBK_Unused_7                         = AreaByte(0x7),
+    AB_OBK_Unused_8                         = AreaByte(0x8),
+    AB_OBK_Unused_9                         = AreaByte(0x9),
+    AB_OBK_Unused_A                         = AreaByte(0xA),
+    AB_OBK_Unused_B                         = AreaByte(0xB),
+    AB_OBK_Unused_C                         = AreaByte(0xC),
+    AB_OBK_Unused_D                         = AreaByte(0xD),
+    AB_OBK_Unused_E                         = AreaByte(0xE),
+    AB_OBK_Unused_F                         = AreaByte(0xF),
 };
 
-enum {
-    AF_OBK01_CabinetMoved           = AreaFlag(1),
-    AF_OBK01_IsPlayerNearPortrait   = AreaFlag(3),
-    AF_OBK01_WasPlayerNearPortrait  = AreaFlag(4),
-    AF_OBK03_HitFirstSwitch         = AreaFlag(5),
-    AF_OBK03_HitSecondSwitch        = AreaFlag(6),
-    AF_OBK03_HitThirdSwitch         = AreaFlag(7),
-    AF_OBK08_KeepAwayStarted        = AreaFlag(8),
+enum AreaFlagsOBK {
+    // AF_OBK_00 unused
+    AF_OBK01_CabinetMoved                   = AreaFlag(0x01),
+    // AF_OBK_02 unused
+    AF_OBK01_IsPlayerNearPortrait           = AreaFlag(0x03),
+    AF_OBK01_WasPlayerNearPortrait          = AreaFlag(0x04),
+    AF_OBK03_HitFirstSwitch                 = AreaFlag(0x05),
+    AF_OBK03_HitSecondSwitch                = AreaFlag(0x06),
+    AF_OBK03_HitThirdSwitch                 = AreaFlag(0x07),
+    AF_OBK08_KeepAwayStarted                = AreaFlag(0x08),
+    // AF_OBK_09 - AF_OBK_FF unused
 };
-
-#endif

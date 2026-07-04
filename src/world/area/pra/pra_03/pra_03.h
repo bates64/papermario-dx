@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_03.h
 /// @brief Crystal Palace - Save Room
 

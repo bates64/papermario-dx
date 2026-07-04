@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file dgb_03.h
 /// @brief Tubba's Castle - Table/Clock Room (1/2F)
 
@@ -19,7 +21,7 @@ enum {
 };
 
 enum {
-    MV_PadlockEntityID      = MapVar(0),
+    MV_EntityID_Padlock      = MapVar(0),
 };
 
 #define NAMESPACE dgb_03

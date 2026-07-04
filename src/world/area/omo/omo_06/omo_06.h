@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file omo_06.h
 /// @brief Shy Guy's Toybox - PNK Station
 
@@ -13,23 +15,22 @@
 
 enum {
     NPC_Conductor           = 0,
-    NPC_TrainToad    = 1,
+    NPC_TrainToad           = 1,
 };
 
 enum {
-    MV_TrainUnk_00          = MapVar(0),
-    MV_TrainUnk_01          = MapVar(1),
-    MV_TrainUnk_02          = MapVar(2),
+    MV_TrainRideState       = MapVar(0),
+    MV_TrainPath            = MapVar(1),
+    MV_TrainSpeedMode       = MapVar(2),
     MV_ArrowTexUOffset      = MapVar(9),
-    MV_TrainPos             = MapVar(11),
-    MV_TrainUnk_0C          = MapVar(12),
-    MV_TrainUnk_0D          = MapVar(13),
+    MV_TrainPosX            = MapVar(11),
+    MV_TrainPosZ            = MapVar(12),
+    MV_TrainYaw             = MapVar(13),
 };
 
 enum {
-    MF_TrainUnk_00          = MapFlag(0),
+    MF_TrainRideActive      = MapFlag(0),
     MF_EitherSwitchPressed  = MapFlag(1),
-    AF_JAN01_TreeDrop_StarPiece               = MapFlag(10),
 };
 
 #define NAMESPACE omo_06
@@ -37,7 +38,7 @@ enum {
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_SetupGizmos);
-extern EvtScript N(EVS_80244F40);
-extern EvtScript N(D_80244B10_DBC420);
+extern EvtScript N(EVS_SetupTrain);
+extern EvtScript N(EVS_Conductor_ChooseRoute);
 extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(DefaultNPCs);

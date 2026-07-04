@@ -1,7 +1,7 @@
 #include "flo_15.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Sun.inc.c"
+#include "world/common/npc/Sun/idle.inc.c"
 
 EvtScript N(EVS_Sun_AnimateBobbing) = {
     IfLt(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
@@ -127,7 +127,7 @@ EvtScript N(EVS_Sun_DescendFromSky) = {
     Call(DisablePlayerInput, true)
     Wait(10)
     KillThread(LVar9)
-    Call(SetNpcFlagBits, NPC_Sun_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Sun_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetNpcPos, NPC_Sun_01, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_Sun_01, LVar0, 450, LVar2, 30)
     Call(DisablePlayerInput, false)

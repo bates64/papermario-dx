@@ -7,7 +7,7 @@ EvtScript N(EVS_Scene_Chapter1) = {
     Thread
         Call(AdjustCam, CAM_DEFAULT, Float(0.5 / DT), 20, 300, Float(17.0), Float(-11.0))
     EndThread
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, -200, 93, -17)
     Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
     Thread

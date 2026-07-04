@@ -730,10 +730,10 @@ API_CALLABLE(NpcSetHomePosToCurrent) {
 }
 
 API_CALLABLE(GetPartnerPos) {
-    Bytecode* ptrReadPos = script->ptrReadPos;
-    Bytecode posX = *ptrReadPos++;
-    Bytecode posY = *ptrReadPos++;
-    Bytecode posZ = *ptrReadPos++;
+    Bytecode* args = script->ptrReadPos;
+    Bytecode posX = *args++;
+    Bytecode posY = *args++;
+    Bytecode posZ = *args++;
     Npc* npc = get_npc_unsafe(NPC_PARTNER);
 
     if (npc == nullptr) {
@@ -747,12 +747,13 @@ API_CALLABLE(GetPartnerPos) {
 }
 
 API_CALLABLE(DisablePartnerAI) {
-    Bytecode* ptrReadPos = script->ptrReadPos;
+    Bytecode* args = script->ptrReadPos;
+    b32 useGenerous = evt_get_variable(script, *args++);
 
-    if (evt_get_variable(script, *ptrReadPos++) == 0) {
-        func_800EF314();
+    if (useGenerous) {
+        partner_disable_ai_soon();
     } else {
-        func_800EF300();
+        partner_disable_ai();
     }
     return ApiStatus_DONE2;
 }
@@ -762,19 +763,19 @@ API_CALLABLE(EnablePartnerAI) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_802CF54C) {
-    func_800EF43C();
+API_CALLABLE(ResetPartnerAIState) {
+    partner_reset_ai_state();
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_802CF56C) {
-    Bytecode* ptrReadPos = script->ptrReadPos;
-    s32 value = evt_get_variable(script, *ptrReadPos++);
+API_CALLABLE(SetPartnerFollowMode) {
+    Bytecode* args = script->ptrReadPos;
+    s32 value = evt_get_variable(script, *args++);
 
     if (value == 2) {
-        func_800EF3E4();
+        partner_move_to_player_side();
     } else {
-        func_800EF3D4(value);
+        partner_set_forced_follow_mode(value);
     }
     return ApiStatus_DONE2;
 }
@@ -805,7 +806,7 @@ API_CALLABLE(BringPartnerOut) {
         partner = get_npc_unsafe(NPC_PARTNER);
         partner->npcID = -5;
 
-        bpPointer->flags = NPC_FLAG_IGNORE_PLAYER_COLLISION;
+        bpPointer->flags = NPC_FLAG_IGNORE_CHAR_COLLISION;
         bpPointer->initialAnim = gPartnerAnimations[wExtraPartnerID].fly;
         bpPointer->onUpdate = nullptr;
         bpPointer->onRender = nullptr;

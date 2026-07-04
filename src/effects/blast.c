@@ -98,8 +98,7 @@ void blast_appendGfx(void* effect) {
     Gfx* dlist = D_090017B0_37F180;
     BlastFXData* data = ((EffectInstance*) effect)->data.blast;
     s32 unk_20 = data->unk_20;
-    f32 t = 256.0f;
-    s32 envAlpha = (data->unk_20 - unk_20) * t;
+    s32 envAlpha = (data->unk_20 - unk_20) * 256.0f;
 
     gDPPipeSync(gMainGfxPos++);
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
@@ -123,7 +122,6 @@ void blast_appendGfx(void* effect) {
     } else {
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 128, 127);
     }
-    t = !(s32)t; // required to match
     gDPSetEnvColor(gMainGfxPos++, 255, 255, 139, envAlpha);
 
     gSPDisplayList(gMainGfxPos++, dlist);

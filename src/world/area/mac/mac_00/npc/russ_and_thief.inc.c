@@ -1,25 +1,15 @@
-s32 N(LetterList_RussT)[] = {
-    ITEM_LETTER_TO_RUSS_T,
-    ITEM_NONE
-};
+#include "../mac_00.h"
 
-EvtScript N(EVS_LetterPrompt_RussT) = {
-    Call(N(LetterDelivery_Init),
-        NPC_RussT, ANIM_RussT_Talk, ANIM_RussT_Idle,
-        ITEM_LETTER_TO_RUSS_T, ITEM_NONE,
-        MSG_MAC_Gate_0011, MSG_MAC_Gate_0012, MSG_MAC_Gate_0013, MSG_MAC_Gate_0014,
-        Ref(N(LetterList_RussT)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_RussT) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_RussT) = {
+    .recipientID = NPC_RussT,
+    .recipientTalk = ANIM_RussT_Talk,
+    .recipientIdle = ANIM_RussT_Idle,
+    .msgGreeting = MSG_MAC_Gate_0011,
+    .msgCancelled = MSG_MAC_Gate_0012,
+    .msgDelivered = MSG_MAC_Gate_0013,
+    .msgRecieved = MSG_MAC_Gate_0014,
+    .letters = { ITEM_LETTER_TO_RUSS_T },
+    .reward = ITEM_STAR_PIECE,
 };
 
 EvtScript N(EVS_ShyGuy_PlayRunningSounds) = {
@@ -40,42 +30,42 @@ typedef struct RussTLoreEntry {
 } RussTLoreEntry; // size = 0x14
 
 RussTLoreEntry N(RussTLore)[] = {
-    { MSG_RussTHint_0000, STORY_CH0_WAKE_UP,             AF_MAC_45, GF_MAC00_RussT_HeardLore_00, AF_MAC_77 },
-    { MSG_RussTHint_0001, STORY_CH0_WAKE_UP,             AF_MAC_46, GF_MAC00_RussT_HeardLore_01, AF_MAC_78 },
-    { MSG_RussTHint_0002, STORY_CH0_WAKE_UP,             AF_MAC_47, GF_MAC00_RussT_HeardLore_02, AF_MAC_79 },
-    { MSG_RussTHint_0003, STORY_CH0_WAKE_UP,             AF_MAC_48, GF_MAC00_RussT_HeardLore_03, AF_MAC_7A },
-    { MSG_RussTHint_0004, STORY_CH0_BEGAN_PEACH_MISSION, AF_MAC_49, GF_MAC00_RussT_HeardLore_04, AF_MAC_7B },
-    { MSG_RussTHint_0005, STORY_CH0_BEGAN_PEACH_MISSION, AF_MAC_4A, GF_MAC00_RussT_HeardLore_05, AF_MAC_7C },
-    { MSG_RussTHint_0006, STORY_CH0_BEGAN_PEACH_MISSION, AF_MAC_4B, GF_MAC00_RussT_HeardLore_06, AF_MAC_7D },
-    { MSG_RussTHint_0007, STORY_CH0_BEGAN_PEACH_MISSION, AF_MAC_4C, GF_MAC00_RussT_HeardLore_07, AF_MAC_7E },
-    { MSG_RussTHint_0008, STORY_CH1_BEGAN_PEACH_MISSION, AF_MAC_4D, GF_MAC00_RussT_HeardLore_08, AF_MAC_7F },
-    { MSG_RussTHint_0009, STORY_CH1_BEGAN_PEACH_MISSION, AF_MAC_4E, GF_MAC00_RussT_HeardLore_09, AF_MAC_80 },
-    { MSG_RussTHint_000A, STORY_CH1_BEGAN_PEACH_MISSION, AF_MAC_4F, GF_MAC00_RussT_HeardLore_0A, AF_MAC_81 },
-    { MSG_RussTHint_000B, STORY_CH1_BEGAN_PEACH_MISSION, AF_MAC_50, GF_MAC00_RussT_HeardLore_0B, AF_MAC_82 },
-    { MSG_RussTHint_000C, STORY_CH2_BEGAN_PEACH_MISSION, AF_MAC_51, GF_MAC00_RussT_HeardLore_0C, AF_MAC_83 },
-    { MSG_RussTHint_000D, STORY_CH2_BEGAN_PEACH_MISSION, AF_MAC_52, GF_MAC00_RussT_HeardLore_0D, AF_MAC_84 },
-    { MSG_RussTHint_000E, STORY_CH2_BEGAN_PEACH_MISSION, AF_MAC_53, GF_MAC00_RussT_HeardLore_0E, AF_MAC_85 },
-    { MSG_RussTHint_000F, STORY_CH2_BEGAN_PEACH_MISSION, AF_MAC_54, GF_MAC00_RussT_HeardLore_0F, AF_MAC_86 },
-    { MSG_RussTHint_0010, STORY_CH3_BEGAN_PEACH_MISSION, AF_MAC_55, GF_MAC00_RussT_HeardLore_10, AF_MAC_87 },
-    { MSG_RussTHint_0011, STORY_CH3_BEGAN_PEACH_MISSION, AF_MAC_56, GF_MAC00_RussT_HeardLore_11, AF_MAC_88 },
-    { MSG_RussTHint_0012, STORY_CH3_BEGAN_PEACH_MISSION, AF_MAC_57, GF_MAC00_RussT_HeardLore_12, AF_MAC_89 },
-    { MSG_RussTHint_0013, STORY_CH3_BEGAN_PEACH_MISSION, AF_MAC_58, GF_MAC00_RussT_HeardLore_13, AF_MAC_8A },
-    { MSG_RussTHint_0014, STORY_CH4_BEGAN_PEACH_MISSION, AF_MAC_59, GF_MAC00_RussT_HeardLore_14, AF_MAC_8B },
-    { MSG_RussTHint_0015, STORY_CH4_BEGAN_PEACH_MISSION, AF_MAC_5A, GF_MAC00_RussT_HeardLore_15, AF_MAC_8C },
-    { MSG_RussTHint_0016, STORY_CH4_BEGAN_PEACH_MISSION, AF_MAC_5B, GF_MAC00_RussT_HeardLore_16, AF_MAC_8D },
-    { MSG_RussTHint_0017, STORY_CH4_BEGAN_PEACH_MISSION, AF_MAC_5C, GF_MAC00_RussT_HeardLore_17, AF_MAC_8E },
-    { MSG_RussTHint_0018, STORY_CH5_BEGAN_PEACH_MISSION, AF_MAC_5D, GF_MAC00_RussT_HeardLore_18, AF_MAC_8F },
-    { MSG_RussTHint_0019, STORY_CH5_BEGAN_PEACH_MISSION, AF_MAC_5E, GF_MAC00_RussT_HeardLore_19, AF_MAC_90 },
-    { MSG_RussTHint_001A, STORY_CH5_BEGAN_PEACH_MISSION, AF_MAC_5F, GF_MAC00_RussT_HeardLore_1A, AF_MAC_91 },
-    { MSG_RussTHint_001B, STORY_CH5_BEGAN_PEACH_MISSION, AF_MAC_60, GF_MAC00_RussT_HeardLore_1B, AF_MAC_92 },
-    { MSG_RussTHint_001C, STORY_CH6_BEGAN_PEACH_MISSION, AF_MAC_61, GF_MAC00_RussT_HeardLore_1C, AF_MAC_93 },
-    { MSG_RussTHint_001D, STORY_CH6_BEGAN_PEACH_MISSION, AF_MAC_62, GF_MAC00_RussT_HeardLore_1D, AF_MAC_94 },
-    { MSG_RussTHint_001E, STORY_CH6_BEGAN_PEACH_MISSION, AF_MAC_63, GF_MAC00_RussT_HeardLore_1E, AF_MAC_95 },
-    { MSG_RussTHint_001F, STORY_CH6_BEGAN_PEACH_MISSION, AF_MAC_64, GF_MAC00_RussT_HeardLore_1F, AF_MAC_96 },
-    { MSG_RussTHint_0020, STORY_CH7_BEGAN_PEACH_MISSION, AF_MAC_65, GF_MAC00_RussT_HeardLore_20, AF_MAC_97 },
-    { MSG_RussTHint_0021, STORY_CH7_BEGAN_PEACH_MISSION, AF_MAC_66, GF_MAC00_RussT_HeardLore_21, AF_MAC_98 },
-    { MSG_RussTHint_0022, STORY_CH7_BEGAN_PEACH_MISSION, AF_MAC_67, GF_MAC00_RussT_HeardLore_22, AF_MAC_99 },
-    { MSG_RussTHint_0023, STORY_CH7_BEGAN_PEACH_MISSION, AF_MAC_68, GF_MAC00_RussT_HeardLore_23, AF_MAC_9A },
+    { MSG_RussTHint_0000, STORY_CH0_WAKE_UP,             AF_MAC00_LoreAvailable_00, GF_MAC00_RussT_HeardLore_00, AF_MAC00_LoreGiven_00 },
+    { MSG_RussTHint_0001, STORY_CH0_WAKE_UP,             AF_MAC00_LoreAvailable_01, GF_MAC00_RussT_HeardLore_01, AF_MAC00_LoreGiven_01 },
+    { MSG_RussTHint_0002, STORY_CH0_WAKE_UP,             AF_MAC00_LoreAvailable_02, GF_MAC00_RussT_HeardLore_02, AF_MAC00_LoreGiven_02 },
+    { MSG_RussTHint_0003, STORY_CH0_WAKE_UP,             AF_MAC00_LoreAvailable_03, GF_MAC00_RussT_HeardLore_03, AF_MAC00_LoreGiven_03 },
+    { MSG_RussTHint_0004, STORY_CH0_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_04, GF_MAC00_RussT_HeardLore_04, AF_MAC00_LoreGiven_04 },
+    { MSG_RussTHint_0005, STORY_CH0_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_05, GF_MAC00_RussT_HeardLore_05, AF_MAC00_LoreGiven_05 },
+    { MSG_RussTHint_0006, STORY_CH0_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_06, GF_MAC00_RussT_HeardLore_06, AF_MAC00_LoreGiven_06 },
+    { MSG_RussTHint_0007, STORY_CH0_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_07, GF_MAC00_RussT_HeardLore_07, AF_MAC00_LoreGiven_07 },
+    { MSG_RussTHint_0008, STORY_CH1_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_08, GF_MAC00_RussT_HeardLore_08, AF_MAC00_LoreGiven_08 },
+    { MSG_RussTHint_0009, STORY_CH1_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_09, GF_MAC00_RussT_HeardLore_09, AF_MAC00_LoreGiven_09 },
+    { MSG_RussTHint_000A, STORY_CH1_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_0A, GF_MAC00_RussT_HeardLore_0A, AF_MAC00_LoreGiven_0A },
+    { MSG_RussTHint_000B, STORY_CH1_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_0B, GF_MAC00_RussT_HeardLore_0B, AF_MAC00_LoreGiven_0B },
+    { MSG_RussTHint_000C, STORY_CH2_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_0C, GF_MAC00_RussT_HeardLore_0C, AF_MAC00_LoreGiven_0C },
+    { MSG_RussTHint_000D, STORY_CH2_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_0D, GF_MAC00_RussT_HeardLore_0D, AF_MAC00_LoreGiven_0D },
+    { MSG_RussTHint_000E, STORY_CH2_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_0E, GF_MAC00_RussT_HeardLore_0E, AF_MAC00_LoreGiven_0E },
+    { MSG_RussTHint_000F, STORY_CH2_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_0F, GF_MAC00_RussT_HeardLore_0F, AF_MAC00_LoreGiven_0F },
+    { MSG_RussTHint_0010, STORY_CH3_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_10, GF_MAC00_RussT_HeardLore_10, AF_MAC00_LoreGiven_10 },
+    { MSG_RussTHint_0011, STORY_CH3_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_11, GF_MAC00_RussT_HeardLore_11, AF_MAC00_LoreGiven_11 },
+    { MSG_RussTHint_0012, STORY_CH3_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_12, GF_MAC00_RussT_HeardLore_12, AF_MAC00_LoreGiven_12 },
+    { MSG_RussTHint_0013, STORY_CH3_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_13, GF_MAC00_RussT_HeardLore_13, AF_MAC00_LoreGiven_13 },
+    { MSG_RussTHint_0014, STORY_CH4_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_14, GF_MAC00_RussT_HeardLore_14, AF_MAC00_LoreGiven_14 },
+    { MSG_RussTHint_0015, STORY_CH4_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_15, GF_MAC00_RussT_HeardLore_15, AF_MAC00_LoreGiven_15 },
+    { MSG_RussTHint_0016, STORY_CH4_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_16, GF_MAC00_RussT_HeardLore_16, AF_MAC00_LoreGiven_16 },
+    { MSG_RussTHint_0017, STORY_CH4_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_17, GF_MAC00_RussT_HeardLore_17, AF_MAC00_LoreGiven_17 },
+    { MSG_RussTHint_0018, STORY_CH5_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_18, GF_MAC00_RussT_HeardLore_18, AF_MAC00_LoreGiven_18 },
+    { MSG_RussTHint_0019, STORY_CH5_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_19, GF_MAC00_RussT_HeardLore_19, AF_MAC00_LoreGiven_19 },
+    { MSG_RussTHint_001A, STORY_CH5_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_1A, GF_MAC00_RussT_HeardLore_1A, AF_MAC00_LoreGiven_1A },
+    { MSG_RussTHint_001B, STORY_CH5_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_1B, GF_MAC00_RussT_HeardLore_1B, AF_MAC00_LoreGiven_1B },
+    { MSG_RussTHint_001C, STORY_CH6_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_1C, GF_MAC00_RussT_HeardLore_1C, AF_MAC00_LoreGiven_1C },
+    { MSG_RussTHint_001D, STORY_CH6_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_1D, GF_MAC00_RussT_HeardLore_1D, AF_MAC00_LoreGiven_1D },
+    { MSG_RussTHint_001E, STORY_CH6_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_1E, GF_MAC00_RussT_HeardLore_1E, AF_MAC00_LoreGiven_1E },
+    { MSG_RussTHint_001F, STORY_CH6_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_1F, GF_MAC00_RussT_HeardLore_1F, AF_MAC00_LoreGiven_1F },
+    { MSG_RussTHint_0020, STORY_CH7_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_20, GF_MAC00_RussT_HeardLore_20, AF_MAC00_LoreGiven_20 },
+    { MSG_RussTHint_0021, STORY_CH7_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_21, GF_MAC00_RussT_HeardLore_21, AF_MAC00_LoreGiven_21 },
+    { MSG_RussTHint_0022, STORY_CH7_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_22, GF_MAC00_RussT_HeardLore_22, AF_MAC00_LoreGiven_22 },
+    { MSG_RussTHint_0023, STORY_CH7_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_23, GF_MAC00_RussT_HeardLore_23, AF_MAC00_LoreGiven_23 },
 };
 
 API_CALLABLE(N(ResetRussHintsGiven)) {
@@ -187,7 +177,7 @@ EvtScript N(EVS_ShyGuy_StealDictionary) = {
         Wait(1)
     EndLoop
     Call(SetNpcPos, NPC_ShyGuyThief, -30, 20, -470)
-    Call(SetNpcAnimation, NPC_ShyGuyThief, ANIM_ShyGuy_Red_Anim04)
+    Call(SetNpcAnimation, NPC_ShyGuyThief, ANIM_ShyGuy_Red_Dash)
     Wait(1)
     Call(DisablePlayerInput, true)
     Call(ShowMessageAtScreenPos, MSG_MAC_Gate_0009, 160, 40)
@@ -273,33 +263,24 @@ EvtScript N(EVS_RussT_GetHint) = {
     End
 };
 
-s32 N(ItemList_RussDocuments1)[] = {
-    ITEM_DICTIONARY,
-    ITEM_MYSTERY_NOTE,
-    ITEM_SUSPICIOUS_NOTE,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_RussDocuments1), ITEM_DICTIONARY, ITEM_MYSTERY_NOTE, ITEM_SUSPICIOUS_NOTE);
 
-s32 N(ItemList_RussDocuments2)[] = {
-    ITEM_MYSTERY_NOTE,
-    ITEM_SUSPICIOUS_NOTE,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_RussDocuments2), ITEM_MYSTERY_NOTE, ITEM_SUSPICIOUS_NOTE);
 
 EvtScript N(EVS_ItemPrompt_Dictionary) = {
-    IfEq(AF_MAC_0D, false)
+    IfEq(AF_MAC00_HeardDictionaryLament, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000A)
-        Set(AF_MAC_0D, true)
+        Set(AF_MAC00_HeardDictionaryLament, true)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000B)
     EndIf
-    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_RussDocuments1))
+    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_RussDocuments1), NPC_RussT)
     Switch(LVar0)
         CaseEq(ITEM_DICTIONARY)
             Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000D)
             Set(GF_MAC00_DictionaryReturned, true)
             Wait(10)
-            EVT_GIVE_STAR_PIECE()
+            EVT_GIVE_REWARD(ITEM_STAR_PIECE)
             Wait(10)
             IfEq(GF_MAC00_TranslatedMysteryNote, true)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_0010)
@@ -317,9 +298,9 @@ EvtScript N(EVS_ItemPrompt_Dictionary) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_0122)
             Set(GF_MAC00_TranslatedSuspiciousNote, true)
 #endif
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000C)
-        CaseEq(0)
+        CaseEq(ITEM_CHOICE_NONE)
     EndSwitch
     Return
     End
@@ -327,9 +308,9 @@ EvtScript N(EVS_ItemPrompt_Dictionary) = {
 
 EvtScript N(EVS_ItemPrompt_Documents) = {
     Set(LVarA, 0)
-    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_RussDocuments2))
+    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_RussDocuments2), NPC_RussT)
     Switch(LVar0)
-        CaseEq(0)
+        CaseEq(ITEM_CHOICE_NONE)
             IfLt(GB_StoryProgress, STORY_CH4_SOLVED_COLOR_PUZZLE)
                 IfEq(GF_MAC00_TranslatedMysteryNote, true)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_0010)
@@ -345,7 +326,7 @@ EvtScript N(EVS_ItemPrompt_Documents) = {
                 EndIf
 #endif
             EndIf
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
         CaseDefault
             IfEq(LVar0, ITEM_MYSTERY_NOTE)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000E)
@@ -367,11 +348,8 @@ EvtScript N(EVS_NpcInteract_RussT) = {
     IfGe(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
         IfEq(GF_MAC00_DictionaryReturned, false)
             ExecWait(N(EVS_ItemPrompt_Dictionary))
-            ExecWait(N(EVS_LetterPrompt_RussT))
-            ExecWait(N(EVS_LetterReward_RussT))
-            IfNe(LVarC, 0)
-                Return
-            EndIf
+            Set(LVar0, Ref(N(LetterDelivery_RussT)))
+            ExecWait(EVS_TryLetterDelivery)
             Return
         EndIf
         ExecWait(N(EVS_ItemPrompt_Documents))
@@ -380,11 +358,8 @@ EvtScript N(EVS_NpcInteract_RussT) = {
         EndIf
     EndIf
     ExecWait(N(EVS_RussT_GetHint))
-    ExecWait(N(EVS_LetterPrompt_RussT))
-    ExecWait(N(EVS_LetterReward_RussT))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    Set(LVar0, Ref(N(LetterDelivery_RussT)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
@@ -394,12 +369,4 @@ EvtScript N(EVS_NpcInit_RussT) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_RussT)))
     Return
     End
-};
-
-NpcSettings N(NpcSettings_RussT) = {
-    .defaultAnim = ANIM_RussT_Idle,
-    .height = 30,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-    .flags = ENEMY_FLAG_PASSIVE,
 };

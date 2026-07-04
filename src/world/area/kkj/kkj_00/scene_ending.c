@@ -1,6 +1,9 @@
 #include "kkj_00.h"
 #include "sprite/player.h"
 
+#include "world/common/npc/ToadGuard/base.h"
+#include "world/common/npc/ToadMinister/base.h"
+
 API_CALLABLE(N(FadeScreenToWhite)) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;

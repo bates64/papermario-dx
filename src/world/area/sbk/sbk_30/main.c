@@ -1,8 +1,6 @@
 #include "sbk_30.h"
+#include "effects.h"
 
-#include "world/common/atomic/ApplyTint.inc.c"
-
-#include "world/common/todo/SpawnSunEffect.inc.c"
 
 EvtScript N(EVS_ExitWalk_sbk_99_1) = EVT_EXIT_WALK(60, sbk_30_ENTRY_0, "sbk_99", sbk_99_ENTRY_1);
 EvtScript N(EVS_ExitWalk_sbk_31_0) = EVT_EXIT_WALK(60, sbk_30_ENTRY_1, "sbk_31", sbk_31_ENTRY_0);
@@ -44,9 +42,9 @@ EvtScript N(EVS_Scene_RuinsRising) = {
     Call(SetPanTarget, CAM_DEFAULT, 193, 0, -237)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(N(SetModelTintMode), APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
-    Call(N(SetModelTintMode), APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
-    Call(N(SetModelTintParams), ENV_TINT_REMAP, 44, 32, 177, 0, 0, 0, 0, 0, 0)
+    Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
+    Call(SetModelTintMode, APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
+    Call(SetModelTintParams, ENV_TINT_REMAP, 44, 32, 177, 0, 0, 0, 0, 0, 0)
     Call(DisablePlayerInput, true)
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 300, Float(0.25))
@@ -91,7 +89,7 @@ EvtScript N(EVS_Main) = {
             ExecWait(N(EVS_Scene_RuinsRising))
         EndCaseGroup
         CaseDefault
-            Call(N(SpawnSunEffect))
+            Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     EndSwitch
     Return
     End

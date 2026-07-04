@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file isk_11.h
 /// @brief Dry Dry Ruins - Stone Puzzle Room
 
@@ -13,13 +15,13 @@
 
 enum {
     MV_LockEntityID             = MapVar(0),
-    MV_HiddenStairsRevealed     = MapVar(0),
-    MV_PlayerPanicDone          = MapVar(1),
-    MV_Socket1_ItemEntity       = MapVar(10),
-    MV_Socket2_ItemEntity       = MapVar(11),
-    MV_Socket3_ItemEntity       = MapVar(12),
-    MV_Socket4_ItemEntity       = MapVar(13),
-    MV_Socket5_ItemEntity       = MapVar(14),
+    MV_HiddenStairsRevealed     = MapVar(1),
+    MV_PlayerPanicDone          = MapVar(2),
+    MV_ItemEntity_Socket1       = MapVar(10),
+    MV_ItemEntity_Socket2       = MapVar(11),
+    MV_ItemEntity_Socket3       = MapVar(12),
+    MV_ItemEntity_Socket4       = MapVar(13),
+    MV_ItemEntity_Socket5       = MapVar(14),
 };
 
 extern EvtScript N(EVS_Main);

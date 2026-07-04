@@ -15,14 +15,6 @@ enum RewindArrowStates {
     REWIND_ARROW_STATE_CHANGE_COLOR_BACK = 4,
 };
 
-#ifdef SHIFT
-#define MSG_ROM_START (s32)msg_ROM_START
-#elif VERSION_JP
-#define MSG_ROM_START 0x1D40000
-#else
-#define MSG_ROM_START 0x1B83000
-#endif
-
 #if VERSION_PAL
 #define CHOICE_POINTER_MOVE_RATE 5.0
 #else
@@ -1396,16 +1388,23 @@ void dma_load_msg(u32 msgID, void* dest) {
 }
 #else
 void dma_load_msg(u32 msgID, void* dest) {
-    u8* addr = (u8*) MSG_ROM_START + (msgID >> 14); // (msgID >> 16) * 4
-    u8* offset[2]; // start, end
+    u8* romStart = msg_ROM_START;
+    u32 sectionOffset;
+    u32 msgOffsets[2]; // start, end
+    u32 sectionID = msgID >> 16;
+    u32 localMsgID = msgID & 0xFFFF;
+    u8* addr;
 
-    dma_copy(addr, addr + 4, &offset[0]); // Load section offset
+    // load offset of this message section
+    addr = romStart + sectionID * sizeof(u32);
+    dma_copy(addr, addr + sizeof(sectionOffset), &sectionOffset);
 
-    addr = MSG_ROM_START + offset[0] + (msgID & 0xFFFF) * 4;
-    dma_copy(addr, addr + 8, &offset); // Load message start and end offsets
+    // load start/end offsets for this message
+    addr = romStart + sectionOffset + localMsgID * sizeof(u32);
+    dma_copy(addr, addr + sizeof(msgOffsets), msgOffsets);
 
-    // Load the msg data
-    dma_copy(MSG_ROM_START + offset[0], MSG_ROM_START + offset[1], dest);
+    // load message data
+    dma_copy(romStart + msgOffsets[0], romStart + msgOffsets[1], dest);
 }
 #endif
 

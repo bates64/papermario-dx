@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tst_01.h
 /// @brief Testing - Jump Width Test
 

@@ -1,15 +1,15 @@
 #include "kpa_03.h"
 
-#include "world/common/enemy/Koopatrol_Wander.inc.c"
-#include "world/common/enemy/SpikeTop.inc.c"
-#include "world/common/enemy/Magikoopa.inc.c"
+#include "world/common/enemy/Koopatrol/wander.inc.c"
+#include "world/common/enemy/SpikeTop/wander.inc.c"
+#include "world/common/enemy/Magikoopa/wander.inc.c"
 
-AnimID N(ExtraAnims_Koopatrol)[] = {
-    ANIM_WorldKoopatrol_Anim01,
-    ANIM_WorldKoopatrol_Anim04,
-    ANIM_WorldKoopatrol_Anim06,
-    ANIM_WorldKoopatrol_Anim10,
-    ANIM_WorldKoopatrol_Anim0B,
+AnimID N(LimitAnims_Koopatrol)[] = {
+    ANIM_WorldKoopatrol_Idle,
+    ANIM_WorldKoopatrol_Walk,
+    ANIM_WorldKoopatrol_Run,
+    ANIM_WorldKoopatrol_Hurt,
+    ANIM_WorldKoopatrol_ShellSpin,
     ANIM_LIST_END
 };
 
@@ -33,7 +33,7 @@ NpcData N(NpcData_Koopatrol_01) = {
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = KOOPATROL_DROPS,
     .animations = KOOPATROL_ANIMS,
-    .extraAnimations = N(ExtraAnims_Koopatrol),
+    .limitAnimations = N(LimitAnims_Koopatrol),
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
@@ -57,7 +57,7 @@ NpcData N(NpcData_Koopatrol_02) = {
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = KOOPATROL_DROPS,
     .animations = KOOPATROL_ANIMS,
-    .extraAnimations = N(ExtraAnims_Koopatrol),
+    .limitAnimations = N(LimitAnims_Koopatrol),
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
@@ -77,7 +77,7 @@ NpcData N(NpcData_BonyBeetle_01) = {
             .detectSize = { 300 },
         }
     },
-    .settings = &N(NpcSettings_BonyBeetle),
+    .settings = &N(NpcSettings_BonyBeetle_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BONY_BEETLE_DROPS_ALT,
     .animations = BONY_BEETLE_ANIMS,
@@ -100,7 +100,7 @@ NpcData N(NpcData_BonyBeetle_02) = {
             .detectSize = { 300 },
         }
     },
-    .settings = &N(NpcSettings_BonyBeetle),
+    .settings = &N(NpcSettings_BonyBeetle_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BONY_BEETLE_DROPS,
     .animations = BONY_BEETLE_ANIMS,
@@ -124,11 +124,11 @@ NpcData N(NpcData_Magikoopa_01)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_Magikoopa),
+        .settings = &N(NpcSettings_Magikoopa_Wander),
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
-        .drops = MAGINO_DROPS,
+        .drops = MAGIKOOPA_DROPS,
         .animations = MAGIKOOPA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Magikoopa),
+        .limitAnimations = N(LimitAnims_Magikoopa),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     MAGIKOOPA_SPELL_HITBOX(NPC_Magikoopa_01_Spell),

@@ -1,10 +1,7 @@
 #include "kzn_19.h"
 #include "sprite/player.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
-#define STAR_SPIRIT_DATA_VAR MV_Unk_01
-#include "world/common/todo/StarSpiritEffectFunc.inc.c"
+#include "world/common/prefab/StarSpiritCard.inc.c"
 
 EvtScript N(EVS_TrySpawningStarCard) = {
     // determine if card should be spawned
@@ -32,14 +29,14 @@ EvtScript N(EVS_TrySpawningStarCard) = {
         Call(SetPanTarget, CAM_DEFAULT, 185, 55, -30)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(N(StarSpiritEffectFunc2), 4, 180, 304, 15, -54, 185, 110, -30, 55, 25)
+        Call(N(InitSpiritCardSpawn), MV_SpiritCardData, 4, 180, 304, 15, -54, 185, 110, -30, 55, 25)
         Thread
-            Call(N(StarSpiritEffectFunc3))
+            Call(N(UpdateSpiritCardSpawn))
         EndThread
         Thread
             Wait(1)
             Call(PlaySound, SOUND_LOOP_STAR_ORB_RISING)
-            Call(N(StarSpiritEffectFunc1))
+            Call(N(AwaitSpiritOrbBurst))
             Call(StopSound, SOUND_LOOP_STAR_ORB_RISING)
             Call(PlaySoundAt, SOUND_STAR_ORB_BURST, SOUND_SPACE_DEFAULT, 185, 110, -30)
         EndThread
@@ -52,7 +49,7 @@ EvtScript N(EVS_TrySpawningStarCard) = {
             Wait(115)
             Call(PlaySoundAt, SOUND_STAR_CARD_APPEARS, SOUND_SPACE_DEFAULT, 185, 110, -30)
         EndThread
-        Call(N(StarSpiritEffectFunc4), 1)
+        Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_FALLING)
         Thread
             Wait(80)
             Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -60,7 +57,7 @@ EvtScript N(EVS_TrySpawningStarCard) = {
         Add(LVar1, 100)
         Call(SetCamDistance, CAM_DEFAULT, LVar1)
         Call(SetPanTarget, CAM_DEFAULT, 185, 25, -30)
-        Call(N(StarSpiritEffectFunc4), 2)
+        Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_DONE_FALLING)
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
@@ -70,14 +67,14 @@ EvtScript N(EVS_TrySpawningStarCard) = {
         Call(DisablePlayerInput, false)
     Else
         // just make the card spawn
-        Call(N(StarSpiritEffectFunc5), 4, 185, 55, -30, 25)
+        Call(N(SpawnExistingSpiritCard), 4, 185, 55, -30, 25)
         Thread
-            Call(N(StarSpiritEffectFunc6))
+            Call(N(UpdateExistingSpiritCard))
         EndThread
         Wait(1)
     EndIf
     // wait for pickup
-    Call(N(StarSpiritEffectFunc4), 3)
+    Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_PLAYER_TOUCH)
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Call(GotoMapSpecial, Ref("kmr_23"), kmr_23_ENTRY_4, TRANSITION_GET_STAR_CARD)
@@ -106,7 +103,7 @@ EvtScript N(EVS_SetupTexPan) = {
         TEX_PAN_PARAMS_STEP(  200,    0,  400, -100)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // leaking lava
     Call(SetTexPanner, MODEL_toro, TEX_PANNER_5)
@@ -115,7 +112,7 @@ EvtScript N(EVS_SetupTexPan) = {
         TEX_PAN_PARAMS_STEP(  300, -500,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // lava bubbles
     Call(SetTexPanner, MODEL_poko, TEX_PANNER_D)
@@ -125,7 +122,7 @@ EvtScript N(EVS_SetupTexPan) = {
         TEX_PAN_PARAMS_STEP(0x8000,  0,    0,    0)
         TEX_PAN_PARAMS_FREQ(   6,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_poko1, TEX_PANNER_E)
     Thread
@@ -134,7 +131,7 @@ EvtScript N(EVS_SetupTexPan) = {
         TEX_PAN_PARAMS_STEP(0x8000,  0,    0,    0)
         TEX_PAN_PARAMS_FREQ(   4,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // smoke
     Call(SetTexPanner, MODEL_kem1, TEX_PANNER_3)
@@ -143,7 +140,7 @@ EvtScript N(EVS_SetupTexPan) = {
         TEX_PAN_PARAMS_STEP( -200,    0,  600, -400)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_kem2, TEX_PANNER_4)
     Thread
@@ -151,7 +148,7 @@ EvtScript N(EVS_SetupTexPan) = {
         TEX_PAN_PARAMS_STEP( 500,    0,    0, -400)
         TEX_PAN_PARAMS_FREQ(   1,    0,    0,    1)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

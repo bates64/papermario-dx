@@ -1,7 +1,7 @@
 #include "kzn_07.h"
 #include "effects.h"
 
-#include "world/common/enemy/LavaBubble.inc.c"
+#include "world/common/enemy/LavaBubble/wander.inc.c"
 
 NpcData N(NpcData_LavaBubble_01) = {
     .id = NPC_Bubble_01,
@@ -19,7 +19,7 @@ NpcData N(NpcData_LavaBubble_01) = {
             .detectSize = { 300 },
         }
     },
-    .settings = &N(NpcSettings_LavaBubble),
+    .settings = &N(NpcSettings_LavaBubble_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = LAVA_BUBBLE_DROPS,
     .animations = LAVA_BUBBLE_ANIMS,
@@ -42,7 +42,7 @@ NpcData N(NpcData_LavaBubble_02) = {
             .detectSize = { 300 },
         }
     },
-    .settings = &N(NpcSettings_LavaBubble),
+    .settings = &N(NpcSettings_LavaBubble_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = LAVA_BUBBLE_DROPS,
     .animations = LAVA_BUBBLE_ANIMS,

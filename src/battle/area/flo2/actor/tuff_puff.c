@@ -26,32 +26,32 @@ enum N(ActorVars) {
 };
 
 s32 N(SmallAnims)[] = {
-    STATUS_KEY_NORMAL,    ANIM_TuffPuff_Anim02,
-    STATUS_KEY_STONE,     ANIM_TuffPuff_Anim00,
-    STATUS_KEY_SLEEP,     ANIM_TuffPuff_Anim02,
-    STATUS_KEY_POISON,    ANIM_TuffPuff_Anim02,
-    STATUS_KEY_STOP,      ANIM_TuffPuff_Anim00,
-    STATUS_KEY_STATIC,    ANIM_TuffPuff_Anim02,
-    STATUS_KEY_PARALYZE,  ANIM_TuffPuff_Anim02,
-    STATUS_KEY_PARALYZE,  ANIM_TuffPuff_Anim00,
-    STATUS_KEY_DIZZY,     ANIM_TuffPuff_Anim02,
-    STATUS_KEY_DIZZY,     ANIM_TuffPuff_Anim02,
-    STATUS_KEY_UNUSED,    ANIM_TuffPuff_Anim02,
+    STATUS_KEY_NORMAL,    ANIM_TuffPuff_IdleSmall,
+    STATUS_KEY_STONE,     ANIM_TuffPuff_StillSmall,
+    STATUS_KEY_SLEEP,     ANIM_TuffPuff_IdleSmall,
+    STATUS_KEY_POISON,    ANIM_TuffPuff_IdleSmall,
+    STATUS_KEY_STOP,      ANIM_TuffPuff_StillSmall,
+    STATUS_KEY_STATIC,    ANIM_TuffPuff_IdleSmall,
+    STATUS_KEY_PARALYZE,  ANIM_TuffPuff_IdleSmall,
+    STATUS_KEY_PARALYZE,  ANIM_TuffPuff_StillSmall,
+    STATUS_KEY_DIZZY,     ANIM_TuffPuff_IdleSmall,
+    STATUS_KEY_DIZZY,     ANIM_TuffPuff_IdleSmall,
+    STATUS_KEY_UNUSED,    ANIM_TuffPuff_IdleSmall,
     STATUS_END,
 };
 
 s32 N(LargeAnims)[] = {
-    STATUS_KEY_NORMAL,    ANIM_TuffPuff_Anim03,
-    STATUS_KEY_STONE,     ANIM_TuffPuff_Anim01,
-    STATUS_KEY_SLEEP,     ANIM_TuffPuff_Anim03,
-    STATUS_KEY_POISON,    ANIM_TuffPuff_Anim03,
-    STATUS_KEY_STOP,      ANIM_TuffPuff_Anim01,
-    STATUS_KEY_STATIC,    ANIM_TuffPuff_Anim03,
-    STATUS_KEY_PARALYZE,  ANIM_TuffPuff_Anim03,
-    STATUS_KEY_PARALYZE,  ANIM_TuffPuff_Anim01,
-    STATUS_KEY_DIZZY,     ANIM_TuffPuff_Anim03,
-    STATUS_KEY_DIZZY,     ANIM_TuffPuff_Anim03,
-    STATUS_KEY_UNUSED,    ANIM_TuffPuff_Anim03,
+    STATUS_KEY_NORMAL,    ANIM_TuffPuff_IdleLarge,
+    STATUS_KEY_STONE,     ANIM_TuffPuff_StillLarge,
+    STATUS_KEY_SLEEP,     ANIM_TuffPuff_IdleLarge,
+    STATUS_KEY_POISON,    ANIM_TuffPuff_IdleLarge,
+    STATUS_KEY_STOP,      ANIM_TuffPuff_StillLarge,
+    STATUS_KEY_STATIC,    ANIM_TuffPuff_IdleLarge,
+    STATUS_KEY_PARALYZE,  ANIM_TuffPuff_IdleLarge,
+    STATUS_KEY_PARALYZE,  ANIM_TuffPuff_StillLarge,
+    STATUS_KEY_DIZZY,     ANIM_TuffPuff_IdleLarge,
+    STATUS_KEY_DIZZY,     ANIM_TuffPuff_IdleLarge,
+    STATUS_KEY_UNUSED,    ANIM_TuffPuff_IdleLarge,
     STATUS_END,
 };
 
@@ -152,7 +152,7 @@ EvtScript N(EVS_Init) = {
         Call(SetTargetOffset, ACTOR_SELF, PRT_TARGET, -1, -41)
         Call(SetActorSize, ACTOR_SELF, 20, 25)
         Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(SmallAnims)))
-        Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_TuffPuff_Anim02)
+        Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_TuffPuff_IdleSmall)
         Call(SetActorVar, ACTOR_SELF, AVAR_IsLarge, false)
     Else
         Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, -8, -13)
@@ -161,7 +161,7 @@ EvtScript N(EVS_Init) = {
         Call(SetTargetOffset, ACTOR_SELF, PRT_TARGET, 1, -36)
         Call(SetActorSize, ACTOR_SELF, 28, 35)
         Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(LargeAnims)))
-        Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_TuffPuff_Anim03)
+        Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_TuffPuff_IdleLarge)
         Call(SetActorVar, ACTOR_SELF, AVAR_IsLarge, true)
     EndIf
     Call(SetActorVar, ACTOR_SELF, AVAR_WobbleMode, 0)
@@ -176,24 +176,22 @@ EvtScript N(EVS_HandlePhase) = {
     End
 };
 
-#include "common/CosInterpMinMax.inc.c"
-
 EvtScript N(EVS_Idle) = {
     Set(LVarF, 0)
     Loop(0)
         Call(GetActorVar, ACTOR_SELF, AVAR_WobbleMode, LVarA)
         Switch(LVarA)
             CaseEq(0)
-                Call(N(CosInterpMinMax), LVarF, LVar0, Float(0.97), Float(1.03), 15, 0, 0)
-                Call(N(CosInterpMinMax), LVarF, LVar1, Float(1.03), Float(0.97), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar0, Float(0.97), Float(1.03), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar1, Float(1.03), Float(0.97), 15, 0, 0)
                 Add(LVarF, 1)
             CaseEq(1)
-                Call(N(CosInterpMinMax), LVarF, LVar0, Float(0.95), Float(1.05), 15, 0, 0)
-                Call(N(CosInterpMinMax), LVarF, LVar1, Float(1.05), Float(0.95), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar0, Float(0.95), Float(1.05), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar1, Float(1.05), Float(0.95), 15, 0, 0)
                 Add(LVarF, 3)
             CaseEq(2)
-                Call(N(CosInterpMinMax), LVarF, LVar0, Float(0.9), Float(1.1), 15, 0, 0)
-                Call(N(CosInterpMinMax), LVarF, LVar1, Float(1.1), Float(0.9), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar0, Float(0.9), Float(1.1), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar1, Float(1.1), Float(0.9), 15, 0, 0)
                 Add(LVarF, 5)
         EndSwitch
         Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar2)
@@ -254,57 +252,57 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             Call(GetActorVar, ACTOR_SELF, AVAR_IsLarge, LVar1)
             IfFalse(LVar1)
-                SetConst(LVar1, ANIM_TuffPuff_Anim0C)
+                SetConst(LVar1, ANIM_TuffPuff_HurtSmall)
             Else
-                SetConst(LVar1, ANIM_TuffPuff_Anim0D)
+                SetConst(LVar1, ANIM_TuffPuff_HurtLarge)
             EndIf
             ExecWait(EVS_Enemy_Hit)
         CaseEq(EVENT_HIT)
             SetConst(LVar0, PRT_MAIN)
             Call(GetActorVar, ACTOR_SELF, AVAR_IsLarge, LVar1)
             IfFalse(LVar1)
-                SetConst(LVar1, ANIM_TuffPuff_Anim0C)
+                SetConst(LVar1, ANIM_TuffPuff_HurtSmall)
             Else
-                SetConst(LVar1, ANIM_TuffPuff_Anim0D)
+                SetConst(LVar1, ANIM_TuffPuff_HurtLarge)
             EndIf
             ExecWait(EVS_Enemy_Hit)
         CaseEq(EVENT_BURN_HIT)
             Set(LVar0, 1)
             Call(GetActorVar, ACTOR_SELF, AVAR_IsLarge, LVar1)
             IfFalse(LVar1)
-                SetConst(LVar1, ANIM_TuffPuff_Anim0E)
+                SetConst(LVar1, ANIM_TuffPuff_BurnHurtSmall)
             Else
-                SetConst(LVar1, ANIM_TuffPuff_Anim10)
+                SetConst(LVar1, ANIM_TuffPuff_BurnHurtLarge)
             EndIf
             Call(GetActorVar, ACTOR_SELF, AVAR_IsLarge, LVar2)
             IfFalse(LVar2)
-                SetConst(LVar2, ANIM_TuffPuff_Anim0F)
+                SetConst(LVar2, ANIM_TuffPuff_BurnStillSmall)
             Else
-                SetConst(LVar2, ANIM_TuffPuff_Anim11)
+                SetConst(LVar2, ANIM_TuffPuff_BurnStillLarge)
             EndIf
             ExecWait(EVS_Enemy_BurnHit)
         CaseEq(EVENT_BURN_DEATH)
             Set(LVar0, 1)
             Call(GetActorVar, ACTOR_SELF, AVAR_IsLarge, LVar1)
             IfFalse(LVar1)
-                SetConst(LVar1, ANIM_TuffPuff_Anim0E)
+                SetConst(LVar1, ANIM_TuffPuff_BurnHurtSmall)
             Else
-                SetConst(LVar1, ANIM_TuffPuff_Anim10)
+                SetConst(LVar1, ANIM_TuffPuff_BurnHurtLarge)
             EndIf
             Call(GetActorVar, ACTOR_SELF, AVAR_IsLarge, LVar2)
             IfFalse(LVar2)
-                SetConst(LVar2, ANIM_TuffPuff_Anim0F)
+                SetConst(LVar2, ANIM_TuffPuff_BurnStillSmall)
             Else
-                SetConst(LVar2, ANIM_TuffPuff_Anim11)
+                SetConst(LVar2, ANIM_TuffPuff_BurnStillLarge)
             EndIf
             ExecWait(EVS_Enemy_BurnHit)
             ExecWait(N(onDeath))
             SetConst(LVar0, PRT_MAIN)
             Call(GetActorVar, ACTOR_SELF, AVAR_IsLarge, LVar1)
             IfFalse(LVar1)
-                SetConst(LVar1, ANIM_TuffPuff_Anim0F)
+                SetConst(LVar1, ANIM_TuffPuff_BurnStillSmall)
             Else
-                SetConst(LVar1, ANIM_TuffPuff_Anim11)
+                SetConst(LVar1, ANIM_TuffPuff_BurnStillLarge)
             EndIf
             ExecWait(EVS_Enemy_Death)
             Return
@@ -312,36 +310,36 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             Call(GetActorVar, ACTOR_SELF, AVAR_IsLarge, LVar1)
             IfFalse(LVar1)
-                SetConst(LVar1, ANIM_TuffPuff_Anim02)
+                SetConst(LVar1, ANIM_TuffPuff_IdleSmall)
             Else
-                SetConst(LVar1, ANIM_TuffPuff_Anim03)
+                SetConst(LVar1, ANIM_TuffPuff_IdleLarge)
             EndIf
             ExecWait(EVS_Enemy_NoDamageHit)
         CaseEq(EVENT_IMMUNE)
             SetConst(LVar0, PRT_MAIN)
             Call(GetActorVar, ACTOR_SELF, AVAR_IsLarge, LVar1)
             IfFalse(LVar1)
-                SetConst(LVar1, ANIM_TuffPuff_Anim02)
+                SetConst(LVar1, ANIM_TuffPuff_IdleSmall)
             Else
-                SetConst(LVar1, ANIM_TuffPuff_Anim03)
+                SetConst(LVar1, ANIM_TuffPuff_IdleLarge)
             EndIf
             ExecWait(EVS_Enemy_NoDamageHit)
         CaseEq(EVENT_DEATH)
             SetConst(LVar0, PRT_MAIN)
             Call(GetActorVar, ACTOR_SELF, AVAR_IsLarge, LVar1)
             IfFalse(LVar1)
-                SetConst(LVar1, ANIM_TuffPuff_Anim0C)
+                SetConst(LVar1, ANIM_TuffPuff_HurtSmall)
             Else
-                SetConst(LVar1, ANIM_TuffPuff_Anim0D)
+                SetConst(LVar1, ANIM_TuffPuff_HurtLarge)
             EndIf
             ExecWait(EVS_Enemy_Hit)
             ExecWait(N(onDeath))
             SetConst(LVar0, PRT_MAIN)
             Call(GetActorVar, ACTOR_SELF, AVAR_IsLarge, LVar1)
             IfFalse(LVar1)
-                SetConst(LVar1, ANIM_TuffPuff_Anim0C)
+                SetConst(LVar1, ANIM_TuffPuff_HurtSmall)
             Else
-                SetConst(LVar1, ANIM_TuffPuff_Anim0D)
+                SetConst(LVar1, ANIM_TuffPuff_HurtLarge)
             EndIf
             ExecWait(EVS_Enemy_Death)
             Return
@@ -349,18 +347,18 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             Call(GetActorVar, ACTOR_SELF, AVAR_IsLarge, LVar1)
             IfFalse(LVar1)
-                SetConst(LVar1, ANIM_TuffPuff_Anim02)
+                SetConst(LVar1, ANIM_TuffPuff_IdleSmall)
             Else
-                SetConst(LVar1, ANIM_TuffPuff_Anim03)
+                SetConst(LVar1, ANIM_TuffPuff_IdleLarge)
             EndIf
             ExecWait(EVS_Enemy_Recover)
         CaseEq(EVENT_BEGIN_AIR_LIFT)
             SetConst(LVar0, PRT_MAIN)
             Call(GetActorVar, ACTOR_SELF, AVAR_IsLarge, LVar1)
             IfFalse(LVar1)
-                SetConst(LVar1, ANIM_TuffPuff_Anim06)
+                SetConst(LVar1, ANIM_TuffPuff_FlyFastSmall)
             Else
-                SetConst(LVar1, ANIM_TuffPuff_Anim07)
+                SetConst(LVar1, ANIM_TuffPuff_FlyFastLarge)
             EndIf
             ExecWait(EVS_Enemy_AirLift)
         CaseEq(EVENT_BLOW_AWAY)
@@ -368,9 +366,9 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             Call(GetActorVar, ACTOR_SELF, AVAR_IsLarge, LVar1)
             IfFalse(LVar1)
-                SetConst(LVar1, ANIM_TuffPuff_Anim0C)
+                SetConst(LVar1, ANIM_TuffPuff_HurtSmall)
             Else
-                SetConst(LVar1, ANIM_TuffPuff_Anim0D)
+                SetConst(LVar1, ANIM_TuffPuff_HurtLarge)
             EndIf
             ExecWait(EVS_Enemy_BlowAway)
             Return
@@ -378,9 +376,9 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             Call(GetActorVar, ACTOR_SELF, AVAR_IsLarge, LVar1)
             IfFalse(LVar1)
-                SetConst(LVar1, ANIM_TuffPuff_Anim02)
+                SetConst(LVar1, ANIM_TuffPuff_IdleSmall)
             Else
-                SetConst(LVar1, ANIM_TuffPuff_Anim03)
+                SetConst(LVar1, ANIM_TuffPuff_IdleLarge)
             EndIf
             ExecWait(EVS_Enemy_NoDamageHit)
         CaseDefault

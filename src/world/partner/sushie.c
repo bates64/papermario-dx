@@ -19,7 +19,6 @@ BSS f32 N(InertialMoveAngle);
 BSS f32 N(UnusedMoveX);
 BSS f32 N(UnusedMoveZ);
 BSS f32 N(ResurfaceVelY);
-BSS s32 N(bss_802BFF0C); // unused (padding?)
 BSS TweesterPhysics N(TweesterPhysicsData);
 
 enum {
@@ -412,7 +411,7 @@ API_CALLABLE(N(UseAbility)) {
                 N(IsRiding) = true;
                 sushie->flags |= NPC_FLAG_FLYING;
                 sushie->flags &= ~NPC_FLAG_GRAVITY;
-                sushie->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
+                sushie->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
                 suggest_player_anim_always_forward(ANIM_MarioW2_RideSushie);
                 disable_player_shadow();
                 disable_npc_shadow(sushie);
@@ -782,7 +781,7 @@ API_CALLABLE(N(Update)) {
     Entity* entity;
 
     if (isInitialCall) {
-        partner_walking_enable(sushie, 1);
+        partner_walking_enable(sushie, true);
         mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
         TweesterTouchingPartner = nullptr;
     }
@@ -797,7 +796,7 @@ API_CALLABLE(N(Update)) {
 
     switch (N(TweesterPhysicsPtr)->state) {
         case TWEESTER_PARTNER_INIT:
-            N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_ATTRACT;
             N(TweesterPhysicsPtr)->prevFlags = sushie->flags;
             N(TweesterPhysicsPtr)->radius = fabsf(dist2D(sushie->pos.x, sushie->pos.z,
                                                      entity->pos.x, entity->pos.z));
@@ -805,7 +804,7 @@ API_CALLABLE(N(Update)) {
             N(TweesterPhysicsPtr)->angularVel = 6.0f;
             N(TweesterPhysicsPtr)->liftoffVelPhase = 50.0f;
             N(TweesterPhysicsPtr)->countdown = 120;
-            sushie->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
+            sushie->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
             sushie->flags &= ~NPC_FLAG_GRAVITY;
         case TWEESTER_PARTNER_ATTRACT:
             sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
@@ -834,20 +833,22 @@ API_CALLABLE(N(Update)) {
                 N(TweesterPhysicsPtr)->angularVel = 40.0f;
             }
 
-            if (--N(TweesterPhysicsPtr)->countdown == 0) {
-                N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->countdown--;
+            if (N(TweesterPhysicsPtr)->countdown == 0) {
+                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_HOLD;
             }
             break;
         case TWEESTER_PARTNER_HOLD:
             sushie->flags = N(TweesterPhysicsPtr)->prevFlags;
             N(TweesterPhysicsPtr)->countdown = 30;
-            N(TweesterPhysicsPtr)->state++;
+            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_RELEASE;
             break;
         case TWEESTER_PARTNER_RELEASE:
             partner_walking_update_player_tracking(sushie);
             partner_walking_update_motion(sushie);
 
-            if (--N(TweesterPhysicsPtr)->countdown == 0) {
+            N(TweesterPhysicsPtr)->countdown--;
+            if (N(TweesterPhysicsPtr)->countdown == 0) {
                 N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
                 TweesterTouchingPartner = nullptr;
             }
@@ -880,7 +881,11 @@ API_CALLABLE(N(PutAway)) {
         gPlayerStatusPtr->animFlags &= ~PA_FLAG_RIDING_PARTNER;
     }
 
-    return partner_put_away(sushie) ? ApiStatus_DONE1 : ApiStatus_BLOCK;
+    if (partner_put_away(sushie)) {
+        return ApiStatus_DONE1;
+    } else {
+        return ApiStatus_BLOCK;
+    }
 }
 
 EvtScript EVS_WorldSushie_PutAway = {
@@ -940,7 +945,7 @@ API_CALLABLE(N(EnterMap)) {
             partnerNPC->moveToPos.x = partnerNPC->pos.x;
             partnerNPC->moveToPos.y = partnerNPC->pos.y;
             partnerNPC->moveToPos.z = partnerNPC->pos.z;
-            partnerNPC->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_FLYING;
+            partnerNPC->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_FLYING;
             partnerNPC->flags &= ~NPC_FLAG_GRAVITY;
             disable_npc_shadow(partnerNPC);
             disable_player_shadow();

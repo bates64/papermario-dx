@@ -111,7 +111,7 @@ extern EvtScript N(EVS_Pipe_ExitVertical_Impl);
 EvtScript N(EVS_Pipe_EnterVertical) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(HidePlayerShadow, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Still)
     Call(GetCurrentPartnerID, LVar0)
@@ -137,7 +137,7 @@ EvtScript N(EVS_Pipe_EnterVertical) = {
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, PARTNER_NONE)
         Thread
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Sub(LVar2, 3)
             Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
@@ -188,7 +188,7 @@ EvtScript N(EVS_Pipe_EnterHorizontal) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, PARTNER_NONE)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(EnableNpcShadow, NPC_PARTNER, false)
         Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
         Call(InterpNpcYaw, NPC_PARTNER, LVar0, 0)
@@ -199,7 +199,7 @@ EvtScript N(EVS_Pipe_EnterHorizontal) = {
         Wait(25)
         Call(HidePlayerShadow, false)
     EndThread
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_REVERSE_ANIM | IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_REVERSE_ANIM | IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_HORIZONTAL_PIPE_CURL, 1, 1, 0)
     Loop(40)
         Call(N(Pipe_GetPointAheadOfPlayer), Float(1.0))
@@ -275,7 +275,7 @@ EvtScript N(EVS_Pipe_ExitVertical_Impl) = {
             Wait(1)
         EndLoop
     EndThread
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_VERTICAL_PIPE_CURL, 1, 1, 0)
     Wait(25)
     ExecWait(LVarC)
@@ -325,7 +325,7 @@ EvtScript N(EVS_Pipe_ExitHorizontal) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetPlayerPos, LVar0, LVar6, LVar7)
     Call(SetPlayerAnimation, ANIM_Mario1_Still)
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Still, IMGFX_SET_ANIM, IMGFX_ANIM_HORIZONTAL_PIPE_CURL, 1, 1, 0)
     Thread
         Wait(8)

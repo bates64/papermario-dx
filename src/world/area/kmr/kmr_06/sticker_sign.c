@@ -17,7 +17,7 @@ typedef struct StickerData {
     /* 0x3C */ f32 fallSpeed;
     /* 0x40 */ f32 gravity;
     /* 0x44 */ s32 duration;
-} StickerData;
+} StickerData; // size = 0x48
 
 void N(appendGfx_sticker)(void* renderData) {
     ImgFXTexture ifxImg;
@@ -27,7 +27,7 @@ void N(appendGfx_sticker)(void* renderData) {
     StickerData* sticker = (StickerData*) evt_get_variable(nullptr, MV_StickerData);
     IMG_PTR img = (IMG_PTR) evt_get_variable(nullptr, MV_StickerImage);
     PAL_PTR pal = (PAL_PTR) evt_get_variable(nullptr, MV_StickerPalette);
-    u32 imgfxFlags = IMGFX_FLAG_400;
+    u32 imgfxFlags = IMGFX_FLAG_ALPHA_CVG;
 
     gDPPipeSync(gMainGfxPos++);
     guTranslateF(mtxTransform, sticker->pos.x, sticker->pos.y, sticker->pos.z);
@@ -50,7 +50,7 @@ void N(appendGfx_sticker)(void* renderData) {
     ifxImg.alpha = 255;
 
     if (sticker->yaw != 0.0 || sticker->pitch != 0.0) {
-        imgfxFlags |= IMGFX_FLAG_2000;
+        imgfxFlags |= IMGFX_FLAG_USE_LIGHTING;
     }
     imgfx_update(0, IMGFX_CLEAR, 0, 0, 0, 0, 0);
     imgfx_appendGfx_component(0, &ifxImg, imgfxFlags, mtxTransform);
@@ -223,8 +223,8 @@ EvtScript N(EVS_OnInspect_StickerSign) = {
     Call(DisablePlayerInput, true)
     Call(ShowMessageAtScreenPos, MSG_Menus_Sign_EatMushroomsTip, 160, 40)
     IfEq(GF_KMR06_Item_Mushroom, false)
-        IfEq(AF_JAN01_TreeDrop_StarPiece, false)
-            Set(AF_JAN01_TreeDrop_StarPiece, true)
+        IfEq(MF_SignDroppedMushroom, false)
+            Set(MF_SignDroppedMushroom, true)
             Thread
                 Wait(2)
                 SetF(LVar0, Float(0.0))

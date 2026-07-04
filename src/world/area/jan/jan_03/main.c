@@ -3,13 +3,6 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
-API_CALLABLE(N(SpawnSunEffect)) {
-    fx_sun(FX_SUN_FROM_LEFT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_ExitWalk_jan_02_1) = EVT_EXIT_WALK(60, jan_03_ENTRY_0, "jan_02", jan_02_ENTRY_1);
 EvtScript N(EVS_ExitWalk_jan_05_0) = EVT_EXIT_WALK(60, jan_03_ENTRY_1, "jan_05", jan_05_ENTRY_0);
 EvtScript N(EVS_ExitWalk_jan_22_0) = EVT_EXIT_WALK(60, jan_03_ENTRY_2, "jan_22", jan_22_ENTRY_0);
@@ -92,7 +85,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0,  400,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water surface
     Call(SetTexPanner, MODEL_o119, TEX_PANNER_2)
@@ -101,7 +94,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP( -100,  200,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetModelFlags, MODEL_o189, MODEL_FLAG_BILLBOARD, true)
     Call(SetModelFlags, MODEL_o186, MODEL_FLAG_BILLBOARD, true)

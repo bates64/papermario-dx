@@ -2,8 +2,8 @@
 
 extern EvtScript N(EVS_FocusCamOnLock);
 
-#include "world/common/enemy/KoopaTroopa_Wander.inc.c"
-#include "world/common/enemy/Bobomb_Guard.inc.c"
+#include "world/common/enemy/KoopaTroopa/wander.inc.c"
+#include "world/common/enemy/Bobomb/guard.inc.c"
 
 API_CALLABLE(N(SetNewWanderCenterPos)) {
     Enemy* owner1 = script->owner1.enemy;

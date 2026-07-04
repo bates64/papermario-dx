@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file jan_23.h
 /// @brief Jade Jungle - Great Treetop Roost
 
@@ -22,11 +24,11 @@ enum {
 };
 
 enum {
-    MV_Unk_05       = MapVar(5),
+    MV_NeedsCamMotion       = MapVar(5),
 };
 
 enum {
-    MF_Unk_00       = MapFlag(0),
+    MF_RaphaelShoutingDone  = MapFlag(0),
 };
 
 #define NAMESPACE jan_23

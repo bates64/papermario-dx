@@ -2,24 +2,9 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/enemy/HuffNPuff.h"
-#include "world/common/enemy/RuffPuff.h"
-
-NpcSettings N(NpcSettings_RuffPuff) = {
-    .height = 24,
-    .radius = 28,
-    .level = 16,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
-
-NpcSettings N(NpcSettings_HuffNPuff) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/enemy/HuffNPuff/idle.inc.c"
+#include "world/common/enemy/RuffPuff/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 Vec3f N(Path_JumpOut)[] = {
     {  600.0,   104.0,    0.0 },
@@ -91,7 +76,7 @@ EvtScript N(EVS_Scene_HuffNPuffAmbush) = {
     Call(InterpPlayerYaw, 90, 1)
     Wait(5)
     Call(SetPlayerAnimation, ANIM_Mario1_Flail)
-    Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetPlayerPos, LVar2, LVar3, LVar4)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
     Call(SetPanTarget, CAM_DEFAULT, LVar2, LVar3, LVar4)
@@ -114,9 +99,9 @@ EvtScript N(EVS_Scene_HuffNPuffAmbush) = {
         EndIf
         Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar2, LVar4)
     EndLoop
-    Call(func_802D2C14, 1)
+    Call(SetPartnerForcedFollowMode, 1)
     Call(SetPlayerPos, LVar0, LVar2, LVar4)
-    Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(DisablePlayerPhysics, false)
     Wait(10)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -139,7 +124,7 @@ EvtScript N(EVS_Scene_HuffNPuffAmbush) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-9.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(func_802D2C14, 0)
+    Call(SetPartnerForcedFollowMode, 0)
     Wait(10)
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, PARTNER_LAKILESTER)
@@ -437,9 +422,9 @@ EvtScript N(EVS_HuffNPuff_Defeat_BlowUp) = {
 };
 
 EvtScript N(EVS_Scene_BossDefeated) = {
-    Call(SetNpcAnimation, NPC_HuffNPuff_02, ANIM_HuffNPuff_Anim04)
-    Call(SetNpcAnimation, NPC_HuffNPuff_01, ANIM_HuffNPuff_Anim05)
-    Call(SetNpcAnimation, NPC_HuffNPuff_03, ANIM_HuffNPuff_Anim06)
+    Call(SetNpcAnimation, NPC_HuffNPuff_02, ANIM_HuffNPuff_IdleSadBody)
+    Call(SetNpcAnimation, NPC_HuffNPuff_01, ANIM_HuffNPuff_IdleSadFace)
+    Call(SetNpcAnimation, NPC_HuffNPuff_03, ANIM_HuffNPuff_IdleSadArms)
     Call(GetNpcPos, NPC_HuffNPuff_01, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Add(LVar0, -15)
@@ -450,7 +435,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(SpeakToPlayer, NPC_HuffNPuff_01, ANIM_HuffNPuff_Anim30, ANIM_HuffNPuff_Anim05, 256, -30, 30, MSG_CH6_00CE)
+    Call(SpeakToPlayer, NPC_HuffNPuff_01, ANIM_HuffNPuff_TalkSadFace, ANIM_HuffNPuff_IdleSadFace, 256, -30, 30, MSG_CH6_00CE)
     Call(FadeOutMusic, 0, 1500)
     Set(MV_BossFightState, 2)
     Call(GetNpcPos, NPC_HuffNPuff_01, LVar0, LVar1, LVar2)
@@ -533,7 +518,7 @@ EvtScript N(EVS_NpcInit_HuffNPuff_Face) = {
         Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
         Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_HuffNPuff_01)))
         Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_HuffNPuff_Main)))
-        Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim02)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_IdleFace)
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -545,7 +530,7 @@ EvtScript N(EVS_NpcInit_HuffNPuff_Body) = {
     IfLt(GB_StoryProgress, STORY_CH6_DEFEATED_HUFF_N_PUFF)
         Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
         Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_HuffNPuff_Aux)))
-        Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim01)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_IdleBody)
         Exec(N(EVS_HuffNPuff_AnimateBodyScale))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
@@ -558,7 +543,7 @@ EvtScript N(EVS_NpcInit_HuffNPuff_Arms) = {
     IfLt(GB_StoryProgress, STORY_CH6_DEFEATED_HUFF_N_PUFF)
         Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
         Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_HuffNPuff_Aux)))
-        Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim19)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_BragArms)
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -573,15 +558,15 @@ EvtScript N(EVS_NpcInit_RuffPuff) = {
     End
 };
 
-AnimID N(ExtraAnims_HuffNPuff)[] = {
-    ANIM_HuffNPuff_Anim00,
-    ANIM_HuffNPuff_Anim01,
-    ANIM_HuffNPuff_Anim02,
-    ANIM_HuffNPuff_Anim04,
-    ANIM_HuffNPuff_Anim05,
-    ANIM_HuffNPuff_Anim31,
-    ANIM_HuffNPuff_Anim19,
-    ANIM_HuffNPuff_Anim2D,
+AnimID N(LimitAnims_HuffNPuff)[] = {
+    ANIM_HuffNPuff_WholeIdle,
+    ANIM_HuffNPuff_IdleBody,
+    ANIM_HuffNPuff_IdleFace,
+    ANIM_HuffNPuff_IdleSadBody,
+    ANIM_HuffNPuff_IdleSadFace,
+    ANIM_HuffNPuff_TalkSadArms,
+    ANIM_HuffNPuff_BragArms,
+    ANIM_HuffNPuff_TalkFace,
     ANIM_LIST_END
 };
 
@@ -595,7 +580,7 @@ NpcData N(NpcData_HuffNPuff)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = HUFF_N_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_HuffNPuff),
+        .limitAnimations = N(LimitAnims_HuffNPuff),
     },
     {
         .id = NPC_HuffNPuff_02,
@@ -606,7 +591,7 @@ NpcData N(NpcData_HuffNPuff)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = HUFF_N_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_HuffNPuff),
+        .limitAnimations = N(LimitAnims_HuffNPuff),
     },
     {
         .id = NPC_HuffNPuff_03,
@@ -617,11 +602,11 @@ NpcData N(NpcData_HuffNPuff)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = HUFF_N_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_HuffNPuff),
+        .limitAnimations = N(LimitAnims_HuffNPuff),
     },
 };
 
-AnimID N(ExtraAnims_RuffPuff)[] = {
+AnimID N(LimitAnims_RuffPuff)[] = {
     ANIM_RuffPuff_Dizzy,
     ANIM_LIST_END
 };
@@ -636,7 +621,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_02,
@@ -647,7 +632,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_03,
@@ -658,7 +643,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_04,
@@ -669,7 +654,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_05,
@@ -680,7 +665,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_06,
@@ -691,7 +676,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_07,
@@ -702,7 +687,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_08,
@@ -713,7 +698,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_09,
@@ -724,7 +709,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_10,
@@ -735,7 +720,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_11,
@@ -746,7 +731,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_12,
@@ -757,7 +742,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_13,
@@ -768,7 +753,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_14,
@@ -779,7 +764,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_15,
@@ -790,7 +775,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
 };
 

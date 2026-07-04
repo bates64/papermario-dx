@@ -1,6 +1,8 @@
+#include "../kmr_22.h"
+
 #include "include_asset.h"
 
-#include "world/common/enemy/LavaPiranha.h"
+#include "world/common/enemy/LavaPiranha/base.h"
 
 #include "world/common/lava_piranha/part1.inc.c"
 
@@ -183,9 +185,9 @@ EvtScript N(EVS_NpcInit_LavaPiranhaHead) = {
     Call(SetNpcImgFXParams, NPC_LavaPiranhaHead, IMGFX_FILL_COLOR, 80, 80, 80, 0)
     Call(SetNpcImgFXParams, NPC_LavaBud_01, IMGFX_FILL_COLOR, 80, 80, 80, 0)
     Call(SetNpcImgFXParams, NPC_LavaBud_02, IMGFX_FILL_COLOR, 80, 80, 80, 0)
-    Call(SetNpcAnimation, NPC_LavaPiranhaHead, ANIM_LavaPiranha_Anim03)
-    Call(SetNpcAnimation, NPC_LavaBud_01, ANIM_LavaBud_Anim03)
-    Call(SetNpcAnimation, NPC_LavaBud_02, ANIM_LavaBud_Anim03)
+    Call(SetNpcAnimation, NPC_LavaPiranhaHead, ANIM_LavaPiranha_Idle)
+    Call(SetNpcAnimation, NPC_LavaBud_01, ANIM_LavaBud_Idle)
+    Call(SetNpcAnimation, NPC_LavaBud_02, ANIM_LavaBud_Idle)
     Call(EnableNpcShadow, NPC_LavaPiranhaHead, false)
     Call(EnableNpcShadow, NPC_LavaBud_01, false)
     Call(EnableNpcShadow, NPC_LavaBud_02, false)
@@ -218,18 +220,18 @@ EvtScript N(EVS_NpcInit_LavaPiranhaHead) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_LavaBud_01) = {
+EvtScript N(EVS_NpcInit_LavaBud) = {
     Return
     End
 };
 
-AnimID N(D_80243848_902EB8)[] = {
-    ANIM_LavaPiranha_Anim03,
-    ANIM_LavaPiranha_Anim0E,
+AnimID N(LimitAnims_LavaPiranha)[] = {
+    ANIM_LavaPiranha_Idle,
+    ANIM_LavaPiranha_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(D_80243854_902EC4)[] = {
-    ANIM_LavaBud_Anim03,
+AnimID N(LimitAnims_LavaBud)[] = {
+    ANIM_LavaBud_Idle,
     ANIM_LIST_END
 };

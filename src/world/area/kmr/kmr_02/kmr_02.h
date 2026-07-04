@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_02.h
 /// @brief Goomba Region - Goomba Village
 
@@ -10,7 +12,6 @@
 #include "mapfs/kmr_02_hit.h"
 
 #include "sprite/npc/Goompa.h"
-#include "sprite/npc/ChuckQuizmo.h"
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/npc/WorldGoombario.h"
 #include "sprite/npc/Goombaria.h"
@@ -37,15 +38,10 @@ enum {
 };
 
 enum {
-    MV_Unk_00       = MapVar(0),
-    MV_Unk_01       = MapVar(1),
-#if VERSION_PAL
-    MV_Unk_04       = MapVar(5),
-    MV_Unk_05       = MapVar(6),
-#else
-    MV_Unk_04       = MapVar(4),
-    MV_Unk_05       = MapVar(5),
-#endif
+    MV_HologramNoiseBase    = MapVar(0),
+    MV_HologramAlpha        = MapVar(1),
+    MV_KammySoundsTID       = MapVar(4),
+    MV_TrackKammyTID        = MapVar(5),
 };
 
 enum {
@@ -64,7 +60,7 @@ extern EvtScript N(EVS_PopSong);
 extern EvtScript N(EVS_SetupRooms);
 extern EvtScript N(EVS_SetupToadHouse);
 extern EvtScript N(EVS_SetWallsDown_ToadHouse);
-extern EvtScript N(EVS_Scene_KammyStrikes);
+extern EvtScript N(EVS_Scene_KammyCrushesGate);
 extern EvtScript N(EVS_NpcAux_Kammy);
 extern EvtScript N(EVS_SummonGateBlock);
 extern EvtScript N(EVS_NpcInteract_ToadHouse);
@@ -75,7 +71,16 @@ extern NpcGroupList N(NpcGroup1);
 extern NpcGroupList N(PrologueNPCs);
 extern NpcGroupList N(DefaultNPCs);
 
+extern API_CALLABLE(N(SetWanderTerritory));
+extern EvtScript N(EVS_NpcIdle_SwitchedWander);
+
+
+#include "world/common/npc/Goombaria/wander.h"
+#include "world/common/npc/Goombario/wander.h"
+#include "world/common/npc/Gooma/wander.h"
+#include "world/common/npc/Goompa/wander.h"
+#include "world/common/npc/Goomama/wander.h"
+#include "world/common/npc/Goompapa/wander.h"
+
 extern IMG_BIN N(heart_block_img)[];
 extern PAL_BIN N(heart_block_pal)[];
-
-API_CALLABLE(N(LoadPartyImage));

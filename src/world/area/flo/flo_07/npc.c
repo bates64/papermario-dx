@@ -1,8 +1,7 @@
 #include "flo_07.h"
 #include "foliage.h"
 
-#include "world/common/npc/Posie.inc.c"
-#include "world/common/complete/GiveReward.inc.c"
+#include "world/common/npc/Posie/idle.inc.c"
 
 EvtScript N(EVS_Scene_SunReturns) = {
     Call(DisablePlayerInput, true)
@@ -78,9 +77,9 @@ EvtScript N(EVS_NpcInteract_Posie) = {
     Call(NpcFacePlayer, NPC_SELF, 1)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_GOT_MAGICAL_BEAN)
-            IfEq(AF_FLO_PoiseHintDialogue, false)
+            IfEq(AF_FLO07_ToggleDialogue_Posie, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Posie_Talk, ANIM_Posie_Idle, 0, MSG_CH6_0070)
-                Set(AF_FLO_PoiseHintDialogue, true)
+                Set(AF_FLO07_ToggleDialogue_Posie, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Posie_Talk, ANIM_Posie_Idle, 0, MSG_CH6_0071)
             EndIf
@@ -140,7 +139,7 @@ EvtScript N(EVS_NpcInit_Posie) = {
             EndIf
         EndIf
     EndIf
-    Set(AF_FLO_PoiseHintDialogue, false)
+    Set(AF_FLO07_ToggleDialogue_Posie, false)
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Posie)))
     Return
     End

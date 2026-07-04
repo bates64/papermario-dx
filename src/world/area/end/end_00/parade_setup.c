@@ -1,4 +1,6 @@
 #include "end_00.h"
+
+#include "world/common/npc/VannaT/base.h"
 #include "effects.h"
 
 extern HeapNode heap_spriteHead;
@@ -33,7 +35,7 @@ API_CALLABLE(N(CreateParadeNPC)) {
     NpcBlueprint bp;
     Npc* npc;
 
-    bp.flags = NPC_FLAG_IGNORE_PLAYER_COLLISION;
+    bp.flags = NPC_FLAG_IGNORE_CHAR_COLLISION;
     bp.initialAnim = npcInfo->initialAnim;
     bp.onUpdate = nullptr;
     bp.onRender = nullptr;
@@ -207,7 +209,7 @@ EvtScript N(EVS_TexPan_Water) = {
     End
 };
 
-AnimID N(ExtraAnims_Tutankoopa)[] = {
+AnimID N(LimitAnims_Tutankoopa)[] = {
     ANIM_Tutankoopa_Run,
     ANIM_Tutankoopa_Hurt,
     ANIM_Tutankoopa_LevitateStill,
@@ -216,7 +218,7 @@ AnimID N(ExtraAnims_Tutankoopa)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Rowf)[] = {
+AnimID N(LimitAnims_Rowf)[] = {
     ANIM_Rowf_PackedStill,
     ANIM_Rowf_PackedIdle,
     ANIM_Rowf_PackedWalk,
@@ -226,7 +228,7 @@ AnimID N(ExtraAnims_Rowf)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Moustafa)[] = {
+AnimID N(LimitAnims_Moustafa)[] = {
     ANIM_Moustafa_Run,
     ANIM_Moustafa_Shout,
     ANIM_Moustafa_Talk,
@@ -235,57 +237,57 @@ AnimID N(ExtraAnims_Moustafa)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Mouser)[] = {
+AnimID N(LimitAnims_Mouser)[] = {
     ANIM_Mouser_Blue_Run,
     ANIM_Mouser_Blue_IdleOnlyBlink,
     ANIM_Mouser_Blue_Whisper,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Buzzar)[] = {
-    ANIM_Buzzar_Anim05,
-    ANIM_Buzzar_Anim03,
+AnimID N(LimitAnims_Buzzar)[] = {
+    ANIM_Buzzar_Roost,
+    ANIM_Buzzar_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_GoombaKing)[] = {
+AnimID N(LimitAnims_GoombaKing)[] = {
     ANIM_GoombaKing_Still,
     ANIM_GoombaKing_Dead,
     ANIM_GoombaKing_Angry,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_RaphaelRaven)[] = {
+AnimID N(LimitAnims_RaphaelRaven)[] = {
     ANIM_RaphaelRaven_IdleNoFeet,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_LavaPiranha)[] = {
-    ANIM_LavaPiranha_Anim04,
+AnimID N(LimitAnims_LavaPiranha)[] = {
+    ANIM_LavaPiranha_TongueWag,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_HuffNPuff)[] = {
-    ANIM_HuffNPuff_Anim01,
-    ANIM_HuffNPuff_Anim02,
-    ANIM_HuffNPuff_Anim03,
-    ANIM_HuffNPuff_Anim07,
-    ANIM_HuffNPuff_Anim08,
-    ANIM_HuffNPuff_Anim09,
-    ANIM_HuffNPuff_Anim26,
-    ANIM_HuffNPuff_Anim27,
-    ANIM_HuffNPuff_Anim28,
+AnimID N(LimitAnims_HuffNPuff)[] = {
+    ANIM_HuffNPuff_IdleBody,
+    ANIM_HuffNPuff_IdleFace,
+    ANIM_HuffNPuff_IdleArms,
+    ANIM_HuffNPuff_HurtBody,
+    ANIM_HuffNPuff_HurtFace,
+    ANIM_HuffNPuff_HurtArms,
+    ANIM_HuffNPuff_FrownBody,
+    ANIM_HuffNPuff_FrownFace,
+    ANIM_HuffNPuff_FrownArms,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_RuffPuff)[] = {
+AnimID N(LimitAnims_RuffPuff)[] = {
     ANIM_RuffPuff_Idle,
     ANIM_RuffPuff_Hurt,
     ANIM_RuffPuff_Blush,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_GourmetGuy)[] = {
+AnimID N(LimitAnims_GourmetGuy)[] = {
     ANIM_GourmetGuy_Walk,
     ANIM_GourmetGuy_Leap,
     ANIM_GourmetGuy_TalkSurprise,
@@ -296,7 +298,7 @@ AnimID N(ExtraAnims_GourmetGuy)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_MageJrTroopa)[] = {
+AnimID N(LimitAnims_MageJrTroopa)[] = {
     ANIM_MageJrTroopa_Idle,
     ANIM_MageJrTroopa_Run,
     ANIM_MageJrTroopa_RaiseStaff,
@@ -305,13 +307,13 @@ AnimID N(ExtraAnims_MageJrTroopa)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Kammy)[] = {
-    ANIM_WorldKammy_Anim14,
-    ANIM_WorldKammy_Anim0C,
-    ANIM_WorldKammy_Anim0E,
-    ANIM_WorldKammy_Anim0F,
-    ANIM_WorldKammy_Anim12,
-    ANIM_WorldKammy_Anim07,
+AnimID N(LimitAnims_Kammy)[] = {
+    ANIM_WorldKammy_FlySlowSly,
+    ANIM_WorldKammy_FlyFast,
+    ANIM_WorldKammy_FlyRodTalk,
+    ANIM_WorldKammy_FlyRodCast,
+    ANIM_WorldKammy_FlyLaugh,
+    ANIM_WorldKammy_BurnSlump,
     ANIM_LIST_END
 };
 
@@ -483,37 +485,37 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
     },
     [NPC_Rowf] {
         .initialAnim = ANIM_Rowf_PackedWalk,
-        .animList = N(ExtraAnims_Rowf),
+        .animList = N(LimitAnims_Rowf),
         .pos = { -1775.0f, 0.0f, 2.0f },
         .yaw = 90.0f
     },
     [NPC_Rhuff] {
         .initialAnim = ANIM_Rowf_PackedWalk,
-        .animList = N(ExtraAnims_Rowf),
+        .animList = N(LimitAnims_Rowf),
         .pos = { -1740.0f, 0.0f, 2.0f },
         .yaw = 90.0f
     },
     [NPC_Moustafa] {
         .initialAnim = ANIM_Moustafa_Run,
-        .animList = N(ExtraAnims_Moustafa),
+        .animList = N(LimitAnims_Moustafa),
         .pos = { -1240.0f, 0.0f, -2.0f },
         .yaw = 270.0f
     },
     [NPC_Mouser1] {
         .initialAnim = ANIM_Mouser_Blue_Run,
-        .animList = N(ExtraAnims_Mouser),
+        .animList = N(LimitAnims_Mouser),
         .pos = { -1210.0f, 0.0f, -2.0f },
         .yaw = 270.0f
     },
     [NPC_Mouser2] {
         .initialAnim = ANIM_Mouser_Blue_Run,
-        .animList = N(ExtraAnims_Mouser),
+        .animList = N(LimitAnims_Mouser),
         .pos = { -1180.0f, 0.0f, -2.0f },
         .yaw = 270.0f
     },
     [NPC_Tutankoopa1] {
         .initialAnim = ANIM_Tutankoopa_Run,
-        .animList = N(ExtraAnims_Tutankoopa),
+        .animList = N(LimitAnims_Tutankoopa),
         .pos = { -1040.0f, 0.0f, 30.0f },
         .yaw = 270.0f
     },
@@ -523,8 +525,8 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
         .yaw = 270.0f
     },
     [NPC_Buzzar] {
-        .initialAnim = ANIM_Buzzar_Anim05,
-        .animList = N(ExtraAnims_Buzzar),
+        .initialAnim = ANIM_Buzzar_Roost,
+        .animList = N(LimitAnims_Buzzar),
         .pos = { -855.0f, 70.0f, -140.0f },
         .yaw = 270.0f
     },
@@ -550,7 +552,7 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
     },
     [NPC_Tutankoopa2] {
         .initialAnim = ANIM_Tutankoopa_Run,
-        .animList = N(ExtraAnims_Tutankoopa),
+        .animList = N(LimitAnims_Tutankoopa),
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
@@ -590,13 +592,13 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
         .yaw = 90.0f
     },
     [NPC_TubbasHeart] {
-        .initialAnim = ANIM_TubbasHeart_Anim01,
+        .initialAnim = ANIM_TubbasHeart_Idle,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_GoombaKing] {
         .initialAnim = ANIM_GoombaKing_Still,
-        .animList = N(ExtraAnims_GoombaKing),
+        .animList = N(LimitAnims_GoombaKing),
         .pos = { -70.0f, 130.0f, -60.0f },
         .yaw = 270.0f
     },
@@ -637,13 +639,13 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
     },
     [NPC_RaphaelRaven] {
         .initialAnim = ANIM_RaphaelRaven_IdleNoFeet,
-        .animList = N(ExtraAnims_RaphaelRaven),
+        .animList = N(LimitAnims_RaphaelRaven),
         .pos = { 357.0f, -120.0f, -30.0f },
         .yaw = 90.0f
     },
     [NPC_LavaPiranha] {
-        .initialAnim = ANIM_LavaPiranha_Anim04,
-        .animList = N(ExtraAnims_LavaPiranha),
+        .initialAnim = ANIM_LavaPiranha_TongueWag,
+        .animList = N(LimitAnims_LavaPiranha),
         .pos = { 507.0f, 50.0f, -5.0f },
         .yaw = 90.0f
     },
@@ -673,85 +675,85 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
         .yaw = 90.0f
     },
     [NPC_HuffNPuffBody] {
-        .initialAnim = ANIM_HuffNPuff_Anim01,
-        .animList = N(ExtraAnims_HuffNPuff),
+        .initialAnim = ANIM_HuffNPuff_IdleBody,
+        .animList = N(LimitAnims_HuffNPuff),
         .pos = { 1060.0f, 80.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_HuffNPuffFace] {
-        .initialAnim = ANIM_HuffNPuff_Anim02,
-        .animList = N(ExtraAnims_HuffNPuff),
+        .initialAnim = ANIM_HuffNPuff_IdleFace,
+        .animList = N(LimitAnims_HuffNPuff),
         .pos = { 1060.0f, 80.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_HuffNPuffArms] {
-        .initialAnim = ANIM_HuffNPuff_Anim03,
-        .animList = N(ExtraAnims_HuffNPuff),
+        .initialAnim = ANIM_HuffNPuff_IdleArms,
+        .animList = N(LimitAnims_HuffNPuff),
         .pos = { 1060.0f, 80.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_RuffPuff1] {
         .initialAnim = ANIM_RuffPuff_Idle,
-        .animList = N(ExtraAnims_RuffPuff),
+        .animList = N(LimitAnims_RuffPuff),
         .pos = { 980.0f, 60.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_RuffPuff2] {
         .initialAnim = ANIM_RuffPuff_Idle,
-        .animList = N(ExtraAnims_RuffPuff),
+        .animList = N(LimitAnims_RuffPuff),
         .pos = { 1140.0f, 60.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_GourmetGuy] {
         .initialAnim = ANIM_GourmetGuy_Walk,
-        .animList = N(ExtraAnims_GourmetGuy),
+        .animList = N(LimitAnims_GourmetGuy),
         .pos = { 1270.0f, 0.0f, -20.0f },
         .yaw = 270.0f
     },
     [NPC_Duplighost1] {
-        .initialAnim = ANIM_Duplighost_Anim0A,
+        .initialAnim = ANIM_Duplighost_Hurt,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
     [NPC_Duplighost2] {
-        .initialAnim = ANIM_Duplighost_Anim0A,
+        .initialAnim = ANIM_Duplighost_Hurt,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
     [NPC_TrueCrystalKing] {
-        .initialAnim = ANIM_CrystalKing_Anim0E,
+        .initialAnim = ANIM_CrystalKing_Walk,
         .pos = { 1440.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_FakeCrystalKing] {
-        .initialAnim = ANIM_CrystalKing_Anim0E,
+        .initialAnim = ANIM_CrystalKing_Walk,
         .pos = { 1600.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_CrystalBit1] {
-        .initialAnim = ANIM_CrystalKing_Anim0A,
+        .initialAnim = ANIM_CrystalKing_CubeIdle,
         .pos = { 2000.0f, 100.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_CrystalBit2] {
-        .initialAnim = ANIM_CrystalKing_Anim0B,
+        .initialAnim = ANIM_CrystalKing_SphereIdle,
         .pos = { 2050.0f, 100.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_CrystalBit3] {
-        .initialAnim = ANIM_CrystalKing_Anim0C,
+        .initialAnim = ANIM_CrystalKing_PrismIdle,
         .pos = { 2100.0f, 100.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_Kammy] {
-        .initialAnim = ANIM_WorldKammy_Anim14,
-        .animList = N(ExtraAnims_Kammy),
+        .initialAnim = ANIM_WorldKammy_FlySlowSly,
+        .animList = N(LimitAnims_Kammy),
         .pos = { 2160.0f, 60.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_JrTroopa] {
         .initialAnim = ANIM_MageJrTroopa_RaiseStaff,
-        .animList = N(ExtraAnims_MageJrTroopa),
+        .animList = N(LimitAnims_MageJrTroopa),
         .pos = { 2060.0f, 0.0f, 0.0f },
         .yaw = 90.0f
     },

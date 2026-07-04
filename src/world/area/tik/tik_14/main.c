@@ -2,8 +2,6 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_tik_15_0) = EVT_EXIT_WALK(60, tik_14_ENTRY_1, "tik_15", tik_15_ENTRY_0);
 
 EvtScript N(EVS_GotoMap_tik_21_2) = {
@@ -49,7 +47,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0, -200, -100, -500)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o47, COLLIDER_FLAGS_UPPER_MASK)
     Exec(N(EVS_EnterMap))

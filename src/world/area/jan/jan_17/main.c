@@ -24,7 +24,7 @@ EvtScript N(EVS_Main) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetLoadType, LVar1)
-    IfEq(LVar1, 1)
+    IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
         Exec(N(EVS_BindExitTriggers))
     Else

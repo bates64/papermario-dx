@@ -4,22 +4,14 @@ extern EvtScript N(EVS_StartKoopaBrosTheme);
 extern EvtScript N(EVS_EndKoopaBrosTheme);
 extern EvtScript N(EVS_EnterMap);
 
-#include "world/common/enemy/KoopaTroopa_Wander.inc.c"
-
-NpcSettings N(NpcSettings_KoopaBros) = {
-    .height = 34,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
-
-#include "world/common/enemy/Bobomb_Wander.inc.c"
+#include "world/common/enemy/KoopaTroopa/wander.inc.c"
+#include "world/common/enemy/KoopaBros/idle.inc.c"
+#include "world/common/enemy/Bobomb/wander.inc.c"
 
 EvtScript N(EVS_Scene_GreenKoopaBros) = {
     Call(DisablePlayerInput, true)
     Exec(N(EVS_StartKoopaBrosTheme))
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, -720, 0, 75)
     Call(SetPlayerPos, -700, 0, 80)
     Call(SetNpcAnimation, NPC_KoopaBros, ANIM_KoopaBros_Green_IdleCrouch)
@@ -188,24 +180,7 @@ NpcData N(NpcData_KoopaBros) = {
     .settings = &N(NpcSettings_KoopaBros),
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_KoopaBros_Green_Idle,
-        .walk   = ANIM_KoopaBros_Green_Walk,
-        .run    = ANIM_KoopaBros_Green_Run,
-        .chase  = ANIM_KoopaBros_Green_Run,
-        .anim_4 = ANIM_KoopaBros_Green_Idle,
-        .anim_5 = ANIM_KoopaBros_Green_Idle,
-        .death  = ANIM_KoopaBros_Green_HurtStill,
-        .hit    = ANIM_KoopaBros_Green_HurtStill,
-        .anim_8 = ANIM_KoopaBros_Green_Run,
-        .anim_9 = ANIM_KoopaBros_Green_Run,
-        .anim_A = ANIM_KoopaBros_Green_Run,
-        .anim_B = ANIM_KoopaBros_Green_Run,
-        .anim_C = ANIM_KoopaBros_Green_Run,
-        .anim_D = ANIM_KoopaBros_Green_Run,
-        .anim_E = ANIM_KoopaBros_Green_Run,
-        .anim_F = ANIM_KoopaBros_Green_Run,
-    },
+    .animations = GREEN_KOOPA_BROS_ANIMS,
 };
 
 NpcData N(NpcData_KoopaTroopa_01) = {

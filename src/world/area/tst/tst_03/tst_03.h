@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tst_03.h
 /// @brief Testing - Entity Test
 

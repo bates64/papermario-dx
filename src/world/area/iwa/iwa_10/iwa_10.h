@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file iwa_10.h
 /// @brief Mt Rugged - Train Station
 
@@ -60,4 +62,3 @@ extern NpcGroupList N(DefaultNPCs);
 
 extern EvtScript N(EVS_NpcIdle_Parakarry);
 extern NpcData N(NpcData_Parakarry);
-API_CALLABLE(N(LoadPartyImage));

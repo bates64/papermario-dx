@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_03.h
 /// @brief Bowser's Castle - Dark Cave 2
 

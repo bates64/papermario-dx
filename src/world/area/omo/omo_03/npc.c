@@ -1,9 +1,10 @@
 #include "omo_03.h"
+#include "world/common/npc/Watt/base.h"
 
-#include "world/common/npc/TrainToad.inc.c"
-#include "world/common/npc/Parakarry.inc.c"
+#include "world/common/npc/TrainToad/idle.inc.c"
+#include "world/common/npc/Parakarry/idle.inc.c"
 
-#include "world/common/enemy/ShyGuy_Stationary.inc.c"
+#include "world/common/enemy/ShyGuy/idle.inc.c"
 
 EvtScript N(EVS_ItemPrompt_ToyTrain) = {
     Call(DisablePlayerInput, true)
@@ -13,25 +14,25 @@ EvtScript N(EVS_ItemPrompt_ToyTrain) = {
         IfEq(LVar0, ITEM_TOY_TRAIN)
             Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0002)
         Else
-            IfEq(AF_OMO_05, false)
+            IfEq(AF_OMO03_ToggleDialogue_Conductor, false)
                 Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_SadTalk, ANIM_TrainToad_SadIdle, 0, MSG_CH4_0000)
-                Set(AF_OMO_05, true)
+                Set(AF_OMO03_ToggleDialogue_Conductor, true)
             Else
                 Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_SadTalk, ANIM_TrainToad_SadIdle, 0, MSG_CH4_0001)
-                Set(AF_OMO_05, false)
+                Set(AF_OMO03_ToggleDialogue_Conductor, false)
             EndIf
         EndIf
     Else
         IfEq(GF_OMO03_LearnedAboutTrainSwitches, false)
-            IfEq(AF_OMO_05, false)
+            IfEq(AF_OMO03_ToggleDialogue_Conductor, false)
                 Thread
-                    Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                    Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                     Call(SetNpcJumpscale, NPC_Conductor, Float(1.0))
                     Call(GetNpcPos, NPC_Conductor, LVar0, LVar1, LVar2)
                     Loop(2)
                         Call(NpcJump1, NPC_Conductor, LVar0, LVar1, LVar2, 15)
                     EndLoop
-                    Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                    Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
                 EndThread
                 Wait(10)
                 IfEq(MF_EitherSwitchPressed, false)
@@ -42,16 +43,16 @@ EvtScript N(EVS_ItemPrompt_ToyTrain) = {
                     Call(ContinueSpeech, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0005)
                     Set(GF_OMO03_LearnedAboutTrainSwitches, true)
                 EndIf
-                Set(AF_OMO_05, true)
+                Set(AF_OMO03_ToggleDialogue_Conductor, true)
             Else
                 Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0004)
                 Set(GF_OMO03_LearnedAboutTrainSwitches, true)
             EndIf
         Else
-            IfEq(AF_OMO_06, false)
-                ExecWait(N(EVS_8024705C))
+            IfEq(AF_OMO03_TrainStuck, false)
+                ExecWait(N(EVS_Conductor_ChooseRoute))
             Else
-                ExecWait(N(EVS_80246108))
+                ExecWait(N(EVS_Conductor_ResumeStuckTrain))
             EndIf
         EndIf
     EndIf
@@ -61,10 +62,7 @@ EvtScript N(EVS_ItemPrompt_ToyTrain) = {
     End
 };
 
-s32 N(ToyTrainList)[] = {
-    ITEM_TOY_TRAIN,
-    ITEM_NONE
-};
+ITEM_LIST(N(ToyTrainList), ITEM_TOY_TRAIN);
 
 EvtScript N(EVS_NpcInteract_Conductor) = {
     BindPadlock(Ref(N(EVS_ItemPrompt_ToyTrain)), TRIGGER_FORCE_ACTIVATE, 0, Ref(N(ToyTrainList)), 0, 1)
@@ -160,33 +158,16 @@ NpcData N(NpcData_Epilogue)[] = {
         .id = NPC_Watt,
         .pos = { 50.0f, 15.0f, 160.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldWatt_Idle,
-            .walk   = ANIM_WorldWatt_Idle,
-            .run    = ANIM_WorldWatt_Idle,
-            .chase  = ANIM_WorldWatt_Idle,
-            .anim_4 = ANIM_WorldWatt_Idle,
-            .anim_5 = ANIM_WorldWatt_Idle,
-            .death  = ANIM_WorldWatt_Idle,
-            .hit    = ANIM_WorldWatt_Idle,
-            .anim_8 = ANIM_WorldWatt_Idle,
-            .anim_9 = ANIM_WorldWatt_Idle,
-            .anim_A = ANIM_WorldWatt_Idle,
-            .anim_B = ANIM_WorldWatt_Idle,
-            .anim_C = ANIM_WorldWatt_Idle,
-            .anim_D = ANIM_WorldWatt_Idle,
-            .anim_E = ANIM_WorldWatt_Idle,
-            .anim_F = ANIM_WorldWatt_Idle,
-        },
+        .animations = WATT_ANIMS,
     },
     {
         .id = NPC_ShyGuy_01,
         .pos = { 100.0f, 0.0f, 160.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -195,7 +176,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .id = NPC_ShyGuy_02,
         .pos = { 115.0f, 0.0f, 200.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -204,7 +185,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .id = NPC_ShyGuy_03,
         .pos = { 145.0f, 0.0f, 150.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_ShyGuy_Stationary),
+        .settings = &N(NpcSettings_ShyGuy),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,

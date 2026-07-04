@@ -1,6 +1,5 @@
 #include "nok_02.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
 #include "world/common/entity/Pipe.inc.c"
 
 EvtScript N(EVS_ExitWalk_nok_01_1) = {
@@ -50,7 +49,7 @@ EvtScript N(EVS_TexPan_Flowers) = {
         TEX_PAN_PARAMS_STEP(0x4000,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    12,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(     0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End
@@ -101,11 +100,11 @@ EvtScript N(EVS_Main) = {
         Wait(1)
         Return
     EndIf
-    Set(AF_NOK_0F, false)
-    Set(AF_NOK_10, false)
-    Set(AF_NOK_12, false)
+    Set(AF_NOK02_DeclinedBobombInvite, false)
+    Set(AF_NOK02_InsideKoopersHouse, false)
+    Set(AF_NOK02_PauseKooperFightSounds, false)
     Set(GF_NOK02_Bush1_KoopaLeaf, false)
-    Set(AF_NOK_13, false)
+    Set(AF_NOK02_FuzzyTreeHit, false)
     IfGe(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Set(GF_NOK02_RecoveredShellA, true)
         Set(GF_NOK02_RecoveredShellB, true)

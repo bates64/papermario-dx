@@ -4,93 +4,93 @@
 
 #define NAMESPACE A(lava_piranha_anim1)
 
-StaticAnimatorNode N(8021A120) = {
+StaticAnimatorNode N(AnimNode11) = {
     .vertexStartOffset = -1,
     .modelID = MODEL_hahen,
 };
 
-StaticAnimatorNode N(8021A14C) = {
+StaticAnimatorNode N(AnimNode10) = {
     .rot = { 249, 0, -9 },
-    .sibling = &N(8021A120),
+    .sibling = &N(AnimNode11),
     .vertexStartOffset = -1,
     .modelID = MODEL_h11,
 };
 
-StaticAnimatorNode N(8021A178) = {
-    .sibling = &N(8021A14C),
+StaticAnimatorNode N(AnimNode9) = {
+    .sibling = &N(AnimNode10),
     .vertexStartOffset = -1,
     .modelID = MODEL_h10,
 };
 
-StaticAnimatorNode N(8021A1A4) = {
-    .sibling = &N(8021A178),
+StaticAnimatorNode N(AnimNode8) = {
+    .sibling = &N(AnimNode9),
     .vertexStartOffset = -1,
     .modelID = MODEL_h09,
 };
 
-StaticAnimatorNode N(8021A1D0) = {
-    .sibling = &N(8021A1A4),
+StaticAnimatorNode N(AnimNode7) = {
+    .sibling = &N(AnimNode8),
     .vertexStartOffset = -1,
     .modelID = MODEL_h08,
 };
 
-StaticAnimatorNode N(8021A1FC) = {
-    .sibling = &N(8021A1D0),
+StaticAnimatorNode N(AnimNode6) = {
+    .sibling = &N(AnimNode7),
     .vertexStartOffset = -1,
     .modelID = MODEL_h07,
 };
 
-StaticAnimatorNode N(8021A228) = {
-    .sibling = &N(8021A1FC),
+StaticAnimatorNode N(AnimNode5) = {
+    .sibling = &N(AnimNode6),
     .vertexStartOffset = -1,
     .modelID = MODEL_h06,
 };
 
-StaticAnimatorNode N(8021A254) = {
-    .sibling = &N(8021A228),
+StaticAnimatorNode N(AnimNode4) = {
+    .sibling = &N(AnimNode5),
     .vertexStartOffset = -1,
     .modelID = MODEL_h05,
 };
 
-StaticAnimatorNode N(8021A280) = {
-    .sibling = &N(8021A254),
+StaticAnimatorNode N(AnimNode3) = {
+    .sibling = &N(AnimNode4),
     .vertexStartOffset = -1,
     .modelID = MODEL_h04,
 };
 
-StaticAnimatorNode N(8021A2AC) = {
-    .sibling = &N(8021A280),
+StaticAnimatorNode N(AnimNode2) = {
+    .sibling = &N(AnimNode3),
     .vertexStartOffset = -1,
     .modelID = MODEL_h03,
 };
 
-StaticAnimatorNode N(8021A2D8) = {
-    .sibling = &N(8021A2AC),
+StaticAnimatorNode N(AnimNode1) = {
+    .sibling = &N(AnimNode2),
     .vertexStartOffset = -1,
     .modelID = MODEL_h02,
 };
 
-StaticAnimatorNode N(8021A304) = {
-    .child = &N(8021A2D8),
+StaticAnimatorNode N(AnimNode0) = {
+    .child = &N(AnimNode1),
 };
 
 StaticAnimatorNode* NAMESPACE[] = {
-    &N(8021A304),
-    &N(8021A2D8),
-    &N(8021A2AC),
-    &N(8021A280),
-    &N(8021A254),
-    &N(8021A228),
-    &N(8021A1FC),
-    &N(8021A1D0),
-    &N(8021A1A4),
-    &N(8021A178),
-    &N(8021A14C),
-    &N(8021A120),
+    &N(AnimNode0),
+    &N(AnimNode1),
+    &N(AnimNode2),
+    &N(AnimNode3),
+    &N(AnimNode4),
+    &N(AnimNode5),
+    &N(AnimNode6),
+    &N(AnimNode7),
+    &N(AnimNode8),
+    &N(AnimNode9),
+    &N(AnimNode10),
+    &N(AnimNode11),
     nullptr,
 };
 
-AnimScript N(8021A364) = {
+AnimScript N(AS_ShatterGround) = {
     as_SetRotation(1, 0.0, 0.0, 0.0)
     as_SetPos(1, 0, 0, 0)
     as_SetScale(1, 1.0, 1.0, 1.0)

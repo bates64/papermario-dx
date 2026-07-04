@@ -10,10 +10,7 @@ extern EvtScript N(EVS_DummyUpdateGuardBoo);
 extern EvtScript N(EVS_GuardBoo_ReturnToPost);
 extern EvtScript N(EVS_NpcAI_GuardBoo_Wary);
 
-s32 N(ItemList_Records)[] = {
-    ITEM_BOO_RECORD,
-    ITEM_NONE
-};
+ITEM_LIST(N(RecordList), ITEM_BOO_RECORD);
 
 s32 N(SongList)[] = {
     SONG_PHONOGRAPH_MUSIC,
@@ -34,7 +31,7 @@ typedef struct PhonographData {
     /* 0x03C */ HudElemID buttonHID;
     /* 0x040 */ HudElemID meterHID;
     /* 0x044 */ HudElemID okHID;
-    /* 0x048 */ char unk_48[0x4];
+    /* 0x048 */ PAD(4);
     /* 0x04C */ s32 updateScaleScriptID;
     /* 0x050 */ s32 updateCrankScriptID;
     /* 0x054 */ s32 updateRecordScriptID;
@@ -45,9 +42,9 @@ typedef struct PhonographData {
     /* 0x1CC */ f32 recordRotation;
     /* 0x1D0 */ f32 modelScale;
     /* 0x1D4 */ s32 meterFillAmount;
-    /* 0x1D8 */ s32 unk_1D8;
-    /* 0x1DC */ s8 unk_1DC;
-    /* 0x1DD */ char unk_1DD[0x3];
+    /* 0x1D8 */ s32 inactiveFrames;
+    /* 0x1DC */ b8 hasStartedMashing;
+    /* 0x1DD */ PAD(3);
 } PhonographData; // size = 0x1E0
 
 enum {
@@ -270,7 +267,7 @@ void N(worker_update_phonograph_hud)(void) {
     }
 }
 
-API_CALLABLE(N(func_80240EF8_BCFAE8)) {
+API_CALLABLE(N(BuggedUpdatePlaybackRate)) {
     PhonographData* data = N(GetPhonographData)();
     s32 temp_f6 = script->varTable[0] / 1000;
 
@@ -307,7 +304,7 @@ void N(worker_draw_phonograph_hud)(void) {
 
 API_CALLABLE(N(GetSelectedRecordIndex)) {
     s32 outVal = 0;
-    s32* record = N(ItemList_Records);
+    s32* record = N(RecordList);
 
     while (true) {
         if (*record == 0) {
@@ -475,34 +472,26 @@ API_CALLABLE(N(GuardBooDoNothing)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80241790_BD0380)) {
+API_CALLABLE(N(UpdatePhonographMeter)) {
     PhonographData* data = N(GetPhonographData)();
     s32 distFromCenter = abs(data->fillValue - 50);
-    s32 v1, v0;
 
-    while (true) {
-        if (distFromCenter < 10) {
-            v1 = 10;
-            v1 -= distFromCenter;
-            v0 = v1 * 24;
-        } else {
-            v1 = -distFromCenter;
-            v0 = v1 * 4;
-        }
-        break;
+    if (distFromCenter < 10) {
+        // fill meter when close to center
+        data->meterFillAmount += (10 - distFromCenter) * 50;
+    } else {
+        // drain meter when away from center
+        data->meterFillAmount -= distFromCenter * 10;
     }
-
-    distFromCenter = (v0 + v1) * 2;
-    data->meterFillAmount += distFromCenter;
 
     if (data->fillValue != 0) {
-        data->unk_1DC = 1;
+        data->hasStartedMashing = true;
     }
-    if (data->unk_1DC == 1) {
+    if (data->hasStartedMashing) {
         if (data->fillValue <= 0) {
-            data->unk_1D8++;
+            data->inactiveFrames++;
         } else {
-            data->unk_1D8 = 0;
+            data->inactiveFrames = 0;
         }
     }
 
@@ -514,7 +503,7 @@ API_CALLABLE(N(func_80241790_BD0380)) {
     }
 
     script->varTable[0] = 0;
-    if (data->unk_1D8 >= 46 || (gGameStatusPtr->pressedButtons[0] & BUTTON_B)) {
+    if (data->inactiveFrames >= 46 || (gGameStatusPtr->pressedButtons[0] & BUTTON_B)) {
         script->varTable[0] = 1;
         return ApiStatus_DONE2;
     }
@@ -525,8 +514,8 @@ API_CALLABLE(N(InitPhonographHud)) {
     PhonographData* data = N(GetPhonographData)();
 
     data->meterFillAmount = 0;
-    data->unk_1D8 = 0;
-    data->unk_1DC = 0;
+    data->inactiveFrames = 0;
+    data->hasStartedMashing = false;
     data->fillValue = 0;
     data->state = PHONOGRAPH_HUD_STATE_INIT;
     script->varTable[10] = 0;
@@ -727,7 +716,7 @@ EvtScript N(EVS_WindDownPhonograph) = {
     Call(MakeLerp, MV_MashInputsAmount, 0, LVar0, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(func_80240EF8_BCFAE8))
+        Call(N(BuggedUpdatePlaybackRate))
         IfEq(LVar1, 0)
             BreakLoop
         EndIf
@@ -826,7 +815,7 @@ EvtScript N(EVS_PlayPhonograph) = {
     ExecGetTID(N(EVS_SetRecordRotation),     MV_SetRecordScript)
     Call(N(SavePhonographUpdateScriptIDs))
     Loop(0)
-        Call(N(func_80241790_BD0380))
+        Call(N(UpdatePhonographMeter))
         IfEq(LVar0, 1)
             Call(N(DestroyPhonographHudData))
             Wait(1)
@@ -872,11 +861,11 @@ EvtScript N(EVS_Inspect_Phonograph) = {
     EndIf
     // choose a record
     Call(ShowKeyChoicePopup)
-    IfEq(LVar0, 0)
+    IfEq(LVar0, ITEM_CHOICE_NONE)
         Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_Phonograph, 160, 40)
         Goto(100)
     EndIf
-    IfEq(LVar0, -1)
+    IfEq(LVar0, ITEM_CHOICE_CANCELED)
         Goto(100)
     EndIf
     Call(N(GetSelectedRecordIndex))
@@ -1171,7 +1160,7 @@ EvtScript N(EVS_SetupPhonograph) = {
     IfLt(GB_StoryProgress, STORY_CH3_PLAYED_THE_RECORD)
         Call(EnableModel, MODEL_reco, false)
     EndIf
-    BindPadlock(Ref(N(EVS_Inspect_Phonograph)), TRIGGER_WALL_PRESS_A, COLLIDER_o344, Ref(N(ItemList_Records)), 0, 1)
+    BindPadlock(Ref(N(EVS_Inspect_Phonograph)), TRIGGER_WALL_PRESS_A, COLLIDER_o344, Ref(N(RecordList)), 0, 1)
     Return
     End
 };

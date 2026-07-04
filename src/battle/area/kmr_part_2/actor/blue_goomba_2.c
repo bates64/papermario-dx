@@ -288,8 +288,6 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-#include "common/CalculateArcsinDeg.inc.c"
-
 EvtScript N(EVS_TakeTurn) = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
@@ -326,7 +324,7 @@ EvtScript N(EVS_TakeTurn) = {
                 Set(LVar0, 0)
                 Loop(16)
                     Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
-                    Call(N(CalculateArcsinDeg), LVar1, LVar2, LVar4, LVar5, LVar0)
+                    Call(CalcActorRotation, LVar0, LVar1, LVar2, LVar4, LVar5)
                     Call(SetActorRotation, ACTOR_SELF, 0, 0, LVar0)
                     Set(LVar1, LVar4)
                     Set(LVar2, LVar5)
@@ -402,7 +400,7 @@ EvtScript N(EVS_TakeTurn) = {
                 Set(LVar0, 0)
                 Loop(16)
                     Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
-                    Call(N(CalculateArcsinDeg), LVar1, LVar2, LVar4, LVar5, LVar0)
+                    Call(CalcActorRotation, LVar0, LVar1, LVar2, LVar4, LVar5)
                     Call(SetActorRotation, ACTOR_SELF, 0, 0, LVar0)
                     Set(LVar1, LVar4)
                     Set(LVar2, LVar5)

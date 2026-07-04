@@ -1,3 +1,5 @@
+#include "nok_01.h"
+
 #include "sprite/player.h"
 
 EvtScript N(EVS_Scene_RecoverTreeShell) = {
@@ -14,7 +16,7 @@ EvtScript N(EVS_Scene_RecoverTreeShell) = {
     Call(PlaySoundAtNpc, NPC_KoopaShell_03, SOUND_ITEM_BOUNCE, SOUND_SPACE_DEFAULT)
     Call(PlayerFaceNpc, NPC_KoopaShell_03, false)
     Call(NpcFaceNpc, NPC_Koopa_03, NPC_KoopaShell_03, 0)
-    Call(SetNpcFlagBits, NPC_Koopa_03, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Koopa_03, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Add(LVar0, -1)
     Add(LVar2, -1)
     Call(GetNpcPos, NPC_Koopa_03, LVar0, LVar1, LVar2)
@@ -47,7 +49,7 @@ EvtScript N(EVS_Scene_RecoverTreeShell) = {
     Call(NpcJump0, NPC_KoopaShell_03, LVar0, LVar1, LVar2, 30)
     Call(SetNpcPos, NPC_KoopaShell_03, NPC_DISPOSE_LOCATION)
     Call(SetNpcSprite, NPC_Koopa_03, ANIM_Koopa_Idle)
-    Call(SetNpcFlagBits, NPC_Koopa_03, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Koopa_03, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetNpcAnimation, NPC_Koopa_03, ANIM_Koopa_Still)
     Wait(4)
     Call(EnableNpcBlur, NPC_KoopaShell_03, true)
@@ -91,7 +93,7 @@ EvtScript N(EVS_Scene_RecoverBlockShell) = {
     Call(PlaySound, SOUND_ITEM_BOUNCE)
     Call(PlayerFaceNpc, NPC_KoopaShell_02, false)
     Call(NpcFaceNpc, NPC_Koopa_02, NPC_KoopaShell_02, 0)
-    Call(SetNpcFlagBits, NPC_Koopa_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Koopa_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Add(LVar0, -1)
     Add(LVar2, -1)
     Call(GetNpcPos, NPC_Koopa_02, LVar0, LVar1, LVar2)
@@ -124,7 +126,7 @@ EvtScript N(EVS_Scene_RecoverBlockShell) = {
     Call(NpcJump0, NPC_KoopaShell_02, LVar0, LVar1, LVar2, 30)
     Call(SetNpcPos, NPC_KoopaShell_02, NPC_DISPOSE_LOCATION)
     Call(SetNpcSprite, NPC_Koopa_02, ANIM_Koopa_Idle)
-    Call(SetNpcFlagBits, NPC_Koopa_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Koopa_02, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetNpcAnimation, NPC_Koopa_02, ANIM_Koopa_Still)
     Wait(4)
     Call(EnableNpcBlur, NPC_KoopaShell_02, true)
@@ -207,7 +209,7 @@ EvtScript N(EVS_Scene_KooverGetsMugged) = {
     Call(PlaySoundAtNpc, NPC_FuzzyWithShell, SOUND_FUZZY_HOP_A, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_FuzzyWithShell, LVar0, 0, LVar2, 20)
     Call(SetNpcAnimation, NPC_Koover, ANIM_KoopaWithoutShell_Idle)
-    Call(SetNpcAnimation, NPC_FuzzyWithShell, ANIM_Fuzzy_Anim0C)
+    Call(SetNpcAnimation, NPC_FuzzyWithShell, ANIM_Fuzzy_Shout)
     Thread
         Add(LVar0, 1)
         Add(LVar2, 1)
@@ -295,12 +297,12 @@ EvtScript N(EVS_NpcIdle_Koover_Crisis) = {
         Call(SetNpcPos, NPC_Koover, LVar0, LVar1, LVar2)
     EndIf
     Call(BindNpcInteract, NPC_Koover, 0)
-    Call(SetNpcFlagBits, NPC_Koover, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Koover, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Set(LVar0, 0)
     Label(0)
         IfEq(GF_NOK01_RecoveredShellA, true)
             Call(BindNpcInteract, NPC_Koover, Ref(N(EVS_NpcInteract_Koover_Crisis)))
-            Call(SetNpcFlagBits, NPC_Koover, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_Koover, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Return
         EndIf
         Call(GetNpcPos, NPC_FuzzyWithShell, LVar0, LVar1, LVar2)
@@ -338,8 +340,8 @@ EvtScript N(EVS_NpcIdle_FuzzyWithShell) = {
             Call(SetNpcPos, NPC_FuzzyWithShell, NPC_DISPOSE_LOCATION)
             Return
         EndIf
-        Call(N(CosInterpMinMax), LVar0, LVar1, -50, 50, 120, 0, 180)
-        Call(N(CosInterpMinMax), LVar0, LVar2, -32, 32, 120, 0, 30)
+        Call(CosInterpMinMax, LVar0, LVar1, -50, 50, 120, 0, 180)
+        Call(CosInterpMinMax, LVar0, LVar2, -32, 32, 120, 0, 30)
         Add(LVar1, LVarA)
         Add(LVar2, LVarC)
         Call(SetNpcAnimation, NPC_FuzzyWithShell, ANIM_Fuzzy_Run)
@@ -384,7 +386,7 @@ EvtScript N(EVS_NpcHit_FuzzyWithShell) = {
             Call(NpcJump0, NPC_FuzzyWithShell, LVar0, 0, LVar2, 15)
             Add(LVar0, 30)
             Add(LVar2, -30)
-            Call(SetNpcAnimation, NPC_FuzzyWithShell, ANIM_Fuzzy_Anim09)
+            Call(SetNpcAnimation, NPC_FuzzyWithShell, ANIM_Fuzzy_Confused)
             Call(PlaySoundAtNpc, NPC_FuzzyWithShell, SOUND_FUZZY_HOP_A, SOUND_SPACE_DEFAULT)
             Call(NpcJump0, NPC_FuzzyWithShell, LVar0, 0, LVar2, 13)
             Add(LVar0, 20)
@@ -414,7 +416,7 @@ EvtScript N(EVS_NpcHit_FuzzyWithShell) = {
         Thread
             Call(AdjustCam, CAM_DEFAULT, 4, 0, Float(-300.0), Float(17.0), Float(-7.0))
         EndThread
-        Call(SetNpcFlagBits, NPC_Koover, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_Koover, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(GetNpcPos, NPC_Koover, LVar0, LVar1, LVar2)
         Call(SetNpcAnimation, NPC_Koover, ANIM_KoopaWithoutShell_Happy)
         Call(NpcJump0, NPC_Koover, LVar0, 0, LVar2, 15)
@@ -445,7 +447,7 @@ EvtScript N(EVS_NpcHit_FuzzyWithShell) = {
         Call(NpcJump0, NPC_KooversShell, LVar0, LVar1, LVar2, 30)
         Call(SetNpcPos, NPC_KooversShell, NPC_DISPOSE_LOCATION)
         Call(SetNpcSprite, NPC_Koover, ANIM_Koopa_Idle)
-        Call(SetNpcFlagBits, NPC_Koover, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_Koover, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(SetNpcAnimation, NPC_Koover, ANIM_Koopa_Still)
         Wait(4)
         Call(EnableNpcBlur, NPC_KooversShell, true)
@@ -465,11 +467,11 @@ EvtScript N(EVS_NpcHit_FuzzyWithShell) = {
 };
 
 EvtScript N(EVS_NpcInteract_Bobomb_01_Crisis) = {
-    IfEq(AF_NOK01_Dialogue_Bobomb_01_Crisis, false)
-        Set(AF_NOK01_Dialogue_Bobomb_01_Crisis, true)
+    IfEq(AF_NOK01_ToggleDialogue_Bobomb1Crisis, false)
+        Set(AF_NOK01_ToggleDialogue_Bobomb1Crisis, true)
         Set(LVar0, MSG_CH1_003D)
     Else
-        Set(AF_NOK01_Dialogue_Bobomb_01_Crisis, false)
+        Set(AF_NOK01_ToggleDialogue_Bobomb1Crisis, false)
         Set(LVar0, MSG_CH1_003E)
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Red_Talk, ANIM_WorldBobomb_Red_Idle, 0, LVar0)
@@ -484,11 +486,11 @@ EvtScript N(EVS_NpcInit_Bobomb_01_Crisis) = {
 };
 
 EvtScript N(EVS_NpcInteract_Bobomb_02_Crisis) = {
-    IfEq(AF_NOK01_Dialogue_Bobomb_02, false)
-        Set(AF_NOK01_Dialogue_Bobomb_02, true)
+    IfEq(AF_NOK01_ToggleDialogue_Bobomb2, false)
+        Set(AF_NOK01_ToggleDialogue_Bobomb2, true)
         Set(LVar0, MSG_CH1_0044)
     Else
-        Set(AF_NOK01_Dialogue_Bobomb_02, false)
+        Set(AF_NOK01_ToggleDialogue_Bobomb2, false)
         Set(LVar0, MSG_CH1_0045)
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Red_Talk, ANIM_WorldBobomb_Red_Idle, 0, LVar0)

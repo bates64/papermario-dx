@@ -2,7 +2,7 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-API_CALLABLE(N(func_80240310_8EC130)){
+API_CALLABLE(N(SetupBeginGameTransition)){
     set_map_transition_effect(TRANSITION_BEGIN_OR_END_GAME);
     return ApiStatus_DONE2;
 }
@@ -47,7 +47,7 @@ EvtScript N(EVS_Main) = {
             EndIf
         EndIf
     EndIf
-    Set(MF_Unk_0C, false)
+    Set(MF_HouseInteriorVisible, false)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Exec(N(EVS_SetupMusic))
@@ -69,7 +69,7 @@ EvtScript N(EVS_Main) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kmr_20_ENTRY_0)
-            Call(N(func_80240310_8EC130))
+            Call(N(SetupBeginGameTransition))
             Exec(N(EVS_Scene_BeginGame))
             Wait(5)
         CaseEq(kmr_20_ENTRY_1)

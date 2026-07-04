@@ -1,12 +1,12 @@
 #include "obk_07.h"
 
-#include "world/common/npc/Boo.inc.c"
+#include "world/common/npc/Boo/idle.inc.c"
 
-#define TRAFFIC_BOO_START_Y 80.0f
-#define TRAFFIC_BOO_START_Z -300.0f
 #include "../common/TrafficBoos.inc.c"
 
 EvtScript N(EVS_NpcInit_TrafficBoo1) = {
+    Call(SetNpcVar, NPC_SELF, NPC_VAR_TRAFFIC_BOO_START_Y, 80)
+    Call(SetNpcVar, NPC_SELF, NPC_VAR_TRAFFIC_BOO_START_Z, -300)
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TrafficBoo)))
     Return
     End
@@ -24,6 +24,8 @@ NpcData N(NpcData_TrafficBoo1) = {
 };
 
 EvtScript N(EVS_NpcInit_TrafficBoo2) = {
+    Call(SetNpcVar, NPC_SELF, NPC_VAR_TRAFFIC_BOO_START_Y, 80)
+    Call(SetNpcVar, NPC_SELF, NPC_VAR_TRAFFIC_BOO_START_Z, -300)
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TrafficBoo)))
     Return
     End

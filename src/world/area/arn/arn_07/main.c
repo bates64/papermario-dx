@@ -1,13 +1,9 @@
 #include "arn_07.h"
 #include "sprite/player.h"
 
-#define STAR_SPIRIT_DATA_VAR MV_Unk_01
-#include "world/common/todo/StarSpiritEffectFunc.inc.c"
+#include "world/common/prefab/StarSpiritCard.inc.c"
 
-s32 N(KeyList)[] = {
-    ITEM_MYSTICAL_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_MYSTICAL_KEY);
 
 EvtScript N(EVS_SpawnStarCard) = {
     Call(FadeOutMusic, 0, 1000)
@@ -19,14 +15,14 @@ EvtScript N(EVS_SpawnStarCard) = {
         Call(SetPanTarget, CAM_DEFAULT, 145, 30, 0)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(N(StarSpiritEffectFunc2), 2, 50, 100, 31, -6, 145, 65, 0, 30, 0)
+        Call(N(InitSpiritCardSpawn), MV_SpiritCardData, 2, 50, 100, 31, -6, 145, 65, 0, 30, 0)
         Thread
-            Call(N(StarSpiritEffectFunc3))
+            Call(N(UpdateSpiritCardSpawn))
         EndThread
         Thread
             Wait(1)
             Call(PlaySound, SOUND_LOOP_STAR_ORB_RISING)
-            Call(N(StarSpiritEffectFunc1))
+            Call(N(AwaitSpiritOrbBurst))
             Call(StopSound, SOUND_LOOP_STAR_ORB_RISING)
             Call(PlaySoundAt, SOUND_STAR_ORB_BURST, SOUND_SPACE_DEFAULT, 145, 65, 0)
         EndThread
@@ -39,7 +35,7 @@ EvtScript N(EVS_SpawnStarCard) = {
             Wait(115)
             Call(PlaySoundAt, SOUND_STAR_CARD_APPEARS, SOUND_SPACE_DEFAULT, 145, 65, 0)
         EndThread
-        Call(N(StarSpiritEffectFunc4), 1)
+        Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_FALLING)
         Thread
             Wait(80)
             Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -47,7 +43,7 @@ EvtScript N(EVS_SpawnStarCard) = {
         Add(LVar1, 100)
         Call(SetCamDistance, CAM_DEFAULT, LVar1)
         Call(SetPanTarget, CAM_DEFAULT, 145, 0, 0)
-        Call(N(StarSpiritEffectFunc4), 2)
+        Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_DONE_FALLING)
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
@@ -56,13 +52,13 @@ EvtScript N(EVS_SpawnStarCard) = {
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(DisablePlayerInput, false)
     Else
-        Call(N(StarSpiritEffectFunc5), 2, 145, 30, 0, 0)
+        Call(N(SpawnExistingSpiritCard), 2, 145, 30, 0, 0)
         Thread
-            Call(N(StarSpiritEffectFunc6))
+            Call(N(UpdateExistingSpiritCard))
         EndThread
         Wait(1)
     EndIf
-    Call(N(StarSpiritEffectFunc4), 3)
+    Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_PLAYER_TOUCH)
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
@@ -81,14 +77,14 @@ EvtScript N(EVS_RespawnStarCard) = {
         Call(SetPanTarget, CAM_DEFAULT, 145, 30, 0)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(N(StarSpiritEffectFunc2), 2, 50, 100, 31, -6, 145, 65, 0, 30, 0)
+        Call(N(InitSpiritCardSpawn), MV_SpiritCardData, 2, 50, 100, 31, -6, 145, 65, 0, 30, 0)
         Thread
-            Call(N(StarSpiritEffectFunc3))
+            Call(N(UpdateSpiritCardSpawn))
         EndThread
         Thread
             Wait(1)
             Call(PlaySound, SOUND_LOOP_STAR_ORB_RISING)
-            Call(N(StarSpiritEffectFunc1))
+            Call(N(AwaitSpiritOrbBurst))
             Call(StopSound, SOUND_LOOP_STAR_ORB_RISING)
             Call(PlaySoundAt, SOUND_STAR_ORB_BURST, SOUND_SPACE_DEFAULT, 145, 65, 0)
         EndThread
@@ -101,7 +97,7 @@ EvtScript N(EVS_RespawnStarCard) = {
             Wait(115)
             Call(PlaySoundAt, SOUND_STAR_CARD_APPEARS, SOUND_SPACE_DEFAULT, 145, 65, 0)
         EndThread
-        Call(N(StarSpiritEffectFunc4), 1)
+        Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_FALLING)
         Thread
             Wait(80)
             Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -109,7 +105,7 @@ EvtScript N(EVS_RespawnStarCard) = {
         Add(LVar1, 100)
         Call(SetCamDistance, CAM_DEFAULT, LVar1)
         Call(SetPanTarget, CAM_DEFAULT, 145, 0, 0)
-        Call(N(StarSpiritEffectFunc4), 2)
+        Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_DONE_FALLING)
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
@@ -118,13 +114,13 @@ EvtScript N(EVS_RespawnStarCard) = {
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(DisablePlayerInput, false)
     Else
-        Call(N(StarSpiritEffectFunc5), 2, 145, 30, 0, 0)
+        Call(N(SpawnExistingSpiritCard), 2, 145, 30, 0, 0)
         Thread
-            Call(N(StarSpiritEffectFunc6))
+            Call(N(UpdateExistingSpiritCard))
         EndThread
         Wait(1)
     EndIf
-    Call(N(StarSpiritEffectFunc4), 3)
+    Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_PLAYER_TOUCH)
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
@@ -142,7 +138,7 @@ EvtScript N(EVS_ExitWalk_mim_12_1) = EVT_EXIT_WALK(60, arn_07_ENTRY_2, "mim_12",
 
 EvtScript N(EVS_Scene_TubbaReunion) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerPos, -28, 0, -333)
     Call(SetNpcPos, NPC_PARTNER, -28, 0, -333)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
@@ -191,7 +187,7 @@ EvtScript N(EVS_Scene_TubbaReunion) = {
         Call(PlaySoundAtCollider, COLLIDER_tt3, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     EndThread
     Call(NpcFaceNpc, NPC_TubbasHeart, NPC_Tubba, 0)
-    Call(SpeakToPlayer, NPC_TubbasHeart, ANIM_TubbasHeart_Anim0A, ANIM_TubbasHeart_Anim01, 5, MSG_CH3_00C7)
+    Call(SpeakToPlayer, NPC_TubbasHeart, ANIM_TubbasHeart_Talk, ANIM_TubbasHeart_Idle, 5, MSG_CH3_00C7)
     Call(SetNpcVar, NPC_TubbasHeart, 0, 1)
     Loop(0)
         Call(GetNpcVar, NPC_TubbasHeart, 0, LVar0)
@@ -216,16 +212,16 @@ EvtScript N(EVS_Scene_TubbaReunion) = {
         Call(SetCamPosC, CAM_DEFAULT, 0, 0)
         Call(SetPanTarget, CAM_DEFAULT, 65, 0, -137)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim22)
+        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_OpenWide)
     EndThread
     Call(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_TubbasHeart, 298, 56, 31, 18)
     Call(SetNpcPos, NPC_TubbasHeart, NPC_DISPOSE_LOCATION)
     Call(EnableNpcShadow, NPC_TubbasHeart, false)
     Thread
-        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim23)
+        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Chew)
         Wait(20 * DT)
-        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim06)
+        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Idle)
     EndThread
     Wait(20 * DT)
     Thread
@@ -269,7 +265,7 @@ EvtScript N(EVS_Scene_TubbaReunion) = {
     EndThread
     Call(PlayerMoveTo, 200, 0, 35 * DT)
     Wait(5 * DT)
-    Call(SpeakToPlayer, NPC_Tubba, ANIM_WorldTubba_Anim10, ANIM_WorldTubba_Anim06, 0, MSG_CH3_00C8)
+    Call(SpeakToPlayer, NPC_Tubba, ANIM_WorldTubba_Talk, ANIM_WorldTubba_Idle, 0, MSG_CH3_00C8)
     Call(SetNpcVar, NPC_Tubba, 0, 1)
     Wait(30 * DT)
     Call(DisablePlayerInput, false)

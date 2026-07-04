@@ -1,27 +1,21 @@
 #include "mac_02.h"
 #include "entity.h"
 
-#include "world/common/todo/RemovePadlock.inc.c"
-
-s32 N(ItemList_OddKey)[] = {
-    ITEM_ODD_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_OddKey), ITEM_ODD_KEY);
 
 EvtScript N(EVS_ChooseItem_OddKey) = {
     Call(ShowKeyChoicePopup)
-    IfEq(LVar0, 0)
+    IfEq(LVar0, ITEM_CHOICE_NONE)
         Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
         Call(CloseChoicePopup)
         Return
     EndIf
-    IfEq(LVar0, -1)
+    IfEq(LVar0, ITEM_CHOICE_CANCELED)
         Call(CloseChoicePopup)
         Return
     EndIf
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, -470, 30, -155)
-    Set(LVar0, MV_BlueHouseLockEntityID)
-    Call(N(RemovePadlock))
+    Call(SetEntityUsed, MV_BlueHouseLockEntityID)
     Wait(5)
     Call(RemoveKeyItemAt, LVar1)
     Set(GF_MAC02_UnlockedHouse, true)

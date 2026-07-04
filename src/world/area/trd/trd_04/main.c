@@ -9,8 +9,6 @@ extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(NpcGroupBefore);
 extern NpcGroupList N(NpcGroupAfter);
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitDoors_trd_03_1) = EVT_EXIT_DOUBLE_DOOR(trd_04_ENTRY_0, "trd_03", trd_03_ENTRY_1,
     COLLIDER_ttw2, MODEL_o6, MODEL_o7);
 
@@ -28,10 +26,7 @@ EvtScript N(EVS_ExitWalk_trd_07_0) = EVT_EXIT_WALK(60, trd_04_ENTRY_4, "trd_07",
 EvtScript N(EVS_ExitDoors_trd_06_1) = EVT_EXIT_DOUBLE_DOOR(trd_04_ENTRY_5, "trd_06", trd_06_ENTRY_1,
     COLLIDER_tte, MODEL_o29, MODEL_o28);
 
-s32 N(KeyList)[] = {
-    ITEM_KOOPA_FORTRESS_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_KOOPA_FORTRESS_KEY);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_trd_03_1)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw2, 1, 0)
@@ -251,7 +246,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(  100,    0, -100,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

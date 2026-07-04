@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sam_07.h
 /// @brief Mt Shiver - Shiver Mountain Passage
 

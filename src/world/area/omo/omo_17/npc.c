@@ -1,10 +1,10 @@
 #include "omo_17.h"
 
-#include "world/common/enemy/ShyGuy_Wander.inc.c"
-#include "world/common/enemy/PyroGuy.inc.c"
-#include "world/common/enemy/GrooveGuy.inc.c"
-#include "world/common/enemy/SkyGuy.inc.c"
-#include "world/common/enemy/SpyGuy.inc.c"
+#include "world/common/enemy/ShyGuy/wander.inc.c"
+#include "world/common/enemy/PyroGuy/wander.inc.c"
+#include "world/common/enemy/GrooveGuy/wander.inc.c"
+#include "world/common/enemy/SkyGuy/wander.inc.c"
+#include "world/common/enemy/SpyGuy/wander.inc.c"
 
 EvtScript N(EVS_NpcCreate_Conductor) = {
     Return
@@ -58,7 +58,7 @@ NpcData N(NpcData_SpyGuy)[] = {
                 .detectSize = { 250 },
             }
         },
-        .settings = &N(NpcSettings_SpyGuy),
+        .settings = &N(NpcSettings_SpyGuy_Wander),
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = SPY_GUY_DROPS,
         .animations = SPY_GUY_ANIMS,
@@ -85,7 +85,7 @@ NpcData N(NpcData_PyroGuy) = {
             .detectSize = { 250 },
         }
     },
-    .settings = &N(NpcSettings_PyroGuy),
+    .settings = &N(NpcSettings_PyroGuy_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PYRO_GUY_DROPS,
     .animations = PYRO_GUY_ANIMS,
@@ -108,7 +108,7 @@ NpcData N(NpcData_GrooveGuy) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_GrooveGuy),
+    .settings = &N(NpcSettings_GrooveGuy_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = GROOVE_GUY_DROPS_B,
     .animations = GROOVE_GUY_ANIMS,

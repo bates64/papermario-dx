@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_39.h
 /// @brief Crystal Palace - Shooting Star Hall
 

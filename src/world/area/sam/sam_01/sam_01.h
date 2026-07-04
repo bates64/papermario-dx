@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sam_01.h
 /// @brief Mt Shiver - Shiver City Mayor Area
 
@@ -11,7 +13,6 @@
 
 #include "sprite/npc/Herringway.h"
 #include "sprite/npc/Penguin.h"
-#include "sprite/npc/ChuckQuizmo.h"
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/npc/MayorPenguin.h"
 #include "sprite/npc/MayorPenguinWife.h"

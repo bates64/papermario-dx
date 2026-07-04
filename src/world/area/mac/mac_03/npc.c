@@ -1,9 +1,16 @@
 #include "mac_03.h"
 #include "effects.h"
 
-#include "world/common/npc/TrainToad.inc.c"
-#include "world/common/npc/Toad_Wander.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
+
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Toad/wander.inc.c"
+#include "world/common/npc/Toadette/idle.inc.c"
+#include "world/common/npc/ToadKid/wander.inc.c"
+#include "world/common/npc/TrainToad/idle.inc.c"
+
+
+#include "world/common/enemy/ShyGuy/base.h"
 
 NpcSettings N(NpcSettings_ShyGuy) = {
     .height = 23,
@@ -14,12 +21,7 @@ NpcSettings N(NpcSettings_ShyGuy) = {
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
 };
 
-#include "world/common/npc/Dummy.inc.c"
-
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
-
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
 API_CALLABLE(N(GetOinkCount)) {
     s32 oinkCount = evt_get_variable(script, GB_MAC03_LilOinkCount);
@@ -32,7 +34,7 @@ API_CALLABLE(N(GetOinkCount)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80241BD8_8333D8)) {
+API_CALLABLE(N(SetLilOinkTransform)) {
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, MV_LilOinkEffect);
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
@@ -48,56 +50,30 @@ API_CALLABLE(N(func_80241BD8_8333D8)) {
     return ApiStatus_DONE2;
 }
 
-s32 N(LetterList_A)[] = {
-    ITEM_LETTER_CHAIN_DANE_T_1,
-    ITEM_NONE
+LetterDelivery N(LetterDelivery_ToadKid1A) = {
+    .recipientID = NPC_ToadKid_01,
+    .recipientTalk = ANIM_ToadKid_Red_Talk,
+    .recipientIdle = ANIM_ToadKid_Red_Idle,
+    .msgGreeting = MSG_MAC_Station_0049,
+    .msgCancelled = MSG_MAC_Station_004A,
+    .msgDelivered = MSG_MAC_Station_004B,
+    .msgRecieved = MSG_MAC_Station_004C,
+    .letters = { ITEM_LETTER_CHAIN_DANE_T_1 },
+    .reward = ITEM_LETTER_CHAIN_YOSHI_KID,
+    .deferReward = true,
 };
 
-EvtScript N(EVS_LetterPrompt_ToadKid1A) = {
-    Call(N(LetterDelivery_Init), NPC_ToadKid_01,
-        ANIM_ToadKid_Red_Talk, ANIM_ToadKid_Red_Idle,
-        ITEM_LETTER_CHAIN_DANE_T_1, ITEM_NONE,
-        MSG_MAC_Station_0049, MSG_MAC_Station_004A,
-        MSG_MAC_Station_004B, MSG_MAC_Station_004C,
-        Ref(N(LetterList_A)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_ToadKid1A) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        Call(SpeakToPlayer, NPC_ToadKid_02, ANIM_ToadKid_Yellow_Talk, ANIM_ToadKid_Yellow_Idle, 0, MSG_MAC_Station_004D)
-        EVT_GIVE_REWARD(ITEM_LETTER_CHAIN_YOSHI_KID)
-    EndIf
-    Return
-    End
-};
-
-s32 N(LetterList_B)[] = {
-    ITEM_LETTER_CHAIN_DANE_T_2,
-    ITEM_NONE
-};
-
-EvtScript N(EVS_LetterPrompt_ToadKid1B) = {
-    Call(N(LetterDelivery_Init), NPC_ToadKid_01,
-        ANIM_ToadKid_Red_Talk, ANIM_ToadKid_Red_Idle,
-        ITEM_LETTER_CHAIN_DANE_T_2, ITEM_NONE,
-        MSG_MAC_Station_004E, MSG_MAC_Station_004F,
-        MSG_MAC_Station_0050, MSG_MAC_Station_0051,
-        Ref(N(LetterList_B)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_ToadKid1B) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        Call(SpeakToPlayer, NPC_ToadKid_02, ANIM_ToadKid_Yellow_Talk, ANIM_ToadKid_Yellow_Idle, 0, MSG_MAC_Station_0052)
-        EVT_GIVE_REWARD(ITEM_LETTER_CHAIN_FROST_T)
-    EndIf
-    Return
-    End
+LetterDelivery N(LetterDelivery_ToadKid1B) = {
+    .recipientID = NPC_ToadKid_01,
+    .recipientTalk = ANIM_ToadKid_Red_Talk,
+    .recipientIdle = ANIM_ToadKid_Red_Idle,
+    .msgGreeting = MSG_MAC_Station_004E,
+    .msgCancelled = MSG_MAC_Station_004F,
+    .msgDelivered = MSG_MAC_Station_0050,
+    .msgRecieved = MSG_MAC_Station_0051,
+    .letters = { ITEM_LETTER_CHAIN_DANE_T_2 },
+    .reward = ITEM_LETTER_CHAIN_FROST_T,
+    .deferReward = true,
 };
 
 EvtScript N(EVS_NpcInteract_TrainToad_01) = {
@@ -395,15 +371,18 @@ EvtScript N(EVS_NpcInteract_ToadKid_02) = {
 
 EvtScript N(EVS_NpcInteract_ToadKid_01) = {
     ExecWait(N(EVS_NpcInteract_ToadKid_02))
-    ExecWait(N(EVS_LetterPrompt_ToadKid1A))
-    ExecWait(N(EVS_LetterReward_ToadKid1A))
-    IfNe(LVarC, 0)
-        Return
+    Set(LVar0, Ref(N(LetterDelivery_ToadKid1A)))
+    ExecWait(EVS_TryLetterDelivery)
+    IfEq(LVar0, DELIVERY_ACCEPTED)
+        Call(SpeakToPlayer, NPC_ToadKid_02, ANIM_ToadKid_Yellow_Talk, ANIM_ToadKid_Yellow_Idle, 0, MSG_MAC_Station_004D)
+        EVT_GIVE_REWARD(LVar1)
     EndIf
-    ExecWait(N(EVS_LetterPrompt_ToadKid1B))
-    ExecWait(N(EVS_LetterReward_ToadKid1B))
-    IfNe(LVarC, 0)
-        Return
+    EVT_RETURN_IF_DELIVERED()
+    Set(LVar0, Ref(N(LetterDelivery_ToadKid1B)))
+    ExecWait(EVS_TryLetterDelivery)
+    IfEq(LVar0, DELIVERY_ACCEPTED)
+        Call(SpeakToPlayer, NPC_ToadKid_02, ANIM_ToadKid_Yellow_Talk, ANIM_ToadKid_Yellow_Idle, 0, MSG_MAC_Station_0052)
+        EVT_GIVE_REWARD(LVar1)
     EndIf
     Return
     End
@@ -460,10 +439,10 @@ EvtScript N(EVS_NpcInteract_Toad_03) = {
         Call(ContinueSpeech, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, LVar0)
         Wait(10)
         Call(InterpNpcYaw, NPC_SELF, 90, 0)
-        Set(MF_Unk_08, true)
+        Set(MF_HeardOinkExplanation, true)
         Return
     EndIf
-    IfEq(MF_Unk_07, false)
+    IfEq(MF_OinkCapsuleOpened, false)
         Set(LVar0, MSG_MAC_Station_0054)
     Else
         Call(N(GetOinkCount))
@@ -501,7 +480,7 @@ EvtScript N(EVS_NpcInit_Toad_03) = {
     End
 };
 
-EvtScript N(D_8024A7F4_83BFF4) = {
+EvtScript N(EVS_PlayShyGuyRunSounds) = {
     Loop(0)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_SEQ_SHY_GUY_STEP, SOUND_SPACE_DEFAULT)
         Wait(2)
@@ -513,7 +492,7 @@ EvtScript N(D_8024A7F4_83BFF4) = {
 EvtScript N(EVS_NpcIdle_ShyGuy) = {
     Call(SetNpcPos, NPC_SELF, -100, 0, -25)
     Call(InterpNpcYaw, NPC_SELF, 270, 1)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim03)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
     Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
     Loop(0)
         Call(NpcMoveTo, NPC_SELF, -250, -25, 30)
@@ -531,13 +510,13 @@ EvtScript N(EVS_NpcIdle_ShyGuy) = {
 
 EvtScript N(EVS_NpcAI_ShyGuy) = {
     Call(DisablePlayerInput, true)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim0C)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Hurt)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 10)
     Call(SetNpcSpeed, NPC_SELF, Float(8.0))
-    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim03)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
     Call(InterpNpcYaw, NPC_SELF, 90, 1)
-    ExecGetTID(N(D_8024A7F4_83BFF4), LVarA)
+    ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVarA)
     Call(NpcMoveTo, NPC_SELF, -100, 0, 0)
     KillThread(LVarA)
     Call(ShowSweat, NPC_SELF, 1, 45, EMOTER_NPC, 0, 0, 0, 0, 20)
@@ -546,7 +525,7 @@ EvtScript N(EVS_NpcAI_ShyGuy) = {
     Call(NpcJump0, NPC_SELF, -30, 0, 0, 20)
     Call(ShowSweat, NPC_SELF, 1, 45, EMOTER_NPC, 0, 0, 0, 0, 20)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
-    ExecGetTID(N(D_8024A7F4_83BFF4), LVarA)
+    ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVarA)
     Call(SetNpcSpeed, NPC_SELF, Float(8.0))
     Call(NpcMoveTo, NPC_SELF, 30, -200, 0)
     Call(ShowSweat, NPC_SELF, 1, -45, EMOTER_NPC, 0, 0, 0, 0, 20)
@@ -615,7 +594,7 @@ EvtScript N(EVS_NpcIdle_Toad_14) = {
             CaseEq(2)
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                 Call(GetNpcYaw, NPC_SELF, LVar3)
-                Call(N(func_80241BD8_8333D8), 10, LVar0, LVar1, LVar2, LVar3)
+                Call(N(SetLilOinkTransform), 10, LVar0, LVar1, LVar2, LVar3)
         EndSwitch
         Wait(1)
     EndLoop
@@ -666,7 +645,7 @@ NpcData N(NpcData_Toads)[] = {
         .pos = { -232.0f, 10.0f, 74.0f },
         .yaw = 75,
         .init = &N(EVS_NpcInit_Toad_01),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
@@ -677,7 +656,7 @@ NpcData N(NpcData_Toads)[] = {
         .pos = { 85.0f, 0.0f, 235.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Toadette_01),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toadette),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PURPLE_ANIMS,
@@ -688,7 +667,7 @@ NpcData N(NpcData_Toads)[] = {
         .pos = { -255.0f, 20.0f, 400.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toad_02),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_GREEN_ANIMS,
@@ -745,7 +724,7 @@ NpcData N(NpcData_Toads)[] = {
         .pos = { 220.0f, 20.0f, -160.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toad_03),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -759,7 +738,7 @@ NpcData N(NpcData_Toadette)[] = {
         .pos = { -130.0f, 0.0f, 220.0f },
         .yaw = 0,
         .init = &N(EVS_NpcInit_Toadette_02),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toadette),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -770,7 +749,7 @@ NpcData N(NpcData_Toadette)[] = {
         .pos = { -100.0f, 0.0f, 220.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toadette_02),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toadette),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -781,7 +760,7 @@ NpcData N(NpcData_Toadette)[] = {
         .pos = { -70.0f, 0.0f, 220.0f },
         .yaw = 180,
         .init = &N(EVS_NpcInit_Toadette_02),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toadette),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -797,24 +776,7 @@ NpcData N(NpcData_ShyGuy) = {
     .settings = &N(NpcSettings_ShyGuy),
     .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_ShyGuy_Red_Anim01,
-        .walk   = ANIM_ShyGuy_Red_Anim02,
-        .run    = ANIM_ShyGuy_Red_Anim03,
-        .chase  = ANIM_ShyGuy_Red_Anim03,
-        .anim_4 = ANIM_ShyGuy_Red_Anim01,
-        .anim_5 = ANIM_ShyGuy_Red_Anim01,
-        .death  = ANIM_ShyGuy_Red_Anim0C,
-        .hit    = ANIM_ShyGuy_Red_Anim0C,
-        .anim_8 = ANIM_ShyGuy_Red_Anim15,
-        .anim_9 = ANIM_ShyGuy_Red_Anim12,
-        .anim_A = ANIM_ShyGuy_Red_Anim11,
-        .anim_B = ANIM_ShyGuy_Red_Anim10,
-        .anim_C = ANIM_ShyGuy_Red_Anim05,
-        .anim_D = ANIM_ShyGuy_Red_Anim01,
-        .anim_E = ANIM_ShyGuy_Red_Anim01,
-        .anim_F = ANIM_ShyGuy_Red_Anim01,
-    },
+    .animations = RED_SHY_GUY_ANIMS,
 };
 
 NpcData N(NpcData_LilOinks)[] = {

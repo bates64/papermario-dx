@@ -1,8 +1,8 @@
 #include "kpa_102.h"
 
-#include "world/common/enemy/HammerBros_Wander.inc.c"
-#include "world/common/enemy/Koopatrol_Wander.inc.c"
-#include "world/common/enemy/FlyingMagikoopa.inc.c"
+#include "world/common/enemy/HammerBros/wander.inc.c"
+#include "world/common/enemy/Koopatrol/wander.inc.c"
+#include "world/common/enemy/FlyingMagikoopa/wander.inc.c"
 
 NpcData N(NpcData_Koopatrol) = {
     .id = NPC_Koopatrol,
@@ -43,11 +43,11 @@ NpcData N(NpcData_FlyingMagikoopa)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_FlyingMagikoopa),
+        .settings = &N(NpcSettings_FlyingMagikoopa_Wander),
         .flags = ENEMY_FLAG_FLYING,
-        .drops = FLYING_MAGINO_DROPS,
+        .drops = FLYING_MAGIKOOPA_DROPS,
         .animations = FLYING_MAGIKOOPA_ANIMS,
-        .extraAnimations = N(ExtraAnims_FlyingMagikoopa),
+        .limitAnimations = N(LimitAnims_FlyingMagikoopa),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     FLYING_MAGIKOOPA_SPELL_HITBOX(NPC_FlyingMagikoopa + 1),

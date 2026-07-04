@@ -1,5 +1,4 @@
-#ifndef _WORLD_AREA_KKJ_KKJ_H_
-#define _WORLD_AREA_KKJ_KKJ_H_
+#pragma once
 
 enum {
     CAKE_TYPE_NONE              = 0, // cake has not been started
@@ -11,51 +10,52 @@ enum {
     CAKE_TYPE_DONE              = 6, // decorated
 };
 
-enum {
-    AB_KKJ19_CurrentBakeStep        = AreaByte(0),
-    AB_KKJ_CompletedBakeStep        = AreaByte(1),
-    AB_KKJ19_HeldIngredient         = AreaByte(2),
-    AB_KKJ19_BakeStepProgress       = AreaByte(3),
-    AB_KKJ19_CookwareItemIdx        = AreaByte(4),
-    AB_KKJ19_CakeItemIdx            = AreaByte(5),
-    AB_KKJ29_AnsweringContestant    = AreaByte(6),
-    AB_KKJ29_AnswerScore            = AreaByte(7),
-    AB_KKJ29_LeftKoopatrolScore     = AreaByte(8),
-    AB_KKJ29_PeachScore             = AreaByte(9),
-    AB_KKJ29_RightKoopatrolScore    = AreaByte(10),
-    AB_KKJ_Unused_B                 = AreaByte(11),
-    AB_KKJ_Unused_C                 = AreaByte(12),
-    AB_KKJ_Unused_D                 = AreaByte(13),
-    AB_KKJ_Unused_E                 = AreaByte(14),
-    AB_KKJ_Unused_F                 = AreaByte(15),
+enum AreaBytesKKJ {
+    AB_KKJ19_CurrentBakeStep                = AreaByte(0x0),
+    AB_KKJ_CompletedBakeStep                = AreaByte(0x1),
+    AB_KKJ19_HeldIngredient                 = AreaByte(0x2),
+    AB_KKJ19_BakeStepProgress               = AreaByte(0x3),
+    AB_KKJ19_CookwareItemIdx                = AreaByte(0x4),
+    AB_KKJ19_CakeItemIdx                    = AreaByte(0x5),
+    AB_KKJ29_AnsweringContestant            = AreaByte(0x6),
+    AB_KKJ29_AnswerScore                    = AreaByte(0x7),
+    AB_KKJ29_LeftKoopatrolScore             = AreaByte(0x8),
+    AB_KKJ29_PeachScore                     = AreaByte(0x9),
+    AB_KKJ29_RightKoopatrolScore            = AreaByte(0xA),
+    AB_KKJ_Unused_B                         = AreaByte(0xB),
+    AB_KKJ_Unused_C                         = AreaByte(0xC),
+    AB_KKJ_Unused_D                         = AreaByte(0xD),
+    AB_KKJ_Unused_E                         = AreaByte(0xE),
+    AB_KKJ_Unused_F                         = AreaByte(0xF),
 };
 
-enum {
-    AF_KKJ_01                       = AreaFlag(1),
-    AF_KKJ_02                       = AreaFlag(2),
-    AF_KKJ_03                       = AreaFlag(3),
-    AF_KKJ_04                       = AreaFlag(4),
-    AF_KKJ_05                       = AreaFlag(5),
-    AF_KKJ_06                       = AreaFlag(6),
-    AF_KKJ_07                       = AreaFlag(7),
-    AF_KKJ_08                       = AreaFlag(8),
-    AF_KKJ19_FailedBakingTask       = AreaFlag(9),
-    AF_KKJ19_AddedEgg               = AreaFlag(10),
-    AF_KKJ19_AddedSugar             = AreaFlag(11),
-    AF_KKJ19_AddedFlour             = AreaFlag(12),
-    AF_KKJ19_AddedButter            = AreaFlag(13),
-    AF_KKJ19_AddedNothingWrong      = AreaFlag(14),
-    AB_KKJ19_AddedIcing             = AreaFlag(15),
-    AB_KKJ19_AddedBerries           = AreaFlag(16),
-    AF_KKJ_FinishedBakingCake       = AreaFlag(17),
-    AF_KKJ19_CanTakeIngredients     = AreaFlag(18),
-    AF_KKJ_13                       = AreaFlag(19),
-    AF_KKJ_14                       = AreaFlag(20),
-    AF_KKJ_15                       = AreaFlag(21),
-    AF_KKJ_17                       = AreaFlag(23),
-    AF_KKJ_18                       = AreaFlag(24),
-    AF_KKJ_19                       = AreaFlag(25),
-    AF_KKJ_1A                       = AreaFlag(26),
+enum AreaFlagsKKJ {
+    // AF_KKJ_00 unused
+    AF_KKJ01_MarioLetIntoBedroom            = AreaFlag(0x01),
+    AF_KKJ01_GuardAskedAboutBedroom         = AreaFlag(0x02),
+    AF_KKJ14_TwinkFlightSync                = AreaFlag(0x03),
+    AF_KKJ14_HiddenButtonRemark             = AreaFlag(0x04),
+    AF_KKJ14_HiddenPassageRemark            = AreaFlag(0x05),
+    AF_KKJ_PeachSawGrandHall                = AreaFlag(0x06),
+    AF_KKJ16_HeardSneakingAdvice            = AreaFlag(0x07),
+    AF_KKJ15_LiedAboutWeakPoints            = AreaFlag(0x08),
+    AF_KKJ19_FailedBakingTask               = AreaFlag(0x09),
+    AF_KKJ19_AddedEgg                       = AreaFlag(0x0A),
+    AF_KKJ19_AddedSugar                     = AreaFlag(0x0B),
+    AF_KKJ19_AddedFlour                     = AreaFlag(0x0C),
+    AF_KKJ19_AddedButter                    = AreaFlag(0x0D),
+    AF_KKJ19_AddedNothingWrong              = AreaFlag(0x0E),
+    AF_KKJ19_AddedIcing                     = AreaFlag(0x0F),
+    AF_KKJ19_AddedBerries                   = AreaFlag(0x10),
+    AF_KKJ_FinishedBakingCake               = AreaFlag(0x11),
+    AF_KKJ19_CanTakeIngredients             = AreaFlag(0x12),
+    AF_KKJ14_CaughtUsingDoor                = AreaFlag(0x13),
+    AF_KKJ14_InspectedFireplace             = AreaFlag(0x14),
+    AF_KKJ14_InspectedDresses               = AreaFlag(0x15),
+    // AF_KKJ_16 unused
+    AF_KKJ14_InspectedPhoto                 = AreaFlag(0x17),
+    AF_KKJ14_InspectedBed                   = AreaFlag(0x18),
+    AF_KKJ14_InspectedFlowers               = AreaFlag(0x19),
+    AF_KKJ25_ActivatedArenaSwitch           = AreaFlag(0x1A),
+    // AF_KKJ_1B - AF_KKJ_FF unused
 };
-
-#endif

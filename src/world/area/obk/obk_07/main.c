@@ -1,7 +1,5 @@
 #include "obk_07.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)
     Set(LVar2, MODEL_door_1)
@@ -32,7 +30,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(   0,    0,  300,  100)
         TEX_PAN_PARAMS_FREQ(   0,    0,    1,    1)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_m2, TEX_PANNER_0)
     Thread
@@ -40,7 +38,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP( 300,  100,    0,    0)
         TEX_PAN_PARAMS_FREQ(   1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

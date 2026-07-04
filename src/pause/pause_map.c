@@ -41,7 +41,6 @@ s32 PauseMapArrowWobble[] = { 0, 2, 3, 3, 4, 4, 4, 4, 3, 2, 1, 0 };
 MenuWindowBP PauseMapWindowBPs[] = {
     {
         .windowID = WIN_PAUSE_MAP,
-        .unk_01 = 0,
         .pos = { .x = 3, .y = 16 },
         .width = 289,
         .height = 154,
@@ -55,7 +54,6 @@ MenuWindowBP PauseMapWindowBPs[] = {
     },
     {
         .windowID = WIN_PAUSE_MAP_TITLE,
-        .unk_01 = 0,
         .pos = { .x = MAP_TITLE_X, .y = 124 },
         .width = MAP_TITLE_WIDTH,
         .height = 20,

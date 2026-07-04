@@ -3,14 +3,12 @@
 
 #define NAMESPACE A(flo_04)
 
-#include "common/CosInterpMinMax.inc.c"
-
 EvtScript N(EVS_AnimateCloud) = {
     Set(LVarA, LVar0)
     Set(LVarF, 0)
     Loop(0)
-        Call(N(CosInterpMinMax), LVarF, LVar0, Float(0.968), Float(1.031), 15, 0, 0)
-        Call(N(CosInterpMinMax), LVarF, LVar1, Float(1.031), Float(0.968), 15, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar0, Float(0.968), Float(1.031), 15, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar1, Float(1.031), Float(0.968), 15, 0, 0)
         Call(ScaleModel, LVarA, LVar1, LVar0, 1)
         Add(LVarF, 1)
         IfGe(LVarF, 30)
@@ -22,7 +20,7 @@ EvtScript N(EVS_AnimateCloud) = {
     End
 };
 
-#include "common/MakeSun.inc.c"
+#include "battle/common/stage/lib/MakeSun.inc.c"
 
 EvtScript N(EVS_PreBattle) = {
     Call(SetSpriteShading, SHADING_NONE)

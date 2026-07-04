@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_51.h
 /// @brief Bowser's Castle - Hall to Water Puzzle
 

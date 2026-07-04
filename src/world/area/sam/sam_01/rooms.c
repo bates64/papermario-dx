@@ -28,7 +28,7 @@ EvtScript N(EVS_RoomListener_MayorFoyer) = {
     Call(UseRoomDoorSounds, DOOR_SOUNDS_BASIC)
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
-            Set(AF_SAM_04, true)
+            Set(AF_SAM01_InsideMayorFoyer, true)
             Set(AF_SAM_Snowing, false)
             Call(SetGroupVisibility, MODEL_s_naisou, MODEL_GROUP_VISIBLE)
             IfGe(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_SOLVED)
@@ -38,7 +38,7 @@ EvtScript N(EVS_RoomListener_MayorFoyer) = {
                 Call(InterpNpcYaw, NPC_MayorPenguinWife, 0, 0)
             EndIf
         CaseEq(ROOM_UPDATE_EXIT_END)
-            Set(AF_SAM_04, false)
+            Set(AF_SAM01_InsideMayorFoyer, false)
             Set(AF_SAM_Snowing, true)
             Call(SetGroupVisibility, MODEL_s_naisou, MODEL_GROUP_HIDDEN)
     EndSwitch
@@ -68,7 +68,7 @@ EvtScript N(EVS_SetWallRot_MayorOffice) = {
 EvtScript N(EVS_RoomListener_MayorOffice) = {
     Call(UseRoomDoorSounds, DOOR_SOUNDS_BASIC)
     IfEq(GB_StoryProgress, STORY_CH7_HERRINGWAY_AT_MAYORS_HOUSE)
-        IfEq(AF_SAM_03, true)
+        IfEq(AF_SAM01_InsideMayorOffice, true)
             Set(LVar0, -1)
             Return
         EndIf
@@ -78,13 +78,13 @@ EvtScript N(EVS_RoomListener_MayorOffice) = {
             IfEq(GB_StoryProgress, STORY_CH7_HERRINGWAY_AT_MAYORS_HOUSE)
                 Thread
                     Call(BindNpcInteract, NPC_Herringway, 0)
-                    Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                    Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                     Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
                     Call(SetNpcAnimation, NPC_Herringway, ANIM_Penguin_Walk)
                     Call(SetNpcSpeed, NPC_Herringway, Float(1.5 / DT))
                     Call(NpcMoveTo, NPC_Herringway, -252, -55, 0)
                     Call(SetNpcAnimation, NPC_Herringway, ANIM_Penguin_Idle)
-                    Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                    Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
                     Call(BindNpcInteract, NPC_Herringway, Ref(N(EVS_NpcInteract_Herringway)))
                 EndThread
             EndIf
@@ -92,12 +92,12 @@ EvtScript N(EVS_RoomListener_MayorOffice) = {
             IfEq(GB_StoryProgress, STORY_CH7_HERRINGWAY_AT_MAYORS_HOUSE)
                 Call(SetMusic, 0, SONG_PENGUIN_WHODUNIT, BGM_VARIATION_1, VOL_LEVEL_FULL)
             EndIf
-            Set(AF_SAM_03, true)
+            Set(AF_SAM01_InsideMayorOffice, true)
         CaseEq(ROOM_UPDATE_EXIT_END)
             IfEq(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_MYSTERY)
                 Exec(N(EVS_SetupMusic))
             EndIf
-            Set(AF_SAM_03, false)
+            Set(AF_SAM01_InsideMayorOffice, false)
     EndSwitch
     Return
     End

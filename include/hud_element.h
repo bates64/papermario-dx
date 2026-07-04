@@ -111,24 +111,24 @@ typedef struct HudCacheEntry {
 
 typedef struct PopupMenu {
     /* 0x000 */ HudScript* ptrIcon[32];
-    /* 0x080 */ char unk_80[0x4];
+    /* 0x080 */ PAD(4);
     /* 0x084 */ s32 nameMsg[32];
-    /* 0x104 */ char unk_104[0x4];
+    /* 0x104 */ PAD(4);
     /* 0x108 */ s32 userIndex[32]; // used to map menu order to a user-ID for each item
-    /* 0x188 */ char unk_188[0x4];
+    /* 0x188 */ PAD(4);
     /* 0x18C */ b32 enabled[32];
-    /* 0x20C */ char unk_20C[0x4];
+    /* 0x20C */ PAD(4);
     /* 0x210 */ s32 value[32]; // sale price, etc
-    /* 0x290 */ char unk_290[0x4];
+    /* 0x290 */ PAD(4);
     /* 0x294 */ s32 descMsg[32];
-    /* 0x314 */ char unk_314[0x4];
+    /* 0x314 */ PAD(4);
     /* 0x318 */ s32 popupType;
     /* 0x31C */ s32 dipMode;
     /* 0x320 */ s32 titleNumber; // used to display 2/3 with double/triple dip
     /* 0x324 */ s32 numEntries;
     /* 0x328 */ s32 initialPos;
     /* 0x32C */ s16 result;
-    /* 0x32E */ char unk_32E[0x2];
+    /* 0x32E */ PAD(2);
 #if VERSION_PAL
     /* 0x330 */ s32 unk_330; // message ID
     /* 0x334 */ s32 unk_334; // x offset
@@ -142,7 +142,7 @@ typedef struct Shop {
     /* 0x000 */ s16 flags;
     /* 0x002 */ s16 numItems;
     /* 0x004 */ s16 numSpecialPrices;
-    /* 0x006 */ char unk_06[0x2];
+    /* 0x006 */ PAD(2);
     /* 0x008 */ s32 curItemSlot;
     /* 0x00C */ s32 selectedStoreItemSlot;
     /* 0x010 */ ShopOwner* owner;
@@ -222,8 +222,7 @@ typedef struct PartnerPopupProperties {
 } PartnerPopupProperties; // size = 0x10
 
 extern PartnerPopupProperties gPartnerPopupProperties[13];
-extern HudScript* wDisabledPartnerHudScripts[];
-extern HudScript* wPartnerHudScripts[];
+extern IconHudScriptPair wPartnerHudScripts[];
 
 #define HS_PTR(sym)         (s32)&sym
 

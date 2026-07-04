@@ -1,22 +1,22 @@
 #include "obk_08.h"
 
-API_CALLABLE(N(func_80241220_BD4A90)) {
-    Npc* npc1 = get_npc_unsafe(NPC_LeaderBoo);
-    Npc* npc2 = get_npc_unsafe(NPC_Boo_01);
+API_CALLABLE(N(UpdateLeaderOrbitPos)) {
+    Npc* leaderBoo = get_npc_unsafe(NPC_LeaderBoo);
+    Npc* hiddenBoo = get_npc_unsafe(NPC_HiddenBoo);
 
-    npc1->pos.x = npc2->pos.x;
-    npc1->pos.z = npc2->pos.z;
-    npc_move_heading(npc1, npc2->planarFlyDist, script->varTable[0]);
-    npc1->pos.y = npc2->pos.y + 1000.0f + 25.0f;
+    leaderBoo->pos.x = hiddenBoo->pos.x;
+    leaderBoo->pos.z = hiddenBoo->pos.z;
+    npc_move_heading(leaderBoo, hiddenBoo->planarFlyDist, script->varTable[0]);
+    leaderBoo->pos.y = hiddenBoo->pos.y - NPC_DISPOSE_POS_Y + 25.0f;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802412BC_BD4B2C)) {
+API_CALLABLE(N(AdvanceLeaderThrowYaw)) {
     script->varTable[0] = clamp_angle(script->varTable[0] - 2);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80241300_BD4B70)) {
+API_CALLABLE(N(FindThrowTargetAtYaw)) {
     Npc* npc1 = get_npc_unsafe(NPC_KeepAwayBoo1);
     Npc* npc2 = get_npc_unsafe(NPC_KeepAwayBoo2);
     Npc* npc3 = get_npc_unsafe(NPC_KeepAwayBoo3);
@@ -25,7 +25,7 @@ API_CALLABLE(N(func_80241300_BD4B70)) {
     Npc* npc6 = get_npc_unsafe(NPC_KeepAwayBoo6);
     Npc* npc7 = get_npc_unsafe(NPC_KeepAwayBoo7);
     Npc* npc8 = get_npc_unsafe(NPC_KeepAwayBoo8);
-    s32 keepAwayNpcID = 0;
+    s32 keepAwayNpcID = NPC_HiddenBoo;
 
     script->varTable[1] = false;
     evt_set_variable(script, MV_ThrowTargetNpc, 0);
@@ -67,40 +67,25 @@ API_CALLABLE(N(func_80241300_BD4B70)) {
     return ApiStatus_DONE2;
 }
 
+// find a position outside the keep away ring for the player
 API_CALLABLE(N(GetPlayerPosOutsideKeepAwayRing)) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-    Npc npc;
-    f32 dist = dist2D(playerStatus->pos.x, playerStatus->pos.z, 0.0f, 0.0f);
-    f32 yaw;
-    s32 gt;
-    s32 lt;
+    f32 dist = dist2D(gPlayerStatus.pos.x, gPlayerStatus.pos.z, 0.0f, 0.0f);
+    f32 posX, posY, posZ, yaw;
 
-    if (!(dist > 90.0f)) {
-        gt = false;
-    } else {
-        gt = true;
-    }
-
-    if (!(dist < 150.0f)) {
-        lt = false;
-    } else {
-        lt = true;
-    }
-
-    if ((gt | lt) != 0) {
-        yaw = atan2(playerStatus->pos.x, playerStatus->pos.z, 0.0f, 0.0f) + 180.0f;
-        npc.pos.x = 0.0f;
-        npc.pos.y = 0.0f;
-        npc.pos.z = 0.0f;
-        npc_move_heading(&npc, 80.0f, yaw);
-        script->varTable[0] = npc.pos.x;
-        script->varTable[1] = npc.pos.y;
-        script->varTable[2] = npc.pos.z;
+    if ((dist > 90.0f) || (dist < 150.0f)) {
+        yaw = atan2(gPlayerStatus.pos.x, gPlayerStatus.pos.z, 0.0f, 0.0f) + 180.0f;
+        posX = 0.0f;
+        posY = 0.0f;
+        posZ = 0.0f;
+        add_vec2D_polar(&posX, &posZ, 80.0f, yaw);
+        script->varTable[0] = posX;
+        script->varTable[1] = posY;
+        script->varTable[2] = posZ;
         script->varTable[3] = 1;
     } else {
-        script->varTable[0] = playerStatus->pos.x;
-        script->varTable[1] = playerStatus->pos.y;
-        script->varTable[2] = playerStatus->pos.z;
+        script->varTable[0] = gPlayerStatus.pos.x;
+        script->varTable[1] = gPlayerStatus.pos.y;
+        script->varTable[2] = gPlayerStatus.pos.z;
         script->varTable[3] = 0;
     }
     return ApiStatus_DONE2;
@@ -108,8 +93,8 @@ API_CALLABLE(N(GetPlayerPosOutsideKeepAwayRing)) {
 
 EvtScript N(EVS_DetermineCarrierNPC) = {
     Switch(MV_ThrowTargetNpc)
-        CaseEq(NPC_Boo_01)
-            Set(MV_ItemCarrierNpc, NPC_Boo_01)
+        CaseEq(NPC_HiddenBoo)
+            Set(MV_ItemCarrierNpc, NPC_HiddenBoo)
         CaseEq(NPC_KeepAwayBoo1)
             Set(MV_ItemCarrierNpc, NPC_KeepAwayBoo1)
         CaseEq(NPC_KeepAwayBoo2)
@@ -205,14 +190,14 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
         EndLoop
         Loop(0)
             Wait(1)
-            IfEq(MV_Unk_01, 1)
+            IfEq(MV_KeepAwayRingReady, true)
                 BreakLoop
             EndIf
         EndLoop
         Wait(10)
         Set(LVar0, 270)
-        Set(MV_Unk_Angle, LVar0)
-        Call(N(func_80241220_BD4A90))
+        Set(MV_LeaderBooThrowYaw, LVar0)
+        Call(N(UpdateLeaderOrbitPos))
         Call(MakeLerp, 0, 255, 30, EASING_LINEAR)
         Loop(0)
             Call(UpdateLerp)
@@ -251,10 +236,10 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
         Call(RandInt, 20, LVar0)
         Add(LVar0, 360)
         Set(LVarB, LVar0)
-        Set(LVar0, MV_Unk_Angle)
+        Set(LVar0, MV_LeaderBooThrowYaw)
         Loop(0)
-            Call(N(func_80241220_BD4A90))
-            Call(N(func_802412BC_BD4B2C))
+            Call(N(UpdateLeaderOrbitPos))
+            Call(N(AdvanceLeaderThrowYaw))
             Wait(1)
             Add(LVarA, -2)
             IfLe(LVarA, 0)
@@ -262,9 +247,9 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             EndIf
         EndLoop
         Loop(0)
-            Call(N(func_80241220_BD4A90))
-            Call(N(func_802412BC_BD4B2C))
-            Call(N(func_80241300_BD4B70))
+            Call(N(UpdateLeaderOrbitPos))
+            Call(N(AdvanceLeaderThrowYaw))
+            Call(N(FindThrowTargetAtYaw))
             Wait(1)
             IfEq(LVar1, true)
                 BreakLoop
@@ -288,8 +273,8 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             Call(SetItemPos, MV_KeepAwayItem, NPC_DISPOSE_LOCATION)
         EndThread
         Loop(0)
-            Call(N(func_80241220_BD4A90))
-            Call(N(func_802412BC_BD4B2C))
+            Call(N(UpdateLeaderOrbitPos))
+            Call(N(AdvanceLeaderThrowYaw))
             Wait(1)
             Add(LVarB, -2)
             IfLe(LVarB, 0)
@@ -307,7 +292,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
                 BreakLoop
             EndIf
         EndLoop
-        Set(MV_Unk_02, 1)
+        Set(MV_KeepAwayRingPaused, true)
         Call(DisablePlayerInput, true)
         ExecWait(N(EVS_DetermineCarrierNPC))
         IfEq(MV_KeepAwayResult, KEEP_AWAY_RIGHT)
@@ -382,7 +367,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             Wait(30)
             Call(SetNpcFlagBits, MV_ItemCarrierNpc, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, false)
             Call(GetNpcPos, MV_ItemCarrierNpc, LVar3, LVar4, LVar5)
-            Call(GetAngleBetweenNPCs, MV_ItemCarrierNpc, NPC_Boo_01, LVar0)
+            Call(GetAngleBetweenNPCs, MV_ItemCarrierNpc, NPC_HiddenBoo, LVar0)
             Call(InterpNpcYaw, MV_ItemCarrierNpc, LVar0, 0)
             Call(SetNpcJumpscale, MV_ItemCarrierNpc, 0)
             Call(NpcJump0, MV_ItemCarrierNpc, 0, 45, 0, 20)
@@ -429,7 +414,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             EndLoop
             Call(SetNpcFlagBits, MV_ItemCarrierNpc, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, true)
             Set(MV_KeepAwayResult, KEEP_AWAY_WAITING)
-            Set(MV_Unk_02, 0)
+            Set(MV_KeepAwayRingPaused, false)
             Call(N(GetPlayerPosOutsideKeepAwayRing))
             Call(SetPlayerSpeed, Float(4.0))
             Call(PlayerMoveTo, LVar0, LVar2, 0)

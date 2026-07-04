@@ -9,16 +9,8 @@
 #include "world/surfaces.h"
 #include "dx/overlay.h"
 
-#ifdef SHIFT
-#define ASSET_TABLE_ROM_START (s32) mapfs_ROM_START
-#elif VERSION_JP
-#define ASSET_TABLE_ROM_START 0x1E00000
-#else
-#define ASSET_TABLE_ROM_START 0x1E40000
-#endif
-
 #define ASSET_TABLE_HEADER_SIZE 0x20
-#define ASSET_TABLE_FIRST_ENTRY (ASSET_TABLE_ROM_START + ASSET_TABLE_HEADER_SIZE)
+#define ASSET_TABLE_FIRST_ENTRY (mapfs_ROM_START + ASSET_TABLE_HEADER_SIZE)
 
 BSS const char* gMapId;
 BSS MapSettings gMapSettings;
@@ -53,7 +45,7 @@ void load_map_script_lib(void) {
 void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     s32 skipLoadingAssets = 0;
     const char* mapId;
-    s32 decompressedSize;
+    u32 decompressedSize;
 
     ovl_unload_type(OVL_MAP);
 
@@ -300,7 +292,7 @@ void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
     return ret;
 }
 
-s32 get_asset_offset(char* assetName, s32* compressedSize) {
+s32 get_asset_offset(char* assetName, u32* compressedSize) {
     AssetHeader firstHeader;
     AssetHeader* assetTableBuffer;
     AssetHeader* curAsset;
@@ -315,7 +307,7 @@ s32 get_asset_offset(char* assetName, s32* compressedSize) {
         curAsset++;
     }
     *compressedSize = curAsset->compressedLength;
-    ret = ASSET_TABLE_FIRST_ENTRY + curAsset->offset;
+    ret = (s32) ASSET_TABLE_FIRST_ENTRY + curAsset->offset;
     heap_free(assetTableBuffer);
     return ret;
 }

@@ -137,7 +137,7 @@ typedef struct ActionCommandStatus {
     /* 0x60 */ b8 wrongButtonPressed;
     /* 0x61 */ b8 showHud;
     /* 0x62 */ b8 playHammerSounds;
-    /* 0x63 */ char pad_63[1];
+    /* 0x63 */ PAD(1);
     /* 0x64 */ union {
                     s16 variation; // used to select different variants of an action command
                     s16 statusChance; // chance of applying special status; higher values make mashing easier

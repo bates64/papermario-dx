@@ -1,7 +1,5 @@
 #include "mac_01.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_mac_00_1) = EVT_EXIT_WALK(60, mac_01_ENTRY_0, "mac_00", mac_00_ENTRY_1);
 
 EvtScript N(EVS_ExitWalk_nok_11_0) = {
@@ -123,14 +121,14 @@ EvtScript N(EVS_Main) = {
     Call(GetLanguage, LVar0)
     Call(SetModelTexVariant, MODEL_k11, LVar0)
 #endif
-    Set(AF_MAC_0E, false)
-    Set(AF_MAC_0F, false)
-    Set(AF_MAC_10, false)
-    Set(AF_MAC_11, false)
-    Set(AF_MAC_12, false)
-    Set(AF_MAC_13, false)
-    Set(AF_MAC_14, false)
-    Set(AF_MAC_15, false)
+    Set(AF_MAC01_Unread_0E, false)
+    Set(AF_MAC01_Unread_0F, false)
+    Set(AF_MAC01_Unread_10, false)
+    Set(AF_MAC01_Unread_11, false)
+    Set(AF_MAC01_Unread_12, false)
+    Set(AF_MAC01_Unread_13, false)
+    Set(AF_MAC01_ToggleDialogue_MinhT, false)
+    Set(AF_MAC01_Unread_15, false)
     IfLt(GB_StoryProgress, STORY_EPILOGUE)
         Exec(N(EVS_SetupBadgeShop))
     Else
@@ -174,7 +172,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(-100,    0, -200, -200)
         TEX_PAN_PARAMS_FREQ(   1,    0,    1,    1)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     BindTrigger(Ref(N(EVS_Merlon_GiveHint)), TRIGGER_WALL_PRESS_A, COLLIDER_o335, 1, 0)
     Exec(N(EVS_SetupQuickChangeTrigger))

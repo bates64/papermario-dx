@@ -106,25 +106,19 @@ EvtScript N(EVS_DropDoor_RightHouse) = {
     End
 };
 
-s32 N(KeyList)[] = {
-    ITEM_WAREHOUSE_KEY,
-    ITEM_NONE
-};
-
-#include "world/common/todo/RemovePadlock.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
+ITEM_LIST(N(KeyList), ITEM_WAREHOUSE_KEY);
 
 EvtScript N(EVS_UnlockPrompt_LeftHouse) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(ShowKeyChoicePopup)
-    IfEq(LVar0, 0)
+    IfEq(LVar0, ITEM_CHOICE_NONE)
         Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
         Call(CloseChoicePopup)
         ResumeGroup(EVT_GROUP_FLAG_INTERACT)
         Return
     EndIf
-    IfEq(LVar0, -1)
+    IfEq(LVar0, ITEM_CHOICE_CANCELED)
         Call(CloseChoicePopup)
         ResumeGroup(EVT_GROUP_FLAG_INTERACT)
         Return
@@ -132,10 +126,9 @@ EvtScript N(EVS_UnlockPrompt_LeftHouse) = {
     Call(RemoveKeyItemAt, LVar1)
     Call(CloseChoicePopup)
     Set(GF_SAM11_UnlockedDoor, true)
-    Call(N(GetEntityPosition), MV_PadlockEntityID, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_EntityID_Padlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Set(LVar0, MV_PadlockEntityID)
-    Call(N(RemovePadlock))
+    Call(SetEntityUsed, MV_EntityID_Padlock)
     ResumeGroup(EVT_GROUP_FLAG_INTERACT)
     Unbind
     Return
@@ -157,7 +150,7 @@ EvtScript N(EVS_RoomListener_RightHouse) = {
 
 s32 N(InteriorNPCs_LeftHouse)[] = {
     NPC_Herringway,
-    NPC_0B,
+    NPC_Unassigned_0B,
     -1
 };
 

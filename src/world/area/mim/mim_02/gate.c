@@ -1,7 +1,6 @@
 #include "mim_02.h"
 
 #include "../common/SupportGates.inc.c"
-
 #include "../common/AnimateGates.inc.c"
 
 EvtScript N(EVS_UseGate_North) = {
@@ -55,12 +54,12 @@ EvtScript N(EVS_UseGate_West) = {
 EvtScript N(EVS_SetupGates) = {
     IfEq(GF_MIM_ChoosingPath, false)
         Set(GF_MIM_ChoosingPath, true)
-        Set(AB_MIM_1, 2)
+        Set(AB_MIM_GateTraversal, MIM_USEGATE_SIDE_B)
         Set(LVar1, 2)
         Set(LVar2, -10)
     Else
         Set(GF_MIM_ChoosingPath, false)
-        Set(AB_MIM_1, 0)
+        Set(AB_MIM_GateTraversal, MIM_USEGATE_SIDE_A)
         Set(LVar1, 0)
         Set(LVar2, 10)
     EndIf

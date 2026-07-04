@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file omo_02.h
 /// @brief Shy Guy's Toybox - RED Boss Barricade
 

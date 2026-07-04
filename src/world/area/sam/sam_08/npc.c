@@ -1,4 +1,5 @@
 #include "sam_08.h"
+#include "world/common/npc/Kooper/base.h"
 
 NpcSettings N(NpcSettings_Kooper) = {
     .height = 35,
@@ -8,13 +9,9 @@ NpcSettings N(NpcSettings_Kooper) = {
     .onDefeat = &EnemyNpcDefeat,
 };
 
-NpcSettings N(NpcSettings_Duplighost) = {
-    .height = 30,
-    .radius = 45,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/enemy/Duplighost/disguised.inc.c"
 
-#include "world/common/enemy/FrostClubba_Wander.inc.c"
+#include "world/common/enemy/FrostClubba/wander.inc.c"
 
 EvtScript N(EVS_NpcInteract_TrueKooperA) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKooper_Talk, ANIM_WorldKooper_Idle, 0, MSG_CH7_012B)
@@ -64,10 +61,10 @@ EvtScript N(EVS_NpcDefeat_Duplighost) = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Call(SetNpcFlagBits, NPC_Duplighost, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_Duplighost, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetNpcSpeed, NPC_Duplighost, Float(3.0 / DT))
             Call(SetNpcJumpscale, NPC_Duplighost, Float(1.5))
-            Call(SetNpcAnimation, NPC_Duplighost, ANIM_Duplighost_Anim04)
+            Call(SetNpcAnimation, NPC_Duplighost, ANIM_Duplighost_Run)
             Call(GetNpcPos, NPC_Duplighost, LVar0, LVar1, LVar2)
             Add(LVar0, 50)
             Call(PlaySoundAtNpc, NPC_Duplighost, SOUND_DUPLIGHOST_STEP, SOUND_SPACE_DEFAULT)
@@ -131,24 +128,7 @@ NpcData N(NpcData_Ambush)[] = {
         .settings = &N(NpcSettings_Kooper),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldKooper_Idle,
-            .walk   = ANIM_WorldKooper_Walk,
-            .run    = ANIM_WorldKooper_Walk,
-            .chase  = ANIM_WorldKooper_Walk,
-            .anim_4 = ANIM_WorldKooper_Walk,
-            .anim_5 = ANIM_WorldKooper_Walk,
-            .death  = ANIM_WorldKooper_Still,
-            .hit    = ANIM_WorldKooper_Still,
-            .anim_8 = ANIM_WorldKooper_Still,
-            .anim_9 = ANIM_WorldKooper_Still,
-            .anim_A = ANIM_WorldKooper_Still,
-            .anim_B = ANIM_WorldKooper_Still,
-            .anim_C = ANIM_WorldKooper_Still,
-            .anim_D = ANIM_WorldKooper_Still,
-            .anim_E = ANIM_WorldKooper_Still,
-            .anim_F = ANIM_WorldKooper_Still,
-        },
+        .animations = KOOPER_ANIMS,
     },
     {
         .id = NPC_Kooper_02A,
@@ -158,24 +138,7 @@ NpcData N(NpcData_Ambush)[] = {
         .settings = &N(NpcSettings_Kooper),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldKooper_Idle,
-            .walk   = ANIM_WorldKooper_Walk,
-            .run    = ANIM_WorldKooper_Walk,
-            .chase  = ANIM_WorldKooper_Walk,
-            .anim_4 = ANIM_WorldKooper_Walk,
-            .anim_5 = ANIM_WorldKooper_Walk,
-            .death  = ANIM_WorldKooper_Still,
-            .hit    = ANIM_WorldKooper_Still,
-            .anim_8 = ANIM_WorldKooper_Still,
-            .anim_9 = ANIM_WorldKooper_Still,
-            .anim_A = ANIM_WorldKooper_Still,
-            .anim_B = ANIM_WorldKooper_Still,
-            .anim_C = ANIM_WorldKooper_Still,
-            .anim_D = ANIM_WorldKooper_Still,
-            .anim_E = ANIM_WorldKooper_Still,
-            .anim_F = ANIM_WorldKooper_Still,
-        },
+        .animations = KOOPER_ANIMS,
     },
     {
         .id = NPC_Duplighost,
@@ -185,24 +148,7 @@ NpcData N(NpcData_Ambush)[] = {
         .settings = &N(NpcSettings_Duplighost),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Duplighost_Anim02,
-            .walk   = ANIM_Duplighost_Anim03,
-            .run    = ANIM_Duplighost_Anim04,
-            .chase  = ANIM_Duplighost_Anim04,
-            .anim_4 = ANIM_Duplighost_Anim02,
-            .anim_5 = ANIM_Duplighost_Anim02,
-            .death  = ANIM_Duplighost_Anim0A,
-            .hit    = ANIM_Duplighost_Anim0A,
-            .anim_8 = ANIM_Duplighost_Anim02,
-            .anim_9 = ANIM_Duplighost_Anim02,
-            .anim_A = ANIM_Duplighost_Anim02,
-            .anim_B = ANIM_Duplighost_Anim02,
-            .anim_C = ANIM_Duplighost_Anim02,
-            .anim_D = ANIM_Duplighost_Anim02,
-            .anim_E = ANIM_Duplighost_Anim02,
-            .anim_F = ANIM_Duplighost_Anim02,
-        },
+        .animations = DUPLIGHOST_ANIMS,
     },
 };
 
@@ -217,7 +163,7 @@ EvtScript N(EVS_NpcIdle_TrueKooperB) = {
 };
 
 EvtScript N(EVS_NpcInit_TrueKooperB) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_PASSIVE, false)
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TrueKooperB)))
     Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TrueKooperB)))
@@ -239,7 +185,7 @@ EvtScript N(EVS_NpcIdle_FakeKooperB) = {
 };
 
 EvtScript N(EVS_NpcInit_FakeKooperB) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_PASSIVE, false)
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_FakeKooperB)))
     Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_FakeKooperB)))
@@ -259,24 +205,7 @@ NpcData N(NpcData_Hittable)[] = {
         .settings = &N(NpcSettings_Kooper),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldKooper_Idle,
-            .walk   = ANIM_WorldKooper_Walk,
-            .run    = ANIM_WorldKooper_Walk,
-            .chase  = ANIM_WorldKooper_Walk,
-            .anim_4 = ANIM_WorldKooper_Walk,
-            .anim_5 = ANIM_WorldKooper_Walk,
-            .death  = ANIM_WorldKooper_Still,
-            .hit    = ANIM_WorldKooper_Still,
-            .anim_8 = ANIM_WorldKooper_Still,
-            .anim_9 = ANIM_WorldKooper_Still,
-            .anim_A = ANIM_WorldKooper_Still,
-            .anim_B = ANIM_WorldKooper_Still,
-            .anim_C = ANIM_WorldKooper_Still,
-            .anim_D = ANIM_WorldKooper_Still,
-            .anim_E = ANIM_WorldKooper_Still,
-            .anim_F = ANIM_WorldKooper_Still,
-        },
+        .animations = KOOPER_ANIMS,
     },
     {
         .id = NPC_Kooper_02B,
@@ -286,24 +215,7 @@ NpcData N(NpcData_Hittable)[] = {
         .settings = &N(NpcSettings_Kooper),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldKooper_Idle,
-            .walk   = ANIM_WorldKooper_Walk,
-            .run    = ANIM_WorldKooper_Walk,
-            .chase  = ANIM_WorldKooper_Walk,
-            .anim_4 = ANIM_WorldKooper_Walk,
-            .anim_5 = ANIM_WorldKooper_Walk,
-            .death  = ANIM_WorldKooper_Still,
-            .hit    = ANIM_WorldKooper_Still,
-            .anim_8 = ANIM_WorldKooper_Still,
-            .anim_9 = ANIM_WorldKooper_Still,
-            .anim_A = ANIM_WorldKooper_Still,
-            .anim_B = ANIM_WorldKooper_Still,
-            .anim_C = ANIM_WorldKooper_Still,
-            .anim_D = ANIM_WorldKooper_Still,
-            .anim_E = ANIM_WorldKooper_Still,
-            .anim_F = ANIM_WorldKooper_Still,
-        },
+        .animations = KOOPER_ANIMS,
     },
 };
 

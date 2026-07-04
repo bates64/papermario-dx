@@ -116,7 +116,7 @@ void btl_state_update_normal_start(void) {
             battleStatus->itemUsesLeft = 0;
             battleStatus->hammerCharge = 0;
             battleStatus->jumpCharge = 0;
-            battleStatus->unk_98 = 0;
+            battleStatus->overcharged = false;
             battleStatus->hpDrainCount = 0;
             gBattleStatus.flags2 |= BS_FLAGS2_CAN_FLEE;
             if (currentEncounter->forbidFleeing) {
@@ -312,7 +312,7 @@ void btl_state_update_normal_start(void) {
                         script = start_script(&EVS_ApplyDizzyAttack, EVT_PRIORITY_A, 0);
                         actor->takeTurnScript = script;
                         actor->takeTurnScriptID = script->id;
-                        script->owner1.enemyID = ACTOR_ENEMY0;
+                        script->owner1.actorID = ACTOR_ENEMY0;
                     }
 
                     BattleScreenFadeAmt = 305;

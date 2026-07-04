@@ -1,10 +1,8 @@
 #include "mim_04.h"
 
-#include "world/common/enemy/ForestFuzzy_Wander.inc.c"
+#include "world/common/enemy/ForestFuzzy/wander.inc.c"
 
-#include "world/common/npc/Bubulb.inc.c"
-
-#include "world/common/complete/GiveReward.inc.c"
+#include "world/common/npc/Bubulb/idle.inc.c"
 
 EvtScript N(EVS_NpcInteract_Bubulb) = {
     IfEq(GF_MIM04_Gift_MagicalSeed3, false)
@@ -31,12 +29,12 @@ EvtScript N(EVS_NpcInteract_Bubulb) = {
                 Set(LVar0, MSG_CH3_0015)
                 Set(LVar1, MSG_CH3_0016)
         EndSwitch
-        IfEq(AF_MIM04_Bubulb_DialogueToggle, false)
+        IfEq(AF_MIM04_ToggleDialogue_Bubulb, false)
             Call(SpeakToPlayer, NPC_Bubulb, ANIM_Bubulb_Green_Talk, ANIM_Bubulb_Green_Idle, 0, LVar0)
-            Set(AF_MIM04_Bubulb_DialogueToggle, true)
+            Set(AF_MIM04_ToggleDialogue_Bubulb, true)
         Else
             Call(SpeakToPlayer, NPC_Bubulb, ANIM_Bubulb_Green_Talk, ANIM_Bubulb_Green_Idle, 0, LVar1)
-            Set(AF_MIM04_Bubulb_DialogueToggle, false)
+            Set(AF_MIM04_ToggleDialogue_Bubulb, false)
         EndIf
     EndIf
     Return

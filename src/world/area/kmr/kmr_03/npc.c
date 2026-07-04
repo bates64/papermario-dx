@@ -2,64 +2,19 @@
 #include "sprite/player.h"
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
-
-API_CALLABLE(N(func_802401B0_8C8140)) {
-    Npc* npc = get_npc_unsafe(NPC_Goompa);
-
-    script->varTable[1] = get_xz_dist_to_player(npc->pos.x, npc->pos.z) / npc->moveSpeed * 0.8f;
-    return ApiStatus_DONE2;
-}
-
 #include "world/common/util/CheckPositionRelativeToPlane.inc.c"
 
-NpcSettings N(NpcSettings_Goompa) = {
-    .height = 22,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-    .actionFlags = AI_ACTION_LOOK_AROUND_DURING_LOITER,
-};
-
-EvtScript N(EVS_NpcAux_Goompa) = {
-    Label(1)
-    IfEq(AF_KMR_08, true)
-        Label(100)
-        Call(AwaitPlayerLeave, 294, 123, 170)
-        Call(EnableNpcAI, NPC_Goompa, false)
-        Call(DisablePlayerInput, true)
-        Call(SetNpcSpeed, NPC_Goompa, Float(4.0))
-        Call(SetNpcAnimation, NPC_Goompa, ANIM_Goompa_Run)
-        Call(N(func_802401B0_8C8140))
-        Call(GetAngleToPlayer, NPC_Goompa, LVar2)
-        Loop(LVar1)
-            Call(GetNpcPos, NPC_Goompa, LVar7, LVar8, LVar9)
-            Call(AddVectorPolar, LVar7, LVar9, Float(4.0), LVar2)
-            Call(SetNpcPos, NPC_Goompa, LVar7, LVar8, LVar9)
-            Wait(1)
-        EndLoop
-        Call(PlayerFaceNpc, NPC_Goompa, 3)
-        Call(SetPlayerSpeed, Float(3.0))
-        Call(PlayerMoveTo, 243, 243, 0)
-        Call(SetNpcVar, NPC_Goompa, 0, 1)
-        Call(EnableNpcAI, NPC_Goompa, true)
-        Call(DisablePlayerInput, false)
-        Goto(100)
-    EndIf
-    Wait(1)
-    Goto(1)
-    Return
-    End
-};
+#include "world/common/npc/Goompa/idle.inc.c"
 
 EvtScript N(EVS_NpcAI_Goompa) = {
-    Label(1)
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH0_FELL_OFF_CLIFF)
             Label(89)
-            Call(N(CheckPositionRelativeToPlane), -118, 86, -70, -15)
-            Wait(1)
-            IfEq(LVar0, 0)
-                Goto(89)
-            EndIf
+                Call(N(CheckPositionRelativeToPlane), -118, 86, -70, -15)
+                Wait(1)
+                IfEq(LVar0, 0)
+                    Goto(89)
+                EndIf
             Call(DisablePlayerInput, true)
             Call(SetNpcAux, NPC_Goompa, 0)
             Call(PlaySoundAtNpc, NPC_Goompa, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
@@ -91,7 +46,7 @@ EvtScript N(EVS_NpcAI_Goompa) = {
             Call(SetPlayerAnimation, ANIM_MarioW2_SpeakUp)
             Wait(30 * DT)
             Call(SpeakToPlayer, NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_00A8)
-            Call(N(ChangeNpcToPartner), 0, 5)
+            Call(N(ChangeNpcToPartner), NPC_Goompa, PARTNER_GOOMPA)
             Set(GB_StoryProgress, STORY_CH0_GOOMPA_JOINED_PARTY)
             Call(UseSettingsFrom, CAM_DEFAULT, -220, 20, -72)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -112,23 +67,23 @@ EvtScript N(EVS_NpcHit_Goompa) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Goompa_Injured)
     Wait(10)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Goompa_Idle)
-    Add(MV_Unk_00, 1)
-    IfLt(MV_Unk_00, 3)
+    Add(MV_GoompaHitCount, 1)
+    IfLt(MV_GoompaHitCount, 3)
         Call(GetOwnerEncounterTrigger, LVar0)
         Switch(LVar0)
             CaseEq(ENCOUNTER_TRIGGER_JUMP)
                 Call(SetNpcVar, NPC_Goompa, 0, 1)
-                IfEq(AF_KMR_06, true)
+                IfEq(AF_KMR03_LastHitGoompaWithJump, true)
                 Else
-                    Set(AF_KMR_06, true)
-                    Set(AF_KMR_07, false)
+                    Set(AF_KMR03_LastHitGoompaWithJump, true)
+                    Set(AF_KMR03_HitGoompaWithHammer, false)
                 EndIf
             CaseEq(ENCOUNTER_TRIGGER_HAMMER)
                 Call(SetNpcVar, NPC_Goompa, 0, 1)
-                IfEq(AF_KMR_07, true)
+                IfEq(AF_KMR03_HitGoompaWithHammer, true)
                 Else
-                    Set(AF_KMR_06, false)
-                    Set(AF_KMR_07, true)
+                    Set(AF_KMR03_LastHitGoompaWithJump, false)
+                    Set(AF_KMR03_HitGoompaWithHammer, true)
                 EndIf
         EndSwitch
         Wait(10)
@@ -139,9 +94,8 @@ EvtScript N(EVS_NpcHit_Goompa) = {
         Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, true)
         Call(SetNpcPos, NPC_Goompa, NPC_DISPOSE_LOCATION)
-        Call(SetNpcFlagBits, NPC_Goompa, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_Goompa, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(EnablePartnerAI)
-        Call(SetNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Goompa)))
         Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_Goompa)))
     EndIf
     Return
@@ -150,7 +104,6 @@ EvtScript N(EVS_NpcHit_Goompa) = {
 
 EvtScript N(EVS_NpcInit_Goompa) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcAI_Goompa)))
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Goompa)))
     Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_Goompa)))
     Switch(GB_StoryProgress)
         CaseGe(STORY_CH0_GOOMPA_JOINED_PARTY)
@@ -170,24 +123,7 @@ NpcData N(NpcData_GoombaFamily) = {
     .settings = &N(NpcSettings_Goompa),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Goompa_Idle,
-        .walk   = ANIM_Goompa_Walk,
-        .run    = ANIM_Goompa_Run,
-        .chase  = ANIM_Goompa_Run,
-        .anim_4 = ANIM_Goompa_Idle,
-        .anim_5 = ANIM_Goompa_Idle,
-        .death  = ANIM_Goompa_Still,
-        .hit    = ANIM_Goompa_Still,
-        .anim_8 = ANIM_Goompa_Run,
-        .anim_9 = ANIM_Goompa_Run,
-        .anim_A = ANIM_Goompa_Run,
-        .anim_B = ANIM_Goompa_Run,
-        .anim_C = ANIM_Goompa_Run,
-        .anim_D = ANIM_Goompa_Run,
-        .anim_E = ANIM_Goompa_Run,
-        .anim_F = ANIM_Goompa_Run,
-    },
+    .animations = GOOMPA_ANIMS,
     .tattle = MSG_NpcTattle_Goompa,
 };
 

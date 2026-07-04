@@ -4,9 +4,6 @@
 #include "hud_element.h"
 #include "battle/action_cmd.h"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
 #define MIXING_TIME_IN_FRAMES   10 * 30 * DT
 #define MIXING_REQUIRED_INPUTS  27
 
@@ -33,7 +30,6 @@ BSS s32 N(MixingGameUIRenderer);
 BSS u32 N(MixingGameState);
 BSS s32 N(MixingGameUIBaseX);
 BSS s32 N(MixingGameUIBaseY);
-BSS s32 N(D_80246564); // unused? related to missing gauge hud element?
 BSS s32 N(MixingGameHudElems)[4];
 BSS s32 N(MixingGameInputBuffer)[10];
 BSS s32 N(MixingGameInputBufferPos);
@@ -193,25 +189,6 @@ API_CALLABLE(N(AwaitPlayerPressATimer)) {
     return ApiStatus_BLOCK;
 }
 
-#if VERSION_PAL
-typedef struct BakingIngredient {
-    s32 itemID;
-    s32 nameID;
-} BakingIngredient;
-struct BakingIngredient N(BakingIngredientsNames)[] = {
-    {ITEM_BAKING_FLOUR,      MSG_Menus_BakingFlour},
-    {ITEM_BAKING_SUGAR,      MSG_Menus_BakingSugar},
-    {ITEM_BAKING_SALT,       MSG_Menus_BakingSalt},
-    {ITEM_BAKING_EGG,        MSG_Menus_BakingEgg},
-    {ITEM_BAKING_MILK,       MSG_Menus_BakingMilk},
-    {ITEM_BAKING_STRAWBERRY, MSG_Menus_BakingStrawberry},
-    {ITEM_BAKING_CREAM,      MSG_Menus_BakingCream},
-    {ITEM_BAKING_BUTTER,     MSG_Menus_BakingButter},
-    {ITEM_BAKING_CLEANSER,   MSG_Menus_BakingCleanser},
-    {ITEM_BAKING_WATER,      MSG_Menus_BakingWater},
-};
-#endif
-
 s32 N(BakingIngredientsList)[] = {
     ITEM_BAKING_SUGAR,
     ITEM_BAKING_SALT,
@@ -224,36 +201,6 @@ s32 N(BakingIngredientsList)[] = {
     ITEM_BAKING_FLOUR,
     ITEM_BAKING_MILK,
 };
-
-// unlike the common import, does not mask out 0xF0000 from itemID
-#if VERSION_PAL
-
-API_CALLABLE(N(GetItemNameRaw)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 inOutVar = *args++;
-    s32 itemID = evt_get_variable(script, inOutVar);
-    s32 i;
-
-    for (i = 0; i < ARRAY_COUNT(N(BakingIngredientsNames)); i++) {
-        if (itemID == N(BakingIngredientsNames)[i].itemID) {
-            evt_set_variable(script, inOutVar, N(BakingIngredientsNames)[i].nameID);
-            break;
-        }
-    }
-    return ApiStatus_DONE2;
-}
-#else
-API_CALLABLE(N(GetItemNameRaw)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 inOutVar = *args++;
-    s32 itemID = evt_get_variable(script, inOutVar);
-
-    evt_set_variable(script, inOutVar, gItemTable[itemID].nameMsg);
-    return ApiStatus_DONE2;
-}
-#endif
-
-#include "world/common/todo/GetFloorCollider.inc.c"
 
 API_CALLABLE(N(SetHeldBakingItem)) {
     Bytecode* args = script->ptrReadPos;
@@ -389,7 +336,7 @@ EvtScript N(EVS_TakeIngredient) = {
         Return
     EndIf
     // get itemID of current station
-    Call(N(GetFloorCollider), LVar0)
+    Call(GetPlayerFloorCollider, LVar0)
     Switch(LVar0)
         CaseEq(COLLIDER_o101)
             Set(LVar0, ITEM_BAKING_SUGAR)
@@ -421,9 +368,9 @@ EvtScript N(EVS_TakeIngredient) = {
     Set(LVarB, LVar0)
     IfEq(AB_KKJ19_HeldIngredient, PEACH_BAKING_NONE)
         // picking up an ingredient while not holding any
-        Call(N(GetItemNameRaw), LVarA)
+        Call(GetItemName, LVarA, LVarA)
         Call(SetMessageText, LVarA, 0)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         Switch(LVar0)
             CaseEq(COLLIDER_o101)
                 Set(LVar0, PEACH_BAKING_SUGAR)
@@ -456,15 +403,15 @@ EvtScript N(EVS_TakeIngredient) = {
         Call(FindItem, LVar0, LVar1)
         IfEq(LVar1, -1)
             Set(LVar9, AB_KKJ19_HeldIngredient)
-            Call(N(GetItemNameRaw), LVar9)
-            Call(N(GetItemNameRaw), LVarA)
+            Call(GetItemName, LVar9, LVar9)
+            Call(GetItemName, LVarA, LVarA)
             Call(SetMessageText, LVar9, 0)
             Call(SetMessageText, LVarA, 1)
             Call(ShowMessageAtScreenPos, MSG_Peach_00E9, 160, 40)
             Call(ShowChoice, MSG_Choice_002B)
             IfEq(LVar0, 0)
                 ExecWait(N(EVS_ReturnHeldIngredient))
-                Call(N(GetFloorCollider), LVar0)
+                Call(GetPlayerFloorCollider, LVar0)
                 Switch(LVar0)
                     CaseEq(COLLIDER_o101)
                         Set(LVar0, PEACH_BAKING_SUGAR)
@@ -497,7 +444,7 @@ EvtScript N(EVS_TakeIngredient) = {
             EndIf
         Else
             // placing ingredient back at its station
-            Call(N(GetItemNameRaw), LVarA)
+            Call(GetItemName, LVarA, LVarA)
             Call(SetMessageText, LVarA, 0)
             Call(ShowMessageAtScreenPos, MSG_Peach_00E6, 160, 40)
             Call(ShowChoice, MSG_Choice_002B)
@@ -525,11 +472,11 @@ EvtScript N(EVS_ItemPrompt_AddIngredient) = {
     Call(ShowKeyChoicePopup)
     Set(LVar2, LVar0)
     Switch(LVar2)
-        CaseEq(0)
+        CaseEq(ITEM_CHOICE_NONE)
             Call(CloseChoicePopup)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Return
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(CloseChoicePopup)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Return
@@ -584,19 +531,19 @@ EvtScript N(EVS_ItemPrompt_AddIngredient) = {
             Call(RemoveItemEntity, AB_KKJ19_CakeItemIdx)
             Switch(LVar0)
                 CaseEq(ITEM_BAKING_STRAWBERRY)
-                    IfEq(AB_KKJ19_AddedIcing, false)
+                    IfEq(AF_KKJ19_AddedIcing, false)
                         Call(MakeItemEntity, ITEM_CAKE_WITH_BERRIES, 287, 20, -30, ITEM_SPAWN_MODE_DECORATION, 0)
                         Set(AB_KKJ19_CakeItemIdx, LVar0)
                     Else
                         Call(MakeItemEntity, ITEM_CAKE_DONE, 287, 20, -30, ITEM_SPAWN_MODE_DECORATION, 0)
                         Set(AB_KKJ19_CakeItemIdx, LVar0)
                     EndIf
-                    Set(AB_KKJ19_AddedBerries, true)
+                    Set(AF_KKJ19_AddedBerries, true)
                 CaseDefault
                     Call(MakeItemEntity, ITEM_CAKE_WITH_ICING, 287, 20, -30, ITEM_SPAWN_MODE_DECORATION, 0)
                     Set(AB_KKJ19_CakeItemIdx, LVar0)
-                    Set(AB_KKJ19_AddedIcing, true)
-                    Set(AB_KKJ19_AddedBerries, false)
+                    Set(AF_KKJ19_AddedIcing, true)
+                    Set(AF_KKJ19_AddedBerries, false)
             EndSwitch
     EndSwitch
     Add(AB_KKJ19_BakeStepProgress, 1)
@@ -651,10 +598,10 @@ EvtScript N(EVS_CloseOverDoor) = {
 };
 
 EvtScript N(EVS_PickupFinalCake) = {
-    IfEq(AB_KKJ19_AddedBerries, false)
+    IfEq(AF_KKJ19_AddedBerries, false)
         Set(LVar0, PEACH_BAKING_CAKE_WITH_ICING)
     Else
-        IfEq(AB_KKJ19_AddedIcing, false)
+        IfEq(AF_KKJ19_AddedIcing, false)
             Set(LVar0, PEACH_BAKING_CAKE_WITH_BERRIES)
         Else
             Set(LVar0, PEACH_BAKING_COMPLETE_CAKE)
@@ -916,7 +863,7 @@ EvtScript N(EVS_EnterKitchen_TryAgain) = {
 
 EvtScript N(EVS_ManageBaking) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
     Call(EnableModel, MODEL_o46, false)
     Call(EnableModel, MODEL_o50, false)
@@ -1372,8 +1319,8 @@ EvtScript N(EVS_ManageBaking) = {
     Set(AB_KKJ19_CurrentBakeStep, BAKE_STEP_DECORATING)
     Set(AB_KKJ19_BakeStepProgress, 0)
     Set(AF_KKJ19_CanTakeIngredients, true)
-    Set(AB_KKJ19_AddedIcing, false)
-    Set(AB_KKJ19_AddedBerries, false)
+    Set(AF_KKJ19_AddedIcing, false)
+    Set(AF_KKJ19_AddedBerries, false)
     // wait for peach to tell twink shes done
     Label(LBL_DECORATE_WAITING)
         Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
@@ -1416,7 +1363,7 @@ EvtScript N(EVS_ManageBaking) = {
             Goto(LBL_START_OVER)
         EndIf
     ExecWait(N(EVS_ReturnHeldIngredient))
-    IfEq(AB_KKJ19_AddedBerries, false)
+    IfEq(AF_KKJ19_AddedBerries, false)
         Set(AF_KKJ19_FailedBakingTask, true)
     EndIf
     IfEq(AF_KKJ19_FailedBakingTask, false)

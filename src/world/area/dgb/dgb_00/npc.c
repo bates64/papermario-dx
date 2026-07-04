@@ -9,9 +9,9 @@ API_CALLABLE(N(PlaySentinelSounds)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/npc/Boo.inc.c"
-#include "world/common/npc/Dummy.inc.c"
-#include "world/common/enemy/Sentinel.h"
+#include "world/common/npc/Boo/idle.inc.c"
+#include "world/common/npc/Dummy/idle.inc.c"
+#include "world/common/enemy/Sentinel/base.h"
 
 EvtScript N(EVS_SetDoorRots) = {
     Set(LVar3, 0)
@@ -219,7 +219,7 @@ EvtScript N(EVS_TubbaTaunting) = {
 
 EvtScript N(EVS_Scene_BoosApproachManor) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerPos, 350, 10, -150)
     Call(InterpPlayerYaw, 270, 1)
     Call(SetNpcPos, NPC_PARTNER, 350, 10, -150)
@@ -302,7 +302,7 @@ EvtScript N(EVS_Scene_EscapeFromTubba) = {
     Call(SetPlayerAnimation, ANIM_Mario1_NodYes)
     Wait(20 * DT)
     Call(SpeakToPlayer, NPC_Boo_01, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00E1)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetCurrentPartnerID, LVar0)
     Switch(LVar0)
         CaseEq(PARTNER_GOOMBARIO)
@@ -375,7 +375,7 @@ EvtScript N(EVS_NpcInteract_Boo_01) = {
     Set(MV_PreventTaunting, true)
     Call(SpeakToPlayer, NPC_Boo_01, ANIM_Boo_Tan_Flail, ANIM_Boo_Tan_Flail, 5, MSG_CH3_00E9)
     Call(SetNpcAnimation, NPC_Boo_01, ANIM_Boo_Tan_Flail)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetCurrentPartnerID, LVar0)
     Switch(LVar0)
         CaseEq(PARTNER_GOOMBARIO)
@@ -506,7 +506,7 @@ NpcData N(NpcData_Boo_06) = {
 EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, 320, 10, -160)
     Call(PlaySound, SOUND_LRAW_SENTINEL_ALARM)
     Thread
@@ -521,7 +521,7 @@ EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
     Call(SetPlayerAnimation, ANIM_MarioW2_Flail)
     Call(SetNpcPos, NPC_Sentinel, 320, 70, -158)
     Call(InterpNpcYaw, NPC_Sentinel, 270, 0)
-    Call(SetNpcAnimation, NPC_Sentinel, ANIM_Sentinel_Anim08)
+    Call(SetNpcAnimation, NPC_Sentinel, ANIM_Sentinel_Grab)
     Call(UseSettingsFrom, CAM_DEFAULT, 175, 0, -35)
     Call(SetPanTarget, CAM_DEFAULT, 175, 0, -35)
     Call(SetCamDistance, CAM_DEFAULT, Float(540.0))
@@ -538,26 +538,26 @@ EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
         Call(PlayerJump1, 175, 50, -35, 40)
     EndThread
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Wait(1)
         Call(InterpNpcYaw, NPC_PARTNER, 270, 0)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_RUN)
         Wait(85)
-        Call(func_802CF56C, 2)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
         Wait(1)
         Call(EnablePartnerAI)
     EndThread
     Call(NpcMoveTo, NPC_Sentinel, 175, -33, 40)
     Wait(20)
     Call(SetNpcPos, NPC_Sentinel, 175, 85, -33)
-    Call(SetNpcAnimation, NPC_Sentinel, ANIM_Sentinel_Anim09)
+    Call(SetNpcAnimation, NPC_Sentinel, ANIM_Sentinel_Release)
     Wait(20)
     Call(PlaySoundAtNpc, NPC_Sentinel, SOUND_SENTINEL_PICKUP, SOUND_SPACE_DEFAULT)
-    Call(SetNpcAnimation, NPC_Sentinel, ANIM_Sentinel_Anim02)
+    Call(SetNpcAnimation, NPC_Sentinel, ANIM_Sentinel_FlySlow)
     Call(SetNpcPos, NPC_Sentinel, 175, 70, -33)
     Thread
         Wait(40)
-        Call(SetNpcAnimation, NPC_Sentinel, ANIM_Sentinel_Anim03)
+        Call(SetNpcAnimation, NPC_Sentinel, ANIM_Sentinel_FlyFast)
         Call(NpcMoveTo, NPC_Sentinel, 270, -120, 30)
         Call(StopSound, SOUND_LRAW_SENTINEL_ALARM)
         Call(SetNpcPos, NPC_Sentinel, NPC_DISPOSE_LOCATION)
@@ -591,7 +591,7 @@ EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
         CaseEq(PARTNER_BOMBETTE)
             Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, true)
     EndSwitch
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetCurrentPartnerID, LVar0)
     Switch(LVar0)
         CaseEq(PARTNER_GOOMBARIO)

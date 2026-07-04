@@ -1,6 +1,6 @@
 #include "sbk_42.h"
 
-#include "world/common/enemy/Bandit.inc.c"
+#include "world/common/enemy/Bandit/wander.inc.c"
 
 NpcData N(NpcData_Bandit_01) = {
     .id = NPC_Bandit_01,
@@ -18,7 +18,7 @@ NpcData N(NpcData_Bandit_01) = {
             .detectSize = { 1000 },
         }
     },
-    .settings = &N(NpcSettings_Bandit),
+    .settings = &N(NpcSettings_Bandit_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BANDIT_DROPS,
     .animations = BANDIT_ANIMS,
@@ -41,7 +41,7 @@ NpcData N(NpcData_Bandit_02) = {
             .detectSize = { 1000 },
         }
     },
-    .settings = &N(NpcSettings_Bandit),
+    .settings = &N(NpcSettings_Bandit_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BANDIT_DROPS,
     .animations = BANDIT_ANIMS,

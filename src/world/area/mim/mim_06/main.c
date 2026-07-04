@@ -20,7 +20,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_FOREVER_FOREST)
     Call(SetSpriteShading, SHADING_MIM_06)
     EVT_SETUP_CAMERA_MIM()
-    Set(AB_MIM_2, GB_MIM_CurrentMapID)
+    Set(AB_MIM_PrevMapID, GB_MIM_CurrentMapID)
     Call(GetMapID, GB_MIM_CurrentMapID)
     ExecWait(N(EVS_SetupGates))
     Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
@@ -28,7 +28,7 @@ EvtScript N(EVS_Main) = {
     Exec(EnterWalk)
     Wait(1)
     Exec(N(EVS_SetupMusic))
-    ExecWait(N(D_802439F8_BA8178))
+    ExecWait(N(EVS_SetupFlowerHints))
     Call(N(SetForeverForestFog))
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
     Return

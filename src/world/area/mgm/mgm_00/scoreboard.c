@@ -24,7 +24,7 @@ typedef struct RecordDisplayData {
     /* 0x14 */ s32 workerID;
 } RecordDisplayData; /* size = 0x18 */
 
-EvtScript N(D_80243C40_E123E0) = {
+EvtScript N(EVS_SetupScoreboard) = {
     Return
     End
 };
@@ -102,7 +102,7 @@ void N(draw_record_display)(RecordDisplayData* data, s32 alpha) {
 }
 #endif
 
-void N(animate_and_draw_record)(void* renderData) {
+void N(appendGfx_record)(void* renderData) {
     RecordDisplayData* data = (RecordDisplayData*)evt_get_variable(nullptr, MV_RecordDisplayData);
 
     switch (data->state) {
@@ -147,12 +147,12 @@ void N(animate_and_draw_record)(void* renderData) {
     N(draw_record_display)(data, data->alpha);
 }
 
-void N(work_draw_record)(void) {
+void N(worker_render_record)(void) {
     RenderTask task;
 
     task.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
     task.appendGfxArg = 0;
-    task.appendGfx = &N(animate_and_draw_record);
+    task.appendGfx = &N(appendGfx_record);
     task.dist = 0;
 
     queue_render_task(&task);
@@ -168,7 +168,7 @@ API_CALLABLE(N(UpdateRecordDisplay)) {
         script->functionTempPtr[0] = data;
         data->state = RECORD_START_SHOW;
         data->alpha = 255;
-        data->workerID = create_worker_scene(nullptr, &N(work_draw_record));
+        data->workerID = create_worker_scene(nullptr, &N(worker_render_record));
         data->gameType = gameType;
         evt_set_variable(script, MV_RecordDisplayData, (s32)data);
     }

@@ -216,7 +216,7 @@ enum GameBytes {
     GB_Unused_DGB_09                        = GameByte(0x0D4),
     GB_Unused_DGB_0A                        = GameByte(0x0D5),
     GB_Unused_OMO_00                        = GameByte(0x0D6),
-    GB_OMO_TrainDestination                 = GameByte(0x0D7),
+    GB_OMO_TrainRoute                       = GameByte(0x0D7),
     GB_OMO_PeachChoice1                     = GameByte(0x0D8),
     GB_OMO_PeachChoice2                     = GameByte(0x0D9),
     GB_OMO_PeachChoice3                     = GameByte(0x0DA),

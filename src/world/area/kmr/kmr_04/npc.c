@@ -1,11 +1,7 @@
 #include "kmr_04.h"
 #include "effects.h"
 
-NpcSettings N(NpcSettings_JrTroopa) = {
-    .height = 32,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/npc/JrTroopa/idle.inc.c"
 
 EvtScript N(EVS_NpcCreate_Goompa) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
@@ -47,13 +43,13 @@ EvtScript N(EVS_NpcAI_Goompa) = {
                 EndIf
             EndLoop
             Call(DisablePlayerInput, true)
-            Call(func_802CF56C, 0)
+            Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Add(LVar0, 30)
             Call(SetNpcSpeed, NPC_PARTNER, Float(2.0 / DT))
             Call(NpcMoveTo, LVar0, LVar1, LVar2, 0)
             Wait(5 * DT)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_00A9)
             Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Idle)
             Call(EnablePartnerAI)
@@ -61,7 +57,7 @@ EvtScript N(EVS_NpcAI_Goompa) = {
             Call(DisablePlayerInput, false)
             Set(GB_StoryProgress, STORY_CH0_LOOKING_FOR_HAMMER)
         CaseEq(STORY_CH0_FOUND_HAMMER)
-            IfEq(AB_KMR_0, 0)
+            IfEq(AB_KMR04_JrTroopaAmbushState, 0)
                 Label(10)
                 Wait(1)
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -79,7 +75,7 @@ EvtScript N(EVS_NpcAI_Goompa) = {
                 EndIf
                 Call(DisablePlayerInput, true)
                 Call(N(AwaitPartnerGrounded))
-                Call(DisablePartnerAI, 0)
+                Call(DisablePartnerAI, false)
                 Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
                 Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Walk)
                 Call(SetNpcSpeed, NPC_PARTNER, Float(3.0))
@@ -133,7 +129,7 @@ EvtScript N(EVS_NpcAI_Goompa) = {
                         Wait(3)
                     EndLoop
                 EndThread
-                Set(AB_KMR_0, 1)
+                Set(AB_KMR04_JrTroopaAmbushState, 1)
             EndIf
     EndSwitch
     Wait(1)
@@ -154,7 +150,7 @@ EvtScript N(EVS_NpcDefeat_Goompa) = {
 
 EvtScript N(EVS_NpcIdle_JrTroopa) = {
     Label(0)
-        IfEq(AB_KMR_0, 1)
+        IfEq(AB_KMR04_JrTroopaAmbushState, 1)
             Exec(N(EVS_SetJrTroopaMusic))
             Thread
                 Wait(20 * DT)
@@ -229,7 +225,7 @@ EvtScript N(EVS_NpcDefeat_JrTroopa) = {
 #endif
             EndThread
             Exec(N(EVS_SetNormalMusic))
-            Set(AB_KMR_0, 0)
+            Set(AB_KMR04_JrTroopaAmbushState, 0)
             Set(GB_StoryProgress, STORY_CH0_DEFEATED_JR_TROOPA)
             Call(DisablePlayerInput, false)
     EndSwitch
@@ -266,27 +262,10 @@ NpcData N(NpcData_JrTroopa) = {
     .settings = &N(NpcSettings_JrTroopa),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_JrTroopa_Idle,
-        .walk   = ANIM_JrTroopa_Walk,
-        .run    = ANIM_JrTroopa_Walk,
-        .chase  = ANIM_JrTroopa_Walk,
-        .anim_4 = ANIM_JrTroopa_Idle,
-        .anim_5 = ANIM_JrTroopa_Idle,
-        .death  = ANIM_JrTroopa_Idle,
-        .hit    = ANIM_JrTroopa_Idle,
-        .anim_8 = ANIM_JrTroopa_Idle,
-        .anim_9 = ANIM_JrTroopa_Idle,
-        .anim_A = ANIM_JrTroopa_Idle,
-        .anim_B = ANIM_JrTroopa_Idle,
-        .anim_C = ANIM_JrTroopa_Idle,
-        .anim_D = ANIM_JrTroopa_Idle,
-        .anim_E = ANIM_JrTroopa_Idle,
-        .anim_F = ANIM_JrTroopa_Idle,
-    },
+    .animations = JR_TROOPA_ANIMS,
 };
 
-NpcData N(NpcData_GoombaFamily) = {
+NpcData N(NpcData_Goompa) = {
     .id = NPC_Goompa,
     .pos = { -58.0f, 0.0f, 130.0f },
     .yaw = 0,
@@ -299,6 +278,6 @@ NpcData N(NpcData_GoombaFamily) = {
 
 NpcGroupList N(DefaultNPCs) = {
     NPC_GROUP(N(NpcData_JrTroopa), BTL_KMR_3_FORMATION_02),
-    NPC_GROUP(N(NpcData_GoombaFamily)),
+    NPC_GROUP(N(NpcData_Goompa)),
     {}
 };

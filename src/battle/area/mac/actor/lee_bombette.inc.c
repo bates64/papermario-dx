@@ -1,3 +1,4 @@
+#undef NAMESPACE
 #define NAMESPACE A(bombette_lee)
 
 extern EvtScript N(EVS_Init);

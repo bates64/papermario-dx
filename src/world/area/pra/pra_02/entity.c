@@ -2,20 +2,9 @@
 #include "entity.h"
 #include "effects.h"
 
-#define NAME_SUFFIX _Unused
-#include "world/common/todo/SetEntityPositionF.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-#define NAME_SUFFIX
+ITEM_LIST(N(RedKeyList), ITEM_RED_KEY);
 
-s32 N(RedKeyList)[] = {
-    ITEM_RED_KEY,
-    ITEM_NONE
-};
-
-s32 N(BlueKeyList)[] = {
-    ITEM_BLUE_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(BlueKeyList), ITEM_BLUE_KEY);
 
 EvtScript N(EVS_RaisePoundableSwitch) = {
     Call(MakeLerp, -10, 0, 10, EASING_LINEAR)
@@ -52,7 +41,13 @@ EvtScript N(EVS_LowerPoundableSwitch) = {
     End
 };
 
-#include "world/common/todo/IsPlayerPounding.inc.c"
+API_CALLABLE(N(IsPlayerPounding)) {
+    script->varTable[0] = false;
+    if (gPlayerStatus.actionState == ACTION_STATE_SPIN_POUND || gPlayerStatus.actionState == ACTION_STATE_TORNADO_POUND) {
+        script->varTable[0] = true;
+    }
+    return ApiStatus_DONE2;
+}
 
 API_CALLABLE(N(UpdatePadlockPosition)) {
     Bytecode* args = script->ptrReadPos;
@@ -158,20 +153,17 @@ EvtScript N(EVS_UpdatePadlockPositions) = {
     End
 };
 
-#include "world/common/todo/RemovePadlock.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-
 EvtScript N(EVS_ItemPrompt_RedPadlock) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(ShowKeyChoicePopup)
-    IfEq(LVar0, 0)
+    IfEq(LVar0, ITEM_CHOICE_NONE)
         Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
         Call(CloseChoicePopup)
         Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
         Return
     EndIf
-    IfEq(LVar0, -1)
+    IfEq(LVar0, ITEM_CHOICE_CANCELED)
         Call(CloseChoicePopup)
         Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
         Return
@@ -182,16 +174,14 @@ EvtScript N(EVS_ItemPrompt_RedPadlock) = {
     Set(GF_PRA02_UnlockedRedDoor, true)
     BindTrigger(Ref(N(EVS_ExitDoors_pra_16_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
     BindTrigger(Ref(N(EVS_ExitDoors_pra_16_3)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
-    Call(N(GetEntityPosition), MV_NearRedPadlock, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_NearRedPadlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Call(N(GetEntityPosition), MV_FarRedPadlock, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_FarRedPadlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Set(LVar0, MV_NearRedPadlock)
+    Call(SetEntityUsed, MV_NearRedPadlock)
     Set(MV_NearRedPadlock, -1)
-    Call(N(RemovePadlock))
-    Set(LVar0, MV_FarRedPadlock)
+    Call(SetEntityUsed, MV_FarRedPadlock)
     Set(MV_FarRedPadlock, -1)
-    Call(N(RemovePadlock))
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
     Unbind
     Return
@@ -202,13 +192,13 @@ EvtScript N(EVS_ItemPrompt_BluePadlock) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(ShowKeyChoicePopup)
-    IfEq(LVar0, 0)
+    IfEq(LVar0, ITEM_CHOICE_NONE)
         Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
         Call(CloseChoicePopup)
         Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
         Return
     EndIf
-    IfEq(LVar0, -1)
+    IfEq(LVar0, ITEM_CHOICE_CANCELED)
         Call(CloseChoicePopup)
         Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
         Return
@@ -219,16 +209,14 @@ EvtScript N(EVS_ItemPrompt_BluePadlock) = {
     Set(GF_PRA02_UnlockedBlueDoor, true)
     BindTrigger(Ref(N(EVS_ExitDoors_pra_13_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse2, 1, 0)
     BindTrigger(Ref(N(EVS_ExitDoors_pra_13_3)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne2, 1, 0)
-    Call(N(GetEntityPosition), MV_NearBluePadlock, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_NearBluePadlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Call(N(GetEntityPosition), MV_FarBluePadlock, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_FarBluePadlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Set(LVar0, MV_NearBluePadlock)
+    Call(SetEntityUsed, MV_NearBluePadlock)
     Set(MV_NearBluePadlock, -1)
-    Call(N(RemovePadlock))
-    Set(LVar0, MV_FarBluePadlock)
+    Call(SetEntityUsed, MV_FarBluePadlock)
     Set(MV_FarBluePadlock, -1)
-    Call(N(RemovePadlock))
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
     Unbind
     Return

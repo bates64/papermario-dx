@@ -1,10 +1,10 @@
 #include "omo_06.h"
 
-#include "world/common/npc/TrainToad.inc.c"
+#include "world/common/npc/TrainToad/idle.inc.c"
 
 EvtScript N(EVS_NpcInteract_Conductor) = {
     Call(DisablePlayerInput, true)
-    ExecWait(N(D_80244B10_DBC420))
+    ExecWait(N(EVS_Conductor_ChooseRoute))
     Call(DisablePlayerInput, false)
     Return
     End

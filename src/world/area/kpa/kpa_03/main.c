@@ -1,6 +1,6 @@
 #include "kpa_03.h"
 
-#include "world/common/atomic/CreateDarkness.inc.c"
+#include "world/common/util/CreateDarkness.inc.c"
 
 EvtScript N(EVS_ExitWalk_kpa_01_1) = EVT_EXIT_WALK(60, kpa_03_ENTRY_0, "kpa_01", kpa_01_ENTRY_1);
 EvtScript N(EVS_ExitWalk_kpa_04_0) = EVT_EXIT_WALK(60, kpa_03_ENTRY_1, "kpa_04", kpa_04_ENTRY_0);

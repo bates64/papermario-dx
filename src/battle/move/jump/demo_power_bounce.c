@@ -15,7 +15,7 @@ Difficulty1D N(DifficultyTable) = {
 s32 N(BaseHitChance) = 200;
 
 API_CALLABLE(N(GetHitChance)) {
-    Actor* enemyTargetActor = get_actor(get_actor(script->owner1.enemyID)->targetActorID);
+    Actor* enemyTargetActor = get_actor(get_actor(script->owner1.actorID)->targetActorID);
     u32 enemyTargetPowerBounceChance;
 
     script->varTable[0] = 99;

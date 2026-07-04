@@ -1,8 +1,8 @@
 
 #include "kpa_51.h"
 
-#include "world/common/enemy/Magikoopa.inc.c"
-#include "world/common/enemy/Koopatrol_Wander.inc.c"
+#include "world/common/enemy/Magikoopa/wander.inc.c"
+#include "world/common/enemy/Koopatrol/wander.inc.c"
 
 NpcData N(NpcData_Magikoopa_01)[] = {
     {
@@ -21,11 +21,11 @@ NpcData N(NpcData_Magikoopa_01)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_Magikoopa),
+        .settings = &N(NpcSettings_Magikoopa_Wander),
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
-        .drops = MAGINO_DROPS,
+        .drops = MAGIKOOPA_DROPS,
         .animations = MAGIKOOPA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Magikoopa),
+        .limitAnimations = N(LimitAnims_Magikoopa),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     MAGIKOOPA_SPELL_HITBOX(NPC_Magikoopa_01 + 1)
@@ -48,11 +48,11 @@ NpcData N(NpcData_Magikoopa_02)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_Magikoopa),
+        .settings = &N(NpcSettings_Magikoopa_Wander),
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
-        .drops = MAGINO_DROPS,
+        .drops = MAGIKOOPA_DROPS,
         .animations = MAGIKOOPA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Magikoopa),
+        .limitAnimations = N(LimitAnims_Magikoopa),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     MAGIKOOPA_SPELL_HITBOX(NPC_Magikoopa_02 + 1)

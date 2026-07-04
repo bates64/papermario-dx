@@ -1,20 +1,17 @@
 #include "dgb_15.h"
 #include "entity.h"
 
-#include "world/common/todo/GetEntityPosition.inc.c"
-#include "world/common/todo/RemovePadlock.inc.c"
-
 EvtScript N(EVS_UnlockPrompt_Door) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(ShowKeyChoicePopup)
-    IfEq(LVar0, 0)
+    IfEq(LVar0, ITEM_CHOICE_NONE)
         Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
         Call(CloseChoicePopup)
         ResumeGroup(EVT_GROUP_FLAG_INTERACT)
         Return
     EndIf
-    IfEq(LVar0, -1)
+    IfEq(LVar0, ITEM_CHOICE_CANCELED)
         Call(CloseChoicePopup)
         ResumeGroup(EVT_GROUP_FLAG_INTERACT)
         Return
@@ -22,10 +19,9 @@ EvtScript N(EVS_UnlockPrompt_Door) = {
     Call(RemoveItem, ITEM_TUBBA_CASTLE_KEY)
     Call(CloseChoicePopup)
     Set(GF_DGB15_UnlockedUpperFoyer, true)
-    Call(N(GetEntityPosition), MV_PadlockEntityID, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_EntityID_Padlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Set(LVar0, MV_PadlockEntityID)
-    Call(N(RemovePadlock))
+    Call(SetEntityUsed, MV_EntityID_Padlock)
     ResumeGroup(EVT_GROUP_FLAG_INTERACT)
     Unbind
     Return
@@ -42,7 +38,7 @@ EvtScript N(EVS_MakeEntities) = {
     IfEq(GF_DGB15_UnlockedUpperFoyer, false)
         Call(MakeEntity, Ref(Entity_Padlock), 130, 8, 175, -80, MAKE_ENTITY_END)
         Call(AssignScript, Ref(N(EVS_OpenLockedDoor)))
-        Set(MV_PadlockEntityID, LVar0)
+        Set(MV_EntityID_Padlock, LVar0)
     EndIf
     Return
     End

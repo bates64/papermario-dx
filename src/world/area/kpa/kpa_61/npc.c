@@ -1,7 +1,7 @@
 #include "kpa_61.h"
 
-#include "world/common/enemy/Koopatrol_Wander.inc.c"
-#include "world/common/enemy/FlyingMagikoopa.inc.c"
+#include "world/common/enemy/Koopatrol/wander.inc.c"
+#include "world/common/enemy/FlyingMagikoopa/wander.inc.c"
 
 NpcData N(NpcData_Koopatrol_01) = {
     .id = NPC_Koopatrol_01,
@@ -64,11 +64,11 @@ NpcData N(NpcData_FlyingMagikoopa_01)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_FlyingMagikoopa),
+        .settings = &N(NpcSettings_FlyingMagikoopa_Wander),
         .flags = ENEMY_FLAG_FLYING,
-        .drops = FLYING_MAGINO_DROPS,
+        .drops = FLYING_MAGIKOOPA_DROPS,
         .animations = FLYING_MAGIKOOPA_ANIMS,
-        .extraAnimations = N(ExtraAnims_FlyingMagikoopa),
+        .limitAnimations = N(LimitAnims_FlyingMagikoopa),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     FLYING_MAGIKOOPA_SPELL_HITBOX(NPC_FlyingMagikoopa_01_Spell),
@@ -91,11 +91,11 @@ NpcData N(NpcData_FlyingMagikoopa_02)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_FlyingMagikoopa),
+        .settings = &N(NpcSettings_FlyingMagikoopa_Wander),
         .flags = ENEMY_FLAG_FLYING,
-        .drops = FLYING_MAGINO_DROPS,
+        .drops = FLYING_MAGIKOOPA_DROPS,
         .animations = FLYING_MAGIKOOPA_ANIMS,
-        .extraAnimations = N(ExtraAnims_FlyingMagikoopa),
+        .limitAnimations = N(LimitAnims_FlyingMagikoopa),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     FLYING_MAGIKOOPA_SPELL_HITBOX(NPC_FlyingMagikoopa_02_Spell),

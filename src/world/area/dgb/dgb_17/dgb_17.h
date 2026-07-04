@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file dgb_17.h
 /// @brief Tubba's Castle - Save Room (3F)
 

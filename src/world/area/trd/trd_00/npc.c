@@ -12,17 +12,13 @@ API_CALLABLE(N(UpgradeStarPowerCh1)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/SyncStatusBar.inc.c"
+API_CALLABLE(N(SyncStatusBar)) {
+    sync_status_bar();
+    return ApiStatus_DONE2;
+}
 
-NpcSettings N(NpcSettings_KoopaBros) = {
-    .height = 34,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-    .onHit = &EnemyNpcHit,
-    .onDefeat = &EnemyNpcDefeat,
-};
-
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/enemy/KoopaBros/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 EvtScript N(EVS_NpcIdle_KoopaBros) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
@@ -135,9 +131,9 @@ EvtScript N(EVS_NpcDefeat_Eldstar) = {
     End
 };
 
-EvtScript N(D_80241DA4_99BA14) = {
-    Call(DisablePartnerAI, 0)
-    Call(func_802CF56C, 2)
+EvtScript N(EVS_Scene_RescuedEldstar) = {
+    Call(DisablePartnerAI, false)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(SetNpcPos, NPC_Eldstar, -567, 26, 236)
     Call(PlayerFaceNpc, NPC_Eldstar, false)
     Call(NpcFaceNpc, NPC_PARTNER, NPC_Eldstar, 0)
@@ -186,7 +182,7 @@ EvtScript N(D_80241DA4_99BA14) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
     Call(PlaySoundAtPlayer, SOUND_GET_STAR_POWER_WAVE, SOUND_SPACE_DEFAULT)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, 1, 30)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, 1, 30)
     Wait(40 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_Eldstar, ANIM_WorldEldstar_Idle)
@@ -296,7 +292,7 @@ EvtScript N(EVS_NpcInit_Eldstar) = {
         Else
             Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Eldstar)))
             Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Eldstar)))
-            Exec(N(D_80241DA4_99BA14))
+            Exec(N(EVS_Scene_RescuedEldstar))
         EndIf
     Else
         Call(RemoveNpc, NPC_SELF)
@@ -313,24 +309,7 @@ NpcData N(NpcData_KoopaBros) = {
     .settings = &N(NpcSettings_KoopaBros),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_KoopaBros_Green_Idle,
-        .walk   = ANIM_KoopaBros_Green_Walk,
-        .run    = ANIM_KoopaBros_Green_Run,
-        .chase  = ANIM_KoopaBros_Green_Run,
-        .anim_4 = ANIM_KoopaBros_Green_Idle,
-        .anim_5 = ANIM_KoopaBros_Green_Idle,
-        .death  = ANIM_KoopaBros_Green_HurtStill,
-        .hit    = ANIM_KoopaBros_Green_HurtStill,
-        .anim_8 = ANIM_KoopaBros_Green_Run,
-        .anim_9 = ANIM_KoopaBros_Green_Run,
-        .anim_A = ANIM_KoopaBros_Green_Run,
-        .anim_B = ANIM_KoopaBros_Green_Run,
-        .anim_C = ANIM_KoopaBros_Green_Run,
-        .anim_D = ANIM_KoopaBros_Green_Run,
-        .anim_E = ANIM_KoopaBros_Green_Run,
-        .anim_F = ANIM_KoopaBros_Green_Run,
-    },
+    .animations = GREEN_KOOPA_BROS_ANIMS,
 };
 
 NpcData N(NpcData_Eldstar) = {

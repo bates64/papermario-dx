@@ -7,15 +7,8 @@ extern EvtScript N(EVS_80241C10);
 extern NpcGroupList N(DefaultNPCs);
 extern EvtScript N(EVS_MakeEntities);
 
-extern EvtScript N(EVS_802467AC);
-extern EvtScript N(EVS_80247A2C);
-
-#include "world/common/atomic/TexturePan.inc.c"
-
-API_CALLABLE(func_8024030C_B2084C) {
-    fx_sun(FX_SUN_FROM_LEFT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
-    return ApiStatus_DONE2;
-}
+extern EvtScript N(EVS_SetupWhale);
+extern EvtScript N(EVS_SetupFoliage);
 
 EvtScript N(EVS_ExitWalk_jan_01_0) = EVT_EXIT_WALK(60, jan_00_ENTRY_1, "jan_01", jan_01_ENTRY_0);
 EvtScript N(EVS_ExitWalk_jan_08_0) = EVT_EXIT_WALK(60, jan_00_ENTRY_2, "jan_08", jan_08_ENTRY_0);
@@ -42,7 +35,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0,  400,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water surface
     Call(SetTexPanner, MODEL_o52, TEX_PANNER_3)
@@ -51,10 +44,10 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP( -100,  200,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
-    Exec(N(EVS_802467AC))
-    Exec(N(EVS_80247A2C))
+    Exec(N(EVS_SetupWhale))
+    Exec(N(EVS_SetupFoliage))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitne, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitse, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetEntryID, LVar0)
@@ -64,7 +57,7 @@ EvtScript N(EVS_Main) = {
         Set(LVar0, Ref(N(EVS_BindExitTriggers)))
         Exec(EnterWalk)
     EndIf
-    Call(func_8024030C_B2084C)
+    Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     ExecWait(N(EVS_80241C10))
     Call(PlaySound, SOUND_LOOP_JAN_BEACH_WAVES)
     Return

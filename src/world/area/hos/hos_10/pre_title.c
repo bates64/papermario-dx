@@ -2,8 +2,6 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/atomic/TexturePan.h"
-
 EvtScript N(EVS_Scene_PreTitle) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
@@ -21,21 +19,21 @@ EvtScript N(EVS_Scene_PreTitle) = {
         TEX_PAN_PARAMS_STEP(  400,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_3)
         TEX_PAN_PARAMS_STEP(  600,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_4)
         TEX_PAN_PARAMS_STEP( 1000,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(EnableTexPanning, MODEL_k2, true)
     Call(EnableTexPanning, MODEL_k7, true)

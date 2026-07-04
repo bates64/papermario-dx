@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_113.h
 /// @brief Bowser's Castle - Room with Hidden Door 2
 
@@ -14,7 +16,7 @@ enum {
 };
 
 enum {
-    MV_PadlockEntityID  = MapVar(1),
+    MV_EntityID_Padlock  = MapVar(1),
 };
 
 #define NAMESPACE kpa_113

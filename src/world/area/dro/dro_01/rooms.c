@@ -194,7 +194,7 @@ EvtScript N(EVS_SetupRooms) = {
     End
 };
 
-EvtScript N(EVS_SwingSign_Shop) = {
+EvtScript N(EVS_ShopSignSwing) = {
     Label(9)
         Call(MakeLerp, 10, -10, 30, EASING_COS_IN_OUT)
         Label(10)

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_03.h
 /// @brief Goomba Region - Bottom of the Cliff
 
@@ -12,15 +14,15 @@
 #include "sprite/npc/Goompa.h"
 
 enum {
-    NPC_Goompa                  = 0,
+    NPC_Goompa          = 0,
 };
 
 enum {
-    MV_Unk_00               = MapVar(0),
+    MV_GoompaHitCount   = MapVar(0),
 };
 
 enum {
-    AF_JAN01_TreeDrop_StarPiece               = MapFlag(10),
+    MF_Tree1_Mushroom   = MapFlag(10),
 };
 
 #define NAMESPACE kmr_03

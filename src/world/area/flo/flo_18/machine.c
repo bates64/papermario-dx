@@ -49,8 +49,6 @@ EvtScript N(EVS_AnimateMachineLightning) = {
     End
 };
 
-#include "common/CosInterpMinMax.inc.c"
-
 EvtScript N(EVS_UpdateSmokeParticle) = {
     Call(EnableModel, LVarF, true)
     Set(LVarE, 159)
@@ -64,10 +62,10 @@ EvtScript N(EVS_UpdateSmokeParticle) = {
         MulF(LVar6, Float(1.01))
         AddF(LVar7, Float(0.01))
         SetF(LVar8, LVar6)
-        Call(N(CosInterpMinMax), LVarE, LVarA, Float(0.0), Float(0.203), 15, 0, 0)
+        Call(CosInterpMinMax, LVarE, LVarA, Float(0.0), Float(0.203), 15, 0, 0)
         AddF(LVar8, LVarA)
         SetF(LVar9, LVar7)
-        Call(N(CosInterpMinMax), LVarE, LVarA, Float(0.0), Float(0.203), 20, 0, 90)
+        Call(CosInterpMinMax, LVarE, LVarA, Float(0.0), Float(0.203), 20, 0, 90)
         AddF(LVar9, LVarA)
         SetF(LVarA, LVar0)
         MulF(LVarA, Float(10.0))
@@ -124,8 +122,8 @@ EvtScript N(EVS_ShakeMachine) = {
         Sub(LVar2, 25)
         PlayEffect(EFFECT_00, LVar0, LVar1, LVar2, 5, 10, 1, 1)
         Add(LVarF, 1)
-        Call(N(CosInterpMinMax), LVarF, LVarE, Float(1.0), Float(1.093), 2, 0, 0)
-        Call(N(CosInterpMinMax), LVarF, LVarD, Float(1.093), Float(1.0), 2, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVarE, Float(1.0), Float(1.093), 2, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVarD, Float(1.093), Float(1.0), 2, 0, 0)
         SetF(LVar0, LVarE)
         SetF(LVar1, LVarD)
         SetF(LVar2, LVarE)

@@ -158,7 +158,7 @@ EvtScript N(EVS_ParadePhase_Wizards) = {
     Call(SetNpcAnimation, NPC_Merlow, ANIM_ParadeWizard_Merle_MerlowRelease)
     Call(SetNpcAnimation, NPC_Merlar, ANIM_ParadeWizard_Merle_MerlarRelease)
     Call(GetNpcPos, NPC_Merlon, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 6, LVar0, LVar1, LVar2, 1, 20, 0, 0, 0, 0, 0, 0, 0)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_GRAY_WAVE, LVar0, LVar1, LVar2, 1, 20, 0, 0, 0, 0, 0, 0, 0)
     Wait(30)
     Exec(N(EVS_Sun))
     ExecGetTID(N(EVS_TexPan_FlowerFloat_WisterwoodBody), LVarB)

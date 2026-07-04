@@ -65,10 +65,7 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-s32 N(KeyList_UpperDoor)[] = {
-    ITEM_TUBBA_CASTLE_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList_UpperDoor), ITEM_TUBBA_CASTLE_KEY);
 
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)

@@ -24,7 +24,7 @@ EvtScript N(EVS_EnterMap) = {
             Call(SetZoneEnabled, ZONE_o203, false)
             Call(UseSettingsFrom, CAM_DEFAULT, 375, 0, -175)
             Call(SetPanTarget, CAM_DEFAULT, 375, 0, -175)
-            Set(AF_DGB_02, true)
+            Set(AF_DGB11_FallingFromHole, true)
             Set(LVar3, 1)
     EndSwitch
     Call(DisablePlayerInput, true)

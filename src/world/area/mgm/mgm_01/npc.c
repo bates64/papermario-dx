@@ -48,14 +48,14 @@ typedef struct JumpGamePanel {
     /* 0x48 */ f32 startAngle;
     /* 0x4C */ f32 endAngle;
     /* 0x50 */ f32 curScale;
-    /* 0x50 */ f32 startScale;
-    /* 0x50 */ f32 endScale;
+    /* 0x54 */ f32 startScale;
+    /* 0x58 */ f32 endScale;
 } JumpGamePanel; /* size = 5C */
 
 typedef struct JumpGameData {
     /* 0x000 */ s32 workerID;
     /* 0x004 */ HudElemID hudElemID;
-    /* 0x008 */ s32 unk_08; // unused -- likely hudElemID for an unused/removed hud element
+    /* 0x008 */ PAD(4);
     /* 0x00C */ s32 curScore;
     /* 0x010 */ s32 targetScore;
     /* 0x014 */ s32 scoreWindowPosX;
@@ -77,9 +77,7 @@ extern f32 N(TallyPosY)[NUM_BLOCKS];
 
 extern s32 N(PanelModelIDs)[NUM_BLOCKS];
 extern JumpGamePanelType N(PanelTypes)[NUM_BLOCKS];
-
 extern JumpGamePanelType N(InitialConfigurations)[4][NUM_BLOCKS];
-extern EvtScript* D_802435E8_E15D48[NUM_BLOCKS];
 
 extern EvtScript N(EVS_OnBreakBlock_0);
 extern EvtScript N(EVS_OnBreakBlock_1);
@@ -150,7 +148,7 @@ void N(appendGfx_score_display) (void* renderData) {
     }
 }
 
-void N(worker_draw_score)(void) {
+void N(worker_render_score)(void) {
     RenderTask task;
 
     task.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
@@ -389,7 +387,7 @@ API_CALLABLE(N(UpdateRecords)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GiveCoinReward)) {
+API_CALLABLE(N(GiveCoinWinnings)) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     s32 coinsLeft = data->curScore;
     s32 increment;
@@ -627,7 +625,7 @@ API_CALLABLE(N(CreateMinigame)) {
     HudElemID hid;
 
     scorekeeper->varTablePtr[JUMP_DATA_VAR_IDX] = data;
-    data->workerID = create_worker_scene(nullptr, &mgm_01_worker_draw_score);
+    data->workerID = create_worker_scene(nullptr, &mgm_01_worker_render_score);
 
     hid = hud_element_create(&HES_StatusCoin);
     data->hudElemID = hid;
@@ -675,7 +673,7 @@ API_CALLABLE(N(HideCoinCounter)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
 s8 N(BlockPosX)[NUM_BLOCKS] = {
     -125, -100, -75, -50, -25, 0, 25, 50, 75, 100, 125
@@ -821,7 +819,7 @@ EvtScript N(EVS_ManageMinigame) = {
             EndSwitch
             Call(ShowCoinCounter, true)
             Wait(10)
-            Call(N(GiveCoinReward))
+            Call(N(GiveCoinWinnings))
             Wait(15)
             Call(ShowCoinCounter, false)
             Wait(5)
@@ -1024,7 +1022,7 @@ NpcData N(NpcData_Toad) = {
     .pos = { 0.0f, 0.0f, -20.0f },
     .yaw = 270,
     .init = &N(EVS_NpcInit_Toad),
-    .settings = &N(NpcSettings_Toad_Stationary),
+    .settings = &N(NpcSettings_Toad),
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = TOAD_RED_ANIMS,

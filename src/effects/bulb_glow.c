@@ -2,14 +2,14 @@
 #include "nu/nusys.h"
 #include "effects_internal.h"
 
-typedef struct UnkBulbGlow {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ f32 unk_08;
-    /* 0x0C */ f32 unk_0C;
-    /* 0x10 */ s32 unk_10;
-    /* 0x14 */ s32 unk_14;
-} UnkBulbGlow; // size = 0x18
+typedef struct BulbGlowResamplePreset {
+    /* 0x00 */ s32 texWidth;
+    /* 0x04 */ s32 texHeight;
+    /* 0x08 */ f32 texScaleX;
+    /* 0x0C */ f32 texScaleY;
+    /* 0x10 */ s32 screenRadius;
+    /* 0x14 */ s32 stripHeight;
+} BulbGlowResamplePreset; // size = 0x18
 
 extern Gfx D_09001400_37C1D0[];
 extern Gfx D_090014B8_37C288[];
@@ -21,13 +21,13 @@ Gfx* D_E0078900[] = {
     D_09001400_37C1D0, D_090014B8_37C288, D_09001570_37C340, D_09001618_37C3E8, D_090016C0_37C490, D_09001570_37C340
 };
 
-UnkBulbGlow D_E0078918[] = {
-    { 0x00000080, 0x00000080, 0.5f, 0.5f, 0x00000040, 0x00000004 },
-    { 0x00000040, 0x00000040, 2.0f, 2.0f, 0x00000020, 0x00000010 },
-    { 0x00000040, 0x00000040, 1.0f, 1.0f, 0x00000040, 0x00000008 },
-    { 0x00000040, 0x00000040, 2.0f, 2.0f, 0x00000010, 0x00000010 },
-    { 0x00000040, 0x00000040, 1.0f, 1.0f, 0x00000020, 0x00000010 },
-    { 0x00000040, 0x00000040, 1.0f, 1.0f, 0x00000040, 0x00000008 },
+BulbGlowResamplePreset BulbGlowPresets[] = {
+    { 128, 128, 0.5f, 0.5f,  64,  4 },
+    {  64,  64, 2.0f, 2.0f,  32, 16 },
+    {  64,  64, 1.0f, 1.0f,  64,  8 },
+    {  64,  64, 2.0f, 2.0f,  16, 16 },
+    {  64,  64, 1.0f, 1.0f,  32, 16 },
+    {  64,  64, 1.0f, 1.0f,  64,  8 },
 };
 
 s32 D_E00789A8 = 0;
@@ -47,7 +47,7 @@ void bulb_glow_update(EffectInstance* effect);
 void bulb_glow_render(EffectInstance* effect);
 void bulb_glow_appendGfx(void* effect);
 
-void bulb_glow_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f32 arg4, EffectInstance** outEffect) {
+void bulb_glow_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 unusedScale, EffectInstance** outEffect) {
     EffectBlueprint bp;
     EffectInstance* effect;
     BulbGlowFXData* data;
@@ -65,8 +65,8 @@ void bulb_glow_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f32 arg4, EffectInst
     data = effect->data.bulbGlow = general_heap_malloc(numParts * sizeof(*data));
     ASSERT(effect->data.bulbGlow != nullptr);
 
-    data->type = arg0 & 255;
-    if (arg0 < 256) {
+    data->type = type & 255;
+    if (type < 256) {
         data->timeLeft = 100;
     } else {
         data->timeLeft = 80;
@@ -83,7 +83,7 @@ void bulb_glow_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f32 arg4, EffectInst
         D_E00789A8 = 0;
     }
 
-    data->unk_20 = rand_int(7);
+    data->colorIdx = rand_int(7);
     *outEffect = effect;
 }
 
@@ -111,6 +111,7 @@ void bulb_glow_update(EffectInstance* effect) {
 
     time = data->lifetime;
     if (data->type == 0) {
+        // type 0 is Watt's flicker. after the pulse it becomes a steady type 4 glow.
         if (time < 11) {
             data->brightness = (time * 6) + 4;
         } else {
@@ -170,7 +171,7 @@ void bulb_glow_appendGfx(void* effect) {
     s32 xMax;
     s32 isPointVisible;
     s32 yStart;
-    UnkBulbGlow* temp_s1;
+    BulbGlowResamplePreset* preset;
     Color_RGB8* color;
     s32 i;
     s32 j;
@@ -185,12 +186,13 @@ void bulb_glow_appendGfx(void* effect) {
     gDPPipeSync(gMainGfxPos++);
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
 
-    temp_s1 = &D_E0078918[type];
-    glowExtent = temp_s1->unk_10;
-    rectHeight = temp_s1->unk_14;
+    preset = &BulbGlowPresets[type];
+    glowExtent = preset->screenRadius;
+    rectHeight = preset->stripHeight;
 
     isPointVisible = is_point_visible(data->pos.x, data->pos.y, data->pos.z, data->depthQueryID, &centerX, &centerY);
 
+    // type 5 is already in screen space, so it skips the depth query and only uses the bounds check below
     if (type == 5) {
         isPointVisible = true;
     }
@@ -200,7 +202,7 @@ void bulb_glow_appendGfx(void* effect) {
     }
 
     gSPDisplayList(gMainGfxPos++, D_E0078900[type]);
-    color = &D_E00789AC[data->unk_20];
+    color = &D_E00789AC[data->colorIdx];
     colorScale = brightness * 2;
     r = color->r * colorScale / 255;
     g = color->g * colorScale / 255;
@@ -237,10 +239,10 @@ void bulb_glow_appendGfx(void* effect) {
         }
 
         gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE,
-            (s32) (xMin * temp_s1->unk_08) * 4,
-            (s32) (temp_s1->unk_04 * 20 - i * temp_s1->unk_14 * temp_s1->unk_0C) * 4,
-            (s32) (xMin * temp_s1->unk_08 + temp_s1->unk_00) * 4,
-            (s32) (temp_s1->unk_04 * 21 - i * temp_s1->unk_14 * temp_s1->unk_0C) * 4);
+            (s32) (xMin * preset->texScaleX) * 4,
+            (s32) (preset->texHeight * 20 - i * preset->stripHeight * preset->texScaleY) * 4,
+            (s32) (xMin * preset->texScaleX + preset->texWidth) * 4,
+            (s32) (preset->texHeight * 21 - i * preset->stripHeight * preset->texScaleY) * 4);
 
         for (j = 0; j < 1; j++) {
             gDPLoadMultiTile(gMainGfxPos++,

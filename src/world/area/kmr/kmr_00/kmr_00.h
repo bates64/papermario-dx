@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_00.h
 /// @brief Goomba Region - Forest Clearing
 
@@ -30,8 +32,8 @@ enum {
 };
 
 enum {
-    MV_Unk_01           = MapVar(1),
-    MV_Unk_02           = MapVar(2),
+    MV_SpiritHologramOffset     = MapVar(1),
+    MV_SpiritArrivalCount       = MapVar(2),
 };
 
 #define NAMESPACE kmr_00

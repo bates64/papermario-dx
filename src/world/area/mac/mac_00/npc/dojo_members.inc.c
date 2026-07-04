@@ -1,3 +1,5 @@
+#include "../mac_00.h"
+
 #include "sprite/player.h"
 
 s32 N(DojoBattleIDs)[] = {
@@ -41,18 +43,18 @@ EvtScript N(EVS_NpcAI_Chan) = {
     Call(SpeakToNpc, NPC_SELF, ANIM_Chan_Run, ANIM_Chan_Idle, 0, NPC_TheMaster, MSG_MAC_Gate_001E)
     Wait(10)
     Thread
-        Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-        Call(func_802D2C14, 1)
+        Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+        Call(SetPartnerForcedFollowMode, 1)
         Call(PlayerMoveTo, 348, -364, 20)
         Call(InterpPlayerYaw, 20, 0)
         Wait(20)
-        Call(func_802D2C14, 0)
-        Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetPartnerForcedFollowMode, 0)
+        Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     EndThread
     Call(SetNpcAnimation, NPC_SELF, ANIM_Chan_Walk)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(NpcMoveTo, NPC_SELF, 380, -400, 30)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Chan_Idle)
     Call(InterpNpcYaw, NPC_SELF, 225, 0)
     Wait(20)
@@ -67,9 +69,9 @@ EvtScript N(EVS_NpcDefeat_Chan) = {
     Call(N(ResetBackgroundPostBattle))
     Thread
         Call(SetNpcAnimation, NPC_SELF, ANIM_Chan_Walk)
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(NpcMoveTo, NPC_SELF, 310, -390, 30)
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Chan_Idle)
         Call(InterpNpcYaw, NPC_SELF, 45, 0)
     EndThread
@@ -109,18 +111,18 @@ EvtScript N(EVS_NpcAI_Lee) = {
     Call(SpeakToNpc, NPC_SELF, ANIM_Lee_Talk, ANIM_Lee_Idle, 0, NPC_TheMaster, MSG_MAC_Gate_0025)
     Wait(10)
     Thread
-        Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-        Call(func_802D2C14, 1)
+        Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+        Call(SetPartnerForcedFollowMode, 1)
         Call(PlayerMoveTo, 348, -364, 20)
         Call(InterpPlayerYaw, 20, 0)
         Wait(20)
-        Call(func_802D2C14, 0)
-        Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetPartnerForcedFollowMode, 0)
+        Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     EndThread
     Call(SetNpcAnimation, NPC_SELF, ANIM_Lee_Walk)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(NpcMoveTo, NPC_SELF, 380, -400, 30)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Lee_Idle)
     Call(InterpNpcYaw, NPC_SELF, 225, 0)
     Wait(20)
@@ -135,9 +137,9 @@ EvtScript N(EVS_NpcDefeat_Lee) = {
     Call(N(ResetBackgroundPostBattle))
     Thread
         Call(SetNpcAnimation, NPC_SELF, ANIM_Lee_Walk)
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(NpcMoveTo, NPC_SELF, 330, -410, 30)
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Lee_Idle)
         Call(InterpNpcYaw, NPC_SELF, 45, 0)
     EndThread
@@ -230,7 +232,7 @@ EvtScript N(EVS_NpcIdle_TheMaster) = {
                 IfNe(LVar1, -1)
                     Call(RemoveKeyItemAt, LVar1)
                 EndIf
-                ExecWait(N(GiveItemReward))
+                ExecWait(EVS_GiveItemReward)
                 Call(AddItem, LVar0, EVT_IGNORE_ARG)
                 IfLt(GB_MAC00_DojoRank, 5)
                     Call(SpeakToPlayer, NPC_TheMaster, ANIM_TheMaster_Talk, ANIM_TheMaster_Idle, 0, MSG_MAC_Gate_0041)
@@ -296,18 +298,18 @@ EvtScript N(EVS_TheMaster_InteractImpl) = {
     EndSwitch
     Call(ContinueSpeech, NPC_TheMaster, ANIM_TheMaster_Talk, ANIM_TheMaster_Idle, 0, LVar1)
     Wait(10)
-    Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Thread
-        Call(func_802D2C14, 1)
+        Call(SetPartnerForcedFollowMode, 1)
         Call(PlayerMoveTo, 348, -364, 20)
         Call(InterpPlayerYaw, 20, 0)
         Wait(20)
-        Call(func_802D2C14, 0)
+        Call(SetPartnerForcedFollowMode, 0)
     EndThread
     Call(NpcMoveTo, NPC_SELF, 375, -400, 30)
     Call(InterpNpcYaw, NPC_TheMaster, 225, 0)
     Wait(30)
-    Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Dojo)))
     Wait(1)
     Call(N(SetDojoBattle))

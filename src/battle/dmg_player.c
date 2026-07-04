@@ -469,7 +469,7 @@ HitResult calc_player_damage_enemy(void) {
             gBattleStatus.flags1 &= ~BS_FLAGS1_HAMMER_CHARGED;
         }
 
-        if (battleStatus->unk_98 != 0) {
+        if (battleStatus->overcharged) {
             currentAttackDamage += 2;
         }
 

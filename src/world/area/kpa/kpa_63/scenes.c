@@ -8,18 +8,17 @@ API_CALLABLE(N(SetPassengerPos)) {
     f32 angle;
     f32 radius;
 
-    if (isInitialCall) {
-        script->functionTemp[0] = evt_get_variable(script, *args++);
-        yBase = evt_get_variable(script, *args++);
-        angle = evt_get_variable(script, *args++);
-        switch (script->functionTemp[0]) {
-            case 0:
-                radius = 0.0f;
-                break;
-            case 1:
-                radius = 5.0f;
-                break;
-        }
+    script->functionTemp[0] = evt_get_variable(script, *args++);
+    yBase = evt_get_variable(script, *args++);
+    angle = evt_get_variable(script, *args++);
+    switch (script->functionTemp[0]) {
+        default:
+        case 0:
+            radius = 0.0f;
+            break;
+        case 1:
+            radius = 5.0f;
+            break;
     }
 
     x = (sin_deg(angle) * radius) + -120.0f;
@@ -44,8 +43,6 @@ API_CALLABLE(N(SetPassengerPos)) {
                 partner->flags |= NPC_FLAG_DIRTY_SHADOW;
             }
             break;
-        default:
-            return ApiStatus_DONE2;
     }
     return ApiStatus_DONE2;
 }
@@ -111,9 +108,9 @@ EvtScript N(EVS_Starship_Depart) = {
     Set(MV_PlayerOnBoard, true)
     Call(InterpPlayerYaw, 225, 0)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Add(LVar2, 10)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcJumpscale, NPC_PARTNER, 1)
     Call(NpcJump0, NPC_PARTNER, LVar0, LVar1, LVar2, 15)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
@@ -133,7 +130,7 @@ EvtScript N(EVS_Starship_Depart) = {
         Call(SetPlayerActionState, ACTION_STATE_LAND)
         Set(MV_PartnerOnBoard, false)
         Call(PartnerIsFlying, LVar0)
-        IfEq(LVar0, true)
+        IfEq(LVar0, false)
             Wait(10)
             Call(SetNpcJumpscale, NPC_PARTNER, 2)
             Call(NpcJump0, NPC_PARTNER, -65, 0, 225, 13)
@@ -175,7 +172,7 @@ EvtScript N(EVS_Starship_Arrive) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(UseSettingsFrom, CAM_DEFAULT, -120, 0, 230)
     Call(SetPanTarget, CAM_DEFAULT, -120, 0, 230)
@@ -217,7 +214,7 @@ EvtScript N(EVS_Starship_Arrive) = {
     Call(DisablePlayerPhysics, false)
     Set(MV_PartnerOnBoard, false)
     Call(PartnerIsFlying, LVar0)
-    IfEq(LVar0, true)
+    IfEq(LVar0, false)
         Wait(10)
         Call(SetNpcJumpscale, NPC_PARTNER, 2)
         Call(NpcJump0, NPC_PARTNER, -65, 0, 225, 13)

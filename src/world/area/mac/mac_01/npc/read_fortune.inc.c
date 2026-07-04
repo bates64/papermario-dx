@@ -1,4 +1,7 @@
-API_CALLABLE(N(func_802440FC_80497C)) {
+#include "../mac_01.h"
+#include "effects.h"
+
+API_CALLABLE(N(FortuneRitualDarkenModels)) {
     if (isInitialCall) {
         set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o283)), CUSTOM_GFX_NONE, ENV_TINT_REMAP);
         set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o279)), CUSTOM_GFX_NONE, ENV_TINT_REMAP);
@@ -17,7 +20,7 @@ API_CALLABLE(N(func_802440FC_80497C)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_802441EC_804A6C)) {
+API_CALLABLE(N(FortuneRitualPulseModels)) {
     if (isInitialCall) {
         script->functionTemp[0] = 64;
         script->functionTemp[2] = 64;
@@ -55,7 +58,7 @@ API_CALLABLE(N(func_802441EC_804A6C)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_80244308_804B88)) {
+API_CALLABLE(N(FortuneRitualRestoreModels)) {
     if (isInitialCall) {
         script->functionTemp[0] = 64;
     }
@@ -73,9 +76,7 @@ API_CALLABLE(N(func_80244308_804B88)) {
     return ApiStatus_BLOCK;
 }
 
-// identical to hos_06 func
-// TODO may not be motionBlurFlame
-API_CALLABLE(N(func_802443E0_804C60)) {
+API_CALLABLE(N(AnimateRitualOrbEffects)) {
     EffectInstance* effects[3];
     Matrix4f sp28, sp68;
     f32 tx;
@@ -107,15 +108,15 @@ API_CALLABLE(N(func_802443E0_804C60)) {
         ty = temp_f28 * cos_deg(temp_f24);
         guTranslateF(sp68, tx, ty, 0.0f);
         guMtxCatF(sp68, sp28, sp28);
-        effects[i]->data.motionBlurFlame->pos.x = sp28[3][0];
-        effects[i]->data.motionBlurFlame->pos.y = sp28[3][1];
-        effects[i]->data.motionBlurFlame->pos.z = sp28[3][2];
+        effects[i]->data.motionBlurFlame->posOffset.x = sp28[3][0];
+        effects[i]->data.motionBlurFlame->posOffset.y = sp28[3][1];
+        effects[i]->data.motionBlurFlame->posOffset.z = sp28[3][2];
     }
 
     script->functionTemp[0]--;
     if (script->functionTemp[0] < 16) {
         for (i = 0; i < ARRAY_COUNT(effects); i++) {
-            effects[i]->data.motionBlurFlame->unk_4C = script->functionTemp[0];
+            effects[i]->data.motionBlurFlame->alpha = script->functionTemp[0];
         }
     }
 
@@ -128,13 +129,11 @@ API_CALLABLE(N(func_802443E0_804C60)) {
     return ApiStatus_BLOCK;
 }
 
-// identical to hos_06 func
-API_CALLABLE(N(func_802446AC_804F2C)) {
+API_CALLABLE(N(SetEnergyOrbBright)) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
-    // TODO effect may be wrong
-    effect->data.energyOrbWave->unk_1C++;
+    effect->data.energyOrbWave->mode++;
     return ApiStatus_DONE2;
 }
 
@@ -207,14 +206,14 @@ EvtScript N(EVS_Merlon_ReadFortuneFX) = {
     Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_RaiseArms)
     Call(GetModelCenter, MODEL_tama)
     Call(PlaySoundAt, SOUND_LRAW_CRYSTAL_BALL_GLOW, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 0, LVar0, LVar1, LVar2, Float(1.0), -1)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_GREEN_ORB, LVar0, LVar1, LVar2, Float(1.0), -1)
     Set(ArrayVar(1), LVarF)
     Wait(30)
     Set(ArrayVar(6), 0)
     Exec(N(EVS_Merlon_AnimateDiscoBall))
     Wait(30)
     Thread
-        Call(N(func_802440FC_80497C))
+        Call(N(FortuneRitualDarkenModels))
     EndThread
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -242,32 +241,32 @@ EvtScript N(EVS_Merlon_ReadFortuneFX) = {
     PlayEffect(EFFECT_MOTION_BLUR_FLAME, 0, LVar0, LVar1, LVar2, 1, -1)
     Set(ArrayVar(5), LVarF)
     Thread
-        Call(N(func_802443E0_804C60))
+        Call(N(AnimateRitualOrbEffects))
     EndThread
     Wait(50)
     Call(GetModelCenter, MODEL_tama)
     Call(PlaySoundAt, SOUND_CRYSTAL_BALL_WAVE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 3, LVar0, LVar1, LVar2, Float(0.5), 20)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_GREEN_WAVE, LVar0, LVar1, LVar2, Float(0.5), 20)
     Wait(30)
     Call(GetModelCenter, MODEL_tama)
     Call(PlaySoundAt, SOUND_CRYSTAL_BALL_WAVE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 3, LVar0, LVar1, LVar2, Float(0.5), 20)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_GREEN_WAVE, LVar0, LVar1, LVar2, Float(0.5), 20)
     Wait(30)
     Thread
-        Call(N(func_802441EC_804A6C))
+        Call(N(FortuneRitualPulseModels))
     EndThread
     Call(GetModelCenter, MODEL_tama)
     Call(PlaySoundAt, SOUND_CRYSTAL_BALL_WAVE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, Float(0.5), 20)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, Float(0.5), 20)
     Wait(70)
     Call(DismissEffect, ArrayVar(2))
     Wait(40)
     Call(PlaySoundAt, SOUND_LRAW_CRYSTAL_BALL_GLOW | SOUND_ID_TRIGGER_CHANGE_SOUND, 0, LVar0, LVar1, LVar2)
-    Call(N(func_802446AC_804F2C), ArrayVar(1))
+    Call(N(SetEnergyOrbBright), ArrayVar(1))
     Wait(15)
     Call(DismissEffect, ArrayVar(1))
     Thread
-        Call(N(func_80244308_804B88))
+        Call(N(FortuneRitualRestoreModels))
     EndThread
     Wait(46)
     Set(ArrayVar(6), 2)

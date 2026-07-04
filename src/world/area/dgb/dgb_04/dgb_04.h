@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file dgb_04.h
 /// @brief Tubba's Castle - Stairs to Basement
 

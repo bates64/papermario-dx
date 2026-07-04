@@ -1,13 +1,11 @@
 #include "kkj_20.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Toad_Stationary.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
-#include "world/common/complete/ToadHouseBlanketAnim.inc.c"
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
-#include "world/common/todo/GetPeachDisguise.inc.c"
 
 EvtScript N(EVS_OpenDresserDoors) = {
     Call(PlaySoundAtCollider, COLLIDER_o80, SOUND_WOODEN_DOOR_OPEN, 0)
@@ -59,7 +57,7 @@ EvtScript N(EVS_ShakeDresser) = {
 };
 
 EvtScript N(EVS_Inspect_Dresser_Peach) = {
-    Call(N(GetPeachDisguise), LVar0)
+    Call(GetPeachDisguise, LVar0)
     IfNe(LVar0, PEACH_DISGUISE_NONE)
         Call(DisablePlayerInput, true)
         Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_Peach_0185)
@@ -79,7 +77,7 @@ EvtScript N(EVS_Inspect_Dresser_Peach) = {
         Call(SetPlayerSpeed, Float(2.0))
         Call(PlayerMoveTo, -50, 0, 0)
         Call(InterpPlayerYaw, 90, 5)
-        Call(func_802CF56C, 2)
+        Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     EndThread
     Wait(10)
     Exec(N(EVS_OpenDresserDoors))
@@ -151,7 +149,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Call(InterpPlayerYaw, 229, 1)
     Call(HidePlayerShadow, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     Thread
         Wait(60)
@@ -202,10 +200,10 @@ EvtScript N(EVS_MeetToadHouseKeeper) = {
     Call(ContinueSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, LVarA)
     Call(SetPlayerJumpscale, 1)
     Call(DisablePlayerPhysics, true)
-    Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(N(ToadHouse_DisableStatusBar))
+    Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(N(ToadHouse_SuspendStatusBar))
     IfNe(LVar4, 0)
-        Exec(N(EVS_ToadHouse_Unk2))
+        Exec(N(EVS_ToadHouse_OpenBedCovers))
     EndIf
     Call(N(ToadHouse_PutPartnerAway), LVarA)
     Wait(20)
@@ -224,9 +222,9 @@ EvtScript N(EVS_MeetToadHouseKeeper) = {
         Call(FullyRestoreHPandFP)
         Call(FullyRestoreSP)
         IfNe(LVar4, 0)
-            Exec(N(EVS_ToadHouse_Unk1))
+            Exec(N(EVS_ToadHouse_ResetBedCovers))
         EndIf
-        Call(N(ToadHouse_GetPartnerBackOut), LVarA)
+        Call(N(ToadHouse_GetPartnerOut), LVarA)
         Wait(30)
         Call(MakeLerp, 255, 0, 30, EASING_LINEAR)
         Loop(0)
@@ -242,9 +240,9 @@ EvtScript N(EVS_MeetToadHouseKeeper) = {
     ExecGetTID(N(EVS_ToadHouse_ReturnFromRest), LVar9)
     Call(N(ToadHouse_AwaitScriptComplete), LVar9)
     Call(DisablePlayerPhysics, false)
-    Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, LVarB)
-    Call(N(ToadHouse_ShowWorldStatusBar))
+    Call(N(ToadHouse_ResumeStatusBar))
     Return
     End
 };
@@ -272,7 +270,7 @@ EvtScript N(EVS_Inspect_Dresser_Mario) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(func_802D1270, -50, 0, Float(2.5))
     Call(InterpPlayerYaw, 90, 5)
-    Call(func_802CF56C, 2)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Wait(10)
     Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_Peach_0186)
     Call(GetNpcPos, NPC_Toad, LVar0, LVar1, LVar2)
@@ -288,7 +286,7 @@ EvtScript N(EVS_Inspect_Dresser_Mario) = {
 EvtScript N(EVS_NpcIdle_Toad) = {
     Call(WaitForPlayerInputEnabled)
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 1)
+    Call(DisablePartnerAI, true)
     Call(SetNpcJumpscale, NPC_PARTNER, Float(0.5))
     Call(NpcJump0, NPC_PARTNER, -86, 40, -25, 15)
     Wait(10)
@@ -343,7 +341,7 @@ NpcData N(NpcData_Toad) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
     .init = &N(EVS_NpcInit_Toad),
-    .settings = &N(NpcSettings_Toad_Stationary),
+    .settings = &N(NpcSettings_Toad),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = TOAD_RED_ANIMS,

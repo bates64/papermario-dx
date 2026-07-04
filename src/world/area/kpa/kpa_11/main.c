@@ -1,7 +1,5 @@
 #include "kpa_11.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_kpa_62_1) = EVT_EXIT_WALK(60, kpa_11_ENTRY_0, "kpa_62", kpa_62_ENTRY_1);
 EvtScript N(EVS_ExitWalk_kpa_12_0) = EVT_EXIT_WALK(60, kpa_11_ENTRY_1, "kpa_12", kpa_12_ENTRY_0);
 EvtScript N(EVS_ExitWalk_kpa_17_1) = EVT_EXIT_WALK(60, kpa_11_ENTRY_2, "kpa_17", kpa_17_ENTRY_1);
@@ -18,9 +16,9 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-EvtScript N(D_80240F04_A537C4) = {
+EvtScript N(EVS_EnterMap) = {
     Call(GetLoadType, LVar0)
-    IfEq(LVar0, 1)
+    IfEq(LVar0, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
         Exec(N(EVS_BindExitTriggers))
         Return
@@ -32,13 +30,13 @@ EvtScript N(D_80240F04_A537C4) = {
     End
 };
 
-EvtScript N(D_80240F84_A53844) = {
+EvtScript N(EVS_StartLavaTexPanners) = {
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
         TEX_PAN_PARAMS_STEP( -400,    0, -800,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o1871, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o1815, TEX_PANNER_0)
@@ -71,12 +69,12 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
-    Exec(N(D_80240F84_A53844))
+    Exec(N(EVS_StartLavaTexPanners))
     IfEq(GF_KPA17_BombedWall, true)
         Call(EnableGroup, MODEL_g301, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittne, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
-    Exec(N(D_80240F04_A537C4))
+    Exec(N(EVS_EnterMap))
     Exec(N(EVS_SetupMusic))
     IfEq(GF_KPA16_ShutOffLava, false)
         Thread

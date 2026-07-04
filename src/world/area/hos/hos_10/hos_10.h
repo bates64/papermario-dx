@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file hos_10.h
 /// @brief Shooting Star Summit - Ending Descent Scene
 
@@ -8,8 +10,6 @@
 #include "../hos.h"
 #include "mapfs/hos_10_shape.h"
 #include "mapfs/hos_10_hit.h"
-
-#include "sprite/npc/Twink.h"
 
 enum {
     NPC_Peach       = 0,
@@ -25,10 +25,17 @@ enum {
 
 enum {
     MV_BubbleFXPtr  = MapVar(0),
-    MV_Unk_01   = MapVar(1),
+    MV_HaloFXPtr    = MapVar(1),
 };
 
 #define NAMESPACE hos_10
+
+#include "sprite/player.h"
+
+#include "world/common/npc/Dummy/idle.h"
+#include "world/common/npc/Peach/base.h"
+#include "world/common/npc/Twink/idle.h"
+#include "world/common/npc/StarSpirit/idle.h"
 
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupMusic);

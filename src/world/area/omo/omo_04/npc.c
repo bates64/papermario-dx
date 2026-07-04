@@ -1,9 +1,9 @@
 #include "omo_04.h"
 
-#include "world/common/enemy/SkyGuy.inc.c"
-#include "world/common/enemy/ShyGuy_Wander.inc.c"
+#include "world/common/enemy/SkyGuy/wander.inc.c"
+#include "world/common/enemy/ShyGuy/wander.inc.c"
 
-#include "world/common/enemy/Goomba.h"
+#include "world/common/enemy/Goomba/base.h"
 
 // level changed from 5 -> 14
 NpcSettings N(NpcSettings_Goomba) = {
@@ -15,8 +15,8 @@ NpcSettings N(NpcSettings_Goomba) = {
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
 };
 
-#include "world/common/enemy/Clubba.inc.c"
-#include "world/common/enemy/Kammy_Flying.inc.c"
+#include "world/common/enemy/Clubba/idle.inc.c"
+#include "world/common/enemy/Kammy/flying.inc.c"
 
 EvtScript N(EVS_NpcIdle_Goomba) = {
     Label(0)
@@ -32,7 +32,7 @@ EvtScript N(EVS_NpcIdle_Goomba) = {
     IfEq(GB_OMO_PeachChoice1, 0)
         Call(SpeakToPlayer, NPC_Goomba, ANIM_Goomba_Run, ANIM_Goomba_Idle, 0, MSG_CH4_003A)
     Else
-        Call(SpeakToPlayer, NPC_Clubba, ANIM_WorldClubba_Anim05, ANIM_WorldClubba_Anim02, 0, MSG_CH4_003B)
+        Call(SpeakToPlayer, NPC_Clubba, ANIM_WorldClubba_Talk, ANIM_WorldClubba_Idle, 0, MSG_CH4_003B)
     EndIf
     Thread
         Call(EnableCameraLeadingPlayer)
@@ -105,7 +105,7 @@ NpcData N(NpcData_Clubba) = {
     .settings = &N(NpcSettings_Clubba),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
-    .animations = CLUBBA_ANIMS_ALT,
+    .animations = CLUBBA_ANIMS,
 };
 
 NpcData N(NpcData_ShyGuy) = {
@@ -147,20 +147,20 @@ NpcData N(NpcData_SkyGuy) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_SkyGuy),
+    .settings = &N(NpcSettings_SkyGuy_Wander),
     .flags = ENEMY_FLAG_FLYING,
     .drops = SKY_GUY_DROPS,
     .animations = SKY_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-AnimID N(ExtraAnims_Kammy)[] = {
-    ANIM_WorldKammy_Anim0E,
-    ANIM_WorldKammy_Anim0F,
-    ANIM_WorldKammy_Anim10,
-    ANIM_WorldKammy_Anim13,
-    ANIM_WorldKammy_Anim15,
-    ANIM_WorldKammy_Anim16,
+AnimID N(LimitAnims_Kammy)[] = {
+    ANIM_WorldKammy_FlyRodTalk,
+    ANIM_WorldKammy_FlyRodCast,
+    ANIM_WorldKammy_FlyBrake,
+    ANIM_WorldKammy_FlyIdleSly,
+    ANIM_WorldKammy_FlyFastSly,
+    ANIM_WorldKammy_FlyTalkSly,
     ANIM_LIST_END
 };
 
@@ -173,7 +173,7 @@ NpcData N(NpcData_Kammy) = {
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = KAMMY_ANIMS,
-    .extraAnimations = N(ExtraAnims_Kammy),
+    .limitAnimations = N(LimitAnims_Kammy),
 };
 
 NpcGroupList N(GoombaAmbushNPCs) = {

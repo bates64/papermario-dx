@@ -39,7 +39,6 @@ u8 filemenu_yesno_gridData[] = {
 MenuWindowBP filemenu_yesno_windowBPs[] = {
     {
         .windowID = WIN_FILES_CONFIRM_OPTIONS,
-        .unk_01 = 0,
         .pos = { .x = 0, .y = 0 },
         .width = 0,
         .height = 0,
@@ -53,7 +52,6 @@ MenuWindowBP filemenu_yesno_windowBPs[] = {
     },
     {
         .windowID = WIN_FILES_CONFIRM_PROMPT,
-        .unk_01 = 0,
         .pos = { .x = 0, .y = 0 },
         .width = 0,
         .height = 0,

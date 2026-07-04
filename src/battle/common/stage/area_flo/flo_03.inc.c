@@ -37,8 +37,7 @@ EvtScript N(EVS_AnimateVines) = {
     End
 };
 
-#include "common/MakeSun.inc.c"
-#include "common/CosInterpMinMax.inc.c"
+#include "battle/common/stage/lib/MakeSun.inc.c"
 
 EvtScript N(EVS_AnimateSmokePuff) = {
     Call(EnableModel, LVarF, true)
@@ -53,10 +52,10 @@ EvtScript N(EVS_AnimateSmokePuff) = {
         MulF(LVar6, Float(1.01))
         AddF(LVar7, Float(0.01))
         SetF(LVar8, LVar6)
-        Call(N(CosInterpMinMax), LVarE, LVarA, Float(0.0), Float(0.203), 15, 0, 0)
+        Call(CosInterpMinMax, LVarE, LVarA, Float(0.0), Float(0.203), 15, 0, 0)
         AddF(LVar8, LVarA)
         SetF(LVar9, LVar7)
-        Call(N(CosInterpMinMax), LVarE, LVarA, Float(0.0), Float(0.203), 20, 0, 90)
+        Call(CosInterpMinMax, LVarE, LVarA, Float(0.0), Float(0.203), 20, 0, 90)
         AddF(LVar9, LVarA)
         SetF(LVarA, LVar0)
         MulF(LVarA, Float(10.0))

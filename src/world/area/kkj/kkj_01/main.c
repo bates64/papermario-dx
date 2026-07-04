@@ -18,7 +18,7 @@ EvtScript N(EVS_ShowMessage_CantOpen) = {
 };
 
 EvtScript N(EVS_BindExitTriggers) = {
-    IfEq(AF_KKJ_01, true)
+    IfEq(AF_KKJ01_MarioLetIntoBedroom, true)
         BindTrigger(Ref(N(EVS_ExitDoors_kkj_14_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
     EndIf
     BindTrigger(Ref(N(EVS_ShowMessage_CantOpen)), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)

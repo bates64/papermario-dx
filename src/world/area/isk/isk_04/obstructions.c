@@ -1,12 +1,7 @@
 #include "isk_04.h"
 #include "effects.h"
 
-#include "world/common/todo/RemovePadlock.inc.c"
-
-s32 N(ItemList_RuinsKey)[] = {
-    ITEM_RUINS_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_RUINS_KEY);
 
 BombTrigger N(BombPos_Wall) = {
     .pos = { 510.0f, 25.0f, -184.0f },
@@ -30,20 +25,19 @@ EvtScript N(EVS_OnBlast_Wall) = {
 
 EvtScript N(EVS_UnlockDoorPrompt) = {
     Call(ShowKeyChoicePopup)
-    IfEq(LVar0, 0)
-        Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
-        Call(CloseChoicePopup)
-        Return
-    EndIf
-    IfEq(LVar0, -1)
-        Call(CloseChoicePopup)
-        Return
-    EndIf
+    Switch(LVar0)
+        CaseEq(ITEM_CHOICE_NONE)
+            Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
+            Call(CloseChoicePopup)
+            Return
+        CaseEq(ITEM_CHOICE_CANCELED)
+            Call(CloseChoicePopup)
+            Return
+    EndSwitch
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, 600, -330, 100)
     Call(RemoveKeyItemAt, LVar1)
     Set(GF_ISK04_UnlockedDoor, true)
-    Set(LVar0, MV_RuinsLockEntityID)
-    Call(N(RemovePadlock))
+    Call(SetEntityUsed, MV_RuinsLockEntityID)
     Set(LVar1, 0)
     Wait(5)
     Call(PlaySoundAtCollider, COLLIDER_deilittsw, SOUND_ISK_DOOR_OPEN, SOUND_SPACE_DEFAULT)
@@ -71,7 +65,7 @@ EvtScript N(EVS_SetupObstructions) = {
     EndIf
     IfEq(GF_ISK04_UnlockedDoor, false)
         Call(MakeTransformGroup, MODEL_g304)
-        BindPadlock(Ref(N(EVS_UnlockDoorPrompt)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(ItemList_RuinsKey)), 0, 1)
+        BindPadlock(Ref(N(EVS_UnlockDoorPrompt)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(KeyList)), 0, 1)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittsw, COLLIDER_FLAGS_UPPER_MASK)
         Call(EnableModel, MODEL_g304, false)

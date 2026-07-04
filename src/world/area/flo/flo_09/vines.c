@@ -1,10 +1,5 @@
 #include "flo_09.h"
 
-// unused extra import for flower-spawning regions
-#define NAMESPACE flo_09_vines
-#include "../common/FlowerSpawnRegion.inc.c"
-#define NAMESPACE flo_09
-
 #include "../common/DroppingVine.inc.c"
 
 EvtScript N(EVS_SetupVines) = {

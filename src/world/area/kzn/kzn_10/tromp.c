@@ -2,8 +2,9 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#define UNK_FUNC_50_LVar1 -469.0
-#define UNK_FUNC_50_LVar2 46.0
+#define SPINY_TROMP_START_Y      46
+#define SPINY_TROMP_START_X    -469
+#define SPINY_TROMP_END_X       418
 
 #include "../common/SpinyTromp.inc.c"
 
@@ -40,8 +41,8 @@ EvtScript N(EVS_SpinyTromp_ManageCamera) = {
         Call(SetCamDistance, CAM_DEFAULT, LVar6)
         Set(LVar0, LVar3)
         Set(LVar2, 0)
-        Call(N(UnkFunc46))
-        Sub(LVar2, 55)
+        Call(N(SpinyTromp_SnapToGround))
+        Sub(LVar2, SPINY_TROMP_RADIUS)
         Call(SetPanTarget, CAM_DEFAULT, LVar3, LVar2, 0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Wait(1)
@@ -50,7 +51,7 @@ EvtScript N(EVS_SpinyTromp_ManageCamera) = {
     End
 };
 
-EvtScript N(D_80241224_C7F3A4) = {
+EvtScript N(EVS_SpinyTromp_Dust) = {
     SetGroup(EVT_GROUP_PASSIVE_NPC)
     Loop(5)
         PlayEffect(EFFECT_DUST, 1, -430, 100, 0, 30)
@@ -111,22 +112,22 @@ EvtScript N(EVS_SetupSpinyTromp) = {
     Call(SetGroupVisibility, MODEL_goron, MODEL_GROUP_VISIBLE)
     Call(EnableModel, MODEL_me, true)
     Call(DisablePlayerInput, true)
-    Set(LVar0, UNK_FUNC_50_LVar1)
+    Set(LVar0, SPINY_TROMP_START_X)
     Set(LVar2, 0)
-    Call(N(UnkFunc46))
+    Call(N(SpinyTromp_SnapToGround))
     Call(MakeLerp, 200, LVar2, 20, EASING_QUADRATIC_IN)
     Label(10)
     Call(UpdateLerp)
-    Set(MV_TrompPosX, UNK_FUNC_50_LVar1)
-    Call(TranslateGroup, MODEL_goron, UNK_FUNC_50_LVar1, LVar0, 0)
-    Call(TranslateModel, MODEL_me, UNK_FUNC_50_LVar1, LVar0, 0)
+    Set(MV_TrompPosX, SPINY_TROMP_START_X)
+    Call(TranslateGroup, MODEL_goron, SPINY_TROMP_START_X, LVar0, 0)
+    Call(TranslateModel, MODEL_me, SPINY_TROMP_START_X, LVar0, 0)
     Wait(1)
     IfEq(LVar1, 1)
         Goto(10)
     EndIf
-    Sub(LVar2, 55)
-    PlayEffect(EFFECT_LANDING_DUST, 4, UNK_FUNC_50_LVar1, LVar2, 0)
-    Exec(N(D_80241224_C7F3A4))
+    Sub(LVar2, SPINY_TROMP_RADIUS)
+    PlayEffect(EFFECT_LANDING_DUST, 4, SPINY_TROMP_START_X, LVar2, 0)
+    Exec(N(EVS_SpinyTromp_Dust))
     Thread
         Call(GetPartnerInUse, LVar0)
         Switch(LVar0)
@@ -155,11 +156,11 @@ EvtScript N(EVS_SetupSpinyTromp) = {
     Call(PlaySoundAt, SOUND_LOOP_TROMP_ROLL, SOUND_SPACE_DEFAULT, -465, 0, 0)
     Set(LVar2, 0)
     Set(LVar3, 0)
-    Call(MakeLerp, UNK_FUNC_50_LVar1, 418, 180, EASING_QUADRATIC_IN)
+    Call(MakeLerp, SPINY_TROMP_START_X, SPINY_TROMP_END_X, 180, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(UnkFunc46))
-        Call(N(UnkFunc51), LVar0, LVar1, LVar2)
+        Call(N(SpinyTromp_SnapToGround))
+        Call(N(SpinyTromp_UpdateSoundPos), LVar0, LVar1, LVar2)
         Set(MV_TrompPosX, LVar0)
         Call(TranslateGroup, MODEL_goron, LVar0, LVar2, 0)
         Call(TranslateModel, MODEL_me, LVar0, LVar2, 0)
@@ -167,16 +168,16 @@ EvtScript N(EVS_SetupSpinyTromp) = {
         Set(LVar9, LVar2)
         Call(RotateGroup, MODEL_goron, LVar3, 0, 0, 1)
         Call(RotateModel, MODEL_me, LVar3, 0, 0, 1)
-        Call(N(UnkFunc49))
+        Call(N(SpinyTromp_UpdateRollWobble))
         Call(TranslateModel, MODEL_me, LVar5, LVar6, 0)
-        Call(N(UnkFunc50))
+        Call(N(SpinyTromp_UpdateRollAngle), SPINY_TROMP_START_X, SPINY_TROMP_START_Y)
         Wait(1)
-        Call(N(SpinyTromp_CheckDist))
+        Call(N(SpinyTromp_GetPlayerDist))
         IfLt(LVar4, 80)
             IfEq(AF_KZN_TrompHitPlayer, false)
                 Call(N(SpinyTromp_GetActingPartner))
                 IfNe(LVar0, PARTNER_BOW)
-                    Exec(N(D_80240D10_C7EE90))
+                    Exec(N(EVS_SpinyTromp_HitPlayer))
                     IfEq(AF_KZN_TrompHitPlayer, false)
                         KillThread(LVarA)
                         Set(AF_KZN_TrompHitPlayer, true)
@@ -206,7 +207,7 @@ EvtScript N(EVS_SetupSpinyTromp) = {
     Thread
         Set(LVar0, 418)
         Set(LVar2, 0)
-        Call(N(UnkFunc46))
+        Call(N(SpinyTromp_SnapToGround))
         PlayEffect(EFFECT_00, LVar0, LVar2, 0, 1, 20, 3, 8)
     EndThread
     Set(LVar0, LVar8)

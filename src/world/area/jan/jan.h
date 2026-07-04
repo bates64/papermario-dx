@@ -1,50 +1,49 @@
-#ifndef _WORLD_AREA_JAN_JAN_H_
-#define _WORLD_AREA_JAN_JAN_H_
+#pragma once
 
-enum {
-    AB_JAN22_ZiplineNpc1            = AreaByte(0),
-    AB_JAN22_ZiplineNpc2            = AreaByte(1),
-    AB_JAN_2                        = AreaByte(2),
-    AB_JAN13_LastPuzzleProgress     = AreaByte(3),
-    AB_JAN_Unused_4                 = AreaByte(4),
-    AB_JAN_Unused_5                 = AreaByte(5),
-    AB_JAN_Unused_6                 = AreaByte(6),
-    AB_JAN_Unused_7                 = AreaByte(7),
-    AB_JAN_Unused_8                 = AreaByte(8),
-    AB_JAN_Unused_9                 = AreaByte(9),
-    AB_JAN_Unused_A                 = AreaByte(10),
-    AB_JAN_Unused_B                 = AreaByte(11),
-    AB_JAN_Unused_C                 = AreaByte(12),
-    AB_JAN_Unused_D                 = AreaByte(13),
-    AB_JAN_Unused_E                 = AreaByte(14),
-    AB_JAN_Unused_F                 = AreaByte(15),
+enum AreaBytesJAN {
+    AB_JAN22_ZiplineNpc1                    = AreaByte(0x0),
+    AB_JAN22_ZiplineNpc2                    = AreaByte(0x1),
+    AB_JAN13_LargeGeyserState               = AreaByte(0x2),
+    AB_JAN13_LastPuzzleProgress             = AreaByte(0x3),
+    AB_JAN_Unused_4                         = AreaByte(0x4),
+    AB_JAN_Unused_5                         = AreaByte(0x5),
+    AB_JAN_Unused_6                         = AreaByte(0x6),
+    AB_JAN_Unused_7                         = AreaByte(0x7),
+    AB_JAN_Unused_8                         = AreaByte(0x8),
+    AB_JAN_Unused_9                         = AreaByte(0x9),
+    AB_JAN_Unused_A                         = AreaByte(0xA),
+    AB_JAN_Unused_B                         = AreaByte(0xB),
+    AB_JAN_Unused_C                         = AreaByte(0xC),
+    AB_JAN_Unused_D                         = AreaByte(0xD),
+    AB_JAN_Unused_E                         = AreaByte(0xE),
+    AB_JAN_Unused_F                         = AreaByte(0xF),
 };
 
-enum {
-    AF_JAN_02                           = AreaFlag(2),
-    AF_JAN_03                           = AreaFlag(3),
-    AF_JAN02_RaphaelComment             = AreaFlag(4),
-    AF_JAN02_MetCouncillor              = AreaFlag(5),
-    AF_JAN_06                           = AreaFlag(6),
-    AF_JAN_07                           = AreaFlag(7),
-    AF_JAN_08                           = AreaFlag(8),
-    AF_JAN01_KoloradoShouting           = AreaFlag(9),
-    AF_JAN_0A                           = AreaFlag(10),
-    AF_JAN22_MisstarReleasedParty       = AreaFlag(11),
-    AF_JAN22_MisstarReleasedKolorado    = AreaFlag(12),
-    AF_JAN00_TreeDrop1                  = AreaFlag(13),
+enum AreaFlagsJAN {
+    // AF_JAN_00 unused
+    // AF_JAN_01 unused
+    AF_JAN_SavedCurrentYoshiKid             = AreaFlag(0x02),
+    AF_JAN_PlayingRaphaelVariant            = AreaFlag(0x03),
+    AF_JAN02_RaphaelComment                 = AreaFlag(0x04),
+    AF_JAN02_MetCouncillor                  = AreaFlag(0x05),
+    AF_JAN03_KoloradoLocalsHint             = AreaFlag(0x06),
+    AF_JAN03_MetSushieDialogue              = AreaFlag(0x07),
+    AF_JAN04_IgnoreSushieTreeHit            = AreaFlag(0x08),
+    AF_JAN01_KoloradoShouting               = AreaFlag(0x09),
+    AF_JAN22_PauseSpearGuyAttack            = AreaFlag(0x0A),
+    AF_JAN22_MisstarReleasedParty           = AreaFlag(0x0B),
+    AF_JAN22_MisstarReleasedKolorado        = AreaFlag(0x0C),
+    AF_JAN00_TreeDrop1                      = AreaFlag(0x0D),
+    AF_JAN01_TreeDrop2                      = AreaFlag(0x0E),
+    AF_JAN01_TreeDrop3                      = AreaFlag(0x0F),
+    AF_JAN01_TreeDrop4                      = AreaFlag(0x10),
+    AF_JAN01_TreeDrop5                      = AreaFlag(0x11),
+    AF_JAN01_TreeDrop6                      = AreaFlag(0x12),
+    AF_JAN01_TreeDrop7                      = AreaFlag(0x13),
+    AF_JAN02_TreeDrop2                      = AreaFlag(0x14),
+    AF_JAN02_TreeDrop3                      = AreaFlag(0x15),
 
-    AF_JAN01_TreeDrop2                  = AreaFlag(14),
-    AF_JAN01_TreeDrop3                  = AreaFlag(15),
-    AF_JAN01_TreeDrop4                  = AreaFlag(16),
-    AF_JAN01_TreeDrop5                  = AreaFlag(17),
-    AF_JAN01_TreeDrop6                  = AreaFlag(18),
-    AF_JAN01_TreeDrop7                  = AreaFlag(19),
-
-    AF_JAN02_TreeDrop2                  = AreaFlag(20),
-    AF_JAN02_TreeDrop3                  = AreaFlag(21),
-    AF_JAN_16                           = AreaFlag(22),
-    AF_JAN03_TreeDrop1                  = AreaFlag(23),
+    // AF_JAN_16 unused
+    AF_JAN03_TreeDrop1                      = AreaFlag(0x17),
+    // AF_JAN_18 - AF_JAN_FF unused
 };
-
-#endif

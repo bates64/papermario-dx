@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_33.h
 /// @brief Bowser's Castle - Upper Grand Hall
 

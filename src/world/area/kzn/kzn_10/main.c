@@ -1,7 +1,5 @@
 #include "kzn_10.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_kzn_09_1) = EVT_EXIT_WALK(60, kzn_10_ENTRY_0, "kzn_09", kzn_09_ENTRY_1);
 EvtScript N(EVS_ExitWalk_kzn_11_0) = EVT_EXIT_WALK(60, kzn_10_ENTRY_1, "kzn_11", kzn_11_ENTRY_0);
 
@@ -12,7 +10,7 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-API_CALLABLE(N(func_8024030C_C7E48C)) {
+API_CALLABLE(N(AwaitCameraFollowEnabled)) {
     if (gPlayerStatus.flags & PS_FLAG_CAMERA_DOESNT_FOLLOW) {
         return ApiStatus_BLOCK;
     } else {
@@ -28,7 +26,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( -200,    0,  600, -400)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End
@@ -50,7 +48,7 @@ EvtScript N(EVS_Main) = {
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Wait(2)
-        Call(N(func_8024030C_C7E48C))
+        Call(N(AwaitCameraFollowEnabled))
         Call(PanToTarget, CAM_DEFAULT, 0, false)
     EndThread
     Set(LVar0, N(EVS_BindExitTriggers))

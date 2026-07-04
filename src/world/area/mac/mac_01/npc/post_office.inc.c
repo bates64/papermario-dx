@@ -1,3 +1,11 @@
+#include "../mac_01.h"
+#include "hud_element.h"
+
+extern IconHudScriptPair gItemHudScripts[];
+
+BSS PopupMenu LetterSelectMenu;
+BSS s32 LetterSelectIdx;
+
 typedef struct PostOfficeEntry {
     /* 0x00 */ s32 partnerID;
     /* 0x04 */ s32 itemID;
@@ -33,40 +41,55 @@ PostOfficeEntry N(PostOfficeLetters)[] = {
     { PARTNER_LAKILESTER, ITEM_LETTER_TO_KOLORADO, LETTER_MESSAGES(Lakilester1) },
 };
 
-API_CALLABLE(N(func_80244E90_805710)) {
-    PlayerData* playerData = &gPlayerData;
-    s32 var_s2 = -1;
-    u32 i;
+enum HasLetterResult {
+    HAS_LETTER_NONE     = -1,
+    HAS_LETTER_READ     = 0,
+    HAS_LETTER_UNREAD   = 1,
+};
+
+API_CALLABLE(N(CheckForUnreadLetters)) {
+    s32 result = HAS_LETTER_NONE;
+    s32 i;
 
     for (i = 0; i < ARRAY_COUNT(N(PostOfficeLetters)); i++) {
-        if (playerData->partners[N(PostOfficeLetters)[i].partnerID].enabled &&
-            evt_get_variable(nullptr, GF_MAC01_UnlockedLetter_00 + i))
-        {
+        if (gPlayerData.partners[N(PostOfficeLetters)[i].partnerID].enabled
+            && evt_get_variable(nullptr, GF_MAC01_UnlockedLetter_00 + i)
+        ) {
             if (!evt_get_variable(nullptr, GF_MAC01_ReadLetter_00 + i)) {
-                var_s2 = 1;
+                // at least one partner has a letter available
+                result = HAS_LETTER_UNREAD;
                 break;
             } else {
-                var_s2 = 0;
+                // at least one partner has a letter unread
+                result = HAS_LETTER_READ;
             }
         }
     }
-    script->varTable[0] = var_s2;
+    script->varTable[0] = result;
     return ApiStatus_DONE2;
 }
 
-s32 func_80244F5C_8057DC(s32 partner) {
-    s32 ret = 0;
-    u32 i;
+enum PartnerLetterStatus {
+    PARTNER_LETTER_NONE     = 0,
+    PARTNER_LETTER_READ     = 1,
+    PARTNER_LETTER_UNREAD   = 2,
+};
+
+s32 N(get_partner_letter_status)(s32 partner) {
+    s32 ret = PARTNER_LETTER_NONE;
+    s32 i;
 
     for (i = 0; i < ARRAY_COUNT(N(PostOfficeLetters)); i++) {
-        if (N(PostOfficeLetters)[i].partnerID == partner &&
-            evt_get_variable(nullptr, GF_MAC01_UnlockedLetter_00 + i))
-        {
-            if (ret == 0) {
-                ret = 1;
+        if (N(PostOfficeLetters)[i].partnerID == partner
+            && evt_get_variable(nullptr, GF_MAC01_UnlockedLetter_00 + i)
+        ) {
+            if (ret == PARTNER_LETTER_NONE) {
+                // at least one letter for this partner is available
+                ret = PARTNER_LETTER_READ;
             }
             if (!evt_get_variable(nullptr, GF_MAC01_ReadLetter_00 + i)) {
-                ret = 2;
+                // at least one letter for this partner is unread
+                ret = PARTNER_LETTER_UNREAD;
                 break;
             }
         }
@@ -74,17 +97,16 @@ s32 func_80244F5C_8057DC(s32 partner) {
     return ret;
 }
 
-API_CALLABLE(N(func_80245018_805898)) {
-    D_80262F68 = 0;
+API_CALLABLE(N(ResetLetterMenuSelection)) {
+    LetterSelectIdx = 0;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80245028_8058A8)) {
-    PopupMenu* menu = &D_80262C38;
-    PartnerPopupProperties* temp_s2;
+API_CALLABLE(N(ShowLetterPartnerMenu)) {
+    PopupMenu* menu = &LetterSelectMenu;
     PlayerData* playerData = &gPlayerData;
     s32 partnerID;
-    s32 cond;
+    s32 hasLetterStatus;
     s32 numEntries;
     s32 i;
 
@@ -94,18 +116,17 @@ API_CALLABLE(N(func_80245028_8058A8)) {
         for (i = 1; i < ARRAY_COUNT(PartnerIDFromMenuIndex); i++) {
             partnerID = PartnerIDFromMenuIndex[i];
             if (playerData->partners[partnerID].enabled && partnerID != PARTNER_GOOMPA) {
-                temp_s2 = &gPartnerPopupProperties[partnerID];
-                cond = func_80244F5C_8057DC(partnerID);
-                if (cond) {
-                    menu->ptrIcon[numEntries] = wPartnerHudScripts[partnerID];
+                hasLetterStatus = N(get_partner_letter_status)(partnerID);
+                if (hasLetterStatus != PARTNER_LETTER_NONE) {
+                    menu->ptrIcon[numEntries] = wPartnerHudScripts[partnerID].enabled;
                     menu->userIndex[numEntries] = partnerID;
                     menu->enabled[numEntries] = true;
-                    menu->nameMsg[numEntries] = temp_s2->nameMsg;
-                    menu->descMsg[numEntries] = temp_s2->worldDescMsg;
+                    menu->nameMsg[numEntries] = gPartnerPopupProperties[partnerID].nameMsg;
+                    menu->descMsg[numEntries] = gPartnerPopupProperties[partnerID].worldDescMsg;
                     menu->value[numEntries] = playerData->partners[partnerID].level;
-                    if (cond == true) {
+                    if (hasLetterStatus == PARTNER_LETTER_READ) {
                         menu->enabled[numEntries] = false;
-                        menu->ptrIcon[numEntries] = wDisabledPartnerHudScripts[partnerID];
+                        menu->ptrIcon[numEntries] = wPartnerHudScripts[partnerID].disabled;
                     }
                     numEntries++;
                 }
@@ -113,7 +134,7 @@ API_CALLABLE(N(func_80245028_8058A8)) {
         }
         menu->popupType = POPUP_MENU_POST_OFFICE;
         menu->numEntries = numEntries;
-        menu->initialPos = D_80262F68;
+        menu->initialPos = LetterSelectIdx;
         create_standard_popup_menu(menu);
         status_bar_respond_to_changes();
         close_status_bar();
@@ -139,18 +160,17 @@ API_CALLABLE(N(func_80245028_8058A8)) {
         script->varTable[1] = -1;
         return ApiStatus_DONE2;
     }
-    partnerID = menu->userIndex[script->functionTemp[1] - 1];
-    script->varTable[1] = partnerID; // TODO required to match (use of partnerID temp)
-    D_80262F68 = script->functionTemp[1] - 1;
+
+    script->varTable[1] = menu->userIndex[script->functionTemp[1] - 1];
+    LetterSelectIdx = script->functionTemp[1] - 1;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_8024522C_805AAC)) {
-    s32 vt10 = script->varTable[10];
-    PopupMenu* menu = &D_80262C38;
+API_CALLABLE(N(ShowLetterListMenu)) {
+    PopupMenu* menu = &LetterSelectMenu;
     IconHudScriptPair* scriptPair;
     s32 letterIdx;
-    s32 hasRead;
+    b32 hasRead;
     s32 isUnlocked;
     s32 numEntries;
     u32 i;
@@ -161,7 +181,7 @@ API_CALLABLE(N(func_8024522C_805AAC)) {
         for (i = 0; i < ARRAY_COUNT(N(PostOfficeLetters)); i++) {
             isUnlocked = evt_get_variable(nullptr, GF_MAC01_UnlockedLetter_00 + i);
             hasRead = evt_get_variable(nullptr, GF_MAC01_ReadLetter_00 + i);
-            if (isUnlocked && vt10 == N(PostOfficeLetters)[i].partnerID) {
+            if (isUnlocked && script->varTable[10] == N(PostOfficeLetters)[i].partnerID) {
                 scriptPair = &gItemHudScripts[gItemTable[84].hudElemID];
                 menu->userIndex[numEntries] = i;
                 menu->nameMsg[numEntries] = N(PostOfficeLetters)[i].letterFromMessage;
@@ -212,7 +232,7 @@ API_CALLABLE(N(func_8024522C_805AAC)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80245440_805CC0)) {
+API_CALLABLE(N(GetLetterPartnerOut)) {
     if (gPlayerData.curPartner == script->varTable[10]) {
         script->varTable[1] = 0;
         return ApiStatus_DONE2;
@@ -222,41 +242,21 @@ API_CALLABLE(N(func_80245440_805CC0)) {
     return ApiStatus_DONE2;
 }
 
-#if VERSION_JP
-EvtScript N(D_80256C10_81EF80) = {
-    IfEq(GF_MAC01_Met_Postmaster, false)
-        Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_00EA)
-        Set(GF_MAC01_Met_Postmaster, true)
-    Else
-        Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_00EB)
-    EndIf
-    Return
-    End
-};
-#endif
-
-s32 N(ItemList_Mailbag)[] = {
-    ITEM_MAILBAG,
-    ITEM_NONE
-};
-
 EvtScript N(EVS_ItemPrompt_Mailbag) = {
     Call(FindItem, ITEM_MAILBAG, LVar0)
     IfEq(LVar0, -1)
         Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0060)
     Else
         Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0061)
-        Set(LVar0, Ref(N(ItemList_Mailbag)))
-        Set(LVar1, 3)
-        ExecWait(N(EVS_ChooseKeyItem))
+        EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_MAILBAG, NPC_Postmaster)
         Switch(LVar0)
-            CaseEq(-1)
+            CaseEq(ITEM_CHOICE_CANCELED)
                 Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0063)
             CaseDefault
                 Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0062)
                 Set(GF_MAC01_MailbagReturned, true)
                 Wait(10)
-                EVT_GIVE_STAR_PIECE()
+                EVT_GIVE_REWARD(ITEM_STAR_PIECE)
                 Wait(10)
         EndSwitch
     EndIf
@@ -273,67 +273,61 @@ EvtScript N(EVS_NpcInteract_Postmaster) = {
     EndIf
     IfEq(GF_MAC01_Met_Postmaster, false)
         Set(GF_MAC01_Met_Postmaster, true)
-        Call(N(func_80244E90_805710))
+        Call(N(CheckForUnreadLetters))
         Switch(LVar0)
-            CaseEq(-1)
-#if VERSION_JP
-                Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_00EA)
-#endif
+            CaseEq(HAS_LETTER_NONE)
                 Return
-            CaseEq(1)
+            CaseEq(HAS_LETTER_UNREAD)
                 Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0055)
         EndSwitch
     Else
-        Call(N(func_80244E90_805710))
+        Call(N(CheckForUnreadLetters))
         Switch(LVar0)
-            CaseEq(-1)
-#if VERSION_JP
-                Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_00EB)
-#endif
+            CaseEq(HAS_LETTER_NONE)
                 Return
-            CaseEq(0)
+            CaseEq(HAS_LETTER_READ)
                 Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0057)
-            CaseEq(1)
+            CaseEq(HAS_LETTER_UNREAD)
                 Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0056)
         EndSwitch
     EndIf
-    Call(N(func_80245018_805898))
+    Call(N(ResetLetterMenuSelection))
     Label(0)
-    Call(N(func_80245028_8058A8))
-    Wait(5)
-    IfEq(LVar1, -1)
-        Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0059)
+        Call(N(ShowLetterPartnerMenu))
+        Wait(5)
+        IfEq(LVar1, -1)
+            Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0059)
+            Call(ShowChoice, MSG_Choice_000D)
+            Call(CloseMessage)
+            IfEq(LVar0, 0)
+                Goto(99)
+            Else
+                Goto(0)
+            EndIf
+        EndIf
+        Set(LVarA, LVar1)
+        Call(N(ShowLetterListMenu))
+        Wait(5)
+        IfEq(LVar1, -1)
+            Goto(0)
+        EndIf
+        Call(N(GetLetterPartnerOut))
+        IfEq(LVar1, 1)
+            Wait(30)
+            Call(InterpNpcYaw, NPC_PARTNER, 90, 1)
+        EndIf
+        Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_005C)
+        Call(ShowMessageAtScreenPos, LVar0, 160, 40)
+        Wait(5)
+        IfLt(GB_StoryProgress, STORY_CH1_DEFEATED_JR_TROOPA)
+            Goto(99)
+        EndIf
+        Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_005A)
         Call(ShowChoice, MSG_Choice_000D)
         Call(CloseMessage)
         IfEq(LVar0, 0)
-            Goto(99)
-        Else
             Goto(0)
         EndIf
-    EndIf
-    Set(LVarA, LVar1)
-    Call(N(func_8024522C_805AAC))
-    Wait(5)
-    IfEq(LVar1, -1)
-        Goto(0)
-    EndIf
-    Call(N(func_80245440_805CC0))
-    IfEq(LVar1, 1)
-        Wait(30)
-        Call(InterpNpcYaw, NPC_PARTNER, 90, 1)
-    EndIf
-    Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_005C)
-    Call(ShowMessageAtScreenPos, LVar0, 160, 40)
-    Wait(5)
-    IfLt(GB_StoryProgress, STORY_CH1_DEFEATED_JR_TROOPA)
-        Goto(99)
-    EndIf
-    Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_005A)
-    Call(ShowChoice, MSG_Choice_000D)
-    Call(CloseMessage)
-    IfEq(LVar0, 0)
-        Goto(0)
-    EndIf
     Label(99)
     IfEq(GF_MAC01_CheckedForLetters, false)
         Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_005D)
@@ -424,7 +418,7 @@ EvtScript N(EVS_NpcInteract_Parakarry) = {
     End
 };
 
-AnimID N(ExtraAnims_Parakarry)[] = {
+AnimID N(LimitAnims_Parakarry)[] = {
     ANIM_WorldParakarry_Still,
     ANIM_WorldParakarry_Idle,
     ANIM_WorldParakarry_Talk,
@@ -458,7 +452,7 @@ EvtScript N(EVS_CarryItem_PostOfficeShyGuy) = {
 
 EvtScript N(EVS_PostOfficeShyGuy_Escape) = {
     Call(SetNpcPos, NPC_PostOfficeShyGuy, 357, 20, -440)
-    Call(SetNpcAnimation, NPC_PostOfficeShyGuy, ANIM_ShyGuy_Red_Anim04)
+    Call(SetNpcAnimation, NPC_PostOfficeShyGuy, ANIM_ShyGuy_Red_Dash)
     Exec(N(EVS_CarryItem_PostOfficeShyGuy))
     Call(DisablePlayerInput, true)
     Wait(60)
@@ -466,7 +460,7 @@ EvtScript N(EVS_PostOfficeShyGuy_Escape) = {
     Call(NpcJump0, NPC_PostOfficeShyGuy, 247, 20, -440, 20)
     Set(LVar0, 6)
     Call(PlaySoundAtNpc, LVar0, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
-    ExecGetTID(N(D_8024E6F8_80EF78), LVarA)
+    ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVarA)
     Call(NpcMoveTo, NPC_PostOfficeShyGuy, 180, -410, 20)
     Call(NpcMoveTo, NPC_PostOfficeShyGuy, 150, -333, 8)
     KillThread(LVarA)

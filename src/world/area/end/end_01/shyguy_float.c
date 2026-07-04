@@ -1,6 +1,5 @@
 #include "end_01.h"
 
-#include "world/common/atomic/ApplyTint.inc.c"
 
 EvtScript N(EVS_TexPan_ShyGuyFloat_Sides) = {
     Call(EnableTexPanning, MODEL_omo1, true)
@@ -58,10 +57,10 @@ EvtScript N(EVS_ShyGuyFloat_Open) = {
             EndIf
         EndLoop
     EndThread
-    Call(N(SetModelTintMode), APPLY_TINT_MODELS, Ref(N(ShyGuyFloat_InteriorModels)), ENV_TINT_REMAP)
-    Call(N(SetModelTintParams), ENV_TINT_REMAP, 255, 255, 255, 120, 120, 80, 0, 0, 0)
+    Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(N(ShyGuyFloat_InteriorModels)), ENV_TINT_REMAP)
+    Call(SetModelTintParams, ENV_TINT_REMAP, 255, 255, 255, 120, 120, 80, 0, 0, 0)
     Wait(30)
-    Call(N(SetModelTintParams), ENV_TINT_REMAP, 255, 255, 255, 0, 0, 0, 0, 0, 0)
+    Call(SetModelTintParams, ENV_TINT_REMAP, 255, 255, 255, 0, 0, 0, 0, 0, 0)
     Return
     End
 };
@@ -357,7 +356,7 @@ EvtScript N(EVS_ParadePhase_ShyGuyFormation) = {
             Wait(1)
         EndLoop
         Call(SetNpcRotation, NPC_Pratfaller, 0, 0, 0)
-        Call(SetNpcAnimation, NPC_Pratfaller, ANIM_ShyGuy_Red_Anim10)
+        Call(SetNpcAnimation, NPC_Pratfaller, ANIM_ShyGuy_Red_Crashed)
     EndThread
     Call(SetNpcJumpscale, NPC_Pratfaller, Float(1.0))
     Call(GetNpcPos, NPC_Pratfaller, LVar0, LVar1, LVar2)
@@ -368,11 +367,11 @@ EvtScript N(EVS_ParadePhase_ShyGuyFormation) = {
     Wait(80)
     Call(SetNpcRotationPivot, NPC_Pratfaller, 0)
     KillThread(LVarA)
-    Call(SetNpcAnimation, NPC_Pratfaller, ANIM_ShyGuy_Red_Anim01)
+    Call(SetNpcAnimation, NPC_Pratfaller, ANIM_ShyGuy_Red_Idle)
     Call(GetNpcPos, NPC_Pratfaller, LVar0, LVar1, LVar2)
     Add(LVar0, -5)
     Call(NpcJump0, NPC_Pratfaller, LVar0, LVar1, LVar2, 10)
-    Call(SetNpcAnimation, NPC_Pratfaller, ANIM_ShyGuy_Red_Anim04)
+    Call(SetNpcAnimation, NPC_Pratfaller, ANIM_ShyGuy_Red_Dash)
     Call(GetNpcPos, NPC_Pratfaller, LVar0, LVar1, LVar2)
     Add(LVar0, -180)
     Call(NpcMoveTo, NPC_Pratfaller, LVar0, LVar2, 90)

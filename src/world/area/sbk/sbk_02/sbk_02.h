@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sbk_02.h
 /// @brief Dry Dry Desert - N3W1 Ruins Entrance
 
@@ -18,7 +20,7 @@ enum {
 };
 
 enum {
-    MV_Unk_00           = MapVar(0),
+    MV_Effect_Sun       = MapVar(0),
 };
 
 #define NAMESPACE sbk_02

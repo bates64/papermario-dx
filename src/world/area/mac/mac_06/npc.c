@@ -1,34 +1,33 @@
 #include "mac_06.h"
 #include "model.h"
 #include "effects.h"
+#include "world/common/prefab/Whale.h"
 
 #define CLONED_MODEL_GULL   CLONED_MODEL(1000)
-#define CLONED_MODEL_UNUSED CLONED_MODEL(0)
 
-NpcSettings N(NpcSettings_Whale) = {
-    .height = 24,
-    .radius = 48,
-    .level = ACTOR_LEVEL_NONE,
+#include "world/common/npc/Whale/idle.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/npc/JrTroopa/idle.inc.c"
+
+enum WhaleRider {
+    WHALE_RIDER_PLAYER      = 0,
+    WHALE_RIDER_PARTNER     = 1,
+    WHALE_RIDER_KOLORADO    = 2,
 };
 
-NpcSettings N(NpcSettings_Kolorado) = {
-    .height = 40,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
+enum WhaleSpoutState {
+    SPOUT_STATE_READY       = 0,
+    SPOUT_STATE_BEGIN       = 10,
+    SPOUT_STATE_RISING      = 11,
+    SPOUT_STATE_FALLING     = 12,
 };
 
-NpcSettings N(NpcSettings_JrTroopa) = {
-    .height = 32,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+s32 N(SpoutState) = SPOUT_STATE_READY;
+f32 N(SpoutHeight) = 0.0f;
+f32 N(SpoutVelocity) = 0.0f;
+s32 N(SpoutInputWindow) = 0;
 
-f32 D_80243434_867F74 = 0.0f;
-f32 D_80243438_867F78 = 0.0f;
-s32 D_8024343C_867F7C = 0;
-s32 D_80243440_867F80 = 0;
-
-API_CALLABLE(N(func_80240E80_8659C0)) {
+API_CALLABLE(N(UpdateWhaleRiderPosition)) {
     Bytecode* args = script->ptrReadPos;
     Npc* whale = get_npc_safe(NPC_Whale);
     Npc* kolorado;
@@ -39,13 +38,13 @@ API_CALLABLE(N(func_80240E80_8659C0)) {
     if (isInitialCall) {
         script->functionTemp[0] = evt_get_variable(script, *args++);
         switch (script->functionTemp[0]) {
-            case 0:
+            case WHALE_RIDER_PLAYER:
                 script->functionTemp[1] = 70;
                 break;
-            case 1:
+            case WHALE_RIDER_PARTNER:
                 script->functionTemp[1] = 100;
                 break;
-            default:
+            case WHALE_RIDER_KOLORADO:
                 script->functionTemp[1] = 40;
                break;
         }
@@ -58,16 +57,16 @@ API_CALLABLE(N(func_80240E80_8659C0)) {
     y = whale->pos.y + 50.0f;
 
     switch (script->functionTemp[0]) {
-        case 0:
+        case WHALE_RIDER_PLAYER:
             gPlayerStatus.pos.x = x;
-            gPlayerStatus.pos.y = y + D_80243434_867F74;
+            gPlayerStatus.pos.y = y + N(SpoutHeight);
             gPlayerStatus.pos.z = z;
             whale->colliderPos.x = whale->pos.x;
             whale->colliderPos.y = whale->pos.y;
             whale->colliderPos.z = whale->pos.z;
             whale->flags |= NPC_FLAG_DIRTY_SHADOW;
             break;
-        case 1:
+        case WHALE_RIDER_PARTNER:
             partner = get_npc_safe(NPC_PARTNER);
             if (partner == nullptr) {
                 return ApiStatus_DONE2;
@@ -80,7 +79,7 @@ API_CALLABLE(N(func_80240E80_8659C0)) {
             partner->colliderPos.z = partner->pos.z;
             partner->flags |= NPC_FLAG_DIRTY_SHADOW;
             break;
-        case 2:
+        case WHALE_RIDER_KOLORADO:
             kolorado = get_npc_safe(NPC_Kolorado);
             kolorado->pos.x = x;
             kolorado->pos.y = y;
@@ -95,90 +94,64 @@ API_CALLABLE(N(func_80240E80_8659C0)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_80241098_865BD8)) {
+// player can press A while riding the whale to make it spout water and toss Mario upward
+API_CALLABLE(N(ManageWhaleSpoutPrompt)) {
     u32 buttons = gGameStatusPtr->pressedButtons[0];
-    Npc* npc = get_npc_safe(NPC_Whale);
+    Npc* whaleNpc = get_npc_safe(NPC_Whale);
 
-    switch (D_8024343C_867F7C) {
-        case 0:
+    switch (N(SpoutState)) {
+        case SPOUT_STATE_READY:
             if (buttons & BUTTON_A) {
-                D_8024343C_867F7C = 10;
+                N(SpoutState) = SPOUT_STATE_BEGIN;
                 break;
             }
-            if (D_80243440_867F80 >= 150) {
+            if (N(SpoutInputWindow) >= 150) {
                 return ApiStatus_DONE2;
             }
-            D_80243440_867F80++;
+            N(SpoutInputWindow)++;
             break;
 
-        case 10:
-            npc->curAnim = ANIM_Kolorado_Shout;
-            D_80243434_867F74 = 0.0f;
-            D_80243438_867F78 = 5.0f;
-            D_8024343C_867F7C = 11;
+        case SPOUT_STATE_BEGIN:
+            whaleNpc->curAnim = XNIM_Whale_Spout;
+            N(SpoutHeight) = 0.0f;
+            N(SpoutVelocity) = 5.0f;
+            N(SpoutState) = SPOUT_STATE_RISING;
             break;
 
-        case 11:
-            D_80243434_867F74 += D_80243438_867F78;
-            if (D_80243434_867F74 < 70.0f) {
-                if (D_80243438_867F78 < 4.0f) {
-                    D_80243438_867F78 = 4.0f;
+        case SPOUT_STATE_RISING:
+            N(SpoutHeight) += N(SpoutVelocity);
+            if (N(SpoutHeight) < 70.0f) {
+                if (N(SpoutVelocity) < 4.0f) {
+                    N(SpoutVelocity) = 4.0f;
                 }
-                D_80243438_867F78 += 1.0f;
+                N(SpoutVelocity) += 1.0f;
             } else {
-                D_80243438_867F78 -= 2.0f;
+                N(SpoutVelocity) -= 2.0f;
             }
-            if (npc->curAnim == ANIM_Kolorado_Idle) {
-                D_80243438_867F78 = 4.0f;
-                D_8024343C_867F7C++;
+            if (whaleNpc->curAnim == XNIM_Whale_Swim) {
+                N(SpoutVelocity) = 4.0f;
+                N(SpoutState) = SPOUT_STATE_FALLING;
             }
             break;
 
-        case 12:
-            D_80243434_867F74 -= D_80243438_867F78;
-            if (D_80243434_867F74 < 0.0f) {
-                D_80243434_867F74 = 0.0f;
+        case SPOUT_STATE_FALLING:
+            N(SpoutHeight) -= N(SpoutVelocity);
+            if (N(SpoutHeight) < 0.0f) {
+                N(SpoutHeight) = 0.0f;
                 return ApiStatus_DONE2;
             }
-            D_80243438_867F78 += 1.0f;
+            N(SpoutVelocity) += 1.0f;
             break;
     }
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_80241290_865DD0)) {
+API_CALLABLE(N(AwaitSkipScenePrompt)) {
     if(gGameStatusPtr->pressedButtons[0] & BUTTON_B) {
         return ApiStatus_DONE2;
     } else {
         return ApiStatus_BLOCK;
     }
-}
-
-API_CALLABLE(N(func_802412AC_865DEC)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 modelID = evt_get_variable(script, *args++);
-    s32 outVarX = *args++;
-    s32 outVarY = *args++;
-    s32 outVarZ = *args++;
-    s32 modelIndex = get_model_list_index_from_tree_index(modelID);
-    Model* model = get_model_from_list_index(modelIndex);
-    f32 x, y, z;
-
-    if (model->flags & MODEL_FLAG_HAS_TRANSFORM) {
-        // get model translation from transform matrix
-        x = model->userTransformMtx[3][0];
-        y = model->userTransformMtx[3][1];
-        z = model->userTransformMtx[3][2];
-    } else {
-        z = 0.0f;
-        y = 0.0f;
-        x = 0.0f;
-    }
-
-    evt_set_float_variable(script, outVarX, x);
-    evt_set_float_variable(script, outVarY, y);
-    evt_set_float_variable(script, outVarZ, z);
-    return ApiStatus_DONE2;
 }
 
 EvtScript N(EVS_NpcIdle_Whale) = {
@@ -187,10 +160,10 @@ EvtScript N(EVS_NpcIdle_Whale) = {
         Call(GetNpcPos, NPC_Whale, LVar0, LVar1, LVar2)
         Call(NpcFlyTo, NPC_Whale, 50, LVar1, 500, 120, 0, EASING_SIN_OUT)
         Thread
-            Call(N(func_80241098_865BD8))
+            Call(N(ManageWhaleSpoutPrompt))
         EndThread
         Wait(150)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Idle)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Swim)
         Call(NpcFlyTo, NPC_Whale, 500, LVar1, 500, 120, 0, EASING_COS_IN)
         IfEq(GF_StartedChapter5, false)
             Set(GF_StartedChapter5, true)
@@ -210,10 +183,10 @@ EvtScript N(EVS_NpcIdle_Whale) = {
         EndIf
         Call(NpcFlyTo, NPC_Whale, -70, LVar1, 500, 120, 0, EASING_SIN_OUT)
         Thread
-            Call(N(func_80241098_865BD8))
+            Call(N(ManageWhaleSpoutPrompt))
         EndThread
         Wait(150)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Idle)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Swim)
         Call(NpcFlyTo, NPC_Whale, -500, LVar1, 500, 120, 0, EASING_COS_IN)
         Call(GotoMap, Ref("mac_05"), mac_05_ENTRY_1)
     EndIf
@@ -221,7 +194,7 @@ EvtScript N(EVS_NpcIdle_Whale) = {
     End
 };
 
-API_CALLABLE(N(SeagullYawInterp)) {
+API_CALLABLE(N(UpdateGullYawInterp)) {
     f32 x1 = evt_get_float_variable(script, LVar1);
     f32 y1 = evt_get_float_variable(script, LVar3);
     f32 x2 = evt_get_float_variable(script, LVar4);
@@ -295,25 +268,25 @@ EvtScript N(EVS_NpcInit_Whale) = {
         Call(SetNpcPos, NPC_SELF, 300, 0, 500)
     EndIf
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Whale)))
-    Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Idle)
+    Call(SetNpcAnimation, NPC_SELF, XNIM_Whale_Swim)
     Call(DisablePlayerPhysics, true)
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Thread
-        Call(N(func_80240E80_8659C0), 0)
+        Call(N(UpdateWhaleRiderPosition), WHALE_RIDER_PLAYER)
     EndThread
     Thread
-        Call(N(func_80240E80_8659C0), 1)
+        Call(N(UpdateWhaleRiderPosition), WHALE_RIDER_PARTNER)
     EndThread
     Thread
         Switch(GB_StoryProgress)
             CaseLt(STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
-                Call(N(func_80240E80_8659C0), 2)
+                Call(N(UpdateWhaleRiderPosition), WHALE_RIDER_KOLORADO)
             CaseEq(STORY_CH5_TRADED_VASE_FOR_SEED)
-                Call(N(func_80240E80_8659C0), 2)
+                Call(N(UpdateWhaleRiderPosition), WHALE_RIDER_KOLORADO)
         EndSwitch
     EndThread
     IfLt(GB_StoryProgress, STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
@@ -325,7 +298,7 @@ EvtScript N(EVS_NpcInit_Whale) = {
         EndIf
     EndIf
     Thread
-        Call(N(func_80241290_865DD0))
+        Call(N(AwaitSkipScenePrompt))
         Call(GetEntryID, LVar0)
         IfEq(LVar0, mac_06_ENTRY_0)
             Call(GotoMap, Ref("jan_00"), jan_00_ENTRY_0)
@@ -373,7 +346,7 @@ EvtScript N(EVS_FlyingGull) = {
             SetF(LVar8, LVar2)
             MulF(LVar8, -1)
             Call(TranslateModel, CLONED_MODEL_GULL, LVar1, LVar8, LVar3)
-            Call(N(SeagullYawInterp))
+            Call(N(UpdateGullYawInterp))
             Call(RotateModel, MODEL_hontai, LVar7, 0, 1, 0)
             Call(RotateModel, CLONED_MODEL_GULL, LVar7, 0, 1, 0)
             Call(RotateModel, CLONED_MODEL_GULL, 180, 0, 0, 1)
@@ -384,86 +357,6 @@ EvtScript N(EVS_FlyingGull) = {
                 Goto(0)
             EndIf
         Goto(10)
-    Return
-    End
-};
-
-EvtScript N(EVS_UnusedGull) = {
-    Call(CloneModel, MODEL_hontai, LVar0)
-    Set(LVarF, LVar0)
-    Set(LFlag0, true)
-    Set(LFlag1, false)
-    SetF(LVar7, 0)
-    Set(LVar8, 0)
-    Set(LVar9, 0)
-    Set(LVarA, 0)
-    Call(RandInt, 200, LVar1)
-    Add(LVar0, -100)
-    Call(RandInt, 50, LVar2)
-    Add(LVar0, 50)
-    Call(RandInt, 200, LVar3)
-    Add(LVar0, -100)
-    Label(10)
-    Label(0)
-    Set(LVarE, LVarF)
-    IfEq(LVarE, CLONED_MODEL_UNUSED)
-        Set(LVarE, 22)
-    Else
-        Add(LVarE, -1)
-    EndIf
-    Call(N(func_802412AC_865DEC), LVarE, MV_Unk_00, MV_Unk_01, MV_Unk_02)
-    SetF(LVar0, MV_Unk_00)
-    SubF(LVar0, LVar1)
-    IfLt(LVar0, 0)
-        AddF(LVar8, -1)
-    Else
-        AddF(LVar8, 1)
-    EndIf
-    IfLe(LVar8, -10)
-        SetF(LVar8, -10)
-    EndIf
-    IfGe(LVar8, 10)
-        SetF(LVar8, 10)
-    EndIf
-    AddF(LVar1, LVar8)
-    SetF(LVar0, MV_Unk_01)
-    SubF(LVar0, LVar2)
-    IfLt(LVar0, 0)
-        AddF(LVar9, -1)
-    Else
-        AddF(LVar9, 1)
-    EndIf
-    IfLe(LVar9, -10)
-        SetF(LVar9, -10)
-    EndIf
-    IfGe(LVar9, 10)
-        SetF(LVar9, 10)
-    EndIf
-    AddF(LVar2, LVar9)
-    SetF(LVar0, MV_Unk_02)
-    SubF(LVar0, LVar3)
-    IfLt(LVar0, 0)
-        AddF(LVarA, -1)
-    Else
-        AddF(LVarA, 1)
-    EndIf
-    IfLe(LVarA, -10)
-        SetF(LVarA, -10)
-    EndIf
-    IfGe(LVarA, 10)
-        SetF(LVarA, 10)
-    EndIf
-    AddF(LVar3, LVarA)
-    Call(TranslateModel, LVarF, LVar1, LVar2, LVar3)
-    Call(N(SeagullYawInterp))
-    Call(RotateModel, LVarF, LVar7, 0, 1, 0)
-    Set(LVar4, LVar1)
-    Set(LVar5, LVar3)
-    Wait(1)
-    IfEq(LVar0, 1)
-        Goto(0)
-    EndIf
-    Goto(10)
     Return
     End
 };
@@ -517,24 +410,7 @@ NpcData N(NpcData_Whale) = {
     .settings = &N(NpcSettings_Whale),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Kolorado_Idle,
-        .walk   = ANIM_Kolorado_Walk,
-        .run    = ANIM_Kolorado_Run,
-        .chase  = ANIM_Kolorado_Run,
-        .anim_4 = ANIM_Kolorado_Idle,
-        .anim_5 = ANIM_Kolorado_Idle,
-        .death  = ANIM_Kolorado_Idle,
-        .hit    = ANIM_Kolorado_Idle,
-        .anim_8 = ANIM_Kolorado_Idle,
-        .anim_9 = ANIM_Kolorado_Idle,
-        .anim_A = ANIM_Kolorado_Idle,
-        .anim_B = ANIM_Kolorado_Idle,
-        .anim_C = ANIM_Kolorado_Idle,
-        .anim_D = ANIM_Kolorado_Idle,
-        .anim_E = ANIM_Kolorado_Idle,
-        .anim_F = ANIM_Kolorado_Idle,
-    },
+    .animations = WHALE_ANIMS,
 };
 
 NpcData N(NpcData_Kolorado) = {
@@ -545,27 +421,10 @@ NpcData N(NpcData_Kolorado) = {
     .settings = &N(NpcSettings_Kolorado),
     .flags = COMMON_PASSIVE_FLAGS,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Kolorado_Idle,
-        .walk   = ANIM_Kolorado_Walk,
-        .run    = ANIM_Kolorado_Run,
-        .chase  = ANIM_Kolorado_Run,
-        .anim_4 = ANIM_Kolorado_Idle,
-        .anim_5 = ANIM_Kolorado_Idle,
-        .death  = ANIM_Kolorado_Idle,
-        .hit    = ANIM_Kolorado_Idle,
-        .anim_8 = ANIM_Kolorado_Idle,
-        .anim_9 = ANIM_Kolorado_Idle,
-        .anim_A = ANIM_Kolorado_Idle,
-        .anim_B = ANIM_Kolorado_Idle,
-        .anim_C = ANIM_Kolorado_Idle,
-        .anim_D = ANIM_Kolorado_Idle,
-        .anim_E = ANIM_Kolorado_Idle,
-        .anim_F = ANIM_Kolorado_Idle,
-    },
+    .animations = KOLORADO_ANIMS,
 };
 
-AnimID N(ExtraAnims_JrTroopa)[] = {
+AnimID N(LimitAnims_JrTroopa)[] = {
     ANIM_JrTroopa_Still,
     ANIM_JrTroopa_Idle,
     ANIM_JrTroopa_ChargeTripped,
@@ -580,25 +439,8 @@ NpcData N(NpcData_JrTroopa) = {
     .settings = &N(NpcSettings_JrTroopa),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_JrTroopa_Idle,
-        .walk   = ANIM_JrTroopa_Walk,
-        .run    = ANIM_JrTroopa_Walk,
-        .chase  = ANIM_JrTroopa_Walk,
-        .anim_4 = ANIM_JrTroopa_Idle,
-        .anim_5 = ANIM_JrTroopa_Idle,
-        .death  = ANIM_JrTroopa_Idle,
-        .hit    = ANIM_JrTroopa_Idle,
-        .anim_8 = ANIM_JrTroopa_Idle,
-        .anim_9 = ANIM_JrTroopa_Idle,
-        .anim_A = ANIM_JrTroopa_Idle,
-        .anim_B = ANIM_JrTroopa_Idle,
-        .anim_C = ANIM_JrTroopa_Idle,
-        .anim_D = ANIM_JrTroopa_Idle,
-        .anim_E = ANIM_JrTroopa_Idle,
-        .anim_F = ANIM_JrTroopa_Idle,
-    },
-    .extraAnimations = N(ExtraAnims_JrTroopa),
+    .animations = JR_TROOPA_ANIMS,
+    .limitAnimations = N(LimitAnims_JrTroopa),
     .tattle = MSG_NpcTattle_JrTroopa,
 };
 

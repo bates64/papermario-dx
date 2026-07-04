@@ -1,14 +1,14 @@
 #include "kpa_95.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/Penguin.inc.c"
+#include "world/common/npc/ToadGuard/idle.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Penguin/idle.inc.c"
 
-#include "world/common/enemy/Koopatrol_Patrol.inc.c"
+#include "world/common/enemy/Koopatrol/patrol.inc.c"
 
-#include "world/common/complete/ToadHouseBlanketAnim.inc.c"
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
 EvtScript N(EVS_ToadHouse_SetDialogue) = {
     Set(LVar0, MSG_CH8_0064)
@@ -43,7 +43,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Call(InterpPlayerYaw, 114, 1)
     Call(HidePlayerShadow, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_2000 | IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_USE_LIGHTING | IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     Wait(61)
     Call(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
@@ -82,39 +82,39 @@ EvtScript N(EVS_NpcInteract_Toad_01) = {
 };
 
 EvtScript N(EVS_NpcInteract_Toad_02) = {
-    Switch(AB_KPA95_Toad2_Dialogue)
+    Switch(AB_KPA95_DialogueState_Toad2)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Blue_Talk, ANIM_Toad_Blue_Idle, 0, MSG_CH8_0069)
-            Set(AB_KPA95_Toad2_Dialogue, 1)
+            Set(AB_KPA95_DialogueState_Toad2, 1)
         CaseEq(1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Blue_Talk, ANIM_Toad_Blue_Idle, 0, MSG_CH8_006A)
-            Set(AB_KPA95_Toad2_Dialogue, 0)
+            Set(AB_KPA95_DialogueState_Toad2, 0)
     EndSwitch
     Return
     End
 };
 
 EvtScript N(EVS_NpcInteract_ToadGuard) = {
-    Switch(AB_KPA95_Toad3_Dialogue)
+    Switch(AB_KPA95_DialogueState_ToadGuard)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Green_Talk, ANIM_ToadGuard_Green_Idle, 0, MSG_CH8_006B)
-            Set(AB_KPA95_Toad3_Dialogue, 1)
+            Set(AB_KPA95_DialogueState_ToadGuard, 1)
         CaseEq(1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Green_Talk, ANIM_ToadGuard_Green_Idle, 0, MSG_CH8_006C)
-            Set(AB_KPA95_Toad3_Dialogue, 0)
+            Set(AB_KPA95_DialogueState_ToadGuard, 0)
     EndSwitch
     Return
     End
 };
 
 EvtScript N(EVS_NpcInteract_Penguin) = {
-    Switch(AB_KPA95_Penguin_Dialogue)
+    Switch(AB_KPA95_DialogueState_Penguin)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Penguin_Talk, ANIM_Penguin_Idle, 0, MSG_CH8_006D)
-            Set(AB_KPA95_Penguin_Dialogue, 1)
+            Set(AB_KPA95_DialogueState_Penguin, 1)
         CaseEq(1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Penguin_Talk, ANIM_Penguin_Idle, 0, MSG_CH8_006E)
-            Set(AB_KPA95_Penguin_Dialogue, 0)
+            Set(AB_KPA95_DialogueState_Penguin, 0)
     EndSwitch
     Return
     End
@@ -160,7 +160,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_Toad_01),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -171,7 +171,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_Toad_02),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -182,7 +182,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
         .init = &N(EVS_NpcInit_ToadGuard),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_ToadGuard),
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_RED_ANIMS,

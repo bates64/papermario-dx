@@ -9,7 +9,6 @@ enum {
     VINE_IDX_5      = 5,
 };
 
-#define PULL_VINE_CALLBACK_SCRIPT MV_PullVineCallback
 #include "../common/PullVine.inc.c"
 
 #include "../common/MoveBush.inc.c"
@@ -81,12 +80,12 @@ EvtScript N(EVS_SetupVines) = {
         Exec(N(EVS_MoveBushes))
     EndIf
     Set(LVarF, MODEL_o28)
-    Set(MV_PullVineCallback, Ref(N(EVS_OnPullVine)))
     Set(LVarD, MODEL_o8)
     Set(LVarE, MODEL_o9)
     Set(LVar9, MODEL_o57)
     Set(LVarA, MODEL_o58)
     Set(LVarB, MODEL_o59)
+    Set(LVar4, Ref(N(EVS_OnPullVine)))
     Set(LVar5, 0)
     Exec(N(EVS_PullVine_Manage))
     Set(LVarC, VINE_IDX_2)
@@ -95,6 +94,7 @@ EvtScript N(EVS_SetupVines) = {
     Set(LVar9, MODEL_o61)
     Set(LVarA, MODEL_o62)
     Set(LVarB, MODEL_o63)
+    Set(LVar4, Ref(N(EVS_OnPullVine)))
     Set(LVar5, 15)
     Exec(N(EVS_PullVine_Manage))
     Set(LVarC, VINE_IDX_3)
@@ -103,6 +103,7 @@ EvtScript N(EVS_SetupVines) = {
     Set(LVar9, MODEL_o65)
     Set(LVarA, MODEL_o67)
     Set(LVarB, MODEL_o2)
+    Set(LVar4, Ref(N(EVS_OnPullVine)))
     Set(LVar5, 15)
     Exec(N(EVS_PullVine_Manage))
     Set(LVarC, VINE_IDX_4)
@@ -111,6 +112,7 @@ EvtScript N(EVS_SetupVines) = {
     Set(LVar9, MODEL_o69)
     Set(LVarA, MODEL_o70)
     Set(LVarB, MODEL_o71)
+    Set(LVar4, Ref(N(EVS_OnPullVine)))
     Set(LVar5, 15)
     Exec(N(EVS_PullVine_Manage))
     Set(LVarC, VINE_IDX_5)
@@ -119,6 +121,7 @@ EvtScript N(EVS_SetupVines) = {
     Set(LVar9, MODEL_o75)
     Set(LVarA, MODEL_o73)
     Set(LVarB, MODEL_o2)
+    Set(LVar4, Ref(N(EVS_OnPullVine)))
     Set(LVar5, 15)
     Exec(N(EVS_PullVine_Manage))
     Return

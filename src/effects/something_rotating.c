@@ -1,6 +1,8 @@
 #include "common.h"
 #include "effects_internal.h"
 
+#define CARD_RING_ANGLE_SPACING (360.0f / 7)
+
 extern Gfx D_09003F98_3FE448[];
 extern Gfx D_09004010_3FE4C0[];
 extern Gfx D_09004088_3FE538[];
@@ -28,7 +30,7 @@ Gfx* D_E0116C70[] = {
     D_09004268_3FE718
 };
 
-Color_RGB8 D_E0116C8C[] = {
+Color_RGB8 CardRingSpiritColors[] = {
     { 255, 224,  65 },
     { 244, 227,  72 },
     { 211, 220,  22 },
@@ -36,10 +38,9 @@ Color_RGB8 D_E0116C8C[] = {
     { 211, 138, 239 },
     { 231, 174, 219 },
     { 255, 200,  11 },
-    {   0,   0,   0 }
 };
 
-s16 D_E0116CA4[] = {
+s16 CardRingSpinAngles[] = {
     0, 60, 120, 180, 240, 300,
     0, 60, 120, 180, 240, 300,
     0, 60, 120, 180, 240, 300,
@@ -48,23 +49,27 @@ s16 D_E0116CA4[] = {
     0
 };
 
-u8 D_E0116CF8[] = {
+u8 CardRingPrimAlphas[] = {
     2, 20, 40, 60, 80, 100, 120, 160, 180, 200, 220, 240, 255
 };
 
-u8 D_E0116D08[] = {
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 20, 40, 60, 80, 100, 120, 160, 180, 200, 220, 240, 255
+u8 CardRingEnvAlphas[] = {
+      0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+      0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+      0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+      0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+     20,  40,  60,  80, 100, 120, 160, 180, 200, 220,
+    240, 255,
 };
 
-u8 D_E0116D3C[] = {
+u8 CardRingColorScales[] = {
     255, 255, 255, 255, 255, 255, 255, 225, 185, 165, 148, 128,
     255, 255, 255, 255, 255, 255, 255, 225, 185, 165, 148, 128,
     255, 255, 255, 255, 255, 255, 255, 225, 185, 165, 148, 128,
-    255, 255, 255, 255, 255, 255, 255, 225, 185, 165, 148, 128
+    255, 255, 255, 255, 255, 255, 255, 225, 185, 165, 148, 128,
 };
 
-u8 D_E0116D6C[] = {
+u8 CardRingScales[] = {
     50, 80, 100, 105, 107, 108, 108, 108, 108, 108, 108, 107, 105, 100, 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
 };
 
@@ -74,12 +79,12 @@ void something_rotating_render(EffectInstance* effect);
 void something_rotating_appendGfx(void* effect);
 
 EffectInstance* something_rotating_main(
-    s32 arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    s32 arg5
+    s32 type,
+    f32 x,
+    f32 y,
+    f32 z,
+    f32 scale,
+    s32 duration
 ) {
     EffectBlueprint bp;
     EffectInstance* effect;
@@ -99,32 +104,32 @@ EffectInstance* something_rotating_main(
     part = effect->data.somethingRotating = general_heap_malloc(numParts * sizeof(*part));
     ASSERT(effect->data.somethingRotating != nullptr);
 
-    part->unk_00 = arg0;
-    part->unk_14 = 0;
-    if (arg5 <= 0) {
-        part->unk_10 = 1000;
+    part->type = type;
+    part->lifetime = 0;
+    if (duration <= 0) {
+        part->timeLeft = 1000;
     } else {
-        part->unk_10 = arg5;
+        part->timeLeft = duration;
     }
-    part->pos.x = arg1;
-    part->pos.y = arg2;
-    part->pos.z = arg3;
-    part->unk_18 = arg4;
-    part->unk_1C = 30.0f;
-    part->unk_20 = 0;
+    part->pos.x = x;
+    part->pos.y = y;
+    part->pos.z = z;
+    part->scale = scale;
+    part->tiltAngle = 30.0f;
+    part->spinAngle = 0.0f;
 
     part++;
     for (i = 1; i < numParts; i++, part++) {
         part->primAlpha = 0;
-        part->unk_18 = arg4 * 0.5;
+        part->scale = scale * 0.5;
         part->env.r = 255;
         part->env.g = 255;
         part->env.b = 0;
-        part->unk_25 = 0;
-        part->unk_1C = 30.0f;
-        part->unk_20 = 0;
-        part->state = 0;
-        part->unk_2C = 50.0f;
+        part->envAlpha = 0;
+        part->tiltAngle = 30.0f;
+        part->spinAngle = 0.0f;
+        part->state = CARD_RING_STATE_IDLE;
+        part->radius = 50.0f;
     }
 
     return effect;
@@ -138,104 +143,103 @@ void something_rotating_update(EffectInstance* effect) {
     f32 x = part->pos.x;
     f32 y = part->pos.y;
     f32 z = part->pos.z;
-    s32 unk_14;
-    s32 unk_14_2;
+    s32 baseTime; // time for base part
+    s32 time;
     f32 factor;
-    f32 angle1;
+    f32 pitch;
     s32 i;
 
     if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
         effect->flags &= ~FX_INSTANCE_FLAG_DISMISS;
-        part->unk_10 = 32;
+        part->timeLeft = 32;
     }
 
-    if (part->unk_10 < 1000) {
-        part->unk_10--;
+    if (part->timeLeft < 1000) {
+        part->timeLeft--;
     }
 
-    part->unk_14++;
+    part->lifetime++;
 
-    if (part->unk_10 < 0) {
+    if (part->timeLeft < 0) {
         remove_effect(effect);
         return;
     }
 
-    unk_14 = part->unk_14;
-    part->unk_20 = 90.0f;
-    angle1 = 90.0f;
+    part->spinAngle = 90.0f;
+    pitch = 90.0f;
+    baseTime = part->lifetime;
 
     part++;
     for (i = 1; i < effect->numParts; i++, part++) {
-        f32 angle2 = unk_14 * 4.0f + (f32) i * 51.43;
-        f32 temp_f24 = sin_deg(angle2);
-        f32 temp_f22 = part->unk_2C;
+        f32 roll = baseTime * 4.0f + i * CARD_RING_ANGLE_SPACING;
+        f32 radial = sin_deg(roll); // xz component
+        f32 radius = part->radius;
 
-        part->pos.x = x + temp_f22 * sin_deg(angle1) * temp_f24;
-        part->pos.y = y + temp_f22 * cos_deg(angle2);
-        part->pos.z = z + temp_f22 * cos_deg(angle1) * temp_f24;
+        part->pos.x = x + radius * sin_deg(pitch) * radial;
+        part->pos.y = y + radius * cos_deg(roll);
+        part->pos.z = z + radius * cos_deg(pitch) * radial;
 
         switch (part->state) {
-            case 1:
-                part->unk_14 = 0;
-                part->state++;
+            case CARD_RING_STATE_CAPTURE_INIT:
+                part->lifetime = 0;
+                part->state = CARD_RING_STATE_CAPTURE;
                 // fallthrough
-            case 2:
-                unk_14_2 = part->unk_14;
+            case CARD_RING_STATE_CAPTURE:
+                time = part->lifetime;
 
-                if (unk_14_2 < ARRAY_COUNT(D_E0116CA4)) {
-                    part->unk_20 = D_E0116CA4[unk_14_2];
+                if (time < ARRAY_COUNT(CardRingSpinAngles)) {
+                    part->spinAngle = CardRingSpinAngles[time];
                 } else {
-                    part->unk_20 = D_E0116CA4[ARRAY_COUNT(D_E0116CA4) - 1];
+                    part->spinAngle = CardRingSpinAngles[ARRAY_COUNT(CardRingSpinAngles) - 1];
                 }
-                if (unk_14_2 < ARRAY_COUNT(D_E0116CF8)) {
-                    part->primAlpha = D_E0116CF8[unk_14_2];
+                if (time < ARRAY_COUNT(CardRingPrimAlphas)) {
+                    part->primAlpha = CardRingPrimAlphas[time];
                 } else {
-                    part->primAlpha = D_E0116CF8[ARRAY_COUNT(D_E0116CF8) - 1];
+                    part->primAlpha = CardRingPrimAlphas[ARRAY_COUNT(CardRingPrimAlphas) - 1];
                 }
-                if (unk_14_2 < ARRAY_COUNT(D_E0116D08)) {
-                    part->unk_25 = D_E0116D08[unk_14_2];
+                if (time < ARRAY_COUNT(CardRingEnvAlphas)) {
+                    part->envAlpha = CardRingEnvAlphas[time];
                 } else {
-                    part->unk_25 = D_E0116D08[ARRAY_COUNT(D_E0116D08) - 1];
-                }
-
-                if (unk_14_2 < ARRAY_COUNT(D_E0116D3C)) {
-                    factor = D_E0116D3C[unk_14_2];
-                } else {
-                    factor = D_E0116D3C[ARRAY_COUNT(D_E0116D3C) - 1];
+                    part->envAlpha = CardRingEnvAlphas[ARRAY_COUNT(CardRingEnvAlphas) - 1];
                 }
 
-                factor *= 0.0039215686; // 1 / 255
-                part->env.r = factor * D_E0116C8C[i - 1].r;
-                part->env.g = factor * D_E0116C8C[i - 1].g;
-                part->env.b = factor * D_E0116C8C[i - 1].b;
-
-                if (unk_14_2 < ARRAY_COUNT(D_E0116D6C)) {
-                    part->unk_18 = (f32) D_E0116D6C[unk_14_2] * 0.01;
+                if (time < ARRAY_COUNT(CardRingColorScales)) {
+                    factor = CardRingColorScales[time];
                 } else {
-                    part->unk_18 = (f32) D_E0116D6C[ARRAY_COUNT(D_E0116D6C) - 1] * 0.01;
+                    factor = CardRingColorScales[ARRAY_COUNT(CardRingColorScales) - 1];
+                }
+
+                factor /= 255.0f;
+                part->env.r = factor * CardRingSpiritColors[i - 1].r;
+                part->env.g = factor * CardRingSpiritColors[i - 1].g;
+                part->env.b = factor * CardRingSpiritColors[i - 1].b;
+
+                if (time < ARRAY_COUNT(CardRingScales)) {
+                    part->scale = (f32) CardRingScales[time] * 0.01;
+                } else {
+                    part->scale = (f32) CardRingScales[ARRAY_COUNT(CardRingScales) - 1] * 0.01;
+                }
+                break;
+            case CARD_RING_STATE_GATHER_INIT:
+                part->lifetime = 0;
+                part->state = CARD_RING_STATE_GATHER;
+                // fallthrough
+            case CARD_RING_STATE_GATHER:
+                time = part->lifetime;
+
+                if (time < 18) {
+                    part->radius = (sin_deg(90 - time * 10) + 1.0f) * 50.0f * 0.5;
+                } else {
+                    part->radius = 0.0f;
+                    part->state = CARD_RING_STATE_DONE;
                 }
 
                 break;
-            case 3:
-                part->unk_14 = 0;
-                part->state++;
-                // fallthrough
-            case 4:
-                unk_14_2 = part->unk_14;
-
-                if (unk_14_2 < 18) {
-                    part->unk_2C = (sin_deg(90 - unk_14_2 * 10) + 1.0f) * 50.0f * 0.5;
-                } else {
-                    part->unk_2C = 0.0f;
-                    part->state++;
-                }
-
-                break;
-            case 5:
+            case CARD_RING_STATE_DONE:
                 break;
         }
 
-        part->unk_14++;
+        part->lifetime++;
     }
 }
 
@@ -252,27 +256,27 @@ void something_rotating_render(EffectInstance* effect) {
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
-void func_E01166E8(s32 arg0, SomethingRotatingFXData* part) {
-    f32 temp;
-    Matrix4f sp20;
-    Matrix4f sp60;
+void something_rotating_transform_card(b32 ignoreCameraYaw, SomethingRotatingFXData* part) {
+    Matrix4f mtxTransform;
+    Matrix4f mtxTemp;
+    f32 yaw;
 
-    if (arg0 == 0) {
-        temp = gCameras[gCurrentCameraID].curYaw;
+    if (!ignoreCameraYaw) {
+        yaw = gCameras[gCurrentCameraID].curYaw;
     } else {
-        temp = 0.0f;
+        yaw = 0.0f;
     }
 
-    guPositionF(sp20, 0.0f, part->unk_20 - temp, 0.0f, part->unk_18,
+    guPositionF(mtxTransform, 0.0f, part->spinAngle - yaw, 0.0f, part->scale,
         part->pos.x + 2.0f,
         part->pos.y,
         part->pos.z + 2.0f
     );
-    guRotateF(sp60, part->unk_1C, 0.0f, 0.0f, 1.0f);
-    guMtxCatF(sp60, sp20, sp20);
-    guTranslateF(sp60, 0.0f, 0.0f, -2.0f);
-    guMtxCatF(sp60, sp20, sp20);
-    guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guRotateF(mtxTemp, part->tiltAngle, 0.0f, 0.0f, 1.0f);
+    guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
+    guTranslateF(mtxTemp, 0.0f, 0.0f, -2.0f);
+    guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
+    guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
               G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -280,7 +284,7 @@ void func_E01166E8(s32 arg0, SomethingRotatingFXData* part) {
 
 void something_rotating_appendGfx(void* effect) {
     SomethingRotatingFXData* data = ((EffectInstance*)effect)->data.somethingRotating;
-    s32 unk_14 = data->unk_14;
+    s32 time = data->lifetime;
     s32 l, t;
     s32 i;
 
@@ -292,24 +296,24 @@ void something_rotating_appendGfx(void* effect) {
 
     data++;
     for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, data++) {
-        if (data->state != 5) {
-            func_E01166E8(1, data);
+        if (data->state != CARD_RING_STATE_DONE) {
+            something_rotating_transform_card(true, data);
             if (data->primAlpha != 255) {
                 gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, data->primAlpha);
-                gDPSetEnvColor(gMainGfxPos++, data->env.r, data->env.g, data->env.b, 0x78);
+                gDPSetEnvColor(gMainGfxPos++, data->env.r, data->env.g, data->env.b, 120);
                 gSPDisplayList(gMainGfxPos++, D_E0116C6C[0]);
 
-                l = ((unk_14 * 4.0f) * 100.0f) * (1.0 / 1024);
-                t = ((unk_14 * 4.0f) * 40.0f) * (1.0 / 1024);
+                l = ((time * 4.0f) * 100.0f) * (1.0 / 1024);
+                t = ((time * 4.0f) * 40.0f) * (1.0 / 1024);
                 gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, l, t, l + 0xFC, t + 0xFC);
 
-                l = ((unk_14 * 4.0f) * 200.0f) * (1.0 / 1024);
-                t = ((unk_14 * 4.0f) * 90.0f) * (1.0 / 1024);
-                gDPSetTileSize(gMainGfxPos++, 1, l, t, l + 0xFC, t + 0xFC);
+                l = ((time * 4.0f) * 200.0f) * (1.0 / 1024);
+                t = ((time * 4.0f) * 90.0f) * (1.0 / 1024);
+                gDPSetTileSize(gMainGfxPos++, G_TX_EXTRA_TILE, l, t, l + 0xFC, t + 0xFC);
                 gSPDisplayList(gMainGfxPos++, D_E0116C64[0]);
             } else {
                 gSPDisplayList(gMainGfxPos++, D_E0116C68[0]);
-                gDPSetEnvColor(gMainGfxPos++, data->env.r, data->env.g, data->env.b, data->unk_25);
+                gDPSetEnvColor(gMainGfxPos++, data->env.r, data->env.g, data->env.b, data->envAlpha);
                 gSPDisplayList(gMainGfxPos++, D_E0116C70[i - 1]);
                 gSPDisplayList(gMainGfxPos++, D_E0116C60[0]);
             }

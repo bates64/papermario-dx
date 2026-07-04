@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mim_08.h
 /// @brief Forever Forest - Laughing Rock
 
@@ -21,7 +23,7 @@ enum {
 };
 
 enum {
-    MV_Unk_00                   = MapVar(0),
+    MV_HitHiveTree      = MapVar(0),
 };
 
 #define NAMESPACE mim_08

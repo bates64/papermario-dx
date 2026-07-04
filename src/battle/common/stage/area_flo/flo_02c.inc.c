@@ -5,7 +5,7 @@
 #define NAMESPACE A(flo_02c)
 
 #include "battle/common/stage/lib/RandomFlowers.inc.c"
-#include "common/MakeSun.inc.c"
+#include "battle/common/stage/lib/MakeSun.inc.c"
 
 EvtScript N(EVS_PreBattle) = {
     Call(SetSpriteShading, SHADING_NONE)

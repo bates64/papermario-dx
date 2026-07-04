@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file jan_08.h
 /// @brief Jade Jungle - SW Jungle (Super Block)
 
@@ -21,9 +23,9 @@ enum {
 };
 
 enum {
-    MV_Unk_00       = MapVar(0),
-    MV_Unk_01       = MapVar(1),
-    MV_SuperBlock   = MapVar(2),
+    MV_BushMoveL        = MapVar(0),
+    MV_BushMoveR        = MapVar(1),
+    MV_SuperBlock       = MapVar(2),
 };
 
 #define NAMESPACE jan_08

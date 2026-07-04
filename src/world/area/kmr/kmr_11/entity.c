@@ -76,15 +76,15 @@ EvtScript N(EVS_MakeEntities) = {
     IfLe(GB_StoryProgress, STORY_CH0_FOUND_GATEHOUSE_SWITCH)
         IfEq(GB_StoryProgress, STORY_CH0_FOUND_GATEHOUSE_SWITCH)
             Call(MakeEntity, Ref(Entity_BlueSwitch), -469, 0, 153, 0, MAKE_ENTITY_END)
-            Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_KMR_04))
+            Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_KMR11_Switch_SelfDestruct))
             Set(MV_SwitchEntityID, LVar0)
-            BindTrigger(Ref(N(EVS_Scene_SelfDestruct)), TRIGGER_AREA_FLAG_SET, AF_KMR_04, 1, 0)
+            BindTrigger(Ref(N(EVS_Scene_SelfDestruct)), TRIGGER_AREA_FLAG_SET, AF_KMR11_Switch_SelfDestruct, 1, 0)
             BindTrigger(Ref(N(EVS_Scene_OverhearEnemies)), TRIGGER_WALL_PRESS_A, COLLIDER_tt, 1, 0)
         Else
             Call(MakeEntity, Ref(Entity_BlueSwitch), NPC_DISPOSE_LOCATION, 0, MAKE_ENTITY_END)
-            Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_KMR_04))
+            Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_KMR11_Switch_SelfDestruct))
             Set(MV_SwitchEntityID, LVar0)
-            BindTrigger(Ref(N(EVS_Scene_SelfDestruct)), TRIGGER_AREA_FLAG_SET, AF_KMR_04, 1, 0)
+            BindTrigger(Ref(N(EVS_Scene_SelfDestruct)), TRIGGER_AREA_FLAG_SET, AF_KMR11_Switch_SelfDestruct, 1, 0)
             BindTrigger(Ref(N(EVS_Scene_OverhearEnemies)), TRIGGER_WALL_PRESS_A, COLLIDER_tt, 1, 0)
         EndIf
     EndIf

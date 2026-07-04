@@ -2,6 +2,7 @@
 #include "script_api/battle.h"
 #include "sprite/npc/BattleBow.h"
 
+#undef NAMESPACE
 #define NAMESPACE A(bow_clone)
 
 extern EvtScript N(EVS_Init);

@@ -2,7 +2,7 @@
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel
 #define AI_SENTINEL_LAST_NPC  NPC_Sentinel
-#include "world/common/enemy/Sentinel.inc.c"
+#include "world/common/enemy/Sentinel/wander.inc.c"
 
 NpcData N(NpcData_Sentinel) = {
     .id = NPC_Sentinel,
@@ -20,7 +20,7 @@ NpcData N(NpcData_Sentinel) = {
             .detectSize = { 80, 150 },
         }
     },
-    .settings = &N(NpcSettings_Sentinel),
+    .settings = &N(NpcSettings_Sentinel_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,

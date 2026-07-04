@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kkj_18.h
 /// @brief Peach's Castle - Dining Room (2F)
 

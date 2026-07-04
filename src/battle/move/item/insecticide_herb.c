@@ -11,7 +11,7 @@
 #include "battle/common/move/ItemRefund.inc.c"
 
 API_CALLABLE(N(func_802A123C_72A98C)) {
-    Actor* enemy = get_actor(script->owner1.enemyID);
+    Actor* enemy = get_actor(script->owner1.actorID);
     Actor* target = get_actor(enemy->targetActorID);
 
     script->varTable[9] = target->actorType == 49;
@@ -20,7 +20,7 @@ API_CALLABLE(N(func_802A123C_72A98C)) {
 }
 
 API_CALLABLE(N(func_802A1280_72A9D0)) {
-    Actor* enemy = get_actor(script->owner1.enemyID);
+    Actor* enemy = get_actor(script->owner1.actorID);
     Actor* target;
 
     sfx_play_sound_at_position(SOUND_DAMAGE_STARS, SOUND_SPACE_DEFAULT, enemy->state.goalPos.x, enemy->state.goalPos.y, enemy->state.goalPos.z);

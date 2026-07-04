@@ -1,7 +1,5 @@
 #include "kzn_22.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_kzn_20_1) = EVT_EXIT_WALK(60, kzn_22_ENTRY_0, "kzn_20", kzn_20_ENTRY_1);
 
 EvtScript N(EVS_BindExitTriggers) = {
@@ -19,7 +17,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP(   0,  700,  200, -300)
         TEX_PAN_PARAMS_FREQ(   1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // lava surface #2
     Thread
@@ -27,7 +25,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( -700,  700,  200, -300)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // lava river
     Call(SetTexPanner, MODEL_yougan1_1, TEX_PANNER_6)
@@ -36,7 +34,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( -1100,    0,  300,  500)
         TEX_PAN_PARAMS_FREQ(     1,    0,    1,    1)
         TEX_PAN_PARAMS_INIT(     0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // lava fall
     Call(SetTexPanner, MODEL_yougan2_2, TEX_PANNER_1)
@@ -45,7 +43,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( 300, -500,    0,    0)
         TEX_PAN_PARAMS_FREQ(   1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // smoke
     Call(SetTexPanner, MODEL_kem1, TEX_PANNER_3)
@@ -54,7 +52,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( -200,    0,  600, -400)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_kem2, TEX_PANNER_4)
     Thread
@@ -62,7 +60,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( 500,    0,    0, -400)
         TEX_PAN_PARAMS_FREQ(   1,    0,    0,    1)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End
@@ -89,7 +87,7 @@ EvtScript N(EVS_InterruptPartnersInLava) = {
     End
 };
 
-API_CALLABLE(N(GetFloorCollider1)) {
+API_CALLABLE(N(GetPlayerFloorCollider1)) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
 
@@ -109,7 +107,7 @@ EvtScript N(EVS_UpdateLavaLevel) = {
         Switch(LVarA)
             CaseEq(0)
                 // state 0: wait for player to stand on one of the steps
-                Call(N(GetFloorCollider1), LVar0)
+                Call(N(GetPlayerFloorCollider1), LVar0)
                 IfEq(LVar0, COLLIDER_o357)
                     Exec(N(EVS_InterruptPartnersInLava))
                     Call(EnableModel, MODEL_yu, true)

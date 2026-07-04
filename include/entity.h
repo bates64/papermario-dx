@@ -3,9 +3,6 @@
 
 #include "common.h"
 
-typedef s32 EntityScript[];
-typedef s32 EntityModelScript[];
-
 extern s32 CreateEntityVarArgBuffer[];
 
 enum {
@@ -66,20 +63,23 @@ enum {
 
 #define BLOCK_GRID_SIZE 25
 
-#define TWEESTER_PATH_STOP 0x80000000
-#define TWEESTER_PATH_LOOP 0x80000001
+#define TWEESTER_PATH_STOP_SENTINEL 0x80000000
+#define TWEESTER_PATH_LOOP_SENTINEL 0x80000001
+
+#define TWEESTER_PATH_STOP { TWEESTER_PATH_STOP_SENTINEL, 0, 0 },
+#define TWEESTER_PATH_LOOP { TWEESTER_PATH_LOOP_SENTINEL, 0, 0 },
 
 typedef struct SaveBlockData {
-    /* 0x000 */ char unk_0[4];
+    /* 0x000 */ PAD(4);
     /* 0x004 */ s16 angle;
-    /* 0x006 */ char unk_6[0x1A];
+    /* 0x006 */ PAD(0x1A);
 } SaveBlockData; // size = 0x20
 
 typedef struct SwitchData {
     /* 0x000 */ f32 fallVel;
     /* 0x004 */ f32 deltaScaleX;
     /* 0x008 */ f32 deltaScaleY;
-    /* 0x00C */ char unk_0C[4];
+    /* 0x00C */ PAD(4);
     /* 0x010 */ s8 animStateScaleX;
     /* 0x011 */ s8 animStateScaleY;
     /* 0x014 */ Vec3f baseScale;
@@ -108,19 +108,19 @@ typedef struct ShatteringBlockData {
 
 typedef struct BlockData {
     /* 0x000 */ u8 parentEntityIndex; // for block entities spawned by other block entities
-    /* 0x001 */ char unk_01[2];
+    /* 0x001 */ PAD(2);
     /* 0x003 */ s8 empty;
     /* 0x004 */ s16 coinsLeft;
     /* 0x006 */ s16 timeLeft;
-    /* 0x008 */ char unk_08[2];
+    /* 0x008 */ PAD(2);
     /* 0x00A */ u16 gameFlagIndex;
-    /* 0x00C */ char unk_0C[2];
+    /* 0x00C */ PAD(2);
     /* 0x00E */ s16 sinkingTimer;
     /* 0x010 */ s16 item; // for spawned item entities
     /* 0x012 */ s16 childEntityIndex; // for block entities that spawn other block entities
     /* 0x014 */ f32 initialY;
     /* 0x018 */ f32 recoilInterpPhase;
-    /* 0x01C */ char unk_1C[0x4];
+    /* 0x01C */ PAD(4);
 } BlockData; // size = 0x20
 
 typedef struct SuperBlockContentData {
@@ -132,7 +132,7 @@ typedef struct SuperBlockContentData {
     /* 0x008 */ u8 paletteTimer;
     /* 0x009 */ u8 paletteArrOffset;
     /* 0x00A */ u8 isHidden;
-    /* 0x00B */ char unk_0B; // padding?
+    /* 0x00B */ PAD(1);
     /* 0x00C */ s32 unk_0C;
     /* 0x010 */ Mtx unk_10;
     /* 0x050 */ Mtx unk_50;
@@ -154,7 +154,7 @@ typedef struct HeartBlockContentData {
     /* 0x008 */ u8 heartbeatTimer;
     /* 0x009 */ u8 unk_09;
     /* 0x00A */ u8 sparkleEffectType;
-    /* 0x00B */ char unk_0B; // padding?
+    /* 0x00B */ PAD(1);
     /* 0x00C */ s32 unk_0C;
     /* 0x010 */ s32 unk_10;
     /* 0x014 */ f32 riseVel;
@@ -173,7 +173,7 @@ typedef struct HeartBlockContentData {
 typedef struct WoodenCrateData {
     /* 0x000 */ s32 itemID;
     /* 0x004 */ u16 globalFlagIndex;
-    /* 0x006 */ u8 unk_06[2];
+    /* 0x006 */ PAD(2);
     /* 0x008 */ Gfx** fragmentsGfx;
     /* 0x00C */ f32 basePosY;
     /* 0x010 */ s8 fragmentRebounds[36];
@@ -205,7 +205,7 @@ typedef struct ChestData {
     /* 0x28 */ f32 giveItemHeightInterpPhase;
     /* 0x2C */ f32 itemVelY;
     /* 0x30 */ s8 gotItemDone;
-    /* 0x31 */ char unk_31[3];
+    /* 0x31 */ PAD(3);
     /* 0x34 */ struct EffectInstance* gotItemEffect;
 } ChestData; // size = 0x38
 
@@ -242,12 +242,12 @@ typedef struct HiddenPanelData {
     /* 0x30 */ f32 rotSpeed;
     /* 0x34 */ Matrix4f entityMatrix;
     /* 0x74 */ u16 modelID;
-    /* 0x76 */ char unk_76[0x2];
+    /* 0x76 */ PAD(2);
     /* 0x78 */ Gfx* renderDList;
 }   HiddenPanelData; // size = 0x7C
 
 typedef struct SignpostData {
-    /* 0x00 */ char unk_00[8];
+    /* 0x00 */ PAD(8);
 } SignpostData; // size = 0x08
 
 typedef struct PadlockData {
@@ -258,7 +258,7 @@ typedef struct PadlockData {
     /* 0x10 */ u8 blinkCounter;
     /* 0x11 */ s8 timer;
     /* 0x12 */ s8 state;
-    /* 0x13 */ char unk_13;
+    /* 0x13 */ PAD(1);
     /* 0x14 */ Mtx* shackleMtx;
     /* 0x18 */ Gfx* shackleGfx;
 } PadlockData; // size = 0x1C
@@ -318,9 +318,9 @@ typedef struct TweesterData {
     /* 0xA6 */ s16 targetY;
     /* 0xA8 */ s16 targetZ;
     /* 0xAA */ s16 pathOffset;
-    /* 0xAC */ char unk_AC[12];
+    /* 0xAC */ PAD(12);
     /* 0xB8 */ f32 yaw;
-    /* 0xBC */ char unk_BC[4];
+    /* 0xBC */ PAD(4);
 } TweesterData; // size = 0xC0;
 
 typedef struct StarBoxLauncherData {
@@ -361,7 +361,7 @@ typedef struct SpinningFlowerData {
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ f32 spinSpeed;
     /* 0x18 */ s32 unk_18;
-    /* 0x1C */ char unk_1C[0x0C];
+    /* 0x1C */ PAD(12);
     /* 0x28 */ Vec3s goalPos;
     /* 0x30 */ Mtx unk_30;
 } SpinningFlowerData; // size = 0x70
@@ -372,7 +372,7 @@ typedef struct TrumpetPlantData {
 
 typedef struct MunchlesiaData {
     /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s8 unk_04[0x8];
+    /* 0x04 */ PAD(8);
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
@@ -447,30 +447,28 @@ extern EntityBlueprint Entity_ArrowSign;
 typedef struct EntityModel {
     /* 0x00 */ s32 flags;
     /* 0x04 */ s8 renderMode;
-    /* 0x05 */ u8 unk_05;
-    /* 0x06 */ u8 unk_06;
-    /* 0x07 */ u8 unk_07;
+    /* 0x05 */ PAD(3);
     /* 0x08 */ f32 nextFrameTime; ///< Set to 1.0 after each update
     /* 0x0C */ f32 timeScale; ///< Default is 1.0
-    /* 0x10 */ EntityModelScript* cmdListReadPos;
+    /* 0x10 */ EntityModelCode* cmdListReadPos;
     /* 0x14 */ union {
-                    Gfx* displayList;
-                    SpriteRasterInfo* imageData;
-               } gfx;
+    /*      */      Gfx* displayList;
+    /*      */      SpriteRasterInfo* imageData;
+    /* 0x14 */ } gfx;
     /* 0x18 */ Mtx transform;
-    /* 0x58 */ EntityModelScript* cmdListSavedPos;
+    /* 0x58 */ EntityModelCode* cmdListSavedPos;
     /* 0x5C */ Vec3s* vertexArray;
-    /* 0x60 */ void (*fpSetupGfxCallback)(void*);
+    /* 0x60 */ DataCallback fpSetupGfxCallback;
     /* 0x64 */ void* setupGfxCallbackArg0;
 } EntityModel; // size = 0x68
 
 typedef EntityModel* EntityModelList[MAX_ENTITY_MODELS];
 
 EntityModel* get_entity_model(s32 idx);
-s32 load_entity_model(EntityModelScript* cmdList);
-s32 ALT_load_entity_model(EntityModelScript* cmdList);
-void entity_set_render_script(Entity* entity, EntityModelScript* cmdList);
-void set_entity_model_render_command_list(s32 idx, EntityModelScript* cmdList);
+s32 load_entity_model(EntityModelCode* cmdList);
+s32 ALT_load_entity_model(EntityModelCode* cmdList);
+void entity_set_render_script(Entity* entity, EntityModelCode* cmdList);
+void set_entity_model_render_command_list(s32 idx, EntityModelCode* cmdList);
 
 void virtual_entity_list_render_world(void);
 void virtual_entity_list_render_UI(void);

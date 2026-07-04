@@ -1,14 +1,10 @@
 #include "flo_09.h"
 
-#include "world/common/enemy/CrazyDayzee.inc.c"
+#include "world/common/enemy/CrazyDayzee/wander.inc.c"
 
-#include "world/common/enemy/Bzzap.inc.c"
+#include "world/common/enemy/Bzzap/wander.inc.c"
 
-NpcSettings N(NpcSettings_Bzzap_02) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/npc/Dummy/idle.inc.c"
 
 EvtScript N(EVS_NpcAI_Bzzap_02) = {
     Loop(0)
@@ -21,7 +17,7 @@ EvtScript N(EVS_NpcAI_Bzzap_02) = {
                     Call(SetNpcJumpscale, NPC_SELF, 0)
                     Call(NpcJump0, NPC_SELF, LVar0, 50, LVar2, 15)
                     Call(SetSelfVar, 0, 1)
-                    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_Bzzap)))
+                    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_Bzzap_Wander)))
                 EndIf
             CaseEq(2)
                 Call(DisablePlayerInput, true)
@@ -74,7 +70,7 @@ NpcData N(NpcData_Dayzee_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee),
+    .settings = &N(NpcSettings_CrazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -97,7 +93,7 @@ NpcData N(NpcData_Dayzee_02) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee),
+    .settings = &N(NpcSettings_CrazyDayzee_Wander),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
@@ -120,7 +116,7 @@ NpcData N(NpcData_Bzzap_01) = {
             .detectSize = { 250 },
         }
     },
-    .settings = &N(NpcSettings_Bzzap),
+    .settings = &N(NpcSettings_Bzzap_Wander),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BZZAP_DROPS,
     .animations = BZZAP_ANIMS,
@@ -144,7 +140,7 @@ NpcData N(NpcData_Bzzap_02) = {
         }
     },
     .init = &N(EVS_NpcInit_Bzzap_02),
-    .settings = &N(NpcSettings_Bzzap_02),
+    .settings = &N(NpcSettings_Dummy),
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BZZAP_DROPS,
     .animations = BZZAP_ANIMS,

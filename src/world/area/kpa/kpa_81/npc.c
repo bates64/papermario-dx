@@ -1,10 +1,7 @@
 #include "kpa_81.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Toad_Stationary.inc.c"
-
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
 EvtScript N(EVS_EnsurePartnerNeutral) = {
     Call(GetPartnerInUse, LVar0)
@@ -134,7 +131,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Call(DisablePlayerInput, true)
     ExecWait(N(EVS_EnsurePartnerNeutral))
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 10)
         Call(EnablePartnerAI)
@@ -144,7 +141,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Label(4)
     ExecWait(N(EVS_EnsurePartnerNeutral))
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 10)
         Call(EnablePartnerAI)
@@ -180,7 +177,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Call(SetPlayerAnimation, ANIM_MarioW2_Flail)
     Wait(30 * DT)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerAnimation, ANIM_MarioW2_PanicStill)
     Wait(10 * DT)
     Call(PlaySoundAtPlayer, SOUND_PLAYER_LONG_FALL, SOUND_SPACE_DEFAULT)
@@ -203,14 +200,14 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Wait(65)
     Call(DisablePlayerInput, false)
     Set(GB_KPA81_BowserDoorState, 1)
-    Call(GotoMap, Ref(N(KPA_17)), kpa_17_ENTRY_0)
+    Call(GotoMap, Ref("kpa_17"), kpa_17_ENTRY_0)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Door) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Door)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcPos, NPC_SELF, 184, 20, 150)
     Return
@@ -222,7 +219,7 @@ NpcData N(NpcData_Door) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
     .init = &N(EVS_NpcInit_Door),
-    .settings = &N(NpcSettings_Toad_Stationary),
+    .settings = &N(NpcSettings_Toad),
     .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
     .drops = NO_DROPS,
     .animations = TOAD_RED_ANIMS,

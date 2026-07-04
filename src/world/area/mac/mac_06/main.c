@@ -1,6 +1,5 @@
 #include "mac_06.h"
-
-#include "world/common/atomic/TexturePan.inc.c"
+#include "effects.h"
 
 API_CALLABLE(N(GetWaveAmplitude)) {
     Bytecode* args = script->ptrReadPos;
@@ -27,8 +26,6 @@ API_CALLABLE(N(GetWaveAmplitude)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/SpawnSunEffect.inc.c"
-
 EvtScript N(EVS_AnimateWaves) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Set(LVarC, 0)
@@ -51,12 +48,12 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     Exec(N(EVS_FlyingGull))
-    Exec(N(EVS_WhaleMain))
+    Exec(N(EVS_SetupWhale))
     Call(SetMusic, 0, SONG_RIDING_THE_WHALE, 0, VOL_LEVEL_FULL)
     Call(PlayAmbientSounds, AMBIENT_BEACH)
     Exec(N(EVS_AnimateWaves))
     Call(SetTexPanner, MODEL_o214, TEX_PANNER_1)
-    Call(N(SpawnSunEffect))
+    Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, mac_06_ENTRY_0)
         Thread
@@ -64,7 +61,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(  400,  150,  200,  -60)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-            Exec(N(EVS_UpdateTexturePan))
+            Exec(EVS_UpdateTexturePan)
         EndThread
     Else
         Thread
@@ -72,7 +69,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP( -400, -150, -200,   60)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-            Exec(N(EVS_UpdateTexturePan))
+            Exec(EVS_UpdateTexturePan)
         EndThread
     EndIf
     Return

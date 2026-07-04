@@ -1,6 +1,6 @@
 #include "tik_05.h"
 
-#include "world/common/enemy/SpikedGloomba_Wander.inc.c"
+#include "world/common/enemy/SpikedGloomba/wander.inc.c"
 
 NpcData N(NpcData_SpikedGloomba_01) = {
     .id = NPC_SpikedGoomba_01,

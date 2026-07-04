@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file jan_04.h
 /// @brief Jade Jungle - Sushi Tree
 
@@ -23,11 +25,6 @@ enum {
 };
 
 enum {
-    MV_Unk_00       = MapVar(0),
-    MV_Unk_01       = MapVar(1),
-};
-
-enum {
     MF_TreeDrop_Letter  = MapFlag(10),
 };
 
@@ -42,11 +39,8 @@ extern EvtScript N(EVS_Scene_TreasureChest);
 extern EvtScript N(EVS_Scene_Epilogue);
 extern EvtScript N(EVS_SetupTrees);
 extern EvtScript N(EVS_SetupBushes);
-extern EvtScript N(EVS_SetupUnused);
 extern EvtScript N(EVS_MakeEntities);
 extern EvtScript N(EVS_PlayDemoScene);
 
 extern NpcGroupList N(DefaultNPCs);
 extern NpcGroupList N(EpilogueNPCs);
-
-API_CALLABLE(N(LoadPartyImage));

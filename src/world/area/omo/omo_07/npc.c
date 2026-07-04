@@ -1,8 +1,10 @@
 #include "omo_07.h"
+#include "world/common/enemy/Fuzzy/base.h"
+#include "world/common/enemy/HammerBros/idle.inc.c"
 
-#include "world/common/enemy/ShyGuy_Wander.inc.c"
-#include "world/common/enemy/ShyGuy_Patrol.inc.c"
-#include "world/common/enemy/SkyGuy.inc.c"
+#include "world/common/enemy/ShyGuy/wander.inc.c"
+#include "world/common/enemy/ShyGuy/patrol.inc.c"
+#include "world/common/enemy/SkyGuy/wander.inc.c"
 
 NpcSettings N(NpcSettings_Fuzzy) = {
     .height = 23,
@@ -13,13 +15,7 @@ NpcSettings N(NpcSettings_Fuzzy) = {
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
 };
 
-NpcSettings N(NpcSettings_HammerBros) = {
-    .height = 36,
-    .radius = 24,
-    .level = ACTOR_LEVEL_HAMMER_BROS,
-};
-
-#include "world/common/enemy/Kammy_Flying.inc.c"
+#include "world/common/enemy/Kammy/flying.inc.c"
 
 // an 'unlimited' number of shy guys walk along the path and emerge from the playhouse
 // they are drawn from a pool of 4 NPCs, with their lifecycle tracked via these states
@@ -169,7 +165,7 @@ EvtScript N(EVS_NpcAI_ShyGuy) = {
                 Call(SetSelfEnemyFlagBits, ENEMY_FLAG_PASSIVE, false)
                 Call(SetNpcPos, NPC_SELF, 800, 0, 75)
                 Call(SetNpcSpeed, NPC_SELF, Float(4.0))
-                Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim03)
+                Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
                 Call(SetNpcSpeed, NPC_SELF, Float(5.0))
                 Call(NpcMoveTo, NPC_SELF, 665, 75, 0)
                 Call(SetNpcSpeed, NPC_SELF, Float(4.0))
@@ -248,7 +244,7 @@ EvtScript N(EVS_NpcDefeat_ShyGuy) = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetSelfEnemyFlagBits, ENEMY_FLAG_PASSIVE, true)
             Call(EnableNpcShadow, NPC_SELF, false)
             Call(SetSelfVar, SHYGUY_VAR_STATE, SHYGUY_STATE_RECYCLE)
@@ -258,9 +254,9 @@ EvtScript N(EVS_NpcDefeat_ShyGuy) = {
             Call(DoNpcDefeat)
             Wait(1)
         CaseEq(OUTCOME_PLAYER_LOST)
-            Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim03)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
         CaseEq(OUTCOME_PLAYER_FLED)
-            Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim03)
+            Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
     EndSwitch
     Return
     End
@@ -285,9 +281,9 @@ EvtScript N(EVS_NpcIdle_Fuzzy) = {
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(SetCamProperties, CAM_DEFAULT, Float(5.0), LVar0, LVar1, LVar2, 300, Float(13.0), Float(-9.5))
     IfEq(GB_OMO_PeachChoice2, 0)
-        Call(SpeakToPlayer, NPC_Fuzzy, ANIM_Fuzzy_Anim0B, ANIM_Fuzzy_Idle, 0, MSG_CH4_003C)
+        Call(SpeakToPlayer, NPC_Fuzzy, ANIM_Fuzzy_Talk, ANIM_Fuzzy_Idle, 0, MSG_CH4_003C)
     Else
-        Call(SpeakToPlayer, NPC_HammerBros, ANIM_HammerBros_Anim0A, ANIM_HammerBros_Anim02, 0, MSG_CH4_003D)
+        Call(SpeakToPlayer, NPC_HammerBros, ANIM_HammerBros_Talk, ANIM_HammerBros_Idle, 0, MSG_CH4_003D)
     EndIf
     Thread
         Call(EnableCameraLeadingPlayer)
@@ -464,24 +460,7 @@ NpcData N(NpcData_Fuzzy) = {
     .settings = &N(NpcSettings_Fuzzy),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Fuzzy_Walk,
-        .walk   = ANIM_Fuzzy_Walk,
-        .run    = ANIM_Fuzzy_Run,
-        .chase  = ANIM_Fuzzy_Run,
-        .anim_4 = ANIM_Fuzzy_Idle,
-        .anim_5 = ANIM_Fuzzy_Idle,
-        .death  = ANIM_Fuzzy_Hurt,
-        .hit    = ANIM_Fuzzy_Hurt,
-        .anim_8 = ANIM_Fuzzy_Run,
-        .anim_9 = ANIM_Fuzzy_Run,
-        .anim_A = ANIM_Fuzzy_Run,
-        .anim_B = ANIM_Fuzzy_Run,
-        .anim_C = ANIM_Fuzzy_Run,
-        .anim_D = ANIM_Fuzzy_Run,
-        .anim_E = ANIM_Fuzzy_Run,
-        .anim_F = ANIM_Fuzzy_Run,
-    },
+    .animations = FUZZY_ANIMS,
 };
 
 NpcData N(NpcData_HammerBros) = {
@@ -492,24 +471,7 @@ NpcData N(NpcData_HammerBros) = {
     .settings = &N(NpcSettings_HammerBros),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_HammerBros_Anim02,
-        .walk   = ANIM_HammerBros_Anim04,
-        .run    = ANIM_HammerBros_Anim07,
-        .chase  = ANIM_HammerBros_Anim07,
-        .anim_4 = ANIM_HammerBros_Anim02,
-        .anim_5 = ANIM_HammerBros_Anim02,
-        .death  = ANIM_HammerBros_Anim0E,
-        .hit    = ANIM_HammerBros_Anim0E,
-        .anim_8 = ANIM_HammerBros_Anim18,
-        .anim_9 = ANIM_HammerBros_Anim19,
-        .anim_A = ANIM_HammerBros_Anim02,
-        .anim_B = ANIM_HammerBros_Anim02,
-        .anim_C = ANIM_HammerBros_Anim02,
-        .anim_D = ANIM_HammerBros_Anim02,
-        .anim_E = ANIM_HammerBros_Anim02,
-        .anim_F = ANIM_HammerBros_Anim02,
-    },
+    .animations = HAMMER_BROS_ANIMS,
 };
 
 NpcData N(NpcData_SkyGuy_01) = {
@@ -528,7 +490,7 @@ NpcData N(NpcData_SkyGuy_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_SkyGuy),
+    .settings = &N(NpcSettings_SkyGuy_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SKY_GUY_DROPS,
     .animations = SKY_GUY_ANIMS,
@@ -551,20 +513,20 @@ NpcData N(NpcData_SkyGuy_02) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_SkyGuy),
+    .settings = &N(NpcSettings_SkyGuy_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SKY_GUY_DROPS,
     .animations = SKY_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-AnimID N(ExtraAnims_Kammy)[] = {
-    ANIM_WorldKammy_Anim0E,
-    ANIM_WorldKammy_Anim0F,
-    ANIM_WorldKammy_Anim10,
-    ANIM_WorldKammy_Anim13,
-    ANIM_WorldKammy_Anim15,
-    ANIM_WorldKammy_Anim16,
+AnimID N(LimitAnims_Kammy)[] = {
+    ANIM_WorldKammy_FlyRodTalk,
+    ANIM_WorldKammy_FlyRodCast,
+    ANIM_WorldKammy_FlyBrake,
+    ANIM_WorldKammy_FlyIdleSly,
+    ANIM_WorldKammy_FlyFastSly,
+    ANIM_WorldKammy_FlyTalkSly,
     ANIM_LIST_END
 };
 
@@ -577,7 +539,7 @@ NpcData N(NpcData_Kammy) = {
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = KAMMY_ANIMS,
-    .extraAnimations = N(ExtraAnims_Kammy),
+    .limitAnimations = N(LimitAnims_Kammy),
 };
 
 NpcGroupList N(FuzzyAmbushNPCs) = {

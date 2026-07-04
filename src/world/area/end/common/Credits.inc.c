@@ -132,7 +132,7 @@ void N(CharAnim_FadeIn_0)(CreditsLine* line, CreditsChar* chr) {
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
-    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_40000 | IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_40, transformMtx);
+    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_UNUSED_C | IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_NO_ZBUFFER, transformMtx);
 
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
@@ -176,7 +176,7 @@ void N(CharAnim_FadeIn_1)(CreditsLine* line, CreditsChar* chr) {
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
-    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_40000 | IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_40, transformMtx);
+    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_UNUSED_C | IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_NO_ZBUFFER, transformMtx);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
@@ -219,7 +219,7 @@ void N(CharAnim_FadeIn_2)(CreditsLine* line, CreditsChar* chr) {
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
-    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_40, transformMtx);
+    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_NO_ZBUFFER, transformMtx);
 
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
@@ -263,7 +263,7 @@ void N(CharAnim_FadeIn_3)(CreditsLine* line, CreditsChar* chr) {
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
-    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_40, transformMtx);
+    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_NO_ZBUFFER, transformMtx);
 
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
@@ -276,7 +276,7 @@ void N(CharAnim_FadeIn_4)(CreditsLine* line, CreditsChar* chr) {
     f32 posX, posY, scaleAmt, rotAngle;
     f32 startX = (line->posX + line->msgWidth) - 16;
     f32 startY = line->posY + 60;
-    u32 imgfxFlags = IMGFX_FLAG_40;
+    u32 imgfxFlags = IMGFX_FLAG_NO_ZBUFFER;
 
     posX = update_lerp(EASING_COS_IN_OUT, startX, chr->posX, chr->fadeInTime, line->appearTime);
     posY = update_lerp(EASING_CUBIC_OUT, startY, chr->posY, chr->fadeInTime, line->appearTime);
@@ -359,7 +359,7 @@ void N(CharAnim_HoldClearImgFX)(CreditsLine* line, CreditsChar* chr) {
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
-    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_40000 | IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_40, transformMtx);
+    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_UNUSED_C | IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_NO_ZBUFFER, transformMtx);
 
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
@@ -404,7 +404,7 @@ void N(CharAnim_FadeOut_0)(CreditsLine* line, CreditsChar* chr) {
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
-    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_40, transformMtx);
+    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_NO_ZBUFFER, transformMtx);
 
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
@@ -439,7 +439,7 @@ void N(CharAnim_FadeOut_1)(CreditsLine* line, CreditsChar* chr) {
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
-    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_40, transformMtx);
+    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_NO_ZBUFFER, transformMtx);
 
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
@@ -474,7 +474,7 @@ void N(CharAnim_FadeOut_2)(CreditsLine* line, CreditsChar* chr) {
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
-    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_40, transformMtx);
+    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_NO_ZBUFFER, transformMtx);
 
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
@@ -723,7 +723,7 @@ void N(credits_update_line)(CreditsLine* line) {
     line->time++;
 }
 
-void N(credits_worker_render)(void) {
+void N(worker_draw_credits)(void) {
     Mtx* projMtx = &N(CreditsProjMatrices)[gCurrentDisplayContextIndex];
     CreditsData* data = N(CreditsDataPtr);
     s32 i;
@@ -795,7 +795,7 @@ void N(init_credits)(void) {
     s32 i;
 
     N(CreditsDataPtr) = &N(CreditsData);
-    N(CreditsData).workerID = create_worker_frontUI(nullptr, N(credits_worker_render));
+    N(CreditsData).workerID = create_worker_frontUI(nullptr, N(worker_draw_credits));
 
     for (i = 0; i < ARRAY_COUNT(N(CreditsData).lines); i++) {
         N(CreditsData).lines[i].flags = 0;

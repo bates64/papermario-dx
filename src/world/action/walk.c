@@ -82,7 +82,7 @@ void action_update_walk(void) {
         return;
     }
 
-    if (fabsf(PrevPlayerCamRelativeYaw - moveAngle) <= 90.0f && abs(moveMag - D_800F7B44) < 20) {
+    if (fabsf(PrevPlayerCamRelativeYaw - moveAngle) <= 90.0f && abs(moveMag) < 20) {
         if (!(playerStatus->animFlags & PA_FLAG_80000000)) {
             if (moveMag >= 20.0f) {
                 playerStatus->targetYaw = moveAngle;

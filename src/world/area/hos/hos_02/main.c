@@ -1,7 +1,7 @@
 #include "hos_02.h"
 #include "world/surfaces.h"
 
-EvtScript N(EVS_ExitStarBeam) = {
+EvtScript N(EVS_ExitStarWarp) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Call(GetPartnerInUse, LVar0)
@@ -17,8 +17,8 @@ EvtScript N(EVS_ExitStarBeam) = {
         EndLoop
     EndIf
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
-    ExecWait(N(EVS_DescendStarBeam))
+    Call(DisablePartnerAI, false)
+    ExecWait(N(EVS_DescendStarWarp))
     Call(GotoMap, Ref("hos_01"), hos_01_ENTRY_1)
     Wait(100)
     Return
@@ -30,17 +30,17 @@ EvtScript N(EVS_ExitWalk_hos_03_0) = EVT_EXIT_WALK(60, hos_02_ENTRY_1, "hos_03",
 EvtScript N(EVS_BindExitTriggers) = {
     Call(GetEntryID, LVar0)
     IfNe(LVar0, hos_02_ENTRY_0)
-        BindTrigger(Ref(N(EVS_ExitStarBeam)), TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
+        BindTrigger(Ref(N(EVS_ExitStarWarp)), TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
     EndIf
     BindTrigger(Ref(N(EVS_ExitWalk_hos_03_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterStarBeam) = {
+EvtScript N(EVS_EnterStarWarp) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(UseSettingsFrom, CAM_DEFAULT, -1105, -171, 225)
     Call(SetPanTarget, CAM_DEFAULT, -1105, -171, 225)
@@ -80,7 +80,7 @@ EvtScript N(EVS_EnterStarBeam) = {
             Goto(10)
         EndIf
     Call(SetNpcRotation, NPC_PARTNER, 0, 0, 0)
-    Call(N(func_80240EF4_A17114), MV_StarBeamEffect)
+    Call(N(SetStarWarpIdleParams), MV_StarWarpEffect)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, true)
     Call(EnablePartnerAI)
     Call(DisablePlayerPhysics, false)
@@ -88,7 +88,7 @@ EvtScript N(EVS_EnterStarBeam) = {
     Call(SetMusic, 0, SONG_STAR_WAY_OPENS, BGM_VARIATION_3, VOL_LEVEL_FULL)
     Call(DisablePlayerInput, false)
     Call(AwaitPlayerLeave, -1105, 225, 40)
-    BindTrigger(Ref(N(EVS_ExitStarBeam)), TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(N(EVS_ExitStarWarp)), TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
     Return
     End
 };
@@ -104,7 +104,7 @@ EvtScript N(EVS_Main) = {
     Switch(LVar0)
         CaseEq(hos_02_ENTRY_0)
             Thread
-                ExecWait(N(EVS_EnterStarBeam))
+                ExecWait(N(EVS_EnterStarWarp))
                 Exec(N(EVS_BindExitTriggers))
             EndThread
         CaseEq(hos_02_ENTRY_1)

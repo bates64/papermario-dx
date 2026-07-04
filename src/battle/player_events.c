@@ -50,14 +50,13 @@ void btl_set_player_idle_anims(void) {
 }
 
 API_CALLABLE(IsPlayerImmobile) {
-    BattleStatus* battleStatus = &gBattleStatus;
-    Actor* playerActor = battleStatus->playerActor;
+    Actor* playerActor = gBattleStatus.playerActor;
     s32 isImmobile = playerActor->debuff == STATUS_KEY_UNUSED
-                     || playerActor->debuff == STATUS_KEY_DIZZY
-                     || playerActor->debuff == STATUS_KEY_PARALYZE
-                     || playerActor->debuff == STATUS_KEY_SLEEP
-                     || playerActor->debuff == STATUS_KEY_FROZEN
-                     || playerActor->debuff == STATUS_KEY_STOP;
+        || playerActor->debuff == STATUS_KEY_DIZZY
+        || playerActor->debuff == STATUS_KEY_PARALYZE
+        || playerActor->debuff == STATUS_KEY_SLEEP
+        || playerActor->debuff == STATUS_KEY_FROZEN
+        || playerActor->debuff == STATUS_KEY_STOP;
 
     if (playerActor->stoneStatus == STATUS_KEY_STONE) {
         isImmobile = true;
@@ -301,12 +300,11 @@ API_CALLABLE(RestorePreDefeatState) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_80261388) {
-    s32 partnerActorExists = gBattleStatus.partnerActor != nullptr;
-
-    script->varTable[0] = false;
-    if (partnerActorExists) {
+API_CALLABLE(DoesPartnerActorExist) {
+    if (gBattleStatus.partnerActor != nullptr) {
         script->varTable[0] = true;
+    } else {
+        script->varTable[0] = false;
     }
     return ApiStatus_DONE2;
 }
@@ -332,7 +330,7 @@ API_CALLABLE(PlayBattleMerleeOrbFX) {
     s32 var2 = evt_get_variable(script, *args++);
     s32 var3 = evt_get_variable(script, *args++);
 
-    fx_energy_orb_wave(9, var1, var2 + 15, var3, 5.0f, 15);
+    fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_BLUE_SHRINK, var1, var2 + 15, var3, 5.0f, 15);
     return ApiStatus_DONE2;
 }
 
@@ -406,8 +404,8 @@ API_CALLABLE(BattleMerleeUpdateFX) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
         BattleMerleeBasePosY = merlee->pos.y;
-        BattleMerleeOrbEffect = fx_energy_orb_wave(0, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.4f, 0);
-        BattleMerleeWaveEffect = fx_energy_orb_wave(3, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.00001f, 0);
+        BattleMerleeOrbEffect = fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_GREEN_ORB, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.4f, 0);
+        BattleMerleeWaveEffect = fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_GREEN_WAVE, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.00001f, 0);
         BattleMerleeEffectsState = MERLEE_EFFECTS_HOLD;
         BattleMerleeEffectsTime = 12;
         sfx_play_sound(SOUND_MAGIC_ASCENDING);
@@ -1436,8 +1434,8 @@ EvtScript EVS_Unused_DrinkItem = {
 EvtScript EVS_UseLifeShroom = {
     Call(UseIdleAnimation, ACTOR_PLAYER, false)
     ChildThread
-        Call(func_80261388)
-        IfEq(LVar0, 1)
+        Call(DoesPartnerActorExist)
+        IfEq(LVar0, true)
             Call(DispatchEvent, ACTOR_PARTNER, EVENT_LIFE_SHROOM_PROC)
             Call(SetActorFlagBits, ACTOR_PARTNER, ACTOR_FLAG_NO_SHADOW, 1)
             Set(LVar0, 255)
@@ -1533,8 +1531,8 @@ EvtScript EVS_UseLifeShroom = {
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 15)
     ChildThread
-        Call(func_80261388)
-        IfEq(LVar0, 1)
+        Call(DoesPartnerActorExist)
+        IfEq(LVar0, true)
             Call(SetActorFlagBits, ACTOR_PARTNER, ACTOR_FLAG_NO_SHADOW, 0)
             Set(LVar0, 0)
             Loop(10)

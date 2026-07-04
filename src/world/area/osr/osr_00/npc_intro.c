@@ -1,6 +1,6 @@
 #include "osr_00.h"
 
-#include "world/common/npc/Luigi.inc.c"
+#include "world/common/npc/Luigi/idle.inc.c"
 
 NpcData N(NpcData_Luigi) = {
     .id = NPC_Luigi,

@@ -1,19 +1,19 @@
 #include "jan_08.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/YoshiKid.inc.c"
-#include "world/common/enemy/MBush.inc.c"
-#include "world/common/enemy/HeartPlant.inc.c"
+#include "world/common/npc/YoshiKid/idle.inc.c"
+#include "world/common/enemy/MBush/idle.inc.c"
+#include "world/common/enemy/HeartPlant/idle.inc.c"
 
-#include "world/common/enemy/HurtPlant.inc.c"
-#include "world/common/enemy/SpearGuy_Wander.inc.c"
+#include "world/common/enemy/HurtPlant/idle.inc.c"
+#include "world/common/enemy/SpearGuy/wander.inc.c"
 
 EvtScript N(EVS_YoshiKid_CryForHelp) = {
-    Set(AF_JAN_02, false)
+    Set(AF_JAN_SavedCurrentYoshiKid, false)
     Loop(0)
         Call(PlaySoundAtNpc, NPC_YoshiKid, SOUND_YOSHI_KID_CRY, SOUND_SPACE_DEFAULT)
         Wait(20)
-        IfEq(AF_JAN_02, true)
+        IfEq(AF_JAN_SavedCurrentYoshiKid, true)
             BreakLoop
         EndIf
     EndLoop
@@ -52,7 +52,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     Call(AdjustCam, CAM_DEFAULT, Float(4.0), -23, 350, Float(17.0), Float(-7.0))
     Call(NpcFacePlayer, NPC_SELF, 0)
     Call(GetCurrentPartnerID, LVar0)
-    Set(AF_JAN_02, true)
+    Set(AF_JAN_SavedCurrentYoshiKid, true)
     Wait(15)
     IfEq(LVar0, PARTNER_SUSHIE)
         Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Red_SadTalk, ANIM_YoshiKid_Red_SadIdle, 0, MSG_CH5_00B0)
@@ -61,7 +61,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     EndIf
     Call(EndSpeech, NPC_SELF, ANIM_YoshiKid_Red_Talk, ANIM_YoshiKid_Red_Idle, 0)
     Thread
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Red_Run)
         Call(SetNpcSpeed, NPC_SELF, Float(5.0))
         Call(NpcMoveTo, NPC_SELF, -418, -60, 0)
@@ -96,7 +96,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
 EvtScript N(EVS_NpcInit_YoshiKid) = {
     IfEq(GB_StoryProgress, STORY_CH5_SUSHIE_JOINED_PARTY)
         IfEq(GF_JAN08_SavedYoshi, false)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(EnableNpcShadow, NPC_SELF, false)
             Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Red_Cry)
             Call(SetNpcYaw, NPC_SELF, 90)
@@ -138,7 +138,7 @@ NpcData N(NpcData_SpearGuy)[] = {
         .settings = &N(NpcSettings_SpearGuy_Wander),
         .drops = SPEAR_GUY_DROPS,
         .animations = SPEAR_GUY_ANIMS,
-        .extraAnimations = N(ExtraAnims_SpearGuy),
+        .limitAnimations = N(LimitAnims_SpearGuy),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     SPEAR_GUY_HITBOX(NPC_SpearGuy_Hitbox)
@@ -152,7 +152,7 @@ NpcData N(NpcData_HurtPlant) = {
     .flags = HURT_PLANT_FLAGS,
     .drops = HURT_PLANT_DROPS,
     .animations = HURT_PLANT_ANIMS,
-    .extraAnimations = N(ExtraAnims_HurtPlant),
+    .limitAnimations = N(LimitAnims_HurtPlant),
     .tattle = MSG_NpcTattle_HeartPlant,
 };
 

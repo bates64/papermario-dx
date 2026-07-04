@@ -1,6 +1,16 @@
 #include "sam_08.h"
+#include "effects.h"
 
-#include "world/common/todo/PlayBigSmokePuff.inc.c"
+API_CALLABLE(N(PlayBigSmokePuff)) {
+    Bytecode* args = script->ptrReadPos;
+    s32 x = evt_get_variable(script, *args++);
+    s32 y = evt_get_variable(script, *args++);
+    s32 z = evt_get_variable(script, *args++);
+
+    fx_big_smoke_puff(x, y, z);
+
+    return ApiStatus_DONE2;
+}
 
 API_CALLABLE(N(AdjustFightingSoundsPos)) {
     Bytecode* args = script->ptrReadPos;
@@ -24,7 +34,7 @@ API_CALLABLE(N(StartFightingRumble)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_TwoKoopesFightingFX) = {
+EvtScript N(EVS_TwoKoopersFightingFX) = {
     Call(PlaySoundAtNpc, NPC_Kooper_01A, SOUND_LOOP_FIGHTING, SOUND_SPACE_DEFAULT)
     Loop(0)
         Call(N(StartFightingRumble), 80, 10)
@@ -56,8 +66,8 @@ EvtScript N(EVS_Scene_ImposterAppears) = {
         EndIf
     EndThread
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INVISIBLE, true)
-    Call(SetNpcFlagBits, NPC_Kooper_01A, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Kooper_02A, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Kooper_01A, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Kooper_02A, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(EnableNpcShadow, NPC_PARTNER, false)
     Call(GetNpcPos, NPC_PARTNER, LVar2, LVar3, LVar4)
     Call(GetPlayerPos, LVar5, LVar6, LVar7)
@@ -85,7 +95,7 @@ EvtScript N(EVS_Scene_ImposterAppears) = {
     EndIf
     Call(InterpPlayerYaw, 270, 0)
     Wait(70 * DT)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INACTIVE, true)
     Call(SetNpcAnimation, NPC_Kooper_01A, ANIM_WorldKooper_Idle)
@@ -184,8 +194,8 @@ EvtScript N(EVS_Scene_ImposterAppears) = {
     Call(SpeakToPlayer, NPC_Kooper_02A, ANIM_WorldKooper_TalkHappy, ANIM_WorldKooper_Idle, 0, MSG_CH7_0128)
     Call(PlayerFaceNpc, NPC_Kooper_01A, false)
     Call(SpeakToPlayer, NPC_Kooper_01A, ANIM_WorldKooper_TalkHappy, ANIM_WorldKooper_Idle, 0, MSG_CH7_0129)
-    Call(SetNpcFlagBits, NPC_Kooper_01A, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-    Call(SetNpcFlagBits, NPC_Kooper_02A, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Kooper_01A, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Kooper_02A, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(DisablePlayerInput, false)
     Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, true)
     Unbind
@@ -266,8 +276,8 @@ EvtScript N(EVS_Scene_HitTrueKooper) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.5 / DT))
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SpeakToPlayer, NPC_Kooper_02A, ANIM_WorldKooper_TalkHappy, ANIM_WorldKooper_Idle, 0, MSG_CH7_012F)
-    Call(SetNpcFlagBits, NPC_Kooper_01A, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Kooper_02A, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Kooper_01A, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Kooper_02A, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetNpcPos, NPC_Kooper_01A, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_Kooper_02A, LVar3, LVar4, LVar5)
     Call(GetAngleBetweenNPCs, NPC_Kooper_01A, NPC_Kooper_02A, LVar9)
@@ -286,7 +296,7 @@ EvtScript N(EVS_Scene_HitTrueKooper) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    ExecGetTID(N(EVS_TwoKoopesFightingFX), MV_KoopersFightingScript)
+    ExecGetTID(N(EVS_TwoKoopersFightingFX), MV_KoopersFightingScript)
     Thread
         Call(SetPlayerSpeed, Float(3.0 / DT))
         Call(PlayerMoveTo, LVar6, LVar8, 0)
@@ -492,8 +502,8 @@ EvtScript N(EVS_Scene_HitTrueKooper) = {
         Call(PlayerFaceNpc, NPC_Kooper_01A, false)
         Call(SpeakToPlayer, NPC_Kooper_01A, ANIM_WorldKooper_Talk, ANIM_WorldKooper_Idle, 0, MSG_CH7_0129)
     EndIf
-    Call(SetNpcFlagBits, NPC_Kooper_01A, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-    Call(SetNpcFlagBits, NPC_Kooper_02A, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Kooper_01A, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Kooper_02A, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(DisablePlayerInput, false)
     Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, true)
     Return
@@ -539,13 +549,13 @@ EvtScript N(EVS_Scene_HitFakeKooper) = {
         Call(AddVectorPolar, LVar1, LVar3, Float(40.0), LVar0)
         Call(SetNpcSpeed, NPC_Kooper_01A, Float(3.0 / DT))
         Call(SetNpcAnimation, NPC_Kooper_01A, ANIM_WorldKooper_Run)
-        Call(SetNpcFlagBits, NPC_Kooper_01A, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_Kooper_01A, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(NpcMoveTo, NPC_Kooper_01A, LVar1, LVar3, 0)
         Call(SetNpcAnimation, NPC_Kooper_01A, ANIM_WorldKooper_Idle)
         Set(MF_KooperDoneMoving, true)
     EndThread
     Call(PlayerFaceNpc, NPC_Duplighost, false)
-    Call(SpeakToPlayer, NPC_Duplighost, ANIM_Duplighost_Anim05, ANIM_Duplighost_Anim02, 0, MSG_CH7_0130)
+    Call(SpeakToPlayer, NPC_Duplighost, ANIM_Duplighost_Talk, ANIM_Duplighost_Idle, 0, MSG_CH7_0130)
     Label(0)
     IfEq(MF_KooperDoneMoving, false)
         Wait(1)
@@ -553,8 +563,8 @@ EvtScript N(EVS_Scene_HitFakeKooper) = {
     EndIf
     Call(SpeakToPlayer, NPC_Kooper_01A, ANIM_WorldKooper_Talk, ANIM_WorldKooper_Idle, 5, MSG_CH7_0131)
     Wait(10 * DT)
-    Call(SpeakToPlayer, NPC_Duplighost, ANIM_Duplighost_Anim05, ANIM_Duplighost_Anim02, 0, MSG_CH7_0132)
-    Call(SetNpcAnimation, NPC_Duplighost, ANIM_Duplighost_Anim06)
+    Call(SpeakToPlayer, NPC_Duplighost, ANIM_Duplighost_Talk, ANIM_Duplighost_Idle, 0, MSG_CH7_0132)
+    Call(SetNpcAnimation, NPC_Duplighost, ANIM_Duplighost_Threaten)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -579,7 +589,7 @@ EvtScript N(EVS_SetupBridge) = {
         Call(TranslateGroup, MODEL_move1, 0, -120, 0)
         Call(UpdateColliderTransform, COLLIDER_m1_kabe)
         Call(EnableModel, MODEL_m1_kabe, false)
-        BindTrigger(Ref(N(EVS_Scene_ImposterAppears)), TRIGGER_AREA_FLAG_SET, AF_SAM_06, 1, 0)
+        BindTrigger(Ref(N(EVS_Scene_ImposterAppears)), TRIGGER_AREA_FLAG_SET, AF_SAM08_ImposterSwitchPressed, 1, 0)
     EndIf
     Return
     End

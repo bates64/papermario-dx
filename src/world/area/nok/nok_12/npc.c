@@ -1,10 +1,10 @@
 #include "nok_12.h"
 
-#include "world/common/enemy/KoopaTroopa_Wander.inc.c"
-#include "world/common/enemy/KoopaTroopa_Patrol.inc.c"
-#include "world/common/enemy/Goomba_Wander.inc.c"
-#include "world/common/enemy/SpikedGoomba_Wander.inc.c"
-#include "world/common/enemy/SpikedGoomba_Patrol.inc.c"
+#include "world/common/enemy/KoopaTroopa/wander.inc.c"
+#include "world/common/enemy/KoopaTroopa/patrol.inc.c"
+#include "world/common/enemy/Goomba/wander.inc.c"
+#include "world/common/enemy/SpikedGoomba/wander.inc.c"
+#include "world/common/enemy/SpikedGoomba/patrol.inc.c"
 
 // 'sleep' on top of brick block until it's broken
 EvtScript N(EVS_NpcIdle_SpikedGoomba) = {

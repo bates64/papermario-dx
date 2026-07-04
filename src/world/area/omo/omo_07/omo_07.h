@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file omo_07.h
 /// @brief Shy Guy's Toybox - PNK Playhouse
 

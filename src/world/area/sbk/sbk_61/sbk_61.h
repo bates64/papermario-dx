@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sbk_61.h
 /// @brief Dry Dry Desert - S3W2 Hidden AttackFX
 

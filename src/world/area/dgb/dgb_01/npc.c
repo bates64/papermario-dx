@@ -2,14 +2,17 @@
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel_01
 #define AI_SENTINEL_LAST_NPC  NPC_Sentinel_04
-#include "world/common/enemy/Sentinel.inc.c"
+#include "world/common/enemy/Sentinel/wander.inc.c"
 
-#include "world/common/enemy/Clubba.h"
-#include "world/common/enemy/TubbaBlubba_Patrol.inc.c"
-#include "world/common/enemy/TubbaBlubba.inc.c"
-#include "world/common/npc/Yakkey.inc.c"
+#include "world/common/enemy/TubbaBlubba/patrol.inc.c"
+#include "world/common/enemy/TubbaBlubba/idle.inc.c"
+#include "world/common/npc/Yakkey/idle.inc.c"
 
-#include "world/common/todo/UnkFunc1.inc.c"
+API_CALLABLE(N(PostBattleHideWorld)) {
+    increment_status_bar_disabled();
+    set_screen_overlay_params_back(OVERLAY_SCREEN_COLOR, 255.0f);
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_NpcIdle_Tubba_Floor3) = {
     Loop(0)
@@ -31,11 +34,11 @@ EvtScript N(EVS_NpcIdle_Tubba_Floor3) = {
             BreakLoop
         EndIf
     EndLoop
-    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim0A)
+    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_WalkAngry)
     Call(SetNpcPos, NPC_SELF, 520, 420, 0)
     Call(SetNpcYaw, NPC_SELF, 270)
     Call(NpcMoveTo, NPC_SELF, 390, 0, 30)
-    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim07)
+    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_IdleAngry)
     Thread
         Wait(20)
         Call(MakeLerp, 80, 0, 10, EASING_LINEAR)
@@ -50,17 +53,17 @@ EvtScript N(EVS_NpcIdle_Tubba_Floor3) = {
         EndLoop
         Call(PlaySoundAtCollider, COLLIDER_deilittne, SOUND_CREAKY_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     EndThread
-    Call(SpeakToPlayer, NPC_Tubba, ANIM_WorldTubba_Anim10, ANIM_WorldTubba_Anim06, 0, MSG_CH3_0101)
+    Call(SpeakToPlayer, NPC_Tubba, ANIM_WorldTubba_Talk, ANIM_WorldTubba_Idle, 0, MSG_CH3_0101)
     Thread
-        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim19)
+        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_LeanAngry)
         Wait(4)
-        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim1A)
+        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_JumpAngry)
         Wait(17)
-        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim1B)
+        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_FallAngry)
         Wait(11)
-        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim1C)
+        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_LandAngry)
         Wait(30)
-        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim1D)
+        Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_GetUpAngry)
     EndThread
     Wait(4)
     Call(SetNpcJumpscale, NPC_Tubba, Float(1.0))
@@ -83,8 +86,9 @@ EvtScript N(EVS_NpcInit_Tubba_Floor3) = {
     End
 };
 
+// failsafe if the player somehow defeats Tubba
 EvtScript N(EVS_NpcDefeat_Tubba_Floor2) = {
-    Call(N(UnkFunc1))
+    Call(N(PostBattleHideWorld))
     Call(GotoMap, Ref("dgb_08"), dgb_08_ENTRY_1)
     Wait(100)
     Return
@@ -134,7 +138,7 @@ EvtScript N(EVS_NpcIdle_Tubba_Floor1) = {
     EndLoop
     Call(SetNpcPos, NPC_SELF, 555, 0, 0)
     Call(SetNpcYaw, NPC_SELF, 270)
-    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim0A)
+    Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_WalkAngry)
     Call(NpcMoveTo, NPC_SELF, 426, 0, 30)
     Thread
         Wait(20)
@@ -167,8 +171,9 @@ EvtScript N(EVS_NpcIdle_Tubba_Floor1) = {
     End
 };
 
+// failsafe if the player somehow defeats Tubba
 EvtScript N(EVS_NpcDefeat_Tubba_Floor1) = {
-    Call(N(UnkFunc1))
+    Call(N(PostBattleHideWorld))
     Call(GotoMap, Ref("dgb_00"), dgb_00_ENTRY_1)
     Wait(100)
     Return
@@ -192,7 +197,7 @@ EvtScript N(EVS_NpcInit_Sentinel_01) = {
     IfGe(LVar0, STORY_CH3_TUBBA_WOKE_UP)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION, true)
         Call(EnableNpcShadow, NPC_SELF, false)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_Sentinel_Anim01)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_Sentinel_Idle)
         Call(SetNpcPos, NPC_SELF, -33, -3, 8)
         Call(SetNpcRotation, NPC_SELF, -50, 30, 10)
         Call(BindNpcIdle, NPC_SELF, 0)
@@ -206,7 +211,7 @@ EvtScript N(EVS_NpcInit_Sentinel_02) = {
     IfGe(LVar0, STORY_CH3_TUBBA_WOKE_UP)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION, true)
         Call(EnableNpcShadow, NPC_SELF, false)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_Sentinel_Anim01)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_Sentinel_Idle)
         Call(SetNpcPos, NPC_SELF, -486, 182, 28)
         Call(SetNpcRotation, NPC_SELF, -10, 50, 0)
         Call(BindNpcIdle, NPC_SELF, 0)
@@ -220,7 +225,7 @@ EvtScript N(EVS_NpcInit_Sentinel_03) = {
     IfGe(LVar0, STORY_CH3_TUBBA_WOKE_UP)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION, true)
         Call(EnableNpcShadow, NPC_SELF, false)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_Sentinel_Anim01)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_Sentinel_Idle)
         Call(SetNpcPos, NPC_SELF, -201, 0, -143)
         Call(SetNpcRotation, NPC_SELF, -50, 0, 0)
         Call(BindNpcIdle, NPC_SELF, 0)
@@ -234,7 +239,7 @@ EvtScript N(EVS_NpcInit_Sentinel_04) = {
     IfGe(LVar0, STORY_CH3_TUBBA_WOKE_UP)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION, true)
         Call(EnableNpcShadow, NPC_SELF, false)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_Sentinel_Anim01)
+        Call(SetNpcAnimation, NPC_SELF, ANIM_Sentinel_Idle)
         Call(SetNpcPos, NPC_SELF, -305, -1, -80)
         Call(SetNpcRotation, NPC_SELF, -65, -30, 0)
         Call(BindNpcIdle, NPC_SELF, 0)
@@ -260,7 +265,7 @@ NpcData N(NpcData_Sentinel_01) = {
         }
     },
     .init = &N(EVS_NpcInit_Sentinel_01),
-    .settings = &N(NpcSettings_Sentinel),
+    .settings = &N(NpcSettings_Sentinel_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
@@ -283,7 +288,7 @@ NpcData N(NpcData_Sentinel_02) = {
         }
     },
     .init = &N(EVS_NpcInit_Sentinel_02),
-    .settings = &N(NpcSettings_Sentinel),
+    .settings = &N(NpcSettings_Sentinel_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
@@ -306,7 +311,7 @@ NpcData N(NpcData_Sentinel_03) = {
         }
     },
     .init = &N(EVS_NpcInit_Sentinel_03),
-    .settings = &N(NpcSettings_Sentinel),
+    .settings = &N(NpcSettings_Sentinel_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
@@ -329,24 +334,24 @@ NpcData N(NpcData_Sentinel_04) = {
         }
     },
     .init = &N(EVS_NpcInit_Sentinel_04),
-    .settings = &N(NpcSettings_Sentinel),
+    .settings = &N(NpcSettings_Sentinel_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
 };
 
-AnimID N(ExtraAnims_Tubba)[] = {
-    ANIM_WorldTubba_Anim06,
-    ANIM_WorldTubba_Anim10,
-    ANIM_WorldTubba_Anim09,
-    ANIM_WorldTubba_Anim07,
-    ANIM_WorldTubba_Anim0A,
-    ANIM_WorldTubba_Anim0D,
-    ANIM_WorldTubba_Anim19,
-    ANIM_WorldTubba_Anim1A,
-    ANIM_WorldTubba_Anim1B,
-    ANIM_WorldTubba_Anim1C,
-    ANIM_WorldTubba_Anim1D,
+AnimID N(LimitAnims_Tubba)[] = {
+    ANIM_WorldTubba_Idle,
+    ANIM_WorldTubba_Talk,
+    ANIM_WorldTubba_Walk,
+    ANIM_WorldTubba_IdleAngry,
+    ANIM_WorldTubba_WalkAngry,
+    ANIM_WorldTubba_RunAngry,
+    ANIM_WorldTubba_LeanAngry,
+    ANIM_WorldTubba_JumpAngry,
+    ANIM_WorldTubba_FallAngry,
+    ANIM_WorldTubba_LandAngry,
+    ANIM_WorldTubba_GetUpAngry,
     ANIM_LIST_END
 };
 
@@ -359,7 +364,7 @@ NpcData N(NpcData_Tubba_Floor3) = {
     .flags = ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = TUBBA_ANIMS,
-    .extraAnimations = N(ExtraAnims_Tubba),
+    .limitAnimations = N(LimitAnims_Tubba),
 };
 
 NpcData N(NpcData_Tubba_Floor2) = {
@@ -383,9 +388,9 @@ NpcData N(NpcData_Tubba_Floor2) = {
     .init = &N(EVS_NpcInit_Tubba_Floor2),
     .settings = &N(NpcSettings_TubbaBlubba_Patrol),
     .flags = ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
-    .drops = CLUBBA_DROPS,
+    .drops = TUBBA_DROPS,
     .animations = TUBBA_ANGRY_ANIMS,
-    .extraAnimations = N(ExtraAnims_Tubba),
+    .limitAnimations = N(LimitAnims_Tubba),
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
@@ -416,9 +421,9 @@ NpcData N(NpcData_Tubba_Floor1) = {
     .init = &N(EVS_NpcInit_Tubba_Floor1),
     .settings = &N(NpcSettings_TubbaBlubba_Patrol),
     .flags = ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
-    .drops = CLUBBA_DROPS,
+    .drops = TUBBA_DROPS,
     .animations = TUBBA_ANGRY_ANIMS,
-    .extraAnimations = N(ExtraAnims_Tubba),
+    .limitAnimations = N(LimitAnims_Tubba),
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 

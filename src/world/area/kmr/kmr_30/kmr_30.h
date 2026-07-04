@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_30.h
 /// @brief Goomba Region - Mario's House (Ending)
 

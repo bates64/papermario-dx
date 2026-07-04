@@ -2,10 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/StarSpirit.inc.c"
-
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
 API_CALLABLE(N(UpgradeStarPowerCh7)) {
     set_max_star_power(7);
@@ -35,8 +32,8 @@ EvtScript N(EVS_NpcIdle_Kalmar) = {
 };
 
 EvtScript N(EVS_Scene_RescuedKalmar) = {
-    Call(DisablePartnerAI, 0)
-    Call(func_802CF56C, 2)
+    Call(DisablePartnerAI, false)
+    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Set(LVar3, LVar0)
     Add(LVar3, -50)
@@ -91,7 +88,7 @@ EvtScript N(EVS_Scene_RescuedKalmar) = {
     Call(PlaySoundAtPlayer, SOUND_GET_STAR_POWER_WAVE, SOUND_SPACE_DEFAULT)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, 1, 30)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, 1, 30)
     Wait(30 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_Kalmar, ANIM_WorldKalmar_Idle)

@@ -2,56 +2,68 @@
 #include "npc.h"
 #include "model.h"
 
-API_CALLABLE(N(UnkPhysicsFunc)) {
+/// Checks whether the player is within the guard's detection area and has a clear line of sight.
+/// @evtapi
+/// @param outDetected
+/// @param forwardExtent
+/// @param centerOffset
+/// @param lateralExtent
+API_CALLABLE(N(CheckPlayerInSight)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    s32 outVar = *args++;
-    f32 inDist1 = *args++;
-    f32 r = *args++;
-    f32 inDist2 = *args++;
+    s32 outDetected = *args++;
+    // dimensions and offset of the detection area
+    f32 forwardExtent = *args++;
+    f32 centerOffset = *args++;
+    f32 lateralExtent = *args++;
     f32 x = npc->pos.x;
     f32 z = npc->pos.z;
     f32 y;
-    f32 xDist;
-    f32 zDist;
-    s32 outVal;
-    s32 channel;
+    f32 deltaX;
+    f32 deltaZ;
+    s32 playerDetected;
+    s32 ignoreFlags;
 
-    add_vec2D_polar(&x, &z, r, npc->yaw);
-    xDist = dist2D(x, 0.0f, playerStatus->pos.x, 0.0f);
-    zDist = dist2D(0.0f, z, 0.0f, playerStatus->pos.z);
+    // center the detection area in front of the guard
+    add_vec2D_polar(&x, &z, centerOffset, npc->yaw);
+    deltaX = dist2D(x, 0.0f, playerStatus->pos.x, 0.0f);
+    deltaZ = dist2D(0.0f, z, 0.0f, playerStatus->pos.z);
 
+    // check if the player is within the detection area
     if (npc->yaw == 90.0 || npc->yaw == 270.0) {
-        if (xDist <= inDist1 && zDist <= inDist2) {
-            outVal = true;
+        if (deltaX <= forwardExtent && deltaZ <= lateralExtent) {
+            playerDetected = true;
         } else {
-            outVal = false;
+            playerDetected = false;
         }
     } else {
-        if (zDist <= inDist1 && xDist <= inDist2) {
-            outVal = true;
+        if (deltaZ <= forwardExtent && deltaX <= lateralExtent) {
+            playerDetected = true;
         } else {
-            outVal = false;
+            playerDetected = false;
         }
     }
 
-    if (outVal) {
+    // cancel detection if a wall blocks the guard's line of sight
+    if (playerDetected) {
         x = npc->pos.x;
         y = npc->pos.y;
         z = npc->pos.z;
-        // required to match, has to be r
-        r = dist2D(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
+        centerOffset = dist2D(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
 
-        channel = COLLISION_IGNORE_ENTITIES | COLLIDER_FLAG_IGNORE_NPC | COLLIDER_FLAG_IGNORE_PLAYER | COLLIDER_FLAG_IGNORE_SHELL;
-        if (npc_test_move_taller_with_slipping(channel, &x, &y, &z, r,
+        ignoreFlags = COLLISION_IGNORE_ENTITIES
+            | COLLIDER_FLAG_IGNORE_NPC
+            | COLLIDER_FLAG_IGNORE_PLAYER
+            | COLLIDER_FLAG_IGNORE_SHELL;
+        if (npc_test_move_taller_with_slipping(ignoreFlags, &x, &y, &z, centerOffset,
                     atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z),
                     npc->collisionDiameter, npc->collisionHeight))
         {
-            outVal = false;
+            playerDetected = false;
         }
     }
-    evt_set_variable(script, outVar, outVal);
+    evt_set_variable(script, outDetected, playerDetected);
     return ApiStatus_DONE2;
 }
 
@@ -65,19 +77,31 @@ void N(set_spotlight_pos_scale)(s32 modelID, f32 x, f32 y, f32 z, f32 scale) {
     model->flags |= MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM;
 }
 
+enum SearchlightResultFlags {
+    SEARCHLIGHT_FLAG_IN_PRIMARY     = 1,
+    SEARCHLIGHT_FLAG_IN_EXTRA       = 0x10,
+};
+
+/// Updates the NPC's searchlights and checks whether the player is within either one.
+/// @evtapi
+/// @param outResult combination of SearchlightResultFlags
+/// @param spotlightOffset
+/// @param spotlightRadius
+/// @param extraSpotlightOffset
+/// @param extraSpotlightRadius
+/// @param spotlightModel
+/// @param lightSourceIdx
 API_CALLABLE(N(UpdateSearchlight)) {
     SpriteShadingLightSource* lightSource;
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     Bytecode* args = script->ptrReadPos;
-    s32 outVar = *args++;
-    // radius and distance from NPC of the first spotlight
-    f32 radius = *args++;
-    f32 offsetDist = *args++;
-    // radius and distance from NPC of the second 'extra' spotlight
-    f32 extraRadius = *args++;
-    f32 extraOffsetDist = *args++;
+    s32 outResult = *args++;
+    f32 spotlightOffset = *args++;
+    f32 spotlightRadius = *args++;
+    f32 extraSpotlightOffset = *args++;
+    f32 extraSpotlightRadius = *args++;
     // spotlight model and sprite shading light source index
     s32 spotlightModel = *args++;
     s32 lightSourceIdx = *args++;
@@ -99,25 +123,25 @@ API_CALLABLE(N(UpdateSearchlight)) {
     // check if player is inside the first spotlight
     x = npc->pos.x;
     z = npc->pos.z;
-    add_vec2D_polar(&x, &z, radius, npc->yaw);
+    add_vec2D_polar(&x, &z, spotlightOffset, npc->yaw);
 
-    if (dist2D(x, z, playerStatus->pos.x, playerStatus->pos.z) <= offsetDist) {
-        outVal |= 1;
+    if (dist2D(x, z, playerStatus->pos.x, playerStatus->pos.z) <= spotlightRadius) {
+        outVal |= SEARCHLIGHT_FLAG_IN_PRIMARY;
     }
 
-    N(set_spotlight_pos_scale)(spotlightModel, x, npc->pos.y, z, (2.0 * offsetDist / 100.0) + 0.3);
+    N(set_spotlight_pos_scale)(spotlightModel, x, npc->pos.y, z, (2.0 * spotlightRadius / 100.0) + 0.3);
 
     // check if player is inside the second spotlight
     x = npc->pos.x;
     z = npc->pos.z;
-    add_vec2D_polar(&x, &z, extraRadius, npc->yaw);
+    add_vec2D_polar(&x, &z, extraSpotlightOffset, npc->yaw);
 
-    if (dist2D(x, z, playerStatus->pos.x, playerStatus->pos.z) <= extraOffsetDist) {
-        outVal |= 0x10;
+    if (dist2D(x, z, playerStatus->pos.x, playerStatus->pos.z) <= extraSpotlightRadius) {
+        outVal |= SEARCHLIGHT_FLAG_IN_EXTRA;
     }
 
     // cancel alert if enemy does not have line of sight to player
-    if (outVal & 1) {
+    if (outVal & SEARCHLIGHT_FLAG_IN_PRIMARY) {
         x = npc->pos.x;
         y = npc->pos.y;
         z = npc->pos.z;
@@ -130,18 +154,6 @@ API_CALLABLE(N(UpdateSearchlight)) {
         }
     }
 
-    evt_set_variable(script, outVar, outVal);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(N(GetAngleBetweenPoints)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 outVar = *args++;
-    s32 Ax = evt_get_variable(script, *args++);
-    s32 Az = evt_get_variable(script, *args++);
-    s32 Bx = evt_get_variable(script, *args++);
-    s32 Bz = evt_get_variable(script, *args++);
-
-    evt_set_variable(script, outVar, atan2(Ax, Az, Bx, Bz));
+    evt_set_variable(script, outResult, outVal);
     return ApiStatus_DONE2;
 }

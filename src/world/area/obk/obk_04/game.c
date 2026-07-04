@@ -2,7 +2,6 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-// redundant, but useful for documentation
 enum {
     KEEP_AWAY_BOO_0     = 0,
     KEEP_AWAY_BOO_1     = 1,
@@ -13,8 +12,6 @@ enum {
     KEEP_AWAY_BOO_6     = 6,
     KEEP_AWAY_BOO_7     = 7,
 };
-
-#include "world/common/complete/GiveReward.inc.c"
 
 API_CALLABLE(N(GetKeepAwayCarrierYaw)) {
     Npc* npc1 = get_npc_unsafe(NPC_KeepAwayBoo1);
@@ -65,17 +62,15 @@ API_CALLABLE(N(GetKeepAwayCarrierYaw)) {
 }
 
 API_CALLABLE(N(GetItemJumpDest)) {
-    // create temporary NPC so we can use npc movement code to determine jump dest position
-    Npc npc;
+    f32 posX, posY, posZ, radius;
 
-    npc.pos.x = 0.0f;
-    npc.pos.y = 0.0f;
-    npc.pos.z = 0.0f;
-    npc.planarFlyDist = 125.0f;
-    npc_move_heading(&npc, 125.0f, script->varTable[0]);
-    script->varTable[0] = npc.pos.x;
-    script->varTable[1] = npc.pos.y + 10.0f;
-    script->varTable[2] = npc.pos.z + 20.0f;
+    posX = 0.0f;
+    posY = 0.0f;
+    posZ = 0.0f;
+    add_vec2D_polar(&posX, &posZ, 125.0f, script->varTable[0]);
+    script->varTable[0] = posX;
+    script->varTable[1] = posY + 10.0f;
+    script->varTable[2] = posZ + 20.0f;
     return ApiStatus_DONE2;
 }
 
@@ -89,10 +84,11 @@ API_CALLABLE(N(GetKeepAwayCarrierPos)) {
 }
 
 API_CALLABLE(N(UpgradeBootsToSuper)) {
-    gPlayerData.bootsLevel = 1;
+    gPlayerData.bootsLevel = GEAR_RANK_SUPER;
     return ApiStatus_DONE2;
 }
 
+// find a position outside the keep away ring for the player
 API_CALLABLE(N(GetPlayerPosOutsideKeepAwayRing)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc npc;
@@ -173,11 +169,11 @@ EvtScript N(EVS_IntroduceAndHideBoots) = {
     End
 };
 
-// useless
+// copy the thrown-to NPC into MV_ItemCarrierNpc for the reveal scripts
 EvtScript N(EVS_DetermineCarrierNPC) = {
     Switch(MV_ThrowTargetNpc)
-        CaseEq(NPC_Boo_01)
-            Set(MV_ItemCarrierNpc, NPC_Boo_01)
+        CaseEq(NPC_HiddenBoo)
+            Set(MV_ItemCarrierNpc, NPC_HiddenBoo)
         CaseEq(NPC_KeepAwayBoo1)
             Set(MV_ItemCarrierNpc, NPC_KeepAwayBoo1)
         CaseEq(NPC_KeepAwayBoo2)
@@ -304,7 +300,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
     Call(SpeakToPlayer, NPC_LeaderBoo, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_003B)
     Loop(0)
         Wait(1)
-        IfEq(MV_Unk_02, 1)
+        IfEq(MV_KeepAwayRingReady, true)
             BreakLoop
         EndIf
     EndLoop
@@ -319,7 +315,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
         // first throw -- from leader
         // choose which boo will have the item next
         Call(RandInt, KEEP_AWAY_BOO_7, LVar0)
-        Set(MV_KeepAwayTarget, LVar0)
+        Set(MV_KeepAwayTargetIdx, LVar0)
         // jump dummy to the location of that NPC
         Set(LVar1, 30)
         Call(N(GetKeepAwayCarrierYaw))
@@ -348,13 +344,13 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             // choose which boo will have the item next
             Call(SetNpcPos, NPC_DummyBoo, LVar0, LVar1, LVar2)
             Call(RandInt, KEEP_AWAY_BOO_7, LVar0)
-            IfEq(MV_KeepAwayTarget, LVar0)
+            IfEq(MV_KeepAwayTargetIdx, LVar0)
                 Add(LVar0, 4)
                 IfGe(LVar0, 8)
                     Sub(LVar0, 8)
                 EndIf
             EndIf
-            Set(MV_KeepAwayTarget, LVar0)
+            Set(MV_KeepAwayTargetIdx, LVar0)
             // jump dummy to the location of that NPC
             Set(LVar1, 30)
             Call(N(GetKeepAwayCarrierYaw))

@@ -1,19 +1,15 @@
 #include "sam_02.h"
 #include "sprite/player.h"
 
-#include "sprite/npc/ShiverToad.h"
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
-#include "world/common/complete/ToadHouseBlanketAnim.inc.c"
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
+#include "world/common/npc/Penguin/wander.inc.c"
+#include "world/common/npc/Penguin/idle.inc.c"
 
-#include "world/common/npc/Penguin_Wander.inc.c"
-#include "world/common/npc/Penguin.inc.c"
+#include "world/common/npc/ShiverToad/idle.inc.c"
 
-#include "world/common/npc/ShiverToad.inc.c"
-
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
 EvtScript N(EVS_NpcInteract_Penguin_ShopOwner) = {
     Switch(GB_StoryProgress)
@@ -70,7 +66,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Call(InterpPlayerYaw, 229, 1)
     Call(HidePlayerShadow, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     Thread
         Wait(60)

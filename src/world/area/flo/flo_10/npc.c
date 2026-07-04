@@ -1,7 +1,7 @@
 #include "flo_10.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Lily.inc.c"
+#include "world/common/npc/Lily/idle.inc.c"
 
 EvtScript N(EVS_Scene_SunReturns) = {
     Call(DisablePlayerInput, true)
@@ -23,10 +23,7 @@ EvtScript N(EVS_Scene_SunReturns) = {
     End
 };
 
-s32 N(KeyList)[] = {
-    ITEM_WATER_STONE,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_WATER_STONE);
 
 EvtScript N(EVS_OnInteract_WaterStoneSocket) = {
     IfEq(GF_FLO10_ShowedLilyTheWaterStone, true)
@@ -41,7 +38,7 @@ EvtScript N(EVS_OnInteract_WaterStoneSocket) = {
         Call(ShowKeyChoicePopup)
         Set(LVar2, LVar0)
         Switch(LVar2)
-            CaseEq(-1)
+            CaseEq(ITEM_CHOICE_CANCELED)
                 Call(CloseChoicePopup)
                 Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
                 Wait(10 * DT)
@@ -49,7 +46,7 @@ EvtScript N(EVS_OnInteract_WaterStoneSocket) = {
             CaseDefault
                 Call(GetPlayerPos, LVar3, LVar4, LVar5)
                 Call(PlayerMoveTo, -17, -17, 20)
-                Call(func_802CF56C, 2)
+                Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
                 Call(InterpPlayerYaw, 100, 1)
                 Wait(10 * DT)
                 Call(AdjustCam, CAM_DEFAULT, Float(1.0 / DT), 0, 450, Float(25.0), Float(-6.0))
@@ -96,10 +93,10 @@ EvtScript N(EVS_MovePlayerToTalk) = {
                 Else
                     Add(LVar0, 40)
                 EndIf
-                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Call(PlayerMoveTo, LVar0, LVar5, 15 * DT)
                 Call(PlayerFaceNpc, NPC_Lily, true)
-                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             EndThread
     EndSwitch
     Return

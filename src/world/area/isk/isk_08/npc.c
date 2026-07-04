@@ -1,6 +1,6 @@
 #include "isk_08.h"
 
-#include "world/common/enemy/SpikeTop.inc.c"
+#include "world/common/enemy/SpikeTop/wander.inc.c"
 
 NpcData N(NpcData_BuzzyBeetle) = {
     .id = NPC_BuzzyBeetle,
@@ -18,7 +18,7 @@ NpcData N(NpcData_BuzzyBeetle) = {
             .detectSize = { 60 },
         }
     },
-    .settings = &N(NpcSettings_BuzzyBeetle),
+    .settings = &N(NpcSettings_BuzzyBeetle_Wander),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = ISK_BUZZY_BEETLE_DROPS,
     .animations = BUZZY_BEETLE_ANIMS,

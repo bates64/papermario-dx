@@ -81,7 +81,7 @@ EvtScript N(EVS_KammyReturnsToCastle) = {
         EndLoop
     EndThread
     ExecGetTID(N(EVS_PlayKammyFlightFX), LVar9)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim1A)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyBack)
     Call(LoadPath, 30, Ref(N(KammyFlightPath1)), ARRAY_COUNT(N(KammyFlightPath1)), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
@@ -108,7 +108,7 @@ EvtScript N(EVS_KammyReturnsToCastle) = {
 EvtScript N(EVS_Scene_BeginInterlude) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(EnableGroup, MODEL_hiru, false)
     Call(EnableGroup, MODEL_niwa, false)

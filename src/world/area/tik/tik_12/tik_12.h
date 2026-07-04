@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tik_12.h
 /// @brief Toad Town Tunnels - Metal Block Room (B3)
 

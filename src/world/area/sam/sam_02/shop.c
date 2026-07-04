@@ -46,17 +46,6 @@ ShopSellPriceData N(PriceList)[] = {
     {},
 };
 
-s32 N(UnknownData)[] = {
-    ITEM_FIRE_FLOWER,     5,
-    ITEM_SNOWMAN_DOLL,    5,
-    ITEM_THUNDER_RAGE,    5,
-    ITEM_SHOOTING_STAR,  10,
-    ITEM_DUSTY_HAMMER,    3,
-    ITEM_PEBBLE,          3,
-    ITEM_STONE_CAP,       5,
-    ITEM_VOLT_SHROOM,    ITEM_VOLT_SHROOM,
-};
-
 EvtScript N(EVS_OnBuy) = {
     Switch(LVar0)
         CaseEq(SHOP_BUY_RESULT_CANCEL)

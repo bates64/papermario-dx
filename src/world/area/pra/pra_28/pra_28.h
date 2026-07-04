@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_28.h
 /// @brief Crystal Palace - P-Up, D-Down Room
 

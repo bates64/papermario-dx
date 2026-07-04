@@ -1,9 +1,22 @@
 #include "kmr_10.h"
 #include "entity.h"
+#include "animation_script.h"
+
+extern AnimScript Entity_SimpleSpring_AnimLaunch;
 
 #include "world/common/entity/Chest.inc.c"
 
-#include "world/common/util/PlaySpringReboundAnimation.inc.c"
+API_CALLABLE(N(PlaySpringReboundAnimation)) {
+    Bytecode* args = script->ptrReadPos;
+    Entity* entity = get_entity_by_index(evt_get_variable(script, *args++));
+
+    if (entity == nullptr) {
+        return ApiStatus_BLOCK;
+    }
+
+    play_model_animation(entity->virtualModelIndex, Entity_SimpleSpring_AnimLaunch);
+    return ApiStatus_DONE2;
+}
 
 API_CALLABLE(N(SetSpringPosition)) {
     Bytecode* args = script->ptrReadPos;
@@ -28,7 +41,7 @@ EvtScript N(EVS_OnShakeTree1) = {
         Thread
             Loop(17)
                 Call(GetNpcPos, NPC_Dummy, LVar0, LVar1, LVar2)
-                Call(N(SetSpringPosition), MV_SpringEntityIndex, LVar0, LVar1, LVar2)
+                Call(N(SetSpringPosition), MV_EntityID_Spring, LVar0, LVar1, LVar2)
                 Wait(1)
             EndLoop
             Call(SetNpcPos, NPC_Dummy, NPC_DISPOSE_LOCATION)
@@ -37,7 +50,7 @@ EvtScript N(EVS_OnShakeTree1) = {
         Call(NpcJump0, NPC_Dummy, 370, 10, 20, 15)
         Call(PlaySoundAt, SOUND_OBJECT_LAND, SOUND_SPACE_DEFAULT, 370, 10, 20)
         Call(PlaySoundAt, SOUND_SPRING, SOUND_SPACE_DEFAULT, 370, 10, 20)
-        Call(N(PlaySpringReboundAnimation), MV_SpringEntityIndex)
+        Call(N(PlaySpringReboundAnimation), MV_EntityID_Spring)
         IfEq(GF_KMR10_UnreadFlagForSpring, false)
             Add(GF_KMR10_UnreadFlagForSpring, 1)
         EndIf
@@ -83,7 +96,7 @@ EvtScript N(EVS_MakeEntities) = {
     IfEq(GF_KMR10_KnockedSpringOutOfTree, false)
         Call(MakeEntity, Ref(Entity_ScriptSpring), 370, 115, -20, 0, MAKE_ENTITY_END)
         Call(AssignScript, Ref(N(EVS_UseSpring)))
-        Set(MV_SpringEntityIndex, LVar0)
+        Set(MV_EntityID_Spring, LVar0)
     Else
         Call(MakeEntity, Ref(Entity_ScriptSpring), 370, 10, 20, 0, MAKE_ENTITY_END)
         Call(AssignScript, Ref(N(EVS_UseSpring)))

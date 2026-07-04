@@ -16,21 +16,20 @@ enum {
     SCENE_STATE_DONE                    = -1,
 };
 
-#include "world/common/npc/Kolorado.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
 
-#include "world/common/complete/LetterDelivery.inc.c"
-
-s32 N(LetterList)[] = {
-    ITEM_LETTER_TO_KOLORADO,
-    ITEM_NONE
+LetterDelivery N(LetterDelivery_Kolorado) = {
+    .recipientID = NPC_Kolorado,
+    .recipientTalk = ANIM_Kolorado_Talk,
+    .recipientIdle = ANIM_Kolorado_Idle,
+    .msgGreeting = MSG_CH5_00E4,
+    .msgCancelled = MSG_CH5_00E5,
+    .msgDelivered = MSG_CH5_00E6,
+    .msgRecieved = MSG_CH5_00E7,
+    .letters = { ITEM_LETTER_TO_KOLORADO },
+    .reward = ITEM_STAR_PIECE,
 };
-
-EVT_LETTER_PROMPT(Kolorado, NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
-    MSG_CH5_00E4, MSG_CH5_00E5, MSG_CH5_00E6, MSG_CH5_00E7,
-    ITEM_LETTER_TO_KOLORADO, N(LetterList));
-
-EVT_LETTER_REWARD(Kolorado);
 
 EvtScript N(EVS_SpawnFallingDust) = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
@@ -163,7 +162,7 @@ EvtScript N(EVS_KoloradoBurned_PlayerReaction) = {
     End
 };
 
-API_CALLABLE(N(func_80240A68_C96998)) {
+API_CALLABLE(N(FadeOutAmbientSounds)) {
     snd_ambient_fade_out(0, true);
     return ApiStatus_DONE2;
 }
@@ -182,7 +181,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     Label(10)
         Switch(MV_SceneState)
             CaseEq(SCENE_STATE_BEGIN)
-                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Walk)
                 Call(InterpNpcYaw, NPC_SELF, 90, 1)
                 Call(SetNpcPos, NPC_SELF, -30, 100, 40)
@@ -261,7 +260,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
                 Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
                 Call(NpcJump0, NPC_SELF, 35, 50, 120, 10)
             CaseEq(SCENE_STATE_KOLORADO_WARNED)
-                Call(N(func_80240A68_C96998))
+                Call(N(FadeOutAmbientSounds))
                 Exec(N(EVS_KoloradoBurned_PlayerReaction))
                 Thread
                     Call(PlayerFaceNpc, NPC_SELF, false)
@@ -307,7 +306,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
                 Call(SetNpcSpeed, NPC_SELF, Float(3.0))
                 Call(NpcMoveTo, NPC_SELF, 75, -30, 0)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Idle)
-                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         EndSwitch
         Wait(1)
         Goto(10)
@@ -320,11 +319,13 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
     IfLt(LVar1, 100)
         Call(EnableNpcAI, NPC_SELF, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0108)
-        EVT_LETTER_CHECK(Kolorado)
+        Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+        ExecWait(EVS_TryLetterDelivery)
         Call(EnableNpcAI, NPC_SELF, true)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Shout, ANIM_Kolorado_Yell, 0, MSG_CH5_0113)
-        EVT_LETTER_CHECK(Kolorado)
+        Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+        ExecWait(EVS_TryLetterDelivery)
     EndIf
     Return
     End
@@ -360,7 +361,7 @@ Vec3f N(FlightPath2)[] = {
     { 270.0, 175.0, -30.0 },
 };
 
-API_CALLABLE(N(GetFloorCollider)) {
+API_CALLABLE(GetPlayerFloorCollider) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
 
@@ -387,7 +388,7 @@ EvtScript N(EVS_Scene_Misstar) = {
     EndIf
     // wait for player to reach the top of the stairs
     Label(0)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         IfNe(LVar0, COLLIDER_o870)
             Wait(1)
             Goto(0)
@@ -480,14 +481,14 @@ EvtScript N(EVS_Scene_Misstar) = {
     Wait(40)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt1, COLLIDER_FLAGS_UPPER_MASK)
     Thread
-        Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(SetNpcAnimation, NPC_Kolorado, ANIM_Kolorado_Panic)
         Call(SetNpcSpeed, NPC_Kolorado, Float(5.0))
         Call(NpcMoveTo, NPC_Kolorado, 305, 0, 0)
         Call(RemoveNpc, NPC_Kolorado)
     EndThread
     Wait(30)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcJumpscale, NPC_SELF, Float(0.5))
     Call(NpcJump0, NPC_SELF, 145, 195, -10, 5)
     Wait(5)

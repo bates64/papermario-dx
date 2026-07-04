@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mim_12.h
 /// @brief Forever Forest - Exit to Gusty Gulch
 

@@ -1,8 +1,6 @@
 #include "tik_09.h"
 
-#include "world/common/enemy/DarkTroopa_Wander.inc.c"
-
-#include "world/common/util/GetDefeatedEnemyCount.inc.c"
+#include "world/common/enemy/DarkTroopa/wander.inc.c"
 
 EvtScript N(EVS_OpenGates) = {
     Call(MakeLerp, 0, 60, 25, EASING_COS_IN_OUT)
@@ -25,7 +23,7 @@ EvtScript N(EVS_NpcDefeat_DarkTroopa) = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Call(N(GetDefeatedEnemyCount), LVar0)
+            Call(GetRemainingEnemyCount, LVar0)
             IfEq(LVar0, 1)
                 Set(GF_TIK09_Defeated_Ambush, true)
                 Exec(N(EVS_SpawnSwitch))

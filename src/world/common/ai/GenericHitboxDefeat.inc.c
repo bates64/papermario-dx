@@ -1,0 +1,19 @@
+#pragma once
+
+#include "world/ai.h"
+
+EvtScript N(EVS_GenericHitboxDefeat) = {
+    Call(GetBattleOutcome, LVar0)
+    Switch(LVar0)
+        CaseEq(OUTCOME_PLAYER_WON)
+            Call(RemoveNpc, NPC_SELF)
+        CaseEq(OUTCOME_PLAYER_FLED)
+            Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
+            Call(OnPlayerFled, true)
+        CaseEq(OUTCOME_ENEMY_FLED)
+            Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_FLED, true)
+            Call(RemoveNpc, NPC_SELF)
+    EndSwitch
+    Return
+    End
+};

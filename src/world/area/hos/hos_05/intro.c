@@ -12,17 +12,29 @@ enum {
     STORY_PAGE_SHRINE_INT   = 4,
 };
 
+s32 N(CardIndexForSpirit)[] = {
+    [NPC_Eldstar]   1,
+    [NPC_Mamar]     7,
+    [NPC_Skolar]    3,
+    [NPC_Muskular]  4,
+    [NPC_Misstar]   6,
+    [NPC_Klevar]    2,
+    [NPC_Kalmar]    5,
+};
+
+#define CARD_RING_ANGLE_SPACING (360.0f / 7)
+
 typedef struct StoryGraphicData {
     /* 0x00 */ s32 workerID;
     /* 0x04 */ IMG_PTR imgFront;
     /* 0x08 */ PAL_PTR palFront;
     /* 0x0C */ IMG_PTR imgBack;
     /* 0x10 */ PAL_PTR palBack;
-    /* 0x14 */ char unk_14[0x4];
+    /* 0x14 */ PAD(4);
     /* 0x18 */ IMG_PTR imgTape;
     /* 0x1C */ IMG_PTR imgBowser;
     /* 0x20 */ PAL_PTR palBowser;
-    /* 0x24 */ char unk_24[0x18];
+    /* 0x24 */ PAD(0x18);
     /* 0x3C */ s16 frontImgPosX;
     /* 0x3E */ s16 frontImgPosY;
     /* 0x40 */ s16 backImgPosX;
@@ -31,26 +43,16 @@ typedef struct StoryGraphicData {
     /* 0x46 */ u16 silhouettePosY;
     /* 0x48 */ s16 tapePosX;
     /* 0x4A */ s16 tapePosY;
-    /* 0x4C */ char unk_4C[0xC];
+    /* 0x4C */ PAD(12);
     /* 0x58 */ s16 flipOrder;
     /* 0x5A */ s16 storyPageAlpha;
     /* 0x5C */ s16 tapeAlpha;
-    /* 0x60 */ char unk_6E[0x2];
+    /* 0x5E */ PAD(2);
 } StoryGraphicData; // size = 0x60
 
-s32 N(missing_802494FC_94FC)[] = {
-    0x64, 0x63, 0x62, 0x60, 0x5E, 0x5C, 0x59, 0x57,
-    0x54, 0x51, 0x4F, 0x4E, 0x4D, 0x4D, 0x4C, 0x4C,
-    0x4C, 0x4C, 0x4D, 0x4D, 0x4E, 0x4E, 0x4F, 0x4F,
-    0x50, 0x50, 0x51, 0x51, 0x52, 0x52, 0x53, 0x53,
-    0x54, 0x54, 0x55, 0x55, 0x56, 0x56, 0x57, 0x57,
-    0x58, 0x58, 0x59, 0x59, 0x5A, 0x5B, 0x5C, 0x5D,
-    0x5E, 0x5F, 0x60, 0x61, 0x62, 0x63, 0x64,
-};
+s32 N(CardRingCaptureCount) = 0;
 
-s32 N(D_802495DC_A3381C) = 0;
-
-s32 N(D_802495E0_A33820) = 0;
+s32 N(CardRingGatherCount) = 0;
 
 CameraControlSettings N(IntroCamSettings0) = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
@@ -305,21 +307,21 @@ API_CALLABLE(N(SetStarSpiritSparkleTrailPos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetCardCaptureState1)) {
+API_CALLABLE(N(StartCardRingCapture)) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, ArrayVar(0));
 
-    effect->data.somethingRotating[N(D_802495DC_A3381C) + 1].state = 1;
-    N(D_802495DC_A3381C)++;
+    effect->data.somethingRotating[N(CardRingCaptureCount) + 1].state = CARD_RING_STATE_CAPTURE_INIT;
+    N(CardRingCaptureCount)++;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetCardCaptureState3)) {
+API_CALLABLE(N(StartCardRingGather)) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, ArrayVar(0));
 
-    effect->data.somethingRotating[N(D_802495E0_A33820) + 1].state = 3;
-    N(D_802495E0_A33820)++;
+    effect->data.somethingRotating[N(CardRingGatherCount) + 1].state = CARD_RING_STATE_GATHER_INIT;
+    N(CardRingGatherCount)++;
     return ApiStatus_DONE2;
 }
 
@@ -373,8 +375,8 @@ f32 IntroCamStateB_BoomPitch = 12.4;
 f32 IntroCamStateB_ViewPitch = -16.8;
 f32 IntroCamStateB_Vfov = 62.0;
 
-s32 N(D_802498F8_A33B38) = 0;
-s32 N(D_802498FC_A33B3C) = 0;
+s32 N(UnusedEndDelayTime) = 0;
+s32 N(UnusedLerpTime) = 0;
 
 // probably for unused 'breaking ceiling' part of the scene
 API_CALLABLE(N(UnusedInitializeStoryCamera)) {
@@ -385,7 +387,7 @@ API_CALLABLE(N(UnusedInitializeStoryCamera)) {
     }
     N(ColorBufPtr) = nuGfxCfb_ptr;
     N(lerp_value_with_max_step)(250.0f, 0.0f, N(StoryCameraAngle), 0.5f, &N(StoryCameraAngle));
-    N(interp_value_with_easing)(INTRO_MATH_EASING_SIN_OUT_DELAYED, 130.4f, N(IntroCamSettings2).boomLength, N(D_802498FC_A33B3C), 470.0f, &IntroCamStateB_BoomLength);
+    N(interp_value_with_easing)(INTRO_MATH_EASING_SIN_OUT_DELAYED, 130.4f, N(IntroCamSettings2).boomLength, N(UnusedLerpTime), 470.0f, &IntroCamStateB_BoomLength);
     N(lerp_value_with_max_step)(12.4f, N(IntroCamSettings2).boomPitch, IntroCamStateB_BoomPitch, 0.05f, &IntroCamStateB_BoomPitch);
     N(lerp_value_with_max_step)(-16.8f, N(IntroCamSettings2).viewPitch, IntroCamStateB_ViewPitch, 0.05f, &IntroCamStateB_ViewPitch);
     N(lerp_value_with_max_step)(62.0f, 49.0f, IntroCamStateB_Vfov, 0.1f, &IntroCamStateB_Vfov);
@@ -396,12 +398,12 @@ API_CALLABLE(N(UnusedInitializeStoryCamera)) {
     camera->overrideSettings.points.two.Bx = sin_deg(N(StoryCameraAngle)) * 500.0f;
     camera->overrideSettings.points.two.Bz = cos_deg(N(StoryCameraAngle)) * -500.0f;
     camera->panActive = true;
-    N(D_802498FC_A33B3C)++;
+    N(UnusedLerpTime)++;
     if (N(StoryCameraAngle) == 0.0f) {
-        N(D_802498F8_A33B38)++;
+        N(UnusedEndDelayTime)++;
     }
 
-    if (N(D_802498F8_A33B38) <= 30) {
+    if (N(UnusedEndDelayTime) <= 30) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
@@ -772,36 +774,31 @@ BSS f32 N(HoldStarRodCamZ);
 BSS f32 N(FlyToBowserStartX);
 BSS f32 N(FlyToBowserStartZ);
 
-BSS f32 N(D_8024F2FC);
-BSS f32 N(D_8024F300);
-BSS f32 N(D_8024F304);
-BSS f32 N(D_8024F308);
-BSS f32 N(D_8024F30C);
-BSS f32 N(D_8024F310);
-BSS char N(D_8024F314)[0x4];
+BSS f32 N(KammyCarryStartX);
+BSS f32 N(KammyCarryStartY);
+BSS f32 N(KammyCarryStartZ);
+BSS f32 N(CardRingCarryStartX);
+BSS f32 N(CardRingCarryStartY);
+BSS f32 N(CardRingCarryStartZ);
 
-BSS f32 N(StarSpiritsPosX)[7];
-BSS char N(D_8024F334)[0x4];
-
-BSS f32 N(StarSpiritsPosY)[7];
-BSS char N(D_8024F354)[0x4];
-
-BSS f32 N(StarSpiritsPosZ)[7];
+BSS f32 N(CapturedSpiritStartX)[7];
+BSS f32 N(CapturedSpiritStartY)[7];
+BSS f32 N(CapturedSpiritStartZ)[7];
 
 BSS f32 N(AnimBowser_FlyOff_InitialY);
 BSS f32 N(AnimKammy_FlyOff_InitialY);
-BSS char N(D_8024F37C)[0x4];
-BSS s32 N(D_8024F380);
-BSS char N(D_8024F384)[0x74];
 
-typedef struct UnkHos05Path {
+// Shared array for EVS_Intro_Main and children, needs enough room for every ArrayVar they will use
+BSS s32 N(ScratchSpace)[30];
+
+typedef struct SpiritCapturePath {
     /* 0x00 */ Vec3f startPoint;
     /* 0x0C */ Vec3f midPoint;
     /* 0x18 */ Vec3f endPoint;
-    /* 0x24 */ char unk_24[4];
-} UnkHos05Path; // size = 0x28
+    /* 0x24 */ PAD(4);
+} SpiritCapturePath; // size = 0x28
 
-BSS UnkHos05Path N(D_8024F3F8)[7];
+BSS SpiritCapturePath N(SpiritCapturePaths)[7];
 
 BSS StoryGraphicData N(StoryGraphics);
 
@@ -880,187 +877,43 @@ API_CALLABLE(N(CamMove_OrbitKammy)) {
     }
 }
 
-// TODO document this function
-API_CALLABLE(func_802428C8_A2CB08) {
+API_CALLABLE(N(BuildSpiritCapturePath)) {
     Bytecode* args = script->ptrReadPos;
-    s32 arg0 = evt_get_variable(script, *args++);
-    f32 arg1 = evt_get_float_variable(script, *args++);
-    f32 arg2 = evt_get_float_variable(script, *args++);
-    EffectInstance* arrayVar0;
-    f32 xPos, yPos, zPos;
-    EffectInstance* effect;
-    UnkHos05Path* path;
-    Vec3f* point;
-    Vec3f* endPoint;
-    s32 numPoints;
-    s32 pathTime;
-    s32 i;
+    s32 spiritNpcID = evt_get_variable(script, *args++);
+    f32 arcHeight = evt_get_float_variable(script, *args++);
+    f32 midpointBias = evt_get_float_variable(script, *args++);
 
-    arrayVar0 = (EffectInstance*) evt_get_variable(script, ArrayVar(0));
-    effect = arrayVar0;
+    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, ArrayVar(0));
+    SpiritCapturePath* path = &N(SpiritCapturePaths)[spiritNpcID];
+    s32 numPoints = 3;
+    s32 pathTime = 30;
+    s32 cardIndex = N(CardIndexForSpirit)[spiritNpcID];
 
-    // set endPoint
-    switch (arg0) {
-        case 1:
-            path = &N(D_8024F3F8)[0];
-            i = 1;
-            point = &path->startPoint;
-            pathTime = 30;
-            numPoints = 3;
-            {
-                f32 angle = 90.0f;
-                u32 unk_14 = effect->data.somethingRotating->unk_14 + 30;
-                f32 angle3 = unk_14 * 4.0f + (f32) i * 51.43;
-                f32 radius = 50.0f;
-                f32 temp_f24 = sin_deg(angle3);
-                xPos = effect->data.somethingRotating->pos.x + sin_deg(angle) * radius * temp_f24 ;
-                yPos = effect->data.somethingRotating->pos.y + cos_deg(angle3) * radius;
-                /// @bug should be `zPos = effect->data.somethingRotating->pos.z + cos_deg(angle) * radius * temp_f24;`
-                zPos = effect->data.somethingRotating->pos.z + sin_deg(angle) * radius * temp_f24;
-                path->endPoint.x = xPos;
-                path->endPoint.y = yPos;
-                path->endPoint.z = zPos;
-            }
-            break;
-        case 2:
-            path = &N(D_8024F3F8)[1];
-            i = 7;
-            point = &path->startPoint;
-            pathTime = 30;
-            numPoints = 3;
-            {
-                f32 angle = 90.0f;
-                u32 unk_14 = effect->data.somethingRotating->unk_14 + 30;
-                f32 angle3 = unk_14 * 4.0f + (f32) i * 51.43;
-                f32 radius = 50.0f;
-                f32 temp_f24 = sin_deg(angle3);
-                xPos = effect->data.somethingRotating->pos.x + sin_deg(angle) * radius * temp_f24 ;
-                yPos = effect->data.somethingRotating->pos.y + cos_deg(angle3) * radius;
-                zPos = effect->data.somethingRotating->pos.z + sin_deg(angle) * radius * temp_f24;
-                path->endPoint.x = xPos;
-                path->endPoint.y = yPos;
-                path->endPoint.z = zPos;
-            }
-            break;
-        case 3:
-            path = &N(D_8024F3F8)[2];
-            i = 3;
-            point = &path->startPoint;
-            pathTime = 30;
-            numPoints = 3;
-            {
-                f32 angle = 90.0f;
-                u32 unk_14 = effect->data.somethingRotating->unk_14 + 30;
-                f32 angle3 = unk_14 * 4.0f + (f32) i * 51.43;
-                f32 radius = 50.0f;
-                f32 temp_f24 = sin_deg(angle3);
-                xPos = effect->data.somethingRotating->pos.x + sin_deg(angle) * radius * temp_f24 ;
-                yPos = effect->data.somethingRotating->pos.y + cos_deg(angle3) * radius;
-                zPos = effect->data.somethingRotating->pos.z + sin_deg(angle) * radius * temp_f24;
-                path->endPoint.x = xPos;
-                path->endPoint.y = yPos;
-                path->endPoint.z = zPos;
-            }
-            break;
-        case 4:
-            path = &N(D_8024F3F8)[3];
-            i = 4;
-            point = &path->startPoint;
-            pathTime = 30;
-            {
-                f32 angle = 90.0f;
-                u32 unk_14 = effect->data.somethingRotating->unk_14 + 30;
-                f32 angle3 = unk_14 * 4.0f + (f32) i * 51.43;
-                f32 radius = 50.0f;
-                f32 temp_f24 = sin_deg(angle3);
-                numPoints = 3;
-                xPos = effect->data.somethingRotating->pos.x + sin_deg(angle) * radius * temp_f24 ;
-                yPos = effect->data.somethingRotating->pos.y + cos_deg(angle3) * radius;
-                zPos = effect->data.somethingRotating->pos.z + sin_deg(angle) * radius * temp_f24;
-                path->endPoint.x = xPos;
-                path->endPoint.y = yPos;
-                path->endPoint.z = zPos;
-            }
-            break;
-        case 5:
-            path = &N(D_8024F3F8)[4];
-            i = 6;
-            point = &path->startPoint;
-            pathTime = 30;
-            numPoints = 3;
-            {
-                f32 angle = 90.0f;
-                u32 unk_14 = effect->data.somethingRotating->unk_14 + 30;
-                f32 angle3 = unk_14 * 4.0f + (f32) i * 51.43;
-                f32 radius = 50.0f;
-                f32 temp_f24 = sin_deg(angle3);
-                xPos = effect->data.somethingRotating->pos.x + sin_deg(angle) * radius * temp_f24 ;
-                yPos = effect->data.somethingRotating->pos.y + cos_deg(angle3) * radius;
-                zPos = effect->data.somethingRotating->pos.z + sin_deg(angle) * radius * temp_f24;
-                path->endPoint.x = xPos;
-                path->endPoint.y = yPos;
-                path->endPoint.z = zPos;
-            }
-            break;
-        case 6:
-            path = &N(D_8024F3F8)[5];
-            i = 2;
-            point = &path->startPoint;
-            pathTime = 30;
-            numPoints = 3;
-            {
-                f32 angle = 90.0f;
-                u32 unk_14 = effect->data.somethingRotating->unk_14 + 30;
-                f32 angle3 = unk_14 * 4.0f + (f32) i * 51.43;
-                f32 radius = 50.0f;
-                f32 temp_f24 = sin_deg(angle3);
-                xPos = effect->data.somethingRotating->pos.x + sin_deg(angle) * radius * temp_f24 ;
-                yPos = effect->data.somethingRotating->pos.y + cos_deg(angle3) * radius;
-                zPos = effect->data.somethingRotating->pos.z + sin_deg(angle) * radius * temp_f24;
-                path->endPoint.x = xPos;
-                path->endPoint.y = yPos;
-                path->endPoint.z = zPos;
-            }
-            break;
-        default:
-            path = &N(D_8024F3F8)[6];
-            i = 5;
-            point = &path->startPoint;
-            pathTime = 30;
-            numPoints = 3;
-            {
-                f32 angle = 90.0f;
-                u32 unk_14 = effect->data.somethingRotating->unk_14 + 30;
-                f32 angle3 = unk_14 * 4.0f + (f32) i * 51.43;
-                f32 radius = 50.0f;
-                f32 temp_f24 = sin_deg(angle3);
-                xPos = effect->data.somethingRotating->pos.x + sin_deg(angle) * radius * temp_f24 ;
-                yPos = effect->data.somethingRotating->pos.y + cos_deg(angle3) * radius;
-                zPos = effect->data.somethingRotating->pos.z + sin_deg(angle) * radius * temp_f24;
-                path->endPoint.x = xPos;
-                path->endPoint.y = yPos;
-                path->endPoint.z = zPos;
-            }
-            break;
-    }
+    s32 time = effect->data.somethingRotating->lifetime;
+    f32 roll = (time + 30) * 4.0f + cardIndex * CARD_RING_ANGLE_SPACING;
+    f32 radius = 50.0f;
+    f32 pitch = 90.0f;
+    f32 radial = sin_deg(roll);
 
     // set startPoint
-    point->x = evt_get_float_variable(script, LVar0);
-    point->y = evt_get_float_variable(script, LVar1);
-    point->z = evt_get_float_variable(script, LVar2);
+    path->startPoint.x = evt_get_float_variable(script, LVar0);
+    path->startPoint.y = evt_get_float_variable(script, LVar1);
+    path->startPoint.z = evt_get_float_variable(script, LVar2);
 
-    endPoint = &point[2];
-    point++;
+    // set endPoint
+    path->endPoint.x = effect->data.somethingRotating->pos.x + sin_deg(pitch) * radius * radial ;
+    path->endPoint.y = effect->data.somethingRotating->pos.y + cos_deg(roll) * radius;
+    path->endPoint.z = effect->data.somethingRotating->pos.z + cos_deg(pitch) * radius * radial;
 
     // set midPoint
-    if (arg0 != 2) {
-        point->x = (evt_get_float_variable(script, LVar0) * arg2) + (endPoint->x * (1.0f - arg2));
-        point->y = (evt_get_float_variable(script, LVar1) * arg2) + (endPoint->y * (1.0f - arg2)) + arg1;
-        point->z = (evt_get_float_variable(script, LVar2) * arg2) + (endPoint->z * (1.0f - arg2));
+    if (spiritNpcID != NPC_Mamar) {
+        path->midPoint.x = (path->startPoint.x * midpointBias) + (path->endPoint.x * (1.0f - midpointBias));
+        path->midPoint.y = (path->startPoint.y * midpointBias) + (path->endPoint.y * (1.0f - midpointBias)) + arcHeight;
+        path->midPoint.z = (path->startPoint.z * midpointBias) + (path->endPoint.z * (1.0f - midpointBias));
     } else {
-        point->x = ((evt_get_float_variable(script, LVar0) * arg2) + (endPoint->x * (1.0f - arg2))) - 50.0f;
-        point->y = (evt_get_float_variable(script, LVar1) * arg2) + (endPoint->y * (1.0f - arg2)) + arg1;
-        point->z = ((evt_get_float_variable(script, LVar2) * arg2) + (endPoint->z * (1.0f - arg2))) - 50.0f;
+        path->midPoint.x = (path->startPoint.x * midpointBias) + (path->endPoint.x * (1.0f - midpointBias)) - 50.0f;
+        path->midPoint.y = (path->startPoint.y * midpointBias) + (path->endPoint.y * (1.0f - midpointBias)) + arcHeight;
+        path->midPoint.z = (path->startPoint.z * midpointBias) + (path->endPoint.z * (1.0f - midpointBias)) - 50.0f;
     }
 
     script->varTable[0] = pathTime;
@@ -1087,24 +940,25 @@ EvtScript N(EVS_CaptureSpirits) = {
     Call(GetNpcPos, NPC_Klevar, LVar0, LVar1, LVar2)
     PlayEffect(EFFECT_RING_BLAST, 1, LVar0, LVar1, LVar2, 4, 20)
     Thread
+        // capture Klevar
         Wait(3)
         Call(GetNpcPos, NPC_Klevar, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_MISC_PARTICLES, 3, LVar0, LVar1, LVar2, 16, 16, 2, 20, 0)
         Set(ArrayVar(13), LVarF)
-        Call(func_802428C8_A2CB08, 6, 80, Float(0.5))
+        Call(N(BuildSpiritCapturePath), NPC_Klevar, 80, Float(0.5))
         Call(LoadPath, LVar0, LVar1, LVar2, EASING_LINEAR)
         SetF(LVar4, Float(1.0))
         Label(6)
-        Call(GetNextPathPos)
-        Call(SetNpcPos, NPC_Klevar, LVar1, LVar2, LVar3)
-        Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(13), ArrayVar(24), LVar1, LVar2, LVar3)
-        AddF(LVar4, Float(-0.03125))
-        Call(SetNpcScale, NPC_Klevar, LVar4, LVar4, LVar4)
-        Wait(1)
-        IfEq(LVar0, 1)
-            Goto(6)
-        EndIf
-        Call(N(SetCardCaptureState1))
+            Call(GetNextPathPos)
+            Call(SetNpcPos, NPC_Klevar, LVar1, LVar2, LVar3)
+            Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(13), ArrayVar(24), LVar1, LVar2, LVar3)
+            AddF(LVar4, Float(-0.03125))
+            Call(SetNpcScale, NPC_Klevar, LVar4, LVar4, LVar4)
+            Wait(1)
+            IfEq(LVar0, 1)
+                Goto(6)
+            EndIf
+        Call(N(StartCardRingCapture))
         Call(SetNpcAnimation, NPC_Klevar, ANIM_WorldKlevar_Panic)
         Call(SetNpcImgFXParams, NPC_Klevar, IMGFX_CLEAR, 0, 0, 0, 0)
         Call(SetNpcFlagBits, NPC_Klevar, NPC_FLAG_INVISIBLE, true)
@@ -1115,24 +969,25 @@ EvtScript N(EVS_CaptureSpirits) = {
     Call(GetNpcPos, NPC_Skolar, LVar0, LVar1, LVar2)
     PlayEffect(EFFECT_RING_BLAST, 1, LVar0, LVar1, LVar2, 4, 20)
     Thread
+        // capture Skolar
         Wait(3)
         Call(GetNpcPos, NPC_Skolar, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_MISC_PARTICLES, 3, LVar0, LVar1, LVar2, 16, 16, 2, 20, 0)
         Set(ArrayVar(10), LVarF)
-        Call(func_802428C8_A2CB08, 3, 30, Float(0.5))
+        Call(N(BuildSpiritCapturePath), NPC_Skolar, 30, Float(0.5))
         Call(LoadPath, LVar0, LVar1, LVar2, EASING_LINEAR)
         SetF(LVar4, Float(1.0))
         Label(3)
-        Call(GetNextPathPos)
-        Call(SetNpcPos, NPC_Skolar, LVar1, LVar2, LVar3)
-        Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(10), ArrayVar(21), LVar1, LVar2, LVar3)
-        AddF(LVar4, Float(-0.03125))
-        Call(SetNpcScale, NPC_Skolar, LVar4, LVar4, LVar4)
-        Wait(1)
-        IfEq(LVar0, 1)
-            Goto(3)
-        EndIf
-        Call(N(SetCardCaptureState1))
+            Call(GetNextPathPos)
+            Call(SetNpcPos, NPC_Skolar, LVar1, LVar2, LVar3)
+            Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(10), ArrayVar(21), LVar1, LVar2, LVar3)
+            AddF(LVar4, Float(-0.03125))
+            Call(SetNpcScale, NPC_Skolar, LVar4, LVar4, LVar4)
+            Wait(1)
+            IfEq(LVar0, 1)
+                Goto(3)
+            EndIf
+        Call(N(StartCardRingCapture))
         Call(SetNpcAnimation, NPC_Skolar, ANIM_WorldSkolar_IdleSad)
         Call(SetNpcImgFXParams, NPC_Skolar, IMGFX_CLEAR, 0, 0, 0, 0)
         Call(SetNpcFlagBits, NPC_Skolar, NPC_FLAG_INVISIBLE, true)
@@ -1143,24 +998,25 @@ EvtScript N(EVS_CaptureSpirits) = {
     Call(GetNpcPos, NPC_Muskular, LVar0, LVar1, LVar2)
     PlayEffect(EFFECT_RING_BLAST, 1, LVar0, LVar1, LVar2, 4, 20)
     Thread
+        // capture Muskular
         Wait(3)
         Call(GetNpcPos, NPC_Muskular, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_MISC_PARTICLES, 3, LVar0, LVar1, LVar2, 16, 16, 2, 20, 0)
         Set(ArrayVar(11), LVarF)
-        Call(func_802428C8_A2CB08, 4, -80, Float(0.3))
+        Call(N(BuildSpiritCapturePath), NPC_Muskular, -80, Float(0.3))
         Call(LoadPath, LVar0, LVar1, LVar2, EASING_LINEAR)
         SetF(LVar4, Float(1.0))
         Label(4)
-        Call(GetNextPathPos)
-        Call(SetNpcPos, NPC_Muskular, LVar1, LVar2, LVar3)
-        Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(11), ArrayVar(22), LVar1, LVar2, LVar3)
-        AddF(LVar4, Float(-0.03125))
-        Call(SetNpcScale, NPC_Muskular, LVar4, LVar4, LVar4)
-        Wait(1)
-        IfEq(LVar0, 1)
-            Goto(4)
-        EndIf
-        Call(N(SetCardCaptureState1))
+            Call(GetNextPathPos)
+            Call(SetNpcPos, NPC_Muskular, LVar1, LVar2, LVar3)
+            Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(11), ArrayVar(22), LVar1, LVar2, LVar3)
+            AddF(LVar4, Float(-0.03125))
+            Call(SetNpcScale, NPC_Muskular, LVar4, LVar4, LVar4)
+            Wait(1)
+            IfEq(LVar0, 1)
+                Goto(4)
+            EndIf
+        Call(N(StartCardRingCapture))
         Call(SetNpcAnimation, NPC_Muskular, ANIM_WorldMuskular_Panic)
         Call(SetNpcImgFXParams, NPC_Muskular, IMGFX_CLEAR, 0, 0, 0, 0)
         Call(SetNpcFlagBits, NPC_Muskular, NPC_FLAG_INVISIBLE, true)
@@ -1171,24 +1027,25 @@ EvtScript N(EVS_CaptureSpirits) = {
     Call(GetNpcPos, NPC_Kalmar, LVar0, LVar1, LVar2)
     PlayEffect(EFFECT_RING_BLAST, 1, LVar0, LVar1, LVar2, 4, 20)
     Thread
+        // capture Kalmar
         Wait(3)
         Call(GetNpcPos, NPC_Kalmar, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_MISC_PARTICLES, 3, LVar0, LVar1, LVar2, 16, 16, 2, 20, 0)
         Set(ArrayVar(14), LVarF)
-        Call(func_802428C8_A2CB08, 7, 120, Float(0.5))
+        Call(N(BuildSpiritCapturePath), NPC_Kalmar, 120, Float(0.5))
         Call(LoadPath, LVar0, LVar1, LVar2, EASING_LINEAR)
         SetF(LVar4, Float(1.0))
         Label(7)
-        Call(GetNextPathPos)
-        Call(SetNpcPos, NPC_Kalmar, LVar1, LVar2, LVar3)
-        Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(14), ArrayVar(25), LVar1, LVar2, LVar3)
-        AddF(LVar4, Float(-0.03125))
-        Call(SetNpcScale, NPC_Kalmar, LVar4, LVar4, LVar4)
-        Wait(1)
-        IfEq(LVar0, 1)
-            Goto(7)
-        EndIf
-        Call(N(SetCardCaptureState1))
+            Call(GetNextPathPos)
+            Call(SetNpcPos, NPC_Kalmar, LVar1, LVar2, LVar3)
+            Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(14), ArrayVar(25), LVar1, LVar2, LVar3)
+            AddF(LVar4, Float(-0.03125))
+            Call(SetNpcScale, NPC_Kalmar, LVar4, LVar4, LVar4)
+            Wait(1)
+            IfEq(LVar0, 1)
+                Goto(7)
+            EndIf
+        Call(N(StartCardRingCapture))
         Call(SetNpcAnimation, NPC_Kalmar, ANIM_WorldKalmar_Panic)
         Call(SetNpcImgFXParams, NPC_Kalmar, IMGFX_CLEAR, 0, 0, 0, 0)
         Call(SetNpcFlagBits, NPC_Kalmar, NPC_FLAG_INVISIBLE, true)
@@ -1199,24 +1056,25 @@ EvtScript N(EVS_CaptureSpirits) = {
     Call(GetNpcPos, NPC_Misstar, LVar0, LVar1, LVar2)
     PlayEffect(EFFECT_RING_BLAST, 1, LVar0, LVar1, LVar2, 4, 20)
     Thread
+        // capture Misstar
         Wait(3)
         Call(GetNpcPos, NPC_Misstar, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_MISC_PARTICLES, 3, LVar0, LVar1, LVar2, 16, 16, 2, 20, 0)
         Set(ArrayVar(12), LVarF)
-        Call(func_802428C8_A2CB08, 5, 120, Float(0.5))
+        Call(N(BuildSpiritCapturePath), NPC_Misstar, 120, Float(0.5))
         Call(LoadPath, LVar0, LVar1, LVar2, EASING_LINEAR)
         SetF(LVar4, Float(1.0))
         Label(5)
-        Call(GetNextPathPos)
-        Call(SetNpcPos, NPC_Misstar, LVar1, LVar2, LVar3)
-        Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(12), ArrayVar(23), LVar1, LVar2, LVar3)
-        AddF(LVar4, Float(-0.03125))
-        Call(SetNpcScale, NPC_Misstar, LVar4, LVar4, LVar4)
-        Wait(1)
-        IfEq(LVar0, 1)
-            Goto(5)
-        EndIf
-        Call(N(SetCardCaptureState1))
+            Call(GetNextPathPos)
+            Call(SetNpcPos, NPC_Misstar, LVar1, LVar2, LVar3)
+            Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(12), ArrayVar(23), LVar1, LVar2, LVar3)
+            AddF(LVar4, Float(-0.03125))
+            Call(SetNpcScale, NPC_Misstar, LVar4, LVar4, LVar4)
+            Wait(1)
+            IfEq(LVar0, 1)
+                Goto(5)
+            EndIf
+        Call(N(StartCardRingCapture))
         Call(SetNpcAnimation, NPC_Misstar, ANIM_WorldMisstar_Panic)
         Call(SetNpcImgFXParams, NPC_Misstar, IMGFX_CLEAR, 0, 0, 0, 0)
         Call(SetNpcFlagBits, NPC_Misstar, NPC_FLAG_INVISIBLE, true)
@@ -1227,24 +1085,25 @@ EvtScript N(EVS_CaptureSpirits) = {
     Call(GetNpcPos, NPC_Mamar, LVar0, LVar1, LVar2)
     PlayEffect(EFFECT_RING_BLAST, 1, LVar0, LVar1, LVar2, 4, 20)
     Thread
+        // capture Mamar
         Wait(3)
         Call(GetNpcPos, NPC_Mamar, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_MISC_PARTICLES, 3, LVar0, LVar1, LVar2, 16, 16, 2, 20, 0)
         Set(ArrayVar(9), LVarF)
-        Call(func_802428C8_A2CB08, 2, -60, Float(0.5))
+        Call(N(BuildSpiritCapturePath), NPC_Mamar, -60, Float(0.5))
         Call(LoadPath, LVar0, LVar1, LVar2, EASING_LINEAR)
         SetF(LVar4, Float(1.0))
         Label(2)
-        Call(GetNextPathPos)
-        Call(SetNpcPos, NPC_Mamar, LVar1, LVar2, LVar3)
-        Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(9), ArrayVar(20), LVar1, LVar2, LVar3)
-        AddF(LVar4, Float(-0.03125))
-        Call(SetNpcScale, NPC_Mamar, LVar4, LVar4, LVar4)
-        Wait(1)
-        IfEq(LVar0, 1)
-            Goto(2)
-        EndIf
-        Call(N(SetCardCaptureState1))
+            Call(GetNextPathPos)
+            Call(SetNpcPos, NPC_Mamar, LVar1, LVar2, LVar3)
+            Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(9), ArrayVar(20), LVar1, LVar2, LVar3)
+            AddF(LVar4, Float(-0.03125))
+            Call(SetNpcScale, NPC_Mamar, LVar4, LVar4, LVar4)
+            Wait(1)
+            IfEq(LVar0, 1)
+                Goto(2)
+            EndIf
+        Call(N(StartCardRingCapture))
         Call(SetNpcAnimation, NPC_Mamar, ANIM_WorldMamar_Panic)
         Call(SetNpcImgFXParams, NPC_Mamar, IMGFX_CLEAR, 0, 0, 0, 0)
         Call(SetNpcFlagBits, NPC_Mamar, NPC_FLAG_INVISIBLE, true)
@@ -1437,48 +1296,43 @@ void N(worker_draw_story_graphics)(void) {
         gDPSetRenderMode(gMainGfxPos++, G_RM_CLD_SURF, G_RM_CLD_SURF2);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, N(StoryGraphicsPtr)->storyPageAlpha);
     }
+
+    // use an overlay set between the world and storybook geometry to tint those elements
+    // while leaving the foreground elements unaffected (Bowser silouette and curtains)
     get_screen_overlay_params(SCREEN_LAYER_BACK, &overlayType, &overlayAlpha);
     if (overlayAlpha != 0.0f) {
         gDPSetCombineMode(gMainGfxPos++, PM_CC_43, PM_CC_43);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 208, 208, 208, (s32) overlayAlpha);
     }
 
-    if (!N(StoryGraphicsPtr)->flipOrder) {
-        N(appendGfx_image_ci)(
-            vpX + N(StoryGraphicsPtr)->backImgPosX,
-            vpY + N(StoryGraphicsPtr)->backImgPosY,
-            N(StoryGraphicsPtr)->imgBack,
-            N(StoryGraphicsPtr)->palBack
-        );
+    if (N(StoryGraphicsPtr)->flipOrder) {
         N(appendGfx_image_ci)(
             vpX + N(StoryGraphicsPtr)->frontImgPosX,
             vpY + N(StoryGraphicsPtr)->frontImgPosY,
             N(StoryGraphicsPtr)->imgFront,
             N(StoryGraphicsPtr)->palFront
+        );
+        N(appendGfx_image_ci)(
+            vpX + N(StoryGraphicsPtr)->backImgPosX,
+            vpY + N(StoryGraphicsPtr)->backImgPosY,
+            N(StoryGraphicsPtr)->imgBack,
+            N(StoryGraphicsPtr)->palBack
         );
     } else {
         N(appendGfx_image_ci)(
-            vpX + N(StoryGraphicsPtr)->frontImgPosX,
-            vpY + N(StoryGraphicsPtr)->frontImgPosY,
-            N(StoryGraphicsPtr)->imgFront,
-            N(StoryGraphicsPtr)->palFront
-        );
-        N(appendGfx_image_ci)(
             vpX + N(StoryGraphicsPtr)->backImgPosX,
             vpY + N(StoryGraphicsPtr)->backImgPosY,
             N(StoryGraphicsPtr)->imgBack,
             N(StoryGraphicsPtr)->palBack
         );
+        N(appendGfx_image_ci)(
+            vpX + N(StoryGraphicsPtr)->frontImgPosX,
+            vpY + N(StoryGraphicsPtr)->frontImgPosY,
+            N(StoryGraphicsPtr)->imgFront,
+            N(StoryGraphicsPtr)->palFront
+        );
     }
 }
-
-#ifdef SHIFT
-// TODO this breaks stuff to enable it for the shift build
-// #define TAPE_OFFSET title_tape_ROM_START - title_bg_1_ROM_START
-#define TAPE_OFFSET 0x2A440
-#else
-#define TAPE_OFFSET 0x2A440
-#endif
 
 #define STORY_IMG_SIZE (264 * 162 * G_IM_SIZ_8b_BYTES)
 #define TAPE_IMG_SIZE (128 * 128 * G_IM_SIZ_8b_BYTES)
@@ -1517,27 +1371,26 @@ void N(load_story_image)(s32 loadBackImage, s32 imageIdx) {
 API_CALLABLE(N(InitializeStoryGraphicsData)) {
     u8* dmaEnd;
     u8* dmaStart;
-    s32 tapeOffset;
-    u8* it;
+    u8* pos;
 
     N(StoryGraphicsPtr)->workerID = create_worker_frontUI(nullptr, N(worker_draw_story_graphics));
-    N(StoryGraphicsPtr)->imgFront = it = mdl_get_next_texture_address(
+    N(StoryGraphicsPtr)->imgFront = pos = mdl_get_next_texture_address(
         (STORY_IMG_SIZE + PAL_256_SIZE) +
         (STORY_IMG_SIZE + PAL_256_SIZE) +
         TAPE_IMG_SIZE +
         (BOWSER_IMG_SIZE + PAL_256_SIZE));
-    it += STORY_IMG_SIZE;
-    N(StoryGraphicsPtr)->palFront = (u16*) it;
-    it += PAL_256_SIZE;
-    N(StoryGraphicsPtr)->imgBack = it;
-    it += STORY_IMG_SIZE;
-    N(StoryGraphicsPtr)->palBack = (u16*) it;
-    it += PAL_256_SIZE;
-    N(StoryGraphicsPtr)->imgTape = it;
-    it += TAPE_IMG_SIZE;
-    N(StoryGraphicsPtr)->imgBowser = it;
-    it += BOWSER_IMG_SIZE;
-    N(StoryGraphicsPtr)->palBowser = (u16*) it;
+    pos += STORY_IMG_SIZE;
+    N(StoryGraphicsPtr)->palFront = (u16*) pos;
+    pos += PAL_256_SIZE;
+    N(StoryGraphicsPtr)->imgBack = pos;
+    pos += STORY_IMG_SIZE;
+    N(StoryGraphicsPtr)->palBack = (u16*) pos;
+    pos += PAL_256_SIZE;
+    N(StoryGraphicsPtr)->imgTape = pos;
+    pos += TAPE_IMG_SIZE;
+    N(StoryGraphicsPtr)->imgBowser = pos;
+    pos += BOWSER_IMG_SIZE;
+    N(StoryGraphicsPtr)->palBowser = (u16*) pos;
     N(StoryGraphicsPtr)->frontImgPosX = 0;
     N(StoryGraphicsPtr)->frontImgPosY = 0;
     N(StoryGraphicsPtr)->backImgPosX = 0;
@@ -1551,11 +1404,10 @@ API_CALLABLE(N(InitializeStoryGraphicsData)) {
     N(load_story_image)(true, STORY_PAGE_STARRY_SKY);
 
     // load the tape and bowser silhouette images
-    tapeOffset = TAPE_OFFSET;
-    dmaStart = title_bg_1_ROM_START + tapeOffset;
-    dmaEnd = title_bg_1_ROM_START + tapeOffset + TAPE_IMG_SIZE;
+    dmaStart = title_tape_ROM_START;
+    dmaEnd = title_tape_ROM_START + TAPE_IMG_SIZE + BOWSER_IMG_SIZE + PAL_256_SIZE;
 
-    dma_copy(dmaStart, dmaEnd + (BOWSER_IMG_SIZE + PAL_256_SIZE), N(StoryGraphicsPtr)->imgTape);
+    dma_copy(dmaStart, dmaEnd, N(StoryGraphicsPtr)->imgTape);
     N(StoryGraphicsPtr)->flipOrder = 0;
     N(StoryGraphicsPtr)->storyPageAlpha = 255;
     N(StoryGraphicsPtr)->tapeAlpha = 0;
@@ -1594,10 +1446,6 @@ s32 N(NextPageAnimOffsetsX)[] = {
     -165, -184, -204, -225, -247, -270,
 #endif
 };
-
-#if VERSION_PAL
-static u32 padding = 0;
-#endif
 
 u8 N(BowserSilhouetteShakeY)[] = {
 #if VERSION_PAL
@@ -1810,8 +1658,6 @@ API_CALLABLE(N(FadeAwayTapeGraphic)) {
     }
 }
 
-s32 N(D_8024ACBC_A34EFC) = 0x00010019;
-
 API_CALLABLE(N(ForceStarRodAlwaysFaceCamera)) {
     Npc* npc = resolve_npc(script, NPC_StarRod);
 
@@ -1819,63 +1665,65 @@ API_CALLABLE(N(ForceStarRodAlwaysFaceCamera)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(func_80244550_A2E790) {
+// While Kammy flies back to Bowser, keep the captured spirits and the card ring locked to her movement.
+// Their initial positions are saved once, then Kammy's displacement is added each frame.
+API_CALLABLE(N(UpdateCapturedSpiritsWithKammy)) {
     Npc* kammy = resolve_npc(script, NPC_Kammy);
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, ArrayVar(0));
-    Npc* npc2;
-    f32 x, y, z;
-    f32* x2;
-    f32* y2;
-    f32* z2;
+    Npc* spirit;
+    f32 deltaX, deltaY, deltaZ;
+    f32* startX;
+    f32* startY;
+    f32* startZ;
     s32 i;
 
     if (isInitialCall) {
-        N(D_8024F2FC) = kammy->pos.x;
-        N(D_8024F300) = kammy->pos.y;
-        N(D_8024F304) = kammy->pos.z;
+        N(KammyCarryStartX) = kammy->pos.x;
+        N(KammyCarryStartY) = kammy->pos.y;
+        N(KammyCarryStartZ) = kammy->pos.z;
 
-        for (i = NPC_Eldstar; i < ARRAY_COUNT(N(StarSpiritsPosX)); i++) {
-            npc2 = resolve_npc(script, i);
+        for (i = NPC_Eldstar; i < ARRAY_COUNT(N(CapturedSpiritStartX)); i++) {
+            spirit = resolve_npc(script, i);
 
-            N(StarSpiritsPosX)[i] = npc2->pos.x;
-            N(StarSpiritsPosY)[i] = npc2->pos.y;
-            N(StarSpiritsPosZ)[i] = npc2->pos.z;
+            N(CapturedSpiritStartX)[i] = spirit->pos.x;
+            N(CapturedSpiritStartY)[i] = spirit->pos.y;
+            N(CapturedSpiritStartZ)[i] = spirit->pos.z;
         }
-        N(D_8024F308) = effect->data.somethingRotating->pos.x;
-        N(D_8024F30C) = effect->data.somethingRotating->pos.y;
-        N(D_8024F310) = effect->data.somethingRotating->pos.z;
+        N(CardRingCarryStartX) = effect->data.somethingRotating->pos.x;
+        N(CardRingCarryStartY) = effect->data.somethingRotating->pos.y;
+        N(CardRingCarryStartZ) = effect->data.somethingRotating->pos.z;
     }
 
-    x = kammy->pos.x - N(D_8024F2FC);
-    y = kammy->pos.y - N(D_8024F300);
-    z = kammy->pos.z - N(D_8024F304);
+    deltaX = kammy->pos.x - N(KammyCarryStartX);
+    deltaY = kammy->pos.y - N(KammyCarryStartY);
+    deltaZ = kammy->pos.z - N(KammyCarryStartZ);
 
     i = 0;
-    z2 = N(StarSpiritsPosZ);
-    y2 = N(StarSpiritsPosY);
-    x2 = N(StarSpiritsPosX);
-    for (; i < ARRAY_COUNT(N(StarSpiritsPosX)); ) {
-        npc2 = resolve_npc(script, i);
+    startZ = N(CapturedSpiritStartZ);
+    startY = N(CapturedSpiritStartY);
+    startX = N(CapturedSpiritStartX);
+    for (; i < ARRAY_COUNT(N(CapturedSpiritStartX)); ) {
+        spirit = resolve_npc(script, i);
         i++;
-        npc2->pos.x = *x2++ + x;
-        npc2->pos.y = *y2++ + y;
-        npc2->pos.z = *z2++ + z;
+        spirit->pos.x = *startX++ + deltaX;
+        spirit->pos.y = *startY++ + deltaY;
+        spirit->pos.z = *startZ++ + deltaZ;
 
-        npc2->colliderPos.x = npc2->pos.x;
-        npc2->colliderPos.y = npc2->pos.y;
-        npc2->colliderPos.z = npc2->pos.z;
+        spirit->colliderPos.x = spirit->pos.x;
+        spirit->colliderPos.y = spirit->pos.y;
+        spirit->colliderPos.z = spirit->pos.z;
     }
 
-    effect->data.somethingRotating->pos.x = N(D_8024F308) + x;
-    effect->data.somethingRotating->pos.y = N(D_8024F30C) + y;
-    effect->data.somethingRotating->pos.z = N(D_8024F310) + z;
+    effect->data.somethingRotating->pos.x = N(CardRingCarryStartX) + deltaX;
+    effect->data.somethingRotating->pos.y = N(CardRingCarryStartY) + deltaY;
+    effect->data.somethingRotating->pos.z = N(CardRingCarryStartZ) + deltaZ;
     return ApiStatus_BLOCK;
 }
 
 extern EvtScript N(EVS_Scene_IntroStory);
 
 EvtScript N(EVS_Intro_Main) = {
-    UseArray(Ref(N(D_8024F380)))
+    UseArray(Ref(N(ScratchSpace)))
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(N(SetWorldFogParams), 0, 0, 0, 0, 0, 0, 0, 995, 1000)
@@ -1952,7 +1800,7 @@ API_CALLABLE(N(AnimKammy_FlyOff)) {
     }
 }
 
-API_CALLABLE(N(func_80244934_A2EB74)) {
+API_CALLABLE(N(FadeOutStorybookTint)) {
     if (isInitialCall) {
         script->functionTemp[0] = 0;
         set_screen_overlay_params_back(OVERLAY_VIEWPORT_COLOR, 255.0f);
@@ -1965,7 +1813,7 @@ API_CALLABLE(N(func_80244934_A2EB74)) {
         set_screen_overlay_color(SCREEN_LAYER_BACK, 250, 250, 250);
         return ApiStatus_DONE2;
     }
-    set_screen_overlay_params_back(OVERLAY_VIEWPORT_COLOR, (10 - script->functionTemp[0]) * 25);
+    set_screen_overlay_params_back(OVERLAY_VIEWPORT_COLOR, (10 - script->functionTemp[0]) * 25.0f);
     set_screen_overlay_color(SCREEN_LAYER_BACK, 250, 250, 250);
     return ApiStatus_BLOCK;
 }
@@ -2008,7 +1856,7 @@ EvtScript N(EVS_Scene_IntroStory) = {
     Call(InterpNpcYaw, NPC_Bowser_Prop, 90, 0)
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_ClownCarTalk)
     Call(SetNpcAnimation, NPC_Bowser_Prop, ANIM_WorldBowser_ClownCarPropeller)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim17)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyRodStill)
     Call(InterpNpcYaw, NPC_Kammy, 45, 0)
     Call(SetNpcPos, NPC_Kammy, -145, 147, 84)
     Call(SetNpcAnimation, NPC_Misstar, ANIM_WorldMisstar_Still)
@@ -2043,9 +1891,7 @@ EvtScript N(EVS_Scene_IntroStory) = {
             Call(SetNpcRotation, NPC_Bowser_Body, 0, LVar0, 0)
             Wait(1)
         EndLoop
-#if !VERSION_JP
         Call(SetNpcRotation, NPC_Bowser_Body, 0, 0, 0)
-#endif
         Call(InterpNpcYaw, NPC_Bowser_Body, 90, 0)
     EndThread
     Thread
@@ -2058,7 +1904,7 @@ EvtScript N(EVS_Scene_IntroStory) = {
     EndThread
     Wait(16 * DT)
     Thread
-        Call(N(func_80244934_A2EB74))
+        Call(N(FadeOutStorybookTint))
     EndThread
     Loop(2)
         Call(N(SetWorldColorParams), 117, 28, 42, 165, 96, 152, 0)
@@ -2098,7 +1944,7 @@ EvtScript N(EVS_Scene_IntroStory) = {
         Call(SetNpcAnimation, NPC_Misstar, ANIM_WorldMisstar_Panic)
         Call(SetNpcAnimation, NPC_Klevar, ANIM_WorldKlevar_Panic)
         Call(SetNpcAnimation, NPC_Kalmar, ANIM_WorldKalmar_Panic)
-        Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim0E)
+        Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyRodTalk)
         PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 180, 0, Float(2.59375), ArrayVar(15))
         PlayEffect(EFFECT_LIGHT_RAYS, 1, 0, 200, 0, Float(1.0), ArrayVar(16))
     EndThread
@@ -2205,7 +2051,7 @@ EvtScript N(EVS_Scene_IntroStory) = {
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_ClownCarCloseMouth)
     Call(SetNpcPos, NPC_Bowser_Body, -30, 150, 162)
     Call(SetNpcPos, NPC_Bowser_Prop, -30, 150, 162)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim11)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyChuckle)
     Thread
         Call(N(SetWorldColorParams), 23, 10, 10, 0, 0, 0, 15)
         Wait(28)
@@ -2431,24 +2277,25 @@ EvtScript N(EVS_Scene_IntroStory) = {
     Call(GetNpcPos, NPC_Eldstar, LVar0, LVar1, LVar2)
     PlayEffect(EFFECT_RING_BLAST, 1, LVar0, LVar1, LVar2, 4, 20)
     Thread
+        // capture Eldstar
         Wait(3)
         Call(GetNpcPos, NPC_Eldstar, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_MISC_PARTICLES, 3, LVar0, LVar1, LVar2, 16, 16, 2, 20, 0)
         Set(ArrayVar(8), LVarF)
-        Call(func_802428C8_A2CB08, 1, 30, Float(0.5))
+        Call(N(BuildSpiritCapturePath), NPC_Eldstar, 30, Float(0.5))
         Call(LoadPath, LVar0, LVar1, LVar2, EASING_LINEAR)
         SetF(LVar4, Float(1.0))
         Label(1)
-        Call(GetNextPathPos)
-        Call(SetNpcPos, NPC_Eldstar, LVar1, LVar2, LVar3)
-        Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(8), ArrayVar(19), LVar1, LVar2, LVar3)
-        AddF(LVar4, Float(-0.03125))
-        Call(SetNpcScale, NPC_Eldstar, LVar4, LVar4, LVar4)
-        Wait(1)
-        IfEq(LVar0, 1)
-            Goto(1)
-        EndIf
-        Call(N(SetCardCaptureState1))
+            Call(GetNextPathPos)
+            Call(SetNpcPos, NPC_Eldstar, LVar1, LVar2, LVar3)
+            Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(8), ArrayVar(19), LVar1, LVar2, LVar3)
+            AddF(LVar4, Float(-0.03125))
+            Call(SetNpcScale, NPC_Eldstar, LVar4, LVar4, LVar4)
+            Wait(1)
+            IfEq(LVar0, 1)
+                Goto(1)
+            EndIf
+        Call(N(StartCardRingCapture))
         Call(SetNpcAnimation, NPC_Eldstar, ANIM_WorldEldstar_Panic)
         Call(SetNpcImgFXParams, NPC_Eldstar, IMGFX_CLEAR, 0, 0, 0, 0)
         Call(SetNpcFlagBits, NPC_Eldstar, NPC_FLAG_INVISIBLE, true)
@@ -2464,18 +2311,18 @@ EvtScript N(EVS_Scene_IntroStory) = {
         Wait(45)
         Call(NpcFaceNpc, NPC_Bowser_Body, NPC_Eldstar, 0)
     EndThread
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim12)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyLaugh)
     Exec(N(EVS_CaptureSpirits))
     Call(N(CamPanAcrossRoom))
     Wait(15 * DT)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim09)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyStill)
     Thread
         Wait(10)
-        Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim12)
+        Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyLaugh)
         Wait(20)
-        Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim0D)
+        Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyTalk)
         Wait(40)
-        Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim09)
+        Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyStill)
     EndThread
     Call(N(CamMove_OrbitKammy))
     Call(N(AdjustCamVfov), 0, 50)
@@ -2487,23 +2334,23 @@ EvtScript N(EVS_Scene_IntroStory) = {
     EndThread
     Wait(20 * DT)
     Thread
-        Call(func_80244550_A2E790)
+        Call(N(UpdateCapturedSpiritsWithKammy))
     EndThread
     Wait(1)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim0B)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlySlow)
     Call(N(KammyFlyToBowser))
     Thread
-        Call(N(SetCardCaptureState3))
-        Call(N(SetCardCaptureState3))
-        Call(N(SetCardCaptureState3))
-        Call(N(SetCardCaptureState3))
-        Call(N(SetCardCaptureState3))
-        Call(N(SetCardCaptureState3))
-        Call(N(SetCardCaptureState3))
+        Call(N(StartCardRingGather))
+        Call(N(StartCardRingGather))
+        Call(N(StartCardRingGather))
+        Call(N(StartCardRingGather))
+        Call(N(StartCardRingGather))
+        Call(N(StartCardRingGather))
+        Call(N(StartCardRingGather))
     EndThread
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim0D)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyTalk)
     Wait(15 * DT)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim11)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyChuckle)
     Wait(32 * DT)
     Call(SetNpcJumpscale, NPC_Eldstar, Float(0.0))
     Call(SetNpcJumpscale, NPC_Mamar, Float(0.0))
@@ -2518,11 +2365,7 @@ EvtScript N(EVS_Scene_IntroStory) = {
     EndThread
     Wait(10 * DT)
     Call(N(AnimKammy_FlyOff))
-#if VERSION_JP
-    Wait(28 * DT)
-#else
     Wait(20 * DT)
-#endif
     Call(N(ResumeIntro))
     Return
     End

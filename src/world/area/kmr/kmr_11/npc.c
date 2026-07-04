@@ -1,6 +1,7 @@
 #include "kmr_11.h"
+#include "world/common/enemy/GoombaBros/base.h"
 
-#include "world/common/enemy/GoombaBros_Guard.inc.c"
+#include "world/common/enemy/GoombaBros/guard.inc.c"
 
 EvtScript N(EVS_NpcIdle_GoombaBros_01) = {
     Return
@@ -118,7 +119,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     Exec(N(EVS_SetupMusic))
     Call(AdjustCam, CAM_DEFAULT, Float(4.0 / DT), 0, Float(250.0), Float(15.0), Float(-7.5))
     Wait(10 * DT)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, MSG_CH0_00D2)
     Call(EnablePartnerAI)
     Wait(10 * DT)
@@ -179,8 +180,14 @@ EvtScript N(EVS_NpcCreate_Kammy) = {
     End
 };
 
-#define KAMMY_NPC NPC_Kammy
-#include "world/common/util/GetKammyBroomEmitterPos.inc.c"
+API_CALLABLE(N(GetKammyBroomEmitterPos)) {
+    Npc* npc = get_npc_unsafe(NPC_Kammy);
+
+    script->varTable[0] = npc->pos.x + (sin_deg(npc->yaw + gCameras[CAM_DEFAULT].curYaw + 180.0f) * 40.0f);
+    script->varTable[1] = npc->pos.y + 8.0f;
+    script->varTable[2] = npc->pos.z - (cos_deg(npc->yaw + gCameras[CAM_DEFAULT].curYaw + 180.0f) * 40.0f);
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_NpcAux_Kammy) = {
     Label(1)
@@ -282,7 +289,7 @@ EvtScript N(EVS_NpcInit_GoombaKing) = {
 };
 
 NpcSettings N(NpcSettings_Kammy) = {
-    .defaultAnim = ANIM_WorldKammy_Anim0A,
+    .defaultAnim = ANIM_WorldKammy_FlyIdle,
     .height = 24,
     .radius = 24,
     .doAux = &N(EVS_NpcAux_Kammy),
@@ -312,24 +319,7 @@ NpcData N(NpcData_Enemies)[] = {
         .settings = &N(NpcSettings_GoombaBros_Guard),
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_GoombaBros_Blue_Idle,
-            .walk   = ANIM_GoombaBros_Blue_Walk,
-            .run    = ANIM_GoombaBros_Blue_Run,
-            .chase  = ANIM_GoombaBros_Blue_Run,
-            .anim_4 = ANIM_GoombaBros_Blue_Idle,
-            .anim_5 = ANIM_GoombaBros_Blue_Idle,
-            .death  = ANIM_GoombaBros_Blue_Hurt,
-            .hit    = ANIM_GoombaBros_Blue_Hurt,
-            .anim_8 = ANIM_GoombaBros_Blue_Run,
-            .anim_9 = ANIM_GoombaBros_Blue_Run,
-            .anim_A = ANIM_GoombaBros_Blue_Run,
-            .anim_B = ANIM_GoombaBros_Blue_Run,
-            .anim_C = ANIM_GoombaBros_Blue_Run,
-            .anim_D = ANIM_GoombaBros_Blue_Run,
-            .anim_E = ANIM_GoombaBros_Blue_Run,
-            .anim_F = ANIM_GoombaBros_Blue_Run,
-        },
+        .animations = GOOMBA_BROS_BLUE_ANIMS,
     },
     {
         .id = NPC_RedGoombaBro,
@@ -351,24 +341,7 @@ NpcData N(NpcData_Enemies)[] = {
         .settings = &N(NpcSettings_GoombaBros_Guard),
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_GoombaBros_Red_Idle,
-            .walk   = ANIM_GoombaBros_Red_Walk,
-            .run    = ANIM_GoombaBros_Red_Run,
-            .chase  = ANIM_GoombaBros_Red_Run,
-            .anim_4 = ANIM_GoombaBros_Red_Idle,
-            .anim_5 = ANIM_GoombaBros_Red_Idle,
-            .death  = ANIM_GoombaBros_Red_Hurt,
-            .hit    = ANIM_GoombaBros_Red_Hurt,
-            .anim_8 = ANIM_GoombaBros_Red_Run,
-            .anim_9 = ANIM_GoombaBros_Red_Run,
-            .anim_A = ANIM_GoombaBros_Red_Run,
-            .anim_B = ANIM_GoombaBros_Red_Run,
-            .anim_C = ANIM_GoombaBros_Red_Run,
-            .anim_D = ANIM_GoombaBros_Red_Run,
-            .anim_E = ANIM_GoombaBros_Red_Run,
-            .anim_F = ANIM_GoombaBros_Red_Run,
-        },
+        .animations = GOOMBA_BROS_RED_ANIMS,
     },
     {
         .id = NPC_GoombaKing,
@@ -395,8 +368,8 @@ NpcData N(NpcData_Enemies)[] = {
             .walk   = ANIM_GoombaKing_Walk,
             .run    = ANIM_GoombaKing_Run,
             .chase  = ANIM_GoombaKing_Run,
-            .anim_4 = ANIM_GoombaKing_Idle,
-            .anim_5 = ANIM_GoombaKing_Idle,
+            .alert  = ANIM_GoombaKing_Idle,
+            .unused = ANIM_GoombaKing_Idle,
             .death  = ANIM_GoombaKing_Dead,
             .hit    = ANIM_GoombaKing_Dead,
             .anim_8 = ANIM_GoombaKing_Run,
@@ -420,7 +393,7 @@ NpcData N(NpcData_Kammy) = {
     .settings = &N(NpcSettings_Kammy),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .animations = {
-        .idle = ANIM_WorldKammy_Anim0A,
+        .idle = ANIM_WorldKammy_FlyIdle,
     },
 };
 

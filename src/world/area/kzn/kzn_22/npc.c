@@ -1,7 +1,10 @@
 #include "kzn_22.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(GetFloorCollider2)) {
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/npc/StarSpirit/idle.inc.c"
+
+API_CALLABLE(N(GetPlayerFloorCollider2)) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
 
@@ -9,13 +12,10 @@ API_CALLABLE(N(GetFloorCollider2)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_8024036C_C9A56C)) {
+API_CALLABLE(N(FadeOutAmbientSounds)) {
     snd_ambient_fade_out(0, true);
     return ApiStatus_DONE2;
 }
-
-#include "world/common/npc/Kolorado.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
 
 EvtScript N(EVS_ShakeScreen) = {
     Loop(0)
@@ -29,7 +29,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     Exec(N(EVS_ShakeScreen))
     Label(0)
         // wait for player to reach top of stairs
-        Call(N(GetFloorCollider2), LVar0)
+        Call(N(GetPlayerFloorCollider2), LVar0)
         IfNe(LVar0, COLLIDER_o544)
             Wait(1)
             Goto(0)
@@ -172,10 +172,10 @@ EvtScript N(EVS_Scene_Misstar) = {
         EndIf
     EndLoop
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Exec(N(EVS_ControlCamera))
     Call(SetNpcJumpscale, NPC_SELF, Float(3.0))
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -219,7 +219,7 @@ EvtScript N(EVS_Scene_Misstar) = {
     Thread
         Wait(25)
         Set(AF_KZN22_FlewAway, true)
-        Call(N(func_8024036C_C9A56C))
+        Call(N(FadeOutAmbientSounds))
     EndThread
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Call(LoadPath, 70, Ref(N(FlightPath3)), ARRAY_COUNT(N(FlightPath3)), EASING_LINEAR)

@@ -1,79 +1,32 @@
 #include "dro_02.h"
 #include "effects.h"
 #include "script_api/battle.h"
-#include "entity.h"
-#include "sprite.h"
-#include "sprite/player.h"
 
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
+extern EvtScript N(EVS_NpcInit_Moustafa);
+extern EvtScript N(EVS_NpcInit_DisguisedMoustafa);
 
-BSS f32 N(D_8024EF80);
-BSS f32 N(D_8024EF84);
-BSS s32 N(RitualStateTime);
-BSS s8 N(pad_D_8024EF8C)[0x4];
-BSS EffectInstance* N(D_8024EF90)[4];
+#include "world/common/npc/Quizmo/quiz.inc.c"
 
-#include "world/common/complete/Quizmo.inc.c"
+#include "world/common/npc/Archeologist/wander.inc.c"
+#include "world/common/npc/Dryite/idle.inc.c"
+#include "world/common/npc/Dryite/wander.inc.c"
+#include "world/common/npc/Merlee/idle.inc.c"
+#include "world/common/npc/Mouser/idle.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
 
-MobileAISettings N(AISettings_Archeologist) = {
-    .moveSpeed = 1.5f,
-    .moveTime = 60,
-    .waitTime = 30,
-    .playerSearchInterval = -1,
-    .loiterMode = 1,
-};
+#include "world/common/prefab/ToadHouse.inc.c"
+#include "world/common/prefab/ToadHouse.data.inc.c"
 
-EvtScript N(EVS_NpcAI_Archeologist) = {
-    Call(BasicAI_Main, Ref(N(AISettings_Archeologist)))
-    Return
-    End
-};
-
-NpcSettings N(NpcSettings_Archeologist_Wander) = {
-    .height = 35,
-    .radius = 24,
-    .doAI = &N(EVS_NpcAI_Archeologist),
-    .level = ACTOR_LEVEL_NONE,
-    .actionFlags = AI_FLAG_SKIP_IDLE_ANIM_AFTER_FLEE,
-};
-
-NpcSettings N(NpcSettings_Archeologist) = {
-    .height = 42,
-    .radius = 24,
-    .doAI = &N(EVS_NpcAI_Archeologist),
-    .level = ACTOR_LEVEL_NONE,
-};
-
-#include "world/common/npc/Dryite_Wander.inc.c"
-#include "world/common/npc/Dryite_Stationary.inc.c"
-#include "world/common/npc/Mouser.inc.c"
-
-#include "world/common/npc/Toad_Stationary.inc.c"
-
-#include "npc_merlee.inc.c"
-
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-#include "world/common/complete/LetterDelivery.inc.c"
-
-#include "world/common/complete/ToadHouseBlanketAnim.inc.c"
-#include "world/common/atomic/ToadHouse.inc.c"
-#include "world/common/atomic/ToadHouse.data.inc.c"
-
-s32 N(LetterList)[] = {
-    ITEM_LETTER_CHAIN_MR_E,
-    ITEM_NONE
-};
-
-EvtScript N(EVS_LetterPrompt_MrE) = {
-    Call(N(LetterDelivery_Init),
-        NPC_Dryite_01, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle,
-        ITEM_LETTER_CHAIN_MR_E, ITEM_LETTER_CHAIN_MISS_T,
-        MSG_CH2_0095, MSG_CH2_0096, MSG_CH2_0097, MSG_CH2_0098,
-        Ref(N(LetterList)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
+LetterDelivery N(LetterDelivery_MrE) = {
+    .recipientID = NPC_Dryite_01,
+    .recipientTalk = ANIM_Dryite_Blue_Talk,
+    .recipientIdle = ANIM_Dryite_Blue_Idle,
+    .msgGreeting = MSG_CH2_0095,
+    .msgCancelled = MSG_CH2_0096,
+    .msgDelivered = MSG_CH2_0097,
+    .msgRecieved = MSG_CH2_0098,
+    .letters = { ITEM_LETTER_CHAIN_MR_E },
+    .reward = ITEM_LETTER_CHAIN_MISS_T,
 };
 
 EvtScript N(EVS_NpcInteract_Archeologist) = {
@@ -82,16 +35,16 @@ EvtScript N(EVS_NpcInteract_Archeologist) = {
             IfEq(GF_SBK30_Kolorado_SharedRumorAboutMoustafa, true)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Archeologist_Talk, ANIM_Archeologist_Idle, 0, MSG_CH2_00B2)
             Else
-                Switch(AB_DRO_3)
+                Switch(AB_DRO02_DialogueState_Archeologist)
                     CaseEq(0)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Archeologist_Talk, ANIM_Archeologist_Idle, 0, MSG_CH2_00AF)
-                        Set(AB_DRO_3, 1)
+                        Set(AB_DRO02_DialogueState_Archeologist, 1)
                     CaseEq(1)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Archeologist_Talk, ANIM_Archeologist_Idle, 0, MSG_CH2_00B0)
-                        Set(AB_DRO_3, 2)
+                        Set(AB_DRO02_DialogueState_Archeologist, 2)
                     CaseEq(2)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Archeologist_Talk, ANIM_Archeologist_Idle, 0, MSG_CH2_00B1)
-                        Set(AB_DRO_3, 1)
+                        Set(AB_DRO02_DialogueState_Archeologist, 1)
                 EndSwitch
             EndIf
         CaseDefault
@@ -123,10 +76,8 @@ EvtScript N(EVS_NpcInteract_MrE) = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_0094)
     EndSwitch
-    ExecWait(N(EVS_LetterPrompt_MrE))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    Set(LVar0, Ref(N(LetterDelivery_MrE)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
@@ -140,12 +91,12 @@ EvtScript N(EVS_NpcInit_MrE) = {
 EvtScript N(EVS_NpcInteract_Dryite_02) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
-            IfEq(AF_DRO_03, false)
+            IfEq(AF_DRO02_ToggleDialogue_Dryite2, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_00A1)
-                Set(AF_DRO_03, true)
+                Set(AF_DRO02_ToggleDialogue_Dryite2, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_00A2)
-                Set(AF_DRO_03, false)
+                Set(AF_DRO02_ToggleDialogue_Dryite2, false)
             EndIf
         CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_00A3)
@@ -177,28 +128,28 @@ EvtScript N(EVS_NpcInit_Dryite_03) = {
 EvtScript N(EVS_NpcInteract_Mouser_01) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
-            IfEq(AF_DRO_04, false)
+            IfEq(AF_DRO02_ToggleDialogue_Mouser1, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_00A5)
-                Set(AF_DRO_04, true)
+                Set(AF_DRO02_ToggleDialogue_Mouser1, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_00A6)
-                Set(AF_DRO_04, false)
+                Set(AF_DRO02_ToggleDialogue_Mouser1, false)
             EndIf
         CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
-            IfEq(AF_DRO_04, false)
+            IfEq(AF_DRO02_ToggleDialogue_Mouser1, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_00A7)
-                Set(AF_DRO_04, true)
+                Set(AF_DRO02_ToggleDialogue_Mouser1, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_00A8)
-                Set(AF_DRO_04, false)
+                Set(AF_DRO02_ToggleDialogue_Mouser1, false)
             EndIf
         CaseDefault
-            IfEq(AF_DRO_04, false)
+            IfEq(AF_DRO02_ToggleDialogue_Mouser1, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_00A9)
-                Set(AF_DRO_04, true)
+                Set(AF_DRO02_ToggleDialogue_Mouser1, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_00AA)
-                Set(AF_DRO_04, false)
+                Set(AF_DRO02_ToggleDialogue_Mouser1, false)
             EndIf
     EndSwitch
     Return
@@ -214,12 +165,12 @@ EvtScript N(EVS_NpcInit_Mouser_01) = {
 EvtScript N(EVS_NpcInteract_Mouser_02) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
-            IfEq(AF_DRO_05, false)
+            IfEq(AF_DRO02_ToggleDialogue_Mouser2, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_00AB)
-                Set(AF_DRO_05, true)
+                Set(AF_DRO02_ToggleDialogue_Mouser2, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_00AC)
-                Set(AF_DRO_05, false)
+                Set(AF_DRO02_ToggleDialogue_Mouser2, false)
             EndIf
         CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_00AD)
@@ -235,8 +186,6 @@ EvtScript N(EVS_NpcInit_Mouser_02) = {
     Return
     End
 };
-
-#include "npc_moustafa.inc.c"
 
 EvtScript N(EVS_NpcIdle_Mouser_03) = {
     Call(InterpNpcYaw, NPC_DisguisedMoustafa, 270, 0)
@@ -263,7 +212,7 @@ EvtScript N(EVS_NpcIdle_Mouser_03) = {
     Label(20)
     Call(SetNpcAnimation, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Idle)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Mouser_Purple_Run)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Mouser_Purple_Run)
     Call(NpcMoveTo, NPC_SELF, 150, 18, 20)
     Call(EnableNpcBlur, NPC_SELF, true)
@@ -317,7 +266,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Call(InterpPlayerYaw, 230, 1)
     Call(HidePlayerShadow, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     Thread
         Wait(60)
@@ -353,6 +302,12 @@ EvtScript N(EVS_NpcInit_ToadHouseKeeper) = {
     End
 };
 
+EvtScript N(EVS_NpcInit_Merlee) = {
+    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Merlee)))
+    Return
+    End
+};
+
 NpcData N(PassiveNPCs)[] = {
     {
         .id = NPC_Archeologist,
@@ -371,27 +326,10 @@ NpcData N(PassiveNPCs)[] = {
             }
         },
         .init = &N(EVS_NpcInit_Archeologist),
-        .settings = &N(NpcSettings_Archeologist),
+        .settings = &N(NpcSettings_Archeologist_Wander),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Archeologist_Idle,
-            .walk   = ANIM_Archeologist_Walk,
-            .run    = ANIM_Archeologist_Run,
-            .chase  = ANIM_Archeologist_Run,
-            .anim_4 = ANIM_Archeologist_Idle,
-            .anim_5 = ANIM_Archeologist_Idle,
-            .death  = ANIM_Archeologist_Idle,
-            .hit    = ANIM_Archeologist_Idle,
-            .anim_8 = ANIM_Archeologist_Idle,
-            .anim_9 = ANIM_Archeologist_Idle,
-            .anim_A = ANIM_Archeologist_Idle,
-            .anim_B = ANIM_Archeologist_Idle,
-            .anim_C = ANIM_Archeologist_Idle,
-            .anim_D = ANIM_Archeologist_Idle,
-            .anim_E = ANIM_Archeologist_Idle,
-            .anim_F = ANIM_Archeologist_Idle,
-        },
+        .animations = ARCHEOLOGIST_ANIMS,
         .tattle = MSG_NpcTattle_Archeologist,
     },
     {
@@ -433,7 +371,7 @@ NpcData N(PassiveNPCs)[] = {
         .pos = { -143.0f, 0.0f, -170.0f },
         .yaw = 180,
         .init = &N(EVS_NpcInit_ToadHouseKeeper),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -443,28 +381,11 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_Merlee,
         .pos = { -130.0f, 0.0f, -400.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcCreate_Merlee),
+        .init = &N(EVS_NpcInit_Merlee),
         .settings = &N(NpcSettings_Merlee),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_WorldMerlee_Idle,
-            .walk   = ANIM_WorldMerlee_Walk,
-            .run    = ANIM_WorldMerlee_Run,
-            .chase  = ANIM_WorldMerlee_Run,
-            .anim_4 = ANIM_WorldMerlee_Idle,
-            .anim_5 = ANIM_WorldMerlee_Idle,
-            .death  = ANIM_WorldMerlee_Idle,
-            .hit    = ANIM_WorldMerlee_Idle,
-            .anim_8 = ANIM_WorldMerlee_Idle,
-            .anim_9 = ANIM_WorldMerlee_Idle,
-            .anim_A = ANIM_WorldMerlee_Idle,
-            .anim_B = ANIM_WorldMerlee_Idle,
-            .anim_C = ANIM_WorldMerlee_Idle,
-            .anim_D = ANIM_WorldMerlee_Idle,
-            .anim_E = ANIM_WorldMerlee_Idle,
-            .anim_F = ANIM_WorldMerlee_Idle,
-        },
+        .animations = MERLEE_ANIMS,
         .tattle = MSG_NpcTattle_Merlee,
     },
     {

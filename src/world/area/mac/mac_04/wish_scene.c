@@ -1,12 +1,5 @@
 #include "mac_04.h"
 
-#define NAME_SUFFIX _Wish
-#include "world/common/npc/Toad_Wander.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/GoombaFamily.inc.c"
-#include "world/common/npc/StarSpirit.inc.c"
-#define NAME_SUFFIX
-
 EvtScript N(EVS_Scene_WishingToadKid) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
@@ -41,7 +34,7 @@ NpcData N(NpcData_WishSceneToads)[] = {
         .pos = { 350.0f, 0.0f, -20.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_WishingToadKid),
-        .settings = &N(NpcSettings_Toad_Stationary_Wish),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOAD_KID_RED_ANIMS,
@@ -50,7 +43,7 @@ NpcData N(NpcData_WishSceneToads)[] = {
         .id = NPC_GossipTrio1,
         .pos = { -245.0f, 20.0f, 100.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_Toad_Stationary_Wish),
+        .settings = &N(NpcSettings_Toad),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .drops = NO_DROPS,
         .animations = TOAD_GREEN_ANIMS,
@@ -60,7 +53,7 @@ NpcData N(NpcData_WishSceneToads)[] = {
         .id = NPC_GossipTrio2,
         .pos = { -25.0f, 0.0f, 170.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_Toad_Stationary_Wish),
+        .settings = &N(NpcSettings_Toad),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -70,7 +63,7 @@ NpcData N(NpcData_WishSceneToads)[] = {
         .id = NPC_GossipTrio3,
         .pos = { -100.0f, 0.0f, 305.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_Toad_Stationary_Wish),
+        .settings = &N(NpcSettings_Toad),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .drops = NO_DROPS,
         .animations = TOAD_YELLOW_ANIMS,

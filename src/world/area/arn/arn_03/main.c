@@ -41,17 +41,17 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_GUSTY_GULCH)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Set(AF_ARN_03, false)
-    Set(AF_ARN_04, false)
-    Set(AF_ARN_05, false)
+    Set(AF_ARN03_ToggleDialogue_Boo2, false)
+    Set(AF_ARN03_ToggleDialogue_Boo3, false)
+    Set(AF_ARN03_ToggleDialogue_Boo4, false)
     IfLt(GB_StoryProgress, STORY_CH3_DEFEATED_TUBBA_BLUBBA)
         Call(MakeNpcs, false, Ref(N(BeforeNPCs)))
     Else
         Call(MakeNpcs, false, Ref(N(AfterNPCs)))
     EndIf
     IfEq(GF_ARN03_WaitingForPackage, true)
-        Set(MV_Unk_00, 450)
-        Set(MV_Unk_01, 450)
+        Set(MV_Koot_Time, 450)
+        Set(MV_Koot_WaitLength, 450)
     EndIf
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))

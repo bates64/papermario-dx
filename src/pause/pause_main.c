@@ -15,10 +15,10 @@ extern MenuPanel gPausePanelPartners;
 extern MenuPanel gPausePanelSpirits;
 extern MenuPanel gPausePanelMap;
 
-void pause_tutorial_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
-void pause_main_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
-void pause_textbox_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
-void pause_draw_cursor(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
+MenuPanelDrawContentFunc pause_tutorial_draw_contents;
+MenuPanelDrawContentFunc pause_main_draw_contents;
+MenuPanelDrawContentFunc pause_textbox_draw_contents;
+MenuPanelDrawContentFunc pause_draw_cursor;
 
 BSS s32 gPauseHeldButtons;
 BSS s32 gPausePressedButtons;
@@ -26,7 +26,6 @@ BSS s32 gPauseCurrentDescMsg;
 BSS HudScript* gPauseCurrentDescIconScript;
 BSS HudElemID gPauseCursorHID;
 BSS s8 gPauseMenuCurrentTab;
-BSS s8 D_802700D[7]; //padding
 
 static s32 gPauseTutorialFrameCounter;
 static HudElemID gPauseCommonHIDs[8];
@@ -120,17 +119,19 @@ s32 gPauseTutorialSpriteAnims[][4] = {
         ANIM_LIST_END
     }
 };
+
 Vp gPauseTutorialViewport = {
     .vp = {
         .vscale = { 640, 480, 511, 0 },
         .vtrans = { 640, 480, 511, 0 },
     }
 };
+
 s32 gPauseTutorialScrollPos = 0;
+
 MenuWindowBP gPauseCommonWindowsBPs[] = {
     {
         .windowID = WIN_PAUSE_MAIN,
-        .unk_01 = 0,
         .pos = { .x = 12, .y = 20 },
         .width = 296,
         .height = 200,
@@ -144,7 +145,6 @@ MenuWindowBP gPauseCommonWindowsBPs[] = {
     },
     {
         .windowID = WIN_PAUSE_TUTORIAL,
-        .unk_01 = 0,
         .pos = { .x = 0, .y = 138 },
         .width = 296,
         .height = 63,
@@ -158,7 +158,6 @@ MenuWindowBP gPauseCommonWindowsBPs[] = {
     },
     {
         .windowID = WIN_PAUSE_DECRIPTION,
-        .unk_01 = 0,
         .pos = { .x = 20, .y = 164 },
         .width = 256,
         .height = 32,
@@ -172,7 +171,6 @@ MenuWindowBP gPauseCommonWindowsBPs[] = {
     },
     {
         .windowID = WIN_PAUSE_CURSOR,
-        .unk_01 = 0,
         .pos = { .x = 0, .y = 0 },
         .width = SCREEN_WIDTH,
         .height = SCREEN_HEIGHT,

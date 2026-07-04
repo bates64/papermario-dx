@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_29.h
 /// @brief Crystal Palace - Hidden Bridge Room
 

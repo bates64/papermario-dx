@@ -1,11 +1,6 @@
 #include "kkj_13.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/Peach.h"
-
-#include "world/common/npc/Bowser.inc.c"
-#include "world/common/npc/Dummy.inc.c"
-
 API_CALLABLE(N(UpdatePropellerSoundPos)) {
     Npc* npc = get_npc_safe(NPC_Bowser_Prop);
     f32 x = npc->pos.x;
@@ -128,7 +123,7 @@ EvtScript N(EVS_Scene_MarioConfrontsBowser) = {
     Wait(20)
     Call(SetPlayerPos, 400, 0, -15)
     Call(PartnerIsFlying, LVar0)
-    IfEq(LVar0, false)
+    IfEq(LVar0, true)
         Call(SetNpcPos, NPC_PARTNER, 370, 20, -15)
     Else
         Call(SetNpcPos, NPC_PARTNER, 370, 0, -15)
@@ -142,9 +137,6 @@ EvtScript N(EVS_Scene_MarioConfrontsBowser) = {
     Call(SetNpcVar, NPC_Bowser_Body, 0, 1)
     Wait(10)
     Thread
-#if VERSION_JP
-        Call(DisablePartnerAI, 0)
-#endif
         Call(PlayerMoveTo, 580, 0, 25)
     EndThread
     Thread
@@ -244,12 +236,12 @@ EvtScript N(EVS_BowserFliesAway) = {
 
 EvtScript N(EVS_Scene_BowserDefeated) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 1)
+    Call(DisablePartnerAI, true)
     Call(EnableGroup, MODEL_g153, false)
     Call(SetPlayerPos, 525, 0, 0)
 #if !VERSION_JP
     Call(PartnerIsFlying, LVar0)
-    IfEq(LVar0, false)
+    IfEq(LVar0, true)
         Set(LVar1, 10)
     Else
         Set(LVar1, 0)
@@ -331,7 +323,7 @@ EvtScript N(EVS_NpcInit_CaptivePeach) = {
     End
 };
 
-AnimID N(ExtraAnims_Bowser)[] = {
+AnimID N(LimitAnims_Bowser)[] = {
     ANIM_WorldBowser_Still,
     ANIM_WorldBowser_Idle,
     ANIM_WorldBowser_Walk,
@@ -357,7 +349,7 @@ NpcData N(NpcData_Bowser_Body) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = BOWSER_ANIMS,
-    .extraAnimations = N(ExtraAnims_Bowser),
+    .limitAnimations = N(LimitAnims_Bowser),
 };
 
 NpcData N(NpcData_Bowser_Prop) = {
@@ -369,7 +361,7 @@ NpcData N(NpcData_Bowser_Prop) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = BOWSER_ANIMS,
-    .extraAnimations = N(ExtraAnims_Bowser),
+    .limitAnimations = N(LimitAnims_Bowser),
 };
 
 NpcData N(NpcData_CaptivePeach) = {

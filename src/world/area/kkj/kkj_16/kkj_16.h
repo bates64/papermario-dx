@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kkj_16.h
 /// @brief Peach's Castle - Library (2F)
 
@@ -29,10 +31,17 @@ enum {
 
 #define NAMESPACE kkj_16
 
+#include "world/common/enemy/HammerBros/idle.h"
+#include "world/common/enemy/Koopatrol/idle.h"
+
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_ManageSneakingScenes);
 extern EvtScript N(EVS_EndPeachChapter2);
 extern EvtScript N(EVS_MakeEntities);
+
+API_CALLABLE(N(CheckPlayerInSight));
+API_CALLABLE(N(GetApproachPeachPos));
+API_CALLABLE(N(UpdateSearchlight));
 
 extern NpcGroupList N(EarlyNPCs);
 extern NpcGroupList N(LaterNPCs);

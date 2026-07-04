@@ -14,9 +14,7 @@ INCLUDE_RAW("charset/standard.dat", charset_standard_OFFSET);
 INCLUDE_RAW("charset/standard/palette.dat", charset_standard_pal_OFFSET);
 INCLUDE_RAW("charset/title.dat", charset_title_OFFSET);
 INCLUDE_RAW("charset/subtitle.dat", charset_subtitle_OFFSET);
-#if VERSION_IQUE
-static int padding[] = {0, 0, 0, 0, 0, 0};
-#endif
+
 INCLUDE_RAW("charset/subtitle/palette.dat", charset_subtitle_pal_OFFSET);
 INCLUDE_RAW("charset/title/palette.dat", charset_title_pal_OFFSET);
 

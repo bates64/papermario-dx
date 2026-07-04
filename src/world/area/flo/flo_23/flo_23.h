@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file flo_23.h
 /// @brief Flower Fields - (West) Path to Maze
 

@@ -18,9 +18,6 @@ API_CALLABLE(N(PlayerHasBadgeEquipped)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/SetEntityPositionF.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-
 EvtScript N(EVS_GotoMap_tik_01_2) = {
     Call(GotoMap, Ref("tik_01"), tik_01_ENTRY_2)
     Wait(100)
@@ -85,18 +82,18 @@ EvtScript N(EVS_SummonGateBlock) = {
     Call(AssignScript, Ref(N(EVS_OnSmash_GateBlock)))
     Call(N(AnimateBlockScale))
     Set(LVar9, LVarA)
-    Call(N(GetEntityPosition), LVar9, LVar2, LVar3, LVar4)
+    Call(GetEntityPosition, LVar9, LVar2, LVar3, LVar4)
     Call(MakeLerp, LVar3, 300, 20 * DT, EASING_QUADRATIC_IN)
     Label(10)
         Call(UpdateLerp)
-        Call(N(SetEntityPositionF), LVar9, LVar2, LVar0, LVar4)
+        Call(SetEntityPosition, LVar9, LVar2, LVar0, LVar4)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(10)
         EndIf
     Call(PlaySoundAt, SOUND_KAMMY_RAISE_OBJECT, SOUND_SPACE_DEFAULT, LVar2, LVar0, LVar4)
     Wait(20 * DT)
-    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim0F)
+    Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyRodCast)
     Thread
         Wait(15)
         PlayEffect(EFFECT_LANDING_DUST, 4, LVar2, 0, LVar4, 0)
@@ -105,7 +102,7 @@ EvtScript N(EVS_SummonGateBlock) = {
     Call(MakeLerp, 300, 0, 20 * DT, EASING_CUBIC_IN)
     Label(20)
         Call(UpdateLerp)
-        Call(N(SetEntityPositionF), LVar9, LVar2, LVar0, LVar4)
+        Call(SetEntityPosition, LVar9, LVar2, LVar0, LVar4)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(20)

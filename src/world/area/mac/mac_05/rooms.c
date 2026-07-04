@@ -1,12 +1,12 @@
 #include "mac_05.h"
 
-EvtScript N(D_802522E0_864450) = {
+EvtScript N(EVS_SetDoorRot_Club64) = {
     Call(RotateModel, MODEL_o80, LVar0, 0, -1, 0)
     Return
     End
 };
 
-EvtScript N(D_80252310_864480) = {
+EvtScript N(EVS_SetWallRot_Club64) = {
     Set(LVar1, LVar0)
     Call(RotateModel, MODEL_o95, LVar1, 1, 0, 0)
     Call(RotateModel, MODEL_o96, LVar1, 1, 0, 0)
@@ -32,25 +32,23 @@ EvtScript N(D_80252310_864480) = {
     End
 };
 
-EvtScript N(D_80252580_8646F0) = {
+EvtScript N(EVS_DropDoor_Club64) = {
     Call(RotateModel, MODEL_o80, LVar0, 1, 0, 0)
     Return
     End
 };
 
-EvtScript N(D_802525B0_864720) = {
+EvtScript N(EVS_RoomListener_Club64) = {
     Switch(LVar0)
         CaseEq(0)
             Call(SetMusic, 0, SONG_CLUB64, 0, VOL_LEVEL_FULL)
             Call(StopSound, SOUND_LOOP_MAC_HARBOR_WATER)
-#if !VERSION_JP
             Call(StopTrackingSoundPos, SOUND_LRAW_MAC_HARBOR_WATER)
-#endif
             Call(EnableGroup, MODEL_bar_inn, true)
             Call(EnableModel, MODEL_o139, false)
             Call(EnableModel, MODEL_o140, false)
         CaseEq(3)
-            Set(AF_JAN01_TreeDrop_StarPiece, false)
+            Set(MF_DivaSongPlaying, false)
             Call(EnableGroup, MODEL_bar_inn, false)
             Call(EnableModel, MODEL_o139, true)
             Call(EnableModel, MODEL_o140, true)
@@ -61,7 +59,7 @@ EvtScript N(D_802525B0_864720) = {
     End
 };
 
-s32 N(D_802526C8_864838)[] = {
+s32 N(InsideNPCs_Club64)[] = {
     NPC_Toad_02,
     NPC_Bartender,
     NPC_Chanterelle,
@@ -73,16 +71,16 @@ s32 N(D_802526C8_864838)[] = {
 EvtScript N(EVS_SetupRooms) = {
     Call(CreateMapRoom,
         2,
-        Ref(N(D_802522E0_864450)),
-        Ref(N(D_80252310_864480)),
-        Ref(N(D_80252580_8646F0)),
-        Ref(N(D_802525B0_864720)),
+        Ref(N(EVS_SetDoorRot_Club64)),
+        Ref(N(EVS_SetWallRot_Club64)),
+        Ref(N(EVS_DropDoor_Club64)),
+        Ref(N(EVS_RoomListener_Club64)),
         COLLIDER_deilit1,
         COLLIDER_deilit1u,
         MODEL_harbour_club,
-        Ref(N(D_802526C8_864838)))
+        Ref(N(InsideNPCs_Club64)))
     Set(LVar0, 3)
-    Exec(N(D_802525B0_864720))
+    Exec(N(EVS_RoomListener_Club64))
     Return
     End
 };

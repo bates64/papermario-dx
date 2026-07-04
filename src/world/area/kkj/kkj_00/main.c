@@ -1,9 +1,9 @@
 #include "kkj_00.h"
 
-EvtScript N(D_80241140_ABC3D0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_00_ENTRY_1, "kkj_01", kkj_01_ENTRY_0,
+EvtScript N(EVS_ExitDoors_kkj_01_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_00_ENTRY_1, "kkj_01", kkj_01_ENTRY_0,
     COLLIDER_ttn, MODEL_door3, MODEL_door4, DOOR_SOUNDS_LARGE);
 
-EvtScript N(D_802411F4_ABC484) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_00_ENTRY_3, "kkj_19", kkj_19_ENTRY_0,
+EvtScript N(EVS_ExitDoor_kkj_19_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_00_ENTRY_3, "kkj_19", kkj_19_ENTRY_0,
     COLLIDER_ttne, MODEL_door8, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
 
 EvtScript N(EVS_ShowMessage_CantOpen) = {
@@ -14,7 +14,7 @@ EvtScript N(EVS_ShowMessage_CantOpen) = {
     End
 };
 
-EvtScript N(D_802412F0_ABC580) = {
+EvtScript N(EVS_PreventFrontDoorExit) = {
     Call(DisablePlayerInput, true)
     Call(EnableNpcAI, NPC_Luigi, false)
     Call(EnableNpcAI, NPC_Toad_01, false)
@@ -29,17 +29,17 @@ EvtScript N(D_802412F0_ABC580) = {
     End
 };
 
-EvtScript N(D_802413C4_ABC654) = {
-    BindTrigger(Ref(N(D_802412F0_ABC580)), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
+EvtScript N(EVS_BindDoorTriggers) = {
+    BindTrigger(Ref(N(EVS_PreventFrontDoorExit)), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
     BindTrigger(Ref(N(EVS_ShowMessage_CantOpen)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     BindTrigger(Ref(N(EVS_ShowMessage_CantOpen)), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
-    BindTrigger(Ref(N(D_80241140_ABC3D0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
-    BindTrigger(Ref(N(D_802411F4_ABC484)), TRIGGER_WALL_PRESS_A, COLLIDER_ttne, 1, 0)
+    BindTrigger(Ref(N(EVS_ExitDoors_kkj_01_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
+    BindTrigger(Ref(N(EVS_ExitDoor_kkj_19_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttne, 1, 0)
     Return
     End
 };
 
-EvtScript N(D_80241460_ABC6F0) = {
+EvtScript N(EVS_EnterMap) = {
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
@@ -90,7 +90,7 @@ SlideParams N(SlideData2) = {
     .integrator = { 0.0, 0.0, 0.0, 0.0 },
 };
 
-API_CALLABLE(N(func_80240040_ABB2D0)) {
+API_CALLABLE(N(StartPlayerSlide)) {
     Bytecode* args = script->ptrReadPos;
     PlayerStatus* status = &gPlayerStatus;
 
@@ -104,14 +104,14 @@ API_CALLABLE(N(func_80240040_ABB2D0)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(D_8024164C_ABC8DC) = {
-    Call(N(func_80240040_ABB2D0), 0)
+EvtScript N(EVS_StartSlide_Left) = {
+    Call(N(StartPlayerSlide), 0)
     Return
     End
 };
 
-EvtScript N(EVS_8024166C) = {
-    Call(N(func_80240040_ABB2D0), 1)
+EvtScript N(EVS_StartSlide_Right) = {
+    Call(N(StartPlayerSlide), 1)
     Return
     End
 };
@@ -135,8 +135,8 @@ EvtScript N(EVS_Main) = {
             Call(FadeOutMusic, 0, 3000)
         EndThread
     EndIf
-    Exec(N(D_802413C4_ABC654))
-    Exec(N(D_80241460_ABC6F0))
+    Exec(N(EVS_BindDoorTriggers))
+    Exec(N(EVS_EnterMap))
     Wait(1)
     Return
     End

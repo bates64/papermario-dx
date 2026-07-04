@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sbk_45.h
 /// @brief Dry Dry Desert - S1E2 Small Bluffs
 

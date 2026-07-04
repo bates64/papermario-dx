@@ -1,7 +1,7 @@
 #include "kpa_16.h"
 
-#include "world/common/enemy/Koopatrol.h"
-#include "world/common/enemy/Magikoopa.h"
+#include "world/common/enemy/Koopatrol/base.h"
+#include "world/common/enemy/Magikoopa/base.h"
 
 API_CALLABLE(N(SetScreenBlackFadeAmount)) {
     Bytecode* args = script->ptrReadPos;
@@ -15,8 +15,6 @@ API_CALLABLE(N(MuteAmbience)) {
     snd_ambient_fade_out(0, true);
     return ApiStatus_DONE2;
 }
-
-#include "world/common/todo/GetFloorCollider.inc.c"
 
 NpcSettings N(NpcSettings_Dummy) = {
     .height = 40,
@@ -99,7 +97,7 @@ EvtScript N(EVS_Scene_LavaShutoff) = {
         EndIf
     EndLoop
     Wait(60 * DT)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetCurrentPartnerID, LVar0)
     Switch(LVar0)
         CaseEq(PARTNER_GOOMBARIO)
@@ -146,7 +144,7 @@ EvtScript N(EVS_ChargeAtPlayer) = {
 EvtScript N(EVS_NpcIdle_Guards) = {
     Label(0)
         Wait(1)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         IfNe(LVar0, COLLIDER_o785)
             Goto(0)
         EndIf
@@ -169,9 +167,9 @@ EvtScript N(EVS_NpcIdle_Guards) = {
     Call(InterpNpcYaw, NPC_Koopatrol_02, 90, 0)
     Call(InterpNpcYaw, NPC_Koopatrol_03, 90, 0)
     Call(InterpNpcYaw, NPC_Magikoopa, 90, 0)
-    Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Anim06)
-    Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Anim06)
-    Call(SetNpcAnimation, NPC_Koopatrol_03, ANIM_WorldKoopatrol_Anim06)
+    Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Run)
+    Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Run)
+    Call(SetNpcAnimation, NPC_Koopatrol_03, ANIM_WorldKoopatrol_Run)
     Wait(10 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 555, 230, -150)
     Call(SetPanTarget, CAM_DEFAULT, 555, 230, -150)
@@ -188,7 +186,7 @@ EvtScript N(EVS_NpcIdle_Guards) = {
     Call(SetSelfVar, 0, 0)
     Thread
         Wait(30 * DT)
-        Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Anim06)
+        Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Run)
         Call(SetNpcSpeed, NPC_Koopatrol_02, Float(4.0 / DT))
         Label(10)
         Call(NpcMoveTo, NPC_Koopatrol_02, 550, -165, 0)
@@ -203,14 +201,14 @@ EvtScript N(EVS_NpcIdle_Guards) = {
         Call(SetSelfVar, 0, 2)
     EndThread
     Call(InterpNpcYaw, NPC_Koopatrol_01, 270, 0)
-    Call(SpeakToPlayer, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Anim06, ANIM_WorldKoopatrol_Anim06, 1, MSG_CH8_0017)
+    Call(SpeakToPlayer, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Run, ANIM_WorldKoopatrol_Run, 1, MSG_CH8_0017)
     Thread
         Wait(5)
         Call(SetNpcJumpscale, NPC_Koopatrol_03, Float(1.0))
         Call(GetNpcPos, NPC_Koopatrol_03, LVar0, LVar1, LVar2)
         Call(NpcJump0, NPC_Koopatrol_03, LVar0, LVar1, LVar2, 20 * DT)
     EndThread
-    Call(SpeakToPlayer, NPC_Koopatrol_03, ANIM_WorldKoopatrol_Anim06, ANIM_WorldKoopatrol_Anim06, 0, MSG_CH8_0018)
+    Call(SpeakToPlayer, NPC_Koopatrol_03, ANIM_WorldKoopatrol_Run, ANIM_WorldKoopatrol_Run, 0, MSG_CH8_0018)
     Call(SetSelfVar, 0, 1)
     Label(15)
     Call(GetSelfVar, 0, LVar0)
@@ -220,21 +218,21 @@ EvtScript N(EVS_NpcIdle_Guards) = {
     EndIf
     Call(InterpNpcYaw, NPC_Koopatrol_02, 270, 0)
     Call(InterpNpcYaw, NPC_Koopatrol_03, 270, 0)
-    Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Anim01)
-    Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Anim01)
-    Call(SetNpcAnimation, NPC_Koopatrol_03, ANIM_WorldKoopatrol_Anim01)
-    Call(SpeakToPlayer, NPC_Magikoopa, ANIM_Magikoopa_Anim02, ANIM_Magikoopa_Anim01, 0, MSG_CH8_0019)
+    Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Idle)
+    Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Idle)
+    Call(SetNpcAnimation, NPC_Koopatrol_03, ANIM_WorldKoopatrol_Idle)
+    Call(SpeakToPlayer, NPC_Magikoopa, ANIM_Magikoopa_Shout, ANIM_Magikoopa_Idle, 0, MSG_CH8_0019)
     Thread
         Wait(15 * DT)
         Call(InterpNpcYaw, NPC_Koopatrol_03, 90, 0)
         Wait(10 * DT)
         Call(InterpNpcYaw, NPC_Koopatrol_01, 90, 0)
     EndThread
-    Call(SpeakToPlayer, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Anim08, ANIM_WorldKoopatrol_Anim01, 0, MSG_CH8_001A)
+    Call(SpeakToPlayer, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 0, MSG_CH8_001A)
     Call(ResetCam, CAM_DEFAULT, Float(90.0))
-    Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Anim06)
-    Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Anim06)
-    Call(SetNpcAnimation, NPC_Koopatrol_03, ANIM_WorldKoopatrol_Anim06)
+    Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Run)
+    Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Run)
+    Call(SetNpcAnimation, NPC_Koopatrol_03, ANIM_WorldKoopatrol_Run)
     Exec(N(EVS_ChargeAtPlayer))
     Call(DisablePlayerInput, false)
     Thread
@@ -321,7 +319,7 @@ NpcData N(NpcData_Guards)[] = {
         .yaw = 270,
         .settings = &N(NpcSettings_Dummy),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
-        .drops = MAGINO_DROPS,
+        .drops = MAGIKOOPA_DROPS,
         .animations = MAGIKOOPA_ANIMS,
     },
 };

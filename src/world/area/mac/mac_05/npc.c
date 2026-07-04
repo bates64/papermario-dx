@@ -1,86 +1,67 @@
 #include "mac_05.h"
 #include "sprite/player.h"
+#include "inventory.h"
 
-void increment_max_star_power(void);
+#include "world/common/prefab/Whale.h"
 
-NpcSettings N(NpcSettings_Whale) = {
-    .height = 24,
-    .radius = 48,
-    .level = ACTOR_LEVEL_NONE,
+#include "world/common/npc/Whale/idle.inc.c"
+#include "world/common/npc/Kolorado/idle.inc.c"
+#include "world/common/npc/JrTroopa/idle.inc.c"
+#include "world/common/npc/Toad/patrol.inc.c"
+#include "world/common/npc/Toad/idle.inc.c"
+#include "world/common/npc/Fishmael/idle.inc.c"
+#include "world/common/npc/Chanterelle/idle.inc.c"
+#include "world/common/npc/Bartender/idle.inc.c"
+#include "world/common/npc/MusicianPoet/idle.inc.c"
+#include "world/common/npc/Quizmo/quiz.inc.c"
+
+enum WhaleRider {
+    WHALE_RIDER_PLAYER      = 0,
+    WHALE_RIDER_PARTNER     = 1,
+    WHALE_RIDER_KOLORADO    = 2,
 };
 
-#include "world/common/npc/Kolorado.inc.c"
-
-NpcSettings N(NpcSettings_JrTroopa_01) = {
-    .height = 32,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
+enum WhaleRiderTarget {
+    WHALE_TARGET_PLAYER              = 0,
+    WHALE_TARGET_PARTNER             = 1,
+    WHALE_TARGET_KOLORADO            = 2,
+    WHALE_TARGET_DISMOUNT_PLAYER     = 3,
+    WHALE_TARGET_DISMOUNT_PARTNER    = 4,
+    WHALE_TARGET_DISMOUNT_KOLORADO   = 5,
 };
 
-#include "world/common/npc/Toad_Patrol.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-
-NpcSettings N(NpcSettings_Unused1) = {
-    .height = 48,
-    .radius = 32,
-    .level = ACTOR_LEVEL_NONE,
+enum WhaleTravelMode {
+    WHALE_TRAVEL_DEPART     = 0,
+    WHALE_TRAVEL_ARRIVE     = 2,
 };
 
-#define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
-
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-#include "world/common/complete/LetterDelivery.inc.c"
-
-s32 N(Fishmael_LetterList)[] = {
-    ITEM_LETTER_CHAIN_FISHMAEL, ITEM_NONE
+LetterDelivery N(LetterDelivery_Fishmael) = {
+    .recipientID = NPC_Fishmael,
+    .recipientTalk = ANIM_Fishmael_Talk,
+    .recipientIdle = ANIM_Fishmael_Idle,
+    .msgGreeting = MSG_MAC_Port_0064,
+    .msgCancelled = MSG_MAC_Port_0065,
+    .msgDelivered = MSG_MAC_Port_0066,
+    .msgRecieved = MSG_MAC_Port_0067,
+    .letters = { ITEM_LETTER_CHAIN_FISHMAEL },
+    .reward = ITEM_LETTER_CHAIN_KOOVER_2,
 };
 
-EvtScript N(EVS_LetterPrompt_Fishmael) = {
-    Call(N(LetterDelivery_Init), NPC_Fishmael,
-        ANIM_Fishmael_Talk, ANIM_Fishmael_Idle,
-        ITEM_LETTER_CHAIN_FISHMAEL, ITEM_LETTER_CHAIN_KOOVER_2,
-        MSG_MAC_Port_0064, MSG_MAC_Port_0065,
-        MSG_MAC_Port_0066, MSG_MAC_Port_0067,
-        Ref(N(Fishmael_LetterList)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
-};
-
-s32 N(Kolorado_LetterList)[] = {
-    ITEM_LETTER_TO_KOLORADO, ITEM_NONE
-};
-
-EvtScript N(EVS_LetterPrompt_Kolorado) = {
-    Call(N(LetterDelivery_Init), NPC_Kolorado,
-        ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
-        ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
-        MSG_MAC_Port_0085, MSG_MAC_Port_0086,
-        MSG_MAC_Port_0087, MSG_MAC_Port_0088,
-        Ref(N(Kolorado_LetterList)))
-    ExecWait(N(EVS_DoLetterDelivery))
-    Return
-    End
-};
-
-EvtScript N(EVS_LetterReward_Kolorado) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
-};
-
-s32 N(ItemList_Artifact)[] = {
-    ITEM_ARTIFACT,
-    ITEM_NONE
+LetterDelivery N(LetterDelivery_Kolorado) = {
+    .recipientID = NPC_Kolorado,
+    .recipientTalk = ANIM_Kolorado_Talk,
+    .recipientIdle = ANIM_Kolorado_Idle,
+    .msgGreeting = MSG_MAC_Port_0085,
+    .msgCancelled = MSG_MAC_Port_0086,
+    .msgDelivered = MSG_MAC_Port_0087,
+    .msgRecieved = MSG_MAC_Port_0088,
+    .letters = { ITEM_LETTER_TO_KOLORADO },
+    .reward = ITEM_STAR_PIECE,
 };
 
 EvtScript N(EVS_ArtifactReward_Kolorado) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_008E)
-    EVT_GIVE_STAR_PIECE()
+    EVT_GIVE_REWARD(ITEM_STAR_PIECE)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_008F)
     Set(GF_SBK_GaveArtifactToKolorado, true)
     Return
@@ -95,10 +76,9 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
     IfEq(LVar0, -1)
         Return
     EndIf
-    IfEq(AF_MAC_44, false)
-        Set(AF_MAC_44, true)
+    IfEq(AF_MAC_KoloradoRequestedArtifact, false)
+        Set(AF_MAC_KoloradoRequestedArtifact, true)
         IfEq(GF_SBK_KeptArtifactFromKolorado, false)
-            Set(GF_SBK_KeptArtifactFromKolorado, false)
             Set(LVar0, MSG_MAC_Port_0089)
         Else
             Set(LVar0, MSG_MAC_Port_008A)
@@ -107,18 +87,14 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
         Set(LVar0, MSG_MAC_Port_008B)
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, LVar0)
-    Set(LVar0, Ref(N(ItemList_Artifact)))
-    Set(LVar1, 1)
-    ExecWait(N(EVS_ChooseKeyItem))
+    EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_ARTIFACT, NPC_Kolorado)
     Switch(LVar0)
         CaseGe(1)
             ExecWait(N(EVS_ArtifactReward_Kolorado))
             BreakSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_008C)
-            Set(LVar0, Ref(N(ItemList_Artifact)))
-            Set(LVar1, 1)
-            ExecWait(N(EVS_ChooseKeyItem))
+            EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_ARTIFACT, NPC_Kolorado)
             Switch(LVar0)
                 CaseGe(1)
                     ExecWait(N(EVS_ArtifactReward_Kolorado))
@@ -130,14 +106,7 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
     End
 };
 
-#if VERSION_JP
-API_CALLABLE(N(IncreaseMaxSP)) {
-    increment_max_star_power();
-    return ApiStatus_DONE2;
-}
-#endif
-
-API_CALLABLE(N(func_80242A90_854C00)) {
+API_CALLABLE(N(GetWhaleRiderTargetPos)) {
     Bytecode* args = script->ptrReadPos;
     u32 mode = evt_get_variable(script, *args++);
     s32 outVarX = *args++;
@@ -148,24 +117,29 @@ API_CALLABLE(N(func_80242A90_854C00)) {
     f32 radius, angle;
 
     switch (mode) {
-        case 0:
+        case WHALE_TARGET_PLAYER:
             radius = 55.0f;
             break;
-        case 1:
+        case WHALE_TARGET_PARTNER:
             radius = 85.0f;
             break;
-        case 2:
+        case WHALE_TARGET_KOLORADO:
             radius = 25.0f;
             break;
-        case 3:
+        case WHALE_TARGET_DISMOUNT_PLAYER:
             posX = -295.0f;
             posY = -10.0f;
             posZ = 400.0f;
             break;
-        case 4:
+        case WHALE_TARGET_DISMOUNT_PARTNER:
             posX = -285.0f;
             posY = -10.0f;
             posZ = 380.0f;
+            break;
+        case WHALE_TARGET_DISMOUNT_KOLORADO:
+            posX = -295.0f;
+            posY = -10.0f;
+            posZ = 420.0f;
             break;
         default:
             posX = -295.0f;
@@ -173,9 +147,9 @@ API_CALLABLE(N(func_80242A90_854C00)) {
             posZ = 420.0f;
             break;
     }
-    if (mode < 3) {
+    if (mode <= WHALE_TARGET_KOLORADO) {
         angle = -npc->yaw;
-        posX = npc->pos.x + 30.0f + sin_deg(angle) * radius;
+        posX = npc->pos.x + sin_deg(angle) * radius + 30.0f;
         posZ = npc->pos.z + cos_deg(angle) * radius;
         posY = npc->pos.y + 50.0f;
     }
@@ -185,8 +159,7 @@ API_CALLABLE(N(func_80242A90_854C00)) {
     return ApiStatus_DONE2;
 }
 
-// maybe a duplicate, not sure if the NPCs are the same
-API_CALLABLE(N(func_80242C78_854DE8)) {
+API_CALLABLE(N(UpdateWhaleRiderPosition)) {
     Bytecode* args = script->ptrReadPos;
     Npc* npc0 = get_npc_safe(NPC_Whale);
     Npc* npc1;
@@ -197,13 +170,13 @@ API_CALLABLE(N(func_80242C78_854DE8)) {
     if (isInitialCall) {
         script->functionTemp[0] = evt_get_variable(script, *args++);
         switch (script->functionTemp[0]) {
-            case 0:
+            case WHALE_RIDER_PLAYER:
                 script->functionTemp[1] = 55;
                 break;
-            case 1:
+            case WHALE_RIDER_PARTNER:
                 script->functionTemp[1] = 85;
                 break;
-            default:
+            case WHALE_RIDER_KOLORADO:
                 script->functionTemp[1] = 25;
                break;
         }
@@ -216,7 +189,7 @@ API_CALLABLE(N(func_80242C78_854DE8)) {
     y = npc0->pos.y + 50.0f;
 
     switch (script->functionTemp[0]) {
-        case 0:
+        case WHALE_RIDER_PLAYER:
             gPlayerStatus.pos.x = x;
             gPlayerStatus.pos.y = y;
             gPlayerStatus.pos.z = z;
@@ -225,7 +198,7 @@ API_CALLABLE(N(func_80242C78_854DE8)) {
             npc0->colliderPos.z = npc0->pos.z;
             npc0->flags |= NPC_FLAG_DIRTY_SHADOW;
             break;
-        case 1:
+        case WHALE_RIDER_PARTNER:
             partner = get_npc_safe(NPC_PARTNER);
             if (partner == nullptr) {
                 return ApiStatus_DONE2;
@@ -238,7 +211,7 @@ API_CALLABLE(N(func_80242C78_854DE8)) {
             partner->colliderPos.z = partner->pos.z;
             partner->flags |= NPC_FLAG_DIRTY_SHADOW;
             break;
-        case 2:
+        case WHALE_RIDER_KOLORADO:
             npc1 = get_npc_safe(NPC_Kolorado);
             npc1->pos.x = x;
             npc1->pos.y = y;
@@ -253,13 +226,13 @@ API_CALLABLE(N(func_80242C78_854DE8)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_80242E84_854FF4)) {
+API_CALLABLE(N(UpdateWhaleTravel)) {
     Bytecode* args = script->ptrReadPos;
     Npc* npc = get_npc_safe(NPC_Whale);
 
     if (isInitialCall) {
         script->functionTemp[0] = evt_get_variable(script, *args++);
-        if (script->functionTemp[0] == 0) {
+        if (script->functionTemp[0] == WHALE_TRAVEL_DEPART) {
             script->functionTemp[2] = 0;
             script->functionTemp[1] = 90;
         } else {
@@ -273,7 +246,7 @@ API_CALLABLE(N(func_80242E84_854FF4)) {
 
     switch (script->functionTemp[2]) {
         case 0:
-            npc->curAnim = ANIM_Kolorado_Idle;
+            npc->curAnim = XNIM_Whale_Swim;
             npc->yaw -= 1.0f;
             npc->pos.x += 3.0f;
             script->functionTemp[1]--;
@@ -283,7 +256,7 @@ API_CALLABLE(N(func_80242E84_854FF4)) {
             }
             break;
         case 1:
-            if (evt_get_variable(nullptr, MF_Unk_01)) {
+            if (evt_get_variable(nullptr, MF_WhaleDepartureReady)) {
                 npc->pos.x += 3.0f;
                 script->functionTemp[1]--;
                 if (script->functionTemp[1] <= 0) {
@@ -311,13 +284,13 @@ API_CALLABLE(N(func_80242E84_854FF4)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(D_802484D8_85A648) = {
-    Call(N(func_80242C78_854DE8), LVar0)
+EvtScript N(EVS_UpdateWhaleRiderPosition) = {
+    Call(N(UpdateWhaleRiderPosition), LVar0)
     Return
     End
 };
 
-EvtScript N(D_802484F8_85A668) = {
+EvtScript N(EVS_UpdateWhaleCamera) = {
     Call(GetNpcPos, NPC_Whale, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -348,7 +321,7 @@ EvtScript N(D_802484F8_85A668) = {
     End
 };
 
-EvtScript N(D_802486EC_85A85C) = {
+EvtScript N(EVS_UpdateWhaleWakeupCamera) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar4, LVar4)
@@ -374,12 +347,12 @@ EvtScript N(D_802486EC_85A85C) = {
     End
 };
 
-EvtScript N(EVS_80248878) = {
+EvtScript N(EVS_Scene_FuzzipedeDefeated) = {
     Set(GB_StoryProgress, STORY_CH5_DEFEATED_FUZZIPEDE)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, -120, 24, 375)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -388,9 +361,9 @@ EvtScript N(EVS_80248878) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Wait(20)
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_009F)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_009F)
     Wait(20)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Shout)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Spout)
     Call(GetNpcPos, NPC_Whale, LVar0, LVar1, LVar2)
     Add(LVar0, 40)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -431,7 +404,7 @@ EvtScript N(EVS_80248878) = {
         Call(NpcJump0, NPC_Kolorado, -380, -10, 372, 20)
         Call(NpcFaceNpc, NPC_Kolorado, NPC_Whale, 0)
     EndThread
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Still)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Idle)
     Wait(60)
     Call(NpcFacePlayer, NPC_Kolorado, 0)
     Call(NpcFaceNpc, NPC_PARTNER, NPC_Fuzzipede, 0)
@@ -450,8 +423,8 @@ EvtScript N(EVS_80248878) = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 400)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(SpeakToPlayer, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 5, MSG_MAC_Port_00A0)
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00A1)
+    Call(SpeakToPlayer, NPC_Fuzzipede, ANIM_Fuzzipede_Talk, ANIM_Fuzzipede_Idle, 5, MSG_MAC_Port_00A0)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00A1)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_Whale, LVar3, LVar4, LVar5)
     Add(LVar0, LVar3)
@@ -464,10 +437,10 @@ EvtScript N(EVS_80248878) = {
     Call(SetCamDistance, CAM_DEFAULT, 475)
     Call(SetCamPosA, CAM_DEFAULT, Float(-63.5), 0)
     Call(SetCamPitch, CAM_DEFAULT, Float(18.5), Float(-5.0))
-    Call(SpeakToNpc, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 0, NPC_Whale, MSG_MAC_Port_00A2)
+    Call(SpeakToNpc, NPC_Fuzzipede, ANIM_Fuzzipede_Talk, ANIM_Fuzzipede_Idle, 0, NPC_Whale, MSG_MAC_Port_00A2)
     Call(NpcFacePlayer, NPC_Fuzzipede, 0)
     Wait(10)
-    Call(EndSpeech, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 0)
+    Call(EndSpeech, NPC_Fuzzipede, ANIM_Fuzzipede_Talk, ANIM_Fuzzipede_Idle, 0)
     Wait(10)
     Call(SetNpcJumpscale, NPC_Fuzzipede, 1)
     Call(GetNpcPos, NPC_Fuzzipede, LVar0, LVar1, LVar2)
@@ -487,7 +460,7 @@ EvtScript N(EVS_80248878) = {
         Call(NpcFaceNpc, NPC_PARTNER, NPC_Whale, 0)
         Call(PlayerFaceNpc, NPC_Whale, false)
     EndThread
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00A3)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00A3)
     Call(GetNpcPos, NPC_Kolorado, LVar0, LVar1, LVar2)
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
     Add(LVar0, LVar3)
@@ -552,7 +525,7 @@ EvtScript N(EVS_80248878) = {
         Call(NpcFaceNpc, NPC_PARTNER, NPC_Whale, 0)
         Call(PlayerFaceNpc, NPC_Whale, false)
     EndThread
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00AB)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00AB)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.5))
     Thread
@@ -566,7 +539,7 @@ EvtScript N(EVS_80248878) = {
     End
 };
 
-EvtScript N(D_802496C0_85B830) = {
+EvtScript N(EVS_AnimatePlayerJump) = {
     Call(SetPlayerAnimation, ANIM_Mario1_Jump)
     Wait(5)
     Call(SetPlayerAnimation, ANIM_Mario1_Fall)
@@ -574,27 +547,27 @@ EvtScript N(D_802496C0_85B830) = {
     End
 };
 
-EvtScript N(EVS_802496FC) = {
+EvtScript N(EVS_Scene_ArriveByWhale) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
     Call(InterpPlayerYaw, 270, 0)
     Set(LVar0, 1)
-    ExecGetTID(N(D_802484F8_85A668), LVarA)
-    Call(DisablePartnerAI, 0)
+    ExecGetTID(N(EVS_UpdateWhaleCamera), LVarA)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(SetNpcYaw, NPC_PARTNER, 270)
-    Set(LVar0, 0)
-    ExecGetTID(N(D_802484D8_85A648), LVarB)
-    Set(LVar0, 1)
-    ExecGetTID(N(D_802484D8_85A648), LVarC)
+    Set(LVar0, WHALE_RIDER_PLAYER)
+    ExecGetTID(N(EVS_UpdateWhaleRiderPosition), LVarB)
+    Set(LVar0, WHALE_RIDER_PARTNER)
+    ExecGetTID(N(EVS_UpdateWhaleRiderPosition), LVarC)
     IfEq(GB_StoryProgress, STORY_CH5_TRADED_VASE_FOR_SEED)
-        Set(LVar0, 2)
-        ExecGetTID(N(D_802484D8_85A648), LVarD)
+        Set(LVar0, WHALE_RIDER_KOLORADO)
+        ExecGetTID(N(EVS_UpdateWhaleRiderPosition), LVarD)
     EndIf
-    Call(N(func_80242E84_854FF4), 2)
+    Call(N(UpdateWhaleTravel), WHALE_TRAVEL_ARRIVE)
     KillThread(LVarB)
     KillThread(LVarC)
     IfEq(GB_StoryProgress, STORY_CH5_TRADED_VASE_FOR_SEED)
@@ -604,25 +577,25 @@ EvtScript N(EVS_802496FC) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt9, COLLIDER_FLAGS_UPPER_MASK)
     IfEq(GB_StoryProgress, STORY_CH5_TRADED_VASE_FOR_SEED)
         Call(SetNpcAnimation, NPC_Kolorado, ANIM_Kolorado_Run)
-        Call(N(func_80242A90_854C00), 5, LVar0, LVar1, LVar2)
+        Call(N(GetWhaleRiderTargetPos), WHALE_TARGET_DISMOUNT_KOLORADO, LVar0, LVar1, LVar2)
         Call(PlaySoundAtNpc, NPC_Kolorado, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
         Call(SetNpcJumpscale, NPC_Kolorado, Float(1.0))
         Call(NpcJump0, NPC_Kolorado, LVar0, LVar1, LVar2, 20)
         Call(SetNpcAnimation, NPC_Kolorado, ANIM_Kolorado_Idle)
     EndIf
-    Call(N(func_80242A90_854C00), 3, LVar0, LVar1, LVar2)
-    Exec(N(D_802496C0_85B830))
+    Call(N(GetWhaleRiderTargetPos), WHALE_TARGET_DISMOUNT_PLAYER, LVar0, LVar1, LVar2)
+    Exec(N(EVS_AnimatePlayerJump))
     Call(SetPlayerJumpscale, Float(1.0))
     Call(PlayerJump, LVar0, LVar1, LVar2, 20)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_RUN)
-    Call(N(func_80242A90_854C00), 4, LVar0, LVar1, LVar2)
+    Call(N(GetWhaleRiderTargetPos), WHALE_TARGET_DISMOUNT_PARTNER, LVar0, LVar1, LVar2)
     Call(SetNpcJumpscale, NPC_PARTNER, Float(1.0))
     Call(NpcJump0, NPC_PARTNER, LVar0, LVar1, LVar2, 20)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_tt9, COLLIDER_FLAGS_UPPER_MASK)
     KillThread(LVarA)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_TalkSad)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Still)
     Call(InterpNpcYaw, NPC_Whale, 270, 60)
     Thread
         Call(SetNpcJumpscale, NPC_Whale, 0)
@@ -651,7 +624,7 @@ EvtScript N(EVS_802496FC) = {
     End
 };
 
-EvtScript N(D_80249C34_85BDA4) = {
+EvtScript N(EVS_EjectPlayerAndPartner) = {
     Thread
         Call(SetPlayerJumpscale, Float(1.0))
         Call(SetPlayerAnimation, ANIM_Mario1_Flail)
@@ -660,7 +633,7 @@ EvtScript N(D_80249C34_85BDA4) = {
         Call(PlayerFaceNpc, NPC_Whale, false)
     EndThread
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
@@ -674,12 +647,12 @@ EvtScript N(D_80249C34_85BDA4) = {
     End
 };
 
-EvtScript N(D_80249D80_85BEF0) = {
+EvtScript N(EVS_MovePlayerAndPartnerOffWhale) = {
     Wait(20)
     Call(PlayerMoveTo, -285, 485, 40)
     Call(PlayerMoveTo, -310, 372, 20)
     Call(PlayerFaceNpc, NPC_Whale, false)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(NpcMoveTo, NPC_PARTNER, -345, 372, 30)
@@ -691,35 +664,32 @@ EvtScript N(D_80249D80_85BEF0) = {
     End
 };
 
-#include "world/common/todo/GetFloorCollider.inc.c"
-
-API_CALLABLE(N(func_802430B4_855224)) {
+API_CALLABLE(N(GetBombetteBlastFloor)) {
     Bytecode* args = script->ptrReadPos;
-    Npc* npc = get_npc_safe(-4);
-    s32 outVal = -1;
+    Npc* npc = get_npc_safe(NPC_PARTNER);
+    HitID result = NO_COLLIDER;
 
     if (gCollisionStatus.bombetteExploded >= 0) {
-        f32 temp = 11.0f;
         f32 x = npc->pos.x;
-        f32 y = npc->pos.y + temp;
+        f32 y = npc->pos.y + 11.0f;
         f32 z = npc->pos.z;
+        f32 depth = 12.0f;
 
-        temp = 12.0f;
-        if (npc_raycast_down_around(npc->collisionChannel, &x, &y, &z, &temp, npc->yaw, npc->collisionDiameter) &&
-            temp <= 12.0f)
-        {
-            outVal = NpcHitQueryColliderID;
+        if (npc_raycast_down_around(npc->collisionChannel, &x, &y, &z, &depth, npc->yaw, npc->collisionDiameter)
+            && depth <= 12.0f
+        ) {
+            result = NpcHitQueryColliderID;
         }
     }
-    evt_set_variable(script, *args++, outVal);
+    evt_set_variable(script, *args++, result);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(D_80249E84_85BFF4) = {
+EvtScript N(EVS_AwaitWhaleWakeupHit) = {
     Set(LVarA, 0)
     Loop(0)
-        Call(N(GetFloorCollider), LVar0)
-        IfEq(LVar0, 29)
+        Call(GetPlayerFloorCollider, LVar0)
+        IfEq(LVar0, COLLIDER_o236)
             Set(LVar5, 0)
             Call(GetPlayerActionState, LVar1)
             IfEq(LVar1, ACTION_STATE_HAMMER)
@@ -758,9 +728,9 @@ EvtScript N(D_80249E84_85BFF4) = {
                         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
                     EndThread
                     Call(PlaySoundAt, SOUND_WHALE_JIGGLE, SOUND_SPACE_DEFAULT, 0, 0, 480)
-                    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Panic)
+                    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Shake)
                     Wait(10)
-                    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_WalkSad)
+                    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Sleep)
                     Call(DisablePlayerInput, false)
                     Add(LVarA, 1)
                 EndIf
@@ -770,9 +740,9 @@ EvtScript N(D_80249E84_85BFF4) = {
                 Return
             EndIf
         EndIf
-        Call(N(func_802430B4_855224), LVar2)
-        IfEq(LVar2, 29)
-            IfEq(LVar0, 29)
+        Call(N(GetBombetteBlastFloor), LVar2)
+        IfEq(LVar2, COLLIDER_o236)
+            IfEq(LVar0, COLLIDER_o236)
                 Set(LFlag0, true)
             EndIf
             Return
@@ -783,55 +753,55 @@ EvtScript N(D_80249E84_85BFF4) = {
     End
 };
 
-EvtScript N(D_8024A1F8_85C368) = {
-    ExecWait(N(D_80249E84_85BFF4))
+EvtScript N(EVS_Scene_WakeWhale) = {
+    ExecWait(N(EVS_AwaitWhaleWakeupHit))
     Call(DisablePlayerInput, true)
     Wait(10)
     Call(PlaySoundAt, SOUND_WHALE_JIGGLE, SOUND_SPACE_DEFAULT, 0, 0, 480)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Panic)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Shake)
     Wait(10)
     Call(DisablePlayerPhysics, true)
-    ExecGetTID(N(D_802486EC_85A85C), LVarA)
+    ExecGetTID(N(EVS_UpdateWhaleWakeupCamera), LVarA)
     IfEq(LFlag0, true)
-        Exec(N(D_80249C34_85BDA4))
+        Exec(N(EVS_EjectPlayerAndPartner))
     EndIf
     Wait(10)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Run)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Shiver)
     Wait(20)
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Run, ANIM_Kolorado_Run, 5, MSG_MAC_Port_0090)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Shiver, XNIM_Whale_Shiver, 5, MSG_MAC_Port_0090)
     IfEq(LFlag0, false)
-        Exec(N(D_80249D80_85BEF0))
+        Exec(N(EVS_MovePlayerAndPartnerOffWhale))
     EndIf
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_kujira, COLLIDER_FLAGS_UPPER_MASK)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_WalkSad)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Sleep)
     Call(MakeLerp, 480, 372, 50, EASING_COS_IN_OUT)
     Label(0)
-    Call(UpdateLerp)
-    Call(SetNpcPos, NPC_Whale, -73, -53, LVar0)
-    IfEq(LVar1, 1)
-        Wait(1)
-        Goto(0)
-    EndIf
+        Call(UpdateLerp)
+        Call(SetNpcPos, NPC_Whale, -73, -53, LVar0)
+        IfEq(LVar1, 1)
+            Wait(1)
+            Goto(0)
+        EndIf
     Call(MakeLerp, -73, -220, 50, EASING_COS_IN_OUT)
     Label(1)
-    Call(UpdateLerp)
-    Call(SetNpcPos, NPC_Whale, LVar0, -53, 372)
-    IfEq(LVar1, 1)
-        Wait(1)
-        Goto(1)
-    EndIf
+        Call(UpdateLerp)
+        Call(SetNpcPos, NPC_Whale, LVar0, -53, 372)
+        IfEq(LVar1, 1)
+            Wait(1)
+            Goto(1)
+        EndIf
     Wait(20)
     Call(MakeLerp, -53, 10, 50, EASING_COS_IN_OUT)
     Label(2)
-    Call(UpdateLerp)
-    Call(SetNpcPos, NPC_Whale, -220, LVar0, 372)
-    IfEq(LVar1, 1)
-        Wait(1)
-        Goto(2)
-    EndIf
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_HurtStill)
+        Call(UpdateLerp)
+        Call(SetNpcPos, NPC_Whale, -220, LVar0, 372)
+        IfEq(LVar1, 1)
+            Wait(1)
+            Goto(2)
+        EndIf
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_WakeUp)
     Wait(50)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Talk)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Sick)
     KillThread(LVarA)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_Kolorado, LVar3, LVar4, LVar5)
@@ -872,7 +842,7 @@ EvtScript N(D_8024A1F8_85C368) = {
         Call(PlayerFaceNpc, NPC_Whale, false)
     EndThread
     Exec(N(EVS_80244314))
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Talk, 5, MSG_MAC_Port_0092)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Sick, 5, MSG_MAC_Port_0092)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_Kolorado, LVar3, LVar4, LVar5)
     Add(LVar0, LVar3)
@@ -910,7 +880,7 @@ EvtScript N(D_8024A1F8_85C368) = {
         Call(NpcFaceNpc, NPC_PARTNER, NPC_Whale, 0)
         Call(PlayerFaceNpc, NPC_Whale, false)
     EndThread
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_0094)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_0094)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_Kolorado, LVar3, LVar4, LVar5)
     Add(LVar0, LVar3)
@@ -933,7 +903,7 @@ EvtScript N(D_8024A1F8_85C368) = {
         Call(PlayerFaceNpc, NPC_Whale, false)
     EndThread
     Set(GB_StoryProgress, STORY_CH5_WHALE_MOUTH_OPEN)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Yell)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_OpenMouth)
     Wait(50)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -948,29 +918,29 @@ EvtScript N(D_8024A1F8_85C368) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_01) = {
+EvtScript N(EVS_NpcInteract_Whale) = {
     IfLt(GB_StoryProgress, STORY_CH5_DEFEATED_FUZZIPEDE)
         IfGe(GB_StoryProgress, STORY_CH5_WHALE_MOUTH_OPEN)
             IfLt(GB_StoryProgress, STORY_CH5_ENTERED_WHALE)
                 Call(GetNpcAnimation, NPC_Whale, LVar0)
-                IfEq(LVar0, ANIM_Kolorado_Yell)
-                    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_IdleSad)
+                IfEq(LVar0, XNIM_Whale_OpenMouth)
+                    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_CloseMouth)
                     Wait(15)
                 EndIf
-                Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Still)
-                Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Talk, 5, MSG_MAC_Port_0097)
-                Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Yell)
+                Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Idle)
+                Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Sick, 5, MSG_MAC_Port_0097)
+                Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_OpenMouth)
                 Wait(30)
                 Return
             Else
                 Call(GetNpcAnimation, NPC_Whale, LVar0)
-                IfEq(LVar0, ANIM_Kolorado_Yell)
-                    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_IdleSad)
+                IfEq(LVar0, XNIM_Whale_OpenMouth)
+                    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_CloseMouth)
                     Wait(15)
                 EndIf
-                Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Still)
-                Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Talk, 5, MSG_MAC_Port_0098)
-                Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Yell)
+                Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Idle)
+                Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Sick, 5, MSG_MAC_Port_0098)
+                Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_OpenMouth)
                 Wait(30)
                 Return
             EndIf
@@ -979,118 +949,118 @@ EvtScript N(EVS_NpcInteract_Toad_01) = {
         EndIf
     EndIf
     Call(DisablePlayerPhysics, true)
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00B0)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00B0)
     Call(ShowChoice, MSG_Choice_0010)
     IfEq(LVar0, 1)
-        Call(ContinueSpeech, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00B2)
+        Call(ContinueSpeech, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00B2)
         Call(DisablePlayerPhysics, false)
         Return
     Else
-        Call(EndSpeech, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5)
+        Call(EndSpeech, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5)
     EndIf
     Call(SetNpcJumpscale, NPC_SELF, 0)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_SELF, -220, -30, 372, 20)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_TalkSad)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Still)
     Call(InterpNpcYaw, NPC_Whale, 180, 60)
     Set(LVar0, 0)
-    Exec(N(D_802484F8_85A668))
+    Exec(N(EVS_UpdateWhaleCamera))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt9, COLLIDER_FLAGS_UPPER_MASK)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
-    Call(N(func_80242A90_854C00), 0, LVar0, LVar1, LVar2)
-    Exec(N(D_802496C0_85B830))
+    Call(N(GetWhaleRiderTargetPos), WHALE_TARGET_PLAYER, LVar0, LVar1, LVar2)
+    Exec(N(EVS_AnimatePlayerJump))
     Call(SetPlayerJumpscale, Float(1.0))
     Call(PlayerJump, LVar0, LVar1, LVar2, 20)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(InterpPlayerYaw, 90, 0)
     Thread
-        Call(N(func_80242C78_854DE8), 0)
+        Call(N(UpdateWhaleRiderPosition), WHALE_RIDER_PLAYER)
     EndThread
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_RUN)
     Call(NpcMoveTo, NPC_PARTNER, LVar3, LVar5, 10)
-    Call(N(func_80242A90_854C00), 1, LVar0, LVar1, LVar2)
+    Call(N(GetWhaleRiderTargetPos), WHALE_TARGET_PARTNER, LVar0, LVar1, LVar2)
     Call(SetNpcJumpscale, NPC_PARTNER, Float(1.0))
     Call(NpcJump0, NPC_PARTNER, LVar0, LVar1, LVar2, 20)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
     Thread
-        Call(N(func_80242C78_854DE8), 1)
+        Call(N(UpdateWhaleRiderPosition), WHALE_RIDER_PARTNER)
     EndThread
     IfLt(GB_StoryProgress, STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
         Call(SpeakToPlayer, NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Talk, 0, MSG_MAC_Port_00AD)
         Call(SetNpcAnimation, NPC_Kolorado, ANIM_Kolorado_Run)
         Call(NpcMoveTo, NPC_Kolorado, LVar3, LVar5, 20)
-        Call(N(func_80242A90_854C00), 2, LVar0, LVar1, LVar2)
+        Call(N(GetWhaleRiderTargetPos), WHALE_TARGET_KOLORADO, LVar0, LVar1, LVar2)
         Call(PlaySoundAtNpc, NPC_Kolorado, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
         Call(SetNpcJumpscale, NPC_Kolorado, Float(1.0))
         Call(NpcJump0, NPC_Kolorado, LVar0, LVar1, LVar2, 20)
         Call(SetNpcAnimation, NPC_Kolorado, ANIM_Kolorado_Idle)
         Thread
-            Call(N(func_80242C78_854DE8), 2)
+            Call(N(UpdateWhaleRiderPosition), WHALE_RIDER_KOLORADO)
         EndThread
-        Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00AE)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Shout)
+        Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00AE)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Spout)
         Wait(30)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Idle)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Swim)
     Else
-        Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00B1)
+        Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00B1)
     EndIf
-    Set(MF_Unk_01, false)
+    Set(MF_WhaleDepartureReady, false)
     Thread
-        Call(N(func_80242E84_854FF4), 0)
+        Call(N(UpdateWhaleTravel), WHALE_TRAVEL_DEPART)
         Call(GotoMap, Ref("mac_06"), mac_06_ENTRY_0)
     EndThread
     IfLt(GB_StoryProgress, STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
-        Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00AF)
-        Set(MF_Unk_01, true)
+        Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00AF)
+        Set(MF_WhaleDepartureReady, true)
     Else
-        Set(MF_Unk_01, true)
+        Set(MF_WhaleDepartureReady, true)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_01)))
+EvtScript N(EVS_NpcInit_Whale) = {
+    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Whale)))
     Call(SetNpcFlagBits, NPC_Whale, NPC_FLAG_HAS_NO_SPRITE, true)
     Call(SetNpcFlagBits, NPC_Whale, NPC_FLAG_HAS_SHADOW, false)
     Call(InterpNpcYaw, NPC_Whale, 270, 0)
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
         Call(SetNpcPos, NPC_Whale, NPC_DISPOSE_LOCATION)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_WalkSad)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Sleep)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_kujira_atari, COLLIDER_FLAGS_UPPER_MASK)
         Return
     EndIf
     IfLt(GB_StoryProgress, STORY_CH4_STAR_SPRIT_DEPARTED)
         Call(SetNpcPos, NPC_Whale, 0, -60, 290)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_WalkSad)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Sleep)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_kujira_atari, COLLIDER_FLAGS_UPPER_MASK)
         Return
     EndIf
     IfLt(GB_StoryProgress, STORY_CH5_WHALE_MOUTH_OPEN)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_kujira, COLLIDER_FLAGS_UPPER_MASK)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Run)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Shiver)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_kujira_atari, COLLIDER_FLAGS_UPPER_MASK)
         Call(SetNpcPos, NPC_Whale, -73, -53, 480)
-        Exec(N(D_8024A1F8_85C368))
+        Exec(N(EVS_Scene_WakeWhale))
         Return
     EndIf
     Call(GetEntryID, LVar0)
     IfEq(LVar0, mac_05_ENTRY_2)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Talk)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Sick)
         Call(SetNpcPos, NPC_Whale, -220, 10, 372)
         Return
     EndIf
     IfLt(GB_StoryProgress, STORY_CH5_DEFEATED_FUZZIPEDE)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Talk)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Sick)
         Call(SetNpcPos, NPC_Whale, -220, 10, 372)
         Return
     EndIf
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Still)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Idle)
     Call(SetNpcPos, NPC_Whale, -220, 10, 372)
     Return
     End
@@ -1105,7 +1075,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
         EndIf
         Wait(1)
     EndLoop
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Walk)
     Call(SetNpcSpeed, NPC_SELF, Float(1.5))
     Call(NpcMoveTo, NPC_SELF, -335, 400, 10)
@@ -1145,9 +1115,9 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
 EvtScript N(EVS_NpcInteract_Kolorado) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_WHALE_MOUTH_OPEN)
-            IfEq(AF_MAC_38, false)
+            IfEq(AF_MAC05_MetKoloradoDialogue, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_0083)
-                Set(AF_MAC_38, true)
+                Set(AF_MAC05_MetKoloradoDialogue, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_0084)
             EndIf
@@ -1162,11 +1132,8 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
             Call(SpeakToPlayer, NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_00AC)
     EndSwitch
     ExecWait(N(EVS_ArtifactPrompt_Kolorado))
-    ExecWait(N(EVS_LetterPrompt_Kolorado))
-    ExecWait(N(EVS_LetterReward_Kolorado))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
@@ -1188,7 +1155,7 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
     End
 };
 
-API_CALLABLE(N(func_802431B0_855320)) {
+API_CALLABLE(N(UpdateJrTroopaSwimEffects)) {
     Npc* npc = get_npc_safe(NPC_JrTroopa_01);
     f32 x = npc->pos.x + 20.0f;
     f32 y = npc->pos.y;
@@ -1201,25 +1168,24 @@ API_CALLABLE(N(func_802431B0_855320)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(D_8024BCBC_85DE2C) = {
+EvtScript N(EVS_UpdateJrTroopaSwimEffects) = {
     Loop(0)
-        Call(N(func_802431B0_855320))
+        Call(N(UpdateJrTroopaSwimEffects))
         Wait(5)
     EndLoop
     Return
     End
 };
 
-API_CALLABLE(N(func_80243254_8553C4)) {
+API_CALLABLE(N(GetPointNearPlayerTowardNpc)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
-    s32 outVar0 = *args++;
-    s32 outVar1 = *args++;
+    s32 outVarX = *args++;
+    s32 outVarZ = *args++;
     Npc* npc = resolve_npc(script, npcID);
     f32 theta;
-    f32 x;
-    f32 z;
+    f32 x, z;
 
     if (npc == nullptr) {
         return ApiStatus_DONE2;
@@ -1228,8 +1194,8 @@ API_CALLABLE(N(func_80243254_8553C4)) {
     theta = clamp_angle(atan2(playerStatus->pos.x, playerStatus->pos.z, npc->pos.x, npc->pos.z));
     x = playerStatus->pos.x + (sin_deg(theta) * 40.0f);
     z = playerStatus->pos.z - (cos_deg(theta) * 40.0f);
-    evt_set_variable(script, outVar0, x);
-    evt_set_variable(script, outVar1, z);
+    evt_set_variable(script, outVarX, x);
+    evt_set_variable(script, outVarZ, z);
     return ApiStatus_DONE2;
 }
 
@@ -1245,7 +1211,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa_01) = {
     Wait(45)
     Exec(N(EVS_80244298))
     Call(PlaySound, SOUND_LOOP_JR_TROOPA_SWIM)
-    ExecGetTID(N(D_8024BCBC_85DE2C), LVar9)
+    ExecGetTID(N(EVS_UpdateJrTroopaSwimEffects), LVar9)
     Call(SetNpcPos, NPC_SELF, 150, -30, 490)
     Wait(5)
     Thread
@@ -1304,7 +1270,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa_01) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_RunBack)
     Wait(15)
     Thread
-        Call(N(func_80243254_8553C4), -1, LVar0, LVar2)
+        Call(N(GetPointNearPlayerTowardNpc), NPC_SELF, LVar0, LVar2)
         Call(NpcMoveTo, NPC_SELF, LVar0, LVar2, 45)
     EndThread
     Call(PanToTarget, CAM_DEFAULT, 0, false)
@@ -1321,7 +1287,7 @@ EvtScript N(EVS_NpcInteract_JrTroopa_01) = {
 };
 
 EvtScript N(EVS_NpcDefeat_JrTroopa_01) = {
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Set(GF_MAC01_Defeated_JrTroopa4, true)
     Call(SetPlayerPos, -340, -10, 380)
     Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
@@ -1401,11 +1367,9 @@ EvtScript N(EVS_NpcInteract_Fuzzipede1) = {
             Set(LVar1, MSG_MAC_Port_005D)
     EndSwitch
     Call(SpeakToNpc, NPC_Fishmael, ANIM_Fishmael_Talk, ANIM_Fishmael_Idle, 0, NPC_Fuzzipede, LVar0)
-    Call(SpeakToNpc, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 0, NPC_Fishmael, LVar1)
-    ExecWait(N(EVS_LetterPrompt_Fishmael))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    Call(SpeakToNpc, NPC_Fuzzipede, ANIM_Fuzzipede_Talk, ANIM_Fuzzipede_Idle, 0, NPC_Fishmael, LVar1)
+    Set(LVar0, Ref(N(LetterDelivery_Fishmael)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
@@ -1436,10 +1400,8 @@ EvtScript N(EVS_NpcInteract_Fishmael) = {
             Set(LVar0, MSG_MAC_Port_005A)
     EndSwitch
     Call(SpeakToPlayer, NPC_SELF, ANIM_Fishmael_Talk, ANIM_Fishmael_Idle, 0, LVar0)
-    ExecWait(N(EVS_LetterPrompt_Fishmael))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    Set(LVar0, Ref(N(LetterDelivery_Fishmael)))
+    ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
@@ -1459,7 +1421,7 @@ EvtScript N(EVS_NpcInteract_Fuzzipede2) = {
         CaseLt(STORY_EPILOGUE)
             Set(LVar0, MSG_MAC_Port_0063)
     EndSwitch
-    Call(SpeakToPlayer, NPC_SELF, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 0, LVar0)
+    Call(SpeakToPlayer, NPC_SELF, ANIM_Fuzzipede_Talk, ANIM_Fuzzipede_Idle, 0, LVar0)
     Return
     End
 };
@@ -1804,29 +1766,25 @@ EvtScript N(EVS_NpcInit_Toad_02) = {
     End
 };
 
-s32 N(D_8024D704_85F874)[] = {
-    104, 0
-};
-
 EvtScript N(EVS_NpcInteract_ArtistToad) = {
     Set(GF_MAC05_Met_Simon, true)
     Set(LVarA, 0)
     IfGe(GB_StoryProgress, STORY_CH2_BEGAN_PEACH_MISSION)
-        IfEq(AF_MAC_3E, true)
+        IfEq(AF_MAC05_MetSimonBefore, true)
             Set(LVarA, 1)
         EndIf
     EndIf
     IfEq(LVarA, 0)
-        IfEq(AF_MAC_3D, false)
+        IfEq(AF_MAC05_ToggleDialogue_Simon, false)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0070)
-            Set(AF_MAC_3D, true)
+            Set(AF_MAC05_ToggleDialogue_Simon, true)
         Else
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0071)
         EndIf
         Return
     EndIf
     IfEq(GF_MAC05_SimonGaveLyrics, false)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0072)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Musician_Poet_Write)
@@ -1841,37 +1799,35 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
         Return
     EndIf
     IfEq(GF_MAC05_SimonGotMelody, true)
-        IfEq(AF_MAC_3D, false)
+        IfEq(AF_MAC05_ToggleDialogue_Simon, false)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0081)
-            Set(AF_MAC_3D, true)
+            Set(AF_MAC05_ToggleDialogue_Simon, true)
         Else
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0082)
-            Set(AF_MAC_3D, false)
+            Set(AF_MAC05_ToggleDialogue_Simon, false)
         EndIf
         Return
     EndIf
     Call(FindItem, ITEM_MELODY, LVar0)
     IfEq(LVar0, -1)
-        IfEq(AF_MAC_3D, false)
+        IfEq(AF_MAC05_ToggleDialogue_Simon, false)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0076)
-            Set(AF_MAC_3D, true)
+            Set(AF_MAC05_ToggleDialogue_Simon, true)
         Else
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0077)
         EndIf
     Else
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
-        IfEq(AF_MAC_3D, false)
+        IfEq(AF_MAC05_ToggleDialogue_Simon, false)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0078)
-            Set(AF_MAC_3D, true)
+            Set(AF_MAC05_ToggleDialogue_Simon, true)
         Else
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0079)
         EndIf
-        Set(LVar0, Ref(N(D_8024D704_85F874)))
-        Set(LVar1, 10)
-        ExecWait(N(EVS_ChooseKeyItem))
+        EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_MELODY, NPC_ArtistToad)
         Switch(LVar0)
-            CaseEq(-1)
+            CaseEq(ITEM_CHOICE_CANCELED)
                 Call(EnablePartnerAI)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_007A)
             CaseDefault
@@ -1880,13 +1836,13 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
                 Call(SpeakToPlayer, NPC_Chanterelle, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_007C)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_007D)
                 Call(SpeakToPlayer, NPC_Chanterelle, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_007E)
-                Call(SetNpcFlagBits, NPC_Chanterelle, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_Chanterelle, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Thread
                     Call(PlayerMoveTo, 167, -513, 20)
                     Call(InterpPlayerYaw, 270, 0)
                     Wait(10)
                     Call(EnablePartnerAI)
-                    Call(func_802CF56C, 2)
+                    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
                 EndThread
                 Thread
                     Call(SetNpcAnimation, NPC_Chanterelle, ANIM_Chanterelle_Walk)
@@ -1945,8 +1901,8 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
                     Call(InterpNpcYaw, NPC_ArtistToad, 90, 0)
                     Call(InterpPlayerYaw, 90, 0)
                     Wait(10)
-                    Call(func_802CF56C, 2)
-                    Call(SetNpcFlagBits, NPC_Chanterelle, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                    Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
+                    Call(SetNpcFlagBits, NPC_Chanterelle, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
                 EndThread
                 Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
                 Call(PanToTarget, CAM_DEFAULT, 0, false)
@@ -1964,10 +1920,10 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
 
 EvtScript N(EVS_NpcInit_ArtistToad) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ArtistToad)))
-    Set(AF_MAC_3D, false)
-    Set(AF_MAC_3E, false)
+    Set(AF_MAC05_ToggleDialogue_Simon, false)
+    Set(AF_MAC05_MetSimonBefore, false)
     IfEq(GF_MAC05_Met_Simon, true)
-        Set(AF_MAC_3E, true)
+        Set(AF_MAC05_MetSimonBefore, true)
     EndIf
     Return
     End
@@ -1981,8 +1937,8 @@ API_CALLABLE(N(AwaitSongFinished)) {
     }
 }
 
-EvtScript N(D_8024E23C_8603AC) = {
-    Set(AF_JAN01_TreeDrop_StarPiece, true)
+EvtScript N(EVS_Chanterelle_PerformSong) = {
+    Set(MF_DivaSongPlaying, true)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_CANT_INTERACT, true)
     Call(InterpNpcYaw, NPC_Chanterelle, 270, 0)
     Call(SetMusic, 0, SONG_POP_DIVA_SONG, BGM_VARIATION_1, VOL_LEVEL_FULL)
@@ -1995,10 +1951,10 @@ EvtScript N(D_8024E23C_8603AC) = {
     ChildThread
         Wait(30)
         Call(N(AwaitSongFinished))
-        Set(AF_JAN01_TreeDrop_StarPiece, false)
+        Set(MF_DivaSongPlaying, false)
     EndChildThread
     Loop(0)
-        IfEq(AF_JAN01_TreeDrop_StarPiece, false)
+        IfEq(MF_DivaSongPlaying, false)
             BreakLoop
         EndIf
         Wait(1)
@@ -2012,28 +1968,28 @@ EvtScript N(D_8024E23C_8603AC) = {
 
 EvtScript N(EVS_NpcInteract_Chanterelle) = {
     IfEq(GF_MAC05_SimonGaveLyrics, false)
-        IfEq(AF_MAC_3F, false)
+        IfEq(AF_MAC05_ToggleDialogue_Chanterelle, false)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_0068)
-            Set(AF_MAC_3F, true)
+            Set(AF_MAC05_ToggleDialogue_Chanterelle, true)
         Else
             Call(SpeakToPlayer, NPC_SELF, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_0069)
-            Set(AF_MAC_3F, false)
+            Set(AF_MAC05_ToggleDialogue_Chanterelle, false)
         EndIf
         Return
     EndIf
     IfEq(GF_MAC05_SimonGotMelody, false)
-        IfEq(AF_MAC_3F, false)
+        IfEq(AF_MAC05_ToggleDialogue_Chanterelle, false)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_006A)
-            Set(AF_MAC_3F, true)
+            Set(AF_MAC05_ToggleDialogue_Chanterelle, true)
         Else
             Call(SpeakToPlayer, NPC_SELF, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_006B)
-            Set(AF_MAC_3F, false)
+            Set(AF_MAC05_ToggleDialogue_Chanterelle, false)
         EndIf
         Return
     EndIf
-    IfEq(AF_MAC_3F, false)
+    IfEq(AF_MAC05_ToggleDialogue_Chanterelle, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_006C)
-        Set(AF_MAC_3F, true)
+        Set(AF_MAC05_ToggleDialogue_Chanterelle, true)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_006D)
     EndIf
@@ -2042,7 +1998,7 @@ EvtScript N(EVS_NpcInteract_Chanterelle) = {
         Call(ContinueSpeech, NPC_SELF, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_006E)
     Else
         Call(ContinueSpeech, NPC_SELF, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_006F)
-        Exec(N(D_8024E23C_8603AC))
+        Exec(N(EVS_Chanterelle_PerformSong))
     EndIf
     Return
     End
@@ -2086,11 +2042,9 @@ EvtScript N(EVS_NpcInteract_Toad_03) = {
         Return
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Port_00C1)
-    Set(LVar0, 0)
-    Set(LVar1, 11)
-    ExecWait(N(EVS_ChooseItem))
+    EVT_CHOOSE_ANY_CONSUMABLE(NPC_TradeEventToad)
     Switch(LVar0)
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Port_00C5)
             Return
         CaseEq(ITEM_COCONUT)
@@ -2122,11 +2076,11 @@ EvtScript N(EVS_NpcInit_TradeEventToad) = {
     End
 };
 
-NpcData N(NpcData_Toad_01) = {
+NpcData N(NpcData_Whale) = {
     .id = NPC_Whale,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Toad_01),
+    .init = &N(EVS_NpcInit_Whale),
     .settings = &N(NpcSettings_Whale),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
@@ -2151,21 +2105,19 @@ NpcData N(NpcData_Fishmael) = {
     .pos = { 370.0f, -10.0f, -115.0f },
     .yaw = 270,
     .init = &N(EVS_NpcInit_Fishmael),
-    .settings = &N(NpcSettings_Toad_Stationary),
+    .settings = &N(NpcSettings_Fishmael),
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Fishmael_Idle,
-    },
+    .animations = FISHMAEL_ANIMS,
     .tattle = MSG_NpcTattle_Fishmael,
 };
 
-AnimID N(ExtraAnims_Fuzzipede)[] = {
-    ANIM_Fuzzipede_Anim00,
-    ANIM_Fuzzipede_Anim04,
-    ANIM_Fuzzipede_Anim08,
-    ANIM_Fuzzipede_Anim0A,
-    ANIM_Fuzzipede_Anim24,
+AnimID N(LimitAnims_Fuzzipede)[] = {
+    ANIM_Fuzzipede_Still,
+    ANIM_Fuzzipede_Idle,
+    ANIM_Fuzzipede_Walk,
+    ANIM_Fuzzipede_Run,
+    ANIM_Fuzzipede_Talk,
     ANIM_LIST_END
 };
 
@@ -2174,17 +2126,17 @@ NpcData N(NpcData_Fuzzipede) = {
     .pos = { 320.0f, -10.0f, -115.0f },
     .yaw = 90,
     .init = &N(EVS_NpcInit_Fuzzipede),
-    .settings = &N(NpcSettings_Toad_Stationary),
+    .settings = &N(NpcSettings_Toad),
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = {
-        .idle   = ANIM_Fuzzipede_Anim04,
+        .idle   = ANIM_Fuzzipede_Idle,
     },
-    .extraAnimations = N(ExtraAnims_Fuzzipede),
+    .limitAnimations = N(LimitAnims_Fuzzipede),
     .tattle = MSG_NpcTattle_Fuzzipede,
 };
 
-AnimID N(ExtraAnims_JrTroopa)[] = {
+AnimID N(LimitAnims_JrTroopa)[] = {
     ANIM_JrTroopa_Still,
     ANIM_JrTroopa_PointStill,
     ANIM_JrTroopa_Idle,
@@ -2200,34 +2152,17 @@ AnimID N(ExtraAnims_JrTroopa)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_JrTroopa_01)[] = {
+NpcData N(NpcData_JrTroopa)[] = {
     {
         .id = NPC_JrTroopa_01,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_JrTroopa_01),
-        .settings = &N(NpcSettings_JrTroopa_01),
+        .settings = &N(NpcSettings_JrTroopa),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_JrTroopa_Idle,
-            .walk   = ANIM_JrTroopa_Walk,
-            .run    = ANIM_JrTroopa_Walk,
-            .chase  = ANIM_JrTroopa_Walk,
-            .anim_4 = ANIM_JrTroopa_Idle,
-            .anim_5 = ANIM_JrTroopa_Idle,
-            .death  = ANIM_JrTroopa_Idle,
-            .hit    = ANIM_JrTroopa_Idle,
-            .anim_8 = ANIM_JrTroopa_Idle,
-            .anim_9 = ANIM_JrTroopa_Idle,
-            .anim_A = ANIM_JrTroopa_Idle,
-            .anim_B = ANIM_JrTroopa_Idle,
-            .anim_C = ANIM_JrTroopa_Idle,
-            .anim_D = ANIM_JrTroopa_Idle,
-            .anim_E = ANIM_JrTroopa_Idle,
-            .anim_F = ANIM_JrTroopa_Idle,
-        },
-        .extraAnimations = N(ExtraAnims_JrTroopa),
+        .animations = JR_TROOPA_ANIMS,
+        .limitAnimations = N(LimitAnims_JrTroopa),
         .tattle = MSG_NpcTattle_JrTroopa,
     },
     {
@@ -2235,59 +2170,25 @@ NpcData N(NpcData_JrTroopa_01)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_JrTroopa_02),
-        .settings = &N(NpcSettings_JrTroopa_01),
+        .settings = &N(NpcSettings_JrTroopa),
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_JrTroopa_Idle,
-            .walk   = ANIM_JrTroopa_Walk,
-            .run    = ANIM_JrTroopa_Walk,
-            .chase  = ANIM_JrTroopa_Walk,
-            .anim_4 = ANIM_JrTroopa_Idle,
-            .anim_5 = ANIM_JrTroopa_Idle,
-            .death  = ANIM_JrTroopa_Idle,
-            .hit    = ANIM_JrTroopa_Idle,
-            .anim_8 = ANIM_JrTroopa_Idle,
-            .anim_9 = ANIM_JrTroopa_Idle,
-            .anim_A = ANIM_JrTroopa_Idle,
-            .anim_B = ANIM_JrTroopa_Idle,
-            .anim_C = ANIM_JrTroopa_Idle,
-            .anim_D = ANIM_JrTroopa_Idle,
-            .anim_E = ANIM_JrTroopa_Idle,
-            .anim_F = ANIM_JrTroopa_Idle,
-        },
-        .extraAnimations = N(ExtraAnims_JrTroopa),
+        .animations = JR_TROOPA_ANIMS,
+        .limitAnimations = N(LimitAnims_JrTroopa),
         .tattle = MSG_NpcTattle_JrTroopa,
     },
 };
 
-NpcData N(NpcData_Toad_04)[] = {
+NpcData N(NpcData_Toads)[] = {
     {
         .id = NPC_Toad_04,
         .pos = { 320.0f, 0.0f, -300.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Toad_04),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Toad_Blue_Idle,
-            .walk   = ANIM_Toad_Blue_Walk,
-            .run    = ANIM_Toad_Blue_Run,
-            .chase  = ANIM_Toad_Blue_Run,
-            .anim_4 = ANIM_Toad_Blue_Idle,
-            .anim_5 = ANIM_Toad_Blue_Idle,
-            .death  = ANIM_Toad_Blue_Disappointed,
-            .hit    = ANIM_Toad_Blue_Disappointed,
-            .anim_8 = ANIM_Toad_Blue_Run,
-            .anim_9 = ANIM_Toad_Blue_Run,
-            .anim_A = ANIM_Toad_Blue_Run,
-            .anim_B = ANIM_Toad_Blue_Run,
-            .anim_C = ANIM_Toad_Blue_Run,
-            .anim_D = ANIM_Toad_Blue_Run,
-            .anim_E = ANIM_Toad_Blue_Run,
-            .anim_F = ANIM_Toad_Blue_Run,
-        },
+        .animations = TOAD_BLUE_ANIMS,
         .tattle = MSG_NpcTattle_MAC_PortGuide,
     },
     {
@@ -2295,27 +2196,10 @@ NpcData N(NpcData_Toad_04)[] = {
         .pos = { -330.0f, -10.0f, -90.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toad_05),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Toad_Blue_Idle,
-            .walk   = ANIM_Toad_Blue_Walk,
-            .run    = ANIM_Toad_Blue_Run,
-            .chase  = ANIM_Toad_Blue_Run,
-            .anim_4 = ANIM_Toad_Blue_Idle,
-            .anim_5 = ANIM_Toad_Blue_Idle,
-            .death  = ANIM_Toad_Blue_Disappointed,
-            .hit    = ANIM_Toad_Blue_Disappointed,
-            .anim_8 = ANIM_Toad_Blue_Run,
-            .anim_9 = ANIM_Toad_Blue_Run,
-            .anim_A = ANIM_Toad_Blue_Run,
-            .anim_B = ANIM_Toad_Blue_Run,
-            .anim_C = ANIM_Toad_Blue_Run,
-            .anim_D = ANIM_Toad_Blue_Run,
-            .anim_E = ANIM_Toad_Blue_Run,
-            .anim_F = ANIM_Toad_Blue_Run,
-        },
+        .animations = TOAD_BLUE_ANIMS,
         .tattle = MSG_NpcTattle_MAC_SeaLover,
     },
     {
@@ -2323,27 +2207,10 @@ NpcData N(NpcData_Toad_04)[] = {
         .pos = { -50.0f, 0.0f, -400.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Toad_06),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Toad_Red_Idle,
-            .walk   = ANIM_Toad_Red_Walk,
-            .run    = ANIM_Toad_Red_Run,
-            .chase  = ANIM_Toad_Red_Run,
-            .anim_4 = ANIM_Toad_Red_Idle,
-            .anim_5 = ANIM_Toad_Red_Idle,
-            .death  = ANIM_Toad_Red_Disappointed,
-            .hit    = ANIM_Toad_Red_Disappointed,
-            .anim_8 = ANIM_Toad_Red_Run,
-            .anim_9 = ANIM_Toad_Red_Run,
-            .anim_A = ANIM_Toad_Red_Run,
-            .anim_B = ANIM_Toad_Red_Run,
-            .anim_C = ANIM_Toad_Red_Run,
-            .anim_D = ANIM_Toad_Red_Run,
-            .anim_E = ANIM_Toad_Red_Run,
-            .anim_F = ANIM_Toad_Red_Run,
-        },
+        .animations = TOAD_RED_ANIMS,
         .tattle = MSG_NpcTattle_MAC_WellTraveledToad,
     },
     {
@@ -2365,27 +2232,10 @@ NpcData N(NpcData_Toad_04)[] = {
             }
         },
         .init = &N(EVS_NpcInit_Toad_07),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Toad_Yellow_Idle,
-            .walk   = ANIM_Toad_Yellow_Walk,
-            .run    = ANIM_Toad_Yellow_Run,
-            .chase  = ANIM_Toad_Yellow_Run,
-            .anim_4 = ANIM_Toad_Yellow_Idle,
-            .anim_5 = ANIM_Toad_Yellow_Idle,
-            .death  = ANIM_Toad_Yellow_Disappointed,
-            .hit    = ANIM_Toad_Yellow_Disappointed,
-            .anim_8 = ANIM_Toad_Yellow_Run,
-            .anim_9 = ANIM_Toad_Yellow_Run,
-            .anim_A = ANIM_Toad_Yellow_Run,
-            .anim_B = ANIM_Toad_Yellow_Run,
-            .anim_C = ANIM_Toad_Yellow_Run,
-            .anim_D = ANIM_Toad_Yellow_Run,
-            .anim_E = ANIM_Toad_Yellow_Run,
-            .anim_F = ANIM_Toad_Yellow_Run,
-        },
+        .animations = TOAD_YELLOW_ANIMS,
         .tattle = MSG_NpcTattle_MAC_SingsOffKey,
     },
 };
@@ -2396,27 +2246,10 @@ NpcData N(NpcData_Bartender)[] = {
         .pos = { -85.0f, 0.0f, -520.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Bartender),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Bartender),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Bartender_Idle,
-            .walk   = ANIM_Bartender_Idle,
-            .run    = ANIM_Bartender_Idle,
-            .chase  = ANIM_Bartender_Idle,
-            .anim_4 = ANIM_Bartender_Idle,
-            .anim_5 = ANIM_Bartender_Idle,
-            .death  = ANIM_Bartender_Idle,
-            .hit    = ANIM_Bartender_Idle,
-            .anim_8 = ANIM_Bartender_Idle,
-            .anim_9 = ANIM_Bartender_Idle,
-            .anim_A = ANIM_Bartender_Idle,
-            .anim_B = ANIM_Bartender_Idle,
-            .anim_C = ANIM_Bartender_Idle,
-            .anim_D = ANIM_Bartender_Idle,
-            .anim_E = ANIM_Bartender_Idle,
-            .anim_F = ANIM_Bartender_Idle,
-        },
+        .animations = BARTENDER_ANIMS,
         .tattle = MSG_NpcTattle_Club64_Bartender,
     },
     {
@@ -2424,27 +2257,10 @@ NpcData N(NpcData_Bartender)[] = {
         .pos = { 30.0f, 0.0f, -570.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Toad_02),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Toad_Red_Idle,
-            .walk   = ANIM_Toad_Red_Walk,
-            .run    = ANIM_Toad_Red_Run,
-            .chase  = ANIM_Toad_Red_Run,
-            .anim_4 = ANIM_Toad_Red_Idle,
-            .anim_5 = ANIM_Toad_Red_Idle,
-            .death  = ANIM_Toad_Red_Disappointed,
-            .hit    = ANIM_Toad_Red_Disappointed,
-            .anim_8 = ANIM_Toad_Red_Run,
-            .anim_9 = ANIM_Toad_Red_Run,
-            .anim_A = ANIM_Toad_Red_Run,
-            .anim_B = ANIM_Toad_Red_Run,
-            .anim_C = ANIM_Toad_Red_Run,
-            .anim_D = ANIM_Toad_Red_Run,
-            .anim_E = ANIM_Toad_Red_Run,
-            .anim_F = ANIM_Toad_Red_Run,
-        },
+        .animations = TOAD_RED_ANIMS,
         .tattle = MSG_NpcTattle_Club64_Waiter,
     },
     {
@@ -2452,27 +2268,10 @@ NpcData N(NpcData_Bartender)[] = {
         .pos = { 208.0f, 0.0f, -530.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_Chanterelle),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Chanterelle),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Chanterelle_Idle,
-            .walk   = ANIM_Chanterelle_Still,
-            .run    = ANIM_Chanterelle_Still,
-            .chase  = ANIM_Chanterelle_Still,
-            .anim_4 = ANIM_Chanterelle_Still,
-            .anim_5 = ANIM_Chanterelle_Still,
-            .death  = ANIM_Chanterelle_Still,
-            .hit    = ANIM_Chanterelle_Still,
-            .anim_8 = ANIM_Chanterelle_Still,
-            .anim_9 = ANIM_Chanterelle_Still,
-            .anim_A = ANIM_Chanterelle_Still,
-            .anim_B = ANIM_Chanterelle_Still,
-            .anim_C = ANIM_Chanterelle_Still,
-            .anim_D = ANIM_Chanterelle_Still,
-            .anim_E = ANIM_Chanterelle_Still,
-            .anim_F = ANIM_Chanterelle_Still,
-        },
+        .animations = CHANTERELLE_ANIMS,
         .tattle = MSG_NpcTattle_PopDiva_CantSing,
     },
     {
@@ -2480,27 +2279,10 @@ NpcData N(NpcData_Bartender)[] = {
         .pos = { 158.0f, 0.0f, -555.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_ArtistToad),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_MusicianPoet),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Musician_Poet_Idle,
-            .walk   = ANIM_Musician_Poet_Idle,
-            .run    = ANIM_Musician_Poet_Idle,
-            .chase  = ANIM_Musician_Poet_Idle,
-            .anim_4 = ANIM_Musician_Poet_Idle,
-            .anim_5 = ANIM_Musician_Poet_Idle,
-            .death  = ANIM_Musician_Poet_Idle,
-            .hit    = ANIM_Musician_Poet_Idle,
-            .anim_8 = ANIM_Musician_Poet_Idle,
-            .anim_9 = ANIM_Musician_Poet_Idle,
-            .anim_A = ANIM_Musician_Poet_Idle,
-            .anim_B = ANIM_Musician_Poet_Idle,
-            .anim_C = ANIM_Musician_Poet_Idle,
-            .anim_D = ANIM_Musician_Poet_Idle,
-            .anim_E = ANIM_Musician_Poet_Idle,
-            .anim_F = ANIM_Musician_Poet_Idle,
-        },
+        .animations = MUSICIAN_POET_ANIMS,
         .tattle = MSG_NpcTattle_MasterPoet,
     },
     {
@@ -2508,27 +2290,10 @@ NpcData N(NpcData_Bartender)[] = {
         .pos = { 92.0f, 0.0f, -500.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_TradeEventToad),
-        .settings = &N(NpcSettings_Toad_Stationary),
+        .settings = &N(NpcSettings_Toad),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Toad_Pink_Idle,
-            .walk   = ANIM_Toad_Pink_Walk,
-            .run    = ANIM_Toad_Pink_Run,
-            .chase  = ANIM_Toad_Pink_Run,
-            .anim_4 = ANIM_Toad_Pink_Idle,
-            .anim_5 = ANIM_Toad_Pink_Idle,
-            .death  = ANIM_Toad_Pink_Idle,
-            .hit    = ANIM_Toad_Pink_Disappointed,
-            .anim_8 = ANIM_Toad_Pink_Run,
-            .anim_9 = ANIM_Toad_Pink_Run,
-            .anim_A = ANIM_Toad_Pink_Run,
-            .anim_B = ANIM_Toad_Pink_Run,
-            .anim_C = ANIM_Toad_Pink_Run,
-            .anim_D = ANIM_Toad_Pink_Run,
-            .anim_E = ANIM_Toad_Pink_Run,
-            .anim_F = ANIM_Toad_Pink_Run,
-        },
+        .animations = TOAD_PINK_ANIMS,
         .tattle = MSG_NpcTattle_PrizeToad,
     },
 };
@@ -2542,24 +2307,7 @@ NpcData N(NpcData_ChuckQuizmo) = {
     .settings = &N(NpcSettings_ChuckQuizmo),
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_HAS_NO_SPRITE,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_ChuckQuizmo_Idle,
-        .walk   = ANIM_ChuckQuizmo_Walk,
-        .run    = ANIM_ChuckQuizmo_Run,
-        .chase  = ANIM_ChuckQuizmo_Run,
-        .anim_4 = ANIM_ChuckQuizmo_Idle,
-        .anim_5 = ANIM_ChuckQuizmo_Idle,
-        .death  = ANIM_ChuckQuizmo_Still,
-        .hit    = ANIM_ChuckQuizmo_Still,
-        .anim_8 = ANIM_ChuckQuizmo_Run,
-        .anim_9 = ANIM_ChuckQuizmo_Run,
-        .anim_A = ANIM_ChuckQuizmo_Run,
-        .anim_B = ANIM_ChuckQuizmo_Run,
-        .anim_C = ANIM_ChuckQuizmo_Run,
-        .anim_D = ANIM_ChuckQuizmo_Run,
-        .anim_E = ANIM_ChuckQuizmo_Run,
-        .anim_F = ANIM_ChuckQuizmo_Run,
-    },
+    .animations = QUIZMO_ANIMS,
     .tattle = MSG_NpcTattle_ChuckQuizmo,
 };
 
@@ -2567,8 +2315,8 @@ NpcGroupList N(NpcSetA) = {
     NPC_GROUP(N(NpcData_Fuzzipede)),
     NPC_GROUP(N(NpcData_Fishmael)),
     NPC_GROUP(N(NpcData_Bartender)),
-    NPC_GROUP(N(NpcData_Toad_04)),
-    NPC_GROUP(N(NpcData_Toad_01)),
+    NPC_GROUP(N(NpcData_Toads)),
+    NPC_GROUP(N(NpcData_Whale)),
     NPC_GROUP(N(NpcData_ChuckQuizmo)),
     {}
 };
@@ -2578,17 +2326,17 @@ NpcGroupList N(NpcSetB) = {
     NPC_GROUP(N(NpcData_Fuzzipede)),
     NPC_GROUP(N(NpcData_Fishmael)),
     NPC_GROUP(N(NpcData_Bartender)),
-    NPC_GROUP(N(NpcData_Toad_04)),
-    NPC_GROUP(N(NpcData_Toad_01)),
+    NPC_GROUP(N(NpcData_Toads)),
+    NPC_GROUP(N(NpcData_Whale)),
     {}
 };
 
 NpcGroupList N(NpcSetC) = {
-    NPC_GROUP(N(NpcData_JrTroopa_01), BTL_KMR_3_FORMATION_05),
+    NPC_GROUP(N(NpcData_JrTroopa), BTL_KMR_3_FORMATION_05),
     NPC_GROUP(N(NpcData_Kolorado)),
     NPC_GROUP(N(NpcData_Fishmael)),
     NPC_GROUP(N(NpcData_Bartender)),
-    NPC_GROUP(N(NpcData_Toad_04)),
-    NPC_GROUP(N(NpcData_Toad_01)),
+    NPC_GROUP(N(NpcData_Toads)),
+    NPC_GROUP(N(NpcData_Whale)),
     {}
 };
