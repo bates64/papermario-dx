@@ -1,0 +1,3 @@
+tools/evt_test/fail/loop_depth_exceeded.c:
+EVS_LoopDepthExceeded
+Loop nesting depth 9 exceeds runtime limit of 8

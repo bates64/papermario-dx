@@ -57,7 +57,7 @@ extern "C" {
 #define EVT_FIXED_TO_FLOAT(x) ({f32 var = (x) + EVT_FIXED_OFFSET; var /= 1024.0f; var;})
 
 /// Progammatically converts f32 --> Float
-#define FLOAT_TO_FIXED(x) (((x) * 1024.0f) + -EVT_FIXED_OFFSET)
+#define FLOAT_TO_FIXED(x) ((s32)((x) * 1024.0f) - EVT_FIXED_OFFSET)
 
 /// Address/pointer constant.
 #define Ref(sym) ((Bytecode) &(sym))
@@ -132,6 +132,8 @@ extern "C" {
 
 /// Argument Word. A variable parameter to this script execution.
 /// Args are set by Exec/ExecGetTID/ExecWait and are not inherited by child scripts or thread blocks.
+/// LocalVar, LocalFlag, and ArgVar arguments are captured by value; all other argument words are preserved as-is.
+/// Assumed to be constant. Mutating by `evt_set_variable` or `evt_set_float_variable` will trigger PANIC.
 #define ArgVar(INDEX) ((INDEX) - EVT_ARG_VAR_OFFSET)
 
 /// An entity index. Entities are assigned indices in the order they are created with Call(MakeEntity, ...).
@@ -241,12 +243,13 @@ extern "C" {
 
 /// Marks this point in the script as a Goto target.
 ///
-/// Range: `0 <= LABEL_ID <= 0x16`
+/// `LABEL_ID` may be an integer constant outside the EVT expression range, or
+/// a pointer to an identifier-style string such as `"Resume"` or `Ref(sym)`.
 #define Label(LABEL_ID)                     EVT_CMD(EVT_OP_LABEL, (Bytecode) LABEL_ID),
 
 /// Moves execution to the given label.
 ///
-/// Range: `0 <= LABEL_ID <= 0x16`
+/// `LABEL_ID` must use the same representation as the matching Label.
 #define Goto(LABEL_ID)                      EVT_CMD(EVT_OP_GOTO, (Bytecode) LABEL_ID),
 
 /// Marks the beginning of a loop.
@@ -470,11 +473,15 @@ extern "C" {
 /// - Flag array pointer
 /// - Priority
 /// - Group
+///
+/// Extra ARGS become ArgVars in the new script. LocalVar, LocalFlag, and ArgVar arguments are copied by value;
+/// all other arguments are passed through as raw EVT words.
 #define Exec(EVT_SOURCE, ARGS...)           EVT_CMD(EVT_OP_EXEC, (Bytecode) EVT_SOURCE, ##ARGS),
 
 /// Identical to Exec, but the newly-launched thread ID is stored in OUTVAR.
 /// The other thread may be interacted with using KillThread, SuspendThread, ResumeThread, and
 /// IsThreadRunning.
+/// Extra ARGS become ArgVars in the new script with the same capture rules as Exec.
 #define ExecGetTID(EVT_SOURCE, OUTVAR, ARGS...) \
     EVT_CMD(EVT_OP_EXEC_GET_TID, (Bytecode) EVT_SOURCE, OUTVAR, ##ARGS),
 
@@ -491,6 +498,7 @@ extern "C" {
 ///
 /// Child threads are killed, suspended, and resumed as their parents are, for example, a different thread using
 /// KillThread to kill a parent thread would also kill its child thread(s) launched by this command.
+/// Extra ARGS become ArgVars in the child script with the same capture rules as Exec.
 #define ExecWait(EVT_SOURCE, ARGS...)      EVT_CMD(EVT_OP_EXEC_WAIT, (Bytecode) EVT_SOURCE, ##ARGS),
 
 /// Assert that this script invocation received exactly NUM_ARGS arguments.

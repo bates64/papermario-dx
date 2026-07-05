@@ -20,7 +20,10 @@ Validation currently catches:
 - mismatched or unclosed Thread/EndThread and ChildThread/EndChildThread blocks;
 - BreakLoop outside a Loop;
 - BreakSwitch or Case commands outside a Switch;
-- constant Goto(label) commands with no matching Label(label).
+- duplicate Label values within the same thread scope;
+- thread scopes with more Label commands than the runtime supports;
+- Label/Goto operands that are not integer constants or relocation-backed string labels;
+- Goto(label) commands with no matching Label(label) in the current thread scope.
 """
 
 from __future__ import annotations
@@ -36,13 +39,20 @@ from typing import Iterable
 
 
 SHT_SYMTAB = 2
+SHT_REL = 9
 STT_OBJECT = 1
+STT_FILE = 4
 SHN_UNDEF = 0
+R_MIPS_32 = 2
 
 BYTECODE_SIZE = 4
 ARGC_MASK = 0xFFFF
+EVT_MAX_NUM_LABELS = 24
+EVT_MAX_LABEL_NAME_LEN = 64
 MAX_LOOP_DEPTH = 8
 MAX_SWITCH_DEPTH = 8
+EVT_LOCAL_VAR_CUTOFF = -20000000
+EVT_LIMIT = -270000000
 
 
 class Opcode(IntEnum):
@@ -144,7 +154,7 @@ class Opcode(IntEnum):
     EVT_OP_END_CHILD_THREAD = (0x59, 0)
     EVT_OP_DEBUG_LOG = (0x5A, 1)
     EVT_OP_DEBUG_PRINT_VAR = (0x5B, 1)
-    EVT_OP_92 = (0x5C, 1)
+    EVT_OP_EXPECT_ARGS = (0x5C, 1)
     EVT_OP_93 = (0x5D, 0)
     EVT_OP_94 = (0x5E, 0)
     EVT_OP_DEBUG_BREAKPOINT = (0x5F, 1)
@@ -183,12 +193,14 @@ CASE_GROUP_OPS = {
 
 @dataclass(frozen=True)
 class Section:
+    index: int
     name: str
     type: int
     offset: int
     size: int
     entsize: int
     link: int
+    info: int
 
 
 @dataclass(frozen=True)
@@ -208,6 +220,7 @@ class Symbol:
 class ScriptSymbol:
     symbol: Symbol
     section: Section
+    source_path: str | None
 
 
 @dataclass(frozen=True)
@@ -220,6 +233,34 @@ class Block:
 class CaseGroup:
     opcode: Opcode
     start_pos: int
+
+
+@dataclass(frozen=True)
+class LabelValue:
+    kind: str
+    value: int | str
+
+
+@dataclass
+class LabelScope:
+    kind: str
+    start_pos: int
+    labels: dict[LabelValue, int]
+
+
+@dataclass(frozen=True)
+class GotoRef:
+    op_pos: int
+    label: LabelValue
+    scope: LabelScope
+
+
+@dataclass(frozen=True)
+class Relocation:
+    offset: int
+    sym_index: int
+    type: int
+    symtab_index: int
 
 
 class ElfError(Exception):
@@ -271,7 +312,9 @@ class Elf32:
         ) = header
 
         self.sections = self._read_sections()
-        self.symbols = self._read_symbols()
+        self.symbols, self.symtabs = self._read_symbols()
+        self.source_path = self._read_source_path()
+        self.relocations = self._read_relocations()
 
     def _read_sections(self) -> list[Section]:
         raw_sections = []
@@ -286,22 +329,25 @@ class Elf32:
         shstr = raw_sections[self.shstrndx]
         shstr_data = self.data[shstr[4] : shstr[4] + shstr[5]]
         sections = []
-        for fields in raw_sections:
-            name_off, sh_type, _flags, _addr, sh_offset, sh_size, sh_link, _info, _align, sh_entsize = fields
+        for i, fields in enumerate(raw_sections):
+            name_off, sh_type, _flags, _addr, sh_offset, sh_size, sh_link, sh_info, _align, sh_entsize = fields
             sections.append(
                 Section(
+                    index=i,
                     name=c_string(shstr_data, name_off),
                     type=sh_type,
                     offset=sh_offset,
                     size=sh_size,
                     entsize=sh_entsize,
                     link=sh_link,
+                    info=sh_info,
                 )
             )
         return sections
 
-    def _read_symbols(self) -> list[Symbol]:
+    def _read_symbols(self) -> tuple[list[Symbol], dict[int, list[Symbol]]]:
         symbols = []
+        symtabs = {}
         for section in self.sections:
             if section.type != SHT_SYMTAB:
                 continue
@@ -313,13 +359,14 @@ class Elf32:
             strtab = self.sections[section.link]
             strtab_data = self.data[strtab.offset : strtab.offset + strtab.size]
             count = section.size // section.entsize
+            cur_symbols = []
             for i in range(count):
                 off = section.offset + i * section.entsize
                 st_name, st_value, st_size, st_info, _st_other, st_shndx = struct.unpack(
                     self.endian + "IIIBBH",
                     self.data[off : off + 16],
                 )
-                symbols.append(
+                cur_symbols.append(
                     Symbol(
                         name=c_string(strtab_data, st_name),
                         value=st_value,
@@ -328,7 +375,45 @@ class Elf32:
                         shndx=st_shndx,
                     )
                 )
-        return symbols
+            symtabs[section.index] = cur_symbols
+            symbols.extend(cur_symbols)
+        return symbols, symtabs
+
+    def _read_source_path(self) -> str | None:
+        for symbol in self.symbols:
+            if symbol.type == STT_FILE and symbol.name:
+                return symbol.name
+        return None
+
+    def _read_relocations(self) -> dict[int, dict[int, Relocation]]:
+        relocations: dict[int, dict[int, Relocation]] = {}
+
+        for section in self.sections:
+            if section.type != SHT_REL:
+                continue
+            if section.entsize == 0:
+                continue
+            if not (0 <= section.info < len(self.sections)):
+                raise ElfError(f"invalid relocation target section for {section.name}")
+            if section.link not in self.symtabs:
+                raise ElfError(f"invalid relocation symbol table for {section.name}")
+
+            target_relocations = relocations.setdefault(section.info, {})
+            count = section.size // section.entsize
+            for i in range(count):
+                off = section.offset + i * section.entsize
+                r_offset, r_info = struct.unpack(self.endian + "II", self.data[off : off + 8])
+                relocation = Relocation(
+                    offset=r_offset,
+                    sym_index=r_info >> 8,
+                    type=r_info & 0xFF,
+                    symtab_index=section.link,
+                )
+                if r_offset in target_relocations:
+                    raise ElfError(f"duplicate relocation at {section.name}+0x{r_offset:X}")
+                target_relocations[r_offset] = relocation
+
+        return relocations
 
     def section_data_for_symbol(self, symbol: Symbol) -> tuple[Section, bytes]:
         if not (0 <= symbol.shndx < len(self.sections)):
@@ -341,6 +426,21 @@ class Elf32:
             )
         start = section.offset + symbol.value
         return section, self.data[start : start + symbol.size]
+
+    def relocation_at(self, section_index: int, offset: int) -> Relocation | None:
+        return self.relocations.get(section_index, {}).get(offset)
+
+    def symbol_for_relocation(self, relocation: Relocation) -> Symbol:
+        symtab = self.symtabs.get(relocation.symtab_index)
+        if symtab is None:
+            raise ElfError(f"invalid symbol table index {relocation.symtab_index} for relocation")
+        if not (0 <= relocation.sym_index < len(symtab)):
+            raise ElfError(f"invalid relocation symbol index {relocation.sym_index}")
+        return symtab[relocation.sym_index]
+
+    def section_data(self, section_index: int) -> bytes:
+        section = self.sections[section_index]
+        return self.data[section.offset : section.offset + section.size]
 
 
 def is_candidate_symbol(symbol: Symbol, regex: re.Pattern[str]) -> bool:
@@ -369,34 +469,130 @@ def line_from_raw_argc(raw_argc: int) -> int:
     return (raw_argc >> 16) & 0xFFFF
 
 
-def validate_argc(symbol: Symbol, op_pos: int, opcode: Opcode, argc: int) -> None:
+def is_label_initial_byte(ch: int) -> bool:
+    return ch == ord("_") or ord("A") <= ch <= ord("Z") or ord("a") <= ch <= ord("z")
+
+
+def is_label_byte(ch: int) -> bool:
+    return is_label_initial_byte(ch) or ord("0") <= ch <= ord("9")
+
+
+def read_label_name(data: bytes, offset: int) -> str | None:
+    if not (0 <= offset < len(data)):
+        return None
+    if not is_label_initial_byte(data[offset]):
+        return None
+
+    end = min(len(data), offset + EVT_MAX_LABEL_NAME_LEN)
+    chars = bytearray([data[offset]])
+    for i in range(offset + 1, end):
+        ch = data[i]
+        if ch == 0:
+            return chars.decode("ascii")
+        if not is_label_byte(ch):
+            return None
+        chars.append(ch)
+    return None
+
+
+def format_label(label: LabelValue) -> str:
+    if label.kind == "number":
+        return str(label.value)
+    return f'"{label.value}"'
+
+
+def format_script_symbol(script: ScriptSymbol) -> str:
+    if script.source_path:
+        return f"{script.source_path}: {script.symbol.name}"
+    return script.symbol.name
+
+
+def format_script_site(script: ScriptSymbol, op_pos: int, line: int | None = None) -> str:
+    script_pos = f"{script.symbol.name}+0x{op_pos * 4:X}"
+    if script.source_path and line:
+        return f"{script.source_path}:{line}: {script_pos}"
+    if script.source_path:
+        return f"{script.source_path}: {script_pos}"
+    if line:
+        return f"{script_pos} (source line {line})"
+    return script_pos
+
+
+def decode_label_value(
+    elf: Elf32,
+    script: ScriptSymbol,
+    value_word_index: int,
+    raw_value: int,
+    raw_bits: int,
+    op_pos: int,
+    line: int | None,
+    opname: str,
+) -> LabelValue:
+    relocation = elf.relocation_at(script.section.index, script.symbol.value + value_word_index * BYTECODE_SIZE)
+
+    if relocation is not None:
+        reloc_symbol = elf.symbol_for_relocation(relocation)
+        if relocation.type != R_MIPS_32:
+            raise ValidationError(
+                f"{format_script_site(script, op_pos, line)}: {opname} uses unsupported relocation type {relocation.type}"
+            )
+        if reloc_symbol.shndx == SHN_UNDEF:
+            raise ValidationError(
+                f"{format_script_site(script, op_pos, line)}: {opname} uses unresolved string label relocation"
+            )
+        if not (0 <= reloc_symbol.shndx < len(elf.sections)):
+            raise ElfError(f"{reloc_symbol.name}: invalid section index {reloc_symbol.shndx}")
+
+        target_data = elf.section_data(reloc_symbol.shndx)
+        label_name = read_label_name(target_data, reloc_symbol.value + raw_bits)
+        if label_name is None:
+            raise ValidationError(
+                f"{format_script_site(script, op_pos, line)}: {opname} does not point to a valid label string"
+            )
+        return LabelValue("string", label_name)
+
+    if raw_value > EVT_LOCAL_VAR_CUTOFF:
+        return LabelValue("number", raw_value)
+
+    if raw_value <= EVT_LIMIT:
+        raise ValidationError(
+            f"{format_script_site(script, op_pos, line)}: {opname} uses raw pointer-like value 0x{raw_bits:08X}"
+        )
+
+    raise ValidationError(
+        f"{format_script_site(script, op_pos, line)}: {opname} value {raw_value} is not a constant label"
+    )
+
+
+def validate_argc(script: ScriptSymbol, op_pos: int, opcode: Opcode, argc: int, line: int | None) -> None:
     if opcode == Opcode.EVT_OP_CALL:
         if argc < 1:
-            raise ValidationError(f"{symbol.name}+0x{op_pos * 4:X}: EVT_OP_CALL has no function argument")
+            raise ValidationError(f"{format_script_site(script, op_pos, line)}: EVT_OP_CALL has no function argument")
         return
     expected = opcode.argc
     if expected is None:
         raise ValidationError(
-            f"{symbol.name}+0x{op_pos * 4:X}: {opcode.name} is not valid in script bytecode"
+            f"{format_script_site(script, op_pos, line)}: {opcode.name} is not valid in script bytecode"
         )
     if argc != expected:
         raise ValidationError(
-            f"{symbol.name}+0x{op_pos * 4:X}: {opcode.name} has argc {argc}, expected {expected}"
+            f"{format_script_site(script, op_pos, line)}: {opcode.name} has argc {argc}, expected {expected}"
         )
 
 
 class ScriptWalkContext:
-    def __init__(self, symbol: Symbol):
-        self.symbol = symbol
+    def __init__(self, script: ScriptSymbol):
+        self.script = script
         self.stack: list[Block] = []
-        self.labels: dict[int, int] = {}
-        self.gotos: list[tuple[int, int]] = []
+        self.gotos: list[GotoRef] = []
+        self.label_scopes: list[LabelScope] = [LabelScope("root", 0, {})]
         self.cur_loop_depth = 0
         self.cur_switch_depth = 0
         self.case_group_stack: list[CaseGroup | None] = []
+        self.current_line: int | None = None
 
     def error_at(self, op_pos: int, message: str) -> ValidationError:
-        return ValidationError(f"{self.symbol.name}+0x{op_pos * 4:X}: {message}")
+        return ValidationError(f"{format_script_site(self.script, op_pos, self.current_line)}: {message}")
 
     def push(self, kind: str, op_pos: int) -> None:
         self.stack.append(Block(kind, op_pos))
@@ -412,6 +608,9 @@ class ScriptWalkContext:
 
     def contains(self, kind: str) -> bool:
         return any(block.kind == kind for block in self.stack)
+
+    def current_label_scope(self) -> LabelScope:
+        return self.label_scopes[-1]
 
     def enter_if(self, op_pos: int) -> None:
         self.push("if", op_pos)
@@ -502,69 +701,104 @@ class ScriptWalkContext:
 
     def enter_thread(self, op_pos: int) -> None:
         self.push("thread", op_pos)
+        self.label_scopes.append(LabelScope("thread", op_pos, {}))
 
     def exit_thread(self, op_pos: int) -> None:
         if not self.top_is("thread"):
             raise self.error_at(op_pos, "EndThread without matching Thread")
         self.pop()
+        self.label_scopes.pop()
 
     def enter_child_thread(self, op_pos: int) -> None:
         self.push("child_thread", op_pos)
+        self.label_scopes.append(LabelScope("child_thread", op_pos, {}))
 
     def exit_child_thread(self, op_pos: int) -> None:
         if not self.top_is("child_thread"):
             raise self.error_at(op_pos, "EndChildThread without matching ChildThread")
         self.pop()
+        self.label_scopes.pop()
+
+    def define_label(self, op_pos: int, label: LabelValue) -> None:
+        scope = self.current_label_scope()
+        prev_pos = scope.labels.get(label)
+        if prev_pos is not None:
+            raise self.error_at(
+                op_pos,
+                f"duplicate Label({format_label(label)}) previously defined at +0x{prev_pos * 4:X}",
+            )
+
+        scope.labels[label] = op_pos
+        if len(scope.labels) > EVT_MAX_NUM_LABELS:
+            raise self.error_at(
+                op_pos,
+                f"Label count {len(scope.labels)} exceeds runtime limit of {EVT_MAX_NUM_LABELS} in this thread scope",
+            )
+
+    def define_goto(self, op_pos: int, label: LabelValue) -> None:
+        self.gotos.append(GotoRef(op_pos, label, self.current_label_scope()))
 
 
-def validate_script(script: ScriptSymbol, data: bytes) -> None:
+def validate_script(elf: Elf32, script: ScriptSymbol, data: bytes) -> None:
     symbol = script.symbol
     if len(data) % BYTECODE_SIZE != 0:
-        raise ValidationError(f"{symbol.name}: size 0x{len(data):X} is not word-aligned")
+        raise ValidationError(f"{format_script_symbol(script)}: size 0x{len(data):X} is not word-aligned")
 
     words = len(data) // BYTECODE_SIZE
     read_pos = 0
     end_pos = None
-    ctx = ScriptWalkContext(symbol)
+    ctx = ScriptWalkContext(script)
+    op_lines: dict[int, int] = {}
+    end_line = None
 
     while read_pos < words:
         op_pos = read_pos
         if read_pos + 2 > words:
-            raise ValidationError(f"{symbol.name}+0x{op_pos * 4:X}: truncated command header")
+            raise ValidationError(f"{format_script_site(script, op_pos)}: truncated command header")
 
         opcode_value = word_at(data, read_pos)
         raw_argc = unsigned_word(data, (read_pos + 1) * BYTECODE_SIZE)
         argc = raw_argc & ARGC_MASK
         line = line_from_raw_argc(raw_argc)
+        ctx.current_line = line if line else None
+        if line:
+            op_lines[op_pos] = line
         read_pos += 2
 
         try:
             opcode = Opcode(opcode_value)
         except ValueError:
             raise ValidationError(
-                f"{symbol.name}+0x{op_pos * 4:X}: unknown opcode 0x{opcode_value:X}"
-                + (f" (source line {line})" if line else "")
+                f"{format_script_site(script, op_pos, ctx.current_line)}: unknown opcode 0x{opcode_value:X}"
             )
         if opcode == Opcode.EVT_OP_INTERNAL_FETCH:
-            raise ValidationError(f"{symbol.name}+0x{op_pos * 4:X}: EVT_OP_INTERNAL_FETCH appears in script data")
+            raise ValidationError(f"{format_script_site(script, op_pos, ctx.current_line)}: EVT_OP_INTERNAL_FETCH appears in script data")
         if read_pos + argc > words:
             raise ValidationError(
-                f"{symbol.name}+0x{op_pos * 4:X}: {opcode.name} argc {argc} runs past symbol boundary"
+                f"{format_script_site(script, op_pos, ctx.current_line)}: {opcode.name} argc {argc} runs past symbol boundary"
             )
 
-        args = [word_at(data, read_pos + i) for i in range(argc)]
-        validate_argc(symbol, op_pos, opcode, argc)
+        arg_pos = read_pos
+        args = [word_at(data, arg_pos + i) for i in range(argc)]
+        raw_args = [unsigned_word(data, (arg_pos + i) * BYTECODE_SIZE) for i in range(argc)]
+        validate_argc(script, op_pos, opcode, argc, ctx.current_line)
         read_pos += argc
 
         if opcode == Opcode.EVT_OP_END:
             end_pos = read_pos
+            end_line = ctx.current_line
             break
 
         if opcode == Opcode.EVT_OP_LABEL:
-            label = args[0]
-            ctx.labels.setdefault(label, op_pos)
+            ctx.define_label(
+                op_pos,
+                decode_label_value(elf, script, arg_pos, args[0], raw_args[0], op_pos, ctx.current_line, "Label"),
+            )
         elif opcode == Opcode.EVT_OP_GOTO:
-            ctx.gotos.append((op_pos, args[0]))
+            ctx.define_goto(
+                op_pos,
+                decode_label_value(elf, script, arg_pos, args[0], raw_args[0], op_pos, ctx.current_line, "Goto"),
+            )
         elif opcode in IF_OPS:
             ctx.enter_if(op_pos)
         elif opcode == Opcode.EVT_OP_ELSE:
@@ -597,25 +831,32 @@ def validate_script(script: ScriptSymbol, data: bytes) -> None:
             ctx.exit_child_thread(op_pos)
 
     if end_pos is None:
-        raise ValidationError(f"{symbol.name}: missing End before symbol boundary 0x{len(data):X}")
+        raise ValidationError(f"{format_script_symbol(script)}: missing End before symbol boundary 0x{len(data):X}")
 
     if ctx.stack:
         block = ctx.stack[-1]
+        block_line = op_lines.get(block.start_pos)
         raise ValidationError(
-            f"{symbol.name}: unclosed {block.kind} block opened at +0x{block.start_pos * 4:X} "
+            f"{format_script_symbol(script)}: unclosed {block.kind} block opened at +0x{block.start_pos * 4:X}"
+            + (f" (source line {block_line})" if block_line else "")
+            + " "
             f"before End at +0x{(end_pos - 3) * 4:X}"
+            + (f" (source line {end_line})" if end_line else "")
         )
 
     trailing_words = words - end_pos
     if trailing_words:
         raise ValidationError(
-            f"{symbol.name}: {trailing_words * BYTECODE_SIZE} unreachable byte(s) after End at +0x{(end_pos - 3) * 4:X}"
+            f"{format_script_symbol(script)}: {trailing_words * BYTECODE_SIZE} unreachable byte(s) after End at +0x{(end_pos - 3) * 4:X}"
+            + (f" (source line {end_line})" if end_line else "")
         )
 
-    for goto_pos, label in ctx.gotos:
-        # Runtime accepts expressions here, but constant labels are nonnegative.
-        if label >= 0 and label not in ctx.labels:
-            raise ValidationError(f"{symbol.name}+0x{goto_pos * 4:X}: Goto({label}) has no matching Label")
+    for goto in ctx.gotos:
+        if goto.label not in goto.scope.labels:
+            raise ValidationError(
+                f"{format_script_site(script, goto.op_pos, op_lines.get(goto.op_pos))}: "
+                f"Goto({format_label(goto.label)}) has no matching Label in this thread scope"
+            )
 
 
 def find_scripts(elf: Elf32, regex: re.Pattern[str]) -> Iterable[ScriptSymbol]:
@@ -623,12 +864,32 @@ def find_scripts(elf: Elf32, regex: re.Pattern[str]) -> Iterable[ScriptSymbol]:
         if not is_candidate_symbol(symbol, regex):
             continue
         section, _data = elf.section_data_for_symbol(symbol)
-        yield ScriptSymbol(symbol=symbol, section=section)
+        yield ScriptSymbol(symbol=symbol, section=section, source_path=elf.source_path)
+
+
+def validate_object(path: Path, regex: re.Pattern[str]) -> int:
+    elf = Elf32(path)
+    checked = 0
+
+    for script in find_scripts(elf, regex):
+        _section, data = elf.section_data_for_symbol(script.symbol)
+        validate_script(elf, script, data)
+        checked += 1
+
+    return checked
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("object", type=Path, help="ELF object file to validate")
+    parser.add_argument("objects", nargs="*", type=Path, help="ELF object file(s) to validate")
+    parser.add_argument(
+        "--object-list",
+        action="append",
+        dest="object_lists",
+        type=Path,
+        default=[],
+        help="text file containing one ELF object path per line",
+    )
     parser.add_argument("--out", type=Path, help="stamp file to write on success")
     parser.add_argument(
         "--symbol-regex",
@@ -640,19 +901,34 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    current_object = None
+    objects = []
+
     try:
         regex = re.compile(args.symbol_regex)
-        elf = Elf32(args.object)
         checked = 0
-        for script in find_scripts(elf, regex):
-            _section, data = elf.section_data_for_symbol(script.symbol)
-            validate_script(script, data)
-            checked += 1
+        objects = list(args.objects)
+
+        for object_list_path in args.object_lists:
+            for path in object_list_path.read_text().splitlines():
+                if path:
+                    objects.append(Path(path))
+
+        if not objects:
+            raise ValidationError("no object files provided")
+
+        for current_object in objects:
+            checked += validate_object(current_object, regex)
+
         if args.out:
             args.out.parent.mkdir(parents=True, exist_ok=True)
             args.out.write_text(f"{checked}\n")
     except (ElfError, OSError, ValidationError, re.error) as e:
-        print(f"evt_validate_obj: {args.object}: {e}", file=sys.stderr)
+        if current_object is None:
+            target = ", ".join(str(path) for path in objects)
+        else:
+            target = current_object
+        print(f"evt_validate_obj: {target}: {e}", file=sys.stderr)
         return 1
     return 0
 

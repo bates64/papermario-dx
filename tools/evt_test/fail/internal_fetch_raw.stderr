@@ -1,0 +1,3 @@
+tools/evt_test/fail/internal_fetch_raw.c:
+EVS_InternalFetch
+EVT_OP_INTERNAL_FETCH appears in script data

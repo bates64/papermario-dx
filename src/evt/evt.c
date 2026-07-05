@@ -16,7 +16,95 @@ Bytecode* evt_skip_else(Evt* script);
 Bytecode* evt_goto_end_case(Evt* script);
 Bytecode* evt_goto_next_case(Evt* script);
 Bytecode* evt_goto_end_loop(Evt* script);
-void evt_set_script_args(Evt* script, Evt* caller, Bytecode* args, s32 argCount);
+
+typedef enum EvtLabelKind {
+    EVT_LABEL_KIND_INVALID = 0,
+    EVT_LABEL_KIND_NUMBER  = 1,
+    EVT_LABEL_KIND_STRING  = 2,
+} EvtLabelKind;
+
+EvtLabelKind evt_get_label_kind(Bytecode label) {
+    if (label <= EVT_LIMIT) {
+        return EVT_LABEL_KIND_STRING;
+    }
+    if (label > EVT_LOCAL_VAR_CUTOFF) {
+        return EVT_LABEL_KIND_NUMBER;
+    }
+    return EVT_LABEL_KIND_INVALID;
+}
+
+static b32 evt_is_label_initial_char(char ch) {
+    return (ch == '_') || (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z');
+}
+
+static b32 evt_is_label_char(char ch) {
+    return evt_is_label_initial_char(ch) || (ch >= '0' && ch <= '9');
+}
+
+static b32 evt_try_read_label_name(Bytecode label, char* out, s32 outSize) {
+    const char* src = (const char*)label;
+    s32 len = 0;
+    char ch;
+
+    if (evt_get_label_kind(label) != EVT_LABEL_KIND_STRING || outSize < 2) {
+        return false;
+    }
+
+    ch = *src++;
+    if (!evt_is_label_initial_char(ch)) {
+        return false;
+    }
+
+    out[len++] = ch;
+    while (true) {
+        ch = *src++;
+        if (ch == '\0') {
+            out[len] = '\0';
+            return true;
+        }
+        if (!evt_is_label_char(ch) || len + 1 >= outSize) {
+            return false;
+        }
+        out[len++] = ch;
+    }
+}
+
+b32 evt_is_valid_label_value(Bytecode label) {
+    char labelName[EVT_MAX_LABEL_NAME_LEN];
+
+    switch (evt_get_label_kind(label)) {
+        case EVT_LABEL_KIND_NUMBER:
+            return true;
+        case EVT_LABEL_KIND_STRING:
+            return evt_try_read_label_name(label, labelName, sizeof(labelName));
+        default:
+            return false;
+    }
+}
+
+b32 evt_label_values_match(Bytecode lhs, Bytecode rhs) {
+    EvtLabelKind lhsKind = evt_get_label_kind(lhs);
+    EvtLabelKind rhsKind = evt_get_label_kind(rhs);
+
+    if (lhsKind != rhsKind) {
+        return false;
+    }
+
+    switch (lhsKind) {
+        case EVT_LABEL_KIND_NUMBER:
+            return lhs == rhs;
+        case EVT_LABEL_KIND_STRING: {
+            char lhsName[EVT_MAX_LABEL_NAME_LEN];
+            char rhsName[EVT_MAX_LABEL_NAME_LEN];
+
+            ASSERT_MSG(evt_try_read_label_name(lhs, lhsName, sizeof(lhsName)), "Invalid string label value: 0x%08lX", (u32) lhs);
+            ASSERT_MSG(evt_try_read_label_name(rhs, rhsName, sizeof(rhsName)), "Invalid string label value: 0x%08lX", (u32) rhs);
+            return strcmp(lhsName, rhsName) == 0;
+        }
+        default:
+            return false;
+    }
+}
 
 f32 evt_fixed_var_to_float(Bytecode scriptVar) {
     if (scriptVar <= EVT_FIXED_CUTOFF) {
@@ -27,9 +115,33 @@ f32 evt_fixed_var_to_float(Bytecode scriptVar) {
 }
 
 Bytecode evt_float_to_fixed_var(f32 value) {
-    // not equivalent to the FLOAT_TO_FIXED() macro due to the s32 cast
-    // occuring *before* the add here and *after* the add in the macro
-    return (s32)(value * 1024.0f) + -EVT_FIXED_OFFSET;
+    return FLOAT_TO_FIXED(value);
+}
+
+ALWAYS_INLINE void evt_assert_valid_arg_var(Evt* script, s32 argIndex) {
+    ASSERT_MSG(argIndex < script->argCount, "ArgVar(%ld) read with only %ld arg(s)", argIndex, script->argCount);
+}
+
+Bytecode evt_capture_script_arg(Evt* caller, Bytecode arg) {
+    s32 wordIdx;
+    s32 bitIdx;
+
+    // Script-local storage does not preserve identity across Exec, so capture its current value.
+    if (arg <= EVT_LOCAL_VAR_CUTOFF && arg > EVT_ARG_VAR_CUTOFF) {
+        return caller->varTable[EVT_INDEX_OF_LOCAL_VAR(arg)];
+    }
+    if (arg <= EVT_ARG_VAR_CUTOFF && arg > EVT_MAP_VAR_CUTOFF) {
+        wordIdx = EVT_INDEX_OF_ARG_VAR(arg);
+        evt_assert_valid_arg_var(caller, wordIdx);
+        return caller->argVars[wordIdx];
+    }
+    if (arg <= EVT_LOCAL_FLAG_CUTOFF && arg > EVT_MAP_FLAG_CUTOFF) {
+        wordIdx = EVT_INDEX_OF_LOCAL_FLAG(arg);
+        bitIdx = wordIdx % 32;
+        return (caller->varFlags[wordIdx / 32] & (1 << bitIdx)) != 0;
+    }
+
+    return arg;
 }
 
 ApiStatus evt_handle_return(Evt* script) {
@@ -42,7 +154,7 @@ ApiStatus evt_handle_label(Evt* script) {
 }
 
 ApiStatus evt_handle_goto(Evt* script) {
-    script->ptrNextLine = evt_find_label(script, evt_get_variable(script, *script->ptrReadPos));
+    script->ptrNextLine = evt_find_label(script, *script->ptrReadPos);
     return ApiStatus_DONE2;
 }
 
@@ -58,7 +170,7 @@ ApiStatus evt_handle_loop(Evt* script) {
     Bytecode var = *args++;
     s32 loopDepth = ++script->loopDepth;
 
-    ASSERT(loopDepth < 8);
+    ASSERT(loopDepth < EVT_MAX_LOOP_DEPTH);
 
     script->loopStartTable[loopDepth] = (s32)args;
     script->loopCounterTable[loopDepth] = var;
@@ -108,7 +220,7 @@ ApiStatus evt_handle_wait(Evt* script) {
 
     if (!script->blocked) {
         script->functionTemp[0] = evt_get_variable(script, *ptrReadPos);
-        script->blocked = 1;
+        script->blocked = true;
     }
 
     if (script->functionTemp[0] == 0) {
@@ -124,7 +236,7 @@ ApiStatus evt_handle_wait_seconds(Evt* script) {
 
     if (!script->blocked) {
         script->functionTemp[0] = evt_get_float_variable(script, *ptrReadPos) * 30.0f + 0.5;
-        script->blocked = 1;
+        script->blocked = true;
     }
 
     if (script->functionTemp[0] == 0) {
@@ -243,7 +355,7 @@ ApiStatus evt_handle_switch(Evt* script) {
     Bytecode value = evt_get_variable(script, *args++);
     s32 switchDepth = ++script->switchDepth;
 
-    ASSERT(switchDepth < 8);
+    ASSERT(switchDepth < EVT_MAX_SWITCH_DEPTH);
 
     script->switchBlockValue[switchDepth] = value;
     script->switchBlockState[switchDepth] = 1;
@@ -253,12 +365,12 @@ ApiStatus evt_handle_switch(Evt* script) {
 
 ApiStatus evt_handle_switch_const(Evt* script) {
     Bytecode* args = script->ptrReadPos;
-    s32 a0 = *args++;
+    s32 value = *args++;
     s32 switchDepth = ++script->switchDepth;
 
-    ASSERT(switchDepth < 8);
+    ASSERT(switchDepth < EVT_MAX_SWITCH_DEPTH);
 
-    script->switchBlockValue[switchDepth] = a0;
+    script->switchBlockValue[switchDepth] = value;
     script->switchBlockState[switchDepth] = 1;
 
     return ApiStatus_DONE2;
@@ -939,7 +1051,7 @@ void evt_set_script_args(Evt* script, Evt* caller, Bytecode* args, s32 argCount)
     ASSERT(script->argVars != nullptr);
 
     for (i = 0; i < argCount; i++) {
-        script->argVars[i] = evt_get_variable(caller, *args++);
+        script->argVars[i] = evt_capture_script_arg(caller, *args++);
     }
 }
 
@@ -1192,20 +1304,39 @@ ApiStatus evt_handle_bind_lock(Evt* script) {
     return ApiStatus_DONE2;
 }
 
+Bytecode* evt_find_thread_block_end(Bytecode* startLine, s32 endOpcode) {
+    Bytecode* endLine = startLine;
+    s32 nestedDepth = 0;
+
+    while (true) {
+        s32 opcode = *endLine++;
+        s32 nargs = EVT_CMD_ARGC(*endLine++);
+
+        endLine += nargs;
+
+        if (opcode == EVT_OP_END) {
+            PANIC_MSG("Missing thread terminator 0x%lX before End", (u32) endOpcode);
+        }
+        if (opcode == endOpcode) {
+            if (nestedDepth == 0) {
+                return endLine;
+            }
+            nestedDepth--;
+            continue;
+        }
+        if ((endOpcode == EVT_OP_END_THREAD && opcode == EVT_OP_THREAD)
+            || (endOpcode == EVT_OP_END_CHILD_THREAD && opcode == EVT_OP_CHILD_THREAD)) {
+            nestedDepth++;
+        }
+    }
+}
+
 ApiStatus evt_handle_thread(Evt* script) {
     Evt* newScript;
-    s32 nargs;
-    s32 opcode;
     s32 i;
 
-    // seek end thread opcode
     Bytecode* startLine = script->ptrNextLine;
-    Bytecode* endLine = startLine;
-    do {
-        opcode = *endLine++;
-        nargs = EVT_CMD_ARGC(*endLine++);
-        endLine += nargs;
-    } while (opcode != EVT_OP_END_THREAD);
+    Bytecode* endLine = evt_find_thread_block_end(startLine, EVT_OP_END_THREAD);
 
     script->ptrNextLine = endLine;
     newScript = start_script_in_group((EvtScript*)startLine, script->priority, EVT_FLAG_RUN_IMMEDIATELY | EVT_FLAG_THREAD, script->groupFlags);
@@ -1232,16 +1363,9 @@ ApiStatus evt_handle_end_thread(Evt* script) {
 
 ApiStatus evt_handle_child_thread(Evt* script) {
     Evt* newScript;
-    s32 nargs;
-    s32 opcode;
 
     Bytecode* startLine = script->ptrNextLine;
-    Bytecode* endLine = startLine;
-    do {
-        opcode = *endLine++;
-        nargs = EVT_CMD_ARGC(*endLine++);
-        endLine += nargs;
-    } while (opcode != EVT_OP_END_CHILD_THREAD);
+    Bytecode* endLine = evt_find_thread_block_end(startLine, EVT_OP_END_CHILD_THREAD);
 
     script->ptrNextLine = endLine;
     newScript = start_child_thread(script, startLine, EVT_FLAG_RUN_IMMEDIATELY | EVT_FLAG_THREAD);
@@ -1263,13 +1387,12 @@ ApiStatus evt_handle_debug_log(Evt* script) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus evt_handle_print_debug_var(Evt* script);
-
-// TODO: Fake match, seems to be UB for some of the print calls.
-s32 evt_handle_print_debug_var(Evt* script) {
+ApiStatus evt_handle_print_debug_var(Evt* script) {
     Bytecode* args = script->ptrReadPos;
     s32 var = *args++;
-    s32 flagBitPos;
+    s32 value;
+    s32 flagIndex;
+    s32 flagShift;
 
     if (var <= EVT_LIMIT) {
         sprintf(evtDebugPrintBuffer, "ADDR     [%08lX]", var);
@@ -1277,86 +1400,82 @@ s32 evt_handle_print_debug_var(Evt* script) {
         sprintf(evtDebugPrintBuffer, "FLOAT    [%4.2f]", evt_fixed_var_to_float(var));
     } else if (var <= EVT_ARRAY_FLAG_CUTOFF) {
         var = EVT_INDEX_OF_ARRAY_FLAG(var);
-        flagBitPos = var % 32;
-        sprintf(evtDebugPrintBuffer, "UF(%3ld)  [%ld]", var, script->flagArray[var / 32] & (1 << flagBitPos));
+        flagIndex = var / 32;
+        flagShift = var % 32;
+        value = script->flagArray[flagIndex] & (1 << flagShift);
+        sprintf(evtDebugPrintBuffer, "ArrayFlag(%3ld)  [%d]", var, value != 0);
     } else if (var <= EVT_ARRAY_VAR_CUTOFF) {
-        s32 arrayVal;
-
         var = EVT_INDEX_OF_ARRAY_VAR(var);
-        arrayVal = script->array[var];
+        value = script->array[var];
 
-        if (script->array[var] <= EVT_LIMIT) {
-            sprintf(evtDebugPrintBuffer, "UW(%3ld)  [%08lX]", var, arrayVal);
-        } else if (arrayVal <= EVT_FIXED_CUTOFF) {
-            sprintf(evtDebugPrintBuffer, "UW(%3ld)  [%4.2f]", var, evt_fixed_var_to_float(arrayVal));
+        if (value <= EVT_LIMIT) {
+            sprintf(evtDebugPrintBuffer, "ArrayVar(%3ld)  [%08lX]", var, value);
+        } else if (value <= EVT_FIXED_CUTOFF) {
+            sprintf(evtDebugPrintBuffer, "ArrayVar(%3ld)  [%4.2f]", var, evt_fixed_var_to_float(value));
         } else {
-            sprintf(evtDebugPrintBuffer, "UW(%3ld)  [%ld]", var, arrayVal);
+            sprintf(evtDebugPrintBuffer, "ArrayVar(%3ld)  [%ld]", var, value);
         }
     } else if (var <= EVT_GAME_BYTE_CUTOFF) {
-        s32 globalByte;
-
         var = EVT_INDEX_OF_GAME_BYTE(var);
-        globalByte = get_global_byte(var);
+        value = get_global_byte(var);
 
-        if (globalByte <= EVT_LIMIT) {
-            sprintf(evtDebugPrintBuffer, "GSW(%3ld) [%08lX]", var, globalByte);
-        } else if (globalByte <= EVT_FIXED_CUTOFF) {
-            sprintf(evtDebugPrintBuffer, "GSW(%3ld) [%4.2f]", var, evt_fixed_var_to_float(globalByte));
+        if (value <= EVT_LIMIT) {
+            sprintf(evtDebugPrintBuffer, "GB(%3ld) [%08lX]", var, value);
+        } else if (value <= EVT_FIXED_CUTOFF) {
+            sprintf(evtDebugPrintBuffer, "GB(%3ld) [%4.2f]", var, evt_fixed_var_to_float(value));
         } else {
-            sprintf(evtDebugPrintBuffer, "GSW(%3ld) [%ld]", var, globalByte);
+            sprintf(evtDebugPrintBuffer, "GB(%3ld) [%ld]", var, value);
         }
     } else if (var <= EVT_AREA_BYTE_CUTOFF) {
-        s32 areaByte;
-
         var = EVT_INDEX_OF_AREA_BYTE(var);
-        areaByte = get_area_byte(var);
+        value = get_area_byte(var);
 
-        if (areaByte <= EVT_LIMIT) {
-            sprintf(evtDebugPrintBuffer, "LSW(%3ld) [%08lX]", var, areaByte);
-        } else if (areaByte <= EVT_FIXED_CUTOFF) {
-            sprintf(evtDebugPrintBuffer, "LSW(%3ld)  [%4.2f]", var, evt_fixed_var_to_float(areaByte));
+        if (value <= EVT_LIMIT) {
+            sprintf(evtDebugPrintBuffer, "AB(%3ld) [%08lX]", var, value);
+        } else if (value <= EVT_FIXED_CUTOFF) {
+            sprintf(evtDebugPrintBuffer, "AB(%3ld)  [%4.2f]", var, evt_fixed_var_to_float(value));
         } else {
-            sprintf(evtDebugPrintBuffer, "LSW(%3ld) [%ld]", var, areaByte);
+            sprintf(evtDebugPrintBuffer, "AB(%3ld) [%ld]", var, value);
         }
     } else if (var <= EVT_GAME_FLAG_CUTOFF) {
         var = EVT_INDEX_OF_GAME_FLAG(var);
-        sprintf(evtDebugPrintBuffer, "GSWF(%3ld)[%ld]", var, get_global_flag(var));
+        sprintf(evtDebugPrintBuffer, "GF(%3ld)[%ld]", var, get_global_flag(var));
     } else if (var <= EVT_AREA_FLAG_CUTOFF) {
         var = EVT_INDEX_OF_AREA_FLAG(var);
-        sprintf(evtDebugPrintBuffer, "LSWF(%3ld)[%ld]", var, get_area_flag(var));
+        sprintf(evtDebugPrintBuffer, "AF(%3ld)[%ld]", var, get_area_flag(var));
     } else if (var <= EVT_MAP_FLAG_CUTOFF) {
         var = EVT_INDEX_OF_MAP_FLAG(var);
-        flagBitPos = var % 32;
-        sprintf(evtDebugPrintBuffer, "GF(%3ld)  [%ld]", var, gMapFlags[var / 32] & (1 << flagBitPos));
+        flagIndex = var / 32;
+        flagShift = var % 32;
+        value = gMapFlags[flagIndex] & (1 << flagShift);
+        sprintf(evtDebugPrintBuffer, "MF(%3ld)  [%d]", var, value != 0);
     } else if (var <= EVT_LOCAL_FLAG_CUTOFF) {
         var = EVT_INDEX_OF_LOCAL_FLAG(var);
-        flagBitPos = var % 32;
-        sprintf(evtDebugPrintBuffer, "LF(%3ld)  [%ld]", var, script->varFlags[var / 32] & (1 << flagBitPos));
+        flagIndex = var / 32;
+        flagShift = var % 32;
+        value = script->varFlags[flagIndex] & (1 << flagShift);
+        sprintf(evtDebugPrintBuffer, "LFlag(%3ld)  [%d]", var, value != 0);
     } else if (var <= EVT_MAP_VAR_CUTOFF) {
-        s32 mapVar;
-
         var = EVT_INDEX_OF_MAP_VAR(var);
-        mapVar = gMapVars[var];
+        value = gMapVars[var];
 
-        if (mapVar <= EVT_LIMIT) {
-            sprintf(evtDebugPrintBuffer, "GW(%3ld)  [%08lX]", var, mapVar);
-        } else if (mapVar <= EVT_FIXED_CUTOFF) {
-            sprintf(evtDebugPrintBuffer, "GW(%3ld)  [%4.2f]", var, evt_fixed_var_to_float(mapVar));
+        if (value <= EVT_LIMIT) {
+            sprintf(evtDebugPrintBuffer, "MV(%3ld)  [%08lX]", var, value);
+        } else if (value <= EVT_FIXED_CUTOFF) {
+            sprintf(evtDebugPrintBuffer, "MV(%3ld)  [%4.2f]", var, evt_fixed_var_to_float(value));
         } else {
-            sprintf(evtDebugPrintBuffer, "GW(%3ld)  [%ld]", var, mapVar);
+            sprintf(evtDebugPrintBuffer, "MV(%3ld)  [%ld]", var, value);
         }
     } else if (var <= EVT_LOCAL_VAR_CUTOFF) {
-        s32 tableVar;
-
         var = EVT_INDEX_OF_LOCAL_VAR(var);
-        tableVar = script->varTable[var];
+        value = script->varTable[var];
 
-        if (tableVar <= EVT_LIMIT) {
-            sprintf(evtDebugPrintBuffer, "LW(%3ld)  [%08lX]", var, tableVar);
-        } else if (tableVar <= EVT_FIXED_CUTOFF) {
-            sprintf(evtDebugPrintBuffer, "LW(%3ld)  [%4.2f]", var, evt_fixed_var_to_float(tableVar));
+        if (value <= EVT_LIMIT) {
+            sprintf(evtDebugPrintBuffer, "LVar(%3ld)  [%08lX]", var, value);
+        } else if (value <= EVT_FIXED_CUTOFF) {
+            sprintf(evtDebugPrintBuffer, "LVar(%3ld)  [%4.2f]", var, evt_fixed_var_to_float(value));
         } else {
-            sprintf(evtDebugPrintBuffer, "LW(%3ld)  [%ld]", var, tableVar);
+            sprintf(evtDebugPrintBuffer, "LVar(%3ld)  [%ld]", var, value);
         }
     } else {
         sprintf(evtDebugPrintBuffer, "         [%ld]", var);
@@ -1809,7 +1928,7 @@ s32 evt_get_variable(Evt* script, Bytecode var) {
         }
     } else if (var <= EVT_ARG_VAR_CUTOFF) {
         var = EVT_INDEX_OF_ARG_VAR(var);
-        ASSERT(var < script->argCount);
+        evt_assert_valid_arg_var(script, var);
         return script->argVars[var];
     } else if (var <= EVT_LOCAL_VAR_CUTOFF) {
         var = EVT_INDEX_OF_LOCAL_VAR(var);
@@ -2043,7 +2162,7 @@ f32 evt_get_float_variable(Evt* script, Bytecode var) {
         return evt_fixed_var_to_float(gMapVars[var]);
     } else if (var <= EVT_ARG_VAR_CUTOFF) {
         var = EVT_INDEX_OF_ARG_VAR(var);
-        ASSERT(var < script->argCount);
+        evt_assert_valid_arg_var(script, var);
         return evt_fixed_var_to_float(script->argVars[var]);
     } else if (var <= EVT_LOCAL_VAR_CUTOFF) {
         var = EVT_INDEX_OF_LOCAL_VAR(var);
@@ -2102,22 +2221,23 @@ f32 evt_set_float_variable(Evt* script, Bytecode var, f32 value) {
     }
 }
 
-Bytecode* evt_find_label(Evt* script, s32 arg1) {
+Bytecode* evt_find_label(Evt* script, s32 arg) {
     Bytecode* ret = script->ptrReadPos;
     s32 i;
 
-    if (arg1 < EVT_LIMIT) {
-        return (Bytecode*) arg1;
-    }
+    ASSERT_MSG(evt_is_valid_label_value(arg), "Invalid Goto label value: 0x%08lX", (u32) arg);
 
-    for (i = 0; i < ARRAY_COUNT(script->labelIndices); i++) {
-        if (script->labelIndices[i] == arg1) {
-            ret = script->labelPositions[i];
+    for (i = 0; i < ARRAY_COUNT(script->labelValuePtrs); i++) {
+        if (script->labelValuePtrs[i] == nullptr) {
+            break;
+        }
+        if (evt_label_values_match(arg, *script->labelValuePtrs[i])) {
+            ret = script->labelValuePtrs[i] + 1;
             break;
         }
     }
 
-    ASSERT(i < ARRAY_COUNT(script->labelIndices));
+    ASSERT_MSG(i < ARRAY_COUNT(script->labelValuePtrs), "Missing label for Goto value: 0x%08lX", (u32) arg);
     return ret;
 }
 

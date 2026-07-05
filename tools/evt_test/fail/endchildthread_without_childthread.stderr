@@ -1,0 +1,3 @@
+tools/evt_test/fail/endchildthread_without_childthread.c:
+EVS_EndChildThreadWithoutChildThread
+EndChildThread without matching ChildThread

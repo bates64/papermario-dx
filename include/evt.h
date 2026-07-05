@@ -15,8 +15,8 @@ enum {
     EVT_OP_INTERNAL_FETCH,
     EVT_OP_END,
     EVT_OP_RETURN,
-    EVT_OP_LABEL, ///< Args: index
-    EVT_OP_GOTO, ///< Args: index
+    EVT_OP_LABEL, ///< Args: label identifier
+    EVT_OP_GOTO, ///< Args: label identifier
     EVT_OP_LOOP, ///< Args: number of repeats (0 = infinite)
     EVT_OP_END_LOOP,
     EVT_OP_BREAK_LOOP,
@@ -119,6 +119,12 @@ extern struct Evt* EvtCurrentScript;
 #define EVT_CONTINUE 0   /* Continue to next command */
 #define EVT_ABORT    1   /* Quit execution */
 #define EVT_FINISH   255 /* Return from script */
+
+// EvtScript structural limitations
+#define EVT_MAX_NUM_LABELS      24
+#define EVT_MAX_LABEL_NAME_LEN  64
+#define EVT_MAX_LOOP_DEPTH      8
+#define EVT_MAX_SWITCH_DEPTH    8
 
 /* Return type of script API functions */
 typedef s32 ApiStatus;

@@ -1,0 +1,3 @@
+tools/evt_test/fail/unknown_opcode_raw.c:
+EVS_UnknownOpcode
+unknown opcode 0x7F

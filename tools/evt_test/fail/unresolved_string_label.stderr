@@ -1,0 +1,3 @@
+tools/evt_test/fail/unresolved_string_label.c:
+EVS_UnresolvedStringLabel
+uses unresolved string label relocation

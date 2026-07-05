@@ -414,57 +414,56 @@ typedef struct Evt {
     /* 0x002 */ u8 curOpcode;
     /* 0x003 */ u8 priority;
     /* 0x004 */ u8 groupFlags;
-    /* 0x005 */ s8 blocked; /* 1 = blocking */
-    /* 0x006 */ s8 loopDepth; /* how many nested loops we are in, >= 8 hangs forever */
-    /* 0x007 */ s8 switchDepth; /* how many nested switches we are in, max = 8 */
+    /* 0x005 */ b8 blocked; /// execution is blocked with either Wait or a blocking Call
+    /* 0x006 */ s8 loopDepth; /// loop stack top; must remain below EVT_MAX_LOOP_DEPTH
+    /* 0x007 */ s8 switchDepth; /// switch stack top; must remain below EVT_MAX_SWITCH_DEPTH
     /* 0x008 */ Bytecode* ptrNextLine;
     /* 0x00C */ Bytecode* ptrReadPos;
-    /* 0x010 */ Bytecode labelIndices[16];
-    /* 0x050 */ Bytecode* labelPositions[16];
-    /* 0x090 */ void* userData; /// any heap user data, will be automatically free'd in kill_script()
-    /* 0x094 */ struct Evt* blockingParent; /* parent? */
-    /* 0x098 */ struct Evt* childScript;
-    /* 0x09C */ struct Evt* parentScript; /* brother? */
-    /* 0x0A0 */ union {
+    /* 0x010 */ Bytecode* labelValuePtrs[EVT_MAX_NUM_LABELS]; /// addresses of Label values in this thread scope
+    /* 0x070 */ void* userData; /// any heap user data, will be automatically free'd in kill_script()
+    /* 0x074 */ struct Evt* blockingParent; /// child's link to parent for a child created via ExecWait
+    /* 0x078 */ struct Evt* blockingChild; /// parent's link to child created via ExecWait
+    /* 0x07C */ struct Evt* threadParent; /// ChildThread's link to parent
+    /* 0x080 */ union {
     /*       */     s32 functionTemp[4];
     /*       */     f32 functionTempF[4];
     /*       */     void* functionTempPtr[4];
     /*       */ };
-    /* 0x0B0 */ ApiFunc callFunction;
-    /* 0x0B4 */ union {
+    /* 0x090 */ ApiFunc callFunction;
+    /* 0x094 */ union {
     /*       */     s32 varTable[16];
     /*       */     f32 varTableF[16];
     /*       */     void* varTablePtr[16];
     /*       */ };
-    /* 0x0F4 */ s32 varFlags[3];
-    /* 0x100 */ Bytecode* argVars;
-    /* 0x104 */ s32 argCount;
-    /* 0x108 */ s32 loopStartTable[8];
-    /* 0x128 */ s32 loopCounterTable[8];
-    /* 0x148 */ s8 switchBlockState[8];
-    /* 0x150 */ s32 switchBlockValue[8];
-    /* 0x170 */ s32* buffer;
-    /* 0x174 */ s32* array;
-    /* 0x178 */ s32* flagArray;
-    /* 0x17C */ s32 id;
-    /* 0x180 */ union {
+    /* 0x0D4 */ s32 varFlags[3];
+    /* 0x0E0 */ Bytecode* argVars;
+    /* 0x0E4 */ s32 argCount;
+    /* 0x0E8 */ s32 loopStartTable[EVT_MAX_LOOP_DEPTH];
+    /* 0x108 */ s32 loopCounterTable[EVT_MAX_LOOP_DEPTH];
+    /* 0x128 */ s8 switchBlockState[EVT_MAX_SWITCH_DEPTH];
+    /* 0x130 */ s32 switchBlockValue[EVT_MAX_SWITCH_DEPTH];
+    /* 0x150 */ s32* buffer;
+    /* 0x154 */ s32* array;
+    /* 0x158 */ s32* flagArray;
+    /* 0x15C */ s32 id;
+    /* 0x160 */ union {
     /*       */     s32 actorID;
     /*       */     struct Enemy* enemy; ///< For overworld scripts owned by an Enemy AI
     /*       */     struct Actor* actor; ///< For battle scripts
-    /* 0x180 */ } owner1;                ///< Initially -1
-    /* 0x184 */ union {
+    /* 0x160 */ } owner1;                ///< Initially -1
+    /* 0x164 */ union {
     /*       */     s32 npcID;
     /*       */     struct Npc* npc;            ///< For overworld scripts owned by an Npc
     /*       */     struct Trigger* trigger;    ///< For overworld scripts bound to a Trigger
-    /* 0x184 */ } owner2;                       ///< Initially -1
-    /* 0x188 */ f32 timeScale;
-    /* 0x18C */ f32 frameCounter;
-    /* 0x190 */ Bytecode* ptrFirstLine;
-    /* 0x194 */ Bytecode* ptrCurLine;
-    /* 0x198 */ u16 curLine;
-    /* 0x19A */ b8 debugPaused;
-    /* 0x19B */ s8 debugStep;
-} Evt; // size = 0x19C
+    /* 0x164 */ } owner2;                       ///< Initially -1
+    /* 0x168 */ f32 timeScale;
+    /* 0x16C */ f32 frameCounter;
+    /* 0x170 */ Bytecode* ptrFirstLine;
+    /* 0x174 */ Bytecode* ptrCurLine;
+    /* 0x178 */ u16 curLine;
+    /* 0x17A */ b8 debugPaused;
+    /* 0x17B */ s8 debugStep;
+} Evt; // size = 0x17C
 
 typedef Evt* ScriptList[MAX_SCRIPTS];
 

@@ -1,0 +1,5 @@
+tools/evt_test/fail/childthread_without_endchildthread.c:
+EVS_ChildThreadWithoutEndChildThread
+unclosed child_thread block
+before End
+source line

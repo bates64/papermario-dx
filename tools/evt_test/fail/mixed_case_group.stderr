@@ -1,0 +1,3 @@
+tools/evt_test/fail/mixed_case_group.c:
+EVS_MixedCaseGroup
+cannot continue EVT_OP_CASE_OR_EQ group

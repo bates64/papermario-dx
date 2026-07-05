@@ -1,0 +1,3 @@
+tools/evt_test/fail/else_without_if.c:
+EVS_ElseWithoutIf
+Else without matching If

@@ -1,0 +1,5 @@
+tools/evt_test/fail/else_without_endif.c:
+EVS_ElseWithoutEndIf
+unclosed else block
+before End
+source line

@@ -686,7 +686,6 @@ EvtScript N(EVS_CountSummonerPokeys) = {
 };
 
 EvtScript N(EVS_TakeTurn) = {
-    #define LBL_NO_SUMMON 123
     Call(GetActorVar, ACTOR_SELF, AVAR_PartsThrown, LVarA)
     IfEq(LVarA, 3)
         ExecWait(N(EVS_Attack_SinglePartLeap))
@@ -696,11 +695,11 @@ EvtScript N(EVS_TakeTurn) = {
     IfEq(LVar0, 0)
         Call(GetActorVar, ACTOR_SELF, AVAR_Generation, LVar0)
         IfEq(LVar0, AVAL_Generation_Last)
-            Goto(LBL_NO_SUMMON)
+            Goto("no_summon")
         EndIf
         ExecWait(N(EVS_FindValidSummonPosition))
         IfEq(LVarE, -1)
-            Goto(LBL_NO_SUMMON)
+            Goto("no_summon")
         EndIf
         ExecWait(N(EVS_CountSummonerPokeys))
         Switch(LVar9)
@@ -725,7 +724,7 @@ EvtScript N(EVS_TakeTurn) = {
         EndSwitch
     EndIf
     // try other moves
-    Label(LBL_NO_SUMMON)
+    Label("no_summon")
     Call(RandInt, 1000, LVar0)
     IfLt(LVar0, 500)
         ExecWait(N(EVS_Attack_GroundSmash))

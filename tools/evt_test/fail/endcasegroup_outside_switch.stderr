@@ -1,0 +1,3 @@
+tools/evt_test/fail/endcasegroup_outside_switch.c:
+EVS_EndCaseGroupOutsideSwitch
+EVT_OP_END_CASE_GROUP outside Switch

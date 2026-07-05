@@ -1,0 +1,3 @@
+tools/evt_test/fail/goto_missing_label.c:
+EVS_GotoMissingLabel
+Goto("Missing") has no matching Label in this thread scope
