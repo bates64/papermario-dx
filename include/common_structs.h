@@ -934,8 +934,8 @@ typedef struct BattleStatus {
     /* 0x0AF */ s8 jumpLossTurns;
     /* 0x0B0 */ s8 itemLossTurns;
     /* 0x0B1 */ PAD(3);
-    /* 0x0B4 */ VoidCallback(preUpdateCallback);
-    /* 0x0B8 */ VoidCallback(initBattleCallback);
+    /* 0x0B4 */ VoidCallback preUpdateCallback;
+    /* 0x0B8 */ VoidCallback initBattleCallback;
     /* 0x0BC */ struct Evt* controlScript; /* control handed over to this when changing partners */
     /* 0x0C0 */ s32 controlScriptID;
     /* 0x0C4 */ struct Evt* camMovementScript;

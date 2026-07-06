@@ -119,7 +119,7 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
                     // Use the frame pointer to refer to the current frame.
                     sp = fp;
                     if (!is_valid_address((uint32_t)sp)) {
-                        debugf("backtrace: interrupted because of invalid frame pointer 0x%08x\n", (uint32_t)sp);
+                        debugf("backtrace: interrupted because of invalid frame pointer 0x%08X\n", (uint32_t)sp);
                         return;
                     }
                 }
@@ -189,7 +189,7 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
                         entry = symt_addrtab_entry(&symt, --idx);
                     func_start = ADDRENTRY_ADDR(entry);
                     #if BACKTRACE_DEBUG
-                    debugf("Found interrupted function start address: %08lx\n", func_start);
+                    debugf("Found interrupted function start address: %08lX\n", func_start);
                     #endif
                 }
             }   break;
@@ -242,7 +242,7 @@ static void backtrace_foreach_foreign(void (*cb)(void *arg, void *ptr), void *ar
                     // Use the frame pointer to refer to the current frame.
                     sp = fp;
                     if (!is_valid_address((uint32_t)sp)) {
-                        debugf("backtrace: interrupted because of invalid frame pointer 0x%08x\n", (uint32_t)sp);
+                        debugf("backtrace: interrupted because of invalid frame pointer 0x%08X\n", (uint32_t)sp);
                         return;
                     }
                 }
@@ -621,7 +621,7 @@ bool __bt_analyze_func(bt_func_t *func, uint32_t *ptr, uint32_t func_start, bool
         // Validate that we can dereference the virtual address without raising an exception
         if (!is_valid_address(addr)) {
             // This address is invalid, probably something is corrupted. Avoid looking further.
-            debugf("backtrace: interrupted because of invalid return address 0x%08x\n", addr);
+            debugf("backtrace: interrupted because of invalid return address 0x%08X\n", addr);
             return false;
         }
         op = *(uint32_t*)get_physical_address(addr);

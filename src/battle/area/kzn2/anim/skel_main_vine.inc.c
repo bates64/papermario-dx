@@ -1,5 +1,6 @@
 #include "../area.h"
 
+#undef NAMESPACE
 #define NAMESPACE A(lava_piranha_AnimModel_MainHeadVine)
 
 StaticAnimatorNode N(Node09) = {

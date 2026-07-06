@@ -2,7 +2,17 @@
 #include "nu/nusys.h"
 #include "include_asset.h"
 
-#define INTEGER_LOG2(x) ((x) <= 1 ? 0 : (x) <= 2 ? 1 : (x) <= 4 ? 2 : (x) <= 8 ? 3 : (x) <= 16 ? 4 : (x) <= 32 ? 5 : (x) <= 64 ? 6 : (x) <= 128 ? 7 : (x) <= 256 ? 8 : (x) <= 512 ? 9 : 10)
+#define DRAW_BOX_LOG2(x) (\
+    (x) <= 1 ? 0 : \
+    (x) <= 2 ? 1 : \
+    (x) <= 4 ? 2 : \
+    (x) <= 8 ? 3 : \
+    (x) <= 16 ? 4 : \
+    (x) <= 32 ? 5 : \
+    (x) <= 64 ? 6 : \
+    (x) <= 128 ? 7 : \
+    (x) <= 256 ? 8 : \
+    (x) <= 512 ? 9 : 10)
 
 typedef struct DefaultWindowStyle {
     /* 0x00 */ u8 bgIndex;
@@ -391,8 +401,8 @@ s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s
         bgImage = background->imgData;
         bgHeight = background->height;
 
-        bgMasks = INTEGER_LOG2(bgWidth);
-        bgMaskt = INTEGER_LOG2(bgHeight);
+        bgMasks = DRAW_BOX_LOG2(bgWidth);
+        bgMaskt = DRAW_BOX_LOG2(bgHeight);
 
         quads = nullptr;
         sp154 = nullptr;
@@ -520,8 +530,8 @@ s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s
             for (idx = 0; idx < 4; idx++) {
                 cornerWidth = cornersSizes[idx].x;
                 cornerHeight = cornersSizes[idx].y;
-                masks = INTEGER_LOG2(cornerWidth);
-                maskt = INTEGER_LOG2(cornerHeight);
+                masks = DRAW_BOX_LOG2(cornerWidth);
+                maskt = DRAW_BOX_LOG2(cornerHeight);
 
                 switch (cornersBitDepth) {
                     case G_IM_SIZ_4b:

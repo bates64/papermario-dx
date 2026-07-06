@@ -2,6 +2,7 @@
 #include "animation_script.h"
 #include "mapfs/kzn_bt05_shape.h"
 
+#undef NAMESPACE
 #define NAMESPACE A(lava_piranha_anim1)
 
 StaticAnimatorNode N(AnimNode11) = {
@@ -930,4 +931,3 @@ AnimScript N(AS_ShatterGround) = {
     as_Restart
     as_End
 };
-

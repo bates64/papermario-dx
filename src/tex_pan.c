@@ -1,5 +1,3 @@
-#pragma once
-
 #include "common.h"
 
 API_CALLABLE(UpdateTexturePanSmooth) {

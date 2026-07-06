@@ -3049,6 +3049,17 @@ void appendGfx_transform_group(void* data) {
     }
 }
 
+#define TEXEL_LOG2(x) (\
+    (x) <= 2 ? 1 : \
+    (x) <= 4 ? 2 : \
+    (x) <= 8 ? 3 : \
+    (x) <= 16 ? 4 : \
+    (x) <= 32 ? 5 : \
+    (x) <= 64 ? 6 : \
+    (x) <= 128 ? 7 : \
+    (x) <= 256 ? 8 : \
+    (x) <= 512 ? 9 : 10)
+
 void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_PTR palette, IMG_PTR auxRaster, PAL_PTR auxPalette, u8 auxShiftS, u8 auxShiftT, u16 auxOffsetS, u16 auxOffsetT) {
     s32 mainWidth, mainHeight;
     s32 auxWidth, auxHeight;
@@ -3076,8 +3087,8 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
     lod = 0;
     auxPaletteIndex = 0;
 
-    mainMasks = INTEGER_LOG2(mainWidth);
-    mainMaskt = INTEGER_LOG2(mainHeight);
+    mainMasks = TEXEL_LOG2(mainWidth);
+    mainMaskt = TEXEL_LOG2(mainHeight);
 
     mainWrapW = header->mainWrapW;
     mainWrapH = header->mainWrapH;
@@ -3091,8 +3102,8 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
     auxWidth = header->auxW;
     auxHeight = header->auxH;
 
-    auxMasks = INTEGER_LOG2(auxWidth);
-    auxMaskt = INTEGER_LOG2(auxHeight);
+    auxMasks = TEXEL_LOG2(auxWidth);
+    auxMaskt = TEXEL_LOG2(auxHeight);
 
     auxWrapW = header->auxWrapW;
     auxWrapH = header->auxWrapH;
@@ -4589,6 +4600,7 @@ OPTIMIZE_OFAST void execute_render_tasks(void) {
     // tasks with dist >= 3M sort in descending order
     taskList = RenderTaskLists[RENDER_TASK_LIST_FAR];
     sorted = sorteds[RENDER_TASK_LIST_FAR];
+#undef LESS
 #define LESS(i, j) taskList[sorted[i]].dist > taskList[sorted[j]].dist
     QSORT(RenderTaskCount[RENDER_TASK_LIST_FAR], LESS, SWAP);
 
@@ -4596,6 +4608,8 @@ OPTIMIZE_OFAST void execute_render_tasks(void) {
     taskList = RenderTaskLists[RENDER_TASK_LIST_NEAR];
     sorted = sorteds[RENDER_TASK_LIST_NEAR];
     QSORT(RenderTaskCount[RENDER_TASK_LIST_NEAR], LESS, SWAP);
+#undef LESS
+#undef SWAP
 
     gLastRenderTaskCount = RenderTaskCount[RENDER_TASK_LIST_MID] + RenderTaskCount[RENDER_TASK_LIST_FAR] + RenderTaskCount[RENDER_TASK_LIST_NEAR];
     if (gOverrideFlags & GLOBAL_OVERRIDES_ENABLE_FLOOR_REFLECTION) {

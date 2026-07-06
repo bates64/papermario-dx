@@ -13,6 +13,7 @@
     }
 
 #define MAX_PAD ((sizeof(spaces) - 1))
+#undef PAD
 #define PAD(s, n)                                             \
     if (0 < (n))                                              \
     {                                                         \
@@ -229,4 +230,3 @@ static void _Putfld(_Pft *x, va_list *args, char type, char *buff) {
             break;
     }
 }
-

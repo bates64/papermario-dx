@@ -407,7 +407,7 @@ API_CALLABLE(N(SetBoxContents)) {
                     }
                 }
                 break;
-            case 3:
+            case BOX_CONTENT_EMPTY:
                 data->box[i].state = BOX_STATE_EMPTY_INIT;
                 break;
         }
@@ -674,6 +674,8 @@ API_CALLABLE(N(RunMinigame)) {
                     break;
                 case BOX_STATE_BOMB_DONE:
                     break;
+                case BOX_STATE_BOMB_END:
+                    break;
 
                 case BOX_STATE_PEACH_INIT:
                     get_model_center_and_size(data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ);
@@ -759,6 +761,11 @@ API_CALLABLE(N(RunMinigame)) {
                     }
                     break;
                 case BOX_STATE_PEACH_DONE:
+                    break;
+
+                case BOX_STATE_EMPTY_INIT:
+                case BOX_STATE_EMPTY_IDLE:
+                case BOX_STATE_EMPTY_HIT:
                     break;
             }
         } else {

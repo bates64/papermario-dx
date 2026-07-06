@@ -209,8 +209,6 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
 
 #define CLAMP(value, min, max) MIN(MAX((value), (min)), (max))
 
-#define INTEGER_LOG2(x) ((x) <= 2 ? 1 : (x) <= 4 ? 2 : (x) <= 8 ? 3 : (x) <= 16 ? 4 : (x) <= 32 ? 5 : (x) <= 64 ? 6 : (x) <= 128 ? 7 : (x) <= 256 ? 8 : (x) <= 512 ? 9 : 10)
-
 #define FOLIAGE_MODEL_LIST(names...) \
 { \
     .count = __NARG__(names), \
