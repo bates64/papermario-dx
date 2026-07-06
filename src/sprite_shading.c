@@ -283,17 +283,15 @@ void appendGfx_shading_palette(
     s32 ambientPower, s32 renderMode)
 {
     Camera* camera = &gCameras[gCurrentCameraID];
-    f32 mtx01;
-    f32 mtx11;
-    f32 mtx21;
+    f32 Mxy, Myy, Mzy;
+    f32 Mxz, Mzz;
+    f32 Pxz, Pzz;
     f32 offsetX;
     f32 offsetY;
     f32 shadowMag;
-    f32 var_f12_2;
+    f32 tiltXZ;
     f32 shadowXZ;
     f32 facingDir;
-    f32 ex, ey, ez;
-    f32 pm02, pm12, pm22;
 
     shadowMag = SQ(shadowX) + SQ(shadowY) + SQ(shadowZ);
 
@@ -307,40 +305,34 @@ void appendGfx_shading_palette(
     shadowY *= shadowMag;
     shadowZ *= shadowMag;
 
-    if (((-mtx[0][2] * camera->mtxPerspective[0][2]) + (mtx[2][2] * camera->mtxPerspective[2][2])) < 0.0f) {
+    Pxz = camera->mtxPerspective[0][2];
+    Pzz = camera->mtxPerspective[2][2];
+
+    Mxz = mtx[0][2];
+    Mzz = mtx[2][2];
+
+    Mxy = mtx[0][1];
+    Myy = mtx[1][1];
+    Mzy = mtx[2][1];
+
+    if (Mzz * Pzz < Mxz * Pxz) {
         facingDir = 1.0f;
     } else {
         facingDir = -1.0f;
     }
 
-    if (facingDir < 0.0f) {
-        ex = mtx[0][2];
-        ey = mtx[1][2];
-        ez = -mtx[2][2];
-    } else {
-        ex = -mtx[0][2];
-        ey = mtx[1][2];
-        ez = mtx[2][2];
-    }
-
-    pm02 = camera->mtxPerspective[0][2];
-    pm12 = camera->mtxPerspective[1][2];
-    pm22 = camera->mtxPerspective[2][2];
-
-    offsetX = ambientPower * ((shadowX * -pm22) + (shadowZ * pm02));
+    offsetX = ambientPower * ((shadowX * -Pzz) + (shadowZ * Pxz));
 
     shadowXZ = SQ(shadowX) + SQ(shadowZ);
     if (shadowXZ != 0.0f) {
         shadowXZ = sqrtf(shadowXZ);
     }
-    mtx01 = mtx[0][1];
-    mtx11 = mtx[1][1];
-    mtx21 = mtx[2][1];
-    var_f12_2 = SQ(mtx01) + SQ(mtx21);
-    if (var_f12_2 != 0.0f) {
-        var_f12_2 = sqrtf(var_f12_2);
+
+    tiltXZ = SQ(Mxy) + SQ(Mzy);
+    if (tiltXZ != 0.0f) {
+        tiltXZ = sqrtf(tiltXZ);
     }
-    offsetY = -((shadowXZ * var_f12_2) + (shadowY * mtx11)) * ambientPower;
+    offsetY = ambientPower * -((shadowXZ * tiltXZ) + (shadowY * Myy));
 
     if (shadowR > 255) {
         shadowR = 255;
@@ -412,7 +404,7 @@ void appendGfx_shading_palette(
     );
 }
 
-void func_801491E4(Matrix4f mtx, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 alpha) {
+void setup_item_entity_shading(Matrix4f mtx, s32 uls, s32 ult, s32 lrs, s32 lrt, s32 alpha) {
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, alpha);
 
     if (alpha == 255) {

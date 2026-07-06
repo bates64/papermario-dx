@@ -141,14 +141,13 @@ void explosion_update(EffectInstance* effect) {
 
 void explosion_render(EffectInstance* effect) {
     RenderTask renderTask;
-    RenderTask* retTask;
 
     renderTask.appendGfx = explosion_appendGfx;
     renderTask.appendGfxArg = effect;
     renderTask.dist = 10;
     renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = queue_render_task(&renderTask);
+    queue_render_task(&renderTask);
 }
 
 void explosion_appendGfx(void* effect) {

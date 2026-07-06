@@ -185,7 +185,6 @@ void star_render(EffectInstance* effect) {
     StarFXData* data = effect->data.star;
     RenderTask renderTask;
     RenderTask* renderTaskPtr = &renderTask;
-    RenderTask* retTask;
     s32 renderModeTemp;
 
     renderTask.appendGfxArg = effect;
@@ -198,7 +197,7 @@ void star_render(EffectInstance* effect) {
     }
     renderTaskPtr->renderMode = renderModeTemp;
 
-    retTask = queue_render_task(&renderTask);
+    queue_render_task(&renderTask);
 }
 
 void star_appendGfx(void* effect) {

@@ -988,9 +988,9 @@ void appendGfx_item_entity(void* data) {
             gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 0x00FC, 0);
 
             if (item->flags & (ITEM_ENTITY_FLAG_HIDING | ITEM_ENTITY_FLAG_TRANSPARENT)) {
-                func_801491E4(mtxTranslate, 0, 0, 24, 24, alpha);
+                setup_item_entity_shading(mtxTranslate, 0, 0, 24, 24, alpha);
             } else {
-                func_801491E4(mtxTranslate, 0, 0, 24, 24, 255);
+                setup_item_entity_shading(mtxTranslate, 0, 0, 24, 24, 255);
             }
         } else {
             gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 12, gHudElementCacheTableRaster[item->lookupRasterIndex].data);
@@ -1022,9 +1022,9 @@ void appendGfx_item_entity(void* data) {
                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
             gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 0x00FC, 0);
             if (item->flags & (ITEM_ENTITY_FLAG_HIDING | ITEM_ENTITY_FLAG_TRANSPARENT)) {
-                func_801491E4(mtxTranslate, 0, 0, 32, 32, alpha);
+                setup_item_entity_shading(mtxTranslate, 0, 0, 32, 32, alpha);
             } else {
-                func_801491E4(mtxTranslate, 0, 0, 32, 32, 255);
+                setup_item_entity_shading(mtxTranslate, 0, 0, 32, 32, 255);
             }
         } else {
             gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 16, gHudElementCacheTableRaster[item->lookupRasterIndex].data);
@@ -1193,9 +1193,9 @@ void render_item_entities(void) {
                                 gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
                                 gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 0x00FC, 0);
                                 if (item->flags & (ITEM_ENTITY_FLAG_TRANSPARENT | ITEM_ENTITY_FLAG_HIDING)) {
-                                    func_801491E4(sp58, 0, 0, 24, 24, alpha);
+                                    setup_item_entity_shading(sp58, 0, 0, 24, 24, alpha);
                                 } else {
-                                    func_801491E4(sp58, 0, 0, 24, 24, 255);
+                                    setup_item_entity_shading(sp58, 0, 0, 24, 24, 255);
                                 }
                             } else {
                                 gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 12, gHudElementCacheTableRaster[item->lookupRasterIndex].data);
@@ -1221,9 +1221,9 @@ void render_item_entities(void) {
                                 gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
                                 gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 0x00FC, 0);
                                 if (item->flags & (ITEM_ENTITY_FLAG_TRANSPARENT | ITEM_ENTITY_FLAG_HIDING)) {
-                                    func_801491E4(sp58, 0, 0, 32, 32, alpha);
+                                    setup_item_entity_shading(sp58, 0, 0, 32, 32, alpha);
                                 } else {
-                                    func_801491E4(sp58, 0, 0, 32, 32, 255);
+                                    setup_item_entity_shading(sp58, 0, 0, 32, 32, 255);
                                 }
                             } else {
                                 gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 16, gHudElementCacheTableRaster[item->lookupRasterIndex].data);

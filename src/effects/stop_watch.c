@@ -177,14 +177,13 @@ void stop_watch_update(EffectInstance* effect) {
 
 void stop_watch_render(EffectInstance* effect) {
     RenderTask renderTask;
-    RenderTask* retTask;
 
     renderTask.appendGfx = stop_watch_appendGfx;
     renderTask.appendGfxArg = effect;
     renderTask.dist = 10;
     renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = queue_render_task(&renderTask);
+    queue_render_task(&renderTask);
 }
 
 void stop_watch_appendGfx(void* effect) {

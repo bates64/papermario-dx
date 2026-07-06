@@ -119,14 +119,13 @@ void green_impact_update(EffectInstance* effect) {
 
 void green_impact_render(EffectInstance* effect) {
     RenderTask renderTask;
-    RenderTask* retTask;
 
     renderTask.appendGfx = green_impact_appendGfx;
     renderTask.appendGfxArg = effect;
     renderTask.dist = 0;
     renderTask.renderMode = RENDER_MODE_PASS_THROUGH;
 
-    retTask = queue_render_task(&renderTask);
+    queue_render_task(&renderTask);
 }
 
 void green_impact_appendGfx(void* effect) {
