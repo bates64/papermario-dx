@@ -164,7 +164,7 @@ typedef struct IconHudScriptPair {
 } IconHudScriptPair; // size = 0x08
 
 typedef struct VtxRect {
-    Vtx vtx[4];
+    /* 0x00 */ Vtx vtx[4];
 } VtxRect; // size = 0x40
 
 typedef struct HudTransform {

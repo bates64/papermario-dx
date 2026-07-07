@@ -31,9 +31,9 @@ typedef struct MapSettings {
     /* 0x34 */ PAD(4);
     /* 0x38 */ const char* bgName;
     /* 0x3C */ union {
-               s32 msgID;
-               s32 (*get)(void);
-               } tattle;
+    /*      */ s32 msgID;
+    /*      */ s32 (*get)(void);
+    /* 0x3C */ } tattle;
     /* 0x40 */ const char* textureArchive;
     /* 0x44 */ s8 songVariation; ///< 0 or 1. @see bgm_get_map_default_variation
     /* 0x45 */ s8 sfxReverb;

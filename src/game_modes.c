@@ -9,6 +9,7 @@ enum GameModeFlags {
 
 typedef struct GameModeData {
     /* 0x00 */ u16 flags;
+    /* 0x02 */ PAD(2);
     /* 0x04 */ void (*init)(void);
     /* 0x08 */ void (*step)(void);
     /* 0x0C */ void (*renderBackUI)(void);

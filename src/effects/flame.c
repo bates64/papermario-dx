@@ -8,6 +8,7 @@ typedef struct FlamePreset {
     /* 0x04 */ Color_RGB8 envColor;
     /* 0x07 */ s8 primIntensity;
     /* 0x08 */ u8 sizeScale;
+    /* 0x09 */ PAD(3);
     /* 0x0C */ Gfx* dlist;
 } FlamePreset; // size = 0x10
 

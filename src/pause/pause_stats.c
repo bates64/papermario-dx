@@ -33,9 +33,9 @@ static s32 gPauseStatsIconIDs[12];
 
 // Probably only used here, but could theoretically be used in the main menu too
 typedef struct {
-    s32 cursorX;
-    s32 cursorY;
-    s32 baseMsgID;
+    /* 0x00 */ s32 cursorX;
+    /* 0x04 */ s32 cursorY;
+    /* 0x08 */ s32 baseMsgID;
 } StatsEntryData; // size = 0xC
 
 enum {

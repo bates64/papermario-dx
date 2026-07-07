@@ -79,8 +79,8 @@ extern "C" {
 #define ANIM_LIST_END -1
 
 typedef struct QuizRequirement {
-    s32 requiredStoryProgress;
-    s32 numQuestionsUnlocked;
+    /* 0x00 */ s32 requiredStoryProgress;
+    /* 0x04 */ s32 numQuestionsUnlocked;
 } QuizRequirement; // size = 0x8
 
 typedef struct NpcBlueprint {
@@ -307,7 +307,7 @@ typedef struct Enemy {
     /*      */      s32 varTable[16];
     /*      */      f32 varTableF[16];
     /*      */      void* varTablePtr[16];
-    /*      */ };
+    /* 0x64 */ };
     /* 0xA4 */ u8 aiDetectFlags; // see: EnemyDetectFlags
     /* 0xA5 */ PAD(3);
     /* 0xA8 */ u32 aiFlags; // see: EnemyAIFlags
@@ -318,9 +318,9 @@ typedef struct Enemy {
     /* 0xB4 */ EnemyTerritory* territory;
     /* 0xB8 */ EnemyDrops* drops;
     /* 0xBC */ u32 tattleMsg;
-    /* 0xD0 */ s16 savedNpcYaw;
-    /* 0xD2 */ PAD(2);
-} Enemy; // size = 0xD4
+    /* 0xC0 */ s16 savedNpcYaw;
+    /* 0xC2 */ PAD(2);
+} Enemy; // size = 0xC4
 
 typedef struct Encounter {
     /* 0x00 */ s32 count;

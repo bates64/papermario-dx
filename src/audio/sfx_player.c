@@ -47,6 +47,7 @@ typedef struct MusicTriggeredSound {
     /* 0x00 */ u16 sound;
     /* 0x02 */ u16 prereq; // when nonzero, sound may only play if this is already playing
     /* 0x04 */ u8 flags;
+    /* 0x05 */ PAD(1);
 } MusicTriggeredSound; // size = 0x6
 
 // This flag field prefixes every SEF stream: two low bits choose a mode

@@ -3,6 +3,7 @@
 
 typedef struct WaterBlockVtxData {
     /* 0x00 */ Vec3b pos;
+    // Implicit padding avoids a dummy initializer column.
     /* 0x04 */ s16 normX;
     /* 0x06 */ s16 normY;
     /* 0x08 */ Color_RGB8 color;

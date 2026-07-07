@@ -30,10 +30,11 @@ enum MagikoopaAiAnims {
 };
 
 typedef struct MagikoopaTeleportAnim {
-    f32 scaleX;
-    f32 scaleY;
-    u8 alpha;
-} MagikoopaTeleportAnim;
+    /* 0x00 */ f32 scaleX;
+    /* 0x04 */ f32 scaleY;
+    /* 0x08 */ u8 alpha;
+    /* 0x09 */ PAD(3);
+} MagikoopaTeleportAnim; // size = 0x0C
 
 MagikoopaTeleportAnim N(MagikoopaAI_TeleportAnim)[] = {
     { 0.80f, 1.0f, 200 },

@@ -112,7 +112,7 @@ typedef struct PlayerSpriteCacheEntry {
 } PlayerSpriteCacheEntry; // size = 0x10
 
 typedef struct Quad {
-    Vtx v[4];
+    /* 0x00 */ Vtx v[4];
 } Quad; // size = 0x40
 
 #ifdef _LANGUAGE_C_PLUS_PLUS

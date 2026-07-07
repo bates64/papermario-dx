@@ -8,6 +8,7 @@ typedef struct Action {
     /* 0x04 */ void* dmaStart;
     /* 0x08 */ void* dmaEnd;
     /* 0x0C */ s8 flag;
+    /* 0x0D */ PAD(3);
 } Action; // size = 0x10
 
 extern Action PlayerActionsTable[39];

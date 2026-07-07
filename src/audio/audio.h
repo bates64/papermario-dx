@@ -683,9 +683,9 @@ typedef struct Instrument {
     /* 0x1C */ u16 codebookSize;
     /* 0x1E */ u16 keyBase;
     /* 0x20 */ union {
-                    f32 pitchRatio; // ratio of sample rate to hardware output rate
-                    s32 sampleRate;
-               };
+    /*      */     f32 pitchRatio; // ratio of sample rate to hardware output rate
+    /*      */     s32 sampleRate;
+    /* 0x20 */ };
     /* 0x24 */ u8 type;
     /* 0x25 */ b8 useDma; // set to false to bypass DMA transfer while loading data -- only do this if the audio samples/codebook are static
     /* 0x26 */ s8 unused_26;

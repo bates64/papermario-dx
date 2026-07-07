@@ -43,6 +43,7 @@ typedef struct LandingDustFXData {
 typedef struct WalkingDustFXData {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ u16 unk_04;
+    /* 0x06 */ PAD(2);
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
@@ -530,6 +531,7 @@ typedef struct RisingBubbleFXData {
 
 typedef struct RingBlastFXData {
     /* 0x00 */ u16 unk_00;
+    /* 0x02 */ PAD(2);
     /* 0x04 */ Vec3f pos;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ s32 timeLeft;
@@ -582,6 +584,7 @@ typedef struct MusicNoteFXData {
 
 typedef struct SmokeBurstFXData {
     /* 0x00 */ u16 unk_00;
+    /* 0x02 */ PAD(2);
     /* 0x04 */ Vec3f pos;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ s32 timeLeft;
@@ -1009,6 +1012,7 @@ typedef struct AuraFXData {
     /* 0x6C */ u8 envG;
     /* 0x6D */ u8 engB;
     /* 0x6E */ u8 engA;
+    /* 0x6F */ PAD(1);
 } AuraFXData; // size = 0x70
 
 typedef struct BulbGlowFXData {
@@ -1048,6 +1052,7 @@ typedef struct Effect3DFXData {
 
 typedef struct BlastFXData {
     /* 0x00 */ s16 unk_00;
+    /* 0x02 */ PAD(2);
     /* 0x04 */ Vec3f pos;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ s32 timeLeft;
@@ -1945,6 +1950,7 @@ typedef struct TattleWindowFXData {
     /* 0x20 */ Vec3f rot;
     /* 0x2C */ Vec2f offset;
     /* 0x34 */ Vec2bu closeAmt;
+    /* 0x36 */ PAD(2);
 } TattleWindowFXData; // size = 0x38
 
 typedef struct ShinyFlareFXData {
@@ -2258,6 +2264,7 @@ typedef struct LilOinkFXData {
     /* 0x105 */ u8 gfxFrame[MAX_LIL_OINKS];
     /* 0x110 */ f32 jumpOffset[MAX_LIL_OINKS];
     /* 0x13C */ s8 animTime[MAX_LIL_OINKS];
+    /* 0x147 */ PAD(1);
 } LilOinkFXData; // size = 0x148
 
 enum {
@@ -2323,6 +2330,7 @@ typedef struct PartnerBuffFXData {
     /* 0x04 */ s32 timeLeft;
     /* 0x08 */ s32 lifeTime;
     /* 0x0C */ BuffData unk_0C[3];
+    /* 0x2A */ PAD(2);
 } PartnerBuffFXData; // size = 0x2C
 
 typedef struct QuizmoAssistantFXData {

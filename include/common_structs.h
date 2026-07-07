@@ -22,12 +22,17 @@ typedef void (*AuCallback)(void);
 typedef void (*AppendGfxCallback)(void* data);
 
 typedef struct {
-    u8 r, g, b, a;
-} Color_RGBA8;
+    /* 0x00 */ u8 r;
+    /* 0x01 */ u8 g;
+    /* 0x02 */ u8 b;
+    /* 0x03 */ u8 a;
+} Color_RGBA8; // size = 0x04
 
 typedef struct {
-    u8 r, g, b;
-} Color_RGB8;
+    /* 0x00 */ u8 r;
+    /* 0x01 */ u8 g;
+    /* 0x02 */ u8 b;
+} Color_RGB8; // size = 0x03
 
 typedef struct Vec2b {
     /* 0x00 */ s8 x;
@@ -215,14 +220,14 @@ typedef struct Npc {
     /* 0x018 */ f32 moveSpeed;
     /* 0x01C */ f32 jumpVel;
     /* 0x020 */ union {
-                void* any;
-                NpcMotionBlur* motion; ///< Null unless flag NPC_FLAG_MOTION_BLUR is set.
-                NpcChompBlur*  chomp;
-                NpcQuizmoBlur* quizmo;
-                NpcFollowData* followData;
-                struct Npc*    controlNpc; ///< Used by Boos in the Keep Away minigame
-                KeepAwayData*  keepAwayData;
-                } userData;
+    /*       */     void* any;
+    /*       */     NpcMotionBlur* motion; ///< Null unless flag NPC_FLAG_MOTION_BLUR is set.
+    /*       */     NpcChompBlur*  chomp;
+    /*       */     NpcQuizmoBlur* quizmo;
+    /*       */     NpcFollowData* followData;
+    /*       */     struct Npc*    controlNpc; ///< Used by Boos in the Keep Away minigame
+    /*       */     KeepAwayData*  keepAwayData;
+    /* 0x020 */ } userData;
     /* 0x024 */ s32 spriteInstanceID;
     /* 0x028 */ AnimID curAnim;
     /* 0x02C */ s32 animNotifyValue;
@@ -377,7 +382,7 @@ typedef struct Trigger {
     /* 0x08 */ union {
     /*      */     s32 colliderID;
     /*      */     struct BombTrigger* blast;
-    /*      */ } location;
+    /* 0x08 */ } location;
     /* 0x0C */ s32 (*onActivateFunc)(struct Trigger*);
     /* 0x10 */ EvtScript* onTriggerEvt;
     /* 0x14 */ struct Evt* runningScript;
@@ -386,7 +391,7 @@ typedef struct Trigger {
     /*      */     s32 varTable[3];
     /*      */     f32 varTableF[3];
     /*      */     void* varTablePtr[3];
-    /*      */ };
+    /* 0x1C */ };
     /* 0x28 */ s32* itemList;
     /* 0x2C */ s32 tattleMsg;
     /* 0x30 */ u8 hasPlayerInteractPrompt;
@@ -429,13 +434,13 @@ typedef struct Evt {
     /*       */     s32 functionTemp[4];
     /*       */     f32 functionTempF[4];
     /*       */     void* functionTempPtr[4];
-    /*       */ };
+    /* 0x070 */ };
     /* 0x080 */ ApiFunc callFunction;
     /* 0x084 */ union {
     /*       */     s32 varTable[16];
     /*       */     f32 varTableF[16];
     /*       */     void* varTablePtr[16];
-    /*       */ };
+    /* 0x084 */ };
     /* 0x0C4 */ s32 varFlags[3];
     /* 0x0D0 */ s32 loopStartTable[8];
     /* 0x0F0 */ s32 loopCounterTable[8];
@@ -534,17 +539,17 @@ typedef struct EntityBlueprint {
     /* 0x00 */ u16 flags;
     /* 0x02 */ u16 typeDataSize;
     /* 0x04 */ union {
-                EntityModelScriptPtr renderCommandList;
-                AnimScriptPtr animScript;
-               };
+    /*      */     EntityModelScriptPtr renderCommandList;
+    /*      */     AnimScriptPtr animScript;
+    /* 0x04 */ };
     /* 0x08 */ struct StaticAnimatorNode** modelAnimationNodes;
     /* 0x0C */ void (*fpInit)(struct Entity*);
     /* 0x10 */ EntityScriptPtr updateEntityScript;
     /* 0x14 */ EntityCallback fpHandleCollision;
     /* 0x18 */ union {
-                DmaEntry dma;
-                DmaEntry* dmaList;
-               };
+    /*      */     DmaEntry dma;
+    /*      */     DmaEntry* dmaList;
+    /* 0x18 */ };
     /* 0x20 */ u8 entityType;
     /* 0x21 */ u8 aabbSize[3];
 } EntityBlueprint; // size = 0x24
@@ -620,9 +625,9 @@ typedef struct ShadowBlueprint {
     /* 0x00 */ u16 flags;
     /* 0x02 */ s16 typeDataSize;
     /* 0x04 */ union {
-                EntityModelScriptPtr renderCommandList;
-                AnimScriptPtr animScript;
-               };
+    /*      */     EntityModelScriptPtr renderCommandList;
+    /*      */     AnimScriptPtr animScript;
+    /* 0x04 */ };
     /* 0x08 */ struct StaticAnimatorNode** animModelNode;
     /* 0x0C */ ShadowCallback onCreateCallback;
     /* 0x10 */ PAD(0x10);
@@ -754,24 +759,24 @@ typedef struct CameraControlSettings {
     /* 0x00 */ s32 type;
     /* 0x04 */ f32 boomLength;
     /* 0x08 */ f32 boomPitch;
-    union {
-        struct {
-            f32 Ax;
-            f32 Ay;
-            f32 Az;
-            f32 Bx;
-            f32 By;
-            f32 Bz;
-        } two;
-        struct {
-            f32 Ax;
-            f32 Cx;
-            f32 Az;
-            f32 Bx;
-            f32 Cz;
-            f32 Bz;
-        } three;
-    } points;
+    /* 0x0C */ union {
+    /*      */     struct {
+    /*      */         f32 Ax;
+    /*      */         f32 Ay;
+    /*      */         f32 Az;
+    /*      */         f32 Bx;
+    /*      */         f32 By;
+    /*      */         f32 Bz;
+    /*      */     } two;
+    /*      */     struct {
+    /*      */         f32 Ax;
+    /*      */         f32 Cx;
+    /*      */         f32 Az;
+    /*      */         f32 Bx;
+    /*      */         f32 Cz;
+    /*      */         f32 Bz;
+    /*      */     } three;
+    /* 0x0C */ } points;
     /* 0x24 */ f32 viewPitch;
     /* 0x28 */ b32 flag;
 } CameraControlSettings; // size = 0x2C
@@ -788,43 +793,45 @@ typedef struct Camera {
     /* 0x010 */ s16 viewportStartY;
     /* 0x012 */ s16 nearClip;
     /* 0x014 */ s16 farClip;
+    /* 0x016 */ PAD(2);
     /* 0x018 */ f32 vfov;
     /* 0x01C */ union {
-                    struct {
-                        s16 zoomPercent;
-                    } world;
-                    struct {
-                        s16 dist;
-                        s16 offsetY;
-                        s16 pitch;
-                        s16 yaw;
-                        s16 fovScale; // 100 --> vfov = 25, scales as 1/x so larger values mean smaller vfov
-                        s16 zoomPercent;
-                        b16 skipRecalc;
-                    } basic;
-                    struct {
-                        s16 dist;
-                        s16 offsetY;
-                        s16 pitch;
-                        s16 yaw;
-                    } interp;
-                    struct {
-                        s16 dist;
-                        s16 offsetY;
-                        s16 pitch;
-                        s16 minRadius;
-                    } radial;
-                    struct {
-                        s16 dist;
-                        s16 offsetY;
-                        s16 xLimit;
-                        s16 zLimit;
-                    } confined;
-                    PAD(0x10); // force size
-                } params;
+    /*       */     struct {
+    /*       */         s16 zoomPercent;
+    /*       */     } world;
+    /*       */     struct {
+    /*       */         s16 dist;
+    /*       */         s16 offsetY;
+    /*       */         s16 pitch;
+    /*       */         s16 yaw;
+    /*       */         s16 fovScale; // 100 --> vfov = 25, scales as 1/x so larger values mean smaller vfov
+    /*       */         s16 zoomPercent;
+    /*       */         b16 skipRecalc;
+    /*       */     } basic;
+    /*       */     struct {
+    /*       */         s16 dist;
+    /*       */         s16 offsetY;
+    /*       */         s16 pitch;
+    /*       */         s16 yaw;
+    /*       */     } interp;
+    /*       */     struct {
+    /*       */         s16 dist;
+    /*       */         s16 offsetY;
+    /*       */         s16 pitch;
+    /*       */         s16 minRadius;
+    /*       */     } radial;
+    /*       */     struct {
+    /*       */         s16 dist;
+    /*       */         s16 offsetY;
+    /*       */         s16 xLimit;
+    /*       */         s16 zLimit;
+    /*       */     } confined;
+    /*       */     PAD(0x10); // force size
+    /* 0x01C */ } params;
     /* 0x02C */ s16 bgColor[3];
     /* 0x032 */ Vec3s targetScreenCoords; // screen coords corresponding to targetPos
     /* 0x038 */ u16 perspNorm;
+    /* 0x03A */ PAD(2);
     /* 0x03C */ Vec3f lookAt_eye; // used to construct the view matrix
     /* 0x048 */ Vec3f lookAt_obj; // used to construct the view matrix
     /* 0x054 */ Vec3f lookAt_obj_target;
@@ -892,7 +899,7 @@ typedef struct BattleStatus {
     /*       */     s32 varTable[16];
     /*       */     f32 varTableF[16];
     /*       */     void* varTablePtr[16];
-    /*       */ };
+    /* 0x008 */ };
     /* 0x048 */ s8 curSubmenu;
     /* 0x049 */ s8 lastSelectedAbility;
     /* 0x04A */ s8 curPartnerSubmenu;
@@ -1061,9 +1068,9 @@ typedef struct Collider {
     /* 0x0A */ s16 numTriangles;
     /* 0x0C */ struct ColliderTriangle* triangleTable;
     /* 0x10 */ union {
-                   struct ColliderBoundingBox* aabb;
-                   struct CameraControlSettings* camSettings;
-               };
+    /*      */     struct ColliderBoundingBox* aabb;
+    /*      */     struct CameraControlSettings* camSettings;
+    /* 0x10 */ };
     /* 0x14 */ s16 numVertices;
     /* 0x16 */ PAD(2);
     /* 0x18 */ Vec3f* vertexTable; // contains local and global coordinates
@@ -1073,9 +1080,9 @@ typedef struct CollisionData {
     /* 0x00 */ Vec3f* vertices;
     /* 0x04 */ Collider* colliderList;
     /* 0x08 */ union {
-                   struct ColliderBoundingBox* aabbs;
-                   struct CameraControlSettings* camSettings;
-               };
+    /*      */     struct ColliderBoundingBox* aabbs;
+    /*      */     struct CameraControlSettings* camSettings;
+    /* 0x08 */ };
     /* 0x0C */ s16 numColliders;
     /* 0x0E */ PAD(2);
 } CollisionData; // size = 0x10
@@ -1095,7 +1102,7 @@ typedef struct AnimatorNode {
     /* 0xFC */ union {
     /*      */   s32 modelID;
     /*      */   Vtx* vtxList;
-    /*      */ } fcData;
+    /* 0xFC */ } fcData;
 } AnimatorNode; // size = 0x100
 
 typedef struct AnimatorNodeBlueprint {
@@ -1140,6 +1147,7 @@ typedef struct ModelAnimator {
     /* 0x4B8 */ s32 savedTreePos;
     /* 0x4BC */ void (*fpRenderCallback)(void*);
     /* 0x4C0 */ void* renderCallbackArg;
+    /* 0x4C4 */ PAD(4);
 } ModelAnimator; // size = 0x4C8
 
 typedef ModelAnimator* AnimatedMeshList[MAX_ANIMATED_MESHES];
@@ -1566,7 +1574,7 @@ typedef struct ActorPartMovement {
     /*      */     s32 varTable[16];
     /*      */     f32 varTableF[16];
     /*      */     void* varTablePtr[16];
-    /*      */ };
+    /* 0x4C */ };
 } ActorPartMovement; // size = 0x8C
 
 typedef struct ActorPartBlueprint {
@@ -1770,6 +1778,7 @@ typedef struct DecorationTable {
     /* 0x8BE */ s16 stateResetTimer[MAX_ACTOR_DECORATIONS];
     /* 0x8C2 */ PAD(4);
     /* 0x8C6 */ DecorationData decorData[MAX_ACTOR_DECORATIONS];
+    /* 0x8E6 */ PAD(2);
 } DecorationTable; // size = 0x8E8
 
 typedef struct LavaReset {
@@ -1862,12 +1871,12 @@ typedef struct ActorState { // TODO: Make the first field of this an ActorMoveme
     /*      */     s32 functionTemp[4];
     /*      */     f32 functionTempF[4];
     /*      */     void* functionTempPtr[4];
-    /*      */ };
+    /* 0x6C */ };
     /* 0x7C */ union {
     /*      */     s32 varTable[16];
     /*      */     f32 varTableF[16];
     /*      */     void* varTablePtr[16];
-    /*      */ };
+    /* 0x7C */ };
 } ActorState; // size = 0xBC;
 
 typedef struct Actor {
@@ -2089,6 +2098,7 @@ typedef struct PauseMapSpace {
     /* 0x00 */ Vec2s pos;
     /* 0x04 */ u8 parent;
     /* 0x05 */ u8 pathLength;
+    /* 0x06 */ PAD(2);
     /* 0x08 */ Vec2b* path;
     /* 0x0C */ s32 afterRequirement;
     /* 0x10 */ s32 id;
@@ -2304,9 +2314,9 @@ typedef struct PopupMessage {
     /* 0x16 */ s8 showMsgState;
     /* 0x17 */ s8 needsInit;
     /* 0x18 */ union {
-                struct BonkData* bonk;
-                struct HudStatusIcon*  icons;
-                } data;
+    /*      */     struct BonkData* bonk;
+    /*      */     struct HudStatusIcon*  icons;
+    /* 0x18 */ } data;
 } PopupMessage; // size = 0x1C
 
 typedef struct HiddenPanelsData {

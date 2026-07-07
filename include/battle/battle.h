@@ -155,9 +155,9 @@ typedef struct FormationRow {
     /* 0x00 */ ActorBlueprint* actor;
     /* 0x04 */ const char* overlay; ///< Overlay name, if `actor` is to be loaded dynamically.
     /* 0x08 */ union {
-                   s32    index;
-                   Vec3i* vec;
-               } home;
+    /*      */     s32    index;
+    /*      */     Vec3i* vec;
+    /* 0x08 */ } home;
     /* 0x0C */ s32 priority; ///< Actors with higher priority values take their turn first.
     /* 0x10 */ s32 var0;
     /* 0x14 */ s32 var1;
