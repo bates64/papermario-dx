@@ -1,5 +1,4 @@
 #include "common.h"
 
-u8* dx_string_to_msg(u8* msg, const char* str);
-
-u8 dx_ascii_char_to_msg(char in);
+MSG_PTR dx_string_to_msg(MSG_PTR msg, const char* str);
+MSG_BIN dx_ascii_char_to_msg(char in);

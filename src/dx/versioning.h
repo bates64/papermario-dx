@@ -20,7 +20,7 @@ typedef struct VanillaSaveFileSummary {
     /* 0x04 */ u8 spiritsRescued;
     /* 0x05 */ PAD(1);
     /* 0x06 */ s8 level;
-    /* 0x07 */ char filename[8];
+    /* 0x07 */ MSG_BIN filename[8];
     /* 0x0F */ PAD(9);
 } VanillaSaveFileSummary; // size = 0x18
 
@@ -135,7 +135,7 @@ typedef struct SaveFileSummary {
     /* 0x04 */ u8 spiritsRescued;
     /* 0x05 */ PAD(1);
     /* 0x06 */ s8 level;
-    /* 0x07 */ char filename[8];
+    /* 0x07 */ MSG_BIN filename[8];
     /* 0x0F */ PAD(9);
 } SaveFileSummary; // size = 0x18
 

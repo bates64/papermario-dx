@@ -64,7 +64,7 @@ extern HudElemID filemenu_cursorHIDs[1];
 extern s32 filemenu_8024C0A4[3];
 extern HudElemID filemenu_mainHIDs[20];
 extern HudElemID filemenu_createfile_HIDs[4];
-extern u8 filemenu_filename[8];
+extern MSG_BIN filemenu_filename[8];
 
 #if VERSION_PAL
 extern HudElemID PauseLanguageHIDs[1];
@@ -96,7 +96,7 @@ WindowUpdateCallback main_menu_window_update;
 
 WindowUpdateCallback filemenu_update_show_title;
 
-void filemenu_draw_file_name(u8*, s32, s32, s32, s32, s32, s32, s32);
+void filemenu_draw_file_name(MSG_PTR, s32, s32, s32, s32, s32, s32, s32);
 
 MenuPanelDrawContentFunc filemenu_draw_contents_title;
 MenuPanelDrawContentFunc filemenu_draw_contents_stereo;
@@ -137,7 +137,7 @@ void filemenu_choose_name_handle_input(MenuPanel*);
 void filemenu_choose_name_update(MenuPanel*);
 void filemenu_choose_name_cleanup(MenuPanel*);
 
-void filemenu_draw_message(u8*, s32, s32, s32, s32, u32);
+void filemenu_draw_message(MSG_PTR, s32, s32, s32, s32, u32);
 void filemenu_draw_rect(s32 ulx, s32 uly, s32 lrx, s32 lry, s32 tileIdx, s32 uls, s32 ult, s32 dsdx, s32 dtdy);
 
 extern WindowStyleCustom filemenu_windowStyles[];

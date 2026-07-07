@@ -48,7 +48,7 @@ extern u8 D_filemenu_8025093C[4];
 #define COPY_OFFSET_X 16
 #endif
 
-BSS u8 filemenu_filename[8];
+BSS MSG_BIN filemenu_filename[8];
 
 #define LOCALE_FILE_NUMBER_X 33
 //TODO ifdef for LOCALE_DE/ES/FR/JP/CN ...
@@ -337,7 +337,7 @@ void filemenu_draw_contents_title(
     s32 opacity, s32 darkening
 ) {
     char strBuf[64];
-    u8 msgBuf[64];
+    MSG_BIN msgBuf[64];
     s32 msgWidth;
     s32 msgIdx;
     s32 xOffset;
@@ -526,7 +526,7 @@ void filemenu_draw_contents_file_info(s32 fileIdx,
 
     // do not show file summary from mods that don't match the current one
     if (!gSaveSlotMetadata[fileIdx].validData) {
-        u8 buf[32];
+        MSG_BIN buf[32];
         if (gSaveSlotMetadata[fileIdx].modName[0] == '\0') {
             dx_string_to_msg(buf, "Paper Mario");
         } else {

@@ -1189,13 +1189,13 @@ typedef struct ItemEntity {
 #endif
 
 typedef struct MessagePrintState {
-    /* 0x000 */ u8* srcBuffer;
+    /* 0x000 */ MSG_PTR srcBuffer;
     /* 0x004 */ u16 printBufferPos;
     /* 0x006 */ PAD(2);
     /* 0x008 */ s32 msgID;
     /* 0x00C */ u16 srcBufferPos;
     /* 0x00E */ u16 curPrintDelay;
-    /* 0x010 */ u8 printBuffer[PRINT_BUFFER_SIZE];
+    /* 0x010 */ MSG_BIN printBuffer[PRINT_BUFFER_SIZE];
     /* 0x450 */ s16 printBufferSize;
     /* 0x452 */ u16 effectFrameCounter;
     /* 0x454 */ u8 font;
@@ -1307,7 +1307,7 @@ typedef struct MessageDrawState {
     /* 0x42 */ s16 nextPos[2];
     /* 0x46 */ s16 textStartPos[2]; // relative to textbox
     /* 0x4A */ s16 textColor;
-    /* 0x4C */ u8* printBuffer;
+    /* 0x4C */ MSG_PTR printBuffer;
     /* 0x50 */ u8 nextCounter; // related to closing mssages and cmd FA
     /* 0x51 */ PAD(3);
 } MessageDrawState; // size = 0x54
@@ -2395,7 +2395,7 @@ typedef struct CreditsEntry {
 } CreditsEntry; // size = 0x38
 
 typedef struct CreditsLine {
-    /* 0x00 */ u8* message;
+    /* 0x00 */ MSG_PTR message;
     /* 0x04 */ PAD(4);
     /* 0x08 */ s32 time;
     /* 0x0C */ s32 state;

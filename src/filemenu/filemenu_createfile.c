@@ -262,9 +262,9 @@ void filemenu_draw_contents_choose_name(
                             xNudge = 9;
                         }
 #if VERSION_PAL
-                        filemenu_draw_message((u8*)c, baseX + xOffset + ((8 - xNudge) / 2), baseY + yOffset, 255, color, flags);
+                        filemenu_draw_message((MSG_PTR)c, baseX + xOffset + ((8 - xNudge) / 2), baseY + yOffset, 255, color, flags);
 #else
-                        filemenu_draw_message((u8*)c, baseX + xOffset, baseY + yOffset, 255, color, flags);
+                        filemenu_draw_message((MSG_PTR)c, baseX + xOffset, baseY + yOffset, 255, color, flags);
 #endif
                     }
                 }
@@ -318,9 +318,9 @@ void filemenu_draw_contents_choose_name(
                         xNudge = 9;
                     }
 #if VERSION_PAL
-                    filemenu_draw_message((u8*)c, baseX + xOffset + ((8 - xNudge) / 2), baseY + yOffset, 255, color, flags);
+                    filemenu_draw_message((MSG_PTR)c, baseX + xOffset + ((8 - xNudge) / 2), baseY + yOffset, 255, color, flags);
 #else
-                    filemenu_draw_message((u8*)c, baseX + xOffset, baseY + yOffset, 255, color, flags);
+                    filemenu_draw_message((MSG_PTR)c, baseX + xOffset, baseY + yOffset, 255, color, flags);
 #endif
                 }
             }

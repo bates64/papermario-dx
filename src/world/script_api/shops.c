@@ -6,8 +6,8 @@
 #include "inventory.h"
 
 #if !VERSION_JP
-extern u8 MessagePlural[];
-extern u8 MessageSingular[];
+extern MSG_BIN MessagePlural[];
+extern MSG_BIN MessageSingular[];
 #endif
 
 extern HudScript HES_ItemCoin;
