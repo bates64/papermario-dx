@@ -382,7 +382,7 @@ typedef struct Trigger {
     /* 0x08 */ union {
     /*      */     s32 colliderID;
     /*      */     struct BombTrigger* blast;
-    /* 0x08 */ } location;
+    /*      */ } location;
     /* 0x0C */ s32 (*onActivateFunc)(struct Trigger*);
     /* 0x10 */ EvtScript* onTriggerEvt;
     /* 0x14 */ struct Evt* runningScript;
@@ -1102,7 +1102,7 @@ typedef struct AnimatorNode {
     /* 0xFC */ union {
     /*      */   s32 modelID;
     /*      */   Vtx* vtxList;
-    /* 0xFC */ } fcData;
+    /*      */ } fcData;
 } AnimatorNode; // size = 0x100
 
 typedef struct AnimatorNodeBlueprint {
