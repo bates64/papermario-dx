@@ -64,8 +64,8 @@ BSS u8* gLogosImage1;
 BSS u8* gLogosImage2;
 
 void state_init_logos(void) {
-    s8* romStart;
-    s8* romEnd;
+    u8* romStart;
+    u8* romEnd;
 
     general_heap_create();
     gGameStatusPtr->startupState = LOGOS_STATE_N64_FADE_IN;

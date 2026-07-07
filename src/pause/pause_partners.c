@@ -77,7 +77,7 @@ Vp gPausePartnersViewport = {
     }
 };
 
-s32 gPausePartnersSpriteAnims[][4] = {
+AnimID gPausePartnersSpriteAnims[][4] = {
     {
         ANIM_WorldGoombario_Still,
         ANIM_WorldGoombario_Walk,
@@ -161,7 +161,7 @@ s32 gPausePartnersMoveBase[] = {
     MOVE_SPINY_FLIP1
 };
 
-s8 gPausePartnersGridData[] = {
+u8 gPausePartnersGridData[] = {
     4, 5, 6, 7,
     0, 1, 2, 3
 };
@@ -285,7 +285,7 @@ typedef struct PartnerPosition {
 } PartnerPosition; // size = 0x8
 
 void pause_partners_load_portrait(s32 index) {
-    s32 size;
+    u32 size;
     void* asset;
 
     if (gPausePartnersCurrentPortraitIndex != gPausePartnersPartnerIdx[index]) {

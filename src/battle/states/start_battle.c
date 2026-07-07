@@ -26,7 +26,7 @@ void load_stage_assets(Stage* stage) {
     void* compressedAsset;
     ModelNode* rootModel;
     s32 texturesOffset;
-    s32 size;
+    u32 size;
 
     compressedAsset = load_asset_by_name(stage->shape, &size);
     decode_yay0(compressedAsset, &gMapShapeData);

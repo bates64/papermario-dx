@@ -391,7 +391,7 @@ s32 sign(s32 val) {
 
 // Writes integer in base as a string to dest. base can range from 2 to 36
 char* int_to_string(s32 integer, char* dest, s32 base) {
-    u8 string[40]; // Even for binary this is a little long: 34 would suffice
+    char string[40]; // Even for binary this is a little long: 34 would suffice
     s32 i = ARRAY_COUNT(string) - 2;
     s32 negative = false;
     s64 longInteger = integer;

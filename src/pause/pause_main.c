@@ -99,7 +99,7 @@ s32 gPauseTutorialIconIDs[] = { 5, 4, 5, 5, 5, 5, 6 };
 u8 gPauseMenuTextScrollInterpEasingLUT[] = { 0, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8};
 u8 gPauseMenuPageScrollInterpEasingLUT[] = { 0, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8};
 
-s32 gPauseTutorialSpriteAnims[][4] = {
+AnimID gPauseTutorialSpriteAnims[][4] = {
     {
         ANIM_Goombaria_Still,
         ANIM_Goombaria_Idle,
@@ -518,7 +518,7 @@ void pause_tutorial_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
     s32 msgNumLines;
     s32 msgMaxLinesPerPage;
     s32 msgHeight2;
-    u32 msgWidth2;
+    s32 msgWidth2;
     s32 msgMaxLineChars2;
     s32 msgNumLines2;
     s32 msgMaxLinesPerPage2;

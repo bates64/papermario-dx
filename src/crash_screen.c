@@ -209,7 +209,7 @@ s32 crash_screen_printf(s32 x, s32 y, const char* fmt, ...) {
 
     va_start(args, fmt);
 
-    size = _Printf(crash_screen_copy_to_buf, (s8*)buf, fmt, args);
+    size = _Printf(crash_screen_copy_to_buf, (char*)buf, fmt, args);
 
     if (size > 0) {
         ptr = buf;
@@ -255,7 +255,7 @@ s32 crash_screen_printf_proportional(s32 x, s32 y, const char* fmt, ...) {
 
     va_start(args, fmt);
 
-    size = _Printf(crash_screen_copy_to_buf, (s8*)buf, fmt, args);
+    size = _Printf(crash_screen_copy_to_buf, (char*)buf, fmt, args);
 
     if (size > 0) {
         ptr = buf;
@@ -691,7 +691,7 @@ void crash_screen_printf_with_bg(s16 x, s16 y, const char* fmt, ...) {
 
     va_start(args, fmt);
 
-    size = _Printf(crash_screen_copy_to_buf, (s8*)buf, fmt, args);
+    size = _Printf(crash_screen_copy_to_buf, (char*)buf, fmt, args);
 
     if (size > 0) {
         crash_screen_draw_rect(x - 6, y - 6, (size + 2) * 6, 19);

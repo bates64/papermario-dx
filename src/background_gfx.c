@@ -157,7 +157,7 @@ void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u1
     #undef RGBA_BUF_SIZE
 }
 
-void func_80027600(Color_RGBA8* arg0, s16* out) {
+void func_80027600(Color_RGBA8* arg0, u16* out) {
     #define RGBA_BUF_SIZE 32
     Color_RGBA8 final;
     u8 rs[RGBA_BUF_SIZE];

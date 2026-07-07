@@ -77,7 +77,7 @@ HudScript* gStatsBootsElements[] = { &HES_StatBoots0, &HES_StatBoots1, &HES_Stat
 HudScript* gStatsHammerElements[] = { &HES_StatHammer0, &HES_StatHammer1, &HES_StatHammer2, &HES_StatHammer3 };
 s32 gPauseStatsBootsMessages[] = { PAUSE_MSG_3B, PAUSE_MSG_3C, PAUSE_MSG_3D, PAUSE_MSG_3E };
 s32 gPauseStatsHammerMessages[] = { PAUSE_MSG_3F, PAUSE_MSG_40, PAUSE_MSG_41, PAUSE_MSG_42 };
-s8 gPauseStatsGridData[] = {
+u8 gPauseStatsGridData[] = {
     0, 4,
     1, 5,
     1, 6,

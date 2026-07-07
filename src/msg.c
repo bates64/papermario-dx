@@ -84,12 +84,12 @@ s32 gMsgBGScrollAmtY;
 u8* D_8015131C;
 Gfx* D_80151338;
 
-static char gMessageBuffers[2][1024];
+static MSG_BIN gMessageBuffers[2][1024];
 static MessagePrintState gMessagePrinters[3];
 #if VERSION_JP
 static s32 D_80155C38;
 #endif
-static u8 gMessageMsgVars[3][32];
+static MSG_BIN gMessageMsgVars[3][32];
 static s16 D_80155C98;
 static Mtx gMessageWindowProjMatrix[2];
 
@@ -1408,8 +1408,8 @@ void dma_load_msg(u32 msgID, void* dest) {
 }
 #endif
 
-s8* load_message_to_buffer(s32 msgID) {
-    s8* prevBufferPos;
+u8* load_message_to_buffer(s32 msgID) {
+    u8* prevBufferPos;
 
     dma_load_msg(msgID, &gMessageBuffers[NextMessageBuffer]);
     prevBufferPos = gMessageBuffers[NextMessageBuffer];
@@ -1428,7 +1428,7 @@ MessagePrintState* msg_get_printer_for_msg(s32 msgID, s32* donePrintingWriteback
 
 MessagePrintState* _msg_get_printer_for_msg(s32 msgID, s32* donePrintingWriteback, s32 arg2) {
     MessagePrintState* printer;
-    s8* srcBuffer;
+    u8* srcBuffer;
     s32 height;
     s32 width;
     s32 maxLineChars;
@@ -1440,7 +1440,7 @@ MessagePrintState* _msg_get_printer_for_msg(s32 msgID, s32* donePrintingWritebac
         return nullptr;
     }
 
-    srcBuffer = (s8*) msgID;
+    srcBuffer = (u8*) msgID;
     if (msgID >= 0) {
         srcBuffer = load_message_to_buffer((s32)srcBuffer);
     }
@@ -1473,12 +1473,12 @@ MessagePrintState* _msg_get_printer_for_msg(s32 msgID, s32* donePrintingWritebac
 }
 
 s32 msg_printer_load_msg(s32 msgID, MessagePrintState* printer) {
-    s8* buffer;
+    u8* buffer;
 
     if (msgID >= 0) {
         buffer = load_message_to_buffer(msgID);
     } else {
-        buffer = (s8*) msgID;
+        buffer = (u8*) msgID;
     }
 
     printer->srcBuffer = buffer;
@@ -1549,8 +1549,8 @@ void set_message_text_var(s32 msgID, s32 index) {
 }
 
 void set_message_int_var(s32 value, s32 index) {
-    s8 strBuffer[ARRAY_COUNT(gMessageMsgVars[index])];
-    s8* bufferIt;
+    char strBuffer[ARRAY_COUNT(gMessageMsgVars[index])];
+    char* bufferIt;
     s32 i;
 
     int_to_string(value, strBuffer, 10);
@@ -1989,7 +1989,7 @@ void draw_msg(s32 msgID, s32 posX, s32 posY, s32 opacity, s32 palette, u8 style)
     MessagePrintState stackPrinter;
     MessagePrintState* printer;
     u16 bufferPos;
-    s8* mallocSpace;
+    u8* mallocSpace;
     s32 charset;
     u16 flags;
     s32 width;
@@ -2222,7 +2222,7 @@ void draw_digit(IMG_PTR img, s32 charset, s32 posX, s32 posY) {
 }
 
 void draw_number(s32 value, s32 x, s32 y, s32 charset, s32 palette, s32 opacity, u16 style) {
-    u8 valueStr[24];
+    char valueStr[24];
     s8 digits[24];
     s32 digitPosX[24];
     s32 i;
