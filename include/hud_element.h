@@ -5,10 +5,10 @@
 
 #define HUD_ELEMENT_BATTLE_ID_MASK 0x800
 
-typedef s32 HudScriptCode;              /// HudScript bytecode word
-typedef HudScriptCode HudScript[];      /// HudScript declaration body
-typedef HudScriptCode* HudScriptPtr;    /// start of a declared HudScript
-typedef HudScriptCode* HudScriptPos;    /// position within a HudScript
+typedef s32 HudScriptCode;              /// HudScript bytecode
+typedef HudScriptCode HudScript[];      /// HudScript definition
+typedef HudScriptCode* HudScriptPtr;    /// pointer to a HudScript
+typedef HudScriptCode* HudScriptPos;    /// read position within a HudScript
 typedef HudScriptPtr HudScriptList[];   /// list of HudScripts
 
 enum {
@@ -178,7 +178,7 @@ typedef struct HudTransform {
 
 typedef struct HudElement {
     /* 0x00 */ u32 flags;
-    /* 0x04 */ HudScriptPtr anim;
+    /* 0x04 */ HudScriptPtr source;
     /* 0x08 */ HudScriptPos readPos;
     /* 0x0C */ HudScriptPos loopStartPos;
     /* 0x10 */ IMG_PTR imageAddr;
@@ -421,7 +421,7 @@ extern IconHudScriptPair wPartnerHudScripts[];
 extern "C" {
 #endif
 
-void hud_element_load_script(HudElement* hudElement, HudScriptPtr anim);
+void hud_element_load_script(HudElement* hudElement, HudScriptPtr script);
 
 /// `clamp` selects the wrap mode: 0 = repeat, 1 = clamp.
 /// `dropShadow` controls whether to render a drop shadow.
@@ -432,7 +432,7 @@ void hud_element_clear_cache(void);
 void init_hud_element_list(void);
 
 /// Creates a new HUD element and returns its ID.
-s32 hud_element_create(HudScriptPtr anim);
+s32 hud_element_create(HudScriptPtr script);
 
 void update_hud_elements(void);
 
@@ -470,7 +470,7 @@ void hud_element_draw_clipped(s32 id);
 void hud_element_draw_next(s32 id);
 void hud_element_draw_without_clipping(s32 id);
 
-void hud_element_set_script(s32 id, HudScriptPtr anim);
+void hud_element_set_script(s32 id, HudScriptPtr script);
 
 HudScriptPtr hud_element_get_script(s32 id);
 

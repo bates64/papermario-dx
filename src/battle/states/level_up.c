@@ -208,7 +208,7 @@ EntityModelScriptList starpoint_digit_scripts = {
     EMS_starpoint_digit_9,
 };
 
-EntityModelCode* starpoint_space_script = EMS_starpoint_dummy;
+EntityModelScriptPtr starpoint_space_script = EMS_starpoint_dummy;
 
 HudScriptPtr levelup_stat_scripts[3] = {
     HES_level_up_FP,

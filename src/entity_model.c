@@ -88,7 +88,7 @@ void init_entity_models(void) {
     entity_fog_dist_max = 1000;
 }
 
-s32 load_entity_model(EntityModelCode* cmdList) {
+s32 load_entity_model(EntityModelScriptPtr cmdList) {
     EntityModel* newEntityModel;
     s32 i;
 
@@ -124,7 +124,7 @@ s32 load_entity_model(EntityModelCode* cmdList) {
     return i;
 }
 
-s32 ALT_load_entity_model(EntityModelCode* cmdList) {
+s32 ALT_load_entity_model(EntityModelScriptPtr cmdList) {
     EntityModel* newEntityModel;
     SpriteRasterInfo* imageData;
     s32 i;
@@ -186,7 +186,7 @@ void exec_entity_model_commandlist(s32 idx) {
 s32 step_entity_model_commandlist(EntityModel* entityModel) {
     SpriteRasterInfo* imageData;
 
-    EntityModelCode* curPos = entityModel->cmdListReadPos;
+    EntityModelScriptPos curPos = entityModel->cmdListReadPos;
     switch (*curPos++) {
         case ENTITY_MODEL_SCRIPT_OP_End: // kill model
             free_entity_model_by_ref(entityModel);
@@ -700,7 +700,7 @@ void draw_entity_model_E(s32 modelIdx, Mtx* transformMtx) {
     gDPPipeSync(gMainGfxPos++);
 }
 
-void set_entity_model_render_command_list(s32 idx, EntityModelCode* cmdList) {
+void set_entity_model_render_command_list(s32 idx, EntityModelScriptPtr cmdList) {
     EntityModel* entityModel = gCurrentEntityModelList[idx & ~BATTLE_ENTITY_ID_BIT];
 
     if (entityModel != nullptr && entityModel->flags) {

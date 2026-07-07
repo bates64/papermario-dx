@@ -450,13 +450,13 @@ typedef struct EntityModel {
     /* 0x05 */ PAD(3);
     /* 0x08 */ f32 nextFrameTime; ///< Set to 1.0 after each update
     /* 0x0C */ f32 timeScale; ///< Default is 1.0
-    /* 0x10 */ EntityModelCode* cmdListReadPos;
+    /* 0x10 */ EntityModelScriptPos cmdListReadPos;
     /* 0x14 */ union {
     /*      */      Gfx* displayList;
     /*      */      SpriteRasterInfo* imageData;
     /* 0x14 */ } gfx;
     /* 0x18 */ Mtx transform;
-    /* 0x58 */ EntityModelCode* cmdListSavedPos;
+    /* 0x58 */ EntityModelScriptPos cmdListSavedPos;
     /* 0x5C */ Vec3s* vertexArray;
     /* 0x60 */ DataCallback fpSetupGfxCallback;
     /* 0x64 */ void* setupGfxCallbackArg0;
@@ -465,10 +465,10 @@ typedef struct EntityModel {
 typedef EntityModel* EntityModelList[MAX_ENTITY_MODELS];
 
 EntityModel* get_entity_model(s32 idx);
-s32 load_entity_model(EntityModelCode* cmdList);
-s32 ALT_load_entity_model(EntityModelCode* cmdList);
-void entity_set_render_script(Entity* entity, EntityModelCode* cmdList);
-void set_entity_model_render_command_list(s32 idx, EntityModelCode* cmdList);
+s32 load_entity_model(EntityModelScriptPtr cmdList);
+s32 ALT_load_entity_model(EntityModelScriptPtr cmdList);
+void entity_set_render_script(Entity* entity, EntityModelScriptPtr cmdList);
+void set_entity_model_render_command_list(s32 idx, EntityModelScriptPtr cmdList);
 
 void virtual_entity_list_render_world(void);
 void virtual_entity_list_render_UI(void);

@@ -500,28 +500,46 @@ typedef struct DmaEntry {
     void* end;
 } DmaEntry;
 
-typedef s32 EntityCode;
-typedef EntityCode EntityScript[];
-typedef EntityCode* EntityScriptList[];
+typedef s32 EntityCode; /// EntityScript bytecode
+typedef EntityCode EntityScript[]; /// EntityScript definition
+typedef EntityCode* EntityScriptPtr; /// pointer to an EntityScript
+typedef EntityCode* EntityScriptPos; /// read position within an EntityScript
+typedef EntityScriptPtr EntityScriptList[]; /// list of EntityScripts
 
-typedef s32 EntityModelCode;
-typedef EntityModelCode EntityModelScript[];
-typedef EntityModelCode* EntityModelScriptList[];
+typedef s32 EntityModelCode; /// EntityModelScript bytecode
+typedef EntityModelCode EntityModelScript[]; /// EntityModelScript definition
+typedef EntityModelCode* EntityModelScriptPtr; /// pointer to an EntityModelScript
+typedef EntityModelCode* EntityModelScriptPos; /// read position within an EntityModelScript
+typedef EntityModelScriptPtr EntityModelScriptList[]; /// list of EntityModelScripts
 
-typedef s16 AnimScriptCode;
-typedef AnimScriptCode AnimScript[];
-typedef AnimScriptCode* AnimScriptList[];
+typedef s16 AnimScriptCode; /// AnimScript bytecode
+typedef AnimScriptCode AnimScript[]; /// AnimScript definition
+typedef AnimScriptCode* AnimScriptPtr; /// pointer to an AnimScript
+typedef AnimScriptCode* AnimScriptPos; /// read position within an AnimScript
+typedef AnimScriptPtr AnimScriptList[]; /// list of AnimScripts
+
+typedef s32 ItemScriptCode; /// ItemScript bytecode
+typedef ItemScriptCode ItemScript[]; /// ItemScript definition
+typedef ItemScriptCode* ItemScriptPtr; /// pointer to an ItemScript
+typedef ItemScriptCode* ItemScriptPos; /// read position within an ItemScript
+typedef ItemScriptPtr ItemScriptList[]; /// list of ItemScripts
+
+typedef s32 SparkleScriptCode; /// SparkleScript bytecode
+typedef SparkleScriptCode SparkleScript[]; /// SparkleScript definition
+typedef SparkleScriptCode* SparkleScriptPtr; /// pointer to a SparkleScript
+typedef SparkleScriptCode* SparkleScriptPos; /// read position within a SparkleScript
+typedef SparkleScriptPtr SparkleScriptList[]; /// list of SparkleScripts
 
 typedef struct EntityBlueprint {
     /* 0x00 */ u16 flags;
     /* 0x02 */ u16 typeDataSize;
     /* 0x04 */ union {
-                EntityModelCode* renderCommandList;
-                AnimScriptCode* animScript;
+                EntityModelScriptPtr renderCommandList;
+                AnimScriptPtr animScript;
                };
     /* 0x08 */ struct StaticAnimatorNode** modelAnimationNodes;
     /* 0x0C */ void (*fpInit)(struct Entity*);
-    /* 0x10 */ EntityCode* updateEntityScript;
+    /* 0x10 */ EntityScriptPtr updateEntityScript;
     /* 0x14 */ EntityCallback fpHandleCollision;
     /* 0x18 */ union {
                 DmaEntry dma;
@@ -561,23 +579,22 @@ typedef union {
 typedef struct Entity {
     /* 0x00 */ s32 flags;
     /* 0x04 */ u8 listIndex;
-    /* 0x05 */ s8 unk_05;
-    /* 0x06 */ u8 collisionFlags;
-    /* 0x07 */ s8 collisionTimer;
-    /* 0x08 */ u8 unk_08;
-    /* 0x09 */ u8 scriptDelay;
-    /* 0x0A */ u8 type;
-    /* 0x0B */ u8 alpha;
-    /* 0x0C */ Vec3s aabb;
-    /* 0x12 */ s16 vertexSegment;
-    /* 0x14 */ s16 virtualModelIndex;
-    /* 0x16 */ s16 shadowIndex;
-    /* 0x18 */ EntityCode* scriptReadPos;
+    /* 0x05 */ u8 collisionFlags;
+    /* 0x06 */ s8 collisionTimer;
+    /* 0x07 */ u8 scriptDelay;
+    /* 0x08 */ u8 type;
+    /* 0x09 */ u8 alpha;
+    /* 0x0A */ Vec3s aabb;
+    /* 0x10 */ s16 vertexSegment;
+    /* 0x12 */ s16 virtualModelIndex;
+    /* 0x14 */ s16 shadowIndex;
+    /* 0x16 */ PAD(2);
+    /* 0x18 */ EntityScriptPos scriptReadPos;
     /* 0x1C */ EntityCallback updateScriptCallback;
     /* 0x20 */ EntityCallback updateMatrixOverride;
     /* 0x24 */ Evt* boundScript;
     /* 0x28 */ EvtScript* boundScriptBytecode;
-    /* 0x2C */ EntityCode* savedReadPos[3];
+    /* 0x2C */ EntityScriptPos savedReadPos[3];
     /* 0x38 */ EntityBlueprint* blueprint;
     /* 0x3C */ void (*renderSetupFunc)(s32);
     /* 0x40 */ EntityData dataBuf;
@@ -586,7 +603,7 @@ typedef struct Entity {
     /* 0x54 */ Vec3f scale;
     /* 0x60 */ Vec3f rot;
     /* 0x6C */ f32 shadowPosY;
-    /* 0x70 */ Matrix4f inverseTransformMatrix; /* world-to-local */
+    /* 0x70 */ Matrix4f inverseTransformMatrix; // world-to-local
     /* 0xB0 */ f32 effectiveSize;
     /* 0xB4 */ PAD(4);
     /* 0xB8 */ Mtx transformMatrix;
@@ -603,8 +620,8 @@ typedef struct ShadowBlueprint {
     /* 0x00 */ u16 flags;
     /* 0x02 */ s16 typeDataSize;
     /* 0x04 */ union {
-                EntityModelCode* renderCommandList;
-                AnimScriptCode* animScript;
+                EntityModelScriptPtr renderCommandList;
+                AnimScriptPtr animScript;
                };
     /* 0x08 */ struct StaticAnimatorNode** animModelNode;
     /* 0x0C */ ShadowCallback onCreateCallback;
@@ -1105,8 +1122,8 @@ typedef struct ModelAnimator {
     /* 0x000 */ u32 flags;
     /* 0x004 */ s8 renderMode;
     /* 0x005 */ PAD(3);
-    /* 0x008 */ AnimScriptCode* animReadPos;
-    /* 0x00C */ AnimScriptCode* savedReadPos;
+    /* 0x008 */ AnimScriptPos animReadPos;
+    /* 0x00C */ AnimScriptPos animSavedPos;
     /* 0x010 */ AnimatorNode* rootNode;
     /* 0x014 */ AnimatorNode* nodeCache[0x7A];
     /* 0x1FC */ u8 nextUniqueID;
@@ -1116,7 +1133,7 @@ typedef struct ModelAnimator {
     /* 0x27C */ f32 timeScale;
     /* 0x280 */ Mtx mtx;
     /* 0x2C0 */ void* baseAddr;
-    /* 0x2C4 */ AnimScriptCode* animationBuffer;
+    /* 0x2C4 */ AnimScriptPtr animationBuffer;
     /* 0x2C8 */ StaticAnimatorNode* staticNodes[0x7A];
     /* 0x4B0 */ StaticAnimatorNode** staticRoot;
     /* 0x4B4 */ s32 treeIndexPos;
@@ -1163,8 +1180,8 @@ typedef struct ItemEntity {
     /* 0x1E */ s16 spawnAngle; /* if < 0, a random screen-relative angle is chosen: left or right */
     /* 0x20 */ s16 shadowIndex;
     /* 0x22 */ PAD(2);
-    /* 0x24 */ s32* readPos;
-    /* 0x28 */ s32* savedReadPos;
+    /* 0x24 */ ItemScriptPos readPos;
+    /* 0x28 */ ItemScriptPos savedPos;
     /* 0x2C */ u8 lookupRasterIndex;
     /* 0x2D */ u8 lookupPaletteIndex;
     /* 0x2E */ u8 nextUpdate;
@@ -1173,14 +1190,13 @@ typedef struct ItemEntity {
     /* 0x34 */ Vec3s lastPos;
     /* 0x3A */ PAD(2);
     /* 0x3C */ s32 sparkleNextUpdate;
-    /* 0x40 */ s32* sparkleReadPos;
-    /* 0x44 */ s32 sparkleUnk44;
-    /* 0x48 */ s32* sparkleSavedPos;
-    /* 0x4C */ IMG_PTR sparkleRaster;
-    /* 0x50 */ PAL_PTR sparklePalette;
-    /* 0x54 */ s32 sparkleWidth;
-    /* 0x58 */ s32 sparkleHeight;
-} ItemEntity; // size = 0x5C
+    /* 0x40 */ SparkleScriptPos sparkleReadPos;
+    /* 0x44 */ SparkleScriptPos sparkleSavedPos;
+    /* 0x48 */ IMG_PTR sparkleRaster;
+    /* 0x4C */ PAL_PTR sparklePalette;
+    /* 0x50 */ s32 sparkleWidth;
+    /* 0x54 */ s32 sparkleHeight;
+} ItemEntity; // size = 0x58
 
 #if VERSION_JP
 #define PRINT_BUFFER_SIZE 1024
@@ -1772,7 +1788,7 @@ typedef struct AnimatedModel {
     /* 0x10 */ Vec3f rot;
     /* 0x1C */ Vec3f scale;
     /* 0x28 */ Mtx mtx;
-    /* 0x68 */ AnimScriptCode* curAnimData;
+    /* 0x68 */ AnimScriptPtr curAnimData;
     /* 0x6C */ PAD(4);
 } AnimatedModel; // size = 0x70
 
