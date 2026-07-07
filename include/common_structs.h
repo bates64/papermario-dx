@@ -1390,10 +1390,9 @@ typedef struct ShopOwner {
     /* 0x04 */ s32 idleAnim;
     /* 0x08 */ s32 talkAnim;
     /* 0x0C */ EvtScript* onBuyEvt;
-    /* 0x10 */ EvtScript* unk_10Evt;
-    /* 0x14 */ EvtScript* onTalkEvt;
-    /* 0x18 */ s32* shopMsgIDs;
-} ShopOwner; // size = 0x1C
+    /* 0x10 */ EvtScript* onTalkEvt;
+    /* 0x14 */ s32* shopMsgIDs;
+} ShopOwner; // size = 0x18
 
 typedef struct ShopItemLocation {
     /* 0x0 */ u16 posModelID;
