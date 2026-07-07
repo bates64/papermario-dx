@@ -51,16 +51,16 @@ void* D_PAL_8014AE50[] = {
 };
 #endif
 
-s16 gNextMessageBuffer = 0;
+s16 NextMessageBuffer = 0;
 
-Vtx gRewindArrowQuad[] = {
+Vtx RewindArrowQuad[] = {
     {{{ -16,   9,   0 }, 0, { 0x000, 0x000 }, { 255, 255, 255, 255 }}},
     {{{  16,   9,   0 }, 0, { 0x400, 0x000 }, { 255, 255, 255, 255 }}},
     {{{ -16,  -9,   0 }, 0, { 0x000, 0x240 }, { 255, 255, 255, 255 }}},
     {{{  16,  -9,   0 }, 0, { 0x400, 0x240 }, { 255, 255, 255, 255 }}},
 };
 
-Gfx D_8014C2D8[] = {
+Gfx RewindArrowSetupGfx[] = {
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsSPClearGeometryMode(G_CULL_BOTH | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
@@ -1411,12 +1411,12 @@ void dma_load_msg(u32 msgID, void* dest) {
 s8* load_message_to_buffer(s32 msgID) {
     s8* prevBufferPos;
 
-    dma_load_msg(msgID, &gMessageBuffers[gNextMessageBuffer]);
-    prevBufferPos = gMessageBuffers[gNextMessageBuffer];
+    dma_load_msg(msgID, &gMessageBuffers[NextMessageBuffer]);
+    prevBufferPos = gMessageBuffers[NextMessageBuffer];
 
-    gNextMessageBuffer++;
-    if (gNextMessageBuffer >= ARRAY_COUNT(gMessageBuffers)) {
-        gNextMessageBuffer = 0;
+    NextMessageBuffer++;
+    if (NextMessageBuffer >= ARRAY_COUNT(gMessageBuffers)) {
+        NextMessageBuffer = 0;
     }
 
     return prevBufferPos;
@@ -2071,7 +2071,7 @@ void msg_update_rewind_arrow(s32 printerIndex) {
     f32 temp;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPDisplayList(gMainGfxPos++, D_8014C2D8);
+    gSPDisplayList(gMainGfxPos++, RewindArrowSetupGfx);
 
     switch (printer->rewindArrowAnimState) {
         case REWIND_ARROW_STATE_INIT:
@@ -2139,7 +2139,7 @@ void msg_update_rewind_arrow(s32 printerIndex) {
     gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPLoadTextureTile(gMainGfxPos++, ui_msg_star_png, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 0, 0, 0, 15, 17, 0, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
     gDPLoadMultiTile_4b(gMainGfxPos++, ui_msg_star_silhouette_png, 0x0100, 1, G_IM_FMT_I, 16, 0, 0, 0, 15, 18, 0, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, 5, G_TX_NOLOD, G_TX_NOLOD);
-    gSPVertex(gMainGfxPos++, gRewindArrowQuad, 4, 0);
+    gSPVertex(gMainGfxPos++, RewindArrowQuad, 4, 0);
     gSP2Triangles(gMainGfxPos++, 0, 2, 1, 0, 1, 2, 3, 0);
 }
 

@@ -399,11 +399,11 @@ void pause_tabs_update(MenuPanel* tab) {
     gPauseTabsHorizScrollPos += delta;
 
     if ((gPauseTabsPreviousTab != 0 || tab->col != 5) && (gPauseTabsPreviousTab < tab->col || (gPauseTabsPreviousTab == 5 && tab->col == 0))) {
-        fpUpdateActive = pause_update_page_active_1;
-        fpUpdateInactive = pause_update_page_inactive_1;
+        fpUpdateActive = pause_update_page_active_next;
+        fpUpdateInactive = pause_update_page_inactive_next;
     } else {
-        fpUpdateActive = pause_update_page_active_2;
-        fpUpdateInactive = pause_update_page_inactive_2;
+        fpUpdateActive = pause_update_page_active_prev;
+        fpUpdateInactive = pause_update_page_inactive_prev;
     }
 
     flag = false;
@@ -418,8 +418,8 @@ void pause_tabs_update(MenuPanel* tab) {
         for (i = 0; i < ARRAY_COUNT(gPauseTabsPanelIDs); i++) {
             if (gPausePanels[gPauseTabsPanelIDs[i]]->initialized) {
                 fpUpdate = gWindows[gPauseTabsPageWindowIDs[i]].fpUpdate;
-                if (i != tab->col && (fpUpdate.func == pause_update_page_active_1 ||
-                                      fpUpdate.func == pause_update_page_active_2 ||
+                if (i != tab->col && (fpUpdate.func == pause_update_page_active_next ||
+                                      fpUpdate.func == pause_update_page_active_prev ||
                                       fpUpdate.func == basic_window_update ||
                                       fpUpdate.i == 1)) {
                     set_window_update(gPauseTabsPageWindowIDs[i], (s32)fpUpdateInactive);
@@ -429,8 +429,8 @@ void pause_tabs_update(MenuPanel* tab) {
         }
 
         if (!flag) {
-            if (gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.func == pause_update_page_inactive_1 ||
-                gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.func == pause_update_page_inactive_2 ||
+            if (gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.func == pause_update_page_inactive_next ||
+                gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.func == pause_update_page_inactive_prev ||
                 gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.i == 2) {
                 if (gPauseDoBasicWindowUpdate) {
                     fpUpdateActive = &basic_window_update;
