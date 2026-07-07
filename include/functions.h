@@ -262,11 +262,11 @@ s32 phys_can_player_interact(void);
 HitID player_test_move_without_slipping(PlayerStatus*, f32*, f32*, f32*, f32, f32, s32*);
 HitID player_test_move_with_slipping(PlayerStatus* playerStatus, f32* posX, f32* posY, f32* posZ, f32 speed, f32 heading);
 
-s32 evt_get_variable(Evt* script, Bytecode var);
-s32 evt_set_variable(Evt* script, Bytecode var, s32 value);
-f32 evt_get_float_variable(Evt* script, Bytecode var);
-f32 evt_set_float_variable(Evt* script, Bytecode var, f32 value);
-s32 evt_get_variable_index(Evt* script, s32 var);
+s32 evt_get_variable(Evt* script, EvtVar var);
+s32 evt_set_variable(Evt* script, EvtVar var, s32 value);
+f32 evt_get_float_variable(Evt* script, EvtVar var);
+f32 evt_set_float_variable(Evt* script, EvtVar var, f32 value);
+s32 evt_get_variable_index(Evt* script, EvtVar var);
 void set_script_timescale(Evt* script, f32 timescale);
 f32 sin_deg(f32 x);
 f32 cos_deg(f32 x);

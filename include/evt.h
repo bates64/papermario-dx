@@ -5,6 +5,7 @@
 
 // Should be at least the width of a pointer i.e. intptr_t
 typedef s32 Bytecode;
+typedef Bytecode EvtVar; /// encoded EVT variable reference
 
 // The argc word in EVT bytecode encodes both the argument count (low 16 bits)
 // and the source line number (high 16 bits) for crash diagnostics.

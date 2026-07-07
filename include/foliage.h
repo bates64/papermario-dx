@@ -22,41 +22,41 @@ typedef enum TreeType {
 } TreeType;
 
 typedef struct FoliageModelList {
-    s32 count;
-    s32 models[VLA];
+    /* 0x00 */ s32 count;
+    /* 0x04 */ s32 models[VLA];
 } FoliageModelList;
 
 typedef struct FoliageDrop {
-    s32 itemID;
-    Vec3i pos;
-    s32 spawnMode;
-    Bytecode pickupFlag;
-    Bytecode spawnFlag;
-} FoliageDrop;
+    /* 0x00 */ s32 itemID;
+    /* 0x04 */ Vec3i pos;
+    /* 0x10 */ s32 spawnMode;
+    /* 0x14 */ EvtVar pickupFlag;
+    /* 0x18 */ EvtVar spawnFlag;
+} FoliageDrop; // size = 0x1C
 
 typedef struct FoliageDropList {
-    s32 count;
-    FoliageDrop drops[VLA];
+    /* 0x00 */ s32 count;
+    /* 0x04 */ FoliageDrop drops[VLA];
 } FoliageDropList;
 
 typedef struct FoliageVectorList {
-    s32 count;
-    Vec3i vectors[VLA];
+    /* 0x00 */ s32 count;
+    /* 0x04 */ Vec3i vectors[VLA];
 } FoliageVectorList;
 
 typedef struct SearchBushConfig {
-    FoliageModelList* bush;
-    FoliageDropList* drops;
-    FoliageVectorList* vectors;
-    EvtScript* callback;
-    BushType type;
-} SearchBushConfig;
+    /* 0x00 */ FoliageModelList* bush;
+    /* 0x04 */ FoliageDropList* drops;
+    /* 0x08 */ FoliageVectorList* vectors;
+    /* 0x0C */ EvtScript* callback;
+    /* 0x10 */ BushType type;
+} SearchBushConfig; // size = 0x14
 
 typedef struct ShakeTreeConfig {
-    FoliageModelList* leaves;
-    FoliageModelList* trunk;
-    FoliageDropList* drops;
-    FoliageVectorList* vectors;
-    EvtScript* callback;
-    TreeType type;
-} ShakeTreeConfig;
+    /* 0x00 */ FoliageModelList* leaves;
+    /* 0x04 */ FoliageModelList* trunk;
+    /* 0x08 */ FoliageDropList* drops;
+    /* 0x0C */ FoliageVectorList* vectors;
+    /* 0x10 */ EvtScript* callback;
+    /* 0x14 */ TreeType type;
+} ShakeTreeConfig; // size = 0x18

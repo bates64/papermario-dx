@@ -1727,7 +1727,7 @@ s32 evt_execute_next_command(Evt* script) {
     }
 }
 
-s32 evt_get_variable(Evt* script, Bytecode var) {
+s32 evt_get_variable(Evt* script, EvtVar var) {
     s32 wordIdx;
     s32 bitIdx;
     s32 temp;
@@ -1798,7 +1798,7 @@ s32 evt_get_variable(Evt* script, Bytecode var) {
         return var;
 }
 
-s32 evt_get_variable_index(Evt* script, s32 var) {
+s32 evt_get_variable_index(Evt* script, EvtVar var) {
     if (EVT_LIMIT >= var) {
         return var;
     }
@@ -1841,7 +1841,7 @@ s32 evt_get_variable_index(Evt* script, s32 var) {
     return var;
 }
 
-s32 evt_get_variable_index_alt(s32 var) {
+s32 evt_get_variable_index_alt(EvtVar var) {
     if (EVT_LIMIT >= var) {
         return var;
     }
@@ -1884,7 +1884,7 @@ s32 evt_get_variable_index_alt(s32 var) {
     return var;
 }
 
-s32 evt_set_variable(Evt* script, Bytecode var, s32 value) {
+s32 evt_set_variable(Evt* script, EvtVar var, s32 value) {
     s32 flagBitPos;
     s32 oldValue;
 
@@ -1967,7 +1967,7 @@ s32 evt_set_variable(Evt* script, Bytecode var, s32 value) {
     }
 }
 
-f32 evt_get_float_variable(Evt* script, Bytecode var) {
+f32 evt_get_float_variable(Evt* script, EvtVar var) {
     s32 temp;
 
     if (var <= EVT_LIMIT) {
@@ -2014,7 +2014,7 @@ f32 evt_get_float_variable(Evt* script, Bytecode var) {
     }
 }
 
-f32 evt_set_float_variable(Evt* script, Bytecode var, f32 value) {
+f32 evt_set_float_variable(Evt* script, EvtVar var, f32 value) {
     s32 temp;
     s32 oldValue;
 

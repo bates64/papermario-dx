@@ -161,7 +161,7 @@ typedef struct {
 } NUDMAState;
 
 /* Sequence Display structure*/
-typedef struct st_Seqence{
+typedef struct st_Seqence {
     ALCSPlayer	player;     	/* Sequence Display structure */
     ALCSeq	sequence;
     u8*		data_ptr;       /* Sequence data */
