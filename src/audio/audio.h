@@ -606,10 +606,10 @@ typedef struct AuEnvMixer {
     /* 0x0A */ s16 cvolR;
     /* 0x0C */ s16 dryamt;
     /* 0x0E */ s16 wetamt;
-    /* 0x10 */ s16 lratl;
+    /* 0x10 */ u16 lratl;
     /* 0x12 */ s16 lratm;
     /* 0x14 */ s16 ltgt;
-    /* 0x16 */ s16 rratl;
+    /* 0x16 */ u16 rratl;
     /* 0x18 */ s16 rratm;
     /* 0x1A */ s16 rtgt;
     /* 0x1C */ s32 delta;
@@ -737,7 +737,7 @@ typedef struct SoundPlayer {
     /* 0x84 */ s8 alternativeType;
     /* 0x85 */ u8 triggers;
     /* 0x86 */ PAD(2);
-    /* 0x88 */ s8* loopStartPos;
+    /* 0x88 */ AuFilePos loopStartPos;
     /* 0x8C */ u8 loopIterCount; // loopIterCount = 0 for infinite loop
     /* 0x8D */ PAD(1);
     /* 0x8E */ u16 delay;

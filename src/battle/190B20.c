@@ -52,7 +52,7 @@ extern ActorPartBlueprint bMarioParts[];
 
 extern PartnerDMAData bPartnerDmaTable[];
 
-s32 get_npc_anim_for_status(AnimID*, s32);
+s32 get_npc_anim_for_status(s32*, s32);
 
 void create_target_list(Actor* actor, b32 targetHomePos) {
     s32 numTargets = 0;
@@ -1669,7 +1669,7 @@ Actor* create_actor(Formation formation) {
     return actor;
 }
 
-s32 get_npc_anim_for_status(AnimID* animations, s32 statusKey) {
+s32 get_npc_anim_for_status(s32* animations, s32 statusKey) {
     AnimID foundAnim;
 
     if (animations == nullptr) {
@@ -1694,7 +1694,7 @@ s32 get_player_anim_for_status(s32 statusKey) {
     BattleStatus* battleStatus = &gBattleStatus;
     PlayerData* playerData = &gPlayerData;
     Actor* player = battleStatus->playerActor;
-    u32* anim = &player->partsTable->idleAnimations[0];
+    s32* anim = &player->partsTable->idleAnimations[0];
     s32 ret;
 
     if (anim == nullptr) {

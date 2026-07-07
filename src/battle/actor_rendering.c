@@ -113,7 +113,7 @@ void enable_status_debuff(s16);
 void enable_status_transparent(s16);
 void enable_status_icon_boost_jump(s32 iconID);
 void enable_status_icon_boost_hammer(s32 iconID);
-s32 get_npc_anim_for_status(u32*, s32);
+s32 get_npc_anim_for_status(s32*, s32);
 void set_actor_pal_adjustment(Actor* actor, s32 arg1);
 void create_status_icon_boost_hammer(s32 iconID);
 void create_status_icon_boost_jump(s32 iconID);

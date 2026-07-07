@@ -817,10 +817,12 @@ class Configure:
                 cppflags = f"-DVERSION_{self.version.upper()}"
 
                 # default cflags where not specified
+                src_parts = entry.src_paths[0].parts
+
                 if cflags is None:
-                    if "nusys" in entry.src_paths[0].parts:
+                    if "nusys" in src_parts:
                         cflags = ""
-                    elif "os" in entry.src_paths[0].parts:  # libultra
+                    elif "os" in src_parts:  # libultra
                         cflags = ""
                     else:  # papermario
                         cflags = "-fforce-addr"
@@ -838,7 +840,7 @@ class Configure:
 
                 cflags = cflags.replace("gcc_modern", "").replace("gcc_272", "")
 
-                if "nusys" in entry.src_paths[0].parts or "os" in entry.src_paths[0].parts:
+                if "nusys" in src_parts or "os" in src_parts:
                     cflags += (
                         " -Wno-maybe-uninitialized"
                         " -Wno-inline"
@@ -846,6 +848,9 @@ class Configure:
                         " -Wno-strict-aliasing"
                         " -Wno-pointer-sign"
                     )
+
+                if "gcc" in src_parts:
+                    cflags += " -Wno-pointer-sign"
 
                 cppflags += " -DMODERN_COMPILER"
 

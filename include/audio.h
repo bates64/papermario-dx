@@ -63,7 +63,7 @@ void snd_song_set_proximity_mix_far(s32 songName, s32 mix);
 void snd_song_set_proximity_mix_near(s32 songName, s32 mix);
 void snd_song_set_proximity_mix_full(s32 songName, s32 mix);
 */
-void snd_song_poll_music_events(u32** arg0, s32* arg1);
+void snd_song_poll_music_events(MusicEventTrigger** arg0, s32* arg1);
 void snd_song_flush_music_events(void);
 void snd_song_trigger_music_event(s32 playerID, s32 trackIndex, s32 eventInfo);
 void snd_song_clear_music_events(void);

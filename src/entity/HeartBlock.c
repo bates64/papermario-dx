@@ -24,7 +24,7 @@ extern Gfx Entity_HeartBlockContent_RenderHeartSleeping[];
 extern Gfx Entity_HeartBlockContent_RenderHeartAwake[];
 extern Gfx Entity_HeartBlockContent_RenderHeartHappy[];
 
-BSS u32 HeartBlockPrinterClosed;
+BSS b32 HeartBlockPrinterClosed;
 
 f32 entity_HeartBlockContent_get_previous_yaw(HeartBlockContentData* data, s32 lagTime) {
     s32 bufIdx = data->yawBufferPos - lagTime;

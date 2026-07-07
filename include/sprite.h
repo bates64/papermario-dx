@@ -36,7 +36,7 @@ enum {
 typedef struct SpriteComponent {
     /* 0x00 */ s32 initialized;
     /* 0x04 */ s32 properties; ///< AABBCCCC : AA = unused?, BB = parent, CCCC = notify value
-    /* 0x08 */ s16* readPos;
+    /* 0x08 */ u16* readPos;
     /* 0x0C */ f32 waitTime;
     /* 0x10 */ s32 loopCounter;
     /* 0x14 */ s32 curRaster;

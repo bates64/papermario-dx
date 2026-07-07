@@ -17,7 +17,7 @@ static EvtScript EVS_MusicEventMonitor = {
 API_CALLABLE(PollMusicEvents) {
     MusicEventTrigger* list;
     s32 musicEventID, scriptSelector;
-    u32 count;
+    s32 count;
     s32 i;
 
     snd_song_poll_music_events(&list, &count);

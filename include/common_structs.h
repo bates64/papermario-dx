@@ -1005,7 +1005,7 @@ typedef struct BattleStatus {
 } BattleStatus; // size = 0x460
 
 typedef struct TextureHeader {
-    /* 0x00 */ s8 name[32];
+    /* 0x00 */ char name[32];
     /* 0x20 */ u16 auxW;
     /* 0x22 */ u16 mainW;
     /* 0x24 */ u16 auxH;
@@ -1591,7 +1591,7 @@ typedef struct ActorPart {
     /* 0x74 */ s8 verticalStretch;
     /* 0x75 */ Vec2b projectileTargetOffset;
     /* 0x77 */ PAD(1);
-    /* 0x78 */ u32* defenseTable;
+    /* 0x78 */ s32* defenseTable;
     /* 0x7C */ s32 eventFlags;
     /* 0x80 */ s32 elementalImmunities; // bits from Elements, i.e., ELEMENT_FIRE | ELEMENT_QUAKE
     /* 0x84 */ s32 spriteInstanceID;

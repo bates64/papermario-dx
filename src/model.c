@@ -1331,8 +1331,8 @@ BSS ModelNode* bModelTreeRoot;
 BSS ModelTreeInfoList wModelTreeNodeInfo;
 BSS ModelTreeInfoList bModelTreeNodeInfo;
 
-BSS s8 wBackgroundTintMode;
-BSS s8 bBackgroundTintMode;
+BSS u8 wBackgroundTintMode;
+BSS u8 bBackgroundTintMode;
 BSS s32 TreeIterPos;
 BSS FogSettings wFogSettings;
 BSS FogSettings bFogSettings;
@@ -3671,6 +3671,10 @@ void mdl_group_set_visibility(u16 treeIndex, s32 flags, s32 mode) {
         }
     }
 
+    if (maxGroupIndex == -1) {
+        return;
+    }
+
     if (mode < 2) {
         for (i = minGroupIndex; i <= maxGroupIndex; i++) {
             Model* model = (*gCurrentModels)[i];
@@ -3728,6 +3732,10 @@ void mdl_group_set_custom_gfx(u16 groupModelID, s32 customGfxIndex, s32 tintType
                 minGroupIndex = siblingIndex;
             }
         }
+    }
+
+    if (maxGroupIndex == -1) {
+        return;
     }
 
     maskLow = maskHigh = 0;

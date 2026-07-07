@@ -1,7 +1,7 @@
 #include "audio/audio.h"
 #include "audio/core.h"
 
-static void au_sfx_play_sound(SoundManager* manager, SoundPlayer* player, s8* readPos, SoundRequest* request, s32 priority, s32 exclusiveID);
+static void au_sfx_play_sound(SoundManager* manager, SoundPlayer* player, AuFilePos readPos, SoundRequest* request, s32 priority, s32 exclusiveID);
 static void au_sfx_set_triggers(SoundManager* manager, u32 soundID);
 static void au_sfx_stop_by_id(SoundManager* manager, u32 soundID);
 static void au_sfx_stop_by_exlusive_id(SoundManager* manager, u32 soundID);
@@ -790,7 +790,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                 }
 
                 if (foundPlayer) {
-                    au_sfx_play_sound(manager, player, (s8*)cmdList, request, 0, 0);
+                    au_sfx_play_sound(manager, player, (AuFilePos)cmdList, request, 0, 0);
                 }
             }
         }
@@ -827,7 +827,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                 }
 
                 if (foundPlayer) {
-                    au_sfx_play_sound(manager, player, (u8*)cmdList, request, 0, 0);
+                    au_sfx_play_sound(manager, player, (AuFilePos)cmdList, request, 0, 0);
                 }
             }
         } else {
@@ -992,7 +992,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
     #undef NEXT_POLY_TRACK
 }
 
-static void au_sfx_play_sound(SoundManager* manager, SoundPlayer* player, s8* readPos, SoundRequest* request, s32 priority, s32 exclusiveID) {
+static void au_sfx_play_sound(SoundManager* manager, SoundPlayer* player, AuFilePos readPos, SoundRequest* request, s32 priority, s32 exclusiveID) {
     if (manager->state == SND_MANAGER_STATE_ENABLED) {
         player->sefDataReadPos = readPos;
         player->sefReadStart = readPos;

@@ -60,8 +60,8 @@ BSS PopupMenu gItemChoicePopupMenu;
 BSS u32 gWorldMapFlags[MAX_MAPFLAGS];
 BSS u32 gBattleMapFlags[MAX_MAPFLAGS];
 
-BSS u32 gWorldMapVars[MAX_MAPVARS];
-BSS u32 gBattleMapVars[MAX_MAPVARS];
+BSS s32 gWorldMapVars[MAX_MAPVARS];
+BSS s32 gBattleMapVars[MAX_MAPVARS];
 
 BSS PushBlockGrid* wPushBlockGrids[8];
 
