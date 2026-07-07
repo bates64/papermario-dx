@@ -922,7 +922,7 @@ s32 hud_element_update(HudElement* hudElement) {
             }
 
             nextPos++;
-            hudElement->imageAddr = entryRaster[i].data;
+            hudElement->imageAddr = (IMG_PTR) entryRaster[i].data;
 
             i = 0;
             while (true) {
@@ -931,7 +931,7 @@ s32 hud_element_update(HudElement* hudElement) {
                 }
                 ASSERT(++i < MAX_HUD_CACHE_ENTRIES);
             }
-            hudElement->paletteAddr = entryPalette[i].data;
+            hudElement->paletteAddr = (PAL_PTR) entryPalette[i].data;
             nextPos += 3;
             hudElement->readPos = (HudScript*)nextPos;
 

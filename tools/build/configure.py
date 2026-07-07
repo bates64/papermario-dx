@@ -835,6 +835,15 @@ class Configure:
 
                 cflags = cflags.replace("gcc_modern", "").replace("gcc_272", "")
 
+                if "nusys" in entry.src_paths[0].parts or "os" in entry.src_paths[0].parts:
+                    cflags += (
+                        " -Wno-maybe-uninitialized"
+                        " -Wno-inline"
+                        " -Wno-pointer-to-int-cast"
+                        " -Wno-strict-aliasing"
+                        " -Wno-pointer-sign"
+                    )
+
                 cppflags += " -DMODERN_COMPILER"
 
                 if version == "ique":

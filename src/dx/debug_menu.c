@@ -166,7 +166,7 @@ void dx_debug_draw_box(s32 posX, s32 posY, s32 sizeX, s32 sizeY, int style, s32 
         0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, 0, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
 }
 
-void dx_debug_draw_ascii(char* text, s32 color, s32 posX, s32 posY) {
+void dx_debug_draw_ascii(const char* text, s32 color, s32 posX, s32 posY) {
     char buf[128] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
@@ -174,7 +174,7 @@ void dx_debug_draw_ascii(char* text, s32 color, s32 posX, s32 posY) {
     draw_msg((s32)buf, posX, posY, 255, color, 0);
 }
 
-void dx_debug_draw_ascii_with_effect(char* text, s32 color, s32 posX, s32 posY, s32 effect) {
+void dx_debug_draw_ascii_with_effect(const char* text, s32 color, s32 posX, s32 posY, s32 effect) {
     char buf[128] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
@@ -2257,7 +2257,7 @@ void dx_debug_draw_evt_list() {
         }
 
         dx_debug_draw_number(script->groupFlags, "%02X", color, 255, EvtDebugInfoX, posY);
-        dx_debug_draw_number(script->ptrFirstLine, "%08X", color, 255, EvtDebugInfoX + 20, posY);
+        dx_debug_draw_number((s32)script->ptrFirstLine, "%08X", color, 255, EvtDebugInfoX + 20, posY);
         dx_debug_draw_number((u8*)script->ptrCurLine - (u8*)script->ptrFirstLine, "%X", color, 255, EvtDebugInfoX + 80, posY);
 
         row++;
@@ -2639,7 +2639,7 @@ void dx_debug_update_evt_attached() {
     posY -= RowHeight + 3; // move up one line and include a small gap
     dx_debug_draw_box(EvtDebugInfoX - 10, posY - 4, EvtDebugInfoWidth, 18, WINDOW_STYLE_20, 192);
 
-    dx_debug_draw_number(DebugEvtAttached->ptrFirstLine, "%08X", DefaultColor, 255, EvtDebugInfoX + 40, posY);
+    dx_debug_draw_number((s32) DebugEvtAttached->ptrFirstLine, "%08X", DefaultColor, 255, EvtDebugInfoX + 40, posY);
 
     // evt info box
     dx_debug_draw_box(EvtDebugInfoX - 10, EvtDebugInfoY - 4, EvtDebugInfoWidth, EvtDebugInfoHeight, WINDOW_STYLE_20, 192);

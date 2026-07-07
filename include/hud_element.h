@@ -106,7 +106,7 @@ enum {
 
 typedef struct HudCacheEntry {
     /* 0x00 */ s32 id;
-    /* 0x04 */ u8* data;
+    /* 0x04 */ void* data;
 } HudCacheEntry; // size = 0x8;
 
 typedef struct PopupMenu {

@@ -12,9 +12,9 @@ static void au_sfx_update_basic(SoundManager* manager, SoundPlayer* player, AuVo
 static s16 au_sfx_get_scaled_volume(SoundManager* manager, SoundPlayer* player);
 static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, AuVoice* arg2, u8 arg3);
 static void au_sfx_set_voice_volume(AuVoice* voice, SoundManager* manager, SoundPlayer* player);
-static u8 au_sfx_get_random_pan(s32 arg0, s32 arg1, s32 arg2);
-static s32 au_sfx_get_random_pitch(s32 arg0, s32 arg1, s32 arg2);
-static u8 au_sfx_get_random_vol(s32 arg0, s32 arg1, s32 arg2);
+static u8 au_sfx_get_random_pan(s32 seed, s32 pan, s32 amplitude) UNUSED;
+static s32 au_sfx_get_random_pitch(s32 seed, s32 amplitude, s32 pitch);
+static u8 au_sfx_get_random_vol(s32 seed, s32 amplitude, s32 volume);
 static void au_sfx_reset_players(SoundManager* manager);
 
 static void au_SEFCmd_00_SetVolume(SoundManager* manager, SoundPlayer* player);
