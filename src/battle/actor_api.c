@@ -460,20 +460,21 @@ API_CALLABLE(SetIdleGoal) {
     } else {
         x = evt_get_variable(script, *args);
     }
-
     args++;
+
     if (*args == ACTOR_API_SKIP_ARG) {
         y = fly->goalPos.y;
     } else {
         y = evt_get_variable(script, *args);
     }
-
     args++;
+
     if (*args == ACTOR_API_SKIP_ARG) {
         z = fly->goalPos.z;
     } else {
         z = evt_get_variable(script, *args);
     }
+    args++;
 
     fly->goalPos.x = x;
     fly->goalPos.y = y;

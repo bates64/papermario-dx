@@ -79,8 +79,8 @@ void bgm_reset_volume(void) {
 
 void bgm_update_music_control(void) {
     MusicControlData* music = gMusicControlData;
-    s32 i;
     s32 flags;
+    s32 i;
 
     for (i = 0; i < ARRAY_COUNT(gMusicControlData); i++, music++) {
         switch (music->state) {

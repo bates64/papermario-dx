@@ -2,16 +2,13 @@
 #include "nu/nusys.h"
 #include "dx/profiling.h"
 
-// TODO move these somewhere else...
-u8 nuYieldBuf[NU_GFX_YIELD_BUF_SIZE];
-OSThread __osThreadSave;
-u8 nuBootStack[0x2000] ALIGNED(8);
+extern IMG_BIN ResetTilesImg[];
+extern DisplayContext DisplayContexts[2];
 
-// 32x64 I8 RDP scratch textures used by the flame effect (effects/gfx/flame)
-IMG_BIN GeneratedFlameTexture[0x800] ALIGNED(16); // output texture
-IMG_BIN FlameTextureGenBuffer[0x800] ALIGNED(16); // scratch space for building the texture
-
-s16 D_80074010 = 8; // might be an array, could be size 1-8
+#if defined(SHIFT) || VERSION_IQUE
+#define shim_create_audio_system_obfuscated create_audio_system
+#define shim_load_engine_data_obfuscated load_engine_data
+#endif
 
 void gfxRetrace_Callback(s32);
 void gfxPreNMI_Callback(void);
@@ -23,26 +20,27 @@ void gfx_init_state(void);
 void create_audio_system(void);
 void load_engine_data(void);
 
+u8 nuYieldBuf[NU_GFX_YIELD_BUF_SIZE];
+OSThread __osThreadSave;
+u8 nuBootStack[0x2000] ALIGNED(8);
+
+// 32x64 I8 RDP scratch textures used by the flame effect (effects/gfx/flame)
+IMG_BIN GeneratedFlameTexture[0x800] ALIGNED(16); // output texture
+IMG_BIN FlameTextureGenBuffer[0x800] ALIGNED(16); // scratch space for building the texture
+
 enum {
     RESET_STATE_NONE    = 0,
     RESET_STATE_INIT    = 1,
     RESET_STATE_FADE    = 2,
 };
 
-// TODO try uniting these two split files
-extern s32 ResetGameState;
-extern u16* ResetSavedFrameImg;
-extern s16 D_80073E08;
-extern s16 D_80073E0A;
-extern IMG_BIN ResetTilesImg[];
-extern DisplayContext DisplayContexts[2];
+s32 ResetGameState = RESET_STATE_NONE;
+s16 ResetTileDrawTime = 8;
+u16* ResetSavedFrameImg = nullptr;
+b16 RetraceFrameSkip = false;
+b16 SkippedPrevGfx = false;
 
-#if defined(SHIFT) || VERSION_IQUE
-#define shim_create_audio_system_obfuscated create_audio_system
-#define shim_load_engine_data_obfuscated load_engine_data
-#endif
-
-u16* ResetFrameBufferArray;
+u16* ResetFrameBufferArray[3];
 u16* nuGfxZBuffer;
 
 void gfx_task_end_callback(void* unk) {
@@ -97,37 +95,43 @@ void boot_main(void* data) {
 
 void gfxRetrace_Callback(s32 gfxTaskNum) {
     profiler_rsp_started(PROFILER_RSP_GFX);
-    if (ResetGameState != RESET_STATE_NONE) {
-        if (ResetGameState == RESET_STATE_INIT) {
+
+    switch (ResetGameState) {
+        case RESET_STATE_NONE:
+            // step on every other retrace (60 -> 30fps for NTSC)
+            RetraceFrameSkip = !RetraceFrameSkip;
+            if (!RetraceFrameSkip) {
+                step_game_loop();
+                SkippedPrevGfx = true;
+
+                // skip drawing this frame if there are more than 2 pending gfx tasks
+                if (gfxTaskNum < 3) {
+                    SkippedPrevGfx = false;
+                    gfx_task_background();
+                    gfx_draw_frame();
+                }
+            }
+            break;
+        case RESET_STATE_INIT:
             nuGfxTaskAllEndWait();
             if (gfxTaskNum == 0) {
                 u16* fb = (u16*) osViGetCurrentFramebuffer();
-                u16** bufferSet = &ResetFrameBufferArray;
 
-                bufferSet[2] = fb;
-                bufferSet[1] = fb;
-                bufferSet[0] = fb;
+                ResetFrameBufferArray[0] = fb;
+                ResetFrameBufferArray[1] = fb;
+                ResetFrameBufferArray[2] = fb;
                 ResetSavedFrameImg = fb;
-                nuGfxSetCfb(&ResetFrameBufferArray, 3);
-                osViSwapBuffer(ResetFrameBufferArray);
-                ResetGameState = RESET_STATE_FADE;
-            }
-        }
-        if (ResetGameState == RESET_STATE_FADE) {
-            appendGfx_reset_tile_pattern();
-        }
-    } else {
-        D_80073E0A ^= 1;
-        if (D_80073E0A == 0) {
-            step_game_loop();
-            D_80073E08 = 1;
 
-            if (gfxTaskNum < 3) {
-                D_80073E08 = 0;
-                gfx_task_background();
-                gfx_draw_frame();
+                nuGfxSetCfb(ResetFrameBufferArray, ARRAY_COUNT(ResetFrameBufferArray));
+                osViSwapBuffer(fb);
+
+                ResetGameState = RESET_STATE_FADE;
+                ResetTileDrawTime = 8;
             }
-        }
+            break;
+        case RESET_STATE_FADE:
+            appendGfx_reset_tile_pattern();
+            break;
     }
 }
 
@@ -162,7 +166,7 @@ void appendGfx_reset_tile_pattern(void) {
     for (i = 0; i < 20; i++) {
         for (j = 0; j < 15; j++) {
             s32 s4 = i + 14;
-            t = (33 - (s4 - j)) / 2 + 15 - D_80074010;
+            t = (33 - (s4 - j)) / 2 + 15 - ResetTileDrawTime;
             if (t >= 16) {
                 continue;
             }
@@ -196,10 +200,10 @@ void appendGfx_reset_tile_pattern(void) {
         }
     }
 
-    D_80074010++;
+    ResetTileDrawTime++;
     gDPFullSync(gMainGfxPos++);
     gSPEndDisplayList(gMainGfxPos++);
-    nuGfxTaskStart(gDisplayContext->mainGfx, (u32)(gMainGfxPos - gDisplayContext->mainGfx) * 8, NU_GFX_UCODE_F3DEX, NU_SC_TASK_LODABLE);
+    nuGfxTaskStart(gDisplayContext->mainGfx, (u32)(gMainGfxPos - gDisplayContext->mainGfx) * sizeof(Gfx), NU_GFX_UCODE_F3DEX, NU_SC_TASK_LODABLE);
     gCurrentDisplayContextIndex ^= 1;
 }
 

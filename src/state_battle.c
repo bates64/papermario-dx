@@ -16,10 +16,6 @@ u16* bFrameBuffers[] = {
     gFrameBuf0, gFrameBuf1, gFrameBuf2
 };
 
-s32 D_800778AC[] = {
-    0x00000000, 0xFFFFFF00, 0xFFFFFF00, 0x00000000, 0x00000000
-};
-
 BSS s8 BattleTransitionDelay;
 BSS s32 SavedWorldAnimFlags;
 BSS s32 SavedWorldFreezeMode;
