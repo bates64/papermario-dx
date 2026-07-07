@@ -278,6 +278,7 @@ void spr_npc_unload_unused_assets(SpriteAnimData* spriteData, AnimID* limitAnimL
     rasterReadPos = spriteData->rastersOffset;
     raster = *rasterReadPos;
     compactWritePos = raster->image;
+    lastRetainedRaster = PTR_LIST_END;
 
     // pack retained raster data and cache entries over the discarded blocks
     for (i = 0; i < ARRAY_COUNT(keepRaster) - 1; i++) {

@@ -954,6 +954,8 @@ API_CALLABLE(BattleCam_Update_FollowActorY) {
             }
             actorY = gBattleStatus.enemyActors[actorID]->curPos.y;
             break;
+        default:
+            return ApiStatus_BLOCK;
     }
 
     get_screen_coords(CAM_BATTLE, BattleCam_PosX, actorY, BattleCam_PosZ, &screenX, &screenY, &screenZ);
@@ -1011,6 +1013,8 @@ API_CALLABLE(BattleCam_Update_FollowActorPos) {
             actorY = gBattleStatus.enemyActors[actorID]->curPos.y;
             actorZ = gBattleStatus.enemyActors[actorID]->curPos.z;
             break;
+        default:
+            return ApiStatus_BLOCK;
     }
 
     if (isInitialCall) {

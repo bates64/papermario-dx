@@ -82,6 +82,7 @@ def write_ninja_rules(
     cpp: str,
     extra_cppflags: str,
     extra_cflags: str,
+    extra_cxxflags: str,
     use_ccache: bool,
     shift: bool,
     debug: bool,
@@ -112,7 +113,9 @@ def write_ninja_rules(
 
     CPPFLAGS = CPPFLAGS_COMMON
 
-    cflags_modern = f"-c -G0 -O2 -g1 -gdwarf -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {extra_cflags}"
+    modern_flags = "-c -G0 -O2 -g1 -gdwarf -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch"
+    cflags_modern = f"{modern_flags} {extra_cflags}"
+    cxxflags_modern = f"{modern_flags} {extra_cxxflags}"
 
     ninja.variable("python", sys.executable)
 
@@ -180,7 +183,7 @@ def write_ninja_rules(
     ninja.rule(
         "cxx_modern",
         description="Compiling $in",
-        command=f"{ccache}{cxx_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.hpp -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
+        command=f"{ccache}{cxx_modern} {cxxflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.hpp -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -1847,6 +1850,7 @@ if __name__ == "__main__":
     args.debug = True
 
     extra_cflags = ""
+    extra_cxxflags = ""
     extra_cppflags = ""
     if args.non_matching:
         extra_cppflags += " -DNON_MATCHING"
@@ -1858,11 +1862,13 @@ if __name__ == "__main__":
     if args.shift:
         extra_cppflags += " -DSHIFT"
 
-    extra_cflags += " -Wall -Wno-unused-variable -Wno-unused-but-set-variable -Wno-narrowing -Winline"
+    common_warning_flags = " -Wall -Wno-unused-variable -Wno-unused-but-set-variable -Wno-narrowing -Winline -Wreturn-type"
+    extra_cflags += common_warning_flags
+    extra_cxxflags += common_warning_flags
 
     # Warnings made into errors by default in GCC 14
     # https://gcc.gnu.org/gcc-14/porting_to.html#warnings-as-errors
-    extra_cflags += " --warn-missing-parameter-type -Wincompatible-pointer-types -Wint-conversion  -Wreturn-type"
+    extra_cflags += " --warn-missing-parameter-type -Wincompatible-pointer-types -Wint-conversion"
 
     # add splat to python import path
     sys.path.insert(0, str((ROOT / args.splat / "src").resolve()))
@@ -1876,6 +1882,7 @@ if __name__ == "__main__":
         args.cpp or "mips-linux-gnu-cpp",
         extra_cppflags,
         extra_cflags,
+        extra_cxxflags,
         args.ccache,
         args.shift,
         args.debug,
