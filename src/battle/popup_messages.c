@@ -771,122 +771,122 @@ void btl_update_message_popup(void* data) {
                     gBattleStatus.flags1 &= ~BS_FLAGS1_10000;
                     switch (popup->messageIndex) {
                         case BTL_MSG_ACTION_TIP_MASH_LEFT:
-                            HID_BattleMessage1 = hud_element_create(&HES_StickNeutral);
+                            HID_BattleMessage1 = hud_element_create(HES_StickNeutral);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_HOLD_LEFT_TIMED:
-                            HID_BattleMessage1 = hud_element_create(&HES_StickNeutral);
+                            HID_BattleMessage1 = hud_element_create(HES_StickNeutral);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
 
-                            HID_BattleMessage2 = hud_element_create(&HES_TimingReady);
+                            HID_BattleMessage2 = hud_element_create(HES_TimingReady);
                             hud_element_set_flags(HID_BattleMessage2, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage2, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_HOLD_LEFT_AIM:
-                            HID_BattleMessage1 = hud_element_create(&HES_StickNeutral);
+                            HID_BattleMessage1 = hud_element_create(HES_StickNeutral);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
 
-                            HID_BattleMessage2 = hud_element_create(&HES_AimTarget);
+                            HID_BattleMessage2 = hud_element_create(HES_AimTarget);
                             hud_element_set_flags(HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage2, -100, -100);
                             hud_element_create_transform_B(HID_BattleMessage2);
                             break;
                         case BTL_MSG_ACTION_TIP_UNUSED_1:
-                            HID_BattleMessage1 = hud_element_create(&HES_CUpButton);
+                            HID_BattleMessage1 = hud_element_create(HES_CUpButton);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
 
-                            HID_BattleMessage2 = hud_element_create(&HES_CDownButton);
+                            HID_BattleMessage2 = hud_element_create(HES_CDownButton);
                             hud_element_set_flags(HID_BattleMessage2, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage2, -100, -100);
 
-                            HID_BattleMessage3 = hud_element_create(&HES_CLeftButton);
+                            HID_BattleMessage3 = hud_element_create(HES_CLeftButton);
                             hud_element_set_flags(HID_BattleMessage3, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage3, -100, -100);
 
-                            HID_BattleMessage4 = hud_element_create(&HES_CRightButton);
+                            HID_BattleMessage4 = hud_element_create(HES_CRightButton);
                             hud_element_set_flags(HID_BattleMessage4, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage4, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_UNUSED_2:
-                            HID_BattleMessage1 = hud_element_create(&HES_StickNeutral);
+                            HID_BattleMessage1 = hud_element_create(HES_StickNeutral);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_PRESS_BUTTONS_SHOWN:
-                            HID_BattleMessage1 = hud_element_create(&HES_AButton);
+                            HID_BattleMessage1 = hud_element_create(HES_AButton);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
 
-                            HID_BattleMessage2 = hud_element_create(&HES_BButton);
+                            HID_BattleMessage2 = hud_element_create(HES_BButton);
                             hud_element_set_flags(HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage2, -100, -100);
 
-                            HID_BattleMessage3 = hud_element_create(&HES_CDownButton);
+                            HID_BattleMessage3 = hud_element_create(HES_CDownButton);
                             hud_element_set_flags(HID_BattleMessage3, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage3, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_NOT_USED_1:
-                            HID_BattleMessage1 = hud_element_create(&HES_StickNeutral);
+                            HID_BattleMessage1 = hud_element_create(HES_StickNeutral);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_PRESS_WITH_TIMING:
-                            HID_BattleMessage1 = hud_element_create(&HES_TimingReady);
+                            HID_BattleMessage1 = hud_element_create(HES_TimingReady);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
 
-                            HID_BattleMessage2 = hud_element_create(&HES_AButton);
+                            HID_BattleMessage2 = hud_element_create(HES_AButton);
                             hud_element_set_flags(HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage2, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_NOT_USED_2:
-                            HID_BattleMessage1 = hud_element_create(&HES_AButton);
+                            HID_BattleMessage1 = hud_element_create(HES_AButton);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
-                            HID_BattleMessage2 = hud_element_create(&HES_BButton);
+                            HID_BattleMessage2 = hud_element_create(HES_BButton);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_MASH_BOTH:
-                            HID_BattleMessage1 = hud_element_create(&HES_AButton);
+                            HID_BattleMessage1 = hud_element_create(HES_AButton);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
 
-                            HID_BattleMessage2 = hud_element_create(&HES_BButton);
+                            HID_BattleMessage2 = hud_element_create(HES_BButton);
                             hud_element_set_flags(HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage2, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_HOLD_THEN_RELEASE:
-                            HID_BattleMessage1 = hud_element_create(&HES_TimingReady);
+                            HID_BattleMessage1 = hud_element_create(HES_TimingReady);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
 
-                            HID_BattleMessage2 = hud_element_create(&HES_AButtonDown);
+                            HID_BattleMessage2 = hud_element_create(HES_AButtonDown);
                             hud_element_set_flags(HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage2, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_MOVE_TO_AIM:
-                            HID_BattleMessage1 = hud_element_create(&HES_StickNeutral);
+                            HID_BattleMessage1 = hud_element_create(HES_StickNeutral);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
 
-                            HID_BattleMessage2 = hud_element_create(&HES_AimTarget);
+                            HID_BattleMessage2 = hud_element_create(HES_AimTarget);
                             hud_element_set_flags(HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage2, -100, -100);
                             hud_element_create_transform_B(HID_BattleMessage2);
 
-                            HID_BattleMessage3 = hud_element_create(&HES_AimReticle);
+                            HID_BattleMessage3 = hud_element_create(HES_AimReticle);
                             hud_element_set_flags(HID_BattleMessage3, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage3, -100, -100);
                             hud_element_create_transform_B(HID_BattleMessage3);
                             break;
                         case BTL_MSG_ACTION_TIP_BREAK_FREE:
                         case BTL_MSG_ACTION_TIP_REDUCE_DAMAGE:
-                            HID_BattleMessage1 = hud_element_create(&HES_AButton);
+                            HID_BattleMessage1 = hud_element_create(HES_AButton);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             // fallthrough
@@ -897,7 +897,7 @@ void btl_update_message_popup(void* data) {
                         case BTL_MSG_ACTION_TIP_HOLD_THEN_TAP:
                         case BTL_MSG_ACTION_TIP_UNUSED_4:
                         case BTL_MSG_ACTION_TIP_NOT_USED_3:
-                            HID_BattleMessage1 = hud_element_create(&HES_AButton);
+                            HID_BattleMessage1 = hud_element_create(HES_AButton);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;
@@ -919,70 +919,70 @@ void btl_update_message_popup(void* data) {
                         set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW_TRANSPARENT);
                         switch (popup->messageIndex) {
                             case BTL_MSG_ACTION_TIP_MASH_BUTTON:
-                                hud_element_set_script(HID_BattleMessage1, &HES_MashAButton);
+                                hud_element_set_script(HID_BattleMessage1, HES_MashAButton);
                                 break;
                             case BTL_MSG_ACTION_TIP_MASH_LEFT:
-                                hud_element_set_script(HID_BattleMessage1, &HES_StickMashLeft);
+                                hud_element_set_script(HID_BattleMessage1, HES_StickMashLeft);
                                 break;
                             case BTL_MSG_ACTION_TIP_HOLD_LEFT_TIMED:
-                                hud_element_set_script(HID_BattleMessage1, &HES_StickTapLeft);
-                                hud_element_set_script(HID_BattleMessage2, &HES_TimingBlink);
+                                hud_element_set_script(HID_BattleMessage1, HES_StickTapLeft);
+                                hud_element_set_script(HID_BattleMessage2, HES_TimingBlink);
                                 break;
                             case BTL_MSG_ACTION_TIP_HOLD_LEFT_AIM:
-                                hud_element_set_script(HID_BattleMessage1, &HES_StickTapLeft);
-                                hud_element_set_script(HID_BattleMessage2, &HES_AimTarget);
+                                hud_element_set_script(HID_BattleMessage1, HES_StickTapLeft);
+                                hud_element_set_script(HID_BattleMessage2, HES_AimTarget);
                                 break;
                             case BTL_MSG_ACTION_TIP_UNUSED_1:
-                                hud_element_set_script(HID_BattleMessage1, &HES_MashCUpButton);
-                                hud_element_set_script(HID_BattleMessage2, &HES_MashCDownButton1);
-                                hud_element_set_script(HID_BattleMessage3, &HES_MashCLeftButton);
-                                hud_element_set_script(HID_BattleMessage4, &HES_MashCRightButton1);
+                                hud_element_set_script(HID_BattleMessage1, HES_MashCUpButton);
+                                hud_element_set_script(HID_BattleMessage2, HES_MashCDownButton1);
+                                hud_element_set_script(HID_BattleMessage3, HES_MashCLeftButton);
+                                hud_element_set_script(HID_BattleMessage4, HES_MashCRightButton1);
                                 break;
                             case BTL_MSG_ACTION_TIP_UNUSED_2:
-                                hud_element_set_script(HID_BattleMessage1, &HES_StickBackAndForth);
+                                hud_element_set_script(HID_BattleMessage1, HES_StickBackAndForth);
                                 break;
                             case BTL_MSG_ACTION_TIP_PRESS_BUTTONS_SHOWN:
-                                hud_element_set_script(HID_BattleMessage1, &HES_PressAButton);
-                                hud_element_set_script(HID_BattleMessage2, &HES_PressBButton);
-                                hud_element_set_script(HID_BattleMessage3, &HES_PressCDownButton);
+                                hud_element_set_script(HID_BattleMessage1, HES_PressAButton);
+                                hud_element_set_script(HID_BattleMessage2, HES_PressBButton);
+                                hud_element_set_script(HID_BattleMessage3, HES_PressCDownButton);
                                 break;
                             case BTL_MSG_ACTION_TIP_NOT_USED_1:
-                                hud_element_set_script(HID_BattleMessage1, &HES_RotateStickCW);
+                                hud_element_set_script(HID_BattleMessage1, HES_RotateStickCW);
                                 break;
                             case BTL_MSG_ACTION_TIP_PRESS_WITH_TIMING:
-                                hud_element_set_script(HID_BattleMessage1, &HES_TimingBlink);
-                                hud_element_set_script(HID_BattleMessage2, &HES_MashAButton);
+                                hud_element_set_script(HID_BattleMessage1, HES_TimingBlink);
+                                hud_element_set_script(HID_BattleMessage2, HES_MashAButton);
                                 break;
                             case BTL_MSG_ACTION_TIP_NOT_USED_2:
-                                hud_element_set_script(HID_BattleMessage1, &HES_MashAButton);
-                                hud_element_set_script(HID_BattleMessage2, &HES_MashBButton2);
+                                hud_element_set_script(HID_BattleMessage1, HES_MashAButton);
+                                hud_element_set_script(HID_BattleMessage2, HES_MashBButton2);
                                 break;
                             case BTL_MSG_ACTION_TIP_MASH_BOTH:
-                                hud_element_set_script(HID_BattleMessage1, &HES_MashAButton);
-                                hud_element_set_script(HID_BattleMessage2, &HES_MashBButton1);
+                                hud_element_set_script(HID_BattleMessage1, HES_MashAButton);
+                                hud_element_set_script(HID_BattleMessage2, HES_MashBButton1);
                                 break;
                             case BTL_MSG_ACTION_TIP_UNUSED_3:
-                                hud_element_set_script(HID_BattleMessage1, &HES_MashAButton);
+                                hud_element_set_script(HID_BattleMessage1, HES_MashAButton);
                                 break;
                             case BTL_MSG_ACTION_TIP_HOLD_THEN_RELEASE:
-                                hud_element_set_script(HID_BattleMessage1, &HES_TimingBlink);
-                                hud_element_set_script(HID_BattleMessage2, &HES_PressAButton);
+                                hud_element_set_script(HID_BattleMessage1, HES_TimingBlink);
+                                hud_element_set_script(HID_BattleMessage2, HES_PressAButton);
                                 break;
                             case BTL_MSG_ACTION_TIP_MOVE_TO_AIM:
-                                hud_element_set_script(HID_BattleMessage1, &HES_StickTapRight);
+                                hud_element_set_script(HID_BattleMessage1, HES_StickTapRight);
                                 break;
                             case BTL_MSG_ACTION_TIP_UNUSED_4:
-                                hud_element_set_script(HID_BattleMessage1, &HES_MashAButton);
+                                hud_element_set_script(HID_BattleMessage1, HES_MashAButton);
                                 break;
                             case BTL_MSG_ACTION_TIP_BREAK_FREE:
                             case BTL_MSG_ACTION_TIP_REDUCE_DAMAGE:
-                                hud_element_set_script(HID_BattleMessage1, &HES_PressAButton);
+                                hud_element_set_script(HID_BattleMessage1, HES_PressAButton);
                                 // fallthrough
                             case BTL_MSG_ACTION_TIP_PRESS_BEFORE_LANDING:
                             case BTL_MSG_ACTION_TIP_PRESS_BEFORE_STRIKE:
                             case BTL_MSG_ACTION_TIP_HOLD_THEN_TAP:
                             case BTL_MSG_ACTION_TIP_NOT_USED_3:
-                                hud_element_set_script(HID_BattleMessage1, &HES_PressAButton);
+                                hud_element_set_script(HID_BattleMessage1, HES_PressAButton);
                                 break;
                         }
                         if (popup->duration != -1) {
@@ -1110,37 +1110,37 @@ void btl_update_message_popup(void* data) {
                 case BTL_MSG_STATE_INIT:
                     switch (popup->messageIndex) {
                         case BTL_MSG_HAMMER_DISABLED_1:
-                            HID_BattleMessage1 = hud_element_create(&HES_Item_MenuHammer1);
+                            HID_BattleMessage1 = hud_element_create(HES_Item_MenuHammer1);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;
                         case BTL_MSG_HAMMER_DISABLED_2:
-                            HID_BattleMessage1 = hud_element_create(&HES_Item_MenuHammer2);
+                            HID_BattleMessage1 = hud_element_create(HES_Item_MenuHammer2);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;
                         case BTL_MSG_HAMMER_DISABLED_3:
-                            HID_BattleMessage1 = hud_element_create(&HES_Item_MenuHammer3);
+                            HID_BattleMessage1 = hud_element_create(HES_Item_MenuHammer3);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;
                         case BTL_MSG_JUMP_DISABLED_1:
-                            HID_BattleMessage1 = hud_element_create(&HES_Item_MenuBoots1);
+                            HID_BattleMessage1 = hud_element_create(HES_Item_MenuBoots1);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;
                         case BTL_MSG_JUMP_DISABLED_2:
-                            HID_BattleMessage1 = hud_element_create(&HES_Item_MenuBoots2);
+                            HID_BattleMessage1 = hud_element_create(HES_Item_MenuBoots2);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;
                         case BTL_MSG_JUMP_DISABLED_3:
-                            HID_BattleMessage1 = hud_element_create(&HES_Item_MenuBoots3);
+                            HID_BattleMessage1 = hud_element_create(HES_Item_MenuBoots3);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;
                         case BTL_MSG_ITEMS_DISABLED:
-                            HID_BattleMessage1 = hud_element_create(&HES_Item_MenuItems);
+                            HID_BattleMessage1 = hud_element_create(HES_Item_MenuItems);
                             hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;

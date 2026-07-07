@@ -627,7 +627,7 @@ API_CALLABLE(N(CreateMinigame)) {
     scorekeeper->varTablePtr[JUMP_DATA_VAR_IDX] = data;
     data->workerID = create_worker_scene(nullptr, &mgm_01_worker_render_score);
 
-    hid = hud_element_create(&HES_StatusCoin);
+    hid = hud_element_create(HES_StatusCoin);
     data->hudElemID = hid;
     hud_element_set_flags(data->hudElemID, HUD_ELEMENT_FLAG_MANUAL_RENDER);
     hud_element_set_tint(data->hudElemID, 255, 255, 255);

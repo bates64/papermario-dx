@@ -41,25 +41,25 @@ API_CALLABLE(N(init)) {
     acs->hudPosX = -48;
     acs->hudPosY = 80;
 
-    hid = hud_element_create(&HES_AButton);
+    hid = hud_element_create(HES_AButton);
     acs->hudElemIDs[HIDX_BUTTON] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    hid = hud_element_create(&HES_BlueMeter);
+    hid = hud_element_create(HES_BlueMeter);
     acs->hudElemIDs[HIDX_METER] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY + 28);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    hid = hud_element_create(&HES_FillGaugeResult);
+    hid = hud_element_create(HES_FillGaugeResult);
     acs->hudElemIDs[HIDX_FRAME] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY + 28);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    hid = hud_element_create(&HES_TimingWait);
+    hid = hud_element_create(HES_TimingWait);
     acs->hudElemIDs[HIDX_LIGHT] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX + 41, acs->hudPosY + 22);
     hud_element_set_render_depth(hid, 0);
@@ -151,7 +151,7 @@ void N(update)(void) {
                 acs->prepareTime--;
                 return;
             }
-            hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], &HES_AButtonDown);
+            hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], HES_AButtonDown);
             acs->meterFillLevel = 0;
             acs->escapeThreshold = 0;
             acs->stateTimer = acs->duration;
@@ -173,8 +173,8 @@ void N(update)(void) {
             // handle meter reaching 100%
             if (acs->meterFillLevel >= MAX_MASH_UNITS) {
                 acs->meterFillLevel = MAX_MASH_UNITS;
-                hud_element_set_script(acs->hudElemIDs[HIDX_LIGHT], &HES_TimingReady);
-                hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], &HES_AButton);
+                hud_element_set_script(acs->hudElemIDs[HIDX_LIGHT], HES_TimingReady);
+                hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], HES_AButton);
                 if (!acs->isMeterFilled) {
                     sfx_play_sound(SOUND_TIMING_BAR_GO);
                     acs->isMeterFilled = true;

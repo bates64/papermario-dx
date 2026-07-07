@@ -221,7 +221,7 @@ void N(worker_update_phonograph_hud)(void) {
             hud_element_set_render_pos(data->okHID, data->hudBaseX + 2, data->hudBaseY + 14);
             break;
         case PHONOGRAPH_HUD_STATE_MASHING:
-            hud_element_set_script(data->buttonHID, &HES_SlowlyMashAButton);
+            hud_element_set_script(data->buttonHID, HES_SlowlyMashAButton);
             data->state = PHONOGRAPH_HUD_STATE_FINAL;
             // fallthrough
         case PHONOGRAPH_HUD_STATE_FINAL:
@@ -349,17 +349,17 @@ API_CALLABLE(N(CreatePhonographHudData)) {
     data->timeScale = 1.0f;
     data->modelScale = 1.0f;
 
-    data->buttonHID = hid = hud_element_create(&HES_AButton);
+    data->buttonHID = hid = hud_element_create(HES_AButton);
     hud_element_set_render_pos(hid, data->hudBaseX, data->hudBaseY);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    data->meterHID = hid = hud_element_create(&HES_BlueMeter);
+    data->meterHID = hid = hud_element_create(HES_BlueMeter);
     hud_element_set_render_pos(hid, data->hudBaseX, data->hudBaseY + 28);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    data->okHID = hid = hud_element_create(&HES_RunAwayOK);
+    data->okHID = hid = hud_element_create(HES_RunAwayOK);
     hud_element_set_render_pos(hid, data->hudBaseX, data->hudBaseY + 28);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);

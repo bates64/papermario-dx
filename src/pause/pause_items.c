@@ -25,12 +25,12 @@ static HudElemID gPauseItemsHIDs[20];
 #define ITEM_NONE_STANDIN 0x7FFE
 #define ITEM_INVALID 0x7FFF
 
-HudScript* gPauseItemsHudScripts[] = {
-    &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-    &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-    &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-    &HES_StatBp, &HES_ListPrevPage, &HES_ListNextPage, &HES_Dash,
-    &HES_StatusStar1
+HudScriptList gPauseItemsHudScripts = {
+    HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+    HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+    HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+    HES_StatBp, HES_ListPrevPage, HES_ListNextPage, HES_Dash,
+    HES_StatusStar1
 };
 MenuWindowBP gPauseItemsWindowBPs[] = {
     {

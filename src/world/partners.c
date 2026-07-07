@@ -101,40 +101,36 @@ s32 partner_is_idle(Npc* partner);
 b32 world_partner_can_open_menus_default(Npc* partner);
 
 IconHudScriptPair wPartnerHudScripts[] = {
-    { &HES_Partner0,    &HES_Partner0Disabled    },
-    { &HES_Goombario,   &HES_GoombarioDisabled   },
-    { &HES_Kooper,      &HES_KooperDisabled      },
-    { &HES_Bombette,    &HES_BombetteDisabled    },
-    { &HES_Parakarry,   &HES_ParakarryDisabled   },
-    { &HES_Partner0,    &HES_Partner0Disabled    },
-    { &HES_Watt,        &HES_WattDisabled        },
-    { &HES_Sushie,      &HES_SushieDisabled      },
-    { &HES_Lakilester,  &HES_LakilesterDisabled  },
-    { &HES_Bow,         &HES_BowDisabled         },
-    { &HES_PartnerA,    &HES_PartnerADisabled    },
-    { &HES_PartnerA,    &HES_PartnerADisabled    },
-    { &HES_PartnerA,    &HES_PartnerADisabled    },
-    { &HES_PartnerA,    &HES_PartnerADisabled    },
-    { &HES_PartnerA,    &HES_PartnerADisabled    },
-    { &HES_PartnerA,    &HES_PartnerADisabled    },
+    { HES_Partner0,    HES_Partner0Disabled    },
+    { HES_Goombario,   HES_GoombarioDisabled   },
+    { HES_Kooper,      HES_KooperDisabled      },
+    { HES_Bombette,    HES_BombetteDisabled    },
+    { HES_Parakarry,   HES_ParakarryDisabled   },
+    { HES_Partner0,    HES_Partner0Disabled    },
+    { HES_Watt,        HES_WattDisabled        },
+    { HES_Sushie,      HES_SushieDisabled      },
+    { HES_Lakilester,  HES_LakilesterDisabled  },
+    { HES_Bow,         HES_BowDisabled         },
+    { HES_PartnerA,    HES_PartnerADisabled    },
+    { HES_PartnerA,    HES_PartnerADisabled    },
+    { HES_PartnerA,    HES_PartnerADisabled    },
+    { HES_PartnerA,    HES_PartnerADisabled    },
+    { HES_PartnerA,    HES_PartnerADisabled    },
+    { HES_PartnerA,    HES_PartnerADisabled    },
 };
 
-HudScript* DigitHudScripts[] = {
-    &HES_StatusDigit0, &HES_StatusDigit1, &HES_StatusDigit2, &HES_StatusDigit3, &HES_StatusDigit4,
-    &HES_StatusDigit5, &HES_StatusDigit6, &HES_StatusDigit7, &HES_StatusDigit8, &HES_StatusDigit9,
+HudScriptList DigitHudScripts = {
+    HES_StatusDigit0, HES_StatusDigit1, HES_StatusDigit2, HES_StatusDigit3, HES_StatusDigit4,
+    HES_StatusDigit5, HES_StatusDigit6, HES_StatusDigit7, HES_StatusDigit8, HES_StatusDigit9,
 };
 
-HudScript* TimesHudScript = &HES_StatusTimes;
-
-HudScript* SlashHudScript = &HES_StatusSlash;
-
-HudScript* SPIncrementHudScripts[] = {
-    &HES_StatusSPIncrement1, &HES_StatusSPIncrement3, &HES_StatusSPIncrement2,
-    &HES_StatusSPIncrement4, &HES_StatusSPIncrement5, &HES_StatusSPIncrement6, &HES_StatusSPIncrement7
+HudScriptList SPIncrementHudScripts = {
+    HES_StatusSPIncrement1, HES_StatusSPIncrement3, HES_StatusSPIncrement2,
+    HES_StatusSPIncrement4, HES_StatusSPIncrement5, HES_StatusSPIncrement6, HES_StatusSPIncrement7
 };
 
-HudScript* SPStarHudScripts[] = { &HES_StatusStar1, &HES_StatusStar3, &HES_StatusStar2, &HES_StatusStar4,
-    &HES_StatusStar5, &HES_StatusStar6, &HES_StatusStar7
+HudScriptList SPStarHudScripts = { HES_StatusStar1, HES_StatusStar3, HES_StatusStar2, HES_StatusStar4,
+    HES_StatusStar5, HES_StatusStar6, HES_StatusStar7
 };
 
 s32 StatusBarSPIncrementOffsets[] = { -1, 1, 2, 4, 5, 7, 8, 0, 0, 0 };

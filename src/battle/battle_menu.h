@@ -62,7 +62,7 @@ extern PopupMenu BattlePopupMenu;
 extern s32 StratsOptionHIDs[];
 extern s16 StratsMenuPosX;
 extern s16 StratsMenuPosY;
-extern HudScript* StratsOptionHudScripts[];
+extern HudScriptList StratsOptionHudScripts;
 extern s32 StratsOptionNames[]; // msg IDs
 extern s32 StratsOptionCount;
 extern s32 StratsPrevSelected;
@@ -87,7 +87,7 @@ extern s32 LeftJustMenuMessages[];
 extern s32 CenteredBattleMessages[];
 
 extern IconHudScriptPair PartnerHudScripts[];
-extern HudScript* battle_menu_DisabledPartnerHudScripts[];
+extern HudScriptList battle_menu_DisabledPartnerHudScripts;
 
 extern IconHudScriptPair StarPowerMovesHudScripts[];
 
@@ -100,7 +100,7 @@ extern s32 BattleMenu_TargetPointerAlpha;
 extern s32 BattleMenu_TargetNameOffsetX;
 extern s32 BattleMenu_SwapDelay;
 
-extern HudScript* MovesOptionHudScripts[24];
+extern HudScriptPtr MovesOptionHudScripts[24];
 extern s32 MovesOptionNames[24];
 extern s32 MovesOptionDisplayCosts[24];
 extern s32 MovesOptionDiscounts[24];
@@ -119,7 +119,7 @@ extern s32 SelectedMovesIndex;
 extern s32 WheelOptionSubmenu[];
 extern s32 WheelOptionEnabled[];
 extern s32 WheelOptionError[];
-extern HudScript* WheelOptionHudScript[];
+extern HudScriptList WheelOptionHudScript;
 extern s32 WheelOptionName[];
 
 extern b32 BattleMenu_ShowSwapIcons;

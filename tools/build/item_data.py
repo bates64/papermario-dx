@@ -236,9 +236,9 @@ def generate_hud_element_scripts(fout: TextIOWrapper, items: List[ItemEntry], pa
 
     for script in hud_scripts:
         if script.pair:
-            fout.write(f"    {{ .enabled = &{script.full_name}, .disabled = &{script.full_name}_disabled }},\n")
+            fout.write(f"    {{ .enabled = {script.full_name}, .disabled = {script.full_name}_disabled }},\n")
         else:
-            fout.write(f"    {{ .enabled = &{script.full_name}, .disabled = &{script.full_name} }},\n")
+            fout.write(f"    {{ .enabled = {script.full_name}, .disabled = {script.full_name} }},\n")
 
     fout.write("};\n")
     fout.write("\n")

@@ -107,7 +107,7 @@ void btl_state_update_select_target(void) {
 
             // create the HUD elements for the target pointers
             for (i = 0; i < targetListLength; i++) {
-                hid = hud_element_create(&HES_HandPointDownLoop);
+                hid = hud_element_create(HES_HandPointDownLoop);
                 BattleMenu_TargetHudElems[i] = hid;
                 hud_element_set_render_depth(hid, 0);
                 hud_element_set_render_pos(hid, 0, -100);
@@ -166,9 +166,9 @@ void btl_state_update_select_target(void) {
                     hid = BattleMenu_TargetHudElems[0];
 
                     if (actorFlags & ACTOR_FLAG_UPSIDE_DOWN) {
-                        hud_element_set_script(hid, &HES_HandPointLeftLoop);
+                        hud_element_set_script(hid, HES_HandPointLeftLoop);
                     } else {
-                        hud_element_set_script(hid, &HES_HandPointDownLoop);
+                        hud_element_set_script(hid, HES_HandPointDownLoop);
                     }
                     sfx_play_sound(SOUND_MENU_CHANGE_SELECTION);
                 }
@@ -289,14 +289,14 @@ void btl_state_draw_select_target(void) {
         if (enemyActor->flags & ACTOR_FLAG_UPSIDE_DOWN) {
             xOffset = 16;
             yOffset = 2;
-            if (hud_element_get_script(id) != &HES_HandPointLeftLoop) {
-                hud_element_set_script(id, &HES_HandPointLeftLoop);
+            if (hud_element_get_script(id) != HES_HandPointLeftLoop) {
+                hud_element_set_script(id, HES_HandPointLeftLoop);
             }
         } else {
             xOffset = 5;
             yOffset = -11;
-            if (hud_element_get_script(id) != &HES_HandPointDownLoop) {
-                hud_element_set_script(id, &HES_HandPointDownLoop);
+            if (hud_element_get_script(id) != HES_HandPointDownLoop) {
+                hud_element_set_script(id, HES_HandPointDownLoop);
             }
         }
 
@@ -316,14 +316,14 @@ void btl_state_draw_select_target(void) {
             if (enemyActor->flags & ACTOR_FLAG_UPSIDE_DOWN) {
                 xOffset = 16;
                 yOffset = 2;
-                if (hud_element_get_script(id) != &HES_HandPointLeftLoop) {
-                    hud_element_set_script(id, &HES_HandPointLeftLoop);
+                if (hud_element_get_script(id) != HES_HandPointLeftLoop) {
+                    hud_element_set_script(id, HES_HandPointLeftLoop);
                 }
             } else {
                 xOffset = 5;
                 yOffset = -11;
-                if (hud_element_get_script(id) != &HES_HandPointDownLoop) {
-                    hud_element_set_script(id, &HES_HandPointDownLoop);
+                if (hud_element_get_script(id) != HES_HandPointDownLoop) {
+                    hud_element_set_script(id, HES_HandPointDownLoop);
                 }
             }
 

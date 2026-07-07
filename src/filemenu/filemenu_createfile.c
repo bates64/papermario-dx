@@ -6,8 +6,8 @@ extern HudScript HES_FilenameCaret;
 extern HudScript HES_FilenameSpace;
 extern HudScript HES_134F60_135120;
 
-HudScript* filemenu_createfile_hudScripts[] = {
-    &HES_FilenameCaret, &HES_FilenameSpace, &HES_134F60_135120
+HudScriptList filemenu_createfile_hudScripts = {
+    HES_FilenameCaret, HES_FilenameSpace, HES_134F60_135120
 };
 
 s32 D_8024A18C = -4;

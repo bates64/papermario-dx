@@ -210,14 +210,14 @@ API_CALLABLE(N(CreateScoreDisplay)) {
     if (isInitialCall) {
         data->workerID = create_worker_scene(nullptr, &N(worker_render_score));
 
-        hidButton = hud_element_create(&HES_AButton);
+        hidButton = hud_element_create(HES_AButton);
         data->buttonHID = hidButton;
         hud_element_set_render_depth(hidButton, 0);
         hud_element_set_flags(hidButton, HUD_ELEMENT_FLAG_MANUAL_RENDER);
         hud_element_set_tint(hidButton, 255, 255, 255);
-        hud_element_set_script(hidButton, &HES_AButton);
+        hud_element_set_script(hidButton, HES_AButton);
 
-        hidMeter = hud_element_create(&HES_BlueMeter);
+        hidMeter = hud_element_create(HES_BlueMeter);
         data->meterHID = hidMeter;
         hud_element_set_render_depth(hidMeter, 0);
         hud_element_set_flags(hidMeter, HUD_ELEMENT_FLAG_MANUAL_RENDER);
@@ -490,7 +490,7 @@ API_CALLABLE(N(RunMinigame)) {
                     }
                     break;
                 case BOX_STATE_FUZZY_HIT:
-                    hud_element_set_script(data->buttonHID, &HES_AButton);
+                    hud_element_set_script(data->buttonHID, HES_AButton);
                     hud_element_set_alpha(data->buttonHID, 160);
                     hud_element_set_alpha(data->meterHID, 160);
                     data->mashProgress = 0;
@@ -534,7 +534,7 @@ API_CALLABLE(N(RunMinigame)) {
                         npc->pos.x = gPlayerStatusPtr->pos.x;
                         npc->pos.y = gPlayerStatusPtr->pos.y + 28.0;
                         npc->pos.z = gPlayerStatusPtr->pos.z + 2.0;
-                        hud_element_set_script(data->buttonHID, &HES_MashAButton);
+                        hud_element_set_script(data->buttonHID, HES_MashAButton);
                         hud_element_set_alpha(data->buttonHID, 255);
                         hud_element_set_alpha(data->meterHID, 255);
                         data->box[i].state = BOX_STATE_FUZZY_GRAB;
@@ -551,7 +551,7 @@ API_CALLABLE(N(RunMinigame)) {
                         data->stunFlags |= STUN_FLAG_CHANGED;
                         data->box[i].state = BOX_STATE_FUZZY_DETACH;
                         npc->duration = 10;
-                        hud_element_set_script(data->buttonHID, &HES_AButton);
+                        hud_element_set_script(data->buttonHID, HES_AButton);
                         hud_element_set_alpha(data->buttonHID, 160);
                         hud_element_set_alpha(data->meterHID, 160);
                         npc->curAnim = ANIM_Fuzzy_Hurt;

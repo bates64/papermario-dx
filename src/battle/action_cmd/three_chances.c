@@ -75,17 +75,17 @@ HudScript HES_WaterBlock = HES_TEMPLATE_CI_ENUM_SIZE(battle_action_cmd_three_cha
 HudScript HES_TurboCharge = HES_TEMPLATE_CI_ENUM_SIZE(battle_action_cmd_three_chances_circle, 40, 40);
 HudScript HES_CloudNine = HES_TEMPLATE_CI_ENUM_SIZE(battle_action_cmd_three_chances_cloud, 40, 40);
 
-HudScript* DigitScripts[] = {
-    &HES_Digit0,
-    &HES_Digit1,
-    &HES_Digit2,
-    &HES_Digit3,
-    &HES_Digit4,
-    &HES_Digit4,
-    &HES_Digit4,
-    &HES_Digit4,
-    &HES_Digit4,
-    &HES_Digit4,
+HudScriptList DigitScripts = {
+    HES_Digit0,
+    HES_Digit1,
+    HES_Digit2,
+    HES_Digit3,
+    HES_Digit4,
+    HES_Digit4,
+    HES_Digit4,
+    HES_Digit4,
+    HES_Digit4,
+    HES_Digit4,
 };
 
 API_CALLABLE(N(init)) {
@@ -115,49 +115,49 @@ API_CALLABLE(N(init)) {
     acs->hudPosX = -48;
     acs->hudPosY = 80;
 
-    hid = hud_element_create(&HES_AButton);
+    hid = hud_element_create(HES_AButton);
     acs->hudElemIDs[HIDX_BUTTON] = hid;
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
     hud_element_set_render_depth(hid, 0);
 
-    hid = hud_element_create(&HES_TimingBar3Chances);
+    hid = hud_element_create(HES_TimingBar3Chances);
     acs->hudElemIDs[HIDX_FRAME] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY + 28);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    hid = hud_element_create(&HES_TimingWait);
+    hid = hud_element_create(HES_TimingWait);
     acs->hudElemIDs[HIDX_LIGHT_1] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY + 28);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    hid = hud_element_create(&HES_TimingWait);
+    hid = hud_element_create(HES_TimingWait);
     acs->hudElemIDs[HIDX_LIGHT_2] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY + 28);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    hid = hud_element_create(&HES_TimingWait);
+    hid = hud_element_create(HES_TimingWait);
     acs->hudElemIDs[HIDX_LIGHT_3] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY + 28);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    hid = hud_element_create(&HES_TimingOK);
+    hid = hud_element_create(HES_TimingOK);
     acs->hudElemIDs[HIDX_RATING_1] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    hid = hud_element_create(&HES_TimingOK);
+    hid = hud_element_create(HES_TimingOK);
     acs->hudElemIDs[HIDX_RATING_2] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    hid = hud_element_create(&HES_TimingOK);
+    hid = hud_element_create(HES_TimingOK);
     acs->hudElemIDs[HIDX_RATING_3] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
     hud_element_set_render_depth(hid, 0);
@@ -166,24 +166,24 @@ API_CALLABLE(N(init)) {
     acs->hudElemIDs[HIDX_DIGIT] = hud_element_create(DigitScripts[1]);
     hud_element_set_render_pos(acs->hudElemIDs[HIDX_DIGIT], acs->hudPosX, acs->hudPosY);
 
-    acs->hudElemIDs[HIDX_TICK_1] = hud_element_create(&HES_TimingCharge4c);
+    acs->hudElemIDs[HIDX_TICK_1] = hud_element_create(HES_TimingCharge4c);
     hud_element_set_render_pos(acs->hudElemIDs[HIDX_TICK_1], acs->hudPosX, acs->hudPosY);
 
-    hid = hud_element_create(&HES_TimingCharge4b);
+    hid = hud_element_create(HES_TimingCharge4b);
     acs->hudElemIDs[HIDX_TICK_2] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
 
     switch (acs->variation) {
         case ACV_THREE_CHANCES_WATER_BLOCK:
-            acs->hudElemIDs[HIDX_BUFF_ICON] = hud_element_create(&HES_WaterBlock);
+            acs->hudElemIDs[HIDX_BUFF_ICON] = hud_element_create(HES_WaterBlock);
             hid = acs->hudElemIDs[HIDX_BUFF_ICON];
             break;
         case ACV_THREE_CHANCES_TURBO_CHARGE:
-            acs->hudElemIDs[HIDX_BUFF_ICON] = hud_element_create(&HES_TurboCharge);
+            acs->hudElemIDs[HIDX_BUFF_ICON] = hud_element_create(HES_TurboCharge);
             hid = acs->hudElemIDs[HIDX_BUFF_ICON];
             break;
         case ACV_THREE_CHANCES_CLOUD_NINE:
-            acs->hudElemIDs[HIDX_BUFF_ICON] = hud_element_create(&HES_CloudNine);
+            acs->hudElemIDs[HIDX_BUFF_ICON] = hud_element_create(HES_CloudNine);
             hid = acs->hudElemIDs[HIDX_BUFF_ICON];
             break;
     }
@@ -333,18 +333,18 @@ void N(update)(void) {
 
             // first two minor ticks
             if (acs->stateTimer == 42) {
-                hud_element_set_script(acs->hudElemIDs[HIDX_TICK_1], &HES_TimingCharge3);
+                hud_element_set_script(acs->hudElemIDs[HIDX_TICK_1], HES_TimingCharge3);
                 sfx_play_sound(SOUND_TIMING_BAR_TICK);
             }
             if (acs->stateTimer == 22) {
-                hud_element_set_script(acs->hudElemIDs[HIDX_TICK_2], &HES_TimingCharge2);
+                hud_element_set_script(acs->hudElemIDs[HIDX_TICK_2], HES_TimingCharge2);
                 sfx_play_sound(SOUND_TIMING_BAR_TICK);
             }
 
             // activate the first light
             if (acs->stateTimer == 2) {
-                hud_element_set_script(acs->hudElemIDs[HIDX_LIGHT_1], &HES_TimingReady);
-                hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], &HES_AButtonDown);
+                hud_element_set_script(acs->hudElemIDs[HIDX_LIGHT_1], HES_TimingReady);
+                hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], HES_AButtonDown);
                 sfx_play_sound(SOUND_TIMING_BAR_GO);
             }
 
@@ -402,9 +402,9 @@ void N(update)(void) {
             ) {
                 hid = acs->hudElemIDs[HIDX_RATING_1];
                 if (acs->threeChances.hadCorrectTiming) {
-                    hud_element_set_script(hid, &HES_TimingOK);
+                    hud_element_set_script(hid, HES_TimingOK);
                 } else {
-                    hud_element_set_script(hid, &HES_TimingMiss);
+                    hud_element_set_script(hid, HES_TimingMiss);
                 }
                 hud_element_set_render_pos(hid, acs->hudPosX + 28, acs->hudPosY + 38);
                 hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
@@ -414,21 +414,21 @@ void N(update)(void) {
             if (acs->threeChances.time == -5) {
                 hid = acs->hudElemIDs[HIDX_RATING_1];
                 if (acs->threeChances.hadCorrectTiming) {
-                    hud_element_set_script(hid, &HES_TimingOK);
+                    hud_element_set_script(hid, HES_TimingOK);
                 } else {
-                    hud_element_set_script(hid, &HES_TimingMiss);
+                    hud_element_set_script(hid, HES_TimingMiss);
                 }
                 hud_element_set_render_pos(hid, acs->hudPosX + 28, acs->hudPosY + 38);
                 hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
-                hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], &HES_AButton);
+                hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], HES_AButton);
             }
 
             acs->threeChances.time--;
 
             // activate the second light just before the next state begins
             if (acs->stateTimer == 2) {
-                hud_element_set_script(acs->hudElemIDs[HIDX_LIGHT_2], &HES_TimingReady);
-                hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], &HES_AButtonDown);
+                hud_element_set_script(acs->hudElemIDs[HIDX_LIGHT_2], HES_TimingReady);
+                hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], HES_AButtonDown);
                 sfx_play_sound(SOUND_TIMING_BAR_GO);
             }
 
@@ -490,9 +490,9 @@ void N(update)(void) {
             ) {
                 hid = acs->hudElemIDs[HIDX_RATING_2];
                 if (acs->threeChances.hadCorrectTiming) {
-                    hud_element_set_script(hid, &HES_TimingOK);
+                    hud_element_set_script(hid, HES_TimingOK);
                 } else {
-                    hud_element_set_script(hid, &HES_TimingMiss);
+                    hud_element_set_script(hid, HES_TimingMiss);
                 }
                 hud_element_set_render_pos(hid, acs->hudPosX + 48, acs->hudPosY + 38);
                 hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
@@ -502,21 +502,21 @@ void N(update)(void) {
             if (acs->threeChances.time == -5) {
                 hid = acs->hudElemIDs[HIDX_RATING_2];
                 if (acs->threeChances.hadCorrectTiming) {
-                    hud_element_set_script(hid, &HES_TimingOK);
+                    hud_element_set_script(hid, HES_TimingOK);
                 } else {
-                    hud_element_set_script(hid, &HES_TimingMiss);
+                    hud_element_set_script(hid, HES_TimingMiss);
                 }
                 hud_element_set_render_pos(hid, acs->hudPosX + 48, acs->hudPosY + 38);
                 hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
-                hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], &HES_AButton);
+                hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], HES_AButton);
             }
 
             acs->threeChances.time--;
 
             // activate the third light just before the next state begins
             if (acs->stateTimer == 2) {
-                hud_element_set_script(acs->hudElemIDs[HIDX_LIGHT_3], &HES_TimingReady);
-                hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], &HES_AButtonDown);
+                hud_element_set_script(acs->hudElemIDs[HIDX_LIGHT_3], HES_TimingReady);
+                hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], HES_AButtonDown);
                 sfx_play_sound(SOUND_TIMING_BAR_GO);
             }
 
@@ -579,9 +579,9 @@ void N(update)(void) {
             ) {
                 hid = acs->hudElemIDs[HIDX_RATING_3];
                 if (acs->threeChances.hadCorrectTiming) {
-                    hud_element_set_script(hid, &HES_TimingOK);
+                    hud_element_set_script(hid, HES_TimingOK);
                 } else {
-                    hud_element_set_script(hid, &HES_TimingMiss);
+                    hud_element_set_script(hid, HES_TimingMiss);
                 }
                 hud_element_set_render_pos(hid, acs->hudPosX + 68, acs->hudPosY + 38);
                 hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
@@ -591,13 +591,13 @@ void N(update)(void) {
             if (acs->threeChances.time == -5) {
                 hid = acs->hudElemIDs[HIDX_RATING_3];
                 if (acs->threeChances.hadCorrectTiming) {
-                    hud_element_set_script(hid, &HES_TimingOK);
+                    hud_element_set_script(hid, HES_TimingOK);
                 } else {
-                    hud_element_set_script(hid, &HES_TimingMiss);
+                    hud_element_set_script(hid, HES_TimingMiss);
                 }
                 hud_element_set_render_pos(hid, acs->hudPosX + 68, acs->hudPosY + 38);
                 hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
-                hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], &HES_AButton);
+                hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], HES_AButton);
                 acs->state = THREE_CHANCES_STATE_WRAPUP;
                 return;
             }

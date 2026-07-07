@@ -23,7 +23,7 @@ MenuPanelDrawContentFunc pause_draw_cursor;
 BSS s32 gPauseHeldButtons;
 BSS s32 gPausePressedButtons;
 BSS s32 gPauseCurrentDescMsg;
-BSS HudScript* gPauseCurrentDescIconScript;
+BSS HudScriptPtr gPauseCurrentDescIconScript;
 BSS HudElemID gPauseCursorHID;
 BSS s8 gPauseMenuCurrentTab;
 
@@ -33,12 +33,12 @@ static s32 gPauseShownDescMsg;
 static s32 gPauseDescTextMaxPos;
 static s32 gPauseDescTextPos;
 static s32 gPauseDescTextOffset;
-static HudScript* gPauseShownDescIconScript;
+static HudScriptPtr gPauseShownDescIconScript;
 static s32 gPauseTutorialSprites[3];
 
-static HudScript* gPauseHudScripts[] = {
-    &HES_AnimatedCursorHand, &HES_DescMsgPrev, &HES_DescMsgNext, &HES_UnusedBadge,
-    &HES_StickTapRight, &HES_PressAButton, &HES_PressStartButton, &HES_StartButtonText
+static HudScriptList gPauseHudScripts = {
+    HES_AnimatedCursorHand, HES_DescMsgPrev, HES_DescMsgNext, HES_UnusedBadge,
+    HES_StickTapRight, HES_PressAButton, HES_PressStartButton, HES_StartButtonText
 };
 MenuPanel* gPausePanels[] = {
     &gPausePanelTabs, &gPausePanelStats, &gPausePanelBadges, &gPausePanelItems, &gPausePanelPartners,
@@ -607,7 +607,7 @@ void pause_init(void) {
 
     for (i = 0; i < ARRAY_COUNT(gPauseHudScripts); i++) {
         gPauseCommonHIDs[i] = hud_element_create(gPauseHudScripts[i]);
-        if (gPauseHudScripts[i] == &HES_AnimatedCursorHand) {
+        if (gPauseHudScripts[i] == HES_AnimatedCursorHand) {
             hud_element_set_flags(gPauseCommonHIDs[i], HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_MANUAL_RENDER);
         } else {
             hud_element_set_flags(gPauseCommonHIDs[i], HUD_ELEMENT_FLAG_MANUAL_RENDER);

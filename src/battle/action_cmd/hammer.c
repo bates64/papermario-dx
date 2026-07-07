@@ -38,43 +38,43 @@ API_CALLABLE(N(init)) {
     acs->hudPosX = -48;
     acs->hudPosY = 96;
 
-    hid = hud_element_create(&HES_TimingBar1Chance);
+    hid = hud_element_create(HES_TimingBar1Chance);
     acs->hudElemIDs[HIDX_FRAME] = hid;
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
     hud_element_set_render_depth(hid, 10);
 
-    hid = hud_element_create(&HES_TimingWait);
+    hid = hud_element_create(HES_TimingWait);
     acs->hudElemIDs[HIDX_WAIT] = hid;
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
     hud_element_set_render_depth(hid, 0);
 
-    hid = hud_element_create(&HES_TimingCharge4a);
+    hid = hud_element_create(HES_TimingCharge4a);
     acs->hudElemIDs[HIDX_CHARGE_A] = hid;
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
     hud_element_set_render_depth(hid, 0);
 
-    hid = hud_element_create(&HES_TimingCharge4b);
+    hid = hud_element_create(HES_TimingCharge4b);
     acs->hudElemIDs[HIDX_CHARGE_B] = hid;
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
     hud_element_set_render_depth(hid, 0);
 
-    hid = hud_element_create(&HES_TimingCharge4c);
+    hid = hud_element_create(HES_TimingCharge4c);
     acs->hudElemIDs[HIDX_CHARGE_C] = hid;
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
     hud_element_set_render_depth(hid, 0);
 
-    hid = hud_element_create(&HES_StickHoldLeft);
+    hid = hud_element_create(HES_StickHoldLeft);
     acs->hudElemIDs[HIDX_STICK] = hid;
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
     hud_element_set_render_depth(hid, 0);
 
-    hid = hud_element_create(&HES_RightOn);
+    hid = hud_element_create(HES_RightOn);
     acs->hudElemIDs[HIDX_RIGHT_ON] = hid;
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
@@ -227,7 +227,7 @@ void N(update)(void) {
             oneThird = (acs->duration - new_var) / 3;
 
             if (acs->stateTimer < oneThird) {
-                hud_element_set_script(acs->hudElemIDs[HIDX_CHARGE_C], &HES_TimingCharge3);
+                hud_element_set_script(acs->hudElemIDs[HIDX_CHARGE_C], HES_TimingCharge3);
                 battleStatus->actionProgress = 0;
                 if (acs->stateTimer == 0) {
                     if (acs->playHammerSounds) {
@@ -235,7 +235,7 @@ void N(update)(void) {
                     }
                 }
             } else if (acs->stateTimer < oneThird * 2) {
-                hud_element_set_script(acs->hudElemIDs[HIDX_CHARGE_B], &HES_TimingCharge2);
+                hud_element_set_script(acs->hudElemIDs[HIDX_CHARGE_B], HES_TimingCharge2);
                 battleStatus->actionProgress = 1;
                 if (acs->stateTimer == oneThird) {
                     if (acs->playHammerSounds) {
@@ -243,7 +243,7 @@ void N(update)(void) {
                     }
                 }
             } else if (acs->stateTimer < oneThird * 3) {
-                hud_element_set_script(acs->hudElemIDs[HIDX_CHARGE_A], &HES_TimingCharge1);
+                hud_element_set_script(acs->hudElemIDs[HIDX_CHARGE_A], HES_TimingCharge1);
                 battleStatus->actionProgress = 2;
                 if (acs->stateTimer == oneThird * 2) {
                     if (acs->playHammerSounds) {
@@ -254,8 +254,8 @@ void N(update)(void) {
 
             if (acs->stateTimer == (-(inputWindow + 1) + acs->duration)) {
                 battleStatus->actionProgress = 3;
-                hud_element_set_script(acs->hudElemIDs[HIDX_WAIT], &HES_TimingReady);
-                hud_element_set_script(acs->hudElemIDs[HIDX_STICK], &HES_StickTapNeutral);
+                hud_element_set_script(acs->hudElemIDs[HIDX_WAIT], HES_TimingReady);
+                hud_element_set_script(acs->hudElemIDs[HIDX_STICK], HES_StickTapNeutral);
                 if (acs->playHammerSounds) {
                     sfx_play_sound(SOUND_TIMING_BAR_GO);
                 }

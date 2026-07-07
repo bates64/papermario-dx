@@ -363,8 +363,8 @@ EvtScript N(EVS_ReturnHome_Miss) = {
     End
 };
 
-HudScript* N(AimDotHudScripts)[] = {
-    &HES_AimBlinkA
+HudScriptList N(AimDotHudScripts) = {
+    HES_AimBlinkA
 };
 
 API_CALLABLE(N(SpinyFlipUpdatePopup)) {
@@ -417,14 +417,14 @@ API_CALLABLE(N(SpinyFlipActionCommand)) {
 
     switch (script->functionTemp[0]) {
         case SPINY_FLIP_INIT:
-            HID_AimReticle = hud_element_create(&HES_AimReticle);
+            HID_AimReticle = hud_element_create(HES_AimReticle);
             hud_element_set_render_depth(HID_AimReticle, 10);
-            HID_AimTarget = hud_element_create(&HES_AimTarget);
+            HID_AimTarget = hud_element_create(HES_AimTarget);
             hud_element_set_render_depth(HID_AimTarget, 10);
             hud_element_create_transform_A(HID_AimTarget);
             HudStickPosX = -48;
             HudStickPosY = 70;
-            HID_AnalogStick = hid = hud_element_create(&HES_StickNeutral);
+            HID_AnalogStick = hid = hud_element_create(HES_StickNeutral);
             hud_element_set_render_pos(hid, HudStickPosX, HudStickPosY);
             hud_element_set_render_depth(hid, 0);
             for (i = 0; i < ARRAY_COUNT(N(AimDotHudScripts)); i++) {
@@ -473,7 +473,7 @@ API_CALLABLE(N(SpinyFlipActionCommand)) {
                 AimingTime--;
             } else {
                 AimingTime = (s32)(80 * DT);
-                hud_element_set_script(HID_AnalogStick, &HES_StickTapRight);
+                hud_element_set_script(HID_AnalogStick, HES_StickTapRight);
                 sfx_play_sound_at_position(SOUND_AIM_SPINY_FLIP, SOUND_SPACE_DEFAULT, 0.0f, 0.0f, 0.0f);
                 script->functionTemp[0] = SPINY_FLIP_AIMING;
             }

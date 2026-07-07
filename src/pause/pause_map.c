@@ -32,7 +32,7 @@ static s32 PauseMapCursorCurrentOption;
 static s32 PauseMapCursorCurrentOptionCopy;
 static s32 PauseMapSpacesInSnapRange;
 
-HudScript* PauseMapHudScripts[] = { &HES_MapWalk0 };
+HudScriptList PauseMapHudScripts = { HES_MapWalk0 };
 s32 D_8024FA34 = -1;
 
 #include "world_map.inc.c"

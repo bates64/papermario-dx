@@ -48,23 +48,23 @@ extern HudScript HES_HeaderSpirits_es;
 extern HudScript HES_HeaderMap_es;
 #endif
 
-HudScript* gPauseTabsHudScripts[][6] = {
+HudScriptPtr gPauseTabsHudScripts[][6] = {
     [LANGUAGE_DEFAULT] = {
-        &HES_HeaderStats, &HES_HeaderBadges, &HES_HeaderItems,
-        &HES_HeaderParty, &HES_HeaderSpirits, &HES_HeaderMap
+        HES_HeaderStats, HES_HeaderBadges, HES_HeaderItems,
+        HES_HeaderParty, HES_HeaderSpirits, HES_HeaderMap
     },
 #if VERSION_PAL
     [LANGUAGE_DE] = {
-        &HES_HeaderStats_de, &HES_HeaderBadges_de, &HES_HeaderItems_de,
-        &HES_HeaderParty_de, &HES_HeaderSpirits_de, &HES_HeaderMap_de
+        HES_HeaderStats_de, HES_HeaderBadges_de, HES_HeaderItems_de,
+        HES_HeaderParty_de, HES_HeaderSpirits_de, HES_HeaderMap_de
     },
     [LANGUAGE_FR] = {
-        &HES_HeaderStats_fr, &HES_HeaderBadges_fr, &HES_HeaderItems_fr,
-        &HES_HeaderParty_fr, &HES_HeaderSpirits_fr, &HES_HeaderMap_fr
+        HES_HeaderStats_fr, HES_HeaderBadges_fr, HES_HeaderItems_fr,
+        HES_HeaderParty_fr, HES_HeaderSpirits_fr, HES_HeaderMap_fr
     },
     [LANGUAGE_ES] = {
-        &HES_HeaderStats_es, &HES_HeaderBadges_es, &HES_HeaderItems_es,
-        &HES_HeaderParty_es, &HES_HeaderSpirits_es, &HES_HeaderMap_es
+        HES_HeaderStats_es, HES_HeaderBadges_es, HES_HeaderItems_es,
+        HES_HeaderParty_es, HES_HeaderSpirits_es, HES_HeaderMap_es
     },
 #endif
 };

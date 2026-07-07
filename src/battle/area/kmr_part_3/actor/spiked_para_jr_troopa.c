@@ -560,7 +560,7 @@ API_CALLABLE(N(ShowPointerHudElem)) {
     Bytecode* args = script->ptrReadPos;
     f32 posX = evt_get_float_variable(script, *args++);
     f32 posY = evt_get_float_variable(script, *args++);
-    HudElemID hid = hud_element_create(&HES_AnimatedHandPointer);
+    HudElemID hid = hud_element_create(HES_AnimatedHandPointer);
 
     hud_element_set_render_pos(hid, posX, posY);
     hud_element_set_scale(hid, 1.5f);

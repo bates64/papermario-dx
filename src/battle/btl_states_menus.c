@@ -114,49 +114,49 @@ extern HudScript HES_SwapArrowRight;
 extern HudScript HES_SwapBackground;
 extern HudScript HES_SwapZ;
 
-IconHudScriptPair ItemsHudScripts = { &HES_MenuItem, &HES_MenuItemDisabled };
+IconHudScriptPair ItemsHudScripts = { HES_MenuItem, HES_MenuItemDisabled };
 
-IconHudScriptPair StarPowersHudScripts = { &HES_MenuStarPower, &HES_MenuStarPowerDisabled };
+IconHudScriptPair StarPowersHudScripts = { HES_MenuStarPower, HES_MenuStarPowerDisabled };
 
 IconHudScriptPair StarPowerMovesHudScripts[] = {
-    { &HES_MenuStarPower,   &HES_MenuStarPowerDisabled },
-    { &HES_Eldstar,         &HES_EldstarDisabled },
-    { &HES_Mamar,           &HES_MamarDisabled },
-    { &HES_Skolar,          &HES_SkolarDisabled },
-    { &HES_Muskular,        &HES_MuskularDisabled },
-    { &HES_Misstar,         &HES_MisstarDisabled },
-    { &HES_Klevar,          &HES_KlevarDisabled },
-    { &HES_Kalmar,          &HES_KalmarDisabled },
-    { &HES_StarBeam,        &HES_StarBeamDisabled },
-    { &HES_PeachBeam,       &HES_PeachBeamDisabled },
-    { &HES_MenuStarPower,   &HES_MenuStarPowerDisabled },
-    { &HES_MenuStarPower,   &HES_MenuStarPowerDisabled },
+    { HES_MenuStarPower,   HES_MenuStarPowerDisabled },
+    { HES_Eldstar,         HES_EldstarDisabled },
+    { HES_Mamar,           HES_MamarDisabled },
+    { HES_Skolar,          HES_SkolarDisabled },
+    { HES_Muskular,        HES_MuskularDisabled },
+    { HES_Misstar,         HES_MisstarDisabled },
+    { HES_Klevar,          HES_KlevarDisabled },
+    { HES_Kalmar,          HES_KalmarDisabled },
+    { HES_StarBeam,        HES_StarBeamDisabled },
+    { HES_PeachBeam,       HES_PeachBeamDisabled },
+    { HES_MenuStarPower,   HES_MenuStarPowerDisabled },
+    { HES_MenuStarPower,   HES_MenuStarPowerDisabled },
 };
 
 IconHudScriptPair PartnerHudScripts[] = {
-    { &HES_Partner0,        &HES_Partner0Disabled },
-    { &HES_Goombario,       &HES_GoombarioDisabled },
-    { &HES_Kooper,          &HES_KooperDisabled },
-    { &HES_Bombette,        &HES_BombetteDisabled },
-    { &HES_Parakarry,       &HES_ParakarryDisabled },
-    { &HES_Partner0,        &HES_Partner0Disabled },
-    { &HES_Watt,            &HES_WattDisabled },
-    { &HES_Sushie,          &HES_SushieDisabled },
-    { &HES_Lakilester,      &HES_LakilesterDisabled },
-    { &HES_Bow,             &HES_BowDisabled },
-    { &HES_PartnerA,        &HES_PartnerADisabled },
-    { &HES_PartnerA,        &HES_PartnerADisabled },
-    { &HES_PartnerA,        &HES_PartnerADisabled },
-    { &HES_PartnerA,        &HES_PartnerADisabled },
-    { &HES_PartnerA,        &HES_PartnerADisabled },
-    { &HES_PartnerA,        &HES_PartnerADisabled }
+    { HES_Partner0,        HES_Partner0Disabled },
+    { HES_Goombario,       HES_GoombarioDisabled },
+    { HES_Kooper,          HES_KooperDisabled },
+    { HES_Bombette,        HES_BombetteDisabled },
+    { HES_Parakarry,       HES_ParakarryDisabled },
+    { HES_Partner0,        HES_Partner0Disabled },
+    { HES_Watt,            HES_WattDisabled },
+    { HES_Sushie,          HES_SushieDisabled },
+    { HES_Lakilester,      HES_LakilesterDisabled },
+    { HES_Bow,             HES_BowDisabled },
+    { HES_PartnerA,        HES_PartnerADisabled },
+    { HES_PartnerA,        HES_PartnerADisabled },
+    { HES_PartnerA,        HES_PartnerADisabled },
+    { HES_PartnerA,        HES_PartnerADisabled },
+    { HES_PartnerA,        HES_PartnerADisabled },
+    { HES_PartnerA,        HES_PartnerADisabled }
 };
 
-IconHudScriptPair StrategiesHudScripts = { &HES_MenuStrategies, &HES_MenuStrategiesDisabled };
+IconHudScriptPair StrategiesHudScripts = { HES_MenuStrategies, HES_MenuStrategiesDisabled };
 
-IconHudScriptPair DoNothingHudScripts = { &HES_MenuDoNothing, &HES_MenuDoNothingDisabled };
+IconHudScriptPair DoNothingHudScripts = { HES_MenuDoNothing, HES_MenuDoNothingDisabled };
 
-IconHudScriptPair FleeHudScripts = { &HES_MenuFlee, &HES_MenuFleeDisabled };
+IconHudScriptPair FleeHudScripts = { HES_MenuFlee, HES_MenuFleeDisabled };
 
 s32 LeftJustMenuMessages[] = {
     MSG_Menus_Jump,
@@ -222,7 +222,7 @@ BSS f32 BattleMenu_WheelAngle;
 BSS f32 BattleMenu_WheelSpeed;
 BSS b32 BattleMenu_ShowSwapIcons;
 
-BSS HudScript* WheelOptionHudScript[MENU_CAPACITY];
+BSS HudScriptPtr WheelOptionHudScript[MENU_CAPACITY];
 BSS HudElemID HID_OptionIcons[MENU_CAPACITY];
 BSS HudElemID HID_Spotlights[MENU_CAPACITY];
 BSS MsgID WheelOptionName[MENU_CAPACITY];
@@ -304,7 +304,7 @@ s32 btl_main_menu_update(void) {
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
                 hud_element_set_scale(hid, 0.75f);
 
-                HID_Spotlights[i] = hid = hud_element_create(&HES_ProjectorSpot);
+                HID_Spotlights[i] = hid = hud_element_create(HES_ProjectorSpot);
                 hud_element_create_transform_B(hid);
                 hud_element_set_render_depth(hid, 10);
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
@@ -312,14 +312,14 @@ s32 btl_main_menu_update(void) {
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
             }
 
-            HID_HighlightSpot = hid = hud_element_create(&HES_ProjectorSpot);
+            HID_HighlightSpot = hid = hud_element_create(HES_ProjectorSpot);
             hud_element_create_transform_B(hid);
             hud_element_set_render_depth(hid, 7);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
 
-            HID_ProjectorReelA = hid = hud_element_create(&HES_ProjectorReel);
+            HID_ProjectorReelA = hid = hud_element_create(HES_ProjectorReel);
             hud_element_create_transform_B(hid);
             hud_element_set_render_depth(hid, 0);
             hud_element_set_render_pos(hid, 40, 212);
@@ -329,7 +329,7 @@ s32 btl_main_menu_update(void) {
             hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_alpha(hid, 240);
 
-            HID_ProjectorReelB = hid = hud_element_create(&HES_ProjectorReel);
+            HID_ProjectorReelB = hid = hud_element_create(HES_ProjectorReel);
             hud_element_create_transform_B(hid);
             hud_element_set_render_depth(hid, 2);
             hud_element_set_render_pos(hid, 39, 212);
@@ -339,7 +339,7 @@ s32 btl_main_menu_update(void) {
             hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_alpha(hid, 240);
 
-            HID_ProjectorBeam = hid = hud_element_create(&HES_ProjectorBeam);
+            HID_ProjectorBeam = hid = hud_element_create(HES_ProjectorBeam);
             hud_element_create_transform_B(hid);
             hud_element_set_render_depth(hid, 20);
             hud_element_set_render_pos(hid, 78, 178);
@@ -351,7 +351,7 @@ s32 btl_main_menu_update(void) {
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
 
-            HID_SwapBackground = hid = hud_element_create(&HES_SwapBackground);
+            HID_SwapBackground = hid = hud_element_create(HES_SwapBackground);
             hud_element_set_render_depth(hid, 0);
             hud_element_set_render_pos(hid, 97, 208);
             hud_element_set_tint(hid, 255, 255, 255);
@@ -359,19 +359,19 @@ s32 btl_main_menu_update(void) {
             hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_alpha(hid, 230);
 
-            HID_SwapZ = hid = hud_element_create(&HES_SwapZ);
+            HID_SwapZ = hid = hud_element_create(HES_SwapZ);
             hud_element_set_render_depth(hid, 5);
             hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, 94, 209);
 
-            HID_SwapArrowLeft = hid = hud_element_create(&HES_SwapArrowLeft);
+            HID_SwapArrowLeft = hid = hud_element_create(HES_SwapArrowLeft);
             hud_element_set_render_depth(hid, 5);
             hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, 81, 210);
 
-            HID_SwapArrowRight = hid = hud_element_create(&HES_SwapArrowRight);
+            HID_SwapArrowRight = hid = hud_element_create(HES_SwapArrowRight);
             hud_element_set_render_depth(hid, 5);
             hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);

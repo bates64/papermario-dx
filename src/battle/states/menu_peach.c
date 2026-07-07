@@ -15,7 +15,7 @@ enum {
     BTL_SUBSTATE_CREATE_MAIN_MENU               = 11,
 };
 
-IconHudScriptPair PeachStarPowerHudScripts = { &HES_MenuStarPower, &HES_MenuStarPowerDisabled };
+IconHudScriptPair PeachStarPowerHudScripts = { HES_MenuStarPower, HES_MenuStarPowerDisabled };
 
 s32 PeachMenuMessages[] = {
     MSG_Menus_Focus_Centered,

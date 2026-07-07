@@ -31,14 +31,14 @@ API_CALLABLE(N(init)) {
     acs->wrongButtonPressed = false;
     acs->hudPosY = 80;
 
-    hid = hud_element_create(&HES_AButton);
+    hid = hud_element_create(HES_AButton);
     acs->hudElemIDs[HIDX_BUTTON] = hid;
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_alpha(hid, 255);
 
-    hid = hud_element_create(&HES_RightOn);
+    hid = hud_element_create(HES_RightOn);
     acs->hudElemIDs[HIDX_RIGHT_ON] = hid;
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
@@ -129,7 +129,7 @@ void N(update)(void) {
             // show the A button being pressed two frames before input is allowed
             successWindow = battleStatus->actionCmdDifficultyTable[acs->difficulty];
             if (((acs->prepareTime - successWindow) - 2) <= 0) {
-                hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], &HES_AButtonDown);
+                hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], HES_AButtonDown);
             }
             // inputs during this state will cause the action to fail
             if ((battleStatus->curButtonsPressed & BUTTON_A) && !acs->autoSucceed) {

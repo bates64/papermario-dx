@@ -49,23 +49,23 @@ extern u8 D_PAL_80271B4C[];
 extern u8 D_PAL_80271B50[];
 #endif
 
-HudScript* gPausePartnersHudScripts[][8] = {
+HudScriptPtr gPausePartnersHudScripts[][8] = {
     [LANGUAGE_DEFAULT] = {
-        &HES_FPCost, &HES_StatFp_1, &HES_PartnerRank, &HES_PartnerRank,
-        &HES_MoveDiamond, &HES_MoveBlueOrb, &HES_MoveGreenOrb, &HES_MoveRedOrb
+        HES_FPCost, HES_StatFp_1, HES_PartnerRank, HES_PartnerRank,
+        HES_MoveDiamond, HES_MoveBlueOrb, HES_MoveGreenOrb, HES_MoveRedOrb
     },
 #if VERSION_PAL
     [LANGUAGE_DE] = {
-        &HES_FPCost_de, &HES_StatFp_1, &HES_PartnerRank, &HES_PartnerRank,
-        &HES_MoveDiamond, &HES_MoveBlueOrb, &HES_MoveGreenOrb, &HES_MoveRedOrb
+        HES_FPCost_de, HES_StatFp_1, HES_PartnerRank, HES_PartnerRank,
+        HES_MoveDiamond, HES_MoveBlueOrb, HES_MoveGreenOrb, HES_MoveRedOrb
     },
     [LANGUAGE_FR] = {
-        &HES_FPCost_fr, &HES_StatFp_1, &HES_PartnerRank, &HES_PartnerRank,
-        &HES_MoveDiamond, &HES_MoveBlueOrb, &HES_MoveGreenOrb, &HES_MoveRedOrb
+        HES_FPCost_fr, HES_StatFp_1, HES_PartnerRank, HES_PartnerRank,
+        HES_MoveDiamond, HES_MoveBlueOrb, HES_MoveGreenOrb, HES_MoveRedOrb
     },
     [LANGUAGE_ES] = {
-        &HES_FPCost_es, &HES_StatFp_1, &HES_PartnerRank, &HES_PartnerRank,
-        &HES_MoveDiamond, &HES_MoveBlueOrb, &HES_MoveGreenOrb, &HES_MoveRedOrb
+        HES_FPCost_es, HES_StatFp_1, HES_PartnerRank, HES_PartnerRank,
+        HES_MoveDiamond, HES_MoveBlueOrb, HES_MoveGreenOrb, HES_MoveRedOrb
     },
 #endif
 };

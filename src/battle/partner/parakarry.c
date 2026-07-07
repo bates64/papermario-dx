@@ -73,66 +73,66 @@ API_CALLABLE(N(ShellShotActionCommand)) {
 
     switch (script->functionTemp[0]) {
         case 0:
-            hudMarkers[0] = hid = hud_element_create(&HES_AimMarkerF);
+            hudMarkers[0] = hid = hud_element_create(HES_AimMarkerF);
             hud_element_set_render_depth(hid, 10);
             hud_element_set_render_pos(hid, -100, -100);
 
-            hudMarkers[1] = hid = hud_element_create(&HES_AimMarkerE);
+            hudMarkers[1] = hid = hud_element_create(HES_AimMarkerE);
             hud_element_set_render_depth(hid, 10);
             hud_element_set_render_pos(hid, -100, -100);
 
-            hudMarkers[2] = hid = hud_element_create(&HES_AimMarkerD);
+            hudMarkers[2] = hid = hud_element_create(HES_AimMarkerD);
             hud_element_set_render_depth(hid, 10);
             hud_element_set_render_pos(hid, -100, -100);
 
-            hudMarkers[3] = hid = hud_element_create(&HES_AimMarkerC);
+            hudMarkers[3] = hid = hud_element_create(HES_AimMarkerC);
             hud_element_set_render_depth(hid, 10);
             hud_element_set_render_pos(hid, -100, -100);
 
-            hudMarkers[4] = hid = hud_element_create(&HES_AimMarkerB);
+            hudMarkers[4] = hid = hud_element_create(HES_AimMarkerB);
             hud_element_set_render_depth(hid, 10);
             hud_element_set_render_pos(hid, -100, -100);
 
-            hudMarkers[5] = hid = hud_element_create(&HES_AimMarkerA);
+            hudMarkers[5] = hid = hud_element_create(HES_AimMarkerA);
             hud_element_set_render_depth(hid, 10);
             hud_element_set_render_pos(hid, -100, -100);
 
-            hudMarkers[6] = hid = hud_element_create(&HES_AimReticle);
+            hudMarkers[6] = hid = hud_element_create(HES_AimReticle);
             hud_element_set_render_depth(hid, 10);
             hud_element_set_render_pos(hid, -100, -100);
 
-            hudShimmers[0] = hid = hud_element_create(&HES_AimShimmerF);
+            hudShimmers[0] = hid = hud_element_create(HES_AimShimmerF);
             hud_element_set_render_depth(hid, 9);
             hud_element_set_render_pos(hid, -100, -100);
 
-            hudShimmers[1] = hid = hud_element_create(&HES_AimShimmerE);
+            hudShimmers[1] = hid = hud_element_create(HES_AimShimmerE);
             hud_element_set_render_depth(hid, 9);
             hud_element_set_render_pos(hid, -100, -100);
 
-            hudShimmers[2] = hid = hud_element_create(&HES_AimShimmerD);
+            hudShimmers[2] = hid = hud_element_create(HES_AimShimmerD);
             hud_element_set_render_depth(hid, 9);
             hud_element_set_render_pos(hid, -100, -100);
 
-            hudShimmers[3] = hid = hud_element_create(&HES_AimShimmerC);
+            hudShimmers[3] = hid = hud_element_create(HES_AimShimmerC);
             hud_element_set_render_depth(hid, 9);
             hud_element_set_render_pos(hid, -100, -100);
 
-            hudShimmers[4] = hid = hud_element_create(&HES_AimShimmerB);
+            hudShimmers[4] = hid = hud_element_create(HES_AimShimmerB);
             hud_element_set_render_depth(hid, 9);
             hud_element_set_render_pos(hid, -100, -100);
 
-            hudShimmers[5] = hid = hud_element_create(&HES_AimShimmerA);
+            hudShimmers[5] = hid = hud_element_create(HES_AimShimmerA);
             hud_element_set_render_depth(hid, 9);
             hud_element_set_render_pos(hid, -100, -100);
 
-            hudTarget = hid = hud_element_create(&HES_AimTarget);
+            hudTarget = hid = hud_element_create(HES_AimTarget);
             hud_element_set_render_depth(hid, 10);
             hud_element_create_transform_A(hudTarget);
             hud_element_set_render_pos(hid, -100, -100);
             hudStickPosX = -48;
             hudStickPosY = 80;
 
-            hudStick = hid = hud_element_create(&HES_StickHoldLeft);
+            hudStick = hid = hud_element_create(HES_StickHoldLeft);
             hud_element_set_render_pos(hid, hudStickPosX, hudStickPosY);
             hud_element_set_render_depth(hid, 0);
 
@@ -298,9 +298,9 @@ API_CALLABLE(N(ShellShotActionCommand)) {
             aimAngle = fabsf(clampedAngleDiff) / state->unk_24 * targetActor->scalingFactor;
 
             if (aimAngle < 7.0f) {
-                hud_element_set_script(hid, &HES_StickNeutral);
+                hud_element_set_script(hid, HES_StickNeutral);
             } else {
-                hud_element_set_script(hid, &HES_StickHoldLeft);
+                hud_element_set_script(hid, HES_StickHoldLeft);
             }
 
             hudStickPosX += 20;

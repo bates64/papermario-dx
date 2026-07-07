@@ -86,35 +86,35 @@ extern HudScript HES_OptionMonoOff_es;
 extern HudScript HES_OptionStereoOn_es;
 extern HudScript HES_OptionStereoOff_es;
 
-HudScript* filemenu_main_hudScripts[][20] = {
+HudScriptPtr filemenu_main_hudScripts[][20] = {
     [LANGUAGE_DEFAULT] = {
-        &HES_Spirit1, &HES_Spirit2, &HES_Spirit3, &HES_Spirit4, &HES_Spirit5, &HES_Spirit6, &HES_Spirit7,
-        &HES_Spirit1Missing, &HES_Spirit2Missing, &HES_Spirit3Missing, &HES_Spirit4Missing, &HES_Spirit5Missing,
-        &HES_Spirit6Missing, &HES_Spirit7Missing, &HES_JpFile, &HES_JpFileDisabled, &HES_OptionMonoOn,
-        &HES_OptionMonoOff,
-        &HES_OptionStereoOn, &HES_OptionStereoOff,
+        HES_Spirit1, HES_Spirit2, HES_Spirit3, HES_Spirit4, HES_Spirit5, HES_Spirit6, HES_Spirit7,
+        HES_Spirit1Missing, HES_Spirit2Missing, HES_Spirit3Missing, HES_Spirit4Missing, HES_Spirit5Missing,
+        HES_Spirit6Missing, HES_Spirit7Missing, HES_JpFile, HES_JpFileDisabled, HES_OptionMonoOn,
+        HES_OptionMonoOff,
+        HES_OptionStereoOn, HES_OptionStereoOff,
     },
 #if VERSION_PAL
     [LANGUAGE_DE] = {
-        &HES_Spirit1, &HES_Spirit2, &HES_Spirit3, &HES_Spirit4, &HES_Spirit5, &HES_Spirit6, &HES_Spirit7,
-        &HES_Spirit1Missing, &HES_Spirit2Missing, &HES_Spirit3Missing, &HES_Spirit4Missing, &HES_Spirit5Missing,
-        &HES_Spirit6Missing, &HES_Spirit7Missing, &HES_JpFile, &HES_JpFileDisabled, &HES_OptionMonoOn_de,
-        &HES_OptionMonoOff_de,
-        &HES_OptionStereoOn_de, &HES_OptionStereoOff_de,
+        HES_Spirit1, HES_Spirit2, HES_Spirit3, HES_Spirit4, HES_Spirit5, HES_Spirit6, HES_Spirit7,
+        HES_Spirit1Missing, HES_Spirit2Missing, HES_Spirit3Missing, HES_Spirit4Missing, HES_Spirit5Missing,
+        HES_Spirit6Missing, HES_Spirit7Missing, HES_JpFile, HES_JpFileDisabled, HES_OptionMonoOn_de,
+        HES_OptionMonoOff_de,
+        HES_OptionStereoOn_de, HES_OptionStereoOff_de,
     },
     [LANGUAGE_FR] = {
-        &HES_Spirit1, &HES_Spirit2, &HES_Spirit3, &HES_Spirit4, &HES_Spirit5, &HES_Spirit6, &HES_Spirit7,
-        &HES_Spirit1Missing, &HES_Spirit2Missing, &HES_Spirit3Missing, &HES_Spirit4Missing, &HES_Spirit5Missing,
-        &HES_Spirit6Missing, &HES_Spirit7Missing, &HES_JpFile, &HES_JpFileDisabled, &HES_OptionMonoOn_fr,
-        &HES_OptionMonoOff_fr,
-        &HES_OptionStereoOn_fr, &HES_OptionStereoOff_fr,
+        HES_Spirit1, HES_Spirit2, HES_Spirit3, HES_Spirit4, HES_Spirit5, HES_Spirit6, HES_Spirit7,
+        HES_Spirit1Missing, HES_Spirit2Missing, HES_Spirit3Missing, HES_Spirit4Missing, HES_Spirit5Missing,
+        HES_Spirit6Missing, HES_Spirit7Missing, HES_JpFile, HES_JpFileDisabled, HES_OptionMonoOn_fr,
+        HES_OptionMonoOff_fr,
+        HES_OptionStereoOn_fr, HES_OptionStereoOff_fr,
     },
     [LANGUAGE_ES] = {
-        &HES_Spirit1, &HES_Spirit2, &HES_Spirit3, &HES_Spirit4, &HES_Spirit5, &HES_Spirit6, &HES_Spirit7,
-        &HES_Spirit1Missing, &HES_Spirit2Missing, &HES_Spirit3Missing, &HES_Spirit4Missing, &HES_Spirit5Missing,
-        &HES_Spirit6Missing, &HES_Spirit7Missing, &HES_JpFile, &HES_JpFileDisabled, &HES_OptionMonoOn_es,
-        &HES_OptionMonoOff_es,
-        &HES_OptionStereoOn_es, &HES_OptionStereoOff_es,
+        HES_Spirit1, HES_Spirit2, HES_Spirit3, HES_Spirit4, HES_Spirit5, HES_Spirit6, HES_Spirit7,
+        HES_Spirit1Missing, HES_Spirit2Missing, HES_Spirit3Missing, HES_Spirit4Missing, HES_Spirit5Missing,
+        HES_Spirit6Missing, HES_Spirit7Missing, HES_JpFile, HES_JpFileDisabled, HES_OptionMonoOn_es,
+        HES_OptionMonoOff_es,
+        HES_OptionStereoOn_es, HES_OptionStereoOff_es,
     }
 #endif
 };

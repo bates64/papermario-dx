@@ -47,19 +47,19 @@ API_CALLABLE(N(init)) {
     acs->hudPosX = -48;
     acs->hudPosY = 80;
 
-    hid = hud_element_create(&HES_AButton);
+    hid = hud_element_create(HES_AButton);
     acs->hudElemIDs[HIDX_BUTTON] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    hid = hud_element_create(&HES_BlueMeter);
+    hid = hud_element_create(HES_BlueMeter);
     acs->hudElemIDs[HIDX_METER] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY + 28);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    hid = hud_element_create(&HES_100pct);
+    hid = hud_element_create(HES_100pct);
     acs->hudElemIDs[HIDX_100_PCT] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY + 28);
     hud_element_set_render_depth(hid, 0);
@@ -140,7 +140,7 @@ void N(update)(void) {
                 acs->prepareTime--;
                 return;
             }
-            hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], &HES_MashAButton);
+            hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], HES_MashAButton);
             acs->meterFillLevel = 0;
             acs->stateTimer = acs->duration;
             sfx_play_sound_with_params(SOUND_LOOP_CHARGE_METER, 0, 0, 0);

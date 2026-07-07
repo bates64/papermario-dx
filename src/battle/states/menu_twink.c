@@ -18,7 +18,7 @@ enum {
     BTL_SUBSTATE_CREATE_MAIN_MENU               = 11,
 };
 
-IconHudScriptPair TwinkStarPowerHudScripts = { &HES_MenuStarPower, &HES_MenuStarPowerDisabled };
+IconHudScriptPair TwinkStarPowerHudScripts = { HES_MenuStarPower, HES_MenuStarPowerDisabled };
 
 s32 TwinkMenuMessages[] = {
     MSG_Menus_Dash_Centered,

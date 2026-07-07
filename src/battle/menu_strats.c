@@ -33,7 +33,7 @@ BSS s16 StratsMenuPosY;
 BSS s8 StratsMenuState;
 BSS s32 StratsPrevSelected; // index of previously selected option, set by caller before initializing the menu
 
-BSS HudScript* StratsOptionHudScripts[MENU_CAPACITY];
+BSS HudScriptPtr StratsOptionHudScripts[MENU_CAPACITY];
 BSS s32 StratsOptionHIDs[MENU_CAPACITY];
 BSS s32 StratsOptionNames[MENU_CAPACITY];
 BSS s32 StratsOptionMenuTypes[MENU_CAPACITY];
@@ -131,7 +131,7 @@ void btl_submenu_strats_resume_choose(void) {
     hud_element_set_tint(HID_StratsCursor, 255, 255, 255);
     hud_element_set_tint(HID_StratsArrowUp, 255, 255, 255);
     hud_element_set_tint(HID_StratsArrowDown, 255, 255, 255);
-    hud_element_set_script(HID_StratsCursor, &HES_AnimatedHandPointer);
+    hud_element_set_script(HID_StratsCursor, HES_AnimatedHandPointer);
     set_window_update(WIN_BTL_STRATS_MENU, WINDOW_UPDATE_TRANSPARENT);
     set_window_update(WIN_BTL_STRATS_TITLE, WINDOW_UPDATE_TRANSPARENT);
     set_window_update(WIN_BTL_DESC_BOX, WINDOW_UPDATE_SHOW);
@@ -157,7 +157,7 @@ void btl_submenu_strats_restore_choose(void) {
     hud_element_set_tint(HID_StratsCursor, 255, 255, 255);
     hud_element_set_tint(HID_StratsArrowUp, 255, 255, 255);
     hud_element_set_tint(HID_StratsArrowDown, 255, 255, 255);
-    hud_element_set_script(HID_StratsCursor, &HES_AnimatedHandPointer);
+    hud_element_set_script(HID_StratsCursor, HES_AnimatedHandPointer);
     StratsTextColor = MSG_PAL_STANDARD;
     StratsDescVisible = true;
     StratsMenuState = BTL_SUBMENU_STATE_RESTORE;
@@ -194,15 +194,15 @@ s32 btl_submenu_strats_update(void) {
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
             }
 
-            HID_StratsCursor = hid = hud_element_create(&HES_AnimatedHandPointer);
+            HID_StratsCursor = hid = hud_element_create(HES_AnimatedHandPointer);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, StratsMenuPosX, StratsMenuPosY);
 
-            HID_StratsArrowUp = hid = hud_element_create(&HES_GreenArrowUp);
+            HID_StratsArrowUp = hid = hud_element_create(HES_GreenArrowUp);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, StratsMenuPosX + 39, StratsMenuPosY - 7);
 
-            HID_StratsArrowDown = hid = hud_element_create(&HES_GreenArrowDown);
+            HID_StratsArrowDown = hid = hud_element_create(HES_GreenArrowDown);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, StratsMenuPosX + 39, StratsMenuPosY + 78);
 
@@ -287,7 +287,7 @@ s32 btl_submenu_strats_update(void) {
             hud_element_set_tint(HID_StratsCursor, 160, 160, 160);
             hud_element_set_tint(HID_StratsArrowUp, 160, 160, 160);
             hud_element_set_tint(HID_StratsArrowDown, 160, 160, 160);
-            hud_element_set_script(HID_StratsCursor, &HES_HandPointer);
+            hud_element_set_script(HID_StratsCursor, HES_HandPointer);
             StratsTextColor = MSG_PAL_0D;
             set_window_update(WIN_BTL_STRATS_MENU, WINDOW_UPDATE_DARKENED);
             set_window_update(WIN_BTL_STRATS_TITLE, WINDOW_UPDATE_DARKENED);

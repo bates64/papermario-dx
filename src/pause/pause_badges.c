@@ -51,39 +51,39 @@ static s32 gPauseBadgesIconIDs[22];
 #define OFFSET_3_Y 74
 #endif
 
-HudScript* gPauseBadgesElements[][22] = {
+HudScriptPtr gPauseBadgesElements[][22] = {
     [LANGUAGE_DEFAULT] = {
-        &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-        &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-        &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-        &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-        &HES_StatBp, &HES_ListPrevPage, &HES_ListNextPage,
-        &HES_Dash, &HES_LabelBpNeeded, &HES_StatusStar1
+        HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+        HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+        HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+        HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+        HES_StatBp, HES_ListPrevPage, HES_ListNextPage,
+        HES_Dash, HES_LabelBpNeeded, HES_StatusStar1
     },
 #if VERSION_PAL
     [LANGUAGE_DE] = {
-        &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-        &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-        &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-        &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-        &HES_StatBp, &HES_ListPrevPage, &HES_ListNextPage,
-        &HES_Dash, &HES_LabelBpNeeded_de, &HES_StatusStar1
+        HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+        HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+        HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+        HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+        HES_StatBp, HES_ListPrevPage, HES_ListNextPage,
+        HES_Dash, HES_LabelBpNeeded_de, HES_StatusStar1
     },
     [LANGUAGE_FR] = {
-        &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-        &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-        &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-        &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-        &HES_StatBp, &HES_ListPrevPage, &HES_ListNextPage,
-        &HES_Dash, &HES_LabelBpNeeded_fr, &HES_StatusStar1
+        HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+        HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+        HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+        HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+        HES_StatBp, HES_ListPrevPage, HES_ListNextPage,
+        HES_Dash, HES_LabelBpNeeded_fr, HES_StatusStar1
     },
     [LANGUAGE_ES] = {
-        &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-        &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-        &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-        &HES_StatBp, &HES_StatBp, &HES_StatBp, &HES_StatBp,
-        &HES_StatBp, &HES_ListPrevPage, &HES_ListNextPage,
-        &HES_Dash, &HES_LabelBpNeeded_es, &HES_StatusStar1
+        HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+        HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+        HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+        HES_StatBp, HES_StatBp, HES_StatBp, HES_StatBp,
+        HES_StatBp, HES_ListPrevPage, HES_ListNextPage,
+        HES_Dash, HES_LabelBpNeeded_es, HES_StatusStar1
     },
 #endif
 };

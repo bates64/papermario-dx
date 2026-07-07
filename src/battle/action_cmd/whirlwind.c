@@ -61,12 +61,12 @@ s32 N(DrainRateTable1)[] = { 50, 50, 50, 50, 75, 75, 75, 100, 100, 100, 100 };
 #define GET_DRAIN_RATE_HUFF(pct)    (N(DrainRateTable0)[((pct) / (ONE_PCT_MASH / 5))])
 #define GET_DRAIN_RATE_BUZZAR(pct)  (N(DrainRateTable1)[((pct) / (ONE_PCT_MASH / 10))])
 
-HudScript* N(HuffDigits)[] = {
-    &HES_Whirlwind7, &HES_Whirlwind6, &HES_Whirlwind5, &HES_Whirlwind4, &HES_Whirlwind3, &HES_Whirlwind2
+HudScriptList N(HuffDigits) = {
+    HES_Whirlwind7, HES_Whirlwind6, HES_Whirlwind5, HES_Whirlwind4, HES_Whirlwind3, HES_Whirlwind2
 };
 
-HudScript* N(BuzzarDigits)[] = {
-    &HES_Whirlwind1, &HES_Whirlwind1, &HES_Whirlwind2, &HES_Whirlwind3, &HES_Whirlwind3
+HudScriptList N(BuzzarDigits) = {
+    HES_Whirlwind1, HES_Whirlwind1, HES_Whirlwind2, HES_Whirlwind3, HES_Whirlwind3
 };
 
 s32 N(BuzzarQuality)[] = { 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 1 };
@@ -99,25 +99,25 @@ API_CALLABLE(N(init)) {
     acs->hudPosX = -48;
     acs->hudPosY = 80;
 
-    hid = hud_element_create(&HES_AButton);
+    hid = hud_element_create(HES_AButton);
     acs->hudElemIDs[HIDX_BUTTON] = hid;
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
     hud_element_set_render_depth(hid, 0);
 
-    hid = hud_element_create(&HES_BlueMeter);
+    hid = hud_element_create(HES_BlueMeter);
     acs->hudElemIDs[HIDX_METER] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY + 28);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    hid = hud_element_create(&HES_Whirlwind7);
+    hid = hud_element_create(HES_Whirlwind7);
     acs->hudElemIDs[HIDX_DIGIT] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX + 54, acs->hudPosY + 28);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    hid = hud_element_create(&HES_WhirlwindBubble);
+    hid = hud_element_create(HES_WhirlwindBubble);
     acs->hudElemIDs[HIDX_BUBBLE] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX + 60, acs->hudPosY + 28);
     hud_element_set_render_depth(hid, 0);
@@ -214,7 +214,7 @@ void N(update)(void) {
                 acs->prepareTime--;
                 return;
             }
-            hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], &HES_MashAButton);
+            hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], HES_MashAButton);
             acs->meterFillLevel = 0;
             acs->state = AC_STATE_ACTIVE;
             acs->stateTimer = acs->duration;
