@@ -46,7 +46,10 @@ SHN_UNDEF = 0
 R_MIPS_32 = 2
 
 BYTECODE_SIZE = 4
-ARGC_MASK = 0xFFFF
+OPCODE_SHIFT = 24
+ARGC_SHIFT = 16
+ARGC_MASK = 0xFF
+LINE_MASK = 0xFFFF
 EVT_MAX_NUM_LABELS = 24
 EVT_MAX_LABEL_NAME_LEN = 64
 MAX_LOOP_DEPTH = 8
@@ -271,6 +274,38 @@ class ValidationError(Exception):
     pass
 
 
+def stderr_supports_color() -> bool:
+    return True
+
+
+def error_prefix() -> str:
+    if stderr_supports_color():
+        return "\033[1;31merror:\033[0m"
+    return "error:"
+
+
+def highlight_error_message(message: str) -> str:
+    if not stderr_supports_color():
+        return message
+
+    head, sep, tail = message.rpartition(": ")
+    if not sep:
+        return f"\033[1;31m{message}\033[0m"
+    return f"{head}{sep}\033[1;31m{tail}\033[0m"
+
+
+def format_cli_error(
+    error: Exception, current_object: Path | None, objects: list[Path]
+) -> str:
+    if isinstance(error, ValidationError):
+        return highlight_error_message(str(error))
+    if current_object is not None:
+        return highlight_error_message(f"{current_object}: {error}")
+    if objects:
+        return highlight_error_message(f"{', '.join(str(path) for path in objects)}: {error}")
+    return highlight_error_message(str(error))
+
+
 def c_string(data: bytes, offset: int) -> str:
     end = data.find(b"\0", offset)
     if end < 0:
@@ -448,7 +483,7 @@ def is_candidate_symbol(symbol: Symbol, regex: re.Pattern[str]) -> bool:
         return False
     if symbol.type != STT_OBJECT:
         return False
-    if symbol.size < 3 * BYTECODE_SIZE or symbol.size % BYTECODE_SIZE != 0:
+    if symbol.size < BYTECODE_SIZE or symbol.size % BYTECODE_SIZE != 0:
         return False
     return bool(regex.search(symbol.name))
 
@@ -465,8 +500,16 @@ def word_at(data: bytes, word_index: int) -> int:
     return signed_word(data, word_index * BYTECODE_SIZE)
 
 
-def line_from_raw_argc(raw_argc: int) -> int:
-    return (raw_argc >> 16) & 0xFFFF
+def opcode_from_raw_cmd(raw_cmd: int) -> int:
+    return (raw_cmd >> OPCODE_SHIFT) & 0xFF
+
+
+def argc_from_raw_cmd(raw_cmd: int) -> int:
+    return (raw_cmd >> ARGC_SHIFT) & ARGC_MASK
+
+
+def line_from_raw_cmd(raw_cmd: int) -> int:
+    return raw_cmd & LINE_MASK
 
 
 def is_label_initial_byte(ch: int) -> bool:
@@ -747,23 +790,24 @@ def validate_script(elf: Elf32, script: ScriptSymbol, data: bytes) -> None:
     words = len(data) // BYTECODE_SIZE
     read_pos = 0
     end_pos = None
+    end_op_pos = None
     ctx = ScriptWalkContext(script)
     op_lines: dict[int, int] = {}
     end_line = None
 
     while read_pos < words:
         op_pos = read_pos
-        if read_pos + 2 > words:
+        if read_pos + 1 > words:
             raise ValidationError(f"{format_script_site(script, op_pos)}: truncated command header")
 
-        opcode_value = word_at(data, read_pos)
-        raw_argc = unsigned_word(data, (read_pos + 1) * BYTECODE_SIZE)
-        argc = raw_argc & ARGC_MASK
-        line = line_from_raw_argc(raw_argc)
+        raw_cmd = unsigned_word(data, read_pos * BYTECODE_SIZE)
+        opcode_value = opcode_from_raw_cmd(raw_cmd)
+        argc = argc_from_raw_cmd(raw_cmd)
+        line = line_from_raw_cmd(raw_cmd)
         ctx.current_line = line if line else None
         if line:
             op_lines[op_pos] = line
-        read_pos += 2
+        read_pos += 1
 
         try:
             opcode = Opcode(opcode_value)
@@ -786,6 +830,7 @@ def validate_script(elf: Elf32, script: ScriptSymbol, data: bytes) -> None:
 
         if opcode == Opcode.EVT_OP_END:
             end_pos = read_pos
+            end_op_pos = op_pos
             end_line = ctx.current_line
             break
 
@@ -840,14 +885,14 @@ def validate_script(elf: Elf32, script: ScriptSymbol, data: bytes) -> None:
             f"{format_script_symbol(script)}: unclosed {block.kind} block opened at +0x{block.start_pos * 4:X}"
             + (f" (source line {block_line})" if block_line else "")
             + " "
-            f"before End at +0x{(end_pos - 3) * 4:X}"
+            f"before End at +0x{end_op_pos * 4:X}"
             + (f" (source line {end_line})" if end_line else "")
         )
 
     trailing_words = words - end_pos
     if trailing_words:
         raise ValidationError(
-            f"{format_script_symbol(script)}: {trailing_words * BYTECODE_SIZE} unreachable byte(s) after End at +0x{(end_pos - 3) * 4:X}"
+            f"{format_script_symbol(script)}: {trailing_words * BYTECODE_SIZE} unreachable byte(s) after End at +0x{end_op_pos * 4:X}"
             + (f" (source line {end_line})" if end_line else "")
         )
 
@@ -924,11 +969,7 @@ def main() -> int:
             args.out.parent.mkdir(parents=True, exist_ok=True)
             args.out.write_text(f"{checked}\n")
     except (ElfError, OSError, ValidationError, re.error) as e:
-        if current_object is None:
-            target = ", ".join(str(path) for path in objects)
-        else:
-            target = current_object
-        print(f"evt_validate_obj: {target}: {e}", file=sys.stderr)
+        print(f"{error_prefix()} {format_cli_error(e, current_object, objects)}", file=sys.stderr)
         return 1
     return 0
 

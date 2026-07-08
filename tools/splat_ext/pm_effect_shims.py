@@ -36,6 +36,7 @@ glabel {name}
         type,
         name,
         vram_start,
+        bss_size,
         args,
         yaml,
     ):
@@ -47,6 +48,7 @@ glabel {name}
             vram_start,
             args=args,
             yaml=yaml,
+            bss_size=bss_size,
         )
 
         with open(options.opts.src_path / "effect_shims.yaml") as f:

@@ -74,6 +74,7 @@ class N64SegPm_map_data(Segment):
         type,
         name,
         vram_start,
+        bss_size,
         args,
         yaml,
     ):
@@ -85,6 +86,7 @@ class N64SegPm_map_data(Segment):
             vram_start,
             args=args,
             yaml=yaml,
+            bss_size=bss_size,
         )
 
         if "ver/ique" in str(options.opts.target_path):

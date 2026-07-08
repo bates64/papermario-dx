@@ -70,6 +70,20 @@ def posix(path) -> str:
     return str(path).replace("\\", "/")
 
 
+def evt_validation_output_path(obj_path: Path) -> Path:
+    parts = obj_path.parts
+    build_index = parts.index("build")
+    return Path(*parts[:build_index], "evtcheck", *parts[build_index + 1:])
+
+
+def evt_validation_stamp_path(obj_path: Path) -> str:
+    return posix(evt_validation_output_path(obj_path).with_suffix(".validate_evt.stamp"))
+
+
+def evt_validation_display_path(obj_path: Path) -> str:
+    return posix(evt_validation_output_path(obj_path).with_suffix(""))
+
+
 def exec_shell(command: List[str]) -> str:
     ret = subprocess.run(
         command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
@@ -187,7 +201,7 @@ def write_ninja_rules(
 
     ninja.rule(
         "evt_validate_obj",
-        description="Validating EvtScript bytecode in $out",
+        description="Validating scripts in $evt_target",
         command=f"$python {BUILD_TOOLS}/evt_validate_obj.py --object-list $out.rsp --out $out",
         rspfile="$out.rsp",
         rspfile_content="$in_newline",
@@ -602,7 +616,6 @@ class Configure:
         assert self.linker_entries is not None
 
         built_objects = set()
-        evt_validation_inputs = set()
         evt_validation_stamps = []
         generated_code = []
         inc_img_bins = []
@@ -675,7 +688,19 @@ class Configure:
                 if evt_validation and task in ["cc_modern", "cxx_modern"]:
                     for object_path in object_paths:
                         if object_path.suffixes[-1] == ".o":
-                            evt_validation_inputs.add(posix(object_path))
+                            evt_validation_stamp = evt_validation_stamp_path(object_path)
+                            if len(src_paths) == 1:
+                                evt_target = posix(src_paths[0])
+                            else:
+                                evt_target = evt_validation_display_path(object_path)
+                            evt_validation_stamps.append(evt_validation_stamp)
+                            ninja.build(
+                                evt_validation_stamp,
+                                "evt_validate_obj",
+                                [posix(object_path)],
+                                implicit=[posix(BUILD_TOOLS / "evt_validate_obj.py")],
+                                variables={"evt_target": evt_target},
+                            )
 
         # Effect data includes
         effect_yaml = ROOT / "src/effects.yaml"
@@ -1460,16 +1485,6 @@ class Configure:
             posix(self.version_path / "undefined_syms.txt"),
         )
 
-        if evt_validation_inputs:
-            evt_validation_stamp = posix(self.build_path() / "validate_evt.stamp")
-            evt_validation_stamps.append(evt_validation_stamp)
-            ninja.build(
-                outputs=evt_validation_stamp,
-                rule="evt_validate_obj",
-                inputs=sorted(evt_validation_inputs),
-                implicit=[posix(BUILD_TOOLS / "evt_validate_obj.py")],
-            )
-
         # Build elf, z64, ok
         additional_objects = [posix(self.undefined_syms_path())]
 
@@ -1607,7 +1622,7 @@ class Configure:
             ovl_path = build_dir / f"{name}.ovl"
             debug_syms_path = build_dir / f"{name}.ovl.debug_syms"
             objects = []
-            overlay_evt_validation_stamp = None
+            overlay_evt_validation_stamps = []
 
             c_files = []
             if src_path.is_dir():
@@ -1644,20 +1659,20 @@ class Configure:
                     },
                 )
                 if evt_validation:
-                    overlay_evt_validation_stamp = posix(build_dir / "validate_evt.stamp")
+                    evt_validation_stamp = evt_validation_stamp_path(obj_path)
+                    evt_validation_stamps.append(evt_validation_stamp)
+                    overlay_evt_validation_stamps.append(evt_validation_stamp)
+                    ninja.build(
+                        evt_validation_stamp,
+                        "evt_validate_obj",
+                        [posix(obj_path)],
+                        implicit=[posix(BUILD_TOOLS / "evt_validate_obj.py")],
+                        variables={"evt_target": posix(c_file)},
+                    )
                 objects.append(posix(obj_path))
 
             if len(objects) == 0:
                 continue
-
-            if overlay_evt_validation_stamp is not None:
-                evt_validation_stamps.append(overlay_evt_validation_stamp)
-                ninja.build(
-                    overlay_evt_validation_stamp,
-                    "evt_validate_obj",
-                    objects,
-                    implicit=[posix(BUILD_TOOLS / "evt_validate_obj.py")],
-                )
 
             link_addr = "0x80000000"
             if type_index == 1:  # maps
@@ -1667,8 +1682,7 @@ class Configure:
                 posix(ovl_path),
                 "ovl_link_convert",
                 objects,
-                implicit=[posix(self.syms_path())]
-                + ([overlay_evt_validation_stamp] if overlay_evt_validation_stamp else []),
+                implicit=[posix(self.syms_path())] + overlay_evt_validation_stamps,
                 implicit_outputs=[posix(debug_syms_path)],
                 variables={
                     "syms": posix(self.syms_path()),

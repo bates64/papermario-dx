@@ -139,8 +139,9 @@ void find_script_labels(Evt* script) {
     }
 
     while (true) {
-        s32 opcode = *curLine++;
-        s32 numArgs = EVT_CMD_ARGC(*curLine++);
+        s32 rawCmd = *curLine++;
+        s32 opcode = EVT_CMD_OPCODE(rawCmd);
+        s32 numArgs = EVT_CMD_ARGC(rawCmd);
         Bytecode* args = curLine;
 
         curLine += numArgs;

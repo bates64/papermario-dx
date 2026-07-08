@@ -2511,7 +2511,8 @@ void dx_debug_evt_draw_disasm() {
         }
 
         op = *pos++;
-        nargs = EVT_CMD_ARGC(*pos++);
+        nargs = EVT_CMD_ARGC(op);
+        op = EVT_CMD_OPCODE(op);
         pos += nargs;
 
         DebugEvtLineCount++;
@@ -2528,7 +2529,8 @@ void dx_debug_evt_draw_disasm() {
     for (i = DebugEvtDrawLine; i < last; i++) {
         pos = DebugEvtAttached->ptrFirstLine + DebugEvtLineOffsets[i];
         op = *pos++;
-        nargs = EVT_CMD_ARGC(*pos++);
+        nargs = EVT_CMD_ARGC(op);
+        op = EVT_CMD_OPCODE(op);
         s32* args = pos;
         pos += nargs;
 

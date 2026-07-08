@@ -6,10 +6,20 @@
 // Should be at least the width of a pointer i.e. intptr_t
 typedef s32 Bytecode;
 
-// The argc word in EVT bytecode encodes both the argument count (low 16 bits)
-// and the source line number (high 16 bits) for crash diagnostics.
-#define EVT_CMD_ARGC(raw) ((raw) & 0xFFFF)
-#define EVT_CMD_LINE(raw) ((u32)(raw) >> 16)
+// Pack the opcode, argc, and source line number into a single word for denser bytecode.
+#define EVT_CMD_HEADER(opcode, argc, line) \
+    ((Bytecode)(((((u32)(opcode)) & 0xFF) << 24) | ((((u32)(argc)) & 0xFF) << 16) | (((u32)(line)) & 0xFFFF)))
+#define EVT_CMD_OPCODE(raw) (((u32)(raw) >> 24) & 0xFF)
+#define EVT_CMD_ARGC(raw)   (((u32)(raw) >> 16) & 0xFF)
+#define EVT_CMD_LINE(raw)   ((u32)(raw) & 0xFFFF)
+
+/// Helper for calculating command arg counts
+#define EVT_CMD_COUNT(argv...) (sizeof((Bytecode[]){argv}) / sizeof(Bytecode))
+
+/// This macro expands to a packed header of the given opcode and arguments with argc calculated automatically.
+#define EVT_CMD(opcode, argv...) \
+    EVT_CMD_HEADER((opcode), EVT_CMD_COUNT(argv), __LINE__), \
+    ##argv
 
 enum {
     EVT_OP_INTERNAL_FETCH,

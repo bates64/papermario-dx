@@ -1309,8 +1309,9 @@ Bytecode* evt_find_thread_block_end(Bytecode* startLine, s32 endOpcode) {
     s32 nestedDepth = 0;
 
     while (true) {
-        s32 opcode = *endLine++;
-        s32 nargs = EVT_CMD_ARGC(*endLine++);
+        s32 rawCmd = *endLine++;
+        s32 opcode = EVT_CMD_OPCODE(rawCmd);
+        s32 nargs = EVT_CMD_ARGC(rawCmd);
 
         endLine += nargs;
 
@@ -1530,8 +1531,8 @@ s32 evt_execute_next_command(Evt* script) {
             case EVT_OP_INTERNAL_FETCH:
                 script->ptrCurLine = script->ptrNextLine;
                 lines = script->ptrNextLine;
-                script->curOpcode = *lines++;
                 nargs = *lines++;
+                script->curOpcode = EVT_CMD_OPCODE(nargs);
                 script->curLine = EVT_CMD_LINE(nargs);
                 nargs = EVT_CMD_ARGC(nargs);
                 script->ptrReadPos = lines;
@@ -2244,12 +2245,13 @@ Bytecode* evt_find_label(Evt* script, s32 arg) {
 Bytecode* evt_skip_if(Evt* script) {
     s32 nestedIfDepth = 0;
     Bytecode* pos = script->ptrNextLine;
-    Bytecode opcode;
+    s32 opcode;
     s32 nargs;
 
     do {
-        opcode = *pos++;
-        nargs = EVT_CMD_ARGC(*pos++);
+        s32 rawCmd = *pos++;
+        opcode = EVT_CMD_OPCODE(rawCmd);
+        nargs = EVT_CMD_ARGC(rawCmd);
         pos += nargs;
 
         switch (opcode) {
@@ -2283,12 +2285,13 @@ Bytecode* evt_skip_if(Evt* script) {
 Bytecode* evt_skip_else(Evt* script) {
     s32 nestedIfDepth = 0;
     Bytecode* pos = script->ptrNextLine;
-    Bytecode opcode;
+    s32 opcode;
     s32 nargs;
 
     do {
-        opcode = *pos++;
-        nargs = EVT_CMD_ARGC(*pos++);
+        s32 rawCmd = *pos++;
+        opcode = EVT_CMD_OPCODE(rawCmd);
+        nargs = EVT_CMD_ARGC(rawCmd);
         pos += nargs;
 
         switch (opcode) {
@@ -2331,15 +2334,17 @@ Bytecode* evt_skip_else(Evt* script) {
 Bytecode* evt_goto_end_case(Evt* script) {
     s32 switchDepth = 1;
     Bytecode* pos = script->ptrNextLine;
-    s32* opcode;
-    s32* nargs;
+    Bytecode* cmd;
+    s32 opcode;
+    s32 nargs;
 
     do {
-        opcode = pos++;
-        nargs = pos++;
-        pos += EVT_CMD_ARGC(*nargs);
+        cmd = pos++;
+        opcode = EVT_CMD_OPCODE(*cmd);
+        nargs = EVT_CMD_ARGC(*cmd);
+        pos += nargs;
 
-        switch (*opcode) {
+        switch (opcode) {
             case EVT_OP_END:
                 PANIC();
                 break;
@@ -2349,7 +2354,7 @@ Bytecode* evt_goto_end_case(Evt* script) {
             case EVT_OP_END_SWITCH:
                 switchDepth--;
                 if (switchDepth == 0) {
-                    return opcode;
+                    return cmd;
                 }
                 break;
         }
@@ -2359,15 +2364,17 @@ Bytecode* evt_goto_end_case(Evt* script) {
 Bytecode* evt_goto_next_case(Evt* script) {
     s32 switchDepth = 1;
     Bytecode* pos = script->ptrNextLine;
-    s32* opcode;
-    s32* nargs;
+    Bytecode* cmd;
+    s32 opcode;
+    s32 nargs;
 
     do {
-        opcode = pos++;
-        nargs = pos++;
-        pos += EVT_CMD_ARGC(*nargs);
+        cmd = pos++;
+        opcode = EVT_CMD_OPCODE(*cmd);
+        nargs = EVT_CMD_ARGC(*cmd);
+        pos += nargs;
 
-        switch (*opcode) {
+        switch (opcode) {
             case EVT_OP_END:
                 PANIC();
                 break;
@@ -2377,7 +2384,7 @@ Bytecode* evt_goto_next_case(Evt* script) {
             case EVT_OP_END_SWITCH:
                 switchDepth--;
                 if (switchDepth == 0) {
-                    return opcode;
+                    return cmd;
                 }
                 break;
             case EVT_OP_CASE_EQ:
@@ -2392,7 +2399,7 @@ Bytecode* evt_goto_next_case(Evt* script) {
             case EVT_OP_END_CASE_GROUP:
             case EVT_OP_CASE_RANGE:
                 if (switchDepth == 1) {
-                    return opcode;
+                    return cmd;
                 }
                 break;
         }
@@ -2406,8 +2413,9 @@ Bytecode* evt_goto_end_loop(Evt* script) {
     s32 nargs;
 
     do {
-        opcode = *pos++;
-        nargs = EVT_CMD_ARGC(*pos++);
+        s32 rawCmd = *pos++;
+        opcode = EVT_CMD_OPCODE(rawCmd);
+        nargs = EVT_CMD_ARGC(rawCmd);
         pos += nargs;
 
         switch (opcode) {
