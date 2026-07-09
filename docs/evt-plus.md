@@ -1,0 +1,481 @@
+# EVT Plus
+
+This branch adds new quality of life features and capabilities to EVT scripts to make them more robust and increase readability while staying reverse compatible and optional.
+
+The primary features are:
+
+- a compile-time (and optional) EVT validator
+- argument passing from Exec to child scripts through `ArgVar`
+- variadic arithmetic expressions: `A = B + C + D` or `A = B / C`
+- quick in-line functional interface for C helpers `Eval`, `EvalF`, `Invoke`, `InvokeF`, `IfEval`, and `IfEvalF`
+- new purpose for vector convenience macros using adjacent EVT variables
+- smaller bytecode via packing opcode, argc, and linenum into command header
+
+## Preview
+
+Vanilla EVT needs a temporary local variable just to express a simple calculation:
+
+```c
+Set(LVar0, GF_KKJ19_AddedSugar)
+Add(LVar0, GF_KKJ19_AddedEgg)
+Add(LVar0, GF_KKJ19_AddedNothingWrong)
+```
+
+With variadic arithmetic, that can become:
+
+```c
+Add(LVar0, GF_KKJ19_AddedSugar, GF_KKJ19_AddedEgg, GF_KKJ19_AddedNothingWrong)
+```
+
+Vanilla EVT also needs many tiny `API_CALLABLE` wrappers whose only job is to read arguments, do a calculation, write one LVar, and return:
+
+```c
+API_CALLABLE(N(PullVine_UpdatePosition)) {
+    Bytecode* args = script->ptrReadPos;
+    f32 x1 = evt_get_float_variable(script, *args++);
+    f32 x2 = evt_get_float_variable(script, *args++);
+
+    evt_set_float_variable(script, *args++, (x2 - x1) / 10.0f);
+    return ApiStatus_DONE2;
+}
+
+Call(N(PullVine_UpdatePosition), LVar0, Float(-15.0), LVar2)
+```
+
+With `EvalF`, the helper can be a normal typed C function, with cleaner and consistent position for the return value var and named type parameters:
+
+```c
+static f32 N(PullVine_UpdatePosition)(f32 cur, f32 target) {
+    return (target - cur) / 10.0f;
+}
+
+EvalF(LVar2, N(PullVine_UpdatePosition), LVar0, Float(-15.0))
+```
+
+For boolean helpers, `IfEval` and `IfEvalF` remove the throwaway output LVar:
+
+```c
+static b32 N(IsWithinVineTrigger)(
+    f32 playerX, f32 playerY, f32 playerZ,
+    f32 vineX, f32 vineY, f32 vineZ
+) {
+    f32 dx = playerX - vineX;
+    f32 dy = playerY - vineY;
+    f32 dz = playerZ - vineZ;
+
+    return SQ(dx) + SQ(dy) + SQ(dz) < SQ(60.0f);
+}
+
+Call(GetPlayerPos, EVT_AS_VEC3(LVar0))
+IfNotEvalF(N(IsWithinVineTrigger), EVT_AS_VEC3(LVar0), EVT_AS_VEC3(LVar3))
+    Wait(1)
+    Goto("WaitForPlayer")
+EndIf
+```
+
+## 1. EvtScript Validation
+
+A compile-time structural validator for EvtScripts has been added in `tools/build/evt_validate_obj.py`. This can be disabled completely, or individual scripts can opt-out by *not* following the naming convention `EVS_*`.
+
+The validator catches problems that would crash or cause undefined behavior, as well as unhygienic syntax which was technically valid but unintentional:
+
+- missing `End`
+- commands after `End`
+- unknown opcodes
+- malformed or truncated commands
+- wrong argument counts
+- unclosed or mismatched `If`/`Else`/`EndIf`
+- unclosed or mismatched `Loop`/`EndLoop`
+- unclosed or mismatched `Switch`/`EndSwitch`
+- loop and switch nesting deeper than runtime limits
+- invalid case groups
+- `BreakLoop` outside loops
+- `BreakSwitch` or `Case` outside switches
+- unclosed `Thread` or `ChildThread` blocks
+- duplicate labels
+- label counts beyond runtime limits
+- `Goto` with no matching label
+- invalid string label references
+- invalid Exec args
+- invalid functions for Eval/Invoke
+
+The validator has its own focused test suite:
+
+```sh
+python3 tools/evt_test/run_tests.py
+```
+
+Fixtures live in:
+
+- `tools/evt_test/pass/` for scripts that should compile and validate
+- `tools/evt_test/fail/` for scripts that should fail validation
+- each fail test has a `.stderr` with expected error messages
+
+## 2. Exec with Arguments
+
+`Exec`, `ExecGetTID`, and `ExecWait` can now pass arguments to the child script. The child reads them through `ArgVar(index)` or the shorthand names `ArgVar0` through `ArgVar7`. Since the storage for them is dynamically allocated, any number of arguments (that is, up to ~250 literals) may be passed and accessed through `ArgVar(index)`.
+
+```c
+EvtScript N(EVS_Child) = {
+    ExpectArgs(3)
+    Call(SetNpcPos, NPC_SELF, ArgVar0, ArgVar1, ArgVar2)
+    Return
+    End
+};
+
+EvtScript N(EVS_Parent) = {
+    Exec(N(EVS_Child), 100, 20, -50)
+    Return
+    End
+};
+```
+
+`ExpectArgs(NUM_ARGS)` is a runtime assertion which documents the expected arg count and loudly catches accidental mismatches.
+
+### Literal by Default
+
+Arguments could be passed as either int-var, float-var, or constant. The vanilla pattern is to use `Set`/`SetF`/`SetConst` to handle these different possibilities without ambiguity. Exec-with-args in this branch resolves this by passing all arguments as literal words by default:
+
+```c
+Set(LVar0, 12)
+Exec(N(EVS_Child), LVar0) // child ArgVar0 is 0xFE363C80 (LVar0)
+```
+
+The child receives the literal encoded word `LVar0`, not the current value `12`. That preserves pointer constants, variable identifiers, refs, and other EVT bytecode values exactly as written.
+
+When you want the current integer value of an expression, wrap it with `ARG_INT`:
+
+```c
+Set(LVar0, 12)
+Exec(N(EVS_Child), ARG_INT(LVar0)) // child ArgVar0 is 12
+```
+
+When you want the current float value of an expression, wrap it with `ARG_FLOAT`:
+
+```c
+SetF(LVar1, Float(1.5))
+Exec(N(EVS_Child), ARG_FLOAT(LVar1)) // child ArgVar0 is Float(1.5)
+```
+
+When properly wrapped, the child can read this float var like any other:
+
+```c
+EvtScript N(EVS_Child) = {
+    ExpectArgs(1)
+    AddF(LVar0, ArgVar0)
+    Return
+    End
+};
+```
+
+### ArgVars are Read-Only
+
+`ArgVar` values are intended to be call inputs. Reading them is fine; writing to them is not. `evt_set_variable` and `evt_set_float_variable` will panic if asked to write to an ArgVar.
+
+Copy them to an LVar if the child needs a mutable working copy:
+
+```c
+Set(LVar0, ArgVar0)
+Add(LVar0, 1)
+```
+
+They cannot be made *truly* immutable (a determined and misguided modder can still access them directly in c), but no engine function will ever write to them after they have been passed to the child script.
+
+### ArgVars are Not Passed to Grandchildren
+
+Unlike LVars, the ArgVars of a child script are NOT passed to any of its own children, nor returned in any way to the parent. When combined with their read-only property, this provided a handy way to have guaranteed immutable values for the duration of a script's lifetime.
+
+## 3. Variadic Arithmetic
+
+The arithmetic opcodes still support their original two-argument mutating form, but they also accept expression forms.
+
+### Add and AddF
+
+Two arguments preserve the old behavior:
+
+```c
+Add(LVar0, 5)  // LVar0 += 5
+AddF(LVar1, Float(0.5))
+```
+
+More than two arguments add all inputs and store the result:
+
+```c
+Add(LVar0, LVar1, LVar2, 10)                // LVar0 = LVar1 + LVar2 + 10
+AddF(LVar3, LVar4, Float(1.0), Float(2.0))  // LVar3 = LVar4 + 1.0 + 2.0
+```
+
+Note that the first args are destination-only when using these forms and not included in the sum.
+
+### Mul and MulF
+
+Two arguments preserve the old behavior:
+
+```c
+Mul(LVar0, 2)  // LVar0 *= 2
+MulF(LVar1, Float(0.5))
+```
+
+More than two arguments multiply all inputs and store the result:
+
+```c
+Mul(LVar0, LVar1, 3, 4)                     // LVar0 = LVar1 * 3 * 4
+MulF(LVar2, Float(2.0), Float(3.0), LVar3)  // LVar2 = 2.0 * 3.0 * LVar3
+```
+
+### Sub, Div, and Mod
+
+Two arguments preserve the old behavior:
+
+```c
+Sub(LVar0, 5)   // LVar0 -= 5
+Div(LVar1, 2)   // LVar1 /= 2
+Mod(LVar2, 10)  // LVar2 %= 10
+```
+
+Three arguments compute from two input expressions:
+
+```c
+Sub(LVar0, LVar1, LVar2)  // LVar0 = LVar1 - LVar2
+Div(LVar0, LVar1, 2)      // LVar0 = LVar1 / 2
+Mod(LVar0, LVar1, 10)     // LVar0 = LVar1 % 10
+
+SubF(LVar0, LVar1, Float(1.0))
+DivF(LVar0, LVar1, Float(2.0))
+```
+
+## 4. Eval and Invoke
+
+Quicker in-line calls are now available through the `Eval` and `Invoke`:
+
+```c
+static f32 N(calc_initial_vel)(f32 startY, f32 endY, f32 gravity, f32 duration) {
+     return (endY - startY + (0.5f * gravity * SQ(duration))) / duration;
+}
+
+EvalF(LVar0, N(calc_initial_vel), LVar1, LVar2, LVar3, LVar4)
+```
+
+These automatically handle evt variables, unwrapping args and wrapping return values. They can be used to break out complex math expressions to small C helpers, write small predicates for if-statements, or fire off simple immediate engine calls. These do not replace `Call` for full EVT API functions.
+
+Their simplified nature carries limitations: they are appropriate for applications which do not need `Evt*`, do not use `isInitialCall`, cannot block, and involve only `s32`/`b32` or `f32` types. Type and arg count checks are performed at compile-time and up to 6 args are supported.
+
+### Example: Return Values
+
+`Eval` calls an integer helper and stores its `s32` return value:
+
+```c
+static s32 N(ClampCost)(s32 cost) {
+    return MAX(cost, 0);
+}
+
+Eval(LVar0, N(ClampCost), LVar1)
+```
+
+`EvalF` calls a float helper and stores its `f32` return value:
+
+```c
+static f32 N(SpringOffset)(f32 curX, f32 targetX) {
+    return (targetX - curX) / 10.0f;
+}
+
+EvalF(LVar2, N(SpringOffset), LVar0, Float(20.0))
+```
+
+### Example: Quick Calls to C
+
+`Invoke` calls a `void` helper with integer arguments:
+
+```c
+static void N(TakeKentCoins)(void) {
+    gPlayerData.coins -= 100;
+}
+
+Invoke(N(TakeKentCoins))
+```
+
+`InvokeF` does the same for float arguments:
+
+```c
+static void N(SetSomeOffset)(f32 x, f32 y, f32 z) {
+    SomeState.pos.x = x;
+    SomeState.pos.y = y;
+    SomeState.pos.z = z;
+}
+
+InvokeF(N(SetSomeOffset), EVT_AS_VEC3(LVar0))
+```
+
+### Example: Branch on Predicate
+
+`IfEval` and `IfNotEval` call a `b32` integer helper:
+
+```c
+static b32 N(PlayerHasKentMoney)(void) {
+    return gPlayerData.coins >= 100;
+}
+
+IfNotEval(N(PlayerHasKentMoney))
+    Goto("NotEnoughCoins")
+EndIf
+```
+
+`IfEvalF` and `IfNotEvalF` call a `b32` float helper:
+
+```c
+static b32 N(WithinRange)(f32 value, f32 min, f32 max) {
+    return (min <= value) && (value <= max);
+}
+
+IfEvalF(N(WithinRange), LVar0, Float(0.25), Float(12.5))
+    BreakLoop
+EndIf
+```
+
+### Supported Signatures
+
+Each helper family supports exactly-typed signatures with 0 through 6 arguments.
+These are not C varargs; the arity in the EVT command selects a matching function pointer type. Examples:
+
+```c
+s32  func(void);                       // Eval with 0 helper args
+s32  func(s32 a, s32 b);               // Eval with 2 helper args
+f32  func(f32 a, f32 b, f32 c);        // EvalF with 3 helper args
+void func(s32 a);                      // Invoke with 1 helper arg
+void func(f32 a, f32 b);               // InvokeF with 2 helper args
+b32  func(s32 a);                      // IfEval / IfNotEval
+b32  func(f32 a, f32 b, f32 c, f32 d); // IfEvalF / IfNotEvalF
+```
+
+The function pointer type is checked at compile time. The check is intentionally strict: you must choose either integers or floats only. Mixed signatures or pointer arguments will error. As a second level of defense, the validator checks that the function operand points at a function.
+
+### When to Use Call
+
+As previously stated, these new commands are completely optional and are not meant to replace `Call`. Use them to simplify your scripts and increase readability. Keep using `Call` when the helper function:
+
+- needs `Evt* script` to access script variables
+- can block, yield, or run over multiple frames
+- writes multiple output variables
+- uses mixed argument types such as `s32 npcID, f32 x, f32 y, f32 z`
+- is already a clear public EVT API like `GetPlayerPos`, `SetNpcPos`, or `TranslateModel`
+
+`Eval` is best used for small calculations, `IfEval` for small decisions, and `Invoke` for immediate, non-blocking actions.
+
+## 5. Reintroducing Vector Helpers
+
+These have been in dx for a long time, but have greater purpose when combined with the new `Eval` and `Invoke` commands. For those who are new to them, many scripts store positions as adjacent LVars:
+
+```c
+LVar0 = x
+LVar1 = y
+LVar2 = z
+```
+
+Vector helpers codify this arrangement and facilitate parallel operations on vectors. Nothing structural about the variables has been changed, the macros are merely syntactic sugar for referencing them.
+
+### Accessing-as-Vector
+
+`EVT_AS_VEC2(base)` expands to `base, base + 1`.
+`EVT_AS_VEC3(base)` expands to `base, base + 1, base + 2`.
+We can use these to pass sets of consecutive LVars together:
+
+```c
+Call(GetPlayerPos, EVT_AS_VEC3(LVar0))
+Call(SetNpcPos, NPC_SELF, EVT_AS_VEC3(LVar0))
+IfEvalF(N(IsNear), EVT_AS_VEC3(LVar0), EVT_AS_VEC3(LVar3))
+    ...
+EndIf
+```
+
+Component macros are available for extracting a single component from a 'vector':
+
+```c
+AddF(EVT_VEC_Y(LVar0), Float(10.0))
+```
+
+### Setting and Manipulating Vectors
+
+Vectors starting at a given base component can be set and modified with a single pseudo-command:
+
+```c
+EVT_VEC3F_SET(LVar0, Float(10.0), Float(20.0), Float(30.0))
+EVT_VEC3F_ADD(LVar0, Float(0.0), Float(5.0), Float(0.0))
+EVT_VEC3F_SUB(LVar0, Float(1.0), Float(0.0), Float(1.0))
+```
+
+There are integer and float versions for both 2D and 3D vectors:
+
+- `EVT_VEC2I_SET`, `EVT_VEC2F_SET`, `EVT_VEC3I_SET`, `EVT_VEC3F_SET`;
+- `EVT_VEC2I_ADD`, `EVT_VEC2F_ADD`, `EVT_VEC3I_ADD`, `EVT_VEC3F_ADD`;
+- `EVT_VEC2I_SUB`, `EVT_VEC2F_SUB`, `EVT_VEC3I_SUB`, `EVT_VEC3F_SUB`;
+- `EVT_VEC2I_VSET`, `EVT_VEC2F_VSET`, `EVT_VEC3I_VSET`, `EVT_VEC3F_VSET`;
+- `EVT_VEC2I_VADD`, `EVT_VEC2F_VADD`, `EVT_VEC3I_VADD`, `EVT_VEC3F_VADD`;
+- `EVT_VEC2I_VSUB`, `EVT_VEC2F_VSUB`, `EVT_VEC3I_VSUB`, `EVT_VEC3F_VSUB`.
+
+The `V` forms are vector-to-vector:
+
+```c
+EVT_VEC3F_VSET(LVar0, LVar3) // LVar0..2 = LVar3..5
+EVT_VEC3F_VADD(LVar0, LVar3) // LVar0..2 += LVar3..5
+```
+
+## 6. Named Labels
+
+`Label` and `Goto` can now use strings:
+
+```c
+Label("WaitForPlayer")
+    Wait(1)
+    IfNotEval(N(PlayerReady))
+        Goto("WaitForPlayer")
+    EndIf
+```
+
+Vanilla integer-style labels are still supported, but raw pointer `Goto` support has been removed. Use the `Jump` command for those (or rather, don't use them at all).
+
+The VM has also been modified to make Labels local to the `Thread` scope in which they live: `Goto` statements within a `Thread` can no longer jump to labels outside, nor can `Goto` outside jump in. This was unintended behavior before.
+
+The validator understands these scoping rules and will prevent misuse. It also catches duplicate labels in the same scope, `Goto` with no matching `Label`, and too many labels.
+
+## 7. Stricter Case Groups
+
+Case groups have become stricter to prevent unintended and undefined use-cases. `CaseOrEq` and `CaseAndEq` represent explicit fallthrough groups and must be closed with `EndCaseGroup`:
+
+```c
+Switch(LVar0)
+    CaseOrEq(ITEM_MUSHROOM)
+    CaseOrEq(ITEM_SUPER_SHROOM)
+    CaseOrEq(ITEM_ULTRA_SHROOM)
+        Set(LVar1, true)
+    EndCaseGroup
+    CaseDefault
+        Set(LVar1, false)
+EndSwitch
+```
+
+The validator rejects missing `EndCaseGroup`, `EndCaseGroup` without an active group, and accidental mixing of `CaseOrEq` with `CaseAndEq` in the same group.
+
+## 8. Packed Command Headers
+
+EVT commands now begin with one packed 32-bit header:
+
+```c
+opcode: 8 bits
+argc:   8 bits
+line:  16 bits
+```
+
+This is mostly invisible to modders, but it significantly reduces the final compiled version of each script, opening up more room in vram per overlay. Now that argc is a single byte, command argument counts are limited to 255.
+
+## 9. Debugging Quality Of Life
+
+The new commands have been added to the script debug menu:
+
+- `Eval`;
+- `EvalF`;
+- `Invoke`;
+- `InvokeF`;
+- `IfEval`;
+- `IfNotEval`;
+- `IfEvalF`;
+- `IfNotEvalF`.

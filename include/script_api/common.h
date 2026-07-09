@@ -1613,10 +1613,19 @@ API_CALLABLE(UpdateLerp);
 /// @param phaseOffset
 API_CALLABLE(CosInterpMinMax);
 
+/// Writes a random integer in the inclusive range `[0, max]` to `outValue`.
+/// Negative `max` values are treated as their absolute value.
 /// @evtapi
 /// @param max
 /// @param outValue
 API_CALLABLE(RandInt);
+
+/// Writes a random integer in the inclusive range `[min, max]` to `outValue`.
+/// @evtapi
+/// @param min
+/// @param max
+/// @param outValue
+API_CALLABLE(RandRange);
 
 /// @evtapi
 /// @param npcID_A

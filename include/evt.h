@@ -1,10 +1,11 @@
-#ifndef _EVT_H_
-#define _EVT_H_
+#pragma once
 
 #include "ultra64.h"
 
 // Should be at least the width of a pointer i.e. intptr_t
 typedef s32 Bytecode;
+
+#define EVT_MAX_EVAL_ARGS 6
 
 // Pack the opcode, argc, and source line number into a single word for denser bytecode.
 #define EVT_CMD_HEADER(opcode, argc, line) \
@@ -118,6 +119,14 @@ enum {
     EVT_OP_93,
     EVT_OP_94,
     EVT_OP_DEBUG_BREAKPOINT,
+    EVT_OP_EVAL, ///< Args: container, *function, ...
+    EVT_OP_EVALF, ///< Args: container, *function, ...
+    EVT_OP_INVOKE, ///< Args: *function, ...
+    EVT_OP_INVOKEF, ///< Args: *function, ...
+    EVT_OP_IF_EVAL, ///< Args: *function, ...
+    EVT_OP_IF_NOT_EVAL, ///< Args: *function, ...
+    EVT_OP_IF_EVALF, ///< Args: *function, ...
+    EVT_OP_IF_NOT_EVALF, ///< Args: *function, ...
 };
 
 /// The script currently being executed by evt_execute_next_command, or nullptr.
@@ -187,5 +196,3 @@ enum EventStateFlags {
     EVT_FLAG_THREAD             = 0x40,
     EVT_FLAG_SUSPENDED          = 0x80, ///< doesn't affect child
 };
-
-#endif

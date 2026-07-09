@@ -23,7 +23,8 @@ Validation currently catches:
 - duplicate Label values within the same thread scope;
 - thread scopes with more Label commands than the runtime supports;
 - Label/Goto operands that are not integer constants or relocation-backed string labels;
-- Goto(label) commands with no matching Label(label) in the current thread scope.
+- Goto(label) commands with no matching Label(label) in the current thread scope;
+- Eval/Invoke/IfEval function operands that are not relocation-backed function addresses.
 """
 
 from __future__ import annotations
@@ -40,7 +41,10 @@ from typing import Iterable
 
 SHT_SYMTAB = 2
 SHT_REL = 9
+STT_NOTYPE = 0
 STT_OBJECT = 1
+STT_FUNC = 2
+STT_SECTION = 3
 STT_FILE = 4
 SHN_UNDEF = 0
 R_MIPS_32 = 2
@@ -49,6 +53,7 @@ BYTECODE_SIZE = 4
 EVT_OP_INTERNAL_FETCH = 0x00
 
 MAX_ARGC = 0xFF
+MAX_EVAL_ARGS = 6
 MAX_NUM_LABELS = 24
 MAX_LABEL_NAME_LEN = 64
 MAX_LOOP_DEPTH = 8
@@ -167,6 +172,14 @@ class Opcode(IntEnum):
     EVT_OP_93 = (0x5D, 0)
     EVT_OP_94 = (0x5E, 0)
     EVT_OP_DEBUG_BREAKPOINT = (0x5F, 1)
+    EVT_OP_EVAL = (0x60, 2, 2 + MAX_EVAL_ARGS)
+    EVT_OP_EVALF = (0x61, 2, 2 + MAX_EVAL_ARGS)
+    EVT_OP_INVOKE = (0x62, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_INVOKEF = (0x63, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_IF_EVAL = (0x64, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_IF_NOT_EVAL = (0x65, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_IF_EVALF = (0x66, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_IF_NOT_EVALF = (0x67, 1, 1 + MAX_EVAL_ARGS)
 
 
 IF_OPS = {
@@ -178,6 +191,10 @@ IF_OPS = {
     Opcode.EVT_OP_IF_GE,
     Opcode.EVT_OP_IF_FLAG,
     Opcode.EVT_OP_IF_NOT_FLAG,
+    Opcode.EVT_OP_IF_EVAL,
+    Opcode.EVT_OP_IF_NOT_EVAL,
+    Opcode.EVT_OP_IF_EVALF,
+    Opcode.EVT_OP_IF_NOT_EVALF,
 }
 
 CASE_OPS = {
@@ -208,6 +225,17 @@ EXEC_OPS = {
 EXEC_ARG_MARKERS = {
     EVT_ARG_INT_MARKER: "ARG_INT",
     EVT_ARG_FLOAT_MARKER: "ARG_FLOAT",
+}
+
+FUNCTION_ARG_INDEX_BY_OP = {
+    Opcode.EVT_OP_EVAL: 1,
+    Opcode.EVT_OP_EVALF: 1,
+    Opcode.EVT_OP_INVOKE: 0,
+    Opcode.EVT_OP_INVOKEF: 0,
+    Opcode.EVT_OP_IF_EVAL: 0,
+    Opcode.EVT_OP_IF_NOT_EVAL: 0,
+    Opcode.EVT_OP_IF_EVALF: 0,
+    Opcode.EVT_OP_IF_NOT_EVALF: 0,
 }
 
 @dataclass(frozen=True)
@@ -671,6 +699,54 @@ def validate_exec_arg_stream(
         i += 2
 
 
+def validate_function_arg(
+    elf: Elf32,
+    script: ScriptSymbol,
+    op_pos: int,
+    arg_pos: int,
+    raw_args: list[int],
+    opcode: Opcode,
+    line: int | None,
+) -> None:
+    func_arg_index = FUNCTION_ARG_INDEX_BY_OP.get(opcode)
+    if func_arg_index is None:
+        return
+
+    relocation = elf.relocation_at(
+        script.section.index,
+        script.symbol.value + (arg_pos + func_arg_index) * BYTECODE_SIZE,
+    )
+    if relocation is None:
+        raise ValidationError(
+            f"{format_script_site(script, op_pos, line)}: {opcode.name} function argument at arg "
+            f"{func_arg_index} is not relocation-backed"
+        )
+    if relocation.type != R_MIPS_32:
+        raise ValidationError(
+            f"{format_script_site(script, op_pos, line)}: {opcode.name} function argument uses unsupported "
+            f"relocation type {relocation.type}"
+        )
+
+    reloc_symbol = elf.symbol_for_relocation(relocation)
+    if reloc_symbol.type == STT_SECTION:
+        target_value = reloc_symbol.value + raw_args[func_arg_index]
+        for symbol in elf.symbols:
+            if symbol.type != STT_FUNC or symbol.shndx != reloc_symbol.shndx:
+                continue
+            if symbol.value <= target_value < symbol.value + symbol.size:
+                return
+        raise ValidationError(
+            f"{format_script_site(script, op_pos, line)}: {opcode.name} function argument points to "
+            f"non-function location in {reloc_symbol.name}"
+        )
+
+    if reloc_symbol.type not in {STT_NOTYPE, STT_FUNC}:
+        raise ValidationError(
+            f"{format_script_site(script, op_pos, line)}: {opcode.name} function argument points to "
+            f"non-function symbol {reloc_symbol.name}"
+        )
+
+
 class ScriptWalkContext:
     def __init__(self, script: ScriptSymbol):
         self.script = script
@@ -875,6 +951,7 @@ def validate_script(elf: Elf32, script: ScriptSymbol, data: bytes) -> None:
         raw_args = [unsigned_word(data, (arg_pos + i) * BYTECODE_SIZE) for i in range(argc)]
         validate_argc(script, op_pos, opcode, argc, ctx.current_line)
         validate_exec_arg_stream(script, op_pos, opcode, args, ctx.current_line)
+        validate_function_arg(elf, script, op_pos, arg_pos, raw_args, opcode, ctx.current_line)
         read_pos += argc
 
         if opcode == Opcode.EVT_OP_END:

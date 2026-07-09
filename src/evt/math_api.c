@@ -107,6 +107,19 @@ API_CALLABLE(RandInt) {
     return ApiStatus_DONE2;
 }
 
+API_CALLABLE(RandRange) {
+    Bytecode* args = script->ptrReadPos;
+
+    s32 min = evt_get_variable(script, *args++);
+    s32 max = evt_get_variable(script, *args++);
+    Bytecode outVar = *args++;
+
+    ASSERT_MSG(max >= min, "RandRange min %d > max %d", min, max);
+    evt_set_variable(script, outVar, min + rand_int(max - min));
+
+    return ApiStatus_DONE2;
+}
+
 enum {
     LERP_VAR_0 = 0x0, // (out float) cur
     LERP_VAR_1 = 0x1, // (out bool) in-progress

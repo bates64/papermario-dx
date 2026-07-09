@@ -1047,6 +1047,262 @@ ApiStatus evt_handle_OR_const(Evt* script) {
     return ApiStatus_DONE2;
 }
 
+s32 evt_call_eval_func(Evt* script, Bytecode func, Bytecode* args, s32 argc) {
+    s32 argv[EVT_MAX_EVAL_ARGS];
+    s32 i;
+
+    ASSERT(func != 0);
+    ASSERT((func & 3) == 0);
+    ASSERT(argc >= 0 && argc <= EVT_MAX_EVAL_ARGS);
+
+    for (i = 0; i < argc; i++) {
+        argv[i] = evt_get_variable(script, args[i]);
+    }
+
+    switch (argc) {
+        case 0:
+            return ((EvtEval0Func)func)();
+        case 1:
+            return ((EvtEval1Func)func)(argv[0]);
+        case 2:
+            return ((EvtEval2Func)func)(argv[0], argv[1]);
+        case 3:
+            return ((EvtEval3Func)func)(argv[0], argv[1], argv[2]);
+        case 4:
+            return ((EvtEval4Func)func)(argv[0], argv[1], argv[2], argv[3]);
+        case 5:
+            return ((EvtEval5Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
+        case 6:
+            return ((EvtEval6Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+    }
+
+    PANIC();
+    return 0;
+}
+
+f32 evt_call_evalF_func(Evt* script, Bytecode func, Bytecode* args, s32 argc) {
+    f32 argv[EVT_MAX_EVAL_ARGS];
+    s32 i;
+
+    ASSERT(func != 0);
+    ASSERT((func & 3) == 0);
+    ASSERT(argc >= 0 && argc <= EVT_MAX_EVAL_ARGS);
+
+    for (i = 0; i < argc; i++) {
+        argv[i] = evt_get_float_variable(script, args[i]);
+    }
+
+    switch (argc) {
+        case 0:
+            return ((EvtEvalF0Func)func)();
+        case 1:
+            return ((EvtEvalF1Func)func)(argv[0]);
+        case 2:
+            return ((EvtEvalF2Func)func)(argv[0], argv[1]);
+        case 3:
+            return ((EvtEvalF3Func)func)(argv[0], argv[1], argv[2]);
+        case 4:
+            return ((EvtEvalF4Func)func)(argv[0], argv[1], argv[2], argv[3]);
+        case 5:
+            return ((EvtEvalF5Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
+        case 6:
+            return ((EvtEvalF6Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+    }
+
+    PANIC();
+    return 0.0f;
+}
+
+void evt_call_invoke_func(Evt* script, Bytecode func, Bytecode* args, s32 argc) {
+    s32 argv[EVT_MAX_EVAL_ARGS];
+    s32 i;
+
+    ASSERT(func != 0);
+    ASSERT((func & 3) == 0);
+    ASSERT(argc >= 0 && argc <= EVT_MAX_EVAL_ARGS);
+
+    for (i = 0; i < argc; i++) {
+        argv[i] = evt_get_variable(script, args[i]);
+    }
+
+    switch (argc) {
+        case 0:
+            ((EvtInvoke0Func)func)();
+            return;
+        case 1:
+            ((EvtInvoke1Func)func)(argv[0]);
+            return;
+        case 2:
+            ((EvtInvoke2Func)func)(argv[0], argv[1]);
+            return;
+        case 3:
+            ((EvtInvoke3Func)func)(argv[0], argv[1], argv[2]);
+            return;
+        case 4:
+            ((EvtInvoke4Func)func)(argv[0], argv[1], argv[2], argv[3]);
+            return;
+        case 5:
+            ((EvtInvoke5Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
+            return;
+        case 6:
+            ((EvtInvoke6Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+            return;
+    }
+
+    PANIC();
+}
+
+void evt_call_invokeF_func(Evt* script, Bytecode func, Bytecode* args, s32 argc) {
+    f32 argv[EVT_MAX_EVAL_ARGS];
+    s32 i;
+
+    ASSERT(func != 0);
+    ASSERT((func & 3) == 0);
+    ASSERT(argc >= 0 && argc <= EVT_MAX_EVAL_ARGS);
+
+    for (i = 0; i < argc; i++) {
+        argv[i] = evt_get_float_variable(script, args[i]);
+    }
+
+    switch (argc) {
+        case 0:
+            ((EvtInvokeF0Func)func)();
+            return;
+        case 1:
+            ((EvtInvokeF1Func)func)(argv[0]);
+            return;
+        case 2:
+            ((EvtInvokeF2Func)func)(argv[0], argv[1]);
+            return;
+        case 3:
+            ((EvtInvokeF3Func)func)(argv[0], argv[1], argv[2]);
+            return;
+        case 4:
+            ((EvtInvokeF4Func)func)(argv[0], argv[1], argv[2], argv[3]);
+            return;
+        case 5:
+            ((EvtInvokeF5Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
+            return;
+        case 6:
+            ((EvtInvokeF6Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+            return;
+    }
+
+    PANIC();
+}
+
+s32 evt_call_if_evalF_func(Evt* script, Bytecode func, Bytecode* args, s32 argc) {
+    f32 argv[EVT_MAX_EVAL_ARGS];
+    s32 i;
+
+    ASSERT(func != 0);
+    ASSERT((func & 3) == 0);
+    ASSERT(argc >= 0 && argc <= EVT_MAX_EVAL_ARGS);
+
+    for (i = 0; i < argc; i++) {
+        argv[i] = evt_get_float_variable(script, args[i]);
+    }
+
+    switch (argc) {
+        case 0:
+            return ((EvtIfEvalF0Func)func)();
+        case 1:
+            return ((EvtIfEvalF1Func)func)(argv[0]);
+        case 2:
+            return ((EvtIfEvalF2Func)func)(argv[0], argv[1]);
+        case 3:
+            return ((EvtIfEvalF3Func)func)(argv[0], argv[1], argv[2]);
+        case 4:
+            return ((EvtIfEvalF4Func)func)(argv[0], argv[1], argv[2], argv[3]);
+        case 5:
+            return ((EvtIfEvalF5Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
+        case 6:
+            return ((EvtIfEvalF6Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+    }
+
+    PANIC();
+}
+
+ApiStatus evt_handle_eval(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+    Bytecode func = *args++;
+
+    s32 retVal = evt_call_eval_func(script, func, args, script->curArgc - 2);
+    evt_set_variable(script, outVar, retVal);
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_evalF(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+    Bytecode func = *args++;
+
+    f32 retVal = evt_call_evalF_func(script, func, args, script->curArgc - 2);
+    evt_set_float_variable(script, outVar, retVal);
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_invoke(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode func = *args++;
+
+    evt_call_invoke_func(script, func, args, script->curArgc - 1);
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_invokeF(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode func = *args++;
+
+    evt_call_invokeF_func(script, func, args, script->curArgc - 1);
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_if_eval(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode func = *args++;
+
+    if (!evt_call_eval_func(script, func, args, script->curArgc - 1)) {
+        script->ptrNextLine = evt_skip_if(script);
+    }
+
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_if_not_eval(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode func = *args++;
+
+    if (evt_call_eval_func(script, func, args, script->curArgc - 1)) {
+        script->ptrNextLine = evt_skip_if(script);
+    }
+
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_if_evalF(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode func = *args++;
+
+    if (!evt_call_if_evalF_func(script, func, args, script->curArgc - 1)) {
+        script->ptrNextLine = evt_skip_if(script);
+    }
+
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_if_not_evalF(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode func = *args++;
+
+    if (evt_call_if_evalF_func(script, func, args, script->curArgc - 1)) {
+        script->ptrNextLine = evt_skip_if(script);
+    }
+
+    return ApiStatus_DONE2;
+}
+
 ApiStatus evt_handle_call(Evt* script) {
     Bytecode* args = script->ptrReadPos;
     s32 isInitialCall;
@@ -1898,6 +2154,30 @@ s32 evt_execute_next_command(Evt* script) {
                 break;
             case EVT_OP_DEBUG_BREAKPOINT:
                 status = evt_handle_debug_breakpoint(script);
+                break;
+            case EVT_OP_EVAL:
+                status = evt_handle_eval(script);
+                break;
+            case EVT_OP_EVALF:
+                status = evt_handle_evalF(script);
+                break;
+            case EVT_OP_INVOKE:
+                status = evt_handle_invoke(script);
+                break;
+            case EVT_OP_INVOKEF:
+                status = evt_handle_invokeF(script);
+                break;
+            case EVT_OP_IF_EVAL:
+                status = evt_handle_if_eval(script);
+                break;
+            case EVT_OP_IF_NOT_EVAL:
+                status = evt_handle_if_not_eval(script);
+                break;
+            case EVT_OP_IF_EVALF:
+                status = evt_handle_if_evalF(script);
+                break;
+            case EVT_OP_IF_NOT_EVALF:
+                status = evt_handle_if_not_evalF(script);
                 break;
             case EVT_OP_END:
                 break;

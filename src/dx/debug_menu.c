@@ -2130,6 +2130,14 @@ DebugOpcode DebugOps[] = {
     [EVT_OP_93]                 { "Op93" },
     [EVT_OP_94]                 { "Op94" },
     [EVT_OP_DEBUG_BREAKPOINT]   { "Breakpoint" },
+    [EVT_OP_EVAL]               { "Eval" },
+    [EVT_OP_EVALF]              { "EvalF" },
+    [EVT_OP_INVOKE]             { "Invoke" },
+    [EVT_OP_INVOKEF]            { "InvokeF" },
+    [EVT_OP_IF_EVAL]            { "IfEval" },
+    [EVT_OP_IF_NOT_EVAL]        { "IfNotEval" },
+    [EVT_OP_IF_EVALF]           { "IfEvalF" },
+    [EVT_OP_IF_NOT_EVALF]       { "IfNotEvalF" },
 };
 
 // main menu options for evt debugger
