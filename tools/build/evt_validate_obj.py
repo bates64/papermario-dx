@@ -106,15 +106,15 @@ class Opcode(IntEnum):
     EVT_OP_SET = (0x24, 2)
     EVT_OP_SET_CONST = (0x25, 2)
     EVT_OP_SETF = (0x26, 2)
-    EVT_OP_ADD = (0x27, 2)
-    EVT_OP_SUB = (0x28, 2)
-    EVT_OP_MUL = (0x29, 2)
-    EVT_OP_DIV = (0x2A, 2)
-    EVT_OP_MOD = (0x2B, 2)
-    EVT_OP_ADDF = (0x2C, 2)
-    EVT_OP_SUBF = (0x2D, 2)
-    EVT_OP_MULF = (0x2E, 2)
-    EVT_OP_DIVF = (0x2F, 2)
+    EVT_OP_ADD = (0x27, None)
+    EVT_OP_SUB = (0x28, None)
+    EVT_OP_MUL = (0x29, None)
+    EVT_OP_DIV = (0x2A, None)
+    EVT_OP_MOD = (0x2B, None)
+    EVT_OP_ADDF = (0x2C, None)
+    EVT_OP_SUBF = (0x2D, None)
+    EVT_OP_MULF = (0x2E, None)
+    EVT_OP_DIVF = (0x2F, None)
     EVT_OP_USE_BUF = (0x30, 1)
     EVT_OP_BUF_READ1 = (0x31, 1)
     EVT_OP_BUF_READ2 = (0x32, 2)
@@ -204,6 +204,27 @@ EXEC_MIN_ARGC = {
 EXEC_ARG_MARKERS = {
     EVT_ARG_INT_MARKER: "ARG_INT",
     EVT_ARG_FLOAT_MARKER: "ARG_FLOAT",
+}
+
+VARIADIC_MIN_ARGC = {
+    Opcode.EVT_OP_ADD: 2,
+    Opcode.EVT_OP_SUB: 2,
+    Opcode.EVT_OP_MUL: 2,
+    Opcode.EVT_OP_DIV: 2,
+    Opcode.EVT_OP_MOD: 2,
+    Opcode.EVT_OP_ADDF: 2,
+    Opcode.EVT_OP_SUBF: 2,
+    Opcode.EVT_OP_MULF: 2,
+    Opcode.EVT_OP_DIVF: 2,
+    **EXEC_MIN_ARGC,
+}
+
+VARIADIC_MAX_ARGC = {
+    Opcode.EVT_OP_SUB: 3,
+    Opcode.EVT_OP_DIV: 3,
+    Opcode.EVT_OP_MOD: 3,
+    Opcode.EVT_OP_SUBF: 3,
+    Opcode.EVT_OP_DIVF: 3,
 }
 
 
@@ -625,11 +646,16 @@ def validate_argc(script: ScriptSymbol, op_pos: int, opcode: Opcode, argc: int, 
         if argc < 1:
             raise ValidationError(f"{format_script_site(script, op_pos, line)}: EVT_OP_CALL has no function argument")
         return
-    if opcode in EXEC_MIN_ARGC:
-        expected_min = EXEC_MIN_ARGC[opcode]
+    if opcode in VARIADIC_MIN_ARGC:
+        expected_min = VARIADIC_MIN_ARGC[opcode]
         if argc < expected_min:
             raise ValidationError(
                 f"{format_script_site(script, op_pos, line)}: {opcode.name} has argc {argc}, expected at least {expected_min}"
+            )
+        expected_max = VARIADIC_MAX_ARGC.get(opcode)
+        if expected_max is not None and argc > expected_max:
+            raise ValidationError(
+                f"{format_script_site(script, op_pos, line)}: {opcode.name} has argc {argc}, expected at most {expected_max}"
             )
         return
     expected = opcode.argc

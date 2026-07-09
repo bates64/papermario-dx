@@ -674,12 +674,12 @@ ApiStatus evt_handle_set_float(Evt* script) {
 
 ApiStatus evt_handle_add(Evt* script) {
     Bytecode* args = script->ptrReadPos;
-    Bytecode var = *args++;
+    Bytecode outVar = *args++;
     s32 result;
     s32 i;
 
     if (script->curArgc == 2) {
-        result = evt_get_variable(script, var) + evt_get_variable(script, *args++);
+        result = evt_get_variable(script, outVar) + evt_get_variable(script, *args++);
     } else {
         result = evt_get_variable(script, *args++);
 
@@ -688,103 +688,152 @@ ApiStatus evt_handle_add(Evt* script) {
         }
     }
 
-    evt_set_variable(script, var, result);
+    evt_set_variable(script, outVar, result);
     return ApiStatus_DONE2;
 }
 
 ApiStatus evt_handle_subtract(Evt* script) {
     Bytecode* args = script->ptrReadPos;
-    Bytecode var = *args++;
-    s32 result = evt_get_variable(script, *args++);
-    s32 minuend = evt_get_variable(script, var);
+    Bytecode outVar = *args++;
+    s32 a, b;
 
-    result = minuend - result;
+    if (script->curArgc == 2) {
+        a = evt_get_variable(script, outVar);
+    } else {
+        a = evt_get_variable(script, *args++);
+    }
 
-    evt_set_variable(script, var, result);
+    b = evt_get_variable(script, *args++);
+
+    evt_set_variable(script, outVar, a - b);
     return ApiStatus_DONE2;
 }
 
 ApiStatus evt_handle_multiply(Evt* script) {
     Bytecode* args = script->ptrReadPos;
-    Bytecode var = *args++;
-    s32 result = evt_get_variable(script, *args++);
-    s32 multiplier = evt_get_variable(script, var);
+    Bytecode outVar = *args++;
+    s32 result;
+    s32 i;
 
-    result *= multiplier;
+    if (script->curArgc == 2) {
+        result = evt_get_variable(script, outVar) * evt_get_variable(script, *args++);
+    } else {
+        result = evt_get_variable(script, *args++);
 
-    evt_set_variable(script, var, result);
+        for (i = 2; i < script->curArgc; i++) {
+            result *= evt_get_variable(script, *args++);
+        }
+    }
+
+    evt_set_variable(script, outVar, result);
     return ApiStatus_DONE2;
 }
 
 ApiStatus evt_handle_divide(Evt* script) {
     Bytecode* args = script->ptrReadPos;
-    Bytecode var = *args++;
-    s32 result = evt_get_variable(script, *args++);
-    s32 dividend = evt_get_variable(script, var);
+    Bytecode outVar = *args++;
+    s32 a, b;
 
-    result = dividend / result;
+    if (script->curArgc == 2) {
+        a = evt_get_variable(script, outVar);
+    } else {
+        a = evt_get_variable(script, *args++);
+    }
 
-    evt_set_variable(script, var, result);
+    b = evt_get_variable(script, *args++);
+
+    evt_set_variable(script, outVar, a / b);
     return ApiStatus_DONE2;
 }
 
 ApiStatus evt_handle_mod(Evt* script) {
     Bytecode* args = script->ptrReadPos;
-    Bytecode var = *args++;
-    s32 result = evt_get_variable(script, *args++) + 0.5;
-    s32 num = evt_get_variable(script, var) + 0.5;
+    Bytecode outVar = *args++;
+    s32 a, b;
 
-    result = num % result;
+    if (script->curArgc == 2) {
+        a = evt_get_variable(script, outVar) + 0.5;
+    } else {
+        a = evt_get_variable(script, *args++) + 0.5;
+    }
 
-    evt_set_variable(script, var, result);
+    b = evt_get_variable(script, *args++) + 0.5;
+
+    evt_set_variable(script, outVar, a % b);
     return ApiStatus_DONE2;
 }
 
 ApiStatus evt_handle_addF(Evt* script) {
     Bytecode* args = script->ptrReadPos;
-    Bytecode var = *args++;
-    f32 result = evt_get_float_variable(script, *args++);
-    f32 addend = evt_get_float_variable(script, var);
+    Bytecode outVar = *args++;
+    f32 result;
+    s32 i;
 
-    result += addend;
+    if (script->curArgc == 2) {
+        result = evt_get_float_variable(script, outVar) + evt_get_float_variable(script, *args++);
+    } else {
+        result = evt_get_float_variable(script, *args++);
 
-    evt_set_float_variable(script, var, result);
+        for (i = 2; i < script->curArgc; i++) {
+            result += evt_get_float_variable(script, *args++);
+        }
+    }
+
+    evt_set_float_variable(script, outVar, result);
     return ApiStatus_DONE2;
 }
 
 ApiStatus evt_handle_subtractF(Evt* script) {
     Bytecode* args = script->ptrReadPos;
-    Bytecode var = *args++;
-    f32 result = evt_get_float_variable(script, *args++);
-    f32 minuend = evt_get_float_variable(script, var);
+    Bytecode outVar = *args++;
+    f32 a, b;
 
-    result = minuend - result;
+    if (script->curArgc == 2) {
+        a = evt_get_float_variable(script, outVar);
+    } else {
+        a = evt_get_float_variable(script, *args++);
+    }
 
-    evt_set_float_variable(script, var, result);
+    b = evt_get_float_variable(script, *args++);
+
+    evt_set_float_variable(script, outVar, a - b);
     return ApiStatus_DONE2;
 }
 
 ApiStatus evt_handle_multiplyF(Evt* script) {
     Bytecode* args = script->ptrReadPos;
-    Bytecode var = *args++;
-    f32 result = evt_get_float_variable(script, *args++);
-    f32 multiplier = evt_get_float_variable(script, var);
+    Bytecode outVar = *args++;
+    f32 result;
+    s32 i;
 
-    result *= multiplier;
+    if (script->curArgc == 2) {
+        result = evt_get_float_variable(script, outVar) * evt_get_float_variable(script, *args++);
+    } else {
+        result = evt_get_float_variable(script, *args++);
 
-    evt_set_float_variable(script, var, result);
+        for (i = 2; i < script->curArgc; i++) {
+            result *= evt_get_float_variable(script, *args++);
+        }
+    }
+
+    evt_set_float_variable(script, outVar, result);
     return ApiStatus_DONE2;
 }
 
 ApiStatus evt_handle_divideF(Evt* script) {
     Bytecode* args = script->ptrReadPos;
-    Bytecode var = *args++;
-    f32 result = evt_get_float_variable(script, *args++);
-    f32 dividend = evt_get_float_variable(script, var);
+    Bytecode outVar = *args++;
+    f32 a, b;
 
-    result = dividend / result;
+    if (script->curArgc == 2) {
+        a = evt_get_float_variable(script, outVar);
+    } else {
+        a = evt_get_float_variable(script, *args++);
+    }
 
-    evt_set_float_variable(script, var, result);
+    b = evt_get_float_variable(script, *args++);
+
+    evt_set_float_variable(script, outVar, a / b);
     return ApiStatus_DONE2;
 }
 

@@ -262,17 +262,17 @@ extern "C" {
 #define Loop(TIMES)                         EVT_CMD(EVT_OP_LOOP, TIMES),
 
 /// Marks the end of a loop.
-#define EndLoop                            EVT_CMD(EVT_OP_END_LOOP),
+#define EndLoop                             EVT_CMD(EVT_OP_END_LOOP),
 
 /// Breaks out of the innermost loop.
-#define BreakLoop                          EVT_CMD(EVT_OP_BREAK_LOOP),
+#define BreakLoop                           EVT_CMD(EVT_OP_BREAK_LOOP),
 
 /// Blocks for the given number of frames.
 #define Wait(NUM_FRAMES)                    EVT_CMD(EVT_OP_WAIT_FRAMES, NUM_FRAMES),
 
 
 /// Blocks for the given number of seconds.
-#define WaitSecs(NUM_SECONDS)              EVT_CMD(EVT_OP_WAIT_SECS, NUM_SECONDS),
+#define WaitSecs(NUM_SECONDS)               EVT_CMD(EVT_OP_WAIT_SECS, NUM_SECONDS),
 
 /// Marks the beginning of an if statement that only executes if `LVAR == RVAR`.
 ///
@@ -283,36 +283,36 @@ extern "C" {
 ///     EndIf
 ///
 /// The Else block is optional.
-#define IfEq(LVAR, RVAR)                   EVT_CMD(EVT_OP_IF_EQ, LVAR, RVAR),
+#define IfEq(LVAR, RVAR)                    EVT_CMD(EVT_OP_IF_EQ, LVAR, RVAR),
 
 /// Marks the beginning of an if statement that only executes if `LVAR != RVAR`.
-#define IfNe(LVAR, RVAR)                   EVT_CMD(EVT_OP_IF_NE, LVAR, RVAR),
+#define IfNe(LVAR, RVAR)                    EVT_CMD(EVT_OP_IF_NE, LVAR, RVAR),
 
 /// Marks the beginning of an if statement that only executes if `LVAR < RVAR`.
-#define IfLt(LVAR, RVAR)                   EVT_CMD(EVT_OP_IF_LT, LVAR, RVAR),
+#define IfLt(LVAR, RVAR)                    EVT_CMD(EVT_OP_IF_LT, LVAR, RVAR),
 
 /// Marks the beginning of an if statement that only executes if `LVAR <= RVAR`.
-#define IfGt(LVAR, RVAR)                   EVT_CMD(EVT_OP_IF_GT, LVAR, RVAR),
+#define IfGt(LVAR, RVAR)                    EVT_CMD(EVT_OP_IF_GT, LVAR, RVAR),
 
 /// Marks the beginning of an if statement that only executes if `LVAR > RVAR`.
-#define IfLe(LVAR, RVAR)                   EVT_CMD(EVT_OP_IF_LE, LVAR, RVAR),
+#define IfLe(LVAR, RVAR)                    EVT_CMD(EVT_OP_IF_LE, LVAR, RVAR),
 
 /// Marks the beginning of an if statement that only executes if `LVAR >= RVAR`.
-#define IfGe(LVAR, RVAR)                   EVT_CMD(EVT_OP_IF_GE, LVAR, RVAR),
+#define IfGe(LVAR, RVAR)                    EVT_CMD(EVT_OP_IF_GE, LVAR, RVAR),
 
 /// Marks the beginning of an if statement that only executes if the RVAR flag is set on LVAR,
 /// i.e. `(LVAR & RVAR) != 1`.
-#define IfFlag(LVAR, RVAR)                 EVT_CMD(EVT_OP_IF_FLAG, LVAR, RVAR),
+#define IfFlag(LVAR, RVAR)                  EVT_CMD(EVT_OP_IF_FLAG, LVAR, RVAR),
 
 /// Marks the beginning of an if statement that only executes if the RVAR flag is unset on LVAR,
 /// i.e. `(LVAR & RVAR) == 0`.
-#define IfNotFlag(LVAR, RVAR)             EVT_CMD(EVT_OP_IF_NOT_FLAG, LVAR, RVAR),
+#define IfNotFlag(LVAR, RVAR)               EVT_CMD(EVT_OP_IF_NOT_FLAG, LVAR, RVAR),
 
 /// Marks the end of an if statement and the start of the else block.
 #define Else                                EVT_CMD(EVT_OP_ELSE),
 
 /// Marks the end of an if statement or an else block.
-#define EndIf                              EVT_CMD(EVT_OP_END_IF),
+#define EndIf                               EVT_CMD(EVT_OP_END_IF),
 
 /// Marks the start of a switch statement.
 ///
@@ -330,53 +330,53 @@ extern "C" {
 /// Marks the start of a switch statement where the given value is treated as-is instead of using evt_get_variable.
 /// That is, `SwitchConst(LocalVar(0))` will switch over the value `0xFE363C80` instead of the value contained
 /// within `LocalVar(0)`.
-#define SwitchConst(LCONST)                EVT_CMD(EVT_OP_SWITCH_CONST, LCONST),
+#define SwitchConst(LCONST)                 EVT_CMD(EVT_OP_SWITCH_CONST, LCONST),
 
 /// Marks the start of a switch case that executes only if `LVAR == RVAR`. It also marks the end of any previous case.
-#define CaseEq(RVAR)                       EVT_CMD(EVT_OP_CASE_EQ, RVAR),
+#define CaseEq(RVAR)                        EVT_CMD(EVT_OP_CASE_EQ, RVAR),
 
 /// Marks the start of a switch case that executes only if `LVAR != RVAR`. It also marks the end of any previous case.
-#define CaseNe(RVAR)                       EVT_CMD(EVT_OP_CASE_NE, RVAR),
+#define CaseNe(RVAR)                        EVT_CMD(EVT_OP_CASE_NE, RVAR),
 
 /// Marks the start of a switch case that executes only if `LVAR < RVAR`. It also marks the end of any previous case.
-#define CaseLt(RVAR)                       EVT_CMD(EVT_OP_CASE_LT, RVAR),
+#define CaseLt(RVAR)                        EVT_CMD(EVT_OP_CASE_LT, RVAR),
 
 /// Marks the start of a switch case that executes only if `LVAR <= RVAR`. It also marks the end of any previous case.
-#define CaseGt(RVAR)                       EVT_CMD(EVT_OP_CASE_GT, RVAR),
+#define CaseGt(RVAR)                        EVT_CMD(EVT_OP_CASE_GT, RVAR),
 
 /// Marks the start of a switch case that executes only if `LVAR > RVAR`. It also marks the end of any previous case.
-#define CaseLe(RVAR)                       EVT_CMD(EVT_OP_CASE_LE, RVAR),
+#define CaseLe(RVAR)                        EVT_CMD(EVT_OP_CASE_LE, RVAR),
 
 /// Marks the start of a switch case that executes only if `LVAR >= RVAR`. It also marks the end of any previous case.
-#define CaseGe(RVAR)                       EVT_CMD(EVT_OP_CASE_GE, RVAR),
+#define CaseGe(RVAR)                        EVT_CMD(EVT_OP_CASE_GE, RVAR),
 
 /// Marks the start of a switch case that executes unconditionally. It also marks the end of any previous case.
-#define CaseDefault                        EVT_CMD(EVT_OP_CASE_DEFAULT),
+#define CaseDefault                         EVT_CMD(EVT_OP_CASE_DEFAULT),
 
 /// Marks the start of a switch case that executes only if `LVAR == RVAR`. It also marks the end of any previous case.
 /// Unlike CaseEq, CaseOrEq will fallthrough to the next case until EndCaseGroup is reached.
-#define CaseOrEq(RVAR)                    EVT_CMD(EVT_OP_CASE_OR_EQ, RVAR),
+#define CaseOrEq(RVAR)                      EVT_CMD(EVT_OP_CASE_OR_EQ, RVAR),
 
 /// Marks the start of a switch case that executes only if `LVAR == RVAR`. It also marks the end of any previous case.
 /// Similar to CaseOrEq, CaseAndEq has fallthrough. However, if `LVAR != RVAR`, fallthrough does not apply.
-#define CaseAndEq(RVAR)                   EVT_CMD(EVT_OP_CASE_AND_EQ, RVAR),
+#define CaseAndEq(RVAR)                     EVT_CMD(EVT_OP_CASE_AND_EQ, RVAR),
 
 /// Marks the start of a switch case that executes only if the `RVAR` flag is set on `LVAR`, i.e. `(LVAR & RVAR) != 1`.
 /// It also marks the end of any previous case.
-#define CaseFlag(RVAR)                     EVT_CMD(EVT_OP_CASE_FLAG, RVAR),
+#define CaseFlag(RVAR)                      EVT_CMD(EVT_OP_CASE_FLAG, RVAR),
 
 /// Marks the end of a switch case group (CaseOrEq and/or CaseAndEq), stopping fallthrough.
-#define EndCaseGroup                      EVT_CMD(EVT_OP_END_CASE_GROUP),
+#define EndCaseGroup                        EVT_CMD(EVT_OP_END_CASE_GROUP),
 
 /// Marks the start of a switch case that executes only if `MIN <= LVAR <= MAX` (inclusive).
 /// It also marks the end of any previous case.
-#define CaseRange(MIN, MAX)                EVT_CMD(EVT_OP_CASE_RANGE, MIN, MAX),
+#define CaseRange(MIN, MAX)                 EVT_CMD(EVT_OP_CASE_RANGE, MIN, MAX),
 
 /// Marks the end of a switch case
-#define BreakSwitch                        EVT_CMD(EVT_OP_BREAK_SWITCH),
+#define BreakSwitch                         EVT_CMD(EVT_OP_BREAK_SWITCH),
 
 /// Marks the end of a switch statement and any case.
-#define EndSwitch                          EVT_CMD(EVT_OP_END_SWITCH),
+#define EndSwitch                           EVT_CMD(EVT_OP_END_SWITCH),
 
 /// Sets the given variable to a given value casted to an integer.
 #define Set(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_SET, VAR, (Bytecode) INT_VALUE),
@@ -384,82 +384,105 @@ extern "C" {
 /// Sets the given variable to a given value, skipping the evt_get_variable call.
 /// That is, `SetConst(LocalVar(0), LocalVar(1))` will set `LocalVar(0)` to `0xFE363C81` instead of copying the value of
 /// `LocalVar(1)` into `LocalVar(0)`.
-#define SetConst(VAR, CONST)               EVT_CMD(EVT_OP_SET_CONST, VAR, (Bytecode) CONST),
+#define SetConst(VAR, CONST)                EVT_CMD(EVT_OP_SET_CONST, VAR, (Bytecode) CONST),
 
 /// Sets the given variable to a given value, but supports Floats.
 #define SetF(VAR, FLOAT_VALUE)              EVT_CMD(EVT_OP_SETF, VAR, FLOAT_VALUE),
 
-// Basic arithmetic operations.
-#define Add(VAR, INT_VALUE, REST...)        EVT_CMD(EVT_OP_ADD, VAR, INT_VALUE, ##REST),
-#define Sub(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_SUB, VAR, INT_VALUE),
-#define Mul(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_MUL, VAR, INT_VALUE),
-#define Div(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_DIV, VAR, INT_VALUE),
-#define Mod(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_MOD, VAR, INT_VALUE),
+/// When used with two args, adds a value to a variable (A += B).
+/// When used with more args, all are added together and stored in the variable (A = B + C + ...).
+#define Add(VAR, INT_VALUE, MORE...)        EVT_CMD(EVT_OP_ADD, VAR, INT_VALUE, ##MORE),
 
-// Basic floating-point arithmetic operations.
-#define AddF(VAR, FLOAT_VALUE)              EVT_CMD(EVT_OP_ADDF, VAR, FLOAT_VALUE),
-#define SubF(VAR, FLOAT_VALUE)              EVT_CMD(EVT_OP_SUBF, VAR, FLOAT_VALUE),
-#define MulF(VAR, FLOAT_VALUE)              EVT_CMD(EVT_OP_MULF, VAR, FLOAT_VALUE),
-#define DivF(VAR, FLOAT_VALUE)              EVT_CMD(EVT_OP_DIVF, VAR, FLOAT_VALUE),
+/// When used with two args, subtracts a value from a variable (A -= B).
+/// When used with three args, subtracts one value from another and stores the result in the variable (A = B - C).
+#define Sub(VAR, INT_VALUE, MORE...)        EVT_CMD(EVT_OP_SUB, VAR, INT_VALUE, ##MORE),
+
+/// When used with two args, multiplies a variable by a value (A *= B).
+/// When used with more args, all are multiplied together and stored in the variable (A = B * C * ...).
+#define Mul(VAR, INT_VALUE, MORE...)        EVT_CMD(EVT_OP_MUL, VAR, INT_VALUE, ##MORE),
+
+/// When used with two args, divides a variable by a value (A /= B).
+/// When used with three args, divides one value by another and stores the result in the variable (A = B / C).
+#define Div(VAR, INT_VALUE, MORE...)        EVT_CMD(EVT_OP_DIV, VAR, INT_VALUE, ##MORE),
+
+/// When used with two args, stores the remainder of a variable divided by a value (A %= B).
+/// When used with three args, stores the remainder of one value divided by another in the variable (A = B % C).
+#define Mod(VAR, INT_VALUE, MORE...)        EVT_CMD(EVT_OP_MOD, VAR, INT_VALUE, ##MORE),
+
+/// When used with two args, adds a value to a variable (A += B).
+/// When used with more args, all are added together and stored in the variable (A = B + C + ...).
+#define AddF(VAR, FLOAT_VALUE, MORE...)     EVT_CMD(EVT_OP_ADDF, VAR, FLOAT_VALUE, ##MORE),
+
+/// When used with two args, subtracts a value from a variable (A -= B).
+/// When used with three args, subtracts one value from another and stores the result in the variable (A = B - C).
+#define SubF(VAR, FLOAT_VALUE, MORE...)     EVT_CMD(EVT_OP_SUBF, VAR, FLOAT_VALUE, ##MORE),
+
+/// When used with two args, multiplies a variable by a value (A *= B).
+/// When used with more args, all are multiplied together and stored in the variable (A = B * C * ...).
+#define MulF(VAR, FLOAT_VALUE, MORE...)     EVT_CMD(EVT_OP_MULF, VAR, FLOAT_VALUE, ##MORE),
+
+/// When used with two args, divides a variable by a value (A /= B).
+/// When used with three args, divides one value by another and stores the result in the variable (A = B / C).
+#define DivF(VAR, FLOAT_VALUE, MORE...)     EVT_CMD(EVT_OP_DIVF, VAR, FLOAT_VALUE, ##MORE),
 
 /// Loads a s32 pointer for use with subsequent EVT_BUF_READ commands.
-#define UseBuf(INT_PTR)                    EVT_CMD(EVT_OP_USE_BUF, (Bytecode) INT_PTR),
+#define UseBuf(INT_PTR)                     EVT_CMD(EVT_OP_USE_BUF, (Bytecode) INT_PTR),
 
 /// Consumes the next s32 from the buffer and stores it in the given variable.
-#define BufRead1(VAR)                      EVT_CMD(EVT_OP_BUF_READ1, VAR),
+#define BufRead1(VAR)                       EVT_CMD(EVT_OP_BUF_READ1, VAR),
 
 /// Consumes the next two s32s from the buffer and stores them in the given variables.
-#define BufRead2(VAR1, VAR2)               EVT_CMD(EVT_OP_BUF_READ2, VAR1, VAR2),
+#define BufRead2(VAR1, VAR2)                EVT_CMD(EVT_OP_BUF_READ2, VAR1, VAR2),
 
 /// Consumes the next three s32s from the buffer and stores them in the given variables.
-#define BufRead3(VAR1, VAR2, VAR3)         EVT_CMD(EVT_OP_BUF_READ3, VAR1, VAR2, VAR3),
+#define BufRead3(VAR1, VAR2, VAR3)          EVT_CMD(EVT_OP_BUF_READ3, VAR1, VAR2, VAR3),
 
 /// Consumes the next four s32s from the buffer and stores them in the given variables.
-#define BufRead4(VAR1, VAR2, VAR3, VAR4)   EVT_CMD(EVT_OP_BUF_READ4, VAR1, VAR2, VAR3, VAR4),
+#define BufRead4(VAR1, VAR2, VAR3, VAR4)    EVT_CMD(EVT_OP_BUF_READ4, VAR1, VAR2, VAR3, VAR4),
 
 /// Gets the s32 at the given offset of the buffer and stores it in the given variable, without consuming it.
-#define BufPeek(OFFSET, VAR)               EVT_CMD(EVT_OP_BUF_PEEK, OFFSET, VAR),
+#define BufPeek(OFFSET, VAR)                EVT_CMD(EVT_OP_BUF_PEEK, OFFSET, VAR),
 
 /// Identical to UseBuf. Beware that the int buffer and the float buffer are not distinct.
-#define UseFBuf(FLOAT_PTR)                 EVT_CMD(EVT_OP_USE_FBUF, (Bytecode) FLOAT_PTR),
+#define UseFBuf(FLOAT_PTR)                  EVT_CMD(EVT_OP_USE_FBUF, (Bytecode) FLOAT_PTR),
 
 /// Consumes the next f32 from the buffer and stores it in the given variable.
-#define FBufRead1(VAR)                     EVT_CMD(EVT_OP_FBUF_READ1, VAR),
+#define FBufRead1(VAR)                      EVT_CMD(EVT_OP_FBUF_READ1, VAR),
 
 /// Consumes the next two f32s from the buffer and stores them in the given variables.
-#define FBufRead2(VAR1, VAR2)              EVT_CMD(EVT_OP_FBUF_READ2, VAR1, VAR2),
+#define FBufRead2(VAR1, VAR2)               EVT_CMD(EVT_OP_FBUF_READ2, VAR1, VAR2),
 
 /// Consumes the next three f32s from the buffer and stores them in the given variables.
-#define FBufRead3(VAR1, VAR2, VAR3)        EVT_CMD(EVT_OP_FBUF_READ3, VAR1, VAR2, VAR3),
+#define FBufRead3(VAR1, VAR2, VAR3)         EVT_CMD(EVT_OP_FBUF_READ3, VAR1, VAR2, VAR3),
 
 /// Consumes the next four f32s from the buffer and stores them in the given variables.
-#define FBufRead4(VAR1, VAR2, VAR3, VAR4)  EVT_CMD(EVT_OP_FBUF_READ4, VAR1, VAR2, VAR3, VAR4),
+#define FBufRead4(VAR1, VAR2, VAR3, VAR4)   EVT_CMD(EVT_OP_FBUF_READ4, VAR1, VAR2, VAR3, VAR4),
 
 /// Gets the f32 at the given offset of the buffer and stores it in the given variable, without consuming it.
-#define FBufPeek(OFFSET, VAR)              EVT_CMD(EVT_OP_FBUF_PEEK, OFFSET, VAR),
+#define FBufPeek(OFFSET, VAR)               EVT_CMD(EVT_OP_FBUF_PEEK, OFFSET, VAR),
 
 /// Loads an s32 array pointer into the current thread for use with `ArrayVar(INDEX)`.
-#define UseArray(INT_PTR)                  EVT_CMD(EVT_OP_USE_ARRAY, (Bytecode) INT_PTR),
+#define UseArray(INT_PTR)                   EVT_CMD(EVT_OP_USE_ARRAY, (Bytecode) INT_PTR),
 
 /// Loads an s32 array pointer into the current thread for use with `UF(INDEX)`.
 /// Flags are stored in a 'packed' structure where indices refer to bits.
-#define UseFlagArray(PACKED_FLAGS_PTR)    EVT_CMD(EVT_OP_USE_FLAGS, (Bytecode) PACKED_FLAGS_PTR),
+#define UseFlagArray(PACKED_FLAGS_PTR)      EVT_CMD(EVT_OP_USE_FLAGS, (Bytecode) PACKED_FLAGS_PTR),
 
 /// Allocates a new array of the given size for use with `ArrayVar(INDEX)`.
 /// EVT scripts do not have to worry about freeing this array.
-#define MallocArray(SIZE, OUT_PTR_VAR)     EVT_CMD(EVT_OP_MALLOC_ARRAY, SIZE, OUT_PTR_VAR),
+#define MallocArray(SIZE, OUT_PTR_VAR)      EVT_CMD(EVT_OP_MALLOC_ARRAY, SIZE, OUT_PTR_VAR),
 
 /// `VAR &= VALUE`
-#define BitwiseAnd(VAR, VALUE)             EVT_CMD(EVT_OP_BITWISE_AND, VAR, VALUE),
+#define BitwiseAnd(VAR, VALUE)              EVT_CMD(EVT_OP_BITWISE_AND, VAR, VALUE),
 
 /// `VAR &= CONST`, but CONST is treated as-is rather than dereferenced with evt_get_variable.
-#define BitwiseAndConst(VAR, CONST)       EVT_CMD(EVT_OP_BITWISE_AND_CONST, VAR, CONST),
+#define BitwiseAndConst(VAR, CONST)         EVT_CMD(EVT_OP_BITWISE_AND_CONST, VAR, CONST),
 
 /// `VAR |= VALUE`
-#define BitwiseOr(VAR, VALUE)              EVT_CMD(EVT_OP_BITWISE_OR, VAR, VALUE),
+#define BitwiseOr(VAR, VALUE)               EVT_CMD(EVT_OP_BITWISE_OR, VAR, VALUE),
 
 /// `VAR |= CONST`, but CONST is treated as-is rather than dereferenced with evt_get_variable.
-#define BitwiseOrConst(VAR, CONST)        EVT_CMD(EVT_OP_BITWISE_OR_CONST, VAR, CONST),
+#define BitwiseOrConst(VAR, CONST)          EVT_CMD(EVT_OP_BITWISE_OR_CONST, VAR, CONST),
 
 /// Launches a new thread.
 /// The following values are copied from the current thread to the new thread:
@@ -479,7 +502,7 @@ extern "C" {
 /// IsThreadRunning.
 /// Extra ARGS become ArgVars in the new script with the same capture rules as Exec.
 #define ExecGetTID(EVT_SOURCE, OUTVAR, ARGS...) \
-    EVT_CMD(EVT_OP_EXEC_GET_TID, (Bytecode) EVT_SOURCE, OUTVAR, ##ARGS),
+                                            EVT_CMD(EVT_OP_EXEC_GET_TID, (Bytecode) EVT_SOURCE, OUTVAR, ##ARGS),
 
 /// Launches a new child thread.
 /// Blocks for at least one frame unless the child thread is made to have a higher priority than the parent.
@@ -495,10 +518,10 @@ extern "C" {
 /// Child threads are killed, suspended, and resumed as their parents are, for example, a different thread using
 /// KillThread to kill a parent thread would also kill its child thread(s) launched by this command.
 /// Extra ARGS become ArgVars in the child script with the same capture rules as Exec.
-#define ExecWait(EVT_SOURCE, ARGS...)      EVT_CMD(EVT_OP_EXEC_WAIT, (Bytecode) EVT_SOURCE, ##ARGS),
+#define ExecWait(EVT_SOURCE, ARGS...)       EVT_CMD(EVT_OP_EXEC_WAIT, (Bytecode) EVT_SOURCE, ##ARGS),
 
 /// Assert that this script invocation received exactly NUM_ARGS arguments.
-#define ExpectArgs(NUM_ARGS)               EVT_CMD(EVT_OP_EXPECT_ARGS, NUM_ARGS),
+#define ExpectArgs(NUM_ARGS)                EVT_CMD(EVT_OP_EXPECT_ARGS, NUM_ARGS),
 
 /// Sets up a script to launch when a particular event is triggered.
 ///
@@ -523,54 +546,54 @@ extern "C" {
 ///
 /// Only one thread will run for a trigger at once.
 #define BindTrigger(EVT_SOURCE, TRIGGER, COLLIDER_ID, UNK_A3, TRIGGER_PTR_OUTVAR) \
-    EVT_CMD(EVT_OP_BIND_TRIGGER, (Bytecode) EVT_SOURCE, TRIGGER, (Bytecode) COLLIDER_ID, UNK_A3, TRIGGER_PTR_OUTVAR),
+                                            EVT_CMD(EVT_OP_BIND_TRIGGER, (Bytecode) EVT_SOURCE, TRIGGER, (Bytecode) COLLIDER_ID, UNK_A3, TRIGGER_PTR_OUTVAR),
 
 /// Similar to BindTrigger, but also takes arguments for the item list to show.
 #define BindPadlock(EVT_SOURCE, TRIGGER, COLLIDER_ID, ITEM_LIST, UNK_A3, TRIGGER_PTR_OUTVAR) \
-    EVT_CMD(EVT_OP_BIND_PADLOCK, (Bytecode) EVT_SOURCE, TRIGGER, COLLIDER_ID, (Bytecode) ITEM_LIST, UNK_A3, TRIGGER_PTR_OUTVAR),
+                                            EVT_CMD(EVT_OP_BIND_PADLOCK, (Bytecode) EVT_SOURCE, TRIGGER, COLLIDER_ID, (Bytecode) ITEM_LIST, UNK_A3, TRIGGER_PTR_OUTVAR),
 
 /// Unbinds the current thread from the trigger it was bound to, if any.
 #define Unbind                              EVT_CMD(EVT_OP_UNBIND),
 
 /// Kills a thread by its thread ID.
-#define KillThread(TID)                    EVT_CMD(EVT_OP_KILL_THREAD, TID),
+#define KillThread(TID)                     EVT_CMD(EVT_OP_KILL_THREAD, TID),
 
 /// Sets the current thread's priority. Higher-priority threads execute before lower-priority threads on each frame.
-#define SetPriority(PRIORITY)              EVT_CMD(EVT_OP_SET_PRIORITY, PRIORITY),
+#define SetPriority(PRIORITY)               EVT_CMD(EVT_OP_SET_PRIORITY, PRIORITY),
 
 /// Sets the current thread's timescale. This is a multiplier applied to Wait and Wait_SECONDS.
-#define SetTimescale(TIMESCALE)            EVT_CMD(EVT_OP_SET_TIMESCALE, TIMESCALE),
+#define SetTimescale(TIMESCALE)             EVT_CMD(EVT_OP_SET_TIMESCALE, TIMESCALE),
 
 /// Sets the current thread's group. Group value meanings are currently not known.
-#define SetGroup(GROUP)                    EVT_CMD(EVT_OP_SET_GROUP, GROUP),
+#define SetGroup(GROUP)                     EVT_CMD(EVT_OP_SET_GROUP, GROUP),
 
 /// Suspends all threads in a group.
-#define SuspendGroup(GROUP)                EVT_CMD(EVT_OP_SUSPEND_GROUP, GROUP),
+#define SuspendGroup(GROUP)                 EVT_CMD(EVT_OP_SUSPEND_GROUP, GROUP),
 
 /// Resumes all threads in a group.
-#define ResumeGroup(GROUP)                 EVT_CMD(EVT_OP_RESUME_GROUP, GROUP),
+#define ResumeGroup(GROUP)                  EVT_CMD(EVT_OP_RESUME_GROUP, GROUP),
 
 /// Suspends all threads in a group, except the current thread.
-#define SuspendOthers(GROUP)               EVT_CMD(EVT_OP_SUSPEND_OTHERS, GROUP),
+#define SuspendOthers(GROUP)                EVT_CMD(EVT_OP_SUSPEND_OTHERS, GROUP),
 
 /// Resumes all threads in a group, except the current thread.
-#define ResumeOthers(GROUP)                EVT_CMD(EVT_OP_RESUME_OTHERS, GROUP),
+#define ResumeOthers(GROUP)                 EVT_CMD(EVT_OP_RESUME_OTHERS, GROUP),
 
 /// Suspends all threads in a group, except the current thread.
-#define SuspendThread(TID)                 EVT_CMD(EVT_OP_SUSPEND_THREAD, TID),
+#define SuspendThread(TID)                  EVT_CMD(EVT_OP_SUSPEND_THREAD, TID),
 
 /// Resumes a thread by its thread ID.
-#define ResumeThread(TID)                  EVT_CMD(EVT_OP_RESUME_THREAD, TID),
+#define ResumeThread(TID)                   EVT_CMD(EVT_OP_RESUME_THREAD, TID),
 
 /// Sets OUTVAR to true/false depending on whether a thread with the given ID exists (i.e. has not been killed).
-#define IsThreadRunning(TID, OUTVAR)      EVT_CMD(EVT_OP_IS_THREAD_RUNNING, TID, OUTVAR),
+#define IsThreadRunning(TID, OUTVAR)        EVT_CMD(EVT_OP_IS_THREAD_RUNNING, TID, OUTVAR),
 
 /// Marks the start of a thread block. Commands between this and a matching EndThread
 /// will be executed on their own, new thread instead of on the current thread.
 #define Thread                              EVT_CMD(EVT_OP_THREAD),
 
 /// Marks the end of a thread block.
-#define EndThread                          EVT_CMD(EVT_OP_END_THREAD),
+#define EndThread                           EVT_CMD(EVT_OP_END_THREAD),
 
 /// Marks the start of a child thread block. Commands between this and a matching EndChildThread
 /// will be executed as a new child thread instead of on the current thread.
@@ -583,10 +606,10 @@ extern "C" {
 ///     EndChildThread
 ///     Return                              // parent thread dies
 ///
-#define ChildThread                        EVT_CMD(EVT_OP_CHILD_THREAD),
+#define ChildThread                         EVT_CMD(EVT_OP_CHILD_THREAD),
 
 /// Marks the end of a child thread block.
-#define EndChildThread                    EVT_CMD(EVT_OP_END_CHILD_THREAD),
+#define EndChildThread                      EVT_CMD(EVT_OP_END_CHILD_THREAD),
 
 /// Calls a given C EVT API function with any number of arguments.
 ///
@@ -599,10 +622,10 @@ extern "C" {
 ///     Call(ApiFunction)
 ///
 /// The given arguments can be accessed from the API function using `thread->ptrReadPos`.
-#define Call(FUNC, ARGS...)                     EVT_CMD(EVT_OP_CALL, (Bytecode) FUNC, ##ARGS),
+#define Call(FUNC, ARGS...)                 EVT_CMD(EVT_OP_CALL, (Bytecode) FUNC, ##ARGS),
 
 /// Does nothing in release version
-#define EVT_DEBUG_LOG(STRING)                   EVT_CMD(EVT_OP_DEBUG_LOG, STRING),
+#define EVT_DEBUG_LOG(STRING)               EVT_CMD(EVT_OP_DEBUG_LOG, STRING),
 
 /// Prints variable name and value
 #define DebugPrintVar(VAR)                  EVT_CMD(EVT_OP_DEBUG_PRINT_VAR, VAR),

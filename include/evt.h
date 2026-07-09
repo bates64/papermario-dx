@@ -61,15 +61,15 @@ enum {
     EVT_OP_SET, ///< Args: container, expression
     EVT_OP_SET_CONST, ///< Args: container, value
     EVT_OP_SETF, ///< Args: container, expression
-    EVT_OP_ADD, ///< Args: container, expression to increment by
-    EVT_OP_SUB, ///< Args: container, expression to decrement by
-    EVT_OP_MUL, ///< Args: container, expression to multiply by
-    EVT_OP_DIV, ///< Integer division. Args: container, expression to divide by
-    EVT_OP_MOD, ///< Args: container, expression to divide by
-    EVT_OP_ADDF, ///< Args: container, expression to increment by
-    EVT_OP_SUBF, ///< Args: container, expression to decrement by
-    EVT_OP_MULF, ///< Args: container, expression to multiply by
-    EVT_OP_DIVF, ///< Args: container, expression to divide by
+    EVT_OP_ADD, ///< Args: container, increment expression | expression, expression, ...
+    EVT_OP_SUB, ///< Args: container, decrement expression | expression, expression
+    EVT_OP_MUL, ///< Args: container, multiply expression | expression, expression, ...
+    EVT_OP_DIV, ///< Integer division. Args: container, divisor expression | dividend expression, divisor expression
+    EVT_OP_MOD, ///< Args: container, divisor expression | dividend expression, divisor expression
+    EVT_OP_ADDF, ///< Args: container, increment expression | expression, expression, ...
+    EVT_OP_SUBF, ///< Args: container, decrement expression | expression, expression
+    EVT_OP_MULF, ///< Args: container, multiply expression | expression, expression, ...
+    EVT_OP_DIVF, ///< Args: container, divisor expression | dividend expression, divisor expression
     EVT_OP_USE_BUF, ///< Args: s32*
     EVT_OP_BUF_READ1, /// Args: container
     EVT_OP_BUF_READ2, /// Args: container, container
