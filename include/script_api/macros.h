@@ -23,8 +23,8 @@ extern "C" {
 
 #define EVT_LOCAL_VAR_CUTOFF     -20000000
 #define EVT_LOCAL_VAR_OFFSET      30000000
-#define EVT_ARG_VAR_CUTOFF      -34000000
-#define EVT_ARG_VAR_OFFSET       35000000
+#define EVT_ARG_VAR_CUTOFF       -34000000
+#define EVT_ARG_VAR_OFFSET        35000000
 #define EVT_MAP_VAR_CUTOFF       -40000000
 #define EVT_MAP_VAR_OFFSET        50000000
 #define EVT_LOCAL_FLAG_CUTOFF    -60000000
@@ -48,6 +48,8 @@ extern "C" {
 #define EVT_FIXED_END           -240000000
 #define EVT_IGNORE_ARG          -250000000 // used by a couple functions to selectively ignore args
 #define EVT_LIMIT               -270000000 // TODO better name
+#define EVT_ARG_INT_MARKER      (EVT_LIMIT - 1)
+#define EVT_ARG_FLOAT_MARKER    (EVT_LIMIT - 2)
 
  // This fixes an issue with fixed point numbers not being correct. Potentially a truncation vs round difference.
 #define FLOAT_ROUND(x) ((x) >=0 ? (f64)((x) + 0.9) : (f64)(x))
@@ -132,9 +134,16 @@ extern "C" {
 
 /// Argument Word. A variable parameter to this script execution.
 /// Args are set by Exec/ExecGetTID/ExecWait and are not inherited by child scripts or thread blocks.
-/// LocalVar, LocalFlag, and ArgVar arguments are captured by value; all other argument words are preserved as-is.
 /// Assumed to be constant. Mutating by `evt_set_variable` or `evt_set_float_variable` will trigger PANIC.
 #define ArgVar(INDEX) ((INDEX) - EVT_ARG_VAR_OFFSET)
+
+/// Force an Exec/ExecGetTID/ExecWait argument to be dereferenced through `evt_get_variable`.
+/// Arguments not wrapped with ARG_INT or ARG_FLOAT are passed as literal bytecode words.
+#define ARG_INT(EXPR) EVT_ARG_INT_MARKER, (EXPR)
+
+/// Force an Exec/ExecGetTID/ExecWait argument to be dereferenced through `evt_get_float_variable`.
+/// The captured value is stored in the child ArgVar as an EVT fixed-point bytecode word.
+#define ARG_FLOAT(EXPR) EVT_ARG_FLOAT_MARKER, (EXPR)
 
 /// An entity index. Entities are assigned indices in the order they are created with Call(MakeEntity, ...).
 /// Supported in BindTrigger and BindPadlock only.
@@ -461,8 +470,8 @@ extern "C" {
 /// - Priority
 /// - Group
 ///
-/// Extra ARGS become ArgVars in the new script. LocalVar, LocalFlag, and ArgVar arguments are copied by value;
-/// all other arguments are passed through as raw EVT words.
+/// Extra ARGS become ArgVars in the new script. Arguments are passed as literal bytecode words unless explicitly
+/// wrapped with ARG_INT or ARG_FLOAT.
 #define Exec(EVT_SOURCE, ARGS...)           EVT_CMD(EVT_OP_EXEC, (Bytecode) EVT_SOURCE, ##ARGS),
 
 /// Identical to Exec, but the newly-launched thread ID is stored in OUTVAR.

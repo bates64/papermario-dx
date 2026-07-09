@@ -1,4 +1,5 @@
 #include "common.h"
+#include "script_api/macros.h"
 #include "vars_access.h"
 #include "dx/config.h"
 #include "dx/debug_menu.h"
@@ -119,29 +120,12 @@ Bytecode evt_float_to_fixed_var(f32 value) {
 }
 
 ALWAYS_INLINE void evt_assert_valid_arg_var(Evt* script, s32 argIndex) {
-    ASSERT_MSG(argIndex < script->argCount, "ArgVar(%ld) read with only %ld arg(s)", argIndex, script->argCount);
-}
-
-Bytecode evt_capture_script_arg(Evt* caller, Bytecode arg) {
-    s32 wordIdx;
-    s32 bitIdx;
-
-    // Script-local storage does not preserve identity across Exec, so capture its current value.
-    if (arg <= EVT_LOCAL_VAR_CUTOFF && arg > EVT_ARG_VAR_CUTOFF) {
-        return caller->varTable[EVT_INDEX_OF_LOCAL_VAR(arg)];
-    }
-    if (arg <= EVT_ARG_VAR_CUTOFF && arg > EVT_MAP_VAR_CUTOFF) {
-        wordIdx = EVT_INDEX_OF_ARG_VAR(arg);
-        evt_assert_valid_arg_var(caller, wordIdx);
-        return caller->argVars[wordIdx];
-    }
-    if (arg <= EVT_LOCAL_FLAG_CUTOFF && arg > EVT_MAP_FLAG_CUTOFF) {
-        wordIdx = EVT_INDEX_OF_LOCAL_FLAG(arg);
-        bitIdx = wordIdx % 32;
-        return (caller->varFlags[wordIdx / 32] & (1 << bitIdx)) != 0;
-    }
-
-    return arg;
+    ASSERT_MSG(
+        argIndex >= 0 && argIndex < script->argCount,
+        "ArgVar(%ld) read with only %ld arg(s)",
+        argIndex,
+        script->argCount
+    );
 }
 
 ApiStatus evt_handle_return(Evt* script) {
@@ -1036,22 +1020,64 @@ ApiStatus evt_handle_call(Evt* script) {
     return ret;
 }
 
+s32 evt_count_script_args(Bytecode* args, s32 argCount) {
+    s32 logicalArgCount = 0;
+    s32 i = 0;
+
+    ASSERT(argCount >= 0);
+
+    while (i < argCount) {
+        switch (args[i]) {
+            case EVT_ARG_INT_MARKER:
+            case EVT_ARG_FLOAT_MARKER:
+                if (i + 1 >= argCount) {
+                    ASSERT_MSG(false, "Exec arg deref marker missing value");
+                    return logicalArgCount;
+                }
+                i += 2;
+                break;
+            default:
+                i++;
+                break;
+        }
+
+        logicalArgCount++;
+    }
+
+    return logicalArgCount;
+}
+
 void evt_set_script_args(Evt* script, Evt* caller, Bytecode* args, s32 argCount) {
+    Bytecode arg;
+    s32 execArgCount;
     s32 i;
 
     ASSERT(argCount >= 0);
-    script->argCount = argCount;
+    execArgCount = evt_count_script_args(args, argCount);
+    script->argCount = execArgCount;
     script->argVars = nullptr;
 
-    if (argCount == 0) {
+    if (execArgCount == 0) {
         return;
     }
 
-    script->argVars = heap_malloc(argCount * sizeof(*script->argVars));
+    script->argVars = heap_malloc(execArgCount * sizeof(*script->argVars));
     ASSERT(script->argVars != nullptr);
 
-    for (i = 0; i < argCount; i++) {
-        script->argVars[i] = evt_capture_script_arg(caller, *args++);
+    for (i = 0; i < execArgCount; i++) {
+        arg = *args++;
+
+        switch (arg) {
+            case EVT_ARG_INT_MARKER:
+                script->argVars[i] = evt_get_variable(caller, *args++);
+                break;
+            case EVT_ARG_FLOAT_MARKER:
+                script->argVars[i] = evt_float_to_fixed_var(evt_get_float_variable(caller, *args++));
+                break;
+            default:
+                script->argVars[i] = arg;
+                break;
+        }
     }
 }
 

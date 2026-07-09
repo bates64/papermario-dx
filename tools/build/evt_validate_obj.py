@@ -56,6 +56,8 @@ MAX_LOOP_DEPTH = 8
 MAX_SWITCH_DEPTH = 8
 EVT_LOCAL_VAR_CUTOFF = -20000000
 EVT_LIMIT = -270000000
+EVT_ARG_INT_MARKER = EVT_LIMIT - 1
+EVT_ARG_FLOAT_MARKER = EVT_LIMIT - 2
 
 
 class Opcode(IntEnum):
@@ -133,9 +135,9 @@ class Opcode(IntEnum):
     EVT_OP_BITWISE_OR = (0x41, 2)
     EVT_OP_BITWISE_OR_CONST = (0x42, 2)
     EVT_OP_CALL = (0x43, None)
-    EVT_OP_EXEC = (0x44, 1)
-    EVT_OP_EXEC_GET_TID = (0x45, 2)
-    EVT_OP_EXEC_WAIT = (0x46, 1)
+    EVT_OP_EXEC = (0x44, None)
+    EVT_OP_EXEC_GET_TID = (0x45, None)
+    EVT_OP_EXEC_WAIT = (0x46, None)
     EVT_OP_BIND_TRIGGER = (0x47, 5)
     EVT_OP_UNBIND = (0x48, 0)
     EVT_OP_KILL_THREAD = (0x49, 1)
@@ -191,6 +193,17 @@ CASE_OPS = {
 CASE_GROUP_OPS = {
     Opcode.EVT_OP_CASE_OR_EQ,
     Opcode.EVT_OP_CASE_AND_EQ,
+}
+
+EXEC_MIN_ARGC = {
+    Opcode.EVT_OP_EXEC: 1,
+    Opcode.EVT_OP_EXEC_GET_TID: 2,
+    Opcode.EVT_OP_EXEC_WAIT: 1,
+}
+
+EXEC_ARG_MARKERS = {
+    EVT_ARG_INT_MARKER: "ARG_INT",
+    EVT_ARG_FLOAT_MARKER: "ARG_FLOAT",
 }
 
 
@@ -612,6 +625,13 @@ def validate_argc(script: ScriptSymbol, op_pos: int, opcode: Opcode, argc: int, 
         if argc < 1:
             raise ValidationError(f"{format_script_site(script, op_pos, line)}: EVT_OP_CALL has no function argument")
         return
+    if opcode in EXEC_MIN_ARGC:
+        expected_min = EXEC_MIN_ARGC[opcode]
+        if argc < expected_min:
+            raise ValidationError(
+                f"{format_script_site(script, op_pos, line)}: {opcode.name} has argc {argc}, expected at least {expected_min}"
+            )
+        return
     expected = opcode.argc
     if expected is None:
         raise ValidationError(
@@ -621,6 +641,31 @@ def validate_argc(script: ScriptSymbol, op_pos: int, opcode: Opcode, argc: int, 
         raise ValidationError(
             f"{format_script_site(script, op_pos, line)}: {opcode.name} has argc {argc}, expected {expected}"
         )
+
+
+def validate_exec_arg_stream(
+    script: ScriptSymbol,
+    op_pos: int,
+    opcode: Opcode,
+    args: list[int],
+    line: int | None,
+) -> None:
+    base_argc = EXEC_MIN_ARGC.get(opcode)
+    if base_argc is None:
+        return
+
+    i = base_argc
+    while i < len(args):
+        marker_name = EXEC_ARG_MARKERS.get(args[i])
+        if marker_name is None:
+            i += 1
+            continue
+
+        if i + 1 >= len(args):
+            raise ValidationError(
+                f"{format_script_site(script, op_pos, line)}: {opcode.name} {marker_name} marker at arg {i} has no value"
+            )
+        i += 2
 
 
 class ScriptWalkContext:
@@ -826,6 +871,7 @@ def validate_script(elf: Elf32, script: ScriptSymbol, data: bytes) -> None:
         args = [word_at(data, arg_pos + i) for i in range(argc)]
         raw_args = [unsigned_word(data, (arg_pos + i) * BYTECODE_SIZE) for i in range(argc)]
         validate_argc(script, op_pos, opcode, argc, ctx.current_line)
+        validate_exec_arg_stream(script, op_pos, opcode, args, ctx.current_line)
         read_pos += argc
 
         if opcode == Opcode.EVT_OP_END:
