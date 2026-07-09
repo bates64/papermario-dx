@@ -46,14 +46,14 @@ SHN_UNDEF = 0
 R_MIPS_32 = 2
 
 BYTECODE_SIZE = 4
-OPCODE_SHIFT = 24
-ARGC_SHIFT = 16
-ARGC_MASK = 0xFF
-LINE_MASK = 0xFFFF
-EVT_MAX_NUM_LABELS = 24
-EVT_MAX_LABEL_NAME_LEN = 64
+EVT_OP_INTERNAL_FETCH = 0x00
+
+MAX_ARGC = 0xFF
+MAX_NUM_LABELS = 24
+MAX_LABEL_NAME_LEN = 64
 MAX_LOOP_DEPTH = 8
 MAX_SWITCH_DEPTH = 8
+
 EVT_LOCAL_VAR_CUTOFF = -20000000
 EVT_LIMIT = -270000000
 EVT_ARG_INT_MARKER = EVT_LIMIT - 1
@@ -61,13 +61,17 @@ EVT_ARG_FLOAT_MARKER = EVT_LIMIT - 2
 
 
 class Opcode(IntEnum):
-    def __new__(cls, opcode: int, argc: int | None):
+    def __new__(cls, opcode: int, argc_min: int, argc_max: int | None = None):
         obj = int.__new__(cls, opcode)
         obj._value_ = opcode
-        obj.argc = argc
+        obj.argc_min = argc_min
+        if argc_max is None:
+            obj.argc_max = argc_min
+        else:
+            obj.argc_max = argc_max
+        obj.is_variadic = obj.argc_min != obj.argc_max
         return obj
 
-    EVT_OP_INTERNAL_FETCH = (0x00, None)
     EVT_OP_END = (0x01, 0)
     EVT_OP_RETURN = (0x02, 0)
     EVT_OP_LABEL = (0x03, 1)
@@ -106,15 +110,15 @@ class Opcode(IntEnum):
     EVT_OP_SET = (0x24, 2)
     EVT_OP_SET_CONST = (0x25, 2)
     EVT_OP_SETF = (0x26, 2)
-    EVT_OP_ADD = (0x27, None)
-    EVT_OP_SUB = (0x28, None)
-    EVT_OP_MUL = (0x29, None)
-    EVT_OP_DIV = (0x2A, None)
-    EVT_OP_MOD = (0x2B, None)
-    EVT_OP_ADDF = (0x2C, None)
-    EVT_OP_SUBF = (0x2D, None)
-    EVT_OP_MULF = (0x2E, None)
-    EVT_OP_DIVF = (0x2F, None)
+    EVT_OP_ADD = (0x27, 2, MAX_ARGC)
+    EVT_OP_SUB = (0x28, 2, 3)
+    EVT_OP_MUL = (0x29, 2, MAX_ARGC)
+    EVT_OP_DIV = (0x2A, 2, 3)
+    EVT_OP_MOD = (0x2B, 2, 3)
+    EVT_OP_ADDF = (0x2C, 2, MAX_ARGC)
+    EVT_OP_SUBF = (0x2D, 2, 3)
+    EVT_OP_MULF = (0x2E, 2, MAX_ARGC)
+    EVT_OP_DIVF = (0x2F, 2, 3)
     EVT_OP_USE_BUF = (0x30, 1)
     EVT_OP_BUF_READ1 = (0x31, 1)
     EVT_OP_BUF_READ2 = (0x32, 2)
@@ -134,10 +138,10 @@ class Opcode(IntEnum):
     EVT_OP_BITWISE_AND_CONST = (0x40, 2)
     EVT_OP_BITWISE_OR = (0x41, 2)
     EVT_OP_BITWISE_OR_CONST = (0x42, 2)
-    EVT_OP_CALL = (0x43, None)
-    EVT_OP_EXEC = (0x44, None)
-    EVT_OP_EXEC_GET_TID = (0x45, None)
-    EVT_OP_EXEC_WAIT = (0x46, None)
+    EVT_OP_CALL = (0x43, 1, MAX_ARGC)
+    EVT_OP_EXEC = (0x44, 1, MAX_ARGC)
+    EVT_OP_EXEC_GET_TID = (0x45, 2, MAX_ARGC)
+    EVT_OP_EXEC_WAIT = (0x46, 1, MAX_ARGC)
     EVT_OP_BIND_TRIGGER = (0x47, 5)
     EVT_OP_UNBIND = (0x48, 0)
     EVT_OP_KILL_THREAD = (0x49, 1)
@@ -195,38 +199,16 @@ CASE_GROUP_OPS = {
     Opcode.EVT_OP_CASE_AND_EQ,
 }
 
-EXEC_MIN_ARGC = {
-    Opcode.EVT_OP_EXEC: 1,
-    Opcode.EVT_OP_EXEC_GET_TID: 2,
-    Opcode.EVT_OP_EXEC_WAIT: 1,
+EXEC_OPS = {
+    Opcode.EVT_OP_EXEC,
+    Opcode.EVT_OP_EXEC_GET_TID,
+    Opcode.EVT_OP_EXEC_WAIT,
 }
 
 EXEC_ARG_MARKERS = {
     EVT_ARG_INT_MARKER: "ARG_INT",
     EVT_ARG_FLOAT_MARKER: "ARG_FLOAT",
 }
-
-VARIADIC_MIN_ARGC = {
-    Opcode.EVT_OP_ADD: 2,
-    Opcode.EVT_OP_SUB: 2,
-    Opcode.EVT_OP_MUL: 2,
-    Opcode.EVT_OP_DIV: 2,
-    Opcode.EVT_OP_MOD: 2,
-    Opcode.EVT_OP_ADDF: 2,
-    Opcode.EVT_OP_SUBF: 2,
-    Opcode.EVT_OP_MULF: 2,
-    Opcode.EVT_OP_DIVF: 2,
-    **EXEC_MIN_ARGC,
-}
-
-VARIADIC_MAX_ARGC = {
-    Opcode.EVT_OP_SUB: 3,
-    Opcode.EVT_OP_DIV: 3,
-    Opcode.EVT_OP_MOD: 3,
-    Opcode.EVT_OP_SUBF: 3,
-    Opcode.EVT_OP_DIVF: 3,
-}
-
 
 @dataclass(frozen=True)
 class Section:
@@ -535,15 +517,15 @@ def word_at(data: bytes, word_index: int) -> int:
 
 
 def opcode_from_raw_cmd(raw_cmd: int) -> int:
-    return (raw_cmd >> OPCODE_SHIFT) & 0xFF
+    return (raw_cmd >> 24) & 0xFF
 
 
 def argc_from_raw_cmd(raw_cmd: int) -> int:
-    return (raw_cmd >> ARGC_SHIFT) & ARGC_MASK
+    return (raw_cmd >> 16) & 0xFF
 
 
 def line_from_raw_cmd(raw_cmd: int) -> int:
-    return raw_cmd & LINE_MASK
+    return raw_cmd & 0xFFFF
 
 
 def is_label_initial_byte(ch: int) -> bool:
@@ -560,7 +542,7 @@ def read_label_name(data: bytes, offset: int) -> str | None:
     if not is_label_initial_byte(data[offset]):
         return None
 
-    end = min(len(data), offset + EVT_MAX_LABEL_NAME_LEN)
+    end = min(len(data), offset + MAX_LABEL_NAME_LEN)
     chars = bytearray([data[offset]])
     for i in range(offset + 1, end):
         ch = data[i]
@@ -646,26 +628,22 @@ def validate_argc(script: ScriptSymbol, op_pos: int, opcode: Opcode, argc: int, 
         if argc < 1:
             raise ValidationError(f"{format_script_site(script, op_pos, line)}: EVT_OP_CALL has no function argument")
         return
-    if opcode in VARIADIC_MIN_ARGC:
-        expected_min = VARIADIC_MIN_ARGC[opcode]
-        if argc < expected_min:
+
+    if not opcode.is_variadic:
+        if argc != opcode.argc_min:
             raise ValidationError(
-                f"{format_script_site(script, op_pos, line)}: {opcode.name} has argc {argc}, expected at least {expected_min}"
-            )
-        expected_max = VARIADIC_MAX_ARGC.get(opcode)
-        if expected_max is not None and argc > expected_max:
-            raise ValidationError(
-                f"{format_script_site(script, op_pos, line)}: {opcode.name} has argc {argc}, expected at most {expected_max}"
+                f"{format_script_site(script, op_pos, line)}: {opcode.name} has argc {argc}, expected {opcode.argc_min}"
             )
         return
-    expected = opcode.argc
-    if expected is None:
+
+    if argc < opcode.argc_min:
         raise ValidationError(
-            f"{format_script_site(script, op_pos, line)}: {opcode.name} is not valid in script bytecode"
+            f"{format_script_site(script, op_pos, line)}: {opcode.name} has argc {argc}, expected at least {opcode.argc_min}"
         )
-    if argc != expected:
+
+    if argc > opcode.argc_max:
         raise ValidationError(
-            f"{format_script_site(script, op_pos, line)}: {opcode.name} has argc {argc}, expected {expected}"
+            f"{format_script_site(script, op_pos, line)}: {opcode.name} has argc {argc}, expected at most {opcode.argc_max}"
         )
 
 
@@ -676,11 +654,10 @@ def validate_exec_arg_stream(
     args: list[int],
     line: int | None,
 ) -> None:
-    base_argc = EXEC_MIN_ARGC.get(opcode)
-    if base_argc is None:
+    if opcode not in EXEC_OPS:
         return
 
-    i = base_argc
+    i = opcode.argc_min
     while i < len(args):
         marker_name = EXEC_ARG_MARKERS.get(args[i])
         if marker_name is None:
@@ -843,10 +820,10 @@ class ScriptWalkContext:
             )
 
         scope.labels[label] = op_pos
-        if len(scope.labels) > EVT_MAX_NUM_LABELS:
+        if len(scope.labels) > MAX_NUM_LABELS:
             raise self.error_at(
                 op_pos,
-                f"Label count {len(scope.labels)} exceeds runtime limit of {EVT_MAX_NUM_LABELS} in this thread scope",
+                f"Label count {len(scope.labels)} exceeds runtime limit of {MAX_NUM_LABELS} in this thread scope",
             )
 
     def define_goto(self, op_pos: int, label: LabelValue) -> None:
@@ -880,14 +857,14 @@ def validate_script(elf: Elf32, script: ScriptSymbol, data: bytes) -> None:
             op_lines[op_pos] = line
         read_pos += 1
 
+        if opcode_value == EVT_OP_INTERNAL_FETCH:
+            raise ValidationError(f"{format_script_site(script, op_pos, ctx.current_line)}: EVT_OP_INTERNAL_FETCH appears in script data")
         try:
             opcode = Opcode(opcode_value)
         except ValueError:
             raise ValidationError(
                 f"{format_script_site(script, op_pos, ctx.current_line)}: unknown opcode 0x{opcode_value:X}"
             )
-        if opcode == Opcode.EVT_OP_INTERNAL_FETCH:
-            raise ValidationError(f"{format_script_site(script, op_pos, ctx.current_line)}: EVT_OP_INTERNAL_FETCH appears in script data")
         if read_pos + argc > words:
             raise ValidationError(
                 f"{format_script_site(script, op_pos, ctx.current_line)}: {opcode.name} argc {argc} runs past symbol boundary"
