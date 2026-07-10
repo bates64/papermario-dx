@@ -87,16 +87,10 @@ enum {
     EVT_OP_CLAMP, ///< Args: container, min, max | container, expression, min, max
     EVT_OP_CLAMPF, ///< Args: container, min, max | container, expression, min, max
     EVT_OP_USE_BUF, ///< Args: s32*
-    EVT_OP_BUF_READ1, /// Args: container
-    EVT_OP_BUF_READ2, /// Args: container, container
-    EVT_OP_BUF_READ3, /// Args: container, container, container
-    EVT_OP_BUF_READ4, /// Args: container, container, container, container
+    EVT_OP_BUF_READ, ///< Args: container, ...
     EVT_OP_BUF_PEEK, ///< Args: index, container
     EVT_OP_USE_FBUF, ///< Identical to USE_BUFFER. Args: f32*
-    EVT_OP_FBUF_READ1, /// Args: container
-    EVT_OP_FBUF_READ2, /// Args: container, container
-    EVT_OP_FBUF_READ3, /// Args: container, container, container
-    EVT_OP_FBUF_READ4, /// Args: container, container, container, container
+    EVT_OP_FBUF_READ, ///< Args: container, ...
     EVT_OP_FBUF_PEEK, ///< Args: index, container
     EVT_OP_USE_ARRAY, ///< Args: *s32
     EVT_OP_USE_FLAGS, ///< Args: *s32
@@ -107,34 +101,33 @@ enum {
     EVT_OP_BITWISE_OR_CONST, ///< Args: container, value to bitwise OR with
     EVT_OP_CALL, ///< Args: *function, ...
     EVT_OP_EXEC, ///< Args: EvtScript*, ...
-    EVT_OP_EXEC_GET_TID, ///< Args: EvtScript*, container, ...
+    EVT_OP_EXEC_GET_ID, ///< Args: EvtScript*, container, ...
     EVT_OP_EXEC_WAIT, ///< Spawns a script and waits for it to return before continuing. Args: EvtScript*, ...
-    EVT_OP_BIND_TRIGGER, ///< Args: EvtScript*, trigger flags, s32 target, 1, Trigger*
+    EVT_OP_BIND_TRIGGER, ///< Args: EvtScript*, trigger flags, s32 target, has interact prompt, Trigger* out
     EVT_OP_UNBIND, ///< Unbinds any triggers bound to this script.
-    EVT_OP_KILL_THREAD, ///< Args: ScriptID
+    EVT_OP_KILL_SCRIPT, ///< Args: ScriptID
     EVT_OP_JUMP, ///< Args: EvtScript*
     EVT_OP_SET_PRIORITY, ///< Args: priority
     EVT_OP_SET_TIMESCALE, ///< Args: timescale
     EVT_OP_SET_GROUP, ///< Args: group
-    EVT_OP_BIND_PADLOCK, ///< Args: EvtScript*, trigger flags, s32 target, ItemList*, 0, 1
+    EVT_OP_BIND_ITEM_PROMPT, ///< Args: EvtScript*, trigger flags, s32 target, ItemList*, tattle msg, has interact prompt
     EVT_OP_SUSPEND_GROUP, ///< Args: group
     EVT_OP_RESUME_GROUP, ///< Args: group
     EVT_OP_SUSPEND_OTHERS, ///< Args: group
     EVT_OP_RESUME_OTHERS, ///< Args: group
-    EVT_OP_SUSPEND_THREAD, ///< Args: ScriptID
-    EVT_OP_RESUME_THREAD, ///< Args: ScriptID
-    EVT_OP_IS_THREAD_RUNNING, ///< Args: ScriptID, container
+    EVT_OP_SUSPEND_SCRIPT, ///< Args: ScriptID
+    EVT_OP_RESUME_SCRIPT, ///< Args: ScriptID
+    EVT_OP_IS_SCRIPT_RUNNING, ///< Args: ScriptID, container
     EVT_OP_THREAD,
     EVT_OP_END_THREAD,
     EVT_OP_CHILD_THREAD, ///< Parallel threads are killed as soon as the parent script returns.
     EVT_OP_END_CHILD_THREAD,
     EVT_OP_AWAIT_CHILDREN,
     EVT_OP_AWAIT_SCRIPT, ///< Args: ScriptID
-    EVT_OP_DEBUG_LOG,
     EVT_OP_DEBUG_PRINT_VAR, ///< Args: expression
+    EVT_OP_DEBUG_BREAKPOINT,
     EVT_OP_EXPECT_ARGS,
     EVT_OP_FINALLY,
-    EVT_OP_DEBUG_BREAKPOINT,
     EVT_OP_EVAL, ///< Args: container, *function, ...
     EVT_OP_EVALF, ///< Args: container, *function, ...
     EVT_OP_INVOKE, ///< Args: *function, ...

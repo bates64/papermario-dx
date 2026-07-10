@@ -794,7 +794,7 @@ EvtScript N(EVS_HuffNPuff_Death) = {
         CaseOrEq(AVAL_Move_Charged_2)
         CaseOrEq(AVAL_Move_Charged_3)
             Call(GetActorVar, ACTOR_SELF, AVAR_ChargedJitterScriptID, LVar0)
-            KillThread(LVar0)
+            KillScript(LVar0)
             Call(GetActorVar, ACTOR_SELF, AVAR_ChargedStaticEffect, LVar0)
             Call(RemoveEffect, LVar0)
             Call(StopSound, SOUND_CHARGE_LIGHTNING)
@@ -875,7 +875,7 @@ EvtScript N(EVS_HuffNPuff_BurnDeath) = {
         CaseOrEq(AVAL_Move_Charged_2)
         CaseOrEq(AVAL_Move_Charged_3)
             Call(GetActorVar, ACTOR_SELF, AVAR_ChargedJitterScriptID, LVar0)
-            KillThread(LVar0)
+            KillScript(LVar0)
             Call(GetActorVar, ACTOR_SELF, AVAR_ChargedStaticEffect, LVar0)
             Call(RemoveEffect, LVar0)
             Call(StopSound, SOUND_CHARGE_LIGHTNING)
@@ -1623,7 +1623,7 @@ EvtScript N(EVS_Move_HealOrSlam) = {
     #define HNP_INHALE_CHILD(idx) \
         IfFlag(LVar9, 1 << idx) \
             Set(LVar0, ArrayVar(idx)) \
-            ExecGetTID(N(EVS_RuffPuff_Inhale), LVar7) \
+            ExecGetID(N(EVS_RuffPuff_Inhale), LVar7) \
             Add(LVar1, 1) \
             Wait(5) \
         EndIf
@@ -1632,7 +1632,7 @@ EvtScript N(EVS_Move_HealOrSlam) = {
     FOR_CHILDREN_SCATTERED(HNP_INHALE_CHILD)
 
     Label(0)
-    IsThreadRunning(LVar7, LVar0)
+    IsScriptRunning(LVar7, LVar0)
         Wait(1)
         IfEq(LVar0, 1)
             Goto(0)
@@ -1988,7 +1988,7 @@ EvtScript N(EVS_Move_HurricaneBreath) = {
 EvtScript N(EVS_Move_ChargeForGround) = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
-    ExecGetTID(N(EVS_UpdateChargedJitter), LVarA)
+    ExecGetID(N(EVS_UpdateChargedJitter), LVarA)
     Call(SetActorVar, ACTOR_SELF, AVAR_ChargedJitterScriptID, LVarA)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -2048,7 +2048,7 @@ EvtScript N(EVS_Attack_GroundLightning) = {
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 10)
     Call(GetActorVar, ACTOR_SELF, AVAR_ChargedJitterScriptID, LVarA)
-    KillThread(LVarA)
+    KillScript(LVarA)
     Call(SetActorDispOffset, ACTOR_SELF, 0, 0, 0)
     Call(GetActorVar, ACTOR_SELF, AVAR_ChargedStaticEffect, LVar0)
     Call(RemoveEffect, LVar0)
@@ -2132,7 +2132,7 @@ EvtScript N(EVS_Attack_GroundLightning) = {
 EvtScript N(EVS_Move_ChargeForDirect) = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
-    ExecGetTID(N(EVS_UpdateChargedJitter), LVarA)
+    ExecGetID(N(EVS_UpdateChargedJitter), LVarA)
     Call(SetActorVar, ACTOR_SELF, AVAR_ChargedJitterScriptID, LVarA)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -2212,7 +2212,7 @@ EvtScript N(EVS_Attack_DirectLightning) = {
     Call(FlyToGoal, ACTOR_SELF, 40, -20, EASING_SIN_OUT)
     Wait(30)
     Call(GetActorVar, ACTOR_SELF, AVAR_ChargedJitterScriptID, LVarA)
-    KillThread(LVarA)
+    KillScript(LVarA)
     Call(SetActorDispOffset, ACTOR_SELF, 0, 0, 0)
     Call(GetActorVar, ACTOR_SELF, AVAR_ChargedStaticEffect, LVar0)
     Call(RemoveEffect, LVar0)
@@ -2859,7 +2859,7 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
         IfFlag(LVar0, 1 << idx) \
             Set(LVar1, ArrayVar(idx)) \
             Set(LVar2, LVarA) \
-            ExecGetTID(N(EVS_TuffPuff_SqueezePlayer), ArrayVar(idx + MAX_RUFF_PUFFS)) \
+            ExecGetID(N(EVS_TuffPuff_SqueezePlayer), ArrayVar(idx + MAX_RUFF_PUFFS)) \
             Add(LVar3, 1) \
         EndIf
 
@@ -2886,7 +2886,7 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
 
             #define HNP_SCATTER_PUFF(idx) \
                 IfFlag(LVar0, 1 << idx) \
-                    KillThread(ArrayVar(idx + MAX_RUFF_PUFFS)) \
+                    KillScript(ArrayVar(idx + MAX_RUFF_PUFFS)) \
                     Call(GetActorVar, ArrayVar(idx), AVAR_TuffPuff_IsLarge, LVar1) \
                     IfEq(LVar1, 0) \
                         Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_ShockSmall) \
@@ -3036,7 +3036,7 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
 
             #define HNP_SCATTER_PUFF(idx) \
                 IfFlag(LVar0, 1 << idx) \
-                    KillThread(ArrayVar(idx + MAX_RUFF_PUFFS)) \
+                    KillScript(ArrayVar(idx + MAX_RUFF_PUFFS)) \
                     Call(GetActorVar, ArrayVar(idx), AVAR_TuffPuff_IsLarge, LVar1) \
                     IfEq(LVar1, 0) \
                         Call(SetAnimation, ArrayVar(idx), 1, ANIM_TuffPuff_ShockSmall) \

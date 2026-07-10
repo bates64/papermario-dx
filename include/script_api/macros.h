@@ -133,15 +133,15 @@ extern "C" {
 #define ArrayFlag(INDEX) ((INDEX) - EVT_ARRAY_FLAG_OFFSET)
 
 /// Argument Word. A variable parameter to this script execution.
-/// Args are set by Exec/ExecGetTID/ExecWait and are not inherited by child scripts or thread blocks.
+/// Args are set by Exec/ExecGetID/ExecWait and are not inherited by child scripts or thread blocks.
 /// Assumed to be constant. Mutating by `evt_set_variable` or `evt_set_float_variable` will trigger PANIC.
 #define ArgVar(INDEX) ((INDEX) - EVT_ARG_VAR_OFFSET)
 
-/// Force an Exec/ExecGetTID/ExecWait argument to be dereferenced through `evt_get_variable`.
+/// Force an Exec/ExecGetID/ExecWait argument to be dereferenced through `evt_get_variable`.
 /// Arguments not wrapped with ARG_INT or ARG_FLOAT are passed as literal bytecode words.
 #define ARG_INT(EXPR) EVT_ARG_INT_MARKER, (EXPR)
 
-/// Force an Exec/ExecGetTID/ExecWait argument to be dereferenced through `evt_get_float_variable`.
+/// Force an Exec/ExecGetID/ExecWait argument to be dereferenced through `evt_get_float_variable`.
 /// The captured value is stored in the child ArgVar as an EVT fixed-point bytecode word.
 #define ARG_FLOAT(EXPR) EVT_ARG_FLOAT_MARKER, (EXPR)
 
@@ -207,7 +207,7 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 #endif
 
 /// An entity index. Entities are assigned indices in the order they are created with Call(MakeEntity, ...).
-/// Supported in BindTrigger and BindPadlock only.
+/// Supported in BindTrigger and BindItemPrompt only.
 #define EVT_ENTITY_ID_BIT 0x4000
 #define EVT_ENTITY_INDEX(entityIndex) ((entityIndex) + EVT_ENTITY_ID_BIT)
 
@@ -568,38 +568,21 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 /// When used with four args, clamps a value between a min and max and stores the result (A = clamp(B, MIN, MAX)).
 #define ClampF(VAR, MIN_OR_VALUE, MAX_OR_MIN, MORE...) EVT_CMD(EVT_OP_CLAMPF, VAR, MIN_OR_VALUE, MAX_OR_MIN, ##MORE),
 
-/// Loads a s32 pointer for use with subsequent EVT_BUF_READ commands.
+/// Loads a s32 pointer for use with subsequent BufRead commands.
 #define UseBuf(INT_PTR)                     EVT_CMD(EVT_OP_USE_BUF, (Bytecode) INT_PTR),
 
-/// Consumes the next s32 from the buffer and stores it in the given variable.
-#define BufRead1(VAR)                       EVT_CMD(EVT_OP_BUF_READ1, VAR),
-
-/// Consumes the next two s32s from the buffer and stores them in the given variables.
-#define BufRead2(VAR1, VAR2)                EVT_CMD(EVT_OP_BUF_READ2, VAR1, VAR2),
-
-/// Consumes the next three s32s from the buffer and stores them in the given variables.
-#define BufRead3(VAR1, VAR2, VAR3)          EVT_CMD(EVT_OP_BUF_READ3, VAR1, VAR2, VAR3),
-
-/// Consumes the next four s32s from the buffer and stores them in the given variables.
-#define BufRead4(VAR1, VAR2, VAR3, VAR4)    EVT_CMD(EVT_OP_BUF_READ4, VAR1, VAR2, VAR3, VAR4),
+/// Consumes one or more s32s from the buffer and stores them in the given variables.
+#define BufRead(VAR, MORE...)               EVT_CMD(EVT_OP_BUF_READ, VAR, ##MORE),
 
 /// Gets the s32 at the given offset of the buffer and stores it in the given variable, without consuming it.
 #define BufPeek(OFFSET, VAR)                EVT_CMD(EVT_OP_BUF_PEEK, OFFSET, VAR),
 
-/// Identical to UseBuf. Beware that the int buffer and the float buffer are not distinct.
+/// Loads a f32 pointer for use with subsequent FBufRead commands.
+/// Beware that the int buffer and the float buffer are not distinct.
 #define UseFBuf(FLOAT_PTR)                  EVT_CMD(EVT_OP_USE_FBUF, (Bytecode) FLOAT_PTR),
 
-/// Consumes the next f32 from the buffer and stores it in the given variable.
-#define FBufRead1(VAR)                      EVT_CMD(EVT_OP_FBUF_READ1, VAR),
-
-/// Consumes the next two f32s from the buffer and stores them in the given variables.
-#define FBufRead2(VAR1, VAR2)               EVT_CMD(EVT_OP_FBUF_READ2, VAR1, VAR2),
-
-/// Consumes the next three f32s from the buffer and stores them in the given variables.
-#define FBufRead3(VAR1, VAR2, VAR3)         EVT_CMD(EVT_OP_FBUF_READ3, VAR1, VAR2, VAR3),
-
-/// Consumes the next four f32s from the buffer and stores them in the given variables.
-#define FBufRead4(VAR1, VAR2, VAR3, VAR4)   EVT_CMD(EVT_OP_FBUF_READ4, VAR1, VAR2, VAR3, VAR4),
+/// Consumes one or more f32s from the buffer and stores them in the given variables.
+#define FBufRead(VAR, MORE...)              EVT_CMD(EVT_OP_FBUF_READ, VAR, ##MORE),
 
 /// Gets the f32 at the given offset of the buffer and stores it in the given variable, without consuming it.
 #define FBufPeek(OFFSET, VAR)               EVT_CMD(EVT_OP_FBUF_PEEK, OFFSET, VAR),
@@ -640,12 +623,12 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 /// wrapped with ARG_INT or ARG_FLOAT.
 #define Exec(EVT_SOURCE, ARGS...)           EVT_CMD(EVT_OP_EXEC, (Bytecode) EVT_SOURCE, ##ARGS),
 
-/// Identical to Exec, but the newly-launched thread ID is stored in OUTVAR.
-/// The other thread may be interacted with using KillThread, SuspendThread, ResumeThread, and
-/// IsThreadRunning.
+/// Identical to Exec, but the newly-launched script ID is stored in OUTVAR.
+/// The other script may be interacted with using KillScript, SuspendScript, ResumeScript, and
+/// IsScriptRunning.
 /// Extra ARGS become ArgVars in the new script with the same capture rules as Exec.
-#define ExecGetTID(EVT_SOURCE, OUTVAR, ARGS...) \
-                                            EVT_CMD(EVT_OP_EXEC_GET_TID, (Bytecode) EVT_SOURCE, OUTVAR, ##ARGS),
+#define ExecGetID(EVT_SOURCE, OUTVAR, ARGS...) \
+                                            EVT_CMD(EVT_OP_EXEC_GET_ID, (Bytecode) EVT_SOURCE, OUTVAR, ##ARGS),
 
 /// Launches a new child thread.
 /// Blocks for at least one frame unless the child thread is made to have a higher priority than the parent.
@@ -658,8 +641,8 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 /// - Priority
 /// - Group
 ///
-/// Child threads are killed, suspended, and resumed as their parents are, for example, a different thread using
-/// KillThread to kill a parent thread would also kill its child thread(s) launched by this command.
+/// Child threads are killed, suspended, and resumed as their parents are, for example, a different script using
+/// KillScript to kill a parent thread would also kill its child thread(s) launched by this command.
 /// Extra ARGS become ArgVars in the child script with the same capture rules as Exec.
 #define ExecWait(EVT_SOURCE, ARGS...)       EVT_CMD(EVT_OP_EXEC_WAIT, (Bytecode) EVT_SOURCE, ##ARGS),
 
@@ -667,6 +650,12 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 #define ExpectArgs(NUM_ARGS)                EVT_CMD(EVT_OP_EXPECT_ARGS, NUM_ARGS),
 
 /// Sets up a script to launch when a particular event is triggered.
+///
+/// EVT_SOURCE is the script to launch when the trigger activates.
+/// TRIGGER is one or more trigger flags.
+/// COLLIDER_ID is the trigger target.
+/// HAS_INTERACT_PROMPT controls whether the player sees the interaction prompt for wall-press-A triggers.
+/// TRIGGER_PTR_OUTVAR receives the Trigger* when nonzero.
 ///
 /// Valid triggers:
 /// - TRIGGER_WALL_PUSH
@@ -687,19 +676,24 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 /// - Entity ID (use EVT_ENTITY_INDEX)
 /// - Pointer to a Vec3f (for TRIGGER_POINT_BOMB only)
 ///
-/// Only one thread will run for a trigger at once.
-#define BindTrigger(EVT_SOURCE, TRIGGER, COLLIDER_ID, UNK_A3, TRIGGER_PTR_OUTVAR) \
-                                            EVT_CMD(EVT_OP_BIND_TRIGGER, (Bytecode) EVT_SOURCE, TRIGGER, (Bytecode) COLLIDER_ID, UNK_A3, TRIGGER_PTR_OUTVAR),
+/// Only one script will run for a trigger at once.
+#define BindTrigger(EVT_SOURCE, TRIGGER, COLLIDER_ID, HAS_INTERACT_PROMPT, TRIGGER_PTR_OUTVAR) \
+                                            EVT_CMD(EVT_OP_BIND_TRIGGER, (Bytecode) EVT_SOURCE, TRIGGER, (Bytecode) COLLIDER_ID, HAS_INTERACT_PROMPT, TRIGGER_PTR_OUTVAR),
 
-/// Similar to BindTrigger, but also takes arguments for the item list to show.
-#define BindPadlock(EVT_SOURCE, TRIGGER, COLLIDER_ID, ITEM_LIST, UNK_A3, TRIGGER_PTR_OUTVAR) \
-                                            EVT_CMD(EVT_OP_BIND_PADLOCK, (Bytecode) EVT_SOURCE, TRIGGER, COLLIDER_ID, (Bytecode) ITEM_LIST, UNK_A3, TRIGGER_PTR_OUTVAR),
+/// Similar to BindTrigger, but also attaches an item list to the trigger context.
+///
+/// EVT_SOURCE is responsible for showing any item prompt, typically by calling ShowKeyChoicePopup or
+/// ShowConsumableChoicePopup. Those APIs read ITEM_LIST from the trigger context created here.
+/// TATTLE_MSG is stored on the trigger and may be read by Goombario tattles.
+/// HAS_INTERACT_PROMPT controls whether the player sees the interaction prompt for wall-press-A triggers.
+#define BindItemPrompt(EVT_SOURCE, TRIGGER, COLLIDER_ID, ITEM_LIST, TATTLE_MSG, HAS_INTERACT_PROMPT) \
+                                            EVT_CMD(EVT_OP_BIND_ITEM_PROMPT, (Bytecode) EVT_SOURCE, TRIGGER, COLLIDER_ID, (Bytecode) ITEM_LIST, TATTLE_MSG, HAS_INTERACT_PROMPT),
 
-/// Unbinds the current thread from the trigger it was bound to, if any.
+/// Unbinds the current script from the trigger it was bound to, if any.
 #define Unbind                              EVT_CMD(EVT_OP_UNBIND),
 
-/// Kills a thread by its thread ID.
-#define KillThread(TID)                     EVT_CMD(EVT_OP_KILL_THREAD, TID),
+/// Kills a script by its ID.
+#define KillScript(SCRIPT_ID)               EVT_CMD(EVT_OP_KILL_SCRIPT, SCRIPT_ID),
 
 /// Sets the current thread's priority. Higher-priority threads execute before lower-priority threads on each frame.
 #define SetPriority(PRIORITY)               EVT_CMD(EVT_OP_SET_PRIORITY, PRIORITY),
@@ -722,17 +716,17 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 /// Resumes all threads in a group, except the current thread.
 #define ResumeOthers(GROUP)                 EVT_CMD(EVT_OP_RESUME_OTHERS, GROUP),
 
-/// Suspends all threads in a group, except the current thread.
-#define SuspendThread(TID)                  EVT_CMD(EVT_OP_SUSPEND_THREAD, TID),
+/// Suspends a script by its script ID.
+#define SuspendScript(SCRIPT_ID)            EVT_CMD(EVT_OP_SUSPEND_SCRIPT, SCRIPT_ID),
 
-/// Resumes a thread by its thread ID.
-#define ResumeThread(TID)                   EVT_CMD(EVT_OP_RESUME_THREAD, TID),
+/// Resumes a script by its script ID.
+#define ResumeScript(SCRIPT_ID)             EVT_CMD(EVT_OP_RESUME_SCRIPT, SCRIPT_ID),
 
-/// Sets OUTVAR to true/false depending on whether a thread with the given ID exists (i.e. has not been killed).
-#define IsThreadRunning(TID, OUTVAR)        EVT_CMD(EVT_OP_IS_THREAD_RUNNING, TID, OUTVAR),
+/// Sets OUTVAR to true/false depending on whether a script with the given ID exists (i.e. has not been killed).
+#define IsScriptRunning(SCRIPT_ID, OUTVAR)  EVT_CMD(EVT_OP_IS_SCRIPT_RUNNING, SCRIPT_ID, OUTVAR),
 
 /// Waits until the script with the given ID no longer exists.
-#define AwaitScript(TID)                    EVT_CMD(EVT_OP_AWAIT_SCRIPT, TID),
+#define AwaitScript(SCRIPT_ID)              EVT_CMD(EVT_OP_AWAIT_SCRIPT, SCRIPT_ID),
 
 /// Marks the start of a thread block. Commands between this and a matching EndThread
 /// will be executed on their own, new thread instead of on the current thread.
@@ -873,14 +867,32 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 #define IfNotEvalF6(FUNC, A, B, C, D, E)    EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEvalF5Func), A, B, C, D, E),
 #define IfNotEvalF7(FUNC, A, B, C, D, E, F) EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEvalF6Func), A, B, C, D, E, F),
 
-/// Does nothing in release version
-#define EVT_DEBUG_LOG(STRING)               EVT_CMD(EVT_OP_DEBUG_LOG, STRING),
-
 /// Prints variable name and value
 #define DebugPrintVar(VAR)                  EVT_CMD(EVT_OP_DEBUG_PRINT_VAR, VAR),
 
 /// Halt execution after this command
 #define BreakPoint(TEXT)                    EVT_CMD(EVT_OP_DEBUG_BREAKPOINT, Ref(TEXT)),
+
+/****** BACKWARD COMPATIBILITY FOR RENAMES ****************************************************************************/
+
+#define BindPadlock(EVT_SOURCE, TRIGGER, COLLIDER_ID, ITEM_LIST, TATTLE_MSG, HAS_INTERACT_PROMPT) \
+                                            BindItemPrompt(EVT_SOURCE, TRIGGER, COLLIDER_ID, ITEM_LIST, TATTLE_MSG, HAS_INTERACT_PROMPT)
+#define ExecGetTID(EVT_SOURCE, OUTVAR, ARGS...) \
+                                            ExecGetID(EVT_SOURCE, OUTVAR, ##ARGS)
+#define KillThread(TID)                     KillScript(TID)
+#define IsThreadRunning(TID, OUTVAR)        IsScriptRunning(TID, OUTVAR)
+#define SuspendThread(TID)                  SuspendScript(TID)
+#define ResumeThread(TID)                   ResumeScript(TID)
+
+#define BufRead1(VAR)                       BufRead(VAR)
+#define BufRead2(VAR1, VAR2)                BufRead(VAR1, VAR2)
+#define BufRead3(VAR1, VAR2, VAR3)          BufRead(VAR1, VAR2, VAR3)
+#define BufRead4(VAR1, VAR2, VAR3, VAR4)    BufRead(VAR1, VAR2, VAR3, VAR4)
+
+#define FBufRead1(VAR)                      FBufRead(VAR)
+#define FBufRead2(VAR1, VAR2)               FBufRead(VAR1, VAR2)
+#define FBufRead3(VAR1, VAR2, VAR3)         FBufRead(VAR1, VAR2, VAR3)
+#define FBufRead4(VAR1, VAR2, VAR3, VAR4)   FBufRead(VAR1, VAR2, VAR3, VAR4)
 
 /****** VECTOR OPERATIONS *********************************************************************************************/
 
@@ -949,18 +961,6 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 #define EVT_EXIT_WALK(walkDistance, exitIdx, map, entryIdx) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
-        Call(DisablePlayerInput, true) \
-        Call(UseExitHeading, walkDistance, exitIdx) \
-        Exec(ExitWalk) \
-        Call(GotoMap, Ref(map), entryIdx) \
-        Wait(100) \
-        Return \
-        End \
-    }
-
-// alternate version of EVT_EXIT_WALK used on Pleasant Path which does not join EVT_GROUP_EXIT_MAP
-#define EVT_EXIT_WALK_NOK(walkDistance, exitIdx, map, entryIdx) \
-    { \
         Call(UseExitHeading, walkDistance, exitIdx) \
         Exec(ExitWalk) \
         Call(GotoMap, Ref(map), entryIdx) \

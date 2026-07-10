@@ -6,7 +6,12 @@ EvtScript EVS_AwaitWorker = {
 };
 
 EvtScript EVS_Await = {
-    ExecGetTID(EVS_AwaitWorker, LVar0)
+    BindItemPrompt(EVS_AwaitWorker, TRIGGER_FORCE_ACTIVATE, 0, 0, 0, 0)
+    ExecGetID(EVS_AwaitWorker, LVar0)
+    IsScriptRunning(LVar0, LVar1)
+    SuspendScript(LVar0)
+    ResumeScript(LVar0)
+    KillScript(LVar0)
     AwaitScript(LVar0)
     ChildThread
         Wait(1)

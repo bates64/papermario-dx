@@ -866,9 +866,9 @@ EvtScript N(EVS_Quizmo_ReturnPlayerToOriginalPos) = {
 };
 
 EvtScript N(EVS_Quizmo_RightAnswer) = {
-    ExecGetTID(N(EVS_Quizmo_PlayerReaction_RightAnswer), LVar1)
+    ExecGetID(N(EVS_Quizmo_PlayerReaction_RightAnswer), LVar1)
     Wait(60)
-    KillThread(LVar1)
+    KillScript(LVar1)
     Loop(5)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Add(LVar1, -1)
@@ -882,7 +882,7 @@ EvtScript N(EVS_Quizmo_RightAnswer) = {
 };
 
 EvtScript N(EVS_Quizmo_WrongAnswer) = {
-    ExecGetTID(N(EVS_Quizmo_PlayerReaction_WrongAnswer), LVar1)
+    ExecGetID(N(EVS_Quizmo_PlayerReaction_WrongAnswer), LVar1)
     Wait(60)
     Loop(5)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -891,7 +891,7 @@ EvtScript N(EVS_Quizmo_WrongAnswer) = {
         Wait(2)
     EndLoop
     Wait(20)
-    KillThread(LVar1)
+    KillScript(LVar1)
     ExecWait(N(EVS_Quizmo_ReturnPlayerToOriginalPos))
     Return
     End
@@ -931,11 +931,11 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
-    ExecGetTID(N(EVS_Quizmo_SetCharacterPositons), LVar1)
+    ExecGetID(N(EVS_Quizmo_SetCharacterPositons), LVar1)
     Call(ContinueSpeech, -1, ANIM_ChuckQuizmo_Talk, ANIM_ChuckQuizmo_Idle, 0, MSG_MGM_000B)
     Call(PlaySound, SOUND_LRAW_AUDIENCE_MURMUR)
     Loop(0)
-        IsThreadRunning(LVar1, LVar0)
+        IsScriptRunning(LVar1, LVar0)
         IfEq(LVar0, 0)
             BreakLoop
         EndIf
@@ -956,7 +956,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
     Add(LVar0, GB_CompletedQuizzes)
     Call(PlaySound, SOUND_LRAW_QUIZ_TICKING)
     Call(ShowChoice, LVar0)
-    KillThread(LVar1)
+    KillScript(LVar1)
     Call(StopSound, SOUND_LRAW_QUIZ_TICKING)
     Exec(N(EVS_Quizmo_PlayerHitBuzzer))
     Wait(15)
@@ -1012,13 +1012,13 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
             Wait(15)
         EndThread
         Wait(20)
-        ExecGetTID(N(EVS_Quizmo_RightAnswer), LVar1)
+        ExecGetID(N(EVS_Quizmo_RightAnswer), LVar1)
         Add(GB_CompletedQuizzes, 1)
         IfGe(GB_CompletedQuizzes, 64)
             Call(ContinueSpeech, -1, -1, -1, 0, MSG_MGM_0010)
             Call(SetNpcAnimation, NPC_SELF, ANIM_ChuckQuizmo_CloseHat)
             Loop(0)
-                IsThreadRunning(LVar1, LVar0)
+                IsScriptRunning(LVar1, LVar0)
                 IfEq(LVar0, 0)
                     BreakLoop
                 EndIf
@@ -1034,7 +1034,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
             Call(ContinueSpeech, -1, -1, -1, 0, MSG_MGM_000E)
             Call(SetNpcAnimation, NPC_SELF, ANIM_ChuckQuizmo_CloseHat)
             Loop(0)
-                IsThreadRunning(LVar1, LVar0)
+                IsScriptRunning(LVar1, LVar0)
                 IfEq(LVar0, 0)
                     BreakLoop
                 EndIf
@@ -1058,13 +1058,13 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
         Set(QUIZ_ARRAY_ANSWER_RESULT, 2)
         Call(PlaySound, SOUND_MENU_ERROR)
         Call(PlaySound, SOUND_AUDIENCE_BOO)
-        ExecGetTID(N(EVS_Quizmo_WrongAnswer), LVar1)
+        ExecGetID(N(EVS_Quizmo_WrongAnswer), LVar1)
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         PlayEffect(EFFECT_WINDY_LEAVES, 0, LVar2, LVar3, LVar4)
         Call(ContinueSpeech, -1, -1, -1, 0, MSG_MGM_000D)
         Call(SetNpcAnimation, NPC_SELF, ANIM_ChuckQuizmo_CloseWrong)
         Loop(0)
-            IsThreadRunning(LVar1, LVar0)
+            IsScriptRunning(LVar1, LVar0)
             IfEq(LVar0, 0)
                 BreakLoop
             EndIf

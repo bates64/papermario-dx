@@ -168,7 +168,7 @@ EvtScript N(EVS_NpcInteract_Koopa_01_Crisis) = {
         Call(SpeakToPlayer, NPC_Koopa_01, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0057)
         Return
     EndIf
-    SuspendThread(MV_KoopaChaseThiefScript)
+    SuspendScript(MV_KoopaChaseThiefScript)
     Wait(1)
     IfEq(GF_NOK02_StolenShellComplaintA, false)
         Set(GF_NOK02_StolenShellComplaintA, true)
@@ -176,7 +176,7 @@ EvtScript N(EVS_NpcInteract_Koopa_01_Crisis) = {
     Else
         Call(SpeakToPlayer, NPC_Koopa_01, ANIM_KoopaWithoutShell_CryTalk, ANIM_KoopaWithoutShell_CryIdle, 0, MSG_CH1_0055)
     EndIf
-    ResumeThread(MV_KoopaChaseThiefScript)
+    ResumeScript(MV_KoopaChaseThiefScript)
     Return
     End
 };
@@ -287,11 +287,11 @@ EvtScript N(EVS_Koopa_01_CoordinateWithPlayer) = {
         IfNe(LVar3, LVar4)
             IfEq(LVar3, 0)
                 // player stopping sneaking near thief, resume koopa panic
-                ExecGetTID(N(EVS_Koopa_01_ChaseThief), MV_KoopaChaseThiefScript)
+                ExecGetID(N(EVS_Koopa_01_ChaseThief), MV_KoopaChaseThiefScript)
             Else
                 // player started sneaking near thief, stop koopa interference
                 IfNe(MV_KoopaChaseThiefScript, -1)
-                    KillThread(MV_KoopaChaseThiefScript)
+                    KillScript(MV_KoopaChaseThiefScript)
                     Set(MV_KoopaChaseThiefScript, -1)
                 EndIf
             EndIf
@@ -317,24 +317,24 @@ EvtScript N(EVS_NpcIdle_Koopa_01_Crisis) = {
             Wait(10)
             Goto(5)
     EndIf
-    ExecGetTID(N(EVS_TetherShellToFuzzy), LVar9)
-    ExecGetTID(N(EVS_FuzzyThief_AvoidCapture), LVar8)
-    ExecGetTID(N(EVS_Koopa_01_ChaseThief), MV_KoopaChaseThiefScript)
-    ExecGetTID(N(EVS_Koopa_01_CoordinateWithPlayer), MV_KoopaChaseMonitorTID)
+    ExecGetID(N(EVS_TetherShellToFuzzy), LVar9)
+    ExecGetID(N(EVS_FuzzyThief_AvoidCapture), LVar8)
+    ExecGetID(N(EVS_Koopa_01_ChaseThief), MV_KoopaChaseThiefScript)
+    ExecGetID(N(EVS_Koopa_01_CoordinateWithPlayer), MV_KoopaChaseMonitorTID)
     Label(10)
     IfEq(GF_NOK02_RecoveredShellA, false)
         Wait(1)
         Goto(10)
     Else
-        KillThread(LVar9)
-        KillThread(LVar8)
-        IsThreadRunning(MV_KoopaChaseThiefScript, LVar0)
+        KillScript(LVar9)
+        KillScript(LVar8)
+        IsScriptRunning(MV_KoopaChaseThiefScript, LVar0)
         IfEq(LVar0, 1)
-            KillThread(MV_KoopaChaseThiefScript)
+            KillScript(MV_KoopaChaseThiefScript)
         EndIf
-        IsThreadRunning(MV_KoopaChaseMonitorTID, LVar0)
+        IsScriptRunning(MV_KoopaChaseMonitorTID, LVar0)
         IfEq(LVar0, 1)
-            KillThread(MV_KoopaChaseMonitorTID)
+            KillScript(MV_KoopaChaseMonitorTID)
         EndIf
         Call(DisablePlayerInput, true)
         Thread

@@ -739,9 +739,9 @@ EvtScript N(EVS_WindDownPhonograph) = {
         EndIf
     EndLoop
     // kill the completed scripts
-    KillThread(MV_UpdateScaleScript)
-    KillThread(MV_UpdateCrankScript)
-    KillThread(MV_UpdateRecordScript)
+    KillScript(MV_UpdateScaleScript)
+    KillScript(MV_UpdateCrankScript)
+    KillScript(MV_UpdateRecordScript)
     Exec(N(EVS_SetupMusic))
     Set(MV_WindingDown, false)
     Return
@@ -750,32 +750,32 @@ EvtScript N(EVS_WindDownPhonograph) = {
 
 EvtScript N(EVS_PlayPhonograph) = {
     IfEq(MV_WindingDown, true)
-        IsThreadRunning(MV_WindDownScript, LVar0)
+        IsScriptRunning(MV_WindDownScript, LVar0)
         IfEq(LVar0, 1)
-            KillThread(MV_WindDownScript)
-            IsThreadRunning(MV_UpdateScaleScript, LVar0)
+            KillScript(MV_WindDownScript)
+            IsScriptRunning(MV_UpdateScaleScript, LVar0)
             IfEq(LVar0, 1)
-                KillThread(MV_UpdateScaleScript)
+                KillScript(MV_UpdateScaleScript)
             EndIf
-            IsThreadRunning(MV_UpdateCrankScript, LVar0)
+            IsScriptRunning(MV_UpdateCrankScript, LVar0)
             IfEq(LVar0, 1)
-                KillThread(MV_UpdateCrankScript)
+                KillScript(MV_UpdateCrankScript)
             EndIf
-            IsThreadRunning(MV_UpdateRecordScript, LVar0)
+            IsScriptRunning(MV_UpdateRecordScript, LVar0)
             IfEq(LVar0, 1)
-                KillThread(MV_UpdateRecordScript)
+                KillScript(MV_UpdateRecordScript)
             EndIf
-            IsThreadRunning(MV_SetScaleScript, LVar0)
+            IsScriptRunning(MV_SetScaleScript, LVar0)
             IfEq(LVar0, 1)
-                KillThread(MV_SetScaleScript)
+                KillScript(MV_SetScaleScript)
             EndIf
-            IsThreadRunning(MV_SetCrankScript, LVar0)
+            IsScriptRunning(MV_SetCrankScript, LVar0)
             IfEq(LVar0, 1)
-                KillThread(MV_SetCrankScript)
+                KillScript(MV_SetCrankScript)
             EndIf
-            IsThreadRunning(MV_SetRecordScript, LVar0)
+            IsScriptRunning(MV_SetRecordScript, LVar0)
             IfEq(LVar0, 1)
-                KillThread(MV_SetRecordScript)
+                KillScript(MV_SetRecordScript)
             EndIf
         EndIf
     EndIf
@@ -803,16 +803,16 @@ EvtScript N(EVS_PlayPhonograph) = {
     Call(N(InitPhonographHud))
     IfEq(MV_GuardDeparted, false)
         Call(BindNpcAI, NPC_GuardBoo, Ref(N(EVS_NpcAI_GuardBoo_Wary)))
-        ExecGetTID(N(EVS_UpdateGuardBoo), MV_UpdateGuardScript)
+        ExecGetID(N(EVS_UpdateGuardBoo), MV_UpdateGuardScript)
     Else
-        ExecGetTID(N(EVS_DummyUpdateGuardBoo), MV_UpdateGuardScript)
+        ExecGetID(N(EVS_DummyUpdateGuardBoo), MV_UpdateGuardScript)
     EndIf
-    ExecGetTID(N(EVS_UpdatePhonographScale), MV_UpdateScaleScript)
-    ExecGetTID(N(EVS_UpdateCrankRotation),   MV_UpdateCrankScript)
-    ExecGetTID(N(EVS_UpdateRecordRotation),  MV_UpdateRecordScript)
-    ExecGetTID(N(EVS_SetPhonographScale),    MV_SetScaleScript)
-    ExecGetTID(N(EVS_SetCrankRotation),      MV_SetCrankScript)
-    ExecGetTID(N(EVS_SetRecordRotation),     MV_SetRecordScript)
+    ExecGetID(N(EVS_UpdatePhonographScale), MV_UpdateScaleScript)
+    ExecGetID(N(EVS_UpdateCrankRotation),   MV_UpdateCrankScript)
+    ExecGetID(N(EVS_UpdateRecordRotation),  MV_UpdateRecordScript)
+    ExecGetID(N(EVS_SetPhonographScale),    MV_SetScaleScript)
+    ExecGetID(N(EVS_SetCrankRotation),      MV_SetCrankScript)
+    ExecGetID(N(EVS_SetRecordRotation),     MV_SetRecordScript)
     Call(N(SavePhonographUpdateScriptIDs))
     Loop(0)
         Call(N(UpdatePhonographMeter))
@@ -830,7 +830,7 @@ EvtScript N(EVS_PlayPhonograph) = {
             BreakLoop
         EndIf
     EndLoop
-    KillThread(MV_UpdateGuardScript)
+    KillScript(MV_UpdateGuardScript)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(DisablePlayerInput, false)
     IfEq(MV_GuardDeparted, false)
@@ -839,11 +839,11 @@ EvtScript N(EVS_PlayPhonograph) = {
         Else
             Set(LVar0, 80)
         EndIf
-        ExecGetTID(N(EVS_WindDownPhonograph), MV_WindDownScript)
-        ExecGetTID(N(EVS_GuardBoo_ReturnToPost), MV_GuardReturnScript)
+        ExecGetID(N(EVS_WindDownPhonograph), MV_WindDownScript)
+        ExecGetID(N(EVS_GuardBoo_ReturnToPost), MV_GuardReturnScript)
     Else
         Set(LVar0, 80)
-        ExecGetTID(N(EVS_WindDownPhonograph), MV_WindDownScript)
+        ExecGetID(N(EVS_WindDownPhonograph), MV_WindDownScript)
     EndIf
     Return
     End
@@ -1115,7 +1115,7 @@ EvtScript N(EVS_NpcInteract_GuardBoo) = {
 };
 
 EvtScript N(EVS_Scene_PlayerGotChestItem) = {
-    KillThread(MV_GuardReturnScript)
+    KillScript(MV_GuardReturnScript)
     Call(SetNpcRotation, NPC_GuardBoo, 0, 0, 0)
     Exec(N(EVS_SetupMusic))
     Call(DisablePlayerInput, true)

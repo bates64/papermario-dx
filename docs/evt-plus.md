@@ -4,16 +4,18 @@ This branch adds new quality of life features and capabilities to EVT scripts to
 
 The primary features are:
 
-- a compile-time (and optional) EVT validator
+- an optional compile-time EvtScript validator
 - argument passing from Exec to child scripts through `ArgVar`
 - expanded arithmetic expressions, e.g., `A = B + C + D`, `A = B / C`, `A = min(B, C)`, or `A = clamp(B, MIN, MAX)`
 - quick in-line functional interface for C helpers `Eval`, `EvalF`, `Invoke`, `InvokeF`, `IfEval`, and `IfEvalF`
 - range conditions with `IfRange` and `IfNotRange`
 - `ContinueLoop` as a counterpart to `BreakLoop`
 - first-class lerp loops with `Lerp` and `EndLerp`
-- cleanup blocks with `Finally` which run immediately and must not yield
+- cleanup blocks with `Finally` which are guaranteed to run by a terminating script
 - await commands for child-threads and single scripts by ID
 - new purpose for vector convenience macros using adjacent EVT variables
+- variadic buffer reads with `BufRead` and `FBufRead`
+- clearer command names with compatibility aliases
 - smaller bytecode via packing opcode, argc, and linenum into command header
 
 ## Contents
@@ -47,6 +49,8 @@ The primary features are:
 - [Finally Blocks](#11-finally-blocks)
 - [Awaiting Scripts](#12-awaiting-scripts)
 - [Packed Command Headers](#13-packed-command-headers)
+- [Buffer Reads](#14-buffer-reads)
+- [Command Renames](#15-command-renames)
 
 ## Preview
 
@@ -157,7 +161,7 @@ Fixtures live in:
 
 ## 2. Exec with Arguments
 
-`Exec`, `ExecGetTID`, and `ExecWait` can now pass arguments to the child script. The child reads them through `ArgVar(index)` or the shorthand names `ArgVar0` through `ArgVar7`. Since the storage for them is dynamically allocated, any number of arguments (that is, up to ~250 literals) may be passed and accessed through `ArgVar(index)`.
+`Exec`, `ExecGetID`, and `ExecWait` can now pass arguments to the child script. The child reads them through `ArgVar(index)` or the shorthand names `ArgVar0` through `ArgVar7`. Since the storage for them is dynamically allocated, any number of arguments (that is, up to ~250 literals) may be passed and accessed through `ArgVar(index)`.
 
 ```c
 EvtScript N(EVS_Child) = {
@@ -697,10 +701,10 @@ AwaitChildren
 Call(ContinueAfterBothAnimations)
 ```
 
-`AwaitScript(TID)` waits until a script with the given script ID no longer exists. It is useful after `ExecGetTID` when a script needs to run independently and the caller still needs a rendezvous point. This is usually accomplished in vanilla EVT with a `Goto` busy loop.
+`AwaitScript(ID)` waits until a script with the given script ID no longer exists. It is useful after `ExecGetID` when a script needs to run independently and the caller still needs a rendezvous point. This is usually accomplished in vanilla EVT with a `Goto` busy loop.
 
 ```c
-ExecGetTID(N(EVS_PlayLongEffect), LVarA)
+ExecGetID(N(EVS_PlayLongEffect), LVarA)
 Call(DoSomethingElse)
 AwaitScript(LVarA)
 ```
@@ -716,3 +720,41 @@ line:  16 bits
 ```
 
 This is mostly invisible to modders, but it significantly reduces the final compiled version of each script, opening up more room in vram per overlay. Now that argc is a single byte, command argument counts are limited to 255.
+
+## 14. Buffer Reads
+
+`BufRead` and `FBufRead` are now variadic. The old numbered forms are still available as aliased macros:
+
+```c
+BufRead1(LVar0)
+BufRead2(LVar0, LVar1)
+BufRead3(LVar0, LVar1, LVar2)
+BufRead4(LVar0, LVar1, LVar2, LVar3)
+```
+
+But new scripts should use the unnumbered forms instead:
+
+```c
+UseBuf(Ref(N(SomeData)))
+BufRead(LVar0, LVar1, LVar2, LVar3, LVar4, LVar5)
+
+UseFBuf(Ref(N(SomeFloatData)))
+FBufRead(LVar0, LVar1, LVar2)
+```
+
+Each destination consumes one value from the current buffer and advances the buffer pointer. The old `BufRead1` through `BufRead4` and `FBufRead1` through `FBufRead4` are no longer special. The true cap is the number of `LocalVar`s available to store values in. Read in whatever chunks are convenient.
+
+## 15. Command Renames
+
+Several command names were adjusted from very old conventions to align better with current understanding of the engine and avoid confusion among related concepts. Specifically `BindPadlock` and references to `Thread` which actually apply to normal EvtScripts and not in-line `Thread` blocks.
+
+| Old name | New name | Reason |
+| --- | --- | --- |
+| `ExecGetTID` | `ExecGetID` | The returned value is a script ID, unrelated to `Thread`. |
+| `KillThread` | `KillScript` | The runtime kills scripts by script ID. |
+| `SuspendThread` | `SuspendScript` | Suspends scripts by script ID. |
+| `ResumeThread` | `ResumeScript` | Resumes scripts by script ID. |
+| `IsThreadRunning` | `IsScriptRunning` | The check asks whether a script ID still exists. |
+| `BindPadlock` | `BindItemPrompt` | The command binds a generic item prompt, not just padlocks. |
+
+Compatibility aliases are provided, so the old names still compile. New scripts should prefer the new names.

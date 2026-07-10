@@ -1233,79 +1233,32 @@ ApiStatus evt_handle_clampF(Evt* script) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus evt_handle_set_int_buffer_ptr(Evt* script) {
+ApiStatus evt_handle_set_int_buf(Evt* script) {
     Bytecode* args = script->ptrReadPos;
 
     script->buffer = (s32*) evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
-ApiStatus evt_handle_set_float_buffer_ptr(Evt* script) {
+ApiStatus evt_handle_set_float_buf(Evt* script) {
     Bytecode* args = script->ptrReadPos;
 
     script->buffer = (s32*) evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
-ApiStatus evt_handle_get_1_word(Evt* script) {
+ApiStatus evt_handle_read_buf_words(Evt* script) {
     Bytecode* args = script->ptrReadPos;
-    Bytecode var;
+    s32 i;
 
-    var = *args++;
-    evt_set_variable(script, var, *script->buffer++);
-
+    ASSERT(script->curArgc >= 1);
+    for (i = 0; i < script->curArgc; i++) {
+        evt_set_variable(script, *args++, *script->buffer++);
+    }
     return ApiStatus_DONE2;
 }
 
-ApiStatus evt_handle_get_2_word(Evt* script) {
-    Bytecode* args = script->ptrReadPos;
-    Bytecode var;
-
-    var = *args++;
-    evt_set_variable(script, var, *script->buffer++);
-
-    var = *args++;
-    evt_set_variable(script, var, *script->buffer++);
-
-    return ApiStatus_DONE2;
-}
-
-ApiStatus evt_handle_get_3_word(Evt* script) {
-    Bytecode* args = script->ptrReadPos;
-    Bytecode var;
-
-    var = *args++;
-    evt_set_variable(script, var, *script->buffer++);
-
-    var = *args++;
-    evt_set_variable(script, var, *script->buffer++);
-
-    var = *args++;
-    evt_set_variable(script, var, *script->buffer++);
-
-    return ApiStatus_DONE2;
-}
-
-ApiStatus evt_handle_get_4_word(Evt* script) {
-    Bytecode* args = script->ptrReadPos;
-    Bytecode var;
-
-    var = *args++;
-    evt_set_variable(script, var, *script->buffer++);
-
-    var = *args++;
-    evt_set_variable(script, var, *script->buffer++);
-
-    var = *args++;
-    evt_set_variable(script, var, *script->buffer++);
-
-    var = *args++;
-    evt_set_variable(script, var, *script->buffer++);
-
-    return ApiStatus_DONE2;
-}
-
-ApiStatus evt_handle_get_Nth_word(Evt* script) {
+ApiStatus evt_handle_peek_buf_word(Evt* script) {
     Bytecode* args = script->ptrReadPos;
     Bytecode var;
 
@@ -1315,65 +1268,18 @@ ApiStatus evt_handle_get_Nth_word(Evt* script) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus evt_handle_get_1_float(Evt* script) {
+ApiStatus evt_handle_read_buf_floats(Evt* script) {
     Bytecode* args = script->ptrReadPos;
-    Bytecode var;
+    s32 i;
 
-    var = *args++;
-    evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
-
+    ASSERT(script->curArgc >= 1);
+    for (i = 0; i < script->curArgc; i++) {
+        evt_set_float_variable(script, *args++, evt_get_float_variable(script, *script->buffer++));
+    }
     return ApiStatus_DONE2;
 }
 
-ApiStatus evt_handle_get_2_float(Evt* script) {
-    Bytecode* args = script->ptrReadPos;
-    Bytecode var;
-
-    var = *args++;
-    evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
-
-    var = *args++;
-    evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
-
-    return ApiStatus_DONE2;
-}
-
-ApiStatus evt_handle_get_3_float(Evt* script) {
-    Bytecode* args = script->ptrReadPos;
-    Bytecode var;
-
-    var = *args++;
-    evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
-
-    var = *args++;
-    evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
-
-    var = *args++;
-    evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
-
-    return ApiStatus_DONE2;
-}
-
-ApiStatus evt_handle_get_4_float(Evt* script) {
-    Bytecode* args = script->ptrReadPos;
-    Bytecode var;
-
-    var = *args++;
-    evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
-
-    var = *args++;
-    evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
-
-    var = *args++;
-    evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
-
-    var = *args++;
-    evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
-
-    return ApiStatus_DONE2;
-}
-
-ApiStatus evt_handle_get_Nth_float(Evt* script) {
+ApiStatus evt_handle_peek_buf_float(Evt* script) {
     Bytecode* args = script->ptrReadPos;
     Bytecode var;
 
@@ -2138,10 +2044,6 @@ ApiStatus evt_handle_end_child_thread(Evt* script) {
     return ApiStatus_BLOCK;
 }
 
-ApiStatus evt_handle_debug_log(Evt* script) {
-    return ApiStatus_DONE2;
-}
-
 ApiStatus evt_handle_print_debug_var(Evt* script) {
     Bytecode* args = script->ptrReadPos;
     s32 var = *args++;
@@ -2493,40 +2395,22 @@ s32 evt_execute_next_command(Evt* script) {
                 status = evt_handle_clampF(script);
                 break;
             case EVT_OP_USE_BUF:
-                status = evt_handle_set_int_buffer_ptr(script);
+                status = evt_handle_set_int_buf(script);
                 break;
-            case EVT_OP_BUF_READ1:
-                status = evt_handle_get_1_word(script);
-                break;
-            case EVT_OP_BUF_READ2:
-                status = evt_handle_get_2_word(script);
-                break;
-            case EVT_OP_BUF_READ3:
-                status = evt_handle_get_3_word(script);
-                break;
-            case EVT_OP_BUF_READ4:
-                status = evt_handle_get_4_word(script);
+            case EVT_OP_BUF_READ:
+                status = evt_handle_read_buf_words(script);
                 break;
             case EVT_OP_BUF_PEEK:
-                status = evt_handle_get_Nth_word(script);
+                status = evt_handle_peek_buf_word(script);
                 break;
             case EVT_OP_USE_FBUF:
-                status = evt_handle_set_float_buffer_ptr(script);
+                status = evt_handle_set_float_buf(script);
                 break;
-            case EVT_OP_FBUF_READ1:
-                status = evt_handle_get_1_float(script);
-                break;
-            case EVT_OP_FBUF_READ2:
-                status = evt_handle_get_2_float(script);
-                break;
-            case EVT_OP_FBUF_READ3:
-                status = evt_handle_get_3_float(script);
-                break;
-            case EVT_OP_FBUF_READ4:
-                status = evt_handle_get_4_float(script);
+            case EVT_OP_FBUF_READ:
+                status = evt_handle_read_buf_floats(script);
                 break;
             case EVT_OP_FBUF_PEEK:
-                status = evt_handle_get_Nth_float(script);
+                status = evt_handle_peek_buf_float(script);
                 break;
             case EVT_OP_USE_ARRAY:
                 status = evt_handle_set_array(script);
@@ -2537,7 +2421,7 @@ s32 evt_execute_next_command(Evt* script) {
             case EVT_OP_MALLOC_ARRAY:
                 status = evt_handle_allocate_array(script);
                 break;
-            case EVT_OP_KILL_THREAD:
+            case EVT_OP_KILL_SCRIPT:
                 status = evt_handle_kill(script);
                 break;
             case EVT_OP_BITWISE_AND:
@@ -2558,7 +2442,7 @@ s32 evt_execute_next_command(Evt* script) {
             case EVT_OP_EXEC:
                 status = evt_handle_exec1(script);
                 break;
-            case EVT_OP_EXEC_GET_TID:
+            case EVT_OP_EXEC_GET_ID:
                 status = evt_handle_exec1_get_id(script);
                 break;
             case EVT_OP_EXEC_WAIT:
@@ -2582,7 +2466,7 @@ s32 evt_execute_next_command(Evt* script) {
             case EVT_OP_JUMP:
                 status = evt_handle_jump(script);
                 break;
-            case EVT_OP_BIND_PADLOCK:
+            case EVT_OP_BIND_ITEM_PROMPT:
                 status = evt_handle_bind_lock(script);
                 break;
             case EVT_OP_SUSPEND_GROUP:
@@ -2597,13 +2481,13 @@ s32 evt_execute_next_command(Evt* script) {
             case EVT_OP_RESUME_OTHERS:
                 status = evt_handle_resume_others(script);
                 break;
-            case EVT_OP_SUSPEND_THREAD:
+            case EVT_OP_SUSPEND_SCRIPT:
                 status = evt_handle_suspend(script);
                 break;
-            case EVT_OP_RESUME_THREAD:
+            case EVT_OP_RESUME_SCRIPT:
                 status = evt_handle_resume(script);
                 break;
-            case EVT_OP_IS_THREAD_RUNNING:
+            case EVT_OP_IS_SCRIPT_RUNNING:
                 status = evt_handle_does_script_exist(script);
                 break;
             case EVT_OP_THREAD:
@@ -2624,20 +2508,17 @@ s32 evt_execute_next_command(Evt* script) {
             case EVT_OP_AWAIT_SCRIPT:
                 status = evt_handle_await_script(script);
                 break;
-            case EVT_OP_DEBUG_LOG:
-                status = evt_handle_debug_log(script);
-                break;
             case EVT_OP_DEBUG_PRINT_VAR:
                 status = evt_handle_print_debug_var(script);
+                break;
+            case EVT_OP_DEBUG_BREAKPOINT:
+                status = evt_handle_debug_breakpoint(script);
                 break;
             case EVT_OP_EXPECT_ARGS:
                 status = evt_handle_expect_args(script);
                 break;
             case EVT_OP_FINALLY:
                 status = evt_handle_finally(script);
-                break;
-            case EVT_OP_DEBUG_BREAKPOINT:
-                status = evt_handle_debug_breakpoint(script);
                 break;
             case EVT_OP_EVAL:
                 status = evt_handle_eval(script);
