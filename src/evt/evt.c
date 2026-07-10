@@ -17,6 +17,7 @@ Bytecode* evt_skip_else(Evt* script);
 Bytecode* evt_goto_end_case(Evt* script);
 Bytecode* evt_goto_next_case(Evt* script);
 Bytecode* evt_goto_end_loop(Evt* script);
+Bytecode* evt_goto_loop_continue(Evt* script);
 
 typedef enum EvtLabelKind {
     EVT_LABEL_KIND_INVALID = 0,
@@ -129,7 +130,26 @@ ALWAYS_INLINE void evt_assert_valid_arg_var(Evt* script, s32 argIndex) {
 }
 
 ApiStatus evt_handle_return(Evt* script) {
-    kill_script(script);
+    if (evt_start_finally(script)) {
+        return ApiStatus_DONE2;
+    }
+
+    force_kill_script(script);
+    return ApiStatus_FINISH;
+}
+
+ApiStatus evt_handle_finally(Evt* script) {
+    script->finalizing = true;
+    script->finallyDone = true;
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_end(Evt* script) {
+    if (evt_start_finally(script)) {
+        return ApiStatus_DONE2;
+    }
+
+    force_kill_script(script);
     return ApiStatus_FINISH;
 }
 
@@ -196,6 +216,12 @@ ApiStatus evt_handle_break_loop(Evt* script) {
     ASSERT(script->loopDepth >= 0);
     script->ptrNextLine = evt_goto_end_loop(script);
     script->loopDepth--;
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_continue_loop(Evt* script) {
+    ASSERT(script->loopDepth >= 0);
+    script->ptrNextLine = evt_goto_loop_continue(script);
     return ApiStatus_DONE2;
 }
 
@@ -297,6 +323,32 @@ ApiStatus evt_handle_if_greater_equal(Evt* script) {
     s32 val2 = evt_get_variable(script, *args++);
 
     if (val1 < val2) {
+        script->ptrNextLine = evt_skip_if(script);
+        return ApiStatus_DONE2;
+    }
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_if_range(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    s32 value = evt_get_variable(script, *args++);
+    s32 min = evt_get_variable(script, *args++);
+    s32 max = evt_get_variable(script, *args++);
+
+    if (value < min || value > max) {
+        script->ptrNextLine = evt_skip_if(script);
+        return ApiStatus_DONE2;
+    }
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_if_not_range(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    s32 value = evt_get_variable(script, *args++);
+    s32 min = evt_get_variable(script, *args++);
+    s32 max = evt_get_variable(script, *args++);
+
+    if (value >= min && value <= max) {
         script->ptrNextLine = evt_skip_if(script);
         return ApiStatus_DONE2;
     }
@@ -1587,6 +1639,25 @@ ApiStatus evt_handle_does_script_exist(Evt* script) {
     return ApiStatus_DONE2;
 }
 
+ApiStatus evt_handle_await_children(Evt* script) {
+    if (does_script_have_child_threads(script)) {
+        return ApiStatus_BLOCK;
+    }
+
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_await_script(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    s32 scriptID = evt_get_variable(script, *args++);
+
+    if (does_script_exist(scriptID)) {
+        return ApiStatus_BLOCK;
+    }
+
+    return ApiStatus_DONE2;
+}
+
 s32 evt_trigger_on_activate_lock(Trigger* trigger) {
     if (trigger->runningScript == nullptr) {
         Evt* newScript = start_script(trigger->onTriggerEvt, trigger->priority, EVT_FLAG_RUN_IMMEDIATELY);
@@ -1689,7 +1760,11 @@ ApiStatus evt_handle_thread(Evt* script) {
 }
 
 ApiStatus evt_handle_end_thread(Evt* script) {
-    kill_script(script);
+    if (evt_start_finally(script)) {
+        return ApiStatus_DONE2;
+    }
+
+    force_kill_script(script);
     return ApiStatus_FINISH;
 }
 
@@ -1711,7 +1786,11 @@ ApiStatus evt_handle_child_thread(Evt* script) {
 }
 
 ApiStatus evt_handle_end_child_thread(Evt* script) {
-    kill_script(script);
+    if (evt_start_finally(script)) {
+        return ApiStatus_DONE2;
+    }
+
+    force_kill_script(script);
     return ApiStatus_BLOCK;
 }
 
@@ -1835,6 +1914,9 @@ s32 evt_execute_next_command(Evt* script) {
         s32 status = ApiStatus_DONE2;
         s32* lines;
         s32 nargs;
+        s32 executedOpcode;
+        b32 wasFinalizing;
+        s32 scriptID;
 
         #if DX_DEBUG_MENU
         if (script->debugPaused && script->curOpcode != EVT_OP_INTERNAL_FETCH) {
@@ -1857,6 +1939,10 @@ s32 evt_execute_next_command(Evt* script) {
             backtrace_address_to_string((u32)script->ptrFirstLine, scriptName, -1);
             PANIC_MSG("Script %s is blocking for ages (infinite loop?)", scriptName);
         }
+
+        wasFinalizing = script->finalizing;
+        scriptID = script->id;
+        executedOpcode = script->curOpcode;
 
         switch (script->curOpcode) {
             case EVT_OP_INTERNAL_FETCH:
@@ -1891,6 +1977,9 @@ s32 evt_execute_next_command(Evt* script) {
             case EVT_OP_BREAK_LOOP:
                 status = evt_handle_break_loop(script);
                 break;
+            case EVT_OP_CONTINUE_LOOP:
+                status = evt_handle_continue_loop(script);
+                break;
             case EVT_OP_WAIT_FRAMES:
                 status = evt_handle_wait(script);
                 break;
@@ -1914,6 +2003,12 @@ s32 evt_execute_next_command(Evt* script) {
                 break;
             case EVT_OP_IF_GE:
                 status = evt_handle_if_greater_equal(script);
+                break;
+            case EVT_OP_IF_RANGE:
+                status = evt_handle_if_range(script);
+                break;
+            case EVT_OP_IF_NOT_RANGE:
+                status = evt_handle_if_not_range(script);
                 break;
             case EVT_OP_IF_FLAG:
                 status = evt_handle_if_AND(script);
@@ -2137,6 +2232,12 @@ s32 evt_execute_next_command(Evt* script) {
             case EVT_OP_END_CHILD_THREAD:
                 status = evt_handle_end_child_thread(script);
                 break;
+            case EVT_OP_AWAIT_CHILDREN:
+                status = evt_handle_await_children(script);
+                break;
+            case EVT_OP_AWAIT_SCRIPT:
+                status = evt_handle_await_script(script);
+                break;
             case EVT_OP_DEBUG_LOG:
                 status = evt_handle_debug_log(script);
                 break;
@@ -2146,11 +2247,8 @@ s32 evt_execute_next_command(Evt* script) {
             case EVT_OP_EXPECT_ARGS:
                 status = evt_handle_expect_args(script);
                 break;
-            case EVT_OP_93:
-                status = evt_nop(script);
-                break;
-            case EVT_OP_94:
-                status = evt_nop(script);
+            case EVT_OP_FINALLY:
+                status = evt_handle_finally(script);
                 break;
             case EVT_OP_DEBUG_BREAKPOINT:
                 status = evt_handle_debug_breakpoint(script);
@@ -2180,6 +2278,7 @@ s32 evt_execute_next_command(Evt* script) {
                 status = evt_handle_if_not_evalF(script);
                 break;
             case EVT_OP_END:
+                status = evt_handle_end(script);
                 break;
             default:
                 PANIC();
@@ -2191,6 +2290,14 @@ s32 evt_execute_next_command(Evt* script) {
         }
 
         if (status == ApiStatus_FINISH) {
+            ASSERT_MSG(
+                !wasFinalizing
+                    || executedOpcode == EVT_OP_END
+                    || executedOpcode == EVT_OP_END_THREAD
+                    || executedOpcode == EVT_OP_END_CHILD_THREAD,
+                "Finally block in script %ld finished before reaching its terminator",
+                scriptID
+            );
             return EVT_CMD_RESULT_YIELD;
         }
 
@@ -2198,8 +2305,20 @@ s32 evt_execute_next_command(Evt* script) {
             return EVT_CMD_RESULT_ERROR;
         }
 
+        ASSERT_MSG(
+            !(script->finalizing && status == ApiStatus_BLOCK),
+            "Finally block in script %ld attempted to block at line %d",
+            script->id,
+            script->curLine
+        );
+
         if (status == ApiStatus_BLOCK) {
             return EVT_CMD_RESULT_CONTINUE;
+        }
+
+        if (script->finalizing && (status == ApiStatus_DONE1 || status == ApiStatus_DONE2)) {
+            script->curOpcode = EVT_OP_INTERNAL_FETCH;
+            continue;
         }
 
         #if DX_DEBUG_MENU
@@ -2624,6 +2743,8 @@ Bytecode* evt_skip_if(Evt* script) {
             case EVT_OP_IF_GT:
             case EVT_OP_IF_LE:
             case EVT_OP_IF_GE:
+            case EVT_OP_IF_RANGE:
+            case EVT_OP_IF_NOT_RANGE:
             case EVT_OP_IF_FLAG:
             case EVT_OP_IF_NOT_FLAG:
                 nestedIfDepth++;
@@ -2674,6 +2795,12 @@ Bytecode* evt_skip_else(Evt* script) {
                 nestedIfDepth++;
                 break;
             case EVT_OP_IF_GE:
+                nestedIfDepth++;
+                break;
+            case EVT_OP_IF_RANGE:
+                nestedIfDepth++;
+                break;
+            case EVT_OP_IF_NOT_RANGE:
                 nestedIfDepth++;
                 break;
             case EVT_OP_IF_FLAG:
@@ -2781,6 +2908,36 @@ Bytecode* evt_goto_end_loop(Evt* script) {
                 loopDepth--;
                 if (loopDepth < 0) {
                     return pos;
+                }
+                break;
+            case EVT_OP_LOOP:
+                loopDepth++;
+                break;
+        }
+    } while (true);
+}
+
+Bytecode* evt_goto_loop_continue(Evt* script) {
+    s32 loopDepth = 0;
+    Bytecode* pos = script->ptrNextLine;
+    s32 opcode;
+    s32 nargs;
+
+    do {
+        Bytecode* cmd = pos;
+        s32 rawCmd = *pos++;
+        opcode = EVT_CMD_OPCODE(rawCmd);
+        nargs = EVT_CMD_ARGC(rawCmd);
+        pos += nargs;
+
+        switch (opcode) {
+            case EVT_OP_END:
+                PANIC();
+                break;
+            case EVT_OP_END_LOOP:
+                loopDepth--;
+                if (loopDepth < 0) {
+                    return cmd;
                 }
                 break;
             case EVT_OP_LOOP:

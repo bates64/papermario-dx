@@ -1,0 +1,3 @@
+tools/evt_test/fail/finally_continue_loop.c:
+EVS_FinallyContinueLoop
+ContinueLoop is not allowed inside Finally

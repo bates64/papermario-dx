@@ -8,8 +8,41 @@ The primary features are:
 - argument passing from Exec to child scripts through `ArgVar`
 - variadic arithmetic expressions: `A = B + C + D` or `A = B / C`
 - quick in-line functional interface for C helpers `Eval`, `EvalF`, `Invoke`, `InvokeF`, `IfEval`, and `IfEvalF`
+- range conditions with `IfRange` and `IfNotRange`
+- `ContinueLoop` as a counterpart to `BreakLoop`
+- cleanup blocks with `Finally` which run immediately and must not yield
+- await commands for child-threads and single scripts by ID
 - new purpose for vector convenience macros using adjacent EVT variables
 - smaller bytecode via packing opcode, argc, and linenum into command header
+
+## Contents
+
+- [Preview](#preview)
+- [EvtScript Validation](#1-evtscript-validation)
+- [Exec with Arguments](#2-exec-with-arguments)
+  - [Literal by Default](#literal-by-default)
+  - [ArgVars are Read-Only](#argvars-are-read-only)
+  - [ArgVars are Not Passed to Grandchildren](#argvars-are-not-passed-to-grandchildren)
+- [Variadic Arithmetic](#3-variadic-arithmetic)
+  - [Add and AddF](#add-and-addf)
+  - [Mul and MulF](#mul-and-mulf)
+  - [Sub, Div, and Mod](#sub-div-and-mod)
+- [Eval and Invoke](#4-eval-and-invoke)
+  - [Example: Return Values](#example-return-values)
+  - [Example: Quick Calls to C](#example-quick-calls-to-c)
+  - [Example: Branch on Predicate](#example-branch-on-predicate)
+  - [Supported Signatures](#supported-signatures)
+  - [When to Use Call](#when-to-use-call)
+- [Reintroducing Vector Helpers](#5-reintroducing-vector-helpers)
+  - [Accessing-as-Vector](#accessing-as-vector)
+  - [Setting and Manipulating Vectors](#setting-and-manipulating-vectors)
+- [Named Labels](#6-named-labels)
+- [Stricter Case Groups](#7-stricter-case-groups)
+- [If Ranges](#8-if-ranges)
+- [Continue Loop](#9-continue-loop)
+- [Finally Blocks](#10-finally-blocks)
+- [Awaiting Scripts](#11-awaiting-scripts)
+- [Packed Command Headers](#12-packed-command-headers)
 
 ## Preview
 
@@ -89,15 +122,17 @@ The validator catches problems that would crash or cause undefined behavior, as 
 - unclosed or mismatched `Switch`/`EndSwitch`
 - loop and switch nesting deeper than runtime limits
 - invalid case groups
-- `BreakLoop` outside loops
+- `BreakLoop` or `ContinueLoop` outside loops
 - `BreakSwitch` or `Case` outside switches
 - unclosed `Thread` or `ChildThread` blocks
 - duplicate labels
 - label counts beyond runtime limits
 - `Goto` with no matching label
 - invalid string label references
-- invalid Exec args
-- invalid functions for Eval/Invoke
+- invalid `Exec` args
+- invalid functions for `Eval`/`Invoke`
+- mixed integer/Float literal bounds in `IfRange`/`IfNotRange`
+- invalid `Finally` blocks
 
 The validator has its own focused test suite:
 
@@ -455,7 +490,111 @@ EndSwitch
 
 The validator rejects missing `EndCaseGroup`, `EndCaseGroup` without an active group, and accidental mixing of `CaseOrEq` with `CaseAndEq` in the same group.
 
-## 8. Packed Command Headers
+## 8. If Ranges
+
+`IfRange` and `IfNotRange` allow direct inclusive range, without having to nest comparisons or using a small predicate helper:
+
+```c
+IfRange(LVar0, 0, 100)
+    Call(InRange)
+EndIf
+
+IfNotRange(LVar1, Float(-5.0), Float(5.0))
+    Call(OutOfRange)
+EndIf
+```
+
+`IfRange(VALUE, MIN, MAX)` is true when `MIN <= VALUE <= MAX`.
+`IfNotRange(VALUE, MIN, MAX)` is true when `VALUE < MIN` or `VALUE > MAX`.
+
+Like other comparison commands, these compare the raw integer values returned by `evt_get_variable`. Integer ranges should use integer bounds, and fixed-point float ranges should use `Float(...)` bounds. The validator rejects obvious mixed literal bounds:
+
+```c
+IfRange(LVar0, 0, Float(100.0)) // rejected
+```
+
+Variable bounds are allowed because the validator does not know whether a given variable holds an int or float value at runtime.
+
+## 9. Continue Loop
+
+`ContinueLoop` skips the rest of the current loop body and starts the next iteration. It is the loop-control counterpart to `BreakLoop`:
+
+```c
+Loop(0)
+    Call(PollThing, LVar0)
+    IfEq(LVar0, 0)
+        ContinueLoop
+    EndIf
+
+    Call(HandleReadyThing)
+EndLoop
+```
+
+For counted loops, `ContinueLoop` still runs the normal `EndLoop` counter handling. It does not bypass decrementing or exiting the loop.
+
+## 10. Finally Blocks
+
+`Finally` marks a cleanup tail for a script. When present, the cleanup tail runs immediately before the script is destroyed by `Return`, normal `End`/`EndThread`/`EndChildThread`, or an external `kill_script`.
+
+The whole cleanup tail must finish right away. It cannot wait for another frame, block on an API call, or start a child script and wait for it to finish.
+
+This is intended for temporary resources or state that must be released even if the script exits early:
+
+```c
+EvtScript N(EVS_UseTempState) = {
+    Call(AcquireResource)
+
+    IfEq(GF_SomeCondition, false)
+        Return // automatically call ReleaseResource via Finally
+    EndIf
+
+    Call(DoSomethingElse)
+    Wait(1)
+
+    Finally
+        Call(ReleaseResource)
+    End
+};
+```
+
+The finalizer is anchored to the normal script terminator. There is no `EndFinally`; use `Finally ... End` for root scripts, `Finally ... EndThread` for threads, and `Finally ... EndChildThread` for child threads.
+
+Finalizers are deliberately restricted:
+
+- `Finally` must be top-level in its script, `Thread`, or `ChildThread` scope
+- only one `Finally` is allowed per scope
+- finalizers run immediately and must not block or yield to a later frame
+- obvious blocking or control-flow commands such as `Wait`, `ExecWait`, `Goto`, `Jump`, `BreakLoop`, `ContinueLoop`, `Thread`, and `ChildThread` are rejected by the validator
+- `Call` is allowed, but the runtime will assert if the function returns `ApiStatus_BLOCK`
+
+This makes `Finally` suitable for cleanup work like freeing resources, restoring flags, unregistering transient state, or undoing setup performed earlier in the script.
+
+## 11. Awaiting Scripts
+
+`AwaitChildren` waits until all direct `ChildThread` children of the current script have finished. It does not wait for detached `Thread`s, scripts started with `Exec`, or grandchildren of child threads.
+
+```c
+ChildThread
+    Call(AnimateModelA)
+EndChildThread
+
+ChildThread
+    Call(AnimateModelB)
+EndChildThread
+
+AwaitChildren
+Call(ContinueAfterBothAnimations)
+```
+
+`AwaitScript(TID)` waits until a script with the given script ID no longer exists. It is useful after `ExecGetTID` when a script needs to run independently and the caller still needs a rendezvous point. This is usually accomplished in vanilla EVT with a `Goto` busy loop.
+
+```c
+ExecGetTID(N(EVS_PlayLongEffect), LVarA)
+Call(DoSomethingElse)
+AwaitScript(LVarA)
+```
+
+## 12. Packed Command Headers
 
 EVT commands now begin with one packed 32-bit header:
 
@@ -466,16 +605,3 @@ line:  16 bits
 ```
 
 This is mostly invisible to modders, but it significantly reduces the final compiled version of each script, opening up more room in vram per overlay. Now that argc is a single byte, command argument counts are limited to 255.
-
-## 9. Debugging Quality Of Life
-
-The new commands have been added to the script debug menu:
-
-- `Eval`;
-- `EvalF`;
-- `Invoke`;
-- `InvokeF`;
-- `IfEval`;
-- `IfNotEval`;
-- `IfEvalF`;
-- `IfNotEvalF`.

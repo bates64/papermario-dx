@@ -396,6 +396,7 @@ void set_message_images(MessageImageData* images);
 void kill_all_scripts(void);
 s32 does_script_exist(s32 id);
 s32 does_script_exist_by_ref(Evt* script);
+s32 does_script_have_child_threads(Evt* script);
 Evt* start_script(EvtScript* source, s32 priority, s32 initialState);
 Evt* start_script_in_group(EvtScript* source, u8 priority, u8 initialState, u8 groupFlags);
 f32 get_player_normal_yaw(void);
@@ -565,7 +566,9 @@ void draw_status_ui(void);
 void open_status_bar_slowly(void);
 
 void suspend_all_group(s32 groupFlags);
+void force_kill_script(Evt* instanceToKill);
 void kill_script(Evt* instanceToKill);
+b32 evt_start_finally(Evt* script);
 void exec_entity_commandlist(Entity* entity);
 
 void show_start_recovery_shimmer(f32 x, f32 y, f32 z, s32 arg3);

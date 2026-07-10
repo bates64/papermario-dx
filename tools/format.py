@@ -23,6 +23,7 @@ Three kinds of code are formatted differently:
       Loop/EndLoop                indent body
       Thread/EndThread            indent body
       ChildThread/EndChildThread  indent body
+      Finally/End                 indent cleanup tail
       Preprocessor directives     stay at column 0
       Everything else             indented at current level
 
@@ -52,6 +53,7 @@ class BlockKind(Enum):
     LOOP = auto()
     THREAD = auto()
     CHILD_THREAD = auto()
+    FINALLY = auto()
 
 
 INDENT = "    "
@@ -267,6 +269,8 @@ def reformat_evtscript_block(lines: list[str]) -> list[str]:
             result.append(INDENT + indent + stripped)
             stack.append(BlockKind.THREAD)
         elif macro == "EndThread":
+            if stack and stack[-1] == BlockKind.FINALLY:
+                stack.pop()
             if stack and stack[-1] == BlockKind.THREAD:
                 stack.pop()
             indent = INDENT * len(stack)
@@ -276,7 +280,18 @@ def reformat_evtscript_block(lines: list[str]) -> list[str]:
             result.append(INDENT + indent + stripped)
             stack.append(BlockKind.CHILD_THREAD)
         elif macro == "EndChildThread":
+            if stack and stack[-1] == BlockKind.FINALLY:
+                stack.pop()
             if stack and stack[-1] == BlockKind.CHILD_THREAD:
+                stack.pop()
+            indent = INDENT * len(stack)
+            result.append(INDENT + indent + stripped)
+        elif macro == "Finally":
+            indent = INDENT * len(stack)
+            result.append(INDENT + indent + stripped)
+            stack.append(BlockKind.FINALLY)
+        elif macro == "End":
+            if stack and stack[-1] == BlockKind.FINALLY:
                 stack.pop()
             indent = INDENT * len(stack)
             result.append(INDENT + indent + stripped)

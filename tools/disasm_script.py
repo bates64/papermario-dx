@@ -873,118 +873,126 @@ class ScriptDisassembler:
         elif opcode == 0x07:
             self.write_line(f"EVT_BREAK_LOOP")
         elif opcode == 0x08:
-            self.write_line(f"EVT_WAIT({self.var(argv[0])})")
+            self.write_line(f"EVT_CONTINUE_LOOP")
         elif opcode == 0x09:
-            self.write_line(f"EVT_WAIT_SECS({self.var(argv[0])})")
+            self.write_line(f"EVT_WAIT({self.var(argv[0])})")
         elif opcode == 0x0A:
+            self.write_line(f"EVT_WAIT_SECS({self.var(argv[0])})")
+        elif opcode == 0x0B:
             if self.var(argv[0]).startswith("LW"):
                 args_str = fix_1_arg(self, self.var(argv[0]), self.var(argv[1]), 0)
             else:
                 args_str = self.var(argv[1])
             self.write_line(f"EVT_IF_EQ({self.var(argv[0])}, {args_str})")
             self.indent += 1
-        elif opcode == 0x0B:
+        elif opcode == 0x0C:
             if self.var(argv[0]).startswith("LW"):
                 args_str = fix_1_arg(self, self.var(argv[0]), self.var(argv[1]), 0)
             else:
                 args_str = self.var(argv[1])
             self.write_line(f"EVT_IF_NE({self.var(argv[0])}, {args_str})")
             self.indent += 1
-        elif opcode == 0x0C:
+        elif opcode == 0x0D:
             self.write_line(f"EVT_IF_LT({self.var(argv[0])}, {self.var(argv[1])})")
             self.indent += 1
-        elif opcode == 0x0D:
+        elif opcode == 0x0E:
             self.write_line(f"EVT_IF_GT({self.var(argv[0])}, {self.var(argv[1])})")
             self.indent += 1
-        elif opcode == 0x0E:
+        elif opcode == 0x0F:
             self.write_line(f"EVT_IF_LE({self.var(argv[0])}, {self.var(argv[1])})")
             self.indent += 1
-        elif opcode == 0x0F:
+        elif opcode == 0x10:
             self.write_line(f"EVT_IF_GE({self.var(argv[0])}, {self.var(argv[1])})")
             self.indent += 1
-        elif opcode == 0x10:
+        elif opcode == 0x11:
+            self.write_line(f"EVT_IF_RANGE({self.var(argv[0])}, {self.var(argv[1])}, {self.var(argv[2])})")
+            self.indent += 1
+        elif opcode == 0x12:
+            self.write_line(f"EVT_IF_NOT_RANGE({self.var(argv[0])}, {self.var(argv[1])}, {self.var(argv[2])})")
+            self.indent += 1
+        elif opcode == 0x13:
             args_str = fix_1_arg(self, self.var(argv[0]), self.var(argv[1]), "Hex")
             self.write_line(f"EVT_IF_FLAG({self.var(argv[0])}, {args_str})")
             self.indent += 1
-        elif opcode == 0x11:
+        elif opcode == 0x14:
             args_str = fix_1_arg(self, self.var(argv[0]), self.var(argv[1]), "Hex")
             self.write_line(f"EVT_IF_NOT_FLAG({self.var(argv[0])}, {args_str})")
             self.indent += 1
-        elif opcode == 0x12:
+        elif opcode == 0x15:
             self.indent -= 1
             self.write_line(f"EVT_ELSE")
             self.indent += 1
-        elif opcode == 0x13:
+        elif opcode == 0x16:
             self.indent -= 1
             self.write_line(f"EVT_END_IF")
-        elif opcode == 0x14:
+        elif opcode == 0x17:
             new_arg = trim_lw(self.var(argv[0]))
             SWITCH_TYPES.append(LOCAL_WORDS[int(new_arg)])
             self.write_line(f"EVT_SWITCH({self.var(argv[0])})")
             self.indent += 2
-        elif opcode == 0x15:
+        elif opcode == 0x18:
             self.write_line(f"EVT_SWITCH_CONST(0x{argv[0]:X})")
             self.indent += 2
-        elif opcode == 0x16:
+        elif opcode == 0x19:
             self.indent -= 1
             args_str = fix_1_arg(self, 0, self.var(argv[0]), SWITCH_TYPES[-1])
             self.write_line(f"EVT_CASE_EQ({args_str})")
             self.indent += 1
-        elif opcode == 0x17:
+        elif opcode == 0x1A:
             self.indent -= 1
             args_str = fix_1_arg(self, 0, self.var(argv[0]), SWITCH_TYPES[-1])
             self.write_line(f"EVT_CASE_NE({args_str})")
             self.indent += 1
-        elif opcode == 0x18:
+        elif opcode == 0x1B:
             self.indent -= 1
             self.write_line(f"EVT_CASE_LT({self.var(argv[0])})")
             self.indent += 1
-        elif opcode == 0x19:
+        elif opcode == 0x1C:
             self.indent -= 1
             self.write_line(f"EVT_CASE_GT({self.var(argv[0])})")
             self.indent += 1
-        elif opcode == 0x1A:
+        elif opcode == 0x1D:
             self.indent -= 1
             self.write_line(f"EVT_CASE_LE({self.var(argv[0])})")
             self.indent += 1
-        elif opcode == 0x1B:
+        elif opcode == 0x1E:
             self.indent -= 1
             self.write_line(f"EVT_CASE_GE({self.var(argv[0])})")
             self.indent += 1
-        elif opcode == 0x1C:
+        elif opcode == 0x1F:
             self.indent -= 1
             self.write_line(f"EVT_CASE_DEFAULT")
             self.indent += 1
-        elif opcode == 0x1D:
+        elif opcode == 0x20:
             self.indent -= 1
             args_str = fix_1_arg(self, 0, self.var(argv[0]), SWITCH_TYPES[-1])
             self.write_line(f"EVT_CASE_OR_EQ({args_str})")
             self.indent += 1
-        elif opcode == 0x1E:
+        elif opcode == 0x21:
             self.indent -= 1
             args_str = fix_1_arg(self, 0, self.var(argv[0]), SWITCH_TYPES[-1])
             self.write_line(f"EVT_CASE_AND_EQ({args_str})")
             self.indent += 1
-        elif opcode == 0x1F:
+        elif opcode == 0x22:
             self.indent -= 1
             args_str = fix_1_arg(self, 0, self.var(argv[0]), SWITCH_TYPES[-1])
             self.write_line(f"EVT_CASE_FLAG({args_str})")
             self.indent += 1
-        elif opcode == 0x20:
+        elif opcode == 0x23:
             self.indent -= 1
             self.write_line(f"EVT_END_CASE_GROUP")
             self.indent += 1
-        elif opcode == 0x21:
+        elif opcode == 0x24:
             self.indent -= 1
             self.write_line(f"EVT_CASE_RANGE({self.var(argv[0])}, {self.var(argv[1])})")
             self.indent += 1
-        elif opcode == 0x22:
+        elif opcode == 0x25:
             self.write_line(f"EVT_BREAK_SWITCH")
-        elif opcode == 0x23:
+        elif opcode == 0x26:
             self.indent -= 2
             del SWITCH_TYPES[-1]
             self.write_line(f"EVT_END_SWITCH")
-        elif opcode == 0x24:
+        elif opcode == 0x27:
             if self.var(argv[0]).startswith("LW"):
                 new_arg = trim_lw(self.var(argv[0]))
                 if self.var(argv[1]).startswith("LW"):
@@ -994,7 +1002,7 @@ class ScriptDisassembler:
                 LOCAL_WORDS[int(new_arg)] = LOCAL_WORDS[int(from_arg)]
 
             self.write_line(f"EVT_SET({self.var(argv[0])}, {self.var(argv[1])})")
-        elif opcode == 0x25:
+        elif opcode == 0x28:
             argNum = argv[1]
             sprite = (argNum & 0xFF0000) >> 16
             palette = (argNum & 0xFF00) >> 8
@@ -1006,57 +1014,57 @@ class ScriptDisassembler:
             else:
                 value = f"{argNum}"
             self.write_line(f"EVT_SET_CONST({self.var(argv[0])}, {value})")
-        elif opcode == 0x26:
-            self.write_line(f"EVT_SETF({self.var(argv[0])}, {self.var(argv[1])})")
-        elif opcode == 0x27:
-            self.write_line(f"EVT_ADD({self.var(argv[0])}, {self.var(argv[1])})")
-        elif opcode == 0x28:
-            self.write_line(f"EVT_SUB({self.var(argv[0])}, {self.var(argv[1])})")
         elif opcode == 0x29:
-            self.write_line(f"EVT_MUL({self.var(argv[0])}, {self.var(argv[1])})")
+            self.write_line(f"EVT_SETF({self.var(argv[0])}, {self.var(argv[1])})")
         elif opcode == 0x2A:
-            self.write_line(f"EVT_DIV({self.var(argv[0])}, {self.var(argv[1])})")
+            self.write_line(f"EVT_ADD({self.var(argv[0])}, {self.var(argv[1])})")
         elif opcode == 0x2B:
-            self.write_line(f"EVT_MOD({self.var(argv[0])}, {self.var(argv[1])})")
+            self.write_line(f"EVT_SUB({self.var(argv[0])}, {self.var(argv[1])})")
         elif opcode == 0x2C:
-            self.write_line(f"EVT_ADDF({self.var(argv[0])}, {self.var(argv[1])})")
+            self.write_line(f"EVT_MUL({self.var(argv[0])}, {self.var(argv[1])})")
         elif opcode == 0x2D:
-            self.write_line(f"EVT_SUBF({self.var(argv[0])}, {self.var(argv[1])})")
+            self.write_line(f"EVT_DIV({self.var(argv[0])}, {self.var(argv[1])})")
         elif opcode == 0x2E:
-            self.write_line(f"EVT_MULF({self.var(argv[0])}, {self.var(argv[1])})")
+            self.write_line(f"EVT_MOD({self.var(argv[0])}, {self.var(argv[1])})")
         elif opcode == 0x2F:
-            self.write_line(f"EVT_DIVF({self.var(argv[0])}, {self.var(argv[1])})")
+            self.write_line(f"EVT_ADDF({self.var(argv[0])}, {self.var(argv[1])})")
         elif opcode == 0x30:
+            self.write_line(f"EVT_SUBF({self.var(argv[0])}, {self.var(argv[1])})")
+        elif opcode == 0x31:
+            self.write_line(f"EVT_MULF({self.var(argv[0])}, {self.var(argv[1])})")
+        elif opcode == 0x32:
+            self.write_line(f"EVT_DIVF({self.var(argv[0])}, {self.var(argv[1])})")
+        elif opcode == 0x33:
             self.write_line(f"EVT_USE_BUF({self.var(argv[0])})")
-        elif opcode == 0x31 or opcode == 0x32 or opcode == 0x33 or opcode == 0x34:
+        elif opcode == 0x34 or opcode == 0x35 or opcode == 0x36 or opcode == 0x37:
             args = [*map(self.var, argv)]
-            self.write_line(f"EVT_BUF_READ{opcode - 0x30}({', '.join(args)})")
-        elif opcode == 0x35:
+            self.write_line(f"EVT_BUF_READ{opcode - 0x33}({', '.join(args)})")
+        elif opcode == 0x38:
             args = [*map(self.var, argv)]
             self.write_line(f"EVT_BUF_PEEK({', '.join(args)})")
-        elif opcode == 0x36:
+        elif opcode == 0x39:
             self.write_line(f"EVT_USE_FBUF({self.var(argv[0])})")
-        elif opcode == 0x37 or opcode == 0x38 or opcode == 0x39 or opcode == 0x3A:
+        elif opcode == 0x3A or opcode == 0x3B or opcode == 0x3C or opcode == 0x3D:
             args = [*map(self.var, argv)]
-            self.write_line(f"EVT_FBUF_READ{opcode - 0x36}({', '.join(args)})")
-        elif opcode == 0x3B:
+            self.write_line(f"EVT_FBUF_READ{opcode - 0x39}({', '.join(args)})")
+        elif opcode == 0x3E:
             args = [*map(self.var, argv)]
             self.write_line(f"EVT_FBUF_PEEK({', '.join(args)})")
-        elif opcode == 0x3C:
-            self.write_line(f"EVT_USE_ARRAY({self.var(argv[0])})")
-        elif opcode == 0x3D:
-            self.write_line(f"EVT_USE_FLAG_ARRAY({self.var(argv[0])})")
-        elif opcode == 0x3E:
-            self.write_line(f"EVT_MALLOC_ARRAY({self.var(argv[0])}, {self.var(argv[1])})")
         elif opcode == 0x3F:
-            self.write_line(f"EVT_BITWISE_AND({self.var(argv[0])}, {self.var(argv[1])})")
+            self.write_line(f"EVT_USE_ARRAY({self.var(argv[0])})")
         elif opcode == 0x40:
-            self.write_line(f"EVT_BITWISE_AND_CONST({self.var(argv[0])}, {self.var(argv[1])})")
+            self.write_line(f"EVT_USE_FLAG_ARRAY({self.var(argv[0])})")
         elif opcode == 0x41:
-            self.write_line(f"EVT_BITWISE_OR({self.var(argv[0])}, 0x{argv[1]:X})")
+            self.write_line(f"EVT_MALLOC_ARRAY({self.var(argv[0])}, {self.var(argv[1])})")
         elif opcode == 0x42:
-            self.write_line(f"EVT_BITWISE_OR_CONST({self.var(argv[0])}, 0x{argv[1]:X})")
+            self.write_line(f"EVT_BITWISE_AND({self.var(argv[0])}, {self.var(argv[1])})")
         elif opcode == 0x43:
+            self.write_line(f"EVT_BITWISE_AND_CONST({self.var(argv[0])}, {self.var(argv[1])})")
+        elif opcode == 0x44:
+            self.write_line(f"EVT_BITWISE_OR({self.var(argv[0])}, 0x{argv[1]:X})")
+        elif opcode == 0x45:
+            self.write_line(f"EVT_BITWISE_OR_CONST({self.var(argv[0])}, 0x{argv[1]:X})")
+        elif opcode == 0x46:
             func = self.addr_ref(argv[0])
             args = [self.var(a, use_evt_ptr=True) for a in argv[1:]]
             args_str = ", ".join(args)
@@ -1074,13 +1082,13 @@ class ScriptDisassembler:
                 self.write_line(f"EVT_CALL({func}, {args_str})")
             else:
                 self.write_line(f"EVT_CALL({func})")  # no args
-        elif opcode == 0x44:
-            self.write_line(f"EVT_EXEC({self.addr_ref(argv[0])})")
-        elif opcode == 0x45:
-            self.write_line(f"EVT_EXEC_GET_TID({self.addr_ref(argv[0])}, {self.var(argv[1])})")
-        elif opcode == 0x46:
-            self.write_line(f"EVT_EXEC_WAIT({self.addr_ref(argv[0])})")
         elif opcode == 0x47:
+            self.write_line(f"EVT_EXEC({self.addr_ref(argv[0])})")
+        elif opcode == 0x48:
+            self.write_line(f"EVT_EXEC_GET_TID({self.addr_ref(argv[0])}, {self.var(argv[1])})")
+        elif opcode == 0x49:
+            self.write_line(f"EVT_EXEC_WAIT({self.addr_ref(argv[0])})")
+        elif opcode == 0x4A:
             args = [
                 self.addr_ref(argv[0]),
                 self.trigger(argv[1]),
@@ -1088,19 +1096,19 @@ class ScriptDisassembler:
                 *map(self.var, argv[3:]),
             ]
             self.write_line(f"EVT_BIND_TRIGGER({', '.join(args)})")
-        elif opcode == 0x48:
-            self.write_line(f"EVT_UNBIND")
-        elif opcode == 0x49:
-            self.write_line(f"EVT_KILL_THREAD({self.var(argv[0])})")
-        elif opcode == 0x4A:
-            self.write_line(f"EVT_JUMP({self.var(argv[0])})")
         elif opcode == 0x4B:
-            self.write_line(f"EVT_SET_PRIORITY({self.var(argv[0])})")
+            self.write_line(f"EVT_UNBIND")
         elif opcode == 0x4C:
-            self.write_line(f"EVT_SET_TIMESCALE({self.var(argv[0])})")
+            self.write_line(f"EVT_KILL_THREAD({self.var(argv[0])})")
         elif opcode == 0x4D:
-            self.write_line(f"EVT_SET_GROUP({self.var(argv[0])})")
+            self.write_line(f"EVT_JUMP({self.var(argv[0])})")
         elif opcode == 0x4E:
+            self.write_line(f"EVT_SET_PRIORITY({self.var(argv[0])})")
+        elif opcode == 0x4F:
+            self.write_line(f"EVT_SET_TIMESCALE({self.var(argv[0])})")
+        elif opcode == 0x50:
+            self.write_line(f"EVT_SET_GROUP({self.var(argv[0])})")
+        elif opcode == 0x51:
             args = [
                 self.addr_ref(argv[0]),
                 self.trigger(argv[1]),
@@ -1108,32 +1116,39 @@ class ScriptDisassembler:
                 *map(self.var, argv[3:]),
             ]
             self.write_line(f"EVT_BIND_PADLOCK({', '.join(args)})")
-        elif opcode == 0x4F:
-            self.write_line(f"EVT_SUSPEND_GROUP({self.var(argv[0])})")
-        elif opcode == 0x50:
-            self.write_line(f"EVT_RESUME_GROUP({self.var(argv[0])})")
-        elif opcode == 0x51:
-            self.write_line(f"EVT_SUSPEND_OTHERS({self.var(argv[0])})")
         elif opcode == 0x52:
-            self.write_line(f"EVT_RESUME_OTHERS({self.var(argv[0])})")
+            self.write_line(f"EVT_SUSPEND_GROUP({self.var(argv[0])})")
         elif opcode == 0x53:
-            self.write_line(f"EVT_SUSPEND_THREAD({self.var(argv[0])})")
+            self.write_line(f"EVT_RESUME_GROUP({self.var(argv[0])})")
         elif opcode == 0x54:
-            self.write_line(f"EVT_RESUME_THREAD({self.var(argv[0])})")
+            self.write_line(f"EVT_SUSPEND_OTHERS({self.var(argv[0])})")
         elif opcode == 0x55:
-            self.write_line(f"EVT_IS_THREAD_RUNNING({self.var(argv[0])}, {self.var(argv[1])})")
+            self.write_line(f"EVT_RESUME_OTHERS({self.var(argv[0])})")
         elif opcode == 0x56:
+            self.write_line(f"EVT_SUSPEND_THREAD({self.var(argv[0])})")
+        elif opcode == 0x57:
+            self.write_line(f"EVT_RESUME_THREAD({self.var(argv[0])})")
+        elif opcode == 0x58:
+            self.write_line(f"EVT_IS_THREAD_RUNNING({self.var(argv[0])}, {self.var(argv[1])})")
+        elif opcode == 0x59:
             self.write_line("EVT_THREAD")
             self.indent += 1
-        elif opcode == 0x57:
+        elif opcode == 0x5A:
             self.indent -= 1
             self.write_line("EVT_END_THREAD")
-        elif opcode == 0x58:
+        elif opcode == 0x5B:
             self.write_line("EVT_CHILD_THREAD")
             self.indent += 1
-        elif opcode == 0x59:
+        elif opcode == 0x5C:
             self.indent -= 1
             self.write_line("EVT_END_CHILD_THREAD")
+        elif opcode == 0x5D:
+            self.write_line("EVT_AWAIT_CHILDREN")
+        elif opcode == 0x5E:
+            self.write_line(f"EVT_AWAIT_SCRIPT({self.var(argv[0])})")
+        elif opcode == 0x62:
+            self.write_line("EVT_FINALLY")
+            self.indent += 1
         else:
             # unknown opcode
             argv_str = ""

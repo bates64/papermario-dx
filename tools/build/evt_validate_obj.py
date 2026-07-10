@@ -18,12 +18,14 @@ Validation currently catches:
 - CaseOrEq and CaseAndEq mixed within the same case group;
 - EndCaseGroup without an active CaseOrEq/CaseAndEq group;
 - mismatched or unclosed Thread/EndThread and ChildThread/EndChildThread blocks;
-- BreakLoop outside a Loop;
+- BreakLoop or ContinueLoop outside a Loop;
 - BreakSwitch or Case commands outside a Switch;
 - duplicate Label values within the same thread scope;
 - thread scopes with more Label commands than the runtime supports;
 - Label/Goto operands that are not integer constants or relocation-backed string labels;
 - Goto(label) commands with no matching Label(label) in the current thread scope;
+- misplaced, duplicated, or blocking commands inside Finally cleanup tails;
+- mixed integer/Float literal bounds in IfRange/IfNotRange;
 - Eval/Invoke/IfEval function operands that are not relocation-backed function addresses.
 """
 
@@ -60,6 +62,8 @@ MAX_LOOP_DEPTH = 8
 MAX_SWITCH_DEPTH = 8
 
 EVT_LOCAL_VAR_CUTOFF = -20000000
+EVT_FIXED_CUTOFF = -220000000
+EVT_FIXED_END = -240000000
 EVT_LIMIT = -270000000
 EVT_ARG_INT_MARKER = EVT_LIMIT - 1
 EVT_ARG_FLOAT_MARKER = EVT_LIMIT - 2
@@ -84,102 +88,106 @@ class Opcode(IntEnum):
     EVT_OP_LOOP = (0x05, 1)
     EVT_OP_END_LOOP = (0x06, 0)
     EVT_OP_BREAK_LOOP = (0x07, 0)
-    EVT_OP_WAIT_FRAMES = (0x08, 1)
-    EVT_OP_WAIT_SECS = (0x09, 1)
-    EVT_OP_IF_EQ = (0x0A, 2)
-    EVT_OP_IF_NE = (0x0B, 2)
-    EVT_OP_IF_LT = (0x0C, 2)
-    EVT_OP_IF_GT = (0x0D, 2)
-    EVT_OP_IF_LE = (0x0E, 2)
-    EVT_OP_IF_GE = (0x0F, 2)
-    EVT_OP_IF_FLAG = (0x10, 2)
-    EVT_OP_IF_NOT_FLAG = (0x11, 2)
-    EVT_OP_ELSE = (0x12, 0)
-    EVT_OP_END_IF = (0x13, 0)
-    EVT_OP_SWITCH = (0x14, 1)
-    EVT_OP_SWITCH_CONST = (0x15, 1)
-    EVT_OP_CASE_EQ = (0x16, 1)
-    EVT_OP_CASE_NE = (0x17, 1)
-    EVT_OP_CASE_LT = (0x18, 1)
-    EVT_OP_CASE_GT = (0x19, 1)
-    EVT_OP_CASE_LE = (0x1A, 1)
-    EVT_OP_CASE_GE = (0x1B, 1)
-    EVT_OP_CASE_DEFAULT = (0x1C, 0)
-    EVT_OP_CASE_OR_EQ = (0x1D, 1)
-    EVT_OP_CASE_AND_EQ = (0x1E, 1)
-    EVT_OP_CASE_FLAG = (0x1F, 1)
-    EVT_OP_END_CASE_GROUP = (0x20, 0)
-    EVT_OP_CASE_RANGE = (0x21, 2)
-    EVT_OP_BREAK_SWITCH = (0x22, 0)
-    EVT_OP_END_SWITCH = (0x23, 0)
-    EVT_OP_SET = (0x24, 2)
-    EVT_OP_SET_CONST = (0x25, 2)
-    EVT_OP_SETF = (0x26, 2)
-    EVT_OP_ADD = (0x27, 2, MAX_ARGC)
-    EVT_OP_SUB = (0x28, 2, 3)
-    EVT_OP_MUL = (0x29, 2, MAX_ARGC)
-    EVT_OP_DIV = (0x2A, 2, 3)
-    EVT_OP_MOD = (0x2B, 2, 3)
-    EVT_OP_ADDF = (0x2C, 2, MAX_ARGC)
-    EVT_OP_SUBF = (0x2D, 2, 3)
-    EVT_OP_MULF = (0x2E, 2, MAX_ARGC)
-    EVT_OP_DIVF = (0x2F, 2, 3)
-    EVT_OP_USE_BUF = (0x30, 1)
-    EVT_OP_BUF_READ1 = (0x31, 1)
-    EVT_OP_BUF_READ2 = (0x32, 2)
-    EVT_OP_BUF_READ3 = (0x33, 3)
-    EVT_OP_BUF_READ4 = (0x34, 4)
-    EVT_OP_BUF_PEEK = (0x35, 2)
-    EVT_OP_USE_FBUF = (0x36, 1)
-    EVT_OP_FBUF_READ1 = (0x37, 1)
-    EVT_OP_FBUF_READ2 = (0x38, 2)
-    EVT_OP_FBUF_READ3 = (0x39, 3)
-    EVT_OP_FBUF_READ4 = (0x3A, 4)
-    EVT_OP_FBUF_PEEK = (0x3B, 2)
-    EVT_OP_USE_ARRAY = (0x3C, 1)
-    EVT_OP_USE_FLAGS = (0x3D, 1)
-    EVT_OP_MALLOC_ARRAY = (0x3E, 2)
-    EVT_OP_BITWISE_AND = (0x3F, 2)
-    EVT_OP_BITWISE_AND_CONST = (0x40, 2)
-    EVT_OP_BITWISE_OR = (0x41, 2)
-    EVT_OP_BITWISE_OR_CONST = (0x42, 2)
-    EVT_OP_CALL = (0x43, 1, MAX_ARGC)
-    EVT_OP_EXEC = (0x44, 1, MAX_ARGC)
-    EVT_OP_EXEC_GET_TID = (0x45, 2, MAX_ARGC)
-    EVT_OP_EXEC_WAIT = (0x46, 1, MAX_ARGC)
-    EVT_OP_BIND_TRIGGER = (0x47, 5)
-    EVT_OP_UNBIND = (0x48, 0)
-    EVT_OP_KILL_THREAD = (0x49, 1)
-    EVT_OP_JUMP = (0x4A, 1)
-    EVT_OP_SET_PRIORITY = (0x4B, 1)
-    EVT_OP_SET_TIMESCALE = (0x4C, 1)
-    EVT_OP_SET_GROUP = (0x4D, 1)
-    EVT_OP_BIND_PADLOCK = (0x4E, 6)
-    EVT_OP_SUSPEND_GROUP = (0x4F, 1)
-    EVT_OP_RESUME_GROUP = (0x50, 1)
-    EVT_OP_SUSPEND_OTHERS = (0x51, 1)
-    EVT_OP_RESUME_OTHERS = (0x52, 1)
-    EVT_OP_SUSPEND_THREAD = (0x53, 1)
-    EVT_OP_RESUME_THREAD = (0x54, 1)
-    EVT_OP_IS_THREAD_RUNNING = (0x55, 2)
-    EVT_OP_THREAD = (0x56, 0)
-    EVT_OP_END_THREAD = (0x57, 0)
-    EVT_OP_CHILD_THREAD = (0x58, 0)
-    EVT_OP_END_CHILD_THREAD = (0x59, 0)
-    EVT_OP_DEBUG_LOG = (0x5A, 1)
-    EVT_OP_DEBUG_PRINT_VAR = (0x5B, 1)
-    EVT_OP_EXPECT_ARGS = (0x5C, 1)
-    EVT_OP_93 = (0x5D, 0)
-    EVT_OP_94 = (0x5E, 0)
-    EVT_OP_DEBUG_BREAKPOINT = (0x5F, 1)
-    EVT_OP_EVAL = (0x60, 2, 2 + MAX_EVAL_ARGS)
-    EVT_OP_EVALF = (0x61, 2, 2 + MAX_EVAL_ARGS)
-    EVT_OP_INVOKE = (0x62, 1, 1 + MAX_EVAL_ARGS)
-    EVT_OP_INVOKEF = (0x63, 1, 1 + MAX_EVAL_ARGS)
-    EVT_OP_IF_EVAL = (0x64, 1, 1 + MAX_EVAL_ARGS)
-    EVT_OP_IF_NOT_EVAL = (0x65, 1, 1 + MAX_EVAL_ARGS)
-    EVT_OP_IF_EVALF = (0x66, 1, 1 + MAX_EVAL_ARGS)
-    EVT_OP_IF_NOT_EVALF = (0x67, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_CONTINUE_LOOP = (0x08, 0)
+    EVT_OP_WAIT_FRAMES = (0x09, 1)
+    EVT_OP_WAIT_SECS = (0x0A, 1)
+    EVT_OP_IF_EQ = (0x0B, 2)
+    EVT_OP_IF_NE = (0x0C, 2)
+    EVT_OP_IF_LT = (0x0D, 2)
+    EVT_OP_IF_GT = (0x0E, 2)
+    EVT_OP_IF_LE = (0x0F, 2)
+    EVT_OP_IF_GE = (0x10, 2)
+    EVT_OP_IF_RANGE = (0x11, 3)
+    EVT_OP_IF_NOT_RANGE = (0x12, 3)
+    EVT_OP_IF_FLAG = (0x13, 2)
+    EVT_OP_IF_NOT_FLAG = (0x14, 2)
+    EVT_OP_ELSE = (0x15, 0)
+    EVT_OP_END_IF = (0x16, 0)
+    EVT_OP_SWITCH = (0x17, 1)
+    EVT_OP_SWITCH_CONST = (0x18, 1)
+    EVT_OP_CASE_EQ = (0x19, 1)
+    EVT_OP_CASE_NE = (0x1A, 1)
+    EVT_OP_CASE_LT = (0x1B, 1)
+    EVT_OP_CASE_GT = (0x1C, 1)
+    EVT_OP_CASE_LE = (0x1D, 1)
+    EVT_OP_CASE_GE = (0x1E, 1)
+    EVT_OP_CASE_DEFAULT = (0x1F, 0)
+    EVT_OP_CASE_OR_EQ = (0x20, 1)
+    EVT_OP_CASE_AND_EQ = (0x21, 1)
+    EVT_OP_CASE_FLAG = (0x22, 1)
+    EVT_OP_END_CASE_GROUP = (0x23, 0)
+    EVT_OP_CASE_RANGE = (0x24, 2)
+    EVT_OP_BREAK_SWITCH = (0x25, 0)
+    EVT_OP_END_SWITCH = (0x26, 0)
+    EVT_OP_SET = (0x27, 2)
+    EVT_OP_SET_CONST = (0x28, 2)
+    EVT_OP_SETF = (0x29, 2)
+    EVT_OP_ADD = (0x2A, 2, MAX_ARGC)
+    EVT_OP_SUB = (0x2B, 2, 3)
+    EVT_OP_MUL = (0x2C, 2, MAX_ARGC)
+    EVT_OP_DIV = (0x2D, 2, 3)
+    EVT_OP_MOD = (0x2E, 2, 3)
+    EVT_OP_ADDF = (0x2F, 2, MAX_ARGC)
+    EVT_OP_SUBF = (0x30, 2, 3)
+    EVT_OP_MULF = (0x31, 2, MAX_ARGC)
+    EVT_OP_DIVF = (0x32, 2, 3)
+    EVT_OP_USE_BUF = (0x33, 1)
+    EVT_OP_BUF_READ1 = (0x34, 1)
+    EVT_OP_BUF_READ2 = (0x35, 2)
+    EVT_OP_BUF_READ3 = (0x36, 3)
+    EVT_OP_BUF_READ4 = (0x37, 4)
+    EVT_OP_BUF_PEEK = (0x38, 2)
+    EVT_OP_USE_FBUF = (0x39, 1)
+    EVT_OP_FBUF_READ1 = (0x3A, 1)
+    EVT_OP_FBUF_READ2 = (0x3B, 2)
+    EVT_OP_FBUF_READ3 = (0x3C, 3)
+    EVT_OP_FBUF_READ4 = (0x3D, 4)
+    EVT_OP_FBUF_PEEK = (0x3E, 2)
+    EVT_OP_USE_ARRAY = (0x3F, 1)
+    EVT_OP_USE_FLAGS = (0x40, 1)
+    EVT_OP_MALLOC_ARRAY = (0x41, 2)
+    EVT_OP_BITWISE_AND = (0x42, 2)
+    EVT_OP_BITWISE_AND_CONST = (0x43, 2)
+    EVT_OP_BITWISE_OR = (0x44, 2)
+    EVT_OP_BITWISE_OR_CONST = (0x45, 2)
+    EVT_OP_CALL = (0x46, 1, MAX_ARGC)
+    EVT_OP_EXEC = (0x47, 1, MAX_ARGC)
+    EVT_OP_EXEC_GET_TID = (0x48, 2, MAX_ARGC)
+    EVT_OP_EXEC_WAIT = (0x49, 1, MAX_ARGC)
+    EVT_OP_BIND_TRIGGER = (0x4A, 5)
+    EVT_OP_UNBIND = (0x4B, 0)
+    EVT_OP_KILL_THREAD = (0x4C, 1)
+    EVT_OP_JUMP = (0x4D, 1)
+    EVT_OP_SET_PRIORITY = (0x4E, 1)
+    EVT_OP_SET_TIMESCALE = (0x4F, 1)
+    EVT_OP_SET_GROUP = (0x50, 1)
+    EVT_OP_BIND_PADLOCK = (0x51, 6)
+    EVT_OP_SUSPEND_GROUP = (0x52, 1)
+    EVT_OP_RESUME_GROUP = (0x53, 1)
+    EVT_OP_SUSPEND_OTHERS = (0x54, 1)
+    EVT_OP_RESUME_OTHERS = (0x55, 1)
+    EVT_OP_SUSPEND_THREAD = (0x56, 1)
+    EVT_OP_RESUME_THREAD = (0x57, 1)
+    EVT_OP_IS_THREAD_RUNNING = (0x58, 2)
+    EVT_OP_THREAD = (0x59, 0)
+    EVT_OP_END_THREAD = (0x5A, 0)
+    EVT_OP_CHILD_THREAD = (0x5B, 0)
+    EVT_OP_END_CHILD_THREAD = (0x5C, 0)
+    EVT_OP_AWAIT_CHILDREN = (0x5D, 0)
+    EVT_OP_AWAIT_SCRIPT = (0x5E, 1)
+    EVT_OP_DEBUG_LOG = (0x5F, 1)
+    EVT_OP_DEBUG_PRINT_VAR = (0x60, 1)
+    EVT_OP_EXPECT_ARGS = (0x61, 1)
+    EVT_OP_FINALLY = (0x62, 0)
+    EVT_OP_DEBUG_BREAKPOINT = (0x63, 1)
+    EVT_OP_EVAL = (0x64, 2, 2 + MAX_EVAL_ARGS)
+    EVT_OP_EVALF = (0x65, 2, 2 + MAX_EVAL_ARGS)
+    EVT_OP_INVOKE = (0x66, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_INVOKEF = (0x67, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_IF_EVAL = (0x68, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_IF_NOT_EVAL = (0x69, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_IF_EVALF = (0x6A, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_IF_NOT_EVALF = (0x6B, 1, 1 + MAX_EVAL_ARGS)
 
 
 IF_OPS = {
@@ -189,6 +197,8 @@ IF_OPS = {
     Opcode.EVT_OP_IF_GT,
     Opcode.EVT_OP_IF_LE,
     Opcode.EVT_OP_IF_GE,
+    Opcode.EVT_OP_IF_RANGE,
+    Opcode.EVT_OP_IF_NOT_RANGE,
     Opcode.EVT_OP_IF_FLAG,
     Opcode.EVT_OP_IF_NOT_FLAG,
     Opcode.EVT_OP_IF_EVAL,
@@ -216,6 +226,24 @@ CASE_GROUP_OPS = {
     Opcode.EVT_OP_CASE_AND_EQ,
 }
 
+FINALLY_FORBIDDEN_OPS = {
+    Opcode.EVT_OP_RETURN: "Return is not allowed inside Finally; use the terminator command",
+    Opcode.EVT_OP_LABEL: "Label is not allowed inside Finally",
+    Opcode.EVT_OP_GOTO: "Goto is not allowed inside Finally",
+    Opcode.EVT_OP_LOOP: "Loop is not allowed inside Finally",
+    Opcode.EVT_OP_END_LOOP: "EndLoop is not allowed inside Finally",
+    Opcode.EVT_OP_BREAK_LOOP: "BreakLoop is not allowed inside Finally",
+    Opcode.EVT_OP_CONTINUE_LOOP: "ContinueLoop is not allowed inside Finally",
+    Opcode.EVT_OP_WAIT_FRAMES: "Wait is not allowed inside Finally",
+    Opcode.EVT_OP_WAIT_SECS: "WaitSecs is not allowed inside Finally",
+    Opcode.EVT_OP_EXEC_WAIT: "ExecWait is not allowed inside Finally",
+    Opcode.EVT_OP_AWAIT_CHILDREN: "AwaitChildren is not allowed inside Finally",
+    Opcode.EVT_OP_AWAIT_SCRIPT: "AwaitScript is not allowed inside Finally",
+    Opcode.EVT_OP_JUMP: "Jump is not allowed inside Finally",
+    Opcode.EVT_OP_THREAD: "Thread is not allowed inside Finally",
+    Opcode.EVT_OP_CHILD_THREAD: "ChildThread is not allowed inside Finally",
+}
+
 EXEC_OPS = {
     Opcode.EVT_OP_EXEC,
     Opcode.EVT_OP_EXEC_GET_TID,
@@ -225,6 +253,11 @@ EXEC_OPS = {
 EXEC_ARG_MARKERS = {
     EVT_ARG_INT_MARKER: "ARG_INT",
     EVT_ARG_FLOAT_MARKER: "ARG_FLOAT",
+}
+
+RANGE_IF_OPS = {
+    Opcode.EVT_OP_IF_RANGE,
+    Opcode.EVT_OP_IF_NOT_RANGE,
 }
 
 FUNCTION_ARG_INDEX_BY_OP = {
@@ -293,6 +326,7 @@ class LabelScope:
     kind: str
     start_pos: int
     labels: dict[LabelValue, int]
+    finally_pos: int | None = None
 
 
 @dataclass(frozen=True)
@@ -699,6 +733,43 @@ def validate_exec_arg_stream(
         i += 2
 
 
+def is_fixed_literal(value: int) -> bool:
+    return EVT_FIXED_END <= value <= EVT_FIXED_CUTOFF
+
+
+def is_encoded_evt_expression(value: int) -> bool:
+    return EVT_LIMIT < value <= EVT_LOCAL_VAR_CUTOFF
+
+
+def validate_range_bound_types(
+    script: ScriptSymbol,
+    op_pos: int,
+    opcode: Opcode,
+    args: list[int],
+    line: int | None,
+) -> None:
+    if opcode not in RANGE_IF_OPS:
+        return
+
+    min_value = args[1]
+    max_value = args[2]
+    min_is_float = is_fixed_literal(min_value)
+    max_is_float = is_fixed_literal(max_value)
+    if min_is_float == max_is_float:
+        return
+
+    # Variable-backed bounds may hold either int-shaped or fixed-point values at runtime.
+    min_is_dynamic = is_encoded_evt_expression(min_value) and not min_is_float
+    max_is_dynamic = is_encoded_evt_expression(max_value) and not max_is_float
+    if min_is_dynamic or max_is_dynamic:
+        return
+
+    raise ValidationError(
+        f"{format_script_site(script, op_pos, line)}: {opcode.name} min/max bounds mix "
+        "Float and integer literals"
+    )
+
+
 def validate_function_arg(
     elf: Elf32,
     script: ScriptSymbol,
@@ -779,6 +850,34 @@ class ScriptWalkContext:
     def current_label_scope(self) -> LabelScope:
         return self.label_scopes[-1]
 
+    def scope_is_at_top_level(self, scope: LabelScope) -> bool:
+        if scope.kind == "root":
+            return not self.stack
+        return bool(
+            self.stack
+            and self.stack[-1].kind == scope.kind
+            and self.stack[-1].start_pos == scope.start_pos
+        )
+
+    def enter_finally(self, op_pos: int) -> None:
+        scope = self.current_label_scope()
+        if scope.finally_pos is not None:
+            raise self.error_at(
+                op_pos,
+                f"duplicate Finally in {scope.kind} scope; previous Finally at +0x{scope.finally_pos * 4:X}",
+            )
+        if not self.scope_is_at_top_level(scope):
+            raise self.error_at(op_pos, "Finally must be top-level in its script or thread scope")
+        scope.finally_pos = op_pos
+
+    def check_finally_command_allowed(self, op_pos: int, opcode: Opcode) -> None:
+        scope = self.current_label_scope()
+        if scope.finally_pos is None or opcode == Opcode.EVT_OP_FINALLY:
+            return
+        message = FINALLY_FORBIDDEN_OPS.get(opcode)
+        if message is not None:
+            raise self.error_at(op_pos, message)
+
     def enter_if(self, op_pos: int) -> None:
         self.push("if", op_pos)
 
@@ -807,9 +906,9 @@ class ScriptWalkContext:
         self.pop()
         self.cur_loop_depth -= 1
 
-    def check_inside_loop(self, op_pos: int) -> None:
+    def check_inside_loop(self, op_pos: int, command: str) -> None:
         if not self.contains("loop"):
-            raise self.error_at(op_pos, "BreakLoop outside Loop")
+            raise self.error_at(op_pos, f"{command} outside Loop")
 
     def enter_switch(self, op_pos: int) -> None:
         self.cur_switch_depth += 1
@@ -951,8 +1050,11 @@ def validate_script(elf: Elf32, script: ScriptSymbol, data: bytes) -> None:
         raw_args = [unsigned_word(data, (arg_pos + i) * BYTECODE_SIZE) for i in range(argc)]
         validate_argc(script, op_pos, opcode, argc, ctx.current_line)
         validate_exec_arg_stream(script, op_pos, opcode, args, ctx.current_line)
+        validate_range_bound_types(script, op_pos, opcode, args, ctx.current_line)
         validate_function_arg(elf, script, op_pos, arg_pos, raw_args, opcode, ctx.current_line)
         read_pos += argc
+
+        ctx.check_finally_command_allowed(op_pos, opcode)
 
         if opcode == Opcode.EVT_OP_END:
             end_pos = read_pos
@@ -960,7 +1062,9 @@ def validate_script(elf: Elf32, script: ScriptSymbol, data: bytes) -> None:
             end_line = ctx.current_line
             break
 
-        if opcode == Opcode.EVT_OP_LABEL:
+        if opcode == Opcode.EVT_OP_FINALLY:
+            ctx.enter_finally(op_pos)
+        elif opcode == Opcode.EVT_OP_LABEL:
             ctx.define_label(
                 op_pos,
                 decode_label_value(elf, script, arg_pos, args[0], raw_args[0], op_pos, ctx.current_line, "Label"),
@@ -981,7 +1085,9 @@ def validate_script(elf: Elf32, script: ScriptSymbol, data: bytes) -> None:
         elif opcode == Opcode.EVT_OP_END_LOOP:
             ctx.exit_loop(op_pos)
         elif opcode == Opcode.EVT_OP_BREAK_LOOP:
-            ctx.check_inside_loop(op_pos)
+            ctx.check_inside_loop(op_pos, "BreakLoop")
+        elif opcode == Opcode.EVT_OP_CONTINUE_LOOP:
+            ctx.check_inside_loop(op_pos, "ContinueLoop")
         elif opcode in {Opcode.EVT_OP_SWITCH, Opcode.EVT_OP_SWITCH_CONST}:
             ctx.enter_switch(op_pos)
         elif opcode in CASE_OPS:

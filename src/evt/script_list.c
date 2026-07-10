@@ -73,6 +73,7 @@ s32 evt_execute_next_command(Evt* script);
 b32 evt_is_valid_label_value(Bytecode label);
 b32 evt_label_values_match(Bytecode lhs, Bytecode rhs);
 Bytecode* evt_find_thread_block_end(Bytecode* startLine, s32 endOpcode);
+s32 does_script_exist_by_ref(Evt* script);
 
 void sort_scripts(void) {
     s32 temp_a0;
@@ -131,8 +132,13 @@ static s32 get_script_end_opcode(Evt* script) {
 void find_script_labels(Evt* script) {
     Bytecode* curLine = script->ptrNextLine;
     s32 endOpcode = get_script_end_opcode(script);
+    b32 inFinally = false;
     s32 labelCount = 0;
     s32 i;
+
+    script->ptrFinally = nullptr;
+    script->finalizing = false;
+    script->finallyDone = false;
 
     for (i = 0; i < ARRAY_COUNT(script->labelValuePtrs); i++) {
         script->labelValuePtrs[i] = nullptr;
@@ -160,9 +166,15 @@ void find_script_labels(Evt* script) {
             case EVT_OP_CHILD_THREAD:
                 curLine = evt_find_thread_block_end(curLine, EVT_OP_END_CHILD_THREAD);
                 break;
+            case EVT_OP_FINALLY:
+                ASSERT_MSG(!inFinally, "Script contains multiple Finally commands");
+                script->ptrFinally = curLine;
+                inFinally = true;
+                break;
             case EVT_OP_LABEL: {
                 Bytecode label = *args;
 
+                ASSERT_MSG(!inFinally, "Label commands are not allowed inside Finally");
                 ASSERT_MSG(evt_is_valid_label_value(label), "Invalid Label value: 0x%08lX", (u32) label);
                 ASSERT(labelCount < ARRAY_COUNT(script->labelValuePtrs));
 
@@ -640,11 +652,56 @@ void update_scripts(void) {
     EvtCurrentScript = nullptr;
 }
 
+b32 evt_start_finally(Evt* script) {
+    if (script == nullptr || script->ptrFinally == nullptr || script->finalizing || script->finallyDone) {
+        return false;
+    }
+
+    script->ptrNextLine = script->ptrFinally;
+    script->curOpcode = EVT_OP_INTERNAL_FETCH;
+    script->blocked = false;
+    script->finalizing = true;
+    script->finallyDone = true;
+
+    #if DX_DEBUG_MENU
+    script->debugPaused = false;
+    script->debugStep = DEBUG_EVT_STEP_NONE;
+    #endif
+
+    return true;
+}
+
 void kill_script(Evt* instanceToKill) {
+    s32 commandsExecuted = 0;
+    s32 scriptID;
+
+    if (instanceToKill == nullptr || !does_script_exist_by_ref(instanceToKill)) {
+        return;
+    }
+
+    if (evt_start_finally(instanceToKill)) {
+        scriptID = instanceToKill->id;
+        while (does_script_exist_by_ref(instanceToKill)) {
+            s32 status = evt_execute_next_command(instanceToKill);
+
+            ASSERT_MSG(status != EVT_CMD_RESULT_ERROR, "Finally block failed while killing script %ld", scriptID);
+            ASSERT_MSG(commandsExecuted++ < 10000, "Finally block did not terminate while killing script %ld", scriptID);
+        }
+        return;
+    }
+
+    force_kill_script(instanceToKill);
+}
+
+void force_kill_script(Evt* instanceToKill) {
     Evt* childScript;
     Evt* blockingParent;
     s32 j;
     s32 i;
+
+    if (instanceToKill == nullptr) {
+        return;
+    }
 
     for (i = 0; i < MAX_SCRIPTS; i++) {
         if ((*gCurrentScriptListPtr)[i] == instanceToKill) {
@@ -744,8 +801,29 @@ s32 does_script_exist(s32 id) {
 s32 does_script_exist_by_ref(Evt* script) {
     s32 i;
 
+    if (script == nullptr) {
+        return false;
+    }
+
     for (i = 0; i < MAX_SCRIPTS; i++) {
         if (script == (*gCurrentScriptListPtr)[i]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+s32 does_script_have_child_threads(Evt* script) {
+    s32 i;
+
+    if (script == nullptr) {
+        return false;
+    }
+
+    for (i = 0; i < MAX_SCRIPTS; i++) {
+        Evt* scriptContextPtr = (*gCurrentScriptListPtr)[i];
+
+        if (scriptContextPtr != nullptr && scriptContextPtr->threadParent == script) {
             return true;
         }
     }

@@ -293,6 +293,11 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 /// A script missing a return will live - but do nothing - forever, or until something else kills it (e.g. leaving the map).
 #define Return                              EVT_CMD(EVT_OP_RETURN),
 
+/// Marks the start of a synchronous cleanup tail for the script.
+/// When present, Return, End, and external kills run the commands after Finally before the script is cleaned up.
+/// The cleanup tail is terminated by the script's normal End/EndThread/EndChildThread command and must not block.
+#define Finally                             EVT_CMD(EVT_OP_FINALLY),
+
 /// Jumps to a given instruction pointer and begins execution from there.
 /// You can jump to a different EVT source and labels etc. will be loaded as expected.
 /// The timescale for the current thread is also reset to the global default.
@@ -328,6 +333,9 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 /// Breaks out of the innermost loop.
 #define BreakLoop                           EVT_CMD(EVT_OP_BREAK_LOOP),
 
+/// Skips to the next iteration of the innermost loop.
+#define ContinueLoop                        EVT_CMD(EVT_OP_CONTINUE_LOOP),
+
 /// Blocks for the given number of frames.
 #define Wait(NUM_FRAMES)                    EVT_CMD(EVT_OP_WAIT_FRAMES, NUM_FRAMES),
 
@@ -352,17 +360,23 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 /// Marks the beginning of an if statement that only executes if `LVAR < RVAR`.
 #define IfLt(LVAR, RVAR)                    EVT_CMD(EVT_OP_IF_LT, LVAR, RVAR),
 
-/// Marks the beginning of an if statement that only executes if `LVAR <= RVAR`.
+/// Marks the beginning of an if statement that only executes if `LVAR > RVAR`.
 #define IfGt(LVAR, RVAR)                    EVT_CMD(EVT_OP_IF_GT, LVAR, RVAR),
 
-/// Marks the beginning of an if statement that only executes if `LVAR > RVAR`.
+/// Marks the beginning of an if statement that only executes if `LVAR <= RVAR`.
 #define IfLe(LVAR, RVAR)                    EVT_CMD(EVT_OP_IF_LE, LVAR, RVAR),
 
 /// Marks the beginning of an if statement that only executes if `LVAR >= RVAR`.
 #define IfGe(LVAR, RVAR)                    EVT_CMD(EVT_OP_IF_GE, LVAR, RVAR),
 
+/// Marks the beginning of an if statement that only executes if `MIN <= LVAR <= MAX`.
+#define IfRange(LVAR, MIN, MAX)             EVT_CMD(EVT_OP_IF_RANGE, LVAR, MIN, MAX),
+
+/// Marks the beginning of an if statement that only executes if `LVAR < MIN` or `LVAR > MAX`.
+#define IfNotRange(LVAR, MIN, MAX)          EVT_CMD(EVT_OP_IF_NOT_RANGE, LVAR, MIN, MAX),
+
 /// Marks the beginning of an if statement that only executes if the RVAR flag is set on LVAR,
-/// i.e. `(LVAR & RVAR) != 1`.
+/// i.e. `(LVAR & RVAR) != 0`.
 #define IfFlag(LVAR, RVAR)                  EVT_CMD(EVT_OP_IF_FLAG, LVAR, RVAR),
 
 /// Marks the beginning of an if statement that only executes if the RVAR flag is unset on LVAR,
@@ -649,6 +663,9 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 /// Sets OUTVAR to true/false depending on whether a thread with the given ID exists (i.e. has not been killed).
 #define IsThreadRunning(TID, OUTVAR)        EVT_CMD(EVT_OP_IS_THREAD_RUNNING, TID, OUTVAR),
 
+/// Waits until the script with the given ID no longer exists.
+#define AwaitScript(TID)                    EVT_CMD(EVT_OP_AWAIT_SCRIPT, TID),
+
 /// Marks the start of a thread block. Commands between this and a matching EndThread
 /// will be executed on their own, new thread instead of on the current thread.
 #define Thread                              EVT_CMD(EVT_OP_THREAD),
@@ -671,6 +688,9 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 
 /// Marks the end of a child thread block.
 #define EndChildThread                      EVT_CMD(EVT_OP_END_CHILD_THREAD),
+
+/// Waits until all direct ChildThread children of the current script have finished.
+#define AwaitChildren                       EVT_CMD(EVT_OP_AWAIT_CHILDREN),
 
 /// Calls a given C EVT API function with any number of arguments.
 ///

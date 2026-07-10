@@ -31,6 +31,7 @@ enum {
     EVT_OP_LOOP, ///< Args: number of repeats (0 = infinite)
     EVT_OP_END_LOOP,
     EVT_OP_BREAK_LOOP,
+    EVT_OP_CONTINUE_LOOP,
     EVT_OP_WAIT_FRAMES,
     EVT_OP_WAIT_SECS,
     EVT_OP_IF_EQ, ///< Args: a, b
@@ -39,6 +40,8 @@ enum {
     EVT_OP_IF_GT, ///< Args: a, b
     EVT_OP_IF_LE, ///< Args: a, b
     EVT_OP_IF_GE, ///< Args: a, b
+    EVT_OP_IF_RANGE, ///< Args: value, min, max
+    EVT_OP_IF_NOT_RANGE, ///< Args: value, min, max
     EVT_OP_IF_FLAG, ///< Args: a, b
     EVT_OP_IF_NOT_FLAG, ///< Args: a, b
     EVT_OP_ELSE,
@@ -113,11 +116,12 @@ enum {
     EVT_OP_END_THREAD,
     EVT_OP_CHILD_THREAD, ///< Parallel threads are killed as soon as the parent script returns.
     EVT_OP_END_CHILD_THREAD,
+    EVT_OP_AWAIT_CHILDREN,
+    EVT_OP_AWAIT_SCRIPT, ///< Args: ScriptID
     EVT_OP_DEBUG_LOG,
     EVT_OP_DEBUG_PRINT_VAR, ///< Args: expression
     EVT_OP_EXPECT_ARGS,
-    EVT_OP_93,
-    EVT_OP_94,
+    EVT_OP_FINALLY,
     EVT_OP_DEBUG_BREAKPOINT,
     EVT_OP_EVAL, ///< Args: container, *function, ...
     EVT_OP_EVALF, ///< Args: container, *function, ...
