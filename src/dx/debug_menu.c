@@ -2154,6 +2154,8 @@ DebugOpcode DebugOps[] = {
     [EVT_OP_IF_NOT_EVAL]        { "IfNotEval" },
     [EVT_OP_IF_EVALF]           { "IfEvalF" },
     [EVT_OP_IF_NOT_EVALF]       { "IfNotEvalF" },
+    [EVT_OP_LERP]               { "Lerp" },
+    [EVT_OP_END_LERP]           { "EndLerp" },
 };
 
 // main menu options for evt debugger

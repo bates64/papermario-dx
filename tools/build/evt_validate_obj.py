@@ -12,13 +12,15 @@ Validation currently catches:
 - commands with the wrong number of arguments;
 - mismatched or unclosed If/Else/EndIf blocks;
 - mismatched or unclosed Loop/EndLoop blocks;
+- mismatched, nested, or unclosed Lerp/EndLerp blocks;
 - mismatched or unclosed Switch/EndSwitch blocks;
 - Loop and Switch nesting deeper than the runtime supports;
 - CaseOrEq/CaseAndEq groups missing an EndCaseGroup;
 - CaseOrEq and CaseAndEq mixed within the same case group;
 - EndCaseGroup without an active CaseOrEq/CaseAndEq group;
 - mismatched or unclosed Thread/EndThread and ChildThread/EndChildThread blocks;
-- BreakLoop or ContinueLoop outside a Loop;
+- BreakLoop outside a Loop or Lerp;
+- ContinueLoop outside a Loop, or inside a Lerp;
 - BreakSwitch or Case commands outside a Switch;
 - duplicate Label values within the same thread scope;
 - thread scopes with more Label commands than the runtime supports;
@@ -28,6 +30,7 @@ Validation currently catches:
 - mixed integer/Float literal bounds in IfRange/IfNotRange;
 - Float literals in integer-only math commands where a float variant exists;
 - literal Clamp/ClampF bounds where min > max;
+- literal Lerp durations less than zero;
 - Eval/Invoke/IfEval function operands that are not relocation-backed function addresses.
 """
 
@@ -203,6 +206,8 @@ class Opcode(IntEnum):
     EVT_OP_IF_NOT_EVAL = (0x75, 1, 1 + MAX_EVAL_ARGS)
     EVT_OP_IF_EVALF = (0x76, 1, 1 + MAX_EVAL_ARGS)
     EVT_OP_IF_NOT_EVALF = (0x77, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_LERP = (0x78, 5)
+    EVT_OP_END_LERP = (0x79, 0)
 
 
 IF_OPS = {
@@ -242,21 +247,28 @@ CASE_GROUP_OPS = {
 }
 
 FINALLY_FORBIDDEN_OPS = {
-    Opcode.EVT_OP_RETURN: "Return is not allowed inside Finally; use the terminator command",
-    Opcode.EVT_OP_LABEL: "Label is not allowed inside Finally",
-    Opcode.EVT_OP_GOTO: "Goto is not allowed inside Finally",
-    Opcode.EVT_OP_LOOP: "Loop is not allowed inside Finally",
-    Opcode.EVT_OP_END_LOOP: "EndLoop is not allowed inside Finally",
-    Opcode.EVT_OP_BREAK_LOOP: "BreakLoop is not allowed inside Finally",
-    Opcode.EVT_OP_CONTINUE_LOOP: "ContinueLoop is not allowed inside Finally",
-    Opcode.EVT_OP_WAIT_FRAMES: "Wait is not allowed inside Finally",
-    Opcode.EVT_OP_WAIT_SECS: "WaitSecs is not allowed inside Finally",
-    Opcode.EVT_OP_EXEC_WAIT: "ExecWait is not allowed inside Finally",
-    Opcode.EVT_OP_AWAIT_CHILDREN: "AwaitChildren is not allowed inside Finally",
-    Opcode.EVT_OP_AWAIT_SCRIPT: "AwaitScript is not allowed inside Finally",
-    Opcode.EVT_OP_JUMP: "Jump is not allowed inside Finally",
-    Opcode.EVT_OP_THREAD: "Thread is not allowed inside Finally",
-    Opcode.EVT_OP_CHILD_THREAD: "ChildThread is not allowed inside Finally",
+    Opcode.EVT_OP_RETURN,
+    Opcode.EVT_OP_LABEL,
+    Opcode.EVT_OP_GOTO,
+    Opcode.EVT_OP_LOOP,
+    Opcode.EVT_OP_END_LOOP,
+    Opcode.EVT_OP_BREAK_LOOP,
+    Opcode.EVT_OP_CONTINUE_LOOP,
+    Opcode.EVT_OP_LERP,
+    Opcode.EVT_OP_END_LERP,
+    Opcode.EVT_OP_WAIT_FRAMES,
+    Opcode.EVT_OP_WAIT_SECS,
+    Opcode.EVT_OP_EXEC_WAIT,
+    Opcode.EVT_OP_AWAIT_CHILDREN,
+    Opcode.EVT_OP_AWAIT_SCRIPT,
+    Opcode.EVT_OP_JUMP,
+    Opcode.EVT_OP_THREAD,
+    Opcode.EVT_OP_CHILD_THREAD,
+}
+
+FINALLY_COMMAND_NAME_OVERRIDES = {
+    Opcode.EVT_OP_WAIT_FRAMES: "Wait",
+    Opcode.EVT_OP_WAIT_SECS: "WaitSecs",
 }
 
 EXEC_OPS = {
@@ -299,6 +311,14 @@ FUNCTION_ARG_INDEX_BY_OP = {
     Opcode.EVT_OP_IF_EVALF: 0,
     Opcode.EVT_OP_IF_NOT_EVALF: 0,
 }
+
+
+def command_display_name(opcode: Opcode) -> str:
+    override = FINALLY_COMMAND_NAME_OVERRIDES.get(opcode)
+    if override is not None:
+        return override
+    return "".join(part.capitalize() for part in opcode.name.removeprefix("EVT_OP_").split("_"))
+
 
 @dataclass(frozen=True)
 class Section:
@@ -858,6 +878,26 @@ def validate_clamp_literal_bounds(
         )
 
 
+def validate_lerp_duration(
+    script: ScriptSymbol,
+    op_pos: int,
+    opcode: Opcode,
+    args: list[int],
+    line: int | None,
+) -> None:
+    if opcode != Opcode.EVT_OP_LERP:
+        return
+
+    duration = literal_as_float(args[3])
+    if duration is None:
+        return
+
+    if duration < 0:
+        raise ValidationError(
+            f"{format_script_site(script, op_pos, line)}: Lerp duration must be >= 0"
+        )
+
+
 def validate_function_arg(
     elf: Elf32,
     script: ScriptSymbol,
@@ -962,9 +1002,10 @@ class ScriptWalkContext:
         scope = self.current_label_scope()
         if scope.finally_pos is None or opcode == Opcode.EVT_OP_FINALLY:
             return
-        message = FINALLY_FORBIDDEN_OPS.get(opcode)
-        if message is not None:
-            raise self.error_at(op_pos, message)
+        if opcode == Opcode.EVT_OP_RETURN:
+            raise self.error_at(op_pos, "Return is not allowed inside Finally; use the terminator command")
+        if opcode in FINALLY_FORBIDDEN_OPS:
+            raise self.error_at(op_pos, f"{command_display_name(opcode)} is not allowed inside Finally")
 
     def enter_if(self, op_pos: int) -> None:
         self.push("if", op_pos)
@@ -979,14 +1020,17 @@ class ScriptWalkContext:
             raise self.error_at(op_pos, "EndIf without matching If")
         self.pop()
 
-    def enter_loop(self, op_pos: int) -> None:
+    def enter_loop_like(self, op_pos: int, kind: str, command: str) -> None:
         self.cur_loop_depth += 1
         if self.cur_loop_depth > MAX_LOOP_DEPTH:
             raise self.error_at(
                 op_pos,
-                f"Loop nesting depth {self.cur_loop_depth} exceeds runtime limit of {MAX_LOOP_DEPTH}",
+                f"{command} nesting depth {self.cur_loop_depth} exceeds runtime limit of {MAX_LOOP_DEPTH}",
             )
-        self.push("loop", op_pos)
+        self.push(kind, op_pos)
+
+    def enter_loop(self, op_pos: int) -> None:
+        self.enter_loop_like(op_pos, "loop", "Loop")
 
     def exit_loop(self, op_pos: int) -> None:
         if not self.top_is("loop"):
@@ -994,9 +1038,33 @@ class ScriptWalkContext:
         self.pop()
         self.cur_loop_depth -= 1
 
-    def check_inside_loop(self, op_pos: int, command: str) -> None:
-        if not self.contains("loop"):
-            raise self.error_at(op_pos, f"{command} outside Loop")
+    def enter_lerp(self, op_pos: int) -> None:
+        if self.contains("lerp"):
+            raise self.error_at(op_pos, "nested Lerp is not allowed")
+        self.enter_loop_like(op_pos, "lerp", "Lerp")
+
+    def exit_lerp(self, op_pos: int) -> None:
+        if not self.top_is("lerp"):
+            raise self.error_at(op_pos, "EndLerp without matching Lerp")
+        self.pop()
+        self.cur_loop_depth -= 1
+
+    def nearest_loop_kind(self) -> str | None:
+        for block in reversed(self.stack):
+            if block.kind in {"loop", "lerp"}:
+                return block.kind
+        return None
+
+    def check_break_loop(self, op_pos: int) -> None:
+        if self.nearest_loop_kind() is None:
+            raise self.error_at(op_pos, "BreakLoop outside Loop or Lerp")
+
+    def check_continue_loop(self, op_pos: int) -> None:
+        nearest_loop = self.nearest_loop_kind()
+        if nearest_loop is None:
+            raise self.error_at(op_pos, "ContinueLoop outside Loop")
+        if nearest_loop == "lerp":
+            raise self.error_at(op_pos, "ContinueLoop is not allowed inside Lerp")
 
     def enter_switch(self, op_pos: int) -> None:
         self.cur_switch_depth += 1
@@ -1141,6 +1209,7 @@ def validate_script(elf: Elf32, script: ScriptSymbol, data: bytes) -> None:
         validate_range_bound_types(script, op_pos, opcode, args, ctx.current_line)
         validate_integer_math_arg_types(script, op_pos, opcode, args, ctx.current_line)
         validate_clamp_literal_bounds(script, op_pos, opcode, args, ctx.current_line)
+        validate_lerp_duration(script, op_pos, opcode, args, ctx.current_line)
         validate_function_arg(elf, script, op_pos, arg_pos, raw_args, opcode, ctx.current_line)
         read_pos += argc
 
@@ -1174,10 +1243,14 @@ def validate_script(elf: Elf32, script: ScriptSymbol, data: bytes) -> None:
             ctx.enter_loop(op_pos)
         elif opcode == Opcode.EVT_OP_END_LOOP:
             ctx.exit_loop(op_pos)
+        elif opcode == Opcode.EVT_OP_LERP:
+            ctx.enter_lerp(op_pos)
+        elif opcode == Opcode.EVT_OP_END_LERP:
+            ctx.exit_lerp(op_pos)
         elif opcode == Opcode.EVT_OP_BREAK_LOOP:
-            ctx.check_inside_loop(op_pos, "BreakLoop")
+            ctx.check_break_loop(op_pos)
         elif opcode == Opcode.EVT_OP_CONTINUE_LOOP:
-            ctx.check_inside_loop(op_pos, "ContinueLoop")
+            ctx.check_continue_loop(op_pos)
         elif opcode in {Opcode.EVT_OP_SWITCH, Opcode.EVT_OP_SWITCH_CONST}:
             ctx.enter_switch(op_pos)
         elif opcode in CASE_OPS:

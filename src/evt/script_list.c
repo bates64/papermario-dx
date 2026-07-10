@@ -73,6 +73,7 @@ s32 evt_execute_next_command(Evt* script);
 b32 evt_is_valid_label_value(Bytecode label);
 b32 evt_label_values_match(Bytecode lhs, Bytecode rhs);
 Bytecode* evt_find_thread_block_end(Bytecode* startLine, s32 endOpcode);
+void evt_free_lerp_state(Evt* script);
 s32 does_script_exist_by_ref(Evt* script);
 
 void sort_scripts(void) {
@@ -290,6 +291,7 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
     newScript->userData = nullptr;
     newScript->argVars = nullptr;
     newScript->argCount = 0;
+    newScript->lerpState = nullptr;
     newScript->blockingParent = nullptr;
     newScript->blockingChild = nullptr;
     newScript->threadParent = nullptr;
@@ -358,6 +360,7 @@ Evt* start_script_in_group(EvtScript* source, u8 priority, u8 flags, u8 groupFla
     newScript->userData = nullptr;
     newScript->argVars = nullptr;
     newScript->argCount = 0;
+    newScript->lerpState = nullptr;
     newScript->blockingParent = nullptr;
     newScript->blockingChild = nullptr;
     newScript->threadParent = nullptr;
@@ -424,6 +427,7 @@ Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 flags) {
     child->userData = nullptr;
     child->argVars = nullptr;
     child->argCount = 0;
+    child->lerpState = nullptr;
     child->blockingParent = parentScript;
     child->blockingChild = nullptr;
     child->threadParent = nullptr;
@@ -493,6 +497,7 @@ Evt* start_child_thread(Evt* parentScript, Bytecode* nextLine, s32 newState) {
     child->userData = nullptr;
     child->argVars = nullptr;
     child->argCount = 0;
+    child->lerpState = nullptr;
     child->blockingParent = nullptr;
     child->threadParent = parentScript;
     child->blockingChild = nullptr;
@@ -560,6 +565,7 @@ Evt* func_802C3C10(Evt* script, Bytecode* line, s32 arg2) {
         script->argVars = nullptr;
         script->argCount = 0;
     }
+    evt_free_lerp_state(script);
 
     if (script->blockingChild != nullptr) {
         kill_script(script->blockingChild);
@@ -590,6 +596,7 @@ Evt* restart_script(Evt* script) {
     // frameCounter gets set to 0 twice which makes me think a macro is being used here
     script->loopDepth = -1;
     script->switchDepth = -1;
+    evt_free_lerp_state(script);
     script->frameCounter = 0;
     script->curOpcode = EVT_OP_INTERNAL_FETCH;
 
@@ -755,6 +762,7 @@ void force_kill_script(Evt* instanceToKill) {
         instanceToKill->argVars = nullptr;
         instanceToKill->argCount = 0;
     }
+    evt_free_lerp_state(instanceToKill);
 
     heap_free((*gCurrentScriptListPtr)[i]);
     (*gCurrentScriptListPtr)[i] = nullptr;

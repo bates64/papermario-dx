@@ -25,6 +25,11 @@ typedef enum EvtLabelKind {
     EVT_LABEL_KIND_STRING  = 2,
 } EvtLabelKind;
 
+typedef enum EvtLoopType {
+    EVT_LOOP_TYPE_BASIC = 0,
+    EVT_LOOP_TYPE_LERP  = 1,
+} EvtLoopType;
+
 EvtLabelKind evt_get_label_kind(Bytecode label) {
     if (label <= EVT_LIMIT) {
         return EVT_LABEL_KIND_STRING;
@@ -129,6 +134,13 @@ ALWAYS_INLINE void evt_assert_valid_arg_var(Evt* script, s32 argIndex) {
     );
 }
 
+void evt_free_lerp_state(Evt* script) {
+    if (script->lerpState != nullptr) {
+        heap_free(script->lerpState);
+        script->lerpState = nullptr;
+    }
+}
+
 ApiStatus evt_handle_return(Evt* script) {
     if (evt_start_finally(script)) {
         return ApiStatus_DONE2;
@@ -178,6 +190,7 @@ ApiStatus evt_handle_loop(Evt* script) {
 
     script->loopStartTable[loopDepth] = (s32)args;
     script->loopCounterTable[loopDepth] = var;
+    script->loopTypeTable[loopDepth] = EVT_LOOP_TYPE_BASIC;
 
     return ApiStatus_DONE2;
 }
@@ -187,6 +200,7 @@ ApiStatus evt_handle_end_loop(Evt* script) {
     s32 loopCounter;
 
     ASSERT(loopDepth >= 0);
+    ASSERT(script->loopTypeTable[loopDepth] == EVT_LOOP_TYPE_BASIC);
 
     loopCounter = script->loopCounterTable[loopDepth];
 
@@ -215,14 +229,82 @@ ApiStatus evt_handle_end_loop(Evt* script) {
 ApiStatus evt_handle_break_loop(Evt* script) {
     ASSERT(script->loopDepth >= 0);
     script->ptrNextLine = evt_goto_end_loop(script);
+    if (script->loopTypeTable[script->loopDepth] == EVT_LOOP_TYPE_LERP) {
+        evt_free_lerp_state(script);
+    }
     script->loopDepth--;
     return ApiStatus_DONE2;
 }
 
 ApiStatus evt_handle_continue_loop(Evt* script) {
     ASSERT(script->loopDepth >= 0);
+    ASSERT_MSG(
+        script->loopTypeTable[script->loopDepth] != EVT_LOOP_TYPE_LERP,
+        "ContinueLoop is not allowed inside Lerp"
+    );
     script->ptrNextLine = evt_goto_loop_continue(script);
     return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_lerp(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+    f32 start = evt_get_float_variable(script, *args++);
+    f32 end = evt_get_float_variable(script, *args++);
+    s32 duration = evt_get_variable(script, *args++);
+    s32 easing = evt_get_variable(script, *args++);
+    s32 loopDepth = ++script->loopDepth;
+    EvtLerpState* state;
+
+    ASSERT(loopDepth < EVT_MAX_LOOP_DEPTH);
+    ASSERT_MSG(duration >= 0, "Lerp duration must be >= 0");
+    ASSERT_MSG(script->lerpState == nullptr, "nested Lerp is not allowed");
+
+    script->loopStartTable[loopDepth] = (s32)args;
+    script->loopTypeTable[loopDepth] = EVT_LOOP_TYPE_LERP;
+
+    state = heap_malloc(sizeof(*state));
+    ASSERT(state != nullptr);
+
+    script->lerpState = state;
+    state->outVar = outVar;
+    state->start = start;
+    state->end = end;
+    state->elapsed = 0;
+    state->duration = duration;
+    state->easing = easing;
+
+    evt_set_float_variable(script, outVar, update_lerp(easing, start, end, 0, duration));
+
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_end_lerp(Evt* script) {
+    s32 loopDepth = script->loopDepth;
+    EvtLerpState* state;
+
+    ASSERT(loopDepth >= 0);
+    ASSERT(script->loopTypeTable[loopDepth] == EVT_LOOP_TYPE_LERP);
+
+    state = script->lerpState;
+    ASSERT(state != nullptr);
+
+    if (state->elapsed >= state->duration) {
+        evt_free_lerp_state(script);
+        script->loopDepth--;
+        return ApiStatus_DONE2;
+    }
+
+    state->elapsed++;
+    evt_set_float_variable(script, state->outVar, update_lerp(
+        state->easing,
+        state->start,
+        state->end,
+        state->elapsed,
+        state->duration
+    ));
+    script->ptrNextLine = (Bytecode*)script->loopStartTable[loopDepth];
+    return ApiStatus_DONE1;
 }
 
 ApiStatus evt_handle_wait(Evt* script) {
@@ -2242,6 +2324,12 @@ s32 evt_execute_next_command(Evt* script) {
             case EVT_OP_CONTINUE_LOOP:
                 status = evt_handle_continue_loop(script);
                 break;
+            case EVT_OP_LERP:
+                status = evt_handle_lerp(script);
+                break;
+            case EVT_OP_END_LERP:
+                status = evt_handle_end_lerp(script);
+                break;
             case EVT_OP_WAIT_FRAMES:
                 status = evt_handle_wait(script);
                 break;
@@ -3157,12 +3245,14 @@ Bytecode* evt_goto_end_loop(Evt* script) {
                 PANIC();
                 break;
             case EVT_OP_END_LOOP:
+            case EVT_OP_END_LERP:
                 loopDepth--;
                 if (loopDepth < 0) {
                     return pos;
                 }
                 break;
             case EVT_OP_LOOP:
+            case EVT_OP_LERP:
                 loopDepth++;
                 break;
         }
@@ -3187,12 +3277,14 @@ Bytecode* evt_goto_loop_continue(Evt* script) {
                 PANIC();
                 break;
             case EVT_OP_END_LOOP:
+            case EVT_OP_END_LERP:
                 loopDepth--;
                 if (loopDepth < 0) {
                     return cmd;
                 }
                 break;
             case EVT_OP_LOOP:
+            case EVT_OP_LERP:
                 loopDepth++;
                 break;
         }

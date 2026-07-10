@@ -336,6 +336,26 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 /// Skips to the next iteration of the innermost loop.
 #define ContinueLoop                        EVT_CMD(EVT_OP_CONTINUE_LOOP),
 
+/// Marks the beginning of a lerp loop.
+///
+///     Lerp(VAR, START, END, DURATION, EASING)
+///         ...
+///     EndLerp
+///
+/// `VAR` is set to the current interpolated value before each iteration.
+/// `START` and `END` may be integer or Float values. `DURATION` is measured in frames.
+/// The body runs once for each elapsed frame from 0 through `DURATION`, then exits.
+/// `EndLerp` yields for one frame between iterations, so no Wait is needed inside the loop.
+///
+/// `BreakLoop` exits the lerp early. `ContinueLoop` is not allowed inside Lerp.
+/// Lerp blocks cannot be nested. Up to 8 total Loop and Lerp blocks may be
+/// active within a single script.
+#define Lerp(VAR, START, END, DURATION, EASING) \
+                                            EVT_CMD(EVT_OP_LERP, VAR, START, END, DURATION, EASING),
+
+/// Marks the end of a lerp loop.
+#define EndLerp                             EVT_CMD(EVT_OP_END_LERP),
+
 /// Blocks for the given number of frames.
 #define Wait(NUM_FRAMES)                    EVT_CMD(EVT_OP_WAIT_FRAMES, NUM_FRAMES),
 
@@ -656,8 +676,8 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 /// - TRIGGER_WALL_TOUCH
 /// - TRIGGER_FLOOR_PRESS_A
 /// - TRIGGER_WALL_HAMMER
-/// - TRIGGER_GAME_FLAG_SET (TODO: rename)
-/// - TRIGGER_AREA_FLAG_SET (TODO: rename)
+/// - TRIGGER_GAME_FLAG_SET
+/// - TRIGGER_AREA_FLAG_SET
 /// - TRIGGER_CEILING_TOUCH
 /// - TRIGGER_FLOOR_ABOVE
 /// - TRIGGER_POINT_BOMB (takes Vec3f* instead of collider ID)

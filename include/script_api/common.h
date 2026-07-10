@@ -1587,6 +1587,7 @@ API_CALLABLE(PlaySoundAtPlayer);
 /// @name Math
 
 /// @evtapi
+/// @deprecated Prefer the Lerp/EndLerp block commands for new scripts.
 /// @param start
 /// @param end
 /// @param duration
@@ -1594,6 +1595,7 @@ API_CALLABLE(PlaySoundAtPlayer);
 API_CALLABLE(MakeLerp);
 
 /// @evtapi
+/// @deprecated Prefer the Lerp/EndLerp block commands for new scripts.
 /// @evtout LVar0 currentValue
 /// @evtout LVar1 done
 API_CALLABLE(UpdateLerp);

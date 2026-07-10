@@ -1185,6 +1185,13 @@ class ScriptDisassembler:
         elif opcode == 0x6E:
             self.write_line("EVT_FINALLY")
             self.indent += 1
+        elif opcode == 0x78:
+            args = [*map(self.var, argv)]
+            self.write_line(f"EVT_LERP({', '.join(args)})")
+            self.indent += 1
+        elif opcode == 0x79:
+            self.indent -= 1
+            self.write_line("EVT_END_LERP")
         else:
             # unknown opcode
             argv_str = ""

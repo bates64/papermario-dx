@@ -408,6 +408,15 @@ typedef struct TriggerBlueprint {
     /* 0x1C */ s32* itemList;
 } TriggerBlueprint; // size = 0x20
 
+typedef struct EvtLerpState {
+    /* 0x00 */ Bytecode outVar;
+    /* 0x04 */ f32 start;
+    /* 0x08 */ f32 end;
+    /* 0x0C */ s32 elapsed;
+    /* 0x10 */ s32 duration;
+    /* 0x14 */ s32 easing;
+} EvtLerpState; // size = 0x18
+
 typedef struct Evt {
     /* 0x000 */ u8 stateFlags;
     /* 0x001 */ u8 curArgc;
@@ -440,33 +449,35 @@ typedef struct Evt {
     /* 0x0E4 */ s32 argCount;
     /* 0x0E8 */ s32 loopStartTable[EVT_MAX_LOOP_DEPTH];
     /* 0x108 */ s32 loopCounterTable[EVT_MAX_LOOP_DEPTH];
-    /* 0x128 */ s8 switchBlockState[EVT_MAX_SWITCH_DEPTH];
-    /* 0x130 */ s32 switchBlockValue[EVT_MAX_SWITCH_DEPTH];
-    /* 0x150 */ s32* buffer;
-    /* 0x154 */ s32* array;
-    /* 0x158 */ s32* flagArray;
-    /* 0x15C */ s32 id;
-    /* 0x160 */ union {
+    /* 0x128 */ s8 loopTypeTable[EVT_MAX_LOOP_DEPTH];
+    /* 0x130 */ s8 switchBlockState[EVT_MAX_SWITCH_DEPTH];
+    /* 0x138 */ s32 switchBlockValue[EVT_MAX_SWITCH_DEPTH];
+    /* 0x158 */ EvtLerpState* lerpState;
+    /* 0x15C */ s32* buffer;
+    /* 0x160 */ s32* array;
+    /* 0x164 */ s32* flagArray;
+    /* 0x168 */ s32 id;
+    /* 0x16C */ union {
     /*       */     s32 actorID;
     /*       */     struct Enemy* enemy; ///< For overworld scripts owned by an Enemy AI
     /*       */     struct Actor* actor; ///< For battle scripts
-    /* 0x160 */ } owner1;                ///< Initially -1
-    /* 0x164 */ union {
+    /* 0x16C */ } owner1;                ///< Initially -1
+    /* 0x170 */ union {
     /*       */     s32 npcID;
     /*       */     struct Npc* npc;            ///< For overworld scripts owned by an Npc
     /*       */     struct Trigger* trigger;    ///< For overworld scripts bound to a Trigger
-    /* 0x164 */ } owner2;                       ///< Initially -1
-    /* 0x168 */ f32 timeScale;
-    /* 0x16C */ f32 frameCounter;
-    /* 0x170 */ Bytecode* ptrFirstLine;
-    /* 0x174 */ Bytecode* ptrCurLine;
-    /* 0x178 */ Bytecode* ptrFinally;
-    /* 0x17C */ u16 curLine;
-    /* 0x17E */ b8 debugPaused;
-    /* 0x17F */ s8 debugStep;
-    /* 0x180 */ b8 finalizing;
-    /* 0x181 */ b8 finallyDone;
-} Evt; // size = 0x184
+    /* 0x170 */ } owner2;                       ///< Initially -1
+    /* 0x174 */ f32 timeScale;
+    /* 0x178 */ f32 frameCounter;
+    /* 0x17C */ Bytecode* ptrFirstLine;
+    /* 0x180 */ Bytecode* ptrCurLine;
+    /* 0x184 */ Bytecode* ptrFinally;
+    /* 0x188 */ u16 curLine;
+    /* 0x18A */ b8 debugPaused;
+    /* 0x18B */ s8 debugStep;
+    /* 0x18C */ b8 finalizing;
+    /* 0x18D */ b8 finallyDone;
+} Evt; // size = 0x190
 
 typedef Evt* ScriptList[MAX_SCRIPTS];
 

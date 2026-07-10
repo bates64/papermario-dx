@@ -10,6 +10,7 @@ The primary features are:
 - quick in-line functional interface for C helpers `Eval`, `EvalF`, `Invoke`, `InvokeF`, `IfEval`, and `IfEvalF`
 - range conditions with `IfRange` and `IfNotRange`
 - `ContinueLoop` as a counterpart to `BreakLoop`
+- first-class lerp loops with `Lerp` and `EndLerp`
 - cleanup blocks with `Finally` which run immediately and must not yield
 - await commands for child-threads and single scripts by ID
 - new purpose for vector convenience macros using adjacent EVT variables
@@ -42,9 +43,10 @@ The primary features are:
 - [Stricter Case Groups](#7-stricter-case-groups)
 - [If Ranges](#8-if-ranges)
 - [Continue Loop](#9-continue-loop)
-- [Finally Blocks](#10-finally-blocks)
-- [Awaiting Scripts](#11-awaiting-scripts)
-- [Packed Command Headers](#12-packed-command-headers)
+- [Lerp Loops](#10-lerp-loops)
+- [Finally Blocks](#11-finally-blocks)
+- [Awaiting Scripts](#12-awaiting-scripts)
+- [Packed Command Headers](#13-packed-command-headers)
 
 ## Preview
 
@@ -121,10 +123,12 @@ The validator catches problems that would crash or cause undefined behavior, as 
 - wrong argument counts
 - unclosed or mismatched `If`/`Else`/`EndIf`
 - unclosed or mismatched `Loop`/`EndLoop`
+- unclosed, mismatched, or nested `Lerp`/`EndLerp`
 - unclosed or mismatched `Switch`/`EndSwitch`
 - loop and switch nesting deeper than runtime limits
 - invalid case groups
-- `BreakLoop` or `ContinueLoop` outside loops
+- `BreakLoop` outside loops or lerp loops
+- `ContinueLoop` outside loops, or inside a lerp loop
 - `BreakSwitch` or `Case` outside switches
 - unclosed `Thread` or `ChildThread` blocks
 - duplicate labels
@@ -136,6 +140,7 @@ The validator catches problems that would crash or cause undefined behavior, as 
 - mixed integer/Float literal bounds in `IfRange`/`IfNotRange`
 - invalid integer/float literals in arithmetic commands
 - literal `Clamp`/`ClampF` bounds where min is greater than max
+- literal `Lerp` durations less than zero
 - invalid `Finally` blocks
 
 The validator has its own focused test suite:
@@ -589,7 +594,56 @@ EndLoop
 
 For counted loops, `ContinueLoop` still runs the normal `EndLoop` counter handling. It does not bypass decrementing or exiting the loop.
 
-## 10. Finally Blocks
+## 10. Lerp Loops
+
+`Lerp` turns the common `MakeLerp` / `UpdateLerp` / `Loop` pattern into a first-class block:
+
+```c
+Lerp(LVarAngle, 0, 80, 20, EASING_COS_IN_OUT)
+    Call(RotateModel, MODEL_o236, LVarAngle, 0, -1, 0)
+EndLerp
+```
+
+The command sets the output variable before each iteration. The body runs once for elapsed frame `0`, then once per frame until the final elapsed frame has also run. `EndLerp` yields for one frame between iterations, so no `Wait(1)` is needed inside the loop.
+
+This replaces the older boilerplate:
+
+```c
+Call(MakeLerp, 0, 80, 20, EASING_COS_IN_OUT)
+Loop(0)
+    Call(UpdateLerp)
+    Call(RotateModel, MODEL_o236, LVar0, 0, -1, 0)
+    IfEq(LVar1, false)
+        BreakLoop
+    EndIf
+    Wait(1)
+EndLoop
+```
+
+`Lerp(VAR, START, END, DURATION, EASING)` accepts integer or `Float(...)` start/end bounds:
+
+```c
+Lerp(LVarScale, Float(0.5), Float(1.0), 8, EASING_QUADRATIC_OUT)
+    Call(SetModelScale, MODEL_o236, LVarScale, LVarScale, LVarScale)
+EndLerp
+```
+
+`BreakLoop` exits a lerp early:
+
+```c
+Lerp(LVarAlpha, 0, 255, 30, EASING_LINEAR)
+    IfEq(MF_CancelFade, true)
+        BreakLoop
+    EndIf
+    Call(SetModelCustomGfx, MODEL_o236, CUSTOM_GFX_0, LVarAlpha)
+EndLerp
+```
+
+`ContinueLoop` is not allowed inside a `Lerp` block. If a lerp body needs to skip work for a frame, put that work behind an `If` instead.
+
+`Lerp` state is managed by the VM, no longer store in local variables (as in vanilla), so it does not collide with scripts that use local variables for other work. Just like the vanilla implementation, only one `Lerp` may be active in a script at a time; nested `Lerp` blocks are rejected by the validator. `MakeLerp` and `UpdateLerp` remain available for existing scripts, but new scripts should prefer `Lerp` unless they need the old explicit `LVar0`/`LVar1` behavior.
+
+## 11. Finally Blocks
 
 `Finally` marks a cleanup tail for a script. When present, the cleanup tail runs immediately before the script is destroyed by `Return`, normal `End`/`EndThread`/`EndChildThread`, or an external `kill_script`.
 
@@ -626,7 +680,7 @@ Finalizers are deliberately restricted:
 
 This makes `Finally` suitable for cleanup work like freeing resources, restoring flags, unregistering transient state, or undoing setup performed earlier in the script.
 
-## 11. Awaiting Scripts
+## 12. Awaiting Scripts
 
 `AwaitChildren` waits until all direct `ChildThread` children of the current script have finished. It does not wait for detached `Thread`s, scripts started with `Exec`, or grandchildren of child threads.
 
@@ -651,7 +705,7 @@ Call(DoSomethingElse)
 AwaitScript(LVarA)
 ```
 
-## 12. Packed Command Headers
+## 13. Packed Command Headers
 
 EVT commands now begin with one packed 32-bit header:
 
