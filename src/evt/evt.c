@@ -1812,7 +1812,7 @@ ApiStatus evt_handle_bind(Evt* script) {
 
     bp.flags = triggerType | TRIGGER_SCRIPT_BOUND;
     bp.colliderID = evt_get_variable(script, colliderIDVar);
-    bp.varIndex = evt_get_variable_index(script, colliderIDVar);
+    bp.varIndex = evt_get_variable_index(colliderIDVar);
     bp.hasPlayerInteractPrompt = hasInteractPrompt;
     bp.tattleMsg = 0;
     bp.onActivateFunc = evt_trigger_on_activate_exec_script;
@@ -1951,7 +1951,7 @@ ApiStatus evt_handle_bind_lock(Evt* script) {
 
     bp.flags = triggerType | TRIGGER_SCRIPT_BOUND;
     bp.colliderID = evt_get_variable(script, colliderIDVar);
-    bp.varIndex = evt_get_variable_index(script, colliderIDVar);
+    bp.varIndex = evt_get_variable_index(colliderIDVar);
     bp.itemList = itemList;
     bp.onActivateFunc = evt_trigger_on_activate_lock;
     bp.tattleMsg = triggerOut;
@@ -2716,53 +2716,7 @@ s32 evt_get_variable(Evt* script, Bytecode var) {
         return var;
 }
 
-s32 evt_get_variable_index(Evt* script, s32 var) {
-    if (EVT_LIMIT >= var) {
-        return var;
-    }
-    if (EVT_IGNORE_ARG >= var) {
-        return var;
-    }
-    if (EVT_FIXED_CUTOFF >= var) {
-        return var;
-    }
-    if (EVT_ARRAY_FLAG_CUTOFF >= var) {
-        return EVT_INDEX_OF_ARRAY_FLAG(var);
-    }
-    if (EVT_ARRAY_VAR_CUTOFF >= var) {
-        return EVT_INDEX_OF_ARRAY_VAR(var);
-    }
-    if (EVT_GAME_BYTE_CUTOFF >= var) {
-        return EVT_INDEX_OF_GAME_BYTE(var);
-    }
-    if (EVT_AREA_BYTE_CUTOFF >= var) {
-        return EVT_INDEX_OF_AREA_BYTE(var);
-    }
-    if (EVT_GAME_FLAG_CUTOFF >= var) {
-        return EVT_INDEX_OF_GAME_FLAG(var);
-    }
-    if (EVT_AREA_FLAG_CUTOFF >= var) {
-        return EVT_INDEX_OF_AREA_FLAG(var);
-    }
-    if (EVT_MAP_FLAG_CUTOFF >= var) {
-        return EVT_INDEX_OF_MAP_FLAG(var);
-    }
-    if (EVT_LOCAL_FLAG_CUTOFF >= var) {
-        return EVT_INDEX_OF_LOCAL_FLAG(var);
-    }
-    if (EVT_MAP_VAR_CUTOFF >= var) {
-        return EVT_INDEX_OF_MAP_VAR(var);
-    }
-    if (EVT_ARG_VAR_CUTOFF >= var) {
-        return EVT_INDEX_OF_ARG_VAR(var);
-    }
-    if (EVT_LOCAL_VAR_CUTOFF >= var) {
-        return EVT_INDEX_OF_LOCAL_VAR(var);
-    }
-    return var;
-}
-
-s32 evt_get_variable_index_alt(s32 var) {
+s32 evt_get_variable_index(s32 var) {
     if (EVT_LIMIT >= var) {
         return var;
     }

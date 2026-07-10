@@ -1453,10 +1453,8 @@ API_CALLABLE(AssignBlockFlag) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall == true) {
-        s32 index = evt_get_variable_index(script, *args++);
-
         BlockData* data = get_entity_by_index(gLastCreatedEntityIndex)->dataBuf.block;
-        data->gameFlagIndex = index;
+        data->gameFlagIndex = evt_get_variable_index(*args++);
 
         return ApiStatus_DONE2;
     }
@@ -1469,7 +1467,7 @@ API_CALLABLE(AssignChestFlag) {
 
     if (isInitialCall == true) {
         ChestData* data = get_entity_by_index(gLastCreatedEntityIndex)->dataBuf.chest;
-        data->gameFlagIndex = evt_get_variable_index(script, *args);
+        data->gameFlagIndex = evt_get_variable_index(*args++);
 
         return ApiStatus_DONE2;
     }
@@ -1482,8 +1480,7 @@ API_CALLABLE(AssignPanelFlag) {
 
     if (isInitialCall == true) {
         HiddenPanelData* data = get_entity_by_index(gLastCreatedEntityIndex)->dataBuf.hiddenPanel;
-
-        data->pickupVar = evt_get_variable_index(script, *args++);
+        data->pickupVar = evt_get_variable_index(*args++);
         return ApiStatus_DONE2;
     }
 
@@ -1495,8 +1492,7 @@ API_CALLABLE(AssignCrateFlag) {
 
     if (isInitialCall == true) {
         WoodenCrateData* data = get_entity_by_index(gLastCreatedEntityIndex)->dataBuf.crate;
-
-        data->globalFlagIndex = evt_get_variable_index(script, *args++);
+        data->globalFlagIndex = evt_get_variable_index(*args++);
         return ApiStatus_DONE2;
     }
 
