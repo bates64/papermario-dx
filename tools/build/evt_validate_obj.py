@@ -26,6 +26,8 @@ Validation currently catches:
 - Goto(label) commands with no matching Label(label) in the current thread scope;
 - misplaced, duplicated, or blocking commands inside Finally cleanup tails;
 - mixed integer/Float literal bounds in IfRange/IfNotRange;
+- Float literals in integer-only math commands where a float variant exists;
+- literal Clamp/ClampF bounds where min > max;
 - Eval/Invoke/IfEval function operands that are not relocation-backed function addresses.
 """
 
@@ -63,6 +65,7 @@ MAX_SWITCH_DEPTH = 8
 
 EVT_LOCAL_VAR_CUTOFF = -20000000
 EVT_FIXED_CUTOFF = -220000000
+EVT_FIXED_OFFSET = 230000000
 EVT_FIXED_END = -240000000
 EVT_LIMIT = -270000000
 EVT_ARG_INT_MARKER = EVT_LIMIT - 1
@@ -131,63 +134,75 @@ class Opcode(IntEnum):
     EVT_OP_SUBF = (0x30, 2, 3)
     EVT_OP_MULF = (0x31, 2, MAX_ARGC)
     EVT_OP_DIVF = (0x32, 2, 3)
-    EVT_OP_USE_BUF = (0x33, 1)
-    EVT_OP_BUF_READ1 = (0x34, 1)
-    EVT_OP_BUF_READ2 = (0x35, 2)
-    EVT_OP_BUF_READ3 = (0x36, 3)
-    EVT_OP_BUF_READ4 = (0x37, 4)
-    EVT_OP_BUF_PEEK = (0x38, 2)
-    EVT_OP_USE_FBUF = (0x39, 1)
-    EVT_OP_FBUF_READ1 = (0x3A, 1)
-    EVT_OP_FBUF_READ2 = (0x3B, 2)
-    EVT_OP_FBUF_READ3 = (0x3C, 3)
-    EVT_OP_FBUF_READ4 = (0x3D, 4)
-    EVT_OP_FBUF_PEEK = (0x3E, 2)
-    EVT_OP_USE_ARRAY = (0x3F, 1)
-    EVT_OP_USE_FLAGS = (0x40, 1)
-    EVT_OP_MALLOC_ARRAY = (0x41, 2)
-    EVT_OP_BITWISE_AND = (0x42, 2)
-    EVT_OP_BITWISE_AND_CONST = (0x43, 2)
-    EVT_OP_BITWISE_OR = (0x44, 2)
-    EVT_OP_BITWISE_OR_CONST = (0x45, 2)
-    EVT_OP_CALL = (0x46, 1, MAX_ARGC)
-    EVT_OP_EXEC = (0x47, 1, MAX_ARGC)
-    EVT_OP_EXEC_GET_TID = (0x48, 2, MAX_ARGC)
-    EVT_OP_EXEC_WAIT = (0x49, 1, MAX_ARGC)
-    EVT_OP_BIND_TRIGGER = (0x4A, 5)
-    EVT_OP_UNBIND = (0x4B, 0)
-    EVT_OP_KILL_THREAD = (0x4C, 1)
-    EVT_OP_JUMP = (0x4D, 1)
-    EVT_OP_SET_PRIORITY = (0x4E, 1)
-    EVT_OP_SET_TIMESCALE = (0x4F, 1)
-    EVT_OP_SET_GROUP = (0x50, 1)
-    EVT_OP_BIND_PADLOCK = (0x51, 6)
-    EVT_OP_SUSPEND_GROUP = (0x52, 1)
-    EVT_OP_RESUME_GROUP = (0x53, 1)
-    EVT_OP_SUSPEND_OTHERS = (0x54, 1)
-    EVT_OP_RESUME_OTHERS = (0x55, 1)
-    EVT_OP_SUSPEND_THREAD = (0x56, 1)
-    EVT_OP_RESUME_THREAD = (0x57, 1)
-    EVT_OP_IS_THREAD_RUNNING = (0x58, 2)
-    EVT_OP_THREAD = (0x59, 0)
-    EVT_OP_END_THREAD = (0x5A, 0)
-    EVT_OP_CHILD_THREAD = (0x5B, 0)
-    EVT_OP_END_CHILD_THREAD = (0x5C, 0)
-    EVT_OP_AWAIT_CHILDREN = (0x5D, 0)
-    EVT_OP_AWAIT_SCRIPT = (0x5E, 1)
-    EVT_OP_DEBUG_LOG = (0x5F, 1)
-    EVT_OP_DEBUG_PRINT_VAR = (0x60, 1)
-    EVT_OP_EXPECT_ARGS = (0x61, 1)
-    EVT_OP_FINALLY = (0x62, 0)
-    EVT_OP_DEBUG_BREAKPOINT = (0x63, 1)
-    EVT_OP_EVAL = (0x64, 2, 2 + MAX_EVAL_ARGS)
-    EVT_OP_EVALF = (0x65, 2, 2 + MAX_EVAL_ARGS)
-    EVT_OP_INVOKE = (0x66, 1, 1 + MAX_EVAL_ARGS)
-    EVT_OP_INVOKEF = (0x67, 1, 1 + MAX_EVAL_ARGS)
-    EVT_OP_IF_EVAL = (0x68, 1, 1 + MAX_EVAL_ARGS)
-    EVT_OP_IF_NOT_EVAL = (0x69, 1, 1 + MAX_EVAL_ARGS)
-    EVT_OP_IF_EVALF = (0x6A, 1, 1 + MAX_EVAL_ARGS)
-    EVT_OP_IF_NOT_EVALF = (0x6B, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_NEG = (0x33, 1, 2)
+    EVT_OP_NEGF = (0x34, 1, 2)
+    EVT_OP_ABS = (0x35, 1, 2)
+    EVT_OP_ABSF = (0x36, 1, 2)
+    EVT_OP_SIGN = (0x37, 1, 2)
+    EVT_OP_SIGNF = (0x38, 1, 2)
+    EVT_OP_MIN = (0x39, 2, MAX_ARGC)
+    EVT_OP_MINF = (0x3A, 2, MAX_ARGC)
+    EVT_OP_MAX = (0x3B, 2, MAX_ARGC)
+    EVT_OP_MAXF = (0x3C, 2, MAX_ARGC)
+    EVT_OP_CLAMP = (0x3D, 3, 4)
+    EVT_OP_CLAMPF = (0x3E, 3, 4)
+    EVT_OP_USE_BUF = (0x3F, 1)
+    EVT_OP_BUF_READ1 = (0x40, 1)
+    EVT_OP_BUF_READ2 = (0x41, 2)
+    EVT_OP_BUF_READ3 = (0x42, 3)
+    EVT_OP_BUF_READ4 = (0x43, 4)
+    EVT_OP_BUF_PEEK = (0x44, 2)
+    EVT_OP_USE_FBUF = (0x45, 1)
+    EVT_OP_FBUF_READ1 = (0x46, 1)
+    EVT_OP_FBUF_READ2 = (0x47, 2)
+    EVT_OP_FBUF_READ3 = (0x48, 3)
+    EVT_OP_FBUF_READ4 = (0x49, 4)
+    EVT_OP_FBUF_PEEK = (0x4A, 2)
+    EVT_OP_USE_ARRAY = (0x4B, 1)
+    EVT_OP_USE_FLAGS = (0x4C, 1)
+    EVT_OP_MALLOC_ARRAY = (0x4D, 2)
+    EVT_OP_BITWISE_AND = (0x4E, 2)
+    EVT_OP_BITWISE_AND_CONST = (0x4F, 2)
+    EVT_OP_BITWISE_OR = (0x50, 2)
+    EVT_OP_BITWISE_OR_CONST = (0x51, 2)
+    EVT_OP_CALL = (0x52, 1, MAX_ARGC)
+    EVT_OP_EXEC = (0x53, 1, MAX_ARGC)
+    EVT_OP_EXEC_GET_TID = (0x54, 2, MAX_ARGC)
+    EVT_OP_EXEC_WAIT = (0x55, 1, MAX_ARGC)
+    EVT_OP_BIND_TRIGGER = (0x56, 5)
+    EVT_OP_UNBIND = (0x57, 0)
+    EVT_OP_KILL_THREAD = (0x58, 1)
+    EVT_OP_JUMP = (0x59, 1)
+    EVT_OP_SET_PRIORITY = (0x5A, 1)
+    EVT_OP_SET_TIMESCALE = (0x5B, 1)
+    EVT_OP_SET_GROUP = (0x5C, 1)
+    EVT_OP_BIND_PADLOCK = (0x5D, 6)
+    EVT_OP_SUSPEND_GROUP = (0x5E, 1)
+    EVT_OP_RESUME_GROUP = (0x5F, 1)
+    EVT_OP_SUSPEND_OTHERS = (0x60, 1)
+    EVT_OP_RESUME_OTHERS = (0x61, 1)
+    EVT_OP_SUSPEND_THREAD = (0x62, 1)
+    EVT_OP_RESUME_THREAD = (0x63, 1)
+    EVT_OP_IS_THREAD_RUNNING = (0x64, 2)
+    EVT_OP_THREAD = (0x65, 0)
+    EVT_OP_END_THREAD = (0x66, 0)
+    EVT_OP_CHILD_THREAD = (0x67, 0)
+    EVT_OP_END_CHILD_THREAD = (0x68, 0)
+    EVT_OP_AWAIT_CHILDREN = (0x69, 0)
+    EVT_OP_AWAIT_SCRIPT = (0x6A, 1)
+    EVT_OP_DEBUG_LOG = (0x6B, 1)
+    EVT_OP_DEBUG_PRINT_VAR = (0x6C, 1)
+    EVT_OP_EXPECT_ARGS = (0x6D, 1)
+    EVT_OP_FINALLY = (0x6E, 0)
+    EVT_OP_DEBUG_BREAKPOINT = (0x6F, 1)
+    EVT_OP_EVAL = (0x70, 2, 2 + MAX_EVAL_ARGS)
+    EVT_OP_EVALF = (0x71, 2, 2 + MAX_EVAL_ARGS)
+    EVT_OP_INVOKE = (0x72, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_INVOKEF = (0x73, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_IF_EVAL = (0x74, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_IF_NOT_EVAL = (0x75, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_IF_EVALF = (0x76, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_IF_NOT_EVALF = (0x77, 1, 1 + MAX_EVAL_ARGS)
 
 
 IF_OPS = {
@@ -258,6 +273,20 @@ EXEC_ARG_MARKERS = {
 RANGE_IF_OPS = {
     Opcode.EVT_OP_IF_RANGE,
     Opcode.EVT_OP_IF_NOT_RANGE,
+}
+
+INTEGER_MATH_FLOAT_VARIANT = {
+    Opcode.EVT_OP_NEG: "NegF",
+    Opcode.EVT_OP_ABS: "AbsF",
+    Opcode.EVT_OP_SIGN: "SignF",
+    Opcode.EVT_OP_MIN: "MinF",
+    Opcode.EVT_OP_MAX: "MaxF",
+    Opcode.EVT_OP_CLAMP: "ClampF",
+}
+
+CLAMP_OPS = {
+    Opcode.EVT_OP_CLAMP,
+    Opcode.EVT_OP_CLAMPF,
 }
 
 FUNCTION_ARG_INDEX_BY_OP = {
@@ -737,8 +766,20 @@ def is_fixed_literal(value: int) -> bool:
     return EVT_FIXED_END <= value <= EVT_FIXED_CUTOFF
 
 
+def is_plain_int_literal(value: int) -> bool:
+    return value > EVT_LOCAL_VAR_CUTOFF
+
+
 def is_encoded_evt_expression(value: int) -> bool:
     return EVT_LIMIT < value <= EVT_LOCAL_VAR_CUTOFF
+
+
+def literal_as_float(value: int) -> float | None:
+    if is_fixed_literal(value):
+        return (value + EVT_FIXED_OFFSET) / 1024.0
+    if is_plain_int_literal(value):
+        return float(value)
+    return None
 
 
 def validate_range_bound_types(
@@ -768,6 +809,53 @@ def validate_range_bound_types(
         f"{format_script_site(script, op_pos, line)}: {opcode.name} min/max bounds mix "
         "Float and integer literals"
     )
+
+
+def validate_integer_math_arg_types(
+    script: ScriptSymbol,
+    op_pos: int,
+    opcode: Opcode,
+    args: list[int],
+    line: int | None,
+) -> None:
+    float_variant = INTEGER_MATH_FLOAT_VARIANT.get(opcode)
+    if float_variant is None:
+        return
+
+    for i, value in enumerate(args[1:], start=1):
+        if is_fixed_literal(value):
+            raise ValidationError(
+                f"{format_script_site(script, op_pos, line)}: {opcode.name} arg {i} uses "
+                f"Float literal; use {float_variant}"
+            )
+
+
+def validate_clamp_literal_bounds(
+    script: ScriptSymbol,
+    op_pos: int,
+    opcode: Opcode,
+    args: list[int],
+    line: int | None,
+) -> None:
+    if opcode not in CLAMP_OPS:
+        return
+
+    if len(args) == 3:
+        min_index = 1
+        max_index = 2
+    else:
+        min_index = 2
+        max_index = 3
+
+    min_value = literal_as_float(args[min_index])
+    max_value = literal_as_float(args[max_index])
+    if min_value is None or max_value is None:
+        return
+
+    if min_value > max_value:
+        raise ValidationError(
+            f"{format_script_site(script, op_pos, line)}: {opcode.name} min bound is greater than max bound"
+        )
 
 
 def validate_function_arg(
@@ -1051,6 +1139,8 @@ def validate_script(elf: Elf32, script: ScriptSymbol, data: bytes) -> None:
         validate_argc(script, op_pos, opcode, argc, ctx.current_line)
         validate_exec_arg_stream(script, op_pos, opcode, args, ctx.current_line)
         validate_range_bound_types(script, op_pos, opcode, args, ctx.current_line)
+        validate_integer_math_arg_types(script, op_pos, opcode, args, ctx.current_line)
+        validate_clamp_literal_bounds(script, op_pos, opcode, args, ctx.current_line)
         validate_function_arg(elf, script, op_pos, arg_pos, raw_args, opcode, ctx.current_line)
         read_pos += argc
 

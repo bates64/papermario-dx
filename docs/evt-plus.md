@@ -6,7 +6,7 @@ The primary features are:
 
 - a compile-time (and optional) EVT validator
 - argument passing from Exec to child scripts through `ArgVar`
-- variadic arithmetic expressions: `A = B + C + D` or `A = B / C`
+- expanded arithmetic expressions, e.g., `A = B + C + D`, `A = B / C`, `A = min(B, C)`, or `A = clamp(B, MIN, MAX)`
 - quick in-line functional interface for C helpers `Eval`, `EvalF`, `Invoke`, `InvokeF`, `IfEval`, and `IfEvalF`
 - range conditions with `IfRange` and `IfNotRange`
 - `ContinueLoop` as a counterpart to `BreakLoop`
@@ -27,6 +27,8 @@ The primary features are:
   - [Add and AddF](#add-and-addf)
   - [Mul and MulF](#mul-and-mulf)
   - [Sub, Div, and Mod](#sub-div-and-mod)
+  - [Neg, Abs, and Sign](#neg-abs-and-sign)
+  - [Min, Max, and Clamp](#min-max-and-clamp)
 - [Eval and Invoke](#4-eval-and-invoke)
   - [Example: Return Values](#example-return-values)
   - [Example: Quick Calls to C](#example-quick-calls-to-c)
@@ -132,6 +134,8 @@ The validator catches problems that would crash or cause undefined behavior, as 
 - invalid `Exec` args
 - invalid functions for `Eval`/`Invoke`
 - mixed integer/Float literal bounds in `IfRange`/`IfNotRange`
+- invalid integer/float literals in arithmetic commands
+- literal `Clamp`/`ClampF` bounds where min is greater than max
 - invalid `Finally` blocks
 
 The validator has its own focused test suite:
@@ -278,6 +282,59 @@ Mod(LVar0, LVar1, 10)     // LVar0 = LVar1 % 10
 SubF(LVar0, LVar1, Float(1.0))
 DivF(LVar0, LVar1, Float(2.0))
 ```
+
+### Neg, Abs, and Sign
+
+Unary math commands support both mutating and expression forms:
+
+```c
+Neg(LVar0)          // LVar0 = -LVar0
+Neg(LVar0, LVar1)   // LVar0 = -LVar1
+
+Abs(LVar2)          // LVar2 = abs(LVar2)
+Abs(LVar2, LVar3)   // LVar2 = abs(LVar3)
+
+Sign(LVar4)         // LVar4 = sign(LVar4), as -1, 0, or 1
+Sign(LVar4, LVar5)  // LVar4 = sign(LVar5)
+```
+
+Float variants are available for fixed-point values:
+
+```c
+NegF(LVar0, Float(5.0))
+AbsF(LVar1, LVar2)
+SignF(LVar3)
+```
+
+### Min, Max, and Clamp
+
+`Min` and `Max` support a mutating two-argument form, plus expression forms with two or more inputs:
+
+```c
+Min(LVar0, 10)              // LVar0 = min(LVar0, 10)
+Min(LVar0, LVar1, LVar2)    // LVar0 = min(LVar1, LVar2)
+Min(LVar0, LVar1, 20, 30)   // LVar0 = min(LVar1, 20, 30)
+
+Max(LVar3, 10)
+Max(LVar3, LVar4, LVar5)
+```
+
+`Clamp` supports mutating and expression forms:
+
+```c
+Clamp(LVar0, 0, 100)           // LVar0 = clamp(LVar0, 0, 100)
+Clamp(LVar0, LVar1, 0, 100)    // LVar0 = clamp(LVar1, 0, 100)
+```
+
+Float variants are available for fixed-point values:
+
+```c
+MinF(LVar0, LVar1, Float(0.0))
+MaxF(LVar2, LVar3, Float(100.0))
+ClampF(LVar4, Float(0.0), Float(1.0))
+```
+
+The integer commands should use integer literals. The validator rejects obvious uses of `Float(...)` with integer-only commands when a float variant exists. `Clamp` and `ClampF` also reject literal ranges where the min bound is greater than the max bound.
 
 ## 4. Eval and Invoke
 

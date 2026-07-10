@@ -74,6 +74,18 @@ enum {
     EVT_OP_SUBF, ///< Args: container, decrement expression | expression, expression
     EVT_OP_MULF, ///< Args: container, multiply expression | expression, expression, ...
     EVT_OP_DIVF, ///< Args: container, divisor expression | dividend expression, divisor expression
+    EVT_OP_NEG, ///< Args: container | container, expression
+    EVT_OP_NEGF, ///< Args: container | container, expression
+    EVT_OP_ABS, ///< Args: container | container, expression
+    EVT_OP_ABSF, ///< Args: container | container, expression
+    EVT_OP_SIGN, ///< Args: container | container, expression
+    EVT_OP_SIGNF, ///< Args: container | container, expression
+    EVT_OP_MIN, ///< Args: container, expression | expression, expression, ...
+    EVT_OP_MINF, ///< Args: container, expression | expression, expression, ...
+    EVT_OP_MAX, ///< Args: container, expression | expression, expression, ...
+    EVT_OP_MAXF, ///< Args: container, expression | expression, expression, ...
+    EVT_OP_CLAMP, ///< Args: container, min, max | container, expression, min, max
+    EVT_OP_CLAMPF, ///< Args: container, min, max | container, expression, min, max
     EVT_OP_USE_BUF, ///< Args: s32*
     EVT_OP_BUF_READ1, /// Args: container
     EVT_OP_BUF_READ2, /// Args: container, container

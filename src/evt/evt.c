@@ -889,6 +889,268 @@ ApiStatus evt_handle_divideF(Evt* script) {
     return ApiStatus_DONE2;
 }
 
+ApiStatus evt_handle_neg(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+    s32 value;
+
+    if (script->curArgc == 1) {
+        value = evt_get_variable(script, outVar);
+    } else {
+        value = evt_get_variable(script, *args++);
+    }
+
+    evt_set_variable(script, outVar, -value);
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_negF(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+    f32 value;
+
+    if (script->curArgc == 1) {
+        value = evt_get_float_variable(script, outVar);
+    } else {
+        value = evt_get_float_variable(script, *args++);
+    }
+
+    evt_set_float_variable(script, outVar, -value);
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_abs(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+    s32 value;
+
+    if (script->curArgc == 1) {
+        value = evt_get_variable(script, outVar);
+    } else {
+        value = evt_get_variable(script, *args++);
+    }
+
+    if (value < 0) {
+        value = -value;
+    }
+    evt_set_variable(script, outVar, value);
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_absF(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+    f32 value;
+
+    if (script->curArgc == 1) {
+        value = evt_get_float_variable(script, outVar);
+    } else {
+        value = evt_get_float_variable(script, *args++);
+    }
+
+    if (value < 0.0f) {
+        value = -value;
+    }
+    evt_set_float_variable(script, outVar, value);
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_sign(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+    s32 value;
+
+    if (script->curArgc == 1) {
+        value = evt_get_variable(script, outVar);
+    } else {
+        value = evt_get_variable(script, *args++);
+    }
+
+    if (value > 0) {
+        value = 1;
+    } else if (value < 0) {
+        value = -1;
+    }
+    evt_set_variable(script, outVar, value);
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_signF(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+    f32 value;
+
+    if (script->curArgc == 1) {
+        value = evt_get_float_variable(script, outVar);
+    } else {
+        value = evt_get_float_variable(script, *args++);
+    }
+
+    if (value > 0.0f) {
+        value = 1.0f;
+    } else if (value < 0.0f) {
+        value = -1.0f;
+    }
+    evt_set_float_variable(script, outVar, value);
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_min(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+    s32 result;
+    s32 value;
+    s32 i;
+
+    if (script->curArgc == 2) {
+        result = evt_get_variable(script, outVar);
+        i = 1;
+    } else {
+        result = evt_get_variable(script, *args++);
+        i = 2;
+    }
+
+    for (; i < script->curArgc; i++) {
+        value = evt_get_variable(script, *args++);
+        if (value < result) {
+            result = value;
+        }
+    }
+
+    evt_set_variable(script, outVar, result);
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_minF(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+    f32 result;
+    f32 value;
+    s32 i;
+
+    if (script->curArgc == 2) {
+        result = evt_get_float_variable(script, outVar);
+        i = 1;
+    } else {
+        result = evt_get_float_variable(script, *args++);
+        i = 2;
+    }
+
+    for (; i < script->curArgc; i++) {
+        value = evt_get_float_variable(script, *args++);
+        if (value < result) {
+            result = value;
+        }
+    }
+
+    evt_set_float_variable(script, outVar, result);
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_max(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+    s32 result;
+    s32 value;
+    s32 i;
+
+    if (script->curArgc == 2) {
+        result = evt_get_variable(script, outVar);
+        i = 1;
+    } else {
+        result = evt_get_variable(script, *args++);
+        i = 2;
+    }
+
+    for (; i < script->curArgc; i++) {
+        value = evt_get_variable(script, *args++);
+        if (value > result) {
+            result = value;
+        }
+    }
+
+    evt_set_variable(script, outVar, result);
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_maxF(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+    f32 result;
+    f32 value;
+    s32 i;
+
+    if (script->curArgc == 2) {
+        result = evt_get_float_variable(script, outVar);
+        i = 1;
+    } else {
+        result = evt_get_float_variable(script, *args++);
+        i = 2;
+    }
+
+    for (; i < script->curArgc; i++) {
+        value = evt_get_float_variable(script, *args++);
+        if (value > result) {
+            result = value;
+        }
+    }
+
+    evt_set_float_variable(script, outVar, result);
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_clamp(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+    s32 value;
+    s32 min;
+    s32 max;
+
+    if (script->curArgc == 3) {
+        value = evt_get_variable(script, outVar);
+    } else {
+        value = evt_get_variable(script, *args++);
+    }
+
+    min = evt_get_variable(script, *args++);
+    max = evt_get_variable(script, *args++);
+    ASSERT_MSG(min <= max, "Clamp min must be <= max");
+
+    if (value < min) {
+        value = min;
+    } else if (value > max) {
+        value = max;
+    }
+    evt_set_variable(script, outVar, value);
+    return ApiStatus_DONE2;
+}
+
+ApiStatus evt_handle_clampF(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode outVar = *args++;
+    f32 value;
+    f32 min;
+    f32 max;
+
+    if (script->curArgc == 3) {
+        value = evt_get_float_variable(script, outVar);
+    } else {
+        value = evt_get_float_variable(script, *args++);
+    }
+
+    min = evt_get_float_variable(script, *args++);
+    max = evt_get_float_variable(script, *args++);
+    ASSERT_MSG(min <= max, "ClampF min must be <= max");
+
+    if (value < min) {
+        value = min;
+    } else if (value > max) {
+        value = max;
+    }
+    evt_set_float_variable(script, outVar, value);
+    return ApiStatus_DONE2;
+}
+
 ApiStatus evt_handle_set_int_buffer_ptr(Evt* script) {
     Bytecode* args = script->ptrReadPos;
 
@@ -2105,6 +2367,42 @@ s32 evt_execute_next_command(Evt* script) {
                 break;
             case EVT_OP_DIVF:
                 status = evt_handle_divideF(script);
+                break;
+            case EVT_OP_NEG:
+                status = evt_handle_neg(script);
+                break;
+            case EVT_OP_NEGF:
+                status = evt_handle_negF(script);
+                break;
+            case EVT_OP_ABS:
+                status = evt_handle_abs(script);
+                break;
+            case EVT_OP_ABSF:
+                status = evt_handle_absF(script);
+                break;
+            case EVT_OP_SIGN:
+                status = evt_handle_sign(script);
+                break;
+            case EVT_OP_SIGNF:
+                status = evt_handle_signF(script);
+                break;
+            case EVT_OP_MIN:
+                status = evt_handle_min(script);
+                break;
+            case EVT_OP_MINF:
+                status = evt_handle_minF(script);
+                break;
+            case EVT_OP_MAX:
+                status = evt_handle_max(script);
+                break;
+            case EVT_OP_MAXF:
+                status = evt_handle_maxF(script);
+                break;
+            case EVT_OP_CLAMP:
+                status = evt_handle_clamp(script);
+                break;
+            case EVT_OP_CLAMPF:
+                status = evt_handle_clampF(script);
                 break;
             case EVT_OP_USE_BUF:
                 status = evt_handle_set_int_buffer_ptr(script);

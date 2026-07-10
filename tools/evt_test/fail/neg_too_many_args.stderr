@@ -1,0 +1,3 @@
+tools/evt_test/fail/neg_too_many_args.c:
+EVS_NegTooManyArgs
+EVT_OP_NEG has argc 3, expected at most 2

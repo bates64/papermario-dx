@@ -436,7 +436,7 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 /// Similar to CaseOrEq, CaseAndEq has fallthrough. However, if `LVAR != RVAR`, fallthrough does not apply.
 #define CaseAndEq(RVAR)                     EVT_CMD(EVT_OP_CASE_AND_EQ, RVAR),
 
-/// Marks the start of a switch case that executes only if the `RVAR` flag is set on `LVAR`, i.e. `(LVAR & RVAR) != 1`.
+/// Marks the start of a switch case that executes only if the `RVAR` flag is set on `LVAR`, i.e. `(LVAR & RVAR) != 0`.
 /// It also marks the end of any previous case.
 #define CaseFlag(RVAR)                      EVT_CMD(EVT_OP_CASE_FLAG, RVAR),
 
@@ -500,6 +500,54 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 /// When used with three args, divides one value by another and stores the result in the variable (A = B / C).
 #define DivF(VAR, FLOAT_VALUE, MORE...)     EVT_CMD(EVT_OP_DIVF, VAR, FLOAT_VALUE, ##MORE),
 
+/// When used with one arg, negates a variable (A = -A).
+/// When used with two args, negates a value and stores the result in the variable (A = -B).
+#define Neg(VAR, INT_VALUE...)              EVT_CMD(EVT_OP_NEG, VAR, ##INT_VALUE),
+
+/// When used with one arg, negates a variable (A = -A).
+/// When used with two args, negates a value and stores the result in the variable (A = -B).
+#define NegF(VAR, FLOAT_VALUE...)           EVT_CMD(EVT_OP_NEGF, VAR, ##FLOAT_VALUE),
+
+/// When used with one arg, stores the absolute value of a variable (A = abs(A)).
+/// When used with two args, stores the absolute value of another value (A = abs(B)).
+#define Abs(VAR, INT_VALUE...)              EVT_CMD(EVT_OP_ABS, VAR, ##INT_VALUE),
+
+/// When used with one arg, stores the absolute value of a variable (A = abs(A)).
+/// When used with two args, stores the absolute value of another value (A = abs(B)).
+#define AbsF(VAR, FLOAT_VALUE...)           EVT_CMD(EVT_OP_ABSF, VAR, ##FLOAT_VALUE),
+
+/// When used with one arg, stores the sign of a variable as -1, 0, or 1 (A = sign(A)).
+/// When used with two args, stores the sign of another value as -1, 0, or 1 (A = sign(B)).
+#define Sign(VAR, INT_VALUE...)             EVT_CMD(EVT_OP_SIGN, VAR, ##INT_VALUE),
+
+/// When used with one arg, stores the sign of a variable as -1.0, 0.0, or 1.0 (A = sign(A)).
+/// When used with two args, stores the sign of another value as -1.0, 0.0, or 1.0 (A = sign(B)).
+#define SignF(VAR, FLOAT_VALUE...)          EVT_CMD(EVT_OP_SIGNF, VAR, ##FLOAT_VALUE),
+
+/// When used with two args, stores the lower of a variable and another value (A = min(A, B)).
+/// When used with more args, stores the lowest value in the variable (A = min(B, C, ...)).
+#define Min(VAR, INT_VALUE, MORE...)        EVT_CMD(EVT_OP_MIN, VAR, INT_VALUE, ##MORE),
+
+/// When used with two args, stores the lower of a variable and another value (A = min(A, B)).
+/// When used with more args, stores the lowest value in the variable (A = min(B, C, ...)).
+#define MinF(VAR, FLOAT_VALUE, MORE...)     EVT_CMD(EVT_OP_MINF, VAR, FLOAT_VALUE, ##MORE),
+
+/// When used with two args, stores the higher of a variable and another value (A = max(A, B)).
+/// When used with more args, stores the highest value in the variable (A = max(B, C, ...)).
+#define Max(VAR, INT_VALUE, MORE...)        EVT_CMD(EVT_OP_MAX, VAR, INT_VALUE, ##MORE),
+
+/// When used with two args, stores the higher of a variable and another value (A = max(A, B)).
+/// When used with more args, stores the highest value in the variable (A = max(B, C, ...)).
+#define MaxF(VAR, FLOAT_VALUE, MORE...)     EVT_CMD(EVT_OP_MAXF, VAR, FLOAT_VALUE, ##MORE),
+
+/// When used with three args, clamps a variable between a min and max (A = clamp(A, MIN, MAX)).
+/// When used with four args, clamps a value between a min and max and stores the result (A = clamp(B, MIN, MAX)).
+#define Clamp(VAR, MIN_OR_VALUE, MAX_OR_MIN, MORE...) EVT_CMD(EVT_OP_CLAMP, VAR, MIN_OR_VALUE, MAX_OR_MIN, ##MORE),
+
+/// When used with three args, clamps a variable between a min and max (A = clamp(A, MIN, MAX)).
+/// When used with four args, clamps a value between a min and max and stores the result (A = clamp(B, MIN, MAX)).
+#define ClampF(VAR, MIN_OR_VALUE, MAX_OR_MIN, MORE...) EVT_CMD(EVT_OP_CLAMPF, VAR, MIN_OR_VALUE, MAX_OR_MIN, ##MORE),
+
 /// Loads a s32 pointer for use with subsequent EVT_BUF_READ commands.
 #define UseBuf(INT_PTR)                     EVT_CMD(EVT_OP_USE_BUF, (Bytecode) INT_PTR),
 
@@ -561,8 +609,8 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 
 /// Launches a new thread.
 /// The following values are copied from the current thread to the new thread:
-/// - LFs
-/// - LWs
+/// - LocalFlags
+/// - LocalVars
 /// - Array pointer
 /// - Flag array pointer
 /// - Priority
@@ -583,8 +631,8 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 /// Blocks for at least one frame unless the child thread is made to have a higher priority than the parent.
 ///
 /// The following values are inherited and then copied back to the parent thread upon completion:
-/// - LFs
-/// - LWs
+/// - LocalFlags
+/// - LocalVars
 /// - Array pointer
 /// - Flag array pointer
 /// - Priority
