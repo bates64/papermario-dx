@@ -797,14 +797,14 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
     {
         sfx_play_sound_at_position(SOUND_HIT_SHOCK, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
         apply_shock_effect(attacker);
-        dispatch_damage_event_actor_1(attacker, 1, EVENT_SHOCK_HIT);
+        dispatch_contact_damage_event_actor(attacker, 1, EVENT_SHOCK_HIT);
         return HIT_RESULT_BACKFIRE;
     }
 
     return hitResult;
 }
 
-s32 dispatch_damage_event_actor(Actor* actor, s32 damageAmount, s32 originalEvent, s32 stopMotion) {
+s32 dispatch_damage_event_actor(Actor* actor, s32 damageAmount, s32 originalEvent, b32 isContactDamage) {
     BattleStatus* battleStatus = &gBattleStatus;
     ActorState* state = &actor->state;
     s32 dispatchEvent = originalEvent;
@@ -847,7 +847,7 @@ s32 dispatch_damage_event_actor(Actor* actor, s32 damageAmount, s32 originalEven
         }
     }
 
-    if (!stopMotion) {
+    if (!isContactDamage) {
         s32 savedTargetActorID = actor->targetActorID;
 
         if (create_single_actor_target_list(actor, actor) != 0) {
@@ -869,11 +869,11 @@ s32 dispatch_damage_event_actor(Actor* actor, s32 damageAmount, s32 originalEven
     return 0;
 }
 
-s32 dispatch_damage_event_actor_0(Actor* actor, s32 damageAmount, s32 event) {
+s32 dispatch_generic_damage_event_actor(Actor* actor, s32 damageAmount, s32 event) {
     return dispatch_damage_event_actor(actor, damageAmount, event, false);
 }
 
-s32 dispatch_damage_event_actor_1(Actor* actor, s32 damageAmount, s32 event) {
+s32 dispatch_contact_damage_event_actor(Actor* actor, s32 damageAmount, s32 event) {
     return dispatch_damage_event_actor(actor, damageAmount, event, true);
 }
 
@@ -2865,11 +2865,12 @@ API_CALLABLE(EnemyDamageTarget) {
     }
 
     evt_set_variable(script, outVar, hitResult);
-    if (!(does_script_exist_by_ref(script))) {
+
+    if (does_script_exist_by_ref(script)) {
+        return ApiStatus_DONE2;
+    } else {
         return ApiStatus_FINISH;
     }
-
-    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(EnemyFollowupAfflictTarget) {
@@ -2904,10 +2905,12 @@ API_CALLABLE(EnemyFollowupAfflictTarget) {
     }
 
     evt_set_variable(script, outVar, hitResults);
-    if (does_script_exist_by_ref(script) == nullptr) {
+
+    if (does_script_exist_by_ref(script)) {
+        return ApiStatus_DONE2;
+    } else {
         return ApiStatus_FINISH;
     }
-    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(EnemyTestTarget) {
@@ -2996,7 +2999,7 @@ API_CALLABLE(DispatchDamageEvent) {
     damageAmount = evt_get_variable(script, *args++);
     eventID = evt_get_variable(script, *args++);
 
-    if (dispatch_damage_event_actor_0(actor, damageAmount, eventID) < 0) {
+    if (dispatch_generic_damage_event_actor(actor, damageAmount, eventID) < 0) {
         return ApiStatus_BLOCK;
     }
 

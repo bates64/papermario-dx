@@ -1,7 +1,7 @@
 #include "states.h"
 #include "script_api/battle.h"
 
-b32 dispatch_damage_tick_event_player(s32 damageAmount, s32 event);
+b32 dispatch_generic_damage_event_player(s32 damageAmount, s32 event);
 
 enum {
     // BTL_SUBSTATE_INIT                  = 0,
@@ -155,7 +155,7 @@ void update_status_damage(void) {
     if (gBattleSubState == BTL_SUBSTATE_TRY_STATUS_DAMAGE) {
         if (player->debuff == STATUS_KEY_POISON && player->stoneStatus == 0) {
             gBattleStatus.flags1 |= BS_FLAGS1_TRIGGER_EVENTS;
-            dispatch_damage_tick_event_player(1, EVENT_HIT);
+            dispatch_generic_damage_event_player(1, EVENT_HIT);
         }
 
         // clear rush flags to initialize

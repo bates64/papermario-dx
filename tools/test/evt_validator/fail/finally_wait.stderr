@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/finally_wait.c:
+EVS_FinallyWait
+Wait is not allowed inside Finally

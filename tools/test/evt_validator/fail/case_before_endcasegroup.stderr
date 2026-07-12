@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/case_before_endcasegroup.c:
+EVS_CaseBeforeEndCaseGroup
+EVT_OP_CASE_EQ reached before EndCaseGroup

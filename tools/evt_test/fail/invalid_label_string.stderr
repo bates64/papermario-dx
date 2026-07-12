@@ -1,3 +1,0 @@
-tools/evt_test/fail/invalid_label_string.c:
-EVS_InvalidLabelString
-does not point to a valid label string

@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/add_without_value_raw.c:
+EVS_AddWithoutValue
+EVT_OP_ADD has argc 1, expected at least 2

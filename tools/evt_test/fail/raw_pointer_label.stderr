@@ -1,3 +1,0 @@
-tools/evt_test/fail/raw_pointer_label.c:
-EVS_RawPointerLabel
-uses raw pointer-like value

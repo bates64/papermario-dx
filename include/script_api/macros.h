@@ -4,6 +4,15 @@
 #include "evt.h"
 #include <stdarg.h>
 
+#ifdef __cplusplus
+#include <type_traits>
+
+template <typename Actual, typename Expected>
+struct EvtFuncSignatureMatches {
+    static_assert(std::is_same_v<Actual, Expected>, "EVT_BAD_SIGNATURE");
+};
+#endif
+
 #ifdef _LANGUAGE_C_PLUS_PLUS
 extern "C" {
 #endif
@@ -177,23 +186,26 @@ typedef void (*EvtInvokeF4Func)(f32, f32, f32, f32);
 typedef void (*EvtInvokeF5Func)(f32, f32, f32, f32, f32);
 typedef void (*EvtInvokeF6Func)(f32, f32, f32, f32, f32, f32);
 
-typedef b32 (*EvtIfEval0Func)(void);
-typedef b32 (*EvtIfEval1Func)(s32);
-typedef b32 (*EvtIfEval2Func)(s32, s32);
-typedef b32 (*EvtIfEval3Func)(s32, s32, s32);
-typedef b32 (*EvtIfEval4Func)(s32, s32, s32, s32);
-typedef b32 (*EvtIfEval5Func)(s32, s32, s32, s32, s32);
-typedef b32 (*EvtIfEval6Func)(s32, s32, s32, s32, s32, s32);
+typedef b32 (*EvtPredicate0Func)(void);
+typedef b32 (*EvtPredicate1Func)(s32);
+typedef b32 (*EvtPredicate2Func)(s32, s32);
+typedef b32 (*EvtPredicate3Func)(s32, s32, s32);
+typedef b32 (*EvtPredicate4Func)(s32, s32, s32, s32);
+typedef b32 (*EvtPredicate5Func)(s32, s32, s32, s32, s32);
+typedef b32 (*EvtPredicate6Func)(s32, s32, s32, s32, s32, s32);
 
-typedef b32 (*EvtIfEvalF0Func)(void);
-typedef b32 (*EvtIfEvalF1Func)(f32);
-typedef b32 (*EvtIfEvalF2Func)(f32, f32);
-typedef b32 (*EvtIfEvalF3Func)(f32, f32, f32);
-typedef b32 (*EvtIfEvalF4Func)(f32, f32, f32, f32);
-typedef b32 (*EvtIfEvalF5Func)(f32, f32, f32, f32, f32);
-typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
+typedef b32 (*EvtPredicateF0Func)(void);
+typedef b32 (*EvtPredicateF1Func)(f32);
+typedef b32 (*EvtPredicateF2Func)(f32, f32);
+typedef b32 (*EvtPredicateF3Func)(f32, f32, f32);
+typedef b32 (*EvtPredicateF4Func)(f32, f32, f32, f32);
+typedef b32 (*EvtPredicateF5Func)(f32, f32, f32, f32, f32);
+typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 
-#ifdef __GNUC__
+#ifdef __cplusplus
+#define EVT_CHECK_FUNC_SIGNATURE(FUNC, TYPE) \
+    ((Bytecode)(0 * sizeof(EvtFuncSignatureMatches<decltype(&(FUNC)), TYPE>) + (Bytecode)(FUNC)))
+#elif defined(__GNUC__)
 #define EVT_CHECK_FUNC_SIGNATURE(FUNC, TYPE) \
     (0 * sizeof(struct { \
         _Static_assert( \
@@ -295,7 +307,9 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 
 /// Marks the start of a synchronous cleanup tail for the script.
 /// When present, Return, End, and external kills run the commands after Finally before the script is cleaned up.
-/// The cleanup tail is terminated by the script's normal End/EndThread/EndChildThread command and must not block.
+/// Owned children are cleaned up first. The tail ends at the normal End/EndThread/EndChildThread and must not block
+/// or start an owned child. Exec and ExecGetID may start detached scripts. KillScript is allowed and is idempotent
+/// for scripts which are already terminating.
 #define Finally                             EVT_CMD(EVT_OP_FINALLY),
 
 /// Jumps to a given instruction pointer and begins execution from there.
@@ -575,9 +589,9 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 #define BufRead(VAR, MORE...)               EVT_CMD(EVT_OP_BUF_READ, VAR, ##MORE),
 
 /// Gets the s32 at the given offset of the buffer and stores it in the given variable, without consuming it.
-#define BufPeek(OFFSET, VAR)                EVT_CMD(EVT_OP_BUF_PEEK, OFFSET, VAR),
+#define BufPeek(VAR, OFFSET)                EVT_CMD(EVT_OP_BUF_PEEK, VAR, OFFSET),
 
-/// Loads a f32 pointer for use with subsequent FBufRead commands.
+/// Loads an s32 pointer of fixed-point `Float(...)` values for use with subsequent FBufRead commands.
 /// Beware that the int buffer and the float buffer are not distinct.
 #define UseFBuf(FLOAT_PTR)                  EVT_CMD(EVT_OP_USE_FBUF, (Bytecode) FLOAT_PTR),
 
@@ -585,7 +599,7 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 #define FBufRead(VAR, MORE...)              EVT_CMD(EVT_OP_FBUF_READ, VAR, ##MORE),
 
 /// Gets the f32 at the given offset of the buffer and stores it in the given variable, without consuming it.
-#define FBufPeek(OFFSET, VAR)               EVT_CMD(EVT_OP_FBUF_PEEK, OFFSET, VAR),
+#define FBufPeek(VAR, OFFSET)               EVT_CMD(EVT_OP_FBUF_PEEK, VAR, OFFSET),
 
 /// Loads an s32 array pointer into the current thread for use with `ArrayVar(INDEX)`.
 #define UseArray(INT_PTR)                   EVT_CMD(EVT_OP_USE_ARRAY, (Bytecode) INT_PTR),
@@ -823,49 +837,49 @@ typedef b32 (*EvtIfEvalF6Func)(f32, f32, f32, f32, f32, f32);
 ///
 /// The function must return s32 and take exactly the supplied number of s32 arguments.
 #define IfEval(ARGS...)                     VFUNC(IfEval, ARGS)
-#define IfEval1(FUNC)                       EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEval0Func)),
-#define IfEval2(FUNC, A)                    EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEval1Func), A),
-#define IfEval3(FUNC, A, B)                 EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEval2Func), A, B),
-#define IfEval4(FUNC, A, B, C)              EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEval3Func), A, B, C),
-#define IfEval5(FUNC, A, B, C, D)           EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEval4Func), A, B, C, D),
-#define IfEval6(FUNC, A, B, C, D, E)        EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEval5Func), A, B, C, D, E),
-#define IfEval7(FUNC, A, B, C, D, E, F)     EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEval6Func), A, B, C, D, E, F),
+#define IfEval1(FUNC)                       EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate0Func)),
+#define IfEval2(FUNC, A)                    EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate1Func), A),
+#define IfEval3(FUNC, A, B)                 EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate2Func), A, B),
+#define IfEval4(FUNC, A, B, C)              EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate3Func), A, B, C),
+#define IfEval5(FUNC, A, B, C, D)           EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate4Func), A, B, C, D),
+#define IfEval6(FUNC, A, B, C, D, E)        EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate5Func), A, B, C, D, E),
+#define IfEval7(FUNC, A, B, C, D, E, F)     EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate6Func), A, B, C, D, E, F),
 
 /// Marks the beginning of an if statement that only executes if a C function with integer arguments returns zero.
 ///
 /// The function must return s32 and take exactly the supplied number of s32 arguments.
 #define IfNotEval(ARGS...)                  VFUNC(IfNotEval, ARGS)
-#define IfNotEval1(FUNC)                    EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEval0Func)),
-#define IfNotEval2(FUNC, A)                 EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEval1Func), A),
-#define IfNotEval3(FUNC, A, B)              EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEval2Func), A, B),
-#define IfNotEval4(FUNC, A, B, C)           EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEval3Func), A, B, C),
-#define IfNotEval5(FUNC, A, B, C, D)        EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEval4Func), A, B, C, D),
-#define IfNotEval6(FUNC, A, B, C, D, E)     EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEval5Func), A, B, C, D, E),
-#define IfNotEval7(FUNC, A, B, C, D, E, F)  EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEval6Func), A, B, C, D, E, F),
+#define IfNotEval1(FUNC)                    EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate0Func)),
+#define IfNotEval2(FUNC, A)                 EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate1Func), A),
+#define IfNotEval3(FUNC, A, B)              EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate2Func), A, B),
+#define IfNotEval4(FUNC, A, B, C)           EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate3Func), A, B, C),
+#define IfNotEval5(FUNC, A, B, C, D)        EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate4Func), A, B, C, D),
+#define IfNotEval6(FUNC, A, B, C, D, E)     EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate5Func), A, B, C, D, E),
+#define IfNotEval7(FUNC, A, B, C, D, E, F)  EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate6Func), A, B, C, D, E, F),
 
 /// Marks the beginning of an if statement that only executes if a C function with float arguments returns nonzero.
 ///
 /// The function must return s32 and take exactly the supplied number of f32 arguments.
 #define IfEvalF(ARGS...)                    VFUNC(IfEvalF, ARGS)
-#define IfEvalF1(FUNC)                      EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEvalF0Func)),
-#define IfEvalF2(FUNC, A)                   EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEvalF1Func), A),
-#define IfEvalF3(FUNC, A, B)                EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEvalF2Func), A, B),
-#define IfEvalF4(FUNC, A, B, C)             EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEvalF3Func), A, B, C),
-#define IfEvalF5(FUNC, A, B, C, D)          EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEvalF4Func), A, B, C, D),
-#define IfEvalF6(FUNC, A, B, C, D, E)       EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEvalF5Func), A, B, C, D, E),
-#define IfEvalF7(FUNC, A, B, C, D, E, F)    EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEvalF6Func), A, B, C, D, E, F),
+#define IfEvalF1(FUNC)                      EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF0Func)),
+#define IfEvalF2(FUNC, A)                   EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF1Func), A),
+#define IfEvalF3(FUNC, A, B)                EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF2Func), A, B),
+#define IfEvalF4(FUNC, A, B, C)             EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF3Func), A, B, C),
+#define IfEvalF5(FUNC, A, B, C, D)          EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF4Func), A, B, C, D),
+#define IfEvalF6(FUNC, A, B, C, D, E)       EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF5Func), A, B, C, D, E),
+#define IfEvalF7(FUNC, A, B, C, D, E, F)    EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF6Func), A, B, C, D, E, F),
 
 /// Marks the beginning of an if statement that only executes if a C function with float arguments returns zero.
 ///
 /// The function must return s32 and take exactly the supplied number of f32 arguments.
 #define IfNotEvalF(ARGS...)                 VFUNC(IfNotEvalF, ARGS)
-#define IfNotEvalF1(FUNC)                   EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEvalF0Func)),
-#define IfNotEvalF2(FUNC, A)                EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEvalF1Func), A),
-#define IfNotEvalF3(FUNC, A, B)             EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEvalF2Func), A, B),
-#define IfNotEvalF4(FUNC, A, B, C)          EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEvalF3Func), A, B, C),
-#define IfNotEvalF5(FUNC, A, B, C, D)       EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEvalF4Func), A, B, C, D),
-#define IfNotEvalF6(FUNC, A, B, C, D, E)    EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEvalF5Func), A, B, C, D, E),
-#define IfNotEvalF7(FUNC, A, B, C, D, E, F) EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtIfEvalF6Func), A, B, C, D, E, F),
+#define IfNotEvalF1(FUNC)                   EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF0Func)),
+#define IfNotEvalF2(FUNC, A)                EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF1Func), A),
+#define IfNotEvalF3(FUNC, A, B)             EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF2Func), A, B),
+#define IfNotEvalF4(FUNC, A, B, C)          EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF3Func), A, B, C),
+#define IfNotEvalF5(FUNC, A, B, C, D)       EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF4Func), A, B, C, D),
+#define IfNotEvalF6(FUNC, A, B, C, D, E)    EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF5Func), A, B, C, D, E),
+#define IfNotEvalF7(FUNC, A, B, C, D, E, F) EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF6Func), A, B, C, D, E, F),
 
 /// Prints variable name and value
 #define DebugPrintVar(VAR)                  EVT_CMD(EVT_OP_DEBUG_PRINT_VAR, VAR),

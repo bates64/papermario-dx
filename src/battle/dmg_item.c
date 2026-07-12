@@ -595,11 +595,12 @@ API_CALLABLE(ItemDamageEnemy) {
     }
 
     evt_set_variable(script, hitResultVarOut, hitResult);
-    if (!does_script_exist_by_ref(script)) {
+
+    if (does_script_exist_by_ref(script)) {
+        return ApiStatus_DONE2;
+    } else {
         return ApiStatus_FINISH;
     }
-
-    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(ItemSpookEnemy) {
@@ -665,11 +666,12 @@ API_CALLABLE(ItemSpookEnemy) {
     }
 
     evt_set_variable(script, hitResultVarOut, hitResult);
-    if (!does_script_exist_by_ref(script)) {
+
+    if (does_script_exist_by_ref(script)) {
+        return ApiStatus_DONE2;
+    } else {
         return ApiStatus_FINISH;
     }
-
-    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(ItemAfflictEnemy) {
@@ -734,11 +736,12 @@ API_CALLABLE(ItemAfflictEnemy) {
     }
 
     evt_set_variable(script, hitResultVarOut, hitResult);
-    if (!does_script_exist_by_ref(script)) {
+
+    if (does_script_exist_by_ref(script)) {
+        return ApiStatus_DONE2;
+    } else {
         return ApiStatus_FINISH;
     }
-
-    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(ItemCheckHit) {

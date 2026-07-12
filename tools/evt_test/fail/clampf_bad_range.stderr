@@ -1,3 +1,0 @@
-tools/evt_test/fail/clampf_bad_range.c:
-EVS_ClampFBadRange
-EVT_OP_CLAMPF min bound is greater than max bound

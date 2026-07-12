@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/sub_too_many_args.c:
+EVS_SubTooManyArgs
+EVT_OP_SUB has argc 4, expected at most 3

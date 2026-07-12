@@ -183,7 +183,7 @@ s32 entity_block_handle_collision(Entity* entity);
 void entity_BlueSwitch_init(Entity* entity);
 void entity_HugeBlueSwitch_init(Entity* entity);
 
-s32 dispatch_damage_event_actor_0(Actor* actor, s32 damageAmount, s32 event);
+s32 dispatch_generic_damage_event_actor(Actor* actor, s32 damageAmount, s32 event);
 
 // Text
 MessagePrintState* msg_get_printer_for_msg(s32 msgID, s32* a1);
@@ -566,9 +566,9 @@ void draw_status_ui(void);
 void open_status_bar_slowly(void);
 
 void suspend_all_group(s32 groupFlags);
-void force_kill_script(Evt* instanceToKill);
 void kill_script(Evt* instanceToKill);
-b32 evt_start_finally(Evt* script);
+void evt_terminate_script(Evt* script);
+s32 evt_finish_execution(Evt* script, s32 result);
 void exec_entity_commandlist(Entity* entity);
 
 void show_start_recovery_shimmer(f32 x, f32 y, f32 z, s32 arg3);
@@ -792,7 +792,7 @@ void btl_cam_disable_clamp_x(void);
 void initialize_battle(void);
 
 void dispatch_event_actor(Actor*, s32);
-s32 dispatch_damage_event_actor_1(Actor* actor, s32 damageAmount, s32 event);
+s32 dispatch_contact_damage_event_actor(Actor* actor, s32 damageAmount, s32 event);
 
 void reset_battle_status(void);
 void btl_show_variable_battle_message(s32, s32, s32);
@@ -863,7 +863,7 @@ void set_message_int_var(s32 value, s32 index);
 void open_status_bar_quickly(void);
 void show_immune_bonk(f32 x, f32 y, f32 z, s32, s32, s32);
 void show_primary_damage_popup(f32 x, f32 y, f32 z, s32 attack, s32 a);
-s32 dispatch_damage_event_partner(s32 damageAmount, s32 event, s32 stopMotion);
+s32 dispatch_damage_event_partner(s32 damageAmount, s32 event, b32 isContactDamage);
 void disable_actor_blur(Actor*);
 void reset_actor_blur(Actor*);
 void enable_actor_blur(Actor*);

@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/finally_inside_if.c:
+EVS_FinallyInsideIf
+Finally must be top-level

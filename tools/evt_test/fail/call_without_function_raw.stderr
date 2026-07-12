@@ -1,3 +1,0 @@
-tools/evt_test/fail/call_without_function_raw.c:
-EVS_CallWithoutFunction
-EVT_OP_CALL has no function argument

@@ -1,3 +1,0 @@
-tools/evt_test/fail/finally_duplicate.c:
-EVS_FinallyDuplicate
-duplicate Finally

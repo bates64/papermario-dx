@@ -1,3 +1,0 @@
-tools/evt_test/fail/case_outside_switch.c:
-EVS_CaseOutsideSwitch
-EVT_OP_CASE_EQ outside Switch

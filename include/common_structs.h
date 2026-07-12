@@ -429,55 +429,57 @@ typedef struct Evt {
     /* 0x008 */ Bytecode* ptrNextLine;
     /* 0x00C */ Bytecode* ptrReadPos;
     /* 0x010 */ Bytecode* labelValuePtrs[EVT_MAX_NUM_LABELS]; /// addresses of Label values in this thread scope
-    /* 0x070 */ void* userData; /// any heap user data, will be automatically free'd in kill_script()
-    /* 0x074 */ struct Evt* blockingParent; /// child's link to parent for a child created via ExecWait
-    /* 0x078 */ struct Evt* blockingChild; /// parent's link to child created via ExecWait
-    /* 0x07C */ struct Evt* threadParent; /// ChildThread's link to parent
-    /* 0x080 */ union {
+    /* 0x050 */ void* userData; /// any heap user data, will be automatically free'd in kill_script()
+    /* 0x054 */ struct Evt* blockingParent; /// child's link to parent for a child created via ExecWait
+    /* 0x058 */ struct Evt* blockingChild; /// parent's link to child created via ExecWait
+    /* 0x05C */ struct Evt* threadParent; /// ChildThread's link to parent
+    /* 0x060 */ union {
     /*       */     s32 functionTemp[4];
     /*       */     f32 functionTempF[4];
     /*       */     void* functionTempPtr[4];
     /*       */ };
-    /* 0x090 */ ApiFunc callFunction;
-    /* 0x094 */ union {
+    /* 0x070 */ ApiFunc callFunction;
+    /* 0x074 */ union {
     /*       */     s32 varTable[16];
     /*       */     f32 varTableF[16];
     /*       */     void* varTablePtr[16];
     /*       */ };
-    /* 0x0D4 */ s32 varFlags[3];
-    /* 0x0E0 */ Bytecode* argVars;
-    /* 0x0E4 */ s32 argCount;
-    /* 0x0E8 */ s32 loopStartTable[EVT_MAX_LOOP_DEPTH];
-    /* 0x108 */ s32 loopCounterTable[EVT_MAX_LOOP_DEPTH];
-    /* 0x128 */ s8 loopTypeTable[EVT_MAX_LOOP_DEPTH];
-    /* 0x130 */ s8 switchBlockState[EVT_MAX_SWITCH_DEPTH];
-    /* 0x138 */ s32 switchBlockValue[EVT_MAX_SWITCH_DEPTH];
-    /* 0x158 */ EvtLerpState* lerpState;
-    /* 0x15C */ s32* buffer;
-    /* 0x160 */ s32* array;
-    /* 0x164 */ s32* flagArray;
-    /* 0x168 */ s32 id;
-    /* 0x16C */ union {
+    /* 0x0B4 */ s32 varFlags[3];
+    /* 0x0C0 */ Bytecode* argVars;
+    /* 0x0C4 */ s32 argCount;
+    /* 0x0C8 */ s32 loopStartTable[EVT_MAX_LOOP_DEPTH];
+    /* 0x0E8 */ s32 loopCounterTable[EVT_MAX_LOOP_DEPTH];
+    /* 0x108 */ s8 loopTypeTable[EVT_MAX_LOOP_DEPTH];
+    /* 0x110 */ s8 switchBlockState[EVT_MAX_SWITCH_DEPTH];
+    /* 0x118 */ s32 switchBlockValue[EVT_MAX_SWITCH_DEPTH];
+    /* 0x138 */ EvtLerpState lerpState;
+    /* 0x150 */ s32* buffer;
+    /* 0x154 */ s32* array;
+    /* 0x158 */ s32* flagArray;
+    /* 0x15C */ s32 id;
+    /* 0x160 */ union {
     /*       */     s32 actorID;
     /*       */     struct Enemy* enemy; ///< For overworld scripts owned by an Enemy AI
     /*       */     struct Actor* actor; ///< For battle scripts
-    /* 0x16C */ } owner1;                ///< Initially -1
-    /* 0x170 */ union {
+    /* 0x160 */ } owner1;                ///< Initially -1
+    /* 0x164 */ union {
     /*       */     s32 npcID;
     /*       */     struct Npc* npc;            ///< For overworld scripts owned by an Npc
     /*       */     struct Trigger* trigger;    ///< For overworld scripts bound to a Trigger
-    /* 0x170 */ } owner2;                       ///< Initially -1
-    /* 0x174 */ f32 timeScale;
-    /* 0x178 */ f32 frameCounter;
-    /* 0x17C */ Bytecode* ptrFirstLine;
-    /* 0x180 */ Bytecode* ptrCurLine;
-    /* 0x184 */ Bytecode* ptrFinally;
-    /* 0x188 */ u16 curLine;
-    /* 0x18A */ b8 debugPaused;
-    /* 0x18B */ s8 debugStep;
-    /* 0x18C */ b8 finalizing;
-    /* 0x18D */ b8 finallyDone;
-} Evt; // size = 0x190
+    /* 0x164 */ } owner2;                       ///< Initially -1
+    /* 0x168 */ f32 timeScale;
+    /* 0x16C */ f32 frameCounter;
+    /* 0x170 */ Bytecode* ptrFirstLine;
+    /* 0x174 */ Bytecode* ptrCurLine;
+    /* 0x178 */ Bytecode* ptrFinally;
+    /* 0x17C */ u16 curLine;
+    /* 0x17E */ b8 debugPaused;
+    /* 0x17F */ s8 debugStep;
+    /* 0x180 */ u8 terminationState; /// Current EvtTerminationState.
+    /* 0x181 */ b8 executingCommand; /// True while an interpreter call is using this Evt.
+    /* 0x182 */ b8 traversingChildren; /// Prevents child destruction from re-entering the owner's traversal.
+    /* 0x183 */ b8 lerpActive; /// True while lerpState belongs to an active Lerp block.
+} Evt; // size = 0x184
 
 typedef Evt* ScriptList[MAX_SCRIPTS];
 

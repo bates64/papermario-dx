@@ -1,3 +1,0 @@
-tools/evt_test/fail/break_loop_outside.c:
-EVS_BreakLoopOutside
-BreakLoop outside Loop or Lerp

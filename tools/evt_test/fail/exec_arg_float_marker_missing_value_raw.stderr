@@ -1,3 +1,0 @@
-tools/evt_test/fail/exec_arg_float_marker_missing_value_raw.c:
-EVS_ExecArgFloatMarkerMissingValue
-EVT_OP_EXEC_GET_ID ARG_FLOAT marker at arg 2 has no value

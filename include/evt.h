@@ -88,10 +88,10 @@ enum {
     EVT_OP_CLAMPF, ///< Args: container, min, max | container, expression, min, max
     EVT_OP_USE_BUF, ///< Args: s32*
     EVT_OP_BUF_READ, ///< Args: container, ...
-    EVT_OP_BUF_PEEK, ///< Args: index, container
-    EVT_OP_USE_FBUF, ///< Identical to USE_BUFFER. Args: f32*
+    EVT_OP_BUF_PEEK, ///< Args: container, index
+    EVT_OP_USE_FBUF, ///< Identical to USE_BUFFER. Args: fixed-point s32*
     EVT_OP_FBUF_READ, ///< Args: container, ...
-    EVT_OP_FBUF_PEEK, ///< Args: index, container
+    EVT_OP_FBUF_PEEK, ///< Args: container, index
     EVT_OP_USE_ARRAY, ///< Args: *s32
     EVT_OP_USE_FLAGS, ///< Args: *s32
     EVT_OP_MALLOC_ARRAY, ///< Allocates a new array. Args: length, s32*
@@ -151,23 +151,35 @@ extern struct Evt* EvtCurrentScript;
 #define EVT_FINISH   255 /* Return from script */
 
 // EvtScript structural limitations
-#define EVT_MAX_NUM_LABELS      24
+#define EVT_MAX_NUM_LABELS      16
 #define EVT_MAX_LABEL_NAME_LEN  64
 #define EVT_MAX_LOOP_DEPTH      8
 #define EVT_MAX_SWITCH_DEPTH    8
 
-/* Return type of script API functions */
+/// Return type of script API functions
 typedef s32 ApiStatus;
-#define ApiStatus_BLOCK  0   /* Call again next frame */
-#define ApiStatus_DONE1  1   /* Unconditional. Probably only exists to return a bool from functions */
-#define ApiStatus_DONE2  2   /* Conditional on Evt->disableScripts */
-#define ApiStatus_REPEAT 3   /* Call again immediately. Used internally during fetch operation. */
-#define ApiStatus_FINISH 255 /* Corresponds to EVT_FINISH */
+
+#define ApiStatus_BLOCK  0   /// Command is not done; call it again on the next scheduled update.
+#define ApiStatus_DONE1  1   /// Command completed; yield to the scheduler before executing the next command.
+#define ApiStatus_DONE2  2   /// Command completed; advance to next command and continue executing immediately.
+#define ApiStatus_REPEAT 3   /// Redispatch immediately; used internally when fetching a command.
+#define ApiStatus_FINISH 255 /// Stop executing without automatically advancing to the next command.
+
+// Descriptive aliases for the legacy DONE1 and DONE2 names.
+#define ApiStatus_YIELD  ApiStatus_DONE1
+#define ApiStatus_NEXT   ApiStatus_DONE2 // or ApiStatus_CONTINUE ?
 
 enum EventCommandResults {
     EVT_CMD_RESULT_YIELD        = -1,
     EVT_CMD_RESULT_CONTINUE     = 0,
     EVT_CMD_RESULT_ERROR        = 1,
+};
+
+enum EvtTerminationState {
+    EVT_TERMINATION_NONE                = 0, /// Script is running normally.
+    EVT_TERMINATION_AWAITING_CHILDREN   = 1, /// Waiting for owned descendants to finish before cleanup.
+    EVT_TERMINATION_FINALIZING          = 2, /// The Finally tail is executing.
+    EVT_TERMINATION_DESTROY_PENDING     = 3, /// Ready to destroy after the active interpreter call returns.
 };
 
 // EventGroupFlags determine when scripts are paused and resumed.

@@ -139,7 +139,7 @@ void btl_state_update_transfer_turn(void) {
             }
             if (actor->debuff == STATUS_KEY_POISON) {
                 gBattleStatus.flags1 |= BS_FLAGS1_TRIGGER_EVENTS;
-                dispatch_damage_event_actor_0(actor, 1, EVENT_HIT);
+                dispatch_generic_damage_event_actor(actor, 1, EVENT_HIT);
                 BattleStatusUpdateDelay = 20;
             }
         }

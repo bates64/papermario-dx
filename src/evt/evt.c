@@ -134,51 +134,54 @@ ALWAYS_INLINE void evt_assert_valid_arg_var(Evt* script, s32 argIndex) {
     );
 }
 
-void evt_free_lerp_state(Evt* script) {
-    if (script->lerpState != nullptr) {
-        heap_free(script->lerpState);
-        script->lerpState = nullptr;
-    }
-}
-
+// Ends normal execution early and enters the script's finalizer when one exists.
 ApiStatus evt_handle_return(Evt* script) {
-    if (evt_start_finally(script)) {
-        return ApiStatus_DONE2;
-    }
+    evt_terminate_script(script);
 
-    force_kill_script(script);
-    return ApiStatus_FINISH;
+    if (script->terminationState == EVT_TERMINATION_FINALIZING) {
+        // Return exits normal execution early, so continue into the finalizer if one exists.
+        return ApiStatus_NEXT;
+    } else {
+        // Stop this interpreter call while children finish or destruction begins.
+        return ApiStatus_FINISH;
+    }
 }
 
+// Marks the boundary between normal execution and the script's finalizer body.
 ApiStatus evt_handle_finally(Evt* script) {
-    script->finalizing = true;
-    script->finallyDone = true;
-    return ApiStatus_DONE2;
+    ASSERT(script->terminationState == EVT_TERMINATION_NONE);
+    evt_terminate_script(script);
+
+    if (script->terminationState == EVT_TERMINATION_FINALIZING) {
+        // All children are gone. Continue immediately into the Finally body.
+        return ApiStatus_NEXT;
+    } else {
+        // An active child must return before cleanup can continue.
+        ASSERT(script->terminationState == EVT_TERMINATION_AWAITING_CHILDREN);
+        return ApiStatus_FINISH;
+    }
 }
 
+// Completes the current script scope, including any active finalizer.
 ApiStatus evt_handle_end(Evt* script) {
-    if (evt_start_finally(script)) {
-        return ApiStatus_DONE2;
-    }
-
-    force_kill_script(script);
+    evt_terminate_script(script);
     return ApiStatus_FINISH;
 }
 
 ApiStatus evt_handle_label(Evt* script) {
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_goto(Evt* script) {
     script->ptrNextLine = evt_find_label(script, *script->ptrReadPos);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_expect_args(Evt* script) {
     s32 expected = evt_get_variable(script, *script->ptrReadPos);
 
     ASSERT(script->argCount == expected);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_loop(Evt* script) {
@@ -192,7 +195,7 @@ ApiStatus evt_handle_loop(Evt* script) {
     script->loopCounterTable[loopDepth] = var;
     script->loopTypeTable[loopDepth] = EVT_LOOP_TYPE_BASIC;
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_end_loop(Evt* script) {
@@ -206,7 +209,7 @@ ApiStatus evt_handle_end_loop(Evt* script) {
 
     if (loopCounter == 0) {
         script->ptrNextLine = (Bytecode*)script->loopStartTable[loopDepth];
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     }
 
     if (loopCounter >= -10000000) {
@@ -219,10 +222,10 @@ ApiStatus evt_handle_end_loop(Evt* script) {
 
     if (loopCounter != 0) {
         script->ptrNextLine = (Bytecode*)script->loopStartTable[loopDepth];
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     } else {
         script->loopDepth--;
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     }
 }
 
@@ -230,10 +233,10 @@ ApiStatus evt_handle_break_loop(Evt* script) {
     ASSERT(script->loopDepth >= 0);
     script->ptrNextLine = evt_goto_end_loop(script);
     if (script->loopTypeTable[script->loopDepth] == EVT_LOOP_TYPE_LERP) {
-        evt_free_lerp_state(script);
+        script->lerpActive = false;
     }
     script->loopDepth--;
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_continue_loop(Evt* script) {
@@ -243,7 +246,7 @@ ApiStatus evt_handle_continue_loop(Evt* script) {
         "ContinueLoop is not allowed inside Lerp"
     );
     script->ptrNextLine = evt_goto_loop_continue(script);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_lerp(Evt* script) {
@@ -254,19 +257,16 @@ ApiStatus evt_handle_lerp(Evt* script) {
     s32 duration = evt_get_variable(script, *args++);
     s32 easing = evt_get_variable(script, *args++);
     s32 loopDepth = ++script->loopDepth;
-    EvtLerpState* state;
+    EvtLerpState* state = &script->lerpState;
 
     ASSERT(loopDepth < EVT_MAX_LOOP_DEPTH);
     ASSERT_MSG(duration >= 0, "Lerp duration must be >= 0");
-    ASSERT_MSG(script->lerpState == nullptr, "nested Lerp is not allowed");
+    ASSERT_MSG(!script->lerpActive, "nested Lerp is not allowed");
 
     script->loopStartTable[loopDepth] = (s32)args;
     script->loopTypeTable[loopDepth] = EVT_LOOP_TYPE_LERP;
 
-    state = heap_malloc(sizeof(*state));
-    ASSERT(state != nullptr);
-
-    script->lerpState = state;
+    script->lerpActive = true;
     state->outVar = outVar;
     state->start = start;
     state->end = end;
@@ -276,7 +276,7 @@ ApiStatus evt_handle_lerp(Evt* script) {
 
     evt_set_float_variable(script, outVar, update_lerp(easing, start, end, 0, duration));
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_end_lerp(Evt* script) {
@@ -286,13 +286,13 @@ ApiStatus evt_handle_end_lerp(Evt* script) {
     ASSERT(loopDepth >= 0);
     ASSERT(script->loopTypeTable[loopDepth] == EVT_LOOP_TYPE_LERP);
 
-    state = script->lerpState;
-    ASSERT(state != nullptr);
+    state = &script->lerpState;
+    ASSERT(script->lerpActive);
 
     if (state->elapsed >= state->duration) {
-        evt_free_lerp_state(script);
+        script->lerpActive = false;
         script->loopDepth--;
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     }
 
     state->elapsed++;
@@ -304,7 +304,7 @@ ApiStatus evt_handle_end_lerp(Evt* script) {
         state->duration
     ));
     script->ptrNextLine = (Bytecode*)script->loopStartTable[loopDepth];
-    return ApiStatus_DONE1;
+    return ApiStatus_YIELD;
 }
 
 ApiStatus evt_handle_wait(Evt* script) {
@@ -316,7 +316,7 @@ ApiStatus evt_handle_wait(Evt* script) {
     }
 
     if (script->functionTemp[0] == 0) {
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     }
 
     script->functionTemp[0]--;
@@ -332,7 +332,7 @@ ApiStatus evt_handle_wait_seconds(Evt* script) {
     }
 
     if (script->functionTemp[0] == 0) {
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     }
 
     script->functionTemp[0]--;
@@ -346,9 +346,9 @@ ApiStatus evt_handle_if_equal(Evt* script) {
 
     if (val1 != val2) {
         script->ptrNextLine = evt_skip_if(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     }
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_if_not_equal(Evt* script) {
@@ -358,9 +358,9 @@ ApiStatus evt_handle_if_not_equal(Evt* script) {
 
     if (val1 == val2) {
         script->ptrNextLine = evt_skip_if(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     }
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_if_less(Evt* script) {
@@ -370,9 +370,9 @@ ApiStatus evt_handle_if_less(Evt* script) {
 
     if (val1 >= val2) {
         script->ptrNextLine = evt_skip_if(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     }
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_if_greater(Evt* script) {
@@ -382,9 +382,9 @@ ApiStatus evt_handle_if_greater(Evt* script) {
 
     if (val1 <= val2) {
         script->ptrNextLine = evt_skip_if(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     }
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_if_less_equal(Evt* script) {
@@ -394,9 +394,9 @@ ApiStatus evt_handle_if_less_equal(Evt* script) {
 
     if (val1 > val2) {
         script->ptrNextLine = evt_skip_if(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     }
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_if_greater_equal(Evt* script) {
@@ -406,9 +406,9 @@ ApiStatus evt_handle_if_greater_equal(Evt* script) {
 
     if (val1 < val2) {
         script->ptrNextLine = evt_skip_if(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     }
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_if_range(Evt* script) {
@@ -419,9 +419,9 @@ ApiStatus evt_handle_if_range(Evt* script) {
 
     if (value < min || value > max) {
         script->ptrNextLine = evt_skip_if(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     }
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_if_not_range(Evt* script) {
@@ -432,9 +432,9 @@ ApiStatus evt_handle_if_not_range(Evt* script) {
 
     if (value >= min && value <= max) {
         script->ptrNextLine = evt_skip_if(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     }
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_if_AND(Evt* script) {
@@ -443,9 +443,9 @@ ApiStatus evt_handle_if_AND(Evt* script) {
 
     if ((evt_get_variable(script, var) & *args++) == 0) {
         script->ptrNextLine = evt_skip_if(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     }
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_if_not_AND(Evt* script) {
@@ -454,18 +454,18 @@ ApiStatus evt_handle_if_not_AND(Evt* script) {
 
     if ((evt_get_variable(script, var) & *args++) != 0) {
         script->ptrNextLine = evt_skip_if(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     }
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_else(Evt* script) {
     script->ptrNextLine = evt_skip_else(script);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_end_if(Evt* script) {
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_switch(Evt* script) {
@@ -478,7 +478,7 @@ ApiStatus evt_handle_switch(Evt* script) {
     script->switchBlockValue[switchDepth] = value;
     script->switchBlockState[switchDepth] = 1;
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_switch_const(Evt* script) {
@@ -491,7 +491,7 @@ ApiStatus evt_handle_switch_const(Evt* script) {
     script->switchBlockValue[switchDepth] = value;
     script->switchBlockState[switchDepth] = 1;
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_case_equal(Evt* script) {
@@ -507,14 +507,14 @@ ApiStatus evt_handle_case_equal(Evt* script) {
 
     if (script->switchBlockState[switchDepth] <= 0) {
         script->ptrNextLine = evt_goto_end_case(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     } else if (var != switchBlockValue) {
         script->ptrNextLine = evt_goto_next_case(script);
     } else {
         script->switchBlockState[switchDepth] = 0;
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_case_not_equal(Evt* script) {
@@ -530,14 +530,14 @@ ApiStatus evt_handle_case_not_equal(Evt* script) {
 
     if (script->switchBlockState[switchDepth] <= 0) {
         script->ptrNextLine = evt_goto_end_case(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     } else if (var == switchBlockValue) {
         script->ptrNextLine = evt_goto_next_case(script);
     } else {
         script->switchBlockState[switchDepth] = 0;
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_case_less(Evt* script) {
@@ -553,14 +553,14 @@ ApiStatus evt_handle_case_less(Evt* script) {
 
     if (script->switchBlockState[switchDepth] <= 0) {
         script->ptrNextLine = evt_goto_end_case(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     } else if (var <= switchBlockValue) {
         script->ptrNextLine = evt_goto_next_case(script);
     } else {
         script->switchBlockState[switchDepth] = 0;
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_case_less_equal(Evt* script) {
@@ -576,14 +576,14 @@ ApiStatus evt_handle_case_less_equal(Evt* script) {
 
     if (script->switchBlockState[switchDepth] <= 0) {
         script->ptrNextLine = evt_goto_end_case(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     } else if (var < switchBlockValue) {
         script->ptrNextLine = evt_goto_next_case(script);
     } else {
         script->switchBlockState[switchDepth] = 0;
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_case_greater(Evt* script) {
@@ -599,14 +599,14 @@ ApiStatus evt_handle_case_greater(Evt* script) {
 
     if (script->switchBlockState[switchDepth] <= 0) {
         script->ptrNextLine = evt_goto_end_case(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     } else if (var >= switchBlockValue) {
         script->ptrNextLine = evt_goto_next_case(script);
     } else {
         script->switchBlockState[switchDepth] = 0;
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_case_greater_equal(Evt* script) {
@@ -622,14 +622,14 @@ ApiStatus evt_handle_case_greater_equal(Evt* script) {
 
     if (script->switchBlockState[switchDepth] <= 0) {
         script->ptrNextLine = evt_goto_end_case(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     } else if (var > switchBlockValue) {
         script->ptrNextLine = evt_goto_next_case(script);
     } else {
         script->switchBlockState[switchDepth] = 0;
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_case_range(Evt* script) {
@@ -648,14 +648,14 @@ ApiStatus evt_handle_case_range(Evt* script) {
 
     if (script->switchBlockState[switchDepth] <= 0) {
         script->ptrNextLine = evt_goto_end_case(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     } else if ((var <= switchBlockValue) && (switchBlockValue <= var2)) {
         script->switchBlockState[switchDepth] = 0;
     } else {
         script->ptrNextLine = evt_goto_next_case(script);
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_case_default(Evt* script) {
@@ -665,12 +665,12 @@ ApiStatus evt_handle_case_default(Evt* script) {
 
     if (script->switchBlockState[switchDepth] <= 0) {
         script->ptrNextLine = evt_goto_end_case(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     } else {
         script->switchBlockState[switchDepth] = 0;
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_case_AND(Evt* script) {
@@ -688,14 +688,14 @@ ApiStatus evt_handle_case_AND(Evt* script) {
 
     if (switchBlockState <= 0) {
         script->ptrNextLine = evt_goto_end_case(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     } else if ((var & switchBlockValue) == 0) {
         script->ptrNextLine = evt_goto_next_case(script);
     } else {
         script->switchBlockState[switchDepth] = 0;
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_case_equal_OR(Evt* script) {
@@ -713,14 +713,14 @@ ApiStatus evt_handle_case_equal_OR(Evt* script) {
 
     if (switchBlockState == 0) {
         script->ptrNextLine = evt_goto_end_case(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     } else if (var == switchBlockValue) {
         script->switchBlockState[switchDepth] = -1;
     } else if (switchBlockState != -1) {
         script->ptrNextLine = evt_goto_next_case(script);
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_case_equal_AND(Evt* script) {
@@ -738,7 +738,7 @@ ApiStatus evt_handle_case_equal_AND(Evt* script) {
 
     if (switchBlockState == 0) {
         script->ptrNextLine = evt_goto_end_case(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     } else if (switchBlockState == -2) {
         script->ptrNextLine = evt_goto_next_case(script);
     } else if (var == switchBlockValue) {
@@ -748,7 +748,7 @@ ApiStatus evt_handle_case_equal_AND(Evt* script) {
         script->ptrNextLine = evt_goto_next_case(script);
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_end_case_group(Evt* script) {
@@ -756,7 +756,7 @@ ApiStatus evt_handle_end_case_group(Evt* script) {
 
     if (script->switchBlockState[script->switchDepth] == 0) {
         script->ptrNextLine = evt_goto_end_case(script);
-        return ApiStatus_DONE2;
+        return ApiStatus_NEXT;
     } else if (script->switchBlockState[script->switchDepth] != -1) {
         script->switchBlockState[script->switchDepth] = 1;
         script->ptrNextLine = evt_goto_next_case(script);
@@ -765,13 +765,13 @@ ApiStatus evt_handle_end_case_group(Evt* script) {
         script->ptrNextLine = evt_goto_end_case(script);
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_break_case(Evt* script) {
     ASSERT(script->switchDepth >= 0);
     script->ptrNextLine = evt_goto_end_case(script);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_end_switch(Evt* script) {
@@ -782,7 +782,7 @@ ApiStatus evt_handle_end_switch(Evt* script) {
     script->switchBlockState[switchDepth] = 0;
     script->switchDepth--;
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_set_var(Evt* script) {
@@ -790,12 +790,12 @@ ApiStatus evt_handle_set_var(Evt* script) {
     s32 curPtrReadPos = *args++;
 
     evt_set_variable(script, curPtrReadPos, evt_get_variable(script, *args++));
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_set_const(Evt* script) {
     evt_set_variable(script, *script->ptrReadPos, script->ptrReadPos[1]);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_set_float(Evt* script) {
@@ -803,7 +803,7 @@ ApiStatus evt_handle_set_float(Evt* script) {
     Bytecode var = *args++;
 
     evt_set_float_variable(script, var, evt_get_float_variable(script, *args++));
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_add(Evt* script) {
@@ -823,7 +823,7 @@ ApiStatus evt_handle_add(Evt* script) {
     }
 
     evt_set_variable(script, outVar, result);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_subtract(Evt* script) {
@@ -840,7 +840,7 @@ ApiStatus evt_handle_subtract(Evt* script) {
     b = evt_get_variable(script, *args++);
 
     evt_set_variable(script, outVar, a - b);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_multiply(Evt* script) {
@@ -860,7 +860,7 @@ ApiStatus evt_handle_multiply(Evt* script) {
     }
 
     evt_set_variable(script, outVar, result);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_divide(Evt* script) {
@@ -877,7 +877,7 @@ ApiStatus evt_handle_divide(Evt* script) {
     b = evt_get_variable(script, *args++);
 
     evt_set_variable(script, outVar, a / b);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_mod(Evt* script) {
@@ -894,7 +894,7 @@ ApiStatus evt_handle_mod(Evt* script) {
     b = evt_get_variable(script, *args++) + 0.5;
 
     evt_set_variable(script, outVar, a % b);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_addF(Evt* script) {
@@ -914,7 +914,7 @@ ApiStatus evt_handle_addF(Evt* script) {
     }
 
     evt_set_float_variable(script, outVar, result);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_subtractF(Evt* script) {
@@ -931,7 +931,7 @@ ApiStatus evt_handle_subtractF(Evt* script) {
     b = evt_get_float_variable(script, *args++);
 
     evt_set_float_variable(script, outVar, a - b);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_multiplyF(Evt* script) {
@@ -951,7 +951,7 @@ ApiStatus evt_handle_multiplyF(Evt* script) {
     }
 
     evt_set_float_variable(script, outVar, result);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_divideF(Evt* script) {
@@ -968,7 +968,7 @@ ApiStatus evt_handle_divideF(Evt* script) {
     b = evt_get_float_variable(script, *args++);
 
     evt_set_float_variable(script, outVar, a / b);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_neg(Evt* script) {
@@ -983,7 +983,7 @@ ApiStatus evt_handle_neg(Evt* script) {
     }
 
     evt_set_variable(script, outVar, -value);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_negF(Evt* script) {
@@ -998,7 +998,7 @@ ApiStatus evt_handle_negF(Evt* script) {
     }
 
     evt_set_float_variable(script, outVar, -value);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_abs(Evt* script) {
@@ -1016,7 +1016,7 @@ ApiStatus evt_handle_abs(Evt* script) {
         value = -value;
     }
     evt_set_variable(script, outVar, value);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_absF(Evt* script) {
@@ -1034,7 +1034,7 @@ ApiStatus evt_handle_absF(Evt* script) {
         value = -value;
     }
     evt_set_float_variable(script, outVar, value);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_sign(Evt* script) {
@@ -1054,7 +1054,7 @@ ApiStatus evt_handle_sign(Evt* script) {
         value = -1;
     }
     evt_set_variable(script, outVar, value);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_signF(Evt* script) {
@@ -1074,7 +1074,7 @@ ApiStatus evt_handle_signF(Evt* script) {
         value = -1.0f;
     }
     evt_set_float_variable(script, outVar, value);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_min(Evt* script) {
@@ -1100,7 +1100,7 @@ ApiStatus evt_handle_min(Evt* script) {
     }
 
     evt_set_variable(script, outVar, result);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_minF(Evt* script) {
@@ -1126,7 +1126,7 @@ ApiStatus evt_handle_minF(Evt* script) {
     }
 
     evt_set_float_variable(script, outVar, result);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_max(Evt* script) {
@@ -1152,7 +1152,7 @@ ApiStatus evt_handle_max(Evt* script) {
     }
 
     evt_set_variable(script, outVar, result);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_maxF(Evt* script) {
@@ -1178,7 +1178,7 @@ ApiStatus evt_handle_maxF(Evt* script) {
     }
 
     evt_set_float_variable(script, outVar, result);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_clamp(Evt* script) {
@@ -1204,7 +1204,7 @@ ApiStatus evt_handle_clamp(Evt* script) {
         value = max;
     }
     evt_set_variable(script, outVar, value);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_clampF(Evt* script) {
@@ -1230,21 +1230,21 @@ ApiStatus evt_handle_clampF(Evt* script) {
         value = max;
     }
     evt_set_float_variable(script, outVar, value);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_set_int_buf(Evt* script) {
     Bytecode* args = script->ptrReadPos;
 
     script->buffer = (s32*) evt_get_variable(script, *args++);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_set_float_buf(Evt* script) {
     Bytecode* args = script->ptrReadPos;
 
     script->buffer = (s32*) evt_get_variable(script, *args++);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_read_buf_words(Evt* script) {
@@ -1255,7 +1255,7 @@ ApiStatus evt_handle_read_buf_words(Evt* script) {
     for (i = 0; i < script->curArgc; i++) {
         evt_set_variable(script, *args++, *script->buffer++);
     }
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_peek_buf_word(Evt* script) {
@@ -1265,7 +1265,7 @@ ApiStatus evt_handle_peek_buf_word(Evt* script) {
     var = *args++;
     evt_set_variable(script, var, script->buffer[evt_get_variable(script, *args++)]);
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_read_buf_floats(Evt* script) {
@@ -1276,7 +1276,7 @@ ApiStatus evt_handle_read_buf_floats(Evt* script) {
     for (i = 0; i < script->curArgc; i++) {
         evt_set_float_variable(script, *args++, evt_get_float_variable(script, *script->buffer++));
     }
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_peek_buf_float(Evt* script) {
@@ -1286,17 +1286,17 @@ ApiStatus evt_handle_peek_buf_float(Evt* script) {
     var = *args++;
     evt_set_float_variable(script, var, script->buffer[evt_get_variable(script, *args++)]);
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_set_array(Evt* script) {
     script->array = (s32*)evt_get_variable(script, *script->ptrReadPos);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_set_flag_array(Evt* script) {
     script->flagArray = (s32*)evt_get_variable(script, *script->ptrReadPos);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_allocate_array(Evt* script) {
@@ -1306,7 +1306,7 @@ ApiStatus evt_handle_allocate_array(Evt* script) {
 
     script->array = (s32*)heap_malloc(size * 4);
     evt_set_variable(script, var, (s32)script->array);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_AND(Evt* script) {
@@ -1316,7 +1316,7 @@ ApiStatus evt_handle_AND(Evt* script) {
     s32 prev = evt_get_variable(script, var);
 
     evt_set_variable(script, var, prev & bits);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_AND_const(Evt* script) {
@@ -1326,7 +1326,7 @@ ApiStatus evt_handle_AND_const(Evt* script) {
     s32 prev = evt_get_variable(script, var);
 
     evt_set_variable(script, var, prev & bits);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_OR(Evt* script) {
@@ -1336,7 +1336,7 @@ ApiStatus evt_handle_OR(Evt* script) {
     s32 prev = evt_get_variable(script, var);
 
     evt_set_variable(script, var, prev | bits);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_OR_const(Evt* script) {
@@ -1346,7 +1346,7 @@ ApiStatus evt_handle_OR_const(Evt* script) {
     s32 prev = evt_get_variable(script, var);
 
     evt_set_variable(script, var, prev | bits);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 s32 evt_call_eval_func(Evt* script, Bytecode func, Bytecode* args, s32 argc) {
@@ -1507,19 +1507,19 @@ s32 evt_call_if_evalF_func(Evt* script, Bytecode func, Bytecode* args, s32 argc)
 
     switch (argc) {
         case 0:
-            return ((EvtIfEvalF0Func)func)();
+            return ((EvtPredicateF0Func)func)();
         case 1:
-            return ((EvtIfEvalF1Func)func)(argv[0]);
+            return ((EvtPredicateF1Func)func)(argv[0]);
         case 2:
-            return ((EvtIfEvalF2Func)func)(argv[0], argv[1]);
+            return ((EvtPredicateF2Func)func)(argv[0], argv[1]);
         case 3:
-            return ((EvtIfEvalF3Func)func)(argv[0], argv[1], argv[2]);
+            return ((EvtPredicateF3Func)func)(argv[0], argv[1], argv[2]);
         case 4:
-            return ((EvtIfEvalF4Func)func)(argv[0], argv[1], argv[2], argv[3]);
+            return ((EvtPredicateF4Func)func)(argv[0], argv[1], argv[2], argv[3]);
         case 5:
-            return ((EvtIfEvalF5Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
+            return ((EvtPredicateF5Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
         case 6:
-            return ((EvtIfEvalF6Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+            return ((EvtPredicateF6Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
     }
 
     PANIC();
@@ -1532,7 +1532,7 @@ ApiStatus evt_handle_eval(Evt* script) {
 
     s32 retVal = evt_call_eval_func(script, func, args, script->curArgc - 2);
     evt_set_variable(script, outVar, retVal);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_evalF(Evt* script) {
@@ -1542,7 +1542,7 @@ ApiStatus evt_handle_evalF(Evt* script) {
 
     f32 retVal = evt_call_evalF_func(script, func, args, script->curArgc - 2);
     evt_set_float_variable(script, outVar, retVal);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_invoke(Evt* script) {
@@ -1550,7 +1550,7 @@ ApiStatus evt_handle_invoke(Evt* script) {
     Bytecode func = *args++;
 
     evt_call_invoke_func(script, func, args, script->curArgc - 1);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_invokeF(Evt* script) {
@@ -1558,7 +1558,7 @@ ApiStatus evt_handle_invokeF(Evt* script) {
     Bytecode func = *args++;
 
     evt_call_invokeF_func(script, func, args, script->curArgc - 1);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_if_eval(Evt* script) {
@@ -1569,7 +1569,7 @@ ApiStatus evt_handle_if_eval(Evt* script) {
         script->ptrNextLine = evt_skip_if(script);
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_if_not_eval(Evt* script) {
@@ -1580,7 +1580,7 @@ ApiStatus evt_handle_if_not_eval(Evt* script) {
         script->ptrNextLine = evt_skip_if(script);
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_if_evalF(Evt* script) {
@@ -1591,7 +1591,7 @@ ApiStatus evt_handle_if_evalF(Evt* script) {
         script->ptrNextLine = evt_skip_if(script);
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_if_not_evalF(Evt* script) {
@@ -1602,7 +1602,7 @@ ApiStatus evt_handle_if_not_evalF(Evt* script) {
         script->ptrNextLine = evt_skip_if(script);
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_call(Evt* script) {
@@ -1711,7 +1711,7 @@ ApiStatus evt_handle_exec1(Evt* script) {
     newScript->flagArray = script->flagArray;
     evt_set_script_args(newScript, script, args, script->curArgc - 1);
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_exec1_get_id(Evt* script) {
@@ -1740,7 +1740,7 @@ ApiStatus evt_handle_exec1_get_id(Evt* script) {
 
     evt_set_variable(script, outVar, newScript->id);
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_exec_wait(Evt* script) {
@@ -1758,7 +1758,7 @@ ApiStatus evt_handle_jump(Evt* script) {
 
     script->ptrFirstLine = (Bytecode*) evt_get_variable(script, *args++);
     restart_script(script);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 s32 evt_trigger_on_activate_exec_script(Trigger* trigger) {
@@ -1817,67 +1817,67 @@ ApiStatus evt_handle_bind(Evt* script) {
         evt_set_variable(script, triggerOut, (s32)trigger);
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 API_CALLABLE(DeleteTrigger) {
     delete_trigger((Trigger*)evt_get_variable(script, *script->ptrReadPos));
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_unbind(Evt* script) {
     delete_trigger(script->owner2.trigger);
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_kill(Evt* script) {
     kill_script_by_ID(evt_get_variable(script, *script->ptrReadPos));
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_set_priority(Evt* script) {
     set_script_priority(script, evt_get_variable(script, *script->ptrReadPos));
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_set_timescale(Evt* script) {
     set_script_timescale(script, evt_get_float_variable(script, *script->ptrReadPos));
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_set_group(Evt* script) {
     set_script_group(script, evt_get_variable(script, *script->ptrReadPos));
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_suspend_all(Evt* script) {
     suspend_all_group(evt_get_variable(script, *script->ptrReadPos));
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_resume_all(Evt* script) {
     resume_all_group(evt_get_variable(script, *script->ptrReadPos));
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_suspend_others(Evt* script) {
     suspend_group_others(script, evt_get_variable(script, *script->ptrReadPos));
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_resume_others(Evt* script) {
     resume_group_others(script, evt_get_variable(script, *script->ptrReadPos));
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_suspend(Evt* script) {
     suspend_all_script(evt_get_variable(script, *script->ptrReadPos));
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_resume(Evt* script) {
     resume_all_script(evt_get_variable(script, *script->ptrReadPos));
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_does_script_exist(Evt* script) {
@@ -1886,7 +1886,7 @@ ApiStatus evt_handle_does_script_exist(Evt* script) {
     Bytecode var2 = *args++;
 
     evt_set_variable(script, var2, does_script_exist(scriptID));
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_await_children(Evt* script) {
@@ -1894,7 +1894,7 @@ ApiStatus evt_handle_await_children(Evt* script) {
         return ApiStatus_BLOCK;
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_await_script(Evt* script) {
@@ -1905,7 +1905,7 @@ ApiStatus evt_handle_await_script(Evt* script) {
         return ApiStatus_BLOCK;
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 s32 evt_trigger_on_activate_lock(Trigger* trigger) {
@@ -1953,7 +1953,7 @@ ApiStatus evt_handle_bind_lock(Evt* script) {
     trigger->varTable[1] = evt_get_variable(script, script->varTable[1]);
     trigger->varTable[2] = evt_get_variable(script, script->varTable[2]);
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 Bytecode* evt_find_thread_block_end(Bytecode* startLine, s32 endOpcode) {
@@ -2006,16 +2006,12 @@ ApiStatus evt_handle_thread(Evt* script) {
         newScript->varFlags[i] = script->varFlags[i];
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
+// Completes a Thread script scope.
 ApiStatus evt_handle_end_thread(Evt* script) {
-    if (evt_start_finally(script)) {
-        return ApiStatus_DONE2;
-    }
-
-    force_kill_script(script);
-    return ApiStatus_FINISH;
+    return evt_handle_end(script);
 }
 
 ApiStatus evt_handle_child_thread(Evt* script) {
@@ -2032,16 +2028,12 @@ ApiStatus evt_handle_child_thread(Evt* script) {
     newScript->array = script->array;
     newScript->flagArray = script->flagArray;
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
+// Completes a ChildThread script scope.
 ApiStatus evt_handle_end_child_thread(Evt* script) {
-    if (evt_start_finally(script)) {
-        return ApiStatus_DONE2;
-    }
-
-    force_kill_script(script);
-    return ApiStatus_BLOCK;
+    return evt_handle_end(script);
 }
 
 ApiStatus evt_handle_print_debug_var(Evt* script) {
@@ -2123,6 +2115,18 @@ ApiStatus evt_handle_print_debug_var(Evt* script) {
         } else {
             sprintf(evtDebugPrintBuffer, "MV(%3ld)  [%ld]", var, value);
         }
+    } else if (var <= EVT_ARG_VAR_CUTOFF) {
+        var = EVT_INDEX_OF_ARG_VAR(var);
+        evt_assert_valid_arg_var(script, var);
+        value = script->argVars[var];
+
+        if (value <= EVT_LIMIT) {
+            sprintf(evtDebugPrintBuffer, "ArgVar(%3ld)  [%08lX]", var, value);
+        } else if (value <= EVT_FIXED_CUTOFF) {
+            sprintf(evtDebugPrintBuffer, "ArgVar(%3ld)  [%4.2f]", var, evt_fixed_var_to_float(value));
+        } else {
+            sprintf(evtDebugPrintBuffer, "ArgVar(%3ld)  [%ld]", var, value);
+        }
     } else if (var <= EVT_LOCAL_VAR_CUTOFF) {
         var = EVT_INDEX_OF_LOCAL_VAR(var);
         value = script->varTable[var];
@@ -2138,37 +2142,68 @@ ApiStatus evt_handle_print_debug_var(Evt* script) {
         sprintf(evtDebugPrintBuffer, "         [%ld]", var);
     }
 
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_nop(Evt* script) {
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_debug_breakpoint(Evt* script) {
     #if DX_DEBUG_MENU
     script->debugPaused = true;
     #endif
-    return ApiStatus_DONE2;
+    return ApiStatus_NEXT;
+}
+
+static b32 evt_opcode_forbidden_in_finalizer(s32 opcode) {
+    switch (opcode) {
+        case EVT_OP_RETURN:
+        case EVT_OP_LABEL:
+        case EVT_OP_GOTO:
+        case EVT_OP_JUMP:
+        case EVT_OP_WAIT_FRAMES:
+        case EVT_OP_WAIT_SECS:
+        case EVT_OP_LOOP:
+        case EVT_OP_END_LOOP:
+        case EVT_OP_BREAK_LOOP:
+        case EVT_OP_CONTINUE_LOOP:
+        case EVT_OP_LERP:
+        case EVT_OP_END_LERP:
+        case EVT_OP_THREAD:
+        case EVT_OP_CHILD_THREAD:
+        case EVT_OP_EXEC_WAIT:
+        case EVT_OP_AWAIT_CHILDREN:
+        case EVT_OP_AWAIT_SCRIPT:
+        case EVT_OP_DEBUG_BREAKPOINT:
+            return true;
+        default:
+            return false;
+    }
 }
 
 s32 evt_execute_next_command(Evt* script) {
+    ASSERT(!script->executingCommand);
+    script->executingCommand = true;
     EvtCurrentScript = script;
     s32 commandsExecuted = 0;
 
     while (true) {
-        s32 status = ApiStatus_DONE2;
+        s32 status = ApiStatus_NEXT;
         s32* lines;
         s32 nargs;
         s32 executedOpcode;
         b32 wasFinalizing;
-        s32 scriptID;
 
         #if DX_DEBUG_MENU
         if (script->debugPaused && script->curOpcode != EVT_OP_INTERNAL_FETCH) {
             switch (script->debugStep) {
                 case DEBUG_EVT_STEP_NONE:
-                    return EVT_CMD_RESULT_YIELD;
+                    ASSERT_MSG(
+                        script->terminationState != EVT_TERMINATION_FINALIZING,
+                        "Finally block attempted to pause"
+                    );
+                    return evt_finish_execution(script, EVT_CMD_RESULT_YIELD);
                 case DEBUG_EVT_STEP_ONCE:
                     script->debugStep = DEBUG_EVT_STEP_NONE;
                     break;
@@ -2186,9 +2221,13 @@ s32 evt_execute_next_command(Evt* script) {
             PANIC_MSG("Script %s is blocking for ages (infinite loop?)", scriptName);
         }
 
-        wasFinalizing = script->finalizing;
-        scriptID = script->id;
+        wasFinalizing = script->terminationState == EVT_TERMINATION_FINALIZING;
         executedOpcode = script->curOpcode;
+
+        ASSERT_MSG(
+            !wasFinalizing || !evt_opcode_forbidden_in_finalizer(executedOpcode),
+            "Command is not allowed inside Finally"
+        );
 
         switch (script->curOpcode) {
             case EVT_OP_INTERNAL_FETCH:
@@ -2551,39 +2590,61 @@ s32 evt_execute_next_command(Evt* script) {
                 PANIC();
         }
 
+        // execute command after a fetch operation
         if (status == ApiStatus_REPEAT) {
-            // execute command after a fetch operation
             continue;
         }
 
-        if (status == ApiStatus_FINISH) {
+        // Return and Finally enter the finalizer without yielding
+        if (!wasFinalizing && script->terminationState == EVT_TERMINATION_FINALIZING) {
+            script->curOpcode = EVT_OP_INTERNAL_FETCH;
+            continue;
+        }
+
+        // only a proper terminator may finish a finalizer
+        if (wasFinalizing && script->terminationState != EVT_TERMINATION_FINALIZING) {
             ASSERT_MSG(
-                !wasFinalizing
-                    || executedOpcode == EVT_OP_END
+                executedOpcode == EVT_OP_END
                     || executedOpcode == EVT_OP_END_THREAD
                     || executedOpcode == EVT_OP_END_CHILD_THREAD,
-                "Finally block in script %ld finished before reaching its terminator",
-                scriptID
+                "Finally block ended before reaching its terminator"
             );
-            return EVT_CMD_RESULT_YIELD;
         }
 
+        // Stop while termination waits for children or destroys the script.
+        if (script->terminationState == EVT_TERMINATION_AWAITING_CHILDREN
+            || script->terminationState == EVT_TERMINATION_DESTROY_PENDING
+        ) {
+            return evt_finish_execution(script, EVT_CMD_RESULT_YIELD);
+        }
+
+        // FINISH stops this interpreter run without advancing to another command
+        if (status == ApiStatus_FINISH) {
+            ASSERT_MSG(
+                !wasFinalizing,
+                "Finally block ended before reaching its terminator"
+            );
+            return evt_finish_execution(script, EVT_CMD_RESULT_YIELD);
+        }
+
+        // Report command errors after releasing the interpreter guard.
         if (status < 0) {
-            return EVT_CMD_RESULT_ERROR;
+            ASSERT_MSG(
+                !wasFinalizing,
+                "Command in Finally returned an error"
+            );
+            return evt_finish_execution(script, EVT_CMD_RESULT_ERROR);
         }
 
-        ASSERT_MSG(
-            !(script->finalizing && status == ApiStatus_BLOCK),
-            "Finally block in script %ld attempted to block at line %d",
-            script->id,
-            script->curLine
-        );
-
+        // A blocked command resumes on the next scheduled update.
         if (status == ApiStatus_BLOCK) {
-            return EVT_CMD_RESULT_CONTINUE;
+            ASSERT_MSG(!wasFinalizing, "Call in Finally attempted to block");
+            return evt_finish_execution(script, EVT_CMD_RESULT_CONTINUE);
         }
 
-        if (script->finalizing && (status == ApiStatus_DONE1 || status == ApiStatus_DONE2)) {
+        // Finalizers run to completion without yielding between commands.
+        if (wasFinalizing) {
+            ASSERT(status == ApiStatus_YIELD || status == ApiStatus_NEXT);
             script->curOpcode = EVT_OP_INTERNAL_FETCH;
             continue;
         }
@@ -2595,17 +2656,19 @@ s32 evt_execute_next_command(Evt* script) {
         }
         #endif
 
-        if (status == ApiStatus_DONE1) {
+        // DONE1 advances to the next command on the next scheduled update.
+        if (status == ApiStatus_YIELD) {
             script->curOpcode = EVT_OP_INTERNAL_FETCH;
-            return EVT_CMD_RESULT_CONTINUE;
+            return evt_finish_execution(script, EVT_CMD_RESULT_CONTINUE);
         }
 
-        if (status == ApiStatus_DONE2) {
+        // DONE2 advances immediately unless command stepping requests a yield.
+        if (status == ApiStatus_NEXT) {
             script->curOpcode = EVT_OP_INTERNAL_FETCH;
             if (gGameStatusPtr->debugScripts != DEBUG_SCRIPTS_BLOCK_FUNC_DONE) {
                 continue;
             }
-            return EVT_CMD_RESULT_CONTINUE;
+            return evt_finish_execution(script, EVT_CMD_RESULT_CONTINUE);
         }
     }
 }
@@ -2918,7 +2981,7 @@ f32 evt_set_float_variable(Evt* script, Bytecode var, f32 value) {
 }
 
 Bytecode* evt_find_label(Evt* script, s32 arg) {
-    Bytecode* ret = script->ptrReadPos;
+    Bytecode* ret = nullptr;
     s32 i;
 
     ASSERT_MSG(evt_is_valid_label_value(arg), "Invalid Goto label value: 0x%08lX", (u32) arg);
@@ -2933,8 +2996,30 @@ Bytecode* evt_find_label(Evt* script, s32 arg) {
         }
     }
 
-    ASSERT_MSG(i < ARRAY_COUNT(script->labelValuePtrs), "Missing label for Goto value: 0x%08lX", (u32) arg);
+    ASSERT_MSG(ret != nullptr, "Missing label for Goto value: 0x%08lX", (u32) arg);
     return ret;
+}
+
+static b32 evt_opcode_opens_if(s32 opcode) {
+    switch (opcode) {
+        case EVT_OP_IF_EQ:
+        case EVT_OP_IF_NE:
+        case EVT_OP_IF_LT:
+        case EVT_OP_IF_GT:
+        case EVT_OP_IF_LE:
+        case EVT_OP_IF_GE:
+        case EVT_OP_IF_RANGE:
+        case EVT_OP_IF_NOT_RANGE:
+        case EVT_OP_IF_FLAG:
+        case EVT_OP_IF_NOT_FLAG:
+        case EVT_OP_IF_EVAL:
+        case EVT_OP_IF_NOT_EVAL:
+        case EVT_OP_IF_EVALF:
+        case EVT_OP_IF_NOT_EVALF:
+            return true;
+        default:
+            return false;
+    }
 }
 
 Bytecode* evt_skip_if(Evt* script) {
@@ -2958,23 +3043,16 @@ Bytecode* evt_skip_if(Evt* script) {
                     return pos;
                 }
                 break;
-            case EVT_OP_IF_EQ:
-            case EVT_OP_IF_NE:
-            case EVT_OP_IF_LT:
-            case EVT_OP_IF_GT:
-            case EVT_OP_IF_LE:
-            case EVT_OP_IF_GE:
-            case EVT_OP_IF_RANGE:
-            case EVT_OP_IF_NOT_RANGE:
-            case EVT_OP_IF_FLAG:
-            case EVT_OP_IF_NOT_FLAG:
-                nestedIfDepth++;
-                break;
             case EVT_OP_ELSE:
                 if (nestedIfDepth == 0) {
                     return pos;
                 }
-            break;
+                break;
+            default:
+                if (evt_opcode_opens_if(opcode)) {
+                    nestedIfDepth++;
+                }
+                break;
         }
     } while (true);
 }
@@ -3000,35 +3078,10 @@ Bytecode* evt_skip_else(Evt* script) {
                     return pos;
                 }
                 break;
-            case EVT_OP_IF_EQ:
-                nestedIfDepth++;
-                break;
-            case EVT_OP_IF_NE:
-                nestedIfDepth++;
-                break;
-            case EVT_OP_IF_LT:
-                nestedIfDepth++;
-                break;
-            case EVT_OP_IF_GT:
-                nestedIfDepth++;
-                break;
-            case EVT_OP_IF_LE:
-                nestedIfDepth++;
-                break;
-            case EVT_OP_IF_GE:
-                nestedIfDepth++;
-                break;
-            case EVT_OP_IF_RANGE:
-                nestedIfDepth++;
-                break;
-            case EVT_OP_IF_NOT_RANGE:
-                nestedIfDepth++;
-                break;
-            case EVT_OP_IF_FLAG:
-                nestedIfDepth++;
-                break;
-            case EVT_OP_IF_NOT_FLAG:
-                nestedIfDepth++;
+            default:
+                if (evt_opcode_opens_if(opcode)) {
+                    nestedIfDepth++;
+                }
                 break;
         }
     } while (true);

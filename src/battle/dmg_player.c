@@ -4,8 +4,8 @@
 #include "script_api/battle.h"
 #include "sprite/player.h"
 
-b32 dispatch_damage_event_player(s32 damageAmount, s32 event, b32 noHitSound);
-b32 dispatch_hazard_event_player(s32 damageAmount, s32 event);
+b32 dispatch_damage_event_player(s32 damageAmount, s32 event, b32 isContactDamage);
+b32 dispatch_contact_damage_event_player(s32 damageAmount, s32 event);
 
 API_CALLABLE(PlaySleepHitFX) {
     fx_debuff(0, script->varTable[0], script->varTable[1], script->varTable[2]);
@@ -225,7 +225,7 @@ HitResult calc_player_test_enemy(void) {
         && !player_team_is_ability_active(player, ABILITY_SPIKE_SHIELD)))
     {
         sfx_play_sound_at_position(SOUND_HIT_SPIKE, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
-        dispatch_hazard_event_player(1, EVENT_SPIKE_CONTACT);
+        dispatch_contact_damage_event_player(1, EVENT_SPIKE_CONTACT);
         dispatch_event_actor(target, EVENT_SPIKE_TAUNT);
         return HIT_RESULT_BACKFIRE;
     }
@@ -327,7 +327,7 @@ HitResult calc_player_damage_enemy(void) {
             && !player_team_is_ability_active(player, ABILITY_SPIKE_SHIELD))
         {
             sfx_play_sound_at_position(SOUND_HIT_SPIKE, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
-            dispatch_hazard_event_player(1, EVENT_SPIKE_CONTACT);
+            dispatch_contact_damage_event_player(1, EVENT_SPIKE_CONTACT);
             dispatch_event_actor(target, EVENT_SPIKE_TAUNT);
             return HIT_RESULT_BACKFIRE;
         }
@@ -336,7 +336,7 @@ HitResult calc_player_damage_enemy(void) {
         if (!(battleStatus->curAttackElement & (DAMAGE_TYPE_NO_CONTACT | DAMAGE_TYPE_SMASH))) {
             if (targetPart->eventFlags & ACTOR_EVENT_FLAG_EXPLODE_ON_CONTACT) {
                 sfx_play_sound_at_position(SOUND_HIT_PLAYER_FIRE, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
-                dispatch_hazard_event_player(1, EVENT_BURN_CONTACT);
+                dispatch_contact_damage_event_player(1, EVENT_BURN_CONTACT);
                 dispatch_event_actor(target, EVENT_EXPLODE_TRIGGER);
                 return HIT_RESULT_BACKFIRE;
             }
@@ -347,7 +347,7 @@ HitResult calc_player_damage_enemy(void) {
                 && !(player_team_is_ability_active(player, ABILITY_ICE_POWER))
             ) {
                 sfx_play_sound_at_position(SOUND_HIT_PLAYER_FIRE, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
-                dispatch_hazard_event_player(1, EVENT_BURN_CONTACT);
+                dispatch_contact_damage_event_player(1, EVENT_BURN_CONTACT);
                 dispatch_event_actor(target, EVENT_BURN_TAUNT);
                 return HIT_RESULT_BACKFIRE;
             }
@@ -374,7 +374,7 @@ HitResult calc_player_damage_enemy(void) {
             && !player_team_is_ability_active(player, ABILITY_SPIKE_SHIELD)
         ) {
             sfx_play_sound_at_position(SOUND_HIT_SPIKE, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
-            dispatch_hazard_event_player(1, EVENT_SPIKE_CONTACT);
+            dispatch_contact_damage_event_player(1, EVENT_SPIKE_CONTACT);
             dispatch_event_actor(target, EVENT_SPIKE_TAUNT);
             return HIT_RESULT_BACKFIRE;
         }
@@ -650,7 +650,7 @@ HitResult calc_player_damage_enemy(void) {
             ) {
                 sfx_play_sound_at_position(SOUND_HIT_PLAYER_SHOCK, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
                 apply_shock_effect(player);
-                dispatch_hazard_event_player(1, EVENT_SHOCK_HIT);
+                dispatch_contact_damage_event_player(1, EVENT_SHOCK_HIT);
                 return HIT_RESULT_BACKFIRE;
             } else {
                 if (!(gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS)) {
@@ -1045,19 +1045,19 @@ HitResult calc_player_damage_enemy(void) {
     ) {
         sfx_play_sound_at_position(SOUND_HIT_PLAYER_SHOCK, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
         apply_shock_effect(player);
-        dispatch_hazard_event_player(1, EVENT_SHOCK_HIT);
+        dispatch_contact_damage_event_player(1, EVENT_SHOCK_HIT);
         return HIT_RESULT_BACKFIRE;
     }
 
     return hitResult;
 }
 
-b32 dispatch_damage_event_player(s32 damageAmount, s32 event, b32 noHitSound) {
+b32 dispatch_damage_event_player(s32 damageAmount, s32 event, b32 isContactDamage) {
     BattleStatus* battleStatus = &gBattleStatus;
     PlayerData* playerData = &gPlayerData;
     Actor* player = battleStatus->playerActor;
     ActorState* state = &player->state;
-    s32 flags;
+    b32 wasNice;
     s32 dispatchEvent;
     s32 oldPlayerHP;
     s32 temp;
@@ -1105,7 +1105,7 @@ b32 dispatch_damage_event_player(s32 damageAmount, s32 event, b32 noHitSound) {
         }
     }
 
-    if (!noHitSound) {
+    if (!isContactDamage) {
         set_goal_pos_to_part(state, ACTOR_PLAYER, 0);
         sfx_play_sound_at_position(SOUND_HIT_NORMAL, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
     }
@@ -1117,13 +1117,12 @@ b32 dispatch_damage_event_player(s32 damageAmount, s32 event, b32 noHitSound) {
         set_actor_flash_mode(player, 1);
     }
 
-    flags = (gBattleStatus.flags1 & (BS_FLAGS1_NICE_HIT | BS_FLAGS1_SUPER_HIT)) != 0;
+    wasNice = (gBattleStatus.flags1 & (BS_FLAGS1_NICE_HIT | BS_FLAGS1_SUPER_HIT)) != 0;
     dispatch_event_player(dispatchEvent);
-    return flags;
+    return wasNice;
 }
 
-// damage received from "damage over time" effects (only used for poison)
-b32 dispatch_damage_tick_event_player(s32 damageAmount, s32 event) {
+b32 dispatch_generic_damage_event_player(s32 damageAmount, s32 event) {
     BattleStatus* battleStatus = &gBattleStatus;
 
     battleStatus->curAttackElement = ELEMENT_END;
@@ -1131,8 +1130,7 @@ b32 dispatch_damage_tick_event_player(s32 damageAmount, s32 event) {
     return dispatch_damage_event_player(damageAmount, event, false);
 }
 
-// damage received from contact hazards
-b32 dispatch_hazard_event_player(s32 damageAmount, s32 event) {
+b32 dispatch_contact_damage_event_player(s32 damageAmount, s32 event) {
     return dispatch_damage_event_player(damageAmount, event, true);
 }
 
@@ -1598,13 +1596,14 @@ API_CALLABLE(PlayerDamageEnemy) {
     if (hitResult < 0) {
         return ApiStatus_FINISH;
     }
+
     evt_set_variable(script, hitResultOutVar, hitResult);
 
-    if (!does_script_exist_by_ref(script)) {
+    if (does_script_exist_by_ref(script)) {
+        return ApiStatus_DONE2;
+    } else {
         return ApiStatus_FINISH;
     }
-
-    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(PlayerPowerBounceEnemy) {
@@ -1669,13 +1668,14 @@ API_CALLABLE(PlayerPowerBounceEnemy) {
     if (hitResult < 0) {
         return ApiStatus_FINISH;
     }
+
     evt_set_variable(script, hitResultOutVar, hitResult);
 
-    if (!does_script_exist_by_ref(script)) {
+    if (does_script_exist_by_ref(script)) {
+        return ApiStatus_DONE2;
+    } else {
         return ApiStatus_FINISH;
     }
-
-    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(PlayerTestEnemy) {
@@ -1744,19 +1744,19 @@ API_CALLABLE(PlayerTestEnemy) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(DispatchDamagePlayerEvent) {
+API_CALLABLE(DispatchDamageEventPlayer) {
     Bytecode* args = script->ptrReadPos;
     s32 damageAmount = evt_get_variable(script, *args++);
 
-    if (dispatch_damage_tick_event_player(damageAmount, *args++) < 0) {
+    if (dispatch_generic_damage_event_player(damageAmount, *args++) < 0) {
         return ApiStatus_BLOCK;
     }
 
     if (does_script_exist_by_ref(script)) {
         return ApiStatus_DONE2;
+    } else {
+        return ApiStatus_BLOCK;
     }
-
-    return ApiStatus_BLOCK;
 }
 
 API_CALLABLE(EnablePlayerBlur) {

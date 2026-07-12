@@ -1,6 +1,6 @@
 # EVT Plus
 
-This branch adds new quality of life features and capabilities to EVT scripts to make them more robust and increase readability while staying reverse compatible and optional.
+This branch adds quality-of-life features and capabilities to EVT scripts to make them more robust and readable. The goal is to make correct, concise EvtScripts easier to write by providing first-class support for patterns that previously required substantial boilerplate or Goto-based control flow.
 
 The primary features are:
 
@@ -150,14 +150,20 @@ The validator catches problems that would crash or cause undefined behavior, as 
 The validator has its own focused test suite:
 
 ```sh
-python3 tools/evt_test/run_tests.py
+python3 tools/test/evt_validator.py
 ```
 
 Fixtures live in:
 
-- `tools/evt_test/pass/` for scripts that should compile and validate
-- `tools/evt_test/fail/` for scripts that should fail validation
+- `tools/test/evt_validator/pass/` for scripts that should compile and validate
+- `tools/test/evt_validator/fail/` for scripts that should fail validation
 - each fail test has a `.stderr` with expected error messages
+
+Interpreter and script-lifecycle behavior also has a host-side runtime test compiled with sanitizers. The command first runs the whole-project `validate_evt_us` target, then executes test scripts covering ordinary VM behavior and termination:
+
+```sh
+python3 tools/test/evt_runtime.py
+```
 
 ## 2. Exec with Arguments
 
@@ -651,7 +657,9 @@ EndLerp
 
 `Finally` marks a cleanup tail for a script. When present, the cleanup tail runs immediately before the script is destroyed by `Return`, normal `End`/`EndThread`/`EndChildThread`, or an external `kill_script`.
 
-The whole cleanup tail must finish right away. It cannot wait for another frame, block on an API call, or start a child script and wait for it to finish.
+Any blocking child or `ChildThread` descendants are finalized first. The parent cleanup tail then runs after its children have released their resources and copied back any blocking-child state. Termination does not yield to a later frame: reentrant cleanup is deferred only as far as the nearest safe interpreter boundary in the same VM invocation.
+
+The whole cleanup tail must finish right away. It cannot wait for another frame, block on an API call, or start an owned child. `Exec` and `ExecGetID` may launch detached scripts which continue independently after the finalizing script is destroyed.
 
 This is intended for temporary resources or state that must be released even if the script exits early:
 
@@ -679,8 +687,14 @@ Finalizers are deliberately restricted:
 - `Finally` must be top-level in its script, `Thread`, or `ChildThread` scope
 - only one `Finally` is allowed per scope
 - finalizers run immediately and must not block or yield to a later frame
-- obvious blocking or control-flow commands such as `Wait`, `ExecWait`, `Goto`, `Jump`, `BreakLoop`, `ContinueLoop`, `Thread`, and `ChildThread` are rejected by the validator
-- `Call` is allowed, but the runtime will assert if the function returns `ApiStatus_BLOCK`
+- obvious blocking or control-flow commands such as `Wait`, `ExecWait`, `Goto`, `Jump`, `BreakLoop`, `ContinueLoop`, `Thread`, `ChildThread`, and `BreakPoint` are rejected by the validator
+- `Call` is allowed, but the runtime will assert if the function returns `ApiStatus_BLOCK` or starts an owned child
+
+Detached scripts started during an individual finalizer survive that script's termination. `kill_all_scripts` continues scanning until no running scripts remain, so detached scripts launched by finalizers do not escape a global shutdown.
+
+`KillScript` is allowed and is useful for cleaning up a detached companion started earlier with `ExecGetID`. Killing an already-terminating script, including the current script from its own finalizer, is an idempotent no-op. A target normally finishes before `KillScript` returns; when reentrant ownership requires unwinding an active child or command first, cleanup still completes later in the same VM invocation.
+
+`clear_script_list` remains the intentional exception: it is part of the hard memory reset between game states and bypasses per-script cleanup along with the rest of the old heap.
 
 This makes `Finally` suitable for cleanup work like freeing resources, restoring flags, unregistering transient state, or undoing setup performed earlier in the script.
 

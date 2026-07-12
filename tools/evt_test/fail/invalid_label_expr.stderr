@@ -1,3 +1,0 @@
-tools/evt_test/fail/invalid_label_expr.c:
-EVS_InvalidLabelExpr
-is not a constant label

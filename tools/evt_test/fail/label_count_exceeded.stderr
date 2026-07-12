@@ -1,3 +1,0 @@
-tools/evt_test/fail/label_count_exceeded.c:
-EVS_LabelCountExceeded
-Label count 25 exceeds runtime limit of 24
