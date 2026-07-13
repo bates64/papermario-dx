@@ -378,6 +378,18 @@ static API_CALLABLE(VerifyControlFlow) {
     return ApiStatus_DONE2;
 }
 
+static API_CALLABLE(VerifyLoopControlState) {
+    Bytecode* args = script->ptrReadPos;
+    s32 actual = evt_get_variable(script, *args++);
+    s32 expected = evt_get_variable(script, *args++);
+
+    CHECK(script->loopDepth == -1);
+    CHECK(script->switchDepth == -1);
+    CHECK(!script->lerpActive);
+    CHECK(actual == expected);
+    return ApiStatus_DONE2;
+}
+
 static API_CALLABLE(VerifyStorage) {
     CHECK(evt_get_variable(script, LVar0) == 11);
     CHECK(evt_get_variable(script, LVar1) == 22);
@@ -944,6 +956,126 @@ EvtScript EVS_TestControlFlow = {
         Add(LVar9, 1)
     EndLoop
     Call(VerifyControlFlow)
+    End
+};
+
+EvtScript EVS_TestLoopControlSwitches = {
+    Set(LVar0, 0)
+    Loop(1)
+        Switch(LVar0)
+            CaseDefault
+                SwitchConst(0)
+                    CaseDefault
+                        BreakLoop
+                        Switch(LVar0)
+                            CaseDefault
+                                SwitchConst(0)
+                                    CaseDefault
+                                        Add(LVar0, 100)
+                                EndSwitch
+                        EndSwitch
+                EndSwitch
+        EndSwitch
+    EndLoop
+    Call(VerifyLoopControlState, LVar0, 0)
+
+    Set(LVar0, 0)
+    Loop(2)
+        Switch(LVar0)
+            CaseDefault
+                SwitchConst(0)
+                    CaseDefault
+                        Add(LVar0, 1)
+                        ContinueLoop
+                EndSwitch
+        EndSwitch
+    EndLoop
+    Call(VerifyLoopControlState, LVar0, 2)
+
+    Set(LVar0, 0)
+    Loop(1)
+        Switch(LVar0)
+            CaseDefault
+                SwitchConst(0)
+                    CaseDefault
+                        Add(LVar0, 1)
+                        IfLt(LVar0, 3)
+                            RetryLoop
+                        EndIf
+                EndSwitch
+        EndSwitch
+    EndLoop
+    Call(VerifyLoopControlState, LVar0, 3)
+
+    Lerp(LVar0, 0, 10, 2, EASING_LINEAR)
+        SwitchConst(0)
+            CaseDefault
+                BreakLoop
+        EndSwitch
+    EndLerp
+    Call(VerifyLoopControlState, 0, 0)
+
+    Set(LVar0, 0)
+    SwitchConst(0)
+        CaseDefault
+            Loop(2)
+                Loop(2)
+                    Add(LVar0, 1)
+                    BreakSwitch
+                EndLoop
+            EndLoop
+    EndSwitch
+    Call(VerifyLoopControlState, LVar0, 1)
+
+    Set(LVar0, 0)
+    Loop(2)
+        SwitchConst(0)
+            CaseEq(0)
+                BreakSwitch
+            CaseDefault
+                SwitchConst(0)
+                    CaseDefault
+                        Loop(2)
+                            Add(LVar0, 100)
+                        EndLoop
+                EndSwitch
+        EndSwitch
+        Add(LVar0, 1)
+    EndLoop
+    Call(VerifyLoopControlState, LVar0, 2)
+
+    Set(LVar0, 0)
+    SwitchConst(0)
+        CaseDefault
+            Lerp(LVar0, 0, 10, 2, EASING_LINEAR)
+                BreakSwitch
+            EndLerp
+    EndSwitch
+    Call(VerifyLoopControlState, 0, 0)
+
+    Set(LVar0, 0)
+    SwitchConst(0)
+        CaseEq(0)
+            Add(LVar0, 1)
+        CaseDefault
+            SwitchConst(0)
+                CaseDefault
+                    Add(LVar0, 100)
+            EndSwitch
+    EndSwitch
+    Call(VerifyLoopControlState, LVar0, 1)
+
+    Set(LVar0, 0)
+    SwitchConst(0)
+        CaseEq(1)
+            SwitchConst(0)
+                CaseDefault
+                    Add(LVar0, 100)
+            EndSwitch
+        CaseDefault
+            Add(LVar0, 2)
+    EndSwitch
+    Call(VerifyLoopControlState, LVar0, 2)
     End
 };
 
@@ -1771,6 +1903,7 @@ static void test_interpreter_behavior(void) {
     EvtScript* scripts[] = {
         &EVS_TestArithmetic,
         &EVS_TestControlFlow,
+        &EVS_TestLoopControlSwitches,
         &EVS_TestStorage,
         &EVS_TestEval,
         &EVS_TestArgsParent,

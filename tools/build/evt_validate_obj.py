@@ -372,7 +372,9 @@ class LabelValue:
 class LabelScope:
     kind: str
     start_pos: int
+    stack_base: int
     labels: dict[LabelValue, int]
+    case_group_stack: list[CaseGroup | None]
     finally_pos: int | None = None
 
 
@@ -949,10 +951,7 @@ class ScriptWalkContext:
         self.script = script
         self.stack: list[Block] = []
         self.gotos: list[GotoRef] = []
-        self.label_scopes: list[LabelScope] = [LabelScope("root", 0, {})]
-        self.cur_loop_depth = 0
-        self.cur_switch_depth = 0
-        self.case_group_stack: list[CaseGroup | None] = []
+        self.label_scopes: list[LabelScope] = [LabelScope("root", 0, 0, {}, [])]
         self.current_line: int | None = None
 
     def error_at(self, op_pos: int, message: str) -> ValidationError:
@@ -970,20 +969,17 @@ class ScriptWalkContext:
     def top_is_any(self, kinds: set[str]) -> bool:
         return bool(self.stack and self.stack[-1].kind in kinds)
 
-    def contains(self, kind: str) -> bool:
-        return any(block.kind == kind for block in self.stack)
-
     def current_label_scope(self) -> LabelScope:
         return self.label_scopes[-1]
 
+    def current_scope_blocks(self) -> list[Block]:
+        return self.stack[self.current_label_scope().stack_base:]
+
+    def contains(self, kind: str) -> bool:
+        return any(block.kind == kind for block in self.current_scope_blocks())
+
     def scope_is_at_top_level(self, scope: LabelScope) -> bool:
-        if scope.kind == "root":
-            return not self.stack
-        return bool(
-            self.stack
-            and self.stack[-1].kind == scope.kind
-            and self.stack[-1].start_pos == scope.start_pos
-        )
+        return len(self.stack) == scope.stack_base
 
     def enter_finally(self, op_pos: int) -> None:
         scope = self.current_label_scope()
@@ -1019,11 +1015,11 @@ class ScriptWalkContext:
         self.pop()
 
     def enter_loop_like(self, op_pos: int, kind: str, command: str) -> None:
-        self.cur_loop_depth += 1
-        if self.cur_loop_depth > MAX_LOOP_DEPTH:
+        loop_depth = sum(block.kind in {"loop", "lerp"} for block in self.current_scope_blocks()) + 1
+        if loop_depth > MAX_LOOP_DEPTH:
             raise self.error_at(
                 op_pos,
-                f"{command} nesting depth {self.cur_loop_depth} exceeds runtime limit of {MAX_LOOP_DEPTH}",
+                f"{command} nesting depth {loop_depth} exceeds runtime limit of {MAX_LOOP_DEPTH}",
             )
         self.push(kind, op_pos)
 
@@ -1034,7 +1030,6 @@ class ScriptWalkContext:
         if not self.top_is("loop"):
             raise self.error_at(op_pos, "EndLoop without matching Loop")
         self.pop()
-        self.cur_loop_depth -= 1
 
     def enter_lerp(self, op_pos: int) -> None:
         if self.contains("lerp"):
@@ -1045,10 +1040,9 @@ class ScriptWalkContext:
         if not self.top_is("lerp"):
             raise self.error_at(op_pos, "EndLerp without matching Lerp")
         self.pop()
-        self.cur_loop_depth -= 1
 
     def nearest_loop_kind(self) -> str | None:
-        for block in reversed(self.stack):
+        for block in reversed(self.current_scope_blocks()):
             if block.kind in {"loop", "lerp"}:
                 return block.kind
         return None
@@ -1072,31 +1066,31 @@ class ScriptWalkContext:
             raise self.error_at(op_pos, "RetryLoop is not allowed inside Lerp")
 
     def enter_switch(self, op_pos: int) -> None:
-        self.cur_switch_depth += 1
-        if self.cur_switch_depth > MAX_SWITCH_DEPTH:
+        switch_depth = sum(block.kind == "switch" for block in self.current_scope_blocks()) + 1
+        if switch_depth > MAX_SWITCH_DEPTH:
             raise self.error_at(
                 op_pos,
-                f"Switch nesting depth {self.cur_switch_depth} exceeds runtime limit of {MAX_SWITCH_DEPTH}",
+                f"Switch nesting depth {switch_depth} exceeds runtime limit of {MAX_SWITCH_DEPTH}",
             )
         self.push("switch", op_pos)
-        self.case_group_stack.append(None)
+        self.current_label_scope().case_group_stack.append(None)
 
     def exit_switch(self, op_pos: int) -> None:
         if not self.top_is("switch"):
             raise self.error_at(op_pos, "EndSwitch without matching Switch")
         self.check_no_open_case_group(op_pos, "EndSwitch")
         self.pop()
-        self.case_group_stack.pop()
-        self.cur_switch_depth -= 1
+        self.current_label_scope().case_group_stack.pop()
 
     def check_inside_switch(self, op_pos: int, name: str) -> None:
         if not self.contains("switch"):
             raise self.error_at(op_pos, f"{name} outside Switch")
 
     def active_case_group(self) -> CaseGroup | None:
-        if not self.case_group_stack:
+        case_group_stack = self.current_label_scope().case_group_stack
+        if not case_group_stack:
             return None
-        return self.case_group_stack[-1]
+        return case_group_stack[-1]
 
     def check_no_open_case_group(self, op_pos: int, name: str) -> None:
         group = self.active_case_group()
@@ -1111,7 +1105,7 @@ class ScriptWalkContext:
         if opcode in CASE_GROUP_OPS:
             group = self.active_case_group()
             if group is None:
-                self.case_group_stack[-1] = CaseGroup(opcode, op_pos)
+                self.current_label_scope().case_group_stack[-1] = CaseGroup(opcode, op_pos)
             elif group.opcode != opcode:
                 raise self.error_at(
                     op_pos,
@@ -1124,11 +1118,11 @@ class ScriptWalkContext:
         self.check_inside_switch(op_pos, Opcode.EVT_OP_END_CASE_GROUP.name)
         if self.active_case_group() is None:
             raise self.error_at(op_pos, "EndCaseGroup without active CaseOrEq/CaseAndEq group")
-        self.case_group_stack[-1] = None
+        self.current_label_scope().case_group_stack[-1] = None
 
     def enter_thread(self, op_pos: int) -> None:
         self.push("thread", op_pos)
-        self.label_scopes.append(LabelScope("thread", op_pos, {}))
+        self.label_scopes.append(LabelScope("thread", op_pos, len(self.stack), {}, []))
 
     def exit_thread(self, op_pos: int) -> None:
         if not self.top_is("thread"):
@@ -1138,7 +1132,7 @@ class ScriptWalkContext:
 
     def enter_child_thread(self, op_pos: int) -> None:
         self.push("child_thread", op_pos)
-        self.label_scopes.append(LabelScope("child_thread", op_pos, {}))
+        self.label_scopes.append(LabelScope("child_thread", op_pos, len(self.stack), {}, []))
 
     def exit_child_thread(self, op_pos: int) -> None:
         if not self.top_is("child_thread"):
@@ -1148,11 +1142,11 @@ class ScriptWalkContext:
 
     def define_label(self, op_pos: int, label: LabelValue) -> None:
         scope = self.current_label_scope()
-        prev_pos = scope.labels.get(label)
-        if prev_pos is not None:
+        prev = scope.labels.get(label)
+        if prev is not None:
             raise self.error_at(
                 op_pos,
-                f"duplicate Label({format_label(label)}) previously defined at +0x{prev_pos * 4:X}",
+                f"duplicate Label({format_label(label)}) previously defined at +0x{prev * 4:X}",
             )
 
         scope.labels[label] = op_pos

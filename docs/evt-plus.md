@@ -61,6 +61,7 @@ The primary features are:
 14. [Buffer Reads](#14-buffer-reads)
 15. [Command Renames](#15-command-renames)
 
+- [Bug Fixes](#bug-fixes)
 - [Additional Ideas](#additional-ideas)
 
 ## Preview
@@ -951,6 +952,16 @@ Several command names were updated to match current engine terminology. In parti
 | `BindPadlock` | `BindItemPrompt` |
 
 Compatibility aliases are provided, so the old names still compile. New scripts should prefer the new names.
+
+## Bug Fixes
+
+EVT Plus also fixes several problems in the existing EVT interpreter. These changes do not add new commands and generally require no changes to existing scripts:
+
+- Nested `Thread` and `ChildThread` blocks now skip to their matching terminator. The vanilla interpreter stopped at the first `EndThread` or `EndChildThread`, even when it belonged to a nested block.
+- `BreakLoop` now closes any active `Switch` blocks it exits. Skipping their `EndSwitch` commands previously left stale switch state in the interpreter. `ContinueLoop` and `RetryLoop` use the same safe loop-jump handling.
+- `BreakSwitch` likewise discards any active `Loop` or `Lerp` blocks it exits, rather than leaving stale loop state behind.
+- Case skipping now treats `SwitchConst` as a nested switch. It previously mistook the nested block's `EndSwitch` for the end of the outer switch.
+- `DebugPrintVar` now identifies each variable type correctly and prints flag values as `0` or `1` rather than exposing their underlying bit masks.
 
 ## Additional Ideas
 

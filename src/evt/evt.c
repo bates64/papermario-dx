@@ -16,8 +16,9 @@ Bytecode* evt_skip_if(Evt* script);
 Bytecode* evt_skip_else(Evt* script);
 Bytecode* evt_goto_end_case(Evt* script);
 Bytecode* evt_goto_next_case(Evt* script);
-Bytecode* evt_goto_end_loop(Evt* script);
-Bytecode* evt_goto_loop_continue(Evt* script);
+void evt_skip_to_loop_end(Evt* script);
+void evt_skip_to_switch_end(Evt* script);
+void evt_pop_switch(Evt* script);
 
 typedef enum EvtLabelKind {
     EVT_LABEL_KIND_INVALID = 0,
@@ -40,15 +41,15 @@ EvtLabelKind evt_get_label_kind(Bytecode label) {
     return EVT_LABEL_KIND_INVALID;
 }
 
-static b32 evt_is_label_initial_char(char ch) {
+b32 evt_is_label_initial_char(char ch) {
     return (ch == '_') || (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z');
 }
 
-static b32 evt_is_label_char(char ch) {
+b32 evt_is_label_char(char ch) {
     return evt_is_label_initial_char(ch) || (ch >= '0' && ch <= '9');
 }
 
-static b32 evt_try_read_label_name(Bytecode label, char* out, s32 outSize) {
+b32 evt_try_read_label_name(Bytecode label, char* out, s32 outSize) {
     const char* src = (const char*)label;
     s32 len = 0;
     char ch;
@@ -231,7 +232,11 @@ ApiStatus evt_handle_end_loop(Evt* script) {
 
 ApiStatus evt_handle_break_loop(Evt* script) {
     ASSERT(script->loopDepth >= 0);
-    script->ptrNextLine = evt_goto_end_loop(script);
+    evt_skip_to_loop_end(script);
+
+    // advance to command *after* EndLoop
+    script->ptrNextLine += 1 + EVT_CMD_ARGC(*script->ptrNextLine);
+
     if (script->loopTypeTable[script->loopDepth] == EVT_LOOP_TYPE_LERP) {
         script->lerpActive = false;
     }
@@ -245,7 +250,7 @@ ApiStatus evt_handle_continue_loop(Evt* script) {
         script->loopTypeTable[script->loopDepth] != EVT_LOOP_TYPE_LERP,
         "ContinueLoop is not allowed inside Lerp"
     );
-    script->ptrNextLine = evt_goto_loop_continue(script);
+    evt_skip_to_loop_end(script);
     return ApiStatus_NEXT;
 }
 
@@ -257,6 +262,7 @@ ApiStatus evt_handle_retry_loop(Evt* script) {
         script->loopTypeTable[loopDepth] != EVT_LOOP_TYPE_LERP,
         "RetryLoop is not allowed inside Lerp"
     );
+    evt_skip_to_loop_end(script);
     script->ptrNextLine = (Bytecode*)script->loopStartTable[loopDepth];
     return ApiStatus_NEXT;
 }
@@ -782,18 +788,21 @@ ApiStatus evt_handle_end_case_group(Evt* script) {
 
 ApiStatus evt_handle_break_case(Evt* script) {
     ASSERT(script->switchDepth >= 0);
-    script->ptrNextLine = evt_goto_end_case(script);
+    evt_skip_to_switch_end(script);
     return ApiStatus_NEXT;
 }
 
-ApiStatus evt_handle_end_switch(Evt* script) {
+void evt_pop_switch(Evt* script) {
     s32 switchDepth = script->switchDepth;
 
     ASSERT(switchDepth >= 0);
 
     script->switchBlockState[switchDepth] = 0;
     script->switchDepth--;
+}
 
+ApiStatus evt_handle_end_switch(Evt* script) {
+    evt_pop_switch(script);
     return ApiStatus_NEXT;
 }
 
@@ -3127,6 +3136,7 @@ Bytecode* evt_goto_end_case(Evt* script) {
                 PANIC();
                 break;
             case EVT_OP_SWITCH:
+            case EVT_OP_SWITCH_CONST:
                 switchDepth++;
                 break;
             case EVT_OP_END_SWITCH:
@@ -3157,6 +3167,7 @@ Bytecode* evt_goto_next_case(Evt* script) {
                 PANIC();
                 break;
             case EVT_OP_SWITCH:
+            case EVT_OP_SWITCH_CONST:
                 switchDepth++;
                 break;
             case EVT_OP_END_SWITCH:
@@ -3184,16 +3195,19 @@ Bytecode* evt_goto_next_case(Evt* script) {
     } while (true);
 }
 
-Bytecode* evt_goto_end_loop(Evt* script) {
-    s32 loopDepth = 0;
+// Skips to the current loop's terminator and closes any active Switch blocks left behind.
+void evt_skip_to_loop_end(Evt* script) {
+    s32 nestingDepth = 0;
+    s32 skippedSwitchDepth = 0;
     Bytecode* pos = script->ptrNextLine;
+    Bytecode* cmd;
     s32 opcode;
     s32 nargs;
 
     do {
-        s32 rawCmd = *pos++;
-        opcode = EVT_CMD_OPCODE(rawCmd);
-        nargs = EVT_CMD_ARGC(rawCmd);
+        cmd = pos++;
+        opcode = EVT_CMD_OPCODE(*cmd);
+        nargs = EVT_CMD_ARGC(*cmd);
         pos += nargs;
 
         switch (opcode) {
@@ -3202,46 +3216,80 @@ Bytecode* evt_goto_end_loop(Evt* script) {
                 break;
             case EVT_OP_END_LOOP:
             case EVT_OP_END_LERP:
-                loopDepth--;
-                if (loopDepth < 0) {
-                    return pos;
+                if (nestingDepth == 0) {
+                    script->ptrNextLine = cmd;
+                    return;
                 }
+                nestingDepth--;
                 break;
             case EVT_OP_LOOP:
             case EVT_OP_LERP:
-                loopDepth++;
+                nestingDepth++;
+                break;
+            case EVT_OP_SWITCH:
+            case EVT_OP_SWITCH_CONST:
+                skippedSwitchDepth++;
+                break;
+            case EVT_OP_END_SWITCH:
+                if (skippedSwitchDepth > 0) {
+                    skippedSwitchDepth--;
+                } else {
+                    evt_pop_switch(script);
+                }
                 break;
         }
     } while (true);
 }
 
-Bytecode* evt_goto_loop_continue(Evt* script) {
-    s32 loopDepth = 0;
+// Skips to the current Switch terminator and discards any active loops left behind.
+void evt_skip_to_switch_end(Evt* script) {
+    s32 nestingDepth = 0;
+    s32 skippedLoopDepth = 0;
     Bytecode* pos = script->ptrNextLine;
+    Bytecode* cmd;
     s32 opcode;
     s32 nargs;
 
     do {
-        Bytecode* cmd = pos;
-        s32 rawCmd = *pos++;
-        opcode = EVT_CMD_OPCODE(rawCmd);
-        nargs = EVT_CMD_ARGC(rawCmd);
+        cmd = pos++;
+        opcode = EVT_CMD_OPCODE(*cmd);
+        nargs = EVT_CMD_ARGC(*cmd);
         pos += nargs;
 
         switch (opcode) {
             case EVT_OP_END:
                 PANIC();
                 break;
-            case EVT_OP_END_LOOP:
-            case EVT_OP_END_LERP:
-                loopDepth--;
-                if (loopDepth < 0) {
-                    return cmd;
+            case EVT_OP_END_SWITCH:
+                if (nestingDepth == 0) {
+                    script->ptrNextLine = cmd;
+                    return;
                 }
+                nestingDepth--;
+                break;
+            case EVT_OP_SWITCH:
+            case EVT_OP_SWITCH_CONST:
+                nestingDepth++;
                 break;
             case EVT_OP_LOOP:
             case EVT_OP_LERP:
-                loopDepth++;
+                skippedLoopDepth++;
+                break;
+            case EVT_OP_END_LOOP:
+            case EVT_OP_END_LERP:
+                if (skippedLoopDepth > 0) {
+                    skippedLoopDepth--;
+                } else {
+                    ASSERT(script->loopDepth >= 0);
+                    if (opcode == EVT_OP_END_LERP) {
+                        ASSERT(script->loopTypeTable[script->loopDepth] == EVT_LOOP_TYPE_LERP);
+                        ASSERT(script->lerpActive);
+                        script->lerpActive = false;
+                    } else {
+                        ASSERT(script->loopTypeTable[script->loopDepth] == EVT_LOOP_TYPE_BASIC);
+                    }
+                    script->loopDepth--;
+                }
                 break;
         }
     } while (true);

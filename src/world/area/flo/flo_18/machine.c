@@ -311,7 +311,7 @@ EvtScript N(EVS_DamagedRightOnce) = {
             Set(LVar1, -25)
         EndIf
         IfGt(LVar0, 90)
-            Goto(0)
+            BreakLoop
         EndIf
         Call(TranslateModel, MODEL_o117, 50, 28, 27)
         Call(TranslateModel, MODEL_o118, 50, 28, 27)
@@ -325,7 +325,6 @@ EvtScript N(EVS_DamagedRightOnce) = {
         Call(TranslateModel, MODEL_o118, -50, -28, -27)
         Wait(1)
     EndLoop
-    Label(0)
     Wait(30)
     Return
     End
@@ -347,7 +346,7 @@ EvtScript N(EVS_DamagedLeftTwice) = {
             SetF(LVar2, 80)
             MulF(LVar5, Float(-0.5))
             IfEq(LVar5, 0)
-                Goto(0)
+                BreakLoop
             EndIf
         EndIf
         Call(TranslateModel, MODEL_o119, -55, 5, 16)
@@ -356,7 +355,6 @@ EvtScript N(EVS_DamagedLeftTwice) = {
         Call(TranslateModel, MODEL_o119, 55, -5, -16)
         Wait(1)
     EndLoop
-    Label(0)
     Wait(30)
     Return
     End
@@ -378,7 +376,7 @@ EvtScript N(EVS_DamagedRightTwice) = {
             SetF(LVar2, 80)
             MulF(LVar5, Float(-0.5))
             IfEq(LVar5, 0)
-                Goto(0)
+                BreakLoop
             EndIf
         EndIf
         Call(TranslateModel, MODEL_o122, 60, 0, 16)
@@ -398,7 +396,6 @@ EvtScript N(EVS_DamagedRightTwice) = {
         Call(TranslateModel, MODEL_o124, 0, 0, 41)
         Wait(1)
     EndLoop
-    Label(0)
     Wait(30)
     Return
     End
