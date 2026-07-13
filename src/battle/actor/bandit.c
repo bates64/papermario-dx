@@ -318,7 +318,7 @@ EvtScript N(EVS_HandleEvent) = {
     Call(GetLastEvent, ACTOR_SELF, LVar0)
     Switch(LVar0)
         CaseEq(EVENT_HIT_COMBO)
-            ExecGetID(N(EVS_DropCoin), ArrayVar(0))
+            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_Hurt)
             ExecWait(EVS_Enemy_Hit)
@@ -331,7 +331,7 @@ EvtScript N(EVS_HandleEvent) = {
             EndLoop
         CaseOrEq(EVENT_HIT)
         CaseOrEq(EVENT_SPIN_SMASH_LAUNCH_HIT)
-            ExecGetID(N(EVS_DropCoin), ArrayVar(0))
+            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_Hurt)
             ExecWait(EVS_Enemy_Hit)
@@ -344,7 +344,7 @@ EvtScript N(EVS_HandleEvent) = {
             EndLoop
         EndCaseGroup
         CaseEq(EVENT_BURN_HIT)
-            ExecGetID(N(EVS_DropCoin), ArrayVar(0))
+            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_BurnHurt)
             SetConst(LVar2, ANIM_Bandit_BurnStill)
@@ -357,7 +357,7 @@ EvtScript N(EVS_HandleEvent) = {
                 Wait(1)
             EndLoop
         CaseEq(EVENT_BURN_DEATH)
-            ExecGetID(N(EVS_DropCoin), ArrayVar(0))
+            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_BurnHurt)
             SetConst(LVar2, ANIM_Bandit_BurnStill)
@@ -374,7 +374,7 @@ EvtScript N(EVS_HandleEvent) = {
             EndLoop
             Return
         CaseEq(EVENT_SPIN_SMASH_HIT)
-            ExecGetID(N(EVS_DropCoin), ArrayVar(0))
+            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_Hurt)
             ExecWait(EVS_Enemy_SpinSmashHit)
@@ -386,7 +386,7 @@ EvtScript N(EVS_HandleEvent) = {
                 Wait(1)
             EndLoop
         CaseEq(EVENT_SPIN_SMASH_DEATH)
-            ExecGetID(N(EVS_DropCoin), ArrayVar(0))
+            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_Hurt)
             ExecWait(EVS_Enemy_SpinSmashHit)
@@ -436,7 +436,7 @@ EvtScript N(EVS_HandleEvent) = {
         EndCaseGroup
         CaseOrEq(EVENT_DEATH)
         CaseOrEq(EVENT_SPIN_SMASH_LAUNCH_DEATH)
-            ExecGetID(N(EVS_DropCoin), ArrayVar(0))
+            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_Hurt)
             ExecWait(EVS_Enemy_Hit)
@@ -458,7 +458,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar1, ANIM_Bandit_Idle)
             ExecWait(EVS_Enemy_Recover)
         CaseEq(EVENT_SCARE_AWAY)
-            ExecGetID(N(EVS_DropCoin), ArrayVar(0))
+            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_Run)
             SetConst(LVar2, ANIM_Bandit_Hurt)
@@ -472,7 +472,7 @@ EvtScript N(EVS_HandleEvent) = {
             EndLoop
             Return
         CaseEq(EVENT_BEGIN_AIR_LIFT)
-            ExecGetID(N(EVS_DropCoin), ArrayVar(0))
+            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_Hurt)
             ExecWait(EVS_Enemy_AirLift)

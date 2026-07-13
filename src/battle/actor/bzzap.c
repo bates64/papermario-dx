@@ -492,7 +492,7 @@ EvtScript N(EVS_Attack_CallSwarm) = {
     Call(SetActorYaw, ACTOR_SELF, 0)
     Call(PlaySound, SOUND_MINI_BZZAP_BUZZ)
     Set(LVar0, PRT_SWARM_1)
-    ExecGetID(N(EVS_SummonSwarmPart), LVarA)
+    ExecGetID(LVarA, N(EVS_SummonSwarmPart))
     Wait(11)
     Set(LVar0, PRT_SWARM_2)
     Exec(N(EVS_SummonSwarmPart))

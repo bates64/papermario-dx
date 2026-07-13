@@ -1083,8 +1083,7 @@ static void destroy_actor(Actor* actor) {
 
     ASSERT(actor->deletePending);
 
-    // TODO hard-coded
-    for (i = 0; i < 2; i++) {
+    for (i = 0; i < MAX_ACTOR_DECORATIONS; i++) {
         remove_actor_decoration(actor, i);
     }
     set_actor_glow_pal(actor, GLOW_PAL_OFF);
@@ -1177,7 +1176,7 @@ void btl_delete_player_actor(Actor* player) {
     DecorationTable* decorations;
     s32 i;
 
-    for (i = 0; i < 2; i++) {
+    for (i = 0; i < MAX_ACTOR_DECORATIONS; i++) {
         remove_actor_decoration(player, i);
     }
 

@@ -738,7 +738,7 @@ EvtScript N(EVS_ManageParade) = {
     Call(SetMusic, 0, SONG_PARADE_NIGHT, 0, VOL_LEVEL_FULL)
     Exec(N(EVS_SetupInitialCamera))
     Exec(N(EVS_ManageNpcPool))
-    ExecGetID(N(EVS_ParadePhase_StarSpirits), LVarA)
+    ExecGetID(LVarA, N(EVS_ParadePhase_StarSpirits))
     Loop(0)
         Wait(1)
         IsScriptRunning(LVarA, LVar0)
@@ -747,8 +747,8 @@ EvtScript N(EVS_ManageParade) = {
         EndIf
     EndLoop
     Exec(N(EVS_ParadePhase_PlayCredits))
-    ExecGetID(N(EVS_UpdateScrollPos), LVarA)
-    ExecGetID(N(EVS_UpdateTexPan_Ground), LVarB)
+    ExecGetID(LVarA, N(EVS_UpdateScrollPos))
+    ExecGetID(LVarB, N(EVS_UpdateTexPan_Ground))
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -812,7 +812,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    ExecGetID(N(EVS_ParadePhase_MarioPeach), LVarC)
+    ExecGetID(LVarC, N(EVS_ParadePhase_MarioPeach))
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)

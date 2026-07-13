@@ -2638,19 +2638,19 @@ EvtScript N(EVS_Broadcast_ToppleHit) = {
 EvtScript N(EVS_BroadcastToKoopaBros) = {
     Call(ActorExists, GREEN_ACTOR, LVar0)
     IfEq(LVar0, true)
-        ExecGetID(A(green_ninja_koopa_HandleCommand), LVar1)
+        ExecGetID(LVar1, A(green_ninja_koopa_HandleCommand))
     EndIf
     Call(ActorExists, YELLOW_ACTOR, LVar0)
     IfEq(LVar0, true)
-        ExecGetID(A(yellow_ninja_koopa_HandleCommand), LVar1)
+        ExecGetID(LVar1, A(yellow_ninja_koopa_HandleCommand))
     EndIf
     Call(ActorExists, BLACK_ACTOR, LVar0)
     IfEq(LVar0, true)
-        ExecGetID(A(black_ninja_koopa_HandleCommand), LVar1)
+        ExecGetID(LVar1, A(black_ninja_koopa_HandleCommand))
     EndIf
     Call(ActorExists, RED_ACTOR, LVar0)
     IfEq(LVar0, true)
-        ExecGetID(A(red_ninja_koopa_HandleCommand), LVar1)
+        ExecGetID(LVar1, A(red_ninja_koopa_HandleCommand))
     EndIf
     // if any koopa bros are still alive, wait for their script to finish
     Label(0)

@@ -827,7 +827,7 @@ EvtScript N(EVS_NpcInteract_Merlee) = {
     Call(SetMusic, 0, SONG_MERLEE_SPELL, 0, VOL_LEVEL_FULL)
     Call(DisablePartnerAI, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
-    ExecGetID(N(EVS_PerformRitual), LVar9)
+    ExecGetID(LVar9, N(EVS_PerformRitual))
     Loop(0)
         IsScriptRunning(LVar9, LVar1)
         IfEq(LVar1, 0)

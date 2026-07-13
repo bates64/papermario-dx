@@ -1623,7 +1623,7 @@ EvtScript N(EVS_Move_HealOrSlam) = {
     #define HNP_INHALE_CHILD(idx) \
         IfFlag(LVar9, 1 << idx) \
             Set(LVar0, ArrayVar(idx)) \
-            ExecGetID(N(EVS_RuffPuff_Inhale), LVar7) \
+            ExecGetID(LVar7, N(EVS_RuffPuff_Inhale)) \
             Add(LVar1, 1) \
             Wait(5) \
         EndIf
@@ -1988,7 +1988,7 @@ EvtScript N(EVS_Move_HurricaneBreath) = {
 EvtScript N(EVS_Move_ChargeForGround) = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
-    ExecGetID(N(EVS_UpdateChargedJitter), LVarA)
+    ExecGetID(LVarA, N(EVS_UpdateChargedJitter))
     Call(SetActorVar, ACTOR_SELF, AVAR_ChargedJitterScriptID, LVarA)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -2132,7 +2132,7 @@ EvtScript N(EVS_Attack_GroundLightning) = {
 EvtScript N(EVS_Move_ChargeForDirect) = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
-    ExecGetID(N(EVS_UpdateChargedJitter), LVarA)
+    ExecGetID(LVarA, N(EVS_UpdateChargedJitter))
     Call(SetActorVar, ACTOR_SELF, AVAR_ChargedJitterScriptID, LVarA)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -2859,7 +2859,7 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
         IfFlag(LVar0, 1 << idx) \
             Set(LVar1, ArrayVar(idx)) \
             Set(LVar2, LVarA) \
-            ExecGetID(N(EVS_TuffPuff_SqueezePlayer), ArrayVar(idx + MAX_RUFF_PUFFS)) \
+            ExecGetID(ArrayVar(idx + MAX_RUFF_PUFFS), N(EVS_TuffPuff_SqueezePlayer)) \
             Add(LVar3, 1) \
         EndIf
 

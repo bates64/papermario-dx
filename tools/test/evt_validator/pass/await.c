@@ -7,7 +7,7 @@ EvtScript EVS_AwaitWorker = {
 
 EvtScript EVS_Await = {
     BindItemPrompt(EVS_AwaitWorker, TRIGGER_FORCE_ACTIVATE, 0, 0, 0, 0)
-    ExecGetID(EVS_AwaitWorker, LVar0)
+    ExecGetID(LVar0, EVS_AwaitWorker)
     IsScriptRunning(LVar0, LVar1)
     SuspendScript(LVar0)
     ResumeScript(LVar0)

@@ -803,16 +803,16 @@ EvtScript N(EVS_PlayPhonograph) = {
     Call(N(InitPhonographHud))
     IfEq(MV_GuardDeparted, false)
         Call(BindNpcAI, NPC_GuardBoo, Ref(N(EVS_NpcAI_GuardBoo_Wary)))
-        ExecGetID(N(EVS_UpdateGuardBoo), MV_UpdateGuardScript)
+        ExecGetID(MV_UpdateGuardScript, N(EVS_UpdateGuardBoo))
     Else
-        ExecGetID(N(EVS_DummyUpdateGuardBoo), MV_UpdateGuardScript)
+        ExecGetID(MV_UpdateGuardScript, N(EVS_DummyUpdateGuardBoo))
     EndIf
-    ExecGetID(N(EVS_UpdatePhonographScale), MV_UpdateScaleScript)
-    ExecGetID(N(EVS_UpdateCrankRotation),   MV_UpdateCrankScript)
-    ExecGetID(N(EVS_UpdateRecordRotation),  MV_UpdateRecordScript)
-    ExecGetID(N(EVS_SetPhonographScale),    MV_SetScaleScript)
-    ExecGetID(N(EVS_SetCrankRotation),      MV_SetCrankScript)
-    ExecGetID(N(EVS_SetRecordRotation),     MV_SetRecordScript)
+    ExecGetID(MV_UpdateScaleScript,  N(EVS_UpdatePhonographScale))
+    ExecGetID(MV_UpdateCrankScript,  N(EVS_UpdateCrankRotation))
+    ExecGetID(MV_UpdateRecordScript, N(EVS_UpdateRecordRotation))
+    ExecGetID(MV_SetScaleScript,     N(EVS_SetPhonographScale))
+    ExecGetID(MV_SetCrankScript,     N(EVS_SetCrankRotation))
+    ExecGetID(MV_SetRecordScript,    N(EVS_SetRecordRotation))
     Call(N(SavePhonographUpdateScriptIDs))
     Loop(0)
         Call(N(UpdatePhonographMeter))
@@ -839,11 +839,11 @@ EvtScript N(EVS_PlayPhonograph) = {
         Else
             Set(LVar0, 80)
         EndIf
-        ExecGetID(N(EVS_WindDownPhonograph), MV_WindDownScript)
-        ExecGetID(N(EVS_GuardBoo_ReturnToPost), MV_GuardReturnScript)
+        ExecGetID(MV_WindDownScript, N(EVS_WindDownPhonograph))
+        ExecGetID(MV_GuardReturnScript, N(EVS_GuardBoo_ReturnToPost))
     Else
         Set(LVar0, 80)
-        ExecGetID(N(EVS_WindDownPhonograph), MV_WindDownScript)
+        ExecGetID(MV_WindDownScript, N(EVS_WindDownPhonograph))
     EndIf
     Return
     End

@@ -39,6 +39,6 @@ EvtScript EVS_FinallyDetachedChild = {
 EvtScript EVS_FinallyDetachedExec = {
     Finally
         Exec(EVS_FinallyDetachedChild)
-        ExecGetID(EVS_FinallyDetachedChild, LVar0)
+        ExecGetID(LVar0, EVS_FinallyDetachedChild)
     End
 };

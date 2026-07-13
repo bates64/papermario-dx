@@ -866,7 +866,7 @@ EvtScript N(EVS_Quizmo_ReturnPlayerToOriginalPos) = {
 };
 
 EvtScript N(EVS_Quizmo_RightAnswer) = {
-    ExecGetID(N(EVS_Quizmo_PlayerReaction_RightAnswer), LVar1)
+    ExecGetID(LVar1, N(EVS_Quizmo_PlayerReaction_RightAnswer))
     Wait(60)
     KillScript(LVar1)
     Loop(5)
@@ -882,7 +882,7 @@ EvtScript N(EVS_Quizmo_RightAnswer) = {
 };
 
 EvtScript N(EVS_Quizmo_WrongAnswer) = {
-    ExecGetID(N(EVS_Quizmo_PlayerReaction_WrongAnswer), LVar1)
+    ExecGetID(LVar1, N(EVS_Quizmo_PlayerReaction_WrongAnswer))
     Wait(60)
     Loop(5)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -931,7 +931,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
-    ExecGetID(N(EVS_Quizmo_SetCharacterPositons), LVar1)
+    ExecGetID(LVar1, N(EVS_Quizmo_SetCharacterPositons))
     Call(ContinueSpeech, -1, ANIM_ChuckQuizmo_Talk, ANIM_ChuckQuizmo_Idle, 0, MSG_MGM_000B)
     Call(PlaySound, SOUND_LRAW_AUDIENCE_MURMUR)
     Loop(0)
@@ -1012,7 +1012,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
             Wait(15)
         EndThread
         Wait(20)
-        ExecGetID(N(EVS_Quizmo_RightAnswer), LVar1)
+        ExecGetID(LVar1, N(EVS_Quizmo_RightAnswer))
         Add(GB_CompletedQuizzes, 1)
         IfGe(GB_CompletedQuizzes, 64)
             Call(ContinueSpeech, -1, -1, -1, 0, MSG_MGM_0010)
@@ -1058,7 +1058,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
         Set(QUIZ_ARRAY_ANSWER_RESULT, 2)
         Call(PlaySound, SOUND_MENU_ERROR)
         Call(PlaySound, SOUND_AUDIENCE_BOO)
-        ExecGetID(N(EVS_Quizmo_WrongAnswer), LVar1)
+        ExecGetID(LVar1, N(EVS_Quizmo_WrongAnswer))
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         PlayEffect(EFFECT_WINDY_LEAVES, 0, LVar2, LVar3, LVar4)
         Call(ContinueSpeech, -1, -1, -1, 0, MSG_MGM_000D)

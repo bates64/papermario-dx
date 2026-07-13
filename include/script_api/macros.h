@@ -641,7 +641,7 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 /// The other script may be interacted with using KillScript, SuspendScript, ResumeScript, and
 /// IsScriptRunning.
 /// Extra ARGS become ArgVars in the new script with the same capture rules as Exec.
-#define ExecGetID(EVT_SOURCE, OUTVAR, ARGS...) \
+#define ExecGetID(OUTVAR, EVT_SOURCE, ARGS...) \
                                             EVT_CMD(EVT_OP_EXEC_GET_ID, (Bytecode) EVT_SOURCE, OUTVAR, ##ARGS),
 
 /// Launches a new child thread.
@@ -892,7 +892,7 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 #define BindPadlock(EVT_SOURCE, TRIGGER, COLLIDER_ID, ITEM_LIST, TATTLE_MSG, HAS_INTERACT_PROMPT) \
                                             BindItemPrompt(EVT_SOURCE, TRIGGER, COLLIDER_ID, ITEM_LIST, TATTLE_MSG, HAS_INTERACT_PROMPT)
 #define ExecGetTID(EVT_SOURCE, OUTVAR, ARGS...) \
-                                            ExecGetID(EVT_SOURCE, OUTVAR, ##ARGS)
+                                            ExecGetID(OUTVAR, EVT_SOURCE, ##ARGS)
 #define KillThread(TID)                     KillScript(TID)
 #define IsThreadRunning(TID, OUTVAR)        IsScriptRunning(TID, OUTVAR)
 #define SuspendThread(TID)                  SuspendScript(TID)

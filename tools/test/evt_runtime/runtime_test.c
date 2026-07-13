@@ -555,7 +555,7 @@ EvtScript EVS_Companion = {
 };
 
 EvtScript EVS_CompanionOwner = {
-    ExecGetID(EVS_Companion, LVar0)
+    ExecGetID(LVar0, EVS_Companion)
     Wait(100)
     Finally
         KillScript(LVar0)
@@ -674,7 +674,7 @@ EvtScript EVS_ErrorFinally = {
 EvtScript EVS_ExecFinally = {
     Finally
         Exec(EVS_Companion)
-        ExecGetID(EVS_Companion, LVar0)
+        ExecGetID(LVar0, EVS_Companion)
         Call(CaptureScriptID)
         Call(Record, 'P')
     End
@@ -1047,7 +1047,7 @@ EvtScript EVS_TestArgsWait = {
 };
 
 EvtScript EVS_TestArgsKill = {
-    ExecGetID(EVS_TestArgsWait, LVar0, 7, 8)
+    ExecGetID(LVar0, EVS_TestArgsWait, 7, 8)
     Wait(100)
     Finally
         KillScript(LVar0)

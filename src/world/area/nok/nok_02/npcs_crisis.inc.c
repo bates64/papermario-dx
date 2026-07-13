@@ -287,7 +287,7 @@ EvtScript N(EVS_Koopa_01_CoordinateWithPlayer) = {
         IfNe(LVar3, LVar4)
             IfEq(LVar3, 0)
                 // player stopping sneaking near thief, resume koopa panic
-                ExecGetID(N(EVS_Koopa_01_ChaseThief), MV_KoopaChaseThiefScript)
+                ExecGetID(MV_KoopaChaseThiefScript, N(EVS_Koopa_01_ChaseThief))
             Else
                 // player started sneaking near thief, stop koopa interference
                 IfNe(MV_KoopaChaseThiefScript, -1)
@@ -317,10 +317,10 @@ EvtScript N(EVS_NpcIdle_Koopa_01_Crisis) = {
             Wait(10)
             Goto(5)
     EndIf
-    ExecGetID(N(EVS_TetherShellToFuzzy), LVar9)
-    ExecGetID(N(EVS_FuzzyThief_AvoidCapture), LVar8)
-    ExecGetID(N(EVS_Koopa_01_ChaseThief), MV_KoopaChaseThiefScript)
-    ExecGetID(N(EVS_Koopa_01_CoordinateWithPlayer), MV_KoopaChaseMonitorTID)
+    ExecGetID(LVar9, N(EVS_TetherShellToFuzzy))
+    ExecGetID(LVar8, N(EVS_FuzzyThief_AvoidCapture))
+    ExecGetID(MV_KoopaChaseThiefScript, N(EVS_Koopa_01_ChaseThief))
+    ExecGetID(MV_KoopaChaseMonitorScript, N(EVS_Koopa_01_CoordinateWithPlayer))
     Label(10)
     IfEq(GF_NOK02_RecoveredShellA, false)
         Wait(1)
@@ -332,9 +332,9 @@ EvtScript N(EVS_NpcIdle_Koopa_01_Crisis) = {
         IfEq(LVar0, 1)
             KillScript(MV_KoopaChaseThiefScript)
         EndIf
-        IsScriptRunning(MV_KoopaChaseMonitorTID, LVar0)
+        IsScriptRunning(MV_KoopaChaseMonitorScript, LVar0)
         IfEq(LVar0, 1)
-            KillScript(MV_KoopaChaseMonitorTID)
+            KillScript(MV_KoopaChaseMonitorScript)
         EndIf
         Call(DisablePlayerInput, true)
         Thread
