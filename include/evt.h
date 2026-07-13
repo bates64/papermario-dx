@@ -159,15 +159,19 @@ extern struct Evt* EvtCurrentScript;
 /// Return type of script API functions
 typedef s32 ApiStatus;
 
+// Normal return values for API_CALLABLE functions.
 #define ApiStatus_BLOCK  0   /// Command is not done; call it again on the next scheduled update.
 #define ApiStatus_DONE1  1   /// Command completed; yield to the scheduler before executing the next command.
 #define ApiStatus_DONE2  2   /// Command completed; advance to next command and continue executing immediately.
-#define ApiStatus_REPEAT 3   /// Redispatch immediately; used internally when fetching a command.
-#define ApiStatus_FINISH 255 /// Stop executing without automatically advancing to the next command.
 
 // Descriptive aliases for the legacy DONE1 and DONE2 names.
 #define ApiStatus_YIELD  ApiStatus_DONE1
 #define ApiStatus_NEXT   ApiStatus_DONE2 // or ApiStatus_CONTINUE ?
+
+// Special internal return values for the Evt interpreter control. Users should generally avoid these.
+#define VmStatus_REPEAT  253 /// Redispatch immediately; used internally when fetching a command.
+#define VmStatus_INVALID 254 /// Interpreter context was discarded; return without accessing the Evt.
+#define VmStatus_FINISH  255 /// Stop executing without automatically advancing to the next command.
 
 enum EventCommandResults {
     EVT_CMD_RESULT_YIELD        = -1,

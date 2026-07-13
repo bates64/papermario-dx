@@ -100,23 +100,22 @@ void play_hit_sound(Actor* actor, f32 x, f32 y, f32 z, u32 hitSound) {
 }
 
 void dispatch_event_actor(Actor* actor, s32 event) {
-    Evt* handleEventScript = actor->handleEventScript;
-    s32 onHitID = actor->handleEventScriptID;
+    Evt* handleEventScript = actor->scripts.handleEvent.live;
+    s32 onHitID = actor->scripts.handleEvent.liveID;
 
-    if (actor->handleEventSource != nullptr) {
+    if (actor->scripts.handleEvent.source != nullptr) {
         Evt* newScript;
 
         actor->lastEventType = event;
-        newScript = start_script(actor->handleEventSource, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
-        actor->handleEventScript = newScript;
-        actor->handleEventScriptID = newScript->id;
+        newScript = start_script(actor->scripts.handleEvent.source, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
+        set_bound_script_live(&actor->scripts.handleEvent, newScript);
         newScript->owner1.actorID = actor->actorID;
     }
 
-    if (actor->takeTurnScript != nullptr) {
-        get_script_by_index(actor->takeTurnScriptID);
-        kill_script_by_ID(actor->takeTurnScriptID);
-        actor->takeTurnScript = nullptr;
+    if (actor->scripts.takeTurn.live != nullptr) {
+        get_script_by_index(actor->scripts.takeTurn.liveID);
+        kill_script_by_ID(actor->scripts.takeTurn.liveID);
+        actor->scripts.takeTurn.live = nullptr;
     }
 
     if (handleEventScript != nullptr) {
@@ -887,7 +886,7 @@ API_CALLABLE(BindTakeTurn) {
     }
 
     takeTurnScript = (EvtScript*) evt_get_variable(script, *args++);
-    get_actor(actorID)->takeTurnSource = takeTurnScript;
+    get_actor(actorID)->scripts.takeTurn.source = takeTurnScript;
     return ApiStatus_DONE2;
 }
 
@@ -900,7 +899,7 @@ API_CALLABLE(PauseTakeTurn) {
     }
 
     evt_get_variable(script, *args++);
-    suspend_all_script(get_actor(actorID)->takeTurnScriptID);
+    suspend_all_script(get_actor(actorID)->scripts.takeTurn.liveID);
     return ApiStatus_DONE2;
 }
 
@@ -913,7 +912,7 @@ API_CALLABLE(ResumeTakeTurn) {
     }
 
     evt_get_variable(script, *args++);
-    resume_all_script(get_actor(actorID)->takeTurnScriptID);
+    resume_all_script(get_actor(actorID)->scripts.takeTurn.liveID);
     return ApiStatus_DONE2;
 }
 
@@ -931,15 +930,14 @@ API_CALLABLE(BindIdle) {
     idleCode = (EvtScript*) evt_get_variable(script, *args++);
     actor = get_actor(actorID);
 
-    if (actor->idleScript != 0) {
-        kill_script_by_ID(actor->idleScriptID);
-        actor->idleScript = 0;
+    if (actor->scripts.idle.live != 0) {
+        kill_script_by_ID(actor->scripts.idle.liveID);
+        actor->scripts.idle.live = nullptr;
     }
 
-    actor->idleSource = idleCode;
+    actor->scripts.idle.source = idleCode;
     newScriptContext = start_script(idleCode, EVT_PRIORITY_A, 0);
-    actor->idleScript = newScriptContext;
-    actor->idleScriptID = newScriptContext->id;
+    set_bound_script_live(&actor->scripts.idle, newScriptContext);
     newScriptContext->owner1.actorID = actorID;
     return ApiStatus_DONE2;
 }
@@ -957,17 +955,17 @@ API_CALLABLE(EnableIdleScript) {
     var1 = evt_get_variable(script, *args++);
     actor = get_actor(actorID);
 
-    if (actor->idleScript != nullptr) {
+    if (actor->scripts.idle.live != nullptr) {
         switch (var1) {
             case IDLE_SCRIPT_RESTART:
-                restart_script(actor->idleScript);
-                resume_all_script(actor->idleScriptID);
+                restart_script(actor->scripts.idle.live);
+                resume_all_script(actor->scripts.idle.liveID);
                 break;
             case IDLE_SCRIPT_ENABLE:
-                resume_all_script(actor->idleScriptID);
+                resume_all_script(actor->scripts.idle.liveID);
                 break;
             case IDLE_SCRIPT_DISABLE:
-                suspend_all_script(actor->idleScriptID);
+                suspend_all_script(actor->scripts.idle.liveID);
                 break;
         }
     }
@@ -985,7 +983,7 @@ API_CALLABLE(BindHandleEvent) {
     }
 
     src = (EvtScript*) evt_get_variable(script, *args++);
-    get_actor(actorID)->handleEventSource = src;
+    get_actor(actorID)->scripts.handleEvent.source = src;
     return ApiStatus_DONE2;
 }
 
@@ -999,7 +997,7 @@ API_CALLABLE(BindHandlePhase) {
     }
 
     src = (EvtScript*) evt_get_variable(script, *args++);
-    get_actor(actorID)->handlePhaseSource = src;
+    get_actor(actorID)->scripts.handlePhase.source = src;
     return ApiStatus_DONE2;
 }
 
@@ -2655,27 +2653,24 @@ API_CALLABLE(RemoveActor) {
     s32 actorID = evt_get_variable(script, *args++);
     Actor* actor;
     s32 i;
-    s32 numEnemies;
-    s16* enemyIDs;
 
     if (actorID == ACTOR_SELF) {
         actorID = script->owner1.actorID;
     }
 
     actor = get_actor(actorID);
-    numEnemies = battleStatus->numEnemyActors;
-    enemyIDs = battleStatus->enemyIDs;
 
-    for (i = 0; i < numEnemies; i++) {
-        if (actor == battleStatus->enemyActors[enemyIDs[i] & 0xFF]) {
-            enemyIDs[i] = -1;
+    if (!actor->deletePending) {
+        for (i = 0; i < battleStatus->numEnemyActors; i++) {
+            if (actor == battleStatus->enemyActors[battleStatus->enemyIDs[i] & 0xFF]) {
+                battleStatus->enemyIDs[i] = -1;
+            }
         }
-    }
 
-    currentEncounter->coinsEarned += actor->extraCoinBonus;
-    currentEncounter->coinsEarned += actor->actorBlueprint->coinReward;
+        currentEncounter->coinsEarned += actor->extraCoinBonus;
+        currentEncounter->coinsEarned += actor->actorBlueprint->coinReward;
+    }
     btl_delete_actor(actor);
-    battleStatus->enemyActors[actorID & 0xFF] = nullptr;
 
     return ApiStatus_DONE2;
 }
@@ -2860,17 +2855,10 @@ API_CALLABLE(EnemyDamageTarget) {
     battleStatus->statusDuration = (battleStatus->curAttackStatus & 0xF00) >> 8;
 
     hitResult = calc_enemy_damage_target(actor);
-    if (hitResult < 0) {
-        return ApiStatus_FINISH;
+    if (hitResult >= 0) {
+        evt_set_variable(script, outVar, hitResult);
     }
-
-    evt_set_variable(script, outVar, hitResult);
-
-    if (does_script_exist_by_ref(script)) {
-        return ApiStatus_DONE2;
-    } else {
-        return ApiStatus_FINISH;
-    }
+    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(EnemyFollowupAfflictTarget) {
@@ -2879,7 +2867,7 @@ API_CALLABLE(EnemyFollowupAfflictTarget) {
     Bytecode* args = script->ptrReadPos;
     Actor* actor;
     s32 actorID = evt_get_variable(script, *args++);
-    s32 hitResults;
+    s32 hitResult;
     s32 outVar;
 
     if (actorID == ACTOR_SELF) {
@@ -2898,19 +2886,11 @@ API_CALLABLE(EnemyFollowupAfflictTarget) {
     }
 
     anotherBattleStatus->statusDuration = (anotherBattleStatus->curAttackStatus & 0xF00) >> 8;
-    hitResults = calc_enemy_damage_target(actor);
-
-    if (hitResults < 0) {
-        return ApiStatus_FINISH;
+    hitResult = calc_enemy_damage_target(actor);
+    if (hitResult >= 0) {
+        evt_set_variable(script, outVar, hitResult);
     }
-
-    evt_set_variable(script, outVar, hitResults);
-
-    if (does_script_exist_by_ref(script)) {
-        return ApiStatus_DONE2;
-    } else {
-        return ApiStatus_FINISH;
-    }
+    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(EnemyTestTarget) {
@@ -2975,12 +2955,9 @@ API_CALLABLE(EnemyTestTarget) {
     battleStatus->statusDuration = (battleStatus->curAttackStatus & 0xF00) >> 8;
     hitResult = calc_enemy_test_target(actor);
 
-    if (hitResult < 0) {
-        return ApiStatus_FINISH;
+    if (hitResult >= 0) {
+        evt_set_variable(script, outVar, hitResult);
     }
-
-    evt_set_variable(script, outVar, hitResult);
-
     return ApiStatus_DONE2;
 }
 
@@ -3002,12 +2979,7 @@ API_CALLABLE(DispatchDamageEvent) {
     if (dispatch_generic_damage_event_actor(actor, damageAmount, eventID) < 0) {
         return ApiStatus_BLOCK;
     }
-
-    if (does_script_exist_by_ref(script)) {
-        return ApiStatus_DONE2;
-    } else {
-        return ApiStatus_BLOCK;
-    }
+    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(DispatchEvent) {

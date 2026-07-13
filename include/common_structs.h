@@ -13,6 +13,14 @@ typedef ApiStatus(*ApiFunc)(struct Evt*, s32);
 
 typedef Bytecode EvtScript[];
 
+// Bookkeeping for a runnable script slot: its source, current instance, and runtime ID.
+// The binding does not by itself imply ownership or extend either object's lifetime.
+typedef struct BoundScript {
+    /* 0x00 */ EvtScript* source;
+    /* 0x04 */ struct Evt* live;
+    /* 0x08 */ s32 liveID;
+} BoundScript; // size = 0x0C
+
 // generic callback signatures
 typedef void (*VoidCallback)(void);
 typedef void (*DataCallback)(void* data);
@@ -1381,10 +1389,9 @@ typedef struct ShopOwner {
     /* 0x04 */ s32 idleAnim;
     /* 0x08 */ s32 talkAnim;
     /* 0x0C */ EvtScript* onBuyEvt;
-    /* 0x10 */ EvtScript* unk_10Evt;
-    /* 0x14 */ EvtScript* onTalkEvt;
-    /* 0x18 */ s32* shopMsgIDs;
-} ShopOwner; // size = 0x1C
+    /* 0x10 */ EvtScript* onTalkEvt;
+    /* 0x14 */ s32* shopMsgIDs;
+} ShopOwner; // size = 0x18
 
 typedef struct ShopItemLocation {
     /* 0x0 */ u16 posModelID;
@@ -1880,7 +1887,7 @@ typedef struct Actor {
     /* 0x138 */ u8 ordinal; // unique identifier for actor, holds a value of N for the Nth actor spawned
     /* 0x139 */ u8 footStepCounter;
     /* 0x13A */ u8 actorType;
-    /* 0x13B */ PAD(1);
+    /* 0x13B */ b8 deletePending;
     /* 0x13C */ Vec3f homePos;
     /* 0x148 */ Vec3f curPos;
     /* 0x154 */ Vec3s headOffset;
@@ -1905,18 +1912,15 @@ typedef struct Actor {
     /* 0x1BE */ s16 maxHP;
     /* 0x1C0 */ s8 healthFraction; /* used to render HP bar */
     /* 0x1C1 */ PAD(3);
-    /* 0x1C4 */ EvtScript* idleSource;
-    /* 0x1C8 */ EvtScript* takeTurnSource;
-    /* 0x1CC */ EvtScript* handleEventSource;
-    /* 0x1D0 */ EvtScript* handlePhaseSource;
-    /* 0x1D4 */ struct Evt* idleScript;
-    /* 0x1D8 */ struct Evt* takeTurnScript;
-    /* 0x1DC */ struct Evt* handleEventScript;
-    /* 0x1E0 */ struct Evt* handlePhaseScript;
-    /* 0x1E4 */ s32 idleScriptID;
-    /* 0x1E8 */ s32 takeTurnScriptID;
-    /* 0x1EC */ s32 handleEventScriptID;
-    /* 0x1F0 */ s32 handlePhaseScriptID;
+    /* 0x1C4 */ union {
+        struct {
+            BoundScript idle;
+            BoundScript takeTurn;
+            BoundScript handleEvent;
+            BoundScript handlePhase;
+        };
+        BoundScript all[4];
+    } scripts;
     /* 0x1F4 */ s8 lastEventType;
     /* 0x1F5 */ s8 turnPriority;
     /* 0x1F6 */ s8 enemyIndex; /* actorID = this | 200 */

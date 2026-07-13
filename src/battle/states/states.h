@@ -2,6 +2,7 @@
 #define _BATTLE_STATES_H_
 
 #include "common.h"
+#include "bound_script.h"
 
 enum BattleSubStates {
     // shared

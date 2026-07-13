@@ -7,19 +7,18 @@ s32 dispatch_contact_damage_event_partner(s32, s32);
 void dispatch_event_partner(s32 lastEventType) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* partnerActor = battleStatus->partnerActor;
-    Evt* handleEventScript = partnerActor->handleEventScript;
-    s32 onHitID = partnerActor->handleEventScriptID;
+    Evt* handleEventScript = partnerActor->scripts.handleEvent.live;
+    s32 onHitID = partnerActor->scripts.handleEvent.liveID;
     Evt* script;
 
     partnerActor->lastEventType = lastEventType;
-    script = start_script(partnerActor->handleEventSource, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
-    partnerActor->handleEventScript = script;
-    partnerActor->handleEventScriptID = script->id;
+    script = start_script(partnerActor->scripts.handleEvent.source, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
+    set_bound_script_live(&partnerActor->scripts.handleEvent, script);
     script->owner1.actorID = ACTOR_PARTNER;
 
-    if (partnerActor->takeTurnScript != nullptr) {
-        kill_script_by_ID(partnerActor->takeTurnScriptID);
-        partnerActor->takeTurnScript = nullptr;
+    if (partnerActor->scripts.takeTurn.live != nullptr) {
+        kill_script_by_ID(partnerActor->scripts.takeTurn.liveID);
+        partnerActor->scripts.takeTurn.live = nullptr;
     }
 
     if (handleEventScript != nullptr) {
@@ -30,14 +29,13 @@ void dispatch_event_partner(s32 lastEventType) {
 void dispatch_event_partner_continue_turn(s8 lastEventType) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* partnerActor = battleStatus->partnerActor;
-    Evt* handleEventScript = partnerActor->handleEventScript;
-    s32 onHitID = partnerActor->handleEventScriptID;
+    Evt* handleEventScript = partnerActor->scripts.handleEvent.live;
+    s32 onHitID = partnerActor->scripts.handleEvent.liveID;
     Evt* script;
 
     partnerActor->lastEventType = lastEventType;
-    script = start_script(partnerActor->handleEventSource, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
-    partnerActor->handleEventScript = script;
-    partnerActor->handleEventScriptID = script->id;
+    script = start_script(partnerActor->scripts.handleEvent.source, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
+    set_bound_script_live(&partnerActor->scripts.handleEvent, script);
     script->owner1.actorID = ACTOR_PARTNER;
 
     if (handleEventScript != nullptr) {
@@ -1057,7 +1055,7 @@ API_CALLABLE(PartnerDamageEnemy) {
     Actor* enemy = get_actor(script->owner1.actorID);
     s32 retVar = *args++;
     s32 flags;
-    s32 damageResult;
+    s32 hitResult;
     u8 statusChance;
 
     gBattleStatus.curAttackElement = *args++;
@@ -1121,19 +1119,11 @@ API_CALLABLE(PartnerDamageEnemy) {
     }
 
     battleStatus->statusDuration = (battleStatus->curAttackStatus & 0xF00) >> 8;
-    damageResult = calc_partner_damage_enemy();
-
-    if (damageResult < 0) {
-        return ApiStatus_FINISH;
+    hitResult = calc_partner_damage_enemy();
+    if (hitResult >= 0) {
+        evt_set_variable(script, retVar, hitResult);
     }
-
-    evt_set_variable(script, retVar, damageResult);
-
-    if (does_script_exist_by_ref(script)) {
-        return ApiStatus_DONE2;
-    } else {
-        return ApiStatus_FINISH;
-    }
+    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(PartnerAfflictEnemy) {
@@ -1143,7 +1133,7 @@ API_CALLABLE(PartnerAfflictEnemy) {
     s32 returnValue = *args++;
     s32 flags;
     u8 statusChance;
-    s32 damageResult;
+    s32 hitResult;
 
     battleStatus->curAttackElement = *args++;
     battleStatus->curAttackEventSuppression = *args++;
@@ -1198,19 +1188,11 @@ API_CALLABLE(PartnerAfflictEnemy) {
     }
 
     battleStatus->statusDuration = (battleStatus->curAttackStatus & 0xF00) >> 8;
-    damageResult = calc_partner_damage_enemy();
-
-    if (damageResult < 0) {
-        return ApiStatus_FINISH;
+    hitResult = calc_partner_damage_enemy();
+    if (hitResult >= 0) {
+        evt_set_variable(script, returnValue, hitResult);
     }
-
-    evt_set_variable(script, returnValue, damageResult);
-
-    if (does_script_exist_by_ref(script)) {
-        return ApiStatus_DONE2;
-    } else {
-        return ApiStatus_FINISH;
-    }
+    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(PartnerPowerBounceEnemy) {
@@ -1220,7 +1202,7 @@ API_CALLABLE(PartnerPowerBounceEnemy) {
     s32 returnValue = *args++;
     s32 flags;
     u8 statusChance;
-    s32 damageResult;
+    s32 hitResult;
 
     battleStatus->curAttackElement = *args++;
     battleStatus->curAttackEventSuppression = *args++;
@@ -1274,19 +1256,11 @@ API_CALLABLE(PartnerPowerBounceEnemy) {
     }
 
     battleStatus->statusDuration = (battleStatus->curAttackStatus & 0xF00) >> 8;
-    damageResult = calc_partner_damage_enemy();
-
-    if (damageResult < 0) {
-        return ApiStatus_FINISH;
+    hitResult = calc_partner_damage_enemy();
+    if (hitResult >= 0) {
+        evt_set_variable(script, returnValue, hitResult);
     }
-
-    evt_set_variable(script, returnValue, damageResult);
-
-    if (does_script_exist_by_ref(script)) {
-        return ApiStatus_DONE2;
-    } else {
-        return ApiStatus_FINISH;
-    }
+    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(PartnerTestEnemy) {
@@ -1295,7 +1269,7 @@ API_CALLABLE(PartnerTestEnemy) {
     Actor* enemy = get_actor(script->owner1.actorID);
     s32 outVar;
     s32 flags;
-    s32 damageResult;
+    s32 hitResult;
     u8 statusChance;
 
     outVar = *args++;
@@ -1354,14 +1328,10 @@ API_CALLABLE(PartnerTestEnemy) {
     }
 
     battleStatus->statusDuration = (battleStatus->curAttackStatus & 0xF00) >> 8;
-    damageResult = calc_partner_test_enemy();
-
-    if (damageResult < 0) {
-        return ApiStatus_FINISH;
+    hitResult = calc_partner_test_enemy();
+    if (hitResult >= 0) {
+        evt_set_variable(script, outVar, hitResult);
     }
-
-    evt_set_variable(script, outVar, damageResult);
-
     return ApiStatus_DONE2;
 }
 
@@ -1378,12 +1348,7 @@ API_CALLABLE(DispatchDamageEventPartner) {
     if (dispatch_generic_damage_event_partner(damageAmount, event) < 0) {
         return ApiStatus_BLOCK;
     }
-
-    if (does_script_exist_by_ref(script)) {
-        return ApiStatus_DONE2;
-    } else {
-        return ApiStatus_BLOCK;
-    }
+    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(DeletePartner) {

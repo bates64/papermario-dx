@@ -179,8 +179,8 @@ void update_status_damage(void) {
     }
 
     if (gBattleSubState == BTL_SUBSTATE_TRY_STATUS_RECOVER) {
-        if (player->handleEventScript == nullptr || !does_script_exist(player->handleEventScriptID)) {
-            player->handleEventScript = nullptr;
+        if (player->scripts.handleEvent.live == nullptr || !does_script_exist(player->scripts.handleEvent.liveID)) {
+            player->scripts.handleEvent.live = nullptr;
             if (btl_check_player_defeated()) {
                 return;
             }
@@ -301,8 +301,7 @@ void update_command_loss(void) {
             battleStatus->hammerLossTurns--;
             if (battleStatus->hammerLossTurns == -1) {
                 script = start_script(&EVS_PlayerRegainAbility, EVT_PRIORITY_A, 0);
-                player->takeTurnScript = script;
-                player->takeTurnScriptID = script->id;
+                set_bound_script_live(&player->scripts.takeTurn, script);
                 script->owner1.actorID = ACTOR_PLAYER;
                 script->varTable[0] = itemSpawnOffsetX;
                 itemSpawnOffsetX += 8;
@@ -315,8 +314,7 @@ void update_command_loss(void) {
             battleStatus->jumpLossTurns--;
             if (battleStatus->jumpLossTurns == -1) {
                 script = start_script(&EVS_PlayerRegainAbility, EVT_PRIORITY_A, 0);
-                player->takeTurnScript = script;
-                player->takeTurnScriptID = script->id;
+                set_bound_script_live(&player->scripts.takeTurn, script);
                 script->owner1.actorID = ACTOR_PLAYER;
                 script->varTable[0] = itemSpawnOffsetX;
                 itemSpawnOffsetX += 8;
@@ -329,8 +327,7 @@ void update_command_loss(void) {
             battleStatus->itemLossTurns--;
             if (battleStatus->itemLossTurns == -1) {
                 script = start_script(&EVS_PlayerRegainAbility, EVT_PRIORITY_A, 0);
-                player->takeTurnScript = script;
-                player->takeTurnScriptID = script->id;
+                set_bound_script_live(&player->scripts.takeTurn, script);
                 script->owner1.actorID = ACTOR_PLAYER;
                 script->varTable[0] = itemSpawnOffsetX;
                 itemSpawnOffsetX += 8;
@@ -378,10 +375,9 @@ void btl_state_update_begin_player_turn(void) {
 
                 if (battleStatus->outtaSightActive != 0) {
                     battleStatus->battlePhase = PHASE_ENEMY_BEGIN;
-                    script = start_script(partner->handlePhaseSource, EVT_PRIORITY_A, 0);
-                    partner->handlePhaseScript = script;
+                    script = start_script(partner->scripts.handlePhase.source, EVT_PRIORITY_A, 0);
+                    set_bound_script_live(&partner->scripts.handlePhase, script);
                     gBattleSubState = BTL_SUBSTATE_AWAIT_OUTTA_SIGHT;
-                    partner->handlePhaseScriptID = script->id;
                     script->owner1.actorID = ACTOR_PARTNER;
                 } else {
                     gBattleSubState = BTL_SUBSTATE_CHECK_WATER_BLOCK;
@@ -389,7 +385,7 @@ void btl_state_update_begin_player_turn(void) {
             }
             break;
         case BTL_SUBSTATE_AWAIT_OUTTA_SIGHT:
-            if (!does_script_exist(partner->handlePhaseScriptID)) {
+            if (!does_script_exist(partner->scripts.handlePhase.liveID)) {
                 battleStatus->outtaSightActive = 0;
                 gBattleSubState = BTL_SUBSTATE_CHECK_WATER_BLOCK;
                 gBattleStatus.flags2 |= BS_FLAGS2_PARTNER_TURN_USED;
@@ -405,8 +401,8 @@ void btl_state_update_begin_player_turn(void) {
     update_command_loss();
 
     if (gBattleSubState == BTL_SUBSTATE_END_DELAY) {
-        if (player->handleEventScript == nullptr || !does_script_exist(player->handleEventScriptID)) {
-            player->handleEventScript = nullptr;
+        if (player->scripts.handleEvent.live == nullptr || !does_script_exist(player->scripts.handleEvent.liveID)) {
+            player->scripts.handleEvent.live = nullptr;
 
             if (btl_check_player_defeated() || btl_check_enemies_defeated()) {
                 return;

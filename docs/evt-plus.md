@@ -47,6 +47,9 @@ The primary features are:
 - [Continue Loop](#9-continue-loop)
 - [Lerp Loops](#10-lerp-loops)
 - [Finally Blocks](#11-finally-blocks)
+  - [Cleanup Order](#cleanup-order)
+  - [Restrictions](#restrictions)
+  - [NPC_SELF and ACTOR_SELF](#npc_self-and-actor_self)
 - [Awaiting Scripts](#12-awaiting-scripts)
 - [Packed Command Headers](#13-packed-command-headers)
 - [Buffer Reads](#14-buffer-reads)
@@ -655,13 +658,7 @@ EndLerp
 
 ## 11. Finally Blocks
 
-`Finally` marks a cleanup tail for a script. When present, the cleanup tail runs immediately before the script is destroyed by `Return`, normal `End`/`EndThread`/`EndChildThread`, or an external `kill_script`.
-
-Any blocking child or `ChildThread` descendants are finalized first. The parent cleanup tail then runs after its children have released their resources and copied back any blocking-child state. Termination does not yield to a later frame: reentrant cleanup is deferred only as far as the nearest safe interpreter boundary in the same VM invocation.
-
-The whole cleanup tail must finish right away. It cannot wait for another frame, block on an API call, or start an owned child. `Exec` and `ExecGetID` may launch detached scripts which continue independently after the finalizing script is destroyed.
-
-This is intended for temporary resources or state that must be released even if the script exits early:
+Scripts often perform setup that must be undone before they exit. Previously, every early exit needed to repeat that cleanup or jump to a shared label. `Finally` provides one cleanup block which runs whether the script ends normally or is killed by another script.
 
 ```c
 EvtScript N(EVS_UseTempState) = {
@@ -680,23 +677,42 @@ EvtScript N(EVS_UseTempState) = {
 };
 ```
 
-The finalizer is anchored to the normal script terminator. There is no `EndFinally`; use `Finally ... End` for root scripts, `Finally ... EndThread` for threads, and `Finally ... EndChildThread` for child threads.
+Here, `ReleaseResource` runs if the script reaches `End`, exits early through `Return`, or is killed externally.
 
-Finalizers are deliberately restricted:
+`Finally` belongs at the end of its script scope, immediately before that scope's usual terminator. There is no separate `EndFinally` command:
 
-- `Finally` must be top-level in its script, `Thread`, or `ChildThread` scope
-- only one `Finally` is allowed per scope
-- finalizers run immediately and must not block or yield to a later frame
-- obvious blocking or control-flow commands such as `Wait`, `ExecWait`, `Goto`, `Jump`, `BreakLoop`, `ContinueLoop`, `Thread`, `ChildThread`, and `BreakPoint` are rejected by the validator
-- `Call` is allowed, but the runtime will assert if the function returns `ApiStatus_BLOCK` or starts an owned child
+- use `Finally ... End` for a root script
+- use `Finally ... EndThread` for a `Thread`
+- use `Finally ... EndChildThread` for a `ChildThread`
 
-Detached scripts started during an individual finalizer survive that script's termination. `kill_all_scripts` continues scanning until no running scripts remain, so detached scripts launched by finalizers do not escape a global shutdown.
+### Cleanup Order
 
-`KillScript` is allowed and is useful for cleaning up a detached companion started earlier with `ExecGetID`. Killing an already-terminating script, including the current script from its own finalizer, is an idempotent no-op. A target normally finishes before `KillScript` returns; when reentrant ownership requires unwinding an active child or command first, cleanup still completes later in the same VM invocation.
+Finalizers run as part of termination; they do not wait for a later frame. If a script has an `ExecWait` child or `ChildThread` descendants, those children finish their own finalizers before the parent begins its finalizer.
 
-`clear_script_list` remains the intentional exception: it is part of the hard memory reset between game states and bypasses per-script cleanup along with the rest of the old heap.
+Scripts started with `Exec`, `ExecGetID`, or `Thread` are detached. They are not children for cleanup purposes and continue running when the script which started them ends.
 
-This makes `Finally` suitable for cleanup work like freeing resources, restoring flags, unregistering transient state, or undoing setup performed earlier in the script.
+### Restrictions
+
+A finalizer must complete immediately. This keeps cleanup predictable and ensures that a terminated script does not remain half-alive while waiting for future updates.
+
+- `Finally` must be at the top level of its script, `Thread`, or `ChildThread` scope
+- each scope may have only one `Finally` block
+- `Call` is allowed only when the API function completes immediately; returning `ApiStatus_BLOCK` causes an assertion
+- `KillScript` is allowed, including when its target is already terminating
+- `Exec` and `ExecGetID` may start detached scripts
+- commands which wait, jump out of the block, or start owned children are not allowed
+
+The validator rejects commands such as `Wait`, `ExecWait`, `Goto`, `Jump`, `BreakLoop`, `ContinueLoop`, `Thread`, `ChildThread`, and `BreakPoint` inside a finalizer. The runtime also asserts if a `Call` tries to start an owned child.
+
+### NPC_SELF and ACTOR_SELF
+
+An Enemy's registered init, interact, AI, hit, auxiliary, and defeat scripts keep both the `Enemy` and its backing `Npc` alive until their cleanup is complete. This means `NPC_SELF` remains valid in their finalizers.
+
+An enemy or partner Actor is likewise kept alive while its registered idle, take-turn, handle-event, and handle-phase scripts clean up. This means `ACTOR_SELF` remains valid in their finalizers.
+
+These guarantees also cover owned `ExecWait` and `ChildThread` descendants of the registered script. They do not cover detached `Exec`, `ExecGetID`, or `Thread` scripts. A detached script inherits the current self-context, but does not keep the corresponding Enemy, Npc, or Actor alive. If a detached companion must not outlive its owner, start it with `ExecGetID` and stop it with `KillScript` from the owner's finalizer.
+
+When all scripts are being shut down together, any detached scripts started by finalizers are shut down too. The hard reset between game states is the intentional exception: it discards the entire script heap without running individual finalizers.
 
 ## 12. Awaiting Scripts
 
@@ -762,13 +778,13 @@ Each destination consumes one value from the current buffer and advances the buf
 
 Several command names were adjusted from very old conventions to align better with current understanding of the engine and avoid confusion among related concepts. Specifically `BindPadlock` and references to `Thread` which actually apply to normal EvtScripts and not in-line `Thread` blocks.
 
-| Old name | New name | Reason |
-| --- | --- | --- |
-| `ExecGetTID` | `ExecGetID` | The returned value is a script ID, unrelated to `Thread`. |
-| `KillThread` | `KillScript` | The runtime kills scripts by script ID. |
-| `SuspendThread` | `SuspendScript` | Suspends scripts by script ID. |
-| `ResumeThread` | `ResumeScript` | Resumes scripts by script ID. |
-| `IsThreadRunning` | `IsScriptRunning` | The check asks whether a script ID still exists. |
-| `BindPadlock` | `BindItemPrompt` | The command binds a generic item prompt, not just padlocks. |
+| Old name | New name |
+| --- | --- |
+| `ExecGetTID` | `ExecGetID` |
+| `KillThread` | `KillScript` |
+| `SuspendThread` | `SuspendScript` |
+| `ResumeThread` | `ResumeScript` |
+| `IsThreadRunning` | `IsScriptRunning` |
+| `BindPadlock` | `BindItemPrompt` |
 
 Compatibility aliases are provided, so the old names still compile. New scripts should prefer the new names.

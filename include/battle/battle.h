@@ -2,6 +2,7 @@
 #define _BATTLE_BATTLE_H_
 
 #include "common.h"
+#include "bound_script.h"
 #include "message_ids.h"
 
 // Terminates foreground model lists

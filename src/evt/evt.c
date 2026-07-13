@@ -143,7 +143,7 @@ ApiStatus evt_handle_return(Evt* script) {
         return ApiStatus_NEXT;
     } else {
         // Stop this interpreter call while children finish or destruction begins.
-        return ApiStatus_FINISH;
+        return VmStatus_FINISH;
     }
 }
 
@@ -158,14 +158,14 @@ ApiStatus evt_handle_finally(Evt* script) {
     } else {
         // An active child must return before cleanup can continue.
         ASSERT(script->terminationState == EVT_TERMINATION_AWAITING_CHILDREN);
-        return ApiStatus_FINISH;
+        return VmStatus_FINISH;
     }
 }
 
 // Completes the current script scope, including any active finalizer.
 ApiStatus evt_handle_end(Evt* script) {
     evt_terminate_script(script);
-    return ApiStatus_FINISH;
+    return VmStatus_FINISH;
 }
 
 ApiStatus evt_handle_label(Evt* script) {
@@ -1750,7 +1750,7 @@ ApiStatus evt_handle_exec_wait(Evt* script) {
 
     evt_set_script_args(newScript, script, args, script->curArgc - 1);
     script->curOpcode = EVT_OP_INTERNAL_FETCH;
-    return ApiStatus_FINISH;
+    return VmStatus_FINISH;
 }
 
 ApiStatus evt_handle_jump(Evt* script) {
@@ -1780,12 +1780,12 @@ s32 evt_trigger_on_activate_exec_script(Trigger* trigger) {
         script->owner2.trigger = trigger;
     }
 
-    if (!does_script_exist(trigger->runningScriptID)) {
+    if (does_script_exist(trigger->runningScriptID)) {
+        return 1; // keep calling this function every frame
+    } else {
         trigger->runningScript = nullptr;
         return 0; // stop calling this function
     }
-
-    return 1; // keep calling this function every frame
 }
 
 ApiStatus evt_handle_bind(Evt* script) {
@@ -2242,7 +2242,7 @@ s32 evt_execute_next_command(Evt* script) {
                 script->curArgc = nargs;
                 lines = &lines[nargs];
                 script->ptrNextLine = lines;
-                status = ApiStatus_REPEAT;
+                status = VmStatus_REPEAT;
                 break;
             case EVT_OP_RETURN:
                 status = evt_handle_return(script);
@@ -2590,8 +2590,14 @@ s32 evt_execute_next_command(Evt* script) {
                 PANIC();
         }
 
-        // execute command after a fetch operation
-        if (status == ApiStatus_REPEAT) {
+        // The command discarded the interpreter context (e.g. Game Over state transition).
+        // The script is no longer safe to access.
+        if (status == VmStatus_INVALID) {
+            return EVT_CMD_RESULT_YIELD;
+        }
+
+        // Execute command after a fetch operation
+        if (status == VmStatus_REPEAT) {
             continue;
         }
 
@@ -2601,7 +2607,7 @@ s32 evt_execute_next_command(Evt* script) {
             continue;
         }
 
-        // only a proper terminator may finish a finalizer
+        // Only a proper terminator may finish a finalizer
         if (wasFinalizing && script->terminationState != EVT_TERMINATION_FINALIZING) {
             ASSERT_MSG(
                 executedOpcode == EVT_OP_END
@@ -2619,7 +2625,7 @@ s32 evt_execute_next_command(Evt* script) {
         }
 
         // FINISH stops this interpreter run without advancing to another command
-        if (status == ApiStatus_FINISH) {
+        if (status == VmStatus_FINISH) {
             ASSERT_MSG(
                 !wasFinalizing,
                 "Finally block ended before reaching its terminator"
@@ -2656,13 +2662,13 @@ s32 evt_execute_next_command(Evt* script) {
         }
         #endif
 
-        // DONE1 advances to the next command on the next scheduled update.
+        // Advance to the next command on the next scheduled update.
         if (status == ApiStatus_YIELD) {
             script->curOpcode = EVT_OP_INTERNAL_FETCH;
             return evt_finish_execution(script, EVT_CMD_RESULT_CONTINUE);
         }
 
-        // DONE2 advances immediately unless command stepping requests a yield.
+        // Advance immediately unless command stepping requests a yield.
         if (status == ApiStatus_NEXT) {
             script->curOpcode = EVT_OP_INTERNAL_FETCH;
             if (gGameStatusPtr->debugScripts != DEBUG_SCRIPTS_BLOCK_FUNC_DONE) {

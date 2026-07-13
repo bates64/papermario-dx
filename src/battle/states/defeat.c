@@ -44,30 +44,27 @@ void btl_state_update_defeat(void) {
             // prompt player to handle PHASE_DEATH
             battleStatus->battlePhase = PHASE_DEATH;
             script = start_script(&EVS_Mario_HandlePhase, EVT_PRIORITY_A, 0);
-            player->takeTurnScript = script;
-            player->takeTurnScriptID = script->id;
+            set_bound_script_live(&player->scripts.takeTurn, script);
             script->owner1.actorID = ACTOR_PLAYER;
 
             // prompt partner to handle PHASE_DEATH
             if (partner != nullptr) {
-                script = start_script(partner->takeTurnSource, EVT_PRIORITY_A, 0);
-                partner->takeTurnScript = script;
-                partner->takeTurnScriptID = script->id;
+                script = start_script(partner->scripts.takeTurn.source, EVT_PRIORITY_A, 0);
+                set_bound_script_live(&partner->scripts.takeTurn, script);
                 script->owner1.actorID = ACTOR_PARTNER;
             }
             gBattleSubState = BTL_SUBSTATE_CHECK_LIFE_SHROOM;
             break;
         case BTL_SUBSTATE_CHECK_LIFE_SHROOM:
             // wait for player PHASE_DEATH event to complete (ignore partner script)
-            if (does_script_exist(player->takeTurnScriptID) || battleStatus->stateFreezeCount != 0) {
+            if (does_script_exist(player->scripts.takeTurn.liveID) || battleStatus->stateFreezeCount != 0) {
                 break;
             }
             if (find_item(ITEM_LIFE_SHROOM) >= 0) {
                 // prompt player to handle PHASE_USE_LIFE_SHROOM
                 battleStatus->battlePhase = PHASE_USE_LIFE_SHROOM;
                 script = start_script(&EVS_Mario_HandlePhase, EVT_PRIORITY_A, 0);
-                player->takeTurnScript = script;
-                player->takeTurnScriptID = script->id;
+                set_bound_script_live(&player->scripts.takeTurn, script);
                 script->owner1.actorID = ACTOR_PLAYER;
                 gBattleSubState = BTL_SUBSTATE_AWAIT_LIFE_SHROOM;
             } else {
@@ -76,7 +73,7 @@ void btl_state_update_defeat(void) {
             break;
         case BTL_SUBSTATE_AWAIT_LIFE_SHROOM:
             // wait for player PHASE_USE_LIFE_SHROOM event to complete
-            if (does_script_exist(player->takeTurnScriptID) || battleStatus->stateFreezeCount != 0) {
+            if (does_script_exist(player->scripts.takeTurn.liveID) || battleStatus->stateFreezeCount != 0) {
                 break;
             }
             // never reached if life shroom is successful. its item script calls RestorePreDefeatState,

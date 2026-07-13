@@ -31,16 +31,15 @@ void btl_state_update_victory(void) {
                 gBattleSubState = BTL_SUBSTATE_RECOVER_STATUS;
             } else {
                 battleStatus->battlePhase = PHASE_ENEMY_BEGIN;
-                script = start_script(partner->handlePhaseSource, EVT_PRIORITY_A, 0);
-                partner->handlePhaseScript = script;
-                partner->handlePhaseScriptID = script->id;
+                script = start_script(partner->scripts.handlePhase.source, EVT_PRIORITY_A, 0);
+                set_bound_script_live(&partner->scripts.handlePhase, script);
                 script->owner1.actorID = ACTOR_PARTNER;
                 gBattleSubState = BTL_SUBSTATE_AWAIT_OUTTA_SIGHT;
             }
 
             break;
         case BTL_SUBSTATE_AWAIT_OUTTA_SIGHT:
-            if (!does_script_exist(partner->handlePhaseScriptID)) {
+            if (!does_script_exist(partner->scripts.handlePhase.liveID)) {
                 battleStatus->outtaSightActive = 0;
                 gBattleSubState = BTL_SUBSTATE_RECOVER_STATUS;
             }
@@ -87,16 +86,16 @@ void btl_state_update_victory(void) {
             }
             break;
         case BTL_SUBSTATE_AWAIT_RECOVER_KO:
-            if (player->handleEventScript != nullptr && does_script_exist(player->handleEventScriptID)) {
+            if (player->scripts.handleEvent.live != nullptr && does_script_exist(player->scripts.handleEvent.liveID)) {
                 break;
             }
-            player->handleEventScript = nullptr;
+            player->scripts.handleEvent.live = nullptr;
 
             if (partner != nullptr) {
-                if (partner->handleEventScript != nullptr && does_script_exist(partner->handleEventScriptID)) {
+                if (partner->scripts.handleEvent.live != nullptr && does_script_exist(partner->scripts.handleEvent.liveID)) {
                     break;
                 }
-                partner->handleEventScript = nullptr;
+                partner->scripts.handleEvent.live = nullptr;
             }
             gBattleSubState = BTL_SUBSTATE_CHECK_SWAP;
             break;
@@ -155,8 +154,7 @@ void btl_state_update_victory(void) {
             } else {
                 battleStatus->battlePhase = PHASE_MERLEE_EXP_BONUS;
                 script = start_script(&EVS_Mario_HandlePhase, EVT_PRIORITY_A, 0);
-                player->takeTurnScript = script;
-                player->takeTurnScriptID = script->id;
+                set_bound_script_live(&player->scripts.takeTurn, script);
                 script->owner1.actorID = ACTOR_PLAYER;
             }
         }
@@ -169,8 +167,8 @@ void btl_state_update_victory(void) {
         if (BattleSubstateDelay != 0) {
             BattleSubstateDelay--;
         } else {
-            if (player->takeTurnScript == nullptr || !does_script_exist(player->takeTurnScriptID)) {
-                player->takeTurnScript = nullptr;
+            if (player->scripts.takeTurn.live == nullptr || !does_script_exist(player->scripts.takeTurn.liveID)) {
+                player->scripts.takeTurn.live = nullptr;
                 if (battleStatus->nextMerleeSpellType != MERLEE_SPELL_EXP_BOOST) {
                     gBattleSubState = BTL_SUBSTATE_DONE;
                 } else {

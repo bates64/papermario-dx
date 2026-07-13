@@ -395,7 +395,6 @@ void set_message_images(MessageImageData* images);
 
 void kill_all_scripts(void);
 s32 does_script_exist(s32 id);
-s32 does_script_exist_by_ref(Evt* script);
 s32 does_script_have_child_threads(Evt* script);
 Evt* start_script(EvtScript* source, s32 priority, s32 initialState);
 Evt* start_script_in_group(EvtScript* source, u8 priority, u8 initialState, u8 groupFlags);

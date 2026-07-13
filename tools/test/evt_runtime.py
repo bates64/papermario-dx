@@ -75,9 +75,14 @@ def main() -> int:
         "-Wno-incompatible-pointer-types",
     ]
     sources = [
-        ROOT / "src/evt/evt.c",
-        ROOT / "src/evt/script_list.c",
-        TEST_DIR / "runtime_test.c",
+        (ROOT / "src/evt/evt.c", []),
+        (ROOT / "src/evt/script_list.c", []),
+        (ROOT / "src/npc.c", []),
+        (
+            ROOT / "src/battle/16C8E0.c",
+            ["-include", str(TEST_DIR / "actor_compile.h")],
+        ),
+        (TEST_DIR / "runtime_test.c", []),
     ]
 
     try:
@@ -88,9 +93,9 @@ def main() -> int:
         with tempfile.TemporaryDirectory(prefix="evt_runtime_test_", dir="/tmp") as temp_dir:
             temp = Path(temp_dir)
             objects = []
-            for source in sources:
+            for source, source_flags in sources:
                 obj = temp / f"{source.stem}_{len(objects)}.o"
-                run([cc, "-c", *common_flags, str(source), "-o", str(obj)])
+                run([cc, "-c", *common_flags, *source_flags, str(source), "-o", str(obj)])
                 objects.append(obj)
 
             executable = temp / "runtime_test"
@@ -101,6 +106,7 @@ def main() -> int:
                     "-Wl,--gc-sections",
                     "-fsanitize=address,undefined",
                     *(str(obj) for obj in objects),
+                    "-lm",
                     "-o",
                     str(executable),
                 ]

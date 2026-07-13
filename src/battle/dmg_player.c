@@ -136,17 +136,16 @@ void dispatch_event_player(s32 eventType) {
 
     player->lastEventType = eventType;
 
-    oldOnHitScript = player->handleEventScript;
-    oldOnHitID = player->handleEventScriptID;
+    oldOnHitScript = player->scripts.handleEvent.live;
+    oldOnHitID = player->scripts.handleEvent.liveID;
 
     eventScript = start_script(&EVS_Player_HandleEvent, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
-    player->handleEventScript = eventScript;
-    player->handleEventScriptID = eventScript->id;
+    set_bound_script_live(&player->scripts.handleEvent, eventScript);
     eventScript->owner1.actor = nullptr;
 
-    if (player->takeTurnScript != nullptr) {
-        kill_script_by_ID(player->takeTurnScriptID);
-        player->takeTurnScript = nullptr;
+    if (player->scripts.takeTurn.live != nullptr) {
+        kill_script_by_ID(player->scripts.takeTurn.liveID);
+        player->scripts.takeTurn.live = nullptr;
     }
 
     if (oldOnHitScript != nullptr) {
@@ -162,12 +161,11 @@ void dispatch_event_player_continue_turn(s32 eventType) {
 
     player->lastEventType = eventType;
 
-    oldOnHitScript = player->handleEventScript;
-    oldOnHitID = player->handleEventScriptID;
+    oldOnHitScript = player->scripts.handleEvent.live;
+    oldOnHitID = player->scripts.handleEvent.liveID;
 
     eventScript = start_script(&EVS_Player_HandleEvent, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
-    player->handleEventScript = eventScript;
-    player->handleEventScriptID = eventScript->id;
+    set_bound_script_live(&player->scripts.handleEvent, eventScript);
     eventScript->owner1.actor = nullptr;
 
     if (oldOnHitScript != nullptr) {
@@ -1593,17 +1591,10 @@ API_CALLABLE(PlayerDamageEnemy) {
     battleStatus->statusDuration = (battleStatus->curAttackStatus & 0xF00) >> 8;
 
     hitResult = calc_player_damage_enemy();
-    if (hitResult < 0) {
-        return ApiStatus_FINISH;
+    if (hitResult >= 0) {
+        evt_set_variable(script, hitResultOutVar, hitResult);
     }
-
-    evt_set_variable(script, hitResultOutVar, hitResult);
-
-    if (does_script_exist_by_ref(script)) {
-        return ApiStatus_DONE2;
-    } else {
-        return ApiStatus_FINISH;
-    }
+    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(PlayerPowerBounceEnemy) {
@@ -1665,17 +1656,10 @@ API_CALLABLE(PlayerPowerBounceEnemy) {
     battleStatus->statusDuration = (battleStatus->curAttackStatus & 0xF00) >> 8;
 
     hitResult = calc_player_damage_enemy();
-    if (hitResult < 0) {
-        return ApiStatus_FINISH;
+    if (hitResult >= 0) {
+        evt_set_variable(script, hitResultOutVar, hitResult);
     }
-
-    evt_set_variable(script, hitResultOutVar, hitResult);
-
-    if (does_script_exist_by_ref(script)) {
-        return ApiStatus_DONE2;
-    } else {
-        return ApiStatus_FINISH;
-    }
+    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(PlayerTestEnemy) {
@@ -1737,10 +1721,9 @@ API_CALLABLE(PlayerTestEnemy) {
     battleStatus->statusDuration = (battleStatus->curAttackStatus & 0xF00) >> 8;
 
     hitResult = calc_player_test_enemy();
-    if (hitResult < 0) {
-        return ApiStatus_FINISH;
+    if (hitResult >= 0) {
+        evt_set_variable(script, hitResultOutVar, hitResult);
     }
-    evt_set_variable(script, hitResultOutVar, hitResult);
     return ApiStatus_DONE2;
 }
 
@@ -1751,12 +1734,7 @@ API_CALLABLE(DispatchDamageEventPlayer) {
     if (dispatch_generic_damage_event_player(damageAmount, *args++) < 0) {
         return ApiStatus_BLOCK;
     }
-
-    if (does_script_exist_by_ref(script)) {
-        return ApiStatus_DONE2;
-    } else {
-        return ApiStatus_BLOCK;
-    }
+    return ApiStatus_DONE2;
 }
 
 API_CALLABLE(EnablePlayerBlur) {

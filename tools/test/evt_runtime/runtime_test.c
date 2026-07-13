@@ -1,4 +1,6 @@
 #include "common.h"
+#include "bound_script.h"
+#include "hud_element.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,13 +16,27 @@ s32 evt_execute_next_command(Evt* script);
 
 GameStatus gTestGameStatus;
 GameStatus* gGameStatusPtr = &gTestGameStatus;
+EncounterStatus gCurrentEncounter;
+BattleStatus gBattleStatus;
+s32 gEncounterState = ENCOUNTER_STATE_NONE;
 s32 gTimeFreezeMode = TIME_FREEZE_NONE;
+HudScript HES_HPDigit0 = { 0 };
+HudScript HES_HPDigit1 = { 0 };
+HudScript HES_HPDigit2 = { 0 };
+HudScript HES_HPDigit3 = { 0 };
+HudScript HES_HPDigit4 = { 0 };
+HudScript HES_HPDigit5 = { 0 };
+HudScript HES_HPDigit6 = { 0 };
+HudScript HES_HPDigit7 = { 0 };
+HudScript HES_HPDigit8 = { 0 };
+HudScript HES_HPDigit9 = { 0 };
 static void* gExpectedHeapFree;
 static b32 gExpectedHeapFreeSeen;
 static s32 gTestGlobalFlags[2048];
 static s32 gTestAreaFlags[256];
 static s8 gTestGlobalBytes[512];
 static s8 gTestAreaBytes[16];
+static Evt* gOwnerToReplace;
 
 void* heap_malloc(s32 size) {
     return calloc(1, size);
@@ -32,6 +48,57 @@ s32 heap_free(void* ptr) {
     }
     free(ptr);
     return 0;
+}
+
+void set_defeated(s32 mapID, s32 encounterID) {
+}
+
+void create_encounters(void) {
+}
+
+void update_encounters_neutral(void) {
+}
+
+void update_encounters_pre_battle(void) {
+}
+
+void update_encounters_conversation(void) {
+}
+
+void update_encounters_post_battle(void) {
+}
+
+void update_merlee_messages(void) {
+}
+
+s32 spr_free_sprite(s32 spriteInstanceID) {
+    return 0;
+}
+
+s32 spr_load_npc_sprite(s32 animID, AnimID* limitAnimList) {
+    return 0;
+}
+
+void delete_shadow(s32 shadowIndex) {
+}
+
+s32 create_shadow_type(s32 type, f32 x, f32 y, f32 z) {
+    return 0;
+}
+
+void remove_effect(void* effect) {
+}
+
+void remove_actor_decoration(Actor* actor, s32 decorationIndex) {
+}
+
+void set_actor_glow_pal(Actor* actor, s32 arg1) {
+}
+
+void set_npc_imgfx_all(s32 arg0, ImgFXType arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
+}
+
+void remove_all_status_icons(s32 hudElementDataIndex) {
 }
 
 void dx_debug_evt_force_detach(Evt* evt) {
@@ -125,6 +192,9 @@ static s32 gTestArray[4];
 static s32 gTestFlagArray[2];
 
 extern EvtScript EVS_Companion;
+extern EvtScript EVS_ActorOwnerCompanion;
+extern EvtScript EVS_ActorRebound;
+extern EvtScript EVS_EnemyRebound;
 
 #define CHECK(condition) \
     do { \
@@ -189,14 +259,77 @@ static API_CALLABLE(StartOwnedChild) {
 
 static API_CALLABLE(KillSelfAndStartCompanion) {
     kill_script(script);
-    CHECK(!does_script_exist_by_ref(script));
     start_script(&EVS_Companion, EVT_PRIORITY_0, 0);
-    return ApiStatus_FINISH;
+    return ApiStatus_DONE2;
+}
+
+static API_CALLABLE(ReplaceOwner) {
+    Evt* replacement;
+
+    kill_script(gOwnerToReplace);
+    replacement = start_script(&EVS_Companion, EVT_PRIORITY_0, 0);
+    replacement->groupFlags = script->groupFlags;
+    return ApiStatus_DONE2;
+}
+
+static API_CALLABLE(DeleteEnemyOwner) {
+    kill_enemy(script->owner1.enemy);
+    return ApiStatus_DONE1;
+}
+
+static API_CALLABLE(VerifyEnemyOwner) {
+    Enemy* enemy = script->owner1.enemy;
+
+    CHECK(get_enemy(enemy->npcID) == enemy);
+    CHECK(get_npc_safe(script->owner2.npcID) != nullptr);
+    CHECK(enemy->deletePending);
+    CHECK(enemy->flags & ENEMY_FLAG_DISABLE_AI);
+    return Record(script, isInitialCall);
+}
+
+static API_CALLABLE(RebindEnemyOwner) {
+    Enemy* enemy = script->owner1.enemy;
+    Evt* replacement = start_script(&EVS_EnemyRebound, EVT_PRIORITY_0, 0);
+
+    set_bound_script_live(&enemy->scripts.ai, replacement);
+    replacement->owner1.enemy = enemy;
+    replacement->owner2.npcID = enemy->npcID;
+    return Record(script, isInitialCall);
+}
+
+static API_CALLABLE(DeleteActorOwner) {
+    btl_delete_actor(get_actor(script->owner1.actorID));
+    return ApiStatus_DONE2;
+}
+
+static API_CALLABLE(VerifyActorOwner) {
+    Actor* actor = get_actor(script->owner1.actorID);
+
+    CHECK(actor != nullptr);
+    if (actor != nullptr) {
+        CHECK(actor->deletePending);
+    }
+    return Record(script, isInitialCall);
+}
+
+static API_CALLABLE(RebindActorOwner) {
+    Actor* actor = get_actor(script->owner1.actorID);
+    Evt* replacement = start_script(&EVS_ActorRebound, EVT_PRIORITY_0, 0);
+
+    set_bound_script_live(&actor->scripts.handleEvent, replacement);
+    replacement->owner1.actorID = script->owner1.actorID;
+    return Record(script, isInitialCall);
 }
 
 static API_CALLABLE(KillAllFromCall) {
     kill_all_scripts();
     return ApiStatus_DONE2;
+}
+
+static API_CALLABLE(InvalidateScriptContext) {
+    clear_script_list();
+    heap_free(script);
+    return VmStatus_INVALID;
 }
 
 static API_CALLABLE(CaptureScriptID) {
@@ -573,6 +706,111 @@ EvtScript EVS_SelfReplaceBeforeFinally = {
     End
 };
 
+EvtScript EVS_ReplaceOwnerChild = {
+    Call(ReplaceOwner)
+    Call(Record, 'X')
+    Finally
+        Call(Record, 'C')
+    End
+};
+
+EvtScript EVS_ReplaceOwnerFromChild = {
+    ExecWait(EVS_ReplaceOwnerChild)
+    Call(Record, 'X')
+    Finally
+        Call(Record, 'P')
+    End
+};
+
+EvtScript EVS_EnemyOwnerCompanion = {
+    Wait(100)
+    Finally
+        Call(Record, 'D')
+    End
+};
+
+EvtScript EVS_DeleteEnemyOwner = {
+    ChildThread
+        Wait(100)
+        Finally
+            Call(VerifyEnemyOwner, 'C')
+        EndChildThread
+    Call(DeleteEnemyOwner)
+    Call(Record, 'X')
+    Finally
+        Call(VerifyEnemyOwner, 'P')
+        Exec(EVS_EnemyOwnerCompanion)
+    End
+};
+
+EvtScript EVS_EnemyOwnedSlot = {
+    Wait(100)
+    Finally
+        Call(VerifyEnemyOwner, 'S')
+    End
+};
+
+EvtScript EVS_EnemyRebindRoot = {
+    Wait(100)
+    Finally
+        Call(RebindEnemyOwner, 'A')
+    End
+};
+
+EvtScript EVS_EnemyRebound = {
+    Wait(100)
+    Finally
+        Call(VerifyEnemyOwner, 'B')
+    End
+};
+
+EvtScript EVS_EnemyBindingWait = {
+    Wait(100)
+    End
+};
+
+EvtScript EVS_ActorOwnerCompanion = {
+    Wait(100)
+    Finally
+        Call(Record, 'D')
+    End
+};
+
+EvtScript EVS_DeleteActorOwner = {
+    ChildThread
+        Wait(100)
+        Finally
+            Call(VerifyActorOwner, 'C')
+        EndChildThread
+    Call(DeleteActorOwner)
+    Call(Record, 'X')
+    Finally
+        Call(VerifyActorOwner, 'P')
+        Exec(EVS_ActorOwnerCompanion)
+    End
+};
+
+EvtScript EVS_ActorOwnedSlot = {
+    Wait(100)
+    Finally
+        Call(VerifyActorOwner, 'S')
+    End
+};
+
+EvtScript EVS_ActorRebindRoot = {
+    Wait(100)
+    Finally
+        Call(RebindActorOwner, 'A')
+    End
+};
+
+EvtScript EVS_ActorRebound = {
+    Wait(100)
+    Finally
+        Call(VerifyActorOwner, 'B')
+    End
+};
+
 EvtScript EVS_KillAllFiller = {
     Wait(100)
     End
@@ -590,6 +828,12 @@ EvtScript EVS_KillAllFromActiveCommand = {
     Call(KillAllFromCall)
     Finally
         Call(Record, 'A')
+    End
+};
+
+EvtScript EVS_InvalidateFromCall = {
+    Call(InvalidateScriptContext)
+    Call(Record, 'X')
     End
 };
 
@@ -819,6 +1063,8 @@ static void reset_test(void) {
     CHECK(gNumScripts == 0);
     memset(&gTestScriptList, 0, sizeof(gTestScriptList));
     memset(&gTestGameStatus, 0, sizeof(gTestGameStatus));
+    memset(&gCurrentEncounter, 0, sizeof(gCurrentEncounter));
+    memset(&gBattleStatus, 0, sizeof(gBattleStatus));
     memset(gTestMapVars, 0, sizeof(gTestMapVars));
     memset(gTestMapFlags, 0, sizeof(gTestMapFlags));
     gCurrentScriptListPtr = &gTestScriptList;
@@ -829,6 +1075,7 @@ static void reset_test(void) {
     IsUpdatingScripts = false;
     EvtCurrentScript = nullptr;
     gSiblingToKill = nullptr;
+    gOwnerToReplace = nullptr;
     gCapturedScriptID = -1;
     gInvokeTotal = 0;
     gLerpIterations = 0;
@@ -895,6 +1142,57 @@ static void check_all_scripts_detached(s32 expectedCount) {
         }
     }
     CHECK(count == expectedCount);
+}
+
+static Enemy* create_test_enemy(Encounter** encounterOut, s32 npcID) {
+    NpcBlueprint npcBlueprint = {
+        .flags = NPC_FLAG_HAS_NO_SPRITE,
+    };
+    Encounter* encounter = calloc(1, sizeof(*encounter));
+    Enemy* enemy = heap_malloc(sizeof(*enemy));
+    s32 npcIndex;
+    Npc* npc;
+
+    init_npc_list();
+    npcIndex = create_basic_npc(&npcBlueprint);
+    npc = get_npc_by_index(npcIndex);
+    npc->npcID = npcID;
+
+    encounter->count = 1;
+    encounter->enemy[0] = enemy;
+    enemy->flags = ENEMY_FLAG_PASSIVE;
+    enemy->encounterIndex = 0;
+    enemy->npcID = npcID;
+    gCurrentEncounter.numEncounters = 1;
+    gCurrentEncounter.encounterList[0] = encounter;
+    gExpectedHeapFree = enemy;
+    *encounterOut = encounter;
+    return enemy;
+}
+
+Actor* get_actor(s32 actorID) {
+    switch (actorID & ACTOR_CLASS_MASK) {
+        case ACTOR_CLASS_PLAYER:
+            return gBattleStatus.playerActor;
+        case ACTOR_CLASS_PARTNER:
+            return gBattleStatus.partnerActor;
+        case ACTOR_CLASS_ENEMY:
+            return gBattleStatus.enemyActors[(u8) actorID];
+    }
+    return nullptr;
+}
+
+static Actor* create_test_actor(s32 actorID) {
+    Actor* actor = heap_malloc(sizeof(*actor));
+
+    actor->actorID = actorID;
+    if ((actorID & ACTOR_CLASS_MASK) == ACTOR_CLASS_PARTNER) {
+        gBattleStatus.partnerActor = actor;
+    } else {
+        gBattleStatus.enemyActors[(u8) actorID] = actor;
+    }
+    gExpectedHeapFree = actor;
+    return actor;
 }
 
 static void test_natural_matrix(void) {
@@ -1083,6 +1381,240 @@ static void test_normal_command_can_replace_terminating_self(void) {
     expect_trace("PC");
 }
 
+static void test_active_child_can_replace_owner(void) {
+    Evt* parent;
+    Evt* child;
+    Evt* replacement;
+    s32 i;
+
+    reset_test();
+    parent = start_test_script(&EVS_ReplaceOwnerFromChild);
+    parent->groupFlags = 17;
+    evt_execute_next_command(parent);
+    child = parent->blockingChild;
+    CHECK(child != nullptr);
+    gOwnerToReplace = parent;
+    evt_execute_next_command(child);
+    CHECK(gNumScripts == 1);
+    replacement = nullptr;
+    for (i = 0; i < MAX_SCRIPTS; i++) {
+        if ((*gCurrentScriptListPtr)[i] != nullptr) {
+            replacement = (*gCurrentScriptListPtr)[i];
+            break;
+        }
+    }
+    CHECK(replacement != nullptr);
+    CHECK(replacement->groupFlags == 17);
+    expect_trace("CP");
+    kill_all_scripts();
+    CHECK(gNumScripts == 0);
+    expect_trace("CPC");
+}
+
+static void test_enemy_deletion_preserves_detached_scripts(void) {
+    Encounter* encounter;
+    Enemy* enemy;
+    Evt* script;
+    s32 npcID = 100;
+
+    reset_test();
+    enemy = create_test_enemy(&encounter, npcID);
+    gCurrentEncounter.curEnemy = enemy;
+    script = start_test_script(&EVS_DeleteEnemyOwner);
+    script->owner1.enemy = enemy;
+    script->owner2.npcID = enemy->npcID;
+    set_bound_script_live(&enemy->scripts.init, script);
+    evt_execute_next_command(script);
+    CHECK(!gExpectedHeapFreeSeen);
+    CHECK(gNumScripts == 1);
+    CHECK(encounter->enemy[0] == enemy);
+    check_all_scripts_detached(1);
+    expect_trace("CP");
+    kill_enemy(enemy);
+    update_encounters();
+    CHECK(gExpectedHeapFreeSeen);
+    CHECK(gNumScripts == 1);
+    CHECK(encounter->enemy[0] == nullptr);
+    CHECK(gCurrentEncounter.curEnemy == nullptr);
+    CHECK(get_npc_safe(npcID) == nullptr);
+    expect_trace("CP");
+    kill_all_scripts();
+    CHECK(gNumScripts == 0);
+    expect_trace("CPD");
+    free(encounter);
+    gExpectedHeapFree = nullptr;
+}
+
+static void test_enemy_deletion_finalizes_all_registered_slots(void) {
+    Encounter* encounter;
+    Enemy* enemy;
+    s32 npcID = 101;
+    s32 i;
+
+    reset_test();
+    enemy = create_test_enemy(&encounter, npcID);
+    for (i = 0; i < ARRAY_COUNT(enemy->scripts.all); i++) {
+        Evt* script = start_test_script(&EVS_EnemyOwnedSlot);
+
+        script->owner1.enemy = enemy;
+        script->owner2.npcID = npcID;
+        set_bound_script_live(&enemy->scripts.all[i], script);
+    }
+
+    kill_enemy(enemy);
+    CHECK(!gExpectedHeapFreeSeen);
+    CHECK(gNumScripts == 0);
+    CHECK(encounter->enemy[0] == enemy);
+    expect_trace("SSSSSS");
+
+    update_encounters();
+    CHECK(gExpectedHeapFreeSeen);
+    CHECK(encounter->enemy[0] == nullptr);
+    CHECK(get_npc_safe(npcID) == nullptr);
+    free(encounter);
+    gExpectedHeapFree = nullptr;
+}
+
+static void test_enemy_deletion_terminates_finalizer_rebinding(void) {
+    Encounter* encounter;
+    Enemy* enemy;
+    Evt* script;
+    s32 npcID = 102;
+
+    reset_test();
+    enemy = create_test_enemy(&encounter, npcID);
+    script = start_test_script(&EVS_EnemyRebindRoot);
+    script->owner1.enemy = enemy;
+    script->owner2.npcID = npcID;
+    set_bound_script_live(&enemy->scripts.ai, script);
+
+    kill_enemy(enemy);
+    CHECK(!gExpectedHeapFreeSeen);
+    CHECK(gNumScripts == 0);
+    CHECK(encounter->enemy[0] == enemy);
+    expect_trace("AB");
+
+    update_encounters();
+    CHECK(gExpectedHeapFreeSeen);
+    CHECK(encounter->enemy[0] == nullptr);
+    CHECK(get_npc_safe(npcID) == nullptr);
+    free(encounter);
+    gExpectedHeapFree = nullptr;
+}
+
+static void test_enemy_bindings_set_npc_owner(void) {
+    Encounter* encounter;
+    Enemy* enemy;
+    Evt* script;
+    s32 npcID = 103;
+
+    reset_test();
+    enemy = create_test_enemy(&encounter, npcID);
+
+    script = get_script_by_id(bind_enemy_ai(enemy, &EVS_EnemyBindingWait));
+    CHECK(script->owner1.enemy == enemy);
+    CHECK(script->owner2.npcID == npcID);
+    script = get_script_by_id(bind_enemy_aux(enemy, &EVS_EnemyBindingWait));
+    CHECK(script->owner1.enemy == enemy);
+    CHECK(script->owner2.npcID == npcID);
+    script = get_script_by_id(bind_enemy_interact(enemy, &EVS_EnemyBindingWait));
+    CHECK(script->owner1.enemy == enemy);
+    CHECK(script->owner2.npcID == npcID);
+
+    kill_enemy(enemy);
+    CHECK(gNumScripts == 0);
+    expect_trace("");
+    update_encounters();
+    CHECK(gExpectedHeapFreeSeen);
+    free(encounter);
+    gExpectedHeapFree = nullptr;
+}
+
+static void test_actor_self_deletion_retains_owner_until_finally(void) {
+    Actor* actor;
+    Evt* script;
+    s32 actorID = ACTOR_ENEMY0;
+
+    reset_test();
+    actor = create_test_actor(actorID);
+    script = start_test_script(&EVS_DeleteActorOwner);
+    script->owner1.actorID = actorID;
+    set_bound_script_live(&actor->scripts.handleEvent, script);
+
+    evt_execute_next_command(script);
+    CHECK(!gExpectedHeapFreeSeen);
+    CHECK(actor->deletePending);
+    CHECK(get_actor(actorID) == actor);
+    CHECK(gNumScripts == 1);
+    check_all_scripts_detached(1);
+    expect_trace("CP");
+
+    // This is the same retry performed for pending actors at the start of btl_update.
+    btl_delete_actor(actor);
+    CHECK(gExpectedHeapFreeSeen);
+    CHECK(get_actor(actorID) == nullptr);
+    CHECK(gNumScripts == 1);
+    expect_trace("CP");
+
+    kill_all_scripts();
+    CHECK(gNumScripts == 0);
+    expect_trace("CPD");
+    gExpectedHeapFree = nullptr;
+}
+
+static void test_actor_deletion_finalizes_all_registered_slots(void) {
+    Actor* actor;
+    s32 actorID = ACTOR_ENEMY1;
+    s32 i;
+
+    reset_test();
+    actor = create_test_actor(actorID);
+    for (i = 0; i < ARRAY_COUNT(actor->scripts.all); i++) {
+        Evt* script = start_test_script(&EVS_ActorOwnedSlot);
+
+        script->owner1.actorID = actorID;
+        set_bound_script_live(&actor->scripts.all[i], script);
+    }
+
+    btl_delete_actor(actor);
+    CHECK(gExpectedHeapFreeSeen);
+    CHECK(get_actor(actorID) == nullptr);
+    CHECK(gNumScripts == 0);
+    expect_trace("SSSS");
+    gExpectedHeapFree = nullptr;
+}
+
+static void test_actor_deletion_terminates_finalizer_rebinding(void) {
+    Actor* actor;
+    Evt* script;
+    s32 actorID = ACTOR_ENEMY2;
+
+    reset_test();
+    actor = create_test_actor(actorID);
+    script = start_test_script(&EVS_ActorRebindRoot);
+    script->owner1.actorID = actorID;
+    set_bound_script_live(&actor->scripts.handleEvent, script);
+
+    btl_delete_actor(actor);
+    CHECK(gExpectedHeapFreeSeen);
+    CHECK(get_actor(actorID) == nullptr);
+    CHECK(gNumScripts == 0);
+    expect_trace("AB");
+    gExpectedHeapFree = nullptr;
+}
+
+static void test_partner_deletion_remains_synchronous(void) {
+    Actor* partner;
+
+    reset_test();
+    partner = create_test_actor(ACTOR_PARTNER);
+    btl_delete_actor(partner);
+    CHECK(gExpectedHeapFreeSeen);
+    CHECK(gBattleStatus.partnerActor == nullptr);
+    CHECK(gNumScripts == 0);
+    gExpectedHeapFree = nullptr;
+}
+
 static void test_finalizer_can_start_detached_scripts(void) {
     Evt* script;
 
@@ -1137,6 +1669,19 @@ static void test_clear_script_list_bypasses_finalizers(void) {
     evt_execute_next_command(parent);
     CHECK(gNumScripts == 2);
     clear_script_list();
+    CHECK(gNumScripts == 0);
+    CHECK(EvtCurrentScript == nullptr);
+    expect_trace("");
+}
+
+static void test_active_command_invalidates_context(void) {
+    Evt* script;
+
+    reset_test();
+    gTestGameStatus.context = CONTEXT_WORLD;
+    clear_script_list();
+    script = start_test_script(&EVS_InvalidateFromCall);
+    CHECK(evt_execute_next_command(script) == EVT_CMD_RESULT_YIELD);
     CHECK(gNumScripts == 0);
     CHECK(EvtCurrentScript == nullptr);
     expect_trace("");
@@ -1294,10 +1839,20 @@ int main(int argc, char** argv) {
     test_active_caller_is_killed();
     test_sibling_cleanup_mutates_child_list();
     test_normal_command_can_replace_terminating_self();
+    test_active_child_can_replace_owner();
+    test_enemy_deletion_preserves_detached_scripts();
+    test_enemy_deletion_finalizes_all_registered_slots();
+    test_enemy_deletion_terminates_finalizer_rebinding();
+    test_enemy_bindings_set_npc_owner();
+    test_actor_self_deletion_retains_owner_until_finally();
+    test_actor_deletion_finalizes_all_registered_slots();
+    test_actor_deletion_terminates_finalizer_rebinding();
+    test_partner_deletion_remains_synchronous();
     test_finalizer_can_start_detached_scripts();
     test_kill_all_rescans_for_spawned_scripts();
     test_kill_all_from_active_command();
     test_clear_script_list_bypasses_finalizers();
+    test_active_command_invalidates_context();
     test_kill_blocked_call();
     test_kill_suspended_tree();
     test_jump_restarts_script();

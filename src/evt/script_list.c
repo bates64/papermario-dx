@@ -986,25 +986,7 @@ s32 does_script_exist(s32 id) {
     return false;
 }
 
-// Reports whether a reference identifies a live script.
-// Note: this may fail for stale references if the address is reused by a new script.
-s32 does_script_exist_by_ref(Evt* script) {
-    s32 i;
-
-    if (script == nullptr) {
-        return false;
-    }
-
-    for (i = 0; i < MAX_SCRIPTS; i++) {
-        Evt* candidate = (*gCurrentScriptListPtr)[i];
-
-        if (script == candidate) {
-            return candidate->terminationState == EVT_TERMINATION_NONE;
-        }
-    }
-    return false;
-}
-
+// Reports whether a script has any ChildThread children.
 s32 does_script_have_child_threads(Evt* script) {
     s32 i;
 
