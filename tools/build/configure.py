@@ -612,7 +612,7 @@ class Configure:
         non_matching: bool,
         c_maps: bool = False,
         evt_validation: bool = True,
-    ):
+    ) -> List[str]:
         assert self.linker_entries is not None
 
         built_objects = set()
@@ -1547,7 +1547,7 @@ class Configure:
 
         ninja.build("generated_code_" + self.version, "phony", generated_code)
         ninja.build("inc_img_bins_" + self.version, "phony", inc_img_bins)
-        ninja.build("validate_evt_" + self.version, "phony", evt_validation_stamps)
+        return evt_validation_stamps
 
     def get_segment_max_sizes(self):
         assert self.linker_entries is not None
@@ -1602,8 +1602,10 @@ class Configure:
 
         return sorted(found.values(), key=lambda x: x[0].stem)
 
-    def write_overlays(self, ninja: ninja_syntax.Writer, evt_validation: bool = True) -> str:
-        """Write overlay build statements. Returns the final ROM path."""
+    def write_overlays(
+        self, ninja: ninja_syntax.Writer, evt_validation: bool = True
+    ) -> Tuple[str, List[str]]:
+        """Write overlay build statements and return the ROM path and EVT validation stamps."""
         import json
 
         overlays = self.find_overlays()
@@ -1707,7 +1709,6 @@ class Configure:
             json.dump(manifest_entries, f)
 
         implicit_deps.append(posix(BUILD_TOOLS / "overlay.py"))
-        ninja.build("validate_evt_overlays_" + self.version, "phony", evt_validation_stamps)
         ninja.build(
             posix(self.rom_path()),
             "ovl_apply",
@@ -1718,7 +1719,7 @@ class Configure:
                 "manifest": posix(manifest_path),
             },
         )
-        return posix(self.rom_path())
+        return posix(self.rom_path()), evt_validation_stamps
 
     def make_current(self, ninja: ninja_syntax.Writer):
         current = Path("ver/current")
@@ -1937,6 +1938,7 @@ if __name__ == "__main__":
 
     skip_files: Set[str] = set()
     all: List[str] = []
+    evt_validation_stamps: List[str] = []
     first_configure = None
 
     for version in versions:
@@ -1959,19 +1961,26 @@ if __name__ == "__main__":
         configure.split(
             not args.no_split_assets, args.split_code, args.shift, args.debug
         )
-        configure.write_ninja(
-            ninja, skip_files, non_matching, args.c_maps, args.evt_validation
+        evt_validation_stamps.extend(
+            configure.write_ninja(
+                ninja, skip_files, non_matching, args.c_maps, args.evt_validation
+            )
         )
+
+        overlay_rom, overlay_evt_validation_stamps = configure.write_overlays(
+            ninja, args.evt_validation
+        )
+        evt_validation_stamps.extend(overlay_evt_validation_stamps)
 
         all.append(posix(configure.rom_ok_path()))
         all.append(posix(configure.syms_path()))
-        all.append("validate_evt_" + version)
-        all.append(configure.write_overlays(ninja, args.evt_validation))
-        all.append("validate_evt_overlays_" + version)
+        all.append(overlay_rom)
 
     assert first_configure, "no versions configured"
     first_configure.make_current(ninja)
 
+    ninja.build("evt_script_validation", "phony", evt_validation_stamps)
+    all.append("evt_script_validation")
     ninja.build("all", "phony", all)
     ninja.default("all")
 

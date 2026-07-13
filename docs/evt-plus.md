@@ -248,6 +248,12 @@ EvtScript N(EVS_Example_NeedsCleanup) = {
 
 A compile-time structural validator for EvtScripts lives in `tools/build/evt_validate_obj.py`. It can be disabled globally, and individual scripts can opt out by not following the `EVS_*` naming convention.
 
+The normal build applies it to every compiled `EVS_*` script in the engine and overlays. To run only this whole-project structural check:
+
+```sh
+ninja evt_script_validation
+```
+
 The validator catches malformed scripts, unsafe control flow, and patterns which are technically valid but likely unintended:
 
 - missing `End`
@@ -289,11 +295,13 @@ Fixtures live in:
 - `tools/test/evt_validator/fail/` for scripts that should fail validation
 - each fail test has a `.stderr` with expected error messages
 
-A host-side runtime test, compiled with sanitizers, covers interpreter and script-lifecycle behavior. It first runs the whole-project `validate_evt_us` target, then executes focused scripts covering ordinary VM behavior and termination:
+A separate host-side runtime test covers the VM itself. It compiles the real interpreter and lifecycle code with sanitizers, then executes focused scripts written specifically to exercise ordinary VM behavior and termination:
 
 ```sh
 python3 tools/test/evt_runtime.py
 ```
+
+The runtime test does not execute the game's EvtScript corpus. Game scripts depend on loaded map or battle state, may deliberately run forever, and call APIs with engine-only preconditions. They are covered by the structural build-time validator; the focused runtime fixtures cover the interpreter and scheduler.
 
 ## 2. Exec with Arguments
 

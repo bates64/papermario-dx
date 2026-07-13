@@ -18,7 +18,6 @@ def run(
     command: list[str],
     *,
     env: dict[str, str] | None = None,
-    show_output: bool = True,
 ) -> None:
     result = subprocess.run(command, cwd=ROOT, env=env, text=True, capture_output=True)
     if result.returncode != 0:
@@ -27,7 +26,7 @@ def run(
         if result.stderr:
             print(result.stderr, end="", file=sys.stderr)
         raise subprocess.CalledProcessError(result.returncode, command)
-    if show_output and result.stdout:
+    if result.stdout:
         print(result.stdout, end="")
 
 
@@ -45,10 +44,6 @@ def main() -> int:
     cc = shutil.which("gcc")
     if cc is None:
         print("gcc was not found on PATH", file=sys.stderr)
-        return 1
-    ninja = shutil.which("ninja")
-    if ninja is None:
-        print("ninja was not found on PATH", file=sys.stderr)
         return 1
 
     common_flags = [
@@ -86,10 +81,6 @@ def main() -> int:
     ]
 
     try:
-        validation_env = os.environ.copy()
-        validation_env["CCACHE_DISABLE"] = "1"
-        run([ninja, "validate_evt_us"], env=validation_env, show_output=False)
-        print("Whole-project EVT validation passed.")
         with tempfile.TemporaryDirectory(prefix="evt_runtime_test_", dir="/tmp") as temp_dir:
             temp = Path(temp_dir)
             objects = []
