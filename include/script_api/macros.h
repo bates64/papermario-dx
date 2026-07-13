@@ -350,6 +350,9 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 /// Skips to the next iteration of the innermost loop.
 #define ContinueLoop                        EVT_CMD(EVT_OP_CONTINUE_LOOP),
 
+/// Immediately restarts the current iteration of the innermost loop without updating its counter.
+#define RetryLoop                           EVT_CMD(EVT_OP_RETRY_LOOP),
+
 /// Marks the beginning of a lerp loop.
 ///
 ///     Lerp(VAR, START, END, DURATION, EASING)
@@ -361,7 +364,7 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 /// The body runs once for each elapsed frame from 0 through `DURATION`, then exits.
 /// `EndLerp` yields for one frame between iterations, so no Wait is needed inside the loop.
 ///
-/// `BreakLoop` exits the lerp early. `ContinueLoop` is not allowed inside Lerp.
+/// `BreakLoop` exits the lerp early. `ContinueLoop` and `RetryLoop` are not allowed inside Lerp.
 /// Lerp blocks cannot be nested. Up to 8 total Loop and Lerp blocks may be
 /// active within a single script.
 #define Lerp(VAR, START, END, DURATION, EASING) \

@@ -2043,6 +2043,7 @@ DebugOpcode DebugOps[] = {
     [EVT_OP_END_LOOP]           { "EndLoop" },
     [EVT_OP_BREAK_LOOP]         { "BreakLoop" },
     [EVT_OP_CONTINUE_LOOP]      { "ContinueLoop" },
+    [EVT_OP_RETRY_LOOP]         { "RetryLoop" },
     [EVT_OP_WAIT_FRAMES]        { "Wait" },
     [EVT_OP_WAIT_SECS]          { "WaitSecs" },
     [EVT_OP_IF_EQ]              { "If EQ" },

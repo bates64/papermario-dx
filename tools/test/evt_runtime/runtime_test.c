@@ -373,6 +373,8 @@ static API_CALLABLE(VerifyControlFlow) {
     CHECK(evt_get_variable(script, LVar5) == 7);
     CHECK(evt_get_variable(script, LVar6) == 9);
     CHECK(evt_get_variable(script, LVar7) == 101);
+    CHECK(evt_get_variable(script, LVar8) == 5);
+    CHECK(evt_get_variable(script, LVar9) == 3);
     return ApiStatus_DONE2;
 }
 
@@ -932,6 +934,15 @@ EvtScript EVS_TestControlFlow = {
     IfNotFlag(8, 2)
         Add(LVar7, 100)
     EndIf
+    Set(LVar8, 0)
+    Set(LVar9, 0)
+    Loop(3)
+        Add(LVar8, 1)
+        IfLt(LVar8, 3)
+            RetryLoop
+        EndIf
+        Add(LVar9, 1)
+    EndLoop
     Call(VerifyControlFlow)
     End
 };

@@ -9,7 +9,7 @@ The primary features are:
 - expanded arithmetic expressions such as `A = B + C + D`, `A = B / C`, and `A = clamp(B, MIN, MAX)`
 - lightweight inline calls to C helpers through `Eval`, `Invoke`, and their variants
 - range conditions with `IfRange` and `IfNotRange`
-- `ContinueLoop` as a counterpart to `BreakLoop`
+- greater loop iteration control with `ContinueLoop` and `RetryLoop`
 - first-class lerp loops with `Lerp` and `EndLerp`
 - guaranteed cleanup blocks with `Finally`
 - commands for awaiting child threads or a single script ID
@@ -48,7 +48,9 @@ The primary features are:
 6. [Named Labels](#6-named-labels)
 7. [Stricter Case Groups](#7-stricter-case-groups)
 8. [If Ranges](#8-if-ranges)
-9. [Continue Loop](#9-continue-loop)
+9. [Loop Control](#9-loop-control)
+    - [ContinueLoop](#continueloop)
+    - [RetryLoop](#retryloop)
 10. [Lerp Loops](#10-lerp-loops)
 11. [Finally Blocks](#11-finally-blocks)
     - [Cleanup Order](#cleanup-order)
@@ -58,6 +60,8 @@ The primary features are:
 13. [Packed Command Headers](#13-packed-command-headers)
 14. [Buffer Reads](#14-buffer-reads)
 15. [Command Renames](#15-command-renames)
+
+- [Additional Ideas](#additional-ideas)
 
 ## Preview
 
@@ -257,7 +261,7 @@ The validator catches malformed scripts, unsafe control flow, and patterns which
 - loop and switch nesting deeper than runtime limits
 - invalid case groups
 - `BreakLoop` outside loops or lerp loops
-- `ContinueLoop` outside loops, or inside a lerp loop
+- `ContinueLoop` or `RetryLoop` outside loops, or inside a lerp loop
 - `BreakSwitch` or `Case` outside switches
 - unclosed `Thread` or `ChildThread` blocks
 - duplicate labels
@@ -714,7 +718,9 @@ IfRange(LVar0, 0, Float(100.0)) // rejected
 
 Variable bounds are allowed because the validator does not know whether a given variable holds an int or float value at runtime.
 
-## 9. Continue Loop
+## 9. Loop Control
+
+### ContinueLoop
 
 `ContinueLoop` skips the rest of the current loop body and starts the next iteration. It is the loop-control counterpart to `BreakLoop`:
 
@@ -730,6 +736,37 @@ EndLoop
 ```
 
 For counted loops, `ContinueLoop` still runs the normal `EndLoop` counter handling. It does not bypass decrementing or exiting the loop.
+
+### RetryLoop
+
+`RetryLoop` restarts the current loop iteration without updating its counter. For example, some actor idle scripts use a `Label` anchored at the start of a loop body and `Goto` to pause the loop while an actor is immobilized, without consuming the loop iteration count:
+
+```c
+Loop(80)
+    Label(2)
+        Call(GetStatusFlags, ACTOR_SELF, LVar1)
+        IfFlag(LVar1, STATUS_FLAGS_IMMOBILIZED)
+            Wait(1)
+            Goto(2)
+        EndIf
+    Wait(1)
+EndLoop
+```
+
+`RetryLoop` expresses the same behavior without jumping around the loop counter:
+
+```c
+Loop(80)
+    Call(GetStatusFlags, ACTOR_SELF, LVar1)
+    IfFlag(LVar1, STATUS_FLAGS_IMMOBILIZED)
+        Wait(1)
+        RetryLoop
+    EndIf
+    Wait(1)
+EndLoop
+```
+
+Using `ContinueLoop` here would still decrement the loop counter, allowing this part of the 80-frame idle to expire while the actor is still immobilized. `RetryLoop` preserves the interrupted iteration. It restarts immediately, so either a `Wait` or a blocking `Call` is required to prevent immediate infinite looping.
 
 ## 10. Lerp Loops
 
@@ -776,7 +813,7 @@ Lerp(LVarAlpha, 0, 255, 30, EASING_LINEAR)
 EndLerp
 ```
 
-`ContinueLoop` is not allowed inside a `Lerp` block. If a lerp body needs to skip work for a frame, put that work behind an `If` instead.
+`ContinueLoop` and `RetryLoop` are not allowed inside a `Lerp` block. If a lerp body needs to skip work for a frame, put that work behind an `If` instead.
 
 `Lerp` state is stored in the Evt struct rather than in the script's local variables, so the command only writes its declared output variable. As in the vanilla implementation, only one lerp may be active in a script at a time; nested `Lerp` blocks are rejected by the validator.
 
@@ -828,7 +865,7 @@ A finalizer must complete immediately. This keeps cleanup predictable and ensure
 - `Exec` and `ExecGetID` may start detached scripts
 - commands which wait, jump out of the block, or start owned children are not allowed
 
-The validator rejects commands such as `Wait`, `ExecWait`, `Goto`, `Jump`, `BreakLoop`, `ContinueLoop`, `Thread`, `ChildThread`, and `BreakPoint` inside a finalizer. The runtime also asserts if a `Call` tries to start an owned child.
+The validator rejects commands such as `Wait`, `ExecWait`, `Goto`, `Jump`, `BreakLoop`, `ContinueLoop`, `RetryLoop`, `Thread`, `ChildThread`, and `BreakPoint` inside a finalizer. The runtime also asserts if a `Call` tries to start an owned child.
 
 ### NPC_SELF and ACTOR_SELF
 
@@ -914,3 +951,19 @@ Several command names were updated to match current engine terminology. In parti
 | `BindPadlock` | `BindItemPrompt` |
 
 Compatibility aliases are provided, so the old names still compile. New scripts should prefer the new names.
+
+## Additional Ideas
+
+This EVT Plus proposal covers many new features; here are some that didn't make the cut:
+
+- `Loop(X)` --> `Loop` and `LoopFor(X)`
+  - Make infinite loops explicit
+- Ownership rework: owner1/owner2 --> ownerKind + owner union
+  - Only one owner for a script, less confusion around ID vs pointer for Actor/NPC/Enemy
+- `AwaitAll`
+  - More expansive than `AwaitChildren`, also waits for detached `Exec` and `Thread`
+  - No need to save result from `ExecGetID`, just `Exec` and then `AwaitAll` later
+- Make `Unbind` operate for bound Actor and Enemy scripts in addition to Trigger
+- Address frailty around `EVT_ENTITY_INDEX`
+
+Perhaps these can be made available in the future.

@@ -32,6 +32,7 @@ enum {
     EVT_OP_END_LOOP,
     EVT_OP_BREAK_LOOP,
     EVT_OP_CONTINUE_LOOP,
+    EVT_OP_RETRY_LOOP,
     EVT_OP_WAIT_FRAMES,
     EVT_OP_WAIT_SECS,
     EVT_OP_IF_EQ, ///< Args: a, b

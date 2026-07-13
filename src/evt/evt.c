@@ -249,6 +249,18 @@ ApiStatus evt_handle_continue_loop(Evt* script) {
     return ApiStatus_NEXT;
 }
 
+ApiStatus evt_handle_retry_loop(Evt* script) {
+    s32 loopDepth = script->loopDepth;
+
+    ASSERT(loopDepth >= 0);
+    ASSERT_MSG(
+        script->loopTypeTable[loopDepth] != EVT_LOOP_TYPE_LERP,
+        "RetryLoop is not allowed inside Lerp"
+    );
+    script->ptrNextLine = (Bytecode*)script->loopStartTable[loopDepth];
+    return ApiStatus_NEXT;
+}
+
 ApiStatus evt_handle_lerp(Evt* script) {
     Bytecode* args = script->ptrReadPos;
     Bytecode outVar = *args++;
@@ -2168,6 +2180,7 @@ static b32 evt_opcode_forbidden_in_finalizer(s32 opcode) {
         case EVT_OP_END_LOOP:
         case EVT_OP_BREAK_LOOP:
         case EVT_OP_CONTINUE_LOOP:
+        case EVT_OP_RETRY_LOOP:
         case EVT_OP_LERP:
         case EVT_OP_END_LERP:
         case EVT_OP_THREAD:
@@ -2264,6 +2277,9 @@ s32 evt_execute_next_command(Evt* script) {
                 break;
             case EVT_OP_CONTINUE_LOOP:
                 status = evt_handle_continue_loop(script);
+                break;
+            case EVT_OP_RETRY_LOOP:
+                status = evt_handle_retry_loop(script);
                 break;
             case EVT_OP_LERP:
                 status = evt_handle_lerp(script);
