@@ -934,6 +934,250 @@ s32 BattleDigitOffsets[] = {
 
 s32 DebugBattleColumn = 0;
 
+#define DEBUG_BATTLE_PREVIEW_ROWS       6
+#define DEBUG_BATTLE_PREVIEW_NAME_LEN   24
+#define DEBUG_BATTLE_SCAN_ROWS          8
+
+s32 DebugBattlePreviewBattleCount;
+s32 DebugBattlePreviewStageCount;
+s32 DebugBattlePreviewLineCount;
+Battle DebugBattleScan[DEBUG_BATTLE_SCAN_ROWS] ALIGNED8;
+StageListRow DebugBattleStageScan[DEBUG_BATTLE_SCAN_ROWS] ALIGNED8;
+FormationRow DebugBattlePreviewRows[DEBUG_BATTLE_PREVIEW_ROWS] ALIGNED8;
+char DebugBattlePreviewNames[DEBUG_BATTLE_PREVIEW_ROWS][DEBUG_BATTLE_PREVIEW_NAME_LEN];
+u8 DebugBattlePreviewStringBuf[DEBUG_BATTLE_PREVIEW_NAME_LEN + 2] ALIGNED8;
+
+// copies a small piece of a battle area from ROM without loading the overlay
+b32 dx_debug_read_battle_data(BattleArea* battleArea, void* address, void* dest, s32 size) {
+    u32 areaVramStart;
+    u32 areaSize;
+    u32 addressValue;
+    u32 offset;
+    u8* romStart;
+
+    if (battleArea->dmaStart == nullptr
+        || battleArea->dmaEnd == nullptr
+        || battleArea->dmaDest == nullptr
+        || size <= 0
+    ) {
+        return false;
+    }
+
+    areaVramStart = (u32)battleArea->dmaDest;
+    areaSize = (u32)battleArea->dmaEnd - (u32)battleArea->dmaStart;
+    addressValue = (u32)address;
+    if (addressValue < areaVramStart || (u32)size > areaSize) {
+        return false;
+    }
+
+    offset = addressValue - areaVramStart;
+    if (offset > areaSize - size) {
+        return false;
+    }
+
+    romStart = (u8*)battleArea->dmaStart + offset;
+    dma_copy(romStart, romStart + size, dest);
+    return true;
+}
+
+// reads an actor overlay name from an unloaded battle area
+b32 dx_debug_read_actor_overlay_name(BattleArea* battleArea, const char* address, char* dest) {
+    u32 areaVramEnd = (u32)battleArea->dmaDest + ((u32)battleArea->dmaEnd - (u32)battleArea->dmaStart);
+    u32 alignedAddress = (u32)address & ~1;
+    s32 nameOffset = (u32)address - alignedAddress;
+    s32 readSize = DEBUG_BATTLE_PREVIEW_NAME_LEN + nameOffset;
+    s32 i;
+
+    if (readSize & 1) {
+        readSize++;
+    }
+    if (alignedAddress + readSize > areaVramEnd) {
+        readSize = (areaVramEnd - alignedAddress) & ~1;
+    }
+    if (readSize <= nameOffset
+        || !dx_debug_read_battle_data(battleArea, (void*)alignedAddress, DebugBattlePreviewStringBuf, readSize)
+    ) {
+        dest[0] = '\0';
+        return false;
+    }
+
+    for (i = 0; i < DEBUG_BATTLE_PREVIEW_NAME_LEN - 1 && i + nameOffset < readSize; i++) {
+        dest[i] = DebugBattlePreviewStringBuf[i + nameOffset];
+        if (dest[i] == '\0') {
+            return true;
+        }
+    }
+    dest[i] = '\0';
+    return true;
+}
+
+// counts the battles in an unloaded area using a small scratch buffer
+s32 dx_debug_count_battles(BattleArea* battleArea) {
+    u32 areaVramEnd;
+    u32 listAddress;
+    s32 maxEntries;
+    s32 readPos;
+    s32 i;
+
+    if (battleArea->battles == nullptr) {
+        return 0;
+    }
+
+    areaVramEnd = (u32)battleArea->dmaDest + ((u32)battleArea->dmaEnd - (u32)battleArea->dmaStart);
+    listAddress = (u32)battleArea->battles;
+    if (listAddress >= areaVramEnd) {
+        return 0;
+    }
+
+    maxEntries = (areaVramEnd - listAddress) / sizeof(Battle);
+    if (maxEntries > 0x100) {
+        maxEntries = 0x100;
+    }
+
+    for (readPos = 0; readPos < maxEntries; readPos += DEBUG_BATTLE_SCAN_ROWS) {
+        s32 readCount = maxEntries - readPos;
+
+        if (readCount > DEBUG_BATTLE_SCAN_ROWS) {
+            readCount = DEBUG_BATTLE_SCAN_ROWS;
+        }
+        if (!dx_debug_read_battle_data(
+            battleArea,
+            (void*)(listAddress + readPos * sizeof(Battle)),
+            DebugBattleScan,
+            readCount * sizeof(Battle)
+        )) {
+            return 0;
+        }
+
+        for (i = 0; i < readCount; i++) {
+            if (DebugBattleScan[i].name == nullptr) {
+                return readPos + i;
+            }
+        }
+    }
+    return 0;
+}
+
+// counts the stages in an unloaded area using a small scratch buffer
+s32 dx_debug_count_stages(BattleArea* battleArea) {
+    u32 areaVramEnd;
+    u32 listAddress;
+    s32 maxEntries;
+    s32 readPos;
+    s32 i;
+
+    if (battleArea->stages == nullptr) {
+        return 0;
+    }
+
+    areaVramEnd = (u32)battleArea->dmaDest + ((u32)battleArea->dmaEnd - (u32)battleArea->dmaStart);
+    listAddress = (u32)battleArea->stages;
+    if (listAddress >= areaVramEnd) {
+        return 0;
+    }
+
+    maxEntries = (areaVramEnd - listAddress) / sizeof(StageListRow);
+    if (maxEntries > 0x100) {
+        maxEntries = 0x100;
+    }
+
+    for (readPos = 0; readPos < maxEntries; readPos += DEBUG_BATTLE_SCAN_ROWS) {
+        s32 readCount = maxEntries - readPos;
+
+        if (readCount > DEBUG_BATTLE_SCAN_ROWS) {
+            readCount = DEBUG_BATTLE_SCAN_ROWS;
+        }
+        if (!dx_debug_read_battle_data(
+            battleArea,
+            (void*)(listAddress + readPos * sizeof(StageListRow)),
+            DebugBattleStageScan,
+            readCount * sizeof(StageListRow)
+        )) {
+            return 0;
+        }
+
+        for (i = 0; i < readCount; i++) {
+            if (DebugBattleStageScan[i].name == nullptr) {
+                return readPos + i;
+            }
+        }
+    }
+    return 0;
+}
+
+// builds the actor list shown beneath the selected battle ID
+void dx_debug_load_battle_preview(s32 areaID, s32 formationID) {
+    BattleArea* battleArea;
+    Battle* battle;
+    s32 actorRows;
+    s32 i;
+
+    DebugBattlePreviewBattleCount = 0;
+    DebugBattlePreviewStageCount = 0;
+    DebugBattlePreviewLineCount = 1;
+    if (areaID < 0 || areaID >= ARRAY_COUNT(gBattleAreas)) {
+        strcpy(DebugBattlePreviewNames[0], "(invalid battle)");
+        return;
+    }
+
+    battleArea = &gBattleAreas[areaID];
+    DebugBattlePreviewBattleCount = dx_debug_count_battles(battleArea);
+    DebugBattlePreviewStageCount = dx_debug_count_stages(battleArea);
+    if (formationID < 0 || formationID >= DebugBattlePreviewBattleCount) {
+        strcpy(DebugBattlePreviewNames[0], "(invalid battle)");
+        return;
+    }
+
+    battle = &DebugBattleScan[0];
+    if (!dx_debug_read_battle_data(
+        battleArea,
+        &(*battleArea->battles)[formationID],
+        battle,
+        sizeof(Battle)
+    )) {
+        strcpy(DebugBattlePreviewNames[0], "(unavailable)");
+        return;
+    }
+    if (battle->formationSize <= 0) {
+        strcpy(DebugBattlePreviewNames[0], "(empty formation)");
+        return;
+    }
+
+    actorRows = battle->formationSize;
+    if (actorRows > DEBUG_BATTLE_PREVIEW_ROWS) {
+        actorRows = DEBUG_BATTLE_PREVIEW_ROWS - 1;
+    }
+    if (!dx_debug_read_battle_data(
+        battleArea,
+        &(*battle->formation)[0],
+        DebugBattlePreviewRows,
+        actorRows * sizeof(FormationRow)
+    )) {
+        strcpy(DebugBattlePreviewNames[0], "(unavailable)");
+        return;
+    }
+
+    for (i = 0; i < actorRows; i++) {
+        const char* actorName = DebugBattlePreviewRows[i].overlay;
+
+        if (actorName == nullptr) {
+            strcpy(DebugBattlePreviewNames[i], "(anonymous)");
+        } else if (!dx_debug_read_actor_overlay_name(battleArea, actorName, DebugBattlePreviewNames[i])) {
+            strcpy(DebugBattlePreviewNames[i], "(unavailable)");
+        }
+    }
+
+    DebugBattlePreviewLineCount = actorRows;
+    if (battle->formationSize > DEBUG_BATTLE_PREVIEW_ROWS) {
+        sprintf(
+            DebugBattlePreviewNames[DEBUG_BATTLE_PREVIEW_ROWS - 1],
+            "... and %ld more",
+            battle->formationSize - (DEBUG_BATTLE_PREVIEW_ROWS - 1)
+        );
+        DebugBattlePreviewLineCount = DEBUG_BATTLE_PREVIEW_ROWS;
+    }
+}
+
 EnemyDrops DebugDummyDrops = NO_DROPS;
 
 Enemy DebugDummyEnemy = {
@@ -984,41 +1228,172 @@ void dx_debug_begin_battle() {
     dx_debug_begin_battle_with_IDs(battle, stage);
 }
 
+// returns the number of contiguous battle areas which contain formations
+s32 dx_debug_get_battle_area_count() {
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(gBattleAreas); i++) {
+        if (gBattleAreas[i].battles == nullptr) {
+            return i;
+        }
+    }
+    return ARRAY_COUNT(gBattleAreas);
+}
+
+void dx_debug_set_battle_area(s32 areaID) {
+    DebugBattleNum[DEBUG_BATTLE_AREA_TENS] = (areaID >> 4) & 0xF;
+    DebugBattleNum[DEBUG_BATTLE_AREA_ONES] = areaID & 0xF;
+}
+
+void dx_debug_set_battle_formation(s32 formationID) {
+    DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] = (formationID >> 4) & 0xF;
+    DebugBattleNum[DEBUG_BATTLE_FORMATION_ONES] = formationID & 0xF;
+}
+
+// edits one hex digit while keeping an ID between zero and its maximum
+s32 dx_debug_nav_battle_id(s32 id, s32 maxID, b32 editUpperDigit, s32 direction) {
+    s32 digit;
+
+    if (maxID <= 0) {
+        return 0;
+    }
+    if (id > maxID) {
+        if (direction > 0) {
+            return 0;
+        } else {
+            return maxID;
+        }
+    }
+    if (id == maxID && direction > 0) {
+        return 0;
+    }
+    if (id == 0 && direction < 0) {
+        return maxID;
+    }
+
+    if (editUpperDigit) {
+        digit = dx_debug_wrap(((id >> 4) & 0xF) + direction, 0, 0xF);
+        id = (digit << 4) | (id & 0xF);
+    } else {
+        digit = dx_debug_wrap((id & 0xF) + direction, 0, 0xF);
+        id = (id & 0xF0) | digit;
+    }
+
+    if (id > maxID) {
+        return maxID;
+    }
+    return id;
+}
+
+// cycles through the default stage and every stage in the selected area
+s32 dx_debug_nav_battle_stage(s32 stageID, s32 stageCount, s32 direction) {
+    s32 maxID = stageCount - 1;
+
+    if (stageCount <= 0) {
+        return -1;
+    }
+    if (stageID < -1 || stageID > maxID) {
+        if (direction > 0) {
+            return -1;
+        } else {
+            return maxID;
+        }
+    }
+    if (stageID == maxID && direction > 0) {
+        return -1;
+    }
+    if (stageID == -1 && direction < 0) {
+        return maxID;
+    }
+    return stageID + direction;
+}
+
 void dx_debug_update_select_battle() {
     s32 idx;
-    s32 maxAreaTens = ARRAY_COUNT(gBattleAreas) >> 4;
+    s32 areaCount = dx_debug_get_battle_area_count();
+    s32 areaID;
+    s32 formationID;
+    s32 stageID;
+    s32 loadedAreaID;
+    s32 loadedFormationID;
+    s32 direction = 0;
+    b32 isAreaValid;
+    b32 isFormationValid;
+    b32 isStageValid;
+
+    areaID = (DebugBattleNum[DEBUG_BATTLE_AREA_TENS] & 0xF) << 4
+        | (DebugBattleNum[DEBUG_BATTLE_AREA_ONES] & 0xF);
+    formationID = (DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] & 0xF) << 4
+        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_ONES] & 0xF);
+    stageID = DebugBattleNum[DEBUG_BATTLE_STAGE];
+    dx_debug_load_battle_preview(areaID, formationID);
+    loadedAreaID = areaID;
+    loadedFormationID = formationID;
+    isAreaValid = areaID < areaCount;
+    isFormationValid = isAreaValid && formationID < DebugBattlePreviewBattleCount;
+    isStageValid = isAreaValid
+        && (stageID == -1 || (stageID >= 0 && stageID < DebugBattlePreviewStageCount));
 
     // handle input
     if (RELEASED(BUTTON_L)) {
         DebugMenuState = DBM_MAIN_MENU;
-    } else if (RELEASED(BUTTON_R)) {
+    } else if (RELEASED(BUTTON_R) && isFormationValid && isStageValid) {
         dx_debug_begin_battle();
         DebugMenuState = DBM_NONE;
     }
 
     DebugBattleColumn = dx_debug_menu_nav_1D_horizontal(DebugBattleColumn, 0, 4, false);
     if (NAV_UP) {
-        s32 value = DebugBattleNum[DebugBattleColumn] + 1;
-        if (DebugBattleColumn == DEBUG_BATTLE_STAGE) {
-            value = dx_debug_clamp(value, -1, 0x7F);
-        } else if (DebugBattleColumn == DEBUG_BATTLE_AREA_TENS) {
-            value = dx_debug_wrap(value, 0, maxAreaTens);
-        } else {
-            value = dx_debug_wrap(value, 0, 0xF);
-        }
-        DebugBattleNum[DebugBattleColumn] = value;
+        direction = 1;
+    } else if (NAV_DOWN) {
+        direction = -1;
     }
-    if (NAV_DOWN) {
-        s32 value = DebugBattleNum[DebugBattleColumn] - 1;
+    if (direction != 0) {
         if (DebugBattleColumn == DEBUG_BATTLE_STAGE) {
-            value = dx_debug_clamp(value, -1, 0x7F);
-        } else if (DebugBattleColumn == DEBUG_BATTLE_AREA_TENS) {
-            value = dx_debug_wrap(value, 0, maxAreaTens);
-        } else {
-            value = dx_debug_wrap(value, 0, 0xF);
+            if (isAreaValid) {
+                DebugBattleNum[DEBUG_BATTLE_STAGE] = dx_debug_nav_battle_stage(
+                    stageID,
+                    DebugBattlePreviewStageCount,
+                    direction
+                );
+            }
+        } else if (DebugBattleColumn == DEBUG_BATTLE_AREA_TENS
+            || DebugBattleColumn == DEBUG_BATTLE_AREA_ONES
+        ) {
+            areaID = dx_debug_nav_battle_id(
+                areaID,
+                areaCount - 1,
+                DebugBattleColumn == DEBUG_BATTLE_AREA_TENS,
+                direction
+            );
+            dx_debug_set_battle_area(areaID);
+        } else if (DebugBattleColumn == DEBUG_BATTLE_FORMATION_TENS
+            || DebugBattleColumn == DEBUG_BATTLE_FORMATION_ONES
+        ) {
+            if (isAreaValid) {
+                formationID = dx_debug_nav_battle_id(
+                    formationID,
+                    DebugBattlePreviewBattleCount - 1,
+                    DebugBattleColumn == DEBUG_BATTLE_FORMATION_TENS,
+                    direction
+                );
+                dx_debug_set_battle_formation(formationID);
+            }
         }
-        DebugBattleNum[DebugBattleColumn] = value;
     }
+
+    areaID = (DebugBattleNum[DEBUG_BATTLE_AREA_TENS] & 0xF) << 4
+        | (DebugBattleNum[DEBUG_BATTLE_AREA_ONES] & 0xF);
+    formationID = (DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] & 0xF) << 4
+        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_ONES] & 0xF);
+    if (areaID != loadedAreaID || formationID != loadedFormationID) {
+        dx_debug_load_battle_preview(areaID, formationID);
+    }
+    isAreaValid = areaID < areaCount;
+    isFormationValid = isAreaValid && formationID < DebugBattlePreviewBattleCount;
+    stageID = DebugBattleNum[DEBUG_BATTLE_STAGE];
+    isStageValid = isAreaValid
+        && (stageID == -1 || (stageID >= 0 && stageID < DebugBattlePreviewStageCount));
 
     // draw
     dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 104, 2 * RowHeight + 8, WINDOW_STYLE_20, 192);
@@ -1028,11 +1403,50 @@ void dx_debug_update_select_battle() {
     dx_debug_draw_ascii(")", DefaultColor, SubmenuPosX + 77, SubmenuPosY + 2 * RowHeight);
 
     for (idx = 0; idx < 5; idx++) {
-        s32 color = (DebugBattleColumn == idx) ? HighlightColor : DefaultColor;
+        b32 isInvalid;
+        s32 color = DefaultColor;
         s32 offset = BattleDigitOffsets[idx];
-        char* fmt = (idx == 4) ? "%02X" : "%X";
+        char* fmt = "%X";
+
+        if (DebugBattleColumn == idx) {
+            color = HighlightColor;
+        }
+        if (idx == DEBUG_BATTLE_STAGE) {
+            fmt = "%02X";
+        }
+
+        isInvalid = (idx <= DEBUG_BATTLE_AREA_ONES && !isAreaValid)
+            || (idx >= DEBUG_BATTLE_FORMATION_TENS
+                && idx <= DEBUG_BATTLE_FORMATION_ONES
+                && !isFormationValid)
+            || (idx == DEBUG_BATTLE_STAGE && !isStageValid);
+
+        if (isInvalid) {
+            if (DebugBattleColumn == idx) {
+                color = MSG_PAL_YELLOW;
+            } else {
+                color = MSG_PAL_RED;
+            }
+        }
 
         dx_debug_draw_number(DebugBattleNum[idx] & 0xFF, fmt, color, 255, SubmenuPosX + offset, SubmenuPosY + 2 * RowHeight);
+    }
+
+    dx_debug_draw_box(
+        SubBoxPosX,
+        SubBoxPosY + 4 * RowHeight,
+        104,
+        DebugBattlePreviewLineCount * RowHeight + 8,
+        WINDOW_STYLE_20,
+        192
+    );
+    for (idx = 0; idx < DebugBattlePreviewLineCount; idx++) {
+        dx_debug_draw_ascii(
+            DebugBattlePreviewNames[idx],
+            DefaultColor,
+            SubmenuPosX,
+            SubmenuPosY + (idx + 4) * RowHeight
+        );
     }
 }
 
