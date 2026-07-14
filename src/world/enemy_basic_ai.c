@@ -120,7 +120,7 @@ b32 is_point_outside_territory(s32 shape, f32 centerX, f32 centerZ, f32 pointX, 
     }
 }
 
-static ALWAYS_INLINE b32 is_point_outside_wander_territory(EnemyTerritoryWander* wander, f32 pointX, f32 pointZ) {
+ALWAYS_INLINE b32 is_point_outside_wander_territory(EnemyTerritoryWander* wander, f32 pointX, f32 pointZ) {
     return is_point_outside_territory(
         wander->wanderShape,
         wander->centerPos.x, wander->centerPos.z,
@@ -129,7 +129,7 @@ static ALWAYS_INLINE b32 is_point_outside_wander_territory(EnemyTerritoryWander*
     );
 }
 
-static ALWAYS_INLINE b32 is_point_outside_detect_volume(EnemyDetectVolume* detect, f32 pointX, f32 pointZ) {
+ALWAYS_INLINE b32 is_point_outside_detect_volume(EnemyDetectVolume* detect, f32 pointX, f32 pointZ) {
     return is_point_outside_territory(
         detect->shape,
         detect->pointX, detect->pointZ,
