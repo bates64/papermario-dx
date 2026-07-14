@@ -7,17 +7,17 @@ typedef s32 Bytecode;
 
 #define EVT_MAX_EVAL_ARGS 6
 
-// Pack the opcode, argc, and source line number into a single word for denser bytecode.
+// pack the opcode, argc, and source line number into a single word for denser bytecode
 #define EVT_CMD_HEADER(opcode, argc, line) \
     ((Bytecode)(((((u32)(opcode)) & 0xFF) << 24) | ((((u32)(argc)) & 0xFF) << 16) | (((u32)(line)) & 0xFFFF)))
 #define EVT_CMD_OPCODE(raw) (((u32)(raw) >> 24) & 0xFF)
 #define EVT_CMD_ARGC(raw)   (((u32)(raw) >> 16) & 0xFF)
 #define EVT_CMD_LINE(raw)   ((u32)(raw) & 0xFFFF)
 
-/// Helper for calculating command arg counts
+/// helper for calculating command arg counts
 #define EVT_CMD_COUNT(argv...) (sizeof((Bytecode[]){argv}) / sizeof(Bytecode))
 
-/// This macro expands to a packed header of the given opcode and arguments with argc calculated automatically.
+/// expands to a packed header of the given opcode and arguments with argc calculated automatically
 #define EVT_CMD(opcode, argv...) \
     EVT_CMD_HEADER((opcode), EVT_CMD_COUNT(argv), __LINE__), \
     ##argv
@@ -141,7 +141,7 @@ enum {
     EVT_OP_END_LERP,
 };
 
-/// The script currently being executed by evt_execute_next_command, or nullptr.
+/// the script currently being executed by evt_execute_next_command, or nullptr
 extern struct Evt* EvtCurrentScript;
 
 #define MAKE_ENTITY_END      0x80000000
@@ -157,22 +157,22 @@ extern struct Evt* EvtCurrentScript;
 #define EVT_MAX_LOOP_DEPTH      8
 #define EVT_MAX_SWITCH_DEPTH    8
 
-/// Return type of script API functions
+/// return type of script API functions
 typedef s32 ApiStatus;
 
-// Normal return values for API_CALLABLE functions.
-#define ApiStatus_BLOCK  0   /// Command is not done; call it again on the next scheduled update.
-#define ApiStatus_DONE1  1   /// Command completed; yield to the scheduler before executing the next command.
-#define ApiStatus_DONE2  2   /// Command completed; advance to next command and continue executing immediately.
+// normal return values for API_CALLABLE functions
+#define ApiStatus_BLOCK  0   /// command is not done; call it again on the next scheduled update
+#define ApiStatus_DONE1  1   /// command completed; yield to the scheduler before executing the next command
+#define ApiStatus_DONE2  2   /// command completed; advance to next command and continue executing immediately
 
-// Descriptive aliases for the legacy DONE1 and DONE2 names.
+// descriptive aliases for the legacy DONE1 and DONE2 names
 #define ApiStatus_YIELD  ApiStatus_DONE1
 #define ApiStatus_NEXT   ApiStatus_DONE2 // or ApiStatus_CONTINUE ?
 
-// Special internal return values for the Evt interpreter control. Users should generally avoid these.
-#define VmStatus_REPEAT  253 /// Redispatch immediately; used internally when fetching a command.
-#define VmStatus_INVALID 254 /// Interpreter context was discarded; return without accessing the Evt.
-#define VmStatus_FINISH  255 /// Stop executing without automatically advancing to the next command.
+// internal Evt interpreter control values, generally not for user APIs
+#define VmStatus_REPEAT  253 /// redispatch immediately; used internally when fetching a command
+#define VmStatus_INVALID 254 /// interpreter context was discarded; return without accessing the Evt
+#define VmStatus_FINISH  255 /// stop executing without automatically advancing to the next command
 
 enum EventCommandResults {
     EVT_CMD_RESULT_YIELD        = -1,
@@ -181,10 +181,10 @@ enum EventCommandResults {
 };
 
 enum EvtTerminationState {
-    EVT_TERMINATION_NONE                = 0, /// Script is running normally.
-    EVT_TERMINATION_AWAITING_CHILDREN   = 1, /// Waiting for owned descendants to finish before cleanup.
-    EVT_TERMINATION_FINALIZING          = 2, /// The Finally tail is executing.
-    EVT_TERMINATION_DESTROY_PENDING     = 3, /// Ready to destroy after the active interpreter call returns.
+    EVT_TERMINATION_NONE                = 0, /// the script is not terminating
+    EVT_TERMINATION_AWAITING_CHILDREN   = 1, /// waiting for its children to finish terminating
+    EVT_TERMINATION_FINALIZING          = 2, /// Finally block is running
+    EVT_TERMINATION_DESTROY_PENDING     = 3, /// ready to be destroyed once it is no longer executing
 };
 
 // EventGroupFlags determine when scripts are paused and resumed.

@@ -74,8 +74,8 @@ s32 evt_execute_next_command(Evt* script);
 b32 evt_is_valid_label_value(Bytecode label);
 b32 evt_label_values_match(Bytecode lhs, Bytecode rhs);
 Bytecode* evt_find_thread_block_end(Bytecode* startLine, s32 endOpcode);
-static b32 script_has_descendants(Evt* script);
-static void kill_script_descendants(Evt* script);
+static b32 script_has_children(Evt* script);
+static void kill_script_children(Evt* script);
 
 void sort_scripts(void) {
     s32 temp_a0;
@@ -303,8 +303,8 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
     newScript->timeScale = GlobalTimeRate;
     newScript->debugPaused = false;
     newScript->terminationState = EVT_TERMINATION_NONE;
-    newScript->executingCommand = false;
-    newScript->traversingChildren = false;
+    newScript->isExecuting = false;
+    newScript->isTerminatingChildren = false;
 
     scriptListCount = 0;
 
@@ -375,8 +375,8 @@ Evt* start_script_in_group(EvtScript* source, u8 priority, u8 flags, u8 groupFla
     newScript->timeScale = GlobalTimeRate;
     newScript->debugPaused = false;
     newScript->terminationState = EVT_TERMINATION_NONE;
-    newScript->executingCommand = false;
-    newScript->traversingChildren = false;
+    newScript->isExecuting = false;
+    newScript->isTerminatingChildren = false;
 
     scriptListCount = 0;
 
@@ -455,8 +455,8 @@ Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 flags) {
     child->frameCounter = 0.0f;
     child->debugPaused = false;
     child->terminationState = EVT_TERMINATION_NONE;
-    child->executingCommand = false;
-    child->traversingChildren = false;
+    child->isExecuting = false;
+    child->isTerminatingChildren = false;
 
     scriptListCount = 0;
 
@@ -534,8 +534,8 @@ Evt* start_child_thread(Evt* parentScript, Bytecode* nextLine, s32 newState) {
     child->frameCounter = 0.0f;
     child->debugPaused = false;
     child->terminationState = EVT_TERMINATION_NONE;
-    child->executingCommand = false;
-    child->traversingChildren = false;
+    child->isExecuting = false;
+    child->isTerminatingChildren = false;
 
     scriptListCount = 0;
 
@@ -562,7 +562,7 @@ Evt* start_child_thread(Evt* parentScript, Bytecode* nextLine, s32 newState) {
     return child;
 }
 
-// Retargets an existing script while preserving its local state.
+// points an existing script at new source while keeping its local state
 Evt* replace_script(Evt* script, Bytecode* source, s32 flags) {
     ASSERT(script->terminationState == EVT_TERMINATION_NONE);
     ASSERT_MSG(
@@ -570,12 +570,12 @@ Evt* replace_script(Evt* script, Bytecode* source, s32 flags) {
         "Cannot detach and reset an owned child script"
     );
 
-    // Keep a child finalizer from destroying this script while its reset is on the stack.
-    ASSERT(!script->traversingChildren);
-    script->traversingChildren = true;
-    kill_script_descendants(script);
-    script->traversingChildren = false;
-    ASSERT_MSG(!script_has_descendants(script), "Cannot reset a script beneath an active child command");
+    // keep a child's Finally block from destroying this script while it is being reset
+    ASSERT(!script->isTerminatingChildren);
+    script->isTerminatingChildren = true;
+    kill_script_children(script);
+    script->isTerminatingChildren = false;
+    ASSERT_MSG(!script_has_children(script), "Cannot reset a script beneath an active child command");
     ASSERT_MSG(
         script->terminationState == EVT_TERMINATION_NONE,
         "Child cleanup attempted to terminate a script while it was being reset"
@@ -618,7 +618,7 @@ Evt* replace_script(Evt* script, Bytecode* source, s32 flags) {
     return script;
 }
 
-// Restarts a script from its original source without replacing its local state.
+// restarts a script from its original source while keeping its local state
 Evt* restart_script(Evt* script) {
     Bytecode* ptrFirstLine = script->ptrFirstLine;
 
@@ -690,7 +690,7 @@ void update_scripts(void) {
     EvtCurrentScript = nullptr;
 }
 
-// Checks whether an address and ID still identify the same live script.
+// checks whether an address and ID still identify the same live script
 static b32 script_ref_matches(Evt* script, s32 scriptID) {
     s32 i;
 
@@ -708,8 +708,8 @@ static b32 script_ref_matches(Evt* script, s32 scriptID) {
     return false;
 }
 
-// Reports whether a script still owns an ExecWait child or any ChildThread scripts.
-static b32 script_has_descendants(Evt* script) {
+// checks whether a script still has an ExecWait child or any ChildThread scripts
+static b32 script_has_children(Evt* script) {
     s32 i;
 
     if (script->blockingChild != nullptr) {
@@ -726,8 +726,8 @@ static b32 script_has_descendants(Evt* script) {
     return false;
 }
 
-// Requests termination for every script owned by this script.
-static void kill_script_descendants(Evt* script) {
+// terminates every child owned by this script
+static void kill_script_children(Evt* script) {
     Evt* blockingChild = script->blockingChild;
     s32 i;
 
@@ -750,72 +750,48 @@ static void kill_script_descendants(Evt* script) {
 static void evt_destroy_script(Evt* script);
 
 /*
- * Advances one script through ordered child cleanup, finalization, and destruction.
- * Termination is post-order and synchronous:
+ * terminating a script has four steps:
  *
- *   NONE -> AWAITING_CHILDREN -> FINALIZING -> DESTROY_PENDING
- *                            `----------------> DESTROY_PENDING
+ * 1. request termination of its children
+ * 2. wait for each child to finish Finally and be destroyed
+ * 3. run this script's Finally block
+ * 4. destroy the script once the interpreter is no longer using it
  *
- * Only this function changes a live script between termination states. A termination
- * trigger starts cleanup from NONE or completes a FINALIZING script. Calls without a
- * new trigger resume work that was deferred for a child or active interpreter call.
- * This function may run finalizers and synchronously destroy the script.
+ * children always finish terminating before their parent. this function continues as far as it
+ * can, but may stop while a child or the interpreter is still using the script.
  */
-static void evt_process_termination(Evt* script, b32 advanceTermination) {
+static void evt_continue_termination(Evt* script) {
     ASSERT(script != nullptr);
 
-    // Apply a new kill request or script terminator to the current state.
-    if (advanceTermination) {
-        switch (script->terminationState) {
-            case EVT_TERMINATION_NONE:
-                // Descendants must clean up before this script can run its own finalizer.
-                script->terminationState = EVT_TERMINATION_AWAITING_CHILDREN;
-                script->blocked = false;
-
-                #if DX_DEBUG_MENU
-                script->debugPaused = false;
-                script->debugStep = DEBUG_EVT_STEP_NONE;
-                #endif
-                break;
-            case EVT_TERMINATION_FINALIZING:
-                // The finalizer reached End and is ready for destruction.
-                ASSERT(!script_has_descendants(script));
-                script->terminationState = EVT_TERMINATION_DESTROY_PENDING;
-                break;
-            default:
-                return;
-        }
-    }
-
-    // Terminate owned children and wait for any active child interpreter calls to return.
+    // terminate every child before starting this script's Finally block
     if (script->terminationState == EVT_TERMINATION_AWAITING_CHILDREN) {
-        if (script->traversingChildren) {
-            // A child was destroyed while this script was already walking its children.
+        if (script->isTerminatingChildren) {
+            // a child terminated while this script was already terminating its children
             return;
         }
 
-        script->traversingChildren = true;
-        kill_script_descendants(script);
-        if (script_has_descendants(script)) {
-            // Destruction of an active child is deferred until its interpreter call returns.
-            script->traversingChildren = false;
+        script->isTerminatingChildren = true;
+        kill_script_children(script);
+        if (script_has_children(script)) {
+            // at least one child is still executing and will terminate later
+            script->isTerminatingChildren = false;
             return;
         }
 
         if (script->ptrFinally != nullptr) {
-            // Start at the first command after the Finally marker.
+            // start at the first command after Finally
             script->ptrNextLine = script->ptrFinally;
             script->curOpcode = EVT_OP_INTERNAL_FETCH;
             script->terminationState = EVT_TERMINATION_FINALIZING;
         } else {
-            // Without a finalizer, the script can be destroyed after active calls return.
+            // without Finally, the script is ready to be destroyed
             script->terminationState = EVT_TERMINATION_DESTROY_PENDING;
         }
-        script->traversingChildren = false;
+        script->isTerminatingChildren = false;
     }
 
-    // Never run a finalizer or free an Evt beneath an interpreter call using it.
-    if (script->executingCommand) {
+    // do not run Finally or destroy a script while the interpreter is using it
+    if (script->isExecuting) {
         return;
     }
 
@@ -825,52 +801,73 @@ static void evt_process_termination(Evt* script, b32 advanceTermination) {
         s32 scriptID = script->id;
         s32 status;
 
-        // Finalizers run immediately. Preserve the context of a nested interpreter call.
+        // since Finally runs immediately, we must remember which script the interpreter was using before
         if (previousScript != nullptr) {
             previousScriptID = previousScript->id;
         }
         status = evt_execute_next_command(script);
         ASSERT_MSG(status != EVT_CMD_RESULT_ERROR, "Finally block failed during script termination");
 
-        // Restore the previous interpreter context only if that exact script still exists.
+        // restore the previous script only if that exact script still exists
         if (script_ref_matches(previousScript, previousScriptID)) {
             EvtCurrentScript = previousScript;
         } else {
             EvtCurrentScript = nullptr;
         }
 
-        // The finalizer may have destroyed this script and reused its address.
+        // Finally may have destroyed this script and reused its address
         if (!script_ref_matches(script, scriptID)) {
             return;
         }
     }
 
-    ASSERT(!script->executingCommand);
+    ASSERT(!script->isExecuting);
     if (script->terminationState == EVT_TERMINATION_DESTROY_PENDING) {
         evt_destroy_script(script);
     }
 }
 
-// Handles a script reaching Return, Finally, or its terminating End command.
+// moves a script to the next step when it is killed or reaches Return, Finally, or End
 void evt_terminate_script(Evt* script) {
-    evt_process_termination(script, true);
+    ASSERT(script != nullptr);
+
+    switch (script->terminationState) {
+        case EVT_TERMINATION_NONE:
+            script->terminationState = EVT_TERMINATION_AWAITING_CHILDREN;
+            script->blocked = false;
+
+            #if DX_DEBUG_MENU
+            script->debugPaused = false;
+            script->debugStep = DEBUG_EVT_STEP_NONE;
+            #endif
+            break;
+        case EVT_TERMINATION_FINALIZING:
+            // End has finished the Finally block
+            ASSERT(!script_has_children(script));
+            script->terminationState = EVT_TERMINATION_DESTROY_PENDING;
+            break;
+        default:
+            return;
+    }
+
+    evt_continue_termination(script);
 }
 
-// Requests termination of a known-live script; repeated requests have no effect.
+// requests termination of a known-live script; repeated requests have no effect
 void kill_script(Evt* script) {
     if (script != nullptr && script->terminationState == EVT_TERMINATION_NONE) {
-        evt_process_termination(script, true);
+        evt_terminate_script(script);
     }
 }
 
-// Removes a fully terminated script and releases the resources it owns.
+// destroys a terminated script and frees the resources it owns
 static void evt_destroy_script(Evt* script) {
     Evt* blockingParent = script->blockingParent;
     Evt* threadParent = script->threadParent;
     Evt* parent = blockingParent;
     s32 listIdx, i;
 
-    // Can't have two parents (but could have none).
+    // cannot have two parents (but could have none)
     ASSERT(blockingParent == nullptr || threadParent == nullptr);
 
     if (parent == nullptr) {
@@ -878,8 +875,8 @@ static void evt_destroy_script(Evt* script) {
     }
 
     ASSERT(script->terminationState == EVT_TERMINATION_DESTROY_PENDING);
-    ASSERT(!script->executingCommand);
-    ASSERT(!script_has_descendants(script));
+    ASSERT(!script->isExecuting);
+    ASSERT(!script_has_children(script));
 
     for (listIdx = 0; listIdx < MAX_SCRIPTS; listIdx++) {
         if ((*gCurrentScriptListPtr)[listIdx] == script) {
@@ -888,7 +885,7 @@ static void evt_destroy_script(Evt* script) {
     }
     ASSERT(listIdx < MAX_SCRIPTS);
 
-    // ExecWait copies the child's local state back and unblocks its parent.
+    // ExecWait copies the child's local state back and unblocks its parent
     if (blockingParent != nullptr) {
         ASSERT(blockingParent->blockingChild == script);
         blockingParent->blockingChild = nullptr;
@@ -907,7 +904,7 @@ static void evt_destroy_script(Evt* script) {
     dx_debug_evt_force_detach(script);
     #endif
 
-    // Release resources owned directly by the script.
+    // free resources owned directly by the script
     if (script->userData != nullptr) {
         heap_free(script->userData);
         script->userData = nullptr;
@@ -925,21 +922,21 @@ static void evt_destroy_script(Evt* script) {
     (*gCurrentScriptListPtr)[listIdx] = nullptr;
     gNumScripts--;
 
-    // A terminating parent may now be free to run its finalizer or be destroyed.
+    // the parent may now be able to run Finally or be destroyed
     if (parent != nullptr) {
-        evt_process_termination(parent, false);
+        evt_continue_termination(parent);
     }
 }
 
-// Releases the interpreter lifetime guard and resumes any cleanup that it deferred.
+// marks this script as no longer executing, then continues its termination if needed
 s32 evt_finish_execution(Evt* script, s32 result) {
-    ASSERT(script->executingCommand);
+    ASSERT(script->isExecuting);
     ASSERT(script->terminationState != EVT_TERMINATION_FINALIZING);
 
-    script->executingCommand = false;
+    script->isExecuting = false;
 
-    // Resume cleanup that was waiting for this interpreter call to return.
-    evt_process_termination(script, false);
+    // continue termination that was waiting for the interpreter to finish
+    evt_continue_termination(script);
     return result;
 }
 
@@ -973,7 +970,7 @@ void kill_all_scripts(void) {
     } while (hasKilled);
 }
 
-// Reports whether a script with a given ID is a live script.
+// checks whether a script with this ID is still alive
 s32 does_script_exist(s32 id) {
     s32 i;
 
@@ -987,7 +984,7 @@ s32 does_script_exist(s32 id) {
     return false;
 }
 
-// Reports whether a script has any ChildThread children.
+// checks whether a script has any ChildThread children
 s32 does_script_have_child_threads(Evt* script) {
     s32 i;
 

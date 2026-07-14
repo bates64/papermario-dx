@@ -53,7 +53,7 @@ The primary features are:
     - [RetryLoop](#retryloop)
 10. [Lerp Loops](#10-lerp-loops)
 11. [Finally Blocks](#11-finally-blocks)
-    - [Cleanup Order](#cleanup-order)
+    - [When Finally Runs](#when-finally-runs)
     - [Restrictions](#restrictions)
     - [NPC_SELF and ACTOR_SELF](#npc_self-and-actor_self)
 12. [Awaiting Scripts](#12-awaiting-scripts)
@@ -857,34 +857,34 @@ Here, `ReleaseResource` runs if the script reaches `End`, exits early through `R
 - use `Finally ... EndThread` for a `Thread`
 - use `Finally ... EndChildThread` for a `ChildThread`
 
-### Cleanup Order
+### When Finally Runs
 
-Finalizers run as part of termination; they do not wait for a later frame. If a script has an `ExecWait` child or `ChildThread` descendants, those children finish their own finalizers before the parent begins its finalizer.
+A `Finally` block runs as part of ending the script; it does not wait for a later frame. If a script has an `ExecWait` child or any `ChildThread` children, each child finishes its own `Finally` block before the parent begins `Finally`.
 
-Scripts started with `Exec`, `ExecGetID`, or `Thread` are detached. They are not children for cleanup purposes and continue running when the script which started them ends.
+Scripts started with `Exec`, `ExecGetID`, or `Thread` are detached. They are not children and continue running when the script which started them ends.
 
 ### Restrictions
 
-A finalizer must complete immediately. This keeps cleanup predictable and ensures that a terminated script does not remain half-alive while waiting for future updates.
+A `Finally` block must finish immediately. This keeps cleanup predictable and prevents an ending script from waiting for future updates.
 
 - `Finally` must be at the top level of its script, `Thread`, or `ChildThread` scope
 - each scope may have only one `Finally` block
 - `Call` is allowed only when the API function completes immediately; returning `ApiStatus_BLOCK` causes an assertion
-- `KillScript` is allowed, including when its target is already terminating
+- `KillScript` is allowed, including when its target is already ending
 - `Exec` and `ExecGetID` may start detached scripts
 - commands which wait, jump out of the block, or start owned children are not allowed
 
-The validator rejects commands such as `Wait`, `ExecWait`, `Goto`, `Jump`, `BreakLoop`, `ContinueLoop`, `RetryLoop`, `Thread`, `ChildThread`, and `BreakPoint` inside a finalizer. The runtime also asserts if a `Call` tries to start an owned child.
+The validator rejects commands such as `Wait`, `ExecWait`, `Goto`, `Jump`, `BreakLoop`, `ContinueLoop`, `RetryLoop`, `Thread`, `ChildThread`, and `BreakPoint` inside `Finally`. The runtime also asserts if a `Call` tries to start an owned child.
 
 ### NPC_SELF and ACTOR_SELF
 
-An Enemy's registered init, interact, AI, hit, auxiliary, and defeat scripts keep both the `Enemy` and its backing `Npc` alive until their cleanup is complete. This means `NPC_SELF` remains valid in their finalizers.
+An Enemy's registered init, interact, AI, hit, auxiliary, and defeat scripts keep both the `Enemy` and its backing `Npc` alive until they finish `Finally`. This means `NPC_SELF` remains valid inside `Finally`.
 
-An enemy or partner Actor is likewise kept alive while its registered idle, take-turn, handle-event, and handle-phase scripts clean up. This means `ACTOR_SELF` remains valid in their finalizers.
+An enemy or partner Actor is likewise kept alive while its registered idle, take-turn, handle-event, and handle-phase scripts finish `Finally`. This means `ACTOR_SELF` remains valid inside `Finally`.
 
-These guarantees also cover owned `ExecWait` and `ChildThread` descendants of the registered script. They do not cover detached `Exec`, `ExecGetID`, or `Thread` scripts. A detached script inherits the current self-context, but does not keep the corresponding Enemy, Npc, or Actor alive. If a detached companion must not outlive its owner, start it with `ExecGetID` and stop it with `KillScript` from the owner's finalizer.
+These guarantees also cover the registered script's `ExecWait` and `ChildThread` children. They do not cover detached `Exec`, `ExecGetID`, or `Thread` scripts. A detached script inherits the current self-context, but does not keep the corresponding Enemy, Npc, or Actor alive. If a detached companion must not outlive its owner, start it with `ExecGetID` and stop it with `KillScript` from the owner's `Finally` block.
 
-When all scripts are being shut down together, any detached scripts started by finalizers are shut down too. The hard reset between game states is the intentional exception: it discards the entire script heap without running individual finalizers.
+When all scripts are being shut down together, any detached scripts started during `Finally` are shut down too. The hard reset between game states is the intentional exception: it discards the entire script heap without running `Finally` for each script.
 
 ## 12. Awaiting Scripts
 

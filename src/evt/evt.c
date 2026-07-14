@@ -136,35 +136,35 @@ ALWAYS_INLINE void evt_assert_valid_arg_var(Evt* script, s32 argIndex) {
     );
 }
 
-// Ends normal execution early and enters the script's finalizer when one exists.
+// terminates normal execution early and enters Finally when one exists
 ApiStatus evt_handle_return(Evt* script) {
     evt_terminate_script(script);
 
     if (script->terminationState == EVT_TERMINATION_FINALIZING) {
-        // Return exits normal execution early, so continue into the finalizer if one exists.
+        // continue directly into Finally
         return ApiStatus_NEXT;
     } else {
-        // Stop this interpreter call while children finish or destruction begins.
+        // stop here while children terminate or the script is destroyed
         return VmStatus_FINISH;
     }
 }
 
-// Marks the boundary between normal execution and the script's finalizer body.
+// marks the boundary between normal execution and Finally
 ApiStatus evt_handle_finally(Evt* script) {
     ASSERT(script->terminationState == EVT_TERMINATION_NONE);
     evt_terminate_script(script);
 
     if (script->terminationState == EVT_TERMINATION_FINALIZING) {
-        // All children are gone. Continue immediately into the Finally body.
+        // all children are gone, so continue into Finally
         return ApiStatus_NEXT;
     } else {
-        // An active child must return before cleanup can continue.
+        // a child is still executing and will terminate later
         ASSERT(script->terminationState == EVT_TERMINATION_AWAITING_CHILDREN);
         return VmStatus_FINISH;
     }
 }
 
-// Completes the current script scope, including any active finalizer.
+// terminates the current script scope, including an active Finally block
 ApiStatus evt_handle_end(Evt* script) {
     evt_terminate_script(script);
     return VmStatus_FINISH;
@@ -2027,7 +2027,7 @@ ApiStatus evt_handle_thread(Evt* script) {
     return ApiStatus_NEXT;
 }
 
-// Completes a Thread script scope.
+// terminates the current Thread
 ApiStatus evt_handle_end_thread(Evt* script) {
     return evt_handle_end(script);
 }
@@ -2049,7 +2049,7 @@ ApiStatus evt_handle_child_thread(Evt* script) {
     return ApiStatus_NEXT;
 }
 
-// Completes a ChildThread script scope.
+// terminates the current ChildThread
 ApiStatus evt_handle_end_child_thread(Evt* script) {
     return evt_handle_end(script);
 }
@@ -2174,7 +2174,7 @@ ApiStatus evt_handle_debug_breakpoint(Evt* script) {
     return ApiStatus_NEXT;
 }
 
-static b32 evt_opcode_forbidden_in_finalizer(s32 opcode) {
+static b32 evt_opcode_forbidden_in_finally(s32 opcode) {
     switch (opcode) {
         case EVT_OP_RETURN:
         case EVT_OP_LABEL:
@@ -2202,8 +2202,8 @@ static b32 evt_opcode_forbidden_in_finalizer(s32 opcode) {
 }
 
 s32 evt_execute_next_command(Evt* script) {
-    ASSERT(!script->executingCommand);
-    script->executingCommand = true;
+    ASSERT(!script->isExecuting);
+    script->isExecuting = true;
     EvtCurrentScript = script;
     s32 commandsExecuted = 0;
 
@@ -2244,7 +2244,7 @@ s32 evt_execute_next_command(Evt* script) {
         executedOpcode = script->curOpcode;
 
         ASSERT_MSG(
-            !wasFinalizing || !evt_opcode_forbidden_in_finalizer(executedOpcode),
+            !wasFinalizing || !evt_opcode_forbidden_in_finally(executedOpcode),
             "Command is not allowed inside Finally"
         );
 
@@ -2612,24 +2612,24 @@ s32 evt_execute_next_command(Evt* script) {
                 PANIC();
         }
 
-        // The command discarded the interpreter context (e.g. Game Over state transition).
-        // The script is no longer safe to access.
+        // this command discarded the script, for example by changing the game state
+        // do not access it again
         if (status == VmStatus_INVALID) {
             return EVT_CMD_RESULT_YIELD;
         }
 
-        // Execute command after a fetch operation
+        // run the command found by the fetch operation
         if (status == VmStatus_REPEAT) {
             continue;
         }
 
-        // Return and Finally enter the finalizer without yielding
+        // Return and Finally enter the Finally block without stopping here
         if (!wasFinalizing && script->terminationState == EVT_TERMINATION_FINALIZING) {
             script->curOpcode = EVT_OP_INTERNAL_FETCH;
             continue;
         }
 
-        // Only a proper terminator may finish a finalizer
+        // only End may finish a Finally block
         if (wasFinalizing && script->terminationState != EVT_TERMINATION_FINALIZING) {
             ASSERT_MSG(
                 executedOpcode == EVT_OP_END
@@ -2639,14 +2639,14 @@ s32 evt_execute_next_command(Evt* script) {
             );
         }
 
-        // Stop while termination waits for children or destroys the script.
+        // stop here while children terminate or this script waits to be destroyed
         if (script->terminationState == EVT_TERMINATION_AWAITING_CHILDREN
             || script->terminationState == EVT_TERMINATION_DESTROY_PENDING
         ) {
             return evt_finish_execution(script, EVT_CMD_RESULT_YIELD);
         }
 
-        // FINISH stops this interpreter run without advancing to another command
+        // FINISH stops here without advancing to another command
         if (status == VmStatus_FINISH) {
             ASSERT_MSG(
                 !wasFinalizing,
@@ -2655,7 +2655,7 @@ s32 evt_execute_next_command(Evt* script) {
             return evt_finish_execution(script, EVT_CMD_RESULT_YIELD);
         }
 
-        // Report command errors after releasing the interpreter guard.
+        // report errors after marking this script as no longer executing
         if (status < 0) {
             ASSERT_MSG(
                 !wasFinalizing,
@@ -2664,13 +2664,13 @@ s32 evt_execute_next_command(Evt* script) {
             return evt_finish_execution(script, EVT_CMD_RESULT_ERROR);
         }
 
-        // A blocked command resumes on the next scheduled update.
+        // a blocked command runs again on the next scheduled update
         if (status == ApiStatus_BLOCK) {
             ASSERT_MSG(!wasFinalizing, "Call in Finally attempted to block");
             return evt_finish_execution(script, EVT_CMD_RESULT_CONTINUE);
         }
 
-        // Finalizers run to completion without yielding between commands.
+        // run Finally to completion without stopping between commands
         if (wasFinalizing) {
             ASSERT(status == ApiStatus_YIELD || status == ApiStatus_NEXT);
             script->curOpcode = EVT_OP_INTERNAL_FETCH;
@@ -2684,13 +2684,13 @@ s32 evt_execute_next_command(Evt* script) {
         }
         #endif
 
-        // Advance to the next command on the next scheduled update.
+        // advance to the next command on the next scheduled update
         if (status == ApiStatus_YIELD) {
             script->curOpcode = EVT_OP_INTERNAL_FETCH;
             return evt_finish_execution(script, EVT_CMD_RESULT_CONTINUE);
         }
 
-        // Advance immediately unless command stepping requests a yield.
+        // advance now unless command stepping asks to stop
         if (status == ApiStatus_NEXT) {
             script->curOpcode = EVT_OP_INTERNAL_FETCH;
             if (gGameStatusPtr->debugScripts != DEBUG_SCRIPTS_BLOCK_FUNC_DONE) {
@@ -3192,7 +3192,7 @@ Bytecode* evt_goto_next_case(Evt* script) {
     } while (true);
 }
 
-// Skips to the current loop's terminator and closes any active Switch blocks left behind.
+// skips to EndLoop and closes any Switch blocks it passes
 void evt_skip_to_loop_end(Evt* script) {
     s32 nestingDepth = 0;
     s32 skippedSwitchDepth = 0;
@@ -3238,7 +3238,7 @@ void evt_skip_to_loop_end(Evt* script) {
     } while (true);
 }
 
-// Skips to the current Switch terminator and discards any active loops left behind.
+// skips to EndSwitch and closes any Loop blocks it passes
 void evt_skip_to_switch_end(Evt* script) {
     s32 nestingDepth = 0;
     s32 skippedLoopDepth = 0;

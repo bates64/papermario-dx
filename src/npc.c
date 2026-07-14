@@ -2244,7 +2244,7 @@ void set_battle_transition_state(s8 state) {
 }
 
 void update_encounters(void) {
-    // Script updates for this frame have already processed; pending enemies are no longer in use by their callers.
+    // scripts have already updated, so pending enemies may now be destroyed
     destroy_pending_enemies();
 
     switch (gEncounterState) {
@@ -2269,7 +2269,7 @@ void update_encounters(void) {
 
     update_merlee_messages();
 
-    // Also handle deletions requested by the encounter update itself.
+    // handle additional destruction requested during the encounter update
     destroy_pending_enemies();
 }
 
@@ -2352,8 +2352,8 @@ void kill_encounter(Enemy* enemy) {
     }
 }
 
-// Reports whether any script registered to this enemy is still alive.
-static b32 enemy_has_bound_scripts(Enemy* enemy) {
+// checks whether any script registered to this enemy is still running
+static b32 enemy_has_live_scripts(Enemy* enemy) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(enemy->scripts.all); i++) {
@@ -2364,37 +2364,26 @@ static b32 enemy_has_bound_scripts(Enemy* enemy) {
     return false;
 }
 
-// Requests termination for one script registered to an enemy.
-static b32 kill_bound_enemy_script(s32 scriptID) {
-    Evt* script = get_script_by_id(scriptID);
-
-    if (script == nullptr || script->terminationState != EVT_TERMINATION_NONE) {
-        return false;
-    }
-
-    kill_script(script);
-    return true;
-}
-
-// Requests termination for every script registered to this enemy.
+// terminates every script registered to this enemy
 static void kill_enemy_scripts(Enemy* enemy) {
     b32 killedScript;
     s32 i;
 
-    // A finalizer may bind another script, so rescan until none remain running.
+    // Finally may register another script, so keep checking until none remain
     do {
         killedScript = false;
         for (i = 0; i < ARRAY_COUNT(enemy->scripts.all); i++) {
-            BoundScript* boundScript = &enemy->scripts.all[i];
+            Evt* script = get_bound_script(&enemy->scripts.all[i]);
 
-            if (boundScript->live != nullptr && kill_bound_enemy_script(boundScript->liveID)) {
+            if (script != nullptr && script->terminationState == EVT_TERMINATION_NONE) {
+                kill_script(script);
                 killedScript = true;
             }
         }
     } while (killedScript);
 }
 
-// Releases an enemy after its registered scripts and their children have finished.
+// destroys an enemy after its registered scripts and their children have terminated
 static void destroy_enemy(Enemy* enemy) {
     EncounterStatus* encounterStatus = &gCurrentEncounter;
     Encounter* encounter = encounterStatus->encounterList[enemy->encounterIndex];
@@ -2443,7 +2432,7 @@ static void destroy_enemy(Enemy* enemy) {
     heap_free(enemy);
 }
 
-// Terminates owned scripts and leaves resource destruction to the encounter update.
+// terminates an enemy's scripts and marks it for destruction
 void kill_enemy(Enemy* enemy) {
     if (enemy == nullptr || enemy->deletePending) {
         return;
@@ -2454,8 +2443,7 @@ void kill_enemy(Enemy* enemy) {
     kill_enemy_scripts(enemy);
 }
 
-// Releases enemies after the script update for this frame has completed.
-// This keeps any owner enemies valid while scripts are finalizing.
+// destroys enemies once their registered scripts have finished Finally
 static void destroy_pending_enemies(void) {
     EncounterStatus* encounterStatus = &gCurrentEncounter;
     s32 i, j;
@@ -2472,7 +2460,7 @@ static void destroy_pending_enemies(void) {
 
             if (enemy != nullptr && enemy->deletePending) {
                 kill_enemy_scripts(enemy);
-                if (!enemy_has_bound_scripts(enemy)) {
+                if (!enemy_has_live_scripts(enemy)) {
                     destroy_enemy(enemy);
                 }
             }

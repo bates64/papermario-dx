@@ -204,7 +204,7 @@ void btl_update(void) {
     f32 outMagnitude;
     s32 cond;
 
-    // Scripts update before the battle system, so owner finalizers can finish before this check.
+    // scripts update first, so an actor's Finally block may already be finished
     destroy_pending_actors();
     partner = battleStatus->partnerActor;
 
@@ -1042,8 +1042,8 @@ void btl_restore_world_cameras(void) {
     }
 }
 
-// Reports whether any script registered to this actor is still alive.
-static b32 actor_has_bound_scripts(Actor* actor) {
+// checks whether any script registered to this actor is still running
+static b32 actor_has_live_scripts(Actor* actor) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(actor->scripts.all); i++) {
@@ -1054,12 +1054,12 @@ static b32 actor_has_bound_scripts(Actor* actor) {
     return false;
 }
 
-// Requests termination for every script registered to this actor.
+// terminates every script registered to this actor
 static void kill_actor_scripts(Actor* actor) {
     b32 killedScript;
     s32 i;
 
-    // A finalizer may bind another script, so rescan until none remain running.
+    // Finally may register another script, so keep checking until none remain
     do {
         killedScript = false;
         for (i = 0; i < ARRAY_COUNT(actor->scripts.all); i++) {
@@ -1073,7 +1073,7 @@ static void kill_actor_scripts(Actor* actor) {
     } while (killedScript);
 }
 
-// Releases an actor after its registered scripts and their children have finished.
+// destroys an actor after its registered scripts and their children have terminated
 static void destroy_actor(Actor* actor) {
     ActorPart* part;
     ActorPart* actorPartTemp;
@@ -1136,7 +1136,7 @@ static void destroy_actor(Actor* actor) {
     heap_free(actor);
 }
 
-// Terminates an actor's registered scripts before releasing its resources.
+// terminates an actor's scripts, then destroys it when their Finally blocks are done
 void btl_delete_actor(Actor* actor) {
     if (actor == nullptr) {
         return;
@@ -1144,12 +1144,12 @@ void btl_delete_actor(Actor* actor) {
 
     actor->deletePending = true;
     kill_actor_scripts(actor);
-    if (!actor_has_bound_scripts(actor)) {
+    if (!actor_has_live_scripts(actor)) {
         destroy_actor(actor);
     }
 }
 
-// Releases actors retained while one of their registered scripts was still active.
+// destroys actors that were kept alive for their Finally blocks
 static void destroy_pending_actors(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* partner;

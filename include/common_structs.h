@@ -13,8 +13,8 @@ typedef ApiStatus(*ApiFunc)(struct Evt*, s32);
 
 typedef Bytecode EvtScript[];
 
-// Bookkeeping for a runnable script slot: its source, current instance, and runtime ID.
-// The binding does not by itself imply ownership or extend either object's lifetime.
+// bookkeeping for a runnable script slot: its source, current instance, and runtime ID
+// the binding does not by itself imply ownership or extend either object's lifetime
 typedef struct BoundScript {
     /* 0x00 */ EvtScript* source;
     /* 0x04 */ struct Evt* live;
@@ -481,10 +481,10 @@ typedef struct Evt {
     /* 0x17C */ u16 curLine;
     /* 0x17E */ b8 debugPaused;
     /* 0x17F */ s8 debugStep;
-    /* 0x180 */ u8 terminationState; /// Current EvtTerminationState.
-    /* 0x181 */ b8 executingCommand; /// True while an interpreter call is using this Evt.
-    /* 0x182 */ b8 traversingChildren; /// Prevents child destruction from re-entering the owner's traversal.
-    /* 0x183 */ b8 lerpActive; /// True while lerpState belongs to an active Lerp block.
+    /* 0x180 */ u8 terminationState; /// current EvtTerminationState
+    /* 0x181 */ b8 isExecuting; /// true while the interpreter is executing this script
+    /* 0x182 */ b8 isTerminatingChildren; /// true while this script is terminating its children
+    /* 0x183 */ b8 lerpActive; /// true while lerpState belongs to an active Lerp block
 } Evt; // size = 0x184
 
 typedef Evt* ScriptList[MAX_SCRIPTS];
