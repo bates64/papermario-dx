@@ -604,6 +604,24 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 /// Gets the fixed-point `Float(...)` value at the given offset and stores it without consuming it.
 #define FBufPeek(VAR, OFFSET)               EVT_CMD(EVT_OP_FBUF_PEEK, VAR, OFFSET),
 
+/// Reads a typed value from a C lvalue into an EVT variable.
+/// The address is taken implicitly and must refer to readable memory. No bounds checking is performed.
+#define MemGet(KIND, OUT_VAR, SOURCE)        EVT_CMD(EVT_OP_MEM_GET, KIND, OUT_VAR, Ref(SOURCE), 0),
+
+/// Writes an EVT value to a typed C lvalue.
+/// The address is taken implicitly and must refer to writable memory. No bounds checking is performed.
+#define MemSet(KIND, DESTINATION, VALUE)     EVT_CMD(EVT_OP_MEM_SET, KIND, Ref(DESTINATION), 0, VALUE),
+
+/// Reads a typed array element using an index evaluated when the script runs.
+/// The array must be a link-time-addressable C array, not a pointer stored in an EVT variable.
+#define MemGetIndex(KIND, OUT_VAR, SOURCE_ARRAY, INDEX) \
+                                            EVT_CMD(EVT_OP_MEM_GET, KIND, OUT_VAR, Ref((SOURCE_ARRAY)[0]), INDEX),
+
+/// Writes a typed array element using an index evaluated when the script runs.
+/// The array must be a link-time-addressable C array, not a pointer stored in an EVT variable.
+#define MemSetIndex(KIND, DESTINATION_ARRAY, INDEX, VALUE) \
+                                            EVT_CMD(EVT_OP_MEM_SET, KIND, Ref((DESTINATION_ARRAY)[0]), INDEX, VALUE),
+
 /// Loads an s32 array pointer into the current script for use with `ArrayVar(INDEX)`.
 #define UseArray(INT_PTR)                   EVT_CMD(EVT_OP_USE_ARRAY, (Bytecode) INT_PTR),
 

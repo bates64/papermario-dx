@@ -1311,6 +1311,124 @@ ApiStatus evt_handle_peek_buf_float(Evt* script) {
     return ApiStatus_NEXT;
 }
 
+s32 evt_get_mem_type_size(EvtMemType kind) {
+    ASSERT_MSG(
+        kind >= EVT_MEM_U8 && kind <= EVT_MEM_F32,
+        "Unknown Evt memory type: %ld",
+        (s32)kind
+    );
+
+    switch (kind) {
+        case EVT_MEM_U8:
+            return sizeof(u8);
+        case EVT_MEM_S8:
+            return sizeof(s8);
+        case EVT_MEM_U16:
+            return sizeof(u16);
+        case EVT_MEM_S16:
+            return sizeof(s16);
+        case EVT_MEM_U32:
+            return sizeof(u32);
+        case EVT_MEM_S32:
+            return sizeof(s32);
+        case EVT_MEM_F32:
+            return sizeof(f32);
+        default:
+            return sizeof(u8);
+    }
+}
+
+void* evt_get_mem_address(Evt* script, Bytecode baseAddress, Bytecode index, EvtMemType kind) {
+    s32 typeSize;
+    void* address;
+
+    ASSERT_MSG(baseAddress != 0, "Evt memory access used a null address");
+
+    typeSize = evt_get_mem_type_size(kind);
+    address = (u8*)baseAddress + evt_get_variable(script, index) * typeSize;
+
+    ASSERT_MSG(
+        ((u32)address & (typeSize - 1)) == 0,
+        "Evt memory access is not %ld-byte aligned",
+        typeSize
+    );
+    return address;
+}
+
+ApiStatus evt_handle_mem_get(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    EvtMemType kind = *args++;
+    Bytecode outVar = *args++;
+    Bytecode baseAddress = *args++;
+    Bytecode index = *args++;
+    void* address = evt_get_mem_address(script, baseAddress, index, kind);
+
+    switch (kind) {
+        case EVT_MEM_U8:
+            evt_set_variable(script, outVar, *(u8*)address);
+            break;
+        case EVT_MEM_S8:
+            evt_set_variable(script, outVar, *(s8*)address);
+            break;
+        case EVT_MEM_U16:
+            evt_set_variable(script, outVar, *(u16*)address);
+            break;
+        case EVT_MEM_S16:
+            evt_set_variable(script, outVar, *(s16*)address);
+            break;
+        case EVT_MEM_U32:
+            evt_set_variable(script, outVar, (s32)*(u32*)address);
+            break;
+        case EVT_MEM_S32:
+            evt_set_variable(script, outVar, *(s32*)address);
+            break;
+        case EVT_MEM_F32:
+            evt_set_float_variable(script, outVar, *(f32*)address);
+            break;
+        default:
+            PANIC_MSG("Unknown Evt memory type: %ld", (s32)kind);
+    }
+
+    return ApiStatus_NEXT;
+}
+
+ApiStatus evt_handle_mem_set(Evt* script) {
+    Bytecode* args = script->ptrReadPos;
+    EvtMemType kind = *args++;
+    Bytecode baseAddress = *args++;
+    Bytecode index = *args++;
+    Bytecode value = *args++;
+    void* address = evt_get_mem_address(script, baseAddress, index, kind);
+
+    switch (kind) {
+        case EVT_MEM_U8:
+            *(u8*)address = (u8)evt_get_variable(script, value);
+            break;
+        case EVT_MEM_S8:
+            *(s8*)address = (s8)evt_get_variable(script, value);
+            break;
+        case EVT_MEM_U16:
+            *(u16*)address = (u16)evt_get_variable(script, value);
+            break;
+        case EVT_MEM_S16:
+            *(s16*)address = (s16)evt_get_variable(script, value);
+            break;
+        case EVT_MEM_U32:
+            *(u32*)address = (u32)evt_get_variable(script, value);
+            break;
+        case EVT_MEM_S32:
+            *(s32*)address = evt_get_variable(script, value);
+            break;
+        case EVT_MEM_F32:
+            *(f32*)address = evt_get_float_variable(script, value);
+            break;
+        default:
+            PANIC_MSG("Unknown Evt memory type: %ld", (s32)kind);
+    }
+
+    return ApiStatus_NEXT;
+}
+
 ApiStatus evt_handle_set_array(Evt* script) {
     script->array = (s32*)evt_get_variable(script, *script->ptrReadPos);
     return ApiStatus_NEXT;
@@ -2468,6 +2586,12 @@ s32 evt_execute_next_command(Evt* script) {
                 break;
             case EVT_OP_FBUF_PEEK:
                 status = evt_handle_peek_buf_float(script);
+                break;
+            case EVT_OP_MEM_GET:
+                status = evt_handle_mem_get(script);
+                break;
+            case EVT_OP_MEM_SET:
+                status = evt_handle_mem_set(script);
                 break;
             case EVT_OP_USE_ARRAY:
                 status = evt_handle_set_array(script);

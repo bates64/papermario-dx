@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/mem_invalid_type.c:
+EVS_MemInvalidType
+EVT_OP_MEM_GET has unknown memory type 99

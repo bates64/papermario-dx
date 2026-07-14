@@ -32,6 +32,7 @@ Validation currently catches:
 - Float literals in integer-only math commands where a float variant exists;
 - literal Clamp/ClampF bounds where min > max;
 - literal Lerp durations less than zero;
+- memory access types that are not supported literal EVT_MEM_* values;
 - Eval/Invoke/IfEval function operands that are not relocation-backed function addresses.
 """
 
@@ -74,6 +75,9 @@ EVT_FIXED_END = -240000000
 EVT_LIMIT = -270000000
 EVT_ARG_INT_MARKER = EVT_LIMIT - 1
 EVT_ARG_FLOAT_MARKER = EVT_LIMIT - 2
+
+EVT_MEM_U8 = 0
+EVT_MEM_F32 = 6
 
 
 class Opcode(IntEnum):
@@ -158,52 +162,54 @@ class Opcode(IntEnum):
     EVT_OP_USE_FBUF = (0x43, 1)
     EVT_OP_FBUF_READ = (0x44, 1, MAX_ARGC)
     EVT_OP_FBUF_PEEK = (0x45, 2)
-    EVT_OP_USE_ARRAY = (0x46, 1)
-    EVT_OP_USE_FLAGS = (0x47, 1)
-    EVT_OP_MALLOC_ARRAY = (0x48, 2)
-    EVT_OP_BITWISE_AND = (0x49, 2)
-    EVT_OP_BITWISE_AND_CONST = (0x4A, 2)
-    EVT_OP_BITWISE_OR = (0x4B, 2)
-    EVT_OP_BITWISE_OR_CONST = (0x4C, 2)
-    EVT_OP_CALL = (0x4D, 1, MAX_ARGC)
-    EVT_OP_EXEC = (0x4E, 1, MAX_ARGC)
-    EVT_OP_EXEC_GET_ID = (0x4F, 2, MAX_ARGC)
-    EVT_OP_EXEC_WAIT = (0x50, 1, MAX_ARGC)
-    EVT_OP_BIND_TRIGGER = (0x51, 5)
-    EVT_OP_UNBIND = (0x52, 0)
-    EVT_OP_KILL_SCRIPT = (0x53, 1)
-    EVT_OP_JUMP = (0x54, 1)
-    EVT_OP_SET_PRIORITY = (0x55, 1)
-    EVT_OP_SET_TIMESCALE = (0x56, 1)
-    EVT_OP_SET_GROUP = (0x57, 1)
-    EVT_OP_BIND_ITEM_PROMPT = (0x58, 6)
-    EVT_OP_SUSPEND_GROUP = (0x59, 1)
-    EVT_OP_RESUME_GROUP = (0x5A, 1)
-    EVT_OP_SUSPEND_OTHERS = (0x5B, 1)
-    EVT_OP_RESUME_OTHERS = (0x5C, 1)
-    EVT_OP_SUSPEND_SCRIPT = (0x5D, 1)
-    EVT_OP_RESUME_SCRIPT = (0x5E, 1)
-    EVT_OP_IS_SCRIPT_RUNNING = (0x5F, 2)
-    EVT_OP_THREAD = (0x60, 0)
-    EVT_OP_END_THREAD = (0x61, 0)
-    EVT_OP_CHILD_THREAD = (0x62, 0)
-    EVT_OP_END_CHILD_THREAD = (0x63, 0)
-    EVT_OP_AWAIT_CHILDREN = (0x64, 0)
-    EVT_OP_AWAIT_SCRIPT = (0x65, 1)
-    EVT_OP_DEBUG_PRINT_VAR = (0x66, 1)
-    EVT_OP_DEBUG_BREAKPOINT = (0x67, 1)
-    EVT_OP_EXPECT_ARGS = (0x68, 1)
-    EVT_OP_FINALLY = (0x69, 0)
-    EVT_OP_EVAL = (0x6A, 2, 2 + MAX_EVAL_ARGS)
-    EVT_OP_EVALF = (0x6B, 2, 2 + MAX_EVAL_ARGS)
-    EVT_OP_INVOKE = (0x6C, 1, 1 + MAX_EVAL_ARGS)
-    EVT_OP_INVOKEF = (0x6D, 1, 1 + MAX_EVAL_ARGS)
-    EVT_OP_IF_EVAL = (0x6E, 1, 1 + MAX_EVAL_ARGS)
-    EVT_OP_IF_NOT_EVAL = (0x6F, 1, 1 + MAX_EVAL_ARGS)
-    EVT_OP_IF_EVALF = (0x70, 1, 1 + MAX_EVAL_ARGS)
-    EVT_OP_IF_NOT_EVALF = (0x71, 1, 1 + MAX_EVAL_ARGS)
-    EVT_OP_LERP = (0x72, 5)
-    EVT_OP_END_LERP = (0x73, 0)
+    EVT_OP_MEM_GET = (0x46, 4)
+    EVT_OP_MEM_SET = (0x47, 4)
+    EVT_OP_USE_ARRAY = (0x48, 1)
+    EVT_OP_USE_FLAGS = (0x49, 1)
+    EVT_OP_MALLOC_ARRAY = (0x4A, 2)
+    EVT_OP_BITWISE_AND = (0x4B, 2)
+    EVT_OP_BITWISE_AND_CONST = (0x4C, 2)
+    EVT_OP_BITWISE_OR = (0x4D, 2)
+    EVT_OP_BITWISE_OR_CONST = (0x4E, 2)
+    EVT_OP_CALL = (0x4F, 1, MAX_ARGC)
+    EVT_OP_EXEC = (0x50, 1, MAX_ARGC)
+    EVT_OP_EXEC_GET_ID = (0x51, 2, MAX_ARGC)
+    EVT_OP_EXEC_WAIT = (0x52, 1, MAX_ARGC)
+    EVT_OP_BIND_TRIGGER = (0x53, 5)
+    EVT_OP_UNBIND = (0x54, 0)
+    EVT_OP_KILL_SCRIPT = (0x55, 1)
+    EVT_OP_JUMP = (0x56, 1)
+    EVT_OP_SET_PRIORITY = (0x57, 1)
+    EVT_OP_SET_TIMESCALE = (0x58, 1)
+    EVT_OP_SET_GROUP = (0x59, 1)
+    EVT_OP_BIND_ITEM_PROMPT = (0x5A, 6)
+    EVT_OP_SUSPEND_GROUP = (0x5B, 1)
+    EVT_OP_RESUME_GROUP = (0x5C, 1)
+    EVT_OP_SUSPEND_OTHERS = (0x5D, 1)
+    EVT_OP_RESUME_OTHERS = (0x5E, 1)
+    EVT_OP_SUSPEND_SCRIPT = (0x5F, 1)
+    EVT_OP_RESUME_SCRIPT = (0x60, 1)
+    EVT_OP_IS_SCRIPT_RUNNING = (0x61, 2)
+    EVT_OP_THREAD = (0x62, 0)
+    EVT_OP_END_THREAD = (0x63, 0)
+    EVT_OP_CHILD_THREAD = (0x64, 0)
+    EVT_OP_END_CHILD_THREAD = (0x65, 0)
+    EVT_OP_AWAIT_CHILDREN = (0x66, 0)
+    EVT_OP_AWAIT_SCRIPT = (0x67, 1)
+    EVT_OP_DEBUG_PRINT_VAR = (0x68, 1)
+    EVT_OP_DEBUG_BREAKPOINT = (0x69, 1)
+    EVT_OP_EXPECT_ARGS = (0x6A, 1)
+    EVT_OP_FINALLY = (0x6B, 0)
+    EVT_OP_EVAL = (0x6C, 2, 2 + MAX_EVAL_ARGS)
+    EVT_OP_EVALF = (0x6D, 2, 2 + MAX_EVAL_ARGS)
+    EVT_OP_INVOKE = (0x6E, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_INVOKEF = (0x6F, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_IF_EVAL = (0x70, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_IF_NOT_EVAL = (0x71, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_IF_EVALF = (0x72, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_IF_NOT_EVALF = (0x73, 1, 1 + MAX_EVAL_ARGS)
+    EVT_OP_LERP = (0x74, 5)
+    EVT_OP_END_LERP = (0x75, 0)
 
 
 IF_OPS = {
@@ -899,6 +905,43 @@ def validate_lerp_duration(
         )
 
 
+def validate_mem_type(
+    elf: Elf32,
+    script: ScriptSymbol,
+    op_pos: int,
+    arg_pos: int,
+    args: list[int],
+    opcode: Opcode,
+    line: int | None,
+) -> None:
+    if opcode not in {Opcode.EVT_OP_MEM_GET, Opcode.EVT_OP_MEM_SET}:
+        return
+
+    type_arg_index = 0
+    relocation = elf.relocation_at(
+        script.section.index,
+        script.symbol.value + (arg_pos + type_arg_index) * BYTECODE_SIZE,
+    )
+    if relocation is not None:
+        raise ValidationError(
+            f"{format_script_site(script, op_pos, line)}: {opcode.name} memory type must be "
+            "a literal EVT_MEM_* value"
+        )
+
+    mem_type = args[type_arg_index]
+    if EVT_MEM_U8 <= mem_type <= EVT_MEM_F32:
+        return
+    if is_encoded_evt_expression(mem_type):
+        raise ValidationError(
+            f"{format_script_site(script, op_pos, line)}: {opcode.name} memory type is an EVT expression; "
+            "expected a literal EVT_MEM_* value"
+        )
+    raise ValidationError(
+        f"{format_script_site(script, op_pos, line)}: {opcode.name} has unknown memory type {mem_type}; "
+        "expected EVT_MEM_U8 through EVT_MEM_F32"
+    )
+
+
 def validate_function_arg(
     elf: Elf32,
     script: ScriptSymbol,
@@ -1210,6 +1253,7 @@ def validate_script(elf: Elf32, script: ScriptSymbol, data: bytes) -> None:
         validate_integer_math_arg_types(script, op_pos, opcode, args, ctx.current_line)
         validate_clamp_literal_bounds(script, op_pos, opcode, args, ctx.current_line)
         validate_lerp_duration(script, op_pos, opcode, args, ctx.current_line)
+        validate_mem_type(elf, script, op_pos, arg_pos, args, opcode, ctx.current_line)
         validate_function_arg(elf, script, op_pos, arg_pos, raw_args, opcode, ctx.current_line)
         read_pos += argc
 

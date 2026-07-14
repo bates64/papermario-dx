@@ -2124,6 +2124,8 @@ DebugOpcode DebugOps[] = {
     [EVT_OP_USE_FBUF]           { "UseFBuf" },
     [EVT_OP_FBUF_READ]          { "FBufRead" },
     [EVT_OP_FBUF_PEEK]          { "FBufPeek" },
+    [EVT_OP_MEM_GET]            { "MemGet" },
+    [EVT_OP_MEM_SET]            { "MemSet" },
     [EVT_OP_USE_ARRAY]          { "UseArray" },
     [EVT_OP_USE_FLAGS]          { "UseFlags" },
     [EVT_OP_MALLOC_ARRAY]       { "MallocArray" },

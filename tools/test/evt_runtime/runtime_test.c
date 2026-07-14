@@ -190,6 +190,21 @@ static s32 gTestWords[] = { 11, 22, 33, 44 };
 static s32 gTestFloats[] = { Float(1.25), Float(2.5), Float(3.75) };
 static s32 gTestArray[4];
 static s32 gTestFlagArray[2];
+static u8 gMemLoadU8;
+static s8 gMemLoadS8;
+static u16 gMemLoadU16;
+static s16 gMemLoadS16;
+static u32 gMemLoadU32;
+static s32 gMemLoadS32;
+static f32 gMemLoadF32;
+static u8 gMemStoreU8;
+static s8 gMemStoreS8;
+static u16 gMemStoreU16;
+static s16 gMemStoreS16;
+static u32 gMemStoreU32;
+static s32 gMemStoreS32;
+static f32 gMemStoreF32;
+static s16 gMemValues[4];
 
 extern EvtScript EVS_Companion;
 extern EvtScript EVS_ActorOwnerCompanion;
@@ -406,6 +421,37 @@ static API_CALLABLE(VerifyStorage) {
     CHECK(gTestArray[0] == 15);
     CHECK(gTestArray[2] == -4);
     CHECK(evt_get_variable(script, ArrayFlag(37)));
+    return ApiStatus_DONE2;
+}
+
+static API_CALLABLE(VerifyMemLoads) {
+    CHECK(evt_get_variable(script, LVar0) == 200);
+    CHECK(evt_get_variable(script, LVar1) == -100);
+    CHECK(evt_get_variable(script, LVar2) == 60000);
+    CHECK(evt_get_variable(script, LVar3) == -20000);
+    CHECK((u32)script->varTable[4] == 0x89ABCDEF);
+    CHECK((u32)evt_get_variable(script, LVar4) == 0x89ABCDEF);
+    CHECK(evt_get_variable(script, LVar5) == -123456789);
+    check_float(evt_get_float_variable(script, LVar6), 1.25f);
+    return ApiStatus_DONE2;
+}
+
+static API_CALLABLE(VerifyMemStores) {
+    CHECK(gMemStoreU8 == 0xAB);
+    CHECK(gMemStoreS8 == -100);
+    CHECK(gMemStoreU16 == 0x2345);
+    CHECK(gMemStoreS16 == -20000);
+    CHECK(gMemStoreU32 == 0x89ABCDEF);
+    CHECK(gMemStoreS32 == -12345);
+    check_float(gMemStoreF32, -2.5f);
+    return ApiStatus_DONE2;
+}
+
+static API_CALLABLE(VerifyMemIndex) {
+    CHECK(evt_get_variable(script, LVar0) == 3);
+    CHECK(evt_get_variable(script, LVar2) == 3);
+    CHECK(evt_get_variable(script, LVar3) == -7);
+    CHECK(gMemValues[2] == -7);
     return ApiStatus_DONE2;
 }
 
@@ -1102,6 +1148,35 @@ EvtScript EVS_TestStorage = {
     End
 };
 
+EvtScript EVS_TestMemory = {
+    MemGet(EVT_MEM_U8, LVar0, gMemLoadU8)
+    MemGet(EVT_MEM_S8, LVar1, gMemLoadS8)
+    MemGet(EVT_MEM_U16, LVar2, gMemLoadU16)
+    MemGet(EVT_MEM_S16, LVar3, gMemLoadS16)
+    MemGet(EVT_MEM_U32, LVar4, gMemLoadU32)
+    MemGet(EVT_MEM_S32, LVar5, gMemLoadS32)
+    MemGet(EVT_MEM_F32, LVar6, gMemLoadF32)
+    Call(VerifyMemLoads)
+
+    MemSet(EVT_MEM_U8, gMemStoreU8, 0x1AB)
+    MemSet(EVT_MEM_S8, gMemStoreS8, -100)
+    MemSet(EVT_MEM_U16, gMemStoreU16, 0x12345)
+    MemSet(EVT_MEM_S16, gMemStoreS16, -20000)
+    MemSet(EVT_MEM_U32, gMemStoreU32, (s32)0x89ABCDEF)
+    MemSet(EVT_MEM_S32, gMemStoreS32, -12345)
+    SetF(LVar7, Float(-2.5))
+    MemSet(EVT_MEM_F32, gMemStoreF32, LVar7)
+    Call(VerifyMemStores)
+
+    MemGet(EVT_MEM_S16, LVar0, gMemValues[2])
+    Set(LVar1, 2)
+    MemGetIndex(EVT_MEM_S16, LVar2, gMemValues, LVar1)
+    MemSetIndex(EVT_MEM_S16, gMemValues, LVar1, -7)
+    MemGetIndex(EVT_MEM_S16, LVar3, gMemValues, LVar1)
+    Call(VerifyMemIndex)
+    End
+};
+
 EvtScript EVS_TestEval = {
     Eval(LVar0, TestEval, 3, 4, 5)
     EvalF(LVar1, TestEvalF, Float(1.5), Float(2.0))
@@ -1230,6 +1305,24 @@ static void reset_test(void) {
     memset(gTestAreaBytes, 0, sizeof(gTestAreaBytes));
     memset(gTestArray, 0, sizeof(gTestArray));
     memset(gTestFlagArray, 0, sizeof(gTestFlagArray));
+    gMemLoadU8 = 200;
+    gMemLoadS8 = -100;
+    gMemLoadU16 = 60000;
+    gMemLoadS16 = -20000;
+    gMemLoadU32 = 0x89ABCDEF;
+    gMemLoadS32 = -123456789;
+    gMemLoadF32 = 1.25f;
+    gMemStoreU8 = 0;
+    gMemStoreS8 = 0;
+    gMemStoreU16 = 0;
+    gMemStoreS16 = 0;
+    gMemStoreU32 = 0;
+    gMemStoreS32 = 0;
+    gMemStoreF32 = 0.0f;
+    gMemValues[0] = 1;
+    gMemValues[1] = 2;
+    gMemValues[2] = 3;
+    gMemValues[3] = 4;
     gTraceLen = 0;
     gTrace[0] = '\0';
 }
@@ -1909,6 +2002,7 @@ static void test_interpreter_behavior(void) {
         &EVS_TestControlFlow,
         &EVS_TestLoopControlSwitches,
         &EVS_TestStorage,
+        &EVS_TestMemory,
         &EVS_TestEval,
         &EVS_TestArgsParent,
     };

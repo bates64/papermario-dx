@@ -1,0 +1,4 @@
+tools/test/evt_validator/fail/mem_variable_type.c:
+EVS_MemVariableType
+EVT_OP_MEM_SET memory type is an EVT expression
+expected a literal EVT_MEM_* value

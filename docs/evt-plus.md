@@ -15,6 +15,7 @@ The primary features are:
 - commands for awaiting child threads or a single script ID
 - vector convenience macros for adjacent EVT variables
 - variadic buffer reads with `BufRead` and `FBufRead`
+- direct reads and writes to C primitives with `MemGet` and `MemSet`, and primitive arrays with `MetGetIndex` and `MemSetIndex`
 - clearer command names with compatibility aliases
 - smaller bytecode by packing the opcode, argument count, and line number into one command header
 
@@ -59,7 +60,8 @@ The primary features are:
 12. [Awaiting Scripts](#12-awaiting-scripts)
 13. [Packed Command Headers](#13-packed-command-headers)
 14. [Buffer Reads](#14-buffer-reads)
-15. [Command Renames](#15-command-renames)
+15. [Quick Memory Access](#15-quick-memory-access)
+16. [Command Renames](#16-command-renames)
 
 - [Bug Fixes](#bug-fixes)
 - [Additional Ideas](#additional-ideas)
@@ -946,7 +948,50 @@ FBufRead(LVar0, LVar1, LVar2)
 
 Each destination consumes one value from the current buffer and advances the buffer pointer. The old `BufRead1` through `BufRead4` and `FBufRead1` through `FBufRead4` are no longer special. In practice, the number of available LVars limits how many values a script can use at once. Read them in whatever chunks are convenient.
 
-## 15. Command Renames
+## 15. Quick Memory Access
+
+`MemGet` and `MemSet` provide a direct bridge between EVT variables and typed C data. They are useful for small engine fields which do not warrant a dedicated API function:
+
+```c
+MemGet(EVT_MEM_S16, LVar0, gPlayerData.coins)
+MemSet(EVT_MEM_S16, gPlayerData.coins, 10)
+```
+
+The address is taken automatically. Pass the C field directly rather than wrapping it in `Ref(...)`.
+
+A compile-time array element can be used in the same way:
+
+```c
+s16 MyVals[] = { 1, 2, 3, 4 };
+
+MemGet(EVT_MEM_S16, LVar0, MyVals[2]) // LVar0 = 3
+```
+
+Use `MemGetIndex` or `MemSetIndex` when the index is not known until the script runs:
+
+```c
+Set(LVar1, 2)
+MemGetIndex(EVT_MEM_S16, LVar0, MyVals, LVar1)
+MemSetIndex(EVT_MEM_S16, MyVals, LVar1, -7)
+```
+
+The available memory types are:
+
+| Type | Result |
+| --- | --- |
+| `EVT_MEM_U8` | unsigned 8-bit integer |
+| `EVT_MEM_S8` | signed 8-bit integer |
+| `EVT_MEM_U16` | unsigned 16-bit integer |
+| `EVT_MEM_S16` | signed 16-bit integer |
+| `EVT_MEM_U32` | unsigned 32-bit word |
+| `EVT_MEM_S32` | signed 32-bit integer |
+| `EVT_MEM_F32` | numeric 32-bit float |
+
+Unsigned loads are zero-extended and signed loads are sign-extended. Narrow stores discard any bits which do not fit. `EVT_MEM_F32` converts between a real C `f32` and EVT's fixed-point float representation, so values are limited to normal EVT float precision. `EVT_MEM_U32` instead transfers the raw 32-bit pattern. Some patterns overlap EVT's encoded variable and float ranges, so later use of that value by an ordinary EVT command may interpret it as a tagged value.
+
+These commands are intentionally low-level and do not perform type or bounds checking. The C address or array must exist at link time; an arbitrary pointer stored in an LVar cannot be used as the base. The memory type must match the declared C type because it determines both the access width and the indexed stride. There is no array bounds checking, and negative indices are permitted. Writes must target writable memory. Accesses use native byte order, and null or misaligned addresses cause an assertion. These are ordinary RAM accesses and do not provide volatile or MMIO semantics.
+
+## 16. Command Renames
 
 Several command names were updated to match current engine terminology. In particular, commands which operate on ordinary EvtScripts no longer call them threads, and `BindPadlock` is renamed for the item prompt it actually creates.
 

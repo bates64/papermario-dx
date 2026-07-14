@@ -93,6 +93,8 @@ enum {
     EVT_OP_USE_FBUF, ///< Identical to USE_BUFFER. Args: fixed-point s32*
     EVT_OP_FBUF_READ, ///< Args: container, ...
     EVT_OP_FBUF_PEEK, ///< Args: container, index
+    EVT_OP_MEM_GET, ///< Args: memory type, container, base address, index
+    EVT_OP_MEM_SET, ///< Args: memory type, base address, index, value
     EVT_OP_USE_ARRAY, ///< Args: *s32
     EVT_OP_USE_FLAGS, ///< Args: *s32
     EVT_OP_MALLOC_ARRAY, ///< Allocates a new array. Args: length, s32*
@@ -140,6 +142,16 @@ enum {
     EVT_OP_LERP, ///< Args: container, start, end, duration, easing
     EVT_OP_END_LERP,
 };
+
+typedef enum EvtMemType {
+    EVT_MEM_U8,
+    EVT_MEM_S8,
+    EVT_MEM_U16,
+    EVT_MEM_S16,
+    EVT_MEM_U32,
+    EVT_MEM_S32,
+    EVT_MEM_F32,
+} EvtMemType;
 
 /// the script currently being executed by evt_execute_next_command, or nullptr
 extern struct Evt* EvtCurrentScript;

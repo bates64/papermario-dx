@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/mem_get_wrong_argc.c:
+EVS_MemGetWrongArgc
+EVT_OP_MEM_GET has argc 3, expected 4
