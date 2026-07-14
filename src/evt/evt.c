@@ -127,7 +127,7 @@ Bytecode evt_float_to_fixed_var(f32 value) {
     return FLOAT_TO_FIXED(value);
 }
 
-ALWAYS_INLINE void evt_assert_valid_arg_var(Evt* script, s32 argIndex) {
+static ALWAYS_INLINE void evt_assert_valid_arg_var(Evt* script, s32 argIndex) {
     ASSERT_MSG(
         argIndex >= 0 && argIndex < script->argCount,
         "ArgVar(%ld) read with only %ld arg(s)",
@@ -2163,10 +2163,6 @@ ApiStatus evt_handle_print_debug_var(Evt* script) {
     return ApiStatus_NEXT;
 }
 
-ApiStatus evt_nop(Evt* script) {
-    return ApiStatus_NEXT;
-}
-
 ApiStatus evt_handle_debug_breakpoint(Evt* script) {
     #if DX_DEBUG_MENU
     script->debugPaused = true;
@@ -2174,7 +2170,7 @@ ApiStatus evt_handle_debug_breakpoint(Evt* script) {
     return ApiStatus_NEXT;
 }
 
-static b32 evt_opcode_forbidden_in_finally(s32 opcode) {
+b32 evt_opcode_forbidden_in_finally(s32 opcode) {
     switch (opcode) {
         case EVT_OP_RETURN:
         case EVT_OP_LABEL:
@@ -3028,7 +3024,7 @@ Bytecode* evt_find_label(Evt* script, s32 arg) {
     return ret;
 }
 
-static b32 evt_opcode_opens_if(s32 opcode) {
+b32 evt_opcode_opens_if(s32 opcode) {
     switch (opcode) {
         case EVT_OP_IF_EQ:
         case EVT_OP_IF_NE:

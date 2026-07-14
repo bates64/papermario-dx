@@ -231,7 +231,7 @@ EvtScript N(EVS_Example_NeedsCleanup) = {
 
     // do some work using first-class Lerp support
     // this new version only writes to the chosen LVar
-    // we do not need to worry about accidently overwriting the effect handle on LVarF
+    // we do not need to worry about accidentally overwriting the effect handle on LVarF
     Lerp(LVar0, 0, 90, 20, EASING_COS_IN_OUT)
         Call(RotateModel, MODEL_door, LVar0, 0, 1, 0)
     EndLerp
@@ -970,6 +970,7 @@ EVT Plus also fixes several problems in the existing EVT interpreter. These chan
 - `BreakSwitch` likewise discards any active `Loop` or `Lerp` blocks it exits, rather than leaving stale loop state behind.
 - Case skipping now treats `SwitchConst` as a nested switch. It previously mistook the nested block's `EndSwitch` for the end of the outer switch.
 - `DebugPrintVar` now identifies each variable type correctly and prints flag values as `0` or `1` rather than exposing their underlying bit masks.
+- Resuming a script now also resumes its `ChildThread` children. The vanilla interpreter accidentally suspended those children again.
 
 ## Additional Ideas
 

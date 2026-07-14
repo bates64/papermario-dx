@@ -37,25 +37,25 @@ BSS f32 PartnerMoveYaw;
 BSS s16 PartnerStuckTime;
 BSS f32 PartnerFlyingDeltaY;
 
-ALWAYS_INLINE void advance_write_history(void) {
+static ALWAYS_INLINE void advance_write_history(void) {
     PlayerMoveHistoryIndex++;
     if (PlayerMoveHistoryIndex >= ARRAY_COUNT(PlayerMoveHistory)) {
         PlayerMoveHistoryIndex = 0;
     }
 }
 
-ALWAYS_INLINE void advance_read_history(void) {
+static ALWAYS_INLINE void advance_read_history(void) {
     PartnerMoveHistoryReadIndex++;
     if (PartnerMoveHistoryReadIndex >= ARRAY_COUNT(PlayerMoveHistory)) {
         PartnerMoveHistoryReadIndex = 0;
     }
 }
 
-ALWAYS_INLINE PlayerPathElement* fetch_move_history(void) {
+static ALWAYS_INLINE PlayerPathElement* fetch_move_history(void) {
     return &PlayerMoveHistory[PartnerMoveHistoryReadIndex];
 }
 
-ALWAYS_INLINE b32 is_surface_dangerous(HitID colliderID) {
+static ALWAYS_INLINE b32 is_surface_dangerous(HitID colliderID) {
     s32 surfaceType = get_collider_flags(colliderID) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
     return (surfaceType == SURFACE_TYPE_SPIKES || surfaceType == SURFACE_TYPE_LAVA);
 }

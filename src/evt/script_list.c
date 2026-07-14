@@ -74,8 +74,8 @@ s32 evt_execute_next_command(Evt* script);
 b32 evt_is_valid_label_value(Bytecode label);
 b32 evt_label_values_match(Bytecode lhs, Bytecode rhs);
 Bytecode* evt_find_thread_block_end(Bytecode* startLine, s32 endOpcode);
-static b32 script_has_children(Evt* script);
-static void kill_script_children(Evt* script);
+b32 script_has_children(Evt* script);
+void kill_script_children(Evt* script);
 
 void sort_scripts(void) {
     s32 temp_a0;
@@ -691,7 +691,7 @@ void update_scripts(void) {
 }
 
 // checks whether an address and ID still identify the same live script
-static b32 script_ref_matches(Evt* script, s32 scriptID) {
+b32 script_ref_matches(Evt* script, s32 scriptID) {
     s32 i;
 
     if (script == nullptr) {
@@ -709,7 +709,7 @@ static b32 script_ref_matches(Evt* script, s32 scriptID) {
 }
 
 // checks whether a script still has an ExecWait child or any ChildThread scripts
-static b32 script_has_children(Evt* script) {
+b32 script_has_children(Evt* script) {
     s32 i;
 
     if (script->blockingChild != nullptr) {
@@ -727,7 +727,7 @@ static b32 script_has_children(Evt* script) {
 }
 
 // terminates every child owned by this script
-static void kill_script_children(Evt* script) {
+void kill_script_children(Evt* script) {
     Evt* blockingChild = script->blockingChild;
     s32 i;
 
@@ -747,7 +747,7 @@ static void kill_script_children(Evt* script) {
     }
 }
 
-static void evt_destroy_script(Evt* script);
+void evt_destroy_script(Evt* script);
 
 /*
  * terminating a script has four steps:
@@ -760,7 +760,7 @@ static void evt_destroy_script(Evt* script);
  * children always finish terminating before their parent. this function continues as far as it
  * can, but may stop while a child or the interpreter is still using the script.
  */
-static void evt_continue_termination(Evt* script) {
+void evt_continue_termination(Evt* script) {
     ASSERT(script != nullptr);
 
     // terminate every child before starting this script's Finally block
@@ -861,7 +861,7 @@ void kill_script(Evt* script) {
 }
 
 // destroys a terminated script and frees the resources it owns
-static void evt_destroy_script(Evt* script) {
+void evt_destroy_script(Evt* script) {
     Evt* blockingParent = script->blockingParent;
     Evt* threadParent = script->threadParent;
     Evt* parent = blockingParent;
@@ -1080,7 +1080,7 @@ void resume_group_script(Evt* script, s32 groupFlags) {
         Evt* scriptContextPtr = (*gCurrentScriptListPtr)[i];
 
         if (scriptContextPtr != nullptr && scriptContextPtr->threadParent == script) {
-            suspend_group_script(scriptContextPtr, groupFlags);
+            resume_group_script(scriptContextPtr, groupFlags);
         }
     }
 

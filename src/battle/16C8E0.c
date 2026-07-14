@@ -59,7 +59,7 @@ void tattle_cam_pre_render(Camera*);
 void tattle_cam_post_render(Camera*);
 void btl_draw_enemy_health_bars(void);
 void btl_update_starpoints_display(void);
-static void destroy_pending_actors(void);
+void destroy_pending_actors(void);
 
 void get_stick_input_radial(f32* angle, f32* magnitude) {
     BattleStatus* battleStatus = &gBattleStatus;
@@ -1043,7 +1043,7 @@ void btl_restore_world_cameras(void) {
 }
 
 // checks whether any script registered to this actor is still running
-static b32 actor_has_live_scripts(Actor* actor) {
+b32 actor_has_live_scripts(Actor* actor) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(actor->scripts.all); i++) {
@@ -1055,7 +1055,7 @@ static b32 actor_has_live_scripts(Actor* actor) {
 }
 
 // terminates every script registered to this actor
-static void kill_actor_scripts(Actor* actor) {
+void kill_actor_scripts(Actor* actor) {
     b32 killedScript;
     s32 i;
 
@@ -1074,7 +1074,7 @@ static void kill_actor_scripts(Actor* actor) {
 }
 
 // destroys an actor after its registered scripts and their children have terminated
-static void destroy_actor(Actor* actor) {
+void destroy_actor(Actor* actor) {
     ActorPart* part;
     ActorPart* actorPartTemp;
     BattleStatus* battleStatus;
@@ -1150,7 +1150,7 @@ void btl_delete_actor(Actor* actor) {
 }
 
 // destroys actors that were kept alive for their Finally blocks
-static void destroy_pending_actors(void) {
+void destroy_pending_actors(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* partner;
     s32 i;

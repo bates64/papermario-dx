@@ -1855,6 +1855,10 @@ static void test_kill_suspended_tree(void) {
     suspend_all_script(parent->id);
     CHECK(parent->stateFlags & EVT_FLAG_PAUSED);
     CHECK(child->stateFlags & EVT_FLAG_PAUSED);
+    resume_all_script(parent->id);
+    CHECK(!(parent->stateFlags & EVT_FLAG_PAUSED));
+    CHECK(!(child->stateFlags & EVT_FLAG_PAUSED));
+    suspend_all_script(parent->id);
     kill_script(parent);
     CHECK(gNumScripts == 0);
     expect_trace("CP");

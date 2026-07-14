@@ -77,6 +77,7 @@ EVT_ARG_FLOAT_MARKER = EVT_LIMIT - 2
 
 
 class Opcode(IntEnum):
+    # keep these values and argument counts in sync with include/evt.h
     def __new__(cls, opcode: int, argc_min: int, argc_max: int | None = None):
         obj = int.__new__(cls, opcode)
         obj._value_ = opcode
@@ -402,7 +403,7 @@ class ValidationError(Exception):
 
 
 def stderr_supports_color() -> bool:
-    return True
+    return sys.stderr.isatty()
 
 
 def error_prefix() -> str:

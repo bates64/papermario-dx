@@ -167,7 +167,7 @@ typedef s32 ApiStatus;
 
 // descriptive aliases for the legacy DONE1 and DONE2 names
 #define ApiStatus_YIELD  ApiStatus_DONE1
-#define ApiStatus_NEXT   ApiStatus_DONE2 // or ApiStatus_CONTINUE ?
+#define ApiStatus_NEXT   ApiStatus_DONE2 // or ApiStatus_CONTINUE or stick with ApiStatus_DONE ?
 
 // internal Evt interpreter control values, generally not for user APIs
 #define VmStatus_REPEAT  253 /// redispatch immediately; used internally when fetching a command

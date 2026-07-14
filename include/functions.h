@@ -283,7 +283,7 @@ f32 atan2(f32 startX, f32 startZ, f32 endX, f32 endZ);
 /// initial velocity necessary to move from `startY` to `targetY` over `duration`.
 /// This motion is governed by the projectile motion equation given by:
 /// y(t) = startY + v0 * t - 0.5 * accel * t^2
-ALWAYS_INLINE f32 calc_projectile_v0(f32 startY, f32 targetY, f32 accel, f32 duration) {
+static ALWAYS_INLINE f32 calc_projectile_v0(f32 startY, f32 targetY, f32 accel, f32 duration) {
     return (targetY - startY + (0.5f * accel * SQ(duration))) / duration;
 }
 

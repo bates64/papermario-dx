@@ -434,7 +434,7 @@ typedef struct Evt {
     /* 0x007 */ s8 switchDepth; /// switch stack top; must remain below EVT_MAX_SWITCH_DEPTH
     /* 0x008 */ Bytecode* ptrNextLine;
     /* 0x00C */ Bytecode* ptrReadPos;
-    /* 0x010 */ Bytecode* labelValuePtrs[EVT_MAX_NUM_LABELS]; /// addresses of Label values in this thread scope
+    /* 0x010 */ Bytecode* labelValuePtrs[EVT_MAX_NUM_LABELS]; /// addresses of Label values in this script scope
     /* 0x050 */ void* userData; /// any heap user data, will be automatically free'd in kill_script()
     /* 0x054 */ struct Evt* blockingParent; /// child's link to parent for a child created via ExecWait
     /* 0x058 */ struct Evt* blockingChild; /// parent's link to child created via ExecWait

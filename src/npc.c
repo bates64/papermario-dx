@@ -13,7 +13,7 @@ static NpcList gBattleNpcList;
 static NpcList* gCurrentNpcListPtr;
 static s8 gNpcPlayerCollisionsEnabled;
 
-static void destroy_pending_enemies(void);
+void destroy_pending_enemies(void);
 
 #define PAL_ANIM_END 0xFF
 
@@ -2353,7 +2353,7 @@ void kill_encounter(Enemy* enemy) {
 }
 
 // checks whether any script registered to this enemy is still running
-static b32 enemy_has_live_scripts(Enemy* enemy) {
+b32 enemy_has_live_scripts(Enemy* enemy) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(enemy->scripts.all); i++) {
@@ -2365,7 +2365,7 @@ static b32 enemy_has_live_scripts(Enemy* enemy) {
 }
 
 // terminates every script registered to this enemy
-static void kill_enemy_scripts(Enemy* enemy) {
+void kill_enemy_scripts(Enemy* enemy) {
     b32 killedScript;
     s32 i;
 
@@ -2384,7 +2384,7 @@ static void kill_enemy_scripts(Enemy* enemy) {
 }
 
 // destroys an enemy after its registered scripts and their children have terminated
-static void destroy_enemy(Enemy* enemy) {
+void destroy_enemy(Enemy* enemy) {
     EncounterStatus* encounterStatus = &gCurrentEncounter;
     Encounter* encounter = encounterStatus->encounterList[enemy->encounterIndex];
     s32 i;
@@ -2444,7 +2444,7 @@ void kill_enemy(Enemy* enemy) {
 }
 
 // destroys enemies once their registered scripts have finished Finally
-static void destroy_pending_enemies(void) {
+void destroy_pending_enemies(void) {
     EncounterStatus* encounterStatus = &gCurrentEncounter;
     s32 i, j;
 

@@ -73,27 +73,27 @@ extern "C" {
 /// Address/pointer constant.
 #define Ref(sym) ((Bytecode) &(sym))
 
-/// Local Word. A variable local to the current thread.
-/// LWs are copied to any threads created by this one (Exec, ExecWait, Thread, ChildThread).
-/// Additionally, ExecWait copies LWs back from the spawned thread when it completes.
+/// Local Word. A variable local to the current script.
+/// These are copied to scripts created by Exec, ExecWait, Thread, and ChildThread.
+/// Additionally, ExecWait copies LWs back from the child when it completes.
 ///
 /// Range: `0 <= v < 0x10`
 #define LocalVar(INDEX) ((INDEX) - EVT_LOCAL_VAR_OFFSET)
 
-/// Global Word. A variable global to all threads.
+/// Global Word. A variable global to all scripts.
 /// Cleared upon entering a new map.
 ///
 /// Range: `0 <= v < 0x10`
 #define MapVar(INDEX) ((INDEX) - EVT_MAP_VAR_OFFSET)
 
-/// Local Flag. A boolean variable local to the current thread.
-/// LFs are copied to any threads created by this one (Exec, ExecWait, Thread, ChildThread).
-/// Additionally, ExecWait copies LFs back from the spawned thread when it completes.
+/// Local Flag. A boolean variable local to the current script.
+/// These are copied to scripts created by Exec, ExecWait, Thread, and ChildThread.
+/// Additionally, ExecWait copies LFs back from the child when it completes.
 ///
 /// Range: `0 <= v < 0x60`
 #define LocalFlag(INDEX) ((INDEX) - EVT_LOCAL_FLAG_OFFSET)
 
-/// Global Flag. A boolean variable global to all threads.
+/// Global Flag. A boolean variable global to all scripts.
 /// Cleared upon entering a new map.
 ///
 /// Range: `0 <= v < 0x60`
@@ -128,14 +128,14 @@ extern "C" {
 /// Used for almost all savefile state.
 #define GameByte(INDEX) ((INDEX) - EVT_GAME_BYTE_OFFSET)
 
-/// User Word. A variable stored within the current thread's array.
+/// User Word. A variable stored within the current script's array.
 /// You can load an array with UseArray or temporarily allocate one with MallocArray, then get/set values with
 /// the `ArrayVar(index)` macro.
 ///
 /// Range: `0 <= v`
 #define ArrayVar(INDEX) ((INDEX) - EVT_ARRAY_VAR_OFFSET)
 
-/// User Flag. A boolean variable stored within the current thread's flag array.
+/// User Flag. A boolean variable stored within the current script's flag array.
 /// The flag array is distinct from the word array (unlike UseBuf and UseFBuf).
 ///
 /// Range: `0 <= v`
@@ -285,11 +285,11 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 
 /****** INSTRUCTIONS **************************************************************************************************/
 
-/// On each frame, the EVT manager will continue executing commands in all threads until a blocking command is
-/// encountered. This means that if you have a thread that loops but does not block between iterations, the game will
+/// On each frame, the EVT manager will continue executing commands in all scripts until a blocking command is
+/// encountered. This means that if you have a script that loops but does not block between iterations, the game will
 /// freeze! Avoid this by inserting a blocking command such as Wait(1) in the loop body.
 ///
-/// Also note that threads are never executed in parallel. If your EVT script lacks blocking commands, it will be
+/// Also note that scripts are never executed in parallel. If your EVT script lacks blocking commands, it will be
 /// executed all in one go, and race conditions cannot occur.
 ///
 /// The following subset of EVT commands are blocking:
@@ -301,7 +301,7 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 /// Signals the end of EVT script data. A script missing this will likely crash on load.
 #define End                                 EVT_CMD(EVT_OP_END),
 
-/// Kills the current EVT thread.
+/// Kills the current EVT script.
 /// A script missing a return will live - but do nothing - forever, or until something else kills it (e.g. leaving the map).
 #define Return                              EVT_CMD(EVT_OP_RETURN),
 
@@ -314,7 +314,7 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 
 /// Jumps to a given instruction pointer and begins execution from there.
 /// You can jump to a different EVT source and labels etc. will be loaded as expected.
-/// The timescale for the current thread is also reset to the global default.
+/// The timescale for the current script is also reset to the global default.
 #define Jump(EVT_SOURCE)                    EVT_CMD(EVT_OP_JUMP, (Bytecode) EVT_SOURCE),
 
 /// Marks this point in the script as a Goto target.
@@ -453,10 +453,10 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 /// Marks the start of a switch case that executes only if `LVAR < RVAR`. It also marks the end of any previous case.
 #define CaseLt(RVAR)                        EVT_CMD(EVT_OP_CASE_LT, RVAR),
 
-/// Marks the start of a switch case that executes only if `LVAR <= RVAR`. It also marks the end of any previous case.
+/// Marks the start of a switch case that executes only if `LVAR > RVAR`. It also marks the end of any previous case.
 #define CaseGt(RVAR)                        EVT_CMD(EVT_OP_CASE_GT, RVAR),
 
-/// Marks the start of a switch case that executes only if `LVAR > RVAR`. It also marks the end of any previous case.
+/// Marks the start of a switch case that executes only if `LVAR <= RVAR`. It also marks the end of any previous case.
 #define CaseLe(RVAR)                        EVT_CMD(EVT_OP_CASE_LE, RVAR),
 
 /// Marks the start of a switch case that executes only if `LVAR >= RVAR`. It also marks the end of any previous case.
@@ -598,16 +598,16 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 /// Beware that the int buffer and the float buffer are not distinct.
 #define UseFBuf(FLOAT_PTR)                  EVT_CMD(EVT_OP_USE_FBUF, (Bytecode) FLOAT_PTR),
 
-/// Consumes one or more f32s from the buffer and stores them in the given variables.
+/// Consumes one or more fixed-point `Float(...)` values from the buffer and stores them in the given variables.
 #define FBufRead(VAR, MORE...)              EVT_CMD(EVT_OP_FBUF_READ, VAR, ##MORE),
 
-/// Gets the f32 at the given offset of the buffer and stores it in the given variable, without consuming it.
+/// Gets the fixed-point `Float(...)` value at the given offset and stores it without consuming it.
 #define FBufPeek(VAR, OFFSET)               EVT_CMD(EVT_OP_FBUF_PEEK, VAR, OFFSET),
 
-/// Loads an s32 array pointer into the current thread for use with `ArrayVar(INDEX)`.
+/// Loads an s32 array pointer into the current script for use with `ArrayVar(INDEX)`.
 #define UseArray(INT_PTR)                   EVT_CMD(EVT_OP_USE_ARRAY, (Bytecode) INT_PTR),
 
-/// Loads an s32 array pointer into the current thread for use with `UF(INDEX)`.
+/// Loads an s32 array pointer into the current script for use with `UF(INDEX)`.
 /// Flags are stored in a 'packed' structure where indices refer to bits.
 #define UseFlagArray(PACKED_FLAGS_PTR)      EVT_CMD(EVT_OP_USE_FLAGS, (Bytecode) PACKED_FLAGS_PTR),
 
@@ -627,8 +627,8 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 /// `VAR |= CONST`, but CONST is treated as-is rather than dereferenced with evt_get_variable.
 #define BitwiseOrConst(VAR, CONST)          EVT_CMD(EVT_OP_BITWISE_OR_CONST, VAR, CONST),
 
-/// Launches a new thread.
-/// The following values are copied from the current thread to the new thread:
+/// Launches a new detached script.
+/// The following values are copied from the current script to the new script:
 /// - LocalFlags
 /// - LocalVars
 /// - Array pointer
@@ -647,10 +647,10 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 #define ExecGetID(OUTVAR, EVT_SOURCE, ARGS...) \
                                             EVT_CMD(EVT_OP_EXEC_GET_ID, (Bytecode) EVT_SOURCE, OUTVAR, ##ARGS),
 
-/// Launches a new child thread.
-/// Blocks for at least one frame unless the child thread is made to have a higher priority than the parent.
+/// Launches a new child script.
+/// Blocks for at least one frame unless the child is made to have a higher priority than the parent.
 ///
-/// The following values are inherited and then copied back to the parent thread upon completion:
+/// The following values are inherited and then copied back to the parent script upon completion:
 /// - LocalFlags
 /// - LocalVars
 /// - Array pointer
@@ -658,8 +658,8 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 /// - Priority
 /// - Group
 ///
-/// Child threads are killed, suspended, and resumed as their parents are, for example, a different script using
-/// KillScript to kill a parent thread would also kill its child thread(s) launched by this command.
+/// Child scripts are killed, suspended, and resumed with their parent. For example, using KillScript on the parent
+/// also kills the child launched by this command.
 /// Extra ARGS become ArgVars in the child script with the same capture rules as Exec.
 #define ExecWait(EVT_SOURCE, ARGS...)       EVT_CMD(EVT_OP_EXEC_WAIT, (Bytecode) EVT_SOURCE, ##ARGS),
 
@@ -712,25 +712,25 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 /// Kills a script by its ID.
 #define KillScript(SCRIPT_ID)               EVT_CMD(EVT_OP_KILL_SCRIPT, SCRIPT_ID),
 
-/// Sets the current thread's priority. Higher-priority threads execute before lower-priority threads on each frame.
+/// Sets the current script's priority. Higher-priority scripts execute before lower-priority scripts on each frame.
 #define SetPriority(PRIORITY)               EVT_CMD(EVT_OP_SET_PRIORITY, PRIORITY),
 
-/// Sets the current thread's timescale. This is a multiplier applied to Wait and Wait_SECONDS.
+/// Sets the current script's timescale. This is a multiplier applied to Wait and Wait_SECONDS.
 #define SetTimescale(TIMESCALE)             EVT_CMD(EVT_OP_SET_TIMESCALE, TIMESCALE),
 
-/// Sets the current thread's group. Group value meanings are currently not known.
+/// Sets the current script's group. Group value meanings are currently not known.
 #define SetGroup(GROUP)                     EVT_CMD(EVT_OP_SET_GROUP, GROUP),
 
-/// Suspends all threads in a group.
+/// Suspends all scripts in a group.
 #define SuspendGroup(GROUP)                 EVT_CMD(EVT_OP_SUSPEND_GROUP, GROUP),
 
-/// Resumes all threads in a group.
+/// Resumes all scripts in a group.
 #define ResumeGroup(GROUP)                  EVT_CMD(EVT_OP_RESUME_GROUP, GROUP),
 
-/// Suspends all threads in a group, except the current thread.
+/// Suspends all scripts in a group, except the current script.
 #define SuspendOthers(GROUP)                EVT_CMD(EVT_OP_SUSPEND_OTHERS, GROUP),
 
-/// Resumes all threads in a group, except the current thread.
+/// Resumes all scripts in a group, except the current script.
 #define ResumeOthers(GROUP)                 EVT_CMD(EVT_OP_RESUME_OTHERS, GROUP),
 
 /// Suspends a script by its script ID.
@@ -746,22 +746,22 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 #define AwaitScript(SCRIPT_ID)              EVT_CMD(EVT_OP_AWAIT_SCRIPT, SCRIPT_ID),
 
 /// Marks the start of a thread block. Commands between this and a matching EndThread
-/// will be executed on their own, new thread instead of on the current thread.
+/// will run as a new detached script.
 #define Thread                              EVT_CMD(EVT_OP_THREAD),
 
 /// Marks the end of a thread block.
 #define EndThread                           EVT_CMD(EVT_OP_END_THREAD),
 
 /// Marks the start of a child thread block. Commands between this and a matching EndChildThread
-/// will be executed as a new child thread instead of on the current thread.
+/// will run as a new child script.
 ///
-/// Child threads are killed if the parent thread dies, so the following script does NOT set the player's position:
+/// Child threads are killed if the parent script dies, so the following script does NOT set the player's position:
 ///
 ///     ChildThread
 ///         Wait_SECONDS(1)                 // child thread will be killed whilst waiting
 ///         Call(SetPlayerPos, NPC_DISPOSE_LOCATION) // will not be executed
 ///     EndChildThread
-///     Return                              // parent thread dies
+///     Return                              // parent script dies
 ///
 #define ChildThread                         EVT_CMD(EVT_OP_CHILD_THREAD),
 
@@ -781,7 +781,7 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 ///
 ///     Call(ApiFunction)
 ///
-/// The given arguments can be accessed from the API function using `thread->ptrReadPos`.
+/// The given arguments can be accessed from the API function using `script->ptrReadPos`.
 #define Call(FUNC, ARGS...)                 EVT_CMD(EVT_OP_CALL, (Bytecode) FUNC, ##ARGS),
 
 /// Calls a C function with integer arguments and stores its return value.
