@@ -59,9 +59,23 @@ b32 ai_check_player_dist(Enemy* enemy, s32 chance, f32 radius, f32 moveSpeed);
 void ai_enemy_play_sound(Npc* npc, s32 soundID, s32 upperSoundFlags);
 void ai_try_set_state(Evt* script, s32 state);
 
-// convenience wrappers for is_point_outside_territory
-b32 is_point_outside_wander_territory(EnemyTerritoryWander* wander, f32 pointX, f32 pointZ);
-b32 is_point_outside_detect_volume(EnemyDetectVolume* detect, f32 pointX, f32 pointZ);
+static ALWAYS_INLINE b32 is_point_outside_wander_territory(EnemyTerritoryWander* wander, f32 pointX, f32 pointZ) {
+    return is_point_outside_territory(
+        wander->wanderShape,
+        wander->centerPos.x, wander->centerPos.z,
+        pointX, pointZ,
+        wander->wanderSize.x, wander->wanderSize.z
+    );
+}
+
+static ALWAYS_INLINE b32 is_point_outside_detect_volume(EnemyDetectVolume* detect, f32 pointX, f32 pointZ) {
+    return is_point_outside_territory(
+        detect->shape,
+        detect->pointX, detect->pointZ,
+        pointX, pointZ,
+        detect->sizeX, detect->sizeZ
+    );
+}
 
 // function signature used for state handlers in AI main functions
 typedef void AIStateHandler(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect);

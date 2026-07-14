@@ -427,6 +427,23 @@ void dx_debug_exec_full_restore() {
     sfx_play_sound(SOUND_UNUSED_STAR_SPIRIT_APPEARS);
 }
 
+#if DX_DEBUG_EVT_TESTS
+#include "evt_test.inc.c"
+
+void dx_debug_exec_evt_tests() {
+    Evt* script;
+
+    if (EvtTestRunnerID != 0 && does_script_exist(EvtTestRunnerID)) {
+        debug_print("[EVT TEST] already running");
+    } else {
+        script = start_script(&EVS_EvtPlusInstrumentation, EVT_PRIORITY_A, 0);
+        EvtTestRunnerID = script->id;
+        debug_print("[EVT TEST] launched");
+    }
+    DebugMenuState = DBM_NONE;
+}
+#endif
+
 typedef struct DebugMenuEntry {
     char* text;
     void (*onSelect)();
@@ -435,6 +452,9 @@ typedef struct DebugMenuEntry {
 
 DebugMenuEntry DebugMainMenu[] = {
     { "Full Restore",   dx_debug_exec_full_restore },
+#if DX_DEBUG_EVT_TESTS
+    { "EVT Tests",      dx_debug_exec_evt_tests },
+#endif
     { "Save/Load",      nullptr, DBM_QUICK_SAVE },
     { "Map Select",     nullptr, DBM_SELECT_AREA },
     { "Battle Select",  nullptr, DBM_SELECT_BATTLE },
