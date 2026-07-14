@@ -297,7 +297,7 @@ Fixtures live in:
 - `tools/test/evt_validator/fail/` for scripts that should fail validation
 - each fail test has a `.stderr` with expected error messages
 
-A separate host-side runtime test covers the VM itself. It compiles the real interpreter and lifecycle code with sanitizers, then executes focused scripts written specifically to exercise ordinary VM behavior and termination:
+A separate runtime test covers the VM itself. It compiles the real interpreter and lifecycle code with sanitizers, then executes focused scripts written specifically to test ordinary VM behavior and termination:
 
 ```sh
 python3 tools/test/evt_runtime.py
@@ -375,11 +375,11 @@ Set(LVar0, ArgVar0)
 Add(LVar0, 1)
 ```
 
-Normal EVT variable access treats ArgVars as immutable. C code should not write directly to their backing storage.
+Please regard ArgVars as immutable. Normal EVT variable access can enforce this, but cannot prevent programmers from writing directly to their backing storage in C. Just don't, OK?
 
 ### ArgVars are Not Passed to Grandchildren
 
-Unlike LVars, ArgVars are not copied to grandchildren or returned to the parent. They remain stable inputs for the lifetime of the script which received them.
+Unlike LVars, ArgVars are not copied to grandchildren or returned to the parent. Since they use a new storage location, **no** existing engine functions, API or otherwise, modify them. Values that are passed through them can be treated as safely immutable for the lifespan of the script.
 
 ## 3. Variadic Arithmetic
 
@@ -861,7 +861,7 @@ Here, `ReleaseResource` runs if the script reaches `End`, exits early through `R
 
 ### When Finally Runs
 
-A `Finally` block runs as part of ending the script; it does not wait for a later frame. If a script has an `ExecWait` child or any `ChildThread` children, each child finishes its own `Finally` block before the parent begins `Finally`.
+A `Finally` block runs as part of ending the script; it does not wait for a later frame. If a script has any children through `ExecWait` or `ChildThread`, each child immediately jumps to and finishes its own `Finally` block before the parent begins `Finally`.
 
 Scripts started with `Exec`, `ExecGetID`, or `Thread` are detached. They are not children and continue running when the script which started them ends.
 
@@ -946,7 +946,7 @@ UseFBuf(Ref(N(SomeFloatData)))
 FBufRead(LVar0, LVar1, LVar2)
 ```
 
-Each destination consumes one value from the current buffer and advances the buffer pointer. The old `BufRead1` through `BufRead4` and `FBufRead1` through `FBufRead4` are no longer special. In practice, the number of available LVars limits how many values a script can use at once. Read them in whatever chunks are convenient.
+Each destination consumes one value from the current buffer and advances the buffer pointer. The old `BufRead1` through `BufRead4` and `FBufRead1` through `FBufRead4` are now only special cases for the more generic reads. In practice, the number of reads by a single command is limited only by the number of available LVars, so consume buffers in whatever chunks are convenient.
 
 ## 15. Quick Memory Access
 
@@ -971,8 +971,8 @@ Use `MemGetIndex` or `MemSetIndex` when the index is not known until the script 
 
 ```c
 Set(LVar1, 2)
-MemGetIndex(EVT_MEM_S16, LVar0, MyVals, LVar1)
-MemSetIndex(EVT_MEM_S16, MyVals, LVar1, -7)
+MemGetIndex(EVT_MEM_S16, LVar0, MyVals, LVar1) // get 3 from MyVals[2]
+MemSetIndex(EVT_MEM_S16, MyVals, LVar1, -7)    // set MyVals[2] = -7
 ```
 
 The available memory types are:
@@ -987,9 +987,9 @@ The available memory types are:
 | `EVT_MEM_S32` | signed 32-bit integer |
 | `EVT_MEM_F32` | numeric 32-bit float |
 
-Unsigned loads are zero-extended and signed loads are sign-extended. Narrow stores discard any bits which do not fit. `EVT_MEM_F32` converts between a real C `f32` and EVT's fixed-point float representation, so values are limited to normal EVT float precision. `EVT_MEM_U32` instead transfers the raw 32-bit pattern. Some patterns overlap EVT's encoded variable and float ranges, so later use of that value by an ordinary EVT command may interpret it as a tagged value.
+Unsigned loads are zero-extended and signed loads are sign-extended. Narrow stores discard any bits which do not fit. `EVT_MEM_F32` converts between a real C `f32` and EVT's fixed-point float representation, so values are limited to normal EVT float precision. `EVT_MEM_U32` transfers the raw 32-bit pattern. Some patterns overlap EVT's encoded variable and float ranges, so later use of that value by an ordinary EVT command may interpret it as an EvtVar.
 
-These commands are intentionally low-level and do not perform type or bounds checking. The C address or array must exist at link time; an arbitrary pointer stored in an LVar cannot be used as the base. The memory type must match the declared C type because it determines both the access width and the indexed stride. There is no array bounds checking, and negative indices are permitted. Writes must target writable memory. Accesses use native byte order, and null or misaligned addresses cause an assertion. These are ordinary RAM accesses and do not provide volatile or MMIO semantics.
+These commands are intentionally low-level and do not perform type or bounds checking. The C address or array must exist at link time; an arbitrary pointer stored in an LVar cannot be used as the base. The memory type must match the declared C type because it determines both the access width and the indexed stride. There is no array bounds checking, and negative indices are permitted. Writes must target writable memory. Accessing a null or misaligned address causes an assertion.
 
 ## 16. Command Renames
 
