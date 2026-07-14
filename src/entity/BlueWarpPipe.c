@@ -146,7 +146,7 @@ void entity_BlueWarpPipe_start_bound_script(Entity* entity) {
     EvtScript* triggerScriptStart = entity->dataBuf.bluePipe->onEnterPipeEvt;
 
     gOverrideFlags &= ~GLOBAL_OVERRIDES_40;
-    entity->boundScriptBytecode = triggerScriptStart;
+    entity->script.source = triggerScriptStart;
     entity_start_script(entity);
 }
 

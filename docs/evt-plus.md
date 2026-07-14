@@ -106,7 +106,7 @@ With script arguments and `AwaitScript`, the inputs and the wait are both clear 
 
 ```c
 EvtScript N(EVS_JumpWorker) = {
-    ExpectArgs(4)
+    ExpectArgs(4) // (optional) runtime assertion documenting expected argc
     Call(NpcJump1, ArgVar0, ArgVar1, ArgVar2, ArgVar3, 20)
     Return
     End

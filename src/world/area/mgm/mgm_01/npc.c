@@ -565,7 +565,7 @@ API_CALLABLE(N(CreateBlockEntities)) {
             N(BlockPosZ)[curBlockIdx],
             0, 0, 0, 0, MAKE_ENTITY_END);
         data->panels[curBlockIdx].entityIndex = entityIndex;
-        get_entity_by_index(entityIndex)->boundScriptBytecode = scriptArray[curBlockIdx];
+        get_entity_by_index(entityIndex)->script.source = scriptArray[curBlockIdx];
         fx_sparkles(FX_SPARKLES_3,
             N(BlockPosX)[curBlockIdx],
             N(BlockPosY)[curBlockIdx] + 13,

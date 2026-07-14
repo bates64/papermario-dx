@@ -263,7 +263,7 @@ s32 is_another_trigger_bound(Trigger* trigger, EvtScript* script) {
 
         if (listTrigger->flags & TRIGGER_ACTIVE) {
             if (listTrigger->flags & TRIGGER_ACTIVATED) {
-                if (listTrigger->onTriggerEvt == script) {
+                if (listTrigger->script.source == script) {
                     return true;
                 }
             }

@@ -140,13 +140,10 @@ void dispatch_event_player(s32 eventType) {
     oldOnHitID = player->scripts.handleEvent.liveID;
 
     eventScript = start_script(&EVS_Player_HandleEvent, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
-    set_bound_script_live(&player->scripts.handleEvent, eventScript);
+    assign_bound_script(&player->scripts.handleEvent, eventScript);
     eventScript->owner1.actor = nullptr;
 
-    if (player->scripts.takeTurn.live != nullptr) {
-        kill_script_by_ID(player->scripts.takeTurn.liveID);
-        player->scripts.takeTurn.live = nullptr;
-    }
+    kill_bound_script(&player->scripts.takeTurn);
 
     if (oldOnHitScript != nullptr) {
         kill_script_by_ID(oldOnHitID);
@@ -165,7 +162,7 @@ void dispatch_event_player_continue_turn(s32 eventType) {
     oldOnHitID = player->scripts.handleEvent.liveID;
 
     eventScript = start_script(&EVS_Player_HandleEvent, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
-    set_bound_script_live(&player->scripts.handleEvent, eventScript);
+    assign_bound_script(&player->scripts.handleEvent, eventScript);
     eventScript->owner1.actor = nullptr;
 
     if (oldOnHitScript != nullptr) {

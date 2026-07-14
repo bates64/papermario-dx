@@ -1,4 +1,5 @@
 #include "common.h"
+#include "bound_script.h"
 #include "hud_element.h"
 #include "dx/config.h"
 #include "dx/debug_menu.h"
@@ -1036,8 +1037,8 @@ Trigger* bind_trigger(EvtScript* script, s32 flags, s32 triggerFlagIndex, s32 tr
     bp.hasPlayerInteractPrompt = arg6;
 
     trigger = create_trigger(&bp);
-    trigger->onTriggerEvt = script;
-    trigger->runningScript = nullptr;
+    trigger->script.source = script;
+    clear_bound_script(&trigger->script);
     trigger->priority = priority;
     trigger->varTable[0] = triggerVar0;
     trigger->varTable[1] = triggerVar1;

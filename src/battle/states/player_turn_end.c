@@ -46,7 +46,7 @@ void btl_substate_try_hpfp_recovery(void) {
 
     battleStatus->battlePhase = PHASE_PLAYER_HAPPY;
     script = start_script(&EVS_Mario_HandlePhase, EVT_PRIORITY_A, 0);
-    set_bound_script_live(&player->scripts.takeTurn, script);
+    assign_bound_script(&player->scripts.takeTurn, script);
     script->owner1.actorID = ACTOR_PLAYER;
 
     script->varTable[10] = drainRecovery;
@@ -76,10 +76,9 @@ void btl_state_update_end_player_turn(void) {
 
     if (gBattleSubState == BTL_SUBSTATE_AWAIT_RECOVER) {
         // if a script is running from 'Happy!', wait for it to complete
-        if (player->scripts.takeTurn.live != nullptr && does_script_exist(player->scripts.takeTurn.liveID)) {
+        if (is_bound_script_running(&player->scripts.takeTurn)) {
             return;
         }
-        player->scripts.takeTurn.live = nullptr;
 
         // force peach to back position after turn end
         if ((gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) && !(gBattleStatus.flags1 & BS_FLAGS1_PLAYER_IN_BACK)) {

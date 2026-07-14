@@ -24,24 +24,16 @@ void btl_state_update_end_turn(void) {
 
         for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
             actor = battleStatus->enemyActors[i];
-            if (actor != nullptr && actor->scripts.handleEvent.live != nullptr) {
-                if (does_script_exist(actor->scripts.handleEvent.liveID)) {
-                    cond = true;
-                } else {
-                    actor->scripts.handleEvent.live = nullptr;
-                }
+            if (actor != nullptr && is_bound_script_running(&actor->scripts.handleEvent)) {
+                cond = true;
             }
         }
 
         if (!cond) {
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 actor = battleStatus->enemyActors[i];
-                if (actor != nullptr && actor->scripts.takeTurn.live != nullptr) {
-                    if (does_script_exist(actor->scripts.takeTurn.liveID)) {
-                        cond = true;
-                    } else {
-                        actor->scripts.takeTurn.live = nullptr;
-                    }
+                if (actor != nullptr && is_bound_script_running(&actor->scripts.takeTurn)) {
+                    cond = true;
                 }
             }
 
@@ -127,7 +119,7 @@ void btl_state_update_end_turn(void) {
             if (actor != nullptr && actor->scripts.handlePhase.source != nullptr) {
                 battleStatus->battlePhase = PHASE_ENEMY_END;
                 script = start_script(actor->scripts.handlePhase.source, EVT_PRIORITY_A, 0);
-                set_bound_script_live(&actor->scripts.handlePhase, script);
+                assign_bound_script(&actor->scripts.handlePhase, script);
                 script->owner1.actorID = i | ACTOR_ENEMY0;
             }
         }
@@ -135,7 +127,7 @@ void btl_state_update_end_turn(void) {
         if (partner != nullptr && partner->scripts.handlePhase.source != nullptr) {
             battleStatus->battlePhase = PHASE_ENEMY_END;
             script = start_script(partner->scripts.handlePhase.source, EVT_PRIORITY_A, 0);
-            set_bound_script_live(&partner->scripts.handlePhase, script);
+            assign_bound_script(&partner->scripts.handlePhase, script);
             script->owner1.actorID = ACTOR_PARTNER;
         }
         gBattleSubState = BTL_SUBSTATE_AWAIT_SCRIPTS;
@@ -147,12 +139,12 @@ void btl_state_update_end_turn(void) {
 
         for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
             actor = battleStatus->enemyActors[i];
-            if (actor != nullptr && actor->scripts.handlePhase.source != nullptr && does_script_exist(actor->scripts.handlePhase.liveID)) {
+            if (actor != nullptr && is_bound_script_running(&actor->scripts.handlePhase)) {
                 waitingForScript = true;
             }
         }
 
-        if (partner != nullptr && partner->scripts.handlePhase.source != nullptr && does_script_exist(partner->scripts.handlePhase.liveID)) {
+        if (partner != nullptr && is_bound_script_running(&partner->scripts.handlePhase)) {
             waitingForScript = true;
         }
 

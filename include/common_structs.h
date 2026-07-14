@@ -387,19 +387,17 @@ typedef struct Trigger {
     /*      */     struct BombTrigger* blast;
     /*      */ } location;
     /* 0x0C */ s32 (*onActivateFunc)(struct Trigger*);
-    /* 0x10 */ EvtScript* onTriggerEvt;
-    /* 0x14 */ struct Evt* runningScript;
-    /* 0x18 */ s32 priority;
-    /* 0x1C */ union {
+    /* 0x10 */ BoundScript script;
+    /* 0x1C */ s32 priority;
+    /* 0x20 */ union {
     /*      */     s32 varTable[3];
     /*      */     f32 varTableF[3];
     /*      */     void* varTablePtr[3];
     /*      */ };
-    /* 0x28 */ s32* itemList;
-    /* 0x2C */ s32 tattleMsg;
-    /* 0x30 */ u8 hasPlayerInteractPrompt;
-    /* 0x31 */ PAD(3);
-    /* 0x34 */ s32 runningScriptID;
+    /* 0x2C */ s32* itemList;
+    /* 0x30 */ s32 tattleMsg;
+    /* 0x34 */ u8 hasPlayerInteractPrompt;
+    /* 0x35 */ PAD(3);
 } Trigger; // size = 0x38
 
 typedef Trigger* TriggerList[MAX_TRIGGERS];
@@ -598,20 +596,18 @@ typedef struct Entity {
     /* 0x18 */ EntityCode* scriptReadPos;
     /* 0x1C */ EntityCallback updateScriptCallback;
     /* 0x20 */ EntityCallback updateMatrixOverride;
-    /* 0x24 */ Evt* boundScript;
-    /* 0x28 */ EvtScript* boundScriptBytecode;
-    /* 0x2C */ EntityCode* savedReadPos[3];
-    /* 0x38 */ EntityBlueprint* blueprint;
-    /* 0x3C */ void (*renderSetupFunc)(s32);
-    /* 0x40 */ EntityData dataBuf;
-    /* 0x44 */ void* gfxBaseAddr;
-    /* 0x48 */ Vec3f pos;
-    /* 0x54 */ Vec3f scale;
-    /* 0x60 */ Vec3f rot;
-    /* 0x6C */ f32 shadowPosY;
-    /* 0x70 */ Matrix4f inverseTransformMatrix; /* world-to-local */
-    /* 0xB0 */ f32 effectiveSize;
-    /* 0xB4 */ PAD(4);
+    /* 0x24 */ BoundScript script;
+    /* 0x30 */ EntityCode* savedReadPos[3];
+    /* 0x3C */ EntityBlueprint* blueprint;
+    /* 0x40 */ void (*renderSetupFunc)(s32);
+    /* 0x44 */ EntityData dataBuf;
+    /* 0x48 */ void* gfxBaseAddr;
+    /* 0x4C */ Vec3f pos;
+    /* 0x58 */ Vec3f scale;
+    /* 0x64 */ Vec3f rot;
+    /* 0x70 */ f32 shadowPosY;
+    /* 0x74 */ f32 effectiveSize;
+    /* 0x78 */ Matrix4f inverseTransformMatrix; /// world-to-local
     /* 0xB8 */ Mtx transformMatrix;
 } Entity; // size = 0xF8
 

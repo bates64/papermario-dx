@@ -1063,8 +1063,7 @@ static void kill_actor_scripts(Actor* actor) {
     do {
         killedScript = false;
         for (i = 0; i < ARRAY_COUNT(actor->scripts.all); i++) {
-            BoundScript* boundScript = &actor->scripts.all[i];
-            Evt* script = get_bound_script(boundScript);
+            Evt* script = get_bound_script(&actor->scripts.all[i]);
 
             if (script != nullptr && script->terminationState == EVT_TERMINATION_NONE) {
                 kill_script(script);
@@ -1180,15 +1179,9 @@ void btl_delete_player_actor(Actor* player) {
         remove_actor_decoration(player, i);
     }
 
-    if (player->scripts.idle.live != nullptr) {
-        kill_script_by_ID(player->scripts.idle.liveID);
-    }
-    if (player->scripts.handleEvent.live != nullptr) {
-        kill_script_by_ID(player->scripts.handleEvent.liveID);
-    }
-    if (player->scripts.takeTurn.live != nullptr) {
-        kill_script_by_ID(player->scripts.takeTurn.liveID);
-    }
+    kill_bound_script(&player->scripts.idle);
+    kill_bound_script(&player->scripts.handleEvent);
+    kill_bound_script(&player->scripts.takeTurn);
 
     partsTable = player->partsTable;
     decorations = partsTable->decorationTable;

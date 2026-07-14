@@ -916,7 +916,7 @@ START_BATTLE:
                 if (enemy->scripts.hit.source != nullptr) {
                     enemy->encountered = ENCOUNTER_TRIGGER_NONE;
                     script = start_script(enemy->scripts.hit.source, EVT_PRIORITY_A, 0);
-                    set_bound_script_live(&enemy->scripts.hit, script);
+                    assign_bound_script(&enemy->scripts.hit, script);
                     script->owner1.enemy = enemy;
                     script->owner2.npcID = enemy->npcID;
                     script->groupFlags = enemy->scriptGroup;
@@ -965,7 +965,7 @@ START_BATTLE:
                 if (enemy->scripts.hit.source != nullptr) {
                     enemy->encountered = ENCOUNTER_TRIGGER_SPIN;
                     script = start_script(enemy->scripts.hit.source, EVT_PRIORITY_A, 0);
-                    set_bound_script_live(&enemy->scripts.hit, script);
+                    assign_bound_script(&enemy->scripts.hit, script);
                     script->owner1.enemy = enemy;
                     script->owner2.npcID = enemy->npcID;
                     script->groupFlags = enemy->scriptGroup;
@@ -1006,7 +1006,7 @@ START_BATTLE:
                 if (enemy->scripts.hit.source != nullptr) {
                     enemy->encountered = ENCOUNTER_TRIGGER_JUMP;
                     script = start_script(enemy->scripts.hit.source, EVT_PRIORITY_A, 0);
-                    set_bound_script_live(&enemy->scripts.hit, script);
+                    assign_bound_script(&enemy->scripts.hit, script);
                     script->owner1.enemy = enemy;
                     script->owner2.npcID = enemy->npcID;
                     script->groupFlags = enemy->scriptGroup;
@@ -1061,7 +1061,7 @@ START_BATTLE:
                 if (enemy->scripts.hit.source != nullptr) {
                     enemy->encountered = ENCOUNTER_TRIGGER_HAMMER;
                     script = start_script(enemy->scripts.hit.source, EVT_PRIORITY_A, 0);
-                    set_bound_script_live(&enemy->scripts.hit, script);
+                    assign_bound_script(&enemy->scripts.hit, script);
                     script->owner1.enemy = enemy;
                     script->owner2.npcID = enemy->npcID;
                     script->groupFlags = enemy->scriptGroup;
@@ -1099,7 +1099,7 @@ START_BATTLE:
             if (enemy->scripts.interact.source != nullptr) {
                 enemy->encountered = ENCOUNTER_TRIGGER_CONVERSATION;
                 script = start_script(enemy->scripts.interact.source, EVT_PRIORITY_A, 0);
-                set_bound_script_live(&enemy->scripts.interact, script);
+                assign_bound_script(&enemy->scripts.interact, script);
                 script->owner1.enemy = enemy;
                 script->owner2.npcID = enemy->npcID;
                 script->groupFlags = enemy->scriptGroup;
@@ -1137,7 +1137,7 @@ START_BATTLE:
                 if (enemy->scripts.hit.source != nullptr) {
                     enemy->encountered = ENCOUNTER_TRIGGER_PARTNER;
                     script = start_script(enemy->scripts.hit.source, EVT_PRIORITY_A, 0);
-                    set_bound_script_live(&enemy->scripts.hit, script);
+                    assign_bound_script(&enemy->scripts.hit, script);
                     script->owner1.enemy = enemy;
                     script->owner2.npcID = enemy->npcID;
                     script->groupFlags = enemy->scriptGroup;
@@ -1635,14 +1635,14 @@ void update_encounters_post_battle(void) {
                 }
                 if (enemy->scripts.defeat.source != nullptr) {
                     script = start_script_in_group(enemy->scripts.defeat.source, EVT_PRIORITY_A, 0, EVT_GROUP_NEVER_PAUSE);
-                    set_bound_script_live(&enemy->scripts.defeat, script);
+                    assign_bound_script(&enemy->scripts.defeat, script);
                     script->owner1.enemy = enemy;
                     script->owner2.npcID = enemy->npcID;
                     script->groupFlags = EVT_GROUP_NEVER_PAUSE;
                     currentEncounter->battleStartCountdown = 1;
                 } else {
                     script = start_script_in_group(&EVS_NpcDefeat, EVT_PRIORITY_A, 0, EVT_GROUP_NEVER_PAUSE);
-                    set_bound_script_live(&enemy->scripts.defeat, script);
+                    assign_bound_script(&enemy->scripts.defeat, script);
                     script->owner1.enemy = enemy;
                     script->owner2.npcID = enemy->npcID;
                     script->groupFlags = EVT_GROUP_NEVER_PAUSE;
@@ -1780,7 +1780,7 @@ void update_encounters_post_battle(void) {
 
                 if (enemy->scripts.defeat.source != nullptr) {
                     script = start_script(enemy->scripts.defeat.source, EVT_PRIORITY_A, 0);
-                    set_bound_script_live(&enemy->scripts.defeat, script);
+                    assign_bound_script(&enemy->scripts.defeat, script);
                     enemy->aiFlags |= AI_FLAG_1;
                     script->owner1.enemy = enemy;
                     script->owner2.npcID = enemy->npcID;
@@ -1854,7 +1854,7 @@ void update_encounters_post_battle(void) {
                 enemy = currentEncounter->curEnemy;
                 if (!(currentEncounter->flags & ENCOUNTER_FLAG_SKIP_FLEE_DROPS)) {
                     script = start_script(&EVS_FleeBattleDrops, EVT_PRIORITY_A, 0);
-                    set_bound_script_live(&enemy->scripts.defeat, script);
+                    assign_bound_script(&enemy->scripts.defeat, script);
                     script->owner1.enemy = enemy;
                     script->owner2.npcID = enemy->npcID;
                     script->groupFlags = enemy->scriptGroup;
@@ -1906,7 +1906,7 @@ void update_encounters_post_battle(void) {
 
                 if (enemy->scripts.defeat.source != nullptr) {
                     script = start_script(enemy->scripts.defeat.source, EVT_PRIORITY_A, 0);
-                    set_bound_script_live(&enemy->scripts.defeat, script);
+                    assign_bound_script(&enemy->scripts.defeat, script);
                     script->owner1.enemy = enemy;
                     script->owner2.npcID = enemy->npcID;
                     script->groupFlags = enemy->scriptGroup;
@@ -2014,7 +2014,7 @@ void update_encounters_post_battle(void) {
 
                 if (enemy->scripts.defeat.source != nullptr) {
                     script = start_script(enemy->scripts.defeat.source, EVT_PRIORITY_A, 0);
-                    set_bound_script_live(&enemy->scripts.defeat, script);
+                    assign_bound_script(&enemy->scripts.defeat, script);
                     script->owner1.enemy = enemy;
                     script->owner2.npcID = enemy->npcID;
                     script->groupFlags = enemy->scriptGroup;
@@ -2419,8 +2419,7 @@ void create_encounters(void) {
                     enemy->scripts.aux.source = npcSettings->doAux;
                     enemy->scripts.defeat.source = npcSettings->onDefeat;
                     for (k = 0; k < ARRAY_COUNT(enemy->scripts.all); k++) {
-                        enemy->scripts.all[k].live = nullptr;
-                        enemy->scripts.all[k].liveID = 0;
+                        clear_bound_script(&enemy->scripts.all[k]);
                     }
                     enemy->firstStrikeActive = false;
                     enemy->instigatorValue = 0;
@@ -2524,7 +2523,7 @@ void create_encounters(void) {
 
                     if (npcSettings->onCreate != nullptr) {
                         script = start_script(npcSettings->onCreate, EVT_PRIORITY_A, 0);
-                        set_bound_script_live(&enemy->scripts.ai, script);
+                        assign_bound_script(&enemy->scripts.ai, script);
                         script->owner1.enemy = enemy;
                         script->owner2.npcID = enemy->npcID;
                         script->groupFlags = enemy->scriptGroup;
@@ -2575,7 +2574,7 @@ void create_encounters(void) {
                     }
                     if (enemy->scripts.init.source != nullptr) {
                         script = start_script(enemy->scripts.init.source, EVT_PRIORITY_A, 0);
-                        set_bound_script_live(&enemy->scripts.init, script);
+                        assign_bound_script(&enemy->scripts.init, script);
                         script->owner1.enemy = enemy;
                         script->owner2.npcID = enemy->npcID;
                         script->groupFlags = enemy->scriptGroup;
@@ -2623,7 +2622,7 @@ void create_encounters(void) {
                     if (!(enemy->flags & ENEMY_FLAG_DISABLE_AI)) {
                         if (enemy->scripts.ai.source != nullptr) {
                             script = start_script(enemy->scripts.ai.source, EVT_PRIORITY_A, 0);
-                            set_bound_script_live(&enemy->scripts.ai, script);
+                            assign_bound_script(&enemy->scripts.ai, script);
                             script->owner1.enemy = enemy;
                             script->owner2.npcID = enemy->npcID;
                             script->groupFlags = enemy->scriptGroup;
@@ -2646,7 +2645,7 @@ void create_encounters(void) {
                     if (!(enemy->flags & ENEMY_FLAG_DISABLE_AI)) {
                         if (enemy->scripts.aux.source != nullptr) {
                             script = start_script(enemy->scripts.aux.source, EVT_PRIORITY_A, 0);
-                            set_bound_script_live(&enemy->scripts.aux, script);
+                            assign_bound_script(&enemy->scripts.aux, script);
                             script->owner1.enemy = enemy;
                             script->owner2.npcID = enemy->npcID;
                             script->groupFlags = enemy->scriptGroup;

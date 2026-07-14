@@ -102,7 +102,7 @@ API_CALLABLE(DoNpcDefeat) {
     kill_script(script);
     npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_DEATH];
     newScript = start_script(&EVS_NpcDefeat, EVT_PRIORITY_A, 0);
-    set_bound_script_live(&enemy->scripts.defeat, newScript);
+    assign_bound_script(&enemy->scripts.defeat, newScript);
     newScript->owner1.enemy = enemy;
     newScript->owner2.npcID = enemy->npcID;
     newScript->groupFlags = enemy->scriptGroup;
@@ -133,22 +133,28 @@ void start_battle(Evt* script, s32 songID) {
     disable_player_input();
     partner_disable_input();
 
+    // start hit scripts for all other enemes in same encounter
     encounter = currentEncounter->curEncounter;
     for (i = 0; i < encounter->count; i++) {
         enemy = encounter->enemy[i];
-        if (enemy != nullptr && (!(enemy->flags & ENEMY_FLAG_ENABLE_HIT_SCRIPT) || enemy == currentEncounter->curEnemy)) {
-            if (enemy->scripts.hit.source != nullptr) {
-                Evt* hitEvtInstance;
-                enemy->encountered = true;
 
-                hitEvtInstance = start_script(enemy->scripts.hit.source, EVT_PRIORITY_A, 0);
-
-                set_bound_script_live(&enemy->scripts.hit, hitEvtInstance);
-                hitEvtInstance->owner1.enemy = enemy;
-                hitEvtInstance->owner2.npcID = enemy->npcID;
-                hitEvtInstance->groupFlags = enemy->scriptGroup;
-            }
+        if (enemy == nullptr) {
+            continue;
         }
+        if ((enemy->flags & ENEMY_FLAG_ENABLE_HIT_SCRIPT) && enemy != currentEncounter->curEnemy) {
+            continue;
+        }
+        if (enemy->scripts.hit.source == nullptr) {
+            continue;
+        }
+
+        enemy->encountered = true;
+
+        Evt* newScript = start_script(enemy->scripts.hit.source, EVT_PRIORITY_A, 0);
+        assign_bound_script(&enemy->scripts.hit, newScript);
+        newScript->owner1.enemy = enemy;
+        newScript->owner2.npcID = enemy->npcID;
+        newScript->groupFlags = enemy->scriptGroup;
     }
 
     currentEncounter->fadeOutAmount = 0;
@@ -196,22 +202,28 @@ API_CALLABLE(StartBossBattle) {
     disable_player_input();
     partner_disable_input();
 
+    // start hit scripts for all other enemes in same encounter
     encounter = currentEncounter->curEncounter;
     for (i = 0; i < encounter->count; i++) {
         enemy = encounter->enemy[i];
-        if ((enemy != nullptr && (
-            !(enemy->flags & ENEMY_FLAG_ENABLE_HIT_SCRIPT) || enemy == currentEncounter->curEnemy)
-            ) && enemy->scripts.hit.source != nullptr) {
-            enemy->encountered = true;
 
-            script = start_script(enemy->scripts.hit.source, EVT_PRIORITY_A, 0);
-
-            set_bound_script_live(&enemy->scripts.hit, script);
-
-            script->owner1.enemy = enemy;
-            script->owner2.npcID = enemy->npcID;
-            script->groupFlags = enemy->scriptGroup;
+        if (enemy == nullptr) {
+            continue;
         }
+        if ((enemy->flags & ENEMY_FLAG_ENABLE_HIT_SCRIPT) && enemy != currentEncounter->curEnemy) {
+            continue;
+        }
+        if (enemy->scripts.hit.source == nullptr) {
+            continue;
+        }
+
+        enemy->encountered = true;
+
+        Evt* newScript = start_script(enemy->scripts.hit.source, EVT_PRIORITY_A, 0);
+        assign_bound_script(&enemy->scripts.hit, newScript);
+        newScript->owner1.enemy = enemy;
+        newScript->owner2.npcID = enemy->npcID;
+        newScript->groupFlags = enemy->scriptGroup;
     }
 
     currentEncounter->fadeOutAmount = 0;
@@ -258,7 +270,7 @@ API_CALLABLE(BindNpcAI) {
     kill_bound_script(&enemy->scripts.ai);
     enemy->scripts.ai.source = newScriptSource;
     newScript = start_script(newScriptSource, EVT_PRIORITY_A, 0);
-    set_bound_script_live(&enemy->scripts.ai, newScript);
+    assign_bound_script(&enemy->scripts.ai, newScript);
     newScript->owner1.enemy = enemy;
     newScript->owner2.npcID = npcID;
     newScript->groupFlags = groupFlags;
@@ -302,7 +314,7 @@ API_CALLABLE(RestartNpcAI) {
 
     kill_bound_script(&enemy->scripts.ai);
     newScript = start_script(enemy->scripts.ai.source, EVT_PRIORITY_A, 0);
-    set_bound_script_live(&enemy->scripts.ai, newScript);
+    assign_bound_script(&enemy->scripts.ai, newScript);
     newScript->owner1.enemy = enemy;
     newScript->owner2.npcID = npcID;
     newScript->groupFlags = groupFlags;
@@ -349,7 +361,7 @@ API_CALLABLE(SetNpcAux) {
     enemy->scripts.aux.source = newScriptSource;
     if (newScriptSource != nullptr) {
         newScript = start_script(newScriptSource, EVT_PRIORITY_A, 0);
-        set_bound_script_live(&enemy->scripts.aux, newScript);
+        assign_bound_script(&enemy->scripts.aux, newScript);
         newScript->owner1.enemy = enemy;
         newScript->owner2.npcID = npcID;
         newScript->groupFlags = script->groupFlags;
@@ -394,7 +406,7 @@ API_CALLABLE(RestartNpcAux) {
 
     kill_bound_script(&enemy->scripts.aux);
     newScript = start_script(enemy->scripts.aux.source, EVT_PRIORITY_A, 0);
-    set_bound_script_live(&enemy->scripts.aux, newScript);
+    assign_bound_script(&enemy->scripts.aux, newScript);
     newScript->owner1.enemy = enemy;
     newScript->owner2.npcID = npcID;
     newScript->groupFlags = groupFlags;

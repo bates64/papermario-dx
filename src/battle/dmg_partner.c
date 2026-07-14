@@ -13,13 +13,10 @@ void dispatch_event_partner(s32 lastEventType) {
 
     partnerActor->lastEventType = lastEventType;
     script = start_script(partnerActor->scripts.handleEvent.source, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
-    set_bound_script_live(&partnerActor->scripts.handleEvent, script);
+    assign_bound_script(&partnerActor->scripts.handleEvent, script);
     script->owner1.actorID = ACTOR_PARTNER;
 
-    if (partnerActor->scripts.takeTurn.live != nullptr) {
-        kill_script_by_ID(partnerActor->scripts.takeTurn.liveID);
-        partnerActor->scripts.takeTurn.live = nullptr;
-    }
+    kill_bound_script(&partnerActor->scripts.takeTurn);
 
     if (handleEventScript != nullptr) {
         kill_script_by_ID(onHitID);
@@ -35,7 +32,7 @@ void dispatch_event_partner_continue_turn(s8 lastEventType) {
 
     partnerActor->lastEventType = lastEventType;
     script = start_script(partnerActor->scripts.handleEvent.source, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
-    set_bound_script_live(&partnerActor->scripts.handleEvent, script);
+    assign_bound_script(&partnerActor->scripts.handleEvent, script);
     script->owner1.actorID = ACTOR_PARTNER;
 
     if (handleEventScript != nullptr) {

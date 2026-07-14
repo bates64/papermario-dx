@@ -2357,9 +2357,7 @@ static b32 enemy_has_bound_scripts(Enemy* enemy) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(enemy->scripts.all); i++) {
-        BoundScript* boundScript = &enemy->scripts.all[i];
-
-        if (is_bound_script_running(boundScript)) {
+        if (is_bound_script_running(&enemy->scripts.all[i])) {
             return true;
         }
     }
@@ -2456,7 +2454,8 @@ void kill_enemy(Enemy* enemy) {
     kill_enemy_scripts(enemy);
 }
 
-// Releases enemies after the script update has finished using their owner context.
+// Releases enemies after the script update for this frame has completed.
+// This keeps any owner enemies valid while scripts are finalizing.
 static void destroy_pending_enemies(void) {
     EncounterStatus* encounterStatus = &gCurrentEncounter;
     s32 i, j;
@@ -2487,7 +2486,7 @@ s32 bind_enemy_ai(Enemy* enemy, EvtScript* aiScriptBytecode) {
     kill_bound_script(&enemy->scripts.ai);
     enemy->scripts.ai.source = aiScriptBytecode;
     aiScript = start_script(aiScriptBytecode, EVT_PRIORITY_A, 0);
-    set_bound_script_live(&enemy->scripts.ai, aiScript);
+    assign_bound_script(&enemy->scripts.ai, aiScript);
     aiScript->owner1.enemy = enemy;
     aiScript->owner2.npcID = enemy->npcID;
     return aiScript->id;
@@ -2499,7 +2498,7 @@ s32 bind_enemy_aux(Enemy* enemy, EvtScript* auxScriptBytecode) {
     kill_bound_script(&enemy->scripts.aux);
     enemy->scripts.aux.source = auxScriptBytecode;
     auxScript = start_script(auxScriptBytecode, EVT_PRIORITY_A, 0);
-    set_bound_script_live(&enemy->scripts.aux, auxScript);
+    assign_bound_script(&enemy->scripts.aux, auxScript);
     auxScript->owner1.enemy = enemy;
     auxScript->owner2.npcID = enemy->npcID;
     return auxScript->id;
@@ -2511,7 +2510,7 @@ s32 bind_enemy_interact(Enemy* enemy, EvtScript* interactScriptBytecode) {
     kill_bound_script(&enemy->scripts.interact);
     enemy->scripts.interact.source = interactScriptBytecode;
     interactScript = start_script(interactScriptBytecode, EVT_PRIORITY_A, 0);
-    set_bound_script_live(&enemy->scripts.interact, interactScript);
+    assign_bound_script(&enemy->scripts.interact, interactScript);
     interactScript->owner1.enemy = enemy;
     interactScript->owner2.npcID = enemy->npcID;
     return interactScript->id;

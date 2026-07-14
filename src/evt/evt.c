@@ -1,4 +1,5 @@
 #include "common.h"
+#include "bound_script.h"
 #include "script_api/macros.h"
 #include "vars_access.h"
 #include "dx/config.h"
@@ -1786,25 +1787,23 @@ s32 evt_trigger_on_activate_exec_script(Trigger* trigger) {
     EvtScript* scriptStart;
     Evt* script;
 
-    if (trigger->runningScript == nullptr) {
-        scriptStart = trigger->onTriggerEvt;
+    if (trigger->script.live == nullptr) {
+        scriptStart = trigger->script.source;
         if (is_another_trigger_bound(trigger, scriptStart)) {
             return 0;
         }
 
         script = start_script(scriptStart, trigger->priority, EVT_FLAG_RUN_IMMEDIATELY);
-        trigger->runningScript = script;
-        trigger->runningScriptID = script->id;
+        assign_bound_script(&trigger->script, script);
         script->varTable[0] = trigger->varTable[0];
         script->varTable[1] = trigger->varTable[1];
         script->varTable[2] = trigger->varTable[2];
         script->owner2.trigger = trigger;
     }
 
-    if (does_script_exist(trigger->runningScriptID)) {
+    if (is_bound_script_running(&trigger->script)) {
         return 1; // keep calling this function every frame
     } else {
-        trigger->runningScript = nullptr;
         return 0; // stop calling this function
     }
 }
@@ -1827,8 +1826,8 @@ ApiStatus evt_handle_bind(Evt* script) {
     bp.onActivateFunc = evt_trigger_on_activate_exec_script;
 
     trigger = create_trigger(&bp);
-    trigger->onTriggerEvt = (EvtScript*)triggerScript;
-    trigger->runningScript = nullptr;
+    trigger->script.source = (EvtScript*)triggerScript;
+    clear_bound_script(&trigger->script);
     trigger->priority = script->priority;
     trigger->varTable[0] = evt_get_variable(script, script->varTable[0]);
     trigger->varTable[1] = evt_get_variable(script, script->varTable[1]);
@@ -1930,18 +1929,16 @@ ApiStatus evt_handle_await_script(Evt* script) {
 }
 
 s32 evt_trigger_on_activate_lock(Trigger* trigger) {
-    if (trigger->runningScript == nullptr) {
-        Evt* newScript = start_script(trigger->onTriggerEvt, trigger->priority, EVT_FLAG_RUN_IMMEDIATELY);
-        trigger->runningScript = newScript;
-        trigger->runningScriptID = newScript->id;
+    if (trigger->script.live == nullptr) {
+        Evt* newScript = start_script(trigger->script.source, trigger->priority, EVT_FLAG_RUN_IMMEDIATELY);
+        assign_bound_script(&trigger->script, newScript);
         newScript->varTable[0] = trigger->varTable[0];
         newScript->varTable[1] = trigger->varTable[1];
         newScript->varTable[2] = trigger->varTable[2];
         newScript->owner2.trigger = trigger;
     }
 
-    if (!does_script_exist(trigger->runningScriptID)) {
-        trigger->runningScript = nullptr;
+    if (!is_bound_script_running(&trigger->script)) {
         trigger->flags &= ~TRIGGER_ACTIVATED;
     }
     return 0;
@@ -1967,8 +1964,8 @@ ApiStatus evt_handle_bind_lock(Evt* script) {
     bp.hasPlayerInteractPrompt = hasInteractPrompt;
 
     trigger = create_trigger(&bp);
-    trigger->onTriggerEvt = (EvtScript*)triggerScript;
-    trigger->runningScript = nullptr;
+    trigger->script.source = (EvtScript*)triggerScript;
+    clear_bound_script(&trigger->script);
     trigger->priority = script->priority;
     trigger->varTable[0] = evt_get_variable(script, script->varTable[0]);
     trigger->varTable[1] = evt_get_variable(script, script->varTable[1]);

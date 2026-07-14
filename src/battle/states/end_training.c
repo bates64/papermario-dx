@@ -56,16 +56,14 @@ void btl_state_update_end_training_battle(void) {
             }
             break;
         case BTL_SUBSTATE_AWAIT_RECOVERING:
-            if (player->scripts.handleEvent.live != nullptr && does_script_exist(player->scripts.handleEvent.liveID)) {
+            if (is_bound_script_running(&player->scripts.handleEvent)) {
                 break;
             }
-            player->scripts.handleEvent.live = nullptr;
 
             if (partner != nullptr) {
-                if (partner->scripts.handleEvent.live != nullptr && does_script_exist(partner->scripts.handleEvent.liveID)) {
+                if (is_bound_script_running(&partner->scripts.handleEvent)) {
                     break;
                 }
-                partner->scripts.handleEvent.live = nullptr;
             }
 
             gBattleSubState = BTL_SUBSTATE_CHECK_OUTTA_SIGHT;
@@ -85,13 +83,13 @@ void btl_state_update_end_training_battle(void) {
             } else {
                 battleStatus->battlePhase = PHASE_ENEMY_BEGIN;
                 script = start_script(partner->scripts.handlePhase.source, EVT_PRIORITY_A, 0);
-                set_bound_script_live(&partner->scripts.handlePhase, script);
+                assign_bound_script(&partner->scripts.handlePhase, script);
                 script->owner1.actorID = ACTOR_PARTNER;
                 gBattleSubState = BTL_SUBSTATE_AWAIT_OUTTA_SIGHT;
             }
             break;
         case BTL_SUBSTATE_AWAIT_OUTTA_SIGHT:
-            if (!does_script_exist(partner->scripts.handlePhase.liveID)) {
+            if (!is_bound_script_running(&partner->scripts.handlePhase)) {
                 battleStatus->outtaSightActive = false;
                 gBattleSubState = BTL_SUBSTATE_RESET_CAM;
             }

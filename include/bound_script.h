@@ -12,9 +12,15 @@ static ALWAYS_INLINE Evt* get_bound_script(BoundScript* boundScript) {
 }
 
 // Records a newly started script in this binding.
-static ALWAYS_INLINE void set_bound_script_live(BoundScript* boundScript, Evt* script) {
+static ALWAYS_INLINE void assign_bound_script(BoundScript* boundScript, Evt* script) {
     boundScript->live = script;
     boundScript->liveID = script->id;
+}
+
+// Forgets the current instance without changing the script source.
+static ALWAYS_INLINE void clear_bound_script(BoundScript* boundScript) {
+    boundScript->live = nullptr;
+    boundScript->liveID = 0;
 }
 
 // Reports whether the bound script is still running and clears a stale binding.
@@ -24,6 +30,7 @@ static ALWAYS_INLINE b32 is_bound_script_running(BoundScript* boundScript) {
     }
 
     boundScript->live = nullptr;
+    boundScript->liveID = 0;
     return false;
 }
 
@@ -65,8 +72,11 @@ static ALWAYS_INLINE void kill_bound_script(BoundScript* boundScript) {
         s32 liveID = boundScript->liveID;
 
         kill_script_by_ID(liveID);
+
+        // The killed script's finalizer may have bound a replacement (with a new ID).
         if (boundScript->liveID == liveID) {
             boundScript->live = nullptr;
+            boundScript->liveID = 0;
         }
     }
 }

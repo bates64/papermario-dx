@@ -291,7 +291,7 @@ static API_CALLABLE(RebindEnemyOwner) {
     Enemy* enemy = script->owner1.enemy;
     Evt* replacement = start_script(&EVS_EnemyRebound, EVT_PRIORITY_0, 0);
 
-    set_bound_script_live(&enemy->scripts.ai, replacement);
+    assign_bound_script(&enemy->scripts.ai, replacement);
     replacement->owner1.enemy = enemy;
     replacement->owner2.npcID = enemy->npcID;
     return Record(script, isInitialCall);
@@ -316,7 +316,7 @@ static API_CALLABLE(RebindActorOwner) {
     Actor* actor = get_actor(script->owner1.actorID);
     Evt* replacement = start_script(&EVS_ActorRebound, EVT_PRIORITY_0, 0);
 
-    set_bound_script_live(&actor->scripts.handleEvent, replacement);
+    assign_bound_script(&actor->scripts.handleEvent, replacement);
     replacement->owner1.actorID = script->owner1.actorID;
     return Record(script, isInitialCall);
 }
@@ -1566,7 +1566,7 @@ static void test_enemy_deletion_preserves_detached_scripts(void) {
     script = start_test_script(&EVS_DeleteEnemyOwner);
     script->owner1.enemy = enemy;
     script->owner2.npcID = enemy->npcID;
-    set_bound_script_live(&enemy->scripts.init, script);
+    assign_bound_script(&enemy->scripts.init, script);
     evt_execute_next_command(script);
     CHECK(!gExpectedHeapFreeSeen);
     CHECK(gNumScripts == 1);
@@ -1601,7 +1601,7 @@ static void test_enemy_deletion_finalizes_all_registered_slots(void) {
 
         script->owner1.enemy = enemy;
         script->owner2.npcID = npcID;
-        set_bound_script_live(&enemy->scripts.all[i], script);
+        assign_bound_script(&enemy->scripts.all[i], script);
     }
 
     kill_enemy(enemy);
@@ -1629,7 +1629,7 @@ static void test_enemy_deletion_terminates_finalizer_rebinding(void) {
     script = start_test_script(&EVS_EnemyRebindRoot);
     script->owner1.enemy = enemy;
     script->owner2.npcID = npcID;
-    set_bound_script_live(&enemy->scripts.ai, script);
+    assign_bound_script(&enemy->scripts.ai, script);
 
     kill_enemy(enemy);
     CHECK(!gExpectedHeapFreeSeen);
@@ -1682,7 +1682,7 @@ static void test_actor_self_deletion_retains_owner_until_finally(void) {
     actor = create_test_actor(actorID);
     script = start_test_script(&EVS_DeleteActorOwner);
     script->owner1.actorID = actorID;
-    set_bound_script_live(&actor->scripts.handleEvent, script);
+    assign_bound_script(&actor->scripts.handleEvent, script);
 
     evt_execute_next_command(script);
     CHECK(!gExpectedHeapFreeSeen);
@@ -1716,7 +1716,7 @@ static void test_actor_deletion_finalizes_all_registered_slots(void) {
         Evt* script = start_test_script(&EVS_ActorOwnedSlot);
 
         script->owner1.actorID = actorID;
-        set_bound_script_live(&actor->scripts.all[i], script);
+        assign_bound_script(&actor->scripts.all[i], script);
     }
 
     btl_delete_actor(actor);
@@ -1736,7 +1736,7 @@ static void test_actor_deletion_terminates_finalizer_rebinding(void) {
     actor = create_test_actor(actorID);
     script = start_test_script(&EVS_ActorRebindRoot);
     script->owner1.actorID = actorID;
-    set_bound_script_live(&actor->scripts.handleEvent, script);
+    assign_bound_script(&actor->scripts.handleEvent, script);
 
     btl_delete_actor(actor);
     CHECK(gExpectedHeapFreeSeen);

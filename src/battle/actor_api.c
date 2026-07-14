@@ -2055,7 +2055,7 @@ API_CALLABLE(SummonEnemy) {
             break;
         case 1:
             actor2 = script->functionTempPtr[1];
-            if (does_script_exist(actor2->scripts.takeTurn.liveID)) {
+            if (is_bound_script_running(&actor2->scripts.takeTurn)) {
                 break;
             }
 
@@ -3292,7 +3292,7 @@ API_CALLABLE(BoostAttack) {
                 script->functionTemp[3]--;
                 break;
             }
-            if ((actor->scripts.handleEvent.live != nullptr) && does_script_exist(actor->scripts.handleEvent.liveID)) {
+            if (is_bound_script_running(&actor->scripts.handleEvent)) {
                 break;
             }
             ApplyingBuff = false;
@@ -3416,7 +3416,7 @@ API_CALLABLE(BoostDefense) {
                 script->functionTemp[3]--;
                 break;
             }
-            if ((actor->scripts.handleEvent.live != nullptr) && does_script_exist(actor->scripts.handleEvent.liveID)) {
+            if (is_bound_script_running(&actor->scripts.handleEvent)) {
                 break;
             }
             ApplyingBuff = false;
@@ -3522,7 +3522,7 @@ API_CALLABLE(VanishActor) {
                 script->functionTemp[3]--;
                 break;
             }
-            if ((actor->scripts.handleEvent.live != nullptr) && does_script_exist(actor->scripts.handleEvent.liveID)) {
+            if (is_bound_script_running(&actor->scripts.handleEvent)) {
                 break;
             }
             ApplyingBuff = false;
@@ -3628,7 +3628,7 @@ API_CALLABLE(ElectrifyActor) {
                 script->functionTemp[3]--;
                 break;
             }
-            if ((actor->scripts.handleEvent.live != nullptr) && does_script_exist(actor->scripts.handleEvent.liveID)) {
+            if (is_bound_script_running(&actor->scripts.handleEvent)) {
                 break;
             }
             ApplyingBuff = false;
@@ -3752,7 +3752,7 @@ API_CALLABLE(HealActor) {
                 script->functionTemp[3]--;
                 break;
             }
-            if ((actor->scripts.handleEvent.live != nullptr) && does_script_exist(actor->scripts.handleEvent.liveID)) {
+            if (is_bound_script_running(&actor->scripts.handleEvent)) {
                 break;
             }
             ApplyingBuff = false;

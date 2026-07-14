@@ -100,26 +100,21 @@ void play_hit_sound(Actor* actor, f32 x, f32 y, f32 z, u32 hitSound) {
 }
 
 void dispatch_event_actor(Actor* actor, s32 event) {
-    Evt* handleEventScript = actor->scripts.handleEvent.live;
-    s32 onHitID = actor->scripts.handleEvent.liveID;
+    Evt* prevHandleEvent = actor->scripts.handleEvent.live;
+    s32 prevHandleScriptID = actor->scripts.handleEvent.liveID;
+    Evt* newScript;
 
     if (actor->scripts.handleEvent.source != nullptr) {
-        Evt* newScript;
-
         actor->lastEventType = event;
         newScript = start_script(actor->scripts.handleEvent.source, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
-        set_bound_script_live(&actor->scripts.handleEvent, newScript);
+        assign_bound_script(&actor->scripts.handleEvent, newScript);
         newScript->owner1.actorID = actor->actorID;
     }
 
-    if (actor->scripts.takeTurn.live != nullptr) {
-        get_script_by_index(actor->scripts.takeTurn.liveID);
-        kill_script_by_ID(actor->scripts.takeTurn.liveID);
-        actor->scripts.takeTurn.live = nullptr;
-    }
+    kill_bound_script(&actor->scripts.takeTurn);
 
-    if (handleEventScript != nullptr) {
-        kill_script_by_ID(onHitID);
+    if (prevHandleEvent != nullptr) {
+        kill_script_by_ID(prevHandleScriptID);
     }
 }
 
@@ -879,14 +874,14 @@ s32 dispatch_contact_damage_event_actor(Actor* actor, s32 damageAmount, s32 even
 API_CALLABLE(BindTakeTurn) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
-    EvtScript* takeTurnScript;
+    EvtScript* src;
 
     if (actorID == ACTOR_SELF) {
         actorID = script->owner1.actorID;
     }
 
-    takeTurnScript = (EvtScript*) evt_get_variable(script, *args++);
-    get_actor(actorID)->scripts.takeTurn.source = takeTurnScript;
+    src = (EvtScript*) evt_get_variable(script, *args++);
+    get_actor(actorID)->scripts.takeTurn.source = src;
     return ApiStatus_DONE2;
 }
 
@@ -899,7 +894,7 @@ API_CALLABLE(PauseTakeTurn) {
     }
 
     evt_get_variable(script, *args++);
-    suspend_all_script(get_actor(actorID)->scripts.takeTurn.liveID);
+    suspend_bound_script(&get_actor(actorID)->scripts.takeTurn);
     return ApiStatus_DONE2;
 }
 
@@ -912,60 +907,59 @@ API_CALLABLE(ResumeTakeTurn) {
     }
 
     evt_get_variable(script, *args++);
-    resume_all_script(get_actor(actorID)->scripts.takeTurn.liveID);
+    resume_bound_script(&get_actor(actorID)->scripts.takeTurn);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(BindIdle) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
-    EvtScript* idleCode;
+    EvtScript* src;
     Actor* actor;
-    Evt* newScriptContext;
+    Evt* newScript;
 
     if (actorID == ACTOR_SELF) {
         actorID = script->owner1.actorID;
     }
 
-    idleCode = (EvtScript*) evt_get_variable(script, *args++);
+    src = (EvtScript*) evt_get_variable(script, *args++);
     actor = get_actor(actorID);
 
-    if (actor->scripts.idle.live != 0) {
-        kill_script_by_ID(actor->scripts.idle.liveID);
-        actor->scripts.idle.live = nullptr;
-    }
+    kill_bound_script(&actor->scripts.idle);
 
-    actor->scripts.idle.source = idleCode;
-    newScriptContext = start_script(idleCode, EVT_PRIORITY_A, 0);
-    set_bound_script_live(&actor->scripts.idle, newScriptContext);
-    newScriptContext->owner1.actorID = actorID;
+    actor->scripts.idle.source = src;
+    newScript = start_script(src, EVT_PRIORITY_A, 0);
+    assign_bound_script(&actor->scripts.idle, newScript);
+    newScript->owner1.actorID = actorID;
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(EnableIdleScript) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
-    s32 var1;
     Actor* actor;
+    Evt* boundScript;
+    s32 mode;
 
     if (actorID == ACTOR_SELF) {
         actorID = script->owner1.actorID;
     }
 
-    var1 = evt_get_variable(script, *args++);
+    mode = evt_get_variable(script, *args++);
     actor = get_actor(actorID);
+    boundScript = get_bound_script(&actor->scripts.idle);
 
-    if (actor->scripts.idle.live != nullptr) {
-        switch (var1) {
+    if (boundScript != nullptr) {
+        switch (mode) {
             case IDLE_SCRIPT_RESTART:
-                restart_script(actor->scripts.idle.live);
-                resume_all_script(actor->scripts.idle.liveID);
+                restart_script(boundScript);
+                resume_bound_script(&actor->scripts.idle);
                 break;
             case IDLE_SCRIPT_ENABLE:
-                resume_all_script(actor->scripts.idle.liveID);
+                resume_bound_script(&actor->scripts.idle);
                 break;
             case IDLE_SCRIPT_DISABLE:
-                suspend_all_script(actor->scripts.idle.liveID);
+                suspend_bound_script(&actor->scripts.idle);
                 break;
         }
     }

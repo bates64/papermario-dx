@@ -133,10 +133,9 @@ void btl_state_update_change_partner(void) {
         case BTL_SUBSTATE_EXEC_BRING_OUT:
             partner = battleStatus->partnerActor;
             if (partner != nullptr) {
-                if (does_script_exist(partner->scripts.takeTurn.liveID)) {
+                if (is_bound_script_running(&partner->scripts.takeTurn)) {
                     break;
                 }
-                partner->scripts.takeTurn.live = nullptr;
             }
 
             script = start_script(&EVS_BtlBringPartnerOut, EVT_PRIORITY_A, 0);
@@ -154,7 +153,7 @@ void btl_state_update_change_partner(void) {
                 if (partner->scripts.handlePhase.source != nullptr) {
                     battleStatus->battlePhase = PHASE_PLAYER_BEGIN;
                     script = start_script(partner->scripts.handlePhase.source, EVT_PRIORITY_A, 0);
-                    set_bound_script_live(&partner->scripts.handlePhase, script);
+                    assign_bound_script(&partner->scripts.handlePhase, script);
                     script->owner1.actorID = ACTOR_PARTNER;
                 }
             }
@@ -163,7 +162,7 @@ void btl_state_update_change_partner(void) {
         case BTL_SUBSTATE_AWAIT_PHASE:
             partner = battleStatus->partnerActor;
             if (partner != nullptr) {
-                if (partner->scripts.handlePhase.source != nullptr && does_script_exist(partner->scripts.handlePhase.liveID)) {
+                if (is_bound_script_running(&partner->scripts.handlePhase)) {
                     break;
                 }
             }

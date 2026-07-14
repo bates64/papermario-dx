@@ -502,9 +502,8 @@ s32 create_single_actor_target_list(Actor* actor, Actor* targetActor) {
         }
 
         if (!(part->flags & ACTOR_PART_FLAG_PRIMARY_TARGET)) {
-            /// @bug part list position is not advanced, all further loop iterations will be stuck here
-            // nanaian: I think this is intended and should probably be a break. this flag makes multi-target attacks select this part only
-            continue;
+            // stop at the first targetable, non-primary part
+            break;
         }
 
         partData = part->staticData;
@@ -987,8 +986,7 @@ void load_player_actor(void) {
     player->statusTextOffset.y = 0;
     for (i = 0; i < ARRAY_COUNT(player->scripts.all); i++) {
         player->scripts.all[i].source = nullptr;
-        player->scripts.all[i].live = nullptr;
-        player->scripts.all[i].liveID = 0;
+        clear_bound_script(&player->scripts.all[i]);
     }
     player->turnPriority = 0;
     player->statusTable = bPlayerStatusTable;
@@ -1194,8 +1192,7 @@ void load_partner_actor(void) {
         partnerActor->numParts = partCount;
         for (i = 0; i < ARRAY_COUNT(partnerActor->scripts.all); i++) {
             partnerActor->scripts.all[i].source = nullptr;
-            partnerActor->scripts.all[i].live = nullptr;
-            partnerActor->scripts.all[i].liveID = 0;
+            clear_bound_script(&partnerActor->scripts.all[i]);
         }
         partnerActor->scripts.takeTurn.source = actorBP->initScript;
         partnerActor->turnPriority = 0;
@@ -1384,7 +1381,7 @@ void load_partner_actor(void) {
 
         takeTurnScript = start_script(partnerActor->scripts.takeTurn.source, EVT_PRIORITY_A, 0);
 
-        set_bound_script_live(&partnerActor->scripts.takeTurn, takeTurnScript);
+        assign_bound_script(&partnerActor->scripts.takeTurn, takeTurnScript);
         takeTurnScript->owner1.actorID = ACTOR_PARTNER;
     }
 }
@@ -1452,8 +1449,7 @@ Actor* create_actor(Formation formation) {
     actor->numParts = partCount;
     for (i = 0; i < ARRAY_COUNT(actor->scripts.all); i++) {
         actor->scripts.all[i].source = nullptr;
-        actor->scripts.all[i].live = nullptr;
-        actor->scripts.all[i].liveID = 0;
+        clear_bound_script(&actor->scripts.all[i]);
     }
     actor->scripts.takeTurn.source = formationActor->initScript;
     actor->turnPriority = formation->priority;
@@ -1658,7 +1654,7 @@ Actor* create_actor(Formation formation) {
     actor->healthFraction = 25;
     actor->actorID = actor->enemyIndex | ACTOR_CLASS_ENEMY;
     takeTurnScript = start_script(actor->scripts.takeTurn.source, EVT_PRIORITY_A, 0);
-    set_bound_script_live(&actor->scripts.takeTurn, takeTurnScript);
+    assign_bound_script(&actor->scripts.takeTurn, takeTurnScript);
     takeTurnScript->owner1.actorID = actor->actorID;
     actor->shadow.id = create_shadow_type(SHADOW_VARYING_CIRCLE, actor->curPos.x, actor->curPos.y, actor->curPos.z);
     actor->shadowScale = actor->size.x / 24.0;
