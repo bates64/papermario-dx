@@ -15,7 +15,7 @@ The primary features are:
 - commands for awaiting child threads or a single script ID
 - vector convenience macros for adjacent EVT variables
 - variadic buffer reads with `BufRead` and `FBufRead`
-- direct reads and writes to C primitives with `MemGet` and `MemSet`, and primitive arrays with `MetGetIndex` and `MemSetIndex`
+- direct reads and writes to C primitives with `MemGet` and `MemSet`, and primitive arrays with `MemGetIndex` and `MemSetIndex`
 - clearer command names with compatibility aliases
 - smaller bytecode by packing the opcode, argument count, and line number into one command header
 
