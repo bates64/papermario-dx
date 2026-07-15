@@ -1030,5 +1030,6 @@ This EVT Plus proposal covers many new features; here are some that didn't make 
   - No need to save result from `ExecGetID`, just `Exec` and then `AwaitAll` later
 - Make `Unbind` operate for bound Actor and Enemy scripts in addition to Trigger
 - Address frailty around `EVT_ENTITY_INDEX`
+- Swap arg order for `IsScriptRunning`; settle on outVar-first to align with other commands. Should probably swap `MallocArray` as well to keep them all consistent.
 
 Perhaps these can be made available in the future.
