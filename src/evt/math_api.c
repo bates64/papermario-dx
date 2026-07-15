@@ -114,7 +114,7 @@ API_CALLABLE(RandRange) {
     s32 max = evt_get_variable(script, *args++);
     Bytecode outVar = *args++;
 
-    ASSERT_MSG(max >= min, "RandRange min %d > max %d", min, max);
+    ASSERT_MSG(max >= min, "RandRange min %ld > max %ld", min, max);
     evt_set_variable(script, outVar, min + rand_int(max - min));
 
     return ApiStatus_DONE2;

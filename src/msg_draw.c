@@ -2088,7 +2088,7 @@ void msg_draw_speech_arrow(MessagePrintState* printer) {
 void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 palette, s32 fading, s32 bgAlpha, s32 frameAlpha) {
     s32 i;
     s32 frameType;
-    s32 textures[16];
+    IMG_PTR textures[16];
     u8 r, g, b;
     Rect quads[16];
 

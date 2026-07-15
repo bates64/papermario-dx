@@ -1,7 +1,7 @@
 #include "audio/audio.h"
 #include "audio/core.h"
 
-static void au_sfx_play_sound(SoundManager* manager, SoundPlayer* player, s8* readPos, SoundRequest* request, s32 priority, s32 exclusiveID);
+static void au_sfx_play_sound(SoundManager* manager, SoundPlayer* player, AuFilePos readPos, SoundRequest* request, s32 priority, s32 exclusiveID);
 static void au_sfx_set_triggers(SoundManager* manager, u32 soundID);
 static void au_sfx_stop_by_id(SoundManager* manager, u32 soundID);
 static void au_sfx_stop_by_exlusive_id(SoundManager* manager, u32 soundID);
@@ -12,9 +12,9 @@ static void au_sfx_update_basic(SoundManager* manager, SoundPlayer* player, AuVo
 static s16 au_sfx_get_scaled_volume(SoundManager* manager, SoundPlayer* player);
 static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, AuVoice* arg2, u8 arg3);
 static void au_sfx_set_voice_volume(AuVoice* voice, SoundManager* manager, SoundPlayer* player);
-static u8 au_sfx_get_random_pan(s32 arg0, s32 arg1, s32 arg2);
-static s32 au_sfx_get_random_pitch(s32 arg0, s32 arg1, s32 arg2);
-static u8 au_sfx_get_random_vol(s32 arg0, s32 arg1, s32 arg2);
+static u8 au_sfx_get_random_pan(s32 seed, s32 pan, s32 amplitude) UNUSED;
+static s32 au_sfx_get_random_pitch(s32 seed, s32 amplitude, s32 pitch);
+static u8 au_sfx_get_random_vol(s32 seed, s32 amplitude, s32 volume);
 static void au_sfx_reset_players(SoundManager* manager);
 
 static void au_SEFCmd_00_SetVolume(SoundManager* manager, SoundPlayer* player);
@@ -47,6 +47,7 @@ typedef struct MusicTriggeredSound {
     /* 0x00 */ u16 sound;
     /* 0x02 */ u16 prereq; // when nonzero, sound may only play if this is already playing
     /* 0x04 */ u8 flags;
+    /* 0x05 */ PAD(1);
 } MusicTriggeredSound; // size = 0x6
 
 // This flag field prefixes every SEF stream: two low bits choose a mode
@@ -459,7 +460,7 @@ f32 AlTuneScaling[] = {
     0.00014023f, 0.00013024f, 0.00012096f, 0.00011234f, 0.00010433f, 0.00009689f, 0.00008999f, 0.00008358f
 };
 
-extern s32* AU_FX_CUSTOM_PARAMS[0];
+extern s32* AU_FX_CUSTOM_PARAMS[];
 
 void (*CurrentSefCmdHandler)(SoundManager*, SoundPlayer*);
 
@@ -790,7 +791,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                 }
 
                 if (foundPlayer) {
-                    au_sfx_play_sound(manager, player, (s8*)cmdList, request, 0, 0);
+                    au_sfx_play_sound(manager, player, (AuFilePos)cmdList, request, 0, 0);
                 }
             }
         }
@@ -827,7 +828,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                 }
 
                 if (foundPlayer) {
-                    au_sfx_play_sound(manager, player, (u8*)cmdList, request, 0, 0);
+                    au_sfx_play_sound(manager, player, (AuFilePos)cmdList, request, 0, 0);
                 }
             }
         } else {
@@ -992,7 +993,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
     #undef NEXT_POLY_TRACK
 }
 
-static void au_sfx_play_sound(SoundManager* manager, SoundPlayer* player, s8* readPos, SoundRequest* request, s32 priority, s32 exclusiveID) {
+static void au_sfx_play_sound(SoundManager* manager, SoundPlayer* player, AuFilePos readPos, SoundRequest* request, s32 priority, s32 exclusiveID) {
     if (manager->state == SND_MANAGER_STATE_ENABLED) {
         player->sefDataReadPos = readPos;
         player->sefReadStart = readPos;

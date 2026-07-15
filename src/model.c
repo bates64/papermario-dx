@@ -1331,8 +1331,8 @@ BSS ModelNode* bModelTreeRoot;
 BSS ModelTreeInfoList wModelTreeNodeInfo;
 BSS ModelTreeInfoList bModelTreeNodeInfo;
 
-BSS s8 wBackgroundTintMode;
-BSS s8 bBackgroundTintMode;
+BSS u8 wBackgroundTintMode;
+BSS u8 bBackgroundTintMode;
 BSS s32 TreeIterPos;
 BSS FogSettings wFogSettings;
 BSS FogSettings bFogSettings;
@@ -1388,6 +1388,7 @@ void appendGfx_model(void* data) {
 
     mtxPushMode = G_MTX_PUSH;
     mtxLoadMode = G_MTX_LOAD;
+    extraTileType = EXTRA_TILE_NONE;
     modelNode = model->modelNode;
 
     if (model->textureID != 0) {
@@ -2047,10 +2048,10 @@ void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 si
     char* textureName = (char*)propertyName->data.p;
     u32 startOffset = romOffset;
     s32 textureIdx = 0;
-    u32 paletteSize;
-    u32 rasterSize;
-    u32 auxPaletteSize;
-    u32 auxRasterSize;
+    u32 paletteSize = 0;
+    u32 rasterSize = 0;
+    u32 auxPaletteSize = 0;
+    u32 auxRasterSize = 0;
     TextureHeader* header;
     TextureHandle* textureHandle;
     s32 mainSize;
@@ -3049,6 +3050,17 @@ void appendGfx_transform_group(void* data) {
     }
 }
 
+#define TEXEL_LOG2(x) (\
+    (x) <= 2 ? 1 : \
+    (x) <= 4 ? 2 : \
+    (x) <= 8 ? 3 : \
+    (x) <= 16 ? 4 : \
+    (x) <= 32 ? 5 : \
+    (x) <= 64 ? 6 : \
+    (x) <= 128 ? 7 : \
+    (x) <= 256 ? 8 : \
+    (x) <= 512 ? 9 : 10)
+
 void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_PTR palette, IMG_PTR auxRaster, PAL_PTR auxPalette, u8 auxShiftS, u8 auxShiftT, u16 auxOffsetS, u16 auxOffsetT) {
     s32 mainWidth, mainHeight;
     s32 auxWidth, auxHeight;
@@ -3074,10 +3086,12 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
     mainHeight = header->mainH;
 
     lod = 0;
+    lodDivisor = 0;
+    lodMode = G_TL_TILE;
     auxPaletteIndex = 0;
 
-    mainMasks = INTEGER_LOG2(mainWidth);
-    mainMaskt = INTEGER_LOG2(mainHeight);
+    mainMasks = TEXEL_LOG2(mainWidth);
+    mainMaskt = TEXEL_LOG2(mainHeight);
 
     mainWrapW = header->mainWrapW;
     mainWrapH = header->mainWrapH;
@@ -3091,8 +3105,8 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
     auxWidth = header->auxW;
     auxHeight = header->auxH;
 
-    auxMasks = INTEGER_LOG2(auxWidth);
-    auxMaskt = INTEGER_LOG2(auxHeight);
+    auxMasks = TEXEL_LOG2(auxWidth);
+    auxMaskt = TEXEL_LOG2(auxHeight);
 
     auxWrapW = header->auxWrapW;
     auxWrapH = header->auxWrapH;
@@ -3657,6 +3671,10 @@ void mdl_group_set_visibility(u16 treeIndex, s32 flags, s32 mode) {
         }
     }
 
+    if (maxGroupIndex == -1) {
+        return;
+    }
+
     if (mode < 2) {
         for (i = minGroupIndex; i <= maxGroupIndex; i++) {
             Model* model = (*gCurrentModels)[i];
@@ -3714,6 +3732,10 @@ void mdl_group_set_custom_gfx(u16 groupModelID, s32 customGfxIndex, s32 tintType
                 minGroupIndex = siblingIndex;
             }
         }
+    }
+
+    if (maxGroupIndex == -1) {
+        return;
     }
 
     maskLow = maskHigh = 0;
@@ -4128,31 +4150,32 @@ void mdl_project_tex_coords(s32 modelID, Gfx* outGfx, Matrix4f arg2, Vtx* arg3) 
     Model* model;
     Gfx* dlist;
     s32 cmd;
-    Vtx* tempVert;
-
-    s8 zero = 0; // TODO needed to match
 
     listIndex = get_model_list_index_from_tree_index(modelID & 0xFFFF);
     model = get_model_from_list_index(listIndex);
     dlist = model->modelNode->displayData->displayList;
+    baseVtx = nullptr;
 
     while (true) {
         cmd = dlist->words.w0 >> 0x18;
-        tempVert = (Vtx*)dlist->words.w1;
         if (cmd == G_ENDDL) {
             break;
         }
         if (cmd == G_VTX) {
-            baseVtx = tempVert;
+            baseVtx = (Vtx*)dlist->words.w1;
             break;
         }
         dlist++;
     }
 
-    v0ob0 = baseVtx[zero].v.ob[0];
-    v0ob2 = baseVtx[zero].v.ob[2];
-    v0tc0 = baseVtx[zero].v.tc[0];
-    v0tc1 = baseVtx[zero].v.tc[1];
+    if (baseVtx == nullptr) {
+        return;
+    }
+
+    v0ob0 = baseVtx[0].v.ob[0];
+    v0ob2 = baseVtx[0].v.ob[2];
+    v0tc0 = baseVtx[0].v.tc[0];
+    v0tc1 = baseVtx[0].v.tc[1];
 
     v1ob0 = baseVtx[1].v.ob[0];
     v1ob2 = baseVtx[1].v.ob[2];
@@ -4589,6 +4612,7 @@ OPTIMIZE_OFAST void execute_render_tasks(void) {
     // tasks with dist >= 3M sort in descending order
     taskList = RenderTaskLists[RENDER_TASK_LIST_FAR];
     sorted = sorteds[RENDER_TASK_LIST_FAR];
+#undef LESS
 #define LESS(i, j) taskList[sorted[i]].dist > taskList[sorted[j]].dist
     QSORT(RenderTaskCount[RENDER_TASK_LIST_FAR], LESS, SWAP);
 
@@ -4596,6 +4620,8 @@ OPTIMIZE_OFAST void execute_render_tasks(void) {
     taskList = RenderTaskLists[RENDER_TASK_LIST_NEAR];
     sorted = sorteds[RENDER_TASK_LIST_NEAR];
     QSORT(RenderTaskCount[RENDER_TASK_LIST_NEAR], LESS, SWAP);
+#undef LESS
+#undef SWAP
 
     gLastRenderTaskCount = RenderTaskCount[RENDER_TASK_LIST_MID] + RenderTaskCount[RENDER_TASK_LIST_FAR] + RenderTaskCount[RENDER_TASK_LIST_NEAR];
     if (gOverrideFlags & GLOBAL_OVERRIDES_ENABLE_FLOOR_REFLECTION) {

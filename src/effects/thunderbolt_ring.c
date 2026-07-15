@@ -86,14 +86,13 @@ void thunderbolt_ring_update(EffectInstance *effect) {
 
 void thunderbolt_ring_render(EffectInstance* effect) {
     RenderTask renderTask;
-    RenderTask* retTask;
 
     renderTask.appendGfx = thunderbolt_ring_appendGfx;
     renderTask.appendGfxArg = effect;
     renderTask.dist = 10;
     renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = queue_render_task(&renderTask);
+    queue_render_task(&renderTask);
 }
 
 void thunderbolt_ring_appendGfx(void* effect) {

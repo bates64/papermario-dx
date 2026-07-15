@@ -49,23 +49,23 @@ extern u8 D_PAL_80271B4C[];
 extern u8 D_PAL_80271B50[];
 #endif
 
-HudScript* gPausePartnersHudScripts[][8] = {
+HudScriptPtr gPausePartnersHudScripts[][8] = {
     [LANGUAGE_DEFAULT] = {
-        &HES_FPCost, &HES_StatFp_1, &HES_PartnerRank, &HES_PartnerRank,
-        &HES_MoveDiamond, &HES_MoveBlueOrb, &HES_MoveGreenOrb, &HES_MoveRedOrb
+        HES_FPCost, HES_StatFp_1, HES_PartnerRank, HES_PartnerRank,
+        HES_MoveDiamond, HES_MoveBlueOrb, HES_MoveGreenOrb, HES_MoveRedOrb
     },
 #if VERSION_PAL
     [LANGUAGE_DE] = {
-        &HES_FPCost_de, &HES_StatFp_1, &HES_PartnerRank, &HES_PartnerRank,
-        &HES_MoveDiamond, &HES_MoveBlueOrb, &HES_MoveGreenOrb, &HES_MoveRedOrb
+        HES_FPCost_de, HES_StatFp_1, HES_PartnerRank, HES_PartnerRank,
+        HES_MoveDiamond, HES_MoveBlueOrb, HES_MoveGreenOrb, HES_MoveRedOrb
     },
     [LANGUAGE_FR] = {
-        &HES_FPCost_fr, &HES_StatFp_1, &HES_PartnerRank, &HES_PartnerRank,
-        &HES_MoveDiamond, &HES_MoveBlueOrb, &HES_MoveGreenOrb, &HES_MoveRedOrb
+        HES_FPCost_fr, HES_StatFp_1, HES_PartnerRank, HES_PartnerRank,
+        HES_MoveDiamond, HES_MoveBlueOrb, HES_MoveGreenOrb, HES_MoveRedOrb
     },
     [LANGUAGE_ES] = {
-        &HES_FPCost_es, &HES_StatFp_1, &HES_PartnerRank, &HES_PartnerRank,
-        &HES_MoveDiamond, &HES_MoveBlueOrb, &HES_MoveGreenOrb, &HES_MoveRedOrb
+        HES_FPCost_es, HES_StatFp_1, HES_PartnerRank, HES_PartnerRank,
+        HES_MoveDiamond, HES_MoveBlueOrb, HES_MoveGreenOrb, HES_MoveRedOrb
     },
 #endif
 };
@@ -77,7 +77,7 @@ Vp gPausePartnersViewport = {
     }
 };
 
-s32 gPausePartnersSpriteAnims[][4] = {
+AnimID gPausePartnersSpriteAnims[][4] = {
     {
         ANIM_WorldGoombario_Still,
         ANIM_WorldGoombario_Walk,
@@ -161,7 +161,7 @@ s32 gPausePartnersMoveBase[] = {
     MOVE_SPINY_FLIP1
 };
 
-s8 gPausePartnersGridData[] = {
+u8 gPausePartnersGridData[] = {
     4, 5, 6, 7,
     0, 1, 2, 3
 };
@@ -285,7 +285,7 @@ typedef struct PartnerPosition {
 } PartnerPosition; // size = 0x8
 
 void pause_partners_load_portrait(s32 index) {
-    s32 size;
+    u32 size;
     void* asset;
 
     if (gPausePartnersCurrentPortraitIndex != gPausePartnersPartnerIdx[index]) {

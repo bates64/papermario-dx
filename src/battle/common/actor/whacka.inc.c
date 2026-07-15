@@ -2,6 +2,7 @@
 #include "script_api/battle.h"
 #include "sprite/npc/Whacka.h"
 
+#undef NAMESPACE
 #define NAMESPACE A(whacka)
 
 extern EvtScript N(EVS_Init);

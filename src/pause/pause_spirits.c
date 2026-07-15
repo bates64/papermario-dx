@@ -29,7 +29,7 @@ Vp gPauseSpiritsViewport = {
         .vtrans = { 640, 480, 511, 0 },
     }
 };
-s32 gPauseSpiritsSpriteAnims[][4] = {
+AnimID gPauseSpiritsSpriteAnims[][4] = {
     {
         ANIM_WorldEldstar_Still,
         ANIM_WorldEldstar_Idle,
@@ -73,7 +73,7 @@ s32 gPauseSpiritsSpriteAnims[][4] = {
         ANIM_LIST_END
     }
 };
-s8 gPauseSpiritsGridData[] = {
+u8 gPauseSpiritsGridData[] = {
     5, 6, 0, 1, 2,
     5, 4, 4, 3, 2
 };

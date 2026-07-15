@@ -30,8 +30,8 @@ enum {
     TIDAL_WAVE_INPUT_COUNT,
 };
 
-HudScript* HudButtonsUp[TIDAL_WAVE_INPUT_COUNT] = { &HES_PressAButton, &HES_PressBButton, &HES_PressCDownButton };
-HudScript* HudButtonsDown[TIDAL_WAVE_INPUT_COUNT] = { &HES_AButtonDown, &HES_BButtonHeld, &HES_CDownButtonHeld };
+HudScriptPtr HudButtonsUp[TIDAL_WAVE_INPUT_COUNT] = { HES_PressAButton, HES_PressBButton, HES_PressCDownButton };
+HudScriptPtr HudButtonsDown[TIDAL_WAVE_INPUT_COUNT] = { HES_AButtonDown, HES_BButtonHeld, HES_CDownButtonHeld };
 
 API_CALLABLE(N(init)) {
     ActionCommandStatus* acs = &gActionCommandStatus;
@@ -58,14 +58,14 @@ API_CALLABLE(N(init)) {
     acs->hudPosX = -48;
     acs->hudPosY = 80;
 
-    hid = hud_element_create(&HES_BlueMeter);
+    hid = hud_element_create(HES_BlueMeter);
     acs->hudElemIDs[HIDX_METER] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY + 28);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
     for (i = HIDX_FIRST_BUTTON; i < ARRAY_COUNT(acs->hudElemIDs) - 1; i++) {
-        hid = hud_element_create(&HES_AButton);
+        hid = hud_element_create(HES_AButton);
         acs->hudElemIDs[i] = hid;
         hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
         hud_element_set_render_depth(hid, 0);

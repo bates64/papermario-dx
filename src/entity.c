@@ -235,14 +235,14 @@ void update_shadows(void) {
     }
 }
 
-void set_entity_commandlist(Entity* entity, EntityCode* entityScript) {
+void set_entity_commandlist(Entity* entity, EntityScriptPtr entityScript) {
     entity->scriptReadPos = entityScript;
     entity->scriptDelay = 1;
     entity->savedReadPos[0] = entity->scriptReadPos;
 }
 
 s32 step_entity_commandlist(Entity* entity) {
-    EntityCode* args = entity->scriptReadPos;
+    EntityScriptPos args = entity->scriptReadPos;
     s32 ret;
     s32 labelId;
     void (*tempfunc)(Entity*);
@@ -255,7 +255,7 @@ s32 step_entity_commandlist(Entity* entity) {
             ret = false;
             break;
         case ENTITY_SCRIPT_OP_Jump:
-            entity->scriptReadPos = (EntityCode*)*args;
+            entity->scriptReadPos = (EntityScriptPos)*args;
             entity->scriptDelay = 1;
             entity->savedReadPos[0] = entity->scriptReadPos;
             ret = true;
@@ -761,7 +761,7 @@ s32 is_player_action_state(s8 actionState) {
     return actionState == gPlayerStatus.actionState;
 }
 
-void entity_set_render_script(Entity* entity, EntityModelCode* cmdList) {
+void entity_set_render_script(Entity* entity, EntityModelScriptPtr cmdList) {
     if (!(entity->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL)) {
         set_entity_model_render_command_list(entity->virtualModelIndex, cmdList);
     }
@@ -886,7 +886,7 @@ void reload_world_entity_data(void) {
             if (bp->entityType == ENTITY_TYPE_RESET_MUNCHLESIA) {
                 gfxData = (void*)gEntityHeapBottom;
                 temp1 = dma_copy(dmaList[0].start, dmaList[0].end, gfxData) >> 2;
-                dma_copy(dmaList[1].start, dmaList[1].end, (void*)(gEntityHeapBottom + temp1 * 4)) >> 2;
+                dma_copy(dmaList[1].start, dmaList[1].end, (void*)(gEntityHeapBottom + temp1 * 4));
                 animData = (void*)(gEntityHeapBottom + temp1 * 4);
                 entity_swizzle_anim_pointers(bp, animData, gfxData);
             } else {
@@ -1046,7 +1046,7 @@ void load_split_entity_data(Entity* entity, EntityBlueprint* entityData, s32 lis
     s32 swizzlePointers = false;
     s32 loadedStart, loadedEnd;
     void* animBaseAddr;
-    AnimScriptCode* animationScript;
+    AnimScriptPtr animationScript;
     StaticAnimatorNode** animationNodes;
     s32 specialSize;
     s32 dma1size;
@@ -1265,8 +1265,6 @@ s32 create_entity(EntityBlueprint* bp, ...) {
     entity->aabb.x = bp->aabbSize[0];
     entity->aabb.y = bp->aabbSize[1];
     entity->aabb.z = bp->aabbSize[2];
-    entity->unk_05 = 1;
-    entity->unk_08 = -1;
     entity->alpha = 255;
     entity->virtualModelIndex = -1;
     entity->shadowIndex = -1;

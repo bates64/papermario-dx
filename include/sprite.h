@@ -36,7 +36,7 @@ enum {
 typedef struct SpriteComponent {
     /* 0x00 */ s32 initialized;
     /* 0x04 */ s32 properties; ///< AABBCCCC : AA = unused?, BB = parent, CCCC = notify value
-    /* 0x08 */ s16* readPos;
+    /* 0x08 */ u16* readPos;
     /* 0x0C */ f32 waitTime;
     /* 0x10 */ s32 loopCounter;
     /* 0x14 */ s32 curRaster;
@@ -112,7 +112,7 @@ typedef struct PlayerSpriteCacheEntry {
 } PlayerSpriteCacheEntry; // size = 0x10
 
 typedef struct Quad {
-    Vtx v[4];
+    /* 0x00 */ Vtx v[4];
 } Quad; // size = 0x40
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
@@ -170,7 +170,7 @@ s32 spr_get_npc_color_variations(s32 npcSpriteID);
 
 void create_shading_palette(Matrix4f mtx, s32 uls, s32 ult, s32 lrs, s32 lrt, s32 alpha, s32);
 
-void func_801491E4(Matrix4f mtx, s32, s32, s32, s32, s32 alpha);
+void setup_item_entity_shading(Matrix4f mtx, s32 uls, s32 ult, s32 lrs, s32 lrt, s32 alpha);
 
 SpriteAnimData* spr_load_sprite(s32 idx, s32 arg1, s32 arg2);
 

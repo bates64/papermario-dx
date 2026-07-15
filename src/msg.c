@@ -31,13 +31,13 @@ Vp D_8014C280 = {
 };
 
 #if !VERSION_JP
-u8 MessagePlural[] = { MSG_CHAR_LOWER_S, MSG_CHAR_READ_END };
+MSG_BIN MessagePlural[] = { MSG_CHAR_LOWER_S, MSG_CHAR_READ_END };
 
 #if VERSION_PAL
-u8 MessagePlural_de[] = { MSG_CHAR_LOWER_N, MSG_CHAR_READ_END };
+MSG_BIN MessagePlural_de[] = { MSG_CHAR_LOWER_N, MSG_CHAR_READ_END };
 #endif
 
-u8 MessageSingular[] = { MSG_CHAR_READ_ENDL, MSG_CHAR_READ_END };
+MSG_BIN MessageSingular[] = { MSG_CHAR_READ_ENDL, MSG_CHAR_READ_END };
 #endif
 
 #if VERSION_PAL
@@ -51,16 +51,16 @@ void* D_PAL_8014AE50[] = {
 };
 #endif
 
-s16 gNextMessageBuffer = 0;
+s16 NextMessageBuffer = 0;
 
-Vtx gRewindArrowQuad[] = {
+Vtx RewindArrowQuad[] = {
     {{{ -16,   9,   0 }, 0, { 0x000, 0x000 }, { 255, 255, 255, 255 }}},
     {{{  16,   9,   0 }, 0, { 0x400, 0x000 }, { 255, 255, 255, 255 }}},
     {{{ -16,  -9,   0 }, 0, { 0x000, 0x240 }, { 255, 255, 255, 255 }}},
     {{{  16,  -9,   0 }, 0, { 0x400, 0x240 }, { 255, 255, 255, 255 }}},
 };
 
-Gfx D_8014C2D8[] = {
+Gfx RewindArrowSetupGfx[] = {
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsSPClearGeometryMode(G_CULL_BOTH | G_LIGHTING),
     gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
@@ -84,12 +84,12 @@ s32 gMsgBGScrollAmtY;
 u8* D_8015131C;
 Gfx* D_80151338;
 
-static char gMessageBuffers[2][1024];
+static MSG_BIN gMessageBuffers[2][1024];
 static MessagePrintState gMessagePrinters[3];
 #if VERSION_JP
 static s32 D_80155C38;
 #endif
-static u8 gMessageMsgVars[3][32];
+static MSG_BIN gMessageMsgVars[3][32];
 static s16 D_80155C98;
 static Mtx gMessageWindowProjMatrix[2];
 
@@ -648,8 +648,8 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
     u8* romEnd;
     void* a2;
     s8 s8 = arg2 & 1;
-    u8* printBuf = &printer->printBuffer[printer->printBufferPos];
-    u8* srcBuf = &printer->srcBuffer[printer->srcBufferPos];
+    MSG_PTR printBuf = &printer->printBuffer[printer->printBufferPos];
+    MSG_PTR srcBuf = &printer->srcBuffer[printer->srcBufferPos];
 
     do {
         u8 c = *srcBuf++; // a1
@@ -1408,15 +1408,15 @@ void dma_load_msg(u32 msgID, void* dest) {
 }
 #endif
 
-s8* load_message_to_buffer(s32 msgID) {
-    s8* prevBufferPos;
+MSG_PTR load_message_to_buffer(s32 msgID) {
+    MSG_PTR prevBufferPos;
 
-    dma_load_msg(msgID, &gMessageBuffers[gNextMessageBuffer]);
-    prevBufferPos = gMessageBuffers[gNextMessageBuffer];
+    dma_load_msg(msgID, &gMessageBuffers[NextMessageBuffer]);
+    prevBufferPos = gMessageBuffers[NextMessageBuffer];
 
-    gNextMessageBuffer++;
-    if (gNextMessageBuffer >= ARRAY_COUNT(gMessageBuffers)) {
-        gNextMessageBuffer = 0;
+    NextMessageBuffer++;
+    if (NextMessageBuffer >= ARRAY_COUNT(gMessageBuffers)) {
+        NextMessageBuffer = 0;
     }
 
     return prevBufferPos;
@@ -1428,7 +1428,7 @@ MessagePrintState* msg_get_printer_for_msg(s32 msgID, s32* donePrintingWriteback
 
 MessagePrintState* _msg_get_printer_for_msg(s32 msgID, s32* donePrintingWriteback, s32 arg2) {
     MessagePrintState* printer;
-    s8* srcBuffer;
+    MSG_PTR srcBuffer;
     s32 height;
     s32 width;
     s32 maxLineChars;
@@ -1440,7 +1440,7 @@ MessagePrintState* _msg_get_printer_for_msg(s32 msgID, s32* donePrintingWritebac
         return nullptr;
     }
 
-    srcBuffer = (s8*) msgID;
+    srcBuffer = (MSG_PTR) msgID;
     if (msgID >= 0) {
         srcBuffer = load_message_to_buffer((s32)srcBuffer);
     }
@@ -1473,12 +1473,12 @@ MessagePrintState* _msg_get_printer_for_msg(s32 msgID, s32* donePrintingWritebac
 }
 
 s32 msg_printer_load_msg(s32 msgID, MessagePrintState* printer) {
-    s8* buffer;
+    MSG_PTR buffer;
 
     if (msgID >= 0) {
         buffer = load_message_to_buffer(msgID);
     } else {
-        buffer = (s8*) msgID;
+        buffer = (MSG_PTR) msgID;
     }
 
     printer->srcBuffer = buffer;
@@ -1519,9 +1519,9 @@ void set_message_images(MessageImageData* images) {
 }
 
 void set_message_text_var(s32 msgID, s32 index) {
-    u8* mallocSpace = nullptr;
+    MSG_PTR mallocSpace = nullptr;
     s32 i;
-    u8* msgVars;
+    MSG_PTR msgVars;
 
     if (msgID >= 0) {
         mallocSpace = general_heap_malloc(0x400);
@@ -1532,8 +1532,8 @@ void set_message_text_var(s32 msgID, s32 index) {
     i = 0;
     msgVars = gMessageMsgVars[index];
     while (true) {
-        msgVars[i] = ((u8*)msgID)[i];
-        if (((u8*)msgID)[i] == MSG_CHAR_READ_END) {
+        msgVars[i] = ((MSG_PTR)msgID)[i];
+        if (((MSG_PTR)msgID)[i] == MSG_CHAR_READ_END) {
             break;
         }
 
@@ -1549,8 +1549,8 @@ void set_message_text_var(s32 msgID, s32 index) {
 }
 
 void set_message_int_var(s32 value, s32 index) {
-    s8 strBuffer[ARRAY_COUNT(gMessageMsgVars[index])];
-    s8* bufferIt;
+    char strBuffer[ARRAY_COUNT(gMessageMsgVars[index])];
+    char* bufferIt;
     s32 i;
 
     int_to_string(value, strBuffer, 10);
@@ -1670,7 +1670,7 @@ s32 msg_get_draw_char_width(s32 character, s32 charset, s32 variation, f32 msgSc
 }
 
 void get_msg_properties(s32 msgID, s32* height, s32* width, s32* maxLineChars, s32* numLines, s32* maxLinesPerPage, s32* numSpaces, u16 charset) {
-    u8* message;
+    MSG_PTR message;
     s32 i;
     u16 pageCount;
     s32 linesOnPage;
@@ -1690,7 +1690,7 @@ void get_msg_properties(s32 msgID, s32* height, s32* width, s32* maxLineChars, s
     s32 lineCount;
     u16 varIndex;
     u16 font;
-    u8* buffer;
+    MSG_PTR buffer;
     u16 maxLineWidth;
     u16 maxCharsPerLine;
     u16 maxLinesOnPage;
@@ -1721,7 +1721,7 @@ void get_msg_properties(s32 msgID, s32* height, s32* width, s32* maxLineChars, s
         dma_load_msg(msgID, buffer);
         message = buffer;
     } else {
-        message = (u8*)msgID;
+        message = (MSG_PTR)msgID;
     }
 
     if (charset & 1) {
@@ -1989,7 +1989,7 @@ void draw_msg(s32 msgID, s32 posX, s32 posY, s32 opacity, s32 palette, u8 style)
     MessagePrintState stackPrinter;
     MessagePrintState* printer;
     u16 bufferPos;
-    s8* mallocSpace;
+    MSG_PTR mallocSpace;
     s32 charset;
     u16 flags;
     s32 width;
@@ -2013,7 +2013,7 @@ void draw_msg(s32 msgID, s32 posX, s32 posY, s32 opacity, s32 palette, u8 style)
         initialize_printer(printer, 1, 0);
 
         if (msgID < 0) {
-            printer->srcBuffer = (u8*)msgID;
+            printer->srcBuffer = (MSG_PTR)msgID;
         } else {
             mallocSpace = general_heap_malloc(0x400);
             dma_load_msg(msgID, mallocSpace);
@@ -2071,7 +2071,7 @@ void msg_update_rewind_arrow(s32 printerIndex) {
     f32 temp;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPDisplayList(gMainGfxPos++, D_8014C2D8);
+    gSPDisplayList(gMainGfxPos++, RewindArrowSetupGfx);
 
     switch (printer->rewindArrowAnimState) {
         case REWIND_ARROW_STATE_INIT:
@@ -2139,7 +2139,7 @@ void msg_update_rewind_arrow(s32 printerIndex) {
     gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPLoadTextureTile(gMainGfxPos++, ui_msg_star_png, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 0, 0, 0, 15, 17, 0, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
     gDPLoadMultiTile_4b(gMainGfxPos++, ui_msg_star_silhouette_png, 0x0100, 1, G_IM_FMT_I, 16, 0, 0, 0, 15, 18, 0, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, 5, G_TX_NOLOD, G_TX_NOLOD);
-    gSPVertex(gMainGfxPos++, gRewindArrowQuad, 4, 0);
+    gSPVertex(gMainGfxPos++, RewindArrowQuad, 4, 0);
     gSP2Triangles(gMainGfxPos++, 0, 2, 1, 0, 1, 2, 3, 0);
 }
 
@@ -2222,7 +2222,7 @@ void draw_digit(IMG_PTR img, s32 charset, s32 posX, s32 posY) {
 }
 
 void draw_number(s32 value, s32 x, s32 y, s32 charset, s32 palette, s32 opacity, u16 style) {
-    u8 valueStr[24];
+    char valueStr[24];
     s8 digits[24];
     s32 digitPosX[24];
     s32 i;

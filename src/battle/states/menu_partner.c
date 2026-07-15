@@ -115,67 +115,67 @@ AnimID PartnerIdleAnims[] = {
 
 IconHudScriptPair PartnerMoveHudScripts[][5] = {
     [PARTNER_GOOMBARIO] {
-        {&HES_Goombario, &HES_GoombarioDisabled},
-        {&HES_MoveDiamond, &HES_MoveDiamond_disabled},
-        {&HES_MoveBlueOrb, &HES_MoveBlueOrbDisabled},
-        {&HES_MoveGreenOrb, &HES_MoveGreenOrbDisabled},
-        {&HES_MoveRedOrb, &HES_MoveRedOrbDisabled}
+        {HES_Goombario, HES_GoombarioDisabled},
+        {HES_MoveDiamond, HES_MoveDiamond_disabled},
+        {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
+        {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
+        {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
     [PARTNER_KOOPER] {
-        {&HES_Kooper, &HES_KooperDisabled},
-        {&HES_MoveDiamond, &HES_MoveDiamond_disabled},
-        {&HES_MoveBlueOrb, &HES_MoveBlueOrbDisabled},
-        {&HES_MoveGreenOrb, &HES_MoveGreenOrbDisabled},
-        {&HES_MoveRedOrb, &HES_MoveRedOrbDisabled}
+        {HES_Kooper, HES_KooperDisabled},
+        {HES_MoveDiamond, HES_MoveDiamond_disabled},
+        {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
+        {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
+        {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
     [PARTNER_BOMBETTE] {
-        {&HES_Bombette, &HES_BombetteDisabled},
-        {&HES_MoveDiamond, &HES_MoveDiamond_disabled},
-        {&HES_MoveBlueOrb, &HES_MoveBlueOrbDisabled},
-        {&HES_MoveGreenOrb, &HES_MoveGreenOrbDisabled},
-        {&HES_MoveRedOrb, &HES_MoveRedOrbDisabled}
+        {HES_Bombette, HES_BombetteDisabled},
+        {HES_MoveDiamond, HES_MoveDiamond_disabled},
+        {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
+        {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
+        {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
     [PARTNER_PARAKARRY]  {
-        {&HES_Parakarry, &HES_ParakarryDisabled},
-        {&HES_MoveDiamond, &HES_MoveDiamond_disabled},
-        {&HES_MoveBlueOrb, &HES_MoveBlueOrbDisabled},
-        {&HES_MoveGreenOrb, &HES_MoveGreenOrbDisabled},
-        {&HES_MoveRedOrb, &HES_MoveRedOrbDisabled}
+        {HES_Parakarry, HES_ParakarryDisabled},
+        {HES_MoveDiamond, HES_MoveDiamond_disabled},
+        {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
+        {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
+        {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
     [PARTNER_GOOMPA] {
-        {&HES_Partner0, &HES_Partner0Disabled},
-        {&HES_MoveDiamond, &HES_MoveDiamond_disabled},
-        {&HES_MoveBlueOrb, &HES_MoveBlueOrbDisabled},
-        {&HES_MoveGreenOrb, &HES_MoveGreenOrbDisabled},
-        {&HES_MoveRedOrb, &HES_MoveRedOrbDisabled}
+        {HES_Partner0, HES_Partner0Disabled},
+        {HES_MoveDiamond, HES_MoveDiamond_disabled},
+        {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
+        {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
+        {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
     [PARTNER_WATT] {
-        {&HES_Watt, &HES_WattDisabled},
-        {&HES_MoveDiamond, &HES_MoveDiamond_disabled},
-        {&HES_MoveBlueOrb, &HES_MoveBlueOrbDisabled},
-        {&HES_MoveGreenOrb, &HES_MoveGreenOrbDisabled},
-        {&HES_MoveRedOrb, &HES_MoveRedOrbDisabled}
+        {HES_Watt, HES_WattDisabled},
+        {HES_MoveDiamond, HES_MoveDiamond_disabled},
+        {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
+        {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
+        {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
     [PARTNER_SUSHIE] {
-        {&HES_Sushie, &HES_SushieDisabled},
-        {&HES_MoveDiamond, &HES_MoveDiamond_disabled},
-        {&HES_MoveBlueOrb, &HES_MoveBlueOrbDisabled},
-        {&HES_MoveGreenOrb, &HES_MoveGreenOrbDisabled},
-        {&HES_MoveRedOrb, &HES_MoveRedOrbDisabled}
+        {HES_Sushie, HES_SushieDisabled},
+        {HES_MoveDiamond, HES_MoveDiamond_disabled},
+        {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
+        {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
+        {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
     [PARTNER_LAKILESTER] {
-        {&HES_Lakilester, &HES_LakilesterDisabled},
-        {&HES_MoveDiamond, &HES_MoveDiamond_disabled},
-        {&HES_MoveBlueOrb, &HES_MoveBlueOrbDisabled},
-        {&HES_MoveGreenOrb, &HES_MoveGreenOrbDisabled},
-        {&HES_MoveRedOrb, &HES_MoveRedOrbDisabled}
+        {HES_Lakilester, HES_LakilesterDisabled},
+        {HES_MoveDiamond, HES_MoveDiamond_disabled},
+        {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
+        {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
+        {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
     [PARTNER_BOW] {
-        {&HES_Bow, &HES_BowDisabled},
-        {&HES_MoveDiamond, &HES_MoveDiamond_disabled},
-        {&HES_MoveBlueOrb, &HES_MoveBlueOrbDisabled},
-        {&HES_MoveGreenOrb, &HES_MoveGreenOrbDisabled},
-        {&HES_MoveRedOrb, &HES_MoveRedOrbDisabled}
+        {HES_Bow, HES_BowDisabled},
+        {HES_MoveDiamond, HES_MoveDiamond_disabled},
+        {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
+        {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
+        {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
 };
 
@@ -658,7 +658,7 @@ void btl_state_update_partner_menu(void) {
         popupIndex = 0;
         for (i = 0; i < ARRAY_COUNT(playerData->invItems); i++) {
             ItemData* item;
-            HudScript** hudScript;
+            HudScriptPtr* hudScript;
             if (playerData->invItems[i] == ITEM_NONE) {
                 continue;
             }

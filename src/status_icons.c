@@ -33,6 +33,7 @@ typedef struct HudComplexStatusIcon {
     /* 0x3 */ s8 removingTask;
     /* 0x4 */ PAD(1);
     /* 0x5 */ s8 frameCounter;
+    /* 0x6 */ PAD(2);
     /* 0x8 */ HudElemID activeElementHID;
     /* 0xC */ HudElemID removingElementHID;
 } HudComplexStatusIcon; // size = 0x10
@@ -40,6 +41,7 @@ typedef struct HudComplexStatusIcon {
 typedef struct HudSimpleStatusIcon {
     /* 0x0 */ s8 active;
     /* 0x1 */ s8 removing;
+    /* 0x2 */ PAD(2);
     /* 0x4 */ s32 activeElementID;
 } HudSimpleStatusIcon; // size = 0x8
 
@@ -364,31 +366,31 @@ void update_all_status_icons(void* data) {
         if (icon->status1.activeTask == STATUS_ICON_TASK_LOAD) {
             switch (icon->status1.active) {
                 case STATUS_KEY_SLEEP:
-                    elementID = icon->status1.activeElementHID = hud_element_create(&HES_AsleepBegin);
+                    elementID = icon->status1.activeElementHID = hud_element_create(HES_AsleepBegin);
                     break;
                 case STATUS_KEY_PARALYZE:
-                    elementID = icon->status1.activeElementHID = hud_element_create(&HES_ParalyzedBegin);
+                    elementID = icon->status1.activeElementHID = hud_element_create(HES_ParalyzedBegin);
                     break;
                 case STATUS_KEY_DIZZY:
-                    elementID = icon->status1.activeElementHID = hud_element_create(&HES_DizzyBegin);
+                    elementID = icon->status1.activeElementHID = hud_element_create(HES_DizzyBegin);
                     break;
                 case STATUS_KEY_UNUSED:
-                    elementID = icon->status1.activeElementHID = hud_element_create(&HES_WeakenedLoop);
+                    elementID = icon->status1.activeElementHID = hud_element_create(HES_WeakenedLoop);
                     break;
                 case STATUS_KEY_STOP:
-                    elementID = icon->status1.activeElementHID = hud_element_create(&HES_StoppedBegin);
+                    elementID = icon->status1.activeElementHID = hud_element_create(HES_StoppedBegin);
                     break;
                 case STATUS_KEY_POISON:
-                    elementID = icon->status1.activeElementHID = hud_element_create(&HES_PoisonedBegin);
+                    elementID = icon->status1.activeElementHID = hud_element_create(HES_PoisonedBegin);
                     break;
                 case STATUS_KEY_SHRINK:
-                    elementID = icon->status1.activeElementHID = hud_element_create(&HES_ShrunkBegin);
+                    elementID = icon->status1.activeElementHID = hud_element_create(HES_ShrunkBegin);
                     break;
                 case STATUS_KEY_FROZEN:
-                    elementID = icon->status1.activeElementHID = hud_element_create(&HES_FrozenBegin);
+                    elementID = icon->status1.activeElementHID = hud_element_create(HES_FrozenBegin);
                     break;
                 default:
-                    elementID = icon->status1.activeElementHID = hud_element_create(&HES_Item_KeyGift);
+                    elementID = icon->status1.activeElementHID = hud_element_create(HES_Item_KeyGift);
                     break;
             }
             hud_element_set_flags(elementID, HUD_ELEMENT_FLAG_DISABLED);
@@ -402,31 +404,31 @@ void update_all_status_icons(void* data) {
             case STATUS_ICON_TASK_LOAD:
                 switch (icon->status1.removing) {
                     case STATUS_KEY_SLEEP:
-                        hud_element_set_script(icon->status1.removingElementHID, &HES_AsleepEnd);
+                        hud_element_set_script(icon->status1.removingElementHID, HES_AsleepEnd);
                         break;
                     case STATUS_KEY_PARALYZE:
-                        hud_element_set_script(icon->status1.removingElementHID, &HES_ParalyzedEnd);
+                        hud_element_set_script(icon->status1.removingElementHID, HES_ParalyzedEnd);
                         break;
                     case STATUS_KEY_DIZZY:
-                        hud_element_set_script(icon->status1.removingElementHID, &HES_DizzyEnd);
+                        hud_element_set_script(icon->status1.removingElementHID, HES_DizzyEnd);
                         break;
                     case STATUS_KEY_UNUSED:
-                        hud_element_set_script(icon->status1.removingElementHID, &HES_WeakenedLoop);
+                        hud_element_set_script(icon->status1.removingElementHID, HES_WeakenedLoop);
                         break;
                     case STATUS_KEY_STOP:
-                        hud_element_set_script(icon->status1.removingElementHID, &HES_StoppedEnd);
+                        hud_element_set_script(icon->status1.removingElementHID, HES_StoppedEnd);
                         break;
                     case STATUS_KEY_POISON:
-                        hud_element_set_script(icon->status1.removingElementHID, &HES_PoisonedEnd);
+                        hud_element_set_script(icon->status1.removingElementHID, HES_PoisonedEnd);
                         break;
                     case STATUS_KEY_SHRINK:
-                        hud_element_set_script(icon->status1.removingElementHID, &HES_ShrunkEnd);
+                        hud_element_set_script(icon->status1.removingElementHID, HES_ShrunkEnd);
                         break;
                     case STATUS_KEY_FROZEN:
-                        hud_element_set_script(icon->status1.removingElementHID, &HES_FrozenEnd);
+                        hud_element_set_script(icon->status1.removingElementHID, HES_FrozenEnd);
                         break;
                     default:
-                        hud_element_set_script(icon->status1.removingElementHID, &HES_Item_KeyGift);
+                        hud_element_set_script(icon->status1.removingElementHID, HES_Item_KeyGift);
                         break;
                 }
 
@@ -448,10 +450,10 @@ void update_all_status_icons(void* data) {
         if (icon->status2.activeTask == STATUS_ICON_TASK_LOAD) {
             switch (icon->status2.active) {
                 case STATUS_KEY_STATIC:
-                    elementID = icon->status2.activeElementHID = hud_element_create(&HES_ElectrifiedBegin);
+                    elementID = icon->status2.activeElementHID = hud_element_create(HES_ElectrifiedBegin);
                     break;
                 default:
-                    elementID = icon->status2.activeElementHID = hud_element_create(&HES_Item_KeyGift);
+                    elementID = icon->status2.activeElementHID = hud_element_create(HES_Item_KeyGift);
                     break;
             }
 
@@ -466,10 +468,10 @@ void update_all_status_icons(void* data) {
             case STATUS_ICON_TASK_LOAD:
                 switch (icon->status2.removing) {
                     case STATUS_KEY_STATIC:
-                        hud_element_set_script(icon->status2.removingElementHID, &HES_ElectrifiedEnd);
+                        hud_element_set_script(icon->status2.removingElementHID, HES_ElectrifiedEnd);
                         break;
                     default:
-                        hud_element_set_script(icon->status2.removingElementHID, &HES_Item_KeyGift);
+                        hud_element_set_script(icon->status2.removingElementHID, HES_Item_KeyGift);
                         break;
                 }
 
@@ -490,10 +492,10 @@ void update_all_status_icons(void* data) {
         if (icon->status3.activeTask == STATUS_ICON_TASK_LOAD) {
             switch (icon->status3.active) {
                 case STATUS_KEY_TRANSPARENT:
-                    elementID = icon->status3.activeElementHID = hud_element_create(&HES_TransparentBegin);
+                    elementID = icon->status3.activeElementHID = hud_element_create(HES_TransparentBegin);
                     break;
                 default:
-                    elementID = icon->status3.activeElementHID = hud_element_create(&HES_Item_KeyGift);
+                    elementID = icon->status3.activeElementHID = hud_element_create(HES_Item_KeyGift);
                     break;
             }
 
@@ -508,10 +510,10 @@ void update_all_status_icons(void* data) {
             case STATUS_ICON_TASK_LOAD:
                 switch (icon->status3.removing) {
                     case STATUS_KEY_TRANSPARENT:
-                        hud_element_set_script(icon->status3.removingElementHID, &HES_TransparentEnd);
+                        hud_element_set_script(icon->status3.removingElementHID, HES_TransparentEnd);
                         break;
                     default:
-                        hud_element_set_script(icon->status3.removingElementHID, &HES_Item_KeyGift);
+                        hud_element_set_script(icon->status3.removingElementHID, HES_Item_KeyGift);
                         break;
                 }
 
@@ -530,7 +532,7 @@ void update_all_status_icons(void* data) {
         }
 
         if (icon->status4.activeTask == STATUS_ICON_TASK_LOAD) {
-            elementID = icon->status4.activeElementHID = hud_element_create(&HES_WeakenedBegin);
+            elementID = icon->status4.activeElementHID = hud_element_create(HES_WeakenedBegin);
             hud_element_set_flags(elementID, HUD_ELEMENT_FLAG_DISABLED);
             hud_element_set_flags(elementID, HUD_ELEMENT_FLAG_MANUAL_RENDER);
             icon->status4.activeTask = STATUS_ICON_TASK_DRAW;
@@ -540,7 +542,7 @@ void update_all_status_icons(void* data) {
             case STATUS_ICON_TASK_NONE:
                 break;
             case STATUS_ICON_TASK_LOAD:
-                hud_element_set_script(icon->status4.removingElementHID, &HES_WeakenedEnd);
+                hud_element_set_script(icon->status4.removingElementHID, HES_WeakenedEnd);
                 icon->status4.frameCounter = 20;
                 icon->status4.removingTask = STATUS_ICON_TASK_DRAW;
                 break;
@@ -1175,7 +1177,7 @@ void create_status_icon_boost_jump(s32 iconID) {
     statusIcon->flags &= ~STATUS_ICON_FLAG_BOOST_JUMP;
     if (!statusIcon->boostJump.active) {
         statusIcon->boostJump.active = true;
-        hid = hud_element_create(&HES_BoostJumpBegin);
+        hid = hud_element_create(HES_BoostJumpBegin);
         hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
         hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
         statusIcon->boostJump.activeElementID = hid;
@@ -1190,7 +1192,7 @@ void remove_status_icon_boost_jump(s32 iconID) {
         statusIcon->boostJump.active = false;
         statusIcon->boostJump.removing = true;
         statusIcon->prevIndexBoostJump = hid;
-        hud_element_set_script(hid, &HES_BoostJumpEnd);
+        hud_element_set_script(hid, HES_BoostJumpEnd);
     }
 }
 
@@ -1207,7 +1209,7 @@ void create_status_icon_boost_hammer(s32 iconID) {
     statusIcon->flags &= ~STATUS_ICON_FLAG_BOOST_HAMMER;
     if (!statusIcon->boostHammer.active) {
         statusIcon->boostHammer.active = true;
-        hid = hud_element_create(&HES_BoostHammerBegin);
+        hid = hud_element_create(HES_BoostHammerBegin);
         hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
         hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
         statusIcon->boostHammer.activeElementID = hid;
@@ -1222,7 +1224,7 @@ void remove_status_icon_boost_hammer(s32 iconID) {
         statusIcon->boostHammer.active = false;
         statusIcon->boostHammer.removing = false;
         statusIcon->prevIndexBoostHammer = hid;
-        hud_element_set_script(hid, &HES_BoostHammerEnd);
+        hud_element_set_script(hid, HES_BoostHammerEnd);
     }
 }
 
@@ -1239,7 +1241,7 @@ void create_status_icon_boost_partner(s32 iconID) {
     statusIcon->flags &= ~STATUS_ICON_FLAG_BOOST_PARTNER;
     if (!statusIcon->boostPartner.active) {
         statusIcon->boostPartner.active = true;
-        hid = hud_element_create(&HES_BoostPartner);
+        hid = hud_element_create(HES_BoostPartner);
         hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
         hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
         statusIcon->boostPartner.activeElementID = hid;
@@ -1268,7 +1270,7 @@ void create_status_icon_surprise(s32 iconID) {
     statusIcon->flags &= ~STATUS_ICON_FLAG_SURPRISE;
     if (!statusIcon->surprise.active) {
         statusIcon->surprise.active = true;
-        hid = hud_element_create(&HES_Surprise);
+        hid = hud_element_create(HES_Surprise);
         hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
         hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
         statusIcon->surprise.activeElementID = hid;
@@ -1297,7 +1299,7 @@ void create_status_icon_peril(s32 iconID) {
     statusIcon->flags &= ~STATUS_ICON_FLAG_PERIL;
     if (!statusIcon->peril.active) {
         statusIcon->peril.active = true;
-        hid = hud_element_create(&HES_Peril);
+        hid = hud_element_create(HES_Peril);
         hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
         hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
         statusIcon->peril.activeElementID = hid;
@@ -1326,7 +1328,7 @@ void create_status_icon_danger(s32 iconID) {
     statusIcon->flags &= ~STATUS_ICON_FLAG_DANGER;
     if (!statusIcon->danger.active) {
         statusIcon->danger.active = true;
-        hid = hud_element_create(&HES_Danger);
+        hid = hud_element_create(HES_Danger);
         hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
         hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
         statusIcon->danger.activeElementID = hid;

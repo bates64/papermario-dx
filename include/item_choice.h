@@ -35,7 +35,7 @@ typedef struct LetterDelivery {
     /* 0x1C */ union {
     /*      */   s32 letters[4];
     /*      */   s32* list;
-    /* 0x2C */ };
+    /* 0x1C */ };
     /* 0x2C */ s32 reward;
     /* 0x30 */ b32 deferReward; /// caller will be responsible for giving reward
 } LetterDelivery; // size = 0x34

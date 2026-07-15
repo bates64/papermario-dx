@@ -96,17 +96,17 @@ s32 BattleMenu_CategoryForSubmenu[] = {
 };
 
 IconHudScriptPair BootsHudScripts[] = {
-    { &HES_MenuBoots1Disabled, &HES_MenuBoots1Disabled },
-    { &HES_MenuBoots1, &HES_MenuBoots1Disabled },
-    { &HES_MenuBoots2, &HES_MenuBoots2Disabled },
-    { &HES_MenuBoots3, &HES_MenuBoots3Disabled },
+    { HES_MenuBoots1Disabled, HES_MenuBoots1Disabled },
+    { HES_MenuBoots1, HES_MenuBoots1Disabled },
+    { HES_MenuBoots2, HES_MenuBoots2Disabled },
+    { HES_MenuBoots3, HES_MenuBoots3Disabled },
 };
 
 IconHudScriptPair HammerHudScripts[] = {
-    { &HES_MenuHammer1Disabled, &HES_MenuHammer1Disabled },
-    { &HES_MenuHammer1, &HES_MenuHammer1Disabled },
-    { &HES_MenuHammer2, &HES_MenuHammer2Disabled },
-    { &HES_MenuHammer3, &HES_MenuHammer3Disabled  },
+    { HES_MenuHammer1Disabled, HES_MenuHammer1Disabled },
+    { HES_MenuHammer1, HES_MenuHammer1Disabled },
+    { HES_MenuHammer2, HES_MenuHammer2Disabled },
+    { HES_MenuHammer3, HES_MenuHammer3Disabled  },
 };
 
 void btl_init_menu_boots(void) {

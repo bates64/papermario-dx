@@ -208,89 +208,89 @@ EntityModelScriptList starpoint_digit_scripts = {
     EMS_starpoint_digit_9,
 };
 
-EntityModelCode* starpoint_space_script = EMS_starpoint_dummy;
+EntityModelScriptPtr starpoint_space_script = EMS_starpoint_dummy;
 
-HudScript* levelup_stat_scripts[3] = {
-    &HES_level_up_FP,
-    &HES_level_up_HP,
-    &HES_level_up_BP,
+HudScriptPtr levelup_stat_scripts[3] = {
+    HES_level_up_FP,
+    HES_level_up_HP,
+    HES_level_up_BP,
 };
 
-HudScript* HES_LevelUpDigits[3][10] = {
+HudScriptPtr HES_LevelUpDigits[3][10] = {
     {
-        &HES_level_up_green_digit_0,
-        &HES_level_up_green_digit_1,
-        &HES_level_up_green_digit_2,
-        &HES_level_up_green_digit_3,
-        &HES_level_up_green_digit_4,
-        &HES_level_up_green_digit_5,
-        &HES_level_up_green_digit_6,
-        &HES_level_up_green_digit_7,
-        &HES_level_up_green_digit_8,
-        &HES_level_up_green_digit_9,
+        HES_level_up_green_digit_0,
+        HES_level_up_green_digit_1,
+        HES_level_up_green_digit_2,
+        HES_level_up_green_digit_3,
+        HES_level_up_green_digit_4,
+        HES_level_up_green_digit_5,
+        HES_level_up_green_digit_6,
+        HES_level_up_green_digit_7,
+        HES_level_up_green_digit_8,
+        HES_level_up_green_digit_9,
     },
     {
-        &HES_level_up_red_digit_0,
-        &HES_level_up_red_digit_1,
-        &HES_level_up_red_digit_2,
-        &HES_level_up_red_digit_3,
-        &HES_level_up_red_digit_4,
-        &HES_level_up_red_digit_5,
-        &HES_level_up_red_digit_6,
-        &HES_level_up_red_digit_7,
-        &HES_level_up_red_digit_8,
-        &HES_level_up_red_digit_9,
+        HES_level_up_red_digit_0,
+        HES_level_up_red_digit_1,
+        HES_level_up_red_digit_2,
+        HES_level_up_red_digit_3,
+        HES_level_up_red_digit_4,
+        HES_level_up_red_digit_5,
+        HES_level_up_red_digit_6,
+        HES_level_up_red_digit_7,
+        HES_level_up_red_digit_8,
+        HES_level_up_red_digit_9,
     },
     {
-        &HES_level_up_blue_digit_0,
-        &HES_level_up_blue_digit_1,
-        &HES_level_up_blue_digit_2,
-        &HES_level_up_blue_digit_3,
-        &HES_level_up_blue_digit_4,
-        &HES_level_up_blue_digit_5,
-        &HES_level_up_blue_digit_6,
-        &HES_level_up_blue_digit_7,
-        &HES_level_up_blue_digit_8,
-        &HES_level_up_blue_digit_9,
+        HES_level_up_blue_digit_0,
+        HES_level_up_blue_digit_1,
+        HES_level_up_blue_digit_2,
+        HES_level_up_blue_digit_3,
+        HES_level_up_blue_digit_4,
+        HES_level_up_blue_digit_5,
+        HES_level_up_blue_digit_6,
+        HES_level_up_blue_digit_7,
+        HES_level_up_blue_digit_8,
+        HES_level_up_blue_digit_9,
     },
 };
 
-HudScript* level_up_small_digit_scripts[3][10] = {
+HudScriptPtr level_up_small_digit_scripts[3][10] = {
     {
-        &HES_level_up_small_green_digit_0,
-        &HES_level_up_small_green_digit_1,
-        &HES_level_up_small_green_digit_2,
-        &HES_level_up_small_green_digit_3,
-        &HES_level_up_small_green_digit_4,
-        &HES_level_up_small_green_digit_5,
-        &HES_level_up_small_green_digit_6,
-        &HES_level_up_small_green_digit_7,
-        &HES_level_up_small_green_digit_8,
-        &HES_level_up_small_green_digit_9,
+        HES_level_up_small_green_digit_0,
+        HES_level_up_small_green_digit_1,
+        HES_level_up_small_green_digit_2,
+        HES_level_up_small_green_digit_3,
+        HES_level_up_small_green_digit_4,
+        HES_level_up_small_green_digit_5,
+        HES_level_up_small_green_digit_6,
+        HES_level_up_small_green_digit_7,
+        HES_level_up_small_green_digit_8,
+        HES_level_up_small_green_digit_9,
     },
     {
-        &HES_level_up_small_red_digit_0,
-        &HES_level_up_small_red_digit_1,
-        &HES_level_up_small_red_digit_2,
-        &HES_level_up_small_red_digit_3,
-        &HES_level_up_small_red_digit_4,
-        &HES_level_up_small_red_digit_5,
-        &HES_level_up_small_red_digit_6,
-        &HES_level_up_small_red_digit_7,
-        &HES_level_up_small_red_digit_8,
-        &HES_level_up_small_red_digit_9,
+        HES_level_up_small_red_digit_0,
+        HES_level_up_small_red_digit_1,
+        HES_level_up_small_red_digit_2,
+        HES_level_up_small_red_digit_3,
+        HES_level_up_small_red_digit_4,
+        HES_level_up_small_red_digit_5,
+        HES_level_up_small_red_digit_6,
+        HES_level_up_small_red_digit_7,
+        HES_level_up_small_red_digit_8,
+        HES_level_up_small_red_digit_9,
     },
     {
-        &HES_level_up_small_blue_digit_0,
-        &HES_level_up_small_blue_digit_1,
-        &HES_level_up_small_blue_digit_2,
-        &HES_level_up_small_blue_digit_3,
-        &HES_level_up_small_blue_digit_4,
-        &HES_level_up_small_blue_digit_5,
-        &HES_level_up_small_blue_digit_6,
-        &HES_level_up_small_blue_digit_7,
-        &HES_level_up_small_blue_digit_8,
-        &HES_level_up_small_blue_digit_9,
+        HES_level_up_small_blue_digit_0,
+        HES_level_up_small_blue_digit_1,
+        HES_level_up_small_blue_digit_2,
+        HES_level_up_small_blue_digit_3,
+        HES_level_up_small_blue_digit_4,
+        HES_level_up_small_blue_digit_5,
+        HES_level_up_small_blue_digit_6,
+        HES_level_up_small_blue_digit_7,
+        HES_level_up_small_blue_digit_8,
+        HES_level_up_small_blue_digit_9,
     },
 };
 
@@ -678,22 +678,22 @@ void btl_state_update_celebration(void) {
                     mdl_set_shroud_tint_params(0, 0, 0, ((10 - CelebrateSubstateTime) * 16) & 0xF0);
                 }
             } else {
-                hid = hud_element_create(&HES_level_up_heart);
+                hid = hud_element_create(HES_level_up_heart);
                 LevelUpStatEmblemIDs[0] = hid;
                 hud_element_set_render_pos(hid, 310, 140);
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
 
-                hid = hud_element_create(&HES_level_up_flower);
+                hid = hud_element_create(HES_level_up_flower);
                 LevelUpStatEmblemIDs[1] = hid;
                 hud_element_set_render_pos(hid, 158, 340);
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
 
-                hid = hud_element_create(&HES_level_up_leaves);
+                hid = hud_element_create(HES_level_up_leaves);
                 LevelUpStatEmblemIDs[3] = hid;
                 hud_element_set_render_pos(hid, 158, 340);
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
 
-                hid = hud_element_create(&HES_level_up_badge);
+                hid = hud_element_create(HES_level_up_badge);
                 LevelUpStatEmblemIDs[2] = hid;
                 hud_element_set_render_pos(hid, 6, 140);
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
@@ -757,7 +757,7 @@ void btl_state_update_celebration(void) {
                     hud_element_set_render_pos(hid, x - 8, y + 46);
 
                     hid = LevelUpStatTextIDs[LVL_UP_FP][LVL_UP_ARROW];
-                    hud_element_set_script(hid, &HES_level_up_small_green_arrow);
+                    hud_element_set_script(hid, HES_level_up_small_green_arrow);
                     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
                     hud_element_get_render_pos(hid, &x, &y);
                     hud_element_set_render_pos(hid, x - 3, y + 46);
@@ -828,7 +828,7 @@ void btl_state_update_celebration(void) {
                     hud_element_set_render_pos(hid, x - 8, y + 46);
 
                     hid = LevelUpStatTextIDs[LVL_UP_HP][LVL_UP_ARROW];
-                    hud_element_set_script(hid, &HES_level_up_small_red_arrow);
+                    hud_element_set_script(hid, HES_level_up_small_red_arrow);
                     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
                     hud_element_get_render_pos(hid, &x, &y);
                     hud_element_set_render_pos(hid, x - 3, y + 46);
@@ -898,7 +898,7 @@ void btl_state_update_celebration(void) {
                     hud_element_set_render_pos(hid, x - 8, y + 46);
 
                     hid = LevelUpStatTextIDs[LVL_UP_BP][LVL_UP_ARROW];
-                    hud_element_set_script(hid, &HES_level_up_small_blue_arrow);
+                    hud_element_set_script(hid, HES_level_up_small_blue_arrow);
                     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
                     hud_element_get_render_pos(hid, &x, &y);
                     hud_element_set_render_pos(hid, x - 3, y + 46);
@@ -934,7 +934,7 @@ void btl_state_update_celebration(void) {
                     CantLevelUpStat[MENU_BP] = true;
                 }
 
-                LevelUpSpotlightID = hid = hud_element_create(&HES_ProjectorBeam);
+                LevelUpSpotlightID = hid = hud_element_create(HES_ProjectorBeam);
                 hud_element_create_transform_B(hid);
                 hud_element_set_render_pos(hid, 156, 13);
                 hud_element_set_tint(hid, 255, 255, 255);
@@ -944,7 +944,7 @@ void btl_state_update_celebration(void) {
                 hud_element_set_alpha(hid, 200);
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
 
-                LevelUpSelectTextID = hid = hud_element_create(&HES_level_up_select_one_to_upgrade);
+                LevelUpSelectTextID = hid = hud_element_create(HES_level_up_select_one_to_upgrade);
                 hud_element_set_render_pos(hid, 0, 0);
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                 battleStatus->curSubmenu = MENU_FP;
@@ -1345,20 +1345,20 @@ void btl_state_draw_celebration(void) {
                     }
 
                     id = LevelUpStatEmblemIDs[0];
-                    if (hud_element_get_script(id) != &HES_level_up_heart_copy) {
-                        hud_element_set_script(id, &HES_level_up_heart_copy);
+                    if (hud_element_get_script(id) != HES_level_up_heart_copy) {
+                        hud_element_set_script(id, HES_level_up_heart_copy);
                     }
                     id = LevelUpStatEmblemIDs[3];
-                    if (hud_element_get_script(id) != &HES_level_up_leaves) {
-                        hud_element_set_script(id, &HES_level_up_leaves);
+                    if (hud_element_get_script(id) != HES_level_up_leaves) {
+                        hud_element_set_script(id, HES_level_up_leaves);
                     }
                     id = LevelUpStatEmblemIDs[1];
-                    if (hud_element_get_script(id) != &HES_level_up_flower) {
-                        hud_element_set_script(id, &HES_level_up_flower);
+                    if (hud_element_get_script(id) != HES_level_up_flower) {
+                        hud_element_set_script(id, HES_level_up_flower);
                     }
                     id = LevelUpStatEmblemIDs[2];
-                    if (hud_element_get_script(id) != &HES_level_up_badge) {
-                        hud_element_set_script(id, &HES_level_up_badge);
+                    if (hud_element_get_script(id) != HES_level_up_badge) {
+                        hud_element_set_script(id, HES_level_up_badge);
                     }
                     break;
                 case MENU_FP:

@@ -120,8 +120,8 @@ BSS s32 FrameQuadIndex;
 
 void hud_element_setup_cam(void);
 
-void hud_element_load_script(HudElement* hudElement, HudScript* anim) {
-    s32* pos = (s32*)anim;
+void hud_element_load_script(HudElement* hudElement, HudScriptPtr script) {
+    HudScriptPos pos = script;
     s32 raster;
     s32 palette;
     s32 preset;
@@ -687,7 +687,7 @@ void hud_element_setup_cam(void) {
     gCameras[CAM_HUD].flags &= ~(CAMERA_FLAG_DISABLED | CAMERA_FLAG_LEAD_PLAYER);
 }
 
-HudElemID hud_element_create(HudScript* anim) {
+HudElemID hud_element_create(HudScriptPtr script) {
     HudElement* hudElement;
     HudElemID id;
 
@@ -705,19 +705,19 @@ HudElemID hud_element_create(HudScript* anim) {
     ASSERT(hudElement != nullptr);
 
     hudElement->flags = HUD_ELEMENT_FLAG_INITIALIZED;
-    hudElement->readPos = anim;
-    if (anim == nullptr) {
-        hudElement->readPos = &HES_Empty;
+    if (script == nullptr) {
+        script = HES_Empty;
     }
+    hudElement->source = script;
+    hudElement->readPos = script;
+    hudElement->loopStartPos = script;
     hudElement->updateTimer = 1;
     hudElement->drawSizePreset = -1;
     hudElement->tileSizePreset = -1;
     hudElement->renderPosX = 0;
     hudElement->renderPosY = 0;
-    hudElement->loopStartPos = anim;
     hudElement->widthScale = X10(1.0f);
     hudElement->heightScale = X10(1.0f);
-    hudElement->anim = hudElement->readPos;
     hudElement->uniformScale = 1.0f;
     hudElement->screenPosOffset.x = 0;
     hudElement->screenPosOffset.y = 0;
@@ -734,7 +734,7 @@ HudElemID hud_element_create(HudScript* anim) {
         id |= HUD_ELEMENT_BATTLE_ID_MASK;
     }
 
-    hud_element_load_script(hudElement, hudElement->readPos);
+    hud_element_load_script(hudElement, script);
     while (hud_element_update(hudElement) != 0);
 
     return id;
@@ -785,10 +785,10 @@ s32 hud_element_update(HudElement* hudElement) {
     s32 s1, s2;
     s32 arg1, arg2;
     f32 uniformScale;
-    HudScript* newReadPos;
+    HudScriptPos newReadPos;
 
     HudTransform* hudTransform = hudElement->hudTransform;
-    s32* nextPos = (s32*)hudElement->readPos;
+    HudScriptPos nextPos = hudElement->readPos;
 
     switch (*nextPos++) {
         case HUD_ELEMENT_OP_End:
@@ -801,31 +801,31 @@ s32 hud_element_update(HudElement* hudElement) {
             hudElement->flags |= HUD_ELEMENT_FLAG_DELETE;
             break;
         case HUD_ELEMENT_OP_UseIA8:
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             hudElement->flags |= HUD_ELEMENT_FLAG_FMT_IA8;
             return true;
         case HUD_ELEMENT_OP_SetVisible:
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             hudElement->flags |= HUD_ELEMENT_FLAG_FMT_CI4;
             return true;
         case HUD_ELEMENT_OP_SetHidden:
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             hudElement->flags &= ~HUD_ELEMENT_FLAG_FMT_CI4;
             return true;
         case HUD_ELEMENT_OP_SetFlags:
             s1 = *nextPos++;
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             hudElement->flags |= s1;
             return true;
         case HUD_ELEMENT_OP_ClearFlags:
             s1 = *nextPos++;
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             hudElement->flags &= ~s1;
             return true;
         case HUD_ELEMENT_OP_SetRGBA:
             hudElement->updateTimer = *nextPos++;
             hudElement->imageAddr = (u8*)*nextPos++;
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
 
             if (hudElement->flags & HUD_ELEMENT_FLAG_MEMOFFSET) {
                 hudElement->imageAddr += hudElement->memOffset;
@@ -865,7 +865,7 @@ s32 hud_element_update(HudElement* hudElement) {
             hudElement->updateTimer = *nextPos++;
             hudElement->imageAddr = (IMG_PTR)*nextPos++;
             hudElement->paletteAddr = (PAL_PTR)*nextPos++;
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
 
             if (hudElement->flags & HUD_ELEMENT_FLAG_MEMOFFSET) {
                 hudElement->imageAddr += hudElement->memOffset;
@@ -922,7 +922,7 @@ s32 hud_element_update(HudElement* hudElement) {
             }
 
             nextPos++;
-            hudElement->imageAddr = entryRaster[i].data;
+            hudElement->imageAddr = (IMG_PTR) entryRaster[i].data;
 
             i = 0;
             while (true) {
@@ -931,9 +931,9 @@ s32 hud_element_update(HudElement* hudElement) {
                 }
                 ASSERT(++i < MAX_HUD_CACHE_ENTRIES);
             }
-            hudElement->paletteAddr = entryPalette[i].data;
+            hudElement->paletteAddr = (PAL_PTR) entryPalette[i].data;
             nextPos += 3;
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
 
             if (hudElement->flags & HUD_ELEMENT_FLAG_RESIZING) {
                 if (hudElement->flags & HUD_ELEMENT_FLAG_CUSTOM_SIZE) {
@@ -969,8 +969,8 @@ s32 hud_element_update(HudElement* hudElement) {
             hudElement->readPos = hudElement->loopStartPos;
             return true;
         case HUD_ELEMENT_OP_Loop:
-            hudElement->loopStartPos = (HudScript*)nextPos;
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->loopStartPos = nextPos;
+            hudElement->readPos = nextPos;
             return true;
         case HUD_ELEMENT_OP_RandomRestart:
             s1 = *nextPos++;
@@ -978,14 +978,14 @@ s32 hud_element_update(HudElement* hudElement) {
             if (rand_int(s1) < s2) {
                 hudElement->readPos = hudElement->loopStartPos;
             } else {
-                hudElement->readPos = (HudScript*)nextPos;
+                hudElement->readPos = nextPos;
             }
             return true;
         case HUD_ELEMENT_OP_SetTileSize:
             sizePreset = *nextPos++;
             hudElement->widthScale = X10(1);
             hudElement->heightScale = X10(1);
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             hudElement->drawSizePreset = sizePreset;
             hudElement->tileSizePreset = sizePreset;
             hudElement->flags &= ~HUD_ELEMENT_FLAG_RESIZING;
@@ -995,7 +995,7 @@ s32 hud_element_update(HudElement* hudElement) {
             tileSizePreset = *nextPos++;
             drawSizePreset = *nextPos++;
 
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             hudElement->tileSizePreset = tileSizePreset;
             hudElement->drawSizePreset = drawSizePreset;
 
@@ -1022,7 +1022,7 @@ s32 hud_element_update(HudElement* hudElement) {
 
             hudElement->widthScale = X10(1);
             hudElement->heightScale = X10(1);
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             hudElement->tileSizePreset = tileSizePreset;
             hudElement->drawSizePreset = drawSizePreset;
             hudElement->flags |= HUD_ELEMENT_FLAG_RESIZING;
@@ -1031,7 +1031,7 @@ s32 hud_element_update(HudElement* hudElement) {
             return true;
         case HUD_ELEMENT_OP_AddTexelOffsetX:
             s1 = *nextPos++;
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             hudElement->screenPosOffset.x += s1;
             return true;
         case HUD_ELEMENT_OP_AddTexelOffsetY:
@@ -1041,7 +1041,7 @@ s32 hud_element_update(HudElement* hudElement) {
             } else {
                 hudElement->screenPosOffset.y += s2;
             }
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             return true;
         case HUD_ELEMENT_OP_SetTexelOffset:
             s1 = *nextPos++;
@@ -1052,7 +1052,7 @@ s32 hud_element_update(HudElement* hudElement) {
             } else {
                 hudElement->screenPosOffset.y = s2;
             }
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             return true;
         case HUD_ELEMENT_OP_SetScale:
             uniformScale = (f32)*nextPos++;
@@ -1082,7 +1082,7 @@ s32 hud_element_update(HudElement* hudElement) {
             hudElement->widthScale = X10(xScaled);
             hudElement->heightScale = X10(yScaled);
 
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             hudElement->flags &= ~HUD_ELEMENT_FLAG_RESIZING;
             hudElement->flags |= HUD_ELEMENT_FLAG_REPEATED | HUD_ELEMENT_FLAG_SCALED;
             return true;
@@ -1093,18 +1093,18 @@ s32 hud_element_update(HudElement* hudElement) {
             if (hudElement->opacity == 255) {
                 hudElement->flags &= ~HUD_ELEMENT_FLAG_TRANSPARENT;
             }
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             return true;
         case HUD_ELEMENT_OP_RandomDelay:
             s1 = *nextPos++;
             s2 = *nextPos++;
             hudElement->updateTimer = rand_int(s2 - s1) + s1;
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             break;
         case HUD_ELEMENT_OP_SetCustomSize:
             hudElement->customDrawSize.x = hudElement->customImageSize.x = *nextPos++;
             hudElement->customDrawSize.y = hudElement->customImageSize.y = *nextPos++;
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             hudElement->widthScale = X10(1);
             hudElement->heightScale = X10(1);
             hudElement->drawSizePreset = 0;
@@ -1115,25 +1115,25 @@ s32 hud_element_update(HudElement* hudElement) {
             return true;
         case HUD_ELEMENT_OP_SetVariable:
             s1 = *nextPos++;
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             hudElement->flags &= ~HUD_ELEMENT_VARIABLE_MASK;
             hudElement->flags |= s1 << 24;
             return true;
         case HUD_ELEMENT_OP_RandomBranch:
             s1 = *nextPos++;
-            newReadPos = (HudScript*)nextPos[rand_int(s1 - 1)];
+            newReadPos = (HudScriptPos)nextPos[rand_int(s1 - 1)];
             hudElement->readPos = newReadPos;
             hud_element_load_script(hudElement, newReadPos);
             return true;
         case HUD_ELEMENT_OP_PlaySound:
             arg2 = *nextPos++;
             sfx_play_sound(arg2);
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             return true;
         case HUD_ELEMENT_OP_SetPivot:
             arg1 = *nextPos++;
             arg2 = *nextPos++;
-            hudElement->readPos = (HudScript*)nextPos;
+            hudElement->readPos = nextPos;
             if (hudElement->flags & HUD_ELEMENT_FLAG_TRANSFORM) {
                 hudTransform->pivot.x = arg1;
                 hudTransform->pivot.y = arg2;
@@ -1924,19 +1924,19 @@ void hud_element_draw_without_clipping(s32 id) {
     draw_hud_element_internal(id, HUD_ELEMENT_DRAW_FIRST_WITHOUT_CLIPPING);
 }
 
-void hud_element_set_script(s32 id, HudScript* anim) {
+void hud_element_set_script(s32 id, HudScriptPtr script) {
     HudElement* hudElement = (*gHudElements)[id & ~HUD_ELEMENT_BATTLE_ID_MASK];
 
-    if (anim == nullptr) {
-        anim = &HES_Empty;
+    if (script == nullptr) {
+        script = HES_Empty;
     }
 
     hudElement->updateTimer = 1;
     hudElement->widthScale = X10(1.0f);
     hudElement->heightScale = X10(1.0f);
-    hudElement->readPos = anim;
-    hudElement->anim = anim;
-    hudElement->loopStartPos = anim;
+    hudElement->readPos = script;
+    hudElement->source = script;
+    hudElement->loopStartPos = script;
     hudElement->screenPosOffset.x = 0;
     hudElement->screenPosOffset.y = 0;
     hudElement->worldPosOffset.x = 0;
@@ -1944,13 +1944,13 @@ void hud_element_set_script(s32 id, HudScript* anim) {
     hudElement->flags &= ~HUD_ELEMENT_FLAG_ANIMATION_FINISHED;
     hudElement->uniformScale = 1.0f;
     hudElement->flags &= ~(HUD_ELEMENT_FLAG_SCALED | HUD_ELEMENT_FLAG_TRANSPARENT | HUD_ELEMENT_FLAG_RESIZING | HUD_ELEMENT_FLAG_REPEATED);
-    hud_element_load_script(hudElement, anim);
+    hud_element_load_script(hudElement, script);
 
     while (hud_element_update(hudElement) != 0) {}
 }
 
-HudScript* hud_element_get_script(s32 id) {
-    return (*gHudElements)[id & ~HUD_ELEMENT_BATTLE_ID_MASK]->anim;
+HudScriptPtr hud_element_get_script(s32 id) {
+    return (*gHudElements)[id & ~HUD_ELEMENT_BATTLE_ID_MASK]->source;
 }
 
 HudElement* get_hud_element(s32 id) {

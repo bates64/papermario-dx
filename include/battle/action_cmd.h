@@ -94,44 +94,44 @@ typedef struct ActionCommandStatus {
     /* 0x58 */ s16 hudPosY;
     /* 0x5A */ s16 escapeChance; // used by air_lift (via AirLiftChance), break_free (30), and flee (random 0-1).
     /* 0x5C */ union {
-                    struct {
-                        s8 unk_5C;
-                        s8 unk_5D;
-                    } any;
-                    struct {
-                        b8 holdingLeft;
-                    } airRaid;
-                    struct {
-                        s8 dir;
-                    } breakFree;
-                    struct {
-                        b8 holdingLeft;
-                    } fireShell;
-                    struct {
-                        s8 dir;
-                        s8 drainDelay; // only found in unused variant
-                    } flee;
-                    struct {
-                        b8 holdingLeft;
-                    } smack;
-                    struct {
-                        s8 tossState;
-                    } spinySurge;
-                    struct {
-                        b8 holdingLeft;
-                    } spook;
-                    struct {
-                        b8 draining;
-                    } squirt;
-                    struct {
-                        b8 hadCorrectTiming;
-                        s8 time;
-                    } threeChances;
-                    struct {
-                        s8 prevButton;
-                        s8 inputCount;
-                    } tidalWave;
-                };
+    /*      */     struct {
+    /*      */         s8 unk_5C;
+    /*      */         s8 unk_5D;
+    /*      */     } any;
+    /*      */     struct {
+    /*      */         b8 holdingLeft;
+    /*      */     } airRaid;
+    /*      */     struct {
+    /*      */         s8 dir;
+    /*      */     } breakFree;
+    /*      */     struct {
+    /*      */         b8 holdingLeft;
+    /*      */     } fireShell;
+    /*      */     struct {
+    /*      */         s8 dir;
+    /*      */         s8 drainDelay; // only found in unused variant
+    /*      */     } flee;
+    /*      */     struct {
+    /*      */         b8 holdingLeft;
+    /*      */     } smack;
+    /*      */     struct {
+    /*      */         s8 tossState;
+    /*      */     } spinySurge;
+    /*      */     struct {
+    /*      */         b8 holdingLeft;
+    /*      */     } spook;
+    /*      */     struct {
+    /*      */         b8 draining;
+    /*      */     } squirt;
+    /*      */     struct {
+    /*      */         b8 hadCorrectTiming;
+    /*      */         s8 time;
+    /*      */     } threeChances;
+    /*      */     struct {
+    /*      */         s8 prevButton;
+    /*      */         s8 inputCount;
+    /*      */     } tidalWave;
+    /* 0x5C */ };
     /* 0x5E */ s8 autoSucceed;
     /* 0x5F */ b8 hammerMissedStart;
     /* 0x60 */ b8 wrongButtonPressed;
@@ -139,9 +139,9 @@ typedef struct ActionCommandStatus {
     /* 0x62 */ b8 playHammerSounds;
     /* 0x63 */ PAD(1);
     /* 0x64 */ union {
-                    s16 variation; // used to select different variants of an action command
-                    s16 statusChance; // chance of applying special status; higher values make mashing easier
-               };
+    /*      */     s16 variation; // used to select different variants of an action command
+    /*      */     s16 statusChance; // chance of applying special status; higher values make mashing easier
+    /* 0x64 */ };
     /* 0x66 */ s16 thresholdMoveDir;
     /* 0x68 */ b16 isMeterFilled;
     /* 0x6A */ b16 berserkerEnabled;
@@ -151,6 +151,7 @@ typedef struct ActionCommandStatus {
     /* 0x72 */ s16 wrongInputFrameCounter;
     /* 0x74 */ s16 mashMeterCutoffs[6]; // upper bounds for each interval
     /* 0x80 */ s8 mashMeterNumIntervals;
+    /* 0x81 */ PAD(3);
 } ActionCommandStatus;
 
 extern ActionCommandStatus gActionCommandStatus;

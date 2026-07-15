@@ -201,7 +201,7 @@ API_CALLABLE(GiveRefund) {
         posY = player->curPos.y;
         posZ = player->curPos.z;
         get_screen_coords(gCurrentCameraID, posX, posY, posZ, &iconPosX, &iconPosY, &iconPosZ);
-        HID_Refund = hud_element_create(&HES_Refund);
+        HID_Refund = hud_element_create(HES_Refund);
         hud_element_set_render_pos(HID_Refund, iconPosX + 36, iconPosY - 63);
     }
 
@@ -483,13 +483,13 @@ API_CALLABLE(SpawnTurnEndFX) {
     screenY -= 19;
 
     if (script->varTable[10] > 0) {
-        HID_HPDrain = hud_element_create(&HES_HPDrain);
+        HID_HPDrain = hud_element_create(HES_HPDrain);
         hud_element_set_render_pos(HID_HPDrain, screenX, screenY);
         screenY += 9;
     }
 
     if (script->varTable[11] > 0 || script->varTable[12] > 0) {
-        HID_Happy = hud_element_create(&HES_Happy);
+        HID_Happy = hud_element_create(HES_Happy);
         hud_element_set_render_pos(HID_Happy, screenX, screenY);
     }
     return ApiStatus_DONE2;

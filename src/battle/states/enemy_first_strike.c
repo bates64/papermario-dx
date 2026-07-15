@@ -11,7 +11,7 @@ void btl_state_update_enemy_striking_first(void) {
     Actor* partner = battleStatus->partnerActor;
     Evt* script;
     Actor* actor;
-    u16* enemyIDs;
+    s16* enemyIDs;
     s16 activeEnemyActorID;
     s32 nextEnemyIdx;
     s32 count;

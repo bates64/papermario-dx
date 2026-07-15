@@ -851,7 +851,7 @@ void snd_song_trigger_music_event(s32 playerID, s32 trackIndex, s32 eventInfo) {
 
 void snd_song_clear_music_events(void) {
     AuGlobals* globals = gSoundGlobals;
-    s32* buf = globals->musicEventQueue;
+    MusicEventTrigger* buf = globals->musicEventQueue;
     s32 i = 15;
 
     do {

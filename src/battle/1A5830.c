@@ -2739,14 +2739,14 @@ API_CALLABLE(SetDefenseTable) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
     s32 partID;
-    u32* table;
+    s32* table;
 
     if (actorID == ACTOR_SELF) {
         actorID = script->owner1.actorID;
     }
 
     partID = evt_get_variable(script, *args++);
-    table = (u32*) evt_get_variable(script, *args++);
+    table = (s32*) evt_get_variable(script, *args++);
     get_actor_part(get_actor(actorID), partID)->defenseTable = table;
     return ApiStatus_DONE2;
 }
@@ -2754,13 +2754,13 @@ API_CALLABLE(SetDefenseTable) {
 API_CALLABLE(SetStatusTable) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
-    u32* table;
+    s32* table;
 
     if (actorID == ACTOR_SELF) {
         actorID = script->owner1.actorID;
     }
 
-    table = (u32*) evt_get_variable(script, *args++);
+    table = (s32*) evt_get_variable(script, *args++);
     get_actor(actorID)->statusTable = table;
     return ApiStatus_DONE2;
 }
@@ -2769,14 +2769,14 @@ API_CALLABLE(SetIdleAnimations) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
     s32 partID;
-    AnimID* idleAnims;
+    s32* idleAnims;
 
     if (actorID == ACTOR_SELF) {
         actorID = script->owner1.actorID;
     }
 
     partID = evt_get_variable(script, *args++);
-    idleAnims = (AnimID*) evt_get_variable(script, *args++);
+    idleAnims = (s32*) evt_get_variable(script, *args++);
     get_actor_part(get_actor(actorID), partID)->idleAnimations = idleAnims;
     return ApiStatus_DONE2;
 }

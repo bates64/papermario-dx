@@ -50,7 +50,7 @@
 #define API_CALLABLE(name) ApiStatus name(Evt* script, b32 isInitialCall)
 
 #define PHYSICAL_TO_VIRTUAL(addr) (void*)((u32)(addr) + 0x80000000)
-#define VIRTUAL_TO_PHYSICAL(addr) (u32)((u8*)(addr) - 0x80000000)
+#define VIRTUAL_TO_PHYSICAL(addr) ((u32)(addr) - 0x80000000)
 
 //#ifdef DEBUG
 #define IS_DEBUG_PANIC(statement) is_debug_panic(statement)
@@ -208,8 +208,6 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
     (ptr)[3] =  0.01152f; \
 
 #define CLAMP(value, min, max) MIN(MAX((value), (min)), (max))
-
-#define INTEGER_LOG2(x) ((x) <= 2 ? 1 : (x) <= 4 ? 2 : (x) <= 8 ? 3 : (x) <= 16 ? 4 : (x) <= 32 ? 5 : (x) <= 64 ? 6 : (x) <= 128 ? 7 : (x) <= 256 ? 8 : (x) <= 512 ? 9 : 10)
 
 #define FOLIAGE_MODEL_LIST(names...) \
 { \

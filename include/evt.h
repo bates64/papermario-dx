@@ -4,6 +4,7 @@
 
 // Should be at least the width of a pointer i.e. intptr_t
 typedef s32 Bytecode;
+typedef Bytecode EvtVar; /// encoded EVT variable reference
 
 #define EVT_MAX_EVAL_ARGS 6
 

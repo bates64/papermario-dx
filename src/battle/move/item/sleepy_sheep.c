@@ -10,7 +10,7 @@
 
 #include "battle/common/move/ItemRefund.inc.c"
 
-s32 virtual_entity_create(EntityModelCode*);
+s32 virtual_entity_create(EntityModelScriptPtr);
 void virtual_entity_set_pos(s32, s32, s32, s32);
 void virtual_entity_set_scale(s32, f32, f32, f32);
 void virtual_entity_delete_by_index(s32);

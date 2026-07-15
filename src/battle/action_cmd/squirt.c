@@ -45,13 +45,13 @@ API_CALLABLE(N(init)) {
     acs->squirt.draining = false;
     acs->hudPosY = 80;
 
-    hid = hud_element_create(&HES_AButton);
+    hid = hud_element_create(HES_AButton);
     acs->hudElemIDs[HIDX_BUTTON] = hid;
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
     hud_element_set_render_depth(hid, 0);
 
-    hid = hud_element_create(&HES_BlueMeter);
+    hid = hud_element_create(HES_BlueMeter);
     acs->hudElemIDs[HIDX_METER] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY + 28);
     hud_element_set_render_depth(hid, 0);
@@ -134,7 +134,7 @@ void N(update)(void) {
                 break;
             }
 
-            hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], &HES_AButtonDown);
+            hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], HES_AButtonDown);
             acs->meterFillLevel = 0;
             acs->squirt.draining = false;
             acs->stateTimer = acs->duration;
@@ -175,12 +175,12 @@ void N(update)(void) {
 
             hid = acs->hudElemIDs[HIDX_BUTTON];
             if (fillPct < 80) {
-                if (hud_element_get_script(hid) != &HES_AButtonDown) {
-                    hud_element_set_script(hid, &HES_AButtonDown);
+                if (hud_element_get_script(hid) != HES_AButtonDown) {
+                    hud_element_set_script(hid, HES_AButtonDown);
                 }
             } else {
-                if (hud_element_get_script(hid) != &HES_PressAButton) {
-                    hud_element_set_script(hid, &HES_PressAButton);
+                if (hud_element_get_script(hid) != HES_PressAButton) {
+                    hud_element_set_script(hid, HES_PressAButton);
                 }
             }
 

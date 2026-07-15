@@ -224,7 +224,7 @@ s32 step_mesh_animator(ModelAnimator* animator);
 
 void set_custom_gfx_builders(s32 customGfxIndex, ModelCustomGfxBuilderFunc pre, ModelCustomGfxBuilderFunc post);
 void mdl_make_local_vertex_copy(s32 arg0, u16 treeIdx, s32);
-void play_model_animation_starting_from(s32 index, AnimScriptCode* animPos, s32 framesToSkip);
+void play_model_animation_starting_from(s32 index, AnimScriptPtr animScript, s32 framesToSkip);
 
 void mdl_set_shroud_tint_params(u8 r, u8 g, u8 b, u8 a);
 

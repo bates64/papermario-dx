@@ -87,8 +87,6 @@ void spiky_white_aura_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, s32 arg4) {
             ASSERT(effect->data.spikyWhiteAura != nullptr);
 
             for (i = 0; i < numParts; i++, part++) {
-                f32 (*matrix)[4] = &sp30[0]; // required to match
-
                 part->unk_00 = arg0;
                 part->unk_04 = arg1;
                 part->unk_08 = arg2;
@@ -103,7 +101,7 @@ void spiky_white_aura_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, s32 arg4) {
                     rotateA = 0.0f;
                 }
 
-                guRotateF(matrix, rotateA, sinYaw, 0.0f, cosYaw);
+                guRotateF(sp30, rotateA, sinYaw, 0.0f, cosYaw);
 
                 part->unk_10 = (sp30[0][0] * fs3 + sp30[1][0] * fs2 + sp30[2][0] * fs1) * 0.6;
                 part->unk_14 = sp30[0][1] * fs3 + sp30[1][1] * fs2 + sp30[2][1] * fs1;

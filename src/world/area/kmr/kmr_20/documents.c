@@ -166,7 +166,7 @@ API_CALLABLE(N(ReadLetters)){
                 }
 
                 if (cond) {
-                    menu->ptrIcon[numEntries] = &HES_Postcard;
+                    menu->ptrIcon[numEntries] = HES_Postcard;
                     menu->userIndex[numEntries] = i;
                     menu->enabled[numEntries] = true;
                     menu->nameMsg[numEntries] = N(LetterSenderStringIDs)[i];
@@ -176,7 +176,7 @@ API_CALLABLE(N(ReadLetters)){
                     menu->value[numEntries] = 0;
                     if (temp) {
                         menu->value[numEntries] = 1;
-                        menu->ptrIcon[numEntries] = &HES_Postcard_disabled;
+                        menu->ptrIcon[numEntries] = HES_Postcard_disabled;
                     }
                     numEntries++;
                 }
@@ -347,7 +347,7 @@ API_CALLABLE(N(ReadDiary)){
             numEntries = 0;
             for (i = 0; i < ARRAY_COUNT(N(DiaryStoryRequirements)); i++) {
                 if (evt_get_variable(nullptr, GB_StoryProgress) >= N(DiaryStoryRequirements)[i]) {
-                    menu->ptrIcon[numEntries] = &HES_EmptyBook;
+                    menu->ptrIcon[numEntries] = HES_EmptyBook;
                     menu->userIndex[numEntries] = i;
                     menu->enabled[numEntries] = true;
                     menu->nameMsg[numEntries] = 0;
@@ -357,7 +357,7 @@ API_CALLABLE(N(ReadDiary)){
                     menu->value[numEntries] = 0;
                     if (flags) {
                         menu->value[numEntries] = 1;
-                        menu->ptrIcon[numEntries] = &HES_EmptyBook_disabled;
+                        menu->ptrIcon[numEntries] = HES_EmptyBook_disabled;
                     }
                     numEntries++;
                 }

@@ -120,7 +120,7 @@ void title_screen_draw_press_start(void);
 void title_screen_draw_copyright(f32);
 
 void state_init_title_screen(void) {
-    s32 titleDataSize;
+    u32 titleDataSize;
     void* titleDataDst;
     void* titleData;
 

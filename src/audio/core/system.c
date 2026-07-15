@@ -14,7 +14,7 @@ BSS OSThread nuAuMgrThread;
 BSS u64 AuStack[NU_AU_STACK_SIZE / sizeof(u64)];
 BSS Acmd* AlCmdListBuffers[3];
 BSS NUScTask nuAuTasks[3];
-BSS u8* D_800A3628[3];
+BSS u8* AuOutputBuffers[3];
 BSS s32 AlFrameSize;
 BSS s32 AlMinFrameSize;
 BSS OSMesgQueue nuAuDmaMesgQ;
@@ -79,8 +79,8 @@ void create_audio_system(void) {
         nuAuTasks[i].list.t.yield_data_size = 0;
     }
 
-    for (i = 0; i < ARRAY_COUNT(D_800A3628); i++) {
-        D_800A3628[i] = alHeapAlloc(config.heap, 1, AlFrameSize * 4);
+    for (i = 0; i < ARRAY_COUNT(AuOutputBuffers); i++) {
+        AuOutputBuffers[i] = alHeapAlloc(config.heap, 1, AlFrameSize * 4);
     }
 
     nuAuDmaBufList[0].node.next = nuAuDmaBufList[0].node.prev = nullptr;
@@ -120,7 +120,7 @@ void nuAuMgr(void* arg) {
     Acmd* cmdListBuf;
     u8* bufferPtr;
     s32 samples;
-    s32 cond;
+    b32 cond;
 
     osCreateMesgQueue(&auMesgQ, auMsgBuf, NU_AU_MESG_MAX);
     osCreateMesgQueue(&auRtnMesgQ, &auRtnMesgBuf, 1);
@@ -130,8 +130,10 @@ void nuAuMgr(void* arg) {
     cmdListIndex = 0;
     bufferIndex = 0;
     samples = 0;
+    bufferPtr = AuOutputBuffers[0];
     cmdListBuf = AlCmdListBuffers[0];
-    bufferPtr = D_800A3628[0];
+    cmdListAfter_ptr = cmdListBuf;
+    cond = false;
     while (true) {
         osRecvMesg(&auMesgQ, (OSMesg*)&mesg_type, OS_MESG_BLOCK);
         switch (*mesg_type) {
@@ -162,7 +164,7 @@ void nuAuMgr(void* arg) {
                 if (cmdList_len != 0 && nuAuTaskStop == NU_AU_TASK_RUN) {
                     osAiSetNextBuffer(bufferPtr, samples * 4);
                     cmdListBuf = AlCmdListBuffers[cmdListIndex];
-                    bufferPtr = D_800A3628[bufferIndex];
+                    bufferPtr = AuOutputBuffers[bufferIndex];
                 }
                 if (sampleSize < AUDIO_MAX_SAMPLES || cond) {
                     samples = AlFrameSize;

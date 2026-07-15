@@ -3,8 +3,6 @@
 
 #include "common.h"
 
-typedef s32 ItemScript[];
-
 enum {
     ITEM_SCRIPT_OP_End,
     ITEM_SCRIPT_OP_SetImage,

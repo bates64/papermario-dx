@@ -6,8 +6,8 @@ extern HudScript HES_FilenameCaret;
 extern HudScript HES_FilenameSpace;
 extern HudScript HES_134F60_135120;
 
-HudScript* filemenu_createfile_hudScripts[] = {
-    &HES_FilenameCaret, &HES_FilenameSpace, &HES_134F60_135120
+HudScriptList filemenu_createfile_hudScripts = {
+    HES_FilenameCaret, HES_FilenameSpace, HES_134F60_135120
 };
 
 s32 D_8024A18C = -4;
@@ -262,9 +262,9 @@ void filemenu_draw_contents_choose_name(
                             xNudge = 9;
                         }
 #if VERSION_PAL
-                        filemenu_draw_message((u8*)c, baseX + xOffset + ((8 - xNudge) / 2), baseY + yOffset, 255, color, flags);
+                        filemenu_draw_message((MSG_PTR)c, baseX + xOffset + ((8 - xNudge) / 2), baseY + yOffset, 255, color, flags);
 #else
-                        filemenu_draw_message((u8*)c, baseX + xOffset, baseY + yOffset, 255, color, flags);
+                        filemenu_draw_message((MSG_PTR)c, baseX + xOffset, baseY + yOffset, 255, color, flags);
 #endif
                     }
                 }
@@ -318,9 +318,9 @@ void filemenu_draw_contents_choose_name(
                         xNudge = 9;
                     }
 #if VERSION_PAL
-                    filemenu_draw_message((u8*)c, baseX + xOffset + ((8 - xNudge) / 2), baseY + yOffset, 255, color, flags);
+                    filemenu_draw_message((MSG_PTR)c, baseX + xOffset + ((8 - xNudge) / 2), baseY + yOffset, 255, color, flags);
 #else
-                    filemenu_draw_message((u8*)c, baseX + xOffset, baseY + yOffset, 255, color, flags);
+                    filemenu_draw_message((MSG_PTR)c, baseX + xOffset, baseY + yOffset, 255, color, flags);
 #endif
                 }
             }

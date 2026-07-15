@@ -48,23 +48,23 @@ extern HudScript HES_HeaderSpirits_es;
 extern HudScript HES_HeaderMap_es;
 #endif
 
-HudScript* gPauseTabsHudScripts[][6] = {
+HudScriptPtr gPauseTabsHudScripts[][6] = {
     [LANGUAGE_DEFAULT] = {
-        &HES_HeaderStats, &HES_HeaderBadges, &HES_HeaderItems,
-        &HES_HeaderParty, &HES_HeaderSpirits, &HES_HeaderMap
+        HES_HeaderStats, HES_HeaderBadges, HES_HeaderItems,
+        HES_HeaderParty, HES_HeaderSpirits, HES_HeaderMap
     },
 #if VERSION_PAL
     [LANGUAGE_DE] = {
-        &HES_HeaderStats_de, &HES_HeaderBadges_de, &HES_HeaderItems_de,
-        &HES_HeaderParty_de, &HES_HeaderSpirits_de, &HES_HeaderMap_de
+        HES_HeaderStats_de, HES_HeaderBadges_de, HES_HeaderItems_de,
+        HES_HeaderParty_de, HES_HeaderSpirits_de, HES_HeaderMap_de
     },
     [LANGUAGE_FR] = {
-        &HES_HeaderStats_fr, &HES_HeaderBadges_fr, &HES_HeaderItems_fr,
-        &HES_HeaderParty_fr, &HES_HeaderSpirits_fr, &HES_HeaderMap_fr
+        HES_HeaderStats_fr, HES_HeaderBadges_fr, HES_HeaderItems_fr,
+        HES_HeaderParty_fr, HES_HeaderSpirits_fr, HES_HeaderMap_fr
     },
     [LANGUAGE_ES] = {
-        &HES_HeaderStats_es, &HES_HeaderBadges_es, &HES_HeaderItems_es,
-        &HES_HeaderParty_es, &HES_HeaderSpirits_es, &HES_HeaderMap_es
+        HES_HeaderStats_es, HES_HeaderBadges_es, HES_HeaderItems_es,
+        HES_HeaderParty_es, HES_HeaderSpirits_es, HES_HeaderMap_es
     },
 #endif
 };
@@ -399,11 +399,11 @@ void pause_tabs_update(MenuPanel* tab) {
     gPauseTabsHorizScrollPos += delta;
 
     if ((gPauseTabsPreviousTab != 0 || tab->col != 5) && (gPauseTabsPreviousTab < tab->col || (gPauseTabsPreviousTab == 5 && tab->col == 0))) {
-        fpUpdateActive = pause_update_page_active_1;
-        fpUpdateInactive = pause_update_page_inactive_1;
+        fpUpdateActive = pause_update_page_active_next;
+        fpUpdateInactive = pause_update_page_inactive_next;
     } else {
-        fpUpdateActive = pause_update_page_active_2;
-        fpUpdateInactive = pause_update_page_inactive_2;
+        fpUpdateActive = pause_update_page_active_prev;
+        fpUpdateInactive = pause_update_page_inactive_prev;
     }
 
     flag = false;
@@ -418,8 +418,8 @@ void pause_tabs_update(MenuPanel* tab) {
         for (i = 0; i < ARRAY_COUNT(gPauseTabsPanelIDs); i++) {
             if (gPausePanels[gPauseTabsPanelIDs[i]]->initialized) {
                 fpUpdate = gWindows[gPauseTabsPageWindowIDs[i]].fpUpdate;
-                if (i != tab->col && (fpUpdate.func == pause_update_page_active_1 ||
-                                      fpUpdate.func == pause_update_page_active_2 ||
+                if (i != tab->col && (fpUpdate.func == pause_update_page_active_next ||
+                                      fpUpdate.func == pause_update_page_active_prev ||
                                       fpUpdate.func == basic_window_update ||
                                       fpUpdate.i == 1)) {
                     set_window_update(gPauseTabsPageWindowIDs[i], (s32)fpUpdateInactive);
@@ -429,8 +429,8 @@ void pause_tabs_update(MenuPanel* tab) {
         }
 
         if (!flag) {
-            if (gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.func == pause_update_page_inactive_1 ||
-                gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.func == pause_update_page_inactive_2 ||
+            if (gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.func == pause_update_page_inactive_next ||
+                gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.func == pause_update_page_inactive_prev ||
                 gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.i == 2) {
                 if (gPauseDoBasicWindowUpdate) {
                     fpUpdateActive = &basic_window_update;

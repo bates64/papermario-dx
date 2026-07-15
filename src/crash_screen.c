@@ -14,6 +14,7 @@ typedef struct {
     /* 0x9CC */ u16* frameBuf;
     /* 0x9D0 */ u16 width;
     /* 0x9D2 */ u16 height;
+    /* 0x9D4 */ PAD(4);
 } CrashScreen; // size = 0x9D8
 
 BSS CrashScreen gCrashScreen;
@@ -209,7 +210,7 @@ s32 crash_screen_printf(s32 x, s32 y, const char* fmt, ...) {
 
     va_start(args, fmt);
 
-    size = _Printf(crash_screen_copy_to_buf, (s8*)buf, fmt, args);
+    size = _Printf(crash_screen_copy_to_buf, (char*)buf, fmt, args);
 
     if (size > 0) {
         ptr = buf;
@@ -255,7 +256,7 @@ s32 crash_screen_printf_proportional(s32 x, s32 y, const char* fmt, ...) {
 
     va_start(args, fmt);
 
-    size = _Printf(crash_screen_copy_to_buf, (s8*)buf, fmt, args);
+    size = _Printf(crash_screen_copy_to_buf, (char*)buf, fmt, args);
 
     if (size > 0) {
         ptr = buf;
@@ -305,7 +306,7 @@ void crash_screen_print_fpcsr(u32 value) {
     s32 i;
     u32 flag = 0x20000;
 
-    crash_screen_printf(30, 155, "FPCSR:%08XH", value);
+    crash_screen_printf(30, 155, "FPCSR:%08lXH", value);
 
     for (i = 0; i < 6;) {
         if (value & flag) {
@@ -347,8 +348,8 @@ static char* crash_screen_disasm(u32 pc, u32 op, char* buf) {
         case 0x28: sprintf(buf, "sb    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
         case 0x29: sprintf(buf, "sh    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
         case 0x2B: sprintf(buf, "sw    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
-        case 0x31: sprintf(buf, "lwc1  f%d, %d(%s)", RT(op), IMM(op), sRegNames[RS(op)]); return buf;
-        case 0x39: sprintf(buf, "swc1  f%d, %d(%s)", RT(op), IMM(op), sRegNames[RS(op)]); return buf;
+        case 0x31: sprintf(buf, "lwc1  f%lu, %d(%s)", RT(op), IMM(op), sRegNames[RS(op)]); return buf;
+        case 0x39: sprintf(buf, "swc1  f%lu, %d(%s)", RT(op), IMM(op), sRegNames[RS(op)]); return buf;
     }
 
     // ALU immediate
@@ -363,15 +364,15 @@ static char* crash_screen_disasm(u32 pc, u32 op, char* buf) {
 
     // Branch
     switch (opcode) {
-        case 0x04: sprintf(buf, "beq   %s, %s, 0x%08X", sRegNames[RS(op)], sRegNames[RT(op)], pc + 4 + (IMM(op) << 2)); return buf;
-        case 0x05: sprintf(buf, "bne   %s, %s, 0x%08X", sRegNames[RS(op)], sRegNames[RT(op)], pc + 4 + (IMM(op) << 2)); return buf;
-        case 0x06: sprintf(buf, "blez  %s, 0x%08X", sRegNames[RS(op)], pc + 4 + (IMM(op) << 2)); return buf;
-        case 0x07: sprintf(buf, "bgtz  %s, 0x%08X", sRegNames[RS(op)], pc + 4 + (IMM(op) << 2)); return buf;
+        case 0x04: sprintf(buf, "beq   %s, %s, 0x%08lX", sRegNames[RS(op)], sRegNames[RT(op)], pc + 4 + (IMM(op) << 2)); return buf;
+        case 0x05: sprintf(buf, "bne   %s, %s, 0x%08lX", sRegNames[RS(op)], sRegNames[RT(op)], pc + 4 + (IMM(op) << 2)); return buf;
+        case 0x06: sprintf(buf, "blez  %s, 0x%08lX", sRegNames[RS(op)], pc + 4 + (IMM(op) << 2)); return buf;
+        case 0x07: sprintf(buf, "bgtz  %s, 0x%08lX", sRegNames[RS(op)], pc + 4 + (IMM(op) << 2)); return buf;
     }
 
     // Jump
-    if (opcode == 0x02) { sprintf(buf, "j     0x%08X", TARGET(op, pc)); return buf; }
-    if (opcode == 0x03) { sprintf(buf, "jal   0x%08X", TARGET(op, pc)); return buf; }
+    if (opcode == 0x02) { sprintf(buf, "j     0x%08lX", TARGET(op, pc)); return buf; }
+    if (opcode == 0x03) { sprintf(buf, "jal   0x%08lX", TARGET(op, pc)); return buf; }
 
     // SPECIAL (opcode 0)
     if (opcode == 0x00) {
@@ -391,9 +392,9 @@ static char* crash_screen_disasm(u32 pc, u32 op, char* buf) {
             case 0x27: sprintf(buf, "nor   %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
             case 0x2A: sprintf(buf, "slt   %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
             case 0x2B: sprintf(buf, "sltu  %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
-            case 0x00: sprintf(buf, "sll   %s, %s, %d", sRegNames[RD(op)], sRegNames[RT(op)], SA(op)); return buf;
-            case 0x02: sprintf(buf, "srl   %s, %s, %d", sRegNames[RD(op)], sRegNames[RT(op)], SA(op)); return buf;
-            case 0x03: sprintf(buf, "sra   %s, %s, %d", sRegNames[RD(op)], sRegNames[RT(op)], SA(op)); return buf;
+            case 0x00: sprintf(buf, "sll   %s, %s, %lu", sRegNames[RD(op)], sRegNames[RT(op)], SA(op)); return buf;
+            case 0x02: sprintf(buf, "srl   %s, %s, %lu", sRegNames[RD(op)], sRegNames[RT(op)], SA(op)); return buf;
+            case 0x03: sprintf(buf, "sra   %s, %s, %lu", sRegNames[RD(op)], sRegNames[RT(op)], SA(op)); return buf;
             case 0x18: sprintf(buf, "mult  %s, %s", sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
             case 0x19: sprintf(buf, "multu %s, %s", sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
             case 0x1A: sprintf(buf, "div   %s, %s", sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
@@ -402,7 +403,7 @@ static char* crash_screen_disasm(u32 pc, u32 op, char* buf) {
         }
     }
 
-    sprintf(buf, ".word 0x%08X", op);
+    sprintf(buf, ".word 0x%08lX", op);
     return buf;
 }
 
@@ -421,10 +422,10 @@ static s32 crash_screen_print_disasm(s32 x, s32 y, u32 pc) {
 
         if (i == 0) {
             gCrashScreenColor = COLOR_WHITE;
-            y = crash_screen_printf(x, y, "  > %08X: %s", addr, buf);
+            y = crash_screen_printf(x, y, "  > %08lX: %s", addr, buf);
         } else {
             gCrashScreenColor = COLOR_GREY;
-            y = crash_screen_printf(x, y, "    %08X: %s", addr, buf);
+            y = crash_screen_printf(x, y, "    %08lX: %s", addr, buf);
         }
     }
 
@@ -448,34 +449,34 @@ static s32 crash_screen_print_error(s32 x, s32 y, OSThread* faultedThread) {
 
     switch (causeIndex) {
         case 1: // TLB modification
-            y = crash_screen_printf_proportional(x, y, "Segfault: write to 0x%08X", badvaddr);
+            y = crash_screen_printf_proportional(x, y, "Segfault: write to 0x%08lX", badvaddr);
             break;
         case 2: // TLB exception on load
             if (badvaddr == 0) {
                 y = crash_screen_printf_proportional(x, y, "Attempt to read from nullptr");
             } else {
-                y = crash_screen_printf_proportional(x, y, "Segfault: read from 0x%08X", badvaddr);
+                y = crash_screen_printf_proportional(x, y, "Segfault: read from 0x%08lX", badvaddr);
             }
             break;
         case 3: // TLB exception on store
             if (badvaddr == 0) {
                 y = crash_screen_printf_proportional(x, y, "Attempt to write to nullptr");
             } else {
-                y = crash_screen_printf_proportional(x, y, "Segfault: write to 0x%08X", badvaddr);
+                y = crash_screen_printf_proportional(x, y, "Segfault: write to 0x%08lX", badvaddr);
             }
             break;
         case 4: // Address error on load
-            y = crash_screen_printf_proportional(x, y, "Unaligned read from 0x%08X", badvaddr);
+            y = crash_screen_printf_proportional(x, y, "Unaligned read from 0x%08lX", badvaddr);
             break;
         case 5: // Address error on store
-            y = crash_screen_printf_proportional(x, y, "Unaligned write to 0x%08X", badvaddr);
+            y = crash_screen_printf_proportional(x, y, "Unaligned write to 0x%08lX", badvaddr);
             break;
         case 6: // Bus error on inst
         case 7: // Bus error on data
-            y = crash_screen_printf_proportional(x, y, "Bus error at 0x%08X", badvaddr);
+            y = crash_screen_printf_proportional(x, y, "Bus error at 0x%08lX", badvaddr);
             break;
         case 10: // Reserved instruction
-            y = crash_screen_printf_proportional(x, y, "Invalid instruction at 0x%08X", (u32)ctx->pc);
+            y = crash_screen_printf_proportional(x, y, "Invalid instruction at 0x%08lX", (u32)ctx->pc);
             break;
         case 12: // Arithmetic overflow
             y = crash_screen_printf_proportional(x, y, "Integer overflow");
@@ -691,7 +692,7 @@ void crash_screen_printf_with_bg(s16 x, s16 y, const char* fmt, ...) {
 
     va_start(args, fmt);
 
-    size = _Printf(crash_screen_copy_to_buf, (s8*)buf, fmt, args);
+    size = _Printf(crash_screen_copy_to_buf, (char*)buf, fmt, args);
 
     if (size > 0) {
         crash_screen_draw_rect(x - 6, y - 6, (size + 2) * 6, 19);

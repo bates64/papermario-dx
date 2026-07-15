@@ -503,169 +503,177 @@ void spr_component_update_commands(SpriteComponent* comp, SpriteAnimComponent* a
     u16* gotoPos;
     s32 cmdValue;
 
-    if (comp->initialized) {
-        scaleZ = 1.0f;
-        scaleY = 1.0f;
-        scaleX = 1.0f;
-        changedFlags = 0;
+    if (!comp->initialized) {
+        return;
+    }
 
-        bufPos = comp->readPos;
-        gotoPos = (u16*) -1;
+    posX = 0;
+    posY = 0;
+    posZ = 0;
+    rotX = 0;
+    rotY = 0;
+    rotZ = 0;
+    scaleZ = 1.0f;
+    scaleY = 1.0f;
+    scaleX = 1.0f;
+    changedFlags = 0;
 
-        comp->waitTime -= SpriteAnimUpdateTimescale;
+    bufPos = comp->readPos;
+    gotoPos = (u16*) -1;
 
-        while (comp->waitTime <= 0.0f) {
-            // overflow check
-            if (bufPos >= &anim->cmdList[anim->cmdListSize / 2]) {
-                bufPos = anim->cmdList;
+    comp->waitTime -= SpriteAnimUpdateTimescale;
+
+    while (comp->waitTime <= 0.0f) {
+        // overflow check
+        if (bufPos >= &anim->cmdList[anim->cmdListSize / 2]) {
+            bufPos = anim->cmdList;
+            break;
+        }
+
+        switch (*bufPos & 0xF000) {
+            // 0VVV
+            // Wait
+            case 0x0000:
+                comp->waitTime = *bufPos++ & 0xFFF;
+                if (comp->waitTime == 0.0f) {
+                    comp->waitTime = 4095.0f;
+                }
+                comp->posOffset.z = 0.0f;
+                comp->posOffset.y = 0.0f;
+                comp->posOffset.x = 0.0f;
+                comp->rot.z = 0;
+                comp->rot.y = 0;
+                comp->rot.x = 0;
+                comp->scale.z = 1.0f;
+                comp->scale.y = 1.0f;
+                comp->scale.x = 1.0f;
                 break;
-            }
-
-            switch (*bufPos & 0xF000) {
-                // 0VVV
-                // Wait
-                case 0x0000:
-                    comp->waitTime = *bufPos++ & 0xFFF;
-                    if (comp->waitTime == 0.0f) {
-                        comp->waitTime = 4095.0f;
-                    }
-                    comp->posOffset.z = 0.0f;
-                    comp->posOffset.y = 0.0f;
-                    comp->posOffset.x = 0.0f;
-                    comp->rot.z = 0;
-                    comp->rot.y = 0;
-                    comp->rot.x = 0;
-                    comp->scale.z = 1.0f;
-                    comp->scale.y = 1.0f;
-                    comp->scale.x = 1.0f;
-                    break;
-                // 2VVV
-                // Goto -- jump to another position in the list
-                case 0x2000:
-                    bufPos = &anim->cmdList[spr_unpack_signed_12bit(*bufPos)];
-                    if (bufPos == gotoPos) {
-                        bufPos = anim->cmdList;
-                        comp->waitTime = 1.0f;
-                    }
-                    gotoPos = bufPos;
-                    break;
-                // 1VVV
-                // SetImage -- FFF is valid value for "no image"
-                case 0x1000:
-                    cmdValue = *bufPos++ & 0xFFF;
-                    if (cmdValue != 0xFFF) {
-                        comp->curRaster = cmdValue;
-                    } else {
-                        comp->curRaster = -1;
-                    }
-                    comp->curPalette = -1;
-                    break;
-                // 6VVV
-                // SetPalette -- FFF to clear
-                case 0x6000:
-                    cmdValue = *bufPos++ & 0xFFF;
-                    if (cmdValue != 0xFFF) {
-                        comp->curPalette = cmdValue;
-                    } else {
-                        comp->curPalette = -1;
-                    }
-                    break;
-                // 8VUU
-                // SetProperty
-                // 81-XX parent to component XX
-                // 82-YY set notify value to YY
-                case 0x8000:
-                    cmdValue = *bufPos++;
-                    switch (cmdValue & 0xF00) {
-                        case 0x100: // set parent
-                            comp->properties = (comp->properties & 0xFFFF0000) | cmdValue;
-                            break;
-                        case 0x200: // set notify value
-                            SpriteUpdateNotifyValue = cmdValue & 0xFF;
-                            comp->properties = (comp->properties & 0xFF00FFFF) | (SpriteUpdateNotifyValue << 0x10);
-                            break;
-                    }
-                    break;
-                // 3VVV XXXX YYYY ZZZZ
-                // SetPosition -- what does the flag do?
-                case 0x3000:
-                    switch (*bufPos++ & 0xF) {
-                        case 0:
-                        case 1:
-                            posX = spr_unpack_signed_16bit(*bufPos++);
-                            posY = spr_unpack_signed_16bit(*bufPos++);
-                            posZ = spr_unpack_signed_16bit(*bufPos++);
-                            changedFlags |= 1;
-                            break;
-                    }
-                    break;
-                // 4XXX YYYY ZZZZ
-                // SetRotation (euler angles)
-                case 0x4000:
-                    rotX = spr_unpack_signed_12bit(*bufPos++);
-                    rotY = spr_unpack_signed_16bit(*bufPos++);
-                    rotZ = spr_unpack_signed_16bit(*bufPos++);
-                    changedFlags |= 2;
-                    break;
-                // 5VVV UUUU
-                // SetScale (%)
-                case 0x5000:
-                    switch (*bufPos++ & 0xF) {
-                        case 0:
-                            scaleZ = *bufPos++ / 100.0f;
-                            scaleY = scaleZ;
-                            scaleX = scaleZ;
-                            break;
-                        case 1:
-                            scaleX = *bufPos++ / 100.0f;
-                            break;
-                        case 2:
-                            scaleY = *bufPos++ / 100.0f;
-                            break;
-                        case 3:
-                            scaleZ = *bufPos++ / 100.0f;
-                            break;
-                    }
-                    changedFlags |= 4;
-                    break;
-                // 7VVV UUUU
-                // Loop -- VV iterations jumping back to UUUU
-                case 0x7000:
-                    if (comp->loopCounter != 0) {
-                        comp->loopCounter--;
-                        if (comp->loopCounter == 0) {
-                            bufPos += 2;
-                            break;
-                        }
-                    } else {
-                        comp->loopCounter = bufPos[1];
-                    }
-                    bufPos = &anim->cmdList[spr_unpack_signed_12bit(*bufPos)];
-                    break;
-                // invalid command
-                default:
+            // 2VVV
+            // Goto -- jump to another position in the list
+            case 0x2000:
+                bufPos = &anim->cmdList[spr_unpack_signed_12bit(*bufPos)];
+                if (bufPos == gotoPos) {
                     bufPos = anim->cmdList;
                     comp->waitTime = 1.0f;
-                    break;
-            }
-        } // end loop
+                }
+                gotoPos = bufPos;
+                break;
+            // 1VVV
+            // SetImage -- FFF is valid value for "no image"
+            case 0x1000:
+                cmdValue = *bufPos++ & 0xFFF;
+                if (cmdValue != 0xFFF) {
+                    comp->curRaster = cmdValue;
+                } else {
+                    comp->curRaster = -1;
+                }
+                comp->curPalette = -1;
+                break;
+            // 6VVV
+            // SetPalette -- FFF to clear
+            case 0x6000:
+                cmdValue = *bufPos++ & 0xFFF;
+                if (cmdValue != 0xFFF) {
+                    comp->curPalette = cmdValue;
+                } else {
+                    comp->curPalette = -1;
+                }
+                break;
+            // 8VUU
+            // SetProperty
+            // 81-XX parent to component XX
+            // 82-YY set notify value to YY
+            case 0x8000:
+                cmdValue = *bufPos++;
+                switch (cmdValue & 0xF00) {
+                    case 0x100: // set parent
+                        comp->properties = (comp->properties & 0xFFFF0000) | cmdValue;
+                        break;
+                    case 0x200: // set notify value
+                        SpriteUpdateNotifyValue = cmdValue & 0xFF;
+                        comp->properties = (comp->properties & 0xFF00FFFF) | (SpriteUpdateNotifyValue << 0x10);
+                        break;
+                }
+                break;
+            // 3VVV XXXX YYYY ZZZZ
+            // SetPosition -- what does the flag do?
+            case 0x3000:
+                switch (*bufPos++ & 0xF) {
+                    case 0:
+                    case 1:
+                        posX = spr_unpack_signed_16bit(*bufPos++);
+                        posY = spr_unpack_signed_16bit(*bufPos++);
+                        posZ = spr_unpack_signed_16bit(*bufPos++);
+                        changedFlags |= 1;
+                        break;
+                }
+                break;
+            // 4XXX YYYY ZZZZ
+            // SetRotation (euler angles)
+            case 0x4000:
+                rotX = spr_unpack_signed_12bit(*bufPos++);
+                rotY = spr_unpack_signed_16bit(*bufPos++);
+                rotZ = spr_unpack_signed_16bit(*bufPos++);
+                changedFlags |= 2;
+                break;
+            // 5VVV UUUU
+            // SetScale (%)
+            case 0x5000:
+                switch (*bufPos++ & 0xF) {
+                    case 0:
+                        scaleZ = *bufPos++ / 100.0f;
+                        scaleY = scaleZ;
+                        scaleX = scaleZ;
+                        break;
+                    case 1:
+                        scaleX = *bufPos++ / 100.0f;
+                        break;
+                    case 2:
+                        scaleY = *bufPos++ / 100.0f;
+                        break;
+                    case 3:
+                        scaleZ = *bufPos++ / 100.0f;
+                        break;
+                }
+                changedFlags |= 4;
+                break;
+            // 7VVV UUUU
+            // Loop -- VV iterations jumping back to UUUU
+            case 0x7000:
+                if (comp->loopCounter != 0) {
+                    comp->loopCounter--;
+                    if (comp->loopCounter == 0) {
+                        bufPos += 2;
+                        break;
+                    }
+                } else {
+                    comp->loopCounter = bufPos[1];
+                }
+                bufPos = &anim->cmdList[spr_unpack_signed_12bit(*bufPos)];
+                break;
+            // invalid command
+            default:
+                bufPos = anim->cmdList;
+                comp->waitTime = 1.0f;
+                break;
+        }
+    } // end loop
 
-        comp->readPos = bufPos;
-        if (changedFlags & 1) {
-            comp->posOffset.x = posX;
-            comp->posOffset.y = posY;
-            comp->posOffset.z = posZ;
-        }
-        if (changedFlags & 2) {
-            comp->rot.x = rotX;
-            comp->rot.y = rotY;
-            comp->rot.z = rotZ;
-        }
-        if (changedFlags & 4) {
-            comp->scale.x = scaleX;
-            comp->scale.y = scaleY;
-            comp->scale.z = scaleZ;
-        }
+    comp->readPos = bufPos;
+    if (changedFlags & 1) {
+        comp->posOffset.x = posX;
+        comp->posOffset.y = posY;
+        comp->posOffset.z = posZ;
+    }
+    if (changedFlags & 2) {
+        comp->rot.x = rotX;
+        comp->rot.y = rotY;
+        comp->rot.z = rotZ;
+    }
+    if (changedFlags & 4) {
+        comp->scale.x = scaleX;
+        comp->scale.y = scaleY;
+        comp->scale.z = scaleZ;
     }
 }
 
@@ -1078,7 +1086,7 @@ s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     s32 i = spriteInstanceID & 0xFF;
     s32 animIndex = SPR_UNPACK_ANIM(animID);
 
-    ASSERT_MSG(i <= MaxLoadedSpriteInstanceID, "Invalid sprite instance ID %lx", spriteInstanceID);
+    ASSERT_MSG(i <= MaxLoadedSpriteInstanceID, "Invalid sprite instance ID %lX", spriteInstanceID);
 
     compList = SpriteInstances[i].componentList;
     spriteData = SpriteInstances[i].spriteData;
@@ -1089,7 +1097,7 @@ s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     palID = SPR_UNPACK_PAL(animID);
     spr_set_anim_timescale(timeScale);
     if ((spriteInstanceID & DRAW_SPRITE_OVERRIDE_ALPHA) || (SPR_UNPACK_ANIM(SpriteInstances[i].curAnimID) != animIndex)) {
-        ASSERT_MSG(animList != (SpriteComponent**) -1, "Anim %lx is not loaded", animID);
+        ASSERT_MSG(animList != (SpriteAnimComponent**) -1, "Anim %lX is not loaded", animID);
         spr_init_anim_state(compList, animList);
         SpriteInstances[i].curAnimID = (palID << 8) | animIndex;
         SpriteInstances[i].notifyValue = 0;

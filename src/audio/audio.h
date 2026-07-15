@@ -606,10 +606,10 @@ typedef struct AuEnvMixer {
     /* 0x0A */ s16 cvolR;
     /* 0x0C */ s16 dryamt;
     /* 0x0E */ s16 wetamt;
-    /* 0x10 */ s16 lratl;
+    /* 0x10 */ u16 lratl;
     /* 0x12 */ s16 lratm;
     /* 0x14 */ s16 ltgt;
-    /* 0x16 */ s16 rratl;
+    /* 0x16 */ u16 rratl;
     /* 0x18 */ s16 rratm;
     /* 0x1A */ s16 rtgt;
     /* 0x1C */ s32 delta;
@@ -683,9 +683,9 @@ typedef struct Instrument {
     /* 0x1C */ u16 codebookSize;
     /* 0x1E */ u16 keyBase;
     /* 0x20 */ union {
-                    f32 pitchRatio; // ratio of sample rate to hardware output rate
-                    s32 sampleRate;
-               };
+    /*      */     f32 pitchRatio; // ratio of sample rate to hardware output rate
+    /*      */     s32 sampleRate;
+    /* 0x20 */ };
     /* 0x24 */ u8 type;
     /* 0x25 */ b8 useDma; // set to false to bypass DMA transfer while loading data -- only do this if the audio samples/codebook are static
     /* 0x26 */ s8 unused_26;
@@ -737,7 +737,7 @@ typedef struct SoundPlayer {
     /* 0x84 */ s8 alternativeType;
     /* 0x85 */ u8 triggers;
     /* 0x86 */ PAD(2);
-    /* 0x88 */ s8* loopStartPos;
+    /* 0x88 */ AuFilePos loopStartPos;
     /* 0x8C */ u8 loopIterCount; // loopIterCount = 0 for infinite loop
     /* 0x8D */ PAD(1);
     /* 0x8E */ u16 delay;

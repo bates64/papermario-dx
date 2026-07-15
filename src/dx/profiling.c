@@ -386,8 +386,8 @@ void profiler_print_times() {
                 break;
         }
 
-        dx_string_to_msg((u8*)&text_buffer_labels, (u8*)&text_buffer_labels);
-        dx_string_to_msg((u8*)&text_buffer_time, (u8*)&text_buffer_time);
+        dx_string_to_msg((MSG_PTR)text_buffer_labels, text_buffer_labels);
+        dx_string_to_msg((MSG_PTR)text_buffer_time, text_buffer_time);
         text_buffer_labels[0] = text_buffer_time[0] = MSG_CHAR_READ_FUNCTION;
         text_buffer_labels[1] = text_buffer_time[1] = MSG_READ_FUNC_SIZE;
         text_buffer_labels[2] = text_buffer_time[2] = 14;
@@ -473,8 +473,8 @@ void profiler_print_times() {
             microseconds[PROFILER_TIME_RSP_AUDIO] * 2
         );
 #endif
-        dx_string_to_msg((u8*)&text_buffer_labels, (u8*)&text_buffer_labels);
-        dx_string_to_msg((u8*)&text_buffer_time, (u8*)&text_buffer_time);
+        dx_string_to_msg((MSG_PTR)text_buffer_labels, text_buffer_labels);
+        dx_string_to_msg((MSG_PTR)text_buffer_time, text_buffer_time);
         text_buffer_labels[0] = text_buffer_time[0] = MSG_CHAR_READ_FUNCTION;
         text_buffer_labels[1] = text_buffer_time[1] = MSG_READ_FUNC_SIZE;
         text_buffer_labels[2] = text_buffer_time[2] = 14;

@@ -22,6 +22,7 @@ class Field:
     annotation: int | None
     text: str
     kind: str
+    pad_size: int | None = None
 
 
 @dataclass
@@ -33,6 +34,15 @@ class StructInfo:
     close_line: int
     size_annotation: int | None
     fields: list[Field]
+
+
+@dataclass
+class LayoutRow:
+    name: str
+    actual: int | None
+    annotation: int | None
+    line: int | None
+    marker: str = ""
 
 
 def strip_comments(line: str) -> str:
@@ -84,6 +94,14 @@ def parse_field_name(decl: str) -> str | None:
     if name in {"struct", "union", "enum"}:
         return None
     return name
+
+
+def parse_pad_size(decl: str) -> int | None:
+    clean = strip_comments(decl).strip()
+    match = re.match(r"PAD\s*\(\s*(0x[0-9A-Fa-f]+|\d+)\s*\)\s*;?\s*$", clean)
+    if not match:
+        return None
+    return int(match.group(1), 0)
 
 
 def parse_structs(path: Path) -> list[StructInfo]:
@@ -150,9 +168,13 @@ def parse_structs(path: Path) -> list[StructInfo]:
                     kind = "field" if nested_name else "anonymous"
                     fields.append(Field(nested_name, line_num, annotation, line.strip(), kind))
                 elif ";" in strip_comments(line) and not clean.startswith(("}", "#")):
-                    field_name = parse_field_name(decl)
-                    kind = "field" if field_name else "skip"
-                    fields.append(Field(field_name, line_num, annotation, line.strip(), kind))
+                    pad_size = parse_pad_size(decl)
+                    if pad_size is not None:
+                        fields.append(Field(None, line_num, annotation, line.strip(), "pad", pad_size))
+                    else:
+                        field_name = parse_field_name(decl)
+                        kind = "field" if field_name else "skip"
+                        fields.append(Field(field_name, line_num, annotation, line.strip(), kind))
 
             depth += brace_delta(line)
             item += 1
@@ -218,6 +240,10 @@ def compile_probe(
                 continue
             labels.append(f"{info.name}.{field.name}")
             code.append(f"    (unsigned)offsetof({info.c_name}, {field.name}),")
+            labels.append(f"{info.name}.{field.name}.__sizeof")
+            code.append(f"    (unsigned)sizeof(((const {info.c_name}*)0)->{field.name}),")
+            labels.append(f"{info.name}.{field.name}.__alignof")
+            code.append(f"    (unsigned)__alignof__(((const {info.c_name}*)0)->{field.name}),")
 
     code.append("};")
 
@@ -281,23 +307,93 @@ def fmt(value: int | None, width: int = 4) -> str:
     return f"0x{value:0{width}X}"
 
 
-def print_struct(info: StructInfo, values: dict[str, int], compare: bool) -> int:
+def align_up(value: int, alignment: int) -> int:
+    if alignment <= 1:
+        return value
+    return (value + alignment - 1) & ~(alignment - 1)
+
+
+def next_named_field_index(info: StructInfo, start_index: int) -> int | None:
+    for index in range(start_index + 1, len(info.fields)):
+        field = info.fields[index]
+        if field.name is not None:
+            return index
+        if field.kind not in {"pad", "skip"}:
+            return None
+    return None
+
+
+def print_struct(info: StructInfo, values: dict[str, int], compare: bool) -> tuple[int, int]:
     size_actual = values[f"{info.name}.__sizeof"]
     size_bad = info.size_annotation is not None and info.size_annotation != size_actual
     bad_count = 1 if size_bad else 0
+    warning_count = 0
+    rows: list[LayoutRow] = []
+    prev_end: int | None = None
+
+    for index, field in enumerate(info.fields):
+        if field.kind == "pad":
+            start = prev_end if prev_end is not None else field.annotation
+            marker = ""
+            if start is not None:
+                prev_end = start + (field.pad_size or 0)
+
+                if compare and field.annotation is not None and field.annotation != start:
+                    marker = "x"
+                    bad_count += 1
+
+                next_index = next_named_field_index(info, index)
+                if next_index is not None:
+                    next_field = info.fields[next_index]
+                    next_align = values.get(f"{info.name}.{next_field.name}.__alignof", 1)
+                    natural_gap = align_up(start, next_align) - start
+                    explicit_gap = max(0, (field.pad_size or 0) - natural_gap)
+                    if compare and explicit_gap and marker != "x":
+                        marker = "?"
+                        warning_count += 1
+            else:
+                prev_end = None
+            rows.append(LayoutRow(f"PAD({field.pad_size})", start, field.annotation, field.line, marker))
+            continue
+
+        if field.name is None:
+            rows.append(LayoutRow(f"<{field.kind}>", None, field.annotation, field.line))
+            prev_end = None
+            continue
+
+        actual = values.get(f"{info.name}.{field.name}")
+        size = values.get(f"{info.name}.{field.name}.__sizeof")
+        if actual is None or size is None:
+            rows.append(LayoutRow(field.name, actual, field.annotation, field.line))
+            prev_end = None
+            continue
+
+        if prev_end is not None and actual > prev_end:
+            marker = "?" if compare else ""
+            rows.append(LayoutRow(f"<implicit PAD({actual - prev_end})>", prev_end, None, field.line, marker))
+            if compare:
+                warning_count += 1
+
+        bad = compare and field.annotation is not None and field.annotation != actual
+        marker = "x" if bad else ""
+        bad_count += 1 if bad else 0
+        rows.append(LayoutRow(field.name, actual, field.annotation, field.line, marker))
+        prev_end = actual + size
+
+    if prev_end is not None and size_actual > prev_end:
+        marker = "?" if compare else ""
+        rows.append(LayoutRow(f"<implicit tail PAD({size_actual - prev_end})>", prev_end, None, info.close_line, marker))
+        if compare:
+            warning_count += 1
 
     rel = info.path.relative_to(root_dir)
     print(f"{info.name} ({rel}:{info.line})")
     print("  field                         actual   annotated  line  bad")
     print("  ----------------------------  -------  ---------  ----  ---")
 
-    for field in info.fields:
-        actual = values.get(f"{info.name}.{field.name}") if field.name is not None else None
-        bad = compare and field.annotation is not None and actual is not None and field.annotation != actual
-        bad_count += 1 if bad else 0
-        marker = "x" if bad else ""
-        name = field.name or f"<{field.kind}>"
-        print(f"  {name:<28}  {fmt(actual):>7}  {fmt(field.annotation):>9}  {field.line:>4}  {marker}")
+    for row in rows:
+        line = "-" if row.line is None else str(row.line)
+        print(f"  {row.name:<28}  {fmt(row.actual):>7}  {fmt(row.annotation):>9}  {line:>4}  {row.marker}")
 
     print()
     if compare:
@@ -307,7 +403,7 @@ def print_struct(info: StructInfo, values: dict[str, int], compare: bool) -> int
         print(f"  {'sizeof:':<28}  {fmt(size_actual):>7}")
 
     print()
-    return bad_count
+    return bad_count, warning_count
 
 
 def main() -> int:
@@ -340,14 +436,21 @@ def main() -> int:
     values = compile_probe(selected, args.include, args.cc, args.objcopy)
 
     bad_count = 0
+    warning_count = 0
     for info in selected:
-        bad_count += print_struct(info, values, not args.no_compare)
+        struct_bad_count, struct_warning_count = print_struct(info, values, not args.no_compare)
+        bad_count += struct_bad_count
+        warning_count += struct_warning_count
 
     if not args.no_compare:
+        if warning_count:
+            print(f"{warning_count} layout warning(s) detected.")
         if bad_count:
-            print(f"{bad_count} bad annotation(s) detected.")
+            print(f"{bad_count} layout error(s) detected.")
+        elif warning_count:
+            print("No layout errors detected.")
         else:
-            print("No problems detected.")
+            print("No layout problems detected.")
 
     return 2 if bad_count and not args.no_compare else 0
 

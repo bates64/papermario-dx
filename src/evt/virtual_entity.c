@@ -130,7 +130,7 @@ API_CALLABLE(InitVirtualEntityList) {
 API_CALLABLE(CreateVirtualEntityAt) {
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
-    EntityModelCode* cmdList = (EntityModelCode*) evt_get_variable(script, *args++);
+    EntityModelScriptPtr cmdList = (EntityModelScriptPtr) evt_get_variable(script, *args++);
     VirtualEntity* virtualEntity = (*gCurrentVirtualEntityListPtr)[index];
 
     virtualEntity->entityModelIndex = load_entity_model(cmdList);
@@ -151,7 +151,7 @@ API_CALLABLE(CreateVirtualEntityAt) {
 API_CALLABLE(CreateVirtualEntity) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
-    EntityModelCode* cmdList = (EntityModelCode*)evt_get_variable(script, *args++);
+    EntityModelScriptPtr cmdList = (EntityModelScriptPtr)evt_get_variable(script, *args++);
     VirtualEntity* virtualEntity;
     s32 i;
 
@@ -186,7 +186,7 @@ API_CALLABLE(CreateVirtualEntity) {
 API_CALLABLE(CreateVirtualEntity_ALT) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
-    EntityModelCode* cmdList = (EntityModelCode*) evt_get_variable(script, *args++);
+    EntityModelScriptPtr cmdList = (EntityModelScriptPtr) evt_get_variable(script, *args++);
     VirtualEntity* virtualEntity;
     s32 i;
 
@@ -229,7 +229,7 @@ API_CALLABLE(DeleteVirtualEntity) {
 API_CALLABLE(SetVirtualEntityRenderCommands) {
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
-    EntityModelCode* cmdList = (EntityModelCode*) evt_get_variable(script, *args++);
+    EntityModelScriptPtr cmdList = (EntityModelScriptPtr) evt_get_variable(script, *args++);
 
     set_entity_model_render_command_list((*gCurrentVirtualEntityListPtr)[index]->entityModelIndex, cmdList);
     return ApiStatus_DONE2;
@@ -527,7 +527,7 @@ VirtualEntity* virtual_entity_get_by_index(s32 index) {
     return (*gCurrentVirtualEntityListPtr)[index];
 }
 
-VirtualEntity* virtual_entity_create_at_index(s32 index, EntityModelCode* entityModelData) {
+VirtualEntity* virtual_entity_create_at_index(s32 index, EntityModelScriptPtr entityModelData) {
     VirtualEntity* virtualEntity = (*gCurrentVirtualEntityListPtr)[index];
 
     virtualEntity->entityModelIndex = load_entity_model(entityModelData);
@@ -545,7 +545,7 @@ VirtualEntity* virtual_entity_create_at_index(s32 index, EntityModelCode* entity
     return (*gCurrentVirtualEntityListPtr)[index];
 }
 
-s32 virtual_entity_create(EntityModelCode* cmdList) {
+s32 virtual_entity_create(EntityModelScriptPtr cmdList) {
     s32 i;
     VirtualEntity* virtualEntity;
 
@@ -576,7 +576,7 @@ s32 virtual_entity_create(EntityModelCode* cmdList) {
     return i;
 }
 
-VirtualEntity* ALT_virtual_entity_create(EntityModelCode* cmdList) {
+VirtualEntity* ALT_virtual_entity_create(EntityModelScriptPtr cmdList) {
     s32 i;
     VirtualEntity* virtualEntity;
 

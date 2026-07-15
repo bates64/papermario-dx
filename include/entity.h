@@ -82,15 +82,18 @@ typedef struct SwitchData {
     /* 0x00C */ PAD(4);
     /* 0x010 */ s8 animStateScaleX;
     /* 0x011 */ s8 animStateScaleY;
+    /* 0x012 */ PAD(2);
     /* 0x014 */ Vec3f baseScale;
     /* 0x020 */ u16 areaFlagIndex;
     /* 0x022 */ s16 greenMotionTimer;
     /* 0x024 */ s16 scaleAnimTimer;
+    /* 0x026 */ PAD(2);
     /* 0x028 */ struct Entity* linkedSwitch;
 } SwitchData; // size = 0x2C
 
 typedef struct ShatteringBlockData {
     /* 0x000 */ u16 fragmentFlags[25];
+    /* 0x032 */ PAD(2);
     /* 0x034 */ Gfx** fragmentDisplayLists;
     /* 0x038 */ f32 originalPosY;
     /* 0x03C */ s16 alpha;
@@ -100,6 +103,7 @@ typedef struct ShatteringBlockData {
     /* 0x072 */ u8 fragmentMoveAngle[25]; // scaled to map [0,255] -> [0,360]
     /* 0x08B */ u8 fragmentRotX[25]; // scaled to map [0,255] -> [0,360]
     /* 0x0A4 */ u8 fragmentRotY[25]; // scaled to map [0,255] -> [0,360]
+    /* 0x0BD */ PAD(3);
     /* 0x0C0 */ f32 fragmentPosX[25];
     /* 0x124 */ f32 fragmentPosY[25];
     /* 0x188 */ f32 fragmentPosZ[25];
@@ -138,6 +142,7 @@ typedef struct SuperBlockContentData {
     /* 0x050 */ Mtx unk_50;
     /* 0x090 */ Mtx unk_90;
     /* 0x0D0 */ u16 yawBufferPos;
+    /* 0x0D2 */ PAD(2);
     /* 0x0D4 */ f32 yawBuffer[20];
     /* 0x124 */ s32 unk_124;
     /* 0x128 */ Gfx* gfx1;
@@ -273,6 +278,7 @@ typedef struct BoardedFloorData {
     /* 0x022 */ u8 fragmentRotX[FRAGMENT_BUF_SIZE];
     /* 0x02F */ u8 fragmentRotY[FRAGMENT_BUF_SIZE];
     /* 0x03C */ u8 fragmentLateralSpeed[FRAGMENT_BUF_SIZE];
+    /* 0x049 */ PAD(3);
     /* 0x04C */ f32 fragmentRotSpeed[FRAGMENT_BUF_SIZE];
     /* 0x080 */ f32 fragmentPosX[FRAGMENT_BUF_SIZE];
     /* 0x0B4 */ f32 fragmentPosY[FRAGMENT_BUF_SIZE];
@@ -288,6 +294,7 @@ typedef struct BombableRockData {
     /* 0x14 */ u8 fragmentRotX[6];
     /* 0x1A */ u8 fragmentRotY[6];
     /* 0x20 */ u8 fragmentLateralSpeed[6];
+    /* 0x26 */ PAD(2);
     /* 0x28 */ f32 fragmentRotSpeed[6];
     /* 0x40 */ f32 fragmentPosX[6];
     /* 0x58 */ f32 fragmentPosY[6];
@@ -312,6 +319,7 @@ typedef struct TweesterData {
     /* 0x94 */ s16 outerWhirlTexOffsetX;
     /* 0x96 */ s16 outerWhirlTexOffsetY;
     /* 0x98 */ s16 frameCounter;
+    /* 0x9A */ PAD(2);
     /* 0x9C */ s32* curPath;
     /* 0xA0 */ s32** paths;
     /* 0xA4 */ s16 targetX;
@@ -330,6 +338,7 @@ typedef struct StarBoxLauncherData {
     /* 0x03 */ s8 faceDataIndex;
     /* 0x04 */ s8 faceAnimTimer;
     /* 0x05 */ s8 faceTexOffset;
+    /* 0x06 */ PAD(2);
     /* 0x08 */ f32 basePosX;
     /* 0x0C */ f32 basePosZ;
     /* 0x10 */ f32 basePosY;
@@ -351,18 +360,21 @@ typedef struct PinkFlowerData {
     /* 0x0 */ u16 state;
     /* 0x2 */ u16 timer;
     /* 0x4 */ u16 linkedEntityIndex;
+    /* 0x6 */ PAD(2);
     /* 0x8 */ f32 initialRotY;
 } PinkFlowerData; // size = 0xC
 
 typedef struct SpinningFlowerData {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s8 state;
+    /* 0x03 */ PAD(1);
     /* 0x04 */ Vec3f rot;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ f32 spinSpeed;
     /* 0x18 */ s32 unk_18;
     /* 0x1C */ PAD(12);
     /* 0x28 */ Vec3s goalPos;
+    /* 0x2E */ PAD(2);
     /* 0x30 */ Mtx unk_30;
 } SpinningFlowerData; // size = 0x70
 
@@ -450,13 +462,13 @@ typedef struct EntityModel {
     /* 0x05 */ PAD(3);
     /* 0x08 */ f32 nextFrameTime; ///< Set to 1.0 after each update
     /* 0x0C */ f32 timeScale; ///< Default is 1.0
-    /* 0x10 */ EntityModelCode* cmdListReadPos;
+    /* 0x10 */ EntityModelScriptPos cmdListReadPos;
     /* 0x14 */ union {
     /*      */      Gfx* displayList;
     /*      */      SpriteRasterInfo* imageData;
     /* 0x14 */ } gfx;
     /* 0x18 */ Mtx transform;
-    /* 0x58 */ EntityModelCode* cmdListSavedPos;
+    /* 0x58 */ EntityModelScriptPos cmdListSavedPos;
     /* 0x5C */ Vec3s* vertexArray;
     /* 0x60 */ DataCallback fpSetupGfxCallback;
     /* 0x64 */ void* setupGfxCallbackArg0;
@@ -465,10 +477,10 @@ typedef struct EntityModel {
 typedef EntityModel* EntityModelList[MAX_ENTITY_MODELS];
 
 EntityModel* get_entity_model(s32 idx);
-s32 load_entity_model(EntityModelCode* cmdList);
-s32 ALT_load_entity_model(EntityModelCode* cmdList);
-void entity_set_render_script(Entity* entity, EntityModelCode* cmdList);
-void set_entity_model_render_command_list(s32 idx, EntityModelCode* cmdList);
+s32 load_entity_model(EntityModelScriptPtr cmdList);
+s32 ALT_load_entity_model(EntityModelScriptPtr cmdList);
+void entity_set_render_script(Entity* entity, EntityModelScriptPtr cmdList);
+void set_entity_model_render_command_list(s32 idx, EntityModelScriptPtr cmdList);
 
 void virtual_entity_list_render_world(void);
 void virtual_entity_list_render_UI(void);

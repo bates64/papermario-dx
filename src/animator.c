@@ -315,7 +315,7 @@ void delete_model_animator(ModelAnimator* animator) {
     }
 }
 
-s32 create_model_animator(AnimScriptCode* animPos) {
+s32 create_model_animator(AnimScriptPtr animScript) {
     ModelAnimator* animator;
     s32 i, j;
 
@@ -336,13 +336,13 @@ s32 create_model_animator(AnimScriptCode* animPos) {
     animator->renderMode = RENDER_MODE_ALPHATEST;
     animator->nextUpdateTime = 1.0f;
     animator->timeScale = 1.0f;
-    animator->animReadPos = animPos;
+    animator->animReadPos = animScript;
 
-    if (animPos == nullptr) {
+    if (animScript == nullptr) {
         animator->animReadPos = gAnimScriptDefault;
     }
 
-    animator->savedReadPos = animPos;
+    animator->animSavedPos = animScript;
     animator->animationBuffer = nullptr;
     animator->baseAddr = nullptr;
     animator->fpRenderCallback = nullptr;
@@ -363,8 +363,9 @@ s32 create_model_animator(AnimScriptCode* animPos) {
     return i;
 }
 
-s32 create_mesh_animator(AnimScriptCode* animPos, AnimScriptCode* animBuffer) {
+s32 create_mesh_animator(AnimScriptPtr animScript, AnimScriptPtr animBuffer) {
     ModelAnimator* animator;
+    AnimScriptPos animPos;
     s32 i, j;
 
     for (i = 0; i < ARRAY_COUNT(*gCurrentAnimMeshListPtr); i++) {
@@ -389,9 +390,9 @@ s32 create_mesh_animator(AnimScriptCode* animPos, AnimScriptCode* animBuffer) {
     animator->animationBuffer = animBuffer;
     animator->nextUpdateTime = 1.0f;
     animator->timeScale = 1.0f;
-    animPos = (AnimScriptCode*)(((s32)animPos & 0xFFFFFF) + (s32)animator->animationBuffer);
+    animPos = (AnimScriptPos)(((s32)animScript & 0xFFFFFF) + (s32)animator->animationBuffer);
     animator->animReadPos = animPos;
-    animator->savedReadPos = animPos;
+    animator->animSavedPos = animPos;
 
     for (j = 0; j < ARRAY_COUNT(animator->nodeCache); j++) {
         animator->nodeCache[j] = nullptr;
@@ -607,7 +608,7 @@ void update_model_animator_with_transform(s32 animatorID, Mtx* mtx) {
 }
 
 s32 step_model_animator(ModelAnimator* animator) {
-    AnimScriptCode* args = animator->animReadPos;
+    AnimScriptPos args = animator->animReadPos;
     AnimatorNode* node;
     f32 x, y, z;
     s32 flags;
@@ -625,10 +626,10 @@ s32 step_model_animator(ModelAnimator* animator) {
             animator->animReadPos = args;
             break;
         case AS_END_LOOP:
-            animator->animReadPos = animator->savedReadPos;
+            animator->animReadPos = animator->animSavedPos;
             return 1;
         case AS_LOOP:
-            animator->animReadPos = animator->savedReadPos = args;
+            animator->animReadPos = animator->animSavedPos = args;
             return 1;
         case AS_SET_FLAGS:
             flags = *args++;
@@ -1099,29 +1100,31 @@ void clear_animator_flags(s32 index, s32 bits) {
     animator->flags &= ~bits;
 }
 
-void play_model_animation(s32 index, AnimScriptCode* animPos) {
+void play_model_animation(s32 index, AnimScriptPtr animScript) {
     ModelAnimator* animator = (*gCurrentAnimMeshListPtr)[index & ~BATTLE_ID_BIT];
+    AnimScriptPos animPos = animScript;
 
     if (animator->animationBuffer != nullptr) {
-        animPos = (AnimScriptCode*) (((s32)animPos & 0xFFFFFF) + (s32)animator->animationBuffer); // TODO: array access? / cleanup
+        animPos = (AnimScriptPos) (((s32)animScript & 0xFFFFFF) + (s32)animator->animationBuffer); // TODO: array access? / cleanup
     }
     animator->animReadPos = animPos;
-    animator->savedReadPos = animPos;
+    animator->animSavedPos = animPos;
     animator->treeIndexPos = 0;
     animator->nextUpdateTime = 1.0f;
 }
 
-void play_model_animation_starting_from(s32 index, AnimScriptCode* animPos, s32 framesToSkip) {
+void play_model_animation_starting_from(s32 index, AnimScriptPtr animScript, s32 framesToSkip) {
     s32 indexMasked = index & ~BATTLE_ID_BIT;
     ModelAnimator* animator = (*gCurrentAnimMeshListPtr)[indexMasked];
+    AnimScriptPos animPos = animScript;
     s32 i;
 
     if (animator->animationBuffer != nullptr) {
-        animPos = (AnimScriptCode*) (((s32)animPos & 0xFFFFFF) + (s32)animator->animationBuffer); // TODO: array access? / cleanup
+        animPos = (AnimScriptPos) (((s32)animScript & 0xFFFFFF) + (s32)animator->animationBuffer); // TODO: array access? / cleanup
     }
 
     animator->animReadPos = animPos;
-    animator->savedReadPos = animPos;
+    animator->animSavedPos = animPos;
     animator->treeIndexPos = 0;
     animator->nextUpdateTime = 1.0f;
 
@@ -1273,8 +1276,8 @@ void reload_mesh_animator_tree(ModelAnimator* animator) {
 }
 
 s32 step_mesh_animator(ModelAnimator* animator) {
-    AnimScriptCode* args = animator->animReadPos;
-    AnimScriptCode* oldPos = animator->animReadPos;
+    AnimScriptPos args = animator->animReadPos;
+    AnimScriptPos oldPos = animator->animReadPos;
     AnimatorNode* node;
     f32 x, y, z;
     s32 flags;
@@ -1292,16 +1295,16 @@ s32 step_mesh_animator(ModelAnimator* animator) {
             animator->animReadPos = args;
             return 1;
         case AS_END_LOOP:
-            animator->animReadPos = animator->savedReadPos;
+            animator->animReadPos = animator->animSavedPos;
             animator->treeIndexPos = animator->savedTreePos;
             reload_mesh_animator_tree(animator);
             return 1;
         case AS_OP_4:
-            animator->animReadPos = animator->savedReadPos;
+            animator->animReadPos = animator->animSavedPos;
             animator->treeIndexPos = animator->savedTreePos;
             break;
         case AS_LOOP:
-            animator->animReadPos = animator->savedReadPos = args;
+            animator->animReadPos = animator->animSavedPos = args;
             animator->savedTreePos = animator->treeIndexPos;
             return 1;
         case AS_SET_FLAGS:

@@ -4,6 +4,7 @@
 typedef struct QuizmoAudiencePositonOffsets {
     /* 0x00 */ Vec2b* offsets;
     /* 0x04 */ u8 count;
+    /* 0x05 */ PAD(3);
 } QuizmoAudiencePositonOffsets; // size = 0x8
 
 extern Gfx D_09002EE0_3AA680[];
@@ -213,4 +214,3 @@ void quizmo_audience_appendGfx(void* effect) {
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     gDPPipeSync(gMainGfxPos++);
 }
-

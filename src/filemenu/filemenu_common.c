@@ -15,7 +15,7 @@ extern MenuPanel filemenu_yesno_menuBP;
 extern MenuPanel filemenu_info_menuBP;
 extern MenuPanel filemenu_createfile_menuBP;
 
-HudScript* filemenu_cursor_hudElemScripts[] = { &HES_AnimatedCursorHand };
+HudScriptList filemenu_cursor_hudElemScripts = { HES_AnimatedCursorHand };
 MenuPanel* filemenu_menus[] = {
     &filemenu_main_menuBP,
     &filemenu_yesno_menuBP,

@@ -15,8 +15,8 @@ typedef struct CookingResult {
 typedef struct ExtraCookingPair {
     /* 00 */ s32 inputA;
     /* 04 */ s32 inputB;
-    /* 04 */ s32 output;
-} ExtraCookingPair; // size = 0x8
+    /* 08 */ s32 output;
+} ExtraCookingPair; // size = 0xC
 
 enum CookingResultQuality {
     QUALITY_BAD     = 0,

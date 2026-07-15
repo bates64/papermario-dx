@@ -1,4 +1,5 @@
-#pragma once
+#ifndef COMMON_H
+#define COMMON_H
 
 #include "ultra64.h"
 #include "gbi_custom.h"
@@ -16,3 +17,5 @@
 #include "tex_pan.h"
 #include "item_choice.h"
 #include "dx/debug_menu.h"
+
+#endif

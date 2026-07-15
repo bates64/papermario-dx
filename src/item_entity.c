@@ -118,21 +118,16 @@ s16 PickupHeaderWindowHeight[] = { 32, 40 };
 s16 PickupMessageWindowYOffsets[] = { 8, 4 };
 #endif
 
-void sparkle_script_init(ItemEntity* item, SparkleScript* script) {
-    item->sparkleReadPos = (s32*)script;
+void sparkle_script_init(ItemEntity* item, SparkleScriptPtr script) {
+    item->sparkleReadPos = script;
     item->sparkleNextUpdate = 1;
-    item->sparkleSavedPos = (s32*)script;
+    item->sparkleSavedPos = script;
 }
 
 s32 sparkle_script_step(ItemEntity* item) {
-    s32* readPos = item->sparkleReadPos;
+    SparkleScriptPos readPos = item->sparkleReadPos;
 
     switch (*readPos++) {
-        case SPARKLE_OP_SetGfx:
-            item->sparkleNextUpdate = *readPos++;
-            item->sparkleUnk44 = *readPos++;
-            item->sparkleReadPos = readPos;
-            break;
         case SPARKLE_OP_Restart:
             item->sparkleReadPos = item->sparkleSavedPos;
             return true;
@@ -279,10 +274,10 @@ void init_item_entity_list(void) {
     ItemEntityAlternatingSpawn = 0;
 }
 
-extern s32* gItemEntityScripts[];
+extern ItemScriptList gItemEntityScripts;
 
 void item_entity_load(ItemEntity* item) {
-    s32* pos;
+    ItemScriptPos pos;
     HudCacheEntry* entry;
     s32 cond;
     s32 raster;
@@ -290,7 +285,7 @@ void item_entity_load(ItemEntity* item) {
     s32 size;
     s32 i;
 
-    item->savedReadPos = item->readPos = pos = gItemEntityScripts[item->itemID];
+    item->savedPos = item->readPos = pos = gItemEntityScripts[item->itemID];
 
     while (true) {
         switch (*pos++) {
@@ -661,7 +656,7 @@ s32 make_item_entity(s32 itemID, f32 x, f32 y, f32 z, s32 itemSpawnMode, s32 pic
     item_entity_load(item);
 
     if (item->itemID == ITEM_COIN) {
-        sparkle_script_init(item, &SparkleScript_Coin);
+        sparkle_script_init(item, SparkleScript_Coin);
         sparkle_script_update(item);
     }
 
@@ -760,14 +755,14 @@ s32 make_item_entity_at_player(s32 itemID, s32 category, s32 pickupMsgFlags) {
 
     item_entity_load(item);
     if (item->itemID == ITEM_COIN) {
-        sparkle_script_init(item, &SparkleScript_Coin);
+        sparkle_script_init(item, SparkleScript_Coin);
         sparkle_script_update(item);
     }
     return id;
 }
 
 void item_entity_update(ItemEntity* entity) {
-    s32* args;
+    ItemScriptPos args;
     s32 max, threshold;
 
     entity->nextUpdate--;
@@ -783,8 +778,8 @@ void item_entity_update(ItemEntity* entity) {
                 return;
             case ITEM_SCRIPT_OP_SetImage:
                 entity->nextUpdate = *args++;
-                *args++;
-                *args++;
+                args++;
+                args++;
                 if (gGameStatusPtr->context == CONTEXT_WORLD) {
                     entity->lookupRasterIndex  = *args++;
                     entity->lookupPaletteIndex = *args++;
@@ -795,17 +790,17 @@ void item_entity_update(ItemEntity* entity) {
                 entity->readPos = args;
                 return;
             case ITEM_SCRIPT_OP_Restart:
-                entity->readPos = entity->savedReadPos;
+                entity->readPos = entity->savedPos;
                 break;
             case ITEM_SCRIPT_OP_Loop:
-                entity->savedReadPos = args;
+                entity->savedPos = args;
                 entity->readPos = args;
                 break;
             case ITEM_SCRIPT_OP_RandomRestart:
                 max = *args++;
                 threshold = *args++;
                 if (rand_int(max) < threshold) {
-                    entity->readPos = entity->savedReadPos;
+                    entity->readPos = entity->savedPos;
                 } else {
                     entity->readPos = args;
                 }
@@ -829,7 +824,7 @@ void update_item_entities(void) {
         if (item != nullptr && item->flags != 0) {
             if (item->itemID == ITEM_COIN) {
                 if (rand_int(100) > 90) {
-                    sparkle_script_init(item, &SparkleScript_Coin);
+                    sparkle_script_init(item, SparkleScript_Coin);
                     CoinSparkleCenterX = rand_int(16) - 8;
                     CoinSparkleCenterY = rand_int(16) - 8;
                     CoinSparkleCenterZ = 5;
@@ -988,9 +983,9 @@ void appendGfx_item_entity(void* data) {
             gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 0x00FC, 0);
 
             if (item->flags & (ITEM_ENTITY_FLAG_HIDING | ITEM_ENTITY_FLAG_TRANSPARENT)) {
-                func_801491E4(mtxTranslate, 0, 0, 24, 24, alpha);
+                setup_item_entity_shading(mtxTranslate, 0, 0, 24, 24, alpha);
             } else {
-                func_801491E4(mtxTranslate, 0, 0, 24, 24, 255);
+                setup_item_entity_shading(mtxTranslate, 0, 0, 24, 24, 255);
             }
         } else {
             gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 12, gHudElementCacheTableRaster[item->lookupRasterIndex].data);
@@ -1022,9 +1017,9 @@ void appendGfx_item_entity(void* data) {
                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
             gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 0x00FC, 0);
             if (item->flags & (ITEM_ENTITY_FLAG_HIDING | ITEM_ENTITY_FLAG_TRANSPARENT)) {
-                func_801491E4(mtxTranslate, 0, 0, 32, 32, alpha);
+                setup_item_entity_shading(mtxTranslate, 0, 0, 32, 32, alpha);
             } else {
-                func_801491E4(mtxTranslate, 0, 0, 32, 32, 255);
+                setup_item_entity_shading(mtxTranslate, 0, 0, 32, 32, 255);
             }
         } else {
             gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 16, gHudElementCacheTableRaster[item->lookupRasterIndex].data);
@@ -1193,9 +1188,9 @@ void render_item_entities(void) {
                                 gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
                                 gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 0x00FC, 0);
                                 if (item->flags & (ITEM_ENTITY_FLAG_TRANSPARENT | ITEM_ENTITY_FLAG_HIDING)) {
-                                    func_801491E4(sp58, 0, 0, 24, 24, alpha);
+                                    setup_item_entity_shading(sp58, 0, 0, 24, 24, alpha);
                                 } else {
-                                    func_801491E4(sp58, 0, 0, 24, 24, 255);
+                                    setup_item_entity_shading(sp58, 0, 0, 24, 24, 255);
                                 }
                             } else {
                                 gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 12, gHudElementCacheTableRaster[item->lookupRasterIndex].data);
@@ -1221,9 +1216,9 @@ void render_item_entities(void) {
                                 gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
                                 gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 0x00FC, 0);
                                 if (item->flags & (ITEM_ENTITY_FLAG_TRANSPARENT | ITEM_ENTITY_FLAG_HIDING)) {
-                                    func_801491E4(sp58, 0, 0, 32, 32, alpha);
+                                    setup_item_entity_shading(sp58, 0, 0, 32, 32, alpha);
                                 } else {
-                                    func_801491E4(sp58, 0, 0, 32, 32, 255);
+                                    setup_item_entity_shading(sp58, 0, 0, 32, 32, 255);
                                 }
                             } else {
                                 gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 16, gHudElementCacheTableRaster[item->lookupRasterIndex].data);

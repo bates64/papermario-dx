@@ -1,12 +1,15 @@
-#ifndef HUD_ELEMENT_H
-#define HUD_ELEMENT_H
+#pragma once
 
 #include "common_structs.h"
 #include "icon_offsets.h"
 
 #define HUD_ELEMENT_BATTLE_ID_MASK 0x800
 
-typedef s32 HudScript[];
+typedef s32 HudScriptCode;              /// HudScript bytecode
+typedef HudScriptCode HudScript[];      /// HudScript definition
+typedef HudScriptCode* HudScriptPtr;    /// pointer to a HudScript
+typedef HudScriptCode* HudScriptPos;    /// read position within a HudScript
+typedef HudScriptPtr HudScriptList[];   /// list of HudScripts
 
 enum {
     HUD_ELEMENT_OP_End,
@@ -106,11 +109,11 @@ enum {
 
 typedef struct HudCacheEntry {
     /* 0x00 */ s32 id;
-    /* 0x04 */ u8* data;
+    /* 0x04 */ void* data;
 } HudCacheEntry; // size = 0x8;
 
 typedef struct PopupMenu {
-    /* 0x000 */ HudScript* ptrIcon[32];
+    /* 0x000 */ HudScriptPtr ptrIcon[32];
     /* 0x080 */ PAD(4);
     /* 0x084 */ s32 nameMsg[32];
     /* 0x104 */ PAD(4);
@@ -156,12 +159,12 @@ typedef struct Shop {
 } Shop; // size = 0x35C
 
 typedef struct IconHudScriptPair {
-    /* 0x00 */ HudScript* enabled;
-    /* 0x04 */ HudScript* disabled;
+    /* 0x00 */ HudScriptPtr enabled;
+    /* 0x04 */ HudScriptPtr disabled;
 } IconHudScriptPair; // size = 0x08
 
 typedef struct VtxRect {
-    Vtx vtx[4];
+    /* 0x00 */ Vtx vtx[4];
 } VtxRect; // size = 0x40
 
 typedef struct HudTransform {
@@ -175,9 +178,9 @@ typedef struct HudTransform {
 
 typedef struct HudElement {
     /* 0x00 */ u32 flags;
-    /* 0x04 */ HudScript* readPos;
-    /* 0x08 */ HudScript* anim;
-    /* 0x0C */ HudScript* loopStartPos;
+    /* 0x04 */ HudScriptPtr source;
+    /* 0x08 */ HudScriptPos readPos;
+    /* 0x0C */ HudScriptPos loopStartPos;
     /* 0x10 */ IMG_PTR imageAddr;
     /* 0x14 */ PAL_PTR paletteAddr;
     /* 0x18 */ s32 memOffset;
@@ -224,10 +227,10 @@ typedef struct PartnerPopupProperties {
 extern PartnerPopupProperties gPartnerPopupProperties[13];
 extern IconHudScriptPair wPartnerHudScripts[];
 
-#define HS_PTR(sym)         (s32)&sym
+#define HS_PTR(sym) (s32)(sym)
 
 #define hs_End HUD_ELEMENT_OP_End,
-#define hs_SetRGBA(time, image) HUD_ELEMENT_OP_SetRGBA, time, (s32)image,
+#define hs_SetRGBA(time, image) HUD_ELEMENT_OP_SetRGBA, time, (s32)(image),
 #define hs_SetCI(time, name) HUD_ELEMENT_OP_SetCI, time, (s32)name##_png, (s32)name##_pal,
 #define hs_SetCI_Explicit(time, raster, palette) HUD_ELEMENT_OP_SetCI, time, (s32)raster##_png, (s32)palette##_pal,
 #define hs_Restart HUD_ELEMENT_OP_Restart,
@@ -418,7 +421,7 @@ extern IconHudScriptPair wPartnerHudScripts[];
 extern "C" {
 #endif
 
-void hud_element_load_script(HudElement* hudElement, HudScript* anim);
+void hud_element_load_script(HudElement* hudElement, HudScriptPtr script);
 
 /// `clamp` selects the wrap mode: 0 = repeat, 1 = clamp.
 /// `dropShadow` controls whether to render a drop shadow.
@@ -429,7 +432,7 @@ void hud_element_clear_cache(void);
 void init_hud_element_list(void);
 
 /// Creates a new HUD element and returns its ID.
-s32 hud_element_create(HudScript* anim);
+s32 hud_element_create(HudScriptPtr script);
 
 void update_hud_elements(void);
 
@@ -467,9 +470,9 @@ void hud_element_draw_clipped(s32 id);
 void hud_element_draw_next(s32 id);
 void hud_element_draw_without_clipping(s32 id);
 
-void hud_element_set_script(s32 id, HudScript* anim);
+void hud_element_set_script(s32 id, HudScriptPtr script);
 
-HudScript* hud_element_get_script(s32 id);
+HudScriptPtr hud_element_get_script(s32 id);
 
 HudElement* get_hud_element(s32 id);
 
@@ -527,6 +530,4 @@ void create_standard_popup_menu(PopupMenu*);
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 } // extern "C"
-#endif
-
 #endif

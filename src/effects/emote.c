@@ -325,6 +325,9 @@ void emote_appendGfx(void* effect) {
             uls = 128 - frame * 32;
             ult = 0;
             break;
+        default:
+            // don't draw invalid emote
+            return;
     }
 
     if (gfxSetupTex != nullptr) {

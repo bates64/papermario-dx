@@ -27,8 +27,8 @@ HudScript N(D_802A27D0) = HES_TEMPLATE_CI_ENUM_SIZE(battle_item_strange_cake1, 3
 HudScript N(D_802A27F8) = HES_TEMPLATE_CI_ENUM_SIZE(battle_item_strange_cake2, 32, 32);
 HudScript N(D_802A2820) = HES_TEMPLATE_CI_ENUM_SIZE(battle_item_strange_cake3, 32, 32);
 
-HudScript* N(D_802A2848_732B48)[] = {
-    &N(D_802A27F8), &N(D_802A2820), &N(D_802A27D0), &N(D_802A27F8)
+HudScriptList N(D_802A2848_732B48) = {
+    N(D_802A27F8), N(D_802A2820), N(D_802A27D0), N(D_802A27F8)
 };
 
 // indexes into D_802A2848_732B48
@@ -359,4 +359,3 @@ EvtScript N(script9) = {
     Return
     End
 };
-

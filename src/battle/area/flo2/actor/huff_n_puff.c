@@ -787,6 +787,7 @@ EvtScript N(EVS_HuffNPuff_Death) = {
 
     // kill any remaining Tuff Puffs
     FOR_CHILDREN_ORDERED(HNP_KILL_CHILD)
+    #undef HNP_KILL_CHILD
 
     Call(GetActorVar, ACTOR_SELF, AVAR_NextMove, LVar0)
     Switch(LVar0)
@@ -868,6 +869,7 @@ EvtScript N(EVS_HuffNPuff_BurnDeath) = {
 
     // kill any remaining Tuff Puffs
     FOR_CHILDREN_ORDERED(HNP_KILL_CHILD)
+    #undef HNP_KILL_CHILD
 
     Call(GetActorVar, ACTOR_SELF, AVAR_NextMove, LVar0)
     Switch(LVar0)
@@ -2629,6 +2631,7 @@ EvtScript N(EVS_Attack_GroupSlam) = {
 
             // have each Tuff Puff return to their home position
             FOR_CHILDREN_SCATTERED(HNP_RETURN_HOME)
+            #undef HNP_RETURN_HOME
 
             Call(SetGoalToHome, ACTOR_SELF)
             Call(FlyToGoal, ACTOR_SELF, 20, -10, EASING_SIN_OUT)
@@ -2647,6 +2650,7 @@ EvtScript N(EVS_Attack_GroupSlam) = {
 
     // add 1 damage for each Tuff Puff
     FOR_CHILDREN_ORDERED(HNP_ADD_CHILD)
+    #undef HNP_ADD_CHILD
 
     Wait(2)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -2679,6 +2683,7 @@ EvtScript N(EVS_Attack_GroupSlam) = {
 
             // make each Tuff Puff return home
             FOR_CHILDREN_SCATTERED(HNP_RETURN_HOME)
+            #undef HNP_RETURN_HOME
 
             Wait(20)
         EndCaseGroup
@@ -2782,6 +2787,7 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
 
     // count the number of Tuff Puffs to compute radial spacing around the player
     FOR_CHILDREN_ORDERED(HNP_ADD_CHILD)
+    #undef HNP_ADD_CHILD
 
     // radial increment will be stored in LVarB
     SetF(LVarB, Float(360.0))
@@ -2849,6 +2855,7 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
 
     // count the number of Tuff Puffs
     FOR_CHILDREN_ORDERED(HNP_ADD_CHILD)
+    #undef HNP_ADD_CHILD
 
     Set(LVarA, 30 * DT)
     Sub(LVarA, LVar9)
@@ -2950,6 +2957,7 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
 
             // have each Tuff Puff fly back to its home position
             FOR_CHILDREN_SCATTERED(HNP_RETURN_HOME)
+            #undef HNP_RETURN_HOME
 
             Wait(50)
             Call(UseIdleAnimation, ACTOR_SELF, true)
@@ -3124,6 +3132,7 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
 
             // have each Tuff Puff fly back to its home position
             FOR_CHILDREN_SCATTERED(HNP_RETURN_HOME)
+            #undef HNP_RETURN_HOME
 
             Wait(50)
         EndCaseGroup

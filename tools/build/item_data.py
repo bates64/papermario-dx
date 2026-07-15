@@ -236,9 +236,9 @@ def generate_hud_element_scripts(fout: TextIOWrapper, items: List[ItemEntry], pa
 
     for script in hud_scripts:
         if script.pair:
-            fout.write(f"    {{ .enabled = &{script.full_name}, .disabled = &{script.full_name}_disabled }},\n")
+            fout.write(f"    {{ .enabled = {script.full_name}, .disabled = {script.full_name}_disabled }},\n")
         else:
-            fout.write(f"    {{ .enabled = &{script.full_name}, .disabled = &{script.full_name} }},\n")
+            fout.write(f"    {{ .enabled = {script.full_name}, .disabled = {script.full_name} }},\n")
 
     fout.write("};\n")
     fout.write("\n")
@@ -288,7 +288,7 @@ def generate_item_entity_scripts(fout: TextIOWrapper, items: List[ItemEntry]):
 
     # write the item script table
     fout.write("// indexed by itemID\n")
-    fout.write("s32* gItemEntityScripts[] = {\n")
+    fout.write("ItemScriptList gItemEntityScripts = {\n")
     for item in items:
         script = item_scripts[item.itemEntID]
         fout.write(f"    {script.full_name},\n")

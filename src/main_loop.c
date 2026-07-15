@@ -154,8 +154,10 @@ void step_game_loop(void) {
 }
 
 void gfx_task_background(void) {
+    s32 gfxCount;
+
     gDisplayContext = &DisplayContexts[gCurrentDisplayContextIndex];
-    gMainGfxPos = &gDisplayContext->backgroundGfx[0];
+    gMainGfxPos = gDisplayContext->backgroundGfx;
 
     gfx_init_state();
     gfx_draw_background();
@@ -163,22 +165,23 @@ void gfx_task_background(void) {
     gDPFullSync(gMainGfxPos++);
     gSPEndDisplayList(gMainGfxPos++);
 
-    // TODO these << 3 >> 3 shouldn't be necessary. There's almost definitely something we're missing here...
-    ASSERT((s32)((u32)((gMainGfxPos - gDisplayContext->backgroundGfx) << 3) >> 3) < ARRAY_COUNT(
-               gDisplayContext->backgroundGfx))
+    gfxCount = gMainGfxPos - gDisplayContext->backgroundGfx;
+    ASSERT(gfxCount <= ARRAY_COUNT(gDisplayContext->backgroundGfx));
 
-    nuGfxTaskStart(&gDisplayContext->backgroundGfx[0], (u32)(gMainGfxPos - gDisplayContext->backgroundGfx) * 8,
-                   NU_GFX_UCODE_F3DEX2, NU_SC_NOSWAPBUFFER);
+    nuGfxTaskStart(gDisplayContext->backgroundGfx, gfxCount * sizeof(Gfx), NU_GFX_UCODE_F3DEX2, NU_SC_NOSWAPBUFFER);
 }
 
 void gfx_draw_frame(void) {
+    s32 gfxCount;
+    s32 gfxCapacity;
+
     profiler_gfx_started();
 
     gMatrixListPos = 0;
-    gMainGfxPos = &gDisplayContext->mainGfx[0];
+    gMainGfxPos = gDisplayContext->mainGfx;
 
     if (gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME) {
-        gCurrentDisplayContextIndex = gCurrentDisplayContextIndex ^ 1;
+        gCurrentDisplayContextIndex ^= 1;
         return;
     }
 
@@ -257,19 +260,22 @@ void gfx_draw_frame(void) {
     dx_debug_console_main();
     #endif
 
-    {
-        s32 used = gMainGfxPos - gDisplayContext->mainGfx;
-        s32 capacity = ARRAY_COUNT(gDisplayContext->mainGfx);
-        s32 maskedUsed = (s32)(((u32)used << 3) >> 3);
-        ASSERT_MSG(maskedUsed < capacity, "gMainGfxPos overflow: %0.1fkiB (%ld%%%%)", (used - capacity) * (s32)sizeof(Gfx) / 1024.0f, (long)(used * 100 / capacity));
-    }
-
     gDPFullSync(gMainGfxPos++);
     gSPEndDisplayList(gMainGfxPos++);
 
-    nuGfxTaskStart(gDisplayContext->mainGfx, (u32)(gMainGfxPos - gDisplayContext->mainGfx) * 8, NU_GFX_UCODE_F3DEX2,
-                   NU_SC_TASK_LODABLE | NU_SC_SWAPBUFFER);
-    gCurrentDisplayContextIndex = gCurrentDisplayContextIndex ^ 1;
+    gfxCount = gMainGfxPos - gDisplayContext->mainGfx;
+    gfxCapacity = ARRAY_COUNT(gDisplayContext->mainGfx);
+
+    ASSERT_MSG(gfxCount <= gfxCapacity,
+        "gMainGfxPos overflow: %0.1fkiB (%ld%%%%)",
+        (gfxCount - gfxCapacity) * (s32)sizeof(Gfx) / 1024.0f,
+        (long)(gfxCount * 100 / gfxCapacity)
+    );
+
+    nuGfxTaskStart(gDisplayContext->mainGfx, gfxCount * sizeof(Gfx), NU_GFX_UCODE_F3DEX2,
+        NU_SC_TASK_LODABLE | NU_SC_SWAPBUFFER);
+
+    gCurrentDisplayContextIndex ^= 1;
     crash_screen_set_draw_info(nuGfxCfb_ptr, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 

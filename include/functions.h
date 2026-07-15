@@ -87,7 +87,7 @@ void clear_entity_model_flags(s32 idx, s32 newFlags);
 void exec_entity_model_commandlist(s32 idx);
 RenderTask* queue_render_task(RenderTask* task);
 
-s32 create_mesh_animator(AnimScriptCode* animPos, AnimScriptCode* animBuffer);
+s32 create_mesh_animator(AnimScriptPtr animScript, AnimScriptPtr animBuffer);
 void load_mesh_animator_tree(s32 index, StaticAnimatorNode** tree);
 
 void setup_pause_menu_tab(MenuWindowBP* bpArray, s32 arraySize);
@@ -115,7 +115,7 @@ s32 filemenu_get_exit_mode(void);
 void filemenu_set_selected(MenuPanel* menu, s32 col, s32 row);
 void filemenu_set_cursor_alpha(s32 arg0);
 void filemenu_set_cursor_goal_pos(s32 windowIndex, s32 posX, s32 posY);
-u8* filemenu_get_menu_message(s32 idx);
+MSG_PTR filemenu_get_menu_message(s32 idx);
 
 void gfx_task_background(void);
 
@@ -195,7 +195,7 @@ void get_screen_coords(s32 camID, f32 x, f32 y, f32 z, s32* screenX, s32* screen
 void parent_collider_to_model(s16 colliderID, s16 modelIndex);
 void clone_model(u16 srcModelID, u16 newModelID);
 struct Model* get_model_from_list_index(s32 listIndex);
-s32 create_model_animator(AnimScriptCode* animPos);
+s32 create_model_animator(AnimScriptPtr animScript);
 s32 get_model_list_index_from_tree_index(s32 treeIndex);
 s32 get_transform_group_index(s32);
 void get_model_center_and_size(u16 modelID, f32* centerX, f32* centerY, f32* centerZ, f32* sizeX, f32* sizeY,
@@ -262,11 +262,11 @@ s32 phys_can_player_interact(void);
 HitID player_test_move_without_slipping(PlayerStatus*, f32*, f32*, f32*, f32, f32, s32*);
 HitID player_test_move_with_slipping(PlayerStatus* playerStatus, f32* posX, f32* posY, f32* posZ, f32 speed, f32 heading);
 
-s32 evt_get_variable(Evt* script, Bytecode var);
-s32 evt_set_variable(Evt* script, Bytecode var, s32 value);
-f32 evt_get_float_variable(Evt* script, Bytecode var);
-f32 evt_set_float_variable(Evt* script, Bytecode var, f32 value);
-s32 evt_get_variable_index(s32 var);
+s32 evt_get_variable(Evt* script, EvtVar var);
+s32 evt_set_variable(Evt* script, EvtVar var, s32 value);
+f32 evt_get_float_variable(Evt* script, EvtVar var);
+f32 evt_set_float_variable(Evt* script, EvtVar var, f32 value);
+s32 evt_get_variable_index(EvtVar var);
 void set_script_timescale(Evt* script, f32 timescale);
 f32 sin_deg(f32 x);
 f32 cos_deg(f32 x);
@@ -327,7 +327,7 @@ void clear_virtual_entity_list(void);
 void reset_model_animators(void);
 void init_virtual_entity_list(void);
 void init_model_animators(void);
-void play_model_animation(s32, AnimScriptCode*);
+void play_model_animation(s32, AnimScriptPtr);
 s32 heap_free(void* ptr);
 
 void load_battle_hit_asset(const char* hitName);
@@ -753,7 +753,7 @@ void init_trigger_list(void);
 void partner_init_after_battle(s32 arg0);
 void load_map_script_lib(void);
 void remove_item_entity_by_index(s32 index);
-void set_entity_commandlist(Entity* entity, EntityCode* entityScript);
+void set_entity_commandlist(Entity* entity, EntityScriptPtr entityScript);
 s32 is_player_dismounted(void);
 void partner_disable_ai_soon(void);
 void partner_disable_ai(void);

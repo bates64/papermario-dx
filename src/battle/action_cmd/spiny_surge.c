@@ -48,19 +48,19 @@ API_CALLABLE(N(init)) {
     acs->hudPosX = -48;
     acs->hudPosY = 80;
 
-    hid = hud_element_create(&HES_StickNeutral);
+    hid = hud_element_create(HES_StickNeutral);
     acs->hudElemIDs[HIDX_STICK] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    hid = hud_element_create(&HES_BlueMeter);
+    hid = hud_element_create(HES_BlueMeter);
     acs->hudElemIDs[HIDX_METER] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY + 28);
     hud_element_set_render_depth(hid, 0);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-    hid = hud_element_create(&HES_100pct);
+    hid = hud_element_create(HES_100pct);
     acs->hudElemIDs[HIDX_100_PCT] = hid;
     hud_element_set_render_pos(hid, acs->hudPosX, acs->hudPosY + 28);
     hud_element_set_render_depth(hid, 0);
@@ -146,7 +146,7 @@ void N(update)(void) {
                 break;
             }
 
-            hud_element_set_script(acs->hudElemIDs[HIDX_STICK], &HES_StickMashLeft);
+            hud_element_set_script(acs->hudElemIDs[HIDX_STICK], HES_StickMashLeft);
             acs->spinySurge.tossState = SPINY_SURGE_NONE;
             PrevButtons = 0;
             acs->stateTimer = acs->duration;

@@ -332,8 +332,8 @@ void sfx_clear_env_sounds(s16 playSounds) {
 
 void sfx_update_env_sound_params(void) {
     SoundInstance* sound = gCurrentEnvSounds;
-    u16 volume;
-    u16 pan;
+    s16 volume;
+    s16 pan;
     s32 i;
 
     for (i = 0; i < MAX_SOUND_INSTANCES; i++, sound++) {

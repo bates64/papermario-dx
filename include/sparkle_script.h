@@ -1,10 +1,7 @@
 #include "common.h"
 
-typedef s32 SparkleScript[];
-
 enum {
     SPARKLE_OP_End      = 0,
-    SPARKLE_OP_SetGfx   = 1,
     SPARKLE_OP_Restart  = 2,
     SPARKLE_OP_Jump     = 3,
     SPARKLE_OP_Break    = 4,
@@ -12,7 +9,6 @@ enum {
 };
 
 #define sp_End SPARKLE_OP_End,
-#define sp_SetGfx(time, gfx) SPARKLE_OP_SetGfx, time, (s32)gfx,
 #define sp_Restart SPARKLE_OP_Restart,
 #define sp_Jump(dest) SPARKLE_OP_Jump, (s32)dest,
 /// Purpose unknown; arg is not read

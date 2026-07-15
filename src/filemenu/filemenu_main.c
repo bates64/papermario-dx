@@ -48,7 +48,7 @@ extern u8 D_filemenu_8025093C[4];
 #define COPY_OFFSET_X 16
 #endif
 
-BSS u8 filemenu_filename[8];
+BSS MSG_BIN filemenu_filename[8];
 
 #define LOCALE_FILE_NUMBER_X 33
 //TODO ifdef for LOCALE_DE/ES/FR/JP/CN ...
@@ -86,35 +86,35 @@ extern HudScript HES_OptionMonoOff_es;
 extern HudScript HES_OptionStereoOn_es;
 extern HudScript HES_OptionStereoOff_es;
 
-HudScript* filemenu_main_hudScripts[][20] = {
+HudScriptPtr filemenu_main_hudScripts[][20] = {
     [LANGUAGE_DEFAULT] = {
-        &HES_Spirit1, &HES_Spirit2, &HES_Spirit3, &HES_Spirit4, &HES_Spirit5, &HES_Spirit6, &HES_Spirit7,
-        &HES_Spirit1Missing, &HES_Spirit2Missing, &HES_Spirit3Missing, &HES_Spirit4Missing, &HES_Spirit5Missing,
-        &HES_Spirit6Missing, &HES_Spirit7Missing, &HES_JpFile, &HES_JpFileDisabled, &HES_OptionMonoOn,
-        &HES_OptionMonoOff,
-        &HES_OptionStereoOn, &HES_OptionStereoOff,
+        HES_Spirit1, HES_Spirit2, HES_Spirit3, HES_Spirit4, HES_Spirit5, HES_Spirit6, HES_Spirit7,
+        HES_Spirit1Missing, HES_Spirit2Missing, HES_Spirit3Missing, HES_Spirit4Missing, HES_Spirit5Missing,
+        HES_Spirit6Missing, HES_Spirit7Missing, HES_JpFile, HES_JpFileDisabled, HES_OptionMonoOn,
+        HES_OptionMonoOff,
+        HES_OptionStereoOn, HES_OptionStereoOff,
     },
 #if VERSION_PAL
     [LANGUAGE_DE] = {
-        &HES_Spirit1, &HES_Spirit2, &HES_Spirit3, &HES_Spirit4, &HES_Spirit5, &HES_Spirit6, &HES_Spirit7,
-        &HES_Spirit1Missing, &HES_Spirit2Missing, &HES_Spirit3Missing, &HES_Spirit4Missing, &HES_Spirit5Missing,
-        &HES_Spirit6Missing, &HES_Spirit7Missing, &HES_JpFile, &HES_JpFileDisabled, &HES_OptionMonoOn_de,
-        &HES_OptionMonoOff_de,
-        &HES_OptionStereoOn_de, &HES_OptionStereoOff_de,
+        HES_Spirit1, HES_Spirit2, HES_Spirit3, HES_Spirit4, HES_Spirit5, HES_Spirit6, HES_Spirit7,
+        HES_Spirit1Missing, HES_Spirit2Missing, HES_Spirit3Missing, HES_Spirit4Missing, HES_Spirit5Missing,
+        HES_Spirit6Missing, HES_Spirit7Missing, HES_JpFile, HES_JpFileDisabled, HES_OptionMonoOn_de,
+        HES_OptionMonoOff_de,
+        HES_OptionStereoOn_de, HES_OptionStereoOff_de,
     },
     [LANGUAGE_FR] = {
-        &HES_Spirit1, &HES_Spirit2, &HES_Spirit3, &HES_Spirit4, &HES_Spirit5, &HES_Spirit6, &HES_Spirit7,
-        &HES_Spirit1Missing, &HES_Spirit2Missing, &HES_Spirit3Missing, &HES_Spirit4Missing, &HES_Spirit5Missing,
-        &HES_Spirit6Missing, &HES_Spirit7Missing, &HES_JpFile, &HES_JpFileDisabled, &HES_OptionMonoOn_fr,
-        &HES_OptionMonoOff_fr,
-        &HES_OptionStereoOn_fr, &HES_OptionStereoOff_fr,
+        HES_Spirit1, HES_Spirit2, HES_Spirit3, HES_Spirit4, HES_Spirit5, HES_Spirit6, HES_Spirit7,
+        HES_Spirit1Missing, HES_Spirit2Missing, HES_Spirit3Missing, HES_Spirit4Missing, HES_Spirit5Missing,
+        HES_Spirit6Missing, HES_Spirit7Missing, HES_JpFile, HES_JpFileDisabled, HES_OptionMonoOn_fr,
+        HES_OptionMonoOff_fr,
+        HES_OptionStereoOn_fr, HES_OptionStereoOff_fr,
     },
     [LANGUAGE_ES] = {
-        &HES_Spirit1, &HES_Spirit2, &HES_Spirit3, &HES_Spirit4, &HES_Spirit5, &HES_Spirit6, &HES_Spirit7,
-        &HES_Spirit1Missing, &HES_Spirit2Missing, &HES_Spirit3Missing, &HES_Spirit4Missing, &HES_Spirit5Missing,
-        &HES_Spirit6Missing, &HES_Spirit7Missing, &HES_JpFile, &HES_JpFileDisabled, &HES_OptionMonoOn_es,
-        &HES_OptionMonoOff_es,
-        &HES_OptionStereoOn_es, &HES_OptionStereoOff_es,
+        HES_Spirit1, HES_Spirit2, HES_Spirit3, HES_Spirit4, HES_Spirit5, HES_Spirit6, HES_Spirit7,
+        HES_Spirit1Missing, HES_Spirit2Missing, HES_Spirit3Missing, HES_Spirit4Missing, HES_Spirit5Missing,
+        HES_Spirit6Missing, HES_Spirit7Missing, HES_JpFile, HES_JpFileDisabled, HES_OptionMonoOn_es,
+        HES_OptionMonoOff_es,
+        HES_OptionStereoOn_es, HES_OptionStereoOff_es,
     }
 #endif
 };
@@ -337,7 +337,7 @@ void filemenu_draw_contents_title(
     s32 opacity, s32 darkening
 ) {
     char strBuf[64];
-    u8 msgBuf[64];
+    MSG_BIN msgBuf[64];
     s32 msgWidth;
     s32 msgIdx;
     s32 xOffset;
@@ -526,7 +526,7 @@ void filemenu_draw_contents_file_info(s32 fileIdx,
 
     // do not show file summary from mods that don't match the current one
     if (!gSaveSlotMetadata[fileIdx].validData) {
-        u8 buf[32];
+        MSG_BIN buf[32];
         if (gSaveSlotMetadata[fileIdx].modName[0] == '\0') {
             dx_string_to_msg(buf, "Paper Mario");
         } else {

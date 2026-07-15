@@ -44,21 +44,21 @@ API_CALLABLE(N(GiveRefund)) {
 #if VERSION_PAL
         switch (gCurrentLanguage) {
             case LANGUAGE_EN:
-                itemIcon = hid = hud_element_create(&HES_Refund);
+                itemIcon = hid = hud_element_create(HES_Refund);
                 break;
             case LANGUAGE_DE:
-                itemIcon = hid = hud_element_create(&HES_Refund_de);
+                itemIcon = hid = hud_element_create(HES_Refund_de);
                 break;
             case LANGUAGE_FR:
-                itemIcon = hid = hud_element_create(&HES_Refund_fr);
+                itemIcon = hid = hud_element_create(HES_Refund_fr);
                 break;
             case LANGUAGE_ES:
-                itemIcon = hid = hud_element_create(&HES_Refund_es);
+                itemIcon = hid = hud_element_create(HES_Refund_es);
                 break;
         }
         hud_element_set_render_pos(hid, iconX + 36, iconY - 63);
 #else
-        itemHID = hud_element_create(&HES_Refund);
+        itemHID = hud_element_create(HES_Refund);
         hud_element_set_render_pos(itemHID, iconX + 36, iconY - 63);
 #endif
     }

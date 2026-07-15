@@ -46,6 +46,7 @@ typedef struct EnemyDetectVolume {
     /* 0x14 */ s32 sizeZ;
     /* 0x18 */ f32 halfHeight;
     /* 0x1C */ s16 detectFlags; // see: DetectVolumeFlags
+    /* 0x1E */ PAD(2);
 } EnemyDetectVolume; // size = 0x20
 
 void ai_suspend_for_time(Evt* script);

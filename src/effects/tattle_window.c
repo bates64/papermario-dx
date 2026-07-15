@@ -27,9 +27,9 @@ WindowStyleCustom TattleWindowStyle = {
 };
 
 typedef struct TattleAnimFrame {
-    s16 offsetY;
-    u8 closeAmtX;
-    u8 closeAmtY;
+    /* 0x00 */ s16 offsetY;
+    /* 0x02 */ u8 closeAmtX;
+    /* 0x03 */ u8 closeAmtY;
 } TattleAnimFrame; // size = 0x4
 
 TattleAnimFrame TattleWindowAnimation[] = {

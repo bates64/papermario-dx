@@ -49,7 +49,7 @@ BSS s32 MovesPrevSelected; // index of previously selected option, set by caller
 // the arrays for option data are NOT sorted, so we use this to look up display order indices --> data array indices
 BSS s32 MovesOptionIndexMap[MENU_CAPACITY];
 
-BSS HudScript* MovesOptionHudScripts[MENU_CAPACITY];
+BSS HudScriptPtr MovesOptionHudScripts[MENU_CAPACITY];
 BSS HudElemID MovesOptionHIDs[MENU_CAPACITY];
 BSS HudElemID MovesOptionCostHIDs[MENU_CAPACITY];
 BSS MsgID MovesOptionNames[MENU_CAPACITY];
@@ -186,7 +186,7 @@ void btl_submenu_moves_resume_choose(void) {
         hud_element_set_tint(moveOptionCostUnitIconIDs[i], 255, 255, 255);
     }
 
-    hud_element_set_script(HID_MovesCursor, &HES_AnimatedHandPointer);
+    hud_element_set_script(HID_MovesCursor, HES_AnimatedHandPointer);
     set_window_update(WIN_BTL_MOVES_MENU, WINDOW_UPDATE_TRANSPARENT);
 
     if (!UsingSpiritsSubmenu) {
@@ -237,7 +237,7 @@ void btl_submenu_moves_restore_choose(void) {
         hud_element_set_tint(moveOptionCostUnitIconIDs[i], 255, 255, 255);
     }
 
-    hud_element_set_script(HID_MovesCursor, &HES_AnimatedHandPointer);
+    hud_element_set_script(HID_MovesCursor, HES_AnimatedHandPointer);
     MovesTextColor = MSG_PAL_STANDARD;
     MovesDescVisible = true;
     MovesMenuState = BTL_SUBMENU_STATE_RESTORE;
@@ -305,27 +305,27 @@ s32 btl_submenu_moves_update(void) {
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
             }
 
-            hid = hud_element_create(&HES_AnimatedHandPointer);
+            hid = hud_element_create(HES_AnimatedHandPointer);
             HID_MovesCursor = hid;
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, MovesMenuPosX, MovesMenuPosY);
 
-            hid = hud_element_create(&HES_GreenArrowUp);
+            hid = hud_element_create(HES_GreenArrowUp);
             HID_MovesArrowUp = hid;
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, MovesMenuPosX + 39, MovesMenuPosY - 7);
 
-            hid = hud_element_create(&HES_GreenArrowDown);
+            hid = hud_element_create(HES_GreenArrowDown);
             HID_MovesArrowDown = hid;
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, MovesMenuPosX + 39, MovesMenuPosY + 78);
 
             if (!UsingSpiritsSubmenu) {
-                hid = hud_element_create(&HES_StatusFlower);
+                hid = hud_element_create(HES_StatusFlower);
                 HID_MovesTitle = hid;
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
             } else {
-                hid = hud_element_create(&HES_MenuStarPower);
+                hid = hud_element_create(HES_MenuStarPower);
                 HID_MovesTitle = hid;
                 hud_element_set_scale(hid, 0.75f);
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
@@ -336,30 +336,30 @@ s32 btl_submenu_moves_update(void) {
                 if (!UsingSpiritsSubmenu) {
                     switch (MovesOptionDiscountColors[i]) {
                         case 0:
-                            hid = hud_element_create(&HES_FPCost);
+                            hid = hud_element_create(HES_FPCost);
                             MovesOptionCostHIDs[i] = hid;
                             break;
                         case 1:
-                            hid = hud_element_create(&HES_FPCostReduced);
+                            hid = hud_element_create(HES_FPCostReduced);
                             MovesOptionCostHIDs[i] = hid;
                             break;
                         default:
-                            hid = hud_element_create(&HES_FPCostReducedTwice);
+                            hid = hud_element_create(HES_FPCostReducedTwice);
                             MovesOptionCostHIDs[i] = hid;
                             break;
                     }
                 } else {
                     switch (MovesOptionDiscountColors[i]) {
                         case 0:
-                            hid = hud_element_create(&HES_POWCost);
+                            hid = hud_element_create(HES_POWCost);
                             MovesOptionCostHIDs[i] = hid;
                             break;
                         case 1:
-                            hid = hud_element_create(&HES_POWCostReduced);
+                            hid = hud_element_create(HES_POWCostReduced);
                             MovesOptionCostHIDs[i] = hid;
                             break;
                         default:
-                            hid = hud_element_create(&HES_POWCostReducedTwice);
+                            hid = hud_element_create(HES_POWCostReducedTwice);
                             MovesOptionCostHIDs[i] = hid;
                             break;
                     }
@@ -496,7 +496,7 @@ s32 btl_submenu_moves_update(void) {
                 hud_element_set_tint(hid, 160, 160, 160);
             }
 
-            hud_element_set_script(HID_MovesCursor, &HES_HandPointer);
+            hud_element_set_script(HID_MovesCursor, HES_HandPointer);
             MovesTextColor = MSG_PAL_0D;
             set_window_update(WIN_BTL_MOVES_MENU, WINDOW_UPDATE_DARKENED);
             if (!UsingSpiritsSubmenu) {
@@ -732,7 +732,7 @@ void btl_menu_moves_draw_content(void* data, s32 x, s32 y) {
                                 DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
                             );
                             if (MovesOptionEnabled[index] <= 0) {
-                                hud_element_set_script(hid, &HES_NotEnoughPOW);
+                                hud_element_set_script(hid, HES_NotEnoughPOW);
                             }
                             hud_element_set_render_pos(hid, xPos + 102, yPos + 7);
                         } else {
@@ -741,7 +741,7 @@ void btl_menu_moves_draw_content(void* data, s32 x, s32 y) {
                                 DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
                             );
                             if (MovesOptionEnabled[index] <= 0) {
-                                hud_element_set_script(hid, &HES_NotEnoughFP);
+                                hud_element_set_script(hid, HES_NotEnoughFP);
                             }
                             hud_element_set_render_pos(hid, xPos + 116, yPos + 7);
                         }

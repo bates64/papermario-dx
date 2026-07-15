@@ -77,15 +77,12 @@ void bgm_reset_volume(void) {
     MusicMaxVolume = VOL_LEVEL_FULL;
 }
 
-//TODO refactor out constants
 void bgm_update_music_control(void) {
     MusicControlData* music = gMusicControlData;
-    s32 i = 0;
-    s16 stateFadeOut = MUSIC_STATE_AWAIT_FADEOUT;
-    s16 pushedFlag = MUSIC_FLAG_PUSHING;
     s32 flags;
+    s32 i;
 
-    for (i; i < ARRAY_COUNT(gMusicControlData); i++, music++) {
+    for (i = 0; i < ARRAY_COUNT(gMusicControlData); i++, music++) {
         switch (music->state) {
             case MUSIC_STATE_IDLE:
                 break;
@@ -94,20 +91,20 @@ void bgm_update_music_control(void) {
                     if (music->fadeOutTime < 250) {
                         if (!(music->flags & MUSIC_FLAG_PUSHING)) {
                             if (snd_song_stop(music->songName) == AU_RESULT_OK) {
-                                music->state = stateFadeOut;
+                                music->state = MUSIC_STATE_AWAIT_FADEOUT;
                             }
                         } else {
                             if (snd_song_push_stop(music->songName) == AU_RESULT_OK) {
-                                music->state = stateFadeOut;
+                                music->state = MUSIC_STATE_AWAIT_FADEOUT;
                             }
                         }
                     } else if (!(music->flags & MUSIC_FLAG_PUSHING)) {
                         if (snd_song_request_fade_out(music->songName, music->fadeOutTime, nullptr) == AU_RESULT_OK) {
-                            music->state = stateFadeOut;
+                            music->state = MUSIC_STATE_AWAIT_FADEOUT;
                         }
                     } else {
                         if (snd_song_request_push_fade_out(music->songName, 250) == AU_RESULT_OK) {
-                            music->state = stateFadeOut;
+                            music->state = MUSIC_STATE_AWAIT_FADEOUT;
                         }
                     }
                 } else {
@@ -115,13 +112,13 @@ void bgm_update_music_control(void) {
                         // nothing was playing in this case, so remember to skip the next pop
                         music->flags |= MUSIC_FLAG_IGNORE_POP;
                     }
-                    music->flags &= ~pushedFlag;
+                    music->flags &= ~MUSIC_FLAG_PUSHING;
                     music->state = MUSIC_STATE_PLAY_NEXT;
                 }
                 break;
             case MUSIC_STATE_AWAIT_FADEOUT:
                 flags = music->flags;
-                music->flags &= ~pushedFlag;
+                music->flags &= ~MUSIC_FLAG_PUSHING;
                 if (flags & MUSIC_FLAG_PLAYING) {
                     if (snd_song_is_playing(music->songName) == AU_RESULT_OK) {
                         music->flags &= ~MUSIC_FLAG_PLAYING;

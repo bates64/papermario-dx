@@ -700,7 +700,7 @@ s32 au_bgm_player_audio_frame_update(BGMPlayer* player) {
 }
 
 void au_bgm_player_initialize(BGMPlayer* player) {
-    s32* buf;
+    SegData* buf;
     s32 cmd;
     s32 keepReading;
     s32 i;
@@ -816,7 +816,7 @@ void au_bgm_player_initialize(BGMPlayer* player) {
 
 void au_bgm_clear_custom_note_press(BGMPlayer* player, s32 index) {
     s32 i;
-    u16* pos = player->customPressEnvelopes[index];
+    s16* pos = player->customPressEnvelopes[index];
     player->customEnvelopeWritePos[index] = 0;
 
     for (i = 0; i < 9; i++) {
@@ -939,7 +939,7 @@ void au_bgm_end_composition_loop(BGMPlayer* player, u32 cmd) {
 void au_bgm_load_phrase(BGMPlayer* player, u32 cmd) {
     BGMPlayerTrack* track;
     u32 trackInfo;
-    s32* trackList;
+    SegData* trackList;
     u32 linkedID;
     s32 count;
     s32 curVoice;

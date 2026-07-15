@@ -84,13 +84,13 @@ API_CALLABLE(N(RunMixingMinigame)) {
             N(MixingGameUIBaseX) = -48;
             N(MixingGameUIBaseY) = 64;
 
-            hid = hud_element_create(&HES_AButton);
+            hid = hud_element_create(HES_AButton);
             N(MixingGameHudElems)[0] = hid;
             hud_element_set_render_pos(hid, N(MixingGameUIBaseX), N(MixingGameUIBaseY));
             hud_element_set_render_depth(hid, 0);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-            hid = hud_element_create(&HES_BlueMeter);
+            hid = hud_element_create(HES_BlueMeter);
             N(MixingGameHudElems)[1] = hid;
             hud_element_set_render_pos(hid, N(MixingGameUIBaseX), N(MixingGameUIBaseY) + 28);
             hud_element_set_render_depth(hid, 0);
@@ -121,7 +121,7 @@ API_CALLABLE(N(RunMixingMinigame)) {
             }
             break;
         case MIXING_STATE_BEGIN:
-            hud_element_set_script(N(MixingGameHudElems)[0], &HES_MashAButton);
+            hud_element_set_script(N(MixingGameHudElems)[0], HES_MashAButton);
             N(MixingGameInputs) = 0;
             N(MixingAnimState) = MIXING_ANIM_INIT;
             N(MixingGameState) = MIXING_STATE_MASHING;

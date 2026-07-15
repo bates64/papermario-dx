@@ -166,16 +166,16 @@ void dx_debug_draw_box(s32 posX, s32 posY, s32 sizeX, s32 sizeY, int style, s32 
         0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, 0, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
 }
 
-void dx_debug_draw_ascii(char* text, s32 color, s32 posX, s32 posY) {
-    char buf[128] = {
+void dx_debug_draw_ascii(const char* text, s32 color, s32 posX, s32 posY) {
+    MSG_BIN buf[128] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
     dx_string_to_msg(&buf[4], text);
     draw_msg((s32)buf, posX, posY, 255, color, 0);
 }
 
-void dx_debug_draw_ascii_with_effect(char* text, s32 color, s32 posX, s32 posY, s32 effect) {
-    char buf[128] = {
+void dx_debug_draw_ascii_with_effect(const char* text, s32 color, s32 posX, s32 posY, s32 effect) {
+    MSG_BIN buf[128] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
     dx_string_to_msg(&buf[4], text);
@@ -183,10 +183,10 @@ void dx_debug_draw_ascii_with_effect(char* text, s32 color, s32 posX, s32 posY, 
 }
 
 void dx_debug_draw_msg(s32 msgID, s32 color, s32 alpha, s32 posX, s32 posY) {
-    char buf[128] = {
+    MSG_BIN buf[128] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12,
     };
-    ALIGNED(8) char dmaBuf[124];
+    ALIGNED(8) MSG_BIN dmaBuf[124];
     dma_load_msg(msgID, dmaBuf);
     memcpy(&buf[4], dmaBuf, sizeof(dmaBuf));
     draw_msg((s32)buf, posX, posY, alpha, color, 0);
@@ -194,7 +194,7 @@ void dx_debug_draw_msg(s32 msgID, s32 color, s32 alpha, s32 posX, s32 posY) {
 
 void dx_debug_draw_number(s32 number, char* fmt, s32 color, s32 alpha, s32 posX, s32 posY) {
     char fmtBuf[16];
-    char buf[16] = {
+    MSG_BIN buf[16] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
     sprintf(fmtBuf, fmt, number);
@@ -204,7 +204,7 @@ void dx_debug_draw_number(s32 number, char* fmt, s32 color, s32 alpha, s32 posX,
 
 // efficiently renders an number with (optionally) a digit highlighted using a single draw_msg call
 void dx_debug_draw_editable_number(s32 number, char* fmt, s32 selectedDigit, b32 hasSelected, s32 posX, s32 posY) {
-    char msgBuf[32] = {
+    MSG_BIN msgBuf[32] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12,
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SPACING, 8
     };
@@ -2713,7 +2713,7 @@ void dx_debug_draw_evt_list() {
         }
 
         dx_debug_draw_number(script->groupFlags, "%02X", color, 255, EvtDebugInfoX, posY);
-        dx_debug_draw_number(script->ptrFirstLine, "%08X", color, 255, EvtDebugInfoX + 20, posY);
+        dx_debug_draw_number((s32)script->ptrFirstLine, "%08X", color, 255, EvtDebugInfoX + 20, posY);
         dx_debug_draw_number((u8*)script->ptrCurLine - (u8*)script->ptrFirstLine, "%X", color, 255, EvtDebugInfoX + 80, posY);
 
         row++;
@@ -2848,7 +2848,7 @@ void dx_debug_evt_draw_menu_line(s32 idx, char* text) {
 
 void dx_debug_draw_var(s32 i, s32 number, char* fmt, s32 color, s32 alpha, s32 posX, s32 posY) {
     char fmtBuf[64];
-    char buf[64] = {
+    MSG_BIN buf[64] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
     sprintf(fmtBuf, fmt, i, number);
@@ -2858,7 +2858,7 @@ void dx_debug_draw_var(s32 i, s32 number, char* fmt, s32 color, s32 alpha, s32 p
 
 void dx_debug_draw_fvar(s32 i, f32 number, char* fmt, s32 color, s32 alpha, s32 posX, s32 posY) {
     char fmtBuf[64];
-    char buf[64] = {
+    MSG_BIN buf[64] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
     sprintf(fmtBuf, fmt, i, number);
@@ -3097,7 +3097,7 @@ void dx_debug_update_evt_attached() {
     posY -= RowHeight + 3; // move up one line and include a small gap
     dx_debug_draw_box(EvtDebugInfoX - 10, posY - 4, EvtDebugInfoWidth, 18, WINDOW_STYLE_20, 192);
 
-    dx_debug_draw_number(DebugEvtAttached->ptrFirstLine, "%08X", DefaultColor, 255, EvtDebugInfoX + 40, posY);
+    dx_debug_draw_number((s32) DebugEvtAttached->ptrFirstLine, "%08X", DefaultColor, 255, EvtDebugInfoX + 40, posY);
 
     // evt info box
     dx_debug_draw_box(EvtDebugInfoX - 10, EvtDebugInfoY - 4, EvtDebugInfoWidth, EvtDebugInfoHeight, WINDOW_STYLE_20, 192);
@@ -3195,7 +3195,7 @@ void dx_debug_update_banner() {
 typedef struct DebugConsoleLine {
     u32 hash;
     s32 timeLeft;
-    u8 buf[DEBUG_CONSOLE_MSG_BUF_SIZE];
+    MSG_BIN buf[DEBUG_CONSOLE_MSG_BUF_SIZE];
 } DebugConsoleLine;
 
 DebugConsoleLine DebugConsoleLine0 = { 0 };

@@ -391,7 +391,7 @@ s32 sign(s32 val) {
 
 // Writes integer in base as a string to dest. base can range from 2 to 36
 char* int_to_string(s32 integer, char* dest, s32 base) {
-    u8 string[40]; // Even for binary this is a little long: 34 would suffice
+    char string[40]; // Even for binary this is a little long: 34 would suffice
     s32 i = ARRAY_COUNT(string) - 2;
     s32 negative = false;
     s64 longInteger = integer;
@@ -452,9 +452,9 @@ u32 dma_copy(Addr romStart, Addr romEnd, void* vramDest) {
     u32 length = romEnd - romStart;
     s32 i;
 
-    ASSERT_MSG(((u32)vramDest & 7) == 0, "dest %08x not 8-byte aligned", vramDest);
-    ASSERT_MSG(((u32)romStart & 1) == 0, "romStart %08x not 2-byte aligned", romStart);
-    ASSERT_MSG(((u32)romEnd & 1) == 0, "romEnd %08x not 2-byte aligned", romEnd);
+    ASSERT_MSG(((u32)vramDest & 7) == 0, "dest %08lX not 8-byte aligned", (u32)vramDest);
+    ASSERT_MSG(((u32)romStart & 1) == 0, "romStart %08lX not 2-byte aligned", (u32)romStart);
+    ASSERT_MSG(((u32)romEnd & 1) == 0, "romEnd %08lX not 2-byte aligned", (u32)romEnd);
 
     osInvalICache(vramDest, length);
 

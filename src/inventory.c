@@ -21,12 +21,10 @@ BSS b16 HidingCoinCounter;
 
 StatusBar gStatusBar;
 
-extern HudScript* TimesHudScript;
-extern HudScript* SPIncrementHudScripts[];
-extern HudScript* SPStarHudScripts[];
+extern HudScriptList DigitHudScripts;
+extern HudScriptList SPIncrementHudScripts;
+extern HudScriptList SPStarHudScripts;
 extern s32 StatusBarSPIncrementOffsets[];
-
-extern HudScript* DigitHudScripts[10];
 
 extern HudScript HES_StatusCoinSparkle;
 extern HudScript HES_StatusHP;
@@ -46,7 +44,8 @@ extern HudScript HES_StatusSPShine;
 extern HudScript HES_StatusSPEmptyIncrement;
 extern HudScript HES_StatusStarEmpty;
 
-extern HudScript* SlashHudScript;
+extern HudScript HES_StatusTimes;
+extern HudScript HES_StatusSlash;
 
 void status_bar_start_blinking_coins(void);
 void status_bar_stop_blinking_coins(void);
@@ -528,92 +527,92 @@ void initialize_status_bar(void) {
 #if VERSION_PAL
     switch (gCurrentLanguage) {
         case LANGUAGE_EN:
-            hid = statusBar->hpIconHIDs[0] = hud_element_create(&HES_StatusHP);
+            hid = statusBar->hpIconHIDs[0] = hud_element_create(HES_StatusHP);
             break;
         case LANGUAGE_DE:
-            hid = statusBar->hpIconHIDs[0] = hud_element_create(&HES_StatusHP_de);
+            hid = statusBar->hpIconHIDs[0] = hud_element_create(HES_StatusHP_de);
             break;
         case LANGUAGE_FR:
-            hid = statusBar->hpIconHIDs[0] = hud_element_create(&HES_StatusHP_fr);
+            hid = statusBar->hpIconHIDs[0] = hud_element_create(HES_StatusHP_fr);
             break;
         case LANGUAGE_ES:
-            hid = statusBar->hpIconHIDs[0] = hud_element_create(&HES_StatusHP_es);
+            hid = statusBar->hpIconHIDs[0] = hud_element_create(HES_StatusHP_es);
             break;
     }
 
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
 #else
-    statusBar->hpIconHIDs[0] = hid = hud_element_create(&HES_StatusHP);
+    statusBar->hpIconHIDs[0] = hid = hud_element_create(HES_StatusHP);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
 #endif
 
-    statusBar->hpIconHIDs[1] = hid = hud_element_create(&HES_StatusHeart);
+    statusBar->hpIconHIDs[1] = hid = hud_element_create(HES_StatusHeart);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
 
 #if VERSION_PAL
     switch (gCurrentLanguage) {
         case LANGUAGE_EN:
-            hid = statusBar->fpIconHIDs[0] = hud_element_create(&HES_StatusFP);
+            hid = statusBar->fpIconHIDs[0] = hud_element_create(HES_StatusFP);
             break;
         case LANGUAGE_DE:
-            hid = statusBar->fpIconHIDs[0] = hud_element_create(&HES_StatusFP_de);
+            hid = statusBar->fpIconHIDs[0] = hud_element_create(HES_StatusFP_de);
             break;
         case LANGUAGE_FR:
-            hid = statusBar->fpIconHIDs[0] = hud_element_create(&HES_StatusFP_fr);
+            hid = statusBar->fpIconHIDs[0] = hud_element_create(HES_StatusFP_fr);
             break;
         case LANGUAGE_ES:
-            hid = statusBar->fpIconHIDs[0] = hud_element_create(&HES_StatusFP_es);
+            hid = statusBar->fpIconHIDs[0] = hud_element_create(HES_StatusFP_es);
             break;
     }
 
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
 #else
-    statusBar->fpIconHIDs[0] = hid = hud_element_create(&HES_StatusFP);
+    statusBar->fpIconHIDs[0] = hid = hud_element_create(HES_StatusFP);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
 #endif
 
-    statusBar->fpIconHIDs[1] = hid = hud_element_create(&HES_StatusFlower);
+    statusBar->fpIconHIDs[1] = hid = hud_element_create(HES_StatusFlower);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
 
-    statusBar->coinIconHID = hid = hud_element_create(&HES_StatusCoin);
+    statusBar->coinIconHID = hid = hud_element_create(HES_StatusCoin);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
 
-    statusBar->coinSparkleHID = hid = hud_element_create(&HES_StatusCoinSparkle);
+    statusBar->coinSparkleHID = hid = hud_element_create(HES_StatusCoinSparkle);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
 
-    statusBar->spIconHID = hid = hud_element_create(&HES_StatusStarPoint);
+    statusBar->spIconHID = hid = hud_element_create(HES_StatusStarPoint);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
 
-    statusBar->spShineHID = hid = hud_element_create(&HES_StatusSPShine);
+    statusBar->spShineHID = hid = hud_element_create(HES_StatusSPShine);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
 
-    statusBar->hpTimesHID = hid = hud_element_create(&HES_StatusTimes);
+    statusBar->hpTimesHID = hid = hud_element_create(HES_StatusTimes);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
 
-    statusBar->fpTimesHID = hid = hud_element_create(&HES_StatusTimes);
+    statusBar->fpTimesHID = hid = hud_element_create(HES_StatusTimes);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
 
-    statusBar->spTimesHID = hid = hud_element_create(&HES_StatusTimes);
+    statusBar->spTimesHID = hid = hud_element_create(HES_StatusTimes);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
 
-    statusBar->coinTimesHID = hid = hud_element_create(&HES_StatusTimes);
+    statusBar->coinTimesHID = hid = hud_element_create(HES_StatusTimes);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
 
-    statusBar->starIconHID = hid = hud_element_create(&HES_StatusStar1);
+    statusBar->starIconHID = hid = hud_element_create(HES_StatusStar1);
     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
 
@@ -627,7 +626,7 @@ void status_bar_draw_number(s32 iconID, s32 startX, s32 startY, s32 value, s32 n
     s32 digit;
     s32 i;
 
-    hud_element_set_script(iconID, TimesHudScript);
+    hud_element_set_script(iconID, HES_StatusTimes);
     drawX = startX + 8;
     drawY = startY + 8;
     hud_element_set_render_pos(iconID, drawX, drawY - 1);
@@ -669,7 +668,7 @@ void status_bar_draw_stat(s32 id, s32 startX, s32 startY, s32 currentValue, s32 
     s32 baseX = startX + 8;
     s32 baseY = startY + 8;
 
-    hud_element_set_script(id, SlashHudScript);
+    hud_element_set_script(id, HES_StatusSlash);
     hud_element_set_render_pos(id, baseX + 14, baseY + 1);
     hud_element_clear_flags(id, HUD_ELEMENT_FLAG_DISABLED);
     hud_element_draw_next(id);
@@ -1208,7 +1207,7 @@ void update_status_bar(void) {
         }
         if (s1 == 0) {
             i++;
-            hud_element_set_script(id, &HES_StatusSPEmptyIncrement);
+            hud_element_set_script(id, HES_StatusSPEmptyIncrement);
             hud_element_set_render_pos(id, x + sp50 * 20 + StatusBarSPIncrementOffsets[s1], y - 2);
             hud_element_draw_next(id);
             if (i >= limit) {
@@ -1218,7 +1217,7 @@ void update_status_bar(void) {
         }
         if (s1 == 1) {
             i++;
-            hud_element_set_script(id, &HES_StatusSPEmptyIncrement);
+            hud_element_set_script(id, HES_StatusSPEmptyIncrement);
             hud_element_set_render_pos(id, x + sp50 * 20 + StatusBarSPIncrementOffsets[s1], y - 2);
             hud_element_draw_next(id);
             if (i >= limit) {
@@ -1228,7 +1227,7 @@ void update_status_bar(void) {
         }
         if (s1 == 2) {
             i++;
-            hud_element_set_script(id, &HES_StatusSPEmptyIncrement);
+            hud_element_set_script(id, HES_StatusSPEmptyIncrement);
             hud_element_set_render_pos(id, x + sp50 * 20 + StatusBarSPIncrementOffsets[s1], y - 2);
             hud_element_draw_next(id);
             if (i >= limit) {
@@ -1238,7 +1237,7 @@ void update_status_bar(void) {
         }
         if (s1 == 3) {
             i++;
-            hud_element_set_script(id, &HES_StatusSPEmptyIncrement);
+            hud_element_set_script(id, HES_StatusSPEmptyIncrement);
             hud_element_set_render_pos(id, x + sp50 * 20 + StatusBarSPIncrementOffsets[s1], y - 2);
             hud_element_draw_next(id);
             if (i >= limit) {
@@ -1248,7 +1247,7 @@ void update_status_bar(void) {
         }
         if (s1 == 4) {
             i++;
-            hud_element_set_script(id, &HES_StatusSPEmptyIncrement);
+            hud_element_set_script(id, HES_StatusSPEmptyIncrement);
             hud_element_set_render_pos(id, x + sp50 * 20 + StatusBarSPIncrementOffsets[s1], y - 2);
             hud_element_draw_next(id);
             if (i >= limit) {
@@ -1258,7 +1257,7 @@ void update_status_bar(void) {
         }
         if (s1 == 5) {
             i++;
-            hud_element_set_script(id, &HES_StatusSPEmptyIncrement);
+            hud_element_set_script(id, HES_StatusSPEmptyIncrement);
             hud_element_set_render_pos(id, x + sp50 * 20 + StatusBarSPIncrementOffsets[s1], y - 2);
             hud_element_draw_next(id);
             if (i >= limit) {
@@ -1268,7 +1267,7 @@ void update_status_bar(void) {
         }
         if (s1 == 6) {
             i++;
-            hud_element_set_script(id, &HES_StatusSPEmptyIncrement);
+            hud_element_set_script(id, HES_StatusSPEmptyIncrement);
             hud_element_set_render_pos(id, x + sp50 * 20 + StatusBarSPIncrementOffsets[s1], y - 2);
             hud_element_draw_next(id);
             if (i >= limit) {
@@ -1279,7 +1278,7 @@ void update_status_bar(void) {
 
         if (s1 == 7) {
             i++;
-            hud_element_set_script(id, &HES_StatusStarEmpty);
+            hud_element_set_script(id, HES_StatusStarEmpty);
             hud_element_set_render_pos(id, x + 12 + sp50 * 20, y);
             hud_element_draw_next(id);
             if (i >= limit) {
@@ -1375,10 +1374,10 @@ void show_coin_counter(void) {
     if (statusBar->coinCounterHideDelay == 0) {
         set_window_properties(WIN_CURRENCY_COUNTER, 32, 164, 64, 20, WINDOW_PRIORITY_21, coin_counter_draw_content, 0, -1);
         set_window_update(WIN_CURRENCY_COUNTER, (s32)basic_window_update);
-        statusBar->coinCountTimesHID = hid = hud_element_create(&HES_MenuTimes);
+        statusBar->coinCountTimesHID = hid = hud_element_create(HES_MenuTimes);
         hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
         hud_element_set_tint(hid, 255, 255, 255);
-        statusBar->coinCountIconHID = hid = hud_element_create(&HES_StatusCoin);
+        statusBar->coinCountIconHID = hid = hud_element_create(HES_StatusCoin);
         hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
         hud_element_set_tint(hid, 255, 255, 255);
         statusBar->coinCounterHideDelay = 0;
