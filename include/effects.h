@@ -2623,13 +2623,12 @@ typedef struct EffectBlueprint {
 typedef struct EffectSharedData {
     /* 0x00 */ s32 flags;
     /* 0x04 */ s32 effectIndex;
-    /* 0x08 */ s32 instanceCounter;
-    /* 0x0C */ s32 freeDelay;
-    /* 0x10 */ void (*update)(EffectInstance* effectInst);
-    /* 0x14 */ void (*renderScene)(EffectInstance* effectInst);
-    /* 0x18 */ void (*renderUI)(EffectInstance* effectInst);
-    /* 0x1C */ s32* graphics;
-} EffectSharedData; // size = 0x20
+    /* 0x08 */ s32 freeDelay;
+    /* 0x0C */ void (*update)(EffectInstance* effectInst);
+    /* 0x10 */ void (*renderScene)(EffectInstance* effectInst);
+    /* 0x14 */ void (*renderUI)(EffectInstance* effectInst);
+    /* 0x18 */ s32* graphics;
+} EffectSharedData; // size = 0x1C
 
 typedef struct EffectTableEntry {
     /* 0x00 */ void* entryPoint;

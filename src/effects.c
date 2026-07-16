@@ -209,25 +209,21 @@ EffectInstance* create_effect_instance(EffectBlueprint* effectBp) {
 
     ASSERT(i < ARRAY_COUNT(gEffectSharedData));
 
-    // If this is the first new instance of the effect, initialize the function pointers
-    if (sharedData->instanceCounter == 0) {
-        sharedData->update = effectBp->update;
-        if (sharedData->update == nullptr) {
-            sharedData->renderScene = stub_effect_delegate;
-        }
-
-        sharedData->renderScene = effectBp->renderScene;
-        if (sharedData->renderScene == nullptr) {
-            sharedData->renderScene = stub_effect_delegate;
-        }
-
-        sharedData->renderUI = effectBp->renderUI;
-        if (sharedData->renderUI == nullptr) {
-            sharedData->renderUI = stub_effect_delegate;
-        }
+    sharedData->update = effectBp->update;
+    if (sharedData->update == nullptr) {
+        sharedData->update = stub_effect_delegate;
     }
 
-    sharedData->instanceCounter++;
+    sharedData->renderScene = effectBp->renderScene;
+    if (sharedData->renderScene == nullptr) {
+        sharedData->renderScene = stub_effect_delegate;
+    }
+
+    sharedData->renderUI = effectBp->renderUI;
+    if (sharedData->renderUI == nullptr) {
+        sharedData->renderUI = stub_effect_delegate;
+    }
+
     newEffectInst->shared = sharedData;
 
     if (effectBp->init != nullptr) {
@@ -293,10 +289,9 @@ void* load_effect(s32 effectIndex) {
         sharedData++;
     }
 
-    // reset the initialization latch and return the cached entrypoint
+    // return the cached entrypoint
     if (i < ARRAY_COUNT(gEffectSharedData)) {
         sharedData->effectIndex = effectIndex;
-        sharedData->instanceCounter = 0;
         sharedData->flags = FX_SHARED_DATA_LOADED;
         return effectEntry->entryPoint;
     }
@@ -328,7 +323,6 @@ void* load_effect(s32 effectIndex) {
 
     // Initialize the newly loaded effect data
     sharedData->effectIndex = effectIndex;
-    sharedData->instanceCounter = 0;
     sharedData->flags = FX_SHARED_DATA_LOADED;
     return effectEntry->entryPoint;
 }
