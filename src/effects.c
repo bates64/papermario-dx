@@ -1,23 +1,16 @@
 #include "common.h"
+#include "dx/overlay.h"
 #include "effects.h"
 #include "ld_addrs.h"
 
-typedef s8 TlbEntry[0x1000];
-typedef TlbEntry TlbMappablePage[15];
-
-#define EFFECT_GLOBALS_TLB_IDX 0x10
-
-BSS EffectSharedData gEffectSharedData[15];
+BSS EffectSharedData gEffectSharedData[EFFECT_OVERLAY_SLOT_COUNT];
 EffectInstance* gEffectInstances[96];
 
-extern TlbMappablePage gEffectDataBuffer;
-extern Addr gEffectGlobals;
+void reset_effect_utils(void);
 
 #define FX_ENTRY(name, gfx_name) { \
-    .entryPoint = name##_main, \
-    .dmaStart = effect_##name##_ROM_START, \
-    .dmaEnd = effect_##name##_ROM_END, \
-    .dmaDest = effect_##name##_VRAM, \
+    .overlayName = #name, \
+    .entryPointName = #name "_main", \
     .graphicsDmaStart = gfx_name##_ROM_START, \
     .graphicsDmaEnd = gfx_name##_ROM_END, \
 }
@@ -28,31 +21,22 @@ extern Addr gEffectGlobals;
 void stub_effect_delegate(EffectInstance* effect) {
 }
 
-void set_effect_pos_offset(EffectInstance* effect, f32 x, f32 y, f32 z) {
-    s32* data = effect->data.any;
-
-    ((f32*)data)[1] = x;
-    ((f32*)data)[2] = y;
-    ((f32*)data)[3] = z;
-}
-
 void clear_effect_data(void) {
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(gEffectSharedData); i++) {
-        gEffectSharedData[i].flags = 0;
+    ovl_unload_type(OVL_EFFECT);
+
+    for (i = 0; i < ARRAY_COUNT(gEffectTable); i++) {
+        EffectTableEntry* effectEntry = &gEffectTable[i];
+
+        effectEntry->overlay = nullptr;
+        effectEntry->entryPoint = nullptr;
     }
 
-    for (i = 0; i < ARRAY_COUNT(gEffectInstances); i++) {
-        gEffectInstances[i] = nullptr;
-    }
+    memset(gEffectSharedData, 0, sizeof(gEffectSharedData));
+    memset(gEffectInstances, 0, sizeof(gEffectInstances));
 
-    osUnmapTLBAll();
-    osMapTLB(EFFECT_GLOBALS_TLB_IDX, OS_PM_4K, effect_globals_VRAM, (s32)&gEffectGlobals & 0xFFFFFF, -1, -1);
-    DMA_COPY_SEGMENT(effect_globals);
-}
-
-void func_80059D48(void) {
+    reset_effect_utils();
 }
 
 void update_effects(void) {
@@ -102,8 +86,12 @@ void update_effects(void) {
                             general_heap_free(sharedData->graphics);
                             sharedData->graphics = nullptr;
                         }
-                        sharedData->flags = 0;
-                        osUnmapTLB(i);
+                        EffectTableEntry* effectEntry = &gEffectTable[sharedData->effectIndex];
+
+                        ovl_unload(effectEntry->overlay);
+                        effectEntry->overlay = nullptr;
+                        effectEntry->entryPoint = nullptr;
+                        memset(sharedData, 0, sizeof(*sharedData));
                     }
                 }
             }
@@ -263,14 +251,12 @@ void remove_effect(EffectInstance* effectInstance) {
 
     ASSERT(i < ARRAY_COUNT(gEffectInstances));
 
-    if (effectInstance->data.any == nullptr) {
-        general_heap_free(effectInstance);
-        gEffectInstances[i] = nullptr;
-    } else {
+    if (effectInstance->data.any != nullptr) {
         general_heap_free(effectInstance->data.any);
-        general_heap_free(effectInstance);
-        gEffectInstances[i] = nullptr;
     }
+
+    general_heap_free(effectInstance);
+    gEffectInstances[i] = nullptr;
 }
 
 void remove_all_effects(void) {
@@ -289,7 +275,12 @@ void remove_all_effects(void) {
     }
 }
 
-s32 load_effect(s32 effectIndex) {
+void* load_effect(s32 effectIndex) {
+    if ((u32)effectIndex >= ARRAY_COUNT(gEffectTable) || gEffectTable[effectIndex].overlayName == nullptr) {
+        PANIC_MSG("Invalid effect index %d", (int)effectIndex);
+        return nullptr;
+    }
+
     EffectTableEntry* effectEntry = &gEffectTable[effectIndex];
     EffectSharedData* sharedData;
     s32 i;
@@ -302,12 +293,12 @@ s32 load_effect(s32 effectIndex) {
         sharedData++;
     }
 
-    // If an effect was found within the table, initialize it and return
+    // reset the initialization latch and return the cached entrypoint
     if (i < ARRAY_COUNT(gEffectSharedData)) {
         sharedData->effectIndex = effectIndex;
         sharedData->instanceCounter = 0;
         sharedData->flags = FX_SHARED_DATA_LOADED;
-        return 1;
+        return effectEntry->entryPoint;
     }
 
     // If a loaded effect wasn't found, look for the first empty space
@@ -321,11 +312,11 @@ s32 load_effect(s32 effectIndex) {
     // If no empty space was found, panic
     ASSERT(i < ARRAY_COUNT(gEffectSharedData));
 
-    // Map space for the effect
-    osMapTLB(i, OS_PM_4K, effectEntry->dmaDest, (s32)(gEffectDataBuffer[i]) & 0xFFFFFF, -1, -1);
-
-    // Copy the effect into the newly mapped space
-    dma_copy(effectEntry->dmaStart, effectEntry->dmaEnd, effectEntry->dmaDest);
+    // load and relocate the implementation into the dedicated effect pool
+    effectEntry->overlay = ovl_load(effectEntry->overlayName, OVL_EFFECT);
+    effectEntry->entryPoint = ovl_import(effectEntry->overlay, effectEntry->entryPointName);
+    ASSERT_MSG(effectEntry->entryPoint != nullptr, "Effect '%s' does not export '%s'",
+               effectEntry->overlayName, effectEntry->entryPointName);
 
     // If there's graphics data for the effect, allocate space and copy into the new space
     if (effectEntry->graphicsDmaStart != nullptr) {
@@ -339,5 +330,5 @@ s32 load_effect(s32 effectIndex) {
     sharedData->effectIndex = effectIndex;
     sharedData->instanceCounter = 0;
     sharedData->flags = FX_SHARED_DATA_LOADED;
-    return 1;
+    return effectEntry->entryPoint;
 }

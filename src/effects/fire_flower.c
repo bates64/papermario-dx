@@ -76,8 +76,6 @@ EffectInstance* fire_flower_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, s32 arg
 void fire_flower_init(EffectInstance* effect) {
 }
 
-EFFECT_DEF_STARS_SPREAD(stars_spread_main);
-
 void fire_flower_update(EffectInstance* effect) {
     FireFlowerFXData* part = effect->data.fireFlower;
     s32 unk_04;
@@ -97,8 +95,7 @@ void fire_flower_update(EffectInstance* effect) {
 
     switch (unk_04) {
         case 0:
-            load_effect(EFFECT_STARS_SPREAD);
-            stars_spread_main(0, part->pos.x - 10.0f, part->pos.y, part->pos.z, 7, 20);
+            fx_stars_spread(0, part->pos.x - 10.0f, part->pos.y, part->pos.z, 7, 20);
             part->unk_34 = 0;
             part->unk_38 = 0;
             part->unk_40.x = 0;

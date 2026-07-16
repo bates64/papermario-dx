@@ -54,8 +54,6 @@ EffectInstance* chomp_drop_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4
 void chomp_drop_init(EffectInstance* effect) {
 }
 
-EFFECT_DEF_DUST(dust_main);
-
 void chomp_drop_update(EffectInstance* effect) {
     ChompDropFXData* data = effect->data.chompDrop;
     s32 unk40;
@@ -98,9 +96,8 @@ void chomp_drop_update(EffectInstance* effect) {
             data->unk_08 += data->unk_10;
             if (data->unk_08 < 0.0f) {
                 data->unk_08 = 0.0f;
-                load_effect(EFFECT_DUST);
-                dust_main(2, data->unk_04 + 5.0f, data->unk_08, data->unk_0C, 30);
-                dust_main(2, data->unk_04 - 5.0f, data->unk_08, data->unk_0C, 30);
+                fx_dust(2, data->unk_04 + 5.0f, data->unk_08, data->unk_0C, 30);
+                fx_dust(2, data->unk_04 - 5.0f, data->unk_08, data->unk_0C, 30);
                 data->unk_2C = 4;
                 data->unk_30 = 20;
             }

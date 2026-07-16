@@ -59,8 +59,6 @@ void energy_shockwave_main(
 void energy_shockwave_init(EffectInstance* effect) {
 }
 
-EFFECT_DEF_SHIMMER_WAVE(shimmer_wave_main);
-
 void energy_shockwave_update(EffectInstance* effect) {
     EnergyShockwaveFXData* data = effect->data.energyShockwave;
     s32 unk_28;
@@ -82,8 +80,7 @@ void energy_shockwave_update(EffectInstance* effect) {
         angle = effect_simple_rand(360, unk_2C);
         sin_deg(angle);
         cos_deg(angle);
-        load_effect(EFFECT_SHIMMER_WAVE);
-        shimmer_wave_main(0, data->unk_04, data->unk_08, data->unk_0C, unk_2C * 8, 10.0f, 10, 20);
+        fx_shimmer_wave(0, data->unk_04, data->unk_08, data->unk_0C, unk_2C * 8, 10.0f, 10, 20);
     }
 
     data->unk_1C += data->unk_20;

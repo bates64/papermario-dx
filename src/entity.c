@@ -6,7 +6,6 @@
 #include "model.h"
 #include "sprite/player.h"
 
-#ifdef SHIFT
 extern Addr WorldEntityHeapBottom;
 extern Addr WorldEntityHeapBase;
 #define WORLD_ENTITY_HEAP_BOTTOM (s32) WorldEntityHeapBottom
@@ -14,22 +13,6 @@ extern Addr WorldEntityHeapBase;
 #define entity_jan_iwa_VRAM (void*) entity_jan_iwa_VRAM
 #define entity_sbk_omo_VRAM (void*) entity_sbk_omo_VRAM
 #define entity_default_VRAM (void*) entity_default_VRAM
-#else
-#define WORLD_ENTITY_HEAP_BOTTOM 0x80250000
-#define WORLD_ENTITY_HEAP_BASE 0x80267FF0
-#define entity_jan_iwa_VRAM (void*) 0x802BAE00
-#define entity_sbk_omo_VRAM (void*) 0x802BAE00
-#define entity_default_VRAM (void*) 0x802BAE00
-#endif
-
-#if VERSION_JP // TODO remove once segments are split
-extern Addr entity_default_ROM_END;
-extern Addr entity_default_ROM_START;
-extern Addr entity_jan_iwa_ROM_END;
-extern Addr entity_jan_iwa_ROM_START;
-extern Addr entity_sbk_omo_ROM_END;
-extern Addr entity_sbk_omo_ROM_START;
-#endif
 
 s32 D_8014AFB0 = 255;
 
@@ -1322,7 +1305,6 @@ s32 create_shadow_from_data(ShadowBlueprint* bp, f32 x, f32 y, f32 z) {
     shadow->listIndex = i;
     shadow->flags = bp->flags | ENTITY_FLAG_CREATED;
     shadow->alpha = 128;
-    shadow->unk_06 = 0x80;
     shadow->pos.x = x;
     shadow->pos.y = y;
     shadow->pos.z = z;

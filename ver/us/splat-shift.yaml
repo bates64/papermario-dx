@@ -1,3 +1,4 @@
 options:
   ld_use_symbolic_vram_addresses: True
+  ld_sort_segments_by_vram_class_dependency: True
   emit_subalign: False

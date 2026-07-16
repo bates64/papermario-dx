@@ -116,8 +116,6 @@ EffectInstance* star_main(s32 type, f32 startX, f32 startY, f32 startZ, f32 endX
 void star_init(EffectInstance* effect) {
 }
 
-EFFECT_DEF_LANDING_DUST(landing_dust_main);
-
 void star_update(EffectInstance* effect) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     StarFXData* data = effect->data.star;
@@ -148,8 +146,7 @@ void star_update(EffectInstance* effect) {
             data->vel.x = data->vel.x * 0.7;
             data->projVel *= 0.7;
             data->starAngleVel *= 0.7;
-            load_effect(EFFECT_LANDING_DUST);
-            landing_dust_main(0, data->pos.x, data->pos.y - 5.0f, data->pos.z, 0.0f);
+            fx_landing_dust(0, data->pos.x, data->pos.y - 5.0f, data->pos.z, 0.0f);
 
             if (gGameStatusPtr->context == CONTEXT_WORLD) {
                 sfx_play_sound_at_position(SOUND_SEQ_SHOOTING_STAR_BOUNCE, SOUND_SPACE_DEFAULT, data->pos.x, data->pos.y, data->pos.z);

@@ -3228,6 +3228,11 @@ u32 dx_debug_hash_location(const char* filename, s32 line) {
 
     hash = ((hash << 5) + hash) + line;
 
+    // hash zero is reserved for messages which bypass source deduplication
+    if (hash == 0) {
+        hash = 1;
+    }
+
     return hash;
 }
 
@@ -3235,56 +3240,146 @@ static char *proutSprintf(char *dst, const char *src, size_t count) {
     return (char *)memcpy((u8 *)dst, (u8 *)src, count) + count;
 }
 
-void dx_hashed_debug_printf(const char* filename, s32 line, const char* fmt, ...) {
+static s32 dx_debug_get_escape_color(char code) {
+    switch (code) {
+        case 'r': return MSG_PAL_RED;
+        case 'b': return MSG_PAL_BLUE;
+        case 'y': return MSG_PAL_YELLOW;
+        case 'g': return MSG_PAL_GREEN;
+        case 'd': return DefaultColor;
+        default: return -1;
+    }
+}
+
+static void dx_debug_string_to_msg(u8* msg, s32 msgSize, const char* str) {
+    s32 pos = 0;
+
+    while (*str != '\0') {
+        s32 color = -1;
+
+        if (*str == '\\') {
+            if (str[1] == '\\') {
+                str++;
+            } else {
+                color = dx_debug_get_escape_color(str[1]);
+            }
+        }
+
+        if (color >= 0) {
+            ASSERT(pos + 3 < msgSize);
+            if (pos + 3 >= msgSize) {
+                break;
+            }
+            msg[pos++] = MSG_CHAR_READ_FUNCTION;
+            msg[pos++] = MSG_READ_FUNC_COLOR;
+            msg[pos++] = color;
+            str += 2;
+        } else {
+            ASSERT(pos + 1 < msgSize);
+            if (pos + 1 >= msgSize) {
+                break;
+            }
+            msg[pos++] = dx_ascii_char_to_msg(*str++);
+        }
+    }
+
+    msg[pos] = MSG_CHAR_READ_END;
+}
+
+static void dx_debug_vprintf(const char* filename, s32 line, b32 deduplicate, const char* fmt, va_list args) {
     char fmtBuf[128];
-    va_list args;
-    va_start(args, fmt);
     s32 len = _Printf(&proutSprintf, fmtBuf, fmt, args);
     if (len >= 0) {
         fmtBuf[len] = 0;
     }
-    ASSERT(len < 85);
+    ASSERT(len <= DEBUG_CONSOLE_MSG_BUF_SIZE - 5);
 
-    u32 hash = dx_debug_hash_location(filename, line);
+    u32 hash = 0;
     s32 matchedLine = -1;
     s32 idx;
 
-    // find a line with the matching hash
-    for (idx = 0; idx < ARRAY_COUNT(DebugConsole); idx++) {
-        if (DebugConsole[idx]->hash == hash) {
-            matchedLine = idx;
-            break;
-        }
-    }
+    if (deduplicate) {
+        hash = dx_debug_hash_location(filename, line);
 
-    // find the oldest line
-    if (matchedLine == -1) {
-        s32 minTimeLeft = DEBUG_CONSOLE_DEFAULT_TIMELEFT;
-
+        // find a line with the matching source-location hash
         for (idx = 0; idx < ARRAY_COUNT(DebugConsole); idx++) {
-            if (DebugConsole[idx]->timeLeft == 0) {
+            if (DebugConsole[idx]->hash == hash) {
                 matchedLine = idx;
                 break;
             }
-            if (DebugConsole[idx]->timeLeft < minTimeLeft) {
-                minTimeLeft = DebugConsole[idx]->timeLeft;
-                matchedLine = idx;
-            }
         }
     }
 
-    // update the ConsoleLine entry
-    if (matchedLine != -1) {
-        DebugConsole[matchedLine]->buf[0] = MSG_CHAR_READ_FUNCTION;
-        DebugConsole[matchedLine]->buf[1] = MSG_READ_FUNC_SIZE;
-        DebugConsole[matchedLine]->buf[2] = 12;
-        DebugConsole[matchedLine]->buf[3] = 12;
+    // find an empty line or evict the oldest
+    if (matchedLine == -1) {
+        if (deduplicate) {
+            s32 minTimeLeft = DEBUG_CONSOLE_DEFAULT_TIMELEFT;
 
-        dx_string_to_msg(&DebugConsole[matchedLine]->buf[4], fmtBuf);
+            for (idx = 0; idx < ARRAY_COUNT(DebugConsole); idx++) {
+                if (DebugConsole[idx]->timeLeft == 0) {
+                    matchedLine = idx;
+                    break;
+                }
+                if (DebugConsole[idx]->timeLeft < minTimeLeft) {
+                    minTimeLeft = DebugConsole[idx]->timeLeft;
+                    matchedLine = idx;
+                }
+            }
+        } else {
+            s32 minTimeLeft = DebugConsole[0]->timeLeft;
 
-        DebugConsole[matchedLine]->hash = hash;
-        DebugConsole[matchedLine]->timeLeft = DEBUG_CONSOLE_DEFAULT_TIMELEFT;
+            matchedLine = 0;
+            for (idx = 1; idx < ARRAY_COUNT(DebugConsole); idx++) {
+                if (DebugConsole[idx]->timeLeft <= minTimeLeft) {
+                    minTimeLeft = DebugConsole[idx]->timeLeft;
+                    matchedLine = idx;
+                }
+            }
+        }
+
+        // always-print messages use pointer order to preserve every distinct
+        // call in a burst, retaining the newest eight messages when full
+        if (!deduplicate && matchedLine != 0) {
+            DebugConsoleLine* selectedLine = DebugConsole[matchedLine];
+
+            for (idx = matchedLine; idx > 0; idx--) {
+                DebugConsole[idx] = DebugConsole[idx - 1];
+            }
+            DebugConsole[0] = selectedLine;
+            matchedLine = 0;
+        }
     }
+
+    if (matchedLine == -1) {
+        return;
+    }
+
+    // update the console line entry
+    DebugConsole[matchedLine]->buf[0] = MSG_CHAR_READ_FUNCTION;
+    DebugConsole[matchedLine]->buf[1] = MSG_READ_FUNC_SIZE;
+    DebugConsole[matchedLine]->buf[2] = 12;
+    DebugConsole[matchedLine]->buf[3] = 12;
+
+    dx_debug_string_to_msg(&DebugConsole[matchedLine]->buf[4], DEBUG_CONSOLE_MSG_BUF_SIZE - 4, fmtBuf);
+
+    DebugConsole[matchedLine]->hash = hash;
+    DebugConsole[matchedLine]->timeLeft = DEBUG_CONSOLE_DEFAULT_TIMELEFT;
+}
+
+void dx_hashed_debug_printf(const char* filename, s32 line, const char* fmt, ...) {
+    va_list args;
+
+    va_start(args, fmt);
+    dx_debug_vprintf(filename, line, true, fmt, args);
+    va_end(args);
+}
+
+void dx_unhashed_debug_printf(const char* fmt, ...) {
+    va_list args;
+
+    va_start(args, fmt);
+    dx_debug_vprintf(nullptr, 0, false, fmt, args);
+    va_end(args);
 }
 
 API_CALLABLE(_dxDebugIntPrintf) {

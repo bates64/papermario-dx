@@ -25,11 +25,6 @@ void lightning_update(EffectInstance* effect);
 void lightning_render(EffectInstance* effect);
 void lightning_appendGfx(void* effect);
 
-EFFECT_DEF_GATHER_MAGIC(gather_magic_main);
-EFFECT_DEF_BULB_GLOW(bulb_glow_main);
-EFFECT_DEF_SNAKING_STATIC(snaking_static_main);
-EFFECT_DEF_FLASHING_BOX_SHOCKWAVE(flashing_box_shockwave_main);
-
 EffectInstance* lightning_main(
     s32 arg0,
     f32 arg1,
@@ -79,14 +74,11 @@ EffectInstance* lightning_main(
 
     if (arg0 == 1 || arg0 == 2) {
         if (arg0 == 1) {
-            load_effect(EFFECT_GATHER_MAGIC);
-            data->unk_44 = gather_magic_main(0, -118.0f, 184.0f, 79.0f, 1.0f, -1);
+            data->unk_44 = fx_gather_magic(0, -118.0f, 184.0f, 79.0f, 1.0f, -1);
 
-            load_effect(EFFECT_BULB_GLOW);
-            bulb_glow_main(0, -120.0f, 189.0f, 77.0f, 1.0f, &data->unk_48);
+            fx_bulb_glow(0, -120.0f, 189.0f, 77.0f, 1.0f, &data->unk_48);
         } else {
-            load_effect(EFFECT_SNAKING_STATIC);
-            data->unk_48 = snaking_static_main(0, -120.0f, 189.0f, 72.0f, 1.0f, 0);
+            data->unk_48 = fx_snaking_static(0, -120.0f, 189.0f, 72.0f, 1.0f, 0);
 
             data->unk_48->data.snakingStatic->envCol.r = 255;
             data->unk_48->data.snakingStatic->envCol.g = 255;
@@ -98,11 +90,10 @@ EffectInstance* lightning_main(
     }
 
     if (arg0 >= 3) {
-        load_effect(EFFECT_FLASHING_BOX_SHOCKWAVE);
         if (gGameStatusPtr->context == CONTEXT_BATTLE) {
-            flashing_box_shockwave_main(FX_SHOCK_OVERLAY_LIGHTNING_BATTLE, arg1, arg2, arg3, arg4, arg5);
+            fx_flashing_box_shockwave(FX_SHOCK_OVERLAY_LIGHTNING_BATTLE, arg1, arg2, arg3, arg4, arg5);
         } else {
-            flashing_box_shockwave_main(FX_SHOCK_OVERLAY_LIGHTNING_WORLD, arg1, arg2, arg3, arg4, arg5);
+            fx_flashing_box_shockwave(FX_SHOCK_OVERLAY_LIGHTNING_WORLD, arg1, arg2, arg3, arg4, arg5);
         }
     }
 

@@ -18,6 +18,8 @@ except ModuleNotFoundError:
 
 import ninja_syntax
 
+from effect_data import effects_from_yaml
+
 # Configuration:
 VERSIONS = ["us"]
 
@@ -68,6 +70,76 @@ RUST_TOOLS = [
 def posix(path) -> str:
     """Return path as string with forward slashes for cross-platform build.ninja compatibility."""
     return str(path).replace("\\", "/")
+
+
+def sort_splat_segments_by_vram_class_dependency(all_segments):
+    """Topologically order symbolic VRAM classes and their member segments.
+
+    The pinned splat sorter follows direct ``*_VRAM_END`` references, but does
+    not add graph edges for ``follows_classes``.  GNU ld can then consume a
+    class-start expression before the output sections used to calculate it,
+    producing low addresses and R_MIPS_26 overflows in SHIFT builds.
+    """
+    from collections import defaultdict, deque
+
+    from splat.segtypes.linker_entry import get_segment_vram_end_symbol_name
+
+    segments_by_class = defaultdict(list)
+    end_symbol_to_segment = {}
+    for segment in all_segments:
+        end_symbol_to_segment[get_segment_vram_end_symbol_name(segment)] = segment
+        if segment.vram_class is not None:
+            segments_by_class[segment.vram_class.name].append(segment)
+
+    # a class-start symbol is emitted immediately before the first member of
+    # that class; account for other classes which alias that symbol directly
+    class_symbol_to_segments = {}
+    for segments in segments_by_class.values():
+        vram_class = segments[0].vram_class
+        if vram_class.given_vram_symbol is None and vram_class.follows_classes:
+            class_symbol_to_segments[vram_class.vram_symbol] = segments
+
+    graph = defaultdict(list)
+    indegree = {segment: 0 for segment in all_segments}
+    edges = set()
+
+    def add_edge(before, after):
+        edge = (before, after)
+        if before is after or edge in edges:
+            return
+        edges.add(edge)
+        graph[before].append(after)
+        indegree[after] += 1
+
+    for segment in all_segments:
+        direct_dependency = end_symbol_to_segment.get(segment.vram_symbol)
+        if direct_dependency is not None:
+            add_edge(direct_dependency, segment)
+
+        aliased_class = class_symbol_to_segments.get(segment.vram_symbol, ())
+        if segment not in aliased_class:
+            for dependency in aliased_class:
+                add_edge(dependency, segment)
+
+        if segment.vram_class is not None:
+            for class_name in segment.vram_class.follows_classes:
+                for dependency in segments_by_class.get(class_name, ()):
+                    add_edge(dependency, segment)
+
+    queue = deque(segment for segment in all_segments if indegree[segment] == 0)
+    ordered = []
+    while queue:
+        segment = queue.popleft()
+        ordered.append(segment)
+        for dependent in graph.get(segment, ()):
+            indegree[dependent] -= 1
+            if indegree[dependent] == 0:
+                queue.append(dependent)
+
+    assert len(ordered) == len(all_segments), (
+        "Encountered cyclic dependency when ordering symbolic VRAM classes."
+    )
+    return ordered
 
 
 def evt_validation_output_path(obj_path: Path) -> Path:
@@ -424,7 +496,7 @@ def write_ninja_rules(
     ninja.rule(
         "ovl_link_convert",
         description="Linking overlay $ovl_src",
-        command=f"$python {BUILD_TOOLS}/overlay.py link $syms $out $link_addr $in",
+        command=f"$python {BUILD_TOOLS}/overlay.py link $syms $out $link_addr $force_export $max_loaded_size $require_resolved $in",
     )
 
     ninja.rule(
@@ -453,6 +525,13 @@ class Configure:
     def split(self, assets: bool, code: bool, shift: bool, debug: bool):
         import splat.scripts.split as split
 
+        if shift:
+            # work around the pinned splat sorter's missing follows_classes
+            # edges; keep this local to symbolic-VRAM (SHIFT) builds
+            split.sort_segments_by_vram_class_dependency = (
+                sort_splat_segments_by_vram_class_dependency
+            )
+
         modes = ["ld"]
         if assets:
             modes.extend(
@@ -473,7 +552,6 @@ class Configure:
                     "pm_charset",
                     "pm_charset_palettes",
                     "pm_effect_loads",
-                    "pm_effect_shims",
                     "pm_sprite_shading_profiles",
                     "pm_imgfx_data",
                     "pm_sbn",
@@ -497,13 +575,22 @@ class Configure:
         self.linker_entries = split.linker_writer.entries
         self.asset_stack: List[str] = split.config["asset_stack"]
 
-        self.discard_map_linker_entries()
+        self.discard_overlay_linker_entries()
 
-    def discard_map_linker_entries(self):
-        """Post-process the linker script to remove all map overlay segments.
+    @staticmethod
+    def is_effect_source_path(path: Path) -> bool:
+        path = Path(path)
+        return (
+            path.parent.name == "effects"
+            and path.parent.parent.name == "src"
+            and path.suffix in (".c", ".cpp")
+        )
 
-        splat.yaml has some map segments that are only for splitting. Maps are compiled
-        to .ovl files now, not linked by the main linker.
+    def discard_overlay_linker_entries(self):
+        """Remove map and effect overlay objects from the main linker script.
+
+        These splat segments remain useful for extracting source metadata and assets,
+        but their code is compiled into .ovl files instead of the engine ELF.
         """
         discard_objs = set()
         for entry in self.linker_entries:
@@ -512,7 +599,7 @@ class Configure:
             if (
                 most_parent.vram_class is not None
                 and most_parent.vram_class.name == "map"
-            ):
+            ) or any(self.is_effect_source_path(path) for path in entry.src_paths):
                 if entry.object_path is not None:
                     discard_objs.add(posix(entry.object_path))
 
@@ -708,13 +795,16 @@ class Configure:
         # Effect data includes
         effect_yaml = ROOT / "src/effects.yaml"
         effect_data_outdir = ROOT / "assets" / version / "effects"
-        effect_macros_path = effect_data_outdir / "effect_macros.h"
         effect_defs_path = effect_data_outdir / "effect_defs.h"
         effect_table_path = effect_data_outdir / "effect_table.c"
 
         build(
-            [effect_macros_path, effect_defs_path, effect_table_path],
-            [effect_yaml],
+            [effect_defs_path, effect_table_path],
+            [
+                effect_yaml,
+                BUILD_TOOLS / "effects.py",
+                BUILD_TOOLS / "effect_data.py",
+            ],
             "effect_data",
             variables={
                 "in_yaml": posix(effect_yaml),
@@ -821,6 +911,9 @@ class Configure:
             if seg.type == "linker" or seg.type == "linker_offset":
                 continue
 
+            if any(self.is_effect_source_path(path) for path in entry.src_paths):
+                continue
+
             assert entry.object_path is not None
 
             if isinstance(seg, splat.segtypes.n64.header.N64SegHeader):
@@ -843,7 +936,7 @@ class Configure:
                 or isinstance(seg, splat.segtypes.common.textbin.CommonSegTextbin)
             ):
                 build(entry.object_path, entry.src_paths, "as")
-            elif seg.type in ["pm_effect_loads", "pm_effect_shims"]:
+            elif seg.type == "pm_effect_loads":
                 build(entry.object_path, entry.src_paths, "as")
             elif isinstance(seg, splat.segtypes.common.c.CommonSegC) or (
                 isinstance(seg, splat.segtypes.common.data.CommonSegData)
@@ -902,12 +995,6 @@ class Configure:
                         cppflags += " -DBBPLAYER"
                     elif entry.src_paths[0].parts[-2] == "bss":
                         cppflags += " -DBBPLAYER"
-
-                # Effects must call via shims due to being TLB mapped
-                if "effects" in entry.src_paths[0].parts:
-                    cflags += (
-                        " -fno-tree-loop-distribute-patterns"  # Don't call memset etc
-                    )
 
                 # Dead cod
                 if isinstance(seg.parent.yaml, dict) and seg.parent.yaml.get(
@@ -1590,6 +1677,7 @@ class Configure:
         overlay_types = [
             "battle/actor/*",
             "world/area/*/*/",
+            "effects/*.c",
         ]
 
         # Collect overlays keyed by (type_index, name). Later entries in the
@@ -1606,6 +1694,8 @@ class Configure:
                 for match in search_dir.glob(glob_str, case_sensitive=True):
                     if match.name.endswith(".inc.c") or match.name.endswith(".inc.cpp"):
                         continue
+                    if type_index == 2 and match.name == "effect_table.c":
+                        continue
                     # Skip asset directories that contain no compilable source files
                     # (only .inc.c/.inc.cpp), so they don't shadow src/ overlays
                     if match.is_dir() and not any(
@@ -1619,6 +1709,26 @@ class Configure:
 
         return sorted(found.values(), key=lambda x: x[0].stem)
 
+    def effect_cflags(self, src_path: Path) -> str:
+        """Return the cflags attached to an effect's splat C subsegment."""
+        src_path = Path(src_path)
+        for entry in self.linker_entries:
+            if not any(Path(path).resolve() == src_path.resolve() for path in entry.src_paths):
+                continue
+
+            seg = entry.segment
+            cflags = None
+            if isinstance(seg.yaml, dict):
+                cflags = seg.yaml.get("cflags")
+            elif len(seg.yaml) >= 4:
+                cflags = seg.yaml[3]
+
+            if cflags is None:
+                cflags = "-fforce-addr"
+            return cflags.replace("gcc_modern", "").replace("gcc_272", "").strip()
+
+        return "-fforce-addr"
+
     def write_overlays(
         self, ninja: ninja_syntax.Writer, evt_validation: bool = True
     ) -> Tuple[str, List[str]]:
@@ -1626,6 +1736,27 @@ class Configure:
         import json
 
         overlays = self.find_overlays()
+        effects = effects_from_yaml(ROOT / "src/effects.yaml")
+        effect_names = [effect.name for effect in effects if not effect.empty]
+        duplicate_effects = sorted(
+            name for name in set(effect_names) if effect_names.count(name) > 1
+        )
+        effect_sources = {
+            src_path.stem for src_path, type_index in overlays if type_index == 2
+        }
+        missing_effects = sorted(set(effect_names) - effect_sources)
+        orphan_effects = sorted(effect_sources - set(effect_names))
+
+        errors = []
+        if duplicate_effects:
+            errors.append("duplicate effect names: " + ", ".join(duplicate_effects))
+        if missing_effects:
+            errors.append("effects without source overlays: " + ", ".join(missing_effects))
+        if orphan_effects:
+            errors.append("effect overlays missing from effects.yaml: " + ", ".join(orphan_effects))
+        if errors:
+            raise ValueError("invalid effect overlay configuration\n  " + "\n  ".join(errors))
+
         c_precompiled_header_path = Path("include/common.h.gch")
         cxx_precompiled_header_path = Path("include/common.hpp.gch")
 
@@ -1662,6 +1793,11 @@ class Configure:
                     task = "cc_modern"
                     pch = c_precompiled_header_path
                 obj_path = build_dir / (c_file.name + ".o")
+                cflags = "-fno-common -fvisibility=hidden"
+                if type_index == 2:
+                    effect_cflags = self.effect_cflags(c_file)
+                    if effect_cflags:
+                        cflags = f"{effect_cflags} {cflags}"
                 ninja.build(
                     posix(obj_path),
                     task,
@@ -1673,7 +1809,7 @@ class Configure:
                     ],
                     variables={
                         "version": self.version,
-                        "cflags": "-fno-common -fvisibility=hidden",
+                        "cflags": cflags,
                         "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
                     },
                 )
@@ -1697,16 +1833,30 @@ class Configure:
             if type_index == 1:  # maps
                 link_addr = "0x80240000"
 
+            force_export = ""
+            max_loaded_size = ""
+            require_resolved = ""
+            if type_index == 2:  # effects
+                force_export = f"--force-export {name}_main"
+                max_loaded_size = "--max-loaded-size 0x1000"
+                require_resolved = "--require-resolved"
+
             ninja.build(
                 posix(ovl_path),
                 "ovl_link_convert",
                 objects,
-                implicit=[posix(self.syms_path())] + overlay_evt_validation_stamps,
+                implicit=[
+                    posix(self.syms_path()),
+                    posix(BUILD_TOOLS / "overlay.py"),
+                ] + overlay_evt_validation_stamps,
                 implicit_outputs=[posix(debug_syms_path)],
                 variables={
                     "syms": posix(self.syms_path()),
                     "link_addr": link_addr,
                     "ovl_src": posix(src_path.relative_to(ROOT)),
+                    "force_export": force_export,
+                    "max_loaded_size": max_loaded_size,
+                    "require_resolved": require_resolved,
                 },
             )
 
@@ -1828,7 +1978,11 @@ if __name__ == "__main__":
         new_content = "\n".join(file_list) + "\n"
         if stamp.exists() and stamp.read_text() == new_content:
             build_ninja = ROOT / "build.ninja"
-            configure_inputs = [ROOT / BUILD_TOOLS / "configure.py"]
+            configure_inputs = [
+                ROOT / BUILD_TOOLS / "configure.py",
+                ROOT / BUILD_TOOLS / "effect_data.py",
+                ROOT / "tools/splat_ext/pm_effect_loads.py",
+            ]
             for version in VERSIONS:
                 configure_inputs.append(ROOT / f"ver/{version}/splat.yaml")
                 if args.debug:
@@ -2027,7 +2181,11 @@ if __name__ == "__main__":
         pool="console",
     )
 
-    configure_deps = [str(BUILD_TOOLS / "configure.py")]
+    configure_deps = [
+        str(BUILD_TOOLS / "configure.py"),
+        str(BUILD_TOOLS / "effect_data.py"),
+        "tools/splat_ext/pm_effect_loads.py",
+    ]
     for version in versions:
         configure_deps.append(f"ver/{version}/splat.yaml")
         if args.debug:

@@ -154,6 +154,7 @@ segments:
     - [auto, c, audio/core/pull_voice]
     - [auto, c, audio/core/reverb]
     - [auto, c, effects]
+    - [auto, c, effect_utils]
     - [auto, c, item_move_tables]
     - [auto, c, partner_menu_data]
     - [auto, c, cursor_hud_scripts]
@@ -1706,14 +1707,6 @@ segments:
 ###############
 ### Effects ###
 ###############
-  - name: effect_globals
-    type: code
-    start: 0x325AD0
-    vram: 0xE0200000
-    subsegments:
-    - [auto, c, effect_utils]
-    - [0x325EE0, pm_effect_shims, effect_shims]
-    - [0x326160]
   - name: effect_gfx_big_smoke_puff
     dir: effects/gfx
     type: code

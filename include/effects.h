@@ -2634,9 +2634,9 @@ typedef struct EffectSharedData {
 
 typedef struct EffectTableEntry {
     /* 0x00 */ void* entryPoint;
-    /* 0x04 */ void* dmaStart;
-    /* 0x08 */ void* dmaEnd;
-    /* 0x0C */ void* dmaDest;
+    /* 0x04 */ struct Overlay* overlay;
+    /* 0x08 */ const char* overlayName;
+    /* 0x0C */ const char* entryPointName;
     /* 0x10 */ void* graphicsDmaStart;
     /* 0x14 */ void* graphicsDmaEnd;
 } EffectTableEntry; // size = 0x18
@@ -2653,7 +2653,7 @@ extern "C" {
 
 EffectInstance* create_effect_instance(EffectBlueprint* effectBp);
 void remove_effect(EffectInstance*);
-s32 load_effect(s32 effectIndex);
+void* load_effect(s32 effectIndex);
 
 #include "effects/effect_defs.h"
 

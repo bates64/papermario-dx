@@ -299,7 +299,8 @@ void load_engine_data(void) {
     gGameStatusPtr->altViewportOffset.x = -8;
     gGameStatusPtr->altViewportOffset.y = 4;
     gTimeFreezeMode = TIME_FREEZE_NONE;
-    gGameStatusPtr->debugQuizmo = gGameStatusPtr->unk_13C = 0;
+    gGameStatusPtr->debugQuizmo = 0;
+    gGameStatusPtr->unk_13C = 0;
     gGameStepDelayCount = 5;
     gGameStatusPtr->saveCount = 0;
     fio_init_flash();

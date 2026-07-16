@@ -15,10 +15,6 @@ extern Gfx D_09001208_40B3C8[];
 Gfx* D_E011E7F0[] = { D_090011A8_40B368, D_090011C8_40B388, D_090011E8_40B3A8, D_09001208_40B3C8 };
 Gfx* D_E011E800[] = { D_09001000_40B1C0 };
 
-EFFECT_DEF_MISC_PARTICLES(misc_particles_main);
-EFFECT_DEF_ICE_SHARD(ice_shard_main);
-EFFECT_DEF_COLD_BREATH(cold_breath_main);
-
 EffectInstance* ice_pillar_main(s32 arg0, f32 x, f32 y, f32 z, f32 scale, s32 arg5) {
     EffectBlueprint effectBp;
     EffectInstance* effect;
@@ -60,10 +56,7 @@ EffectInstance* ice_pillar_main(s32 arg0, f32 x, f32 y, f32 z, f32 scale, s32 ar
     data->env.a = 255;
     data->unk_24 = data->unk_25 = 0;
 
-    load_effect(EFFECT_MISC_PARTICLES);
-    data->miscParticles = misc_particles_main(1, x, y + 10.0f, z, 32.0f, 30.0f, scale, 4, 0);
-
-    load_effect(EFFECT_COLD_BREATH);
+    data->miscParticles = fx_misc_particles(1, x, y + 10.0f, z, 32.0f, 30.0f, scale, 4, 0);
     return effect;
 }
 
@@ -88,12 +81,10 @@ void ice_pillar_update(EffectInstance* effect) {
     data->lifeTime++;
 
     if (data->timeLeft < 0) {
-        load_effect(EFFECT_ICE_SHARD);
-
         for (i = 0; i < 20; i++) {
             EffectInstance* iceShard;
 
-            iceShard = ice_shard_main(
+            iceShard = fx_ice_shard(
                 (i % 2) + 2,
                 (data->pos.x + rand_int(20)) - 10.0f,
                 data->pos.y + (rand_int(40) * data->scale),
@@ -130,8 +121,8 @@ void ice_pillar_update(EffectInstance* effect) {
     }
 
     if (timeLeft > 16 && (lifeTime % 16) == 0) {
-        load_effect(EFFECT_COLD_BREATH);
-        cold_breath_main(2, data->pos.x, data->pos.y + (data->scale * 40.0f), data->pos.z, data->scale, 30);
+        fx_cold_breath(2, data->pos.x, data->pos.y + (data->scale * 40.0f),
+                       data->pos.z, data->scale, 30);
     }
     data->miscParticles->data.miscParticles->pos.x = data->pos.x;
     data->miscParticles->data.miscParticles->pos.y = data->pos.y + 10.0f;

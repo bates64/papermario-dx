@@ -658,8 +658,7 @@ typedef struct Shadow {
     /* 0x00 */ s32 flags;
     /* 0x04 */ u8 listIndex;
     /* 0x05 */ u8 alpha;
-    /* 0x06 */ u8 unk_06;
-    /* 0x07 */ PAD(1);
+    /* 0x06 */ PAD(2);
     /* 0x08 */ s16 entityModelID;
     /* 0x0A */ s16 vertexSegment;
     /* 0x0C */ Vec3s* vertexArray;

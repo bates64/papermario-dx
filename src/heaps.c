@@ -1,12 +1,9 @@
 #include "common.h"
 #include "audio/audio.h"
+#include "dx/overlay.h"
 #include "model.h"
 
-typedef s8 TlbEntry[0x1000];
-typedef TlbEntry TlbMappablePage[15];
-
-BSS TlbMappablePage gEffectDataBuffer ALIGNED(0x1000);
-BSS u8 gEffectGlobals[0x1000] ALIGNED(0x1000);
+BSS u8 gEffectOverlayBuffer[EFFECT_OVERLAY_SLOT_COUNT][EFFECT_OVERLAY_SLOT_SIZE] ALIGNED(0x1000);
 BSS u8 BattleEntityHeapBottom[0x3000] ALIGNED(0x1000);
 BSS u8 AuHeapBase[AUDIO_HEAP_SIZE] ALIGNED(0x1000);
 BSS u8 D_80200000[0x4000] ALIGNED(0x1000);

@@ -154,7 +154,7 @@ API_CALLABLE(N(Quizmo_ShouldAppear)) {
     hasQuestionAvailable = numAnswered < N(Quizmo_Requirements)[i].numQuestionsUnlocked;
     atQuizLocation = (curTown == locTown) && (curMap == locMap) && !changedLocation;
 
-    if (hasQuestionAvailable && (true || atQuizLocation || gGameStatusPtr->debugQuizmo)) {
+    if (hasQuestionAvailable && (atQuizLocation || gGameStatusPtr->debugQuizmo)) {
         script->varTable[0] = true;
     } else {
         kill_enemy(enemy);

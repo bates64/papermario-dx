@@ -102,6 +102,7 @@ segments:
     - [auto, c, audio/core/reverb]
 
     - [auto, c, effects]
+    - [auto, c, effect_utils]
     - [auto, c, 5B320] # data only
     - [auto, c, world/world]
     - [auto, c, collision]
@@ -1486,14 +1487,6 @@ segments:
 ###############
 ### Effects ###
 ###############
-  - name: effect_globals
-    type: code
-    start: 0x32DDD0
-    vram: 0xE0200000
-    subsegments:
-    - [0x32DDD0, c, effect_utils]
-    - [0x32E1E0, pm_effect_shims, effect_shims]
-    - [0x32E460]
   - name: effect_gfx_big_smoke_puff
     dir: effects/gfx
     type: code

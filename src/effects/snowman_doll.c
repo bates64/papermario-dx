@@ -120,9 +120,6 @@ EffectInstance* snowman_doll_main(
 void snowman_doll_init(EffectInstance* effect) {
 }
 
-EFFECT_DEF_COLD_BREATH(cold_breath_main);
-EFFECT_DEF_MISC_PARTICLES(misc_particles_main);
-
 void snowman_doll_update(EffectInstance* effect) {
     SnowmanDollFXData* data = effect->data.snowmanDoll;
     s32 unk_14;
@@ -258,14 +255,12 @@ void snowman_doll_update(EffectInstance* effect) {
     }
 
     if ((unk_14 & 7) == 1) {
-        load_effect(EFFECT_COLD_BREATH);
-        cold_breath_main(2,
+        fx_cold_breath(2,
             data->unk_04 + data->unk_30 + rand_int(60) - 30.0f,
             data->unk_08 + data->unk_34 + rand_int(100) + 50.0f,
             data->unk_0C + data->unk_38,
             4.0f, 40);
-        load_effect(EFFECT_MISC_PARTICLES);
-        misc_particles_main(1,
+        fx_misc_particles(1,
             data->unk_04 + data->unk_30,
             data->unk_08 + data->unk_34 + 10.0f,
             data->unk_0C + data->unk_38 + 60.0f,

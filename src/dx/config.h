@@ -14,6 +14,9 @@
 /// Adds focused EVT VM tests to the debug menu
 #define DX_DEBUG_EVT_TESTS 0
 
+/// logs every overlay load and unload to the debug console
+#define DX_DEBUG_OVERLAY_LOADS 1
+
 /// Loads last used save file.
 #define DX_QUICK_LAUNCH 0
 

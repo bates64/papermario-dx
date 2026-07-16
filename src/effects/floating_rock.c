@@ -62,8 +62,6 @@ EffectInstance* floating_rock_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 f
 void floating_rock_init(EffectInstance* effect) {
 }
 
-EFFECT_DEF_DUST(dust_main);
-
 void floating_rock_update(EffectInstance* effect) {
     FloatingRockFXData* data = effect->data.floatingRock;
     s32 time;
@@ -84,8 +82,7 @@ void floating_rock_update(EffectInstance* effect) {
         data->rot.y += data->rotVel.y;
         if (data->pos.y <= data->floorY) {
             data->pos.y = data->floorY;
-            load_effect(EFFECT_DUST);
-            dust_main(2, data->pos.x, data->pos.y, data->pos.z, 20);
+            fx_dust(2, data->pos.x, data->pos.y, data->pos.z, 20);
             data->timeLeft = 30;
         }
     }

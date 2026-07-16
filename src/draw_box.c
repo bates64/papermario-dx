@@ -689,17 +689,9 @@ s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s
 
                             quads[15].v.tc[0] = width * 32;
                             quads[15].v.tc[1] = height * 32;
-
-#ifndef SHIFT
-                            quads += 12;
-#endif
                             break;
                     }
-#ifdef SHIFT
                     gSPVertex(gMainGfxPos++, &quads[idx*4], 4, 0);
-#else
-                    gSPVertex(gMainGfxPos++, quads, 4, 0);
-#endif
                     gSP2Triangles(gMainGfxPos++, 0, 3, 1, 0, 0, 2, 3, 0);
                 } else {
                     switch (idx) {

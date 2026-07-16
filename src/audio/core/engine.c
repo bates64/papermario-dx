@@ -20,16 +20,6 @@ extern u8 EnvelopePressDefault[];
 extern u8 EnvelopeReleaseDefault[];
 extern f32 AlTuneScaling[];
 
-#ifdef SHIFT
-#define SBN_ROM_OFFSET (s32) audio_ROM_START
-#elif VERSION_JP
-#define SBN_ROM_OFFSET 0xFC0000
-#elif VERSION_PAL
-#define SBN_ROM_OFFSET 0x13A0000
-#else
-#define SBN_ROM_OFFSET 0xF00000
-#endif
-
 void au_release_voice(u8 index) {
     AuVoice* voice = &gSoundGlobals->voices[index];
 
@@ -108,7 +98,7 @@ void au_engine_init(s32 outputRate) {
         voice->priority = AU_PRIORITY_FREE;
     }
 
-    au_load_INIT(globals, SBN_ROM_OFFSET, alHeap);
+    au_load_INIT(globals, (s32)audio_ROM_START, alHeap);
 
     for (i = 0; i < ARRAY_COUNT(globals->auxBanks); i++) {
         globals->auxBanks[i] = alHeapAlloc(alHeap, 1, sizeof(BKFileBuffer));

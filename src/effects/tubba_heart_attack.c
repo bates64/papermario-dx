@@ -119,8 +119,6 @@ EffectInstance* tubba_heart_attack_main(
 void tubba_heart_attack_init(EffectInstance* effect) {
 }
 
-EFFECT_DEF_FLOATING_CLOUD_PUFF(floating_cloud_puff_main);
-
 void tubba_heart_attack_update(EffectInstance* effect) {
     TubbaHeartAttackFXData* data = effect->data.tubbaHeartAttack;
     EffectInstance* puffEffect;
@@ -271,12 +269,13 @@ void tubba_heart_attack_update(EffectInstance* effect) {
                 data->rotZ[i] *= 0.9;
                 break;
             case HEART_STATE_VANISH:
-                load_effect(EFFECT_FLOATING_CLOUD_PUFF);
                 guRotateF(mtx, data->rotXY[i], 0.0f, 1.0f, 0.0f);
                 guTranslateF(tempMtx, data->posX[i], data->posY[i], data->posZ[i]);
                 guMtxCatF(tempMtx, mtx, mtx);
 
-                puffEffect = floating_cloud_puff_main(0, data->centerX + mtx[3][0], data->centerY + mtx[3][1], data->centerZ + mtx[3][2], 1.0f, 16);
+                puffEffect = fx_floating_cloud_puff(0, data->centerX + mtx[3][0],
+                                                     data->centerY + mtx[3][1],
+                                                     data->centerZ + mtx[3][2], 1.0f, 16);
                 puffEffect->data.floatingCloudPuff->unk_28 = 100;
                 puffEffect->data.floatingCloudPuff->unk_2C = 0;
                 puffEffect->data.floatingCloudPuff->unk_30 = 0;

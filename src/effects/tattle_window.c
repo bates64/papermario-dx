@@ -188,7 +188,7 @@ void tattle_window_fill_clipped_quad(s32 l, s32 t, s32 r, s32 b) {
     gDPFillRectangle(gMainGfxPos++, l, t, r, b);
 }
 
-void func_E00D8334(void* arg, s32 left, s32 top, s32 right, s32 bottom) {
+void func_E00D8334(s32 arg, s32 left, s32 top, s32 right, s32 bottom, s32 opacity, s32 darkening) {
     TattleWindowFXData* data = (TattleWindowFXData*)arg;
     f32 closeFracX = data->closeAmt.x / 255.0f;
     f32 closeFracY = data->closeAmt.y / 255.0f;
@@ -244,6 +244,6 @@ void func_E00D8630(EffectInstance* effect) {
         255, 0,
         data->scale, data->scale,
         data->rot.x, data->rot.y, data->rot.z,
-        (void (*)(void*)) func_E00D8334, data, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+        func_E00D8334, data, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
     gDPPipeSync(gMainGfxPos++);
 }

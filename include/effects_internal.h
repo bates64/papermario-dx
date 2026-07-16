@@ -3,7 +3,7 @@
 
 #include "effects.h"
 
-// slimmed down assert so that all effects still fit under the TLB page size limit of 0x1000 bytes
+// slimmed down assert so that effect overlays fit within their 0x1000-byte pool slots
 #undef ASSERT
 #define ASSERT(condition) \
     if (!(condition)) { \
@@ -12,8 +12,6 @@
 
 s32 effect_rand_int(s32);
 s32 effect_simple_rand(s32, s32);
-
-#include "effect_shims.h"
 
 #define FX_TIME_FOREVER (1000)
 

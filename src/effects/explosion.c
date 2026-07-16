@@ -82,9 +82,6 @@ void explosion_main(s32 type, f32 x, f32 y, f32 z) {
 void explosion_init(EffectInstance* effect) {
 }
 
-EFFECT_DEF_SMOKE_RING(smoke_ring_main);
-EFFECT_DEF_CONFETTI(confetti_main);
-
 void explosion_update(EffectInstance* effect) {
     ExplosionFXData* part = effect->data.explosion;
     s32 unk_00;
@@ -102,11 +99,9 @@ void explosion_update(EffectInstance* effect) {
     unk_34 = part->unk_34;
 
     if (unk_34 == 7) {
-        load_effect(EFFECT_SMOKE_RING);
-        smoke_ring_main(unk_00, part->pos.x, part->pos.y, part->pos.z);
+        fx_smoke_ring(unk_00, part->pos.x, part->pos.y, part->pos.z);
     } else if (unk_34 == 1) {
-        load_effect(EFFECT_CONFETTI);
-        confetti_main(unk_00 + 4, part->pos.x, part->pos.y, part->pos.z, 1.0f, 50);
+        fx_confetti(unk_00 + 4, part->pos.x, part->pos.y, part->pos.z, 1.0f, 50);
     }
 
     part++;
