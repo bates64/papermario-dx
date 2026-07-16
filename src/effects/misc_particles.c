@@ -65,7 +65,6 @@ EffectInstance* misc_particles_main(
     bp.init = misc_particles_init;
     bp.update = misc_particles_update;
     bp.renderScene = misc_particles_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_MISC_PARTICLES;
 

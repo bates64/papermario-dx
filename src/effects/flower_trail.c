@@ -56,7 +56,6 @@ void flower_trail_main(b32 triggeredByNpc, f32 posX, f32 posY, f32 posZ, f32 ang
     bp.init = flower_trail_init;
     bp.update = flower_trail_update;
     bp.renderScene = flower_trail_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_FLOWER_TRAIL;
 

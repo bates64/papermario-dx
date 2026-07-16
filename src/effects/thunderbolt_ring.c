@@ -18,7 +18,6 @@ EffectInstance* thunderbolt_ring_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f3
     effectBp.init = thunderbolt_ring_init;
     effectBp.update = thunderbolt_ring_update;
     effectBp.renderScene = thunderbolt_ring_render;
-    effectBp.unk_00 = 0;
     effectBp.renderUI = nullptr;
     effectBp.effectID = EFFECT_THUNDERBOLT_RING;
 

@@ -29,7 +29,6 @@ EffectInstance* red_impact_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4
     }
     numParts++;
 
-    bpPtr->unk_00 = 0;
     bpPtr->init = red_impact_init;
     bpPtr->update = red_impact_update;
     bpPtr->renderScene = red_impact_render;

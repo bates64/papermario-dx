@@ -42,7 +42,6 @@ EffectInstance* spirit_card_main(
     bp.init = spirit_card_init;
     bp.update = spirit_card_update;
     bp.renderScene = spirit_card_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_SPIRIT_CARD;
 

@@ -42,7 +42,6 @@ EffectInstance* partner_buff_main(s32 useRandomValues, f32 arg1, f32 arg2, f32 a
     s32 numParts = 1;
     s32 i;
 
-    bp.unk_00 = 0;
     bp.init = partner_buff_init;
     bp.update = partner_buff_update;
     bp.renderScene = partner_buff_render;

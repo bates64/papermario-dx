@@ -132,7 +132,6 @@ EffectInstance* water_fountain_main(s32 type, f32 x, f32 y, f32 z, f32 scale, s3
     effectBp.init = water_fountain_init;
     effectBp.update = water_fountain_update;
     effectBp.renderScene = water_fountain_render;
-    effectBp.unk_00 = 0;
     effectBp.renderUI = nullptr;
     effectBp.effectID = EFFECT_WATER_FOUNTAIN;
 

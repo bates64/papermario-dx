@@ -25,7 +25,6 @@ EffectInstance* waterfall_main(
     bp.init = waterfall_init;
     bp.update = waterfall_update;
     bp.renderScene = waterfall_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_WATERFALL;
 

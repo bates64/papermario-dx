@@ -18,7 +18,6 @@ EffectInstance* merlin_house_stars_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3) 
     bp.init = merlin_house_stars_init;
     bp.update = merlin_house_stars_update;
     bp.renderScene = merlin_house_stars_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_MERLIN_HOUSE_STARS;
 

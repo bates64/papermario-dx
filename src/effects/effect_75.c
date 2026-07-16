@@ -22,7 +22,6 @@ EffectInstance* effect_75_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 scale
     bp.init = effect_75_init;
     bp.update = effect_75_update;
     bp.renderScene = effect_75_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_75;
 

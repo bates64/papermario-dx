@@ -25,7 +25,6 @@ void energy_shockwave_main(
     bp.init = energy_shockwave_init;
     bp.update = energy_shockwave_update;
     bp.renderScene = energy_shockwave_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_ENERGY_SHOCKWAVE;
 

@@ -423,9 +423,7 @@ INCLUDE_ASM(ApiResult, "world/area/mgm/mgm_02/mgm_02_2_npc", mgm_02_RunMinigame)
 API_CALLABLE(N(RunMinigame)) {
     SmashGameData* data;
     Enemy* enemy;
-
     Npc* npc;
-    EffectInstance* writeback;
 
     Model* model;
     Matrix4f mtx;
@@ -511,7 +509,7 @@ API_CALLABLE(N(RunMinigame)) {
                     npc->jumpScale = 1.5f;
 
                     data->box[i].stateTimer = 0;
-                    fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, 0.0f, 10, &writeback);
+                    fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, 0.0f, 10, nullptr);
                     enemy->varTable[1] = npc->pos.x * 10.0f;
                     enemy->varTable[2] = npc->pos.y * 10.0f;
                     enemy->varTable[3] = npc->pos.z * 10.0f;
@@ -628,7 +626,7 @@ API_CALLABLE(N(RunMinigame)) {
                     npc->pos.x = centerX;
                     npc->pos.y = centerY - 10.0f;
                     npc->pos.z = centerZ + 8.0;
-                    fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, 0.0f, 10, &writeback);
+                    fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, 0.0f, 10, nullptr);
                     if (npc->pos.x > gPlayerStatusPtr->pos.x) {
                         npc->yaw = 270.0f;
                         gPlayerStatusPtr->targetYaw = 95.0f;
@@ -920,7 +918,6 @@ API_CALLABLE(N(CleanupGame)) {
     SmashGameData* data = enemy->varTablePtr[SMASH_DATA_VAR_IDX];
     Npc* npc;
     s32 screenX, screenY, screenZ;
-    EffectInstance* writeback;
     s32 i;
 
     if (enemy->varTable[3] == 4) {
@@ -959,7 +956,7 @@ API_CALLABLE(N(CleanupGame)) {
                 case BOX_CONTENT_FUZZY:
                     if (data->box[i].state != BOX_STATE_FUZZY_END) {
                         data->box[i].state = BOX_STATE_FUZZY_END;
-                        fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, 0.0f, 30, &writeback);
+                        fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, 0.0f, 30, nullptr);
                         npc->curAnim = ANIM_Fuzzy_Sleep;
                         enable_npc_shadow(npc);
                     }
@@ -968,7 +965,7 @@ API_CALLABLE(N(CleanupGame)) {
                 case BOX_CONTENT_BOMB:
                     if (data->box[i].state != BOX_STATE_BOMB_END) {
                         data->box[i].state = BOX_STATE_BOMB_END;
-                        fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, 0.0f, 30, &writeback);
+                        fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, 0.0f, 30, nullptr);
                         npc->curAnim = ANIM_Bobomb_Dizzy;
                         enable_npc_shadow(npc);
                     }

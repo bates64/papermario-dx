@@ -36,7 +36,6 @@ EffectInstance* moving_cloud_main(
     bp.init = moving_cloud_init;
     bp.update = moving_cloud_update;
     bp.renderScene = moving_cloud_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_MOVING_CLOUD;
 

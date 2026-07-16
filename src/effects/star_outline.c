@@ -23,7 +23,6 @@ EffectInstance* star_outline_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f32 ar
     effectBp.init = star_outline_init;
     effectBp.update = star_outline_update;
     effectBp.renderScene = star_outline_render;
-    effectBp.unk_00 = 0;
     effectBp.renderUI = nullptr;
     effectBp.effectID = EFFECT_STAR_OUTLINE;
 

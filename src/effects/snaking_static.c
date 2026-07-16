@@ -19,7 +19,6 @@ EffectInstance* snaking_static_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 
     effectBp.init = snaking_static_init;
     effectBp.update = snaking_static_update;
     effectBp.renderScene = snaking_static_render;
-    effectBp.unk_00 = 0;
     effectBp.renderUI = nullptr;
     effectBp.effectID = EFFECT_SNAKING_STATIC;
 

@@ -35,7 +35,6 @@ EffectInstance* energy_orb_wave_main(s32 type, f32 x, f32 y, f32 z, f32 scale, s
     bp.init = energy_orb_wave_init;
     bp.update = energy_orb_wave_update;
     bp.renderScene = energy_orb_wave_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_ENERGY_ORB_WAVE;
 

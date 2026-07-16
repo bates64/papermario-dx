@@ -54,7 +54,6 @@ EffectInstance* firework_main(
     s32 numParts = (arg5 * 5 + 20) / 3 + 1;
     s32 i;
 
-    bp.unk_00 = 0;
     bp.init = firework_init;
     bp.update = firework_update;
     bp.renderScene = firework_render;

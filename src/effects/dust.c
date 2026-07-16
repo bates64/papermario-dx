@@ -29,7 +29,6 @@ EffectInstance* dust_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, s32 arg4) {
     bp.init = dust_init;
     bp.update = dust_update;
     bp.renderScene = dust_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_DUST;
 

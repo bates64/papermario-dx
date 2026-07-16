@@ -69,7 +69,6 @@ EffectInstance* tattle_window_main(s32 type, f32 x, f32 y, f32 z, f32 arg4, s32 
     bp.update = tattle_window_update;
     bp.renderScene = tattle_window_render;
     bp.renderUI = func_E00D8264;
-    bp.unk_00 = 0;
     bp.effectID = EFFECT_TATTLE_WINDOW;
 
     effect = create_effect_instance(bpPtr);

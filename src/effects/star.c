@@ -32,7 +32,6 @@ EffectInstance* star_main(s32 type, f32 startX, f32 startY, f32 startZ, f32 endX
     s32 temp_s0;
     f32 length;
 
-    bp.unk_00 = 0;
     bp.init = star_init;
     bp.update = star_update;
     bp.renderScene = star_render;

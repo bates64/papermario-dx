@@ -35,7 +35,6 @@ EffectInstance* butterflies_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     ButterfliesFXData* part;
     s32 numParts = 1;
 
-    bp.unk_00 = 0;
     bp.init = butterflies_init;
     bp.update = butterflies_update;
     bp.renderScene = butterflies_render;

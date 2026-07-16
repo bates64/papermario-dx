@@ -28,7 +28,6 @@ void rising_bubble_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f32 arg4) {
     RisingBubbleFXData* data;
     s32 numParts = 1;
 
-    effectBp.unk_00 = 0;
     effectBp.init = rising_bubble_init;
     effectBp.update = rising_bubble_update;
     effectBp.renderScene = rising_bubble_render;

@@ -37,7 +37,6 @@ void got_item_outline_main(
     bp.init = got_item_outline_init;
     bp.update = got_item_outline_update;
     bp.renderScene = got_item_outline_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_GOT_ITEM_OUTLINE;
 

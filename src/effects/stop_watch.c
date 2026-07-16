@@ -66,7 +66,6 @@ EffectInstance* stop_watch_main(s32 type, f32 x, f32 y, f32 z, f32 scale, s32 du
     bp.init = stop_watch_init;
     bp.update = stop_watch_update;
     bp.renderScene = stop_watch_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_STOP_WATCH;
 

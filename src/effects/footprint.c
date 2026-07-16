@@ -29,7 +29,6 @@ void footprint_main(f32 x, f32 y, f32 z, f32 angle, b32 isLeft) {
     f32 temp_f20_2;
     f32 sense = isLeft ? 1.0 : -1.0;
 
-    bp.unk_00 = 0;
     bp.init = footprint_init;
     bp.update = footprint_update;
     bp.renderScene = footprint_render;

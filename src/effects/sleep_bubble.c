@@ -25,7 +25,6 @@ void sleep_bubble_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
     SleepBubbleFXData* part;
     s32 numParts = 1;
 
-    bp.unk_00 = 0;
     bp.init = sleep_bubble_init;
     bp.update = sleep_bubble_update;
     bp.renderScene = sleep_bubble_render;

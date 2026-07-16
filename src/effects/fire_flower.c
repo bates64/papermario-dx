@@ -23,7 +23,6 @@ EffectInstance* fire_flower_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, s32 arg
     s32 numParts = 31;
     s32 i;
 
-    bp.unk_00 = 0;
     bp.init = fire_flower_init;
     bp.update = fire_flower_update;
     bp.renderScene = fire_flower_render;

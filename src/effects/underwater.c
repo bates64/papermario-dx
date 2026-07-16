@@ -22,7 +22,6 @@ EffectInstance* underwater_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4
     bp.init = underwater_init;
     bp.update = underwater_update;
     bp.renderScene = underwater_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_UNDERWATER;
 

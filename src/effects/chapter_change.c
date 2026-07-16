@@ -186,7 +186,6 @@ EffectInstance* chapter_change_main(s32 type, f32 posX, f32 posY, f32 arg3, f32 
     bp.init = chapter_change_init;
     bp.update = chapter_change_update;
     bp.renderScene = chapter_change_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_CHAPTER_CHANGE;
 

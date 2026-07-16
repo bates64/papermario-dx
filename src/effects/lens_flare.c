@@ -32,7 +32,6 @@ void lens_flare_main(s32 type, f32 posX, f32 posY, f32 posZ, s32 duration) {
     bp.init = lens_flare_init;
     bp.update = lens_flare_update;
     bp.renderScene = lens_flare_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_LENS_FLARE;
 

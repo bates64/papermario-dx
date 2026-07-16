@@ -42,7 +42,6 @@ EffectInstance* shimmer_burst_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
     bp.init = shimmer_burst_init;
     bp.update = shimmer_burst_update;
     bp.renderScene = shimmer_burst_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_SHIMMER_BURST;
 

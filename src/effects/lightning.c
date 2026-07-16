@@ -41,7 +41,6 @@ EffectInstance* lightning_main(
     bp.init = lightning_init;
     bp.update = lightning_update;
     bp.renderScene = lightning_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_LIGHTNING;
 

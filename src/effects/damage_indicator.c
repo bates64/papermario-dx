@@ -91,7 +91,6 @@ void damage_indicator_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f32 starsRadi
     bp.update = damage_indicator_update;
     bp.renderScene = damage_indicator_render;
     bp.renderUI = damage_indicator_render_ui;
-    bp.unk_00 = 0;
     bp.effectID = EFFECT_DAMAGE_INDICATOR;
 
     effect = create_effect_instance(bpPtr);

@@ -40,7 +40,6 @@ EffectInstance* attack_result_text_main(s32 type, f32 posX, f32 posY, f32 posZ, 
     AttackResultTextFXData* data;
     s32 numParts = 1;
 
-    bp.unk_00 = 0;
     bp.init = attack_result_text_init;
     bp.update = attack_result_text_update;
     bp.renderScene = attack_result_text_render;

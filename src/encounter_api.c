@@ -713,14 +713,12 @@ API_CALLABLE(OnPlayerFled) {
     enemy->aiFlags |= AI_FLAG_SUSPEND;
 
     if (!skipReaction) {
-        EffectInstance* emoteEffect;
-
         if (!(enemy->aiFlags & AI_FLAG_SKIP_IDLE_ANIM_AFTER_FLEE)) {
             npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         }
 
         if (!(enemy->aiFlags & AI_FLAG_SKIP_EMOTE_AFTER_FLEE)) {
-            fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 0.0f, -20.0f, 40, &emoteEffect);
+            fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 0.0f, -20.0f, 40, nullptr);
         }
 
         if ((npc->flags & (NPC_FLAG_GRAVITY | NPC_FLAG_JUMPING | NPC_FLAG_FLYING)) == (NPC_FLAG_JUMPING | NPC_FLAG_FLYING)) {

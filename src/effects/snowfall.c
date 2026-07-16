@@ -33,7 +33,6 @@ EffectInstance* snowfall_main(s32 arg0, s32 arg1) {
     effectBp.init = snowfall_init;
     effectBp.update = snowfall_update;
     effectBp.renderScene = snowfall_render;
-    effectBp.unk_00 = 0;
     effectBp.renderUI = nullptr;
     effectBp.effectID = EFFECT_SNOWFALL;
 

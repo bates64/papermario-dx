@@ -24,7 +24,6 @@ EffectInstance* ice_pillar_main(s32 arg0, f32 x, f32 y, f32 z, f32 scale, s32 ar
     effectBp.init = ice_pillar_init;
     effectBp.update = ice_pillar_update;
     effectBp.renderScene = ice_pillar_render;
-    effectBp.unk_00 = 0;
     effectBp.renderUI = nullptr;
     effectBp.effectID = EFFECT_ICE_PILLAR;
 

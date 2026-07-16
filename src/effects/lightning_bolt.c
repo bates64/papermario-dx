@@ -63,7 +63,6 @@ EffectInstance* lightning_bolt_main(
     bp.init = lightning_bolt_init;
     bp.update = lightning_bolt_update;
     bp.renderScene = lightning_bolt_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_LIGHTNING_BOLT;
 

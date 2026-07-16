@@ -70,7 +70,6 @@ EffectInstance* tubba_heart_attack_main(
     bp.init = tubba_heart_attack_init;
     bp.update = tubba_heart_attack_update;
     bp.renderScene = tubba_heart_attack_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_TUBBA_HEART_ATTACK;
 

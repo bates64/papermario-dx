@@ -48,7 +48,6 @@ void shattering_stones_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
     bp.init = shattering_stones_init;
     bp.update = shattering_stones_update;
     bp.renderScene = shattering_stones_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_SHATTERING_STONES;
 

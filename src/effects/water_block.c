@@ -75,7 +75,6 @@ EffectInstance* water_block_main(s32 type, f32 x, f32 y, f32 z, f32 arg4, s32 du
     bpPtr->init = water_block_init;
     bpPtr->update = &water_block_update;
     bpPtr->renderScene = water_block_render;
-    bpPtr->unk_00 = 0;
     bpPtr->renderUI = nullptr;
     bpPtr->effectID = EFFECT_WATER_BLOCK;
 

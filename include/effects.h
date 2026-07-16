@@ -2613,13 +2613,12 @@ typedef struct WattEffectData {
 } WattEffectData;
 
 typedef struct EffectBlueprint {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 effectID;
-    /* 0x08 */ void (*init)(EffectInstance* effectInst);
-    /* 0x0C */ void (*update)(EffectInstance* effectInst);
-    /* 0x10 */ void (*renderScene)(EffectInstance* effectInst);
-    /* 0x14 */ void (*renderUI)(EffectInstance* effectInst);
-} EffectBlueprint; // size = 0x18
+    /* 0x00 */ s32 effectID;
+    /* 0x04 */ void (*init)(EffectInstance* effectInst);
+    /* 0x08 */ void (*update)(EffectInstance* effectInst);
+    /* 0x0C */ void (*renderScene)(EffectInstance* effectInst);
+    /* 0x10 */ void (*renderUI)(EffectInstance* effectInst);
+} EffectBlueprint; // size = 0x14
 
 typedef struct EffectSharedData {
     /* 0x00 */ s32 flags;

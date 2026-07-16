@@ -79,7 +79,6 @@ void sparkles_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
     bpPtr->init = sparkles_init;
     bpPtr->update = sparkles_update;
     bpPtr->renderScene = sparkles_render;
-    bpPtr->unk_00 = 0;
     bpPtr->renderUI = nullptr;
     bpPtr->effectID = EFFECT_SPARKLES;
 

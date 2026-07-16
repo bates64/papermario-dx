@@ -149,7 +149,6 @@ EffectInstance* stat_change_main(s32 arg0, f32 x, f32 y, f32 z, f32 scale, s32 t
     bp.update = stat_change_update;
     bp.renderScene = stat_change_render;
     bp.renderUI = func_E00AC288;
-    bp.unk_00 = 0;
     bp.effectID = EFFECT_STAT_CHANGE;
 
     effect = create_effect_instance(bpPtr);

@@ -37,7 +37,6 @@ void ending_decals_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 arg4, Effect
     bp.init = ending_decals_init;
     bp.update = ending_decals_update;
     bp.renderScene = ending_decals_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_ENDING_DECALS;
 

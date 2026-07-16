@@ -29,7 +29,6 @@ EffectInstance* quizmo_stage_main(s32 arg0, f32 posX, f32 posY, f32 posZ) {
     effectBp.init = quizmo_stage_init;
     effectBp.update = quizmo_stage_update;
     effectBp.renderScene = quizmo_stage_render;
-    effectBp.unk_00 = 0;
     effectBp.renderUI = nullptr;
     effectBp.effectID = EFFECT_QUIZMO_STAGE;
 

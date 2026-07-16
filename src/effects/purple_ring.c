@@ -87,7 +87,6 @@ EffectInstance* purple_ring_main(
     bpPtr->init = purple_ring_init;
     bpPtr->update = purple_ring_update;
     bpPtr->renderScene = purple_ring_render;
-    bpPtr->unk_00 = 0;
     bpPtr->renderUI = nullptr;
     bpPtr->effectID = EFFECT_PURPLE_RING;
 

@@ -45,7 +45,6 @@ EffectInstance* motion_blur_flame_main(s32 type, f32 x, f32 y, f32 z, f32 scale,
     bp.init = motion_blur_flame_init;
     bp.update = motion_blur_flame_update;
     bp.renderScene = motion_blur_flame_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_MOTION_BLUR_FLAME;
 

@@ -100,7 +100,6 @@ EffectInstance* star_spirits_energy_main(s32 type, f32 x, f32 y, f32 z, f32 scal
     bp.init = star_spirits_energy_init;
     bp.update = star_spirits_energy_update;
     bp.renderScene = star_spirits_energy_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_STAR_SPIRITS_ENERGY;
 

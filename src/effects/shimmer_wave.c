@@ -51,7 +51,6 @@ EffectInstance* shimmer_wave_main(
     bp.init = shimmer_wave_init;
     bp.update = shimmer_wave_update;
     bp.renderScene = shimmer_wave_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_SHIMMER_WAVE;
 

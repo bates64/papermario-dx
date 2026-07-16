@@ -33,7 +33,6 @@ EffectInstance* radiating_energy_orb_main(
     s32 numParts = 6;
     s32 i;
 
-    bp.unk_00 = 0;
     bp.init = radiating_energy_orb_init;
     bp.update = radiating_energy_orb_update;
     bp.renderScene = radiating_energy_orb_render;

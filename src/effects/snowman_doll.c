@@ -77,7 +77,6 @@ EffectInstance* snowman_doll_main(
     bp.init = snowman_doll_init;
     bp.update = snowman_doll_update;
     bp.renderScene = snowman_doll_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_SNOWMAN_DOLL;
 

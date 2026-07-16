@@ -79,7 +79,6 @@ API_CALLABLE(ShowEmote) {
     f32 radius = evt_get_float_variable(script, *args++);
 
     Npc* npc;
-    EffectInstance* emoteHandle;
     f32 x, y, z, r;
 
     switch (emoterType) {
@@ -112,7 +111,7 @@ API_CALLABLE(ShowEmote) {
             break;
     }
 
-    fx_emote(emoteType, npc, x, y, z, r, pitch, duration, &emoteHandle);
+    fx_emote(emoteType, npc, x, y, z, r, pitch, duration, nullptr);
     return ApiStatus_DONE2;
 }
 

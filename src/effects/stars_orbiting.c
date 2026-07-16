@@ -32,7 +32,6 @@ void stars_orbiting_main(
     bp.init = stars_orbiting_init;
     bp.update = stars_orbiting_update;
     bp.renderScene = stars_orbiting_render;
-    bp.unk_00 = 0;
     bp.renderUI = func_E005E318;
     bp.effectID = EFFECT_STARS_ORBITING;
 

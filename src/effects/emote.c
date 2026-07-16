@@ -126,7 +126,6 @@ void emote_main(s32 type, Npc* npc, f32 x, f32 y, f32 z, f32 radius, f32 pitch, 
         numParts = 1;
     }
 
-    bp.unk_00 = 0;
     bp.init = emote_init;
     bp.update = emote_update;
     bp.renderScene = emote_render;

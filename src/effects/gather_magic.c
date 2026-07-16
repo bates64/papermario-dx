@@ -19,7 +19,6 @@ EffectInstance* gather_magic_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 ar
     s32 numParts = 31;
     s32 i;
 
-    bp.unk_00 = 0;
     bp.init = gather_magic_init;
     bp.update = gather_magic_update;
     bp.renderScene = gather_magic_render;

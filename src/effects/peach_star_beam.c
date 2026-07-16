@@ -41,7 +41,6 @@ EffectInstance* peach_star_beam_main(s32 type, f32 x, f32 y, f32 z, f32 arg4, s3
     s32 numParts = 1;
     s32 i;
 
-    bp.unk_00 = 0;
     bp.init = peach_star_beam_init;
     bp.update = peach_star_beam_update;
     bp.renderScene = peach_star_beam_render;
