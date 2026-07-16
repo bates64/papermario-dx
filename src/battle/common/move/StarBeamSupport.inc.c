@@ -4,16 +4,16 @@
 
 EvtScript N(EVS_PlayBeamFX) = {
     Thread
-        PlayEffect(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 100, 0)
+        PlayEffect(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 100)
         Wait(5)
-        PlayEffect(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 100, 0)
+        PlayEffect(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 100)
         IfEq(LVarA, 1)
             Wait(5)
-            PlayEffect(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 100, 0)
+            PlayEffect(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 100)
         EndIf
     EndThread
     Wait(20)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, Float(1.0), 30, 0)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, Float(1.0), 30)
     Return
     End
 };

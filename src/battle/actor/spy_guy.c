@@ -591,7 +591,7 @@ EvtScript N(EVS_Attack_Mallet) = {
                 Wait(5)
                 Call(SetActorVar, ACTOR_SELF, AVAR_ItemState, AVAL_Item_KnockAway)
                 Sub(LVar1, 7)
-                PlayEffect(EFFECT_FIREWORK, 0, LVar1, LVar2, LVar3, Float(1.0), 0, 0)
+                PlayEffect(EFFECT_FIREWORK, 0, LVar1, LVar2, LVar3, Float(1.0), 0)
                 Wait(40)
             Else
                 Wait(8)
@@ -605,7 +605,7 @@ EvtScript N(EVS_Attack_Mallet) = {
                 Wait(10)
                 Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                 Add(LVar1, 10)
-                PlayEffect(EFFECT_EMOTE, EMOTE_QUESTION, 0, LVar0, LVar1, LVar2, 25, -45, 20, 0, 0)
+                PlayEffect(EFFECT_EMOTE, EMOTE_QUESTION, 0, LVar0, LVar1, LVar2, 25, -45, 20, 0)
                 Wait(20)
             EndIf
             Label(100)

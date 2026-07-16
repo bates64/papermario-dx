@@ -1114,7 +1114,7 @@ EvtScript N(EVS_HideBoxWithSmoke) = {
     Wait(1)
     Call(GetColliderCenter, LVar1)
     Sub(LVar1, 5)
-    PlayEffect(EFFECT_WALKING_DUST, 1, LVar0, LVar1, LVar2)
+    PlayEffect(EFFECT_WALKING_DUST, 1, LVar0, LVar1, LVar2, 0, 0)
     Return
     End
 };
@@ -1484,11 +1484,11 @@ EvtScript N(EVS_OnHitBox) = {
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, LVarB, COLLIDER_FLAGS_UPPER_MASK)
             Wait(4)
             Sub(LVar1, 5)
-            PlayEffect(EFFECT_WALKING_DUST, 1, LVar0, LVar1, LVar2)
+            PlayEffect(EFFECT_WALKING_DUST, 1, LVar0, LVar1, LVar2, 0, 0)
         CaseOrEq(0)
         CaseOrEq(1)
             Sub(LVar1, 5)
-            PlayEffect(EFFECT_WALKING_DUST, 1, LVar0, LVar1, LVar2)
+            PlayEffect(EFFECT_WALKING_DUST, 1, LVar0, LVar1, LVar2, 0, 0)
         EndCaseGroup
     EndSwitch
     Call(EnableModel, LVarA, false)
@@ -1643,11 +1643,11 @@ EvtScript N(EVS_Toad_GovernGame) = {
     EndThread
     Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(N(CreateSignpost))
-    PlayEffect(EFFECT_WALKING_DUST, 1, 355, 45, -175)
+    PlayEffect(EFFECT_WALKING_DUST, 1, 355, 45, -175, 0, 0)
     Thread
         Call(SetNpcPos, NPC_Toad, 358, -20, 185)
         Call(EnableNpcShadow, NPC_Toad, true)
-        PlayEffect(EFFECT_WALKING_DUST, 1, 358, 5, 189)
+        PlayEffect(EFFECT_WALKING_DUST, 1, 358, 5, 189, 0, 0)
         Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, false)
     EndThread
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -1779,11 +1779,11 @@ EvtScript N(EVS_NpcInteract_Toad) = {
     Wait(25)
     Thread
         Wait(12)
-        PlayEffect(EFFECT_WALKING_DUST, 1, 358, -10, 185)
+        PlayEffect(EFFECT_WALKING_DUST, 1, 358, -10, 185, 0, 0)
         Call(SetNpcPos, NPC_Toad, 358, 500, 185)
         Call(EnableNpcShadow, NPC_Toad, false)
         Call(N(DestroySignpost))
-        PlayEffect(EFFECT_WALKING_DUST, 1, 355, 30, -180)
+        PlayEffect(EFFECT_WALKING_DUST, 1, 355, 30, -180, 0, 0)
     EndThread
     Call(EndSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 5)
     Call(PushSong, SONG_PLAYROOM, 0)

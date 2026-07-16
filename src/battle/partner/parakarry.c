@@ -1234,14 +1234,14 @@ EvtScript N(airRaid) = {
         Loop(5)
             Wait(18)
             Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 10, 0)
+            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 10)
         EndLoop
     EndChildThread
     ChildThread
         Loop(5)
             Wait(18)
             Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_SPARKLES, 1, LVar0, LVar1, LVar2, 40, 0)
+            PlayEffect(EFFECT_SPARKLES, 1, LVar0, LVar1, LVar2, 40)
         EndLoop
     EndChildThread
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleParakarry_ShellFlyFastest)

@@ -243,7 +243,7 @@ API_CALLABLE(N(UpdateCrystalBitEffect)) {
 }
 
 EvtScript N(EVS_Idle) = {
-    PlayEffect(EFFECT_MISC_PARTICLES, 1, NPC_DISPOSE_LOCATION, 24, 24, Float(1.0), 5, 0, 0, 0, 0)
+    PlayEffect(EFFECT_MISC_PARTICLES, 1, NPC_DISPOSE_LOCATION, 24, 24, Float(1.0), 5, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_Bit_ParticlesEffect, LVarF)
     ChildThread
         Call(N(UpdateCrystalBitEffect), LVarF)

@@ -377,7 +377,7 @@ EvtScript N(EVS_TakeTurn) = {
                 EndThread
                 Add(LVar0, 20)
                 Add(LVar1, 20)
-                PlayEffect(EFFECT_RECOVER, 0, LVar0, LVar1, LVar2, LVar3, 0)
+                PlayEffect(EFFECT_RECOVER, 0, LVar0, LVar1, LVar2, LVar3)
                 Call(GetActorHP, ACTOR_SELF, LVar0)
                 Add(LVar0, LVar3)
                 Call(SetEnemyHP, ACTOR_SELF, LVar0)

@@ -29,7 +29,7 @@ EvtScript N(EVS_UseItem) = {
     Add(LVar1, LVar3)
     SetF(LVar3, Float(1.0))
     Call(MultiplyByActorScale, LVar3)
-    PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, LVar3, 30, 0)
+    PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, LVar3, 30)
     Call(PlaySound, SOUND_VOLT_SHROOM_APPLY)
     Call(GetItemPower, ITEM_VOLT_SHROOM, LVar0, LVar1)
     Call(N(func_802A123C_71AA2C))

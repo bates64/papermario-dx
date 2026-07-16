@@ -302,10 +302,10 @@ EvtScript N(EVS_TakeTurn) = {
 EvtScript N(EVS_MakeExplosionFX) = {
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar2, 2)
-    PlayEffect(EFFECT_SMOKE_RING, 0, LVar0, LVar1, LVar2, 0)
+    PlayEffect(EFFECT_SMOKE_RING, 0, LVar0, LVar1, LVar2)
     Add(LVar1, 16)
     Add(LVar2, 2)
-    PlayEffect(EFFECT_BLAST, 0, LVar0, LVar1, LVar2, Float(3.0), 30, 0)
+    PlayEffect(EFFECT_BLAST, 0, LVar0, LVar1, LVar2, Float(3.0), 30)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BULLET_BILL_EXPLODE_A)
     Call(StartRumble, BTL_RUMBLE_PLAYER_MAX)
     Thread

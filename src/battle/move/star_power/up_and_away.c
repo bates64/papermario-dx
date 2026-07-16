@@ -154,7 +154,7 @@ EvtScript N(EVS_UsePower) = {
                     Call(SetActorPos, LVarA, NPC_DISPOSE_LOCATION)
                     Call(GetActorPos, LVarA, LVar0, LVar1, LVar2)
                     Loop(10)
-                        PlayEffect(EFFECT_SPARKLES, FX_SPARKLES_1, LVar0, LVar1, LVar2, 20, 0)
+                        PlayEffect(EFFECT_SPARKLES, FX_SPARKLES_1, LVar0, LVar1, LVar2, 20)
                         Add(LVar1, 30)
                         Wait(5)
                     EndLoop

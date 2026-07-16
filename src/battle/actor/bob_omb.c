@@ -192,7 +192,7 @@ EvtScript N(EVS_Defuse) = {
     Call(SetStatusTable, ACTOR_SELF, Ref(N(StatusTable)))
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar2, 2)
-    PlayEffect(EFFECT_LANDING_DUST, 3, LVar0, LVar1, LVar2, 0, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, LVar0, LVar1, LVar2, 0)
     Call(StopLoopingSoundAtActor, ACTOR_SELF, 0)
     Call(EnableActorPaletteEffects, ACTOR_SELF, PRT_MAIN, false)
     Return
@@ -220,10 +220,10 @@ EvtScript N(EVS_Explode) = {
     EndThread
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar2, 2)
-    PlayEffect(EFFECT_SMOKE_RING, 0, LVar0, LVar1, LVar2, 0)
+    PlayEffect(EFFECT_SMOKE_RING, 0, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
     Add(LVar2, 2)
-    PlayEffect(EFFECT_EXPLOSION, 0, LVar0, LVar1, LVar2, 0)
+    PlayEffect(EFFECT_EXPLOSION, 0, LVar0, LVar1, LVar2)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOMB_BLAST)
     Return
     End
@@ -578,7 +578,7 @@ EvtScript N(EVS_Attack_Tackle) = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Bobomb_Buildup)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(GetActorSize, ACTOR_SELF, LVar3, LVar4)
-            PlayEffect(EFFECT_FLASHING_BOX_SHOCKWAVE, FX_SHOCK_OVERLAY_SHOCK_HIT, LVar0, LVar1, LVar2, LVar4, LVar3, 0)
+            PlayEffect(EFFECT_FLASHING_BOX_SHOCKWAVE, FX_SHOCK_OVERLAY_SHOCK_HIT, LVar0, LVar1, LVar2, LVar4, LVar3)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HIT_SHOCK)
             Wait(20)
             ExecWait(N(EVS_Explode))

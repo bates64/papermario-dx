@@ -1214,9 +1214,9 @@ EvtScript N(EVS_Attack_Bomb) = {
                 Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
                 Wait(8)
                 IfGt(LVarA, 0)
-                    PlayEffect(EFFECT_RED_IMPACT, 0, LVar0, 0, LVar2, 1, 0, 0)
+                    PlayEffect(EFFECT_RED_IMPACT, 0, LVar0, 0, LVar2, 1, 0)
                 Else
-                    PlayEffect(EFFECT_RED_IMPACT, 1, LVar0, 0, LVar2, 1, 0, 0)
+                    PlayEffect(EFFECT_RED_IMPACT, 1, LVar0, 0, LVar2, 1, 0)
                 EndIf
             CaseEq(MOVE_MEGA_BOMB)
                 Set(LVarA, 0)

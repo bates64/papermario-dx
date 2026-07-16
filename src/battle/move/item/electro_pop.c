@@ -100,7 +100,7 @@ EvtScript N(EVS_UseItem) = {
     ExecWait(N(EatItem))
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
-    PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(1.0), 30, 0)
+    PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(1.0), 30)
     Call(PlaySound, SOUND_VOLT_SHROOM_APPLY)
     Call(GetItemPower, ITEM_VOLT_SHROOM, LVar0, LVar1)
     Call(N(func_802A123C_7307DC))

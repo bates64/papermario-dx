@@ -860,7 +860,7 @@ EvtScript N(EVS_Charge) = {
         Add(LVar1, 18)
         SetF(LVar3, Float(0.64))
     EndIf
-    PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, LVar3, -1, 0)
+    PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, LVar3, -1)
     Call(SetActorVar, ACTOR_SELF, AVAR_StaticEffect, LVarF)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_CHARGE_LIGHTNING)
     Call(SetPartEventFlags, ACTOR_SELF, PRT_TARGET, ACTOR_EVENT_FLAG_ATTACK_CHARGED | ACTOR_EVENT_FLAG_ELECTRIFIED)

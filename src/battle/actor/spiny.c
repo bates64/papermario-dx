@@ -303,7 +303,7 @@ EvtScript N(EVS_HandleEvent) = {
                 EndIf
                 Add(LVar1, 22)
             EndIf
-            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20, 0)
+            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20)
             Wait(20)
         CaseEq(EVENT_DEATH)
             SetConst(LVar0, PRT_MAIN)
@@ -423,11 +423,11 @@ EvtScript N(EVS_TakeTurn) = {
     EndIf
     Thread
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
         Wait(10)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
         Wait(5)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
     EndThread
     Call(EnableActorBlur, ACTOR_SELF, ACTOR_BLUR_ENABLE)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_MAIN, ACTOR_PART_FLAG_INVISIBLE, true)

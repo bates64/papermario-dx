@@ -501,9 +501,9 @@ EvtScript N(EVS_Attack_GroundStomp) = {
             Call(ShakeCam, CAM_BATTLE, 0, 10, Float(4.0))
         EndIf
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_GoombaKing_Idle)
-        PlayEffect(EFFECT_DROP_LEAVES, 0, -80, 125, 0, 100, 0)
-        PlayEffect(EFFECT_DROP_LEAVES, 0, -15, 135, 0, 85, 0)
-        PlayEffect(EFFECT_DROP_LEAVES, 0, 100, 103, 0, 70, 0)
+        PlayEffect(EFFECT_DROP_LEAVES, 0, -80, 125, 0, 100)
+        PlayEffect(EFFECT_DROP_LEAVES, 0, -15, 135, 0, 85)
+        PlayEffect(EFFECT_DROP_LEAVES, 0, 100, 103, 0, 70)
     EndThread
     Call(EnemyTestTarget, ACTOR_SELF, LVarA, 0, 0, 2, BS_FLAGS1_INCLUDE_POWER_UPS)
     Switch(LVarA)
@@ -755,7 +755,7 @@ EvtScript N(EVS_GoombaKing_Death) = {
     EndLoop
     Call(SetActorYaw, ACTOR_SELF, 0)
     Call(GetActorPos, ACTOR_SELF, LVar2, LVar3, LVar4)
-    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar2, LVar3, LVar4, 0, 0, 0, 0, 0)
+    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar2, LVar3, LVar4)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_ACTOR_DEATH)
     Call(DropStarPoints, ACTOR_SELF)
     Set(LVar3, 0)

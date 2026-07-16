@@ -153,7 +153,7 @@ EvtScript N(EVS_Move_Charge) = {
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_POWER_UP)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 10)
-        PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.0), 45, 0)
+        PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.0), 45)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Goomba_Hyper_Run)
         Wait(30)
         Call(UseBattleCamPreset, BTL_CAM_DEFAULT)

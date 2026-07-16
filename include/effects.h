@@ -2657,6 +2657,8 @@ void* load_effect(s32 effectIndex);
 
 #include "effects/effect_defs.h"
 
+extern const u8 gEffectArgCounts[EFFECT_COUNT];
+
 #ifdef __cplusplus
 } // extern "C"
 #endif

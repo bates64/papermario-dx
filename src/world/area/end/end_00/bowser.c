@@ -170,7 +170,7 @@ EvtScript N(EVS_ParadePhase_Bowser) = {
         Call(NpcMoveTo, NPC_BurntBowserPropeller, 2270, 0, 60 * DT)
     EndThread
     Call(NpcMoveTo, NPC_BurntBowser, 2270, 0, 60 * DT)
-    PlayEffect(EFFECT_FIRE_BREATH, 0, 2270, 40, -5, 2280, 40, -5, 5, 2, 30, 0, 0, 0)
+    PlayEffect(EFFECT_FIRE_BREATH, 0, 2270, 40, -5, 2280, 40, -5, 5, 2, 30)
     Wait(20 * DT)
     Thread
         Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_BurnSlump)

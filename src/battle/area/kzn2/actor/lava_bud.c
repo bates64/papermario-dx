@@ -681,7 +681,7 @@ EvtScript N(EVS_ComboHit) = {
             Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
             Sub(LVar2, 25)
             Add(LVar3, 2)
-            PlayEffect(EFFECT_EMBERS, 0, LVar1, LVar2, LVar3, 40, 50, Float(1.2), 24, 42, Float(0.8), Float(0.6), 0)
+            PlayEffect(EFFECT_EMBERS, 0, LVar1, LVar2, LVar3, 40, 50, Float(1.2), 24, 42, Float(0.8), Float(0.6))
             Wait(29)
         EndIf
     EndIf
@@ -736,7 +736,7 @@ EvtScript N(EVS_Hit) = {
                     Call(RemoveEffect, LVar0)
                     Call(SetActorVar, ACTOR_SELF, AVAR_Common_FlameEffect, nullptr)
                     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-                    PlayEffect(EFFECT_COLD_BREATH, 0, LVar0, LVar1, LVar2, Float(2.0), 45, 0)
+                    PlayEffect(EFFECT_COLD_BREATH, 0, LVar0, LVar1, LVar2, Float(2.0), 45)
                 EndIf
                 Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(StunnedAnims)))
                 Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(StunnedDefense)))
@@ -780,7 +780,7 @@ EvtScript N(EVS_Hit) = {
                 Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
                 Sub(LVar2, 25)
                 Add(LVar3, 2)
-                PlayEffect(EFFECT_EMBERS, 0, LVar1, LVar2, LVar3, 40, 50, Float(1.2), 24, 42, Float(0.8), Float(0.6), 0)
+                PlayEffect(EFFECT_EMBERS, 0, LVar1, LVar2, LVar3, 40, 50, Float(1.2), 24, 42, Float(0.8), Float(0.6))
                 Wait(29)
             EndIf
         EndIf
@@ -885,7 +885,7 @@ EvtScript N(EVS_Attack_SpitPetit) = {
             Call(GetGoalPos, LVar5, LVar0, LVar1, LVar2)
             Set(LVar1, 10)
             Add(LVar2, 2)
-            PlayEffect(EFFECT_FLAME, FX_FLAME_SMALL_BLUE, LVar0, LVar1, LVar2, Float(0.3), LVarA, 0)
+            PlayEffect(EFFECT_FLAME, FX_FLAME_SMALL_BLUE, LVar0, LVar1, LVar2, Float(0.3), LVarA)
             Call(MakeLerp, 120, 10, 20, EASING_QUADRATIC_IN)
             Loop(0)
                 Call(UpdateLerp)

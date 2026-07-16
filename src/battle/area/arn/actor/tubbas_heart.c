@@ -523,8 +523,8 @@ EvtScript N(EVS_Move_Charge) = {
         Add(LVar1, 6)
         SetF(LVar3, Float(0.4))
     EndIf
-    PlayEffect(EFFECT_GATHER_MAGIC, 1, LVar0, LVar1, LVar2, LVar3, 60, 0)
-    PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, LVar3, 60, 0)
+    PlayEffect(EFFECT_GATHER_MAGIC, 1, LVar0, LVar1, LVar2, LVar3, 60)
+    PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, LVar3, 60)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_TUBBAS_HEART_CHARGE)
     Wait(60)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
@@ -543,7 +543,7 @@ EvtScript N(EVS_Move_Charge) = {
         Add(LVar1, 6)
         SetF(LVar3, Float(0.4))
     EndIf
-    PlayEffect(EFFECT_ENERGY_IN_OUT, 3, LVar0, LVar1, LVar2, LVar3, 0, 0)
+    PlayEffect(EFFECT_ENERGY_IN_OUT, 3, LVar0, LVar1, LVar2, LVar3, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_ChargedEffectID, LVarF)
     Call(EnableActorGlow, ACTOR_SELF, true)
     Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ChargedAnims)))
@@ -568,7 +568,7 @@ EvtScript N(EVS_Attack_DarkSwarm) = {
     Else
         Add(LVar1, 6)
     EndIf
-    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, LVar0, LVar1, LVar2, Float(1.0), 45, 0)
+    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, LVar0, LVar1, LVar2, Float(1.0), 45)
     Wait(60)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 20)
@@ -597,7 +597,7 @@ EvtScript N(EVS_Attack_DarkSwarm) = {
         CaseOrEq(HIT_RESULT_LUCKY)
             Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
             Add(LVar1, 5)
-            PlayEffect(EFFECT_TUBBA_HEART_ATTACK, FX_HEART_SWARM_MISS, LVar0, LVar1, LVar2, Float(1.0), 200, 0)
+            PlayEffect(EFFECT_TUBBA_HEART_ATTACK, FX_HEART_SWARM_MISS, LVar0, LVar1, LVar2, Float(1.0), 200)
             Wait(145)
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
@@ -608,7 +608,7 @@ EvtScript N(EVS_Attack_DarkSwarm) = {
     EndSwitch
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 5)
-    PlayEffect(EFFECT_TUBBA_HEART_ATTACK, FX_HEART_SWARM_HIT, LVar0, LVar1, LVar2, Float(1.0), 200, 0)
+    PlayEffect(EFFECT_TUBBA_HEART_ATTACK, FX_HEART_SWARM_HIT, LVar0, LVar1, LVar2, Float(1.0), 200)
     Thread
         Wait(160)
         Call(PlaySound, SOUND_TUBBAS_HEART_SWARM_VANISH)

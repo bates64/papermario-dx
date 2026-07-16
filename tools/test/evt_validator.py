@@ -15,6 +15,7 @@ SUITE_ROOT = Path(__file__).resolve().with_suffix("")
 PASS_DIR = SUITE_ROOT / "pass"
 FAIL_DIR = SUITE_ROOT / "fail"
 VALIDATOR = ROOT / "tools/build/evt_validate_obj.py"
+EFFECTS_YAML = ROOT / "src/effects.yaml"
 
 
 def parse_args() -> argparse.Namespace:
@@ -136,7 +137,15 @@ def run_case(
             compile_result.stderr,
         )
 
-    validate_result = run_command([sys.executable, str(VALIDATOR), str(object_path)])
+    validate_result = run_command(
+        [
+            sys.executable,
+            str(VALIDATOR),
+            "--effects-yaml",
+            str(EFFECTS_YAML),
+            str(object_path),
+        ]
+    )
     if should_pass:
         if validate_result.returncode != 0:
             return format_failure(

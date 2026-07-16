@@ -433,11 +433,11 @@ EvtScript N(EVS_Attack_ShellToss) = {
     Wait(10)
     Thread
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
         Wait(10)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
         Wait(5)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
     EndThread
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SHELL_SPIN)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BonyBeetle_ShellSpin)
@@ -614,7 +614,7 @@ EvtScript N(EVS_HandleEvent_SpikyUpright) = {
                 Add(LVar0, -8)
                 Add(LVar1, 26)
             EndIf
-            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20, 0)
+            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20)
             Wait(20)
         CaseEq(EVENT_SHOCK_DEATH)
             Call(SetActorRotationOffset, ACTOR_SELF, 0, 0, 0)
@@ -671,15 +671,15 @@ EvtScript N(EVS_Attack_SpikeBounce) = {
     Wait(10)
     Thread
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 4, 0, 10)
         Wait(10)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 6, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 6, 0, 10)
         Wait(5)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 8, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 8, 0, 10)
         Wait(5)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 10, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 10, 0, 10)
         Wait(5)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 12, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 12, 0, 10)
     EndThread
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SHELL_SPIN)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BonyBeetle_ShellSpinSpiky)
@@ -688,7 +688,7 @@ EvtScript N(EVS_Attack_SpikeBounce) = {
     Thread
         Loop(20)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_WALKING_DUST, 0, LVar0, LVar1, LVar2, 0, 0, 0)
+            PlayEffect(EFFECT_WALKING_DUST, 0, LVar0, LVar1, LVar2, 0, 0)
             Wait(1)
         EndLoop
     EndThread

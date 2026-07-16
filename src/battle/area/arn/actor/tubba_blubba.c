@@ -301,7 +301,7 @@ EvtScript N(EVS_Attack_SlamFist) = {
     IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
         Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Set(LVar1, 0)
-        PlayEffect(EFFECT_LANDING_DUST, 4, LVar0, LVar1, LVar2, 0, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 4, LVar0, LVar1, LVar2, 0)
         Thread
             Call(StartRumble, BTL_RUMBLE_LONG)
             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(15.0))
@@ -313,7 +313,7 @@ EvtScript N(EVS_Attack_SlamFist) = {
         CaseOrEq(HIT_RESULT_MISS)
         CaseOrEq(HIT_RESULT_LUCKY)
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_SHOCKWAVE, 0, LVar0, 0, LVar2, 0)
+            PlayEffect(EFFECT_SHOCKWAVE, 0, LVar0, 0, LVar2)
             Wait(30)
             Set(LVar1, ANIM_BattleTubba_Idle)
             ExecWait(N(EVS_DummyCheck))
@@ -331,7 +331,7 @@ EvtScript N(EVS_Attack_SlamFist) = {
     Call(GetStatusFlags, ACTOR_SELF, LVar5)
     IfNotFlag(LVar5, STATUS_FLAG_SHRINK)
         Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        PlayEffect(EFFECT_SHOCKWAVE, 1, LVar0, 0, LVar2, 0)
+        PlayEffect(EFFECT_SHOCKWAVE, 1, LVar0, 0, LVar2)
     EndIf
     Wait(2)
     Call(SetGoalToTarget, ACTOR_SELF)
@@ -396,11 +396,11 @@ EvtScript N(EVS_Attack_BodySlam) = {
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 23, false, true, false)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEAVY_NPC_LANDING)
-            PlayEffect(EFFECT_SHOCKWAVE, 0, LVar0, 0, LVar2, 0)
+            PlayEffect(EFFECT_SHOCKWAVE, 0, LVar0, 0, LVar2)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleTubba_Land)
             Thread
                 Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 60, 8, 10, 20, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 60, 8, 10, 20)
             EndThread
             Thread
                 Call(StartRumble, BTL_RUMBLE_LONG)
@@ -417,7 +417,7 @@ EvtScript N(EVS_Attack_BodySlam) = {
             Call(StartRumble, BTL_RUMBLE_LONG)
             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(3.0))
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 60, 8, 10, 20, 0)
+            PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 60, 8, 10, 20)
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
             EndIf
@@ -471,11 +471,11 @@ EvtScript N(EVS_Attack_BodySlam) = {
             EndIf
             Label(0)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_SHOCKWAVE, 0, LVar0, 0, LVar2, 0)
+            PlayEffect(EFFECT_SHOCKWAVE, 0, LVar0, 0, LVar2)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleTubba_Land)
             Thread
                 Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 60, 8, 10, 20, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 60, 8, 10, 20)
             EndThread
             Thread
                 Call(StartRumble, BTL_RUMBLE_LONG)
@@ -492,14 +492,14 @@ EvtScript N(EVS_Attack_BodySlam) = {
             Call(StartRumble, BTL_RUMBLE_LONG)
             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(3.0))
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 60, 8, 10, 20, 0)
+            PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 60, 8, 10, 20)
             Goto(2)
             Label(1)
             Call(GetStatusFlags, ACTOR_SELF, LVar5)
             IfNotFlag(LVar5, STATUS_FLAG_SHRINK)
                 Wait(3)
                 Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-                PlayEffect(EFFECT_SHOCKWAVE, 1, LVar0, 0, LVar2, 0)
+                PlayEffect(EFFECT_SHOCKWAVE, 1, LVar0, 0, LVar2)
                 Call(StartRumble, BTL_RUMBLE_LONG)
                 Call(ShakeCam, CAM_BATTLE, 0, 5, Float(3.0))
             EndIf
@@ -517,7 +517,7 @@ EvtScript N(EVS_Attack_BodySlam) = {
                 Call(StartRumble, BTL_RUMBLE_LONG)
                 Call(ShakeCam, CAM_BATTLE, 0, 5, Float(3.0))
                 Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 60, 8, 10, 20, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 60, 8, 10, 20)
                 Wait(8)
             EndIf
             Label(2)

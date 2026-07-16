@@ -126,7 +126,7 @@ EvtScript N(EVS_SetupSpinyTromp) = {
         Goto(10)
     EndIf
     Sub(LVar2, SPINY_TROMP_RADIUS)
-    PlayEffect(EFFECT_LANDING_DUST, 4, SPINY_TROMP_START_X, LVar2, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 4, SPINY_TROMP_START_X, LVar2, 0, 0)
     Exec(N(EVS_SpinyTromp_Dust))
     Thread
         Call(GetPartnerInUse, LVar0)

@@ -993,7 +993,7 @@ EvtScript N(EVS_Attack_PowerShock) = {
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
     Add(LVar2, 5)
-    PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(1.0), 75 * DT, 0)
+    PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(1.0), 75 * DT)
     Call(N(UnkBackgroundFunc3))
     Set(LVar9, 0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleWatt_StrainBigger)
@@ -1017,7 +1017,7 @@ EvtScript N(EVS_Attack_PowerShock) = {
         EndLoop
         Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
         Add(LVar1, 8)
-        PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.8), 30, 0)
+        PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.8), 30)
     EndThread
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
@@ -1159,7 +1159,7 @@ EvtScript N(EVS_TurboCharge_HealthyPlayer) = {
         Add(LVar0, 15)
         Add(LVar1, 35)
         Add(LVarF, 0)
-        PlayEffect(EFFECT_STAT_CHANGE, LVarF, LVar0, LVar1, LVar2, Float(1.5), 60, 0)
+        PlayEffect(EFFECT_STAT_CHANGE, LVarF, LVar0, LVar1, LVar2, Float(1.5), 60)
         Wait(4)
     EndIf
     IfEq(LVar0, 0)
@@ -1230,7 +1230,7 @@ EvtScript N(EVS_TurboCharge_ImmobilePlayer) = {
         Add(LVar0, 15)
         Add(LVar1, 35)
         Add(LVarF, 0)
-        PlayEffect(EFFECT_STAT_CHANGE, LVarF, LVar0, LVar1, LVar2, Float(1.5), 60, 0)
+        PlayEffect(EFFECT_STAT_CHANGE, LVarF, LVar0, LVar1, LVar2, Float(1.5), 60)
         Wait(4)
     EndIf
     IfEq(LVar0, 0)
@@ -1287,10 +1287,10 @@ EvtScript N(EVS_Attack_MegaShock) = {
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
     Add(LVar2, 5)
-    PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(1.0), 90 * DT, 0)
+    PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(1.0), 90 * DT)
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar1, 12)
-    PlayEffect(EFFECT_RADIAL_SHIMMER, 8, LVar0, LVar1, LVar2, Float(1.3), 90 * DT, 0)
+    PlayEffect(EFFECT_RADIAL_SHIMMER, 8, LVar0, LVar1, LVar2, Float(1.3), 90 * DT)
     Call(AddBattleCamDist, -100)
     Call(MoveBattleCamOver, 90 * DT)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_NONE, BTL_CAM_XADJ_NONE, true)
@@ -1314,10 +1314,10 @@ EvtScript N(EVS_Attack_MegaShock) = {
         Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
         Add(LVar1, 12)
         Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_WATT_MEGA_DISCHARGE)
-        PlayEffect(EFFECT_FLASHING_BOX_SHOCKWAVE, FX_SHOCK_OVERLAY_MEGA_SHOCK, LVar0, LVar1, LVar2, 0, 0, 0)
+        PlayEffect(EFFECT_FLASHING_BOX_SHOCKWAVE, FX_SHOCK_OVERLAY_MEGA_SHOCK, LVar0, LVar1, LVar2, 0, 0)
         Wait(10)
         Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_WATT_MEGA_CHARGE_WAVE)
-        PlayEffect(EFFECT_FLASHING_BOX_SHOCKWAVE, FX_SHOCK_OVERLAY_MEGA_SHOCK, LVar0, LVar1, LVar2, 0, 0, 0)
+        PlayEffect(EFFECT_FLASHING_BOX_SHOCKWAVE, FX_SHOCK_OVERLAY_MEGA_SHOCK, LVar0, LVar1, LVar2, 0, 0)
     EndThread
     Thread
         Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleWatt_StrainBiggest)

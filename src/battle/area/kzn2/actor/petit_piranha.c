@@ -220,10 +220,10 @@ EvtScript N(EVS_HandleEvent) = {
 // unused
 EvtScript N(EVS_AbsorbDamage) = {
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_SPARKLES, 0, LVar0, LVar1, LVar2, Float(1.0), 0)
+    PlayEffect(EFFECT_SPARKLES, 0, LVar0, LVar1, LVar2, Float(1.0))
     Add(LVar0, 20)
     Call(GetLastDamage, ACTOR_SELF, LVar3)
-    PlayEffect(EFFECT_RECOVER, 0, LVar0, LVar1, LVar2, LVar3, 0)
+    PlayEffect(EFFECT_RECOVER, 0, LVar0, LVar1, LVar2, LVar3)
     Call(GetActorHP, ACTOR_SELF, LVar0)
     Add(LVar0, LVar3)
     Call(GetEnemyMaxHP, ACTOR_SELF, LVar1)
@@ -311,7 +311,7 @@ EvtScript N(EVS_TakeTurn) = {
     Add(LVar0, 10)
     Set(LVar1, 0)
     Add(LVar2, 2)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, LVar0, LVar1, LVar2, Float(0.3), LVarA, 0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, LVar0, LVar1, LVar2, Float(0.3), LVarA)
     Thread
         Call(SetGoalToTarget, ACTOR_SELF)
         Call(GetGoalPos, ACTOR_SELF, LVar3, LVar4, LVar5)

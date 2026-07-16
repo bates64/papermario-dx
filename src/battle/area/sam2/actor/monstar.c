@@ -343,7 +343,7 @@ EvtScript N(EVS_ChargeUp) = {
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar1, 40)
     Sub(LVar2, 5)
-    PlayEffect(EFFECT_RADIAL_SHIMMER, 10, LVar0, LVar1, LVar2, Float(1.0), 300, 0)
+    PlayEffect(EFFECT_RADIAL_SHIMMER, 10, LVar0, LVar1, LVar2, Float(1.0), 300)
     Wait(75)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 20)
@@ -418,7 +418,7 @@ EvtScript N(EVS_Attack_StarStorm) = {
             Set(LVar4, LVar2)
             Call(RandInt, 10, LVar5)
             Add(LVar5, 10)
-            PlayEffect(EFFECT_STAR, LVar0, LVar1, 240, LVar2, LVar3, 0, LVar4, LVar5, 0)
+            PlayEffect(EFFECT_STAR, LVar0, LVar1, 240, LVar2, LVar3, 0, LVar4, LVar5)
             Wait(3)
         EndLoop
     EndThread
@@ -428,7 +428,7 @@ EvtScript N(EVS_Attack_StarStorm) = {
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar1, 50)
     Add(LVar2, 5)
-    PlayEffect(EFFECT_RADIAL_SHIMMER, 11, LVar0, LVar1, LVar2, Float(0.8), 160, 0)
+    PlayEffect(EFFECT_RADIAL_SHIMMER, 11, LVar0, LVar1, LVar2, Float(0.8), 160)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Monstar_Release)
     Call(EnemyTestTarget, ACTOR_SELF, LVar0, 0, 0, 0, BS_FLAGS1_INCLUDE_POWER_UPS)
     Switch(LVar0)
@@ -556,7 +556,7 @@ EvtScript N(EVS_Death) = {
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar1, 10)
     Add(LVar2, 10)
-    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2, 0, 0, 0, 0, 0)
+    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_ACTOR_DEATH)
     Call(DropStarPoints, ACTOR_SELF)
     Call(SetActorYaw, ACTOR_SELF, 0)
@@ -656,7 +656,7 @@ EvtScript N(EVS_BurnHit) = {
                         SetF(LVar3, Float(1.0))
                     EndIf
                 EndIf
-                PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, LVar3, 10, 0)
+                PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, LVar3, 10)
             EndIf
         CaseEq(EVENT_BURN_DEATH)
             // do nothing

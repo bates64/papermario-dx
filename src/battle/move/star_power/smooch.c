@@ -63,7 +63,7 @@ EvtScript N(EVS_UsePower) = {
     Call(NpcFlyTo, NPC_BTL_SPIRIT, LVar0, LVar1, LVar2, 10, 0, EASING_COS_IN_OUT)
     Call(PlaySound, SOUND_SMOOCH)
     Thread
-        PlayEffect(EFFECT_RECOVER, 2, LVar0, LVar1, LVar2, 1, 0)
+        PlayEffect(EFFECT_RECOVER, 2, LVar0, LVar1, LVar2, 1)
         Wait(2)
         UseBuf(Ref(N(RecoverEffectPositions)))
         Loop(ARRAY_COUNT(N(RecoverEffectPositions)))
@@ -72,7 +72,7 @@ EvtScript N(EVS_UsePower) = {
             Set(LVar4, LVar1)
             Add(LVar3, LVar5)
             Add(LVar4, LVar6)
-            PlayEffect(EFFECT_RECOVER, 2, LVar3, LVar4, LVar2, 1, 0)
+            PlayEffect(EFFECT_RECOVER, 2, LVar3, LVar4, LVar2, 1)
             Wait(2)
         EndLoop
     EndThread

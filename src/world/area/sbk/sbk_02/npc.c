@@ -123,7 +123,7 @@ EvtScript N(EVS_Scene_RescuedMamar) = {
     Thread
         Loop(25)
             Call(GetNpcPos, NPC_Mamar, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_SPARKLES, 4, LVar0, LVar1, LVar2, 20, 0, 0, 0, 0, 0, 0, 0, 0)
+            PlayEffect(EFFECT_SPARKLES, 4, LVar0, LVar1, LVar2, 20)
             Wait(4 * DT)
         EndLoop
     EndThread

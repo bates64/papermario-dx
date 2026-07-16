@@ -451,7 +451,7 @@ EvtScript A(EVS_Lee_LoseDisguise) = {
         Add(LVar1, 3)
         Add(LVar2, 5)
         Loop(3)
-            PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2, 0, 0, 0, 0, 0)
+            PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2)
             Wait(3)
         EndLoop
     EndThread
@@ -619,7 +619,7 @@ EvtScript N(EVS_Move_CopyPartner) = {
         Add(LVar1, 20)
         SetF(LVar3, Float(1.0))
     EndIf
-    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 1, LVar0, LVar1, LVar2, LVar3, 40, 0)
+    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 1, LVar0, LVar1, LVar2, LVar3, 40)
     Call(WATT(UnkBackgroundFunc3))
     Call(MakeLerp, 0, 200, 20, EASING_LINEAR)
     Label(0)
@@ -659,7 +659,7 @@ EvtScript N(EVS_Move_CopyPartner) = {
         Add(LVar1, 3)
         Add(LVar2, 5)
         Loop(3)
-            PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2, 0, 0, 0, 0, 0)
+            PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2)
             Wait(3)
         EndLoop
     EndThread

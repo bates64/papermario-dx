@@ -152,7 +152,7 @@ EvtScript N(EVS_HandleEvent) = {
             Add(LVar0, 5)
             Add(LVar1, 10)
             Loop(4)
-                PlayEffect(EFFECT_SWEAT, 0, LVar0, LVar1, LVar2, 10, 45, 4, 0)
+                PlayEffect(EFFECT_SWEAT, 0, LVar0, LVar1, LVar2, 10, 45, 4)
                 Wait(6)
             EndLoop
             Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK, SOUND_ACTOR_STEP_A, SOUND_ACTOR_STEP_B)

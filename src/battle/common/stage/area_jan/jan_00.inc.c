@@ -15,7 +15,7 @@ EvtScript N(EVS_PreBattle) = {
     Exec(N(EVS_AnimatePalmLeaves))
     Set(LVar0, MODEL_g86)
     Exec(N(EVS_AnimateWave))
-    PlayEffect(EFFECT_SUN, 0, 0, 0, 0, 0, 0, 0)
+    PlayEffect(EFFECT_SUN, FX_SUN_FROM_LEFT, 0, 0, 0, 0, 0)
     Return
     End
 };

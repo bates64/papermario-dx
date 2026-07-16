@@ -308,13 +308,27 @@ API_CALLABLE(SetSleepBubbleTimeLeft) {
 
 API_CALLABLE(PlayEffect_impl) {
     Bytecode* args = script->ptrReadPos;
-    Bytecode rawVars[14];
-    s32 iVars[14];
-    f32 fVars[14];
+    Bytecode rawVars[EFFECT_MAX_ARGS + 1];
+    s32 iVars[EFFECT_MAX_ARGS + 1];
+    f32 fVars[EFFECT_MAX_ARGS + 1];
     EffectInstance* effectRet = nullptr;
     EffectInstance* effectOut;
+    s32 effectIndex;
+    s32 expectedArgCount;
 
-    for (s32 i = 0; i < ARRAY_COUNT(rawVars); i++) {
+    ASSERT_MSG(script->curArgc >= 1, "PlayEffect missing effect ID");
+    effectIndex = evt_get_variable(script, args[0]);
+    ASSERT_MSG((u32) effectIndex < EFFECT_COUNT, "Invalid effect ID %lX", effectIndex);
+    expectedArgCount = gEffectArgCounts[effectIndex];
+    ASSERT_MSG(
+        script->curArgc == expectedArgCount + 1,
+        "PlayEffect %lX argc %d != %ld",
+        effectIndex,
+        script->curArgc - 1,
+        expectedArgCount
+    );
+
+    for (s32 i = 0; i < script->curArgc; i++) {
         rawVars[i] = args[i];
         iVars[i] = evt_get_variable(script, rawVars[i]);
         fVars[i] = evt_get_float_variable(script, rawVars[i]);

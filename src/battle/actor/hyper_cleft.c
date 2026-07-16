@@ -160,7 +160,7 @@ EvtScript N(EVS_Move_Charge) = {
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_POWER_UP)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 10)
-        PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.0), 45, 0)
+        PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.0), 45)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Cleft_Hyper_Party)
         Wait(30)
         Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
@@ -174,7 +174,7 @@ EvtScript N(EVS_Move_Charge) = {
             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.5))
         EndThread
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HYPER_CLEFT_LAND)
-        PlayEffect(EFFECT_LANDING_DUST, 4, LVar0, LVar1, LVar2, 0, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 4, LVar0, LVar1, LVar2, 0)
         Thread
             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
         EndThread
@@ -224,7 +224,7 @@ EvtScript N(EVS_Move_Charge) = {
             Thread
                 Loop(30)
                     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-                    PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0, 0)
+                    PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0)
                     Wait(1)
                 EndLoop
             EndThread
@@ -256,7 +256,7 @@ EvtScript N(EVS_Move_Charge) = {
     Thread
         Loop(25)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0, 0)
+            PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0)
             Wait(1)
         EndLoop
     EndThread
@@ -432,7 +432,7 @@ EvtScript N(EVS_FlipOver) = {
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
     EndThread
-    PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 40, 8, Float(0.0), 20, 0)
+    PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 40, 8, Float(0.0), 20)
     Call(SetActorPos, ACTOR_SELF, LVar0, 0, LVar2)
     Call(SetActorRotationOffset, ACTOR_SELF, 0, 0, 0)
     Call(SetActorRotation, ACTOR_SELF, 0, 0, 0)
@@ -608,7 +608,7 @@ EvtScript N(EVS_HandleEvent) = {
                 Add(LVar0, -8)
                 Add(LVar1, 27)
             EndIf
-            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20, 0)
+            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20)
             Wait(20)
         CaseOrEq(EVENT_ZERO_DAMAGE)
         CaseOrEq(EVENT_IMMUNE)
@@ -750,11 +750,11 @@ EvtScript N(EVS_Attack_Tackle) = {
     Call(MoveBattleCamOver, 30)
     Thread
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
         Wait(10)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
         Wait(5)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
     EndThread
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Cleft_Hyper_Crouch)
     Wait(10)

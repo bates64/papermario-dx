@@ -80,7 +80,7 @@ EvtScript N(EVS_PreBattle) = {
     Set(LVar0, MODEL_g62)
     Set(LVar1, 240)
     Exec(N(EVS_UpdateSunPos))
-    PlayEffect(EFFECT_SUN, 0, 0, 0, 0, 0, 0, 0)
+    PlayEffect(EFFECT_SUN, FX_SUN_FROM_LEFT, 0, 0, 0, 0, 0)
     Return
     End
 };

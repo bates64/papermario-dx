@@ -13,6 +13,17 @@ class Effect:
     empty: bool
     returns_void: bool
 
+    @property
+    def arg_count(self) -> int:
+        return len([arg for arg in self.args.split(",") if arg.strip()])
+
+    @property
+    def enum_name(self) -> str:
+        name = self.name.upper()
+        if not name.startswith("EFFECT_"):
+            name = "EFFECT_" + name
+        return name
+
     def get_decl(self, func_name: str) -> str:
         ret_type = "void" if self.returns_void else "EffectInstance*"
 

@@ -291,7 +291,7 @@ EvtScript N(EVS_Init) = {
     Call(SetActorVar, ACTOR_SELF, N(VAR_SPEAK_FLAGS), 0)
     Call(SetActorVar, ACTOR_SELF, N(VAR_MOVE_ID), N(MOVE_HEAVY_JUMP))
     Call(SetActorVar, ACTOR_SELF, N(VAR_LIGHT_BEAM_COUNTER), 0)
-    PlayEffect(EFFECT_BULB_GLOW, 1, LVar0, LVar1, LVar2, Float(1.0), LVar0, 0)
+    PlayEffect(EFFECT_BULB_GLOW, 1, LVar0, LVar1, LVar2, Float(1.0), LVar0)
     Call(SetActorVar, ACTOR_SELF, N(VAR_EFFECT), LVar0)
     Call(N(init_overlay))
     Exec(N(updateEffectThread))
@@ -672,13 +672,13 @@ EvtScript N(attackLightBeam) = {
     Add(LVar2, 2)
     Thread
         Wait(1)
-        PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, LVar1, LVar2, Float(1.0), LVarB, 0)
+        PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, LVar1, LVar2, Float(1.0), LVarB)
         Wait(30)
         Call(RemoveEffect, LVarB)
     EndThread
     Thread
         Wait(1)
-        PlayEffect(EFFECT_RADIATING_ENERGY_ORB, 1, LVar0, LVar1, LVar2, Float(1.5), 30, 0)
+        PlayEffect(EFFECT_RADIATING_ENERGY_ORB, 1, LVar0, LVar1, LVar2, Float(1.5), 30)
     EndThread
     Wait(5)
     Call(EnemyTestTarget, ACTOR_SELF, LVarA, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)

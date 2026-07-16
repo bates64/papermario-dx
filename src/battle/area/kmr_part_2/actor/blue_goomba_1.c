@@ -506,7 +506,7 @@ EvtScript N(EVS_GoombaBros_Death) = {
     EndLoop
     Call(SetActorYaw, ACTOR_SELF, 0)
     Call(GetActorPos, ACTOR_SELF, LVar2, LVar3, LVar4)
-    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar2, LVar3, LVar4, 0, 0, 0, 0, 0)
+    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar2, LVar3, LVar4)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_ACTOR_DEATH)
     Call(DropStarPoints, ACTOR_SELF)
     Set(LVar3, 0)

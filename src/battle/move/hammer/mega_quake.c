@@ -76,11 +76,11 @@ EvtScript N(EVS_UseMove_Impl) = {
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar0, 24)
         Add(LVar1, 10)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 60, 8, 0, 30, 0, 0, 0, 0, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 60, 8, 0, 30)
         Wait(2)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 60, 8, 33, 30, 0, 0, 0, 0, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 60, 8, 33, 30)
         Wait(2)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 60, 8, 66, 30, 0, 0, 0, 0, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 60, 8, 66, 30)
     EndThread
     Call(GetPlayerActionQuality, LVar0)
     Switch(LVar0)
@@ -100,17 +100,17 @@ EvtScript N(EVS_UseMove_Impl) = {
                 Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
                 Add(LVar0, 24)
                 Add(LVar1, 10)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 0, 30, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 0, 30)
                 Wait(5)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 24, 30, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 24, 30)
                 Wait(5)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 48, 30, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 48, 30)
                 Wait(5)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 72, 30, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 72, 30)
             EndThread
             Thread
                 Wait(10)
-                PlayEffect(EFFECT_SHOCKWAVE, 1, LVar0, LVar1, LVar2, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SHOCKWAVE, 1, LVar0, LVar1, LVar2)
             EndThread
         CaseDefault
             Call(StartRumble, BTL_RUMBLE_PLAYER_MAX)
@@ -128,17 +128,17 @@ EvtScript N(EVS_UseMove_Impl) = {
                 Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
                 Add(LVar0, 24)
                 Add(LVar1, 10)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 0, 30, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 0, 30)
                 Wait(5)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 24, 30, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 24, 30)
                 Wait(5)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 48, 30, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 48, 30)
                 Wait(5)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 72, 30, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 72, 30)
             EndThread
             Thread
                 Wait(10)
-                PlayEffect(EFFECT_SHOCKWAVE, 1, LVar0, LVar1, LVar2, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SHOCKWAVE, 1, LVar0, LVar1, LVar2)
             EndThread
     EndSwitch
     Call(GetPlayerActionQuality, LVar0)
@@ -153,7 +153,7 @@ EvtScript N(EVS_UseMove_Impl) = {
             AddF(LVar6, Float(36.0))
             Call(AddVectorPolar, LVar4, LVar5, Float(300.0), LVar6)
             Set(LVarA, LVarF)
-            PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar3, 1, LVar2, LVar4, 1, LVar5, Float(4.0), 30, 0, 0, 0, 0)
+            PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar3, 1, LVar2, LVar4, 1, LVar5, Float(4.0), 30)
             Set(LVarF, LVarA)
         EndLoop
         Wait(10)

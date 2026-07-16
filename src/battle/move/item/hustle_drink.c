@@ -107,8 +107,8 @@ EvtScript N(EVS_UseItem) = {
     EndThread
     Loop(10)
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_HUSTLE_WHISTLE)
-        PlayEffect(EFFECT_LANDING_DUST, 0, LVar0, LVar1, LVar2, 0, 0)
-        PlayEffect(EFFECT_LANDING_DUST, 1, LVar0, LVar1, LVar2, 0, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 0, LVar0, LVar1, LVar2, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, LVar0, LVar1, LVar2, 0)
         Wait(4)
     EndLoop
     Wait(10)

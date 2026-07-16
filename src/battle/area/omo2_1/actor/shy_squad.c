@@ -1009,7 +1009,7 @@ EvtScript N(EVS_ReduceCrowdSize) = {
                         EndLoop
                 EndSwitch
                 Call(PlaySoundAtActor, ACTOR_SELF, SOUND_ACTOR_DEATH)
-                PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar1, LVar2, LVar3, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar1, LVar2, LVar3)
                 Set(LVar8, 0)
                 Loop(12)
                     Call(SetPartRotation, ACTOR_SELF, LVar0, LVar8, 0, 0)
@@ -1106,7 +1106,7 @@ EvtScript N(EVS_Death) = {
         Wait(1)
     EndLoop
     Call(GetPartOffset, ACTOR_SELF, LVar0, LVar1, LVar2, LVar3)
-    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar1, LVar2, LVar3, 0, 0, 0, 0, 0)
+    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar1, LVar2, LVar3)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_ACTOR_DEATH)
     Call(DropStarPoints, ACTOR_SELF)
     Set(LVar3, 0)
@@ -1195,12 +1195,12 @@ EvtScript N(EVS_Attack_Swarm) = {
             Call(GetActorVar, ACTOR_SELF, AVAR_NumDefeated, LVar0)
             IfLt(LVar0, 14)
                 Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-                PlayEffect(EFFECT_LANDING_DUST, 3, LVar0, LVar1, LVar2, 0, 0)
+                PlayEffect(EFFECT_LANDING_DUST, 3, LVar0, LVar1, LVar2, 0)
                 Thread
                     Loop(7)
-                        PlayEffect(EFFECT_LANDING_DUST, 0, LVar0, LVar1, LVar2, 0, 0)
+                        PlayEffect(EFFECT_LANDING_DUST, 0, LVar0, LVar1, LVar2, 0)
                         Wait(2)
-                        PlayEffect(EFFECT_LANDING_DUST, 1, LVar0, LVar1, LVar2, 0, 0)
+                        PlayEffect(EFFECT_LANDING_DUST, 1, LVar0, LVar1, LVar2, 0)
                         Wait(2)
                     EndLoop
                 EndThread
@@ -1248,9 +1248,9 @@ EvtScript N(EVS_Attack_Swarm) = {
         Call(EnemyDamageTarget, ACTOR_SELF, LVarF, 0, 0, 0, DMG_SWARM, LVar0)
         Thread
             Call(GetActorPos, ACTOR_PLAYER, LVar1, LVar2, LVar3)
-            PlayEffect(EFFECT_LANDING_DUST, 0, LVar1, LVar2, LVar3, 0, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 0, LVar1, LVar2, LVar3, 0)
             Wait(2)
-            PlayEffect(EFFECT_LANDING_DUST, 1, LVar1, LVar2, LVar3, 0, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 1, LVar1, LVar2, LVar3, 0)
             Wait(2)
         EndThread
         Call(GetPlayerHP, LVar0)

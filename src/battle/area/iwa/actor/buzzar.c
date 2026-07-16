@@ -369,7 +369,7 @@ EvtScript N(EVS_Attack_WindBlast) = {
                             Call(SetGoalToTarget, ACTOR_SELF)
                             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                             Add(LVar0, 10)
-                            PlayEffect(EFFECT_WINDY_LEAVES, 2, LVar0, 10, LVar2, 0)
+                            PlayEffect(EFFECT_WINDY_LEAVES, 2, LVar0, 10, LVar2)
                             Wait(3)
                         EndLoop
                     EndThread
@@ -407,7 +407,7 @@ EvtScript N(EVS_Attack_WindBlast) = {
                             Call(SetGoalToTarget, ACTOR_SELF)
                             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                             Add(LVar0, 10)
-                            PlayEffect(EFFECT_WINDY_LEAVES, 2, LVar0, 10, LVar2, 0)
+                            PlayEffect(EFFECT_WINDY_LEAVES, 2, LVar0, 10, LVar2)
                             Wait(3)
                         EndLoop
                     EndThread
@@ -472,7 +472,7 @@ EvtScript N(EVS_Attack_WindBlast) = {
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar0, 10)
-            PlayEffect(EFFECT_WINDY_LEAVES, 2, LVar0, 10, LVar2, 0)
+            PlayEffect(EFFECT_WINDY_LEAVES, 2, LVar0, 10, LVar2)
             Wait(3)
         EndLoop
     EndThread
@@ -582,7 +582,7 @@ EvtScript N(EVS_Attack_FeatherFling) = {
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 24)
     Add(LVar1, 24)
-    PlayEffect(EFFECT_SHINY_FLARE, 0, LVar0, LVar1, LVar2, Float(0.6), 0, 0)
+    PlayEffect(EFFECT_SHINY_FLARE, 0, LVar0, LVar1, LVar2, Float(0.6), 0)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SMALL_LENS_FLARE)
     Wait(10)
     Call(SetPartSounds, ACTOR_SELF, PRT_FEATHER_1, ACTOR_SOUND_FLY, SOUND_NONE, SOUND_NONE)

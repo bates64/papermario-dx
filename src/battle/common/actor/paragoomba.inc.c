@@ -527,7 +527,7 @@ EvtScript N(EVS_KnockDown) = {
         Call(GetActorPos, ACTOR_SELF, LVar3, LVar4, LVar5)
         Add(LVar4, 10)
         Add(LVar5, 5)
-        PlayEffect(EFFECT_SMOKE_BURST, 0, LVar3, LVar4, LVar5, Float(1.0), 10, 0)
+        PlayEffect(EFFECT_SMOKE_BURST, 0, LVar3, LVar4, LVar5, Float(1.0), 10)
     EndIf
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)

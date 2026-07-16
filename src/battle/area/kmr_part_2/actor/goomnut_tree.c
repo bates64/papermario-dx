@@ -264,7 +264,7 @@ EvtScript N(EVS_TriggerTreeShake) = {
 };
 
 EvtScript N(EVS_DropNutOnGoombas) = {
-    PlayEffect(EFFECT_DROP_LEAVES, 0, -25, 120, 0, 90, 0)
+    PlayEffect(EFFECT_DROP_LEAVES, 0, -25, 120, 0, 90)
     Call(GetActorVar, ACTOR_SELF, AVAR_BigNutDropped, LVar0)
     IfNe(LVar0, false)
         Return

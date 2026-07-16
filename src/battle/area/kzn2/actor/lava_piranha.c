@@ -683,7 +683,7 @@ EvtScript N(EVS_Scene_KoloradoToTheRescue) = {
     Thread
         Loop(10)
             Call(GetNpcPos, NPC_BTL_COMPANION, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 20, 0)
+            PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 20)
             Wait(2)
         EndLoop
     EndThread
@@ -694,7 +694,7 @@ EvtScript N(EVS_Scene_KoloradoToTheRescue) = {
     Thread
         Loop(10)
             Call(GetNpcPos, NPC_BTL_COMPANION, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 20, 0)
+            PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 20)
             Wait(2)
         EndLoop
     EndThread
@@ -1206,11 +1206,11 @@ EvtScript N(EVS_Attack_SpitFire) = {
     Call(GetGoalPos, ACTOR_SELF, LVar3, LVar4, LVar5)
     Sub(LVar3, 40)
     Set(LVar4, -10)
-    PlayEffect(EFFECT_63, 1, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.0), 20, 20, 0)
+    PlayEffect(EFFECT_63, 1, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.0), 20, 20)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LAVA_PIRANHA_SPIT_FIRE)
     Wait(19)
     Call(GetGoalPos, ACTOR_SELF, LVar3, LVar4, LVar5)
-    PlayEffect(EFFECT_EMBERS, 0, LVar3, 0, LVar5, 50, 50, Float(1.0), 40, 55, Float(1.0), Float(1.0), 0)
+    PlayEffect(EFFECT_EMBERS, 0, LVar3, 0, LVar5, 50, 50, Float(1.0), 40, 55, Float(1.0), Float(1.0))
     Call(OverrideBattleDmaDest, VINE_0_BASE)
     Call(LoadBattleDmaData, VINE_ANIM_BOSS_POST_ATTACK)
     Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
@@ -1286,12 +1286,12 @@ EvtScript N(EVS_Attack_FireBreath) = {
     Set(LVar1, -10)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar3, LVar4, LVar5)
-    PlayEffect(EFFECT_63, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.0), 16, 40, 0)
+    PlayEffect(EFFECT_63, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, Float(1.0), 16, 40)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LAVA_PIRANHA_FIRE_BREATH)
     Wait(15)
     Thread
         Wait(24)
-        PlayEffect(EFFECT_EMBERS, 0, LVar3, 0, LVar5, 50, 50, Float(1.0), 40, 55, Float(1.0), Float(1.0), 0)
+        PlayEffect(EFFECT_EMBERS, 0, LVar3, 0, LVar5, 50, 50, Float(1.0), 40, 55, Float(1.0), Float(1.0))
     EndThread
     Call(EnemyTestTarget, ACTOR_SELF, LVarA, DAMAGE_TYPE_FIRE, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
     Switch(LVarA)
@@ -1538,10 +1538,10 @@ EvtScript N(EVS_Death) = {
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_EMOTE_QUESTION)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar1, 20)
-        PlayEffect(EFFECT_EMOTE, EMOTE_QUESTION, 0, LVar0, LVar1, LVar2, 20, 315, 30, 0, 0)
+        PlayEffect(EFFECT_EMOTE, EMOTE_QUESTION, 0, LVar0, LVar1, LVar2, 20, 315, 30, 0)
         Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
         Add(LVar1, 10)
-        PlayEffect(EFFECT_EMOTE, EMOTE_QUESTION, 0, LVar0, LVar1, LVar2, 20, 315, 30, 0, 0)
+        PlayEffect(EFFECT_EMOTE, EMOTE_QUESTION, 0, LVar0, LVar1, LVar2, 20, 315, 30, 0)
         Wait(50)
         Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
         Call(SetBattleCamTarget, 90, 90, 0)
@@ -1636,7 +1636,7 @@ EvtScript N(EVS_Death) = {
         Call(EnableModel, MODEL_h10, true)
         Call(EnableModel, MODEL_h11, true)
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LAVA_PIRANHA_EMERGE)
-        PlayEffect(EFFECT_EMBERS, 0, 100, 0, 0, 70, 80, Float(2.5), 80, 55, Float(2.0), Float(2.0), 0)
+        PlayEffect(EFFECT_EMBERS, 0, 100, 0, 0, 70, 80, Float(2.5), 80, 55, Float(2.0), Float(2.0))
         Call(LoadAnimatedModel, SHATTER_GROUND, Ref(N(anim1)))
         Call(PlayModelAnimation, SHATTER_GROUND, Ref(N(anim1_AS_ShatterGround)))
         Call(SetAnimatedModelRootPosition, SHATTER_GROUND, 0, 0, 0)
@@ -1724,7 +1724,7 @@ EvtScript N(EVS_Death) = {
             Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
             Call(GetActorVar, ACTOR_SELF, AVAR_Common_PiranhaState, LVar0)
             IfEq(LVar0, PIRANHA_STATE_FIERY)
-                PlayEffect(EFFECT_EMBERS, 0, 105, 60, 2, 80, 60, Float(1.8), 90, 100, Float(1.5), Float(1.5), 0)
+                PlayEffect(EFFECT_EMBERS, 0, 105, 60, 2, 80, 60, Float(1.8), 90, 100, Float(1.5), Float(1.5))
             EndIf
             Wait(121)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LAVA_PIRANHA_COLLAPSE)
@@ -1762,7 +1762,7 @@ EvtScript N(EVS_Death) = {
             Call(PlayModelAnimation, VINE_1, VINE_1_BASE)
             Call(GetActorVar, ACTOR_BUD_1, AVAR_Common_PiranhaState, LVar0)
             IfEq(LVar0, PIRANHA_STATE_FIERY)
-                PlayEffect(EFFECT_EMBERS, 0, 67, 30, 2, 50, 40, Float(1.3), 30, 70, Float(1.2), Float(1.2), 0)
+                PlayEffect(EFFECT_EMBERS, 0, 67, 30, 2, 50, 40, Float(1.3), 30, 70, Float(1.2), Float(1.2))
             EndIf
             Wait(96)
             Call(OverrideBattleDmaDest, VINE_1_BASE)
@@ -1798,7 +1798,7 @@ EvtScript N(EVS_Death) = {
             Call(PlayModelAnimation, VINE_2, VINE_2_BASE)
             Call(GetActorVar, ACTOR_BUD_2, AVAR_Common_PiranhaState, LVar0)
             IfEq(LVar0, PIRANHA_STATE_FIERY)
-                PlayEffect(EFFECT_EMBERS, 0, 120, 35, 5, 50, 40, Float(1.3), 30, 70, Float(1.2), Float(1.2), 0)
+                PlayEffect(EFFECT_EMBERS, 0, 120, 35, 5, 50, 40, Float(1.3), 30, 70, Float(1.2), Float(1.2))
             EndIf
             Wait(96)
             Call(OverrideBattleDmaDest, VINE_2_BASE)
@@ -1830,7 +1830,7 @@ EvtScript N(EVS_Death) = {
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaPiranha_Dead)
         Call(SetAnimation, ACTOR_BUD_1, PRT_MAIN, ANIM_LavaBud_Dead)
         Call(SetAnimation, ACTOR_BUD_2, PRT_MAIN, ANIM_LavaBud_Dead)
-        PlayEffect(EFFECT_SHOCKWAVE, 0, -60, 0, 2, 0)
+        PlayEffect(EFFECT_SHOCKWAVE, 0, -60, 0, 2)
         Thread
             Call(N(StartRumbleWithParams), 180, 16)
             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(4.0))
@@ -1887,7 +1887,7 @@ EvtScript N(EVS_RemovePetitPiranha) = {
             Wait(1)
         EndLoop
         Call(GetActorPos, LVar0, LVar3, LVar4, LVar5)
-        PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar3, LVar4, LVar5, 0, 0, 0, 0, 0)
+        PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar3, LVar4, LVar5)
         Set(LVar3, 0)
         Loop(12)
             Call(SetPartRotation, LVar0, 1, LVar3, LVar2, 0)
@@ -1946,7 +1946,7 @@ EvtScript N(EVS_Ignite) = {
             Call(N(GetFlamePosition), LVar1, LVar2, LVar6, LVar7, LVar8, LVar3, LVar4)
             Call(GetPartOffset, ACTOR_BUD_1, PRT_MAIN, LVar0, LVar1, LVar2)
             Sub(LVar2, 3)
-            PlayEffect(EFFECT_FLAME, FX_FLAME_RED, LVar3, LVar4, LVar2, Float(0.3), LVarA, 0)
+            PlayEffect(EFFECT_FLAME, FX_FLAME_RED, LVar3, LVar4, LVar2, Float(0.3), LVarA)
             Call(SetActorVar, ACTOR_BUD_1, AVAR_Common_FlameEffect, LVarA)
             Call(SetIdleAnimations, ACTOR_BUD_1, PRT_MAIN, Ref(A(lava_bud_FieryAnims)))
             Call(SetDefenseTable, ACTOR_BUD_1, PRT_MAIN, Ref(A(lava_bud_FieryDefense)))
@@ -1967,7 +1967,7 @@ EvtScript N(EVS_Ignite) = {
             Call(N(GetFlamePosition), LVar1, LVar2, LVar6, LVar7, LVar8, LVar3, LVar4)
             Call(GetPartOffset, ACTOR_BUD_2, PRT_MAIN, LVar0, LVar1, LVar2)
             Sub(LVar2, 3)
-            PlayEffect(EFFECT_FLAME, FX_FLAME_RED, LVar3, LVar4, LVar2, Float(0.3), LVarA, 0)
+            PlayEffect(EFFECT_FLAME, FX_FLAME_RED, LVar3, LVar4, LVar2, Float(0.3), LVarA)
             Call(SetActorVar, ACTOR_BUD_2, AVAR_Common_FlameEffect, LVarA)
             Call(SetIdleAnimations, ACTOR_BUD_2, PRT_MAIN, Ref(A(lava_bud_FieryAnims)))
             Call(SetDefenseTable, ACTOR_BUD_2, PRT_MAIN, Ref(A(lava_bud_FieryDefense)))
@@ -1988,7 +1988,7 @@ EvtScript N(EVS_Ignite) = {
             Call(N(GetFlamePosition), LVar1, LVar2, LVar6, LVar7, LVar8, LVar3, LVar4)
             Call(GetPartOffset, ACTOR_BOSS, PRT_MAIN, LVar0, LVar1, LVar2)
             Sub(LVar2, 3)
-            PlayEffect(EFFECT_FLAME, FX_FLAME_RED, LVar3, LVar4, LVar2, Float(0.7), LVarA, 0)
+            PlayEffect(EFFECT_FLAME, FX_FLAME_RED, LVar3, LVar4, LVar2, Float(0.7), LVarA)
             Call(SetActorVar, ACTOR_BOSS, AVAR_Common_FlameEffect, LVarA)
             Call(SetIdleAnimations, ACTOR_BOSS, PRT_MAIN, Ref(N(FieryAnims)))
             Call(SetDefenseTable, ACTOR_BOSS, PRT_MAIN, Ref(N(FieryDefense)))
@@ -2088,7 +2088,7 @@ EvtScript N(EVS_Hit_Inner) = {
                 Call(RemoveEffect, LVar0)
                 Call(SetActorVar, ACTOR_SELF, AVAR_Common_FlameEffect, nullptr)
                 Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-                PlayEffect(EFFECT_COLD_BREATH, 0, LVar0, LVar1, LVar2, Float(3.0), 50, 0)
+                PlayEffect(EFFECT_COLD_BREATH, 0, LVar0, LVar1, LVar2, Float(3.0), 50)
             EndIf
             Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(StunnedAnims)))
             Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(StunnedDefense)))
@@ -2129,7 +2129,7 @@ EvtScript N(EVS_Hit_Inner) = {
                 Call(LoadBattleDmaData, VINE_ANIM_BOSS_HEAVY_HIT)
             EndIf
             Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
-            PlayEffect(EFFECT_EMBERS, 0, 80, 50, 0, 60, 50, Float(1.5), 36, 42, Float(0.8), Float(0.8), 0)
+            PlayEffect(EFFECT_EMBERS, 0, 80, 50, 0, 60, 50, Float(1.5), 36, 42, Float(0.8), Float(0.8))
             Wait(29)
             Wait(14)
         EndIf

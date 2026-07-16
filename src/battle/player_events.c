@@ -1478,7 +1478,7 @@ EvtScript EVS_UseLifeShroom = {
     EndIf
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_LIFE_SHROOM_CHIME)
     Add(LVar4, 15)
-    PlayEffect(EFFECT_ENERGY_IN_OUT, 3, LVar3, LVar4, LVar5, Float(1.0))
+    PlayEffect(EFFECT_ENERGY_IN_OUT, 3, LVar3, LVar4, LVar5, Float(1.0), 0)
     Set(LVar0, LVarF)
     Loop(4)
         Call(SetItemFlags, LVarA, 64, 1)

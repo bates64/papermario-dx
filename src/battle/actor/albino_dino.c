@@ -227,7 +227,7 @@ EvtScript N(EVS_AddWalkQuakeFX) = {
         Else
             Add(LVar0, -20)
         EndIf
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 25, 8, 45, 20, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 25, 8, 45, 20)
         IfGt(LVarA, 3)
             Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.2))
             Set(LVarA, 0)

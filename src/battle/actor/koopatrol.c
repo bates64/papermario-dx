@@ -523,7 +523,7 @@ EvtScript N(EVS_HandleEvent) = {
             IfEq(LFlag0, false)
                 Add(LVar1, 42)
             EndIf
-            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20, 0)
+            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20)
             Wait(20)
         CaseEq(EVENT_DEATH)
             Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
@@ -701,11 +701,11 @@ EvtScript N(EVS_Attack_ShellToss) = {
         Thread
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar1, 4)
-            PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+            PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
             Wait(3)
-            PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+            PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
             Wait(2)
-            PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+            PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
         EndThread
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SHELL_SPIN)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Koopatrol_ShellSpin)
@@ -819,7 +819,7 @@ EvtScript N(EVS_Attack_ChargedToss) = {
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_POWER_UP)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 10)
-        PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.0), 45, 0)
+        PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.0), 45)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Koopatrol_Lift)
         Wait(30)
         Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
@@ -887,7 +887,7 @@ EvtScript N(EVS_Attack_ChargedToss) = {
             Thread
                 Loop(30)
                     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-                    PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0, 0)
+                    PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0)
                     Wait(1)
                 EndLoop
             EndThread
@@ -924,7 +924,7 @@ EvtScript N(EVS_Attack_ChargedToss) = {
     Thread
         Loop(30)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0, 0)
+            PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0)
             Wait(1)
         EndLoop
     EndThread
@@ -1081,7 +1081,7 @@ EvtScript N(EVS_Move_SummonBackup) = {
     Thread
         Wait(8)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        PlayEffect(EFFECT_SPARKLES, 0, LVar0, LVar1, LVar2, 30, 0)
+        PlayEffect(EFFECT_SPARKLES, 0, LVar0, LVar1, LVar2, 30)
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_RECOVER_HEART)
     EndThread
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Koopatrol_Panic)

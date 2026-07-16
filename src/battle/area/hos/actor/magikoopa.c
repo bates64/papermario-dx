@@ -339,7 +339,7 @@ EvtScript N(EVS_KnockDown) = {
         Call(GetActorPos, ACTOR_SELF, LVar3, LVar4, LVar5)
         Add(LVar4, 10)
         Add(LVar5, 5)
-        PlayEffect(EFFECT_SMOKE_BURST, 0, LVar3, LVar4, LVar5, Float(1.0), 10, 0)
+        PlayEffect(EFFECT_SMOKE_BURST, 0, LVar3, LVar4, LVar5, Float(1.0), 10)
     EndIf
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
@@ -496,7 +496,7 @@ EvtScript N(EVS_RemoveClone) = {
     Thread
         Add(LVar3, 2)
         Loop(2)
-            PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar1, LVar2, LVar3, 0, 0, 0, 0, 0)
+            PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar1, LVar2, LVar3)
             Wait(2)
         EndLoop
     EndThread
@@ -808,12 +808,12 @@ EvtScript N(EVS_Move_HealOne) = {
             Sub(LVar0, 6)
             Add(LVar1, 12)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.12), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.12), 30)
         Else
             Sub(LVar0, 16)
             Add(LVar1, 31)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.3), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.3), 30)
         EndIf
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -822,12 +822,12 @@ EvtScript N(EVS_Move_HealOne) = {
             Sub(LVar0, 12)
             Add(LVar1, 14)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.12), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.12), 30)
         Else
             Sub(LVar0, 30)
             Add(LVar1, 36)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.3), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.3), 30)
         EndIf
     EndIf
     Wait(30)
@@ -888,12 +888,12 @@ EvtScript N(EVS_Move_HealAll) = {
             Sub(LVar0, 6)
             Add(LVar1, 12)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.12), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.12), 30)
         Else
             Sub(LVar0, 16)
             Add(LVar1, 31)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.3), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.3), 30)
         EndIf
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -902,12 +902,12 @@ EvtScript N(EVS_Move_HealAll) = {
             Sub(LVar0, 12)
             Add(LVar1, 14)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.12), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.12), 30)
         Else
             Sub(LVar0, 30)
             Add(LVar1, 36)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.3), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 7, LVar0, LVar1, LVar2, Float(0.3), 30)
         EndIf
     EndIf
     Wait(30)
@@ -993,7 +993,7 @@ EvtScript N(EVS_Attack_MagicBlast) = {
             Call(GetActorPos, LVarA, LVar0, LVar1, LVar2)
             Sub(LVar0, 17)
             Add(LVar1, 33)
-            PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, Float(0.5), 30, 0)
+            PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, Float(0.5), 30)
         EndIf
         Call(SetAnimation, ACTOR_SELF, PRT_GROUND, ANIM_Magikoopa_Shout)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -1005,14 +1005,14 @@ EvtScript N(EVS_Attack_MagicBlast) = {
             Sub(LVar0, 17)
             Add(LVar1, 33)
         EndIf
-        PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, Float(0.5), 30, 0)
+        PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, Float(0.5), 30)
     Else
         IfEq(LFlag0, true)
             Call(SetAnimation, LVarA, 1, ANIM_FlyingMagikoopa_Shout)
             Call(GetActorPos, LVarA, LVar0, LVar1, LVar2)
             Sub(LVar0, 30)
             Add(LVar1, 36)
-            PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, Float(0.5), 30, 0)
+            PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, Float(0.5), 30)
         EndIf
         Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_FlyingMagikoopa_Shout)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -1024,7 +1024,7 @@ EvtScript N(EVS_Attack_MagicBlast) = {
             Sub(LVar0, 30)
             Add(LVar1, 36)
         EndIf
-        PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, Float(0.5), 30, 0)
+        PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, Float(0.5), 30)
     EndIf
     Wait(30)
     Call(EnemyTestTarget, ACTOR_SELF, LVar9, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
@@ -1439,7 +1439,7 @@ EvtScript N(EVS_Move_MakeClone) = {
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 23)
     EndIf
-    PlayEffect(EFFECT_ENERGY_IN_OUT, 1, LVar0, LVar1, LVar2, Float(1.0), 30, 0)
+    PlayEffect(EFFECT_ENERGY_IN_OUT, 1, LVar0, LVar1, LVar2, Float(1.0), 30)
     Wait(10)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     Call(EnableIdleScript, LVar9, IDLE_SCRIPT_ENABLE)
@@ -1559,12 +1559,12 @@ EvtScript N(EVS_Move_TryBoostAttack) = {
             Sub(LVar0, 6)
             Add(LVar1, 12)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.12), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.12), 30)
         Else
             Sub(LVar0, 16)
             Add(LVar1, 31)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.3), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.3), 30)
         EndIf
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -1573,12 +1573,12 @@ EvtScript N(EVS_Move_TryBoostAttack) = {
             Sub(LVar0, 12)
             Add(LVar1, 14)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.12), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.12), 30)
         Else
             Sub(LVar0, 30)
             Add(LVar1, 36)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.3), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.3), 30)
         EndIf
     EndIf
     Wait(30)
@@ -1672,12 +1672,12 @@ EvtScript N(EVS_Move_TryBoostDefense) = {
             Sub(LVar0, 6)
             Add(LVar1, 12)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.12), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.12), 30)
         Else
             Sub(LVar0, 16)
             Add(LVar1, 31)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.3), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.3), 30)
         EndIf
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -1686,12 +1686,12 @@ EvtScript N(EVS_Move_TryBoostDefense) = {
             Sub(LVar0, 12)
             Add(LVar1, 14)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.12), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.12), 30)
         Else
             Sub(LVar0, 30)
             Add(LVar1, 36)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.3), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.3), 30)
         EndIf
     EndIf
     Wait(30)
@@ -1785,12 +1785,12 @@ EvtScript N(EVS_Move_TryElectrify) = {
             Sub(LVar0, 6)
             Add(LVar1, 12)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(0.12), 30, 0)
+            PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(0.12), 30)
         Else
             Sub(LVar0, 16)
             Add(LVar1, 31)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(0.3), 30, 0)
+            PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(0.3), 30)
         EndIf
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -1799,12 +1799,12 @@ EvtScript N(EVS_Move_TryElectrify) = {
             Sub(LVar0, 12)
             Add(LVar1, 14)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(0.12), 30, 0)
+            PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(0.12), 30)
         Else
             Sub(LVar0, 30)
             Add(LVar1, 36)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(0.3), 30, 0)
+            PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(0.3), 30)
         EndIf
     EndIf
     Wait(30)
@@ -1903,12 +1903,12 @@ EvtScript N(EVS_Move_TryTransparent) = {
             Sub(LVar0, 6)
             Add(LVar1, 12)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, Float(0.12), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, Float(0.12), 30)
         Else
             Sub(LVar0, 16)
             Add(LVar1, 31)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, Float(0.3), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, Float(0.3), 30)
         EndIf
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -1917,12 +1917,12 @@ EvtScript N(EVS_Move_TryTransparent) = {
             Sub(LVar0, 12)
             Add(LVar1, 14)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, Float(0.12), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, Float(0.12), 30)
         Else
             Sub(LVar0, 30)
             Add(LVar1, 36)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, Float(0.3), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, Float(0.3), 30)
         EndIf
     EndIf
     Wait(30)

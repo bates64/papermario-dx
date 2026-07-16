@@ -280,7 +280,7 @@ EvtScript N(EVS_Attack_Sing) = {
         Call(RandInt, 30, LVar3)
         Sub(LVar3, 15)
         Add(LVar3, LVar0)
-        PlayEffect(EFFECT_MUSIC_NOTE, 1, LVar3, LVar1, LVar2, 0)
+        PlayEffect(EFFECT_MUSIC_NOTE, 1, LVar3, LVar1, LVar2)
         Wait(10)
     EndLoop
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Dayzee_Idle)

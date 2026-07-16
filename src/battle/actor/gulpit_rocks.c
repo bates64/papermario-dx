@@ -173,7 +173,7 @@ EvtScript N(EVS_HandleEvent) = {
                     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Gulpit_SmallRockShatter)
             EndSwitch
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_LANDING_DUST, 1, LVar0, LVar1, LVar2, 0, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 1, LVar0, LVar1, LVar2, 0)
             Wait(30)
             Call(RemoveActor, ACTOR_SELF)
             Return

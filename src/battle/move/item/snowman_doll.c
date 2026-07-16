@@ -37,7 +37,7 @@ EvtScript N(EVS_UseItem) = {
             Set(LVar1, 170)
             Call(RandInt, 50, LVar2)
             Sub(LVar2, 25)
-            PlayEffect(EFFECT_SNOWFLAKE, LVar0, LVar1, LVar2, 60, 0)
+            PlayEffect(EFFECT_SNOWFLAKE, LVar0, LVar1, LVar2, 60)
             Wait(2)
         EndLoop
     EndThread
@@ -45,7 +45,7 @@ EvtScript N(EVS_UseItem) = {
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
     Call(MoveBattleCamOver, 50)
     Wait(50)
-    PlayEffect(EFFECT_SNOWMAN_DOLL, 0, 0, 0, 20, Float(1.0), 160, 0)
+    PlayEffect(EFFECT_SNOWMAN_DOLL, 0, 0, 0, 20, Float(1.0), 160)
     Thread
         Wait(17)
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_SNOWMAN_DOLL_JUMP)

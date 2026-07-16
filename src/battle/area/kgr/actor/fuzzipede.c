@@ -899,7 +899,7 @@ EvtScript N(EVS_Attack_DisableTackle) = {
                 EndLoop
                 Wait(10)
                 Call(SetActorVar, ACTOR_SELF, AVAR_CommandLossState, AVAL_LossState_ShowMessage)
-                PlayEffect(EFFECT_FIREWORK, 0, LVar0, LVar1, LVar2, Float(1.0), 0, 0)
+                PlayEffect(EFFECT_FIREWORK, 0, LVar0, LVar1, LVar2, Float(1.0), 0)
                 Call(N(StartRumbleWithParams), 200, 10)
                 Call(PlaySoundAtActor, ACTOR_SELF, SOUND_COMMAND_LOSS)
                 Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Fuzzipede_Kick)

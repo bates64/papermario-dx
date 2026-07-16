@@ -473,7 +473,7 @@ EvtScript N(EVS_HandleEvent) = {
             EndIf
             AddF(LVar3, LVar0)
             AddF(LVar4, LVar1)
-            PlayEffect(EFFECT_LENS_FLARE, 0, LVar3, LVar4, LVar5, 20, 0)
+            PlayEffect(EFFECT_LENS_FLARE, 0, LVar3, LVar4, LVar5, 20)
             Wait(30)
         CaseEq(EVENT_RECOVER_STATUS)
             SetConst(LVar0, PRT_MAIN)
@@ -984,7 +984,7 @@ EvtScript N(EVS_SummonBackup) = {
     Sub(LVar1, 80)
     Call(SetActorPos, LVarB, LVar0, LVar1, LVar2)
     ChildThread
-        PlayEffect(EFFECT_SHOCKWAVE, 2, LVar0, 0, LVar2, 0)
+        PlayEffect(EFFECT_SHOCKWAVE, 2, LVar0, 0, LVar2)
         Call(UseIdleAnimation, LVarB, false)
         Call(SetAnimation, LVarB, 1, ANIM_Pokey_Hurt4)
         Call(GetActorPos, LVarB, LVar0, LVar1, LVar2)
@@ -1422,7 +1422,7 @@ EvtScript N(EVS_Pokey_Hit) = {
             Add(LVar1, LVar3)
             Add(LVar2, 5)
             DivF(LVar3, Float(10.0))
-            PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, LVar3, 10, 0)
+            PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, LVar3, 10)
         CaseEq(EVENT_BURN_DEATH)
             Call(GetActorVar, ACTOR_SELF, AVAR_Anim_BurnStill, LVar1)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, LVar1)
@@ -1469,7 +1469,7 @@ EvtScript N(EVS_Pokey_ScareAway) = {
     ChildThread
         Call(GetActorPos, ACTOR_SELF, LVarA, LVarB, LVarC)
         Loop(LVar6)
-            PlayEffect(EFFECT_SHOCKWAVE, 2, LVarA, 0, LVarC, 0)
+            PlayEffect(EFFECT_SHOCKWAVE, 2, LVarA, 0, LVarC)
             Wait(10)
         EndLoop
     EndChildThread

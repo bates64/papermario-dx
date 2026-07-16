@@ -904,8 +904,8 @@ EvtScript N(EVS_Move_Spook) = {
     EndThread
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar1, 32)
-    PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.8), 45, 0)
-    PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.0), 45, 0)
+    PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.8), 45)
+    PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.0), 45)
     Wait(15)
     Call(InitTargetIterator)
     Call(GetActionProgress, LVarF)
@@ -1085,7 +1085,7 @@ EvtScript N(EVS_Attack_FanSmack) = {
             Call(MoveBattleCamOver, 5)
         EndIf
         Call(GetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-        PlayEffect(EFFECT_CONFETTI, 5, LVar0, LVar1, LVar2, Float(1.0), 20, 0)
+        PlayEffect(EFFECT_CONFETTI, 5, LVar0, LVar1, LVar2, Float(1.0), 20)
         Call(SetActorSounds, ACTOR_PARTNER, ACTOR_SOUND_HURT, SOUND_BOW_FAN_SMACK, 0)
         IfEq(LVarE, 1)
             IfGt(LVarB, 99)

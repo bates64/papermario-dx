@@ -721,7 +721,7 @@ EvtScript N(EVS_MemberShockReaction) = {
     Call(SetAnimation, ACTOR_SELF, LVar0, LVar1)
     Call(GetPartOffset, ACTOR_SELF, LVar0, LVar1, LVar2, LVar3)
     Call(GetActorSize, ACTOR_SELF, LVar4, LVar5)
-    PlayEffect(EFFECT_FLASHING_BOX_SHOCKWAVE, FX_SHOCK_OVERLAY_SHOCK_HIT, LVar1, LVar2, LVar3, LVar5, LVar4, 0)
+    PlayEffect(EFFECT_FLASHING_BOX_SHOCKWAVE, FX_SHOCK_OVERLAY_SHOCK_HIT, LVar1, LVar2, LVar3, LVar5, LVar4)
     Call(SetPartDispOffset, ACTOR_SELF, LVar0, 0, 0, 0)
     Call(SetPartDispOffset, ACTOR_SELF, LVar0, 0, 1, 0)
     Wait(1)
@@ -914,7 +914,7 @@ EvtScript N(EVS_ReduceCrowdSize) = {
                             Wait(1)
                         EndLoop
                 EndSwitch
-                PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar1, LVar2, LVar3, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar1, LVar2, LVar3)
                 Set(LVar8, 0)
                 Loop(12)
                     Call(SetPartRotation, ACTOR_SELF, LVar0, LVar8, 0, 0)
@@ -1011,7 +1011,7 @@ EvtScript N(EVS_Death) = {
         Wait(1)
     EndLoop
     Call(GetPartOffset, ACTOR_SELF, LVar0, LVar1, LVar2, LVar3)
-    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar1, LVar2, LVar3, 0, 0, 0, 0, 0)
+    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar1, LVar2, LVar3)
     Call(DropStarPoints, ACTOR_SELF)
     Set(LVar3, 0)
     Loop(12)
@@ -1157,12 +1157,12 @@ EvtScript N(EVS_Attack_Swarm) = {
             Call(GetActorVar, ACTOR_SELF, AVAR_NumDefeated, LVar0)
             IfLt(LVar0, 14)
                 Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-                PlayEffect(EFFECT_LANDING_DUST, 3, LVar0, LVar1, LVar2, 0, 0)
+                PlayEffect(EFFECT_LANDING_DUST, 3, LVar0, LVar1, LVar2, 0)
                 Thread
                     Loop(7)
-                        PlayEffect(EFFECT_LANDING_DUST, 0, LVar0, LVar1, LVar2, 0, 0)
+                        PlayEffect(EFFECT_LANDING_DUST, 0, LVar0, LVar1, LVar2, 0)
                         Wait(2)
-                        PlayEffect(EFFECT_LANDING_DUST, 1, LVar0, LVar1, LVar2, 0, 0)
+                        PlayEffect(EFFECT_LANDING_DUST, 1, LVar0, LVar1, LVar2, 0)
                         Wait(2)
                     EndLoop
                 EndThread
@@ -1194,9 +1194,9 @@ EvtScript N(EVS_Attack_Swarm) = {
         Call(EnemyDamageTarget, ACTOR_SELF, LVarF, 0, 0, 0, DMG_SWARM, LVar0)
         Thread
             Call(GetActorPos, ACTOR_PLAYER, LVar1, LVar2, LVar3)
-            PlayEffect(EFFECT_LANDING_DUST, 0, LVar1, LVar2, LVar3, 0, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 0, LVar1, LVar2, LVar3, 0)
             Wait(2)
-            PlayEffect(EFFECT_LANDING_DUST, 1, LVar1, LVar2, LVar3, 0, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 1, LVar1, LVar2, LVar3, 0)
             Wait(2)
         EndThread
         Call(GetPlayerHP, LVar0)

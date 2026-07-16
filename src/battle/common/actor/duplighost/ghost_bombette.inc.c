@@ -113,10 +113,10 @@ EvtScript N(EVS_PlayDetonateFX) = {
     EndThread
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar2, 2)
-    PlayEffect(EFFECT_SMOKE_RING, 0, LVar0, LVar1, LVar2, 0)
+    PlayEffect(EFFECT_SMOKE_RING, 0, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
     Add(LVar2, 2)
-    PlayEffect(EFFECT_EXPLOSION, 0, LVar0, LVar1, LVar2, 0)
+    PlayEffect(EFFECT_EXPLOSION, 0, LVar0, LVar1, LVar2)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOMB_BLAST)
     Return
     End

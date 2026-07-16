@@ -33,7 +33,8 @@ Validation currently catches:
 - literal Clamp/ClampF bounds where min > max;
 - literal Lerp durations less than zero;
 - memory access types that are not supported literal EVT_MEM_* values;
-- Eval/Invoke/IfEval function operands that are not relocation-backed function addresses.
+- Eval/Invoke/IfEval function operands that are not relocation-backed function addresses;
+- PlayEffect calls whose argument counts do not match effects.yaml.
 """
 
 from __future__ import annotations
@@ -46,6 +47,8 @@ from dataclasses import dataclass
 from enum import IntEnum
 from pathlib import Path
 from typing import Iterable
+
+from effect_data import Effect, effects_from_yaml
 
 
 SHT_SYMTAB = 2
@@ -990,6 +993,63 @@ def validate_function_arg(
         )
 
 
+def validate_play_effect(
+    elf: Elf32,
+    effects: list[Effect] | None,
+    script: ScriptSymbol,
+    op_pos: int,
+    arg_pos: int,
+    args: list[int],
+    opcode: Opcode,
+    line: int | None,
+) -> None:
+    if effects is None or opcode != Opcode.EVT_OP_CALL or not args:
+        return
+
+    function_relocation = elf.relocation_at(
+        script.section.index,
+        script.symbol.value + arg_pos * BYTECODE_SIZE,
+    )
+    if function_relocation is None or function_relocation.type != R_MIPS_32:
+        return
+    function_symbol = elf.symbol_for_relocation(function_relocation)
+    if function_symbol.name != "PlayEffect_impl":
+        return
+
+    if len(args) < 2:
+        raise ValidationError(
+            f"{format_script_site(script, op_pos, line)}: PlayEffect has no effect ID"
+        )
+
+    effect_arg_pos = arg_pos + 1
+    effect_relocation = elf.relocation_at(
+        script.section.index,
+        script.symbol.value + effect_arg_pos * BYTECODE_SIZE,
+    )
+    effect_index = args[1]
+    if effect_relocation is not None or not is_plain_int_literal(effect_index):
+        raise ValidationError(
+            f"{format_script_site(script, op_pos, line)}: PlayEffect effect ID must be a literal EFFECT_* value"
+        )
+    if not 0 <= effect_index < len(effects):
+        raise ValidationError(
+            f"{format_script_site(script, op_pos, line)}: PlayEffect has invalid effect ID 0x{effect_index:X}"
+        )
+
+    effect = effects[effect_index]
+    if effect.empty:
+        raise ValidationError(
+            f"{format_script_site(script, op_pos, line)}: PlayEffect cannot use empty effect ID 0x{effect_index:X}"
+        )
+
+    actual_arg_count = len(args) - 2
+    if actual_arg_count != effect.arg_count:
+        raise ValidationError(
+            f"{format_script_site(script, op_pos, line)}: PlayEffect({effect.enum_name}) has "
+            f"argc {actual_arg_count}, expected {effect.arg_count}"
+        )
+
+
 class ScriptWalkContext:
     def __init__(self, script: ScriptSymbol):
         self.script = script
@@ -1204,7 +1264,12 @@ class ScriptWalkContext:
         self.gotos.append(GotoRef(op_pos, label, self.current_label_scope()))
 
 
-def validate_script(elf: Elf32, script: ScriptSymbol, data: bytes) -> None:
+def validate_script(
+    elf: Elf32,
+    effects: list[Effect] | None,
+    script: ScriptSymbol,
+    data: bytes,
+) -> None:
     symbol = script.symbol
     if len(data) % BYTECODE_SIZE != 0:
         raise ValidationError(f"{format_script_symbol(script)}: size 0x{len(data):X} is not word-aligned")
@@ -1255,6 +1320,7 @@ def validate_script(elf: Elf32, script: ScriptSymbol, data: bytes) -> None:
         validate_lerp_duration(script, op_pos, opcode, args, ctx.current_line)
         validate_mem_type(elf, script, op_pos, arg_pos, args, opcode, ctx.current_line)
         validate_function_arg(elf, script, op_pos, arg_pos, raw_args, opcode, ctx.current_line)
+        validate_play_effect(elf, effects, script, op_pos, arg_pos, args, opcode, ctx.current_line)
         read_pos += argc
 
         ctx.check_finally_command_allowed(op_pos, opcode)
@@ -1353,13 +1419,13 @@ def find_scripts(elf: Elf32, regex: re.Pattern[str]) -> Iterable[ScriptSymbol]:
         yield ScriptSymbol(symbol=symbol, section=section, source_path=elf.source_path)
 
 
-def validate_object(path: Path, regex: re.Pattern[str]) -> int:
+def validate_object(path: Path, regex: re.Pattern[str], effects: list[Effect] | None) -> int:
     elf = Elf32(path)
     checked = 0
 
     for script in find_scripts(elf, regex):
         _section, data = elf.section_data_for_symbol(script.symbol)
-        validate_script(elf, script, data)
+        validate_script(elf, effects, script, data)
         checked += 1
 
     return checked
@@ -1378,6 +1444,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--out", type=Path, help="stamp file to write on success")
     parser.add_argument(
+        "--effects-yaml",
+        type=Path,
+        help="effects.yaml used to validate PlayEffect argument counts",
+    )
+    parser.add_argument(
         "--symbol-regex",
         default=r"(^|_)EVS_",
         help="regex selecting object symbols to treat as EvtScript bytecode",
@@ -1392,6 +1463,7 @@ def main() -> int:
 
     try:
         regex = re.compile(args.symbol_regex)
+        effects = effects_from_yaml(args.effects_yaml) if args.effects_yaml else None
         checked = 0
         objects = list(args.objects)
 
@@ -1404,7 +1476,7 @@ def main() -> int:
             raise ValidationError("no object files provided")
 
         for current_object in objects:
-            checked += validate_object(current_object, regex)
+            checked += validate_object(current_object, regex, effects)
 
         if args.out:
             args.out.parent.mkdir(parents=True, exist_ok=True)

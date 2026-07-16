@@ -528,7 +528,7 @@ EvtScript N(EVS_TakeTurn) = {
             Add(LVar1, 18)
             Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(3.0))
             Loop(5)
-                PlayEffect(EFFECT_SWEAT, 1, LVar0, LVar1, LVar2, 1, 225, 10, 0)
+                PlayEffect(EFFECT_SWEAT, 1, LVar0, LVar1, LVar2, 1, 225, 10)
                 Wait(5)
             EndLoop
             Wait(30)
@@ -544,7 +544,7 @@ EvtScript N(EVS_TakeTurn) = {
             Add(LVar1, 18)
             Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(3.0))
             Loop(5)
-                PlayEffect(EFFECT_SWEAT, 1, LVar0, LVar1, LVar2, 1, 225, 10, 0)
+                PlayEffect(EFFECT_SWEAT, 1, LVar0, LVar1, LVar2, 1, 225, 10)
                 Wait(5)
             EndLoop
             Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(3.0))
@@ -624,11 +624,11 @@ EvtScript N(EVS_Attack_ShellToss) = {
     Thread
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 4)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
         Wait(3)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
         Wait(2)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
     EndThread
     Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK, SOUND_NONE, SOUND_NONE)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_KENT_C_SHELL_TOSS_LOOP)

@@ -143,7 +143,7 @@ EvtScript N(EVS_Scene_LowerStairs) = {
             Add(LVar1, LVar4)
             Add(LVar2, 200)
             Add(LVar3, LVar5)
-            PlayEffect(EFFECT_SHATTERING_STONES, 0, LVar1, LVar2, LVar3)
+            PlayEffect(EFFECT_SHATTERING_STONES, 0, LVar1, LVar2, LVar3, 0)
             Call(RandInt, 30 * DT, LVar0)
             Add(LVar0, 30 * DT)
             Wait(LVar0)

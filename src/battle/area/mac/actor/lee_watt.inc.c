@@ -399,11 +399,11 @@ EvtScript N(EVS_TakeTurn) = {
     IfFlag(LVar0, STATUS_FLAG_SHRINK)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 4)
-        PlayEffect(EFFECT_RADIAL_SHIMMER, 8, LVar0, LVar1, LVar2, Float(0.52), LVarA, 0)
+        PlayEffect(EFFECT_RADIAL_SHIMMER, 8, LVar0, LVar1, LVar2, Float(0.52), LVarA)
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 12)
-        PlayEffect(EFFECT_RADIAL_SHIMMER, 8, LVar0, LVar1, LVar2, Float(1.3), LVarA, 0)
+        PlayEffect(EFFECT_RADIAL_SHIMMER, 8, LVar0, LVar1, LVar2, Float(1.3), LVarA)
     EndIf
     Call(N(UnkBackgroundFunc3))
     Set(LVar9, 0)

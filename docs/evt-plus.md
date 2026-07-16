@@ -187,7 +187,7 @@ A script which disables player input and creates a persistent effect owns both u
 EvtScript N(EVS_Example_NeedsCleanup) = {
     // both of these require cleanup
     Call(DisablePlayerInput, true)
-    PlayEffect(EFFECT_LIGHT_RAYS, 2, 0, 40, 0, Float(1.0), LVarA, 0)
+    PlayEffect(EFFECT_LIGHT_RAYS, 2, 0, 40, 0, Float(1.0), LVarA)
 
     // possible early-return
     Call(ShouldSkipAnimation, LVar0)
@@ -223,7 +223,7 @@ With EVT Plus, `Return` only describes the decision to stop. We use `Finally` to
 EvtScript N(EVS_Example_NeedsCleanup) = {
     // both of these require cleanup
     Call(DisablePlayerInput, true)
-    PlayEffect(EFFECT_LIGHT_RAYS, 2, 0, 40, 0, Float(1.0), LVarF, 0)
+    PlayEffect(EFFECT_LIGHT_RAYS, 2, 0, 40, 0, Float(1.0), LVarF)
 
     // early Return automatically enters Finally
     Call(ShouldSkipAnimation, LVar0)

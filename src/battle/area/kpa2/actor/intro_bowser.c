@@ -485,7 +485,7 @@ EvtScript N(EVS_UseStarRod) = {
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 20)
         Add(LVar1, 90)
-        PlayEffect(EFFECT_STARS_SHIMMER, 3, LVar0, LVar1, LVar2, 30, 30, 7, 30, 0)
+        PlayEffect(EFFECT_STARS_SHIMMER, 3, LVar0, LVar1, LVar2, 30, 30, 7, 30)
     EndThread
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Brandish)
     Wait(30)
@@ -564,17 +564,17 @@ EvtScript N(EVS_StarRodCast) = {
     IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
         Add(LVar0, 15)
         Sub(LVar2, 3)
-        PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, 90, LVar2, Float(1.0), LVarF, 0)
-        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 90, LVar2, Float(1.0), LVarE, 0)
+        PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, 90, LVar2, Float(1.0), LVarF)
+        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 90, LVar2, Float(1.0), LVarE)
         Sub(LVar2, 3)
-        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 90, LVar2, Float(1.0), LVarD, 0)
+        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 90, LVar2, Float(1.0), LVarD)
     Else
         Add(LVar0, 6)
         Sub(LVar2, 3)
-        PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, 36, LVar2, Float(0.4), LVarF, 0)
-        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 36, LVar2, Float(0.4), LVarE, 0)
+        PlayEffect(EFFECT_LIGHT_RAYS, 2, LVar0, 36, LVar2, Float(0.4), LVarF)
+        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 36, LVar2, Float(0.4), LVarE)
         Sub(LVar2, 3)
-        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 36, LVar2, Float(0.4), LVarD, 0)
+        PlayEffect(EFFECT_BULB_GLOW, 2, LVar0, 36, LVar2, Float(0.4), LVarD)
     EndIf
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_USE)
     Wait(30)
@@ -592,12 +592,12 @@ EvtScript N(EVS_StarRodCast) = {
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 40)
         Add(LVar2, 12)
-        PlayEffect(EFFECT_STARS_SHIMMER, 3, LVar0, LVar1, LVar2, 70, 80, 25, 60, 0)
+        PlayEffect(EFFECT_STARS_SHIMMER, 3, LVar0, LVar1, LVar2, 70, 80, 25, 60)
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 16)
         Add(LVar2, 12)
-        PlayEffect(EFFECT_STARS_SHIMMER, 3, LVar0, LVar1, LVar2, 28, 32, 10, 60, 0)
+        PlayEffect(EFFECT_STARS_SHIMMER, 3, LVar0, LVar1, LVar2, 28, 32, 10, 60)
     EndIf
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_ENCHANT)
     Thread
@@ -616,7 +616,7 @@ EvtScript N(EVS_StarRodCast) = {
     Else
         Add(LVar1, 16)
     EndIf
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, Float(1.0), 15, 0)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, Float(1.0), 15)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_SHOCKWAVE)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)

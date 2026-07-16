@@ -394,7 +394,7 @@ EvtScript N(EVS_KnockDown) = {
         Call(GetActorPos, ACTOR_SELF, LVar3, LVar4, LVar5)
         Add(LVar4, 10)
         Add(LVar5, 5)
-        PlayEffect(EFFECT_SMOKE_BURST, 0, LVar3, LVar4, LVar5, Float(1.0), 10, 0)
+        PlayEffect(EFFECT_SMOKE_BURST, 0, LVar3, LVar4, LVar5, Float(1.0), 10)
     EndIf
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
@@ -562,7 +562,7 @@ EvtScript N(EVS_Attack_MagicBlast) = {
         Sub(LVar0, 30)
         Add(LVar1, 36)
     EndIf
-    PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, Float(0.5), 30, 0)
+    PlayEffect(EFFECT_GATHER_MAGIC, 0, LVar0, LVar1, LVar2, Float(0.5), 30)
     Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_FlyingMagikoopa_Green_Shout)
     Wait(30)
     Call(EnemyTestTarget, ACTOR_SELF, LVar0, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
@@ -862,12 +862,12 @@ EvtScript N(EVS_TakeTurn) = {
             Sub(LVar0, 6)
             Add(LVar1, 12)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.12), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.12), 30)
         Else
             Sub(LVar0, 16)
             Add(LVar1, 31)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.3), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.3), 30)
         EndIf
     Else
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -876,12 +876,12 @@ EvtScript N(EVS_TakeTurn) = {
             Sub(LVar0, 12)
             Add(LVar1, 14)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.12), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.12), 30)
         Else
             Sub(LVar0, 30)
             Add(LVar1, 36)
             Sub(LVar2, 2)
-            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.3), 30, 0)
+            PlayEffect(EFFECT_RADIAL_SHIMMER, 5, LVar0, LVar1, LVar2, Float(0.3), 30)
         EndIf
     EndIf
     Wait(30)

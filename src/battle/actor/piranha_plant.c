@@ -209,7 +209,7 @@ EvtScript N(EVS_HandleEvent) = {
                     Add(LVar0, 0)
                     Add(LVar1, 35)
                 EndIf
-                PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20, 0)
+                PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20)
                 Wait(20)
             EndThread
             Loop(40)

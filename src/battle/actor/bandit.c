@@ -301,7 +301,7 @@ EvtScript N(EVS_DropCoin) = {
             Call(SetGoalToTarget, LVarA)
             Call(JumpToGoal, LVarA, 15, false, false, false)
             Call(GetGoalPos, LVarA, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_SMALL_GOLD_SPARKLE, 0, LVar0, LVar1, LVar2, Float(1.0), 0, 0)
+            PlayEffect(EFFECT_SMALL_GOLD_SPARKLE, 0, LVar0, LVar1, LVar2, Float(1.0), 0)
             Call(PlaySoundAtActor, LVarA, SOUND_COIN_PICKUP)
             Call(GetActorVar, LVarA, AVAR_Coin_NumCoins, LVar0)
             Call(AddCoin, LVar0)

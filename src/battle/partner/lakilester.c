@@ -861,7 +861,7 @@ EvtScript N(EVS_Move_SpinyFlip) = {
     Add(LVar0, 8)
     Add(LVar1, 40)
     Add(LVar2, 5)
-    PlayEffect(EFFECT_ENERGY_IN_OUT, 0, LVar0, LVar1, LVar2, Float(1.0), 80 * DT, 0)
+    PlayEffect(EFFECT_ENERGY_IN_OUT, 0, LVar0, LVar1, LVar2, Float(1.0), 80 * DT)
     Call(SetActorVar, ACTOR_PARTNER, AVAR_Unk_0, 1)
     Thread
         Loop(40 * DT)
@@ -1183,7 +1183,7 @@ EvtScript N(EVS_CloudNine_PlayerOK) = {
             Call(RandInt, 30, LVar6)
             Sub(LVar6, 15)
             Add(LVar1, LVar6)
-            PlayEffect(EFFECT_FLOATING_CLOUD_PUFF, 0, LVar0, LVar1, LVar2, Float(1.0), 20, 0)
+            PlayEffect(EFFECT_FLOATING_CLOUD_PUFF, 0, LVar0, LVar1, LVar2, Float(1.0), 20)
             Wait(1)
         EndLoop
     EndThread
@@ -1296,7 +1296,7 @@ EvtScript N(EVS_CloudNine_PlayerImmobile) = {
             Call(RandInt, 30, LVar6)
             Sub(LVar6, 15)
             Add(LVar1, LVar6)
-            PlayEffect(EFFECT_FLOATING_CLOUD_PUFF, 0, LVar0, LVar1, LVar2, Float(1.0), 20, 0)
+            PlayEffect(EFFECT_FLOATING_CLOUD_PUFF, 0, LVar0, LVar1, LVar2, Float(1.0), 20)
             Wait(1)
         EndLoop
     EndThread

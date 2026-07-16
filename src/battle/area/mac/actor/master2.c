@@ -514,7 +514,7 @@ EvtScript N(EVS_HandlePhase) = {
                 Call(PlaySoundAtActor, ACTOR_SELF, SOUND_GHOST_TRANSFORM)
                 Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                 Add(LVar1, 20)
-                PlayEffect(EFFECT_GATHER_ENERGY_PINK, 1, LVar0, LVar1, LVar2, Float(1.0), 30, 0)
+                PlayEffect(EFFECT_GATHER_ENERGY_PINK, 1, LVar0, LVar1, LVar2, Float(1.0), 30)
                 Set(LVar0, 0)
                 Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_TheMaster_Still)
                 Loop(15)
@@ -534,7 +534,7 @@ EvtScript N(EVS_HandlePhase) = {
                     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                     Add(LVar1, 3)
                     Loop(3)
-                        PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2, 0, 0, 0, 0, 0)
+                        PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2)
                         Wait(3)
                     EndLoop
                 EndThread

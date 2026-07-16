@@ -293,7 +293,7 @@ EvtScript N(EVS_HandleEvent) = {
             Else
                 Add(LVar1, 26)
             EndIf
-            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20, 0)
+            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20)
             Wait(20)
         CaseDefault
     EndSwitch
