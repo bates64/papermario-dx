@@ -279,11 +279,11 @@ EvtScript N(EVS_Scene_FlowerGateAppears) = {
     ExecWait(N(EVS_FadeInFlowerGateGlowAlpha))
     Thread
         Wait(10)
-        PlayEffect(EFFECT_FLOATING_FLOWER, 266, 50, 338, 100, 0)
+        PlayEffect(EFFECT_FLOATING_FLOWER, 0, 266, 50, 338, 100)
         Wait(10)
-        PlayEffect(EFFECT_FLOATING_FLOWER, 240, 50, 338, 100, 0)
+        PlayEffect(EFFECT_FLOATING_FLOWER, 0, 240, 50, 338, 100)
         Wait(10)
-        PlayEffect(EFFECT_FLOATING_FLOWER, 292, 50, 338, 100, 0)
+        PlayEffect(EFFECT_FLOATING_FLOWER, 0, 292, 50, 338, 100)
     EndThread
     Set(LVar0, 3)
     ExecGetID(LVar2, N(EVS_ModulateFlowerGateGlowAlpha))

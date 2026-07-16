@@ -40,7 +40,7 @@ EvtScript N(EVS_SpawnFloatingFlowers) = {
         Add(LVar0, LVarA)
         Add(LVar1, LVarB)
         Add(LVar2, LVarE)
-        PlayEffect(EFFECT_FLOATING_FLOWER, LVar0, LVar2, LVar1, LVar3)
+        PlayEffect(EFFECT_FLOATING_FLOWER, 0, LVar0, LVar2, LVar1, LVar3)
     EndLoop
     Wait(LVarF)
     Label(0)
@@ -48,7 +48,7 @@ EvtScript N(EVS_SpawnFloatingFlowers) = {
     Call(RandInt, LVarD, LVar1)
     Add(LVar0, LVarA)
     Add(LVar1, LVarB)
-    PlayEffect(EFFECT_FLOATING_FLOWER, LVar0, LVarE, LVar1, 200)
+    PlayEffect(EFFECT_FLOATING_FLOWER, 0, LVar0, LVarE, LVar1, 200)
     Wait(LVarF)
     Goto(0)
     Return

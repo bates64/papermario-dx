@@ -307,459 +307,405 @@ API_CALLABLE(SetSleepBubbleTimeLeft) {
 }
 
 API_CALLABLE(PlayEffect_impl) {
-    Bytecode* intArgs = script->ptrReadPos;
-    Bytecode* floatArgs = script->ptrReadPos;
     Bytecode* args = script->ptrReadPos;
-
-    s32 effectID = evt_get_variable(script, *intArgs++);
+    Bytecode rawVars[14];
+    s32 iVars[14];
+    f32 fVars[14];
     EffectInstance* effectRet = nullptr;
-    s32 new_var;
+    EffectInstance* effectOut;
 
-    s32 iVar1, iVar2, iVar3, iVar4, iVar5;
-    s32 iVar6, iVar7, iVar8, iVar9, iVar10;
+    for (s32 i = 0; i < ARRAY_COUNT(rawVars); i++) {
+        rawVars[i] = args[i];
+        iVars[i] = evt_get_variable(script, rawVars[i]);
+        fVars[i] = evt_get_float_variable(script, rawVars[i]);
+    }
 
-    f32 fVar1, fVar2, fVar3, fVar4, fVar5, fVar6;
-    f32 fVar7, fVar8, fVar9, fVar10, fVar11;
-
-    EffectInstance* sp30;
-    EffectInstance* sp34;
-    EffectInstance* sp38;
-    EffectInstance* sp3C;
-
-    s32 a2, a6, a7, a8, a9;
-
-    evt_get_variable(script, *floatArgs++);
-    evt_get_variable(script, *args++);
-
-    new_var = evt_get_variable(script, *intArgs++);
-    iVar2 = evt_get_variable(script, *intArgs++);
-    iVar3 = evt_get_variable(script, *intArgs++);
-    iVar4 = evt_get_variable(script, *intArgs++);
-    iVar5 = evt_get_variable(script, *intArgs++);
-    iVar6 = evt_get_variable(script, *intArgs++);
-    iVar7 = evt_get_variable(script, *intArgs++);
-    iVar8 = evt_get_variable(script, *intArgs++);
-    iVar9 = evt_get_variable(script, *intArgs++);
-    iVar10 = evt_get_variable(script, *intArgs++);
-    evt_get_variable(script, *intArgs++);
-    evt_get_variable(script, *intArgs++);
-    evt_get_variable(script, *intArgs++);
-
-    fVar1 = evt_get_float_variable(script, *floatArgs++);
-    fVar2 = evt_get_float_variable(script, *floatArgs++);
-    fVar3 = evt_get_float_variable(script, *floatArgs++);
-    fVar4 = evt_get_float_variable(script, *floatArgs++);
-    fVar5 = evt_get_float_variable(script, *floatArgs++);
-    fVar6 = evt_get_float_variable(script, *floatArgs++);
-    fVar7 = evt_get_float_variable(script, *floatArgs++);
-    fVar8 = evt_get_float_variable(script, *floatArgs++);
-    fVar9 = evt_get_float_variable(script, *floatArgs++);
-    fVar10 = evt_get_float_variable(script, *floatArgs++);
-    fVar11 = evt_get_float_variable(script, *floatArgs++);
-    evt_get_float_variable(script, *floatArgs++);
-    evt_get_float_variable(script, *floatArgs++);
-
-    args++;
-    a2 = *args++;
-    args++;
-    args++;
-    args++;
-    a6 = *args++;
-    a7 = *args++;
-    a8 = *args++;
-    a9 = *args++;
-
-    iVar1 = new_var;
-
-    switch (effectID) {
-        case EFFECT_00:
-            fx_blast(0, fVar1, fVar2, fVar3, 3.0f, iVar5);
-            break;
+    switch (iVars[0]) {
         case EFFECT_BIG_SMOKE_PUFF:
-            fx_big_smoke_puff(fVar1, fVar2, fVar3);
+            fx_big_smoke_puff(fVars[1], fVars[2], fVars[3]);
             break;
         case EFFECT_LANDING_DUST:
-            fx_landing_dust(iVar1, fVar2, fVar3, fVar4, fVar5);
+            fx_landing_dust(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5]);
             break;
         case EFFECT_WALKING_DUST:
-            fx_walking_dust(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6);
+            fx_walking_dust(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6]);
             break;
         case EFFECT_FLOWER_SPLASH:
-            fx_flower_splash(fVar1, fVar2, fVar3, fVar4);
+            fx_flower_splash(fVars[1], fVars[2], fVars[3], fVars[4]);
             break;
         case EFFECT_FLOWER_TRAIL:
-            fx_flower_trail(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6);
+            fx_flower_trail(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6]);
             break;
         case EFFECT_CLOUD_PUFF:
-            fx_cloud_puff(fVar1, fVar2, fVar3, fVar4);
+            fx_cloud_puff(fVars[1], fVars[2], fVars[3], fVars[4]);
             break;
         case EFFECT_CLOUD_TRAIL:
-            fx_cloud_trail(iVar1, fVar2, fVar3, fVar4);
+            fx_cloud_trail(iVars[1], fVars[2], fVars[3], fVars[4]);
             break;
         case EFFECT_FOOTPRINT:
-            fx_footprint(fVar1, fVar2, fVar3, fVar4, fVar5);
+            fx_footprint(fVars[1], fVars[2], fVars[3], fVars[4], fVars[5]);
             break;
         case EFFECT_FLOATING_FLOWER:
-            fx_floating_flower(0, fVar1, fVar2, fVar3, iVar4);
+            fx_floating_flower(iVars[1], fVars[2], fVars[3], fVars[4], iVars[5]);
             break;
         case EFFECT_SNOWFLAKE:
-            fx_snowflake(fVar1, fVar2, fVar3, iVar4);
+            fx_snowflake(fVars[1], fVars[2], fVars[3], iVars[4]);
             break;
         case EFFECT_STAR:
-            fx_star(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8);
+            fx_star(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8]);
             break;
         case EFFECT_EMOTE:
-            fx_emote(iVar1, (Npc*) a2, fVar3, fVar4, fVar5, fVar6, fVar7, iVar8, &sp30);
-            evt_set_variable(script, a8, (s32) sp30);
+            fx_emote(iVars[1], (Npc*) rawVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8], &effectOut);
+            evt_set_variable(script, rawVars[9], (s32) effectOut);
             break;
         case EFFECT_SPARKLES:
-            fx_sparkles(iVar1, fVar2, fVar3, fVar4, fVar5);
+            fx_sparkles(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5]);
             break;
         case EFFECT_SHAPE_SPELL:
-            fx_shape_spell(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, iVar8);
+            fx_shape_spell(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8]);
             break;
         case EFFECT_GATHER_ENERGY_PINK:
-            fx_gather_energy_pink(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            fx_gather_energy_pink(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_DROP_LEAVES:
-            fx_drop_leaves(iVar1, fVar2, fVar3, fVar4, iVar5);
+            fx_drop_leaves(iVars[1], fVars[2], fVars[3], fVars[4], iVars[5]);
             break;
         case EFFECT_DUST:
-            fx_dust(iVar1, fVar2, fVar3, fVar4, iVar5);
+            fx_dust(iVars[1], fVars[2], fVars[3], fVars[4], iVars[5]);
             break;
         case EFFECT_SHATTERING_STONES:
-            fx_shattering_stones(iVar1, fVar2, fVar3, fVar4, fVar5);
+            fx_shattering_stones(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5]);
             break;
         case EFFECT_SMOKE_RING:
-            fx_smoke_ring(iVar1, fVar2, fVar3, fVar4);
+            fx_smoke_ring(iVars[1], fVars[2], fVars[3], fVars[4]);
             break;
         case EFFECT_DAMAGE_STARS:
-            fx_damage_stars(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, iVar8);
+            fx_damage_stars(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8]);
             break;
         case EFFECT_EXPLOSION:
-            fx_explosion(iVar1, fVar2, fVar3, fVar4);
+            fx_explosion(iVars[1], fVars[2], fVars[3], fVars[4]);
             break;
         case EFFECT_LENS_FLARE:
-            fx_lens_flare(iVar1, fVar2, fVar3, fVar4, iVar5);
+            fx_lens_flare(iVars[1], fVars[2], fVars[3], fVars[4], iVars[5]);
             break;
         case EFFECT_GOT_ITEM_OUTLINE:
-            fx_got_item_outline(iVar1, fVar2, fVar3, fVar4, fVar5, &sp34);
-            evt_set_variable(script, a6, (s32) sp34);
+            fx_got_item_outline(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], &effectOut);
+            evt_set_variable(script, rawVars[6], (s32) effectOut);
             break;
         case EFFECT_SPIKY_WHITE_AURA:
-            fx_spiky_white_aura(iVar1, fVar2, fVar3, fVar4, iVar5);
+            fx_spiky_white_aura(iVars[1], fVars[2], fVars[3], fVars[4], iVars[5]);
             break;
         case EFFECT_SMOKE_IMPACT:
-            fx_smoke_impact(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6, fVar7, iVar8);
+            fx_smoke_impact(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6], fVars[7], iVars[8]);
             break;
         case EFFECT_DAMAGE_INDICATOR:
-            fx_damage_indicator(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, iVar7, &sp30);
-            evt_set_variable(script, a8, (s32) sp30);
+            fx_damage_indicator(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], iVars[7], &effectOut);
+            evt_set_variable(script, rawVars[8], (s32) effectOut);
             break;
         case EFFECT_PURPLE_RING:
-            fx_purple_ring(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8);
+            fx_purple_ring(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8]);
             break;
         case EFFECT_STARS_BURST:
-            fx_stars_burst(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, iVar7);
+            fx_stars_burst(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], iVars[7]);
             break;
         case EFFECT_STARS_SHIMMER:
-            fx_stars_shimmer(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, iVar7, iVar8);
+            fx_stars_shimmer(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], iVars[7], iVars[8]);
             break;
         case EFFECT_RISING_BUBBLE:
-            fx_rising_bubble(iVar1, fVar2, fVar3, fVar4, fVar5);
+            fx_rising_bubble(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5]);
             break;
         case EFFECT_RING_BLAST:
-            fx_ring_blast(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            fx_ring_blast(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_SHOCKWAVE:
-            fx_shockwave(iVar1, fVar2, fVar3, fVar4);
+            fx_shockwave(iVars[1], fVars[2], fVars[3], fVars[4]);
             break;
         case EFFECT_MUSIC_NOTE:
-            fx_music_note(iVar1, fVar2, fVar3, fVar4);
+            fx_music_note(iVars[1], fVars[2], fVars[3], fVars[4]);
             break;
         case EFFECT_SMOKE_BURST:
-            fx_smoke_burst(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            fx_smoke_burst(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_SWEAT:
-            fx_sweat(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, iVar7);
+            fx_sweat(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], iVars[7]);
             break;
         case EFFECT_SLEEP_BUBBLE:
-            fx_sleep_bubble(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, &sp38);
-            evt_set_variable(script, a7, (s32) sp38);
+            fx_sleep_bubble(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], &effectOut);
+            evt_set_variable(script, rawVars[7], (s32) effectOut);
             break;
         case EFFECT_WINDY_LEAVES:
-            fx_windy_leaves(iVar1, fVar2, fVar3, fVar4);
+            fx_windy_leaves(iVars[1], fVars[2], fVars[3], fVars[4]);
             break;
         case EFFECT_FLAME:
-            fx_flame(iVar1, fVar2, fVar3, fVar4, fVar5, &sp34);
-            evt_set_variable(script, a6, (s32) sp34);
+            fx_flame(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], &effectOut);
+            evt_set_variable(script, rawVars[6], (s32) effectOut);
             break;
         case EFFECT_FALLING_LEAVES:
-            fx_falling_leaves(iVar1, fVar2, fVar3, fVar4);
+            fx_falling_leaves(iVars[1], fVars[2], fVars[3], fVars[4]);
             break;
         case EFFECT_STARS_SPREAD:
-            fx_stars_spread(iVar1, fVar2, fVar3, fVar4, iVar5, iVar6);
+            fx_stars_spread(iVars[1], fVars[2], fVars[3], fVars[4], iVars[5], iVars[6]);
             break;
         case EFFECT_STEAM_BURST:
-            fx_steam_burst(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            fx_steam_burst(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_STARS_ORBITING:
-            fx_stars_orbiting(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6, &sp38);
-            evt_set_variable(script, a7, (s32) sp38);
+            fx_stars_orbiting(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6], &effectOut);
+            evt_set_variable(script, rawVars[7], (s32) effectOut);
             break;
         case EFFECT_BIG_SNOWFLAKES:
-            fx_big_snowflakes(iVar1, fVar2, fVar3, fVar4);
+            fx_big_snowflakes(iVars[1], fVars[2], fVars[3], fVars[4]);
             break;
         case EFFECT_DEBUFF:
-            fx_debuff(iVar1, fVar2, fVar3, fVar4);
+            fx_debuff(iVars[1], fVars[2], fVars[3], fVars[4]);
             break;
         case EFFECT_GREEN_IMPACT:
-            fx_green_impact(iVar1, fVar2, fVar3, fVar4, fVar5);
+            fx_green_impact(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5]);
             break;
         case EFFECT_RADIAL_SHIMMER:
-            fx_radial_shimmer(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            fx_radial_shimmer(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_ENDING_DECALS:
-            fx_ending_decals(iVar1, fVar2, fVar3, fVar4, fVar5, &sp34);
-            evt_set_variable(script, a6, (s32) sp34);
+            fx_ending_decals(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], &effectOut);
+            evt_set_variable(script, rawVars[6], (s32) effectOut);
             break;
         case EFFECT_LIGHT_RAYS:
-            fx_light_rays(iVar1, fVar2, fVar3, fVar4, fVar5, &sp34);
-            evt_set_variable(script, a6, (s32) sp34);
+            fx_light_rays(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], &effectOut);
+            evt_set_variable(script, rawVars[6], (s32) effectOut);
             break;
         case EFFECT_LIGHTNING:
-            effectRet = fx_lightning(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6);
+            effectRet = fx_lightning(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6]);
             break;
         case EFFECT_FIRE_BREATH:
-            effectRet = fx_fire_breath(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, iVar8, iVar9, iVar10);
+            effectRet = fx_fire_breath(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8], iVars[9], iVars[10]);
             break;
         case EFFECT_SHIMMER_BURST:
-            fx_shimmer_burst(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            fx_shimmer_burst(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_ENERGY_SHOCKWAVE:
-            fx_energy_shockwave(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            fx_energy_shockwave(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_SHIMMER_WAVE:
-            fx_shimmer_wave(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, iVar7, iVar8);
+            fx_shimmer_wave(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], iVars[7], iVars[8]);
             break;
         case EFFECT_AURA:
-            fx_aura(iVar1, fVar2, fVar3, fVar4, fVar5, &sp34);
-            evt_set_variable(script, a6, (s32) sp34);
+            fx_aura(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], &effectOut);
+            evt_set_variable(script, rawVars[6], (s32) effectOut);
             break;
         case EFFECT_BULB_GLOW:
-            fx_bulb_glow(iVar1, fVar2, fVar3, fVar4, fVar5, &sp34);
-            evt_set_variable(script, a6, (s32) sp34);
+            fx_bulb_glow(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], &effectOut);
+            evt_set_variable(script, rawVars[6], (s32) effectOut);
             break;
         case EFFECT_3D:
-            fx_effect_3D(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, iVar8, &sp3C);
-            evt_set_variable(script, a9, (s32) sp3C);
+            fx_effect_3D(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8], &effectOut);
+            evt_set_variable(script, rawVars[9], (s32) effectOut);
             break;
         case EFFECT_BLAST:
-            fx_blast(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            fx_blast(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_FIRE_FLOWER:
-            effectRet = fx_fire_flower(iVar1, fVar2, fVar3, fVar4, iVar5);
+            effectRet = fx_fire_flower(iVars[1], fVars[2], fVars[3], fVars[4], iVars[5]);
             break;
         case EFFECT_RECOVER:
-            effectRet = fx_recover(iVar1, fVar2, fVar3, fVar4, iVar5);
+            effectRet = fx_recover(iVars[1], fVars[2], fVars[3], fVars[4], iVars[5]);
             break;
         case EFFECT_DISABLE_X:
-            effectRet = fx_disable_x(iVar1, fVar2, fVar3, fVar4, iVar5);
+            effectRet = fx_disable_x(iVars[1], fVars[2], fVars[3], fVars[4], iVars[5]);
             break;
         case EFFECT_BOMBETTE_BREAKING:
-            effectRet = fx_bombette_breaking(iVar1, iVar2, iVar3, fVar4, iVar5, iVar6);
+            effectRet = fx_bombette_breaking(iVars[1], iVars[2], iVars[3], fVars[4], iVars[5], iVars[6]);
             break;
         case EFFECT_FIREWORK:
-            effectRet = fx_firework(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_firework(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_CONFETTI:
-            effectRet = fx_confetti(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_confetti(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_SNOWFALL:
-            effectRet = fx_snowfall(iVar1, iVar2);
+            effectRet = fx_snowfall(iVars[1], iVars[2]);
             break;
         case EFFECT_46:
-            effectRet = fx_effect_46(iVar1, (PlayerStatus*) a2, fVar3, iVar4);
+            effectRet = fx_effect_46(iVars[1], (PlayerStatus*) rawVars[2], fVars[3], iVars[4]);
             break;
         case EFFECT_GATHER_MAGIC:
-            effectRet = fx_gather_magic(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_gather_magic(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_ATTACK_RESULT_TEXT:
-            effectRet = fx_attack_result_text(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_attack_result_text(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_SMALL_GOLD_SPARKLE:
-            effectRet = fx_small_gold_sparkle(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_small_gold_sparkle(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_FLASHING_BOX_SHOCKWAVE:
-            effectRet = fx_flashing_box_shockwave(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6);
+            effectRet = fx_flashing_box_shockwave(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6]);
             break;
         case EFFECT_BALLOON:
-            effectRet = fx_balloon(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_balloon(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_FLOATING_ROCK:
-            effectRet = fx_floating_rock(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8, iVar9);
+            effectRet = fx_floating_rock(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9]);
             break;
         case EFFECT_CHOMP_DROP:
-            effectRet = fx_chomp_drop(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8, fVar9, iVar10);
+            effectRet = fx_chomp_drop(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], fVars[9], iVars[10]);
             break;
         case EFFECT_QUIZMO_STAGE:
-            effectRet = fx_quizmo_stage(iVar1, fVar2, fVar3, fVar4);
+            effectRet = fx_quizmo_stage(iVars[1], fVars[2], fVars[3], fVars[4]);
             break;
         case EFFECT_RADIATING_ENERGY_ORB:
-            effectRet = fx_radiating_energy_orb(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_radiating_energy_orb(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_ENERGY_ORB_WAVE:
-            effectRet = fx_energy_orb_wave(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_energy_orb_wave(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_MERLIN_HOUSE_STARS:
-            effectRet = fx_merlin_house_stars(iVar1, fVar2, fVar3, fVar4);
+            effectRet = fx_merlin_house_stars(iVars[1], fVars[2], fVars[3], fVars[4]);
             break;
         case EFFECT_MOTION_BLUR_FLAME:
-            effectRet = fx_motion_blur_flame(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_motion_blur_flame(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_STAT_CHANGE:
-            effectRet = fx_stat_change(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_stat_change(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_SNAKING_STATIC:
-            effectRet = fx_snaking_static(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_snaking_static(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_THUNDERBOLT_RING:
-            effectRet = fx_thunderbolt_ring(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_thunderbolt_ring(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_SQUIRT:
-            effectRet = fx_squirt(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8, iVar9);
+            effectRet = fx_squirt(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9]);
             break;
         case EFFECT_WATER_BLOCK:
-            effectRet = fx_water_block(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_water_block(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_WATERFALL:
-            effectRet = fx_waterfall(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_waterfall(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_WATER_FOUNTAIN:
-            effectRet = fx_water_fountain(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_water_fountain(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_UNDERWATER:
-            effectRet = fx_underwater(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_underwater(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_LIGHTNING_BOLT:
-            effectRet = fx_lightning_bolt(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8, iVar9);
+            effectRet = fx_lightning_bolt(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9]);
             break;
         case EFFECT_WATER_SPLASH:
-            effectRet = fx_water_splash(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_water_splash(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_SNOWMAN_DOLL:
-            effectRet = fx_snowman_doll(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_snowman_doll(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_FRIGHT_JAR:
-            effectRet = fx_fright_jar(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_fright_jar(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_STOP_WATCH:
-            effectRet = fx_stop_watch(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_stop_watch(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_63:
-            effectRet = fx_effect_63(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8, iVar9, iVar10);
+            effectRet = fx_effect_63(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9], iVars[10]);
             break;
         case EFFECT_THROW_SPINY:
-            effectRet = fx_throw_spiny(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8, iVar9);
+            effectRet = fx_throw_spiny(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9]);
             break;
         case EFFECT_65:
-            effectRet = fx_effect_65(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_effect_65(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_TUBBA_HEART_ATTACK:
-            effectRet = fx_tubba_heart_attack(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_tubba_heart_attack(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_WHIRLWIND:
-            effectRet = fx_whirlwind(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_whirlwind(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_RED_IMPACT:
-            effectRet = fx_red_impact(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_red_impact(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_FLOATING_CLOUD_PUFF:
-            effectRet = fx_floating_cloud_puff(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_floating_cloud_puff(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_ENERGY_IN_OUT:
-            effectRet = fx_energy_in_out(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_energy_in_out(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_TATTLE_WINDOW:
-            effectRet = fx_tattle_window(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_tattle_window(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_SHINY_FLARE:
-            effectRet = fx_shiny_flare(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_shiny_flare(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_HUFF_PUFF_BREATH:
-            effectRet = fx_huff_puff_breath(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, iVar8);
+            effectRet = fx_huff_puff_breath(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8]);
             break;
         case EFFECT_COLD_BREATH:
-            effectRet = fx_cold_breath(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_cold_breath(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_EMBERS:
-            effectRet = fx_embers(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, iVar8, iVar9, fVar10, fVar11);
+            effectRet = fx_embers(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8], iVars[9], fVars[10], fVars[11]);
             break;
         case EFFECT_HIEROGLYPHS:
-            effectRet = fx_hieroglyphs(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_hieroglyphs(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_MISC_PARTICLES:
-            effectRet = fx_misc_particles(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, iVar8, iVar9);
+            effectRet = fx_misc_particles(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8], iVars[9]);
             break;
         case EFFECT_STATIC_STATUS:
-            effectRet = fx_static_status(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6, iVar7);
+            effectRet = fx_static_status(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6], iVars[7]);
             break;
         case EFFECT_MOVING_CLOUD:
-            effectRet = fx_moving_cloud(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8, fVar9);
+            effectRet = fx_moving_cloud(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], fVars[9]);
             break;
         case EFFECT_75:
-            effectRet = fx_effect_75(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_effect_75(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_FIREWORK_ROCKET:
-            effectRet = fx_firework_rocket(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8, iVar9);
+            effectRet = fx_firework_rocket(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9]);
             break;
         case EFFECT_PEACH_STAR_BEAM:
-            effectRet = fx_peach_star_beam(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_peach_star_beam(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_BUTTERFLIES:
-            effectRet = fx_butterflies(iVar1, fVar2, fVar3, fVar4);
+            effectRet = fx_butterflies(iVars[1], fVars[2], fVars[3], fVars[4]);
             break;
         case EFFECT_CHAPTER_CHANGE:
-            effectRet = fx_chapter_change(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_chapter_change(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_ICE_SHARD:
-            effectRet = fx_ice_shard(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_ice_shard(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_SPIRIT_CARD:
-            effectRet = fx_spirit_card(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_spirit_card(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_LIL_OINK:
-            effectRet = fx_lil_oink(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_lil_oink(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_SOMETHING_ROTATING:
-            effectRet = fx_something_rotating(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_something_rotating(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_BREAKING_JUNK:
-            effectRet = fx_breaking_junk(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_breaking_junk(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_PARTNER_BUFF:
-            effectRet = fx_partner_buff(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_partner_buff(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_QUIZMO_ASSISTANT:
-            effectRet = fx_quizmo_assistant(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_quizmo_assistant(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_ICE_PILLAR:
-            effectRet = fx_ice_pillar(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_ice_pillar(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_SUN:
-            effectRet = fx_sun(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_sun(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_STAR_SPIRITS_ENERGY:
-            effectRet = fx_star_spirits_energy(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_star_spirits_energy(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_PINK_SPARKLES:
-            effectRet = fx_pink_sparkles(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_pink_sparkles(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_STAR_OUTLINE:
-            effectRet = fx_star_outline(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_star_outline(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_86:
-            effectRet = fx_effect_86(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_effect_86(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         default:
             PANIC();

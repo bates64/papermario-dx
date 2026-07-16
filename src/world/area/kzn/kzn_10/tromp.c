@@ -208,7 +208,7 @@ EvtScript N(EVS_SetupSpinyTromp) = {
         Set(LVar0, 418)
         Set(LVar2, 0)
         Call(N(SpinyTromp_SnapToGround))
-        PlayEffect(EFFECT_00, LVar0, LVar2, 0, 1, 20, 3, 8)
+        PlayEffect(EFFECT_BLAST, 0, LVar0, LVar2, 0, Float(3.0), 20)
     EndThread
     Set(LVar0, LVar8)
     Set(LVar1, LVar9)

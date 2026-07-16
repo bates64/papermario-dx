@@ -411,7 +411,7 @@ EvtScript N(EVS_OpenCapsule) = {
     EndLoop
     Call(GetNpcPos, NPC_Capsule, LVar0, LVar1, LVar2)
     Sub(LVar1, 10)
-    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2, 1, 1, 1, 1)
+    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2)
     Call(EnableModel, MODEL_capsule, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_capsule, COLLIDER_FLAGS_UPPER_MASK)
     Set(GB_MAC03_LilOinkCapsuleState, 2)

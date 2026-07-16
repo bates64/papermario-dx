@@ -62,7 +62,7 @@ EvtScript N(EVS_NpcAI_Duplighost_Caught) = {
     Thread
         Add(LVar4, 15)
         Loop(8)
-            PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar2, LVar3, LVar4, 1, 1, 1, 1)
+            PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar2, LVar3, LVar4)
             Wait(5)
         EndLoop
     EndThread

@@ -2036,7 +2036,7 @@ EvtScript N(EVS_NpcInteract_Toad_03) = {
         Wait(10)
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
-        PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2, 1, 1, 1, 1)
+        PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         Set(GF_TradingEvent3_Active, false)
         Return
@@ -2055,7 +2055,7 @@ EvtScript N(EVS_NpcInteract_Toad_03) = {
             Wait(10)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
-            PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2, 1, 1, 1, 1)
+            PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
             Set(GF_TradingEvent3_Active, false)
             Add(GB_TradingEvent_Count, 1)

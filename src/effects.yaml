@@ -1,11 +1,6 @@
-- {}
 - name: big_smoke_puff
   args: f32, f32, f32
   void: True
-- {}
-- {}
-- {}
-- {}
 - name: landing_dust
   args: s32, f32, f32, f32, f32
   void: True
@@ -120,7 +115,6 @@
 - name: sleep_bubble
   args: s32, f32, f32, f32, f32, f32, EffectInstance**
   void: True
-- {}
 - name: windy_leaves
   args: s32, f32, f32, f32
   gfx: drop_leaves
@@ -265,7 +259,6 @@
   gfx: shockwave
 - name: floating_cloud_puff
   args: s32, f32, f32, f32, f32, s32
-- {}
 - name: energy_in_out
   args: s32, f32, f32, f32, f32, s32
 - name: tattle_window
@@ -288,7 +281,6 @@
   args: s32, f32, f32, f32, f32, f32, f32, f32, f32
 - name: effect_75
   args: s32, f32, f32, f32, f32, s32
-- {}
 - name: firework_rocket
   args: s32, f32, f32, f32, f32, f32, f32, f32, s32
 - name: peach_star_beam

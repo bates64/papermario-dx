@@ -120,7 +120,7 @@ EvtScript N(EVS_ShakeMachine) = {
         Call(RandInt, 50, LVar1)
         Call(RandInt, 50, LVar2)
         Sub(LVar2, 25)
-        PlayEffect(EFFECT_00, LVar0, LVar1, LVar2, 5, 10, 1, 1)
+        PlayEffect(EFFECT_BLAST, 0, LVar0, LVar1, LVar2, Float(3.0), 10)
         Add(LVarF, 1)
         Call(CosInterpMinMax, LVarF, LVarE, Float(1.0), Float(1.093), 2, 0, 0)
         Call(CosInterpMinMax, LVarF, LVarD, Float(1.093), Float(1.0), 2, 0, 0)

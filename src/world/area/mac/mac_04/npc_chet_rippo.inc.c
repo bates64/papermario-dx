@@ -187,7 +187,7 @@ EvtScript N(EVS_NpcInteract_ChetRippo) = {
     Wait(10)
     Call(GetNpcPos, NPC_ChetRippo, LVar0, LVar1, LVar2)
     Call(PlaySoundAtNpc, NPC_ChetRippo, SOUND_VANISH_IN_SMOKE, SOUND_SPACE_DEFAULT)
-    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2, 1, 1, 1, 1)
+    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_ChetRippo, NPC_DISPOSE_LOCATION)
     Set(AF_MAC04_UsedChetRippo, true)
     Call(N(ForceStatusBarToAppear))

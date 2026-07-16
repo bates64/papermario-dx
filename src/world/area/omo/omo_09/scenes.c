@@ -101,7 +101,7 @@ EvtScript N(EVS_Scene_KammySetAmbush) = {
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyRodCast)
     Add(LVar0, 55)
     Call(PlaySoundAt, SOUND_VANISH_IN_SMOKE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, 150, 0, 1, 15, 3, 8)
+    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, 150, 0)
     Wait(5 * DT)
     IfNe(AB_OMO_CurrentPeachChoice, 2)
         Call(SetNpcPos, MV_AmbushID, LVar0, 150, 0)
