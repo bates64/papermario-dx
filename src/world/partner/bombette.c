@@ -689,3 +689,17 @@ void N(pre_battle)(Npc* bombette) {
         }
     }
 }
+
+WORLD_PARTNER_ENTRY = {
+    .isFlying = false,
+    .init = N(init),
+    .takeOut = &EVS_WorldBombette_TakeOut,
+    .update = &EVS_WorldBombette_Update,
+    .useAbility = &EVS_WorldBombette_UseAbility,
+    .putAway = &EVS_WorldBombette_PutAway,
+    .idle = ANIM_WorldBombette_Idle,
+    .testFirstStrike = N(test_first_strike),
+    .canUseAbility = N(can_use_ability),
+    .canPlayerOpenMenus = N(can_open_menus),
+    .preBattle = N(pre_battle),
+};

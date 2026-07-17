@@ -992,3 +992,18 @@ EvtScript EVS_WorldSushie_EnterMap = {
     Return
     End
 };
+
+WORLD_PARTNER_ENTRY = {
+    .isFlying = false,
+    .init = N(init),
+    .takeOut = &EVS_WorldSushie_TakeOut,
+    .update = &EVS_WorldSushie_Update,
+    .useAbility = &EVS_WorldSushie_UseAbility,
+    .putAway = &EVS_WorldSushie_PutAway,
+    .idle = ANIM_WorldSushie_Idle,
+    .canPlayerOpenMenus = world_partner_can_open_menus_default,
+    .preBattle = N(pre_battle),
+    .postBattle = N(post_battle),
+    .onEnterMap = &EVS_WorldSushie_EnterMap,
+    .syncPlayerPosition = N(sync_player_position),
+};

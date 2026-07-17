@@ -1,6 +1,7 @@
 #include "common.h"
 #include "goombaria.h"
 #include "world/partners.h"
+#include "sprite/npc/Goombaria.h"
 
 #define NAMESPACE world_goombaria
 
@@ -74,4 +75,16 @@ EvtScript EVS_WorldGoombaria_PutAway = {
     Call(N(PutAway))
     Return
     End
+};
+
+WORLD_PARTNER_ENTRY = {
+    .isFlying = false,
+    .init = N(init),
+    .takeOut = &EVS_WorldGoombaria_TakeOut,
+    .update = &EVS_WorldGoombaria_Update,
+    .useAbility = &EVS_WorldGoombaria_UseAbility,
+    .putAway = &EVS_WorldGoombaria_PutAway,
+    .idle = ANIM_Goombaria_Idle,
+    .canUseAbility = partner_is_idle,
+    .canPlayerOpenMenus = partner_is_idle,
 };

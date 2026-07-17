@@ -231,7 +231,7 @@ void N(get_movement_from_input)(f32* outAngle, f32* outSpeed) {
     *outSpeed = moveSpeed;
 }
 
-s32 N(can_dismount)(void) {
+export s32 world_partner_can_dismount(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Camera* currentCamera;
     f32 hitDirX, hitDirZ;
@@ -836,7 +836,7 @@ API_CALLABLE(N(UseAbility)) {
                 }
 #endif
                 if (partnerStatus->pressedButtons & (BUTTON_B | D_CBUTTONS)) {
-                    if (N(can_dismount)()) {
+                    if (world_partner_can_dismount()) {
                         N(AbilityState) = RIDE_STATE_DISMOUNT_1;
                     }
                 }
@@ -864,7 +864,7 @@ API_CALLABLE(N(UseAbility)) {
                 break;
             }
             if (partnerStatus->pressedButtons & (BUTTON_B | D_CBUTTONS)) {
-                if (N(can_dismount)()) {
+                if (world_partner_can_dismount()) {
                     N(AbilityState) = RIDE_STATE_DISMOUNT_1;
                 } else {
                     if (!(playerStatus->animFlags & PA_FLAG_FORCED_PARTNER_ABILITY_END)) {
@@ -877,7 +877,7 @@ API_CALLABLE(N(UseAbility)) {
         case RIDE_STATE_DISMOUNT_1:
             lakilester->flags &= ~NPC_FLAG_IGNORE_WORLD_COLLISION;
             playerStatus->flags |= PS_FLAG_PAUSE_DISABLED;
-            N(can_dismount)();
+            world_partner_can_dismount();
             camYaw = camera->curYaw;
             if (playerStatus->spriteFacingAngle >= 90.0f && playerStatus->spriteFacingAngle < 270.0f) {
                 yaw = (180.0f + camYaw) - 90.0f;
@@ -1006,14 +1006,14 @@ API_CALLABLE(N(PutAway)) {
     if (isInitialCall) {
         N(PutAwayState) = (N(MountState) == MOUNT_STATE_NONE) ? PUT_AWAY_FINISH_1 : PUT_AWAY_DISMOUNT_1;
         partner_init_put_away(lakilester);
-        N(can_dismount)();
+        world_partner_can_dismount();
         playerStatus->animFlags &= ~PA_FLAG_RIDING_PARTNER;
         playerStatus->flags |= PS_FLAG_PAUSE_DISABLED;
     }
 
     switch (N(PutAwayState)) {
         case PUT_AWAY_DISMOUNT_1:
-            N(can_dismount)();
+            world_partner_can_dismount();
             yaw = cam->curYaw;
             if ((playerStatus->spriteFacingAngle >= 90.0f) && (playerStatus->spriteFacingAngle < 270.0f)) {
                 lakilester->yaw = (yaw + 180.0f) - 90.0f;
@@ -1260,4 +1260,19 @@ EvtScript EVS_WorldLakilester_EnterMap = {
     Call(N(EnterMap))
     Return
     End
+};
+
+WORLD_PARTNER_ENTRY = {
+    .isFlying = true,
+    .init = N(init),
+    .takeOut = &EVS_WorldLakilester_TakeOut,
+    .update = &EVS_WorldLakilester_Update,
+    .useAbility = &EVS_WorldLakilester_UseAbility,
+    .putAway = &EVS_WorldLakilester_PutAway,
+    .idle = ANIM_WorldLakilester_Idle,
+    .canPlayerOpenMenus = world_partner_can_open_menus_default,
+    .preBattle = N(pre_battle),
+    .postBattle = N(post_battle),
+    .onEnterMap = &EVS_WorldLakilester_EnterMap,
+    .syncPlayerPosition = N(sync_player_position),
 };

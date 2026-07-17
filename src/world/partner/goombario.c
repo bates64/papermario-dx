@@ -13,7 +13,6 @@ BSS s32 N(HadSpeechPrompt);
 BSS s32 N(HadInteractPrompt);
 BSS Npc* N(InteractNpc);
 BSS TweesterPhysics N(TweesterPhysicsData);
-BSS s32 WorldTattleInteractionID;
 BSS s32 N(IsTattleActive);
 
 s32 N(EntityTattles)[][2] = {
@@ -505,3 +504,16 @@ void N(pre_battle)(Npc* goombario) {
 
     partnerStatus->actingPartner = PARTNER_GOOMBARIO;
 }
+
+WORLD_PARTNER_ENTRY = {
+    .isFlying = false,
+    .init = N(init),
+    .takeOut = &EVS_WorldGoombario_TakeOut,
+    .update = &EVS_WorldGoombario_Update,
+    .useAbility = &EVS_WorldGoombario_UseAbility,
+    .putAway = &EVS_WorldGoombario_PutAway,
+    .idle = ANIM_WorldGoombario_Idle,
+    .canUseAbility = N(can_open_menus),
+    .canPlayerOpenMenus = N(can_open_menus),
+    .preBattle = N(pre_battle),
+};

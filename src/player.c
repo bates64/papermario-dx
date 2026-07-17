@@ -2,13 +2,11 @@
 #include "ld_addrs.h"
 #include "world/disguise.h"
 #include "world/surfaces.h"
-#include "world/partner/watt.h"
+#include "world/partners.h"
 #include "sprite/player.h"
 
 PlayerStatus gPlayerStatus;
 PlayerData gPlayerData;
-
-extern s32 WorldTattleInteractionID;
 
 extern DisguiseAnims BasicPeachDisguiseAnims[];
 
@@ -189,7 +187,7 @@ void phys_update_standard(void) {
     }
 
     if (playerStatus->animFlags & PA_FLAG_WATT_IN_HANDS) {
-        world_watt_sync_held_position();
+        partner_sync_player_position();
     }
 
     if (!(playerStatus->flags & PS_FLAG_CAMERA_DOESNT_FOLLOW)) {

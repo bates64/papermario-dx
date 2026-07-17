@@ -433,3 +433,16 @@ void N(pre_battle)(Npc* bow) {
         bow->flags &= ~NPC_FLAG_INVISIBLE;
     }
 }
+
+WORLD_PARTNER_ENTRY = {
+    .isFlying = true,
+    .init = N(init),
+    .takeOut = &EVS_WorldBow_TakeOut,
+    .update = &EVS_WorldBow_Update,
+    .useAbility = &EVS_WorldBow_UseAbility,
+    .putAway = &EVS_WorldBow_PutAway,
+    .idle = ANIM_WorldBow_Idle,
+    .canUseAbility = partner_is_idle,
+    .canPlayerOpenMenus = world_partner_can_open_menus_default,
+    .preBattle = N(pre_battle),
+};

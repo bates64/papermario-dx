@@ -16,6 +16,7 @@ typedef enum {
     OVL_MAP,          ///< `world/area_*/*/` -- only one loaded at a time
     OVL_EFFECT,       ///< `effects/*` -- loaded into a fixed-size slot pool
     OVL_ACTION,       ///< `world/action/*` -- only one loaded at a time
+    OVL_PARTNER,      ///< Splat segments in the `world_partner` VRAM class
     OVL_NUM_TYPES,
 } OverlayType;
 
@@ -38,6 +39,10 @@ void ovl_unload_type(OverlayType type);
 
 /// Look up an exported symbol by name. Returns nullptr if not found.
 void* ovl_import(const Overlay* ovl, const char* name);
+
+/// Look up a declared symbol using its C name and function/data type.
+#define OVL_IMPORT_SYMBOL(overlay, symbol) \
+    ((__typeof__(&(symbol)))ovl_import((overlay), #symbol))
 
 /// Searches all loaded overlays for the symbol nearest to `addr`.
 /// Returns an empty string (not NULL) if the address is in an overlay but has

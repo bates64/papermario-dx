@@ -3,41 +3,30 @@
 #include "world/partners_internal.h"
 #include "macros.h"
 
-#include "ld_addrs.h"
+#include "dx/overlay.h"
 #include "npc.h"
 #include "hud_element.h"
 
-#include "partner/goombario.h"
 #include "sprite/npc/WorldGoombario.h"
 
-#include "partner/kooper.h"
 #include "sprite/npc/WorldKooper.h"
 
-#include "partner/bombette.h"
 #include "sprite/npc/WorldBombette.h"
 
-#include "partner/parakarry.h"
 #include "sprite/npc/WorldParakarry.h"
 
-#include "partner/goompa.h"
 #include "sprite/npc/Goompa.h"
 
-#include "partner/watt.h"
 #include "sprite/npc/WorldWatt.h"
 
-#include "partner/sushie.h"
 #include "sprite/npc/WorldSushie.h"
 
-#include "partner/lakilester.h"
 #include "sprite/npc/WorldLakilester.h"
 
-#include "partner/bow.h"
 #include "sprite/npc/WorldBow.h"
 
-#include "partner/goombaria.h"
 #include "sprite/npc/Goombaria.h"
 
-#include "partner/twink.h"
 #include "sprite/npc/Twink.h"
 
 PartnerStatus gPartnerStatus;
@@ -46,6 +35,8 @@ Npc* gPartnerNpc;
 BSS s32 PartnerNpcIndex;
 BSS s32 CurrentPartnerID;
 BSS WorldPartner* ActivePartner;
+BSS s32 WorldTattleInteractionID;
+static Overlay* ActivePartnerOverlay;
 
 extern HudScript HES_Partner0;
 extern HudScript HES_Goombario;
@@ -97,9 +88,6 @@ extern HudScript HES_StatusSPIncrement5;
 extern HudScript HES_StatusSPIncrement6;
 extern HudScript HES_StatusSPIncrement7;
 
-s32 partner_is_idle(Npc* partner);
-b32 world_partner_can_open_menus_default(Npc* partner);
-
 IconHudScriptPair wPartnerHudScripts[] = {
     { HES_Partner0,    HES_Partner0Disabled    },
     { HES_Goombario,   HES_GoombarioDisabled   },
@@ -135,176 +123,18 @@ HudScriptList SPStarHudScripts = { HES_StatusStar1, HES_StatusStar3, HES_StatusS
 
 s32 StatusBarSPIncrementOffsets[] = { -1, 1, 2, 4, 5, 7, 8, 0, 0, 0 };
 
-WorldPartner wPartners[] = {
-    [PARTNER_NONE] {
-        // blank
-    },
-    [PARTNER_GOOMBARIO] {
-        .dmaStart = &world_partner_goombario_ROM_START,
-        .dmaEnd = &world_partner_goombario_ROM_END,
-        .dmaDest = &world_partner_goombario_VRAM,
-        .isFlying = false,
-        .init = world_goombario_init,
-        .takeOut = &EVS_WorldGoombario_TakeOut,
-        .update = &EVS_WorldGoombario_Update,
-        .useAbility = &EVS_WorldGoombario_UseAbility,
-        .putAway = &EVS_WorldGoombario_PutAway,
-        .idle = ANIM_WorldGoombario_Idle,
-        .canUseAbility = world_goombario_can_open_menus,
-        .canPlayerOpenMenus = world_goombario_can_open_menus,
-        .preBattle = world_goombario_pre_battle,
-    },
-    [PARTNER_KOOPER] {
-        .dmaStart = &world_partner_kooper_ROM_START,
-        .dmaEnd = &world_partner_kooper_ROM_END,
-        .dmaDest = &world_partner_kooper_VRAM,
-        .isFlying = false,
-        .init = world_kooper_init,
-        .takeOut = &EVS_WorldKooper_TakeOut,
-        .update = &EVS_WorldKooper_Update,
-        .useAbility = &EVS_WorldKooper_UseAbility,
-        .putAway = &EVS_WorldKooper_PutAway,
-        .idle = ANIM_WorldKooper_Idle,
-        .testFirstStrike = world_kooper_test_first_strike,
-        .canUseAbility = partner_is_idle,
-        .canPlayerOpenMenus = partner_is_idle,
-        .preBattle = world_kooper_pre_battle,
-        .postBattle = world_kooper_post_battle,
-    },
-    [PARTNER_BOMBETTE] {
-        .dmaStart = &world_partner_bombette_ROM_START,
-        .dmaEnd = &world_partner_bombette_ROM_END,
-        .dmaDest = &world_partner_bombette_VRAM,
-        .isFlying = false,
-        .init = world_bombette_init,
-        .takeOut = &EVS_WorldBombette_TakeOut,
-        .update = &EVS_WorldBombette_Update,
-        .useAbility = &EVS_WorldBombette_UseAbility,
-        .putAway = &EVS_WorldBombette_PutAway,
-        .idle = ANIM_WorldBombette_Idle,
-        .testFirstStrike = world_bombette_test_first_strike,
-        .canUseAbility = world_bombette_can_use_ability,
-        .canPlayerOpenMenus = world_bombette_can_open_menus,
-        .preBattle = world_bombette_pre_battle,
-    },
-    [PARTNER_PARAKARRY] {
-        .dmaStart = &world_partner_parakarry_ROM_START,
-        .dmaEnd = &world_partner_parakarry_ROM_END,
-        .dmaDest = &world_partner_parakarry_VRAM,
-        .isFlying = true,
-        .init = world_parakarry_init,
-        .takeOut = &EVS_WorldParakarry_TakeOut,
-        .update = &EVS_WorldParakarry_Update,
-        .useAbility = &EVS_WorldParakarry_UseAbility,
-        .putAway = &EVS_WorldParakarry_PutAway,
-        .idle = ANIM_WorldParakarry_Idle,
-        .canPlayerOpenMenus = partner_is_idle,
-        .preBattle = world_parakarry_pre_battle,
-        .postBattle = world_parakarry_post_battle,
-    },
-    [PARTNER_GOOMPA] {
-        .dmaStart = &world_partner_goompa_ROM_START,
-        .dmaEnd = &world_partner_goompa_ROM_END,
-        .dmaDest = &world_partner_goompa_VRAM,
-        .isFlying = false,
-        .init = world_goompa_init,
-        .takeOut = &EVS_WorldGoompa_TakeOut,
-        .update = &EVS_WorldGoompa_Update,
-        .useAbility = &EVS_WorldGoompa_UseAbility,
-        .putAway = &EVS_WorldGoompa_PutAway,
-        .idle = ANIM_Goompa_Idle,
-    },
-    [PARTNER_WATT] {
-        .dmaStart = &world_partner_watt_ROM_START,
-        .dmaEnd = &world_partner_watt_ROM_END,
-        .dmaDest = &world_partner_watt_VRAM,
-        .isFlying = true,
-        .init = world_watt_init,
-        .takeOut = &EVS_WorldWatt_TakeOut,
-        .update = &EVS_WorldWatt_Update,
-        .useAbility = &EVS_WorldWatt_UseAbility,
-        .putAway = &EVS_WorldWatt_PutAway,
-        .idle = ANIM_WorldWatt_Idle,
-        .canPlayerOpenMenus = world_partner_can_open_menus_default,
-        .preBattle = world_watt_pre_battle,
-        .postBattle = world_watt_post_battle,
-        .onEnterMap = &EVS_WorldWatt_EnterMap,
-    },
-    [PARTNER_SUSHIE] {
-        .dmaStart = &world_partner_sushie_ROM_START,
-        .dmaEnd = &world_partner_sushie_ROM_END,
-        .dmaDest = &world_partner_sushie_VRAM,
-        .isFlying = false,
-        .init = world_sushie_init,
-        .takeOut = &EVS_WorldSushie_TakeOut,
-        .update = &EVS_WorldSushie_Update,
-        .useAbility = &EVS_WorldSushie_UseAbility,
-        .putAway = &EVS_WorldSushie_PutAway,
-        .idle = ANIM_WorldSushie_Idle,
-        .canPlayerOpenMenus = world_partner_can_open_menus_default,
-        .preBattle = world_sushie_pre_battle,
-        .postBattle = world_sushie_post_battle,
-        .onEnterMap = &EVS_WorldSushie_EnterMap,
-    },
-    [PARTNER_LAKILESTER] {
-        .dmaStart = &world_partner_lakilester_ROM_START,
-        .dmaEnd = &world_partner_lakilester_ROM_END,
-        .dmaDest = &world_partner_lakilester_VRAM,
-        .isFlying = true,
-        .init = world_lakilester_init,
-        .takeOut = &EVS_WorldLakilester_TakeOut,
-        .update = &EVS_WorldLakilester_Update,
-        .useAbility = &EVS_WorldLakilester_UseAbility,
-        .putAway = &EVS_WorldLakilester_PutAway,
-        .idle = ANIM_WorldLakilester_Idle,
-        .canPlayerOpenMenus = world_partner_can_open_menus_default,
-        .preBattle = world_lakilester_pre_battle,
-        .postBattle = world_lakilester_post_battle,
-        .onEnterMap = &EVS_WorldLakilester_EnterMap,
-    },
-    [PARTNER_BOW] {
-        .dmaStart = &world_partner_bow_ROM_START,
-        .dmaEnd = &world_partner_bow_ROM_END,
-        .dmaDest = &world_partner_bow_VRAM,
-        .isFlying = true,
-        .init = world_bow_init,
-        .takeOut = &EVS_WorldBow_TakeOut,
-        .update = &EVS_WorldBow_Update,
-        .useAbility = &EVS_WorldBow_UseAbility,
-        .putAway = &EVS_WorldBow_PutAway,
-        .idle = ANIM_WorldBow_Idle,
-        .canUseAbility = partner_is_idle,
-        .canPlayerOpenMenus = world_partner_can_open_menus_default,
-        .preBattle = world_bow_pre_battle,
-    },
-    [PARTNER_GOOMBARIA] {
-        .dmaStart = &world_partner_goombaria_ROM_START,
-        .dmaEnd = &world_partner_goombaria_ROM_END,
-        .dmaDest = &world_partner_goombaria_VRAM,
-        .isFlying = false,
-        .init = world_goombaria_init,
-        .takeOut = &EVS_WorldGoombaria_TakeOut,
-        .update = &EVS_WorldGoombaria_Update,
-        .useAbility = &EVS_WorldGoombaria_UseAbility,
-        .putAway = &EVS_WorldGoombaria_PutAway,
-        .idle = ANIM_Goombaria_Idle,
-        .canUseAbility = partner_is_idle,
-        .canPlayerOpenMenus = partner_is_idle,
-    },
-    [PARTNER_TWINK] {
-        .dmaStart = &world_partner_twink_ROM_START,
-        .dmaEnd = &world_partner_twink_ROM_END,
-        .dmaDest = &world_partner_twink_VRAM,
-        .isFlying = true,
-        .init = world_twink_init,
-        .takeOut = &EVS_WorldTwink_TakeOut,
-        .update = &EVS_WorldTwink_Update,
-        .useAbility = &EVS_WorldTwink_UseAbility,
-        .putAway = &EVS_WorldTwink_PutAway,
-        .idle = ANIM_Twink_Idle,
-        .canUseAbility = partner_is_idle,
-        .canPlayerOpenMenus = partner_is_idle,
-    },
+static const char* WorldPartnerOverlayNames[] = {
+    [PARTNER_GOOMBARIO]  = "world_partner_goombario",
+    [PARTNER_KOOPER]     = "world_partner_kooper",
+    [PARTNER_BOMBETTE]   = "world_partner_bombette",
+    [PARTNER_PARAKARRY]  = "world_partner_parakarry",
+    [PARTNER_GOOMPA]     = "world_partner_goompa",
+    [PARTNER_WATT]       = "world_partner_watt",
+    [PARTNER_SUSHIE]     = "world_partner_sushie",
+    [PARTNER_LAKILESTER] = "world_partner_lakilester",
+    [PARTNER_BOW]        = "world_partner_bow",
+    [PARTNER_GOOMBARIA]  = "world_partner_goombaria",
+    [PARTNER_TWINK]      = "world_partner_twink",
 };
 
 Vec3f SavedPartnerPos = { 0 };
@@ -444,6 +274,23 @@ b32 world_partner_can_open_menus_default(Npc* partner) {
     return true;
 }
 
+void partner_sync_player_position(void) {
+    if (ActivePartner != nullptr && ActivePartner->syncPlayerPosition != nullptr) {
+        ActivePartner->syncPlayerPosition();
+    }
+}
+
+b32 partner_can_dismount(void) {
+    __typeof__(&world_partner_can_dismount) canDismount;
+
+    if (ActivePartnerOverlay == nullptr) {
+        return false;
+    }
+
+    canDismount = OVL_IMPORT_SYMBOL(ActivePartnerOverlay, world_partner_can_dismount);
+    return canDismount != nullptr && canDismount();
+}
+
 b32 partner_can_continue_ability(s32 partnerID) {
     s32 playerActionState = gPlayerStatus.actionState;
     b32 ret = false;
@@ -487,12 +334,25 @@ void partner_clear_collision_flags(Npc* partner) {
         | NPC_FLAG_COLLIDING_WITH_WORLD | NPC_FLAG_GROUNDED | NPC_FLAG_JUMPING);
 }
 
+void unload_world_partner(void) {
+    ovl_unload(ActivePartnerOverlay);
+    ActivePartnerOverlay = nullptr;
+    ActivePartner = nullptr;
+}
+
 void create_partner_npc(void) {
-    WorldPartner* partnerEntry = &wPartners[CurrentPartnerID];
+    const char* overlayName;
     NpcBlueprint blueprint;
 
-    ActivePartner = partnerEntry;
-    dma_copy(partnerEntry->dmaStart, partnerEntry->dmaEnd, partnerEntry->dmaDest);
+    ASSERT_MSG(CurrentPartnerID > PARTNER_NONE && CurrentPartnerID < ARRAY_COUNT(WorldPartnerOverlayNames),
+               "Invalid world partner ID %d", (int)CurrentPartnerID);
+    overlayName = WorldPartnerOverlayNames[CurrentPartnerID];
+    ASSERT_MSG(overlayName != nullptr, "World partner ID %d has no overlay", (int)CurrentPartnerID);
+
+    ActivePartnerOverlay = ovl_load(overlayName, OVL_PARTNER);
+    ActivePartner = ovl_import(ActivePartnerOverlay, WORLD_PARTNER_EXPORT_NAME);
+    ASSERT_MSG(ActivePartner != nullptr, "World partner overlay '%s' has no %s export",
+               overlayName, WORLD_PARTNER_EXPORT_NAME);
 
     blueprint.flags = NPC_FLAG_PARTNER | NPC_FLAG_IGNORE_CHAR_COLLISION;
     blueprint.initialAnim = ActivePartner->idle;
@@ -518,6 +378,7 @@ void create_partner_npc(void) {
 
 void partner_free_npc(void) {
     free_npc_by_index(PartnerNpcIndex);
+    unload_world_partner();
 }
 
 void partner_initialize_data(void) {
@@ -534,6 +395,7 @@ void partner_initialize_data(void) {
     partnerStatus->partnerActionState = 0;
     partnerStatus->moveWithoutInput = false;
     ActivePartner = nullptr;
+    ActivePartnerOverlay = nullptr;
     SavedPartnerPos.x = 0;
     SavedPartnerPos.y = 0;
     SavedPartnerPos.z = 0;

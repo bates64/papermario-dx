@@ -6,8 +6,6 @@
 #include "sprite.h"
 #include "game_modes.h"
 #include "pause/pause_common.h"
-#include "world/partners.h"
-#include "world/partner/lakilester.h"
 
 enum WorldMenuStates {
     WORLD_MENU_STATE_NONE       = 0,
@@ -114,7 +112,7 @@ b32 can_open_world_menu(s32 currentButtons, s32 pressedButtons) {
                 }
             } else if (partnerStatus->actingPartner == PARTNER_LAKILESTER) {
                 if (actionState == ACTION_STATE_RIDE) {
-                    if (world_lakilester_can_dismount()) {
+                    if (partner_can_dismount()) {
                         return true;
                     }
                     sfx_play_sound(SOUND_MENU_ERROR);

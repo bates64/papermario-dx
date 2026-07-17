@@ -1,6 +1,7 @@
 #include "common.h"
 #include "world/partners.h"
 #include "twink.h"
+#include "sprite/npc/Twink.h"
 
 #define NAMESPACE world_twink
 
@@ -78,4 +79,16 @@ EvtScript EVS_WorldTwink_PutAway = {
     Call(N(PutAway))
     Return
     End
+};
+
+WORLD_PARTNER_ENTRY = {
+    .isFlying = true,
+    .init = N(init),
+    .takeOut = &EVS_WorldTwink_TakeOut,
+    .update = &EVS_WorldTwink_Update,
+    .useAbility = &EVS_WorldTwink_UseAbility,
+    .putAway = &EVS_WorldTwink_PutAway,
+    .idle = ANIM_Twink_Idle,
+    .canUseAbility = partner_is_idle,
+    .canPlayerOpenMenus = partner_is_idle,
 };

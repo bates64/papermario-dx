@@ -678,3 +678,16 @@ void N(post_battle)(Npc* parakarry) {
         partner_use_ability();
     }
 }
+
+WORLD_PARTNER_ENTRY = {
+    .isFlying = true,
+    .init = N(init),
+    .takeOut = &EVS_WorldParakarry_TakeOut,
+    .update = &EVS_WorldParakarry_Update,
+    .useAbility = &EVS_WorldParakarry_UseAbility,
+    .putAway = &EVS_WorldParakarry_PutAway,
+    .idle = ANIM_WorldParakarry_Idle,
+    .canPlayerOpenMenus = partner_is_idle,
+    .preBattle = N(pre_battle),
+    .postBattle = N(post_battle),
+};

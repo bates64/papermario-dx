@@ -434,7 +434,7 @@ void partner_reset_data(void) {
         gGameStatusPtr->keepUsingPartnerOnMapChange = false;
     }
 
-    ActivePartner = nullptr;
+    unload_world_partner();
     SavedPartnerPos.x = gPlayerStatus.pos.x;
     SavedPartnerPos.y = gPlayerStatus.pos.y;
     SavedPartnerPos.z = gPlayerStatus.pos.z;

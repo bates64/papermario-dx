@@ -1,7 +1,6 @@
 #include "common.h"
 #include "world/disguise.h"
-#include "world/partner/sushie.h"
-#include "world/partner/lakilester.h"
+#include "world/partners.h"
 #include "sprite/player.h"
 
 BSS f32 D_802B6770_E27C80;
@@ -21,10 +20,9 @@ export void action_update_ride(void) {
     }
 
     if (playerStatus->animFlags & PA_FLAG_RIDING_PARTNER) {
-        if (partnerStatus->actingPartner == PARTNER_LAKILESTER) {
-            world_lakilester_sync_player_position();
-        } else if (partnerStatus->actingPartner == PARTNER_SUSHIE) {
-            world_sushie_sync_player_position();
+        if (partnerStatus->actingPartner == PARTNER_LAKILESTER
+            || partnerStatus->actingPartner == PARTNER_SUSHIE) {
+            partner_sync_player_position();
         }
     }
 }

@@ -20,6 +20,7 @@ extern Vec3f SavedPartnerPos;
 
 void create_partner_npc(void);
 void partner_free_npc(void);
+void unload_world_partner(void);
 void partner_clear_collision_flags(Npc* partner);
 void partner_clear_player_tracking(Npc* partner);
 

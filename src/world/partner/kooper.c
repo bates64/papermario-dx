@@ -767,3 +767,18 @@ void N(post_battle)(Npc* npc) {
         partner_use_ability();
     }
 }
+
+WORLD_PARTNER_ENTRY = {
+    .isFlying = false,
+    .init = N(init),
+    .takeOut = &EVS_WorldKooper_TakeOut,
+    .update = &EVS_WorldKooper_Update,
+    .useAbility = &EVS_WorldKooper_UseAbility,
+    .putAway = &EVS_WorldKooper_PutAway,
+    .idle = ANIM_WorldKooper_Idle,
+    .testFirstStrike = N(test_first_strike),
+    .canUseAbility = partner_is_idle,
+    .canPlayerOpenMenus = partner_is_idle,
+    .preBattle = N(pre_battle),
+    .postBattle = N(post_battle),
+};

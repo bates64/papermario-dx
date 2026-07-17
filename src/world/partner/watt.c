@@ -600,3 +600,18 @@ EvtScript EVS_WorldWatt_EnterMap = {
     Return
     End
 };
+
+WORLD_PARTNER_ENTRY = {
+    .isFlying = true,
+    .init = N(init),
+    .takeOut = &EVS_WorldWatt_TakeOut,
+    .update = &EVS_WorldWatt_Update,
+    .useAbility = &EVS_WorldWatt_UseAbility,
+    .putAway = &EVS_WorldWatt_PutAway,
+    .idle = ANIM_WorldWatt_Idle,
+    .canPlayerOpenMenus = world_partner_can_open_menus_default,
+    .preBattle = N(pre_battle),
+    .postBattle = N(post_battle),
+    .onEnterMap = &EVS_WorldWatt_EnterMap,
+    .syncPlayerPosition = N(sync_held_position),
+};

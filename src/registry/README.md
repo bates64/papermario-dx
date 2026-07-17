@@ -1,7 +1,6 @@
 # Registries
 
-The YAML files in this directory are used to automatically generate tables and
-enums related to various game systems:
+The YAML files in this directory are used to automatically generate tables and enums related to various game systems:
 
 | Registry | Generates |
 | --- | --- |
@@ -11,3 +10,11 @@ enums related to various game systems:
 | `items.yaml` | [`item_enum.h`](../../ver/us/build/include/item_enum.h) : The `ItemIDs` enum.<br>[`item_data.inc.c`](../../ver/us/build/include/item_data.inc.c) : The item table, along with HudScripts, ItemScripts, and icon data for each item. |
 | `moves.yaml` | [`move_enum.h`](../../ver/us/build/include/move_enum.h) : The `MoveIDs` enum.<br>[`move_data.inc.c`](../../ver/us/build/include/move_data.inc.c) : The move data table. |
 | `recipes.yaml` | [`recipes.inc.c`](../../ver/us/build/include/recipes.inc.c) : Cooking ingredient and result tables. |
+
+## Note About Overlays
+
+Not every overlay type is registered here. The build intentionally derives overlay boundaries in three different ways, according to what defines the module:
+
+- Maps and battle actors use their source directory as the boundary.
+- Actions and effects use registries because their logical IDs bind directly to overlay implementations.
+- World partners use their splat vram class. Partner IDs describe a broader game concept than merely a world implementation, so we let splat define the members of the class and map them manually with a table.

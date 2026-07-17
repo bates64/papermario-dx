@@ -618,7 +618,7 @@ class Configure:
             most_parent = seg.get_most_parent()
             if (
                 most_parent.vram_class is not None
-                and most_parent.vram_class.name == "map"
+                and most_parent.vram_class.name in ("map", "world_partner")
             ) or any(
                 self.is_effect_source_path(path)
                 or self.is_world_action_source_path(path)
@@ -1717,7 +1717,7 @@ class Configure:
 
         return segment_size_map
 
-    def find_overlays(self) -> List[Tuple[Path, int]]:
+    def find_overlays(self) -> List[Tuple[str, Path, List[Path], int]]:
         overlay_types = [
             "battle/actor/*",
             "world/area/*/*/",
@@ -1727,7 +1727,7 @@ class Configure:
 
         # Collect overlays keyed by (type_index, name). Later entries in the
         # asset stack override earlier ones; src/ is the lowest-priority layer.
-        found: Dict[Tuple[int, str], Tuple[Path, int]] = {}
+        found: Dict[Tuple[int, str], Tuple[str, Path, List[Path], int]] = {}
 
         search_dirs = [ROOT / "src"] + [
             ROOT / "assets" / d for d in reversed(self.asset_stack)
@@ -1750,9 +1750,54 @@ class Configure:
                         for f in match.iterdir()
                     ):
                         continue
-                    found[(type_index, match.stem)] = (match, type_index)
+                    if match.is_dir():
+                        sources = [
+                            path for path in sorted(match.iterdir())
+                            if path.suffix in (".c", ".cpp")
+                            and not path.name.endswith((".inc.c", ".inc.cpp"))
+                        ]
+                    else:
+                        sources = [match]
+                    found[(type_index, match.stem)] = (
+                        match.stem,
+                        match,
+                        sources,
+                        type_index,
+                    )
 
-        return sorted(found.values(), key=lambda x: x[0].stem)
+        # VRAM-class overlays are defined by their top-level splat segment.
+        # The segment name is the overlay key and all of its C/C++ subsegments
+        # are linked into that overlay.
+        vram_class_types = {
+            "world_partner": 4,
+        }
+        class_sources: Dict[Tuple[int, str], List[Path]] = {}
+        for entry in self.linker_entries:
+            segment = entry.segment.get_most_parent()
+            if segment.vram_class is None:
+                continue
+            type_index = vram_class_types.get(segment.vram_class.name)
+            if type_index is None:
+                continue
+
+            key = (type_index, segment.name)
+            sources = class_sources.setdefault(key, [])
+            for path in entry.src_paths:
+                path = Path(path)
+                if (
+                    path.suffix in (".c", ".cpp")
+                    and not path.name.endswith((".inc.c", ".inc.cpp"))
+                    and path not in sources
+                ):
+                    sources.append(path)
+
+        for (type_index, name), sources in class_sources.items():
+            if not sources:
+                continue
+            sources.sort()
+            found[(type_index, name)] = (name, sources[0], sources, type_index)
+
+        return sorted(found.values(), key=lambda x: (x[3], x[0]))
 
     def effect_cflags(self, src_path: Path) -> str:
         """Return the cflags attached to an effect's splat C subsegment."""
@@ -1788,12 +1833,12 @@ class Configure:
             name for name in set(effect_names) if effect_names.count(name) > 1
         )
         effect_sources = {
-            src_path.stem for src_path, type_index in overlays if type_index == 2
+            name for name, _, _, type_index in overlays if type_index == 2
         }
         missing_effects = sorted(set(effect_names) - effect_sources)
         orphan_effects = sorted(effect_sources - set(effect_names))
         action_sources = {
-            src_path.stem for src_path, type_index in overlays if type_index == 3
+            name for name, _, _, type_index in overlays if type_index == 3
         }
         action_overlays = {action.overlay for action in actions}
         missing_action_overlays = sorted(action_overlays - action_sources)
@@ -1828,24 +1873,12 @@ class Configure:
         if CRC_TOOL != "n64crc":
             implicit_deps.append(CRC_TOOL)
 
-        for src_path, type_index in overlays:
-            name = src_path.stem
+        for name, src_path, c_files, type_index in overlays:
             build_dir = self.build_path() / "ovl" / str(type_index) / name
             ovl_path = build_dir / f"{name}.ovl"
             debug_syms_path = build_dir / f"{name}.ovl.debug_syms"
             objects = []
             overlay_evt_validation_stamps = []
-
-            c_files = []
-            if src_path.is_dir():
-                for c_file in sorted(src_path.glob("*.c")):
-                    if not c_file.name.endswith(".inc.c"):
-                        c_files.append(c_file)
-                for c_file in sorted(src_path.glob("*.cpp")):
-                    if not c_file.name.endswith(".inc.c"):
-                        c_files.append(c_file)
-            else:
-                c_files.append(src_path)
 
             for c_file in c_files:
                 if c_file.suffix == ".cpp":
@@ -1907,6 +1940,9 @@ class Configure:
                 max_loaded_size = "--max-loaded-size 0x1000"
                 require_resolved = "--require-resolved"
             elif type_index == 3:  # actions
+                require_resolved = "--require-resolved"
+            elif type_index == 4:  # world partners
+                force_export = "--force-export gWorldPartner"
                 require_resolved = "--require-resolved"
 
             overlay_link_deps = [

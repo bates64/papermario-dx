@@ -1,6 +1,7 @@
 #include "common.h"
 #include "goompa.h"
 #include "world/partners.h"
+#include "sprite/npc/Goompa.h"
 
 #define NAMESPACE world_goompa
 
@@ -159,4 +160,14 @@ EvtScript EVS_WorldGoompa_PutAway = {
     Call(N(PutAway))
     Return
     End
+};
+
+WORLD_PARTNER_ENTRY = {
+    .isFlying = false,
+    .init = N(init),
+    .takeOut = &EVS_WorldGoompa_TakeOut,
+    .update = &EVS_WorldGoompa_Update,
+    .useAbility = &EVS_WorldGoompa_UseAbility,
+    .putAway = &EVS_WorldGoompa_PutAway,
+    .idle = ANIM_Goompa_Idle,
 };
