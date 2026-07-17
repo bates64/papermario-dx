@@ -214,7 +214,7 @@ void btl_init_menu_hammer(void) {
     s32 fpCost;
 
     // If you don't have a hammer, disable this menu
-    if (playerData->hammerLevel == -1) {
+    if (playerData->hammerLevel == GEAR_RANK_NONE) {
         battleStatus->menuStatus[2] = 0;
         return;
     }
@@ -467,7 +467,7 @@ void btl_state_update_player_menu(void) {
             entryIdx++;
 
             // hammer menu category
-            if (playerData->hammerLevel >= 0) {
+            if (playerData->hammerLevel > GEAR_RANK_NONE) {
                 WheelOptionHudScript[entryIdx] = HammerHudScripts[playerData->hammerLevel + 1].enabled;
                 WheelOptionSubmenu[entryIdx] = BTL_MENU_TYPE_SMASH;
                 WheelOptionEnabled[entryIdx] = true;

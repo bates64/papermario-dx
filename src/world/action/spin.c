@@ -24,7 +24,7 @@ enum SpinTypeFlag {
     SPIN_TYPE_ATTACK    = 4,
 };
 
-void action_update_spin(void) {
+export void action_update_spin(void) {
     PlayerSpinState* playerSpinState = &gPlayerSpinState;
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 angle, magnitude, speedModifier;

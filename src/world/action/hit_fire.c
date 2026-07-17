@@ -6,7 +6,7 @@ enum {
     SUBSTATE_FALLING    = 1
 };
 
-void action_update_hit_fire(void) {
+export void action_update_hit_fire(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 dx, dy;
     f32 speed;

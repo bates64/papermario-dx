@@ -9,7 +9,7 @@ enum {
 void action_update_peach_land(void);
 void action_update_peach_step_down_land(void);
 
-void action_update_land(void) {
+export void action_update_land(void) {
     CollisionStatus* collisionStatus = &gCollisionStatus;
     PlayerStatus* playerStatus = &gPlayerStatus;
     Camera* camera = &gCameras[CAM_DEFAULT];
@@ -74,7 +74,7 @@ void action_update_land(void) {
     }
 }
 
-void action_update_step_down_land(void) {
+export void action_update_step_down_land(void) {
     CollisionStatus* collisionStatus = &gCollisionStatus;
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 inputMoveMagnitude;

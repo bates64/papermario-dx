@@ -18,6 +18,7 @@ except ModuleNotFoundError:
 
 import ninja_syntax
 
+from action_data import actions_from_yaml
 from effect_data import effects_from_yaml
 
 # Configuration:
@@ -277,7 +278,7 @@ def write_ninja_rules(
     ninja.rule(
         "evt_validate_obj",
         description="Validating scripts in $evt_target",
-        command=f"$python {BUILD_TOOLS}/evt_validate_obj.py --effects-yaml src/effects.yaml --object-list $out.rsp --out $out",
+        command=f"$python {BUILD_TOOLS}/evt_validate_obj.py --effects-yaml src/registry/effects.yaml --object-list $out.rsp --out $out",
         rspfile="$out.rsp",
         rspfile_content="$in_newline",
     )
@@ -370,6 +371,15 @@ def write_ninja_rules(
         "item_data",
         description="Generating item data",
         command=f"$python {BUILD_TOOLS}/item_data.py $out $in $asset_stack",
+    )
+
+    ninja.rule(
+        "action_data",
+        description="Generating player action data",
+        command=(
+            f"$python {BUILD_TOOLS}/action_data.py "
+            "$out_data $out_enum $actions_yaml"
+        ),
     )
 
     ninja.rule(
@@ -586,8 +596,18 @@ class Configure:
             and path.suffix in (".c", ".cpp")
         )
 
+    @staticmethod
+    def is_world_action_source_path(path: Path) -> bool:
+        path = Path(path)
+        return (
+            path.parent.name == "action"
+            and path.parent.parent.name == "world"
+            and path.parent.parent.parent.name == "src"
+            and path.suffix in (".c", ".cpp")
+        )
+
     def discard_overlay_linker_entries(self):
-        """Remove map and effect overlay objects from the main linker script.
+        """Remove overlay objects from the main linker script.
 
         These splat segments remain useful for extracting source metadata and assets,
         but their code is compiled into .ovl files instead of the engine ELF.
@@ -599,7 +619,11 @@ class Configure:
             if (
                 most_parent.vram_class is not None
                 and most_parent.vram_class.name == "map"
-            ) or any(self.is_effect_source_path(path) for path in entry.src_paths):
+            ) or any(
+                self.is_effect_source_path(path)
+                or self.is_world_action_source_path(path)
+                for path in entry.src_paths
+            ):
                 if entry.object_path is not None:
                     discard_objs.add(posix(entry.object_path))
 
@@ -791,13 +815,13 @@ class Configure:
                                 implicit=[
                                     posix(BUILD_TOOLS / "evt_validate_obj.py"),
                                     posix(BUILD_TOOLS / "effect_data.py"),
-                                    "src/effects.yaml",
+                                    "src/registry/effects.yaml",
                                 ],
                                 variables={"evt_target": evt_target},
                             )
 
         # Effect data includes
-        effect_yaml = ROOT / "src/effects.yaml"
+        effect_yaml = ROOT / "src/registry/effects.yaml"
         effect_data_outdir = ROOT / "assets" / version / "effects"
         effect_defs_path = effect_data_outdir / "effect_defs.h"
         effect_table_path = effect_data_outdir / "effect_table.c"
@@ -849,13 +873,13 @@ class Configure:
         if self.version == "jp":
             build(
                 self.build_path() / "include/recipes.inc.c",
-                [Path("src/recipes_jp.yaml")],
+                [Path("src/registry/recipes_jp.yaml")],
                 "recipes",
             )
         else:
             build(
                 self.build_path() / "include/recipes.inc.c",
-                [Path("src/recipes.yaml")],
+                [Path("src/registry/recipes.yaml")],
                 "recipes",
             )
 
@@ -864,7 +888,7 @@ class Configure:
                 self.build_path() / "include/move_data.inc.c",
                 self.build_path() / "include/move_enum.h",
             ],
-            [Path("src/move_table.yaml")],
+            [Path("src/registry/moves.yaml")],
             "move_data",
         )
 
@@ -873,10 +897,26 @@ class Configure:
                 self.build_path() / "include/item_data.inc.c",
                 self.build_path() / "include/item_enum.h",
             ],
-            [Path("src/item_table.yaml")],
+            [Path("src/registry/items.yaml")],
             "item_data",
             variables={
                 "asset_stack": ",".join(self.asset_stack),
+            },
+        )
+
+        action_data_path = self.build_path() / "include/action_data.inc.c"
+        action_enum_path = self.build_path() / "include/action_state_enum.h"
+        build(
+            [action_data_path, action_enum_path],
+            [
+                Path("src/registry/actions.yaml"),
+                BUILD_TOOLS / "action_data.py",
+            ],
+            "action_data",
+            variables={
+                "out_data": posix(action_data_path),
+                "out_enum": posix(action_enum_path),
+                "actions_yaml": "src/registry/actions.yaml",
             },
         )
 
@@ -887,7 +927,7 @@ class Configure:
                     self.build_path() / "include/battle/actor_types.h",
                 ],
                 [
-                    Path("src/battle/actors_jp.yaml"),
+                    Path("src/registry/actors_jp.yaml"),
                 ],
                 "actor_types",
             )
@@ -898,7 +938,7 @@ class Configure:
                     self.build_path() / "include/battle/actor_types.h",
                 ],
                 [
-                    Path("src/battle/actors.yaml"),
+                    Path("src/registry/actors.yaml"),
                 ],
                 "actor_types",
             )
@@ -1682,6 +1722,7 @@ class Configure:
             "battle/actor/*",
             "world/area/*/*/",
             "effects/*.c",
+            "world/action/*.c",
         ]
 
         # Collect overlays keyed by (type_index, name). Later entries in the
@@ -1740,7 +1781,8 @@ class Configure:
         import json
 
         overlays = self.find_overlays()
-        effects = effects_from_yaml(ROOT / "src/effects.yaml")
+        effects = effects_from_yaml(ROOT / "src/registry/effects.yaml")
+        actions = actions_from_yaml(ROOT / "src/registry/actions.yaml")
         effect_names = [effect.name for effect in effects if not effect.empty]
         duplicate_effects = sorted(
             name for name in set(effect_names) if effect_names.count(name) > 1
@@ -1750,6 +1792,12 @@ class Configure:
         }
         missing_effects = sorted(set(effect_names) - effect_sources)
         orphan_effects = sorted(effect_sources - set(effect_names))
+        action_sources = {
+            src_path.stem for src_path, type_index in overlays if type_index == 3
+        }
+        action_overlays = {action.overlay for action in actions}
+        missing_action_overlays = sorted(action_overlays - action_sources)
+        orphan_action_overlays = sorted(action_sources - action_overlays)
 
         errors = []
         if duplicate_effects:
@@ -1758,8 +1806,18 @@ class Configure:
             errors.append("effects without source overlays: " + ", ".join(missing_effects))
         if orphan_effects:
             errors.append("effect overlays missing from effects.yaml: " + ", ".join(orphan_effects))
+        if missing_action_overlays:
+            errors.append(
+                "actions referencing missing overlays: "
+                + ", ".join(missing_action_overlays)
+            )
+        if orphan_action_overlays:
+            errors.append(
+                "action overlays missing from actions.yaml: "
+                + ", ".join(orphan_action_overlays)
+            )
         if errors:
-            raise ValueError("invalid effect overlay configuration\n  " + "\n  ".join(errors))
+            raise ValueError("invalid overlay configuration\n  " + "\n  ".join(errors))
 
         c_precompiled_header_path = Path("include/common.h.gch")
         cxx_precompiled_header_path = Path("include/common.hpp.gch")
@@ -1828,7 +1886,7 @@ class Configure:
                         implicit=[
                             posix(BUILD_TOOLS / "evt_validate_obj.py"),
                             posix(BUILD_TOOLS / "effect_data.py"),
-                            "src/effects.yaml",
+                            "src/registry/effects.yaml",
                         ],
                         variables={"evt_target": posix(c_file)},
                     )
@@ -1848,15 +1906,18 @@ class Configure:
                 force_export = f"--force-export {name}_main"
                 max_loaded_size = "--max-loaded-size 0x1000"
                 require_resolved = "--require-resolved"
+            elif type_index == 3:  # actions
+                require_resolved = "--require-resolved"
 
+            overlay_link_deps = [
+                posix(self.syms_path()),
+                posix(BUILD_TOOLS / "overlay.py"),
+            ] + overlay_evt_validation_stamps
             ninja.build(
                 posix(ovl_path),
                 "ovl_link_convert",
                 objects,
-                implicit=[
-                    posix(self.syms_path()),
-                    posix(BUILD_TOOLS / "overlay.py"),
-                ] + overlay_evt_validation_stamps,
+                implicit=overlay_link_deps,
                 implicit_outputs=[posix(debug_syms_path)],
                 variables={
                     "syms": posix(self.syms_path()),
@@ -1988,7 +2049,9 @@ if __name__ == "__main__":
             build_ninja = ROOT / "build.ninja"
             configure_inputs = [
                 ROOT / BUILD_TOOLS / "configure.py",
+                ROOT / BUILD_TOOLS / "action_data.py",
                 ROOT / BUILD_TOOLS / "effect_data.py",
+                ROOT / "src/registry/actions.yaml",
                 ROOT / "tools/splat_ext/pm_effect_loads.py",
             ]
             for version in VERSIONS:
@@ -2191,7 +2254,9 @@ if __name__ == "__main__":
 
     configure_deps = [
         str(BUILD_TOOLS / "configure.py"),
+        str(BUILD_TOOLS / "action_data.py"),
         str(BUILD_TOOLS / "effect_data.py"),
+        "src/registry/actions.yaml",
         "tools/splat_ext/pm_effect_loads.py",
     ]
     for version in versions:

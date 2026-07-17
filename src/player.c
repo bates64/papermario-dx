@@ -127,14 +127,14 @@ void update_player(void) {
 void check_input_use_partner(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
-    u32 actionState = playerStatus->actionState;
+    s32 actionState = playerStatus->actionState;
 
     if (!(playerStatus->animFlags & PA_FLAG_8BIT_MARIO)
         && (playerStatus->animFlags & PA_FLAG_FORCE_USE_PARTNER || playerStatus->inputDisabledCount == 0)
         && (playerStatus->pressedButtons & BUTTON_C_DOWN && !(playerStatus->flags & PS_FLAG_NO_PARTNER_USAGE))
         && !(playerStatus->pressedButtons & BUTTON_B)
         && !(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS)
-        && actionState <= ACTION_STATE_RUN
+        && action_is_locomotion(actionState)
     ) {
         if (playerData->curPartner == PARTNER_GOOMBARIO) {
             WorldTattleInteractionID = playerStatus->interactingWithID;

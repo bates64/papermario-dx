@@ -62,8 +62,8 @@ API_CALLABLE(N(SetupChapter0)) {
 
     playerData->curHP = 5;
     playerData->curMaxHP = 5;
-    playerData->bootsLevel = 0;
-    playerData->hammerLevel = -1;
+    playerData->bootsLevel = GEAR_RANK_NORMAL;
+    playerData->hammerLevel = GEAR_RANK_NONE;
 
     for (i = 0; i < ARRAY_COUNT(playerData->partners); i++) {
         playerData->partners[i].enabled = false;
@@ -87,8 +87,8 @@ API_CALLABLE(N(SetupChapter1)) {
 
     playerData->curHP = 8;
     playerData->curMaxHP = 8;
-    playerData->bootsLevel = 0;
-    playerData->hammerLevel = 0;
+    playerData->bootsLevel = GEAR_RANK_NORMAL;
+    playerData->hammerLevel = GEAR_RANK_NORMAL;
     playerData->partners[PARTNER_NONE].enabled = true;
 
     for (i = 1; i < ARRAY_COUNT(playerData->partners); i++) {
@@ -103,8 +103,8 @@ API_CALLABLE(N(SetupChapter2)) {
 
     playerData->curHP = 11;
     playerData->curMaxHP = 11;
-    playerData->bootsLevel = 0;
-    playerData->hammerLevel = 0;
+    playerData->bootsLevel = GEAR_RANK_NORMAL;
+    playerData->hammerLevel = GEAR_RANK_NORMAL;
 
     for (i = 0; i < ARRAY_COUNT(playerData->partners); i++) {
         playerData->partners[i].enabled = false;

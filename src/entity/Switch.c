@@ -103,7 +103,7 @@ void entity_small_switch_idle(Entity* entity) {
 
     if (entity->collisionFlags & ENTITY_COLLISION_PLAYER_HAMMER) {
         if (playerStatus->actionState == ACTION_STATE_HAMMER) {
-            if (gPlayerData.hammerLevel < 0) {
+            if (gPlayerData.hammerLevel == GEAR_RANK_NONE) {
                 return;
             }
             exec_entity_commandlist(entity);

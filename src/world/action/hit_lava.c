@@ -16,7 +16,7 @@ enum {
     SUBSTATE_DELAY_INIT         = 21
 };
 
-void action_update_hit_lava(void) {
+export void action_update_hit_lava(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 resetPosX, resetPosY, resetPosZ;
     f32 returnRadians;

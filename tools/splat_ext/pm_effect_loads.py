@@ -81,7 +81,7 @@ glabel fx_{name}
             bss_size=bss_size,
         )
 
-        self.effects = effects_from_yaml(options.opts.src_path / "effects.yaml")
+        self.effects = effects_from_yaml(options.opts.src_path / "registry/effects.yaml")
 
     def effect_s_path(self, effect_name: str):
         return options.opts.build_path / "asm" / "effects" / f"{effect_name}.s"

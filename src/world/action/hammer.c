@@ -52,12 +52,12 @@ void action_hammer_play_hit_fx(s32 hitID) {
     s32 numParticles;
     f32 x, y, z;
 
-    if (gPlayerData.hammerLevel == 2) {
+    if (gPlayerData.hammerLevel >= GEAR_RANK_ULTRA) {
         shakeAmt = 1.2f;
         time = 1;
         radius = 28;
         soundID = SOUND_HAMMER_STRIKE_3;
-    } else if (gPlayerData.hammerLevel == 1) {
+    } else if (gPlayerData.hammerLevel == GEAR_RANK_SUPER) {
         shakeAmt = 0.8f;
         time = 1;
         radius = 16;
@@ -185,29 +185,27 @@ HitID action_hammer_test_swing_collision(void) {
     }
 
     if (ret > NO_COLLIDER && (ret & COLLISION_WITH_ENTITY_BIT)) {
-        s32 hammerLevel = gPlayerData.hammerLevel;
-
         switch (get_entity_type(ret)) {
             case ENTITY_TYPE_HAMMER1_BLOCK:
             case ENTITY_TYPE_HAMMER1_BLOCK_TINY:
-                if (hammerLevel >= 0) {
-                    ret = -1;
+                if (gPlayerData.hammerLevel >= GEAR_RANK_NORMAL) {
+                    ret = NO_COLLIDER;
                 } else {
                     playerStatus->animFlags |= PA_FLAG_SHIVERING;
                 }
                 break;
             case ENTITY_TYPE_HAMMER2_BLOCK:
             case ENTITY_TYPE_HAMMER2_BLOCK_TINY:
-                if (hammerLevel >= 1) {
-                    ret = -1;
+                if (gPlayerData.hammerLevel >= GEAR_RANK_SUPER) {
+                    ret = NO_COLLIDER;
                 } else {
                     playerStatus->animFlags |= PA_FLAG_SHIVERING;
                 }
                 break;
             case ENTITY_TYPE_HAMMER3_BLOCK:
             case ENTITY_TYPE_HAMMER3_BLOCK_TINY:
-                if (hammerLevel >= 2) {
-                    ret = -1;
+                if (gPlayerData.hammerLevel >= GEAR_RANK_ULTRA) {
+                    ret = NO_COLLIDER;
                 } else {
                     playerStatus->animFlags |= PA_FLAG_SHIVERING;
                 }
@@ -219,7 +217,7 @@ HitID action_hammer_test_swing_collision(void) {
             case ENTITY_TYPE_BLUE_SWITCH:
             case ENTITY_TYPE_RED_SWITCH:
             case ENTITY_TYPE_BRICK_BLOCK:
-                ret = -1;
+                ret = NO_COLLIDER;
                 break;
         }
     }
@@ -227,7 +225,7 @@ HitID action_hammer_test_swing_collision(void) {
     return ret;
 }
 
-void action_update_hammer(void) {
+export void action_update_hammer(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     HammerHit->unk_1C = 0;
@@ -244,14 +242,14 @@ void action_update_hammer(void) {
         playerStatus->animNotifyValue = 0;
         HammerHit->hitID = action_hammer_test_swing_collision();
 
-        if (gPlayerData.hammerLevel == 2) {
+        if (gPlayerData.hammerLevel >= GEAR_RANK_ULTRA) {
             soundID = SOUND_HAMMER_SWING_3;
             anim = ANIM_MarioW1_Smash3_Hit;
             if (HammerHit->hitID <= NO_COLLIDER) {
                 soundID = SOUND_HAMMER_SWING_3;
                 anim = ANIM_MarioW1_Smash3_Miss;
             }
-        } else if (gPlayerData.hammerLevel == 1) {
+        } else if (gPlayerData.hammerLevel == GEAR_RANK_SUPER) {
             soundID = SOUND_HAMMER_SWING_2;
             anim = ANIM_MarioW1_Smash2_Hit;
             if (HammerHit->hitID <= NO_COLLIDER) {
@@ -294,7 +292,6 @@ void action_hammer_end_swing(void) {
     f32 playerX, playerY, playerZ;
     f32 x, y, z;
     s32 result;
-    s32 hammerLevel;
     s32 soundID;
     s32 i;
 
@@ -367,10 +364,9 @@ void action_hammer_end_swing(void) {
     }
 
     if (HammerHit->timer == 2) {
-        hammerLevel = gPlayerData.hammerLevel;
-        if (hammerLevel == 2) {
+        if (gPlayerData.hammerLevel >= GEAR_RANK_ULTRA) {
             soundID = SOUND_HAMMER_SWING_3;
-        } else if (hammerLevel == 1) {
+        } else if (gPlayerData.hammerLevel == GEAR_RANK_SUPER) {
             soundID = SOUND_HAMMER_SWING_2;
         } else {
             soundID = SOUND_HAMMER_SWING_1;
@@ -386,7 +382,7 @@ void action_hammer_end_swing(void) {
             playerStatus->flags |= PS_FLAG_HAMMER_CHECK;
         }
 
-        if (HammerHit->hitID <= NO_COLLIDER && gPlayerData.hammerLevel >= 2) {
+        if (HammerHit->hitID <= NO_COLLIDER && gPlayerData.hammerLevel >= GEAR_RANK_ULTRA) {
             gCurrentHiddenPanels.tryFlipTrigger = true;
             gCurrentHiddenPanels.flipTriggerPosY = playerStatus->pos.y;
         }

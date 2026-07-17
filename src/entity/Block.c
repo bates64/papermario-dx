@@ -406,11 +406,11 @@ s32 entity_block_handle_collision(Entity* entity) {
         case ENTITY_TYPE_HAMMER1_BLOCK:
         case ENTITY_TYPE_HAMMER1_BLOCK_TINY:
             if (breakBlock) {
-                if (gPlayerData.bootsLevel < 1) {
+                if (gPlayerData.bootsLevel < GEAR_RANK_SUPER) {
                     breakBlock = false;
                 }
             } else {
-                if (gPlayerData.hammerLevel > -1) {
+                if (gPlayerData.hammerLevel > GEAR_RANK_NONE) {
                     breakBlock = true;
                 }
             }
@@ -423,10 +423,10 @@ s32 entity_block_handle_collision(Entity* entity) {
         case ENTITY_TYPE_HAMMER2_BLOCK:
         case ENTITY_TYPE_HAMMER2_BLOCK_TINY:
             if (breakBlock) {
-                if (gPlayerData.bootsLevel < 2) {
+                if (gPlayerData.bootsLevel < GEAR_RANK_ULTRA) {
                     breakBlock = false;
                 }
-            } else if (gPlayerData.hammerLevel > 0) {
+            } else if (gPlayerData.hammerLevel > GEAR_RANK_NORMAL) {
                 breakBlock = true;
             }
             if (!breakBlock) {
@@ -437,7 +437,7 @@ s32 entity_block_handle_collision(Entity* entity) {
             break;
         case ENTITY_TYPE_HAMMER3_BLOCK:
         case ENTITY_TYPE_HAMMER3_BLOCK_TINY:
-            if (gPlayerData.hammerLevel < 2) {
+            if (gPlayerData.hammerLevel < GEAR_RANK_ULTRA) {
                 return true;
             }
             set_entity_commandlist(entity, Entity_BreakingBlock_Script);

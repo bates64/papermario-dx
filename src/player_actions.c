@@ -6,11 +6,11 @@
 #include "world/disguise.h"
 #include "npc.h"
 #include "effects.h"
-#include "ld_addrs.h"
+#include "dx/overlay.h"
 
-extern Addr world_action_CLASS_VRAM;
-
-void* LastLoadedActionOffset;
+static Overlay* CurrentActionOverlay;
+static ActionFamily CurrentActionFamily;
+static ActionUpdate CurrentActionUpdate;
 s32 gSpinHistoryBufferPos;
 s32 gSpinHistoryPosX[5];
 s32 gSpinHistoryPosY[5];
@@ -22,6 +22,29 @@ s32 PrevPlayerCamRelativeYaw = 0;
 f32 LastMidairPlayerVelY = 0.0;
 
 s32 (*LandingAdjustCamCallback)(void) = nullptr;
+
+void unload_player_action(void) {
+    ovl_unload(CurrentActionOverlay);
+    CurrentActionOverlay = nullptr;
+    CurrentActionFamily = nullptr;
+    CurrentActionUpdate = nullptr;
+}
+
+static void load_player_action(Action* action) {
+    ASSERT_MSG(action->entry != nullptr, "Action state %d has no entry point",
+               (int)gPlayerStatus.actionState);
+
+    if (CurrentActionOverlay == nullptr ||
+        strcmp(CurrentActionFamily, action->family) != 0) {
+        unload_player_action();
+        CurrentActionOverlay = ovl_load(action->family, OVL_ACTION);
+        CurrentActionFamily = action->family;
+    }
+
+    CurrentActionUpdate = ovl_import(CurrentActionOverlay, action->entry);
+    ASSERT_MSG(CurrentActionUpdate != nullptr, "Action overlay '%s' has no export '%s'",
+               action->family, action->entry);
+}
 
 void phys_set_landing_adjust_cam_check(s32 (*funcPtr)(void)) {
     LandingAdjustCamCallback = funcPtr;
@@ -89,7 +112,7 @@ void phys_reset_spin_history(void) {
         gSpinHistoryPosZ[i] = 0;
     }
 
-    LastLoadedActionOffset = nullptr;
+    unload_player_action();
 }
 
 void phys_update_action_state(void) {
@@ -152,13 +175,10 @@ void phys_update_action_state(void) {
 
         Action* action = &PlayerActionsTable[gPlayerStatus.actionState];
 
-        if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
-            if (action->dmaStart != nullptr && action->dmaStart != LastLoadedActionOffset) {
-                LastLoadedActionOffset = action->dmaStart;
-                dma_copy(action->dmaStart, action->dmaEnd, world_action_CLASS_VRAM);
-            }
+        if ((playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) || CurrentActionOverlay == nullptr) {
+            load_player_action(action);
         }
-        action->update();
+        CurrentActionUpdate();
     } while (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED);
 }
 
@@ -172,20 +192,48 @@ void phys_peach_update(void) {
 
         Action* action = &PlayerActionsTable[gPlayerStatus.actionState];
 
-        if (action->flag) {
-            if (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED) {
-                if (action->dmaStart != nullptr && action->dmaStart != LastLoadedActionOffset) {
-                    LastLoadedActionOffset = action->dmaStart;
-                    dma_copy(action->dmaStart, action->dmaEnd, world_action_CLASS_VRAM);
-                }
+        if (action->enabledForPeach) {
+            if ((gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED) || CurrentActionOverlay == nullptr) {
+                load_player_action(action);
             }
-            action->update();
+            CurrentActionUpdate();
         }
     } while (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED);
 
     peach_check_for_parasol_input();
     if (gPlayerStatus.animFlags & PA_FLAG_INVISIBLE) {
         peach_sync_disguise_npc();
+    }
+}
+
+b32 action_is_locomotion(s32 actionState) {
+    switch (actionState) {
+        case ACTION_STATE_IDLE:
+        case ACTION_STATE_WALK:
+        case ACTION_STATE_RUN:
+            return true;
+        default:
+            return false;
+    }
+}
+
+b32 action_8bit_supported(s32 actionState) {
+    switch (actionState) {
+        case ACTION_STATE_IDLE:
+        case ACTION_STATE_WALK:
+        case ACTION_STATE_RUN:
+        case ACTION_STATE_JUMP:
+        case ACTION_STATE_BOUNCE:
+        case ACTION_STATE_HOP:
+        case ACTION_STATE_LAUNCH:
+        case ACTION_STATE_LANDING_ON_SWITCH:
+        case ACTION_STATE_FALLING:
+        case ACTION_STATE_STEP_DOWN:
+        case ACTION_STATE_LAND:
+        case ACTION_STATE_STEP_DOWN_LAND:
+            return true;
+        default:
+            return false;
     }
 }
 
@@ -200,7 +248,7 @@ void set_action_state(s32 actionState) {
     }
 
     if (playerStatus->animFlags & PA_FLAG_8BIT_MARIO) {
-        if (actionState >= ACTION_STATE_IDLE && actionState < ACTION_STATE_TALK) {
+        if (action_8bit_supported(actionState)) {
             playerStatus->prevActionState = playerStatus->actionState;
             playerStatus->actionState = actionState;
             playerStatus->flags |= PS_FLAG_ACTION_STATE_CHANGED;
@@ -262,11 +310,9 @@ void set_action_state(s32 actionState) {
 }
 
 void update_locomotion_state(void) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-
-    if (!is_ability_active(ABILITY_SLOW_GO) &&
-        SQ(playerStatus->stickAxis[0]) + SQ(playerStatus->stickAxis[1]) > SQ(55))
-    {
+    if (is_ability_active(ABILITY_SLOW_GO)) {
+        set_action_state(ACTION_STATE_WALK);
+    } else if (SQ(gPlayerStatus.stickAxis[0]) + SQ(gPlayerStatus.stickAxis[1]) > SQ(55)) {
         set_action_state(ACTION_STATE_RUN);
     } else {
         set_action_state(ACTION_STATE_WALK);
@@ -274,47 +320,38 @@ void update_locomotion_state(void) {
 }
 
 void start_falling(void) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-
     set_action_state(ACTION_STATE_FALLING);
-    LOAD_INTEGRATOR_FALL(playerStatus->gravityIntegrator);
+    LOAD_INTEGRATOR_FALL(gPlayerStatus.gravityIntegrator);
 }
 
 void start_bounce_a(void) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-
     set_action_state(ACTION_STATE_BOUNCE);
-    playerStatus->gravityIntegrator[0] = 10.0f;
-    playerStatus->gravityIntegrator[1] = -2.0f;
-    playerStatus->gravityIntegrator[2] = 0.8f;
-    playerStatus->gravityIntegrator[3] = -0.75f;
+    gPlayerStatus.gravityIntegrator[0] = 10.0f;
+    gPlayerStatus.gravityIntegrator[1] = -2.0f;
+    gPlayerStatus.gravityIntegrator[2] = 0.8f;
+    gPlayerStatus.gravityIntegrator[3] = -0.75f;
 }
 
 void start_bounce_b(void) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-
     set_action_state(ACTION_STATE_BOUNCE);
-    playerStatus->gravityIntegrator[0] = 8.0f;
-    playerStatus->gravityIntegrator[1] = -1.0f;
-    playerStatus->gravityIntegrator[2] = 0;
-    playerStatus->gravityIntegrator[3] = 0;
-    playerStatus->flags |= PS_FLAG_SCRIPTED_FALL;
+    gPlayerStatus.gravityIntegrator[0] = 8.0f;
+    gPlayerStatus.gravityIntegrator[1] = -1.0f;
+    gPlayerStatus.gravityIntegrator[2] = 0;
+    gPlayerStatus.gravityIntegrator[3] = 0;
+    gPlayerStatus.flags |= PS_FLAG_SCRIPTED_FALL;
 }
 
 b32 check_input_hammer(void) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-    PlayerData* playerData = &gPlayerData;
-
-    if (playerStatus->pressedButtons & BUTTON_B) {
-        if (playerStatus->flags & PS_FLAG_FALLING) {
+    if (gPlayerStatus.pressedButtons & BUTTON_B) {
+        if (gPlayerStatus.flags & PS_FLAG_FALLING) {
             return false;
         }
 
-        if (gPartnerStatus.partnerActionState == PARTNER_ACTION_USE && playerData->curPartner == PARTNER_WATT) {
+        if (gPartnerStatus.partnerActionState == PARTNER_ACTION_USE && gPlayerData.curPartner == PARTNER_WATT) {
             return false;
         }
 
-        if (playerData->hammerLevel == -1) {
+        if (gPlayerData.hammerLevel == GEAR_RANK_NONE) {
             return false;
         }
 
@@ -367,35 +404,41 @@ b32 check_input_jump(void) {
 }
 
 void check_input_spin(void) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-    PlayerSpinState* spinState = &gPlayerSpinState;
-    PlayerSpinState* temp2 = spinState;
+    s32 actionState = gPlayerStatus.actionState;
+    s32 btnPressed = gPlayerStatus.pressedButtons & Z_TRIG;
 
-    if (!((playerStatus->flags & (PS_FLAG_NO_STATIC_COLLISION | PS_FLAG_CUTSCENE_MOVEMENT)) ||
-          (playerStatus->animFlags & PA_FLAG_USING_WATT) ||
-          (playerStatus->curButtons & BUTTON_C_DOWN) ||
-          is_ability_active(ABILITY_SLOW_GO))) {
+    // no spinning if normal collisions are disabled
+    if (gPlayerStatus.flags & (PS_FLAG_NO_STATIC_COLLISION | PS_FLAG_CUTSCENE_MOVEMENT)) {
+        return;
+    }
 
-        s32 actionState = playerStatus->actionState;
-        s32 btnPressed = playerStatus->pressedButtons & Z_TRIG;
+    // cant spin with Watt out or if already spinning
+    if (gPlayerStatus.animFlags & (PA_FLAG_USING_WATT | PA_FLAG_SPINNING)) {
+        return;
+    }
 
-        // TODO
-        if (actionState != ACTION_STATE_RIDE) {
-            if (actionState < ACTION_STATE_STEP_UP) {
-                if (actionState < ACTION_STATE_JUMP) {
-                    if (actionState >= 0 && !(playerStatus->animFlags & PA_FLAG_SPINNING)) {
-                        if (btnPressed || spinState->hasBufferedSpin) {
-                            set_action_state(ACTION_STATE_SPIN);
-                            if (spinState->hasBufferedSpin != false) {
-                                if (spinState->bufferedStickAxis.x != 0 || spinState->bufferedStickAxis.y != 0) {
-                                    playerStatus->prevActionState = temp2->prevActionState;
-                                } else {
-                                    playerStatus->prevActionState = ACTION_STATE_IDLE;
-                                }
-                            }
-                        }
-                    }
-                }
+    // cant spin and use partner at the same time
+    if (gPlayerStatus.curButtons & BUTTON_C_DOWN) {
+        return;
+    }
+
+    // cant spin with Slow Go equipped
+    if (is_ability_active(ABILITY_SLOW_GO)) {
+        return;
+    }
+
+    // only allow spinning in a locomotion action state
+    if (!action_is_locomotion(actionState)) {
+        return;
+    }
+
+    if (btnPressed || gPlayerSpinState.hasBufferedSpin) {
+        set_action_state(ACTION_STATE_SPIN);
+        if (gPlayerSpinState.hasBufferedSpin) {
+            if (gPlayerSpinState.bufferedStickAxis.x != 0 || gPlayerSpinState.bufferedStickAxis.y != 0) {
+                gPlayerStatus.prevActionState = gPlayerSpinState.prevActionState;
+            } else {
+                gPlayerStatus.prevActionState = ACTION_STATE_IDLE;
             }
         }
     }

@@ -15,7 +15,7 @@ SUITE_ROOT = Path(__file__).resolve().with_suffix("")
 PASS_DIR = SUITE_ROOT / "pass"
 FAIL_DIR = SUITE_ROOT / "fail"
 VALIDATOR = ROOT / "tools/build/evt_validate_obj.py"
-EFFECTS_YAML = ROOT / "src/effects.yaml"
+EFFECTS_YAML = ROOT / "src/registry/effects.yaml"
 
 
 def parse_args() -> argparse.Namespace:

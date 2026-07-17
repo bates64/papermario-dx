@@ -7,6 +7,7 @@
 #include "model.h"
 #include "game_modes.h"
 #include "dx/overlay.h"
+#include "world/actions.h"
 
 extern u16 gFrameBuf0[];
 extern u16 gFrameBuf1[];
@@ -89,6 +90,7 @@ void state_step_battle(void) {
         clear_npcs();
         clear_entity_data(true);
         clear_trigger_data();
+        unload_player_action();
         DMA_COPY_SEGMENT(battle_code);
         initialize_battle();
         btl_save_world_cameras();

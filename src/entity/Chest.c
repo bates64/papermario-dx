@@ -371,22 +371,22 @@ void entity_GiantChest_give_equipment(Entity* entity) {
 
     switch (data->itemID) {
         case ITEM_BOOTS:
-            gPlayerData.bootsLevel = 0;
+            gPlayerData.bootsLevel = GEAR_RANK_NORMAL;
             break;
         case ITEM_SUPER_BOOTS:
-            gPlayerData.bootsLevel = 1;
+            gPlayerData.bootsLevel = GEAR_RANK_SUPER;
             break;
         case ITEM_ULTRA_BOOTS:
-            gPlayerData.bootsLevel = 2;
+            gPlayerData.bootsLevel = GEAR_RANK_ULTRA;
             break;
         case ITEM_HAMMER:
-            gPlayerData.hammerLevel = 0;
+            gPlayerData.hammerLevel = GEAR_RANK_NORMAL;
             break;
         case ITEM_SUPER_HAMMER:
-            gPlayerData.hammerLevel = 1;
+            gPlayerData.hammerLevel = GEAR_RANK_SUPER;
             break;
         case ITEM_ULTRA_HAMMER:
-            gPlayerData.hammerLevel = 2;
+            gPlayerData.hammerLevel = GEAR_RANK_ULTRA;
             break;
     }
 

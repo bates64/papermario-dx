@@ -769,7 +769,7 @@ void update_encounters_neutral(void) {
                             triggeredBattle = false;
                         }
                         if (triggeredBattle) {
-                            if (gPlayerData.bootsLevel < 0) {
+                            if (gPlayerData.bootsLevel == GEAR_RANK_NONE) {
                                 currentEncounter->hitType = ENCOUNTER_TRIGGER_NONE;
                                 enemy->encountered = ENCOUNTER_TRIGGER_NONE;
                                 currentEncounter->curEncounter = encounter;

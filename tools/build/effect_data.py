@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 import yaml as yaml_loader
 
@@ -9,7 +9,7 @@ import yaml as yaml_loader
 class Effect:
     name: str
     args: str
-    gfx: str
+    gfx: Optional[str]
     empty: bool
     returns_void: bool
 
@@ -37,11 +37,17 @@ def effects_from_yaml(yaml_path: Path) -> List[Effect]:
     effects: List[Effect] = []
     for effect_yaml in effects_yaml:
         name = str(effect_yaml.get("name", f"{len(effects):02X}"))
+        gfx = effect_yaml.get("gfx", name)
+        if gfx == "None":
+            gfx = None
+        elif gfx is not None and not isinstance(gfx, str):
+            raise ValueError(f"effect {name} has invalid gfx {gfx!r}")
+
         effects.append(
             Effect(
                 name=name,
                 args=effect_yaml.get("args", ""),
-                gfx=effect_yaml.get("gfx", name),
+                gfx=gfx,
                 empty="name" not in effect_yaml,
                 returns_void=effect_yaml.get("void", False),
             )

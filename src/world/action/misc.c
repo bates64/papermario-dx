@@ -6,7 +6,7 @@
 
 BSS f32 D_802B6770_E27C80;
 
-void action_update_ride(void) {
+export void action_update_ride(void) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
     PlayerStatus* playerStatus = &gPlayerStatus;
 
@@ -29,7 +29,7 @@ void action_update_ride(void) {
     }
 }
 
-void action_update_state_23(void) {
+export void action_update_state_23(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 hitDirZ;
     f32 hitDirX;
@@ -114,7 +114,7 @@ void action_update_state_23(void) {
     }
 }
 
-void action_update_launch(void) {
+export void action_update_launch(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
@@ -138,7 +138,7 @@ void action_update_launch(void) {
     }
 }
 
-void action_update_first_strike(void) {
+export void action_update_first_strike(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
@@ -159,7 +159,7 @@ void action_update_first_strike(void) {
     }
 }
 
-void action_update_raise_arms(void) {
+export void action_update_raise_arms(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
@@ -178,7 +178,7 @@ void action_update_raise_arms(void) {
     }
 }
 
-void action_update_pushing_block(void) {
+export void action_update_pushing_block(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
@@ -210,7 +210,7 @@ void action_update_pushing_block(void) {
     }
 }
 
-void action_update_talk(void) {
+export void action_update_talk(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {

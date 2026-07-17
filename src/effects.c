@@ -15,6 +15,11 @@ void reset_effect_utils(void);
     .graphicsDmaEnd = gfx_name##_ROM_END, \
 }
 
+#define FX_ENTRY_NO_GFX(name) { \
+    .overlayName = #name, \
+    .entryPointName = #name "_main", \
+}
+
 #include "effects/effect_table.c"
 
 /// Used for unbound function points in effect structs.

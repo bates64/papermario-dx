@@ -2,7 +2,7 @@
 #include "world/partners.h"
 
 API_CALLABLE(N(InitializeDemoEquipment)) {
-    gPlayerData.bootsLevel = 1;
+    gPlayerData.bootsLevel = GEAR_RANK_SUPER;
     return ApiStatus_DONE2;
 }
 

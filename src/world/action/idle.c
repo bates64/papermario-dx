@@ -33,7 +33,7 @@ enum {
 
 void action_update_idle_peach(void);
 
-void action_update_idle(void) {
+export void action_update_idle(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
     s32 firstFrame = false;

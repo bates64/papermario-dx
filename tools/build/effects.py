@@ -4,6 +4,9 @@ from pathlib import Path
 from effect_data import effects_from_yaml
 
 
+GENERATED_NOTICE = "/* This file is auto-generated. Do not edit. */\n"
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Builds effect table, function declarations, and enum")
     parser.add_argument("in_yaml")
@@ -21,7 +24,10 @@ if __name__ == "__main__":
         effect_enum_text += f"    {effect.enum_name} = 0x{i:02X},\n"
         effect_arg_counts_text += f"    {effect.arg_count},\n"
         if not effect.empty:
-            effect_table_text += f"    FX_ENTRY({effect.name}, effect_gfx_{effect.gfx}),\n"
+            if effect.gfx is None:
+                effect_table_text += f"    FX_ENTRY_NO_GFX({effect.name}),\n"
+            else:
+                effect_table_text += f"    FX_ENTRY({effect.name}, effect_gfx_{effect.gfx}),\n"
             fx_decls_text += effect.get_decl("fx_" + effect.name) + ";\n"
         else:
             effect_table_text += "    {},\n"
@@ -36,4 +42,4 @@ if __name__ == "__main__":
         f.write(effect_table_text + "};\n\n" + effect_arg_counts_text + "};\n")
 
     with open(args.out_dir / "effect_defs.h", "w") as f:
-        f.write(effect_enum_text + "\n\n" + fx_decls_text)
+        f.write(GENERATED_NOTICE + "\n#pragma once\n\n" + effect_enum_text + "\n\n" + fx_decls_text)

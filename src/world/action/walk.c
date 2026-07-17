@@ -27,7 +27,7 @@ AnimID WalkPeachAnims[] = {
 static void action_update_run_peach(void);
 static void action_update_walk_peach(void);
 
-void action_update_walk(void) {
+export void action_update_walk(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
     b32 firstFrame = false;
@@ -108,7 +108,7 @@ void action_update_walk(void) {
     playerData->walkingStepsTaken++;
 }
 
-void action_update_run(void) {
+export void action_update_run(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
     b32 firstFrame = false;

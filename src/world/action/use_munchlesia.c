@@ -15,7 +15,7 @@ enum {
     SUBSTATE_GET_UP     = 5,
 };
 
-void action_update_use_munchlesia(void) {
+export void action_update_use_munchlesia(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 colliderID;
     f32 hitPosY;

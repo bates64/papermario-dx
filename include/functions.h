@@ -556,6 +556,8 @@ s32 add_star_points(s32 amt);
 s32 add_star_pieces(s32 amt);
 s32 make_item_entity_at_player(s32 itemID, s32 arg1, s32 pickupMsgFlags);
 
+b32 action_is_locomotion(s32 actionState);
+b32 action_8bit_supported(s32 actionState);
 void set_action_state(s32 actionState);
 s32 get_collider_flags(s32 colliderID);
 void suggest_player_anim_always_forward(AnimID anim);

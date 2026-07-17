@@ -15,7 +15,7 @@ enum {
 
 static s32 get_collider_below_spin_jump(void);
 
-void action_update_spin_jump(void) {
+export void action_update_spin_jump(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     CollisionStatus* collisionStatus = &gCollisionStatus;
     HiddenPanelsData* panels;

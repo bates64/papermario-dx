@@ -26,7 +26,7 @@ AnimID StepUpPeachAnims[] = {
 
 void action_update_step_up_set_peach_anim(void);
 
-void action_update_step_up(void) {
+export void action_update_step_up(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     HitID colliderID;
     f32 cosTheta;
@@ -82,7 +82,7 @@ void action_update_step_up_set_peach_anim(void) {
     }
 }
 
-void action_update_step_up_peach(void) {
+export void action_update_step_up_peach(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {

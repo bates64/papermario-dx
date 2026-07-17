@@ -38,7 +38,7 @@ void initialize_jump(void) {
     collisionStatus->curFloor = NO_COLLIDER;
 }
 
-void action_update_jump(void) {
+export void action_update_jump(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     AnimID anim;
 
@@ -73,7 +73,7 @@ void action_update_jump(void) {
     playerStatus->timeInAir++;
 }
 
-void action_update_landing_on_switch(void) {
+export void action_update_landing_on_switch(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     CollisionStatus* collisionStatus = &gCollisionStatus;
     AnimID anim;
@@ -111,7 +111,7 @@ void action_update_landing_on_switch(void) {
     playerStatus->actionSubstate++;
 }
 
-void action_update_falling(void) {
+export void action_update_falling(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS) {
@@ -138,7 +138,7 @@ void action_update_falling(void) {
     playerStatus->timeInAir++;
 }
 
-void action_update_step_down(void) {
+export void action_update_step_down(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 colliderID;
     s32 surfaceType;
