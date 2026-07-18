@@ -113,10 +113,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     if (gMapSettings.textureArchive != nullptr) {
         sprintf(wMapTexName, "%s_tex", gMapSettings.textureArchive);
     } else {
-        char texStr[17];
-        strcpy(texStr, mapId);
-        texStr[3] = '\0';
-        sprintf(wMapTexName, "%s_tex", texStr);
+        sprintf(wMapTexName, "%s_tex", gAreas[areaID].id);
     }
 
     if (gMapSettings.bgName != nullptr) {
