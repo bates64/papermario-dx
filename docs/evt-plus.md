@@ -953,8 +953,8 @@ Each destination consumes one value from the current buffer and advances the buf
 `MemGet` and `MemSet` provide a direct bridge between EVT variables and typed C data. They are useful for small engine fields which do not warrant a dedicated API function:
 
 ```c
-MemGet(EVT_MEM_S16, LVar0, gPlayerData.coins)
-MemSet(EVT_MEM_S16, gPlayerData.coins, 10)
+MemGet(LVar0, gPlayerData.coins)
+MemSet(gPlayerData.coins, 10)
 ```
 
 The address is taken automatically. Pass the C field directly rather than wrapping it in `Ref(...)`.
@@ -964,30 +964,30 @@ A compile-time array element can be used in the same way:
 ```c
 s16 MyVals[] = { 1, 2, 3, 4 };
 
-MemGet(EVT_MEM_S16, LVar0, MyVals[2]) // LVar0 = 3
+MemGet(LVar0, MyVals[2]) // LVar0 = 3
 ```
 
 Use `MemGetIndex` or `MemSetIndex` when the index is not known until the script runs:
 
 ```c
 Set(LVar1, 2)
-MemGetIndex(EVT_MEM_S16, LVar0, MyVals, LVar1) // get 3 from MyVals[2]
-MemSetIndex(EVT_MEM_S16, MyVals, LVar1, -7)    // set MyVals[2] = -7
+MemGetIndex(LVar0, MyVals, LVar1) // get 3 from MyVals[2]
+MemSetIndex(MyVals, LVar1, -7)    // set MyVals[2] = -7
 ```
 
-The available memory types are:
+The memory type is inferred with `_Generic`. The supported types are:
 
 | Type | Result |
 | --- | --- |
-| `EVT_MEM_U8` | unsigned 8-bit integer |
-| `EVT_MEM_S8` | signed 8-bit integer |
-| `EVT_MEM_U16` | unsigned 16-bit integer |
-| `EVT_MEM_S16` | signed 16-bit integer |
-| `EVT_MEM_U32` | unsigned 32-bit word |
-| `EVT_MEM_S32` | signed 32-bit integer |
-| `EVT_MEM_F32` | numeric 32-bit float |
+| `u8` | unsigned 8-bit integer |
+| `s8` | signed 8-bit integer |
+| `u16` | unsigned 16-bit integer |
+| `s16` | signed 16-bit integer |
+| `u32` | unsigned 32-bit word |
+| `s32` | signed 32-bit integer |
+| `f32` | numeric 32-bit float |
 
-Unsigned loads are zero-extended and signed loads are sign-extended. Narrow stores discard any bits which do not fit. `EVT_MEM_F32` converts between a real C `f32` and EVT's fixed-point float representation, so values are limited to normal EVT float precision. `EVT_MEM_U32` transfers the raw 32-bit pattern. Some patterns overlap EVT's encoded variable and float ranges, so later use of that value by an ordinary EVT command may interpret it as an EvtVar.
+Unsigned loads are zero-extended and signed loads are sign-extended. Narrow stores discard any bits which do not fit. An `f32` access converts between a real C float and EVT's fixed-point float representation, so values are limited to normal EVT float precision. A `u32` access transfers the raw 32-bit pattern. Some patterns overlap EVT's encoded variable and float ranges, so later use of that value by an ordinary EVT command may interpret it as an EvtVar.
 
 These commands are intentionally low-level and do not perform type or bounds checking. The C address or array must exist at link time; an arbitrary pointer stored in an LVar cannot be used as the base. The memory type must match the declared C type because it determines both the access width and the indexed stride. There is no array bounds checking, and negative indices are permitted. Writes must target writable memory. Accessing a null or misaligned address causes an assertion.
 

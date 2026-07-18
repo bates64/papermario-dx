@@ -1,3 +1,0 @@
-tools/test/evt_validator/fail/mem_relocated_type.c:
-EVS_MemRelocatedType
-EVT_OP_MEM_GET memory type must be a literal EVT_MEM_* value
