@@ -4,6 +4,15 @@
 #include "evt.h"
 #include <stdarg.h>
 
+#ifdef __cplusplus
+#include <type_traits>
+
+template <typename Actual, typename Expected>
+struct EvtFuncSignatureMatches {
+    static_assert(std::is_same_v<Actual, Expected>, "EVT_BAD_SIGNATURE");
+};
+#endif
+
 #ifdef _LANGUAGE_C_PLUS_PLUS
 extern "C" {
 #endif
@@ -23,6 +32,8 @@ extern "C" {
 
 #define EVT_LOCAL_VAR_CUTOFF     -20000000
 #define EVT_LOCAL_VAR_OFFSET      30000000
+#define EVT_ARG_VAR_CUTOFF       -34000000
+#define EVT_ARG_VAR_OFFSET        35000000
 #define EVT_MAP_VAR_CUTOFF       -40000000
 #define EVT_MAP_VAR_OFFSET        50000000
 #define EVT_LOCAL_FLAG_CUTOFF    -60000000
@@ -46,6 +57,8 @@ extern "C" {
 #define EVT_FIXED_END           -240000000
 #define EVT_IGNORE_ARG          -250000000 // used by a couple functions to selectively ignore args
 #define EVT_LIMIT               -270000000 // TODO better name
+#define EVT_ARG_INT_MARKER      (EVT_LIMIT - 1)
+#define EVT_ARG_FLOAT_MARKER    (EVT_LIMIT - 2)
 
  // This fixes an issue with fixed point numbers not being correct. Potentially a truncation vs round difference.
 #define FLOAT_ROUND(x) ((x) >=0 ? (f64)((x) + 0.9) : (f64)(x))
@@ -55,32 +68,32 @@ extern "C" {
 #define EVT_FIXED_TO_FLOAT(x) ({f32 var = (x) + EVT_FIXED_OFFSET; var /= 1024.0f; var;})
 
 /// Progammatically converts f32 --> Float
-#define FLOAT_TO_FIXED(x) (((x) * 1024.0f) + -EVT_FIXED_OFFSET)
+#define FLOAT_TO_FIXED(x) ((s32)((x) * 1024.0f) - EVT_FIXED_OFFSET)
 
 /// Address/pointer constant.
 #define Ref(sym) ((Bytecode) &(sym))
 
-/// Local Word. A variable local to the current thread.
-/// LWs are copied to any threads created by this one (Exec, ExecWait, Thread, ChildThread).
-/// Additionally, ExecWait copies LWs back from the spawned thread when it completes.
+/// Local Word. A variable local to the current script.
+/// These are copied to scripts created by Exec, ExecWait, Thread, and ChildThread.
+/// Additionally, ExecWait copies LWs back from the child when it completes.
 ///
 /// Range: `0 <= v < 0x10`
 #define LocalVar(INDEX) ((INDEX) - EVT_LOCAL_VAR_OFFSET)
 
-/// Global Word. A variable global to all threads.
+/// Global Word. A variable global to all scripts.
 /// Cleared upon entering a new map.
 ///
 /// Range: `0 <= v < 0x10`
 #define MapVar(INDEX) ((INDEX) - EVT_MAP_VAR_OFFSET)
 
-/// Local Flag. A boolean variable local to the current thread.
-/// LFs are copied to any threads created by this one (Exec, ExecWait, Thread, ChildThread).
-/// Additionally, ExecWait copies LFs back from the spawned thread when it completes.
+/// Local Flag. A boolean variable local to the current script.
+/// These are copied to scripts created by Exec, ExecWait, Thread, and ChildThread.
+/// Additionally, ExecWait copies LFs back from the child when it completes.
 ///
 /// Range: `0 <= v < 0x60`
 #define LocalFlag(INDEX) ((INDEX) - EVT_LOCAL_FLAG_OFFSET)
 
-/// Global Flag. A boolean variable global to all threads.
+/// Global Flag. A boolean variable global to all scripts.
 /// Cleared upon entering a new map.
 ///
 /// Range: `0 <= v < 0x60`
@@ -115,21 +128,98 @@ extern "C" {
 /// Used for almost all savefile state.
 #define GameByte(INDEX) ((INDEX) - EVT_GAME_BYTE_OFFSET)
 
-/// User Word. A variable stored within the current thread's array.
+/// User Word. A variable stored within the current script's array.
 /// You can load an array with UseArray or temporarily allocate one with MallocArray, then get/set values with
 /// the `ArrayVar(index)` macro.
 ///
 /// Range: `0 <= v`
 #define ArrayVar(INDEX) ((INDEX) - EVT_ARRAY_VAR_OFFSET)
 
-/// User Flag. A boolean variable stored within the current thread's flag array.
+/// User Flag. A boolean variable stored within the current script's flag array.
 /// The flag array is distinct from the word array (unlike UseBuf and UseFBuf).
 ///
 /// Range: `0 <= v`
 #define ArrayFlag(INDEX) ((INDEX) - EVT_ARRAY_FLAG_OFFSET)
 
+/// Argument Word. A variable parameter to this script execution.
+/// Args are set by Exec/ExecGetID/ExecWait and are not inherited by child scripts or thread blocks.
+/// Assumed to be constant. Mutating by `evt_set_variable` or `evt_set_float_variable` will trigger PANIC.
+#define ArgVar(INDEX) ((INDEX) - EVT_ARG_VAR_OFFSET)
+
+/// Force an Exec/ExecGetID/ExecWait argument to be dereferenced through `evt_get_variable`.
+/// Arguments not wrapped with ARG_INT or ARG_FLOAT are passed as literal bytecode words.
+#define ARG_INT(EXPR) EVT_ARG_INT_MARKER, (EXPR)
+
+/// Force an Exec/ExecGetID/ExecWait argument to be dereferenced through `evt_get_float_variable`.
+/// The captured value is stored in the child ArgVar as an EVT fixed-point bytecode word.
+#define ARG_FLOAT(EXPR) EVT_ARG_FLOAT_MARKER, (EXPR)
+
+typedef s32 (*EvtEval0Func)(void);
+typedef s32 (*EvtEval1Func)(s32);
+typedef s32 (*EvtEval2Func)(s32, s32);
+typedef s32 (*EvtEval3Func)(s32, s32, s32);
+typedef s32 (*EvtEval4Func)(s32, s32, s32, s32);
+typedef s32 (*EvtEval5Func)(s32, s32, s32, s32, s32);
+typedef s32 (*EvtEval6Func)(s32, s32, s32, s32, s32, s32);
+
+typedef f32 (*EvtEvalF0Func)(void);
+typedef f32 (*EvtEvalF1Func)(f32);
+typedef f32 (*EvtEvalF2Func)(f32, f32);
+typedef f32 (*EvtEvalF3Func)(f32, f32, f32);
+typedef f32 (*EvtEvalF4Func)(f32, f32, f32, f32);
+typedef f32 (*EvtEvalF5Func)(f32, f32, f32, f32, f32);
+typedef f32 (*EvtEvalF6Func)(f32, f32, f32, f32, f32, f32);
+
+typedef void (*EvtInvoke0Func)(void);
+typedef void (*EvtInvoke1Func)(s32);
+typedef void (*EvtInvoke2Func)(s32, s32);
+typedef void (*EvtInvoke3Func)(s32, s32, s32);
+typedef void (*EvtInvoke4Func)(s32, s32, s32, s32);
+typedef void (*EvtInvoke5Func)(s32, s32, s32, s32, s32);
+typedef void (*EvtInvoke6Func)(s32, s32, s32, s32, s32, s32);
+
+typedef void (*EvtInvokeF0Func)(void);
+typedef void (*EvtInvokeF1Func)(f32);
+typedef void (*EvtInvokeF2Func)(f32, f32);
+typedef void (*EvtInvokeF3Func)(f32, f32, f32);
+typedef void (*EvtInvokeF4Func)(f32, f32, f32, f32);
+typedef void (*EvtInvokeF5Func)(f32, f32, f32, f32, f32);
+typedef void (*EvtInvokeF6Func)(f32, f32, f32, f32, f32, f32);
+
+typedef b32 (*EvtPredicate0Func)(void);
+typedef b32 (*EvtPredicate1Func)(s32);
+typedef b32 (*EvtPredicate2Func)(s32, s32);
+typedef b32 (*EvtPredicate3Func)(s32, s32, s32);
+typedef b32 (*EvtPredicate4Func)(s32, s32, s32, s32);
+typedef b32 (*EvtPredicate5Func)(s32, s32, s32, s32, s32);
+typedef b32 (*EvtPredicate6Func)(s32, s32, s32, s32, s32, s32);
+
+typedef b32 (*EvtPredicateF0Func)(void);
+typedef b32 (*EvtPredicateF1Func)(f32);
+typedef b32 (*EvtPredicateF2Func)(f32, f32);
+typedef b32 (*EvtPredicateF3Func)(f32, f32, f32);
+typedef b32 (*EvtPredicateF4Func)(f32, f32, f32, f32);
+typedef b32 (*EvtPredicateF5Func)(f32, f32, f32, f32, f32);
+typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
+
+#ifdef __cplusplus
+#define EVT_CHECK_FUNC_SIGNATURE(FUNC, TYPE) \
+    ((Bytecode)(0 * sizeof(EvtFuncSignatureMatches<decltype(&(FUNC)), TYPE>) + (Bytecode)(FUNC)))
+#elif defined(__GNUC__)
+#define EVT_CHECK_FUNC_SIGNATURE(FUNC, TYPE) \
+    (0 * sizeof(struct { \
+        _Static_assert( \
+            __builtin_types_compatible_p(__typeof__(&(FUNC)), TYPE), \
+            "EVT_BAD_SIGNATURE expected " #TYPE \
+        ); \
+        char evtSignatureOk; \
+    }) + (Bytecode)(FUNC))
+#else
+#define EVT_CHECK_FUNC_SIGNATURE(FUNC, TYPE) ((Bytecode)(FUNC))
+#endif
+
 /// An entity index. Entities are assigned indices in the order they are created with Call(MakeEntity, ...).
-/// Supported in BindTrigger and BindPadlock only.
+/// Supported in BindTrigger and BindItemPrompt only.
 #define EVT_ENTITY_ID_BIT 0x4000
 #define EVT_ENTITY_INDEX(entityIndex) ((entityIndex) + EVT_ENTITY_ID_BIT)
 
@@ -144,6 +234,7 @@ extern "C" {
 #define EVT_INDEX_OF_GAME_BYTE(v)   ((v) + EVT_GAME_BYTE_OFFSET)
 #define EVT_INDEX_OF_ARRAY_FLAG(v)  ((v) + EVT_ARRAY_FLAG_OFFSET)
 #define EVT_INDEX_OF_ARRAY_VAR(v)   ((v) + EVT_ARRAY_VAR_OFFSET)
+#define EVT_INDEX_OF_ARG_VAR(v)     ((v) + EVT_ARG_VAR_OFFSET)
 
 // shorthand names for LocalVar
 #define LVar0 LocalVar(0)
@@ -162,6 +253,16 @@ extern "C" {
 #define LVarD LocalVar(13)
 #define LVarE LocalVar(14)
 #define LVarF LocalVar(15)
+
+// shorthand names for ArgVar
+#define ArgVar0 ArgVar(0)
+#define ArgVar1 ArgVar(1)
+#define ArgVar2 ArgVar(2)
+#define ArgVar3 ArgVar(3)
+#define ArgVar4 ArgVar(4)
+#define ArgVar5 ArgVar(5)
+#define ArgVar6 ArgVar(6)
+#define ArgVar7 ArgVar(7)
 
 // shorthand names for common LocalFlags
 // these actually run all the way up to LocalFlag(96), but nothing past 15 is ever used
@@ -184,11 +285,11 @@ extern "C" {
 
 /****** INSTRUCTIONS **************************************************************************************************/
 
-/// On each frame, the EVT manager will continue executing commands in all threads until a blocking command is
-/// encountered. This means that if you have a thread that loops but does not block between iterations, the game will
+/// On each frame, the EVT manager will continue executing commands in all scripts until a blocking command is
+/// encountered. This means that if you have a script that loops but does not block between iterations, the game will
 /// freeze! Avoid this by inserting a blocking command such as Wait(1) in the loop body.
 ///
-/// Also note that threads are never executed in parallel. If your EVT script lacks blocking commands, it will be
+/// Also note that scripts are never executed in parallel. If your EVT script lacks blocking commands, it will be
 /// executed all in one go, and race conditions cannot occur.
 ///
 /// The following subset of EVT commands are blocking:
@@ -197,40 +298,35 @@ extern "C" {
 /// - Wait_SECONDS
 /// - Call (if function returns ApiStatus_BLOCK)
 
-/// In EVT scripts, instructions are stored contiguously in the following structs:
-///     struct {
-///         Bytecode opcode;
-///         Bytecode argc;
-///         Bytecode argv[argc];
-///     }
-/// This macro expands to the given opcode and argv, with argc calculated automatically.
-/// The line number is also encoded into the upper nibble of argc for debugging purposes.
-#define EVT_CMD(opcode, argv...) \
-    opcode, \
-    (sizeof((Bytecode[]){argv})/sizeof(Bytecode)) | (__LINE__ << 16), \
-    ##argv
-
 /// Signals the end of EVT script data. A script missing this will likely crash on load.
 #define End                                 EVT_CMD(EVT_OP_END),
 
-/// Kills the current EVT thread.
+/// Kills the current EVT script.
 /// A script missing a return will live - but do nothing - forever, or until something else kills it (e.g. leaving the map).
 #define Return                              EVT_CMD(EVT_OP_RETURN),
 
+/// Marks the start of a synchronous cleanup tail for the script.
+/// When present, Return, End, and external kills run the commands after Finally before the script is cleaned up.
+/// Owned children are cleaned up first. The tail ends at the normal End/EndThread/EndChildThread and must not block
+/// or start an owned child. Exec and ExecGetID may start detached scripts. KillScript is allowed and is idempotent
+/// for scripts which are already terminating.
+#define Finally                             EVT_CMD(EVT_OP_FINALLY),
+
 /// Jumps to a given instruction pointer and begins execution from there.
 /// You can jump to a different EVT source and labels etc. will be loaded as expected.
-/// The timescale for the current thread is also reset to the global default.
+/// The timescale for the current script is also reset to the global default.
 #define Jump(EVT_SOURCE)                    EVT_CMD(EVT_OP_JUMP, (Bytecode) EVT_SOURCE),
 
 /// Marks this point in the script as a Goto target.
 ///
-/// Range: `0 <= LABEL_ID <= 0x16`
-#define Label(LABEL_ID)                     EVT_CMD(EVT_OP_LABEL, LABEL_ID),
+/// `LABEL_ID` may be an integer constant outside the EVT expression range, or
+/// a pointer to an identifier-style string such as `"Resume"` or `Ref(sym)`.
+#define Label(LABEL_ID)                     EVT_CMD(EVT_OP_LABEL, (Bytecode) LABEL_ID),
 
 /// Moves execution to the given label.
 ///
-/// Range: `0 <= LABEL_ID <= 0x16`
-#define Goto(LABEL_ID)                      EVT_CMD(EVT_OP_GOTO, LABEL_ID),
+/// `LABEL_ID` must use the same representation as the matching Label.
+#define Goto(LABEL_ID)                      EVT_CMD(EVT_OP_GOTO, (Bytecode) LABEL_ID),
 
 /// Marks the beginning of a loop.
 ///
@@ -246,17 +342,43 @@ extern "C" {
 #define Loop(TIMES)                         EVT_CMD(EVT_OP_LOOP, TIMES),
 
 /// Marks the end of a loop.
-#define EndLoop                            EVT_CMD(EVT_OP_END_LOOP),
+#define EndLoop                             EVT_CMD(EVT_OP_END_LOOP),
 
 /// Breaks out of the innermost loop.
-#define BreakLoop                          EVT_CMD(EVT_OP_BREAK_LOOP),
+#define BreakLoop                           EVT_CMD(EVT_OP_BREAK_LOOP),
+
+/// Skips to the next iteration of the innermost loop.
+#define ContinueLoop                        EVT_CMD(EVT_OP_CONTINUE_LOOP),
+
+/// Immediately restarts the current iteration of the innermost loop without updating its counter.
+#define RetryLoop                           EVT_CMD(EVT_OP_RETRY_LOOP),
+
+/// Marks the beginning of a lerp loop.
+///
+///     Lerp(VAR, START, END, DURATION, EASING)
+///         ...
+///     EndLerp
+///
+/// `VAR` is set to the current interpolated value before each iteration.
+/// `START` and `END` may be integer or Float values. `DURATION` is measured in frames.
+/// The body runs once for each elapsed frame from 0 through `DURATION`, then exits.
+/// `EndLerp` yields for one frame between iterations, so no Wait is needed inside the loop.
+///
+/// `BreakLoop` exits the lerp early. `ContinueLoop` and `RetryLoop` are not allowed inside Lerp.
+/// Lerp blocks cannot be nested. Up to 8 total Loop and Lerp blocks may be
+/// active within a single script.
+#define Lerp(VAR, START, END, DURATION, EASING) \
+                                            EVT_CMD(EVT_OP_LERP, VAR, START, END, DURATION, EASING),
+
+/// Marks the end of a lerp loop.
+#define EndLerp                             EVT_CMD(EVT_OP_END_LERP),
 
 /// Blocks for the given number of frames.
 #define Wait(NUM_FRAMES)                    EVT_CMD(EVT_OP_WAIT_FRAMES, NUM_FRAMES),
 
 
 /// Blocks for the given number of seconds.
-#define WaitSecs(NUM_SECONDS)              EVT_CMD(EVT_OP_WAIT_SECS, NUM_SECONDS),
+#define WaitSecs(NUM_SECONDS)               EVT_CMD(EVT_OP_WAIT_SECS, NUM_SECONDS),
 
 /// Marks the beginning of an if statement that only executes if `LVAR == RVAR`.
 ///
@@ -267,36 +389,42 @@ extern "C" {
 ///     EndIf
 ///
 /// The Else block is optional.
-#define IfEq(LVAR, RVAR)                   EVT_CMD(EVT_OP_IF_EQ, LVAR, RVAR),
+#define IfEq(LVAR, RVAR)                    EVT_CMD(EVT_OP_IF_EQ, LVAR, RVAR),
 
 /// Marks the beginning of an if statement that only executes if `LVAR != RVAR`.
-#define IfNe(LVAR, RVAR)                   EVT_CMD(EVT_OP_IF_NE, LVAR, RVAR),
+#define IfNe(LVAR, RVAR)                    EVT_CMD(EVT_OP_IF_NE, LVAR, RVAR),
 
 /// Marks the beginning of an if statement that only executes if `LVAR < RVAR`.
-#define IfLt(LVAR, RVAR)                   EVT_CMD(EVT_OP_IF_LT, LVAR, RVAR),
-
-/// Marks the beginning of an if statement that only executes if `LVAR <= RVAR`.
-#define IfGt(LVAR, RVAR)                   EVT_CMD(EVT_OP_IF_GT, LVAR, RVAR),
+#define IfLt(LVAR, RVAR)                    EVT_CMD(EVT_OP_IF_LT, LVAR, RVAR),
 
 /// Marks the beginning of an if statement that only executes if `LVAR > RVAR`.
-#define IfLe(LVAR, RVAR)                   EVT_CMD(EVT_OP_IF_LE, LVAR, RVAR),
+#define IfGt(LVAR, RVAR)                    EVT_CMD(EVT_OP_IF_GT, LVAR, RVAR),
+
+/// Marks the beginning of an if statement that only executes if `LVAR <= RVAR`.
+#define IfLe(LVAR, RVAR)                    EVT_CMD(EVT_OP_IF_LE, LVAR, RVAR),
 
 /// Marks the beginning of an if statement that only executes if `LVAR >= RVAR`.
-#define IfGe(LVAR, RVAR)                   EVT_CMD(EVT_OP_IF_GE, LVAR, RVAR),
+#define IfGe(LVAR, RVAR)                    EVT_CMD(EVT_OP_IF_GE, LVAR, RVAR),
+
+/// Marks the beginning of an if statement that only executes if `MIN <= LVAR <= MAX`.
+#define IfRange(LVAR, MIN, MAX)             EVT_CMD(EVT_OP_IF_RANGE, LVAR, MIN, MAX),
+
+/// Marks the beginning of an if statement that only executes if `LVAR < MIN` or `LVAR > MAX`.
+#define IfNotRange(LVAR, MIN, MAX)          EVT_CMD(EVT_OP_IF_NOT_RANGE, LVAR, MIN, MAX),
 
 /// Marks the beginning of an if statement that only executes if the RVAR flag is set on LVAR,
-/// i.e. `(LVAR & RVAR) != 1`.
-#define IfFlag(LVAR, RVAR)                 EVT_CMD(EVT_OP_IF_FLAG, LVAR, RVAR),
+/// i.e. `(LVAR & RVAR) != 0`.
+#define IfFlag(LVAR, RVAR)                  EVT_CMD(EVT_OP_IF_FLAG, LVAR, RVAR),
 
 /// Marks the beginning of an if statement that only executes if the RVAR flag is unset on LVAR,
 /// i.e. `(LVAR & RVAR) == 0`.
-#define IfNotFlag(LVAR, RVAR)             EVT_CMD(EVT_OP_IF_NOT_FLAG, LVAR, RVAR),
+#define IfNotFlag(LVAR, RVAR)               EVT_CMD(EVT_OP_IF_NOT_FLAG, LVAR, RVAR),
 
 /// Marks the end of an if statement and the start of the else block.
 #define Else                                EVT_CMD(EVT_OP_ELSE),
 
 /// Marks the end of an if statement or an else block.
-#define EndIf                              EVT_CMD(EVT_OP_END_IF),
+#define EndIf                               EVT_CMD(EVT_OP_END_IF),
 
 /// Marks the start of a switch statement.
 ///
@@ -314,53 +442,53 @@ extern "C" {
 /// Marks the start of a switch statement where the given value is treated as-is instead of using evt_get_variable.
 /// That is, `SwitchConst(LocalVar(0))` will switch over the value `0xFE363C80` instead of the value contained
 /// within `LocalVar(0)`.
-#define SwitchConst(LCONST)                EVT_CMD(EVT_OP_SWITCH_CONST, LCONST),
+#define SwitchConst(LCONST)                 EVT_CMD(EVT_OP_SWITCH_CONST, LCONST),
 
 /// Marks the start of a switch case that executes only if `LVAR == RVAR`. It also marks the end of any previous case.
-#define CaseEq(RVAR)                       EVT_CMD(EVT_OP_CASE_EQ, RVAR),
+#define CaseEq(RVAR)                        EVT_CMD(EVT_OP_CASE_EQ, RVAR),
 
 /// Marks the start of a switch case that executes only if `LVAR != RVAR`. It also marks the end of any previous case.
-#define CaseNe(RVAR)                       EVT_CMD(EVT_OP_CASE_NE, RVAR),
+#define CaseNe(RVAR)                        EVT_CMD(EVT_OP_CASE_NE, RVAR),
 
 /// Marks the start of a switch case that executes only if `LVAR < RVAR`. It also marks the end of any previous case.
-#define CaseLt(RVAR)                       EVT_CMD(EVT_OP_CASE_LT, RVAR),
-
-/// Marks the start of a switch case that executes only if `LVAR <= RVAR`. It also marks the end of any previous case.
-#define CaseGt(RVAR)                       EVT_CMD(EVT_OP_CASE_GT, RVAR),
+#define CaseLt(RVAR)                        EVT_CMD(EVT_OP_CASE_LT, RVAR),
 
 /// Marks the start of a switch case that executes only if `LVAR > RVAR`. It also marks the end of any previous case.
-#define CaseLe(RVAR)                       EVT_CMD(EVT_OP_CASE_LE, RVAR),
+#define CaseGt(RVAR)                        EVT_CMD(EVT_OP_CASE_GT, RVAR),
+
+/// Marks the start of a switch case that executes only if `LVAR <= RVAR`. It also marks the end of any previous case.
+#define CaseLe(RVAR)                        EVT_CMD(EVT_OP_CASE_LE, RVAR),
 
 /// Marks the start of a switch case that executes only if `LVAR >= RVAR`. It also marks the end of any previous case.
-#define CaseGe(RVAR)                       EVT_CMD(EVT_OP_CASE_GE, RVAR),
+#define CaseGe(RVAR)                        EVT_CMD(EVT_OP_CASE_GE, RVAR),
 
 /// Marks the start of a switch case that executes unconditionally. It also marks the end of any previous case.
-#define CaseDefault                        EVT_CMD(EVT_OP_CASE_DEFAULT),
+#define CaseDefault                         EVT_CMD(EVT_OP_CASE_DEFAULT),
 
 /// Marks the start of a switch case that executes only if `LVAR == RVAR`. It also marks the end of any previous case.
 /// Unlike CaseEq, CaseOrEq will fallthrough to the next case until EndCaseGroup is reached.
-#define CaseOrEq(RVAR)                    EVT_CMD(EVT_OP_CASE_OR_EQ, RVAR),
+#define CaseOrEq(RVAR)                      EVT_CMD(EVT_OP_CASE_OR_EQ, RVAR),
 
 /// Marks the start of a switch case that executes only if `LVAR == RVAR`. It also marks the end of any previous case.
 /// Similar to CaseOrEq, CaseAndEq has fallthrough. However, if `LVAR != RVAR`, fallthrough does not apply.
-#define CaseAndEq(RVAR)                   EVT_CMD(EVT_OP_CASE_AND_EQ, RVAR),
+#define CaseAndEq(RVAR)                     EVT_CMD(EVT_OP_CASE_AND_EQ, RVAR),
 
-/// Marks the start of a switch case that executes only if the `RVAR` flag is set on `LVAR`, i.e. `(LVAR & RVAR) != 1`.
+/// Marks the start of a switch case that executes only if the `RVAR` flag is set on `LVAR`, i.e. `(LVAR & RVAR) != 0`.
 /// It also marks the end of any previous case.
-#define CaseFlag(RVAR)                     EVT_CMD(EVT_OP_CASE_FLAG, RVAR),
+#define CaseFlag(RVAR)                      EVT_CMD(EVT_OP_CASE_FLAG, RVAR),
 
 /// Marks the end of a switch case group (CaseOrEq and/or CaseAndEq), stopping fallthrough.
-#define EndCaseGroup                      EVT_CMD(EVT_OP_END_CASE_GROUP),
+#define EndCaseGroup                        EVT_CMD(EVT_OP_END_CASE_GROUP),
 
 /// Marks the start of a switch case that executes only if `MIN <= LVAR <= MAX` (inclusive).
 /// It also marks the end of any previous case.
-#define CaseRange(MIN, MAX)                EVT_CMD(EVT_OP_CASE_RANGE, MIN, MAX),
+#define CaseRange(MIN, MAX)                 EVT_CMD(EVT_OP_CASE_RANGE, MIN, MAX),
 
 /// Marks the end of a switch case
-#define BreakSwitch                        EVT_CMD(EVT_OP_BREAK_SWITCH),
+#define BreakSwitch                         EVT_CMD(EVT_OP_BREAK_SWITCH),
 
 /// Marks the end of a switch statement and any case.
-#define EndSwitch                          EVT_CMD(EVT_OP_END_SWITCH),
+#define EndSwitch                           EVT_CMD(EVT_OP_END_SWITCH),
 
 /// Sets the given variable to a given value casted to an integer.
 #define Set(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_SET, VAR, (Bytecode) INT_VALUE),
@@ -368,114 +496,210 @@ extern "C" {
 /// Sets the given variable to a given value, skipping the evt_get_variable call.
 /// That is, `SetConst(LocalVar(0), LocalVar(1))` will set `LocalVar(0)` to `0xFE363C81` instead of copying the value of
 /// `LocalVar(1)` into `LocalVar(0)`.
-#define SetConst(VAR, CONST)               EVT_CMD(EVT_OP_SET_CONST, VAR, (Bytecode) CONST),
+#define SetConst(VAR, CONST)                EVT_CMD(EVT_OP_SET_CONST, VAR, (Bytecode) CONST),
 
 /// Sets the given variable to a given value, but supports Floats.
 #define SetF(VAR, FLOAT_VALUE)              EVT_CMD(EVT_OP_SETF, VAR, FLOAT_VALUE),
 
-// Basic arithmetic operations.
-#define Add(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_ADD, VAR, INT_VALUE),
-#define Sub(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_SUB, VAR, INT_VALUE),
-#define Mul(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_MUL, VAR, INT_VALUE),
-#define Div(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_DIV, VAR, INT_VALUE),
-#define Mod(VAR, INT_VALUE)                 EVT_CMD(EVT_OP_MOD, VAR, INT_VALUE),
+/// When used with two args, adds a value to a variable (A += B).
+/// When used with more args, all are added together and stored in the variable (A = B + C + ...).
+#define Add(VAR, INT_VALUE, MORE...)        EVT_CMD(EVT_OP_ADD, VAR, INT_VALUE, ##MORE),
 
-// Basic floating-point arithmetic operations.
-#define AddF(VAR, FLOAT_VALUE)              EVT_CMD(EVT_OP_ADDF, VAR, FLOAT_VALUE),
-#define SubF(VAR, FLOAT_VALUE)              EVT_CMD(EVT_OP_SUBF, VAR, FLOAT_VALUE),
-#define MulF(VAR, FLOAT_VALUE)              EVT_CMD(EVT_OP_MULF, VAR, FLOAT_VALUE),
-#define DivF(VAR, FLOAT_VALUE)              EVT_CMD(EVT_OP_DIVF, VAR, FLOAT_VALUE),
+/// When used with two args, subtracts a value from a variable (A -= B).
+/// When used with three args, subtracts one value from another and stores the result in the variable (A = B - C).
+#define Sub(VAR, INT_VALUE, MORE...)        EVT_CMD(EVT_OP_SUB, VAR, INT_VALUE, ##MORE),
 
-/// Loads a s32 pointer for use with subsequent EVT_BUF_READ commands.
-#define UseBuf(INT_PTR)                    EVT_CMD(EVT_OP_USE_BUF, (Bytecode) INT_PTR),
+/// When used with two args, multiplies a variable by a value (A *= B).
+/// When used with more args, all are multiplied together and stored in the variable (A = B * C * ...).
+#define Mul(VAR, INT_VALUE, MORE...)        EVT_CMD(EVT_OP_MUL, VAR, INT_VALUE, ##MORE),
 
-/// Consumes the next s32 from the buffer and stores it in the given variable.
-#define BufRead1(VAR)                      EVT_CMD(EVT_OP_BUF_READ1, VAR),
+/// When used with two args, divides a variable by a value (A /= B).
+/// When used with three args, divides one value by another and stores the result in the variable (A = B / C).
+#define Div(VAR, INT_VALUE, MORE...)        EVT_CMD(EVT_OP_DIV, VAR, INT_VALUE, ##MORE),
 
-/// Consumes the next two s32s from the buffer and stores them in the given variables.
-#define BufRead2(VAR1, VAR2)               EVT_CMD(EVT_OP_BUF_READ2, VAR1, VAR2),
+/// When used with two args, stores the remainder of a variable divided by a value (A %= B).
+/// When used with three args, stores the remainder of one value divided by another in the variable (A = B % C).
+#define Mod(VAR, INT_VALUE, MORE...)        EVT_CMD(EVT_OP_MOD, VAR, INT_VALUE, ##MORE),
 
-/// Consumes the next three s32s from the buffer and stores them in the given variables.
-#define BufRead3(VAR1, VAR2, VAR3)         EVT_CMD(EVT_OP_BUF_READ3, VAR1, VAR2, VAR3),
+/// When used with two args, adds a value to a variable (A += B).
+/// When used with more args, all are added together and stored in the variable (A = B + C + ...).
+#define AddF(VAR, FLOAT_VALUE, MORE...)     EVT_CMD(EVT_OP_ADDF, VAR, FLOAT_VALUE, ##MORE),
 
-/// Consumes the next four s32s from the buffer and stores them in the given variables.
-#define BufRead4(VAR1, VAR2, VAR3, VAR4)   EVT_CMD(EVT_OP_BUF_READ4, VAR1, VAR2, VAR3, VAR4),
+/// When used with two args, subtracts a value from a variable (A -= B).
+/// When used with three args, subtracts one value from another and stores the result in the variable (A = B - C).
+#define SubF(VAR, FLOAT_VALUE, MORE...)     EVT_CMD(EVT_OP_SUBF, VAR, FLOAT_VALUE, ##MORE),
+
+/// When used with two args, multiplies a variable by a value (A *= B).
+/// When used with more args, all are multiplied together and stored in the variable (A = B * C * ...).
+#define MulF(VAR, FLOAT_VALUE, MORE...)     EVT_CMD(EVT_OP_MULF, VAR, FLOAT_VALUE, ##MORE),
+
+/// When used with two args, divides a variable by a value (A /= B).
+/// When used with three args, divides one value by another and stores the result in the variable (A = B / C).
+#define DivF(VAR, FLOAT_VALUE, MORE...)     EVT_CMD(EVT_OP_DIVF, VAR, FLOAT_VALUE, ##MORE),
+
+/// When used with one arg, negates a variable (A = -A).
+/// When used with two args, negates a value and stores the result in the variable (A = -B).
+#define Neg(VAR, INT_VALUE...)              EVT_CMD(EVT_OP_NEG, VAR, ##INT_VALUE),
+
+/// When used with one arg, negates a variable (A = -A).
+/// When used with two args, negates a value and stores the result in the variable (A = -B).
+#define NegF(VAR, FLOAT_VALUE...)           EVT_CMD(EVT_OP_NEGF, VAR, ##FLOAT_VALUE),
+
+/// When used with one arg, stores the absolute value of a variable (A = abs(A)).
+/// When used with two args, stores the absolute value of another value (A = abs(B)).
+#define Abs(VAR, INT_VALUE...)              EVT_CMD(EVT_OP_ABS, VAR, ##INT_VALUE),
+
+/// When used with one arg, stores the absolute value of a variable (A = abs(A)).
+/// When used with two args, stores the absolute value of another value (A = abs(B)).
+#define AbsF(VAR, FLOAT_VALUE...)           EVT_CMD(EVT_OP_ABSF, VAR, ##FLOAT_VALUE),
+
+/// When used with one arg, stores the sign of a variable as -1, 0, or 1 (A = sign(A)).
+/// When used with two args, stores the sign of another value as -1, 0, or 1 (A = sign(B)).
+#define Sign(VAR, INT_VALUE...)             EVT_CMD(EVT_OP_SIGN, VAR, ##INT_VALUE),
+
+/// When used with one arg, stores the sign of a variable as -1.0, 0.0, or 1.0 (A = sign(A)).
+/// When used with two args, stores the sign of another value as -1.0, 0.0, or 1.0 (A = sign(B)).
+#define SignF(VAR, FLOAT_VALUE...)          EVT_CMD(EVT_OP_SIGNF, VAR, ##FLOAT_VALUE),
+
+/// When used with two args, stores the lower of a variable and another value (A = min(A, B)).
+/// When used with more args, stores the lowest value in the variable (A = min(B, C, ...)).
+#define Min(VAR, INT_VALUE, MORE...)        EVT_CMD(EVT_OP_MIN, VAR, INT_VALUE, ##MORE),
+
+/// When used with two args, stores the lower of a variable and another value (A = min(A, B)).
+/// When used with more args, stores the lowest value in the variable (A = min(B, C, ...)).
+#define MinF(VAR, FLOAT_VALUE, MORE...)     EVT_CMD(EVT_OP_MINF, VAR, FLOAT_VALUE, ##MORE),
+
+/// When used with two args, stores the higher of a variable and another value (A = max(A, B)).
+/// When used with more args, stores the highest value in the variable (A = max(B, C, ...)).
+#define Max(VAR, INT_VALUE, MORE...)        EVT_CMD(EVT_OP_MAX, VAR, INT_VALUE, ##MORE),
+
+/// When used with two args, stores the higher of a variable and another value (A = max(A, B)).
+/// When used with more args, stores the highest value in the variable (A = max(B, C, ...)).
+#define MaxF(VAR, FLOAT_VALUE, MORE...)     EVT_CMD(EVT_OP_MAXF, VAR, FLOAT_VALUE, ##MORE),
+
+/// When used with three args, clamps a variable between a min and max (A = clamp(A, MIN, MAX)).
+/// When used with four args, clamps a value between a min and max and stores the result (A = clamp(B, MIN, MAX)).
+#define Clamp(VAR, MIN_OR_VALUE, MAX_OR_MIN, MORE...) EVT_CMD(EVT_OP_CLAMP, VAR, MIN_OR_VALUE, MAX_OR_MIN, ##MORE),
+
+/// When used with three args, clamps a variable between a min and max (A = clamp(A, MIN, MAX)).
+/// When used with four args, clamps a value between a min and max and stores the result (A = clamp(B, MIN, MAX)).
+#define ClampF(VAR, MIN_OR_VALUE, MAX_OR_MIN, MORE...) EVT_CMD(EVT_OP_CLAMPF, VAR, MIN_OR_VALUE, MAX_OR_MIN, ##MORE),
+
+/// Loads a s32 pointer for use with subsequent BufRead commands.
+#define UseBuf(INT_PTR)                     EVT_CMD(EVT_OP_USE_BUF, (Bytecode) INT_PTR),
+
+/// Consumes one or more s32s from the buffer and stores them in the given variables.
+#define BufRead(VAR, MORE...)               EVT_CMD(EVT_OP_BUF_READ, VAR, ##MORE),
 
 /// Gets the s32 at the given offset of the buffer and stores it in the given variable, without consuming it.
-#define BufPeek(OFFSET, VAR)               EVT_CMD(EVT_OP_BUF_PEEK, OFFSET, VAR),
+#define BufPeek(VAR, OFFSET)                EVT_CMD(EVT_OP_BUF_PEEK, VAR, OFFSET),
 
-/// Identical to UseBuf. Beware that the int buffer and the float buffer are not distinct.
-#define UseFBuf(FLOAT_PTR)                 EVT_CMD(EVT_OP_USE_FBUF, (Bytecode) FLOAT_PTR),
+/// Loads an s32 pointer of fixed-point `Float(...)` values for use with subsequent FBufRead commands.
+/// Beware that the int buffer and the float buffer are not distinct.
+#define UseFBuf(FLOAT_PTR)                  EVT_CMD(EVT_OP_USE_FBUF, (Bytecode) FLOAT_PTR),
 
-/// Consumes the next f32 from the buffer and stores it in the given variable.
-#define FBufRead1(VAR)                     EVT_CMD(EVT_OP_FBUF_READ1, VAR),
+/// Consumes one or more fixed-point `Float(...)` values from the buffer and stores them in the given variables.
+#define FBufRead(VAR, MORE...)              EVT_CMD(EVT_OP_FBUF_READ, VAR, ##MORE),
 
-/// Consumes the next two f32s from the buffer and stores them in the given variables.
-#define FBufRead2(VAR1, VAR2)              EVT_CMD(EVT_OP_FBUF_READ2, VAR1, VAR2),
+/// Gets the fixed-point `Float(...)` value at the given offset and stores it without consuming it.
+#define FBufPeek(VAR, OFFSET)               EVT_CMD(EVT_OP_FBUF_PEEK, VAR, OFFSET),
 
-/// Consumes the next three f32s from the buffer and stores them in the given variables.
-#define FBufRead3(VAR1, VAR2, VAR3)        EVT_CMD(EVT_OP_FBUF_READ3, VAR1, VAR2, VAR3),
+#define EVT_MEM_TYPEOF(VALUE) _Generic((VALUE), \
+    u8: EVT_MEM_U8,   \
+    s8: EVT_MEM_S8,   \
+    u16: EVT_MEM_U16, \
+    s16: EVT_MEM_S16, \
+    u32: EVT_MEM_U32, \
+    s32: EVT_MEM_S32, \
+    f32: EVT_MEM_F32)
 
-/// Consumes the next four f32s from the buffer and stores them in the given variables.
-#define FBufRead4(VAR1, VAR2, VAR3, VAR4)  EVT_CMD(EVT_OP_FBUF_READ4, VAR1, VAR2, VAR3, VAR4),
+/// Reads a typed value from a C lvalue into an EVT variable.
+/// The address is taken implicitly and must refer to readable memory. No bounds checking is performed.
+#define MemGet(OUT_VAR, SOURCE)              EVT_CMD(EVT_OP_MEM_GET, EVT_MEM_TYPEOF(SOURCE), OUT_VAR, Ref(SOURCE), 0),
 
-/// Gets the f32 at the given offset of the buffer and stores it in the given variable, without consuming it.
-#define FBufPeek(OFFSET, VAR)              EVT_CMD(EVT_OP_FBUF_PEEK, OFFSET, VAR),
+/// Writes an EVT value to a typed C lvalue.
+/// The address is taken implicitly and must refer to writable memory. No bounds checking is performed.
+#define MemSet(DESTINATION, VALUE)           EVT_CMD(EVT_OP_MEM_SET, EVT_MEM_TYPEOF(DESTINATION), Ref(DESTINATION), 0, VALUE),
 
-/// Loads an s32 array pointer into the current thread for use with `ArrayVar(INDEX)`.
-#define UseArray(INT_PTR)                  EVT_CMD(EVT_OP_USE_ARRAY, (Bytecode) INT_PTR),
+/// Reads a typed array element using an index evaluated when the script runs.
+/// The array must be a link-time-addressable C array, not a pointer stored in an EVT variable.
+#define MemGetIndex(OUT_VAR, SOURCE_ARRAY, INDEX) \
+                                            EVT_CMD(EVT_OP_MEM_GET, EVT_MEM_TYPEOF((SOURCE_ARRAY)[0]), OUT_VAR, Ref((SOURCE_ARRAY)[0]), INDEX),
 
-/// Loads an s32 array pointer into the current thread for use with `UF(INDEX)`.
+/// Writes a typed array element using an index evaluated when the script runs.
+/// The array must be a link-time-addressable C array, not a pointer stored in an EVT variable.
+#define MemSetIndex(DESTINATION_ARRAY, INDEX, VALUE) \
+                                            EVT_CMD(EVT_OP_MEM_SET, EVT_MEM_TYPEOF((DESTINATION_ARRAY)[0]), Ref((DESTINATION_ARRAY)[0]), INDEX, VALUE),
+
+/// Loads an s32 array pointer into the current script for use with `ArrayVar(INDEX)`.
+#define UseArray(INT_PTR)                   EVT_CMD(EVT_OP_USE_ARRAY, (Bytecode) INT_PTR),
+
+/// Loads an s32 array pointer into the current script for use with `UF(INDEX)`.
 /// Flags are stored in a 'packed' structure where indices refer to bits.
-#define UseFlagArray(PACKED_FLAGS_PTR)    EVT_CMD(EVT_OP_USE_FLAG_ARRAY, (Bytecode) PACKED_FLAGS_PTR),
+#define UseFlagArray(PACKED_FLAGS_PTR)      EVT_CMD(EVT_OP_USE_FLAGS, (Bytecode) PACKED_FLAGS_PTR),
 
 /// Allocates a new array of the given size for use with `ArrayVar(INDEX)`.
 /// EVT scripts do not have to worry about freeing this array.
-#define MallocArray(SIZE, OUT_PTR_VAR)     EVT_CMD(EVT_OP_MALLOC_ARRAY, SIZE, OUT_PTR_VAR),
+#define MallocArray(SIZE, OUT_PTR_VAR)      EVT_CMD(EVT_OP_MALLOC_ARRAY, SIZE, OUT_PTR_VAR),
 
 /// `VAR &= VALUE`
-#define BitwiseAnd(VAR, VALUE)             EVT_CMD(EVT_OP_BITWISE_AND, VAR, VALUE),
+#define BitwiseAnd(VAR, VALUE)              EVT_CMD(EVT_OP_BITWISE_AND, VAR, VALUE),
 
 /// `VAR &= CONST`, but CONST is treated as-is rather than dereferenced with evt_get_variable.
-#define BitwiseAndConst(VAR, CONST)       EVT_CMD(EVT_OP_BITWISE_AND_CONST, VAR, CONST),
+#define BitwiseAndConst(VAR, CONST)         EVT_CMD(EVT_OP_BITWISE_AND_CONST, VAR, CONST),
 
 /// `VAR |= VALUE`
-#define BitwiseOr(VAR, VALUE)              EVT_CMD(EVT_OP_BITWISE_OR, VAR, VALUE),
+#define BitwiseOr(VAR, VALUE)               EVT_CMD(EVT_OP_BITWISE_OR, VAR, VALUE),
 
 /// `VAR |= CONST`, but CONST is treated as-is rather than dereferenced with evt_get_variable.
-#define BitwiseOrConst(VAR, CONST)        EVT_CMD(EVT_OP_BITWISE_OR_CONST, VAR, CONST),
+#define BitwiseOrConst(VAR, CONST)          EVT_CMD(EVT_OP_BITWISE_OR_CONST, VAR, CONST),
 
-/// Launches a new thread.
-/// The following values are copied from the current thread to the new thread:
-/// - LFs
-/// - LWs
-/// - Array pointer
-/// - Flag array pointer
-/// - Priority
-/// - Group
-#define Exec(EVT_SOURCE)                    EVT_CMD(EVT_OP_EXEC, (Bytecode) EVT_SOURCE),
-
-/// Identical to Exec, but the newly-launched thread ID is stored in OUTVAR.
-/// The other thread may be interacted with using KillThread, SuspendThread, ResumeThread, and
-/// IsThreadRunning.
-#define ExecGetTID(EVT_SOURCE, OUTVAR)    EVT_CMD(EVT_OP_EXEC_GET_TID, (Bytecode) EVT_SOURCE, OUTVAR),
-
-/// Launches a new child thread.
-/// Blocks for at least one frame unless the child thread is made to have a higher priority than the parent.
-///
-/// The following values are inherited and then copied back to the parent thread upon completion:
-/// - LFs
-/// - LWs
+/// Launches a new detached script.
+/// The following values are copied from the current script to the new script:
+/// - LocalFlags
+/// - LocalVars
 /// - Array pointer
 /// - Flag array pointer
 /// - Priority
 /// - Group
 ///
-/// Child threads are killed, suspended, and resumed as their parents are, for example, a different thread using
-/// KillThread to kill a parent thread would also kill its child thread(s) launched by this command.
-#define ExecWait(EVT_SOURCE)               EVT_CMD(EVT_OP_EXEC_WAIT, (Bytecode) EVT_SOURCE),
+/// Extra ARGS become ArgVars in the new script. Arguments are passed as literal bytecode words unless explicitly
+/// wrapped with ARG_INT or ARG_FLOAT.
+#define Exec(EVT_SOURCE, ARGS...)           EVT_CMD(EVT_OP_EXEC, (Bytecode) EVT_SOURCE, ##ARGS),
+
+/// Identical to Exec, but the newly-launched script ID is stored in OUTVAR.
+/// The other script may be interacted with using KillScript, SuspendScript, ResumeScript, and
+/// IsScriptRunning.
+/// Extra ARGS become ArgVars in the new script with the same capture rules as Exec.
+#define ExecGetID(OUTVAR, EVT_SOURCE, ARGS...) \
+                                            EVT_CMD(EVT_OP_EXEC_GET_ID, (Bytecode) EVT_SOURCE, OUTVAR, ##ARGS),
+
+/// Launches a new child script.
+/// Blocks for at least one frame unless the child is made to have a higher priority than the parent.
+///
+/// The following values are inherited and then copied back to the parent script upon completion:
+/// - LocalFlags
+/// - LocalVars
+/// - Array pointer
+/// - Flag array pointer
+/// - Priority
+/// - Group
+///
+/// Child scripts are killed, suspended, and resumed with their parent. For example, using KillScript on the parent
+/// also kills the child launched by this command.
+/// Extra ARGS become ArgVars in the child script with the same capture rules as Exec.
+#define ExecWait(EVT_SOURCE, ARGS...)       EVT_CMD(EVT_OP_EXEC_WAIT, (Bytecode) EVT_SOURCE, ##ARGS),
+
+/// Assert that this script invocation received exactly NUM_ARGS arguments.
+#define ExpectArgs(NUM_ARGS)                EVT_CMD(EVT_OP_EXPECT_ARGS, NUM_ARGS),
 
 /// Sets up a script to launch when a particular event is triggered.
+///
+/// EVT_SOURCE is the script to launch when the trigger activates.
+/// TRIGGER is one or more trigger flags.
+/// COLLIDER_ID is the trigger target.
+/// HAS_INTERACT_PROMPT controls whether the player sees the interaction prompt for wall-press-A triggers.
+/// TRIGGER_PTR_OUTVAR receives the Trigger* when nonzero.
 ///
 /// Valid triggers:
 /// - TRIGGER_WALL_PUSH
@@ -485,8 +709,8 @@ extern "C" {
 /// - TRIGGER_WALL_TOUCH
 /// - TRIGGER_FLOOR_PRESS_A
 /// - TRIGGER_WALL_HAMMER
-/// - TRIGGER_GAME_FLAG_SET (TODO: rename)
-/// - TRIGGER_AREA_FLAG_SET (TODO: rename)
+/// - TRIGGER_GAME_FLAG_SET
+/// - TRIGGER_AREA_FLAG_SET
 /// - TRIGGER_CEILING_TOUCH
 /// - TRIGGER_FLOOR_ABOVE
 /// - TRIGGER_POINT_BOMB (takes Vec3f* instead of collider ID)
@@ -496,72 +720,83 @@ extern "C" {
 /// - Entity ID (use EVT_ENTITY_INDEX)
 /// - Pointer to a Vec3f (for TRIGGER_POINT_BOMB only)
 ///
-/// Only one thread will run for a trigger at once.
-#define BindTrigger(EVT_SOURCE, TRIGGER, COLLIDER_ID, UNK_A3, TRIGGER_PTR_OUTVAR) \
-    EVT_CMD(EVT_OP_BIND_TRIGGER, (Bytecode) EVT_SOURCE, TRIGGER, (Bytecode) COLLIDER_ID, UNK_A3, TRIGGER_PTR_OUTVAR),
+/// Only one script will run for a trigger at once.
+#define BindTrigger(EVT_SOURCE, TRIGGER, COLLIDER_ID, HAS_INTERACT_PROMPT, TRIGGER_PTR_OUTVAR) \
+                                            EVT_CMD(EVT_OP_BIND_TRIGGER, (Bytecode) EVT_SOURCE, TRIGGER, (Bytecode) COLLIDER_ID, HAS_INTERACT_PROMPT, TRIGGER_PTR_OUTVAR),
 
-/// Similar to BindTrigger, but also takes arguments for the item list to show.
-#define BindPadlock(EVT_SOURCE, TRIGGER, COLLIDER_ID, ITEM_LIST, UNK_A3, TRIGGER_PTR_OUTVAR) \
-    EVT_CMD(EVT_OP_BIND_PADLOCK, (Bytecode) EVT_SOURCE, TRIGGER, COLLIDER_ID, (Bytecode) ITEM_LIST, UNK_A3, TRIGGER_PTR_OUTVAR),
+/// Similar to BindTrigger, but also attaches an item list to the trigger context.
+///
+/// EVT_SOURCE is responsible for showing any item prompt, typically by calling ShowKeyChoicePopup or
+/// ShowConsumableChoicePopup. Those APIs read ITEM_LIST from the trigger context created here.
+/// TATTLE_MSG is stored on the trigger and may be read by Goombario tattles.
+/// HAS_INTERACT_PROMPT controls whether the player sees the interaction prompt for wall-press-A triggers.
+#define BindItemPrompt(EVT_SOURCE, TRIGGER, COLLIDER_ID, ITEM_LIST, TATTLE_MSG, HAS_INTERACT_PROMPT) \
+                                            EVT_CMD(EVT_OP_BIND_ITEM_PROMPT, (Bytecode) EVT_SOURCE, TRIGGER, COLLIDER_ID, (Bytecode) ITEM_LIST, TATTLE_MSG, HAS_INTERACT_PROMPT),
 
-/// Unbinds the current thread from the trigger it was bound to, if any.
+/// Unbinds the current script from the trigger it was bound to, if any.
 #define Unbind                              EVT_CMD(EVT_OP_UNBIND),
 
-/// Kills a thread by its thread ID.
-#define KillThread(TID)                    EVT_CMD(EVT_OP_KILL_THREAD, TID),
+/// Kills a script by its ID.
+#define KillScript(SCRIPT_ID)               EVT_CMD(EVT_OP_KILL_SCRIPT, SCRIPT_ID),
 
-/// Sets the current thread's priority. Higher-priority threads execute before lower-priority threads on each frame.
-#define SetPriority(PRIORITY)              EVT_CMD(EVT_OP_SET_PRIORITY, PRIORITY),
+/// Sets the current script's priority. Higher-priority scripts execute before lower-priority scripts on each frame.
+#define SetPriority(PRIORITY)               EVT_CMD(EVT_OP_SET_PRIORITY, PRIORITY),
 
-/// Sets the current thread's timescale. This is a multiplier applied to Wait and Wait_SECONDS.
-#define SetTimescale(TIMESCALE)            EVT_CMD(EVT_OP_SET_TIMESCALE, TIMESCALE),
+/// Sets the current script's timescale. This is a multiplier applied to Wait and Wait_SECONDS.
+#define SetTimescale(TIMESCALE)             EVT_CMD(EVT_OP_SET_TIMESCALE, TIMESCALE),
 
-/// Sets the current thread's group. Group value meanings are currently not known.
-#define SetGroup(GROUP)                    EVT_CMD(EVT_OP_SET_GROUP, GROUP),
+/// Sets the current script's group. Group value meanings are currently not known.
+#define SetGroup(GROUP)                     EVT_CMD(EVT_OP_SET_GROUP, GROUP),
 
-/// Suspends all threads in a group.
-#define SuspendGroup(GROUP)                EVT_CMD(EVT_OP_SUSPEND_GROUP, GROUP),
+/// Suspends all scripts in a group.
+#define SuspendGroup(GROUP)                 EVT_CMD(EVT_OP_SUSPEND_GROUP, GROUP),
 
-/// Resumes all threads in a group.
-#define ResumeGroup(GROUP)                 EVT_CMD(EVT_OP_RESUME_GROUP, GROUP),
+/// Resumes all scripts in a group.
+#define ResumeGroup(GROUP)                  EVT_CMD(EVT_OP_RESUME_GROUP, GROUP),
 
-/// Suspends all threads in a group, except the current thread.
-#define SuspendOthers(GROUP)               EVT_CMD(EVT_OP_SUSPEND_OTHERS, GROUP),
+/// Suspends all scripts in a group, except the current script.
+#define SuspendOthers(GROUP)                EVT_CMD(EVT_OP_SUSPEND_OTHERS, GROUP),
 
-/// Resumes all threads in a group, except the current thread.
-#define ResumeOthers(GROUP)                EVT_CMD(EVT_OP_RESUME_OTHERS, GROUP),
+/// Resumes all scripts in a group, except the current script.
+#define ResumeOthers(GROUP)                 EVT_CMD(EVT_OP_RESUME_OTHERS, GROUP),
 
-/// Suspends all threads in a group, except the current thread.
-#define SuspendThread(TID)                 EVT_CMD(EVT_OP_SUSPEND_THREAD, TID),
+/// Suspends a script by its script ID.
+#define SuspendScript(SCRIPT_ID)            EVT_CMD(EVT_OP_SUSPEND_SCRIPT, SCRIPT_ID),
 
-/// Resumes a thread by its thread ID.
-#define ResumeThread(TID)                  EVT_CMD(EVT_OP_RESUME_THREAD, TID),
+/// Resumes a script by its script ID.
+#define ResumeScript(SCRIPT_ID)             EVT_CMD(EVT_OP_RESUME_SCRIPT, SCRIPT_ID),
 
-/// Sets OUTVAR to true/false depending on whether a thread with the given ID exists (i.e. has not been killed).
-#define IsThreadRunning(TID, OUTVAR)      EVT_CMD(EVT_OP_IS_THREAD_RUNNING, TID, OUTVAR),
+/// Sets OUTVAR to true/false depending on whether a script with the given ID exists (i.e. has not been killed).
+#define IsScriptRunning(SCRIPT_ID, OUTVAR)  EVT_CMD(EVT_OP_IS_SCRIPT_RUNNING, SCRIPT_ID, OUTVAR),
+
+/// Waits until the script with the given ID no longer exists.
+#define AwaitScript(SCRIPT_ID)              EVT_CMD(EVT_OP_AWAIT_SCRIPT, SCRIPT_ID),
 
 /// Marks the start of a thread block. Commands between this and a matching EndThread
-/// will be executed on their own, new thread instead of on the current thread.
+/// will run as a new detached script.
 #define Thread                              EVT_CMD(EVT_OP_THREAD),
 
 /// Marks the end of a thread block.
-#define EndThread                          EVT_CMD(EVT_OP_END_THREAD),
+#define EndThread                           EVT_CMD(EVT_OP_END_THREAD),
 
 /// Marks the start of a child thread block. Commands between this and a matching EndChildThread
-/// will be executed as a new child thread instead of on the current thread.
+/// will run as a new child script.
 ///
-/// Child threads are killed if the parent thread dies, so the following script does NOT set the player's position:
+/// Child threads are killed if the parent script dies, so the following script does NOT set the player's position:
 ///
 ///     ChildThread
 ///         Wait_SECONDS(1)                 // child thread will be killed whilst waiting
 ///         Call(SetPlayerPos, NPC_DISPOSE_LOCATION) // will not be executed
 ///     EndChildThread
-///     Return                              // parent thread dies
+///     Return                              // parent script dies
 ///
-#define ChildThread                        EVT_CMD(EVT_OP_CHILD_THREAD),
+#define ChildThread                         EVT_CMD(EVT_OP_CHILD_THREAD),
 
 /// Marks the end of a child thread block.
-#define EndChildThread                    EVT_CMD(EVT_OP_END_CHILD_THREAD),
+#define EndChildThread                      EVT_CMD(EVT_OP_END_CHILD_THREAD),
+
+/// Waits until all direct ChildThread children of the current script have finished.
+#define AwaitChildren                       EVT_CMD(EVT_OP_AWAIT_CHILDREN),
 
 /// Calls a given C EVT API function with any number of arguments.
 ///
@@ -573,17 +808,135 @@ extern "C" {
 ///
 ///     Call(ApiFunction)
 ///
-/// The given arguments can be accessed from the API function using `thread->ptrReadPos`.
-#define Call(FUNC, ARGS...)                     EVT_CMD(EVT_OP_CALL, (Bytecode) FUNC, ##ARGS),
+/// The given arguments can be accessed from the API function using `script->ptrReadPos`.
+#define Call(FUNC, ARGS...)                 EVT_CMD(EVT_OP_CALL, (Bytecode) FUNC, ##ARGS),
 
-/// Does nothing in release version
-#define EVT_DEBUG_LOG(STRING)                   EVT_CMD(EVT_OP_DEBUG_LOG, STRING),
+/// Calls a C function with integer arguments and stores its return value.
+///
+/// The function must return s32 and take exactly the supplied number of s32 arguments.
+/// The function is called synchronously and cannot block script execution.
+#define Eval(ARGS...)                       VFUNC(Eval, ARGS)
+#define Eval2(OUT, FUNC)                    EVT_CMD(EVT_OP_EVAL, OUT, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtEval0Func)),
+#define Eval3(OUT, FUNC, A)                 EVT_CMD(EVT_OP_EVAL, OUT, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtEval1Func), A),
+#define Eval4(OUT, FUNC, A, B)              EVT_CMD(EVT_OP_EVAL, OUT, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtEval2Func), A, B),
+#define Eval5(OUT, FUNC, A, B, C)           EVT_CMD(EVT_OP_EVAL, OUT, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtEval3Func), A, B, C),
+#define Eval6(OUT, FUNC, A, B, C, D)        EVT_CMD(EVT_OP_EVAL, OUT, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtEval4Func), A, B, C, D),
+#define Eval7(OUT, FUNC, A, B, C, D, E)     EVT_CMD(EVT_OP_EVAL, OUT, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtEval5Func), A, B, C, D, E),
+#define Eval8(OUT, FUNC, A, B, C, D, E, F)  EVT_CMD(EVT_OP_EVAL, OUT, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtEval6Func), A, B, C, D, E, F),
+
+/// Calls a C function with float arguments and stores its float return value.
+///
+/// The function must return f32 and take exactly the supplied number of f32 arguments.
+/// The function is called synchronously and cannot block script execution.
+#define EvalF(ARGS...)                      VFUNC(EvalF, ARGS)
+#define EvalF2(OUT, FUNC)                   EVT_CMD(EVT_OP_EVALF, OUT, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtEvalF0Func)),
+#define EvalF3(OUT, FUNC, A)                EVT_CMD(EVT_OP_EVALF, OUT, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtEvalF1Func), A),
+#define EvalF4(OUT, FUNC, A, B)             EVT_CMD(EVT_OP_EVALF, OUT, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtEvalF2Func), A, B),
+#define EvalF5(OUT, FUNC, A, B, C)          EVT_CMD(EVT_OP_EVALF, OUT, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtEvalF3Func), A, B, C),
+#define EvalF6(OUT, FUNC, A, B, C, D)       EVT_CMD(EVT_OP_EVALF, OUT, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtEvalF4Func), A, B, C, D),
+#define EvalF7(OUT, FUNC, A, B, C, D, E)    EVT_CMD(EVT_OP_EVALF, OUT, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtEvalF5Func), A, B, C, D, E),
+#define EvalF8(OUT, FUNC, A, B, C, D, E, F) EVT_CMD(EVT_OP_EVALF, OUT, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtEvalF6Func), A, B, C, D, E, F),
+
+/// Calls a C function with integer arguments and no return value.
+///
+/// The function must return void and take exactly the supplied number of s32 arguments.
+/// The function is called synchronously and cannot block script execution.
+#define Invoke(ARGS...)                     VFUNC(Invoke, ARGS)
+#define Invoke1(FUNC)                       EVT_CMD(EVT_OP_INVOKE, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtInvoke0Func)),
+#define Invoke2(FUNC, A)                    EVT_CMD(EVT_OP_INVOKE, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtInvoke1Func), A),
+#define Invoke3(FUNC, A, B)                 EVT_CMD(EVT_OP_INVOKE, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtInvoke2Func), A, B),
+#define Invoke4(FUNC, A, B, C)              EVT_CMD(EVT_OP_INVOKE, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtInvoke3Func), A, B, C),
+#define Invoke5(FUNC, A, B, C, D)           EVT_CMD(EVT_OP_INVOKE, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtInvoke4Func), A, B, C, D),
+#define Invoke6(FUNC, A, B, C, D, E)        EVT_CMD(EVT_OP_INVOKE, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtInvoke5Func), A, B, C, D, E),
+#define Invoke7(FUNC, A, B, C, D, E, F)     EVT_CMD(EVT_OP_INVOKE, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtInvoke6Func), A, B, C, D, E, F),
+
+/// Calls a C function with float arguments and no return value.
+///
+/// The function must return void and take exactly the supplied number of f32 arguments.
+/// The function is called synchronously and cannot block script execution.
+#define InvokeF(ARGS...)                    VFUNC(InvokeF, ARGS)
+#define InvokeF1(FUNC)                      EVT_CMD(EVT_OP_INVOKEF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtInvokeF0Func)),
+#define InvokeF2(FUNC, A)                   EVT_CMD(EVT_OP_INVOKEF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtInvokeF1Func), A),
+#define InvokeF3(FUNC, A, B)                EVT_CMD(EVT_OP_INVOKEF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtInvokeF2Func), A, B),
+#define InvokeF4(FUNC, A, B, C)             EVT_CMD(EVT_OP_INVOKEF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtInvokeF3Func), A, B, C),
+#define InvokeF5(FUNC, A, B, C, D)          EVT_CMD(EVT_OP_INVOKEF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtInvokeF4Func), A, B, C, D),
+#define InvokeF6(FUNC, A, B, C, D, E)       EVT_CMD(EVT_OP_INVOKEF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtInvokeF5Func), A, B, C, D, E),
+#define InvokeF7(FUNC, A, B, C, D, E, F)    EVT_CMD(EVT_OP_INVOKEF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtInvokeF6Func), A, B, C, D, E, F),
+
+/// Marks the beginning of an if statement that only executes if a C function with integer arguments returns nonzero.
+///
+/// The function must return s32 and take exactly the supplied number of s32 arguments.
+#define IfEval(ARGS...)                     VFUNC(IfEval, ARGS)
+#define IfEval1(FUNC)                       EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate0Func)),
+#define IfEval2(FUNC, A)                    EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate1Func), A),
+#define IfEval3(FUNC, A, B)                 EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate2Func), A, B),
+#define IfEval4(FUNC, A, B, C)              EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate3Func), A, B, C),
+#define IfEval5(FUNC, A, B, C, D)           EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate4Func), A, B, C, D),
+#define IfEval6(FUNC, A, B, C, D, E)        EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate5Func), A, B, C, D, E),
+#define IfEval7(FUNC, A, B, C, D, E, F)     EVT_CMD(EVT_OP_IF_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate6Func), A, B, C, D, E, F),
+
+/// Marks the beginning of an if statement that only executes if a C function with integer arguments returns zero.
+///
+/// The function must return s32 and take exactly the supplied number of s32 arguments.
+#define IfNotEval(ARGS...)                  VFUNC(IfNotEval, ARGS)
+#define IfNotEval1(FUNC)                    EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate0Func)),
+#define IfNotEval2(FUNC, A)                 EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate1Func), A),
+#define IfNotEval3(FUNC, A, B)              EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate2Func), A, B),
+#define IfNotEval4(FUNC, A, B, C)           EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate3Func), A, B, C),
+#define IfNotEval5(FUNC, A, B, C, D)        EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate4Func), A, B, C, D),
+#define IfNotEval6(FUNC, A, B, C, D, E)     EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate5Func), A, B, C, D, E),
+#define IfNotEval7(FUNC, A, B, C, D, E, F)  EVT_CMD(EVT_OP_IF_NOT_EVAL, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicate6Func), A, B, C, D, E, F),
+
+/// Marks the beginning of an if statement that only executes if a C function with float arguments returns nonzero.
+///
+/// The function must return s32 and take exactly the supplied number of f32 arguments.
+#define IfEvalF(ARGS...)                    VFUNC(IfEvalF, ARGS)
+#define IfEvalF1(FUNC)                      EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF0Func)),
+#define IfEvalF2(FUNC, A)                   EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF1Func), A),
+#define IfEvalF3(FUNC, A, B)                EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF2Func), A, B),
+#define IfEvalF4(FUNC, A, B, C)             EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF3Func), A, B, C),
+#define IfEvalF5(FUNC, A, B, C, D)          EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF4Func), A, B, C, D),
+#define IfEvalF6(FUNC, A, B, C, D, E)       EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF5Func), A, B, C, D, E),
+#define IfEvalF7(FUNC, A, B, C, D, E, F)    EVT_CMD(EVT_OP_IF_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF6Func), A, B, C, D, E, F),
+
+/// Marks the beginning of an if statement that only executes if a C function with float arguments returns zero.
+///
+/// The function must return s32 and take exactly the supplied number of f32 arguments.
+#define IfNotEvalF(ARGS...)                 VFUNC(IfNotEvalF, ARGS)
+#define IfNotEvalF1(FUNC)                   EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF0Func)),
+#define IfNotEvalF2(FUNC, A)                EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF1Func), A),
+#define IfNotEvalF3(FUNC, A, B)             EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF2Func), A, B),
+#define IfNotEvalF4(FUNC, A, B, C)          EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF3Func), A, B, C),
+#define IfNotEvalF5(FUNC, A, B, C, D)       EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF4Func), A, B, C, D),
+#define IfNotEvalF6(FUNC, A, B, C, D, E)    EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF5Func), A, B, C, D, E),
+#define IfNotEvalF7(FUNC, A, B, C, D, E, F) EVT_CMD(EVT_OP_IF_NOT_EVALF, EVT_CHECK_FUNC_SIGNATURE(FUNC, EvtPredicateF6Func), A, B, C, D, E, F),
 
 /// Prints variable name and value
 #define DebugPrintVar(VAR)                  EVT_CMD(EVT_OP_DEBUG_PRINT_VAR, VAR),
 
 /// Halt execution after this command
 #define BreakPoint(TEXT)                    EVT_CMD(EVT_OP_DEBUG_BREAKPOINT, Ref(TEXT)),
+
+/****** BACKWARD COMPATIBILITY FOR RENAMES ****************************************************************************/
+
+#define BindPadlock(EVT_SOURCE, TRIGGER, COLLIDER_ID, ITEM_LIST, TATTLE_MSG, HAS_INTERACT_PROMPT) \
+                                            BindItemPrompt(EVT_SOURCE, TRIGGER, COLLIDER_ID, ITEM_LIST, TATTLE_MSG, HAS_INTERACT_PROMPT)
+#define ExecGetTID(EVT_SOURCE, OUTVAR, ARGS...) \
+                                            ExecGetID(OUTVAR, EVT_SOURCE, ##ARGS)
+#define KillThread(TID)                     KillScript(TID)
+#define IsThreadRunning(TID, OUTVAR)        IsScriptRunning(TID, OUTVAR)
+#define SuspendThread(TID)                  SuspendScript(TID)
+#define ResumeThread(TID)                   ResumeScript(TID)
+
+#define BufRead1(VAR)                       BufRead(VAR)
+#define BufRead2(VAR1, VAR2)                BufRead(VAR1, VAR2)
+#define BufRead3(VAR1, VAR2, VAR3)          BufRead(VAR1, VAR2, VAR3)
+#define BufRead4(VAR1, VAR2, VAR3, VAR4)    BufRead(VAR1, VAR2, VAR3, VAR4)
+
+#define FBufRead1(VAR)                      FBufRead(VAR)
+#define FBufRead2(VAR1, VAR2)               FBufRead(VAR1, VAR2)
+#define FBufRead3(VAR1, VAR2, VAR3)         FBufRead(VAR1, VAR2, VAR3)
+#define FBufRead4(VAR1, VAR2, VAR3, VAR4)   FBufRead(VAR1, VAR2, VAR3, VAR4)
 
 /****** VECTOR OPERATIONS *********************************************************************************************/
 
@@ -652,18 +1005,6 @@ extern "C" {
 #define EVT_EXIT_WALK(walkDistance, exitIdx, map, entryIdx) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
-        Call(DisablePlayerInput, true) \
-        Call(UseExitHeading, walkDistance, exitIdx) \
-        Exec(ExitWalk) \
-        Call(GotoMap, Ref(map), entryIdx) \
-        Wait(100) \
-        Return \
-        End \
-    }
-
-// alternate version of EVT_EXIT_WALK used on Pleasant Path which does not join EVT_GROUP_EXIT_MAP
-#define EVT_EXIT_WALK_NOK(walkDistance, exitIdx, map, entryIdx) \
-    { \
         Call(UseExitHeading, walkDistance, exitIdx) \
         Exec(ExitWalk) \
         Call(GotoMap, Ref(map), entryIdx) \

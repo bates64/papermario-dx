@@ -26,6 +26,7 @@ b32 can_trigger_loading_zone(void) {
     if (actionState == ACTION_STATE_IDLE ||
         actionState == ACTION_STATE_WALK ||
         actionState == ACTION_STATE_RUN ||
+        actionState == ACTION_STATE_LAND ||
         actionState == ACTION_STATE_USE_TWEESTER ||
         actionState == ACTION_STATE_SPIN
        ) {

@@ -1,6 +1,6 @@
 #include "sam_12.h"
 
-EvtScript N(EVS_ExitWalk_sam_10_2) = EVT_EXIT_WALK_NOK(60, sam_12_ENTRY_0, "sam_10", sam_10_ENTRY_2);
+EvtScript N(EVS_ExitWalk_sam_10_2) = EVT_EXIT_WALK(60, sam_12_ENTRY_0, "sam_10", sam_10_ENTRY_2);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_sam_10_2)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili, 1, 0)

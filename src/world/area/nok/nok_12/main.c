@@ -25,8 +25,8 @@ API_CALLABLE(N(UpdateEnounterStages)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ExitWalk_nok_11_1) = EVT_EXIT_WALK_NOK(60, nok_12_ENTRY_0, "nok_11", nok_11_ENTRY_1);
-EvtScript N(EVS_ExitWalk_nok_13_0) = EVT_EXIT_WALK_NOK(60, nok_12_ENTRY_1, "nok_13", nok_13_ENTRY_0);
+EvtScript N(EVS_ExitWalk_nok_11_1) = EVT_EXIT_WALK(60, nok_12_ENTRY_0, "nok_11", nok_11_ENTRY_1);
+EvtScript N(EVS_ExitWalk_nok_13_0) = EVT_EXIT_WALK(60, nok_12_ENTRY_1, "nok_13", nok_13_ENTRY_0);
 
 EvtScript N(EVS_UpdateEnounterStages) = {
     Label(0)

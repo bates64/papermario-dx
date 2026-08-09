@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/argc_runs_past_boundary_raw.c:
+EVS_ArgcRunsPastBoundary
+EVT_OP_WAIT_FRAMES argc 2 runs past symbol boundary

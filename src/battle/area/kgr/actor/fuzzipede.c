@@ -647,6 +647,7 @@ EvtScript N(EVS_Attack_Leap) = {
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
             Return
+    EndCaseGroup
     EndSwitch
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Fuzzipede_IdleAngry)
     Thread

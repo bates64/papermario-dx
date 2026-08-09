@@ -349,7 +349,7 @@ b32 check_input_jump(void) {
         Entity* entity = get_entity_by_index(collisionStatus->curInspect);
 
         if (entity->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT) {
-            if ((entity->boundScriptBytecode == nullptr) || (entity->flags & ENTITY_FLAG_4000)) {
+            if ((entity->script.source == nullptr) || (entity->flags & ENTITY_FLAG_4000)) {
                 if (entity->type == ENTITY_TYPE_PINK_FLOWER ||
                     entity->type == ENTITY_TYPE_BELLBELL_PLANT ||
                     entity->type == ENTITY_TYPE_TRUMPET_PLANT)

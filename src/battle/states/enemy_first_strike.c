@@ -89,10 +89,9 @@ void btl_state_update_enemy_striking_first(void) {
             actor = battleStatus->curTurnEnemy;
             reset_actor_turn_info();
             battleStatus->battlePhase = PHASE_FIRST_STRIKE;
-            script = start_script(actor->takeTurnSource, EVT_PRIORITY_A, 0);
+            script = start_script(actor->scripts.takeTurn.source, EVT_PRIORITY_A, 0);
             script->owner1.actorID = battleStatus->activeEnemyActorID;
-            actor->takeTurnScript = script;
-            actor->takeTurnScriptID = script->id;
+            assign_bound_script(&actor->scripts.takeTurn, script);
             gBattleSubState = BTL_SUBSTATE_AWAIT;
             BattleSubstateDelay = 3;
             break;
@@ -105,23 +104,20 @@ void btl_state_update_enemy_striking_first(void) {
 
             // wait for current enemy TakeTurn script to finish
             actor = battleStatus->curTurnEnemy;
-            if (actor->takeTurnScript != nullptr && does_script_exist(actor->takeTurnScriptID)) {
+            if (is_bound_script_running(&actor->scripts.takeTurn)) {
                 break;
             }
-            actor->takeTurnScript = nullptr;
 
             // wait for player HandleEvent script to finish (may have been triggered by enemy Take Turn)
-            if (player->handleEventScript != nullptr && does_script_exist(player->handleEventScriptID)) {
+            if (is_bound_script_running(&player->scripts.handleEvent)) {
                 break;
             }
-            player->handleEventScript = nullptr;
 
             // wait for partner HandleEvent script to finish (may have been triggered by enemy Take Turn)
             if (partner != nullptr) {
-                if (partner->handleEventScript != nullptr && does_script_exist(partner->handleEventScriptID)) {
+                if (is_bound_script_running(&partner->scripts.handleEvent)) {
                     break;
                 }
-                partner->handleEventScript = nullptr;
             }
 
             // wait for all enemy TakeTurn scripts to finish
@@ -129,12 +125,8 @@ void btl_state_update_enemy_striking_first(void) {
 
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 actor = battleStatus->enemyActors[i];
-                if (actor != nullptr && actor->takeTurnScript != nullptr) {
-                    if (does_script_exist(actor->takeTurnScriptID)) {
-                        waitingForScript = true;
-                    } else {
-                        actor->takeTurnScript = nullptr;
-                    }
+                if (actor != nullptr && is_bound_script_running(&actor->scripts.takeTurn)) {
+                    waitingForScript = true;
                 }
             }
 
@@ -147,12 +139,8 @@ void btl_state_update_enemy_striking_first(void) {
 
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 actor = battleStatus->enemyActors[i];
-                if (actor != nullptr && actor->handleEventScript != nullptr) {
-                    if (does_script_exist(actor->handleEventScriptID)) {
-                        waitingForScript = true;
-                    } else {
-                        actor->handleEventScript = nullptr;
-                    }
+                if (actor != nullptr && is_bound_script_running(&actor->scripts.handleEvent)) {
+                    waitingForScript = true;
                 }
             }
 

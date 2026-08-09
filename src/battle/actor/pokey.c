@@ -356,7 +356,7 @@ EvtScript N(EVS_HandleEvent) = {
                     EndSwitch
                 EndIf
             EndIf
-        CaseOrEq(EVENT_BURN_DEATH)
+        CaseEq(EVENT_BURN_DEATH)
             Call(GetActorVar, ACTOR_SELF, AVAR_Anim_BurnHurt, LVar1)
             Call(GetActorVar, ACTOR_SELF, AVAR_Anim_BurnStill, LVar2)
             SetConst(LVar0, PRT_MAIN)
@@ -599,6 +599,7 @@ EvtScript N(EVS_Attack_GroundSmash) = {
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
             Return
+    EndCaseGroup
     EndSwitch
     // damage *could* depend on size of the Pokey, but all DMG values are the same, so it doesn't
     Call(GetActorVar, ACTOR_SELF, AVAR_PartsThrown, LVar0)
@@ -685,7 +686,6 @@ EvtScript N(EVS_CountSummonerPokeys) = {
 };
 
 EvtScript N(EVS_TakeTurn) = {
-    #define LBL_NO_SUMMON 123
     Call(GetActorVar, ACTOR_SELF, AVAR_PartsThrown, LVarA)
     IfEq(LVarA, 3)
         ExecWait(N(EVS_Attack_SinglePartLeap))
@@ -695,11 +695,11 @@ EvtScript N(EVS_TakeTurn) = {
     IfEq(LVar0, 0)
         Call(GetActorVar, ACTOR_SELF, AVAR_Generation, LVar0)
         IfEq(LVar0, AVAL_Generation_Last)
-            Goto(LBL_NO_SUMMON)
+            Goto("no_summon")
         EndIf
         ExecWait(N(EVS_FindValidSummonPosition))
         IfEq(LVarE, -1)
-            Goto(LBL_NO_SUMMON)
+            Goto("no_summon")
         EndIf
         ExecWait(N(EVS_CountSummonerPokeys))
         Switch(LVar9)
@@ -724,7 +724,7 @@ EvtScript N(EVS_TakeTurn) = {
         EndSwitch
     EndIf
     // try other moves
-    Label(LBL_NO_SUMMON)
+    Label("no_summon")
     Call(RandInt, 1000, LVar0)
     IfLt(LVar0, 500)
         ExecWait(N(EVS_Attack_GroundSmash))
@@ -1164,6 +1164,7 @@ EvtScript N(EVS_Attack_SinglePartLeap) = {
             Call(SetActorJumpGravity, ACTOR_SELF, Float(2.0))
             ExecWait(EVS_Enemy_HopToPos)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Pokey_Idle1)
+    EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     Call(UseIdleAnimation, ACTOR_SELF, true)

@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/endswitch_without_switch.c:
+EVS_EndSwitchWithoutSwitch
+EndSwitch without matching Switch

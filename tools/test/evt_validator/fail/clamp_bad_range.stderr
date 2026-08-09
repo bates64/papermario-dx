@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/clamp_bad_range.c:
+EVS_ClampBadRange
+EVT_OP_CLAMP min bound is greater than max bound

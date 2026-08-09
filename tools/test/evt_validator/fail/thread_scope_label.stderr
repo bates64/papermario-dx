@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/thread_scope_label.c:
+EVS_ThreadScopeLabel
+Goto("Inner") has no matching Label in this thread scope

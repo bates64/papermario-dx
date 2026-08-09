@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/finally_breakpoint.c:
+EVS_FinallyBreakPoint
+BreakPoint is not allowed inside Finally

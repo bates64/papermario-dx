@@ -58,6 +58,7 @@ void tattle_cam_pre_render(Camera*);
 void tattle_cam_post_render(Camera*);
 void btl_draw_enemy_health_bars(void);
 void btl_update_starpoints_display(void);
+void destroy_pending_actors(void);
 
 void get_stick_input_radial(f32* angle, f32* magnitude) {
     BattleStatus* battleStatus = &gBattleStatus;
@@ -197,10 +198,14 @@ void update_nonplayer_actor_shadows(void) {
 void btl_update(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     PlayerData* playerData = &gPlayerData;
-    Actor* partner = battleStatus->partnerActor;
+    Actor* partner;
     f32 outAngle;
     f32 outMagnitude;
     s32 cond;
+
+    // scripts update first, so an actor's Finally block may already be finished
+    destroy_pending_actors();
+    partner = battleStatus->partnerActor;
 
     if (battleStatus->inputBitmask != -1) {
         if ((battleStatus->flags1 & BS_FLAGS1_PARTNER_ACTING) && gGameStatusPtr->multiplayerEnabled) {
@@ -1036,25 +1041,48 @@ void btl_restore_world_cameras(void) {
     }
 }
 
-void btl_delete_actor(Actor* actor) {
+// checks whether any script registered to this actor is still running
+b32 actor_has_live_scripts(Actor* actor) {
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(actor->scripts.all); i++) {
+        if (is_bound_script_running(&actor->scripts.all[i])) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// terminates every script registered to this actor
+void kill_actor_scripts(Actor* actor) {
+    b32 killedScript;
+    s32 i;
+
+    // Finally may register another script, so keep checking until none remain
+    do {
+        killedScript = false;
+        for (i = 0; i < ARRAY_COUNT(actor->scripts.all); i++) {
+            Evt* script = get_bound_script(&actor->scripts.all[i]);
+
+            if (script != nullptr && script->terminationState == EVT_TERMINATION_NONE) {
+                kill_script(script);
+                killedScript = true;
+            }
+        }
+    } while (killedScript);
+}
+
+// destroys an actor after its registered scripts and their children have terminated
+void destroy_actor(Actor* actor) {
     ActorPart* part;
     ActorPart* actorPartTemp;
     BattleStatus* battleStatus;
     s32 i;
 
-    // TODO hard-coded
-    for (i = 0; i < 2; i++) {
-        remove_actor_decoration(actor, i);
-    }
+    ASSERT(actor->deletePending);
 
-    if (actor->idleScript != nullptr) {
-        kill_script_by_ID(actor->idleScriptID);
-    }
-    if (actor->handleEventScript != nullptr) {
-        kill_script_by_ID(actor->handleEventScriptID);
-    }
-    if (actor->takeTurnScript != nullptr) {
-        kill_script_by_ID(actor->takeTurnScriptID);
+    for (i = 0; i < MAX_ACTOR_DECORATIONS; i++) {
+        remove_actor_decoration(actor, i);
     }
     set_actor_glow_pal(actor, GLOW_PAL_OFF);
 
@@ -1095,11 +1123,49 @@ void btl_delete_actor(Actor* actor) {
     for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
         if (battleStatus->enemyActors[i] == actor) {
             battleStatus->enemyActors[i] = nullptr;
-            break;
         }
+    }
+    if (battleStatus->partnerActor == actor) {
+        battleStatus->partnerActor = nullptr;
+    }
+    if (battleStatus->curTurnEnemy == actor) {
+        battleStatus->curTurnEnemy = nullptr;
     }
 
     heap_free(actor);
+}
+
+// terminates an actor's scripts, then destroys it when their Finally blocks are done
+void btl_delete_actor(Actor* actor) {
+    if (actor == nullptr) {
+        return;
+    }
+
+    actor->deletePending = true;
+    kill_actor_scripts(actor);
+    if (!actor_has_live_scripts(actor)) {
+        destroy_actor(actor);
+    }
+}
+
+// destroys actors that were kept alive for their Finally blocks
+void destroy_pending_actors(void) {
+    BattleStatus* battleStatus = &gBattleStatus;
+    Actor* partner;
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
+        Actor* actor = battleStatus->enemyActors[i];
+
+        if (actor != nullptr && actor->deletePending) {
+            btl_delete_actor(actor);
+        }
+    }
+
+    partner = battleStatus->partnerActor;
+    if (partner != nullptr && partner->deletePending) {
+        btl_delete_actor(partner);
+    }
 }
 
 void btl_delete_player_actor(Actor* player) {
@@ -1108,19 +1174,13 @@ void btl_delete_player_actor(Actor* player) {
     DecorationTable* decorations;
     s32 i;
 
-    for (i = 0; i < 2; i++) {
+    for (i = 0; i < MAX_ACTOR_DECORATIONS; i++) {
         remove_actor_decoration(player, i);
     }
 
-    if (player->idleScript != nullptr) {
-        kill_script_by_ID(player->idleScriptID);
-    }
-    if (player->handleEventScript != nullptr) {
-        kill_script_by_ID(player->handleEventScriptID);
-    }
-    if (player->takeTurnScript != nullptr) {
-        kill_script_by_ID(player->takeTurnScriptID);
-    }
+    kill_bound_script(&player->scripts.idle);
+    kill_bound_script(&player->scripts.handleEvent);
+    kill_bound_script(&player->scripts.takeTurn);
 
     partsTable = player->partsTable;
     decorations = partsTable->decorationTable;

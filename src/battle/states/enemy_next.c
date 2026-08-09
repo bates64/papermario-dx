@@ -106,33 +106,37 @@ void btl_state_update_next_enemy(void) {
             gBattleStatus.flags2 |= BS_FLAGS2_HIDE_BUFF_COUNTERS;
 
             NextEnemyWaitingOrdinal = enemy->ordinal;
-            if (enemy->handlePhaseSource != nullptr) {
+            if (enemy->scripts.handlePhase.source != nullptr) {
                 Evt* onTurnChanceScript;
 
                 battleStatus->battlePhase = PHASE_ENEMY_BEGIN;
-                onTurnChanceScript = start_script(enemy->handlePhaseSource, EVT_PRIORITY_A, 0);
-                enemy->handlePhaseScript = onTurnChanceScript;
-                enemy->handlePhaseScriptID = onTurnChanceScript->id;
+                onTurnChanceScript = start_script(enemy->scripts.handlePhase.source, EVT_PRIORITY_A, 0);
+                assign_bound_script(&enemy->scripts.handlePhase, onTurnChanceScript);
                 onTurnChanceScript->owner1.actorID = battleStatus->activeEnemyActorID;
             }
             gBattleSubState = BTL_SUBSTATE_DONE;
             break;
         case BTL_SUBSTATE_DONE:
-            if (battleStatus->stateFreezeCount == 0) {
-                enemy = get_actor(battleStatus->activeEnemyActorID);
+            if (battleStatus->stateFreezeCount != 0) {
+                break;
+            }
 
-                if (enemy == nullptr || enemy->ordinal != NextEnemyWaitingOrdinal) {
-                    btl_set_state(BATTLE_STATE_NEXT_ENEMY);
-                } else {
-                    if (enemy->handlePhaseSource == nullptr || !does_script_exist(enemy->handlePhaseScriptID)) {
-                        if (battleStatus->cancelTurnMode < 0) {
-                            battleStatus->cancelTurnMode = 0;
-                            btl_set_state(BATTLE_STATE_END_TURN);
-                        } else {
-                            btl_set_state(BATTLE_STATE_ENEMY_MOVE);
-                        }
-                    }
-                }
+            enemy = get_actor(battleStatus->activeEnemyActorID);
+
+            if (enemy == nullptr || enemy->ordinal != NextEnemyWaitingOrdinal) {
+                btl_set_state(BATTLE_STATE_NEXT_ENEMY);
+                return;
+            }
+
+            if (is_bound_script_running(&enemy->scripts.handlePhase)) {
+                break;
+            }
+
+            if (battleStatus->cancelTurnMode < 0) {
+                battleStatus->cancelTurnMode = 0;
+                btl_set_state(BATTLE_STATE_END_TURN);
+            } else {
+                btl_set_state(BATTLE_STATE_ENEMY_MOVE);
             }
             break;
     }

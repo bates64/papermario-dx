@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/if_range_mixed_bounds.c:
+EVS_IfRangeMixedBounds
+EVT_OP_IF_RANGE min/max bounds mix Float and integer literals

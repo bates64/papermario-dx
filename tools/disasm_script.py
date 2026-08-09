@@ -421,7 +421,7 @@ replace_funcs = {
     "CountTargets": {0: "ActorIDs"},
     "DisablePlayerInput": {0: "Bool"},
     "DisablePlayerPhysics": {0: "Bool"},
-    "DispatchDamagePlayerEvent": {1: "Events"},
+    "DispatchDamageEventPlayer": {1: "Events"},
     "DispatchEvent": {0: "ActorIDs", 1: "Events"},
     "EnableActorBlur": {0: "ActorIDs"},
     "EnableActorGlow": {0: "ActorIDs", 1: "Bool"},

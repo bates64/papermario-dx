@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/integer_math_float_literal.c:
+EVS_IntegerMathFloatLiteral
+EVT_OP_MIN arg 2 uses Float literal; use MinF

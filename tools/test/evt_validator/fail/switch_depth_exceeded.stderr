@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/switch_depth_exceeded.c:
+EVS_SwitchDepthExceeded
+Switch nesting depth 9 exceeds runtime limit of 8

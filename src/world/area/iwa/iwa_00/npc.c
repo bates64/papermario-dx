@@ -273,7 +273,6 @@ EvtScript N(EVS_NpcHit_Whacka_02) = {
             Sub(LVar0, 1)
             Call(SetNpcPos, NPC_Whacka_01, LVar0, LVar1, LVar2)
             Wait(1)
-        EndCaseGroup
     EndSwitch
     IfLt(GB_IWA00_Whacka_HitCount, 8)
         Switch(LVarA)

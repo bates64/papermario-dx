@@ -16,14 +16,14 @@ void btl_state_update_defend(void) {
 
             // prompt player to handle PHASE_USE_DEFEND
             gBattleStatus.battlePhase = PHASE_USE_DEFEND;
-            player->takeTurnScript = script = start_script(&EVS_Mario_HandlePhase, EVT_PRIORITY_A, 0);
-            player->takeTurnScriptID = script->id;
+            script = start_script(&EVS_Mario_HandlePhase, EVT_PRIORITY_A, 0);
+            assign_bound_script(&player->scripts.takeTurn, script);
             script->owner1.actorID = ACTOR_PLAYER;
             gBattleSubState = BTL_SUBSTATE_AWAIT;
             break;
         case BTL_SUBSTATE_AWAIT:
             // wait for PHASE_USE_DEFEND event to complete
-            if (does_script_exist(player->takeTurnScriptID) || gBattleStatus.stateFreezeCount != 0) {
+            if (is_bound_script_running(&player->scripts.takeTurn) || gBattleStatus.stateFreezeCount != 0) {
                 break;
             }
 

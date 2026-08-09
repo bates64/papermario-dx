@@ -301,6 +301,7 @@ EvtScript N(EVS_HandleEvent) = {
             Set(LVar2, EXEC_DEATH_NO_SPINNING)
             ExecWait(EVS_Enemy_Death)
             Return
+        EndCaseGroup
         CaseEq(EVENT_ZERO_DAMAGE)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bobomb_Idle)

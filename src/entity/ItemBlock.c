@@ -223,7 +223,7 @@ void entity_HitItemBlock_hide(Entity* entity) {
 }
 
 s32 entity_TriggerBlock_start_bound_script(Entity* entity) {
-    if (entity->boundScriptBytecode != nullptr) {
+    if (entity->script.source != nullptr) {
         entity->flags |= ENTITY_FLAG_BOUND_SCRIPT_DIRTY;
         return true;
     }

@@ -126,6 +126,7 @@ EvtScript N(EVS_HandleEvent) = {
     Call(GetLastEvent, ACTOR_SELF, LVar0)
     Switch(LVar0)
         CaseEq(EVENT_BEGIN_FIRST_STRIKE)
+            // do nothing
         CaseOrEq(EVENT_HIT_COMBO)
         CaseOrEq(EVENT_HIT)
         CaseOrEq(EVENT_BURN_HIT)

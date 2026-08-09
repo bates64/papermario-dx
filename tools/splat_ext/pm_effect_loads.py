@@ -91,6 +91,7 @@ glabel fx_{name}
         type,
         name,
         vram_start,
+        bss_size,
         args,
         yaml,
     ):
@@ -102,6 +103,7 @@ glabel fx_{name}
             vram_start,
             args=args,
             yaml=yaml,
+            bss_size=bss_size,
         )
 
         self.effects = effects_from_yaml(options.opts.src_path / "effects.yaml")

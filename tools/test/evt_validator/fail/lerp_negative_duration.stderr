@@ -1,0 +1,2 @@
+EVS_LerpNegativeDuration
+Lerp duration must be >= 0

@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/endif_without_if.c:
+EVS_EndIfWithoutIf
+EndIf without matching If

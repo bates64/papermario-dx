@@ -1,0 +1,5 @@
+tools/test/evt_validator/fail/if_without_endif.c:
+EVS_IfWithoutEndIf
+unclosed if block
+before End
+source line
