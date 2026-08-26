@@ -1176,7 +1176,7 @@ enum SoundIDs {
     SOUND_FRIGHT_JAR                            = 0x00000367,
     SOUND_MYSTERY_REEL                          = 0x00000368,
     SOUND_HUSTLE_WHISTLE                        = 0x00000369,
-    SOUND_SMALL_GLASS_BREAK                     = 0x00000369, // #unused
+    SOUND_SMALL_GLASS_BREAK                     = 0x0000036A, // #unused
     SOUND_CRYSTAL_KING_DISAPPEAR                = 0x0000036B,
     SOUND_LRAW_SHY_GUY_CROWD_1                  = 0x0000036C,
     SOUND_LRAW_SHY_GUY_CROWD_2                  = 0x0000036D,
