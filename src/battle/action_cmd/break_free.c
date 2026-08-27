@@ -268,3 +268,5 @@ void N(free)(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_RUN_AWAY]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_OK]);
 }
+
+ACTION_COMMAND_ENTRY(ACTION_COMMAND_BREAK_FREE);

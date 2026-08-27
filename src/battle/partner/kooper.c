@@ -1,6 +1,7 @@
 #include "common.h"
 #include "effects.h"
 #include "battle/battle.h"
+#include "battle/partner.h"
 #include "script_api/battle.h"
 #include "sprite/npc/BattleKooper.h"
 #include "battle/action_cmd/hammer.h"
@@ -547,7 +548,7 @@ EvtScript N(getShellTossMoveTime) = {
 
 EvtScript N(shellToss) = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
-    Call(action_command_hammer_init)
+    Call(InitActionCommand)
     Call(InitTargetIterator)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar0, 30)
@@ -567,7 +568,7 @@ EvtScript N(shellToss) = {
             BreakLoop
         EndIf
     EndLoop
-    Call(action_command_hammer_start, 0, 50 * DT - 3, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 0, 50 * DT - 3, AC_DIFFICULTY_3)
     Call(SetActionProgress, 0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleKooper_ShellSpinSlowest)
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_KOOPER_SHELL_SPINUP)
@@ -704,7 +705,7 @@ EvtScript N(shellToss) = {
 
 EvtScript N(powerShell) = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
-    Call(action_command_hammer_init)
+    Call(InitActionCommand)
     Call(GetActorLevel, ACTOR_PARTNER, LVar0)
     Switch(LVar0)
         CaseEq(0)
@@ -737,7 +738,7 @@ EvtScript N(powerShell) = {
         EndIf
     EndLoop
     Call(UseBattleCamPreset, BTL_CAM_PARTNER_CLOSE_UP)
-    Call(action_command_hammer_start, 0, 47, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 0, 47, AC_DIFFICULTY_3)
     Call(SetActionProgress, 0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleKooper_ShellSpinSlowest)
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_KOOPER_SHELL_SPINUP)
@@ -883,7 +884,7 @@ EvtScript N(powerShell) = {
 
 EvtScript N(dizzyShell) = {
     Call(LoadActionCommand, ACTION_COMMAND_DIZZY_SHELL)
-    Call(action_command_dizzy_shell_init)
+    Call(InitActionCommand)
     Call(SetupMashMeter, 1, 100, 0, 0, 0, 0)
     Call(InitTargetIterator)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
@@ -903,7 +904,7 @@ EvtScript N(dizzyShell) = {
     Set(LVarA, LVarD)
     Add(LVarA, -3)
     Call(N(AverageTargetDizzyChance))
-    Call(action_command_dizzy_shell_start, 0, LVarA, AC_DIFFICULTY_3, LVar0)
+    Call(StartActionCommand, 0, LVarA, AC_DIFFICULTY_3, LVar0)
     Call(SetActionProgress, 0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleKooper_ShellSpinSlowest)
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_KOOPER_SHELL_SPINUP)
@@ -1055,7 +1056,7 @@ EvtScript N(dizzyShell) = {
 
 EvtScript N(fireShell) = {
     Call(LoadActionCommand, ACTION_COMMAND_FIRE_SHELL)
-    Call(action_command_fire_shell_init)
+    Call(InitActionCommand)
     Call(SetupMashMeter, 5, 35, 60, 80, 99, 100)
     Call(InitTargetIterator)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
@@ -1074,7 +1075,7 @@ EvtScript N(fireShell) = {
     Set(LVarD, 75 * DT)
     Set(LVarC, LVarD)
     Add(LVarC, -3)
-    Call(action_command_fire_shell_start, 0, LVarC, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 0, LVarC, AC_DIFFICULTY_3)
     Call(SetActorVar, ACTOR_SELF, AVAR_Unk_1, 0)
     Set(LVarA, Float(8.0))
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleKooper_ShellSpinSlowest)
@@ -1384,3 +1385,5 @@ EvtScript N(shellTossOnFirstStrike) = {
     Return
     End
 };
+
+BATTLE_PARTNER_ENTRY(PARTNER_KOOPER, 0);

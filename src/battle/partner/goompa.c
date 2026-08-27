@@ -1,4 +1,5 @@
 #include "battle/battle.h"
+#include "battle/partner.h"
 #include "script_api/battle.h"
 #include "sprite/npc/Goompa.h"
 
@@ -195,3 +196,5 @@ EvtScript N(EVS_ExecuteAction) = {
     Return
     End
 };
+
+BATTLE_PARTNER_ENTRY(PARTNER_GOOMPA, 0);

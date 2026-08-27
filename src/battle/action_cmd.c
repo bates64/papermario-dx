@@ -1,5 +1,6 @@
 #include "common.h"
-#include "ld_addrs.h"
+#include "battle/action_cmd.h"
+#include "dx/overlay.h"
 
 u8 mashMeter_bgColors[15] = {
      33,  33, 117,
@@ -49,34 +50,31 @@ Difficulty1D actionCmdTableSpook = { 130, 120, 110, 100, 90, 80, 70, 60 };
 Difficulty2D actionCmdTableWaterBlock = { {6, 3}, {5, 3}, {4, 3}, {2, 3}, {1, 3}, {0, 3}, {0, 2}, {0, 1} };
 Difficulty1D actionCmdTableTidalWave = { 130, 120, 110, 100, 90, 80, 70, 60 };
 
-#define AC_TBL_ENTRY(name) \
-    action_cmd_ ## name ## _ROM_START, action_cmd_ ## name ## _ROM_END, action_cmd_ ## name ## _VRAM
-
-void* actionCommandDmaTable[] = {
-    nullptr, nullptr, nullptr,
-    AC_TBL_ENTRY(jump),
-    AC_TBL_ENTRY(hammer),
-    AC_TBL_ENTRY(flee),
-    AC_TBL_ENTRY(break_free),
-    AC_TBL_ENTRY(whirlwind),
-    AC_TBL_ENTRY(stop_leech),
-    AC_TBL_ENTRY(unused_flee),
-    AC_TBL_ENTRY(dizzy_shell),
-    AC_TBL_ENTRY(fire_shell),
-    AC_TBL_ENTRY(unused_mash_a),
-    AC_TBL_ENTRY(bomb),
-    AC_TBL_ENTRY(body_slam),
-    AC_TBL_ENTRY(air_lift),
-    AC_TBL_ENTRY(air_raid),
-    AC_TBL_ENTRY(squirt),
-    AC_TBL_ENTRY(power_shock),
-    AC_TBL_ENTRY(mega_shock),
-    AC_TBL_ENTRY(smack),
-    AC_TBL_ENTRY(spiny_surge),
-    AC_TBL_ENTRY(hurricane),
-    AC_TBL_ENTRY(spook),
-    AC_TBL_ENTRY(three_chances),
-    AC_TBL_ENTRY(tidal_wave),
+static const char* ActionCommandOverlayNames[] = {
+    [ACTION_COMMAND_NONE]          = nullptr,
+    [ACTION_COMMAND_JUMP]          = "jump",
+    [ACTION_COMMAND_SMASH]         = "hammer",
+    [ACTION_COMMAND_FLEE]          = "flee",
+    [ACTION_COMMAND_BREAK_FREE]    = "break_free",
+    [ACTION_COMMAND_WHIRLWIND]     = "whirlwind",
+    [ACTION_COMMAND_STOP_LEECH]    = "stop_leech",
+    [ACTION_COMMAND_UNUSED_FLEE]   = "unused_flee",
+    [ACTION_COMMAND_DIZZY_SHELL]   = "dizzy_shell",
+    [ACTION_COMMAND_FIRE_SHELL]    = "fire_shell",
+    [ACTION_COMMAND_UNUSED_MASH_A] = "unused_mash_a",
+    [ACTION_COMMAND_BOMB]          = "bomb",
+    [ACTION_COMMAND_BODY_SLAM]     = "body_slam",
+    [ACTION_COMMAND_AIR_LIFT]      = "air_lift",
+    [ACTION_COMMAND_AIR_RAID]      = "air_raid",
+    [ACTION_COMMAND_SQUIRT]        = "squirt",
+    [ACTION_COMMAND_POWER_SHOCK]   = "power_shock",
+    [ACTION_COMMAND_MEGA_SHOCK]    = "mega_shock",
+    [ACTION_COMMAND_SMACK]         = "smack",
+    [ACTION_COMMAND_SPINY_SURGE]   = "spiny_surge",
+    [ACTION_COMMAND_HURRICANE]     = "hurricane",
+    [ACTION_COMMAND_SPOOK]         = "spook",
+    [ACTION_COMMAND_THREE_CHANCES] = "three_chances",
+    [ACTION_COMMAND_TIDAL_WAVE]    = "tidal_wave",
 };
 
 BSS s32 MashMeterSmoothDivisor;
@@ -86,16 +84,56 @@ BSS s32 IsGroupHeal;
 BSS s8 ApplyingBuff;
 BSS s32 D_8029FBD8_pad[2];
 
-#include "battle/action_cmd.h"
-
 BSS ActionCommandStatus gActionCommandStatus;
+static Overlay* LoadedActionCommandOverlay;
+static const ActionCommandInterface* LoadedActionCommand;
+
+void unload_action_command(void) {
+    if (LoadedActionCommand != nullptr &&
+        gActionCommandStatus.actionCommandID != ACTION_COMMAND_NONE) {
+        action_command_free();
+    }
+
+    ovl_unload(LoadedActionCommandOverlay);
+    LoadedActionCommandOverlay = nullptr;
+    LoadedActionCommand = nullptr;
+}
 
 API_CALLABLE(LoadActionCommand) {
     Bytecode* args = script->ptrReadPos;
     s32 cmd = evt_get_variable(script, *args++);
+    const char* overlayName;
 
-    dma_copy(actionCommandDmaTable[cmd * 3 + 0], actionCommandDmaTable[cmd * 3 + 1], actionCommandDmaTable[cmd * 3 + 2]);
+    ASSERT_MSG((u32)cmd < ARRAY_COUNT(ActionCommandOverlayNames),
+               "Invalid action command ID %d", (int)cmd);
+    overlayName = ActionCommandOverlayNames[cmd];
+    ASSERT_MSG(overlayName != nullptr, "Action command ID %d has no overlay", (int)cmd);
+
+    unload_action_command();
+    LoadedActionCommandOverlay = ovl_load(overlayName, OVL_ACTION_CMD);
+    LoadedActionCommand = ovl_import(LoadedActionCommandOverlay, ACTION_COMMAND_EXPORT_NAME);
+    ASSERT_MSG(LoadedActionCommand != nullptr,
+               "Action command overlay '%s' has no %s export",
+               overlayName, ACTION_COMMAND_EXPORT_NAME);
+    ASSERT_MSG(LoadedActionCommand->id == cmd,
+               "Action command overlay '%s' has ID %d, expected %d",
+               overlayName, (int)LoadedActionCommand->id, (int)cmd);
+    ASSERT_MSG(LoadedActionCommand->init != nullptr && LoadedActionCommand->start != nullptr &&
+               LoadedActionCommand->update != nullptr && LoadedActionCommand->draw != nullptr &&
+               LoadedActionCommand->free != nullptr,
+               "Action command overlay '%s' has an incomplete interface", overlayName);
+
     return ApiStatus_DONE2;
+}
+
+API_CALLABLE(InitActionCommand) {
+    ASSERT_MSG(LoadedActionCommand != nullptr, "No action command is loaded");
+    return LoadedActionCommand->init(script, isInitialCall);
+}
+
+API_CALLABLE(StartActionCommand) {
+    ASSERT_MSG(LoadedActionCommand != nullptr, "No action command is loaded");
+    return LoadedActionCommand->start(script, isInitialCall);
 }
 
 s32 adjust_action_command_difficulty(s32 difficultyLevel) {
@@ -291,233 +329,25 @@ void action_command_update(void) {
         action_command_free();
     }
 
-    switch (acs->actionCommandID) {
-        case ACTION_COMMAND_NONE:
-            break;
-        case ACTION_COMMAND_JUMP:
-            action_command_jump_update();
-            break;
-        case ACTION_COMMAND_SMASH:
-            action_command_hammer_update();
-            break;
-        case ACTION_COMMAND_FLEE:
-            action_command_flee_update();
-            break;
-        case ACTION_COMMAND_BREAK_FREE:
-            action_command_break_free_update();
-            break;
-        case ACTION_COMMAND_WHIRLWIND:
-            action_command_whirlwind_update();
-            break;
-        case ACTION_COMMAND_STOP_LEECH:
-            action_command_stop_leech_update();
-            break;
-        case ACTION_COMMAND_UNUSED_FLEE:
-            action_command_unused_flee_update();
-            break;
-        case ACTION_COMMAND_DIZZY_SHELL:
-            action_command_dizzy_shell_update();
-            break;
-        case ACTION_COMMAND_FIRE_SHELL:
-            action_command_fire_shell_update();
-            break;
-        case ACTION_COMMAND_UNUSED_MASH_A:
-            action_command_unused_mash_a_update();
-            break;
-        case ACTION_COMMAND_BOMB:
-            action_command_bomb_update();
-            break;
-        case ACTION_COMMAND_BODY_SLAM:
-            action_command_body_slam_update();
-            break;
-        case ACTION_COMMAND_AIR_LIFT:
-            action_command_air_lift_update();
-            break;
-        case ACTION_COMMAND_AIR_RAID:
-            action_command_air_raid_update();
-            break;
-        case ACTION_COMMAND_SQUIRT:
-            action_command_squirt_update();
-            break;
-        case ACTION_COMMAND_POWER_SHOCK:
-            action_command_power_shock_update();
-            break;
-        case ACTION_COMMAND_MEGA_SHOCK:
-            action_command_mega_shock_update();
-            break;
-        case ACTION_COMMAND_SMACK:
-            action_command_smack_update();
-            break;
-        case ACTION_COMMAND_SPINY_SURGE:
-            action_command_spiny_surge_update();
-            break;
-        case ACTION_COMMAND_HURRICANE:
-            action_command_hurricane_update();
-            break;
-        case ACTION_COMMAND_SPOOK:
-            action_command_spook_update();
-            break;
-        case ACTION_COMMAND_THREE_CHANCES:
-            action_command_three_chances_update();
-            break;
-        case ACTION_COMMAND_TIDAL_WAVE:
-            action_command_tidal_wave_update();
-            break;
-        default:
-            break;
+    if (acs->actionCommandID != ACTION_COMMAND_NONE) {
+        ASSERT_MSG(LoadedActionCommand != nullptr, "Active action command has no loaded overlay");
+        LoadedActionCommand->update();
     }
 }
 
 void action_command_draw(void) {
-    switch (gActionCommandStatus.actionCommandID) {
-        case ACTION_COMMAND_NONE:
-            break;
-        case ACTION_COMMAND_JUMP:
-            action_command_jump_draw();
-            break;
-        case ACTION_COMMAND_SMASH:
-            action_command_hammer_draw();
-            break;
-        case ACTION_COMMAND_FLEE:
-            action_command_flee_draw();
-            break;
-        case ACTION_COMMAND_BREAK_FREE:
-            action_command_break_free_draw();
-            break;
-        case ACTION_COMMAND_WHIRLWIND:
-            action_command_whirlwind_draw();
-            break;
-        case ACTION_COMMAND_STOP_LEECH:
-            action_command_stop_leech_draw();
-            break;
-        case ACTION_COMMAND_UNUSED_FLEE:
-            action_command_unused_flee_draw();
-            break;
-        case ACTION_COMMAND_DIZZY_SHELL:
-            action_command_dizzy_shell_draw();
-            break;
-        case ACTION_COMMAND_FIRE_SHELL:
-            action_command_fire_shell_draw();
-            break;
-        case ACTION_COMMAND_UNUSED_MASH_A:
-            action_command_unused_mash_a_draw();
-            break;
-        case ACTION_COMMAND_BOMB:
-            action_command_bomb_draw();
-            break;
-        case ACTION_COMMAND_BODY_SLAM:
-            action_command_body_slam_draw();
-            break;
-        case ACTION_COMMAND_AIR_LIFT:
-            action_command_air_lift_draw();
-            break;
-        case ACTION_COMMAND_AIR_RAID:
-            action_command_air_raid_draw();
-            break;
-        case ACTION_COMMAND_SQUIRT:
-            action_command_squirt_draw();
-            break;
-        case ACTION_COMMAND_POWER_SHOCK:
-            action_command_power_shock_draw();
-            break;
-        case ACTION_COMMAND_MEGA_SHOCK:
-            action_command_mega_shock_draw();
-            break;
-        case ACTION_COMMAND_SMACK:
-            action_command_smack_draw();
-            break;
-        case ACTION_COMMAND_SPINY_SURGE:
-            action_command_spiny_surge_draw();
-            break;
-        case ACTION_COMMAND_HURRICANE:
-            action_command_hurricane_draw();
-            break;
-        case ACTION_COMMAND_SPOOK:
-            action_command_spook_draw();
-            break;
-        case ACTION_COMMAND_THREE_CHANCES:
-            action_command_three_chances_draw();
-            break;
-        case ACTION_COMMAND_TIDAL_WAVE:
-            action_command_tidal_wave_draw();
+    if (gActionCommandStatus.actionCommandID != ACTION_COMMAND_NONE) {
+        ASSERT_MSG(LoadedActionCommand != nullptr, "Active action command has no loaded overlay");
+        LoadedActionCommand->draw();
     }
 }
 
 void action_command_free(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
 
-    switch (acs->actionCommandID) {
-        case ACTION_COMMAND_NONE:
-            break;
-        case ACTION_COMMAND_JUMP:
-            action_command_jump_free();
-            break;
-        case ACTION_COMMAND_SMASH:
-            action_command_hammer_free();
-            break;
-        case ACTION_COMMAND_FLEE:
-            action_command_flee_free();
-            break;
-        case ACTION_COMMAND_BREAK_FREE:
-            action_command_break_free_free();
-            break;
-        case ACTION_COMMAND_WHIRLWIND:
-            action_command_whirlwind_free();
-            break;
-        case ACTION_COMMAND_STOP_LEECH:
-            action_command_stop_leech_free();
-            break;
-        case ACTION_COMMAND_UNUSED_FLEE:
-            action_command_unused_flee_free();
-            break;
-        case ACTION_COMMAND_DIZZY_SHELL:
-            action_command_dizzy_shell_free();
-            break;
-        case ACTION_COMMAND_FIRE_SHELL:
-            action_command_fire_shell_free();
-            break;
-        case ACTION_COMMAND_UNUSED_MASH_A:
-            action_command_unused_mash_a_free();
-            break;
-        case ACTION_COMMAND_BOMB:
-            action_command_bomb_free();
-            break;
-        case ACTION_COMMAND_BODY_SLAM:
-            action_command_body_slam_free();
-            break;
-        case ACTION_COMMAND_AIR_LIFT:
-            action_command_air_lift_free();
-            break;
-        case ACTION_COMMAND_AIR_RAID:
-            action_command_air_raid_free();
-            break;
-        case ACTION_COMMAND_SQUIRT:
-            action_command_squirt_free();
-            break;
-        case ACTION_COMMAND_POWER_SHOCK:
-            action_command_power_shock_free();
-            break;
-        case ACTION_COMMAND_MEGA_SHOCK:
-            action_command_mega_shock_free();
-            break;
-        case ACTION_COMMAND_SMACK:
-            action_command_smack_free();
-            break;
-        case ACTION_COMMAND_SPINY_SURGE:
-            action_command_spiny_surge_free();
-            break;
-        case ACTION_COMMAND_HURRICANE:
-            action_command_hurricane_free();
-            break;
-        case ACTION_COMMAND_SPOOK:
-            action_command_spook_free();
-            break;
-        case ACTION_COMMAND_THREE_CHANCES:
-            action_command_three_chances_free();
-            break;
-        case ACTION_COMMAND_TIDAL_WAVE:
-            action_command_tidal_wave_free();
-            break;
+    if (acs->actionCommandID != ACTION_COMMAND_NONE) {
+        ASSERT_MSG(LoadedActionCommand != nullptr, "Active action command has no loaded overlay");
+        LoadedActionCommand->free();
     }
 
     acs->actionCommandID = ACTION_COMMAND_NONE;

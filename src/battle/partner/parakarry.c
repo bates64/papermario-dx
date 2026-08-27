@@ -1,4 +1,5 @@
 #include "battle/battle.h"
+#include "battle/partner.h"
 #include "script_api/battle.h"
 #include "hud_element.h"
 #include "effects.h"
@@ -929,7 +930,7 @@ EvtScript N(skyDive) = {
     Call(EnableIdleScript, ACTOR_PARTNER, IDLE_SCRIPT_DISABLE)
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
-    Call(action_command_jump_init)
+    Call(InitActionCommand)
     Call(SetActionDifficultyTable, Ref(N(actionCommandTable)))
     Call(UseBattleCamPreset, BTL_CAM_PARTNER_MIDAIR)
     Call(BattleCamTargetActor, ACTOR_SELF)
@@ -941,7 +942,7 @@ EvtScript N(skyDive) = {
     Call(FlyToGoal, ACTOR_PARTNER, 0, -10, EASING_COS_IN_OUT)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleParakarry_Still)
     Wait(3)
-    Call(action_command_jump_start, 32, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 32, AC_DIFFICULTY_3)
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_PARAKARRY_PREDIVE)
     Call(UseBattleCamPreset, BTL_CAM_PARTNER_MIDAIR)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleParakarry_FlyFast)
@@ -1093,7 +1094,7 @@ EvtScript N(airLift) = {
     Call(InitTargetIterator)
     Call(N(AirLiftChance))
     Call(LoadActionCommand, ACTION_COMMAND_AIR_LIFT)
-    Call(action_command_air_lift_init, LVar0)
+    Call(InitActionCommand, LVar0)
     Call(SetupMashMeter, 1, 100, 0, 0, 0, 0)
     Call(SetActionHudPrepareTime, 0)
     Call(InitTargetIterator)
@@ -1143,7 +1144,7 @@ EvtScript N(airLift) = {
     Call(PartnerTestEnemy, LVar0, DAMAGE_TYPE_AIR_LIFT, SUPPRESS_EVENT_SPIKY_FRONT, 0, 0, BS_FLAGS1_INCLUDE_POWER_UPS | BS_FLAGS1_TRIGGER_EVENTS)
     Call(N(AirLiftChance))
     IfNe(LVar0, -1)
-        Call(action_command_air_lift_start, 0, 87 * DT, AC_DIFFICULTY_3, 0)
+        Call(StartActionCommand, 0, 87 * DT, AC_DIFFICULTY_3, 0)
         Call(SetBattleFlagBits, BS_FLAGS1_4000, false)
         ChildThread
             Wait(1)
@@ -1204,7 +1205,7 @@ EvtScript N(airLift) = {
 
 EvtScript N(airRaid) = {
     Call(LoadActionCommand, ACTION_COMMAND_AIR_RAID)
-    Call(action_command_air_raid_init)
+    Call(InitActionCommand)
     Call(SetupMashMeter, 4, 25, 50, 75, 100, 0)
     Call(SetActionHudPrepareTime, 0)
     Call(UseBattleCamPreset, BTL_CAM_ACTOR)
@@ -1216,7 +1217,7 @@ EvtScript N(airRaid) = {
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleParakarry_Run)
     Call(FlyToGoal, ACTOR_PARTNER, 15, -2, EASING_LINEAR)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleParakarry_Idle)
-    Call(action_command_air_raid_start, 0, 90 * DT, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 0, 90 * DT, AC_DIFFICULTY_3)
     Call(SetBattleFlagBits, BS_FLAGS1_4000, false)
     Wait(2)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleParakarry_PreDive)
@@ -1295,3 +1296,5 @@ EvtScript N(airRaid) = {
     Return
     End
 };
+
+BATTLE_PARTNER_ENTRY(PARTNER_PARAKARRY, 30);

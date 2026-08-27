@@ -667,3 +667,5 @@ void N(free)(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_TICK_2]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_BUFF_ICON]);
 }
+
+ACTION_COMMAND_ENTRY(ACTION_COMMAND_THREE_CHANCES);

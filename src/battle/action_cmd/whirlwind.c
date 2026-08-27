@@ -318,3 +318,5 @@ void N(free)(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_DIGIT]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_BUBBLE]);
 }
+
+ACTION_COMMAND_ENTRY(ACTION_COMMAND_WHIRLWIND);

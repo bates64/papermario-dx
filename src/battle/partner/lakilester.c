@@ -1,6 +1,7 @@
 #include "common.h"
 #include "effects.h"
 #include "battle/battle.h"
+#include "battle/partner.h"
 #include "script_api/battle.h"
 #include "sprite/npc/BattleLakilester.h"
 #include "battle/action_cmd/spiny_surge.h"
@@ -957,7 +958,7 @@ EvtScript N(EVS_Move_SpinyFlip) = {
 
 EvtScript N(EVS_Move_SpinySurge) = {
     Call(LoadActionCommand, ACTION_COMMAND_SPINY_SURGE)
-    Call(action_command_spiny_surge_init)
+    Call(InitActionCommand)
     Call(GetActorLevel, ACTOR_PARTNER, LVar0)
     Switch(LVar0)
         CaseEq(0)
@@ -991,7 +992,7 @@ EvtScript N(EVS_Move_SpinySurge) = {
     EndSwitch
     Set(LVarB, LVarA)
     Add(LVarB, -3)
-    Call(action_command_spiny_surge_start, 0, LVarB, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 0, LVarB, AC_DIFFICULTY_3)
     Call(SetBattleFlagBits, BS_FLAGS1_4000, false)
     Call(InitTargetIterator)
     Call(SetActorVar, ACTOR_PARTNER, AVAR_Unk_0, 0)
@@ -1112,7 +1113,7 @@ EvtScript N(EVS_CloudNine_PlayerOK) = {
     Call(SetBattleFlagBits, BS_FLAGS1_SHOW_PLAYER_DECORATIONS, false)
     Call(SetActorFlagBits, ACTOR_PLAYER, ACTOR_FLAG_NO_INACTIVE_ANIM, true)
     Call(LoadActionCommand, ACTION_COMMAND_THREE_CHANCES)
-    Call(action_command_three_chances_init, ACV_THREE_CHANCES_CLOUD_NINE)
+    Call(InitActionCommand, ACV_THREE_CHANCES_CLOUD_NINE)
     Call(SetActionHudPrepareTime, 50)
     Call(InitTargetIterator)
     Call(SetGoalToHome, ACTOR_PARTNER)
@@ -1153,7 +1154,7 @@ EvtScript N(EVS_CloudNine_PlayerOK) = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_FightingStance)
     Wait(3)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
-    Call(action_command_three_chances_start, 0, 97, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 0, 97, AC_DIFFICULTY_3)
     Call(AddBattleCamDist, -75)
     Call(MoveBattleCamOver, 100)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_NONE, BTL_CAM_XADJ_NONE, true)
@@ -1231,7 +1232,7 @@ EvtScript N(EVS_CloudNine_PlayerOK) = {
 EvtScript N(EVS_CloudNine_PlayerImmobile) = {
     Call(UseIdleAnimation, ACTOR_PLAYER, false)
     Call(LoadActionCommand, ACTION_COMMAND_THREE_CHANCES)
-    Call(action_command_three_chances_init, ACV_THREE_CHANCES_CLOUD_NINE)
+    Call(InitActionCommand, ACV_THREE_CHANCES_CLOUD_NINE)
     Call(SetActionHudPrepareTime, 50)
     Call(N(RemoveCloudNineFX))
     Call(InitTargetIterator)
@@ -1268,7 +1269,7 @@ EvtScript N(EVS_CloudNine_PlayerImmobile) = {
     Add(LVar1, 40)
     Call(SetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Call(FlyToGoal, ACTOR_PARTNER, 20, 0, EASING_COS_IN_OUT)
-    Call(action_command_three_chances_start, 0, 97, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 0, 97, AC_DIFFICULTY_3)
     Call(AddBattleCamDist, -75)
     Call(MoveBattleCamOver, 100)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_NONE, BTL_CAM_XADJ_NONE, true)
@@ -1704,7 +1705,7 @@ API_CALLABLE(N(IsHurricaneActive)) {
 
 EvtScript N(EVS_Move_Hurricane) = {
     Call(LoadActionCommand, ACTION_COMMAND_HURRICANE)
-    Call(action_command_hurricane_init)
+    Call(InitActionCommand)
     Call(SetupMashMeter, 1, 100, 0, 0, 0, 0)
     Call(SetActionHudPrepareTime, 15)
     Call(SetDamageSource, DMG_SRC_HURRICANE)
@@ -1721,7 +1722,7 @@ EvtScript N(EVS_Move_Hurricane) = {
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleLakilester_Idle)
     Wait(15)
     Call(N(InitHurricane))
-    Call(action_command_hurricane_start, 0, 147 * DT, AC_DIFFICULTY_3, LVar0)
+    Call(StartActionCommand, 0, 147 * DT, AC_DIFFICULTY_3, LVar0)
     Call(SetBattleFlagBits, BS_FLAGS1_4000, false)
     Call(SetActorRotationOffset, ACTOR_PARTNER, 0, 20, 0)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
@@ -1785,3 +1786,5 @@ EvtScript N(EVS_Move_Hurricane) = {
     Return
     End
 };
+
+BATTLE_PARTNER_ENTRY(PARTNER_LAKILESTER, 10);

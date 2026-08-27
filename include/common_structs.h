@@ -2479,14 +2479,6 @@ typedef struct CreditsPairOffset {
     /* 0x02 */ s16 offset;
 } CreditsPairOffset; // size = 0x4
 
-typedef struct PartnerDMAData {
-    /* 0x00 */ u32 dmaStart;
-    /* 0x04 */ u32 dmaEnd;
-    /* 0x08 */ void* dmaDest;
-    /* 0x0C */ struct ActorBlueprint* ActorBlueprint;
-    /* 0x10 */ s32 posY;
-} PartnerDMAData; // size = 0x14
-
 typedef struct MsgVoice {
     /* 0x00 */ s32 voiceA;
     /* 0x04 */ s32 voiceB;

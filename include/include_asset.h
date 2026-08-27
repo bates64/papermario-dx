@@ -15,6 +15,7 @@
     extern unsigned char SYMBOLNAME[]; \
     __asm__( \
         ".globl " #SYMBOLNAME"\n" \
+        ".hidden " #SYMBOLNAME"\n" \
         PUSHSECTION(".data") \
         ".align 3\n" \
         ".type " #SYMBOLNAME", @object\n" \
@@ -31,6 +32,7 @@
     extern unsigned short SYMBOLNAME[]; \
     __asm__( \
         ".globl " #SYMBOLNAME"\n" \
+        ".hidden " #SYMBOLNAME"\n" \
         PUSHSECTION(".data") \
         ".align 3\n" \
         ".type " #SYMBOLNAME", @object\n" \
@@ -43,6 +45,7 @@
     extern unsigned char SYMBOLNAME[]; \
     __asm__( \
         ".globl " #SYMBOLNAME"\n" \
+        ".hidden " #SYMBOLNAME"\n" \
         PUSHSECTION(".data") \
         ".align 3\n" \
         ".type " #SYMBOLNAME", @object\n" \

@@ -63,6 +63,30 @@ enum ActionCommandModes {
     AC_MODE_TUTORIAL_WAIT_INPUT     = 3,
 };
 
+typedef void (*ActionCommandCallback)(void);
+
+typedef struct ActionCommandInterface {
+    /* 0x00 */ s32 id;
+    /* 0x04 */ ApiFunc init;
+    /* 0x08 */ ApiFunc start;
+    /* 0x0C */ ActionCommandCallback update;
+    /* 0x10 */ ActionCommandCallback draw;
+    /* 0x14 */ ActionCommandCallback free;
+} ActionCommandInterface; // size = 0x18
+
+#define ACTION_COMMAND_EXPORT_NAME "gActionCommand"
+#define ACTION_COMMAND_ENTRY(commandID) \
+    export const ActionCommandInterface gActionCommand = { \
+        .id = (commandID), \
+        .init = N(init), \
+        .start = N(start), \
+        .update = N(update), \
+        .draw = N(draw), \
+        .free = N(free), \
+    }
+
+extern const ActionCommandInterface gActionCommand;
+
 #define AC_QUALITY_FAILED -1
 
 // mash meter has 100 units for each 1%
@@ -191,6 +215,7 @@ extern HudScript HES_TimingWait;
 
 void action_command_init_status(void);
 void action_command_free(void);
+void unload_action_command(void);
 void create_action_command_ui_worker(void);
 void increment_action_command_attempt_count(void);
 void increment_action_command_success_count(void);
@@ -204,6 +229,8 @@ s32 adjust_action_command_difficulty(s32 arg0);
 s32 check_block_input(s32 buttonMask);
 
 API_CALLABLE(LoadActionCommand);
+API_CALLABLE(InitActionCommand);
+API_CALLABLE(StartActionCommand);
 API_CALLABLE(SetActionDifficultyTable);
 API_CALLABLE(SetupMashMeter);
 API_CALLABLE(GetSmashActionQuality);

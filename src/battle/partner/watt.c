@@ -1,6 +1,7 @@
 #include "common.h"
 #include "effects.h"
 #include "battle/battle.h"
+#include "battle/partner.h"
 #include "script_api/battle.h"
 #include "battle/action_cmd/body_slam.h"
 #include "battle/action_cmd/power_shock.h"
@@ -772,7 +773,7 @@ EvtScript N(EVS_ElectroDashDelay) = {
 
 EvtScript N(EVS_Attack_ElectroDash) = {
     Call(LoadActionCommand, ACTION_COMMAND_BODY_SLAM)
-    Call(action_command_body_slam_init)
+    Call(InitActionCommand)
     Call(SetupMashMeter, 1, 100, 0, 0, 0, 0)
     Wait(10)
     Call(UseBattleCamPreset, BTL_CAM_CLOSER_PARTNER_APPROACH)
@@ -790,7 +791,7 @@ EvtScript N(EVS_Attack_ElectroDash) = {
     EndLoop
     Call(MoveBattleCamOver, 75)
     IfEq(LFlag2, true)
-        Call(action_command_body_slam_start, 0, 102, AC_DIFFICULTY_3, ACV_SLAM_WATT)
+        Call(StartActionCommand, 0, 102, AC_DIFFICULTY_3, ACV_SLAM_WATT)
         Set(LFlag0, false)
         ExecGetTID(N(dashToTarget), LVarA)
         Loop(20)
@@ -842,7 +843,7 @@ EvtScript N(EVS_Attack_ElectroDash) = {
             Call(CheckButtonDown, BUTTON_A, LVar0)
             IfNe(LVar0, 0)
                 IfEq(LFlag2, false)
-                    Call(action_command_body_slam_start, 0, 92, AC_DIFFICULTY_3, ACV_SLAM_WATT)
+                    Call(StartActionCommand, 0, 92, AC_DIFFICULTY_3, ACV_SLAM_WATT)
                     Set(LFlag2, true)
                 EndIf
             EndIf
@@ -865,7 +866,7 @@ EvtScript N(EVS_Attack_ElectroDash) = {
             Call(CheckButtonDown, BUTTON_A, LVar0)
             IfNe(LVar0, 0)
                 IfEq(LFlag2, false)
-                    Call(action_command_body_slam_start, 0, 92, AC_DIFFICULTY_3, ACV_SLAM_WATT)
+                    Call(StartActionCommand, 0, 92, AC_DIFFICULTY_3, ACV_SLAM_WATT)
                     Set(LFlag2, true)
                 EndIf
             EndIf
@@ -966,7 +967,7 @@ EvtScript N(EVS_Attack_ElectroDash) = {
 
 EvtScript N(EVS_Attack_PowerShock) = {
     Call(LoadActionCommand, ACTION_COMMAND_POWER_SHOCK)
-    Call(action_command_power_shock_init)
+    Call(InitActionCommand)
     Call(SetupMashMeter, 1, 100, 0, 0, 0, 0)
     Call(SetActionHudPrepareTime, 0)
     Set(LFlagF, false)
@@ -989,7 +990,7 @@ EvtScript N(EVS_Attack_PowerShock) = {
     Call(MoveBattleCamOver, 80)
     Call(N(WattFXDisable))
     Call(N(TargetParalyzeChance))
-    Call(action_command_power_shock_start, 0, 75 * DT - 3, AC_DIFFICULTY_3, LVar0)
+    Call(StartActionCommand, 0, 75 * DT - 3, AC_DIFFICULTY_3, LVar0)
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
     Add(LVar2, 5)
@@ -1089,7 +1090,7 @@ EvtScript N(EVS_Attack_PowerShock) = {
 
 EvtScript N(EVS_TurboCharge_HealthyPlayer) = {
     Call(LoadActionCommand, ACTION_COMMAND_THREE_CHANCES)
-    Call(action_command_three_chances_init, ACV_THREE_CHANCES_TURBO_CHARGE)
+    Call(InitActionCommand, ACV_THREE_CHANCES_TURBO_CHARGE)
     Call(SetActionHudPrepareTime, 0)
     Call(SetActorFlagBits, ACTOR_PLAYER, ACTOR_FLAG_NO_INACTIVE_ANIM, true)
     Call(UseIdleAnimation, ACTOR_PLAYER, false)
@@ -1112,7 +1113,7 @@ EvtScript N(EVS_TurboCharge_HealthyPlayer) = {
     Wait(1)
     Call(SetActorYaw, ACTOR_PARTNER, 180)
     Wait(10)
-    Call(action_command_three_chances_start, 0, 100 * DT, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 0, 100 * DT, AC_DIFFICULTY_3)
     Call(AddBattleCamDist, -75)
     Call(MoveBattleCamOver, 100 * DT)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_NONE, BTL_CAM_XADJ_NONE, true)
@@ -1174,7 +1175,7 @@ EvtScript N(EVS_TurboCharge_HealthyPlayer) = {
 
 EvtScript N(EVS_TurboCharge_ImmobilePlayer) = {
     Call(LoadActionCommand, ACTION_COMMAND_THREE_CHANCES)
-    Call(action_command_three_chances_init, ACV_THREE_CHANCES_TURBO_CHARGE)
+    Call(InitActionCommand, ACV_THREE_CHANCES_TURBO_CHARGE)
     Call(SetActionHudPrepareTime, 0)
     Call(UseIdleAnimation, ACTOR_PLAYER, false)
     Wait(5)
@@ -1195,7 +1196,7 @@ EvtScript N(EVS_TurboCharge_ImmobilePlayer) = {
     Wait(1)
     Call(SetActorYaw, ACTOR_PARTNER, 180)
     Wait(10)
-    Call(action_command_three_chances_start, 0, 100 * DT, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 0, 100 * DT, AC_DIFFICULTY_3)
     Call(AddBattleCamDist, -100)
     Call(MoveBattleCamOver, 100 * DT)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_NONE, BTL_CAM_XADJ_NONE, true)
@@ -1258,7 +1259,7 @@ s32 D_8023B948_707438[] = { 3, 3, 4, 7, 10, 13, 16, 16, 16, 16 };
 
 EvtScript N(EVS_Attack_MegaShock) = {
     Call(LoadActionCommand, ACTION_COMMAND_MEGA_SHOCK)
-    Call(action_command_mega_shock_init)
+    Call(InitActionCommand)
     Call(SetupMashMeter, 1, 100, 0, 0, 0, 0)
     Call(SetActionHudPrepareTime, 0)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
@@ -1283,7 +1284,7 @@ EvtScript N(EVS_Attack_MegaShock) = {
         EndLoop
     EndThread
     Call(N(AverageTargetParalyzeChance))
-    Call(action_command_mega_shock_start, 0, 87 * DT, AC_DIFFICULTY_3, LVar0)
+    Call(StartActionCommand, 0, 87 * DT, AC_DIFFICULTY_3, LVar0)
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
     Add(LVar2, 5)
@@ -1377,3 +1378,5 @@ EvtScript N(EVS_Attack_MegaShock) = {
     Return
     End
 };
+
+BATTLE_PARTNER_ENTRY(PARTNER_WATT, 20);

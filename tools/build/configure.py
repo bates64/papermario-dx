@@ -38,6 +38,16 @@ else:
 
 SOURCE_DIRS = ["src", "include", "assets"]
 
+# Serialized overlay type indices. These must match OverlayType in
+# src/dx/overlay.h.
+OVL_TYPE_EFFECT = 0
+OVL_TYPE_MAP = 1
+OVL_TYPE_ACTION = 2
+OVL_TYPE_PARTNER = 3
+OVL_TYPE_ACTOR = 4
+OVL_TYPE_BATTLE_PARTNER = 5
+OVL_TYPE_ACTION_CMD = 6
+
 
 def _walk_source_file_list():
     """Returns a sorted list of all files and directories under SOURCE_DIRS."""
@@ -618,7 +628,12 @@ class Configure:
             most_parent = seg.get_most_parent()
             if (
                 most_parent.vram_class is not None
-                and most_parent.vram_class.name in ("map", "world_partner")
+                and most_parent.vram_class.name in (
+                    "map",
+                    "world_partner",
+                    "action_cmd",
+                    "battle_partner",
+                )
             ) or any(
                 self.is_effect_source_path(path)
                 or self.is_world_action_source_path(path)
@@ -1719,10 +1734,12 @@ class Configure:
 
     def find_overlays(self) -> List[Tuple[str, Path, List[Path], int]]:
         overlay_types = [
-            "battle/actor/*",
-            "world/area/*/*/",
-            "effects/*.c",
-            "world/action/*.c",
+            (OVL_TYPE_EFFECT, "effects/*.c"),
+            (OVL_TYPE_MAP, "world/area/*/*/"),
+            (OVL_TYPE_ACTION, "world/action/*.c"),
+            (OVL_TYPE_ACTOR, "battle/actor/*"),
+            (OVL_TYPE_BATTLE_PARTNER, "battle/partner/*.c"),
+            (OVL_TYPE_ACTION_CMD, "battle/action_cmd/*.c"),
         ]
 
         # Collect overlays keyed by (type_index, name). Later entries in the
@@ -1735,11 +1752,11 @@ class Configure:
         for search_dir in search_dirs:
             if not search_dir.exists():
                 continue
-            for type_index, glob_str in enumerate(overlay_types):
+            for type_index, glob_str in overlay_types:
                 for match in search_dir.glob(glob_str, case_sensitive=True):
                     if match.name.endswith(".inc.c") or match.name.endswith(".inc.cpp"):
                         continue
-                    if type_index == 2 and match.name == "effect_table.c":
+                    if type_index == OVL_TYPE_EFFECT and match.name == "effect_table.c":
                         continue
                     # Skip asset directories that contain no compilable source files
                     # (only .inc.c/.inc.cpp), so they don't shadow src/ overlays
@@ -1769,7 +1786,7 @@ class Configure:
         # The segment name is the overlay key and all of its C/C++ subsegments
         # are linked into that overlay.
         vram_class_types = {
-            "world_partner": 4,
+            "world_partner": OVL_TYPE_PARTNER,
         }
         class_sources: Dict[Tuple[int, str], List[Path]] = {}
         for entry in self.linker_entries:
@@ -1833,12 +1850,14 @@ class Configure:
             name for name in set(effect_names) if effect_names.count(name) > 1
         )
         effect_sources = {
-            name for name, _, _, type_index in overlays if type_index == 2
+            name for name, _, _, type_index in overlays
+            if type_index == OVL_TYPE_EFFECT
         }
         missing_effects = sorted(set(effect_names) - effect_sources)
         orphan_effects = sorted(effect_sources - set(effect_names))
         action_sources = {
-            name for name, _, _, type_index in overlays if type_index == 3
+            name for name, _, _, type_index in overlays
+            if type_index == OVL_TYPE_ACTION
         }
         action_overlays = {action.overlay for action in actions}
         missing_action_overlays = sorted(action_overlays - action_sources)
@@ -1889,7 +1908,7 @@ class Configure:
                     pch = c_precompiled_header_path
                 obj_path = build_dir / (c_file.name + ".o")
                 cflags = "-fno-common -fvisibility=hidden"
-                if type_index == 2:
+                if type_index == OVL_TYPE_EFFECT:
                     effect_cflags = self.effect_cflags(c_file)
                     if effect_cflags:
                         cflags = f"{effect_cflags} {cflags}"
@@ -1929,20 +1948,26 @@ class Configure:
                 continue
 
             link_addr = "0x80000000"
-            if type_index == 1:  # maps
+            if type_index == OVL_TYPE_MAP:
                 link_addr = "0x80240000"
 
             force_export = ""
             max_loaded_size = ""
             require_resolved = ""
-            if type_index == 2:  # effects
+            if type_index == OVL_TYPE_EFFECT:
                 force_export = f"--force-export {name}_main"
                 max_loaded_size = "--max-loaded-size 0x1000"
                 require_resolved = "--require-resolved"
-            elif type_index == 3:  # actions
+            elif type_index == OVL_TYPE_ACTION:
                 require_resolved = "--require-resolved"
-            elif type_index == 4:  # world partners
+            elif type_index == OVL_TYPE_PARTNER:
                 force_export = "--force-export gWorldPartner"
+                require_resolved = "--require-resolved"
+            elif type_index == OVL_TYPE_BATTLE_PARTNER:
+                force_export = "--force-export gBattlePartner"
+                require_resolved = "--require-resolved"
+            elif type_index == OVL_TYPE_ACTION_CMD:
+                force_export = "--force-export gActionCommand"
                 require_resolved = "--require-resolved"
 
             overlay_link_deps = [

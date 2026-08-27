@@ -334,3 +334,5 @@ void N(free)(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_100_PCT]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_OK]);
 }
+
+ACTION_COMMAND_ENTRY(ACTION_COMMAND_POWER_SHOCK);

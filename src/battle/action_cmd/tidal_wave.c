@@ -335,3 +335,5 @@ void N(free)(void) {
         hud_element_free(gActionCommandStatus.hudElemIDs[i]);
     }
 }
+
+ACTION_COMMAND_ENTRY(ACTION_COMMAND_TIDAL_WAVE);

@@ -31,13 +31,13 @@ typedef struct OverlayStorage {
 } OverlayStorage; // size = 0x18
 
 static const OverlayStorage overlayStorage[OVL_NUM_TYPES] = {
-    [OVL_ACTOR] = {
-        .mode = OVL_STORAGE_RELOCATABLE,
-        .base = (u8*)RELOCATABLE_LINK_ADDR,
-        .slotSize = 0,
-        .slotCount = 0,
-        .descStart = 0,
-        .descCount = MAX_GENERAL_OVERLAYS,
+    [OVL_EFFECT] = {
+        .mode = OVL_STORAGE_POOL,
+        .base = (u8*)gEffectOverlayBuffer,
+        .slotSize = EFFECT_OVERLAY_SLOT_SIZE,
+        .slotCount = EFFECT_OVERLAY_SLOT_COUNT,
+        .descStart = EFFECT_OVERLAY_DESCRIPTOR_START,
+        .descCount = EFFECT_OVERLAY_SLOT_COUNT,
     },
     [OVL_MAP] = {
         .mode = OVL_STORAGE_FIXED,
@@ -46,14 +46,6 @@ static const OverlayStorage overlayStorage[OVL_NUM_TYPES] = {
         .slotCount = 1,
         .descStart = 0,
         .descCount = MAX_GENERAL_OVERLAYS,
-    },
-    [OVL_EFFECT] = {
-        .mode = OVL_STORAGE_POOL,
-        .base = (u8*)gEffectOverlayBuffer,
-        .slotSize = EFFECT_OVERLAY_SLOT_SIZE,
-        .slotCount = EFFECT_OVERLAY_SLOT_COUNT,
-        .descStart = EFFECT_OVERLAY_DESCRIPTOR_START,
-        .descCount = EFFECT_OVERLAY_SLOT_COUNT,
     },
     [OVL_ACTION] = {
         .mode = OVL_STORAGE_RELOCATABLE,
@@ -64,6 +56,30 @@ static const OverlayStorage overlayStorage[OVL_NUM_TYPES] = {
         .descCount = MAX_GENERAL_OVERLAYS,
     },
     [OVL_PARTNER] = {
+        .mode = OVL_STORAGE_RELOCATABLE,
+        .base = (u8*)RELOCATABLE_LINK_ADDR,
+        .slotSize = 0,
+        .slotCount = 0,
+        .descStart = 0,
+        .descCount = MAX_GENERAL_OVERLAYS,
+    },
+    [OVL_ACTOR] = {
+        .mode = OVL_STORAGE_RELOCATABLE,
+        .base = (u8*)RELOCATABLE_LINK_ADDR,
+        .slotSize = 0,
+        .slotCount = 0,
+        .descStart = 0,
+        .descCount = MAX_GENERAL_OVERLAYS,
+    },
+    [OVL_BATTLE_PARTNER] = {
+        .mode = OVL_STORAGE_RELOCATABLE,
+        .base = (u8*)RELOCATABLE_LINK_ADDR,
+        .slotSize = 0,
+        .slotCount = 0,
+        .descStart = 0,
+        .descCount = MAX_GENERAL_OVERLAYS,
+    },
+    [OVL_ACTION_CMD] = {
         .mode = OVL_STORAGE_RELOCATABLE,
         .base = (u8*)RELOCATABLE_LINK_ADDR,
         .slotSize = 0,
@@ -86,6 +102,10 @@ static const char* get_type_name(OverlayType type) {
             return "action";
         case OVL_PARTNER:
             return "partner";
+        case OVL_ACTION_CMD:
+            return "action_cmd";
+        case OVL_BATTLE_PARTNER:
+            return "battle_partner";
         default:
             return "invalid";
     }

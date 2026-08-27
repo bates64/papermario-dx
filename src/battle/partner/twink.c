@@ -1,4 +1,5 @@
 #include "battle/battle.h"
+#include "battle/partner.h"
 #include "script_api/battle.h"
 #include "sprite/npc/Twink.h"
 #include "sprite/player.h"
@@ -291,3 +292,5 @@ EvtScript N(EVS_ExecuteAction) = {
     Return
     End
 };
+
+BATTLE_PARTNER_ENTRY(PARTNER_TWINK, 30);

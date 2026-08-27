@@ -2,6 +2,7 @@
 #include "nu/nusys.h"
 #include "effects.h"
 #include "battle/battle.h"
+#include "battle/partner.h"
 #include "script_api/battle.h"
 #include "model.h"
 #include "sprite.h"
@@ -49,8 +50,6 @@ extern s32 bMarioDefenseTable[];
 extern s32 bPlayerStatusTable[];
 extern ActorBlueprint bPlayerActorBlueprint;
 extern ActorPartBlueprint bMarioParts[];
-
-extern PartnerDMAData bPartnerDmaTable[];
 
 s32 get_npc_anim_for_status(s32*, s32);
 
@@ -1141,7 +1140,7 @@ void load_partner_actor(void) {
     Evt* takeTurnScript;
     s32 partCount;
     s32 currentPartner;
-    PartnerDMAData* partnerData;
+    const BattlePartner* partnerData;
     f32 x;
     f32 y;
     f32 z;
@@ -1150,15 +1149,14 @@ void load_partner_actor(void) {
     s32 i2;
 
     currentPartner = playerData->curPartner;
-    battleStatus->partnerActor = nullptr;
+    ASSERT_MSG(battleStatus->partnerActor == nullptr,
+               "Cannot load partner %d while the previous partner actor is alive",
+               (int)currentPartner);
 
     if (currentPartner != PARTNER_NONE) {
-        partnerData = &bPartnerDmaTable[currentPartner];
-        actorBP = partnerData->ActorBlueprint;
+        partnerData = load_battle_partner(currentPartner);
+        actorBP = partnerData->blueprint;
 
-        ASSERT(actorBP != nullptr);
-
-        nuPiReadRom(partnerData->dmaStart, partnerData->dmaDest, partnerData->dmaEnd - partnerData->dmaStart);
         if ((gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) || (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_PARTNER_ACTING)) {
             x = -95.0f;
             y = partnerData->posY;
@@ -1180,6 +1178,7 @@ void load_partner_actor(void) {
         partnerActor->footStepCounter = 0;
         partnerActor->deletePending = false;
         partnerActor->actorBlueprint = actorBP;
+        partnerActor->overlay = get_battle_partner_overlay();
         partnerActor->actorType = actorBP->type;
         partnerActor->flags = actorBP->flags;
         partnerActor->homePos.x = partnerActor->curPos.x = x;
@@ -1383,6 +1382,8 @@ void load_partner_actor(void) {
 
         assign_bound_script(&partnerActor->scripts.takeTurn, takeTurnScript);
         takeTurnScript->owner1.actorID = ACTOR_PARTNER;
+    } else {
+        unload_battle_partner();
     }
 }
 

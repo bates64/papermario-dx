@@ -1,5 +1,7 @@
 #include "states.h"
 #include "battle/battle.h"
+#include "battle/action_cmd.h"
+#include "battle/partner.h"
 #include "game_modes.h"
 
 extern s16 DemoBattleBeginDelay;
@@ -85,6 +87,15 @@ void btl_state_update_end_demo_battle(void) {
                 btl_delete_actor(battleStatus->partnerActor);
             }
 
+            for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
+                if (battleStatus->enemyActors[i] != nullptr) {
+                    break;
+                }
+            }
+            if (i < ARRAY_COUNT(battleStatus->enemyActors) || battleStatus->partnerActor != nullptr) {
+                break;
+            }
+
             btl_delete_player_actor(battleStatus->playerActor);
             remove_all_effects();
             set_windows_visible(WINDOW_GROUP_ALL);
@@ -96,6 +107,9 @@ void btl_state_update_end_demo_battle(void) {
             if (EndDemoWhiteOut != -1) {
                 gGameStatusPtr->nextDemoScene = LAST_DEMO_SCENE_IDX;
             }
+
+            unload_action_command();
+            unload_battle_partner();
 
             btl_set_state(BATTLE_STATE_NONE);
             gLastDrawBattleState = gBattleState;

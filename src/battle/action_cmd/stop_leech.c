@@ -183,3 +183,5 @@ void N(free)(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_BUTTON]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_METER]);
 }
+
+ACTION_COMMAND_ENTRY(ACTION_COMMAND_STOP_LEECH);

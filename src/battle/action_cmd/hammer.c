@@ -350,3 +350,5 @@ void N(free)(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_STICK]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_RIGHT_ON]);
 }
+
+ACTION_COMMAND_ENTRY(ACTION_COMMAND_SMASH);

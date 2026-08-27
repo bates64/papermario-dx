@@ -250,3 +250,5 @@ void N(update)(void) {
 #include "common/MashCommandDraw.inc.c"
 
 #include "common/MashCommandFree.inc.c"
+
+ACTION_COMMAND_ENTRY(ACTION_COMMAND_SPINY_SURGE);

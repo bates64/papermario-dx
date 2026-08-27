@@ -1,4 +1,5 @@
 #include "battle/battle.h"
+#include "battle/partner.h"
 #include "script_api/battle.h"
 #include "effects.h"
 #include "battle/action_cmd/smack.h"
@@ -449,7 +450,7 @@ EvtScript N(EVS_ReturnHome_Spook) = {
 
 EvtScript N(EVS_Attack_Smack) = {
     Call(LoadActionCommand, ACTION_COMMAND_SMACK)
-    Call(action_command_smack_init)
+    Call(InitActionCommand)
     Call(SetActionHudPrepareTime, 0)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar2)
@@ -471,7 +472,7 @@ EvtScript N(EVS_Attack_Smack) = {
         Wait(10)
         Set(LVar0, LVarB)
         Add(LVar0, -3)
-        Call(action_command_smack_start, 0, LVar0, AC_DIFFICULTY_3, ACV_SMACK_HAND)
+        Call(StartActionCommand, 0, LVar0, AC_DIFFICULTY_3, ACV_SMACK_HAND)
         Call(SetBattleFlagBits, BS_FLAGS1_4000, false)
     EndThread
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_BOO_VANISH_A)
@@ -735,7 +736,7 @@ EvtScript N(EVS_HidePlayer) = {
 
 EvtScript N(EVS_Move_Spook) = {
     Call(LoadActionCommand, ACTION_COMMAND_SPOOK)
-    Call(action_command_spook_init)
+    Call(InitActionCommand)
     Call(SetupMashMeter, 1, 100, 0, 0, 0, 0)
     Call(SetActionHudPrepareTime, 20)
     Wait(10)
@@ -777,7 +778,7 @@ EvtScript N(EVS_Move_Spook) = {
         Call(SetActorDispOffset, ACTOR_PARTNER, 0, 0, 0)
     EndThread
     Call(N(AverageSpookChance))
-    Call(action_command_spook_start, 0, 87 * DT, AC_DIFFICULTY_3, LVar0)
+    Call(StartActionCommand, 0, 87 * DT, AC_DIFFICULTY_3, LVar0)
     Call(GetActionProgress, LVar1)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleBow_Conceal)
     Set(LVar1, 0)
@@ -973,7 +974,7 @@ EvtScript N(EVS_Move_Spook) = {
 
 EvtScript N(EVS_Attack_FanSmack) = {
     Call(LoadActionCommand, ACTION_COMMAND_SMACK)
-    Call(action_command_smack_init)
+    Call(InitActionCommand)
     Call(SetActionHudPrepareTime, 0)
     Call(SetupMashMeter, 5, 35, 60, 80, 99, 100)
     Set(LVarB, 90 * DT)
@@ -983,7 +984,7 @@ EvtScript N(EVS_Attack_FanSmack) = {
         Wait(10)
         Set(LVar0, LVarB)
         Add(LVar0, -3)
-        Call(action_command_smack_start, 0, LVar0, AC_DIFFICULTY_3, ACV_SMACK_FAN)
+        Call(StartActionCommand, 0, LVar0, AC_DIFFICULTY_3, ACV_SMACK_FAN)
         Call(SetBattleFlagBits, BS_FLAGS1_4000, false)
     EndThread
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_BOO_VANISH_A)
@@ -1208,3 +1209,4 @@ EvtScript N(EVS_Attack_FanSmack) = {
     End
 };
 
+BATTLE_PARTNER_ENTRY(PARTNER_BOW, 20);

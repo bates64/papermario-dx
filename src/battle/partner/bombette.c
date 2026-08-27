@@ -1,6 +1,7 @@
 #include "common.h"
 #include "effects.h"
 #include "battle/battle.h"
+#include "battle/partner.h"
 #include "script_api/battle.h"
 #include "sprite/npc/BattleBombette.h"
 #include "battle/action_cmd/bomb.h"
@@ -805,7 +806,7 @@ EvtScript N(animHold) = {
 
 EvtScript N(EVS_Attack_BodySlam) = {
     Call(LoadActionCommand, ACTION_COMMAND_BODY_SLAM)
-    Call(action_command_body_slam_init)
+    Call(InitActionCommand)
     Call(SetupMashMeter, 1, 100, 0, 0, 0, 0)
     Wait(10)
     Call(UseBattleCamPreset, BTL_CAM_CLOSER_PARTNER_APPROACH)
@@ -823,7 +824,7 @@ EvtScript N(EVS_Attack_BodySlam) = {
     EndLoop
     Call(MoveBattleCamOver, 65)
     IfEq(LF_MashStarted, 1)
-        Call(action_command_body_slam_start, 0, 92, AC_DIFFICULTY_3, ACV_SLAM_BOMBETTE)
+        Call(StartActionCommand, 0, 92, AC_DIFFICULTY_3, ACV_SLAM_BOMBETTE)
         Set(LF_MashEnded, 0)
         ExecGetTID(N(runToTarget), LVarA)
         Loop(35)
@@ -874,7 +875,7 @@ EvtScript N(EVS_Attack_BodySlam) = {
             Call(CheckButtonDown, BUTTON_A, LVar0)
             IfNe(LVar0, false)
                 IfEq(LF_MashStarted, 0)
-                    Call(action_command_body_slam_start, 0, 92, AC_DIFFICULTY_3, ACV_SLAM_BOMBETTE)
+                    Call(StartActionCommand, 0, 92, AC_DIFFICULTY_3, ACV_SLAM_BOMBETTE)
                     Set(LF_MashStarted, 1)
                 EndIf
             EndIf
@@ -896,7 +897,7 @@ EvtScript N(EVS_Attack_BodySlam) = {
             Call(CheckButtonDown, BUTTON_A, LVar0)
             IfNe(LVar0, false)
                 IfEq(LF_MashStarted, 0)
-                    Call(action_command_body_slam_start, 0, 92, AC_DIFFICULTY_3, ACV_SLAM_BOMBETTE)
+                    Call(StartActionCommand, 0, 92, AC_DIFFICULTY_3, ACV_SLAM_BOMBETTE)
                     Set(LF_MashStarted, 1)
                 EndIf
             EndIf
@@ -1018,7 +1019,7 @@ EvtScript N(EVS_Attack_BodySlam) = {
 
 EvtScript N(EVS_Attack_Bomb) = {
     Call(LoadActionCommand, ACTION_COMMAND_BOMB)
-    Call(action_command_bomb_init)
+    Call(InitActionCommand)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar2)
         CaseEq(MOVE_BOMB)
@@ -1063,11 +1064,11 @@ EvtScript N(EVS_Attack_Bomb) = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar2)
         CaseEq(MOVE_BOMB)
-            Call(action_command_bomb_start, 0, 57 * DT, AC_DIFFICULTY_3, ACV_BOMB_BASIC)
+            Call(StartActionCommand, 0, 57 * DT, AC_DIFFICULTY_3, ACV_BOMB_BASIC)
         CaseEq(MOVE_POWER_BOMB)
-            Call(action_command_bomb_start, 0, 73 * DT - 1, AC_DIFFICULTY_3, ACV_BOMB_SUPER)
+            Call(StartActionCommand, 0, 73 * DT - 1, AC_DIFFICULTY_3, ACV_BOMB_SUPER)
         CaseEq(MOVE_MEGA_BOMB)
-            Call(action_command_bomb_start, 0, 87 * DT, AC_DIFFICULTY_3, ACV_BOMB_ULTRA)
+            Call(StartActionCommand, 0, 87 * DT, AC_DIFFICULTY_3, ACV_BOMB_ULTRA)
     EndSwitch
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_LRAW_BOMBETTE_FUSE)
     ChildThread
@@ -1436,3 +1437,5 @@ EvtScript N(EVS_Attack_FirstStrike) = {
     Return
     End
 };
+
+BATTLE_PARTNER_ENTRY(PARTNER_BOMBETTE, 0);

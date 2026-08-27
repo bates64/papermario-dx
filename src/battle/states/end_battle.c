@@ -1,5 +1,7 @@
 #include "states.h"
 #include "script_api/battle.h"
+#include "battle/action_cmd.h"
+#include "battle/partner.h"
 #include "game_modes.h"
 
 extern StageListRow* gCurrentStagePtr;
@@ -79,6 +81,15 @@ void btl_state_update_end_battle(void) {
                 btl_delete_actor(battleStatus->partnerActor);
             }
 
+            for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
+                if (battleStatus->enemyActors[i] != nullptr) {
+                    break;
+                }
+            }
+            if (i < ARRAY_COUNT(battleStatus->enemyActors) || battleStatus->partnerActor != nullptr) {
+                break;
+            }
+
             btl_delete_player_actor(battleStatus->playerActor);
 
             if (battleStatus->nextMerleeSpellType == MERLEE_SPELL_COIN_BOOST) {
@@ -98,6 +109,9 @@ void btl_state_update_end_battle(void) {
             if (gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) {
                 decrement_status_bar_disabled();
             }
+
+            unload_action_command();
+            unload_battle_partner();
 
             if (encounterStatus->battleOutcome == OUTCOME_PLAYER_LOST
                 && !(gBattleStatus.flags1 & BS_FLAGS1_NO_GAME_OVER)
