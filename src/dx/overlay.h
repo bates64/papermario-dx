@@ -11,6 +11,11 @@ typedef struct Overlay Overlay;
 #define EFFECT_OVERLAY_SLOT_COUNT 16
 #define EFFECT_OVERLAY_SLOT_SIZE 0x1000
 
+#define BATTLE_PARTNER_OVERLAY_SLOT_SIZE 0x5000
+#define ACTION_COMMAND_OVERLAY_SLOT_SIZE 0x3000
+#define BATTLE_SCRIPT_OVERLAY_SLOT_SIZE 0x4000
+#define BATTLE_MENU_OVERLAY_SLOT_SIZE 0x10000
+
 typedef enum {
     OVL_EFFECT,         ///< `effects/*` -- loaded into a fixed-size slot pool
     OVL_MAP,            ///< `world/area_*/*/` -- only one loaded at a time
@@ -19,6 +24,8 @@ typedef enum {
     OVL_ACTOR,          ///< `battle/actor/*`
     OVL_BATTLE_PARTNER, ///< `battle/partner/*` -- only one loaded at a time
     OVL_ACTION_CMD,     ///< `battle/action_cmd/*` -- only one loaded at a time
+    OVL_BATTLE_SCRIPT,  ///< `battle/move/*` -- only one loaded at a time
+    OVL_BATTLE_MENU,    ///< Cohesive battle menu implementation
     OVL_NUM_TYPES,
 } OverlayType;
 

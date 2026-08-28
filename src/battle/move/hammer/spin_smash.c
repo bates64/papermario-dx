@@ -1,4 +1,5 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "effects.h"
 #include "sprite/player.h"
 
@@ -182,6 +183,7 @@ EvtScript N(EVS_UseMoveBasic_Impl) = {
     End
 };
 
+
 EvtScript N(EVS_UseMoveSuper_Impl) = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(InitActionCommand)
@@ -304,6 +306,7 @@ EvtScript N(EVS_UseMoveSuper_Impl) = {
     End
 };
 
+
 EvtScript N(EVS_UseMoveUltra_Impl) = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(InitActionCommand)
@@ -423,3 +426,7 @@ EvtScript N(EVS_UseMoveUltra_Impl) = {
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
+    &N(EVS_UseMove),
+);

@@ -1,6 +1,6 @@
 #include "common.h"
-#include "ld_addrs.h"
 #include "battle/battle.h"
+#include "battle/script_module.h"
 #include "sprite/player.h"
 
 #include "sprite/npc/WorldGoombario.h"
@@ -13,32 +13,21 @@
 #include "sprite/npc/BattleLakilester.h"
 #include "sprite/npc/BattleBow.h"
 
-extern EvtScript battle_move_focus_EVS_UsePower;
-extern EvtScript battle_move_refresh_EVS_UsePower;
-extern EvtScript battle_move_lullaby_EVS_UsePower;
-extern EvtScript battle_move_star_storm_EVS_UsePower;
-extern EvtScript battle_move_chill_out_EVS_UsePower;
-extern EvtScript battle_move_smooch_EVS_UsePower;
-extern EvtScript battle_move_time_out_EVS_UsePower;
-extern EvtScript battle_move_up_and_away_EVS_UsePower;
-extern EvtScript battle_move_star_beam_EVS_UsePower;
-extern EvtScript battle_move_peach_beam_EVS_UsePower;
-extern EvtScript battle_move_peach_focus_EVS_UsePower;
-extern EvtScript battle_move_peach_focus_alt_EVS_UsePower;
+#define STAR_POWER_SCRIPT(name) { "battle_move_" name, BATTLE_SCRIPT_KIND_STAR_POWER, 0 }
 
-BattleMoveEntry StarPowersTable[] = {
-    BTL_MOVE(focus,           EVS_UsePower),
-    BTL_MOVE(refresh,         EVS_UsePower),
-    BTL_MOVE(lullaby,         EVS_UsePower),
-    BTL_MOVE(star_storm,      EVS_UsePower),
-    BTL_MOVE(chill_out,       EVS_UsePower),
-    BTL_MOVE(smooch,          EVS_UsePower),
-    BTL_MOVE(time_out,        EVS_UsePower),
-    BTL_MOVE(up_and_away,     EVS_UsePower),
-    BTL_MOVE(star_beam,       EVS_UsePower),
-    BTL_MOVE(peach_beam,      EVS_UsePower),
-    BTL_MOVE(peach_focus,     EVS_UsePower),
-    BTL_MOVE(peach_focus_alt, EVS_UsePower),
+static const BattleScriptRef StarPowersTable[] = {
+    STAR_POWER_SCRIPT("focus"),
+    STAR_POWER_SCRIPT("refresh"),
+    STAR_POWER_SCRIPT("lullaby"),
+    STAR_POWER_SCRIPT("star_storm"),
+    STAR_POWER_SCRIPT("chill_out"),
+    STAR_POWER_SCRIPT("smooch"),
+    STAR_POWER_SCRIPT("time_out"),
+    STAR_POWER_SCRIPT("up_and_away"),
+    STAR_POWER_SCRIPT("star_beam"),
+    STAR_POWER_SCRIPT("peach_beam"),
+    STAR_POWER_SCRIPT("peach_focus"),
+    STAR_POWER_SCRIPT("peach_focus_alt"),
 };
 
 s32 PartnerWishAnims[][5] = {
@@ -117,9 +106,8 @@ API_CALLABLE(LoadStarPowerScript) {
 
     playerData->starPower -= gMoveTable[battleStatus->selectedMoveID].costFP * SP_PER_BAR;
     starPowerIdx = battleStatus->moveArgument;
-    dma_copy((&StarPowersTable[starPowerIdx])->romStart,
-             (&StarPowersTable[starPowerIdx])->romEnd,
-             (&StarPowersTable[starPowerIdx])->vramStart);
-    script->varTable[0] = (s32) (&StarPowersTable[starPowerIdx])->mainScript;
+    ASSERT_MSG((u32)starPowerIdx < ARRAY_COUNT(StarPowersTable),
+               "Invalid star power index %d", (int)starPowerIdx);
+    script->varTablePtr[0] = load_battle_script(&StarPowersTable[starPowerIdx]);
     return ApiStatus_DONE2;
 }

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 
 #define NAMESPACE battle_item_dizzy_dial
@@ -98,3 +99,7 @@ EvtScript N(EVS_UseItem) = {
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
+    &N(EVS_UseItem),
+);

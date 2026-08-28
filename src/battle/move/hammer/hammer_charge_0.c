@@ -1,4 +1,5 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "effects.h"
 #include "sprite/player.h"
 
@@ -235,6 +236,7 @@ EvtScript N(EVS_802A3948) = {
     End
 };
 
+
 EvtScript N(EVS_802A3C90) = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_CHARGE_UP)
     Wait(10)
@@ -286,6 +288,7 @@ EvtScript N(EVS_802A3C90) = {
     End
 };
 
+
 EvtScript N(EVS_802A3FD8) = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_CHARGE_UP)
     Wait(10)
@@ -336,3 +339,8 @@ EvtScript N(EVS_802A3FD8) = {
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
+    &N(EVS_UseMove0),
+    &N(EVS_UseMove1),
+);

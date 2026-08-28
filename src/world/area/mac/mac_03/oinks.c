@@ -334,7 +334,7 @@ EvtScript N(EVS_UseMachinePrompt) = {
         IfEq(LVar0, COLLIDER_step)
             Goto(0)
         EndIf
-        IfEq(LVar0, -1)
+        IfEq(LVar0, NO_COLLIDER)
             Goto(0)
         EndIf
     Call(N(DismissCoinCounter))

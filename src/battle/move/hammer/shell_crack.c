@@ -1,4 +1,5 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "effects.h"
 
@@ -45,6 +46,7 @@ EvtScript N(EVS_UseMove) = {
     Return
     End
 };
+
 
 EvtScript N(EVS_802A3248) = {
     Call(StartRumble, BTL_RUMBLE_PLAYER_EXTREME)
@@ -124,3 +126,7 @@ EvtScript N(EVS_UseMove_Impl) = {
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
+    &N(EVS_UseMove),
+);

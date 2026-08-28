@@ -1,4 +1,5 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "battle/action_cmd/jump.h"
 #include "effects.h"
@@ -56,6 +57,7 @@ EvtScript N(EVS_UseMove_Unimplemented) = {
     End
 };
 
+
 EvtScript N(EVS_UseMove) = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_CHARGE_UP)
     Wait(10)
@@ -112,3 +114,7 @@ EvtScript N(EVS_UseMove) = {
     End
 };
 
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
+    &N(EVS_UseMove),
+    &N(EVS_UseMove_Unimplemented),
+);

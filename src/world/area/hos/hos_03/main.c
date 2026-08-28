@@ -31,7 +31,7 @@ EvtScript N(EVS_ControlUpperVisibility) = {
                 Wait(1)
                 Label(15)
                     Call(GetPlayerFloorCollider, LVar1)
-                    IfEq(LVar1, -1)
+                    IfEq(LVar1, NO_COLLIDER)
                         Wait(1)
                         Goto(15)
                     EndIf

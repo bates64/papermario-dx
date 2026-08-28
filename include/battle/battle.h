@@ -105,29 +105,6 @@ enum CommonActorVars {
 
 EXTERN_C s32 bActorNames[];
 
-typedef struct BattleMoveEntry {
-    /* 0x00 */ u8* romStart;
-    /* 0x04 */ u8* romEnd;
-    /* 0x08 */ u8* vramStart;
-    /* 0x0C */ EvtScript* mainScript;
-} BattleMoveEntry; // size = 0x10
-
-#define BTL_MOVE(name, script) \
-{ \
-    .romStart   = battle_move_##name##_ROM_START, \
-    .romEnd     = battle_move_##name##_ROM_END, \
-    .vramStart  = battle_move_##name##_VRAM, \
-    .mainScript = &battle_move_##name##_##script \
-}
-
-#define BTL_ITEM(name) \
-{ \
-    .romStart   = name##_ROM_START, \
-    .romEnd     = name##_ROM_END, \
-    .vramStart  = name##_VRAM, \
-    .mainScript = &battle_item_##name##_##EVS_UseItem \
-}
-
 typedef struct ActorBlueprint {
     /* 0x00 */ s32 flags;
     /* 0x04 */ s16 maxHP;

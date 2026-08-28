@@ -1,4 +1,5 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "battle/action_cmd/jump.h"
 #include "effects.h"
@@ -255,6 +256,7 @@ EvtScript N(EVS_UseMove_Basic) = {
     End
 };
 
+
 EvtScript N(EVS_UseMove_Super) = {
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
     Call(InitActionCommand)
@@ -481,6 +483,7 @@ EvtScript N(EVS_UseMove_Super) = {
     End
 };
 
+
 EvtScript N(EVS_UseMove_Ultra) = {
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
     Call(InitActionCommand)
@@ -702,3 +705,7 @@ EvtScript N(EVS_UseMove_Ultra) = {
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
+    &N(EVS_UseMove),
+);

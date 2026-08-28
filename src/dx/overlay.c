@@ -14,6 +14,10 @@
 #define MAP_OVERLAY_ADDR 0x80240000
 
 extern u8 gEffectOverlayBuffer[EFFECT_OVERLAY_SLOT_COUNT][EFFECT_OVERLAY_SLOT_SIZE];
+extern u8 gBattlePartnerOverlayBuffer[BATTLE_PARTNER_OVERLAY_SLOT_SIZE];
+extern u8 gActionCommandOverlayBuffer[ACTION_COMMAND_OVERLAY_SLOT_SIZE];
+extern u8 gBattleScriptOverlayBuffer[BATTLE_SCRIPT_OVERLAY_SLOT_SIZE];
+extern u8 gBattleMenuOverlayBuffer[BATTLE_MENU_OVERLAY_SLOT_SIZE];
 
 typedef enum OverlayStorageMode {
     OVL_STORAGE_FIXED       = 0,
@@ -72,18 +76,34 @@ static const OverlayStorage overlayStorage[OVL_NUM_TYPES] = {
         .descCount = MAX_GENERAL_OVERLAYS,
     },
     [OVL_BATTLE_PARTNER] = {
-        .mode = OVL_STORAGE_RELOCATABLE,
-        .base = (u8*)RELOCATABLE_LINK_ADDR,
-        .slotSize = 0,
-        .slotCount = 0,
+        .mode = OVL_STORAGE_POOL,
+        .base = gBattlePartnerOverlayBuffer,
+        .slotSize = BATTLE_PARTNER_OVERLAY_SLOT_SIZE,
+        .slotCount = 1,
         .descStart = 0,
         .descCount = MAX_GENERAL_OVERLAYS,
     },
     [OVL_ACTION_CMD] = {
-        .mode = OVL_STORAGE_RELOCATABLE,
-        .base = (u8*)RELOCATABLE_LINK_ADDR,
-        .slotSize = 0,
-        .slotCount = 0,
+        .mode = OVL_STORAGE_POOL,
+        .base = gActionCommandOverlayBuffer,
+        .slotSize = ACTION_COMMAND_OVERLAY_SLOT_SIZE,
+        .slotCount = 1,
+        .descStart = 0,
+        .descCount = MAX_GENERAL_OVERLAYS,
+    },
+    [OVL_BATTLE_SCRIPT] = {
+        .mode = OVL_STORAGE_POOL,
+        .base = gBattleScriptOverlayBuffer,
+        .slotSize = BATTLE_SCRIPT_OVERLAY_SLOT_SIZE,
+        .slotCount = 1,
+        .descStart = 0,
+        .descCount = MAX_GENERAL_OVERLAYS,
+    },
+    [OVL_BATTLE_MENU] = {
+        .mode = OVL_STORAGE_POOL,
+        .base = gBattleMenuOverlayBuffer,
+        .slotSize = BATTLE_MENU_OVERLAY_SLOT_SIZE,
+        .slotCount = 1,
         .descStart = 0,
         .descCount = MAX_GENERAL_OVERLAYS,
     },
@@ -106,6 +126,10 @@ static const char* get_type_name(OverlayType type) {
             return "action_cmd";
         case OVL_BATTLE_PARTNER:
             return "battle_partner";
+        case OVL_BATTLE_SCRIPT:
+            return "battle_script";
+        case OVL_BATTLE_MENU:
+            return "battle_menu";
         default:
             return "invalid";
     }

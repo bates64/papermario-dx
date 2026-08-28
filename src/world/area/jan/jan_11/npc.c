@@ -29,7 +29,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     Label(0)
         Wait(1)
         Call(GetPlayerFloorCollider, LVar0)
-        IfNe(LVar0, 10)
+        IfNe(LVar0, COLLIDER_o142)
             Goto(0)
         EndIf
         Call(N(IsPartnerWatt))

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "sprite/npc/BattleSkolar.h"
 
@@ -94,3 +95,7 @@ EvtScript N(EVS_UsePower) = {
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_STAR_POWER,
+    &N(EVS_UsePower),
+);

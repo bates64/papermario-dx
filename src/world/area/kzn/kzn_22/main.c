@@ -87,14 +87,6 @@ EvtScript N(EVS_InterruptPartnersInLava) = {
     End
 };
 
-API_CALLABLE(N(GetPlayerFloorCollider1)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 outVar = *args++;
-
-    evt_set_variable(script, outVar, gCollisionStatus.curFloor);
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_UpdateLavaLevel) = {
     SetGroup(EVT_GROUP_NOT_BATTLE)
     Call(EnableModel, MODEL_yu, false)
@@ -107,7 +99,7 @@ EvtScript N(EVS_UpdateLavaLevel) = {
         Switch(LVarA)
             CaseEq(0)
                 // state 0: wait for player to stand on one of the steps
-                Call(N(GetPlayerFloorCollider1), LVar0)
+                Call(GetPlayerFloorCollider, LVar0)
                 IfEq(LVar0, COLLIDER_o357)
                     Exec(N(EVS_InterruptPartnersInLava))
                     Call(EnableModel, MODEL_yu, true)

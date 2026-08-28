@@ -1,7 +1,9 @@
 #include "states.h"
 #include "battle/battle.h"
 #include "battle/action_cmd.h"
+#include "battle/menu.h"
 #include "battle/partner.h"
+#include "battle/script_module.h"
 #include "game_modes.h"
 
 extern s16 DemoBattleBeginDelay;
@@ -109,7 +111,9 @@ void btl_state_update_end_demo_battle(void) {
             }
 
             unload_action_command();
+            unload_battle_script();
             unload_battle_partner();
+            unload_battle_menu();
 
             btl_set_state(BATTLE_STATE_NONE);
             gLastDrawBattleState = gBattleState;

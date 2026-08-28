@@ -47,6 +47,19 @@ OVL_TYPE_PARTNER = 3
 OVL_TYPE_ACTOR = 4
 OVL_TYPE_BATTLE_PARTNER = 5
 OVL_TYPE_ACTION_CMD = 6
+OVL_TYPE_BATTLE_SCRIPT = 7
+OVL_TYPE_BATTLE_MENU = 8
+
+BATTLE_MENU_SOURCES = (
+    "battle/btl_states_menus.c",
+    "battle/menu_moves.c",
+    "battle/menu_strats.c",
+    "battle/states/menu_player.c",
+    "battle/states/menu_partner.c",
+    "battle/states/menu_peach.c",
+    "battle/states/menu_twink.c",
+    "battle/states/select_target.c",
+)
 
 
 def _walk_source_file_list():
@@ -616,6 +629,15 @@ class Configure:
             and path.suffix in (".c", ".cpp")
         )
 
+    @staticmethod
+    def is_battle_menu_source_path(path: Path) -> bool:
+        path = Path(path).resolve()
+        try:
+            relative_path = path.relative_to((ROOT / "src").resolve())
+        except ValueError:
+            return False
+        return posix(relative_path) in BATTLE_MENU_SOURCES
+
     def discard_overlay_linker_entries(self):
         """Remove overlay objects from the main linker script.
 
@@ -634,9 +656,18 @@ class Configure:
                     "action_cmd",
                     "battle_partner",
                 )
+            ) or (
+                most_parent.vram_class is not None
+                and most_parent.vram_class.name == "battle_move"
+                and most_parent.name not in (
+                    "btl_states_menus",
+                    "level_up",
+                    "starpoint",
+                )
             ) or any(
                 self.is_effect_source_path(path)
                 or self.is_world_action_source_path(path)
+                or self.is_battle_menu_source_path(path)
                 for path in entry.src_paths
             ):
                 if entry.object_path is not None:
@@ -1782,11 +1813,41 @@ class Configure:
                         type_index,
                     )
 
+        # The battle menu is one cohesive overlay assembled from sources that
+        # historically straddled the btl_states_menus segment and resident battle
+        # code. Resolve each file independently so a higher-priority asset layer
+        # can override only the files it supplies.
+        menu_sources = []
+        for relative_path in BATTLE_MENU_SOURCES:
+            source = None
+            for stack_dir in self.asset_stack:
+                candidate = ROOT / "assets" / stack_dir / relative_path
+                if candidate.is_file():
+                    source = candidate
+                    break
+            if source is None:
+                candidate = ROOT / "src" / relative_path
+                if candidate.is_file():
+                    source = candidate
+            if source is None:
+                raise FileNotFoundError(
+                    f"missing battle-menu overlay source: {relative_path}"
+                )
+            menu_sources.append(source)
+
+        found[(OVL_TYPE_BATTLE_MENU, "battle_menu")] = (
+            "battle_menu",
+            menu_sources[0],
+            menu_sources,
+            OVL_TYPE_BATTLE_MENU,
+        )
+
         # VRAM-class overlays are defined by their top-level splat segment.
         # The segment name is the overlay key and all of its C/C++ subsegments
         # are linked into that overlay.
         vram_class_types = {
             "world_partner": OVL_TYPE_PARTNER,
+            "battle_move": OVL_TYPE_BATTLE_SCRIPT,
         }
         class_sources: Dict[Tuple[int, str], List[Path]] = {}
         for entry in self.linker_entries:
@@ -1795,6 +1856,13 @@ class Configure:
                 continue
             type_index = vram_class_types.get(segment.vram_class.name)
             if type_index is None:
+                continue
+            # These modules share the legacy battle_move VRAM class, but are not
+            # moves, items, or star-power battle scripts.
+            if (
+                type_index == OVL_TYPE_BATTLE_SCRIPT
+                and segment.name in ("btl_states_menus", "level_up", "starpoint")
+            ):
                 continue
 
             key = (type_index, segment.name)
@@ -1965,9 +2033,19 @@ class Configure:
                 require_resolved = "--require-resolved"
             elif type_index == OVL_TYPE_BATTLE_PARTNER:
                 force_export = "--force-export gBattlePartner"
+                max_loaded_size = "--max-loaded-size 0x5000"
                 require_resolved = "--require-resolved"
             elif type_index == OVL_TYPE_ACTION_CMD:
                 force_export = "--force-export gActionCommand"
+                max_loaded_size = "--max-loaded-size 0x3000"
+                require_resolved = "--require-resolved"
+            elif type_index == OVL_TYPE_BATTLE_SCRIPT:
+                force_export = "--force-export gBattleScriptModule"
+                max_loaded_size = "--max-loaded-size 0x4000"
+                require_resolved = "--require-resolved"
+            elif type_index == OVL_TYPE_BATTLE_MENU:
+                force_export = "--force-export gBattleMenu"
+                max_loaded_size = "--max-loaded-size 0x10000"
                 require_resolved = "--require-resolved"
 
             overlay_link_deps = [

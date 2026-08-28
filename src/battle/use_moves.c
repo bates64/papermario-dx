@@ -1,109 +1,112 @@
 #include "common.h"
-#include "ld_addrs.h"
 #include "battle/battle.h"
+#include "battle/script_module.h"
+#include "dx/overlay.h"
 
-extern EvtScript battle_move_hammer_attack_EVS_UseMove;
-extern EvtScript battle_move_hammer_attack_EVS_FirstStrike;
-extern EvtScript battle_move_hammer_attack_EVS_UseBerserker;
-extern EvtScript battle_move_hammer_charge_0_EVS_UseMove0;
-extern EvtScript battle_move_hammer_charge_0_EVS_UseMove1;
-extern EvtScript battle_move_hammer_charge_1_EVS_UseMove0;
-extern EvtScript battle_move_hammer_charge_1_EVS_UseMove1;
-extern EvtScript battle_move_hammer_charge_2_EVS_UseMove0;
-extern EvtScript battle_move_hammer_charge_2_EVS_UseMove1;
-extern EvtScript battle_move_auto_smash_EVS_UseMove;
-extern EvtScript battle_move_power_smash_EVS_UseMove;
-extern EvtScript battle_move_super_smash_EVS_UseMove;
-extern EvtScript battle_move_mega_smash_EVS_UseMove;
-extern EvtScript battle_move_quake_hammer_EVS_UseMove;
-extern EvtScript battle_move_power_quake_EVS_UseMove;
-extern EvtScript battle_move_mega_quake_EVS_UseMove;
-extern EvtScript battle_move_hammer_throw_EVS_UseMove;
-extern EvtScript battle_move_d_down_pound_EVS_UseMove;
-extern EvtScript battle_move_shrink_smash_EVS_UseMove;
-extern EvtScript battle_move_spin_smash_EVS_UseMove;
-extern EvtScript battle_move_shell_crack_EVS_UseMove;
+#define MOVE_SCRIPT(name, entry) \
+    { "battle_move_" name, BATTLE_SCRIPT_KIND_MOVE, entry }
 
-extern EvtScript battle_move_jump_attack_EVS_UseMove;
-extern EvtScript battle_move_jump_attack_EVS_FirstStrike;
-extern EvtScript battle_move_jump_attack_EVS_UseBerserker;
-extern EvtScript battle_move_jump_charge_0_EVS_UseMove;
-extern EvtScript battle_move_jump_charge_0_EVS_UseMove_Unimplemented;
-extern EvtScript battle_move_jump_charge_1_EVS_UseMove;
-extern EvtScript battle_move_jump_charge_1_EVS_UseMove_Unimplemented;
-extern EvtScript battle_move_jump_charge_2_EVS_UseMove;
-extern EvtScript battle_move_jump_charge_2_EVS_UseMove_Unimplemented;
-extern EvtScript battle_move_auto_jump_EVS_UseMove;
-extern EvtScript battle_move_power_jump_EVS_UseMove;
-extern EvtScript battle_move_super_jump_EVS_UseMove;
-extern EvtScript battle_move_mega_jump_EVS_UseMove;
-extern EvtScript battle_move_auto_multibounce_EVS_UseMove;
-extern EvtScript battle_move_multibounce_EVS_UseMove;
-extern EvtScript battle_move_power_bounce_EVS_UseMove;
-extern EvtScript battle_move_d_down_jump_EVS_UseMove;
-extern EvtScript battle_move_sleep_stomp_EVS_UseMove;
-extern EvtScript battle_move_dizzy_stomp_EVS_UseMove;
-extern EvtScript battle_move_shrink_stomp_EVS_UseMove;
-extern EvtScript battle_move_earthquake_jump_EVS_UseMove;
-
-BattleMoveEntry gMoveScriptTable[] = {
+static const BattleScriptRef gMoveScriptTable[] = {
     [MOVE_NONE]                 {},
     [MOVE_UNUSED_01]            {},
     [MOVE_UNUSED_02]            {},
-    [MOVE_HAMMER1]              BTL_MOVE(hammer_attack, EVS_UseMove),
-    [MOVE_HAMMER2]              BTL_MOVE(hammer_attack, EVS_UseMove),
-    [MOVE_HAMMER3]              BTL_MOVE(hammer_attack, EVS_UseMove),
-    [MOVE_FIRST_STRIKE_HAMMER]  BTL_MOVE(hammer_attack, EVS_FirstStrike),
-    [MOVE_BERSERKER_HAMMER]     BTL_MOVE(hammer_attack, EVS_UseBerserker),
-    [MOVE_SPIN_SMASH]           BTL_MOVE(spin_smash, EVS_UseMove),
-    [MOVE_QUAKE_HAMMER]         BTL_MOVE(quake_hammer, EVS_UseMove),
-    [MOVE_D_DOWN_POUND]         BTL_MOVE(d_down_pound, EVS_UseMove),
-    [MOVE_SMASH_CHARGE0]        BTL_MOVE(hammer_charge_0, EVS_UseMove0),
-    [MOVE_UNUSED_HAMMER_0C]     BTL_MOVE(hammer_charge_0, EVS_UseMove1),
-    [MOVE_HAMMER_THROW]         BTL_MOVE(hammer_throw, EVS_UseMove),
-    [MOVE_MEGA_QUAKE]           BTL_MOVE(mega_quake, EVS_UseMove),
-    [MOVE_SMASH_CHARGE]         BTL_MOVE(hammer_charge_1, EVS_UseMove0),
-    [MOVE_UNUSED_HAMMER_10]     BTL_MOVE(hammer_charge_1, EVS_UseMove1),
-    [MOVE_SUPER_SMASH_CHARGE]   BTL_MOVE(hammer_charge_2, EVS_UseMove0),
-    [MOVE_UNUSED_HAMMER_12]     BTL_MOVE(hammer_charge_2, EVS_UseMove1),
-    [MOVE_AUTO_SMASH]           BTL_MOVE(auto_smash,  EVS_UseMove),
-    [MOVE_POWER_QUAKE]          BTL_MOVE(power_quake, EVS_UseMove),
-    [MOVE_POWER_SMASH]          BTL_MOVE(power_smash, EVS_UseMove),
-    [MOVE_SUPER_SMASH]          BTL_MOVE(super_smash, EVS_UseMove),
-    [MOVE_MEGA_SMASH]           BTL_MOVE(mega_smash,  EVS_UseMove),
-    [MOVE_SHRINK_SMASH]         BTL_MOVE(shrink_smash, EVS_UseMove),
-    [MOVE_SHELL_CRACK]          BTL_MOVE(shell_crack, EVS_UseMove),
-    [MOVE_JUMP1]                BTL_MOVE(jump_attack, EVS_UseMove),
-    [MOVE_JUMP2]                BTL_MOVE(jump_attack, EVS_UseMove),
-    [MOVE_JUMP3]                BTL_MOVE(jump_attack, EVS_UseMove),
-    [MOVE_FIRST_STRIKE_JUMP]    BTL_MOVE(jump_attack, EVS_FirstStrike),
-    [MOVE_BERSERKER_JUMP]       BTL_MOVE(jump_attack, EVS_UseBerserker),
-    [MOVE_MULTIBOUNCE]          BTL_MOVE(multibounce, EVS_UseMove),
-    [MOVE_POWER_BOUNCE]         BTL_MOVE(power_bounce, EVS_UseMove),
-    [MOVE_SLEEP_STOMP]          BTL_MOVE(sleep_stomp, EVS_UseMove),
-    [MOVE_DIZZY_STOMP]          BTL_MOVE(dizzy_stomp, EVS_UseMove),
-    [MOVE_JUMP_CHARGE0]         BTL_MOVE(jump_charge_0, EVS_UseMove),
-    [MOVE_UNUSED_24]            BTL_MOVE(jump_charge_0, EVS_UseMove_Unimplemented),
-    [MOVE_JUMP_CHARGE]          BTL_MOVE(jump_charge_1, EVS_UseMove),
-    [MOVE_UNUSED_26]            BTL_MOVE(jump_charge_1, EVS_UseMove_Unimplemented),
-    [MOVE_SUPER_JUMP_CHARGE]    BTL_MOVE(jump_charge_2, EVS_UseMove),
-    [MOVE_UNUSED_28]            BTL_MOVE(jump_charge_2, EVS_UseMove_Unimplemented),
-    [MOVE_AUTO_JUMP]            BTL_MOVE(auto_jump, EVS_UseMove),
-    [MOVE_AUTO_MULTIBOUNCE]     BTL_MOVE(auto_multibounce, EVS_UseMove),
-    [MOVE_POWER_JUMP]           BTL_MOVE(power_jump, EVS_UseMove),
-    [MOVE_SUPER_JUMP]           BTL_MOVE(super_jump, EVS_UseMove),
-    [MOVE_MEGA_JUMP]            BTL_MOVE(mega_jump,  EVS_UseMove),
-    [MOVE_D_DOWN_JUMP]          BTL_MOVE(d_down_jump, EVS_UseMove),
-    [MOVE_SHRINK_STOMP]         BTL_MOVE(shrink_stomp, EVS_UseMove),
-    [MOVE_EARTHQUAKE_JUMP]      BTL_MOVE(earthquake_jump, EVS_UseMove),
+    [MOVE_HAMMER1]              MOVE_SCRIPT("hammer_attack", 0),
+    [MOVE_HAMMER2]              MOVE_SCRIPT("hammer_attack", 0),
+    [MOVE_HAMMER3]              MOVE_SCRIPT("hammer_attack", 0),
+    [MOVE_FIRST_STRIKE_HAMMER]  MOVE_SCRIPT("hammer_attack", 1),
+    [MOVE_BERSERKER_HAMMER]     MOVE_SCRIPT("hammer_attack", 2),
+    [MOVE_SPIN_SMASH]           MOVE_SCRIPT("spin_smash", 0),
+    [MOVE_QUAKE_HAMMER]         MOVE_SCRIPT("quake_hammer", 0),
+    [MOVE_D_DOWN_POUND]         MOVE_SCRIPT("d_down_pound", 0),
+    [MOVE_SMASH_CHARGE0]        MOVE_SCRIPT("hammer_charge_0", 0),
+    [MOVE_UNUSED_HAMMER_0C]     MOVE_SCRIPT("hammer_charge_0", 1),
+    [MOVE_HAMMER_THROW]         MOVE_SCRIPT("hammer_throw", 0),
+    [MOVE_MEGA_QUAKE]           MOVE_SCRIPT("mega_quake", 0),
+    [MOVE_SMASH_CHARGE]         MOVE_SCRIPT("hammer_charge_1", 0),
+    [MOVE_UNUSED_HAMMER_10]     MOVE_SCRIPT("hammer_charge_1", 1),
+    [MOVE_SUPER_SMASH_CHARGE]   MOVE_SCRIPT("hammer_charge_2", 0),
+    [MOVE_UNUSED_HAMMER_12]     MOVE_SCRIPT("hammer_charge_2", 1),
+    [MOVE_AUTO_SMASH]           MOVE_SCRIPT("auto_smash", 0),
+    [MOVE_POWER_QUAKE]          MOVE_SCRIPT("power_quake", 0),
+    [MOVE_POWER_SMASH]          MOVE_SCRIPT("power_smash", 0),
+    [MOVE_SUPER_SMASH]          MOVE_SCRIPT("super_smash", 0),
+    [MOVE_MEGA_SMASH]           MOVE_SCRIPT("mega_smash", 0),
+    [MOVE_SHRINK_SMASH]         MOVE_SCRIPT("shrink_smash", 0),
+    [MOVE_SHELL_CRACK]          MOVE_SCRIPT("shell_crack", 0),
+    [MOVE_JUMP1]                MOVE_SCRIPT("jump_attack", 0),
+    [MOVE_JUMP2]                MOVE_SCRIPT("jump_attack", 0),
+    [MOVE_JUMP3]                MOVE_SCRIPT("jump_attack", 0),
+    [MOVE_FIRST_STRIKE_JUMP]    MOVE_SCRIPT("jump_attack", 1),
+    [MOVE_BERSERKER_JUMP]       MOVE_SCRIPT("jump_attack", 2),
+    [MOVE_MULTIBOUNCE]          MOVE_SCRIPT("multibounce", 0),
+    [MOVE_POWER_BOUNCE]         MOVE_SCRIPT("power_bounce", 0),
+    [MOVE_SLEEP_STOMP]          MOVE_SCRIPT("sleep_stomp", 0),
+    [MOVE_DIZZY_STOMP]          MOVE_SCRIPT("dizzy_stomp", 0),
+    [MOVE_JUMP_CHARGE0]         MOVE_SCRIPT("jump_charge_0", 0),
+    [MOVE_UNUSED_24]            MOVE_SCRIPT("jump_charge_0", 1),
+    [MOVE_JUMP_CHARGE]          MOVE_SCRIPT("jump_charge_1", 0),
+    [MOVE_UNUSED_26]            MOVE_SCRIPT("jump_charge_1", 1),
+    [MOVE_SUPER_JUMP_CHARGE]    MOVE_SCRIPT("jump_charge_2", 0),
+    [MOVE_UNUSED_28]            MOVE_SCRIPT("jump_charge_2", 1),
+    [MOVE_AUTO_JUMP]            MOVE_SCRIPT("auto_jump", 0),
+    [MOVE_AUTO_MULTIBOUNCE]     MOVE_SCRIPT("auto_multibounce", 0),
+    [MOVE_POWER_JUMP]           MOVE_SCRIPT("power_jump", 0),
+    [MOVE_SUPER_JUMP]           MOVE_SCRIPT("super_jump", 0),
+    [MOVE_MEGA_JUMP]            MOVE_SCRIPT("mega_jump", 0),
+    [MOVE_D_DOWN_JUMP]          MOVE_SCRIPT("d_down_jump", 0),
+    [MOVE_SHRINK_STOMP]         MOVE_SCRIPT("shrink_stomp", 0),
+    [MOVE_EARTHQUAKE_JUMP]      MOVE_SCRIPT("earthquake_jump", 0),
 };
+
+static Overlay* LoadedBattleScriptOverlay;
+static const BattleScriptModule* LoadedBattleScriptModule;
+static const char* LoadedBattleScriptName;
+
+void unload_battle_script(void) {
+    ovl_unload(LoadedBattleScriptOverlay);
+    LoadedBattleScriptOverlay = nullptr;
+    LoadedBattleScriptModule = nullptr;
+    LoadedBattleScriptName = nullptr;
+}
+
+EvtScript* load_battle_script(const BattleScriptRef* ref) {
+    ASSERT_MSG(ref != nullptr && ref->overlayName != nullptr, "Invalid battle script reference");
+
+    if (LoadedBattleScriptModule == nullptr || strcmp(LoadedBattleScriptName, ref->overlayName) != 0) {
+        unload_battle_script();
+        LoadedBattleScriptOverlay = ovl_load(ref->overlayName, OVL_BATTLE_SCRIPT);
+        LoadedBattleScriptName = ref->overlayName;
+        LoadedBattleScriptModule = ovl_import(LoadedBattleScriptOverlay, BATTLE_SCRIPT_EXPORT_NAME);
+        ASSERT_MSG(LoadedBattleScriptModule != nullptr,
+                   "Battle script overlay '%s' has no %s export",
+                   ref->overlayName, BATTLE_SCRIPT_EXPORT_NAME);
+        ASSERT_MSG(LoadedBattleScriptModule->entryCount > 0 &&
+                   LoadedBattleScriptModule->entryScripts != nullptr,
+                   "Battle script overlay '%s' has no entries", ref->overlayName);
+    }
+
+    ASSERT_MSG(LoadedBattleScriptModule->kind == ref->kind,
+               "Battle script overlay '%s' has kind %d, expected %d",
+               ref->overlayName, (int)LoadedBattleScriptModule->kind, (int)ref->kind);
+    ASSERT_MSG((u32)ref->entryIndex < (u32)LoadedBattleScriptModule->entryCount,
+               "Battle script overlay '%s' has no entry %d",
+               ref->overlayName, (int)ref->entryIndex);
+    ASSERT_MSG(LoadedBattleScriptModule->entryScripts[ref->entryIndex] != nullptr,
+               "Battle script overlay '%s' entry %d is null",
+               ref->overlayName, (int)ref->entryIndex);
+    return LoadedBattleScriptModule->entryScripts[ref->entryIndex];
+}
 
 API_CALLABLE(LoadMoveScript) {
     BattleStatus* battleStatus = &gBattleStatus;
-    BattleMoveEntry* moveTableEntry = &gMoveScriptTable[battleStatus->selectedMoveID];
+    const BattleScriptRef* moveScript;
 
-    dma_copy(moveTableEntry->romStart, moveTableEntry->romEnd, moveTableEntry->vramStart);
-    script->varTablePtr[0] = moveTableEntry->mainScript;
+    ASSERT_MSG((u32)battleStatus->selectedMoveID < ARRAY_COUNT(gMoveScriptTable),
+               "Invalid move ID %d", (int)battleStatus->selectedMoveID);
+    moveScript = &gMoveScriptTable[battleStatus->selectedMoveID];
+    ASSERT_MSG(moveScript->overlayName != nullptr,
+               "Move ID %d has no battle script", (int)battleStatus->selectedMoveID);
+    script->varTablePtr[0] = load_battle_script(moveScript);
 
     deduct_current_move_fp();
 

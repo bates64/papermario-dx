@@ -1,4 +1,5 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "battle/action_cmd/jump.h"
 #include "sprite/player.h"
@@ -76,6 +77,7 @@ EvtScript N(EVS_UseMove_Basic) = {
     Return
     End
 };
+
 
 EvtScript N(EVS_UseMove_Super) = {
     ExecWait(N(EVS_JumpSupport_ApproachAndJump))
@@ -184,3 +186,7 @@ EvtScript N(EVS_UseMove_Ultra) = {
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
+    &N(EVS_UseMove),
+);

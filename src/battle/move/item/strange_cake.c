@@ -1,4 +1,5 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "effects.h"
 #include "hud_element.h"
@@ -334,6 +335,7 @@ EvtScript N(script7) = {
     End
 };
 
+
 EvtScript N(script8) = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
@@ -359,3 +361,7 @@ EvtScript N(script9) = {
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
+    &N(EVS_UseItem),
+);

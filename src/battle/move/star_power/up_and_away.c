@@ -1,4 +1,5 @@
 #include "battle/battle.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "sprite/npc/BattleKalmar.h"
 #include "entity.h"
@@ -179,3 +180,7 @@ EvtScript N(EVS_UsePower) = {
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_STAR_POWER,
+    &N(EVS_UsePower),
+);

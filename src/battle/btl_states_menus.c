@@ -1,4 +1,6 @@
 #include "battle/battle.h"
+#include "battle/menu.h"
+#include "battle/states/states.h"
 #include "battle_hud_scripts.h"
 
 #define MENU_CAPACITY 6
@@ -767,3 +769,49 @@ b32 btl_partner_can_act(void) {
     }
     return !partnerCantMove;
 }
+
+static void battle_menu_update(s32 state) {
+    switch (state) {
+        case BATTLE_STATE_PLAYER_MENU:
+            btl_state_update_player_menu();
+            break;
+        case BATTLE_STATE_PARTNER_MENU:
+            btl_state_update_partner_menu();
+            break;
+        case BATTLE_STATE_TWINK_MENU:
+            btl_state_update_twink_menu();
+            break;
+        case BATTLE_STATE_PEACH_MENU:
+            btl_state_update_peach_menu();
+            break;
+        case BATTLE_STATE_SELECT_TARGET:
+            btl_state_update_select_target();
+            break;
+        default:
+            PANIC_MSG("Invalid battle menu update state %d", (int)state);
+    }
+}
+
+static void battle_menu_draw(s32 state) {
+    switch (state) {
+        case BATTLE_STATE_PLAYER_MENU:
+            btl_state_draw_player_menu();
+            break;
+        case BATTLE_STATE_PARTNER_MENU:
+            btl_state_draw_partner_menu();
+            break;
+        case BATTLE_STATE_TWINK_MENU:
+            btl_state_draw_twink_menu();
+            break;
+        case BATTLE_STATE_PEACH_MENU:
+            btl_state_draw_peach_menu();
+            break;
+        case BATTLE_STATE_SELECT_TARGET:
+            btl_state_draw_select_target();
+            break;
+        default:
+            PANIC_MSG("Invalid battle menu draw state %d", (int)state);
+    }
+}
+
+BATTLE_MENU_INTERFACE(battle_menu_update, battle_menu_draw);

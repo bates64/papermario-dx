@@ -1,4 +1,5 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "sprite/npc/WorldBombette.h"
 #include "battle/action_cmd/hammer.h"
@@ -33,6 +34,7 @@ EvtScript N(EVS_UseMove) = {
     Return
     End
 };
+
 
 EvtScript N(EVS_UseMove_Impl) = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
@@ -130,6 +132,7 @@ EvtScript N(EVS_UseMove_Impl) = {
     Return
     End
 };
+
 
 EvtScript N(EVS_FirstStrike) = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
@@ -352,3 +355,9 @@ EvtScript N(EVS_UseBerserker_Impl) = {
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
+    &N(EVS_UseMove),
+    &N(EVS_FirstStrike),
+    &N(EVS_UseBerserker),
+);

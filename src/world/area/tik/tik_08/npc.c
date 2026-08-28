@@ -7,7 +7,7 @@ EvtScript N(EVS_NpcIdle_Blooper) = {
         Wait(1)
         Call(GetPlayerFloorCollider, LVar0)
         Call(GetPlayerPos, LVar1, LVar2, LVar3)
-        IfEq(LVar0, 11)
+        IfEq(LVar0, COLLIDER_o76)
             IfGe(LVar2, -20)
                 BreakLoop
             EndIf

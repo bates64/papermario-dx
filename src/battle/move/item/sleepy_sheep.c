@@ -1,4 +1,5 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "entity.h"
 #include "ld_addrs.h"
@@ -463,3 +464,7 @@ EntityModelScriptList D_802A3F28_721578 = {
     N(modelCommandList3),
     N(modelCommandList)
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
+    &N(EVS_UseItem),
+);

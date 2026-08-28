@@ -1,7 +1,9 @@
 #include "states.h"
 #include "script_api/battle.h"
 #include "battle/action_cmd.h"
+#include "battle/menu.h"
 #include "battle/partner.h"
+#include "battle/script_module.h"
 #include "game_modes.h"
 
 extern StageListRow* gCurrentStagePtr;
@@ -111,7 +113,9 @@ void btl_state_update_end_battle(void) {
             }
 
             unload_action_command();
+            unload_battle_script();
             unload_battle_partner();
+            unload_battle_menu();
 
             if (encounterStatus->battleOutcome == OUTCOME_PLAYER_LOST
                 && !(gBattleStatus.flags1 & BS_FLAGS1_NO_GAME_OVER)

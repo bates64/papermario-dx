@@ -361,14 +361,6 @@ Vec3f N(FlightPath2)[] = {
     { 270.0, 175.0, -30.0 },
 };
 
-API_CALLABLE(GetPlayerFloorCollider) {
-    Bytecode* args = script->ptrReadPos;
-    s32 outVar = *args++;
-
-    evt_set_variable(script, outVar, gCollisionStatus.curFloor);
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_Scene_Misstar) = {
     IfEq(AF_KZN20_MisstarFlightDone, false)
         Call(SetNpcPos, NPC_SELF, -120, 70, 45)

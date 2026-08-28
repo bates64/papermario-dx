@@ -1,4 +1,5 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 
 #define NAMESPACE battle_move_auto_smash
@@ -31,6 +32,7 @@ EvtScript N(EVS_UseMove) = {
     Return
     End
 };
+
 
 EvtScript N(EVS_UseMove_Impl) = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
@@ -129,3 +131,7 @@ EvtScript N(EVS_UseMove_Impl) = {
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
+    &N(EVS_UseMove),
+);

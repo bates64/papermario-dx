@@ -1,4 +1,5 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "effects.h"
 #include "entity.h"
 #include "sprite/player.h"
@@ -58,6 +59,7 @@ EvtScript N(EVS_UseMove) = {
     Return
     End
 };
+
 
 EvtScript N(EVS_802A3E5C) = {
     Call(SetGoalToTarget, ACTOR_PLAYER)
@@ -426,3 +428,7 @@ EvtScript N(EVS_UseMove_Impl) = {
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
+    &N(EVS_UseMove),
+);
