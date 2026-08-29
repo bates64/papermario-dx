@@ -237,7 +237,7 @@ EntityModelScript Entity_PadlockRedFrame_RenderScript = STANDARD_ENTITY_MODEL_SC
 EntityModelScript Entity_PadlockRedFace_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_PadlockRedFace_Render, RENDER_MODE_SURFACE_OPA);
 EntityModelScript Entity_PadlockBlueFace_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_PadlockBlueFace_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityBlueprint Entity_Padlock = {
+ENTITY_IMPLEMENTATION(Padlock) = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_400 | ENTITY_FLAG_HAS_SHADOW,
     .typeDataSize = sizeof(PadlockData),
     .renderCommandList = Entity_Padlock_RenderScript,
@@ -250,7 +250,7 @@ EntityBlueprint Entity_Padlock = {
     .aabbSize = { 30, 175, 10 }
 };
 
-EntityBlueprint Entity_PadlockRedFrame = {
+ENTITY_IMPLEMENTATION(PadlockRedFrame) = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_400 | ENTITY_FLAG_HAS_SHADOW,
     .typeDataSize = sizeof(PadlockData),
     .renderCommandList = Entity_PadlockRedFrame_RenderScript,
@@ -263,7 +263,7 @@ EntityBlueprint Entity_PadlockRedFrame = {
     .aabbSize = { 30, 175, 10 }
 };
 
-EntityBlueprint Entity_PadlockRedFace = {
+ENTITY_IMPLEMENTATION(PadlockRedFace) = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_400 | ENTITY_FLAG_HAS_SHADOW,
     .typeDataSize = sizeof(PadlockData),
     .renderCommandList = Entity_PadlockRedFace_RenderScript,
@@ -276,7 +276,7 @@ EntityBlueprint Entity_PadlockRedFace = {
     .aabbSize = { 30, 175, 10 }
  };
 
-EntityBlueprint Entity_PadlockBlueFace = {
+ENTITY_IMPLEMENTATION(PadlockBlueFace) = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_400 | ENTITY_FLAG_HAS_SHADOW,
     .typeDataSize = sizeof(PadlockData),
     .renderCommandList = Entity_PadlockBlueFace_RenderScript,

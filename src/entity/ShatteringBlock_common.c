@@ -3,10 +3,6 @@
 
 void entity_shattering_setupGfx(s32 entityIndex);
 
-void entity_BrickBlock_idle(Entity* entity) {
-    entity_base_block_idle(entity);
-}
-
 void entity_shattering_init_pieces(Entity* entity, Gfx** dlists, Mtx* matrices) {
     ShatteringBlockData* data = entity->dataBuf.shatteringBlock;
     s32 s7;

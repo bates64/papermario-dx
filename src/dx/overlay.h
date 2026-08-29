@@ -26,6 +26,7 @@ typedef enum {
     OVL_ACTION_CMD,     ///< `battle/action_cmd/*` -- only one loaded at a time
     OVL_BATTLE_SCRIPT,  ///< `battle/move/*` -- only one loaded at a time
     OVL_BATTLE_MENU,    ///< Cohesive battle menu implementation
+    OVL_ENTITY,         ///< `entity/*` -- retained for the current map
     OVL_NUM_TYPES,
 } OverlayType;
 

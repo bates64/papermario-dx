@@ -536,7 +536,7 @@ EntityModelScript Entity_RedSwitch_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(E
 
 EntityModelScript Entity_GreenStompSwitch_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_GreenStompSwitch_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityBlueprint Entity_RedSwitch = {
+ENTITY_IMPLEMENTATION(RedSwitch) = {
     .flags = ENTITY_FLAG_8000 | ENTITY_FLAG_ALWAYS_FACE_CAMERA,
     .typeDataSize = sizeof(SwitchData),
     .renderCommandList = Entity_RedSwitch_RenderScript,
@@ -549,7 +549,7 @@ EntityBlueprint Entity_RedSwitch = {
     .aabbSize = {22, 23, 22}
 };
 
-EntityBlueprint Entity_BlueSwitch = {
+ENTITY_IMPLEMENTATION(BlueSwitch) = {
     .flags = ENTITY_FLAG_8000 | ENTITY_FLAG_ALWAYS_FACE_CAMERA | ENTITY_FLAG_CIRCULAR_SHADOW | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_DYNAMIC_SHADOW,
     .typeDataSize = sizeof(SwitchData),
     .renderCommandList = Entity_BlueSwitch_RenderScript,
@@ -562,7 +562,7 @@ EntityBlueprint Entity_BlueSwitch = {
     .aabbSize = {22, 23, 22}
 };
 
-EntityBlueprint Entity_HugeBlueSwitch = {
+ENTITY_IMPLEMENTATION(HugeBlueSwitch) = {
     .flags = ENTITY_FLAG_8000 | ENTITY_FLAG_ALWAYS_FACE_CAMERA | ENTITY_FLAG_CIRCULAR_SHADOW | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_DYNAMIC_SHADOW,
     .typeDataSize = sizeof(SwitchData),
     .renderCommandList = Entity_HugeBlueSwitch_RenderScript,
@@ -575,7 +575,7 @@ EntityBlueprint Entity_HugeBlueSwitch = {
     .aabbSize = {66, 75, 66}
 };
 
-EntityBlueprint Entity_GreenStompSwitch = {
+ENTITY_IMPLEMENTATION(GreenStompSwitch) = {
     .flags = ENTITY_FLAG_8000 | ENTITY_FLAG_4000,
     .typeDataSize = sizeof(SwitchData),
     .renderCommandList = Entity_GreenStompSwitch_RenderScript,

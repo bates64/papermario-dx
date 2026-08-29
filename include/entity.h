@@ -4,6 +4,7 @@
 #include "common.h"
 
 extern s32 CreateEntityVarArgBuffer[];
+extern Vec3s FlowerGoalPosition;
 
 enum {
     ENTITY_SCRIPT_OP_End,
@@ -60,6 +61,10 @@ enum {
 
 #define ENTITY_ADDR(entity, type, data) (type)((s32)(entity->gfxBaseAddr) + ((s32)(data) & 0xFFFF))
 #define ENTITY_ROM(name) { entity_model_##name##_ROM_START, entity_model_##name##_ROM_END }
+
+/// Define the runtime descriptor exported by an entity implementation overlay.
+/// The corresponding resident manifest is named Entity_<name>.
+#define ENTITY_IMPLEMENTATION(name) export EntityImplementation EntityImpl_##name
 
 #define BLOCK_GRID_SIZE 25
 
@@ -352,16 +357,16 @@ typedef struct CymbalPlantData {
     /* 0x0 */ u8 state;
     /* 0x1 */ s8 unk_01;
     /* 0x2 */ s16 timer;
-    /* 0x4 */ f32 angle;
-    /* 0x8 */ f32 dist;
+    /* 0x4 */ f32 playerPullAngle;
+    /* 0x8 */ f32 playerPullDistance;
 } CymbalPlantData; // size = 0xC
 
 typedef struct PinkFlowerData {
-    /* 0x0 */ u16 state;
-    /* 0x2 */ u16 timer;
+    /* 0x0 */ u16 activationPending;
+    /* 0x2 */ u16 fadeState;
     /* 0x4 */ u16 linkedEntityIndex;
     /* 0x6 */ PAD(2);
-    /* 0x8 */ f32 initialRotY;
+    /* 0x8 */ f32 flowerYaw;
 } PinkFlowerData; // size = 0xC
 
 typedef struct SpinningFlowerData {
@@ -375,7 +380,7 @@ typedef struct SpinningFlowerData {
     /* 0x1C */ PAD(12);
     /* 0x28 */ Vec3s goalPos;
     /* 0x2E */ PAD(2);
-    /* 0x30 */ Mtx unk_30;
+    /* 0x30 */ Mtx petalMtx;
 } SpinningFlowerData; // size = 0x70
 
 typedef struct TrumpetPlantData {
@@ -383,12 +388,12 @@ typedef struct TrumpetPlantData {
 } TrumpetPlantData; // size = 0x4
 
 typedef struct MunchlesiaData {
-    /* 0x00 */ s32 unk_00;
+    /* 0x00 */ s32 resetEntityIndex;
     /* 0x04 */ PAD(8);
-    /* 0x0C */ f32 unk_0C;
-    /* 0x10 */ f32 unk_10;
-    /* 0x14 */ f32 unk_14;
-    /* 0x18 */ f32 unk_18;
+    /* 0x0C */ f32 playerBaseY;
+    /* 0x10 */ f32 chewPhase;
+    /* 0x14 */ f32 playerPullAngle;
+    /* 0x18 */ f32 playerPullDistance;
 } MunchlesiaData; // size = 0x1C
 
 typedef struct ArrowSignData {
@@ -406,6 +411,13 @@ extern EntityBlueprint Entity_RedSwitch;
 extern EntityBlueprint Entity_BlueSwitch;
 extern EntityBlueprint Entity_HugeBlueSwitch;
 extern EntityBlueprint Entity_GreenStompSwitch;
+extern EntityBlueprint Entity_ShatteringHammer1Block;
+extern EntityBlueprint Entity_ShatteringHammer2Block;
+extern EntityBlueprint Entity_ShatteringHammer3Block;
+extern EntityBlueprint Entity_ShatteringHammer1BlockTiny;
+extern EntityBlueprint Entity_ShatteringHammer2BlockTiny;
+extern EntityBlueprint Entity_ShatteringHammer3BlockTiny;
+extern EntityBlueprint Entity_ShatteringBrickBlock;
 extern EntityBlueprint Entity_InertYellowBlock;
 extern EntityBlueprint Entity_InertRedBlock;
 extern EntityBlueprint Entity_BrickBlock;
@@ -429,8 +441,16 @@ extern EntityBlueprint Entity_HiddenYellowBlock;
 extern EntityBlueprint Entity_RedBlock;
 extern EntityBlueprint Entity_HiddenRedBlock;
 extern EntityBlueprint Entity_TriggerBlock;
+extern EntityBlueprint Entity_HitGroundedYellowBlock;
+extern EntityBlueprint Entity_HitFloatingYellowBlock;
+extern EntityBlueprint Entity_HitRedBlock;
+extern EntityBlueprint Entity_HeartBlockFrame;
+extern EntityBlueprint Entity_HeartBlockContent;
 extern EntityBlueprint Entity_HeartBlock;
 extern EntityBlueprint Entity_SuperBlock;
+extern EntityBlueprint Entity_SuperBlockContent;
+extern EntityBlueprint Entity_UltraBlock;
+extern EntityBlueprint Entity_UltraBlockContent;
 extern EntityBlueprint Entity_ScriptSpring;
 extern EntityBlueprint Entity_SimpleSpring;
 extern EntityBlueprint Entity_HiddenPanel;
@@ -450,10 +470,19 @@ extern EntityBlueprint Entity_Tweester;
 extern EntityBlueprint Entity_StarBoxLauncher;
 extern EntityBlueprint Entity_CymbalPlant;
 extern EntityBlueprint Entity_PinkFlower;
+extern EntityBlueprint Entity_PinkFlowerLight;
 extern EntityBlueprint Entity_SpinningFlower;
 extern EntityBlueprint Entity_BellbellPlant;
 extern EntityBlueprint Entity_TrumpetPlant;
 extern EntityBlueprint Entity_Munchlesia;
+extern EntityBlueprint Entity_MunchlesiaReset;
+extern EntityBlueprint Entity_MunchlesiaGrab;
+extern EntityBlueprint Entity_MunchlesiaEnvelop;
+extern EntityBlueprint Entity_MunchlesiaBeginChew;
+extern EntityBlueprint Entity_MunchlesiaChewing;
+extern EntityBlueprint Entity_MunchlesiaSpitOut;
+extern EntityBlueprint Entity_MunchlesiaReset1;
+extern EntityBlueprint Entity_MunchlesiaReset2;
 extern EntityBlueprint Entity_ArrowSign;
 
 typedef struct EntityModel {

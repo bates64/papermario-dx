@@ -97,7 +97,7 @@ DmaEntry Entity_ScriptSpring_dma[] = { ENTITY_ROM(ScriptSpring_gfx), ENTITY_ROM(
 
 DmaEntry Entity_SimpleSpring_dma[] = { ENTITY_ROM(SimpleSpring_gfx), ENTITY_ROM(SimpleSpring_anim) };
 
-EntityBlueprint Entity_ScriptSpring = {
+ENTITY_IMPLEMENTATION(ScriptSpring) = {
     .flags = ENTITY_FLAG_ALWAYS_FACE_CAMERA | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = 0,
     .animScript = Entity_ScriptSpring_AnimIdle,
@@ -110,7 +110,7 @@ EntityBlueprint Entity_ScriptSpring = {
     .aabbSize = {40, 25, 40}
 };
 
-EntityBlueprint Entity_SimpleSpring = {
+ENTITY_IMPLEMENTATION(SimpleSpring) = {
     .flags = ENTITY_FLAG_ALWAYS_FACE_CAMERA | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(SimpleSpringData),
     .animScript = Entity_SimpleSpring_AnimIdle,

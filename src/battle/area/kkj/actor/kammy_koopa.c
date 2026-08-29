@@ -252,7 +252,7 @@ API_CALLABLE(N(DropBlock)) {
     playerStatus->flags |= PS_FLAG_HAMMER_CHECK;
     entity->collisionFlags = ENTITY_COLLISION_PLAYER_HAMMER;
     playerStatus->actionState = ACTION_STATE_HAMMER;
-    entity->blueprint->fpHandleCollision(entity);
+    entity->implementation->fpHandleCollision(entity);
     entity->collisionTimer = 10;
     entity->flags |= ENTITY_FLAG_DETECTED_COLLISION;
     collisionStatus->lastWallHammered = -1;

@@ -260,7 +260,7 @@ EntityScript Entity_StarBoxLauncher_Script = {
 
 EntityModelScript Entity_StarBoxLauncher_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_StarBoxLauncher_RenderTop, RENDER_MODE_SURFACE_OPA);
 
-EntityBlueprint Entity_StarBoxLauncher = {
+ENTITY_IMPLEMENTATION(StarBoxLauncher) = {
     .flags = ENTITY_FLAG_8000,
     .typeDataSize = sizeof(StarBoxLauncherData),
     .renderCommandList = Entity_StarBoxLauncher_RenderScript,

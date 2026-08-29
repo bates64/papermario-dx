@@ -12,7 +12,7 @@
 #define ASSET_TABLE_HEADER_SIZE 0x20
 #define ASSET_TABLE_FIRST_ENTRY (mapfs_ROM_START + ASSET_TABLE_HEADER_SIZE)
 
-BSS const char* gMapId;
+BSS const char* wMapName;
 BSS MapSettings gMapSettings;
 
 char wMapHitName[0x18];
@@ -44,7 +44,7 @@ void load_map_script_lib(void) {
 
 void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     s32 skipLoadingAssets = 0;
-    const char* mapId;
+    const char* mapName;
     u32 decompressedSize;
 
     ovl_unload_type(OVL_MAP);
@@ -88,33 +88,33 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
 
     ASSERT_MSG(gAreas[areaID].maps != nullptr, "Invalid area ID %d", areaID);
     ASSERT_MSG(mapID < gAreas[areaID].mapCount, "Invalid map ID %d in %s", mapID, gAreas[areaID].id);
-    mapId = gAreas[areaID].maps[mapID];
+    mapName = gAreas[areaID].maps[mapID];
 
     #if DX_DEBUG_MENU
-    dx_debug_set_map_info(mapId, gGameStatus.entryID);
+    dx_debug_set_map_info(mapName, gGameStatus.entryID);
     #endif
 
-    sprintf(wMapShapeName, "%s_shape", mapId);
-    sprintf(wMapHitName, "%s_hit", mapId);
+    sprintf(wMapShapeName, "%s_shape", mapName);
+    sprintf(wMapHitName, "%s_hit", mapName);
 
-    gMapId = mapId;
+    wMapName = mapName;
     load_map_script_lib();
 
-    Overlay* ovl = ovl_load(mapId, OVL_MAP);
+    Overlay* ovl = ovl_load(mapName, OVL_MAP);
     MapSettings* settings = ovl_import(ovl, "settings");
     if (settings == nullptr) { // TODO: don't use NAMESPACE in maps
         char symSettings[32];
-        sprintf(symSettings, "%s_settings", mapId);
+        sprintf(symSettings, "%s_settings", mapName);
         settings = ovl_import(ovl, symSettings);
     }
-    ASSERT_MSG(settings != nullptr, "Map '%s' does not export 'settings'", mapId);
+    ASSERT_MSG(settings != nullptr, "Map '%s' does not export 'settings'", mapName);
     gMapSettings = *settings;
 
     if (gMapSettings.textureArchive != nullptr) {
         sprintf(wMapTexName, "%s_tex", gMapSettings.textureArchive);
     } else {
         char texStr[17];
-        strcpy(texStr, mapId);
+        strcpy(texStr, mapName);
         texStr[3] = '\0';
         sprintf(wMapTexName, "%s_tex", texStr);
     }
@@ -126,7 +126,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     s32 (*init)(void) = ovl_import(ovl, "map_init");
     if (init == nullptr) { // TODO: don't use NAMESPACE in maps
         char symInit[32];
-        sprintf(symInit, "%s_map_init", mapId);
+        sprintf(symInit, "%s_map_init", mapName);
         init = ovl_import(ovl, symInit);
     }
     if (init != nullptr) {

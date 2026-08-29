@@ -30,7 +30,7 @@ void entity_shattering_block_init(Entity* entity);
 
 EntityModelScript Entity_ShatteringBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER1);
 
-EntityBlueprint Entity_ShatteringHammer1Block = {
+ENTITY_IMPLEMENTATION(ShatteringHammer1Block) = {
     .flags = 0,
     .typeDataSize = sizeof(ShatteringBlockData),
     .renderCommandList = Entity_ShatteringBlock_RenderScript,
@@ -43,7 +43,7 @@ EntityBlueprint Entity_ShatteringHammer1Block = {
     .aabbSize = {16, 16, 16}
 };
 
-EntityBlueprint Entity_ShatteringHammer2Block = {
+ENTITY_IMPLEMENTATION(ShatteringHammer2Block) = {
     .flags = 0,
     .typeDataSize = sizeof(ShatteringBlockData),
     .renderCommandList = Entity_ShatteringBlock_RenderScript,
@@ -56,7 +56,7 @@ EntityBlueprint Entity_ShatteringHammer2Block = {
     .aabbSize = {16, 16, 16}
 };
 
-EntityBlueprint Entity_ShatteringHammer3Block = {
+ENTITY_IMPLEMENTATION(ShatteringHammer3Block) = {
     .flags = 0,
     .typeDataSize = sizeof(ShatteringBlockData),
     .renderCommandList = Entity_ShatteringBlock_RenderScript,
@@ -69,7 +69,7 @@ EntityBlueprint Entity_ShatteringHammer3Block = {
     .aabbSize = {16, 16, 16}
 };
 
-EntityBlueprint Entity_ShatteringHammer1BlockTiny = {
+ENTITY_IMPLEMENTATION(ShatteringHammer1BlockTiny) = {
     .flags = 0,
     .typeDataSize = sizeof(ShatteringBlockData),
     .renderCommandList = Entity_ShatteringBlock_RenderScript,
@@ -82,7 +82,7 @@ EntityBlueprint Entity_ShatteringHammer1BlockTiny = {
     .aabbSize = {8, 8, 8}
 };
 
-EntityBlueprint Entity_ShatteringHammer2BlockTiny = {
+ENTITY_IMPLEMENTATION(ShatteringHammer2BlockTiny) = {
     .flags = 0,
     .typeDataSize = sizeof(ShatteringBlockData),
     .renderCommandList = Entity_ShatteringBlock_RenderScript,
@@ -95,7 +95,7 @@ EntityBlueprint Entity_ShatteringHammer2BlockTiny = {
     .aabbSize = {8, 8, 8}
 };
 
-EntityBlueprint Entity_ShatteringHammer3BlockTiny = {
+ENTITY_IMPLEMENTATION(ShatteringHammer3BlockTiny) = {
     .flags = 0,
     .typeDataSize = sizeof(ShatteringBlockData),
     .renderCommandList = Entity_ShatteringBlock_RenderScript,
@@ -108,7 +108,7 @@ EntityBlueprint Entity_ShatteringHammer3BlockTiny = {
     .aabbSize = {8, 8, 8}
 };
 
-EntityBlueprint Entity_ShatteringBrickBlock = {
+ENTITY_IMPLEMENTATION(ShatteringBrickBlock) = {
     .flags = 0,
     .typeDataSize = sizeof(ShatteringBlockData),
     .renderCommandList = Entity_ShatteringBlock_RenderScript,
@@ -173,45 +173,4 @@ void entity_shattering_block_init(Entity* entity) {
     }
 
     entity_shattering_init_pieces(entity, fragmentDisplayLists, fragmentMatrices);
-}
-
-void entity_breakable_block_create_shattering_entity(Entity* entity) {
-    EntityBlueprint* bp = nullptr;
-
-    switch (get_entity_type(entity->listIndex)) {
-        case ENTITY_TYPE_HAMMER1_BLOCK:
-            bp = &Entity_ShatteringHammer1Block;
-            break;
-        case ENTITY_TYPE_HAMMER1_BLOCK_TINY:
-            bp = &Entity_ShatteringHammer1BlockTiny;
-            break;
-        case ENTITY_TYPE_HAMMER2_BLOCK:
-            bp = &Entity_ShatteringHammer2Block;
-            break;
-        case ENTITY_TYPE_HAMMER2_BLOCK_TINY:
-            bp = &Entity_ShatteringHammer2BlockTiny;
-            break;
-        case ENTITY_TYPE_HAMMER3_BLOCK:
-            bp = &Entity_ShatteringHammer3Block;
-            break;
-        case ENTITY_TYPE_HAMMER3_BLOCK_TINY:
-            bp = &Entity_ShatteringHammer3BlockTiny;
-            break;
-        case ENTITY_TYPE_BRICK_BLOCK:
-            bp = &Entity_ShatteringBrickBlock;
-            break;
-        case ENTITY_TYPE_MULTI_COIN_BRICK:
-        case ENTITY_TYPE_YELLOW_BLOCK:
-        case ENTITY_TYPE_SINGLE_TRIGGER_BLOCK:
-        case ENTITY_TYPE_HIDDEN_YELLOW_BLOCK:
-        case ENTITY_TYPE_HIDDEN_RED_BLOCK:
-        case ENTITY_TYPE_INACTIVE_BLOCK:
-            break;
-    }
-
-    if (bp == nullptr) {
-        return;
-    }
-
-    create_entity(bp, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, 0, MAKE_ENTITY_END);
 }

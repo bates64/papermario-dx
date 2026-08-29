@@ -12290,29 +12290,7 @@ segments:
     vram: 0x802B6000
     subsegments:
     - [auto, c, sneaky_parasol]
-  - type: code
-    dir: entity/default
-    start: 0xE98540
-    vram: 0x802BAE00
-    subsegments:
-    - [auto, c, Padlock]
-    - [auto, c, BoardedFloor]
-    - [auto, c, BombableRock]
-  - type: code
-    dir: entity/jan_iwa
-    start: 0xE9A740
-    vram: 0x802BAE00
-    subsegments:
-    - [auto, c, Plants1]
-    - [auto, c, Plants2]
-    - [auto, c, ArrowSign]
-  - type: code
-    dir: entity/sbk_omo
-    start: 0xE9C760
-    vram: 0x802BAE00
-    subsegments:
-    - [auto, c, Tweester]
-    - [auto, c, StarBoxLauncher]
+    - [0xE98540, linker_offset, removed_area_entities]
 
   - name: entity_model_Hammer1Block
     dir: entity/model

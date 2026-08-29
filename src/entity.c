@@ -5,20 +5,22 @@
 #include "entity.h"
 #include "model.h"
 #include "sprite/player.h"
+#include "dx/overlay.h"
+
+#include "entity/blueprints.inc.c"
+#include "entity/block_support.inc.c"
 
 extern Addr WorldEntityHeapBottom;
 extern Addr WorldEntityHeapBase;
 #define WORLD_ENTITY_HEAP_BOTTOM (s32) WorldEntityHeapBottom
 #define WORLD_ENTITY_HEAP_BASE (s32) WorldEntityHeapBase
-#define entity_jan_iwa_VRAM (void*) entity_jan_iwa_VRAM
-#define entity_sbk_omo_VRAM (void*) entity_sbk_omo_VRAM
-#define entity_default_VRAM (void*) entity_default_VRAM
 
 s32 D_8014AFB0 = 255;
 
 s32 CreateEntityVarArgBuffer[4];
 HiddenPanelsData gCurrentHiddenPanels;
 s32 gEntityHideMode;
+BSS Vec3s FlowerGoalPosition;
 
 s32 D_801512BC;
 s32 D_80151304;
@@ -29,7 +31,6 @@ s32 gLastCreatedEntityIndex;
 
 s32 gEntityHeapBottom;
 s32 entity_numShadows;
-s32 isAreaSpecificEntityDataLoaded;
 s32 entity_updateCounter;
 
 BSS EntityList gWorldEntityList;
@@ -42,15 +43,15 @@ BSS ShadowList* gCurrentShadowListPtr;
 BSS s32 wEntityDataLoadedSize;
 BSS s32 bEntityDataLoadedSize;
 
-BSS EntityBlueprint* wEntityBlueprint[MAX_ENTITIES + 2];
-BSS EntityBlueprint* bEntityBlueprint[4];
+BSS EntityImplementation* wEntityImplementations[MAX_ENTITIES + 2];
+BSS EntityImplementation* bEntityImplementations[4];
 BSS s32 D_801516FC;
 
 extern Addr BattleEntityHeapBottom; // todo ???
 
 void update_shadows(void);
 s32 step_entity_commandlist(Entity* entity);
-void entity_swizzle_anim_pointers(EntityBlueprint* entityData, void* baseAnim, void* baseGfx);
+void entity_swizzle_anim_pointers(EntityImplementation* entityData, void* baseAnim, void* baseGfx);
 void render_shadows(void);
 void update_entity_transform_matrix(Entity* entity);
 void update_shadow_transform_matrix(Shadow* shadow);
@@ -59,7 +60,7 @@ void delete_entity(s32 entityIndex);
 void delete_entity_and_unload_data(s32 entityIndex);
 void reload_world_entity_data(void);
 s32 entity_get_collision_flags(Entity* entity);
-void entity_free_static_data(EntityBlueprint* data);
+void entity_free_static_data(EntityImplementation* data);
 s32 create_entity_shadow(Entity* entity, f32 x, f32 y, f32 z);
 void update_entity_shadow_position(Entity* entity);
 
@@ -112,7 +113,7 @@ void update_entities(void) {
                     entity->collisionFlags = entity_get_collision_flags(entity);
 
                     if (entity->collisionFlags) {
-                        EntityCallback handleCollision = entity->blueprint->fpHandleCollision;
+                        EntityCallback handleCollision = entity->implementation->fpHandleCollision;
 
                         if (handleCollision != nullptr && handleCollision(entity) != 0) {
                             entity->collisionTimer = 10;
@@ -557,7 +558,7 @@ u32 get_entity_type(s32 index) {
     if (entity == nullptr) {
         return -1;
     } else {
-        return entity->blueprint->entityType;
+        return entity->implementation->entityType;
     }
 }
 
@@ -597,7 +598,7 @@ void delete_entity_and_unload_data(s32 entityIndex) {
         delete_model_animator(get_animator_by_index(entity->virtualModelIndex));
     }
 
-    entity_free_static_data(entity->blueprint);
+    entity_free_static_data(entity->implementation);
 
     if (entity->shadowIndex >= 0) {
         Shadow* shadow = get_shadow_by_index(entity->shadowIndex);
@@ -755,21 +756,6 @@ void entity_reset_collision(Entity* entity) {
     entity->flags &= ~ENTITY_FLAG_DETECTED_COLLISION;
 }
 
-void load_area_specific_entity_data(void) {
-    //TODO hardcoded map and area IDs, connect these to MapTable.xml eventually
-    if (!isAreaSpecificEntityDataLoaded) {
-        if (gGameStatusPtr->areaID == AREA_JAN || gGameStatusPtr->areaID == AREA_IWA) {
-            DMA_COPY_SEGMENT(entity_jan_iwa);
-        } else if (gGameStatusPtr->areaID == AREA_SBK || gGameStatusPtr->areaID == AREA_OMO) {
-            DMA_COPY_SEGMENT(entity_sbk_omo);
-        } else {
-            DMA_COPY_SEGMENT(entity_default);
-        }
-
-        isAreaSpecificEntityDataLoaded = true;
-    }
-}
-
 void clear_entity_data(b32 arg0) {
     s32 i;
 
@@ -783,7 +769,6 @@ void clear_entity_data(b32 arg0) {
         gEntityHideMode = ENTITY_HIDE_MODE_0;
     }
 
-    isAreaSpecificEntityDataLoaded = false;
     gCurrentHiddenPanels.panelsCount = 0;
     gCurrentHiddenPanels.activateISpy = false;
     if (!arg0) {
@@ -794,12 +779,12 @@ void clear_entity_data(b32 arg0) {
     if (gGameStatusPtr->context == CONTEXT_WORLD) {
         wEntityDataLoadedSize = 0;
         for (i = 0; i < MAX_ENTITIES; i++) {
-            wEntityBlueprint[i] = nullptr;
+            wEntityImplementations[i] = nullptr;
         }
     } else {
         bEntityDataLoadedSize = 0;
-        for (i = 0; i < ARRAY_COUNT(bEntityBlueprint); i++) {
-            bEntityBlueprint[i] = nullptr;
+        for (i = 0; i < ARRAY_COUNT(bEntityImplementations); i++) {
+            bEntityImplementations[i] = nullptr;
         }
     }
 
@@ -821,6 +806,13 @@ void clear_entity_data(b32 arg0) {
     for (i = 0; i < MAX_SHADOWS; i++) {
         (*gCurrentShadowListPtr)[i] = nullptr;
     }
+
+    // World entity implementations must survive pause and battle transitions:
+    // their model descriptors are retained and replayed by init_entity_data().
+    // A full world reset marks the end of the map-lifetime overlay arena.
+    if (arg0 && gGameStatusPtr->context == CONTEXT_WORLD) {
+        ovl_unload_type(OVL_ENTITY);
+    }
 }
 
 void init_entity_data(void) {
@@ -831,8 +823,8 @@ void init_entity_data(void) {
     } else {
         s32 i;
 
-        for (i = 0; i < ARRAY_COUNT(bEntityBlueprint); i++) {
-            bEntityBlueprint[i] = 0;
+        for (i = 0; i < ARRAY_COUNT(bEntityImplementations); i++) {
+            bEntityImplementations[i] = 0;
         }
         gEntityHeapBottom = (s32) BattleEntityHeapBottom;
         gEntityHeapBase = gEntityHeapBottom + 0x3000;
@@ -852,7 +844,7 @@ void reload_world_entity_data(void) {
     void* animData;
 
     for (i = 0; i < MAX_ENTITIES; i++) {
-        EntityBlueprint* bp = wEntityBlueprint[i];
+        EntityImplementation* bp = wEntityImplementations[i];
         if (bp == nullptr) {
             break;
         }
@@ -891,7 +883,7 @@ void reload_world_entity_data(void) {
     }
 }
 
-void entity_swizzle_anim_pointers(EntityBlueprint* entityData, void* baseAnim, void* baseGfx) {
+void entity_swizzle_anim_pointers(EntityImplementation* entityData, void* baseAnim, void* baseGfx) {
     StaticAnimatorNode* node;
     s32* ptr = (s32*)((s32)baseAnim + (s32)entityData->modelAnimationNodes);
 
@@ -929,8 +921,8 @@ void entity_swizzle_anim_pointers(EntityBlueprint* entityData, void* baseAnim, v
     }
 }
 
-s32 is_entity_data_loaded(Entity* entity, EntityBlueprint* blueprint, s32* loadedStart, s32* loadedEnd) {
-    EntityBlueprint** blueprints;
+s32 is_entity_data_loaded(Entity* entity, EntityImplementation* implementation, s32* loadedStart, s32* loadedEnd) {
+    EntityImplementation** implementations;
     s32 i;
     s32 ret;
     DmaEntry* entDmaList;
@@ -940,34 +932,34 @@ s32 is_entity_data_loaded(Entity* entity, EntityBlueprint* blueprint, s32* loade
     ret = false;
 
     if (gGameStatusPtr->context == CONTEXT_WORLD) {
-        blueprints = wEntityBlueprint;
+        implementations = wEntityImplementations;
     } else {
-        blueprints = bEntityBlueprint;
+        implementations = bEntityImplementations;
     }
 
-    for (i = 0; i < MAX_ENTITIES; i++, blueprints++) {
-        EntityBlueprint* bp = *blueprints;
+    for (i = 0; i < MAX_ENTITIES; i++, implementations++) {
+        EntityImplementation* bp = *implementations;
         if (bp == nullptr) {
-            blueprints[0] = blueprint;
-            blueprints[1] = nullptr;
+            implementations[0] = implementation;
+            implementations[1] = nullptr;
             ret = true;
-            if (blueprint->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL) {
+            if (implementation->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL) {
                 s32 size;
-                entDmaList = blueprint->dmaList;
+                entDmaList = implementation->dmaList;
                 size = (entDmaList[0].end - entDmaList[0].start) >> 2;
                 *loadedEnd = *loadedStart + size;
             }
             break;
         } else {
             DmaEntry* bpDmaList = bp->dmaList;
-            entDmaList = blueprint->dmaList;
+            entDmaList = implementation->dmaList;
             if (bpDmaList == entDmaList) {
-                if (blueprint->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL) {
+                if (implementation->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL) {
                     s32 size = (bpDmaList[0].end - bpDmaList[0].start) >> 2;
                     *loadedEnd = *loadedStart + size;
                 }
                 break;
-            } else if (bp == blueprint) {
+            } else if (bp == implementation) {
                 if (bp->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL) {
                     s32 size = (entDmaList[0].end - entDmaList[0].start) >> 2;
                     *loadedEnd = *loadedStart + size;
@@ -989,7 +981,7 @@ s32 is_entity_data_loaded(Entity* entity, EntityBlueprint* blueprint, s32* loade
     return ret;
 }
 
-void load_simple_entity_data(Entity* entity, EntityBlueprint* bp, s32 listIndex) {
+void load_simple_entity_data(Entity* entity, EntityImplementation* bp, s32 listIndex) {
     s32 loadedStart;
     s32 loadedEnd;
     s32 entitySize;
@@ -1025,7 +1017,7 @@ void load_simple_entity_data(Entity* entity, EntityBlueprint* bp, s32 listIndex)
     }
 }
 
-void load_split_entity_data(Entity* entity, EntityBlueprint* entityData, s32 listIndex) {
+void load_split_entity_data(Entity* entity, EntityImplementation* entityData, s32 listIndex) {
     s32 swizzlePointers = false;
     s32 loadedStart, loadedEnd;
     void* animBaseAddr;
@@ -1126,14 +1118,14 @@ void load_split_entity_data(Entity* entity, EntityBlueprint* entityData, s32 lis
     entity->flags |= ENTITY_FLAG_HAS_ANIMATED_MODEL;
 }
 
-s32 func_80111790(EntityBlueprint* data) {
+s32 func_80111790(EntityImplementation* data) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(*gCurrentEntityListPtr); i++) {
         Entity* entity = (*gCurrentEntityListPtr)[i];
 
-        if (entity != nullptr && entity->blueprint->dma.start != nullptr) {
-            if (entity->blueprint->dma.start == entity->blueprint) {
+        if (entity != nullptr && entity->implementation->dma.start != nullptr) {
+            if (entity->implementation->dma.start == entity->implementation) {
                 return true;
             }
         }
@@ -1141,33 +1133,33 @@ s32 func_80111790(EntityBlueprint* data) {
     return false;
 }
 
-void entity_free_static_data(EntityBlueprint* data) {
+void entity_free_static_data(EntityImplementation* data) {
     s32 freeSlot;
     s32 size;
-    EntityBlueprint* bp;
+    EntityImplementation* bp;
 
     for (freeSlot = 0; freeSlot < MAX_ENTITIES; freeSlot++) {
-        bp = wEntityBlueprint[freeSlot];
+        bp = wEntityImplementations[freeSlot];
         if (bp == nullptr) {
             break;
         }
     }
 
     if (freeSlot < MAX_ENTITIES) {
-        bp = wEntityBlueprint[freeSlot - 1];
+        bp = wEntityImplementations[freeSlot - 1];
         if (bp == data) {
             if (bp->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL) {
                 DmaEntry* dmaList = bp->dmaList;
                 size = ((dmaList[0].end - dmaList[0].start) >> 2);
                 size += ((dmaList[1].end - dmaList[1].start) >> 2);
                 if (!func_80111790(bp)) {
-                    wEntityBlueprint[freeSlot - 1] = nullptr;
+                    wEntityImplementations[freeSlot - 1] = nullptr;
                     wEntityDataLoadedSize -= size;
                 }
             } else {
                 size = (bp->dma.end - bp->dma.start) >> 2;
                 if (!func_80111790(bp)) {
-                    wEntityBlueprint[freeSlot - 1] = nullptr;
+                    wEntityImplementations[freeSlot - 1] = nullptr;
                     wEntityDataLoadedSize -= size;
                 }
             }
@@ -1175,17 +1167,26 @@ void entity_free_static_data(EntityBlueprint* data) {
     }
 }
 
-s32 create_entity(EntityBlueprint* bp, ...) {
+static EntityImplementation* load_entity_implementation(EntityBlueprint* blueprint) {
+    Overlay* overlay = ovl_load(blueprint->overlayName, OVL_ENTITY);
+    EntityImplementation* implementation = ovl_import(overlay, blueprint->implementationName);
+
+    ASSERT_MSG(implementation != nullptr,
+               "Entity implementation '%s' not found in overlay '%s'",
+               blueprint->implementationName, blueprint->overlayName);
+    return implementation;
+}
+
+s32 create_entity(EntityBlueprint* blueprint, ...) {
     va_list ap;
+    EntityImplementation* bp = load_entity_implementation(blueprint);
     f32 x, y, z;
     f32 rotY;
     s32 listIndex;
     Entity* entity;
     s32 idx;
 
-    va_start(ap, bp);
-
-    load_area_specific_entity_data();
+    va_start(ap, blueprint);
 
     x = va_arg(ap, s32);
     y = va_arg(ap, s32);
@@ -1227,7 +1228,7 @@ s32 create_entity(EntityBlueprint* bp, ...) {
     entity->type = bp->entityType;
     entity->listIndex = listIndex;
     entity->updateMatrixOverride = nullptr;
-    entity->blueprint = bp;
+    entity->implementation = bp;
     entity->scriptReadPos = bp->updateEntityScript;
     entity->scriptDelay = entity->scriptReadPos != nullptr ? 1 : 0;
     entity->savedReadPos[0] = bp->updateEntityScript;
@@ -1515,7 +1516,7 @@ API_CALLABLE(SetEntityUsed) {
 }
 
 s32 create_entity_shadow(Entity* entity, f32 x, f32 y, f32 z) {
-    u16 bpFlags = entity->blueprint->flags;
+    u16 bpFlags = entity->implementation->flags;
     s32 type;
     s16 shadowIndex;
 

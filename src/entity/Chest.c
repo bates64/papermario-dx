@@ -4,6 +4,7 @@
 #include "ld_addrs.h"
 #include "entity.h"
 #include "sprite/player.h"
+#include <string.h>
 
 #if VERSION_JP // TODO remove once segments are split
 extern Addr entity_model_Chest_ROM_END;
@@ -63,18 +64,15 @@ EvtScript Entity_Chest_ResetCam_Default = {
     End
 };
 
-//TODO hardcoded area IDs
 void entity_Chest_adjust_camera(Entity* entity) {
-    s16 areaID;
     EvtScript* script;
 
-    areaID = gGameStatusPtr->areaID;
     script = nullptr;
-    if (areaID == AREA_ISK) {
+    if (strcmp(wMapName, "isk_09") == 0) {
         script = &Entity_Chest_AdjustCam_ISK;
-    } else if (areaID == AREA_TIK) {
+    } else if (strcmp(wMapName, "tik_25") == 0) {
         script = &Entity_Chest_AdjustCam_TIK;
-    } else if (areaID == AREA_KZN) {
+    } else if (strcmp(wMapName, "kzn_07") == 0) {
         script = &Entity_Chest_AdjustCam_KZN;
     }
     if (script != nullptr) {
@@ -82,14 +80,10 @@ void entity_Chest_adjust_camera(Entity* entity) {
     }
 }
 
-//TODO hardcoded area IDs
 void entity_Chest_reset_camera(Entity* entity) {
-    s16 areaID;
     EvtScript* script;
 
-    areaID = gGameStatusPtr->areaID;
-    script = nullptr;
-    if (areaID == AREA_ISK) {
+    if (strcmp(wMapName, "isk_09") == 0) {
         script = &Entity_Chest_ResetCam_ISK;
     } else {
         script = &Entity_Chest_ResetCam_Default;
@@ -319,8 +313,7 @@ void entity_GiantChest_open(Entity* entity) {
             giveItemLerpAlpha = sin_rad(DEG_TO_RAD(chest->giveItemRadiusInterpPhase));
             theta = intermediateTheta = clamp_angle(atan2(entity->pos.x, entity->pos.z, playerStatus->pos.x, playerStatus->pos.z));
 
-            // hardcoded areaID
-            if (gGameStatusPtr->areaID == AREA_KZN) {
+            if (strcmp(wMapName, "kzn_07") == 0) {
                 radius = 3.0f;
             } else {
                 radius = 4.0f;
@@ -496,7 +489,7 @@ EntityScript Entity_Chest_Script = {
 };
 EntityModelScript Entity_Chest_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_Chest_RenderBox, RENDER_MODE_SURFACE_OPA);
 
-EntityBlueprint Entity_GiantChest = {
+ENTITY_IMPLEMENTATION(GiantChest) = {
     .flags = ENTITY_FLAG_4000,
     .typeDataSize = sizeof(ChestData),
     .renderCommandList = Entity_Chest_RenderScript,
@@ -508,7 +501,7 @@ EntityBlueprint Entity_GiantChest = {
     .entityType = ENTITY_TYPE_CHEST,
     .aabbSize = { 50, 45, 46 }
 };
-EntityBlueprint Entity_Chest = {
+ENTITY_IMPLEMENTATION(Chest) = {
     .flags = ENTITY_FLAG_8000 | ENTITY_FLAG_4000,
     .typeDataSize = sizeof(ChestData),
     .renderCommandList = Entity_Chest_RenderScript,

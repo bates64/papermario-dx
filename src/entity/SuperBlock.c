@@ -37,17 +37,6 @@ f32 entity_SuperBlockContent_get_previous_yaw(SuperBlockContentData* data, s32 l
     return data->yawBuffer[bufIdx];
 }
 
-void entity_upgrade_block_hide_content(s32 entityIndex) {
-    Entity* entity = get_entity_by_index(entityIndex);
-    BlockData* data = entity->dataBuf.block;
-
-    if (data->childEntityIndex >= 0) {
-        Entity* childEntity = get_entity_by_index(data->childEntityIndex);
-        SuperBlockContentData* childEntityData = childEntity->dataBuf.superBlockContent;
-        childEntityData->isHidden = true;
-    }
-}
-
 s32 entity_upgrade_block_idle(Entity* entity) {
     return entity_base_block_idle(entity);
 }
@@ -250,7 +239,7 @@ EntityModelScript Entity_SuperBlockContent_RenderScript = STANDARD_ENTITY_MODEL_
 EntityModelScript Entity_UltraBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_UltraBlock_Render, RENDER_MODE_ALPHATEST);
 EntityModelScript Entity_UltraBlockContent_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER2);
 
-EntityBlueprint Entity_SuperBlock = {
+ENTITY_IMPLEMENTATION(SuperBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_SuperBlock_RenderScript,
@@ -263,7 +252,7 @@ EntityBlueprint Entity_SuperBlock = {
     .aabbSize = { 25, 25, 25 }
 };
 
-EntityBlueprint Entity_SuperBlockContent = {
+ENTITY_IMPLEMENTATION(SuperBlockContent) = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION,
     .typeDataSize = sizeof(SuperBlockContentData),
     .renderCommandList = Entity_SuperBlockContent_RenderScript,
@@ -276,7 +265,7 @@ EntityBlueprint Entity_SuperBlockContent = {
     .aabbSize = { 18, 6, 18 }
 };
 
-EntityBlueprint Entity_UltraBlock = {
+ENTITY_IMPLEMENTATION(UltraBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_UltraBlock_RenderScript,
@@ -289,7 +278,7 @@ EntityBlueprint Entity_UltraBlock = {
     .aabbSize = { 25, 25, 25 }
 };
 
-EntityBlueprint Entity_UltraBlockContent = {
+ENTITY_IMPLEMENTATION(UltraBlockContent) = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION,
     .typeDataSize = sizeof(SuperBlockContentData),
     .renderCommandList = Entity_UltraBlockContent_RenderScript,

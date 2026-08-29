@@ -32,7 +32,7 @@ Gfx D_0A000AF8_E9D3F8[] = {
     gsSPEndDisplayList(),
 };
 
-Mtx D_0A000B70_E9D470 = RDP_MATRIX(
+Mtx PetalBaseMtx = RDP_MATRIX(
     1.000000, 0.000000, 0.000000,  0.000000,
     0.000000, 1.000000, 0.000000, 20.000000,
     0.000000, 0.000000, 1.000000,  0.000000,
@@ -99,7 +99,7 @@ Gfx D_0A000CC8_E9D5C8[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_0A000D18_E9D618[] = {
+Gfx Entity_SpinningFlower_RenderPetals[] = {
     gsSPDisplayList(D_0A000CC8_E9D5C8),
     gsSPDisplayList(D_0A000C78_E9D578),
     gsSPEndDisplayList(),

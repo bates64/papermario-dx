@@ -312,7 +312,7 @@ EntityScript Entity_Tweester_Script ={
 
 EntityModelScript Entity_Tweester_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_Tweester_Render, RENDER_MODE_SURFACE_XLU_LAYER1);
 
-EntityBlueprint Entity_Tweester = {
+ENTITY_IMPLEMENTATION(Tweester) = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION,
     .typeDataSize = sizeof(TweesterData),
     .renderCommandList = Entity_Tweester_RenderScript,
@@ -324,4 +324,3 @@ EntityBlueprint Entity_Tweester = {
     .entityType = ENTITY_TYPE_TWEESTER,
     .aabbSize = { 50, 70, 50 }
 };
-

@@ -52,6 +52,7 @@ extern char wMapTexName[];
 extern char wMapHitName[];
 extern char wMapShapeName[];
 extern char wMapBgName[];
+extern const char* wMapName;
 
 /// Zero-terminated.
 extern AreaConfig gAreas[];

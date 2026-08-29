@@ -3,10 +3,10 @@
 
 #define MOD_MAGIC   0x4D4F4400 // "MOD\0"
 
-/// The original descriptor budget remains available to maps and actors. Effect
-/// descriptors are reserved separately so actor loads cannot consume pool
-/// bookkeeping while effect slots are still available.
-#define MAX_GENERAL_OVERLAYS 24
+/// General descriptors are shared by maps, actors, and map-lifetime entity
+/// modules. Effect descriptors are reserved separately so those persistent
+/// modules cannot consume effect-slot bookkeeping.
+#define MAX_GENERAL_OVERLAYS 64
 #define EFFECT_OVERLAY_DESCRIPTOR_START MAX_GENERAL_OVERLAYS
 #define MAX_OVERLAYS (MAX_GENERAL_OVERLAYS + EFFECT_OVERLAY_SLOT_COUNT)
 
@@ -107,6 +107,14 @@ static const OverlayStorage overlayStorage[OVL_NUM_TYPES] = {
         .descStart = 0,
         .descCount = MAX_GENERAL_OVERLAYS,
     },
+    [OVL_ENTITY] = {
+        .mode = OVL_STORAGE_RELOCATABLE,
+        .base = (u8*)RELOCATABLE_LINK_ADDR,
+        .slotSize = 0,
+        .slotCount = 0,
+        .descStart = 0,
+        .descCount = MAX_GENERAL_OVERLAYS,
+    },
 };
 
 #if DX_DEBUG_OVERLAY_LOADS && (DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE))
@@ -130,6 +138,8 @@ static const char* get_type_name(OverlayType type) {
             return "battle_script";
         case OVL_BATTLE_MENU:
             return "battle_menu";
+        case OVL_ENTITY:
+            return "entity";
         default:
             return "invalid";
     }

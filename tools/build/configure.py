@@ -49,6 +49,7 @@ OVL_TYPE_BATTLE_PARTNER = 5
 OVL_TYPE_ACTION_CMD = 6
 OVL_TYPE_BATTLE_SCRIPT = 7
 OVL_TYPE_BATTLE_MENU = 8
+OVL_TYPE_ENTITY = 9
 
 BATTLE_MENU_SOURCES = (
     "battle/btl_states_menus.c",
@@ -638,6 +639,19 @@ class Configure:
             return False
         return posix(relative_path) in BATTLE_MENU_SOURCES
 
+    @staticmethod
+    def is_entity_overlay_source_path(path: Path) -> bool:
+        path = Path(path).resolve()
+        try:
+            relative_path = path.relative_to((ROOT / "src/entity").resolve())
+        except ValueError:
+            return False
+        return (
+            path.suffix in (".c", ".cpp")
+            and "model" not in relative_path.parts
+            and relative_path.name not in ("Shadow.c", "blueprints.inc.c")
+        )
+
     def discard_overlay_linker_entries(self):
         """Remove overlay objects from the main linker script.
 
@@ -668,6 +682,7 @@ class Configure:
                 self.is_effect_source_path(path)
                 or self.is_world_action_source_path(path)
                 or self.is_battle_menu_source_path(path)
+                or self.is_entity_overlay_source_path(path)
                 for path in entry.src_paths
             ):
                 if entry.object_path is not None:
@@ -1771,6 +1786,7 @@ class Configure:
             (OVL_TYPE_ACTOR, "battle/actor/*"),
             (OVL_TYPE_BATTLE_PARTNER, "battle/partner/*.c"),
             (OVL_TYPE_ACTION_CMD, "battle/action_cmd/*.c"),
+            (OVL_TYPE_ENTITY, "entity/**/*.c"),
         ]
 
         # Collect overlays keyed by (type_index, name). Later entries in the
@@ -1788,6 +1804,10 @@ class Configure:
                     if match.name.endswith(".inc.c") or match.name.endswith(".inc.cpp"):
                         continue
                     if type_index == OVL_TYPE_EFFECT and match.name == "effect_table.c":
+                        continue
+                    if type_index == OVL_TYPE_ENTITY and not self.is_entity_overlay_source_path(match):
+                        continue
+                    if type_index == OVL_TYPE_ENTITY and match.name == "ShatteringBlock_common.c":
                         continue
                     # Skip asset directories that contain no compilable source files
                     # (only .inc.c/.inc.cpp), so they don't shadow src/ overlays
@@ -1812,6 +1832,11 @@ class Configure:
                         sources,
                         type_index,
                     )
+
+        shattering_key = (OVL_TYPE_ENTITY, "ShatteringBlock")
+        if shattering_key in found:
+            name, source, sources, type_index = found[shattering_key]
+            sources.append(ROOT / "src/entity/ShatteringBlock_common.c")
 
         # The battle menu is one cohesive overlay assembled from sources that
         # historically straddled the btl_states_menus segment and resident battle
@@ -2046,6 +2071,8 @@ class Configure:
             elif type_index == OVL_TYPE_BATTLE_MENU:
                 force_export = "--force-export gBattleMenu"
                 max_loaded_size = "--max-loaded-size 0x10000"
+                require_resolved = "--require-resolved"
+            elif type_index == OVL_TYPE_ENTITY:
                 require_resolved = "--require-resolved"
 
             overlay_link_deps = [

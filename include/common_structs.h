@@ -557,6 +557,12 @@ typedef SparkleScriptCode* SparkleScriptPos; /// read position within a SparkleS
 typedef SparkleScriptPtr SparkleScriptList[]; /// list of SparkleScripts
 
 typedef struct EntityBlueprint {
+    /* 0x00 */ const char* overlayName;
+    /* 0x04 */ const char* implementationName;
+} EntityBlueprint; // size = 0x08
+
+/// Runtime implementation loaded for a resident EntityBlueprint manifest.
+typedef struct EntityImplementation {
     /* 0x00 */ u16 flags;
     /* 0x02 */ u16 typeDataSize;
     /* 0x04 */ union {
@@ -573,7 +579,7 @@ typedef struct EntityBlueprint {
     /* 0x18 */ };
     /* 0x20 */ u8 entityType;
     /* 0x21 */ u8 aabbSize[3];
-} EntityBlueprint; // size = 0x24
+} EntityImplementation; // size = 0x24
 
 typedef union {
     s32* any;
@@ -620,7 +626,7 @@ typedef struct Entity {
     /* 0x20 */ EntityCallback updateMatrixOverride;
     /* 0x24 */ BoundScript script;
     /* 0x30 */ EntityScriptPos savedReadPos[3];
-    /* 0x3C */ EntityBlueprint* blueprint;
+    /* 0x3C */ EntityImplementation* implementation;
     /* 0x40 */ void (*renderSetupFunc)(s32);
     /* 0x44 */ EntityData dataBuf;
     /* 0x48 */ void* gfxBaseAddr;
@@ -639,7 +645,7 @@ struct Shadow;
 
 typedef void (*ShadowCallback)(struct Shadow*);
 
-// same as EntityBlueprint
+// Shares the runtime descriptor prefix used by EntityImplementation.
 typedef struct ShadowBlueprint {
     /* 0x00 */ u16 flags;
     /* 0x02 */ s16 typeDataSize;

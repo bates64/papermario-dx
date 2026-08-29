@@ -355,7 +355,7 @@ EntityModelScript Entity_HiddenYellowBlock_RenderScript = STANDARD_ENTITY_MODEL_
 EntityModelScript Entity_RedBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RedBlock_Render, RENDER_MODE_SURFACE_OPA);
 EntityModelScript Entity_HiddenRedBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RedBlock_Render, RENDER_MODE_SURFACE_XLU_LAYER2);
 
-EntityBlueprint Entity_YellowBlock = {
+ENTITY_IMPLEMENTATION(YellowBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_YellowBlock_RenderScript,
@@ -368,7 +368,7 @@ EntityBlueprint Entity_YellowBlock = {
     .aabbSize = { 25, 25, 25 }
 };
 
-EntityBlueprint Entity_HiddenYellowBlock = {
+ENTITY_IMPLEMENTATION(HiddenYellowBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_HiddenYellowBlock_RenderScript,
@@ -381,7 +381,7 @@ EntityBlueprint Entity_HiddenYellowBlock = {
     .aabbSize = { 25, 25, 25 }
 };
 
-EntityBlueprint Entity_RedBlock = {
+ENTITY_IMPLEMENTATION(RedBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_RedBlock_RenderScript,
@@ -394,7 +394,7 @@ EntityBlueprint Entity_RedBlock = {
     .aabbSize = { 25, 25, 25 }
 };
 
-EntityBlueprint Entity_HiddenRedBlock = {
+ENTITY_IMPLEMENTATION(HiddenRedBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_HiddenRedBlock_RenderScript,
@@ -407,7 +407,7 @@ EntityBlueprint Entity_HiddenRedBlock = {
     .aabbSize = { 25, 25, 25 }
 };
 
-EntityBlueprint Entity_TriggerBlock = {
+ENTITY_IMPLEMENTATION(TriggerBlock) = {
     .flags = ENTITY_FLAG_8000 | ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(BlockData),
     .animScript = Entity_HitYellowBlock_AnimationIdle,
@@ -420,7 +420,7 @@ EntityBlueprint Entity_TriggerBlock = {
     .aabbSize = { 25, 25, 25 }
 };
 
-EntityBlueprint Entity_HitGroundedYellowBlock = {
+ENTITY_IMPLEMENTATION(HitGroundedYellowBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(BlockData),
     .animScript = Entity_HitYellowBlock_AnimationIdle,
@@ -433,7 +433,7 @@ EntityBlueprint Entity_HitGroundedYellowBlock = {
     .aabbSize = { 25, 25, 25 }
 };
 
-EntityBlueprint Entity_HitFloatingYellowBlock = {
+ENTITY_IMPLEMENTATION(HitFloatingYellowBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(BlockData),
     .animScript = Entity_HitFloatingYellowBlock_AnimationIdle,
@@ -446,7 +446,7 @@ EntityBlueprint Entity_HitFloatingYellowBlock = {
     .aabbSize = { 25, 25, 25 }
 };
 
-EntityBlueprint Entity_HitRedBlock = {
+ENTITY_IMPLEMENTATION(HitRedBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(BlockData),
     .animScript = Entity_HitRedBlock_AnimationHit,

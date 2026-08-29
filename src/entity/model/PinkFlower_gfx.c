@@ -32,7 +32,7 @@ Gfx D_0A001020_E9C520[] = {
     gsSPEndDisplayList(),
 };
 
-Mtx D_0A001098_E9C598 = RDP_MATRIX(
+Mtx Entity_PinkFlowerLight_BaseMtx = RDP_MATRIX(
     1.000000, 0.000000, 0.000000, -10.000000,
     0.000000, 1.000000, 0.000000,  25.000000,
     0.000000, 0.000000, 1.000000,  13.000000,
@@ -143,7 +143,7 @@ Gfx Entity_PinkFlower_RenderNode5[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_0A0013B8_E9C8B8[] = {
+Gfx Entity_PinkFlowerLight_Render[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_ZB_XLU_SURF, G_RM_AA_ZB_XLU_SURF2),

@@ -279,7 +279,7 @@ EntityScript Entity_WoodenCrate_Script = {
     es_End
 };
 
-EntityBlueprint Entity_WoodenCrate = {
+ENTITY_IMPLEMENTATION(WoodenCrate) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(WoodenCrateData),
     .renderCommandList = Entity_WoodenCrate_RenderScript,
