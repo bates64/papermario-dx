@@ -18,6 +18,9 @@ except ModuleNotFoundError:
 
 import ninja_syntax
 
+if sys.platform == 'win32':
+    import ntfsutils.junction
+
 # Configuration:
 VERSIONS = ["us"]
 
@@ -1689,7 +1692,11 @@ class Configure:
         except Exception:
             pass
 
-        current.symlink_to(self.version)
+        if sys.platform == 'win32':
+            # symlinks require admin on windows so we create a junction instead
+            ntfsutils.junction.create("ver/" + self.version, current)
+        else:
+            current.symlink_to(self.version)
 
         ninja.build("ver/current/build/papermario.z64", "phony", posix(self.rom_path()))
 
