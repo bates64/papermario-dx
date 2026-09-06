@@ -76,7 +76,7 @@ def _update_clangd_config(root: Path, idx_path: Path):
     # Read existing config, preserving other sections
     existing_lines = []
     if clangd_path.exists():
-        with open(clangd_path) as f:
+        with open(clangd_path, "r", encoding="utf-8") as f:
             existing_lines = f.readlines()
 
     if not existing_lines:
@@ -102,5 +102,5 @@ def _update_clangd_config(root: Path, idx_path: Path):
     filtered.append(f"    File: {abs_idx}\n")
     filtered.append(f"    MountPoint: {abs_root}\n")
 
-    with open(clangd_path, "w") as f:
+    with open(clangd_path, "w", encoding="utf-8") as f:
         f.writelines(filtered)
