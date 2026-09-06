@@ -7,6 +7,7 @@ set "TOOLCHAIN_DIR=%DX_DIR%\windows"
 set "TOOLCHAIN_ZIP=%DX_DIR%\papermario-dx-windows.zip"
 
 call tools/windows/download_toolchain.bat
+if errorlevel 1 exit /b 1
 
 :: Set up PATH
 set "PATH=%TOOLCHAIN_DIR%\bin;%TOOLCHAIN_DIR%\python;%PATH%"
