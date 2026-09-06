@@ -166,7 +166,7 @@ def write_ninja_rules(
     ninja.rule(
         "sha1sum",
         description="Verifying checksum",
-        command=f"$python -c \"open('$out','w').close()\"",
+        command=f"$python -c \"open('$out','w', encoding='utf-8').close()\"",
     )
 
     ninja.rule(
@@ -1668,7 +1668,7 @@ class Configure:
 
         manifest_path = self.build_path() / "ovl" / "manifest.json"
         manifest_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(manifest_path, "w") as f:
+        with open(manifest_path, "w", encoding="utf-8") as f:
             json.dump(manifest_entries, f)
 
         implicit_deps.append(posix(BUILD_TOOLS / "overlay.py"))
@@ -1885,7 +1885,7 @@ if __name__ == "__main__":
     # add splat to python import path
     sys.path.insert(0, str((ROOT / args.splat / "src").resolve()))
 
-    ninja = ninja_syntax.Writer(open(str(ROOT / "build.ninja"), "w"), width=9999)
+    ninja = ninja_syntax.Writer(open(str(ROOT / "build.ninja"), "w", encoding="utf-8"), width=9999)
 
     non_matching = args.non_matching or True or args.shift
 
