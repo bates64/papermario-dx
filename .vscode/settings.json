@@ -55,14 +55,9 @@
         "**/.jj": true,
         "**/.direnv": true,
         "**/.cache": true,
-        "**/build": true,
         "**/.n2_db": true,
         "**/.ninja_deps": true,
-        "**/.run_hash": true,
-        "**/.starrod": true,
         "**/.dx": true,
-        "**/venv": true,
-        "**/*.o": true
     },
     "[python]": {
         "editor.formatOnType": true,
