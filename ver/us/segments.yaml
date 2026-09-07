@@ -8,17 +8,8 @@
 exclude:
   - src/battle/actor/*
   - src/world/area/*/*/
-  # Provided by the prebuilt libultra archive rather than compiled from source.
-  - src/os/_getcount.c
-  - src/os/_setcompare.c
-  - src/os/flashreadarray.c
-  - src/os/flashsectorerase.c
-  - src/os/flashwritearray.c
-  - src/os/flashwritebuffer.c
-  - src/os/guMtxCat.s
+  # Built only by the jp and ique configurations.
   - src/os/padding_alt.s
-  - src/os/pfssearchfile.c
-  - src/os/si.c
   - src/os/skapi.s
 
 dirs:
