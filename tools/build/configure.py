@@ -721,6 +721,227 @@ class Configure:
         build(obj, [Path(posix(blob) + ".bin")], "bin")
         self.register_asset(obj)
 
+    def write_mapfs_rules(self, build, c_maps) -> None:
+        """Build the map filesystem in the order the ROM stores it."""
+        import yaml
+
+        toc = yaml.safe_load((self.version_path / "mapfs.yaml").read_text())
+        mapfs = Path("assets") / self.version / "mapfs"
+        src_paths = []
+        for name in toc["maps"]:
+            src_paths.append(mapfs / "geom" / f"{name}_shape_built.bin")
+            src_paths.append(mapfs / "geom" / f"{name}_hit.bin")
+        src_paths += [mapfs / "tex" / f"{n}_tex.bin" for n in toc["textures"]]
+        src_paths += [mapfs / "bg" / f"{n}_bg.png" for n in toc["backgrounds"]]
+        src_paths.append(mapfs / "title_data.bin")
+        src_paths += [mapfs / "party" / f"{n}.png" for n in toc["parties"]]
+
+        seg_name = "mapfs"
+        object_path = self.build_path() / "assets" / self.version / "mapfs.dat.o"
+        # flat list of (uncompressed path, compressed? path) pairs
+        bin_yay0s: List[Path] = []
+        src_dir = Path("assets/x") / seg_name
+
+        for path in src_paths:
+            name = path.stem
+            out_dir = object_path.with_suffix("").with_suffix("")
+            bin_path = out_dir / f"{name}.bin"
+
+            if name.startswith("party_"):
+                compress = True
+                build(
+                    bin_path,
+                    [path],
+                    "img",
+                    variables={
+                        "img_type": "party",
+                        "img_flags": "",
+                    },
+                )
+            elif path.suffixes[-2:] == [".raw", ".dat"]:
+                compress = False
+                bin_path = path
+            elif name == "title_data":
+                compress = True
+
+                logotype_path = out_dir / "title_logotype.bin"
+                copyright_path = out_dir / "title_copyright.bin"
+                copyright_pal_path = out_dir / "title_copyright.pal"  # jp only
+                press_start_path = out_dir / "title_press_start.bin"
+
+                build(
+                    logotype_path,
+                    [src_dir / "title/logotype.png"],
+                    "pigment",
+                    variables={
+                        "img_type": "rgba32",
+                        "img_flags": "",
+                    },
+                )
+                build(
+                    press_start_path,
+                    [src_dir / "title/press_start.png"],
+                    "pigment",
+                    variables={
+                        "img_type": "ia8",
+                        "img_flags": "",
+                    },
+                )
+
+                if self.version == "jp":
+                    build(
+                        copyright_path,
+                        [src_dir / "title/copyright.png"],
+                        "pigment",
+                        variables={
+                            "img_type": "ci4",
+                            "img_flags": "",
+                        },
+                    )
+                    build(
+                        copyright_pal_path,
+                        [src_dir / "title/copyright.png"],
+                        "pigment",
+                        variables={
+                            "img_type": "palette",
+                            "img_flags": "",
+                        },
+                    )
+                    imgs = [
+                        logotype_path,
+                        copyright_path,
+                        press_start_path,
+                        copyright_pal_path,
+                    ]
+                else:
+                    build(
+                        copyright_path,
+                        [src_dir / "title/copyright.png"],
+                        "pigment",
+                        variables={
+                            "img_type": "ia8",
+                            "img_flags": "",
+                        },
+                    )
+                    imgs = [logotype_path, copyright_path, press_start_path]
+
+                build(bin_path, imgs, "pack_title_data")
+            elif name.endswith("_bg"):
+                compress = True
+                build(
+                    bin_path,
+                    [path],
+                    "img",
+                    variables={
+                        "img_type": "bg",
+                        "img_flags": "",
+                    },
+                )
+            elif name.endswith("_tex"):
+                compress = False
+                tex_dir = path.parent / name
+                build(
+                    bin_path,
+                    [tex_dir, path.parent / (name + ".json")],
+                    "tex",
+                    variables={
+                        "tex_name": name,
+                        "asset_stack": ",".join(self.asset_stack),
+                    },
+                    asset_deps=[f"mapfs/tex/{name}"],
+                )
+            elif name.endswith("_shape_built"):
+                base_name = name[:-6]
+                map_name = base_name[:-6]
+                raw_bin_path = self.resolve_asset_path(
+                    f"assets/x/mapfs/geom/{base_name}.bin"
+                )
+                bin_path = bin_path.parent / "geom" / (base_name + ".bin")
+
+                if c_maps:
+                    # raw bin -> c -> o -> elf -> objcopy -> final bin file
+                    c_file_path = (
+                        bin_path.parent / "geom" / base_name
+                    ).with_suffix(".c")
+                    o_path = bin_path.parent / "geom" / (base_name + ".o")
+                    elf_path = bin_path.parent / "geom" / (base_name + ".elf")
+
+                    build(c_file_path, [raw_bin_path], "shape")
+                    build(
+                        o_path,
+                        [c_file_path],
+                        "cc_modern",
+                        variables={
+                            "cflags": "",
+                            "cppflags": f"-DVERSION_{self.version.upper()}",
+                        },
+                    )
+                    build(elf_path, [o_path], "shape_ld")
+                    build(bin_path, [elf_path], "shape_objcopy")
+                else:
+                    build(bin_path, [raw_bin_path], "cp")
+
+                xml_path = self.resolve_asset_path(
+                    f"assets/x/mapfs/geom/{map_name}.xml"
+                )
+                if xml_path.exists():
+                    build(
+                        self.build_path()
+                        / "include/mapfs"
+                        / (base_name + ".h"),
+                        [xml_path],
+                        "map_header",
+                    )
+
+                compress = True
+                out_dir = out_dir / "geom"
+            elif name.endswith("_hit"):
+                base_name = name
+                map_name = base_name[:-4]
+                raw_bin_path = self.resolve_asset_path(
+                    f"assets/x/mapfs/geom/{base_name}.bin"
+                )
+
+                # TEMP: star rod compatiblity
+                old_raw_bin_path = self.resolve_asset_path(
+                    f"assets/x/mapfs/{base_name}.bin"
+                )
+                if old_raw_bin_path.is_file():
+                    raw_bin_path = old_raw_bin_path
+
+                bin_path = bin_path.parent / "geom" / (base_name + ".bin")
+                build(bin_path, [raw_bin_path], "cp")
+
+                xml_path = self.resolve_asset_path(
+                    f"assets/x/mapfs/geom/{map_name}.xml"
+                )
+                if xml_path.exists():
+                    build(
+                        self.build_path()
+                        / "include/mapfs"
+                        / (base_name + ".h"),
+                        [xml_path],
+                        "map_header",
+                    )
+            else:
+                compress = True
+                bin_path = path
+
+            if compress:
+                yay0_path = out_dir / f"{name}.Yay0"
+                build(yay0_path, [bin_path], "yay0")
+            else:
+                yay0_path = bin_path
+
+            bin_yay0s.append(bin_path)
+            bin_yay0s.append(yay0_path)
+
+        # combine
+        build(object_path.with_suffix(""), bin_yay0s, "mapfs")
+        build(object_path, [object_path.with_suffix("")], "bin")
+
+        self.register_asset(object_path)
+
     def write_texture_rules(self, build) -> None:
         """Convert each texture to the binary and header the game includes."""
         symbols = assets.include_symbols(ROOT / "src")
@@ -1116,6 +1337,7 @@ class Configure:
         self.write_effect_stub_rules(build)
         self.write_blob_rules(build)
         self.write_packer_rules(build, ninja, skip_outputs)
+        self.write_mapfs_rules(build, c_maps)
         self.write_texture_rules(build)
 
         # Compile everything the filesystem scan found.
@@ -1272,207 +1494,7 @@ class Configure:
             elif seg.type == "pm_icons":
                 continue  # packed from the assets instead
             elif seg.type == "pm_map_data":
-                # flat list of (uncompressed path, compressed? path) pairs
-                bin_yay0s: List[Path] = []
-                src_dir = Path("assets/x") / seg.name
-
-                for path in entry.src_paths:
-                    name = path.stem
-                    out_dir = entry.object_path.with_suffix("").with_suffix("")
-                    bin_path = out_dir / f"{name}.bin"
-
-                    if name.startswith("party_"):
-                        compress = True
-                        build(
-                            bin_path,
-                            [path],
-                            "img",
-                            variables={
-                                "img_type": "party",
-                                "img_flags": "",
-                            },
-                        )
-                    elif path.suffixes[-2:] == [".raw", ".dat"]:
-                        compress = False
-                        bin_path = path
-                    elif name == "title_data":
-                        compress = True
-
-                        logotype_path = out_dir / "title_logotype.bin"
-                        copyright_path = out_dir / "title_copyright.bin"
-                        copyright_pal_path = out_dir / "title_copyright.pal"  # jp only
-                        press_start_path = out_dir / "title_press_start.bin"
-
-                        build(
-                            logotype_path,
-                            [src_dir / "title/logotype.png"],
-                            "pigment",
-                            variables={
-                                "img_type": "rgba32",
-                                "img_flags": "",
-                            },
-                        )
-                        build(
-                            press_start_path,
-                            [src_dir / "title/press_start.png"],
-                            "pigment",
-                            variables={
-                                "img_type": "ia8",
-                                "img_flags": "",
-                            },
-                        )
-
-                        if self.version == "jp":
-                            build(
-                                copyright_path,
-                                [src_dir / "title/copyright.png"],
-                                "pigment",
-                                variables={
-                                    "img_type": "ci4",
-                                    "img_flags": "",
-                                },
-                            )
-                            build(
-                                copyright_pal_path,
-                                [src_dir / "title/copyright.png"],
-                                "pigment",
-                                variables={
-                                    "img_type": "palette",
-                                    "img_flags": "",
-                                },
-                            )
-                            imgs = [
-                                logotype_path,
-                                copyright_path,
-                                press_start_path,
-                                copyright_pal_path,
-                            ]
-                        else:
-                            build(
-                                copyright_path,
-                                [src_dir / "title/copyright.png"],
-                                "pigment",
-                                variables={
-                                    "img_type": "ia8",
-                                    "img_flags": "",
-                                },
-                            )
-                            imgs = [logotype_path, copyright_path, press_start_path]
-
-                        build(bin_path, imgs, "pack_title_data")
-                    elif name.endswith("_bg"):
-                        compress = True
-                        build(
-                            bin_path,
-                            [path],
-                            "img",
-                            variables={
-                                "img_type": "bg",
-                                "img_flags": "",
-                            },
-                        )
-                    elif name.endswith("_tex"):
-                        compress = False
-                        tex_dir = path.parent / name
-                        build(
-                            bin_path,
-                            [tex_dir, path.parent / (name + ".json")],
-                            "tex",
-                            variables={
-                                "tex_name": name,
-                                "asset_stack": ",".join(self.asset_stack),
-                            },
-                            asset_deps=[f"mapfs/tex/{name}"],
-                        )
-                    elif name.endswith("_shape_built"):
-                        base_name = name[:-6]
-                        map_name = base_name[:-6]
-                        raw_bin_path = self.resolve_asset_path(
-                            f"assets/x/mapfs/geom/{base_name}.bin"
-                        )
-                        bin_path = bin_path.parent / "geom" / (base_name + ".bin")
-
-                        if c_maps:
-                            # raw bin -> c -> o -> elf -> objcopy -> final bin file
-                            c_file_path = (
-                                bin_path.parent / "geom" / base_name
-                            ).with_suffix(".c")
-                            o_path = bin_path.parent / "geom" / (base_name + ".o")
-                            elf_path = bin_path.parent / "geom" / (base_name + ".elf")
-
-                            build(c_file_path, [raw_bin_path], "shape")
-                            build(
-                                o_path,
-                                [c_file_path],
-                                "cc_modern",
-                                variables={
-                                    "cflags": "",
-                                    "cppflags": f"-DVERSION_{self.version.upper()}",
-                                },
-                            )
-                            build(elf_path, [o_path], "shape_ld")
-                            build(bin_path, [elf_path], "shape_objcopy")
-                        else:
-                            build(bin_path, [raw_bin_path], "cp")
-
-                        xml_path = self.resolve_asset_path(
-                            f"assets/x/mapfs/geom/{map_name}.xml"
-                        )
-                        if xml_path.exists():
-                            build(
-                                self.build_path()
-                                / "include/mapfs"
-                                / (base_name + ".h"),
-                                [xml_path],
-                                "map_header",
-                            )
-
-                        compress = True
-                        out_dir = out_dir / "geom"
-                    elif name.endswith("_hit"):
-                        base_name = name
-                        map_name = base_name[:-4]
-                        raw_bin_path = self.resolve_asset_path(
-                            f"assets/x/mapfs/geom/{base_name}.bin"
-                        )
-
-                        # TEMP: star rod compatiblity
-                        old_raw_bin_path = self.resolve_asset_path(
-                            f"assets/x/mapfs/{base_name}.bin"
-                        )
-                        if old_raw_bin_path.is_file():
-                            raw_bin_path = old_raw_bin_path
-
-                        bin_path = bin_path.parent / "geom" / (base_name + ".bin")
-                        build(bin_path, [raw_bin_path], "cp")
-
-                        xml_path = self.resolve_asset_path(
-                            f"assets/x/mapfs/geom/{map_name}.xml"
-                        )
-                        if xml_path.exists():
-                            build(
-                                self.build_path()
-                                / "include/mapfs"
-                                / (base_name + ".h"),
-                                [xml_path],
-                                "map_header",
-                            )
-                    else:
-                        compress = True
-                        bin_path = path
-
-                    if compress:
-                        yay0_path = out_dir / f"{name}.Yay0"
-                        build(yay0_path, [bin_path], "yay0")
-                    else:
-                        yay0_path = bin_path
-
-                    bin_yay0s.append(bin_path)
-                    bin_yay0s.append(yay0_path)
-
-                # combine
-                build(entry.object_path.with_suffix(""), bin_yay0s, "mapfs")
-                build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
+                continue  # built from mapfs.yaml instead
             elif seg.type == "pm_sprite_shading_profiles":
                 continue  # packed from the assets instead
             elif seg.type == "pm_sbn":
