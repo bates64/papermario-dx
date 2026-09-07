@@ -6,6 +6,7 @@ carry a sidecar: `<name>.png.meta` for one asset, or `.meta` in a directory
 for every asset in it.
 """
 
+import re
 from functools import lru_cache
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -76,3 +77,43 @@ class Texture:
         return ("--flip-x " if self.flip_x else "") + (
             "--flip-y " if self.flip_y else ""
         )
+
+
+INCLUDE_MACRO = re.compile(
+    r'INCLUDE_(?:IMG|PAL)\(\s*"([^"]+)"\s*,\s*([A-Za-z_][A-Za-z0-9_]*)'
+)
+
+
+def include_symbols(src_root: Path) -> Dict[str, str]:
+    """Asset path to the C symbol its generated header should define.
+
+    A texture's dimensions are referred to by the name the source includes it
+    under, so the generated header has to agree. An asset included twice under
+    different names has no single answer and falls back to the file's name.
+    """
+    symbols: Dict[str, str] = {}
+    seen = set()
+    for source in sorted(src_root.rglob("*.c")):
+        for asset, symbol in INCLUDE_MACRO.findall(source.read_text()):
+            # An _OFFSET symbol addresses the asset's place in ROM rather
+            # than naming the image.
+            if symbol.endswith("_OFFSET"):
+                continue
+            if asset in symbols and symbols[asset] != symbol:
+                seen.add(asset)
+            symbols.setdefault(asset, symbol)
+    for asset in seen:
+        del symbols[asset]
+    return symbols
+
+
+def included_palettes(src_root: Path) -> set:
+    """Assets whose palette the source includes, named by their image path.
+
+    An indexed PNG only needs its palette split out if something asks for it.
+    """
+    palettes = set()
+    for source in sorted(src_root.rglob("*.c")):
+        for match in re.finditer(r'INCLUDE_PAL\(\s*"([^"]+)"', source.read_text()):
+            palettes.add(str(Path(match.group(1)).with_suffix(".png")))
+    return palettes

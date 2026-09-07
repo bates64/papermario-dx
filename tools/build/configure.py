@@ -21,6 +21,7 @@ import ninja_syntax
 if sys.platform == 'win32':
     import ntfsutils.junction
 
+import assets
 import linker
 from layout import Layout
 from segments import SegmentMap
@@ -495,6 +496,85 @@ class Configure:
             ROOT / self.build_path() / "include/ld_addrs.h", segments
         )
 
+    def textures(self) -> Dict[Path, Path]:
+        """Every standalone texture, keyed by its path relative to the assets root.
+
+        Images that are packed into a blob are left out: they are inputs to a
+        packer, not textures the game draws directly.
+        """
+        found: Dict[Path, Path] = {}
+        for layer in reversed(self.asset_stack):
+            root = ROOT / "assets" / layer
+            if not root.is_dir():
+                continue
+            for png in root.rglob("*.png"):
+                relative = png.relative_to(root)
+                if not self.layout.is_packed(Path("assets") / layer / relative):
+                    found[relative] = png
+        return dict(sorted(found.items()))
+
+    def write_texture_rules(self, build) -> None:
+        """Convert each texture to the binary and header the game includes."""
+        symbols = assets.include_symbols(ROOT / "src")
+        wanted_palettes = assets.included_palettes(ROOT / "src")
+        for relative, png in self.textures().items():
+            texture = assets.Texture(png.relative_to(ROOT), self.asset_stack)
+            stem = relative.with_suffix("")
+            asset_path = Path("assets") / self.version / relative
+
+            # A texture with a segment of its own is linked, so its object sits
+            # beside the asset; the rest are included into C and do not.
+            linked = self.layout.segment_of_asset(
+                asset_path.with_suffix(".png.o")
+            ) is not None
+            out_dir = self.build_path() / (asset_path.parent if linked else stem.parent)
+
+            # A dotted name carries a variant palette for the image it is named
+            # after, and contributes nothing else.
+            variant = "." in stem.name
+            if not variant:
+                build(
+                    out_dir / (stem.name + ".png.bin"),
+                    [png.relative_to(ROOT)],
+                    "pigment",
+                    variables={
+                        "img_type": texture.format,
+                        "img_flags": texture.flags(),
+                    },
+                )
+                build(
+                    self.build_path() / "include" / stem.parent / (stem.name + ".png.h"),
+                    [png.relative_to(ROOT)],
+                    "img_header",
+                    variables={"c_name": symbols.get(relative.as_posix(), "")},
+                )
+                if linked:
+                    build(
+                        out_dir / (stem.name + ".png.o"),
+                        [out_dir / (stem.name + ".png.bin")],
+                        "bin",
+                    )
+            needs_palette = (
+                relative.as_posix() in wanted_palettes
+                or self.layout.segment_of_asset(
+                    asset_path.with_suffix(".pal.o")
+                )
+                is not None
+            )
+            if texture.png.palette_size is not None and needs_palette:
+                build(
+                    out_dir / (stem.name + ".pal.bin"),
+                    [png.relative_to(ROOT)],
+                    "pigment",
+                    variables={"img_type": "palette", "img_flags": ""},
+                )
+                if linked:
+                    build(
+                        out_dir / (stem.name + ".pal.o"),
+                        [out_dir / (stem.name + ".pal.bin")],
+                        "bin",
+                    )
+
     def source_object(self, src_path: Path) -> Path:
         return self.build_path() / (str(src_path) + ".o")
 
@@ -824,6 +904,8 @@ class Configure:
 
         import splat
 
+        self.write_texture_rules(build)
+
         # Compile everything the filesystem scan found.
         for segment, src_paths in self.sources.items():
             for src in src_paths:
@@ -856,6 +938,13 @@ class Configure:
             seg = entry.segment
 
             if seg.type == "linker" or seg.type == "linker_offset":
+                continue
+
+            # Textures are built from the assets themselves, not from here.
+            if isinstance(
+                seg,
+                (splat.segtypes.n64.img.N64SegImg, splat.segtypes.n64.palette.N64SegPalette),
+            ):
                 continue
 
             assert entry.object_path is not None
@@ -897,80 +986,7 @@ class Configure:
                 # images embedded inside data aren't linked, but they do need to be built into .bin files
                 if isinstance(seg, splat.segtypes.common.group.CommonSegGroup):
                     for subseg in seg.subsegments:
-                        if isinstance(subseg, splat.segtypes.n64.img.N64SegImg):
-                            flags = ""
-                            if subseg.n64img.flip_h:
-                                flags += "--flip-x "
-                            if subseg.n64img.flip_v:
-                                flags += "--flip-y "
-
-                            src_paths = [subseg.out_path().relative_to(ROOT)]
-                            inc_dir = self.build_path() / "include" / subseg.dir
-                            bin_path = (
-                                self.build_path()
-                                / subseg.dir
-                                / (subseg.name + ".png.bin")
-                            )
-
-                            build(
-                                bin_path,
-                                src_paths,
-                                "pigment",
-                                variables={
-                                    "img_type": subseg.type,
-                                    "img_flags": flags,
-                                },
-                            )
-
-                            assert subseg.vram_start is not None, (
-                                "img with vram_start unset: " + subseg.name
-                            )
-
-                            c_sym = subseg.create_symbol(
-                                addr=subseg.vram_start,
-                                in_segment=True,
-                                type="data",
-                                define=True,
-                            )
-                            name = c_sym.name
-                            if "namespaced" in subseg.args:
-                                name = f"N({name[7:]})"
-                            vars = {"c_name": name}
-                            build(
-                                inc_dir / (subseg.name + ".png.h"),
-                                src_paths,
-                                "img_header",
-                                vars,
-                            )
-                        elif isinstance(
-                            subseg, splat.segtypes.n64.palette.N64SegPalette
-                        ):
-                            src_paths = [subseg.out_path().relative_to(ROOT)]
-                            inc_dir = self.build_path() / "include" / subseg.dir
-                            bin_path = (
-                                self.build_path()
-                                / subseg.dir
-                                / (subseg.name + ".pal.bin")
-                            )
-
-                            build(
-                                bin_path,
-                                src_paths,
-                                "pigment",
-                                variables={
-                                    "img_type": subseg.type,
-                                    "img_flags": "",
-                                },
-                            )
-
-                            assert subseg.vram_start is not None
-                            c_sym = subseg.create_symbol(
-                                addr=subseg.vram_start,
-                                in_segment=True,
-                                type="data",
-                                define=True,
-                            )
-                        elif subseg.type == "pm_charset":
+                        if subseg.type == "pm_charset":
                             rasters = []
                             entry = subseg.get_linker_entries()[0]
 
@@ -1037,45 +1053,6 @@ class Configure:
                 compressed_path = entry.object_path.with_suffix("")  # remove .o
                 build(compressed_path, entry.src_paths, "yay0")
                 build(entry.object_path, [compressed_path], "bin")
-            elif isinstance(seg, splat.segtypes.n64.img.N64SegImg):
-                flags = ""
-                if seg.n64img.flip_h:
-                    flags += "--flip-x "
-                if seg.n64img.flip_v:
-                    flags += "--flip-y "
-
-                bin_path = entry.object_path.with_suffix(".bin")
-                inc_dir = self.build_path() / "include" / seg.dir
-
-                build(
-                    bin_path,
-                    entry.src_paths,
-                    "pigment",
-                    variables={
-                        "img_type": seg.type,
-                        "img_flags": flags,
-                    },
-                )
-                build(entry.object_path, [bin_path], "bin")
-
-                # c_sym = seg.create_symbol(
-                #     addr=seg.vram_start, in_segment=True, type="data", define=True
-                # )
-                # vars = {"c_name": c_sym.name}
-                build(inc_dir / (seg.name + ".png.h"), entry.src_paths, "img_header")
-            elif isinstance(seg, splat.segtypes.n64.palette.N64SegPalette):
-                bin_path = entry.object_path.with_suffix(".bin")
-
-                build(
-                    bin_path,
-                    entry.src_paths,
-                    "pigment",
-                    variables={
-                        "img_type": seg.type,
-                        "img_flags": "",
-                    },
-                )
-                build(entry.object_path, [bin_path], "bin")
             elif seg.type == "a":
                 build(entry.object_path, entry.src_paths, "cp")
             elif seg.type == "pm_sprites":
