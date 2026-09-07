@@ -239,6 +239,12 @@ def write_ninja_rules(
     )
 
     ninja.rule(
+        "effect_stub",
+        description="Generating $out",
+        command=f"$python {BUILD_TOOLS}/effect_stub.py $kind $stub_name $stub_index $out",
+    )
+
+    ninja.rule(
         "yay0",
         description="Compressing $in",
         command=f"crunch64 compress yay0 $in $out",
@@ -512,6 +518,43 @@ class Configure:
                 if not self.layout.is_packed(Path("assets") / layer / relative):
                     found[relative] = png
         return dict(sorted(found.items()))
+
+    def register_asset(self, object_path: Path) -> None:
+        """Record an object so the linker script can place it in its segment."""
+        segment = self.layout.segment_of_asset(
+            Path(posix(object_path)[len(posix(self.build_path())) + 1 :])
+        )
+        if segment is not None:
+            self.asset_objects.setdefault(segment, []).append(object_path)
+
+    def write_effect_stub_rules(self, build) -> None:
+        """Generate the trampolines that reach effects and their shims."""
+        import yaml
+
+        effects = yaml.safe_load((ROOT / "src/effects.yaml").read_text())
+        shims = yaml.safe_load((ROOT / "src/effect_shims.yaml").read_text())
+
+        stubs = [
+            ("load", "asm/effects", (entry or {}).get("name") or f"{index:02X}", index)
+            for index, entry in enumerate(effects)
+        ] + [("shim", "asm/effect_shims", name, index) for index, name in enumerate(shims)]
+
+        for kind, directory, name, index in stubs:
+            source = self.build_path() / directory / (name + ".s")
+            build(
+                source,
+                [Path("src/effects.yaml" if kind == "load" else "src/effect_shims.yaml")],
+                "effect_stub",
+                variables={
+                    "kind": kind,
+                    "stub_name": name,
+                    "stub_index": str(index),
+                },
+            )
+            obj = self.build_path() / directory / (name + ".s.o")
+            build(obj, [source], "as",
+                  variables={"cppflags": f"-DVERSION_{self.version.upper()}"})
+            self.register_asset(obj)
 
     def write_texture_rules(self, build) -> None:
         """Convert each texture to the binary and header the game includes."""
@@ -904,6 +947,8 @@ class Configure:
 
         import splat
 
+        self.asset_objects: Dict[str, List[Path]] = {}
+        self.write_effect_stub_rules(build)
         self.write_texture_rules(build)
 
         # Compile everything the filesystem scan found.
@@ -977,8 +1022,7 @@ class Configure:
                 if not from_scan:
                     build(entry.object_path, entry.src_paths, "as")
             elif seg.type in ["pm_effect_loads", "pm_effect_shims"]:
-                if not from_scan:
-                    build(entry.object_path, entry.src_paths, "as")
+                continue  # generated from the effect lists instead
             elif isinstance(seg, splat.segtypes.common.c.CommonSegC) or (
                 isinstance(seg, splat.segtypes.common.data.CommonSegData)
                 and seg.type[0] == "."
