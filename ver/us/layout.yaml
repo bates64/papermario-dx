@@ -1101,3 +1101,26 @@ packed:
   - assets/us/charset/standard
   - assets/us/charset/subtitle
   - assets/us/charset/title
+
+# The image effect tables are emitted in this order.
+imgfx:
+  - shock
+  - shiver
+  - vertical_pipe_curl
+  - horizontal_pipe_curl
+  - startle
+  - flutter_down
+  - unfurl
+  - get_in_bed
+  - spirit_capture
+  - unused_1
+  - unused_2
+  - unused_3
+  - tutankoopa_gather
+  - tutankoopa_swirl_2
+  - tutankoopa_swirl_1
+  - shuffle_cards
+  - flip_card_1
+  - flip_card_2
+  - flip_card_3
+  - cymbal_crush

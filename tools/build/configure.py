@@ -572,6 +572,155 @@ class Configure:
             build(obj, [source], task)
             self.register_asset(obj)
 
+    def write_packer_rules(self, build, ninja, skip_outputs) -> None:
+        """Pack the assets that become one blob in the ROM."""
+        version_assets = Path("assets") / self.version
+        asset_stack = ",".join(self.asset_stack)
+
+        def packed(name: str, task: str, inputs, **kwargs):
+            """A packer writes a blob, which is then wrapped as an object."""
+            blob = self.build_path() / version_assets / name
+            build(blob, inputs, task, **kwargs)
+            obj = Path(posix(blob) + ".o")
+            build(obj, [blob], "bin")
+            self.register_asset(obj)
+
+        icon_header = posix(self.build_path() / "include" / "icon_offsets.h")
+        packed(
+            "icons.bin",
+            "icons",
+            [version_assets / "icon/Icons.xml"],
+            variables={"header_path": icon_header, "asset_stack": asset_stack},
+            implicit_outputs=[icon_header],
+            asset_deps=["icon"],
+        )
+
+        shading_header = posix(
+            self.build_path() / "include/sprite/sprite_shading_profiles.h"
+        )
+        packed(
+            "sprite_shading_profiles.bin",
+            "sprite_shading_profiles",
+            [version_assets / "sprite/sprite_shading_profiles.json"],
+            variables={"header_path": shading_header},
+            implicit_outputs=[shading_header],
+        )
+
+        audio = version_assets / "audio"
+        packed(
+            "audio.sbn",
+            "pm_sbn",
+            [audio],
+            variables={"asset_stack": asset_stack},
+            asset_deps=[audio],
+        )
+
+        # Image effect tables are emitted in a fixed order, and the generated C
+        # is compiled rather than wrapped like the other blobs.
+        imgfx_c = version_assets / "imgfx" / "imgfx_data.c"
+        build(
+            imgfx_c,
+            [version_assets / "imgfx" / (name + ".json") for name in self.layout.imgfx],
+            "imgfx_data",
+        )
+        imgfx_obj = self.build_path() / (posix(imgfx_c) + ".o")
+        build(
+            imgfx_obj,
+            [imgfx_c],
+            "cc_modern",
+            variables={
+                "cflags": "",
+                "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
+            },
+        )
+        self.register_asset(imgfx_obj)
+
+        self.write_sprite_rules(build, packed, version_assets, asset_stack)
+        self.write_message_rules(build, ninja, skip_outputs, version_assets)
+
+    def write_sprite_rules(self, build, packed, version_assets, asset_stack) -> None:
+        """Compress each NPC sprite, then pack them with the player's."""
+        import re
+
+        names = re.findall(
+            r'<Sprite name="([^"]+)"',
+            (ROOT / self.resolve_asset_path(version_assets / "sprite/npc.xml")).read_text(),
+        )
+        sprite_dir = self.build_path() / version_assets / "sprite"
+        compressed = []
+        for sprite_id, name in enumerate(names, 1):
+            source = version_assets / "sprite/npc" / name
+            raw = sprite_dir / "npc" / (name + ".bin")
+            packed_sprite = raw.with_suffix(".Yay0")
+            compressed.append(packed_sprite)
+            build(
+                raw,
+                [source],
+                "npc_sprite",
+                variables={"sprite_name": name, "asset_stack": asset_stack},
+                asset_deps=[posix(source)],
+            )
+            build(packed_sprite, [raw], "yay0")
+            build(
+                self.build_path() / "include/sprite/npc" / (name + ".h"),
+                [source, packed_sprite],
+                "sprite_header",
+                variables={
+                    "sprite_name": name,
+                    "sprite_id": str(sprite_id),
+                    "asset_stack": asset_stack,
+                },
+            )
+
+        player_header = posix(self.build_path() / "include/sprite/player.h")
+        packed(
+            "sprite/sprites.bin",
+            "sprites",
+            [version_assets / "sprite", *compressed],
+            variables={
+                "header_out": player_header,
+                "build_dir": posix(sprite_dir),
+                "asset_stack": asset_stack,
+            },
+            implicit_outputs=[player_header],
+            asset_deps=["sprite/player"],
+        )
+
+    def write_message_rules(self, build, ninja, skip_outputs, version_assets) -> None:
+        """Compile each message file, then combine them in asset stack order."""
+        blob = self.build_path() / version_assets / "msg"
+        message_bins = []
+        layer_sizes = []
+        for layer in reversed(self.asset_stack):
+            directory = Path("assets") / layer / "msg"
+            count = 0
+            if directory.exists():
+                for source in sorted(directory.glob("*.msg")):
+                    bin_path = blob / f"{len(message_bins):02X}.bin"
+                    message_bins.append(bin_path)
+                    skip_outputs.add(posix(bin_path))
+                    ninja.build(
+                        outputs=[posix(bin_path)],
+                        rule="msg",
+                        inputs=[posix(source)],
+                        variables={"version": self.version},
+                    )
+                    count += 1
+            layer_sizes.append(str(count))
+
+        build(
+            [
+                Path(posix(blob) + ".bin"),
+                self.build_path() / "include" / "message_ids.h",
+            ],
+            message_bins,
+            "msg_combine",
+            variables={"layer_sizes": ",".join(layer_sizes)},
+        )
+        obj = Path(posix(blob) + ".o")
+        build(obj, [Path(posix(blob) + ".bin")], "bin")
+        self.register_asset(obj)
+
     def write_texture_rules(self, build) -> None:
         """Convert each texture to the binary and header the game includes."""
         symbols = assets.include_symbols(ROOT / "src")
@@ -966,6 +1115,7 @@ class Configure:
         self.asset_objects: Dict[str, List[Path]] = {}
         self.write_effect_stub_rules(build)
         self.write_blob_rules(build)
+        self.write_packer_rules(build, ninja, skip_outputs)
         self.write_texture_rules(build)
 
         # Compile everything the filesystem scan found.
@@ -1116,119 +1266,11 @@ class Configure:
             elif seg.type == "a":
                 continue  # built from layout.yaml's asset list
             elif seg.type == "pm_sprites":
-                assert entry.object_path is not None
-
-                sprite_yay0s = []
-
-                npc_obj_path = entry.object_path.parent / "npc"
-
-                # NPC sprite headers
-                for sprite_id, sprite_dir in enumerate(entry.src_paths[1:], 1):
-                    sprite_name = sprite_dir.name
-
-                    bin_path = npc_obj_path / (sprite_name + ".bin")
-                    yay0_path = bin_path.with_suffix(".Yay0")
-                    sprite_yay0s.append(yay0_path)
-
-                    build(
-                        bin_path,
-                        [sprite_dir],
-                        "npc_sprite",
-                        variables={
-                            "sprite_name": sprite_name,
-                            "asset_stack": ",".join(self.asset_stack),
-                        },
-                        asset_deps=[posix(sprite_dir)],
-                    )
-                    build(yay0_path, [bin_path], "yay0")
-
-                    # NPC sprite header
-                    build(
-                        self.build_path() / "include/sprite/npc" / (sprite_name + ".h"),
-                        [sprite_dir, yay0_path],
-                        "sprite_header",
-                        variables={
-                            "sprite_name": sprite_name,
-                            "sprite_id": str(sprite_id),
-                            "asset_stack": ",".join(self.asset_stack),
-                        },
-                    )
-
-                # Sprites .bin
-                sprite_player_header_path = posix(
-                    self.build_path() / "include/sprite/player.h"
-                )
-
-                build(
-                    entry.object_path.with_suffix(".bin"),
-                    [entry.src_paths[0], *sprite_yay0s],
-                    "sprites",
-                    variables={
-                        "header_out": sprite_player_header_path,
-                        "build_dir": posix(
-                            self.build_path() / "assets" / self.version / "sprite"
-                        ),
-                        "asset_stack": ",".join(self.asset_stack),
-                    },
-                    implicit_outputs=[sprite_player_header_path],
-                    asset_deps=["sprite/player"],
-                )
-
-                # Sprites .o
-                build(entry.object_path, [entry.object_path.with_suffix(".bin")], "bin")
-
+                continue  # packed from the assets instead
             elif seg.type == "pm_msg":
-                msg_bins = []
-                layer_sizes = []
-                bin_idx = 0
-
-                # Process each asset stack layer, lowest priority first
-                for stack_dir in reversed(self.asset_stack):
-                    msg_dir = Path(f"assets/{stack_dir}/msg")
-                    layer_count = 0
-                    if msg_dir.exists():
-                        for msg_file in sorted(msg_dir.glob("*.msg")):
-                            bin_path = entry.object_path.with_suffix("") / f"{bin_idx:02X}.bin"
-                            msg_bins.append(bin_path)
-                            skip_outputs.add(posix(bin_path))
-                            ninja.build(
-                                outputs=[posix(bin_path)],
-                                rule="msg",
-                                inputs=[posix(msg_file)],
-                                variables={"version": self.version},
-                            )
-                            bin_idx += 1
-                            layer_count += 1
-                    layer_sizes.append(str(layer_count))
-
-                build(
-                    [
-                        entry.object_path.with_suffix(".bin"),
-                        self.build_path() / "include" / "message_ids.h",
-                    ],
-                    msg_bins,
-                    "msg_combine",
-                    variables={"layer_sizes": ",".join(layer_sizes)},
-                )
-                build(entry.object_path, [entry.object_path.with_suffix(".bin")], "bin")
-
+                continue  # packed from the assets instead
             elif seg.type == "pm_icons":
-                # make icons.bin
-                header_path = posix(self.build_path() / "include" / "icon_offsets.h")
-                build(
-                    entry.object_path.with_suffix(""),
-                    entry.src_paths,
-                    "icons",
-                    variables={
-                        "header_path": header_path,
-                        "asset_stack": ",".join(self.asset_stack),
-                    },
-                    implicit_outputs=[header_path],
-                    asset_deps=["icon"],
-                )
-                # make icons.bin.o
-                build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
-
+                continue  # packed from the assets instead
             elif seg.type == "pm_map_data":
                 # flat list of (uncompressed path, compressed? path) pairs
                 bin_yay0s: List[Path] = []
@@ -1432,48 +1474,13 @@ class Configure:
                 build(entry.object_path.with_suffix(""), bin_yay0s, "mapfs")
                 build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
             elif seg.type == "pm_sprite_shading_profiles":
-                header_path = posix(
-                    self.build_path() / "include/sprite/sprite_shading_profiles.h"
-                )
-                build(
-                    entry.object_path.with_suffix(""),
-                    entry.src_paths,
-                    "sprite_shading_profiles",
-                    implicit_outputs=[header_path],
-                    variables={
-                        "header_path": header_path,
-                    },
-                )
-                build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
+                continue  # packed from the assets instead
             elif seg.type == "pm_sbn":
-                sbn_path = entry.object_path.with_suffix("")
-                build(
-                    sbn_path,
-                    entry.src_paths,
-                    "pm_sbn",
-                    variables={
-                        "asset_stack": ",".join(self.asset_stack),
-                    },
-                    asset_deps=entry.src_paths,
-                )
-                build(entry.object_path, [sbn_path], "bin")
+                continue  # packed from the assets instead
             elif seg.type == "linker" or seg.type == "linker_offset":
                 pass
             elif seg.type == "pm_imgfx_data":
-                c_file_path = (
-                    Path(f"assets/{self.version}") / "imgfx" / (seg.name + ".c")
-                )
-                build(c_file_path, entry.src_paths, "imgfx_data")
-
-                build(
-                    entry.object_path,
-                    [c_file_path],
-                    "cc_modern",
-                    variables={
-                        "cflags": "",
-                        "cppflags": f"-DVERSION_{self.version.upper()}",
-                    },
-                )
+                continue  # packed from the assets instead
             else:
                 raise Exception(
                     f"don't know how to build {seg.__class__.__name__} '{seg.name}'"
