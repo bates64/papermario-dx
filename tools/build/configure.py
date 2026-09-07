@@ -494,13 +494,6 @@ class Configure:
         )
         self.sources = self.sources_config.scan()
         self.layout = Layout(self.version_path / "layout.yaml")
-        segments = self.build_segments()
-        linker.write_script(
-            ROOT / self.linker_script_path(), segments, self.layout.follows
-        )
-        linker.write_symbol_header(
-            ROOT / self.build_path() / "include/ld_addrs.h", segments
-        )
 
     def textures(self) -> Dict[Path, Path]:
         """Every standalone texture, keyed by its path relative to the assets root.
@@ -577,11 +570,11 @@ class Configure:
         version_assets = Path("assets") / self.version
         asset_stack = ",".join(self.asset_stack)
 
-        def packed(name: str, task: str, inputs, **kwargs):
+        def packed(name: str, task: str, inputs, object_name=None, **kwargs):
             """A packer writes a blob, which is then wrapped as an object."""
             blob = self.build_path() / version_assets / name
             build(blob, inputs, task, **kwargs)
-            obj = Path(posix(blob) + ".o")
+            obj = self.build_path() / version_assets / (object_name or (name + ".o"))
             build(obj, [blob], "bin")
             self.register_asset(obj)
 
@@ -677,6 +670,7 @@ class Configure:
             "sprite/sprites.bin",
             "sprites",
             [version_assets / "sprite", *compressed],
+            object_name="sprite/sprites.o",
             variables={
                 "header_out": player_header,
                 "build_dir": posix(sprite_dir),
@@ -978,11 +972,9 @@ class Configure:
                     variables={"c_name": symbols.get(relative.as_posix(), "")},
                 )
                 if linked:
-                    build(
-                        out_dir / (stem.name + ".png.o"),
-                        [out_dir / (stem.name + ".png.bin")],
-                        "bin",
-                    )
+                    obj = out_dir / (stem.name + ".png.o")
+                    build(obj, [out_dir / (stem.name + ".png.bin")], "bin")
+                    self.register_asset(obj)
             needs_palette = (
                 relative.as_posix() in wanted_palettes
                 or self.layout.segment_of_asset(
@@ -998,11 +990,9 @@ class Configure:
                     variables={"img_type": "palette", "img_flags": ""},
                 )
                 if linked:
-                    build(
-                        out_dir / (stem.name + ".pal.o"),
-                        [out_dir / (stem.name + ".pal.bin")],
-                        "bin",
-                    )
+                    obj = out_dir / (stem.name + ".pal.o")
+                    build(obj, [out_dir / (stem.name + ".pal.bin")], "bin")
+                    self.register_asset(obj)
 
     def source_object(self, src_path: Path) -> Path:
         return self.build_path() / (str(src_path) + ".o")
@@ -1014,18 +1004,12 @@ class Configure:
         source objects. splat supplies only the asset objects it splits.
         """
         build_prefix = posix(self.build_path()) + "/"
-        src_prefix = build_prefix + "src/"
         roots = (f"assets/{self.version}/", "src/", f"ver/{self.version}/")
         label = lambda obj: linker.data_label(obj, build_prefix, roots)
-        assets: Dict[str, List[str]] = {}
-        for entry in self.linker_entries:
-            seg = entry.segment.get_most_parent()
-            if seg.type in ("linker", "linker_offset"):
-                continue
-            if entry.object_path is not None:
-                obj = posix(entry.object_path)
-                if not obj.startswith(src_prefix):
-                    assets.setdefault(seg.name, []).append((obj, label(obj)))
+        assets = {
+            segment: [(posix(o), label(posix(o))) for o in sorted(objects)]
+            for segment, objects in self.asset_objects.items()
+        }
 
         segments = []
         for seg in self.layout.segments:
@@ -1339,6 +1323,15 @@ class Configure:
         self.write_packer_rules(build, ninja, skip_outputs)
         self.write_mapfs_rules(build, c_maps)
         self.write_texture_rules(build)
+
+        # Every asset object is registered by now, so the segments are complete.
+        segments = self.build_segments()
+        linker.write_script(
+            ROOT / self.linker_script_path(), segments, self.layout.follows
+        )
+        linker.write_symbol_header(
+            ROOT / self.build_path() / "include/ld_addrs.h", segments
+        )
 
         # Compile everything the filesystem scan found.
         for segment, src_paths in self.sources.items():
