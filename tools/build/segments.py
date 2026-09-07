@@ -13,6 +13,19 @@ import yaml
 
 SOURCE_SUFFIXES = (".c", ".cpp", ".s")
 
+# The console starts executing at the base of the main segment, so this file's
+# code must be the first thing linked there whatever the sort order would be.
+ENTRY_POINT = "src/boot/entry_point.s"
+
+
+def _link_order(paths: List[Path]) -> List[Path]:
+    ordered = sorted(paths, key=lambda p: p.as_posix())
+    entry = next((p for p in ordered if p.as_posix() == ENTRY_POINT), None)
+    if entry is not None:
+        ordered.remove(entry)
+        ordered.insert(0, entry)
+    return ordered
+
 
 def _is_source(path: Path) -> bool:
     return path.suffix in SOURCE_SUFFIXES and not path.name.endswith(
@@ -69,6 +82,6 @@ class SegmentMap:
                 continue
             found.setdefault(seg, []).append(path)
         return {
-            seg: sorted(paths, key=lambda p: p.as_posix())
+            seg: _link_order(paths)
             for seg, paths in sorted(found.items())
         }
