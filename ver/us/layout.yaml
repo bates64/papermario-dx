@@ -1056,3 +1056,47 @@ segments:
   - { name: copy_1E00000 }
   - { name: mapfs }
   - { name: copy_27FEE22, subalign: 2 }
+
+# Which segment links each asset object, matched by the directory it sits in.
+# A directory marked "each" gives every file its own segment, named by the
+# file's stem with any prefix given.
+assets:
+  dirs:
+    asm/effects: main
+    asm/effect_shims: effect_globals
+    ver/us/asm: header
+    assets/us/imgfx: imgfx_data
+    assets/us/logos: logos
+    assets/us/sprite: sprites
+    assets/us/ui/files: ui_images_filemenu_pause
+    assets/us/ui/pause: ui_images_filemenu_pause
+  each:
+    assets/us/title: 'title/'
+  files:
+    assets/us/audio.sbn: audio
+    assets/us/copy_1942C40.bin: copy_1942C40
+    assets/us/copy_1B8220C.bin: copy_1B8220C
+    assets/us/copy_1E00000.bin: copy_1E00000
+    assets/us/copy_27FEE22.bin: copy_27FEE22
+    assets/us/gspF3DEX2kawase_fifo_data.bin: main
+    assets/us/gspF3DEX2kawase_fifo_text.bin: main
+    assets/us/icons.bin: icon
+    assets/us/libgcc_vr4300.a: main
+    assets/us/mapfs.dat: mapfs
+    assets/us/msg: msg
+    assets/us/n_aspMain_data.bin: main
+    assets/us/n_aspMain_text.bin: main
+    assets/us/pad_1B82208.bin: pad_1B82208
+    assets/us/rspboot_font.bin: boot
+    assets/us/sprite_shading_profiles.bin: sprite_shading_profiles
+    assets/us/unk_1C84D30.bin: unk_1C84D30
+
+# Directories whose images are packed into a larger blob rather than being
+# textures in their own right.
+packed:
+  - assets/us/sprite
+  - assets/us/mapfs
+  - assets/us/icon
+  - assets/us/charset/standard
+  - assets/us/charset/subtitle
+  - assets/us/charset/title

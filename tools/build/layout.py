@@ -63,6 +63,33 @@ class Layout:
             SegmentSpec(spec, self.classes, subalign) for spec in cfg["segments"]
         ]
 
+        assets = cfg.get("assets") or {}
+        self.asset_dirs: Dict[str, str] = assets.get("dirs") or {}
+        self.asset_each: Dict[str, str] = assets.get("each") or {}
+        self.asset_files: Dict[str, str] = assets.get("files") or {}
+        self.packed = [Path(p) for p in cfg.get("packed") or []]
+
     @property
     def follows(self) -> Dict[str, List[str]]:
         return {c.name: c.follows for c in self.classes.values() if c.follows}
+
+    def is_packed(self, asset: Path) -> bool:
+        """Whether an image is packed into a blob rather than a texture itself."""
+        return any(
+            asset == root or root in asset.parents for root in self.packed
+        )
+
+    def segment_of_asset(self, object_path: Path) -> Optional[str]:
+        """Which segment links an asset object, or None if nothing does."""
+        asset = object_path.with_suffix("")  # drop .o
+        if asset.as_posix() in self.asset_files:
+            return self.asset_files[asset.as_posix()]
+        for parent in asset.parents:
+            key = parent.as_posix()
+            if key in self.asset_each:
+                # bg_1.png and bg_1.pal are both part of the bg_1 segment.
+                stem = asset.name.split(".")[0]
+                return self.asset_each[key] + stem
+            if key in self.asset_dirs:
+                return self.asset_dirs[key]
+        return None
