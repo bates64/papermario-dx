@@ -556,6 +556,22 @@ class Configure:
                   variables={"cppflags": f"-DVERSION_{self.version.upper()}"})
             self.register_asset(obj)
 
+    def write_blob_rules(self, build) -> None:
+        """Link the assets that are copied into the ROM as they are.
+
+        Each is named in layout.yaml; the ones that are not on disk are
+        produced by a packer and built elsewhere.
+        """
+        recipes = {".bin": "bin", ".a": "cp", ".s": "as"}
+        for asset, _segment in sorted(self.layout.asset_files.items()):
+            source = self.resolve_asset_path(Path(asset))
+            task = recipes.get(source.suffix)
+            if task is None or not (ROOT / source).is_file():
+                continue
+            obj = self.build_path() / (asset + ".o")
+            build(obj, [source], task)
+            self.register_asset(obj)
+
     def write_texture_rules(self, build) -> None:
         """Convert each texture to the binary and header the game includes."""
         symbols = assets.include_symbols(ROOT / "src")
@@ -949,6 +965,7 @@ class Configure:
 
         self.asset_objects: Dict[str, List[Path]] = {}
         self.write_effect_stub_rules(build)
+        self.write_blob_rules(build)
         self.write_texture_rules(build)
 
         # Compile everything the filesystem scan found.
@@ -999,8 +1016,7 @@ class Configure:
             from_scan = posix(entry.object_path) in scanned
 
             if isinstance(seg, splat.segtypes.n64.header.N64SegHeader):
-                if not from_scan:
-                    build(entry.object_path, entry.src_paths, "as")
+                continue  # built from layout.yaml's asset list
             elif isinstance(seg, splat.segtypes.common.hasm.CommonSegHasm):
                 cppflags = f"-DVERSION_{self.version.upper()}"
 
@@ -1092,13 +1108,13 @@ class Configure:
                                 "bin",
                             )
             elif isinstance(seg, splat.segtypes.common.bin.CommonSegBin):
-                build(entry.object_path, entry.src_paths, "bin")
+                continue  # built from layout.yaml's asset list
             elif isinstance(seg, splat.segtypes.n64.yay0.N64SegYay0):
                 compressed_path = entry.object_path.with_suffix("")  # remove .o
                 build(compressed_path, entry.src_paths, "yay0")
                 build(entry.object_path, [compressed_path], "bin")
             elif seg.type == "a":
-                build(entry.object_path, entry.src_paths, "cp")
+                continue  # built from layout.yaml's asset list
             elif seg.type == "pm_sprites":
                 assert entry.object_path is not None
 

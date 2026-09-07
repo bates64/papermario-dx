@@ -1073,6 +1073,7 @@ assets:
   each:
     assets/us/title: 'title/'
   files:
+    ver/us/asm/header.s: header
     assets/us/audio.sbn: audio
     assets/us/copy_1942C40.bin: copy_1942C40
     assets/us/copy_1B8220C.bin: copy_1B8220C
