@@ -8,6 +8,12 @@
 # max_size, where given, is the space the segment has to fit in; the build
 # fails if it outgrows it.
 
+# Asset layers, highest priority first.
+asset_stack:
+  - mod
+  - dx
+  - us
+
 defaults:
   subalign: 8
 

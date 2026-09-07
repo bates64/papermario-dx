@@ -440,9 +440,25 @@ class Configure:
     def __init__(self, version: str):
         self.version = version
         self.version_path = ROOT / f"ver/{version}"
-        self.linker_entries = None
 
-    def split(self, assets: bool, code: bool, shift: bool, debug: bool):
+    def dump_stamp(self) -> Path:
+        return self.build_path() / "assets_dumped.stamp"
+
+    def load(self) -> None:
+        """Read the version's configuration and scan what it points at."""
+        self.layout = Layout(self.version_path / "layout.yaml")
+        self.asset_stack: List[str] = self.layout.asset_stack
+        self.sources_config = SegmentMap(
+            self.version_path / "segments.yaml", ROOT / "src"
+        )
+        self.sources = self.sources_config.scan()
+
+    def dump(self, assets: bool, code: bool, shift: bool, debug: bool) -> None:
+        """Split the assets out of the baserom.
+
+        This is all splat is needed for, and only until the assets are on disk,
+        so configure skips it once they have been dumped.
+        """
         import splat.scripts.split as split
 
         modes = ["ld"]
@@ -486,31 +502,33 @@ class Configure:
             modes,
             verbose=False,
         )
-        self.linker_entries = split.linker_writer.entries
-        self.asset_stack: List[str] = split.config["asset_stack"]
-
-        self.sources_config = SegmentMap(
-            self.version_path / "segments.yaml", ROOT / "src"
-        )
-        self.sources = self.sources_config.scan()
-        self.layout = Layout(self.version_path / "layout.yaml")
+        self.dump_stamp().parent.mkdir(parents=True, exist_ok=True)
+        self.dump_stamp().write_text("")
 
     def textures(self) -> Dict[Path, Path]:
         """Every standalone texture, keyed by its path relative to the assets root.
 
-        Images that are packed into a blob are left out: they are inputs to a
-        packer, not textures the game draws directly.
+        Directories that are packed into a blob are skipped whole: they hold
+        thousands of images that feed a packer rather than being textures in
+        their own right.
         """
-        found: Dict[Path, Path] = {}
+        packed = self.layout.packed_dirs
+        found: Dict[str, Path] = {}
         for layer in reversed(self.asset_stack):
             root = ROOT / "assets" / layer
             if not root.is_dir():
                 continue
-            for png in root.rglob("*.png"):
-                relative = png.relative_to(root)
-                if not self.layout.is_packed(Path("assets") / layer / relative):
-                    found[relative] = png
-        return dict(sorted(found.items()))
+            base = str(root)
+            for directory, subdirectories, filenames in os.walk(base):
+                relative = os.path.relpath(directory, base)
+                prefix = "" if relative == "." else relative.replace(os.sep, "/") + "/"
+                subdirectories[:] = [
+                    name for name in subdirectories if prefix + name not in packed
+                ]
+                for filename in filenames:
+                    if filename.endswith(".png"):
+                        found[prefix + filename] = Path(directory) / filename
+        return {Path(name): found[name] for name in sorted(found)}
 
     def register_asset(self, object_path: Path) -> None:
         """Record an object so the linker script can place it in its segment."""
@@ -1179,7 +1197,6 @@ class Configure:
         non_matching: bool,
         c_maps: bool = False,
     ):
-        assert self.linker_entries is not None
 
         built_objects = set()
         generated_code = []
@@ -1356,8 +1373,6 @@ class Configure:
 
         build([precompiled_header_path], [Path("include/common.h")], "cc_modern")
         build([cxx_precompiled_header_path], [Path("include/common.hpp")], "cxx_modern")
-
-        import splat
 
         self.asset_objects: Dict[str, List[Path]] = {}
         self.write_effect_stub_rules(build)
@@ -1685,6 +1700,11 @@ if __name__ == "__main__":
     )
     parser.add_argument("--no-ccache", action="store_true", help="Use ccache")
     parser.add_argument(
+        "--dump",
+        action="store_true",
+        help="Re-split the assets out of the baserom before configuring",
+    )
+    parser.add_argument(
         "--incremental",
         action="store_true",
         help="Exit early if no source files were added or deleted (used by generator rule)",
@@ -1855,9 +1875,11 @@ if __name__ == "__main__":
         # include tools/splat_ext in the python path
         sys.path.append(str((ROOT / "tools/splat_ext").resolve()))
 
-        configure.split(
-            not args.no_split_assets, args.split_code, args.shift, args.debug
-        )
+        configure.load()
+        if args.dump or not configure.dump_stamp().exists():
+            configure.dump(
+                not args.no_split_assets, args.split_code, args.shift, args.debug
+            )
         configure.write_ninja(ninja, skip_files, non_matching, args.c_maps)
 
         all.append(posix(configure.rom_ok_path()))

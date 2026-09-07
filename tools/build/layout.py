@@ -70,10 +70,19 @@ class Layout:
         self.packed = [Path(p) for p in cfg.get("packed") or []]
         self.imgfx: List[str] = cfg.get("imgfx") or []
         self.charsets: List[str] = cfg.get("charsets") or []
+        self.asset_stack: List[str] = cfg.get("asset_stack") or []
 
     @property
     def follows(self) -> Dict[str, List[str]]:
         return {c.name: c.follows for c in self.classes.values() if c.follows}
+
+    @property
+    def packed_dirs(self) -> set:
+        """Packed directories relative to an asset layer."""
+        return {
+            Path(*p.parts[2:]).as_posix() if p.parts[:1] == ("assets",) else p.as_posix()
+            for p in self.packed
+        }
 
     def is_packed(self, asset: Path) -> bool:
         """Whether an image is packed into a blob rather than a texture itself.
