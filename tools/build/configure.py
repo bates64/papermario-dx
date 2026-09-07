@@ -936,6 +936,48 @@ class Configure:
 
         self.register_asset(object_path)
 
+    def write_charset_rules(self, build) -> None:
+        """Pack each font's glyphs and palettes into the files the text engine reads.
+
+        The .dat files are included raw by the character set source rather than
+        linked, so no object is built for them.
+        """
+        charset = Path("assets") / self.version / "charset"
+        for name in self.layout.charsets:
+            glyphs = []
+            for source in sorted((ROOT / charset / name).glob("*.png")):
+                raster = self.build_path() / "charset" / name / (source.stem + ".bin")
+                build(
+                    raster,
+                    [source.relative_to(ROOT)],
+                    "pigment",
+                    variables={"img_type": "ci4", "img_flags": ""},
+                )
+                glyphs.append(raster)
+            build(self.build_path() / charset / (name + ".dat"), glyphs, "charset")
+
+            palettes = []
+            for source in sorted((ROOT / charset / name / "palette").glob("*.png")):
+                raster = (
+                    self.build_path()
+                    / "charset"
+                    / name
+                    / "palette"
+                    / (source.stem + ".bin")
+                )
+                build(
+                    raster,
+                    [source.relative_to(ROOT)],
+                    "pigment",
+                    variables={"img_type": "palette", "img_flags": ""},
+                )
+                palettes.append(raster)
+            build(
+                self.build_path() / charset / name / "palette.dat",
+                palettes,
+                "charset_palettes",
+            )
+
     def write_texture_rules(self, build) -> None:
         """Convert each texture to the binary and header the game includes."""
         symbols = assets.include_symbols(ROOT / "src")
@@ -1322,6 +1364,7 @@ class Configure:
         self.write_blob_rules(build)
         self.write_packer_rules(build, ninja, skip_outputs)
         self.write_mapfs_rules(build, c_maps)
+        self.write_charset_rules(build)
         self.write_texture_rules(build)
 
         # Every asset object is registered by now, so the segments are complete.
@@ -1360,147 +1403,6 @@ class Configure:
             for p in paths
         }
 
-        # Build objects
-        for entry in self.linker_entries:
-            seg = entry.segment
-
-            if seg.type == "linker" or seg.type == "linker_offset":
-                continue
-
-            # Textures are built from the assets themselves, not from here.
-            if isinstance(
-                seg,
-                (splat.segtypes.n64.img.N64SegImg, splat.segtypes.n64.palette.N64SegPalette),
-            ):
-                continue
-
-            assert entry.object_path is not None
-
-            # Sources are compiled from the scan above, but a segment may still
-            # have embedded images to build below.
-            from_scan = posix(entry.object_path) in scanned
-
-            if isinstance(seg, splat.segtypes.n64.header.N64SegHeader):
-                continue  # built from layout.yaml's asset list
-            elif isinstance(seg, splat.segtypes.common.hasm.CommonSegHasm):
-                cppflags = f"-DVERSION_{self.version.upper()}"
-
-                if version == "ique" and seg.name.startswith("os/"):
-                    cppflags += " -DBBPLAYER"
-
-                if not from_scan:
-                    build(
-                        entry.object_path,
-                        entry.src_paths,
-                        "as",
-                        variables={"cppflags": cppflags},
-                    )
-            elif isinstance(seg, splat.segtypes.common.asm.CommonSegAsm) or (
-                isinstance(seg, splat.segtypes.common.data.CommonSegData)
-                and not seg.type[0] == "."
-                or isinstance(seg, splat.segtypes.common.textbin.CommonSegTextbin)
-            ):
-                if not from_scan:
-                    build(entry.object_path, entry.src_paths, "as")
-            elif seg.type in ["pm_effect_loads", "pm_effect_shims"]:
-                continue  # generated from the effect lists instead
-            elif isinstance(seg, splat.segtypes.common.c.CommonSegC) or (
-                isinstance(seg, splat.segtypes.common.data.CommonSegData)
-                and seg.type[0] == "."
-            ):
-                # images embedded inside data aren't linked, but they do need to be built into .bin files
-                if isinstance(seg, splat.segtypes.common.group.CommonSegGroup):
-                    for subseg in seg.subsegments:
-                        if subseg.type == "pm_charset":
-                            rasters = []
-                            entry = subseg.get_linker_entries()[0]
-
-                            for src_path in entry.src_paths:
-                                out_path = (
-                                    self.build_path()
-                                    / subseg.dir
-                                    / subseg.name
-                                    / (src_path.stem + ".bin")
-                                )
-                                build(
-                                    out_path,
-                                    [src_path],
-                                    "pigment",
-                                    variables={
-                                        "img_type": "ci4",
-                                        "img_flags": "",
-                                    },
-                                )
-                                rasters.append(out_path)
-
-                            build(entry.object_path.with_suffix(""), rasters, "charset")
-                            build(
-                                entry.object_path,
-                                [entry.object_path.with_suffix("")],
-                                "bin",
-                            )
-                        elif subseg.type == "pm_charset_palettes":
-                            palettes = []
-                            entry = subseg.get_linker_entries()[0]
-
-                            for src_path in entry.src_paths:
-                                out_path = (
-                                    self.build_path()
-                                    / subseg.dir
-                                    / subseg.name
-                                    / "palette"
-                                    / (src_path.stem + ".bin")
-                                )
-                                build(
-                                    out_path,
-                                    [src_path],
-                                    "pigment",
-                                    variables={
-                                        "img_type": "palette",
-                                        "img_flags": "",
-                                    },
-                                )
-                                palettes.append(out_path)
-
-                            build(
-                                entry.object_path.with_suffix(""),
-                                palettes,
-                                "charset_palettes",
-                            )
-                            build(
-                                entry.object_path,
-                                [entry.object_path.with_suffix("")],
-                                "bin",
-                            )
-            elif isinstance(seg, splat.segtypes.common.bin.CommonSegBin):
-                continue  # built from layout.yaml's asset list
-            elif isinstance(seg, splat.segtypes.n64.yay0.N64SegYay0):
-                compressed_path = entry.object_path.with_suffix("")  # remove .o
-                build(compressed_path, entry.src_paths, "yay0")
-                build(entry.object_path, [compressed_path], "bin")
-            elif seg.type == "a":
-                continue  # built from layout.yaml's asset list
-            elif seg.type == "pm_sprites":
-                continue  # packed from the assets instead
-            elif seg.type == "pm_msg":
-                continue  # packed from the assets instead
-            elif seg.type == "pm_icons":
-                continue  # packed from the assets instead
-            elif seg.type == "pm_map_data":
-                continue  # built from mapfs.yaml instead
-            elif seg.type == "pm_sprite_shading_profiles":
-                continue  # packed from the assets instead
-            elif seg.type == "pm_sbn":
-                continue  # packed from the assets instead
-            elif seg.type == "linker" or seg.type == "linker_offset":
-                pass
-            elif seg.type == "pm_imgfx_data":
-                continue  # packed from the assets instead
-            else:
-                raise Exception(
-                    f"don't know how to build {seg.__class__.__name__} '{seg.name}'"
-                )
-
         # Run undefined_syms through cpp
         ninja.build(
             posix(self.undefined_syms_path()),
@@ -1515,7 +1417,7 @@ class Configure:
             posix(self.elf_path()),
             "ld",
             posix(self.linker_script_path()),
-            implicit=list(built_objects) + additional_objects,
+            implicit=sorted(built_objects) + additional_objects,
             variables={"version": self.version, "mapfile": posix(self.map_path())},
         )
 

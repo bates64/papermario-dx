@@ -1102,6 +1102,12 @@ packed:
   - assets/us/charset/subtitle
   - assets/us/charset/title
 
+# Fonts, each packed from the glyphs and palettes in its directory.
+charsets:
+  - standard
+  - subtitle
+  - title
+
 # The image effect tables are emitted in this order.
 imgfx:
   - shock
