@@ -1513,24 +1513,11 @@ class Configure:
         ninja.build("inc_img_bins_" + self.version, "phony", inc_img_bins)
 
     def get_segment_max_sizes(self):
-        assert self.linker_entries is not None
-        segment_size_map = {}
-
-        # depth-first search
-        def visit(segment):
-            if hasattr(segment, "parent") and segment.parent is not None:
-                visit(segment.parent)
-            if (
-                hasattr(segment, "yaml")
-                and isinstance(segment.yaml, dict)
-                and "max_size" in segment.yaml
-            ):
-                segment_size_map[segment.name] = segment.yaml["max_size"]
-
-        for entry in self.linker_entries:
-            visit(entry.segment)
-
-        return segment_size_map
+        return {
+            seg.name: seg.max_size
+            for seg in self.layout.segments
+            if seg.max_size is not None
+        }
 
     def find_overlays(self) -> List[Tuple[Path, int]]:
         overlay_types = [

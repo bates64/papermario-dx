@@ -34,6 +34,7 @@ class SegmentSpec:
         self.name: str = spec["name"]
         self.vram_class = classes.get(spec["class"]) if spec.get("class") else None
         self.subalign: int = spec.get("subalign", subalign)
+        self.max_size: Optional[int] = spec.get("max_size")
         self.vram_start: Optional[int] = spec.get("vram")
         if self.vram_start is None and self.vram_class is not None:
             self.vram_start = self.vram_class.vram

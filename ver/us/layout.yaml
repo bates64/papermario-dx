@@ -4,6 +4,9 @@
 # one ended. A segment's VRAM address comes from its class, so segments sharing
 # a class overlay one another in RAM. Adding a segment means adding a line here;
 # adding a source file to an existing segment does not.
+#
+# max_size, where given, is the space the segment has to fit in; the build
+# fails if it outgrows it.
 
 defaults:
   subalign: 8
@@ -88,243 +91,243 @@ segments:
   - { name: world_use_item, class: world_use_item }
   - { name: effect_globals, vram: 0xE0200000 }
   - { name: effect_gfx_big_smoke_puff, class: effect_gfx }
-  - { name: effect_big_smoke_puff, vram: 0xE0002000 }
-  - { name: effect_landing_dust, vram: 0xE000C000 }
+  - { name: effect_big_smoke_puff, vram: 0xE0002000, max_size: 0x1000 }
+  - { name: effect_landing_dust, vram: 0xE000C000, max_size: 0x1000 }
   - { name: effect_gfx_landing_dust, class: effect_gfx }
-  - { name: effect_walking_dust, vram: 0xE000E000 }
-  - { name: effect_flower_splash, vram: 0xE0010000 }
+  - { name: effect_walking_dust, vram: 0xE000E000, max_size: 0x1000 }
+  - { name: effect_flower_splash, vram: 0xE0010000, max_size: 0x1000 }
   - { name: effect_gfx_flower_splash_trail, class: effect_gfx }
-  - { name: effect_flower_trail, vram: 0xE0012000 }
-  - { name: effect_cloud_puff, vram: 0xE0014000 }
+  - { name: effect_flower_trail, vram: 0xE0012000, max_size: 0x1000 }
+  - { name: effect_cloud_puff, vram: 0xE0014000, max_size: 0x1000 }
   - { name: effect_gfx_cloud_puff_trail, class: effect_gfx }
-  - { name: effect_cloud_trail, vram: 0xE0016000 }
-  - { name: effect_footprint, vram: 0xE0018000 }
+  - { name: effect_cloud_trail, vram: 0xE0016000, max_size: 0x1000 }
+  - { name: effect_footprint, vram: 0xE0018000, max_size: 0x1000 }
   - { name: effect_gfx_footprint, class: effect_gfx }
-  - { name: effect_floating_flower, vram: 0xE001A000 }
+  - { name: effect_floating_flower, vram: 0xE001A000, max_size: 0x1000 }
   - { name: effect_gfx_floating_flower, class: effect_gfx }
-  - { name: effect_snowflake, vram: 0xE001C000 }
+  - { name: effect_snowflake, vram: 0xE001C000, max_size: 0x1000 }
   - { name: effect_gfx_snowflake, class: effect_gfx }
-  - { name: effect_star, vram: 0xE001E000 }
+  - { name: effect_star, vram: 0xE001E000, max_size: 0x1000 }
   - { name: effect_gfx_star, class: effect_gfx }
-  - { name: effect_emote, vram: 0xE0020000 }
+  - { name: effect_emote, vram: 0xE0020000, max_size: 0x1000 }
   - { name: effect_gfx_emote, class: effect_gfx }
-  - { name: effect_sparkles, vram: 0xE0022000 }
+  - { name: effect_sparkles, vram: 0xE0022000, max_size: 0x1000 }
   - { name: effect_gfx_sparkles, class: effect_gfx }
-  - { name: effect_shape_spell, vram: 0xE0024000 }
+  - { name: effect_shape_spell, vram: 0xE0024000, max_size: 0x1000 }
   - { name: effect_gfx_shape_spell, class: effect_gfx }
-  - { name: effect_gather_energy_pink, vram: 0xE0026000 }
+  - { name: effect_gather_energy_pink, vram: 0xE0026000, max_size: 0x1000 }
   - { name: effect_gfx_gather_energy_pink, class: effect_gfx }
-  - { name: effect_drop_leaves, vram: 0xE0028000 }
+  - { name: effect_drop_leaves, vram: 0xE0028000, max_size: 0x1000 }
   - { name: effect_gfx_drop_leaves, class: effect_gfx }
-  - { name: effect_dust, vram: 0xE002A000 }
+  - { name: effect_dust, vram: 0xE002A000, max_size: 0x1000 }
   - { name: effect_gfx_dust, class: effect_gfx }
-  - { name: effect_shattering_stones, vram: 0xE002C000 }
+  - { name: effect_shattering_stones, vram: 0xE002C000, max_size: 0x1000 }
   - { name: effect_gfx_shattering_stones, class: effect_gfx }
-  - { name: effect_smoke_ring, vram: 0xE002E000 }
-  - { name: effect_damage_stars, vram: 0xE0030000 }
+  - { name: effect_smoke_ring, vram: 0xE002E000, max_size: 0x1000 }
+  - { name: effect_damage_stars, vram: 0xE0030000, max_size: 0x1000 }
   - { name: effect_gfx_damage_stars, class: effect_gfx }
-  - { name: effect_explosion, vram: 0xE0032000 }
+  - { name: effect_explosion, vram: 0xE0032000, max_size: 0x1000 }
   - { name: effect_gfx_explosion, class: effect_gfx }
-  - { name: effect_lens_flare, vram: 0xE0034000 }
+  - { name: effect_lens_flare, vram: 0xE0034000, max_size: 0x1000 }
   - { name: effect_gfx_lens_flare, class: effect_gfx }
-  - { name: effect_got_item_outline, vram: 0xE0036000 }
+  - { name: effect_got_item_outline, vram: 0xE0036000, max_size: 0x1000 }
   - { name: effect_gfx_got_item_outline, class: effect_gfx }
-  - { name: effect_spiky_white_aura, vram: 0xE0038000 }
+  - { name: effect_spiky_white_aura, vram: 0xE0038000, max_size: 0x1000 }
   - { name: effect_gfx_spiky_white_aura, class: effect_gfx }
-  - { name: effect_smoke_impact, vram: 0xE003A000 }
+  - { name: effect_smoke_impact, vram: 0xE003A000, max_size: 0x1000 }
   - { name: effect_damage_indicator, vram: 0xE003C000 }
   - { name: effect_gfx_damage_indicator, class: effect_gfx }
-  - { name: effect_purple_ring, vram: 0xE003E000 }
+  - { name: effect_purple_ring, vram: 0xE003E000, max_size: 0x1000 }
   - { name: effect_gfx_purple_ring, class: effect_gfx }
-  - { name: effect_flame, vram: 0xE0040000 }
+  - { name: effect_flame, vram: 0xE0040000, max_size: 0x1000 }
   - { name: effect_gfx_flame, class: effect_gfx }
-  - { name: effect_stars_burst, vram: 0xE0042000 }
-  - { name: effect_stars_shimmer, vram: 0xE0044000 }
-  - { name: effect_rising_bubble, vram: 0xE0046000 }
+  - { name: effect_stars_burst, vram: 0xE0042000, max_size: 0x1000 }
+  - { name: effect_stars_shimmer, vram: 0xE0044000, max_size: 0x1000 }
+  - { name: effect_rising_bubble, vram: 0xE0046000, max_size: 0x1000 }
   - { name: effect_gfx_rising_bubble, class: effect_gfx }
-  - { name: effect_ring_blast, vram: 0xE0048000 }
+  - { name: effect_ring_blast, vram: 0xE0048000, max_size: 0x1000 }
   - { name: effect_gfx_ring_blast, class: effect_gfx }
-  - { name: effect_shockwave, vram: 0xE004A000 }
+  - { name: effect_shockwave, vram: 0xE004A000, max_size: 0x1000 }
   - { name: effect_gfx_shockwave, class: effect_gfx }
-  - { name: effect_music_note, vram: 0xE004C000 }
+  - { name: effect_music_note, vram: 0xE004C000, max_size: 0x1000 }
   - { name: effect_gfx_music_note, class: effect_gfx }
-  - { name: effect_smoke_burst, vram: 0xE004E000 }
-  - { name: effect_sweat, vram: 0xE0050000 }
+  - { name: effect_smoke_burst, vram: 0xE004E000, max_size: 0x1000 }
+  - { name: effect_sweat, vram: 0xE0050000, max_size: 0x1000 }
   - { name: effect_gfx_sweat, class: effect_gfx }
-  - { name: effect_sleep_bubble, vram: 0xE0052000 }
+  - { name: effect_sleep_bubble, vram: 0xE0052000, max_size: 0x1000 }
   - { name: effect_gfx_sleep_bubble, class: effect_gfx }
-  - { name: effect_windy_leaves, vram: 0xE0056000 }
-  - { name: effect_falling_leaves, vram: 0xE0058000 }
+  - { name: effect_windy_leaves, vram: 0xE0056000, max_size: 0x1000 }
+  - { name: effect_falling_leaves, vram: 0xE0058000, max_size: 0x1000 }
   - { name: effect_gfx_falling_leaves, class: effect_gfx }
-  - { name: effect_stars_spread, vram: 0xE005A000 }
+  - { name: effect_stars_spread, vram: 0xE005A000, max_size: 0x1000 }
   - { name: effect_gfx_stars_spread, class: effect_gfx }
-  - { name: effect_steam_burst, vram: 0xE005C000 }
+  - { name: effect_steam_burst, vram: 0xE005C000, max_size: 0x1000 }
   - { name: effect_gfx_steam_burst, class: effect_gfx }
-  - { name: effect_stars_orbiting, vram: 0xE005E000 }
+  - { name: effect_stars_orbiting, vram: 0xE005E000, max_size: 0x1000 }
   - { name: effect_gfx_stars_orbiting, class: effect_gfx }
-  - { name: effect_big_snowflakes, vram: 0xE0060000 }
+  - { name: effect_big_snowflakes, vram: 0xE0060000, max_size: 0x1000 }
   - { name: effect_gfx_big_snowflakes, class: effect_gfx }
-  - { name: effect_debuff, vram: 0xE0062000 }
+  - { name: effect_debuff, vram: 0xE0062000, max_size: 0x1000 }
   - { name: effect_gfx_debuff, class: effect_gfx }
-  - { name: effect_green_impact, vram: 0xE0064000 }
+  - { name: effect_green_impact, vram: 0xE0064000, max_size: 0x1000 }
   - { name: effect_gfx_green_impact, class: effect_gfx }
-  - { name: effect_radial_shimmer, vram: 0xE0066000 }
+  - { name: effect_radial_shimmer, vram: 0xE0066000, max_size: 0x1000 }
   - { name: effect_gfx_radial_shimmer, class: effect_gfx }
-  - { name: effect_ending_decals, vram: 0xE0068000 }
+  - { name: effect_ending_decals, vram: 0xE0068000, max_size: 0x1000 }
   - { name: effect_gfx_ending_decals, class: effect_gfx }
-  - { name: effect_light_rays, vram: 0xE006A000 }
+  - { name: effect_light_rays, vram: 0xE006A000, max_size: 0x1000 }
   - { name: effect_gfx_light_rays, class: effect_gfx }
-  - { name: effect_lightning, vram: 0xE006C000 }
+  - { name: effect_lightning, vram: 0xE006C000, max_size: 0x1000 }
   - { name: effect_gfx_lightning, class: effect_gfx }
-  - { name: effect_fire_breath, vram: 0xE006E000 }
+  - { name: effect_fire_breath, vram: 0xE006E000, max_size: 0x1000 }
   - { name: effect_gfx_fire_breath, class: effect_gfx }
-  - { name: effect_shimmer_burst, vram: 0xE0070000 }
-  - { name: effect_energy_shockwave, vram: 0xE0072000 }
+  - { name: effect_shimmer_burst, vram: 0xE0070000, max_size: 0x1000 }
+  - { name: effect_energy_shockwave, vram: 0xE0072000, max_size: 0x1000 }
   - { name: effect_gfx_energy_shockwave, class: effect_gfx }
-  - { name: effect_shimmer_wave, vram: 0xE0074000 }
-  - { name: effect_aura, vram: 0xE0076000 }
+  - { name: effect_shimmer_wave, vram: 0xE0074000, max_size: 0x1000 }
+  - { name: effect_aura, vram: 0xE0076000, max_size: 0x1000 }
   - { name: effect_gfx_aura, class: effect_gfx }
-  - { name: effect_bulb_glow, vram: 0xE0078000 }
+  - { name: effect_bulb_glow, vram: 0xE0078000, max_size: 0x1000 }
   - { name: effect_gfx_bulb_glow, class: effect_gfx }
-  - { name: effect_effect_3D, vram: 0xE007A000 }
+  - { name: effect_effect_3D, vram: 0xE007A000, max_size: 0x1000 }
   - { name: effect_gfx_effect_3D, class: effect_gfx }
-  - { name: effect_blast, vram: 0xE007C000 }
+  - { name: effect_blast, vram: 0xE007C000, max_size: 0x1000 }
   - { name: effect_gfx_blast, class: effect_gfx }
-  - { name: effect_fire_flower, vram: 0xE007E000 }
+  - { name: effect_fire_flower, vram: 0xE007E000, max_size: 0x1000 }
   - { name: effect_gfx_fire_flower, class: effect_gfx }
-  - { name: effect_recover, vram: 0xE0080000 }
+  - { name: effect_recover, vram: 0xE0080000, max_size: 0x1000 }
   - { name: effect_gfx_recover, class: effect_gfx }
-  - { name: effect_disable_x, vram: 0xE0082000 }
+  - { name: effect_disable_x, vram: 0xE0082000, max_size: 0x1000 }
   - { name: effect_gfx_disable_x, class: effect_gfx }
-  - { name: effect_bombette_breaking, vram: 0xE0084000 }
-  - { name: effect_firework, vram: 0xE0086000 }
+  - { name: effect_bombette_breaking, vram: 0xE0084000, max_size: 0x1000 }
+  - { name: effect_firework, vram: 0xE0086000, max_size: 0x1000 }
   - { name: effect_gfx_firework, class: effect_gfx }
-  - { name: effect_confetti, vram: 0xE0088000 }
+  - { name: effect_confetti, vram: 0xE0088000, max_size: 0x1000 }
   - { name: effect_gfx_confetti, class: effect_gfx }
-  - { name: effect_snowfall, vram: 0xE008A000 }
+  - { name: effect_snowfall, vram: 0xE008A000, max_size: 0x1000 }
   - { name: effect_gfx_snowfall, class: effect_gfx }
-  - { name: effect_effect_46, vram: 0xE008C000 }
+  - { name: effect_effect_46, vram: 0xE008C000, max_size: 0x1000 }
   - { name: effect_gfx_effect_46, class: effect_gfx }
-  - { name: effect_gather_magic, vram: 0xE008E000 }
+  - { name: effect_gather_magic, vram: 0xE008E000, max_size: 0x1000 }
   - { name: effect_gfx_gather_magic, class: effect_gfx }
-  - { name: effect_attack_result_text, vram: 0xE0090000 }
+  - { name: effect_attack_result_text, vram: 0xE0090000, max_size: 0x1000 }
   - { name: effect_gfx_attack_result_text, class: effect_gfx }
-  - { name: effect_small_gold_sparkle, vram: 0xE0092000 }
+  - { name: effect_small_gold_sparkle, vram: 0xE0092000, max_size: 0x1000 }
   - { name: effect_gfx_small_gold_sparkle, class: effect_gfx }
-  - { name: effect_flashing_box_shockwave, vram: 0xE0094000 }
+  - { name: effect_flashing_box_shockwave, vram: 0xE0094000, max_size: 0x1000 }
   - { name: effect_gfx_flashing_box_shockwave, class: effect_gfx }
-  - { name: effect_balloon, vram: 0xE0096000 }
+  - { name: effect_balloon, vram: 0xE0096000, max_size: 0x1000 }
   - { name: effect_gfx_balloon, class: effect_gfx }
-  - { name: effect_floating_rock, vram: 0xE0098000 }
+  - { name: effect_floating_rock, vram: 0xE0098000, max_size: 0x1000 }
   - { name: effect_gfx_floating_rock, class: effect_gfx }
-  - { name: effect_chomp_drop, vram: 0xE009A000 }
+  - { name: effect_chomp_drop, vram: 0xE009A000, max_size: 0x1000 }
   - { name: effect_gfx_chomp_drop, class: effect_gfx }
-  - { name: effect_quizmo_stage, vram: 0xE009C000 }
+  - { name: effect_quizmo_stage, vram: 0xE009C000, max_size: 0x1000 }
   - { name: effect_gfx_quizmo_stage, class: effect_gfx }
-  - { name: effect_radiating_energy_orb, vram: 0xE009E000 }
+  - { name: effect_radiating_energy_orb, vram: 0xE009E000, max_size: 0x1000 }
   - { name: effect_gfx_radiating_energy_orb, class: effect_gfx }
-  - { name: effect_quizmo_answer, vram: 0xE00A0000 }
+  - { name: effect_quizmo_answer, vram: 0xE00A0000, max_size: 0x1000 }
   - { name: effect_gfx_quizmo_answer, class: effect_gfx }
-  - { name: effect_motion_blur_flame, vram: 0xE00A2000 }
+  - { name: effect_motion_blur_flame, vram: 0xE00A2000, max_size: 0x1000 }
   - { name: effect_gfx_motion_blur_flame, class: effect_gfx }
-  - { name: effect_energy_orb_wave, vram: 0xE00A4000 }
+  - { name: effect_energy_orb_wave, vram: 0xE00A4000, max_size: 0x1000 }
   - { name: effect_gfx_energy_orb_wave, class: effect_gfx }
-  - { name: effect_merlin_house_stars, vram: 0xE00A6000 }
+  - { name: effect_merlin_house_stars, vram: 0xE00A6000, max_size: 0x1000 }
   - { name: effect_gfx_merlin_house_stars, class: effect_gfx }
-  - { name: effect_quizmo_audience, vram: 0xE00A8000 }
+  - { name: effect_quizmo_audience, vram: 0xE00A8000, max_size: 0x1000 }
   - { name: effect_gfx_quizmo_audience, class: effect_gfx }
-  - { name: effect_butterflies, vram: 0xE00AA000 }
+  - { name: effect_butterflies, vram: 0xE00AA000, max_size: 0x1000 }
   - { name: effect_gfx_butterflies, class: effect_gfx }
-  - { name: effect_stat_change, vram: 0xE00AC000 }
+  - { name: effect_stat_change, vram: 0xE00AC000, max_size: 0x1000 }
   - { name: effect_gfx_stat_change, class: effect_gfx }
-  - { name: effect_snaking_static, vram: 0xE00AE000 }
+  - { name: effect_snaking_static, vram: 0xE00AE000, max_size: 0x1000 }
   - { name: effect_gfx_snaking_static, class: effect_gfx }
-  - { name: effect_thunderbolt_ring, vram: 0xE00B0000 }
+  - { name: effect_thunderbolt_ring, vram: 0xE00B0000, max_size: 0x1000 }
   - { name: effect_gfx_thunderbolt_ring, class: effect_gfx }
-  - { name: effect_squirt, vram: 0xE00B2000 }
+  - { name: effect_squirt, vram: 0xE00B2000, max_size: 0x1000 }
   - { name: effect_gfx_squirt, class: effect_gfx }
-  - { name: effect_water_block, vram: 0xE00B4000 }
+  - { name: effect_water_block, vram: 0xE00B4000, max_size: 0x1000 }
   - { name: effect_gfx_water_block, class: effect_gfx }
-  - { name: effect_waterfall, vram: 0xE00B6000 }
+  - { name: effect_waterfall, vram: 0xE00B6000, max_size: 0x1000 }
   - { name: effect_gfx_waterfall, class: effect_gfx }
-  - { name: effect_water_fountain, vram: 0xE00B8000 }
+  - { name: effect_water_fountain, vram: 0xE00B8000, max_size: 0x1000 }
   - { name: effect_gfx_water_fountain, class: effect_gfx }
-  - { name: effect_underwater, vram: 0xE00BA000 }
+  - { name: effect_underwater, vram: 0xE00BA000, max_size: 0x1000 }
   - { name: effect_gfx_underwater, class: effect_gfx }
-  - { name: effect_lightning_bolt, vram: 0xE00BC000 }
+  - { name: effect_lightning_bolt, vram: 0xE00BC000, max_size: 0x1000 }
   - { name: effect_gfx_lightning_bolt, class: effect_gfx }
-  - { name: effect_water_splash, vram: 0xE00BE000 }
+  - { name: effect_water_splash, vram: 0xE00BE000, max_size: 0x1000 }
   - { name: effect_gfx_water_splash, class: effect_gfx }
-  - { name: effect_snowman_doll, vram: 0xE00C0000 }
+  - { name: effect_snowman_doll, vram: 0xE00C0000, max_size: 0x1000 }
   - { name: effect_gfx_snowman_doll, class: effect_gfx }
-  - { name: effect_fright_jar, vram: 0xE00C2000 }
+  - { name: effect_fright_jar, vram: 0xE00C2000, max_size: 0x1000 }
   - { name: effect_gfx_fright_jar, class: effect_gfx }
-  - { name: effect_stop_watch, vram: 0xE00C4000 }
+  - { name: effect_stop_watch, vram: 0xE00C4000, max_size: 0x1000 }
   - { name: effect_gfx_stop_watch, class: effect_gfx }
-  - { name: effect_effect_63, vram: 0xE00C6000 }
+  - { name: effect_effect_63, vram: 0xE00C6000, max_size: 0x1000 }
   - { name: effect_gfx_effect_63, class: effect_gfx }
-  - { name: effect_throw_spiny, vram: 0xE00C8000 }
+  - { name: effect_throw_spiny, vram: 0xE00C8000, max_size: 0x1000 }
   - { name: effect_gfx_throw_spiny, class: effect_gfx }
-  - { name: effect_effect_65, vram: 0xE00CA000 }
+  - { name: effect_effect_65, vram: 0xE00CA000, max_size: 0x1000 }
   - { name: effect_gfx_effect_65, class: effect_gfx }
-  - { name: effect_tubba_heart_attack, vram: 0xE00CC000 }
+  - { name: effect_tubba_heart_attack, vram: 0xE00CC000, max_size: 0x1000 }
   - { name: effect_gfx_tubba_heart_attack, class: effect_gfx }
-  - { name: effect_whirlwind, vram: 0xE00CE000 }
+  - { name: effect_whirlwind, vram: 0xE00CE000, max_size: 0x1000 }
   - { name: effect_gfx_whirlwind, class: effect_gfx }
-  - { name: effect_red_impact, vram: 0xE00D0000 }
-  - { name: effect_floating_cloud_puff, vram: 0xE00D2000 }
+  - { name: effect_red_impact, vram: 0xE00D0000, max_size: 0x1000 }
+  - { name: effect_floating_cloud_puff, vram: 0xE00D2000, max_size: 0x1000 }
   - { name: effect_gfx_floating_cloud_puff, class: effect_gfx }
-  - { name: effect_energy_in_out, vram: 0xE00D6000 }
+  - { name: effect_energy_in_out, vram: 0xE00D6000, max_size: 0x1000 }
   - { name: effect_gfx_energy_in_out, class: effect_gfx }
-  - { name: effect_tattle_window, vram: 0xE00D8000 }
+  - { name: effect_tattle_window, vram: 0xE00D8000, max_size: 0x1000 }
   - { name: effect_gfx_tattle_window, class: effect_gfx }
-  - { name: effect_shiny_flare, vram: 0xE00DA000 }
+  - { name: effect_shiny_flare, vram: 0xE00DA000, max_size: 0x1000 }
   - { name: effect_gfx_shiny_flare, class: effect_gfx }
-  - { name: effect_huff_puff_breath, vram: 0xE00DC000 }
+  - { name: effect_huff_puff_breath, vram: 0xE00DC000, max_size: 0x1000 }
   - { name: effect_gfx_huff_puff_breath, class: effect_gfx }
-  - { name: effect_cold_breath, vram: 0xE00DE000 }
+  - { name: effect_cold_breath, vram: 0xE00DE000, max_size: 0x1000 }
   - { name: effect_gfx_cold_breath, class: effect_gfx }
-  - { name: effect_embers, vram: 0xE00E0000 }
+  - { name: effect_embers, vram: 0xE00E0000, max_size: 0x1000 }
   - { name: effect_gfx_embers, class: effect_gfx }
-  - { name: effect_hieroglyphs, vram: 0xE00E2000 }
+  - { name: effect_hieroglyphs, vram: 0xE00E2000, max_size: 0x1000 }
   - { name: effect_gfx_hieroglyphs, class: effect_gfx }
-  - { name: effect_misc_particles, vram: 0xE00E4000 }
+  - { name: effect_misc_particles, vram: 0xE00E4000, max_size: 0x1000 }
   - { name: effect_gfx_misc_particles, class: effect_gfx }
-  - { name: effect_static_status, vram: 0xE00E6000 }
+  - { name: effect_static_status, vram: 0xE00E6000, max_size: 0x1000 }
   - { name: effect_gfx_static_status, class: effect_gfx }
-  - { name: effect_moving_cloud, vram: 0xE00E8000 }
+  - { name: effect_moving_cloud, vram: 0xE00E8000, max_size: 0x1000 }
   - { name: effect_gfx_moving_cloud, class: effect_gfx }
-  - { name: effect_effect_75, vram: 0xE00EA000 }
+  - { name: effect_effect_75, vram: 0xE00EA000, max_size: 0x1000 }
   - { name: effect_gfx_effect_75, class: effect_gfx }
-  - { name: effect_firework_rocket, vram: 0xE010A000 }
+  - { name: effect_firework_rocket, vram: 0xE010A000, max_size: 0x1000 }
   - { name: effect_gfx_firework_rocket, class: effect_gfx }
-  - { name: effect_peach_star_beam, vram: 0xE010C000 }
+  - { name: effect_peach_star_beam, vram: 0xE010C000, max_size: 0x1000 }
   - { name: effect_gfx_peach_star_beam, class: effect_gfx }
-  - { name: effect_chapter_change, vram: 0xE010E000 }
+  - { name: effect_chapter_change, vram: 0xE010E000, max_size: 0x1000 }
   - { name: effect_gfx_chapter_change, class: effect_gfx }
-  - { name: effect_ice_shard, vram: 0xE0110000 }
+  - { name: effect_ice_shard, vram: 0xE0110000, max_size: 0x1000 }
   - { name: effect_gfx_ice_shard, class: effect_gfx }
-  - { name: effect_spirit_card, vram: 0xE0112000 }
+  - { name: effect_spirit_card, vram: 0xE0112000, max_size: 0x1000 }
   - { name: effect_gfx_spirit_card, class: effect_gfx }
-  - { name: effect_lil_oink, vram: 0xE0114000 }
+  - { name: effect_lil_oink, vram: 0xE0114000, max_size: 0x1000 }
   - { name: effect_gfx_lil_oink, class: effect_gfx }
-  - { name: effect_something_rotating, vram: 0xE0116000 }
-  - { name: effect_breaking_junk, vram: 0xE0118000 }
+  - { name: effect_something_rotating, vram: 0xE0116000, max_size: 0x1000 }
+  - { name: effect_breaking_junk, vram: 0xE0118000, max_size: 0x1000 }
   - { name: effect_gfx_breaking_junk, class: effect_gfx }
-  - { name: effect_partner_buff, vram: 0xE011A000 }
+  - { name: effect_partner_buff, vram: 0xE011A000, max_size: 0x1000 }
   - { name: effect_gfx_partner_buff, class: effect_gfx }
-  - { name: effect_quizmo_assistant, vram: 0xE011C000 }
+  - { name: effect_quizmo_assistant, vram: 0xE011C000, max_size: 0x1000 }
   - { name: effect_gfx_quizmo_assistant, class: effect_gfx }
-  - { name: effect_ice_pillar, vram: 0xE011E000 }
+  - { name: effect_ice_pillar, vram: 0xE011E000, max_size: 0x1000 }
   - { name: effect_gfx_ice_pillar, class: effect_gfx }
-  - { name: effect_sun, vram: 0xE0120000 }
+  - { name: effect_sun, vram: 0xE0120000, max_size: 0x1000 }
   - { name: effect_gfx_sun, class: effect_gfx }
-  - { name: effect_star_spirits_energy, vram: 0xE0122000 }
+  - { name: effect_star_spirits_energy, vram: 0xE0122000, max_size: 0x1000 }
   - { name: effect_gfx_star_spirits_energy, class: effect_gfx }
-  - { name: effect_pink_sparkles, vram: 0xE0124000 }
-  - { name: effect_star_outline, vram: 0xE0126000 }
+  - { name: effect_pink_sparkles, vram: 0xE0124000, max_size: 0x1000 }
+  - { name: effect_star_outline, vram: 0xE0126000, max_size: 0x1000 }
   - { name: effect_gfx_star_outline, class: effect_gfx }
-  - { name: effect_effect_86, vram: 0xE0128000 }
+  - { name: effect_effect_86, vram: 0xE0128000, max_size: 0x1000 }
   - { name: effect_gfx_effect_86, class: effect_gfx }
   - { name: btl_states_menus, class: battle_move }
   - { name: action_cmd_jump, class: action_cmd }
