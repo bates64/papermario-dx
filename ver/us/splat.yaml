@@ -395,31 +395,31 @@ segments:
     start: 0x759B0
     vram_class: engine1
     subsegments:
-    - [auto, c, npc_collision]
-    - [auto, c, player]
-    - [auto, c, player_collision]
-    - [auto, c, player_prompts]
-    - [auto, c, player_render]
-    - [auto, c, player_input]
-    - [auto, c, player_physics]
-    - [auto, c, player_actions]
-    - [auto, c, peach_disguise]
-    - [auto, c, world/menus]
-    - [auto, c, inventory]
-    - [auto, c, world/actions]
-    - [auto, c, world/partners]
-    - [auto, c, world/partners_control]
-    - [auto, c, world/partners_follow]
-    - [auto, c, world/partners_swap]
-    - [auto, c, world_use_item_wrapper]
-    - [auto, c, global_hud_scripts]
-    - [auto, c, world/surfaces]
-    - [auto, c, status_star_shimmer]
-    - [auto, c, popup_menu]
-    - [auto, c, draw_box]
+    - [auto, c, engine1/npc_collision]
+    - [auto, c, engine1/player]
+    - [auto, c, engine1/player_collision]
+    - [auto, c, engine1/player_prompts]
+    - [auto, c, engine1/player_render]
+    - [auto, c, engine1/player_input]
+    - [auto, c, engine1/player_physics]
+    - [auto, c, engine1/player_actions]
+    - [auto, c, engine1/peach_disguise]
+    - [auto, c, engine1/menus]
+    - [auto, c, engine1/inventory]
+    - [auto, c, engine1/actions]
+    - [auto, c, engine1/partners]
+    - [auto, c, engine1/partners_control]
+    - [auto, c, engine1/partners_follow]
+    - [auto, c, engine1/partners_swap]
+    - [auto, c, engine1/world_use_item_wrapper]
+    - [auto, c, engine1/global_hud_scripts]
+    - [auto, c, engine1/surfaces]
+    - [auto, c, engine1/status_star_shimmer]
+    - [auto, c, engine1/popup_menu]
+    - [auto, c, engine1/draw_box]
     - start: 0x919B0
       type: .data
-      name: global_hud_scripts
+      name: engine1/global_hud_scripts
       subsegments:
       - [auto, ci4,     ui/input/a_button_unpressed, 48, 40]
       - [auto, palette, ui/input/a_button_unpressed]
@@ -802,7 +802,7 @@ segments:
       - [0x9DE60]
     - start: 0xA2960
       type: .data
-      name: status_star_shimmer
+      name: engine1/status_star_shimmer
       subsegments:
       - [0xA2960, ia8, ui/status/shimmer_particle, 32, 16]
       - [0xA2B60] # Vp
@@ -812,7 +812,7 @@ segments:
       - [0xA2CB0]
     - start: 0xA2D90
       type: .data
-      name: draw_box
+      name: engine1/draw_box
       subsegments:
       - [0xA2D90]
       - [0xA2E90, ia8, ui/box/corners9, 16, 64]
@@ -835,33 +835,33 @@ segments:
     start: 0xA5DD0
     vram_class: engine2
     subsegments:
-    - [auto, c, entity]
-    - [auto, c, model]
-    - [auto, c, animator]
-    - [auto, c, foliage]
-    - [auto, c, tex_pan]
-    - [auto, c, item_choice]
-    - [auto, c, entity_model]
-    - [auto, c, worker]
-    - [auto, c, msg]
-    - [auto, c, msg_draw]
-    - [auto, c, draw_img_util]
-    - [auto, c, item_entity]
-    - [auto, c, screen_overlays]
-    - [auto, c, screen_render_util]
-    - [auto, c, imgfx]
-    - [auto, c, hud_element]
-    - [auto, c, vars_access]
-    - [auto, c, trigger]
-    - [auto, c, background]
-    - [auto, c, audio/ambience]
-    - [auto, c, windows]
-    - [auto, c, sprite_shading]
-    - [auto, c, audio/sfx_control]
-    - [auto, c, audio/bgm_control]
+    - [auto, c, engine2/entity]
+    - [auto, c, engine2/model]
+    - [auto, c, engine2/animator]
+    - [auto, c, engine2/foliage]
+    - [auto, c, engine2/tex_pan]
+    - [auto, c, engine2/item_choice]
+    - [auto, c, engine2/entity_model]
+    - [auto, c, engine2/worker]
+    - [auto, c, engine2/msg]
+    - [auto, c, engine2/msg_draw]
+    - [auto, c, engine2/draw_img_util]
+    - [auto, c, engine2/item_entity]
+    - [auto, c, engine2/screen_overlays]
+    - [auto, c, engine2/screen_render_util]
+    - [auto, c, engine2/imgfx]
+    - [auto, c, engine2/hud_element]
+    - [auto, c, engine2/vars_access]
+    - [auto, c, engine2/trigger]
+    - [auto, c, engine2/background]
+    - [auto, c, engine2/ambience]
+    - [auto, c, engine2/windows]
+    - [auto, c, engine2/sprite_shading]
+    - [auto, c, engine2/sfx_control]
+    - [auto, c, engine2/bgm_control]
     - start: 0xE2DF0
       type: .data
-      name: screen_overlays
+      name: engine2/screen_overlays
       subsegments:
       - [0xE2DF0]
       - [0xE2E00, i4, ui/stencil/star, 32, 64]
@@ -879,7 +879,7 @@ segments:
     vram_class: heaps
     subalign: 0x1000
     subsegments:
-    - [auto, c, heaps]
+    - [auto, c, heaps/heaps]
   - name: evt
     type: code
     dir: evt
@@ -906,8 +906,8 @@ segments:
     start: 0xFEE30
     vram_class: engine4
     subsegments:
-    - [auto, c, sprite]
-    - [auto, c, sprite_loading]
+    - [auto, c, engine4/sprite]
+    - [auto, c, engine4/sprite_loading]
   - name: entity
     type: code
     start: 0x102610
@@ -945,11 +945,11 @@ segments:
     start: 0x10CC10
     vram_class: font_width
     subsegments:
-    - [auto, c, msg_data]
-    - [auto, c, msg_img]
+    - [auto, c, font_width/msg_data]
+    - [auto, c, font_width/msg_img]
     - start: 0x10CEB0
       type: .data
-      name: msg_img
+      name: font_width/msg_img
       subsegments:
       - [auto, ci4, ui/msg/bubble_left, 32, 64, ui/msg/bubble_left]
       - [auto, ci4, ui/msg/bubble_mid, 8, 64, ui/msg/bubble_left]
@@ -1028,7 +1028,7 @@ segments:
     start: 0x10F1B0
     vram_class: heaps3
     subsegments:
-    - [auto, c, heaps3]
+    - [auto, c, heaps/heaps3]
   - type: code
     dir: charset
     vram: 0
@@ -1228,7 +1228,7 @@ segments:
     - [auto, palette, ui/pause/partner_rank]
     - [auto, ci4, ui/pause/unused_bubble, 56, 16]
     - [auto, palette, ui/pause/unused_bubble]
-    - [auto, .data, menu_hud_scripts]
+    - [auto, .data, menu_hud_scripts/menu_hud_scripts]
   - type: code
     dir: pause
     start: 0x135EE0
@@ -1306,8 +1306,8 @@ segments:
     name: battle_code
     vram_class: battle_code
     subsegments:
-    - [auto, c, battle/16C8E0]
-    - [auto, c, battle/btl_states_actions]
+    - [auto, c, battle/code/16C8E0]
+    - [auto, c, battle/code/btl_states_actions]
     - [auto, c, battle/states/start_battle]
     - [auto, c, battle/states/player_first_strike]
     - [auto, c, battle/states/partner_first_strike]
@@ -1340,30 +1340,30 @@ segments:
     - [auto, c, battle/states/menu_peach]
     - [auto, c, battle/states/menu_twink]
     - [auto, c, battle/states/select_target]
-    - [auto, c, battle/camera]
-    - [auto, c, battle/actors]
-    - [auto, c, battle/popup_messages]
-    - [auto, c, battle/entity_model_icons]
-    - [auto, c, battle/partner_dma]
-    - [auto, c, battle/dmg_item]
-    - [auto, c, battle/181810]
-    - [auto, c, battle/actor_rendering]
-    - [auto, c, battle/player_events]
-    - [auto, c, battle_ui_gfx]
-    - [auto, c, battle/190A10]
-    - [auto, c, battle/190B20]
-    - [auto, c, battle/use_items]
-    - [auto, c, battle/use_moves]
-    - [auto, c, battle/action_cmd]
-    - [auto, c, battle/actor_api]
-    - [auto, c, battle/dmg_player]
-    - [auto, c, battle/1A5830]
-    - [auto, c, battle/dmg_partner]
-    - [auto, c, battle/standard_events]
-    - [auto, c, battle/use_star_powers]
+    - [auto, c, battle/code/camera]
+    - [auto, c, battle/code/actors]
+    - [auto, c, battle/code/popup_messages]
+    - [auto, c, battle/code/entity_model_icons]
+    - [auto, c, battle/code/partner_dma]
+    - [auto, c, battle/code/dmg_item]
+    - [auto, c, battle/code/181810]
+    - [auto, c, battle/code/actor_rendering]
+    - [auto, c, battle/code/player_events]
+    - [auto, c, battle/code/battle_ui_gfx]
+    - [auto, c, battle/code/190A10]
+    - [auto, c, battle/code/190B20]
+    - [auto, c, battle/code/use_items]
+    - [auto, c, battle/code/use_moves]
+    - [auto, c, battle/code/action_cmd]
+    - [auto, c, battle/code/actor_api]
+    - [auto, c, battle/code/dmg_player]
+    - [auto, c, battle/code/1A5830]
+    - [auto, c, battle/code/dmg_partner]
+    - [auto, c, battle/code/standard_events]
+    - [auto, c, battle/code/use_star_powers]
     - start: 0x1B2050
       type: .data
-      name: battle/popup_messages
+      name: battle/code/popup_messages
       subsegments:
       - [0x1B2050]
       - [0x1B21E0, ci4, ui/battle/cursor_hand, 32, 32]
@@ -1371,7 +1371,7 @@ segments:
       - [0x1B2400]
     - start: 0x1B7CE0
       type: .data
-      name: battle_ui_gfx
+      name: battle/code/battle_ui_gfx
       subsegments:
       - [0x1B7CE0, ci4, ui/battle/menu/unused, 32, 32]
       - [0x1B7EE0, palette, ui/battle/menu/unused]
@@ -1579,32 +1579,32 @@ segments:
     name: create_audio_system_obfuscated
     vram: 0x80200000
     subsegments:
-    - [auto, c, create_audio_system_obfuscated]
+    - [auto, c, obfuscated/create_audio_system_obfuscated]
   - type: code
     start: 0x316A70
     vram: 0x80200080
     name: load_engine_data_obfuscated
     follows_vram: create_audio_system_obfuscated
     subsegments:
-    - [auto, c, load_engine_data_obfuscated]
+    - [auto, c, obfuscated/load_engine_data_obfuscated]
   - type: code
     start: 0x316C00
     name: general_heap_create_obfuscated
     vram: 0x802AE000
     subsegments:
-    - [auto, c, general_heap_create_obfuscated]
+    - [auto, c, obfuscated/general_heap_create_obfuscated]
   - type: code
     start: 0x316D90
     name: battle_heap_create_obfuscated
     vram: 0x802AE000
     subsegments:
-    - [auto, c, battle_heap_create_obfuscated]
+    - [auto, c, obfuscated/battle_heap_create_obfuscated]
   - type: code
     start: 0x316F30
     name: obfuscation_shims
     vram: 0x802B2000
     subsegments:
-    - [auto, c, obfuscation_shims]
+    - [auto, c, obfuscated/obfuscation_shims]
   - type: code
     dir: world/partner
     name: world_partner_goombario
@@ -1687,7 +1687,7 @@ segments:
     name: world_use_item
     vram_class: world_use_item
     subsegments:
-    - [auto, c, world_use_item]
+    - [auto, c, world_use_item/world_use_item]
 
 ###############
 ### Effects ###
@@ -1697,7 +1697,7 @@ segments:
     start: 0x325AD0
     vram: 0xE0200000
     subsegments:
-    - [auto, c, effect_utils]
+    - [auto, c, effect_globals/effect_utils]
     - [0x325EE0, pm_effect_shims, effect_shims]
     - [0x326160]
   - name: effect_gfx_big_smoke_puff
@@ -5880,9 +5880,9 @@ segments:
     name: btl_states_menus
     vram_class: battle_move
     subsegments:
-    - [auto, c, battle/btl_states_menus]
-    - [auto, c, battle/menu_moves]
-    - [auto, c, battle/menu_strats]
+    - [auto, c, battle/menus/btl_states_menus]
+    - [auto, c, battle/menus/menu_moves]
+    - [auto, c, battle/menus/menu_strats]
   - type: code
     start: 0x4219F0
     vram_class: action_cmd
@@ -7528,10 +7528,10 @@ segments:
     vram_class: battle_move
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, level_up]
+    - [auto, c, battle/overlay/level_up]
     - start: 0x79EF40
       type: .data
-      name: level_up
+      name: battle/overlay/level_up
       subsegments:
       - [0x79EF40]
       - [0x79EF58, vtx, level_up/draw_second_E]
@@ -7662,10 +7662,10 @@ segments:
     vram_class: battle_move
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, starpoint]
+    - [auto, c, battle/overlay/starpoint]
     - start: 0x7A89A0
       type: .data
-      name: starpoint
+      name: battle/overlay/starpoint
       subsegments:
       - [0x7A89A0]
       - [0x7A89B8, ia8, starpoint/starpoint, 128, 32]
@@ -8011,7 +8011,7 @@ segments:
     start: 0x7E73A0
     vram_class: texture_memory
     subsegments:
-    - [auto, c, texture_memory]
+    - [auto, c, texture_memory/texture_memory]
 
 
 ############
@@ -13236,16 +13236,16 @@ segments:
     start: 0xE20110
     vram_class: heaps2
     subsegments:
-    - [auto, c, heaps2]
+    - [auto, c, heaps/heaps2]
   - type: code
     start: 0xE20110
     name: inspect_icon
     vram_class: indicator_icon
     subsegments:
-    - [auto, c, inspect_icon]
+    - [auto, c, indicator_icon/inspect_icon]
     - start: 0xE20B30
       type: .data
-      name: inspect_icon
+      name: indicator_icon/inspect_icon
       subsegments:
       - [0xE20B30, ci4, inspect_icon, 32, 32]
       - [0xE20D30, palette, inspect_icon]
@@ -13257,10 +13257,10 @@ segments:
     name: speech_bubble
     vram_class: indicator_icon
     subsegments:
-    - [auto, c, speech_bubble]
+    - [auto, c, indicator_icon/speech_bubble]
     - start: 0xE215C0
       type: .data
-      name: speech_bubble
+      name: indicator_icon/speech_bubble
       subsegments:
       - [0xE215C0, ci4, speech_bubble, 32, 32]
       - [0xE217C0, palette, speech_bubble]
@@ -13272,10 +13272,10 @@ segments:
     name: pulse_stone
     vram_class: indicator_icon
     subsegments:
-    - [auto, c, pulse_stone]
+    - [auto, c, indicator_icon/pulse_stone]
     - start: 0xE21EB0
       type: .data
-      name: pulse_stone
+      name: indicator_icon/pulse_stone
       subsegments:
       - [0xE21EB0, ci4, pulse_stone_icon, 56, 56]
       - [0xE224D0, palette, pulse_stone_icon]
@@ -13288,10 +13288,10 @@ segments:
     name: i_spy
     vram_class: indicator_icon
     subsegments:
-    - [auto, c, i_spy]
+    - [auto, c, indicator_icon/i_spy]
     - start: 0xE22B30
       type: .data
-      name: i_spy
+      name: indicator_icon/i_spy
       subsegments:
       - [0xE22B30, ci4, ispy_icon, 56, 56]
       - [0xE23150, palette, ispy_icon]
@@ -13305,7 +13305,7 @@ segments:
     start: 0xE23260
     vram_class: model_clear_render_tasks
     subsegments:
-    - [auto, c, model_clear_render_tasks]
+    - [auto, c, model_clear_render_tasks/model_clear_render_tasks]
   - type: code
     name: world_action_idle
     dir: world/action
