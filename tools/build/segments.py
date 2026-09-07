@@ -26,6 +26,7 @@ class SegmentMap:
         self.dirs: Dict[str, str] = cfg.get("dirs") or {}
         self.each: Dict[str, str] = cfg.get("each") or {}
         self.files: Dict[str, str] = cfg.get("files") or {}
+        self.cflags: Dict[str, str] = cfg.get("cflags") or {}
         self.src_root = src_root
         # Overlays are linked separately, so their sources are not part of any
         # ROM segment even though they sit under a directory that declares one.

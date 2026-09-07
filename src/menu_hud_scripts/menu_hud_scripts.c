@@ -8,7 +8,7 @@ HudScript HES_UnusedBadge_disabled = {
     hs_SetVisible
     hs_SetTileSize(HUD_ELEMENT_SIZE_24x24)
     hs_Loop
-        hs_SetCI_Explicit(60, ui_pause_unused_badge_points, ui_pause_unused_badge_points_disabled_disabled_)
+        hs_SetCI_Explicit(60, ui_pause_unused_badge_points, ui_pause_unused_badge_points_disabled)
     hs_Restart
     hs_End
 };
@@ -19,7 +19,7 @@ HudScript HES_UnusedCompass_disabled = {
     hs_SetVisible
     hs_SetTileSize(HUD_ELEMENT_SIZE_24x24)
     hs_Loop
-        hs_SetCI_Explicit(60, ui_pause_unused_compass, ui_pause_unused_compass_disabled_disabled_)
+        hs_SetCI_Explicit(60, ui_pause_unused_compass, ui_pause_unused_compass_disabled)
     hs_Restart
     hs_End
 };

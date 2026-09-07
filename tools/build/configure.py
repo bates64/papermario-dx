@@ -21,6 +21,9 @@ import ninja_syntax
 if sys.platform == 'win32':
     import ntfsutils.junction
 
+import linker
+from segments import SegmentMap
+
 # Configuration:
 VERSIONS = ["us"]
 
@@ -478,34 +481,86 @@ class Configure:
         self.linker_entries = split.linker_writer.entries
         self.asset_stack: List[str] = split.config["asset_stack"]
 
-        self.discard_map_linker_entries()
+        self.sources_config = SegmentMap(
+            self.version_path / "segments.yaml", ROOT / "src"
+        )
+        self.sources = self.sources_config.scan()
+        segments = self.build_segments()
+        follows = {
+            c["name"]: c["follows_classes"]
+            for c in split.config.get("vram_classes", [])
+            if isinstance(c, dict) and c.get("follows_classes")
+        }
+        linker.write_script(ROOT / self.linker_script_path(), segments, follows)
+        linker.write_symbol_header(
+            ROOT / self.build_path() / "include/ld_addrs.h", segments
+        )
 
-    def discard_map_linker_entries(self):
-        """Post-process the linker script to remove all map overlay segments.
+    def source_object(self, src_path: Path) -> Path:
+        return self.build_path() / (str(src_path) + ".o")
 
-        splat.yaml has some map segments that are only for splitting. Maps are compiled
-        to .ovl files now, not linked by the main linker.
+    def build_segments(self) -> List["linker.Segment"]:
+        """Segments in ROM order, with their objects.
+
+        splat supplies each segment's address and its asset objects; the source
+        objects come from the filesystem instead of from splat.yaml.
         """
-        discard_objs = set()
+        build_prefix = posix(self.build_path()) + "/"
+        src_prefix = build_prefix + "src/"
+        roots = (f"assets/{self.version}/", "src/", f"ver/{self.version}/")
+        label = lambda obj: linker.data_label(obj, build_prefix, roots)
+        order = []
+        assets: Dict[str, List[str]] = {}
+
         for entry in self.linker_entries:
-            seg = entry.segment
-            most_parent = seg.get_most_parent()
-            if (
-                most_parent.vram_class is not None
-                and most_parent.vram_class.name == "map"
-            ):
-                if entry.object_path is not None:
-                    discard_objs.add(posix(entry.object_path))
+            seg = entry.segment.get_most_parent()
+            if seg.type in ("linker", "linker_offset"):
+                continue
+            if seg.name not in assets:
+                assets[seg.name] = []
+                order.append(seg)
+            if entry.object_path is not None:
+                obj = posix(entry.object_path)
+                if not obj.startswith(src_prefix):
+                    assets[seg.name].append((obj, label(obj)))
 
-        if not discard_objs:
-            return
+        segments = []
+        for seg in order:
+            objects = [
+                (posix(self.source_object(p)), label(posix(self.source_object(p))))
+                for p in self.sources.get(linker.symbol_name(seg.name), [])
+            ] + assets[seg.name]
+            segments.append(
+                linker.Segment(
+                    seg.name,
+                    linker.vram_expr(seg),
+                    getattr(seg, "subalign", None),
+                    objects,
+                    getattr(seg, "vram_class", None)
+                    and seg.vram_class.name,
+                )
+            )
+        return segments
 
-        ld_path = self.linker_script_path()
-        lines = ld_path.read_text().splitlines(keepends=True)
-        filtered = [
-            line for line in lines if not any(obj in line for obj in discard_objs)
-        ]
-        ld_path.write_text("".join(filtered))
+    def source_cflags(self, src: Path, segment: str, non_matching: bool) -> str:
+        parts = src.parts
+        libultra = "nusys" in parts or "os" in parts
+        cflags = self.sources_config.cflags.get(src.as_posix())
+        if cflags is None:
+            cflags = "" if libultra else "-fforce-addr"
+        if libultra:
+            cflags += (
+                " -Wno-maybe-uninitialized -Wno-inline -Wno-pointer-to-int-cast"
+                " -Wno-strict-aliasing -Wno-pointer-sign"
+            )
+        if "gcc" in parts:
+            cflags += " -Wno-pointer-sign"
+        # Effects are TLB mapped, so they must not call memset and friends.
+        if "effects" in parts:
+            cflags += " -fno-tree-loop-distribute-patterns"
+        if non_matching or segment not in ("main", "engine1", "engine2"):
+            cflags += " -fno-common"
+        return cflags.strip()
 
     def build_path(self) -> Path:
         return Path(f"ver/{self.version}/build")
@@ -776,6 +831,33 @@ class Configure:
 
         import splat
 
+        # Compile everything the filesystem scan found.
+        for segment, src_paths in self.sources.items():
+            for src in src_paths:
+                if src.suffix == ".s":
+                    build(
+                        self.source_object(src),
+                        [src],
+                        "as",
+                        variables={"cppflags": f"-DVERSION_{self.version.upper()}"},
+                    )
+                    continue
+                build(
+                    self.source_object(src),
+                    [src],
+                    "cxx_modern" if src.suffix == ".cpp" else "cc_modern",
+                    variables={
+                        "cflags": self.source_cflags(src, segment, non_matching),
+                        "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
+                    },
+                )
+
+        scanned = {
+            posix(self.source_object(p))
+            for paths in self.sources.values()
+            for p in paths
+        }
+
         # Build objects
         for entry in self.linker_entries:
             seg = entry.segment
@@ -785,130 +867,40 @@ class Configure:
 
             assert entry.object_path is not None
 
+            # Sources are compiled from the scan above, but a segment may still
+            # have embedded images to build below.
+            from_scan = posix(entry.object_path) in scanned
+
             if isinstance(seg, splat.segtypes.n64.header.N64SegHeader):
-                build(entry.object_path, entry.src_paths, "as")
+                if not from_scan:
+                    build(entry.object_path, entry.src_paths, "as")
             elif isinstance(seg, splat.segtypes.common.hasm.CommonSegHasm):
                 cppflags = f"-DVERSION_{self.version.upper()}"
 
                 if version == "ique" and seg.name.startswith("os/"):
                     cppflags += " -DBBPLAYER"
 
-                build(
-                    entry.object_path,
-                    entry.src_paths,
-                    "as",
-                    variables={"cppflags": cppflags},
-                )
+                if not from_scan:
+                    build(
+                        entry.object_path,
+                        entry.src_paths,
+                        "as",
+                        variables={"cppflags": cppflags},
+                    )
             elif isinstance(seg, splat.segtypes.common.asm.CommonSegAsm) or (
                 isinstance(seg, splat.segtypes.common.data.CommonSegData)
                 and not seg.type[0] == "."
                 or isinstance(seg, splat.segtypes.common.textbin.CommonSegTextbin)
             ):
-                build(entry.object_path, entry.src_paths, "as")
+                if not from_scan:
+                    build(entry.object_path, entry.src_paths, "as")
             elif seg.type in ["pm_effect_loads", "pm_effect_shims"]:
-                build(entry.object_path, entry.src_paths, "as")
+                if not from_scan:
+                    build(entry.object_path, entry.src_paths, "as")
             elif isinstance(seg, splat.segtypes.common.c.CommonSegC) or (
                 isinstance(seg, splat.segtypes.common.data.CommonSegData)
                 and seg.type[0] == "."
             ):
-                cflags = None
-                if isinstance(seg.yaml, dict):
-                    cflags = seg.yaml.get("cflags")
-                elif len(seg.yaml) >= 4:
-                    cflags = seg.yaml[3]
-
-                cppflags = f"-DVERSION_{self.version.upper()}"
-
-                # default cflags where not specified
-                src_parts = entry.src_paths[0].parts
-
-                if cflags is None:
-                    if "nusys" in src_parts:
-                        cflags = ""
-                    elif "os" in src_parts:  # libultra
-                        cflags = ""
-                    else:  # papermario
-                        cflags = "-fforce-addr"
-
-                # c
-                task = "cc_modern"
-                if entry.src_paths[0].suffixes[-1] == ".cpp":
-                    task = "cxx_modern"
-
-                if task == "cxx":
-                    task = "cxx_modern"
-
-                if entry.src_paths[0].suffixes[-1] == ".s":
-                    task = "as"
-
-                cflags = cflags.replace("gcc_modern", "").replace("gcc_272", "")
-
-                if "nusys" in src_parts or "os" in src_parts:
-                    cflags += (
-                        " -Wno-maybe-uninitialized"
-                        " -Wno-inline"
-                        " -Wno-pointer-to-int-cast"
-                        " -Wno-strict-aliasing"
-                        " -Wno-pointer-sign"
-                    )
-
-                if "gcc" in src_parts:
-                    cflags += " -Wno-pointer-sign"
-
-                cppflags += " -DMODERN_COMPILER"
-
-                if version == "ique":
-                    if "nusys" in entry.src_paths[0].parts:
-                        pass
-                    elif "os" in entry.src_paths[0].parts:
-                        cppflags += " -DBBPLAYER"
-                    elif entry.src_paths[0].parts[-2] == "bss":
-                        cppflags += " -DBBPLAYER"
-
-                # Effects must call via shims due to being TLB mapped
-                if "effects" in entry.src_paths[0].parts:
-                    cflags += (
-                        " -fno-tree-loop-distribute-patterns"  # Don't call memset etc
-                    )
-
-                # Dead cod
-                if isinstance(seg.parent.yaml, dict) and seg.parent.yaml.get(
-                    "dead_code", False
-                ):
-                    obj_path = posix(entry.object_path)
-                    init_obj_path = Path(obj_path + ".dead")
-                    build(
-                        init_obj_path,
-                        entry.src_paths,
-                        task,
-                        variables={
-                            "cflags": cflags,
-                            "cppflags": cppflags,
-                        },
-                    )
-                    build(
-                        entry.object_path,
-                        [init_obj_path],
-                        "dead_cc_fix",
-                    )
-                # Not dead cod
-                else:
-                    if non_matching or seg.get_most_parent().name not in [
-                        "main",
-                        "engine1",
-                        "engine2",
-                    ]:
-                        cflags += " -fno-common"
-                    build(
-                        entry.object_path,
-                        entry.src_paths,
-                        task,
-                        variables={
-                            "cflags": cflags,
-                            "cppflags": cppflags,
-                        },
-                    )
-
                 # images embedded inside data aren't linked, but they do need to be built into .bin files
                 if isinstance(seg, splat.segtypes.common.group.CommonSegGroup):
                     for subseg in seg.subsegments:
