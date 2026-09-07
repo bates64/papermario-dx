@@ -498,7 +498,7 @@ def main():
 
     any_changed = False
     for path in args.files:
-        with open(path, "r") as f:
+        with open(path, "r", encoding="utf-8") as f:
             source = f.read()
         result = format_source(source, path)
         if result != source:
@@ -506,7 +506,7 @@ def main():
             if args.check:
                 print(f"::warning file={path},title=File not formatted::This file was changed, but it isn't formatted correctly. Run treefmt to format this file.")
             else:
-                with open(path, "w") as f:
+                with open(path, "w", encoding="utf-8") as f:
                     f.write(result)
                 print(f"reformatted {path}", file=sys.stderr)
 

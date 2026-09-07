@@ -826,7 +826,7 @@ OVL_DIR_HEADER_SIZE = 4 + 4  # magic(u32) + count(u32)
 def parse_syms(syms_path):
     """Parse a syms.ld file into a dict of symbol name -> integer value."""
     syms = {}
-    with open(syms_path) as f:
+    with open(syms_path, "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip().rstrip(";").strip()
             if line.startswith("PROVIDE(") and line.endswith(")"):
@@ -1566,7 +1566,7 @@ def cmd_apply_all(args):
     else:
         syms = parse_syms(args.syms)
 
-    with open(args.manifest) as f:
+    with open(args.manifest, "r", encoding="utf-8") as f:
         entries = json.load(f)
 
     with open(args.input_rom, "rb") as f:

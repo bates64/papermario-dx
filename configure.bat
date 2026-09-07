@@ -13,13 +13,6 @@ if errorlevel 1 exit /b 1
 set "PATH=%TOOLCHAIN_DIR%\bin;%TOOLCHAIN_DIR%\python;%PATH%"
 set "PYTHONUTF8=1"
 
-:: Configure if needed
-if not exist build.ninja (
-    echo Running configure...
-    python.exe tools\build\configure.py
-    if errorlevel 1 exit /b 1
-)
-
-:: Build
-echo Building...
-ninja.exe %*
+:: Configure
+python.exe tools\build\configure.py %*
+if errorlevel 1 exit /b 1
