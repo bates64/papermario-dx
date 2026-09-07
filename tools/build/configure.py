@@ -22,6 +22,7 @@ if sys.platform == 'win32':
     import ntfsutils.junction
 
 import linker
+from layout import Layout
 from segments import SegmentMap
 
 # Configuration:
@@ -485,13 +486,11 @@ class Configure:
             self.version_path / "segments.yaml", ROOT / "src"
         )
         self.sources = self.sources_config.scan()
+        self.layout = Layout(self.version_path / "layout.yaml")
         segments = self.build_segments()
-        follows = {
-            c["name"]: c["follows_classes"]
-            for c in split.config.get("vram_classes", [])
-            if isinstance(c, dict) and c.get("follows_classes")
-        }
-        linker.write_script(ROOT / self.linker_script_path(), segments, follows)
+        linker.write_script(
+            ROOT / self.linker_script_path(), segments, self.layout.follows
+        )
         linker.write_symbol_header(
             ROOT / self.build_path() / "include/ld_addrs.h", segments
         )
@@ -502,42 +501,36 @@ class Configure:
     def build_segments(self) -> List["linker.Segment"]:
         """Segments in ROM order, with their objects.
 
-        splat supplies each segment's address and its asset objects; the source
-        objects come from the filesystem instead of from splat.yaml.
+        layout.yaml supplies the segments and their addresses, segments.py the
+        source objects. splat supplies only the asset objects it splits.
         """
         build_prefix = posix(self.build_path()) + "/"
         src_prefix = build_prefix + "src/"
         roots = (f"assets/{self.version}/", "src/", f"ver/{self.version}/")
         label = lambda obj: linker.data_label(obj, build_prefix, roots)
-        order = []
         assets: Dict[str, List[str]] = {}
-
         for entry in self.linker_entries:
             seg = entry.segment.get_most_parent()
             if seg.type in ("linker", "linker_offset"):
                 continue
-            if seg.name not in assets:
-                assets[seg.name] = []
-                order.append(seg)
             if entry.object_path is not None:
                 obj = posix(entry.object_path)
                 if not obj.startswith(src_prefix):
-                    assets[seg.name].append((obj, label(obj)))
+                    assets.setdefault(seg.name, []).append((obj, label(obj)))
 
         segments = []
-        for seg in order:
+        for seg in self.layout.segments:
             objects = [
                 (posix(self.source_object(p)), label(posix(self.source_object(p))))
                 for p in self.sources.get(linker.symbol_name(seg.name), [])
-            ] + assets[seg.name]
+            ] + assets.get(seg.name, [])
             segments.append(
                 linker.Segment(
                     seg.name,
-                    linker.vram_expr(seg),
-                    getattr(seg, "subalign", None),
+                    seg.vram_expr,
+                    seg.subalign,
                     objects,
-                    getattr(seg, "vram_class", None)
-                    and seg.vram_class.name,
+                    seg.vram_class and seg.vram_class.name,
                 )
             )
         return segments

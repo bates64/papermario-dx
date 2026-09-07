@@ -45,15 +45,6 @@ class Segment:
         self.vram_class = vram_class
 
 
-def vram_expr(seg) -> Optional[str]:
-    """Where a segment starts: a chained symbol if it has one, else an address."""
-    vram_class = getattr(seg, "vram_class", None)
-    if vram_class is not None and vram_class.vram_symbol:
-        return vram_class.vram_symbol
-    if seg.vram_start is not None:
-        return f"0x{seg.vram_start:X}"
-    return None
-
 
 def _section(out: List[str], name: str, kind: str, objects) -> None:
     out.append(f"        {name}_{kind}_START = .;")
