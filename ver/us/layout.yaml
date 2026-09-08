@@ -14,9 +14,6 @@ asset_stack:
   - dx
   - us
 
-defaults:
-  subalign: 8
-
 classes:
   action_cmd: { vram: 0x802A9000, follows: [battle_move] }
   area_entities: { vram: 0x802BAE00, vram_symbol: model_clear_render_tasks_VRAM_END }

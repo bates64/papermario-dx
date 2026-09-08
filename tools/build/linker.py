@@ -92,6 +92,8 @@ def write_script(path: Path, segments: List[Segment],
     for seg in segments:
         name = seg.name
         addr = f"{seg.vram} " if seg.vram else ""
+        # Only where a segment needs an alignment of its own; the linker
+        # otherwise uses each section's own, which is what the source asks for.
         subalign = f" SUBALIGN({seg.subalign})" if seg.subalign else ""
 
         out.append(f"    {name}_ROM_START = __romPos;")

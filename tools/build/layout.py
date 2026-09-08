@@ -54,7 +54,7 @@ class SegmentSpec:
 class Layout:
     def __init__(self, path: Path):
         cfg = yaml.safe_load(path.read_text())
-        subalign = (cfg.get("defaults") or {}).get("subalign", 8)
+        subalign = (cfg.get("defaults") or {}).get("subalign")
         self.classes = {
             name: VramClass(name, spec or {})
             for name, spec in (cfg.get("classes") or {}).items()
