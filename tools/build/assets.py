@@ -115,5 +115,5 @@ def included_palettes(src_root: Path) -> set:
     palettes = set()
     for source in sorted(src_root.rglob("*.c")):
         for match in re.finditer(r'INCLUDE_PAL\(\s*"([^"]+)"', source.read_text()):
-            palettes.add(str(Path(match.group(1)).with_suffix(".png")))
+            palettes.add(Path(match.group(1)).with_suffix(".png").as_posix())
     return palettes
