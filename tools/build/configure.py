@@ -968,6 +968,16 @@ class Configure:
 
         self.register_asset(object_path)
 
+    def charset_sources(self, directory: str) -> List[Path]:
+        """The images of one font, across the asset stack."""
+        found: Dict[str, Path] = {}
+        for layer in reversed(self.asset_stack):
+            root = ROOT / "assets" / layer / "charset" / directory
+            if root.is_dir():
+                for source in root.glob("*.png"):
+                    found[source.name] = source.relative_to(ROOT)
+        return [found[name] for name in sorted(found)]
+
     def write_charset_rules(self, build) -> None:
         """Pack each font's glyphs and palettes into the files the text engine reads.
 
@@ -977,11 +987,11 @@ class Configure:
         charset = Path("assets") / self.version / "charset"
         for name in self.layout.charsets:
             glyphs = []
-            for source in sorted((ROOT / charset / name).glob("*.png")):
+            for source in self.charset_sources(name):
                 raster = self.build_path() / "charset" / name / (source.stem + ".bin")
                 build(
                     raster,
-                    [source.relative_to(ROOT)],
+                    [source],
                     "pigment",
                     variables={"img_type": "ci4", "img_flags": ""},
                 )
@@ -989,7 +999,7 @@ class Configure:
             build(self.build_path() / charset / (name + ".dat"), glyphs, "charset")
 
             palettes = []
-            for source in sorted((ROOT / charset / name / "palette").glob("*.png")):
+            for source in self.charset_sources(f"{name}/palette"):
                 raster = (
                     self.build_path()
                     / "charset"
@@ -999,7 +1009,7 @@ class Configure:
                 )
                 build(
                     raster,
-                    [source.relative_to(ROOT)],
+                    [source],
                     "pigment",
                     variables={"img_type": "palette", "img_flags": ""},
                 )
