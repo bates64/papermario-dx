@@ -67,7 +67,7 @@ segments:
   - { name: ui_images_filemenu_pause, class: ui_images_filemenu_pause }
   - { name: pause, class: filemenu_pause }
   - { name: filemenu, class: filemenu_pause }
-  - { name: battle_code, class: battle_code }
+  - { name: battle, class: battle_code }
   - { name: icon }
   - { name: logos }
   - { name: title/bg_1 }
@@ -1147,7 +1147,6 @@ sources:
   # Directories whose segment is not the one their path names.
   dirs:
     src/audio: main            # the audio segment is the sound bank, not code
-    src/battle/states: battle_code
     src/battle/menus: btl_states_menus
     src/menu_hud_scripts: ui_images_filemenu_pause
     src/world/area/dgb: dgb_01_smash_bridges
