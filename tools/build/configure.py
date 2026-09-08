@@ -864,6 +864,10 @@ class Configure:
                         "img_type": "bg",
                         "img_flags": "",
                     },
+                    # The builder picks up <name>.<n>.png as further palettes.
+                    implicit_deps=sorted(
+                        (ROOT / path.parent).glob(path.name.split(".")[0] + ".*.png")
+                    ),
                 )
             elif name.endswith("_tex"):
                 compress = False
@@ -1227,6 +1231,7 @@ class Configure:
             variables: Dict[str, str] = {},
             implicit_outputs: List[str] = [],
             asset_deps: List[str] = [],
+            implicit_deps: List[str] = [],
         ):
             if not isinstance(object_paths, list):
                 object_paths = [object_paths]
@@ -1258,7 +1263,7 @@ class Configure:
             if needs_build:
                 skip_outputs.update(object_strs)
 
-                implicit = []
+                implicit = [posix(dep) for dep in implicit_deps]
                 order_only = []
 
                 if task in ["cc", "cxx", "cc_modern", "cxx_modern"]:
