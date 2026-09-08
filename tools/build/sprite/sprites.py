@@ -33,8 +33,7 @@ import png  # type: ignore
 import struct
 import subprocess
 import xml.etree.ElementTree as ET
-from dataclasses import dataclass
-from typing import Dict, List, Tuple
+from typing import Dict, Tuple
 
 TOOLS_DIR = Path(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 sys.path.append(str(TOOLS_DIR))

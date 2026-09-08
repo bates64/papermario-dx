@@ -16,14 +16,10 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 import crunch64
 
 import png  # type: ignore
-import yaml as yaml_loader
 from n64img.image import CI4
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "splat_ext"))
 from sprite_common import AnimComponent, iter_in_groups, read_offset_list
-
-sys.path.insert(0, str(Path(__file__).parent.parent))
-from common import get_asset_path
 
 # TODO move into yaml
 PLAYER_PAL_TO_RASTER: Dict[str, int] = {

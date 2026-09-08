@@ -2,18 +2,30 @@
 """splat's sprite segment. The tables it reads live with the build tools."""
 
 import sys
+import xml.etree.ElementTree as ET
 from pathlib import Path
+from typing import List
+
+import crunch64
+import yaml as yaml_loader
 
 from splat.segtypes.segment import Segment
 from splat.util import options
 
+sys.path.insert(0, str(Path(__file__).parent.parent / "build"))
 sys.path.insert(0, str(Path(__file__).parent.parent / "build" / "sprite"))
-from tables import *  # noqa: F401,F403
-from tables import (  # noqa: F401
+from common import get_asset_path
+from tables import (
     NPC_SPRITE_MEDADATA_XML_FILENAME,
-    PLAYER_SPRITE_MEDADATA_XML_FILENAME,
     NpcSprite,
-    PlayerSprite,
+    PlayerSpriteRasterSet,
+    extract_raster_table_entries,
+    extract_sprites,
+    write_npc_metadata,
+    write_player_metadata,
+    write_player_palettes,
+    write_player_rasters,
+    write_player_xmls,
 )
 
 class N64SegPm_sprites(Segment):

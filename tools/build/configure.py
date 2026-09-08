@@ -11,11 +11,6 @@ from glob import glob
 from pathlib import Path
 from typing import Dict, List, Set, Tuple, Union
 
-try:
-    import tomllib
-except ModuleNotFoundError:
-    import tomli as tomllib
-
 import ninja_syntax
 
 if sys.platform == 'win32':
@@ -761,7 +756,6 @@ class Configure:
 
     def write_mapfs_rules(self, build, c_maps) -> None:
         """Build the map filesystem."""
-        mapfs = Path("assets") / self.version / "mapfs"
         src_paths = self.mapfs_contents()
 
         seg_name = "mapfs"
@@ -1439,11 +1433,6 @@ class Configure:
                     },
                 )
 
-        scanned = {
-            posix(self.source_object(p))
-            for paths in self.sources.values()
-            for p in paths
-        }
 
         # Run undefined_syms through cpp
         ninja.build(
