@@ -1161,6 +1161,18 @@ class Configure:
         layout.yaml supplies the segments and their addresses, segments.py the
         source objects. splat supplies only the asset objects it splits.
         """
+        declared = {seg.name for seg in self.layout.segments}
+        # Objects are placed by iterating the layout, so a segment name nothing
+        # declares would drop its objects out of the ROM without a diagnostic.
+        undeclared = sorted(
+            (set(self.sources) | set(self.asset_objects)) - declared
+        )
+        if undeclared:
+            raise SystemExit(
+                f"configure: {self.version}/layout.yaml declares no segment named "
+                + ", ".join(undeclared)
+            )
+
         build_prefix = posix(self.build_path()) + "/"
         roots = (f"assets/{self.version}/", "src/", f"ver/{self.version}/")
         label = lambda obj: linker.data_label(obj, build_prefix, roots)
