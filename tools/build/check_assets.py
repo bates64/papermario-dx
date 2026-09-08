@@ -2,8 +2,8 @@
 """Checks that assets describe themselves as well as splat.yaml describes them.
 
 Reads every image splat declares and compares it against what assets.py works
-out from the file and its sidecars. Run this after touching png.py, assets.py
-or a .meta file:
+out from the file and its sidecars. Run this after touching raster.py,
+assets.py or a .meta file:
 
     python3 tools/build/check_assets.py
 """
