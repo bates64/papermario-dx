@@ -14,7 +14,7 @@ path.append(str(Path(__file__).parent.parent.parent / "splat"))
 path.append(str(Path(__file__).parent.parent.parent / "splat_ext"))
 
 from common import get_asset_path, iter_in_groups
-from tables import (
+from sprite_tables import (
     MAX_COMPONENTS_XML,
     PALETTE_GROUPS_XML,
     NpcRaster,

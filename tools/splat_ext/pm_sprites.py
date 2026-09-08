@@ -15,7 +15,7 @@ from splat.util import options
 sys.path.insert(0, str(Path(__file__).parent.parent / "build"))
 sys.path.insert(0, str(Path(__file__).parent.parent / "build" / "sprite"))
 from common import get_asset_path
-from tables import (
+from sprite_tables import (
     NPC_SPRITE_MEDADATA_XML_FILENAME,
     NpcSprite,
     PlayerSpriteRasterSet,

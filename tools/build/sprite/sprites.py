@@ -10,10 +10,9 @@ sys.path.append(str(Path(__file__).parent))
 sys.path.append(str(Path(__file__).parent.parent))
 sys.path.append(str(Path(__file__).parent.parent.parent / "splat_ext"))
 sys.path.append(str(Path(__file__).parent.parent.parent))
-sys.path.append(str(Path(__file__).parent.parent.parent))
 sys.path.append(str(Path(__file__).parent.parent.parent / "splat"))
 from common import get_asset_path, iter_in_groups
-from tables import (
+from sprite_tables import (
     BACK_PALETTE_XML,
     LIST_END_BYTES,
     MAX_COMPONENTS_XML,
