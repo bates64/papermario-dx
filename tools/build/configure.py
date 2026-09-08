@@ -22,6 +22,19 @@ import linker
 from layout import Layout
 from segments import SegmentMap
 
+# Everything configure reads to decide what build.ninja should contain. The
+# generator rule reruns configure when any of these change; a module missing
+# here would leave build.ninja stale after an edit to it.
+CONFIGURE_MODULES = [
+    "configure.py",
+    "assets.py",
+    "effect_table.py",
+    "layout.py",
+    "linker.py",
+    "raster.py",
+    "segments.py",
+]
+
 # Configuration:
 VERSIONS = ["us"]
 
@@ -124,6 +137,15 @@ class RecordingWriter(ninja_syntax.Writer):
         return super().build(
             outputs, rule, inputs, implicit, order_only, variables, implicit_outputs
         )
+
+
+def configure_input_paths(versions: List[str]) -> List[str]:
+    """Every file configure reads to decide what build.ninja should contain."""
+    paths = [posix(BUILD_TOOLS / module) for module in CONFIGURE_MODULES]
+    for version in versions:
+        paths.append(f"ver/{version}/layout.yaml")
+        paths.append(f"ver/{version}/splat.yaml")
+    return paths
 
 
 def exec_shell(command: List[str]) -> str:
@@ -1860,9 +1882,9 @@ if __name__ == "__main__":
         new_content = "\n".join(file_list) + "\n"
         if stamp.exists() and stamp.read_text() == new_content:
             build_ninja = ROOT / "build.ninja"
-            configure_inputs = [ROOT / BUILD_TOOLS / "configure.py"]
-            for version in VERSIONS:
-                configure_inputs.append(ROOT / f"ver/{version}/splat.yaml")
+            configure_inputs = [
+                ROOT / p for p in configure_input_paths(VERSIONS)
+            ]
             newest_config_input = max(
                 p.stat().st_mtime_ns for p in configure_inputs if p.exists()
             )
@@ -2059,9 +2081,7 @@ if __name__ == "__main__":
         pool="console",
     )
 
-    configure_deps = [str(BUILD_TOOLS / "configure.py")]
-    for version in versions:
-        configure_deps.append(f"ver/{version}/splat.yaml")
+    configure_deps = configure_input_paths(versions)
 
     for top in ["src", "include", "assets"]:
         for dirpath, dirnames, _ in os.walk(ROOT / top):
