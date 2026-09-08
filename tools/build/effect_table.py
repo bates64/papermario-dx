@@ -28,7 +28,7 @@ class Effect:
 
 
 def effects_from_yaml(yaml_path: Path) -> List[Effect]:
-    with open(yaml_path) as f:
+    with open(yaml_path, "r", encoding="utf-8") as f:
         effects_yaml = yaml_loader.load(f.read(), Loader=yaml_loader.SafeLoader)
 
     effects: List[Effect] = []
