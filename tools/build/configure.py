@@ -2003,7 +2003,14 @@ if __name__ == "__main__":
     # add splat to python import path
     sys.path.insert(0, str((ROOT / args.splat / "src").resolve()))
 
-    ninja = RecordingWriter(open(str(ROOT / "build.ninja"), "w", encoding="utf-8"), width=9999)
+    # The manifest is written as configure goes, so a run that gives up part
+    # way through would leave a truncated build.ninja that ninja would happily
+    # use. Build it beside the real one and move it into place only on success.
+    build_ninja_path = ROOT / "build.ninja"
+    partial_build_ninja = build_ninja_path.with_suffix(".ninja.partial")
+    ninja = RecordingWriter(
+        open(str(partial_build_ninja), "w", encoding="utf-8"), width=9999
+    )
 
     non_matching = args.non_matching or True or args.shift
 
@@ -2066,6 +2073,8 @@ if __name__ == "__main__":
             "\nCheck that each file has a supported extension and sits in a directory "
             "the build expects it in. Remove any file that isn't meant to be built."
         )
+        ninja.close()
+        partial_build_ninja.unlink()
         raise SystemExit(1)
 
     ninja.build("all", "phony", all)
@@ -2112,9 +2121,11 @@ if __name__ == "__main__":
         implicit=configure_deps,
     )
 
+    ninja.close()
+    os.replace(partial_build_ninja, build_ninja_path)
+
     # Generate compile_commands.json with MIPS cross-compiler flags stripped,
     # so clangd and clang-tidy can parse the compile commands.
-    ninja.close()
     try:
         compdb = subprocess.run(
             ["ninja", "-t", "compdb"],
