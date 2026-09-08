@@ -442,7 +442,7 @@ class Configure:
         )
         self.sources = self.sources_config.scan()
 
-    def dump(self, assets: bool, code: bool, shift: bool, debug: bool) -> None:
+    def dump(self, assets: bool, code: bool) -> None:
         """Split the assets out of the baserom.
 
         This is all splat is needed for, and only until the assets are on disk,
@@ -480,11 +480,6 @@ class Configure:
             modes.extend(["code", "c", "data", "rodata"])
 
         splat_files = [Path(self.version_path / "splat.yaml")]
-        if debug:
-            splat_files += [Path(self.version_path / "splat-debug.yaml")]
-
-        if shift:
-            splat_files += [Path(self.version_path / "splat-shift.yaml")]
 
         split.main(
             splat_files,
@@ -1754,10 +1749,6 @@ if __name__ == "__main__":
             configure_inputs = [ROOT / BUILD_TOOLS / "configure.py"]
             for version in VERSIONS:
                 configure_inputs.append(ROOT / f"ver/{version}/splat.yaml")
-                if args.debug:
-                    configure_inputs.append(ROOT / f"ver/{version}/splat-debug.yaml")
-                if args.shift:
-                    configure_inputs.append(ROOT / f"ver/{version}/splat-shift.yaml")
             newest_config_input = max(
                 p.stat().st_mtime_ns for p in configure_inputs if p.exists()
             )
@@ -1903,9 +1894,7 @@ if __name__ == "__main__":
 
         configure.load()
         if args.dump or not configure.dump_stamp().exists():
-            configure.dump(
-                not args.no_split_assets, args.split_code, args.shift, args.debug
-            )
+            configure.dump(not args.no_split_assets, args.split_code)
         configure.write_ninja(ninja, skip_files, non_matching, args.c_maps)
 
         all.append(posix(configure.rom_ok_path()))
@@ -1943,14 +1932,6 @@ if __name__ == "__main__":
     configure_deps = [str(BUILD_TOOLS / "configure.py")]
     for version in versions:
         configure_deps.append(f"ver/{version}/splat.yaml")
-        if args.debug:
-            p = f"ver/{version}/splat-debug.yaml"
-            if os.path.exists(p):
-                configure_deps.append(p)
-        if args.shift:
-            p = f"ver/{version}/splat-shift.yaml"
-            if os.path.exists(p):
-                configure_deps.append(p)
 
     for top in ["src", "include", "assets"]:
         for dirpath, dirnames, _ in os.walk(ROOT / top):
