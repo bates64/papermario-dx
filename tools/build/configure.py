@@ -1248,8 +1248,8 @@ class Configure:
                     ".c"
                 ):
                     generated_code.append(obj_posix)
-                elif object_path.name.endswith(".png.bin") or object_path.name.endswith(
-                    ".pal.bin"
+                elif object_path.name.endswith(
+                    (".png.bin", ".pal.bin", ".dat")
                 ):
                     inc_img_bins.append(obj_posix)
 
