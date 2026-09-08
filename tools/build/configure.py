@@ -17,6 +17,7 @@ if sys.platform == 'win32':
     import ntfsutils.junction
 
 import assets
+import effect_table
 import linker
 from layout import Layout
 from segments import SegmentMap
@@ -576,14 +577,15 @@ class Configure:
         """Generate the trampolines that reach effects and their shims."""
         import yaml
 
-        effects = yaml.safe_load((ROOT / "src/effects.yaml").read_text())
+        effects = effect_table.effects_from_yaml(ROOT / "src/effects.yaml")
         shims = yaml.safe_load((ROOT / "src/effect_shims.yaml").read_text())
 
         stubs = [
-            ("load", "asm/effects", (entry or {}).get("name") or f"{index:02X}", index)
-            for index, entry in enumerate(effects)
+            ("load", "asm/effects", effect.name, index)
+            for index, effect in enumerate(effects)
         ] + [("shim", "asm/effect_shims", name, index) for index, name in enumerate(shims)]
 
+        stub_tool = Path(BUILD_TOOLS / "effect_stub.py")
         for kind, directory, name, index in stubs:
             source = self.build_path() / directory / (name + ".s")
             build(
@@ -595,6 +597,7 @@ class Configure:
                     "stub_name": name,
                     "stub_index": str(index),
                 },
+                implicit_deps=[stub_tool],
             )
             obj = self.build_path() / directory / (name + ".s.o")
             build(obj, [source], "as",
