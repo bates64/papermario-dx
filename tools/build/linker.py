@@ -1,9 +1,9 @@
 """Writes the linker script and its symbol header.
 
 Which objects a segment contains comes from the filesystem (see segments.py).
-Where a segment lives comes from splat's segment metadata: either an explicit
-VRAM address or, for a chained vram_class, the symbol the previous segment
-ends at.
+Where a segment lives comes from layout.yaml (see layout.py): either an
+explicit VRAM address or, for a class that follows others, the symbol the
+segments it follows end at.
 
 Segments are laid out uniformly. Object order within a segment is the sorted
 order segments.py produces, so the script is identical on every platform.
@@ -11,7 +11,11 @@ order segments.py produces, so the script is identical on every platform.
 
 import re
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
+
+# An object as the script refers to it, paired with the symbol labelling its
+# data: see data_label.
+LabelledObject = Tuple[str, str]
 
 BUILD_SECTIONS = ("TEXT", "DATA", "RODATA")
 SYMBOL_SUFFIXES = (
@@ -37,7 +41,7 @@ def symbol_name(segment_name: str) -> str:
 
 class Segment:
     def __init__(self, name: str, vram: Optional[str], subalign: Optional[int],
-                 objects: List[str], vram_class: Optional[str] = None):
+                 objects: List[LabelledObject], vram_class: Optional[str] = None):
         self.name = symbol_name(name)
         self.vram = vram
         self.subalign = subalign
@@ -45,8 +49,8 @@ class Segment:
         self.vram_class = vram_class
 
 
-
-def _section(out: List[str], name: str, kind: str, objects) -> None:
+def _section(out: List[str], name: str, kind: str,
+             objects: List[LabelledObject]) -> None:
     out.append(f"        {name}_{kind}_START = .;")
     for obj, label in objects:
         # Data symbols are addressed by name from C, so label each contribution.
@@ -86,8 +90,8 @@ def _class_vram(segments: List[Segment], follows: Dict[str, List[str]]):
 
 
 def write_script(path: Path, segments: List[Segment],
-                 follows: Dict[str, List[str]] = {}) -> None:
-    class_vram = _class_vram(segments, follows)
+                 follows: Optional[Dict[str, List[str]]] = None) -> None:
+    class_vram = _class_vram(segments, follows or {})
     out = ["SECTIONS", "{", "    __romPos = 0;", ""]
     for seg in segments:
         name = seg.name
