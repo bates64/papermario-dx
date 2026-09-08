@@ -727,20 +727,42 @@ class Configure:
         build(obj, [Path(posix(blob) + ".bin")], "bin")
         self.register_asset(obj)
 
-    def write_mapfs_rules(self, build, c_maps) -> None:
-        """Build the map filesystem in the order the ROM stores it."""
-        import yaml
+    def mapfs_contents(self) -> List[Path]:
+        """Everything the map filesystem holds, found by looking for it.
 
-        toc = yaml.safe_load((self.version_path / "mapfs.yaml").read_text())
+        The filesystem is looked up by name at runtime, so the order here only
+        decides where things sit in the ROM. Adding a map means adding its
+        files; nothing else has to be told about it.
+        """
         mapfs = Path("assets") / self.version / "mapfs"
-        src_paths = []
-        for name in toc["maps"]:
-            src_paths.append(mapfs / "geom" / f"{name}_shape_built.bin")
-            src_paths.append(mapfs / "geom" / f"{name}_hit.bin")
-        src_paths += [mapfs / "tex" / f"{n}_tex.bin" for n in toc["textures"]]
-        src_paths += [mapfs / "bg" / f"{n}_bg.png" for n in toc["backgrounds"]]
-        src_paths.append(mapfs / "title_data.bin")
-        src_paths += [mapfs / "party" / f"{n}.png" for n in toc["parties"]]
+
+        def names(directory: str, pattern: str) -> List[str]:
+            found = set()
+            for layer in self.asset_stack:
+                found.update(
+                    path.name
+                    for path in (ROOT / "assets" / layer / "mapfs" / directory).glob(
+                        pattern
+                    )
+                )
+            return sorted(found)
+
+        contents = []
+        for shape in names("geom", "*_shape.bin"):
+            name = shape[: -len("_shape.bin")]
+            # The shape is rebuilt before packing; the collision is packed as is.
+            contents.append(mapfs / "geom" / f"{name}_shape_built.bin")
+            contents.append(mapfs / "geom" / f"{name}_hit.bin")
+        contents += [mapfs / "tex" / f"{n[:-5]}.bin" for n in names("tex", "*_tex.json")]
+        contents += [mapfs / "bg" / n for n in names("bg", "*_bg.png")]
+        contents.append(mapfs / "title_data.bin")
+        contents += [mapfs / "party" / n for n in names("party", "*.png")]
+        return contents
+
+    def write_mapfs_rules(self, build, c_maps) -> None:
+        """Build the map filesystem."""
+        mapfs = Path("assets") / self.version / "mapfs"
+        src_paths = self.mapfs_contents()
 
         seg_name = "mapfs"
         object_path = self.build_path() / "assets" / self.version / "mapfs.dat.o"
