@@ -1,7 +1,6 @@
 from pathlib import Path
 from dataclasses import astuple, dataclass
 import os
-import yaml
 import struct
 from typing import List, Optional
 

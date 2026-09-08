@@ -7,37 +7,37 @@
 #include "npc.h"
 #include "hud_element.h"
 
-#include "partner/goombario.h"
+#include "world/partner/goombario.h"
 #include "sprite/npc/WorldGoombario.h"
 
-#include "partner/kooper.h"
+#include "world/partner/kooper.h"
 #include "sprite/npc/WorldKooper.h"
 
-#include "partner/bombette.h"
+#include "world/partner/bombette.h"
 #include "sprite/npc/WorldBombette.h"
 
-#include "partner/parakarry.h"
+#include "world/partner/parakarry.h"
 #include "sprite/npc/WorldParakarry.h"
 
-#include "partner/goompa.h"
+#include "world/partner/goompa.h"
 #include "sprite/npc/Goompa.h"
 
-#include "partner/watt.h"
+#include "world/partner/watt.h"
 #include "sprite/npc/WorldWatt.h"
 
-#include "partner/sushie.h"
+#include "world/partner/sushie.h"
 #include "sprite/npc/WorldSushie.h"
 
-#include "partner/lakilester.h"
+#include "world/partner/lakilester.h"
 #include "sprite/npc/WorldLakilester.h"
 
-#include "partner/bow.h"
+#include "world/partner/bow.h"
 #include "sprite/npc/WorldBow.h"
 
-#include "partner/goombaria.h"
+#include "world/partner/goombaria.h"
 #include "sprite/npc/Goombaria.h"
 
-#include "partner/twink.h"
+#include "world/partner/twink.h"
 #include "sprite/npc/Twink.h"
 
 PartnerStatus gPartnerStatus;

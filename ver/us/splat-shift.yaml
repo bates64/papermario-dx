@@ -1,3 +1,0 @@
-options:
-  ld_use_symbolic_vram_addresses: True
-  emit_subalign: False
