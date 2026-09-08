@@ -34,7 +34,7 @@ classes:
   entity_model: { vram: 0xA000000 }
   entity_model_anim: { vram: 0x0 }
   evt: { vram: 0x802C3000, vram_symbol: world_use_item_VRAM_END }
-  filemenu_pause: { vram: 0x80242BA0, vram_symbol: ui_images_filemenu_pause_VRAM_END }
+  filemenu_pause: { vram: 0x80242BA0, vram_symbol: menu_hud_scripts_VRAM_END }
   font_width: { vram: 0x802EB3D0, vram_symbol: entity_VRAM_END }
   heaps: { vram: 0x80197000, vram_symbol: engine2_VRAM_END }
   heaps2: { vram: 0x80267FF0, follows: [map] }
@@ -64,7 +64,7 @@ segments:
   - { name: font_width, class: font_width }
   - { name: heaps3, class: heaps3 }
   - { name: charset, vram: 0x0 }
-  - { name: ui_images_filemenu_pause, class: ui_images_filemenu_pause }
+  - { name: menu_hud_scripts, class: ui_images_filemenu_pause }
   - { name: pause, class: filemenu_pause }
   - { name: filemenu, class: filemenu_pause }
   - { name: battle, class: battle_code }
@@ -335,7 +335,7 @@ segments:
   - { name: effect_gfx_star_outline, class: effect_gfx }
   - { name: effect_effect_86, vram: 0xE0128000, max_size: 0x1000 }
   - { name: effect_gfx_effect_86, class: effect_gfx }
-  - { name: btl_states_menus, class: battle_move }
+  - { name: battle/menus, class: battle_move }
   - { name: action_cmd_jump, class: action_cmd }
   - { name: action_cmd_hammer, class: action_cmd }
   - { name: action_cmd_flee, class: action_cmd }
@@ -1074,8 +1074,8 @@ assets:
     assets/us/imgfx: imgfx_data
     assets/us/logos: logos
     assets/us/sprite: sprites
-    assets/us/ui/files: ui_images_filemenu_pause
-    assets/us/ui/pause: ui_images_filemenu_pause
+    assets/us/ui/files: menu_hud_scripts
+    assets/us/ui/pause: menu_hud_scripts
   each:
     assets/us/title: 'title/'
   files:
@@ -1146,8 +1146,6 @@ imgfx:
 sources:
   # Directories whose segment is not the one their path names.
   dirs:
-    src/battle/menus: btl_states_menus
-    src/menu_hud_scripts: ui_images_filemenu_pause
     src/world/area/dgb: dgb_01_smash_bridges
 
   # Directories where every source is its own segment, named <prefix><stem>.
