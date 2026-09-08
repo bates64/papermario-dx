@@ -565,6 +565,14 @@ class Configure:
             build(obj, [source], task)
             self.register_asset(obj)
 
+    def imgfx_animations(self) -> List[Path]:
+        """The image effect animations, across the asset stack."""
+        found: Dict[str, Path] = {}
+        for layer in reversed(self.asset_stack):
+            for source in (ROOT / "assets" / layer / "imgfx").glob("*.json"):
+                found[source.name] = source.relative_to(ROOT)
+        return [found[name] for name in sorted(found)]
+
     def write_packer_rules(self, build, ninja, skip_outputs) -> None:
         """Pack the assets that become one blob in the ROM."""
         version_assets = Path("assets") / self.version
@@ -608,14 +616,10 @@ class Configure:
             asset_deps=[audio],
         )
 
-        # Image effect tables are emitted in a fixed order, and the generated C
-        # is compiled rather than wrapped like the other blobs.
+        # Each animation is reached by name from a table in the engine, so the
+        # order these are emitted in only decides where they sit.
         imgfx_c = version_assets / "imgfx" / "imgfx_data.c"
-        build(
-            imgfx_c,
-            [version_assets / "imgfx" / (name + ".json") for name in self.layout.imgfx],
-            "imgfx_data",
-        )
+        build(imgfx_c, self.imgfx_animations(), "imgfx_data")
         imgfx_obj = self.build_path() / (posix(imgfx_c) + ".o")
         build(
             imgfx_obj,

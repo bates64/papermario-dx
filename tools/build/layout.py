@@ -68,7 +68,6 @@ class Layout:
         self.asset_each: Dict[str, str] = assets.get("each") or {}
         self.asset_files: Dict[str, str] = assets.get("files") or {}
         self.packed = [Path(p) for p in cfg.get("packed") or []]
-        self.imgfx: List[str] = cfg.get("imgfx") or []
         self.charsets: List[str] = cfg.get("charsets") or []
         self.asset_stack: List[str] = cfg.get("asset_stack") or []
         self.sources: Dict = cfg.get("sources") or {}
