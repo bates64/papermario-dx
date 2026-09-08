@@ -1140,7 +1140,7 @@ class Configure:
         roots = (f"assets/{self.version}/", "src/", f"ver/{self.version}/")
         label = lambda obj: linker.data_label(obj, build_prefix, roots)
         assets = {
-            segment: [(posix(o), label(posix(o))) for o in sorted(objects)]
+            segment: [(posix(o), label(posix(o))) for o in sorted(objects, key=posix)]
             for segment, objects in self.asset_objects.items()
         }
 
@@ -1224,7 +1224,7 @@ class Configure:
 
             if path is not None:
                 if path.is_dir():
-                    out.extend(posix(p) for p in sorted(glob(str(path) + "/**/*", recursive=True)))
+                    out.extend(sorted(posix(p) for p in glob(str(path) + "/**/*", recursive=True)))
                 else:
                     out.append(posix(path))
 
@@ -1238,12 +1238,12 @@ class Configure:
         for stack_dir in self.asset_stack:
             path_stem = f"assets/{stack_dir}/{asset_dir}"
 
-            for p in sorted(Path(path_stem).glob("**/*")):
+            for p in Path(path_stem).glob("**/*"):
                 glob_part = p.relative_to(path_stem)
                 if glob_part not in ret:
                     ret[glob_part] = p
 
-        return [posix(v) for v in ret.values()]
+        return sorted(posix(v) for v in ret.values())
 
     @lru_cache(maxsize=None)
     def resolve_asset_path(self, path: Path) -> Path:
@@ -1641,7 +1641,10 @@ class Configure:
             if not search_dir.exists():
                 continue
             for type_index, glob_str in enumerate(overlay_types):
-                for match in search_dir.glob(glob_str, case_sensitive=True):
+                for match in sorted(
+                    search_dir.glob(glob_str, case_sensitive=True),
+                    key=lambda p: p.as_posix(),
+                ):
                     if match.name.endswith(".inc.c") or match.name.endswith(".inc.cpp"):
                         continue
                     # Skip asset directories that contain no compilable source files
@@ -1679,10 +1682,10 @@ class Configure:
 
             c_files = []
             if src_path.is_dir():
-                for c_file in sorted(src_path.glob("*.c")):
+                for c_file in sorted(src_path.glob("*.c"), key=lambda p: p.name):
                     if not c_file.name.endswith(".inc.c"):
                         c_files.append(c_file)
-                for c_file in sorted(src_path.glob("*.cpp")):
+                for c_file in sorted(src_path.glob("*.cpp"), key=lambda p: p.name):
                     if not c_file.name.endswith(".inc.c"):
                         c_files.append(c_file)
             else:
