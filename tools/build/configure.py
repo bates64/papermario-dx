@@ -1311,7 +1311,9 @@ class Configure:
             "world_map",
         )
 
-        # When maps are added or removed, rerun gen_areas
+        # gen_areas counts a directory as a map once it holds a source file to
+        # compile, so the stamp records that rather than just which directories
+        # exist: otherwise adding the first source to one leaves the table stale.
         gen_areas_stamp = self.build_path() / "gen_areas.stamp"
         area_dirs = []
         for area_root in [ROOT / "src" / "world" / "area"] + [
@@ -1321,7 +1323,11 @@ class Configure:
                 for area_dir in sorted(area_root.iterdir()):
                     if area_dir.is_dir():
                         for map_dir in sorted(area_dir.iterdir()):
-                            if map_dir.is_dir():
+                            if map_dir.is_dir() and any(
+                                f.suffix in (".c", ".cpp")
+                                and not f.name.endswith((".inc.c", ".inc.cpp"))
+                                for f in map_dir.iterdir()
+                            ):
                                 area_dirs.append(str(map_dir.relative_to(ROOT)))
         gen_areas_stamp.parent.mkdir(parents=True, exist_ok=True)
         gen_areas_stamp.write_text("\n".join(area_dirs) + "\n")
