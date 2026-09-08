@@ -61,6 +61,15 @@ let
 
   requirements = ../../requirements.txt;
 
+  # ntfsutils is required by tools/build/configure.py on Windows, but its
+  # "sys_platform == 'win32'" marker in requirements.txt makes pip skip it when
+  # resolving wheels on Linux, so fetch the wheel directly. It is pure Python
+  # with no dependencies.
+  ntfsutilsWheel = pkgs.fetchurl {
+    url = "https://files.pythonhosted.org/packages/c2/fe/458d97505f51e88cf90d7ea88a76fb1ef2d345332bb8f70e5eea91ae4a22/ntfsutils-0.1.5-py3-none-any.whl";
+    hash = "sha256-I/fSdIfDsng4saDomCXjwXC9CNCLqeTIb8M19fpzoOI=";
+  };
+
   # Download all Python build dependencies for offline installation (Linux, used by wineRom).
   pythonDeps = pkgs.stdenvNoCC.mkDerivation {
     name = "papermario-python-deps";
@@ -233,6 +242,7 @@ let
     for whl in ${pythonDepsWindows}/*.whl; do
       unzip -o -q "$whl" -d $dir/python/Lib/site-packages
     done
+    unzip -o -q ${ntfsutilsWheel} -d $dir/python/Lib/site-packages
 
     cat > $dir/shell.bat << 'SHELL_EOF'
     @echo off
