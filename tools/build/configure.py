@@ -73,6 +73,58 @@ def posix(path) -> str:
     return str(path).replace("\\", "/")
 
 
+# Files a hand-authored asset layer may hold that no build rule reads.
+IGNORED_ASSET_NAMES = {".gitkeep", ".DS_Store", "Thumbs.db"}
+
+
+def _repo_paths(entries) -> List[str]:
+    """Ninja build entries as repo-relative POSIX strings, dropping ninja vars."""
+    if not entries:
+        return []
+    if isinstance(entries, (str, Path)):
+        entries = [entries]
+    paths = []
+    for entry in entries:
+        text = str(entry)
+        if not text or text.startswith("$"):
+            continue
+        paths.append(posix(os.path.relpath(text, ROOT)))
+    return paths
+
+
+class RecordingWriter(ninja_syntax.Writer):
+    """A ninja writer that remembers every path it is told to read or write.
+
+    configure builds build.ninja by scanning the assets/ tree with a different
+    glob per subsystem, so a file that no glob matches is left out with no
+    error. Recording each input and output lets check_asset_coverage report
+    assets that no rule consumes.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.consumed_paths: Set[str] = set()
+        self.produced_paths: Set[str] = set()
+
+    def build(
+        self,
+        outputs,
+        rule,
+        inputs=None,
+        implicit=None,
+        order_only=None,
+        variables=None,
+        implicit_outputs=None,
+    ):
+        for group in (inputs, implicit, order_only):
+            self.consumed_paths.update(_repo_paths(group))
+        for group in (outputs, implicit_outputs):
+            self.produced_paths.update(_repo_paths(group))
+        return super().build(
+            outputs, rule, inputs, implicit, order_only, variables, implicit_outputs
+        )
+
+
 def exec_shell(command: List[str]) -> str:
     ret = subprocess.run(
         command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
@@ -1211,6 +1263,60 @@ class Configure:
 
         return path
 
+    def _sidecar_target_consumed(
+        self, sidecar: Path, layer: str, consumed_assets: Set[str]
+    ) -> bool:
+        """Whether the asset a `.meta` sidecar annotates is itself built.
+
+        A sidecar carries no pixels, so it never reaches ninja; it earns its
+        place only by describing an asset that some rule reads. The asset can
+        live in a different layer than the sidecar, so resolve it through the
+        stack.
+        """
+        rel = Path(os.path.relpath(str(sidecar), ROOT / "assets" / layer))
+        if sidecar.name == assets.DIRECTORY_SIDECAR:
+            directory = rel.parent.as_posix()
+            directory = "" if directory == "." else directory + "/"
+            prefixes = tuple(f"assets/{name}/{directory}" for name in self.asset_stack)
+            return any(path.startswith(prefixes) for path in consumed_assets)
+        target = rel.as_posix()[: -len(assets.SIDECAR_SUFFIX)]
+        resolved = self.resolve_asset_path(Path("assets") / layer / target)
+        return posix(os.path.relpath(str(resolved), ROOT)) in consumed_assets
+
+    def check_asset_coverage(
+        self, consumed: Set[str], produced: Set[str]
+    ) -> List[str]:
+        """Files under a hand-authored asset layer that no build rule reads.
+
+        The last asset_stack layer is split from the baserom and checked by
+        tools/build/check_assets.py; the earlier layers are hand-authored, so a
+        file there that nothing builds is a mistake rather than leftover dump.
+        """
+        consumed_assets = {p for p in consumed if p.startswith("assets/")}
+        produced_assets = {p for p in produced if p.startswith("assets/")}
+
+        orphans: List[str] = []
+        for layer in self.asset_stack[:-1]:
+            root = ROOT / "assets" / layer
+            if not root.is_dir():
+                continue
+            for directory, _subdirs, filenames in os.walk(root):
+                for filename in sorted(filenames):
+                    path = Path(directory) / filename
+                    rel = posix(os.path.relpath(str(path), ROOT))
+                    if filename in IGNORED_ASSET_NAMES:
+                        continue
+                    if filename.endswith((".inc.c", ".inc.cpp")):
+                        continue
+                    if rel in consumed_assets or rel in produced_assets:
+                        continue
+                    if filename.endswith(assets.SIDECAR_SUFFIX) and (
+                        self._sidecar_target_consumed(path, layer, consumed_assets)
+                    ):
+                        continue
+                    orphans.append(rel)
+        return sorted(orphans)
+
     def write_ninja(
         self,
         ninja: ninja_syntax.Writer,
@@ -1857,7 +1963,7 @@ if __name__ == "__main__":
     # add splat to python import path
     sys.path.insert(0, str((ROOT / args.splat / "src").resolve()))
 
-    ninja = ninja_syntax.Writer(open(str(ROOT / "build.ninja"), "w", encoding="utf-8"), width=9999)
+    ninja = RecordingWriter(open(str(ROOT / "build.ninja"), "w", encoding="utf-8"), width=9999)
 
     non_matching = args.non_matching or True or args.shift
 
@@ -1905,6 +2011,22 @@ if __name__ == "__main__":
 
     assert first_configure, "no versions configured"
     first_configure.make_current(ninja)
+
+    orphans = first_configure.check_asset_coverage(
+        ninja.consumed_paths, ninja.produced_paths
+    )
+    if orphans:
+        print(
+            "configure: no build rule uses these files, so nothing would put them "
+            "in the ROM:\n"
+        )
+        for orphan in orphans:
+            print(f"  {orphan}")
+        print(
+            "\nCheck that each file has a supported extension and sits in a directory "
+            "the build expects it in. Remove any file that isn't meant to be built."
+        )
+        raise SystemExit(1)
 
     ninja.build("all", "phony", all)
     ninja.default("all")
