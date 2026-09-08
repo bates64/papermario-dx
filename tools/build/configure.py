@@ -197,12 +197,6 @@ def write_ninja_rules(
     )
 
     ninja.rule(
-        "dead_cc_fix",
-        description="Fixing dead code symbols in $in",
-        command=f"{cross}objcopy --redefine-sym sqrtf=dead_sqrtf $in $out",
-    )
-
-    ninja.rule(
         "bin",
         description="Extracting binary data from $in",
         command=f"{cross}objcopy -I binary -O {BFDNAME} --set-section-alignment .data=8 $in $out",

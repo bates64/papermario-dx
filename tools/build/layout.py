@@ -84,23 +84,6 @@ class Layout:
             for p in self.packed
         }
 
-    def is_packed(self, asset: Path) -> bool:
-        """Whether an image is packed into a blob rather than a texture itself.
-
-        Compared without the asset layer, so a texture overridden in another
-        layer is classified the same as the one it replaces.
-        """
-        def strip(path: Path) -> Path:
-            parts = path.parts
-            return Path(*parts[2:]) if parts[:1] == ("assets",) else path
-
-        target = strip(asset)
-        for root in self.packed:
-            stripped = strip(root)
-            if target == stripped or stripped in target.parents:
-                return True
-        return False
-
     def segment_of_asset(self, object_path: Path) -> Optional[str]:
         """Which segment links an asset object, or None if nothing does."""
         asset = object_path.with_suffix("")  # drop .o

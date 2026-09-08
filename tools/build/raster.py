@@ -9,7 +9,7 @@ only usable when the data actually fits it.
 import struct
 import zlib
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 SIGNATURE = b"\x89PNG\r\n\x1a\n"
 
