@@ -437,9 +437,7 @@ class Configure:
         """Read the version's configuration and scan what it points at."""
         self.layout = Layout(self.version_path / "layout.yaml")
         self.asset_stack: List[str] = self.layout.asset_stack
-        self.sources_config = SegmentMap(
-            self.version_path / "segments.yaml", ROOT / "src"
-        )
+        self.sources_config = SegmentMap(self.layout, ROOT / "src")
         self.sources = self.sources_config.scan()
 
     def dump(self, assets: bool, code: bool) -> None:
@@ -1094,7 +1092,7 @@ class Configure:
         for seg in self.layout.segments:
             objects = [
                 (posix(self.source_object(p)), label(posix(self.source_object(p))))
-                for p in self.sources.get(linker.symbol_name(seg.name), [])
+                for p in self.sources.get(seg.name, [])
             ] + assets.get(seg.name, [])
             segments.append(
                 linker.Segment(
@@ -1110,7 +1108,7 @@ class Configure:
     def source_cflags(self, src: Path, segment: str, non_matching: bool) -> str:
         parts = src.parts
         libultra = "nusys" in parts or "os" in parts
-        cflags = self.sources_config.cflags.get(src.as_posix())
+        cflags = self.sources_config.cflags(src)
         if cflags is None:
             cflags = "" if libultra else "-fforce-addr"
         if libultra:

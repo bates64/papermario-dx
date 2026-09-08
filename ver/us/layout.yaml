@@ -1136,3 +1136,79 @@ imgfx:
   - flip_card_2
   - flip_card_3
   - cymbal_crush
+
+# Where a segment's sources live.
+#
+# A directory belongs to the segment its path names, so src/battle/area/arn
+# holds battle/area/arn and src/engine1 holds engine1. A directory that names
+# no segment belongs to the one its parent does, and src itself is main, so
+# adding a source file needs no entry here.
+sources:
+  # Directories whose segment is not the one their path names.
+  dirs:
+    src/audio: main            # the audio segment is the sound bank, not code
+    src/battle/states: battle_code
+    src/battle/menus: btl_states_menus
+    src/menu_hud_scripts: ui_images_filemenu_pause
+    src/world/area/dgb: dgb_01_smash_bridges
+
+  # Directories where every source is its own segment, named <prefix><stem>.
+  each:
+    src/battle/action_cmd: action_cmd_
+    src/battle/move/hammer: battle_move_
+    src/battle/move/item: ''
+    src/battle/move/jump: battle_move_
+    src/battle/move/star_power: battle_move_
+    src/battle/overlay: ''
+    src/battle/partner: battle_partner_
+    src/effects: effect_
+    src/effects/gfx: effect_gfx_
+    src/entity/model: entity_model_
+    src/heaps: ''
+    src/indicator_icon: ''
+    src/obfuscated: ''
+    src/world/action: world_action_
+    src/world/model_anim/kzn: world_model_anim_kzn_
+    src/world/partner: world_partner_
+
+  # Sources the rules above cannot place.
+  files:
+    src/battle/move/hammer/attack.c: battle_move_hammer_attack
+    src/battle/move/jump/attack.c: battle_move_jump_attack
+    src/boot/entry_point.s: main
+    src/boot/ipl3_boot.s: boot
+
+  # Sources that build separately, or not for this version.
+  exclude:
+    - src/battle/actor/*
+    - src/world/area/*/*/
+    - src/os/padding_alt.s
+    - src/os/skapi.s
+
+# Compiler flags for sources that need something other than the default,
+# by directory and then by file.
+cflags:
+  dirs:
+    src/gcc: -g2
+    src/os: -O3
+    src/os/nusys: ''
+  files:
+    src/effects/aura.c: -Os
+    src/effects/energy_in_out.c: -Os
+    src/effects/firework_rocket.c: -Os
+    src/effects/light_rays.c: -Os
+    src/effects/stars_shimmer.c: -Os
+    src/effects/tubba_heart_attack.c: -Os
+    src/is_debug.c: -g -fforce-addr
+    src/os/createmesgqueue.c: ''
+    src/os/memset.c: -O1
+    src/os/nusys/nugfxtaskmgr.c: -fforce-addr
+    src/os/osFlash.c: ''
+    src/os/osSiDeviceBusy.c: ''
+    src/os/sqrtf.c: -ffast-math
+    src/os/strcmp.c: -O1
+    src/os/strcpy.c: -O1
+    src/os/strncmp.c: ''
+    src/os/vimodempallan1.c: ''
+    src/os/vimodentsclan1.c: ''
+    src/os/vimodepallan1.c: ''

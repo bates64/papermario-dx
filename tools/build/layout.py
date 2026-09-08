@@ -71,6 +71,8 @@ class Layout:
         self.imgfx: List[str] = cfg.get("imgfx") or []
         self.charsets: List[str] = cfg.get("charsets") or []
         self.asset_stack: List[str] = cfg.get("asset_stack") or []
+        self.sources: Dict = cfg.get("sources") or {}
+        self.cflags: Dict = cfg.get("cflags") or {}
 
     @property
     def follows(self) -> Dict[str, List[str]]:
