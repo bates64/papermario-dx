@@ -47,6 +47,16 @@ class Png:
         self.width, self.height, self.depth, self.color_type = struct.unpack(
             ">IIBB", data[16:26]
         )
+        interlace = data[28]
+        # The decoder below walks one byte per channel through unfiltered
+        # scanlines, so anything else would be read at the wrong stride and
+        # produce a wrong format rather than an error.
+        if self.depth != 8:
+            raise ValueError(
+                f"{path}: bit depth {self.depth} is not supported, save it as 8-bit"
+            )
+        if interlace:
+            raise ValueError(f"{path}: interlaced PNGs are not supported")
         self.palette_size: Optional[int] = None
         idat = []
         offset = 8
@@ -71,7 +81,7 @@ class Png:
         return self._pixels
 
     def _unfilter(self, raw: bytes) -> bytes:
-        step = CHANNELS[self.color_type] * (self.depth // 8)
+        step = CHANNELS[self.color_type]
         stride = self.width * step
         previous = bytearray(stride)
         rows: List[bytes] = []
