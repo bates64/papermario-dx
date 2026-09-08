@@ -1052,7 +1052,7 @@ segments:
   - { name: entity_model_PinkFlower_gfx, class: entity_model }
   - { name: entity_model_SpinningFlower, class: entity_model }
   - { name: entity_model_BombableRock, class: entity_model }
-  - { name: audio }
+  - { name: sbn }
   - { name: copy_1942C40 }
   - { name: sprites }
   - { name: pad_1B82208 }
@@ -1080,7 +1080,7 @@ assets:
     assets/us/title: 'title/'
   files:
     ver/us/asm/header.s: header
-    assets/us/audio.sbn: audio
+    assets/us/audio.sbn: sbn
     assets/us/copy_1942C40.bin: copy_1942C40
     assets/us/copy_1B8220C.bin: copy_1B8220C
     assets/us/copy_1E00000.bin: copy_1E00000
@@ -1146,7 +1146,6 @@ imgfx:
 sources:
   # Directories whose segment is not the one their path names.
   dirs:
-    src/audio: main            # the audio segment is the sound bank, not code
     src/battle/menus: btl_states_menus
     src/menu_hud_scripts: ui_images_filemenu_pause
     src/world/area/dgb: dgb_01_smash_bridges
