@@ -2,10 +2,9 @@ import argparse
 from pathlib import Path
 import sys
 
-sys.path.append(str(Path(__file__).parent.parent))
-sys.path.append(str(Path(__file__).parent.parent / "splat"))
+sys.path.append(str(Path(__file__).parent))
 
-from splat_ext.pm_effect_loads import effects_from_yaml
+from effect_table import effects_from_yaml
 
 
 if __name__ == "__main__":
