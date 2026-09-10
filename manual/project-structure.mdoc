@@ -1,0 +1,46 @@
+---
+title: Project Structure
+sidebar:
+  order: 2
+---
+
+Here are the important files and folders in a Paper Mario DX mod.
+
+{% filetree %}
+- README.md
+- assets
+  - **mod** Where you will place your mod's assets
+    - …
+  - dx Assets provided by DX (**do not edit**)
+    - … 
+  - us Assets dumped from the baserom (**do not edit**)
+    - …
+- include C headers
+  - …
+- src C code
+  - dx
+    - **config.h** Mod configuration
+  - …
+- … Other files/folders are internal to DX
+{% /filetree %}
+
+## The `assets` folder
+
+The `assets` folder contains game content (not engine code).
+
+It has a layered approach where `assets/mod/` takes priority over `assets/dx/`, which takes priority over `assets/us/`.
+For example, the file `assets/us/msg/0C_Chapter1.msg` can be overridden by creating a file at `assets/mod/msg/0C_Chapter1.msg`.
+You can create the `msg` folder if it doesn't exist.
+
+{% aside type="caution" %}
+You should **only** create, modify, or delete files in `assets/mod/`. **Never** edit `assets/dx/` or `assets/us`.
+{% /aside %}
+
+## The `src` and `include` folders
+
+These folders contain C code for the game engine. You can edit it freely, just note that you may get merge conflicts
+when updating to a new version of DX.
+
+## The `src/dx/config.h` file
+
+This is where you configure mod settings like the [mod name and new game start](/papermario-dx/title-screen), the [debug menu](/papermario-dx/testing/debug-menu), and more. You don't need to understand C code to use these options — just edit the file.

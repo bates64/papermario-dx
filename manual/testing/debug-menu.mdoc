@@ -1,0 +1,54 @@
+---
+title: Debug Menu
+sidebar:
+  order: 2
+---
+
+The debug menu lets you warp to maps, trigger battles, edit inventory and stats, and more — without playing through the game normally.
+
+## Enabling the debug menu
+
+The debug menu is enabled by default. If it's been disabled, set `DX_DEBUG_MENU` to `1` in `src/dx/config.h`:
+
+```c
+#define DX_DEBUG_MENU 1
+```
+
+## Controls
+
+Once in-game, press **D-Pad Left** to open the debug menu.
+
+| Button | Action |
+|--------|--------|
+| D-Pad | Select option |
+| L | Confirm selection |
+| R | Cancel / close menu |
+
+## Features
+
+The debug menu has many options. Here are some highlights:
+
+- **Load Map** — warp to any map by name
+- **Load Battle** — start any battle formation directly
+- **Story Progress** — change the current story progress value
+- **Inventory** — add or remove items, badges, and key items
+- **Stats** — edit HP, FP, BP, star points, coins, star pieces, and level
+- **Partners** — add partners and change the active partner
+
+## Quick launch
+
+To skip the title screen and load a save file immediately, set `DX_QUICK_LAUNCH` in `src/dx/config.h`:
+
+```c
+#define DX_QUICK_LAUNCH 1
+```
+
+You can also quick-launch directly into a specific battle. Uncomment and edit this line in `config.h`:
+
+```c
+#define DX_QUICK_LAUNCH_BATTLE BTL_NOK_FORMATION_00, BTL_NOK_STAGE_00
+```
+
+## Performance profiler
+
+Set `USE_PROFILER` to `1` in `src/dx/config.h` to show a performance profiler overlay. Toggle it in-game with **L + D-Pad Up**.

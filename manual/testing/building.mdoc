@@ -1,0 +1,53 @@
+---
+title: Building
+sidebar:
+  order: 1
+---
+
+After making changes, you need to build the ROM to test them.
+
+## Using VS Code
+
+With Visual Studio Code focused, press **Ctrl+Shift+B** (Cmd+Shift+B on macOS). This builds the ROM and launches it in an emulator if one is found.
+
+The output ROM is at `ver/us/build/papermario.z64`.
+
+## Building manually
+
+If you prefer to build from the command line, or if the VS Code task isn't working:
+
+### 1. Enter the development environment
+
+```sh
+nix develop
+```
+
+This provides the cross-compiler toolchain, build tools, and all other dependencies. You need to be in this shell for the following commands to work.
+
+### 2. Generate the build configuration
+
+```sh
+./configure
+```
+
+This creates a `build.ninja` file. You only need to re-run this if you add or remove source files.
+
+### 3. Build the ROM
+
+```sh
+n2
+```
+
+{% aside %}
+If you're experiencing a weird build issue (e.g. after updating DX), try `./configure --clean` to delete previously-built files and start fresh.
+{% /aside %}
+
+## Running
+
+DX will try to launch the ROM in a known emulator after building. We recommend the accurate emulator [ares](https://ares-emu.net).
+
+If DX did not find your emulator, load `ver/us/build/papermario.z64` manually. For real hardware, copy this ROM to a flashcart.
+
+{% aside type="caution" %}
+If you don't regularly test with ares and/or real hardware, your mod may not work correctly for others.
+{% /aside %}
