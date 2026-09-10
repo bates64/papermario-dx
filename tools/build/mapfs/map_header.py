@@ -33,40 +33,38 @@ if __name__ == "__main__":
     xml = parse(xml_path)
 
     out_path = Path(out_path)
-    f = out_path.open("w")
 
-    is_shape = out_path.stem.endswith("_shape")
-    is_hit = out_path.stem.endswith("_hit")
+    with out_path.open("w", encoding="utf-8") as f:
+        is_shape = out_path.stem.endswith("_shape")
+        is_hit = out_path.stem.endswith("_hit")
 
-    map_name = path.basename(xml_path)[:-4]
+        map_name = path.basename(xml_path)[:-4]
 
-    if is_shape:
-        for model in xml.getElementsByTagName("Model"):
-            map_object = model.getElementsByTagName("MapObject")[0]
-            name = map_object.getAttribute("name")
-            if " " in name:
-                continue
-            idx = "0x" + map_object.getAttribute("id")
-            write_if_unique(f, f"MODEL_{name}", idx)
-    elif is_hit:
-        for collider in xml.getElementsByTagName("Collider"):
-            map_object = collider.getElementsByTagName("MapObject")[0]
-            name = map_object.getAttribute("name")
-            if " " in name:
-                continue
-            idx = "0x" + map_object.getAttribute("id")
-            write_if_unique(f, f"COLLIDER_{name}", idx)
+        if is_shape:
+            for model in xml.getElementsByTagName("Model"):
+                map_object = model.getElementsByTagName("MapObject")[0]
+                name = map_object.getAttribute("name")
+                if " " in name:
+                    continue
+                idx = "0x" + map_object.getAttribute("id")
+                write_if_unique(f, f"MODEL_{name}", idx)
+        elif is_hit:
+            for collider in xml.getElementsByTagName("Collider"):
+                map_object = collider.getElementsByTagName("MapObject")[0]
+                name = map_object.getAttribute("name")
+                if " " in name:
+                    continue
+                idx = "0x" + map_object.getAttribute("id")
+                write_if_unique(f, f"COLLIDER_{name}", idx)
 
-        f.write("\n")
+            f.write("\n")
 
-        for zone in xml.getElementsByTagName("Zone"):
-            map_object = zone.getElementsByTagName("MapObject")[0]
-            name = map_object.getAttribute("name")
-            if " " in name:
-                continue
-            idx = "0x" + map_object.getAttribute("id")
-            write_if_unique(f, f"ZONE_{name}", idx)
-    else:
-        raise ValueError("Invalid output file name")
-
-    f.close()
+            for zone in xml.getElementsByTagName("Zone"):
+                map_object = zone.getElementsByTagName("MapObject")[0]
+                name = map_object.getAttribute("name")
+                if " " in name:
+                    continue
+                idx = "0x" + map_object.getAttribute("id")
+                write_if_unique(f, f"ZONE_{name}", idx)
+        else:
+            raise ValueError("Invalid output file name")
