@@ -26,9 +26,8 @@ EvtScript N(EVS_OpenGiantChest) = {
     Set(GF_OBK04_GiantChest, true)
     Exec(N(EVS_Scene_BoosUnleashed))
     Call(DisablePlayerInput, false)
-EndIf
-Return
-End
+    Return
+    End
 };
 
 EvtScript N(EVS_MakeEntities) = {

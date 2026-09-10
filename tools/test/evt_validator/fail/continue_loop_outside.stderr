@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/continue_loop_outside.c:
+EVS_ContinueLoopOutside
+ContinueLoop outside Loop

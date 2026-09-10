@@ -227,6 +227,7 @@ EvtScript N(EVS_HandleEvent) = {
             ExecWait(EVS_Enemy_Hit)
         EndCaseGroup
         CaseEq(EVENT_BEGIN_FIRST_STRIKE)
+            // do nothing
         CaseOrEq(EVENT_BURN_HIT)
         CaseOrEq(EVENT_BURN_DEATH)
             SetConst(LVar0, PRT_MAIN)
@@ -260,11 +261,10 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             ExecWait(EVS_Enemy_NoDamageHit)
         EndCaseGroup
-        CaseOrEq(EVENT_DEATH)
+        CaseEq(EVENT_DEATH)
             ExecWait(N(EVS_SelectAnimation))
             SetConst(LVar0, PRT_MAIN)
             ExecWait(EVS_Enemy_Hit)
-        EndCaseGroup
         CaseEq(EVENT_SPIN_SMASH_DEATH)
             ExecWait(N(EVS_SelectAnimation))
             SetConst(LVar0, PRT_MAIN)

@@ -112,12 +112,11 @@ void btl_state_update_begin_turn(void) {
         if (gGameStatusPtr->debugEnemyContact == DEBUG_CONTACT_DIE_IN_BATTLE) {
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemy = battleStatus->enemyActors[i];
-                if (enemy != nullptr && enemy->handleEventSource != nullptr) {
-                    Evt* script = start_script(enemy->handleEventSource, EVT_PRIORITY_A, 0);
+                if (enemy != nullptr && enemy->scripts.handleEvent.source != nullptr) {
+                    Evt* script = start_script(enemy->scripts.handleEvent.source, EVT_PRIORITY_A, 0);
 
-                    enemy->handleEventScript = script;
+                    assign_bound_script(&enemy->scripts.handleEvent, script);
                     script->owner1.actorID = i | ACTOR_ENEMY0;
-                    enemy->handleEventScriptID = script->id;
                     enemy->lastEventType = EVENT_DEATH;
                 }
             }
@@ -125,21 +124,19 @@ void btl_state_update_begin_turn(void) {
         } else {
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemy = battleStatus->enemyActors[i];
-                if (enemy != nullptr && enemy->handlePhaseSource != nullptr) {
+                if (enemy != nullptr && enemy->scripts.handlePhase.source != nullptr) {
                     battleStatus->battlePhase = PHASE_PLAYER_BEGIN;
-                    script = start_script(enemy->handlePhaseSource, EVT_PRIORITY_A, 0);
-                    enemy->handlePhaseScript = script;
-                    enemy->handlePhaseScriptID = script->id;
+                    script = start_script(enemy->scripts.handlePhase.source, EVT_PRIORITY_A, 0);
+                    assign_bound_script(&enemy->scripts.handlePhase, script);
                     script->owner1.actorID = i | ACTOR_ENEMY0;
                 }
             }
 
             partner = battleStatus->partnerActor;
-            if (partner != nullptr && partner->handlePhaseSource != nullptr) {
+            if (partner != nullptr && partner->scripts.handlePhase.source != nullptr) {
                 battleStatus->battlePhase = PHASE_PLAYER_BEGIN;
-                script = start_script(partner->handlePhaseSource, EVT_PRIORITY_A, 0);
-                partner->handlePhaseScript = script;
-                partner->handlePhaseScriptID = script->id;
+                script = start_script(partner->scripts.handlePhase.source, EVT_PRIORITY_A, 0);
+                assign_bound_script(&partner->scripts.handlePhase, script);
                 script->owner1.actorID = ACTOR_PARTNER;
             }
             gBattleSubState = BTL_SUBSTATE_AWAIT_ENEMY_SCRIPTS;
@@ -150,11 +147,11 @@ void btl_state_update_begin_turn(void) {
         awaiting = false;
         for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
             enemy = battleStatus->enemyActors[i];
-            if (enemy != nullptr && enemy->handlePhaseSource != nullptr && does_script_exist(enemy->handlePhaseScriptID)) {
+            if (enemy != nullptr && is_bound_script_running(&enemy->scripts.handlePhase)) {
                 awaiting = true;
             }
         }
-        if (partner != nullptr && partner->handlePhaseSource != nullptr && does_script_exist(partner->handlePhaseScriptID)) {
+        if (partner != nullptr && is_bound_script_running(&partner->scripts.handlePhase)) {
             awaiting = true;
         }
 
@@ -170,7 +167,7 @@ void btl_state_update_begin_turn(void) {
         awaiting = false;
         for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
             enemy = battleStatus->enemyActors[i];
-            if (enemy != nullptr && enemy->handleEventSource != nullptr && does_script_exist(enemy->handleEventScriptID)) {
+            if (enemy != nullptr && is_bound_script_running(&enemy->scripts.handleEvent)) {
                 awaiting = true;
             }
         }

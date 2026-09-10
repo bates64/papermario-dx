@@ -1,4 +1,5 @@
 #include "common.h"
+#include "bound_script.h"
 #include "vars_access.h"
 #include "ld_addrs.h"
 #include "entity.h"
@@ -80,6 +81,7 @@ s32 create_entity_shadow(Entity* entity, f32 x, f32 y, f32 z);
 void update_entity_shadow_position(Entity* entity);
 
 void update_entities(void) {
+    Evt* script;
     s32 i;
 
     D_801512BC = 0;
@@ -98,11 +100,12 @@ void update_entities(void) {
                     if (!(entity->flags & ENTITY_FLAG_8000)) {
                         entity->flags |= ENTITY_FLAG_2000000;
                     }
-                    entity->boundScript = start_script(entity->boundScriptBytecode, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
+                    script = start_script(entity->script.source, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
+                    assign_bound_script(&entity->script, script);
                 }
 
                 if (entity->flags & ENTITY_FLAG_2000000) {
-                    if (does_script_exist(entity->boundScript->id)) {
+                    if (is_bound_script_running(&entity->script)) {
                         if (entity->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL) {
                             update_model_animator(entity->virtualModelIndex);
                         } else {
@@ -280,7 +283,7 @@ s32 step_entity_commandlist(Entity* entity) {
             ret = true;
             break;
         case ENTITY_SCRIPT_OP_RestartBoundScript:
-            if (entity->boundScriptBytecode != nullptr) {
+            if (entity->script.source != nullptr) {
                 entity->flags |= ENTITY_FLAG_BOUND_SCRIPT_DIRTY;
             }
             entity->scriptReadPos = args++;
@@ -558,7 +561,7 @@ ShadowList* get_shadow_list(void) {
 }
 
 s32 entity_start_script(Entity* entity) {
-    if (entity->boundScriptBytecode != nullptr) {
+    if (entity->script.source != nullptr) {
         entity->flags |= ENTITY_FLAG_BOUND_SCRIPT_DIRTY;
         return 1;
     }
@@ -1240,7 +1243,6 @@ s32 create_entity(EntityBlueprint* bp, ...) {
     }
     entity->type = bp->entityType;
     entity->listIndex = listIndex;
-    entity->boundScript = nullptr;
     entity->updateMatrixOverride = nullptr;
     entity->blueprint = bp;
     entity->scriptReadPos = bp->updateEntityScript;
@@ -1422,7 +1424,7 @@ API_CALLABLE(AssignScript) {
     if (isInitialCall == true) {
         EvtScript* toBind = (EvtScript*)evt_get_variable(script, *args++);
 
-        get_entity_by_index(gLastCreatedEntityIndex)->boundScriptBytecode = toBind;
+        get_entity_by_index(gLastCreatedEntityIndex)->script.source = toBind;
         return ApiStatus_DONE2;
     }
 
@@ -1451,10 +1453,8 @@ API_CALLABLE(AssignBlockFlag) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall == true) {
-        s32 index = evt_get_variable_index(script, *args++);
-
         BlockData* data = get_entity_by_index(gLastCreatedEntityIndex)->dataBuf.block;
-        data->gameFlagIndex = index;
+        data->gameFlagIndex = evt_get_variable_index(*args++);
 
         return ApiStatus_DONE2;
     }
@@ -1467,7 +1467,7 @@ API_CALLABLE(AssignChestFlag) {
 
     if (isInitialCall == true) {
         ChestData* data = get_entity_by_index(gLastCreatedEntityIndex)->dataBuf.chest;
-        data->gameFlagIndex = evt_get_variable_index(script, *args);
+        data->gameFlagIndex = evt_get_variable_index(*args++);
 
         return ApiStatus_DONE2;
     }
@@ -1480,8 +1480,7 @@ API_CALLABLE(AssignPanelFlag) {
 
     if (isInitialCall == true) {
         HiddenPanelData* data = get_entity_by_index(gLastCreatedEntityIndex)->dataBuf.hiddenPanel;
-
-        data->pickupVar = evt_get_variable_index(script, *args++);
+        data->pickupVar = evt_get_variable_index(*args++);
         return ApiStatus_DONE2;
     }
 
@@ -1493,8 +1492,7 @@ API_CALLABLE(AssignCrateFlag) {
 
     if (isInitialCall == true) {
         WoodenCrateData* data = get_entity_by_index(gLastCreatedEntityIndex)->dataBuf.crate;
-
-        data->globalFlagIndex = evt_get_variable_index(script, *args++);
+        data->globalFlagIndex = evt_get_variable_index(*args++);
         return ApiStatus_DONE2;
     }
 

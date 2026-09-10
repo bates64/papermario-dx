@@ -68,9 +68,9 @@ EvtScript N(EVS_GardenShyGuy_RunAway) = {
     Call(InterpNpcYaw, NPC_SELF, 270, 1)
     Set(LVar0, -1)
     Call(PlaySoundAtNpc, LVar0, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
-    ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVar9)
+    ExecGetID(LVar9, N(EVS_PlayShyGuyRunSounds))
     Call(NpcMoveTo, NPC_SELF, 160, 400, 0)
-    KillThread(LVar9)
+    KillScript(LVar9)
     Call(DisablePlayerInput, false)
     IfEq(LVarA, 2)
         Exec(N(EVS_MinhThankYou))
@@ -286,7 +286,7 @@ EvtScript N(EVS_Scene_FlowerGateAppears) = {
         PlayEffect(EFFECT_FLOATING_FLOWER, 292, 50, 338, 100, 0)
     EndThread
     Set(LVar0, 3)
-    ExecGetTID(N(EVS_ModulateFlowerGateGlowAlpha), LVar2)
+    ExecGetID(LVar2, N(EVS_ModulateFlowerGateGlowAlpha))
     Wait(30 / DT)
     Call(EnableModel, MODEL_r_door, true)
     Call(PlaySoundAtCollider, COLLIDER_deilitf, SOUND_WOODEN_DOOR_SPINNING, SOUND_SPACE_DEFAULT)
@@ -309,7 +309,7 @@ EvtScript N(EVS_Scene_FlowerGateAppears) = {
     EndLoop
     Loop(0)
         Wait(1)
-        IsThreadRunning(LVar2, LVar0)
+        IsScriptRunning(LVar2, LVar0)
         IfEq(LVar0, 0)
             BreakLoop
         EndIf
@@ -644,7 +644,7 @@ EvtScript N(EVS_ExitFlowerGate) = {
     Call(PlaySoundAtCollider, COLLIDER_deilitf, SOUND_FLOWER_GATE, SOUND_SPACE_DEFAULT)
     ExecWait(N(EVS_FadeInFlowerGateGlowAlpha))
     Set(LVar0, 3)
-    ExecGetTID(N(EVS_ModulateFlowerGateGlowAlpha), LVar2)
+    ExecGetID(LVar2, N(EVS_ModulateFlowerGateGlowAlpha))
     Call(PlayerMoveTo, 300, 370, 15)
     Call(InterpPlayerYaw, -22, 0)
     Thread
@@ -680,7 +680,7 @@ EvtScript N(EVS_ExitFlowerGate) = {
     Call(SetNpcPos, NPC_PARTNER, 0, -500, 0)
     Loop(0)
         Wait(1)
-        IsThreadRunning(LVar2, LVar0)
+        IsScriptRunning(LVar2, LVar0)
         IfEq(LVar0, 0)
             BreakLoop
         EndIf
@@ -721,7 +721,7 @@ EvtScript N(EVS_EnterFlowerGate) = {
     Call(PlaySoundAtCollider, COLLIDER_deilitf, SOUND_FLOWER_GATE, SOUND_SPACE_DEFAULT)
     ExecWait(N(EVS_FadeInFlowerGateGlowAlpha))
     Set(LVar0, 2)
-    ExecGetTID(N(EVS_ModulateFlowerGateGlowAlpha), LVar2)
+    ExecGetID(LVar2, N(EVS_ModulateFlowerGateGlowAlpha))
     Call(PlaySoundAtCollider, COLLIDER_deilitf, SOUND_WOODEN_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, -120, 15, EASING_LINEAR)
     Loop(0)
@@ -747,7 +747,7 @@ EvtScript N(EVS_EnterFlowerGate) = {
     Call(PlaySoundAtCollider, COLLIDER_deilitf, SOUND_WOODEN_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     Loop(0)
         Wait(1)
-        IsThreadRunning(LVar2, LVar0)
+        IsScriptRunning(LVar2, LVar0)
         IfEq(LVar0, 0)
             BreakLoop
         EndIf

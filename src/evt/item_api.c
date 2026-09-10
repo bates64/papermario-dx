@@ -306,7 +306,7 @@ API_CALLABLE(MakeItemEntity) {
     s32 y = evt_get_variable(script, *args++);
     s32 z = evt_get_variable(script, *args++);
     s32 itemSpawnMode = evt_get_variable(script, *args++);
-    s32 pickupVar = evt_get_variable_index(script, *args++);
+    s32 pickupVar = evt_get_variable_index(*args++);
 
     script->varTable[0] = make_item_entity_nodelay(itemID, x, y, z, itemSpawnMode, pickupVar);
     return ApiStatus_DONE2;
@@ -332,7 +332,7 @@ API_CALLABLE(DropResizableItemEntity) {
     s32 y = evt_get_variable(script, *args++);
     s32 z = evt_get_variable(script, *args++);
     s32 itemSpawnMode = evt_get_variable(script, *args++);
-    s32 pickupVar = evt_get_variable_index(script, *args++);
+    s32 pickupVar = evt_get_variable_index(*args++);
 
     script->varTable[0] = make_item_entity_nodelay(itemID, x, y, z, itemSpawnMode, pickupVar);
     set_item_entity_flags(script->varTable[0], ITEM_ENTITY_RESIZABLE);

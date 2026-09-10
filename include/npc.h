@@ -285,24 +285,17 @@ typedef struct Enemy {
     /* 0x10 */ Vec3s attackOriginPos; // intial position when firstStrikeActive is set
     /* 0x16 */ PAD(2);
     /* 0x18 */ NpcSettings* npcSettings;
-    /* 0x1C */ EvtScript* initSource; // from Npc::init
-    /* 0x20 */ EvtScript* interactSource;
-    /* 0x24 */ EvtScript* aiSource;
-    /* 0x28 */ EvtScript* hitSource;
-    /* 0x2C */ EvtScript* auxSource;
-    /* 0x30 */ EvtScript* defeatSource;
-    /* 0x34 */ struct Evt* initScript;
-    /* 0x38 */ struct Evt* interactScript;
-    /* 0x3C */ struct Evt* aiScript;
-    /* 0x40 */ struct Evt* hitScript;
-    /* 0x44 */ struct Evt* auxScript;
-    /* 0x48 */ struct Evt* defeatScript;
-    /* 0x4C */ s32 initScriptID;
-    /* 0x50 */ s32 interactScriptID;
-    /* 0x54 */ s32 aiScriptID;
-    /* 0x58 */ s32 hitScriptID;
-    /* 0x5C */ s32 auxScriptID;
-    /* 0x60 */ s32 defeatScriptID;
+    /* 0x1C */ union {
+    /*      */     struct {
+    /* 0x1C */         BoundScript init; // source comes from Npc::init
+    /* 0x28 */         BoundScript interact;
+    /* 0x34 */         BoundScript ai;
+    /* 0x40 */         BoundScript hit;
+    /* 0x4C */         BoundScript aux;
+    /* 0x58 */         BoundScript defeat;
+    /*      */     };
+    /* 0x1C */     BoundScript all[6];
+    /*      */ } scripts;
     /* 0x64 */ union {
     /*      */      s32 varTable[16];
     /*      */      f32 varTableF[16];
@@ -318,9 +311,10 @@ typedef struct Enemy {
     /* 0xB4 */ EnemyTerritory* territory;
     /* 0xB8 */ EnemyDrops* drops;
     /* 0xBC */ u32 tattleMsg;
-    /* 0xC0 */ s16 savedNpcYaw;
-    /* 0xC2 */ PAD(2);
-} Enemy; // size = 0xC4
+    /* 0xD0 */ s16 savedNpcYaw;
+    /* 0xD2 */ b8 deletePending;
+    /* 0xD3 */ PAD(1);
+} Enemy; // size = 0xD4
 
 typedef struct Encounter {
     /* 0x00 */ s32 count;

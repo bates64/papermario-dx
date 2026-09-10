@@ -67,8 +67,7 @@ void btl_state_update_player_move(void) {
                 battleStatus->nextMerleeSpellType = MERLEE_SPELL_NONE;
                 battleStatus->battlePhase = PHASE_MERLEE_ATTACK_BONUS;
                 script = start_script(&EVS_Mario_HandlePhase, EVT_PRIORITY_A, 0);
-                player->takeTurnScript = script;
-                player->takeTurnScriptID = script->id;
+                assign_bound_script(&player->scripts.takeTurn, script);
                 script->owner1.actorID = ACTOR_PLAYER;
                 gBattleStatus.flags1 |= BS_FLAGS1_10000;
                 close_action_command_instruction_popup();
@@ -85,10 +84,9 @@ void btl_state_update_player_move(void) {
 
     switch (gBattleSubState) {
         case BTL_SUBSTATE_BEGIN_SHOW_TIP:
-            if (player->takeTurnScript != nullptr && does_script_exist(player->takeTurnScriptID)) {
+            if (is_bound_script_running(&player->scripts.takeTurn)) {
                 break;
             }
-            player->takeTurnScript = nullptr;
             if (!is_ability_active(ABILITY_BERSERKER)) {
                 if (battleStatus->selectedMoveID != MOVE_NONE) {
                     tipIndex = gMoveTable[battleStatus->selectedMoveID].actionTip;
@@ -122,46 +120,38 @@ void btl_state_update_player_move(void) {
             } else {
                 script = start_script(&EVS_Mario_HandlePhase, EVT_PRIORITY_A, 0);
             }
-            player->takeTurnScript = script;
+            assign_bound_script(&player->scripts.takeTurn, script);
             gBattleSubState = BTL_SUBSTATE_HANDLE_RESULTS;
-            player->takeTurnScriptID = script->id;
             script->owner1.actorID = ACTOR_PLAYER;
             break;
         case BTL_SUBSTATE_HANDLE_RESULTS:
             // wait for player battle phase script to finish
             if (!(gBattleStatus.flags1 & BS_FLAGS1_YIELD_TURN)) {
-                if (player->takeTurnScript != nullptr && does_script_exist(player->takeTurnScriptID)) {
+                if (is_bound_script_running(&player->scripts.takeTurn)) {
                     break;
                 }
-                player->takeTurnScript = nullptr;
             }
 
             gBattleStatus.flags1 &= ~BS_FLAGS1_EXECUTING_MOVE;
 
              // wait for player battle event script to finish
-            if (player->handleEventScript != nullptr && does_script_exist(player->handleEventScriptID)) {
+            if (is_bound_script_running(&player->scripts.handleEvent)) {
                 break;
             }
-            player->handleEventScript = nullptr;
 
             // wait for partner battle event script to finish
             if (partner != nullptr) {
-                if (partner->handleEventScript != nullptr && does_script_exist(partner->handleEventScriptID)) {
+                if (is_bound_script_running(&partner->scripts.handleEvent)) {
                     break;
                 }
-                partner->handleEventScript = nullptr;
             }
 
             // wait for all enemy battle phase scripts to finish
             enemyNotDone = false;
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 actor = battleStatus->enemyActors[i];
-                if (actor != nullptr && actor->takeTurnScript != nullptr) {
-                    if (does_script_exist(actor->takeTurnScriptID)) {
-                        enemyNotDone = true;
-                    } else {
-                        actor->takeTurnScript = nullptr;
-                    }
+                if (actor != nullptr && is_bound_script_running(&actor->scripts.takeTurn)) {
+                    enemyNotDone = true;
                 }
             }
             if (enemyNotDone) {
@@ -172,12 +162,8 @@ void btl_state_update_player_move(void) {
             enemyNotDone = false;
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 actor = battleStatus->enemyActors[i];
-                if (actor != nullptr && actor->handleEventScript != nullptr) {
-                    if (does_script_exist(actor->handleEventScriptID)) {
-                        enemyNotDone = true;
-                    } else {
-                        actor->handleEventScript = nullptr;
-                    }
+                if (actor != nullptr && is_bound_script_running(&actor->scripts.handleEvent)) {
+                    enemyNotDone = true;
                 }
             }
             if (enemyNotDone) {
@@ -371,8 +357,7 @@ void btl_state_update_player_move(void) {
     }
 
     if (gBattleSubState == BTL_SUBSTATE_AWAIT_DONE) {
-        if (player->takeTurnScript == nullptr || !does_script_exist(player->takeTurnScriptID)) {
-            player->takeTurnScript = nullptr;
+        if (!is_bound_script_running(&player->scripts.takeTurn)) {
             btl_set_state(BATTLE_STATE_END_PLAYER_TURN);
         }
     }

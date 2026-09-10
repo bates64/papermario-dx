@@ -73,19 +73,17 @@ void btl_state_update_run_away(void) {
 
             battleStatus->battlePhase = PHASE_RUN_AWAY_START;
             script = start_script(&EVS_Mario_HandlePhase, EVT_PRIORITY_A, 0);
-            player->takeTurnScript = script;
-            player->takeTurnScriptID = script->id;
+            assign_bound_script(&player->scripts.takeTurn, script);
             script->owner1.actorID = ACTOR_PLAYER;
             if (partner != nullptr && partner->koStatus == 0) {
-                script = start_script(partner->takeTurnSource, EVT_PRIORITY_A, 0);
-                partner->takeTurnScript = script;
-                partner->takeTurnScriptID = script->id;
+                script = start_script(partner->scripts.takeTurn.source, EVT_PRIORITY_A, 0);
+                assign_bound_script(&partner->scripts.takeTurn, script);
                 script->owner1.actorID = ACTOR_PARTNER;
             }
             gBattleSubState = BTL_SUBSTATE_AWAIT_SCRIPT;
             break;
         case BTL_SUBSTATE_AWAIT_SCRIPT:
-            if (does_script_exist(player->takeTurnScriptID) || battleStatus->stateFreezeCount != 0) {
+            if (is_bound_script_running(&player->scripts.takeTurn) || battleStatus->stateFreezeCount != 0) {
                 break;
             }
             if (!(gBattleStatus.flags1 & BS_FLAGS1_BATTLE_FLED)) {
@@ -153,13 +151,11 @@ void btl_state_update_run_away(void) {
         case BTL_SUBSTATE_EXEC_POST_FAILURE:
             battleStatus->battlePhase = PHASE_RUN_AWAY_FAIL;
             script = start_script(&EVS_Mario_HandlePhase, EVT_PRIORITY_A, 0);
-            player->takeTurnScript = script;
-            player->takeTurnScriptID = script->id;
+            assign_bound_script(&player->scripts.takeTurn, script);
             script->owner1.actorID = ACTOR_PLAYER;
             if (partner != nullptr && partner->koStatus == 0) {
-                script = start_script(partner->takeTurnSource, EVT_PRIORITY_A, 0);
-                partner->takeTurnScript = script;
-                partner->takeTurnScriptID = script->id;
+                script = start_script(partner->scripts.takeTurn.source, EVT_PRIORITY_A, 0);
+                assign_bound_script(&partner->scripts.takeTurn, script);
                 script->owner1.actorID = ACTOR_PARTNER;
             }
             gBattleSubState = BTL_SUBSTATE_AWAIT_POST_FAILURE;
@@ -169,8 +165,8 @@ void btl_state_update_run_away(void) {
                 BattleSubstateDelay--;
                 return;
             }
-            if (!does_script_exist(player->takeTurnScriptID)
-                && (partner == nullptr || !does_script_exist(partner->takeTurnScriptID))
+            if (!is_bound_script_running(&player->scripts.takeTurn)
+                && (partner == nullptr || !is_bound_script_running(&partner->scripts.takeTurn))
                 && battleStatus->stateFreezeCount == 0
             ) {
                 btl_set_state(BATTLE_STATE_TRANSFER_TURN);

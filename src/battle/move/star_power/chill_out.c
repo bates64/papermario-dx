@@ -95,7 +95,7 @@ API_CALLABLE(N(InflictChillOutHit)) {
     target->chillOutTurns = 4;
     target->chillOutAmount = 3;
 
-    dispatch_damage_event_actor_0(target, 0, EVENT_HIT);
+    dispatch_generic_damage_event_actor(target, 0, EVENT_HIT);
 
     x = target->curPos.x + target->headOffset.x + (target->size.x / 2);
     if (target->flags & ACTOR_FLAG_UPSIDE_DOWN) {

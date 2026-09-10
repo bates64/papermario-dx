@@ -13,6 +13,14 @@ typedef ApiStatus(*ApiFunc)(struct Evt*, s32);
 
 typedef Bytecode EvtScript[];
 
+// bookkeeping for a runnable script slot: its source, current instance, and runtime ID
+// the binding does not by itself imply ownership or extend either object's lifetime
+typedef struct BoundScript {
+    /* 0x00 */ EvtScript* source;
+    /* 0x04 */ struct Evt* live;
+    /* 0x08 */ s32 liveID;
+} BoundScript; // size = 0x0C
+
 // generic callback signatures
 typedef void (*VoidCallback)(void);
 typedef void (*DataCallback)(void* data);
@@ -384,19 +392,17 @@ typedef struct Trigger {
     /*      */     struct BombTrigger* blast;
     /*      */ } location;
     /* 0x0C */ s32 (*onActivateFunc)(struct Trigger*);
-    /* 0x10 */ EvtScript* onTriggerEvt;
-    /* 0x14 */ struct Evt* runningScript;
-    /* 0x18 */ s32 priority;
-    /* 0x1C */ union {
+    /* 0x10 */ BoundScript script;
+    /* 0x1C */ s32 priority;
+    /* 0x20 */ union {
     /*      */     s32 varTable[3];
     /*      */     f32 varTableF[3];
     /*      */     void* varTablePtr[3];
-    /* 0x1C */ };
-    /* 0x28 */ s32* itemList;
-    /* 0x2C */ s32 tattleMsg;
-    /* 0x30 */ u8 hasPlayerInteractPrompt;
-    /* 0x31 */ PAD(3);
-    /* 0x34 */ s32 runningScriptID;
+    /*      */ };
+    /* 0x2C */ s32* itemList;
+    /* 0x30 */ s32 tattleMsg;
+    /* 0x34 */ u8 hasPlayerInteractPrompt;
+    /* 0x35 */ PAD(3);
 } Trigger; // size = 0x38
 
 typedef Trigger* TriggerList[MAX_TRIGGERS];
@@ -413,63 +419,78 @@ typedef struct TriggerBlueprint {
     /* 0x1C */ s32* itemList;
 } TriggerBlueprint; // size = 0x20
 
+typedef struct EvtLerpState {
+    /* 0x00 */ Bytecode outVar;
+    /* 0x04 */ f32 start;
+    /* 0x08 */ f32 end;
+    /* 0x0C */ s32 elapsed;
+    /* 0x10 */ s32 duration;
+    /* 0x14 */ s32 easing;
+} EvtLerpState; // size = 0x18
+
 typedef struct Evt {
     /* 0x000 */ u8 stateFlags;
     /* 0x001 */ u8 curArgc;
     /* 0x002 */ u8 curOpcode;
     /* 0x003 */ u8 priority;
     /* 0x004 */ u8 groupFlags;
-    /* 0x005 */ s8 blocked; /* 1 = blocking */
-    /* 0x006 */ s8 loopDepth; /* how many nested loops we are in, >= 8 hangs forever */
-    /* 0x007 */ s8 switchDepth; /* how many nested switches we are in, max = 8 */
+    /* 0x005 */ b8 blocked; /// execution is blocked with either Wait or a blocking Call
+    /* 0x006 */ s8 loopDepth; /// loop stack top; must remain below EVT_MAX_LOOP_DEPTH
+    /* 0x007 */ s8 switchDepth; /// switch stack top; must remain below EVT_MAX_SWITCH_DEPTH
     /* 0x008 */ Bytecode* ptrNextLine;
     /* 0x00C */ Bytecode* ptrReadPos;
-    /* 0x010 */ s8 labelIndices[16];
-    /* 0x020 */ Bytecode* labelPositions[16];
-    /* 0x060 */ void* userData; /* unknown pointer; allocated on the heap, free'd in kill_script() */
-    /* 0x064 */ struct Evt* blockingParent; /* parent? */
-    /* 0x068 */ struct Evt* childScript;
-    /* 0x06C */ struct Evt* parentScript; /* brother? */
-    /* 0x070 */ union {
+    /* 0x010 */ Bytecode* labelValuePtrs[EVT_MAX_NUM_LABELS]; /// addresses of Label values in this script scope
+    /* 0x050 */ void* userData; /// any heap user data, will be automatically free'd in kill_script()
+    /* 0x054 */ struct Evt* blockingParent; /// child's link to parent for a child created via ExecWait
+    /* 0x058 */ struct Evt* blockingChild; /// parent's link to child created via ExecWait
+    /* 0x05C */ struct Evt* threadParent; /// ChildThread's link to parent
+    /* 0x060 */ union {
     /*       */     s32 functionTemp[4];
     /*       */     f32 functionTempF[4];
     /*       */     void* functionTempPtr[4];
-    /* 0x070 */ };
-    /* 0x080 */ ApiFunc callFunction;
-    /* 0x084 */ union {
+    /*       */ };
+    /* 0x070 */ ApiFunc callFunction;
+    /* 0x074 */ union {
     /*       */     s32 varTable[16];
     /*       */     f32 varTableF[16];
     /*       */     void* varTablePtr[16];
-    /* 0x084 */ };
-    /* 0x0C4 */ s32 varFlags[3];
-    /* 0x0D0 */ s32 loopStartTable[8];
-    /* 0x0F0 */ s32 loopCounterTable[8];
-    /* 0x110 */ s8 switchBlockState[8];
-    /* 0x118 */ s32 switchBlockValue[8];
-    /* 0x138 */ s32* buffer;
-    /* 0x13C */ s32* array;
-    /* 0x140 */ s32* flagArray;
-    /* 0x144 */ s32 id;
-    /* 0x148 */ union {
+    /*       */ };
+    /* 0x0B4 */ s32 varFlags[3];
+    /* 0x0C0 */ Bytecode* argVars;
+    /* 0x0C4 */ s32 argCount;
+    /* 0x0C8 */ s32 loopStartTable[EVT_MAX_LOOP_DEPTH];
+    /* 0x0E8 */ s32 loopCounterTable[EVT_MAX_LOOP_DEPTH];
+    /* 0x108 */ s8 loopTypeTable[EVT_MAX_LOOP_DEPTH];
+    /* 0x110 */ s8 switchBlockState[EVT_MAX_SWITCH_DEPTH];
+    /* 0x118 */ s32 switchBlockValue[EVT_MAX_SWITCH_DEPTH];
+    /* 0x138 */ EvtLerpState lerpState;
+    /* 0x150 */ s32* buffer;
+    /* 0x154 */ s32* array;
+    /* 0x158 */ s32* flagArray;
+    /* 0x15C */ s32 id;
+    /* 0x160 */ union {
     /*       */     s32 actorID;
     /*       */     struct Enemy* enemy; ///< For overworld scripts owned by an Enemy AI
     /*       */     struct Actor* actor; ///< For battle scripts
-    /* 0x148 */ } owner1;                ///< Initially -1
-    /* 0x14C */ union {
+    /* 0x160 */ } owner1;                ///< Initially -1
+    /* 0x164 */ union {
     /*       */     s32 npcID;
     /*       */     struct Npc* npc;            ///< For overworld scripts owned by an Npc
     /*       */     struct Trigger* trigger;    ///< For overworld scripts bound to a Trigger
-    /* 0x14C */ } owner2;                       ///< Initially -1
-    /* 0x150 */ f32 timeScale;
-    /* 0x154 */ f32 frameCounter;
-    /* 0x158 */ s32 unk_158;
-    /* 0x15C */ Bytecode* ptrFirstLine;
-    /* 0x160 */ Bytecode* ptrSavedPos;
-    /* 0x164 */ Bytecode* ptrCurLine;
-    /* 0x168 */ b8 debugPaused;
-    /* 0x169 */ s8 debugStep;
-    /* 0x16A */ u16 curLine;
-} Evt; // size = 0x16C
+    /* 0x164 */ } owner2;                       ///< Initially -1
+    /* 0x168 */ f32 timeScale;
+    /* 0x16C */ f32 frameCounter;
+    /* 0x170 */ Bytecode* ptrFirstLine;
+    /* 0x174 */ Bytecode* ptrCurLine;
+    /* 0x178 */ Bytecode* ptrFinally;
+    /* 0x17C */ u16 curLine;
+    /* 0x17E */ b8 debugPaused;
+    /* 0x17F */ s8 debugStep;
+    /* 0x180 */ u8 terminationState; /// current EvtTerminationState
+    /* 0x181 */ b8 isExecuting; /// true while the interpreter is executing this script
+    /* 0x182 */ b8 isTerminatingChildren; /// true while this script is terminating its children
+    /* 0x183 */ b8 lerpActive; /// true while lerpState belongs to an active Lerp block
+} Evt; // size = 0x184
 
 typedef Evt* ScriptList[MAX_SCRIPTS];
 
@@ -597,20 +618,18 @@ typedef struct Entity {
     /* 0x18 */ EntityScriptPos scriptReadPos;
     /* 0x1C */ EntityCallback updateScriptCallback;
     /* 0x20 */ EntityCallback updateMatrixOverride;
-    /* 0x24 */ Evt* boundScript;
-    /* 0x28 */ EvtScript* boundScriptBytecode;
-    /* 0x2C */ EntityScriptPos savedReadPos[3];
-    /* 0x38 */ EntityBlueprint* blueprint;
-    /* 0x3C */ void (*renderSetupFunc)(s32);
-    /* 0x40 */ EntityData dataBuf;
-    /* 0x44 */ void* gfxBaseAddr;
-    /* 0x48 */ Vec3f pos;
-    /* 0x54 */ Vec3f scale;
-    /* 0x60 */ Vec3f rot;
-    /* 0x6C */ f32 shadowPosY;
-    /* 0x70 */ Matrix4f inverseTransformMatrix; // world-to-local
-    /* 0xB0 */ f32 effectiveSize;
-    /* 0xB4 */ PAD(4);
+    /* 0x24 */ BoundScript script;
+    /* 0x30 */ EntityScriptPos savedReadPos[3];
+    /* 0x3C */ EntityBlueprint* blueprint;
+    /* 0x40 */ void (*renderSetupFunc)(s32);
+    /* 0x44 */ EntityData dataBuf;
+    /* 0x48 */ void* gfxBaseAddr;
+    /* 0x4C */ Vec3f pos;
+    /* 0x58 */ Vec3f scale;
+    /* 0x64 */ Vec3f rot;
+    /* 0x70 */ f32 shadowPosY;
+    /* 0x74 */ f32 effectiveSize;
+    /* 0x78 */ Matrix4f inverseTransformMatrix; /// world-to-local
     /* 0xB8 */ Mtx transformMatrix;
 } Entity; // size = 0xF8
 
@@ -1889,7 +1908,7 @@ typedef struct Actor {
     /* 0x138 */ u8 ordinal; // unique identifier for actor, holds a value of N for the Nth actor spawned
     /* 0x139 */ u8 footStepCounter;
     /* 0x13A */ u8 actorType;
-    /* 0x13B */ PAD(1);
+    /* 0x13B */ b8 deletePending;
     /* 0x13C */ Vec3f homePos;
     /* 0x148 */ Vec3f curPos;
     /* 0x154 */ Vec3s headOffset;
@@ -1914,18 +1933,15 @@ typedef struct Actor {
     /* 0x1BE */ s16 maxHP;
     /* 0x1C0 */ s8 healthFraction; /* used to render HP bar */
     /* 0x1C1 */ PAD(3);
-    /* 0x1C4 */ EvtScript* idleSource;
-    /* 0x1C8 */ EvtScript* takeTurnSource;
-    /* 0x1CC */ EvtScript* handleEventSource;
-    /* 0x1D0 */ EvtScript* handlePhaseSource;
-    /* 0x1D4 */ struct Evt* idleScript;
-    /* 0x1D8 */ struct Evt* takeTurnScript;
-    /* 0x1DC */ struct Evt* handleEventScript;
-    /* 0x1E0 */ struct Evt* handlePhaseScript;
-    /* 0x1E4 */ s32 idleScriptID;
-    /* 0x1E8 */ s32 takeTurnScriptID;
-    /* 0x1EC */ s32 handleEventScriptID;
-    /* 0x1F0 */ s32 handlePhaseScriptID;
+    /* 0x1C4 */ union {
+        struct {
+            BoundScript idle;
+            BoundScript takeTurn;
+            BoundScript handleEvent;
+            BoundScript handlePhase;
+        };
+        BoundScript all[4];
+    } scripts;
     /* 0x1F4 */ s8 lastEventType;
     /* 0x1F5 */ s8 turnPriority;
     /* 0x1F6 */ s8 enemyIndex; /* actorID = this | 200 */

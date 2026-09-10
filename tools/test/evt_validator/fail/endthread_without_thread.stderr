@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/endthread_without_thread.c:
+EVS_EndThreadWithoutThread
+EndThread without matching Thread

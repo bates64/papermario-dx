@@ -16,7 +16,6 @@ EvtScript N(EVS_PlayMusicByPosition) = {
     Switch(LVar0)
         CaseEq(hos_00_ENTRY_0)
             Exec(N(EVS_PlayToadTownSong))
-        EndCaseGroup
         CaseOrEq(hos_00_ENTRY_1)
         CaseOrEq(hos_00_ENTRY_2)
             Call(SetMusic, 0, SONG_SHOOTING_STAR_SUMMIT, 0, VOL_LEVEL_FULL)

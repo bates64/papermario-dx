@@ -12,7 +12,7 @@ EvtScript N(EVS_ExitWalk_mac_01_1) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_nok_12_0) = EVT_EXIT_WALK_NOK(60, nok_11_ENTRY_1, "nok_12", nok_12_ENTRY_0);
+EvtScript N(EVS_ExitWalk_nok_12_0) = EVT_EXIT_WALK(60, nok_11_ENTRY_1, "nok_12", nok_12_ENTRY_0);
 
 EvtScript N(EVS_SetupTexPan) = {
     // flowers

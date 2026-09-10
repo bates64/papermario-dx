@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/endloop_without_loop.c:
+EVS_EndLoopWithoutLoop
+EndLoop without matching Loop

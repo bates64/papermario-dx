@@ -67,40 +67,32 @@ void btl_state_update_partner_move(void) {
             reset_actor_turn_info();
             reset_all_actor_sounds(partner);
             battleStatus->battlePhase = PHASE_EXECUTE_ACTION;
-            script = start_script(partner->takeTurnSource, EVT_PRIORITY_A, 0);
-            partner->takeTurnScript = script;
-            partner->takeTurnScriptID = script->id;
+            script = start_script(partner->scripts.takeTurn.source, EVT_PRIORITY_A, 0);
+            assign_bound_script(&partner->scripts.takeTurn, script);
             script->owner1.actorID = ACTOR_PARTNER;
             gBattleSubState = BTL_SUBSTATE_HANDLE_RESULTS;
             break;
         case BTL_SUBSTATE_HANDLE_RESULTS:
             if (!(gBattleStatus.flags1 & BS_FLAGS1_YIELD_TURN)) {
-                if (partner->takeTurnScript != nullptr && does_script_exist(partner->takeTurnScriptID)) {
+                if (is_bound_script_running(&partner->scripts.takeTurn)) {
                     break;
                 }
-                partner->takeTurnScript = nullptr;
             }
             gBattleStatus.flags1 &= ~BS_FLAGS1_EXECUTING_MOVE;
 
-            if (partner->handleEventScript != nullptr && does_script_exist(partner->handleEventScriptID)) {
+            if (is_bound_script_running(&partner->scripts.handleEvent)) {
                 break;
             }
-            partner->handleEventScript = nullptr;
 
-            if (player->handleEventScript != nullptr && does_script_exist(player->handleEventScriptID)) {
+            if (is_bound_script_running(&player->scripts.handleEvent)) {
                 break;
             }
-            player->handleEventScript = nullptr;
 
             enemyFound = false;
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemyActor = battleStatus->enemyActors[i];
-                if (enemyActor != nullptr && enemyActor->takeTurnScript != nullptr) {
-                    if (does_script_exist(enemyActor->takeTurnScriptID)) {
-                        enemyFound = true;
-                    } else {
-                        enemyActor->takeTurnScript = nullptr;
-                    }
+                if (enemyActor != nullptr && is_bound_script_running(&enemyActor->scripts.takeTurn)) {
+                    enemyFound = true;
                 }
             }
             if (enemyFound) {
@@ -110,12 +102,8 @@ void btl_state_update_partner_move(void) {
             enemyFound = false;
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemyActor = battleStatus->enemyActors[i];
-                if (enemyActor != nullptr && enemyActor->handleEventScript != nullptr) {
-                    if (does_script_exist(enemyActor->handleEventScriptID)) {
-                        enemyFound = true;
-                    } else {
-                        enemyActor->handleEventScript = nullptr;
-                    }
+                if (enemyActor != nullptr && is_bound_script_running(&enemyActor->scripts.handleEvent)) {
+                    enemyFound = true;
                 }
             }
             if (enemyFound) {
@@ -266,10 +254,9 @@ void btl_state_update_partner_move(void) {
     }
 
     if (gBattleSubState == BTL_SUBSTATE_DONE) {
-        if (partner->takeTurnScript != nullptr && does_script_exist(partner->takeTurnScriptID)) {
+        if (is_bound_script_running(&partner->scripts.takeTurn)) {
             return;
         }
-        partner->takeTurnScript = nullptr;
         btl_set_state(BATTLE_STATE_END_PARTNER_TURN);
     }
 }

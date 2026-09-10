@@ -142,6 +142,7 @@ EvtScript N(EVS_HandleEvent) = {
                 Wait(30)
             EndIf
         CaseEq(EVENT_AIR_LIFT_FAILED)
+            // do nothing
         CaseOrEq(EVENT_DEATH)
         CaseOrEq(EVENT_BURN_DEATH)
             ExecWait(N(EVS_Death))

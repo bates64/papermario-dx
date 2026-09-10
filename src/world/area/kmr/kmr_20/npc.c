@@ -492,7 +492,6 @@ EvtScript N(EVS_NpcInteract_Luigi) = {
     IfNe(MF_LuigiWaiting, true)
         Switch(GB_StoryProgress)
             CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
-            EndCaseGroup
             CaseLt(STORY_EPILOGUE)
                 Call(InterpNpcYaw, NPC_SELF, 39, 5)
         EndSwitch

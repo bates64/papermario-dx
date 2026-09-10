@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/endcasegroup_without_group.c:
+EVS_EndCaseGroupWithoutGroup
+EndCaseGroup without active CaseOrEq/CaseAndEq group

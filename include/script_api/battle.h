@@ -1072,7 +1072,7 @@ API_CALLABLE(PlayerTestEnemy);
 /// @evtapi
 /// @param damageAmount
 /// @param event
-API_CALLABLE(DispatchDamagePlayerEvent);
+API_CALLABLE(DispatchDamageEventPlayer);
 
 /// @evtapi
 /// @param enabled

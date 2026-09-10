@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/finally_await_script.c:
+EVS_FinallyAwaitScript
+AwaitScript is not allowed inside Finally

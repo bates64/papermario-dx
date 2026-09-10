@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/breakswitch_outside.c:
+EVS_BreakSwitchOutside
+BreakSwitch outside Switch

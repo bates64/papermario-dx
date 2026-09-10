@@ -155,13 +155,12 @@ EvtScript N(EVS_ExitDoors_pra_13_3) = {
         Set(LVar2, Ref(N(FarBlueDoorModelsL)))
         Set(LVar3, Ref(N(FarBlueDoorModelsR)))
     EndIf
-EndIf
-Exec(BaseExitDoor)
-Wait(17)
-Call(GotoMap, Ref("pra_13"), pra_13_ENTRY_3)
-Wait(100)
-Return
-End
+    Exec(BaseExitDoor)
+    Wait(17)
+    Call(GotoMap, Ref("pra_13"), pra_13_ENTRY_3)
+    Wait(100)
+    Return
+    End
 };
 
 EvtScript N(EVS_ExitDoors_pra_04_0) = {

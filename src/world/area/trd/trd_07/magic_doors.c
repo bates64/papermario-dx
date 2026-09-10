@@ -200,7 +200,7 @@ EvtScript N(EVS_AnimateDoorLowering) = {
 EvtScript N(EVS_RaiseMagicDoors) = {
     // for for enter walk scrip to complete
     Label(10)
-        IsThreadRunning(MV_EnterWalkScriptID, LVar0)
+        IsScriptRunning(MV_EnterWalkScriptID, LVar0)
         IfEq(LVar0, 1)
             Wait(1)
             Goto(10)

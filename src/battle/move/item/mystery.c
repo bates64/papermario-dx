@@ -276,7 +276,7 @@ EvtScript N(EVS_UseItem) = {
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(N(func_802A188C_72CE3C), LVar0, LVar1, LVar2)
     Call(SetBattleFlagBits, BS_FLAGS1_TRIGGER_EVENTS, true)
-    Call(DispatchDamagePlayerEvent, 1, EVENT_HIT)
+    Call(DispatchDamageEventPlayer, 1, EVENT_HIT)
     Return
     End
 };

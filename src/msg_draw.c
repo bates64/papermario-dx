@@ -7,9 +7,9 @@
 #include "charset/postcard.png.h"
 #include "charset/letter_content_1.png.h"
 
-//TODO get a real ceil
 s32 my_ceil(f32 f) {
-    return (s32)(f + 0.999f);
+    s32 value = f;
+    return value + (f > value);
 }
 
 extern IMG_BIN ui_msg_bubble_left_png[];

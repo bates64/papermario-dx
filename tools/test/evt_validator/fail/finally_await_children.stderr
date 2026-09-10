@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/finally_await_children.c:
+EVS_FinallyAwaitChildren
+AwaitChildren is not allowed inside Finally

@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/missing_end.c:
+EVS_MissingEnd
+missing End before symbol boundary

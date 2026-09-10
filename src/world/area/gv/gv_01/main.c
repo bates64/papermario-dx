@@ -313,5 +313,5 @@ API_CALLABLE(N(ChangeStateToTitleScreen)) {
     startup_set_fade_screen_alpha(255);
     startup_set_fade_screen_color(208);
     set_game_mode(GAME_MODE_TITLE_SCREEN);
-    return ApiStatus_FINISH;
+    return VmStatus_INVALID;
 }
