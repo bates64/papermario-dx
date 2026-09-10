@@ -1,0 +1,58 @@
+---
+title: Summoning Actors
+sidebar:
+  order: 7
+---
+
+Actors can summon other actors during battle. This is how Magikoopa creates clones, Bill Blaster fires Bullet Bills, and bosses call in reinforcements.
+
+## SummonEnemy
+
+Use `SummonEnemy` to summon an actor from a local formation. The summoned actor's ID is returned in `LVar0`.
+
+```c
+Formation CloneFormation = {
+    OVL_ACTOR_BY_IDX("frost_goomba", BTL_POS_GROUND_C, 10),
+};
+
+EvtScript EVS_TakeTurn = {
+    // ...
+    Call(SummonEnemy, Ref(CloneFormation), false)
+    // LVar0 now contains the new actor's ID
+    // ...
+};
+```
+
+The second argument controls priority ordering — `false` for normal priority, `true` for low priority.
+
+## Storing the summoned actor's ID
+
+You'll usually want to save the summoned actor's ID in an [actor variable](actor-variables) so you can reference it later:
+
+```c
+enum ActorVars {
+    AVAR_SpawnedActorID = 0,
+};
+
+EvtScript EVS_TakeTurn = {
+    // ...
+    Call(SummonEnemy, Ref(CloneFormation), false)
+    Call(SetActorVar,
+        ACTOR_SELF, AVAR_SpawnedActorID, LVar0)
+    // ...
+};
+```
+
+## Passing data to summoned actors
+
+The simplest approach is to call `SetActorVar` on the summoned actor right after summoning it, using the actor ID returned in `LVar0`:
+
+```c
+Call(SummonEnemy, Ref(CloneFormation), false)
+Call(SetActorVar,
+    LVar0, 0, true)  // set the summoned actor's var 0
+```
+
+See [Actor Variables](actor-variables) for more on how variables work.
+
+For complete examples, see `src/battle/common/actor/magikoopa.inc.c` (cloning) and `src/battle/common/actor/bill_blaster.inc.c` (summoning projectiles).
