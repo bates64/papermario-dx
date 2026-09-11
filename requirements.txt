@@ -12,6 +12,6 @@ n64img
 python-githooks
 crunch64>=0.5.1
 spimdisasm>=1.41.0,<2.0.0
-splat64[mips] @ git+https://github.com/ethteck/splat.git@8e3dc52817a2a6e678b59101e12969ab9d65073b
+splat64[mips]==0.41.1
 requests
 ntfsutils; sys_platform == 'win32'
