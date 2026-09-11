@@ -7,20 +7,21 @@ from typing import List, Dict, Tuple
 import xml.etree.ElementTree as ET
 import png  # type: ignore
 
+path.append(str(Path(__file__).parent))
 path.append(str(Path(__file__).parent.parent))
 path.append(str(Path(__file__).parent.parent.parent))
 path.append(str(Path(__file__).parent.parent.parent / "splat"))
 path.append(str(Path(__file__).parent.parent.parent / "splat_ext"))
 
 from common import get_asset_path, iter_in_groups
-from splat_ext.pm_sprites import (
+from sprite_tables import (
     MAX_COMPONENTS_XML,
     PALETTE_GROUPS_XML,
     NpcRaster,
     NpcSprite,
 )
 
-from splat_ext.sprite_common import AnimComponent
+from sprite_common import AnimComponent
 
 
 def pack_color(r, g, b, a):
