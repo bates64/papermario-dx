@@ -3,27 +3,48 @@
 :: Ensure .dx directory exists
 if not exist "%DX_DIR%" mkdir "%DX_DIR%"
 
-:: Check for git
+:: Get the nearest dx-* tag (current commit or ancestor): prefer jj if this
+:: is a jj repo, otherwise fall back to git.
+set "HAVE_JJ=0"
+if exist ".jj" (
+    where jj >nul 2>nul
+    if not errorlevel 1 set "HAVE_JJ=1"
+)
+set "HAVE_GIT=0"
 where git >nul 2>nul
-if errorlevel 1 (
-    echo Error: git is not installed. Install it from https://git-scm.com/ or via: winget install Git.Git
+if not errorlevel 1 set "HAVE_GIT=1"
+
+if "%HAVE_JJ%"=="0" if "%HAVE_GIT%"=="0" (
+    echo Error: this needs jj or git to find the toolchain version to download.
+    echo Install jj: https://jj-vcs.github.io/jj/latest/install-and-setup/
+    echo Or install git: https://git-scm.com/ ^(or: winget install Git.Git^)
     exit /b 1
 )
 
-:: Get the nearest dx-* tag (current commit or ancestor)
-git describe --tags --abbrev=0 --match dx-* > "%TEMP%\dx-tag.txt" 2>nul
-set /p TAG=<"%TEMP%\dx-tag.txt"
-del "%TEMP%\dx-tag.txt" 2>nul
+set "TAG="
+set "TAG_HASH="
+if "%HAVE_JJ%"=="1" (
+    for /f "usebackq delims=" %%T in (`jj log -r "latest(tags(glob:'dx-*') & ::@)" --no-graph -T "self.tags().join('|')" 2^>nul`) do if not defined TAG set "TAG=%%T"
+    if defined TAG (
+        for /f "usebackq delims=" %%H in (`jj log -r "latest(tags(glob:'dx-*') & ::@)" --no-graph -T "commit_id" 2^>nul`) do set "TAG_HASH=%%H"
+    )
+) else (
+    git describe --tags --abbrev=0 --match dx-* > "%TEMP%\dx-tag.txt" 2>nul
+    set /p TAG=<"%TEMP%\dx-tag.txt"
+    del "%TEMP%\dx-tag.txt" 2>nul
+    if defined TAG (
+        :: Get the commit hash the tag points to (detects force-moved tags like dx-nightly)
+        git rev-parse "!TAG!^{}" > "%TEMP%\dx-tag-hash.txt" 2>nul
+        set /p TAG_HASH=<"%TEMP%\dx-tag-hash.txt"
+        del "%TEMP%\dx-tag-hash.txt" 2>nul
+    )
+)
+
 if not defined TAG (
     echo Error: no dx-* tag found in the commit history.
     echo The Windows build requires a tagged release with a pre-built toolchain.
     exit /b 1
 )
-
-:: Get the commit hash the tag points to (detects force-moved tags like dx-nightly)
-git rev-parse "%TAG%^{}" > "%TEMP%\dx-tag-hash.txt" 2>nul
-set /p TAG_HASH=<"%TEMP%\dx-tag-hash.txt"
-del "%TEMP%\dx-tag-hash.txt" 2>nul
 
 :: Check if toolchain needs downloading
 set "NEED_DOWNLOAD=0"
