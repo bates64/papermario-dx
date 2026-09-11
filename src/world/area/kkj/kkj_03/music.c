@@ -9,7 +9,6 @@ EvtScript N(EVS_SetupMusic) = {
             Call(SetMusic, 0, SONG_PEACHS_CASTLE_PARTY, BGM_VARIATION_1, VOL_LEVEL_4)
         CaseDefault
             Call(SetMusic, 0, SONG_BOWSER_ATTACKS, 0, VOL_LEVEL_FULL)
-        EndCaseGroup
     EndSwitch
     Return
     End

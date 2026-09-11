@@ -1,4 +1,5 @@
 #include "common.h"
+#include "bound_script.h"
 #include "npc.h"
 #include "entity.h"
 #include "effects.h"
@@ -11,6 +12,8 @@ static NpcList gWorldNpcList;
 static NpcList gBattleNpcList;
 static NpcList* gCurrentNpcListPtr;
 static s8 gNpcPlayerCollisionsEnabled;
+
+void destroy_pending_enemies(void);
 
 #define PAL_ANIM_END 0xFF
 
@@ -2241,6 +2244,9 @@ void set_battle_transition_state(s8 state) {
 }
 
 void update_encounters(void) {
+    // scripts have already updated, so pending enemies may now be destroyed
+    destroy_pending_enemies();
+
     switch (gEncounterState) {
         case ENCOUNTER_STATE_NONE:
             break;
@@ -2262,6 +2268,9 @@ void update_encounters(void) {
     }
 
     update_merlee_messages();
+
+    // handle additional destruction requested during the encounter update
+    destroy_pending_enemies();
 }
 
 void draw_encounter_ui(void) {
@@ -2339,12 +2348,43 @@ void kill_encounter(Enemy* enemy) {
         Enemy* currentEnemy = encounter->enemy[i];
         if (currentEnemy != nullptr) {
             kill_enemy(currentEnemy);
-            encounter->enemy[i] = nullptr;
         }
     }
 }
 
-void kill_enemy(Enemy* enemy) {
+// checks whether any script registered to this enemy is still running
+b32 enemy_has_live_scripts(Enemy* enemy) {
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(enemy->scripts.all); i++) {
+        if (is_bound_script_running(&enemy->scripts.all[i])) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// terminates every script registered to this enemy
+void kill_enemy_scripts(Enemy* enemy) {
+    b32 killedScript;
+    s32 i;
+
+    // Finally may register another script, so keep checking until none remain
+    do {
+        killedScript = false;
+        for (i = 0; i < ARRAY_COUNT(enemy->scripts.all); i++) {
+            Evt* script = get_bound_script(&enemy->scripts.all[i]);
+
+            if (script != nullptr && script->terminationState == EVT_TERMINATION_NONE) {
+                kill_script(script);
+                killedScript = true;
+            }
+        }
+    } while (killedScript);
+}
+
+// destroys an enemy after its registered scripts and their children have terminated
+void destroy_enemy(Enemy* enemy) {
     EncounterStatus* encounterStatus = &gCurrentEncounter;
     Encounter* encounter = encounterStatus->encounterList[enemy->encounterIndex];
     s32 i;
@@ -2357,30 +2397,11 @@ void kill_enemy(Enemy* enemy) {
         }
     }
 
-    if (enemy->initScript != nullptr) {
-        kill_script_by_ID(enemy->initScriptID);
-    }
-    if (enemy->interactScript != nullptr) {
-        kill_script_by_ID(enemy->interactScriptID);
-    }
-    if (enemy->aiScript != nullptr) {
-        kill_script_by_ID(enemy->aiScriptID);
-    }
-    if (enemy->hitScript != nullptr) {
-        kill_script_by_ID(enemy->hitScriptID);
-    }
-    if (enemy->auxScript != nullptr) {
-        kill_script_by_ID(enemy->auxScriptID);
-    }
-    if (enemy->defeatScript != nullptr) {
-        kill_script_by_ID(enemy->defeatScriptID);
-    }
-
-    enemy->interactSource = nullptr;
-    enemy->aiSource = nullptr;
-    enemy->hitSource = nullptr;
-    enemy->auxSource = nullptr;
-    enemy->defeatSource = nullptr;
+    enemy->scripts.interact.source = nullptr;
+    enemy->scripts.ai.source = nullptr;
+    enemy->scripts.hit.source = nullptr;
+    enemy->scripts.aux.source = nullptr;
+    enemy->scripts.defeat.source = nullptr;
 
     #if DX_DEBUG_MENU
     if (enemy->npcID != (s16) DX_DEBUG_DUMMY_ID) {
@@ -2404,49 +2425,83 @@ void kill_enemy(Enemy* enemy) {
         set_defeated(encounterStatus->mapID, encounter->encounterID + i);
     }
 
+    if (encounterStatus->curEnemy == enemy) {
+        encounterStatus->curEnemy = nullptr;
+    }
+
     heap_free(enemy);
+}
+
+// terminates an enemy's scripts and marks it for destruction
+void kill_enemy(Enemy* enemy) {
+    if (enemy == nullptr || enemy->deletePending) {
+        return;
+    }
+
+    enemy->deletePending = true;
+    enemy->flags |= ENEMY_FLAG_DISABLE_AI;
+    kill_enemy_scripts(enemy);
+}
+
+// destroys enemies once their registered scripts have finished Finally
+void destroy_pending_enemies(void) {
+    EncounterStatus* encounterStatus = &gCurrentEncounter;
+    s32 i, j;
+
+    for (i = 0; i < encounterStatus->numEncounters; i++) {
+        Encounter* encounter = encounterStatus->encounterList[i];
+
+        if (encounter == nullptr) {
+            continue;
+        }
+
+        for (j = 0; j < encounter->count; j++) {
+            Enemy* enemy = encounter->enemy[j];
+
+            if (enemy != nullptr && enemy->deletePending) {
+                kill_enemy_scripts(enemy);
+                if (!enemy_has_live_scripts(enemy)) {
+                    destroy_enemy(enemy);
+                }
+            }
+        }
+    }
 }
 
 s32 bind_enemy_ai(Enemy* enemy, EvtScript* aiScriptBytecode) {
     Evt* aiScript;
-    s32 id;
 
-    if (enemy->aiScript != nullptr) {
-        kill_script_by_ID(enemy->aiScript->id);
-    }
-    enemy->aiSource = aiScriptBytecode;
-    aiScript = enemy->aiScript = start_script(aiScriptBytecode, EVT_PRIORITY_A, 0);
-    id = enemy->aiScriptID = aiScript->id;
+    kill_bound_script(&enemy->scripts.ai);
+    enemy->scripts.ai.source = aiScriptBytecode;
+    aiScript = start_script(aiScriptBytecode, EVT_PRIORITY_A, 0);
+    assign_bound_script(&enemy->scripts.ai, aiScript);
     aiScript->owner1.enemy = enemy;
-    return id;
+    aiScript->owner2.npcID = enemy->npcID;
+    return aiScript->id;
 }
 
 s32 bind_enemy_aux(Enemy* enemy, EvtScript* auxScriptBytecode) {
     Evt* auxScript;
-    s32 id;
 
-    if (enemy->auxScript != nullptr) {
-        kill_script_by_ID(enemy->auxScript->id);
-    }
-    enemy->auxSource = auxScriptBytecode;
-    auxScript = enemy->auxScript = start_script(auxScriptBytecode, EVT_PRIORITY_A, 0);
-    id = enemy->auxScriptID = auxScript->id;
+    kill_bound_script(&enemy->scripts.aux);
+    enemy->scripts.aux.source = auxScriptBytecode;
+    auxScript = start_script(auxScriptBytecode, EVT_PRIORITY_A, 0);
+    assign_bound_script(&enemy->scripts.aux, auxScript);
     auxScript->owner1.enemy = enemy;
-    return id;
+    auxScript->owner2.npcID = enemy->npcID;
+    return auxScript->id;
 }
 
 s32 bind_enemy_interact(Enemy* enemy, EvtScript* interactScriptBytecode) {
     Evt* interactScript;
-    s32 id;
 
-    if (enemy->interactScript != nullptr) {
-        kill_script_by_ID(enemy->interactScript->id);
-    }
-    enemy->interactSource = interactScriptBytecode;
-    interactScript = enemy->interactScript = start_script(interactScriptBytecode, EVT_PRIORITY_A, 0);
-    id = enemy->interactScriptID = interactScript->id;
+    kill_bound_script(&enemy->scripts.interact);
+    enemy->scripts.interact.source = interactScriptBytecode;
+    interactScript = start_script(interactScriptBytecode, EVT_PRIORITY_A, 0);
+    assign_bound_script(&enemy->scripts.interact, interactScript);
     interactScript->owner1.enemy = enemy;
-    return id;
+    interactScript->owner2.npcID = enemy->npcID;
+    return interactScript->id;
 }
 
 void bind_npc_ai(s32 npcID, EvtScript* npcAiBytecode) {

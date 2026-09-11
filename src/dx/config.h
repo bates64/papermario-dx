@@ -11,6 +11,9 @@
 /// Enables the debug menu.
 #define DX_DEBUG_MENU 1
 
+/// Adds focused EVT VM tests to the debug menu
+#define DX_DEBUG_EVT_TESTS 0
+
 /// Loads last used save file.
 #define DX_QUICK_LAUNCH 0
 

@@ -3279,6 +3279,7 @@ class N64SegPm_msg(Segment):
         type,
         name,
         vram_start,
+        bss_size,
         args,
         yaml,
     ):
@@ -3290,6 +3291,7 @@ class N64SegPm_msg(Segment):
             vram_start,
             args=args,
             yaml=yaml,
+            bss_size=bss_size,
         )
 
         self.files = yaml.get("files", []) if isinstance(yaml, dict) else []

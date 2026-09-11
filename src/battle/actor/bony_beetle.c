@@ -193,17 +193,16 @@ EvtScript N(EVS_Init) = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BonyBeetle_IdleSpiky)
         EndIf
     EndIf
-EndIf
-Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, -8)
-Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -3, 21)
-Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_UPSIDE_DOWN, false)
-Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
-Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-Call(HPBarToHome, ACTOR_SELF)
-Call(SetActorVar, ACTOR_SELF, AVAR_ShouldTrySwitching, false)
-Return
-End
+    Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, -8)
+    Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -3, 21)
+    Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_UPSIDE_DOWN, false)
+    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
+    Call(HPBarToHome, ACTOR_SELF)
+    Call(SetActorVar, ACTOR_SELF, AVAR_ShouldTrySwitching, false)
+    Return
+    End
 };
 
 EvtScript N(EVS_Idle) = {
@@ -1162,4 +1161,3 @@ EvtScript N(EVS_TryGettingUp_Spiky) = {
     Return
     End
 };
-

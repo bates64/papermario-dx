@@ -238,6 +238,7 @@ EvtScript N(EVS_HandleEvent) = {
             ExecWait(EVS_Enemy_Hit)
         EndCaseGroup
         CaseEq(EVENT_BEGIN_FIRST_STRIKE)
+            // do nothing
         CaseOrEq(EVENT_BURN_HIT)
         CaseOrEq(EVENT_BURN_DEATH)
             ExecWait(N(EVS_PrepareTaunt))

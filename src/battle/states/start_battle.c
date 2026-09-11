@@ -236,8 +236,7 @@ void btl_state_update_normal_start(void) {
             } else {
                 script = start_script(&EVS_Mario_OnActorCreate, EVT_PRIORITY_A, 0);
             }
-            actor->takeTurnScript = script;
-            actor->takeTurnScriptID = script->id;
+            assign_bound_script(&actor->scripts.takeTurn, script);
             script->owner1.actorID = ACTOR_PLAYER;
             load_partner_actor();
             gBattleSubState = BTL_SUBSTATE_CHECK_FIRST_STRIKE;
@@ -246,11 +245,9 @@ void btl_state_update_normal_start(void) {
             enemyNotDone = false;
             for (i = 0; i < BattleEnemiesCreated; i++) {
                 actor = battleStatus->enemyActors[i];
-                if (does_script_exist(actor->takeTurnScriptID)) {
+                if (is_bound_script_running(&actor->scripts.takeTurn)) {
                     enemyNotDone = true;
                     break;
-                } else {
-                    actor->takeTurnScript = nullptr;
                 }
             }
             if (enemyNotDone) {
@@ -258,17 +255,15 @@ void btl_state_update_normal_start(void) {
             }
 
             actor = battleStatus->playerActor;
-            if (does_script_exist(actor->takeTurnScriptID)) {
+            if (is_bound_script_running(&actor->scripts.takeTurn)) {
                 break;
             }
-            actor->takeTurnScript = nullptr;
 
             actor = battleStatus->partnerActor;
             if (actor != nullptr) {
-                if (does_script_exist(actor->takeTurnScriptID)) {
+                if (is_bound_script_running(&actor->scripts.takeTurn)) {
                     break;
                 }
-                actor->takeTurnScript = nullptr;
             }
 
             if (battle->onBattleStart != nullptr) {
@@ -299,8 +294,7 @@ void btl_state_update_normal_start(void) {
                         } else {
                             script = start_script(&EVS_MarioEnterStage, EVT_PRIORITY_A, 0);
                         }
-                        actor->takeTurnScript = script;
-                        actor->takeTurnScriptID = script->id;
+                        assign_bound_script(&actor->scripts.takeTurn, script);
                         script->owner1.actorID = ACTOR_PLAYER;
                     }
 
@@ -310,8 +304,7 @@ void btl_state_update_normal_start(void) {
                     ) {
                         actor = battleStatus->enemyActors[0];
                         script = start_script(&EVS_ApplyDizzyAttack, EVT_PRIORITY_A, 0);
-                        actor->takeTurnScript = script;
-                        actor->takeTurnScriptID = script->id;
+                        assign_bound_script(&actor->scripts.takeTurn, script);
                         script->owner1.actorID = ACTOR_ENEMY0;
                     }
 

@@ -373,7 +373,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar1, ANIM_BabyBlooper_Hurt)
             ExecWait(EVS_Enemy_Knockback)
             ExecWait(N(EVS_FloatToHome))
-        CaseOrEq(EVENT_SHOCK_DEATH)
+        CaseEq(EVENT_SHOCK_DEATH)
             Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_BabyBlooper_Hurt)

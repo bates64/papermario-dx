@@ -1179,10 +1179,10 @@ EvtScript N(EVS_ManageParade) = {
     Exec(N(EVS_TexPan_Water))
     Exec(N(EVS_SetupInitialCamera))
     Exec(N(EVS_ManageNpcPool))
-    ExecGetTID(N(EVS_ParadePhase_Luigi), LVarA)
+    ExecGetID(LVarA, N(EVS_ParadePhase_Luigi))
     Loop(0)
         Wait(1)
-        IsThreadRunning(LVarA, LVar0)
+        IsScriptRunning(LVarA, LVar0)
         IfEq(LVar0, 0)
             BreakLoop
         EndIf

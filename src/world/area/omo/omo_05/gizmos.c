@@ -29,7 +29,6 @@ EvtScript N(EVS_Gizmos_Wheels) = {
 
 EvtScript N(EVS_Gizmos_Shutters) = {
     Label(0)
-    Label(0)
         Call(MakeLerp, 0, 160, 60, EASING_COS_IN_OUT)
         Label(1)
             Call(UpdateLerp)

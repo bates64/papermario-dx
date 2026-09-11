@@ -51,7 +51,7 @@ enum {
 
 enum {
     MV_KoopaChaseThiefScript    = MapVar(0),
-    MV_KoopaChaseMonitorTID     = MapVar(1),
+    MV_KoopaChaseMonitorScript  = MapVar(1),
     MV_IsPlayerNearbyThief      = MapVar(2),
     MV_KooperFightSoundsScript  = MapVar(3),
     MV_StarPieceItem            = MapVar(10),

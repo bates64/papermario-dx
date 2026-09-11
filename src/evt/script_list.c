@@ -1,4 +1,5 @@
 #include "common.h"
+#include "bound_script.h"
 #include "hud_element.h"
 #include "dx/config.h"
 #include "dx/debug_menu.h"
@@ -70,6 +71,12 @@ BSS s32 DoorModelsSwingCCW[3];
 
 s32 evt_execute_next_command(Evt* script);
 
+b32 evt_is_valid_label_value(Bytecode label);
+b32 evt_label_values_match(Bytecode lhs, Bytecode rhs);
+Bytecode* evt_find_thread_block_end(Bytecode* startLine, s32 endOpcode);
+b32 script_has_children(Evt* script);
+void kill_script_children(Evt* script);
+
 void sort_scripts(void) {
     s32 temp_a0;
     s32 temp_a1;
@@ -114,42 +121,76 @@ void sort_scripts(void) {
     }
 }
 
-void find_script_labels(Evt* script) {
-    Bytecode* curLine;
-    s32 type;
-    s32 label;
-    s32 numArgs;
+void scan_script_structure(Evt* script) {
+    Bytecode* curLine = script->ptrNextLine;
+    s32 labelCount = 0;
+    b32 inFinally = false;
+    s32 endOpcode;
     s32 i;
-    s32 j;
 
-    for (i = 0; i < ARRAY_COUNT(script->labelIndices); i++) {
-        script->labelIndices[i] = -1;
-        script->labelPositions[i] = nullptr;
+    if (script->threadParent != nullptr) {
+        endOpcode = EVT_OP_END_CHILD_THREAD;
+    } else if (script->stateFlags & EVT_FLAG_THREAD) {
+        endOpcode = EVT_OP_END_THREAD;
+    } else {
+        endOpcode = EVT_OP_END;
     }
 
-    j = 0;
-    curLine = script->ptrNextLine;
-    while (j < ARRAY_COUNT(script->labelIndices)) {
-        type = *curLine++;
-        numArgs = EVT_CMD_ARGC(*curLine++);
-        label = *curLine;
+    script->ptrFinally = nullptr;
+
+    for (i = 0; i < ARRAY_COUNT(script->labelValuePtrs); i++) {
+        script->labelValuePtrs[i] = nullptr;
+    }
+
+    while (true) {
+        s32 rawCmd = *curLine++;
+        s32 opcode = EVT_CMD_OPCODE(rawCmd);
+        s32 numArgs = EVT_CMD_ARGC(rawCmd);
+        Bytecode* args = curLine;
+
         curLine += numArgs;
 
-        if (type == 1) {
+        if (opcode == endOpcode) {
             return;
         }
+        if (opcode == EVT_OP_END) {
+            PANIC_MSG("Unexpected End while scanning labels for opcode 0x%lX", (u32) endOpcode);
+        }
 
-        if (type == 3) {
-            script->labelIndices[j] = label;
-            script->labelPositions[j] = curLine;
-            j++;
+        switch (opcode) {
+            case EVT_OP_THREAD:
+                curLine = evt_find_thread_block_end(curLine, EVT_OP_END_THREAD);
+                break;
+            case EVT_OP_CHILD_THREAD:
+                curLine = evt_find_thread_block_end(curLine, EVT_OP_END_CHILD_THREAD);
+                break;
+            case EVT_OP_FINALLY:
+                ASSERT_MSG(!inFinally, "Script contains multiple Finally commands");
+                script->ptrFinally = curLine;
+                inFinally = true;
+                break;
+            case EVT_OP_LABEL: {
+                Bytecode label = *args;
+
+                ASSERT_MSG(!inFinally, "Label commands are not allowed inside Finally");
+                ASSERT_MSG(evt_is_valid_label_value(label), "Invalid Label value: 0x%08lX", (u32) label);
+                ASSERT(labelCount < ARRAY_COUNT(script->labelValuePtrs));
+
+                for (i = 0; i < labelCount; i++) {
+                    ASSERT_MSG(!evt_label_values_match(label, *script->labelValuePtrs[i]), "Duplicate Label value: 0x%08lX", (u32) label);
+                }
+
+                script->labelValuePtrs[labelCount++] = args;
+                break;
+            }
         }
     }
-    PANIC();
 }
 
 void clear_script_list(void) {
     s32 i;
+
+    EvtCurrentScript = nullptr;
 
     if (gGameStatusPtr->context == CONTEXT_WORLD) {
         gCurrentScriptListPtr = &gWorldScriptList;
@@ -247,19 +288,23 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
     newScript->ptrFirstLine = (Bytecode*)source;
     newScript->ptrCurLine = (Bytecode*)source;
     newScript->userData = nullptr;
+    newScript->argVars = nullptr;
+    newScript->argCount = 0;
+    newScript->lerpActive = false;
     newScript->blockingParent = nullptr;
-    newScript->childScript = nullptr;
-    newScript->parentScript = nullptr;
+    newScript->blockingChild = nullptr;
+    newScript->threadParent = nullptr;
     newScript->owner1.actorID = -1;
     newScript->owner2.npcID = -1;
     newScript->loopDepth = -1;
     newScript->switchDepth = -1;
     newScript->groupFlags = EVT_GROUP_NOT_BATTLE;
-    newScript->ptrSavedPos = nullptr;
     newScript->frameCounter = 0.0f;
-    newScript->unk_158 = 0;
     newScript->timeScale = GlobalTimeRate;
     newScript->debugPaused = false;
+    newScript->terminationState = EVT_TERMINATION_NONE;
+    newScript->isExecuting = false;
+    newScript->isTerminatingChildren = false;
 
     scriptListCount = 0;
 
@@ -271,7 +316,7 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
         newScript->varFlags[i] = 0;
     }
 
-    find_script_labels(newScript);
+    scan_script_structure(newScript);
 
     if (IsUpdatingScripts && (newScript->stateFlags & EVT_FLAG_RUN_IMMEDIATELY)) {
         scriptListCount = gScriptListCount++;
@@ -315,19 +360,23 @@ Evt* start_script_in_group(EvtScript* source, u8 priority, u8 flags, u8 groupFla
     newScript->ptrFirstLine = (Bytecode*)source;
     newScript->ptrCurLine = (Bytecode*)source;
     newScript->userData = nullptr;
+    newScript->argVars = nullptr;
+    newScript->argCount = 0;
+    newScript->lerpActive = false;
     newScript->blockingParent = nullptr;
-    newScript->childScript = nullptr;
-    newScript->parentScript = nullptr;
+    newScript->blockingChild = nullptr;
+    newScript->threadParent = nullptr;
     newScript->owner1.actorID = -1;
     newScript->owner2.npcID = -1;
     newScript->loopDepth = -1;
     newScript->switchDepth = -1;
     newScript->groupFlags = groupFlags;
-    newScript->ptrSavedPos = nullptr;
     newScript->frameCounter = 0.0f;
-    newScript->unk_158 = 0;
     newScript->timeScale = GlobalTimeRate;
     newScript->debugPaused = false;
+    newScript->terminationState = EVT_TERMINATION_NONE;
+    newScript->isExecuting = false;
+    newScript->isTerminatingChildren = false;
 
     scriptListCount = 0;
 
@@ -338,7 +387,7 @@ Evt* start_script_in_group(EvtScript* source, u8 priority, u8 flags, u8 groupFla
         newScript->varFlags[i] = 0;
     }
 
-    find_script_labels(newScript);
+    scan_script_structure(newScript);
 
     if (IsUpdatingScripts && (newScript->stateFlags & EVT_FLAG_RUN_IMMEDIATELY)) {
         scriptListCount = gScriptListCount++;
@@ -361,6 +410,12 @@ Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 flags) {
     Evt* child;
     s32 i;
 
+    ASSERT_MSG(
+        EvtCurrentScript == nullptr || EvtCurrentScript->terminationState != EVT_TERMINATION_FINALIZING,
+        "Finally block attempted to start an owned child script"
+    );
+    ASSERT_MSG(parentScript->terminationState == EVT_TERMINATION_NONE, "Cannot add a child to a terminating script");
+
     for (i = 0; i < MAX_SCRIPTS; i++) {
         if ((*gCurrentScriptListPtr)[i] == nullptr) {
             break;
@@ -374,16 +429,19 @@ Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 flags) {
     gNumScripts++;
     ASSERT(child != nullptr);
 
-    parentScript->childScript = child;
+    parentScript->blockingChild = child;
     parentScript->stateFlags |= EVT_FLAG_BLOCKED_BY_CHILD;
     child->stateFlags = flags | EVT_FLAG_ACTIVE;
     child->ptrCurLine = child->ptrFirstLine = child->ptrNextLine = (Bytecode*)source;
 
     child->curOpcode = EVT_OP_INTERNAL_FETCH;
     child->userData = nullptr;
+    child->argVars = nullptr;
+    child->argCount = 0;
+    child->lerpActive = false;
     child->blockingParent = parentScript;
-    child->childScript = nullptr;
-    child->parentScript = nullptr;
+    child->blockingChild = nullptr;
+    child->threadParent = nullptr;
     child->priority = parentScript->priority + 1;
     child->id = UniqueScriptCounter++;
     child->owner1 = parentScript->owner1;
@@ -391,13 +449,14 @@ Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 flags) {
     child->loopDepth = -1;
     child->switchDepth = -1;
     child->groupFlags = parentScript->groupFlags;
-    child->ptrSavedPos = nullptr;
     child->array = parentScript->array;
     child->flagArray = parentScript->flagArray;
     child->timeScale = GlobalTimeRate;
     child->frameCounter = 0.0f;
-    child->unk_158 = 0;
     child->debugPaused = false;
+    child->terminationState = EVT_TERMINATION_NONE;
+    child->isExecuting = false;
+    child->isTerminatingChildren = false;
 
     scriptListCount = 0;
 
@@ -409,7 +468,7 @@ Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 flags) {
         child->varFlags[i] = parentScript->varFlags[i];
     }
 
-    find_script_labels(child);
+    scan_script_structure(child);
     if (IsUpdatingScripts) {
         scriptListCount = gScriptListCount++;
         gScriptIndexList[scriptListCount] = curScriptIndex;
@@ -431,6 +490,12 @@ Evt* start_child_thread(Evt* parentScript, Bytecode* nextLine, s32 newState) {
     s32 i;
     s32 scriptListCount;
 
+    ASSERT_MSG(
+        EvtCurrentScript == nullptr || EvtCurrentScript->terminationState != EVT_TERMINATION_FINALIZING,
+        "Finally block attempted to start an owned child script"
+    );
+    ASSERT_MSG(parentScript->terminationState == EVT_TERMINATION_NONE, "Cannot add a child to a terminating script");
+
     for (i = 0; i < MAX_SCRIPTS; i++) {
         if ((*gCurrentScriptListPtr)[i] == nullptr) {
             break;
@@ -450,9 +515,12 @@ Evt* start_child_thread(Evt* parentScript, Bytecode* nextLine, s32 newState) {
     child->ptrCurLine = nextLine;
     child->curOpcode = EVT_OP_INTERNAL_FETCH;
     child->userData = nullptr;
+    child->argVars = nullptr;
+    child->argCount = 0;
+    child->lerpActive = false;
     child->blockingParent = nullptr;
-    child->parentScript = parentScript;
-    child->childScript = nullptr;
+    child->threadParent = parentScript;
+    child->blockingChild = nullptr;
     child->priority = parentScript->priority;
     child->id = UniqueScriptCounter++;
     child->owner1.actorID = parentScript->owner1.actorID;
@@ -460,13 +528,14 @@ Evt* start_child_thread(Evt* parentScript, Bytecode* nextLine, s32 newState) {
     child->loopDepth = -1;
     child->switchDepth = -1;
     child->groupFlags = parentScript->groupFlags;
-    child->ptrSavedPos = nullptr;
     child->array = parentScript->array;
     child->flagArray = parentScript->flagArray;
     child->timeScale = GlobalTimeRate;
     child->frameCounter = 0.0f;
-    child->unk_158 = 0;
     child->debugPaused = false;
+    child->terminationState = EVT_TERMINATION_NONE;
+    child->isExecuting = false;
+    child->isTerminatingChildren = false;
 
     scriptListCount = 0;
 
@@ -478,7 +547,7 @@ Evt* start_child_thread(Evt* parentScript, Bytecode* nextLine, s32 newState) {
         child->varFlags[i] = parentScript->varFlags[i];
     }
 
-    find_script_labels(child);
+    scan_script_structure(child);
     if (IsUpdatingScripts) {
         scriptListCount = gScriptListCount++;
         gScriptIndexList[scriptListCount] = curScriptIndex;
@@ -493,16 +562,31 @@ Evt* start_child_thread(Evt* parentScript, Bytecode* nextLine, s32 newState) {
     return child;
 }
 
-Evt* func_802C3C10(Evt* script, Bytecode* line, s32 arg2) {
-    Evt* curScript;
-    s32 i;
+// points an existing script at new source while keeping its local state
+Evt* replace_script(Evt* script, Bytecode* source, s32 flags) {
+    ASSERT(script->terminationState == EVT_TERMINATION_NONE);
+    ASSERT_MSG(
+        script->blockingParent == nullptr && script->threadParent == nullptr,
+        "Cannot detach and reset an owned child script"
+    );
 
-    script->ptrNextLine = line;
-    script->ptrFirstLine = line;
-    script->ptrCurLine = line;
+    // keep a child's Finally block from destroying this script while it is being reset
+    ASSERT(!script->isTerminatingChildren);
+    script->isTerminatingChildren = true;
+    kill_script_children(script);
+    script->isTerminatingChildren = false;
+    ASSERT_MSG(!script_has_children(script), "Cannot reset a script beneath an active child command");
+    ASSERT_MSG(
+        script->terminationState == EVT_TERMINATION_NONE,
+        "Child cleanup attempted to terminate a script while it was being reset"
+    );
+
+    script->ptrNextLine = source;
+    script->ptrFirstLine = source;
+    script->ptrCurLine = source;
     script->curOpcode = EVT_OP_INTERNAL_FETCH;
     script->frameCounter = 0;
-    script->stateFlags |= arg2;
+    script->stateFlags |= flags;
     script->timeScale = 1.0f;
 
     #if DX_DEBUG_MENU
@@ -514,48 +598,45 @@ Evt* func_802C3C10(Evt* script, Bytecode* line, s32 arg2) {
         script->userData = nullptr;
     }
 
-    if (script->childScript != 0) {
-        kill_script(script->childScript);
+    if (script->argVars != nullptr) {
+        heap_free(script->argVars);
+        script->argVars = nullptr;
+        script->argCount = 0;
     }
+    script->lerpActive = false;
 
-    for (i = 0; i < MAX_SCRIPTS; i++) {
-        curScript = (*gCurrentScriptListPtr)[i];
-        if ((curScript != 0) && (curScript->parentScript == script)) {
-            kill_script(curScript);
-        }
-    }
     script->loopDepth = -1;
     script->switchDepth = -1;
     script->blockingParent = nullptr;
-    script->parentScript = nullptr;
-    script->childScript = nullptr;
+    script->threadParent = nullptr;
+    script->blockingChild = nullptr;
     script->frameCounter = 0.0f;
-    script->unk_158 = 0;
     script->timeScale = GlobalTimeRate;
-    find_script_labels(script);
+    scan_script_structure(script);
     suspend_frozen_scripts(script);
 
     return script;
 }
 
+// restarts a script from its original source while keeping its local state
 Evt* restart_script(Evt* script) {
     Bytecode* ptrFirstLine = script->ptrFirstLine;
 
-    // frameCounter gets set to 0 twice which makes me think a macro is being used here
+    ASSERT(script->terminationState == EVT_TERMINATION_NONE);
+
     script->loopDepth = -1;
     script->switchDepth = -1;
-    script->frameCounter = 0;
+    script->lerpActive = false;
     script->curOpcode = EVT_OP_INTERNAL_FETCH;
 
     script->ptrNextLine = ptrFirstLine;
     script->ptrCurLine = ptrFirstLine;
     script->timeScale = 1.0f;
     script->frameCounter = 0;
-    script->unk_158 = 0;
 
     script->timeScale = GlobalTimeRate;
 
-    find_script_labels(script);
+    scan_script_structure(script);
     suspend_frozen_scripts(script);
 
     return script;
@@ -571,12 +652,14 @@ void update_scripts(void) {
     IsUpdatingScripts = true;
     sort_scripts();
 
+    // iterate over all scripts, executing commands in each until EVT_CMD_RESULT_YIELD
     for (i = 0; i < gScriptListCount; i++) {
         Evt* script = (*gCurrentScriptListPtr)[gScriptIndexList[i]];
 
         if (script != nullptr
             && script->id == gScriptIdList[i]
             && script->stateFlags != 0
+            && script->terminationState == EVT_TERMINATION_NONE
             && !(script->stateFlags & (EVT_FLAG_SUSPENDED | EVT_FLAG_BLOCKED_BY_CHILD | EVT_FLAG_PAUSED))
         ) {
             b32 stop = false;
@@ -607,106 +690,312 @@ void update_scripts(void) {
     EvtCurrentScript = nullptr;
 }
 
-void kill_script(Evt* instanceToKill) {
-    Evt* childScript;
-    Evt* blockingParent;
-    s32 j;
+// checks whether an address and ID still identify the same live script
+b32 script_ref_matches(Evt* script, s32 scriptID) {
     s32 i;
 
+    if (script == nullptr) {
+        return false;
+    }
+
     for (i = 0; i < MAX_SCRIPTS; i++) {
-        if ((*gCurrentScriptListPtr)[i] == instanceToKill) {
-            break;
+        Evt* candidate = (*gCurrentScriptListPtr)[i];
+
+        if (candidate == script) {
+            return candidate->id == scriptID;
         }
     }
-
-    if (i >= MAX_SCRIPTS) {
-        return;
-    }
-
-    childScript = instanceToKill->childScript;
-    if (childScript != nullptr) {
-        kill_script(childScript);
-    }
-
-    for (j = 0; j < MAX_SCRIPTS; j++) {
-        Evt* tempScriptInstance = (*gCurrentScriptListPtr)[j];
-        if (tempScriptInstance != nullptr) {
-            if (tempScriptInstance->parentScript == instanceToKill) {
-                kill_script(tempScriptInstance);
-            }
-        }
-    }
-
-    blockingParent = instanceToKill->blockingParent;
-    if (blockingParent != nullptr) {
-        blockingParent->childScript = nullptr;
-        blockingParent->stateFlags &= ~EVT_FLAG_BLOCKED_BY_CHILD;
-
-        for (j = 0; j < ARRAY_COUNT(blockingParent->varTable); j++) {
-            blockingParent->varTable[j] = instanceToKill->varTable[j];
-        }
-
-        for (j = 0; j < ARRAY_COUNT(blockingParent->varFlags); j++) {
-            blockingParent->varFlags[j] = instanceToKill->varFlags[j];
-        }
-    }
-
-    #if DX_DEBUG_MENU
-    dx_debug_evt_force_detach(instanceToKill);
-    #endif
-
-    if (instanceToKill->userData != nullptr) {
-        heap_free(instanceToKill->userData);
-        instanceToKill->userData = nullptr;
-    }
-
-    heap_free((*gCurrentScriptListPtr)[i]);
-    (*gCurrentScriptListPtr)[i] = nullptr;
-    gNumScripts--;
+    return false;
 }
 
-void kill_script_by_ID(s32 id) {
+// checks whether a script still has an ExecWait child or any ChildThread scripts
+b32 script_has_children(Evt* script) {
     s32 i;
-    Evt* scriptContextPtr;
 
-    for (i = 0; i < MAX_SCRIPTS; i++) {
-        scriptContextPtr = (*gCurrentScriptListPtr)[i];
-        if (scriptContextPtr != nullptr && scriptContextPtr->id == id) {
-            kill_script(scriptContextPtr);
-        }
+    if (script->blockingChild != nullptr) {
+        return true;
     }
-}
-
-void kill_all_scripts(void) {
-    s32 i;
-    Evt* scriptContextPtr;
 
     for (i = 0; i < MAX_SCRIPTS; i++) {
-        scriptContextPtr = (*gCurrentScriptListPtr)[i];
-        if (scriptContextPtr != nullptr) {
-            kill_script(scriptContextPtr);
-        }
-    }
-}
+        Evt* candidate = (*gCurrentScriptListPtr)[i];
 
-s32 does_script_exist(s32 id) {
-    s32 i;
-    Evt* scriptContextPtr;
-
-    for (i = 0; i < MAX_SCRIPTS; i++) {
-        scriptContextPtr = (*gCurrentScriptListPtr)[i];
-        if (scriptContextPtr != nullptr && scriptContextPtr->id == id) {
+        if (candidate != nullptr && candidate->threadParent == script) {
             return true;
         }
     }
     return false;
 }
 
-s32 does_script_exist_by_ref(Evt* script) {
+// terminates every child owned by this script
+void kill_script_children(Evt* script) {
+    Evt* blockingChild = script->blockingChild;
+    s32 i;
+
+    if (blockingChild != nullptr && blockingChild->terminationState == EVT_TERMINATION_NONE) {
+        kill_script(blockingChild);
+    }
+
+    for (i = 0; i < MAX_SCRIPTS; i++) {
+        Evt* candidate = (*gCurrentScriptListPtr)[i];
+
+        if (candidate != nullptr
+            && candidate->threadParent == script
+            && candidate->terminationState == EVT_TERMINATION_NONE
+        ) {
+            kill_script(candidate);
+        }
+    }
+}
+
+void evt_destroy_script(Evt* script);
+
+/*
+ * terminating a script has four steps:
+ *
+ * 1. request termination of its children
+ * 2. wait for each child to finish Finally and be destroyed
+ * 3. run this script's Finally block
+ * 4. destroy the script once the interpreter is no longer using it
+ *
+ * children always finish terminating before their parent. this function continues as far as it
+ * can, but may stop while a child or the interpreter is still using the script.
+ */
+void evt_continue_termination(Evt* script) {
+    ASSERT(script != nullptr);
+
+    // terminate every child before starting this script's Finally block
+    if (script->terminationState == EVT_TERMINATION_AWAITING_CHILDREN) {
+        if (script->isTerminatingChildren) {
+            // a child terminated while this script was already terminating its children
+            return;
+        }
+
+        script->isTerminatingChildren = true;
+        kill_script_children(script);
+        if (script_has_children(script)) {
+            // at least one child is still executing and will terminate later
+            script->isTerminatingChildren = false;
+            return;
+        }
+
+        if (script->ptrFinally != nullptr) {
+            // start at the first command after Finally
+            script->ptrNextLine = script->ptrFinally;
+            script->curOpcode = EVT_OP_INTERNAL_FETCH;
+            script->terminationState = EVT_TERMINATION_FINALIZING;
+        } else {
+            // without Finally, the script is ready to be destroyed
+            script->terminationState = EVT_TERMINATION_DESTROY_PENDING;
+        }
+        script->isTerminatingChildren = false;
+    }
+
+    // do not run Finally or destroy a script while the interpreter is using it
+    if (script->isExecuting) {
+        return;
+    }
+
+    if (script->terminationState == EVT_TERMINATION_FINALIZING) {
+        Evt* previousScript = EvtCurrentScript;
+        s32 previousScriptID = 0;
+        s32 scriptID = script->id;
+        s32 status;
+
+        // since Finally runs immediately, we must remember which script the interpreter was using before
+        if (previousScript != nullptr) {
+            previousScriptID = previousScript->id;
+        }
+        status = evt_execute_next_command(script);
+        ASSERT_MSG(status != EVT_CMD_RESULT_ERROR, "Finally block failed during script termination");
+
+        // restore the previous script only if that exact script still exists
+        if (script_ref_matches(previousScript, previousScriptID)) {
+            EvtCurrentScript = previousScript;
+        } else {
+            EvtCurrentScript = nullptr;
+        }
+
+        // Finally may have destroyed this script and reused its address
+        if (!script_ref_matches(script, scriptID)) {
+            return;
+        }
+    }
+
+    ASSERT(!script->isExecuting);
+    if (script->terminationState == EVT_TERMINATION_DESTROY_PENDING) {
+        evt_destroy_script(script);
+    }
+}
+
+// moves a script to the next step when it is killed or reaches Return, Finally, or End
+void evt_terminate_script(Evt* script) {
+    ASSERT(script != nullptr);
+
+    switch (script->terminationState) {
+        case EVT_TERMINATION_NONE:
+            script->terminationState = EVT_TERMINATION_AWAITING_CHILDREN;
+            script->blocked = false;
+
+            #if DX_DEBUG_MENU
+            script->debugPaused = false;
+            script->debugStep = DEBUG_EVT_STEP_NONE;
+            #endif
+            break;
+        case EVT_TERMINATION_FINALIZING:
+            // End has finished the Finally block
+            ASSERT(!script_has_children(script));
+            script->terminationState = EVT_TERMINATION_DESTROY_PENDING;
+            break;
+        default:
+            return;
+    }
+
+    evt_continue_termination(script);
+}
+
+// requests termination of a known-live script; repeated requests have no effect
+void kill_script(Evt* script) {
+    if (script != nullptr && script->terminationState == EVT_TERMINATION_NONE) {
+        evt_terminate_script(script);
+    }
+}
+
+// destroys a terminated script and frees the resources it owns
+void evt_destroy_script(Evt* script) {
+    Evt* blockingParent = script->blockingParent;
+    Evt* threadParent = script->threadParent;
+    Evt* parent = blockingParent;
+    s32 listIdx, i;
+
+    // cannot have two parents (but could have none)
+    ASSERT(blockingParent == nullptr || threadParent == nullptr);
+
+    if (parent == nullptr) {
+        parent = threadParent;
+    }
+
+    ASSERT(script->terminationState == EVT_TERMINATION_DESTROY_PENDING);
+    ASSERT(!script->isExecuting);
+    ASSERT(!script_has_children(script));
+
+    for (listIdx = 0; listIdx < MAX_SCRIPTS; listIdx++) {
+        if ((*gCurrentScriptListPtr)[listIdx] == script) {
+            break;
+        }
+    }
+    ASSERT(listIdx < MAX_SCRIPTS);
+
+    // ExecWait copies the child's local state back and unblocks its parent
+    if (blockingParent != nullptr) {
+        ASSERT(blockingParent->blockingChild == script);
+        blockingParent->blockingChild = nullptr;
+        blockingParent->stateFlags &= ~EVT_FLAG_BLOCKED_BY_CHILD;
+
+        for (i = 0; i < ARRAY_COUNT(blockingParent->varTable); i++) {
+            blockingParent->varTable[i] = script->varTable[i];
+        }
+
+        for (i = 0; i < ARRAY_COUNT(blockingParent->varFlags); i++) {
+            blockingParent->varFlags[i] = script->varFlags[i];
+        }
+    }
+
+    #if DX_DEBUG_MENU
+    dx_debug_evt_force_detach(script);
+    #endif
+
+    // free resources owned directly by the script
+    if (script->userData != nullptr) {
+        heap_free(script->userData);
+        script->userData = nullptr;
+    }
+
+    if (script->argVars != nullptr) {
+        heap_free(script->argVars);
+        script->argVars = nullptr;
+        script->argCount = 0;
+    }
+    if (EvtCurrentScript == script) {
+        EvtCurrentScript = nullptr;
+    }
+    heap_free((*gCurrentScriptListPtr)[listIdx]);
+    (*gCurrentScriptListPtr)[listIdx] = nullptr;
+    gNumScripts--;
+
+    // the parent may now be able to run Finally or be destroyed
+    if (parent != nullptr) {
+        evt_continue_termination(parent);
+    }
+}
+
+// marks this script as no longer executing, then continues its termination if needed
+s32 evt_finish_execution(Evt* script, s32 result) {
+    ASSERT(script->isExecuting);
+    ASSERT(script->terminationState != EVT_TERMINATION_FINALIZING);
+
+    script->isExecuting = false;
+
+    // continue termination that was waiting for the interpreter to finish
+    evt_continue_termination(script);
+    return result;
+}
+
+void kill_script_by_ID(s32 id) {
     s32 i;
 
     for (i = 0; i < MAX_SCRIPTS; i++) {
-        if (script == (*gCurrentScriptListPtr)[i]) {
+        Evt* candidate = (*gCurrentScriptListPtr)[i];
+        if (candidate != nullptr && candidate->id == id) {
+            kill_script(candidate);
+        }
+    }
+}
+
+void kill_all_scripts(void) {
+    b32 hasKilled = false;
+    s32 scriptsKilled = 0;
+    s32 i;
+
+    do {
+        hasKilled = false;
+        for (i = 0; i < MAX_SCRIPTS; i++) {
+            Evt* candidate = (*gCurrentScriptListPtr)[i];
+            if (candidate != nullptr && candidate->terminationState == EVT_TERMINATION_NONE) {
+                kill_script(candidate);
+                hasKilled = true;
+                scriptsKilled++;
+                ASSERT_MSG(scriptsKilled < 10000, "kill_all_scripts did not settle");
+            }
+        }
+    } while (hasKilled);
+}
+
+// checks whether a script with this ID is still alive
+s32 does_script_exist(s32 id) {
+    s32 i;
+
+    for (i = 0; i < MAX_SCRIPTS; i++) {
+        Evt* candidate = (*gCurrentScriptListPtr)[i];
+
+        if (candidate != nullptr && candidate->id == id) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// checks whether a script has any ChildThread children
+s32 does_script_have_child_threads(Evt* script) {
+    s32 i;
+
+    if (script == nullptr) {
+        return false;
+    }
+
+    for (i = 0; i < MAX_SCRIPTS; i++) {
+        Evt* candidate = (*gCurrentScriptListPtr)[i];
+
+        if (candidate != nullptr && candidate->threadParent == script) {
             return true;
         }
     }
@@ -745,8 +1034,8 @@ Trigger* bind_trigger(EvtScript* script, s32 flags, s32 triggerFlagIndex, s32 tr
     bp.hasPlayerInteractPrompt = arg6;
 
     trigger = create_trigger(&bp);
-    trigger->onTriggerEvt = script;
-    trigger->runningScript = nullptr;
+    trigger->script.source = script;
+    clear_bound_script(&trigger->script);
     trigger->priority = priority;
     trigger->varTable[0] = triggerVar0;
     trigger->varTable[1] = triggerVar1;
@@ -759,7 +1048,7 @@ Trigger* bind_trigger_1(EvtScript* script, s32 flags, s32 triggerFlagIndex, s32 
 }
 
 void suspend_group_script(Evt* script, s32 groupFlags) {
-    Evt* childScript = script->childScript;
+    Evt* childScript = script->blockingChild;
     s32 i;
 
     if (childScript != nullptr) {
@@ -769,7 +1058,7 @@ void suspend_group_script(Evt* script, s32 groupFlags) {
     for (i = 0; i < MAX_SCRIPTS; i++) {
         Evt* scriptContextPtr = (*gCurrentScriptListPtr)[i];
 
-        if (scriptContextPtr != nullptr && scriptContextPtr->parentScript == script) {
+        if (scriptContextPtr != nullptr && scriptContextPtr->threadParent == script) {
             suspend_group_script(scriptContextPtr, groupFlags);
         }
     }
@@ -780,7 +1069,7 @@ void suspend_group_script(Evt* script, s32 groupFlags) {
 }
 
 void resume_group_script(Evt* script, s32 groupFlags) {
-    Evt* childScript = script->childScript;
+    Evt* childScript = script->blockingChild;
     s32 i;
 
     if (childScript != nullptr) {
@@ -790,8 +1079,8 @@ void resume_group_script(Evt* script, s32 groupFlags) {
     for (i = 0; i < MAX_SCRIPTS; i++) {
         Evt* scriptContextPtr = (*gCurrentScriptListPtr)[i];
 
-        if (scriptContextPtr != nullptr && scriptContextPtr->parentScript == script) {
-            suspend_group_script(scriptContextPtr, groupFlags);
+        if (scriptContextPtr != nullptr && scriptContextPtr->threadParent == script) {
+            resume_group_script(scriptContextPtr, groupFlags);
         }
     }
 
@@ -916,7 +1205,7 @@ Evt* get_script_by_id(s32 id) {
 }
 
 void set_script_flags(Evt* script, s32 flags) {
-    Evt* childScript = script->childScript;
+    Evt* childScript = script->blockingChild;
     s32 i;
 
     script->stateFlags |= flags;
@@ -927,14 +1216,14 @@ void set_script_flags(Evt* script, s32 flags) {
     for (i = 0; i < MAX_SCRIPTS; i++) {
         Evt* scriptContextPtr = (*gCurrentScriptListPtr)[i];
 
-        if (scriptContextPtr != nullptr && scriptContextPtr->parentScript == script) {
-            set_script_flags(script->parentScript, flags);
+        if (scriptContextPtr != nullptr && scriptContextPtr->threadParent == script) {
+            set_script_flags(scriptContextPtr, flags);
         }
     }
 }
 
 void clear_script_flags(Evt* script, s32 flags) {
-    Evt* childScript = script->childScript;
+    Evt* childScript = script->blockingChild;
     s32 i;
 
     script->stateFlags &= ~flags;
@@ -945,7 +1234,7 @@ void clear_script_flags(Evt* script, s32 flags) {
     for (i = 0; i < MAX_SCRIPTS; i++) {
         Evt* scriptContextPtr = (*gCurrentScriptListPtr)[i];
 
-        if (scriptContextPtr != nullptr && scriptContextPtr->parentScript == script) {
+        if (scriptContextPtr != nullptr && scriptContextPtr->threadParent == script) {
             clear_script_flags(scriptContextPtr, flags);
         }
     }

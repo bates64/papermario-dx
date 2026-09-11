@@ -1,0 +1,5 @@
+tools/test/evt_validator/fail/switch_without_endswitch.c:
+EVS_SwitchWithoutEndSwitch
+unclosed switch block
+before End
+source line

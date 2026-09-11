@@ -1,6 +1,6 @@
 #include "nok_04.h"
 
-EvtScript N(EVS_ExitWalk_nok_03_1) = EVT_EXIT_WALK_NOK(60, nok_04_ENTRY_0, "nok_03", nok_03_ENTRY_1);
+EvtScript N(EVS_ExitWalk_nok_03_1) = EVT_EXIT_WALK(60, nok_04_ENTRY_0, "nok_03", nok_03_ENTRY_1);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_nok_03_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)

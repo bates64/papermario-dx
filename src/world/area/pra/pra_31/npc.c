@@ -89,6 +89,7 @@ EvtScript N(EVS_ChangeDinoDirection) = {
                 EndLoop
                 Call(SetNpcRotation, NPC_SELF, 0, 0, 0)
                 Call(SetNpcYaw, NPC_SELF, LVarA)
+            EndCaseGroup
             CaseDefault
                 Thread
                     Wait(15)

@@ -248,7 +248,7 @@ API_CALLABLE(N(CreateSignpost)) {
     SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
     s32 entityIndex = create_entity(&Entity_Signpost, 355, 20, -180, 0, 0, 0, 0, MAKE_ENTITY_END);
     data->signpostEntity = entityIndex;
-    get_entity_by_index(entityIndex)->boundScriptBytecode = &N(EVS_ReadSign_Instructions);
+    get_entity_by_index(entityIndex)->script.source = &N(EVS_ReadSign_Instructions);
 
     return ApiStatus_DONE2;
 }

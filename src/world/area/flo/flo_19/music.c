@@ -16,7 +16,6 @@ EvtScript N(EVS_SetupMusic) = {
                 Call(FadeOutMusic, 1, 3000)
                 Call(FadeInMusic, 0, SONG_CLOUDY_CLIMB, 0, 3000, 0, 127)
             EndIf
-        EndCaseGroup
     EndSwitch
     Return
     End

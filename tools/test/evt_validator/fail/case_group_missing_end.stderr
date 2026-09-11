@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/case_group_missing_end.c:
+EVS_CaseGroupMissingEnd
+EndSwitch reached before EndCaseGroup

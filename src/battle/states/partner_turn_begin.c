@@ -73,10 +73,9 @@ void btl_state_update_begin_partner_turn(void) {
     switch (gBattleSubState) {
         case BTL_SUBSTATE_AWAIT_RECOVER_DONE:
             if (partner != nullptr) {
-                if (partner->handleEventScript != nullptr && does_script_exist(partner->handleEventScriptID)) {
+                if (is_bound_script_running(&partner->scripts.handleEvent)) {
                     break;
                 }
-                partner->handleEventScript = nullptr;
             }
 
             gBattleStatus.flags2 &= ~BS_FLAGS2_OVERRIDE_INACTIVE_PLAYER;
@@ -88,18 +87,17 @@ void btl_state_update_begin_partner_turn(void) {
     }
 
     if (gBattleSubState == BTL_SUBSTATE_EXEC_TURN_SCRIPT) {
-        if (partner->handlePhaseSource != nullptr) {
+        if (partner->scripts.handlePhase.source != nullptr) {
             battleStatus->battlePhase = PHASE_ENEMY_BEGIN;
-            script = start_script(partner->handlePhaseSource, EVT_PRIORITY_A, 0);
-            partner->handlePhaseScript = script;
-            partner->handlePhaseScriptID = script->id;
+            script = start_script(partner->scripts.handlePhase.source, EVT_PRIORITY_A, 0);
+            assign_bound_script(&partner->scripts.handlePhase, script);
             script->owner1.actorID = ACTOR_PARTNER;
         }
         gBattleSubState = BTL_SUBSTATE_AWAIT_TURN_SCRIPT;
     }
 
     if (gBattleSubState == BTL_SUBSTATE_AWAIT_TURN_SCRIPT) {
-        if (partner->handlePhaseSource == nullptr || !does_script_exist(partner->handlePhaseScriptID)) {
+        if (!is_bound_script_running(&partner->scripts.handlePhase)) {
             gBattleSubState = BTL_SUBSTATE_END_DELAY;
         }
     }

@@ -1,0 +1,81 @@
+---
+title: Actor Variables
+sidebar:
+  order: 8
+---
+
+Each actor has **16 variables** (indices 0–15) that can store integer values. These are useful for tracking state, communicating between actors, and creating actor variants from a single source file.
+
+## Setting and getting variables
+
+Use `SetActorVar` and `GetActorVar`:
+
+```c
+Call(SetActorVar, ACTOR_SELF, 0, 1)
+Call(GetActorVar, ACTOR_SELF, 0, LVar0)  // LVar0 = 1
+```
+
+## Naming variables
+
+Define an enum to give your variables readable names:
+
+```c
+enum ActorVars {
+    AVAR_Toppled     = 0,
+    AVAR_ToppleTurns = 1,
+};
+
+// in EVS_Init:
+Call(SetActorVar, ACTOR_SELF, AVAR_Toppled, false)
+
+// in EVS_TakeTurn:
+Call(GetActorVar, ACTOR_SELF, AVAR_Toppled, LVar0)
+IfTrue(LVar0)
+    // try to get back up instead of attacking
+EndIf
+```
+
+## Communication between actors
+
+You can read another actor's variables by using their actor ID instead of `ACTOR_SELF`. This lets actors coordinate:
+
+```c
+// parent actor stores the clone's ID when spawning it
+Call(SetActorVar, ACTOR_SELF, AVAR_CloneID, LVar0)
+
+// later, check if the clone is still alive by reading its variable
+Call(GetActorVar, ACTOR_SELF, AVAR_CloneID, LVarA)
+Call(GetActorVar, LVarA, AVAR_IsClone, LVar0)
+```
+
+See `src/battle/common/actor/magikoopa.inc.c` for this pattern in practice.
+
+## Formation variants
+
+The first 4 variables (indices 0–3) can be set from the battle formation using the `.var0`, `.var1`, `.var2`, and `.var3` fields. This lets you reuse a single actor file for different variants:
+
+```c
+Formation MyFormation = {
+    OVL_ACTOR_BY_IDX("boo", BTL_POS_GROUND_B, 10, .var0 = 0),  // normal
+    OVL_ACTOR_BY_IDX("boo", BTL_POS_GROUND_C, 9, .var0 = 1),   // starts transparent
+};
+```
+
+The actor reads the variable in its `EVS_Init` to configure itself:
+
+```c
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(GetActorVar,
+        ACTOR_SELF, AVAR_StartTransparent, LVar0)
+    IfTrue(LVar0)
+        Call(SetPartAlpha, ACTOR_SELF, PRT_MAIN, 80)
+    EndIf
+    Return
+    End
+};
+```
+
+This avoids duplicating actor files for minor variations.

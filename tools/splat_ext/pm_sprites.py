@@ -31,8 +31,8 @@ from sprite_tables import (
 class N64SegPm_sprites(Segment):
     DEFAULT_NPC_SPRITE_NAMES = [f"{i:02X}" for i in range(0xEA)]
 
-    def __init__(self, rom_start, rom_end, type, name, vram_start, args, yaml) -> None:
-        super().__init__(rom_start, rom_end, type, name, vram_start, args=args, yaml=yaml)
+    def __init__(self, rom_start, rom_end, type, name, vram_start, bss_size, args, yaml) -> None:
+        super().__init__(rom_start, rom_end, type, name, vram_start, args=args, yaml=yaml, bss_size=bss_size)
 
         path = Path(__file__).parent / f"npc_sprite_names.yaml"
         with path.open("r", encoding="utf-8") as f:

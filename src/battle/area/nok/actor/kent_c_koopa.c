@@ -1004,8 +1004,8 @@ EvtScript N(EVS_Attack_HeavyStomp) = {
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(MoveBattleCamOver, 20)
             ExecWait(N(EVS_KentC_GoHome))
-        CaseEq(HIT_RESULT_NICE_NO_DAMAGE)
         EndCaseGroup
+        CaseEq(HIT_RESULT_NICE_NO_DAMAGE)
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     Call(UseIdleAnimation, ACTOR_SELF, true)

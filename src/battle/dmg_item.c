@@ -590,15 +590,9 @@ API_CALLABLE(ItemDamageEnemy) {
     battleStatus->statusDuration = (battleStatus->curAttackStatus & 0xF00) >> 8;
 
     hitResult = calc_item_damage_enemy();
-    if (hitResult < 0) {
-        return ApiStatus_FINISH;
+    if (hitResult >= 0) {
+        evt_set_variable(script, hitResultVarOut, hitResult);
     }
-
-    evt_set_variable(script, hitResultVarOut, hitResult);
-    if (!does_script_exist_by_ref(script)) {
-        return ApiStatus_FINISH;
-    }
-
     return ApiStatus_DONE2;
 }
 
@@ -660,15 +654,9 @@ API_CALLABLE(ItemSpookEnemy) {
     battleStatus->statusDuration = (battleStatus->curAttackStatus & 0xF00) >> 8;
 
     hitResult = calc_item_damage_enemy();
-    if (hitResult < 0) {
-        return ApiStatus_FINISH;
+    if (hitResult >= 0) {
+        evt_set_variable(script, hitResultVarOut, hitResult);
     }
-
-    evt_set_variable(script, hitResultVarOut, hitResult);
-    if (!does_script_exist_by_ref(script)) {
-        return ApiStatus_FINISH;
-    }
-
     return ApiStatus_DONE2;
 }
 
@@ -729,15 +717,9 @@ API_CALLABLE(ItemAfflictEnemy) {
     battleStatus->statusDuration = (battleStatus->curAttackStatus & 0xF00) >> 8;
 
     hitResult = calc_item_damage_enemy();
-    if (hitResult < 0) {
-        return ApiStatus_FINISH;
+    if (hitResult >= 0) {
+        evt_set_variable(script, hitResultVarOut, hitResult);
     }
-
-    evt_set_variable(script, hitResultVarOut, hitResult);
-    if (!does_script_exist_by_ref(script)) {
-        return ApiStatus_FINISH;
-    }
-
     return ApiStatus_DONE2;
 }
 
@@ -799,11 +781,8 @@ API_CALLABLE(ItemCheckHit) {
     battleStatus->statusDuration = (battleStatus->curAttackStatus & 0xF00) >> 8;
 
     hitResult = calc_item_check_hit();
-    if (hitResult < 0) {
-        return ApiStatus_FINISH;
+    if (hitResult >= 0) {
+        evt_set_variable(script, hitResultVarOut, hitResult);
     }
-
-    evt_set_variable(script, hitResultVarOut, hitResult);
-
     return ApiStatus_DONE2;
 }

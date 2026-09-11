@@ -1,0 +1,3 @@
+tools/test/evt_validator/fail/duplicate_label.c:
+EVS_DuplicateLabel
+duplicate Label(1)

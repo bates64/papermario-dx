@@ -106,13 +106,41 @@ def _repo_paths(entries) -> List[str]:
     return paths
 
 
-class RecordingWriter(ninja_syntax.Writer):
-    """A ninja writer that remembers every path it is told to read or write.
+def configure_input_paths(versions: List[str]) -> List[str]:
+    """Every file configure reads to decide what build.ninja should contain."""
+    paths = [posix(BUILD_TOOLS / module) for module in CONFIGURE_MODULES]
+    for version in versions:
+        paths.append(f"ver/{version}/layout.yaml")
+        paths.append(f"ver/{version}/splat.yaml")
+    return paths
+
+
+def evt_validation_output_path(obj_path: Path) -> Path:
+    parts = obj_path.parts
+    build_index = parts.index("build")
+    return Path(*parts[:build_index], "evtcheck", *parts[build_index + 1:])
+
+
+def evt_validation_stamp_path(obj_path: Path) -> str:
+    return posix(evt_validation_output_path(obj_path).with_suffix(".validate_evt.stamp"))
+
+
+def evt_validation_display_path(obj_path: Path) -> str:
+    return posix(evt_validation_output_path(obj_path).with_suffix(""))
+
+
+class NinjaWriter(ninja_syntax.Writer):
+    """A ninja writer that remembers every path it is told to read or write, and can emit validations.
 
     configure builds build.ninja by scanning the assets/ tree with a different
     glob per subsystem, so a file that no glob matches is left out with no
     error. Recording each input and output lets check_asset_coverage report
     assets that no rule consumes.
+
+    A validation is a target that ninja builds whenever the requesting edge is
+    part of the build, but that nothing waits on. ninja_syntax has no parameter
+    for them, so they go through order_only behind the `|@` separator, which
+    Writer.build passes through untouched.
     """
 
     def __init__(self, *args, **kwargs):
@@ -129,23 +157,17 @@ class RecordingWriter(ninja_syntax.Writer):
         order_only=None,
         variables=None,
         implicit_outputs=None,
+        validations: List[str] = [],
     ):
         for group in (inputs, implicit, order_only):
             self.consumed_paths.update(_repo_paths(group))
         for group in (outputs, implicit_outputs):
             self.produced_paths.update(_repo_paths(group))
+        if validations:
+            order_only = list(order_only or []) + ["|@"] + validations
         return super().build(
             outputs, rule, inputs, implicit, order_only, variables, implicit_outputs
         )
-
-
-def configure_input_paths(versions: List[str]) -> List[str]:
-    """Every file configure reads to decide what build.ninja should contain."""
-    paths = [posix(BUILD_TOOLS / module) for module in CONFIGURE_MODULES]
-    for version in versions:
-        paths.append(f"ver/{version}/layout.yaml")
-        paths.append(f"ver/{version}/splat.yaml")
-    return paths
 
 
 def exec_shell(command: List[str]) -> str:
@@ -156,7 +178,7 @@ def exec_shell(command: List[str]) -> str:
 
 
 def write_ninja_rules(
-    ninja: ninja_syntax.Writer,
+    ninja: NinjaWriter,
     cpp: str,
     extra_cppflags: str,
     extra_cflags: str,
@@ -264,6 +286,20 @@ def write_ninja_rules(
         command=f"{ccache}{cxx_modern} {cxxflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.hpp -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
+    )
+
+    ninja.rule(
+        "evt_validate_obj",
+        description="Validating scripts in $evt_target",
+        command=f"$python {BUILD_TOOLS}/evt_validate_obj.py --object-list $out.rsp --out $out",
+        rspfile="$out.rsp",
+        rspfile_content="$in_newline",
+    )
+
+    ninja.rule(
+        "dead_cc_fix",
+        description="Fixing dead code symbols in $in",
+        command=f"{cross}objcopy --redefine-sym sqrtf=dead_sqrtf $in $out",
     )
 
     ninja.rule(
@@ -490,7 +526,7 @@ def write_ninja_rules(
     )
 
 
-def write_ninja_for_tools(ninja: ninja_syntax.Writer):
+def write_ninja_for_tools(ninja: NinjaWriter):
     if CRC_TOOL != "n64crc":
         ninja.rule(
             "cc_tool",
@@ -1356,13 +1392,15 @@ class Configure:
 
     def write_ninja(
         self,
-        ninja: ninja_syntax.Writer,
+        ninja: NinjaWriter,
         skip_outputs: Set[str],
         non_matching: bool,
         c_maps: bool = False,
-    ):
+        evt_validation: bool = True,
+    ) -> List[str]:
 
         built_objects = set()
+        evt_validation_stamps = []
         generated_code = []
         inc_img_bins = []
         precompiled_header_path = Path("include/common.h.gch")
@@ -1422,6 +1460,15 @@ class Configure:
                 inputs = self.resolve_src_paths(src_paths)
                 for dir in asset_deps:
                     inputs.extend(self.get_asset_list(dir))
+
+                evt_objects = []
+                if evt_validation and task in ["cc_modern", "cxx_modern"]:
+                    evt_objects = [
+                        obj for obj in object_paths if obj.suffixes[-1] == ".o"
+                    ]
+                evt_stamps = [evt_validation_stamp_path(obj) for obj in evt_objects]
+                evt_validation_stamps.extend(evt_stamps)
+
                 ninja.build(
                     outputs=object_strs,  # $out
                     rule=task,
@@ -1430,7 +1477,21 @@ class Configure:
                     order_only=order_only,
                     variables={"version": self.version, **variables},
                     implicit_outputs=implicit_outputs,
+                    validations=evt_stamps,
                 )
+
+                for object_path, evt_validation_stamp in zip(evt_objects, evt_stamps):
+                    if len(src_paths) == 1:
+                        evt_target = posix(src_paths[0])
+                    else:
+                        evt_target = evt_validation_display_path(object_path)
+                    ninja.build(
+                        evt_validation_stamp,
+                        "evt_validate_obj",
+                        [posix(object_path)],
+                        implicit=[posix(BUILD_TOOLS / "evt_validate_obj.py")],
+                        variables={"evt_target": evt_target},
+                    )
 
         # Effect data includes
         effect_yaml = ROOT / "src/effects.yaml"
@@ -1653,6 +1714,7 @@ class Configure:
 
         ninja.build("generated_code_" + self.version, "phony", generated_code)
         ninja.build("inc_img_bins_" + self.version, "phony", inc_img_bins)
+        return evt_validation_stamps
 
     def get_segment_max_sizes(self):
         return {
@@ -1697,8 +1759,10 @@ class Configure:
 
         return sorted(found.values(), key=lambda x: x[0].stem)
 
-    def write_overlays(self, ninja: ninja_syntax.Writer) -> str:
-        """Write overlay build statements. Returns the final ROM path."""
+    def write_overlays(
+        self, ninja: NinjaWriter, evt_validation: bool = True
+    ) -> Tuple[str, List[str]]:
+        """Write overlay build statements and return the ROM path and EVT validation stamps."""
         import json
 
         overlays = self.find_overlays()
@@ -1706,6 +1770,7 @@ class Configure:
         cxx_precompiled_header_path = Path("include/common.hpp.gch")
 
         manifest_entries = []
+        evt_validation_stamps = []
         implicit_deps = [posix(self.syms_path())]
         if CRC_TOOL != "n64crc":
             implicit_deps.append(CRC_TOOL)
@@ -1736,6 +1801,10 @@ class Configure:
                     task = "cc_modern"
                     pch = c_precompiled_header_path
                 obj_path = build_dir / (c_file.name + ".o")
+                evt_stamps = (
+                    [evt_validation_stamp_path(obj_path)] if evt_validation else []
+                )
+                evt_validation_stamps.extend(evt_stamps)
                 ninja.build(
                     posix(obj_path),
                     task,
@@ -1750,7 +1819,16 @@ class Configure:
                         "cflags": "-fno-common -fvisibility=hidden",
                         "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
                     },
+                    validations=evt_stamps,
                 )
+                for evt_validation_stamp in evt_stamps:
+                    ninja.build(
+                        evt_validation_stamp,
+                        "evt_validate_obj",
+                        [posix(obj_path)],
+                        implicit=[posix(BUILD_TOOLS / "evt_validate_obj.py")],
+                        variables={"evt_target": posix(c_file)},
+                    )
                 objects.append(posix(obj_path))
 
             if len(objects) == 0:
@@ -1799,9 +1877,9 @@ class Configure:
                 "manifest": posix(manifest_path),
             },
         )
-        return posix(self.rom_path())
+        return posix(self.rom_path()), evt_validation_stamps
 
-    def make_current(self, ninja: ninja_syntax.Writer):
+    def make_current(self, ninja: NinjaWriter):
         current = Path("ver/current")
 
         try:
@@ -1883,10 +1961,16 @@ if __name__ == "__main__":
         action="store_true",
         help="Convert map binaries to C as part of the build process",
     )
+    parser.add_argument(
+        "--no-evt-validation",
+        action="store_true",
+        help="Disable static EvtScript bytecode validation",
+    )
     args = parser.parse_args()
     args.shift = not args.no_shift
     args.non_matching = not args.no_non_matching
     args.ccache = not args.no_ccache
+    args.evt_validation = not args.no_evt_validation
 
     if args.incremental:
         stamp = ROOT / "build" / "source_files.stamp"
@@ -2008,8 +2092,8 @@ if __name__ == "__main__":
     # use. Build it beside the real one and move it into place only on success.
     build_ninja_path = ROOT / "build.ninja"
     partial_build_ninja = build_ninja_path.with_suffix(".ninja.partial")
-    ninja = RecordingWriter(
-        open(str(partial_build_ninja), "w", encoding="utf-8"), width=9999
+    ninja = NinjaWriter(
+        open(str(partial_build_ninja), "w", encoding="utf-8"), width=120
     )
 
     non_matching = args.non_matching or True or args.shift
@@ -2028,6 +2112,7 @@ if __name__ == "__main__":
 
     skip_files: Set[str] = set()
     all: List[str] = []
+    evt_validation_stamps: List[str] = []
     first_configure = None
 
     for version in versions:
@@ -2050,11 +2135,20 @@ if __name__ == "__main__":
         configure.load()
         if args.dump or not configure.dump_stamp().exists():
             configure.dump(not args.no_split_assets, args.split_code)
-        configure.write_ninja(ninja, skip_files, non_matching, args.c_maps)
+        evt_validation_stamps.extend(
+            configure.write_ninja(
+                ninja, skip_files, non_matching, args.c_maps, args.evt_validation
+            )
+        )
+
+        overlay_rom, overlay_evt_validation_stamps = configure.write_overlays(
+            ninja, args.evt_validation
+        )
+        evt_validation_stamps.extend(overlay_evt_validation_stamps)
 
         all.append(posix(configure.rom_ok_path()))
         all.append(posix(configure.syms_path()))
-        all.append(configure.write_overlays(ninja))
+        all.append(overlay_rom)
 
     assert first_configure, "no versions configured"
     first_configure.make_current(ninja)
@@ -2077,6 +2171,8 @@ if __name__ == "__main__":
         partial_build_ninja.unlink()
         raise SystemExit(1)
 
+    ninja.build("evt_script_validation", "phony", evt_validation_stamps)
+    all.append("evt_script_validation")
     ninja.build("all", "phony", all)
     ninja.default("all")
 

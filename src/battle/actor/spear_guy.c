@@ -251,6 +251,7 @@ EvtScript N(EVS_Init) = {
     Call(GetEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseEq(ENCOUNTER_TRIGGER_JUMP)
+            // do nothing
         CaseOrEq(ENCOUNTER_TRIGGER_HAMMER)
         CaseOrEq(ENCOUNTER_TRIGGER_PARTNER)
             Call(SetPartEventBits, ACTOR_SELF, PRT_SPEAR_GUY, ACTOR_EVENT_FLAG_SPIKY_FRONT, false)

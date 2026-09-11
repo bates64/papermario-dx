@@ -660,6 +660,7 @@ EvtScript N(EVS_Attack_ThrowShell) = {
             Call(RunToGoal, ACTOR_SELF, 10, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Tutankoopa_Idle)
             Return
+    EndCaseGroup
     EndSwitch
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Tutankoopa_Toss)
     Call(SetPartMoveSpeed, ACTOR_SELF, LVar9, Float(14.0))

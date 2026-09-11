@@ -36,11 +36,13 @@ EvtScript N(EVS_NpcHit_BillBlaster) = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseEq(ENCOUNTER_TRIGGER_NONE)
+            // do nothing
         CaseOrEq(ENCOUNTER_TRIGGER_JUMP)
         CaseOrEq(ENCOUNTER_TRIGGER_HAMMER)
         CaseOrEq(ENCOUNTER_TRIGGER_PARTNER)
             Set(LVar0, ANIM_BillBlaster_Hurt)
             ExecWait(EVS_NpcHitRecoil)
+        EndCaseGroup
         CaseEq(ENCOUNTER_TRIGGER_SPIN)
             Thread
                 Call(EnemyHasNoSpinReaction, LVar0)
@@ -53,7 +55,6 @@ EvtScript N(EVS_NpcHit_BillBlaster) = {
                     EndLoop
                 EndIf
             EndThread
-        EndCaseGroup
     EndSwitch
     Return
     End

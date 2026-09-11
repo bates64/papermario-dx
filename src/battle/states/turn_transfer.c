@@ -58,12 +58,8 @@ void btl_state_update_transfer_turn(void) {
         waitingForScript = false;
         for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
             actor = battleStatus->enemyActors[i];
-            if (actor != nullptr && actor->handleEventScript != nullptr) {
-                if (does_script_exist(actor->handleEventScriptID)) {
-                    waitingForScript = true;
-                } else {
-                    actor->handleEventScript = nullptr;
-                }
+            if (actor != nullptr && is_bound_script_running(&actor->scripts.handleEvent)) {
+                waitingForScript = true;
             }
         }
         if (waitingForScript) {
@@ -139,7 +135,7 @@ void btl_state_update_transfer_turn(void) {
             }
             if (actor->debuff == STATUS_KEY_POISON) {
                 gBattleStatus.flags1 |= BS_FLAGS1_TRIGGER_EVENTS;
-                dispatch_damage_event_actor_0(actor, 1, EVENT_HIT);
+                dispatch_generic_damage_event_actor(actor, 1, EVENT_HIT);
                 BattleStatusUpdateDelay = 20;
             }
         }
@@ -148,35 +144,21 @@ void btl_state_update_transfer_turn(void) {
 
     if (gBattleSubState == BTL_SUBSTATE_AWAIT_ALL) {
         // wait for player HandleEvent script to finish
-        if(player->handleEventScript != nullptr) {
-            if (does_script_exist(player->handleEventScriptID)) {
-                return;
-            } else {
-                player->handleEventScript = nullptr;
-            }
+        if (is_bound_script_running(&player->scripts.handleEvent)) {
+            return;
         }
 
         // wait for partner HandleEvent script to finish
-        if (partner != nullptr) {
-            if (partner->handleEventScript != nullptr) {
-                if (does_script_exist(partner->handleEventScriptID)) {
-                    return;
-                } else {
-                    partner->handleEventScript = nullptr;
-                }
-            }
+        if (partner != nullptr && is_bound_script_running(&partner->scripts.handleEvent)) {
+            return;
         }
 
         // wait for all enemy HandleEvent scripts to finish
         waitingForScript = false;
         for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
             actor = battleStatus->enemyActors[i];
-            if (actor != nullptr && actor->handleEventScript != nullptr) {
-                if (does_script_exist(actor->handleEventScriptID)) {
-                    waitingForScript = true;
-                } else {
-                    actor->handleEventScript = nullptr;
-                }
+            if (actor != nullptr && is_bound_script_running(&actor->scripts.handleEvent)) {
+                waitingForScript = true;
             }
         }
         if (waitingForScript) {
@@ -263,8 +245,7 @@ void btl_state_update_transfer_turn(void) {
             battleStatus->nextMerleeSpellType = MERLEE_SPELL_NONE;
             battleStatus->battlePhase = PHASE_MERLEE_DEFENSE_BONUS;
             script = start_script(&EVS_Mario_HandlePhase, EVT_PRIORITY_A, 0);
-            player->takeTurnScript = script;
-            player->takeTurnScriptID = script->id;
+            assign_bound_script(&player->scripts.takeTurn, script);
             script->owner1.actorID = ACTOR_PLAYER;
         }
         gBattleStatus.flags1 &= ~BS_FLAGS1_MENU_OPEN;
@@ -283,22 +264,17 @@ void btl_state_update_transfer_turn(void) {
 
     if (gBattleSubState == BTL_SUBSTATE_NOTIFY_ENEMY_PHASE) {
         // potentially wait for the merlee script to end
-        if (player->takeTurnScript != nullptr) {
-            if (does_script_exist(player->takeTurnScriptID)) {
-                return;
-            } else {
-                player->takeTurnScript = nullptr;
-            }
+        if (is_bound_script_running(&player->scripts.takeTurn)) {
+            return;
         }
 
         // initiate all enemy PHASE_PLAYER_END scripts
         for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
             actor = battleStatus->enemyActors[i];
-            if (actor != nullptr && actor->handlePhaseSource != nullptr) {
+            if (actor != nullptr && actor->scripts.handlePhase.source != nullptr) {
                 battleStatus->battlePhase = PHASE_PLAYER_END;
-                script = start_script(actor->handlePhaseSource, EVT_PRIORITY_A, 0);
-                actor->handlePhaseScript = script;
-                actor->handlePhaseScriptID = script->id;
+                script = start_script(actor->scripts.handlePhase.source, EVT_PRIORITY_A, 0);
+                assign_bound_script(&actor->scripts.handlePhase, script);
                 script->owner1.actorID = i | ACTOR_CLASS_ENEMY;
             }
         }
@@ -311,12 +287,8 @@ void btl_state_update_transfer_turn(void) {
         waitingForScript = false;
         for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
             actor = battleStatus->enemyActors[i];
-            // interesting: this condition checks for handlePhaseSource instead of handlePhaseScript,
-            // which is the expected pattern. result: handlePhaseScript is never nullptr'd. minor bug?
-            if (actor != nullptr && actor->handlePhaseSource != nullptr) {
-                if (does_script_exist(actor->handlePhaseScriptID)) {
-                    waitingForScript = true;
-                }
+            if (actor != nullptr && is_bound_script_running(&actor->scripts.handlePhase)) {
+                waitingForScript = true;
             }
         }
         if (waitingForScript) {

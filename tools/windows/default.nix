@@ -61,6 +61,13 @@ let
 
   requirements = ../../requirements.txt;
 
+  # Both wheel sets below are fixed-output derivations, so their store path
+  # depends only on the name and outputHash. Including the requirements digest
+  # in the name means editing requirements.txt without also updating outputHash
+  # fails with a hash mismatch instead of silently reusing the cached wheels
+  # from the previous requirements.
+  requirementsDigest = builtins.substring 0 8 (builtins.hashFile "sha256" requirements);
+
   # ntfsutils is required by tools/build/configure.py on Windows, but its
   # "sys_platform == 'win32'" marker in requirements.txt makes pip skip it when
   # resolving wheels on Linux, so fetch the wheel directly. It is pure Python
@@ -72,10 +79,10 @@ let
 
   # Download all Python build dependencies for offline installation (Linux, used by wineRom).
   pythonDeps = pkgs.stdenvNoCC.mkDerivation {
-    name = "papermario-python-deps";
+    name = "papermario-python-deps-${requirementsDigest}";
     outputHashMode = "recursive";
     outputHashAlgo = "sha256";
-    outputHash = "sha256-ifJYeWSK11nY8ATT0ZD/XvhpFAetiwNMPsrW+STjJRg=";
+    outputHash = "sha256-aQ8C7a9o0hsYmOOcAN/lDSSFED7eqnLsbrrdhiBOoh8=";
     nativeBuildInputs = [ pkgs.python3 pkgs.python3Packages.pip pkgs.cacert ];
     buildCommand = ''
       export SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
@@ -89,10 +96,10 @@ let
   # all wheels first (which creates universal wheels from sdists), then replace
   # any Linux-specific wheels with their Windows counterparts.
   pythonDepsWindows = pkgs.stdenvNoCC.mkDerivation {
-    name = "papermario-python-deps-windows";
+    name = "papermario-python-deps-windows-${requirementsDigest}";
     outputHashMode = "recursive";
     outputHashAlgo = "sha256";
-    outputHash = "sha256-zrMEwffdltfh51U5xF4DI+mJpMnNwA7YMV2b19Ya+CM=";
+    outputHash = "sha256-+tTQ/XnvfEWQAIxtK8d8GKZhGsIqI6ZmAa5G2VRKTzg=";
     nativeBuildInputs = [
       pkgs.python3
       pkgs.python3Packages.pip
@@ -217,6 +224,15 @@ let
     # MIPS glibc headers (string.h, stdio.h, etc.) in the sysroot
     mkdir -p $dir/mips-linux-gnu/sys-include
     cp -rL ${mipsGlibcDev}/include/* $dir/mips-linux-gnu/sys-include/
+    # libstdc++ headers (type_traits, etc.) needed by include/common.hpp. The
+    # Windows GCC is a Canadian cross and cannot build target libraries itself,
+    # so take them from the native cross-compiler, which is the same GCC for
+    # the same target. They go in GCC's C++ search path,
+    # <prefix>/mips-linux-gnu/include/c++/<version>/, where the version is
+    # GCC's own rather than the nixpkgs package version.
+    gccVersion=$(ls ${mips-gcc-windows}/lib/gcc/mips-linux-gnu)
+    mkdir -p $dir/mips-linux-gnu/include/c++/$gccVersion
+    cp -rL ${mipsCrossGcc.cc}/include/c++/*/* $dir/mips-linux-gnu/include/c++/$gccVersion/
 
     # Rust tools
     cp ${pigment64-windows}/bin/pigment64.exe $dir/bin/

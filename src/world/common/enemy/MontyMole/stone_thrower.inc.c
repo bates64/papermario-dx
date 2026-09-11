@@ -97,10 +97,8 @@ EvtScript N(EVS_NpcHit_MontyMole_Stone) = {
             PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
             Call(SetSelfVar, AI_VAR_MISSILE_STATUS, MISSILE_STATUS_IDLE)
-        EndCaseGroup
         CaseDefault
             Call(SetBattleAsScripted)
-        EndCaseGroup
     EndSwitch
     Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_MontyMole_Stone)))
     Return
