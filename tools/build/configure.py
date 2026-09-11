@@ -87,6 +87,22 @@ def evt_validation_display_path(obj_path: Path) -> str:
     return posix(evt_validation_output_path(obj_path).with_suffix(""))
 
 
+class NinjaWriter(ninja_syntax.Writer):
+    """ninja_syntax.Writer that can emit validations.
+
+    A validation is a target that ninja builds whenever the requesting edge is
+    part of the build, but that nothing waits on. ninja_syntax has no parameter
+    for them, so they go through order_only behind the `|@` separator, which
+    Writer.build passes through untouched.
+    """
+
+    def build(self, *args, validations: List[str] = [], **kwargs):
+        if validations:
+            order_only = list(kwargs.get("order_only") or [])
+            kwargs["order_only"] = order_only + ["|@"] + validations
+        return super().build(*args, **kwargs)
+
+
 def exec_shell(command: List[str]) -> str:
     ret = subprocess.run(
         command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
@@ -95,7 +111,7 @@ def exec_shell(command: List[str]) -> str:
 
 
 def write_ninja_rules(
-    ninja: ninja_syntax.Writer,
+    ninja: NinjaWriter,
     cpp: str,
     extra_cppflags: str,
     extra_cflags: str,
@@ -437,7 +453,7 @@ def write_ninja_rules(
     )
 
 
-def write_ninja_for_tools(ninja: ninja_syntax.Writer):
+def write_ninja_for_tools(ninja: NinjaWriter):
     if CRC_TOOL != "n64crc":
         ninja.rule(
             "cc_tool",
@@ -613,7 +629,7 @@ class Configure:
 
     def write_ninja(
         self,
-        ninja: ninja_syntax.Writer,
+        ninja: NinjaWriter,
         skip_outputs: Set[str],
         non_matching: bool,
         c_maps: bool = False,
@@ -681,6 +697,15 @@ class Configure:
                 inputs = self.resolve_src_paths(src_paths)
                 for dir in asset_deps:
                     inputs.extend(self.get_asset_list(dir))
+
+                evt_objects = []
+                if evt_validation and task in ["cc_modern", "cxx_modern"]:
+                    evt_objects = [
+                        obj for obj in object_paths if obj.suffixes[-1] == ".o"
+                    ]
+                evt_stamps = [evt_validation_stamp_path(obj) for obj in evt_objects]
+                evt_validation_stamps.extend(evt_stamps)
+
                 ninja.build(
                     outputs=object_strs,  # $out
                     rule=task,
@@ -689,24 +714,21 @@ class Configure:
                     order_only=order_only,
                     variables={"version": self.version, **variables},
                     implicit_outputs=implicit_outputs,
+                    validations=evt_stamps,
                 )
 
-                if evt_validation and task in ["cc_modern", "cxx_modern"]:
-                    for object_path in object_paths:
-                        if object_path.suffixes[-1] == ".o":
-                            evt_validation_stamp = evt_validation_stamp_path(object_path)
-                            if len(src_paths) == 1:
-                                evt_target = posix(src_paths[0])
-                            else:
-                                evt_target = evt_validation_display_path(object_path)
-                            evt_validation_stamps.append(evt_validation_stamp)
-                            ninja.build(
-                                evt_validation_stamp,
-                                "evt_validate_obj",
-                                [posix(object_path)],
-                                implicit=[posix(BUILD_TOOLS / "evt_validate_obj.py")],
-                                variables={"evt_target": evt_target},
-                            )
+                for object_path, evt_validation_stamp in zip(evt_objects, evt_stamps):
+                    if len(src_paths) == 1:
+                        evt_target = posix(src_paths[0])
+                    else:
+                        evt_target = evt_validation_display_path(object_path)
+                    ninja.build(
+                        evt_validation_stamp,
+                        "evt_validate_obj",
+                        [posix(object_path)],
+                        implicit=[posix(BUILD_TOOLS / "evt_validate_obj.py")],
+                        variables={"evt_target": evt_target},
+                    )
 
         # Effect data includes
         effect_yaml = ROOT / "src/effects.yaml"
@@ -1512,7 +1534,7 @@ class Configure:
             posix(self.elf_path()),
             "ld",
             posix(self.linker_script_path()),
-            implicit=list(built_objects) + additional_objects + evt_validation_stamps,
+            implicit=list(built_objects) + additional_objects,
             variables={"version": self.version, "mapfile": posix(self.map_path())},
         )
 
@@ -1623,7 +1645,7 @@ class Configure:
         return sorted(found.values(), key=lambda x: x[0].stem)
 
     def write_overlays(
-        self, ninja: ninja_syntax.Writer, evt_validation: bool = True
+        self, ninja: NinjaWriter, evt_validation: bool = True
     ) -> Tuple[str, List[str]]:
         """Write overlay build statements and return the ROM path and EVT validation stamps."""
         import json
@@ -1644,7 +1666,6 @@ class Configure:
             ovl_path = build_dir / f"{name}.ovl"
             debug_syms_path = build_dir / f"{name}.ovl.debug_syms"
             objects = []
-            overlay_evt_validation_stamps = []
 
             c_files = []
             if src_path.is_dir():
@@ -1665,6 +1686,10 @@ class Configure:
                     task = "cc_modern"
                     pch = c_precompiled_header_path
                 obj_path = build_dir / (c_file.name + ".o")
+                evt_stamps = (
+                    [evt_validation_stamp_path(obj_path)] if evt_validation else []
+                )
+                evt_validation_stamps.extend(evt_stamps)
                 ninja.build(
                     posix(obj_path),
                     task,
@@ -1679,11 +1704,9 @@ class Configure:
                         "cflags": "-fno-common -fvisibility=hidden",
                         "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
                     },
+                    validations=evt_stamps,
                 )
-                if evt_validation:
-                    evt_validation_stamp = evt_validation_stamp_path(obj_path)
-                    evt_validation_stamps.append(evt_validation_stamp)
-                    overlay_evt_validation_stamps.append(evt_validation_stamp)
+                for evt_validation_stamp in evt_stamps:
                     ninja.build(
                         evt_validation_stamp,
                         "evt_validate_obj",
@@ -1704,7 +1727,7 @@ class Configure:
                 posix(ovl_path),
                 "ovl_link_convert",
                 objects,
-                implicit=[posix(self.syms_path())] + overlay_evt_validation_stamps,
+                implicit=[posix(self.syms_path())],
                 implicit_outputs=[posix(debug_syms_path)],
                 variables={
                     "syms": posix(self.syms_path()),
@@ -1741,7 +1764,7 @@ class Configure:
         )
         return posix(self.rom_path()), evt_validation_stamps
 
-    def make_current(self, ninja: ninja_syntax.Writer):
+    def make_current(self, ninja: NinjaWriter):
         current = Path("ver/current")
 
         try:
@@ -1948,7 +1971,7 @@ if __name__ == "__main__":
     # add splat to python import path
     sys.path.insert(0, str((ROOT / args.splat / "src").resolve()))
 
-    ninja = ninja_syntax.Writer(open(str(ROOT / "build.ninja"), "w", encoding="utf-8"), width=120)
+    ninja = NinjaWriter(open(str(ROOT / "build.ninja"), "w", encoding="utf-8"), width=120)
 
     non_matching = args.non_matching or True or args.shift
 
