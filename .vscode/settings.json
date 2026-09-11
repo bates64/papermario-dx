@@ -55,7 +55,6 @@
         "**/.jj": true,
         "**/.direnv": true,
         "**/.cache": true,
-        "**/.n2_db": true,
         "**/.ninja_deps": true,
         "**/.dx": true,
     },
