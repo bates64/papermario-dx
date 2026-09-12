@@ -10,9 +10,11 @@ if ! command -v mips-linux-gnu-gcc >/dev/null 2>&1; then
   "$ROOT/tools/unix/download_toolchain.sh"
   export PATH="$TOOLCHAIN_DIR/bin:$PATH"
   export PYTHONPATH="$TOOLCHAIN_DIR/python:$PYTHONPATH"
-  PYTHON="$TOOLCHAIN_DIR/bin/python3"
-else
-  PYTHON=python3
 fi
 
-exec "$PYTHON" tools/build/configure.py "$@"
+if [ ! -f "$ROOT/build.ninja" ]; then
+  echo "Running configure..."
+  "$ROOT/configure"
+fi
+
+exec ninja "$@"
