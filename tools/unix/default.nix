@@ -120,7 +120,7 @@ let
         f=$(find "$dir/store" -mindepth 3 -maxdepth 3 -path '*/bin/'"$1" | head -n1)
         [ -n "$f" ] && ln -sf "$(realpath --relative-to="$dir/bin" "$f")" "$dir/bin/$1"
       }
-      for tool in mips-linux-gnu-gcc mips-linux-gnu-g++ mips-linux-gnu-ld mips-linux-gnu-as \
+      for tool in mips-linux-gnu-gcc mips-linux-gnu-g++ mips-linux-gnu-cpp mips-linux-gnu-ld mips-linux-gnu-as \
                   mips-linux-gnu-ar mips-linux-gnu-nm mips-linux-gnu-objcopy mips-linux-gnu-objdump \
                   mips-linux-gnu-ranlib mips-linux-gnu-strip \
                   ninja ccache pigment64 crunch64 n64crc python3; do
