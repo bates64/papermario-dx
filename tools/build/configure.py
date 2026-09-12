@@ -150,7 +150,7 @@ def write_ninja_rules(
     cflags_modern = f"{modern_flags} {extra_cflags}"
     cxxflags_modern = f"{modern_flags} {extra_cxxflags}"
 
-    ninja.variable("python", sys.executable)
+    ninja.variable("python", f'"{sys.executable}"')
 
     ld_args = f"-T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Map $mapfile --no-check-sections --whole-archive -T $in -o $out"
     ld = (
@@ -2052,7 +2052,7 @@ if __name__ == "__main__":
     ninja.rule(
         "configure",
         description="Reconfiguring build.ninja",
-        command=f"{sys.executable} {' '.join(argv)}",
+        command=f'"{sys.executable}" {" ".join(argv)}',
         generator=True,
         pool="console",
     )
