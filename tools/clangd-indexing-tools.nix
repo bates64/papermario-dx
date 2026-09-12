@@ -1,7 +1,6 @@
-{ lib, stdenv, fetchurl, autoPatchelfHook, libgcc, unzip }:
+{ lib, stdenv, fetchurl, autoPatchelfHook, libgcc, unzip, version }:
 
 let
-  version = "21.1.8";
   systems = {
     x86_64-linux = {
       url = "https://github.com/clangd/clangd/releases/download/${version}/clangd_indexing_tools-linux-${version}.zip";
