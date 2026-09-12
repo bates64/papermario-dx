@@ -25,7 +25,7 @@ let
     outputHashMode = "recursive";
     outputHashAlgo = "sha256";
     outputHash = wheelHashes.${pkgs.stdenv.hostPlatform.system};
-    nativeBuildInputs = [ pkgs.python3 pkgs.python3Packages.pip pkgs.cacert ];
+    nativeBuildInputs = [ pkgs.python3 pkgs.python3Packages.pip pkgs.cacert pkgs.gcc ];
     buildCommand = ''
       export SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
       pip download -r ${requirements} -r ${requirementsExtra} setuptools wheel -d $out
