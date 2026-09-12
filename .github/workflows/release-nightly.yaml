@@ -47,3 +47,35 @@ jobs:
             -f event_type=update-papermario-dx
         env:
           GH_TOKEN: ${{ secrets.DOCS_DISPATCH_TOKEN }}
+
+  release-unix-toolchain:
+    name: Release toolchain (${{ matrix.system }})
+    if: github.repository == 'bates64/papermario-dx'
+    strategy:
+      matrix:
+        include:
+          - system: x86_64-linux
+            runs-on: ubuntu-latest
+          - system: aarch64-linux
+            runs-on: ubuntu-24.04-arm
+          - system: aarch64-darwin
+            runs-on: macos-14
+    runs-on: ${{ matrix.runs-on }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v25
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - uses: cachix/cachix-action@v15
+        with:
+          name: ${{ matrix.system == 'aarch64-darwin' && 'papermario-dx-aarch64-darwin' || 'papermario-dx' }}
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - name: Build toolchain
+        run: nix build .#unix-toolchain --out-link result-toolchain
+      - name: Upload toolchain
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: dx-nightly
+          files: result-toolchain/papermario-dx-*.zip

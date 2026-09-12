@@ -7,6 +7,7 @@ on:
 jobs:
   release:
     name: Release
+    if: github.repository == 'bates64/papermario-dx'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -49,6 +50,7 @@ jobs:
 
   release-unix-toolchain:
     name: Release toolchain (${{ matrix.system }})
+    if: github.repository == 'bates64/papermario-dx'
     strategy:
       matrix:
         include:
