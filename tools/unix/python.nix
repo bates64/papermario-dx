@@ -37,7 +37,7 @@ pkgs.stdenvNoCC.mkDerivation {
   version = "0";
   dontUnpack = true;
 
-  nativeBuildInputs = [ pkgs.python3 pkgs.python3Packages.pip ];
+  nativeBuildInputs = [ pkgs.python3 pkgs.python3Packages.pip pkgs.gcc ];
 
   installPhase = ''
     mkdir -p $out
