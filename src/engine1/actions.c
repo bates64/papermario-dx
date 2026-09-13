@@ -1,0 +1,118 @@
+#include "common.h"
+#include "world/actions.h"
+#include "ld_addrs.h"
+
+void action_update_idle(void);
+void action_update_walk(void);
+void action_update_run(void);
+void action_update_land(void);
+void action_update_jump(void);
+void action_update_landing_on_switch(void);
+void action_update_falling(void);
+void action_update_step_down(void);
+void action_update_step_down_land(void);
+void action_update_spin_jump(void);
+void action_update_tornado_jump(void);
+void action_update_talk(void);
+void action_update_sliding(void);
+void action_update_hammer(void);
+void action_update_launch(void);
+void action_update_pushing_block(void);
+void action_update_hit_fire(void);
+void action_update_knockback(void);
+void action_update_hit_lava(void);
+void action_update_parasol(void);
+void action_update_spin(void);
+void action_update_step_up_peach(void);
+void action_update_ride(void);
+void action_update_step_up(void);
+void action_update_first_strike(void);
+void action_update_raise_arms(void);
+void action_update_use_spinning_flower(void);
+void action_update_use_munchlesia(void);
+void action_update_use_tweester(void);
+void action_update_state_23(void);
+
+#if VERSION_JP // TODO remove once segments are split
+extern Addr world_action_idle_ROM_START;
+extern Addr world_action_idle_ROM_END;
+extern Addr world_action_walk_ROM_START;
+extern Addr world_action_walk_ROM_END;
+extern Addr world_action_jump_ROM_START;
+extern Addr world_action_jump_ROM_END;
+extern Addr world_action_land_ROM_START;
+extern Addr world_action_land_ROM_END;
+extern Addr world_action_misc_ROM_START;
+extern Addr world_action_misc_ROM_END;
+extern Addr world_action_spin_jump_ROM_START;
+extern Addr world_action_spin_jump_ROM_END;
+extern Addr world_action_tornado_jump_ROM_START;
+extern Addr world_action_tornado_jump_ROM_END;
+extern Addr world_action_slide_ROM_START;
+extern Addr world_action_slide_ROM_END;
+extern Addr world_action_hammer_ROM_START;
+extern Addr world_action_hammer_ROM_END;
+extern Addr world_action_hit_fire_ROM_START;
+extern Addr world_action_hit_fire_ROM_END;
+extern Addr world_action_knockback_ROM_START;
+extern Addr world_action_knockback_ROM_END;
+extern Addr world_action_hit_lava_ROM_START;
+extern Addr world_action_hit_lava_ROM_END;
+extern Addr world_action_step_up_ROM_START;
+extern Addr world_action_step_up_ROM_END;
+extern Addr world_action_sneaky_parasol_ROM_START;
+extern Addr world_action_sneaky_parasol_ROM_END;
+extern Addr world_action_spin_ROM_START;
+extern Addr world_action_spin_ROM_END;
+extern Addr world_action_use_spinning_flower_ROM_START;
+extern Addr world_action_use_spinning_flower_ROM_END;
+extern Addr world_action_use_munchlesia_ROM_START;
+extern Addr world_action_use_munchlesia_ROM_END;
+extern Addr world_action_use_tweester_ROM_START;
+extern Addr world_action_use_tweester_ROM_END;
+#endif
+
+#define ACTION_FILE(name) world_action_##name##_ROM_START, world_action_##name##_ROM_END
+
+Action PlayerActionsTable[] = {
+    [ACTION_STATE_IDLE]                 { action_update_idle, ACTION_FILE(idle), true },
+    [ACTION_STATE_WALK]                 { action_update_walk, ACTION_FILE(walk), true },
+    [ACTION_STATE_RUN]                  { action_update_run, ACTION_FILE(walk), true },
+    [ACTION_STATE_JUMP]                 { action_update_jump, ACTION_FILE(jump), true },
+    [ACTION_STATE_BOUNCE]               { action_update_jump, ACTION_FILE(jump), true },
+    [ACTION_STATE_HOP]                  { action_update_jump, ACTION_FILE(jump), false },
+    [ACTION_STATE_LAUNCH]               { action_update_jump, ACTION_FILE(jump), false },
+    [ACTION_STATE_LANDING_ON_SWITCH]    { action_update_landing_on_switch, ACTION_FILE(jump), false },
+    [ACTION_STATE_FALLING]              { action_update_falling, ACTION_FILE(jump), true },
+    [ACTION_STATE_STEP_DOWN]            { action_update_step_down, ACTION_FILE(jump), true },
+    [ACTION_STATE_LAND]                 { action_update_land, ACTION_FILE(land), true },
+    [ACTION_STATE_STEP_DOWN_LAND]       { action_update_step_down_land, ACTION_FILE(land), true },
+    [ACTION_STATE_TALK]                 { action_update_talk, ACTION_FILE(misc), true },
+    [ACTION_STATE_SPIN_JUMP]            { action_update_spin_jump, ACTION_FILE(spin_jump), false },
+    [ACTION_STATE_SPIN_POUND]           { action_update_spin_jump, ACTION_FILE(spin_jump), false },
+    [ACTION_STATE_TORNADO_JUMP]         { action_update_tornado_jump, ACTION_FILE(tornado_jump), false },
+    [ACTION_STATE_TORNADO_POUND]        { action_update_tornado_jump, ACTION_FILE(tornado_jump), false },
+    [ACTION_STATE_SLIDING]              { action_update_sliding, ACTION_FILE(slide), false },
+    [ACTION_STATE_HAMMER]               { action_update_hammer, ACTION_FILE(hammer), false },
+    [ACTION_STATE_13]                   { action_update_launch, ACTION_FILE(misc), true },
+    [ACTION_STATE_PUSHING_BLOCK]        { action_update_pushing_block, ACTION_FILE(misc), false },
+    [ACTION_STATE_HIT_FIRE]             { action_update_hit_fire, ACTION_FILE(hit_fire), false },
+    [ACTION_STATE_KNOCKBACK]            { action_update_knockback, ACTION_FILE(knockback), false },
+    [ACTION_STATE_HIT_LAVA]             { action_update_hit_lava, ACTION_FILE(hit_lava), false },
+    [ACTION_STATE_STEP_UP_PEACH]        { action_update_step_up_peach, ACTION_FILE(step_up), true },
+    [ACTION_STATE_USE_SNEAKY_PARASOL]   { action_update_parasol, ACTION_FILE(sneaky_parasol), true },
+    [ACTION_STATE_SPIN]                 { action_update_spin, ACTION_FILE(spin), false },
+    [ACTION_STATE_ENEMY_FIRST_STRIKE]   { action_update_first_strike, ACTION_FILE(misc), false },
+    [ACTION_STATE_RAISE_ARMS]           { action_update_raise_arms, ACTION_FILE(misc), false },
+    [ACTION_STATE_USE_SPINNING_FLOWER]  { action_update_use_spinning_flower, ACTION_FILE(use_spinning_flower), false },
+    [ACTION_STATE_USE_MUNCHLESIA]       { action_update_use_munchlesia, ACTION_FILE(use_munchlesia), false },
+    [ACTION_STATE_USE_TWEESTER]         { action_update_use_tweester, ACTION_FILE(use_tweester), false },
+    [ACTION_STATE_BOUNCE_OFF_SWITCH]    { action_update_launch, ACTION_FILE(misc), true },
+    [ACTION_STATE_RIDE]                 { action_update_ride, ACTION_FILE(misc), false },
+    [ACTION_STATE_STEP_UP]              { action_update_step_up, ACTION_FILE(step_up), true },
+    [ACTION_STATE_23]                   { action_update_state_23, ACTION_FILE(misc), false },
+    [ACTION_STATE_24]                   { action_update_launch, ACTION_FILE(misc), false },
+    //@bug function does not exist in world_action_walk, causes jump to middle of action_update_run and crashes
+    [ACTION_STATE_INVALID_25]           { action_update_launch, ACTION_FILE(walk), false },
+    [ACTION_STATE_USE_SPRING]           { action_update_launch, ACTION_FILE(misc), true },
+};

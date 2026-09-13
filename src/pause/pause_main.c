@@ -603,7 +603,7 @@ void pause_init(void) {
     MenuPanel** menuPanels;
     s32 i;
 
-    DMA_COPY_SEGMENT(ui_images_filemenu_pause);
+    DMA_COPY_SEGMENT(menu_hud_scripts);
 
     for (i = 0; i < ARRAY_COUNT(gPauseHudScripts); i++) {
         gPauseCommonHIDs[i] = hud_element_create(gPauseHudScripts[i]);

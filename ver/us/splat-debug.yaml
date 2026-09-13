@@ -1,3 +1,0 @@
-options:
-  ld_discard_section: False
-  ld_sections_denylist: [ .eh_frame, .MIPS.abiflags ]
