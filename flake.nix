@@ -109,7 +109,12 @@
             "flips --create --bps ${baseRom} ver/us/build/papermario.z64 $out/papermario.bps"}
         '';
 
-        clangdIndexingTools = pkgs.callPackage ./tools/clangd-indexing-tools.nix {};
+        # clangd's on-disk index format isn't stable across releases, so the
+        # devShell's clangd (below) and the clangd-indexer that builds this
+        # project's downloadable index must be the exact same version.
+        clangdVersion = "21.1.8";
+        clangdIndexingTools = pkgs.callPackage ./tools/clangd-indexing-tools.nix { version = clangdVersion; };
+        clangdPkg = pkgs.callPackage ./tools/clangd.nix { version = clangdVersion; };
         clangdIndex = pkgs.runCommand "papermario-dx-clangd-index" {
           nativeBuildInputs = [
             pkgsCross.stdenv.cc
@@ -201,12 +206,16 @@
             (callPackage ./tools/pigment64.nix {})
             (callPackage ./tools/crunch64.nix {})
             star-rod.packages.${system}.default
-            clang-tools
+            clang-tools # clang-format, clang-tidy (clangd itself is overridden below)
             treefmt
           ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
           shellHook = ''
             rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64
             export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
+
+            # Take priority over clang-tools' own clangd, which must stay in
+            # version lockstep with clangd-index (see clangdVersion above).
+            export PATH="${clangdPkg}/bin:$PATH"
 
             virtualenv venv --quiet
             source venv/bin/activate
