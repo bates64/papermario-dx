@@ -104,10 +104,6 @@ let
       while read -r p; do
         cp -rL --no-preserve=ownership "$p" "$dir/store/$(basename "$p")"
       done < ${closure}/store-paths
-      # /nix/store paths are read-only; make our copies writable for
-      # patchelf/install_name_tool later, without disturbing the executable
-      # bits that --no-preserve=mode would otherwise reset.
-      chmod -R u+w "$dir/store"
 
       # Flatten every shared library into lib/ as relative symlinks, so every
       # binary can share a single RPATH pointing at lib/.
@@ -144,7 +140,13 @@ let
       # PYTHONPATH rather than baked into the interpreter's own store copy.
       mkdir -p $dir/python
       cp -rL --no-preserve=ownership ${python-packages}/* $dir/python/
-      chmod -R u+w $dir/python
+
+      # Everything copied above came from read-only /nix/store paths. Make the
+      # whole tree writable, without disturbing the executable bits that
+      # --no-preserve=mode would otherwise reset: activation rewrites the
+      # binaries in place, and a read-only directory anywhere in here would
+      # also stop download_toolchain.sh removing the toolchain to update it.
+      chmod -R u+w "$dir"
 
       ${pkgs.lib.optionalString (!isDarwin) ''
         cp ${pkgs.pkgsStatic.patchelf}/bin/patchelf $dir/bin/.patchelf
