@@ -120,7 +120,7 @@ let
         f=$(find "$dir/store" -mindepth 3 -maxdepth 3 -path '*/bin/'"$1" | head -n1)
         [ -n "$f" ] && ln -sf "$(realpath --relative-to="$dir/bin" "$f")" "$dir/bin/$1"
       }
-      for tool in mips-linux-gnu-gcc mips-linux-gnu-g++ mips-linux-gnu-ld mips-linux-gnu-as \
+      for tool in mips-linux-gnu-gcc mips-linux-gnu-g++ mips-linux-gnu-cpp mips-linux-gnu-ld mips-linux-gnu-as \
                   mips-linux-gnu-ar mips-linux-gnu-nm mips-linux-gnu-objcopy mips-linux-gnu-objdump \
                   mips-linux-gnu-ranlib mips-linux-gnu-strip \
                   ninja ccache pigment64 crunch64 n64crc python3; do
@@ -132,10 +132,13 @@ let
       cp -rL ${mipsGlibcDev}/include/* $dir/mips-linux-gnu/sys-include/
 
       # libstdc++ headers, borrowed from the reference cross-compiler for the
-      # same target, placed in GCC's C++ search path using GCC's own version.
+      # same target. GCC derives its C++ search path from the prefix it is run
+      # from, which is its own copy under store/, so they belong in there
+      # rather than alongside it.
+      gccPrefix=$dir/store/$(basename ${mips-gcc})
       gccVersion=$(ls ${mips-gcc}/lib/gcc/mips-linux-gnu)
-      mkdir -p $dir/mips-linux-gnu/include/c++/$gccVersion
-      cp -rL ${mipsCrossGcc.cc}/include/c++/*/* $dir/mips-linux-gnu/include/c++/$gccVersion/
+      mkdir -p $gccPrefix/mips-linux-gnu/include/c++/$gccVersion
+      cp -rL ${mipsCrossGcc.cc}/include/c++/*/* $gccPrefix/mips-linux-gnu/include/c++/$gccVersion/
 
       # Python packages (requirements.txt + requirements_extra.txt), found via
       # PYTHONPATH rather than baked into the interpreter's own store copy.
