@@ -23,6 +23,7 @@
   pkgs,
   nixpkgs-binutils-2_39,
   mipsCrossGcc,
+  mipsGdb,
 }:
 
 let
@@ -82,6 +83,7 @@ let
   closureRoots = [
     mips-binutils
     mips-gcc
+    mipsGdb
     n64crc
     pigment64-native
     crunch64-native
@@ -122,6 +124,16 @@ let
                   ninja ccache pigment64 crunch64 n64crc python3; do
         link_bin "$tool"
       done
+
+      # The debugger an editor attaches to ares' GDB stub with. Its package is
+      # named for the bare-metal triple rather than the compiler's, so link it
+      # under a stable name instead of deriving one.
+      gdb=$(find "$dir/store/$(basename ${mipsGdb})/bin" -name '*gdb' | head -n1)
+      if [ -z "$gdb" ]; then
+        echo "tools/unix: no gdb binary in ${mipsGdb}" >&2
+        exit 1
+      fi
+      ln -sf "$(realpath --relative-to="$dir/bin" "$gdb")" "$dir/bin/gdb"
 
       # MIPS glibc headers (string.h, stdio.h, etc.) in the sysroot.
       mkdir -p $dir/mips-linux-gnu/sys-include
