@@ -881,7 +881,7 @@ void filemenu_init(s32 mode) {
     MenuPanel* menu;
     s32 i;
 
-    DMA_COPY_SEGMENT(ui_images_filemenu_pause);
+    DMA_COPY_SEGMENT(menu_hud_scripts);
 
     for (i = 0; i < ARRAY_COUNT(filemenu_cursorHIDs); i++) {
         filemenu_cursorHIDs[i] = hud_element_create(filemenu_cursor_hudElemScripts[i]);

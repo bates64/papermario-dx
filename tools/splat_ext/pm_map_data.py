@@ -1,5 +1,5 @@
 from math import ceil
-import os, sys
+import os
 import struct
 from pathlib import Path
 

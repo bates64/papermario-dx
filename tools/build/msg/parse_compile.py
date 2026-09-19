@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from sys import argv
-from collections import OrderedDict
 import re
 import msgpack  # way faster than pickle
 

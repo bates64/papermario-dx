@@ -1,5 +1,4 @@
 from typing import List
-from yaml.loader import Loader
 from splat.segtypes.segment import Segment
 from splat.util import options
 import yaml as yaml_loader

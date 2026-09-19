@@ -6,12 +6,13 @@ from pathlib import Path
 import sys
 from typing import List
 
+sys.path.append(str(Path(__file__).parent))
 sys.path.append(str(Path(__file__).parent.parent))
-sys.path.append(str(Path(__file__).parent.parent.parent))
+sys.path.append(str(Path(__file__).parent.parent.parent / "splat_ext"))
 sys.path.append(str(Path(__file__).parent.parent.parent))
 sys.path.append(str(Path(__file__).parent.parent.parent / "splat"))
 from common import get_asset_path, iter_in_groups
-from splat_ext.pm_sprites import (
+from sprite_tables import (
     BACK_PALETTE_XML,
     LIST_END_BYTES,
     MAX_COMPONENTS_XML,
@@ -24,15 +25,14 @@ from splat_ext.pm_sprites import (
     PlayerRaster,
     RasterTableEntry,
 )
-from splat_ext.sprite_common import AnimComponent
+from sprite_common import AnimComponent
 
 import os
 import png  # type: ignore
 import struct
 import subprocess
 import xml.etree.ElementTree as ET
-from dataclasses import dataclass
-from typing import Dict, List, Tuple
+from typing import Dict, Tuple
 
 TOOLS_DIR = Path(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 sys.path.append(str(TOOLS_DIR))

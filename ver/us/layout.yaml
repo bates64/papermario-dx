@@ -1,0 +1,767 @@
+# Where each segment lives in the ROM.
+#
+# Segments are laid out in the order listed, each starting where the previous
+# one ended. A segment's VRAM address comes from its class, so segments sharing
+# a class overlay one another in RAM. Adding a segment means adding a line here;
+# adding a source file to an existing segment does not.
+#
+# max_size, where given, is the space the segment has to fit in; the build
+# fails if it outgrows it.
+
+# Asset layers, highest priority first.
+asset_stack:
+  - mod
+  - dx
+  - us
+
+classes:
+  action_cmd: { vram: 0x802A9000, follows: [battle_move] }
+  area_entities: { vram: 0x802BAE00, vram_symbol: model_clear_render_tasks_VRAM_END }
+  battle_area: { vram: 0x80218000, vram_symbol: heaps_VRAM_END }
+  battle_area2: { vram: 0x80231000, vram_symbol: Vine1Base }
+  battle: { vram: 0x8023E000, follows: [battle_partner] }
+  battle_move: { vram: 0x802A1000, follows: [battle] }
+  battle_partner: { vram: 0x80238000, follows: [battle_area] }
+  dgb_01_smash_bridges: { vram: 0x80200000, vram_symbol: D_80200000 }
+  effect_gfx: { vram: 0x9000000 }
+  engine1: { vram: 0x800DC500, vram_symbol: overlays_start }
+  engine2: { vram: 0x8010F6D0, vram_symbol: engine1_VRAM_END }
+  engine4: { vram: 0x802DBD40, vram_symbol: evt_VRAM_END }
+  entity: { vram: 0x802E0D90, vram_symbol: engine4_VRAM_END }
+  entity_model: { vram: 0xA000000 }
+  entity_model_anim: { vram: 0x0 }
+  evt: { vram: 0x802C3000, vram_symbol: world_use_item_VRAM_END }
+  filemenu_pause: { vram: 0x80242BA0, vram_symbol: menu_hud_scripts_VRAM_END }
+  font_width: { vram: 0x802EB3D0, vram_symbol: entity_VRAM_END }
+  heaps: { vram: 0x80197000, vram_symbol: engine2_VRAM_END }
+  heaps2: { vram: 0x80267FF0, vram_symbol: map_CLASS_VRAM }
+  heaps3: { vram: 0x802FB800, vram_symbol: font_width_VRAM_END }
+  indicator_icon: { vram: 0x802B7000, follows: [world_action] }
+  main: { vram: 0x80025C00 }
+  # Maps are overlays, loaded here at runtime. Nothing is linked into this
+  # class; it marks where the map region begins so heaps2 can start above it.
+  map: { vram: 0x80240000, follows: [world_model_anim] }
+  model_clear_render_tasks: { vram: 0x802B7E00, follows: [indicator_icon] }
+  texture_memory: { vram: 0x8028E000, follows: [battle, world_script_api] }
+  menu_hud_scripts: { vram: 0x8023E000, vram_symbol: battle_CLASS_VRAM }
+  world_action: { vram: 0x802B6000, follows: [texture_memory] }
+  world_model_anim: { vram: 0x80234000, vram_symbol: Vine0Base }
+  world_partner: { vram: 0x802BD100, follows: [area_entities] }
+  world_script_api: { vram: 0x80280000, follows: [heaps2] }
+  world_use_item: { vram: 0x802C0000, follows: [world_partner] }
+
+segments:
+  - { name: header }
+  - { name: boot, vram: 0xA4000040 }
+  - { name: main, class: main }
+  - { name: engine1, class: engine1 }
+  - { name: engine2, class: engine2 }
+  - { name: heaps, class: heaps, subalign: 4096 }
+  - { name: evt, class: evt }
+  - { name: engine4, class: engine4 }
+  - { name: entity, class: entity }
+  - { name: font_width, class: font_width }
+  - { name: heaps3, class: heaps3 }
+  - { name: charset, vram: 0x0 }
+  - { name: menu_hud_scripts, class: menu_hud_scripts }
+  - { name: pause, class: filemenu_pause }
+  - { name: filemenu, class: filemenu_pause }
+  - { name: battle, class: battle }
+  - { name: icon }
+  - { name: logos }
+  - { name: title/bg_1 }
+  - { name: title/bg_2 }
+  - { name: title/bg_3 }
+  - { name: title/bg_4 }
+  - { name: title/tape }
+  - { name: title/bowser_silhouette }
+  - { name: imgfx_data, vram: 0x0 }
+  - { name: sprite_shading_profiles }
+  - { name: create_audio_system_obfuscated, vram: 0x80200000 }
+  - { name: load_engine_data_obfuscated, vram: 0x80200080 }
+  - { name: general_heap_create_obfuscated, vram: 0x802AE000 }
+  - { name: battle_heap_create_obfuscated, vram: 0x802AE000 }
+  - { name: obfuscation_shims, vram: 0x802B2000 }
+  - { name: world_partner_goombario, class: world_partner }
+  - { name: world_partner_bombette, class: world_partner }
+  - { name: world_partner_parakarry, class: world_partner }
+  - { name: world_partner_kooper, class: world_partner }
+  - { name: world_partner_watt, class: world_partner }
+  - { name: world_partner_sushie, class: world_partner }
+  - { name: world_partner_lakilester, class: world_partner }
+  - { name: world_partner_bow, class: world_partner }
+  - { name: world_partner_goompa, class: world_partner }
+  - { name: world_partner_goombaria, class: world_partner }
+  - { name: world_partner_twink, class: world_partner }
+  - { name: world_use_item, class: world_use_item }
+  - { name: effect_globals, vram: 0xE0200000 }
+  - { name: effect_gfx_big_smoke_puff, class: effect_gfx }
+  - { name: effect_big_smoke_puff, vram: 0xE0002000, max_size: 0x1000 }
+  - { name: effect_landing_dust, vram: 0xE000C000, max_size: 0x1000 }
+  - { name: effect_gfx_landing_dust, class: effect_gfx }
+  - { name: effect_walking_dust, vram: 0xE000E000, max_size: 0x1000 }
+  - { name: effect_flower_splash, vram: 0xE0010000, max_size: 0x1000 }
+  - { name: effect_gfx_flower_splash_trail, class: effect_gfx }
+  - { name: effect_flower_trail, vram: 0xE0012000, max_size: 0x1000 }
+  - { name: effect_cloud_puff, vram: 0xE0014000, max_size: 0x1000 }
+  - { name: effect_gfx_cloud_puff_trail, class: effect_gfx }
+  - { name: effect_cloud_trail, vram: 0xE0016000, max_size: 0x1000 }
+  - { name: effect_footprint, vram: 0xE0018000, max_size: 0x1000 }
+  - { name: effect_gfx_footprint, class: effect_gfx }
+  - { name: effect_floating_flower, vram: 0xE001A000, max_size: 0x1000 }
+  - { name: effect_gfx_floating_flower, class: effect_gfx }
+  - { name: effect_snowflake, vram: 0xE001C000, max_size: 0x1000 }
+  - { name: effect_gfx_snowflake, class: effect_gfx }
+  - { name: effect_star, vram: 0xE001E000, max_size: 0x1000 }
+  - { name: effect_gfx_star, class: effect_gfx }
+  - { name: effect_emote, vram: 0xE0020000, max_size: 0x1000 }
+  - { name: effect_gfx_emote, class: effect_gfx }
+  - { name: effect_sparkles, vram: 0xE0022000, max_size: 0x1000 }
+  - { name: effect_gfx_sparkles, class: effect_gfx }
+  - { name: effect_shape_spell, vram: 0xE0024000, max_size: 0x1000 }
+  - { name: effect_gfx_shape_spell, class: effect_gfx }
+  - { name: effect_gather_energy_pink, vram: 0xE0026000, max_size: 0x1000 }
+  - { name: effect_gfx_gather_energy_pink, class: effect_gfx }
+  - { name: effect_drop_leaves, vram: 0xE0028000, max_size: 0x1000 }
+  - { name: effect_gfx_drop_leaves, class: effect_gfx }
+  - { name: effect_dust, vram: 0xE002A000, max_size: 0x1000 }
+  - { name: effect_gfx_dust, class: effect_gfx }
+  - { name: effect_shattering_stones, vram: 0xE002C000, max_size: 0x1000 }
+  - { name: effect_gfx_shattering_stones, class: effect_gfx }
+  - { name: effect_smoke_ring, vram: 0xE002E000, max_size: 0x1000 }
+  - { name: effect_damage_stars, vram: 0xE0030000, max_size: 0x1000 }
+  - { name: effect_gfx_damage_stars, class: effect_gfx }
+  - { name: effect_explosion, vram: 0xE0032000, max_size: 0x1000 }
+  - { name: effect_gfx_explosion, class: effect_gfx }
+  - { name: effect_lens_flare, vram: 0xE0034000, max_size: 0x1000 }
+  - { name: effect_gfx_lens_flare, class: effect_gfx }
+  - { name: effect_got_item_outline, vram: 0xE0036000, max_size: 0x1000 }
+  - { name: effect_gfx_got_item_outline, class: effect_gfx }
+  - { name: effect_spiky_white_aura, vram: 0xE0038000, max_size: 0x1000 }
+  - { name: effect_gfx_spiky_white_aura, class: effect_gfx }
+  - { name: effect_smoke_impact, vram: 0xE003A000, max_size: 0x1000 }
+  - { name: effect_damage_indicator, vram: 0xE003C000 }
+  - { name: effect_gfx_damage_indicator, class: effect_gfx }
+  - { name: effect_purple_ring, vram: 0xE003E000, max_size: 0x1000 }
+  - { name: effect_gfx_purple_ring, class: effect_gfx }
+  - { name: effect_flame, vram: 0xE0040000, max_size: 0x1000 }
+  - { name: effect_gfx_flame, class: effect_gfx }
+  - { name: effect_stars_burst, vram: 0xE0042000, max_size: 0x1000 }
+  - { name: effect_stars_shimmer, vram: 0xE0044000, max_size: 0x1000 }
+  - { name: effect_rising_bubble, vram: 0xE0046000, max_size: 0x1000 }
+  - { name: effect_gfx_rising_bubble, class: effect_gfx }
+  - { name: effect_ring_blast, vram: 0xE0048000, max_size: 0x1000 }
+  - { name: effect_gfx_ring_blast, class: effect_gfx }
+  - { name: effect_shockwave, vram: 0xE004A000, max_size: 0x1000 }
+  - { name: effect_gfx_shockwave, class: effect_gfx }
+  - { name: effect_music_note, vram: 0xE004C000, max_size: 0x1000 }
+  - { name: effect_gfx_music_note, class: effect_gfx }
+  - { name: effect_smoke_burst, vram: 0xE004E000, max_size: 0x1000 }
+  - { name: effect_sweat, vram: 0xE0050000, max_size: 0x1000 }
+  - { name: effect_gfx_sweat, class: effect_gfx }
+  - { name: effect_sleep_bubble, vram: 0xE0052000, max_size: 0x1000 }
+  - { name: effect_gfx_sleep_bubble, class: effect_gfx }
+  - { name: effect_windy_leaves, vram: 0xE0056000, max_size: 0x1000 }
+  - { name: effect_falling_leaves, vram: 0xE0058000, max_size: 0x1000 }
+  - { name: effect_gfx_falling_leaves, class: effect_gfx }
+  - { name: effect_stars_spread, vram: 0xE005A000, max_size: 0x1000 }
+  - { name: effect_gfx_stars_spread, class: effect_gfx }
+  - { name: effect_steam_burst, vram: 0xE005C000, max_size: 0x1000 }
+  - { name: effect_gfx_steam_burst, class: effect_gfx }
+  - { name: effect_stars_orbiting, vram: 0xE005E000, max_size: 0x1000 }
+  - { name: effect_gfx_stars_orbiting, class: effect_gfx }
+  - { name: effect_big_snowflakes, vram: 0xE0060000, max_size: 0x1000 }
+  - { name: effect_gfx_big_snowflakes, class: effect_gfx }
+  - { name: effect_debuff, vram: 0xE0062000, max_size: 0x1000 }
+  - { name: effect_gfx_debuff, class: effect_gfx }
+  - { name: effect_green_impact, vram: 0xE0064000, max_size: 0x1000 }
+  - { name: effect_gfx_green_impact, class: effect_gfx }
+  - { name: effect_radial_shimmer, vram: 0xE0066000, max_size: 0x1000 }
+  - { name: effect_gfx_radial_shimmer, class: effect_gfx }
+  - { name: effect_ending_decals, vram: 0xE0068000, max_size: 0x1000 }
+  - { name: effect_gfx_ending_decals, class: effect_gfx }
+  - { name: effect_light_rays, vram: 0xE006A000, max_size: 0x1000 }
+  - { name: effect_gfx_light_rays, class: effect_gfx }
+  - { name: effect_lightning, vram: 0xE006C000, max_size: 0x1000 }
+  - { name: effect_gfx_lightning, class: effect_gfx }
+  - { name: effect_fire_breath, vram: 0xE006E000, max_size: 0x1000 }
+  - { name: effect_gfx_fire_breath, class: effect_gfx }
+  - { name: effect_shimmer_burst, vram: 0xE0070000, max_size: 0x1000 }
+  - { name: effect_energy_shockwave, vram: 0xE0072000, max_size: 0x1000 }
+  - { name: effect_gfx_energy_shockwave, class: effect_gfx }
+  - { name: effect_shimmer_wave, vram: 0xE0074000, max_size: 0x1000 }
+  - { name: effect_aura, vram: 0xE0076000, max_size: 0x1000 }
+  - { name: effect_gfx_aura, class: effect_gfx }
+  - { name: effect_bulb_glow, vram: 0xE0078000, max_size: 0x1000 }
+  - { name: effect_gfx_bulb_glow, class: effect_gfx }
+  - { name: effect_effect_3D, vram: 0xE007A000, max_size: 0x1000 }
+  - { name: effect_gfx_effect_3D, class: effect_gfx }
+  - { name: effect_blast, vram: 0xE007C000, max_size: 0x1000 }
+  - { name: effect_gfx_blast, class: effect_gfx }
+  - { name: effect_fire_flower, vram: 0xE007E000, max_size: 0x1000 }
+  - { name: effect_gfx_fire_flower, class: effect_gfx }
+  - { name: effect_recover, vram: 0xE0080000, max_size: 0x1000 }
+  - { name: effect_gfx_recover, class: effect_gfx }
+  - { name: effect_disable_x, vram: 0xE0082000, max_size: 0x1000 }
+  - { name: effect_gfx_disable_x, class: effect_gfx }
+  - { name: effect_bombette_breaking, vram: 0xE0084000, max_size: 0x1000 }
+  - { name: effect_firework, vram: 0xE0086000, max_size: 0x1000 }
+  - { name: effect_gfx_firework, class: effect_gfx }
+  - { name: effect_confetti, vram: 0xE0088000, max_size: 0x1000 }
+  - { name: effect_gfx_confetti, class: effect_gfx }
+  - { name: effect_snowfall, vram: 0xE008A000, max_size: 0x1000 }
+  - { name: effect_gfx_snowfall, class: effect_gfx }
+  - { name: effect_effect_46, vram: 0xE008C000, max_size: 0x1000 }
+  - { name: effect_gfx_effect_46, class: effect_gfx }
+  - { name: effect_gather_magic, vram: 0xE008E000, max_size: 0x1000 }
+  - { name: effect_gfx_gather_magic, class: effect_gfx }
+  - { name: effect_attack_result_text, vram: 0xE0090000, max_size: 0x1000 }
+  - { name: effect_gfx_attack_result_text, class: effect_gfx }
+  - { name: effect_small_gold_sparkle, vram: 0xE0092000, max_size: 0x1000 }
+  - { name: effect_gfx_small_gold_sparkle, class: effect_gfx }
+  - { name: effect_flashing_box_shockwave, vram: 0xE0094000, max_size: 0x1000 }
+  - { name: effect_gfx_flashing_box_shockwave, class: effect_gfx }
+  - { name: effect_balloon, vram: 0xE0096000, max_size: 0x1000 }
+  - { name: effect_gfx_balloon, class: effect_gfx }
+  - { name: effect_floating_rock, vram: 0xE0098000, max_size: 0x1000 }
+  - { name: effect_gfx_floating_rock, class: effect_gfx }
+  - { name: effect_chomp_drop, vram: 0xE009A000, max_size: 0x1000 }
+  - { name: effect_gfx_chomp_drop, class: effect_gfx }
+  - { name: effect_quizmo_stage, vram: 0xE009C000, max_size: 0x1000 }
+  - { name: effect_gfx_quizmo_stage, class: effect_gfx }
+  - { name: effect_radiating_energy_orb, vram: 0xE009E000, max_size: 0x1000 }
+  - { name: effect_gfx_radiating_energy_orb, class: effect_gfx }
+  - { name: effect_quizmo_answer, vram: 0xE00A0000, max_size: 0x1000 }
+  - { name: effect_gfx_quizmo_answer, class: effect_gfx }
+  - { name: effect_motion_blur_flame, vram: 0xE00A2000, max_size: 0x1000 }
+  - { name: effect_gfx_motion_blur_flame, class: effect_gfx }
+  - { name: effect_energy_orb_wave, vram: 0xE00A4000, max_size: 0x1000 }
+  - { name: effect_gfx_energy_orb_wave, class: effect_gfx }
+  - { name: effect_merlin_house_stars, vram: 0xE00A6000, max_size: 0x1000 }
+  - { name: effect_gfx_merlin_house_stars, class: effect_gfx }
+  - { name: effect_quizmo_audience, vram: 0xE00A8000, max_size: 0x1000 }
+  - { name: effect_gfx_quizmo_audience, class: effect_gfx }
+  - { name: effect_butterflies, vram: 0xE00AA000, max_size: 0x1000 }
+  - { name: effect_gfx_butterflies, class: effect_gfx }
+  - { name: effect_stat_change, vram: 0xE00AC000, max_size: 0x1000 }
+  - { name: effect_gfx_stat_change, class: effect_gfx }
+  - { name: effect_snaking_static, vram: 0xE00AE000, max_size: 0x1000 }
+  - { name: effect_gfx_snaking_static, class: effect_gfx }
+  - { name: effect_thunderbolt_ring, vram: 0xE00B0000, max_size: 0x1000 }
+  - { name: effect_gfx_thunderbolt_ring, class: effect_gfx }
+  - { name: effect_squirt, vram: 0xE00B2000, max_size: 0x1000 }
+  - { name: effect_gfx_squirt, class: effect_gfx }
+  - { name: effect_water_block, vram: 0xE00B4000, max_size: 0x1000 }
+  - { name: effect_gfx_water_block, class: effect_gfx }
+  - { name: effect_waterfall, vram: 0xE00B6000, max_size: 0x1000 }
+  - { name: effect_gfx_waterfall, class: effect_gfx }
+  - { name: effect_water_fountain, vram: 0xE00B8000, max_size: 0x1000 }
+  - { name: effect_gfx_water_fountain, class: effect_gfx }
+  - { name: effect_underwater, vram: 0xE00BA000, max_size: 0x1000 }
+  - { name: effect_gfx_underwater, class: effect_gfx }
+  - { name: effect_lightning_bolt, vram: 0xE00BC000, max_size: 0x1000 }
+  - { name: effect_gfx_lightning_bolt, class: effect_gfx }
+  - { name: effect_water_splash, vram: 0xE00BE000, max_size: 0x1000 }
+  - { name: effect_gfx_water_splash, class: effect_gfx }
+  - { name: effect_snowman_doll, vram: 0xE00C0000, max_size: 0x1000 }
+  - { name: effect_gfx_snowman_doll, class: effect_gfx }
+  - { name: effect_fright_jar, vram: 0xE00C2000, max_size: 0x1000 }
+  - { name: effect_gfx_fright_jar, class: effect_gfx }
+  - { name: effect_stop_watch, vram: 0xE00C4000, max_size: 0x1000 }
+  - { name: effect_gfx_stop_watch, class: effect_gfx }
+  - { name: effect_effect_63, vram: 0xE00C6000, max_size: 0x1000 }
+  - { name: effect_gfx_effect_63, class: effect_gfx }
+  - { name: effect_throw_spiny, vram: 0xE00C8000, max_size: 0x1000 }
+  - { name: effect_gfx_throw_spiny, class: effect_gfx }
+  - { name: effect_effect_65, vram: 0xE00CA000, max_size: 0x1000 }
+  - { name: effect_gfx_effect_65, class: effect_gfx }
+  - { name: effect_tubba_heart_attack, vram: 0xE00CC000, max_size: 0x1000 }
+  - { name: effect_gfx_tubba_heart_attack, class: effect_gfx }
+  - { name: effect_whirlwind, vram: 0xE00CE000, max_size: 0x1000 }
+  - { name: effect_gfx_whirlwind, class: effect_gfx }
+  - { name: effect_red_impact, vram: 0xE00D0000, max_size: 0x1000 }
+  - { name: effect_floating_cloud_puff, vram: 0xE00D2000, max_size: 0x1000 }
+  - { name: effect_gfx_floating_cloud_puff, class: effect_gfx }
+  - { name: effect_energy_in_out, vram: 0xE00D6000, max_size: 0x1000 }
+  - { name: effect_gfx_energy_in_out, class: effect_gfx }
+  - { name: effect_tattle_window, vram: 0xE00D8000, max_size: 0x1000 }
+  - { name: effect_gfx_tattle_window, class: effect_gfx }
+  - { name: effect_shiny_flare, vram: 0xE00DA000, max_size: 0x1000 }
+  - { name: effect_gfx_shiny_flare, class: effect_gfx }
+  - { name: effect_huff_puff_breath, vram: 0xE00DC000, max_size: 0x1000 }
+  - { name: effect_gfx_huff_puff_breath, class: effect_gfx }
+  - { name: effect_cold_breath, vram: 0xE00DE000, max_size: 0x1000 }
+  - { name: effect_gfx_cold_breath, class: effect_gfx }
+  - { name: effect_embers, vram: 0xE00E0000, max_size: 0x1000 }
+  - { name: effect_gfx_embers, class: effect_gfx }
+  - { name: effect_hieroglyphs, vram: 0xE00E2000, max_size: 0x1000 }
+  - { name: effect_gfx_hieroglyphs, class: effect_gfx }
+  - { name: effect_misc_particles, vram: 0xE00E4000, max_size: 0x1000 }
+  - { name: effect_gfx_misc_particles, class: effect_gfx }
+  - { name: effect_static_status, vram: 0xE00E6000, max_size: 0x1000 }
+  - { name: effect_gfx_static_status, class: effect_gfx }
+  - { name: effect_moving_cloud, vram: 0xE00E8000, max_size: 0x1000 }
+  - { name: effect_gfx_moving_cloud, class: effect_gfx }
+  - { name: effect_effect_75, vram: 0xE00EA000, max_size: 0x1000 }
+  - { name: effect_gfx_effect_75, class: effect_gfx }
+  - { name: effect_firework_rocket, vram: 0xE010A000, max_size: 0x1000 }
+  - { name: effect_gfx_firework_rocket, class: effect_gfx }
+  - { name: effect_peach_star_beam, vram: 0xE010C000, max_size: 0x1000 }
+  - { name: effect_gfx_peach_star_beam, class: effect_gfx }
+  - { name: effect_chapter_change, vram: 0xE010E000, max_size: 0x1000 }
+  - { name: effect_gfx_chapter_change, class: effect_gfx }
+  - { name: effect_ice_shard, vram: 0xE0110000, max_size: 0x1000 }
+  - { name: effect_gfx_ice_shard, class: effect_gfx }
+  - { name: effect_spirit_card, vram: 0xE0112000, max_size: 0x1000 }
+  - { name: effect_gfx_spirit_card, class: effect_gfx }
+  - { name: effect_lil_oink, vram: 0xE0114000, max_size: 0x1000 }
+  - { name: effect_gfx_lil_oink, class: effect_gfx }
+  - { name: effect_something_rotating, vram: 0xE0116000, max_size: 0x1000 }
+  - { name: effect_breaking_junk, vram: 0xE0118000, max_size: 0x1000 }
+  - { name: effect_gfx_breaking_junk, class: effect_gfx }
+  - { name: effect_partner_buff, vram: 0xE011A000, max_size: 0x1000 }
+  - { name: effect_gfx_partner_buff, class: effect_gfx }
+  - { name: effect_quizmo_assistant, vram: 0xE011C000, max_size: 0x1000 }
+  - { name: effect_gfx_quizmo_assistant, class: effect_gfx }
+  - { name: effect_ice_pillar, vram: 0xE011E000, max_size: 0x1000 }
+  - { name: effect_gfx_ice_pillar, class: effect_gfx }
+  - { name: effect_sun, vram: 0xE0120000, max_size: 0x1000 }
+  - { name: effect_gfx_sun, class: effect_gfx }
+  - { name: effect_star_spirits_energy, vram: 0xE0122000, max_size: 0x1000 }
+  - { name: effect_gfx_star_spirits_energy, class: effect_gfx }
+  - { name: effect_pink_sparkles, vram: 0xE0124000, max_size: 0x1000 }
+  - { name: effect_star_outline, vram: 0xE0126000, max_size: 0x1000 }
+  - { name: effect_gfx_star_outline, class: effect_gfx }
+  - { name: effect_effect_86, vram: 0xE0128000, max_size: 0x1000 }
+  - { name: effect_gfx_effect_86, class: effect_gfx }
+  - { name: battle/menus, class: battle_move }
+  - { name: action_cmd_jump, class: action_cmd }
+  - { name: action_cmd_hammer, class: action_cmd }
+  - { name: action_cmd_flee, class: action_cmd }
+  - { name: action_cmd_break_free, class: action_cmd }
+  - { name: action_cmd_whirlwind, class: action_cmd }
+  - { name: action_cmd_stop_leech, class: action_cmd }
+  - { name: action_cmd_unused_flee, class: action_cmd }
+  - { name: action_cmd_dizzy_shell, class: action_cmd }
+  - { name: action_cmd_fire_shell, class: action_cmd }
+  - { name: action_cmd_unused_mash_a, class: action_cmd }
+  - { name: action_cmd_bomb, class: action_cmd }
+  - { name: action_cmd_body_slam, class: action_cmd }
+  - { name: action_cmd_air_lift, class: action_cmd }
+  - { name: action_cmd_air_raid, class: action_cmd }
+  - { name: action_cmd_squirt, class: action_cmd }
+  - { name: action_cmd_three_chances, class: action_cmd }
+  - { name: action_cmd_tidal_wave, class: action_cmd }
+  - { name: action_cmd_power_shock, class: action_cmd }
+  - { name: action_cmd_mega_shock, class: action_cmd }
+  - { name: action_cmd_smack, class: action_cmd }
+  - { name: action_cmd_spiny_surge, class: action_cmd }
+  - { name: action_cmd_hurricane, class: action_cmd }
+  - { name: action_cmd_spook, class: action_cmd }
+  - { name: battle/area/kmr_part_1, class: battle_area }
+  - { name: battle/area/kmr_part_2, class: battle_area }
+  - { name: battle/area/kmr_part_3, class: battle_area }
+  - { name: battle/area/mac, class: battle_area }
+  - { name: battle/area/hos, class: battle_area }
+  - { name: battle/area/nok, class: battle_area }
+  - { name: battle/area/trd_part_1, class: battle_area }
+  - { name: battle/area/trd_part_2, class: battle_area }
+  - { name: battle/area/trd_part_3, class: battle_area }
+  - { name: battle/area/iwa, class: battle_area }
+  - { name: battle/area/sbk, class: battle_area, subalign: 16 }
+  - { name: battle/area/isk_part_1, class: battle_area }
+  - { name: battle/area/isk_part_2, class: battle_area }
+  - { name: battle/area/mim, class: battle_area }
+  - { name: battle/area/arn, class: battle_area }
+  - { name: battle/area/dgb, class: battle_area }
+  - { name: battle/area/omo, class: battle_area }
+  - { name: battle/area/omo2, class: battle_area }
+  - { name: battle/area/omo2_1, class: battle_area2 }
+  - { name: battle/area/omo2_2, class: battle_area2 }
+  - { name: battle/area/omo2_3, class: battle_area2 }
+  - { name: battle/area/omo2_4, class: battle_area2 }
+  - { name: battle/area/omo2_5, class: battle_area2 }
+  - { name: battle/area/omo2_6, class: battle_area2 }
+  - { name: battle/area/omo3, class: battle_area }
+  - { name: battle/area/kgr, class: battle_area }
+  - { name: battle/area/jan, class: battle_area }
+  - { name: battle/area/jan2, class: battle_area }
+  - { name: battle/area/kzn, class: battle_area }
+  - { name: battle/area/kzn2, class: battle_area }
+  - { name: battle/area/flo, class: battle_area }
+  - { name: battle/area/flo2, class: battle_area }
+  - { name: battle/area/tik, class: battle_area }
+  - { name: battle/area/tik2, class: battle_area }
+  - { name: battle/area/tik3, class: battle_area }
+  - { name: battle/area/sam, class: battle_area }
+  - { name: battle/area/sam2, class: battle_area }
+  - { name: battle/area/pra, class: battle_area }
+  - { name: battle/area/pra2, class: battle_area, subalign: 16 }
+  - { name: battle/area/pra3, class: battle_area }
+  - { name: battle/area/kpa, class: battle_area }
+  - { name: battle/area/kpa2, class: battle_area }
+  - { name: battle/area/kpa3, class: battle_area }
+  - { name: battle/area/kpa4, class: battle_area }
+  - { name: battle/area/kkj, class: battle_area }
+  - { name: battle/area/dig, class: battle_area }
+  - { name: battle_partner_goompa, class: battle_partner }
+  - { name: battle_partner_goombario, class: battle_partner }
+  - { name: battle_partner_kooper, class: battle_partner }
+  - { name: battle_partner_bombette, class: battle_partner }
+  - { name: battle_partner_parakarry, class: battle_partner }
+  - { name: battle_partner_watt, class: battle_partner }
+  - { name: battle_partner_sushie, class: battle_partner }
+  - { name: battle_partner_lakilester, class: battle_partner }
+  - { name: battle_partner_bow, class: battle_partner }
+  - { name: battle_partner_twink, class: battle_partner }
+  - { name: mushroom, class: battle_move }
+  - { name: fire_flower, class: battle_move }
+  - { name: dusty_hammer, class: battle_move }
+  - { name: pow_block, class: battle_move }
+  - { name: pebble, class: battle_move }
+  - { name: volt_shroom, class: battle_move }
+  - { name: thunder_rage, class: battle_move }
+  - { name: snowman_doll, class: battle_move }
+  - { name: dried_shroom, class: battle_move }
+  - { name: shooting_star, class: battle_move }
+  - { name: sleepy_sheep, class: battle_move }
+  - { name: stone_cap, class: battle_move }
+  - { name: tasty_tonic, class: battle_move }
+  - { name: thunder_bolt, class: battle_move }
+  - { name: ultra_shroom, class: battle_move }
+  - { name: unknown_item, class: battle_move }
+  - { name: super_soda, class: battle_move }
+  - { name: hustle_drink, class: battle_move }
+  - { name: stop_watch, class: battle_move }
+  - { name: dizzy_dial, class: battle_move }
+  - { name: please_come_back, class: battle_move }
+  - { name: egg_missile, class: battle_move }
+  - { name: insecticide_herb, class: battle_move }
+  - { name: fright_jar, class: battle_move }
+  - { name: mystery, class: battle_move }
+  - { name: repel_gel, class: battle_move }
+  - { name: life_shroom, class: battle_move }
+  - { name: coconut, class: battle_move }
+  - { name: electro_pop, class: battle_move }
+  - { name: strange_cake, class: battle_move }
+  - { name: food, class: battle_move }
+  - { name: battle_move_hammer_attack, class: battle_move }
+  - { name: battle_move_spin_smash, class: battle_move }
+  - { name: battle_move_quake_hammer, class: battle_move }
+  - { name: battle_move_jump_attack, class: battle_move }
+  - { name: battle_move_multibounce, class: battle_move }
+  - { name: battle_move_power_bounce, class: battle_move }
+  - { name: battle_move_sleep_stomp, class: battle_move }
+  - { name: battle_move_dizzy_stomp, class: battle_move }
+  - { name: battle_move_d_down_pound, class: battle_move }
+  - { name: battle_move_jump_charge_0, class: battle_move }
+  - { name: battle_move_hammer_charge_0, class: battle_move }
+  - { name: battle_move_hammer_throw, class: battle_move }
+  - { name: battle_move_mega_quake, class: battle_move }
+  - { name: battle_move_hammer_charge_1, class: battle_move }
+  - { name: battle_move_jump_charge_1, class: battle_move }
+  - { name: battle_move_hammer_charge_2, class: battle_move }
+  - { name: battle_move_jump_charge_2, class: battle_move }
+  - { name: battle_move_auto_smash, class: battle_move }
+  - { name: battle_move_auto_jump, class: battle_move }
+  - { name: battle_move_power_quake, class: battle_move }
+  - { name: battle_move_auto_multibounce, class: battle_move }
+  - { name: battle_move_power_jump, class: battle_move }
+  - { name: battle_move_super_jump, class: battle_move }
+  - { name: battle_move_mega_jump, class: battle_move }
+  - { name: battle_move_power_smash, class: battle_move }
+  - { name: battle_move_super_smash, class: battle_move }
+  - { name: battle_move_mega_smash, class: battle_move }
+  - { name: battle_move_demo_power_bounce, class: battle_move }
+  - { name: battle_move_shrink_smash, class: battle_move }
+  - { name: battle_move_shell_crack, class: battle_move }
+  - { name: battle_move_d_down_jump, class: battle_move }
+  - { name: battle_move_shrink_stomp, class: battle_move }
+  - { name: battle_move_earthquake_jump, class: battle_move }
+  - { name: battle_move_focus, class: battle_move }
+  - { name: battle_move_refresh, class: battle_move }
+  - { name: battle_move_lullaby, class: battle_move }
+  - { name: battle_move_star_storm, class: battle_move }
+  - { name: battle_move_chill_out, class: battle_move }
+  - { name: battle_move_smooch, class: battle_move }
+  - { name: battle_move_time_out, class: battle_move }
+  - { name: battle_move_up_and_away, class: battle_move }
+  - { name: battle_move_star_beam, class: battle_move }
+  - { name: battle_move_peach_beam, class: battle_move }
+  - { name: battle_move_peach_focus, class: battle_move }
+  - { name: battle_move_peach_focus_alt, class: battle_move }
+  - { name: level_up, class: battle_move }
+  - { name: starpoint, class: battle_move }
+  - { name: world_model_anim_kzn_01, class: world_model_anim }
+  - { name: world_model_anim_kzn_00, class: world_model_anim }
+  - { name: world_model_anim_kzn_04, class: world_model_anim }
+  - { name: world_model_anim_kzn_05, class: world_model_anim }
+  - { name: world_model_anim_kzn_06, class: world_model_anim }
+  - { name: world_model_anim_kzn_07, class: world_model_anim }
+  - { name: world_model_anim_kzn_08, class: world_model_anim }
+  - { name: world_model_anim_kzn_09, class: world_model_anim }
+  - { name: world_model_anim_kzn_0A, class: world_model_anim }
+  - { name: world_model_anim_kzn_0B, class: world_model_anim }
+  - { name: world_model_anim_kzn_0C, class: world_model_anim }
+  - { name: world_model_anim_kzn_0D, class: world_model_anim }
+  - { name: world_model_anim_kzn_0E, class: world_model_anim }
+  - { name: world_model_anim_kzn_02, class: world_model_anim }
+  - { name: world_model_anim_kzn_03, class: world_model_anim }
+  - { name: world_model_anim_kzn_0F, class: world_model_anim }
+  - { name: world_model_anim_kzn_10, class: world_model_anim }
+  - { name: world_model_anim_kzn_11, class: world_model_anim }
+  - { name: world_model_anim_kzn_12, class: world_model_anim }
+  - { name: world_model_anim_kzn_13, class: world_model_anim }
+  - { name: world_model_anim_kzn_14, class: world_model_anim }
+  - { name: world_model_anim_kzn_15, class: world_model_anim }
+  - { name: world_model_anim_kzn_16, class: world_model_anim }
+  - { name: world_model_anim_kzn_17, class: world_model_anim }
+  - { name: world_model_anim_kzn_18, class: world_model_anim }
+  - { name: world_model_anim_kzn_19, class: world_model_anim }
+  - { name: world_model_anim_kzn_1A, class: world_model_anim }
+  - { name: world_model_anim_kzn_1B, class: world_model_anim }
+  - { name: world_model_anim_kzn_1C, class: world_model_anim }
+  - { name: world_model_anim_kzn_1D, class: world_model_anim }
+  - { name: world_model_anim_kzn_1E, class: world_model_anim }
+  - { name: world_model_anim_kzn_1F, class: world_model_anim }
+  - { name: world_model_anim_kzn_20, class: world_model_anim }
+  - { name: world_model_anim_kzn_21, class: world_model_anim }
+  - { name: world_model_anim_kzn_22, class: world_model_anim }
+  - { name: world_model_anim_kzn_23, class: world_model_anim }
+  - { name: world_model_anim_kzn_24, class: world_model_anim }
+  - { name: world_script_api, class: world_script_api }
+  - { name: texture_memory, class: texture_memory }
+  - { name: dgb_01_smash_bridges, class: dgb_01_smash_bridges }
+  - { name: heaps2, class: heaps2 }
+  - { name: inspect_icon, class: indicator_icon }
+  - { name: speech_bubble, class: indicator_icon }
+  - { name: pulse_stone, class: indicator_icon }
+  - { name: i_spy, class: indicator_icon }
+  - { name: model_clear_render_tasks, class: model_clear_render_tasks }
+  - { name: world_action_idle, class: world_action }
+  - { name: world_action_walk, class: world_action }
+  - { name: world_action_jump, class: world_action }
+  - { name: world_action_step_up, class: world_action }
+  - { name: world_action_land, class: world_action }
+  - { name: world_action_hammer, class: world_action }
+  - { name: world_action_spin, class: world_action }
+  - { name: world_action_tornado_jump, class: world_action }
+  - { name: world_action_spin_jump, class: world_action }
+  - { name: world_action_slide, class: world_action }
+  - { name: world_action_hit_fire, class: world_action }
+  - { name: world_action_hit_lava, class: world_action }
+  - { name: world_action_knockback, class: world_action }
+  - { name: world_action_misc, class: world_action }
+  - { name: world_action_use_munchlesia, class: world_action }
+  - { name: world_action_use_spinning_flower, class: world_action }
+  - { name: world_action_use_tweester, class: world_action }
+  - { name: world_action_sneaky_parasol, class: world_action }
+  - { name: entity/default, class: area_entities }
+  - { name: entity/jan_iwa, class: area_entities }
+  - { name: entity/sbk_omo, class: area_entities }
+  - { name: entity_model_Hammer1Block, class: entity_model }
+  - { name: entity_model_Hammer2Block, class: entity_model }
+  - { name: entity_model_Hammer3Block, class: entity_model }
+  - { name: entity_model_ShatteringHammer1Block, class: entity_model }
+  - { name: entity_model_ShatteringHammer2Block, class: entity_model }
+  - { name: entity_model_ShatteringHammer3Block, class: entity_model }
+  - { name: entity_model_YellowBlock, class: entity_model }
+  - { name: entity_model_RedBlock, class: entity_model }
+  - { name: entity_model_UnusedBlock, class: entity_model }
+  - { name: entity_model_PushBlock, class: entity_model }
+  - { name: entity_model_BrickBlock, class: entity_model }
+  - { name: entity_model_ShatteringBrickBlock, class: entity_model }
+  - { name: entity_model_InertYellowBlock, class: entity_model }
+  - { name: entity_model_InertRedBlock, class: entity_model }
+  - { name: entity_model_HeartBlock, class: entity_model }
+  - { name: entity_model_PowBlock, class: entity_model }
+  - { name: entity_model_SuperBlock, class: entity_model }
+  - { name: entity_model_UltraBlock, class: entity_model }
+  - { name: entity_model_HitYellowBlock_gfx, class: entity_model }
+  - { name: entity_model_HitYellowBlock_anim, class: entity_model_anim }
+  - { name: entity_model_HitFloatingYellowBlock_gfx, class: entity_model }
+  - { name: entity_model_HitFloatingYellowBlock_anim, class: entity_model_anim }
+  - { name: entity_model_HitRedBlock_gfx, class: entity_model }
+  - { name: entity_model_HitRedBlock_anim, class: entity_model_anim }
+  - { name: entity_model_HeartBlockContent, class: entity_model }
+  - { name: entity_model_SuperBlockContent, class: entity_model }
+  - { name: entity_model_UltraBlockContent, class: entity_model }
+  - { name: entity_model_SaveBlock, class: entity_model }
+  - { name: entity_model_BoardedFloor, class: entity_model }
+  - { name: entity_model_WoodenCrate, class: entity_model }
+  - { name: entity_model_StarBoxLauncher, class: entity_model }
+  - { name: entity_model_HiddenPanel, class: entity_model }
+  - { name: entity_model_Tweester, class: entity_model }
+  - { name: entity_model_BlueWarpPipe, class: entity_model }
+  - { name: entity_model_Signpost, class: entity_model }
+  - { name: entity_model_ArrowSign, class: entity_model }
+  - { name: entity_model_Padlock, class: entity_model }
+  - { name: entity_model_PadlockRedFrame, class: entity_model }
+  - { name: entity_model_PadlockRedFace, class: entity_model }
+  - { name: entity_model_PadlockBlueFace, class: entity_model }
+  - { name: entity_model_GreenStompSwitch, class: entity_model }
+  - { name: entity_model_RedSwitch, class: entity_model }
+  - { name: entity_model_BlueSwitch, class: entity_model }
+  - { name: entity_model_Chest, class: entity_model }
+  - { name: entity_model_ScriptSpring_gfx, class: entity_model }
+  - { name: entity_model_ScriptSpring_anim, class: entity_model_anim }
+  - { name: entity_model_SimpleSpring_gfx, class: entity_model }
+  - { name: entity_model_SimpleSpring_anim, class: entity_model_anim }
+  - { name: entity_model_BellbellPlant_gfx, class: entity_model }
+  - { name: entity_model_BellbellPlant_anim, class: entity_model_anim }
+  - { name: entity_model_TrumpetPlant_gfx, class: entity_model }
+  - { name: entity_model_TrumpetPlant_anim, class: entity_model_anim }
+  - { name: entity_model_MunchlesiaReset_gfx, class: entity_model }
+  - { name: entity_model_MunchlesiaReset_anim, class: entity_model_anim }
+  - { name: entity_model_MunchlesiaGrab_gfx, class: entity_model }
+  - { name: entity_model_MunchlesiaGrab_anim, class: entity_model_anim }
+  - { name: entity_model_MunchlesiaEnvelop_gfx, class: entity_model }
+  - { name: entity_model_MunchlesiaEnvelop_anim, class: entity_model_anim }
+  - { name: entity_model_MunchlesiaBeginChew_gfx, class: entity_model }
+  - { name: entity_model_MunchlesiaBeginChew_anim, class: entity_model_anim }
+  - { name: entity_model_MunchlesiaChewing_gfx, class: entity_model }
+  - { name: entity_model_MunchlesiaChewing_anim, class: entity_model_anim }
+  - { name: entity_model_MunchlesiaSpitOut_gfx, class: entity_model }
+  - { name: entity_model_MunchlesiaSpitOut_anim, class: entity_model_anim }
+  - { name: entity_model_MunchlesiaReset1_gfx, class: entity_model }
+  - { name: entity_model_MunchlesiaReset1_anim, class: entity_model_anim }
+  - { name: entity_model_CymbalPlant_anim, class: entity_model_anim }
+  - { name: entity_model_CymbalPlant_gfx, class: entity_model }
+  - { name: entity_model_PinkFlower_anim, class: entity_model_anim }
+  - { name: entity_model_PinkFlower_gfx, class: entity_model }
+  - { name: entity_model_SpinningFlower, class: entity_model }
+  - { name: entity_model_BombableRock, class: entity_model }
+  - { name: sbn }
+  - { name: copy_1942C40 }
+  - { name: sprites }
+  - { name: pad_1B82208 }
+  - { name: copy_1B8220C }
+  - { name: msg }
+  - { name: unk_1C84D30 }
+  - { name: copy_1E00000 }
+  - { name: mapfs }
+  - { name: copy_27FEE22, subalign: 2 }
+
+# Which segment links each asset object, matched by the directory it sits in.
+# A directory marked "each" gives every file its own segment, named by the
+# file's stem with any prefix given.
+assets:
+  dirs:
+    asm/effects: main
+    asm/effect_shims: effect_globals
+    ver/us/asm: header
+    assets/us/imgfx: imgfx_data
+    assets/us/logos: logos
+    assets/us/sprite: sprites
+    assets/us/ui/files: menu_hud_scripts
+    assets/us/ui/pause: menu_hud_scripts
+  each:
+    assets/us/title: 'title/'
+  files:
+    ver/us/asm/header.s: header
+    assets/us/audio.sbn: sbn
+    assets/us/copy_1942C40.bin: copy_1942C40
+    assets/us/copy_1B8220C.bin: copy_1B8220C
+    assets/us/copy_1E00000.bin: copy_1E00000
+    assets/us/copy_27FEE22.bin: copy_27FEE22
+    assets/us/gspF3DEX2kawase_fifo_data.bin: main
+    assets/us/gspF3DEX2kawase_fifo_text.bin: main
+    assets/us/icons.bin: icon
+    assets/us/libgcc_vr4300.a: main
+    assets/us/mapfs.dat: mapfs
+    assets/us/msg: msg
+    assets/us/n_aspMain_data.bin: main
+    assets/us/n_aspMain_text.bin: main
+    assets/us/pad_1B82208.bin: pad_1B82208
+    assets/us/rspboot_font.bin: boot
+    assets/us/sprite_shading_profiles.bin: sprite_shading_profiles
+    assets/us/unk_1C84D30.bin: unk_1C84D30
+
+# Directories whose images are packed into a larger blob rather than being
+# textures in their own right.
+packed:
+  - assets/us/sprite
+  - assets/us/mapfs
+  - assets/us/icon
+  - assets/us/charset/standard
+  - assets/us/charset/subtitle
+  - assets/us/charset/title
+
+# Fonts, each packed from the glyphs and palettes in its directory.
+charsets:
+  - standard
+  - subtitle
+  - title
+
+
+# Where a segment's sources live.
+#
+# A directory belongs to the segment its path names, so src/battle/area/arn
+# holds battle/area/arn and src/engine1 holds engine1. A directory that names
+# no segment belongs to the one its parent does, and src itself is main, so
+# adding a source file needs no entry here.
+sources:
+  # Directories whose segment is not the one their path names.
+  dirs:
+    src/world/area/dgb: dgb_01_smash_bridges
+
+  # Directories where every source is its own segment, named <prefix><stem>.
+  each:
+    src/battle/action_cmd: action_cmd_
+    src/battle/move/hammer: battle_move_
+    src/battle/move/item: ''
+    src/battle/move/jump: battle_move_
+    src/battle/move/star_power: battle_move_
+    src/battle/overlay: ''
+    src/battle/partner: battle_partner_
+    src/effects: effect_
+    src/effects/gfx: effect_gfx_
+    src/entity/model: entity_model_
+    src/heaps: ''
+    src/indicator_icon: ''
+    src/obfuscated: ''
+    src/world/action: world_action_
+    src/world/model_anim/kzn: world_model_anim_kzn_
+    src/world/partner: world_partner_
+
+  # Sources the rules above cannot place.
+  files:
+    src/battle/move/hammer/attack.c: battle_move_hammer_attack
+    src/battle/move/jump/attack.c: battle_move_jump_attack
+    src/boot/entry_point.s: main
+    src/boot/ipl3_boot.s: boot
+
+  # Sources that build separately, or not for this version.
+  exclude:
+    - src/battle/actor/*
+    - src/world/area/*/*/
+    - src/os/padding_alt.s
+    - src/os/skapi.s
+
+# Compiler flags for sources that need something other than the default,
+# by directory and then by file.
+cflags:
+  dirs:
+    src/gcc: -g2
+    src/os: -O3
+    src/os/nusys: ''
+  files:
+    src/effects/aura.c: -Os
+    src/effects/energy_in_out.c: -Os
+    src/effects/firework_rocket.c: -Os
+    src/effects/light_rays.c: -Os
+    src/effects/stars_shimmer.c: -Os
+    src/effects/tubba_heart_attack.c: -Os
+    src/is_debug.c: -g -fforce-addr
+    src/os/createmesgqueue.c: ''
+    src/os/memset.c: -O1
+    src/os/nusys/nugfxtaskmgr.c: -fforce-addr
+    src/os/osFlash.c: ''
+    src/os/osSiDeviceBusy.c: ''
+    src/os/sqrtf.c: -ffast-math
+    src/os/strcmp.c: -O1
+    src/os/strcpy.c: -O1
+    src/os/strncmp.c: ''
+    src/os/vimodempallan1.c: ''
+    src/os/vimodentsclan1.c: ''
+    src/os/vimodepallan1.c: ''

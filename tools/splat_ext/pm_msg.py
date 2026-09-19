@@ -1,10 +1,8 @@
-import shutil
 from splat.segtypes.segment import Segment
 from pathlib import Path
 from splat.util import options
 import re
 
-import pylibyaml
 import yaml as yaml_loader
 
 

@@ -22,6 +22,6 @@ extern Addr D_8020A000;
 #define VINE_3_BASE 0x8020A000
 #endif
 
-#include "world/common/lava_piranha/skele1.c"
-#include "world/common/lava_piranha/skele2.c"
-#include "world/common/lava_piranha/skele3.c"
+#include "world/common/lava_piranha/skele1.inc.c"
+#include "world/common/lava_piranha/skele2.inc.c"
+#include "world/common/lava_piranha/skele3.inc.c"
