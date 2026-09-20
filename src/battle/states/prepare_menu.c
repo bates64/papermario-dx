@@ -5,6 +5,11 @@
 static Overlay* LoadedBattleMenuOverlay;
 static const BattleMenuInterface* LoadedBattleMenu;
 
+void reset_battle_menu_overlay(void) {
+    LoadedBattleMenuOverlay = nullptr;
+    LoadedBattleMenu = nullptr;
+}
+
 void load_battle_menu(void) {
     if (LoadedBattleMenu != nullptr) {
         return;

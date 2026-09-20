@@ -21,6 +21,11 @@ static const char* BattlePartnerOverlayNames[] = {
 static Overlay* LoadedBattlePartnerOverlay;
 static const BattlePartner* LoadedBattlePartner;
 
+void reset_battle_partner_overlay(void) {
+    LoadedBattlePartnerOverlay = nullptr;
+    LoadedBattlePartner = nullptr;
+}
+
 Overlay* get_battle_partner_overlay(void) {
     return LoadedBattlePartnerOverlay;
 }

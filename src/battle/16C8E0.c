@@ -6,6 +6,9 @@
 #include "script_api/battle.h"
 #include "sprite.h"
 #include "effects.h"
+#include "battle/action_cmd.h"
+#include "battle/partner.h"
+#include "battle/script_module.h"
 #include "battle/states/states.h"
 
 f32 StarPointsIncrementInterp = 0.0f;
@@ -111,6 +114,13 @@ void initialize_battle(void) {
     Camera* tattleCam = &gCameras[CAM_TATTLE];
     HudElemID hid;
     s32 i;
+
+    // The legacy battle segment is DMA-loaded without clearing its BSS. These
+    // overlay handles were added later and must not inherit the prior RAM image.
+    reset_action_command_overlay();
+    reset_battle_script_overlay();
+    reset_battle_partner_overlay();
+    reset_battle_menu_overlay();
 
     gBattleStatus.flags1 = 0;
     gBattleStatus.flags2 = 0;

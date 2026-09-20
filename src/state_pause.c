@@ -6,6 +6,7 @@
 #include "sprite.h"
 #include "model.h"
 #include "game_modes.h"
+#include "dx/overlay.h"
 #include "world/actions.h"
 
 #if VERSION_JP
@@ -165,6 +166,9 @@ void state_step_unpause(void) {
                     StepPauseDelay = -1;
                     nuGfxSetCfb(pause_frameBuffers, ARRAY_COUNT(pause_frameBuffers));
                     pause_cleanup();
+                    // The legacy pause overlay overlaps the fixed map overlay window.
+                    // Restore map code and data before dereferencing any map-owned pointers.
+                    ovl_restore_type(OVL_MAP);
                     gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
                     mapSettings = get_current_map_settings();
                     gGameStatusPtr->context = CONTEXT_WORLD;

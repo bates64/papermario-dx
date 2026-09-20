@@ -74,6 +74,8 @@ typedef struct ActionCommandInterface {
     /* 0x14 */ ActionCommandCallback free;
 } ActionCommandInterface; // size = 0x18
 
+void reset_action_command_overlay(void);
+
 #define ACTION_COMMAND_EXPORT_NAME "gActionCommand"
 #define ACTION_COMMAND_ENTRY(commandID) \
     export const ActionCommandInterface gActionCommand = { \

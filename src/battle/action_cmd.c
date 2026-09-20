@@ -88,6 +88,11 @@ BSS ActionCommandStatus gActionCommandStatus;
 static Overlay* LoadedActionCommandOverlay;
 static const ActionCommandInterface* LoadedActionCommand;
 
+void reset_action_command_overlay(void) {
+    LoadedActionCommandOverlay = nullptr;
+    LoadedActionCommand = nullptr;
+}
+
 void unload_action_command(void) {
     if (LoadedActionCommand != nullptr &&
         gActionCommandStatus.actionCommandID != ACTION_COMMAND_NONE) {

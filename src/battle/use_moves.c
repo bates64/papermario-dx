@@ -62,6 +62,12 @@ static Overlay* LoadedBattleScriptOverlay;
 static const BattleScriptModule* LoadedBattleScriptModule;
 static const char* LoadedBattleScriptName;
 
+void reset_battle_script_overlay(void) {
+    LoadedBattleScriptOverlay = nullptr;
+    LoadedBattleScriptModule = nullptr;
+    LoadedBattleScriptName = nullptr;
+}
+
 void unload_battle_script(void) {
     ovl_unload(LoadedBattleScriptOverlay);
     LoadedBattleScriptOverlay = nullptr;

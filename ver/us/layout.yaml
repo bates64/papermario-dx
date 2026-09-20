@@ -15,7 +15,7 @@ asset_stack:
   - us
 
 classes:
-  battle_area: { vram: 0x80218000, vram_symbol: heaps_VRAM_END }
+  battle_area: { vram: 0x80218000, vram_symbol: heaps_legacy_VRAM_END }
   battle_area2: { vram: 0x80231000, vram_symbol: Vine1Base }
   battle: { vram: 0x8023E000, follows: [battle_area] }
   battle_move: { vram: 0x802A1000, follows: [battle] }
@@ -31,6 +31,8 @@ classes:
   filemenu_pause: { vram: 0x80242BA0, vram_symbol: menu_hud_scripts_VRAM_END }
   font_width: { vram: 0x802EB3D0, vram_symbol: entity_VRAM_END }
   heaps: { vram: 0x80197000, vram_symbol: engine2_VRAM_END }
+  # Several callers and packed assets address this scratch region directly.
+  heaps_legacy: { vram: 0x80200000 }
   # Maps occupy the fixed runtime overlay window 0x80240000..0x80267FF0.
   heaps2: { vram: 0x80267FF0 }
   heaps3: { vram: 0x802FB800, vram_symbol: font_width_VRAM_END }
@@ -52,6 +54,7 @@ segments:
   - { name: engine1, class: engine1 }
   - { name: engine2, class: engine2 }
   - { name: heaps, class: heaps, subalign: 4096 }
+  - { name: heaps_legacy, class: heaps_legacy }
   - { name: evt, class: evt }
   - { name: engine4, class: engine4 }
   - { name: entity, class: entity }

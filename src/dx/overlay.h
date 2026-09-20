@@ -48,6 +48,12 @@ void ovl_unload(Overlay* ovl);
 /// Unload all overlays of a given type.
 void ovl_unload_type(OverlayType type);
 
+/// Restore a fixed overlay whose RAM image was overwritten externally.
+///
+/// This reloads the overlay into its existing address without invoking the
+/// overwritten image's destructors or changing its descriptor identity.
+void ovl_restore_type(OverlayType type);
+
 /// Look up an exported symbol by name. Returns nullptr if not found.
 void* ovl_import(const Overlay* ovl, const char* name);
 

@@ -19,6 +19,7 @@ typedef struct BattleMenuInterface {
 
 extern const BattleMenuInterface gBattleMenu;
 
+void reset_battle_menu_overlay(void);
 void load_battle_menu(void);
 void unload_battle_menu(void);
 void update_battle_menu(s32 state);

@@ -348,21 +348,10 @@ static b32 find_in_directory(OverlayType type, const char* name, OverlayDirector
     return false;
 }
 
-static Overlay* load_overlay(OverlayType type, const OverlayDirectoryEntry* entry) {
+static void populate_overlay(Overlay* ovl, OverlayType type, const OverlayDirectoryEntry* entry,
+                             b32 allocate) {
     const OverlayStorage* storage = &overlayStorage[type];
     const char* name = entry->name;
-
-    // Search the descriptor partition for a free slot.
-    Overlay* ovl = nullptr;
-    s32 descriptorEnd = storage->descStart + storage->descCount;
-    for (s32 i = storage->descStart; i < descriptorEnd; i++) {
-        if (overlays[i].name[0] == '\0') {
-            ovl = &overlays[i];
-        }
-    }
-
-    ASSERT_MSG(ovl != nullptr, "Too many overlays loaded for type %d (descriptor budget %d)",
-               type, (int)storage->descCount);
 
     strcpy(ovl->name, name);
     ovl->type = type;
@@ -389,7 +378,17 @@ static Overlay* load_overlay(OverlayType type, const OverlayDirectoryEntry* entr
     // Allocate: [text+data][bss][alignment][exports|strtab|dtors]
     u32 meta_mem_off = (hdr.load_size + hdr.bss_size + 7) & ~7;
     u32 footprint = meta_mem_off + meta_sz;
-    ovl->base = allocate_storage(ovl, footprint);
+    if (allocate) {
+        ovl->base = allocate_storage(ovl, footprint);
+    } else {
+        ASSERT_MSG(storage->mode == OVL_STORAGE_FIXED,
+                   "Only fixed overlays may be restored in place (type %d)", type);
+        ASSERT_MSG(footprint <= storage->slotSize,
+                   "Overlay '%s' footprint 0x%X exceeds fixed storage size 0x%X",
+                   name, (unsigned int)footprint, (unsigned int)storage->slotSize);
+        ASSERT_MSG(ovl->base == storage->base,
+                   "Overlay '%s' is not at its fixed storage address", name);
+    }
     ASSERT_MSG(ovl->base != nullptr, "Could not allocate storage for overlay '%s'", name);
 
     // DMA text+data
@@ -430,14 +429,16 @@ static Overlay* load_overlay(OverlayType type, const OverlayDirectoryEntry* entr
     }
 
 #if DX_DEBUG_OVERLAY_LOADS && (DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE))
-    if (storage->mode == OVL_STORAGE_POOL) {
-        debug_printf_always("\\gOVL+\\d %s/%s \\y%.32s\\d @%08X +%X #%d",
-                            get_type_name(ovl->type), get_storage_name(storage->mode), ovl->name,
-                            (unsigned int)ovl->base, (unsigned int)footprint, ovl->storageSlot);
-    } else {
-        debug_printf_always("\\gOVL+\\d %s/%s \\y%.32s\\d @%08X +%X",
-                            get_type_name(ovl->type), get_storage_name(storage->mode), ovl->name,
-                            (unsigned int)ovl->base, (unsigned int)footprint);
+    if (allocate) {
+        if (storage->mode == OVL_STORAGE_POOL) {
+            debug_printf_always("\\gOVL+\\d %s/%s \\y%.32s\\d @%08X +%X #%d",
+                                get_type_name(ovl->type), get_storage_name(storage->mode), ovl->name,
+                                (unsigned int)ovl->base, (unsigned int)footprint, ovl->storageSlot);
+        } else {
+            debug_printf_always("\\gOVL+\\d %s/%s \\y%.32s\\d @%08X +%X",
+                                get_type_name(ovl->type), get_storage_name(storage->mode), ovl->name,
+                                (unsigned int)ovl->base, (unsigned int)footprint);
+        }
     }
 #endif
 
@@ -451,6 +452,24 @@ static Overlay* load_overlay(OverlayType type, const OverlayDirectoryEntry* entr
             fn();
         }
     }
+}
+
+static Overlay* load_overlay(OverlayType type, const OverlayDirectoryEntry* entry) {
+    const OverlayStorage* storage = &overlayStorage[type];
+
+    // Search the descriptor partition for a free slot.
+    Overlay* ovl = nullptr;
+    s32 descriptorEnd = storage->descStart + storage->descCount;
+    for (s32 i = storage->descStart; i < descriptorEnd; i++) {
+        if (overlays[i].name[0] == '\0') {
+            ovl = &overlays[i];
+        }
+    }
+
+    ASSERT_MSG(ovl != nullptr, "Too many overlays loaded for type %d (descriptor budget %d)",
+               type, (int)storage->descCount);
+
+    populate_overlay(ovl, type, entry, true);
 
     return ovl;
 }
@@ -506,6 +525,28 @@ void ovl_unload_type(OverlayType type) {
     for (s32 i = 0; i < MAX_OVERLAYS; i++) {
         if (overlays[i].type == type) {
             ovl_unload(&overlays[i]);
+        }
+    }
+}
+
+void ovl_restore_type(OverlayType type) {
+    if ((u32)type >= OVL_NUM_TYPES) {
+        PANIC_MSG("Invalid overlay type %d", type);
+        return;
+    }
+
+    const OverlayStorage* storage = &overlayStorage[type];
+    ASSERT_MSG(storage->mode == OVL_STORAGE_FIXED,
+               "Only fixed overlays may be restored in place (type %d)", type);
+
+    s32 descriptorEnd = storage->descStart + storage->descCount;
+    for (s32 i = storage->descStart; i < descriptorEnd; i++) {
+        Overlay* ovl = &overlays[i];
+        if (ovl->name[0] != '\0' && ovl->type == type) {
+            ALIGNED(8) OverlayDirectoryEntry entry;
+            b32 found = find_in_directory(type, ovl->name, &entry);
+            ASSERT_MSG(found, "Overlay '%s' not found while restoring", ovl->name);
+            populate_overlay(ovl, type, &entry, false);
         }
     }
 }

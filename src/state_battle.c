@@ -178,6 +178,8 @@ void state_step_end_battle(void) {
                 initialize_collision();
                 restore_map_collision_data();
 
+                ovl_restore_type(OVL_MAP);
+
                 if (mapSettings->bgName != nullptr) {
                     load_map_bg(wMapBgName);
                     set_background(&gBackgroundImage);

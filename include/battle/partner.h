@@ -19,3 +19,4 @@ typedef struct BattlePartner {
 const BattlePartner* load_battle_partner(s32 partnerID);
 struct Overlay* get_battle_partner_overlay(void);
 void unload_battle_partner(void);
+void reset_battle_partner_overlay(void);

@@ -32,3 +32,4 @@ typedef struct BattleScriptRef {
 
 EvtScript* load_battle_script(const BattleScriptRef* ref);
 void unload_battle_script(void);
+void reset_battle_script_overlay(void);
