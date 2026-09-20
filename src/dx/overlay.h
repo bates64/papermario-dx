@@ -19,9 +19,9 @@ typedef struct Overlay Overlay;
 
 typedef enum {
     OVL_EFFECT,         ///< `effects/*` -- loaded into a fixed-size slot pool
-    OVL_MAP,            ///< `world/area_*/*/` -- only one loaded at a time
+    OVL_MAP,            ///< `world/area/*/*` -- only one loaded at a time
     OVL_ACTION,         ///< `world/action/*` -- only one loaded at a time
-    OVL_PARTNER,        ///< Splat segments in the `world_partner` VRAM class
+    OVL_PARTNER,        ///< `world/partner/*`
     OVL_ACTOR,          ///< `battle/actor/*`
     OVL_BATTLE_PARTNER, ///< `battle/partner/*` -- only one loaded at a time
     OVL_ACTION_CMD,     ///< `battle/action_cmd/*` -- only one loaded at a time

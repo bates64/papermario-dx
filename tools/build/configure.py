@@ -707,7 +707,7 @@ class Configure:
                 ("battle", "move"),
                 ("battle", "actor"),
             )
-            or parts[:2] == ("world", "area") and len(parts) >= 4
+            or parts[:2] == ("world", "area") and len(parts) >= 5
         )
 
     def textures(self) -> Dict[Path, Path]:
@@ -1346,6 +1346,13 @@ class Configure:
                     seg.vram_class and seg.vram_class.name,
                 )
             )
+        empty = [segment.name for segment in segments if not segment.objects]
+        if empty:
+            raise SystemExit(
+                f"configure: {self.version}/layout.yaml declares empty segments: "
+                + ", ".join(empty)
+                + "; runtime overlays must not be listed as resident segments"
+            )
         return segments
 
     def source_cflags(self, src: Path, segment: str, non_matching: bool) -> str:
@@ -1873,13 +1880,18 @@ class Configure:
 
     def find_overlays(self) -> List[Tuple[str, Path, List[Path], int]]:
         overlay_types = [
-            (OVL_TYPE_EFFECT, "effects/*.c"),
-            (OVL_TYPE_MAP, "world/area/*/*/"),
-            (OVL_TYPE_ACTION, "world/action/*.c"),
-            (OVL_TYPE_ACTOR, "battle/actor/*"),
-            (OVL_TYPE_BATTLE_PARTNER, "battle/partner/*.c"),
-            (OVL_TYPE_ACTION_CMD, "battle/action_cmd/*.c"),
-            (OVL_TYPE_ENTITY, "entity/**/*.c"),
+            (OVL_TYPE_EFFECT, "effects/*.c", ""),
+            (OVL_TYPE_MAP, "world/area/*/*/", ""),
+            (OVL_TYPE_ACTION, "world/action/*.c", ""),
+            (OVL_TYPE_PARTNER, "world/partner/*.c", "world_partner_"),
+            (OVL_TYPE_ACTOR, "battle/actor/*", ""),
+            (OVL_TYPE_BATTLE_PARTNER, "battle/partner/*.c", ""),
+            (OVL_TYPE_ACTION_CMD, "battle/action_cmd/*.c", ""),
+            (OVL_TYPE_BATTLE_SCRIPT, "battle/move/hammer/*.c", "battle_move_"),
+            (OVL_TYPE_BATTLE_SCRIPT, "battle/move/item/*.c", ""),
+            (OVL_TYPE_BATTLE_SCRIPT, "battle/move/jump/*.c", "battle_move_"),
+            (OVL_TYPE_BATTLE_SCRIPT, "battle/move/star_power/*.c", "battle_move_"),
+            (OVL_TYPE_ENTITY, "entity/**/*.c", ""),
         ]
 
         # Collect overlays keyed by (type_index, name). Later entries in the
@@ -1892,7 +1904,7 @@ class Configure:
         for search_dir in search_dirs:
             if not search_dir.exists():
                 continue
-            for type_index, glob_str in overlay_types:
+            for type_index, glob_str, name_prefix in overlay_types:
                 for match in sorted(
                     search_dir.glob(glob_str, case_sensitive=True),
                     key=lambda p: p.as_posix(),
@@ -1922,8 +1934,16 @@ class Configure:
                         ]
                     else:
                         sources = [match]
-                    found[(type_index, match.stem)] = (
-                        match.stem,
+                    if (
+                        type_index == OVL_TYPE_BATTLE_SCRIPT
+                        and match.name == "attack.c"
+                        and match.parent.name in ("hammer", "jump")
+                    ):
+                        name = f"battle_move_{match.parent.name}_attack"
+                    else:
+                        name = name_prefix + match.stem
+                    found[(type_index, name)] = (
+                        name,
                         match,
                         sources,
                         type_index,
@@ -1962,35 +1982,6 @@ class Configure:
             menu_sources,
             OVL_TYPE_BATTLE_MENU,
         )
-
-        # Layout VRAM classes define multi-source overlays. SegmentMap provides
-        # their sources now that Splat is used only for extracting assets.
-        vram_class_types = {
-            "world_partner": OVL_TYPE_PARTNER,
-            "battle_move": OVL_TYPE_BATTLE_SCRIPT,
-        }
-        for segment in self.layout.segments:
-            if segment.vram_class is None:
-                continue
-            type_index = vram_class_types.get(segment.vram_class.name)
-            if type_index is None:
-                continue
-            # These modules share the legacy battle_move VRAM class, but are not
-            # moves, items, or star-power battle scripts.
-            if (
-                type_index == OVL_TYPE_BATTLE_SCRIPT
-                and segment.name in ("battle/menus", "level_up", "starpoint")
-            ):
-                continue
-            sources = list(self.all_sources.get(segment.name, []))
-            if not sources:
-                continue
-            found[(type_index, segment.name)] = (
-                segment.name,
-                sources[0],
-                sorted(sources),
-                type_index,
-            )
 
         return sorted(found.values(), key=lambda x: (x[3], x[0]))
 

@@ -108,25 +108,6 @@ def write_script(
     out = ["SECTIONS", "{", "    __romPos = 0;", ""]
     for seg in segments:
         name = seg.name
-        if not seg.objects:
-            # GNU ld does not materialize an empty output section. ADDR() then
-            # evaluates to zero, which poisons any later class that follows
-            # the empty segment. Overlay-only segments intentionally have no
-            # resident objects, so describe their zero-sized bounds directly.
-            vram = seg.vram or "."
-            out.append(f"    {name}_ROM_START = __romPos;")
-            out.append(f"    {name}_VRAM = {vram};")
-            for kind in (*BUILD_SECTIONS, "BSS"):
-                out.append(f"    {name}_{kind}_START = {name}_VRAM;")
-                out.append(f"    {name}_{kind}_END = {name}_VRAM;")
-                out.append(f"    {name}_{kind}_SIZE = 0;")
-            out.append(f"    {name}_bss_VRAM = {name}_VRAM;")
-            out.append(f"    {name}_ROM_END = __romPos;")
-            out.append(f"    {name}_VRAM_END = {name}_VRAM;")
-            out.append("")
-            out += class_vram.get(name, [])
-            continue
-
         addr = f"{seg.vram} " if seg.vram else ""
         # Only where a segment needs an alignment of its own; the linker
         # otherwise uses each section's own, which is what the source asks for.
