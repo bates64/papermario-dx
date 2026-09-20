@@ -62,6 +62,11 @@
           src = self;
         };
         pythonDeps = windowsToolchain.passthru.pythonDeps;
+
+        unixToolchain = import ./tools/unix {
+          inherit pkgs nixpkgs-binutils-2_39;
+          mipsCrossGcc = pkgsCross.stdenv.cc;
+        };
         linuxRom = pkgs.runCommand "papermario-linux-rom" {
           nativeBuildInputs = [
             pkgsCross.stdenv.cc
@@ -155,6 +160,7 @@
       in {
         packages = {
           default = linuxRom;
+          unix-toolchain = unixToolchain;
         } // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
           windows-toolchain = windowsToolchain;
           windows-rom = windowsToolchain.passthru.wineRom;
@@ -183,8 +189,7 @@
           # generation and would cause Linux builds to differ from Windows.
           NIX_HARDENING_ENABLE = "";
           packages = with pkgs; [
-            ninja # needed for ninja -t compdb in configure, as n2 doesn't support it
-            n2 # same as ninja, but with prettier output
+            ninja
             zlib
             libyaml
             python3

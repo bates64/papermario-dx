@@ -1,0 +1,81 @@
+---
+title: Spiky Actors
+sidebar:
+  order: 5
+---
+
+Spiky actors hurt the player or their partner when they use contact attacks. There are two types of spikes, controlled by event flags on actor parts.
+
+## Top spikes
+
+Set `ACTOR_EVENT_FLAG_SPIKY_TOP` on a part's `.eventFlags` to hurt attackers that jump on the actor:
+
+```c
+ActorPartBlueprint ActorParts[] = {
+    {
+        .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
+        .index = PRT_MAIN,
+        // ...
+        .eventFlags = ACTOR_EVENT_FLAG_SPIKY_TOP,
+    },
+};
+```
+
+Used by Cleft, Spiny, and Spike Top.
+
+## Front spikes
+
+Set `ACTOR_EVENT_FLAG_SPIKY_FRONT` to hurt attackers that use hammer or direct contact attacks:
+
+```c
+.eventFlags = ACTOR_EVENT_FLAG_SPIKY_FRONT,
+```
+
+You can combine both flags to make an actor spiky from all angles:
+
+```c
+.eventFlags = ACTOR_EVENT_FLAG_SPIKY_TOP | ACTOR_EVENT_FLAG_SPIKY_FRONT,
+```
+
+## The spike taunt
+
+When the player or their partner attacks a spiky actor and gets hurt, the `EVENT_SPIKE_TAUNT` event fires. You can use this in `EVS_HandleEvent` to play a taunt animation:
+
+```c
+CaseEq(EVENT_SPIKE_TAUNT)
+    Call(SetAnimation,
+        ACTOR_SELF, PRT_MAIN, ANIM_Cleft_Anim18)
+    Wait(30)
+```
+
+## Toggling spikes dynamically
+
+You can enable or disable spikes at runtime with `SetPartEventBits`. This is useful for actors that can be flipped over:
+
+```c
+// disable top spikes (e.g. when toppled)
+Call(SetPartEventBits,
+    ACTOR_SELF, PRT_MAIN,
+    ACTOR_EVENT_FLAG_SPIKY_TOP, false)
+
+// re-enable top spikes (e.g. when getting back up)
+Call(SetPartEventBits,
+    ACTOR_SELF, PRT_MAIN,
+    ACTOR_EVENT_FLAG_SPIKY_TOP, true)
+```
+
+## Flipable actors
+
+Actors with `ACTOR_EVENT_FLAG_FLIPABLE` can be flipped over by certain attacks (like explosions). Combine this with spiky flags to create enemies that are only vulnerable when flipped:
+
+```c
+.eventFlags = ACTOR_EVENT_FLAG_SPIKY_TOP | ACTOR_EVENT_FLAG_FLIPABLE,
+```
+
+When flipped, you typically want to:
+- Disable the spiky flags
+- Swap to a different defense table (lower defense)
+- Change the actor's animations
+- Set `ACTOR_FLAG_FLIPPED` on the actor
+
+See `src/battle/actor/cleft.c` for a complete flipable spiky actor that recovers after a few turns.

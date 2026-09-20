@@ -11,15 +11,31 @@ from glob import glob
 from pathlib import Path
 from typing import Dict, List, Set, Tuple, Union
 
-try:
-    import tomllib
-except ModuleNotFoundError:
-    import tomli as tomllib
-
 import ninja_syntax
 
+if sys.platform == 'win32':
+    import ntfsutils.junction
+
+import assets
+import linker
 from action_data import actions_from_yaml
 from effect_data import effects_from_yaml
+from layout import Layout
+from segments import SegmentMap
+
+# Everything configure reads to decide what build.ninja should contain. The
+# generator rule reruns configure when any of these change; a module missing
+# here would leave build.ninja stale after an edit to it.
+CONFIGURE_MODULES = [
+    "configure.py",
+    "action_data.py",
+    "assets.py",
+    "effect_data.py",
+    "layout.py",
+    "linker.py",
+    "raster.py",
+    "segments.py",
+]
 
 # Configuration:
 VERSIONS = ["us"]
@@ -52,9 +68,9 @@ OVL_TYPE_BATTLE_MENU = 8
 OVL_TYPE_ENTITY = 9
 
 BATTLE_MENU_SOURCES = (
-    "battle/btl_states_menus.c",
-    "battle/menu_moves.c",
-    "battle/menu_strats.c",
+    "battle/menus/btl_states_menus.c",
+    "battle/menus/menu_moves.c",
+    "battle/menus/menu_strats.c",
     "battle/states/menu_player.c",
     "battle/states/menu_partner.c",
     "battle/states/menu_peach.c",
@@ -97,74 +113,38 @@ def posix(path) -> str:
     return str(path).replace("\\", "/")
 
 
-def sort_splat_segments_by_vram_class_dependency(all_segments):
-    """Topologically order symbolic VRAM classes and their member segments.
+# Files a hand-authored asset layer may hold that no build rule reads.
+IGNORED_ASSET_NAMES = {".gitkeep", ".DS_Store", "Thumbs.db"}
 
-    The pinned splat sorter follows direct ``*_VRAM_END`` references, but does
-    not add graph edges for ``follows_classes``.  GNU ld can then consume a
-    class-start expression before the output sections used to calculate it,
-    producing low addresses and R_MIPS_26 overflows in SHIFT builds.
-    """
-    from collections import defaultdict, deque
 
-    from splat.segtypes.linker_entry import get_segment_vram_end_symbol_name
+def _repo_paths(entries) -> List[str]:
+    """Ninja build entries as repo-relative POSIX strings, dropping ninja vars."""
+    if not entries:
+        return []
+    if isinstance(entries, (str, Path)):
+        entries = [entries]
+    paths = []
+    for entry in entries:
+        text = str(entry)
+        if not text or text.startswith("$"):
+            continue
+        paths.append(posix(os.path.relpath(text, ROOT)))
+    return paths
 
-    segments_by_class = defaultdict(list)
-    end_symbol_to_segment = {}
-    for segment in all_segments:
-        end_symbol_to_segment[get_segment_vram_end_symbol_name(segment)] = segment
-        if segment.vram_class is not None:
-            segments_by_class[segment.vram_class.name].append(segment)
 
-    # a class-start symbol is emitted immediately before the first member of
-    # that class; account for other classes which alias that symbol directly
-    class_symbol_to_segments = {}
-    for segments in segments_by_class.values():
-        vram_class = segments[0].vram_class
-        if vram_class.given_vram_symbol is None and vram_class.follows_classes:
-            class_symbol_to_segments[vram_class.vram_symbol] = segments
-
-    graph = defaultdict(list)
-    indegree = {segment: 0 for segment in all_segments}
-    edges = set()
-
-    def add_edge(before, after):
-        edge = (before, after)
-        if before is after or edge in edges:
-            return
-        edges.add(edge)
-        graph[before].append(after)
-        indegree[after] += 1
-
-    for segment in all_segments:
-        direct_dependency = end_symbol_to_segment.get(segment.vram_symbol)
-        if direct_dependency is not None:
-            add_edge(direct_dependency, segment)
-
-        aliased_class = class_symbol_to_segments.get(segment.vram_symbol, ())
-        if segment not in aliased_class:
-            for dependency in aliased_class:
-                add_edge(dependency, segment)
-
-        if segment.vram_class is not None:
-            for class_name in segment.vram_class.follows_classes:
-                for dependency in segments_by_class.get(class_name, ()):
-                    add_edge(dependency, segment)
-
-    queue = deque(segment for segment in all_segments if indegree[segment] == 0)
-    ordered = []
-    while queue:
-        segment = queue.popleft()
-        ordered.append(segment)
-        for dependent in graph.get(segment, ()):
-            indegree[dependent] -= 1
-            if indegree[dependent] == 0:
-                queue.append(dependent)
-
-    assert len(ordered) == len(all_segments), (
-        "Encountered cyclic dependency when ordering symbolic VRAM classes."
+def configure_input_paths(versions: List[str]) -> List[str]:
+    """Every file configure reads to decide what build.ninja should contain."""
+    paths = [posix(BUILD_TOOLS / module) for module in CONFIGURE_MODULES]
+    for version in versions:
+        paths.append(f"ver/{version}/layout.yaml")
+        paths.append(f"ver/{version}/splat.yaml")
+    paths.extend(
+        [
+            "src/registry/actions.yaml",
+            "src/registry/effects.yaml",
+        ]
     )
-    return ordered
+    return paths
 
 
 def evt_validation_output_path(obj_path: Path) -> Path:
@@ -181,6 +161,47 @@ def evt_validation_display_path(obj_path: Path) -> str:
     return posix(evt_validation_output_path(obj_path).with_suffix(""))
 
 
+class NinjaWriter(ninja_syntax.Writer):
+    """A ninja writer that remembers every path it is told to read or write, and can emit validations.
+
+    configure builds build.ninja by scanning the assets/ tree with a different
+    glob per subsystem, so a file that no glob matches is left out with no
+    error. Recording each input and output lets check_asset_coverage report
+    assets that no rule consumes.
+
+    A validation is a target that ninja builds whenever the requesting edge is
+    part of the build, but that nothing waits on. ninja_syntax has no parameter
+    for them, so they go through order_only behind the `|@` separator, which
+    Writer.build passes through untouched.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.consumed_paths: Set[str] = set()
+        self.produced_paths: Set[str] = set()
+
+    def build(
+        self,
+        outputs,
+        rule,
+        inputs=None,
+        implicit=None,
+        order_only=None,
+        variables=None,
+        implicit_outputs=None,
+        validations: List[str] = [],
+    ):
+        for group in (inputs, implicit, order_only):
+            self.consumed_paths.update(_repo_paths(group))
+        for group in (outputs, implicit_outputs):
+            self.produced_paths.update(_repo_paths(group))
+        if validations:
+            order_only = list(order_only or []) + ["|@"] + validations
+        return super().build(
+            outputs, rule, inputs, implicit, order_only, variables, implicit_outputs
+        )
+
+
 def exec_shell(command: List[str]) -> str:
     ret = subprocess.run(
         command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
@@ -189,7 +210,7 @@ def exec_shell(command: List[str]) -> str:
 
 
 def write_ninja_rules(
-    ninja: ninja_syntax.Writer,
+    ninja: NinjaWriter,
     cpp: str,
     extra_cppflags: str,
     extra_cflags: str,
@@ -228,7 +249,7 @@ def write_ninja_rules(
     cflags_modern = f"{modern_flags} {extra_cflags}"
     cxxflags_modern = f"{modern_flags} {extra_cxxflags}"
 
-    ninja.variable("python", sys.executable)
+    ninja.variable("python", f'"{sys.executable}"')
 
     ld_args = f"-T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Map $mapfile --no-check-sections --whole-archive -T $in -o $out"
     ld = (
@@ -274,7 +295,7 @@ def write_ninja_rules(
     ninja.rule(
         "sha1sum",
         description="Verifying checksum",
-        command=f"$python -c \"open('$out','w').close()\"",
+        command=f"$python -c \"open('$out','w', encoding='utf-8').close()\"",
     )
 
     ninja.rule(
@@ -347,6 +368,12 @@ def write_ninja_rules(
         "img_header",
         description="Generating header for image $in",
         command=f'$python {BUILD_TOOLS}/img/header.py $in $out "$c_name"',
+    )
+
+    ninja.rule(
+        "effect_stub",
+        description="Generating $out",
+        command=f"$python {BUILD_TOOLS}/effect_stub.py $kind $stub_name $stub_index $out",
     )
 
     ninja.rule(
@@ -523,7 +550,7 @@ def write_ninja_rules(
     ninja.rule(
         "syms",
         description="Reading engine symbols for overlays",
-        command=f"$python {BUILD_TOOLS}/overlay.py gen-syms $in $out",
+        command=f"$python {BUILD_TOOLS}/overlay.py gen-syms $elf $out $symbol_files",
         restat=True,
     )
 
@@ -540,7 +567,7 @@ def write_ninja_rules(
     )
 
 
-def write_ninja_for_tools(ninja: ninja_syntax.Writer):
+def write_ninja_for_tools(ninja: NinjaWriter):
     if CRC_TOOL != "n64crc":
         ninja.rule(
             "cc_tool",
@@ -554,17 +581,32 @@ class Configure:
     def __init__(self, version: str):
         self.version = version
         self.version_path = ROOT / f"ver/{version}"
-        self.linker_entries = None
 
-    def split(self, assets: bool, code: bool, shift: bool, debug: bool):
+    def dump_stamp(self) -> Path:
+        return self.build_path() / "assets_dumped.stamp"
+
+    def load(self) -> None:
+        """Read the version's configuration and scan what it points at."""
+        self.layout = Layout(self.version_path / "layout.yaml")
+        self.asset_stack: List[str] = self.layout.asset_stack
+        self.sources_config = SegmentMap(self.layout, ROOT / "src")
+        self.all_sources = self.sources_config.scan()
+        self.sources = {
+            segment: [
+                source
+                for source in sources
+                if not self.is_overlay_source_path(source)
+            ]
+            for segment, sources in self.all_sources.items()
+        }
+
+    def dump(self, assets: bool, code: bool) -> None:
+        """Split the assets out of the baserom.
+
+        This is all splat is needed for, and only until the assets are on disk,
+        so configure skips it once they have been dumped.
+        """
         import splat.scripts.split as split
-
-        if shift:
-            # work around the pinned splat sorter's missing follows_classes
-            # edges; keep this local to symbolic-VRAM (SHIFT) builds
-            split.sort_segments_by_vram_class_dependency = (
-                sort_splat_segments_by_vram_class_dependency
-            )
 
         modes = ["ld"]
         if assets:
@@ -595,108 +637,736 @@ class Configure:
             modes.extend(["code", "c", "data", "rodata"])
 
         splat_files = [Path(self.version_path / "splat.yaml")]
-        if debug:
-            splat_files += [Path(self.version_path / "splat-debug.yaml")]
-
-        if shift:
-            splat_files += [Path(self.version_path / "splat-shift.yaml")]
 
         split.main(
             splat_files,
             modes,
             verbose=False,
         )
-        self.linker_entries = split.linker_writer.entries
-        self.asset_stack: List[str] = split.config["asset_stack"]
-
-        self.discard_overlay_linker_entries()
+        self.dump_stamp().parent.mkdir(parents=True, exist_ok=True)
+        self.dump_stamp().write_text("")
 
     @staticmethod
-    def is_effect_source_path(path: Path) -> bool:
-        path = Path(path)
-        return (
-            path.parent.name == "effects"
-            and path.parent.parent.name == "src"
-            and path.suffix in (".c", ".cpp")
-        )
-
-    @staticmethod
-    def is_world_action_source_path(path: Path) -> bool:
-        path = Path(path)
-        return (
-            path.parent.name == "action"
-            and path.parent.parent.name == "world"
-            and path.parent.parent.parent.name == "src"
-            and path.suffix in (".c", ".cpp")
-        )
-
-    @staticmethod
-    def is_battle_menu_source_path(path: Path) -> bool:
-        path = Path(path).resolve()
+    def source_relative_path(path: Path) -> Union[Path, None]:
         try:
-            relative_path = path.relative_to((ROOT / "src").resolve())
+            return Path(path).resolve().relative_to((ROOT / "src").resolve())
         except ValueError:
-            return False
-        return posix(relative_path) in BATTLE_MENU_SOURCES
+            return None
 
-    @staticmethod
-    def is_entity_overlay_source_path(path: Path) -> bool:
-        path = Path(path).resolve()
-        try:
-            relative_path = path.relative_to((ROOT / "src/entity").resolve())
-        except ValueError:
-            return False
+    @classmethod
+    def is_effect_source_path(cls, path: Path) -> bool:
+        relative = cls.source_relative_path(path)
         return (
-            path.suffix in (".c", ".cpp")
-            and "model" not in relative_path.parts
-            and relative_path.name not in ("Shadow.c", "blueprints.inc.c")
+            relative is not None
+            and relative.parent == Path("effects")
+            and relative.suffix in (".c", ".cpp")
         )
 
-    def discard_overlay_linker_entries(self):
-        """Remove overlay objects from the main linker script.
+    @classmethod
+    def is_world_action_source_path(cls, path: Path) -> bool:
+        relative = cls.source_relative_path(path)
+        return (
+            relative is not None
+            and relative.parent == Path("world/action")
+            and relative.suffix in (".c", ".cpp")
+        )
 
-        These splat segments remain useful for extracting source metadata and assets,
-        but their code is compiled into .ovl files instead of the engine ELF.
+    @classmethod
+    def is_battle_menu_source_path(cls, path: Path) -> bool:
+        relative = cls.source_relative_path(path)
+        return relative is not None and posix(relative) in BATTLE_MENU_SOURCES
+
+    @classmethod
+    def is_entity_overlay_source_path(cls, path: Path) -> bool:
+        relative = cls.source_relative_path(path)
+        if relative is None or relative.parts[:1] != ("entity",):
+            return False
+        entity_relative = Path(*relative.parts[1:])
+        return (
+            relative.suffix in (".c", ".cpp")
+            and "model" not in entity_relative.parts
+            and entity_relative.name not in ("Shadow.c", "blueprints.inc.c")
+        )
+
+    @classmethod
+    def is_overlay_source_path(cls, path: Path) -> bool:
+        """Whether a source is linked into an overlay instead of the main ELF."""
+        relative = cls.source_relative_path(path)
+        if relative is None:
+            return False
+        parts = relative.parts
+        return (
+            cls.is_effect_source_path(path)
+            or cls.is_world_action_source_path(path)
+            or cls.is_battle_menu_source_path(path)
+            or cls.is_entity_overlay_source_path(path)
+            or parts[:2] in (
+                ("world", "partner"),
+                ("battle", "partner"),
+                ("battle", "action_cmd"),
+                ("battle", "move"),
+                ("battle", "actor"),
+            )
+            or parts[:2] == ("world", "area") and len(parts) >= 4
+        )
+
+    def textures(self) -> Dict[Path, Path]:
+        """Every standalone texture, keyed by its path relative to the assets root.
+
+        Directories that are packed into a blob are skipped whole: they hold
+        thousands of images that feed a packer rather than being textures in
+        their own right.
         """
-        discard_objs = set()
-        for entry in self.linker_entries:
-            seg = entry.segment
-            most_parent = seg.get_most_parent()
-            if (
-                most_parent.vram_class is not None
-                and most_parent.vram_class.name in (
-                    "map",
-                    "world_partner",
-                    "action_cmd",
-                    "battle_partner",
-                )
-            ) or (
-                most_parent.vram_class is not None
-                and most_parent.vram_class.name == "battle_move"
-                and most_parent.name not in (
-                    "btl_states_menus",
-                    "level_up",
-                    "starpoint",
-                )
-            ) or any(
-                self.is_effect_source_path(path)
-                or self.is_world_action_source_path(path)
-                or self.is_battle_menu_source_path(path)
-                or self.is_entity_overlay_source_path(path)
-                for path in entry.src_paths
-            ):
-                if entry.object_path is not None:
-                    discard_objs.add(posix(entry.object_path))
+        packed = self.layout.packed_dirs
+        found: Dict[str, Path] = {}
+        for layer in reversed(self.asset_stack):
+            root = ROOT / "assets" / layer
+            if not root.is_dir():
+                continue
+            base = str(root)
+            for directory, subdirectories, filenames in os.walk(base):
+                relative = os.path.relpath(directory, base)
+                prefix = "" if relative == "." else relative.replace(os.sep, "/") + "/"
+                subdirectories[:] = [
+                    name for name in subdirectories if prefix + name not in packed
+                ]
+                for filename in filenames:
+                    if filename.endswith(".png"):
+                        found[prefix + filename] = Path(directory) / filename
+        return {Path(name): found[name] for name in sorted(found)}
 
-        if not discard_objs:
-            return
+    def register_asset(self, object_path: Path) -> None:
+        """Record an object so the linker script can place it in its segment."""
+        segment = self.layout.segment_of_asset(
+            Path(posix(object_path)[len(posix(self.build_path())) + 1 :])
+        )
+        if segment is not None:
+            self.asset_objects.setdefault(segment, []).append(object_path)
 
-        ld_path = self.linker_script_path()
-        lines = ld_path.read_text().splitlines(keepends=True)
-        filtered = [
-            line for line in lines if not any(obj in line for obj in discard_objs)
+    def write_effect_stub_rules(self, build) -> None:
+        """Generate the resident dispatcher and trampolines for effect overlays."""
+        effects_yaml = Path("src/registry/effects.yaml")
+        effects = effects_from_yaml(ROOT / effects_yaml)
+        stubs = [("dispatch", "dispatch", 0)] + [
+            ("load", effect.name, index)
+            for index, effect in enumerate(effects)
+            if not effect.empty
         ]
-        ld_path.write_text("".join(filtered))
+
+        stub_tool = Path(BUILD_TOOLS / "effect_stub.py")
+        for kind, name, index in stubs:
+            source = self.build_path() / "asm/effects" / (name + ".s")
+            build(
+                source,
+                [effects_yaml],
+                "effect_stub",
+                variables={
+                    "kind": kind,
+                    "stub_name": name,
+                    "stub_index": str(index),
+                },
+                implicit_deps=[stub_tool, BUILD_TOOLS / "effect_data.py"],
+            )
+            obj = self.build_path() / "asm/effects" / (name + ".s.o")
+            build(
+                obj,
+                [source],
+                "as",
+                variables={"cppflags": f"-DVERSION_{self.version.upper()}"},
+            )
+            self.register_asset(obj)
+
+    def write_blob_rules(self, build) -> None:
+        """Link the assets that are copied into the ROM as they are.
+
+        Each is named in layout.yaml; the ones that are not on disk are
+        produced by a packer and built elsewhere.
+        """
+        recipes = {".bin": "bin", ".a": "cp", ".s": "as"}
+        for asset, _segment in sorted(self.layout.asset_files.items()):
+            source = self.resolve_asset_path(Path(asset))
+            task = recipes.get(source.suffix)
+            if task is None or not (ROOT / source).is_file():
+                continue
+            obj = self.build_path() / (asset + ".o")
+            build(obj, [source], task)
+            self.register_asset(obj)
+
+    def imgfx_animations(self) -> List[Path]:
+        """The image effect animations, across the asset stack."""
+        found: Dict[str, Path] = {}
+        for layer in reversed(self.asset_stack):
+            for source in (ROOT / "assets" / layer / "imgfx").glob("*.json"):
+                found[source.name] = source.relative_to(ROOT)
+        return [found[name] for name in sorted(found)]
+
+    def write_packer_rules(self, build, ninja, skip_outputs) -> None:
+        """Pack the assets that become one blob in the ROM."""
+        version_assets = Path("assets") / self.version
+        asset_stack = ",".join(self.asset_stack)
+
+        def packed(name: str, task: str, inputs, object_name=None, **kwargs):
+            """A packer writes a blob, which is then wrapped as an object."""
+            blob = self.build_path() / version_assets / name
+            build(blob, inputs, task, **kwargs)
+            obj = self.build_path() / version_assets / (object_name or (name + ".o"))
+            build(obj, [blob], "bin")
+            self.register_asset(obj)
+
+        icon_header = posix(self.build_path() / "include" / "icon_offsets.h")
+        packed(
+            "icons.bin",
+            "icons",
+            [version_assets / "icon/Icons.xml"],
+            variables={"header_path": icon_header, "asset_stack": asset_stack},
+            implicit_outputs=[icon_header],
+            asset_deps=["icon"],
+        )
+
+        shading_header = posix(
+            self.build_path() / "include/sprite/sprite_shading_profiles.h"
+        )
+        packed(
+            "sprite_shading_profiles.bin",
+            "sprite_shading_profiles",
+            [version_assets / "sprite/sprite_shading_profiles.json"],
+            variables={"header_path": shading_header},
+            implicit_outputs=[shading_header],
+        )
+
+        audio = version_assets / "audio"
+        packed(
+            "audio.sbn",
+            "pm_sbn",
+            [audio],
+            variables={"asset_stack": asset_stack},
+            asset_deps=[audio],
+        )
+
+        # Each animation is reached by name from a table in the engine, so the
+        # order these are emitted in only decides where they sit.
+        imgfx_c = version_assets / "imgfx" / "imgfx_data.c"
+        build(imgfx_c, self.imgfx_animations(), "imgfx_data")
+        imgfx_obj = self.build_path() / (posix(imgfx_c) + ".o")
+        build(
+            imgfx_obj,
+            [imgfx_c],
+            "cc_modern",
+            variables={
+                "cflags": "",
+                "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
+            },
+        )
+        self.register_asset(imgfx_obj)
+
+        self.write_sprite_rules(build, packed, version_assets, asset_stack)
+        self.write_message_rules(build, ninja, skip_outputs, version_assets)
+
+    def write_sprite_rules(self, build, packed, version_assets, asset_stack) -> None:
+        """Compress each NPC sprite, then pack them with the player's."""
+        import re
+
+        names = re.findall(
+            r'<Sprite name="([^"]+)"',
+            (ROOT / self.resolve_asset_path(version_assets / "sprite/npc.xml")).read_text(),
+        )
+        sprite_dir = self.build_path() / version_assets / "sprite"
+        compressed = []
+        for sprite_id, name in enumerate(names, 1):
+            source = version_assets / "sprite/npc" / name
+            raw = sprite_dir / "npc" / (name + ".bin")
+            packed_sprite = raw.with_suffix(".Yay0")
+            compressed.append(packed_sprite)
+            build(
+                raw,
+                [source],
+                "npc_sprite",
+                variables={"sprite_name": name, "asset_stack": asset_stack},
+                asset_deps=[posix(source)],
+            )
+            build(packed_sprite, [raw], "yay0")
+            build(
+                self.build_path() / "include/sprite/npc" / (name + ".h"),
+                [source, packed_sprite],
+                "sprite_header",
+                variables={
+                    "sprite_name": name,
+                    "sprite_id": str(sprite_id),
+                    "asset_stack": asset_stack,
+                },
+            )
+
+        player_header = posix(self.build_path() / "include/sprite/player.h")
+        packed(
+            "sprite/sprites.bin",
+            "sprites",
+            [version_assets / "sprite", *compressed],
+            object_name="sprite/sprites.o",
+            variables={
+                "header_out": player_header,
+                "build_dir": posix(sprite_dir),
+                "asset_stack": asset_stack,
+            },
+            implicit_outputs=[player_header],
+            asset_deps=["sprite/player"],
+        )
+
+    def write_message_rules(self, build, ninja, skip_outputs, version_assets) -> None:
+        """Compile each message file, then combine them in asset stack order."""
+        blob = self.build_path() / version_assets / "msg"
+        message_bins = []
+        layer_sizes = []
+        for layer in reversed(self.asset_stack):
+            directory = Path("assets") / layer / "msg"
+            count = 0
+            if directory.exists():
+                for source in sorted(directory.glob("*.msg")):
+                    bin_path = blob / f"{len(message_bins):02X}.bin"
+                    message_bins.append(bin_path)
+                    skip_outputs.add(posix(bin_path))
+                    ninja.build(
+                        outputs=[posix(bin_path)],
+                        rule="msg",
+                        inputs=[posix(source)],
+                        variables={"version": self.version},
+                    )
+                    count += 1
+            layer_sizes.append(str(count))
+
+        build(
+            [
+                Path(posix(blob) + ".bin"),
+                self.build_path() / "include" / "message_ids.h",
+            ],
+            message_bins,
+            "msg_combine",
+            variables={"layer_sizes": ",".join(layer_sizes)},
+        )
+        obj = Path(posix(blob) + ".o")
+        build(obj, [Path(posix(blob) + ".bin")], "bin")
+        self.register_asset(obj)
+
+    def mapfs_contents(self) -> List[Path]:
+        """Everything the map filesystem holds, found by looking for it.
+
+        The filesystem is looked up by name at runtime, so the order here only
+        decides where things sit in the ROM. Adding a map means adding its
+        files; nothing else has to be told about it.
+        """
+        mapfs = Path("assets") / self.version / "mapfs"
+
+        def names(directory: str, pattern: str) -> List[str]:
+            found = set()
+            for layer in self.asset_stack:
+                found.update(
+                    path.name
+                    for path in (ROOT / "assets" / layer / "mapfs" / directory).glob(
+                        pattern
+                    )
+                )
+            return sorted(found)
+
+        contents = []
+        for shape in names("geom", "*_shape.bin"):
+            name = shape[: -len("_shape.bin")]
+            # The shape is rebuilt before packing; the collision is packed as is.
+            contents.append(mapfs / "geom" / f"{name}_shape_built.bin")
+            contents.append(mapfs / "geom" / f"{name}_hit.bin")
+        contents += [mapfs / "tex" / f"{n[:-5]}.bin" for n in names("tex", "*_tex.json")]
+        contents += [mapfs / "bg" / n for n in names("bg", "*_bg.png")]
+        contents.append(mapfs / "title_data.bin")
+        contents += [mapfs / "party" / n for n in names("party", "*.png")]
+        return contents
+
+    def write_mapfs_rules(self, build, c_maps) -> None:
+        """Build the map filesystem."""
+        src_paths = self.mapfs_contents()
+
+        seg_name = "mapfs"
+        object_path = self.build_path() / "assets" / self.version / "mapfs.dat.o"
+        # flat list of (uncompressed path, compressed? path) pairs
+        bin_yay0s: List[Path] = []
+        src_dir = Path("assets/x") / seg_name
+
+        for path in src_paths:
+            name = path.stem
+            out_dir = object_path.with_suffix("").with_suffix("")
+            bin_path = out_dir / f"{name}.bin"
+
+            if name.startswith("party_"):
+                compress = True
+                build(
+                    bin_path,
+                    [path],
+                    "img",
+                    variables={
+                        "img_type": "party",
+                        "img_flags": "",
+                    },
+                )
+            elif path.suffixes[-2:] == [".raw", ".dat"]:
+                compress = False
+                bin_path = path
+            elif name == "title_data":
+                compress = True
+
+                logotype_path = out_dir / "title_logotype.bin"
+                copyright_path = out_dir / "title_copyright.bin"
+                copyright_pal_path = out_dir / "title_copyright.pal"  # jp only
+                press_start_path = out_dir / "title_press_start.bin"
+
+                build(
+                    logotype_path,
+                    [src_dir / "title/logotype.png"],
+                    "pigment",
+                    variables={
+                        "img_type": "rgba32",
+                        "img_flags": "",
+                    },
+                )
+                build(
+                    press_start_path,
+                    [src_dir / "title/press_start.png"],
+                    "pigment",
+                    variables={
+                        "img_type": "ia8",
+                        "img_flags": "",
+                    },
+                )
+
+                if self.version == "jp":
+                    build(
+                        copyright_path,
+                        [src_dir / "title/copyright.png"],
+                        "pigment",
+                        variables={
+                            "img_type": "ci4",
+                            "img_flags": "",
+                        },
+                    )
+                    build(
+                        copyright_pal_path,
+                        [src_dir / "title/copyright.png"],
+                        "pigment",
+                        variables={
+                            "img_type": "palette",
+                            "img_flags": "",
+                        },
+                    )
+                    imgs = [
+                        logotype_path,
+                        copyright_path,
+                        press_start_path,
+                        copyright_pal_path,
+                    ]
+                else:
+                    build(
+                        copyright_path,
+                        [src_dir / "title/copyright.png"],
+                        "pigment",
+                        variables={
+                            "img_type": "ia8",
+                            "img_flags": "",
+                        },
+                    )
+                    imgs = [logotype_path, copyright_path, press_start_path]
+
+                build(bin_path, imgs, "pack_title_data")
+            elif name.endswith("_bg"):
+                compress = True
+                build(
+                    bin_path,
+                    [path],
+                    "img",
+                    variables={
+                        "img_type": "bg",
+                        "img_flags": "",
+                    },
+                    # The builder picks up <name>.<n>.png as further palettes.
+                    implicit_deps=sorted(
+                        (ROOT / path.parent).glob(path.name.split(".")[0] + ".*.png")
+                    ),
+                )
+            elif name.endswith("_tex"):
+                compress = False
+                tex_dir = path.parent / name
+                build(
+                    bin_path,
+                    [tex_dir, path.parent / (name + ".json")],
+                    "tex",
+                    variables={
+                        "tex_name": name,
+                        "asset_stack": ",".join(self.asset_stack),
+                    },
+                    asset_deps=[f"mapfs/tex/{name}"],
+                )
+            elif name.endswith("_shape_built"):
+                base_name = name[:-6]
+                map_name = base_name[:-6]
+                raw_bin_path = self.resolve_asset_path(
+                    f"assets/x/mapfs/geom/{base_name}.bin"
+                )
+                bin_path = bin_path.parent / "geom" / (base_name + ".bin")
+
+                if c_maps:
+                    # raw bin -> c -> o -> elf -> objcopy -> final bin file
+                    c_file_path = (
+                        bin_path.parent / "geom" / base_name
+                    ).with_suffix(".c")
+                    o_path = bin_path.parent / "geom" / (base_name + ".o")
+                    elf_path = bin_path.parent / "geom" / (base_name + ".elf")
+
+                    build(c_file_path, [raw_bin_path], "shape")
+                    build(
+                        o_path,
+                        [c_file_path],
+                        "cc_modern",
+                        variables={
+                            "cflags": "",
+                            "cppflags": f"-DVERSION_{self.version.upper()}",
+                        },
+                    )
+                    build(elf_path, [o_path], "shape_ld")
+                    build(bin_path, [elf_path], "shape_objcopy")
+                else:
+                    build(bin_path, [raw_bin_path], "cp")
+
+                xml_path = self.resolve_asset_path(
+                    f"assets/x/mapfs/geom/{map_name}.xml"
+                )
+                if xml_path.exists():
+                    build(
+                        self.build_path()
+                        / "include/mapfs"
+                        / (base_name + ".h"),
+                        [xml_path],
+                        "map_header",
+                    )
+
+                compress = True
+                out_dir = out_dir / "geom"
+            elif name.endswith("_hit"):
+                base_name = name
+                map_name = base_name[:-4]
+                raw_bin_path = self.resolve_asset_path(
+                    f"assets/x/mapfs/geom/{base_name}.bin"
+                )
+
+                # TEMP: star rod compatiblity
+                old_raw_bin_path = self.resolve_asset_path(
+                    f"assets/x/mapfs/{base_name}.bin"
+                )
+                if old_raw_bin_path.is_file():
+                    raw_bin_path = old_raw_bin_path
+
+                bin_path = bin_path.parent / "geom" / (base_name + ".bin")
+                build(bin_path, [raw_bin_path], "cp")
+
+                xml_path = self.resolve_asset_path(
+                    f"assets/x/mapfs/geom/{map_name}.xml"
+                )
+                if xml_path.exists():
+                    build(
+                        self.build_path()
+                        / "include/mapfs"
+                        / (base_name + ".h"),
+                        [xml_path],
+                        "map_header",
+                    )
+            else:
+                compress = True
+                bin_path = path
+
+            if compress:
+                yay0_path = out_dir / f"{name}.Yay0"
+                build(yay0_path, [bin_path], "yay0")
+            else:
+                yay0_path = bin_path
+
+            bin_yay0s.append(bin_path)
+            bin_yay0s.append(yay0_path)
+
+        # combine
+        build(object_path.with_suffix(""), bin_yay0s, "mapfs")
+        build(object_path, [object_path.with_suffix("")], "bin")
+
+        self.register_asset(object_path)
+
+    def charset_sources(self, directory: str) -> List[Path]:
+        """The images of one font, across the asset stack."""
+        found: Dict[str, Path] = {}
+        for layer in reversed(self.asset_stack):
+            root = ROOT / "assets" / layer / "charset" / directory
+            if root.is_dir():
+                for source in root.glob("*.png"):
+                    found[source.name] = source.relative_to(ROOT)
+        return [found[name] for name in sorted(found)]
+
+    def write_charset_rules(self, build) -> None:
+        """Pack each font's glyphs and palettes into the files the text engine reads.
+
+        The .dat files are included raw by the character set source rather than
+        linked, so no object is built for them.
+        """
+        charset = Path("assets") / self.version / "charset"
+        for name in self.layout.charsets:
+            glyphs = []
+            for source in self.charset_sources(name):
+                raster = self.build_path() / "charset" / name / (source.stem + ".bin")
+                build(
+                    raster,
+                    [source],
+                    "pigment",
+                    variables={"img_type": "ci4", "img_flags": ""},
+                )
+                glyphs.append(raster)
+            build(self.build_path() / charset / (name + ".dat"), glyphs, "charset")
+
+            palettes = []
+            for source in self.charset_sources(f"{name}/palette"):
+                raster = (
+                    self.build_path()
+                    / "charset"
+                    / name
+                    / "palette"
+                    / (source.stem + ".bin")
+                )
+                build(
+                    raster,
+                    [source],
+                    "pigment",
+                    variables={"img_type": "palette", "img_flags": ""},
+                )
+                palettes.append(raster)
+            build(
+                self.build_path() / charset / name / "palette.dat",
+                palettes,
+                "charset_palettes",
+            )
+
+    def write_texture_rules(self, build) -> None:
+        """Convert each texture to the binary and header the game includes."""
+        symbols = assets.include_symbols(ROOT / "src")
+        wanted_palettes = assets.included_palettes(ROOT / "src")
+        for relative, png in self.textures().items():
+            texture = assets.Texture(png.relative_to(ROOT), self.asset_stack)
+            stem = relative.with_suffix("")
+            asset_path = Path("assets") / self.version / relative
+
+            # A texture with a segment of its own is linked, so its object sits
+            # beside the asset; the rest are included into C and do not.
+            linked = self.layout.segment_of_asset(
+                asset_path.with_suffix(".png.o")
+            ) is not None
+            out_dir = self.build_path() / (asset_path.parent if linked else stem.parent)
+
+            # A dotted name carries a variant palette for the image it is named
+            # after, and contributes nothing else.
+            variant = "." in stem.name
+            if not variant:
+                build(
+                    out_dir / (stem.name + ".png.bin"),
+                    [png.relative_to(ROOT)],
+                    "pigment",
+                    variables={
+                        "img_type": texture.format,
+                        "img_flags": texture.flags(),
+                    },
+                )
+                build(
+                    self.build_path() / "include" / stem.parent / (stem.name + ".png.h"),
+                    [png.relative_to(ROOT)],
+                    "img_header",
+                    variables={"c_name": symbols.get(relative.as_posix(), "")},
+                )
+                if linked:
+                    obj = out_dir / (stem.name + ".png.o")
+                    build(obj, [out_dir / (stem.name + ".png.bin")], "bin")
+                    self.register_asset(obj)
+            needs_palette = (
+                relative.as_posix() in wanted_palettes
+                or self.layout.segment_of_asset(
+                    asset_path.with_suffix(".pal.o")
+                )
+                is not None
+            )
+            if texture.png.palette_size is not None and needs_palette:
+                build(
+                    out_dir / (stem.name + ".pal.bin"),
+                    [png.relative_to(ROOT)],
+                    "pigment",
+                    variables={"img_type": "palette", "img_flags": ""},
+                )
+                if linked:
+                    obj = out_dir / (stem.name + ".pal.o")
+                    build(obj, [out_dir / (stem.name + ".pal.bin")], "bin")
+                    self.register_asset(obj)
+
+    def source_object(self, src_path: Path) -> Path:
+        return self.build_path() / (str(src_path) + ".o")
+
+    def build_segments(self) -> List["linker.Segment"]:
+        """Segments in ROM order, with their objects.
+
+        layout.yaml supplies the segments and their addresses, segments.py the
+        source objects. splat supplies only the asset objects it splits.
+        """
+        declared = {seg.name for seg in self.layout.segments}
+        # Objects are placed by iterating the layout, so a segment name nothing
+        # declares would drop its objects out of the ROM without a diagnostic.
+        undeclared = sorted(
+            (set(self.sources) | set(self.asset_objects)) - declared
+        )
+        if undeclared:
+            raise SystemExit(
+                f"configure: {self.version}/layout.yaml declares no segment named "
+                + ", ".join(undeclared)
+            )
+
+        build_prefix = posix(self.build_path()) + "/"
+        roots = (f"assets/{self.version}/", "src/", f"ver/{self.version}/")
+        label = lambda obj: linker.data_label(obj, build_prefix, roots)
+        assets = {
+            segment: [(posix(o), label(posix(o))) for o in sorted(objects, key=posix)]
+            for segment, objects in self.asset_objects.items()
+        }
+
+        segments = []
+        for seg in self.layout.segments:
+            objects = [
+                (posix(self.source_object(p)), label(posix(self.source_object(p))))
+                for p in self.sources.get(seg.name, [])
+            ] + assets.get(seg.name, [])
+            segments.append(
+                linker.Segment(
+                    seg.name,
+                    seg.vram_expr,
+                    seg.subalign,
+                    objects,
+                    seg.vram_class and seg.vram_class.name,
+                )
+            )
+        return segments
+
+    def source_cflags(self, src: Path, segment: str, non_matching: bool) -> str:
+        parts = src.parts
+        libultra = "nusys" in parts or "os" in parts
+        cflags = self.sources_config.cflags(src)
+        if cflags is None:
+            cflags = "" if libultra else "-fforce-addr"
+        if libultra:
+            cflags += (
+                " -Wno-maybe-uninitialized -Wno-inline -Wno-pointer-to-int-cast"
+                " -Wno-strict-aliasing -Wno-pointer-sign"
+            )
+        if "gcc" in parts:
+            cflags += " -Wno-pointer-sign"
+        # Effects are TLB mapped, so they must not call memset and friends.
+        if "effects" in parts:
+            cflags += " -fno-tree-loop-distribute-patterns"
+        if non_matching or segment not in ("main", "engine1", "engine2"):
+            cflags += " -fno-common"
+        return cflags.strip()
 
     def build_path(self) -> Path:
         return Path(f"ver/{self.version}/build")
@@ -741,7 +1411,7 @@ class Configure:
 
             if path is not None:
                 if path.is_dir():
-                    out.extend(posix(p) for p in sorted(glob(str(path) + "/**/*", recursive=True)))
+                    out.extend(sorted(posix(p) for p in glob(str(path) + "/**/*", recursive=True)))
                 else:
                     out.append(posix(path))
 
@@ -755,12 +1425,12 @@ class Configure:
         for stack_dir in self.asset_stack:
             path_stem = f"assets/{stack_dir}/{asset_dir}"
 
-            for p in sorted(Path(path_stem).glob("**/*")):
+            for p in Path(path_stem).glob("**/*"):
                 glob_part = p.relative_to(path_stem)
                 if glob_part not in ret:
                     ret[glob_part] = p
 
-        return [posix(v) for v in ret.values()]
+        return sorted(posix(v) for v in ret.values())
 
     @lru_cache(maxsize=None)
     def resolve_asset_path(self, path: Path) -> Path:
@@ -780,15 +1450,68 @@ class Configure:
 
         return path
 
+    def _sidecar_target_consumed(
+        self, sidecar: Path, layer: str, consumed_assets: Set[str]
+    ) -> bool:
+        """Whether the asset a `.meta` sidecar annotates is itself built.
+
+        A sidecar carries no pixels, so it never reaches ninja; it earns its
+        place only by describing an asset that some rule reads. The asset can
+        live in a different layer than the sidecar, so resolve it through the
+        stack.
+        """
+        rel = Path(os.path.relpath(str(sidecar), ROOT / "assets" / layer))
+        if sidecar.name == assets.DIRECTORY_SIDECAR:
+            directory = rel.parent.as_posix()
+            directory = "" if directory == "." else directory + "/"
+            prefixes = tuple(f"assets/{name}/{directory}" for name in self.asset_stack)
+            return any(path.startswith(prefixes) for path in consumed_assets)
+        target = rel.as_posix()[: -len(assets.SIDECAR_SUFFIX)]
+        resolved = self.resolve_asset_path(Path("assets") / layer / target)
+        return posix(os.path.relpath(str(resolved), ROOT)) in consumed_assets
+
+    def check_asset_coverage(
+        self, consumed: Set[str], produced: Set[str]
+    ) -> List[str]:
+        """Files under a hand-authored asset layer that no build rule reads.
+
+        The last asset_stack layer is split from the baserom and checked by
+        tools/build/check_assets.py; the earlier layers are hand-authored, so a
+        file there that nothing builds is a mistake rather than leftover dump.
+        """
+        consumed_assets = {p for p in consumed if p.startswith("assets/")}
+        produced_assets = {p for p in produced if p.startswith("assets/")}
+
+        orphans: List[str] = []
+        for layer in self.asset_stack[:-1]:
+            root = ROOT / "assets" / layer
+            if not root.is_dir():
+                continue
+            for directory, _subdirs, filenames in os.walk(root):
+                for filename in sorted(filenames):
+                    path = Path(directory) / filename
+                    rel = posix(os.path.relpath(str(path), ROOT))
+                    if filename in IGNORED_ASSET_NAMES:
+                        continue
+                    if filename.endswith((".inc.c", ".inc.cpp")):
+                        continue
+                    if rel in consumed_assets or rel in produced_assets:
+                        continue
+                    if filename.endswith(assets.SIDECAR_SUFFIX) and (
+                        self._sidecar_target_consumed(path, layer, consumed_assets)
+                    ):
+                        continue
+                    orphans.append(rel)
+        return sorted(orphans)
+
     def write_ninja(
         self,
-        ninja: ninja_syntax.Writer,
+        ninja: NinjaWriter,
         skip_outputs: Set[str],
         non_matching: bool,
         c_maps: bool = False,
         evt_validation: bool = True,
     ) -> List[str]:
-        assert self.linker_entries is not None
 
         built_objects = set()
         evt_validation_stamps = []
@@ -804,6 +1527,7 @@ class Configure:
             variables: Dict[str, str] = {},
             implicit_outputs: List[str] = [],
             asset_deps: List[str] = [],
+            implicit_deps: List[str] = [],
         ):
             if not isinstance(object_paths, list):
                 object_paths = [object_paths]
@@ -819,8 +1543,8 @@ class Configure:
                     ".c"
                 ):
                     generated_code.append(obj_posix)
-                elif object_path.name.endswith(".png.bin") or object_path.name.endswith(
-                    ".pal.bin"
+                elif object_path.name.endswith(
+                    (".png.bin", ".pal.bin", ".dat")
                 ):
                     inc_img_bins.append(obj_posix)
 
@@ -835,7 +1559,7 @@ class Configure:
             if needs_build:
                 skip_outputs.update(object_strs)
 
-                implicit = []
+                implicit = [posix(dep) for dep in implicit_deps]
                 order_only = []
 
                 if task in ["cc", "cxx", "cc_modern", "cxx_modern"]:
@@ -850,6 +1574,15 @@ class Configure:
                 inputs = self.resolve_src_paths(src_paths)
                 for dir in asset_deps:
                     inputs.extend(self.get_asset_list(dir))
+
+                evt_objects = []
+                if evt_validation and task in ["cc_modern", "cxx_modern"]:
+                    evt_objects = [
+                        obj for obj in object_paths if obj.suffixes[-1] == ".o"
+                    ]
+                evt_stamps = [evt_validation_stamp_path(obj) for obj in evt_objects]
+                evt_validation_stamps.extend(evt_stamps)
+
                 ninja.build(
                     outputs=object_strs,  # $out
                     rule=task,
@@ -858,28 +1591,25 @@ class Configure:
                     order_only=order_only,
                     variables={"version": self.version, **variables},
                     implicit_outputs=implicit_outputs,
+                    validations=evt_stamps,
                 )
 
-                if evt_validation and task in ["cc_modern", "cxx_modern"]:
-                    for object_path in object_paths:
-                        if object_path.suffixes[-1] == ".o":
-                            evt_validation_stamp = evt_validation_stamp_path(object_path)
-                            if len(src_paths) == 1:
-                                evt_target = posix(src_paths[0])
-                            else:
-                                evt_target = evt_validation_display_path(object_path)
-                            evt_validation_stamps.append(evt_validation_stamp)
-                            ninja.build(
-                                evt_validation_stamp,
-                                "evt_validate_obj",
-                                [posix(object_path)],
-                                implicit=[
-                                    posix(BUILD_TOOLS / "evt_validate_obj.py"),
-                                    posix(BUILD_TOOLS / "effect_data.py"),
-                                    "src/registry/effects.yaml",
-                                ],
-                                variables={"evt_target": evt_target},
-                            )
+                for object_path, evt_validation_stamp in zip(evt_objects, evt_stamps):
+                    if len(src_paths) == 1:
+                        evt_target = posix(src_paths[0])
+                    else:
+                        evt_target = evt_validation_display_path(object_path)
+                    ninja.build(
+                        evt_validation_stamp,
+                        "evt_validate_obj",
+                        [posix(object_path)],
+                        implicit=[
+                            posix(BUILD_TOOLS / "evt_validate_obj.py"),
+                            posix(BUILD_TOOLS / "effect_data.py"),
+                            "src/registry/effects.yaml",
+                        ],
+                        variables={"evt_target": evt_target},
+                    )
 
         # Effect data includes
         effect_yaml = ROOT / "src/registry/effects.yaml"
@@ -907,7 +1637,9 @@ class Configure:
             "world_map",
         )
 
-        # When maps are added or removed, rerun gen_areas
+        # gen_areas counts a directory as a map once it holds a source file to
+        # compile, so the stamp records that rather than just which directories
+        # exist: otherwise adding the first source to one leaves the table stale.
         gen_areas_stamp = self.build_path() / "gen_areas.stamp"
         area_dirs = []
         for area_root in [ROOT / "src" / "world" / "area"] + [
@@ -917,7 +1649,11 @@ class Configure:
                 for area_dir in sorted(area_root.iterdir()):
                     if area_dir.is_dir():
                         for map_dir in sorted(area_dir.iterdir()):
-                            if map_dir.is_dir():
+                            if map_dir.is_dir() and any(
+                                f.suffix in (".c", ".cpp")
+                                and not f.name.endswith((".inc.c", ".inc.cpp"))
+                                for f in map_dir.iterdir()
+                            ):
                                 area_dirs.append(str(map_dir.relative_to(ROOT)))
         gen_areas_stamp.parent.mkdir(parents=True, exist_ok=True)
         gen_areas_stamp.write_text("\n".join(area_dirs) + "\n")
@@ -1007,685 +1743,47 @@ class Configure:
         build([precompiled_header_path], [Path("include/common.h")], "cc_modern")
         build([cxx_precompiled_header_path], [Path("include/common.hpp")], "cxx_modern")
 
-        import splat
+        self.asset_objects: Dict[str, List[Path]] = {}
+        self.write_effect_stub_rules(build)
+        self.write_blob_rules(build)
+        self.write_packer_rules(build, ninja, skip_outputs)
+        self.write_mapfs_rules(build, c_maps)
+        self.write_charset_rules(build)
+        self.write_texture_rules(build)
 
-        # Build objects
-        for entry in self.linker_entries:
-            seg = entry.segment
+        # Every asset object is registered by now, so the segments are complete.
+        segments = self.build_segments()
+        linker.write_script(
+            ROOT / self.linker_script_path(),
+            segments,
+            self.layout.follows,
+            self.layout.class_vrams,
+        )
+        linker.write_symbol_header(
+            ROOT / self.build_path() / "include/ld_addrs.h", segments
+        )
 
-            if seg.type == "linker" or seg.type == "linker_offset":
-                continue
-
-            if any(self.is_effect_source_path(path) for path in entry.src_paths):
-                continue
-
-            assert entry.object_path is not None
-
-            if isinstance(seg, splat.segtypes.n64.header.N64SegHeader):
-                build(entry.object_path, entry.src_paths, "as")
-            elif isinstance(seg, splat.segtypes.common.hasm.CommonSegHasm):
-                cppflags = f"-DVERSION_{self.version.upper()}"
-
-                if version == "ique" and seg.name.startswith("os/"):
-                    cppflags += " -DBBPLAYER"
-
-                build(
-                    entry.object_path,
-                    entry.src_paths,
-                    "as",
-                    variables={"cppflags": cppflags},
-                )
-            elif isinstance(seg, splat.segtypes.common.asm.CommonSegAsm) or (
-                isinstance(seg, splat.segtypes.common.data.CommonSegData)
-                and not seg.type[0] == "."
-                or isinstance(seg, splat.segtypes.common.textbin.CommonSegTextbin)
-            ):
-                build(entry.object_path, entry.src_paths, "as")
-            elif seg.type == "pm_effect_loads":
-                build(entry.object_path, entry.src_paths, "as")
-            elif isinstance(seg, splat.segtypes.common.c.CommonSegC) or (
-                isinstance(seg, splat.segtypes.common.data.CommonSegData)
-                and seg.type[0] == "."
-            ):
-                cflags = None
-                if isinstance(seg.yaml, dict):
-                    cflags = seg.yaml.get("cflags")
-                elif len(seg.yaml) >= 4:
-                    cflags = seg.yaml[3]
-
-                cppflags = f"-DVERSION_{self.version.upper()}"
-
-                # default cflags where not specified
-                src_parts = entry.src_paths[0].parts
-
-                if cflags is None:
-                    if "nusys" in src_parts:
-                        cflags = ""
-                    elif "os" in src_parts:  # libultra
-                        cflags = ""
-                    else:  # papermario
-                        cflags = "-fforce-addr"
-
-                # c
-                task = "cc_modern"
-                if entry.src_paths[0].suffixes[-1] == ".cpp":
-                    task = "cxx_modern"
-
-                if task == "cxx":
-                    task = "cxx_modern"
-
-                if entry.src_paths[0].suffixes[-1] == ".s":
-                    task = "as"
-
-                cflags = cflags.replace("gcc_modern", "").replace("gcc_272", "")
-
-                if "nusys" in src_parts or "os" in src_parts:
-                    cflags += (
-                        " -Wno-maybe-uninitialized"
-                        " -Wno-inline"
-                        " -Wno-pointer-to-int-cast"
-                        " -Wno-strict-aliasing"
-                        " -Wno-pointer-sign"
-                    )
-
-                if "gcc" in src_parts:
-                    cflags += " -Wno-pointer-sign"
-
-                cppflags += " -DMODERN_COMPILER"
-
-                if version == "ique":
-                    if "nusys" in entry.src_paths[0].parts:
-                        pass
-                    elif "os" in entry.src_paths[0].parts:
-                        cppflags += " -DBBPLAYER"
-                    elif entry.src_paths[0].parts[-2] == "bss":
-                        cppflags += " -DBBPLAYER"
-
-                # Dead cod
-                if isinstance(seg.parent.yaml, dict) and seg.parent.yaml.get(
-                    "dead_code", False
-                ):
-                    obj_path = posix(entry.object_path)
-                    init_obj_path = Path(obj_path + ".dead")
+        # Compile everything the filesystem scan found.
+        for segment, src_paths in self.sources.items():
+            for src in src_paths:
+                if src.suffix == ".s":
                     build(
-                        init_obj_path,
-                        entry.src_paths,
-                        task,
-                        variables={
-                            "cflags": cflags,
-                            "cppflags": cppflags,
-                        },
+                        self.source_object(src),
+                        [src],
+                        "as",
+                        variables={"cppflags": f"-DVERSION_{self.version.upper()}"},
                     )
-                    build(
-                        entry.object_path,
-                        [init_obj_path],
-                        "dead_cc_fix",
-                    )
-                # Not dead cod
-                else:
-                    if non_matching or seg.get_most_parent().name not in [
-                        "main",
-                        "engine1",
-                        "engine2",
-                    ]:
-                        cflags += " -fno-common"
-                    build(
-                        entry.object_path,
-                        entry.src_paths,
-                        task,
-                        variables={
-                            "cflags": cflags,
-                            "cppflags": cppflags,
-                        },
-                    )
-
-                # images embedded inside data aren't linked, but they do need to be built into .bin files
-                if isinstance(seg, splat.segtypes.common.group.CommonSegGroup):
-                    for subseg in seg.subsegments:
-                        if isinstance(subseg, splat.segtypes.n64.img.N64SegImg):
-                            flags = ""
-                            if subseg.n64img.flip_h:
-                                flags += "--flip-x "
-                            if subseg.n64img.flip_v:
-                                flags += "--flip-y "
-
-                            src_paths = [subseg.out_path().relative_to(ROOT)]
-                            inc_dir = self.build_path() / "include" / subseg.dir
-                            bin_path = (
-                                self.build_path()
-                                / subseg.dir
-                                / (subseg.name + ".png.bin")
-                            )
-
-                            build(
-                                bin_path,
-                                src_paths,
-                                "pigment",
-                                variables={
-                                    "img_type": subseg.type,
-                                    "img_flags": flags,
-                                },
-                            )
-
-                            assert subseg.vram_start is not None, (
-                                "img with vram_start unset: " + subseg.name
-                            )
-
-                            c_sym = subseg.create_symbol(
-                                addr=subseg.vram_start,
-                                in_segment=True,
-                                type="data",
-                                define=True,
-                            )
-                            name = c_sym.name
-                            if "namespaced" in subseg.args:
-                                name = f"N({name[7:]})"
-                            vars = {"c_name": name}
-                            build(
-                                inc_dir / (subseg.name + ".png.h"),
-                                src_paths,
-                                "img_header",
-                                vars,
-                            )
-                        elif isinstance(
-                            subseg, splat.segtypes.n64.palette.N64SegPalette
-                        ):
-                            src_paths = [subseg.out_path().relative_to(ROOT)]
-                            inc_dir = self.build_path() / "include" / subseg.dir
-                            bin_path = (
-                                self.build_path()
-                                / subseg.dir
-                                / (subseg.name + ".pal.bin")
-                            )
-
-                            build(
-                                bin_path,
-                                src_paths,
-                                "pigment",
-                                variables={
-                                    "img_type": subseg.type,
-                                    "img_flags": "",
-                                },
-                            )
-
-                            assert subseg.vram_start is not None
-                            c_sym = subseg.create_symbol(
-                                addr=subseg.vram_start,
-                                in_segment=True,
-                                type="data",
-                                define=True,
-                            )
-                        elif subseg.type == "pm_charset":
-                            rasters = []
-                            entry = subseg.get_linker_entries()[0]
-
-                            for src_path in entry.src_paths:
-                                out_path = (
-                                    self.build_path()
-                                    / subseg.dir
-                                    / subseg.name
-                                    / (src_path.stem + ".bin")
-                                )
-                                build(
-                                    out_path,
-                                    [src_path],
-                                    "pigment",
-                                    variables={
-                                        "img_type": "ci4",
-                                        "img_flags": "",
-                                    },
-                                )
-                                rasters.append(out_path)
-
-                            build(entry.object_path.with_suffix(""), rasters, "charset")
-                            build(
-                                entry.object_path,
-                                [entry.object_path.with_suffix("")],
-                                "bin",
-                            )
-                        elif subseg.type == "pm_charset_palettes":
-                            palettes = []
-                            entry = subseg.get_linker_entries()[0]
-
-                            for src_path in entry.src_paths:
-                                out_path = (
-                                    self.build_path()
-                                    / subseg.dir
-                                    / subseg.name
-                                    / "palette"
-                                    / (src_path.stem + ".bin")
-                                )
-                                build(
-                                    out_path,
-                                    [src_path],
-                                    "pigment",
-                                    variables={
-                                        "img_type": "palette",
-                                        "img_flags": "",
-                                    },
-                                )
-                                palettes.append(out_path)
-
-                            build(
-                                entry.object_path.with_suffix(""),
-                                palettes,
-                                "charset_palettes",
-                            )
-                            build(
-                                entry.object_path,
-                                [entry.object_path.with_suffix("")],
-                                "bin",
-                            )
-            elif isinstance(seg, splat.segtypes.common.bin.CommonSegBin):
-                build(entry.object_path, entry.src_paths, "bin")
-            elif isinstance(seg, splat.segtypes.n64.yay0.N64SegYay0):
-                compressed_path = entry.object_path.with_suffix("")  # remove .o
-                build(compressed_path, entry.src_paths, "yay0")
-                build(entry.object_path, [compressed_path], "bin")
-            elif isinstance(seg, splat.segtypes.n64.img.N64SegImg):
-                flags = ""
-                if seg.n64img.flip_h:
-                    flags += "--flip-x "
-                if seg.n64img.flip_v:
-                    flags += "--flip-y "
-
-                bin_path = entry.object_path.with_suffix(".bin")
-                inc_dir = self.build_path() / "include" / seg.dir
-
+                    continue
                 build(
-                    bin_path,
-                    entry.src_paths,
-                    "pigment",
+                    self.source_object(src),
+                    [src],
+                    "cxx_modern" if src.suffix == ".cpp" else "cc_modern",
                     variables={
-                        "img_type": seg.type,
-                        "img_flags": flags,
+                        "cflags": self.source_cflags(src, segment, non_matching),
+                        "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
                     },
                 )
-                build(entry.object_path, [bin_path], "bin")
 
-                # c_sym = seg.create_symbol(
-                #     addr=seg.vram_start, in_segment=True, type="data", define=True
-                # )
-                # vars = {"c_name": c_sym.name}
-                build(inc_dir / (seg.name + ".png.h"), entry.src_paths, "img_header")
-            elif isinstance(seg, splat.segtypes.n64.palette.N64SegPalette):
-                bin_path = entry.object_path.with_suffix(".bin")
-
-                build(
-                    bin_path,
-                    entry.src_paths,
-                    "pigment",
-                    variables={
-                        "img_type": seg.type,
-                        "img_flags": "",
-                    },
-                )
-                build(entry.object_path, [bin_path], "bin")
-            elif seg.type == "a":
-                build(entry.object_path, entry.src_paths, "cp")
-            elif seg.type == "pm_sprites":
-                assert entry.object_path is not None
-
-                sprite_yay0s = []
-
-                npc_obj_path = entry.object_path.parent / "npc"
-
-                # NPC sprite headers
-                for sprite_id, sprite_dir in enumerate(entry.src_paths[1:], 1):
-                    sprite_name = sprite_dir.name
-
-                    bin_path = npc_obj_path / (sprite_name + ".bin")
-                    yay0_path = bin_path.with_suffix(".Yay0")
-                    sprite_yay0s.append(yay0_path)
-
-                    build(
-                        bin_path,
-                        [sprite_dir],
-                        "npc_sprite",
-                        variables={
-                            "sprite_name": sprite_name,
-                            "asset_stack": ",".join(self.asset_stack),
-                        },
-                        asset_deps=[posix(sprite_dir)],
-                    )
-                    build(yay0_path, [bin_path], "yay0")
-
-                    # NPC sprite header
-                    build(
-                        self.build_path() / "include/sprite/npc" / (sprite_name + ".h"),
-                        [sprite_dir, yay0_path],
-                        "sprite_header",
-                        variables={
-                            "sprite_name": sprite_name,
-                            "sprite_id": str(sprite_id),
-                            "asset_stack": ",".join(self.asset_stack),
-                        },
-                    )
-
-                # Sprites .bin
-                sprite_player_header_path = posix(
-                    self.build_path() / "include/sprite/player.h"
-                )
-
-                build(
-                    entry.object_path.with_suffix(".bin"),
-                    [entry.src_paths[0], *sprite_yay0s],
-                    "sprites",
-                    variables={
-                        "header_out": sprite_player_header_path,
-                        "build_dir": posix(
-                            self.build_path() / "assets" / self.version / "sprite"
-                        ),
-                        "asset_stack": ",".join(self.asset_stack),
-                    },
-                    implicit_outputs=[sprite_player_header_path],
-                    asset_deps=["sprite/player"],
-                )
-
-                # Sprites .o
-                build(entry.object_path, [entry.object_path.with_suffix(".bin")], "bin")
-
-            elif seg.type == "pm_msg":
-                msg_bins = []
-                layer_sizes = []
-                bin_idx = 0
-
-                # Process each asset stack layer, lowest priority first
-                for stack_dir in reversed(self.asset_stack):
-                    msg_dir = Path(f"assets/{stack_dir}/msg")
-                    layer_count = 0
-                    if msg_dir.exists():
-                        for msg_file in sorted(msg_dir.glob("*.msg")):
-                            bin_path = entry.object_path.with_suffix("") / f"{bin_idx:02X}.bin"
-                            msg_bins.append(bin_path)
-                            skip_outputs.add(posix(bin_path))
-                            ninja.build(
-                                outputs=[posix(bin_path)],
-                                rule="msg",
-                                inputs=[posix(msg_file)],
-                                variables={"version": self.version},
-                            )
-                            bin_idx += 1
-                            layer_count += 1
-                    layer_sizes.append(str(layer_count))
-
-                build(
-                    [
-                        entry.object_path.with_suffix(".bin"),
-                        self.build_path() / "include" / "message_ids.h",
-                    ],
-                    msg_bins,
-                    "msg_combine",
-                    variables={"layer_sizes": ",".join(layer_sizes)},
-                )
-                build(entry.object_path, [entry.object_path.with_suffix(".bin")], "bin")
-
-            elif seg.type == "pm_icons":
-                # make icons.bin
-                header_path = posix(self.build_path() / "include" / "icon_offsets.h")
-                build(
-                    entry.object_path.with_suffix(""),
-                    entry.src_paths,
-                    "icons",
-                    variables={
-                        "header_path": header_path,
-                        "asset_stack": ",".join(self.asset_stack),
-                    },
-                    implicit_outputs=[header_path],
-                    asset_deps=["icon"],
-                )
-                # make icons.bin.o
-                build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
-
-            elif seg.type == "pm_map_data":
-                # flat list of (uncompressed path, compressed? path) pairs
-                bin_yay0s: List[Path] = []
-                src_dir = Path("assets/x") / seg.name
-
-                for path in entry.src_paths:
-                    name = path.stem
-                    out_dir = entry.object_path.with_suffix("").with_suffix("")
-                    bin_path = out_dir / f"{name}.bin"
-
-                    if name.startswith("party_"):
-                        compress = True
-                        build(
-                            bin_path,
-                            [path],
-                            "img",
-                            variables={
-                                "img_type": "party",
-                                "img_flags": "",
-                            },
-                        )
-                    elif path.suffixes[-2:] == [".raw", ".dat"]:
-                        compress = False
-                        bin_path = path
-                    elif name == "title_data":
-                        compress = True
-
-                        logotype_path = out_dir / "title_logotype.bin"
-                        copyright_path = out_dir / "title_copyright.bin"
-                        copyright_pal_path = out_dir / "title_copyright.pal"  # jp only
-                        press_start_path = out_dir / "title_press_start.bin"
-
-                        build(
-                            logotype_path,
-                            [src_dir / "title/logotype.png"],
-                            "pigment",
-                            variables={
-                                "img_type": "rgba32",
-                                "img_flags": "",
-                            },
-                        )
-                        build(
-                            press_start_path,
-                            [src_dir / "title/press_start.png"],
-                            "pigment",
-                            variables={
-                                "img_type": "ia8",
-                                "img_flags": "",
-                            },
-                        )
-
-                        if self.version == "jp":
-                            build(
-                                copyright_path,
-                                [src_dir / "title/copyright.png"],
-                                "pigment",
-                                variables={
-                                    "img_type": "ci4",
-                                    "img_flags": "",
-                                },
-                            )
-                            build(
-                                copyright_pal_path,
-                                [src_dir / "title/copyright.png"],
-                                "pigment",
-                                variables={
-                                    "img_type": "palette",
-                                    "img_flags": "",
-                                },
-                            )
-                            imgs = [
-                                logotype_path,
-                                copyright_path,
-                                press_start_path,
-                                copyright_pal_path,
-                            ]
-                        else:
-                            build(
-                                copyright_path,
-                                [src_dir / "title/copyright.png"],
-                                "pigment",
-                                variables={
-                                    "img_type": "ia8",
-                                    "img_flags": "",
-                                },
-                            )
-                            imgs = [logotype_path, copyright_path, press_start_path]
-
-                        build(bin_path, imgs, "pack_title_data")
-                    elif name.endswith("_bg"):
-                        compress = True
-                        build(
-                            bin_path,
-                            [path],
-                            "img",
-                            variables={
-                                "img_type": "bg",
-                                "img_flags": "",
-                            },
-                        )
-                    elif name.endswith("_tex"):
-                        compress = False
-                        tex_dir = path.parent / name
-                        build(
-                            bin_path,
-                            [tex_dir, path.parent / (name + ".json")],
-                            "tex",
-                            variables={
-                                "tex_name": name,
-                                "asset_stack": ",".join(self.asset_stack),
-                            },
-                            asset_deps=[f"mapfs/tex/{name}"],
-                        )
-                    elif name.endswith("_shape_built"):
-                        base_name = name[:-6]
-                        map_name = base_name[:-6]
-                        raw_bin_path = self.resolve_asset_path(
-                            f"assets/x/mapfs/geom/{base_name}.bin"
-                        )
-                        bin_path = bin_path.parent / "geom" / (base_name + ".bin")
-
-                        if c_maps:
-                            # raw bin -> c -> o -> elf -> objcopy -> final bin file
-                            c_file_path = (
-                                bin_path.parent / "geom" / base_name
-                            ).with_suffix(".c")
-                            o_path = bin_path.parent / "geom" / (base_name + ".o")
-                            elf_path = bin_path.parent / "geom" / (base_name + ".elf")
-
-                            build(c_file_path, [raw_bin_path], "shape")
-                            build(
-                                o_path,
-                                [c_file_path],
-                                "cc_modern",
-                                variables={
-                                    "cflags": "",
-                                    "cppflags": f"-DVERSION_{self.version.upper()}",
-                                },
-                            )
-                            build(elf_path, [o_path], "shape_ld")
-                            build(bin_path, [elf_path], "shape_objcopy")
-                        else:
-                            build(bin_path, [raw_bin_path], "cp")
-
-                        xml_path = self.resolve_asset_path(
-                            f"assets/x/mapfs/geom/{map_name}.xml"
-                        )
-                        if xml_path.exists():
-                            build(
-                                self.build_path()
-                                / "include/mapfs"
-                                / (base_name + ".h"),
-                                [xml_path],
-                                "map_header",
-                            )
-
-                        compress = True
-                        out_dir = out_dir / "geom"
-                    elif name.endswith("_hit"):
-                        base_name = name
-                        map_name = base_name[:-4]
-                        raw_bin_path = self.resolve_asset_path(
-                            f"assets/x/mapfs/geom/{base_name}.bin"
-                        )
-
-                        # TEMP: star rod compatiblity
-                        old_raw_bin_path = self.resolve_asset_path(
-                            f"assets/x/mapfs/{base_name}.bin"
-                        )
-                        if old_raw_bin_path.is_file():
-                            raw_bin_path = old_raw_bin_path
-
-                        bin_path = bin_path.parent / "geom" / (base_name + ".bin")
-                        build(bin_path, [raw_bin_path], "cp")
-
-                        xml_path = self.resolve_asset_path(
-                            f"assets/x/mapfs/geom/{map_name}.xml"
-                        )
-                        if xml_path.exists():
-                            build(
-                                self.build_path()
-                                / "include/mapfs"
-                                / (base_name + ".h"),
-                                [xml_path],
-                                "map_header",
-                            )
-                    else:
-                        compress = True
-                        bin_path = path
-
-                    if compress:
-                        yay0_path = out_dir / f"{name}.Yay0"
-                        build(yay0_path, [bin_path], "yay0")
-                    else:
-                        yay0_path = bin_path
-
-                    bin_yay0s.append(bin_path)
-                    bin_yay0s.append(yay0_path)
-
-                # combine
-                build(entry.object_path.with_suffix(""), bin_yay0s, "mapfs")
-                build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
-            elif seg.type == "pm_sprite_shading_profiles":
-                header_path = posix(
-                    self.build_path() / "include/sprite/sprite_shading_profiles.h"
-                )
-                build(
-                    entry.object_path.with_suffix(""),
-                    entry.src_paths,
-                    "sprite_shading_profiles",
-                    implicit_outputs=[header_path],
-                    variables={
-                        "header_path": header_path,
-                    },
-                )
-                build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
-            elif seg.type == "pm_sbn":
-                sbn_path = entry.object_path.with_suffix("")
-                build(
-                    sbn_path,
-                    entry.src_paths,
-                    "pm_sbn",
-                    variables={
-                        "asset_stack": ",".join(self.asset_stack),
-                    },
-                    asset_deps=entry.src_paths,
-                )
-                build(entry.object_path, [sbn_path], "bin")
-            elif seg.type == "linker" or seg.type == "linker_offset":
-                pass
-            elif seg.type == "pm_imgfx_data":
-                c_file_path = (
-                    Path(f"assets/{self.version}") / "imgfx" / (seg.name + ".c")
-                )
-                build(c_file_path, entry.src_paths, "imgfx_data")
-
-                build(
-                    entry.object_path,
-                    [c_file_path],
-                    "cc_modern",
-                    variables={
-                        "cflags": "",
-                        "cppflags": f"-DVERSION_{self.version.upper()}",
-                    },
-                )
-            else:
-                raise Exception(
-                    f"don't know how to build {seg.__class__.__name__} '{seg.name}'"
-                )
 
         # Run undefined_syms through cpp
         ninja.build(
@@ -1701,7 +1799,7 @@ class Configure:
             posix(self.elf_path()),
             "ld",
             posix(self.linker_script_path()),
-            implicit=list(built_objects) + additional_objects + evt_validation_stamps,
+            implicit=sorted(built_objects) + additional_objects,
             variables={"version": self.version, "mapfile": posix(self.map_path())},
         )
 
@@ -1752,6 +1850,14 @@ class Configure:
             posix(self.syms_path()),
             "syms",
             posix(self.elf_path()),
+            implicit=[
+                posix(self.version_path / "symbol_addrs.txt"),
+                posix(BUILD_TOOLS / "overlay.py"),
+            ],
+            variables={
+                "elf": posix(self.elf_path()),
+                "symbol_files": posix(self.version_path / "symbol_addrs.txt"),
+            },
         )
 
         ninja.build("generated_code_" + self.version, "phony", generated_code)
@@ -1759,24 +1865,11 @@ class Configure:
         return evt_validation_stamps
 
     def get_segment_max_sizes(self):
-        assert self.linker_entries is not None
-        segment_size_map = {}
-
-        # depth-first search
-        def visit(segment):
-            if hasattr(segment, "parent") and segment.parent is not None:
-                visit(segment.parent)
-            if (
-                hasattr(segment, "yaml")
-                and isinstance(segment.yaml, dict)
-                and "max_size" in segment.yaml
-            ):
-                segment_size_map[segment.name] = segment.yaml["max_size"]
-
-        for entry in self.linker_entries:
-            visit(entry.segment)
-
-        return segment_size_map
+        return {
+            seg.name: seg.max_size
+            for seg in self.layout.segments
+            if seg.max_size is not None
+        }
 
     def find_overlays(self) -> List[Tuple[str, Path, List[Path], int]]:
         overlay_types = [
@@ -1800,7 +1893,10 @@ class Configure:
             if not search_dir.exists():
                 continue
             for type_index, glob_str in overlay_types:
-                for match in search_dir.glob(glob_str, case_sensitive=True):
+                for match in sorted(
+                    search_dir.glob(glob_str, case_sensitive=True),
+                    key=lambda p: p.as_posix(),
+                ):
                     if match.name.endswith(".inc.c") or match.name.endswith(".inc.cpp"):
                         continue
                     if type_index == OVL_TYPE_EFFECT and match.name == "effect_table.c":
@@ -1867,16 +1963,13 @@ class Configure:
             OVL_TYPE_BATTLE_MENU,
         )
 
-        # VRAM-class overlays are defined by their top-level splat segment.
-        # The segment name is the overlay key and all of its C/C++ subsegments
-        # are linked into that overlay.
+        # Layout VRAM classes define multi-source overlays. SegmentMap provides
+        # their sources now that Splat is used only for extracting assets.
         vram_class_types = {
             "world_partner": OVL_TYPE_PARTNER,
             "battle_move": OVL_TYPE_BATTLE_SCRIPT,
         }
-        class_sources: Dict[Tuple[int, str], List[Path]] = {}
-        for entry in self.linker_entries:
-            segment = entry.segment.get_most_parent()
+        for segment in self.layout.segments:
             if segment.vram_class is None:
                 continue
             type_index = vram_class_types.get(segment.vram_class.name)
@@ -1886,51 +1979,28 @@ class Configure:
             # moves, items, or star-power battle scripts.
             if (
                 type_index == OVL_TYPE_BATTLE_SCRIPT
-                and segment.name in ("btl_states_menus", "level_up", "starpoint")
+                and segment.name in ("battle/menus", "level_up", "starpoint")
             ):
                 continue
-
-            key = (type_index, segment.name)
-            sources = class_sources.setdefault(key, [])
-            for path in entry.src_paths:
-                path = Path(path)
-                if (
-                    path.suffix in (".c", ".cpp")
-                    and not path.name.endswith((".inc.c", ".inc.cpp"))
-                    and path not in sources
-                ):
-                    sources.append(path)
-
-        for (type_index, name), sources in class_sources.items():
+            sources = list(self.all_sources.get(segment.name, []))
             if not sources:
                 continue
-            sources.sort()
-            found[(type_index, name)] = (name, sources[0], sources, type_index)
+            found[(type_index, segment.name)] = (
+                segment.name,
+                sources[0],
+                sorted(sources),
+                type_index,
+            )
 
         return sorted(found.values(), key=lambda x: (x[3], x[0]))
 
     def effect_cflags(self, src_path: Path) -> str:
-        """Return the cflags attached to an effect's splat C subsegment."""
-        src_path = Path(src_path)
-        for entry in self.linker_entries:
-            if not any(Path(path).resolve() == src_path.resolve() for path in entry.src_paths):
-                continue
-
-            seg = entry.segment
-            cflags = None
-            if isinstance(seg.yaml, dict):
-                cflags = seg.yaml.get("cflags")
-            elif len(seg.yaml) >= 4:
-                cflags = seg.yaml[3]
-
-            if cflags is None:
-                cflags = "-fforce-addr"
-            return cflags.replace("gcc_modern", "").replace("gcc_272", "").strip()
-
-        return "-fforce-addr"
+        """Return the cflags attached to an effect in layout.yaml."""
+        cflags = self.sources_config.cflags(Path(src_path)) or "-fforce-addr"
+        return cflags.replace("gcc_modern", "").replace("gcc_272", "").strip()
 
     def write_overlays(
-        self, ninja: ninja_syntax.Writer, evt_validation: bool = True
+        self, ninja: NinjaWriter, evt_validation: bool = True
     ) -> Tuple[str, List[str]]:
         """Write overlay build statements and return the ROM path and EVT validation stamps."""
         import json
@@ -1991,7 +2061,6 @@ class Configure:
             debug_syms_path = build_dir / f"{name}.ovl.debug_syms"
             objects = []
             overlay_evt_validation_stamps = []
-
             for c_file in c_files:
                 if c_file.suffix == ".cpp":
                     task = "cxx_modern"
@@ -2000,6 +2069,11 @@ class Configure:
                     task = "cc_modern"
                     pch = c_precompiled_header_path
                 obj_path = build_dir / (c_file.name + ".o")
+                evt_stamps = (
+                    [evt_validation_stamp_path(obj_path)] if evt_validation else []
+                )
+                evt_validation_stamps.extend(evt_stamps)
+                overlay_evt_validation_stamps.extend(evt_stamps)
                 cflags = "-fno-common -fvisibility=hidden"
                 if type_index == OVL_TYPE_EFFECT:
                     effect_cflags = self.effect_cflags(c_file)
@@ -2019,11 +2093,9 @@ class Configure:
                         "cflags": cflags,
                         "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
                     },
+                    validations=evt_stamps,
                 )
-                if evt_validation:
-                    evt_validation_stamp = evt_validation_stamp_path(obj_path)
-                    evt_validation_stamps.append(evt_validation_stamp)
-                    overlay_evt_validation_stamps.append(evt_validation_stamp)
+                for evt_validation_stamp in evt_stamps:
                     ninja.build(
                         evt_validation_stamp,
                         "evt_validate_obj",
@@ -2051,6 +2123,9 @@ class Configure:
                 force_export = f"--force-export {name}_main"
                 max_loaded_size = "--max-loaded-size 0x1000"
                 require_resolved = "--require-resolved"
+            elif type_index == OVL_TYPE_MAP:
+                max_loaded_size = "--max-loaded-size 0x27FF0"
+                require_resolved = "--require-resolved"
             elif type_index == OVL_TYPE_ACTION:
                 require_resolved = "--require-resolved"
             elif type_index == OVL_TYPE_PARTNER:
@@ -2073,6 +2148,8 @@ class Configure:
                 max_loaded_size = "--max-loaded-size 0x10000"
                 require_resolved = "--require-resolved"
             elif type_index == OVL_TYPE_ENTITY:
+                require_resolved = "--require-resolved"
+            elif type_index == OVL_TYPE_ACTOR:
                 require_resolved = "--require-resolved"
 
             overlay_link_deps = [
@@ -2107,7 +2184,7 @@ class Configure:
 
         manifest_path = self.build_path() / "ovl" / "manifest.json"
         manifest_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(manifest_path, "w") as f:
+        with open(manifest_path, "w", encoding="utf-8") as f:
             json.dump(manifest_entries, f)
 
         implicit_deps.append(posix(BUILD_TOOLS / "overlay.py"))
@@ -2123,7 +2200,7 @@ class Configure:
         )
         return posix(self.rom_path()), evt_validation_stamps
 
-    def make_current(self, ninja: ninja_syntax.Writer):
+    def make_current(self, ninja: NinjaWriter):
         current = Path("ver/current")
 
         try:
@@ -2131,7 +2208,11 @@ class Configure:
         except Exception:
             pass
 
-        current.symlink_to(self.version)
+        if sys.platform == 'win32':
+            # symlinks require admin on windows so we create a junction instead
+            ntfsutils.junction.create("ver/" + self.version, current)
+        else:
+            current.symlink_to(self.version)
 
         ninja.build("ver/current/build/papermario.z64", "phony", posix(self.rom_path()))
 
@@ -2187,6 +2268,11 @@ if __name__ == "__main__":
     )
     parser.add_argument("--no-ccache", action="store_true", help="Use ccache")
     parser.add_argument(
+        "--dump",
+        action="store_true",
+        help="Re-split the assets out of the baserom before configuring",
+    )
+    parser.add_argument(
         "--incremental",
         action="store_true",
         help="Exit early if no source files were added or deleted (used by generator rule)",
@@ -2213,19 +2299,7 @@ if __name__ == "__main__":
         new_content = "\n".join(file_list) + "\n"
         if stamp.exists() and stamp.read_text() == new_content:
             build_ninja = ROOT / "build.ninja"
-            configure_inputs = [
-                ROOT / BUILD_TOOLS / "configure.py",
-                ROOT / BUILD_TOOLS / "action_data.py",
-                ROOT / BUILD_TOOLS / "effect_data.py",
-                ROOT / "src/registry/actions.yaml",
-                ROOT / "tools/splat_ext/pm_effect_loads.py",
-            ]
-            for version in VERSIONS:
-                configure_inputs.append(ROOT / f"ver/{version}/splat.yaml")
-                if args.debug:
-                    configure_inputs.append(ROOT / f"ver/{version}/splat-debug.yaml")
-                if args.shift:
-                    configure_inputs.append(ROOT / f"ver/{version}/splat-shift.yaml")
+            configure_inputs = [ROOT / p for p in configure_input_paths(VERSIONS)]
             newest_config_input = max(
                 p.stat().st_mtime_ns for p in configure_inputs if p.exists()
             )
@@ -2332,7 +2406,14 @@ if __name__ == "__main__":
     # add splat to python import path
     sys.path.insert(0, str((ROOT / args.splat / "src").resolve()))
 
-    ninja = ninja_syntax.Writer(open(str(ROOT / "build.ninja"), "w"), width=120)
+    # The manifest is written as configure goes, so a run that gives up part
+    # way through would leave a truncated build.ninja that ninja would happily
+    # use. Build it beside the real one and move it into place only on success.
+    build_ninja_path = ROOT / "build.ninja"
+    partial_build_ninja = build_ninja_path.with_suffix(".ninja.partial")
+    ninja = NinjaWriter(
+        open(str(partial_build_ninja), "w", encoding="utf-8"), width=120
+    )
 
     non_matching = args.non_matching or True or args.shift
 
@@ -2370,9 +2451,9 @@ if __name__ == "__main__":
         # include tools/splat_ext in the python path
         sys.path.append(str((ROOT / "tools/splat_ext").resolve()))
 
-        configure.split(
-            not args.no_split_assets, args.split_code, args.shift, args.debug
-        )
+        configure.load()
+        if args.dump or not configure.dump_stamp().exists():
+            configure.dump(not args.no_split_assets, args.split_code)
         evt_validation_stamps.extend(
             configure.write_ninja(
                 ninja, skip_files, non_matching, args.c_maps, args.evt_validation
@@ -2390,6 +2471,24 @@ if __name__ == "__main__":
 
     assert first_configure, "no versions configured"
     first_configure.make_current(ninja)
+
+    orphans = first_configure.check_asset_coverage(
+        ninja.consumed_paths, ninja.produced_paths
+    )
+    if orphans:
+        print(
+            "configure: no build rule uses these files, so nothing would put them "
+            "in the ROM:\n"
+        )
+        for orphan in orphans:
+            print(f"  {orphan}")
+        print(
+            "\nCheck that each file has a supported extension and sits in a directory "
+            "the build expects it in. Remove any file that isn't meant to be built."
+        )
+        ninja.close()
+        partial_build_ninja.unlink()
+        raise SystemExit(1)
 
     ninja.build("evt_script_validation", "phony", evt_validation_stamps)
     all.append("evt_script_validation")
@@ -2413,28 +2512,12 @@ if __name__ == "__main__":
     ninja.rule(
         "configure",
         description="Reconfiguring build.ninja",
-        command=f"{sys.executable} {' '.join(argv)}",
+        command=f'"{sys.executable}" {" ".join(argv)}',
         generator=True,
         pool="console",
     )
 
-    configure_deps = [
-        str(BUILD_TOOLS / "configure.py"),
-        str(BUILD_TOOLS / "action_data.py"),
-        str(BUILD_TOOLS / "effect_data.py"),
-        "src/registry/actions.yaml",
-        "tools/splat_ext/pm_effect_loads.py",
-    ]
-    for version in versions:
-        configure_deps.append(f"ver/{version}/splat.yaml")
-        if args.debug:
-            p = f"ver/{version}/splat-debug.yaml"
-            if os.path.exists(p):
-                configure_deps.append(p)
-        if args.shift:
-            p = f"ver/{version}/splat-shift.yaml"
-            if os.path.exists(p):
-                configure_deps.append(p)
+    configure_deps = configure_input_paths(versions)
 
     for top in ["src", "include", "assets"]:
         for dirpath, dirnames, _ in os.walk(ROOT / top):
@@ -2453,9 +2536,11 @@ if __name__ == "__main__":
         implicit=configure_deps,
     )
 
+    ninja.close()
+    os.replace(partial_build_ninja, build_ninja_path)
+
     # Generate compile_commands.json with MIPS cross-compiler flags stripped,
     # so clangd and clang-tidy can parse the compile commands.
-    ninja.close()
     try:
         compdb = subprocess.run(
             ["ninja", "-t", "compdb"],

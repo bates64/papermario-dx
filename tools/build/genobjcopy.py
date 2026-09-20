@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import sys, os
+import sys
 
 # Under normal compilation we rely on splat to use a discard option in the ldscript
 # to not include sections in the elf then just output all sections, however under debug we want
@@ -14,10 +14,10 @@ if __name__ == "__main__":
     infile, outfile = sys.argv[1:]
 
     # generate output based on input
-    file_data = open(infile, "r").read().split("\n")
+    file_data = open(infile, "r", encoding="utf-8").read().split("\n")
     if len(file_data[-1]) == 0:
         file_data.pop()
 
     outdata = "-j " + " -j ".join(file_data)
-    with open(outfile, "w") as f:
+    with open(outfile, "w", encoding="utf-8") as f:
         f.write(outdata)

@@ -1,7 +1,6 @@
 from pathlib import Path
 from dataclasses import astuple, dataclass
 import os
-import yaml
 import struct
 from typing import List, Optional
 
@@ -212,7 +211,7 @@ class SBN:
             except Exception as e:
                 raise Exception(f"Failed to write {sbn_file}: {e}")
 
-        with open(path / "sbn.yaml", "w") as f:
+        with open(path / "sbn.yaml", "w", encoding="utf-8") as f:
             # Filename->ID map
             f.write("# Mapping of filenames to entry IDs. Use 'id: auto' to automatically assign a unique ID.\n")
             f.write(

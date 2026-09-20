@@ -50,5 +50,5 @@ else:
     msg = "ok"
     print(msg)
     if out_path:
-        with open(out_path, "w") as f:
+        with open(out_path, "w", encoding="utf-8") as f:
             f.write(msg + "\n")

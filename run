@@ -43,18 +43,18 @@ def main():
             exit(1)
 
     os.system("clear")
-    ret = os.system(f"n2 {ROM}")
+    ret = os.system(f"ninja {ROM}")
 
-    # n2 errors on missing inputs (e.g. deleted source directory) instead of
+    # ninja errors on missing inputs (e.g. deleted source directory) instead of
     # re-running the generator. Reconfigure and retry once.
     if ret != 0 and b"missing" in subprocess.run(
-        ["n2", ROM], capture_output=True
+        ["ninja", ROM], capture_output=True
     ).stderr:
         print("missing input, reconfiguring...")
         if os.system("./configure") != 0:
             print("error: configure failed")
             exit(1)
-        ret = os.system(f"n2 {ROM}")
+        ret = os.system(f"ninja {ROM}")
 
     if ret != 0:
         print("error: build failed")

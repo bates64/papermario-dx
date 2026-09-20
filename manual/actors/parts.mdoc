@@ -1,0 +1,75 @@
+---
+title: Actor Parts
+sidebar:
+  order: 4
+---
+
+An actor can have multiple **parts** — separate visual components, each with their own animations, defense table, and target offsets. A simple Goomba has one part; a Paragoomba has four (body, flying body, left wing, right wing).
+
+## Defining multiple parts
+
+Add entries to the `ActorPartBlueprint` array and give each part a unique ID:
+
+```c
+enum ActorPartIDs {
+    PRT_MAIN    = 1,
+    PRT_FLYING  = 2,
+    PRT_WING_L  = 3,
+    PRT_WING_R  = 4,
+};
+
+ActorPartBlueprint ActorParts[] = {
+    {
+        .flags = ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_NO_TARGET,
+        .index = PRT_MAIN,
+        .posOffset = { 0, 0, 0 },
+        .targetOffset = { 0, 20 },
+        .opacity = 255,
+        .idleAnimations = DownedAnims,
+        .defenseTable = DownedDefense,
+        .eventFlags = 0,
+        .elementImmunityFlags = 0,
+        .projectileTargetOffset = { 0, -10 },
+    },
+    {
+        .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
+        .index = PRT_FLYING,
+        .posOffset = { 0, 0, 0 },
+        .targetOffset = { 0, 24 },
+        .opacity = 255,
+        .idleAnimations = FlyingAnims,
+        .defenseTable = FlyingDefense,
+        .eventFlags = 0,
+        .elementImmunityFlags = 0,
+        .projectileTargetOffset = { 0, -10 },
+    },
+    // ... more parts
+};
+```
+
+## Part flags
+
+| Flag | Effect |
+|------|--------|
+| `ACTOR_PART_FLAG_PRIMARY_TARGET` | This part is the main target for attacks. Exactly one part should have this. |
+| `ACTOR_PART_FLAG_INVISIBLE` | Part is not rendered. |
+| `ACTOR_PART_FLAG_NO_TARGET` | Part cannot be targeted. |
+| `ACTOR_PART_FLAG_NO_SHADOW` | Part doesn't cast a shadow. |
+| `ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION` | Part position is absolute, not relative to the actor. |
+
+## Swapping parts at runtime
+
+A common pattern is having multiple parts that you show and hide depending on the actor's state. For example, the Paragoomba has a "flying" body part and a "downed" body part — when it loses its wings, the flying part is hidden and the downed part becomes the primary target:
+
+```c
+// hide the flying part
+Call(SetPartFlags, ACTOR_SELF, PRT_FLYING,
+    ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_NO_SHADOW | ACTOR_PART_FLAG_NO_TARGET)
+// show the downed part as the new target
+Call(SetPartFlags, ACTOR_SELF, PRT_MAIN,
+    ACTOR_PART_FLAG_NO_SHADOW | ACTOR_PART_FLAG_PRIMARY_TARGET)
+```
+
+Each part has its own animations and defense table, so swapping the active part changes both the actor's appearance and its defensive properties.
+
+For a full multi-part example, see `src/battle/actor/paragoomba.c`.

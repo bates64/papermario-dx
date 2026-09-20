@@ -1,5 +1,6 @@
 """Download and configure a pre-built clangd index from GitHub releases."""
 
+import shutil
 import subprocess
 import urllib.request
 import urllib.error
@@ -8,21 +9,38 @@ from pathlib import Path
 from rewrite_index_paths import rewrite_paths
 
 
-def exec_shell(command):
-    ret = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+def exec_shell(command, cwd=None):
+    ret = subprocess.run(command, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     return ret.stdout
+
+
+def resolve_dx_tag(root: Path):
+    """Find the nearest dx-* tag (current commit or ancestor) and the commit
+    hash it points to, preferring jj if this is a jj repo and falling back to
+    git. Returns (None, None) if neither is available or no tag is found."""
+    if (root / ".jj").is_dir() and shutil.which("jj"):
+        revset = 'latest(tags(glob:"dx-*") & ::@)'
+        tag = exec_shell(["jj", "log", "-r", revset, "--no-graph", "-T", 'self.tags().join("\n")'], cwd=root).strip().splitlines()
+        tag = tag[0] if tag else ""
+        tag_hash = exec_shell(["jj", "log", "-r", revset, "--no-graph", "-T", "commit_id"], cwd=root).strip()
+    elif shutil.which("git"):
+        tag = exec_shell(["git", "describe", "--tags", "--abbrev=0", "--match", "dx-*"], cwd=root).strip()
+        tag_hash = exec_shell(["git", "rev-parse", f"{tag}^{{}}"], cwd=root).strip() if tag else ""
+    else:
+        return None, None
+
+    return (tag, tag_hash) if tag else (None, None)
 
 
 def fetch_clangd_index(root: Path):
     """Fetch the clangd index for the nearest dx-* tag and configure .clangd."""
-    tag = exec_shell(["git", "describe", "--tags", "--abbrev=0", "--match", "dx-*"]).strip()
+    tag, tag_hash = resolve_dx_tag(root)
     if not tag:
         return
 
     dx_dir = root / ".dx"
     dx_dir.mkdir(exist_ok=True)
     idx_path = dx_dir / "papermario-dx.idx"
-    tag_hash = exec_shell(["git", "rev-parse", f"{tag}^{{}}"]).strip()
     tag_file = dx_dir / "configure-tag"
 
     # Check if we already have the index for this tag
@@ -76,7 +94,7 @@ def _update_clangd_config(root: Path, idx_path: Path):
     # Read existing config, preserving other sections
     existing_lines = []
     if clangd_path.exists():
-        with open(clangd_path) as f:
+        with open(clangd_path, "r", encoding="utf-8") as f:
             existing_lines = f.readlines()
 
     if not existing_lines:
@@ -102,5 +120,5 @@ def _update_clangd_config(root: Path, idx_path: Path):
     filtered.append(f"    File: {abs_idx}\n")
     filtered.append(f"    MountPoint: {abs_root}\n")
 
-    with open(clangd_path, "w") as f:
+    with open(clangd_path, "w", encoding="utf-8") as f:
         f.writelines(filtered)

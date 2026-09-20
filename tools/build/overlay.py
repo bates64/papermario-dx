@@ -383,12 +383,9 @@ def link_overlay(obj_paths, syms, link_addr, force_exports=(), require_resolved=
     for elf_idx, elf in enumerate(elfs):
         for sym_idx, sym in enumerate(elf.symbols):
             if sym.shndx == SHN_UNDEF:
-                # Undefined: look up in external syms dict
-                if sym.name and sym.name in syms:
-                    resolved_syms[(elf_idx, sym_idx)] = syms[sym.name]
-                elif sym.name:
-                    # Try other ELFs' globals
-                    pass  # resolved in second pass
+                # Defer undefined symbols until all overlay objects have been
+                # scanned. Overlay-local definitions must take precedence over
+                # baseline addresses from symbol_addrs.txt.
                 continue
             if sym.shndx == SHN_ABS:
                 resolved_syms[(elf_idx, sym_idx)] = sym.value
@@ -867,9 +864,9 @@ OVL_DIR_HEADER_SIZE = 4 + 4  # magic(u32) + count(u32)
 def parse_syms(syms_path):
     """Parse a syms.ld file into a dict of symbol name -> integer value."""
     syms = {}
-    with open(syms_path) as f:
+    with open(syms_path, "r", encoding="utf-8") as f:
         for line in f:
-            line = line.strip().rstrip(";").strip()
+            line = line.split("//", 1)[0].split("#", 1)[0].strip().rstrip(";").strip()
             if line.startswith("PROVIDE(") and line.endswith(")"):
                 line = line[len("PROVIDE("):-1].strip()
             if "=" not in line:
@@ -916,7 +913,11 @@ def gen_syms_from_elf(elf_path):
 
 def cmd_gen_syms(args):
     """Subcommand: generate pickled syms from an ELF."""
-    syms = gen_syms_from_elf(args.input)
+    syms = {}
+    for symbol_file in args.symbol_files:
+        syms.update(parse_syms(symbol_file))
+    # The newly linked engine always wins over addresses from the baseline.
+    syms.update(gen_syms_from_elf(args.input))
     data = pickle.dumps(syms)
 
     # Restat: only update if contents changed
@@ -1625,7 +1626,7 @@ def cmd_apply_all(args):
     else:
         syms = parse_syms(args.syms)
 
-    with open(args.manifest) as f:
+    with open(args.manifest, "r", encoding="utf-8") as f:
         entries = json.load(f)
 
     with open(args.input_rom, "rb") as f:
@@ -1676,6 +1677,9 @@ def main():
     p_gen_syms = subparsers.add_parser("gen-syms", help="Generate pickled syms from ELF")
     p_gen_syms.add_argument("input", help="Input ELF file")
     p_gen_syms.add_argument("output", help="Output .pkl file")
+    p_gen_syms.add_argument(
+        "symbol_files", nargs="*", help="Baseline linker symbol files"
+    )
     p_gen_syms.set_defaults(func=cmd_gen_syms)
 
     p_convert = subparsers.add_parser("convert", help="Convert ELF to overlay format")

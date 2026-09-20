@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from sys import argv
-from collections import OrderedDict
 import re
 import msgpack  # way faster than pickle
 
@@ -3173,7 +3172,7 @@ if __name__ == "__main__":
     messages = []
 
     message = None
-    with open(filename, "r") as f:
+    with open(filename, "r", encoding="utf-8") as f:
         source = strip_c_comments(f.read())
         lineno = 1
 
@@ -4451,7 +4450,7 @@ if __name__ == "__main__":
             exit(1)
 
     if is_output_format_c:
-        with open(outfile, "w") as f:
+        with open(outfile, "w", encoding="utf-8") as f:
             f.write(f"#include <ultra64.h>\n")
 
             for message in messages:

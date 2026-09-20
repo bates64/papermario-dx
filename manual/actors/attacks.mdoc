@@ -1,0 +1,121 @@
+---
+title: Actor Attacks
+sidebar:
+  order: 3
+---
+
+The `EVS_TakeTurn` script runs when it's the actor's turn to attack. A typical attack follows this pattern: approach the target, check if the attack hits, deal damage, then return home.
+
+## Testing the target
+
+Before dealing damage, use `EnemyTestTarget` to check if the attack will hit. This accounts for evasion badges and abilities.
+
+```c
+Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
+Call(EnemyTestTarget,
+    ACTOR_SELF, LVar0, 0, 0,
+    1, BS_FLAGS1_INCLUDE_POWER_UPS)
+Switch(LVar0)
+    CaseOrEq(HIT_RESULT_MISS)
+    CaseOrEq(HIT_RESULT_LUCKY)
+        // play miss animation, then return home
+        Call(YieldTurn)
+        Return
+    EndCaseGroup
+EndSwitch
+```
+
+The fifth argument (`1` in this example) is the damage amount for display purposes.
+
+## Dealing damage
+
+If the test passes, use `EnemyDamageTarget` to actually apply damage:
+
+```c
+Call(SetGoalToTarget, ACTOR_SELF)
+Call(EnemyDamageTarget,
+    ACTOR_SELF, LVar0, 0, 0,
+    0, 2, BS_FLAGS1_TRIGGER_EVENTS)
+```
+
+The third argument is the damage type flags — use `0` for a normal attack, or combine flags for elemental and special behavior (see [below](#damage-type-flags)). The sixth argument (`2` here) is the actual damage dealt. The result in `LVar0` tells you what happened:
+
+| Result | Meaning |
+|--------|---------|
+| `HIT_RESULT_HIT` | Normal hit |
+| `HIT_RESULT_NO_DAMAGE` | Hit but dealt 0 damage (e.g. high defense) |
+
+## Simple melee attack
+
+Here's a basic melee attack that runs up to the player, hits, and retreats:
+
+```c
+EvtScript EVS_TakeTurn = {
+    Call(UseIdleAnimation, ACTOR_SELF, false)
+    Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
+    Call(UseBattleCamPreset, BTL_CAM_ENEMY_APPROACH)
+    Call(BattleCamTargetActor, ACTOR_SELF)
+    // run towards the player
+    Call(SetAnimation,
+        ACTOR_SELF, PRT_MAIN, ANIM_Goomba_Run)
+    Call(SetGoalToTarget, ACTOR_SELF)
+    Call(AddGoalPos, ACTOR_SELF, 50, 0, 0)
+    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(RunToGoal, ACTOR_SELF, 0, false)
+    // test if the attack hits
+    Call(EnemyTestTarget,
+        ACTOR_SELF, LVar0, 0, 0,
+        2, BS_FLAGS1_INCLUDE_POWER_UPS)
+    Switch(LVar0)
+        CaseOrEq(HIT_RESULT_MISS)
+        CaseOrEq(HIT_RESULT_LUCKY)
+            // missed — return home
+            Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
+            Call(YieldTurn)
+            Call(SetAnimation,
+                ACTOR_SELF, PRT_MAIN, ANIM_Goomba_Run)
+            Call(SetGoalToHome, ACTOR_SELF)
+            Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+            Call(RunToGoal,
+                ACTOR_SELF, 0, false)
+            Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+            Call(UseIdleAnimation, ACTOR_SELF, true)
+            Return
+        EndCaseGroup
+    EndSwitch
+    // attack connects
+    Call(SetGoalToTarget, ACTOR_SELF)
+    Call(EnemyDamageTarget,
+        ACTOR_SELF, LVar0, 0, 0,
+        0, 2, BS_FLAGS1_TRIGGER_EVENTS)
+    // return home
+    Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
+    Wait(5)
+    Call(YieldTurn)
+    Call(SetAnimation,
+        ACTOR_SELF, PRT_MAIN, ANIM_Goomba_Run)
+    Call(SetGoalToHome, ACTOR_SELF)
+    Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+    Call(RunToGoal, ACTOR_SELF, 0, false)
+    Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+    Call(UseIdleAnimation, ACTOR_SELF, true)
+    Return
+    End
+};
+```
+
+For a jump attack with arc rotation, see `src/battle/actor/gloomba.c`. For a dive attack pattern, see `src/battle/actor/paragoomba.c`.
+
+## Damage type flags
+
+The third argument to `EnemyDamageTarget` is a bitmask of `DAMAGE_TYPE_` flags. Use exactly one **elemental** flag to set the [attack's element](/papermario-dx/actors/elemental-attacks/), and optionally combine it with **modifier** flags:
+
+| Flag | Effect |
+|------|--------|
+| `DAMAGE_TYPE_NO_CONTACT` | Ranged/projectile attack — won't trigger contact hazards like spikes or Zap Tap. |
+| `DAMAGE_TYPE_IGNORE_DEFENSE` | Bypasses the target's defense stat. |
+| `DAMAGE_TYPE_UNBLOCKABLE` | Cannot be blocked by the player. |
+| `DAMAGE_TYPE_STATUS_ALWAYS_HITS` | Status effects bypass immunity checks. |
+
+Pass `0` for a normal contact attack with no special properties.

@@ -1,6 +1,5 @@
 from pathlib import Path
 import sys
-
 from splat.segtypes.segment import Segment
 from splat.util import options
 
@@ -96,7 +95,7 @@ glabel fx_{name}
             if effect.empty:
                 continue
 
-            with open(self.effect_s_path(effect.name), "w") as f:
+            with open(self.effect_s_path(effect.name), "w", encoding="utf-8") as f:
                 f.write(self.get_effect_asm(i, effect.name))
 
     def split(self, rom_bytes):

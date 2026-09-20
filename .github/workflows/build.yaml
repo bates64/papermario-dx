@@ -33,7 +33,6 @@ jobs:
           path: |
             ver/us/build
             assets/us
-            .n2_db
             .ninja_deps
       - name: Build shell
         run: nix develop --command true

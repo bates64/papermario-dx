@@ -38,8 +38,8 @@ if __name__ == "__main__":
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
-    with open(args.out_dir / "effect_table.c", "w") as f:
+    with open(args.out_dir / "effect_table.c", "w", encoding="utf-8") as f:
         f.write(effect_table_text + "};\n\n" + effect_arg_counts_text + "};\n")
 
-    with open(args.out_dir / "effect_defs.h", "w") as f:
+    with open(args.out_dir / "effect_defs.h", "w", encoding="utf-8") as f:
         f.write(GENERATED_NOTICE + "\n#pragma once\n\n" + effect_enum_text + "\n\n" + fx_decls_text)

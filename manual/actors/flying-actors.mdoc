@@ -1,0 +1,100 @@
+---
+title: Flying and Ceiling Actors
+sidebar:
+  order: 6
+---
+
+Actors can be positioned in the air or attached to the ceiling. Both require specific flags and movement functions.
+
+## Flying actors
+
+Set `ACTOR_FLAG_FLYING` on the blueprint to make the actor airborne:
+
+```c
+export ActorBlueprint blueprint = {
+    .flags = ACTOR_FLAG_FLYING,
+    // ...
+};
+```
+
+Flying actors use different movement functions than ground actors:
+
+| Ground function | Flying equivalent |
+|----------------|-------------------|
+| `RunToGoal` | `FlyToGoal` |
+| `IdleRunToGoal` | `IdleFlyToGoal` |
+
+```c
+// flying movement (in EVS_Idle or EVS_TakeTurn)
+Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+Call(FlyToGoal,
+    ACTOR_SELF, 0, -4, EASING_LINEAR)
+```
+
+The third argument to `FlyToGoal` is the arc height (negative = bob downward), and the fourth is the easing function.
+
+### Knockdown
+
+A flying actor can be grounded by attacks. Handle `EVENT_FALL_TRIGGER` in `EVS_HandleEvent` to trigger a knockdown sequence:
+
+```c
+CaseEq(EVENT_FALL_TRIGGER)
+    SetConst(LVar0, PRT_FLYING)
+    SetConst(LVar1, ANIM_Paragoomba_Hurt)
+    ExecWait(EVS_Enemy_Hit)
+    ExecWait(EVS_KnockDown)
+```
+
+A knockdown typically involves:
+- Swapping visible [parts](parts) (hide flying body, show grounded body)
+- Removing the `ACTOR_FLAG_FLYING` flag
+- Changing the status table
+- Moving the actor's home position to the ground tier
+- Rebinding scripts to downed versions
+
+See `src/battle/actor/paragoomba.c` for a complete flying-to-grounded transition.
+
+## Ceiling actors
+
+Set `ACTOR_FLAG_UPSIDE_DOWN` to make an actor hang from the ceiling:
+
+```c
+export ActorBlueprint blueprint = {
+    .flags = ACTOR_FLAG_UPSIDE_DOWN,
+    // ...
+    .statusIconOffset = { -10, -20 },
+    .statusTextOffset = { 10, -20 },
+};
+```
+
+{% aside %}
+The status icon and text offsets need to be **negative** for ceiling actors so they appear below the actor (which is rendered upside-down at the top of the screen).
+{% /aside %}
+
+You can toggle the flag at runtime when the actor detaches from the ceiling:
+
+```c
+// detach from ceiling
+Call(SetActorFlagBits,
+    ACTOR_SELF, ACTOR_FLAG_UPSIDE_DOWN, false)
+```
+
+### Ceiling + spiky
+
+Ceiling actors are often combined with [spiky flags](spiky-actors). For example, Spike Top uses both `ACTOR_FLAG_UPSIDE_DOWN` and `ACTOR_EVENT_FLAG_SPIKY_TOP`:
+
+```c
+export ActorBlueprint blueprint = {
+    .flags = ACTOR_FLAG_UPSIDE_DOWN,
+    // ...
+};
+
+ActorPartBlueprint ActorParts[] = {
+    {
+        // ...
+        .eventFlags = ACTOR_EVENT_FLAG_SPIKY_TOP | ACTOR_EVENT_FLAG_FLIPABLE,
+    },
+};
+```
+
+For ceiling actor examples, see `src/battle/actor/swooper.c` (simple) and `src/battle/actor/spike_top.c` (ceiling + spiky + flipable).

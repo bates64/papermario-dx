@@ -128,7 +128,7 @@ if __name__ == "__main__":
             f.write(offset.to_bytes(4, byteorder="big"))
         f.write(b"\0\0\0\0")
 
-    with open(header_file, "w") as f:
+    with open(header_file, "w", encoding="utf-8") as f:
         f.write(f'#pragma once\n\n#include "messages.h"\n\n')
 
         seen = {}

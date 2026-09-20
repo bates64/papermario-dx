@@ -46,7 +46,7 @@ static const OverlayStorage overlayStorage[OVL_NUM_TYPES] = {
     [OVL_MAP] = {
         .mode = OVL_STORAGE_FIXED,
         .base = (u8*)MAP_OVERLAY_ADDR,
-        .slotSize = 0,
+        .slotSize = MAP_OVERLAY_SLOT_SIZE,
         .slotCount = 1,
         .descStart = 0,
         .descCount = MAX_GENERAL_OVERLAYS,
@@ -282,6 +282,9 @@ static u8* allocate_storage(Overlay* ovl, u32 footprint) {
     ovl->storageSlot = -1;
     switch (storage->mode) {
         case OVL_STORAGE_FIXED:
+            ASSERT_MSG(footprint <= storage->slotSize,
+                       "Overlay '%s' footprint 0x%X exceeds fixed storage size 0x%X",
+                       ovl->name, (unsigned int)footprint, (unsigned int)storage->slotSize);
             for (s32 i = 0; i < MAX_OVERLAYS; i++) {
                 ASSERT_MSG(&overlays[i] == ovl || overlays[i].name[0] == '\0' || overlays[i].type != ovl->type,
                            "Fixed overlay storage for type %d is already occupied", ovl->type);
