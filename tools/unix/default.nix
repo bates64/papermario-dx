@@ -23,6 +23,7 @@
   pkgs,
   nixpkgs-binutils-2_39,
   mipsCrossGcc,
+  mipsGdb,
 }:
 
 let
@@ -82,6 +83,7 @@ let
   closureRoots = [
     mips-binutils
     mips-gcc
+    mipsGdb
     n64crc
     pigment64-native
     crunch64-native
@@ -104,10 +106,6 @@ let
       while read -r p; do
         cp -rL --no-preserve=ownership "$p" "$dir/store/$(basename "$p")"
       done < ${closure}/store-paths
-      # /nix/store paths are read-only; make our copies writable for
-      # patchelf/install_name_tool later, without disturbing the executable
-      # bits that --no-preserve=mode would otherwise reset.
-      chmod -R u+w "$dir/store"
 
       # Flatten every shared library into lib/ as relative symlinks, so every
       # binary can share a single RPATH pointing at lib/.
@@ -127,6 +125,16 @@ let
         link_bin "$tool"
       done
 
+      # The debugger an editor attaches to ares' GDB stub with. Its package is
+      # named for the bare-metal triple rather than the compiler's, so link it
+      # under a stable name instead of deriving one.
+      gdb=$(find "$dir/store/$(basename ${mipsGdb})/bin" -name '*gdb' | head -n1)
+      if [ -z "$gdb" ]; then
+        echo "tools/unix: no gdb binary in ${mipsGdb}" >&2
+        exit 1
+      fi
+      ln -sf "$(realpath --relative-to="$dir/bin" "$gdb")" "$dir/bin/gdb"
+
       # MIPS glibc headers (string.h, stdio.h, etc.) in the sysroot.
       mkdir -p $dir/mips-linux-gnu/sys-include
       cp -rL ${mipsGlibcDev}/include/* $dir/mips-linux-gnu/sys-include/
@@ -144,7 +152,13 @@ let
       # PYTHONPATH rather than baked into the interpreter's own store copy.
       mkdir -p $dir/python
       cp -rL --no-preserve=ownership ${python-packages}/* $dir/python/
-      chmod -R u+w $dir/python
+
+      # Everything copied above came from read-only /nix/store paths. Make the
+      # whole tree writable, without disturbing the executable bits that
+      # --no-preserve=mode would otherwise reset: activation rewrites the
+      # binaries in place, and a read-only directory anywhere in here would
+      # also stop download_toolchain.sh removing the toolchain to update it.
+      chmod -R u+w "$dir"
 
       ${pkgs.lib.optionalString (!isDarwin) ''
         cp ${pkgs.pkgsStatic.patchelf}/bin/patchelf $dir/bin/.patchelf

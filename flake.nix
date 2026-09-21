@@ -63,8 +63,12 @@
         };
         pythonDeps = windowsToolchain.passthru.pythonDeps;
 
+        # Runs on this machine and debugs MIPS, so it comes from the cross
+        # package set's build packages rather than pkgs.
+        mipsGdb = pkgsCross.buildPackages.gdb;
+
         unixToolchain = import ./tools/unix {
-          inherit pkgs nixpkgs-binutils-2_39;
+          inherit pkgs nixpkgs-binutils-2_39 mipsGdb;
           mipsCrossGcc = pkgsCross.stdenv.cc;
         };
         linuxRom = pkgs.runCommand "papermario-linux-rom" {
@@ -203,7 +207,7 @@
             star-rod.packages.${system}.default
             clang-tools
             treefmt
-          ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
+          ] ++ [ mipsGdb ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
           shellHook = ''
             rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64
             export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
