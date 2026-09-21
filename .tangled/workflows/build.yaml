@@ -10,6 +10,14 @@ dependencies:
     - nix
 
 steps:
+  - name: "Configure Nix caches"
+    command: |
+      cat >> /etc/nix/nix.conf <<EOF
+      accept-flake-config = true
+      extra-substituters = https://spindle:${SPINDLE_NIX_CACHE_PASSWORD}@spindle-nix-cache.starhaven.dev
+      extra-trusted-public-keys = spindle-nix-cache.starhaven.dev-1:ITs3A4uq6PjFUYIbtkPwoH03ii4K4uwsTDpfvovPKvs=
+      EOF
+
   - name: "Build shell"
     command: nix develop --command true
 
