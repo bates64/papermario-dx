@@ -7,8 +7,11 @@
 
     flake-utils.url = "github:numtide/flake-utils";
 
+    # Not `follows`-ed to our nixpkgs: tools/star-rod.nix rebuilds star-rod's
+    # jar using its own pinned nixpkgs/Gradle, since its offline dependency
+    # resolution (gradle/verification-metadata.xml) is pinned to that exact
+    # Gradle version.
     star-rod.url = "github:z64a/star-rod/9339cb4e867514267ff8ab404b00b53e5a5e67dd";
-    star-rod.inputs.nixpkgs.follows = "nixpkgs";
   };
   nixConfig = {
     extra-substituters = [
@@ -56,10 +59,19 @@
           '';
           sha256 = "9ec6d2a5c2fca81ab86312328779fd042b5f3b920bf65df9f6b87b376883cb5b";
         };
+        # Plain platform-independent bytecode; rebuilt per-system (like the
+        # rest of the toolchain) rather than cross-referencing a single
+        # build, since CI's aarch64-darwin runner can't build/substitute an
+        # x86_64-linux derivation.
+        starRodJar = import ./tools/star-rod.nix { starRod = star-rod; inherit system; };
+
         windowsToolchain = import ./tools/windows {
           inherit pkgs nixpkgs-binutils-2_39 baseRom;
           mipsCrossGcc = pkgsCross.stdenv.cc;
           src = self;
+          # Windows-toolchain is only ever built from the x86_64-linux branch
+          # below, so this is always that same system's starRodJar.
+          inherit starRodJar;
         };
         pythonDeps = windowsToolchain.passthru.pythonDeps;
 
@@ -68,7 +80,7 @@
         mipsGdb = pkgsCross.buildPackages.gdb;
 
         unixToolchain = import ./tools/unix {
-          inherit pkgs nixpkgs-binutils-2_39 mipsGdb;
+          inherit pkgs nixpkgs-binutils-2_39 mipsGdb starRodJar;
           mipsCrossGcc = pkgsCross.stdenv.cc;
         };
         linuxRom = pkgs.runCommand "papermario-linux-rom" {
@@ -204,7 +216,9 @@
             gcc # for n64crc
             (callPackage ./tools/pigment64.nix {})
             (callPackage ./tools/crunch64.nix {})
-            star-rod.packages.${system}.default
+            (writeShellScriptBin "star-rod" ''
+              exec ${jdk17}/bin/java -jar ${starRodJar}/share/java/StarRod.jar "$@"
+            '')
             clang-tools
             treefmt
           ] ++ [ mipsGdb ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508

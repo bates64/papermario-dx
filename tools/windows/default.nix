@@ -4,6 +4,7 @@
   mipsCrossGcc,
   baseRom,
   src,
+  starRodJar,
 }:
 
 let
@@ -52,6 +53,7 @@ let
   ccache-windows = pkgs.callPackage ./ccache.nix {};
   n64crc-windows = import ./n64crc.nix { stdenv = mingwStdenv; };
   busybox-windows = pkgs.callPackage ./busybox.nix {};
+  jre-windows = pkgs.callPackage ./jre.nix {};
 
   pigment64-windows = mingw.callPackage ../pigment64.nix {};
   crunch64-windows = mingw.callPackage ../crunch64.nix {};
@@ -259,6 +261,16 @@ let
       unzip -o -q "$whl" -d $dir/python/Lib/site-packages
     done
     unzip -o -q ${ntfsutilsWheel} -d $dir/python/Lib/site-packages
+
+    # Star Rod: bundled JRE + jar, launched via a small .bat wrapper
+    mkdir -p $dir/jre $dir/share/java
+    cp -rL ${jre-windows}/* $dir/jre/
+    cp -L ${starRodJar}/share/java/StarRod.jar $dir/share/java/StarRod.jar
+    cat > $dir/bin/star-rod.bat << 'STARROD_EOF'
+    @echo off
+    set "TOOLCHAIN_DIR=%~dp0..\"
+    "%TOOLCHAIN_DIR%jre\bin\java.exe" -jar "%TOOLCHAIN_DIR%share\java\StarRod.jar" %*
+    STARROD_EOF
 
     cat > $dir/shell.bat << 'SHELL_EOF'
     @echo off

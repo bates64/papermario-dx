@@ -2,9 +2,9 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Run Mod",
+      "label": "Build Mod",
       "type": "shell",
-      "command": "nix --extra-experimental-features \"flakes nix-command\" develop --profile .nix-profile --command ./run",
+      "command": "./build.sh",
       "problemMatcher": "$gcc",
       "group": {
         "kind": "build",
@@ -15,7 +15,28 @@
       }
     },
     {
+      "label": "Build Mod (Nix)",
+      "type": "shell",
+      "command": "nix --extra-experimental-features \"flakes nix-command\" develop --profile .nix-profile --command ./build.sh",
+      "problemMatcher": "$gcc",
+      "group": {
+        "kind": "none"
+      },
+    },
+    {
       "label": "Open Star Rod",
+      "type": "shell",
+      "command": "./star-rod.sh",
+      "problemMatcher": [],
+      "group": {
+        "kind": "none"
+      },
+      "windows": {
+        "command": "star-rod.bat"
+      }
+    },
+    {
+      "label": "Open Star Rod (Nix)",
       "type": "shell",
       "command": "nix --extra-experimental-features \"flakes nix-command\" develop --profile .nix-profile --command star-rod",
       "problemMatcher": [],
