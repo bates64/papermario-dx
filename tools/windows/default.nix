@@ -61,7 +61,7 @@ let
   # MIPS glibc headers from the native cross-compiler, needed for string.h etc.
   mipsGlibcDev = mipsCrossGcc.libc.dev;
 
-  requirements = ../../requirements.txt;
+  requirements = ../requirements.txt;
 
   # Both wheel sets below are fixed-output derivations, so their store path
   # depends only on the name and outputHash. Including the requirements digest
@@ -191,7 +191,7 @@ let
     # Install Python packages from cached wheels
     virtualenv venv --quiet
     source venv/bin/activate
-    pip install --no-index --find-links=${pythonDeps} -r requirements.txt --quiet
+    pip install --no-index --find-links=${pythonDeps} -r tools/requirements.txt --quiet
 
     # The ld wrapper uses wine; set PAPERMARIO_LD to use it
     export PAPERMARIO_LD="mips-linux-gnu-ld"

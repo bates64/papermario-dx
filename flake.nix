@@ -113,7 +113,7 @@
 
           virtualenv venv --quiet
           source venv/bin/activate
-          pip install --no-index --find-links=${pythonDeps} -r requirements.txt --quiet
+          pip install --no-index --find-links=${pythonDeps} -r tools/requirements.txt --quiet
 
           export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
           python3 tools/build/configure.py --no-ccache
@@ -154,7 +154,7 @@
 
           virtualenv venv --quiet
           source venv/bin/activate
-          pip install --no-index --find-links=${pythonDeps} -r requirements.txt --quiet
+          pip install --no-index --find-links=${pythonDeps} -r tools/requirements.txt --quiet
 
           export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
           python3 tools/build/configure.py --no-ccache
@@ -228,7 +228,7 @@
 
             virtualenv venv --quiet
             source venv/bin/activate
-            pip install -r ${./requirements.txt} -r ${./requirements_extra.txt} --quiet
+            pip install -r ${./tools/requirements.txt} -r ${./tools/requirements_extra.txt} --quiet
           '';
         };
       }

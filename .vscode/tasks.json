@@ -4,20 +4,20 @@
     {
       "label": "Build Mod",
       "type": "shell",
-      "command": "./build.sh",
+      "command": "./tools/build.sh",
       "problemMatcher": "$gcc",
       "group": {
         "kind": "build",
         "isDefault": true
       },
       "windows": {
-        "command": "build.bat"
+        "command": "tools\\build.bat"
       }
     },
     {
       "label": "Build Mod (Nix)",
       "type": "shell",
-      "command": "nix --extra-experimental-features \"flakes nix-command\" develop --profile .nix-profile --command ./build.sh",
+      "command": "nix --extra-experimental-features \"flakes nix-command\" develop --profile .nix-profile --command ./tools/build.sh",
       "problemMatcher": "$gcc",
       "group": {
         "kind": "none"
@@ -26,13 +26,13 @@
     {
       "label": "Open Star Rod",
       "type": "shell",
-      "command": "./star-rod.sh",
+      "command": "./tools/star-rod.sh",
       "problemMatcher": [],
       "group": {
         "kind": "none"
       },
       "windows": {
-        "command": "star-rod.bat"
+        "command": "tools\\star-rod.bat"
       }
     },
     {

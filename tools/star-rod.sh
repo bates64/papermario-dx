@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-ROOT="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TOOLCHAIN_DIR="$ROOT/.dx/unix"
 
 # If star-rod isn't already on PATH (e.g. via `nix develop`), download the

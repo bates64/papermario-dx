@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 
 set "REPO=bates64/papermario-dx"
-set "DX_DIR=%~dp0.dx"
+set "DX_DIR=%~dp0..\.dx"
 set "TOOLCHAIN_DIR=%DX_DIR%\windows"
 set "TOOLCHAIN_ZIP=%DX_DIR%\papermario-dx-windows.zip"
 
