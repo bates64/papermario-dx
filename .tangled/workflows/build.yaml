@@ -3,8 +3,11 @@ when:
     branch: ["main"]
   - event: ["pull_request"]
 
-engine: microvm
-image: nixos
+engine: nixery
+
+dependencies:
+  nixpkgs:
+    - nix
 
 steps:
   - name: "Build shell"
@@ -18,6 +21,3 @@ steps:
 
   - name: "Build patch file"
     command: nix develop --command ninja ver/us/build/papermario.bps
-# trigger
-# retry 1790030928
-# retest 1790032075
