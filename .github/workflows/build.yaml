@@ -37,7 +37,7 @@ jobs:
       - name: Build shell
         run: nix develop --command true
       - name: Configure
-        run: nix develop --command "./configure"
+        run: nix develop --command "./tools/configure.sh"
       - uses: root-project/gcc-problem-matcher-improved@v0.0.1-alpha.1
       - name: Build game
         run: nix develop --command "ninja"

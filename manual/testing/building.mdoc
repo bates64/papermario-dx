@@ -8,45 +8,58 @@ After making changes, you need to build the ROM to test them.
 
 ## Using VS Code
 
-With Visual Studio Code focused, press **Ctrl+Shift+B** (Cmd+Shift+B on macOS). This builds the ROM and launches it in an emulator if one is found.
+With Visual Studio Code focused, press **Ctrl+Shift+B** (Cmd+Shift+B on macOS) to build the ROM.
 
-The output ROM is at `ver/us/build/papermario.z64`.
+If you set up your project [using Nix](/papermario-dx/dx), use **Ctrl+Shift+P > Tasks: Run Task > Build Mod (Nix)** instead, so the build runs inside the Nix environment.
+
+The output ROM is at `ver/us/build/papermario.z64`. See [Running](#running) below for how to load it.
 
 ## Building manually
 
 If you prefer to build from the command line, or if the VS Code task isn't working:
 
-### 1. Enter the development environment
+{% tabs %}
+{% tabitem label="Windows" %}
+Open a terminal in the project folder and run:
 
+```
+.\tools\configure.bat
+.\tools\build.bat
+```
+
+`configure.bat` downloads the compiler toolchain (on the first run) and creates a `build.ninja` file. You only need to re-run it if you add or remove source files. `build.bat` builds the ROM.
+{% /tabitem %}
+{% tabitem label="macOS/Linux" %}
+Make sure `git`, `ninja`, and `python3` are installed, then run:
+
+```sh
+./tools/configure.sh
+./tools/build.sh
+```
+
+`configure.sh` downloads the compiler toolchain (on the first run) and creates a `build.ninja` file. You only need to re-run it if you add or remove source files. `build.sh` builds the ROM.
+{% /tabitem %}
+{% tabitem label="Using Nix" %}
 ```sh
 nix develop
 ```
 
-This provides the cross-compiler toolchain, build tools, and all other dependencies. You need to be in this shell for the following commands to work.
-
-### 2. Generate the build configuration
+This builds (or downloads, if cached) the cross-compiler toolchain, build tools, and all other dependencies using [Nix](https://nixos.org). You need to be in this shell for the following commands to work.
 
 ```sh
-./configure
-```
-
-This creates a `build.ninja` file. You only need to re-run this if you add or remove source files.
-
-### 3. Build the ROM
-
-```sh
+./tools/configure.sh
 ninja
 ```
+{% /tabitem %}
+{% /tabs %}
 
 {% aside %}
-If you're experiencing a weird build issue (e.g. after updating DX), try `./configure --clean` to delete previously-built files and start fresh.
+If you're experiencing a weird build issue (e.g. after updating DX), try `./tools/configure.sh --clean` (or `.\tools\configure.bat --clean` on Windows) to delete previously-built files and start fresh.
 {% /aside %}
 
 ## Running
 
-DX will try to launch the ROM in a known emulator after building. We recommend the accurate emulator [ares](https://ares-emu.net).
-
-If DX did not find your emulator, load `ver/us/build/papermario.z64` manually. For real hardware, copy this ROM to a flashcart.
+Load `ver/us/build/papermario.z64` in an emulator. We recommend the accurate emulator [ares](https://ares-emu.net). For real hardware, copy this ROM to a flashcart.
 
 {% aside type="caution" %}
 If you don't regularly test with ares and/or real hardware, your mod may not work correctly for others.

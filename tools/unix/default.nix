@@ -24,6 +24,7 @@
   nixpkgs-binutils-2_39,
   mipsCrossGcc,
   mipsGdb,
+  starRodJar,
 }:
 
 let
@@ -75,6 +76,7 @@ let
   pigment64-native = pkgs.callPackage ../pigment64.nix { };
   crunch64-native = pkgs.callPackage ../crunch64.nix { };
   python-packages = import ./python.nix { inherit pkgs; };
+  jre = import ./jre.nix { inherit pkgs; };
 
   # MIPS glibc headers, borrowed from the reference native cross-compiler for
   # the same target (this build only compiles `all-gcc`, not target libs).
@@ -90,6 +92,8 @@ let
     pkgs.ninja
     pkgs.ccache
     pkgs.python3
+    jre
+    starRodJar
   ];
   closure = pkgs.closureInfo { rootPaths = closureRoots; };
 
@@ -121,7 +125,7 @@ let
       for tool in mips-linux-gnu-gcc mips-linux-gnu-g++ mips-linux-gnu-cpp mips-linux-gnu-ld mips-linux-gnu-as \
                   mips-linux-gnu-ar mips-linux-gnu-nm mips-linux-gnu-objcopy mips-linux-gnu-objdump \
                   mips-linux-gnu-ranlib mips-linux-gnu-strip \
-                  ninja ccache pigment64 crunch64 n64crc python3; do
+                  ninja ccache pigment64 crunch64 n64crc python3 java; do
         link_bin "$tool"
       done
 
@@ -135,6 +139,16 @@ let
       fi
       ln -sf "$(realpath --relative-to="$dir/bin" "$gdb")" "$dir/bin/gdb"
 
+      # Star Rod: bundled jar + a wrapper script, launched via bin/java.
+      mkdir -p $dir/share/java
+      cp -L "$(find "$dir/store" -path '*/share/java/StarRod.jar' | head -n1)" $dir/share/java/StarRod.jar
+      cat > $dir/bin/star-rod << 'STARROD_EOF'
+      #!/bin/sh
+      DIR="$(cd "$(dirname "$0")/.." && pwd)"
+      exec "$DIR/bin/java" -jar "$DIR/share/java/StarRod.jar" "$@"
+      STARROD_EOF
+      chmod +x $dir/bin/star-rod
+
       # MIPS glibc headers (string.h, stdio.h, etc.) in the sysroot.
       mkdir -p $dir/mips-linux-gnu/sys-include
       cp -rL ${mipsGlibcDev}/include/* $dir/mips-linux-gnu/sys-include/
@@ -145,6 +159,9 @@ let
       # rather than alongside it.
       gccPrefix=$dir/store/$(basename ${mips-gcc})
       gccVersion=$(ls ${mips-gcc}/lib/gcc/mips-linux-gnu)
+      # $gccPrefix is still read-only, copied straight from /nix/store; the
+      # final chmod below runs too late to let this mkdir/cp write into it.
+      chmod -R u+w "$gccPrefix"
       mkdir -p $gccPrefix/mips-linux-gnu/include/c++/$gccVersion
       cp -rL ${mipsCrossGcc.cc}/include/c++/*/* $gccPrefix/mips-linux-gnu/include/c++/$gccVersion/
 

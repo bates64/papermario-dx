@@ -82,7 +82,7 @@ if "%NEED_DOWNLOAD%"=="1" (
         :: Using windows' tar command
         where tar >nul 2>nul
         if errorlevel 1 (
-            echo msgbox "tar is not available on this system (Windows 7)." ^& vbCrLf ^& vbCrLf ^& "Please manually extract:" ^& vbCrLf ^& "%TOOLCHAIN_ZIP%" ^& vbCrLf ^& vbCrLf ^& "To the following directory:" ^& vbCrLf ^& "%DX_DIR%\windows" ^& vbCrLf ^& vbCrLf ^& "Then run build.bat again.", vbOKOnly, "papermario-dx" > "%TEMP%\dx-notar.vbs"
+            echo msgbox "tar is not available on this system (Windows 7)." ^& vbCrLf ^& vbCrLf ^& "Please manually extract:" ^& vbCrLf ^& "%TOOLCHAIN_ZIP%" ^& vbCrLf ^& vbCrLf ^& "To the following directory:" ^& vbCrLf ^& "%DX_DIR%\windows" ^& vbCrLf ^& vbCrLf ^& "Then run tools\build.bat again.", vbOKOnly, "papermario-dx" > "%TEMP%\dx-notar.vbs"
             wscript "%TEMP%\dx-notar.vbs"
             del "%TEMP%\dx-notar.vbs"
             exit /b 1

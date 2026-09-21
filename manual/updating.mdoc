@@ -1,0 +1,38 @@
+---
+title: Updating your project
+sidebar:
+  order: 5
+---
+
+In VS Code, open a terminal (**Terminal > New Terminal**), then:
+
+## Add papermario-dx as a remote named `upstream`
+
+```sh
+git remote add upstream https://github.com/bates64/papermario-dx.git
+```
+
+## Fetch the latest changes
+
+```sh
+git fetch upstream --tags --force
+```
+
+## Merge the version you want into your `main` branch
+
+Paper Mario DX marks releases with tags, such as `dx-nightly` for the latest development build:
+
+```sh
+git checkout main
+git merge upstream/dx-nightly
+```
+
+Replace `dx-nightly` with a specific version tag (for example `dx-1.0`) for a stable release instead.
+
+## Resolve any merge conflicts
+
+VS Code highlights conflicting sections in the editor with buttons like **Accept Current Change**, **Accept Incoming Change**, and **Accept Both Changes**. Stage each resolved file in the Source Control panel (**Ctrl+Shift+G**), then commit the merge.
+
+## Build
+
+Build as usual with **Ctrl+Shift+B**.

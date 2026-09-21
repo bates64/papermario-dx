@@ -8,7 +8,7 @@ First versioned release. The following changes are relative to [vanilla Paper Ma
 
 ### Added
 
-- DX settings can be configured in [src/dx/config.h](src/dx/config.h):
+- DX settings can be configured in [src/dx/config.h](../src/dx/config.h):
     - Quick launch into first save file on boot with `DX_QUICK_LAUNCH`.
     - Change 'First Play' map with `NEW_GAME_MAP_ID`.
     - Adjust the title screen with `DX_SKIP_LOGOS`, `DX_SKIP_STORY`, `DX_SKIP_DEMO`.

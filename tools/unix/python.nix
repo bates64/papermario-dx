@@ -6,8 +6,8 @@
 { pkgs }:
 
 let
-  requirements = ../../requirements.txt;
-  requirementsExtra = ../../requirements_extra.txt;
+  requirements = ../requirements.txt;
+  requirementsExtra = ../requirements_extra.txt;
   requirementsDigest = builtins.substring 0 8 (builtins.hashFile "sha256" requirements);
 
   # Each platform resolves a different set of wheels, so each needs its own
