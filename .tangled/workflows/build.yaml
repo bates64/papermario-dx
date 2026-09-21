@@ -1,0 +1,20 @@
+when:
+  - event: ["push"]
+    branch: ["main"]
+  - event: ["pull_request"]
+
+engine: microvm
+image: nixos
+
+steps:
+  - name: "Build shell"
+    command: nix develop --command true
+
+  - name: "Configure"
+    command: nix develop --command ./tools/configure.sh
+
+  - name: "Build game"
+    command: nix develop --command ninja
+
+  - name: "Build patch file"
+    command: nix develop --command ninja ver/us/build/papermario.bps
