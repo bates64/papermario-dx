@@ -6,10 +6,12 @@ import re
 import shutil
 import subprocess
 import sys
+import urllib.error
+import urllib.request
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
-from typing import Dict, List, Set, Tuple, Union
+from typing import Dict, List, Optional, Set, Tuple, Union
 
 import ninja_syntax
 
@@ -51,6 +53,44 @@ else:
     CRC_TOOL = f"{BUILD_TOOLS}/rom/n64crc"
 
 SOURCE_DIRS = ["src", "include", "assets"]
+
+# Publishes shared sccache credentials for anyone building papermario-dx (or
+# a fork/mod of it). Overridable for self-hosted caches.
+BUILD_JSON_URL = os.environ.get(
+    "PAPERMARIO_BUILD_JSON_URL", "https://papermario-dx.starhaven.dev/build.json"
+)
+
+
+def fetch_shared_sccache_env() -> Optional[Dict[str, str]]:
+    """Fetches config for the shared sccache instance and translates it into
+    sccache's S3-backend environment variables. Returns None (falling back to
+    a local-only cache) if the user already has their own sccache configured,
+    or the shared cache can't be reached."""
+    if any(k.startswith("SCCACHE_") for k in os.environ) or "AWS_ACCESS_KEY_ID" in os.environ:
+        return None
+
+    try:
+        with urllib.request.urlopen(BUILD_JSON_URL, timeout=3) as resp:
+            config = json.load(resp)
+        sccache_config = config["sccache"]
+        endpoint: str = sccache_config["endpoint"]
+        use_ssl = "true"
+        if endpoint.startswith("https://"):
+            endpoint = endpoint[len("https://") :]
+        elif endpoint.startswith("http://"):
+            endpoint = endpoint[len("http://") :]
+            use_ssl = "false"
+        return {
+            "SCCACHE_BUCKET": sccache_config["bucket"],
+            "SCCACHE_ENDPOINT": endpoint,
+            "SCCACHE_REGION": "auto",
+            "SCCACHE_S3_USE_SSL": use_ssl,
+            "AWS_ACCESS_KEY_ID": sccache_config["accessKey"],
+            "AWS_SECRET_ACCESS_KEY": sccache_config["secretKey"],
+        }
+    except (urllib.error.URLError, TimeoutError, OSError, ValueError, KeyError) as e:
+        print(f"note: couldn't reach shared sccache config ({e}), using a local-only cache", file=sys.stderr)
+        return None
 
 
 def _walk_source_file_list():
@@ -183,22 +223,42 @@ def write_ninja_rules(
     extra_cppflags: str,
     extra_cflags: str,
     extra_cxxflags: str,
-    use_ccache: bool,
+    use_sccache: bool,
     shift: bool,
     debug: bool,
 ):
     # platform-specific
 
-    ccache = ""
+    sccache = ""
 
-    if use_ccache:
-        ccache = "ccache "
+    if use_sccache:
+        sccache_found = True
         try:
             subprocess.call(
-                ["ccache"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+                ["sccache", "--version"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
             )
         except FileNotFoundError:
-            ccache = ""
+            sccache_found = False
+
+        if sccache_found:
+            # SCCACHE_BASEDIRS strips the checkout root from hashed compiler
+            # arguments and preprocessed source, the same way ccache's
+            # CCACHE_BASEDIR does - without it, two contributors' checkouts
+            # (different absolute paths) would never hash to the same cache
+            # entry. Needs sccache >= 0.18.0, which strips basedirs from
+            # compiler arguments too, not just preprocessed source (see
+            # tools/sccache.nix and tools/windows/sccache.nix).
+            sccache_env = {"SCCACHE_BASEDIRS": os.getcwd()}
+            remote_env = fetch_shared_sccache_env()
+            if remote_env is not None:
+                sccache_env.update(remote_env)
+
+            env_file = ROOT / "build" / "sccache_env.json"
+            env_file.parent.mkdir(parents=True, exist_ok=True)
+            env_file.write_text(json.dumps(sccache_env))
+            sccache = f"$python {BUILD_TOOLS}/sccache_wrapper.py "
 
     cross = "mips-linux-gnu-"
     cc_modern = f"{cross}gcc"
@@ -213,7 +273,15 @@ def write_ninja_rules(
 
     CPPFLAGS = CPPFLAGS_COMMON
 
-    modern_flags = "-c -G0 -O2 -g1 -gdwarf -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch"
+    # Remaps the absolute checkout path to a fixed virtual path in debug info
+    # and __FILE__/__DIR__ macro expansions, so an object file built on one
+    # contributor's machine still has sane, portable debug paths when reused
+    # from the shared cache on someone else's. This flag's own text contains
+    # the checkout path, but SCCACHE_BASEDIRS strips that back out before
+    # hashing, so it doesn't defeat the cache itself.
+    prefix_map = f"-ffile-prefix-map={os.getcwd()}=/papermario-dx"
+
+    modern_flags = f"-c -G0 -O2 -g1 -gdwarf -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {prefix_map}"
     cflags_modern = f"{modern_flags} {extra_cflags}"
     cxxflags_modern = f"{modern_flags} {extra_cxxflags}"
 
@@ -275,7 +343,7 @@ def write_ninja_rules(
     ninja.rule(
         "cc_modern",
         description="Compiling $in",
-        command=f"{ccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.h -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
+        command=f"{sccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.h -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -283,7 +351,7 @@ def write_ninja_rules(
     ninja.rule(
         "cxx_modern",
         description="Compiling $in",
-        command=f"{ccache}{cxx_modern} {cxxflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.hpp -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
+        command=f"{sccache}{cxx_modern} {cxxflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.hpp -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -1945,7 +2013,7 @@ if __name__ == "__main__":
         action="store_true",
         help="Use modern GCC instead of the original compiler",
     )
-    parser.add_argument("--no-ccache", action="store_true", help="Use ccache")
+    parser.add_argument("--no-sccache", action="store_true", help="Use sccache")
     parser.add_argument(
         "--dump",
         action="store_true",
@@ -1969,7 +2037,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     args.shift = not args.no_shift
     args.non_matching = not args.no_non_matching
-    args.ccache = not args.no_ccache
+    args.sccache = not args.no_sccache
     args.evt_validation = not args.no_evt_validation
 
     if args.incremental:
@@ -2104,7 +2172,7 @@ if __name__ == "__main__":
         extra_cppflags,
         extra_cflags,
         extra_cxxflags,
-        args.ccache,
+        args.sccache,
         args.shift,
         args.debug,
     )
@@ -2231,9 +2299,11 @@ if __name__ == "__main__":
         if compdb.returncode == 0:
             entries = json.loads(compdb.stdout)
             strip_re = re.compile(r"^(-m\S+|-f\S+|-g\S+|-G\d+|--warn-\S+)$")
-            cross_cc_re = re.compile(r"^(ccache\s+)?mips-linux-gnu-g(cc|\+\+)(?=\s)")
+            # Strips any wrapper (sccache, the sccache_wrapper.py shim, ...)
+            # ahead of the compiler invocation, leaving a plain "cc ...".
+            cross_cc_re = re.compile(r"^.*?\bmips-linux-gnu-g(cc|\+\+)(?=\s)")
             for entry in entries:
-                entry["command"] = cross_cc_re.sub(r"\1cc", entry["command"])
+                entry["command"] = cross_cc_re.sub("cc", entry["command"])
                 parts = entry["command"].split()
                 entry["command"] = " ".join(p for p in parts if not strip_re.match(p))
             (ROOT / "compile_commands.json").write_text(

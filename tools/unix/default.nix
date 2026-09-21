@@ -75,6 +75,7 @@ let
   n64crc = import ./n64crc.nix { stdenv = pkgs.stdenv; };
   pigment64-native = pkgs.callPackage ../pigment64.nix { };
   crunch64-native = pkgs.callPackage ../crunch64.nix { };
+  sccache-native = pkgs.callPackage ../sccache.nix { inherit pkgs; };
   python-packages = import ./python.nix { inherit pkgs; };
   jre = import ./jre.nix { inherit pkgs; };
 
@@ -90,7 +91,7 @@ let
     pigment64-native
     crunch64-native
     pkgs.ninja
-    pkgs.ccache
+    sccache-native
     pkgs.python3
     jre
     starRodJar
@@ -126,7 +127,7 @@ let
       for tool in mips-linux-gnu-gcc mips-linux-gnu-g++ mips-linux-gnu-cpp mips-linux-gnu-ld mips-linux-gnu-as \
                   mips-linux-gnu-ar mips-linux-gnu-nm mips-linux-gnu-objcopy mips-linux-gnu-objdump \
                   mips-linux-gnu-ranlib mips-linux-gnu-strip \
-                  ninja ccache pigment64 crunch64 n64crc python3 java clang-format clang-tidy clangd; do
+                  ninja sccache pigment64 crunch64 n64crc python3 java clang-format clang-tidy clangd; do
         link_bin "$tool"
       done
 
@@ -216,9 +217,18 @@ let
       '' else ''
         PATCHELF="$DIR/bin/.patchelf"
         find "$DIR/store" -type f | while read -r f; do
-          if "$PATCHELF" --print-rpath "$f" >/dev/null 2>&1; then
+          # A statically linked binary (e.g. sccache) still has a minimal
+          # dynamic section for self-relocation, so --print-rpath/--print-needed
+          # succeed on it too even though it needs no dependencies and has no
+          # interpreter. Patching it anyway (setting an RPATH it doesn't need)
+          # corrupts it, so only patch files that actually have an interpreter
+          # to rewrite or a real DT_NEEDED dependency to find via RPATH.
+          has_interp=0
+          "$PATCHELF" --print-interpreter "$f" >/dev/null 2>&1 && has_interp=1
+          needed=$("$PATCHELF" --print-needed "$f" 2>/dev/null)
+          if [ "$has_interp" = 1 ] || [ -n "$needed" ]; then
             "$PATCHELF" --set-rpath "$DIR/lib" "$f" || true
-            if "$PATCHELF" --print-interpreter "$f" >/dev/null 2>&1; then
+            if [ "$has_interp" = 1 ]; then
               "$PATCHELF" --set-interpreter "$DIR/lib/${interpName}" "$f" || true
             fi
           fi

@@ -79,6 +79,8 @@
         # package set's build packages rather than pkgs.
         mipsGdb = pkgsCross.buildPackages.gdb;
 
+        sccachePkg = pkgs.callPackage ./tools/sccache.nix { inherit pkgs; };
+
         unixToolchain = import ./tools/unix {
           inherit pkgs nixpkgs-binutils-2_39 mipsGdb starRodJar;
           mipsCrossGcc = pkgsCross.stdenv.cc;
@@ -116,7 +118,7 @@
           pip install --no-index --find-links=${pythonDeps} -r tools/requirements.txt --quiet
 
           export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
-          python3 tools/build/configure.py --no-ccache
+          python3 tools/build/configure.py --no-sccache
           ninja
 
           mkdir -p $out
@@ -162,7 +164,7 @@
           pip install --no-index --find-links=${pythonDeps} -r tools/requirements.txt --quiet
 
           export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
-          python3 tools/build/configure.py --no-ccache
+          python3 tools/build/configure.py --no-sccache
           ninja
 
           # Build binary RIFF index with a known path prefix.
@@ -215,7 +217,7 @@
             libyaml
             python3
             python3Packages.virtualenv
-            ccache
+            sccachePkg
             git
             iconv
             gcc # for n64crc
