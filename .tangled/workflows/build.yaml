@@ -18,3 +18,4 @@ steps:
 
   - name: "Build patch file"
     command: nix develop --command ninja ver/us/build/papermario.bps
+# trigger
