@@ -18,6 +18,14 @@ steps:
       extra-trusted-public-keys = spindle-nix-cache.starhaven.dev-1:ITs3A4uq6PjFUYIbtkPwoH03ii4K4uwsTDpfvovPKvs=
       EOF
 
+  - name: "Fetch base ROM"
+    # pkgs.requireFile sets allowSubstitutes = false, so it will never ask a
+    # substituter for this path itself. Placing it in the local store first
+    # (rather than relying on substitution) satisfies the check.
+    command: |
+      nix copy --from "https://spindle:${SPINDLE_NIX_CACHE_PASSWORD}@spindle-nix-cache.starhaven.dev" \
+        /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64
+
   - name: "Build shell"
     command: nix develop --command true
 
