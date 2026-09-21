@@ -94,6 +94,7 @@ let
     pkgs.python3
     jre
     starRodJar
+    pkgs.llvmPackages.clang-unwrapped
   ];
   closure = pkgs.closureInfo { rootPaths = closureRoots; };
 
@@ -125,7 +126,7 @@ let
       for tool in mips-linux-gnu-gcc mips-linux-gnu-g++ mips-linux-gnu-cpp mips-linux-gnu-ld mips-linux-gnu-as \
                   mips-linux-gnu-ar mips-linux-gnu-nm mips-linux-gnu-objcopy mips-linux-gnu-objdump \
                   mips-linux-gnu-ranlib mips-linux-gnu-strip \
-                  ninja ccache pigment64 crunch64 n64crc python3 java; do
+                  ninja ccache pigment64 crunch64 n64crc python3 java clang-format clang-tidy clangd; do
         link_bin "$tool"
       done
 
