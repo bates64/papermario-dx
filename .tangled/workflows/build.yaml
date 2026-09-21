@@ -8,14 +8,10 @@ engine: nixery
 dependencies:
   nixpkgs:
     - nix
+    - cachix
 
 steps:
   - name: "Configure Nix caches"
-    # spindle-nix-cache (ncps) is not added as a general substituter here:
-    # it has a known bug where some upstream narinfo lookups fail with a
-    # hard 500 ("invalid nar hash") instead of a clean 404, which breaks
-    # automatic substitution for arbitrary packages. It's only used below,
-    # explicitly, for the one path it's been verified to serve reliably.
     command: |
       cat >> /etc/nix/nix.conf <<EOF
       accept-flake-config = true
@@ -31,7 +27,7 @@ steps:
         /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64
 
   - name: "Build shell"
-    command: nix develop --command true
+    command: nix develop --profile ./dev-profile --command true
 
   - name: "Configure"
     command: nix develop --command ./tools/configure.sh
@@ -41,4 +37,8 @@ steps:
 
   - name: "Build patch file"
     command: nix develop --command ninja ver/us/build/papermario.bps
-# retest 1790033803
+
+  - name: "Push to Cachix"
+    command: |
+      cachix push papermario-dx ./dev-profile
+      cachix push papermario-dx ver/us/build/papermario.bps
