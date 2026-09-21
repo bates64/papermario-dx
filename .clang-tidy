@@ -13,6 +13,7 @@ Checks: >
   performance-unnecessary-copy-initialization,
   performance-type-promotion-in-math-fn,
   readability-*,
+  -readability-identifier-naming,
   -readability-magic-numbers,
   -readability-math-missing-parentheses,
   -readability-else-after-return,
@@ -29,18 +30,6 @@ Checks: >
   -readability-enum-initial-value,
   -readability-avoid-unconditional-preprocessor-if,
   -readability-avoid-nested-conditional-operator,
-
-CheckOptions:
-  - key: readability-identifier-naming.LocalVariableCase
-    value: camelBack
-
-  - key: readability-identifier-naming.ParameterCase
-    value: camelBack
-
-  - key: readability-identifier-naming.MemberCase
-    value: camelBack
-  - key: readability-identifier-naming.MemberIgnoredRegexp
-    value: '^(unk|pad|unused)_.*'
 
 # Ignore include/PR/ (libultra) and include/nu/ (nusys)
 HeaderFilterRegex: '(src|include)/(?!PR/|nu/).*\.h'

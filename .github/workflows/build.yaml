@@ -61,7 +61,7 @@ jobs:
         if: github.event_name == 'pull_request'
         id: changed
         run: |
-          files=$(gh pr diff ${{ github.event.pull_request.number }} --name-only | grep -E '\.(c|cpp|h|hpp)$' || true)
+          files=$(gh pr diff ${{ github.event.pull_request.number }} --name-only | grep -E '\.(c|cpp|h|hpp)$' | grep -vE '^include/(nu|PR|libc)/' || true)
           echo "files<<EOF" >> "$GITHUB_OUTPUT"
           echo "$files" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
@@ -70,7 +70,6 @@ jobs:
 
       - name: Check formatting
         if: github.event_name == 'pull_request' && steps.changed.outputs.files != ''
-        continue-on-error: true
         run: |
           nix develop --command bash -c 'echo "$1" | xargs python3 tools/format.py --check' _ "${{ steps.changed.outputs.files }}"
 

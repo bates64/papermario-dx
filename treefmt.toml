@@ -2,3 +2,4 @@
 command = "python3"
 options = ["tools/format.py"]
 includes = ["*.c", "*.cpp", "*.h", "*.hpp"]
+excludes = ["include/nu/**", "include/PR/**", "include/libc/**"]
