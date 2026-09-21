@@ -159,6 +159,7 @@ void state_step_end_battle(void) {
             init_trigger_list();
 
             ovl_unload_type(OVL_ACTOR);
+            remove_all_effects();
 
             if (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_ENABLED) {
                 npc_reload_all();
