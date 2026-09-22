@@ -237,6 +237,15 @@
             rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64
             export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
 
+            # Points sccache at the shared-cache config/credentials that
+            # Configure writes to .dx/ (see write_shared_sccache_config in
+            # configure.py) - exported once for the whole shell session
+            # rather than per compile, since ninja's rule commands can't
+            # carry environment-variable assignments portably.
+            export SCCACHE_CONF="$PWD/.dx/sccache-config.toml"
+            export AWS_SHARED_CREDENTIALS_FILE="$PWD/.dx/sccache-credentials"
+            export SCCACHE_BASEDIRS="$PWD"
+
             # Take priority over clang-tools' own clangd, which must stay in
             # version lockstep with clangd-index (see clangdVersion above).
             export PATH="${clangdPkg}/bin:$PATH"

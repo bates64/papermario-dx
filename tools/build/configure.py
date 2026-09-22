@@ -3,7 +3,6 @@
 import json
 import os
 import re
-import shlex
 import shutil
 import subprocess
 import sys
@@ -12,7 +11,7 @@ import urllib.request
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple, Union
+from typing import Dict, List, Set, Tuple, Union
 
 import ninja_syntax
 
@@ -61,14 +60,28 @@ BUILD_JSON_URL = os.environ.get(
     "PAPERMARIO_BUILD_JSON_URL", "https://papermario-dx.starhaven.dev/build.json"
 )
 
+# Where the shared sccache S3 config/credentials get written (see
+# write_shared_sccache_config below). Under .dx/ so it's gitignored, and so
+# the ninja rule command never has to carry credentials as text: ninja on
+# Windows calls CreateProcess directly on the rule command with no shell
+# involved (see subprocess-win32.cc, which explicitly avoids prepending
+# "cmd /c" since that breaks command lines over 8,191 chars), so there's no
+# `VAR=val cmd` or `set "VAR=val" && cmd` that would work there anyway.
+# SCCACHE_CONF and AWS_SHARED_CREDENTIALS_FILE (below) point sccache at these
+# files instead; the build environment (CI workflow, devShell) is
+# responsible for exporting those two variables once, not per compile.
+SCCACHE_CONFIG_PATH = ".dx/sccache-config.toml"
+SCCACHE_CREDENTIALS_PATH = ".dx/sccache-credentials"
 
-def fetch_shared_sccache_env() -> Optional[Dict[str, str]]:
-    """Fetches config for the shared sccache instance and translates it into
-    sccache's S3-backend environment variables. Returns None (falling back to
-    a local-only cache) if the user already has their own sccache configured,
-    or the shared cache can't be reached."""
+
+def write_shared_sccache_config(root: Path) -> None:
+    """Fetches config for the shared sccache instance and writes it out as an
+    sccache config file (bucket/endpoint/region) plus an AWS credentials file
+    (access key/secret key), rather than environment variables. Does nothing
+    if the user already has their own sccache configured, or the shared
+    cache can't be reached."""
     if any(k.startswith("SCCACHE_") for k in os.environ) or "AWS_ACCESS_KEY_ID" in os.environ:
-        return None
+        return
 
     try:
         with urllib.request.urlopen(BUILD_JSON_URL, timeout=3) as resp:
@@ -81,27 +94,27 @@ def fetch_shared_sccache_env() -> Optional[Dict[str, str]]:
         elif endpoint.startswith("http://"):
             endpoint = endpoint[len("http://") :]
             use_ssl = "false"
-        return {
-            "SCCACHE_BUCKET": sccache_config["bucket"],
-            "SCCACHE_ENDPOINT": endpoint,
-            "SCCACHE_REGION": "auto",
-            "SCCACHE_S3_USE_SSL": use_ssl,
-            "AWS_ACCESS_KEY_ID": sccache_config["accessKey"],
-            "AWS_SECRET_ACCESS_KEY": sccache_config["secretKey"],
-        }
+
+        config_path = root / SCCACHE_CONFIG_PATH
+        config_path.parent.mkdir(parents=True, exist_ok=True)
+        config_path.write_text(
+            "[cache.s3]\n"
+            f'bucket = "{sccache_config["bucket"]}"\n'
+            f'endpoint = "{endpoint}"\n'
+            f"use_ssl = {use_ssl}\n"
+            "no_credentials = false\n"
+        )
+
+        credentials_path = root / SCCACHE_CREDENTIALS_PATH
+        credentials_path.write_text(
+            "[default]\n"
+            f'aws_access_key_id = {sccache_config["accessKey"]}\n'
+            f'aws_secret_access_key = {sccache_config["secretKey"]}\n'
+        )
+        if sys.platform != "win32":
+            credentials_path.chmod(0o600)
     except (urllib.error.URLError, TimeoutError, OSError, ValueError, KeyError) as e:
         print(f"note: couldn't reach shared sccache config ({e}), using a local-only cache", file=sys.stderr)
-        return None
-
-
-def env_prefix(env: Dict[str, str]) -> str:
-    """A ninja rule command prefix that sets the given environment variables
-    for just that one command. sh supports `VAR=val cmd` directly; cmd.exe
-    (which is what ninja invokes rule commands through on Windows) doesn't,
-    so `set` has to run as a separate chained statement per variable."""
-    if sys.platform == "win32":
-        return "".join(f'set "{key}={value}" && ' for key, value in env.items())
-    return "".join(f"{key}={shlex.quote(value)} " for key, value in env.items())
 
 
 def _walk_source_file_list():
@@ -254,19 +267,17 @@ def write_ninja_rules(
             sccache_found = False
 
         if sccache_found:
-            # SCCACHE_BASEDIRS strips the checkout root from hashed compiler
-            # arguments and preprocessed source, the same way ccache's
-            # CCACHE_BASEDIR does - without it, two contributors' checkouts
-            # (different absolute paths) would never hash to the same cache
-            # entry. Needs sccache >= 0.18.0, which strips basedirs from
-            # compiler arguments too, not just preprocessed source (see
-            # tools/sccache.nix and tools/windows/sccache.nix).
-            sccache_env = {"SCCACHE_BASEDIRS": os.getcwd()}
-            remote_env = fetch_shared_sccache_env()
-            if remote_env is not None:
-                sccache_env.update(remote_env)
-
-            sccache = f"{env_prefix(sccache_env)}sccache "
+            # SCCACHE_BASEDIRS (stripping the checkout root from hashed
+            # compiler arguments and preprocessed source, the same way
+            # ccache's CCACHE_BASEDIR does - without it, two contributors'
+            # checkouts, at different absolute paths, would never hash to the
+            # same cache entry - and SCCACHE_CONF/AWS_SHARED_CREDENTIALS_FILE
+            # (pointing at the files written below) are exported once by the
+            # build environment (CI workflow, devShell), not here: see the
+            # comment above SCCACHE_CONFIG_PATH for why they can't be
+            # prepended to this rule's command on Windows.
+            write_shared_sccache_config(ROOT)
+            sccache = "sccache "
 
     cross = "mips-linux-gnu-"
     cc_modern = f"{cross}gcc"

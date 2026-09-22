@@ -11,6 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       rom-sha256: ${{ steps.rom-sha.outputs.sha256 }}
+    env:
+      # Points sccache at the shared-cache config/credentials that Configure
+      # writes to .dx/ (see write_shared_sccache_config in configure.py) -
+      # set once for the whole job rather than per compile, since ninja's
+      # rule commands can't carry environment-variable assignments portably.
+      SCCACHE_CONF: ${{ github.workspace }}/.dx/sccache-config.toml
+      AWS_SHARED_CREDENTIALS_FILE: ${{ github.workspace }}/.dx/sccache-credentials
+      SCCACHE_BASEDIRS: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v25
@@ -121,6 +129,11 @@ jobs:
     needs: [windows-toolchain]
     outputs:
       rom-sha256: ${{ steps.windows-rom-sha.outputs.sha256 }}
+    env:
+      # See the matching comment in the `game` job above.
+      SCCACHE_CONF: ${{ github.workspace }}\.dx\sccache-config.toml
+      AWS_SHARED_CREDENTIALS_FILE: ${{ github.workspace }}\.dx\sccache-credentials
+      SCCACHE_BASEDIRS: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
       - name: Download base ROM
