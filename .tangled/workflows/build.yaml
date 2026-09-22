@@ -16,7 +16,7 @@ steps:
     command: |
       cat >> /etc/nix/nix.conf <<EOF
       accept-flake-config = true
-      extra-trusted-public-keys = spindle-nix-cache.starhaven.dev-1:ITs3A4uq6PjFUYIbtkPwoH03ii4K4uwsTDpfvovPKvs=
+      extra-trusted-public-keys = papermario-dx:CnZCdSGA4n/b2AtneJYjPd/yAvfLPAdtlvkIs8sjrQQ=
       EOF
 
   - name: "Fix up FHS paths"
@@ -32,7 +32,7 @@ steps:
     # substituter for this path itself. Placing it in the local store first
     # (rather than relying on substitution) satisfies the check.
     command: |
-      nix copy --from "https://spindle:${SPINDLE_NIX_CACHE_PASSWORD}@spindle-nix-cache.starhaven.dev" \
+      nix copy --from "https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx" \
         /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64
 
   - name: "Build shell"
@@ -48,7 +48,5 @@ steps:
     command: nix develop --command ninja ver/us/build/papermario.bps
 
   - name: "Push to Cachix"
-    command: |
-      cachix push papermario-dx ./dev-profile
-      cachix push papermario-dx ver/us/build/papermario.bps
+    command: cachix push papermario-dx ./dev-profile
 # retest 1790038010
