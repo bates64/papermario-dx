@@ -30,16 +30,21 @@ steps:
         /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64
 
   - name: "Build release artifacts"
+    # windows-toolchain and clangd-index only exist under packages.x86_64-linux
+    # in the flake (unqualified .#windows-toolchain resolves against the
+    # current system instead, aarch64-linux here, where they don't exist).
     # aarch64-darwin has no builder on this host and isn't cross-compiled by
     # this flake, so it's not built here - that leg stays on GitHub Actions.
     command: |
-      nix build .#windows-toolchain --out-link result-windows-toolchain
-      nix build .#clangd-index --out-link result-clangd-index
+      set -e
+      nix build .#packages.x86_64-linux.windows-toolchain --out-link result-windows-toolchain
+      nix build .#packages.x86_64-linux.clangd-index --out-link result-clangd-index
       nix build .#packages.x86_64-linux.unix-toolchain --out-link result-toolchain-x86_64-linux
       nix build .#packages.aarch64-linux.unix-toolchain --out-link result-toolchain-aarch64-linux
 
   - name: "Upload release artifacts to S3"
     command: |
+      set -e
       dest="s3://$S3_BUCKET/releases/$TANGLED_REF_NAME"
       aws --endpoint-url "$S3_ENDPOINT" s3 cp result-windows-toolchain/papermario-dx-windows.zip "$dest/"
       aws --endpoint-url "$S3_ENDPOINT" s3 cp result-clangd-index/papermario-dx.idx "$dest/"
