@@ -17,6 +17,7 @@ steps:
       extra-substituters = https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx?priority=1
       extra-trusted-public-keys = papermario-dx:CnZCdSGA4n/b2AtneJYjPd/yAvfLPAdtlvkIs8sjrQQ=
       download-buffer-size = 536870912
+      extra-platforms = x86_64-linux
       EOF
 
   - name: "Fix up FHS paths"
