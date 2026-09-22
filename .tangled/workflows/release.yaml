@@ -8,6 +8,7 @@ dependencies:
   nixpkgs:
     - nix
     - awscli2
+    - curl
 
 steps:
   - name: "Configure Nix caches"
@@ -17,7 +18,6 @@ steps:
       extra-substituters = https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx?priority=1
       extra-trusted-public-keys = papermario-dx:CnZCdSGA4n/b2AtneJYjPd/yAvfLPAdtlvkIs8sjrQQ=
       download-buffer-size = 536870912
-      extra-platforms = x86_64-linux
       EOF
 
   - name: "Fix up FHS paths"
@@ -30,25 +30,24 @@ steps:
       nix copy --from "https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx" \
         /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64
 
-  - name: "Build release artifacts"
-    # windows-toolchain and clangd-index only exist under packages.x86_64-linux
-    # in the flake (unqualified .#windows-toolchain resolves against the
-    # current system instead, aarch64-linux here, where they don't exist).
-    # aarch64-darwin has no builder on this host and isn't cross-compiled by
-    # this flake, so it's not built here - that leg stays on GitHub Actions.
-    command: |
-      set -e
-      nix build .#packages.x86_64-linux.windows-toolchain --out-link result-windows-toolchain
-      nix build .#packages.x86_64-linux.clangd-index --out-link result-clangd-index
-      nix build .#packages.x86_64-linux.unix-toolchain --out-link result-toolchain-x86_64-linux
-      nix build .#packages.aarch64-linux.unix-toolchain --out-link result-toolchain-aarch64-linux
+  - name: "Build aarch64-linux toolchain"
+    # This is the only release artifact native to this host. Everything
+    # that needs x86_64-linux, Windows, or macOS hardware is built by
+    # star-haven/diorama64-gha on GitHub Actions instead (dispatched below),
+    # rather than emulated here.
+    command: nix build .#unix-toolchain --out-link result-toolchain-aarch64-linux
 
-  - name: "Upload release artifacts to S3"
+  - name: "Upload to S3"
     command: |
       set -e
-      dest="s3://$S3_BUCKET/releases/$TANGLED_REF_NAME"
-      aws --endpoint-url "$S3_ENDPOINT" s3 cp result-windows-toolchain/papermario-dx-windows.zip "$dest/"
-      aws --endpoint-url "$S3_ENDPOINT" s3 cp result-clangd-index/papermario-dx.idx "$dest/"
-      for f in result-toolchain-x86_64-linux/papermario-dx-*.zip result-toolchain-aarch64-linux/papermario-dx-*.zip; do
-        aws --endpoint-url "$S3_ENDPOINT" s3 cp "$f" "$dest/"
-      done
+      aws s3 cp result-toolchain-aarch64-linux/papermario-dx-*.zip \
+        "s3://starhaven/papermario-dx/releases/$TANGLED_REF_NAME/" \
+        --endpoint-url "https://fsn1.your-objectstorage.com"
+
+  - name: "Trigger the rest of the release on GitHub Actions"
+    command: |
+      curl -sf -X POST \
+        -H "Authorization: Bearer $GHA_DISPATCH_TOKEN" \
+        -H "Accept: application/vnd.github+json" \
+        https://api.github.com/repos/star-haven/diorama64-gha/dispatches \
+        -d "{\"event_type\":\"papermario-dx-release\",\"client_payload\":{\"tag\":\"$TANGLED_REF_NAME\"}}"
