@@ -89,6 +89,9 @@ def _update_clangd_config(root: Path, idx_path: Path):
         "  Remove: [-m*, -f*, -g*]\n"
         "InlayHints:\n"
         "  Designators: No\n"
+        "Diagnostics:\n"
+        "  UnusedIncludes: None\n"
+        "  MissingIncludes: None\n"
     )
 
     # Read existing config, preserving other sections
