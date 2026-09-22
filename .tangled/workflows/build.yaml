@@ -77,9 +77,13 @@ steps:
       fi
 
   - name: "Push to Attic"
+    # Attic skips pushing paths already signed by an "upstream cache" (e.g.
+    # cache.nixos.org) by default, on the assumption that re-hosting them
+    # is wasted disk space. Since the whole point here is a local copy that
+    # avoids re-fetching those same paths from the internet, override that.
     command: |
       attic login spindle "https://spindle-nix-cache.starhaven.dev" "$ATTIC_TOKEN"
-      attic push spindle:papermario-dx ./dev-profile
+      attic push --ignore-upstream-cache-filter spindle:papermario-dx ./dev-profile
 
   - name: "Push to Cachix"
     command: cachix push papermario-dx ./dev-profile
