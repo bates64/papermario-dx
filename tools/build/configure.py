@@ -585,20 +585,20 @@ def write_ninja_rules(
     ninja.rule(
         "syms",
         description="Reading engine symbols for overlays",
-        command=f"$python {BUILD_TOOLS}/overlay.py gen-syms $in $out",
+        command=f"$python {BUILD_TOOLS}/overlay_cli.py gen-syms $in $out",
         restat=True,
     )
 
     ninja.rule(
         "ovl_link_convert",
         description="Linking overlay $ovl_src",
-        command=f"$python {BUILD_TOOLS}/overlay.py link $syms $out $link_addr $in",
+        command=f"$python {BUILD_TOOLS}/overlay_cli.py link $syms $out $link_addr $in",
     )
 
     ninja.rule(
         "ovl_apply",
         description="Applying overlays",
-        command=f"$python {BUILD_TOOLS}/overlay.py apply-all $in $out $syms $manifest",
+        command=f"$python {BUILD_TOOLS}/overlay_cli.py apply-all $in $out $syms $manifest",
     )
 
 
@@ -1940,7 +1940,8 @@ class Configure:
         with open(manifest_path, "w", encoding="utf-8") as f:
             json.dump(manifest_entries, f)
 
-        implicit_deps.append(posix(BUILD_TOOLS / "overlay.py"))
+        implicit_deps.append(posix(BUILD_TOOLS / "overlay_cli.py"))
+        implicit_deps.append(posix(BUILD_TOOLS / "overlay_impl.py"))
         ninja.build(
             posix(self.rom_path()),
             "ovl_apply",
