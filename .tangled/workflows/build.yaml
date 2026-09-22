@@ -9,14 +9,21 @@ dependencies:
   nixpkgs:
     - nix
     - cachix
+    - attic-client
 
 
 steps:
   - name: "Configure Nix caches"
+    # Attic runs on this same host, so it's listed ahead of cache.nixos.org
+    # and Cachix (both over the public internet) via an explicit low
+    # priority number - otherwise nix falls back to each cache's own
+    # self-advertised priority, which doesn't reflect network distance.
     command: |
       cat >> /etc/nix/nix.conf <<EOF
       accept-flake-config = true
+      extra-substituters = https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx?priority=1
       extra-trusted-public-keys = papermario-dx:CnZCdSGA4n/b2AtneJYjPd/yAvfLPAdtlvkIs8sjrQQ=
+      download-buffer-size = 536870912
       EOF
 
   - name: "Fix up FHS paths"
@@ -47,6 +54,10 @@ steps:
   - name: "Build patch file"
     command: nix develop --command ninja ver/us/build/papermario.bps
 
+  - name: "Push to Attic"
+    command: |
+      attic login spindle "https://spindle-nix-cache.starhaven.dev" "$ATTIC_TOKEN"
+      attic push spindle:papermario-dx ./dev-profile
+
   - name: "Push to Cachix"
     command: cachix push papermario-dx ./dev-profile
-# retest 1790038010
