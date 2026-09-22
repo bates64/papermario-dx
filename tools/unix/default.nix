@@ -76,6 +76,7 @@ let
   pigment64-native = pkgs.callPackage ../pigment64.nix { };
   crunch64-native = pkgs.callPackage ../crunch64.nix { };
   sccache-native = pkgs.callPackage ../sccache.nix { inherit pkgs; };
+  evt-validate-native = pkgs.callPackage ../evt_validate.nix { };
   python-packages = import ./python.nix { inherit pkgs; };
   jre = import ./jre.nix { inherit pkgs; };
 
@@ -92,6 +93,7 @@ let
     crunch64-native
     pkgs.ninja
     sccache-native
+    evt-validate-native
     pkgs.python3
     jre
     starRodJar
@@ -127,7 +129,7 @@ let
       for tool in mips-linux-gnu-gcc mips-linux-gnu-g++ mips-linux-gnu-cpp mips-linux-gnu-ld mips-linux-gnu-as \
                   mips-linux-gnu-ar mips-linux-gnu-nm mips-linux-gnu-objcopy mips-linux-gnu-objdump \
                   mips-linux-gnu-ranlib mips-linux-gnu-strip \
-                  ninja sccache pigment64 crunch64 n64crc python3 java clang-format clang-tidy clangd; do
+                  ninja sccache evt_validate pigment64 crunch64 n64crc python3 java clang-format clang-tidy clangd; do
         link_bin "$tool"
       done
 

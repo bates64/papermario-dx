@@ -80,6 +80,7 @@
         mipsGdb = pkgsCross.buildPackages.gdb;
 
         sccachePkg = pkgs.callPackage ./tools/sccache.nix { inherit pkgs; };
+        evtValidatePkg = pkgs.callPackage ./tools/evt_validate.nix { };
 
         unixToolchain = import ./tools/unix {
           inherit pkgs nixpkgs-binutils-2_39 mipsGdb starRodJar;
@@ -99,6 +100,7 @@
             pkgs.iconv
             (pkgs.callPackage ./tools/pigment64.nix {})
             (pkgs.callPackage ./tools/crunch64.nix {})
+            evtValidatePkg
           ] ++ pkgs.lib.optional pkgs.stdenv.isLinux pkgs.flips;
           # Disable nixpkgs hardening flags (zerocallusedregs, fortify, etc.)
           # that the cross-compiler wrapper injects. The build system manages
@@ -147,6 +149,7 @@
             pkgs.iconv
             (pkgs.callPackage ./tools/pigment64.nix {})
             (pkgs.callPackage ./tools/crunch64.nix {})
+            evtValidatePkg
             clangdIndexingTools
           ];
           NIX_HARDENING_ENABLE = "";
@@ -223,6 +226,7 @@
             gcc # for n64crc
             (callPackage ./tools/pigment64.nix {})
             (callPackage ./tools/crunch64.nix {})
+            evtValidatePkg
             (writeShellScriptBin "star-rod" ''
               exec ${jdk17}/bin/java -jar ${starRodJar}/share/java/StarRod.jar "$@"
             '')

@@ -365,9 +365,9 @@ def write_ninja_rules(
     )
 
     ninja.rule(
-        "evt_validate_obj",
+        "evt_validate",
         description="Validating scripts in $evt_target",
-        command=f"$python {BUILD_TOOLS}/evt_validate_obj.py --object-list $out.rsp --out $out",
+        command="evt_validate --object-list $out.rsp --out $out",
         rspfile="$out.rsp",
         rspfile_content="$in_newline",
     )
@@ -1563,9 +1563,8 @@ class Configure:
                         evt_target = evt_validation_display_path(object_path)
                     ninja.build(
                         evt_validation_stamp,
-                        "evt_validate_obj",
+                        "evt_validate",
                         [posix(object_path)],
-                        implicit=[posix(BUILD_TOOLS / "evt_validate_obj.py")],
                         variables={"evt_target": evt_target},
                     )
 
@@ -1900,9 +1899,8 @@ class Configure:
                 for evt_validation_stamp in evt_stamps:
                     ninja.build(
                         evt_validation_stamp,
-                        "evt_validate_obj",
+                        "evt_validate",
                         [posix(obj_path)],
-                        implicit=[posix(BUILD_TOOLS / "evt_validate_obj.py")],
                         variables={"evt_target": posix(c_file)},
                     )
                 objects.append(posix(obj_path))
