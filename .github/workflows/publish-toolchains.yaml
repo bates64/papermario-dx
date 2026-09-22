@@ -1,0 +1,124 @@
+name: Publish toolchains
+
+# Mirrors .tangled/workflows/publish-toolchains.yaml.
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  S3_ENDPOINT: https://fsn1.your-objectstorage.com
+
+jobs:
+  linux:
+    name: Publish (windows, x86_64-linux, clangd-index)
+    if: github.repository == 'bates64/papermario-dx'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v25
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - uses: cachix/cachix-action@v15
+        with:
+          name: papermario-dx
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+      - name: Build Windows toolchain
+        run: nix build .#windows-toolchain --out-link result-windows-toolchain
+
+      - name: Download base ROM
+        # Only clangd-index needs this - it runs a real build to generate
+        # compile_commands.json for indexing. windows-toolchain and
+        # unix-toolchain just package the compiler/tools themselves.
+        run: |
+          curl -L "$BASEROM_US_URL" -o papermario.us.z64
+          nix-store --add-fixed sha256 papermario.us.z64
+        env:
+          BASEROM_US_URL: ${{ secrets.BASEROM_US_URL }}
+
+      - name: Build clangd index
+        run: nix build .#clangd-index --out-link result-clangd-index
+
+      - name: Build x86_64-linux toolchain
+        run: nix build .#unix-toolchain --out-link result-toolchain-x86_64-linux
+
+      - name: Publish to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          set -euo pipefail
+          bucket="s3://starhaven/papermario-dx"
+          publish() {
+            file="$1"; key="$2"; ext="$3"
+            hash=$(sha256sum "$file" | cut -d' ' -f1)
+            if ! aws s3api head-object --bucket starhaven --key "papermario-dx/toolchains/$hash.$ext" --endpoint-url "$S3_ENDPOINT" >/dev/null 2>&1; then
+              aws s3 cp "$file" "$bucket/toolchains/$hash.$ext" --endpoint-url "$S3_ENDPOINT"
+            fi
+            echo "$hash" | aws s3 cp - "$bucket/commits/${{ github.sha }}/$key" --endpoint-url "$S3_ENDPOINT"
+          }
+          publish result-windows-toolchain/papermario-dx-windows.zip windows zip
+          publish result-clangd-index/papermario-dx.idx clangd-index idx
+          publish result-toolchain-x86_64-linux/papermario-dx-linux-x86_64.zip linux-x86_64 zip
+
+  linux-aarch64:
+    name: Publish (aarch64-linux)
+    if: github.repository == 'bates64/papermario-dx'
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v25
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - uses: cachix/cachix-action@v15
+        with:
+          name: papermario-dx
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+      - name: Build aarch64-linux toolchain
+        run: nix build .#unix-toolchain --out-link result-toolchain
+
+      - name: Publish to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          set -euo pipefail
+          bucket="s3://starhaven/papermario-dx"
+          file=$(echo result-toolchain/papermario-dx-*.zip)
+          hash=$(sha256sum "$file" | cut -d' ' -f1)
+          if ! aws s3api head-object --bucket starhaven --key "papermario-dx/toolchains/$hash.zip" --endpoint-url "$S3_ENDPOINT" >/dev/null 2>&1; then
+            aws s3 cp "$file" "$bucket/toolchains/$hash.zip" --endpoint-url "$S3_ENDPOINT"
+          fi
+          echo "$hash" | aws s3 cp - "$bucket/commits/${{ github.sha }}/linux-aarch64" --endpoint-url "$S3_ENDPOINT"
+
+  mac:
+    name: Publish (macos-aarch64)
+    if: github.repository == 'bates64/papermario-dx'
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@v23
+      - uses: cachix/cachix-action@v15
+        with:
+          name: papermario-dx-aarch64-darwin
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+      - name: Build aarch64-darwin toolchain
+        run: nix build .#unix-toolchain --out-link result-toolchain
+
+      - name: Publish to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          set -euo pipefail
+          bucket="s3://starhaven/papermario-dx"
+          file=$(echo result-toolchain/papermario-dx-*.zip)
+          hash=$(sha256sum "$file" | cut -d' ' -f1)
+          if ! aws s3api head-object --bucket starhaven --key "papermario-dx/toolchains/$hash.zip" --endpoint-url "$S3_ENDPOINT" >/dev/null 2>&1; then
+            aws s3 cp "$file" "$bucket/toolchains/$hash.zip" --endpoint-url "$S3_ENDPOINT"
+          fi
+          echo "$hash" | aws s3 cp - "$bucket/commits/${{ github.sha }}/macos-aarch64" --endpoint-url "$S3_ENDPOINT"
