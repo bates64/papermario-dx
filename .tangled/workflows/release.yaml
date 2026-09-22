@@ -1,8 +1,6 @@
 when:
   - event: ["push"]
     tag: ["dx-*"]
-  - event: ["push"]
-    tag: ["v*"]
 
 engine: nixery
 
@@ -31,35 +29,20 @@ steps:
       nix copy --from "https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx" \
         /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64
 
-  - name: "Build game"
-    command: nix build .#default --out-link result
-
-  - name: "Build dx-tag release artifacts"
-    # dx-* tags ship the Windows toolchain, clangd index, and both Linux
-    # unix-toolchain builds alongside the patch. plain version tags (v*)
-    # ship only the patch file. aarch64-darwin has no builder on this host
-    # and isn't cross-compiled by this flake, so it's not built here.
+  - name: "Build release artifacts"
+    # aarch64-darwin has no builder on this host and isn't cross-compiled by
+    # this flake, so it's not built here - that leg stays on GitHub Actions.
     command: |
-      case "$TANGLED_REF_NAME" in
-        dx-*)
-          nix build .#windows-toolchain --out-link result-windows-toolchain
-          nix build .#clangd-index --out-link result-clangd-index
-          nix build .#packages.x86_64-linux.unix-toolchain --out-link result-toolchain-x86_64-linux
-          nix build .#packages.aarch64-linux.unix-toolchain --out-link result-toolchain-aarch64-linux
-          ;;
-      esac
+      nix build .#windows-toolchain --out-link result-windows-toolchain
+      nix build .#clangd-index --out-link result-clangd-index
+      nix build .#packages.x86_64-linux.unix-toolchain --out-link result-toolchain-x86_64-linux
+      nix build .#packages.aarch64-linux.unix-toolchain --out-link result-toolchain-aarch64-linux
 
   - name: "Upload release artifacts to S3"
     command: |
       dest="s3://$S3_BUCKET/releases/$TANGLED_REF_NAME"
-      cp result/papermario.bps "papermario-dx-${TANGLED_REF_NAME}.bps"
-      aws --endpoint-url "$S3_ENDPOINT" s3 cp "papermario-dx-${TANGLED_REF_NAME}.bps" "$dest/"
-      case "$TANGLED_REF_NAME" in
-        dx-*)
-          aws --endpoint-url "$S3_ENDPOINT" s3 cp result-windows-toolchain/papermario-dx-windows.zip "$dest/"
-          aws --endpoint-url "$S3_ENDPOINT" s3 cp result-clangd-index/papermario-dx.idx "$dest/"
-          for f in result-toolchain-x86_64-linux/papermario-dx-*.zip result-toolchain-aarch64-linux/papermario-dx-*.zip; do
-            aws --endpoint-url "$S3_ENDPOINT" s3 cp "$f" "$dest/"
-          done
-          ;;
-      esac
+      aws --endpoint-url "$S3_ENDPOINT" s3 cp result-windows-toolchain/papermario-dx-windows.zip "$dest/"
+      aws --endpoint-url "$S3_ENDPOINT" s3 cp result-clangd-index/papermario-dx.idx "$dest/"
+      for f in result-toolchain-x86_64-linux/papermario-dx-*.zip result-toolchain-aarch64-linux/papermario-dx-*.zip; do
+        aws --endpoint-url "$S3_ENDPOINT" s3 cp "$f" "$dest/"
+      done
