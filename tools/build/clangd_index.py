@@ -85,7 +85,7 @@ def _update_clangd_config(root: Path, idx_path: Path):
 
     default_header = (
         "CompileFlags:\n"
-        "  Add: -Wno-unknown-warning-option\n"
+        "  Add: [-Wno-unknown-warning-option, --target=mips-unknown-elf]\n"
         "  Remove: [-m*, -f*, -g*]\n"
         "InlayHints:\n"
         "  Designators: No\n"
