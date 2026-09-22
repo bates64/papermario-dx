@@ -3,6 +3,7 @@
 import json
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -91,6 +92,16 @@ def fetch_shared_sccache_env() -> Optional[Dict[str, str]]:
     except (urllib.error.URLError, TimeoutError, OSError, ValueError, KeyError) as e:
         print(f"note: couldn't reach shared sccache config ({e}), using a local-only cache", file=sys.stderr)
         return None
+
+
+def env_prefix(env: Dict[str, str]) -> str:
+    """A ninja rule command prefix that sets the given environment variables
+    for just that one command. sh supports `VAR=val cmd` directly; cmd.exe
+    (which is what ninja invokes rule commands through on Windows) doesn't,
+    so `set` has to run as a separate chained statement per variable."""
+    if sys.platform == "win32":
+        return "".join(f'set "{key}={value}" && ' for key, value in env.items())
+    return "".join(f"{key}={shlex.quote(value)} " for key, value in env.items())
 
 
 def _walk_source_file_list():
@@ -255,10 +266,7 @@ def write_ninja_rules(
             if remote_env is not None:
                 sccache_env.update(remote_env)
 
-            env_file = ROOT / "build" / "sccache_env.json"
-            env_file.parent.mkdir(parents=True, exist_ok=True)
-            env_file.write_text(json.dumps(sccache_env))
-            sccache = f"$python {BUILD_TOOLS}/sccache_wrapper.py "
+            sccache = f"{env_prefix(sccache_env)}sccache "
 
     cross = "mips-linux-gnu-"
     cc_modern = f"{cross}gcc"
@@ -2299,8 +2307,8 @@ if __name__ == "__main__":
         if compdb.returncode == 0:
             entries = json.loads(compdb.stdout)
             strip_re = re.compile(r"^(-m\S+|-f\S+|-g\S+|-G\d+|--warn-\S+)$")
-            # Strips any wrapper (sccache, the sccache_wrapper.py shim, ...)
-            # ahead of the compiler invocation, leaving a plain "cc ...".
+            # Strips sccache and any env-var prefix ahead of the compiler
+            # invocation, leaving a plain "cc ...".
             cross_cc_re = re.compile(r"^.*?\bmips-linux-gnu-g(cc|\+\+)(?=\s)")
             for entry in entries:
                 entry["command"] = cross_cc_re.sub("cc", entry["command"])
