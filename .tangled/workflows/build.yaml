@@ -10,6 +10,7 @@ dependencies:
     - nix
     - cachix
 
+
 steps:
   - name: "Configure Nix caches"
     command: |
