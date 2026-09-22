@@ -241,10 +241,16 @@
             # install the incompatible x86_64 build; force a source build
             # there. Elsewhere the prebuilt wheel is already correct and
             # faster to install.
-            CC=${pkgs.stdenv.cc}/bin/cc pip install ${
+            #
+            # requirements.txt installs from the same prefetched wheel
+            # bundle linuxRom and windowsToolchain use, instead of
+            # resolving from PyPI on every shell entry - it's a Nix store
+            # path like any other, so it substitutes from cache too.
+            CC=${pkgs.stdenv.cc}/bin/cc pip install --no-index --find-links=${pythonDeps} ${
               pkgs.lib.optionalString (pkgs.stdenv.hostPlatform.isLinux && pkgs.stdenv.hostPlatform.isAarch64)
                 "--no-binary pygfxd"
-            } -r ${./tools/requirements.txt} -r ${./tools/requirements_extra.txt} --quiet
+            } -r ${./tools/requirements.txt} --quiet
+            pip install -r ${./tools/requirements_extra.txt} --quiet
           '';
         };
       }
