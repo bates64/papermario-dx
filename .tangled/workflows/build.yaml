@@ -51,9 +51,6 @@ steps:
   - name: "Build game"
     command: nix develop --command ninja
 
-  - name: "Build patch file"
-    command: nix develop --command ninja ver/us/build/papermario.bps
-
   - name: "Push to Attic"
     command: |
       attic login spindle "https://spindle-nix-cache.starhaven.dev" "$ATTIC_TOKEN"
