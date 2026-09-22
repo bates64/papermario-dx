@@ -807,9 +807,9 @@ class Configure:
 
         # Each animation is reached by name from a table in the engine, so the
         # order these are emitted in only decides where they sit.
-        imgfx_c = version_assets / "imgfx" / "imgfx_data.c"
+        imgfx_c = self.build_path() / version_assets / "imgfx" / "imgfx_data.c"
         build(imgfx_c, self.imgfx_animations(), "imgfx_data")
-        imgfx_obj = self.build_path() / (posix(imgfx_c) + ".o")
+        imgfx_obj = Path(posix(imgfx_c) + ".o")
         build(
             imgfx_obj,
             [imgfx_c],
