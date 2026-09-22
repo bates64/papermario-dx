@@ -51,6 +51,31 @@ steps:
   - name: "Build game"
     command: nix develop --command ninja
 
+  - name: "Check formatting"
+    # spindle's checkout is a single-commit shallow clone with no shared
+    # history with the target branch, so this diffs trees directly (two-dot)
+    # rather than from a merge base (three-dot). advisory only, like the
+    # GitHub Actions equivalent this replaces - a formatting nit shouldn't
+    # block a build.
+    command: |
+      if [ "$TANGLED_PIPELINE_KIND" = "pull_request" ]; then
+        git fetch origin "$TANGLED_PIPELINE_TARGET_BRANCH"
+        files=$(git diff --name-only "origin/$TANGLED_PIPELINE_TARGET_BRANCH" HEAD -- '*.c' '*.cpp' '*.h' '*.hpp')
+        if [ -n "$files" ]; then
+          nix develop --command bash -c 'echo "$1" | xargs python3 tools/format.py --check' _ "$files" || true
+        fi
+      fi
+
+  - name: "Run clang-tidy"
+    command: |
+      if [ "$TANGLED_PIPELINE_KIND" = "pull_request" ]; then
+        git fetch origin "$TANGLED_PIPELINE_TARGET_BRANCH"
+        files=$(git diff --name-only "origin/$TANGLED_PIPELINE_TARGET_BRANCH" HEAD -- '*.c' '*.cpp' '*.h' '*.hpp')
+        if [ -n "$files" ]; then
+          nix develop --command bash -c 'echo "$1" | xargs clang-tidy -p . --quiet' _ "$files" || true
+        fi
+      fi
+
   - name: "Push to Attic"
     command: |
       attic login spindle "https://spindle-nix-cache.starhaven.dev" "$ATTIC_TOKEN"
