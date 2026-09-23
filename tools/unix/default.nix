@@ -75,7 +75,7 @@ let
   n64crc = import ./n64crc.nix { stdenv = pkgs.stdenv; };
   pigment64-native = pkgs.callPackage ../pigment64.nix { };
   crunch64-native = pkgs.callPackage ../crunch64.nix { };
-  sccache-native = pkgs.callPackage ../sccache.nix { inherit pkgs; };
+  sccache-native = pkgs.callPackage ../sccache.nix { };
   evt-validate-native = pkgs.callPackage ../evt_validate.nix { };
   python-packages = import ./python.nix { inherit pkgs; };
   jre = import ./jre.nix { inherit pkgs; };
@@ -219,20 +219,13 @@ let
       '' else ''
         PATCHELF="$DIR/bin/.patchelf"
         find "$DIR/store" -type f | while read -r f; do
-          # A statically linked binary (e.g. sccache) still has a minimal
-          # dynamic section for self-relocation, so --print-rpath/--print-needed
-          # succeed on it too even though it needs no dependencies and has no
-          # interpreter. Patching it anyway (setting an RPATH it doesn't need)
-          # corrupts it, so only patch files that actually have an interpreter
-          # to rewrite or a real DT_NEEDED dependency to find via RPATH.
-          has_interp=0
-          "$PATCHELF" --print-interpreter "$f" >/dev/null 2>&1 && has_interp=1
-          needed=$("$PATCHELF" --print-needed "$f" 2>/dev/null)
-          if [ "$has_interp" = 1 ] || [ -n "$needed" ]; then
+          # Static-PIE binaries (like sccache) have a dynamic section but no
+          # interpreter or DT_NEEDED, and setting an RPATH on them corrupts them.
+          if "$PATCHELF" --print-interpreter "$f" >/dev/null 2>&1; then
             "$PATCHELF" --set-rpath "$DIR/lib" "$f" || true
-            if [ "$has_interp" = 1 ]; then
-              "$PATCHELF" --set-interpreter "$DIR/lib/${interpName}" "$f" || true
-            fi
+            "$PATCHELF" --set-interpreter "$DIR/lib/${interpName}" "$f" || true
+          elif [ -n "$("$PATCHELF" --print-needed "$f" 2>/dev/null)" ]; then
+            "$PATCHELF" --set-rpath "$DIR/lib" "$f" || true
           fi
         done
       ''}

@@ -6,7 +6,6 @@ import re
 import shutil
 import subprocess
 import sys
-import urllib.error
 import urllib.request
 from functools import lru_cache
 from glob import glob
@@ -54,66 +53,43 @@ else:
 
 SOURCE_DIRS = ["src", "include", "assets"]
 
-# Publishes shared sccache credentials for anyone building papermario-dx (or
-# a fork/mod of it). Overridable for self-hosted caches.
+# Serves the shared sccache bucket's config and credentials. Overridable for
+# self-hosted caches.
 BUILD_JSON_URL = os.environ.get(
     "PAPERMARIO_BUILD_JSON_URL", "https://papermario-dx.starhaven.dev/build.json"
 )
 
-# Where the shared sccache S3 config/credentials get written (see
-# write_shared_sccache_config below). Under .dx/ so it's gitignored, and so
-# the ninja rule command never has to carry credentials as text: ninja on
-# Windows calls CreateProcess directly on the rule command with no shell
-# involved (see subprocess-win32.cc, which explicitly avoids prepending
-# "cmd /c" since that breaks command lines over 8,191 chars), so there's no
-# `VAR=val cmd` or `set "VAR=val" && cmd` that would work there anyway.
-# SCCACHE_CONF and AWS_SHARED_CREDENTIALS_FILE (below) point sccache at these
-# files instead; the build environment (CI workflow, devShell) is
-# responsible for exporting those two variables once, not per compile.
-SCCACHE_CONFIG_PATH = ".dx/sccache-config.toml"
-SCCACHE_CREDENTIALS_PATH = ".dx/sccache-credentials"
+# Ninja can't set per-command environment variables portably, so the build
+# environment exports SCCACHE_CONF and AWS_SHARED_CREDENTIALS_FILE pointing at
+# these files instead.
+SCCACHE_CONFIG_PATH = ROOT / ".dx/sccache-config.toml"
+SCCACHE_CREDENTIALS_PATH = ROOT / ".dx/sccache-credentials"
 
 
-def write_shared_sccache_config(root: Path) -> None:
-    """Fetches config for the shared sccache instance and writes it out as an
-    sccache config file (bucket/endpoint/region) plus an AWS credentials file
-    (access key/secret key), rather than environment variables. Does nothing
-    if the user already has their own sccache configured, or the shared
-    cache can't be reached."""
-    if any(k.startswith("SCCACHE_") for k in os.environ) or "AWS_ACCESS_KEY_ID" in os.environ:
-        return
-
+def write_shared_sccache_config() -> None:
     try:
         with urllib.request.urlopen(BUILD_JSON_URL, timeout=3) as resp:
-            config = json.load(resp)
-        sccache_config = config["sccache"]
-        endpoint: str = sccache_config["endpoint"]
-        use_ssl = "true"
-        if endpoint.startswith("https://"):
-            endpoint = endpoint[len("https://") :]
-        elif endpoint.startswith("http://"):
-            endpoint = endpoint[len("http://") :]
-            use_ssl = "false"
+            config = json.load(resp)["sccache"]
+        endpoint: str = config["endpoint"]
+        use_ssl = not endpoint.startswith("http://")
+        endpoint = endpoint.removeprefix("https://").removeprefix("http://")
 
-        config_path = root / SCCACHE_CONFIG_PATH
-        config_path.parent.mkdir(parents=True, exist_ok=True)
-        config_path.write_text(
+        SCCACHE_CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
+        SCCACHE_CONFIG_PATH.write_text(
             "[cache.s3]\n"
-            f'bucket = "{sccache_config["bucket"]}"\n'
+            f'bucket = "{config["bucket"]}"\n'
             f'endpoint = "{endpoint}"\n'
-            f"use_ssl = {use_ssl}\n"
+            'region = "auto"\n'
+            f"use_ssl = {str(use_ssl).lower()}\n"
             "no_credentials = false\n"
         )
-
-        credentials_path = root / SCCACHE_CREDENTIALS_PATH
-        credentials_path.write_text(
+        SCCACHE_CREDENTIALS_PATH.write_text(
             "[default]\n"
-            f'aws_access_key_id = {sccache_config["accessKey"]}\n'
-            f'aws_secret_access_key = {sccache_config["secretKey"]}\n'
+            f'aws_access_key_id = {config["accessKey"]}\n'
+            f'aws_secret_access_key = {config["secretKey"]}\n'
         )
-        if sys.platform != "win32":
-            credentials_path.chmod(0o600)
-    except (urllib.error.URLError, TimeoutError, OSError, ValueError, KeyError) as e:
+        SCCACHE_CREDENTIALS_PATH.chmod(0o600)
+    except (OSError, ValueError, KeyError) as e:
         print(f"note: couldn't reach shared sccache config ({e}), using a local-only cache", file=sys.stderr)
 
 
@@ -255,29 +231,9 @@ def write_ninja_rules(
 
     sccache = ""
 
-    if use_sccache:
-        sccache_found = True
-        try:
-            subprocess.call(
-                ["sccache", "--version"],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-        except FileNotFoundError:
-            sccache_found = False
-
-        if sccache_found:
-            # SCCACHE_BASEDIRS (stripping the checkout root from hashed
-            # compiler arguments and preprocessed source, the same way
-            # ccache's CCACHE_BASEDIR does - without it, two contributors'
-            # checkouts, at different absolute paths, would never hash to the
-            # same cache entry - and SCCACHE_CONF/AWS_SHARED_CREDENTIALS_FILE
-            # (pointing at the files written below) are exported once by the
-            # build environment (CI workflow, devShell), not here: see the
-            # comment above SCCACHE_CONFIG_PATH for why they can't be
-            # prepended to this rule's command on Windows.
-            write_shared_sccache_config(ROOT)
-            sccache = "sccache "
+    if use_sccache and shutil.which("sccache"):
+        write_shared_sccache_config()
+        sccache = "sccache "
 
     cross = "mips-linux-gnu-"
     cc_modern = f"{cross}gcc"
@@ -292,12 +248,8 @@ def write_ninja_rules(
 
     CPPFLAGS = CPPFLAGS_COMMON
 
-    # Remaps the absolute checkout path to a fixed virtual path in debug info
-    # and __FILE__/__DIR__ macro expansions, so an object file built on one
-    # contributor's machine still has sane, portable debug paths when reused
-    # from the shared cache on someone else's. This flag's own text contains
-    # the checkout path, but SCCACHE_BASEDIRS strips that back out before
-    # hashing, so it doesn't defeat the cache itself.
+    # Keeps debug paths portable across machines sharing the cache.
+    # SCCACHE_BASEDIRS strips the checkout path from this flag before hashing.
     prefix_map = f"-ffile-prefix-map={os.getcwd()}=/papermario-dx"
 
     modern_flags = f"-c -G0 -O2 -g1 -gdwarf -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {prefix_map}"
@@ -2317,9 +2269,7 @@ if __name__ == "__main__":
         if compdb.returncode == 0:
             entries = json.loads(compdb.stdout)
             strip_re = re.compile(r"^(-m\S+|-f\S+|-g\S+|-G\d+|--warn-\S+)$")
-            # Strips sccache and any env-var prefix ahead of the compiler
-            # invocation, leaving a plain "cc ...".
-            cross_cc_re = re.compile(r"^.*?\bmips-linux-gnu-g(cc|\+\+)(?=\s)")
+            cross_cc_re = re.compile(r"^(sccache\s+)?mips-linux-gnu-g(cc|\+\+)(?=\s)")
             for entry in entries:
                 entry["command"] = cross_cc_re.sub("cc", entry["command"])
                 parts = entry["command"].split()

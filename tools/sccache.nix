@@ -1,11 +1,6 @@
-# Pre-built sccache for the current system (fixed-output derivation).
-#
-# Not taken from nixpkgs: nixpkgs-unstable currently ships 0.17.0, but
-# SCCACHE_BASEDIRS (needed for cache hits across different absolute checkout
-# paths - see tools/build/configure.py) only strips basedirs from compiler
-# arguments, not just preprocessed source, since 0.18.0.
+# Pre-built sccache. Needs >= 0.18.0, where SCCACHE_BASEDIRS also applies to
+# compiler arguments.
 {
-  pkgs,
   fetchurl,
   stdenvNoCC,
 }:
@@ -18,7 +13,7 @@ let
     "aarch64-linux" = "aarch64-unknown-linux-musl";
     "x86_64-darwin" = "x86_64-apple-darwin";
     "aarch64-darwin" = "aarch64-apple-darwin";
-  }.${pkgs.stdenv.hostPlatform.system} or (throw "tools/sccache.nix: unsupported system ${pkgs.stdenv.hostPlatform.system}");
+  }.${stdenvNoCC.hostPlatform.system} or (throw "tools/sccache.nix: unsupported system ${stdenvNoCC.hostPlatform.system}");
 
   sha256 = {
     "x86_64-unknown-linux-musl" = "12fcd96wrzh9liyawqlddhhi5lkxcxqfylg3plvk07i3przl9wa5";

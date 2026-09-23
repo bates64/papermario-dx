@@ -1,7 +1,3 @@
-# No separate "Language: C" document here: our toolchain's clang-format
-# doesn't recognize C as a Language enum value (added in clang-format 21) and
-# fails to parse this file entirely if that section exists. clang-format
-# applies this document to .c files under Language: Cpp regardless.
 BasedOnStyle: WebKit
 IndentWidth: 4
 UseTab: Never

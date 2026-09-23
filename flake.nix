@@ -79,7 +79,7 @@
         # package set's build packages rather than pkgs.
         mipsGdb = pkgsCross.buildPackages.gdb;
 
-        sccachePkg = pkgs.callPackage ./tools/sccache.nix { inherit pkgs; };
+        sccachePkg = pkgs.callPackage ./tools/sccache.nix { };
         evtValidatePkg = pkgs.callPackage ./tools/evt_validate.nix { };
 
         unixToolchain = import ./tools/unix {
@@ -129,9 +129,7 @@
             "flips --create --bps ${baseRom} ver/us/build/papermario.z64 $out/papermario.bps"}
         '';
 
-        # clangd's on-disk index format isn't stable across releases, so the
-        # devShell's clangd (below) and the clangd-indexer that builds this
-        # project's downloadable index must be the exact same version.
+        # clangd only loads indexes built by the same version of clangd-indexer.
         clangdVersion = "21.1.8";
         clangdIndexingTools = pkgs.callPackage ./tools/clangd-indexing-tools.nix { version = clangdVersion; };
         clangdPkg = pkgs.callPackage ./tools/clangd.nix { version = clangdVersion; };
@@ -230,24 +228,18 @@
             (writeShellScriptBin "star-rod" ''
               exec ${jdk17}/bin/java -jar ${starRodJar}/share/java/StarRod.jar "$@"
             '')
-            clang-tools # clang-format, clang-tidy (clangd itself is overridden below)
+            clang-tools
             treefmt
           ] ++ [ mipsGdb ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
           shellHook = ''
             rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64
             export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
 
-            # Points sccache at the shared-cache config/credentials that
-            # Configure writes to .dx/ (see write_shared_sccache_config in
-            # configure.py) - exported once for the whole shell session
-            # rather than per compile, since ninja's rule commands can't
-            # carry environment-variable assignments portably.
             export SCCACHE_CONF="$PWD/.dx/sccache-config.toml"
             export AWS_SHARED_CREDENTIALS_FILE="$PWD/.dx/sccache-credentials"
             export SCCACHE_BASEDIRS="$PWD"
 
-            # Take priority over clang-tools' own clangd, which must stay in
-            # version lockstep with clangd-index (see clangdVersion above).
+            # Shadows clang-tools' clangd.
             export PATH="${clangdPkg}/bin:$PATH"
 
             virtualenv venv --quiet

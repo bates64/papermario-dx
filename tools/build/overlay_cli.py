@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 
-# Thin entrypoint over overlay_impl.py. This script is invoked directly by
-# ninja (once per overlay, hundreds of times per build), and CPython only
-# bytecode-caches imported modules, not the __main__ script - so the actual
-# logic lives in overlay_impl.py, which this just imports and calls, to
-# avoid re-parsing 1600+ lines on every invocation.
+# CPython doesn't bytecode-cache __main__, so keep the logic in an imported
+# module.
 
 import sys
 from pathlib import Path

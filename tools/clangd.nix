@@ -1,9 +1,3 @@
-# The standalone clangd editor binary, fetched from the same clangd/clangd
-# release as clangd-indexing-tools.nix's clangd-indexer. Both must come from
-# the same version: clangd's on-disk index format isn't stable across
-# releases, and clangd refuses to load an index built by a mismatched
-# version. Used in the devShell in place of nixpkgs' own clangd (whose
-# version tracks nixpkgs, not this project's downloadable index).
 { lib, stdenv, fetchurl, autoPatchelfHook, libgcc, unzip, version }:
 
 let
@@ -41,7 +35,7 @@ stdenv.mkDerivation {
   '';
 
   meta = {
-    description = "clangd (matches the version that builds this project's downloadable index)";
+    description = "clangd";
     homepage = "https://github.com/clangd/clangd";
     license = lib.licenses.asl20;
     platforms = builtins.attrNames systems;
