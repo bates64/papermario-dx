@@ -2301,13 +2301,16 @@ if __name__ == "__main__":
 
     for top in ["src", "include", "assets"]:
         for dirpath, dirnames, _ in os.walk(ROOT / top):
-            configure_deps.append(
-                str(
-                    Path(dirpath).relative_to(ROOT)
-                    if Path(dirpath).is_absolute()
-                    else dirpath
-                )
+            directory = posix(
+                Path(dirpath).relative_to(ROOT)
+                if Path(dirpath).is_absolute()
+                else dirpath
             )
+            configure_deps.append(directory)
+            # A phony edge with no inputs is out of date once its path is
+            # missing, so deleting the directory reconfigures instead of
+            # failing for want of a rule to make it.
+            ninja.build(directory, "phony")
 
     ninja.build(
         "build.ninja",
