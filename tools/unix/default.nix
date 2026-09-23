@@ -1,7 +1,6 @@
 # Builds a downloadable, self-contained toolchain for the current system
-# (one of x86_64-linux, aarch64-linux, aarch64-darwin - x86_64-darwin is
-# unsupported since nixpkgs-unstable dropped it), analogous to tools/windows
-# for Windows.
+# (one of x86_64-linux, aarch64-linux, x86_64-darwin, aarch64-darwin),
+# analogous to tools/windows for Windows.
 #
 # Unlike the Windows toolchain (a Canadian cross that produces binaries with
 # no /nix/store dependency by construction), these binaries are built
@@ -34,6 +33,7 @@ let
   platformTag = {
     "x86_64-linux" = "linux-x86_64";
     "aarch64-linux" = "linux-aarch64";
+    "x86_64-darwin" = "macos-x86_64";
     "aarch64-darwin" = "macos-aarch64";
   }.${system} or (throw "tools/unix: unsupported system ${system}");
 

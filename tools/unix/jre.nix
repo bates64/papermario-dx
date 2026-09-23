@@ -22,6 +22,11 @@ let
       sha256 = "b8efcd5acc9109fe8d35bed132499643048a257b4f6042906ece37d03c839d77";
       home = ".";
     };
+    "x86_64-darwin" = {
+      asset = "OpenJDK17U-jre_x64_mac_hotspot_17.0.20.1_1.tar.gz";
+      sha256 = "333cb81123c36568586646c73c8fa2326dab8badc43f5ea388a90fff59c9df27";
+      home = "Contents/Home";
+    };
     "aarch64-darwin" = {
       asset = "OpenJDK17U-jre_aarch64_mac_hotspot_17.0.20.1_1.tar.gz";
       sha256 = "190480874ccceb358cbc840393207f77ac3e63a4c5f8129d0e23e9518b96ad05";

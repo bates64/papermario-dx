@@ -18,6 +18,7 @@ let
   sha256 = {
     "x86_64-unknown-linux-musl" = "12fcd96wrzh9liyawqlddhhi5lkxcxqfylg3plvk07i3przl9wa5";
     "aarch64-unknown-linux-musl" = "0jimlkjrfjgqsavlyxcdkjllmb48gfxpb7i2qiys8iivvbaq8cib";
+    "x86_64-apple-darwin" = "1vvsijhnfx4kswdqajz4m0h2i6059d9wvv35flrl5swyqhyfib8x";
     "aarch64-apple-darwin" = "13jfcx426w5ymsa3k4j1l09mm9kcdyrib1cy50jm2vv4kd8q909h";
   }.${platformTag} or (throw "tools/sccache.nix: no hash pinned for ${platformTag}");
 
