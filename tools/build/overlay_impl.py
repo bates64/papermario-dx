@@ -1529,6 +1529,33 @@ def cmd_link(args):
     with open(debug_path, "wb") as f:
         f.write(debug_blob)
 
+    write_debug_linker_script(args.output + ".ld", args.objects, elfs, section_map)
+
+
+def write_debug_linker_script(path, obj_paths, elfs, section_map):
+    """Write a linker script that puts every input section where link_overlay
+    did, for GNU ld to link a debug ELF of the overlay: the same layout, but
+    with the DWARF relocated too, which a debugger needs to find source lines
+    and variables once it knows where the overlay was loaded."""
+    lines = ["SECTIONS {"]
+    placed = set()
+    for i, (elf_idx, sec_idx, vma, size) in enumerate(section_map):
+        sec = elfs[elf_idx].sections[sec_idx]
+        # ld takes every input section of this name from the file at once, in
+        # file order, which is also the order link_overlay placed them in.
+        if (elf_idx, sec.name) in placed:
+            continue
+        placed.add((elf_idx, sec.name))
+        noload = " (NOLOAD)" if sec.type == SHT_NOBITS else ""
+        # binutils sign-extends 32-bit MIPS addresses, including the engine's
+        # symbols, so these must be too for calls into the engine to resolve.
+        address = vma | 0xFFFFFFFF00000000 if vma & 0x80000000 else vma
+        lines.append(f'  .ovl{i} 0x{address:X}{noload} : {{ "{obj_paths[elf_idx]}"({sec.name}) }}')
+    lines.append("  /DISCARD/ : { *(.MIPS.abiflags) *(.reginfo) *(.pdr) *(.comment) *(.note.*) *(.gnu.attributes) *(.mdebug.*) }")
+    lines.append("}")
+    with open(path, "w") as f:
+        f.write("\n".join(lines) + "\n")
+
 
 def cmd_apply(args):
     """Subcommand: apply an overlay to a ROM (non-mutating)."""

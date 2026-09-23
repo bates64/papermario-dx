@@ -563,6 +563,15 @@ def write_ninja_rules(
         command=f"$python {BUILD_TOOLS}/overlay_cli.py link $syms $out $link_addr $in",
     )
 
+    # A debugger loads this alongside the engine's ELF, offset to wherever the
+    # game loaded the overlay. Calls into the engine resolve against its ELF.
+    # Some overlays define a global twice, which the overlay linker tolerates.
+    ninja.rule(
+        "ovl_debug_elf",
+        description="Linking overlay debug ELF $ovl_src",
+        command=f"{ld} -T $script --just-symbols=$engine_elf --no-check-sections --allow-multiple-definition -o $out $in",
+    )
+
     ninja.rule(
         "ovl_apply",
         description="Applying overlays",
@@ -1874,6 +1883,8 @@ class Configure:
             build_dir = self.build_path() / "ovl" / str(type_index) / name
             ovl_path = build_dir / f"{name}.ovl"
             debug_syms_path = build_dir / f"{name}.ovl.debug_syms"
+            debug_script_path = build_dir / f"{name}.ovl.ld"
+            debug_elf_path = build_dir / f"{name}.ovl.elf"
             objects = []
 
             c_files = []
@@ -1940,11 +1951,29 @@ class Configure:
                 posix(ovl_path),
                 "ovl_link_convert",
                 objects,
-                implicit=[posix(self.syms_path())],
-                implicit_outputs=[posix(debug_syms_path)],
+                implicit=[
+                    posix(self.syms_path()),
+                    posix(BUILD_TOOLS / "overlay_cli.py"),
+                    posix(BUILD_TOOLS / "overlay_impl.py"),
+                ],
+                implicit_outputs=[posix(debug_syms_path), posix(debug_script_path)],
                 variables={
                     "syms": posix(self.syms_path()),
                     "link_addr": link_addr,
+                    "ovl_src": posix(src_path.relative_to(ROOT)),
+                },
+            )
+
+            # Depends on the engine through syms.pkl, which only changes when
+            # its symbols do, rather than on every rebuild of the engine's ELF.
+            ninja.build(
+                posix(debug_elf_path),
+                "ovl_debug_elf",
+                objects,
+                implicit=[posix(debug_script_path), posix(self.syms_path())],
+                variables={
+                    "script": posix(debug_script_path),
+                    "engine_elf": posix(self.elf_path()),
                     "ovl_src": posix(src_path.relative_to(ROOT)),
                 },
             )
@@ -1958,6 +1987,7 @@ class Configure:
                 }
             )
             implicit_deps.append(posix(ovl_path))
+            implicit_deps.append(posix(debug_elf_path))
 
         manifest_path = self.build_path() / "ovl" / "manifest.json"
         manifest_path.parent.mkdir(parents=True, exist_ok=True)
