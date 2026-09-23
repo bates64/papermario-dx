@@ -314,17 +314,44 @@ int backtrace_thread(void **buffer, int size, OSThread *thread) {
 }
 
 /**
- * Uses the symbol table to look up the symbol corresponding to the given address.
+ * Looks up the last symbol at or before `address` in a symbol table stored in ROM.
  *
  * The address should be inside some function, otherwise an incorrect symbol will be returned.
  *
- * Looks up `address` and writes the result into `out`.
- * Returns offset into `out->address`, -1 if not found.
+ * Writes the symbol into `out` and returns `address - out->address`, or -1 if not found.
  */
-s32 address2symbol(u32 address, Symbol* out) {
-    #define symbolsPerChunk 0x1000
-    #define chunkSize ((sizeof(Symbol) * symbolsPerChunk))
+static s32 search_symbol_table(u32 tableRomAddr, u32 address, Symbol* out) {
+    // DMA invalidates whole 16-byte cache lines, so read into a buffer that fills them.
+    static union {
+        SymbolTable header;
+        Symbol symbol;
+        u8 pad[16];
+    } buf ALIGNED16;
 
+    nuPiReadRom(tableRomAddr, &buf, sizeof(SymbolTable));
+    if (buf.header.magic[0] != 'S' || buf.header.magic[1] != 'Y' || buf.header.magic[2] != 'M' || buf.header.magic[3] != 'S') {
+        debugf("search_symbol_table: invalid magic at 0x%08lX\n", tableRomAddr);
+        return -1;
+    }
+
+    s32 lo = 0;
+    s32 hi = buf.header.symbolCount - 1;
+    b32 found = false;
+    while (lo <= hi) {
+        s32 mid = (lo + hi) / 2;
+        nuPiReadRom(tableRomAddr + sizeof(SymbolTable) + mid * sizeof(Symbol), &buf, sizeof(Symbol));
+        if (buf.symbol.address <= address) {
+            *out = buf.symbol;
+            found = true;
+            lo = mid + 1;
+        } else {
+            hi = mid - 1;
+        }
+    }
+    return found ? address - out->address : -1;
+}
+
+s32 address2symbol(u32 address, Symbol* out) {
     static u32 romHeader[0x10];
     nuPiReadRom(0, &romHeader, sizeof(romHeader));
 
@@ -333,40 +360,7 @@ s32 address2symbol(u32 address, Symbol* out) {
         debugf("address2symbol: no symbols available (SYMBOL_TABLE_PTR is nullptr)\n");
         return -1;
     }
-
-    // Read the header
-    SymbolTable symt;
-    nuPiReadRom(symbolTableRomAddr, &symt, sizeof(SymbolTable));
-    if (symt.magic[0] != 'S' || symt.magic[1] != 'Y' || symt.magic[2] != 'M' || symt.magic[3] != 'S') {
-        debugf("address2symbol: no symbols available (invalid magic '%c%c%c%c')\n", symt.magic[0], symt.magic[1], symt.magic[2], symt.magic[3]);
-        return -1;
-    }
-    if (symt.symbolCount <= 0) {
-        debugf("address2symbol: no symbols available (symbolCount=%lu)\n", symt.symbolCount);
-        return -1;
-    }
-
-    // Read symbols in chunks
-    static Symbol chunk[symbolsPerChunk];
-    s32 i;
-    for (i = 0; i < symt.symbolCount; i++) {
-        if (i % symbolsPerChunk == 0) {
-            u32 chunkAddr = symbolTableRomAddr + sizeof(SymbolTable) + (i / symbolsPerChunk) * chunkSize;
-            nuPiReadRom(chunkAddr, chunk, chunkSize);
-        }
-
-        Symbol sym = chunk[i % symbolsPerChunk];
-
-        if (sym.address == address) {
-            *out = sym;
-            return 0;
-        } else if (address < sym.address) {
-            break;
-        } else {
-            *out = sym;
-        }
-    }
-    return address - out->address;
+    return search_symbol_table(symbolTableRomAddr, address, out);
 }
 
 char* load_symbol_string(char* dest, u32 addr, int n) {
@@ -380,50 +374,6 @@ char* load_symbol_string(char* dest, u32 addr, int n) {
 
     // Shift to start of string
     return (char*)((u32)dest + (addr & 3));
-}
-
-/**
- * @brief Look up a symbol in an overlay's debug symbol table stored in ROM.
- *
- * Addresses in the table are stored as offsets from LINK_ADDR (0x80000000).
- * The caller passes `offset = addr - overlay_base` as the lookup key.
- */
-s32 ovl_address2symbol(u32 offset, u32 debugRomStart, u32 debugRomEnd, Symbol* out) {
-    #define symbolsPerChunk 0x1000
-    #define chunkSize ((sizeof(Symbol) * symbolsPerChunk))
-
-    SymbolTable symt;
-    nuPiReadRom(debugRomStart, &symt, sizeof(SymbolTable));
-    if (symt.magic[0] != 'S' || symt.magic[1] != 'Y' || symt.magic[2] != 'M' || symt.magic[3] != 'S') {
-        return -1;
-    }
-    if (symt.symbolCount <= 0) {
-        return -1;
-    }
-
-    static Symbol chunk[symbolsPerChunk];
-    s32 i;
-    for (i = 0; i < symt.symbolCount; i++) {
-        if (i % symbolsPerChunk == 0) {
-            u32 chunkAddr = debugRomStart + sizeof(SymbolTable) + (i / symbolsPerChunk) * chunkSize;
-            nuPiReadRom(chunkAddr, chunk, chunkSize);
-        }
-
-        Symbol sym = chunk[i % symbolsPerChunk];
-
-        if (sym.address == offset) {
-            *out = sym;
-            return 0;
-        } else if (offset < sym.address) {
-            break;
-        } else {
-            *out = sym;
-        }
-    }
-    return offset - out->address;
-
-    #undef symbolsPerChunk
-    #undef chunkSize
 }
 
 /// Extract file basename and line number from a symbol table file string.
@@ -471,7 +421,7 @@ void backtrace_resolve_addr(u32 address, ResolvedSym* out, s32 lineOverride) {
         if (debugRomStart != 0) {
             u32 offset = address - ovlBase;
             Symbol sym;
-            s32 sym_offset = ovl_address2symbol(offset, debugRomStart, debugRomEnd, &sym);
+            s32 sym_offset = search_symbol_table(debugRomStart, offset, &sym);
             if (sym_offset >= 0 && sym_offset < 0x1000) {
                 char name_buf[0x40];
                 char file_buf[0x40];

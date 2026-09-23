@@ -50,13 +50,14 @@ let
 
   python-windows = pkgs.callPackage ./python.nix {};
   ninja-windows = pkgs.callPackage ./ninja.nix {};
-  ccache-windows = pkgs.callPackage ./ccache.nix {};
+  sccache-windows = pkgs.callPackage ./sccache.nix {};
   n64crc-windows = import ./n64crc.nix { stdenv = mingwStdenv; };
   busybox-windows = pkgs.callPackage ./busybox.nix {};
   jre-windows = pkgs.callPackage ./jre.nix {};
 
   pigment64-windows = mingw.callPackage ../pigment64.nix {};
   crunch64-windows = mingw.callPackage ../crunch64.nix {};
+  evt-validate-windows = mingw.callPackage ../evt_validate.nix {};
 
   # MIPS glibc headers from the native cross-compiler, needed for string.h etc.
   mipsGlibcDev = mipsCrossGcc.libc.dev;
@@ -197,7 +198,7 @@ let
     export PAPERMARIO_LD="mips-linux-gnu-ld"
 
     # Configure
-    python3 tools/build/configure.py --no-ccache
+    python3 tools/build/configure.py --no-sccache
 
     # Build
     ninja
@@ -239,6 +240,7 @@ let
     # Rust tools
     cp ${pigment64-windows}/bin/pigment64.exe $dir/bin/
     cp ${crunch64-windows}/bin/crunch64.exe $dir/bin/
+    cp ${evt-validate-windows}/bin/evt_validate.exe $dir/bin/
 
     # busybox (Unix utilities: cp, etc.)
     cp ${busybox-windows}/bin/busybox.exe $dir/bin/
@@ -247,8 +249,8 @@ let
     # ninja
     cp ${ninja-windows}/bin/ninja.exe $dir/bin/
 
-    # ccache
-    cp ${ccache-windows}/bin/ccache.exe $dir/bin/
+    # sccache
+    cp ${sccache-windows}/bin/sccache.exe $dir/bin/
 
     # n64crc (pre-built so Windows users don't need a host C compiler)
     cp ${n64crc-windows}/bin/n64crc.exe $dir/bin/
@@ -288,8 +290,8 @@ let
 in
 zip // {
   passthru = {
-    inherit mips-toolchain python-windows ninja-windows ccache-windows n64crc-windows
-            pigment64-windows crunch64-windows wineRom pythonDeps pythonDepsWindows;
+    inherit mips-toolchain python-windows ninja-windows sccache-windows n64crc-windows
+            pigment64-windows crunch64-windows evt-validate-windows wineRom pythonDeps pythonDepsWindows;
 
     tests.wine = pkgs.runCommand "mips-toolchain-windows-test" {
       nativeBuildInputs = [ pkgs.wineWow64Packages.stable ];

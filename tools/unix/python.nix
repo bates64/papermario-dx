@@ -17,6 +17,7 @@ let
   wheelHashes = {
     "x86_64-linux" = "sha256-fE/68DoCfnoaIN8nVjnfe8+XKbsfBsSXBPlPEgVc8WQ=";
     "aarch64-linux" = "sha256-aOgCFi6gQhCTAC1MzoX5TcBunoDFUsizvRZYzkgq+4g=";
+    "x86_64-darwin" = pkgs.lib.fakeHash;
     "aarch64-darwin" = "sha256-UE+EqFe+LEM9OFF76GdUcW/HXe9bpPzDsD1dY3L/R6M=";
   };
 

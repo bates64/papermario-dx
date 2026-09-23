@@ -14,11 +14,17 @@ ROOT = Path(__file__).resolve().parents[2]
 SUITE_ROOT = Path(__file__).resolve().with_suffix("")
 PASS_DIR = SUITE_ROOT / "pass"
 FAIL_DIR = SUITE_ROOT / "fail"
-VALIDATOR = ROOT / "tools/build/evt_validate_obj.py"
+
+
+def validator_binary() -> str:
+    validator = shutil.which("evt_validate")
+    if validator is None:
+        raise RuntimeError("evt_validate was not found on PATH")
+    return validator
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run fixture tests for evt_validate_obj.py")
+    parser = argparse.ArgumentParser(description="Run fixture tests for the evt_validate binary")
     parser.add_argument("--filter", help="only run cases whose relative path contains this substring")
     parser.add_argument("--keep-temp", action="store_true", help="keep compiled test objects")
     parser.add_argument("--stamp", type=Path, help="write a stamp file on success")
@@ -118,6 +124,7 @@ def format_failure(case: str, message: str, stdout: str, stderr: str) -> str:
 
 def run_case(
     compiler: str,
+    validator: str,
     version: str,
     source: Path,
     should_pass: bool,
@@ -136,7 +143,7 @@ def run_case(
             compile_result.stderr,
         )
 
-    validate_result = run_command([sys.executable, str(VALIDATOR), str(object_path)])
+    validate_result = run_command([validator, str(object_path)])
     if should_pass:
         if validate_result.returncode != 0:
             return format_failure(
@@ -174,7 +181,8 @@ def run_case(
 def main() -> int:
     args = parse_args()
     compiler = compiler_for_tests()
-    temp_root = Path(tempfile.mkdtemp(prefix="evt_validate_obj_tests_", dir="/tmp"))
+    validator = validator_binary()
+    temp_root = Path(tempfile.mkdtemp(prefix="evt_validate_tests_", dir="/tmp"))
     failures: list[str] = []
     cases_run = 0
 
@@ -184,7 +192,7 @@ def main() -> int:
                 cases_run += 1
                 rel = source.relative_to(ROOT)
                 print(f"[{cases_run:02d}] {rel}")
-                failure = run_case(compiler, args.version, source, should_pass, temp_root)
+                failure = run_case(compiler, validator, args.version, source, should_pass, temp_root)
                 if failure is not None:
                     failures.append(failure)
 

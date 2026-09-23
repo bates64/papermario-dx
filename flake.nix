@@ -79,6 +79,9 @@
         # package set's build packages rather than pkgs.
         mipsGdb = pkgsCross.buildPackages.gdb;
 
+        sccachePkg = pkgs.callPackage ./tools/sccache.nix { };
+        evtValidatePkg = pkgs.callPackage ./tools/evt_validate.nix { };
+
         unixToolchain = import ./tools/unix {
           inherit pkgs nixpkgs-binutils-2_39 mipsGdb starRodJar;
           mipsCrossGcc = pkgsCross.stdenv.cc;
@@ -97,6 +100,7 @@
             pkgs.iconv
             (pkgs.callPackage ./tools/pigment64.nix {})
             (pkgs.callPackage ./tools/crunch64.nix {})
+            evtValidatePkg
           ] ++ pkgs.lib.optional pkgs.stdenv.isLinux pkgs.flips;
           # Disable nixpkgs hardening flags (zerocallusedregs, fortify, etc.)
           # that the cross-compiler wrapper injects. The build system manages
@@ -116,7 +120,7 @@
           pip install --no-index --find-links=${pythonDeps} -r tools/requirements.txt --quiet
 
           export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
-          python3 tools/build/configure.py --no-ccache
+          python3 tools/build/configure.py --no-sccache
           ninja
 
           mkdir -p $out
@@ -125,7 +129,10 @@
             "flips --create --bps ${baseRom} ver/us/build/papermario.z64 $out/papermario.bps"}
         '';
 
-        clangdIndexingTools = pkgs.callPackage ./tools/clangd-indexing-tools.nix {};
+        # clangd only loads indexes built by the same version of clangd-indexer.
+        clangdVersion = "21.1.8";
+        clangdIndexingTools = pkgs.callPackage ./tools/clangd.nix { version = clangdVersion; archive = "clangd_indexing_tools"; };
+        clangdPkg = pkgs.callPackage ./tools/clangd.nix { version = clangdVersion; archive = "clangd"; };
         clangdIndex = pkgs.runCommand "papermario-dx-clangd-index" {
           nativeBuildInputs = [
             pkgsCross.stdenv.cc
@@ -140,6 +147,7 @@
             pkgs.iconv
             (pkgs.callPackage ./tools/pigment64.nix {})
             (pkgs.callPackage ./tools/crunch64.nix {})
+            evtValidatePkg
             clangdIndexingTools
           ];
           NIX_HARDENING_ENABLE = "";
@@ -157,7 +165,7 @@
           pip install --no-index --find-links=${pythonDeps} -r tools/requirements.txt --quiet
 
           export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
-          python3 tools/build/configure.py --no-ccache
+          python3 tools/build/configure.py --no-sccache
           ninja
 
           # Build binary RIFF index with a known path prefix.
@@ -210,12 +218,13 @@
             libyaml
             python3
             python3Packages.virtualenv
-            ccache
+            sccachePkg
             git
             iconv
             gcc # for n64crc
             (callPackage ./tools/pigment64.nix {})
             (callPackage ./tools/crunch64.nix {})
+            evtValidatePkg
             (writeShellScriptBin "star-rod" ''
               exec ${jdk17}/bin/java -jar ${starRodJar}/share/java/StarRod.jar "$@"
             '')
@@ -225,6 +234,13 @@
           shellHook = ''
             rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64
             export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
+
+            export SCCACHE_CONF="$PWD/.dx/sccache-config.toml"
+            export AWS_SHARED_CREDENTIALS_FILE="$PWD/.dx/sccache-credentials"
+            export SCCACHE_BASEDIRS="$PWD"
+
+            # Shadows clang-tools' clangd.
+            export PATH="${clangdPkg}/bin:$PATH"
 
             virtualenv venv --quiet
             source venv/bin/activate

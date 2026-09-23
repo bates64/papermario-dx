@@ -6,6 +6,7 @@ import re
 import shutil
 import subprocess
 import sys
+import urllib.request
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
@@ -51,6 +52,45 @@ else:
     CRC_TOOL = f"{BUILD_TOOLS}/rom/n64crc"
 
 SOURCE_DIRS = ["src", "include", "assets"]
+
+# Serves the shared sccache bucket's config and credentials. Overridable for
+# self-hosted caches.
+BUILD_JSON_URL = os.environ.get(
+    "PAPERMARIO_BUILD_JSON_URL", "https://papermario-dx.starhaven.dev/build.json"
+)
+
+# Ninja can't set per-command environment variables portably, so the build
+# environment exports SCCACHE_CONF and AWS_SHARED_CREDENTIALS_FILE pointing at
+# these files instead.
+SCCACHE_CONFIG_PATH = ROOT / ".dx/sccache-config.toml"
+SCCACHE_CREDENTIALS_PATH = ROOT / ".dx/sccache-credentials"
+
+
+def write_shared_sccache_config() -> None:
+    try:
+        with urllib.request.urlopen(BUILD_JSON_URL, timeout=3) as resp:
+            config = json.load(resp)["sccache"]
+        endpoint: str = config["endpoint"]
+        use_ssl = not endpoint.startswith("http://")
+        endpoint = endpoint.removeprefix("https://").removeprefix("http://")
+
+        SCCACHE_CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
+        SCCACHE_CONFIG_PATH.write_text(
+            "[cache.s3]\n"
+            f'bucket = "{config["bucket"]}"\n'
+            f'endpoint = "{endpoint}"\n'
+            'region = "auto"\n'
+            f"use_ssl = {str(use_ssl).lower()}\n"
+            "no_credentials = false\n"
+        )
+        SCCACHE_CREDENTIALS_PATH.write_text(
+            "[default]\n"
+            f'aws_access_key_id = {config["accessKey"]}\n'
+            f'aws_secret_access_key = {config["secretKey"]}\n'
+        )
+        SCCACHE_CREDENTIALS_PATH.chmod(0o600)
+    except (OSError, ValueError, KeyError) as e:
+        print(f"note: couldn't reach shared sccache config ({e}), using a local-only cache", file=sys.stderr)
 
 
 def _walk_source_file_list():
@@ -183,22 +223,17 @@ def write_ninja_rules(
     extra_cppflags: str,
     extra_cflags: str,
     extra_cxxflags: str,
-    use_ccache: bool,
+    use_sccache: bool,
     shift: bool,
     debug: bool,
 ):
     # platform-specific
 
-    ccache = ""
+    sccache = ""
 
-    if use_ccache:
-        ccache = "ccache "
-        try:
-            subprocess.call(
-                ["ccache"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-            )
-        except FileNotFoundError:
-            ccache = ""
+    if use_sccache and shutil.which("sccache"):
+        write_shared_sccache_config()
+        sccache = "sccache "
 
     cross = "mips-linux-gnu-"
     cc_modern = f"{cross}gcc"
@@ -213,7 +248,11 @@ def write_ninja_rules(
 
     CPPFLAGS = CPPFLAGS_COMMON
 
-    modern_flags = "-c -G0 -O2 -g1 -gdwarf -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch"
+    # Keeps debug paths portable across machines sharing the cache.
+    # SCCACHE_BASEDIRS strips the checkout path from this flag before hashing.
+    prefix_map = f"-ffile-prefix-map={os.getcwd()}=/papermario-dx"
+
+    modern_flags = f"-c -G0 -O2 -g1 -gdwarf -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {prefix_map}"
     cflags_modern = f"{modern_flags} {extra_cflags}"
     cxxflags_modern = f"{modern_flags} {extra_cxxflags}"
 
@@ -275,7 +314,7 @@ def write_ninja_rules(
     ninja.rule(
         "cc_modern",
         description="Compiling $in",
-        command=f"{ccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.h -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
+        command=f"{sccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.h -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -283,15 +322,15 @@ def write_ninja_rules(
     ninja.rule(
         "cxx_modern",
         description="Compiling $in",
-        command=f"{ccache}{cxx_modern} {cxxflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.hpp -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
+        command=f"{sccache}{cxx_modern} {cxxflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.hpp -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
 
     ninja.rule(
-        "evt_validate_obj",
+        "evt_validate",
         description="Validating scripts in $evt_target",
-        command=f"$python {BUILD_TOOLS}/evt_validate_obj.py --object-list $out.rsp --out $out",
+        command="evt_validate --object-list $out.rsp --out $out",
         rspfile="$out.rsp",
         rspfile_content="$in_newline",
     )
@@ -509,20 +548,20 @@ def write_ninja_rules(
     ninja.rule(
         "syms",
         description="Reading engine symbols for overlays",
-        command=f"$python {BUILD_TOOLS}/overlay.py gen-syms $in $out",
+        command=f"$python {BUILD_TOOLS}/overlay_cli.py gen-syms $in $out",
         restat=True,
     )
 
     ninja.rule(
         "ovl_link_convert",
         description="Linking overlay $ovl_src",
-        command=f"$python {BUILD_TOOLS}/overlay.py link $syms $out $link_addr $in",
+        command=f"$python {BUILD_TOOLS}/overlay_cli.py link $syms $out $link_addr $in",
     )
 
     ninja.rule(
         "ovl_apply",
         description="Applying overlays",
-        command=f"$python {BUILD_TOOLS}/overlay.py apply-all $in $out $syms $manifest",
+        command=f"$python {BUILD_TOOLS}/overlay_cli.py apply-all $in $out $syms $manifest",
     )
 
 
@@ -731,9 +770,9 @@ class Configure:
 
         # Each animation is reached by name from a table in the engine, so the
         # order these are emitted in only decides where they sit.
-        imgfx_c = version_assets / "imgfx" / "imgfx_data.c"
+        imgfx_c = self.build_path() / version_assets / "imgfx" / "imgfx_data.c"
         build(imgfx_c, self.imgfx_animations(), "imgfx_data")
-        imgfx_obj = self.build_path() / (posix(imgfx_c) + ".o")
+        imgfx_obj = Path(posix(imgfx_c) + ".o")
         build(
             imgfx_obj,
             [imgfx_c],
@@ -1487,9 +1526,8 @@ class Configure:
                         evt_target = evt_validation_display_path(object_path)
                     ninja.build(
                         evt_validation_stamp,
-                        "evt_validate_obj",
+                        "evt_validate",
                         [posix(object_path)],
-                        implicit=[posix(BUILD_TOOLS / "evt_validate_obj.py")],
                         variables={"evt_target": evt_target},
                     )
 
@@ -1824,9 +1862,8 @@ class Configure:
                 for evt_validation_stamp in evt_stamps:
                     ninja.build(
                         evt_validation_stamp,
-                        "evt_validate_obj",
+                        "evt_validate",
                         [posix(obj_path)],
-                        implicit=[posix(BUILD_TOOLS / "evt_validate_obj.py")],
                         variables={"evt_target": posix(c_file)},
                     )
                 objects.append(posix(obj_path))
@@ -1866,7 +1903,8 @@ class Configure:
         with open(manifest_path, "w", encoding="utf-8") as f:
             json.dump(manifest_entries, f)
 
-        implicit_deps.append(posix(BUILD_TOOLS / "overlay.py"))
+        implicit_deps.append(posix(BUILD_TOOLS / "overlay_cli.py"))
+        implicit_deps.append(posix(BUILD_TOOLS / "overlay_impl.py"))
         ninja.build(
             posix(self.rom_path()),
             "ovl_apply",
@@ -1945,7 +1983,7 @@ if __name__ == "__main__":
         action="store_true",
         help="Use modern GCC instead of the original compiler",
     )
-    parser.add_argument("--no-ccache", action="store_true", help="Use ccache")
+    parser.add_argument("--no-sccache", action="store_true", help="Use sccache")
     parser.add_argument(
         "--dump",
         action="store_true",
@@ -1969,7 +2007,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     args.shift = not args.no_shift
     args.non_matching = not args.no_non_matching
-    args.ccache = not args.no_ccache
+    args.sccache = not args.no_sccache
     args.evt_validation = not args.no_evt_validation
 
     if args.incremental:
@@ -2104,7 +2142,7 @@ if __name__ == "__main__":
         extra_cppflags,
         extra_cflags,
         extra_cxxflags,
-        args.ccache,
+        args.sccache,
         args.shift,
         args.debug,
     )
@@ -2231,9 +2269,9 @@ if __name__ == "__main__":
         if compdb.returncode == 0:
             entries = json.loads(compdb.stdout)
             strip_re = re.compile(r"^(-m\S+|-f\S+|-g\S+|-G\d+|--warn-\S+)$")
-            cross_cc_re = re.compile(r"^(ccache\s+)?mips-linux-gnu-g(cc|\+\+)(?=\s)")
+            cross_cc_re = re.compile(r"^(sccache\s+)?mips-linux-gnu-g(cc|\+\+)(?=\s)")
             for entry in entries:
-                entry["command"] = cross_cc_re.sub(r"\1cc", entry["command"])
+                entry["command"] = cross_cc_re.sub("cc", entry["command"])
                 parts = entry["command"].split()
                 entry["command"] = " ".join(p for p in parts if not strip_re.match(p))
             (ROOT / "compile_commands.json").write_text(

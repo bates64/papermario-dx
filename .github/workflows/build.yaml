@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       rom-sha256: ${{ steps.rom-sha.outputs.sha256 }}
+    env:
+      SCCACHE_CONF: ${{ github.workspace }}/.dx/sccache-config.toml
+      AWS_SHARED_CREDENTIALS_FILE: ${{ github.workspace }}/.dx/sccache-credentials
+      SCCACHE_BASEDIRS: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v25
@@ -121,6 +125,10 @@ jobs:
     needs: [windows-toolchain]
     outputs:
       rom-sha256: ${{ steps.windows-rom-sha.outputs.sha256 }}
+    env:
+      SCCACHE_CONF: ${{ github.workspace }}\.dx\sccache-config.toml
+      AWS_SHARED_CREDENTIALS_FILE: ${{ github.workspace }}\.dx\sccache-credentials
+      SCCACHE_BASEDIRS: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
       - name: Download base ROM

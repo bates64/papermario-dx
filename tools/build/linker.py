@@ -18,6 +18,13 @@ from typing import Dict, List, Optional, Tuple
 LabelledObject = Tuple[str, str]
 
 BUILD_SECTIONS = ("TEXT", "DATA", "RODATA")
+
+DEBUG_SECTIONS = (
+    ".debug_info", ".debug_abbrev", ".debug_aranges", ".debug_line",
+    ".debug_line_str", ".debug_str", ".debug_str_offsets", ".debug_loc",
+    ".debug_loclists", ".debug_ranges", ".debug_rnglists", ".debug_frame",
+    ".debug_macro", ".debug_addr", ".debug_names", ".comment",
+)
 SYMBOL_SUFFIXES = (
     "ROM_START", "ROM_END", "VRAM", "VRAM_END",
     *(f"{s}_{k}" for s in (*BUILD_SECTIONS, "BSS") for k in ("START", "END", "SIZE")),
@@ -123,6 +130,9 @@ def write_script(path: Path, segments: List[Segment],
         out.append(f"    {name}_VRAM_END = .;")
         out.append("")
         out += class_vram.get(name, [])
+
+    for section in DEBUG_SECTIONS:
+        out.append(f"    {section} 0 : {{ *({section}) }}")
 
     out += ["    /DISCARD/ :", "    {", "        *(*);", "    }", "}", ""]
     path.parent.mkdir(parents=True, exist_ok=True)

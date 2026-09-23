@@ -1,7 +1,6 @@
 # Builds a downloadable, self-contained toolchain for the current system
-# (one of x86_64-linux, aarch64-linux, aarch64-darwin - x86_64-darwin is
-# unsupported since nixpkgs-unstable dropped it), analogous to tools/windows
-# for Windows.
+# (one of x86_64-linux, aarch64-linux, x86_64-darwin, aarch64-darwin),
+# analogous to tools/windows for Windows.
 #
 # Unlike the Windows toolchain (a Canadian cross that produces binaries with
 # no /nix/store dependency by construction), these binaries are built
@@ -34,6 +33,7 @@ let
   platformTag = {
     "x86_64-linux" = "linux-x86_64";
     "aarch64-linux" = "linux-aarch64";
+    "x86_64-darwin" = "macos-x86_64";
     "aarch64-darwin" = "macos-aarch64";
   }.${system} or (throw "tools/unix: unsupported system ${system}");
 
@@ -75,6 +75,8 @@ let
   n64crc = import ./n64crc.nix { stdenv = pkgs.stdenv; };
   pigment64-native = pkgs.callPackage ../pigment64.nix { };
   crunch64-native = pkgs.callPackage ../crunch64.nix { };
+  sccache-native = pkgs.callPackage ../sccache.nix { };
+  evt-validate-native = pkgs.callPackage ../evt_validate.nix { };
   python-packages = import ./python.nix { inherit pkgs; };
   jre = import ./jre.nix { inherit pkgs; };
 
@@ -90,10 +92,12 @@ let
     pigment64-native
     crunch64-native
     pkgs.ninja
-    pkgs.ccache
+    sccache-native
+    evt-validate-native
     pkgs.python3
     jre
     starRodJar
+    pkgs.llvmPackages.clang-unwrapped
   ];
   closure = pkgs.closureInfo { rootPaths = closureRoots; };
 
@@ -124,8 +128,8 @@ let
       }
       for tool in mips-linux-gnu-gcc mips-linux-gnu-g++ mips-linux-gnu-cpp mips-linux-gnu-ld mips-linux-gnu-as \
                   mips-linux-gnu-ar mips-linux-gnu-nm mips-linux-gnu-objcopy mips-linux-gnu-objdump \
-                  mips-linux-gnu-ranlib mips-linux-gnu-strip \
-                  ninja ccache pigment64 crunch64 n64crc python3 java; do
+                  mips-linux-gnu-ranlib mips-linux-gnu-readelf mips-linux-gnu-strip \
+                  ninja sccache evt_validate pigment64 crunch64 n64crc python3 java clang-format clang-tidy clangd; do
         link_bin "$tool"
       done
 
@@ -215,11 +219,13 @@ let
       '' else ''
         PATCHELF="$DIR/bin/.patchelf"
         find "$DIR/store" -type f | while read -r f; do
-          if "$PATCHELF" --print-rpath "$f" >/dev/null 2>&1; then
+          # Static-PIE binaries (like sccache) have a dynamic section but no
+          # interpreter or DT_NEEDED, and setting an RPATH on them corrupts them.
+          if "$PATCHELF" --print-interpreter "$f" >/dev/null 2>&1; then
             "$PATCHELF" --set-rpath "$DIR/lib" "$f" || true
-            if "$PATCHELF" --print-interpreter "$f" >/dev/null 2>&1; then
-              "$PATCHELF" --set-interpreter "$DIR/lib/${interpName}" "$f" || true
-            fi
+            "$PATCHELF" --set-interpreter "$DIR/lib/${interpName}" "$f" || true
+          elif [ -n "$("$PATCHELF" --print-needed "$f" 2>/dev/null)" ]; then
+            "$PATCHELF" --set-rpath "$DIR/lib" "$f" || true
           fi
         done
       ''}

@@ -95,9 +95,17 @@ jobs:
           echo "$hash" | aws s3 cp - "$bucket/commits/${{ github.sha }}/linux-aarch64" --endpoint-url "$S3_ENDPOINT"
 
   mac:
-    name: Publish (macos-aarch64)
+    name: Publish (${{ matrix.platform }})
     if: github.repository == 'bates64/papermario-dx'
-    runs-on: macos-15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            platform: macos-aarch64
+          - runner: macos-15-intel
+            platform: macos-x86_64
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@v23
@@ -106,7 +114,7 @@ jobs:
           name: papermario-dx-aarch64-darwin
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
-      - name: Build aarch64-darwin toolchain
+      - name: Build ${{ matrix.platform }} toolchain
         run: nix build .#unix-toolchain --out-link result-toolchain
 
       - name: Publish to S3
@@ -121,4 +129,4 @@ jobs:
           if ! aws s3api head-object --bucket starhaven --key "papermario-dx/toolchains/$hash.zip" --endpoint-url "$S3_ENDPOINT" >/dev/null 2>&1; then
             aws s3 cp "$file" "$bucket/toolchains/$hash.zip" --endpoint-url "$S3_ENDPOINT"
           fi
-          echo "$hash" | aws s3 cp - "$bucket/commits/${{ github.sha }}/macos-aarch64" --endpoint-url "$S3_ENDPOINT"
+          echo "$hash" | aws s3 cp - "$bucket/commits/${{ github.sha }}/${{ matrix.platform }}" --endpoint-url "$S3_ENDPOINT"
