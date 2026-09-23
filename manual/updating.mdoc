@@ -15,19 +15,15 @@ git remote add upstream https://github.com/bates64/papermario-dx.git
 ## Fetch the latest changes
 
 ```sh
-git fetch upstream --tags --force
+git fetch upstream
 ```
 
-## Merge the version you want into your `main` branch
-
-Paper Mario DX marks releases with tags, such as `dx-nightly` for the latest development build:
+## Merge the latest changes into your `main` branch
 
 ```sh
 git checkout main
-git merge upstream/dx-nightly
+git merge upstream/main
 ```
-
-Replace `dx-nightly` with a specific version tag (for example `dx-1.0`) for a stable release instead.
 
 ## Resolve any merge conflicts
 
@@ -35,4 +31,4 @@ VS Code highlights conflicting sections in the editor with buttons like **Accept
 
 ## Build
 
-Build as usual with **Ctrl+Shift+B**.
+Build as usual with **Ctrl+Shift+B**. If the update needs a different compiler toolchain, the build downloads it first, so this build might take longer than usual.

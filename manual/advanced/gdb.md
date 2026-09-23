@@ -43,6 +43,6 @@ This page was adapted from [Dragorn421's oot gdb tutorial](https://github.com/Dr
 
 | Previous | Next |
 |:---------|-----:|
-|[Star Rod](star-rod.md)|[GitHub Actions](gh-actions.md)|
+|[Star Rod](star-rod.md)||
 
 </div>
