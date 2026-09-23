@@ -278,7 +278,7 @@ void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
     curAsset = &assetTableBuffer[0];
     dma_copy((u8*) ASSET_TABLE_FIRST_ENTRY, (u8*) ASSET_TABLE_FIRST_ENTRY + firstHeader.offset, assetTableBuffer);
     while (strcmp(curAsset->name, assetName) != 0) {
-        ASSERT_MSG(strcmp(curAsset->name, "end_data") != 0, "Asset not found: %s", assetName);
+        ASSERT_MSG(curAsset->name[0] != '\0', "Asset not found: %s", assetName);
         curAsset++;
     }
     *decompressedSize = curAsset->decompressedLength;
@@ -300,7 +300,7 @@ s32 get_asset_offset(char* assetName, u32* compressedSize) {
     curAsset = &assetTableBuffer[0];
     dma_copy((u8*) ASSET_TABLE_FIRST_ENTRY, (u8*) ASSET_TABLE_FIRST_ENTRY + firstHeader.offset, assetTableBuffer);
     while (strcmp(curAsset->name, assetName) != 0) {
-        ASSERT_MSG(strcmp(curAsset->name, "end_data") != 0, "Asset not found: %s", assetName);
+        ASSERT_MSG(curAsset->name[0] != '\0', "Asset not found: %s", assetName);
         curAsset++;
     }
     *compressedSize = curAsset->compressedLength;
