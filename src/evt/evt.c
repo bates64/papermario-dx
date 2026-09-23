@@ -3182,9 +3182,9 @@ Bytecode* evt_skip_if(Evt* script) {
         nargs = EVT_CMD_ARGC(rawCmd);
         pos += nargs;
 
+        ASSERT_MSG(opcode != EVT_OP_END, "If is missing EndIf");
+
         switch (opcode) {
-            case EVT_OP_END:
-                PANIC();
             case EVT_OP_END_IF:
                 nestedIfDepth--;
                 if (nestedIfDepth < 0) {
@@ -3217,9 +3217,9 @@ Bytecode* evt_skip_else(Evt* script) {
         nargs = EVT_CMD_ARGC(rawCmd);
         pos += nargs;
 
+        ASSERT_MSG(opcode != EVT_OP_END, "Else is missing EndIf");
+
         switch (opcode) {
-            case EVT_OP_END:
-                PANIC();
             case EVT_OP_END_IF:
                 nestedIfDepth--;
                 if (nestedIfDepth < 0) {
@@ -3248,10 +3248,9 @@ Bytecode* evt_goto_end_case(Evt* script) {
         nargs = EVT_CMD_ARGC(*cmd);
         pos += nargs;
 
+        ASSERT_MSG(opcode != EVT_OP_END, "Switch is missing EndSwitch");
+
         switch (opcode) {
-            case EVT_OP_END:
-                PANIC();
-                break;
             case EVT_OP_SWITCH:
             case EVT_OP_SWITCH_CONST:
                 switchDepth++;
@@ -3279,10 +3278,9 @@ Bytecode* evt_goto_next_case(Evt* script) {
         nargs = EVT_CMD_ARGC(*cmd);
         pos += nargs;
 
+        ASSERT_MSG(opcode != EVT_OP_END, "Switch is missing EndSwitch");
+
         switch (opcode) {
-            case EVT_OP_END:
-                PANIC();
-                break;
             case EVT_OP_SWITCH:
             case EVT_OP_SWITCH_CONST:
                 switchDepth++;
@@ -3327,10 +3325,9 @@ void evt_skip_to_loop_end(Evt* script) {
         nargs = EVT_CMD_ARGC(*cmd);
         pos += nargs;
 
+        ASSERT_MSG(opcode != EVT_OP_END, "Loop is missing EndLoop or EndLerp");
+
         switch (opcode) {
-            case EVT_OP_END:
-                PANIC();
-                break;
             case EVT_OP_END_LOOP:
             case EVT_OP_END_LERP:
                 if (nestingDepth == 0) {
@@ -3373,10 +3370,9 @@ void evt_skip_to_switch_end(Evt* script) {
         nargs = EVT_CMD_ARGC(*cmd);
         pos += nargs;
 
+        ASSERT_MSG(opcode != EVT_OP_END, "Switch is missing EndSwitch");
+
         switch (opcode) {
-            case EVT_OP_END:
-                PANIC();
-                break;
             case EVT_OP_END_SWITCH:
                 if (nestingDepth == 0) {
                     script->ptrNextLine = cmd;
