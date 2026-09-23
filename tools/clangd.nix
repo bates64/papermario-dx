@@ -1,26 +1,27 @@
-{ lib, stdenv, fetchurl, autoPatchelfHook, libgcc, unzip, version }:
+# Prebuilt binaries from a clangd/clangd release.
+{ lib, stdenv, fetchurl, autoPatchelfHook, libgcc, unzip, version, archive }:
 
 let
-  systems = {
-    x86_64-linux = {
-      url = "https://github.com/clangd/clangd/releases/download/${version}/clangd-linux-${version}.zip";
-      hash = "sha256-4LIUpZkG387vM0Boc8Q3n7jnaPtDRdivp/MHvS7Imd4=";
+  hashes = {
+    clangd = {
+      x86_64-linux = "sha256-4LIUpZkG387vM0Boc8Q3n7jnaPtDRdivp/MHvS7Imd4=";
+      aarch64-darwin = "sha256-tDXo7/m7jbWdbw+HSzprHPqqlJgOCOOPD6AV3eGF020=";
+      x86_64-darwin = hashes.clangd.aarch64-darwin;
     };
-    aarch64-darwin = {
-      url = "https://github.com/clangd/clangd/releases/download/${version}/clangd-mac-${version}.zip";
-      hash = "sha256-tDXo7/m7jbWdbw+HSzprHPqqlJgOCOOPD6AV3eGF020=";
+    clangd_indexing_tools = {
+      x86_64-linux = "sha256-fFoSY1zp4/B5B4kxGgvNPTIFRRz6jJjIsj0FDIIBkyA=";
     };
-    x86_64-darwin = systems.aarch64-darwin;
   };
-  platform = systems.${stdenv.hostPlatform.system}
-    or (throw "clangd: unsupported system ${stdenv.hostPlatform.system}");
+  system = stdenv.hostPlatform.system;
+  os = if stdenv.isDarwin then "mac" else "linux";
 in
 stdenv.mkDerivation {
-  pname = "clangd";
+  pname = lib.replaceStrings [ "_" ] [ "-" ] archive;
   inherit version;
 
   src = fetchurl {
-    inherit (platform) url hash;
+    url = "https://github.com/clangd/clangd/releases/download/${version}/${archive}-${os}-${version}.zip";
+    hash = hashes.${archive}.${system} or (throw "${archive}: unsupported system ${system}");
   };
 
   sourceRoot = "clangd_${version}";
@@ -35,9 +36,8 @@ stdenv.mkDerivation {
   '';
 
   meta = {
-    description = "clangd";
     homepage = "https://github.com/clangd/clangd";
     license = lib.licenses.asl20;
-    platforms = builtins.attrNames systems;
+    platforms = builtins.attrNames hashes.${archive};
   };
 }

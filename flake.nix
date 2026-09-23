@@ -131,8 +131,8 @@
 
         # clangd only loads indexes built by the same version of clangd-indexer.
         clangdVersion = "21.1.8";
-        clangdIndexingTools = pkgs.callPackage ./tools/clangd-indexing-tools.nix { version = clangdVersion; };
-        clangdPkg = pkgs.callPackage ./tools/clangd.nix { version = clangdVersion; };
+        clangdIndexingTools = pkgs.callPackage ./tools/clangd.nix { version = clangdVersion; archive = "clangd_indexing_tools"; };
+        clangdPkg = pkgs.callPackage ./tools/clangd.nix { version = clangdVersion; archive = "clangd"; };
         clangdIndex = pkgs.runCommand "papermario-dx-clangd-index" {
           nativeBuildInputs = [
             pkgsCross.stdenv.cc
