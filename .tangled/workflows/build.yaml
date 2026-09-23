@@ -1,0 +1,89 @@
+when:
+  - event: ["push"]
+    branch: ["main"]
+  - event: ["pull_request"]
+
+engine: nixery
+
+dependencies:
+  nixpkgs:
+    - nix
+    - cachix
+    - attic-client
+
+
+steps:
+  - name: "Configure Nix caches"
+    # Attic runs on this same host, so it's listed ahead of cache.nixos.org
+    # and Cachix (both over the public internet) via an explicit low
+    # priority number - otherwise nix falls back to each cache's own
+    # self-advertised priority, which doesn't reflect network distance.
+    command: |
+      cat >> /etc/nix/nix.conf <<EOF
+      accept-flake-config = true
+      extra-substituters = https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx?priority=1
+      extra-trusted-public-keys = papermario-dx:CnZCdSGA4n/b2AtneJYjPd/yAvfLPAdtlvkIs8sjrQQ=
+      download-buffer-size = 536870912
+      EOF
+
+  - name: "Fix up FHS paths"
+    # this minimal nixery container has no /usr/bin/env, so scripts with a
+    # #!/usr/bin/env shebang (used throughout the build, not just by us)
+    # can't be exec'd directly. coreutils provides env, just not at that path.
+    command: |
+      mkdir -p /usr/bin
+      ln -sf "$(command -v env)" /usr/bin/env
+
+  - name: "Fetch base ROM"
+    # pkgs.requireFile sets allowSubstitutes = false, so it will never ask a
+    # substituter for this path itself. Placing it in the local store first
+    # (rather than relying on substitution) satisfies the check.
+    command: |
+      nix copy --from "https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx" \
+        /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64
+
+  - name: "Build shell"
+    command: nix develop --profile ./dev-profile --command true
+
+  - name: "Configure"
+    command: nix develop --command ./tools/configure.sh
+
+  - name: "Build game"
+    command: nix develop --command ninja
+
+  - name: "Check formatting"
+    # spindle's checkout is a single-commit shallow clone with no shared
+    # history with the target branch, so this diffs trees directly (two-dot)
+    # rather than from a merge base (three-dot). advisory only, like the
+    # GitHub Actions equivalent this replaces - a formatting nit shouldn't
+    # block a build.
+    command: |
+      if [ "$TANGLED_PIPELINE_KIND" = "pull_request" ]; then
+        git fetch origin "$TANGLED_PIPELINE_TARGET_BRANCH"
+        files=$(git diff --name-only "origin/$TANGLED_PIPELINE_TARGET_BRANCH" HEAD -- '*.c' '*.cpp' '*.h' '*.hpp')
+        if [ -n "$files" ]; then
+          nix develop --command bash -c 'echo "$1" | xargs python3 tools/format.py --check' _ "$files" || true
+        fi
+      fi
+
+  - name: "Run clang-tidy"
+    command: |
+      if [ "$TANGLED_PIPELINE_KIND" = "pull_request" ]; then
+        git fetch origin "$TANGLED_PIPELINE_TARGET_BRANCH"
+        files=$(git diff --name-only "origin/$TANGLED_PIPELINE_TARGET_BRANCH" HEAD -- '*.c' '*.cpp' '*.h' '*.hpp')
+        if [ -n "$files" ]; then
+          nix develop --command bash -c 'echo "$1" | xargs clang-tidy -p . --quiet' _ "$files" || true
+        fi
+      fi
+
+  - name: "Push to Attic"
+    # Attic skips pushing paths already signed by an "upstream cache" (e.g.
+    # cache.nixos.org) by default, on the assumption that re-hosting them
+    # is wasted disk space. Since the whole point here is a local copy that
+    # avoids re-fetching those same paths from the internet, override that.
+    command: |
+      attic login spindle "https://spindle-nix-cache.starhaven.dev" "$ATTIC_TOKEN"
+      attic push --ignore-upstream-cache-filter spindle:papermario-dx ./dev-profile
+
+  - name: "Push to Cachix"
+    command: cachix push papermario-dx ./dev-profile
