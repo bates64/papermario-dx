@@ -138,8 +138,9 @@ let
       # holds libraries built for the MIPS target, some with the same name as
       # a host library (such as libc.so.6 and libstdc++.so.6); skip them. They
       # are big-endian ELF (EI_DATA = 2), and every supported host is
-      # little-endian.
-      find "$dir/store" \( -type f -o -type l \) \( -name '*.so' -o -name '*.so.*' -o -name '*.dylib' \) | while read -r f; do
+      # little-endian. Sorted, so which copy a name ends up pointing at
+      # doesn't depend on the order the filesystem lists them in.
+      find "$dir/store" \( -type f -o -type l \) \( -name '*.so' -o -name '*.so.*' -o -name '*.dylib' \) | sort | while read -r f; do
         [ "$(od -An -tx1 -j5 -N1 "$f" | tr -d ' ')" = "02" ] && continue
         ln -sf "$(realpath --relative-to="$dir/lib" "$f")" "$dir/lib/$(basename "$f")"
       done
@@ -231,7 +232,7 @@ let
         (
           cd $dir
           touch .activate-interp .activate-rpath
-          find store -type f | while read -r f; do
+          find store python -type f | sort | while read -r f; do
             case "$(od -An -tx1 -N6 "$f" | tr -d ' \n')" in
               7f454c46??01) ;;
               *) continue ;;
@@ -288,7 +289,8 @@ let
       mkdir -p $out
       # xz rather than zip: it's about half the size, and any tar on macOS or
       # Linux can extract it. Fixed file order, times, and owners keep the
-      # archive, and so the hash it's published under, reproducible.
+      # archive the same when its contents are, so the publish step stores
+      # an unchanged toolchain only once.
       tar --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner -c $dir \
         | xz -9 -T0 > $out/papermario-dx-${platformTag}.tar.xz
     '';
