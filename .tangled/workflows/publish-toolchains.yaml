@@ -42,12 +42,12 @@ steps:
       set -e
       endpoint="https://fsn1.your-objectstorage.com"
       bucket="s3://starhaven/papermario-dx"
-      zip=$(echo result-toolchain-aarch64-linux/papermario-dx-*.zip)
-      hash=$(sha256sum "$zip" | cut -d' ' -f1)
-      if ! aws s3api head-object --bucket starhaven --key "papermario-dx/toolchains/$hash.zip" --endpoint-url "$endpoint" >/dev/null 2>&1; then
-        aws s3 cp "$zip" "$bucket/toolchains/$hash.zip" --endpoint-url "$endpoint"
+      file=$(echo result-toolchain-aarch64-linux/papermario-dx-*.tar.xz)
+      hash=$(sha256sum "$file" | cut -d' ' -f1)
+      if ! aws s3api head-object --bucket starhaven --key "papermario-dx/toolchains/$hash.tar.xz" --endpoint-url "$endpoint" >/dev/null 2>&1; then
+        aws s3 cp "$file" "$bucket/toolchains/$hash.tar.xz" --endpoint-url "$endpoint"
       fi
-      echo "$hash" | aws s3 cp - "$bucket/commits/$TANGLED_SHA/linux-aarch64" --endpoint-url "$endpoint"
+      echo "$hash" | aws s3 cp - "$bucket/commits/$TANGLED_SHA/linux-aarch64.tar.xz" --endpoint-url "$endpoint"
 
   - name: "Trigger the rest of the build on GitHub Actions"
     command: |

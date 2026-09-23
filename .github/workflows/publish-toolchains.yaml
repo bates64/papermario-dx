@@ -61,7 +61,7 @@ jobs:
           }
           publish result-windows-toolchain/papermario-dx-windows.zip windows zip
           publish result-clangd-index/papermario-dx.idx clangd-index idx
-          publish result-toolchain-x86_64-linux/papermario-dx-linux-x86_64.zip linux-x86_64 zip
+          publish result-toolchain-x86_64-linux/papermario-dx-linux-x86_64.tar.xz linux-x86_64.tar.xz tar.xz
 
   linux-aarch64:
     name: Publish (aarch64-linux)
@@ -87,12 +87,12 @@ jobs:
         run: |
           set -euo pipefail
           bucket="s3://starhaven/papermario-dx"
-          file=$(echo result-toolchain/papermario-dx-*.zip)
+          file=$(echo result-toolchain/papermario-dx-*.tar.xz)
           hash=$(sha256sum "$file" | cut -d' ' -f1)
-          if ! aws s3api head-object --bucket starhaven --key "papermario-dx/toolchains/$hash.zip" --endpoint-url "$S3_ENDPOINT" >/dev/null 2>&1; then
-            aws s3 cp "$file" "$bucket/toolchains/$hash.zip" --endpoint-url "$S3_ENDPOINT"
+          if ! aws s3api head-object --bucket starhaven --key "papermario-dx/toolchains/$hash.tar.xz" --endpoint-url "$S3_ENDPOINT" >/dev/null 2>&1; then
+            aws s3 cp "$file" "$bucket/toolchains/$hash.tar.xz" --endpoint-url "$S3_ENDPOINT"
           fi
-          echo "$hash" | aws s3 cp - "$bucket/commits/${{ github.sha }}/linux-aarch64" --endpoint-url "$S3_ENDPOINT"
+          echo "$hash" | aws s3 cp - "$bucket/commits/${{ github.sha }}/linux-aarch64.tar.xz" --endpoint-url "$S3_ENDPOINT"
 
   mac:
     name: Publish (${{ matrix.platform }})
@@ -124,9 +124,9 @@ jobs:
         run: |
           set -euo pipefail
           bucket="s3://starhaven/papermario-dx"
-          file=$(echo result-toolchain/papermario-dx-*.zip)
+          file=$(echo result-toolchain/papermario-dx-*.tar.xz)
           hash=$(sha256sum "$file" | cut -d' ' -f1)
-          if ! aws s3api head-object --bucket starhaven --key "papermario-dx/toolchains/$hash.zip" --endpoint-url "$S3_ENDPOINT" >/dev/null 2>&1; then
-            aws s3 cp "$file" "$bucket/toolchains/$hash.zip" --endpoint-url "$S3_ENDPOINT"
+          if ! aws s3api head-object --bucket starhaven --key "papermario-dx/toolchains/$hash.tar.xz" --endpoint-url "$S3_ENDPOINT" >/dev/null 2>&1; then
+            aws s3 cp "$file" "$bucket/toolchains/$hash.tar.xz" --endpoint-url "$S3_ENDPOINT"
           fi
-          echo "$hash" | aws s3 cp - "$bucket/commits/${{ github.sha }}/${{ matrix.platform }}" --endpoint-url "$S3_ENDPOINT"
+          echo "$hash" | aws s3 cp - "$bucket/commits/${{ github.sha }}/${{ matrix.platform }}.tar.xz" --endpoint-url "$S3_ENDPOINT"

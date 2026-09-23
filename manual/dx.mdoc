@@ -24,26 +24,25 @@ You will need:
   3. Open VS Code, press **Ctrl+Shift+P** to open the command palette, type `Git: Clone`, and press Enter.
   4. Paste `https://github.com/bates64/papermario-dx.git`, choose a folder to clone into, then click **Open** when VS Code asks whether to open the cloned repository.
   5. Get a Paper Mario (US) ROM in [.z64](https://hack64.net/tools/swapper.php) format, rename it to `baserom.z64`, and put it in the `ver/us` folder inside the project.
-  6. Press **Ctrl+Shift+B** to build the game. The first build downloads the compiler toolchain, so it takes longer than later builds.
+  6. Press **Ctrl+Shift+B** to build the game.
   {% /steps %}
 {% /tabitem %}
 {% tabitem label="macOS" %}
   {% steps %}
   1. Open Terminal and run `xcode-select --install` to install the Xcode Command Line Tools, which provide `git`. Follow the prompts, then wait for the install to finish.
-  2. Install [Homebrew](https://brew.sh), then run `brew install ninja python3`.
-  3. Run `git clone https://github.com/bates64/papermario-dx.git && cd papermario-dx`.
-  4. Get a Paper Mario (US) ROM in [.z64](https://hack64.net/tools/swapper.php) format, rename it to `baserom.z64`, and put it in the `ver/us` folder inside the project.
-  5. Install [Visual Studio Code](https://code.visualstudio.com/), then open the `papermario-dx` folder you just cloned (**File > Open Folder...**).
-  6. Press **Cmd+Shift+B** to build the game. The first build downloads the compiler toolchain, so it takes longer than later builds.
+  2. Run `git clone https://github.com/bates64/papermario-dx.git && cd papermario-dx`.
+  3. Get a Paper Mario (US) ROM in [.z64](https://hack64.net/tools/swapper.php) format, rename it to `baserom.z64`, and put it in the `ver/us` folder inside the project.
+  4. Install [Visual Studio Code](https://code.visualstudio.com/), then open the `papermario-dx` folder you just cloned (**File > Open Folder...**).
+  5. Press **Cmd+Shift+B** to build the game.
   {% /steps %}
 {% /tabitem %}
 {% tabitem label="Linux" %}
   {% steps %}
-  1. Open a terminal and install `git`, `ninja`, and `python3` using your distribution's package manager, for example on Ubuntu/Debian: `sudo apt install git ninja-build python3`.
+  1. Open a terminal and install `git` and `curl` using your distribution's package manager, for example on Ubuntu/Debian: `sudo apt install git curl`.
   2. Run `git clone https://github.com/bates64/papermario-dx.git && cd papermario-dx`.
   3. Get a Paper Mario (US) ROM in [.z64](https://hack64.net/tools/swapper.php) format, rename it to `baserom.z64`, and put it in the `ver/us` folder inside the project.
   4. Install [Visual Studio Code](https://code.visualstudio.com/), then open the `papermario-dx` folder you just cloned (**File > Open Folder...**).
-  5. Press **Ctrl+Shift+B** to build the game. The first build downloads the compiler toolchain, so it takes longer than later builds.
+  5. Press **Ctrl+Shift+B** to build the game.
   {% /steps %}
 {% /tabitem %}
 {% tabitem label="Nix" %}

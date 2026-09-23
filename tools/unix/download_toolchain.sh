@@ -9,7 +9,7 @@ S3_BASE="https://fsn1.your-objectstorage.com/starhaven/papermario-dx"
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 DX_DIR="$ROOT/.dx"
 TOOLCHAIN_DIR="$DX_DIR/unix"
-TOOLCHAIN_ZIP="$DX_DIR/papermario-dx-unix.zip"
+TOOLCHAIN_ARCHIVE="$DX_DIR/papermario-dx-unix.tar.xz"
 HASH_FILE="$DX_DIR/unix-hash"
 
 case "$(uname -s)" in
@@ -77,7 +77,7 @@ else
   CANDIDATES="$BASE"
 fi
 for commit in $CANDIDATES; do
-  candidate=$(curl -fsL "$S3_BASE/commits/$commit/$PLATFORM" 2>/dev/null || true)
+  candidate=$(curl -fsL "$S3_BASE/commits/$commit/$PLATFORM.tar.xz" 2>/dev/null || true)
   if [ -n "$candidate" ]; then
     HASH="$candidate"
     COMMIT="$commit"
@@ -104,22 +104,18 @@ fi
 if [ "$NEED_DOWNLOAD" = "1" ]; then
   echo "Downloading toolchain for commit $COMMIT ($PLATFORM)..." >&2
 
-  rm -rf "$TOOLCHAIN_DIR" "$TOOLCHAIN_ZIP"
+  rm -rf "$TOOLCHAIN_DIR" "$TOOLCHAIN_ARCHIVE"
 
-  URL="$S3_BASE/toolchains/$HASH.zip"
-  if ! curl -fL -o "$TOOLCHAIN_ZIP" "$URL"; then
+  URL="$S3_BASE/toolchains/$HASH.tar.xz"
+  if ! curl -fL -o "$TOOLCHAIN_ARCHIVE" "$URL"; then
     echo "Error: failed to download toolchain from $URL" >&2
     exit 1
   fi
 
   echo "Extracting toolchain..." >&2
-  if command -v unzip >/dev/null 2>&1; then
-    unzip -q "$TOOLCHAIN_ZIP" -d "$DX_DIR"
-  else
-    tar -xf "$TOOLCHAIN_ZIP" -C "$DX_DIR"
-  fi
+  tar -xJf "$TOOLCHAIN_ARCHIVE" -C "$DX_DIR"
   mv "$DX_DIR/papermario-dx-$PLATFORM" "$TOOLCHAIN_DIR"
-  rm -f "$TOOLCHAIN_ZIP"
+  rm -f "$TOOLCHAIN_ARCHIVE"
 
   echo "Activating toolchain..." >&2
   if [ "$OS" = "macos" ] && ! command -v install_name_tool >/dev/null 2>&1; then

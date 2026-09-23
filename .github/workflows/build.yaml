@@ -152,19 +152,60 @@ jobs:
         run: |
           $hash = (Get-FileHash ver/us/build/papermario.z64 -Algorithm SHA256).Hash.ToLower()
           echo "sha256=$hash" >> $env:GITHUB_OUTPUT
+  game-unix-toolchain:
+    name: Game (Unix toolchain)
+    runs-on: ubuntu-latest
+    outputs:
+      rom-sha256: ${{ steps.unix-rom-sha.outputs.sha256 }}
+    env:
+      SCCACHE_CONF: ${{ github.workspace }}/.dx/sccache-config.toml
+      AWS_SHARED_CREDENTIALS_FILE: ${{ github.workspace }}/.dx/sccache-credentials
+      SCCACHE_BASEDIRS: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v25
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - uses: cachix/cachix-action@v15
+        with:
+          name: papermario-dx
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - name: Download base ROM
+        run: curl -L $BASEROM_US_URL -o ver/us/baserom.z64
+        env:
+          BASEROM_US_URL: ${{ secrets.BASEROM_US_URL }}
+      - name: Build Unix toolchain
+        run: nix build .#unix-toolchain
+      - name: Install toolchain
+        run: |
+          mkdir -p .dx
+          tar -xJf result/papermario-dx-linux-x86_64.tar.xz -C .dx
+          mv .dx/papermario-dx-linux-x86_64 .dx/unix
+          .dx/unix/activate.sh "$PWD/.dx/unix"
+      - name: Build game
+        run: |
+          export PATH="$PWD/.dx/unix/bin:$PATH"
+          export PYTHONPATH="$PWD/.dx/unix/python"
+          python3 tools/build/configure.py
+          ninja
+      - name: Compute ROM SHA256
+        id: unix-rom-sha
+        run: echo "sha256=$(sha256sum ver/us/build/papermario.z64 | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
   rom-match:
     name: Verify ROM Match
     runs-on: ubuntu-latest
-    needs: [game, game-windows]
+    needs: [game, game-windows, game-unix-toolchain]
     steps:
       - name: Compare SHA256 hashes
         run: |
           linux="${{ needs.game.outputs.rom-sha256 }}"
           windows="${{ needs.game-windows.outputs.rom-sha256 }}"
-          echo "Linux ROM SHA256:   $linux"
-          echo "Windows ROM SHA256: $windows"
-          if [ "$linux" != "$windows" ]; then
-            echo "::error::ROM mismatch! Windows and Linux builds produced different ROMs."
+          unix="${{ needs.game-unix-toolchain.outputs.rom-sha256 }}"
+          echo "Linux ROM SHA256:          $linux"
+          echo "Windows ROM SHA256:        $windows"
+          echo "Unix toolchain ROM SHA256: $unix"
+          if [ "$linux" != "$windows" ] || [ "$linux" != "$unix" ]; then
+            echo "::error::ROM mismatch! The Nix, Windows, and Unix toolchain builds produced different ROMs."
             exit 1
           fi
           echo "ROMs match."
