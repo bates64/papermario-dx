@@ -314,7 +314,7 @@ def write_ninja_rules(
     ninja.rule(
         "cc_modern",
         description="Compiling $in",
-        command=f"{sccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.h -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
+        command=f"{sccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include $pch_header -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -322,7 +322,7 @@ def write_ninja_rules(
     ninja.rule(
         "cxx_modern",
         description="Compiling $in",
-        command=f"{sccache}{cxx_modern} {cxxflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.hpp -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
+        command=f"{sccache}{cxx_modern} {cxxflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include $pch_header -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -1442,8 +1442,20 @@ class Configure:
         evt_validation_stamps = []
         generated_code = []
         inc_img_bins = []
-        precompiled_header_path = Path("include/common.h.gch")
-        cxx_precompiled_header_path = Path("include/common.hpp.gch")
+        # Sources force-include the header beside each precompiled header,
+        # which includes the real one so sccache can still preprocess them.
+        # The directory stays off the include path: GCC would otherwise match
+        # the `.gch` again for a source's own `#include "common.h"`.
+        precompiled_header_path = self.build_path() / "pch" / "common.h.gch"
+        cxx_precompiled_header_path = self.build_path() / "pch" / "common.hpp.gch"
+        for pch in [precompiled_header_path, cxx_precompiled_header_path]:
+            forwarder = ROOT / pch.with_suffix("")
+            target = os.path.relpath(ROOT / "include" / forwarder.name, forwarder.parent)
+            text = f'#include "{posix(target)}"\n'
+            # Rewriting it unchanged would rebuild every object on each reconfigure.
+            if not forwarder.exists() or forwarder.read_text() != text:
+                forwarder.parent.mkdir(parents=True, exist_ok=True)
+                forwarder.write_text(text)
 
         def build(
             object_paths: Union[Path, List[Path]],
@@ -1490,11 +1502,20 @@ class Configure:
                 if task in ["cc", "cxx", "cc_modern", "cxx_modern"]:
                     order_only.append("generated_code_" + self.version)
                     order_only.append("inc_img_bins_" + self.version)
-                    if object_paths[0].suffixes[-1] != ".gch":
-                        if task == "cc_modern":
-                            implicit.append(posix(precompiled_header_path))
-                        elif task == "cxx_modern":
-                            implicit.append(posix(cxx_precompiled_header_path))
+                    if task in ["cc_modern", "cxx_modern"]:
+                        pch = (
+                            precompiled_header_path
+                            if task == "cc_modern"
+                            else cxx_precompiled_header_path
+                        )
+                        if object_paths[0] == pch:
+                            # Not the forwarder, which would pick up the
+                            # previous build of this precompiled header.
+                            pch_header = Path("include") / pch.stem
+                        else:
+                            pch_header = pch.with_suffix("")
+                            implicit.append(posix(pch))
+                        variables = {**variables, "pch_header": posix(pch_header)}
 
                 inputs = self.resolve_src_paths(src_paths)
                 for dir in asset_deps:
@@ -1533,7 +1554,7 @@ class Configure:
 
         # Effect data includes
         effect_yaml = ROOT / "src/effects.yaml"
-        effect_data_outdir = ROOT / "assets" / version / "effects"
+        effect_data_outdir = self.build_path() / "include" / "effects"
         effect_macros_path = effect_data_outdir / "effect_macros.h"
         effect_defs_path = effect_data_outdir / "effect_defs.h"
         effect_table_path = effect_data_outdir / "effect_table.c"
@@ -1641,8 +1662,16 @@ class Configure:
                 "actor_types",
             )
 
-        build([precompiled_header_path], [Path("include/common.h")], "cc_modern")
-        build([cxx_precompiled_header_path], [Path("include/common.hpp")], "cxx_modern")
+        build(
+            [precompiled_header_path],
+            [precompiled_header_path.with_suffix("")],
+            "cc_modern",
+        )
+        build(
+            [cxx_precompiled_header_path],
+            [cxx_precompiled_header_path.with_suffix("")],
+            "cxx_modern",
+        )
 
         self.asset_objects: Dict[str, List[Path]] = {}
         self.write_effect_stub_rules(build)
@@ -1804,8 +1833,8 @@ class Configure:
         import json
 
         overlays = self.find_overlays()
-        c_precompiled_header_path = Path("include/common.h.gch")
-        cxx_precompiled_header_path = Path("include/common.hpp.gch")
+        c_precompiled_header_path = self.build_path() / "pch" / "common.h.gch"
+        cxx_precompiled_header_path = self.build_path() / "pch" / "common.hpp.gch"
 
         manifest_entries = []
         evt_validation_stamps = []
@@ -1854,6 +1883,7 @@ class Configure:
                     ],
                     variables={
                         "version": self.version,
+                        "pch_header": posix(pch.with_suffix("")),
                         "cflags": "-fno-common -fvisibility=hidden",
                         "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
                     },
