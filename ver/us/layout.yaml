@@ -67,7 +67,7 @@ segments:
   - { name: pause, class: filemenu_pause }
   - { name: filemenu, class: filemenu_pause }
   - { name: battle, class: battle }
-  - { name: icon }
+  - { name: icon, vram: 0x0 }
   - { name: logos }
   - { name: title/bg_1 }
   - { name: title/bg_2 }
