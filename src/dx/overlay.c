@@ -66,6 +66,11 @@ volatile u32 ovlDirectoryRomAddr[OVL_NUM_TYPES] = {};
 
 static Overlay overlays[MAX_OVERLAYS];
 
+/// Called after an overlay is loaded or unloaded, so a debugger can break here.
+static __attribute__((noinline)) void ovl_debug_changed(void) {
+    __asm__ volatile("nop");
+}
+
 static u32 link_addr(OverlayType type) {
     switch (type) {
         case OVL_MAP: return 0x80240000;
@@ -228,6 +233,7 @@ Overlay* ovl_load(const char* name, OverlayType type) {
     }
 
     printf("ovl_load %s\n", ovl->name);
+    ovl_debug_changed();
 
     // Run constructors
     if (hdr.ctor_count > 0) {
@@ -259,6 +265,7 @@ void ovl_unload(Overlay* ovl) {
     }
 
     memset(ovl, 0, sizeof(*ovl));
+    ovl_debug_changed();
 }
 
 void ovl_unload_type(OverlayType type) {
