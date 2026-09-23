@@ -128,7 +128,7 @@ let
       }
       for tool in mips-linux-gnu-gcc mips-linux-gnu-g++ mips-linux-gnu-cpp mips-linux-gnu-ld mips-linux-gnu-as \
                   mips-linux-gnu-ar mips-linux-gnu-nm mips-linux-gnu-objcopy mips-linux-gnu-objdump \
-                  mips-linux-gnu-ranlib mips-linux-gnu-strip \
+                  mips-linux-gnu-ranlib mips-linux-gnu-readelf mips-linux-gnu-strip \
                   ninja sccache evt_validate pigment64 crunch64 n64crc python3 java clang-format clang-tidy clangd; do
         link_bin "$tool"
       done
