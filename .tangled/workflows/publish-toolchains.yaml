@@ -1,0 +1,58 @@
+when:
+  - event: ["push"]
+    branch: ["main"]
+
+engine: nixery
+
+dependencies:
+  nixpkgs:
+    - nix
+    - awscli2
+    - curl
+
+steps:
+  - name: "Configure Nix caches"
+    command: |
+      cat >> /etc/nix/nix.conf <<EOF
+      accept-flake-config = true
+      extra-substituters = https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx?priority=1
+      extra-trusted-public-keys = papermario-dx:CnZCdSGA4n/b2AtneJYjPd/yAvfLPAdtlvkIs8sjrQQ=
+      download-buffer-size = 536870912
+      EOF
+
+  - name: "Fix up FHS paths"
+    command: |
+      mkdir -p /usr/bin
+      ln -sf "$(command -v env)" /usr/bin/env
+
+  - name: "Fetch base ROM"
+    command: |
+      nix copy --from "https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx" \
+        /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64
+
+  - name: "Build aarch64-linux toolchain"
+    # This is the only artifact native to this host. Everything that needs
+    # x86_64-linux, Windows, or macOS hardware is built by
+    # star-haven/diorama64-gha on GitHub Actions instead (dispatched below),
+    # rather than emulated here.
+    command: nix build .#unix-toolchain --out-link result-toolchain-aarch64-linux
+
+  - name: "Publish to S3"
+    command: |
+      set -e
+      endpoint="https://fsn1.your-objectstorage.com"
+      bucket="s3://starhaven/papermario-dx"
+      zip=$(echo result-toolchain-aarch64-linux/papermario-dx-*.zip)
+      hash=$(sha256sum "$zip" | cut -d' ' -f1)
+      if ! aws s3api head-object --bucket starhaven --key "papermario-dx/toolchains/$hash.zip" --endpoint-url "$endpoint" >/dev/null 2>&1; then
+        aws s3 cp "$zip" "$bucket/toolchains/$hash.zip" --endpoint-url "$endpoint"
+      fi
+      echo "$hash" | aws s3 cp - "$bucket/commits/$TANGLED_SHA/linux-aarch64" --endpoint-url "$endpoint"
+
+  - name: "Trigger the rest of the build on GitHub Actions"
+    command: |
+      curl -sf -X POST \
+        -H "Authorization: Bearer $GHA_DISPATCH_TOKEN" \
+        -H "Accept: application/vnd.github+json" \
+        https://api.github.com/repos/star-haven/diorama64-gha/dispatches \
+        -d "{\"event_type\":\"papermario-dx-release\",\"client_payload\":{\"sha\":\"$TANGLED_SHA\"}}"

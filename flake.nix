@@ -228,7 +228,23 @@
 
             virtualenv venv --quiet
             source venv/bin/activate
-            pip install -r ${./tools/requirements.txt} -r ${./tools/requirements_extra.txt} --quiet
+            # This shell's CC is the MIPS o32 cross-compiler (for the game
+            # itself), not a host compiler. pip normally never notices,
+            # since it only needs one to build pygfxd's C extension from
+            # source - but that means whenever it does, it silently uses
+            # the cross-compiler and produces a 32-bit MIPS .so that the
+            # host Python can't load. Point it at a real host compiler for
+            # this one install so a from-source build is possible at all.
+            #
+            # pygfxd also has no manylinux aarch64 wheel on PyPI (only
+            # x86_64), so on that platform pip would otherwise silently
+            # install the incompatible x86_64 build; force a source build
+            # there. Elsewhere the prebuilt wheel is already correct and
+            # faster to install.
+            CC=${pkgs.stdenv.cc}/bin/cc pip install ${
+              pkgs.lib.optionalString (pkgs.stdenv.hostPlatform.isLinux && pkgs.stdenv.hostPlatform.isAarch64)
+                "--no-binary pygfxd"
+            } -r ${./tools/requirements.txt} -r ${./tools/requirements_extra.txt} --quiet
           '';
         };
       }
