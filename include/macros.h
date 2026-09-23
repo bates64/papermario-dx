@@ -63,7 +63,7 @@
     do { \
         char panicMsg[0x100]; \
         sprintf(panicMsg, msg, ##args); \
-        IS_DEBUG_PANIC(msg); \
+        IS_DEBUG_PANIC(panicMsg); \
     } while (0)
 #define ASSERT(condition) \
     if (!(condition)) { \
