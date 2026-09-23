@@ -9,7 +9,7 @@ for every asset in it.
 import re
 from functools import lru_cache
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 import yaml
 
@@ -117,3 +117,28 @@ def included_palettes(src_root: Path) -> set:
         for match in re.finditer(r'INCLUDE_PAL\(\s*"([^"]+)"', source.read_text()):
             palettes.add(Path(match.group(1)).with_suffix(".png").as_posix())
     return palettes
+
+
+EMBED_MACRO = re.compile(r'INCLUDE_(IMG|PAL|RAW)\(\s*"([^"]+)"')
+LOCAL_INCLUDE = re.compile(r'^\s*#\s*include\s+"([^"]+)"', re.MULTILINE)
+
+
+def embedded_assets(source: Path) -> List[Tuple[str, str]]:
+    """The (macro, path) pairs a source embeds with INCLUDE_IMG, INCLUDE_PAL or INCLUDE_RAW.
+
+    The compiler's dependency output leaves out files pulled in by `.incbin`,
+    so the build has to find them itself. Includes that resolve next to the
+    including file are followed, since that is how `.inc.c` files are pulled in.
+    """
+    found: List[Tuple[str, str]] = []
+    seen = set()
+    pending = [source]
+    while pending:
+        path = pending.pop()
+        if path in seen or not path.is_file():
+            continue
+        seen.add(path)
+        text = path.read_text()
+        found.extend(EMBED_MACRO.findall(text))
+        pending.extend(path.parent / name for name in LOCAL_INCLUDE.findall(text))
+    return found
