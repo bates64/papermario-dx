@@ -257,6 +257,11 @@ def write_ninja_rules(
     cxxflags_modern = f"{modern_flags} {extra_cxxflags}"
 
     ninja.variable("python", f'"{sys.executable}"')
+    # sccache keys on the preprocessed source, which leaves out files pulled in
+    # by `.incbin`, so edges that embed assets clear this to compile uncached.
+    # The trailing space lives in the value because Windows fails to start a
+    # command that begins with one.
+    ninja.variable("sccache", sccache)
 
     ld_args = f"-T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Map $mapfile --no-check-sections --whole-archive -T $in -o $out"
     ld = (
@@ -314,7 +319,7 @@ def write_ninja_rules(
     ninja.rule(
         "cc_modern",
         description="Compiling $in",
-        command=f"{sccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include $pch_header -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
+        command=f"${{sccache}}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include $pch_header -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -322,7 +327,7 @@ def write_ninja_rules(
     ninja.rule(
         "cxx_modern",
         description="Compiling $in",
-        command=f"{sccache}{cxx_modern} {cxxflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include $pch_header -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
+        command=f"${{sccache}}{cxx_modern} {cxxflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include $pch_header -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -1328,6 +1333,22 @@ class Configure:
     def syms_path(self) -> Path:
         return self.build_path() / "syms.pkl"
 
+    def embedded_asset_deps(self, src: Path) -> List[str]:
+        """Build outputs that a source embeds with `.incbin`.
+
+        Paths without a build rule belong to other versions, such as the
+        Japanese fonts, and are left out.
+        """
+        deps = []
+        for macro, asset in assets.embedded_assets(ROOT / src):
+            if macro == "RAW":
+                path = self.build_path() / "assets" / self.version / asset
+            else:
+                path = self.build_path() / (asset + ".bin")
+            if posix(path) in self.inc_img_bins:
+                deps.append(posix(path))
+        return deps
+
     def resolve_src_paths(self, src_paths: List[Path]) -> List[str]:
         out = []
 
@@ -1441,7 +1462,7 @@ class Configure:
         built_objects = set()
         evt_validation_stamps = []
         generated_code = []
-        inc_img_bins = []
+        self.inc_img_bins: Set[str] = set()
         # Sources force-include the header beside each precompiled header,
         # which includes the real one so sccache can still preprocess them.
         # The directory stays off the include path: GCC would otherwise match
@@ -1483,7 +1504,7 @@ class Configure:
                 elif object_path.name.endswith(
                     (".png.bin", ".pal.bin", ".dat")
                 ):
-                    inc_img_bins.append(obj_posix)
+                    self.inc_img_bins.add(obj_posix)
 
                 # don't rebuild objects if we've already seen all of them
                 if obj_posix not in skip_outputs:
@@ -1516,6 +1537,12 @@ class Configure:
                             pch_header = pch.with_suffix("")
                             implicit.append(posix(pch))
                         variables = {**variables, "pch_header": posix(pch_header)}
+                    embedded = [
+                        dep for src in src_paths for dep in self.embedded_asset_deps(src)
+                    ]
+                    if embedded:
+                        implicit.extend(embedded)
+                        variables = {**variables, "sccache": ""}
 
                 inputs = self.resolve_src_paths(src_paths)
                 for dir in asset_deps:
@@ -1780,7 +1807,7 @@ class Configure:
         )
 
         ninja.build("generated_code_" + self.version, "phony", generated_code)
-        ninja.build("inc_img_bins_" + self.version, "phony", inc_img_bins)
+        ninja.build("inc_img_bins_" + self.version, "phony", sorted(self.inc_img_bins))
         return evt_validation_stamps
 
     def get_segment_max_sizes(self):
@@ -1868,6 +1895,15 @@ class Configure:
                     task = "cc_modern"
                     pch = c_precompiled_header_path
                 obj_path = build_dir / (c_file.name + ".o")
+                embedded = self.embedded_asset_deps(c_file)
+                variables = {
+                    "version": self.version,
+                    "pch_header": posix(pch.with_suffix("")),
+                    "cflags": "-fno-common -fvisibility=hidden",
+                    "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
+                }
+                if embedded:
+                    variables["sccache"] = ""
                 evt_stamps = (
                     [evt_validation_stamp_path(obj_path)] if evt_validation else []
                 )
@@ -1876,17 +1912,12 @@ class Configure:
                     posix(obj_path),
                     task,
                     posix(c_file),
-                    implicit=[posix(pch)],
+                    implicit=[posix(pch)] + embedded,
                     order_only=[
                         "generated_code_" + self.version,
                         "inc_img_bins_" + self.version,
                     ],
-                    variables={
-                        "version": self.version,
-                        "pch_header": posix(pch.with_suffix("")),
-                        "cflags": "-fno-common -fvisibility=hidden",
-                        "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
-                    },
+                    variables=variables,
                     validations=evt_stamps,
                 )
                 for evt_validation_stamp in evt_stamps:
