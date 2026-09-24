@@ -55,7 +55,7 @@ void appendGfx_animator_node(ModelAnimator*, AnimatorNode*, Matrix4f);
 // copy Vtx array from node->fcData.vtxList, but overwrite xyz coordinates with ones from buffer
 // if animator has own vertexArray, buffer is offset within it
 Vtx* animator_copy_vertices_to_buffer(ModelAnimator* animator, AnimatorNode* node, Vec3s* buffer, s32 vtxCount,
-                                      s32 overhead, s32 startIdx) {
+                                      s32 overhead, s32 vtxIdx) {
     DisplayListBufferHandle* handle;
     Vtx* bufferMem;
     Vtx* nodeVtxList;
@@ -76,7 +76,7 @@ Vtx* animator_copy_vertices_to_buffer(ModelAnimator* animator, AnimatorNode* nod
     ASSERT(bufferMem != nullptr);
 
     handle->ttl = 3;
-    nodeVtxList = &node->fcData.vtxList[startIdx];
+    nodeVtxList = &node->fcData.vtxList[vtxIdx];
 
     if (animator->baseAddr != nullptr) {
         i = ((s32)buffer & 0xFFFFFF); // needed to match

@@ -302,6 +302,10 @@ s32 dx_debug_menu_nav_1D_horizontal(s32 cur, s32 min, s32 max, b32 flip) {
 }
 
 s32 dx_debug_menu_nav_2D(s32 cur, s32 max, s32 nrows) {
+    if (nrows <= 0) {
+        return cur;
+    }
+
     s32 ncols = max / nrows;
     if ((max % nrows) != 0) {
         ncols++;
@@ -491,8 +495,6 @@ void dx_debug_update_sound_player();
 void dx_debug_update_select_sound();
 void dx_debug_update_edit_partners();
 void dx_debug_update_edit_inventory();
-void dx_debug_update_edit_items();
-void dx_debug_update_edit_items();
 void dx_debug_update_edit_items();
 void dx_debug_update_edit_gear();
 void dx_debug_update_edit_stats();
@@ -3380,7 +3382,8 @@ void dx_debug_console_main() {
 
 #define LESS(i, j) DebugConsole[i]->timeLeft > DebugConsole[j]->timeLeft
 #define SWAP(i, j) temp = DebugConsole[i], DebugConsole[i] = DebugConsole[j], DebugConsole[j] = temp
-    QSORT(ARRAY_COUNT(DebugConsole), LESS, SWAP);
+    s32 count = ARRAY_COUNT(DebugConsole);
+    QSORT(count, LESS, SWAP);
 #undef LESS
 #undef SWAP
 
