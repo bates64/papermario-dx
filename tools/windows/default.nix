@@ -5,6 +5,7 @@
   baseRom,
   src,
   starRodJar,
+  llvmVersion,
 }:
 
 let
@@ -54,6 +55,7 @@ let
   n64crc-windows = import ./n64crc.nix { stdenv = mingwStdenv; };
   busybox-windows = pkgs.callPackage ./busybox.nix {};
   jre-windows = pkgs.callPackage ./jre.nix {};
+  llvm-windows = pkgs.callPackage ./llvm.nix { version = llvmVersion; };
 
   pigment64-windows = mingw.callPackage ../pigment64.nix {};
   crunch64-windows = mingw.callPackage ../crunch64.nix {};
@@ -255,6 +257,12 @@ let
     # n64crc (pre-built so Windows users don't need a host C compiler)
     cp ${n64crc-windows}/bin/n64crc.exe $dir/bin/
 
+    # clangd, clang-tidy, and clang-format, which find clang's built-in
+    # headers in ../lib/clang/ relative to themselves
+    cp ${llvm-windows}/bin/*.exe $dir/bin/
+    chmod u+w $dir/lib
+    cp -r ${llvm-windows}/lib/clang $dir/lib/
+
     # Embeddable Python with pre-installed packages
     cp -rL ${python-windows}/* $dir/python/
     rm -f $dir/python/get-pip.py
@@ -291,7 +299,7 @@ in
 zip // {
   passthru = {
     inherit mips-toolchain python-windows ninja-windows sccache-windows n64crc-windows
-            pigment64-windows crunch64-windows evt-validate-windows wineRom pythonDeps pythonDepsWindows;
+            pigment64-windows crunch64-windows evt-validate-windows llvm-windows wineRom pythonDeps pythonDepsWindows;
 
     tests.wine = pkgs.runCommand "mips-toolchain-windows-test" {
       nativeBuildInputs = [ pkgs.wineWow64Packages.stable ];
@@ -327,6 +335,11 @@ zip // {
 
       echo "=== n64crc ==="
       wine ${n64crc-windows}/bin/n64crc.exe || true
+
+      echo "=== clang tools ==="
+      wine ${llvm-windows}/bin/clangd.exe --version
+      wine ${llvm-windows}/bin/clang-tidy.exe --version
+      wine ${llvm-windows}/bin/clang-format.exe --version
 
       echo "=== all tests passed ==="
       touch $out
