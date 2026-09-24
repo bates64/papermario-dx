@@ -3,11 +3,6 @@
 
 let
   hashes = {
-    clangd = {
-      x86_64-linux = "sha256-4LIUpZkG387vM0Boc8Q3n7jnaPtDRdivp/MHvS7Imd4=";
-      aarch64-darwin = "sha256-tDXo7/m7jbWdbw+HSzprHPqqlJgOCOOPD6AV3eGF020=";
-      x86_64-darwin = hashes.clangd.aarch64-darwin;
-    };
     clangd_indexing_tools = {
       x86_64-linux = "sha256-fFoSY1zp4/B5B4kxGgvNPTIFRRz6jJjIsj0FDIIBkyA=";
     };
