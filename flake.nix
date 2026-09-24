@@ -132,29 +132,7 @@
         # clangd only loads indexes built by the same version of clangd-indexer.
         clangdVersion = "21.1.8";
         clangdIndexingTools = pkgs.callPackage ./tools/clangd.nix { version = clangdVersion; archive = "clangd_indexing_tools"; };
-        clangdUnwrapped = pkgs.callPackage ./tools/clangd.nix { version = clangdVersion; archive = "clangd"; };
-        # compile_commands.json names the host `cc`, and the prebuilt clangd
-        # only searches /usr/include for its headers, which Nix doesn't have.
-        # Point it at the host libc and libstdc++ headers, as clang-tools'
-        # wrapper does.
-        clangdPkg = pkgs.runCommand "clangd-${clangdVersion}" {
-          nativeBuildInputs = [ pkgs.makeWrapper ];
-        } ''
-          includePath() {
-            local path=
-            while (( $# )); do
-              case $1 in
-                -isystem|-cxx-isystem|-idirafter) shift; path=$path''${path:+:}$1 ;;
-              esac
-              shift
-            done
-            echo "$path"
-          }
-          support=${pkgs.llvmPackages.clang}/nix-support
-          makeWrapper ${clangdUnwrapped}/bin/clangd $out/bin/clangd \
-            --prefix C_INCLUDE_PATH : "$(includePath $(< $support/libc-cflags))" \
-            --prefix CPLUS_INCLUDE_PATH : "$(includePath $(< $support/libcxx-cxxflags) $(< $support/libc-cflags))"
-        '';
+        clangdPkg = pkgs.callPackage ./tools/clangd.nix { version = clangdVersion; archive = "clangd"; };
         clangdIndex = pkgs.runCommand "papermario-dx-clangd-index" {
           nativeBuildInputs = [
             pkgsCross.stdenv.cc
