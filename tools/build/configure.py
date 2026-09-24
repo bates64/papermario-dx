@@ -217,6 +217,38 @@ def exec_shell(command: List[str]) -> str:
     return ret.stdout
 
 
+def cross_include_flags(compiler: str, language: str) -> List[str]:
+    """Flags that give clang the cross-compiler's header search path.
+
+    GCC's own built-in headers (lib/gcc/<target>/<version>/) are left out, since
+    clang has its own. Directories before them (libstdc++) are searched first,
+    and directories after them (the C library) last, as GCC does.
+    """
+    try:
+        output = subprocess.run(
+            [compiler, f"-x{language}", "-E", "-v", os.devnull],
+            capture_output=True,
+            text=True,
+        ).stderr
+    except FileNotFoundError:
+        return []
+    lines = output.splitlines()
+    try:
+        start = lines.index("#include <...> search starts here:") + 1
+        end = lines.index("End of search list.", start)
+    except ValueError:
+        return []
+    flags = []
+    flag = "-isystem"
+    for line in lines[start:end]:
+        path = os.path.normpath(line.strip())
+        if "/lib/gcc/" in posix(path):
+            flag = "-idirafter"
+            continue
+        flags += [flag, posix(path)]
+    return flags
+
+
 def write_ninja_rules(
     ninja: NinjaWriter,
     cpp: str,
@@ -2352,8 +2384,8 @@ if __name__ == "__main__":
     ninja.close()
     os.replace(partial_build_ninja, build_ninja_path)
 
-    # Generate compile_commands.json with MIPS cross-compiler flags stripped,
-    # so clangd and clang-tidy can parse the compile commands.
+    # Generate compile_commands.json for clang targeting MIPS, with GCC-only
+    # flags stripped, so clangd and clang-tidy can parse the compile commands.
     try:
         compdb = subprocess.run(
             ["ninja", "-t", "compdb"],
@@ -2362,10 +2394,23 @@ if __name__ == "__main__":
         )
         if compdb.returncode == 0:
             entries = json.loads(compdb.stdout)
-            strip_re = re.compile(r"^(-m\S+|-f\S+|-g\S+|-G\d+|--warn-\S+)$")
+            strip_re = re.compile(r"^(-m\S+|-f(?!unsigned-char$)\S+|-g\S+|-G\d+|--warn-\S+)$")
             cross_cc_re = re.compile(r"^(sccache\s+)?mips-linux-gnu-g(cc|\+\+)(?=\s)")
+            # Clang's name for GCC's -Wno-builtin-declaration-mismatch.
+            clang_flags = ["--target=mips-linux-gnu", "-Wno-incompatible-library-redeclaration"]
+            clang_commands = {
+                "cc": " ".join(["clang"] + clang_flags + cross_include_flags("mips-linux-gnu-gcc", "c")),
+                "++": " ".join(["clang++"] + clang_flags + cross_include_flags("mips-linux-gnu-g++", "c++")),
+            }
+            # Keep only C and C++ compiles. clangd would otherwise borrow other
+            # tools' commands, or the assembler's, for nearby headers.
+            entries = [
+                entry
+                for entry in entries
+                if cross_cc_re.match(entry["command"]) and entry["file"].endswith((".c", ".cpp"))
+            ]
             for entry in entries:
-                entry["command"] = cross_cc_re.sub("cc", entry["command"])
+                entry["command"] = cross_cc_re.sub(lambda m: clang_commands[m[2]], entry["command"])
                 parts = entry["command"].split()
                 entry["command"] = " ".join(p for p in parts if not strip_re.match(p))
             (ROOT / "compile_commands.json").write_text(
