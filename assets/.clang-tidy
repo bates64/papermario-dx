@@ -1,0 +1,7 @@
+# dx and mod code also gets the static analyzer.
+InheritParentConfig: true
+Checks: >
+  clang-analyzer-core.*,
+  -clang-analyzer-core.FixedAddressDereference,
+  clang-analyzer-security.*,
+  -clang-analyzer-security.insecureAPI.*,

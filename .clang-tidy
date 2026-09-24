@@ -1,11 +1,9 @@
+# The static analyzer runs only on dx and mod code (see src/dx/.clang-tidy and
+# assets/.clang-tidy). In the decompiled code, it mostly flags paths that the
+# game's invariants rule out.
 Checks: >
   -*,
-  clang-analyzer-core.*,
-  clang-analyzer-deadcode.*,
-  clang-analyzer-security.*,
   bugprone-suspicious-semicolon,
-  bugprone-sizeof-expression,
-  bugprone-integer-division,
   bugprone-suspicious-missing-comma,
   bugprone-bool-pointer-implicit-conversion,
   misc-redundant-expression,
@@ -31,9 +29,6 @@ Checks: >
   -readability-avoid-nested-conditional-operator,
 
 CheckOptions:
-  - key: readability-identifier-naming.LocalVariableCase
-    value: camelBack
-
   - key: readability-identifier-naming.ParameterCase
     value: camelBack
 

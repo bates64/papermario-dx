@@ -990,7 +990,6 @@ START_BATTLE:
             cond2 = false;
             for (i = 0; i < encounter->count; i++) {
                 enemy = encounter->enemy[i];
-                enemy = encounter->enemy[i];
                 if (enemy == nullptr) {
                     continue;
                 }
@@ -1094,15 +1093,14 @@ START_BATTLE:
             enemy = currentEncounter->curEnemy;
             if (enemy != nullptr) {
                 suspend_bound_script(&enemy->scripts.ai);
-            }
-            enemy = currentEncounter->curEnemy;
-            if (enemy->scripts.interact.source != nullptr) {
-                enemy->encountered = ENCOUNTER_TRIGGER_CONVERSATION;
-                script = start_script(enemy->scripts.interact.source, EVT_PRIORITY_A, 0);
-                assign_bound_script(&enemy->scripts.interact, script);
-                script->owner1.enemy = enemy;
-                script->owner2.npcID = enemy->npcID;
-                script->groupFlags = enemy->scriptGroup;
+                if (enemy->scripts.interact.source != nullptr) {
+                    enemy->encountered = ENCOUNTER_TRIGGER_CONVERSATION;
+                    script = start_script(enemy->scripts.interact.source, EVT_PRIORITY_A, 0);
+                    assign_bound_script(&enemy->scripts.interact, script);
+                    script->owner1.enemy = enemy;
+                    script->owner2.npcID = enemy->npcID;
+                    script->groupFlags = enemy->scriptGroup;
+                }
             }
             disable_player_input();
             partner_disable_input();
@@ -1697,7 +1695,6 @@ void update_encounters_post_battle(void) {
                 }
                 encounter = currentEncounter->curEncounter;
                 for (i = 0; i < encounter->count; i++) {
-                    enemy = encounter->enemy[i];
                     enemy = encounter->enemy[i];
                     if (enemy == nullptr) {
                         continue;
