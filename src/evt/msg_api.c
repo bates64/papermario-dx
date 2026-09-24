@@ -160,7 +160,7 @@ s32 _show_message(Evt* script, s32 isInitialCall, s32 mode) {
         }
     }
 
-    if (!(script->functionTemp[1] & SPEECH_FLAG_200)) {
+    if (!(script->functionTemp[1] & SPEECH_FLAG_FIXED_ORIGIN)) {
         msg_printer_set_origin_pos(gCurrentPrintContext, screenX + ShowMessageScreenOffsetX, screenY + ShowMessageScreenOffsetY);
     }
 
@@ -179,7 +179,7 @@ s32 _show_message(Evt* script, s32 isInitialCall, s32 mode) {
             playerStatus->anim = script->functionTemp[3];
         }
     }
-    if (script->functionTemp[1] & SPEECH_FLAG_10) {
+    if (script->functionTemp[1] & SPEECH_FLAG_RESTORE_SPEAKER_YAW) {
         speakerNpc->yaw = script->varTable[0xF];
     }
     return true;

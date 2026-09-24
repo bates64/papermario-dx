@@ -52,7 +52,7 @@ EvtScript N(EVS_Scene_SunReturns) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(6.5))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(SpeakToPlayer, NPC_Sun_01, ANIM_Sun_TalkJoy, ANIM_Sun_TalkJoy, SPEECH_FLAG_200 | 5, MSG_CH6_00C3)
+    Call(SpeakToPlayer, NPC_Sun_01, ANIM_Sun_TalkJoy, ANIM_Sun_TalkJoy, SPEECH_FLAG_FIXED_ORIGIN | 5, MSG_CH6_00C3)
     Call(SetNpcAnimation, NPC_Sun_01, ANIM_Sun_TalkJoy)
     Thread
         Call(SetCamDistance, CAM_DEFAULT, 1000)

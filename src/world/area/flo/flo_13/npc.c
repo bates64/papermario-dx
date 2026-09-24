@@ -172,10 +172,10 @@ EvtScript N(EVS_Lakilulu_SpinyToss) = {
         Wait(5 * DT)
         Call(SetPlayerAnimation, ANIM_Mario1_Flail)
     EndThread
-    Call(ContinueSpeech, NPC_Lakilulu, -1, -1, SPEECH_FLAG_200, MSG_CH6_00A8)
+    Call(ContinueSpeech, NPC_Lakilulu, -1, -1, SPEECH_FLAG_FIXED_ORIGIN, MSG_CH6_00A8)
     Thread
         Wait(15 * DT)
-        Call(EndSpeech, NPC_Lakilulu, -1, -1, SPEECH_FLAG_200)
+        Call(EndSpeech, NPC_Lakilulu, -1, -1, SPEECH_FLAG_FIXED_ORIGIN)
     EndThread
     Set(MV_LakiluluSpinySceneState, 1)
     Loop(0)
