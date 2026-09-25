@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _NPC_H_
+#define _NPC_H_
 
 #include "common_structs.h"
 #include "enums.h"
@@ -311,10 +312,10 @@ typedef struct Enemy {
     /* 0xB4 */ EnemyTerritory* territory;
     /* 0xB8 */ EnemyDrops* drops;
     /* 0xBC */ u32 tattleMsg;
-    /* 0xD0 */ s16 savedNpcYaw;
-    /* 0xD2 */ b8 deletePending;
-    /* 0xD3 */ PAD(1);
-} Enemy; // size = 0xD4
+    /* 0xC0 */ s16 savedNpcYaw;
+    /* 0xC2 */ b8 deletePending;
+    /* 0xC3 */ PAD(1);
+} Enemy; // size = 0xC4
 
 typedef struct Encounter {
     /* 0x00 */ s32 count;
@@ -593,4 +594,6 @@ void set_npc_sprite(Npc* npc, s32 anim, AnimID* limitAnimList);
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 } // extern "C"
+#endif
+
 #endif
