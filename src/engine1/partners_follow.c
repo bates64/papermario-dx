@@ -833,7 +833,6 @@ void partner_walking_move_to_side(Npc* partner) {
             PartnerFollowSubstate = 0;
     }
 
-    return;
 }
 
 void partner_walking_disable_asap(Npc* partner) {

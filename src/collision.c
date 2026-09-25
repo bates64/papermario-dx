@@ -398,7 +398,7 @@ void update_collider_transform(s16 colliderID) {
     if (model->bakedMtx == nullptr) {
         copy_matrix(model->userTransformMtx, matrix);
     } else {
-        guMtxL2F(matrix, (Mtx*)model->bakedMtx);
+        guMtxL2F(matrix, model->bakedMtx);
         guMtxCatF(model->userTransformMtx, matrix, matrix);
     }
 

@@ -44,7 +44,7 @@ extern HudScript HES_StatusSPShine;
 extern HudScript HES_StatusSPEmptyIncrement;
 extern HudScript HES_StatusStarEmpty;
 
-extern HudScript HES_StatusTimes;
+
 extern HudScript HES_StatusSlash;
 
 void status_bar_start_blinking_coins(void);

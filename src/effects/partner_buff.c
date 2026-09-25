@@ -270,7 +270,7 @@ void func_E011A700(EffectInstance* effect) {
                     dlist = D_E011AC24[idx];
                     if (dlist != nullptr) {
                         gSPDisplayList(gMainGfxPos++, dlist);
-                        scale = D_E011AC4C[(s16)stateTimer] * 0.01f;
+                        scale = D_E011AC4C[stateTimer] * 0.01f;
                         temp2 = (-(scale - 1.0f) * 16.0f) + 0.5;
                         x = temp2 + 20 + numShown * 32;
                         y = temp2 + 50;
@@ -281,9 +281,9 @@ void func_E011A700(EffectInstance* effect) {
                 dlist = D_E011AC24[turnsDisplay];
                 if (dlist != nullptr) {
                     gSPDisplayList(gMainGfxPos++, dlist);
-                    temp1 = D_E011AC64[(s16)stateTimer];
+                    temp1 = D_E011AC64[stateTimer];
                     temp2 = -temp1;
-                    scale = D_E011AC58[(s16)stateTimer] * 0.01f;
+                    scale = D_E011AC58[stateTimer] * 0.01f;
                     x = temp1 + 20 + numShown * 32;
                     y = temp2 + 50;
                     func_E011A48C(x, y, 0, 1024.0f / scale);

@@ -322,7 +322,7 @@ static Acmd* _decodeChunk(Acmd* cmdBufPos, AuLoadFilter* filter, s32 tsam, s32 n
     s32 paddedSize;
 
     if (nbytes > 0) {
-        endAddr = filter->dmaFunc((s32) filter->memin, nbytes, filter->dmaState, filter->instrument->useDma);
+        endAddr = filter->dmaFunc( filter->memin, nbytes, filter->dmaState, filter->instrument->useDma);
         endAlign = endAddr & 7;
         nbytes += endAlign;
         paddedSize = nbytes + 8 - (nbytes & 7);

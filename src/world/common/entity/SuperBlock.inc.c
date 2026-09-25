@@ -261,7 +261,7 @@ API_CALLABLE(N(SuperBlock_AnimateEnergyOrbs)) {
         userData->superBlock = get_entity_by_index(evt_get_variable(script, *args++));
 
         for (i = 0; i < SUPER_BLOCK_NUM_ORBS; i++) {
-            userData->orbEffects[i] = (EffectInstance*)fx_motion_blur_flame(0, userData->superBlock->pos.x,
+            userData->orbEffects[i] = fx_motion_blur_flame(0, userData->superBlock->pos.x,
                 userData->superBlock->pos.y + 12.5f, userData->superBlock->pos.z, 1.0f, -1);
             t1 = 0.0f;
             userData->posZ[i] = t1;

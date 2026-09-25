@@ -69,7 +69,7 @@ s32 N(reflection_unk_change_anim_facing)(s32 playerAnim) {
 }
 
 API_CALLABLE(N(EnableWallReflection)){
-    script->array[0] = (s32) create_worker_scene(nullptr, N(worker_render_player_reflection_wall));
+    script->array[0] = create_worker_scene(nullptr, N(worker_render_player_reflection_wall));
     return ApiStatus_DONE2;
 }
 
