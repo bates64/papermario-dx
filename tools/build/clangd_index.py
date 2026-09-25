@@ -33,7 +33,7 @@ def resolve_dx_tag(root: Path):
 
 
 def fetch_clangd_index(root: Path):
-    """Fetch the clangd index for the nearest dx-* tag and configure .clangd."""
+    """Fetch the clangd index for the nearest dx-* tag."""
     tag, tag_hash = resolve_dx_tag(root)
     if not tag:
         return
@@ -71,57 +71,3 @@ def fetch_clangd_index(root: Path):
             print(f"configure: clangd index not available for {tag} ({e.code}), skipping")
         except Exception as e:
             print(f"configure: failed to download clangd index: {e}")
-
-    # Update .clangd config with index path
-    if idx_path.exists():
-        _update_clangd_config(root, idx_path)
-
-
-def _update_clangd_config(root: Path, idx_path: Path):
-    """Add or update the Index.External section in .clangd."""
-    clangd_path = root / ".clangd"
-    abs_idx = str(idx_path.resolve())
-    abs_root = str(root.resolve()) + "/"
-
-    default_header = (
-        "CompileFlags:\n"
-        "  Add: -Wno-unknown-warning-option\n"
-        "  Remove: [-m*, -g*]\n"
-        "InlayHints:\n"
-        "  Designators: No\n"
-        "Diagnostics:\n"
-        "  UnusedIncludes: None\n"
-        "  MissingIncludes: None\n"
-    )
-
-    # Read existing config, preserving other sections
-    existing_lines = []
-    if clangd_path.exists():
-        with open(clangd_path, "r", encoding="utf-8") as f:
-            existing_lines = f.readlines()
-
-    if not existing_lines:
-        existing_lines = [l + "\n" for l in default_header.splitlines()]
-
-    # Remove any existing Index section
-    filtered = []
-    in_index = False
-    for line in existing_lines:
-        if line.rstrip() == "Index:":
-            in_index = True
-            continue
-        if in_index and (line.startswith("  ") or line.startswith("\t")):
-            continue
-        in_index = False
-        filtered.append(line)
-
-    # Append Index.External section
-    if filtered and not filtered[-1].endswith("\n"):
-        filtered.append("\n")
-    filtered.append("Index:\n")
-    filtered.append("  External:\n")
-    filtered.append(f"    File: {abs_idx}\n")
-    filtered.append(f"    MountPoint: {abs_root}\n")
-
-    with open(clangd_path, "w", encoding="utf-8") as f:
-        f.writelines(filtered)
