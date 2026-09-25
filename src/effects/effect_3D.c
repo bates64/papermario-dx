@@ -118,7 +118,7 @@ void effect_3D_update(EffectInstance* effect) {
     Effect3DFXData* part = effect->data.whaleSpout;
     s32 unk_04 = part->unk_04;
     s32 unk_5C;
-    s32 saved_5C;
+    s32 saved5C;
     s32 i;
 
     part->timeLeft--;
@@ -129,7 +129,7 @@ void effect_3D_update(EffectInstance* effect) {
         return;
     }
 
-    saved_5C = part->timeLeft;
+    saved5C = part->timeLeft;
 
     part++;
     for (i = 1; i < effect->numParts; i++, part++) {
@@ -192,7 +192,7 @@ void effect_3D_update(EffectInstance* effect) {
         }
     }
 
-    if (saved_5C < 0) {
+    if (saved5C < 0) {
         part = effect->data.whaleSpout;
         part->timeLeft = 10;
         part->lifetime = 0;

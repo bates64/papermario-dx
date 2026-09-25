@@ -313,7 +313,7 @@ API_CALLABLE(PlayEffect_impl) {
 
     s32 effectID = evt_get_variable(script, *intArgs++);
     EffectInstance* effectRet = nullptr;
-    s32 new_var;
+    s32 newVar;
 
     s32 iVar1, iVar2, iVar3, iVar4, iVar5;
     s32 iVar6, iVar7, iVar8, iVar9, iVar10;
@@ -331,7 +331,7 @@ API_CALLABLE(PlayEffect_impl) {
     evt_get_variable(script, *floatArgs++);
     evt_get_variable(script, *args++);
 
-    new_var = evt_get_variable(script, *intArgs++);
+    newVar = evt_get_variable(script, *intArgs++);
     iVar2 = evt_get_variable(script, *intArgs++);
     iVar3 = evt_get_variable(script, *intArgs++);
     iVar4 = evt_get_variable(script, *intArgs++);
@@ -369,7 +369,7 @@ API_CALLABLE(PlayEffect_impl) {
     a8 = *args++;
     a9 = *args++;
 
-    iVar1 = new_var;
+    iVar1 = newVar;
 
     switch (effectID) {
         case EFFECT_00:

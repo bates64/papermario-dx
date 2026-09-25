@@ -415,38 +415,38 @@ void update_camera_from_controller(
                 break;
             case CAM_CONTROL_CONSTRAIN_TO_LINE:
                 {
-                    const f32 Ax = curSettings->points.three.Ax;
-                    const f32 Az = curSettings->points.three.Az;
-                    const f32 Bx = curSettings->points.three.Bx;
-                    const f32 Bz = curSettings->points.three.Bz;
-                    const f32 Cx = curSettings->points.three.Cx;
-                    const f32 Cz = curSettings->points.three.Cz;
+                    const f32 ax = curSettings->points.three.Ax;
+                    const f32 az = curSettings->points.three.Az;
+                    const f32 bx = curSettings->points.three.Bx;
+                    const f32 bz = curSettings->points.three.Bz;
+                    const f32 cx = curSettings->points.three.Cx;
+                    const f32 cz = curSettings->points.three.Cz;
 
                     if (!curSettings->flag) {
                         f32 Tx, Tz;
                         f32 BAx, BAz;
                         f32 BCx, BCz;
 
-                        if (Ax == Bx && Az == Bz) {
-                            BAx = Bx - Cx;
-                            BAz = Bz - Cz;
+                        if (ax == bx && az == bz) {
+                            BAx = bx - cx;
+                            BAz = bz - cz;
                         } else {
-                            BAx = Bx - Ax;
-                            BAz = Bz - Az;
+                            BAx = bx - ax;
+                            BAz = bz - az;
                         }
 
-                        BCx = Bx - Cx;
-                        BCz = Bz - Cz;
+                        BCx = bx - cx;
+                        BCz = bz - cz;
 
                         if (BCx == 0.0f) {
                             f32 Q = BAz + BCx * BAx / BCz;
-                            f32 V = (x - Bx) + (Bz - z) * BCx / BCz;
+                            f32 V = (x - bx) + (bz - z) * BCx / BCz;
 
                             Tx = x - BAz * V / Q;
                             Tz = z + BAx * V / Q;
                         } else {
                             f32 Q = -BAx - BAz * BCz / BCx;
-                            f32 V = (z - Bz) + (Bx - x) * BCz / BCx;
+                            f32 V = (z - bz) + (bx - x) * BCz / BCx;
 
                             Tx = x - BAz * V / Q;
                             Tz = z + BAx * V / Q;
@@ -457,8 +457,8 @@ void update_camera_from_controller(
                         curRig->targetPos.z = Tz;
 
                         if (changingMap) {
-                            dx = Bx - Ax;
-                            dz = Bz - Az;
+                            dx = bx - ax;
+                            dz = bz - az;
                             curRig->boomLength = fabsf(curSettings->boomLength);
                             curRig->boomYaw = atan2(0.0f, 0.0f, dx, dz);
                             curRig->boomPitch = curSettings->boomPitch;
@@ -466,14 +466,14 @@ void update_camera_from_controller(
                         }
                     } else {
                         if (changingMap) {
-                            dx = Bx - Ax;
-                            dz = Bz - Az;
+                            dx = bx - ax;
+                            dz = bz - az;
                             curRig->boomLength = fabsf(curSettings->boomLength);
                             curRig->boomYaw = atan2(0.0f, 0.0f, dx, dz);
                             curRig->boomPitch = curSettings->boomPitch;
                             curRig->viewPitch = curSettings->viewPitch;
-                            curRig->targetPos.x = Bx;
-                            curRig->targetPos.z = Bz;
+                            curRig->targetPos.x = bx;
+                            curRig->targetPos.z = bz;
                         } else if (changingZone) {
                             curRig->targetPos.x = prevRig->targetPos.x;
                             curRig->targetPos.z = prevRig->targetPos.z;

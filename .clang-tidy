@@ -29,6 +29,21 @@ Checks: >
   -readability-avoid-nested-conditional-operator,
 
 CheckOptions:
+  # Locals may keep decomp placeholder names (unk_, temp_, var_, sp_, phi_),
+  # which mark variables whose purpose isn't known yet, and short math names
+  # like A1x or Mxz.
+  - key: readability-identifier-naming.LocalVariableCase
+    value: camelBack
+  - key: readability-identifier-naming.LocalVariableIgnoredRegexp
+    value: '^((unk|temp|var|sp|phi)_.*|[A-Z]{1,2}[0-9]?[a-z]{0,2})$'
+  - key: readability-identifier-naming.LocalConstantCase
+    value: camelBack
+  - key: readability-identifier-naming.LocalConstantIgnoredRegexp
+    value: '^[A-Z][A-Z0-9_]*$'
+  # Function-level statics are named like globals, which aren't checked.
+  - key: readability-identifier-naming.StaticVariableCase
+    value: aNy_CasE
+
   - key: readability-identifier-naming.ParameterCase
     value: camelBack
 

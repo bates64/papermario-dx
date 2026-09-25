@@ -57,7 +57,7 @@ void stars_shimmer_main(s32 type, f32 x, f32 y, f32 z, f32 arg4, f32 arg5, s32 n
     f32 theta;
     f32 temp5;
     f32 t3;
-    f32 new_var;
+    f32 newVar;
     s32 i;
 
     numParts++;
@@ -101,10 +101,10 @@ void stars_shimmer_main(s32 type, f32 x, f32 y, f32 z, f32 arg4, f32 arg5, s32 n
         temp_f22 = sin_deg(t3);
         temp_f8 = (arg4 * 0.4) - (arg4 * 0.1 * temp_f22);
         temp_ft = (arg5 * 0.4) - (arg5 * 0.1 * temp_f22);
-        new_var = 1.0f; // TODO dumb temp and cast later required to match
+        newVar = 1.0f; // TODO dumb temp and cast later required to match
         temp5 = (arg5 / (numParts - 1)) * (i - 1);
 
-        part->unk_1C = (u8) new_var;
+        part->unk_1C = (u8) newVar;
         part->lifeTime = 0;
         part->timeLeft = i + 30;
 
