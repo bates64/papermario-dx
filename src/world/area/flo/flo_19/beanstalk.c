@@ -21,7 +21,8 @@ API_CALLABLE(N(PlayerRideBeanstalk)) {
 
     temp = sin_deg(clamped);
     gPlayerStatus.pos.x = (dist * temp) + 0.0f;
-    gPlayerStatus.pos.y = evt_get_variable(nullptr, script->varTable[10]) + evt_get_variable(nullptr, script->varTable[3]);
+    gPlayerStatus.pos.y =
+        evt_get_variable(nullptr, script->varTable[10]) + evt_get_variable(nullptr, script->varTable[3]);
     temp = cos_deg(clamped);
     gPlayerStatus.pos.z = 0.0f - (dist * temp);
 

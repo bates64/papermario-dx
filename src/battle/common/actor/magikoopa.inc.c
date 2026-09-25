@@ -2131,7 +2131,7 @@ EvtScript N(EVS_TakeTurn) = {
             EndIf
         EndIf
     Else
-    // multiple injured actors were found
+        // multiple injured actors were found
         Call(GetActorVar, ACTOR_SELF, AVAR_HealAllCount, LVar0)
         IfLt(LVar0, MAX_HEAL_ALL)
             Call(RandInt, 1000, LVar0)

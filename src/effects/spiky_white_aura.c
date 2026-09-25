@@ -173,16 +173,16 @@ void spiky_white_aura_render(EffectInstance* effect) {
 }
 
 void spiky_white_aura_appendGfx(void* effect) {
-    SpikyWhiteAuraFXData* part = ((EffectInstance*)effect)->data.spikyWhiteAura;
+    SpikyWhiteAuraFXData* part = ((EffectInstance*) effect)->data.spikyWhiteAura;
     Matrix4f sp18;
     Matrix4f sp58;
     s32 i;
 
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_09000440_34EBB0);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, part->unk_24);
 
-    for (i = 0; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 0; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         guTranslateF(sp18, part->unk_04, part->unk_08, part->unk_0C);
         guRotateF(sp58, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
         guMtxCatF(sp58, sp18, sp18);
@@ -193,7 +193,9 @@ void spiky_white_aura_appendGfx(void* effect) {
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
         gDPPipeSync(gMainGfxPos++);
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_090004E8_34EC58);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

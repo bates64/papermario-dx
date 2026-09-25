@@ -53,8 +53,7 @@ API_CALLABLE(N(BigExplosionRumble)) {
     }
 
     script->functionTemp[0]--;
-    if (script->functionTemp[0] == 0)
-    {
+    if (script->functionTemp[0] == 0) {
         return ApiStatus_DONE1;
     }
 

@@ -7,7 +7,7 @@ API_CALLABLE(N(CheckItemExists)) {
     s32 outVar = *args++;
     ItemEntity* itemEntity = get_item_entity(itemIdx);
 
-    evt_set_variable(script, outVar, (s32)itemEntity);
+    evt_set_variable(script, outVar, (s32) itemEntity);
     return ApiStatus_DONE2;
 }
 

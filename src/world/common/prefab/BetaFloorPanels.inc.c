@@ -15,7 +15,8 @@ API_CALLABLE(N(CheckShouldBreakFloor)) {
 
     script->varTable[0] = 1;
     if ((playerStatus->actionState != ACTION_STATE_SPIN_POUND)
-            && (playerStatus->actionState != ACTION_STATE_TORNADO_POUND)) {
+        && (playerStatus->actionState != ACTION_STATE_TORNADO_POUND))
+    {
         script->varTable[0] = 0;
     }
     if (script->array[4] <= distance) {
@@ -27,9 +28,7 @@ API_CALLABLE(N(CheckShouldBreakFloor)) {
 
 API_CALLABLE(N(CheckShouldFlipFloor)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
-    f32 distance = dist2D(
-        playerStatus->pos.x, playerStatus->pos.z,
-        script->array[2], script->array[4]);
+    f32 distance = dist2D(playerStatus->pos.x, playerStatus->pos.z, script->array[2], script->array[4]);
 
     script->varTable[0] = 0;
     if (distance < 112.5f) {

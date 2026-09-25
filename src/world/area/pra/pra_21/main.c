@@ -3,8 +3,8 @@
 s32 N(DoorModelsL)[] = { MODEL_o977, -1 };
 s32 N(DoorModelsR)[] = { MODEL_o976, -1 };
 
-EvtScript N(EVS_ExitDoor_pra_20_1) = EVT_EXIT_SINGLE_DOOR(pra_21_ENTRY_0, "pra_20", pra_20_ENTRY_1,
-    COLLIDER_deilittnnw, MODEL_o774, DOOR_SWING_IN);
+EvtScript N(EVS_ExitDoor_pra_20_1) =
+    EVT_EXIT_SINGLE_DOOR(pra_21_ENTRY_0, "pra_20", pra_20_ENTRY_1, COLLIDER_deilittnnw, MODEL_o774, DOOR_SWING_IN);
 
 EvtScript N(EVS_ExitDoors_pra_36_0) = {
     SetGroup(EVT_GROUP_EXIT_MAP)

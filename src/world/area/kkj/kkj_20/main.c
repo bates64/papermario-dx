@@ -1,7 +1,7 @@
 #include "kkj_20.h"
 
-EvtScript N(EVS_ExitDoor_kkj_10_4) = EVT_EXIT_SINGLE_DOOR(kkj_20_ENTRY_0, "kkj_10", kkj_10_ENTRY_4,
-    COLLIDER_ttw, MODEL_o9, DOOR_SWING_IN);
+EvtScript N(EVS_ExitDoor_kkj_10_4) =
+    EVT_EXIT_SINGLE_DOOR(kkj_20_ENTRY_0, "kkj_10", kkj_10_ENTRY_4, COLLIDER_ttw, MODEL_o9, DOOR_SWING_IN);
 
 EvtScript N(EVS_EnterMap) = {
     Set(LVar0, kkj_20_ENTRY_0)

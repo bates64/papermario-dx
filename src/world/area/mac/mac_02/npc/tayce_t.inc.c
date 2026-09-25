@@ -115,7 +115,8 @@ API_CALLABLE(N(GetCookResultForDoubleRecipe)) {
     if (resultIdx == 0) {
         for (i = 0; i < ARRAY_COUNT(ExtraDoubleRecipes); i++) {
             if (((ExtraDoubleRecipes[i].inputA == inputItemA) && (ExtraDoubleRecipes[i].inputB == inputItemB))
-             || ((ExtraDoubleRecipes[i].inputA == inputItemB) && (ExtraDoubleRecipes[i].inputB == inputItemA))) {
+                || ((ExtraDoubleRecipes[i].inputA == inputItemB) && (ExtraDoubleRecipes[i].inputB == inputItemA)))
+            {
                 resultIdx = ExtraDoubleRecipes[i].output;
             }
         }
@@ -246,7 +247,7 @@ EvtScript N(EVS_TayceT_Cook) = {
     #define LABEL_COOK 6
     #define LABEL_DONE 9
 
-   // greeting and opening choice
+    // greeting and opening choice
     Call(DisablePlayerInput, true)
     IfEq(GF_MAC02_Met_TayceT, false)
         Set(GF_MAC02_Met_TayceT, true)
@@ -272,7 +273,7 @@ EvtScript N(EVS_TayceT_Cook) = {
     EndIf
     Call(ContinueSpeech, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0005)
 
-   // choose the first ingredient
+    // choose the first ingredient
     Label(LABEL_CHOOSE_FIRST)
     Set(LVar3, 0)
     EVT_CHOOSE_ANY_CONSUMABLE(NPC_TayceT)

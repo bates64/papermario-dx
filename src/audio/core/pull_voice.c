@@ -26,7 +26,8 @@ s16 AuEqPower[AUEQPOWER_LENGTH] = {
     2833,  2429,  2025,  1620,  1216,  810,   405,   0
 };
 
-static Acmd* _decodeChunk(Acmd* cmdBufPos, AuLoadFilter* filter, s32 tsam, s32 nbytes, s16 output, s16 input, s32 flags);
+static Acmd*
+_decodeChunk(Acmd* cmdBufPos, AuLoadFilter* filter, s32 tsam, s32 nbytes, s16 output, s16 input, s32 flags);
 static s16 _getRate(f64 vol, f64 tgt, s32 count, u16* ratel);
 
 // decode, resample, and mix
@@ -59,11 +60,11 @@ Acmd* au_pull_voice(AuPVoice* pvoice, Acmd* cmdBufPos) {
     }
 
     // convert pitch ratio to fixed-point resampling increment
-    resampler->ratio = (s32)(resampler->ratio * UNITY_PITCH);
+    resampler->ratio = (s32) (resampler->ratio * UNITY_PITCH);
     resampler->ratio = resampler->ratio / UNITY_PITCH;
 
     // determine how many output samples are needed for this frame
-    finCount = resampler->delta + resampler->ratio * (f32)AUDIO_SAMPLES;
+    finCount = resampler->delta + resampler->ratio * (f32) AUDIO_SAMPLES;
     outCount = (s32) finCount;
     resampler->delta = finCount - (f32) outCount;
 
@@ -117,7 +118,8 @@ Acmd* au_pull_voice(AuPVoice* pvoice, Acmd* cmdBufPos) {
                 }
 
                 decoder->lastsam = decoder->loop.start & 0xF;
-                decoder->memin = (s32)decoder->instrument->wavData + ADPCMFBYTES * ((s32)(decoder->loop.start >> LFSAMPLES) + 1);
+                decoder->memin =
+                    (s32) decoder->instrument->wavData + ADPCMFBYTES * ((s32) (decoder->loop.start >> LFSAMPLES) + 1);
                 decoder->sample = decoder->loop.start;
 
                 // continue decoding looped portion if needed
@@ -144,7 +146,8 @@ Acmd* au_pull_voice(AuPVoice* pvoice, Acmd* cmdBufPos) {
                 decoder->memin += ADPCMFBYTES * nframes;
             } else {
                 nSam = nframes << LFSAMPLES;
-                overFlow = decoder->memin + nbytes - ((s32)decoder->instrument->wavData + decoder->instrument->wavDataLength);
+                overFlow =
+                    decoder->memin + nbytes - ((s32) decoder->instrument->wavData + decoder->instrument->wavDataLength);
 
                 if (overFlow <= 0) {
                     overFlow = 0;
@@ -202,10 +205,10 @@ Acmd* au_pull_voice(AuPVoice* pvoice, Acmd* cmdBufPos) {
                     dramAlign = 0;
                 }
                 outp += dramAlign;
-                decoder->memin = (s32)decoder->instrument->wavData + (decoder->loop.start << 1);
+                decoder->memin = (s32) decoder->instrument->wavData + (decoder->loop.start << 1);
                 decoder->sample = decoder->loop.start;
                 op = outp;
-                while (outCount > nSam){
+                while (outCount > nSam) {
                     op += nSam << 1;
                     outCount -= nSam;
                     if (decoder->loop.count != -1 && decoder->loop.count != 0) {
@@ -231,7 +234,8 @@ Acmd* au_pull_voice(AuPVoice* pvoice, Acmd* cmdBufPos) {
                 decoder->memin += outCount << 1;
             } else {
                 nbytes = outCount << 1;
-                overFlow = decoder->memin + nbytes - ((s32)decoder->instrument->wavData + decoder->instrument->wavDataLength);
+                overFlow =
+                    decoder->memin + nbytes - ((s32) decoder->instrument->wavData + decoder->instrument->wavDataLength);
                 if (overFlow <= 0) {
                     overFlow = 0;
                 } else {
@@ -243,7 +247,8 @@ Acmd* au_pull_voice(AuPVoice* pvoice, Acmd* cmdBufPos) {
                 if (overFlow < nbytes) {
                     if (outCount > 0) {
                         nbytes -= overFlow;
-                        dramLoc = decoder->dmaFunc(decoder->memin, nbytes, decoder->dmaState, decoder->instrument->useDma);
+                        dramLoc =
+                            decoder->dmaFunc(decoder->memin, nbytes, decoder->dmaState, decoder->instrument->useDma);
                         dramAlign = dramLoc & 7;
                         nbytes += dramAlign;
                         n_aLoadBuffer(ptr++, nbytes + 8 - (nbytes & 7), outp, dramLoc - dramAlign);
@@ -269,7 +274,7 @@ Acmd* au_pull_voice(AuPVoice* pvoice, Acmd* cmdBufPos) {
     }
 
     // resample audio from source buffer to output buffer
-    incr = (s32)(resampler->ratio * UNITY_PITCH);
+    incr = (s32) (resampler->ratio * UNITY_PITCH);
     n_aResample(ptr++, osVirtualToPhysical(resampler->state), resampler->first, incr, outp, 0);
     resampler->first = false;
 
@@ -316,13 +321,14 @@ Acmd* au_pull_voice(AuPVoice* pvoice, Acmd* cmdBufPos) {
 }
 
 /// loads and decodes a chunk of ADPCM data into RSP memory
-static Acmd* _decodeChunk(Acmd* cmdBufPos, AuLoadFilter* filter, s32 tsam, s32 nbytes, s16 output, s16 input, s32 flags) {
+static Acmd*
+_decodeChunk(Acmd* cmdBufPos, AuLoadFilter* filter, s32 tsam, s32 nbytes, s16 output, s16 input, s32 flags) {
     s32 endAddr;
     s32 endAlign;
     s32 paddedSize;
 
     if (nbytes > 0) {
-        endAddr = filter->dmaFunc( filter->memin, nbytes, filter->dmaState, filter->instrument->useDma);
+        endAddr = filter->dmaFunc(filter->memin, nbytes, filter->dmaState, filter->instrument->useDma);
         endAlign = endAddr & 7;
         nbytes += endAlign;
         paddedSize = nbytes + 8 - (nbytes & 7);

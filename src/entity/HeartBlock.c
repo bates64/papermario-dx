@@ -56,7 +56,13 @@ void entity_HeartBlockContent__setupGfx(s32 entityIndex, Gfx* arg1) {
     guMtxF2L(sp18, &data->unk_58);
     gDisplayContext->matrixStack[gMatrixListPos] = data->unk_58;
     gSPMatrix(gfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-    gDPSetRenderMode(gfxPos++, AA_EN | Z_CMP | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA), AA_EN | Z_CMP | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA));
+    gDPSetRenderMode(
+        gfxPos++,
+        AA_EN | Z_CMP | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL
+            | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA),
+        AA_EN | Z_CMP | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL
+            | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA)
+    );
     gSPDisplayList(gfxPos++, dlist);
     gDPPipeSync(gfxPos++);
     gDPSetCombineMode(gfxPos++, PM_CC_01, PM_CC_02);
@@ -72,7 +78,13 @@ void entity_HeartBlockContent__setupGfx(s32 entityIndex, Gfx* arg1) {
     guMtxF2L(sp18, &data->unk_98);
     gDisplayContext->matrixStack[gMatrixListPos] = data->unk_98;
     gSPMatrix(gfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-    gDPSetRenderMode(gfxPos++, AA_EN | Z_CMP | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA), AA_EN | Z_CMP | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA));
+    gDPSetRenderMode(
+        gfxPos++,
+        AA_EN | Z_CMP | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL
+            | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA),
+        AA_EN | Z_CMP | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL
+            | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA)
+    );
     gSPDisplayList(gfxPos++, dlist);
     gDPPipeSync(gfxPos++);
     gDPSetCombineMode(gfxPos++, PM_CC_01, PM_CC_02);
@@ -157,7 +169,9 @@ void entity_HeartBlockContent_anim_idle(Entity* entity, s32 arg1) {
                 data->sparkleTimer--;
                 if (data->sparkleTimer <= 0) {
                     data->sparkleTimer = 50;
-                    fx_stars_shimmer(data->sparkleEffectType, entity->pos.x, entity->pos.y, entity->pos.z, 22.0f, 8.0f, 4, 20);
+                    fx_stars_shimmer(
+                        data->sparkleEffectType, entity->pos.x, entity->pos.y, entity->pos.z, 22.0f, 8.0f, 4, 20
+                    );
                 }
             }
             break;
@@ -246,10 +260,9 @@ void entity_HeartBlockContent__anim_heal(Entity* entity, s32 arg1) {
             data->sparkleTrailPosY -= 0.7;
 
             if ((data->sparkleTrailTimer++ & 1) != 0) {
-                fx_sparkles(FX_SPARKLES_3, playerStatus->pos.x + offsetX,
-                        playerStatus->pos.y + offsetY,
-                        playerStatus->pos.z - offsetZ,
-                        8.0f
+                fx_sparkles(
+                    FX_SPARKLES_3, playerStatus->pos.x + offsetX, playerStatus->pos.y + offsetY,
+                    playerStatus->pos.z - offsetZ, 8.0f
                 );
             }
             if (data->sparkleTrailPosY < 20.0f) {
@@ -394,7 +407,9 @@ void entity_HeartBlock_create_child_entity(Entity* entity, EntityBlueprint* bp) 
     HeartBlockContentData* data;
 
     entity_base_block_init(entity);
-    childEntity = get_entity_by_index(create_entity(bp, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, 0, MAKE_ENTITY_END));
+    childEntity = get_entity_by_index(
+        create_entity(bp, (s32) entity->pos.x, (s32) entity->pos.y, (s32) entity->pos.z, 0, MAKE_ENTITY_END)
+    );
     data = childEntity->dataBuf.heartBlockContent;
     data->parentEntityIndex = entity->listIndex;
 
@@ -433,10 +448,14 @@ EntityScript Entity_HeartBlock_Script = {
     es_End
 };
 
-EntityModelScript Entity_HeartBlockContent_RenderScriptIdle = STANDARD_ENTITY_MODEL_SCRIPT(Entity_HeartBlockContent_RenderHeartSleeping, RENDER_MODE_ALPHATEST);
-EntityModelScript Entity_HeartBlockContent_RenderScriptHit = STANDARD_ENTITY_MODEL_SCRIPT(Entity_HeartBlockContent_RenderHeartAwake, RENDER_MODE_SURFACE_XLU_LAYER2);
-EntityModelScript Entity_HeartBlockContent_RenderScriptAfterHit = STANDARD_ENTITY_MODEL_SCRIPT(Entity_HeartBlockContent_RenderHeartHappy, RENDER_MODE_SURFACE_XLU_LAYER2);
-EntityModelScript Entity_HeartBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_HeartBlock_Render, RENDER_MODE_SURFACE_XLU_LAYER3);
+EntityModelScript Entity_HeartBlockContent_RenderScriptIdle =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_HeartBlockContent_RenderHeartSleeping, RENDER_MODE_ALPHATEST);
+EntityModelScript Entity_HeartBlockContent_RenderScriptHit =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_HeartBlockContent_RenderHeartAwake, RENDER_MODE_SURFACE_XLU_LAYER2);
+EntityModelScript Entity_HeartBlockContent_RenderScriptAfterHit =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_HeartBlockContent_RenderHeartHappy, RENDER_MODE_SURFACE_XLU_LAYER2);
+EntityModelScript Entity_HeartBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_HeartBlock_Render, RENDER_MODE_SURFACE_XLU_LAYER3);
 
 EntityBlueprint Entity_HeartBlockFrame = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,

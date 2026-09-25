@@ -339,7 +339,9 @@ void sfx_update_env_sound_params(void) {
     for (i = 0; i < MAX_SOUND_INSTANCES; i++, sound++) {
         if (sound->flags & SOUND_INSTANCE_FLAG_ACTIVE) {
             if (sound->flags & SOUND_INSTANCE_FLAG_POSITION_CHANGED) {
-                sfx_get_spatialized_sound_params(sound->pos.x, sound->pos.y, sound->pos.z, &volume, &pan, sound->sourceFlags);
+                sfx_get_spatialized_sound_params(
+                    sound->pos.x, sound->pos.y, sound->pos.z, &volume, &pan, sound->sourceFlags
+                );
                 sound->volume = volume;
                 sound->pan = pan;
             }
@@ -645,7 +647,7 @@ void sfx_compute_spatialized_sound_params_with_depth(f32 x, f32 y, f32 z, s16* v
         screenX = camera->viewportW;
     }
 
-    depth = fabsf((f32)(5000 - screenZ));
+    depth = fabsf((f32) (5000 - screenZ));
     if (depth > 1000.0f) {
         depth = 1000.0f;
     }

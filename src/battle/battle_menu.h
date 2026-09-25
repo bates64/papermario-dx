@@ -215,8 +215,6 @@ extern HudScript HES_GreenArrowDown;
 extern HudScript HES_GreenArrowUp;
 extern HudScript HES_HandPointer;
 
-
-
 extern HudScript HES_FPCost;
 extern HudScript HES_FPCostReduced;
 extern HudScript HES_FPCostReducedTwice;

@@ -13,7 +13,7 @@ Vec3f N(FlyAwayPath)[] = {
 };
 
 API_CALLABLE(N(UpdatePropellerSoundPos)) {
-    Npc *npc = get_npc_safe(NPC_Bowser_Prop);
+    Npc* npc = get_npc_safe(NPC_Bowser_Prop);
     f32 x = npc->pos.x;
     f32 y = npc->pos.y;
     f32 z = npc->pos.z;

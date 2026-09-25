@@ -53,7 +53,7 @@ EffectInstance* snaking_static_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 
     data->envCol.b = 255;
 
     data++;
-    for(i = 1; i < numParts; i++, data++) {
+    for (i = 1; i < numParts; i++, data++) {
         data->timeLeft = 20;
         data->unk_3C = (i - 1) * 360 / (numParts - 1);
         data->lifeTime = 0;
@@ -64,7 +64,6 @@ EffectInstance* snaking_static_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 
     }
 
     return effect;
-
 }
 
 void snaking_static_init(EffectInstance* effect) {
@@ -171,21 +170,22 @@ void snaking_static_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp18, data->pos.x, data->pos.y, data->pos.z);
     guScaleF(sp58, data->scale, data->scale, data->scale);
     guMtxCatF(sp58, sp18, sp18);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetEnvColor(gMainGfxPos++, data->envCol.r, data->envCol.g, data->envCol.b, 0);
     gSPDisplayList(gMainGfxPos++, D_09001000_3B3D90);
 
     data++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, data++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, data++) {
         gDPSetPrimColor(gMainGfxPos++, 0, 0, primR, primG, primB, (data->unk_24 * unk_24) / 255);
         guTranslateF(sp18, data->pos.x, data->pos.y, 0.0f);
         guRotateF(sp58, data->unk_3C, 0.0f, 0.0f, 1.0f);
@@ -194,8 +194,9 @@ void snaking_static_appendGfx(void* effect) {
         guMtxCatF(sp58, sp18, sp18);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                  G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, data->unk_40 * 64, 0, (data->unk_40 * 64) | 0x3C, 0x007C);
         gDPSetTileSize(gMainGfxPos++, 1, (lifeTime * 12), 0, ((lifeTime * 3) + 0x1F) * 4, 0x007C);
 

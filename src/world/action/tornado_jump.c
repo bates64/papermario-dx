@@ -78,10 +78,11 @@ void action_update_tornado_jump(void) {
         case SUBSTATE_ASCEND:
             fallVelocity = integrate_gravity();
             playerStatus->pos.y = player_check_collision_below(fallVelocity, &colliderBelow);
-            if (colliderBelow >= 0 && collisionStatus->curFloor & COLLISION_WITH_ENTITY_BIT ) {
+            if (colliderBelow >= 0 && collisionStatus->curFloor & COLLISION_WITH_ENTITY_BIT) {
                 entityType = get_entity_type(collisionStatus->curFloor);
                 if (entityType == ENTITY_TYPE_BLUE_SWITCH || entityType == ENTITY_TYPE_RED_SWITCH) {
-                    get_entity_by_index(collisionStatus->curFloor)->collisionFlags |= ENTITY_COLLISION_PLAYER_TOUCH_FLOOR;
+                    get_entity_by_index(collisionStatus->curFloor)->collisionFlags |=
+                        ENTITY_COLLISION_PLAYER_TOUCH_FLOOR;
                     disable_player_input();
                     playerStatus->actionSubstate = SUBSTATE_HIT_SWITCH;
                     break;
@@ -194,5 +195,7 @@ static s32 get_collider_below_tornado_jump(void) {
     posZ = gPlayerStatus.pos.z;
     height = gPlayerStatus.colliderHeight;
     posY = gPlayerStatus.pos.y + (height * 0.5f);
-    return player_raycast_below_cam_relative(&gPlayerStatus, &posX, &posY, &posZ, &height, &hitRx, &hitRz, &hitDirX, &hitDirZ);
+    return player_raycast_below_cam_relative(
+        &gPlayerStatus, &posX, &posY, &posZ, &height, &hitRx, &hitRz, &hitDirX, &hitDirZ
+    );
 }

@@ -283,12 +283,10 @@ s32 btl_submenu_moves_update(void) {
                             continue;
                         }
 
-                        if (
-                            MovesOptionSortPriority[temp1] != MovesOptionSortPriority[temp2] ||
-                            ((MovesOptionDisplayCosts[temp1] >= MovesOptionDisplayCosts[temp2]) &&
-                            (MovesOptionDisplayCosts[temp1] != MovesOptionDisplayCosts[temp2] ||
-                                MovesOptionBPCosts[temp1] >= MovesOptionBPCosts[temp2]))
-                        )
+                        if (MovesOptionSortPriority[temp1] != MovesOptionSortPriority[temp2]
+                            || ((MovesOptionDisplayCosts[temp1] >= MovesOptionDisplayCosts[temp2])
+                                && (MovesOptionDisplayCosts[temp1] != MovesOptionDisplayCosts[temp2]
+                                    || MovesOptionBPCosts[temp1] >= MovesOptionBPCosts[temp2])))
                         {
                             s32 swapTemp = MovesOptionIndexMap[i];
                             MovesOptionIndexMap[i] = MovesOptionIndexMap[j];
@@ -372,16 +370,32 @@ s32 btl_submenu_moves_update(void) {
             x = MovesMenuPosX;
             y = MovesMenuPosY;
             if (!UsingSpiritsSubmenu) {
-                set_window_properties(WIN_BTL_MOVES_MENU, x, y, 150, (MovesMenuLines * MENU_LINE_HEIGHT) + 28, 0, btl_menu_moves_draw_content, nullptr, -1);
-                set_window_properties(WIN_BTL_MOVES_TITLE, x + 16, y - 6, 90, 16, 1, btl_menu_moves_show_title, nullptr, -1);
-                set_window_properties(WIN_BTL_MOVES_ICON, x + 114, y - 12, 32, 32, 1, btl_menu_moves_show_icon, nullptr, -1);
+                set_window_properties(
+                    WIN_BTL_MOVES_MENU, x, y, 150, (MovesMenuLines * MENU_LINE_HEIGHT) + 28, 0,
+                    btl_menu_moves_draw_content, nullptr, -1
+                );
+                set_window_properties(
+                    WIN_BTL_MOVES_TITLE, x + 16, y - 6, 90, 16, 1, btl_menu_moves_show_title, nullptr, -1
+                );
+                set_window_properties(
+                    WIN_BTL_MOVES_ICON, x + 114, y - 12, 32, 32, 1, btl_menu_moves_show_icon, nullptr, -1
+                );
             } else {
-                set_window_properties(WIN_BTL_MOVES_MENU, x, y, 144, (MovesMenuLines * MENU_LINE_HEIGHT) + 28, 0, btl_menu_moves_draw_content, nullptr, -1);
-                set_window_properties(WIN_BTL_SPIRITS_TITLE, x + 10, y - 6, 100, 16, 1, btl_menu_moves_show_title, 0, -1);
-                set_window_properties(WIN_BTL_SPIRITS_ICON, x + 110, y - 12, 32, 35, 1, btl_menu_moves_show_icon, 0, -1);
+                set_window_properties(
+                    WIN_BTL_MOVES_MENU, x, y, 144, (MovesMenuLines * MENU_LINE_HEIGHT) + 28, 0,
+                    btl_menu_moves_draw_content, nullptr, -1
+                );
+                set_window_properties(
+                    WIN_BTL_SPIRITS_TITLE, x + 10, y - 6, 100, 16, 1, btl_menu_moves_show_title, 0, -1
+                );
+                set_window_properties(
+                    WIN_BTL_SPIRITS_ICON, x + 110, y - 12, 32, 35, 1, btl_menu_moves_show_icon, 0, -1
+                );
             }
 
-            set_window_properties(WIN_BTL_DESC_BOX, 20, 186, 280, 32, WINDOW_PRIORITY_20, btl_menu_moves_show_desc, nullptr, -1);
+            set_window_properties(
+                WIN_BTL_DESC_BOX, 20, 186, 280, 32, WINDOW_PRIORITY_20, btl_menu_moves_show_desc, nullptr, -1
+            );
             set_window_update(WIN_BTL_MOVES_MENU, WINDOW_UPDATE_SHOW);
             if (!UsingSpiritsSubmenu) {
                 set_window_update(WIN_BTL_MOVES_TITLE, WINDOW_UPDATE_SHOW);
@@ -593,7 +607,9 @@ s32 btl_submenu_moves_update(void) {
             msgWidth = get_msg_width(msgID, 0) + 23;
             msgHeight = ErrorMessageHeight[get_msg_lines(msgID) - 1];
             x = (SCREEN_WIDTH / 2) - (msgWidth / 2);
-            set_window_properties(WIN_BTL_POPUP, x, 80, msgWidth, msgHeight, 20, btl_menu_moves_show_error, nullptr, -1);
+            set_window_properties(
+                WIN_BTL_POPUP, x, 80, msgWidth, msgHeight, 20, btl_menu_moves_show_error, nullptr, -1
+            );
             set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             MovesErrorTimer = 60;
             MovesMenuState = BTL_SUBMENU_STATE_ERROR_DONE;
@@ -689,7 +705,7 @@ void btl_menu_moves_draw_content(void* data, s32 x, s32 y) {
                         cost = 1;
                     }
 
-                    if (UsingSpiritsSubmenu ) {
+                    if (UsingSpiritsSubmenu) {
                         if (i == MovesCursorPos) {
                             if (cost == 0 || MovesOptionEnabled[index] <= 0) {
                                 status_bar_stop_blinking_sp();
@@ -774,7 +790,7 @@ void btl_menu_moves_draw_content(void* data, s32 x, s32 y) {
             target = (MovesCursorPos - MovesVisibleStart) * MENU_LINE_HEIGHT;
             cur = MovesCursorOffset;
             delta = (target - cur) * 1.0;
-            MovesCursorOffset =  (delta != 0) ? cur + delta : target;
+            MovesCursorOffset = (delta != 0) ? cur + delta : target;
 
             // draw the cursor
             xPos = x + 10;
@@ -849,8 +865,9 @@ void btl_menu_moves_show_desc(void* data, s32 x, s32 y) {
         case BTL_SUBMENU_STATE_RESTORE:
         case BTL_SUBMENU_STATE_LOCK:
             if (MovesDescVisible) {
-                draw_msg(MovesOptionDesc[MovesOptionIndexMap[MovesCursorPos]],
-                            x + 8, y, MovesTextAlpha, MovesTextColor, 0);
+                draw_msg(
+                    MovesOptionDesc[MovesOptionIndexMap[MovesCursorPos]], x + 8, y, MovesTextAlpha, MovesTextColor, 0
+                );
             }
             break;
     }

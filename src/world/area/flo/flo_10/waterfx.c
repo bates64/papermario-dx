@@ -65,13 +65,15 @@ void N(draw_wavy_water_reflection)(s32 left, s32 top, s32 right, s32 bottom) {
                 alpha = 255;
             }
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, alpha);
-            gDPLoadTextureTile(gMainGfxPos++, osVirtualToPhysical(framebuffer), G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                            SCREEN_WIDTH, 6,
-                            left, top - 6 * i - 6, right - 1, top - 6 * i - 1, 0,
-                            G_TX_WRAP, G_TX_WRAP, 9, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gSPTextureRectangle(gMainGfxPos++, left * 4, (top + i * 6) * 4, right * 4, (top + i * 6 + 6) * 4,
-                                G_TX_RENDERTILE, left * 32, (top - i * 6) * 32, 1024,
-                                (s32)(sin_deg(N(ReflectionWavePhase) + i * 30) * 500.0f) - 500);
+            gDPLoadTextureTile(
+                gMainGfxPos++, osVirtualToPhysical(framebuffer), G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, 6, left,
+                top - 6 * i - 6, right - 1, top - 6 * i - 1, 0, G_TX_WRAP, G_TX_WRAP, 9, G_TX_NOMASK, G_TX_NOLOD,
+                G_TX_NOLOD
+            );
+            gSPTextureRectangle(
+                gMainGfxPos++, left * 4, (top + i * 6) * 4, right * 4, (top + i * 6 + 6) * 4, G_TX_RENDERTILE,
+                left * 32, (top - i * 6) * 32, 1024, (s32) (sin_deg(N(ReflectionWavePhase) + i * 30) * 500.0f) - 500
+            );
         }
     }
 
@@ -82,13 +84,15 @@ void N(draw_wavy_water_reflection)(s32 left, s32 top, s32 right, s32 bottom) {
                 alpha = 255;
             }
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, alpha);
-            gDPLoadTextureTile(gMainGfxPos++, osVirtualToPhysical(framebuffer), G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                            SCREEN_WIDTH, 6,
-                            left, top - 6 * i - remainder, right - 1, top - 6 * i - 1, 0,
-                            G_TX_WRAP, G_TX_WRAP, 9, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gSPTextureRectangle(gMainGfxPos++, left * 4, (top + i * 6) * 4, right * 4,
-                                (top + i * 6 + remainder) * 4,
-                                G_TX_RENDERTILE, left * 32, (top - i * 6) * 32, 1024, -1024);
+            gDPLoadTextureTile(
+                gMainGfxPos++, osVirtualToPhysical(framebuffer), G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, 6, left,
+                top - 6 * i - remainder, right - 1, top - 6 * i - 1, 0, G_TX_WRAP, G_TX_WRAP, 9, G_TX_NOMASK,
+                G_TX_NOLOD, G_TX_NOLOD
+            );
+            gSPTextureRectangle(
+                gMainGfxPos++, left * 4, (top + i * 6) * 4, right * 4, (top + i * 6 + remainder) * 4, G_TX_RENDERTILE,
+                left * 32, (top - i * 6) * 32, 1024, -1024
+            );
         }
     }
 }
@@ -107,9 +111,10 @@ void N(build_gfx_water_reflection)(void) {
     f32 maxScreenY;
 
     // find the screen bounds of the water-edge model
-    transform_point(camera->mtxPerspective,
-                    waterEdge->center.x - bbHalfX, waterEdge->center.y, waterEdge->center.z - bbHalfZ, 1.0f,
-                    &outX, &outY, &outZ, &outW);
+    transform_point(
+        camera->mtxPerspective, waterEdge->center.x - bbHalfX, waterEdge->center.y, waterEdge->center.z - bbHalfZ, 1.0f,
+        &outX, &outY, &outZ, &outW
+    );
 
     outX *= 1.0f / outW;
     outY *= -(1.0f / outW);
@@ -123,9 +128,10 @@ void N(build_gfx_water_reflection)(void) {
     maxScreenX = outX;
     maxScreenY = outY;
 
-    transform_point(camera->mtxPerspective,
-                    waterEdge->center.x - bbHalfX, waterEdge->center.y, waterEdge->center.z + bbHalfZ, 1.0f,
-                    &outX, &outY, &outZ, &outW);
+    transform_point(
+        camera->mtxPerspective, waterEdge->center.x - bbHalfX, waterEdge->center.y, waterEdge->center.z + bbHalfZ, 1.0f,
+        &outX, &outY, &outZ, &outW
+    );
 
     outX *= 1.0f / outW;
     outY *= -(1.0f / outW);
@@ -155,9 +161,10 @@ void N(build_gfx_water_reflection)(void) {
         maxScreenY = outY;
     }
 
-    transform_point(camera->mtxPerspective,
-                    waterEdge->center.x + bbHalfX, waterEdge->center.y, waterEdge->center.z + bbHalfZ, 1.0f,
-                    &outX, &outY, &outZ, &outW);
+    transform_point(
+        camera->mtxPerspective, waterEdge->center.x + bbHalfX, waterEdge->center.y, waterEdge->center.z + bbHalfZ, 1.0f,
+        &outX, &outY, &outZ, &outW
+    );
 
     outX *= 1.0f / outW;
     outY *= -(1.0f / outW);
@@ -185,9 +192,10 @@ void N(build_gfx_water_reflection)(void) {
         maxScreenY = outY;
     }
 
-    transform_point(camera->mtxPerspective,
-                    waterEdge->center.x + bbHalfX, waterEdge->center.y, waterEdge->center.z - bbHalfZ, 1.0f,
-                    &outX, &outY, &outZ, &outW);
+    transform_point(
+        camera->mtxPerspective, waterEdge->center.x + bbHalfX, waterEdge->center.y, waterEdge->center.z - bbHalfZ, 1.0f,
+        &outX, &outY, &outZ, &outW
+    );
 
     outX *= 1.0f / outW;
     outY *= -(1.0f / outW);
@@ -228,8 +236,10 @@ void N(build_gfx_water_reflection)(void) {
 
         // draw the water edge into the depth buffer to use as a mask
         gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
-        gDPSetRenderMode(gMainGfxPos++, Z_CMP | CVG_DST_CLAMP | ZMODE_OPA | FORCE_BL | G_RM_PASS,
-                         Z_CMP | CVG_DST_CLAMP | ZMODE_OPA | FORCE_BL | GBL_c2(G_BL_CLR_IN, G_BL_0, G_BL_CLR_IN, G_BL_1));
+        gDPSetRenderMode(
+            gMainGfxPos++, Z_CMP | CVG_DST_CLAMP | ZMODE_OPA | FORCE_BL | G_RM_PASS,
+            Z_CMP | CVG_DST_CLAMP | ZMODE_OPA | FORCE_BL | GBL_c2(G_BL_CLR_IN, G_BL_0, G_BL_CLR_IN, G_BL_1)
+        );
         gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxZBuffer));
         gDPSetCombineMode(gMainGfxPos++, PM_CC_PRIM_NO_ALPHA, PM_CC_PRIM_NO_ALPHA);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 248, 240, 240, 0);

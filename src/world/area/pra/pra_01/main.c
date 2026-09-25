@@ -6,8 +6,8 @@
 
 s32 N(NearDoorModelsL)[] = { MODEL_o946, -1 };
 s32 N(NearDoorModelsR)[] = { MODEL_o948, -1 };
-s32 N(FarDoorModelsL)[]  = { MODEL_o952, -1 };
-s32 N(FarDoorModelsR)[]  = { MODEL_o950, -1 };
+s32 N(FarDoorModelsL)[] = { MODEL_o952, -1 };
+s32 N(FarDoorModelsR)[] = { MODEL_o950, -1 };
 s32 N(BothDoorModelsL)[] = { MODEL_o946, MODEL_o952, -1 };
 s32 N(BothDoorModelsR)[] = { MODEL_o948, MODEL_o950, -1 };
 

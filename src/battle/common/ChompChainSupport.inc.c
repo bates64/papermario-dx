@@ -5,17 +5,17 @@
 
 // actor part of the first link in the chain
 #ifndef CHOMP_CHAIN_FIRST_PART_IDX
-    #error CHOMP_CHAIN_FIRST_PART_IDX is not defined!
+#error CHOMP_CHAIN_FIRST_PART_IDX is not defined!
 #endif
 
 // actor part of the last link in the chain
 #ifndef CHOMP_CHAIN_LAST_PART_IDX
-    #error CHOMP_CHAIN_LAST_PART_IDX  is not defined!
+#error CHOMP_CHAIN_LAST_PART_IDX  is not defined!
 #endif
 
 // actor var index which determines if chain sounds can play
 #ifndef CHOMP_CHAIN_AVAR_SOUNDS
-    #error CHOMP_CHAIN_AVAR_SOUNDS  is not defined!
+#error CHOMP_CHAIN_AVAR_SOUNDS  is not defined!
 #endif
 
 // ----------------------------------------------------------------
@@ -96,9 +96,9 @@ API_CALLABLE(N(ChompChainUpdate)) {
         return ApiStatus_BLOCK;
     }
 
-    #if CHOMP_CHAIN_UPDATE_Z == true
+#if CHOMP_CHAIN_UPDATE_Z == true
     f32 posZ = evt_get_variable(script, *args++);
-    #endif
+#endif
 
     baseChainPart = CHOMP_CHAIN_FIRST_PART_IDX;
 
@@ -129,7 +129,9 @@ API_CALLABLE(N(ChompChainUpdate)) {
         if (chain->velY < 2.0f * -chain->gravAccel) {
             chain->velY = 2.0f * -chain->gravAccel;
             if (actor->state.varTable[CHOMP_CHAIN_AVAR_SOUNDS] && i == 0) {
-                sfx_play_sound_at_position(SOUND_CHAIN_RATTLE, SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
+                sfx_play_sound_at_position(
+                    SOUND_CHAIN_RATTLE, SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z
+                );
             }
         }
 
@@ -179,9 +181,9 @@ API_CALLABLE(N(ChompChainUpdate)) {
             chain->settleAmt = 4.0f;
         }
 
-        #if CHOMP_CHAIN_UPDATE_Z == true
+#if CHOMP_CHAIN_UPDATE_Z == true
         chain->curPos.z = posZ;
-        #endif
+#endif
 
         part = get_actor_part(actor, baseChainPart + i);
         part->absolutePos.x = chain->curPos.x;

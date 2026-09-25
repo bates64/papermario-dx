@@ -83,7 +83,8 @@ void N(LakituAI_Wander)(Evt* script, MobileAISettings* settings, EnemyDetectVolu
     }
 
     if (is_point_outside_wander_territory(&enemy->territory->wander, npc->pos.x, npc->pos.z)) {
-        npc->yaw = atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
+        npc->yaw =
+            atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
     }
 
     if (npc->turnAroundYawAdjustment == 0) {

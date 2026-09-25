@@ -36,7 +36,7 @@ static API_CALLABLE(ItemChoice_SaveSelected) {
 static API_CALLABLE(BuildKeyItemChoiceList) {
     Bytecode* args = script->ptrReadPos;
     s32 choiceArg = evt_get_variable(script, *args++);
-    s32* allowedItemList = (s32*)choiceArg;
+    s32* allowedItemList = (s32*) choiceArg;
     s32 pos = 0;
     s32 i;
 
@@ -100,7 +100,7 @@ EvtScript EVS_ChooseKeyItem = {
 static API_CALLABLE(BuildItemChoiceList) {
     Bytecode* args = script->ptrReadPos;
     s32 choiceArg = evt_get_variable(script, *args++);
-    s32* allowedItemList = (s32*)choiceArg;
+    s32* allowedItemList = (s32*) choiceArg;
     s32 pos = 0;
     s32 i;
 

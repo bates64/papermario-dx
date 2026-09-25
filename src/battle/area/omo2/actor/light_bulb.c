@@ -309,8 +309,9 @@ API_CALLABLE(N(SpawnShatterFX)) {
     };
 
     for (i = 0; i < ARRAY_COUNT(shards); i++) {
-        EffectInstance* effect = fx_ice_shard(shards[i].type, shards[i].pos.x, shards[i].pos.y,
-                                              shards[i].pos.z, shards[i].scale, shards[i].duration);
+        EffectInstance* effect = fx_ice_shard(
+            shards[i].type, shards[i].pos.x, shards[i].pos.y, shards[i].pos.z, shards[i].scale, shards[i].duration
+        );
         effect->data.iceShard->vel.x = shards[i].vel.x;
         effect->data.iceShard->vel.y = shards[i].vel.y;
         effect->data.iceShard->vel.z = shards[i].vel.z;

@@ -1,13 +1,16 @@
 #include "kkj_01.h"
 
-EvtScript N(EVS_ExitDoors_kkj_00_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_01_ENTRY_0, "kkj_00", kkj_00_ENTRY_1,
-    COLLIDER_tts, MODEL_door2, MODEL_door1, DOOR_SOUNDS_LARGE);
+EvtScript N(EVS_ExitDoors_kkj_00_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    kkj_01_ENTRY_0, "kkj_00", kkj_00_ENTRY_1, COLLIDER_tts, MODEL_door2, MODEL_door1, DOOR_SOUNDS_LARGE
+);
 
-EvtScript N(EVS_ExitDoors_kkj_02_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_01_ENTRY_1, "kkj_02", kkj_02_ENTRY_0,
-    COLLIDER_ttn, MODEL_door3, MODEL_door4, DOOR_SOUNDS_LARGE);
+EvtScript N(EVS_ExitDoors_kkj_02_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    kkj_01_ENTRY_1, "kkj_02", kkj_02_ENTRY_0, COLLIDER_ttn, MODEL_door3, MODEL_door4, DOOR_SOUNDS_LARGE
+);
 
-EvtScript N(EVS_ExitDoors_kkj_14_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_01_ENTRY_4, "kkj_14", kkj_14_ENTRY_0,
-    COLLIDER_ttn2, MODEL_door7, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
+EvtScript N(EVS_ExitDoors_kkj_14_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
+    kkj_01_ENTRY_4, "kkj_14", kkj_14_ENTRY_0, COLLIDER_ttn2, MODEL_door7, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
+);
 
 EvtScript N(EVS_ShowMessage_CantOpen) = {
     Call(DisablePlayerInput, true)

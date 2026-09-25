@@ -1,10 +1,12 @@
 #include "obk_03.h"
 
-EvtScript N(EVS_ExitDoor_obk_02_1) = EVT_EXIT_SPLIT_SINGLE_DOOR(obk_03_ENTRY_0, "obk_02", obk_02_ENTRY_1,
-    COLLIDER_tt2, MODEL_door_2_1, MODEL_door_2_2, DOOR_SWING_IN);
+EvtScript N(EVS_ExitDoor_obk_02_1) = EVT_EXIT_SPLIT_SINGLE_DOOR(
+    obk_03_ENTRY_0, "obk_02", obk_02_ENTRY_1, COLLIDER_tt2, MODEL_door_2_1, MODEL_door_2_2, DOOR_SWING_IN
+);
 
-EvtScript N(EVS_ExitDoor_obk_04_0) = EVT_EXIT_SPLIT_SINGLE_DOOR(obk_03_ENTRY_1, "obk_04", obk_04_ENTRY_0,
-    COLLIDER_tt1, MODEL_door_1, MODEL_o494, DOOR_SWING_OUT);
+EvtScript N(EVS_ExitDoor_obk_04_0) = EVT_EXIT_SPLIT_SINGLE_DOOR(
+    obk_03_ENTRY_1, "obk_04", obk_04_ENTRY_0, COLLIDER_tt1, MODEL_door_1, MODEL_o494, DOOR_SWING_OUT
+);
 
 EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)

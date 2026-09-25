@@ -573,7 +573,7 @@ void btl_render_actors(void) {
                     actor = battleStatus->enemyActors[i];
 
                     if (actor != nullptr && !(actor->flags & ACTOR_FLAG_INVISIBLE)) {
-                        renderTaskPtr->appendGfxArg = (void*)i;
+                        renderTaskPtr->appendGfxArg = (void*) i;
                         renderTaskPtr->appendGfx = appendGfx_enemy_actor;
                         renderTaskPtr->dist = actor->curPos.z;
                         renderTaskPtr->renderMode = actor->renderMode;
@@ -700,7 +700,10 @@ void tattle_cam_pre_render(Camera* camera) {
         gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGB, G_CC_DECALRGB);
         gDPSetRenderMode(gMainGfxPos++, G_RM_NOOP, G_RM_NOOP2);
         gDPSetTextureFilter(gMainGfxPos++, G_TF_POINT);
-        gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, cam->viewportStartX, cam->viewportStartY, cam->viewportStartX + cam->viewportW - 1, cam->viewportStartY + cam->viewportH - 1);
+        gDPSetScissor(
+            gMainGfxPos++, G_SC_NON_INTERLACE, cam->viewportStartX, cam->viewportStartY,
+            cam->viewportStartX + cam->viewportW - 1, cam->viewportStartY + cam->viewportH - 1
+        );
         gDPPipeSync(gMainGfxPos++);
         if (!fogEnabled) {
             gDPLoadTLUT_pal256(gMainGfxPos++, gGameStatusPtr->backgroundPalette);
@@ -720,42 +723,53 @@ void tattle_cam_pre_render(Camera* camera) {
             if (texOffsetY > gGameStatusPtr->backgroundMaxY) {
                 texOffsetY -= gGameStatusPtr->backgroundMaxY;
             }
-            gDPLoadTextureTile(gMainGfxPos++, gGameStatusPtr->backgroundRaster + bgWidth * texOffsetY,
-                               G_IM_FMT_CI, G_IM_SIZ_8b, bgWidth, 6,
-                               0, 0, 295, 5, 0,
-                               G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureTile(
+                gMainGfxPos++, gGameStatusPtr->backgroundRaster + bgWidth * texOffsetY, G_IM_FMT_CI, G_IM_SIZ_8b,
+                bgWidth, 6, 0, 0, 295, 5, 0, G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+            );
 
-            gSPTextureRectangle(gMainGfxPos++, posX * 4, (lineHeight * i + posY) * 4,
-                                                 (texOffsetX + posX - 1) * 4, (lineHeight * i + lineHeight - 1 + posY) * 4,
-                                                 G_TX_RENDERTILE, bgWidth * 32, 0, 4096, 1024);
-            gSPTextureRectangle(gMainGfxPos++, (texOffsetX + posX) * 4, (lineHeight * i + posY) * 4,
-                                                 (bgWidth + posX - 1) * 4, (lineHeight * i + lineHeight - 1 + posY) * 4,
-                                                 G_TX_RENDERTILE, 0, 0, 4096, 1024);
+            gSPTextureRectangle(
+                gMainGfxPos++, posX * 4, (lineHeight * i + posY) * 4, (texOffsetX + posX - 1) * 4,
+                (lineHeight * i + lineHeight - 1 + posY) * 4, G_TX_RENDERTILE, bgWidth * 32, 0, 4096, 1024
+            );
+            gSPTextureRectangle(
+                gMainGfxPos++, (texOffsetX + posX) * 4, (lineHeight * i + posY) * 4, (bgWidth + posX - 1) * 4,
+                (lineHeight * i + lineHeight - 1 + posY) * 4, G_TX_RENDERTILE, 0, 0, 4096, 1024
+            );
         }
         if (extraHeight != 0) {
             texOffsetY = gTattleBgTextureYOffset + lineHeight * i;
             if (texOffsetY > gGameStatusPtr->backgroundMaxY) {
                 texOffsetY -= gGameStatusPtr->backgroundMaxY;
             }
-            gDPLoadTextureTile(gMainGfxPos++, gGameStatusPtr->backgroundRaster + bgWidth * texOffsetY,
-                               G_IM_FMT_CI, G_IM_SIZ_8b, bgWidth, extraHeight,
-                               0, 0, 295, extraHeight - 1, 0,
-                               G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gSPTextureRectangle(gMainGfxPos++, posX * 4, (i * lineHeight + posY) * 4,
-                                                 (texOffsetX + posX - 1) * 4, (bgHeight + - 1 + posY) * 4,
-                                                 G_TX_RENDERTILE, bgWidth * 32, 0, 4096, 1024);
-            gSPTextureRectangle(gMainGfxPos++, (texOffsetX + posX) * 4, (i * lineHeight + posY) * 4,
-                                                 (bgWidth + posX - 1) * 4, (bgHeight - 1 + posY) * 4,
-                                                 G_TX_RENDERTILE, 0, 0, 4096, 1024);
+            gDPLoadTextureTile(
+                gMainGfxPos++, gGameStatusPtr->backgroundRaster + bgWidth * texOffsetY, G_IM_FMT_CI, G_IM_SIZ_8b,
+                bgWidth, extraHeight, 0, 0, 295, extraHeight - 1, 0, G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                G_TX_NOLOD, G_TX_NOLOD
+            );
+            gSPTextureRectangle(
+                gMainGfxPos++, posX * 4, (i * lineHeight + posY) * 4, (texOffsetX + posX - 1) * 4,
+                (bgHeight + -1 + posY) * 4, G_TX_RENDERTILE, bgWidth * 32, 0, 4096, 1024
+            );
+            gSPTextureRectangle(
+                gMainGfxPos++, (texOffsetX + posX) * 4, (i * lineHeight + posY) * 4, (bgWidth + posX - 1) * 4,
+                (bgHeight - 1 + posY) * 4, G_TX_RENDERTILE, 0, 0, 4096, 1024
+            );
         }
     }
 
     gSPViewport(gMainGfxPos++, &cam->vp);
-    gSPClearGeometryMode(gMainGfxPos++, G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
+    gSPClearGeometryMode(
+        gMainGfxPos++,
+        G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH
+    );
     gSPTexture(gMainGfxPos++, 0, 0, 0, G_TX_RENDERTILE, G_OFF);
     gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
     gDPPipelineMode(gMainGfxPos++, G_PM_NPRIMITIVE);
-    gDPSetScissorFrac(gMainGfxPos++, G_SC_NON_INTERLACE, cam->viewportStartX * 4.0f, cam->viewportStartY * 4.0f, (cam->viewportStartX + cam->viewportW) * 4.0f, (cam->viewportStartY + cam->viewportH) * 4.0f);
+    gDPSetScissorFrac(
+        gMainGfxPos++, G_SC_NON_INTERLACE, cam->viewportStartX * 4.0f, cam->viewportStartY * 4.0f,
+        (cam->viewportStartX + cam->viewportW) * 4.0f, (cam->viewportStartY + cam->viewportH) * 4.0f
+    );
     gDPSetTextureLOD(gMainGfxPos++, G_TL_TILE);
     gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
     gDPSetTextureDetail(gMainGfxPos++, G_TD_CLAMP);
@@ -772,20 +786,28 @@ void tattle_cam_pre_render(Camera* camera) {
     gDPSetCycleType(gMainGfxPos++, G_CYC_FILL);
     gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxZBuffer));
     gDPSetFillColor(gMainGfxPos++, PACK_FILL_DEPTH(G_MAXFBZ, 0));
-    gDPFillRectangle(gMainGfxPos++, cam->viewportStartX, cam->viewportStartY, cam->viewportStartX + cam->viewportW - 1, cam->viewportStartY + cam->viewportH - 1);
+    gDPFillRectangle(
+        gMainGfxPos++, cam->viewportStartX, cam->viewportStartY, cam->viewportStartX + cam->viewportW - 1,
+        cam->viewportStartY + cam->viewportH - 1
+    );
     gDPPipeSync(gMainGfxPos++);
     gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxCfb_ptr));
 
     if (!(gGameStatusPtr->backgroundFlags & BACKGROUND_FLAG_TEXTURE)) {
         gDPSetCycleType(gMainGfxPos++, G_CYC_FILL);
         gDPSetFillColor(gMainGfxPos++, PACK_FILL_COLOR(cam->bgColor[0], cam->bgColor[1], cam->bgColor[2], 1));
-        gDPFillRectangle(gMainGfxPos++, cam->viewportStartX, cam->viewportStartY, cam->viewportStartX + cam->viewportW - 1, cam->viewportStartY + cam->viewportH - 1);
+        gDPFillRectangle(
+            gMainGfxPos++, cam->viewportStartX, cam->viewportStartY, cam->viewportStartX + cam->viewportW - 1,
+            cam->viewportStartY + cam->viewportH - 1
+        );
     }
 
     gDPPipeSync(gMainGfxPos++);
     gSPPerspNormalize(gMainGfxPos++, cam->perspNorm);
     guMtxF2L(cam->mtxPerspective, &gDisplayContext->camPerspMatrix[gCurrentCamID]);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+    );
 }
 
 void tattle_cam_post_render(Camera* camera) {
@@ -828,8 +850,8 @@ void btl_draw_enemy_health_bars(void) {
 
                 if (!(enemy->flags & (ACTOR_FLAG_NO_HEALTH_BAR | ACTOR_FLAG_TARGET_ONLY))
                     && ((gBattleStatus.flags1 & BS_FLAGS1_MENU_OPEN) || (enemy->flags & ACTOR_FLAG_HEALTH_BAR_HIDDEN))
-                    && is_actor_health_bar_visible(enemy)
-                ) {
+                    && is_actor_health_bar_visible(enemy))
+                {
                     f32 x = enemy->healthBarPos.x;
                     f32 y = enemy->healthBarPos.y;
                     f32 z = enemy->healthBarPos.z;
@@ -847,7 +869,7 @@ void btl_draw_enemy_health_bars(void) {
                         hud_element_set_render_pos(hid, screenX, screenY);
                         hud_element_draw_clipped(hid);
 
-                        #define DIGIT_WIDTH 6
+#define DIGIT_WIDTH 6
                         nextDigitXOffset = DIGIT_WIDTH;
                         hid = HPBarHID;
                         // draw all digits
@@ -867,7 +889,7 @@ void btl_draw_enemy_health_bars(void) {
                             currentHP /= 10;
                             nextDigitXOffset -= DIGIT_WIDTH;
                         }
-                        #undef DIGIT_WIDTH
+#undef DIGIT_WIDTH
 
                         temp = enemy->healthFraction;
                         temp = 25 - temp;
@@ -968,7 +990,7 @@ void btl_update_starpoints_display(void) {
                 posX -= 20.0f;
             }
 
-           for (; i < ARRAY_COUNT(BtlStarPointTensHIDs); i++) {
+            for (; i < ARRAY_COUNT(BtlStarPointTensHIDs); i++) {
                 hud_element_set_flags(BtlStarPointTensHIDs[i], HUD_ELEMENT_FLAG_DISABLED);
                 hud_element_set_flags(BtlStarPointShinesHIDs[i], HUD_ELEMENT_FLAG_DISABLED);
             }
@@ -977,8 +999,10 @@ void btl_update_starpoints_display(void) {
             posY = StarPointsBasePosY + 14.0f;
             if (gBattleStatus.flags2 & BS_FLAGS2_AWARDING_STAR_POINTS) {
                 if (ones != 0) {
-                    draw_box(0, WINDOW_STYLE_4, posX - 100, posY - 5, 0, 110, 12, 120, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr,
-                             nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+                    draw_box(
+                        0, WINDOW_STYLE_4, posX - 100, posY - 5, 0, 110, 12, 120, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+                        nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr
+                    );
                 }
             }
 

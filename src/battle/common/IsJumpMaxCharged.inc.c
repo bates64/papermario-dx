@@ -10,4 +10,3 @@ API_CALLABLE(N(IsJumpMaxCharged)) {
 
     return ApiStatus_DONE2;
 }
-

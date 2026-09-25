@@ -28,7 +28,8 @@ extern EntityScript Entity_ShatteringBlock_Script;
 void entity_shattering_init_pieces(Entity* entity, Gfx** dlists, Mtx* matrices);
 void entity_shattering_block_init(Entity* entity);
 
-EntityModelScript Entity_ShatteringBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER1);
+EntityModelScript Entity_ShatteringBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER1);
 
 EntityBlueprint Entity_ShatteringHammer1Block = {
     .flags = 0,
@@ -129,9 +130,8 @@ void entity_shattering_block_init(Entity* entity) {
     entity->dataBuf.shatteringBlock->originalPosY = entity->pos.y;
     type = get_entity_type(entity->listIndex);
 
-    if (type == ENTITY_TYPE_HAMMER1_BLOCK_TINY ||
-        type == ENTITY_TYPE_HAMMER2_BLOCK_TINY ||
-        type == ENTITY_TYPE_HAMMER3_BLOCK_TINY)
+    if (type == ENTITY_TYPE_HAMMER1_BLOCK_TINY || type == ENTITY_TYPE_HAMMER2_BLOCK_TINY
+        || type == ENTITY_TYPE_HAMMER3_BLOCK_TINY)
     {
         entity->scale.x = 0.5f;
         entity->scale.y = 0.5f;
@@ -155,7 +155,9 @@ void entity_shattering_block_init(Entity* entity) {
             fragmentMatrices = Entity_ShatteringHammer3Block_FragmentsMatrices;
             break;
         case ENTITY_TYPE_BRICK_BLOCK:
-            sfx_play_sound_at_position(SOUND_BLOCK_SHATTER, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z);
+            sfx_play_sound_at_position(
+                SOUND_BLOCK_SHATTER, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z
+            );
             fragmentDisplayLists = Entity_ShatteringBrickBlock_FragmentsRender;
             fragmentMatrices = Entity_ShatteringBrickBlock_FragmentsMatrices;
             break;
@@ -213,5 +215,5 @@ void entity_breakable_block_create_shattering_entity(Entity* entity) {
         return;
     }
 
-    create_entity(bp, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, 0, MAKE_ENTITY_END);
+    create_entity(bp, (s32) entity->pos.x, (s32) entity->pos.y, (s32) entity->pos.z, 0, MAKE_ENTITY_END);
 }

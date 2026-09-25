@@ -32,10 +32,11 @@ void get_npc_pos(s32 npcID, f32* outX, f32* outY, f32* outZ, s32* outAirborne) {
             *outAirborne = true;
         }
     }
-
 }
 
-void npc_follow_init(Npc* npc, s32 targetNpcID, FollowAnims* anims, f32 walkSpeed, f32 runSpeed, s32 idleRadius, s32 walkRadius) {
+void npc_follow_init(
+    Npc* npc, s32 targetNpcID, FollowAnims* anims, f32 walkSpeed, f32 runSpeed, s32 idleRadius, s32 walkRadius
+) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     NpcFollowData* followData;
     s32 i;
@@ -246,8 +247,8 @@ void npc_follow_npc(Npc* npc) {
                 dist = fabsf(npc->jumpVel) + 8.0;
                 currentY = npc->pos.y + dist;
                 currentZ = npc->pos.z;
-                if (npc_raycast_down_sides(npc->collisionChannel, &currentX, &currentY, &currentZ, &dist) != 0 &&
-                    dist <= fabsf(npc->jumpVel) + 8.0)
+                if (npc_raycast_down_sides(npc->collisionChannel, &currentX, &currentY, &currentZ, &dist) != 0
+                    && dist <= fabsf(npc->jumpVel) + 8.0)
                 {
                     npc->curAnim = followData->anims->land;
                     npc->jumpVel = 0.0f;

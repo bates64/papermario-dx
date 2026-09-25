@@ -1,10 +1,12 @@
 #include "pra_04.h"
 
-EvtScript N(EVS_ExitDoor_pra_02_4) = EVT_EXIT_SINGLE_DOOR(pra_04_ENTRY_0, "pra_02", pra_02_ENTRY_4,
-    COLLIDER_deilittssw, MODEL_o847, DOOR_SWING_OUT);
+EvtScript N(EVS_ExitDoor_pra_02_4) =
+    EVT_EXIT_SINGLE_DOOR(pra_04_ENTRY_0, "pra_02", pra_02_ENTRY_4, COLLIDER_deilittssw, MODEL_o847, DOOR_SWING_OUT);
 
-EvtScript N(EVS_ExitDoors_pra_39_0) = EVT_EXIT_DOUBLE_DOOR(pra_04_ENTRY_1, "pra_39", pra_39_ENTRY_0, COLLIDER_deilittse, MODEL_o874, MODEL_o876);
-EvtScript N(EVS_ExitDoors_pra_10_0) = EVT_EXIT_DOUBLE_DOOR(pra_04_ENTRY_2, "pra_10", pra_10_ENTRY_0, COLLIDER_deilittsse, MODEL_o986, MODEL_o987);
+EvtScript N(EVS_ExitDoors_pra_39_0) =
+    EVT_EXIT_DOUBLE_DOOR(pra_04_ENTRY_1, "pra_39", pra_39_ENTRY_0, COLLIDER_deilittse, MODEL_o874, MODEL_o876);
+EvtScript N(EVS_ExitDoors_pra_10_0) =
+    EVT_EXIT_DOUBLE_DOOR(pra_04_ENTRY_2, "pra_10", pra_10_ENTRY_0, COLLIDER_deilittsse, MODEL_o986, MODEL_o987);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoor_pra_02_4)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittssw, 1, 0)

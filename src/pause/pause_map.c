@@ -155,11 +155,15 @@ void pause_map_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s
             tileHeight = 111 - 4 * i;
         }
 
-        gDPLoadTextureTile(gMainGfxPos++, pause_world_map_png, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 320,
-                        0, i * 4 - cameraY, 319, i * 4 + tileHeight - 1 - cameraY, 0,
-                        G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        pause_draw_rect((baseX + 26) * 4, (baseY + 22 + 4 * i) * 4, (baseX + 260) * 4,
-        (baseY + 22 + i * 4 + tileHeight) * 4, 0, ult, (-cameraY + i * 4) * 32, 0x400, 0x400);
+        gDPLoadTextureTile(
+            gMainGfxPos++, pause_world_map_png, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 320, 0, i * 4 - cameraY, 319,
+            i * 4 + tileHeight - 1 - cameraY, 0, G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+            G_TX_NOLOD
+        );
+        pause_draw_rect(
+            (baseX + 26) * 4, (baseY + 22 + 4 * i) * 4, (baseX + 260) * 4, (baseY + 22 + i * 4 + tileHeight) * 4, 0,
+            ult, (-cameraY + i * 4) * 32, 0x400, 0x400
+        );
         gDPPipeSync(gMainGfxPos++);
 
         if (4 * i + 4 >= 110) {
@@ -208,14 +212,17 @@ void pause_map_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s
         if (i != PauseMapCursorCurrentOption) {
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 220, 80, 30, 255);
         } else {
-            gDPSetPrimColor(gMainGfxPos++, 0, 0, (gGameStatusPtr->frameCounter * 10) % 120 + 120,
-                                                   (gGameStatusPtr->frameCounter * 10) % 120 + 120,
-                                                   (gGameStatusPtr->frameCounter * 10) % 120, 255);
+            gDPSetPrimColor(
+                gMainGfxPos++, 0, 0, (gGameStatusPtr->frameCounter * 10) % 120 + 120,
+                (gGameStatusPtr->frameCounter * 10) % 120 + 120, (gGameStatusPtr->frameCounter * 10) % 120, 255
+            );
         }
 
         bigPointX = camX + 26 + posX;
         bigPointY = camY + 22 + posY;
-        pause_draw_rect((bigPointX - 8) * 4, (bigPointY - 8) * 4, (bigPointX + 8) * 4, (bigPointY + 8) * 4, 0, 0, 0, 0x400, 0x400);
+        pause_draw_rect(
+            (bigPointX - 8) * 4, (bigPointY - 8) * 4, (bigPointX + 8) * 4, (bigPointY + 8) * 4, 0, 0, 0, 0x400, 0x400
+        );
         gDPPipeSync(gMainGfxPos++);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 230, 190, 180, 255);
 
@@ -227,7 +234,10 @@ void pause_map_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s
             for (j = 0; j < pathLength; j++, path++) {
                 pathX += path->x;
                 pathY += path->y;
-                pause_draw_rect((camX + 26 + posX + pathX - 8) * 4, (camY + 22 + posY + pathY - 8) * 4, (camX + 26 + posX + pathX + 8) * 4, (camY + 22 + posY + pathY + 8) * 4, 1, 0, 0, 0x400, 0x400);
+                pause_draw_rect(
+                    (camX + 26 + posX + pathX - 8) * 4, (camY + 22 + posY + pathY - 8) * 4,
+                    (camX + 26 + posX + pathX + 8) * 4, (camY + 22 + posY + pathY + 8) * 4, 1, 0, 0, 0x400, 0x400
+                );
             }
         }
     }
@@ -299,7 +309,10 @@ void pause_map_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s
 
         gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, x1, y1, x2, y2);
     }
-    draw_box(0, &gPauseWS_27, baseX + 18, baseY + 14, 0, 250, 126, opacity, darkening, 1.0f, 1.0f, 0, 0, 0, 0, 0, 0, width, height, 0);
+    draw_box(
+        0, &gPauseWS_27, baseX + 18, baseY + 14, 0, 250, 126, opacity, darkening, 1.0f, 1.0f, 0, 0, 0, 0, 0, 0, width,
+        height, 0
+    );
 }
 
 void pause_map_draw_title(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
@@ -352,10 +365,10 @@ void pause_map_init(MenuPanel* tab) {
 
     PauseMapCameraX = 0.0f;
     PauseMapCameraY = 0.0f;
-    PauseMapCameraX -= (s32)(PauseMapTargetX + PauseMapCameraX - 117.0);
-    PauseMapCameraY -= (s32)(PauseMapTargetY + PauseMapCameraY - 55.0);
+    PauseMapCameraX -= (s32) (PauseMapTargetX + PauseMapCameraX - 117.0);
+    PauseMapCameraY -= (s32) (PauseMapTargetY + PauseMapCameraY - 55.0);
 
-    if (PauseMapCameraX > 0)  {
+    if (PauseMapCameraX > 0) {
         PauseMapCameraX = 0;
     }
     if (PauseMapCameraY > 0) {

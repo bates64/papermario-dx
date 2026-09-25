@@ -2,7 +2,7 @@
 
 API_CALLABLE(N(GetPendulumAngle)) {
     script->varTable[0] = sin_deg(script->varTable[1]) * 10.0f;
-    script->varTable[1] = clamp_angle(script->varTable[1] + (s32)(6 * DT));
+    script->varTable[1] = clamp_angle(script->varTable[1] + (s32) (6 * DT));
     return ApiStatus_DONE2;
 }
 

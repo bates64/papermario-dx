@@ -63,9 +63,11 @@ void set_goal_pos_to_part(ActorState* state, s32 actorID, s32 partID) {
             if (!(part->flags & ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION)) {
                 state->goalPos.x = actor->curPos.x + (part->partOffset.x + part->targetOffset.x) * actor->scalingFactor;
                 if (!(actor->flags & ACTOR_FLAG_UPSIDE_DOWN)) {
-                    state->goalPos.y = actor->curPos.y + (part->partOffset.y + part->targetOffset.y) * actor->scalingFactor;
+                    state->goalPos.y =
+                        actor->curPos.y + (part->partOffset.y + part->targetOffset.y) * actor->scalingFactor;
                 } else {
-                    state->goalPos.y = actor->curPos.y + (-part->partOffset.y - part->targetOffset.y) * actor->scalingFactor;
+                    state->goalPos.y =
+                        actor->curPos.y + (-part->partOffset.y - part->targetOffset.y) * actor->scalingFactor;
                 }
                 state->goalPos.z = actor->curPos.z + part->partOffset.z + 10.0f;
             } else {
@@ -97,11 +99,14 @@ void set_part_goal_to_actor_part(ActorPartMovement* movement, s32 actorID, s32 p
         case ACTOR_CLASS_ENEMY:
             part = get_actor_part(actor, partID);
             if (!(part->flags & ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION)) {
-                part->movement->goalPos.x = actor->curPos.x + (part->partOffset.x + part->targetOffset.x) * actor->scalingFactor;
+                part->movement->goalPos.x =
+                    actor->curPos.x + (part->partOffset.x + part->targetOffset.x) * actor->scalingFactor;
                 if (!(actor->flags & ACTOR_FLAG_UPSIDE_DOWN)) {
-                    part->movement->goalPos.y = actor->curPos.y + (part->partOffset.y + part->targetOffset.y) * actor->scalingFactor;
+                    part->movement->goalPos.y =
+                        actor->curPos.y + (part->partOffset.y + part->targetOffset.y) * actor->scalingFactor;
                 } else {
-                    part->movement->goalPos.y = actor->curPos.y + (-part->partOffset.y - part->targetOffset.y) * actor->scalingFactor;
+                    part->movement->goalPos.y =
+                        actor->curPos.y + (-part->partOffset.y - part->targetOffset.y) * actor->scalingFactor;
                 }
                 part->movement->goalPos.z = actor->curPos.z + part->partOffset.z;
             } else {
@@ -157,7 +162,7 @@ Actor* get_actor(s32 actorID) {
     Actor* ret = nullptr;
     BattleStatus* battleStatus = &gBattleStatus;
     s32 actorClass = actorID & ACTOR_CLASS_MASK;
-    u32 idIdx = (u8)actorID;
+    u32 idIdx = (u8) actorID;
 
     switch (actorClass) {
         case ACTOR_CLASS_PLAYER:
@@ -2051,7 +2056,7 @@ API_CALLABLE(SummonEnemy) {
 
     switch (script->functionTemp[0]) {
         case 0:
-            script->functionTempPtr[1] = create_actor((FormationRow*)evt_get_variable(script, *args++));
+            script->functionTempPtr[1] = create_actor((FormationRow*) evt_get_variable(script, *args++));
             script->functionTemp[2] = evt_get_variable(script, *args++); // isLowPriority
             script->functionTemp[0] = 1;
             break;
@@ -2098,7 +2103,7 @@ API_CALLABLE(SummonEnemy) {
                 }
             } else {
                 numEnemies = battleStatus->numEnemyActors;
-                for (i = 0; i < numEnemies; i++){
+                for (i = 0; i < numEnemies; i++) {
                     if (battleStatus->enemyActors[enemyIDs[i] & 0xFF] == actor2) {
                         enemyIDs[i] = -1;
                     }
@@ -2864,12 +2869,12 @@ API_CALLABLE(GetStatusFlags) {
     }
 
     for (partsTable = actor->partsTable; partsTable != nullptr; partsTable = partsTable->nextPart) {
-            if (partsTable->flags & ACTOR_PART_FLAG_TRANSPARENT) {
-                flags |= STATUS_FLAG_TRANSPARENT;
-            }
-            if (partsTable->eventFlags & ACTOR_EVENT_FLAG_ILLUSORY) {
-                flags |= STATUS_FLAG_TRANSPARENT;
-            }
+        if (partsTable->flags & ACTOR_PART_FLAG_TRANSPARENT) {
+            flags |= STATUS_FLAG_TRANSPARENT;
+        }
+        if (partsTable->eventFlags & ACTOR_EVENT_FLAG_ILLUSORY) {
+            flags |= STATUS_FLAG_TRANSPARENT;
+        }
     }
 
     switch (actorClass) {
@@ -3800,8 +3805,9 @@ API_CALLABLE(CopyBuffs) {
 API_CALLABLE(ExecOnActor_impl) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
-    if (actorID == ACTOR_SELF) actorID = script->owner1.actorID;
-    const char* scriptName = (const char*)evt_get_variable(script, *args++);
+    if (actorID == ACTOR_SELF)
+        actorID = script->owner1.actorID;
+    const char* scriptName = (const char*) evt_get_variable(script, *args++);
 
     Actor* actor = get_actor(actorID);
     if (actor == nullptr) {
@@ -3840,8 +3846,9 @@ API_CALLABLE(ExecOnActor_impl) {
 API_CALLABLE(ExecWaitOnActor_impl) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
-    if (actorID == ACTOR_SELF) actorID = script->owner1.actorID;
-    const char* scriptName = (const char*)evt_get_variable(script, *args++);
+    if (actorID == ACTOR_SELF)
+        actorID = script->owner1.actorID;
+    const char* scriptName = (const char*) evt_get_variable(script, *args++);
 
     Actor* actor = get_actor(actorID);
     if (actor == nullptr) {
@@ -3868,8 +3875,9 @@ API_CALLABLE(ExecWaitOnActor_impl) {
 API_CALLABLE(DoesActorExport) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
-    if (actorID == ACTOR_SELF) actorID = script->owner1.actorID;
-    const char* symbolName = (const char*)evt_get_variable(script, *args++);
+    if (actorID == ACTOR_SELF)
+        actorID = script->owner1.actorID;
+    const char* symbolName = (const char*) evt_get_variable(script, *args++);
     Bytecode outVar = *args++;
 
     Actor* actor = get_actor(actorID);

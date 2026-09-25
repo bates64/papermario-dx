@@ -142,7 +142,11 @@ void N(PiranhaPlantAI_Burrow)(Evt* script, MobileAISettings* settings, EnemyDete
                 x = gPlayerStatusPtr->pos.x;
                 y = gPlayerStatusPtr->pos.y + 18.0;
                 z = gPlayerStatusPtr->pos.z;
-                if (npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, ambushDist, sideYaw, npc->collisionHeight, npc->collisionDiameter)) {
+                if (npc_test_move_simple_with_slipping(
+                        npc->collisionChannel, &x, &y, &z, ambushDist, sideYaw, npc->collisionHeight,
+                        npc->collisionDiameter
+                    ))
+                {
                     posRadius = dist2D(gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z, x, z);
                     npc->pos.x = gPlayerStatusPtr->pos.x;
                     npc->pos.z = gPlayerStatusPtr->pos.z;
@@ -154,12 +158,19 @@ void N(PiranhaPlantAI_Burrow)(Evt* script, MobileAISettings* settings, EnemyDete
                 x = gPlayerStatusPtr->pos.x;
                 y = gPlayerStatusPtr->pos.y + 18.0;
                 z = gPlayerStatusPtr->pos.z;
-                if (npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, ambushDist, sideYaw, npc->collisionHeight, npc->collisionDiameter)) {
+                if (npc_test_move_simple_with_slipping(
+                        npc->collisionChannel, &x, &y, &z, ambushDist, sideYaw, npc->collisionHeight,
+                        npc->collisionDiameter
+                    ))
+                {
                     // perhaps there was a slope, are we obstructed if slightly higher up?
                     x = gPlayerStatusPtr->pos.x;
                     y = gPlayerStatusPtr->pos.y + 45.0;
                     z = gPlayerStatusPtr->pos.z;
-                    higherPathBlocked = npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, ambushDist, sideYaw, npc->collisionHeight, npc->collisionDiameter);
+                    higherPathBlocked = npc_test_move_simple_with_slipping(
+                        npc->collisionChannel, &x, &y, &z, ambushDist, sideYaw, npc->collisionHeight,
+                        npc->collisionDiameter
+                    );
                     // check the floor under the preliminary ambush location:
                     // if we move the NPC up a bit, can we snap down to a valid position?
                     testX = npc->pos.x;
@@ -178,7 +189,10 @@ void N(PiranhaPlantAI_Burrow)(Evt* script, MobileAISettings* settings, EnemyDete
                         x = gPlayerStatusPtr->pos.x;
                         y = gPlayerStatusPtr->pos.y + 10.0;
                         z = gPlayerStatusPtr->pos.z;
-                        npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, ambushDist, sideYaw, npc->collisionHeight, npc->collisionDiameter);
+                        npc_test_move_simple_with_slipping(
+                            npc->collisionChannel, &x, &y, &z, ambushDist, sideYaw, npc->collisionHeight,
+                            npc->collisionDiameter
+                        );
                         posRadius = dist2D(gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z, x, z);
                         npc->pos.x = gPlayerStatusPtr->pos.x;
                         npc->pos.z = gPlayerStatusPtr->pos.z;
@@ -220,13 +234,9 @@ void N(PiranhaPlantAI_Burrow)(Evt* script, MobileAISettings* settings, EnemyDete
                     }
                     break;
                 case SHAPE_RECT:
-                    npc->pos.x = CLAMP(npc->pos.x,
-                        detect->pointX - detect->sizeX,
-                        detect->pointX + detect->sizeX);
+                    npc->pos.x = CLAMP(npc->pos.x, detect->pointX - detect->sizeX, detect->pointX + detect->sizeX);
 
-                    npc->pos.z = CLAMP(npc->pos.z,
-                        detect->pointZ - detect->sizeZ,
-                        detect->pointZ + detect->sizeZ);
+                    npc->pos.z = CLAMP(npc->pos.z, detect->pointZ - detect->sizeZ, detect->pointZ + detect->sizeZ);
                     break;
             }
         }
@@ -316,7 +326,7 @@ API_CALLABLE(N(PiranhaPlantAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args++);
     EnemyDetectVolume detectVolume;
     EnemyDetectVolume* detect = &detectVolume;
 
@@ -385,4 +395,3 @@ API_CALLABLE(N(PiranhaPlantAI_Main)) {
     }
     return ApiStatus_BLOCK;
 }
-

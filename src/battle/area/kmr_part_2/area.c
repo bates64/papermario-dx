@@ -14,16 +14,16 @@ extern Stage A(kmr_05);
 extern Stage A(kmr_06);
 
 Vec3i A(BlueMinibossPos) = { 14, 0, -10 };
-Vec3i A(RedMinibossPos)  = { 54, 0,  32 };
+Vec3i A(RedMinibossPos) = { 54, 0, 32 };
 
 Formation A(Formation_00) = {
     ACTOR_BY_POS(A(blue_goomba_1), A(BlueMinibossPos), 10),
     ACTOR_BY_POS(A(red_goomba_1),  A(RedMinibossPos),  10),
 };
 
-Vec3i A(KingBossPos) = {  10, 0,  10 };
-Vec3i A(RedBossPos)  = {  70, 0,  30 };
-Vec3i A(BlueBossPos) = { 125, 0,  20 };
+Vec3i A(KingBossPos) = { 10, 0, 10 };
+Vec3i A(RedBossPos) = { 70, 0, 30 };
+Vec3i A(BlueBossPos) = { 125, 0, 20 };
 Vec3i A(TreeBossPos) = { -40, 0, -45 };
 
 Formation A(Formation_01) = {

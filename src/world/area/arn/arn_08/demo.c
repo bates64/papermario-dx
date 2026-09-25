@@ -122,7 +122,6 @@ API_CALLABLE(N(AwaitPlayerFallBelowFloor)) {
     }
 }
 
-
 EvtScript N(EVS_8024116C) = {
     Call(N(AwaitPlayerFallBelowFloor))
     Return

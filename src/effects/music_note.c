@@ -138,10 +138,10 @@ void music_note_appendGfx(void* data) {
     colorIdx = fxData->lifetime % ARRAY_COUNT(D_E004C67C);
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_09000FC0_35B5A0);
-    gDPSetPrimColor(gMainGfxPos++, 0, 0,
-        D_E004C67C[colorIdx].r, D_E004C67C[colorIdx].g, D_E004C67C[colorIdx].b, fxData->alpha
+    gDPSetPrimColor(
+        gMainGfxPos++, 0, 0, D_E004C67C[colorIdx].r, D_E004C67C[colorIdx].g, D_E004C67C[colorIdx].b, fxData->alpha
     );
     guTranslateF(mtxTransform, fxData->pos.x, fxData->pos.y, fxData->pos.z);
     guRotateF(mtxTemp, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);

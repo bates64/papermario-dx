@@ -37,9 +37,9 @@ EvtScript N(EVS_OnTouch_StairSwitch) = {
     Set(AF_ISK07_FlippingRedStairs, true)
     Label(15)
     Wait(1)
-        IfEq(AF_ISK07_FlippingRedStairs, true)
-            Goto(15)
-        EndIf
+    IfEq(AF_ISK07_FlippingRedStairs, true)
+        Goto(15)
+    EndIf
     Call(MakeLerp, -14, 0, 5, EASING_LINEAR)
     Label(20)
         Call(UpdateLerp)

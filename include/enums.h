@@ -3281,7 +3281,8 @@ enum RenderModeIndex {
 };
 
 // predefined configurations for RDP geometry and render modes
-// though these are called "render modes", they do not strictly correspond to the RDP render modes (as supplied to gDPSetRenderMode)
+// though these are called "render modes", they do not strictly correspond to the RDP render modes (as supplied to
+// gDPSetRenderMode)
 enum RenderMode {
     // opaque render modes
     RENDER_MODE_SURF_SOLID_AA_ZB_LAYER0          = 0x00,

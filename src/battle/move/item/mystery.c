@@ -11,7 +11,6 @@
 
 #include "battle/common/move/UseItem.inc.c"
 
-
 #include "battle/move/item/mystery.png.h"
 INCLUDE_IMG("battle/move/item/mystery.png", battle_item_mystery_png);
 INCLUDE_PAL("battle/move/item/mystery.pal", battle_item_mystery_pal);
@@ -87,7 +86,10 @@ void N(func_802A123C_72C7EC(void)) {
 
     if (D_802A25E4 < 6) {
         if (D_802A25E4 > 0) {
-            draw_box(0, WINDOW_STYLE_7, 106, 86, 0, 36, 36, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+            draw_box(
+                0, WINDOW_STYLE_7, 106, 86, 0, 36, 36, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr,
+                SCREEN_WIDTH, SCREEN_HEIGHT, nullptr
+            );
             gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 108, 90, 139, 118);
 
             for (i = 0; i < ARRAY_COUNT(D_802A25C8); i++) {

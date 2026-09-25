@@ -242,7 +242,7 @@ void func_E00A4648(void) {
 }
 
 void energy_orb_wave_appendGfx(void* effect) {
-    EnergyOrbWaveFXData* data = ((EffectInstance*)effect)->data.energyOrbWave;
+    EnergyOrbWaveFXData* data = ((EffectInstance*) effect)->data.energyOrbWave;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 lifetime = data->lifetime;
     s32 alpha = data->alpha;
@@ -251,14 +251,16 @@ void energy_orb_wave_appendGfx(void* effect) {
     Matrix4f sp58;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp18, data->pos.x, data->pos.y, data->pos.z);
     guScaleF(sp58, data->scale, data->scale, data->scale);
     guMtxCatF(sp58, sp18, sp18);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, data->color.r, data->color.g, data->color.b, alpha);
     gDPSetColorDither(gMainGfxPos++, G_CD_BAYER);
@@ -270,7 +272,9 @@ void energy_orb_wave_appendGfx(void* effect) {
         guRotateF(sp18, lifetime, 0.0f, 0.0f, 1.0f);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_090011D0_3A54F0);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         gDPSetColorDither(gMainGfxPos++, G_CD_MAGICSQ);
@@ -278,7 +282,9 @@ void energy_orb_wave_appendGfx(void* effect) {
         guRotateF(sp18, -lifetime * 8, 0.0f, 0.0f, 1.0f);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_090011F0_3A5510);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     } else {

@@ -1,9 +1,9 @@
-typedef unsigned int UQItype    __attribute__ ((mode (QI)));
-typedef          int SItype     __attribute__ ((mode (SI)));
-typedef unsigned int USItype    __attribute__ ((mode (SI)));
-typedef          int DItype     __attribute__ ((mode (DI)));
-typedef unsigned int UDItype    __attribute__ ((mode (DI)));
-typedef          int word_type  __attribute__ ((mode (__word__)));
+typedef unsigned int UQItype __attribute__((mode(QI)));
+typedef int SItype __attribute__((mode(SI)));
+typedef unsigned int USItype __attribute__((mode(SI)));
+typedef int DItype __attribute__((mode(DI)));
+typedef unsigned int UDItype __attribute__((mode(DI)));
+typedef int word_type __attribute__((mode(__word__)));
 
 #define BITS_PER_UNIT 8
 #define SI_TYPE_SIZE (sizeof (SItype) * BITS_PER_UNIT)
@@ -14,8 +14,8 @@ struct DIstruct {
 };
 
 typedef union {
-  struct DIstruct s;
-  DItype ll;
+    struct DIstruct s;
+    DItype ll;
 } DIunion;
 
 #define __BITS4 (SI_TYPE_SIZE / 4)
@@ -119,17 +119,17 @@ static inline DItype __negdi2(DItype u) {
 }
 
 static const UQItype __clz_tab[] = {
-    0,1,2,2,3,3,3,3,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
-    6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-    7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-    7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-    8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-    8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-    8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-    8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+    0, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+    6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+    8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+    8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+    8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+    8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
 };
 
-static inline UDItype __udivmoddi4(UDItype n, UDItype d, UDItype *rp) {
+static inline UDItype __udivmoddi4(UDItype n, UDItype d, UDItype* rp) {
     DIunion ww;
     DIunion nn, dd;
     DIunion rr;
@@ -149,7 +149,7 @@ static inline UDItype __udivmoddi4(UDItype n, UDItype d, UDItype *rp) {
         if (d0 > n1) {
             /* 0q = nn / 0D */
 
-            count_leading_zeros (bm, d0);
+            count_leading_zeros(bm, d0);
 
             if (bm != 0) {
                 /* Normalize, i.e. make the most significant bit of the
@@ -171,7 +171,7 @@ static inline UDItype __udivmoddi4(UDItype n, UDItype d, UDItype *rp) {
                 d0 = 1 / d0;    /* Divide intentionally by zero.  */
             }
 
-            count_leading_zeros (bm, d0);
+            count_leading_zeros(bm, d0);
 
             if (bm == 0) {
                 /* From (n1 >= d0) /\ (the most significant bit of d0 is set),
@@ -224,7 +224,7 @@ static inline UDItype __udivmoddi4(UDItype n, UDItype d, UDItype *rp) {
         } else {
             /* 0q = NN / dd */
 
-            count_leading_zeros (bm, d1);
+            count_leading_zeros(bm, d1);
             if (bm == 0) {
                 /* From (n1 >= d1) /\ (the most significant bit of d1 is set),
                    conclude (the most significant bit of n1 is set) /\ (the

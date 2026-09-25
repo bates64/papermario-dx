@@ -16,7 +16,9 @@ void floating_rock_update(EffectInstance* effect);
 void floating_rock_render(EffectInstance* effect);
 void floating_rock_appendGfx(void* effect);
 
-EffectInstance* floating_rock_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 floorY, f32 fallVelocity, f32 fallAccel, f32 scale, s32 duration) {
+EffectInstance* floating_rock_main(
+    s32 type, f32 posX, f32 posY, f32 posZ, f32 floorY, f32 fallVelocity, f32 fallAccel, f32 scale, s32 duration
+) {
     EffectBlueprint bp;
     EffectInstance* effect;
     FloatingRockFXData* data;
@@ -95,7 +97,7 @@ void floating_rock_update(EffectInstance* effect) {
     }
 }
 
-void floating_rock_render(EffectInstance *effect) {
+void floating_rock_render(EffectInstance* effect) {
     FloatingRockFXData* effect76 = effect->data.floatingRock;
     RenderTask renderTask;
     RenderTask* retTask;
@@ -110,14 +112,16 @@ void floating_rock_render(EffectInstance *effect) {
 }
 
 void floating_rock_appendGfx(void* effect) {
-    FloatingRockFXData* data = ((EffectInstance*)effect)->data.floatingRock;
+    FloatingRockFXData* data = ((EffectInstance*) effect)->data.floatingRock;
     s32 alpha = data->alpha;
     Matrix4f mtxTransform;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
-    guPositionF(mtxTransform, data->rot.x, data->rot.z, data->rot.y, data->scale, data->pos.x, data->pos.y, data->pos.z);
+    guPositionF(
+        mtxTransform, data->rot.x, data->rot.z, data->rot.y, data->scale, data->pos.x, data->pos.y, data->pos.z
+    );
     guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);

@@ -1,6 +1,5 @@
 #include "end_01.h"
 
-
 EvtScript N(EVS_TexPan_ShyGuyFloat_Sides) = {
     Call(EnableTexPanning, MODEL_omo1, true)
     Call(EnableTexPanning, MODEL_omo4, true)

@@ -23,7 +23,9 @@ API_CALLABLE(N(func_802A1280_72A9D0)) {
     Actor* enemy = get_actor(script->owner1.actorID);
     Actor* target;
 
-    sfx_play_sound_at_position(SOUND_DAMAGE_STARS, SOUND_SPACE_DEFAULT, enemy->state.goalPos.x, enemy->state.goalPos.y, enemy->state.goalPos.z);
+    sfx_play_sound_at_position(
+        SOUND_DAMAGE_STARS, SOUND_SPACE_DEFAULT, enemy->state.goalPos.x, enemy->state.goalPos.y, enemy->state.goalPos.z
+    );
     target = get_actor(enemy->targetActorID);
     dispatch_event_actor(target, EVENT_SCARE_AWAY);
 
@@ -53,7 +55,6 @@ API_CALLABLE(N(func_802A12E0_72AA30)) {
 }
 
 #include "battle/common/move/UseItem.inc.c"
-
 
 #include "battle/move/item/insecticide_herb.png.h"
 INCLUDE_IMG("battle/move/item/insecticide_herb.png", battle_item_insecticide_herb_png);

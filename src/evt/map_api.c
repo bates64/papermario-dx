@@ -6,7 +6,6 @@
 extern LavaReset* gLavaResetList;
 extern s32 LastSafeFloor;
 
-
 API_CALLABLE(TranslateModel) {
     Bytecode* args = script->ptrReadPos;
     s32 modelIndex = evt_get_variable(script, *args++);
@@ -120,8 +119,7 @@ API_CALLABLE(GetModelCenter) {
     f32 sizeY;
     f32 sizeZ;
 
-    get_model_center_and_size(evt_get_variable(script, *args++), &centerX, &centerY, &centerZ, &sizeX, &sizeY,
-                              &sizeZ);
+    get_model_center_and_size(evt_get_variable(script, *args++), &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ);
     script->varTable[0] = centerX;
     script->varTable[1] = centerY;
     script->varTable[2] = centerZ;
@@ -401,7 +399,7 @@ void apply_transform_to_children(ApiStatus (*apiFunc)(Evt*, s32), Evt* script) {
 }
 
 API_CALLABLE(MakeTransformGroup) {
-    mdl_make_transform_group((u16)evt_get_variable(script, *script->ptrReadPos));
+    mdl_make_transform_group((u16) evt_get_variable(script, *script->ptrReadPos));
     return ApiStatus_DONE2;
 }
 
@@ -585,7 +583,6 @@ void modify_collider_family_flags(s32 index, s32 flags, s32 mode) {
             collider->flags &= ~0xFF;
             collider->flags |= flags & 0xFF;
             break;
-
     }
 }
 
@@ -619,7 +616,7 @@ API_CALLABLE(ModifyColliderFlags) {
     return ApiStatus_DONE2;
 }
 
-//TODO rename to MonitorLastSafeFloor
+// TODO rename to MonitorLastSafeFloor
 API_CALLABLE(ResetFromLava) {
     Bytecode* args = script->ptrReadPos;
     CollisionStatus* collisionStatus = &gCollisionStatus;
@@ -627,7 +624,7 @@ API_CALLABLE(ResetFromLava) {
     LavaReset* lavaReset;
 
     if (isInitialCall) {
-        lavaReset = gLavaResetList = (LavaReset*)evt_get_variable(script, *args++);
+        lavaReset = gLavaResetList = (LavaReset*) evt_get_variable(script, *args++);
 
         while (true) {
             if (lavaReset->colliderID == -1) {
@@ -656,7 +653,7 @@ API_CALLABLE(ResetFromLava) {
 }
 
 s32 get_lava_reset_pos(f32* outX, f32* outY, f32* outZ) {
-    Vec4f *temp_v0;
+    Vec4f* temp_v0;
     LavaReset* lavaReset = gLavaResetList;
 
     if (LastSafeFloor == -1) {
@@ -762,7 +759,7 @@ void goto_map(Evt* script, s32 mode) {
         areaID = evt_get_variable(script, *args++);
         mapID = evt_get_variable(script, *args++);
     } else {
-        get_map_IDs_by_name_checked((char*)evt_get_variable(script, *args++), &areaID, &mapID);
+        get_map_IDs_by_name_checked((char*) evt_get_variable(script, *args++), &areaID, &mapID);
     }
 
     gGameStatusPtr->areaID = areaID;

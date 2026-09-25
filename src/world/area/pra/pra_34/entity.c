@@ -21,4 +21,3 @@ EvtScript N(EVS_MakeEntities) = {
     Return
     End
 };
-

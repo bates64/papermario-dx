@@ -27,8 +27,10 @@ void action_update_hit_fire(void) {
         playerStatus->gravityIntegrator[2] = 0.8059f;
         playerStatus->gravityIntegrator[3] = -0.0987f;
         gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_IGNORE_PLAYER_Y;
-        ReturnAngle = atan2(playerStatus->pos.x, playerStatus->pos.z, playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z);
-        playerStatus->curSpeed = get_xz_dist_to_player(playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z) / 18.0f;
+        ReturnAngle =
+            atan2(playerStatus->pos.x, playerStatus->pos.z, playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z);
+        playerStatus->curSpeed =
+            get_xz_dist_to_player(playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z) / 18.0f;
         subtract_hp(1);
         open_status_bar_slowly();
         gOverrideFlags |= GLOBAL_OVERRIDES_40;
@@ -56,7 +58,7 @@ void action_update_hit_fire(void) {
 
         playerStatus->pos.y = player_check_collision_below(player_fall_distance(), &colliderID);
         if (colliderID > NO_COLLIDER) {
-            colliderID = get_collider_flags(colliderID); //TODO surfaceType
+            colliderID = get_collider_flags(colliderID); // TODO surfaceType
             set_action_state(ACTION_STATE_LAND);
             playerStatus->blinkTimer = 60;
             playerStatus->hazardType = HAZARD_TYPE_NONE;

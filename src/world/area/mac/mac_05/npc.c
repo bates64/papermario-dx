@@ -178,7 +178,7 @@ API_CALLABLE(N(UpdateWhaleRiderPosition)) {
                 break;
             case WHALE_RIDER_KOLORADO:
                 script->functionTemp[1] = 25;
-               break;
+                break;
         }
     }
 
@@ -676,8 +676,8 @@ API_CALLABLE(N(GetBombetteBlastFloor)) {
         f32 depth = 12.0f;
 
         if (npc_raycast_down_around(npc->collisionChannel, &x, &y, &z, &depth, npc->yaw, npc->collisionDiameter)
-            && depth <= 12.0f
-        ) {
+            && depth <= 12.0f)
+        {
             result = NpcHitQueryColliderID;
         }
     }
@@ -2014,7 +2014,8 @@ EvtScript N(EVS_NpcInit_Chanterelle) = {
 };
 
 API_CALLABLE(N(CheckTradeEventTime)) {
-    script->varTable[0] = (s32) ((gPlayerData.frameCounter - gPlayerData.tradeEventStartTime) / 3600) < script->varTable[0];
+    script->varTable[0] =
+        (s32) ((gPlayerData.frameCounter - gPlayerData.tradeEventStartTime) / 3600) < script->varTable[0];
     return ApiStatus_DONE2;
 }
 

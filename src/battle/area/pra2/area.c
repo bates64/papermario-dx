@@ -9,9 +9,9 @@ extern Stage A(sam_04);
 
 Vec3i A(KingPos) = { 70, 0, 5 };
 
-Vec3i A(CrystalBitPos1) = {  10, 35,  -5 };
-Vec3i A(CrystalBitPos2) = { 112, 52,  -5 };
-Vec3i A(CrystalBitPos3) = {  42, 85, -10 };
+Vec3i A(CrystalBitPos1) = { 10, 35, -5 };
+Vec3i A(CrystalBitPos2) = { 112, 52, -5 };
+Vec3i A(CrystalBitPos3) = { 42, 85, -10 };
 
 Formation A(Formation_01) = {
     ACTOR_BY_POS(A(crystal_king), A(KingPos), 10),

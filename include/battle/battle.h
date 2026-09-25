@@ -187,7 +187,7 @@ typedef struct Battle {
     /* 0x04 */ s32 formationSize;
     /* 0x08 */ Formation* formation;
     /* 0x0C */ Stage* stage;
-    /* 0x10 */ EvtScript* onBattleStart;    // sets BattleStatus::controlScript on battle start, overrides Stage::preBattle
+    /* 0x10 */ EvtScript* onBattleStart; // sets BattleStatus::controlScript on battle start, overrides Stage::preBattle
 } Battle; // size = 0x14
 
 typedef Battle BattleList[];

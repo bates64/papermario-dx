@@ -32,7 +32,7 @@ API_CALLABLE(CreateNpc) {
     s32 npcID = evt_get_variable(script, *args++);
     s32 initialAnim = evt_get_variable(script, *args++);
     NpcBlueprint blueprint;
-    Npc *npc;
+    Npc* npc;
 
     blueprint.flags = 0;
     blueprint.initialAnim = initialAnim;
@@ -62,7 +62,7 @@ API_CALLABLE(GetNpcPointer) {
     s32 npcID = evt_get_variable(script, *args++);
     Bytecode varNPC = *args++;
 
-    evt_set_variable(script, varNPC, (s32)get_npc_safe(npcID));
+    evt_set_variable(script, varNPC, (s32) get_npc_safe(npcID));
     return ApiStatus_DONE2;
 }
 
@@ -335,7 +335,7 @@ ApiStatus _npc_jump_to(Evt* script, s32 isInitialCall, s32 snapYaw) {
 
         npc->flags |= NPC_FLAG_JUMPING;
         npc->jumpVel = (npc->jumpScale * npc->duration * 0.5f) + (goalY / npc->duration);
-        script->functionTemp[0] =1;
+        script->functionTemp[0] = 1;
     }
 
     npc = script->functionTempPtr[1];
@@ -367,9 +367,9 @@ API_CALLABLE(NpcJump1) {
 
 API_CALLABLE(NpcFlyTo) {
     Bytecode* args = script->ptrReadPos;
-    f32* outX = (f32*)&script->varTable[3];
-    f32* outY = (f32*)&script->varTable[4];
-    f32* outZ = (f32*)&script->varTable[5];
+    f32* outX = (f32*) &script->varTable[3];
+    f32* outY = (f32*) &script->varTable[4];
+    f32* outZ = (f32*) &script->varTable[5];
     Npc* npc;
     f32 dist;
     f32 yDelta;
@@ -910,7 +910,8 @@ API_CALLABLE(PutPartnerAway) {
             }
 
             partnerY = targetY - partnerY;
-            partner->jumpVel = (partnerY + (partner->jumpScale * partner->duration * partner->duration * 0.5f)) / partner->duration;
+            partner->jumpVel =
+                (partnerY + (partner->jumpScale * partner->duration * partner->duration * 0.5f)) / partner->duration;
             partner->curAnim = gPartnerAnimations[wExtraPartnerID].walk;
             return ApiStatus_BLOCK;
         } else {

@@ -30,7 +30,7 @@ void N(worker_update_partner_reflection_wall)(void);
 s32 N(reflection_unk_resolve_anim)(s32 playerAnim) {
     AnimID temp;
 
-    //TODO write with sensibile logic based on spriteIDs
+    // TODO write with sensibile logic based on spriteIDs
     playerAnim &= ~SPRITE_ID_BACK_FACING;
     temp = playerAnim + ~ANIM_MarioW1_LandWatt;
     if (temp < 16 && temp & 1) {
@@ -68,7 +68,7 @@ s32 N(reflection_unk_change_anim_facing)(s32 playerAnim) {
     return playerAnim | SPRITE_ID_BACK_FACING;
 }
 
-API_CALLABLE(N(EnableWallReflection)){
+API_CALLABLE(N(EnableWallReflection)) {
     script->array[0] = create_worker_scene(nullptr, N(worker_render_player_reflection_wall));
     return ApiStatus_DONE2;
 }
@@ -86,8 +86,9 @@ void N(worker_render_player_reflection_wall)(void) {
         entityModel = get_entity_model(get_shadow_by_index(playerStatus->shadowID)->entityModelID);
         entityModel->flags |= ENTITY_MODEL_FLAG_REFLECT;
 
-        get_screen_coords(gCurrentCamID, playerStatus->pos.x, playerStatus->pos.y, -playerStatus->pos.z,
-                          &screenX, &screenY, &screenZ);
+        get_screen_coords(
+            gCurrentCamID, playerStatus->pos.x, playerStatus->pos.y, -playerStatus->pos.z, &screenX, &screenY, &screenZ
+        );
 
         anim = N(reflection_unk_resolve_anim)(playerStatus->trueAnimation);
 
@@ -122,7 +123,7 @@ void N(worker_render_player_reflection_wall)(void) {
 }
 
 void N(appendGfx_reflect_player_wall)(void* data) {
-    PlayerStatus* playerStatus = (PlayerStatus*)data;
+    PlayerStatus* playerStatus = (PlayerStatus*) data;
     f32 yaw = -gCameras[gCurrentCamID].curYaw;
     Matrix4f main;
     Matrix4f translation;
@@ -143,7 +144,7 @@ void N(appendGfx_reflect_player_wall)(void* data) {
     spr_draw_player_sprite(PLAYER_SPRITE_AUX2, 0, 0, nullptr, main);
 }
 
-API_CALLABLE(N(EnableFloorReflection)){
+API_CALLABLE(N(EnableFloorReflection)) {
     switch (script->varTable[0]) {
         case REFLECTION_FLOOR_WALL:
         case REFLECTION_FLOOR_ONLY:
@@ -165,8 +166,9 @@ void N(worker_render_player_reflection_floor)(void) {
     s32 screenX, screenY, screenZ;
 
     if (playerStatus->flags & PS_FLAG_HAS_REFLECTION) {
-        get_screen_coords(gCurrentCamID, playerStatus->pos.x, -playerStatus->pos.y, playerStatus->pos.z,
-                          &screenX, &screenY, &screenZ);
+        get_screen_coords(
+            gCurrentCamID, playerStatus->pos.x, -playerStatus->pos.y, playerStatus->pos.z, &screenX, &screenY, &screenZ
+        );
 
         spr_update_player_sprite(PLAYER_SPRITE_AUX1, playerStatus->trueAnimation, 1.0f);
 
@@ -200,7 +202,7 @@ void N(worker_render_player_reflection_floor)(void) {
 }
 
 void N(appendGfx_reflect_player_floor_basic)(void* data) {
-    PlayerStatus* playerStatus = (PlayerStatus*)data;
+    PlayerStatus* playerStatus = (PlayerStatus*) data;
     f32 yaw = -gCameras[gCurrentCamID].curYaw;
     Matrix4f main;
     Matrix4f translation;
@@ -230,7 +232,7 @@ void N(appendGfx_reflect_player_floor_basic)(void* data) {
 }
 
 void N(appendGfx_reflect_player_floor_fancy)(void* data) {
-    PlayerStatus* playerStatus = (PlayerStatus*)data;
+    PlayerStatus* playerStatus = (PlayerStatus*) data;
     Matrix4f mtx;
     Matrix4f translation;
     Matrix4f rotation;
@@ -321,7 +323,7 @@ void N(appendGfx_reflect_player_floor_fancy)(void* data) {
 
 /// int var0 = reflection type
 /// bool var1 = enable wall reflection
-API_CALLABLE(N(EnablePartnerReflection)){
+API_CALLABLE(N(EnablePartnerReflection)) {
     Npc* partner;
 
     if (script->varTable[1] == false) {

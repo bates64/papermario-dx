@@ -65,8 +65,8 @@ API_CALLABLE(N(ShouldTargetBeCaptured)) {
     }
 
     if (targetActor->actorBlueprint->upAndAwayChance != 0
-        && rand_int(100) <= targetActor->actorBlueprint->upAndAwayChance
-    ) {
+        && rand_int(100) <= targetActor->actorBlueprint->upAndAwayChance)
+    {
         script->varTable[0] = true;
     }
 

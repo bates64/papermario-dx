@@ -39,7 +39,7 @@ void N(GetFirstTriangleNormal)(Gfx* inGfx, f32* outNx, f32* outNy, f32* outNz) {
                 readState = READ_STATE_DONE;
                 break;
             case G_DL:
-                N(GetFirstTriangleNormal)((Gfx* ) w1, outNx, outNy, outNz);
+                N(GetFirstTriangleNormal)((Gfx*) w1, outNx, outNy, outNz);
                 break;
             case G_VTX:
                 vtxCount = (w0 >> 0xC) & 0xFF;

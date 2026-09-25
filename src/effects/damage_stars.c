@@ -113,9 +113,7 @@ void damage_stars_main(s32 type, f32 x, f32 y, f32 z, f32 rotAxisX, f32 rotAxisY
                 case FX_DAMAGE_STARS_3:
                     rotateX = sin_deg(gCameras[gCurrentCameraID].curYaw);
                     rotateZ = -cos_deg(gCameras[gCurrentCameraID].curYaw);
-                    guRotateF(mtxRot,
-                        (number != 1) ? (i * 100) / (number - 1) - 50 : 0.0f,
-                        rotateX, 0.0f, rotateZ);
+                    guRotateF(mtxRot, (number != 1) ? (i * 100) / (number - 1) - 50 : 0.0f, rotateX, 0.0f, rotateZ);
                     part->vel.x = mtxRot[0][0] * rotAxisX + mtxRot[1][0] * rotAxisY + mtxRot[2][0] * rotAxisZ;
                     part->vel.y = mtxRot[0][1] * rotAxisX + mtxRot[1][1] * rotAxisY + mtxRot[2][1] * rotAxisZ;
                     part->vel.z = mtxRot[0][2] * rotAxisX + mtxRot[1][2] * rotAxisY + mtxRot[2][2] * rotAxisZ;
@@ -234,36 +232,42 @@ void damage_stars_render(EffectInstance* effect) {
 }
 
 void damage_stars_appendGfx(void* effect) {
-    DamageStarsFXData* part = ((EffectInstance*)effect)->data.damageStars;
+    DamageStarsFXData* part = ((EffectInstance*) effect)->data.damageStars;
     Matrix4f mtxTransform;
     Matrix4f mtxTemp;
     s32 baseIdx;
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_090004C0_343500);
 
     baseIdx = (part->lifetime - 1) * 3;
     baseIdx %= 36;
 
-    for (i = 0; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 0; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         s32 rIdx = baseIdx + i * 3;
         s32 gIdx = baseIdx + 1 + i * 3;
         s32 bIdx = baseIdx + 2 + i * 3;
 
-        gDPSetPrimColor(gMainGfxPos++, 0, 0, D_E0030E90[rIdx % 36], D_E0030E90[gIdx % 36], D_E0030E90[bIdx % 36], part->alpha);
+        gDPSetPrimColor(
+            gMainGfxPos++, 0, 0, D_E0030E90[rIdx % 36], D_E0030E90[gIdx % 36], D_E0030E90[bIdx % 36], part->alpha
+        );
         guTranslateF(mtxTransform, part->pos.x, part->pos.y, part->pos.z);
         guRotateF(mtxTemp, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
         guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
 
         guRotateF(mtxTransform, part->rollAngle, 0.0f, 0.0f, 1.0f);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_090005E0_343620);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);

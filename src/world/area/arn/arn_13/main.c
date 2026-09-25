@@ -1,10 +1,10 @@
 #include "arn_13.h"
 
-EvtScript N(EVS_ExitDoor_arn_12_1) = EVT_EXIT_SINGLE_DOOR(arn_13_ENTRY_0, "arn_12", arn_12_ENTRY_1,
-    COLLIDER_ttw, MODEL_o44, DOOR_SWING_IN);
+EvtScript N(EVS_ExitDoor_arn_12_1) =
+    EVT_EXIT_SINGLE_DOOR(arn_13_ENTRY_0, "arn_12", arn_12_ENTRY_1, COLLIDER_ttw, MODEL_o44, DOOR_SWING_IN);
 
-EvtScript N(EVS_ExitDoor_arn_11_0) = EVT_EXIT_SINGLE_DOOR(arn_13_ENTRY_1, "arn_11", arn_12_ENTRY_0,
-    COLLIDER_tte, MODEL_o37, DOOR_SWING_OUT);
+EvtScript N(EVS_ExitDoor_arn_11_0) =
+    EVT_EXIT_SINGLE_DOOR(arn_13_ENTRY_1, "arn_11", arn_12_ENTRY_0, COLLIDER_tte, MODEL_o37, DOOR_SWING_OUT);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoor_arn_12_1)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)

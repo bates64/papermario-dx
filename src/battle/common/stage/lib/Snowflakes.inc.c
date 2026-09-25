@@ -20,7 +20,11 @@ void N(build_gfx_star)(s32 index) {
         vtx->v.cn[2] = temp2 / 0x8000 + 100;
         vtx->v.cn[1] = temp2 / 0x8000 + 50;
 
-        temp3 = sins(N(StarAnimPhases)[index] / 0x8000 * (((i / 2) % 3 + 1) << 15)  + N(StarAnimPhases)[index] / 0x4000 * 0x8000 + i) + 0x8000;
+        temp3 =
+            sins(
+                N(StarAnimPhases)[index] / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(StarAnimPhases)[index] / 0x4000 * 0x8000 + i
+            )
+            + 0x8000;
         vtx->v.cn[0] = vtx->v.cn[0] * temp3 / 0x10000;
     }
 

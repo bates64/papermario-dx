@@ -6,11 +6,11 @@
 
 // required include args
 #ifndef AI_SENTINEL_FIRST_NPC
-#error  AI_SENTINEL_FIRST_NPC must be defined for SentinelAI.inc.c
+#error AI_SENTINEL_FIRST_NPC must be defined for SentinelAI.inc.c
 #define AI_SENTINEL_FIRST_NPC 0
 #endif
 #ifndef AI_SENTINEL_LAST_NPC
-#error  AI_SENTINEL_LAST_NPC must be defined for SentinelAI.inc.c
+#error AI_SENTINEL_LAST_NPC must be defined for SentinelAI.inc.c
 #define AI_SENTINEL_LAST_NPC 0
 #endif
 
@@ -83,8 +83,8 @@ void N(SentinelAI_Chase)(Evt* script, MobileAISettings* settings, EnemyDetectVol
 
     if (basic_ai_check_player_dist(detect, enemy, settings->chaseRadius, settings->chaseOffsetDist, true)) {
         npc_move_heading(npc, npc->moveSpeed, npc->yaw);
-        if (dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x,
-                   gPlayerStatusPtr->pos.z) <= (npc->moveSpeed * 2.5)) {
+        if (dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z) <= (npc->moveSpeed * 2.5))
+        {
             npc->duration = 0;
             script->AI_TEMP_STATE = AI_STATE_SENTINEL_DESCEND_INIT;
         } else {
@@ -141,7 +141,7 @@ void N(SentinelAI_Descend)(Evt* script, MobileAISettings* settings, EnemyDetectV
         if (npc->rot.y > 360.0) {
             npc->rot.y -= 360.0;
         }
-        color = 255.0f - (cosine((s32)npc->rot.y % 180) * 56.0f);
+        color = 255.0f - (cosine((s32) npc->rot.y % 180) * 56.0f);
         set_npc_imgfx_all(npc->spriteInstanceID, IMGFX_SET_COLOR, color, color, color, 255, 0);
 
         posX = gPlayerStatusPtr->pos.x;
@@ -194,7 +194,8 @@ void N(SentinelAI_LosePlayer)(Evt* script, MobileAISettings* settings, EnemyDete
     hitDepth = 1000.0f;
     npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &hitDepth);
     if (!(npc->pos.y < posY + hoverHeight)) {
-        npc->yaw = atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
+        npc->yaw =
+            atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
         npc->pos.y = posY + hoverHeight;
         fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 10, nullptr);
         npc->duration = 10;
@@ -263,7 +264,8 @@ void N(SentinelAI_ReturnHome)(Evt* script, MobileAISettings* settings, EnemyDete
     enemy->varTable[AI_VAR_FLYING_BOB_PHASE] = clamp_angle(enemy->varTable[AI_VAR_FLYING_BOB_PHASE] + 12);
     if (script->functionTemp[1] <= 0) {
         script->functionTemp[1] = settings->playerSearchInterval;
-        if (basic_ai_check_player_dist(detect, enemy, settings->alertRadius * 0.5, settings->alertOffsetDist * 0.5, 0)) {
+        if (basic_ai_check_player_dist(detect, enemy, settings->alertRadius * 0.5, settings->alertOffsetDist * 0.5, 0))
+        {
             fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, nullptr);
             ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
             npc->moveToPos.y = npc->pos.y;
@@ -274,9 +276,11 @@ void N(SentinelAI_ReturnHome)(Evt* script, MobileAISettings* settings, EnemyDete
 
     script->functionTemp[1]--;
     if (npc->turnAroundYawAdjustment == 0) {
-        npc->yaw = atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
+        npc->yaw =
+            atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
         npc_move_heading(npc, npc->moveSpeed, npc->yaw);
-        dist = dist2D(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
+        dist =
+            dist2D(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
         if (dist <= (2.0f * npc->moveSpeed)) {
             script->functionTemp[1] = (rand_int(1000) % 3) + 2;
             script->AI_TEMP_STATE = AI_STATE_SENTINEL_LOITER_INIT;

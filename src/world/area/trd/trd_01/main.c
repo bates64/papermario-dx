@@ -34,10 +34,14 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_ExitDoors_trd_00_1) = EVT_EXIT_DOUBLE_DOOR(trd_01_ENTRY_0, "trd_00", trd_00_ENTRY_1, COLLIDER_ttw, MODEL_ew_doa, MODEL_ew_doa2);
-EvtScript N(EVS_ExitDoors_trd_02_0) = EVT_EXIT_DOUBLE_DOOR(trd_01_ENTRY_1, "trd_02", trd_02_ENTRY_0, COLLIDER_tte, MODEL_e2_doa, MODEL_e2_doa2);
-EvtScript N(EVS_ExitDoors_trd_02_2) = EVT_EXIT_DOUBLE_DOOR(trd_01_ENTRY_2, "trd_02", trd_02_ENTRY_2, COLLIDER_tte2, MODEL_e3_doa, MODEL_e3_doa2);
-EvtScript N(EVS_ExitDoors_trd_09_0) = EVT_EXIT_DOUBLE_DOOR(trd_01_ENTRY_3, "trd_09", trd_09_ENTRY_0, COLLIDER_tte3, MODEL_e4_doa, MODEL_e4_doa2);
+EvtScript N(EVS_ExitDoors_trd_00_1) =
+    EVT_EXIT_DOUBLE_DOOR(trd_01_ENTRY_0, "trd_00", trd_00_ENTRY_1, COLLIDER_ttw, MODEL_ew_doa, MODEL_ew_doa2);
+EvtScript N(EVS_ExitDoors_trd_02_0) =
+    EVT_EXIT_DOUBLE_DOOR(trd_01_ENTRY_1, "trd_02", trd_02_ENTRY_0, COLLIDER_tte, MODEL_e2_doa, MODEL_e2_doa2);
+EvtScript N(EVS_ExitDoors_trd_02_2) =
+    EVT_EXIT_DOUBLE_DOOR(trd_01_ENTRY_2, "trd_02", trd_02_ENTRY_2, COLLIDER_tte2, MODEL_e3_doa, MODEL_e3_doa2);
+EvtScript N(EVS_ExitDoors_trd_09_0) =
+    EVT_EXIT_DOUBLE_DOOR(trd_01_ENTRY_3, "trd_09", trd_09_ENTRY_0, COLLIDER_tte3, MODEL_e4_doa, MODEL_e4_doa2);
 
 EvtScript N(EVS_Scene_RaiseStairs) = {
     Call(DisablePlayerInput, true)

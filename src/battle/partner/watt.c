@@ -54,8 +54,10 @@ API_CALLABLE(N(WattFXUpdate)) {
         sWattEffectData_bouncePhase = 0;
         sWattEffectData_isActive = true;
         sWattEffectData_currentEffectIndex = 0;
-        sWattEffectData_effect1 = fx_static_status(0, partner->curPos.x, partner->curPos.y, partner->curPos.z, 1.0f, 5, 0);
-        sWattEffectData_effect2 = fx_static_status(1, partner->curPos.x, NPC_DISPOSE_POS_Y, partner->curPos.z, 1.0f, 5, 0);
+        sWattEffectData_effect1 =
+            fx_static_status(0, partner->curPos.x, partner->curPos.y, partner->curPos.z, 1.0f, 5, 0);
+        sWattEffectData_effect2 =
+            fx_static_status(1, partner->curPos.x, NPC_DISPOSE_POS_Y, partner->curPos.z, 1.0f, 5, 0);
         sWattEffectData_initialized = true;
     }
 
@@ -72,7 +74,9 @@ API_CALLABLE(N(WattFXUpdate)) {
     x = partner->curPos.x + partner->headOffset.x;
     y = partner->curPos.y + partner->headOffset.y + partner->verticalRenderOffset + 12.0f;
     z = partner->curPos.z + partner->headOffset.z;
-    if (!(gBattleStatus.flags2 & BS_FLAGS2_OVERRIDE_INACTIVE_PARTNER) && (gBattleStatus.flags2 & BS_FLAGS2_PARTNER_TURN_USED)) {
+    if (!(gBattleStatus.flags2 & BS_FLAGS2_OVERRIDE_INACTIVE_PARTNER)
+        && (gBattleStatus.flags2 & BS_FLAGS2_PARTNER_TURN_USED))
+    {
         y = NPC_DISPOSE_POS_Y;
     }
 
@@ -358,7 +362,8 @@ API_CALLABLE(N(ApplyTurboCharge)) {
     if (battleStatus->turboChargeTurnsLeft < actionCommandResult) {
         battleStatus->turboChargeTurnsLeft = actionCommandResult;
         battleStatus->turboChargeAmount = 1;
-        battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_TURBO_CHARGE].turnsLeft = battleStatus->turboChargeTurnsLeft;
+        battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_TURBO_CHARGE].turnsLeft =
+            battleStatus->turboChargeTurnsLeft;
     }
 
     if (gBattleStatus.flags2 & BS_FLAGS2_PLAYER_TURN_USED) {

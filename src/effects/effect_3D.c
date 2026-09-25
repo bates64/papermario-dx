@@ -54,7 +54,7 @@ void effect_3D_main(s32 type, f32 x, f32 y, f32 z, f32 vx, f32 vy, f32 vz, s32 c
                 sp70 *= vel;
                 temp_f28 *= vel;
 
-                temp_f30 *=  8.0f;
+                temp_f30 *= 8.0f;
                 sp70 *= 8.0f;
                 temp_f28 *= 8.0f;
                 vx *= 8.0f;
@@ -216,22 +216,24 @@ void func_E007A884(void) {
 }
 
 void effect_3D_appendGfx(void* effect) {
-    Effect3DFXData* part = ((EffectInstance*)effect)->data.whaleSpout;
+    Effect3DFXData* part = ((EffectInstance*) effect)->data.whaleSpout;
     Matrix4f sp18;
     Matrix4f sp58;
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_09000240_37D3C0);
 
     guTranslateF(sp18, part->pos.x, part->pos.y, part->pos.z);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 200, 255, 255, part->unk_58);
 
         guTranslateF(sp18, part->pos.x, part->pos.y, part->pos.z);
@@ -243,7 +245,9 @@ void effect_3D_appendGfx(void* effect) {
         guMtxCatF(sp58, sp18, sp18);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_090002E8_37D468);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

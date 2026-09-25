@@ -184,4 +184,3 @@ API_CALLABLE(N(ShyGuyWanderAI_Main)) {
 
     return ApiStatus_BLOCK;
 }
-

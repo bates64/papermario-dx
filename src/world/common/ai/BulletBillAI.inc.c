@@ -59,7 +59,7 @@ s32 N(BillBlasterAI_GetIdleBulletNpcID)(void) {
 API_CALLABLE(N(BulletBillAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *script->ptrReadPos);
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *script->ptrReadPos);
     b32 reachedRangeLimit = false;
     b32 done = false;
     Npc* blasterNpc;
@@ -174,7 +174,7 @@ API_CALLABLE(N(BillBlasterAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args++);
     s32 bulletNpcID;
     Enemy* bulletEnemy;
     f32 deltaY;

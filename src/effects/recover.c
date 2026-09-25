@@ -26,10 +26,9 @@ extern Gfx D_09003780_385580[];
 extern Gfx D_090037C0_3855C0[];
 extern Gfx D_09003800_385600[];
 
-Gfx* D_E0080AC0[] = { D_09003540_385340, D_09003580_385380, D_090035C0_3853C0,
-                      D_09003600_385400, D_09003640_385440, D_09003680_385480,
-                      D_090036C0_3854C0, D_09003700_385500, D_09003740_385540,
-                      D_09003780_385580, D_090037C0_3855C0, D_09003800_385600 };
+Gfx* D_E0080AC0[] = { D_09003540_385340, D_09003580_385380, D_090035C0_3853C0, D_09003600_385400,
+                      D_09003640_385440, D_09003680_385480, D_090036C0_3854C0, D_09003700_385500,
+                      D_09003740_385540, D_09003780_385580, D_090037C0_3855C0, D_09003800_385600 };
 
 f32 D_E0080AF0[] = { 0.25f, 0.5f, 0.75f, 1.0f, 0.9f, 1.1f, 1.0f };
 
@@ -174,7 +173,7 @@ void func_E0080448(EffectInstance* effect) {
     Matrix4f sp98;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp18, part->pos.x, part->pos.y, part->pos.z);
     guRotateF(sp58, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
@@ -192,28 +191,39 @@ void func_E0080448(EffectInstance* effect) {
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, part->alpha);
 
             if (part->alpha == 255) {
-                gDPSetRenderMode(gMainGfxPos++, AA_EN | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM), AA_EN | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM));
+                gDPSetRenderMode(
+                    gMainGfxPos++,
+                    AA_EN | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA
+                        | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM),
+                    AA_EN | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA
+                        | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM)
+                );
                 gDPSetCombineMode(gMainGfxPos++, G_CC_MODULATEIDECALA, G_CC_MODULATEIDECALA);
             } else {
                 gDPSetRenderMode(gMainGfxPos++, G_RM_CLD_SURF, G_RM_CLD_SURF2);
                 gDPSetCombineMode(gMainGfxPos++, PM_CC_49, PM_CC_49);
             }
 
-            gSPDisplayList(gMainGfxPos++, (type == 0 || type == 2) ?
-                (unk_44 == 0 ? D_09003200_385000 : D_09003298_385098) :
-                D_09003330_385130);
+            gSPDisplayList(
+                gMainGfxPos++,
+                (type == 0 || type == 2) ? (unk_44 == 0 ? D_09003200_385000 : D_09003298_385098) : D_09003330_385130
+            );
 
             guTranslateF(sp18, part->pos.x + part->offsetX, part->pos.y, part->pos.z);
             guScaleF(sp58, part->scaleX, part->scaleY, 1.0f);
             guMtxCatF(sp58, sp18, sp18);
             guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
 
             guRotateF(sp18, part->angle, 0.0f, 0.0f, 1.0f);
             guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
 
             if (i == 1 && type != 2) {
                 gSPDisplayList(gMainGfxPos++, D_090033D0_3851D0);

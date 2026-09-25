@@ -14,4 +14,3 @@
 #define NAMESPACE kkj_21
 
 extern EvtScript N(EVS_Main);
-

@@ -108,14 +108,14 @@ void big_snowflakes_render(EffectInstance* effect) {
 }
 
 void big_snowflakes_appendGfx(void* effect) {
-    BigSnowflakesFXData* data = ((EffectInstance*)effect)->data.bigSnowflakes;
+    BigSnowflakesFXData* data = ((EffectInstance*) effect)->data.bigSnowflakes;
     Matrix4f sp18;
     Matrix4f sp58;
     Matrix4f sp98;
     Gfx* dlist = D_E0060738[0];
     s32 i;
 
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, dlist);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 20, 100, 20, data->unk_24);
 
@@ -124,7 +124,7 @@ void big_snowflakes_appendGfx(void* effect) {
     guMtxCatF(sp58, sp18, sp98);
 
     data++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, data++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, data++) {
         Gfx* dlist2 = D_E0060730[i & 1]; // should be able to be i % 2 (ARRAY_COUNT(D_E0060730))
 
         guTranslateF(sp58, data->unk_04, data->unk_08, data->unk_0C);
@@ -138,7 +138,9 @@ void big_snowflakes_appendGfx(void* effect) {
         }
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, dlist2);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

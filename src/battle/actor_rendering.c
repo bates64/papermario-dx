@@ -130,7 +130,6 @@ void func_unkA_draw_player(ActorPart*, s32, Matrix4f);
 void func_unkB_draw_player(ActorPart*, s32, Matrix4f);
 void part_glow_on(b32 arg0, ActorPart* part, s32 yaw, b32 arg3);
 
-
 void add_part_decor_none(ActorPart*, s32);
 void add_part_decor_golden_flames(ActorPart*, s32);
 void add_part_decor_sweat(ActorPart*, s32);
@@ -153,7 +152,9 @@ void render_with_paralyze_palettes(b32 arg0, ActorPart* part, s32 yaw, Matrix4f 
 void render_with_berserk_palettes(b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation);
 void render_with_watt_idle_palettes(b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation);
 void render_with_watt_attack_palettes(b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation);
-void render_with_player_debuff_palettes(b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation, s32 isPoison);
+void render_with_player_debuff_palettes(
+    b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation, s32 isPoison
+);
 void render_with_pal_blending(b32 arg0, ActorPart* part, s32 yaw, s32 arg3, Matrix4f mtx, s32 skipAnimation);
 void render_with_palset_blending(b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation);
 s32 update_part_glow(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 isReflection);
@@ -208,8 +209,8 @@ void enable_actor_blur(Actor* actor) {
                 decorations->posY[j] = partsTable->curPos.y;
                 decorations->posZ[j] = partsTable->curPos.z;
                 decorations->yaw[j] = actor->yaw;
-                decorations->rotPivotOffsetX[j] = (s32)(actor->rotPivotOffset.x * actor->scalingFactor);
-                decorations->rotPivotOffsetY[j] = (s32)(actor->rotPivotOffset.y * actor->scalingFactor);
+                decorations->rotPivotOffsetX[j] = (s32) (actor->rotPivotOffset.x * actor->scalingFactor);
+                decorations->rotPivotOffsetY[j] = (s32) (actor->rotPivotOffset.y * actor->scalingFactor);
 
                 decorations->rotX[j] = clamp_angle(actor->rot.x) * 0.5f;
                 decorations->rotY[j] = clamp_angle(actor->rot.y) * 0.5f;
@@ -378,7 +379,7 @@ void update_player_actor_blur_history(Actor* actor) {
 }
 
 void appendGfx_player_actor_blur(void* data) {
-    Actor* actor = (Actor*)data;
+    Actor* actor = (Actor*) data;
     Matrix4f mtxRotX, mtxRotY, mtxRotZ, mtxRotation;
     Matrix4f mtxScale;
     Matrix4f mtxPivotOn, mtxPivotOff, mtxTranslate;
@@ -471,9 +472,11 @@ void appendGfx_player_actor_blur(void* data) {
             guRotateF(mtxRotZ, rotZ, 0.0f, 0.0f, 1.0f);
             guMtxCatF(mtxRotX, mtxRotY, mtxTransform);
             guMtxCatF(mtxTransform, mtxRotZ, mtxRotation);
-            guScaleF(mtxScale, actor->scale.x * SPRITE_WORLD_SCALE_D * actor->scalingFactor,
-                            actor->scale.y * SPRITE_WORLD_SCALE_D * actor->scalingFactor * partTable->verticalStretch,
-                            actor->scale.z * SPRITE_WORLD_SCALE_D);
+            guScaleF(
+                mtxScale, actor->scale.x * SPRITE_WORLD_SCALE_D * actor->scalingFactor,
+                actor->scale.y * SPRITE_WORLD_SCALE_D * actor->scalingFactor * partTable->verticalStretch,
+                actor->scale.z * SPRITE_WORLD_SCALE_D
+            );
             guMtxCatF(mtxScale, mtxPivotOn, mtxTemp);
             guMtxCatF(mtxTemp, mtxRotation, mtxTransform);
             guMtxCatF(mtxTransform, mtxPivotOff, mtxTemp);
@@ -493,7 +496,9 @@ void update_nonplayer_actor_blur_history(b32 isPartner, Actor* actor) {
     s32 i, j;
 
     for (i = 0; i < numParts; i++) {
-        if (partsTable->flags & ACTOR_PART_FLAG_INVISIBLE || partsTable->idleAnimations == nullptr || partsTable->flags & ACTOR_PART_FLAG_NO_DECORATIONS) {
+        if (partsTable->flags & ACTOR_PART_FLAG_INVISIBLE || partsTable->idleAnimations == nullptr
+            || partsTable->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
+        {
             partsTable = partsTable->nextPart;
         } else {
             decorations = partsTable->decorationTable;
@@ -546,9 +551,10 @@ void appendGfx_nonplayer_actor_blur(b32 isPartner, Actor* actor) {
     guRotateF(mtxRotZ, actor->rot.z, 0.0f, 0.0f, 1.0f);
     guMtxCatF(mtxRotX, mtxRotY, mtxTemp);
     guMtxCatF(mtxTemp, mtxRotZ, mtxRotation);
-    guScaleF(mtxScale, actor->scale.x * SPRITE_WORLD_SCALE_D * actor->scalingFactor,
-                    actor->scale.y * SPRITE_WORLD_SCALE_D * actor->scalingFactor,
-                    actor->scale.z * SPRITE_WORLD_SCALE_D);
+    guScaleF(
+        mtxScale, actor->scale.x * SPRITE_WORLD_SCALE_D * actor->scalingFactor,
+        actor->scale.y * SPRITE_WORLD_SCALE_D * actor->scalingFactor, actor->scale.z * SPRITE_WORLD_SCALE_D
+    );
     guMtxCatF(mtxScale, mtxRotation, mtxActor);
 
     numParts = actor->numParts;
@@ -575,7 +581,10 @@ void appendGfx_nonplayer_actor_blur(b32 isPartner, Actor* actor) {
         }
 
         if (partTable->flags & ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION) {
-            guScaleF(mtxPartScale, actor->scale.x * SPRITE_WORLD_SCALE_D, actor->scale.y * SPRITE_WORLD_SCALE_D, actor->scale.z * SPRITE_WORLD_SCALE_D);
+            guScaleF(
+                mtxPartScale, actor->scale.x * SPRITE_WORLD_SCALE_D, actor->scale.y * SPRITE_WORLD_SCALE_D,
+                actor->scale.z * SPRITE_WORLD_SCALE_D
+            );
         }
 
         bufPos = decorations->blurBufferPos;
@@ -860,10 +869,10 @@ void appendGfx_npc_actor(b32 isPartner, s32 actorIndex) {
     }
     actorPosZ = actor->curPos.z + actor->headOffset.z;
 
-    actor->disableEffect->data.disableX->pos.x = actorPosX +
-        (actor->actorBlueprint->statusIconOffset.x + actor->statusIconOffset.x) * actor->scalingFactor;
-    actor->disableEffect->data.disableX->pos.y = actorPosY +
-        (actor->actorBlueprint->statusIconOffset.y + actor->statusIconOffset.y) * actor->scalingFactor;
+    actor->disableEffect->data.disableX->pos.x =
+        actorPosX + (actor->actorBlueprint->statusIconOffset.x + actor->statusIconOffset.x) * actor->scalingFactor;
+    actor->disableEffect->data.disableX->pos.y =
+        actorPosY + (actor->actorBlueprint->statusIconOffset.y + actor->statusIconOffset.y) * actor->scalingFactor;
     actor->disableEffect->data.disableX->pos.z = actorPosZ;
 
     if (!(gBattleStatus.flags1 & BS_FLAGS1_TATTLE_OPEN) && (actor->flags & ACTOR_FLAG_SHOW_STATUS_ICONS)) {
@@ -880,8 +889,8 @@ void appendGfx_npc_actor(b32 isPartner, s32 actorIndex) {
     if (actor->debuff == STATUS_KEY_FROZEN) {
         effect = actor->icePillarEffect;
         if (actor->icePillarEffect != nullptr) {
-            if ((gBattleStatus.flags1 & BS_FLAGS1_SHOW_PLAYER_DECORATIONS) ||
-                (!(gBattleStatus.flags1 & BS_FLAGS1_TATTLE_OPEN) && (actor->flags & ACTOR_FLAG_SHOW_STATUS_ICONS)))
+            if ((gBattleStatus.flags1 & BS_FLAGS1_SHOW_PLAYER_DECORATIONS)
+                || (!(gBattleStatus.flags1 & BS_FLAGS1_TATTLE_OPEN) && (actor->flags & ACTOR_FLAG_SHOW_STATUS_ICONS)))
             {
                 effect->data.icePillar->pos.x = actorPosX;
                 effect->data.icePillar->pos.y = actorPosY;
@@ -900,20 +909,22 @@ void appendGfx_npc_actor(b32 isPartner, s32 actorIndex) {
             actor->icePillarEffect = nullptr;
         }
     }
-    set_status_icons_properties(actor->hudElementDataIndex, actorPosX, actorPosY, actorPosZ,
+    set_status_icons_properties(
+        actor->hudElementDataIndex, actorPosX, actorPosY, actorPosZ,
         (actor->actorBlueprint->statusIconOffset.x + actor->statusIconOffset.x) * actor->scalingFactor,
         (actor->actorBlueprint->statusIconOffset.y + actor->statusIconOffset.y) * actor->scalingFactor,
         (actor->actorBlueprint->statusTextOffset.x + actor->statusTextOffset.x) * actor->scalingFactor,
-        (actor->actorBlueprint->statusTextOffset.y + actor->statusTextOffset.y) * actor->scalingFactor);
+        (actor->actorBlueprint->statusTextOffset.y + actor->statusTextOffset.y) * actor->scalingFactor
+    );
 
     if (!(actor->flags & ACTOR_FLAG_UPSIDE_DOWN)) {
-        set_status_icons_offset(actor->hudElementDataIndex,
-            actor->size.y * actor->scalingFactor,
-            actor->size.x * actor->scalingFactor);
+        set_status_icons_offset(
+            actor->hudElementDataIndex, actor->size.y * actor->scalingFactor, actor->size.x * actor->scalingFactor
+        );
     } else {
-        set_status_icons_offset(actor->hudElementDataIndex,
-            -actor->size.y * actor->scalingFactor,
-             actor->size.x * actor->scalingFactor);
+        set_status_icons_offset(
+            actor->hudElementDataIndex, -actor->size.y * actor->scalingFactor, actor->size.x * actor->scalingFactor
+        );
     }
 
     if (actor->debuff == STATUS_KEY_SHRINK) {
@@ -923,33 +934,33 @@ void appendGfx_npc_actor(b32 isPartner, s32 actorIndex) {
     }
 
     if (!(actor->flags & ACTOR_FLAG_UPSIDE_DOWN)) {
-        guTranslateF(mtxPivotOn,
-            -actor->rotPivotOffset.x * actor->scalingFactor,
-            -actor->rotPivotOffset.y * actor->scalingFactor,
-            -actor->rotPivotOffset.z * actor->scalingFactor);
-        guTranslateF(mtxPivotOff,
-            actor->rotPivotOffset.x * actor->scalingFactor,
-            actor->rotPivotOffset.y * actor->scalingFactor,
-            actor->rotPivotOffset.z * actor->scalingFactor);
+        guTranslateF(
+            mtxPivotOn, -actor->rotPivotOffset.x * actor->scalingFactor,
+            -actor->rotPivotOffset.y * actor->scalingFactor, -actor->rotPivotOffset.z * actor->scalingFactor
+        );
+        guTranslateF(
+            mtxPivotOff, actor->rotPivotOffset.x * actor->scalingFactor, actor->rotPivotOffset.y * actor->scalingFactor,
+            actor->rotPivotOffset.z * actor->scalingFactor
+        );
     } else {
-        guTranslateF(mtxPivotOn,
-            -actor->rotPivotOffset.x * actor->scalingFactor,
-             actor->rotPivotOffset.y * actor->scalingFactor,
-            -actor->rotPivotOffset.z * actor->scalingFactor);
-        guTranslateF(mtxPivotOff,
-             actor->rotPivotOffset.x * actor->scalingFactor,
-            -actor->rotPivotOffset.y * actor->scalingFactor,
-             actor->rotPivotOffset.z * actor->scalingFactor);
+        guTranslateF(
+            mtxPivotOn, -actor->rotPivotOffset.x * actor->scalingFactor, actor->rotPivotOffset.y * actor->scalingFactor,
+            -actor->rotPivotOffset.z * actor->scalingFactor
+        );
+        guTranslateF(
+            mtxPivotOff, actor->rotPivotOffset.x * actor->scalingFactor,
+            -actor->rotPivotOffset.y * actor->scalingFactor, actor->rotPivotOffset.z * actor->scalingFactor
+        );
     }
     guRotateF(mtxRotX, actor->rot.x, 1.0f, 0.0f, 0.0f);
     guRotateF(mtxRotY, actor->rot.y, 0.0f, 1.0f, 0.0f);
     guRotateF(mtxRotZ, actor->rot.z, 0.0f, 0.0f, 1.0f);
     guMtxCatF(mtxRotY, mtxRotX, mtxTemp);
     guMtxCatF(mtxTemp, mtxRotZ, mtxRotation);
-    guScaleF(mtxScale,
-        actor->scale.x * SPRITE_WORLD_SCALE_D * actor->scalingFactor,
-        actor->scale.y * SPRITE_WORLD_SCALE_D * actor->scalingFactor,
-        actor->scale.z * SPRITE_WORLD_SCALE_D);
+    guScaleF(
+        mtxScale, actor->scale.x * SPRITE_WORLD_SCALE_D * actor->scalingFactor,
+        actor->scale.y * SPRITE_WORLD_SCALE_D * actor->scalingFactor, actor->scale.z * SPRITE_WORLD_SCALE_D
+    );
     guScaleF(mtxScaleMod, actor->scaleModifier.x, actor->scaleModifier.y, actor->scaleModifier.z);
     guMtxCatF(mtxPivotOn, mtxScale, mtxTemp);
     guMtxCatF(mtxTemp, mtxScaleMod, mtxScale);
@@ -972,10 +983,10 @@ void appendGfx_npc_actor(b32 isPartner, s32 actorIndex) {
             partPosX = part->absolutePos.x + part->visualOffset.x;
             partPosY = part->absolutePos.y + part->visualOffset.y;
             partPosZ = part->absolutePos.z + part->visualOffset.z;
-            guScaleF(mtxPartScale,
-                actor->scale.x * SPRITE_WORLD_SCALE_D,
-                actor->scale.y * SPRITE_WORLD_SCALE_D,
-                actor->scale.z * SPRITE_WORLD_SCALE_D);
+            guScaleF(
+                mtxPartScale, actor->scale.x * SPRITE_WORLD_SCALE_D, actor->scale.y * SPRITE_WORLD_SCALE_D,
+                actor->scale.z * SPRITE_WORLD_SCALE_D
+            );
             partYaw = part->yaw;
         }
         part->curPos.x = partPosX;
@@ -1004,8 +1015,8 @@ void appendGfx_npc_actor(b32 isPartner, s32 actorIndex) {
 
         if (isPartner) {
             if (!(gBattleStatus.flags2 & (BS_FLAGS2_OVERRIDE_INACTIVE_PARTNER))
-                && (gBattleStatus.flags2 & BS_FLAGS2_PARTNER_TURN_USED)
-            ) {
+                && (gBattleStatus.flags2 & BS_FLAGS2_PARTNER_TURN_USED))
+            {
                 if (actor->koStatus == 0) {
                     part->curAnimation = get_npc_anim_for_status(part->idleAnimations, STATUS_KEY_INACTIVE);
                     spr_update_sprite(part->spriteInstanceID, part->curAnimation, part->animationRate);
@@ -1166,28 +1177,27 @@ void appendGfx_npc_actor(b32 isPartner, s32 actorIndex) {
             }
         }
         if (!(actor->flags & ACTOR_FLAG_UPSIDE_DOWN)) {
-            guTranslateF(mtxPivotOn,
-                -part->rotPivotOffset.x * actor->scalingFactor,
-                -part->rotPivotOffset.y * actor->scalingFactor,
-                -part->rotPivotOffset.z * actor->scalingFactor);
-            guTranslateF(mtxPivotOff,
-                part->rotPivotOffset.x * actor->scalingFactor,
-                part->rotPivotOffset.y * actor->scalingFactor,
-                part->rotPivotOffset.z * actor->scalingFactor);
+            guTranslateF(
+                mtxPivotOn, -part->rotPivotOffset.x * actor->scalingFactor,
+                -part->rotPivotOffset.y * actor->scalingFactor, -part->rotPivotOffset.z * actor->scalingFactor
+            );
+            guTranslateF(
+                mtxPivotOff, part->rotPivotOffset.x * actor->scalingFactor,
+                part->rotPivotOffset.y * actor->scalingFactor, part->rotPivotOffset.z * actor->scalingFactor
+            );
         } else {
-            guTranslateF(mtxPivotOn,
-                -part->rotPivotOffset.x * actor->scalingFactor,
-                 part->rotPivotOffset.y * actor->scalingFactor,
-                -part->rotPivotOffset.z * actor->scalingFactor);
-            guTranslateF(mtxPivotOff,
-                 part->rotPivotOffset.x * actor->scalingFactor,
-                -part->rotPivotOffset.y * actor->scalingFactor,
-                 part->rotPivotOffset.z * actor->scalingFactor);
+            guTranslateF(
+                mtxPivotOn, -part->rotPivotOffset.x * actor->scalingFactor,
+                part->rotPivotOffset.y * actor->scalingFactor, -part->rotPivotOffset.z * actor->scalingFactor
+            );
+            guTranslateF(
+                mtxPivotOff, part->rotPivotOffset.x * actor->scalingFactor,
+                -part->rotPivotOffset.y * actor->scalingFactor, part->rotPivotOffset.z * actor->scalingFactor
+            );
         }
-        guTranslateF(mtxTranslate,
-            partPosX + part->palAnimPosOffset[0],
-            partPosY + part->palAnimPosOffset[1],
-            partPosZ);
+        guTranslateF(
+            mtxTranslate, partPosX + part->palAnimPosOffset[0], partPosY + part->palAnimPosOffset[1], partPosZ
+        );
         guRotateF(mtxRotX, part->rot.x, 1.0f, 0.0f, 0.0f);
         guRotateF(mtxRotY, part->rot.y, 0.0f, 1.0f, 0.0f);
         guRotateF(mtxRotZ, part->rot.z, 0.0f, 0.0f, 1.0f);
@@ -1245,23 +1255,23 @@ void appendGfx_npc_actor_reflection(s32 flipYaw, Actor* actor) {
     actorPosZ = actor->curPos.z + actor->headOffset.z - 5.0f;
 
     if (!(actor->flags & ACTOR_FLAG_UPSIDE_DOWN)) {
-        guTranslateF(mtxPivotOn,
-            -actor->rotPivotOffset.x * actor->scalingFactor,
-            -actor->rotPivotOffset.y * actor->scalingFactor,
-            -actor->rotPivotOffset.z * actor->scalingFactor);
-         guTranslateF(mtxPivotOff,
-             actor->rotPivotOffset.x * actor->scalingFactor,
-             actor->rotPivotOffset.y * actor->scalingFactor,
-             actor->rotPivotOffset.z * actor->scalingFactor);
+        guTranslateF(
+            mtxPivotOn, -actor->rotPivotOffset.x * actor->scalingFactor,
+            -actor->rotPivotOffset.y * actor->scalingFactor, -actor->rotPivotOffset.z * actor->scalingFactor
+        );
+        guTranslateF(
+            mtxPivotOff, actor->rotPivotOffset.x * actor->scalingFactor, actor->rotPivotOffset.y * actor->scalingFactor,
+            actor->rotPivotOffset.z * actor->scalingFactor
+        );
     } else {
-        guTranslateF(mtxPivotOn,
-            -actor->rotPivotOffset.x * actor->scalingFactor,
-             actor->rotPivotOffset.y * actor->scalingFactor,
-            -actor->rotPivotOffset.z * actor->scalingFactor);
-         guTranslateF(mtxPivotOff,
-             actor->rotPivotOffset.x * actor->scalingFactor,
-             -actor->rotPivotOffset.y * actor->scalingFactor,
-             actor->rotPivotOffset.z * actor->scalingFactor);
+        guTranslateF(
+            mtxPivotOn, -actor->rotPivotOffset.x * actor->scalingFactor, actor->rotPivotOffset.y * actor->scalingFactor,
+            -actor->rotPivotOffset.z * actor->scalingFactor
+        );
+        guTranslateF(
+            mtxPivotOff, actor->rotPivotOffset.x * actor->scalingFactor,
+            -actor->rotPivotOffset.y * actor->scalingFactor, actor->rotPivotOffset.z * actor->scalingFactor
+        );
     }
 
     guRotateF(mtxRotX, actor->rot.x, 1.0f, 0.0f, 0.0f);
@@ -1270,10 +1280,10 @@ void appendGfx_npc_actor_reflection(s32 flipYaw, Actor* actor) {
     guMtxCatF(mtxRotY, mtxRotX, mtxTemp);
     guMtxCatF(mtxTemp, mtxRotZ, mtxRotation);
 
-    guScaleF(mtxScale,
-        actor->scale.x * SPRITE_WORLD_SCALE_D * actor->scalingFactor,
-        actor->scale.y * SPRITE_WORLD_SCALE_D * actor->scalingFactor,
-        actor->scale.z * SPRITE_WORLD_SCALE_D);
+    guScaleF(
+        mtxScale, actor->scale.x * SPRITE_WORLD_SCALE_D * actor->scalingFactor,
+        actor->scale.y * SPRITE_WORLD_SCALE_D * actor->scalingFactor, actor->scale.z * SPRITE_WORLD_SCALE_D
+    );
 
     guMtxCatF(mtxPivotOn, mtxScale, mtxTemp);
     guMtxCatF(mtxTemp, mtxRotation, mtxTransform);
@@ -1296,10 +1306,10 @@ void appendGfx_npc_actor_reflection(s32 flipYaw, Actor* actor) {
             partPosX = part->absolutePos.x + part->visualOffset.x;
             partPosY = part->absolutePos.y + part->visualOffset.y;
             partPosZ = part->absolutePos.z + part->visualOffset.z;
-            guScaleF(mtxPartScale,
-                actor->scale.x * SPRITE_WORLD_SCALE_D,
-                actor->scale.y * SPRITE_WORLD_SCALE_D,
-                actor->scale.z * SPRITE_WORLD_SCALE_D);
+            guScaleF(
+                mtxPartScale, actor->scale.x * SPRITE_WORLD_SCALE_D, actor->scale.y * SPRITE_WORLD_SCALE_D,
+                actor->scale.z * SPRITE_WORLD_SCALE_D
+            );
             partYaw = part->yaw;
         }
 
@@ -1313,28 +1323,27 @@ void appendGfx_npc_actor_reflection(s32 flipYaw, Actor* actor) {
         }
 
         if (!(actor->flags & ACTOR_FLAG_UPSIDE_DOWN)) {
-            guTranslateF(mtxPivotOn,
-                -part->rotPivotOffset.x * actor->scalingFactor,
-                -part->rotPivotOffset.y * actor->scalingFactor,
-                -part->rotPivotOffset.z * actor->scalingFactor);
-            guTranslateF(mtxPivotOff,
-                 part->rotPivotOffset.x * actor->scalingFactor,
-                 part->rotPivotOffset.y * actor->scalingFactor,
-                 part->rotPivotOffset.z * actor->scalingFactor);
+            guTranslateF(
+                mtxPivotOn, -part->rotPivotOffset.x * actor->scalingFactor,
+                -part->rotPivotOffset.y * actor->scalingFactor, -part->rotPivotOffset.z * actor->scalingFactor
+            );
+            guTranslateF(
+                mtxPivotOff, part->rotPivotOffset.x * actor->scalingFactor,
+                part->rotPivotOffset.y * actor->scalingFactor, part->rotPivotOffset.z * actor->scalingFactor
+            );
         } else {
-            guTranslateF(mtxPivotOn,
-                -part->rotPivotOffset.x * actor->scalingFactor,
-                 part->rotPivotOffset.y * actor->scalingFactor,
-                -part->rotPivotOffset.z * actor->scalingFactor);
-            guTranslateF(mtxPivotOff,
-                 part->rotPivotOffset.x * actor->scalingFactor,
-                -part->rotPivotOffset.y * actor->scalingFactor,
-                 part->rotPivotOffset.z * actor->scalingFactor);
+            guTranslateF(
+                mtxPivotOn, -part->rotPivotOffset.x * actor->scalingFactor,
+                part->rotPivotOffset.y * actor->scalingFactor, -part->rotPivotOffset.z * actor->scalingFactor
+            );
+            guTranslateF(
+                mtxPivotOff, part->rotPivotOffset.x * actor->scalingFactor,
+                -part->rotPivotOffset.y * actor->scalingFactor, part->rotPivotOffset.z * actor->scalingFactor
+            );
         }
-        guTranslateF(mtxTranslate,
-            partPosX + part->palAnimPosOffset[0],
-            partPosY + part->palAnimPosOffset[1],
-            partPosZ - 1.0f);
+        guTranslateF(
+            mtxTranslate, partPosX + part->palAnimPosOffset[0], partPosY + part->palAnimPosOffset[1], partPosZ - 1.0f
+        );
 
         guRotateF(mtxRotX, part->rot.x, 1.0f, 0.0f, 0.0f);
         guRotateF(mtxRotY, part->rot.y, 0.0f, 1.0f, 0.0f);
@@ -1456,10 +1465,10 @@ void appendGfx_player_actor(void* arg0) {
 
     playerYaw = playerParts->yaw = player->yaw;
 
-    player->disableEffect->data.disableX->pos.x = playerPosX +
-        (player->actorBlueprint->statusIconOffset.x + player->statusIconOffset.x) * player->scalingFactor;
-    player->disableEffect->data.disableX->pos.y = playerPosY +
-        (player->actorBlueprint->statusIconOffset.y + player->statusIconOffset.y) * player->scalingFactor;
+    player->disableEffect->data.disableX->pos.x =
+        playerPosX + (player->actorBlueprint->statusIconOffset.x + player->statusIconOffset.x) * player->scalingFactor;
+    player->disableEffect->data.disableX->pos.y =
+        playerPosY + (player->actorBlueprint->statusIconOffset.y + player->statusIconOffset.y) * player->scalingFactor;
     player->disableEffect->data.disableX->pos.z = playerPosZ;
 
     if (!(gBattleStatus.flags1 & BS_FLAGS1_TATTLE_OPEN) && (player->flags & ACTOR_FLAG_SHOW_STATUS_ICONS)) {
@@ -1475,8 +1484,8 @@ void appendGfx_player_actor(void* arg0) {
     }
 
     if (battleStatus->waterBlockTurnsLeft != 0) {
-        if ((gBattleStatus.flags1 & BS_FLAGS1_SHOW_PLAYER_DECORATIONS) ||
-            (!(gBattleStatus.flags1 & BS_FLAGS1_TATTLE_OPEN) && (player->flags & ACTOR_FLAG_SHOW_STATUS_ICONS)))
+        if ((gBattleStatus.flags1 & BS_FLAGS1_SHOW_PLAYER_DECORATIONS)
+            || (!(gBattleStatus.flags1 & BS_FLAGS1_TATTLE_OPEN) && (player->flags & ACTOR_FLAG_SHOW_STATUS_ICONS)))
         {
             effect = battleStatus->waterBlockEffect;
             effect->data.waterBlock->pos.x = playerPosX;
@@ -1490,8 +1499,8 @@ void appendGfx_player_actor(void* arg0) {
         }
     }
     if (battleStatus->cloudNineTurnsLeft != 0) {
-        if ((gBattleStatus.flags1 & BS_FLAGS1_SHOW_PLAYER_DECORATIONS) ||
-            (!(gBattleStatus.flags1 & BS_FLAGS1_TATTLE_OPEN) && (player->flags & ACTOR_FLAG_SHOW_STATUS_ICONS)))
+        if ((gBattleStatus.flags1 & BS_FLAGS1_SHOW_PLAYER_DECORATIONS)
+            || (!(gBattleStatus.flags1 & BS_FLAGS1_TATTLE_OPEN) && (player->flags & ACTOR_FLAG_SHOW_STATUS_ICONS)))
         {
             effect = battleStatus->cloudNineEffect;
             effect->data.endingDecals->pos.x = playerPosX;
@@ -1508,8 +1517,8 @@ void appendGfx_player_actor(void* arg0) {
     if (player->debuff == STATUS_KEY_FROZEN) {
         effect = player->icePillarEffect;
         if (player->icePillarEffect != nullptr) {
-            if ((gBattleStatus.flags1 & BS_FLAGS1_SHOW_PLAYER_DECORATIONS) ||
-                (!(gBattleStatus.flags1 & BS_FLAGS1_TATTLE_OPEN) && (player->flags & ACTOR_FLAG_SHOW_STATUS_ICONS)))
+            if ((gBattleStatus.flags1 & BS_FLAGS1_SHOW_PLAYER_DECORATIONS)
+                || (!(gBattleStatus.flags1 & BS_FLAGS1_TATTLE_OPEN) && (player->flags & ACTOR_FLAG_SHOW_STATUS_ICONS)))
             {
                 effect->data.icePillar->pos.x = playerPosX - 8.0f;
                 effect->data.icePillar->pos.y = playerPosY;
@@ -1533,10 +1542,9 @@ void appendGfx_player_actor(void* arg0) {
         }
     }
 
-    if (!(gBattleStatus.flags2 & BS_FLAGS2_HIDE_BUFF_COUNTERS)
-        && !(gBattleStatus.flags1 & BS_FLAGS1_TATTLE_OPEN)
-        && (player->flags & ACTOR_FLAG_SHOW_STATUS_ICONS)
-    ) {
+    if (!(gBattleStatus.flags2 & BS_FLAGS2_HIDE_BUFF_COUNTERS) && !(gBattleStatus.flags1 & BS_FLAGS1_TATTLE_OPEN)
+        && (player->flags & ACTOR_FLAG_SHOW_STATUS_ICONS))
+    {
         battleStatus->buffEffect->data.partnerBuff->visible = true;
     } else {
         battleStatus->buffEffect->data.partnerBuff->visible = false;
@@ -1595,25 +1603,22 @@ void appendGfx_player_actor(void* arg0) {
     lastAnim = playerParts->curAnimation;
 
     if ((((!(gBattleStatus.flags2 & BS_FLAGS2_OVERRIDE_INACTIVE_PLAYER)
-            && (gBattleStatus.flags2 & BS_FLAGS2_PLAYER_TURN_USED))
-                && (partner != nullptr))
-            || (battleStatus->outtaSightActive > 0))
+           && (gBattleStatus.flags2 & BS_FLAGS2_PLAYER_TURN_USED))
+          && (partner != nullptr))
+         || (battleStatus->outtaSightActive > 0))
         && !(player->flags & ACTOR_FLAG_NO_INACTIVE_ANIM)
-        && !((partner != nullptr) && (partner->flags & ACTOR_FLAG_NO_ATTACK))
-    ) {
+        && !((partner != nullptr) && (partner->flags & ACTOR_FLAG_NO_ATTACK)))
+    {
         if (!(gBattleStatus.flags2 & BS_FLAGS2_NO_PLAYER_PAL_ADJUST)) {
-            if ((player->debuff != STATUS_KEY_UNUSED)
-                && (player->debuff != STATUS_KEY_PARALYZE)
-                && (player->debuff != STATUS_KEY_FROZEN)
-                && (player->debuff != STATUS_KEY_STOP)
-            ) {
-                if ((player->transparentStatus != STATUS_KEY_TRANSPARENT) &&
-                    (player->stoneStatus != STATUS_KEY_STONE) &&
-                    ((battleStatus->outtaSightActive > 0) || (gBattleStatus.flags2 & BS_FLAGS2_PLAYER_TURN_USED)))
+            if ((player->debuff != STATUS_KEY_UNUSED) && (player->debuff != STATUS_KEY_PARALYZE)
+                && (player->debuff != STATUS_KEY_FROZEN) && (player->debuff != STATUS_KEY_STOP))
+            {
+                if ((player->transparentStatus != STATUS_KEY_TRANSPARENT) && (player->stoneStatus != STATUS_KEY_STONE)
+                    && ((battleStatus->outtaSightActive > 0) || (gBattleStatus.flags2 & BS_FLAGS2_PLAYER_TURN_USED)))
                 {
                     if (is_ability_active(ABILITY_BERSERKER)) {
                         playerParts->curAnimation = get_player_anim_for_status(STATUS_KEY_INACTIVE_BERSERK);
-                    } else  if (player->debuff == STATUS_KEY_SLEEP) {
+                    } else if (player->debuff == STATUS_KEY_SLEEP) {
                         playerParts->curAnimation = get_player_anim_for_status(STATUS_KEY_INACTIVE_SLEEP);
                     } else if (player->debuff == STATUS_KEY_DIZZY) {
                         playerParts->curAnimation = get_player_anim_for_status(STATUS_KEY_INACTIVE_DIZZY);
@@ -1742,7 +1747,7 @@ void appendGfx_player_actor(void* arg0) {
                     playerParts->curAnimation = get_player_anim_for_status(STATUS_KEY_PARALYZE);
                     animChanged = true;
                 }
-                } else {
+            } else {
                 if (player_team_is_ability_active(player, ABILITY_BERSERKER)) {
                     if (!animChanged) {
                         playerParts->curAnimation = get_player_anim_for_status(STATUS_KEY_BERSERK);
@@ -1762,7 +1767,8 @@ void appendGfx_player_actor(void* arg0) {
             playerParts->curAnimation = get_player_anim_for_status(STATUS_KEY_STATIC);
             animChanged = true;
         }
-        if ((player->transparentStatus == STATUS_KEY_TRANSPARENT) || (playerParts->flags & ACTOR_PART_FLAG_TRANSPARENT)) {
+        if ((player->transparentStatus == STATUS_KEY_TRANSPARENT) || (playerParts->flags & ACTOR_PART_FLAG_TRANSPARENT))
+        {
             if (!animChanged) {
                 playerParts->curAnimation = get_player_anim_for_status(STATUS_KEY_TRANSPARENT);
                 animChanged = true;
@@ -1793,7 +1799,8 @@ void appendGfx_player_actor(void* arg0) {
                 create_status_static(player->hudElementDataIndex, STATUS_KEY_STATIC);
             }
         }
-        if ((player->transparentStatus == STATUS_KEY_TRANSPARENT) || (playerParts->flags & ACTOR_PART_FLAG_TRANSPARENT)) {
+        if ((player->transparentStatus == STATUS_KEY_TRANSPARENT) || (playerParts->flags & ACTOR_PART_FLAG_TRANSPARENT))
+        {
             create_status_transparent(player->hudElementDataIndex, STATUS_KEY_TRANSPARENT);
         }
     } else {
@@ -1815,29 +1822,30 @@ void appendGfx_player_actor(void* arg0) {
         create_status_debuff(player->hudElementDataIndex, STATUS_KEY_STOP);
     }
 
-    set_status_icons_properties(player->hudElementDataIndex,
-        playerPosX, playerPosY, playerPosZ,
+    set_status_icons_properties(
+        player->hudElementDataIndex, playerPosX, playerPosY, playerPosZ,
         player->actorBlueprint->statusIconOffset.x * player->scalingFactor,
         player->actorBlueprint->statusIconOffset.y * player->scalingFactor,
         player->actorBlueprint->statusTextOffset.x * player->scalingFactor,
-        player->actorBlueprint->statusTextOffset.y * player->scalingFactor);
-    set_status_icons_offset(player->hudElementDataIndex,
-        player->size.y * player->scalingFactor,
-        player->size.x * player->scalingFactor);
+        player->actorBlueprint->statusTextOffset.y * player->scalingFactor
+    );
+    set_status_icons_offset(
+        player->hudElementDataIndex, player->size.y * player->scalingFactor, player->size.x * player->scalingFactor
+    );
 
     playerParts->curPos.x = playerPosX + playerParts->palAnimPosOffset[0];
     playerParts->curPos.y = playerPosY + playerParts->palAnimPosOffset[1];
     playerParts->curPos.z = playerPosZ;
     guTranslateF(mtxTranslate, playerParts->curPos.x, playerParts->curPos.y, playerParts->curPos.z);
 
-    guTranslateF(mtxPivotOn,
-        -player->rotPivotOffset.x * player->scalingFactor,
-        -player->rotPivotOffset.y * player->scalingFactor,
-        -player->rotPivotOffset.z * player->scalingFactor);
-    guTranslateF(mtxPivotOff,
-        player->rotPivotOffset.x * player->scalingFactor,
-        player->rotPivotOffset.y * player->scalingFactor,
-        player->rotPivotOffset.z * player->scalingFactor);
+    guTranslateF(
+        mtxPivotOn, -player->rotPivotOffset.x * player->scalingFactor,
+        -player->rotPivotOffset.y * player->scalingFactor, -player->rotPivotOffset.z * player->scalingFactor
+    );
+    guTranslateF(
+        mtxPivotOff, player->rotPivotOffset.x * player->scalingFactor, player->rotPivotOffset.y * player->scalingFactor,
+        player->rotPivotOffset.z * player->scalingFactor
+    );
 
     guRotateF(mtxRotX, player->rot.x, 1.0f, 0.0f, 0.0f);
     guRotateF(mtxRotY, player->rot.y, 0.0f, 1.0f, 0.0f);
@@ -1845,10 +1853,11 @@ void appendGfx_player_actor(void* arg0) {
     guMtxCatF(mtxRotY, mtxRotX, mtxTemp);
     guMtxCatF(mtxTemp, mtxRotZ, mtxRotation);
 
-    guScaleF(mtxScale,
-        player->scale.x * SPRITE_WORLD_SCALE_D * player->scalingFactor,
+    guScaleF(
+        mtxScale, player->scale.x * SPRITE_WORLD_SCALE_D * player->scalingFactor,
         player->scale.y * SPRITE_WORLD_SCALE_D * player->scalingFactor * playerParts->verticalStretch,
-        player->scale.z * SPRITE_WORLD_SCALE_D);
+        player->scale.z * SPRITE_WORLD_SCALE_D
+    );
 
     guMtxCatF(mtxScale, mtxPivotOn, mtxTemp);
     guMtxCatF(mtxTemp, mtxRotation, mtxTransform);
@@ -1880,24 +1889,25 @@ void appendGfx_player_actor_reflection(void* arg0) {
 
     guTranslateF(mtxTranslate, dx, dy, dz - 1.0f);
 
-    guTranslateF(mtxPivotOn,
-        -player->rotPivotOffset.x * player->scalingFactor,
-        -player->rotPivotOffset.y * player->scalingFactor,
-        -player->rotPivotOffset.z * player->scalingFactor);
-    guTranslateF(mtxPivotOff,
-        player->rotPivotOffset.x * player->scalingFactor,
-        player->rotPivotOffset.y * player->scalingFactor,
-        player->rotPivotOffset.z * player->scalingFactor);
+    guTranslateF(
+        mtxPivotOn, -player->rotPivotOffset.x * player->scalingFactor,
+        -player->rotPivotOffset.y * player->scalingFactor, -player->rotPivotOffset.z * player->scalingFactor
+    );
+    guTranslateF(
+        mtxPivotOff, player->rotPivotOffset.x * player->scalingFactor, player->rotPivotOffset.y * player->scalingFactor,
+        player->rotPivotOffset.z * player->scalingFactor
+    );
 
     guRotateF(mtxRotX, player->rot.x, 1.0f, 0.0f, 0.0f);
     guRotateF(mtxRotY, player->rot.y, 0.0f, 1.0f, 0.0f);
     guRotateF(mtxRotZ, player->rot.z, 0.0f, 0.0f, 1.0f);
     guMtxCatF(mtxRotY, mtxRotX, mtxTemp);
     guMtxCatF(mtxTemp, mtxRotZ, mtxRotation);
-    guScaleF(mtxScale,
-        player->scale.x * SPRITE_WORLD_SCALE_D * player->scalingFactor,
+    guScaleF(
+        mtxScale, player->scale.x * SPRITE_WORLD_SCALE_D * player->scalingFactor,
         player->scale.y * SPRITE_WORLD_SCALE_D * player->scalingFactor * part->verticalStretch,
-        player->scale.z * SPRITE_WORLD_SCALE_D);
+        player->scale.z * SPRITE_WORLD_SCALE_D
+    );
     mtx_mirror_y(mtxMirror);
 
     guMtxCatF(mtxScale, mtxPivotOn, mtxTemp);
@@ -2002,7 +2012,6 @@ void make_flash_palettes(ActorPart* part) {
                 *dest = *src | 0xFFFE; // pure white, not affecting alpha bit
                 src++;
                 dest++;
-
             }
             decorations->flashPalettes[i] = decorations->copiedPalettes[1][i];
         }
@@ -2072,9 +2081,15 @@ void func_unkB_draw_npc(ActorPart* part, s32 yaw, Matrix4f mtx) {
 
     if (decorations->flashEnabled != FLASH_PAL_OFF) {
         make_flash_palettes(part);
-        spr_draw_npc_sprite(part->spriteInstanceID | DRAW_SPRITE_OVERRIDE_PALETTES | idMask, yaw, opacity, decorations->flashPalettes, mtx);
+        spr_draw_npc_sprite(
+            part->spriteInstanceID | DRAW_SPRITE_OVERRIDE_PALETTES | idMask, yaw, opacity, decorations->flashPalettes,
+            mtx
+        );
     } else {
-        spr_draw_npc_sprite(part->spriteInstanceID | DRAW_SPRITE_OVERRIDE_PALETTES | idMask, yaw, opacity, decorations->adjustedPalettes, mtx);
+        spr_draw_npc_sprite(
+            part->spriteInstanceID | DRAW_SPRITE_OVERRIDE_PALETTES | idMask, yaw, opacity,
+            decorations->adjustedPalettes, mtx
+        );
     }
 }
 
@@ -2175,7 +2190,7 @@ void render_with_sleep_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matri
         }
 
         decorations->originalPalettesCount = 0;
-        while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
+        while ((s32) decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
             decorations->originalPalettesCount++;
         }
         decorations->palAnimState = 0;
@@ -2233,7 +2248,7 @@ void render_with_static_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matr
         }
 
         decorations->originalPalettesCount = 0;
-        while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
+        while ((s32) decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
             decorations->originalPalettesCount++;
         }
 
@@ -2344,7 +2359,7 @@ void render_with_fear_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix
             decorations->originalPalettesCount = 2;
         }
 
-        while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
+        while ((s32) decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
             decorations->originalPalettesCount++;
         }
 
@@ -2412,7 +2427,7 @@ void render_with_poison_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matr
         }
 
         decorations->originalPalettesCount = 0;
-        while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
+        while ((s32) decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
             decorations->originalPalettesCount++;
         }
 
@@ -2465,7 +2480,7 @@ void render_with_paralyze_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Ma
         }
 
         decorations->originalPalettesCount = 0;
-        while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
+        while ((s32) decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
             decorations->originalPalettesCount++;
         }
 
@@ -2562,7 +2577,7 @@ void render_with_berserk_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Mat
         }
 
         decorations->originalPalettesCount = 0;
-        while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
+        while ((s32) decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
             decorations->originalPalettesCount++;
         }
         decorations->palBlendAlpha = 0;
@@ -2621,7 +2636,7 @@ void render_with_watt_idle_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, M
         }
 
         decorations->originalPalettesCount = 0;
-        while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
+        while ((s32) decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
             decorations->originalPalettesCount++;
         }
 
@@ -2730,7 +2745,7 @@ void render_with_watt_attack_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw,
         }
 
         decorations->originalPalettesCount = 0;
-        while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
+        while ((s32) decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
             decorations->originalPalettesCount++;
         }
 
@@ -2820,7 +2835,9 @@ void render_with_watt_attack_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw,
     }
 }
 
-void render_with_player_debuff_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation, b32 isPoison) {
+void render_with_player_debuff_palettes(
+    b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation, b32 isPoison
+) {
     DecorationTable* decorations = part->decorationTable;
     PAL_PTR color2;
     PAL_PTR color1;
@@ -2842,7 +2859,7 @@ void render_with_player_debuff_palettes(b32 isNpcSprite, ActorPart* part, s32 ya
         }
 
         decorations->originalPalettesCount = 0;
-        while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
+        while ((s32) decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
             decorations->originalPalettesCount++;
         }
 
@@ -2896,7 +2913,8 @@ void render_with_player_debuff_palettes(b32 isNpcSprite, ActorPart* part, s32 ya
                 if (!isPoison) {
                     color2 = decorations->originalPalettesList[i];
                 } else {
-                    color2 = decorations->originalPalettesList[decorations->spriteColorVariations * STANDARD_PAL_POISON + i];
+                    color2 =
+                        decorations->originalPalettesList[decorations->spriteColorVariations * STANDARD_PAL_POISON + i];
                 }
                 color1 = decorations->originalPalettesList[decorations->spriteColorVariations * STANDARD_PAL_DIZZY + i];
                 palOut = decorations->copiedPalettes[0][i];
@@ -2941,7 +2959,9 @@ void render_with_player_debuff_palettes(b32 isNpcSprite, ActorPart* part, s32 ya
     }
 }
 
-void render_with_pal_blending(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 hasDifferentIntervals, Matrix4f mtx, b32 skipAnimation) {
+void render_with_pal_blending(
+    b32 isNpcSprite, ActorPart* part, s32 yaw, b32 hasDifferentIntervals, Matrix4f mtx, b32 skipAnimation
+) {
     DecorationTable* decorations = part->decorationTable;
     PAL_PTR color1;
     PAL_PTR color2;
@@ -2959,7 +2979,7 @@ void render_with_pal_blending(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 has
         }
 
         decorations->originalPalettesCount = 0;
-        while ((s32)decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
+        while ((s32) decorations->originalPalettesList[decorations->originalPalettesCount] != -1) {
             decorations->originalPalettesCount++;
         }
 
@@ -3143,7 +3163,7 @@ void render_with_palset_blending(b32 isNpcSprite, ActorPart* part, s32 yaw, Matr
             decorations->palBlendAlpha = 255;
         }
 
-         for (i = 0; i < decorations->originalPalettesCount; i++) {
+        for (i = 0; i < decorations->originalPalettesCount; i++) {
             color2 = decorations->originalPalettesList[i];
             color1 = decorations->copiedPalettes[0][i];
             decorations->adjustedPalettes[i] = color1;
@@ -3183,8 +3203,10 @@ void render_with_palset_blending(b32 isNpcSprite, ActorPart* part, s32 yaw, Matr
             blendAlpha = decorations->palBlendAlpha / 100;
             // blend all palettes from two palette sets
             for (i = 0; i < decorations->spriteColorVariations; i++) {
-                color2 = decorations->originalPalettesList[decorations->blendPalA * decorations->spriteColorVariations + i];
-                color1 = decorations->originalPalettesList[decorations->blendPalB * decorations->spriteColorVariations + i];
+                color2 =
+                    decorations->originalPalettesList[decorations->blendPalA * decorations->spriteColorVariations + i];
+                color1 =
+                    decorations->originalPalettesList[decorations->blendPalB * decorations->spriteColorVariations + i];
                 outColor = decorations->copiedPalettes[0][i];
                 decorations->adjustedPalettes[i] = outColor;
 
@@ -3235,8 +3257,10 @@ void render_with_palset_blending(b32 isNpcSprite, ActorPart* part, s32 yaw, Matr
             blendAlpha = decorations->palBlendAlpha / 100;
             // blend all palettes from two palette sets
             for (i = 0; i < decorations->spriteColorVariations; i++) {
-                color2 = decorations->originalPalettesList[decorations->blendPalA * decorations->spriteColorVariations + i];
-                color1 = decorations->originalPalettesList[decorations->blendPalB * decorations->spriteColorVariations + i];
+                color2 =
+                    decorations->originalPalettesList[decorations->blendPalA * decorations->spriteColorVariations + i];
+                color1 =
+                    decorations->originalPalettesList[decorations->blendPalB * decorations->spriteColorVariations + i];
                 outColor = decorations->copiedPalettes[0][i];
                 decorations->adjustedPalettes[i] = outColor;
 
@@ -3426,7 +3450,7 @@ void part_flash_on(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 isReflection) 
             }
             break;
         case FLASH_MODE_MEDIUM:
-           switch (decorations->flashFramesLeft) {
+            switch (decorations->flashFramesLeft) {
                 case 1:
                 case 2:
                 case 5:
@@ -3448,7 +3472,7 @@ void part_flash_on(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 isReflection) 
             }
             break;
         case FLASH_MODE_HEAVY:
-           switch (decorations->flashFramesLeft) {
+            switch (decorations->flashFramesLeft) {
                 case 1:
                 case 2:
                 case 5:
@@ -3647,7 +3671,9 @@ void add_part_decor_seeing_stars(ActorPart* part, s32 idx) {
     decorations = part->decorationTable;
     switch (decorations->state[idx]) {
         case 0:
-            fx_stars_orbiting(0, part->curPos.x, part->curPos.y + part->size.y, part->curPos.z, 20.0f, 3, &decorations->effect[idx]);
+            fx_stars_orbiting(
+                0, part->curPos.x, part->curPos.y + part->size.y, part->curPos.z, 20.0f, 3, &decorations->effect[idx]
+            );
             decorations->state[idx] = 1;
             break;
         case 1:
@@ -3787,11 +3813,10 @@ void add_part_decor_steam(ActorPart* part, s32 idx) {
                 angle = DEG_TO_RAD(clamp_angle(-part->yaw));
                 sinA = sin_rad(angle);
                 cosA = cos_rad(angle);
-                fx_walking_dust(0,
-                    part->curPos.x + (part->size.x * sinA * 0.2f),
-                    part->curPos.y + 1.5f,
-                    part->curPos.z + (part->size.x * cosA * 0.2f),
-                    sinA, cosA);
+                fx_walking_dust(
+                    0, part->curPos.x + (part->size.x * sinA * 0.2f), part->curPos.y + 1.5f,
+                    part->curPos.z + (part->size.x * cosA * 0.2f), sinA, cosA
+                );
             }
             break;
     }
@@ -3818,7 +3843,9 @@ void add_part_decor_sparkles(ActorPart* part, s32 idx) {
                     fx_sparkles(FX_SPARKLES_1, x, y, z, 10.0f);
                 }
                 decorations->stateResetTimer[idx]++;
-                if (SparkleSpawnIntervals[decorations->decorData[idx].sparkles.spawnInterval] < decorations->stateResetTimer[idx]) {
+                if (SparkleSpawnIntervals[decorations->decorData[idx].sparkles.spawnInterval]
+                    < decorations->stateResetTimer[idx])
+                {
                     decorations->stateResetTimer[idx] = 0;
                     fx_sparkles(FX_SPARKLES_1, x, y, z, 20.0f);
                 }

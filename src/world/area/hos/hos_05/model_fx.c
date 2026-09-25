@@ -4,7 +4,6 @@
 
 u16 StarShrineLightBeamAlpha = 255;
 
-
 API_CALLABLE(N(SetWorldColorParams)) {
     Bytecode* args;
     static u8 oldPrimR, oldPrimG, oldPrimB;
@@ -29,12 +28,10 @@ API_CALLABLE(N(SetWorldColorParams)) {
     if (duration > 0) {
         time++;
         mdl_set_remap_tint_params(
-            oldPrimR + ((newPrimR - oldPrimR) * time) / duration,
-            oldPrimG + ((newPrimG - oldPrimG) * time) / duration,
-            oldPrimB + ((newPrimB - oldPrimB) * time) / duration,
-            oldEnvR  + ( (newEnvR - oldEnvR)  * time) / duration,
-            oldEnvG  + ( (newEnvG - oldEnvG)  * time) / duration,
-            oldEnvB  + ( (newEnvB - oldEnvB)  * time) / duration);
+            oldPrimR + ((newPrimR - oldPrimR) * time) / duration, oldPrimG + ((newPrimG - oldPrimG) * time) / duration,
+            oldPrimB + ((newPrimB - oldPrimB) * time) / duration, oldEnvR + ((newEnvR - oldEnvR) * time) / duration,
+            oldEnvG + ((newEnvG - oldEnvG) * time) / duration, oldEnvB + ((newEnvB - oldEnvB) * time) / duration
+        );
         if (time >= duration) {
             return ApiStatus_DONE2;
         }

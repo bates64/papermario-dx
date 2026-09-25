@@ -2,7 +2,8 @@
 #include "effects.h"
 
 EvtScript N(EVS_ExitWalk_mac_01_2) = EVT_EXIT_WALK(60, osr_00_ENTRY_0, "mac_01", mac_01_ENTRY_2);
-EvtScript N(EVS_ExitDoors_kkj_00_6) = EVT_EXIT_DOUBLE_DOOR(osr_00_ENTRY_2, "kkj_00", kkj_00_ENTRY_6, COLLIDER_deilitn, MODEL_d2, MODEL_d1);
+EvtScript N(EVS_ExitDoors_kkj_00_6) =
+    EVT_EXIT_DOUBLE_DOOR(osr_00_ENTRY_2, "kkj_00", kkj_00_ENTRY_6, COLLIDER_deilitn, MODEL_d2, MODEL_d1);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_mac_01_2)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)

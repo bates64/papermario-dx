@@ -13,7 +13,7 @@ typedef struct FlamePreset {
 } FlamePreset; // size = 0x10
 
 extern Gfx D_09000800_3543B0[];
-extern Gfx D_090008F8_3544A8[]; //TODO rename EffectGfx_Flame_DrawQuad
+extern Gfx D_090008F8_3544A8[]; // TODO rename EffectGfx_Flame_DrawQuad
 extern Gfx D_09000918_3544C8[];
 extern Gfx D_090009E0_354590[];
 
@@ -59,14 +59,7 @@ void flame_update(EffectInstance* effect);
 void flame_render(EffectInstance* effect);
 void flame_appendGfx(void* effect);
 
-void flame_main(
-    s32 type,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    EffectInstance** outEffect
-) {
+void flame_main(s32 type, f32 arg1, f32 arg2, f32 arg3, f32 arg4, EffectInstance** outEffect) {
     EffectBlueprint bp;
     EffectBlueprint* bpPtr = &bp;
     EffectInstance* effect;
@@ -143,8 +136,10 @@ void flame_render(EffectInstance* effect) {
     f32 outZ;
     f32 outW;
 
-    transform_point(gCameras[gCurrentCameraID].mtxPerspective, data->pos.x, data->pos.y, data->pos.z, 1.0f,
-                         &outX, &outY, &outZ, &outW);
+    transform_point(
+        gCameras[gCurrentCameraID].mtxPerspective, data->pos.x, data->pos.y, data->pos.z, 1.0f, &outX, &outY, &outZ,
+        &outW
+    );
 
     outDist = outZ + 5000;
     if (outDist < 0) {
@@ -166,7 +161,7 @@ void flame_render(EffectInstance* effect) {
 }
 
 void flame_appendGfx(void* effect) {
-    FlameFXData* data = ((EffectInstance*)effect)->data.flame;
+    FlameFXData* data = ((EffectInstance*) effect)->data.flame;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 type = data->type;
     s32 uls = data->unk_1C * 4.0f;
@@ -177,7 +172,7 @@ void flame_appendGfx(void* effect) {
     Matrix4f sp98;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     if (LastFlameRenderFrame != gGameStatusPtr->frameCounter) {
         LastFlameRenderFrame = gGameStatusPtr->frameCounter;
@@ -185,11 +180,10 @@ void flame_appendGfx(void* effect) {
         gDPSetTileSize(gMainGfxPos++, 1, uls, ult, uls + 128, ult + 256);
         gSPDisplayList(gMainGfxPos++, D_090009E0_354590);
         gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, VIRTUAL_TO_PHYSICAL(nuGfxCfb_ptr));
-        gDPSetScissorFrac(gMainGfxPos++, G_SC_NON_INTERLACE,
-            camera->viewportStartX * 4.0f,
-            camera->viewportStartY * 4.0f,
-            (camera->viewportStartX + camera->viewportW) * 4.0f,
-            (camera->viewportStartY + camera->viewportH) * 4.0f);
+        gDPSetScissorFrac(
+            gMainGfxPos++, G_SC_NON_INTERLACE, camera->viewportStartX * 4.0f, camera->viewportStartY * 4.0f,
+            (camera->viewportStartX + camera->viewportW) * 4.0f, (camera->viewportStartY + camera->viewportH) * 4.0f
+        );
     }
 
     preset = &FlamePresets[type];
@@ -207,8 +201,7 @@ void flame_appendGfx(void* effect) {
     guMtxCatF(sp58, sp98, sp98);
     guMtxF2L(sp98, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gSPDisplayList(gMainGfxPos++, D_090008F8_3544A8);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     gDPPipeSync(gMainGfxPos++);

@@ -155,7 +155,7 @@ void func_E0078274(void) {
 #define TMEM_ADDR(x) (x / sizeof(u64))
 
 void bulb_glow_appendGfx(void* effect) {
-    BulbGlowFXData* data = ((EffectInstance*)effect)->data.bulbGlow;
+    BulbGlowFXData* data = ((EffectInstance*) effect)->data.bulbGlow;
     f32 centerX;
     f32 centerY;
     s32 xMin;
@@ -184,7 +184,7 @@ void bulb_glow_appendGfx(void* effect) {
     }
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     preset = &BulbGlowPresets[type];
     glowExtent = preset->screenRadius;
@@ -238,24 +238,23 @@ void bulb_glow_appendGfx(void* effect) {
             break;
         }
 
-        gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE,
-            (s32) (xMin * preset->texScaleX) * 4,
+        gDPSetTileSize(
+            gMainGfxPos++, G_TX_RENDERTILE, (s32) (xMin * preset->texScaleX) * 4,
             (s32) (preset->texHeight * 20 - i * preset->stripHeight * preset->texScaleY) * 4,
             (s32) (xMin * preset->texScaleX + preset->texWidth) * 4,
-            (s32) (preset->texHeight * 21 - i * preset->stripHeight * preset->texScaleY) * 4);
+            (s32) (preset->texHeight * 21 - i * preset->stripHeight * preset->texScaleY) * 4
+        );
 
         for (j = 0; j < 1; j++) {
-            gDPLoadMultiTile(gMainGfxPos++,
-                VIRTUAL_TO_PHYSICAL(nuGfxCfb_ptr + y * SCREEN_WIDTH),
-                TMEM_ADDR(TMEM_SIZE/2), G_TX_RENDERTILE + 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, 0,
-                xMin + xStart, 0, xMax - 1, rectHeight - 1,
-                0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 9, 8, G_TX_NOLOD, G_TX_NOLOD);
-            gSPTextureRectangle(gMainGfxPos++,
-                (xMin + xStart) * 4, y * 4,
-                xMax * 4, (y + rectHeight) * 4,
-                G_TX_RENDERTILE,
-                ((xMin + xStart) & 0x1FF) << 5, 0,
-                1 << 10, 1 << 10);
+            gDPLoadMultiTile(
+                gMainGfxPos++, VIRTUAL_TO_PHYSICAL(nuGfxCfb_ptr + y * SCREEN_WIDTH), TMEM_ADDR(TMEM_SIZE / 2),
+                G_TX_RENDERTILE + 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, 0, xMin + xStart, 0, xMax - 1,
+                rectHeight - 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 9, 8, G_TX_NOLOD, G_TX_NOLOD
+            );
+            gSPTextureRectangle(
+                gMainGfxPos++, (xMin + xStart) * 4, y * 4, xMax * 4, (y + rectHeight) * 4, G_TX_RENDERTILE,
+                ((xMin + xStart) & 0x1FF) << 5, 0, 1 << 10, 1 << 10
+            );
             gDPPipeSync(gMainGfxPos++);
         }
     }

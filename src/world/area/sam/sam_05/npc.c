@@ -26,7 +26,7 @@ ImgFXOverlayTexture N(MonstarDetailTexture) = {
 };
 
 API_CALLABLE(N(UpdateMonstarSpriteEffects)) {
-    #define RGBA_BUF_SIZE 20
+#define RGBA_BUF_SIZE 20
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     u8 rbuf[RGBA_BUF_SIZE];
@@ -57,8 +57,10 @@ API_CALLABLE(N(UpdateMonstarSpriteEffects)) {
         bbuf[i] = (cosine(script->functionTemp[0] + (i * 25) + 90) + 1.0) * 56.0;
         abuf[i] = enemy->varTable[3];
 
-        set_npc_imgfx_comp(npc->spriteInstanceID, 0, IMGFX_COLOR_BUF_SET_MODULATE, i,
-                            (rbuf[i] << 24) | (gbuf[i] << 16) | (bbuf[i] << 8) | abuf[i], 0, 255, 0);
+        set_npc_imgfx_comp(
+            npc->spriteInstanceID, 0, IMGFX_COLOR_BUF_SET_MODULATE, i,
+            (rbuf[i] << 24) | (gbuf[i] << 16) | (bbuf[i] << 8) | abuf[i], 0, 255, 0
+        );
     }
 
     if (enemy->varTable[3] == 255) {
@@ -66,12 +68,14 @@ API_CALLABLE(N(UpdateMonstarSpriteEffects)) {
         set_npc_imgfx_comp(npc->spriteInstanceID, 1, IMGFX_OVERLAY, (s32) &N(MonstarDetailTexture), 255, 0, 255, 0);
     } else {
         npc->renderMode = RENDER_MODE_SURFACE_XLU_LAYER2;
-        set_npc_imgfx_comp(npc->spriteInstanceID, 1, IMGFX_OVERLAY, (s32) &N(MonstarDetailTexture),
-                            enemy->varTable[3], 0, enemy->varTable[3], 0);
+        set_npc_imgfx_comp(
+            npc->spriteInstanceID, 1, IMGFX_OVERLAY, (s32) &N(MonstarDetailTexture), enemy->varTable[3], 0,
+            enemy->varTable[3], 0
+        );
     }
     return ApiStatus_BLOCK;
 
-    #undef RGBA_BUF_SIZE
+#undef RGBA_BUF_SIZE
 }
 
 API_CALLABLE(N(CheckSkipInput)) {

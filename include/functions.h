@@ -28,8 +28,8 @@ void is_debug_init(void);
 NORETURN void is_debug_panic(const char* message);
 
 // TODO: migrate to vsnprintf on modern libc
-typedef char *outfun(char*,const char*,size_t);
-int _Printf(outfun prout, char *arg, const char *fmt, va_list args);
+typedef char* outfun(char*, const char*, size_t);
+int _Printf(outfun prout, char* arg, const char* fmt, va_list args);
 
 f32 signF(f32 val);
 
@@ -92,17 +92,21 @@ void load_mesh_animator_tree(s32 index, StaticAnimatorNode** tree);
 
 void setup_pause_menu_tab(MenuWindowBP* bpArray, s32 arraySize);
 
-s32 draw_ci_image_with_clipping(IMG_PTR raster, s32 width, s32 height, s32 fmt, s32 bitDepth, PAL_PTR palette, s16 posX,
-                                s16 posY, u16 clipULx, u16 clipULy, u16 clipLRx, u16 clipRLy, u8 opacity);
+s32 draw_ci_image_with_clipping(
+    IMG_PTR raster, s32 width, s32 height, s32 fmt, s32 bitDepth, PAL_PTR palette, s16 posX, s16 posY, u16 clipULx,
+    u16 clipULy, u16 clipLRx, u16 clipRLy, u8 opacity
+);
 
 void render_frame(s32 flag);
 void clear_windows(void);
 void update_window_hierarchy(s32 windowIndex, u8 arg1);
-void get_msg_properties(s32 msgID, s32* height, s32* width, s32* maxLineChars, s32* numLines, s32* maxLinesPerPage, s32* arg6, u16 charset);
+void get_msg_properties(
+    s32 msgID, s32* height, s32* width, s32* maxLineChars, s32* numLines, s32* maxLinesPerPage, s32* arg6, u16 charset
+);
 void replace_window_update(s32 idx, s8 arg1, WindowUpdateFunc pendingFunc);
 void decode_yay0(void* src, void* dst);
 
-//pause
+// pause
 void pause_init(void);
 void pause_handle_input(s32 buttonsPressed, s32 buttonsHeld);
 void pause_cleanup(void);
@@ -198,17 +202,20 @@ struct Model* get_model_from_list_index(s32 listIndex);
 s32 create_model_animator(AnimScriptPtr animScript);
 s32 get_model_list_index_from_tree_index(s32 treeIndex);
 s32 get_transform_group_index(s32);
-void get_model_center_and_size(u16 modelID, f32* centerX, f32* centerY, f32* centerZ, f32* sizeX, f32* sizeY,
-                               f32* sizeZ);
+void get_model_center_and_size(
+    u16 modelID, f32* centerX, f32* centerY, f32* centerZ, f32* sizeX, f32* sizeY, f32* sizeZ
+);
 HitID collision_main_above(void);
 void collision_lava_reset_check_additional_overlaps(void);
 s32 player_test_lateral_overlap(s32, PlayerStatus*, f32*, f32*, f32*, f32, f32);
 Npc* peach_make_disguise_npc(s32 peachDisguise);
 void peach_set_disguise_anim(AnimID);
 
-s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s32 width, s32 height, u8 opacity,
-              u8 darkening, f32 scaleX, f32 scaleY, f32 rotX, f32 rotY, f32 rotZ, void (*fpDrawContents)(s32, s32, s32, s32, s32, s32, s32),
-              void* drawContentsArg0, Matrix4f rotScaleMtx, s32 translateX, s32 translateY, Matrix4f outMtx);
+s32 draw_box(
+    s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s32 width, s32 height, u8 opacity, u8 darkening,
+    f32 scaleX, f32 scaleY, f32 rotX, f32 rotY, f32 rotZ, void (*fpDrawContents)(s32, s32, s32, s32, s32, s32, s32),
+    void* drawContentsArg0, Matrix4f rotScaleMtx, s32 translateX, s32 translateY, Matrix4f outMtx
+);
 s32 get_msg_width(s32 msgID, u16 charset);
 
 s32 partner_can_open_world_menus(void);
@@ -260,7 +267,9 @@ s32 count_power_plus(s32);
 s32 phys_can_player_interact(void);
 
 HitID player_test_move_without_slipping(PlayerStatus*, f32*, f32*, f32*, f32, f32, s32*);
-HitID player_test_move_with_slipping(PlayerStatus* playerStatus, f32* posX, f32* posY, f32* posZ, f32 speed, f32 heading);
+HitID player_test_move_with_slipping(
+    PlayerStatus* playerStatus, f32* posX, f32* posY, f32* posZ, f32 speed, f32 heading
+);
 
 s32 evt_get_variable(Evt* script, EvtVar var);
 s32 evt_set_variable(Evt* script, EvtVar var, s32 value);
@@ -294,10 +303,14 @@ b32 check_player_action_debug(void);
 
 s32 battle_heap_create(void);
 
-s32 test_ray_zones(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX, f32* hitY, f32* hitZ,
-                   f32* hitDepth, f32* nx, f32* ny, f32* nz);
-s32 test_ray_colliders(s32 ignoreFlags, f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX,
-                       f32* hitY, f32* hitZ, f32* hitDepth, f32* hitNx, f32* hitNy, f32* hitNz);
+s32 test_ray_zones(
+    f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX, f32* hitY, f32* hitZ, f32* hitDepth,
+    f32* nx, f32* ny, f32* nz
+);
+s32 test_ray_colliders(
+    s32 ignoreFlags, f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX, f32* hitY, f32* hitZ,
+    f32* hitDepth, f32* hitNx, f32* hitNy, f32* hitNz
+);
 
 /// Test a general ray from a given starting position and direction against all entities.
 /// If one is hit, returns the position and normal of the hit and the length along the ray
@@ -309,8 +322,10 @@ s32 test_ray_colliders(s32 ignoreFlags, f32 startX, f32 startY, f32 startZ, f32 
 /// to the hit).
 ///
 /// Returns entity index or `NO_COLLIDER` if none is hit.
-s32 test_ray_entities(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX, f32* hitY, f32* hitZ,
-                      f32* hitDepth, f32* hitNx, f32* hitNy, f32* hitNz);
+s32 test_ray_entities(
+    f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX, f32* hitY, f32* hitZ, f32* hitDepth,
+    f32* hitNx, f32* hitNy, f32* hitNz
+);
 
 void mem_clear(void* data, s32 numBytes);
 
@@ -366,8 +381,10 @@ b32 npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32
 b32 npc_raycast_up(s32, f32*, f32*, f32*, f32*);
 HitID npc_raycast_up_corners(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth, f32 yaw, f32 radius);
 HitID player_raycast_up_corners(PlayerStatus*, f32*, f32*, f32*, f32*, f32);
-HitID player_raycast_below_cam_relative(PlayerStatus* playerStatus, f32* outX, f32* outY, f32* outZ, f32* outLength,
-                                      f32* hitRx, f32* hitRz, f32* hitDirX, f32* hitDirZ);
+HitID player_raycast_below_cam_relative(
+    PlayerStatus* playerStatus, f32* outX, f32* outY, f32* outZ, f32* outLength, f32* hitRx, f32* hitRz, f32* hitDirX,
+    f32* hitDirZ
+);
 b32 npc_test_move_taller_with_slipping(s32, f32*, f32*, f32*, f32, f32, f32, f32);
 b32 npc_test_move_simple_with_slipping(s32, f32*, f32*, f32*, f32, f32, f32, f32);
 s32 npc_test_move_complex_with_slipping(s32, f32*, f32*, f32*, f32, f32, f32, f32);
@@ -456,7 +473,8 @@ void clear_item_entity_flags(s32 index, s32 flags);
 
 s32 create_worker_frontUI(VoidCallback updateFunc, VoidCallback drawFunc);
 Worker* get_worker(s32 idx);
-Trigger* bind_trigger_1(EvtScript* script, s32 flags, s32 triggerFlagIndex, s32 triggerVar0, s32 triggerVar1, s32 priority);
+Trigger*
+bind_trigger_1(EvtScript* script, s32 flags, s32 triggerFlagIndex, s32 triggerVar0, s32 triggerVar1, s32 priority);
 
 void set_cam_viewport(s16 id, s16 x, s16 y, s16 width, s16 height);
 
@@ -481,10 +499,14 @@ void add_vec2D_polar(f32* x, f32* y, f32 r, f32 theta);
 
 #include "audio.h"
 
-void basic_window_update(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                   f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
-void basic_hidden_window_update(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                   f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
+void basic_window_update(
+    s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
+);
+void basic_hidden_window_update(
+    s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
+);
 
 void create_current_pos_target_list(Actor* actor);
 void create_home_target_list(Actor* actor);
@@ -756,7 +778,9 @@ void partner_reset_ai_state(void);
 void partner_move_to_player_side(void);
 void enable_player_shadow(void);
 s32 get_msg_lines(s32 messageID);
-void set_window_properties(s32 panelID, s32 posX, s32 posY, s32 width, s32 height, u8, void* drawContents, void* drawContentsArg, s8 parent);
+void set_window_properties(
+    s32 panelID, s32 posX, s32 posY, s32 width, s32 height, u8, void* drawContents, void* drawContentsArg, s8 parent
+);
 void set_window_update(s32 panelID, s32 func);
 void set_windows_visible(s32 groupIdx);
 

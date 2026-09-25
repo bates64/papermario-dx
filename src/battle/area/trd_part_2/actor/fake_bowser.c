@@ -69,7 +69,6 @@ enum N(AnimState) {
 
 #include "common/StartRumbleWithParams.inc.c"
 
-
 s32 N(BowserDefense)[] = {
     ELEMENT_NORMAL,   1,
     ELEMENT_BLAST,    1,
@@ -1823,7 +1822,9 @@ API_CALLABLE(N(PlayLandOnTowerFX)) {
     s32 actorID = evt_get_variable(script, *args++);
     Actor* actor = get_actor(actorID);
 
-    play_movement_dust_effects(2, actor->state.goalPos.x - 15.0f, actor->state.goalPos.y, actor->state.goalPos.z, actor->state.angle);
+    play_movement_dust_effects(
+        2, actor->state.goalPos.x - 15.0f, actor->state.goalPos.y, actor->state.goalPos.z, actor->state.angle
+    );
     return ApiStatus_DONE2;
 }
 

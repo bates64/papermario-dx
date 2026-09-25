@@ -10,9 +10,8 @@ extern Gfx D_09001040_398080[];
 extern Gfx D_090010E8_398128[];
 extern Gfx D_09001190_3981D0[];
 
-EffectInstance* chomp_drop_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5, f32 arg6, s32 arg7,
-                                f32 arg8, s32 arg9)
-{
+EffectInstance*
+chomp_drop_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5, f32 arg6, s32 arg7, f32 arg8, s32 arg9) {
     EffectBlueprint bp;
     EffectInstance* effect;
     ChompDropFXData* data;
@@ -146,20 +145,20 @@ void chomp_drop_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effectTemp)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effectTemp)->shared->graphics));
 
     guScaleF(sp20, 0.01f, 0.01f, 0.01f);
-    guPositionF(sp60, 0.0f, 0.0f, 0.0f, data->unk_24, data->unk_04 * 100.0f, data->unk_08 * 100.0f, data->unk_0C * 100.0f);
+    guPositionF(
+        sp60, 0.0f, 0.0f, 0.0f, data->unk_24, data->unk_04 * 100.0f, data->unk_08 * 100.0f, data->unk_0C * 100.0f
+    );
     guMtxCatF(sp60, sp20, sp20);
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gDPSetPrimColor(
-        gMainGfxPos++, 0, 0,
-        (sin_deg(temp_s6 * 30) * 25.0f) + 225.0f,
-        (sin_deg(temp_s6 * 30) * 25.0f) + 225.0f,
-        255,
+        gMainGfxPos++, 0, 0, (sin_deg(temp_s6 * 30) * 25.0f) + 225.0f, (sin_deg(temp_s6 * 30) * 25.0f) + 225.0f, 255,
         primA
     );
 
@@ -205,10 +204,8 @@ void chomp_drop_appendGfx(void* effect) {
 
         for (i = 0; i < 15; i++) {
             s32 i2 = i * 2;
-            gSP2Triangles(gMainGfxPos++,
-                i2    , i2 + 2, i2 + 1, i2,
-                i2 + 1, i2 + 2, i2 + 3, i2);
-            };
+            gSP2Triangles(gMainGfxPos++, i2, i2 + 2, i2 + 1, i2, i2 + 1, i2 + 2, i2 + 3, i2);
+        };
     }
 
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);

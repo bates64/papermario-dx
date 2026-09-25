@@ -7,8 +7,10 @@ extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(DefaultNPCs);
 
 EvtScript N(EVS_ExitWalk_nok_15_1) = EVT_EXIT_WALK(60, trd_00_ENTRY_0, "nok_15", nok_15_ENTRY_1);
-EvtScript N(EVS_ExitDoors_trd_01_0) = EVT_EXIT_DOUBLE_DOOR(trd_00_ENTRY_1, "trd_01", trd_01_ENTRY_0, COLLIDER_tt2, MODEL_o62, MODEL_doa);
-EvtScript N(EVS_ExitDoors_trd_05_1) = EVT_EXIT_DOUBLE_DOOR(trd_00_ENTRY_2, "trd_05", trd_05_ENTRY_1, COLLIDER_tt3, MODEL_o70, MODEL_o69);
+EvtScript N(EVS_ExitDoors_trd_01_0) =
+    EVT_EXIT_DOUBLE_DOOR(trd_00_ENTRY_1, "trd_01", trd_01_ENTRY_0, COLLIDER_tt2, MODEL_o62, MODEL_doa);
+EvtScript N(EVS_ExitDoors_trd_05_1) =
+    EVT_EXIT_DOUBLE_DOOR(trd_00_ENTRY_2, "trd_05", trd_05_ENTRY_1, COLLIDER_tt3, MODEL_o70, MODEL_o69);
 EvtScript N(EVS_ExitWalk_trd_05_2) = EVT_EXIT_WALK(60, trd_00_ENTRY_3, "trd_05", trd_05_ENTRY_2);
 EvtScript N(EVS_ExitWalk_nok_15_2) = EVT_EXIT_WALK(60, trd_00_ENTRY_4, "nok_15", nok_15_ENTRY_2);
 
@@ -112,7 +114,7 @@ EvtScript N(EVS_Main) = {
             // do nothing
         CaseOrEq(trd_00_ENTRY_1)
         CaseOrEq(trd_00_ENTRY_4)
-    EndCaseGroup
+        EndCaseGroup
     EndSwitch
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))

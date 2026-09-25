@@ -125,8 +125,9 @@ void au_mseq_fade_setup(AmbiencePlayer* player) {
         // update ticks needed = (32000 / 184) / 2, and then we divide by 1000 (since fade time has units of ms).
         // this reduces to 16/184, which is exactly 1.6 times 10/115
         // why this odd reduction was chosen unstead of 16/184 is unknown
-        player->fadeTime = (u32)(time * 10) / 115;
-        player->fadeStep = ((player->fadeSettingsGoal - player->fadeSettingsInitial) << 24) / ((s16)player->fadeTime & 0xFFFF);
+        player->fadeTime = (u32) (time * 10) / 115;
+        player->fadeStep =
+            ((player->fadeSettingsGoal - player->fadeSettingsInitial) << 24) / ((s16) player->fadeTime & 0xFFFF);
     }
 
     player->fadeSettingsTime = 0;
@@ -408,7 +409,8 @@ void au_mseq_player_update(AmbienceManager* manager, AmbiencePlayer* player) {
                 if ((voiceState->info.all & 0xFFFF0000) == voiceSelector) {
                     voice = &globals->voices[i];
                     if (voice->priority == manager->priority && trackIdx != TRACK_ID_DRUM) {
-                        voice->pitchRatio = au_compute_pitch_ratio(voiceState->pitch + (track->tuneLerp.current >> 16)) * track->instrument->pitchRatio;
+                        voice->pitchRatio = au_compute_pitch_ratio(voiceState->pitch + (track->tuneLerp.current >> 16))
+                            * track->instrument->pitchRatio;
                         voice->syncFlags |= AU_VOICE_SYNC_FLAG_PITCH;
                         isPitchChanged[i - player->firstVoiceIdx] = true;
                     }
@@ -436,7 +438,8 @@ void au_mseq_player_update(AmbienceManager* manager, AmbiencePlayer* player) {
                     voice = &globals->voices[i];
                     if (voice->priority == manager->priority) {
                         track = &player->tracks[voiceState->info.trackIndex];
-                        voice->clientVolume = VOL_MULT_3(player->fadeVolume >> 24, track->volumeLerp.current >> 16, voiceState->volume);
+                        voice->clientVolume =
+                            VOL_MULT_3(player->fadeVolume >> 24, track->volumeLerp.current >> 16, voiceState->volume);
                         voice->envelopeFlags |= AU_VOICE_ENV_FLAG_VOL_CHANGED;
                     }
                 }
@@ -448,7 +451,7 @@ void au_mseq_player_update(AmbienceManager* manager, AmbiencePlayer* player) {
     if (player->delay <= 0) {
         while (player->delay == 0) {
             op = au_mseq_read_next(player);
-            if ((s8)op >= 0) {
+            if ((s8) op >= 0) {
                 if (op == 0) {
                     // stop
                     player->mseqReadPos = nullptr;
@@ -460,7 +463,7 @@ void au_mseq_player_update(AmbienceManager* manager, AmbiencePlayer* player) {
                     // long delay
                     player->delay = ((op & 7) << 8) + au_mseq_read_next(player) + 0x78;
                 } else {
-                    //short delay
+                    // short delay
                     player->delay = op;
                 }
                 continue;
@@ -542,8 +545,12 @@ void au_mseq_player_update(AmbienceManager* manager, AmbiencePlayer* player) {
 
                                 voiceState->pitch = (arg1 & 0x7F) * 100 - track->instrument->keyBase;
                                 voiceState->volume = arg2 & 0x7F;
-                                voice->clientVolume = VOL_MULT_3(player->fadeVolume >> 24, track->volumeLerp.current >> 16, voiceState->volume);
-                                voice->pitchRatio = au_compute_pitch_ratio(voiceState->pitch + (track->tuneLerp.current >> 16)) * track->instrument->pitchRatio;
+                                voice->clientVolume = VOL_MULT_3(
+                                    player->fadeVolume >> 24, track->volumeLerp.current >> 16, voiceState->volume
+                                );
+                                voice->pitchRatio =
+                                    au_compute_pitch_ratio(voiceState->pitch + (track->tuneLerp.current >> 16))
+                                    * track->instrument->pitchRatio;
                                 voice->pan = track->pan;
                                 voice->reverb = track->reverb;
                                 voice->instrument = track->instrument;
@@ -554,11 +561,16 @@ void au_mseq_player_update(AmbienceManager* manager, AmbiencePlayer* player) {
                                 voiceState->isResumable = false;
                                 drum = &manager->globals->dataPER->drums[arg1 & 0x7F];
                                 bankPatch = drum->bankPatch;
-                                voice->instrument = au_get_instrument(manager->globals, bankPatch >> 8, bankPatch & 0xFF, &voice->envelope);
+                                voice->instrument = au_get_instrument(
+                                    manager->globals, bankPatch >> 8, bankPatch & 0xFF, &voice->envelope
+                                );
                                 voiceState->pitch = drum->keyBase - voice->instrument->keyBase;
                                 voiceState->volume = VOL_MULT_2(arg2 & 0x7F, drum->volume);
-                                voice->clientVolume = VOL_MULT_3(player->fadeVolume >> 24, track->volumeLerp.current >> 16, voiceState->volume);
-                                voice->pitchRatio = au_compute_pitch_ratio(voiceState->pitch) * voice->instrument->pitchRatio;
+                                voice->clientVolume = VOL_MULT_3(
+                                    player->fadeVolume >> 24, track->volumeLerp.current >> 16, voiceState->volume
+                                );
+                                voice->pitchRatio =
+                                    au_compute_pitch_ratio(voiceState->pitch) * voice->instrument->pitchRatio;
                                 voice->pan = drum->pan;
                                 voice->reverb = drum->reverb;
                                 voice->busID = manager->busID;
@@ -596,7 +608,9 @@ void au_mseq_player_update(AmbienceManager* manager, AmbiencePlayer* player) {
                             if ((voiceState->info.all & 0xFFFF0000) == voiceSelector) {
                                 voice = &globals->voices[i];
                                 if (voice->priority == manager->priority) {
-                                    voice->clientVolume = VOL_MULT_3(player->fadeVolume >> 24, track->volumeLerp.current >> 16, voiceState->volume);
+                                    voice->clientVolume = VOL_MULT_3(
+                                        player->fadeVolume >> 24, track->volumeLerp.current >> 16, voiceState->volume
+                                    );
                                     if (!isVolumeChanged[i - player->firstVoiceIdx]) {
                                         voice->envelopeFlags |= AU_VOICE_ENV_FLAG_VOL_CHANGED;
                                         isVolumeChanged[i - player->firstVoiceIdx] = true;
@@ -666,7 +680,9 @@ void au_mseq_player_update(AmbienceManager* manager, AmbiencePlayer* player) {
                         if ((voiceState->info.all & 0xFFFF0000) == voiceSelector) {
                             voice = &globals->voices[i];
                             if (voice->priority == manager->priority && trackIdx != TRACK_ID_DRUM) {
-                                voice->pitchRatio = au_compute_pitch_ratio(voiceState->pitch + (track->tuneLerp.current >> 16)) * track->instrument->pitchRatio;
+                                voice->pitchRatio =
+                                    au_compute_pitch_ratio(voiceState->pitch + (track->tuneLerp.current >> 16))
+                                    * track->instrument->pitchRatio;
                                 voice->syncFlags |= AU_VOICE_SYNC_FLAG_PITCH;
                                 isPitchChanged[i - player->firstVoiceIdx] = 1;
                             }
@@ -686,7 +702,8 @@ void au_mseq_player_update(AmbienceManager* manager, AmbiencePlayer* player) {
                 voice = &globals->voices[i];
                 if (voice->priority == manager->priority && !isVolumeChanged[i - player->firstVoiceIdx]) {
                     track = &player->tracks[voiceState->info.trackIndex];
-                    voice->clientVolume = VOL_MULT_3(player->fadeVolume >> 24, track->volumeLerp.current >> 16, voiceState->volume);
+                    voice->clientVolume =
+                        VOL_MULT_3(player->fadeVolume >> 24, track->volumeLerp.current >> 16, voiceState->volume);
                     voice->envelopeFlags |= AU_VOICE_ENV_FLAG_VOL_CHANGED;
                 }
             }
@@ -779,8 +796,10 @@ void au_mseq_restore_voices(AmbienceManager* manager, AmbiencePlayer* player) {
                     voiceState->info.all = player->id.all + (savedVoice->trackIndex << 16) + (savedVoice->tune << 8);
                     voiceState->pitch = (savedVoice->tune & 0x7F) * 100 - track->instrument->keyBase;
                     voiceState->volume = savedVoice->volume & 0x7F;
-                    voice->clientVolume = VOL_MULT_3(player->fadeVolume >> 24, track->volumeLerp.current >> 16, voiceState->volume);
-                    voice->pitchRatio = au_compute_pitch_ratio(voiceState->pitch + (track->tuneLerp.current >> 16)) * track->instrument->pitchRatio;
+                    voice->clientVolume =
+                        VOL_MULT_3(player->fadeVolume >> 24, track->volumeLerp.current >> 16, voiceState->volume);
+                    voice->pitchRatio = au_compute_pitch_ratio(voiceState->pitch + (track->tuneLerp.current >> 16))
+                        * track->instrument->pitchRatio;
                     voice->pan = track->pan;
                     voice->reverb = track->reverb;
                     voice->instrument = track->instrument;

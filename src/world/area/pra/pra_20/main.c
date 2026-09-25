@@ -5,7 +5,7 @@
 #include "../common/GlassShimmer.inc.c"
 
 s32 N(NearSingleDoorModels)[] = { MODEL_o999, MODEL_o1000, -1 };
-s32 N(FarSingleDoorModels)[]  = { MODEL_o997, MODEL_o998, -1 };
+s32 N(FarSingleDoorModels)[] = { MODEL_o997, MODEL_o998, -1 };
 
 s32 N(NearRightDoorModelsL)[] = { MODEL_o874, MODEL_o875, -1 };
 s32 N(NearRightDoorModelsR)[] = { MODEL_o876, MODEL_o877, -1 };

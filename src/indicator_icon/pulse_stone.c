@@ -40,8 +40,8 @@ s32 should_cancel_pulse_stone(void) {
     }
 
     if (partnerStatus->partnerActionState == PARTNER_ACTION_USE
-        && (partnerStatus->actingPartner == PARTNER_BOW || partnerStatus->actingPartner == PARTNER_PARAKARRY)
-    ) {
+        && (partnerStatus->actingPartner == PARTNER_BOW || partnerStatus->actingPartner == PARTNER_PARAKARRY))
+    {
         return true;
     }
 
@@ -51,12 +51,9 @@ s32 should_cancel_pulse_stone(void) {
 s32 should_continue_pulse_stone(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
-    if (!is_starting_conversation()
-        && !(playerStatus->flags & PS_FLAG_PAUSED)
-        && playerStatus->animFlags & PA_FLAG_USING_PULSE_STONE
-        && !has_valid_conversation_npc()
-        && !func_800E06D8()
-    ) {
+    if (!is_starting_conversation() && !(playerStatus->flags & PS_FLAG_PAUSED)
+        && playerStatus->animFlags & PA_FLAG_USING_PULSE_STONE && !has_valid_conversation_npc() && !func_800E06D8())
+    {
         // hardcoded map IDs assuming first 49 maps (in sbk) are a 7x7 grid
         s32 dx = abs((gGameStatusPtr->mapID % 7) - 2);
         s32 dy = gGameStatusPtr->mapID / 7;
@@ -96,8 +93,9 @@ void appendGfx_pulse_stone_icon(void) {
         guMtxCatF(sp18, sp58, sp58);
         guMtxF2L(sp58, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                    G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, pulse_stone_icon_gfx);
 
         dx = abs((gGameStatusPtr->mapID % 7) - 2);
@@ -142,9 +140,9 @@ void appendGfx_pulse_stone_icon(void) {
             }
         }
 
-        ifxImg.raster  = pulse_stone_icon_img;
-        ifxImg.width   = pulse_stone_icon_img_width;
-        ifxImg.height  = pulse_stone_icon_img_height;
+        ifxImg.raster = pulse_stone_icon_img;
+        ifxImg.width = pulse_stone_icon_img_width;
+        ifxImg.height = pulse_stone_icon_img_height;
         ifxImg.xOffset = -28;
         ifxImg.yOffset = 46;
         ifxImg.alpha = 255;

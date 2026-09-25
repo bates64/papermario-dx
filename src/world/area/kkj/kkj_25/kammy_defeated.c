@@ -5,7 +5,10 @@
 API_CALLABLE(N(SpawnStarsOrbitingKammy2)) {
     EffectInstance* effect;
 
-    fx_stars_orbiting(0, script->varTable[0], script->varTable[1], script->varTable[2], script->varTable[3], script->varTable[4], &effect);
+    fx_stars_orbiting(
+        0, script->varTable[0], script->varTable[1], script->varTable[2], script->varTable[3], script->varTable[4],
+        &effect
+    );
     script->varTablePtr[0] = effect;
 
     return ApiStatus_DONE2;

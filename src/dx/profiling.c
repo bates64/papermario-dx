@@ -146,7 +146,8 @@ void profiler_gfx_completed() {
     buffer_update(curData, time - gfx_start, curIndex);
 
 #ifdef GFX_PROFILING
-    gfx_subset_tallies[PROFILER_TIME_SUB_GFX_UPDATE - PROFILER_TIME_SUB_GFX_START] += time - gfx_subset_starts[PROFILER_TIME_SUB_GFX_UPDATE - PROFILER_TIME_SUB_GFX_START];
+    gfx_subset_tallies[PROFILER_TIME_SUB_GFX_UPDATE - PROFILER_TIME_SUB_GFX_START] +=
+        time - gfx_subset_starts[PROFILER_TIME_SUB_GFX_UPDATE - PROFILER_TIME_SUB_GFX_START];
 
     for (s32 i = 0; i < GFX_SUBSET_SIZE; i++) {
         curData = &all_profiling_data[i + PROFILER_TIME_SUB_GFX_START];
@@ -162,7 +163,6 @@ void profiler_gfx_completed() {
     gfx_buffer_index = curIndex;
 }
 
-
 void profiler_audio_completed() {
     ProfileTimeData* curData = &all_profiling_data[PROFILER_TIME_AUDIO];
     u32 time = osGetCount();
@@ -172,7 +172,8 @@ void profiler_audio_completed() {
     buffer_update(curData, time - audio_start, curIndex);
 
 #ifdef AUDIO_PROFILING
-    audio_subset_tallies[PROFILER_TIME_SUB_AUDIO_UPDATE - PROFILER_TIME_SUB_AUDIO_START] += time - audio_subset_starts[PROFILER_TIME_SUB_AUDIO_UPDATE - PROFILER_TIME_SUB_AUDIO_START];
+    audio_subset_tallies[PROFILER_TIME_SUB_AUDIO_UPDATE - PROFILER_TIME_SUB_AUDIO_START] +=
+        time - audio_subset_starts[PROFILER_TIME_SUB_AUDIO_UPDATE - PROFILER_TIME_SUB_AUDIO_START];
 
     for (s32 i = 0; i < AUDIO_SUBSET_SIZE; i++) {
         cur_data = &all_profiling_data[i + PROFILER_TIME_SUB_AUDIO_START];
@@ -212,7 +213,7 @@ extern u8 fDebug;
 
 static void update_rdp_timers() {
     u32 tmem = IO_READ(DPC_TMEM_REG);
-    u32 cmd =  IO_READ(DPC_BUFBUSY_REG);
+    u32 cmd = IO_READ(DPC_BUFBUSY_REG);
     u32 pipe = IO_READ(DPC_PIPEBUSY_REG);
 
     if (gGameStatus.frameCounter > 5) {
@@ -283,7 +284,9 @@ void profiler_print_times() {
 
 #ifndef PUPPYPRINT_DEBUG
     static u8 show_profiler = 0;
-    if ((gPlayerStatus.pressedButtons & (L_TRIG | U_JPAD)) && (gPlayerStatus.curButtons & L_TRIG) && (gPlayerStatus.curButtons & U_JPAD)) {
+    if ((gPlayerStatus.pressedButtons & (L_TRIG | U_JPAD)) && (gPlayerStatus.curButtons & L_TRIG)
+        && (gPlayerStatus.curButtons & U_JPAD))
+    {
         show_profiler ^= 1;
     }
 #endif
@@ -305,7 +308,9 @@ void profiler_print_times() {
         u32 totalCpu = microseconds[PROFILER_TIME_TOTAL] + microseconds[PROFILER_TIME_AUDIO] * 2;
 #ifndef GFX_PROFILING
         u32 total_rsp = microseconds[PROFILER_TIME_RSP_GFX] + microseconds[PROFILER_TIME_RSP_AUDIO] * 2;
-        u32 max_rdp  = MAX(MAX(microseconds[PROFILER_TIME_TMEM], microseconds[PROFILER_TIME_CMD]), microseconds[PROFILER_TIME_PIPE]);
+        u32 max_rdp =
+            MAX(MAX(microseconds[PROFILER_TIME_TMEM], microseconds[PROFILER_TIME_CMD]),
+                microseconds[PROFILER_TIME_PIPE]);
 #endif
 
         s32 textBufferLabelsLen = sprintf(
@@ -322,8 +327,7 @@ void profiler_print_times() {
             " Entities\n"
             " Gfx\n"
             " Audio\n",
-            1000000.0f / microseconds[PROFILER_TIME_FPS],
-            totalCpu, totalCpu / 333
+            1000000.0f / microseconds[PROFILER_TIME_FPS], totalCpu, totalCpu / 333
         );
         s32 textBufferTimeLen = sprintf(
             textBufferTime,
@@ -339,20 +343,17 @@ void profiler_print_times() {
             "%lu\n"
             "%lu\n"
             "%lu\n",
-            microseconds[PROFILER_TIME_CONTROLLERS],
-            microseconds[PROFILER_TIME_WORKERS],
-            microseconds[PROFILER_TIME_TRIGGERS],
-            microseconds[PROFILER_TIME_EVT],
-            microseconds[PROFILER_TIME_MESSAGES],
-            microseconds[PROFILER_TIME_HUD_ELEMENTS],
-            microseconds[PROFILER_TIME_ENTITIES],
+            microseconds[PROFILER_TIME_CONTROLLERS], microseconds[PROFILER_TIME_WORKERS],
+            microseconds[PROFILER_TIME_TRIGGERS], microseconds[PROFILER_TIME_EVT], microseconds[PROFILER_TIME_MESSAGES],
+            microseconds[PROFILER_TIME_HUD_ELEMENTS], microseconds[PROFILER_TIME_ENTITIES],
             microseconds[PROFILER_TIME_GFX],
             microseconds[PROFILER_TIME_AUDIO] * 2 // audio is 60Hz, so double the average
         );
 
         switch (get_game_mode()) {
             case GAME_MODE_WORLD:
-                sprintf(&textBufferLabels[textBufferLabelsLen],
+                sprintf(
+                    &textBufferLabels[textBufferLabelsLen],
                     " Encounters\n"
                     " NPCs\n"
                     " Player\n"
@@ -360,40 +361,33 @@ void profiler_print_times() {
                     " Effects\n"
                     " Cameras\n"
                 );
-                sprintf(&textBufferTime[textBufferTimeLen],
+                sprintf(
+                    &textBufferTime[textBufferTimeLen],
                     "%lu\n"
                     "%lu\n"
                     "%lu\n"
                     "%lu\n"
                     "%lu\n"
                     "%lu\n",
-                    microseconds[PROFILE_TIME_WORLD_ENCOUNTERS],
-                    microseconds[PROFILE_TIME_WORLD_NPCS],
-                    microseconds[PROFILE_TIME_WORLD_PLAYER],
-                    microseconds[PROFILE_TIME_WORLD_ITEM_ENTITIES],
-                    microseconds[PROFILE_TIME_WORLD_EFFECTS],
-                    microseconds[PROFILE_TIME_WORLD_CAMERAS]
+                    microseconds[PROFILE_TIME_WORLD_ENCOUNTERS], microseconds[PROFILE_TIME_WORLD_NPCS],
+                    microseconds[PROFILE_TIME_WORLD_PLAYER], microseconds[PROFILE_TIME_WORLD_ITEM_ENTITIES],
+                    microseconds[PROFILE_TIME_WORLD_EFFECTS], microseconds[PROFILE_TIME_WORLD_CAMERAS]
                 );
                 break;
             default:
-                sprintf(&textBufferLabels[textBufferLabelsLen],
-                    " Game mode step\n"
-                );
-                sprintf(&textBufferTime[textBufferTimeLen],
-                    "%lu\n",
-                    microseconds[PROFILER_TIME_STEP_GAME_MODE]
-                );
+                sprintf(&textBufferLabels[textBufferLabelsLen], " Game mode step\n");
+                sprintf(&textBufferTime[textBufferTimeLen], "%lu\n", microseconds[PROFILER_TIME_STEP_GAME_MODE]);
                 break;
         }
 
-        dx_string_to_msg((MSG_PTR)textBufferLabels, textBufferLabels);
-        dx_string_to_msg((MSG_PTR)textBufferTime, textBufferTime);
+        dx_string_to_msg((MSG_PTR) textBufferLabels, textBufferLabels);
+        dx_string_to_msg((MSG_PTR) textBufferTime, textBufferTime);
         textBufferLabels[0] = textBufferTime[0] = MSG_CHAR_READ_FUNCTION;
         textBufferLabels[1] = textBufferTime[1] = MSG_READ_FUNC_SIZE;
         textBufferLabels[2] = textBufferTime[2] = 14;
         textBufferLabels[3] = textBufferTime[3] = 14;
-        draw_msg((s32)&textBufferLabels, 3, 0, 255, 0, 0);
-        draw_msg((s32)&textBufferTime, 110, 0, 255, 0, 0);
+        draw_msg((s32) &textBufferLabels, 3, 0, 255, 0, 0);
+        draw_msg((s32) &textBufferTime, 110, 0, 255, 0, 0);
 
 #ifdef GFX_PROFILING
         s32 timeOffset = 100;
@@ -428,20 +422,16 @@ void profiler_print_times() {
             "%lu\n"
             "%lu\n"
             "%lu\n",
-            microseconds[PROFILER_TIME_SUB_GFX_ENTITIES],
-            microseconds[PROFILER_TIME_SUB_GFX_MODELS],
-            microseconds[PROFILER_TIME_SUB_GFX_PLAYER],
-            microseconds[PROFILER_TIME_SUB_GFX_WORKERS],
-            microseconds[PROFILER_TIME_SUB_GFX_NPCS],
-            microseconds[PROFILER_TIME_SUB_GFX_EFFECTS],
-            microseconds[PROFILER_TIME_SUB_GFX_RENDER_TASKS],
-            microseconds[PROFILER_TIME_SUB_GFX_HUD_ELEMENTS],
-            microseconds[PROFILER_TIME_SUB_GFX_BACK_UI],
-            microseconds[PROFILER_TIME_SUB_GFX_FRONT_UI]
+            microseconds[PROFILER_TIME_SUB_GFX_ENTITIES], microseconds[PROFILER_TIME_SUB_GFX_MODELS],
+            microseconds[PROFILER_TIME_SUB_GFX_PLAYER], microseconds[PROFILER_TIME_SUB_GFX_WORKERS],
+            microseconds[PROFILER_TIME_SUB_GFX_NPCS], microseconds[PROFILER_TIME_SUB_GFX_EFFECTS],
+            microseconds[PROFILER_TIME_SUB_GFX_RENDER_TASKS], microseconds[PROFILER_TIME_SUB_GFX_HUD_ELEMENTS],
+            microseconds[PROFILER_TIME_SUB_GFX_BACK_UI], microseconds[PROFILER_TIME_SUB_GFX_FRONT_UI]
         );
 #else
         s32 time_offset = 50;
-        sprintf(text_buffer_labels,
+        sprintf(
+            text_buffer_labels,
             "    " // space for prepend
             "\n"
             "RDP\t\t\t%lu (%lu%%)\n"
@@ -452,10 +442,10 @@ void profiler_print_times() {
             "RSP\t\t%lu (%lu%%)\n"
             " Gfx\n"
             " Audio\n",
-            max_rdp, max_rdp / 333,
-            total_rsp, total_rsp / 333
+            max_rdp, max_rdp / 333, total_rsp, total_rsp / 333
         );
-        sprintf(text_buffer_time,
+        sprintf(
+            text_buffer_time,
             "    " // space for prepend
             "\n"
             "\n"
@@ -466,21 +456,18 @@ void profiler_print_times() {
             "\n"
             "%lu\n"
             "%lu\n",
-            microseconds[PROFILER_TIME_TMEM],
-            microseconds[PROFILER_TIME_CMD],
-            microseconds[PROFILER_TIME_PIPE],
-            microseconds[PROFILER_TIME_RSP_GFX],
-            microseconds[PROFILER_TIME_RSP_AUDIO] * 2
+            microseconds[PROFILER_TIME_TMEM], microseconds[PROFILER_TIME_CMD], microseconds[PROFILER_TIME_PIPE],
+            microseconds[PROFILER_TIME_RSP_GFX], microseconds[PROFILER_TIME_RSP_AUDIO] * 2
         );
 #endif
-        dx_string_to_msg((MSG_PTR)textBufferLabels, textBufferLabels);
-        dx_string_to_msg((MSG_PTR)textBufferTime, textBufferTime);
+        dx_string_to_msg((MSG_PTR) textBufferLabels, textBufferLabels);
+        dx_string_to_msg((MSG_PTR) textBufferTime, textBufferTime);
         textBufferLabels[0] = textBufferTime[0] = MSG_CHAR_READ_FUNCTION;
         textBufferLabels[1] = textBufferTime[1] = MSG_READ_FUNC_SIZE;
         textBufferLabels[2] = textBufferTime[2] = 14;
         textBufferLabels[3] = textBufferTime[3] = 14;
-        draw_msg((s32)&textBufferLabels, SCREEN_WIDTH/2, 0, 255, 0, 0);
-        draw_msg((s32)&textBufferTime, SCREEN_WIDTH/2 + timeOffset, 0, 255, 0, 0);
+        draw_msg((s32) &textBufferLabels, SCREEN_WIDTH / 2, 0, 255, 0, 0);
+        draw_msg((s32) &textBufferTime, SCREEN_WIDTH / 2 + timeOffset, 0, 255, 0, 0);
     }
 }
 

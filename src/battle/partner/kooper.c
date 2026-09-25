@@ -53,11 +53,15 @@ API_CALLABLE(N(SlowDown)) {
     add_xz_vec3f(&partnerActorMovement->curPos, partnerActor->state.speed, partnerActor->state.angle);
 
     if (partnerActor->state.speed < 4.0f) {
-        play_movement_dust_effects(0, partnerActor->state.curPos.x, partnerActor->state.curPos.y,
-                                   partnerActor->state.curPos.z, partnerActor->state.angle);
+        play_movement_dust_effects(
+            0, partnerActor->state.curPos.x, partnerActor->state.curPos.y, partnerActor->state.curPos.z,
+            partnerActor->state.angle
+        );
     } else {
-        play_movement_dust_effects(1, partnerActor->state.curPos.x, partnerActor->state.curPos.y,
-                                   partnerActor->state.curPos.z, partnerActor->state.angle);
+        play_movement_dust_effects(
+            1, partnerActor->state.curPos.x, partnerActor->state.curPos.y, partnerActor->state.curPos.z,
+            partnerActor->state.angle
+        );
     }
 
     partnerActorMovement->speed = partnerActorMovement->speed / 1.5;
@@ -820,41 +824,41 @@ EvtScript N(powerShell) = {
         Call(RemoveActorDecoration, ACTOR_SELF, PRT_ZERO, 1)
     EndThread
     Set(LFlag0, false)
-        Label(10)
-        Wait(1)
-        Call(SetGoalToTarget, ACTOR_PARTNER)
-        Call(GetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-        Call(GetActorPos, ACTOR_PARTNER, LVar3, LVar4, LVar5)
-        IfGt(LVar0, LVar3)
-            Goto(10)
-        EndIf
-        Call(PartnerTestEnemy, LVar0, 0, SUPPRESS_EVENTS_KOOPER_TEST, 0, 2, BS_FLAGS1_INCLUDE_POWER_UPS)
-        IfEq(LVar0, 6)
-            Goto(12)
-        EndIf
-        IfEq(LFlag0, false)
-            Call(GetPartnerActionQuality, LVar0)
-            Switch(LVar0)
-                CaseGt(0)
-                    Call(UseBattleCamPreset, BTL_CAM_RETURN_HOME)
-                CaseDefault
-                    Call(UseBattleCamPreset, BTL_CAM_PARTNER_MISTAKE)
-            EndSwitch
-        EndIf
-        Set(LFlag0, true)
+    Label(10)
+    Wait(1)
+    Call(SetGoalToTarget, ACTOR_PARTNER)
+    Call(GetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
+    Call(GetActorPos, ACTOR_PARTNER, LVar3, LVar4, LVar5)
+    IfGt(LVar0, LVar3)
+        Goto(10)
+    EndIf
+    Call(PartnerTestEnemy, LVar0, 0, SUPPRESS_EVENTS_KOOPER_TEST, 0, 2, BS_FLAGS1_INCLUDE_POWER_UPS)
+    IfEq(LVar0, 6)
+        Goto(12)
+    EndIf
+    IfEq(LFlag0, false)
         Call(GetPartnerActionQuality, LVar0)
         Switch(LVar0)
             CaseGt(0)
-                Call(PartnerDamageEnemy, LVar0, DAMAGE_TYPE_MULTIPLE_POPUPS, SUPPRESS_EVENTS_KOOPER_DAMAGE, 0, LVarF, BS_FLAGS1_NICE_HIT | BS_FLAGS1_TRIGGER_EVENTS | BS_FLAGS1_INCLUDE_POWER_UPS)
+                Call(UseBattleCamPreset, BTL_CAM_RETURN_HOME)
             CaseDefault
-                Call(PartnerDamageEnemy, LVar0, DAMAGE_TYPE_MULTIPLE_POPUPS, SUPPRESS_EVENTS_KOOPER_DAMAGE, 0, LVarE, BS_FLAGS1_TRIGGER_EVENTS | BS_FLAGS1_INCLUDE_POWER_UPS)
+                Call(UseBattleCamPreset, BTL_CAM_PARTNER_MISTAKE)
         EndSwitch
-        Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_NONE)
-        Label(12)
-        Call(ChooseNextTarget, ITER_NEXT, LVar2)
-        IfNe(LVar2, ITER_NO_MORE)
-            Goto(10)
-        EndIf
+    EndIf
+    Set(LFlag0, true)
+    Call(GetPartnerActionQuality, LVar0)
+    Switch(LVar0)
+        CaseGt(0)
+            Call(PartnerDamageEnemy, LVar0, DAMAGE_TYPE_MULTIPLE_POPUPS, SUPPRESS_EVENTS_KOOPER_DAMAGE, 0, LVarF, BS_FLAGS1_NICE_HIT | BS_FLAGS1_TRIGGER_EVENTS | BS_FLAGS1_INCLUDE_POWER_UPS)
+        CaseDefault
+            Call(PartnerDamageEnemy, LVar0, DAMAGE_TYPE_MULTIPLE_POPUPS, SUPPRESS_EVENTS_KOOPER_DAMAGE, 0, LVarE, BS_FLAGS1_TRIGGER_EVENTS | BS_FLAGS1_INCLUDE_POWER_UPS)
+    EndSwitch
+    Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_NONE)
+    Label(12)
+    Call(ChooseNextTarget, ITER_NEXT, LVar2)
+    IfNe(LVar2, ITER_NO_MORE)
+        Goto(10)
+    EndIf
     IfEq(LFlag0, false)
         Call(GetPartnerActionQuality, LVar0)
         Switch(LVar0)

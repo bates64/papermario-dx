@@ -8,7 +8,7 @@
 #endif
 
 API_CALLABLE(N(UpdateEnchantedBowserColors)) {
-    #define RGBA_BUF_SIZE 20
+#define RGBA_BUF_SIZE 20
     Actor* actor = get_actor(script->owner1.actorID);
     ActorPart* part;
     s32 i, j;
@@ -59,7 +59,9 @@ API_CALLABLE(N(UpdateEnchantedBowserColors)) {
             colorRGBA = 255;
             for (i = 0; i < 10; i++) {
                 // TODO find better match for opacity
-                set_npc_imgfx_comp(part->spriteInstanceID, i, IMGFX_COLOR_BUF_SET_MODULATE, j, colorRGBA, 0, opacity & 0xFFFF, 0);
+                set_npc_imgfx_comp(
+                    part->spriteInstanceID, i, IMGFX_COLOR_BUF_SET_MODULATE, j, colorRGBA, 0, opacity & 0xFFFF, 0
+                );
             }
         }
         script->functionTemp[1] = 0;
@@ -68,5 +70,5 @@ API_CALLABLE(N(UpdateEnchantedBowserColors)) {
         return ApiStatus_BLOCK;
     }
 
-    #undef RGBA_BUF_SIZE
+#undef RGBA_BUF_SIZE
 }

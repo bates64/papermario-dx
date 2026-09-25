@@ -13,20 +13,20 @@
 
 // layout
 
-const s32 MainMenuPosX    = 26;
-const s32 MainMenuPosY    = 60;
+const s32 MainMenuPosX = 26;
+const s32 MainMenuPosY = 60;
 
-const s32 RowHeight       = 15;
-const s32 BottomRowY      = 222;
+const s32 RowHeight = 15;
+const s32 BottomRowY = 222;
 
-const s32 SubmenuPosX     = 140;
-const s32 SubmenuPosY     = MainMenuPosY;
+const s32 SubmenuPosX = 140;
+const s32 SubmenuPosY = MainMenuPosY;
 
-const s32 BoxOutsetX      = 10;
-const s32 BoxOutsetY      = 4;
+const s32 BoxOutsetX = 10;
+const s32 BoxOutsetY = 4;
 
-const s32 SubBoxPosX      = SubmenuPosX - BoxOutsetX;
-const s32 SubBoxPosY      = SubmenuPosY - BoxOutsetY;
+const s32 SubBoxPosX = SubmenuPosX - BoxOutsetX;
+const s32 SubBoxPosY = SubmenuPosY - BoxOutsetY;
 
 // which menu or submenu is open, only one is displayed at a time
 // pressing ACCEPT (R) or CANCEL (L) usually moves between these states
@@ -65,8 +65,8 @@ s32 DebugMenuState = DBM_NONE;
 b32 DebugStateChanged = false;
 
 const s32 DefaultColor = MSG_PAL_WHITE;
-const s32 HoverColor   = MSG_PAL_GREEN;
-const s32 SelectColor  = MSG_PAL_PURPLE;
+const s32 HoverColor = MSG_PAL_GREEN;
+const s32 SelectColor = MSG_PAL_PURPLE;
 s32 HighlightColor;
 
 // data grabbed during map or battle load
@@ -162,8 +162,10 @@ void dx_debug_update_buttons() {
 // utility functions for drawing menus
 
 void dx_debug_draw_box(s32 posX, s32 posY, s32 sizeX, s32 sizeY, int style, s32 opacity) {
-    draw_box(0, (WindowStyle)style, posX, posY, 0, sizeX, sizeY, opacity,
-        0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, 0, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+    draw_box(
+        0, (WindowStyle) style, posX, posY, 0, sizeX, sizeY, opacity, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, 0,
+        nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr
+    );
 }
 
 void dx_debug_draw_ascii(const char* text, s32 color, s32 posX, s32 posY) {
@@ -171,7 +173,7 @@ void dx_debug_draw_ascii(const char* text, s32 color, s32 posX, s32 posY) {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
     dx_string_to_msg(&buf[4], text);
-    draw_msg((s32)buf, posX, posY, 255, color, 0);
+    draw_msg((s32) buf, posX, posY, 255, color, 0);
 }
 
 void dx_debug_draw_ascii_with_effect(const char* text, s32 color, s32 posX, s32 posY, s32 effect) {
@@ -179,7 +181,7 @@ void dx_debug_draw_ascii_with_effect(const char* text, s32 color, s32 posX, s32 
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
     dx_string_to_msg(&buf[4], text);
-    draw_msg((s32)buf, posX, posY, 255, color, effect);
+    draw_msg((s32) buf, posX, posY, 255, color, effect);
 }
 
 void dx_debug_draw_msg(s32 msgID, s32 color, s32 alpha, s32 posX, s32 posY) {
@@ -189,7 +191,7 @@ void dx_debug_draw_msg(s32 msgID, s32 color, s32 alpha, s32 posX, s32 posY) {
     ALIGNED(8) MSG_BIN dmaBuf[124];
     dma_load_msg(msgID, dmaBuf);
     memcpy(&buf[4], dmaBuf, sizeof(dmaBuf));
-    draw_msg((s32)buf, posX, posY, alpha, color, 0);
+    draw_msg((s32) buf, posX, posY, alpha, color, 0);
 }
 
 void dx_debug_draw_number(s32 number, char* fmt, s32 color, s32 alpha, s32 posX, s32 posY) {
@@ -199,7 +201,7 @@ void dx_debug_draw_number(s32 number, char* fmt, s32 color, s32 alpha, s32 posX,
     };
     sprintf(fmtBuf, fmt, number);
     dx_string_to_msg(&buf[4], fmtBuf);
-    draw_msg((s32)buf, posX, posY, alpha, color, 0);
+    draw_msg((s32) buf, posX, posY, alpha, color, 0);
 }
 
 // efficiently renders an number with (optionally) a digit highlighted using a single draw_msg call
@@ -231,35 +233,35 @@ void dx_debug_draw_editable_number(s32 number, char* fmt, s32 selectedDigit, b32
     msgBuf[pos] = MSG_CHAR_READ_END;
 
     if (hasSelected && selectedDigit == -1) {
-        draw_msg((s32)msgBuf, posX, posY, 255, HighlightColor, 0);
+        draw_msg((s32) msgBuf, posX, posY, 255, HighlightColor, 0);
     } else {
-        draw_msg((s32)msgBuf, posX, posY, 255, DefaultColor, 0);
+        draw_msg((s32) msgBuf, posX, posY, 255, DefaultColor, 0);
     }
 }
 
 // utility functions for menu navigation
 
 s32 dx_debug_clamp(s32 v, s32 min, s32 max) {
-  const s32 u = v < min ? min : v;
-  return u > max ? max : u;
+    const s32 u = v < min ? min : v;
+    return u > max ? max : u;
 }
 
 s32 dx_debug_wrap(s32 v, s32 min, s32 max) {
-  const s32 u = v < min ? v + (max - min + 1) : v;
-  return u > max ? u - (max - min + 1) : u;
+    const s32 u = v < min ? v + (max - min + 1) : v;
+    return u > max ? u - (max - min + 1) : u;
 }
 
 // range from [min, max] with min < max
 s32 dx_debug_menu_nav_1D_vertical(s32 cur, s32 min, s32 max, b32 flip) {
     if (NAV_UP) {
-        if(flip) {
+        if (flip) {
             cur++;
         } else {
             cur--;
         }
     }
     if (NAV_DOWN) {
-        if(flip) {
+        if (flip) {
             cur--;
         } else {
             cur++;
@@ -278,14 +280,14 @@ s32 dx_debug_menu_nav_1D_vertical(s32 cur, s32 min, s32 max, b32 flip) {
 // range from [min, max] with min < max
 s32 dx_debug_menu_nav_1D_horizontal(s32 cur, s32 min, s32 max, b32 flip) {
     if (NAV_LEFT) {
-        if(flip) {
+        if (flip) {
             cur++;
         } else {
             cur--;
         }
     }
     if (NAV_RIGHT) {
-        if(flip) {
+        if (flip) {
             cur--;
         } else {
             cur++;
@@ -315,8 +317,7 @@ s32 dx_debug_menu_nav_2D(s32 cur, s32 max, s32 nrows) {
         cur--;
         if (cur < 0) {
             cur += nrows;
-        }
-        else if (cur % nrows == nrows - 1) {
+        } else if (cur % nrows == nrows - 1) {
             cur += nrows;
         }
         while (cur >= max) {
@@ -327,8 +328,7 @@ s32 dx_debug_menu_nav_2D(s32 cur, s32 max, s32 nrows) {
         cur++;
         if (cur >= max) {
             cur = (cur / nrows) * nrows;
-        }
-        else if (cur % nrows == 0) {
+        } else if (cur % nrows == 0) {
             cur -= nrows;
         }
     }
@@ -473,10 +473,10 @@ DebugMenuEntry DebugMainMenu[] = {
 s32 MainMenuPos = 0;
 
 // position of the blue box containing the main menu options
-const s32 MainBoxPosX     = MainMenuPosX - BoxOutsetX;
-const s32 MainBoxPosY     = MainMenuPosY - BoxOutsetY;
-const s32 MainBoxWidth    = 96;
-const s32 MainBoxHeight   = ARRAY_COUNT(DebugMainMenu) * RowHeight + 8;
+const s32 MainBoxPosX = MainMenuPosX - BoxOutsetX;
+const s32 MainBoxPosY = MainMenuPosY - BoxOutsetY;
+const s32 MainBoxWidth = 96;
+const s32 MainBoxHeight = ARRAY_COUNT(DebugMainMenu) * RowHeight + 8;
 
 f32 ArrowAnimOffset = 0;
 f32 DebugArrowPhase = 0.0f;
@@ -698,7 +698,9 @@ void dx_debug_update_quick_save() {
     }
 
     // draw
-    dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 75, ARRAY_COUNT(DebugQuickSaveMenu) * RowHeight + 8, WINDOW_STYLE_20, 192);
+    dx_debug_draw_box(
+        SubBoxPosX, SubBoxPosY + RowHeight, 75, ARRAY_COUNT(DebugQuickSaveMenu) * RowHeight + 8, WINDOW_STYLE_20, 192
+    );
 
     for (idx = 0; idx < ARRAY_COUNT(DebugQuickSaveMenu); idx++) {
         s32 color = (QuickSaveMenuPos == idx) ? HighlightColor : DefaultColor;
@@ -720,7 +722,8 @@ void dx_debug_update_select_area() {
     s32 i, j, idx;
     s32 nrows, ncols;
     s32 numAreas;
-    for (numAreas = 0; gAreas[numAreas].maps != nullptr; numAreas++) {}
+    for (numAreas = 0; gAreas[numAreas].maps != nullptr; numAreas++) {
+    }
     s32 prev = SelectAreaMenuPos;
 
     // select optimal shape for the menu based on numAreas
@@ -767,7 +770,9 @@ void dx_debug_update_select_area() {
 
     // draw
 
-    dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, AreaSizeX * ncols + 8, RowHeight * nrows + 8, WINDOW_STYLE_20, 192);
+    dx_debug_draw_box(
+        SubBoxPosX, SubBoxPosY + RowHeight, AreaSizeX * ncols + 8, RowHeight * nrows + 8, WINDOW_STYLE_20, 192
+    );
 
     idx = 0;
     for (i = 0; i < ncols; i++) {
@@ -821,9 +826,14 @@ void dx_debug_update_select_map() {
     maxCol = numMaps / numRows;
 
     if (maxCol > 2) {
-        dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, MapSizeX * numCols + 8, RowHeight * (numRows + 1) + 8, WINDOW_STYLE_20, 192);
+        dx_debug_draw_box(
+            SubBoxPosX, SubBoxPosY + RowHeight, MapSizeX * numCols + 8, RowHeight * (numRows + 1) + 8, WINDOW_STYLE_20,
+            192
+        );
     } else {
-        dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, MapSizeX * numCols + 8, RowHeight * numRows + 8, WINDOW_STYLE_20, 192);
+        dx_debug_draw_box(
+            SubBoxPosX, SubBoxPosY + RowHeight, MapSizeX * numCols + 8, RowHeight * numRows + 8, WINDOW_STYLE_20, 192
+        );
     }
 
     if (maxCol < 3) {
@@ -842,7 +852,9 @@ void dx_debug_update_select_map() {
             if (idx < numMaps) {
                 s32 color = (SelectMapMenuPos == idx) ? HighlightColor : DefaultColor;
                 const char* name = maps[idx];
-                dx_debug_draw_ascii(name, color, SubmenuPosX + (i - startCol) * MapSizeX, SubmenuPosY + (j + 1) * RowHeight);
+                dx_debug_draw_ascii(
+                    name, color, SubmenuPosX + (i - startCol) * MapSizeX, SubmenuPosY + (j + 1) * RowHeight
+                );
             }
             idx++;
         }
@@ -854,14 +866,20 @@ void dx_debug_update_select_map() {
             char msgLeftArrow[] = {
                 MSG_CHAR_LEFT, MSG_CHAR_READ_END
             };
-            draw_msg((s32)msgLeftArrow, SubmenuPosX - 2 - round(3.0f * ArrowAnimOffset), SubmenuPosY + 104, 255, DefaultColor, 0);
+            draw_msg(
+                (s32) msgLeftArrow, SubmenuPosX - 2 - round(3.0f * ArrowAnimOffset), SubmenuPosY + 104, 255,
+                DefaultColor, 0
+            );
         }
         // right arrow
         if (curCol < maxCol - 1) {
             char msgRightArrow[] = {
                 MSG_CHAR_RIGHT, MSG_CHAR_READ_END
             };
-            draw_msg((s32)msgRightArrow, SubmenuPosX + 128 + round(3.0f * ArrowAnimOffset), SubmenuPosY + 104, 255, DefaultColor, 0);
+            draw_msg(
+                (s32) msgRightArrow, SubmenuPosX + 128 + round(3.0f * ArrowAnimOffset), SubmenuPosY + 104, 255,
+                DefaultColor, 0
+            );
         }
     }
 }
@@ -960,18 +978,15 @@ b32 dx_debug_read_battle_data(BattleArea* battleArea, void* address, void* dest,
     u32 offset;
     u8* romStart;
 
-    if (battleArea->dmaStart == nullptr
-        || battleArea->dmaEnd == nullptr
-        || battleArea->dmaDest == nullptr
-        || size <= 0
-    ) {
+    if (battleArea->dmaStart == nullptr || battleArea->dmaEnd == nullptr || battleArea->dmaDest == nullptr || size <= 0)
+    {
         return false;
     }
 
-    areaVramStart = (u32)battleArea->dmaDest;
-    areaSize = (u32)battleArea->dmaEnd - (u32)battleArea->dmaStart;
-    addressValue = (u32)address;
-    if (addressValue < areaVramStart || (u32)size > areaSize) {
+    areaVramStart = (u32) battleArea->dmaDest;
+    areaSize = (u32) battleArea->dmaEnd - (u32) battleArea->dmaStart;
+    addressValue = (u32) address;
+    if (addressValue < areaVramStart || (u32) size > areaSize) {
         return false;
     }
 
@@ -980,16 +995,16 @@ b32 dx_debug_read_battle_data(BattleArea* battleArea, void* address, void* dest,
         return false;
     }
 
-    romStart = (u8*)battleArea->dmaStart + offset;
+    romStart = (u8*) battleArea->dmaStart + offset;
     dma_copy(romStart, romStart + size, dest);
     return true;
 }
 
 // reads an actor overlay name from an unloaded battle area
 b32 dx_debug_read_actor_overlay_name(BattleArea* battleArea, const char* address, char* dest) {
-    u32 areaVramEnd = (u32)battleArea->dmaDest + ((u32)battleArea->dmaEnd - (u32)battleArea->dmaStart);
-    u32 alignedAddress = (u32)address & ~1;
-    s32 nameOffset = (u32)address - alignedAddress;
+    u32 areaVramEnd = (u32) battleArea->dmaDest + ((u32) battleArea->dmaEnd - (u32) battleArea->dmaStart);
+    u32 alignedAddress = (u32) address & ~1;
+    s32 nameOffset = (u32) address - alignedAddress;
     s32 readSize = DEBUG_BATTLE_PREVIEW_NAME_LEN + nameOffset;
     s32 i;
 
@@ -1000,8 +1015,8 @@ b32 dx_debug_read_actor_overlay_name(BattleArea* battleArea, const char* address
         readSize = (areaVramEnd - alignedAddress) & ~1;
     }
     if (readSize <= nameOffset
-        || !dx_debug_read_battle_data(battleArea, (void*)alignedAddress, DebugBattlePreviewStringBuf, readSize)
-    ) {
+        || !dx_debug_read_battle_data(battleArea, (void*) alignedAddress, DebugBattlePreviewStringBuf, readSize))
+    {
         dest[0] = '\0';
         return false;
     }
@@ -1028,8 +1043,8 @@ s32 dx_debug_count_battles(BattleArea* battleArea) {
         return 0;
     }
 
-    areaVramEnd = (u32)battleArea->dmaDest + ((u32)battleArea->dmaEnd - (u32)battleArea->dmaStart);
-    listAddress = (u32)battleArea->battles;
+    areaVramEnd = (u32) battleArea->dmaDest + ((u32) battleArea->dmaEnd - (u32) battleArea->dmaStart);
+    listAddress = (u32) battleArea->battles;
     if (listAddress >= areaVramEnd) {
         return 0;
     }
@@ -1046,11 +1061,10 @@ s32 dx_debug_count_battles(BattleArea* battleArea) {
             readCount = DEBUG_BATTLE_SCAN_ROWS;
         }
         if (!dx_debug_read_battle_data(
-            battleArea,
-            (void*)(listAddress + readPos * sizeof(Battle)),
-            DebugBattleScan,
-            readCount * sizeof(Battle)
-        )) {
+                battleArea, (void*) (listAddress + readPos * sizeof(Battle)), DebugBattleScan,
+                readCount * sizeof(Battle)
+            ))
+        {
             return 0;
         }
 
@@ -1075,8 +1089,8 @@ s32 dx_debug_count_stages(BattleArea* battleArea) {
         return 0;
     }
 
-    areaVramEnd = (u32)battleArea->dmaDest + ((u32)battleArea->dmaEnd - (u32)battleArea->dmaStart);
-    listAddress = (u32)battleArea->stages;
+    areaVramEnd = (u32) battleArea->dmaDest + ((u32) battleArea->dmaEnd - (u32) battleArea->dmaStart);
+    listAddress = (u32) battleArea->stages;
     if (listAddress >= areaVramEnd) {
         return 0;
     }
@@ -1093,11 +1107,10 @@ s32 dx_debug_count_stages(BattleArea* battleArea) {
             readCount = DEBUG_BATTLE_SCAN_ROWS;
         }
         if (!dx_debug_read_battle_data(
-            battleArea,
-            (void*)(listAddress + readPos * sizeof(StageListRow)),
-            DebugBattleStageScan,
-            readCount * sizeof(StageListRow)
-        )) {
+                battleArea, (void*) (listAddress + readPos * sizeof(StageListRow)), DebugBattleStageScan,
+                readCount * sizeof(StageListRow)
+            ))
+        {
             return 0;
         }
 
@@ -1134,12 +1147,7 @@ void dx_debug_load_battle_preview(s32 areaID, s32 formationID) {
     }
 
     battle = &DebugBattleScan[0];
-    if (!dx_debug_read_battle_data(
-        battleArea,
-        &(*battleArea->battles)[formationID],
-        battle,
-        sizeof(Battle)
-    )) {
+    if (!dx_debug_read_battle_data(battleArea, &(*battleArea->battles)[formationID], battle, sizeof(Battle))) {
         strcpy(DebugBattlePreviewNames[0], "(unavailable)");
         return;
     }
@@ -1153,11 +1161,9 @@ void dx_debug_load_battle_preview(s32 areaID, s32 formationID) {
         actorRows = DEBUG_BATTLE_PREVIEW_ROWS - 1;
     }
     if (!dx_debug_read_battle_data(
-        battleArea,
-        &(*battle->formation)[0],
-        DebugBattlePreviewRows,
-        actorRows * sizeof(FormationRow)
-    )) {
+            battleArea, &(*battle->formation)[0], DebugBattlePreviewRows, actorRows * sizeof(FormationRow)
+        ))
+    {
         strcpy(DebugBattlePreviewNames[0], "(unavailable)");
         return;
     }
@@ -1175,8 +1181,7 @@ void dx_debug_load_battle_preview(s32 areaID, s32 formationID) {
     DebugBattlePreviewLineCount = actorRows;
     if (battle->formationSize > DEBUG_BATTLE_PREVIEW_ROWS) {
         sprintf(
-            DebugBattlePreviewNames[DEBUG_BATTLE_PREVIEW_ROWS - 1],
-            "... and %ld more",
+            DebugBattlePreviewNames[DEBUG_BATTLE_PREVIEW_ROWS - 1], "... and %ld more",
             battle->formationSize - (DEBUG_BATTLE_PREVIEW_ROWS - 1)
         );
         DebugBattlePreviewLineCount = DEBUG_BATTLE_PREVIEW_ROWS;
@@ -1243,8 +1248,7 @@ void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage) {
 
 void dx_debug_begin_battle() {
     s16 battle = (DebugBattleNum[DEBUG_BATTLE_AREA_TENS] & 0xF) << 12
-        | (DebugBattleNum[DEBUG_BATTLE_AREA_ONES] & 0xF) << 8
-        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] & 0xF) << 4
+        | (DebugBattleNum[DEBUG_BATTLE_AREA_ONES] & 0xF) << 8 | (DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] & 0xF) << 4
         | (DebugBattleNum[DEBUG_BATTLE_FORMATION_ONES] & 0xF);
     s16 stage = DebugBattleNum[DEBUG_BATTLE_STAGE] & 0xFFFF;
 
@@ -1344,18 +1348,16 @@ void dx_debug_update_select_battle() {
     b32 isFormationValid;
     b32 isStageValid;
 
-    areaID = (DebugBattleNum[DEBUG_BATTLE_AREA_TENS] & 0xF) << 4
-        | (DebugBattleNum[DEBUG_BATTLE_AREA_ONES] & 0xF);
-    formationID = (DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] & 0xF) << 4
-        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_ONES] & 0xF);
+    areaID = (DebugBattleNum[DEBUG_BATTLE_AREA_TENS] & 0xF) << 4 | (DebugBattleNum[DEBUG_BATTLE_AREA_ONES] & 0xF);
+    formationID =
+        (DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] & 0xF) << 4 | (DebugBattleNum[DEBUG_BATTLE_FORMATION_ONES] & 0xF);
     stageID = DebugBattleNum[DEBUG_BATTLE_STAGE];
     dx_debug_load_battle_preview(areaID, formationID);
     loadedAreaID = areaID;
     loadedFormationID = formationID;
     isAreaValid = areaID < areaCount;
     isFormationValid = isAreaValid && formationID < DebugBattlePreviewBattleCount;
-    isStageValid = isAreaValid
-        && (stageID == -1 || (stageID >= 0 && stageID < DebugBattlePreviewStageCount));
+    isStageValid = isAreaValid && (stageID == -1 || (stageID >= 0 && stageID < DebugBattlePreviewStageCount));
 
     // handle input
     if (RELEASED(BUTTON_L)) {
@@ -1374,30 +1376,18 @@ void dx_debug_update_select_battle() {
     if (direction != 0) {
         if (DebugBattleColumn == DEBUG_BATTLE_STAGE) {
             if (isAreaValid) {
-                DebugBattleNum[DEBUG_BATTLE_STAGE] = dx_debug_nav_battle_stage(
-                    stageID,
-                    DebugBattlePreviewStageCount,
-                    direction
-                );
+                DebugBattleNum[DEBUG_BATTLE_STAGE] =
+                    dx_debug_nav_battle_stage(stageID, DebugBattlePreviewStageCount, direction);
             }
-        } else if (DebugBattleColumn == DEBUG_BATTLE_AREA_TENS
-            || DebugBattleColumn == DEBUG_BATTLE_AREA_ONES
-        ) {
-            areaID = dx_debug_nav_battle_id(
-                areaID,
-                areaCount - 1,
-                DebugBattleColumn == DEBUG_BATTLE_AREA_TENS,
-                direction
-            );
+        } else if (DebugBattleColumn == DEBUG_BATTLE_AREA_TENS || DebugBattleColumn == DEBUG_BATTLE_AREA_ONES) {
+            areaID =
+                dx_debug_nav_battle_id(areaID, areaCount - 1, DebugBattleColumn == DEBUG_BATTLE_AREA_TENS, direction);
             dx_debug_set_battle_area(areaID);
-        } else if (DebugBattleColumn == DEBUG_BATTLE_FORMATION_TENS
-            || DebugBattleColumn == DEBUG_BATTLE_FORMATION_ONES
-        ) {
+        } else if (DebugBattleColumn == DEBUG_BATTLE_FORMATION_TENS || DebugBattleColumn == DEBUG_BATTLE_FORMATION_ONES)
+        {
             if (isAreaValid) {
                 formationID = dx_debug_nav_battle_id(
-                    formationID,
-                    DebugBattlePreviewBattleCount - 1,
-                    DebugBattleColumn == DEBUG_BATTLE_FORMATION_TENS,
+                    formationID, DebugBattlePreviewBattleCount - 1, DebugBattleColumn == DEBUG_BATTLE_FORMATION_TENS,
                     direction
                 );
                 dx_debug_set_battle_formation(formationID);
@@ -1405,18 +1395,16 @@ void dx_debug_update_select_battle() {
         }
     }
 
-    areaID = (DebugBattleNum[DEBUG_BATTLE_AREA_TENS] & 0xF) << 4
-        | (DebugBattleNum[DEBUG_BATTLE_AREA_ONES] & 0xF);
-    formationID = (DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] & 0xF) << 4
-        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_ONES] & 0xF);
+    areaID = (DebugBattleNum[DEBUG_BATTLE_AREA_TENS] & 0xF) << 4 | (DebugBattleNum[DEBUG_BATTLE_AREA_ONES] & 0xF);
+    formationID =
+        (DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] & 0xF) << 4 | (DebugBattleNum[DEBUG_BATTLE_FORMATION_ONES] & 0xF);
     if (areaID != loadedAreaID || formationID != loadedFormationID) {
         dx_debug_load_battle_preview(areaID, formationID);
     }
     isAreaValid = areaID < areaCount;
     isFormationValid = isAreaValid && formationID < DebugBattlePreviewBattleCount;
     stageID = DebugBattleNum[DEBUG_BATTLE_STAGE];
-    isStageValid = isAreaValid
-        && (stageID == -1 || (stageID >= 0 && stageID < DebugBattlePreviewStageCount));
+    isStageValid = isAreaValid && (stageID == -1 || (stageID >= 0 && stageID < DebugBattlePreviewStageCount));
 
     // draw
     dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 104, 2 * RowHeight + 8, WINDOW_STYLE_20, 192);
@@ -1439,9 +1427,7 @@ void dx_debug_update_select_battle() {
         }
 
         isInvalid = (idx <= DEBUG_BATTLE_AREA_ONES && !isAreaValid)
-            || (idx >= DEBUG_BATTLE_FORMATION_TENS
-                && idx <= DEBUG_BATTLE_FORMATION_ONES
-                && !isFormationValid)
+            || (idx >= DEBUG_BATTLE_FORMATION_TENS && idx <= DEBUG_BATTLE_FORMATION_ONES && !isFormationValid)
             || (idx == DEBUG_BATTLE_STAGE && !isStageValid);
 
         if (isInvalid) {
@@ -1452,23 +1438,17 @@ void dx_debug_update_select_battle() {
             }
         }
 
-        dx_debug_draw_number(DebugBattleNum[idx] & 0xFF, fmt, color, 255, SubmenuPosX + offset, SubmenuPosY + 2 * RowHeight);
+        dx_debug_draw_number(
+            DebugBattleNum[idx] & 0xFF, fmt, color, 255, SubmenuPosX + offset, SubmenuPosY + 2 * RowHeight
+        );
     }
 
     dx_debug_draw_box(
-        SubBoxPosX,
-        SubBoxPosY + 4 * RowHeight,
-        104,
-        DebugBattlePreviewLineCount * RowHeight + 8,
-        WINDOW_STYLE_20,
-        192
+        SubBoxPosX, SubBoxPosY + 4 * RowHeight, 104, DebugBattlePreviewLineCount * RowHeight + 8, WINDOW_STYLE_20, 192
     );
     for (idx = 0; idx < DebugBattlePreviewLineCount; idx++) {
         dx_debug_draw_ascii(
-            DebugBattlePreviewNames[idx],
-            DefaultColor,
-            SubmenuPosX,
-            SubmenuPosY + (idx + 4) * RowHeight
+            DebugBattlePreviewNames[idx], DefaultColor, SubmenuPosX, SubmenuPosY + (idx + 4) * RowHeight
         );
     }
 }
@@ -1518,7 +1498,9 @@ s32 SoundPlayerMenuPos = 0;
 void dx_debug_draw_sound_player(b32 activeMenu) {
     s32 idx;
 
-    dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 75, ARRAY_COUNT(DebugSoundPlayerMenu) * RowHeight + 8, WINDOW_STYLE_20, 192);
+    dx_debug_draw_box(
+        SubBoxPosX, SubBoxPosY + RowHeight, 75, ARRAY_COUNT(DebugSoundPlayerMenu) * RowHeight + 8, WINDOW_STYLE_20, 192
+    );
 
     for (idx = 0; idx < ARRAY_COUNT(DebugSoundPlayerMenu); idx++) {
         s32 color;
@@ -1533,7 +1515,8 @@ void dx_debug_draw_sound_player(b32 activeMenu) {
 
 void dx_debug_update_sound_player() {
     // handle input
-    SoundPlayerMenuPos = dx_debug_menu_nav_1D_vertical(SoundPlayerMenuPos, 0, ARRAY_COUNT(DebugSoundPlayerMenu) - 1, false);
+    SoundPlayerMenuPos =
+        dx_debug_menu_nav_1D_vertical(SoundPlayerMenuPos, 0, ARRAY_COUNT(DebugSoundPlayerMenu) - 1, false);
     if (RELEASED(BUTTON_L)) {
         DebugMenuState = DBM_MAIN_MENU;
     } else if (RELEASED(BUTTON_R)) {
@@ -1586,8 +1569,10 @@ void dx_debug_update_edit_partners() {
     }
 
     // handle input
-    SelectPartnerMenuPos = dx_debug_menu_nav_1D_vertical(SelectPartnerMenuPos, 1, ARRAY_COUNT(gPlayerData.partners) - 1, false);
-    DebugPartnerLevels[SelectPartnerMenuPos] = dx_debug_menu_nav_1D_horizontal(DebugPartnerLevels[SelectPartnerMenuPos], -1, 2, false);
+    SelectPartnerMenuPos =
+        dx_debug_menu_nav_1D_vertical(SelectPartnerMenuPos, 1, ARRAY_COUNT(gPlayerData.partners) - 1, false);
+    DebugPartnerLevels[SelectPartnerMenuPos] =
+        dx_debug_menu_nav_1D_horizontal(DebugPartnerLevels[SelectPartnerMenuPos], -1, 2, false);
     if (RELEASED(BUTTON_L)) {
         DebugMenuState = DBM_MAIN_MENU;
     } else if (RELEASED(BUTTON_R)) {
@@ -1627,10 +1612,10 @@ void dx_debug_update_edit_partners() {
 
         if (level == 1) {
             char msg[] = { MSG_CHAR_CIRCLE, MSG_CHAR_READ_END };
-            draw_msg((s32)msg, SubmenuPosX + 82, posY - 1, 255, MSG_PAL_BLUE, 0);
+            draw_msg((s32) msg, SubmenuPosX + 82, posY - 1, 255, MSG_PAL_BLUE, 0);
         } else if (level == 2) {
             char msg[] = { MSG_CHAR_CIRCLE, MSG_CHAR_CIRCLE, MSG_CHAR_READ_END };
-            draw_msg((s32)msg, SubmenuPosX + 82, posY - 1, 255, MSG_PAL_BLUE, 0);
+            draw_msg((s32) msg, SubmenuPosX + 82, posY - 1, 255, MSG_PAL_BLUE, 0);
         }
     }
 }
@@ -1666,7 +1651,9 @@ void dx_debug_update_edit_inventory() {
     }
 
     // draw
-    dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 75, ARRAY_COUNT(DebugInventoryMenu) * RowHeight + 8, WINDOW_STYLE_20, 192);
+    dx_debug_draw_box(
+        SubBoxPosX, SubBoxPosY + RowHeight, 75, ARRAY_COUNT(DebugInventoryMenu) * RowHeight + 8, WINDOW_STYLE_20, 192
+    );
 
     for (idx = 0; idx < ARRAY_COUNT(DebugInventoryMenu); idx++) {
         s32 color = (InventoryMenuPos == idx) ? HighlightColor : DefaultColor;
@@ -1676,7 +1663,7 @@ void dx_debug_update_edit_inventory() {
 
 b32 DebugEditingItem = false;
 
-#define _MAX_INV_SIZE(a,b,c) MAX(MAX(ARRAY_COUNT(a), ARRAY_COUNT(b)), ARRAY_COUNT(c))
+#define _MAX_INV_SIZE(a, b, c) MAX(MAX(ARRAY_COUNT(a), ARRAY_COUNT(b)), ARRAY_COUNT(c))
 s8 DebugItemDigits[_MAX_INV_SIZE(gPlayerData.invItems, gPlayerData.keyItems, gPlayerData.badges)][3];
 
 typedef struct DebugItemsMenu {
@@ -1827,7 +1814,7 @@ void dx_debug_update_edit_items() {
                 MSG_CHAR_LOWER_E, MSG_CHAR_LOWER_M, MSG_CHAR_LOWER_P, MSG_CHAR_LOWER_T, MSG_CHAR_LOWER_Y,
                 MSG_CHAR_READ_END,
             };
-            draw_msg((s32)msgBuf, SubmenuPosX + 50, posY, 255, DefaultColor, 0);
+            draw_msg((s32) msgBuf, SubmenuPosX + 50, posY, 255, DefaultColor, 0);
         }
     }
 
@@ -1836,14 +1823,16 @@ void dx_debug_update_edit_items() {
         char msgArrow[] = {
             MSG_CHAR_UP, MSG_CHAR_READ_END
         };
-        draw_msg((s32)msgArrow, SubmenuPosX + 132, SubmenuPosY + round(3.0f * ArrowAnimOffset), 255, DefaultColor, 0);
+        draw_msg((s32) msgArrow, SubmenuPosX + 132, SubmenuPosY + round(3.0f * ArrowAnimOffset), 255, DefaultColor, 0);
     }
     // down arrow
     if (menu->startPos + 10 < invSize) {
         char msgArrow[] = {
             MSG_CHAR_DOWN, MSG_CHAR_READ_END
         };
-        draw_msg((s32)msgArrow, SubmenuPosX + 132, SubmenuPosY + 134 - round(3.0f * ArrowAnimOffset), 255, DefaultColor, 0);
+        draw_msg(
+            (s32) msgArrow, SubmenuPosX + 132, SubmenuPosY + 134 - round(3.0f * ArrowAnimOffset), 255, DefaultColor, 0
+        );
     }
 }
 
@@ -1936,7 +1925,9 @@ void dx_debug_update_edit_gear() {
 
     for (idx = 0; idx < ARRAY_COUNT(DebugGearValues); idx++) {
         s32 color = (DebugGearPos == idx) ? HighlightColor : DefaultColor;
-        dx_debug_draw_number(DebugGearValues[idx], "%2d", color, 255, SubmenuPosX + 63, SubmenuPosY + (idx + 2) * RowHeight);
+        dx_debug_draw_number(
+            DebugGearValues[idx], "%2d", color, 255, SubmenuPosX + 63, SubmenuPosY + (idx + 2) * RowHeight
+        );
     }
 }
 
@@ -2026,7 +2017,9 @@ void dx_debug_update_edit_stats() {
 
     for (idx = 0; idx < ARRAY_COUNT(DebugStatValues); idx++) {
         s32 color = (DebugStatPos == idx) ? HighlightColor : DefaultColor;
-        dx_debug_draw_number(DebugStatValues[idx], "%2d", color, 255, SubmenuPosX + 55, SubmenuPosY + (idx + 2) * RowHeight);
+        dx_debug_draw_number(
+            DebugStatValues[idx], "%2d", color, 255, SubmenuPosX + 55, SubmenuPosY + (idx + 2) * RowHeight
+        );
     }
 }
 
@@ -2182,7 +2175,9 @@ void dx_debug_update_view_collision() {
             s32 fadeDist = DebugCollisionMenu[idx].state;
             dx_debug_draw_number(fadeDist, "%d", color, 255, SubmenuPosX, SubmenuPosY + (idx + 1) * RowHeight);
         }
-        dx_debug_draw_ascii(DebugCollisionMenu[idx].text, DefaultColor, SubmenuPosX + 28, SubmenuPosY + (idx + 1) * RowHeight);
+        dx_debug_draw_ascii(
+            DebugCollisionMenu[idx].text, DefaultColor, SubmenuPosX + 28, SubmenuPosY + (idx + 1) * RowHeight
+        );
     }
 }
 
@@ -2344,7 +2339,7 @@ void dx_debug_draw_collision() {
 
         // fade triangles too close to the camera
         fadeDist = DebugCollisionMenu[DBC_FADE_DIST].state;
-        if(fadeDist > 0) {
+        if (fadeDist > 0) {
             dist = debugTri->depth - (fadeDist - 1) * 25;
             if (dist < 20) {
                 // from a=20 at d=40 to a=0 at d=-100
@@ -2393,7 +2388,7 @@ void dx_debug_update_cheat_menu() {
     if (RELEASED(BUTTON_L)) {
         DebugMenuState = DBM_MAIN_MENU;
     }
-     if (NAV_LEFT || NAV_RIGHT) {
+    if (NAV_LEFT || NAV_RIGHT) {
         DebugCheatMenu[DebugCheatPos].enabled = !DebugCheatMenu[DebugCheatPos].enabled;
 
         // actions to execute on state change
@@ -2415,19 +2410,22 @@ void dx_debug_update_cheat_menu() {
                 }
                 break;
         }
-
     }
     DebugCheatPos = dx_debug_menu_nav_1D_vertical(DebugCheatPos, 0, ARRAY_COUNT(DebugCheatMenu) - 1, false);
 
     // draw
-    dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 120, ARRAY_COUNT(DebugCheatMenu) * RowHeight + 8, WINDOW_STYLE_20, 192);
+    dx_debug_draw_box(
+        SubBoxPosX, SubBoxPosY + RowHeight, 120, ARRAY_COUNT(DebugCheatMenu) * RowHeight + 8, WINDOW_STYLE_20, 192
+    );
 
     for (idx = 0; idx < ARRAY_COUNT(DebugCheatMenu); idx++) {
         s32 color = (DebugCheatPos == idx) ? HighlightColor : DefaultColor;
         char* onoff = DebugCheatMenu[idx].enabled ? "On" : "Off";
 
         dx_debug_draw_ascii(onoff, color, SubmenuPosX, SubmenuPosY + (idx + 1) * RowHeight);
-        dx_debug_draw_ascii(DebugCheatMenu[idx].text, DefaultColor, SubmenuPosX + 28, SubmenuPosY + (idx + 1) * RowHeight);
+        dx_debug_draw_ascii(
+            DebugCheatMenu[idx].text, DefaultColor, SubmenuPosX + 28, SubmenuPosY + (idx + 1) * RowHeight
+        );
     }
 }
 
@@ -2438,20 +2436,20 @@ b32 dx_debug_is_cheat_enabled(DebugCheat cheat) {
 // ----------------------------------------------------------------------------
 // script debugger
 
-const s32 EvtDebugBoxWidth    = 72;
-const s32 EvtDebugBoxHeight   = BoxOutsetY + 10 * RowHeight + BoxOutsetY;
+const s32 EvtDebugBoxWidth = 72;
+const s32 EvtDebugBoxHeight = BoxOutsetY + 10 * RowHeight + BoxOutsetY;
 
-const s32 EvtDebugMenuPosX    = 314 - EvtDebugBoxWidth; // right edge should be at 314
-const s32 EvtDebugMenuPosY    = 60;
+const s32 EvtDebugMenuPosX = 314 - EvtDebugBoxWidth; // right edge should be at 314
+const s32 EvtDebugMenuPosY = 60;
 
 // position of the blue box containing the main menu options
-const s32 EvtDebugBoxPosX     = EvtDebugMenuPosX - BoxOutsetX;
-const s32 EvtDebugBoxPosY     = EvtDebugMenuPosY - BoxOutsetY;
+const s32 EvtDebugBoxPosX = EvtDebugMenuPosX - BoxOutsetX;
+const s32 EvtDebugBoxPosY = EvtDebugMenuPosY - BoxOutsetY;
 
-const s32 EvtDebugInfoX     = 26;
-const s32 EvtDebugInfoY     = 60;
-const s32 EvtDebugInfoWidth     = 212;
-const s32 EvtDebugInfoHeight    = BoxOutsetY + 10 * RowHeight + BoxOutsetY;
+const s32 EvtDebugInfoX = 26;
+const s32 EvtDebugInfoY = 60;
+const s32 EvtDebugInfoWidth = 212;
+const s32 EvtDebugInfoHeight = BoxOutsetY + 10 * RowHeight + BoxOutsetY;
 
 char* EvtMainMenuOpts[] = {
     "Attach",
@@ -2648,10 +2646,7 @@ void dx_debug_update_evt_list() {
     for (i = 0; i < gScriptListCount; i++) {
         Evt* script = (*gCurrentScriptListPtr)[gScriptIndexList[i]];
 
-        if (script != nullptr
-            && script->id == gScriptIdList[i]
-            && script->stateFlags != 0
-        ) {
+        if (script != nullptr && script->id == gScriptIdList[i] && script->stateFlags != 0) {
             DebugEvtList[DebugEvtCount] = script;
             DebugEvtCount++;
         }
@@ -2693,7 +2688,7 @@ s32 dx_debug_scroll_to_line(s32 drawnLine, s32 selectedLine, s32 maxLine, s32 ma
         return selectedLine - (maxVisible - 1);
     }
 
-    //scroll down to show selectedLine with an extra line after
+    // scroll down to show selectedLine with an extra line after
     if (selectedLine > drawnLine + (maxVisible - 2)) {
         return selectedLine - (maxVisible - 2);
     }
@@ -2736,8 +2731,10 @@ void dx_debug_draw_evt_list() {
         }
 
         dx_debug_draw_number(script->groupFlags, "%02X", color, 255, EvtDebugInfoX, posY);
-        dx_debug_draw_number((s32)script->ptrFirstLine, "%08X", color, 255, EvtDebugInfoX + 20, posY);
-        dx_debug_draw_number((u8*)script->ptrCurLine - (u8*)script->ptrFirstLine, "%X", color, 255, EvtDebugInfoX + 80, posY);
+        dx_debug_draw_number((s32) script->ptrFirstLine, "%08X", color, 255, EvtDebugInfoX + 20, posY);
+        dx_debug_draw_number(
+            (u8*) script->ptrCurLine - (u8*) script->ptrFirstLine, "%X", color, 255, EvtDebugInfoX + 80, posY
+        );
 
         row++;
     }
@@ -2748,7 +2745,7 @@ void dx_debug_draw_evt_list() {
             MSG_CHAR_DOWN, MSG_CHAR_READ_END
         };
         s32 posY = EvtDebugInfoY + (9) * RowHeight;
-        draw_msg((s32)msgDownArrow, EvtDebugInfoX + 185, posY - round(2.0f * ArrowAnimOffset), 255, DefaultColor, 0);
+        draw_msg((s32) msgDownArrow, EvtDebugInfoX + 185, posY - round(2.0f * ArrowAnimOffset), 255, DefaultColor, 0);
     }
     // animated up arrow
     if (EvtListDrawPos > 0) {
@@ -2756,11 +2753,14 @@ void dx_debug_draw_evt_list() {
             MSG_CHAR_UP, MSG_CHAR_READ_END
         };
         s32 posY = EvtDebugInfoY + (1) * RowHeight;
-        draw_msg((s32)msgUpArrow, EvtDebugInfoX + 185, posY + round(2.0f * ArrowAnimOffset), 255, DefaultColor, 0);
+        draw_msg((s32) msgUpArrow, EvtDebugInfoX + 185, posY + round(2.0f * ArrowAnimOffset), 255, DefaultColor, 0);
     }
 
     // menu box (upper right)
-    dx_debug_draw_box(EvtDebugBoxPosX, EvtDebugBoxPosY, EvtDebugBoxWidth, ARRAY_COUNT(EvtMainMenuOpts) * RowHeight + 8, WINDOW_STYLE_4, 192);
+    dx_debug_draw_box(
+        EvtDebugBoxPosX, EvtDebugBoxPosY, EvtDebugBoxWidth, ARRAY_COUNT(EvtMainMenuOpts) * RowHeight + 8,
+        WINDOW_STYLE_4, 192
+    );
 
     for (i = 0; i < ARRAY_COUNT(EvtMainMenuOpts); i++) {
         s32 color = DefaultColor;
@@ -2771,8 +2771,12 @@ void dx_debug_draw_evt_list() {
     }
 
     // count box (lower right)
-    dx_debug_draw_box(EvtDebugBoxPosX, EvtDebugBoxPosY + 9 * RowHeight, EvtDebugBoxWidth, RowHeight + 8, WINDOW_STYLE_4, 192);
-    dx_debug_draw_number(DebugEvtCount, "%d running", DefaultColor, 255, EvtDebugMenuPosX, EvtDebugMenuPosY + 9 * RowHeight);
+    dx_debug_draw_box(
+        EvtDebugBoxPosX, EvtDebugBoxPosY + 9 * RowHeight, EvtDebugBoxWidth, RowHeight + 8, WINDOW_STYLE_4, 192
+    );
+    dx_debug_draw_number(
+        DebugEvtCount, "%d running", DefaultColor, 255, EvtDebugMenuPosX, EvtDebugMenuPosY + 9 * RowHeight
+    );
 }
 
 void dx_debug_evt_break_all() {
@@ -2876,7 +2880,7 @@ void dx_debug_draw_var(s32 i, s32 number, char* fmt, s32 color, s32 alpha, s32 p
     };
     sprintf(fmtBuf, fmt, i, number);
     dx_string_to_msg(&buf[4], fmtBuf);
-    draw_msg((s32)buf, posX, posY, alpha, color, 0);
+    draw_msg((s32) buf, posX, posY, alpha, color, 0);
 }
 
 void dx_debug_draw_fvar(s32 i, f32 number, char* fmt, s32 color, s32 alpha, s32 posX, s32 posY) {
@@ -2886,11 +2890,11 @@ void dx_debug_draw_fvar(s32 i, f32 number, char* fmt, s32 color, s32 alpha, s32 
     };
     sprintf(fmtBuf, fmt, i, number);
     dx_string_to_msg(&buf[4], fmtBuf);
-    draw_msg((s32)buf, posX, posY, alpha, color, 0);
+    draw_msg((s32) buf, posX, posY, alpha, color, 0);
 }
 
 void dx_debug_evt_draw_vars() {
-    #define MAX_VALID_FLOAT 1e9
+#define MAX_VALID_FLOAT 1e9
     s32 val;
     f32 fval;
     s32 i;
@@ -2901,7 +2905,7 @@ void dx_debug_evt_draw_vars() {
         s32 color = DebugEvtPrevLVars[i] == DebugEvtAttached->varTable[i] ? DefaultColor : HoverColor;
 
         switch (EvtAttachedVarsMode) {
-                case DEBUG_EVT_DISP_MODE_RAW:
+            case DEBUG_EVT_DISP_MODE_RAW:
                 dx_debug_draw_var(i, DebugEvtAttached->varTable[i], "LVar%X  %08X", color, 255, posX, posY);
                 break;
             case DEBUG_EVT_DISP_MODE_INT:
@@ -2983,7 +2987,7 @@ void dx_debug_evt_draw_disasm() {
 
     // find offsets for all lines in script
     while (true) {
-        DebugEvtLineOffsets[DebugEvtLineCount] = (u16)(pos - DebugEvtAttached->ptrFirstLine);
+        DebugEvtLineOffsets[DebugEvtLineCount] = (u16) (pos - DebugEvtAttached->ptrFirstLine);
 
         if (pos == DebugEvtAttached->ptrCurLine) {
             DebugEvtCurLine = DebugEvtLineCount;
@@ -3123,7 +3127,9 @@ void dx_debug_update_evt_attached() {
     dx_debug_draw_number((s32) DebugEvtAttached->ptrFirstLine, "%08X", DefaultColor, 255, EvtDebugInfoX + 40, posY);
 
     // evt info box
-    dx_debug_draw_box(EvtDebugInfoX - 10, EvtDebugInfoY - 4, EvtDebugInfoWidth, EvtDebugInfoHeight, WINDOW_STYLE_20, 192);
+    dx_debug_draw_box(
+        EvtDebugInfoX - 10, EvtDebugInfoY - 4, EvtDebugInfoWidth, EvtDebugInfoHeight, WINDOW_STYLE_20, 192
+    );
 
     switch (EvtAttachedDispMode) {
         case 0:
@@ -3254,8 +3260,8 @@ u32 dx_debug_hash_location(const char* filename, s32 line) {
     return hash;
 }
 
-static char *proutSprintf(char *dst, const char *src, size_t count) {
-    return (char *)memcpy((u8 *)dst, (u8 *)src, count) + count;
+static char* proutSprintf(char* dst, const char* src, size_t count) {
+    return (char*) memcpy((u8*) dst, (u8*) src, count) + count;
 }
 
 void dx_hashed_debug_printf(const char* filename, s32 line, const char* fmt, ...) {
@@ -3316,9 +3322,9 @@ API_CALLABLE(_dxDebugIntPrintf) {
     s32 nargs = 0;
     s32 idx;
 
-    char* filename = (char*)*args++;
+    char* filename = (char*) *args++;
     s32 line = *args++;
-    char* fmt = (char*)*args++;
+    char* fmt = (char*) *args++;
 
     for (idx = 0; idx < 8; idx++) {
         s32 var = *args++;
@@ -3330,14 +3336,30 @@ API_CALLABLE(_dxDebugIntPrintf) {
     }
 
     switch (nargs) {
-        case 0: dx_hashed_debug_printf(filename, line, fmt); break;
-        case 1: dx_hashed_debug_printf(filename, line, fmt, i[0]); break;
-        case 2: dx_hashed_debug_printf(filename, line, fmt, i[0], i[1]); break;
-        case 3: dx_hashed_debug_printf(filename, line, fmt, i[0], i[1], i[2]); break;
-        case 4: dx_hashed_debug_printf(filename, line, fmt, i[0], i[1], i[2], i[3]); break;
-        case 5: dx_hashed_debug_printf(filename, line, fmt, i[0], i[1], i[2], i[3], i[4]); break;
-        case 6: dx_hashed_debug_printf(filename, line, fmt, i[0], i[1], i[2], i[3], i[4], i[5]); break;
-        case 7: dx_hashed_debug_printf(filename, line, fmt, i[0], i[1], i[2], i[3], i[4], i[5], i[6]); break;
+        case 0:
+            dx_hashed_debug_printf(filename, line, fmt);
+            break;
+        case 1:
+            dx_hashed_debug_printf(filename, line, fmt, i[0]);
+            break;
+        case 2:
+            dx_hashed_debug_printf(filename, line, fmt, i[0], i[1]);
+            break;
+        case 3:
+            dx_hashed_debug_printf(filename, line, fmt, i[0], i[1], i[2]);
+            break;
+        case 4:
+            dx_hashed_debug_printf(filename, line, fmt, i[0], i[1], i[2], i[3]);
+            break;
+        case 5:
+            dx_hashed_debug_printf(filename, line, fmt, i[0], i[1], i[2], i[3], i[4]);
+            break;
+        case 6:
+            dx_hashed_debug_printf(filename, line, fmt, i[0], i[1], i[2], i[3], i[4], i[5]);
+            break;
+        case 7:
+            dx_hashed_debug_printf(filename, line, fmt, i[0], i[1], i[2], i[3], i[4], i[5], i[6]);
+            break;
     }
 
     return ApiStatus_DONE2;
@@ -3349,9 +3371,9 @@ API_CALLABLE(_dxDebugFloatPrintf) {
     s32 nargs = 0;
     s32 idx;
 
-    char* filename = (char*)*args++;
+    char* filename = (char*) *args++;
     s32 line = *args++;
-    char* fmt = (char*)*args++;
+    char* fmt = (char*) *args++;
 
     for (idx = 0; idx < 8; idx++) {
         s32 var = *args++;
@@ -3363,14 +3385,30 @@ API_CALLABLE(_dxDebugFloatPrintf) {
     }
 
     switch (nargs) {
-        case 0: dx_hashed_debug_printf(filename, line, fmt); break;
-        case 1: dx_hashed_debug_printf(filename, line, fmt, f[0]); break;
-        case 2: dx_hashed_debug_printf(filename, line, fmt, f[0], f[1]); break;
-        case 3: dx_hashed_debug_printf(filename, line, fmt, f[0], f[1], f[2]); break;
-        case 4: dx_hashed_debug_printf(filename, line, fmt, f[0], f[1], f[2], f[3]); break;
-        case 5: dx_hashed_debug_printf(filename, line, fmt, f[0], f[1], f[2], f[3], f[4]); break;
-        case 6: dx_hashed_debug_printf(filename, line, fmt, f[0], f[1], f[2], f[3], f[4], f[5]); break;
-        case 7: dx_hashed_debug_printf(filename, line, fmt, f[0], f[1], f[2], f[3], f[4], f[5], f[6]); break;
+        case 0:
+            dx_hashed_debug_printf(filename, line, fmt);
+            break;
+        case 1:
+            dx_hashed_debug_printf(filename, line, fmt, f[0]);
+            break;
+        case 2:
+            dx_hashed_debug_printf(filename, line, fmt, f[0], f[1]);
+            break;
+        case 3:
+            dx_hashed_debug_printf(filename, line, fmt, f[0], f[1], f[2]);
+            break;
+        case 4:
+            dx_hashed_debug_printf(filename, line, fmt, f[0], f[1], f[2], f[3]);
+            break;
+        case 5:
+            dx_hashed_debug_printf(filename, line, fmt, f[0], f[1], f[2], f[3], f[4]);
+            break;
+        case 6:
+            dx_hashed_debug_printf(filename, line, fmt, f[0], f[1], f[2], f[3], f[4], f[5]);
+            break;
+        case 7:
+            dx_hashed_debug_printf(filename, line, fmt, f[0], f[1], f[2], f[3], f[4], f[5], f[6]);
+            break;
     }
 
     return ApiStatus_DONE2;
@@ -3396,7 +3434,7 @@ void dx_debug_console_main() {
                 alpha = round(254 * (timeLeft / 20.0f));
             }
 
-            draw_msg((s32)DebugConsole[idx]->buf, 32, 200 - 15 * idx, alpha, DefaultColor, 0);
+            draw_msg((s32) DebugConsole[idx]->buf, 32, 200 - 15 * idx, alpha, DefaultColor, 0);
             DebugConsole[idx]->timeLeft--;
         }
     }

@@ -46,7 +46,7 @@ void player_surface_spawn_fx(void) {
         surfaceType = PrevSurfaceType;
     }
 
-    PrevSurfaceType = get_collider_flags((u16)gCollisionStatus.curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
+    PrevSurfaceType = get_collider_flags((u16) gCollisionStatus.curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
 
     if (gPlayerStatus.actionState != ACTION_STATE_JUMP) {
         surfaceType = PrevSurfaceType;
@@ -85,10 +85,9 @@ void player_surface_spawn_basic_fx(void) {
     f32 x, y, z;
 
     // spawn effects if landing from a decent height
-    if (gPlayerStatus.actionState == ACTION_STATE_LAND
-        && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED)
-        && LandedTimeInAir >= 10
-    ) {
+    if (gPlayerStatus.actionState == ACTION_STATE_LAND && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED)
+        && LandedTimeInAir >= 10)
+    {
         x = gPlayerStatus.pos.x;
         y = gPlayerStatus.pos.y;
         z = gPlayerStatus.pos.z;
@@ -105,8 +104,8 @@ void player_surface_spawn_basic_fx(void) {
 
     // spawn effects if ground pounding
     if ((gPlayerStatus.actionState == ACTION_STATE_SPIN_POUND && (gPlayerStatus.flags & PS_FLAG_SPECIAL_LAND))
-     || (gPlayerStatus.actionState == ACTION_STATE_TORNADO_POUND && (gPlayerStatus.flags & PS_FLAG_SPECIAL_LAND))
-    ) {
+        || (gPlayerStatus.actionState == ACTION_STATE_TORNADO_POUND && (gPlayerStatus.flags & PS_FLAG_SPECIAL_LAND)))
+    {
         x = gPlayerStatus.pos.x;
         y = gPlayerStatus.pos.y;
         z = gPlayerStatus.pos.z;
@@ -130,21 +129,16 @@ void player_surface_spawn_basic_fx(void) {
                 case SURFACE_WALK_FX_STANDARD:
                     sin_cos_rad(DEG_TO_RAD(clamp_angle(-gPlayerStatus.curYaw)), &sinAngle, &cosAngle);
                     fx_walking_dust(
-                        0,
-                        gPlayerStatus.pos.x + (gPlayerStatus.colliderDiameter * sinAngle * 0.2f),
+                        0, gPlayerStatus.pos.x + (gPlayerStatus.colliderDiameter * sinAngle * 0.2f),
                         gPlayerStatus.pos.y + 1.5f,
-                        gPlayerStatus.pos.z + (gPlayerStatus.colliderDiameter * cosAngle * 0.2f),
-                        sinAngle,
-                        cosAngle
+                        gPlayerStatus.pos.z + (gPlayerStatus.colliderDiameter * cosAngle * 0.2f), sinAngle, cosAngle
                     );
                     break;
                 case SURFACE_WALK_FX_SPARKLE:
                     sin_cos_rad(DEG_TO_RAD(clamp_angle(gPlayerStatus.targetYaw)), &sinAngle, &cosAngle);
                     fx_misc_particles(
-                        3,
-                        gPlayerStatus.pos.x + (gPlayerStatus.colliderDiameter * sinAngle),
-                        gPlayerStatus.pos.y + 1.5f,
-                        gPlayerStatus.pos.z + (gPlayerStatus.colliderDiameter * cosAngle),
+                        3, gPlayerStatus.pos.x + (gPlayerStatus.colliderDiameter * sinAngle),
+                        gPlayerStatus.pos.y + 1.5f, gPlayerStatus.pos.z + (gPlayerStatus.colliderDiameter * cosAngle),
                         13.0f, 10.0f, 1.0f, 5, 30
                     );
                     break;
@@ -155,8 +149,8 @@ void player_surface_spawn_basic_fx(void) {
 
     // spawn effects if running or starting a spin
     if (gPlayerStatus.actionState == ACTION_STATE_RUN
-        || (gPlayerStatus.actionState == ACTION_STATE_SPIN && gPlayerStatus.actionSubstate == 0)
-    ) {
+        || (gPlayerStatus.actionState == ACTION_STATE_SPIN && gPlayerStatus.actionSubstate == 0))
+    {
         if (PlayerDustSpawnDelay++ >= 4) {
             PlayerDustSpawnDelay = 0;
 
@@ -164,22 +158,16 @@ void player_surface_spawn_basic_fx(void) {
                 case SURFACE_WALK_FX_STANDARD:
                     sin_cos_rad(DEG_TO_RAD(clamp_angle(-gPlayerStatus.curYaw)), &sinAngle, &cosAngle);
                     fx_walking_dust(
-                        0,
-                        gPlayerStatus.pos.x + (gPlayerStatus.colliderDiameter * sinAngle * 0.2f),
+                        0, gPlayerStatus.pos.x + (gPlayerStatus.colliderDiameter * sinAngle * 0.2f),
                         gPlayerStatus.pos.y + 1.5f,
-                        gPlayerStatus.pos.z + (gPlayerStatus.colliderDiameter * cosAngle * 0.2f),
-                        sinAngle,
-                        cosAngle
+                        gPlayerStatus.pos.z + (gPlayerStatus.colliderDiameter * cosAngle * 0.2f), sinAngle, cosAngle
                     );
                     break;
                 case SURFACE_WALK_FX_SPARKLE:
                     sin_cos_rad(DEG_TO_RAD(clamp_angle(gPlayerStatus.targetYaw)), &sinAngle, &cosAngle);
                     fx_misc_particles(
-                        3,
-                        gPlayerStatus.pos.x + (gPlayerStatus.curSpeed * sinAngle),
-                        gPlayerStatus.pos.y + 1.5f,
-                        gPlayerStatus.pos.z + (gPlayerStatus.curSpeed * cosAngle),
-                        13.0f, 10.0f, 1.0f, 5, 30
+                        3, gPlayerStatus.pos.x + (gPlayerStatus.curSpeed * sinAngle), gPlayerStatus.pos.y + 1.5f,
+                        gPlayerStatus.pos.z + (gPlayerStatus.curSpeed * cosAngle), 13.0f, 10.0f, 1.0f, 5, 30
                     );
                     break;
             }
@@ -195,10 +183,8 @@ void player_surface_spawn_flower_fx(void) {
     f32 sinAngle, cosAngle;
     f32 x, y, z;
 
-    if (gPlayerStatus.actionState == ACTION_STATE_JUMP
-        && gPlayerStatus.timeInAir == 1
-        && PlayerFlowerSplashDelay == 5
-    ) {
+    if (gPlayerStatus.actionState == ACTION_STATE_JUMP && gPlayerStatus.timeInAir == 1 && PlayerFlowerSplashDelay == 5)
+    {
         x = gPlayerStatus.pos.x;
         z = gPlayerStatus.pos.z;
         y = gPlayerStatus.pos.y + 14.0f;
@@ -214,10 +200,9 @@ void player_surface_spawn_flower_fx(void) {
         PlayerFlowerSplashDelay = 5;
     }
 
-    if (gPlayerStatus.actionState == ACTION_STATE_WALK
-        || gPlayerStatus.actionState == ACTION_STATE_RUN
-        || (gPlayerStatus.actionState == ACTION_STATE_SPIN && gPlayerStatus.actionSubstate == 0)
-    ) {
+    if (gPlayerStatus.actionState == ACTION_STATE_WALK || gPlayerStatus.actionState == ACTION_STATE_RUN
+        || (gPlayerStatus.actionState == ACTION_STATE_SPIN && gPlayerStatus.actionSubstate == 0))
+    {
         if (PlayerFlowerTrailDelay++ > 0) {
             PlayerFlowerTrailDelay = 0;
             sin_cos_rad(DEG_TO_RAD(clamp_angle(-gPlayerStatus.curYaw)), &sinAngle, &cosAngle);
@@ -241,15 +226,12 @@ void player_surface_spawn_cloud_fx(void) {
     s32 i;
 
     if (((gPlayerStatus.actionState == ACTION_STATE_LAND && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED))
-        || (gPlayerStatus.actionState == ACTION_STATE_SPIN_POUND && (gPlayerStatus.flags & PS_FLAG_SPECIAL_LAND))
-        || (gPlayerStatus.actionState == ACTION_STATE_TORNADO_POUND && (gPlayerStatus.flags & PS_FLAG_SPECIAL_LAND)))
-        && LandedTimeInAir >= 10
-    ) {
+         || (gPlayerStatus.actionState == ACTION_STATE_SPIN_POUND && (gPlayerStatus.flags & PS_FLAG_SPECIAL_LAND))
+         || (gPlayerStatus.actionState == ACTION_STATE_TORNADO_POUND && (gPlayerStatus.flags & PS_FLAG_SPECIAL_LAND)))
+        && LandedTimeInAir >= 10)
+    {
         fx_cloud_puff(
-            gPlayerStatus.pos.x,
-            (gPlayerStatus.pos.y + 14.0f) - 5.0f,
-            gPlayerStatus.pos.z,
-            PlayerCloudPuffAngle
+            gPlayerStatus.pos.x, (gPlayerStatus.pos.y + 14.0f) - 5.0f, gPlayerStatus.pos.z, PlayerCloudPuffAngle
         );
         PlayerCloudPuffAngle = clamp_angle(PlayerCloudPuffAngle + 35.0f);
 
@@ -260,8 +242,7 @@ void player_surface_spawn_cloud_fx(void) {
 
             sin_cos_rad(DEG_TO_RAD(clamp_angle(-gPlayerStatus.curYaw + (i * 90))), &sinAngle, &cosAngle);
             fx_cloud_trail(
-                0,
-                gPlayerStatus.pos.x + (gPlayerStatus.colliderDiameter * sinAngle * -0.3f) + dx,
+                0, gPlayerStatus.pos.x + (gPlayerStatus.colliderDiameter * sinAngle * -0.3f) + dx,
                 gPlayerStatus.pos.y + 15.5f + dy,
                 gPlayerStatus.pos.z + (gPlayerStatus.colliderDiameter * cosAngle * -0.3f) + dz
             );
@@ -269,42 +250,36 @@ void player_surface_spawn_cloud_fx(void) {
         return;
     }
 
-    if (gPlayerStatus.actionState == ACTION_STATE_WALK
-        || gPlayerStatus.actionState == ACTION_STATE_RUN
-        || (gPlayerStatus.actionState == ACTION_STATE_SPIN && gPlayerStatus.actionSubstate == 0)
-    ) {
+    if (gPlayerStatus.actionState == ACTION_STATE_WALK || gPlayerStatus.actionState == ACTION_STATE_RUN
+        || (gPlayerStatus.actionState == ACTION_STATE_SPIN && gPlayerStatus.actionSubstate == 0))
+    {
         dx = rand_int(10) - 5;
         dz = rand_int(10) - 5;
         dy = -2.0f - ((SQ(dx) + SQ(dz)) / 5.0f);
 
         sin_cos_rad(DEG_TO_RAD(clamp_angle(-gPlayerStatus.curYaw)), &sinAngle, &cosAngle);
         fx_cloud_trail(
-            1,
-            gPlayerStatus.pos.x + (gPlayerStatus.colliderDiameter * sinAngle * -0.3f) + dx,
+            1, gPlayerStatus.pos.x + (gPlayerStatus.colliderDiameter * sinAngle * -0.3f) + dx,
             gPlayerStatus.pos.y + 15.5f + dy,
             gPlayerStatus.pos.z + (gPlayerStatus.colliderDiameter * cosAngle * -0.3f) + dz
         );
-
     }
 }
 
 void player_surface_spawn_snow_fx(void) {
     f32 sinAngle, cosAngle;
 
-    if (gPlayerStatus.actionState == ACTION_STATE_WALK
-        || gPlayerStatus.actionState == ACTION_STATE_RUN
+    if (gPlayerStatus.actionState == ACTION_STATE_WALK || gPlayerStatus.actionState == ACTION_STATE_RUN
         || (gPlayerStatus.actionState == ACTION_STATE_SPIN && gPlayerStatus.actionSubstate == 0)
         || (gPlayerStatus.actionState == ACTION_STATE_LAND && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED))
-        || (gPlayerStatus.actionState == ACTION_STATE_IDLE && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED))
-    ) {
+        || (gPlayerStatus.actionState == ACTION_STATE_IDLE && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED)))
+    {
         if (PlayerSnowSpawnDelay++ >= 4) {
             PlayerSnowSpawnDelay = 0;
             sin_cos_rad(DEG_TO_RAD(clamp_angle(-gPlayerStatus.curYaw)), &sinAngle, &cosAngle);
             fx_footprint(
-                gPlayerStatus.pos.x + (gPlayerStatus.colliderDiameter * sinAngle * 0.2f),
-                gPlayerStatus.pos.y + 1.5f,
-                gPlayerStatus.pos.z + (gPlayerStatus.colliderDiameter * cosAngle * 0.2f),
-                -gPlayerStatus.curYaw,
+                gPlayerStatus.pos.x + (gPlayerStatus.colliderDiameter * sinAngle * 0.2f), gPlayerStatus.pos.y + 1.5f,
+                gPlayerStatus.pos.z + (gPlayerStatus.colliderDiameter * cosAngle * 0.2f), -gPlayerStatus.curYaw,
                 PlayerNextFootParity
             );
             PlayerNextFootParity = !PlayerNextFootParity;
@@ -318,19 +293,16 @@ void player_surface_spawn_snow_fx(void) {
 void player_surface_spawn_hedges_fx(void) {
     f32 sinAngle, cosAngle;
 
-    if (gPlayerStatus.actionState == ACTION_STATE_WALK
-        || gPlayerStatus.actionState == ACTION_STATE_RUN
+    if (gPlayerStatus.actionState == ACTION_STATE_WALK || gPlayerStatus.actionState == ACTION_STATE_RUN
         || (gPlayerStatus.actionState == ACTION_STATE_SPIN && gPlayerStatus.actionSubstate == 0)
         || (gPlayerStatus.actionState == ACTION_STATE_LAND && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED))
-        || (gPlayerStatus.actionState == ACTION_STATE_IDLE && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED))
-    ) {
+        || (gPlayerStatus.actionState == ACTION_STATE_IDLE && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED)))
+    {
         if (PlayerHedgeSpawnDelay++ >= 4) {
             PlayerHedgeSpawnDelay = 0;
             sin_cos_rad(DEG_TO_RAD(clamp_angle(-gPlayerStatus.curYaw)), &sinAngle, &cosAngle);
             fx_falling_leaves(
-                0,
-                gPlayerStatus.pos.x + (gPlayerStatus.colliderDiameter * sinAngle * 0.2f),
-                40.0f,
+                0, gPlayerStatus.pos.x + (gPlayerStatus.colliderDiameter * sinAngle * 0.2f), 40.0f,
                 gPlayerStatus.pos.z + (gPlayerStatus.colliderDiameter * cosAngle * 0.2f)
             );
         }
@@ -343,21 +315,17 @@ void player_surface_spawn_hedges_fx(void) {
 void player_surface_spawn_water_fx(void) {
     f32 sinAngle, cosAngle;
 
-    if (gPlayerStatus.actionState == ACTION_STATE_WALK
-        || gPlayerStatus.actionState == ACTION_STATE_RUN
+    if (gPlayerStatus.actionState == ACTION_STATE_WALK || gPlayerStatus.actionState == ACTION_STATE_RUN
         || (gPlayerStatus.actionState == ACTION_STATE_SPIN && gPlayerStatus.actionSubstate == 0)
         || (gPlayerStatus.actionState == ACTION_STATE_LAND && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED))
-        || (gPlayerStatus.actionState == ACTION_STATE_IDLE && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED))
-    ) {
+        || (gPlayerStatus.actionState == ACTION_STATE_IDLE && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED)))
+    {
         if (PlayerWaterSpawnDelay++ >= 4) {
             PlayerWaterSpawnDelay = 0;
             sin_cos_rad(DEG_TO_RAD(clamp_angle(-gPlayerStatus.curYaw)), &sinAngle, &cosAngle);
             fx_rising_bubble(
-                0,
-                gPlayerStatus.pos.x + (gPlayerStatus.colliderDiameter * sinAngle * 0.2f),
-                gPlayerStatus.pos.y + 0.0f,
-                gPlayerStatus.pos.z + (gPlayerStatus.colliderDiameter * cosAngle * 0.2f),
-                0.0f
+                0, gPlayerStatus.pos.x + (gPlayerStatus.colliderDiameter * sinAngle * 0.2f), gPlayerStatus.pos.y + 0.0f,
+                gPlayerStatus.pos.z + (gPlayerStatus.colliderDiameter * cosAngle * 0.2f), 0.0f
             );
         }
         return;
@@ -392,7 +360,7 @@ void npc_surface_spawn_fx(Npc* npc, SurfaceInteractMode mode) {
         return;
     }
 
-    surfaceType = get_collider_flags((u16)npc->curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
+    surfaceType = get_collider_flags((u16) npc->curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
     switch (surfaceType) {
         case SURFACE_TYPE_FLOWERS:
             npc_surface_spawn_flower_fx(npc, mode);
@@ -430,7 +398,7 @@ void npc_surface_spawn_basic_fx(Npc* npc, SurfaceInteractMode mode) {
                 NpcDustSpawnAngle = clamp_angle(NpcDustSpawnAngle + 35.0f);
                 break;
             case SURFACE_WALK_FX_SPARKLE:
-                fx_misc_particles(3, x, y, z,  13.0f, 10.0f, 1.0f, 5, 30);
+                fx_misc_particles(3, x, y, z, 13.0f, 10.0f, 1.0f, 5, 30);
                 break;
         }
     } else if (mode != SURFACE_INTERACT_WALK) {
@@ -440,20 +408,17 @@ void npc_surface_spawn_basic_fx(Npc* npc, SurfaceInteractMode mode) {
             switch (SurfaceWalkEffectType) {
                 case SURFACE_WALK_FX_STANDARD:
                     sin_cos_rad(DEG_TO_RAD(clamp_angle(-npc->yaw)), &sinTheta, &cosTheta);
-                    fx_walking_dust(0,
-                        npc->pos.x + (npc->collisionDiameter * sinTheta * 0.2f),
-                        npc->pos.y + 1.5f,
-                        npc->pos.z + (npc->collisionDiameter * cosTheta * 0.2f),
-                        sinTheta,
-                        cosTheta);
+                    fx_walking_dust(
+                        0, npc->pos.x + (npc->collisionDiameter * sinTheta * 0.2f), npc->pos.y + 1.5f,
+                        npc->pos.z + (npc->collisionDiameter * cosTheta * 0.2f), sinTheta, cosTheta
+                    );
                     break;
                 case SURFACE_WALK_FX_SPARKLE:
                     sin_cos_rad(DEG_TO_RAD(clamp_angle(npc->yaw)), &sinTheta, &cosTheta);
-                    fx_misc_particles(3,
-                        npc->pos.x + (npc->collisionDiameter * sinTheta),
-                        npc->pos.y + 1.5f,
-                        npc->pos.z + (npc->collisionDiameter * cosTheta),
-                        5.0f, 10.0f, 1.0f, 5, 30);
+                    fx_misc_particles(
+                        3, npc->pos.x + (npc->collisionDiameter * sinTheta), npc->pos.y + 1.5f,
+                        npc->pos.z + (npc->collisionDiameter * cosTheta), 5.0f, 10.0f, 1.0f, 5, 30
+                    );
                     break;
             }
         }
@@ -466,7 +431,7 @@ void npc_surface_spawn_flower_fx(Npc* npc, SurfaceInteractMode mode) {
 
     if (mode == SURFACE_INTERACT_LAND && NpcFlowerSplashDelay == 5) {
         x = npc->pos.x;
-        y = npc->pos.y + + 14.0f;
+        y = npc->pos.y + +14.0f;
         z = npc->pos.z;
 
         fx_flower_splash(x, y, z, NpcFlowerSplashAngle);
@@ -510,9 +475,7 @@ void npc_surface_spawn_cloud_fx(Npc* npc, SurfaceInteractMode mode) {
 
             sin_cos_rad(DEG_TO_RAD(clamp_angle(-npc->yaw + (i * 90))), &sinAngle, &cosAngle);
             fx_cloud_trail(
-                1,
-                npc->pos.x + (npc->collisionDiameter * sinAngle * -0.3f) + dx,
-                npc->pos.y + 15.5f + dy,
+                1, npc->pos.x + (npc->collisionDiameter * sinAngle * -0.3f) + dx, npc->pos.y + 15.5f + dy,
                 npc->pos.z + (npc->collisionDiameter * cosAngle * -0.3f) + dz
             );
         }
@@ -523,9 +486,7 @@ void npc_surface_spawn_cloud_fx(Npc* npc, SurfaceInteractMode mode) {
 
         sin_cos_rad(DEG_TO_RAD(clamp_angle(-npc->yaw)), &sinAngle, &cosAngle);
         fx_cloud_trail(
-            1,
-            npc->pos.x + (npc->collisionDiameter * sinAngle * -0.3f) + dx,
-            npc->pos.y + 15.5f + dy,
+            1, npc->pos.x + (npc->collisionDiameter * sinAngle * -0.3f) + dx, npc->pos.y + 15.5f + dy,
             npc->pos.z + (npc->collisionDiameter * cosAngle * -0.3f) + dz
         );
     }
@@ -534,7 +495,8 @@ void npc_surface_spawn_cloud_fx(Npc* npc, SurfaceInteractMode mode) {
 void npc_surface_spawn_snow_fx(Npc* npc, SurfaceInteractMode mode) {
     f32 sinAngle, cosAngle;
 
-    if (gPartnerStatus.actingPartner == PARTNER_LAKILESTER && gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE) {
+    if (gPartnerStatus.actingPartner == PARTNER_LAKILESTER && gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE)
+    {
         return;
     }
 
@@ -542,11 +504,9 @@ void npc_surface_spawn_snow_fx(Npc* npc, SurfaceInteractMode mode) {
         NpcSnowSpawnDelay = 0;
         sin_cos_rad(DEG_TO_RAD(clamp_angle(-npc->yaw)), &sinAngle, &cosAngle);
         fx_footprint(
-            npc->pos.x + (npc->collisionDiameter * sinAngle * 0.2f),
-            npc->pos.y + 1.5f,
-            npc->pos.z + (npc->collisionDiameter * cosAngle * 0.2f),
-            -npc->yaw,
-            NpcNextFootParity);
+            npc->pos.x + (npc->collisionDiameter * sinAngle * 0.2f), npc->pos.y + 1.5f,
+            npc->pos.z + (npc->collisionDiameter * cosAngle * 0.2f), -npc->yaw, NpcNextFootParity
+        );
         NpcNextFootParity = !NpcNextFootParity;
     }
 }
@@ -558,10 +518,9 @@ void npc_surface_spawn_hedges_fx(Npc* npc, SurfaceInteractMode mode) {
         NpcHedgeSpawnDelay = 0;
         sin_cos_rad(DEG_TO_RAD(clamp_angle(-npc->yaw)), &sinAngle, &cosAngle);
         fx_falling_leaves(
-            1,
-            npc->pos.x + (npc->collisionDiameter * sinAngle * 0.2f),
-            40.0f,
-            npc->pos.z + (npc->collisionDiameter * cosAngle * 0.2f));
+            1, npc->pos.x + (npc->collisionDiameter * sinAngle * 0.2f), 40.0f,
+            npc->pos.z + (npc->collisionDiameter * cosAngle * 0.2f)
+        );
     }
 }
 
@@ -572,10 +531,8 @@ void npc_surface_spawn_water_fx(Npc* npc, SurfaceInteractMode mode) {
         NpcWaterSpawnDelay = 0;
         sin_cos_rad(DEG_TO_RAD(clamp_angle(-npc->yaw)), &sinAngle, &cosAngle);
         fx_rising_bubble(
-            0,
-            npc->pos.x + (npc->collisionDiameter * sinAngle * 0.2f),
-            npc->pos.y + 0.0f,
-            npc->pos.z + (npc->collisionDiameter * cosAngle * 0.2f),
-            0.0f);
+            0, npc->pos.x + (npc->collisionDiameter * sinAngle * 0.2f), npc->pos.y + 0.0f,
+            npc->pos.z + (npc->collisionDiameter * cosAngle * 0.2f), 0.0f
+        );
     }
 }

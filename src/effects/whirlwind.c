@@ -11,7 +11,7 @@ extern Gfx D_09000400_3D3D30[];
 EffectInstance* whirlwind_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
     EffectBlueprint bp;
     EffectBlueprint* bpPtr = &bp;
-    EffectInstance *effect;
+    EffectInstance* effect;
     WhirlwindFXData* part;
     s32 numParts;
     s32 i;
@@ -50,7 +50,7 @@ EffectInstance* whirlwind_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4,
     part->envG = 255;
     part->envB = 235;
 
-    for(i = 0; i < MAX_WHIRLWIND_SEGMENTS; i++) {
+    for (i = 0; i < MAX_WHIRLWIND_SEGMENTS; i++) {
         part->unk_38[i] = arg1;
         part->unk_58[i] = arg2;
         part->unk_78[i] = arg3;
@@ -125,7 +125,7 @@ void whirlwind_update(EffectInstance* effect) {
     if (part->unk_140 > 64.0f) {
         part->unk_140 -= 64.0f;
     }
-    for(i = 0; i < MAX_WHIRLWIND_SEGMENTS; i++) {
+    for (i = 0; i < MAX_WHIRLWIND_SEGMENTS; i++) {
         part->unk_B8[i] += part->unk_D8[i];
     }
 }
@@ -163,7 +163,7 @@ void whirlwind_appendGfx(void* effect) {
     f32 var_f4;
     f32 f22;
     s32 i;
-    EffectInstance* eff = (EffectInstance*)effect;
+    EffectInstance* eff = (EffectInstance*) effect;
     WhirlwindFXData* data = eff->data.whirlwind;
 
     spA0 = data->unk_10;
@@ -177,12 +177,14 @@ void whirlwind_appendGfx(void* effect) {
     guTranslateF(sp20, 0.0f, 0.0f, 0.0f);
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPDisplayList(gMainGfxPos++, D_09000400_3D3D30);
 
     // Reserve 0x208 bytes (65 commands) for a vertex buffer (2x16 Vtx + space for the current command)
     gSPBranchList(gMainGfxPos, &gMainGfxPos[65]);
-    vertexBuffer = (Vtx*)(gMainGfxPos + 1);
+    vertexBuffer = (Vtx*) (gMainGfxPos + 1);
 
     // set the current position we're writing gfx commands to past the vertex buffer
     gMainGfxPos = &gMainGfxPos[65];
@@ -229,8 +231,11 @@ void whirlwind_appendGfx(void* effect) {
     whirlwindMainDisplayList = gMainGfxPos;
 
     // Generate main display list
-    for(i = 0; i < (MAX_WHIRLWIND_SEGMENTS - 1); i++) {
-        guPositionF(sp20, 0.0f, 0.0f, data->unk_118[i], 1.0f, data->unk_38[i] * 10.0f, data->unk_58[i] * 10.0f, data->unk_78[i] * 10.0f);
+    for (i = 0; i < (MAX_WHIRLWIND_SEGMENTS - 1); i++) {
+        guPositionF(
+            sp20, 0.0f, 0.0f, data->unk_118[i], 1.0f, data->unk_38[i] * 10.0f, data->unk_58[i] * 10.0f,
+            data->unk_78[i] * 10.0f
+        );
         guRotateF(sp60, data->unk_138 + i * i, -0.03f, 1.0f, 0.1f);
         guMtxCatF(sp60, sp20, sp20);
         var_f4 = data->unk_98[i] * spB8;
@@ -244,11 +249,16 @@ void whirlwind_appendGfx(void* effect) {
         guTranslateF(sp60, temp_f20_2 * sin_deg(f22), 0.0f, temp_f20_2 * cos_deg(f22));
         guMtxCatF(sp60, sp20, sp20);
         guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPVertex(gMainGfxPos++, vertexBuffer, 16, 0);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 
-        guPositionF(sp20, 0.0f, 0.0f, data->unk_118[i + 1], 1.0f, data->unk_38[i + 1] * 10.0f, data->unk_58[i + 1] * 10.0f, data->unk_78[i + 1] * 10.0f);
+        guPositionF(
+            sp20, 0.0f, 0.0f, data->unk_118[i + 1], 1.0f, data->unk_38[i + 1] * 10.0f, data->unk_58[i + 1] * 10.0f,
+            data->unk_78[i + 1] * 10.0f
+        );
         guRotateF(sp60, data->unk_138 + i * i, 0.03f, 1.0f, 0.0f);
         guMtxCatF(sp60, sp20, sp20);
         guScaleF(sp60, data->unk_98[i + 1] * spB8, spB8, data->unk_98[i + 1] * spB8);
@@ -257,7 +267,9 @@ void whirlwind_appendGfx(void* effect) {
         guTranslateF(sp60, temp_f20_3 * sin_deg(data->unk_B8[i]), 0.0f, temp_f20_3 * cos_deg(data->unk_B8[i]));
         guMtxCatF(sp60, sp20, sp20);
         guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPVertex(gMainGfxPos++, &vertexBuffer[16], 16, 16);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 

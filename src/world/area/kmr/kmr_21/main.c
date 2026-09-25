@@ -48,27 +48,31 @@ void worker_draw_title_image(void) {
 
 #if VERSION_JP
     for (i = 0; i < 44; i++) {
-        gDPLoadTextureTile(gMainGfxPos++, &TitleImage[2176 * i], G_IM_FMT_RGBA, G_IM_SIZ_32b, 272, 112,
-                           0, 0, 271, 1, 0,
-                           G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSPTextureRectangle(gMainGfxPos++,
+        gDPLoadTextureTile(
+            gMainGfxPos++, &TitleImage[2176 * i], G_IM_FMT_RGBA, G_IM_SIZ_32b, 272, 112, 0, 0, 271, 1, 0, G_TX_WRAP,
+            G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+        );
+        gSPTextureRectangle(
+            gMainGfxPos++,
             /* ulx */ 25 * 4,
             /* uly */ (i * 2 + TitlePosY) * 4,
             /* lrx */ 297 * 4,
-            /* lry */ ((i * 2 + 2) + TitlePosY) * 4,
-            G_TX_RENDERTILE, 0, 0, 1024, 1024);
+            /* lry */ ((i * 2 + 2) + TitlePosY) * 4, G_TX_RENDERTILE, 0, 0, 1024, 1024
+        );
     }
 #else
     for (i = 0; i < 56; i++) {
-        gDPLoadTextureTile(gMainGfxPos++, &TitleImage[1600 * i], G_IM_FMT_RGBA, G_IM_SIZ_32b, 200, 112,
-                           0, 0, 199, 1, 0,
-                           G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSPTextureRectangle(gMainGfxPos++,
+        gDPLoadTextureTile(
+            gMainGfxPos++, &TitleImage[1600 * i], G_IM_FMT_RGBA, G_IM_SIZ_32b, 200, 112, 0, 0, 199, 1, 0, G_TX_WRAP,
+            G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+        );
+        gSPTextureRectangle(
+            gMainGfxPos++,
             /* ulx */ 60 * 4,
             /* uly */ (i * 2 + TitlePosY) * 4,
             /* lrx */ 260 * 4,
-            /* lry */ ((i * 2 + 2) + TitlePosY) * 4,
-            G_TX_RENDERTILE, 0, 0, 1024, 1024);
+            /* lry */ ((i * 2 + 2) + TitlePosY) * 4, G_TX_RENDERTILE, 0, 0, 1024, 1024
+        );
     }
 #endif
     gDPPipeSync(gMainGfxPos++);
@@ -81,7 +85,7 @@ API_CALLABLE(N(LoadTitleImage)) {
 
     decode_yay0(compressed, TitleData);
     general_heap_free(compressed);
-    TitleImage = (IMG_PTR)(TitleData->imgOffsetTitle + (s32)TitleData);
+    TitleImage = (IMG_PTR) (TitleData->imgOffsetTitle + (s32) TitleData);
     create_worker_frontUI(nullptr, worker_draw_title_image);
     return ApiStatus_DONE2;
 }

@@ -120,20 +120,19 @@ void big_smoke_puff_render(EffectInstance* effect) {
 }
 
 void big_smoke_puff_appendGfx(void* effect) {
-    BigSmokePuffFXData* data = ((EffectInstance*)effect)->data.bigSmokePuff;
+    BigSmokePuffFXData* data = ((EffectInstance*) effect)->data.bigSmokePuff;
     Matrix4f mtx;
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guPositionF(mtx, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, data->x, data->y, data->z);
     guMtxF2L(mtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++,
-              &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
 
-    for (i = 0; i < ((EffectInstance*)effect)->numParts; i++, data++) {
+    for (i = 0; i < ((EffectInstance*) effect)->numParts; i++, data++) {
         if (data->unk_02 >= 0 && data->unk_08 < 0) {
             s32 primAlpha = data->unk_02;
             f32 temp_f12;
@@ -144,12 +143,12 @@ void big_smoke_puff_appendGfx(void* effect) {
                 primAlpha = 16;
             }
 
-            guPositionF(mtx, 0.0f, 0.0f, sPartYaws[i], sPartScales[i], data->partX,
-                             data->partY, 0.0f);
+            guPositionF(mtx, 0.0f, 0.0f, sPartYaws[i], sPartScales[i], data->partX, data->partY, 0.0f);
             guMtxF2L(mtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++,
-                      &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
 
             temp_f12 = data->unk_00 - 1;
 
@@ -159,11 +158,11 @@ void big_smoke_puff_appendGfx(void* effect) {
             } else {
                 f32 temp = sin_deg((((temp_f12 * 7.0f) / data->unk_04) * 90.0f) / 7.0f) * 7.0f;
 
-                envAlpha = (s32)(temp * 255.0f) % 256;
-                dlist = sDlists[(s32)temp];
+                envAlpha = (s32) (temp * 255.0f) % 256;
+                dlist = sDlists[(s32) temp];
             }
 
-            gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, (u32)(primAlpha * 105) / 8);
+            gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, (u32) (primAlpha * 105) / 8);
             gDPSetEnvColor(gMainGfxPos++, 0, 0, 0, envAlpha);
             gSPDisplayList(gMainGfxPos++, dlist);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);

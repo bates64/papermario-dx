@@ -3,9 +3,16 @@
 
 API_CALLABLE(N(FortuneRitualDarkenModels)) {
     if (isInitialCall) {
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o283)), CUSTOM_GFX_NONE, ENV_TINT_REMAP);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o279)), CUSTOM_GFX_NONE, ENV_TINT_REMAP);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_dr_yuka)), CUSTOM_GFX_NONE, ENV_TINT_REMAP);
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o283)), CUSTOM_GFX_NONE, ENV_TINT_REMAP
+        );
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o279)), CUSTOM_GFX_NONE, ENV_TINT_REMAP
+        );
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_dr_yuka)), CUSTOM_GFX_NONE,
+            ENV_TINT_REMAP
+        );
         mdl_set_remap_tint_params(255, 255, 255, 0, 0, 0);
         script->functionTemp[0] = 255;
     }
@@ -49,8 +56,8 @@ API_CALLABLE(N(FortuneRitualPulseModels)) {
         }
     }
     mdl_set_remap_tint_params(
-        script->functionTemp[0], script->functionTemp[0], script->functionTemp[0],
-        script->functionTemp[2], script->functionTemp[2], script->functionTemp[2]
+        script->functionTemp[0], script->functionTemp[0], script->functionTemp[0], script->functionTemp[2],
+        script->functionTemp[2], script->functionTemp[2]
     );
     if (script->functionTemp[0] == 64 && script->functionTemp[2] == 0) {
         return ApiStatus_DONE2;
@@ -68,9 +75,16 @@ API_CALLABLE(N(FortuneRitualRestoreModels)) {
     }
     mdl_set_remap_tint_params(script->functionTemp[0], script->functionTemp[0], script->functionTemp[0], 0, 0, 0);
     if (script->functionTemp[0] == 255) {
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o283)), CUSTOM_GFX_NONE, ENV_TINT_NONE);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o279)), CUSTOM_GFX_NONE, ENV_TINT_NONE);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_dr_yuka)), CUSTOM_GFX_NONE, ENV_TINT_NONE);
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o283)), CUSTOM_GFX_NONE, ENV_TINT_NONE
+        );
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o279)), CUSTOM_GFX_NONE, ENV_TINT_NONE
+        );
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_dr_yuka)), CUSTOM_GFX_NONE,
+            ENV_TINT_NONE
+        );
         return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;

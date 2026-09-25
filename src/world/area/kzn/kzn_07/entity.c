@@ -2,7 +2,6 @@
 #include "effects.h"
 #include "entity.h"
 
-
 API_CALLABLE(N(NotifyChestDone)) {
     get_entity_by_index(script->varTable[0])->dataBuf.chest->gotItemDone = true;
     return ApiStatus_DONE2;

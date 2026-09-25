@@ -151,7 +151,7 @@ void explosion_render(EffectInstance* effect) {
 }
 
 void explosion_appendGfx(void* effect) {
-    ExplosionFXData* part = ((EffectInstance*)effect)->data.explosion;
+    ExplosionFXData* part = ((EffectInstance*) effect)->data.explosion;
     s32 unk_34 = part->unk_34;
     Matrix4f sp18;
     Matrix4f sp58;
@@ -160,7 +160,7 @@ void explosion_appendGfx(void* effect) {
     s32 cond;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp18, part->pos.x, part->pos.y, part->pos.z);
     guRotateF(sp58, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
@@ -169,7 +169,9 @@ void explosion_appendGfx(void* effect) {
 
     part++;
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     if (part->unk_00 != -1) {
         gSPDisplayList(gMainGfxPos++, D_09000840_3447B0);
@@ -178,7 +180,9 @@ void explosion_appendGfx(void* effect) {
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 240, part->unk_38);
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_090008F0_344860);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

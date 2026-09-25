@@ -11,7 +11,7 @@ API_CALLABLE(N(TackleWanderAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args++);
     EnemyDetectVolume detectVolume;
     EnemyDetectVolume* detect = &detectVolume;
 
@@ -62,9 +62,7 @@ API_CALLABLE(N(TackleWanderAI_Main)) {
     if (enemy->varTable[AI_VAR_TACKLE_CHANGE_TIME] > 0) {
         enemy->varTable[AI_VAR_TACKLE_CHANGE_TIME]--;
         if (enemy->varTable[AI_VAR_TACKLE_CHANGE_TIME] == 0) {
-            if (npc->curAnim == ANIM_BonyBeetle_ExtendSpikes ||
-                npc->curAnim == ANIM_BonyBeetle_RetractSpikes)
-            {
+            if (npc->curAnim == ANIM_BonyBeetle_ExtendSpikes || npc->curAnim == ANIM_BonyBeetle_RetractSpikes) {
                 npc->curAnim = ANIM_BonyBeetle_Walk;
             }
         } else {

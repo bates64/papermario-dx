@@ -96,25 +96,29 @@ typedef struct MobileAISettings {
     /* 0x04 */ s32 moveTime;
     /* 0x08 */ s32 waitTime;
     /* 0x0C */ f32 alertRadius;
-    /* 0x10 */ f32 alertOffsetDist;         // offset along npc->yaw of the test point for alert volume overlap, creates directionality to enemy 'sight'
-    /* 0x14 */ s32 playerSearchInterval;    // how often to search for player (frames)
+    /* 0x10 */ f32 alertOffsetDist; // offset along npc->yaw of the test point for alert volume overlap, creates
+                                    // directionality to enemy 'sight'
+    /* 0x14 */ s32 playerSearchInterval; // how often to search for player (frames)
     /* 0x18 */ f32 chaseSpeed;
-    /* 0x1C */ s32 chaseTurnRate;           // how many degrees this NPC can turn per frame while chasing
-    /* 0x20 */ s32 chaseUpdateInterval;     // how often to re-run chase init and re-acquire player position (frames)
+    /* 0x1C */ s32 chaseTurnRate; // how many degrees this NPC can turn per frame while chasing
+    /* 0x20 */ s32 chaseUpdateInterval; // how often to re-run chase init and re-acquire player position (frames)
     /* 0x24 */ f32 chaseRadius;
-    /* 0x28 */ f32 chaseOffsetDist;         // offset along npc->yaw of the test point for chase volume overlap, creates directionality to enemy 'sight'
-    /* 0x2C */ s32 loiterMode;              // enable loitering after movement when > 0
+    /* 0x28 */ f32 chaseOffsetDist; // offset along npc->yaw of the test point for chase volume overlap, creates
+                                    // directionality to enemy 'sight'
+    /* 0x2C */ s32 loiterMode; // enable loitering after movement when > 0
 } MobileAISettings; // size = 0x30
 
 typedef struct GuardAISettings {
     /* 0x00 */ f32 alertRadius;
-    /* 0x04 */ f32 alertOffsetDist;         // offset along npc->yaw of the test point for alert volume overlap, creates directionality to enemy 'sight'
-    /* 0x08 */ s32 playerSearchInterval;    // how often to search for player (frames)
+    /* 0x04 */ f32 alertOffsetDist; // offset along npc->yaw of the test point for alert volume overlap, creates
+                                    // directionality to enemy 'sight'
+    /* 0x08 */ s32 playerSearchInterval; // how often to search for player (frames)
     /* 0x0C */ f32 chaseSpeed;
-    /* 0x10 */ s32 chaseTurnRate;           // how many degrees this NPC can turn per frame while chasing
-    /* 0x14 */ s32 chaseUpdateInterval;     // how often to re-run chase init and re-acquire player position (frames)
+    /* 0x10 */ s32 chaseTurnRate; // how many degrees this NPC can turn per frame while chasing
+    /* 0x14 */ s32 chaseUpdateInterval; // how often to re-run chase init and re-acquire player position (frames)
     /* 0x18 */ f32 chaseRadius;
-    /* 0x1C */ f32 chaseOffsetDist;         // offset along npc->yaw of the test point for alert volume overlap, creates directionality to enemy 'sight'
+    /* 0x1C */ f32 chaseOffsetDist; // offset along npc->yaw of the test point for alert volume overlap, creates
+                                    // directionality to enemy 'sight'
 } GuardAISettings; // size = 0x20
 
 struct FireBarData;
@@ -153,7 +157,7 @@ typedef struct NpcSettings {
     /* 0x1C */ EvtScript* onDefeat;
     /* 0x20 */ s32 flags; // see: EnemyFlags
     /* 0x24 */ s16 level;
-    /* 0x26 */ s16 actionFlags;  // see: EnemyActionFlags
+    /* 0x26 */ s16 actionFlags; // see: EnemyActionFlags
 } NpcSettings; // size = 0x28
 
 typedef struct ItemDrop {
@@ -177,9 +181,9 @@ typedef struct ItemDrop {
 /// cutoff, generalChance, and chancePerAttempt are short fixed-point percentage values.
 /// That is, `F16(0)` is a 0% chance and `F16(100)` is a 100% chance.
 typedef struct StatDrop {
-    /* 0x00 */ s16 cutoff;           ///< % of max HP/FP. If current HP/FP > cutoff, no hearts/flowers can be dropped.
-    /* 0x02 */ s16 generalChance;    ///< % chance for any hearts/flowers to be dropped at all from this StatDrop.
-    /* 0x04 */ s16 attempts;         ///< Maximum number of hearts/flowers that can be dropped from this StatDrop.
+    /* 0x00 */ s16 cutoff; ///< % of max HP/FP. If current HP/FP > cutoff, no hearts/flowers can be dropped.
+    /* 0x02 */ s16 generalChance; ///< % chance for any hearts/flowers to be dropped at all from this StatDrop.
+    /* 0x04 */ s16 attempts; ///< Maximum number of hearts/flowers that can be dropped from this StatDrop.
     /* 0x06 */ s16 chancePerAttempt; ///< % chance for a single heart/flower to be dropped from each attempt.
 } StatDrop; // size = 0x08
 
@@ -194,7 +198,10 @@ typedef struct EnemyDrops {
     /* 0xB6 */ PAD(2);
 } EnemyDrops; // size = 0xB8
 
-enum TerritoryShape { SHAPE_CYLINDER, SHAPE_RECT };
+enum TerritoryShape {
+    SHAPE_CYLINDER,
+    SHAPE_RECT
+};
 
 typedef struct {
     /* 0x00 */ Vec3i centerPos;
@@ -235,8 +242,10 @@ typedef struct NpcData {
     /* 0x008 */ Vec3f pos;
     /* 0x014 */ s32 flags;
     /* 0x018 */ EvtScript* init;
-    /* 0x01C */ s32 initVarCount; /// size of initVar in words. always 1 if using value/bytes, sizeof the array when using array.
-    /* 0x020 */ NpcInitialVars initVar; /// use this to initialize Enemy::varTable at the earliest possible moment, before onCreate is executed
+    /* 0x01C */ s32
+        initVarCount; /// size of initVar in words. always 1 if using value/bytes, sizeof the array when using array.
+    /* 0x020 */ NpcInitialVars
+        initVar; /// use this to initialize Enemy::varTable at the earliest possible moment, before onCreate is executed
     /* 0x024 */ s32 yaw;
     /* 0x028 */ EnemyDrops drops;
     /* 0x0E0 */ EnemyTerritory territory;
@@ -520,7 +529,7 @@ Npc* npc_find_closest(f32 x, f32 y, f32 z, f32 radius);
 /// Returns nullptr if there are no NPCs within radius.
 Npc* npc_find_closest_simple(f32 x, f32 y, f32 z, f32 radius);
 
-//s32 npc_find_standing_on_entity();
+// s32 npc_find_standing_on_entity();
 
 s32 npc_get_collider_below(Npc* npc);
 

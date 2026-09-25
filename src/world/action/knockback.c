@@ -28,9 +28,10 @@ void action_update_knockback(void) {
 
         gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_IGNORE_PLAYER_Y;
 
-        ReturnAngle = atan2(playerStatus->pos.x, playerStatus->pos.z, playerStatus->lastGoodPos.x,
-                           playerStatus->lastGoodPos.z);
-        playerStatus->curSpeed = get_xz_dist_to_player(playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z) / 18.0f;
+        ReturnAngle =
+            atan2(playerStatus->pos.x, playerStatus->pos.z, playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z);
+        playerStatus->curSpeed =
+            get_xz_dist_to_player(playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z) / 18.0f;
     }
 
     sin_cos_rad(DEG_TO_RAD(ReturnAngle), &dx, &dy);
@@ -59,7 +60,7 @@ void action_update_knockback(void) {
         playerStatus->pos.y = player_check_collision_below(player_fall_distance(), &colliderID);
 
         if (colliderID > NO_COLLIDER) {
-            colliderID = get_collider_flags(colliderID); //TODO surfaceType
+            colliderID = get_collider_flags(colliderID); // TODO surfaceType
             set_action_state(ACTION_STATE_LAND);
         }
     }

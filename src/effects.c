@@ -31,9 +31,9 @@ void stub_effect_delegate(EffectInstance* effect) {
 void set_effect_pos_offset(EffectInstance* effect, f32 x, f32 y, f32 z) {
     s32* data = effect->data.any;
 
-    ((f32*)data)[1] = x;
-    ((f32*)data)[2] = y;
-    ((f32*)data)[3] = z;
+    ((f32*) data)[1] = x;
+    ((f32*) data)[2] = y;
+    ((f32*) data)[3] = z;
 }
 
 void clear_effect_data(void) {
@@ -48,7 +48,7 @@ void clear_effect_data(void) {
     }
 
     osUnmapTLBAll();
-    osMapTLB(EFFECT_GLOBALS_TLB_IDX, OS_PM_4K, effect_globals_VRAM, (s32)&gEffectGlobals & 0xFFFFFF, -1, -1);
+    osMapTLB(EFFECT_GLOBALS_TLB_IDX, OS_PM_4K, effect_globals_VRAM, (s32) &gEffectGlobals & 0xFFFFFF, -1, -1);
     DMA_COPY_SEGMENT(effect_globals);
 }
 
@@ -147,7 +147,8 @@ void render_effects_UI(void) {
                 if (effectInstance->flags & FX_INSTANCE_FLAG_HAS_UPDATED) {
                     void (*renderUI)(EffectInstance* effect);
 
-                    if (gGameStatusPtr->context != CONTEXT_WORLD && !(effectInstance->flags & FX_INSTANCE_FLAG_BATTLE)) {
+                    if (gGameStatusPtr->context != CONTEXT_WORLD && !(effectInstance->flags & FX_INSTANCE_FLAG_BATTLE))
+                    {
                         continue;
                     }
 
@@ -162,22 +163,25 @@ void render_effects_UI(void) {
 
                             gDPPipeSync(gMainGfxPos++);
                             gSPViewport(gMainGfxPos++, &camera->vp);
-                            gSPClearGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG |
-                                                G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD |
-                                                G_SHADING_SMOOTH | G_CLIPPING | 0x40F9FA);
+                            gSPClearGeometryMode(
+                                gMainGfxPos++,
+                                G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN
+                                    | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH | G_CLIPPING | 0x40F9FA
+                            );
                             gSPSetGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH);
-                            gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE,
-                                              camera->viewportStartX,
-                                              camera->viewportStartY,
-                                              camera->viewportStartX + camera->viewportW,
-                                              camera->viewportStartY + camera->viewportH);
+                            gDPSetScissor(
+                                gMainGfxPos++, G_SC_NON_INTERLACE, camera->viewportStartX, camera->viewportStartY,
+                                camera->viewportStartX + camera->viewportW, camera->viewportStartY + camera->viewportH
+                            );
                             gSPClipRatio(gMainGfxPos++, FRUSTRATIO_2);
 
                             cond = false;
                             if (!(camera->flags & CAMERA_FLAG_ORTHO)) {
                                 gSPPerspNormalize(gMainGfxPos++, camera->perspNorm);
-                                gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCameraID],
-                                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+                                gSPMatrix(
+                                    gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCameraID],
+                                    G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+                                );
                             }
                         }
 
@@ -322,7 +326,7 @@ s32 load_effect(s32 effectIndex) {
     ASSERT(i < ARRAY_COUNT(gEffectSharedData));
 
     // Map space for the effect
-    osMapTLB(i, OS_PM_4K, effectEntry->dmaDest, (s32)(gEffectDataBuffer[i]) & 0xFFFFFF, -1, -1);
+    osMapTLB(i, OS_PM_4K, effectEntry->dmaDest, (s32) (gEffectDataBuffer[i]) & 0xFFFFFF, -1, -1);
 
     // Copy the effect into the newly mapped space
     dma_copy(effectEntry->dmaStart, effectEntry->dmaEnd, effectEntry->dmaDest);

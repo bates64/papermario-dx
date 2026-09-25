@@ -5,7 +5,6 @@
 
 #include "sprite/npc/Luigi.h"
 
-
 API_CALLABLE(N(SetModelRemapTint)) {
     Bytecode* args = script->ptrReadPos;
     s32 primR = *args++;
@@ -28,14 +27,14 @@ API_CALLABLE(N(LoadPeachLetterImage)) {
     u8* rasterOffset = charset_peach_letter_OFFSET;
     u16* paletteOffset = charset_peach_letter_pal_OFFSET;
 
-    dma_copy(romStart + (s32)rasterOffset, romStart + (s32)rasterOffset + sizeof(N(PeachLetterImg)), &N(PeachLetterImg));
-    dma_copy(romStart + (s32)paletteOffset, romStart + (s32)paletteOffset + sizeof(N(PeachLetterPal)), &N(PeachLetterPal));
+    dma_copy(romStart + (s32) rasterOffset, romStart + (s32) rasterOffset + sizeof(N(PeachLetterImg)), &N(PeachLetterImg));
+    dma_copy(romStart + (s32) paletteOffset, romStart + (s32) paletteOffset + sizeof(N(PeachLetterPal)), &N(PeachLetterPal));
 
-    N(MsgImage).raster   = N(PeachLetterImg);
-    N(MsgImage).palette  = N(PeachLetterPal);
-    N(MsgImage).width    = charset_peach_letter_png_width;
-    N(MsgImage).height   = charset_peach_letter_png_height;
-    N(MsgImage).format   = G_IM_FMT_CI;
+    N(MsgImage).raster = N(PeachLetterImg);
+    N(MsgImage).palette = N(PeachLetterPal);
+    N(MsgImage).width = charset_peach_letter_png_width;
+    N(MsgImage).height = charset_peach_letter_png_height;
+    N(MsgImage).format = G_IM_FMT_CI;
     N(MsgImage).bitDepth = G_IM_SIZ_8b;
     set_message_images(&N(MsgImage));
     return ApiStatus_DONE2;

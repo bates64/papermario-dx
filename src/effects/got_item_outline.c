@@ -13,7 +13,7 @@ Gfx* D_E0036630[] = {
     D_09008170_34DCB0, D_09008190_34DCD0, D_090081A8_34DCE8, D_090081C0_34DD00
 };
 
-u8 AnimScaleIn[]  = {  60, 120, 140, 147, 149, 150 };
+u8 AnimScaleIn[] = { 60, 120, 140, 147, 149, 150 };
 u8 AnimScaleOut[] = { 150, 150, 150, 150, 150, 150 };
 
 void got_item_outline_init(EffectInstance* effect);
@@ -21,14 +21,7 @@ void got_item_outline_update(EffectInstance* effect);
 void got_item_outline_render(EffectInstance* effect);
 void got_item_outline_appendGfx(void* effect);
 
-void got_item_outline_main(
-    s32 type,
-    f32 posX,
-    f32 posY,
-    f32 posZ,
-    f32 arg4,
-    EffectInstance** outEffect
-) {
+void got_item_outline_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 arg4, EffectInstance** outEffect) {
     EffectBlueprint bp;
     EffectInstance* effect;
     GotItemOutlineFXData* data;
@@ -108,7 +101,7 @@ void func_E003621C(void) {
 }
 
 void got_item_outline_appendGfx(void* effect) {
-    GotItemOutlineFXData* data = ((EffectInstance*)effect)->data.gotItemOutline;
+    GotItemOutlineFXData* data = ((EffectInstance*) effect)->data.gotItemOutline;
     s32 type = data->type;
     f32 scale = data->scale;
     Matrix4f mtxTransform;
@@ -117,7 +110,7 @@ void got_item_outline_appendGfx(void* effect) {
 
     if (scale != 0.0f) {
         gDPPipeSync(gMainGfxPos++);
-        gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+        gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
         gSPDisplayList(gMainGfxPos++, D_09008100_34DC40);
 
         if (type == 0) {
@@ -140,7 +133,9 @@ void got_item_outline_appendGfx(void* effect) {
         guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
 
         for (i = 0; i < 4; i++) {
             IMG_PTR img;
@@ -152,15 +147,17 @@ void got_item_outline_appendGfx(void* effect) {
             }
 
             gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_IA, G_IM_SIZ_8b, 128, img);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 0, G_TX_LOADTILE, 0,
-                       G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD,
-                       G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 0, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD
+            );
             gDPLoadSync(gMainGfxPos++);
             gDPLoadTile(gMainGfxPos++, G_TX_LOADTILE, 0, 0, 508, 124);
             gDPPipeSync(gMainGfxPos++);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 0, G_TX_RENDERTILE, 0,
-                       G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD,
-                       G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 0, G_TX_RENDERTILE, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD
+            );
             gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, 0, 0, 508, 124);
             gSPDisplayList(gMainGfxPos++, D_E0036630[i]);
         }

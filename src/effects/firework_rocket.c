@@ -80,7 +80,9 @@ FireworkSparkList D_E010AF68[] = {
 s32 firework_rocket_frame_counter = 0;
 s32 firework_rocket_blur_alpha = 0;
 
-EffectInstance* firework_rocket_main(s32 variation, f32 centerX, f32 centerY, f32 centerZ, f32 velX, f32 velY, f32 velZ, f32 radius, s32 duration) {
+EffectInstance* firework_rocket_main(
+    s32 variation, f32 centerX, f32 centerY, f32 centerZ, f32 velX, f32 velY, f32 velZ, f32 radius, s32 duration
+) {
     EffectBlueprint bp;
     EffectInstance* effect;
     FireworkRocketFXData* data;
@@ -182,8 +184,8 @@ void firework_rocket_update(EffectInstance* effect) {
 
     i = lifeTime & 3;
     data->rocketX[i] = data->pos.x - data->vel.x * (32 - lifeTime);
-    data->rocketY[i] = data->pos.y - data->vel.y * (32 - lifeTime)
-        - (80.0f - sin_deg((s32)(lifeTime * 90) >> 5) * 80.0f);
+    data->rocketY[i] =
+        data->pos.y - data->vel.y * (32 - lifeTime) - (80.0f - sin_deg((s32) (lifeTime * 90) >> 5) * 80.0f);
     data->rocketZ[i] = data->pos.z - data->vel.z * (32 - lifeTime);
     data->rocketVelX[i] = (rand_int(10) - 5) * 0.1f;
     data->rocketVelY[i] = (rand_int(10) - 5) * 0.1f;
@@ -212,14 +214,14 @@ void firework_rocket_render(EffectInstance* effect) {
     renderTask.appendGfx = firework_rocket_appendGfx;
     renderTask.appendGfxArg = effect;
     renderTask.dist = 700;
-    renderTask.renderMode =  RENDER_MODE_SURFACE_OPA;
+    renderTask.renderMode = RENDER_MODE_SURFACE_OPA;
 
     retTask = queue_render_task(&renderTask);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
 void firework_rocket_appendGfx(void* effect) {
-    FireworkRocketFXData* data = ((EffectInstance*)effect)->data.fireworkRocket;
+    FireworkRocketFXData* data = ((EffectInstance*) effect)->data.fireworkRocket;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 minBlurAlpha = data->minBlurAlpha;
     s32 variation = data->variation;
@@ -244,7 +246,9 @@ void firework_rocket_appendGfx(void* effect) {
     isExploded = data->isExploded;
     if (firework_rocket_frame_counter != gGameStatusPtr->frameCounter) {
         // draw previous frame to create motion blur effect
-        draw_prev_frame_buffer_at_screen_pos(10, 10, SCREEN_WIDTH - 10, SCREEN_HEIGHT - 10, firework_rocket_blur_alpha * 0.8);
+        draw_prev_frame_buffer_at_screen_pos(
+            10, 10, SCREEN_WIDTH - 10, SCREEN_HEIGHT - 10, firework_rocket_blur_alpha * 0.8
+        );
         firework_rocket_frame_counter = gGameStatusPtr->frameCounter;
         firework_rocket_blur_alpha = 0;
     }
@@ -253,7 +257,7 @@ void firework_rocket_appendGfx(void* effect) {
     }
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     mtx00 = camera->mtxPerspective[0][0];
     mtx01 = camera->mtxPerspective[0][1];
@@ -328,9 +332,9 @@ void firework_rocket_appendGfx(void* effect) {
             y += camera->viewportStartY;
             y *= 4.0f;
 
-            gSPScisTextureRectangle(gMainGfxPos++,
-                x, y, x + 8.0f, y + 8.0f,
-                G_TX_RENDERTILE, 4 << 5, 4 << 5, 16 << 10, 16 << 10);
+            gSPScisTextureRectangle(
+                gMainGfxPos++, x, y, x + 8.0f, y + 8.0f, G_TX_RENDERTILE, 4 << 5, 4 << 5, 16 << 10, 16 << 10
+            );
         }
     }
 }

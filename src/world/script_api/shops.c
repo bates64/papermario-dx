@@ -192,8 +192,7 @@ API_CALLABLE(CanInteractWithShopItem) {
 
     script->varTable[2] = false;
 
-    if (playerStatus->actionState == ACTION_STATE_BOUNCE ||
-        playerStatus->actionState == ACTION_STATE_FALLING) {
+    if (playerStatus->actionState == ACTION_STATE_BOUNCE || playerStatus->actionState == ACTION_STATE_FALLING) {
         return ApiStatus_DONE2;
     }
 
@@ -280,7 +279,8 @@ API_CALLABLE(ShowShopPurchaseDialog) {
         if (shopItem->typeFlags & ITEM_TYPE_FLAG_BADGE) {
             bpCost = gMoveTable[shopItem->moveID].costBP;
         }
-        script->functionTemp[1] = shop_owner_buy_dialog(SHOP_MSG_BUY_CONFIRM, shopItem->nameMsg, shopInventory->price, bpCost);
+        script->functionTemp[1] =
+            shop_owner_buy_dialog(SHOP_MSG_BUY_CONFIRM, shopItem->nameMsg, shopInventory->price, bpCost);
         script->functionTemp[0] = PURCHASE_DIALOG_STATE_INIT;
         increment_status_bar_disabled();
         status_bar_always_show_off();
@@ -548,7 +548,8 @@ API_CALLABLE(ShowShopOwnerDialog) {
                             script->functionTemp[0] = DIALOG_STATE_CLOSED_SUBMENU;
                             break;
                         }
-                        script->functionTemp[1] = shop_owner_continue_speech_with_quantity(SHOP_MSG_CHECK_WHICH, get_stored_empty());
+                        script->functionTemp[1] =
+                            shop_owner_continue_speech_with_quantity(SHOP_MSG_CHECK_WHICH, get_stored_empty());
                         script->functionTemp[0] = DIALOG_STATE_INIT_CHECK_CHOICE;
                         break;
                     case 3:
@@ -592,7 +593,10 @@ API_CALLABLE(ShowShopOwnerDialog) {
             shop_close_item_select_popup();
             if (shop->selectedStoreItemSlot >= 0) {
                 ItemData* itemData = &gItemTable[gPlayerData.invItems[shop->selectedStoreItemSlot]];
-                script->functionTemp[1] = shop_owner_buy_dialog(SHOP_MSG_SELL_CONFIRM, itemData->nameMsg, shop_get_sell_price(gPlayerData.invItems[shop->selectedStoreItemSlot]), -1);
+                script->functionTemp[1] = shop_owner_buy_dialog(
+                    SHOP_MSG_SELL_CONFIRM, itemData->nameMsg,
+                    shop_get_sell_price(gPlayerData.invItems[shop->selectedStoreItemSlot]), -1
+                );
                 show_coin_counter();
                 script->functionTemp[0] = DIALOG_STATE_AWAIT_SELL_CONFIRM;
             } else {
@@ -777,7 +781,9 @@ void shop_draw_item_name(s32 arg0, s32 posX, s32 posY) {
     ShopItemData* siItem = &shop->staticInventory[shop->curItemSlot];
     ItemData* shopItem = &gItemTable[siItem->itemID];
 
-    draw_msg(shopItem->nameMsg, posX + 60 - (get_msg_width(shopItem->nameMsg, 0) >> 1), posY + 6, 255, MSG_PAL_WHITE, 0);
+    draw_msg(
+        shopItem->nameMsg, posX + 60 - (get_msg_width(shopItem->nameMsg, 0) >> 1), posY + 6, 255, MSG_PAL_WHITE, 0
+    );
 }
 
 void shop_draw_item_desc(s32 arg0, s32 posX, s32 posY) {
@@ -836,7 +842,9 @@ void draw_shop_items(void) {
                 }
 
                 if (!(get_item_entity(shopItemEntities->index)->flags & ITEM_ENTITY_FLAG_HIDDEN)) {
-                    draw_number(itemData->price, xTemp + xOffset, yTemp, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, 0);
+                    draw_number(
+                        itemData->price, xTemp + xOffset, yTemp, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, 0
+                    );
                 }
 
                 if (i == shop->curItemSlot) {
@@ -928,8 +936,12 @@ API_CALLABLE(MakeShop) {
         gGameStatusPtr->shopItemEntities[numShopItems].index =
             make_item_entity_nodelay(inventory->itemID | shop->inventoryItemFlags, centerX, centerY, centerZ, 1, 0);
         set_item_entity_flags(gGameStatusPtr->shopItemEntities[numShopItems].index, ITEM_ENTITY_RESIZABLE);
-        bind_trigger_1(&EVS_ShopItemInteract, TRIGGER_FLOOR_TOUCH, itemDataPositions->triggerColliderID, numShopItems, 0, 3);
-        bind_trigger_1(&EVS_ShopItemInteract, TRIGGER_FLOOR_PRESS_A, itemDataPositions->triggerColliderID, numShopItems, 0, 3);
+        bind_trigger_1(
+            &EVS_ShopItemInteract, TRIGGER_FLOOR_TOUCH, itemDataPositions->triggerColliderID, numShopItems, 0, 3
+        );
+        bind_trigger_1(
+            &EVS_ShopItemInteract, TRIGGER_FLOOR_PRESS_A, itemDataPositions->triggerColliderID, numShopItems, 0, 3
+        );
         itemDataPositions++;
         inventory++;
         numShopItems++;

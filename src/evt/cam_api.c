@@ -301,7 +301,7 @@ API_CALLABLE(ShakeCam) {
     s32 rumbleDuration;
 
     if (isInitialCall) {
-        switch (shakeMode){
+        switch (shakeMode) {
             case CAM_SHAKE_CONSTANT_VERTICAL:
             case CAM_SHAKE_ANGULAR_HORIZONTAL:
                 break;
@@ -462,8 +462,9 @@ API_CALLABLE(UseSettingsFrom) {
     f32 hitX, hitY, hitZ;
     f32 hitDepth = 32767.0f;
     f32 nx, ny, nz;
-    s32 hitID = test_ray_zones(startX, startY + 10.0f, startZ, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth,
-                               &nx, &ny, &nz);
+    s32 hitID = test_ray_zones(
+        startX, startY + 10.0f, startZ, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &nx, &ny, &nz
+    );
 
     if (hitID > NO_COLLIDER) {
         camera->overrideSettings = *gZoneCollisionData.colliderList[hitID].camSettings;
@@ -687,7 +688,8 @@ API_CALLABLE(SetCamProperties) {
 
     if (isInitialCall) {
         hitDepth = 32767.0f;
-        zoneID = test_ray_zones(posX, posY + 10.0f, posZ, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &nX, &nY, &nZ);
+        zoneID =
+            test_ray_zones(posX, posY + 10.0f, posZ, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &nX, &nY, &nZ);
         if (zoneID >= 0) {
             camera->overrideSettings = *gZoneCollisionData.colliderList[zoneID].camSettings;
         }
@@ -730,7 +732,8 @@ API_CALLABLE(AdjustCam) {
         posX = playerStatus->pos.x;
         posY = playerStatus->pos.y;
         posZ = playerStatus->pos.z;
-        zoneID = test_ray_zones(posX, posY + 10.0f, posZ, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &nX, &nY, &nZ);
+        zoneID =
+            test_ray_zones(posX, posY + 10.0f, posZ, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &nX, &nY, &nZ);
         if (zoneID >= 0) {
             camera->overrideSettings = *gZoneCollisionData.colliderList[zoneID].camSettings;
         }
@@ -771,8 +774,7 @@ API_CALLABLE(ResetCam) {
         f32 nx, ny, nz;
         s32 hitID;
 
-        hitID = test_ray_zones(x, y + 10.0f, z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth,
-                               &nx, &ny, &nz);
+        hitID = test_ray_zones(x, y + 10.0f, z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &nx, &ny, &nz);
 
         if (hitID > NO_COLLIDER) {
             camera->overrideSettings = *gZoneCollisionData.colliderList[hitID].camSettings;

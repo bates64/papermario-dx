@@ -11,7 +11,7 @@ EvtScript N(EVS_LoadPondAnimation) = {
 
 #include "foliage.h"
 
-FoliageModelList N(Tree1_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o558);
+FoliageModelList N(Tree1_LeafModels) = FOLIAGE_MODEL_LIST(MODEL_o558);
 FoliageModelList N(Tree1_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_miki3);
 
 ShakeTreeConfig N(ShakeTree_Tree1) = {
@@ -24,7 +24,7 @@ BombTrigger N(BombPos_Tree1) = {
     .diameter = 0.0f
 };
 
-FoliageModelList N(Tree2_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o192);
+FoliageModelList N(Tree2_LeafModels) = FOLIAGE_MODEL_LIST(MODEL_o192);
 FoliageModelList N(Tree2_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_miki4);
 
 ShakeTreeConfig N(ShakeTree_Tree2) = {
@@ -37,7 +37,7 @@ BombTrigger N(BombPos_Tree2) = {
     .diameter = 0.0f
 };
 
-FoliageModelList N(Tree3_LeafModels) =  FOLIAGE_MODEL_LIST(MODEL_o190);
+FoliageModelList N(Tree3_LeafModels) = FOLIAGE_MODEL_LIST(MODEL_o190);
 FoliageModelList N(Tree3_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_miki5);
 
 ShakeTreeConfig N(ShakeTree_Tree3) = {
@@ -94,9 +94,9 @@ EvtScript N(EVS_Main) = {
     IfNe(LVar0, sam_11_ENTRY_2)
         Goto(10)
     EndIf
-        Call(MakeNpcs, false, Ref(N(EpilogueNPCs)))
-        Call(FadeInMusic, 0, SONG_SHIVER_CITY, 0, 3000, 0, 127)
-        Return
+    Call(MakeNpcs, false, Ref(N(EpilogueNPCs)))
+    Call(FadeInMusic, 0, SONG_SHIVER_CITY, 0, 3000, 0, 127)
+    Return
     Label(10)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)

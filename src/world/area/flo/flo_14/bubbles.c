@@ -63,7 +63,10 @@ API_CALLABLE(N(UpdateBubbleSoundPos)) {
     script->functionTemp[0] = evt_get_variable(script, *args++);
     script->functionTemp[1] = evt_get_variable(script, *args++);
     script->functionTemp[2] = evt_get_variable(script, *args++);
-    sfx_adjust_env_sound_pos(SOUND_LRAW_BUBBLE_DRIFT, SOUND_SPACE_DEFAULT, script->functionTemp[0], script->functionTemp[1], script->functionTemp[2]);
+    sfx_adjust_env_sound_pos(
+        SOUND_LRAW_BUBBLE_DRIFT, SOUND_SPACE_DEFAULT, script->functionTemp[0], script->functionTemp[1],
+        script->functionTemp[2]
+    );
     return ApiStatus_DONE2;
 }
 
@@ -219,15 +222,16 @@ void N(gfx_build_big_bubble)(void) {
     matrix[1][0] = (sin_rad(N(BubblePhase) / 14.0f) * 0.04);
     matrix[1][2] = (cos_rad(N(BubblePhase) / 15.0f) * 0.04);
 
-    matrix[2][2] = (sin_rad(N(BubblePhase) * 0.25f + 2.0f)  * 0.04) + 0.98;
+    matrix[2][2] = (sin_rad(N(BubblePhase) * 0.25f + 2.0f) * 0.04) + 0.98;
     matrix[2][0] = (sin_rad(N(BubblePhase) * 0.0625f) * 0.04);
     matrix[2][1] = (cos_rad(N(BubblePhase) / 17.0f) * 0.04);
 
     guMtxF2L(matrix, &gDisplayContext->matrixStack[gMatrixListPos]);
     mdl_get_copied_vertices(VTX_COPY_0, &src, &dest, &copyCount);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW
+    );
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_0));
 
     N(BubblePhase) += 1.0f;
@@ -253,7 +257,7 @@ void N(gfx_build_bubble_flower)(void) {
             openedScale = 0.7 + (sin_rad((N(FlowerPhase) / 180.0f) * PI_D) * 0.3);
             lengthScale = 0.2 - (sin_rad((N(FlowerPhase) / 180.0f) * PI_D) * 0.2);
             copy->v.ob[0] = ((src->v.ob[0] - 616) * openedScale) + 616.0f + (lengthScale * -48.0f);
-            copy->v.ob[1] = ((src->v.ob[1] -  44) * openedScale) +  44.0f + (lengthScale *  25.0f);
+            copy->v.ob[1] = ((src->v.ob[1] - 44) * openedScale) + 44.0f + (lengthScale * 25.0f);
             copy->v.ob[2] = ((src->v.ob[2] - 113) * openedScale) + 113.0f + (lengthScale * -87.0f);
         }
     }

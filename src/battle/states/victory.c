@@ -172,8 +172,8 @@ void btl_state_update_victory(void) {
                     battleStatus->incrementStarPointDelay = 20;
                     battleStatus->nextMerleeSpellType = MERLEE_SPELL_NONE;
                     gBattleSubState = BTL_SUBSTATE_DONE;
-                    battleStatus->pendingStarPoints = battleStatus->totalStarPoints
-                                            + battleStatus->pendingStarPoints + battleStatus->pendingStarPoints;
+                    battleStatus->pendingStarPoints = battleStatus->totalStarPoints + battleStatus->pendingStarPoints
+                        + battleStatus->pendingStarPoints;
                 }
             }
         }
