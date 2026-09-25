@@ -367,9 +367,9 @@ API_CALLABLE(MerleeStopFX) {
 }
 
 API_CALLABLE(GetCamLookAtObjVector) {
-    script->varTable[0] = gCameras[gCurrentCameraID].lookAt_obj.x;
-    script->varTable[1] = gCameras[gCurrentCameraID].lookAt_obj.y;
-    script->varTable[2] = gCameras[gCurrentCameraID].lookAt_obj.z;
+    script->varTable[0] = gCameras[gCurrentCameraID].lookAtObj.x;
+    script->varTable[1] = gCameras[gCurrentCameraID].lookAtObj.y;
+    script->varTable[2] = gCameras[gCurrentCameraID].lookAtObj.z;
 
     return ApiStatus_DONE2;
 }

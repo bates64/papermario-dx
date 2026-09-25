@@ -81,19 +81,19 @@ API_CALLABLE(GrabCamera) {
 
     gCameras[id].updateMode = CAM_UPDATE_INTERP_POS;
     gCameras[id].needsInit = false;
-    gCameras[id].params.interp.pitch = -round(gCameras[id].lookAt_pitch);
-    gCameras[id].params.interp.yaw = -gCameras[id].lookAt_yaw;
+    gCameras[id].params.interp.pitch = -round(gCameras[id].lookAtPitch);
+    gCameras[id].params.interp.yaw = -gCameras[id].lookAtYaw;
     gCameras[id].params.interp.offsetY = 0;
 
-    dx = gCameras[id].lookAt_obj.x - gCameras[id].lookAt_eye.x;
-    dy = gCameras[id].lookAt_obj.y - gCameras[id].lookAt_eye.y;
-    dz = gCameras[id].lookAt_obj.z - gCameras[id].lookAt_eye.z;
+    dx = gCameras[id].lookAtObj.x - gCameras[id].lookAtEye.x;
+    dy = gCameras[id].lookAtObj.y - gCameras[id].lookAtEye.y;
+    dz = gCameras[id].lookAtObj.z - gCameras[id].lookAtEye.z;
 
     gCameras[id].params.interp.dist = round(sqrtf(SQ(dx) + SQ(dy) + SQ(dz)));
 
-    gCameras[id].lookAt_obj_target.x = gCameras[id].lookAt_obj.x;
-    gCameras[id].lookAt_obj_target.y = gCameras[id].lookAt_obj.y;
-    gCameras[id].lookAt_obj_target.z = gCameras[id].lookAt_obj.z;
+    gCameras[id].lookAtObjTarget.x = gCameras[id].lookAtObj.x;
+    gCameras[id].lookAtObjTarget.y = gCameras[id].lookAtObj.y;
+    gCameras[id].lookAtObjTarget.z = gCameras[id].lookAtObj.z;
 
     evt_set_variable(script, outVar1, gCameras[id].params.interp.pitch);
     evt_set_variable(script, outVar2, gCameras[id].params.interp.yaw);
@@ -204,9 +204,9 @@ API_CALLABLE(SetCamLookTarget) {
     s32 z = evt_get_variable(script, *args++);
     Camera* camera = &gCameras[id];
 
-    camera->lookAt_obj_target.x = x;
-    camera->lookAt_obj_target.y = y;
-    camera->lookAt_obj_target.z = z;
+    camera->lookAtObjTarget.x = x;
+    camera->lookAtObjTarget.y = y;
+    camera->lookAtObjTarget.z = z;
     return ApiStatus_DONE2;
 }
 
@@ -253,9 +253,9 @@ API_CALLABLE(InterpCamTargetPos) {
 
         switch (data->useTarget) {
             case 0:
-                data->vel.x = (posX - cam->lookAt_obj_target.x) / data->time;
-                data->vel.y = (posY - cam->lookAt_obj_target.y) / data->time;
-                data->vel.z = (posZ - cam->lookAt_obj_target.z) / data->time;
+                data->vel.x = (posX - cam->lookAtObjTarget.x) / data->time;
+                data->vel.y = (posY - cam->lookAtObjTarget.y) / data->time;
+                data->vel.z = (posZ - cam->lookAtObjTarget.z) / data->time;
                 break;
             case 1:
                 data->vel.x = (posX - cam->targetPos.x) / data->time;
@@ -269,9 +269,9 @@ API_CALLABLE(InterpCamTargetPos) {
     cam = data->cam;
     switch (data->useTarget) {
         case 0:
-            cam->lookAt_obj_target.x += data->vel.x;
-            cam->lookAt_obj_target.y += data->vel.y;
-            cam->lookAt_obj_target.z += data->vel.z;
+            cam->lookAtObjTarget.x += data->vel.x;
+            cam->lookAtObjTarget.y += data->vel.y;
+            cam->lookAtObjTarget.z += data->vel.z;
             break;
         case 1:
             cam->targetPos.x += data->vel.x;

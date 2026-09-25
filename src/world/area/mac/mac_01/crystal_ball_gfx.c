@@ -12,8 +12,8 @@ void N(gfx_build_crystal_ball_pre)(void) {
 
     N(CrystallBallRenderCounter)++;
     guLookAtHiliteF(sp50, &sp90, &gDisplayContext->hilite,
-                    camera->lookAt_eye.x, camera->lookAt_eye.y, camera->lookAt_eye.z,
-                    camera->lookAt_obj.x, camera->lookAt_obj.y, camera->lookAt_obj.z,
+                    camera->lookAtEye.x, camera->lookAtEye.y, camera->lookAtEye.z,
+                    camera->lookAtObj.x, camera->lookAtObj.y, camera->lookAtObj.z,
                     0.0f, 1.0f, 0.0f,
                     -50.0f, 63.0f, 95.0f,
                     31.0f, 63.0f, 95.0f,

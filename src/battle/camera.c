@@ -221,9 +221,9 @@ API_CALLABLE(BattleCam_Update_FocusMidpointA) {
         BattleCam_BoomLength += MAX(0, subjects.actorSize.y - 24.0);
 
         if (BattleCam_SetImmediately) {
-            camera->lookAt_obj_target.x = subjects.avgPos.x;
-            camera->lookAt_obj_target.y = subjects.avgPos.y;
-            camera->lookAt_obj_target.z = subjects.avgPos.z;
+            camera->lookAtObjTarget.x = subjects.avgPos.x;
+            camera->lookAtObjTarget.y = subjects.avgPos.y;
+            camera->lookAtObjTarget.z = subjects.avgPos.z;
 
             camera->params.basic.dist = BattleCam_BoomLength;
             camera->params.basic.pitch = BattleCam_BoomPitch;
@@ -231,9 +231,9 @@ API_CALLABLE(BattleCam_Update_FocusMidpointA) {
             camera->params.basic.offsetY = BattleCam_BoomOffsetY * 256;
         }
 
-        BattleCam_InitialPosX = camera->lookAt_obj_target.x;
-        BattleCam_InitialPosY = camera->lookAt_obj_target.y;
-        BattleCam_InitialPosZ = camera->lookAt_obj_target.z;
+        BattleCam_InitialPosX = camera->lookAtObjTarget.x;
+        BattleCam_InitialPosY = camera->lookAtObjTarget.y;
+        BattleCam_InitialPosZ = camera->lookAtObjTarget.z;
 
         BattleCam_InitialBoomLength = camera->params.basic.dist;
         BattleCam_InitialBoomPitch = camera->params.basic.pitch;
@@ -248,16 +248,16 @@ API_CALLABLE(BattleCam_Update_FocusMidpointA) {
         alpha = CUBIC_SINE_INTERP(alpha);
     }
 
-    prevPos.x = camera->lookAt_obj_target.x;
-    prevPos.y = camera->lookAt_obj_target.y;
-    prevPos.z = camera->lookAt_obj_target.z;
+    prevPos.x = camera->lookAtObjTarget.x;
+    prevPos.y = camera->lookAtObjTarget.y;
+    prevPos.z = camera->lookAtObjTarget.z;
 
-    camera->lookAt_obj_target.x = LERP(BattleCam_InitialPosX, subjects.avgPos.x, alpha);
-    camera->lookAt_obj_target.y = LERP(BattleCam_InitialPosY, subjects.avgPos.y, alpha);
-    camera->lookAt_obj_target.z = LERP(BattleCam_InitialPosZ, subjects.avgPos.z, alpha);
+    camera->lookAtObjTarget.x = LERP(BattleCam_InitialPosX, subjects.avgPos.x, alpha);
+    camera->lookAtObjTarget.y = LERP(BattleCam_InitialPosY, subjects.avgPos.y, alpha);
+    camera->lookAtObjTarget.z = LERP(BattleCam_InitialPosZ, subjects.avgPos.z, alpha);
 
     targetBoomLength = BattleCam_BoomLength;
-    targetBoomLength += dist2D(camera->lookAt_obj_target.x, camera->lookAt_obj_target.z, subjects.avgPos.x, subjects.avgPos.z);
+    targetBoomLength += dist2D(camera->lookAtObjTarget.x, camera->lookAtObjTarget.z, subjects.avgPos.x, subjects.avgPos.z);
     //NOTE division by 8 here is only difference between this and BattleCam_Update_FocusMidpointB
     targetBoomLength += (subjects.actorSizeAvg + subjects.targetSizeAvg) / 8;
     targetBoomLength -= 64.0f;
@@ -305,9 +305,9 @@ API_CALLABLE(BattleCam_Update_FocusMidpointB) {
         BattleCam_BoomLength += MAX(0, subjects.actorSize.y - 24.0);
 
         if (BattleCam_SetImmediately) {
-            camera->lookAt_obj_target.x = subjects.avgPos.x;
-            camera->lookAt_obj_target.y = subjects.avgPos.y;
-            camera->lookAt_obj_target.z = subjects.avgPos.z;
+            camera->lookAtObjTarget.x = subjects.avgPos.x;
+            camera->lookAtObjTarget.y = subjects.avgPos.y;
+            camera->lookAtObjTarget.z = subjects.avgPos.z;
 
             camera->params.basic.dist = BattleCam_BoomLength;
             camera->params.basic.pitch = BattleCam_BoomPitch;
@@ -315,9 +315,9 @@ API_CALLABLE(BattleCam_Update_FocusMidpointB) {
             camera->params.basic.offsetY = BattleCam_BoomOffsetY * 256;
         }
 
-        BattleCam_InitialPosX = camera->lookAt_obj_target.x;
-        BattleCam_InitialPosY = camera->lookAt_obj_target.y;
-        BattleCam_InitialPosZ = camera->lookAt_obj_target.z;
+        BattleCam_InitialPosX = camera->lookAtObjTarget.x;
+        BattleCam_InitialPosY = camera->lookAtObjTarget.y;
+        BattleCam_InitialPosZ = camera->lookAtObjTarget.z;
 
         BattleCam_InitialBoomLength = camera->params.basic.dist;
         BattleCam_InitialBoomPitch = camera->params.basic.pitch;
@@ -332,16 +332,16 @@ API_CALLABLE(BattleCam_Update_FocusMidpointB) {
         alpha = CUBIC_SINE_INTERP(alpha);
     }
 
-    prevPos.x = camera->lookAt_obj_target.x;
-    prevPos.y = camera->lookAt_obj_target.y;
-    prevPos.z = camera->lookAt_obj_target.z;
+    prevPos.x = camera->lookAtObjTarget.x;
+    prevPos.y = camera->lookAtObjTarget.y;
+    prevPos.z = camera->lookAtObjTarget.z;
 
-    camera->lookAt_obj_target.x = LERP(BattleCam_InitialPosX, subjects.avgPos.x, alpha);
-    camera->lookAt_obj_target.y = LERP(BattleCam_InitialPosY, subjects.avgPos.y, alpha);
-    camera->lookAt_obj_target.z = LERP(BattleCam_InitialPosZ, subjects.avgPos.z, alpha);
+    camera->lookAtObjTarget.x = LERP(BattleCam_InitialPosX, subjects.avgPos.x, alpha);
+    camera->lookAtObjTarget.y = LERP(BattleCam_InitialPosY, subjects.avgPos.y, alpha);
+    camera->lookAtObjTarget.z = LERP(BattleCam_InitialPosZ, subjects.avgPos.z, alpha);
 
     targetBoomLength = BattleCam_BoomLength;
-    targetBoomLength += dist2D(camera->lookAt_obj_target.x, camera->lookAt_obj_target.z, subjects.avgPos.x, subjects.avgPos.z);
+    targetBoomLength += dist2D(camera->lookAtObjTarget.x, camera->lookAtObjTarget.z, subjects.avgPos.x, subjects.avgPos.z);
     targetBoomLength += subjects.actorSizeAvg - 32.0f;
     targetBoomLength += subjects.targetSizeAvg - 32.0f;
     targetBoomLength += 0.5f * dist3D(prevPos.z, prevPos.y, prevPos.z, subjects.targetPos.x, subjects.targetPos.y, subjects.targetPos.z);
@@ -386,9 +386,9 @@ API_CALLABLE(BattleCam_Update_FocusActorPart) {
         BattleCam_BoomLength += MAX(0, subjects.actorSize.y - 24.0);
 
         if (BattleCam_SetImmediately) {
-            camera->lookAt_obj_target.x = subjects.avgPos.x;
-            camera->lookAt_obj_target.y = subjects.avgPos.y;
-            camera->lookAt_obj_target.z = subjects.avgPos.z;
+            camera->lookAtObjTarget.x = subjects.avgPos.x;
+            camera->lookAtObjTarget.y = subjects.avgPos.y;
+            camera->lookAtObjTarget.z = subjects.avgPos.z;
 
             camera->params.basic.dist = BattleCam_BoomLength;
             camera->params.basic.pitch = BattleCam_BoomPitch;
@@ -396,9 +396,9 @@ API_CALLABLE(BattleCam_Update_FocusActorPart) {
             camera->params.basic.offsetY = BattleCam_BoomOffsetY * 256;
         }
 
-        BattleCam_InitialPosX = camera->lookAt_obj_target.x;
-        BattleCam_InitialPosY = camera->lookAt_obj_target.y;
-        BattleCam_InitialPosZ = camera->lookAt_obj_target.z;
+        BattleCam_InitialPosX = camera->lookAtObjTarget.x;
+        BattleCam_InitialPosY = camera->lookAtObjTarget.y;
+        BattleCam_InitialPosZ = camera->lookAtObjTarget.z;
 
         BattleCam_InitialBoomLength = camera->params.basic.dist;
         BattleCam_InitialBoomPitch = camera->params.basic.pitch;
@@ -413,9 +413,9 @@ API_CALLABLE(BattleCam_Update_FocusActorPart) {
         alpha = CUBIC_SINE_INTERP(alpha);
     }
 
-    camera->lookAt_obj_target.x = LERP(BattleCam_InitialPosX, subjects.avgPos.x, alpha);
-    camera->lookAt_obj_target.y = LERP(BattleCam_InitialPosY, subjects.avgPos.y, alpha);
-    camera->lookAt_obj_target.z = LERP(BattleCam_InitialPosZ, subjects.avgPos.z, alpha);
+    camera->lookAtObjTarget.x = LERP(BattleCam_InitialPosX, subjects.avgPos.x, alpha);
+    camera->lookAtObjTarget.y = LERP(BattleCam_InitialPosY, subjects.avgPos.y, alpha);
+    camera->lookAtObjTarget.z = LERP(BattleCam_InitialPosZ, subjects.avgPos.z, alpha);
 
     camera->params.basic.dist = LERP(BattleCam_InitialBoomLength, BattleCam_BoomLength, alpha);
     camera->params.basic.yaw = LERP(BattleCam_InitialBoomYaw, BattleCam_BoomYaw, alpha);
@@ -495,9 +495,9 @@ API_CALLABLE(BattleCam_Update_FocusActor) {
         BattleCam_BoomLength += MAX(0, actor->size.x - 24.0);
         BattleCam_BoomLength += MAX(0, actor->size.y - 24.0);
 
-        BattleCam_InitialPosX = camera->lookAt_obj_target.x;
-        BattleCam_InitialPosY = camera->lookAt_obj_target.y;
-        BattleCam_InitialPosZ = camera->lookAt_obj_target.z;
+        BattleCam_InitialPosX = camera->lookAtObjTarget.x;
+        BattleCam_InitialPosY = camera->lookAtObjTarget.y;
+        BattleCam_InitialPosZ = camera->lookAtObjTarget.z;
 
         BattleCam_InitialBoomLength = camera->params.basic.dist;
         BattleCam_InitialBoomPitch = camera->params.basic.pitch;
@@ -513,12 +513,12 @@ API_CALLABLE(BattleCam_Update_FocusActor) {
     }
 
     if (BattleCam_AdjustTargetXMode != BTL_CAM_XADJ_NONE) {
-        camera->lookAt_obj_target.x = LERP(BattleCam_InitialPosX, actorX + BattleCam_ExtraOffsetX, alpha);
+        camera->lookAtObjTarget.x = LERP(BattleCam_InitialPosX, actorX + BattleCam_ExtraOffsetX, alpha);
     }
     if (BattleCam_AdjustTargetYMode != BTL_CAM_YADJ_NONE) {
-        camera->lookAt_obj_target.y = LERP(BattleCam_InitialPosY, actorY, alpha);
+        camera->lookAtObjTarget.y = LERP(BattleCam_InitialPosY, actorY, alpha);
     }
-    camera->lookAt_obj_target.z = LERP(BattleCam_InitialPosZ, actorZ, alpha);
+    camera->lookAtObjTarget.z = LERP(BattleCam_InitialPosZ, actorZ, alpha);
 
     targetBoomLength = BattleCam_BoomLength;
     targetBoomLength += actorSize - 32.0f;
@@ -611,9 +611,9 @@ API_CALLABLE(BattleCam_Update_FocusGoal) {
     goalX = clamp_edge_pos_x(goalX);
 
     if (isInitialCall) {
-        BattleCam_InitialPosX = camera->lookAt_obj_target.x;
-        BattleCam_InitialPosY = camera->lookAt_obj_target.y;
-        BattleCam_InitialPosZ = camera->lookAt_obj_target.z;
+        BattleCam_InitialPosX = camera->lookAtObjTarget.x;
+        BattleCam_InitialPosY = camera->lookAtObjTarget.y;
+        BattleCam_InitialPosZ = camera->lookAtObjTarget.z;
 
         BattleCam_InitialBoomLength = camera->params.basic.dist;
         BattleCam_InitialBoomPitch = camera->params.basic.pitch;
@@ -628,9 +628,9 @@ API_CALLABLE(BattleCam_Update_FocusGoal) {
         alpha = CUBIC_SINE_INTERP(alpha);
     }
 
-    camera->lookAt_obj_target.x = LERP(BattleCam_InitialPosX, goalX, alpha);
-    camera->lookAt_obj_target.y = LERP(BattleCam_InitialPosY, goalY, alpha);
-    camera->lookAt_obj_target.z = LERP(BattleCam_InitialPosZ, goalZ, alpha);
+    camera->lookAtObjTarget.x = LERP(BattleCam_InitialPosX, goalX, alpha);
+    camera->lookAtObjTarget.y = LERP(BattleCam_InitialPosY, goalY, alpha);
+    camera->lookAtObjTarget.z = LERP(BattleCam_InitialPosZ, goalZ, alpha);
 
     targetBoomLength = BattleCam_BoomLength;
     targetBoomLength += actorSizeAvg - 32.0f;
@@ -666,9 +666,9 @@ API_CALLABLE(BattleCam_Update_SimpleLerp_Unskippable) {
         BattleCam_InitialBoomPitch = camera->params.basic.pitch;
         BattleCam_InitialBoomYaw = camera->params.basic.yaw;
         BattleCam_InitialBoomOffsetY = camera->params.basic.offsetY / 256;
-        BattleCam_InitialPosX = camera->lookAt_obj_target.x;
-        BattleCam_InitialPosY = camera->lookAt_obj_target.y;
-        BattleCam_InitialPosZ = camera->lookAt_obj_target.z;
+        BattleCam_InitialPosX = camera->lookAtObjTarget.x;
+        BattleCam_InitialPosY = camera->lookAtObjTarget.y;
+        BattleCam_InitialPosZ = camera->lookAtObjTarget.z;
 
         BattleCam_MoveTimeTotal = BattleCam_MoveTimeLeft;
     }
@@ -678,9 +678,9 @@ API_CALLABLE(BattleCam_Update_SimpleLerp_Unskippable) {
         alpha = CUBIC_SINE_INTERP(alpha);
     }
 
-    camera->lookAt_obj_target.x = LERP(BattleCam_InitialPosX, BattleCam_PosX, alpha);
-    camera->lookAt_obj_target.y = LERP(BattleCam_InitialPosY, BattleCam_PosY, alpha);
-    camera->lookAt_obj_target.z = LERP(BattleCam_InitialPosZ, BattleCam_PosZ, alpha);
+    camera->lookAtObjTarget.x = LERP(BattleCam_InitialPosX, BattleCam_PosX, alpha);
+    camera->lookAtObjTarget.y = LERP(BattleCam_InitialPosY, BattleCam_PosY, alpha);
+    camera->lookAtObjTarget.z = LERP(BattleCam_InitialPosZ, BattleCam_PosZ, alpha);
 
     camera->params.basic.dist = LERP(BattleCam_InitialBoomLength, BattleCam_BoomLength, alpha);
     camera->params.basic.yaw = LERP(BattleCam_InitialBoomYaw, BattleCam_BoomYaw, alpha);
@@ -715,9 +715,9 @@ API_CALLABLE(BattleCam_Update_ResetToNeutral_Skippable) {
         BattleCam_BoomOffsetY = 0;
 
         if (BattleCam_SetImmediately) {
-            camera->lookAt_obj_target.x = BattleCam_PosX;
-            camera->lookAt_obj_target.y = BattleCam_PosY;
-            camera->lookAt_obj_target.z = BattleCam_PosZ;
+            camera->lookAtObjTarget.x = BattleCam_PosX;
+            camera->lookAtObjTarget.y = BattleCam_PosY;
+            camera->lookAtObjTarget.z = BattleCam_PosZ;
 
             camera->params.basic.dist = BattleCam_BoomLength;
             camera->params.basic.pitch = BattleCam_BoomPitch;
@@ -729,9 +729,9 @@ API_CALLABLE(BattleCam_Update_ResetToNeutral_Skippable) {
         BattleCam_InitialBoomPitch = camera->params.basic.pitch;
         BattleCam_InitialBoomYaw = camera->params.basic.yaw;
         BattleCam_InitialBoomOffsetY = camera->params.basic.offsetY / 256;
-        BattleCam_InitialPosX = camera->lookAt_obj_target.x;
-        BattleCam_InitialPosY = camera->lookAt_obj_target.y;
-        BattleCam_InitialPosZ = camera->lookAt_obj_target.z;
+        BattleCam_InitialPosX = camera->lookAtObjTarget.x;
+        BattleCam_InitialPosY = camera->lookAtObjTarget.y;
+        BattleCam_InitialPosZ = camera->lookAtObjTarget.z;
 
         BattleCam_MoveTimeTotal = BattleCam_MoveTimeLeft;
     }
@@ -741,9 +741,9 @@ API_CALLABLE(BattleCam_Update_ResetToNeutral_Skippable) {
         alpha = QUADRATIC_SINE_INTERP(alpha);
     }
 
-    camera->lookAt_obj_target.x = LERP(BattleCam_InitialPosX, BattleCam_PosX, alpha);
-    camera->lookAt_obj_target.y = LERP(BattleCam_InitialPosY, BattleCam_PosY, alpha);
-    camera->lookAt_obj_target.z = LERP(BattleCam_InitialPosZ, BattleCam_PosZ, alpha);
+    camera->lookAtObjTarget.x = LERP(BattleCam_InitialPosX, BattleCam_PosX, alpha);
+    camera->lookAtObjTarget.y = LERP(BattleCam_InitialPosY, BattleCam_PosY, alpha);
+    camera->lookAtObjTarget.z = LERP(BattleCam_InitialPosZ, BattleCam_PosZ, alpha);
 
     camera->params.basic.dist = LERP(BattleCam_InitialBoomLength, BattleCam_BoomLength, alpha);
     camera->params.basic.pitch = LERP(BattleCam_InitialBoomPitch, BattleCam_BoomPitch, alpha);
@@ -780,9 +780,9 @@ API_CALLABLE(BattleCam_Update_ViewAllEnemies) {
         BattleCam_InitialBoomPitch = camera->params.basic.pitch;
         BattleCam_InitialBoomYaw = camera->params.basic.yaw;
         BattleCam_InitialBoomOffsetY = camera->params.basic.offsetY / 256;
-        BattleCam_InitialPosX = camera->lookAt_obj_target.x;
-        BattleCam_InitialPosY = camera->lookAt_obj_target.y;
-        BattleCam_InitialPosZ = camera->lookAt_obj_target.z;
+        BattleCam_InitialPosX = camera->lookAtObjTarget.x;
+        BattleCam_InitialPosY = camera->lookAtObjTarget.y;
+        BattleCam_InitialPosZ = camera->lookAtObjTarget.z;
 
         BattleCam_MoveTimeTotal = BattleCam_MoveTimeLeft;
     }
@@ -792,9 +792,9 @@ API_CALLABLE(BattleCam_Update_ViewAllEnemies) {
         alpha = CUBIC_SINE_INTERP(alpha);
     }
 
-    camera->lookAt_obj_target.x = LERP(BattleCam_InitialPosX, BattleCam_PosX, alpha);
-    camera->lookAt_obj_target.y = LERP(BattleCam_InitialPosY, BattleCam_PosY, alpha);
-    camera->lookAt_obj_target.z = LERP(BattleCam_InitialPosZ, BattleCam_PosZ, alpha);
+    camera->lookAtObjTarget.x = LERP(BattleCam_InitialPosX, BattleCam_PosX, alpha);
+    camera->lookAtObjTarget.y = LERP(BattleCam_InitialPosY, BattleCam_PosY, alpha);
+    camera->lookAtObjTarget.z = LERP(BattleCam_InitialPosZ, BattleCam_PosZ, alpha);
 
     camera->params.basic.dist = LERP(BattleCam_InitialBoomLength, BattleCam_BoomLength, alpha);
     camera->params.basic.yaw = LERP(BattleCam_InitialBoomYaw, BattleCam_BoomYaw, alpha);
@@ -823,7 +823,7 @@ API_CALLABLE(BattleCam_Update_ViewAllEnemies_MaintainY) {
 
     if (isInitialCall) {
         BattleCam_PosX = 35.0f;
-        BattleCam_PosY = MAX(camera->lookAt_obj_target.y, 60.0f);
+        BattleCam_PosY = MAX(camera->lookAtObjTarget.y, 60.0f);
         BattleCam_PosZ = 0.0f;
 
         BattleCam_BoomYaw = 0;
@@ -831,9 +831,9 @@ API_CALLABLE(BattleCam_Update_ViewAllEnemies_MaintainY) {
         BattleCam_InitialBoomPitch = camera->params.basic.pitch;
         BattleCam_InitialBoomYaw = camera->params.basic.yaw;
         BattleCam_InitialBoomOffsetY = camera->params.basic.offsetY / 256;
-        BattleCam_InitialPosX = camera->lookAt_obj_target.x;
-        BattleCam_InitialPosY = camera->lookAt_obj_target.y;
-        BattleCam_InitialPosZ = camera->lookAt_obj_target.z;
+        BattleCam_InitialPosX = camera->lookAtObjTarget.x;
+        BattleCam_InitialPosY = camera->lookAtObjTarget.y;
+        BattleCam_InitialPosZ = camera->lookAtObjTarget.z;
 
         BattleCam_MoveTimeTotal = BattleCam_MoveTimeLeft;
     }
@@ -843,9 +843,9 @@ API_CALLABLE(BattleCam_Update_ViewAllEnemies_MaintainY) {
         alpha = CUBIC_SINE_INTERP(alpha);
     }
 
-    camera->lookAt_obj_target.x = LERP(BattleCam_InitialPosX, BattleCam_PosX, alpha);
-    camera->lookAt_obj_target.y = LERP(BattleCam_InitialPosY, BattleCam_PosY, alpha);
-    camera->lookAt_obj_target.z = LERP(BattleCam_InitialPosZ, BattleCam_PosZ, alpha);
+    camera->lookAtObjTarget.x = LERP(BattleCam_InitialPosX, BattleCam_PosX, alpha);
+    camera->lookAtObjTarget.y = LERP(BattleCam_InitialPosY, BattleCam_PosY, alpha);
+    camera->lookAtObjTarget.z = LERP(BattleCam_InitialPosZ, BattleCam_PosZ, alpha);
 
     camera->params.basic.dist = LERP(BattleCam_InitialBoomLength, BattleCam_BoomLength, alpha);
     camera->params.basic.yaw = LERP(BattleCam_InitialBoomYaw, BattleCam_BoomYaw, alpha);
@@ -876,17 +876,17 @@ API_CALLABLE(BattleCam_Update_SimpleLerp_Skippable) {
 
     if (isInitialCall) {
         if (BattleCam_SetImmediately) {
-            BattleCam_PosX = camera->lookAt_obj_target.x;
-            BattleCam_PosY = camera->lookAt_obj_target.y;
-            BattleCam_PosZ = camera->lookAt_obj_target.z;
+            BattleCam_PosX = camera->lookAtObjTarget.x;
+            BattleCam_PosY = camera->lookAtObjTarget.y;
+            BattleCam_PosZ = camera->lookAtObjTarget.z;
         }
         BattleCam_InitialBoomLength = camera->params.basic.dist;
         BattleCam_InitialBoomPitch = camera->params.basic.pitch;
         BattleCam_InitialBoomYaw = camera->params.basic.yaw;
         BattleCam_InitialBoomOffsetY = camera->params.basic.offsetY / 256;
-        BattleCam_InitialPosX = camera->lookAt_obj_target.x;
-        BattleCam_InitialPosY = camera->lookAt_obj_target.y;
-        BattleCam_InitialPosZ = camera->lookAt_obj_target.z;
+        BattleCam_InitialPosX = camera->lookAtObjTarget.x;
+        BattleCam_InitialPosY = camera->lookAtObjTarget.y;
+        BattleCam_InitialPosZ = camera->lookAtObjTarget.z;
 
         BattleCam_MoveTimeTotal = BattleCam_MoveTimeLeft;
     }
@@ -896,9 +896,9 @@ API_CALLABLE(BattleCam_Update_SimpleLerp_Skippable) {
         alpha = CUBIC_SINE_INTERP(alpha);
     }
 
-    camera->lookAt_obj_target.x = LERP(BattleCam_InitialPosX, BattleCam_PosX, alpha);
-    camera->lookAt_obj_target.y = LERP(BattleCam_InitialPosY, BattleCam_PosY, alpha);
-    camera->lookAt_obj_target.z = LERP(BattleCam_InitialPosZ, BattleCam_PosZ, alpha);
+    camera->lookAtObjTarget.x = LERP(BattleCam_InitialPosX, BattleCam_PosX, alpha);
+    camera->lookAtObjTarget.y = LERP(BattleCam_InitialPosY, BattleCam_PosY, alpha);
+    camera->lookAtObjTarget.z = LERP(BattleCam_InitialPosZ, BattleCam_PosZ, alpha);
 
     camera->params.basic.dist = LERP(BattleCam_InitialBoomLength, BattleCam_BoomLength, alpha);
     camera->params.basic.yaw = LERP(BattleCam_InitialBoomYaw, BattleCam_BoomYaw, alpha);
@@ -925,9 +925,9 @@ API_CALLABLE(BattleCam_Update_FollowActorY) {
     s32 actorClass;
 
     if (isInitialCall) {
-        BattleCam_PosX = camera->lookAt_obj_target.x;
-        BattleCam_PosY = camera->lookAt_obj_target.y;
-        BattleCam_PosZ = camera->lookAt_obj_target.z;
+        BattleCam_PosX = camera->lookAtObjTarget.x;
+        BattleCam_PosY = camera->lookAtObjTarget.y;
+        BattleCam_PosZ = camera->lookAtObjTarget.z;
         BattleCam_InitialBoomYaw = camera->params.basic.yaw;
         BattleCam_InitialBoomPitch = camera->params.basic.pitch;
     }
@@ -968,11 +968,11 @@ API_CALLABLE(BattleCam_Update_FollowActorY) {
         actorY = BattleCam_PosY;
     }
 
-    delta = actorY - camera->lookAt_obj_target.y;
+    delta = actorY - camera->lookAtObjTarget.y;
     if (fabsf(delta) < 0.01) {
-        camera->lookAt_obj_target.y = actorY;
+        camera->lookAtObjTarget.y = actorY;
     } else {
-        camera->lookAt_obj_target.y += delta / 5.0f;
+        camera->lookAtObjTarget.y += delta / 5.0f;
     }
 
     return ApiStatus_BLOCK;
@@ -1018,9 +1018,9 @@ API_CALLABLE(BattleCam_Update_FollowActorPos) {
     }
 
     if (isInitialCall) {
-        BattleCam_PosX = camera->lookAt_obj_target.x;
-        BattleCam_PosY = camera->lookAt_obj_target.y;
-        BattleCam_PosZ = camera->lookAt_obj_target.z;
+        BattleCam_PosX = camera->lookAtObjTarget.x;
+        BattleCam_PosY = camera->lookAtObjTarget.y;
+        BattleCam_PosZ = camera->lookAtObjTarget.z;
         BattleCam_InitialBoomYaw = camera->params.basic.yaw;
         BattleCam_InitialBoomPitch = camera->params.basic.pitch;
     }
@@ -1044,25 +1044,25 @@ API_CALLABLE(BattleCam_Update_FollowActorPos) {
         actorX += 25.0f;
     }
 
-    delta = actorX - camera->lookAt_obj_target.x;
+    delta = actorX - camera->lookAtObjTarget.x;
     if (fabsf(delta) < 0.01) {
-        camera->lookAt_obj_target.x = actorX;
+        camera->lookAtObjTarget.x = actorX;
     } else {
-        camera->lookAt_obj_target.x += delta / 5.0f;
+        camera->lookAtObjTarget.x += delta / 5.0f;
     }
 
-    delta = actorY - camera->lookAt_obj_target.y;
+    delta = actorY - camera->lookAtObjTarget.y;
     if (fabsf(delta) < 0.01) {
-        camera->lookAt_obj_target.y = actorY;
+        camera->lookAtObjTarget.y = actorY;
     } else {
-        camera->lookAt_obj_target.y += delta / 5.0f;
+        camera->lookAtObjTarget.y += delta / 5.0f;
     }
 
-    delta = actorZ - camera->lookAt_obj_target.z;
+    delta = actorZ - camera->lookAtObjTarget.z;
     if (fabsf(delta) < 0.01) {
-        camera->lookAt_obj_target.z = actorZ;
+        camera->lookAtObjTarget.z = actorZ;
     } else {
-        camera->lookAt_obj_target.z += delta / 5.0f;
+        camera->lookAtObjTarget.z += delta / 5.0f;
     }
 
     return ApiStatus_BLOCK;
@@ -1975,9 +1975,9 @@ void btl_cam_set_pos(f32 x, f32 y, f32 z) {
     Camera* camera = &gCameras[CAM_BATTLE];
 
     if (!BattleCam_IsFrozen) {
-        camera->lookAt_obj_target.x = x;
-        camera->lookAt_obj_target.y = y;
-        camera->lookAt_obj_target.z = z;
+        camera->lookAtObjTarget.x = x;
+        camera->lookAtObjTarget.y = y;
+        camera->lookAtObjTarget.z = z;
     }
 }
 
@@ -2140,9 +2140,9 @@ API_CALLABLE(ForceBattleCamTarget) {
         return ApiStatus_DONE2;
     }
 
-    camera->lookAt_obj_target.x = evt_get_variable(script, *args++);
-    camera->lookAt_obj_target.y = evt_get_variable(script, *args++);
-    camera->lookAt_obj_target.z = evt_get_variable(script, *args++);
+    camera->lookAtObjTarget.x = evt_get_variable(script, *args++);
+    camera->lookAtObjTarget.y = evt_get_variable(script, *args++);
+    camera->lookAtObjTarget.z = evt_get_variable(script, *args++);
 
     return ApiStatus_DONE2;
 }

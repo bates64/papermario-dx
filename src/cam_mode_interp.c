@@ -2,9 +2,9 @@
 #include "camera.h"
 
 // implements CAM_UPDATE_INTERP_POS
-// this camera uses a set of control parameters to calculate its target lookAt_obj and lookAt_eye positions,
+// this camera uses a set of control parameters to calculate its target lookAtObj and lookAtEye positions,
 // then interpolates current positions toward those targets, moving up to half the remaining distance each frame
-// position of the camera is determined with a boom and the ultimate target is given by lookAt_obj_target
+// position of the camera is determined with a boom and the ultimate target is given by lookAtObjTarget
 //
 // control parameters:
 // dist -- length of the camera boom arm
@@ -25,9 +25,9 @@ void update_camera_interp_pos(Camera *camera) {
     if (camera->needsInit) {
         camera->needsInit = false;
 
-        camera->lookAt_obj.x = camera->lookAt_obj_target.x;
-        camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetOffsetY;
-        camera->lookAt_obj.z = camera->lookAt_obj_target.z;
+        camera->lookAtObj.x = camera->lookAtObjTarget.x;
+        camera->lookAtObj.y = camera->lookAtObjTarget.y + camera->targetOffsetY;
+        camera->lookAtObj.z = camera->lookAtObjTarget.z;
 
         pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
         sinPitch = sin_rad(pitchAngle);
@@ -41,16 +41,16 @@ void update_camera_interp_pos(Camera *camera) {
         dx = camera->curBoomLength * cosPitch * -sinYaw;
         dz = camera->curBoomLength * cosPitch * cosYaw;
 
-        camera->lookAt_eye.x = camera->lookAt_obj.x + dx;
-        camera->lookAt_eye.y = camera->lookAt_obj.y + dy;
-        camera->lookAt_eye.z = camera->lookAt_obj.z + dz;
+        camera->lookAtEye.x = camera->lookAtObj.x + dx;
+        camera->lookAtEye.y = camera->lookAtObj.y + dy;
+        camera->lookAtEye.z = camera->lookAtObj.z + dz;
     }
 
-    // interpolate lookAt_obj toward lookAt_obj_target by stepping half the difference each frame
+    // interpolate lookAtObj toward lookAtObjTarget by stepping half the difference each frame
 
-    dx = camera->lookAt_obj_target.x - camera->lookAt_obj.x;
-    dy = camera->lookAt_obj_target.y - camera->lookAt_obj.y + camera->targetOffsetY;
-    dz = camera->lookAt_obj_target.z - camera->lookAt_obj.z;
+    dx = camera->lookAtObjTarget.x - camera->lookAtObj.x;
+    dy = camera->lookAtObjTarget.y - camera->lookAtObj.y + camera->targetOffsetY;
+    dz = camera->lookAtObjTarget.z - camera->lookAtObj.z;
 
     if (fabsf(dx) > 16.0f) {
         if (dx < 0.0f) {
@@ -74,9 +74,9 @@ void update_camera_interp_pos(Camera *camera) {
         }
     }
 
-    camera->lookAt_obj.x += dx * 0.5f;
-    camera->lookAt_obj.y += dy * 0.5f;
-    camera->lookAt_obj.z += dz * 0.5f;
+    camera->lookAtObj.x += dx * 0.5f;
+    camera->lookAtObj.y += dy * 0.5f;
+    camera->lookAtObj.z += dz * 0.5f;
 
     // calculate new camera eye position from distance and angles
 
@@ -92,15 +92,15 @@ void update_camera_interp_pos(Camera *camera) {
     dx = camera->curBoomLength * cosPitch * -sinYaw;
     dz = camera->curBoomLength * cosPitch * cosYaw;
 
-    x = camera->lookAt_obj.x + dx;
-    y = camera->lookAt_obj.y + dy;
-    z = camera->lookAt_obj.z + dz;
+    x = camera->lookAtObj.x + dx;
+    y = camera->lookAtObj.y + dy;
+    z = camera->lookAtObj.z + dz;
 
-    // interpolate lookAt_eye toward new eye position by stepping half the difference each frame
+    // interpolate lookAtEye toward new eye position by stepping half the difference each frame
 
-    dx = (x - camera->lookAt_eye.x) * 0.5f;
-    dy = (y - camera->lookAt_eye.y) * 0.5f;
-    dz = (z - camera->lookAt_eye.z) * 0.5f;
+    dx = (x - camera->lookAtEye.x) * 0.5f;
+    dy = (y - camera->lookAtEye.y) * 0.5f;
+    dz = (z - camera->lookAtEye.z) * 0.5f;
 
     if (fabsf(dx) > 16.0f) {
         if (dx < 0.0f) {
@@ -124,18 +124,18 @@ void update_camera_interp_pos(Camera *camera) {
         }
     }
 
-    camera->lookAt_eye.x += dx;
-    camera->lookAt_eye.y += dy;
-    camera->lookAt_eye.z += dz;
+    camera->lookAtEye.x += dx;
+    camera->lookAtEye.y += dy;
+    camera->lookAtEye.z += dz;
 
     // calculate final position and orientation for camera
 
-    dx = camera->lookAt_obj.x - camera->lookAt_eye.x;
-    dy = camera->lookAt_obj.y - camera->lookAt_eye.y;
-    dz = camera->lookAt_obj.z - camera->lookAt_eye.z;
+    dx = camera->lookAtObj.x - camera->lookAtEye.x;
+    dy = camera->lookAtObj.y - camera->lookAtEye.y;
+    dz = camera->lookAtObj.z - camera->lookAtEye.z;
     dr = sqrtf(SQ(dx) + SQ(dz));
 
-    camera->lookAt_yaw = -atan2(0.0f, 0.0f, dx, dz);
-    camera->lookAt_pitch = atan2(0.0f, 0.0f, dy, -dr);
-    camera->curYaw = atan2(camera->lookAt_eye.x, camera->lookAt_eye.z, camera->lookAt_obj.x, camera->lookAt_obj.z);
+    camera->lookAtYaw = -atan2(0.0f, 0.0f, dx, dz);
+    camera->lookAtPitch = atan2(0.0f, 0.0f, dy, -dr);
+    camera->curYaw = atan2(camera->lookAtEye.x, camera->lookAtEye.z, camera->lookAtObj.x, camera->lookAtObj.z);
 }
