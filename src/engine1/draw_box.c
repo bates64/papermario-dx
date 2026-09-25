@@ -762,9 +762,9 @@ s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s
         gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
         if(fpDrawContents != nullptr) {
             if (quads != nullptr) {
-                void* mdl_address = mdl_get_next_texture_address(width * height * 2);
-                if(mdl_address != 0) {
-                    gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, OS_K0_TO_PHYSICAL(mdl_address));
+                void* mdlAddress = mdl_get_next_texture_address(width * height * 2);
+                if(mdlAddress != 0) {
+                    gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, OS_K0_TO_PHYSICAL(mdlAddress));
                     gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, width, height);
                     gDPSetCycleType(gMainGfxPos++, G_CYC_FILL);
                     gDPSetFillColor(gMainGfxPos++, PACK_FILL_COLOR(primR, primG, primB, 0));
@@ -804,7 +804,7 @@ s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s
                             extraHeight = 1;
                         }
                         lineHeight = extraHeight + 5;
-                        gDPLoadTextureTile(gMainGfxPos++, OS_K0_TO_PHYSICAL(mdl_address), G_IM_FMT_RGBA, G_IM_SIZ_16b, width, 0,
+                        gDPLoadTextureTile(gMainGfxPos++, OS_K0_TO_PHYSICAL(mdlAddress), G_IM_FMT_RGBA, G_IM_SIZ_16b, width, 0,
                                         0, idx * 6, width - 1, idx * 6 + lineHeight, 0,
                                         G_TX_CLAMP, G_TX_CLAMP, 9, 3, G_TX_NOLOD, G_TX_NOLOD);
                         gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, (160 - width / 2) * 4, 0, ((160 - width / 2) + width - 1) * 4, lineHeight * 4);

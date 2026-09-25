@@ -375,16 +375,16 @@ void pause_map_init(MenuPanel* tab) {
 void pause_map_handle_input(MenuPanel* tab) {
     f32 xMovement = gGameStatusPtr->stickX[0] * 0.05f;
     f32 yMovement = -gGameStatusPtr->stickY[0] * 0.05f;
-    f32 PauseMapTargetYPosTemp = PauseMapTargetY;
-    f32 PauseMapTargetXPosTemp = PauseMapTargetX;
+    f32 pauseMapTargetYPosTemp = PauseMapTargetY;
+    f32 pauseMapTargetXPosTemp = PauseMapTargetX;
     s32 xTemp;
     s32 yTemp;
 
     if (xMovement == 0.0f && yMovement == 0.0f && PauseMapCursorCurrentOption != -1) {
         PauseMapSpace* mapSpace = &PauseMapSpaces[PauseMapCursorCurrentOption];
 
-        xMovement = mapSpace->pos.x - PauseMapTargetXPosTemp;
-        yMovement = mapSpace->pos.y - PauseMapTargetYPosTemp;
+        xMovement = mapSpace->pos.x - pauseMapTargetXPosTemp;
+        yMovement = mapSpace->pos.y - pauseMapTargetYPosTemp;
 
         xMovement *= 0.32;
         yMovement *= 0.32;

@@ -105,7 +105,7 @@ void tattle_window_init(EffectInstance* effect) {
 
 void tattle_window_update(EffectInstance* effect) {
     s32 unk_10, unk_10_2;
-    s32 old_unk_14;
+    s32 oldUnk14;
     TattleWindowFXData* part = effect->data.tattleWindow;
 
     if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
@@ -117,7 +117,7 @@ void tattle_window_update(EffectInstance* effect) {
         part->timeLeft--;
     }
 
-    old_unk_14 = part->unk_14++;
+    oldUnk14 = part->unk_14++;
     unk_10 = part->timeLeft;
 
     if (unk_10 < 0) {
@@ -130,10 +130,10 @@ void tattle_window_update(EffectInstance* effect) {
     part->offset.x = 0;
     part->scale = part->unk_18;
 
-    if (old_unk_14 < ARRAY_COUNT(TattleWindowAnimation)) {
-        part->offset.y = TattleWindowAnimation[old_unk_14].offsetY;
-        part->closeAmt.x = TattleWindowAnimation[old_unk_14].closeAmtX;
-        part->closeAmt.y = TattleWindowAnimation[old_unk_14].closeAmtY;
+    if (oldUnk14 < ARRAY_COUNT(TattleWindowAnimation)) {
+        part->offset.y = TattleWindowAnimation[oldUnk14].offsetY;
+        part->closeAmt.x = TattleWindowAnimation[oldUnk14].closeAmtX;
+        part->closeAmt.y = TattleWindowAnimation[oldUnk14].closeAmtY;
     } else {
         part->offset.y = TattleWindowAnimation[ARRAY_COUNT(TattleWindowAnimation) - 1].offsetY;
         part->closeAmt.x = TattleWindowAnimation[ARRAY_COUNT(TattleWindowAnimation) - 1].closeAmtX;
