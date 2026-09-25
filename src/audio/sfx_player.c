@@ -1277,7 +1277,7 @@ static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, A
     u8 opcode;
     u32 playLength;
     s32 startedNewVoice;
-    void (**CmdHandlers)(SoundManager*, SoundPlayer*);
+    void (**cmdHandlers)(SoundManager*, SoundPlayer*);
 
     startedNewVoice = false;
     if (player->state == SND_PLAYER_STATE_INIT) {
@@ -1301,7 +1301,7 @@ static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, A
     }
     player->delay--;
     while (player->delay == 0) {
-        CmdHandlers = SefCmdHandlers;
+        cmdHandlers = SefCmdHandlers;
         opcode = *player->sefDataReadPos++;
         if (opcode < 0x80) {
             if (opcode == 0) {
@@ -1374,7 +1374,7 @@ static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, A
             }
         } else {
             s32 index = opcode - 0xE0;
-            CurrentSefCmdHandler = CmdHandlers[index];
+            CurrentSefCmdHandler = cmdHandlers[index];
             CurrentSefCmdHandler(manager, player);
         }
     }

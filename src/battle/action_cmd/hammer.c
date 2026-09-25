@@ -127,7 +127,7 @@ void N(update)(void) {
     s32 inputWindow;
     s32 bufferPos;
     s32 i;
-    s32 new_var;
+    s32 newVar;
 
     switch (acs->state) {
         case AC_STATE_INIT:
@@ -223,8 +223,8 @@ void N(update)(void) {
             }
 
             inputWindow = battleStatus->actionCmdDifficultyTable[acs->difficulty];
-            new_var = inputWindow + 2;
-            oneThird = (acs->duration - new_var) / 3;
+            newVar = inputWindow + 2;
+            oneThird = (acs->duration - newVar) / 3;
 
             if (acs->stateTimer < oneThird) {
                 hud_element_set_script(acs->hudElemIDs[HIDX_CHARGE_C], HES_TimingCharge3);

@@ -184,10 +184,10 @@ void stat_change_init(EffectInstance* effect) {
 
 void stat_change_update(EffectInstance* effect) {
     StatChangeFXData* part = effect->data.statChange;
-    s32 old_unk18;
+    s32 oldUnk18;
 
     part->timeLeft--;
-    old_unk18 = part->unk_18++;
+    oldUnk18 = part->unk_18++;
 
     if (part->timeLeft < 0) {
         remove_effect(effect);
@@ -195,23 +195,23 @@ void stat_change_update(EffectInstance* effect) {
     }
 
     if (part->arrowType == ARROW_TYPE_ATK_DOWN) {
-        if (old_unk18 >= ARRAY_COUNT(D_E00AC83C)) {
+        if (oldUnk18 >= ARRAY_COUNT(D_E00AC83C)) {
             part->unk_24 = 0;
             part->scaleX = 0.0f;
             part->scaleY = 0.0f;
         } else {
-            part->unk_24 = D_E00AC83C[old_unk18].unk_00;
-            part->scaleY = (f32)D_E00AC83C[old_unk18].unk_01 * 0.01;
+            part->unk_24 = D_E00AC83C[oldUnk18].unk_00;
+            part->scaleY = (f32)D_E00AC83C[oldUnk18].unk_01 * 0.01;
             part->scaleX = 1.0f - part->scaleY + 1.0f;
         }
     } else {
-        if (old_unk18 >= ARRAY_COUNT(D_E00AC7F8)) {
+        if (oldUnk18 >= ARRAY_COUNT(D_E00AC7F8)) {
             part->unk_24 = 0;
             part->scaleX = 0.0f;
             part->scaleY = 0.0f;
         } else {
-            part->unk_24 = D_E00AC7F8[old_unk18].unk_00;
-            part->scaleX = (f32)D_E00AC7F8[old_unk18].unk_01 * 0.01;
+            part->unk_24 = D_E00AC7F8[oldUnk18].unk_00;
+            part->scaleX = (f32)D_E00AC7F8[oldUnk18].unk_01 * 0.01;
             part->scaleY = 1.0f - part->scaleX + 1.0f;
         }
     }

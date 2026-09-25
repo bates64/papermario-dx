@@ -111,9 +111,9 @@ void nuAuMgr(void* arg) {
     OSMesg auMsgBuf[NU_AU_MESG_MAX];
     OSMesgQueue auRtnMesgQ;
     OSMesg auRtnMesgBuf;
-    NUScMsg* mesg_type;
-    s32 cmdList_len;
-    Acmd* cmdListAfter_ptr;
+    NUScMsg* mesgType;
+    s32 cmdListLen;
+    Acmd* cmdListAfterPtr;
     s32 cmdListIndex;
     s32 bufferIndex;
     s32 sampleSize;
@@ -126,22 +126,22 @@ void nuAuMgr(void* arg) {
     osCreateMesgQueue(&auRtnMesgQ, &auRtnMesgBuf, 1);
     nuScAddClient(&auClient, &auMesgQ, NU_SC_RETRACE_MSG | NU_SC_PRENMI_MSG);
 
-    cmdList_len = 0;
+    cmdListLen = 0;
     cmdListIndex = 0;
     bufferIndex = 0;
     samples = 0;
     bufferPtr = AuOutputBuffers[0];
     cmdListBuf = AlCmdListBuffers[0];
-    cmdListAfter_ptr = cmdListBuf;
+    cmdListAfterPtr = cmdListBuf;
     cond = false;
     while (true) {
-        osRecvMesg(&auMesgQ, (OSMesg*)&mesg_type, OS_MESG_BLOCK);
-        switch (*mesg_type) {
+        osRecvMesg(&auMesgQ, (OSMesg*)&mesgType, OS_MESG_BLOCK);
+        switch (*mesgType) {
             case NU_SC_RETRACE_MSG:
-                if (cmdList_len != 0 && nuAuTaskStop == NU_AU_TASK_RUN) {
+                if (cmdListLen != 0 && nuAuTaskStop == NU_AU_TASK_RUN) {
                     nuAuTasks[cmdListIndex].msgQ = &auRtnMesgQ;
                     nuAuTasks[cmdListIndex].list.t.data_ptr = (u64*)cmdListBuf;
-                    nuAuTasks[cmdListIndex].list.t.data_size = (cmdListAfter_ptr - cmdListBuf) * sizeof(Acmd);
+                    nuAuTasks[cmdListIndex].list.t.data_size = (cmdListAfterPtr - cmdListBuf) * sizeof(Acmd);
                     profiler_rsp_started(PROFILER_RSP_AUDIO);
                     osSendMesg(&nusched.audioRequestMQ, &nuAuTasks[cmdListIndex], OS_MESG_BLOCK);
                     profiler_rsp_completed(PROFILER_RSP_AUDIO);
@@ -161,7 +161,7 @@ void nuAuMgr(void* arg) {
                     continue;
                 }
                 sampleSize = osAiGetLength() >> 2;
-                if (cmdList_len != 0 && nuAuTaskStop == NU_AU_TASK_RUN) {
+                if (cmdListLen != 0 && nuAuTaskStop == NU_AU_TASK_RUN) {
                     osAiSetNextBuffer(bufferPtr, samples * 4);
                     cmdListBuf = AlCmdListBuffers[cmdListIndex];
                     bufferPtr = AuOutputBuffers[bufferIndex];
@@ -173,7 +173,7 @@ void nuAuMgr(void* arg) {
                     samples = AlMinFrameSize;
                     cond = true;
                 }
-                cmdListAfter_ptr = alAudioFrame(cmdListBuf, &cmdList_len, (s16*)osVirtualToPhysical(bufferPtr), samples);
+                cmdListAfterPtr = alAudioFrame(cmdListBuf, &cmdListLen, (s16*)osVirtualToPhysical(bufferPtr), samples);
                 if (nuAuPreNMIFunc != 0 && nuAuPreNMI != 0) {
                     nuAuPreNMIFunc(NU_SC_RETRACE_MSG, nuAuPreNMI);
                     nuAuPreNMI++;

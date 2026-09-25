@@ -2705,13 +2705,13 @@ s32 dx_debug_scroll_to_line(s32 drawnLine, s32 selectedLine, s32 maxLine, s32 ma
 void dx_debug_draw_evt_list() {
     s32 i;
 
-    const s32 BoxStartX = EvtDebugInfoX - BoxOutsetX;
-    const s32 BoxStartY = EvtDebugInfoY - BoxOutsetY;
-    const s32 BoxHeight = BoxOutsetY + 10 * RowHeight + BoxOutsetY;
-    const s32 BoxWidth = 212;
+    const s32 boxStartX = EvtDebugInfoX - BoxOutsetX;
+    const s32 boxStartY = EvtDebugInfoY - BoxOutsetY;
+    const s32 boxHeight = BoxOutsetY + 10 * RowHeight + BoxOutsetY;
+    const s32 boxWidth = 212;
 
     // script list box
-    dx_debug_draw_box(BoxStartX, BoxStartY, BoxWidth, BoxHeight, WINDOW_STYLE_20, 192);
+    dx_debug_draw_box(boxStartX, boxStartY, boxWidth, boxHeight, WINDOW_STYLE_20, 192);
 
     dx_debug_draw_ascii("Grp", DefaultColor, EvtDebugInfoX - 3, EvtDebugInfoY);
     dx_debug_draw_ascii("Start", DefaultColor, EvtDebugInfoX + 20 + 8, EvtDebugInfoY);

@@ -157,18 +157,18 @@ void entity_shattering_setupGfx(s32 entityIndex) {
     Matrix4f mtx;
     Matrix4f mtxRotX;
     Matrix4f mtxRotY;
-    f32 x_inv;
-    f32 y_inv;
-    f32 z_inv;
+    f32 xInv;
+    f32 yInv;
+    f32 zInv;
     Gfx* gfxPos = gMainGfxPos;
     Entity* entity = get_entity_by_index(entityIndex);
     ShatteringBlockData* data = entity->dataBuf.shatteringBlock;
     Gfx* fragmentDlist;
     Gfx** gfx = data->fragmentDisplayLists;
 
-    x_inv = -entity->pos.x;
-    y_inv = -entity->pos.y;
-    z_inv = -entity->pos.z;
+    xInv = -entity->pos.x;
+    yInv = -entity->pos.y;
+    zInv = -entity->pos.z;
 
     for (i = 0; i < 24; i++) {
         if (data->alpha == 255) {
@@ -179,7 +179,7 @@ void entity_shattering_setupGfx(s32 entityIndex) {
             gDPSetPrimColor(gfxPos++, 0, 0, 0, 0, 0, data->alpha);
         }
 
-        guTranslateF(mtxTransInv, x_inv, y_inv, z_inv);
+        guTranslateF(mtxTransInv, xInv, yInv, zInv);
         guRotateF(mtxRotX, data->fragmentRotX[i] * 360.0f / 256, 1.0f, 0.0f, 0.0f);
         guRotateF(mtxRotY, data->fragmentRotY[i] * 360.0f / 256, 0.0f, 1.0f, 0.0f);
         guMtxCatF(mtxRotX, mtxRotY, mtxRotY);

@@ -75,8 +75,8 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
      *    to wrong addresses.
      */
 
-    uint32_t* exception_ra;
-    uint32_t func_start;
+    uint32_t* exceptionRa;
+    uint32_t funcStart;
 
     // Current value of SP/RA/FP registers.
     uint32_t *sp, *ra, *fp;
@@ -91,8 +91,8 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
     debugf("backtrace: start\n");
     #endif
 
-    exception_ra = nullptr;      // If != nullptr,
-    func_start = 0;            // Start of the current function (when known)
+    exceptionRa = nullptr;      // If != nullptr,
+    funcStart = 0;            // Start of the current function (when known)
 
     // Start from the backtrace function itself. Put the start pointer somewhere after the initial
     // prolog (eg: 64 instructions after start), so that we parse the prolog itself to find sp/fp/ra offsets.
@@ -102,7 +102,7 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
         // Analyze the function pointed by ra, passing information about the previous exception frame if any.
         // If the analysis fail (for invalid memory accesses), stop right away.
         bt_func_t func;
-        if (!__bt_analyze_func(&func, ra, func_start, (bool)exception_ra))
+        if (!__bt_analyze_func(&func, ra, funcStart, (bool)exceptionRa))
             return;
 
         #if BACKTRACE_DEBUG
@@ -129,8 +129,8 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
                     fp = *(uint32_t**)((uint32_t)sp + func.fp_offset);
                 ra = *(uint32_t**)((uint32_t)sp + func.ra_offset) - 2;
                 sp = (uint32_t*)((uint32_t)sp + func.stack_size);
-                exception_ra = nullptr;
-                func_start = 0;
+                exceptionRa = nullptr;
+                funcStart = 0;
                 break;
             /*
             case BT_EXCEPTION: {
@@ -195,13 +195,13 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
             }   break;
             */
             case BT_LEAF:
-                ra = exception_ra - 2;
+                ra = exceptionRa - 2;
                 // A leaf function has no stack. On the other hand, an exception happening at the
                 // beginning of a standard function (before RA is saved), does have a stack but
                 // will be marked as a leaf function. In this case, we mus update the stack pointer.
                 sp = (uint32_t*)((uint32_t)sp + func.stack_size);
-                exception_ra = nullptr;
-                func_start = 0;
+                exceptionRa = nullptr;
+                funcStart = 0;
                 break;
             case BT_EXCEPTION:
                 break;
@@ -215,17 +215,17 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
 }
 
 static void backtrace_foreach_foreign(void (*cb)(void *arg, void *ptr), void *arg, uint32_t *sp, uint32_t *ra, uint32_t *fp) {
-    uint32_t* exception_ra;
-    uint32_t func_start;
+    uint32_t* exceptionRa;
+    uint32_t funcStart;
 
-    exception_ra = nullptr;      // If != nullptr,
-    func_start = 0;            // Start of the current function (when known)
+    exceptionRa = nullptr;      // If != nullptr,
+    funcStart = 0;            // Start of the current function (when known)
 
     while (1) {
         // Analyze the function pointed by ra, passing information about the previous exception frame if any.
         // If the analysis fail (for invalid memory accesses), stop right away.
         bt_func_t func;
-        if (!__bt_analyze_func(&func, ra, func_start, (bool)exception_ra))
+        if (!__bt_analyze_func(&func, ra, funcStart, (bool)exceptionRa))
             return;
 
         #if BACKTRACE_DEBUG
@@ -252,17 +252,17 @@ static void backtrace_foreach_foreign(void (*cb)(void *arg, void *ptr), void *ar
                     fp = *(uint32_t**)((uint32_t)sp + func.fp_offset);
                 ra = *(uint32_t**)((uint32_t)sp + func.ra_offset) - 2;
                 sp = (uint32_t*)((uint32_t)sp + func.stack_size);
-                exception_ra = nullptr;
-                func_start = 0;
+                exceptionRa = nullptr;
+                funcStart = 0;
                 break;
             case BT_LEAF:
-                ra = exception_ra - 2;
+                ra = exceptionRa - 2;
                 // A leaf function has no stack. On the other hand, an exception happening at the
                 // beginning of a standard function (before RA is saved), does have a stack but
                 // will be marked as a leaf function. In this case, we mus update the stack pointer.
                 sp = (uint32_t*)((uint32_t)sp + func.stack_size);
-                exception_ra = nullptr;
-                func_start = 0;
+                exceptionRa = nullptr;
+                funcStart = 0;
                 break;
             case BT_EXCEPTION:
                 break;
@@ -409,24 +409,24 @@ void backtrace_resolve_addr(u32 address, ResolvedSym* out, s32 lineOverride) {
     out->overlay[0] = '\0';
     out->line = -1;
 
-    const char* ovl_name = nullptr;
+    const char* ovlName = nullptr;
     u32 debugRomStart = 0, debugRomEnd = 0, ovlBase = 0;
-    const char* ovl_sym_name = ovl_resolve_addr(address, &ovl_name,
+    const char* ovlSymName = ovl_resolve_addr(address, &ovlName,
                                               &debugRomStart, &debugRomEnd, &ovlBase);
-    if (ovl_sym_name != nullptr) {
-        if (ovl_name != nullptr) {
-            strncpy(out->overlay, ovl_name, sizeof(out->overlay) - 1);
+    if (ovlSymName != nullptr) {
+        if (ovlName != nullptr) {
+            strncpy(out->overlay, ovlName, sizeof(out->overlay) - 1);
         }
 
         if (debugRomStart != 0) {
             u32 offset = address - ovlBase;
             Symbol sym;
-            s32 sym_offset = search_symbol_table(debugRomStart, offset, &sym);
-            if (sym_offset >= 0 && sym_offset < 0x1000) {
-                char name_buf[0x40];
-                char file_buf[0x40];
-                char* namep = load_symbol_string(name_buf, sym.nameOffset, ARRAY_COUNT(name_buf));
-                char* filep = load_symbol_string(file_buf, sym.fileOffset, ARRAY_COUNT(file_buf));
+            s32 symOffset = search_symbol_table(debugRomStart, offset, &sym);
+            if (symOffset >= 0 && symOffset < 0x1000) {
+                char nameBuf[0x40];
+                char fileBuf[0x40];
+                char* namep = load_symbol_string(nameBuf, sym.nameOffset, ARRAY_COUNT(nameBuf));
+                char* filep = load_symbol_string(fileBuf, sym.fileOffset, ARRAY_COUNT(fileBuf));
 
                 if (namep != nullptr) {
                     strncpy(out->name, namep, sizeof(out->name) - 1);
@@ -435,8 +435,8 @@ void backtrace_resolve_addr(u32 address, ResolvedSym* out, s32 lineOverride) {
                 return;
             }
         }
-        if (ovl_sym_name[0] != '\0') {
-            strncpy(out->name, ovl_sym_name, sizeof(out->name) - 1);
+        if (ovlSymName[0] != '\0') {
+            strncpy(out->name, ovlSymName, sizeof(out->name) - 1);
         } else {
             sprintf(out->name, "0x%08lX", address);
         }
@@ -448,10 +448,10 @@ void backtrace_resolve_addr(u32 address, ResolvedSym* out, s32 lineOverride) {
     s32 offset = address2symbol(address, &sym);
 
     if (offset >= 0 && offset < 0x1000) {
-        char name_buf[0x40];
-        char file_buf[0x40];
-        char* namep = load_symbol_string(name_buf, sym.nameOffset, ARRAY_COUNT(name_buf));
-        char* filep = load_symbol_string(file_buf, sym.fileOffset, ARRAY_COUNT(file_buf));
+        char nameBuf[0x40];
+        char fileBuf[0x40];
+        char* namep = load_symbol_string(nameBuf, sym.nameOffset, ARRAY_COUNT(nameBuf));
+        char* filep = load_symbol_string(fileBuf, sym.fileOffset, ARRAY_COUNT(fileBuf));
 
         if (namep != nullptr) {
             strncpy(out->name, namep, sizeof(out->name) - 1);

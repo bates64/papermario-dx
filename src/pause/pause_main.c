@@ -864,27 +864,27 @@ void pause_sort_item_list(s16* arr, s32 len, s32 (*compare)(s16*, s16 *)) {
 
         end = &arr[len];
         while ((gap /= 2) != 0) {
-            s16* window_end;
+            s16* windowEnd;
 
-            for (window_end = &arr[gap]; window_end < end; window_end++) {
-                s16* cur_elem = window_end - gap;
+            for (windowEnd = &arr[gap]; windowEnd < end; windowEnd++) {
+                s16* curElem = windowEnd - gap;
 
                 // This could be written simpler as a while loop, but the compiler figures out that it only needs to do
                 // the "cur_elem < end" check on the first iteration in that case
-                if (cur_elem >= arr && cur_elem < end) {
+                if (curElem >= arr && curElem < end) {
                     do {
-                        s16* elem_a = cur_elem;
-                        s16* elem_b = cur_elem + gap;
+                        s16* elemA = curElem;
+                        s16* elemB = curElem + gap;
 
-                        if (compare(elem_a, elem_b) > 0) {
-                            s16 temp = *elem_a;
-                            *elem_a = *elem_b;
-                            *elem_b = temp;
-                            cur_elem -= gap;
+                        if (compare(elemA, elemB) > 0) {
+                            s16 temp = *elemA;
+                            *elemA = *elemB;
+                            *elemB = temp;
+                            curElem -= gap;
                         } else {
                             break;
                         }
-                    } while (cur_elem >= arr && cur_elem < end);
+                    } while (curElem >= arr && curElem < end);
                 }
             }
         }

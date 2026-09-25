@@ -1211,18 +1211,18 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                         // try stealing a voice with equal priority and lowest note length
                                         if (!bAcquiredVoiceIdx) {
                                             s32 shortestLength = 0xFFFF;
-                                            u8 voice_it;
+                                            u8 voiceIt;
                                             AuVoice* curVoice;
                                             SeqNote* curNote;
-                                            for (voice_it = track->firstVoice; voice_it < track->lastVoice; voice_it++) {
-                                                curVoice = &player->globals->voices[voice_it];
+                                            for (voiceIt = track->firstVoice; voiceIt < track->lastVoice; voiceIt++) {
+                                                curVoice = &player->globals->voices[voiceIt];
                                                 if (curVoice->priority == player->priority) {
-                                                    curNote = &player->notes[voice_it];
+                                                    curNote = &player->notes[voiceIt];
                                                     if (!curNote->pendingTick && curNote->length < shortestLength) {
                                                         shortestLength = curNote->length;
                                                         voice = curVoice;
                                                         note = curNote;
-                                                        voiceIdx = voice_it;
+                                                        voiceIdx = voiceIt;
                                                         bAcquiredVoiceIdx = true;
                                                     }
                                                 }
