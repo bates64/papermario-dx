@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _STAGE_NAMES_H_
+#define _STAGE_NAMES_H_
 
 #define BTL_STAGE_DEFAULT -1
 
@@ -248,3 +249,5 @@ enum StageNames {
     BTL_DIG_STAGE_03           = 0x03,
     BTL_DIG_STAGE_04           = 0x04,
 };
+
+#endif

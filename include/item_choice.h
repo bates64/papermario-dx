@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _ITEM_CHOICE_H_
+#define _ITEM_CHOICE_H_
 
 #include "common.h"
 
@@ -101,3 +102,5 @@ typedef struct LetterDelivery {
     IfNe(LVar0, DELIVERY_NOT_POSSIBLE) \
         Return \
     EndIf
+
+#endif
