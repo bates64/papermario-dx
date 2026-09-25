@@ -25,15 +25,19 @@ Three kinds of code are formatted differently:
       Thread/EndThread            indent body
       ChildThread/EndChildThread  indent body
       Finally/End                 indent cleanup tail
-      Preprocessor directives     stay at column 0
+      Label                       indent body, if the source already does,
+                                  until the source returns to Label's level
+      Preprocessor directives     stay as written, continuation lines too
+      Call arguments on           keep their position relative to the
+        continuation lines          call's first line
       Everything else             indented at current level
 
-  Initializer lists (arrays and struct literals)
+  Initializer lists (arrays and struct literals) and enum bodies
     clang-format repacks array items to fill lines, destroying
-    intentional grouping (e.g. natural pairs, one-per-line lists).
-    Initializer lists are preserved as-written, with minimal cleanup:
+    intentional grouping (e.g. natural pairs, one-per-line lists), and
+    realigns enum values away from the columns they're written in.
+    These are preserved as-written, with minimal cleanup:
 
-      - 4-space indentation normalised to brace nesting depth
       - Trailing whitespace stripped
       - Space ensured after commas
 """
@@ -56,6 +60,7 @@ class BlockKind(Enum):
     THREAD = auto()
     CHILD_THREAD = auto()
     FINALLY = auto()
+    LABEL = auto()
 
 
 INDENT = "    "
@@ -102,6 +107,8 @@ IF_MACROS = {
     "IfNotRange",
     "IfFlag",
     "IfNotFlag",
+    "IfTrue",
+    "IfFalse",
     "IfEval",
     "IfNotEval",
     "IfEvalF",
@@ -116,8 +123,18 @@ EVT_OPEN_RE = re.compile(r"^(\s*EvtScript\b.*)=\s*\{\s*$")
 # Single-line EvtScript declaration (e.g. EvtScript N(x) = EVT_EXIT_WALK(...);)
 EVT_SINGLE_LINE_RE = re.compile(r"^\s*EvtScript\b.*=\s*\S.*;\s*$")
 
-# Any multi-line initializer: line ends with = {
-INIT_OPEN_RE = re.compile(r"^.*=\s*\{\s*$")
+# Any multi-line initializer (line ends with = {) or enum body
+INIT_OPEN_RE = re.compile(r"^(.*=\s*|\s*(typedef\s+)?enum\b[^;=]*)\{\s*$")
+
+# A struct or union body that opens on this line
+STRUCT_OPEN_RE = re.compile(r"^\s*(typedef\s+)?(struct|union)\b[^;=(]*\{\s*$")
+
+# An offset comment followed by more indentation, which shows nesting after
+# the offset column: /* 0x10 */     struct {
+NESTED_AFTER_OFFSET_RE = re.compile(r"^\s*/\*[^*]*\*/\s{2,}\S")
+
+# String and character literals, which may hold parentheses
+LITERAL_RE = re.compile(r'"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'')
 
 
 def count_braces(line: str) -> tuple[int, int]:
@@ -181,7 +198,8 @@ def collect_block(lines: list[str], start: int) -> tuple[list[str], int]:
 # ---------------------------------------------------------------------------
 
 def protect_blocks(source: str) -> str:
-    """Insert // clang-format off/on around EvtScript blocks and initializer lists."""
+    """Insert // clang-format off/on around EvtScript blocks, initializer lists,
+    and struct bodies that show nesting after their offset comments."""
     lines = source.split("\n")
     result = []
     i = 0
@@ -191,10 +209,15 @@ def protect_blocks(source: str) -> str:
             result.append(line)
             i += 1
             continue
-        if INIT_OPEN_RE.match(line):
+        is_struct = STRUCT_OPEN_RE.match(line)
+        if INIT_OPEN_RE.match(line) or is_struct:
+            body, end = collect_block(lines, i + 1)
+            if is_struct and not any(NESTED_AFTER_OFFSET_RE.match(l) for l in body):
+                result.append(line)
+                i += 1
+                continue
             result.append("// clang-format off")
             result.append(line)
-            _, end = collect_block(lines, i + 1)
             for j in range(i + 1, min(end + 1, len(lines))):
                 result.append(lines[j])
             result.append("// clang-format on")
@@ -230,21 +253,51 @@ def pop_to_kind(stack: list, kind: BlockKind) -> int:
     return count
 
 
+def paren_balance(line: str) -> int:
+    """Count ( minus ) outside of string and character literals."""
+    code = LITERAL_RE.sub("", line)
+    return code.count("(") - code.count(")")
+
+
+def indent_of(line: str) -> int:
+    return len(line) - len(line.lstrip())
+
+
 def reformat_evtscript_block(lines: list[str]) -> list[str]:
     """Reformat lines inside an EvtScript block with proper indentation."""
     stack: list[BlockKind] = []
     result = []
+    # Label bodies the source indents, as (source indent of the Label line,
+    # position of its entry in stack).
+    labels: list[tuple[int, int]] = []
+    in_directive = False
+    # Unclosed parentheses of a call split over several lines, and how far
+    # its first line moved, which its other lines move by too.
+    open_parens = 0
+    call_shift = 0
 
-    for line in lines:
+    for i, line in enumerate(lines):
         stripped = line.strip()
+        source_indent = indent_of(line)
+
+        if in_directive or stripped.startswith("#"):
+            result.append(line.rstrip())
+            in_directive = stripped.endswith("\\")
+            continue
 
         if not stripped:
             result.append("")
             continue
 
-        if stripped.startswith("#"):
-            result.append(stripped)
+        if open_parens > 0:
+            result.append(" " * max(0, source_indent + call_shift) + stripped)
+            open_parens = max(0, open_parens + paren_balance(stripped))
             continue
+
+        while labels and source_indent <= labels[-1][0]:
+            _, position = labels.pop()
+            if position < len(stack):
+                del stack[position]
 
         if stripped.startswith("//") or stripped.startswith("/*"):
             result.append(INDENT + INDENT * len(stack) + stripped)
@@ -336,9 +389,17 @@ def reformat_evtscript_block(lines: list[str]) -> list[str]:
                 stack.pop()
             indent = INDENT * len(stack)
             result.append(INDENT + indent + stripped)
+        elif macro == "Label" and i + 1 < len(lines) and lines[i + 1].strip() and indent_of(lines[i + 1]) > source_indent:
+            indent = INDENT * len(stack)
+            result.append(INDENT + indent + stripped)
+            labels.append((source_indent, len(stack)))
+            stack.append(BlockKind.LABEL)
         else:
             indent = INDENT * len(stack)
             result.append(INDENT + indent + stripped)
+
+        open_parens = max(0, paren_balance(stripped))
+        call_shift = indent_of(result[-1]) - source_indent
 
     return result
 
@@ -417,41 +478,22 @@ def fix_comma_spacing(line: str) -> str:
     return "".join(result)
 
 
-def cleanup_initializer_block(block_lines: list[str], base_indent: int) -> list[str]:
-    """Apply minimal formatting to an initializer list block.
+def cleanup_initializer_block(block_lines: list[str]) -> list[str]:
+    """Apply minimal formatting to an initializer list or enum body.
 
-    Preserves the author's line breaks (no packing/unpacking).
-    Fixes: indentation, trailing whitespace, space after comma.
+    Preserves the author's line breaks and indentation.
+    Fixes: trailing whitespace, space after comma.
     """
     result = []
-    depth = 1
-
     for line in block_lines:
         stripped = line.strip()
-
         if not stripped:
             result.append("")
-            continue
-
-        # Preprocessor directives stay at column 0
-        if stripped.startswith("#"):
+        elif stripped.startswith("#"):
+            # Preprocessor directives stay at column 0
             result.append(stripped)
-            continue
-
-        opens, closes = count_braces(stripped)
-        net = opens - closes
-
-        if net < 0:
-            depth += net
-            depth = max(depth, 0)
-
-        indent = base_indent + 4 * depth
-        fixed = fix_comma_spacing(stripped)
-        result.append(" " * indent + fixed)
-
-        if net > 0:
-            depth += net
-
+        else:
+            result.append(fix_comma_spacing(line.rstrip()))
     return result
 
 
@@ -482,7 +524,7 @@ def cleanup_initializer_lists(source: str) -> str:
             result.append(line.rstrip())
             i += 1
             block_lines, end = collect_block(lines, i)
-            cleaned = cleanup_initializer_block(block_lines, base_indent)
+            cleaned = cleanup_initializer_block(block_lines)
             result.extend(cleaned)
             if end < len(lines):
                 # Closing line (e.g. "};") gets base indent
