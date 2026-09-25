@@ -873,26 +873,39 @@ def gen_syms_from_elf(elf_path):
     return syms
 
 
-def cmd_gen_syms(args):
-    """Subcommand: generate pickled syms from an ELF."""
-    syms = gen_syms_from_elf(args.input)
-    data = pickle.dumps(syms)
+def ld_address(address):
+    """An address as GNU ld wants it in a linker script. binutils sign-extends
+    32-bit MIPS addresses, so a script's addresses must be too for calls
+    between the overlay and the engine to resolve."""
+    return address | 0xFFFFFFFF00000000 if address & 0x80000000 else address
 
-    # Restat: only update if contents changed
-    tmp_path = args.output + ".tmp"
-    with open(tmp_path, "wb") as f:
-        f.write(data)
 
+def write_if_changed(path, data):
+    """Write data to path, leaving the file untouched if it already holds it,
+    so ninja's restat skips whatever depends on it."""
     try:
-        with open(args.output, "rb") as f:
-            old_data = f.read()
-        if old_data == data:
-            os.unlink(tmp_path)
-            return
+        with open(path, "rb") as f:
+            if f.read() == data:
+                return
     except FileNotFoundError:
         pass
 
-    os.replace(tmp_path, args.output)
+    tmp_path = path + ".tmp"
+    with open(tmp_path, "wb") as f:
+        f.write(data)
+    os.replace(tmp_path, path)
+
+
+def cmd_gen_syms(args):
+    """Subcommand: generate pickled syms from an ELF, and a linker script that
+    defines them for linking overlay debug ELFs."""
+    syms = gen_syms_from_elf(args.input)
+    write_if_changed(args.output, pickle.dumps(syms))
+
+    # PROVIDE defines only the symbols an overlay references, so each debug
+    # ELF carries those rather than the whole engine's symbol table.
+    lines = [f'PROVIDE("{name}" = 0x{ld_address(value):X});' for name, value in sorted(syms.items())]
+    write_if_changed(args.script, ("\n".join(lines) + "\n").encode("utf-8"))
 
 
 def get_or_create_overlay_directory(syms, rom_data, type_index=0):
@@ -1547,10 +1560,7 @@ def write_debug_linker_script(path, obj_paths, elfs, section_map):
             continue
         placed.add((elf_idx, sec.name))
         noload = " (NOLOAD)" if sec.type == SHT_NOBITS else ""
-        # binutils sign-extends 32-bit MIPS addresses, including the engine's
-        # symbols, so these must be too for calls into the engine to resolve.
-        address = vma | 0xFFFFFFFF00000000 if vma & 0x80000000 else vma
-        lines.append(f'  .ovl{i} 0x{address:X}{noload} : {{ "{obj_paths[elf_idx]}"({sec.name}) }}')
+        lines.append(f'  .ovl{i} 0x{ld_address(vma):X}{noload} : {{ "{obj_paths[elf_idx]}"({sec.name}) }}')
     lines.append("  /DISCARD/ : { *(.MIPS.abiflags) *(.reginfo) *(.pdr) *(.comment) *(.note.*) *(.gnu.attributes) *(.mdebug.*) }")
     lines.append("}")
     with open(path, "w") as f:
@@ -1645,6 +1655,7 @@ def main():
     p_gen_syms = subparsers.add_parser("gen-syms", help="Generate pickled syms from ELF")
     p_gen_syms.add_argument("input", help="Input ELF file")
     p_gen_syms.add_argument("output", help="Output .pkl file")
+    p_gen_syms.add_argument("script", help="Output linker script defining the symbols")
     p_gen_syms.set_defaults(func=cmd_gen_syms)
 
     p_convert = subparsers.add_parser("convert", help="Convert ELF to overlay format")

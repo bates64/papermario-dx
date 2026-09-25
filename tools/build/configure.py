@@ -596,12 +596,14 @@ def write_ninja_rules(
     )
 
     # A debugger loads this alongside the engine's ELF, offset to wherever the
-    # game loaded the overlay. Calls into the engine resolve against its ELF.
+    # game loaded the overlay. Calls into the engine resolve against the
+    # symbols in $syms_script, which names each symbol once, where the engine's
+    # ELF also holds libgcc's unused copies of symbols the game defines itself.
     # Some overlays define a global twice, which the overlay linker tolerates.
     ninja.rule(
         "ovl_debug_elf",
         description="Linking overlay debug ELF $ovl_src",
-        command=f"{ld} -T $script --just-symbols=$engine_elf --no-check-sections --allow-multiple-definition -o $out $in",
+        command=f"{ld} -T $script --no-check-sections --allow-multiple-definition -o $out $in $syms_script",
     )
 
     ninja.rule(
@@ -1374,6 +1376,9 @@ class Configure:
     def syms_path(self) -> Path:
         return self.build_path() / "syms.pkl"
 
+    def syms_script_path(self) -> Path:
+        return self.build_path() / "syms.ld"
+
     def embedded_asset_deps(self, src: Path) -> List[str]:
         """Build outputs that a source embeds with `.incbin`.
 
@@ -1842,7 +1847,7 @@ class Configure:
         )
 
         ninja.build(
-            posix(self.syms_path()),
+            [posix(self.syms_path()), posix(self.syms_script_path())],
             "syms",
             posix(self.elf_path()),
         )
@@ -1996,16 +2001,16 @@ class Configure:
                 },
             )
 
-            # Depends on the engine through syms.pkl, which only changes when
+            # Depends on the engine through syms.ld, which only changes when
             # its symbols do, rather than on every rebuild of the engine's ELF.
             ninja.build(
                 posix(debug_elf_path),
                 "ovl_debug_elf",
                 objects,
-                implicit=[posix(debug_script_path), posix(self.syms_path())],
+                implicit=[posix(debug_script_path), posix(self.syms_script_path())],
                 variables={
                     "script": posix(debug_script_path),
-                    "engine_elf": posix(self.elf_path()),
+                    "syms_script": posix(self.syms_script_path()),
                     "ovl_src": posix(src_path.relative_to(ROOT)),
                 },
             )
