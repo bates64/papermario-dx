@@ -110,6 +110,12 @@ def _walk_source_file_list():
             file_list.append(str(rel) + "/")
             for f in sorted(filenames):
                 file_list.append(str(rel / f))
+                # Deleting an asset through its sidecar removes it as surely
+                # as deleting the file.
+                if f.endswith(assets.SIDECAR_SUFFIX) and assets.sidecar_deletes(
+                    Path(dirpath) / f
+                ):
+                    file_list[-1] += " (delete)"
     return file_list
 
 
@@ -674,7 +680,11 @@ class Configure:
                 for filename in filenames:
                     if filename.endswith(".png"):
                         found[prefix + filename] = Path(directory) / filename
-        return {Path(name): found[name] for name in sorted(found)}
+        return {
+            Path(name): found[name]
+            for name in sorted(found)
+            if not assets.is_deleted(found[name], self.asset_stack)
+        }
 
     def register_asset(self, object_path: Path) -> None:
         """Record an object so the linker script can place it in its segment."""
@@ -902,6 +912,7 @@ class Configure:
                     for path in (ROOT / "assets" / layer / "mapfs" / directory).glob(
                         pattern
                     )
+                    if not assets.is_deleted(path, self.asset_stack)
                 )
             return sorted(found)
 
@@ -1187,6 +1198,12 @@ class Configure:
         """Convert each texture to the binary and header the game includes."""
         symbols = assets.include_symbols(ROOT / "src")
         wanted_palettes = assets.included_palettes(ROOT / "src")
+        for included in sorted(symbols):
+            if assets.is_deleted(Path("assets", self.version, included), self.asset_stack):
+                raise SystemExit(
+                    f"configure: {included} is included by the code, "
+                    "but its .meta sets delete: true"
+                )
         for relative, png in self.textures().items():
             texture = assets.Texture(png.relative_to(ROOT), self.asset_stack)
             stem = relative.with_suffix("")
@@ -1401,6 +1418,10 @@ class Configure:
             parts[1] = asset_dir
             new_path = Path("/".join(parts))
             if new_path.exists():
+                if assets.is_deleted(new_path, self.asset_stack):
+                    raise SystemExit(
+                        f"configure: {path} is used, but its .meta sets delete: true"
+                    )
                 return new_path
 
         return path
@@ -1452,9 +1473,12 @@ class Configure:
                         continue
                     if rel in consumed_assets or rel in produced_assets:
                         continue
-                    if filename.endswith(assets.SIDECAR_SUFFIX) and (
-                        self._sidecar_target_consumed(path, layer, consumed_assets)
-                    ):
+                    if filename.endswith(assets.SIDECAR_SUFFIX):
+                        if assets.sidecar_deletes(path) or (
+                            self._sidecar_target_consumed(path, layer, consumed_assets)
+                        ):
+                            continue
+                    elif assets.is_deleted(Path(rel), self.asset_stack):
                         continue
                     orphans.append(rel)
         return sorted(orphans)
@@ -1623,6 +1647,8 @@ class Configure:
                 for area_dir in sorted(area_root.iterdir()):
                     if area_dir.is_dir():
                         for map_dir in sorted(area_dir.iterdir()):
+                            if assets.is_deleted(map_dir, self.asset_stack):
+                                continue
                             if map_dir.is_dir() and any(
                                 f.suffix in (".c", ".cpp")
                                 and not f.name.endswith((".inc.c", ".inc.cpp"))
@@ -1848,6 +1874,9 @@ class Configure:
                     key=lambda p: p.as_posix(),
                 ):
                     if match.name.endswith(".inc.c") or match.name.endswith(".inc.cpp"):
+                        continue
+                    if assets.is_deleted(match, self.asset_stack):
+                        found.pop((type_index, match.stem), None)
                         continue
                     # Skip asset directories that contain no compilable source files
                     # (only .inc.c/.inc.cpp), so they don't shadow src/ overlays
@@ -2330,7 +2359,7 @@ if __name__ == "__main__":
     configure_deps = configure_input_paths(versions)
 
     for top in ["src", "include", "assets"]:
-        for dirpath, dirnames, _ in os.walk(ROOT / top):
+        for dirpath, dirnames, filenames in os.walk(ROOT / top):
             directory = posix(
                 Path(dirpath).relative_to(ROOT)
                 if Path(dirpath).is_absolute()
@@ -2341,6 +2370,12 @@ if __name__ == "__main__":
             # missing, so deleting the directory reconfigures instead of
             # failing for want of a rule to make it.
             ninja.build(directory, "phony")
+            # A sidecar can delete assets, which changes what gets built. Like
+            # a directory, it gets a phony edge so removing it reconfigures.
+            for name in filenames:
+                if name.endswith(assets.SIDECAR_SUFFIX):
+                    configure_deps.append(f"{directory}/{name}")
+                    ninja.build(f"{directory}/{name}", "phony")
 
     ninja.build(
         "build.ninja",

@@ -3,7 +3,8 @@
 A texture's format and size come from the PNG (see raster.py), so most assets
 need no declaration at all. The handful whose intent the file cannot express
 carry a sidecar: `<name>.png.meta` for one asset, or `.meta` in a directory
-for every asset in it.
+for every asset in it. Any asset can set `delete: true` in one to leave itself
+out of the build.
 """
 
 import re
@@ -17,6 +18,8 @@ from raster import Png
 
 DIRECTORY_SIDECAR = ".meta"
 SIDECAR_SUFFIX = ".meta"
+
+ROOT = Path(__file__).parent.parent.parent
 
 
 @lru_cache(maxsize=None)
@@ -51,6 +54,27 @@ def metadata(png_path: Path, asset_stack=("us",)) -> Dict:
         values.update(_sidecar(path.parent / DIRECTORY_SIDECAR))
         values.update(_sidecar(path.with_suffix(path.suffix + SIDECAR_SUFFIX)))
     return values
+
+
+def sidecar_deletes(sidecar: Path) -> bool:
+    """Whether a sidecar itself sets `delete: true`."""
+    return _sidecar(sidecar).get("delete") is True
+
+
+def is_deleted(path: Path, asset_stack) -> bool:
+    """Whether a sidecar sets `delete: true`, leaving an asset out of the build.
+
+    A directory stands for everything in it, so the `.meta` inside it deletes
+    it whole. A path under src/ is checked against the same path in the asset
+    layers, so a map's code goes with its assets.
+    """
+    if path.is_absolute():
+        path = path.relative_to(ROOT)
+    if (ROOT / path).is_dir():
+        path = path / DIRECTORY_SIDECAR
+    if path.parts[0] == "src":
+        path = Path("assets", asset_stack[0], *path.parts[1:])
+    return metadata(path, tuple(asset_stack)).get("delete") is True
 
 
 class Texture:
