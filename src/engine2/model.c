@@ -4504,7 +4504,7 @@ void mdl_draw_hidden_panel_surface(Gfx** arg0, u16 treeIndex) {
     Model* model = get_model_from_list_index(get_model_list_index_from_tree_index(treeIndex));
     Model copied = *model;
     Gfx* oldGfxPos;
-    s32 flag;
+    s32 flag = 0;
 
     if (*arg0 == gMainGfxPos) {
         flag = 1;
