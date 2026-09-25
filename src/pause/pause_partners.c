@@ -759,7 +759,7 @@ void pause_partners_update(MenuPanel* panel) {
     s32 sgn;
 
     deltaBefore = gPausePartnersCurrentPartnerIdx * 360 / gPausePartnersNumPartners - gPausePartnersRotAngle;
-    absValue = abs(deltaBefore);
+    absValue = abs((s32)deltaBefore);
     sgn = sign(deltaBefore);
 
     if (absValue >= 16) {

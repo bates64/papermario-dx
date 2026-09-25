@@ -1,7 +1,7 @@
 #include "flo_22.h"
 
 EntryList N(Entrances) = {
-    [flo_22_ENTRY_0]    { -230.0,    0.0,    0.0,   90.0 },
+    [flo_22_ENTRY_0]    = { -230.0,    0.0,    0.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

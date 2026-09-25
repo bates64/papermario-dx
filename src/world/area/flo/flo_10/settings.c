@@ -9,9 +9,9 @@ s32 N(get_tattle)(void) {
 }
 
 EntryList N(Entrances) = {
-    [flo_10_ENTRY_0]    { -360.0,    0.0,    0.0,   90.0 },
-    [flo_10_ENTRY_1]    { -360.0,    0.0,    0.0,   90.0 },
-    [flo_10_ENTRY_2]    { -100.0,  -10.0, -172.0,  135.0 },
+    [flo_10_ENTRY_0]    = { -360.0,    0.0,    0.0,   90.0 },
+    [flo_10_ENTRY_1]    = { -360.0,    0.0,    0.0,   90.0 },
+    [flo_10_ENTRY_2]    = { -100.0,  -10.0, -172.0,  135.0 },
 };
 
 export MapSettings N(settings) = {

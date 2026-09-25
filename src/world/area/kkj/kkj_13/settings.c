@@ -6,10 +6,10 @@ export s32 N(map_init)(void) {
 }
 
 EntryList N(Entrances) = {
-    [kkj_13_ENTRY_0]    {  -95.0,    0.0,    0.0,   90.0 },
-    [kkj_13_ENTRY_1]    { 1295.0,    0.0,    0.0,  270.0 },
-    [kkj_13_ENTRY_2]    {  630.0,    0.0,    0.0,   90.0 },
-    [kkj_13_ENTRY_3]    {    0.0,    0.0,    0.0,   90.0 },
+    [kkj_13_ENTRY_0]    = {  -95.0,    0.0,    0.0,   90.0 },
+    [kkj_13_ENTRY_1]    = { 1295.0,    0.0,    0.0,  270.0 },
+    [kkj_13_ENTRY_2]    = {  630.0,    0.0,    0.0,   90.0 },
+    [kkj_13_ENTRY_3]    = {    0.0,    0.0,    0.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

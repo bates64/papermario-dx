@@ -1,7 +1,7 @@
 #include "obk_04.h"
 
 EntryList N(Entrances) = {
-    [obk_04_ENTRY_0]    { -235.0,    0.0,    5.0,   90.0 },
+    [obk_04_ENTRY_0]    = { -235.0,    0.0,    5.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

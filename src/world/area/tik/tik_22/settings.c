@@ -1,8 +1,8 @@
 #include "tik_22.h"
 
 EntryList N(Entrances) = {
-    [tik_22_ENTRY_0]    { -222.0,    0.0,    0.0,   90.0 },
-    [tik_22_ENTRY_1]    {  -50.0,   50.0,   20.0,  180.0 },
+    [tik_22_ENTRY_0]    = { -222.0,    0.0,    0.0,   90.0 },
+    [tik_22_ENTRY_1]    = {  -50.0,   50.0,   20.0,  180.0 },
 };
 
 export MapSettings N(settings) = {

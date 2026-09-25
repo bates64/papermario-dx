@@ -211,352 +211,352 @@ AnimID N(LimitAnims_ShyGuy)[] = {
 };
 
 ParadeNpcInfo N(ParadeNpcsTable)[] = {
-    [NPC_Eldstar] {
+    [NPC_Eldstar] = {
         .initialAnim = ANIM_BattleEldstar_Idle,
         .animList = N(LimitAnims_Eldstar),
         .pos = { -3135.0f, 210.0f, -120.0f },
         .yaw = 270.0f
     },
-    [NPC_Mamar] {
+    [NPC_Mamar] = {
         .initialAnim = ANIM_BattleMamar_Idle,
         .animList = N(LimitAnims_Mamar),
         .pos = { -3195.0f, 200.0f, -120.0f },
         .yaw = 270.0f
     },
-    [NPC_Skolar] {
+    [NPC_Skolar] = {
         .initialAnim = ANIM_BattleSkolar_Idle,
         .animList = N(LimitAnims_Skolar),
         .pos = { -3075.0f, 195.0f, -120.0f },
         .yaw = 270.0f
     },
-    [NPC_Muskular] {
+    [NPC_Muskular] = {
         .initialAnim = ANIM_BattleMuskular_Idle,
         .animList = N(LimitAnims_Muskular),
         .pos = { -3045.0f, 148.0f, -104.0f },
         .yaw = 270.0f
     },
-    [NPC_Misstar] {
+    [NPC_Misstar] = {
         .initialAnim = ANIM_BattleMisstar_Still,
         .animList = N(LimitAnims_Misstar),
         .pos = { -3105.0f, 158.0f, -104.0f },
         .yaw = 270.0f
     },
-    [NPC_Klevar] {
+    [NPC_Klevar] = {
         .initialAnim = ANIM_BattleKlevar_Idle,
         .animList = N(LimitAnims_Klevar),
         .pos = { -3165.0f, 158.0f, -104.0f },
         .yaw = 270.0f
     },
-    [NPC_Kalmar] {
+    [NPC_Kalmar] = {
         .initialAnim = ANIM_BattleKalmar_Idle,
         .animList = N(LimitAnims_Kalmar),
         .pos = { -3225.0f, 148.0f, -104.0f },
         .yaw = 270.0f
     },
-    [NPC_PenguinSkater1] {
+    [NPC_PenguinSkater1] = {
         .initialAnim = ANIM_ParadeIceShow_Violin_SkateStill,
         .pos = { -2700.0f, 0.0f, -37.0f },
         .yaw = 270.0f
     },
-    [NPC_PenguinSkater2] {
+    [NPC_PenguinSkater2] = {
         .initialAnim = ANIM_ParadeIceShow_Violin_SkateStill,
         .pos = { -2700.0f, 0.0f, 37.0f },
         .yaw = 270.0f
     },
-    [NPC_PenguinMayor] {
+    [NPC_PenguinMayor] = {
         .initialAnim = ANIM_ParadeIceShow_Violin_ShadeMayorWalk,
         .pos = { -2650.0f, 0.0f, -77.0f },
         .yaw = 270.0f
     },
-    [NPC_PenguinMayorWife] {
+    [NPC_PenguinMayorWife] = {
         .initialAnim = ANIM_ParadeIceShow_Violin_ShadeMayorWifeWalk,
         .pos = { -2610.0f, 0.0f, -77.0f },
         .yaw = 270.0f
     },
-    [NPC_ViolinPlayer1] {
+    [NPC_ViolinPlayer1] = {
         .initialAnim = ANIM_ParadeIceShow_Violin_ViolinPlay,
         .pos = { -2555.0f, 5.0f, 30.0f },
         .yaw = 270.0f
     },
-    [NPC_ViolinPlayer2] {
+    [NPC_ViolinPlayer2] = {
         .initialAnim = ANIM_ParadeIceShow_Violin_ViolinPlayUpright,
         .pos = { -2527.0f, 5.0f, 35.0f },
         .yaw = 270.0f
     },
-    [NPC_ViolinPlayer3] {
+    [NPC_ViolinPlayer3] = {
         .initialAnim = ANIM_ParadeIceShow_Violin_ViolinPlay,
         .pos = { -2495.0f, 5.0f, 30.0f },
         .yaw = 90.0f
     },
-    [NPC_Conductor] {
+    [NPC_Conductor] = {
         .initialAnim = ANIM_Musician_Poet_Dark_ConductSlow,
         .pos = { -2624.0f, 20.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_Singer] {
+    [NPC_Singer] = {
         .initialAnim = ANIM_ParadeIceShow_Violin_ShadeDivaIdle,
         .pos = { -2529.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_AmayzeDayzee1] {
+    [NPC_AmayzeDayzee1] = {
         .initialAnim = ANIM_Dayzee_Amazy_Walk,
         .pos = { -2210.0f, 0.0f, -20.0f },
         .yaw = 270.0f
     },
-    [NPC_AmayzeDayzee2] {
+    [NPC_AmayzeDayzee2] = {
         .initialAnim = ANIM_Dayzee_Amazy_Walk,
         .pos = { -2210.0f, 0.0f, 20.0f },
         .yaw = 270.0f
     },
-    [NPC_Merle] {
+    [NPC_Merle] = {
         .initialAnim = ANIM_ParadeWizard_Merle_MerleGather,
         .pos = { -2025.0f, 20.0f, 28.0f },
         .yaw = 270.0f
     },
-    [NPC_Merlee] {
+    [NPC_Merlee] = {
         .initialAnim = ANIM_ParadeWizard_Merle_MerleeGather,
         .pos = { -1995.0f, 20.0f, 20.0f },
         .yaw = 270.0f
     },
-    [NPC_Merlon] {
+    [NPC_Merlon] = {
         .initialAnim = ANIM_ParadeWizard_Merle_MerlonGather,
         .pos = { -2055.0f, 20.0f, 35.0f },
         .yaw = 270.0f
     },
-    [NPC_Merluvlee] {
+    [NPC_Merluvlee] = {
         .initialAnim = ANIM_ParadeWizard_Merle_MerluvleeGather,
         .pos = { -2085.0f, 20.0f, 28.0f },
         .yaw = 270.0f
     },
-    [NPC_Merlow] {
+    [NPC_Merlow] = {
         .initialAnim = ANIM_ParadeWizard_Merle_MerlowGather,
         .pos = { -2110.0f, 20.0f, 20.0f },
         .yaw = 270.0f
     },
-    [NPC_Merlar] {
+    [NPC_Merlar] = {
         .initialAnim = ANIM_ParadeWizard_Merle_MerlarGather,
         .pos = { -1980.0f, 60.0f, 20.0f },
         .yaw = 270.0f
     },
-    [NPC_SunSad] {
+    [NPC_SunSad] = {
         .initialAnim = ANIM_Sun_TalkSad,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_SunHappy] {
+    [NPC_SunHappy] = {
         .initialAnim = ANIM_Sun_FireTalkSad,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_Bubulb1] {
+    [NPC_Bubulb1] = {
         .initialAnim = ANIM_Bubulb_Pink_DarkWalk,
         .pos = { -1850.0f, 0.0f, -20.0f },
         .yaw = 270.0f
     },
-    [NPC_Bubulb2] {
+    [NPC_Bubulb2] = {
         .initialAnim = ANIM_Bubulb_Pink_DarkWalk,
         .pos = { -1850.0f, 0.0f, 20.0f },
         .yaw = 270.0f
     },
-    [NPC_ShyGuyMarshall] {
+    [NPC_ShyGuyMarshall] = {
         .initialAnim = ANIM_ParadeShyGuy_MarshallWalk,
         .pos = { -1548.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_GeneralGuy] {
+    [NPC_GeneralGuy] = {
         .initialAnim = ANIM_ParadeShyGuy_GeneralPoint,
         .pos = { -1448.0f, 57.0f, -25.0f },
         .yaw = 270.0f
     },
-    [NPC_BackupDancer1] {
+    [NPC_BackupDancer1] = {
         .initialAnim = ANIM_ParadeShyGuy_StackHold,
         .pos = { -1483.0f, 24.0f, -40.0f },
         .yaw = 90.0f
     },
-    [NPC_BackupDancer2] {
+    [NPC_BackupDancer2] = {
         .initialAnim = ANIM_ParadeShyGuy_StackHold,
         .pos = { -1413.0f, 24.0f, -40.0f },
         .yaw = 270.0f
     },
-    [NPC_GrooveGuy1] {
+    [NPC_GrooveGuy1] = {
         .initialAnim = ANIM_ParadeShyGuy_GroovePivot,
         .pos = { -1468.0f, 24.0f, -5.0f },
         .yaw = 270.0f
     },
-    [NPC_GrooveGuy2] {
+    [NPC_GrooveGuy2] = {
         .initialAnim = ANIM_ParadeShyGuy_GroovePivot,
         .pos = { -1458.0f, 24.0f, -5.0f },
         .yaw = 270.0f
     },
-    [NPC_GrooveGuy3] {
+    [NPC_GrooveGuy3] = {
         .initialAnim = ANIM_ParadeShyGuy_GroovePivot,
         .pos = { -1438.0f, 24.0f, -5.0f },
         .yaw = 90.0f
     },
-    [NPC_GrooveGuy4] {
+    [NPC_GrooveGuy4] = {
         .initialAnim = ANIM_ParadeShyGuy_GroovePivot,
         .pos = { -1428.0f, 24.0f, -5.0f },
         .yaw = 90.0f
     },
-    [NPC_PyroGuy1] {
+    [NPC_PyroGuy1] = {
         .initialAnim = ANIM_PyroGuy_Run,
         .animList = N(LimitAnims_PyroGuy),
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_PyroGuy2] {
+    [NPC_PyroGuy2] = {
         .initialAnim = ANIM_PyroGuy_Run,
         .animList = N(LimitAnims_PyroGuy),
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_ShyGuyFormation11] {
+    [NPC_ShyGuyFormation11] = {
         .initialAnim = ANIM_ParadeShyGuy_ShadeWalk,
         .pos = { -1048.0f, 0.0f, -30.0f },
         .yaw = 270.0f
     },
-    [NPC_ShyGuyFormation12] {
+    [NPC_ShyGuyFormation12] = {
         .initialAnim = ANIM_ParadeShyGuy_ShadeWalk,
         .pos = { -1048.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_ShyGuyFormation13] {
+    [NPC_ShyGuyFormation13] = {
         .initialAnim = ANIM_ParadeShyGuy_ShadeWalk,
         .pos = { -1048.0f, 0.0f, 30.0f },
         .yaw = 270.0f
     },
-    [NPC_ShyGuyFormation21] {
+    [NPC_ShyGuyFormation21] = {
         .initialAnim = ANIM_ParadeShyGuy_ShadeWalk,
         .pos = { -1018.0f, 0.0f, -30.0f },
         .yaw = 270.0f
     },
-    [NPC_ShyGuyFormation22] {
+    [NPC_ShyGuyFormation22] = {
         .initialAnim = ANIM_ParadeShyGuy_ShadeWalk,
         .pos = { -1018.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_ShyGuyFormation23] {
+    [NPC_ShyGuyFormation23] = {
         .initialAnim = ANIM_ParadeShyGuy_ShadeWalk,
         .pos = { -1018.0f, 0.0f, 30.0f },
         .yaw = 270.0f
     },
-    [NPC_ShyGuyFormation31] {
+    [NPC_ShyGuyFormation31] = {
         .initialAnim = ANIM_ParadeShyGuy_ShadeWalk,
         .pos = { -988.0f, 0.0f, -30.0f },
         .yaw = 270.0f
     },
-    [NPC_ShyGuyFormation32] {
+    [NPC_ShyGuyFormation32] = {
         .initialAnim = ANIM_ParadeShyGuy_ShadeWalk,
         .pos = { -988.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_ShyGuyFormation33] {
+    [NPC_ShyGuyFormation33] = {
         .initialAnim = ANIM_ParadeShyGuy_ShadeWalk,
         .pos = { -988.0f, 0.0f, 30.0f },
         .yaw = 270.0f
     },
-    [NPC_ShyGuyFormation41] {
+    [NPC_ShyGuyFormation41] = {
         .initialAnim = ANIM_ParadeShyGuy_ShadeWalk,
         .pos = { -958.0f, 0.0f, -30.0f },
         .yaw = 270.0f
     },
-    [NPC_ShyGuyFormation42] {
+    [NPC_ShyGuyFormation42] = {
         .initialAnim = ANIM_ParadeShyGuy_ShadeWalk,
         .pos = { -958.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_ShyGuyFormation43] {
+    [NPC_ShyGuyFormation43] = {
         .initialAnim = ANIM_ParadeShyGuy_ShadeWalk,
         .pos = { -958.0f, 0.0f, 30.0f },
         .yaw = 270.0f
     },
-    [NPC_Pratfaller] {
+    [NPC_Pratfaller] = {
         .initialAnim = ANIM_ShyGuy_Red_Dash,
         .animList = N(LimitAnims_ShyGuy),
         .pos = { -788.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_HornPlayer1] {
+    [NPC_HornPlayer1] = {
         .initialAnim = ANIM_ParadeHorn_Walk,
         .pos = { -689.0f, 0.0f, -20.0f },
         .yaw = 270.0f
     },
-    [NPC_HornPlayer2] {
+    [NPC_HornPlayer2] = {
         .initialAnim = ANIM_ParadeHorn_Walk,
         .pos = { -689.0f, 0.0f, 20.0f },
         .yaw = 270.0f
     },
-    [NPC_Drummer1] {
+    [NPC_Drummer1] = {
         .initialAnim = ANIM_ParadeDrummer_Walk,
         .pos = { -639.0f, 0.0f, -20.0f },
         .yaw = 270.0f
     },
-    [NPC_Drummer2] {
+    [NPC_Drummer2] = {
         .initialAnim = ANIM_ParadeDrummer_Walk,
         .pos = { -639.0f, 0.0f, 20.0f },
         .yaw = 270.0f
     },
-    [NPC_StandardBearer1] {
+    [NPC_StandardBearer1] = {
         .initialAnim = ANIM_ParadeBanner_Walk,
         .pos = { -589.0f, 0.0f, -20.0f },
         .yaw = 270.0f
     },
-    [NPC_StandardBearer2] {
+    [NPC_StandardBearer2] = {
         .initialAnim = ANIM_ParadeBanner_Walk,
         .pos = { -589.0f, 0.0f, 20.0f },
         .yaw = 270.0f
     },
-    [NPC_Mario] {
+    [NPC_Mario] = {
         .initialAnim = ANIM_ParadeMario_Wave,
         .pos = { -329.0f, 37.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Peach] {
+    [NPC_Peach] = {
         .initialAnim = ANIM_ParadePeach_ShadeWaveSlow,
         .pos = { -289.0f, 37.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Twink] {
+    [NPC_Twink] = {
         .initialAnim = ANIM_ParadeTwink_Idle,
         .pos = { -389.0f, 120.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_Twirler1] {
+    [NPC_Twirler1] = {
         .initialAnim = ANIM_ParadeTwirler_Walk,
         .pos = { -109.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Twirler2] {
+    [NPC_Twirler2] = {
         .initialAnim = ANIM_ParadeTwirler_Walk,
         .pos = { -69.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Twirler3] {
+    [NPC_Twirler3] = {
         .initialAnim = ANIM_ParadeTwirler_Walk,
         .pos = { -29.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Baton1] {
+    [NPC_Baton1] = {
         .initialAnim = ANIM_ParadeTwirler_BatonSpin,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Baton2] {
+    [NPC_Baton2] = {
         .initialAnim = ANIM_ParadeTwirler_BatonSpin,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Baton3] {
+    [NPC_Baton3] = {
         .initialAnim = ANIM_ParadeTwirler_BatonSpin,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_StandardBearer3] {
+    [NPC_StandardBearer3] = {
         .initialAnim = ANIM_ParadeBanner_Walk,
         .pos = { 41.0f, 0.0f, -20.0f },
         .yaw = 270.0f
     },
-    [NPC_StandardBearer4] {
+    [NPC_StandardBearer4] = {
         .initialAnim = ANIM_ParadeBanner_Walk,
         .pos = { 41.0f, 0.0f, 20.0f },
         .yaw = 270.0f

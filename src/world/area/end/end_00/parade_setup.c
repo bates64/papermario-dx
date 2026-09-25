@@ -318,481 +318,481 @@ AnimID N(LimitAnims_Kammy)[] = {
 };
 
 ParadeNpcInfo N(ParadeNpcsTable)[] = {
-    [NPC_Luigi] {
+    [NPC_Luigi] = {
         .initialAnim = ANIM_ParadeLuigi_March,
         .pos = { -2880.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_HornPlayer1] {
+    [NPC_HornPlayer1] = {
         .initialAnim = ANIM_ParadeToad_Red_HornWalk,
         .pos = { -2880.0f, 0.0f, -20.0f },
         .yaw = 270.0f
     },
-    [NPC_HornPlayer2] {
+    [NPC_HornPlayer2] = {
         .initialAnim = ANIM_ParadeToad_Red_HornWalk,
         .pos = { -2880.0f, 0.0f, 20.0f },
         .yaw = 270.0f
     },
-    [NPC_Drummer1] {
+    [NPC_Drummer1] = {
         .initialAnim = ANIM_ParadeToad_Red_DrummerWalk,
         .pos = { -2830.0f, 0.0f, -20.0f },
         .yaw = 270.0f
     },
-    [NPC_Drummer2] {
+    [NPC_Drummer2] = {
         .initialAnim = ANIM_ParadeToad_Red_DrummerWalk,
         .pos = { -2830.0f, 0.0f, 20.0f },
         .yaw = 270.0f
     },
-    [NPC_StandardBearer1] {
+    [NPC_StandardBearer1] = {
         .initialAnim = ANIM_ParadeToad_Red_BannerWalk,
         .pos = { -2780.0f, 0.0f, -20.0f },
         .yaw = 270.0f
     },
-    [NPC_StandardBearer2] {
+    [NPC_StandardBearer2] = {
         .initialAnim = ANIM_ParadeToad_Red_BannerWalk,
         .pos = { -2780.0f, 0.0f, 20.0f },
         .yaw = 270.0f
     },
-    [NPC_Goombario] {
+    [NPC_Goombario] = {
         .initialAnim = ANIM_ParadePartner_Goombario,
         .pos = { -2585.0f, 70.0f, 15.0f },
         .yaw = 270.0f
     },
-    [NPC_Kooper] {
+    [NPC_Kooper] = {
         .initialAnim = ANIM_ParadePartner_Kooper,
         .pos = { -2517.0f, 40.0f, 7.0f },
         .yaw = 90.0f
     },
-    [NPC_Bombette] {
+    [NPC_Bombette] = {
         .initialAnim = ANIM_ParadePartner_Bombette,
         .pos = { -2536.0f, 50.0f, 38.0f },
         .yaw = 270.0f
     },
-    [NPC_Parakarry] {
+    [NPC_Parakarry] = {
         .initialAnim = ANIM_ParadePartner_Parakarry,
         .pos = { -2515.0f, 80.0f, 5.0f },
         .yaw = 270.0f
     },
-    [NPC_Bow] {
+    [NPC_Bow] = {
         .initialAnim = ANIM_ParadePartner_Bow,
         .pos = { -2475.0f, 56.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Watt] {
+    [NPC_Watt] = {
         .initialAnim = ANIM_ParadePartner_Watt,
         .pos = { -2575.0f, 20.0f, 48.0f },
         .yaw = 270.0f
     },
-    [NPC_Sushie] {
+    [NPC_Sushie] = {
         .initialAnim = ANIM_ParadePartner_Sushie,
         .pos = { -2570.0f, 61.0f, 7.0f },
         .yaw = 90.0f
     },
-    [NPC_Lakilester] {
+    [NPC_Lakilester] = {
         .initialAnim = ANIM_ParadePartner_Lakilester,
         .pos = { -2635.0f, 40.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Twirler1] {
+    [NPC_Twirler1] = {
         .initialAnim = ANIM_ParadeToad_Red_TwirlerWalk,
         .pos = { -2350.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Twirler2] {
+    [NPC_Twirler2] = {
         .initialAnim = ANIM_ParadeToad_Red_TwirlerWalk,
         .pos = { -2300.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Twirler3] {
+    [NPC_Twirler3] = {
         .initialAnim = ANIM_ParadeToad_Red_TwirlerWalk,
         .pos = { -2250.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Baton1] {
+    [NPC_Baton1] = {
         .initialAnim = ANIM_ParadeToad_Red_BatonSpin,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Baton2] {
+    [NPC_Baton2] = {
         .initialAnim = ANIM_ParadeToad_Red_BatonSpin,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Baton3] {
+    [NPC_Baton3] = {
         .initialAnim = ANIM_ParadeToad_Red_BatonSpin,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_ChuckQuizmo] {
+    [NPC_ChuckQuizmo] = {
         .initialAnim = ANIM_ChuckQuizmo_Walk,
         .pos = { -2120.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_VannaT] {
+    [NPC_VannaT] = {
         .initialAnim = ANIM_VannaT_Walk,
         .pos = { -2070.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_KoopaBrosRed] {
+    [NPC_KoopaBrosRed] = {
         .initialAnim = ANIM_KoopaBros_Red_ThumbsUp,
         .pos = { -1860.0f, 65.0f, 10.0f },
         .yaw = 270.0f
     },
-    [NPC_KoopaBrosBlack] {
+    [NPC_KoopaBrosBlack] = {
         .initialAnim = ANIM_KoopaBros_Black_ThumbsUp,
         .pos = { -1840.0f, 65.0f, 10.0f },
         .yaw = 90.0f
     },
-    [NPC_KoopaBrosYellow] {
+    [NPC_KoopaBrosYellow] = {
         .initialAnim = ANIM_KoopaBros_Yellow_ThumbsUp,
         .pos = { -1870.0f, 12.0f, 37.0f },
         .yaw = 270.0f
     },
-    [NPC_KoopaBrosGreen] {
+    [NPC_KoopaBrosGreen] = {
         .initialAnim = ANIM_KoopaBros_Green_ThumbsUp,
         .pos = { -1830.0f, 12.0f, 37.0f },
         .yaw = 90.0f
     },
-    [NPC_Bobomb1] {
+    [NPC_Bobomb1] = {
         .initialAnim = ANIM_Bobomb_WalkLit,
         .pos = { -1750.0f, 0.0f, 43.0f },
         .yaw = 270.0f
     },
-    [NPC_Bobomb2] {
+    [NPC_Bobomb2] = {
         .initialAnim = ANIM_Bobomb_WalkLit,
         .pos = { -1720.0f, 0.0f, 43.0f },
         .yaw = 270.0f
     },
-    [NPC_Bobomb3] {
+    [NPC_Bobomb3] = {
         .initialAnim = ANIM_Bobomb_WalkLit,
         .pos = { -1690.0f, 0.0f, 43.0f },
         .yaw = 270.0f
     },
-    [NPC_Bobomb4] {
+    [NPC_Bobomb4] = {
         .initialAnim = ANIM_Bobomb_WalkLit,
         .pos = { -1660.0f, 0.0f, 43.0f },
         .yaw = 270.0f
     },
-    [NPC_Kolorado] {
+    [NPC_Kolorado] = {
         .initialAnim = ANIM_ParadeKolorado_IdleFwd,
         .pos = { -1555.0f, 45.0f, -190.0f },
         .yaw = 270.0f
     },
-    [NPC_KoloradoWife] {
+    [NPC_KoloradoWife] = {
         .initialAnim = ANIM_ParadeKolorado_WifeIdleFwd,
         .pos = { -1575.0f, 45.0f, -210.0f },
         .yaw = 270.0f
     },
-    [NPC_Rowf] {
+    [NPC_Rowf] = {
         .initialAnim = ANIM_Rowf_PackedWalk,
         .animList = N(LimitAnims_Rowf),
         .pos = { -1775.0f, 0.0f, 2.0f },
         .yaw = 90.0f
     },
-    [NPC_Rhuff] {
+    [NPC_Rhuff] = {
         .initialAnim = ANIM_Rowf_PackedWalk,
         .animList = N(LimitAnims_Rowf),
         .pos = { -1740.0f, 0.0f, 2.0f },
         .yaw = 90.0f
     },
-    [NPC_Moustafa] {
+    [NPC_Moustafa] = {
         .initialAnim = ANIM_Moustafa_Run,
         .animList = N(LimitAnims_Moustafa),
         .pos = { -1240.0f, 0.0f, -2.0f },
         .yaw = 270.0f
     },
-    [NPC_Mouser1] {
+    [NPC_Mouser1] = {
         .initialAnim = ANIM_Mouser_Blue_Run,
         .animList = N(LimitAnims_Mouser),
         .pos = { -1210.0f, 0.0f, -2.0f },
         .yaw = 270.0f
     },
-    [NPC_Mouser2] {
+    [NPC_Mouser2] = {
         .initialAnim = ANIM_Mouser_Blue_Run,
         .animList = N(LimitAnims_Mouser),
         .pos = { -1180.0f, 0.0f, -2.0f },
         .yaw = 270.0f
     },
-    [NPC_Tutankoopa1] {
+    [NPC_Tutankoopa1] = {
         .initialAnim = ANIM_Tutankoopa_Run,
         .animList = N(LimitAnims_Tutankoopa),
         .pos = { -1040.0f, 0.0f, 30.0f },
         .yaw = 270.0f
     },
-    [NPC_ChainChomp1] {
+    [NPC_ChainChomp1] = {
         .initialAnim = ANIM_ChainChomp_QuickBite,
         .pos = { -1000.0f, 0.0f, 30.0f },
         .yaw = 270.0f
     },
-    [NPC_Buzzar] {
+    [NPC_Buzzar] = {
         .initialAnim = ANIM_Buzzar_Roost,
         .animList = N(LimitAnims_Buzzar),
         .pos = { -855.0f, 70.0f, -140.0f },
         .yaw = 270.0f
     },
-    [NPC_VultureChick1] {
+    [NPC_VultureChick1] = {
         .initialAnim = ANIM_ParadeChick_Egg,
         .pos = { -875.0f, 70.0f, -165.0f },
         .yaw = 270.0f
     },
-    [NPC_VultureChick2] {
+    [NPC_VultureChick2] = {
         .initialAnim = ANIM_ParadeChick_Egg,
         .pos = { -855.0f, 70.0f, -160.0f },
         .yaw = 90.0f
     },
-    [NPC_VultureChick3] {
+    [NPC_VultureChick3] = {
         .initialAnim = ANIM_ParadeChick_Egg,
         .pos = { -835.0f, 70.0f, -165.0f },
         .yaw = 90.0f
     },
-    [NPC_Bootler] {
+    [NPC_Bootler] = {
         .initialAnim = ANIM_Bootler_Idle,
         .pos = { -650.0f, 20.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Tutankoopa2] {
+    [NPC_Tutankoopa2] = {
         .initialAnim = ANIM_Tutankoopa_Run,
         .animList = N(LimitAnims_Tutankoopa),
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_ChainChomp2] {
+    [NPC_ChainChomp2] = {
         .initialAnim = ANIM_ChainChomp_QuickBite,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_ChainChomp3] {
+    [NPC_ChainChomp3] = {
         .initialAnim = ANIM_ChainChomp_QuickBite,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_ChainChomp4] {
+    [NPC_ChainChomp4] = {
         .initialAnim = ANIM_ChainChomp_QuickBite,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_TubbasBody] {
+    [NPC_TubbasBody] = {
         .initialAnim = ANIM_ParadeTubba_Still,
         .pos = { -310.0f, 35.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Boo1] {
+    [NPC_Boo1] = {
         .initialAnim = ANIM_Boo_CarryIdle,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_Boo2] {
+    [NPC_Boo2] = {
         .initialAnim = ANIM_Boo_CarryIdle,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_Boo3] {
+    [NPC_Boo3] = {
         .initialAnim = ANIM_Boo_CarryIdle,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_TubbasHeart] {
+    [NPC_TubbasHeart] = {
         .initialAnim = ANIM_TubbasHeart_Idle,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_GoombaKing] {
+    [NPC_GoombaKing] = {
         .initialAnim = ANIM_GoombaKing_Still,
         .animList = N(LimitAnims_GoombaKing),
         .pos = { -70.0f, 130.0f, -60.0f },
         .yaw = 270.0f
     },
-    [NPC_RedGoombaBros] {
+    [NPC_RedGoombaBros] = {
         .initialAnim = ANIM_GoombaBros_Red_Walk,
         .pos = { -110.0f, 0.0f, -28.0f },
         .yaw = 90.0f
     },
-    [NPC_BlueGoombaBros] {
+    [NPC_BlueGoombaBros] = {
         .initialAnim = ANIM_GoombaBros_Blue_Walk,
         .pos = { -30.0f, 0.0f, -32.0f },
         .yaw = 270.0f
     },
-    [NPC_Yoshi1] {
+    [NPC_Yoshi1] = {
         .initialAnim = ANIM_ParadeYoshi_IdleGreen,
         .pos = { 212.0f, 40.0f, 35.0f },
         .yaw = 270.0f
     },
-    [NPC_Yoshi2] {
+    [NPC_Yoshi2] = {
         .initialAnim = ANIM_ParadeYoshi_IdleBlue,
         .pos = { 247.0f, 40.0f, 35.0f },
         .yaw = 270.0f
     },
-    [NPC_Yoshi3] {
+    [NPC_Yoshi3] = {
         .initialAnim = ANIM_ParadeYoshi_IdleYellow,
         .pos = { 282.0f, 40.0f, 35.0f },
         .yaw = 90.0f
     },
-    [NPC_Yoshi4] {
+    [NPC_Yoshi4] = {
         .initialAnim = ANIM_ParadeYoshi_IdleBrown,
         .pos = { 272.0f, 50.0f, 25.0f },
         .yaw = 90.0f
     },
-    [NPC_YoshiChief] {
+    [NPC_YoshiChief] = {
         .initialAnim = ANIM_ParadeYoshi_IdleLeader,
         .pos = { 232.0f, 50.0f, 25.0f },
         .yaw = 270.0f
     },
-    [NPC_RaphaelRaven] {
+    [NPC_RaphaelRaven] = {
         .initialAnim = ANIM_RaphaelRaven_IdleNoFeet,
         .animList = N(LimitAnims_RaphaelRaven),
         .pos = { 357.0f, -120.0f, -30.0f },
         .yaw = 90.0f
     },
-    [NPC_LavaPiranha] {
+    [NPC_LavaPiranha] = {
         .initialAnim = ANIM_LavaPiranha_TongueWag,
         .animList = N(LimitAnims_LavaPiranha),
         .pos = { 507.0f, 50.0f, -5.0f },
         .yaw = 90.0f
     },
-    [NPC_YoshiKidGreen] {
+    [NPC_YoshiKidGreen] = {
         .initialAnim = ANIM_YoshiKid_Green_Walk,
         .pos = { 570.0f, 50.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_YoshiKidBlue] {
+    [NPC_YoshiKidBlue] = {
         .initialAnim = ANIM_YoshiKid_Blue_Run,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_YoshiKidPurple] {
+    [NPC_YoshiKidPurple] = {
         .initialAnim = ANIM_YoshiKid_Purple_Run,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_YoshiKidYellow] {
+    [NPC_YoshiKidYellow] = {
         .initialAnim = ANIM_YoshiKid_Yellow_Run,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_YoshiKidRed] {
+    [NPC_YoshiKidRed] = {
         .initialAnim = ANIM_YoshiKid_Red_Run,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_HuffNPuffBody] {
+    [NPC_HuffNPuffBody] = {
         .initialAnim = ANIM_HuffNPuff_IdleBody,
         .animList = N(LimitAnims_HuffNPuff),
         .pos = { 1060.0f, 80.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_HuffNPuffFace] {
+    [NPC_HuffNPuffFace] = {
         .initialAnim = ANIM_HuffNPuff_IdleFace,
         .animList = N(LimitAnims_HuffNPuff),
         .pos = { 1060.0f, 80.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_HuffNPuffArms] {
+    [NPC_HuffNPuffArms] = {
         .initialAnim = ANIM_HuffNPuff_IdleArms,
         .animList = N(LimitAnims_HuffNPuff),
         .pos = { 1060.0f, 80.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_RuffPuff1] {
+    [NPC_RuffPuff1] = {
         .initialAnim = ANIM_RuffPuff_Idle,
         .animList = N(LimitAnims_RuffPuff),
         .pos = { 980.0f, 60.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_RuffPuff2] {
+    [NPC_RuffPuff2] = {
         .initialAnim = ANIM_RuffPuff_Idle,
         .animList = N(LimitAnims_RuffPuff),
         .pos = { 1140.0f, 60.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_GourmetGuy] {
+    [NPC_GourmetGuy] = {
         .initialAnim = ANIM_GourmetGuy_Walk,
         .animList = N(LimitAnims_GourmetGuy),
         .pos = { 1270.0f, 0.0f, -20.0f },
         .yaw = 270.0f
     },
-    [NPC_Duplighost1] {
+    [NPC_Duplighost1] = {
         .initialAnim = ANIM_Duplighost_Hurt,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_Duplighost2] {
+    [NPC_Duplighost2] = {
         .initialAnim = ANIM_Duplighost_Hurt,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_TrueCrystalKing] {
+    [NPC_TrueCrystalKing] = {
         .initialAnim = ANIM_CrystalKing_Walk,
         .pos = { 1440.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_FakeCrystalKing] {
+    [NPC_FakeCrystalKing] = {
         .initialAnim = ANIM_CrystalKing_Walk,
         .pos = { 1600.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_CrystalBit1] {
+    [NPC_CrystalBit1] = {
         .initialAnim = ANIM_CrystalKing_CubeIdle,
         .pos = { 2000.0f, 100.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_CrystalBit2] {
+    [NPC_CrystalBit2] = {
         .initialAnim = ANIM_CrystalKing_SphereIdle,
         .pos = { 2050.0f, 100.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_CrystalBit3] {
+    [NPC_CrystalBit3] = {
         .initialAnim = ANIM_CrystalKing_PrismIdle,
         .pos = { 2100.0f, 100.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Kammy] {
+    [NPC_Kammy] = {
         .initialAnim = ANIM_WorldKammy_FlySlowSly,
         .animList = N(LimitAnims_Kammy),
         .pos = { 2160.0f, 60.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_JrTroopa] {
+    [NPC_JrTroopa] = {
         .initialAnim = ANIM_MageJrTroopa_RaiseStaff,
         .animList = N(LimitAnims_MageJrTroopa),
         .pos = { 2060.0f, 0.0f, 0.0f },
         .yaw = 90.0f
     },
-    [NPC_Bowser] {
+    [NPC_Bowser] = {
         .initialAnim = ANIM_ParadeKoopas_Bowser_Bowser,
         .pos = { 2390.0f, 10.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_BowserPropeller] {
+    [NPC_BowserPropeller] = {
         .initialAnim = ANIM_ParadeKoopas_Bowser_Propeller,
         .pos = { 2390.0f, 10.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_HammerBros1] {
+    [NPC_HammerBros1] = {
         .initialAnim = ANIM_ParadeKoopas_Bowser_HammerBrosJuggle,
         .pos = { 2300.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_HammerBros2] {
+    [NPC_HammerBros2] = {
         .initialAnim = ANIM_ParadeKoopas_Bowser_HammerBrosJuggle,
         .pos = { 2260.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Koopatrol1] {
+    [NPC_Koopatrol1] = {
         .initialAnim = ANIM_ParadeKoopas_Bowser_KoopatrolMarch,
         .pos = { 2480.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_Koopatrol2] {
+    [NPC_Koopatrol2] = {
         .initialAnim = ANIM_ParadeKoopas_Bowser_KoopatrolMarch,
         .pos = { 2520.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_BurntBowser] {
+    [NPC_BurntBowser] = {
         .initialAnim = ANIM_ParadeBurntBowser_BurntIdle,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 270.0f
     },
-    [NPC_BurntBowserPropeller] {
+    [NPC_BurntBowserPropeller] = {
         .initialAnim = ANIM_ParadeBurntBowser_BurntPropeller,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 270.0f

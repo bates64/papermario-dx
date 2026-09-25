@@ -3,8 +3,8 @@
 #include "../common/MapInit_EnableFloorReflection.inc.c"
 
 EntryList N(Entrances) = {
-    [pra_22_ENTRY_0]    {  126.0,    0.0,  137.0,    0.0 },
-    [pra_22_ENTRY_1]    {  487.0, -200.0,   70.0,  270.0 },
+    [pra_22_ENTRY_0]    = {  126.0,    0.0,  137.0,    0.0 },
+    [pra_22_ENTRY_1]    = {  487.0, -200.0,   70.0,  270.0 },
 };
 
 export MapSettings N(settings) = {

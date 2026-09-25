@@ -1,8 +1,8 @@
 #include "mim_12.h"
 
 EntryList N(Entrances) = {
-    [mim_12_ENTRY_0]    { -380.0,    0.0,   10.0,   90.0 },
-    [mim_12_ENTRY_1]    {  380.0,    0.0,   10.0,  270.0 },
+    [mim_12_ENTRY_0]    = { -380.0,    0.0,   10.0,   90.0 },
+    [mim_12_ENTRY_1]    = {  380.0,    0.0,   10.0,  270.0 },
 };
 
 export MapSettings N(settings) = {

@@ -134,7 +134,7 @@ DemoSceneData DemoScenes[] = {
         .partnerID = PARTNER_NONE,
         .storyProgress = STORY_CH1_KNOCKED_SWITCH_FROM_TREE
     },
-    [LAST_DEMO_SCENE_IDX] {
+    [LAST_DEMO_SCENE_IDX] = {
         .sceneType = DEMO_SCENE_DONE,
         .mapName = "end"
     },

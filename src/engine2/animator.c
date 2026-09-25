@@ -833,7 +833,7 @@ void appendGfx_animator(ModelAnimator* animator) {
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     //TODO find better match
-    switch (gAnimModelFogEnabled != 0) {
+    switch ((s32)(gAnimModelFogEnabled != 0)) {
         case false:
             switch (animator->renderMode) {
                 case RENDER_MODE_SURFACE_OPA:

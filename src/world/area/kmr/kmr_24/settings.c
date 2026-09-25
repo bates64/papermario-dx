@@ -6,7 +6,7 @@ export s32 N(map_init)(void) {
 }
 
 EntryList N(Entrances) = {
-    [kmr_24_ENTRY_0]    {    0.0,    0.0,    0.0,    0.0 },
+    [kmr_24_ENTRY_0]    = {    0.0,    0.0,    0.0,    0.0 },
 };
 
 export MapSettings N(settings) = {

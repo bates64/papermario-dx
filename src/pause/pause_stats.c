@@ -54,18 +54,18 @@ enum {
 };
 
 HudScriptList gStatsMenuElements = {
-    [STAT_ICON_MARIO]       HES_MarioHeadSmall,
-    [STAT_ICON_BOOTS]       HES_StatBoots0,
-    [STAT_ICON_HAMMER]      HES_StatHammer0,
-    [STAT_ICON_COIN]        HES_StatusCoin,
-    [STAT_ICON_STAR_POINT]  HES_StatusStarPoint,
-    [STAT_ICON_STAR_PIECE]  HES_StatStarPiece_1,
-    [STAT_ICON_CLOCK]       HES_Clock,
-    [STAT_ICON_HP]          HES_StatusHeart,
-    [STAT_ICON_FP]          HES_StatFp_1,
-    [STAT_ICON_BP]          HES_StatBp,
-    [STAT_ICON_STAR]        HES_StatusStar1,
-    [STAT_ICON_TIMES]       HES_StatTimes,
+    [STAT_ICON_MARIO]       = HES_MarioHeadSmall,
+    [STAT_ICON_BOOTS]       = HES_StatBoots0,
+    [STAT_ICON_HAMMER]      = HES_StatHammer0,
+    [STAT_ICON_COIN]        = HES_StatusCoin,
+    [STAT_ICON_STAR_POINT]  = HES_StatusStarPoint,
+    [STAT_ICON_STAR_PIECE]  = HES_StatStarPiece_1,
+    [STAT_ICON_CLOCK]       = HES_Clock,
+    [STAT_ICON_HP]          = HES_StatusHeart,
+    [STAT_ICON_FP]          = HES_StatFp_1,
+    [STAT_ICON_BP]          = HES_StatBp,
+    [STAT_ICON_STAR]        = HES_StatusStar1,
+    [STAT_ICON_TIMES]       = HES_StatTimes,
 };
 
 #if VERSION_PAL

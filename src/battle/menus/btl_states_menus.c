@@ -599,7 +599,7 @@ void btl_main_menu_draw(void) {
             theta = (BattleMenu_WheelBase - BattleMenu_CurPos) * WHEEL_SPACING;
 
             // calculate beam narrowing
-            scale = (fabsf(fabsf((BattleMenu_WheelAngle - theta) * (45.0 / WHEEL_SPACING)) - 22.5) / 22.5) + 0.01;
+            scale = (fabsf((f32)(fabsf((f32)((BattleMenu_WheelAngle - theta) * (45.0 / WHEEL_SPACING))) - 22.5)) / 22.5) + 0.01;
             if (wheelDoneMoving) {
                 scale = 1.0f;
             }
