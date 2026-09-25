@@ -22,7 +22,8 @@ void N(build_gfx_yellow_stars)(s32 index) {
         vtx->v.cn[0] = temp2 / 0x8000 + 100;
         vtx->v.cn[1] = temp2 / 0x8000 + 100;
 
-        temp3 = sins(N(StarPhaseAngles)[index] / 0x8000 * (((i / 2) % 3 + 1) << 15)  + N(StarPhaseAngles)[index] / 0x4000 * 0x8000 + i) + 0x8000;
+        u16 angle = N(StarPhaseAngles)[index] / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(StarPhaseAngles)[index] / 0x4000 * 0x8000 + i;
+        temp3 = sins(angle) + 0x8000;
         vtx->v.cn[2] = vtx->v.cn[0] * temp3 / 0x10000;
     }
 
@@ -46,7 +47,8 @@ void N(build_gfx_blue_stars)(s32 index) {
         colors[0] = temp1 * 155 / 0x8000 + 48.62745098039216;
         colors[1] = temp1 * 155 / 0x8000 + 89.41176470588236;
 
-        temp3 = sins(N(StarPhaseAngles)[index] / 0x8000 * (((i / 2) % 3 + 1) << 15)  + N(StarPhaseAngles)[index] / 0x4000 * 0x8000 + i) + 0x8000;
+        u16 angle = N(StarPhaseAngles)[index] / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(StarPhaseAngles)[index] / 0x4000 * 0x8000 + i;
+        temp3 = sins(angle) + 0x8000;
         colors[2] = colors[0] * temp3 / 0x10000 + 99.6078431372549;
     }
 
@@ -70,7 +72,8 @@ void N(build_gfx_green_stars)(s32 index) {
         colors[0] = temp1 * 155 / 0x8000 + 67.45098039215686;
         colors[1] = temp1 * 155 / 0x8000 + 100.0;
 
-        temp3 = sins(N(StarPhaseAngles)[index] / 0x8000 * (((i / 2) % 3 + 1) << 15)  + N(StarPhaseAngles)[index] / 0x4000 * 0x8000 + i) + 0x8000;
+        u16 angle = N(StarPhaseAngles)[index] / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(StarPhaseAngles)[index] / 0x4000 * 0x8000 + i;
+        temp3 = sins(angle) + 0x8000;
         colors[2] = colors[0] * temp3 / 0x10000 + 59.21568627450981;
     }
 
@@ -94,7 +97,8 @@ void N(build_gfx_pink_stars)(s32 index) {
         colors[0] = temp1 * 155 / 0x8000 + 100.0;
         colors[1] = temp1 * 155 / 0x8000 + 80.3921568627451;
 
-        temp3 = sins(N(StarPhaseAngles)[index] / 0x8000 * (((i / 2) % 3 + 1) << 15)  + N(StarPhaseAngles)[index] / 0x4000 * 0x8000 + i) + 0x8000;
+        u16 angle = N(StarPhaseAngles)[index] / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(StarPhaseAngles)[index] / 0x4000 * 0x8000 + i;
+        temp3 = sins(angle) + 0x8000;
         colors[2] = colors[0] * temp3 / 0x10000 + 96.07843137254902;
     }
 
