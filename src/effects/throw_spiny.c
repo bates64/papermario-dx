@@ -136,7 +136,7 @@ void throw_spiny_update(EffectInstance* effectInstance) {
     if ((gravity < 0.0f) && (spinyObject->pos.y < 100.0 / 7.0)) {
         spinyObject->pos.y = 100.0f / 7.0f;
         spinyObject->rotSpeed = -20.0f;
-        spinyObject->gravity = gravity - gravity;
+        spinyObject->gravity = 0.0f; // stop falling
     }
 }
 
