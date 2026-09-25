@@ -28,9 +28,15 @@ def layer_relative(path: Path, asset_stack: Iterable) -> Optional[Path]:
 @lru_cache(maxsize=None)
 def get_asset_path(asset: Path, asset_stack: Tuple[Path, ...]) -> Path:
     """The file for an asset in the highest layer that has it."""
+    from assets import is_deleted
+
     for layer in asset_stack:
         potential_path = ROOT / layer / asset
         if potential_path.exists():
+            if is_deleted(potential_path, [str(s) for s in asset_stack]):
+                raise FileNotFoundError(
+                    f"Asset {asset} is used, but its .meta sets delete: true"
+                )
             return potential_path
     raise FileNotFoundError(f"Could not find asset {asset}")
 
