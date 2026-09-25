@@ -500,7 +500,7 @@ void pause_partners_draw_movelist(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
     s32 i;
     s32 moveNameID;
     s32 costFP;
-    s32 msgX, msgY;
+    s32 posX, posY;
     s32 style;
     s32 level = gPlayerData.partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
 
@@ -512,8 +512,8 @@ void pause_partners_draw_movelist(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
         level = 2;
     }
     for (i = 0; i < 4; i++) {
-        msgX = baseX + 21;
-        msgY = baseY + 22 + i * 13;
+        posX = baseX + 21;
+        posY = baseY + 22 + i * 13;
 
         if (i >= level) {
             continue;
@@ -533,7 +533,7 @@ void pause_partners_draw_movelist(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
             costFP = 0;
         }
 
-        draw_msg(moveNameID, msgX, msgY, 255, MSG_PAL_STANDARD, style);
+        draw_msg(moveNameID, posX, posY, 255, MSG_PAL_STANDARD, style);
         hud_element_set_scale(gPausePartnersHIDs[i + 4], 0.5f);
         //TODO find better match
         hud_element_set_render_pos(gPausePartnersHIDs[i + 4], 12 - (-baseX), baseY + 28 + i * 13);
