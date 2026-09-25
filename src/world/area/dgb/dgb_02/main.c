@@ -1,16 +1,20 @@
 #include "dgb_02.h"
 
-EvtScript N(EVS_ExitDoors_dgb_03_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_02_ENTRY_0, "dgb_03", dgb_03_ENTRY_1,
-    COLLIDER_deilittw, MODEL_o30, MODEL_o31, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_dgb_03_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    dgb_02_ENTRY_0, "dgb_03", dgb_03_ENTRY_1, COLLIDER_deilittw, MODEL_o30, MODEL_o31, DOOR_SOUNDS_CREAKY
+);
 
-EvtScript N(EVS_ExitDoors_dgb_01_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_02_ENTRY_1, "dgb_01", dgb_01_ENTRY_1,
-    COLLIDER_deilitte, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_dgb_01_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    dgb_02_ENTRY_1, "dgb_01", dgb_01_ENTRY_1, COLLIDER_deilitte, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY
+);
 
-EvtScript N(EVS_ExitDoor_dgb_07_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(dgb_02_ENTRY_2, "dgb_07", dgb_07_ENTRY_0,
-    COLLIDER_deilittnw, MODEL_o76, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
+EvtScript N(EVS_ExitDoor_dgb_07_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
+    dgb_02_ENTRY_2, "dgb_07", dgb_07_ENTRY_0, COLLIDER_deilittnw, MODEL_o76, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
+);
 
-EvtScript N(EVS_ExitDoor_dgb_11_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(dgb_02_ENTRY_3, "dgb_11", dgb_11_ENTRY_0,
-    COLLIDER_deilittne, MODEL_o123, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
+EvtScript N(EVS_ExitDoor_dgb_11_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
+    dgb_02_ENTRY_3, "dgb_11", dgb_11_ENTRY_0, COLLIDER_deilittne, MODEL_o123, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
+);
 
 EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)

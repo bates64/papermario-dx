@@ -53,14 +53,20 @@ void update_cameras(void) {
                 break;
         }
 
-        guLookAtReflectF(cam->mtxViewPlayer, &gDisplayContext->lookAt, cam->lookAtEye.x, cam->lookAtEye.y, cam->lookAtEye.z, cam->lookAtObj.x, cam->lookAtObj.y, cam->lookAtObj.z, 0, 1.0f, 0);
+        guLookAtReflectF(
+            cam->mtxViewPlayer, &gDisplayContext->lookAt, cam->lookAtEye.x, cam->lookAtEye.y, cam->lookAtEye.z,
+            cam->lookAtObj.x, cam->lookAtObj.y, cam->lookAtObj.z, 0, 1.0f, 0
+        );
 
         if (!(cam->flags & CAMERA_FLAG_ORTHO)) {
             if (cam->flags & CAMERA_FLAG_LEAD_PLAYER) {
                 create_camera_leadplayer_matrix(cam);
             }
 
-            guPerspectiveF(cam->mtxPerspective, &cam->perspNorm, cam->vfov, (f32) cam->viewportW / (f32) cam->viewportH, (f32) cam->nearClip, (f32) cam->farClip, 1.0f);
+            guPerspectiveF(
+                cam->mtxPerspective, &cam->perspNorm, cam->vfov, (f32) cam->viewportW / (f32) cam->viewportH,
+                (f32) cam->nearClip, (f32) cam->farClip, 1.0f
+            );
 
             if (cam->flags & CAMERA_FLAG_SHAKING) {
                 guMtxCatF(cam->mtxViewShaking, cam->mtxPerspective, cam->mtxPerspective);
@@ -125,8 +131,11 @@ void render_frame(s32 isSecondPass) {
             s32 lry;
 
             gSPViewport(gMainGfxPos++, &camera->vp);
-            gSPClearGeometryMode(gMainGfxPos++, G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
-                                    G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
+            gSPClearGeometryMode(
+                gMainGfxPos++,
+                G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD
+                    | G_SHADING_SMOOTH
+            );
             gSPTexture(gMainGfxPos++, 0, 0, 0, G_TX_RENDERTILE, G_OFF);
             gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
             gDPPipelineMode(gMainGfxPos++, G_PM_NPRIMITIVE);
@@ -175,8 +184,9 @@ void render_frame(s32 isSecondPass) {
             gDPSetRenderMode(gMainGfxPos++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
             gDPSetColorDither(gMainGfxPos++, G_CD_DISABLE);
             gSPClipRatio(gMainGfxPos++, FRUSTRATIO_2);
-            gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH,
-                                osVirtualToPhysical(nuGfxCfb_ptr));
+            gDPSetColorImage(
+                gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxCfb_ptr)
+            );
             gDPPipeSync(gMainGfxPos++);
 
             if (!(camera->flags & CAMERA_FLAG_ORTHO)) {
@@ -184,8 +194,10 @@ void render_frame(s32 isSecondPass) {
             }
 
             guMtxF2L(camera->mtxPerspective, &gDisplayContext->camPerspMatrix[gCurrentCamID]);
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID], G_MTX_NOPUSH | G_MTX_LOAD |
-                        G_MTX_PROJECTION);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID],
+                G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+            );
         }
 
         camera->mtxBillboard = &gDisplayContext->matrixStack[gMatrixListPos++];
@@ -203,13 +215,13 @@ void render_frame(s32 isSecondPass) {
                 }
                 if (!(camera->flags & CAMERA_FLAG_RENDER_MODELS)) {
                     GFX_PROFILER_START(PROFILER_TIME_SUB_GFX_MODELS);
-                    #if DX_DEBUG_MENU
+#if DX_DEBUG_MENU
                     if (!dx_debug_should_hide_models()) {
                         render_models();
                     }
-                    #else
+#else
                     render_models();
-                    #endif
+#endif
                     GFX_PROFILER_COMPLETE(PROFILER_TIME_SUB_GFX_MODELS);
                 }
                 GFX_PROFILER_START(PROFILER_TIME_SUB_GFX_PLAYER);
@@ -222,16 +234,18 @@ void render_frame(s32 isSecondPass) {
                 render_effects_scene();
                 GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_EFFECTS, PROFILER_TIME_SUB_GFX_RENDER_TASKS);
                 execute_render_tasks();
-                #if DX_DEBUG_MENU
+#if DX_DEBUG_MENU
                 dx_debug_draw_collision();
-                #endif
+#endif
                 GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_RENDER_TASKS, PROFILER_TIME_SUB_GFX_HUD_ELEMENTS);
                 render_transformed_hud_elements();
             } else {
                 guOrthoF(camera->mtxPerspective, 0.0f, SCREEN_WIDTH, -SCREEN_HEIGHT, 0.0f, -1000.0f, 1000.0f, 1.0f);
                 guMtxF2L(camera->mtxPerspective, &gDisplayContext->camPerspMatrix[gCurrentCamID]);
-                gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID], G_MTX_NOPUSH |
-                            G_MTX_LOAD | G_MTX_PROJECTION);
+                gSPMatrix(
+                    gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID],
+                    G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+                );
                 render_transformed_hud_elements();
                 render_item_entities();
             }
@@ -245,8 +259,7 @@ void render_frame(s32 isSecondPass) {
         }
 
         gDPPipeSync(gMainGfxPos++);
-        gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH,
-                            osVirtualToPhysical(nuGfxCfb_ptr));
+        gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxCfb_ptr));
         gDPPipeSync(gMainGfxPos++);
     }
 }
@@ -393,8 +406,10 @@ void set_cam_viewport(s16 id, s16 x, s16 y, s16 width, s16 height) {
     camera->vpAlt.vp.vscale[2] = 0x1FF;
     camera->vpAlt.vp.vscale[3] = 0;
 
-    camera->vpAlt.vp.vtrans[0] = gGameStatusPtr->altViewportOffset.x + 4 * (s16) ((u16) camera->viewportStartX + (camera->viewportW / 2));
-    camera->vpAlt.vp.vtrans[1] = gGameStatusPtr->altViewportOffset.y + 4 * (s16) ((u16) camera->viewportStartY + (camera->viewportH / 2));
+    camera->vpAlt.vp.vtrans[0] =
+        gGameStatusPtr->altViewportOffset.x + 4 * (s16) ((u16) camera->viewportStartX + (camera->viewportW / 2));
+    camera->vpAlt.vp.vtrans[1] =
+        gGameStatusPtr->altViewportOffset.y + 4 * (s16) ((u16) camera->viewportStartY + (camera->viewportH / 2));
     camera->vpAlt.vp.vtrans[2] = 0x200;
     camera->vpAlt.vp.vtrans[3] = 0;
 }

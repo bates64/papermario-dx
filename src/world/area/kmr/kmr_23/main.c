@@ -9,12 +9,12 @@ API_CALLABLE(N(DrawBackCurtains)) {
 
 EvtScript N(EVS_GotoNextAfterSceneEnd) = {
     Set(MF_EndChapterSceneDone, false)
-        Loop(0)
-            IfNe(MF_EndChapterSceneDone, false)
-                BreakLoop
-            EndIf
-            Wait(1)
-        EndLoop
+    Loop(0)
+        IfNe(MF_EndChapterSceneDone, false)
+            BreakLoop
+        EndIf
+        Wait(1)
+    EndLoop
     Call(GetEntryID, LVar0)
     IfNe(LVar0, kmr_23_ENTRY_4)
         Call(GotoMapSpecial, Ref("kmr_24"), kmr_24_ENTRY_0, TRANSITION_BEGIN_OR_END_CHAPTER)

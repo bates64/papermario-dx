@@ -53,7 +53,7 @@ void entity_shattering_init_pieces(Entity* entity, Gfx** dlists, Mtx* matrices) 
             data->fragmentRotSpeed[i] = -rotSpeed;
         }
 
-        data->fragmentFallSpeed[i] = fallSpeed + (f32)(rand_float() * 2.7);
+        data->fragmentFallSpeed[i] = fallSpeed + (f32) (rand_float() * 2.7);
         data->fragmentRebounds[i] = 0;
         data->fragmentRotX[i] = 0;
         data->fragmentRotY[i] = 0;
@@ -114,7 +114,10 @@ void entity_shattering_idle(Entity* entity) {
         hitX = data->fragmentPosX[i];
         hitY = data->fragmentPosY[i];
         hitZ = data->fragmentPosZ[i];
-        if (npc_test_move_taller_with_slipping(COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, lateralSpeed, angle, 8.0f, 8.0f)) {
+        if (npc_test_move_taller_with_slipping(
+                COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, lateralSpeed, angle, 8.0f, 8.0f
+            ))
+        {
             data->fragmentPosX[i] = hitX;
             data->fragmentPosY[i] = hitY;
             data->fragmentPosZ[i] = hitZ;
@@ -130,7 +133,9 @@ void entity_shattering_idle(Entity* entity) {
         hitY = data->fragmentPosY[i];
         hitZ = data->fragmentPosZ[i];
         hitDepth = fabsf(data->fragmentFallSpeed[i]);
-        if (npc_raycast_down_sides(COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, &hitDepth) || hitY < data->originalPosY - 200.0f) {
+        if (npc_raycast_down_sides(COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, &hitDepth)
+            || hitY < data->originalPosY - 200.0f)
+        {
             data->fragmentRebounds[i]++;
             data->fragmentPosY[i] = hitY + fabsf(data->fragmentFallSpeed[i]) * 1.2f;
             data->fragmentFallSpeed[i] = reboundSpeed;

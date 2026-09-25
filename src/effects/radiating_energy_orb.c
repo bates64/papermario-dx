@@ -19,14 +19,7 @@ void radiating_energy_orb_update(EffectInstance* effect);
 void radiating_energy_orb_render(EffectInstance* effect);
 void radiating_energy_orb_appendGfx(void* effect);
 
-EffectInstance* radiating_energy_orb_main(
-    s32 arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    s32 arg5
-) {
+EffectInstance* radiating_energy_orb_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
     EffectBlueprint bp;
     EffectInstance* effect;
     RadiatingEnergyOrbFXData* part;
@@ -129,7 +122,7 @@ void radiating_energy_orb_render(EffectInstance* effect) {
 }
 
 void radiating_energy_orb_appendGfx(void* effect) {
-    RadiatingEnergyOrbFXData* part = ((EffectInstance*)effect)->data.radiatingEnergyOrb;
+    RadiatingEnergyOrbFXData* part = ((EffectInstance*) effect)->data.radiatingEnergyOrb;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 unk_1C = part->unk_1C;
     s32 unk_14 = part->unk_14;
@@ -143,12 +136,14 @@ void radiating_energy_orb_appendGfx(void* effect) {
     }
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp18, part->unk_08, part->unk_0C, part->unk_10);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 64, 64, unk_14);
 
@@ -162,7 +157,7 @@ void radiating_energy_orb_appendGfx(void* effect) {
     gSPDisplayList(gMainGfxPos++, D_09001200_3A1F60);
 
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         f32 scale = part->unk_28;
 
         if (scale != 0.0f) {
@@ -176,7 +171,9 @@ void radiating_energy_orb_appendGfx(void* effect) {
             guMtxCatF(sp58, sp18, sp18);
             guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, D_E009EDFC[0]);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 
@@ -187,7 +184,9 @@ void radiating_energy_orb_appendGfx(void* effect) {
             guMtxCatF(sp58, sp18, sp18);
             guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, D_E009EDF8[0]);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 0, 255, (part->unk_14 * unk_14) >> 9);
@@ -203,7 +202,9 @@ void radiating_energy_orb_appendGfx(void* effect) {
             guMtxCatF(sp58, sp18, sp18);
             guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, D_E009EDF4[0]);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 64, 64, (part->unk_14 * unk_14) >> 8);
@@ -217,7 +218,9 @@ void radiating_energy_orb_appendGfx(void* effect) {
             guMtxCatF(sp58, sp18, sp18);
             guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, D_E009EDF0[0]);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         }

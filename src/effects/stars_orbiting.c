@@ -13,15 +13,7 @@ void stars_orbiting_render(EffectInstance* effect);
 void func_E005E318(EffectInstance* effect);
 void func_E005E334(EffectInstance* effect);
 
-void stars_orbiting_main(
-    s32 type,
-    f32 posX,
-    f32 posY,
-    f32 posZ,
-    f32 radius,
-    s32 numStars,
-    EffectInstance** outEffect
-) {
+void stars_orbiting_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 radius, s32 numStars, EffectInstance** outEffect) {
     EffectBlueprint bp;
     EffectInstance* effect;
     StarsOrbitingFXData* part;
@@ -113,7 +105,7 @@ void func_E005E334(EffectInstance* effect) {
         Gfx* dlist2 = D_E005E674[0];
 
         gDPPipeSync(gMainGfxPos++);
-        gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+        gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
         gSPDisplayList(gMainGfxPos++, dlist2);
 
         guTranslateF(sp18, part->pos.x, part->pos.y, part->pos.z);
@@ -121,7 +113,9 @@ void func_E005E334(EffectInstance* effect) {
         guMtxCatF(sp58, sp18, sp98);
         guMtxF2L(sp98, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 220, 220, 40, 255);
 
         part++;
@@ -131,7 +125,9 @@ void func_E005E334(EffectInstance* effect) {
             guMtxCatF(sp58, sp18, sp18);
             guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, dlist);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         }

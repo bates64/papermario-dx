@@ -78,14 +78,7 @@ void something_rotating_update(EffectInstance* effect);
 void something_rotating_render(EffectInstance* effect);
 void something_rotating_appendGfx(void* effect);
 
-EffectInstance* something_rotating_main(
-    s32 type,
-    f32 x,
-    f32 y,
-    f32 z,
-    f32 scale,
-    s32 duration
-) {
+EffectInstance* something_rotating_main(s32 type, f32 x, f32 y, f32 z, f32 scale, s32 duration) {
     EffectBlueprint bp;
     EffectInstance* effect;
     SomethingRotatingFXData* part;
@@ -267,9 +260,8 @@ void something_rotating_transform_card(b32 ignoreCameraYaw, SomethingRotatingFXD
         yaw = 0.0f;
     }
 
-    guPositionF(mtxTransform, 0.0f, part->spinAngle - yaw, 0.0f, part->scale,
-        part->pos.x + 2.0f,
-        part->pos.y,
+    guPositionF(
+        mtxTransform, 0.0f, part->spinAngle - yaw, 0.0f, part->scale, part->pos.x + 2.0f, part->pos.y,
         part->pos.z + 2.0f
     );
     guRotateF(mtxTemp, part->tiltAngle, 0.0f, 0.0f, 1.0f);
@@ -278,24 +270,25 @@ void something_rotating_transform_card(b32 ignoreCameraYaw, SomethingRotatingFXD
     guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
     guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 }
 
 void something_rotating_appendGfx(void* effect) {
-    SomethingRotatingFXData* data = ((EffectInstance*)effect)->data.somethingRotating;
+    SomethingRotatingFXData* data = ((EffectInstance*) effect)->data.somethingRotating;
     s32 time = data->lifetime;
     s32 l, t;
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     gSPDisplayList(gMainGfxPos++, D_090042E0_3FE790);
     gDPSetEnvColor(gMainGfxPos++, 0, 0, 0, 255);
 
     data++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, data++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, data++) {
         if (data->state != CARD_RING_STATE_DONE) {
             something_rotating_transform_card(true, data);
             if (data->primAlpha != 255) {

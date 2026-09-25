@@ -274,7 +274,8 @@ API_CALLABLE(GetEntryID);
 /// @param outMapID
 API_CALLABLE(GetMapID);
 
-/// Returns the way the player loaded into the map, commonly used to put the player in the correct position for save blocks.
+/// Returns the way the player loaded into the map, commonly used to put the player in the correct position for save
+/// blocks.
 /// @evtapi
 /// @param outLoadType
 API_CALLABLE(GetLoadType);

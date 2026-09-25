@@ -68,10 +68,15 @@ void entity_Tweester_render_face(s32 entityIndex) {
     gDPSetCombineMode(gMainGfxPos++, G_CC_MODULATEIA, G_CC_MODULATEIA);
     gDPSetTextureDetail(gMainGfxPos++, G_TD_CLAMP);
     gDPSetTextureLOD(gMainGfxPos++, G_TL_TILE);
-    gDPLoadTextureBlock_4b(gMainGfxPos++, D_0A0014A0_E58300, G_IM_FMT_CI, 64, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_CLAMP, 6, 5, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureBlock_4b(
+        gMainGfxPos++, D_0A0014A0_E58300, G_IM_FMT_CI, 64, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_CLAMP,
+        6, 5, G_TX_NOLOD, G_TX_NOLOD
+    );
     gDPSetTexturePersp(gMainGfxPos++, G_TP_PERSP);
     gDPSetTextureFilter(gMainGfxPos++, G_TF_BILERP);
-    gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, data->faceAnimTexOffset * 4, 0, (data->faceAnimTexOffset + 124) * 4, 31 * 4);
+    gDPSetTileSize(
+        gMainGfxPos++, G_TX_RENDERTILE, data->faceAnimTexOffset * 4, 0, (data->faceAnimTexOffset + 124) * 4, 31 * 4
+    );
 }
 
 void entity_Tweester_setupGfx(s32 entityIndex) {
@@ -85,25 +90,43 @@ void entity_Tweester_setupGfx(s32 entityIndex) {
     gDPSetTextureDetail(gMainGfxPos++, G_TD_CLAMP);
     gDPSetTextureLOD(gMainGfxPos++, G_TL_TILE);
     gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_I, G_IM_SIZ_8b, 32, D_0A000BF0_E57A50);
-    gDPSetTile(gMainGfxPos++, G_IM_FMT_I, G_IM_SIZ_8b, 4, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_WRAP, 5, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, 5, G_TX_NOLOD);
+    gDPSetTile(
+        gMainGfxPos++, G_IM_FMT_I, G_IM_SIZ_8b, 4, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_WRAP, 5, G_TX_NOLOD,
+        G_TX_NOMIRROR | G_TX_WRAP, 5, G_TX_NOLOD
+    );
     gDPLoadSync(gMainGfxPos++);
     gDPLoadTile(gMainGfxPos++, G_TX_LOADTILE, 0, 0, 0x007C, 0x007C);
     gDPPipeSync(gMainGfxPos++);
-    gDPSetTile(gMainGfxPos++, G_IM_FMT_I, G_IM_SIZ_8b, 4, 0x0000, G_TX_RENDERTILE, 0, G_TX_NOMIRROR | G_TX_WRAP, 5, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, 5, G_TX_NOLOD);
+    gDPSetTile(
+        gMainGfxPos++, G_IM_FMT_I, G_IM_SIZ_8b, 4, 0x0000, G_TX_RENDERTILE, 0, G_TX_NOMIRROR | G_TX_WRAP, 5, G_TX_NOLOD,
+        G_TX_NOMIRROR | G_TX_WRAP, 5, G_TX_NOLOD
+    );
     gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, 0, 0, 0x007C, 0x007C);
     gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_I, G_IM_SIZ_8b, 32, D_0A000FF0_E57E50);
-    gDPSetTile(gMainGfxPos++, G_IM_FMT_I, G_IM_SIZ_8b, 4, 0x0080, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_WRAP, 5, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, 5, G_TX_NOLOD);
+    gDPSetTile(
+        gMainGfxPos++, G_IM_FMT_I, G_IM_SIZ_8b, 4, 0x0080, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_WRAP, 5, G_TX_NOLOD,
+        G_TX_NOMIRROR | G_TX_WRAP, 5, G_TX_NOLOD
+    );
     gDPLoadSync(gMainGfxPos++);
     gDPLoadTile(gMainGfxPos++, G_TX_LOADTILE, 0, 0, 0x007C, 0x007C);
     gDPPipeSync(gMainGfxPos++);
-    gDPSetTile(gMainGfxPos++, G_IM_FMT_I, G_IM_SIZ_8b, 4, 0x0080, 1, 0, G_TX_NOMIRROR | G_TX_WRAP, 5, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, 5, G_TX_NOLOD);
+    gDPSetTile(
+        gMainGfxPos++, G_IM_FMT_I, G_IM_SIZ_8b, 4, 0x0080, 1, 0, G_TX_NOMIRROR | G_TX_WRAP, 5, G_TX_NOLOD,
+        G_TX_NOMIRROR | G_TX_WRAP, 5, G_TX_NOLOD
+    );
     gDPSetTileSize(gMainGfxPos++, 1, 0, 0, 0x007C, 0x007C);
     gDPSetTexturePersp(gMainGfxPos++, G_TP_PERSP);
     gDPSetTextureFilter(gMainGfxPos++, G_TF_BILERP);
-    gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, data->innerWhirlTexOffsetX, data->innerWhirlTexOffsetY, data->innerWhirlTexOffsetX + 124, data->innerWhirlTexOffsetY + 124);
+    gDPSetTileSize(
+        gMainGfxPos++, G_TX_RENDERTILE, data->innerWhirlTexOffsetX, data->innerWhirlTexOffsetY,
+        data->innerWhirlTexOffsetX + 124, data->innerWhirlTexOffsetY + 124
+    );
     entity_Tweester_render_inner_whirl(entityIndex);
     gDPPipeSync(gMainGfxPos++);
-    gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, data->outerWhirlTexOffsetX, data->outerWhirlTexOffsetY, data->outerWhirlTexOffsetX + 124, data->outerWhirlTexOffsetY + 124);
+    gDPSetTileSize(
+        gMainGfxPos++, G_TX_RENDERTILE, data->outerWhirlTexOffsetX, data->outerWhirlTexOffsetY,
+        data->outerWhirlTexOffsetX + 124, data->outerWhirlTexOffsetY + 124
+    );
     entity_Tweester_render_outer_whirl(entityIndex);
     entity_Tweester_render_face(entityIndex);
 }
@@ -160,7 +183,7 @@ void entity_Tweester_select_target_point(Entity* entity) {
     pathPtr = &data->curPath[pathOffset];
     if (*pathPtr != TWEESTER_PATH_STOP_SENTINEL) {
         pathOffset += 3;
-        if (*pathPtr == TWEESTER_PATH_LOOP_SENTINEL){
+        if (*pathPtr == TWEESTER_PATH_LOOP_SENTINEL) {
             pathOffset = 0;
             pathPtr = data->curPath;
             data->targetX = *pathPtr++;
@@ -205,13 +228,10 @@ void entity_Tweester_idle(Entity* entity) {
     f32 delta;
     f32 targetRotationSpeed;
 
-    if (get_time_freeze_mode() == TIME_FREEZE_NONE &&
-        !is_picking_up_item() &&
-        !(playerStatus->flags & PS_FLAG_PAUSED) &&
-        (playerData->curPartner != PARTNER_GOOMBARIO ||
-         playerStatus->inputDisabledCount == 0 ||
-         playerStatus->actionState == ACTION_STATE_USE_TWEESTER
-        )) {
+    if (get_time_freeze_mode() == TIME_FREEZE_NONE && !is_picking_up_item() && !(playerStatus->flags & PS_FLAG_PAUSED)
+        && (playerData->curPartner != PARTNER_GOOMBARIO || playerStatus->inputDisabledCount == 0
+            || playerStatus->actionState == ACTION_STATE_USE_TWEESTER))
+    {
         entity_Tweester_move(entity);
     }
 
@@ -225,7 +245,7 @@ void entity_Tweester_idle(Entity* entity) {
             delta = 0.02f;
         }
         data->rotSpeed += delta;
-        if (data->rotSpeed >= targetRotationSpeed){
+        if (data->rotSpeed >= targetRotationSpeed) {
             data->rotSpeed = targetRotationSpeed;
         }
     } else {
@@ -235,7 +255,7 @@ void entity_Tweester_idle(Entity* entity) {
             delta = -0.02f;
         }
         data->rotSpeed += delta;
-        if (data->rotSpeed <= targetRotationSpeed){
+        if (data->rotSpeed <= targetRotationSpeed) {
             data->rotSpeed = targetRotationSpeed;
             data->frameCounter = 0;
         }
@@ -271,12 +291,10 @@ void entity_Tweester_idle(Entity* entity) {
             }
         }
 
-        if (!is_picking_up_item() &&
-            !(playerStatus->flags & PS_FLAG_PAUSED) &&
-            playerStatus->actionState != ACTION_STATE_USE_TWEESTER &&
-            playerStatus->blinkTimer == 0 &&
-            fabs(dist2D(entity->pos.x, entity->pos.z, playerStatus->pos.x, playerStatus->pos.z)) <= 50.0
-            ) {
+        if (!is_picking_up_item() && !(playerStatus->flags & PS_FLAG_PAUSED)
+            && playerStatus->actionState != ACTION_STATE_USE_TWEESTER && playerStatus->blinkTimer == 0
+            && fabs(dist2D(entity->pos.x, entity->pos.z, playerStatus->pos.x, playerStatus->pos.z)) <= 50.0)
+        {
             TweesterTouchingPlayer = entity;
             playerStatus->animFlags |= PA_FLAG_INTERRUPT_USE_PARTNER;
             set_action_state(ACTION_STATE_USE_TWEESTER);
@@ -295,7 +313,7 @@ void entity_Tweester_anim_scale(Entity* entity) {
 void entity_Tweester_init(Entity* entity) {
     TweesterData* data = entity->dataBuf.tweester;
 
-    data->paths = (s32**)CreateEntityVarArgBuffer[0];
+    data->paths = (s32**) CreateEntityVarArgBuffer[0];
     entity_Tweester_select_target_point(entity);
     data->faceAnimTexOffset = 0;
     entity->renderSetupFunc = entity_Tweester_setupGfx;
@@ -310,7 +328,8 @@ EntityScript Entity_Tweester_Script ={
     es_End
 };
 
-EntityModelScript Entity_Tweester_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_Tweester_Render, RENDER_MODE_SURFACE_XLU_LAYER1);
+EntityModelScript Entity_Tweester_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_Tweester_Render, RENDER_MODE_SURFACE_XLU_LAYER1);
 
 EntityBlueprint Entity_Tweester = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION,
@@ -324,4 +343,3 @@ EntityBlueprint Entity_Tweester = {
     .entityType = ENTITY_TYPE_TWEESTER,
     .aabbSize = { 50, 70, 50 }
 };
-

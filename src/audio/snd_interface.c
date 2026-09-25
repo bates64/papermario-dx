@@ -375,7 +375,7 @@ AuResult snd_ambient_disable(s32 index) {
 }
 
 AuResult snd_ambient_enable(s32 index) {
-    AuResult status  = au_mseq_check_player_index(index);
+    AuResult status = au_mseq_check_player_index(index);
 
     if (status == AU_RESULT_OK) {
         au_mseq_set_disabled(index, false);
@@ -818,15 +818,15 @@ AuResult snd_song_set_track_vol_full(s32 songName, s32 trackIdx) {
 }
 
 void snd_song_set_proximity_mix_far(s32 songName, s32 mix) {
-    au_bgm_set_proximity_mix(songName, (u8)mix);
+    au_bgm_set_proximity_mix(songName, (u8) mix);
 }
 
 void snd_song_set_proximity_mix_near(s32 songName, s32 mix) {
-    au_bgm_set_proximity_mix(songName, (u8)mix | ((s32)(0.69f * AU_MAX_VOLUME_8) << 24));
+    au_bgm_set_proximity_mix(songName, (u8) mix | ((s32) (0.69f * AU_MAX_VOLUME_8) << 24));
 }
 
 void snd_song_set_proximity_mix_full(s32 songName, s32 mix) {
-    au_bgm_set_proximity_mix(songName, (u8)mix | (AU_MAX_VOLUME_8 << 24));
+    au_bgm_set_proximity_mix(songName, (u8) mix | (AU_MAX_VOLUME_8 << 24));
 }
 
 void snd_song_poll_music_events(MusicEventTrigger** musicEvents, s32* count) {
@@ -862,7 +862,6 @@ void snd_song_clear_music_events(void) {
     globals->flushMusicEventQueue = false;
     globals->musicEventQueuePos = globals->musicEventQueue;
 }
-
 
 void snd_register_callback(AuCallback func, s32 index) {
     gSoundGlobals->audioThreadCallbacks[index] = func;

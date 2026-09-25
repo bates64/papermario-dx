@@ -41,4 +41,3 @@ EvtScript N(EVS_UseItem) = {
     Return
     End
 };
-

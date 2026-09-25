@@ -17,18 +17,8 @@ void effect_63_update(EffectInstance* effect);
 void effect_63_render(EffectInstance* effect);
 void effect_63_appendGfx(void* effect);
 
-EffectInstance* effect_63_main(
-    s32 arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    f32 arg5,
-    f32 arg6,
-    f32 arg7,
-    s32 arg8,
-    s32 arg9
-) {
+EffectInstance*
+effect_63_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, s32 arg8, s32 arg9) {
     EffectBlueprint bp;
     EffectBlueprint* bpPtr = &bp;
     EffectInstance* effect;
@@ -146,7 +136,9 @@ void effect_63_update(EffectInstance* effect) {
     part->unk_24++;
     if (part->unk_20 == 1 && unk_00 == 1) {
         load_effect(EFFECT_63);
-        effect_63_main(2, part->unk_04, part->unk_08, part->unk_0C, part->unk_10, part->unk_14, part->unk_18, 1.0f, 32, 32);
+        effect_63_main(
+            2, part->unk_04, part->unk_08, part->unk_0C, part->unk_10, part->unk_14, part->unk_18, 1.0f, 32, 32
+        );
     }
 
     if (part->unk_20 < 0) {
@@ -160,7 +152,10 @@ void effect_63_update(EffectInstance* effect) {
         case 0:
             if (!(unk_24 & (1 | 2))) {
                 load_effect(EFFECT_63);
-                effect_63_main(1, part->unk_04, part->unk_08, part->unk_0C, part->unk_10, part->unk_14, part->unk_18, 1.0f, part->unk_1C, part->unk_1C);
+                effect_63_main(
+                    1, part->unk_04, part->unk_08, part->unk_0C, part->unk_10, part->unk_14, part->unk_18, 1.0f,
+                    part->unk_1C, part->unk_1C
+                );
             }
             break;
         case 1:
@@ -208,7 +203,7 @@ void effect_63_render(EffectInstance* effect) {
 }
 
 void effect_63_appendGfx(void* effect) {
-    Effect63FXData* part = ((EffectInstance*)effect)->data.unk_63;
+    Effect63FXData* part = ((EffectInstance*) effect)->data.unk_63;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 unk_34 = part->unk_34;
     s32 unk_00 = part->unk_00;
@@ -222,12 +217,12 @@ void effect_63_appendGfx(void* effect) {
 
     if (part->unk_00 != 0) {
         gDPPipeSync(gMainGfxPos++);
-        gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+        gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
         gDPSetPrimColor(gMainGfxPos++, 0, 0, part->unk_28, part->unk_2C, part->unk_30, unk_34);
         gDPSetEnvColor(gMainGfxPos++, part->unk_38, part->unk_3C, part->unk_40, part->unk_44);
         gSPDisplayList(gMainGfxPos++, D_E00C6C9C[unk_00]);
 
-        for (i = 0; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+        for (i = 0; i < ((EffectInstance*) effect)->numParts; i++, part++) {
             part->unk_4C += part->unk_54;
             part->unk_50 += part->unk_58;
 
@@ -251,7 +246,10 @@ void effect_63_appendGfx(void* effect) {
             guMtxCatF(sp58, sp18, sp18);
             guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
+                G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+            );
             gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
 
             guScaleF(sp18, part->unk_70, part->unk_6C, 1.0f);
@@ -259,7 +257,10 @@ void effect_63_appendGfx(void* effect) {
             guMtxCatF(sp58, sp18, sp18);
             guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
+                G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gDPSetTileSize(gMainGfxPos++, 1, tempX, tempY, (tempX + 0x3F) * 4, (tempY + 0xF) * 4);
             gSPDisplayList(gMainGfxPos++, D_E00C6C90[unk_00]);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);

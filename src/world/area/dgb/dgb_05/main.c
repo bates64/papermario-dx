@@ -1,7 +1,8 @@
 #include "dgb_05.h"
 
-EvtScript N(EVS_ExitDoor_dgb_03_2) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(dgb_05_ENTRY_0, "dgb_03", dgb_03_ENTRY_2,
-    COLLIDER_deilittn, MODEL_o158, DOOR_SWING_IN, DOOR_SOUNDS_BASIC);
+EvtScript N(EVS_ExitDoor_dgb_03_2) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
+    dgb_05_ENTRY_0, "dgb_03", dgb_03_ENTRY_2, COLLIDER_deilittn, MODEL_o158, DOOR_SWING_IN, DOOR_SOUNDS_BASIC
+);
 
 EvtScript N(EVS_EnterMap) = {
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)

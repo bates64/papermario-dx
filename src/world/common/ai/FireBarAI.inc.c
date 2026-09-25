@@ -83,7 +83,10 @@ API_CALLABLE(N(FireBarAI_Main)) {
             dX = playerStatus->pos.x - npc->pos.x;
             dZ = playerStatus->pos.z - npc->pos.z;
             if ((fabsf(dY) < (npc->collisionHeight * 0.8f))
-                && (sqrtf(SQ(dX) + SQ(dZ)) <= ((npc->collisionDiameter * 0.5f * npc->scale.x * 0.5f) + (playerStatus->colliderDiameter * 0.5f * 0.5f)))) {
+                && (sqrtf(SQ(dX) + SQ(dZ))
+                    <= ((npc->collisionDiameter * 0.5f * npc->scale.x * 0.5f)
+                        + (playerStatus->colliderDiameter * 0.5f * 0.5f))))
+            {
                 hitDetected = 1;
             }
         }
@@ -95,7 +98,10 @@ API_CALLABLE(N(FireBarAI_Main)) {
     clampedYaw = clamp_angle(data->yaw);
     if (clampedYaw != data->yaw) {
         data->yaw = clampedYaw;
-        sfx_play_sound_at_position(N(FireBar_Sounds)[data->soundIndex], SOUND_SPACE_DEFAULT, data->centerPos.x, data->centerPos.y, data->centerPos.z);
+        sfx_play_sound_at_position(
+            N(FireBar_Sounds)[data->soundIndex], SOUND_SPACE_DEFAULT, data->centerPos.x, data->centerPos.y,
+            data->centerPos.z
+        );
     }
     distToPlayer = dist2D(data->centerPos.x, data->centerPos.z, playerStatus->pos.x, playerStatus->pos.z);
     distToNpc = dist2D(data->centerPos.x, data->centerPos.z, npc->pos.x, npc->pos.z)
@@ -107,7 +113,9 @@ API_CALLABLE(N(FireBarAI_Main)) {
     if ((hitDetected > 0) && (playerStatus->actionState != ACTION_STATE_HIT_FIRE)) {
         playerStatus->hazardType = HAZARD_TYPE_FIRE_BAR;
         set_action_state(ACTION_STATE_HIT_FIRE);
-        sfx_play_sound_at_position(SOUND_TOUCH_LAVA, SOUND_SPACE_DEFAULT, playerStatus->pos.x, playerStatus->pos.y, playerStatus->pos.z);
+        sfx_play_sound_at_position(
+            SOUND_TOUCH_LAVA, SOUND_SPACE_DEFAULT, playerStatus->pos.x, playerStatus->pos.y, playerStatus->pos.z
+        );
         gCurrentEncounter.battleTriggerCooldown = 45;
         playerStatus->blinkTimer = 45;
         playerStatus->lastGoodPos.x = playerStatus->pos.x;
@@ -117,8 +125,9 @@ API_CALLABLE(N(FireBarAI_Main)) {
         if (data->callback != nullptr) {
             data->callback(data, FIRE_BAR_HIT);
         }
-    } else if ((tempPlayerDist < distToNpc) && !(data->flags & 2)
-        && (hitDetected == 0) && (playerStatus->actionState != ACTION_STATE_HIT_FIRE)) {
+    } else if ((tempPlayerDist < distToNpc) && !(data->flags & 2) && (hitDetected == 0)
+               && (playerStatus->actionState != ACTION_STATE_HIT_FIRE))
+    {
         if (data->rotRate > 0.0f) {
             if (data->lastDeltaYaw < 0.0f) {
                 if (deltaYaw > 0.0f) {
@@ -126,7 +135,7 @@ API_CALLABLE(N(FireBarAI_Main)) {
                     if (data->callback != nullptr) {
                         data->callback(data, FIRE_BAR_SPEED_UP);
                     }
-            }
+                }
             }
         } else if (data->lastDeltaYaw > 0.0f) {
             if (deltaYaw < 0.0f) {

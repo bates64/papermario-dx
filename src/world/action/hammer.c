@@ -379,7 +379,9 @@ void action_hammer_end_swing(void) {
 
         action_hammer_play_hit_fx(HammerHit->hitID);
 
-        if (collisionStatus->lastWallHammered > NO_COLLIDER && (collisionStatus->lastWallHammered & COLLISION_WITH_ENTITY_BIT)) {
+        if (collisionStatus->lastWallHammered > NO_COLLIDER
+            && (collisionStatus->lastWallHammered & COLLISION_WITH_ENTITY_BIT))
+        {
             get_entity_by_index(collisionStatus->lastWallHammered)->collisionTimer = 0;
             playerStatus->flags |= PS_FLAG_HAMMER_CHECK;
         } else if (HammerHit->hitID <= NO_COLLIDER) {

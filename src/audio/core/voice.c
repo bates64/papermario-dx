@@ -71,7 +71,7 @@ void au_update_voices(AuGlobals* globals) {
             // read the first interval of the release envelope
             voice->envIntervalIndex = *voice->cmdPtr++;
             temp = *voice->cmdPtr;
-            if (*(s8*)voice->cmdPtr++ < 0) {
+            if (*(s8*) voice->cmdPtr++ < 0) {
                 // in this case release volumes are relative to last press volume
                 temp &= 0x7F;
                 voice->isRelativeRelease = true;
@@ -102,7 +102,8 @@ void au_update_voices(AuGlobals* globals) {
                 // keep current volume, this is 'sustain' phase
                 if (voice->envelopeFlags & AU_VOICE_ENV_FLAG_VOL_CHANGED) {
                     voice->envelopeFlags &= ~AU_VOICE_ENV_FLAG_VOL_CHANGED;
-                    voice->volume = VOL_MULT_4(voice->envInitial, voice->clientVolume, voice->envRelativeStart, voice->envScale);
+                    voice->volume =
+                        VOL_MULT_4(voice->envInitial, voice->clientVolume, voice->envRelativeStart, voice->envScale);
                     voice->syncFlags |= AU_VOICE_SYNC_FLAG_PARAMS;
                 }
             } else {
@@ -131,7 +132,8 @@ void au_update_voices(AuGlobals* globals) {
                         voice->envTimeLeft = AuEnvelopeIntervals[voice->envIntervalIndex];
                         voice->envDuration = voice->envTimeLeft;
                         if (voice->envDuration != 0) {
-                            voice->envDelta = ((f32) voice->envTarget - (f32) voice->envInitial) / (f32) voice->envDuration;
+                            voice->envDelta =
+                                ((f32) voice->envTarget - (f32) voice->envInitial) / (f32) voice->envDuration;
                         } else {
                             voice->envDelta = 0.0f;
                         }
@@ -140,7 +142,8 @@ void au_update_voices(AuGlobals* globals) {
                             if (voice->envTimeLeft > AU_FRAME_USEC) {
                                 voice->envTimeLeft -= AU_FRAME_USEC;
                                 voice->envelopeFlags |= AU_VOICE_ENV_FLAG_HANDLED_VOL_CHANGE;
-                                current = voice->envInitial + (s32) (voice->envDelta * (voice->envDuration - voice->envTimeLeft));
+                                current = voice->envInitial
+                                    + (s32) (voice->envDelta * (voice->envDuration - voice->envTimeLeft));
                             } else {
                                 current = voice->envTarget;
                             }
@@ -149,7 +152,8 @@ void au_update_voices(AuGlobals* globals) {
                             voice->delta = au_voice_get_delta(voice->envDuration);
                             current = voice->envTarget;
                         }
-                        voice->volume = VOL_MULT_4(current, voice->clientVolume, voice->envRelativeStart, voice->envScale);
+                        voice->volume =
+                            VOL_MULT_4(current, voice->clientVolume, voice->envRelativeStart, voice->envScale);
                         voice->syncFlags |= AU_VOICE_SYNC_FLAG_PARAMS;
                     }
                 } else {
@@ -159,12 +163,14 @@ void au_update_voices(AuGlobals* globals) {
                         if (voice->envTimeLeft > AU_FRAME_USEC) {
                             voice->envTimeLeft -= AU_FRAME_USEC;
                             voice->envelopeFlags |= AU_VOICE_ENV_FLAG_HANDLED_VOL_CHANGE;
-                            current = voice->envInitial + (s32) (voice->envDelta * (voice->envDuration - voice->envTimeLeft));
+                            current =
+                                voice->envInitial + (s32) (voice->envDelta * (voice->envDuration - voice->envTimeLeft));
                         } else {
                             current = voice->envTarget;
                         }
                         voice->delta = AUDIO_SAMPLES;
-                        voice->volume = VOL_MULT_4(current, voice->clientVolume, voice->envRelativeStart, voice->envScale);
+                        voice->volume =
+                            VOL_MULT_4(current, voice->clientVolume, voice->envRelativeStart, voice->envScale);
                         voice->syncFlags |= AU_VOICE_SYNC_FLAG_PARAMS;
                     }
                 }
@@ -217,10 +223,10 @@ u8 au_voice_step(AuVoice* voice) {
     u8 arg;
 
     while (true) {
-        if ((s8)(op = *voice->cmdPtr++) >= 0) {
+        if ((s8) (op = *voice->cmdPtr++) >= 0) {
             break;
         }
-        switch ((u8)op) {
+        switch ((u8) op) {
             case ENV_CMD_SET_SCALE:
                 arg = *voice->cmdPtr++;
                 if (arg > ENV_VOL_MAX) {

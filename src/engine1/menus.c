@@ -54,8 +54,9 @@ b32 should_cancel_open_world_menu(void) {
     }
 
     if (partnerStatus->partnerActionState == PARTNER_ACTION_NONE) {
-        if (!(playerStatus->flags & PS_FLAG_NO_STATIC_COLLISION) &&
-            (actionState == ACTION_STATE_IDLE || actionState == ACTION_STATE_WALK || actionState == ACTION_STATE_RUN))
+        if (!(playerStatus->flags & PS_FLAG_NO_STATIC_COLLISION)
+            && (actionState == ACTION_STATE_IDLE || actionState == ACTION_STATE_WALK
+                || actionState == ACTION_STATE_RUN))
         {
             return true;
         }
@@ -80,32 +81,28 @@ b32 can_open_world_menu(s32 currentButtons, s32 pressedButtons) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
     s32 actionState = gPlayerStatus.actionState;
 
-    if (!(gPlayerStatus.animFlags & PA_FLAG_CHANGING_MAP)
-        && !(gPlayerStatus.flags & PS_FLAG_PAUSE_DISABLED)
+    if (!(gPlayerStatus.animFlags & PA_FLAG_CHANGING_MAP) && !(gPlayerStatus.flags & PS_FLAG_PAUSE_DISABLED)
         && !(currentButtons & (BUTTON_Z | BUTTON_R))
         && (pressedButtons & (BUTTON_START | BUTTON_C_LEFT | BUTTON_C_RIGHT))
         && !((gGameStatusPtr->mapShop != nullptr) && (gGameStatusPtr->mapShop->flags & SHOP_FLAG_SHOWING_ITEM_INFO))
-        && !(gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_MENUS)
-        && !is_picking_up_item()
-    ) {
+        && !(gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_MENUS) && !is_picking_up_item())
+    {
         if (gPlayerStatus.animFlags & PA_FLAG_8BIT_MARIO) {
             sfx_play_sound(SOUND_MENU_ERROR);
             return false;
         }
         if (partnerStatus->partnerActionState == PARTNER_ACTION_NONE) {
             if (!(gPlayerStatus.flags & PS_FLAG_NO_STATIC_COLLISION)) {
-                if (actionState == ACTION_STATE_IDLE ||
-                    actionState == ACTION_STATE_WALK ||
-                    actionState == ACTION_STATE_RUN
-                ) {
+                if (actionState == ACTION_STATE_IDLE || actionState == ACTION_STATE_WALK
+                    || actionState == ACTION_STATE_RUN)
+                {
                     return true;
                 }
             }
         } else if (partner_can_open_world_menus()) {
             if (partnerStatus->actingPartner == PARTNER_WATT) {
-                return actionState == ACTION_STATE_IDLE ||
-                        actionState == ACTION_STATE_WALK ||
-                        actionState == ACTION_STATE_RUN;
+                return actionState == ACTION_STATE_IDLE || actionState == ACTION_STATE_WALK
+                    || actionState == ACTION_STATE_RUN;
             } else if (partnerStatus->actingPartner == PARTNER_BOW) {
                 if (actionState == ACTION_STATE_RIDE) {
                     gPlayerStatus.prevAlpha = 0;
@@ -204,17 +201,15 @@ void check_input_open_menus(void) {
     playerData = &gPlayerData;
     popup = &WorldPopupMenu;
 
-    if (gGameStatusPtr->debugScripts != DEBUG_SCRIPTS_NONE
-        || (gGameStatusPtr->peachFlags & PEACH_FLAG_IS_PEACH)
-        || evt_get_variable(nullptr, GB_StoryProgress) == STORY_INTRO
-    ) {
+    if (gGameStatusPtr->debugScripts != DEBUG_SCRIPTS_NONE || (gGameStatusPtr->peachFlags & PEACH_FLAG_IS_PEACH)
+        || evt_get_variable(nullptr, GB_StoryProgress) == STORY_INTRO)
+    {
         return;
     }
 
-    if (partnerStatus->partnerActionState != PARTNER_ACTION_NONE &&
-        (partnerStatus->actingPartner == PARTNER_SUSHIE ||
-         partnerStatus->actingPartner == PARTNER_LAKILESTER ||
-         partnerStatus->actingPartner == PARTNER_BOW))
+    if (partnerStatus->partnerActionState != PARTNER_ACTION_NONE
+        && (partnerStatus->actingPartner == PARTNER_SUSHIE || partnerStatus->actingPartner == PARTNER_LAKILESTER
+            || partnerStatus->actingPartner == PARTNER_BOW))
     {
         currentButtons = partnerStatus->curButtons;
         pressedButtons = partnerStatus->pressedButtons;
@@ -241,7 +236,7 @@ void check_input_open_menus(void) {
                     WorldMenuType = WORLD_MENU_PAUSE;
                 }
                 SwappedWorldMenus = false;
-block_17:
+            block_17:
                 switch (WorldMenuType) {
                     case WORLD_MENU_CHANGE_PARTNER:
                         if (playerStatus->flags & PS_FLAG_NO_CHANGE_PARTNER) {
@@ -283,7 +278,9 @@ block_17:
             break;
         case WORLD_MENU_STATE_DELAY:
             flags = ~PS_FLAG_PAUSED;
-            if (!should_cancel_open_world_menu() || is_picking_up_item() || (OpenMenuDisableCount < playerStatus->inputDisabledCount) != 0) {
+            if (!should_cancel_open_world_menu() || is_picking_up_item()
+                || (OpenMenuDisableCount < playerStatus->inputDisabledCount) != 0)
+            {
                 playerStatus->flags &= flags;
                 enable_player_input();
                 partner_enable_input();
@@ -396,19 +393,17 @@ void check_input_status_bar(void) {
         }
 
         if (!is_status_bar_visible()) {
-            if (!(playerStatus->curButtons & (Z_TRIG | R_TRIG))
-                && (pressedButtons & BUTTON_C_UP)
-                && can_control_status_bar()
-            ) {
+            if (!(playerStatus->curButtons & (Z_TRIG | R_TRIG)) && (pressedButtons & BUTTON_C_UP)
+                && can_control_status_bar())
+            {
                 open_status_bar_slowly();
                 if (!is_picking_up_item()) {
                     sfx_play_sound(SOUND_LOWER_STATUS_BAR);
                 }
             }
-        } else if (!(playerStatus->curButtons & (Z_TRIG | R_TRIG))
-            && (pressedButtons & BUTTON_C_UP)
-            && can_control_status_bar()
-        ) {
+        } else if (!(playerStatus->curButtons & (Z_TRIG | R_TRIG)) && (pressedButtons & BUTTON_C_UP)
+                   && can_control_status_bar())
+        {
             close_status_bar();
             if (!is_picking_up_item()) {
                 sfx_play_sound(SOUND_RAISE_STATUS_BAR);

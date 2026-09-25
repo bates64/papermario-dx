@@ -126,7 +126,7 @@ void dust_render(EffectInstance* effect) {
 }
 
 void dust_appendGfx(void* effect) {
-    DustFXData* part = ((EffectInstance*)effect)->data.dust;
+    DustFXData* part = ((EffectInstance*) effect)->data.dust;
     s32 unk_00;
     Matrix4f sp18;
     Matrix4f sp58;
@@ -134,7 +134,7 @@ void dust_appendGfx(void* effect) {
     Mtx* matrix;
     s32 i;
 
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, part->unk_00 == 0 ? D_09000CC0_33FCC0 : D_09000D68_33FD68);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, part->unk_30, part->unk_34, part->unk_38, part->unk_18);
     gDPSetEnvColor(gMainGfxPos++, part->unk_3C, part->unk_40, part->unk_44, 0);
@@ -145,7 +145,7 @@ void dust_appendGfx(void* effect) {
 
     unk_00 = part->unk_00;
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         matrix = &gDisplayContext->matrixStack[gMatrixListPos++];
 
         guScaleF(sp18, part->unk_20, part->unk_1C, part->unk_20);
@@ -154,7 +154,9 @@ void dust_appendGfx(void* effect) {
         guMtxCatF(sp58, sp98, sp18);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPMatrix(gMainGfxPos++, matrix, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
 
         if (unk_00 < 2) {

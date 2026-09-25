@@ -46,7 +46,7 @@ API_CALLABLE(N(UpdateWhaleRiderPosition)) {
                 break;
             case WHALE_RIDER_KOLORADO:
                 script->functionTemp[1] = 40;
-               break;
+                break;
         }
     }
 
@@ -147,7 +147,7 @@ API_CALLABLE(N(ManageWhaleSpoutPrompt)) {
 }
 
 API_CALLABLE(N(AwaitSkipScenePrompt)) {
-    if(gGameStatusPtr->pressedButtons[0] & BUTTON_B) {
+    if (gGameStatusPtr->pressedButtons[0] & BUTTON_B) {
         return ApiStatus_DONE2;
     } else {
         return ApiStatus_BLOCK;
@@ -233,7 +233,7 @@ API_CALLABLE(N(UpdateGullYawInterp)) {
         lastYaw += 360.0f;
     }
 
-    evt_set_float_variable(script, LVar7, lastYaw + (f32)((newYaw - lastYaw) * 0.1));
+    evt_set_float_variable(script, LVar7, lastYaw + (f32) ((newYaw - lastYaw) * 0.1));
     return ApiStatus_DONE2;
 }
 

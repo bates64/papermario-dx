@@ -1,7 +1,8 @@
 #include "obk_01.h"
 
-EvtScript N(EVS_ExitDoors_mim_11_2) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(obk_01_ENTRY_0, "mim_11", mim_11_ENTRY_2,
-    COLLIDER_tt1, MODEL_door1_2, MODEL_door1_1, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_mim_11_2) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    obk_01_ENTRY_0, "mim_11", mim_11_ENTRY_2, COLLIDER_tt1, MODEL_door1_2, MODEL_door1_1, DOOR_SOUNDS_CREAKY
+);
 
 EvtScript N(EVS_ExitDoor_obk_02_0) = {
     IfLt(GB_StoryProgress, STORY_CH3_WEIGHED_DOWN_CHANDELIER)
@@ -82,11 +83,13 @@ EvtScript N(EVS_ExitDoor_obk_08_0) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_obk_09_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(obk_01_ENTRY_5, "obk_09", obk_09_ENTRY_0,
-    COLLIDER_tt6, MODEL_door6_1, MODEL_door6_2, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoor_obk_09_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    obk_01_ENTRY_5, "obk_09", obk_09_ENTRY_0, COLLIDER_tt6, MODEL_door6_1, MODEL_door6_2, DOOR_SOUNDS_CREAKY
+);
 
-EvtScript N(EVS_ExitDoor_obk_09_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(obk_01_ENTRY_6, "obk_09", obk_09_ENTRY_1,
-    COLLIDER_tt6_1, MODEL_door7_1, MODEL_door7_2, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoor_obk_09_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    obk_01_ENTRY_6, "obk_09", obk_09_ENTRY_1, COLLIDER_tt6_1, MODEL_door7_1, MODEL_door7_2, DOOR_SOUNDS_CREAKY
+);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_mim_11_2)), TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)

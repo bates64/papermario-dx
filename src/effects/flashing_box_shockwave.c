@@ -11,14 +11,7 @@ void flashing_box_shockwave_update(EffectInstance* effect);
 void flashing_box_shockwave_render(EffectInstance* effect);
 void flashing_box_shockwave_appendGfx(void* effect);
 
-EffectInstance* flashing_box_shockwave_main(
-    s32 type,
-    f32 posX,
-    f32 posY,
-    f32 posZ,
-    f32 sizeX,
-    f32 sizeY
-) {
+EffectInstance* flashing_box_shockwave_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 sizeX, f32 sizeY) {
     EffectBlueprint bp;
     EffectInstance* effect;
     ShockOverlayFXData* data;
@@ -132,7 +125,7 @@ void flashing_box_shockwave_render(EffectInstance* effect) {
 }
 
 void flashing_box_shockwave_appendGfx(void* effect) {
-    ShockOverlayFXData* data = ((EffectInstance*)effect)->data.flashingBoxShockwave;
+    ShockOverlayFXData* data = ((EffectInstance*) effect)->data.flashingBoxShockwave;
     s32 type = data->type;
     s32 time = data->lifetime;
     Matrix4f mtxTransform;
@@ -142,13 +135,15 @@ void flashing_box_shockwave_appendGfx(void* effect) {
     guRotateF(mtxCamRot, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(mtxTransform, data->pos.x, data->pos.y, data->pos.z);
     guMtxCatF(mtxCamRot, mtxTransform, mtxTransform);
     guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gDPSetPrimColor(gMainGfxPos++, 0, 0, data->primCol.r, data->primCol.g, data->primCol.b, data->unk_18);
     gDPSetEnvColor(gMainGfxPos++, data->envCol.r, data->envCol.g, data->envCol.b, 0);
 
@@ -156,14 +151,18 @@ void flashing_box_shockwave_appendGfx(void* effect) {
         guScaleF(mtxTransform, data->scaleX, data->scaleY, 15.0f / 14);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_09000600_3936A0);
         gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, time * 8, time * 8, time * 8 + 128, time * 8 + 128);
         gSPDisplayList(gMainGfxPos++, D_090008E8_393988);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }
 
-    if (type == FX_SHOCK_OVERLAY_LIGHTNING_WORLD || type == FX_SHOCK_OVERLAY_LIGHTNING_BATTLE || type == FX_SHOCK_OVERLAY_MEGA_SHOCK) {
+    if (type == FX_SHOCK_OVERLAY_LIGHTNING_WORLD || type == FX_SHOCK_OVERLAY_LIGHTNING_BATTLE
+        || type == FX_SHOCK_OVERLAY_MEGA_SHOCK)
+    {
         if (type == FX_SHOCK_OVERLAY_LIGHTNING_WORLD) {
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 0, data->unk_14);
         }
@@ -173,7 +172,9 @@ void flashing_box_shockwave_appendGfx(void* effect) {
         guMtxCatF(mtxUnkScale, mtxTransform, mtxTransform);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_09000950_3939F0);
         gSPDisplayList(gMainGfxPos++, D_09000FF8_394098);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);

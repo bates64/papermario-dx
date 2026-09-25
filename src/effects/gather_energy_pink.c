@@ -35,7 +35,7 @@ void gather_energy_pink_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 scale, 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     data = effect->data.gatherEnergyPink = general_heap_malloc(sizeof(*data));
-    ASSERT (data != nullptr);
+    ASSERT(data != nullptr);
 
     data->unk_00 = type;
     data->unk_28 = duration;
@@ -116,7 +116,10 @@ void gather_energy_pink_update(EffectInstance* effect) {
         part->unk_1C += (part->unk_20 + sin_deg(unk_28 * 10) * 0.1 * part->unk_20 - part->unk_1C) * 0.3;
     }
 
-    transform_point(gCameras[gCurrentCameraID].mtxPerspective, part->posA.x, part->posA.y, part->posA.z, 1.0f, &sp28, &sp2C, &sp30, &sp34);
+    transform_point(
+        gCameras[gCurrentCameraID].mtxPerspective, part->posA.x, part->posA.y, part->posA.z, 1.0f, &sp28, &sp2C, &sp30,
+        &sp34
+    );
 
     sp34 = 1.0f / sp34;
     sp28 *= sp34;
@@ -157,7 +160,7 @@ void gather_energy_pink_render(EffectInstance* effect) {
 }
 
 void gather_energy_pink_appendGfx(void* effect) {
-    GatherEnergyPinkFXData* part = ((EffectInstance*)effect)->data.gatherEnergyPink;
+    GatherEnergyPinkFXData* part = ((EffectInstance*) effect)->data.gatherEnergyPink;
     s32 unk_00 = part->unk_00;
     Gfx* dlist = D_E00269F8[unk_00];
     Gfx* dlist2 = D_E00269F0[unk_00];
@@ -170,17 +173,22 @@ void gather_energy_pink_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, dlist);
 
     guTranslateF(sp20, part->posB.x, part->posB.y, part->posB.z);
     guScaleF(sp60, part->unk_1C, part->unk_1C, 1.0f);
     guMtxCatF(sp60, sp20, sp20);
-    guPerspectiveF(sp60, &perspNorm, unk_00 == 1 ? 130.0f : 30.0f, (f32) camera->viewportW / camera->viewportH, 4.0f, 16384.0f, 1.0f);
+    guPerspectiveF(
+        sp60, &perspNorm, unk_00 == 1 ? 130.0f : 30.0f, (f32) camera->viewportW / camera->viewportH, 4.0f, 16384.0f,
+        1.0f
+    );
     guMtxCatF(sp60, sp20, sp20);
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+    );
 
     switch (unk_00) {
         case 1:
@@ -193,12 +201,14 @@ void gather_energy_pink_appendGfx(void* effect) {
 
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     idx = part->unk_2C * 3;
     alpha = part->unk_24;
 
-    for (i = 0; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 0; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         s32 tempX;
         s32 tempY;
         s32 tempX2;
@@ -221,6 +231,8 @@ void gather_energy_pink_appendGfx(void* effect) {
     }
 
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCameraID], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCameraID], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+    );
     gDPPipeSync(gMainGfxPos++);
 }

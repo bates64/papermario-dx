@@ -63,8 +63,9 @@ API_CALLABLE(N(StarRodPowerUpEffect)) {
         if (effectState->delay > 0) {
             effectState->delay--;
             if (effectState->delay <= 0) {
-                effectState->effect = fx_star_outline(0, effectState->pos.x, effectState->pos.y, effectState->pos.z,
-                                                        effectState->unk_10, -1);
+                effectState->effect = fx_star_outline(
+                    0, effectState->pos.x, effectState->pos.y, effectState->pos.z, effectState->unk_10, -1
+                );
                 effectState->effect->data.starOutline->unk_3C.x = effectState->unk_24;
                 effectState->effect->data.starOutline->unk_3C.y = effectState->unk_28;
                 effectState->effect->data.starOutline->unk_3C.z = effectState->unk_2C;

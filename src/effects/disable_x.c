@@ -151,7 +151,9 @@ void disable_x_update(EffectInstance* effect) {
                     data[1].unk_28 = 0;
                     data->unk_38++;
                     if (data->pos.y > -500.0f) {
-                        sfx_play_sound_at_position(SOUND_INFLICT_KO, SOUND_SPACE_DEFAULT, data->pos.x, data->pos.y, data->pos.z);
+                        sfx_play_sound_at_position(
+                            SOUND_INFLICT_KO, SOUND_SPACE_DEFAULT, data->pos.x, data->pos.y, data->pos.z
+                        );
                     }
                 } else if (unk_3C < unk_38) {
                     load_effect(EFFECT_DISABLE_X);
@@ -220,8 +222,7 @@ void func_E0082580(DisableXFXData* data) {
     guRotateF(sp58, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
     guMtxCatF(sp58, sp18, sp18);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
 }
 
 void func_E00826C4(DisableXFXData* data) {
@@ -236,15 +237,15 @@ void func_E00826C4(DisableXFXData* data) {
     guMtxCatF(sp58, sp18, sp18);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, data->alpha);
 
     if (data->alpha == 255) {
-        gDPSetRenderMode(gMainGfxPos++, AA_EN | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA |
-                         GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM),
-                         AA_EN | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA |
-                         GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM));
+        gDPSetRenderMode(
+            gMainGfxPos++,
+            AA_EN | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM),
+            AA_EN | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM)
+        );
         gDPSetCombineMode(gMainGfxPos++, G_CC_MODULATEIDECALA, G_CC_MODULATEIDECALA);
     } else {
         gDPSetRenderMode(gMainGfxPos++, G_RM_CLD_SURF, G_RM_CLD_SURF2);

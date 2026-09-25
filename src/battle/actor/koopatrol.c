@@ -1349,4 +1349,3 @@ EvtScript N(EVS_TakeTurn) = {
     Return
     End
 };
-

@@ -9,14 +9,7 @@ void energy_shockwave_update(EffectInstance* effect);
 void energy_shockwave_render(EffectInstance* effect);
 void energy_shockwave_appendGfx(void* effect);
 
-void energy_shockwave_main(
-    s32 arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    s32 arg5
-) {
+void energy_shockwave_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
     EffectBlueprint bp;
     EffectInstance* effect;
     EnergyShockwaveFXData* data;
@@ -138,7 +131,7 @@ void energy_shockwave_render(EffectInstance* effect) {
 }
 
 void energy_shockwave_appendGfx(void* effect) {
-    EnergyShockwaveFXData* data = ((EffectInstance*)effect)->data.energyShockwave;
+    EnergyShockwaveFXData* data = ((EffectInstance*) effect)->data.energyShockwave;
     Matrix4f sp10;
     Matrix4f sp50;
     s32 uls;
@@ -147,7 +140,7 @@ void energy_shockwave_appendGfx(void* effect) {
     s32 ult2;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_09000E60_376370);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 179, 30, data->unk_24);
     gDPSetEnvColor(gMainGfxPos++, data->unk_50, data->unk_51, data->unk_52, 128);

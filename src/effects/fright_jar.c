@@ -16,14 +16,7 @@ void fright_jar_update(EffectInstance* effect);
 void fright_jar_render(EffectInstance* effect);
 void fright_jar_appendGfx(void* effect);
 
-EffectInstance* fright_jar_main(
-    s32 arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    s32 arg5
-) {
+EffectInstance* fright_jar_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
     EffectBlueprint bp;
     EffectInstance* effect;
     FrightJarFXData* data;
@@ -113,7 +106,7 @@ void func_E00C2214(void) {
 }
 
 void fright_jar_appendGfx(void* effect) {
-    FrightJarFXData* data = ((EffectInstance*)effect)->data.frightJar;
+    FrightJarFXData* data = ((EffectInstance*) effect)->data.frightJar;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 unk_14 = data->unk_14;
     s32 unk_24 = data->unk_24;
@@ -124,14 +117,16 @@ void fright_jar_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp10, data->unk_04, data->unk_08, data->unk_0C);
     guScaleF(sp50, -data->unk_28, data->unk_28, data->unk_28);
     guMtxCatF(sp50, sp10, sp10);
     guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gSPDisplayList(gMainGfxPos++, D_09008BE0_3CA780);
 
@@ -165,19 +160,31 @@ void fright_jar_appendGfx(void* effect) {
 
         gDPSetPrimColor(gMainGfxPos++, 0, 0, data->unk_18, data->unk_1C, data->unk_20, temp3);
         gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 64, &D_09002020_3C3BC0);
-        gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 8, 0, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 7, 14, G_TX_NOMIRROR | G_TX_CLAMP, 7, 14);
+        gDPSetTile(
+            gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 8, 0, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 7, 14,
+            G_TX_NOMIRROR | G_TX_CLAMP, 7, 14
+        );
         gDPLoadSync(gMainGfxPos++);
         gDPLoadTile(gMainGfxPos++, G_TX_LOADTILE, 0, temp1 * 4, 254, (temp1 + 15) * 4);
         gDPPipeSync(gMainGfxPos++);
-        gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 8, 0, G_TX_RENDERTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 7, 14, G_TX_NOMIRROR | G_TX_CLAMP, 7, 14);
+        gDPSetTile(
+            gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 8, 0, G_TX_RENDERTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 7, 14,
+            G_TX_NOMIRROR | G_TX_CLAMP, 7, 14
+        );
         gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, 0, temp1 * 4, 508, (temp1 + 15) * 4);
         gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, 0, temp2 * 128.0f * 4.0f, 2000, 2000);
         gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 64, &D_09000000_3C1BA0);
-        gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 8, 0x80, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 7, 14, G_TX_NOMIRROR | G_TX_CLAMP, 7, 14);
+        gDPSetTile(
+            gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 8, 0x80, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 7, 14,
+            G_TX_NOMIRROR | G_TX_CLAMP, 7, 14
+        );
         gDPLoadSync(gMainGfxPos++);
         gDPLoadTile(gMainGfxPos++, G_TX_LOADTILE, 0, temp1 * 4, 254, (temp1 + 15) * 4);
         gDPPipeSync(gMainGfxPos++);
-        gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 8, 0x80, 1, 1, G_TX_NOMIRROR | G_TX_CLAMP, 7, 14, G_TX_NOMIRROR | G_TX_CLAMP, 7, 14);
+        gDPSetTile(
+            gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 8, 0x80, 1, 1, G_TX_NOMIRROR | G_TX_CLAMP, 7, 14,
+            G_TX_NOMIRROR | G_TX_CLAMP, 7, 14
+        );
         gDPSetTileSize(gMainGfxPos++, 1, 0, temp1 * 4, 508, (temp1 + 15) * 4);
         gDPSetTileSize(gMainGfxPos++, 1, 0, temp2 * 128.0f * 4.0f, 2000, 2000);
 

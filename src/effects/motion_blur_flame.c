@@ -126,7 +126,7 @@ void motion_blur_flame_render(EffectInstance* effect) {
 }
 
 void motion_blur_flame_appendGfx(void* effect) {
-    MotionBlurFlameFXData* data = ((EffectInstance*)effect)->data.motionBlurFlame;
+    MotionBlurFlameFXData* data = ((EffectInstance*) effect)->data.motionBlurFlame;
     s32 type = data->type;
     s32 alpha = data->alpha;
 
@@ -157,7 +157,7 @@ void motion_blur_flame_appendGfx(void* effect) {
     s32 copyPass;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_E00A29D0[type]);
 
     for (i = 0; i < MOTION_BLUR_FLAME_SAMPLES; i++) {
@@ -180,10 +180,8 @@ void motion_blur_flame_appendGfx(void* effect) {
             primG = (data->color.g * sampleAlpha) >> 9;
             primB = (data->color.b * sampleAlpha) >> 9;
 
-            gDPSetPrimColor(gMainGfxPos++, 0, 0,
-                (primR * sampleAlpha) >> 8,
-                (primG * sampleAlpha) >> 8,
-                (primB * sampleAlpha) >> 8,
+            gDPSetPrimColor(
+                gMainGfxPos++, 0, 0, (primR * sampleAlpha) >> 8, (primG * sampleAlpha) >> 8, (primB * sampleAlpha) >> 8,
                 255
             );
 
@@ -233,35 +231,25 @@ void motion_blur_flame_appendGfx(void* effect) {
                     break;
                 }
 
-                gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE,
-                    (s32) (xMin * preset->texScaleX) * 4,
+                gDPSetTileSize(
+                    gMainGfxPos++, G_TX_RENDERTILE, (s32) (xMin * preset->texScaleX) * 4,
                     (s32) (preset->texHeight * 20 - stripIdx * preset->stripHeight * preset->texScaleY) * 4,
                     (s32) (xMin * preset->texScaleX + preset->texWidth) * 4,
-                    (s32) (preset->texHeight * 21 - stripIdx * preset->stripHeight * preset->texScaleY) * 4);
+                    (s32) (preset->texHeight * 21 - stripIdx * preset->stripHeight * preset->texScaleY) * 4
+                );
 
                 // accumulate over several passes to intensify glow
                 for (copyPass = 0; copyPass < 2; copyPass++) {
                     // load from the frame buffer
-                    gDPLoadMultiTile(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(nuGfxCfb_ptr + uly * SCREEN_WIDTH),
-                        0x0100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, SCREEN_HEIGHT,
-                        xStart,
-                        0,
-                        xMax - 1,
-                        stripHeight - 1,
-                        0,
+                    gDPLoadMultiTile(
+                        gMainGfxPos++, VIRTUAL_TO_PHYSICAL(nuGfxCfb_ptr + uly * SCREEN_WIDTH), 0x0100, 1, G_IM_FMT_RGBA,
+                        G_IM_SIZ_16b, SCREEN_WIDTH, SCREEN_HEIGHT, xStart, 0, xMax - 1, stripHeight - 1, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 9, 8, G_TX_NOLOD, G_TX_NOLOD
                     );
                     // render the strip
-                    gSPTextureRectangle(gMainGfxPos++,
-                        (xStart) * 4,
-                        uly * 4,
-                        xMax * 4,
-                        (uly + stripHeight) * 4,
-                        G_TX_RENDERTILE,
-                        (xStart % 0x200) * 32,
-                        0,
-                        0x0400,
-                        0x0400
+                    gSPTextureRectangle(
+                        gMainGfxPos++, (xStart) * 4, uly * 4, xMax * 4, (uly + stripHeight) * 4, G_TX_RENDERTILE,
+                        (xStart % 0x200) * 32, 0, 0x0400, 0x0400
                     );
                     gDPPipeSync(gMainGfxPos++);
                 }

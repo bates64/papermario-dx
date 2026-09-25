@@ -9,8 +9,9 @@ API_CALLABLE(N(SetLightSourcePos)) {
     s32 y = evt_get_variable(script, *args++);
     s32 z = evt_get_variable(script, *args++);
 
-    sprite_shading_set_light_source(0, LIGHT_SOURCE_ENABLED | LIGHT_SOURCE_LINEAR_FALLOFF,
-        x, y, z, 255, 255, 255, 1.0f / 10000, 0);
+    sprite_shading_set_light_source(
+        0, LIGHT_SOURCE_ENABLED | LIGHT_SOURCE_LINEAR_FALLOFF, x, y, z, 255, 255, 255, 1.0f / 10000, 0
+    );
     return ApiStatus_DONE2;
 }
 

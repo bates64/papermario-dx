@@ -19,10 +19,10 @@ Gfx N(setup_gfx_candle_lights)[] = {
     gsSPEndDisplayList(),
 };
 
-EvtScript N(EVS_ExitDoors_kkj_12_1) = EVT_EXIT_DOUBLE_DOOR(kkj_13_ENTRY_0, "kkj_12", kkj_12_ENTRY_1,
-    COLLIDER_deilit1, MODEL_door1, MODEL_door2);
-EvtScript N(EVS_ExitDoors_kkj_22_0) = EVT_EXIT_DOUBLE_DOOR(kkj_13_ENTRY_1, "kkj_22", kkj_22_ENTRY_0,
-    COLLIDER_deilit2, MODEL_door4, MODEL_door3);
+EvtScript N(EVS_ExitDoors_kkj_12_1) =
+    EVT_EXIT_DOUBLE_DOOR(kkj_13_ENTRY_0, "kkj_12", kkj_12_ENTRY_1, COLLIDER_deilit1, MODEL_door1, MODEL_door2);
+EvtScript N(EVS_ExitDoors_kkj_22_0) =
+    EVT_EXIT_DOUBLE_DOOR(kkj_13_ENTRY_1, "kkj_22", kkj_22_ENTRY_0, COLLIDER_deilit2, MODEL_door4, MODEL_door3);
 
 EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)

@@ -33,9 +33,13 @@ HitID npc_raycast_down(s32 ignoreFlags, f32* startX, f32* startY, f32* startZ, f
     sx = *startX;
     sy = *startY;
     sz = *startZ;
-    colliderID = test_ray_colliders(ignoreFlags, sx, sy, sz, 0.0f, -1.0f, 0.0f, &cHitX, &cHitY, &cHitZ, &cHitDepth, &cHitNx, &cHitNy, &cHitNz);
-    if (!(ignoreFlags & COLLISION_IGNORE_ENTITIES))  {
-        entityID = test_ray_entities(*startX, *startY, *startZ, 0.0f, -1.0f, 0.0f, &eHitX, &eHitY, &eHitZ, &eHitDepth, &eHitNx, &eHitNy, &eHitNz);
+    colliderID = test_ray_colliders(
+        ignoreFlags, sx, sy, sz, 0.0f, -1.0f, 0.0f, &cHitX, &cHitY, &cHitZ, &cHitDepth, &cHitNx, &cHitNy, &cHitNz
+    );
+    if (!(ignoreFlags & COLLISION_IGNORE_ENTITIES)) {
+        entityID = test_ray_entities(
+            *startX, *startY, *startZ, 0.0f, -1.0f, 0.0f, &eHitX, &eHitY, &eHitZ, &eHitDepth, &eHitNx, &eHitNy, &eHitNz
+        );
         if (entityID > NO_COLLIDER) {
             colliderID = entityID | COLLISION_WITH_ENTITY_BIT;
             if (eHitDepth < cHitDepth) {
@@ -86,7 +90,7 @@ b32 npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f3
     s32 hasCollision;
     f32 cosTheta;
     s32 colliderID;
-    f32 deltaX,deltaZ;
+    f32 deltaX, deltaZ;
     f32 theta, sinTheta, minDepth, hitYAhead, hitYBehindRight;
 
     hasCollision = false;
@@ -196,7 +200,7 @@ b32 npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32
     s32 hasCollision;
     f32 cosTheta;
     s32 colliderID;
-    f32 deltaX,deltaZ;
+    f32 deltaX, deltaZ;
     f32 yaw;
     f32 theta, sinTheta, minDepth, hitYAhead, hitYBehind, radius;
 
@@ -299,10 +303,14 @@ b32 npc_raycast_up(s32 ignoreFlags, f32* startX, f32* startY, f32* startZ, f32* 
     sx = *startX;
     sy = *startY;
     sz = *startZ;
-    ret = test_ray_colliders(ignoreFlags, sx, sy, sz, 0.0f, 1.0f, 0.0f, &cHitX, &cHitY, &cHitZ, &cHitDepth, &cHitNx, &cHitNy, &cHitNz);
+    ret = test_ray_colliders(
+        ignoreFlags, sx, sy, sz, 0.0f, 1.0f, 0.0f, &cHitX, &cHitY, &cHitZ, &cHitDepth, &cHitNx, &cHitNy, &cHitNz
+    );
     colliderID = ret;
-    if (!(ignoreFlags & COLLISION_IGNORE_ENTITIES))  {
-        entityID = test_ray_entities(sx, sy, sz, 0.0f, 1.0f, 0.0f, &eHitX, &eHitY, &eHitZ, &eHitDepth, &eHitNx, &eHitNy, &eHitNz);
+    if (!(ignoreFlags & COLLISION_IGNORE_ENTITIES)) {
+        entityID = test_ray_entities(
+            sx, sy, sz, 0.0f, 1.0f, 0.0f, &eHitX, &eHitY, &eHitZ, &eHitDepth, &eHitNx, &eHitNy, &eHitNz
+        );
         ret = entityID | COLLISION_WITH_ENTITY_BIT;
         if (entityID > NO_COLLIDER) {
             cHitDepth = eHitDepth;
@@ -348,7 +356,9 @@ HitID npc_raycast_up_corner(s32 ignoreFlags, f32* x, f32* y, f32* z, f32* length
     sy2 = sy = *y;
     sz2 = sz = *z;
     hitDepth = *length;
-    colliderID = test_ray_colliders(ignoreFlags, sx, sy, sz, 0.0f, 1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz);
+    colliderID = test_ray_colliders(
+        ignoreFlags, sx, sy, sz, 0.0f, 1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz
+    );
     if (colliderID > NO_COLLIDER && *length > hitDepth) {
         *length = hitDepth;
         ret = colliderID;
@@ -381,7 +391,7 @@ HitID npc_raycast_up_corners(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f
     f32 theta;
     f32 deltaZ;
     f32 deltaX;
-    f32 x,y,z;
+    f32 x, y, z;
     s32 ret;
     s32 hitID;
 
@@ -440,26 +450,31 @@ HitID npc_raycast_up_corners(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f
     return ret;
 }
 
-HitID npc_raycast_general(s32 flags, f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX,
-                        f32* hitY, f32* hitZ, f32* outDepth, f32* hitNx, f32* hitNy, f32* hitNz) {
+HitID npc_raycast_general(
+    s32 flags, f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX, f32* hitY, f32* hitZ,
+    f32* outDepth, f32* hitNx, f32* hitNy, f32* hitNz
+) {
     s32 entityID;
     HitID ret = NO_COLLIDER;
 
     if (flags & COLLISION_ONLY_ENTITIES) {
-        entityID = test_ray_entities(startX, startY, startZ, dirX, dirY, dirZ,
-                                      hitX, hitY, hitZ, outDepth, hitNx, hitNy, hitNz);
+        entityID = test_ray_entities(
+            startX, startY, startZ, dirX, dirY, dirZ, hitX, hitY, hitZ, outDepth, hitNx, hitNy, hitNz
+        );
         if (entityID > NO_COLLIDER) {
             ret = entityID | COLLISION_WITH_ENTITY_BIT;
         }
     } else {
-        ret = test_ray_colliders(flags, startX, startY, startZ, dirX, dirY, dirZ,
-                                  hitX, hitY, hitZ, outDepth, hitNx, hitNy, hitNz);
+        ret = test_ray_colliders(
+            flags, startX, startY, startZ, dirX, dirY, dirZ, hitX, hitY, hitZ, outDepth, hitNx, hitNy, hitNz
+        );
         if (flags & COLLISION_IGNORE_ENTITIES) {
             return ret;
         }
 
-        entityID = test_ray_entities(startX, startY, startZ, dirX, dirY, dirZ,
-                                      hitX, hitY, hitZ, outDepth, hitNx, hitNy, hitNz);
+        entityID = test_ray_entities(
+            startX, startY, startZ, dirX, dirY, dirZ, hitX, hitY, hitZ, outDepth, hitNx, hitNy, hitNz
+        );
         if (entityID > NO_COLLIDER) {
             ret = entityID | COLLISION_WITH_ENTITY_BIT;
         }
@@ -497,9 +512,10 @@ HitID npc_test_move_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 l
     outCosTheta = inverseOutCosTheta;
     hitDepth = temp_f22;
     aZ = length * inverseOutCosTheta;
-    raycastHitID = npc_raycast_general(ignoreFlags, *x - (radius * outSinTheta * 0.5f), *y,
-                                        *z - (radius * inverseOutCosTheta * 0.5f), outSinTheta,
-                                        0.0f, inverseOutCosTheta, &hitX, &hitY, &hitZ, &hitDepth, &bX, &hitNy, &bZ);
+    raycastHitID = npc_raycast_general(
+        ignoreFlags, *x - (radius * outSinTheta * 0.5f), *y, *z - (radius * inverseOutCosTheta * 0.5f), outSinTheta,
+        0.0f, inverseOutCosTheta, &hitX, &hitY, &hitZ, &hitDepth, &bX, &hitNy, &bZ
+    );
     phi_s5 = false;
 
     if (raycastHitID > NO_COLLIDER && hitDepth <= temp_f22) {
@@ -545,8 +561,10 @@ s32 npc_test_move_without_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 
     temp1 = length * dirY;
     temp2 = length * cosTheta;
 
-    hitID = npc_raycast_general(ignoreFlags, *x - (radius * dirY * 0.5f), *y, *z - (radius * cosTheta * 0.5f), dirY,
-                                0.0f, cosTheta, &hitX, &hitY, &hitZ, &depth, &hitNx, &hitNy, &hitNz);
+    hitID = npc_raycast_general(
+        ignoreFlags, *x - (radius * dirY * 0.5f), *y, *z - (radius * cosTheta * 0.5f), dirY, 0.0f, cosTheta, &hitX,
+        &hitY, &hitZ, &depth, &hitNx, &hitNy, &hitNz
+    );
 
     if (hitID > NO_COLLIDER && depth <= originalDepth) {
         f32 depthDiff = depth - originalDepth;
@@ -563,8 +581,9 @@ s32 npc_test_move_without_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 
     return ret;
 }
 
-b32 npc_test_move_taller_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height,
-                                       f32 radius) {
+b32 npc_test_move_taller_with_slipping(
+    s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height, f32 radius
+) {
     f32 xTemp = *x;
     f32 yTemp = *y + height - 1.0f;
     f32 zTemp = *z;
@@ -575,7 +594,8 @@ b32 npc_test_move_taller_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, 
         xTemp = *x;
         yTemp = *y + 10.01f;
         zTemp = *z;
-        ret = npc_test_move_with_slipping(ignoreFlags, &xTemp, &yTemp, &zTemp, fabsf(length), yaw, radius) > NO_COLLIDER;
+        ret =
+            npc_test_move_with_slipping(ignoreFlags, &xTemp, &yTemp, &zTemp, fabsf(length), yaw, radius) > NO_COLLIDER;
         *x = xTemp;
         *z = zTemp;
     } else {
@@ -586,8 +606,9 @@ b32 npc_test_move_taller_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, 
     return ret;
 }
 
-b32 npc_test_move_simple_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height,
-                                       f32 radius) {
+b32 npc_test_move_simple_with_slipping(
+    s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height, f32 radius
+) {
     f32 tempX = *x;
     f32 tempY = *y + 10.01f;
     f32 tempZ = *z;
@@ -599,8 +620,9 @@ b32 npc_test_move_simple_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, 
     return hitID > NO_COLLIDER;
 }
 
-b32 npc_test_move_simple_without_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height,
-                                          f32 radius) {
+b32 npc_test_move_simple_without_slipping(
+    s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height, f32 radius
+) {
     f32 tempX = *x;
     f32 tempY = *y + 10.01f;
     f32 tempZ = *z;
@@ -615,8 +637,9 @@ b32 npc_test_move_simple_without_slipping(s32 ignoreFlags, f32* x, f32* y, f32* 
 // traces lateral collision at position +10, +15, +20, and one unit below height
 // returns number of traces that hit
 // used for partner NPCs
-s32 npc_test_move_complex_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height,
-                                        f32 radius) {
+s32 npc_test_move_complex_with_slipping(
+    s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height, f32 radius
+) {
     f32 startX;
     f32 startY;
     f32 startZ;

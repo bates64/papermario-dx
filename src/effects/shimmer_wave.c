@@ -30,16 +30,7 @@ void shimmer_wave_update(EffectInstance* effect);
 void shimmer_wave_render(EffectInstance* effect);
 void shimmer_wave_appendGfx(void* effect);
 
-EffectInstance* shimmer_wave_main(
-    s32 arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    f32 arg5,
-    s32 arg6,
-    s32 arg7
-) {
+EffectInstance* shimmer_wave_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s32 arg6, s32 arg7) {
     EffectBlueprint bp;
     EffectInstance* effect;
     ShimmerWaveFXData* part;
@@ -184,7 +175,7 @@ void shimmer_wave_render(EffectInstance* effect) {
 }
 
 void shimmer_wave_appendGfx(void* effect) {
-    ShimmerWaveFXData* part = ((EffectInstance*)effect)->data.shimmerWave;
+    ShimmerWaveFXData* part = ((EffectInstance*) effect)->data.shimmerWave;
     s32 unk_50 = part->unk_50;
     s32 unk_54 = part->unk_54;
     s32 unk_58 = part->unk_58;
@@ -195,14 +186,16 @@ void shimmer_wave_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp20, part->unk_04, part->unk_08, part->unk_0C);
     guScaleF(sp60, part->unk_60, part->unk_60, part->unk_60);
     guMtxCatF(sp60, sp20, sp20);
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gDPSetEnvColor(gMainGfxPos++, part->unk_40, part->unk_44, part->unk_48, part->unk_5C);
     gSPDisplayList(gMainGfxPos++, D_09000F20_338EE0);
 
@@ -210,12 +203,16 @@ void shimmer_wave_appendGfx(void* effect) {
     gMainGfxPos++;
 
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         if (part->unk_30 >= 0) {
-            guPositionF(sp20, 0.0f, 0.0f, part->unk_34, part->unk_60 * temp_4C, part->unk_04, part->unk_08, part->unk_0C);
+            guPositionF(
+                sp20, 0.0f, 0.0f, part->unk_34, part->unk_60 * temp_4C, part->unk_04, part->unk_08, part->unk_0C
+            );
             guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gDPSetPrimColor(gMainGfxPos++, 0, 0, unk_50, unk_54, unk_58, part->unk_4C * temp_4C);
             gSPDisplayList(gMainGfxPos++, D_E0074B60[i & 7]);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);

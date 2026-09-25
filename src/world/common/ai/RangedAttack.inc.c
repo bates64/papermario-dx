@@ -68,7 +68,7 @@ s32 N(RangedAttack_GetUsableMissileID)(Evt* script) {
     Bytecode* args = script->ptrReadPos;
     Camera* camera = &gCameras[gCurrentCamID];
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args++);
     f32 facingAngle;
     f32 angleToPlayer;
     f32 deltaAngle;
@@ -85,7 +85,7 @@ s32 N(RangedAttack_GetUsableMissileID)(Evt* script) {
         angleToPlayer = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
         deltaAngle = get_clamped_angle_diff(facingAngle, angleToPlayer);
         if (fabsf(deltaAngle) > 75.0) {
-           return -1;
+            return -1;
         }
 
         // is player close enough vertically?
@@ -128,10 +128,9 @@ void N(RangedAttack_TryTakeShot)(Evt* script, f32 radius, f32 offset, EnemyDetec
     } else {
         s32 npcID = N(RangedAttack_GetUsableMissileID)(script);
 
-        if (npcID >= 0
-            && get_enemy(npcID)->varTable[AI_VAR_MISSILE_STATUS] == MISSILE_STATUS_IDLE
-            && npc->turnAroundYawAdjustment == 0
-        ) {
+        if (npcID >= 0 && get_enemy(npcID)->varTable[AI_VAR_MISSILE_STATUS] == MISSILE_STATUS_IDLE
+            && npc->turnAroundYawAdjustment == 0)
+        {
             npc->curAnim = enemy->animList[AI_ANIM_RANGED_DRAW];
             npc->duration = enemy->varTable[AI_VAR_RANGED_PRE_TIME];
             script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_FIRE;
@@ -218,7 +217,7 @@ API_CALLABLE(N(MissileAI_Main)) {
         return ApiStatus_BLOCK;
     }
 
-    settings = (MobileAISettings*)evt_get_variable(script, *args++);
+    settings = (MobileAISettings*) evt_get_variable(script, *args++);
     npc = get_npc_unsafe(missile->npcID);
 
     if (missile->varTable[AI_VAR_MISSILE_FLAGS] & AI_MISSILE_FLAG_CENTERED) {
@@ -256,7 +255,9 @@ API_CALLABLE(N(MissileAI_Main)) {
             npc->pos.x = parentNpc->pos.x;
             npc->pos.y = parentNpc->pos.y + missile->varTable[AI_VAR_MISSILE_SPAWN_Y];
             npc->pos.z = parentNpc->pos.z;
-            add_vec2D_polar(&npc->pos.x, &npc->pos.z, missile->varTable[AI_VAR_MISSILE_SPAWN_R], 270.0f - parentNpc->renderYaw);
+            add_vec2D_polar(
+                &npc->pos.x, &npc->pos.z, missile->varTable[AI_VAR_MISSILE_SPAWN_R], 270.0f - parentNpc->renderYaw
+            );
             missile->firstStrikeActive = true;
             missile->attackOriginPos.x = npc->pos.x;
             missile->attackOriginPos.y = npc->pos.y;
@@ -281,9 +282,10 @@ API_CALLABLE(N(MissileAI_Main)) {
             x = npc->pos.x;
             y = npc->pos.y + (npc->collisionHeight * 0.5);
             z = npc->pos.z;
-            if (npc_test_move_taller_with_slipping(0, &x, &y, &z,
-                npc->moveSpeed, npc->yaw, npc->collisionDiameter, npc->collisionHeight)
-            ) {
+            if (npc_test_move_taller_with_slipping(
+                    0, &x, &y, &z, npc->moveSpeed, npc->yaw, npc->collisionDiameter, npc->collisionHeight
+                ))
+            {
                 stopReason = MISSILE_STOP_HIT_WALL;
             }
 
@@ -293,9 +295,8 @@ API_CALLABLE(N(MissileAI_Main)) {
             z = npc->pos.z;
             hitDepth = 1000.0f;
             if ((npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &hitDepth))
-                && (hitDepth < fabsf(npc->jumpVel))
-                && (fabsf(y - npc->moveToPos.y) < 20.0)
-            ) {
+                && (hitDepth < fabsf(npc->jumpVel)) && (fabsf(y - npc->moveToPos.y) < 20.0))
+            {
                 npc->pos.y = y;
                 npc_move_heading(npc, npc->moveSpeed, npc->yaw);
                 stopReason = MISSILE_STOP_HIT_GROUND;
@@ -393,9 +394,10 @@ API_CALLABLE(N(MissileAI_Reflect)) {
             x = npc->pos.x;
             y = npc->pos.y;
             z = npc->pos.z;
-            if (npc_test_move_simple_with_slipping(0, &x, &y, &z,
-                npc->moveSpeed, npc->yaw, npc->collisionDiameter, npc->collisionHeight)
-            ) {
+            if (npc_test_move_simple_with_slipping(
+                    0, &x, &y, &z, npc->moveSpeed, npc->yaw, npc->collisionDiameter, npc->collisionHeight
+                ))
+            {
                 stopReason = REFLECT_STOP_HIT_WALL;
             } else {
                 npc_move_heading(npc, npc->moveSpeed, npc->yaw);
@@ -408,8 +410,8 @@ API_CALLABLE(N(MissileAI_Reflect)) {
                 z = npc->pos.z;
                 hitDepth = fabsf(npc->jumpVel) + 16.0;
                 if (npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &hitDepth)
-                    && (hitDepth <= (fabsf(npc->jumpVel) + 13.0))
-                ) {
+                    && (hitDepth <= (fabsf(npc->jumpVel) + 13.0)))
+                {
                     hitGround = true;
                 }
             }

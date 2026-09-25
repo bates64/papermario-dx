@@ -177,7 +177,7 @@ void cold_breath_render(EffectInstance* effect) {
 }
 
 void cold_breath_appendGfx(void* effect) {
-    ColdBreathFXData* data = ((EffectInstance*)effect)->data.coldBreath;
+    ColdBreathFXData* data = ((EffectInstance*) effect)->data.coldBreath;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 unk14 = data->lifetime;
     s32 unk24 = data->primCol.a;
@@ -194,14 +194,16 @@ void cold_breath_appendGfx(void* effect) {
     s32 cond;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp20, data->pos.x, data->pos.y, data->pos.z);
     guScaleF(sp60, data->scale, data->scale, data->scale);
     guMtxCatF(sp60, sp20, sp20);
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, data->primCol.r, data->primCol.g, data->primCol.b, 0.5 * unk24);
     gDPSetAlphaDither(gMainGfxPos++, G_AD_NOISE);

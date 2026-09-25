@@ -24,15 +24,7 @@ void stars_burst_update(EffectInstance* effect);
 void stars_burst_render(EffectInstance* effect);
 void stars_burst_appendGfx(void* effect);
 
-void stars_burst_main(
-    s32 arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    f32 arg5,
-    s32 arg6
-) {
+void stars_burst_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s32 arg6) {
     EffectBlueprint bp;
     EffectBlueprint* bpPtr = &bp;
     EffectInstance* effect;
@@ -128,7 +120,7 @@ void stars_burst_render(EffectInstance* effect) {
 }
 
 void stars_burst_appendGfx(void* effect) {
-    StarsBurstFXData* part = ((EffectInstance*)effect)->data.starsBurst;
+    StarsBurstFXData* part = ((EffectInstance*) effect)->data.starsBurst;
     Gfx* dlist = D_090005E0_343620;
     s32 unk_2C;
     Matrix4f sp18;
@@ -137,7 +129,7 @@ void stars_burst_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_090004C0_343500);
 
     unk_2C = part->unk_2C;
@@ -146,12 +138,14 @@ void stars_burst_appendGfx(void* effect) {
     baseIdx %= 36;
 
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         s32 rIdx = baseIdx + i * 3;
         s32 gIdx = baseIdx + 1 + i * 3;
         s32 bIdx = baseIdx + 2 + i * 3;
 
-        gDPSetPrimColor(gMainGfxPos++, 0, 0, D_E0042780[rIdx % 36], D_E0042780[gIdx % 36], D_E0042780[bIdx % 36], unk_2C);
+        gDPSetPrimColor(
+            gMainGfxPos++, 0, 0, D_E0042780[rIdx % 36], D_E0042780[gIdx % 36], D_E0042780[bIdx % 36], unk_2C
+        );
 
         guTranslateF(sp18, part->unk_04, part->unk_08, part->unk_0C);
         guRotateF(sp58, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
@@ -160,7 +154,9 @@ void stars_burst_appendGfx(void* effect) {
         guMtxCatF(sp58, sp18, sp18);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, dlist);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

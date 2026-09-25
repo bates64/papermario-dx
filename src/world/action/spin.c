@@ -204,7 +204,8 @@ void action_update_spin(void) {
         playerSpinState->spinDirection.x = sin_rad(DEG_TO_RAD(angle)) * playerSpinState->spinDirectionMagnitude;
         playerSpinState->spinDirection.y = -cos_rad(DEG_TO_RAD(angle)) * playerSpinState->spinDirectionMagnitude;
     } else {
-        speedModifier = playerSpinState->speedScale - (playerStatus->curStateTime - playerSpinState->fullSpeedSpinTime - 1) * playerSpinState->frictionScale;
+        speedModifier = playerSpinState->speedScale
+            - (playerStatus->curStateTime - playerSpinState->fullSpeedSpinTime - 1) * playerSpinState->frictionScale;
         if (speedModifier < 0.1) {
             speedModifier = 0.1f;
         }

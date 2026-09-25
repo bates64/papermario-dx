@@ -33,7 +33,9 @@ void entity_HiddenPanel_setupGfx(s32 entityIndex) {
         guTranslateF(tempMtx, entity->pos.x, data->initialY + 1.0f, entity->pos.z);
         guMtxCatF(tempMtx, rotMtx, tempMtx);
         guMtxF2L(tempMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, ENTITY_ADDR(entity, Gfx*, Gfx_HiddenPanel_RenderHole));
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }
@@ -134,9 +136,10 @@ void entity_HiddenPanel_flip_over(Entity* entity) {
             gPlayerStatusPtr->animFlags |= PA_FLAG_OPENED_HIDDEN_PANEL;
             if (data->needSpawnItem) {
                 data->needSpawnItem = false;
-                data->spawnedItemIndex = make_item_entity_nodelay(data->itemID,
-                    entity->pos.x, entity->pos.y + 2.0, entity->pos.z,
-                    ITEM_SPAWN_MODE_TOSS_NEVER_VANISH, data->pickupVar);
+                data->spawnedItemIndex = make_item_entity_nodelay(
+                    data->itemID, entity->pos.x, entity->pos.y + 2.0, entity->pos.z, ITEM_SPAWN_MODE_TOSS_NEVER_VANISH,
+                    data->pickupVar
+                );
             }
             entity->flags &= ~ENTITY_FLAG_HIDDEN;
             break;
@@ -283,7 +286,7 @@ s32 entity_HiddenPanel_is_item_on_top(Entity* entity) {
         ItemEntity* itemEntity = get_item_entity(data->spawnedItemIndex);
         if (itemEntity != nullptr) {
             if (itemEntity->flags & ITEM_ENTITY_FLAG_10) {
-                if (fabs(entity->pos.x - data->spawnedItemPos.x) <= 34.0)  {
+                if (fabs(entity->pos.x - data->spawnedItemPos.x) <= 34.0) {
                     if (fabs(entity->pos.z - data->spawnedItemPos.z) <= 34.0) {
                         return true;
                     }
@@ -375,4 +378,3 @@ EntityBlueprint Entity_HiddenPanel = {
     .entityType = ENTITY_TYPE_HIDDEN_PANEL,
     .aabbSize = { 60, 0, 60 }
 };
-

@@ -24,11 +24,13 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_ExitDoors_obk_01_5) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(obk_09_ENTRY_0, "obk_01", obk_01_ENTRY_5,
-    COLLIDER_tt1, MODEL_d1_2, MODEL_d1_1, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_obk_01_5) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    obk_09_ENTRY_0, "obk_01", obk_01_ENTRY_5, COLLIDER_tt1, MODEL_d1_2, MODEL_d1_1, DOOR_SOUNDS_CREAKY
+);
 
-EvtScript N(EVS_ExitDoors_obk_01_6) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(obk_09_ENTRY_1, "obk_01", obk_01_ENTRY_6,
-    COLLIDER_tt2, MODEL_d2_2, MODEL_d2_1, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_obk_01_6) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    obk_09_ENTRY_1, "obk_01", obk_01_ENTRY_6, COLLIDER_tt2, MODEL_d2_2, MODEL_d2_1, DOOR_SOUNDS_CREAKY
+);
 
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOOS_MANSION)

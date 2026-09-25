@@ -165,7 +165,7 @@ EvtScript N(EVS_Init) = {
 };
 
 API_CALLABLE(N(UpdateChargeEffectPos)) {
-    Bytecode *args = script->ptrReadPos;
+    Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
     s32 x = evt_get_variable(script, *args++);

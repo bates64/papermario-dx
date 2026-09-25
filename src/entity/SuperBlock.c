@@ -59,7 +59,9 @@ void entity_upgrade_block_check_if_inactive(Entity* entity) {
         Entity* childEntity;
         SuperBlockContentData* childData;
 
-        parentData->childEntityIndex = create_entity(&Entity_SuperBlockContent, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, 0, MAKE_ENTITY_END);
+        parentData->childEntityIndex = create_entity(
+            &Entity_SuperBlockContent, (s32) entity->pos.x, (s32) entity->pos.y, (s32) entity->pos.z, 0, MAKE_ENTITY_END
+        );
         childEntity = get_entity_by_index(parentData->childEntityIndex);
         childData = childEntity->dataBuf.superBlockContent;
         childData->parentEntityIndex = entity->listIndex;
@@ -145,7 +147,8 @@ void entity_SuperBlockContent_setupGfx(s32 entityIndex) {
         data->paletteTimer--;
     }
 
-    palette = ENTITY_ADDR(entity, u8*, Entity_SuperBlock_Palettes[Entity_SuperBlock_PalData[data->paletteArrOffset + 1]]);
+    palette =
+        ENTITY_ADDR(entity, u8*, Entity_SuperBlock_Palettes[Entity_SuperBlock_PalData[data->paletteArrOffset + 1]]);
     dlist = data->gfx2;
 
     gDPPipeSync(gfxPos++);
@@ -169,7 +172,13 @@ void entity_SuperBlockContent_setupGfx(s32 entityIndex) {
     guMtxF2L(sp18, &data->unk_50);
     gDisplayContext->matrixStack[gMatrixListPos] = data->unk_50;
     gSPMatrix(gfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-    gDPSetRenderMode(gfxPos++, AA_EN | Z_CMP | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA), AA_EN | Z_CMP | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA));
+    gDPSetRenderMode(
+        gfxPos++,
+        AA_EN | Z_CMP | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL
+            | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA),
+        AA_EN | Z_CMP | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL
+            | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA)
+    );
     gDPSetCombineMode(gfxPos++, PM_CC_01, PM_CC_02);
     gDPSetPrimColor(gfxPos++, 0, 0, 0, 0, 0, alpha);
     gSPDisplayList(gfxPos++, dlist);
@@ -185,7 +194,13 @@ void entity_SuperBlockContent_setupGfx(s32 entityIndex) {
     guMtxF2L(sp18, &data->unk_90);
     gDisplayContext->matrixStack[gMatrixListPos] = data->unk_90;
     gSPMatrix(gfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-    gDPSetRenderMode(gfxPos++, AA_EN | Z_CMP | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA), AA_EN | Z_CMP | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA));
+    gDPSetRenderMode(
+        gfxPos++,
+        AA_EN | Z_CMP | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL
+            | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA),
+        AA_EN | Z_CMP | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL
+            | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA)
+    );
     gDPSetCombineMode(gfxPos++, PM_CC_01, PM_CC_02);
     gDPSetPrimColor(gfxPos++, 0, 0, 0, 0, 0, alpha);
     gSPDisplayList(gfxPos++, dlist);
@@ -245,10 +260,14 @@ EntityScript Entity_UltraBlockContent_Script = {
     es_End
 };
 
-EntityModelScript Entity_SuperBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_SuperBlock_Render, RENDER_MODE_ALPHATEST);
-EntityModelScript Entity_SuperBlockContent_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER2);
-EntityModelScript Entity_UltraBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_UltraBlock_Render, RENDER_MODE_ALPHATEST);
-EntityModelScript Entity_UltraBlockContent_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER2);
+EntityModelScript Entity_SuperBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_SuperBlock_Render, RENDER_MODE_ALPHATEST);
+EntityModelScript Entity_SuperBlockContent_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER2);
+EntityModelScript Entity_UltraBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_UltraBlock_Render, RENDER_MODE_ALPHATEST);
+EntityModelScript Entity_UltraBlockContent_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER2);
 
 EntityBlueprint Entity_SuperBlock = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,

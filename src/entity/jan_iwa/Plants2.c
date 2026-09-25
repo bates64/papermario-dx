@@ -39,16 +39,18 @@ extern AnimScript Entity_MunchlesiaReset1_Animation;
 extern StaticAnimatorNode* Entity_MunchlesiaReset1_Mesh[];
 
 void entity_BellbellPlant_idle(Entity* entity) {
-    if ((gPlayerStatus.animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE) &&
-        (entity->collisionFlags & (ENTITY_COLLISION_PLAYER_HAMMER | ENTITY_COLLISION_PLAYER_TOUCH_WALL))) {
+    if ((gPlayerStatus.animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE)
+        && (entity->collisionFlags & (ENTITY_COLLISION_PLAYER_HAMMER | ENTITY_COLLISION_PLAYER_TOUCH_WALL)))
+    {
         exec_entity_commandlist(entity);
         play_model_animation(entity->virtualModelIndex, Entity_BellbellPlant_AnimationUse);
     }
 }
 
 void entity_TrumpetPlant_idle(Entity* entity) {
-    if ((gPlayerStatus.animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE) &&
-        (entity->collisionFlags & (ENTITY_COLLISION_PLAYER_HAMMER | ENTITY_COLLISION_PLAYER_TOUCH_WALL))) {
+    if ((gPlayerStatus.animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE)
+        && (entity->collisionFlags & (ENTITY_COLLISION_PLAYER_HAMMER | ENTITY_COLLISION_PLAYER_TOUCH_WALL)))
+    {
         exec_entity_commandlist(entity);
         play_model_animation(entity->virtualModelIndex, Entity_TrumpetPlant_AnimationUse);
     }
@@ -60,7 +62,10 @@ void entity_TrumpetPlant_create_effect(Entity* entity) {
     angle = DEG_TO_RAD(clamp_angle(entity->rot.y));
     xOffset = -26.0 * cos_rad(angle);
     zOffset = 6.0 * sin_rad(angle);
-    fx_stars_burst(0, entity->pos.x + xOffset, entity->pos.y + 62.0f, entity->pos.z + zOffset, clamp_angle(entity->rot.y - 90.0), 54.0f, 2);
+    fx_stars_burst(
+        0, entity->pos.x + xOffset, entity->pos.y + 62.0f, entity->pos.z + zOffset, clamp_angle(entity->rot.y - 90.0),
+        54.0f, 2
+    );
 }
 
 void entity_TrumpetPlant_spawn_coin(Entity* entity) {
@@ -77,19 +82,19 @@ void entity_TrumpetPlant_spawn_coin(Entity* entity) {
         if (rand_int(32) > 16) {
             f32 facingAngle = entity->rot.y - 110.0f + (data->numCoins % 3) * 30;
             data->numCoins++;
-            make_item_entity(ITEM_COIN,
-                             entity->pos.x + xOffset,
-                             entity->pos.y + 62.0f,
-                             entity->pos.z + zOffset,
-                             ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS, 0,
-                             facingAngle, 0);
+            make_item_entity(
+                ITEM_COIN, entity->pos.x + xOffset, entity->pos.y + 62.0f, entity->pos.z + zOffset,
+                ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS, 0, facingAngle, 0
+            );
         }
     }
 }
 
 void entity_Munchlesia_init(Entity* entity) {
-    make_item_entity_nodelay(ITEM_COIN, entity->pos.x, entity->pos.y + 30.0f, entity->pos.z,
-        ITEM_SPAWN_MODE_FIXED_SPAWN_ALWAYS_NEVER_VANISH, 0);
+    make_item_entity_nodelay(
+        ITEM_COIN, entity->pos.x, entity->pos.y + 30.0f, entity->pos.z, ITEM_SPAWN_MODE_FIXED_SPAWN_ALWAYS_NEVER_VANISH,
+        0
+    );
 }
 
 void func_802BC050_E2E980(Entity* entity) {
@@ -126,7 +131,7 @@ void func_802BC17C_E2EAAC(Entity* entity) {
 }
 
 s32 entity_Munchlesia_create_child(Entity* entity, EntityBlueprint* blueprint) {
-    return create_entity(blueprint, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, (s32)entity->rot.y);
+    return create_entity(blueprint, (s32) entity->pos.x, (s32) entity->pos.y, (s32) entity->pos.z, (s32) entity->rot.y);
 }
 
 void func_802BC220_E2EB50(Entity* entity) {
@@ -320,7 +325,8 @@ EntityScript Entity_MunchlesiaReset2_Script = {
 DmaEntry Entity_MunchlesiaReset_dma[] = { ENTITY_ROM(MunchlesiaReset_gfx), ENTITY_ROM(MunchlesiaReset_anim) };
 DmaEntry Entity_MunchlesiaGrab_dma[] = { ENTITY_ROM(MunchlesiaGrab_gfx), ENTITY_ROM(MunchlesiaGrab_anim) };
 DmaEntry Entity_MunchlesiaEnvelop_dma[] = { ENTITY_ROM(MunchlesiaEnvelop_gfx), ENTITY_ROM(MunchlesiaEnvelop_anim) };
-DmaEntry Entity_MunchlesiaBeginChew_dma[] = { ENTITY_ROM(MunchlesiaBeginChew_gfx), ENTITY_ROM(MunchlesiaBeginChew_anim) };
+DmaEntry Entity_MunchlesiaBeginChew_dma[] = { ENTITY_ROM(MunchlesiaBeginChew_gfx),
+                                              ENTITY_ROM(MunchlesiaBeginChew_anim) };
 DmaEntry Entity_MunchlesiaChewing_dma[] = { ENTITY_ROM(MunchlesiaChewing_gfx), ENTITY_ROM(MunchlesiaChewing_anim) };
 DmaEntry Entity_MunchlesiaSpitOut_dma[] = { ENTITY_ROM(MunchlesiaSpitOut_gfx), ENTITY_ROM(MunchlesiaSpitOut_anim) };
 DmaEntry Entity_MunchlesiaReset1_dma[] = { ENTITY_ROM(MunchlesiaReset1_gfx), ENTITY_ROM(MunchlesiaReset1_anim) };

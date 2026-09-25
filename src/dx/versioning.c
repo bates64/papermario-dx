@@ -518,9 +518,9 @@ void ver_deserialize_vanilla_save(SaveData* newSave) {
     newSave->summary.timePlayed = oldSave.summary.timePlayed;
     newSave->summary.spiritsRescued = oldSave.summary.spiritsRescued;
 
-    if (oldSave.areaID >= 0 && oldSave.mapID >= 0
-        && gAreas[oldSave.areaID].maps != nullptr
-        && oldSave.mapID < gAreas[oldSave.areaID].mapCount) {
+    if (oldSave.areaID >= 0 && oldSave.mapID >= 0 && gAreas[oldSave.areaID].maps != nullptr
+        && oldSave.mapID < gAreas[oldSave.areaID].mapCount)
+    {
         newSave->mapHash = hash_string(gAreas[oldSave.areaID].maps[oldSave.mapID]);
         newSave->entryID = oldSave.entryID;
     } else {

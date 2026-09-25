@@ -9,16 +9,7 @@ void purple_ring_update(EffectInstance* effect);
 void purple_ring_render(EffectInstance* effect);
 void purple_ring_appendGfx(void* effect);
 
-EffectInstance* purple_ring_main(
-    s32 arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    f32 arg5,
-    f32 arg6,
-    f32 arg7
-) {
+EffectInstance* purple_ring_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7) {
     EffectBlueprint bp;
     EffectBlueprint* bpPtr = &bp;
     EffectInstance* effect;
@@ -188,14 +179,14 @@ void purple_ring_render(EffectInstance* effect) {
 }
 
 void purple_ring_appendGfx(void* effect) {
-    PurpleRingFXData* data = ((EffectInstance*)effect)->data.purpleRing;
+    PurpleRingFXData* data = ((EffectInstance*) effect)->data.purpleRing;
     s32 unk_5C = data->unk_5C;
     s32 temp = 64;
     Matrix4f sp10;
     Matrix4f sp50;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_09000200_352EE0);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, data->unk_74, data->unk_75, data->unk_76, data->unk_68);
 

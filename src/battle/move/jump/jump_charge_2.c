@@ -111,4 +111,3 @@ EvtScript N(EVS_UseMove) = {
     Return
     End
 };
-

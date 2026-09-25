@@ -175,7 +175,7 @@ API_CALLABLE(N(MakeWhaleRootPos)) {
         case XNIM_Whale_Still:
         case XNIM_Whale_Swim:
         case XNIM_Whale_Spout:
-             break;
+            break;
     }
 
     evt_set_float_variable(script, outX, whale->pos.x);

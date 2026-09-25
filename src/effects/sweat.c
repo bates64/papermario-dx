@@ -19,7 +19,7 @@ void sweat_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s32 
     f32 temp_f2;
     s32 numParts = 1;
 
-    effectBp.init = (void*)sweat_init;
+    effectBp.init = (void*) sweat_init;
     effectBp.update = sweat_update;
     effectBp.renderScene = sweat_render;
     effectBp.unk_00 = 0;
@@ -33,7 +33,9 @@ void sweat_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s32 
     ASSERT(data != nullptr);
 
     data->unk_00 = arg0;
-    guRotateF(matrix, -arg5, sin_deg(gCameras[gCurrentCameraID].curYaw), 0.0f, -cos_deg(gCameras[gCurrentCameraID].curYaw));
+    guRotateF(
+        matrix, -arg5, sin_deg(gCameras[gCurrentCameraID].curYaw), 0.0f, -cos_deg(gCameras[gCurrentCameraID].curYaw)
+    );
     temp_f2 = arg4 + 16.0f;
     data->pos.x = arg1 + (matrix[1][0] * temp_f2);
     data->pos.y = arg2 + (matrix[1][1] * temp_f2);
@@ -48,7 +50,7 @@ void sweat_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s32 
 void sweat_init(EffectInstance* effect) {
 }
 
-void sweat_update(EffectInstance *effect) {
+void sweat_update(EffectInstance* effect) {
     SweatFXData* data = effect->data.sweat;
 
     data->timeLeft--;
@@ -81,12 +83,12 @@ void sweat_render(EffectInstance* effect) {
 }
 
 void sweat_appendGfx(void* effect) {
-    SweatFXData* data = ((EffectInstance*)effect)->data.sweat;
+    SweatFXData* data = ((EffectInstance*) effect)->data.sweat;
     Matrix4f sp18;
     Matrix4f sp58;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp18, data->pos.x, data->pos.y, data->pos.z);
     guRotateF(sp58, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
@@ -95,7 +97,9 @@ void sweat_appendGfx(void* effect) {
     guMtxCatF(sp58, sp18, sp18);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     if (data->unk_10 > 0.0f) {
         gSPDisplayList(gMainGfxPos++, data->unk_00 == 0 ? D_09000200_35C750 : D_090002C8_35C818);

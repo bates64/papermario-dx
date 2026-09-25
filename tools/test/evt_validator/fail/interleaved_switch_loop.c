@@ -5,6 +5,6 @@ EvtScript EVS_InterleavedSwitchLoop = {
         CaseDefault
             Loop(1)
     EndSwitch
-            EndLoop
+    EndLoop
     End
 };

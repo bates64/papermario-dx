@@ -137,10 +137,12 @@ void N(appendGfx_score_display)(void* renderData) {
         meterHID = data->meterHID;
         hud_element_set_render_pos(meterHID, 90, 120);
         hud_element_draw_clipped(meterHID);
-        startup_draw_prim_rect_COPY(62, 116, 62 + (s32)(((f32)data->mashProgress / 12.0) * 59.0), 116 + 5, 0, 228, 134, 255);
+        startup_draw_prim_rect_COPY(
+            62, 116, 62 + (s32) (((f32) data->mashProgress / 12.0) * 59.0), 116 + 5, 0, 228, 134, 255
+        );
     }
 
-   if (scorekeeper->varTable[3] == 0 || scorekeeper->varTable[3] >= 4) {
+    if (scorekeeper->varTable[3] == 0 || scorekeeper->varTable[3] >= 4) {
         if (data->windowAPosX > -80) {
             data->windowAPosX -= 10;
             if (data->windowAPosX < -80) {
@@ -172,19 +174,33 @@ void N(appendGfx_score_display)(void* renderData) {
         }
     }
 
-    draw_box(0, WINDOW_STYLE_9, data->windowAPosX, 23, 0, 80, 38, 180, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+    draw_box(
+        0, WINDOW_STYLE_9, data->windowAPosX, 23, 0, 80, 38, 180, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr,
+        nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr
+    );
     draw_msg(MSG_MGM_0047, data->windowAPosX + 42, TEXT_POS_Y, 255, MSG_PAL_WHITE, 0);
-    draw_number(NUM_PANELS - data->found, data->windowAPosX + 65, COUNT_POS_Y, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
-    draw_ci_image_with_clipping(&N(panel_peach_img), 32, 32, G_IM_FMT_CI, G_IM_SIZ_4b, &N(panel_peach_pal),
-        data->windowAPosX + 5, 26, 10, 20, 300, 200, 255);
+    draw_number(
+        NUM_PANELS - data->found, data->windowAPosX + 65, COUNT_POS_Y, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255,
+        DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+    );
+    draw_ci_image_with_clipping(
+        &N(panel_peach_img), 32, 32, G_IM_FMT_CI, G_IM_SIZ_4b, &N(panel_peach_pal), data->windowAPosX + 5, 26, 10, 20, 300,
+        200, 255
+    );
 
     timeLeft = MIN(data->timeLeft, PLAY_TIME);
-    deciseconds = ((f32)(timeLeft % FRAME_RATE) * 10.0) / FRAME_RATE;
+    deciseconds = ((f32) (timeLeft % FRAME_RATE) * 10.0) / FRAME_RATE;
     seconds = timeLeft / FRAME_RATE;
 
-    draw_box(0, WINDOW_STYLE_11, data->windowBPosX, 27, 0, 60, 20, 180, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+    draw_box(
+        0, WINDOW_STYLE_11, data->windowBPosX, 27, 0, 60, 20, 180, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr,
+        nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr
+    );
     // draw whole seconds
-    draw_number(seconds, data->windowBPosX + 29, 31, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+    draw_number(
+        seconds, data->windowBPosX + 29, 31, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255,
+        DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+    );
     // draw tenths of seconds
     draw_number(deciseconds, data->windowBPosX + 40, 31, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, 0);
     // draw dot
@@ -457,8 +473,13 @@ API_CALLABLE(N(RunMinigame)) {
                     if (data->box[i].stateTimer <= 0) {
                         npc->curAnim = ANIM_Fuzzy_Walk;
                         data->box[i].state = BOX_STATE_FUZZY_POPUP;
-                        sfx_play_sound_at_position(enemy->varTable[8], SOUND_SPACE_DEFAULT | SOUND_PARAM_MOST_QUIET, npc->pos.x, npc->pos.y, npc->pos.z);
-                        get_model_center_and_size(data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ);
+                        sfx_play_sound_at_position(
+                            enemy->varTable[8], SOUND_SPACE_DEFAULT | SOUND_PARAM_MOST_QUIET, npc->pos.x, npc->pos.y,
+                            npc->pos.z
+                        );
+                        get_model_center_and_size(
+                            data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ
+                        );
                         npc->jumpVel = 10.5f;
                         npc->pos.x = centerX;
                         npc->jumpScale = 1.5f;
@@ -502,7 +523,9 @@ API_CALLABLE(N(RunMinigame)) {
                     data->box[i].state = BOX_STATE_FUZZY_ATTACH;
                     gPlayerStatusPtr->anim = ANIM_Mario1_TiredStill;
                     npc->curAnim = ANIM_Fuzzy_Run;
-                    get_model_center_and_size(data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ);
+                    get_model_center_and_size(
+                        data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ
+                    );
                     npc->pos.x = centerX;
                     npc->pos.y = centerY;
                     npc->pos.z = centerZ + 2.0;
@@ -522,9 +545,18 @@ API_CALLABLE(N(RunMinigame)) {
                     break;
                 case BOX_STATE_FUZZY_ATTACH:
                     enemy->varTable[7]++;
-                    npc->pos.x = update_lerp(EASING_LINEAR, (f32)enemy->varTable[1] / 10.0, (f32)enemy->varTable[4] / 10.0, enemy->varTable[7], 8);
-                    npc->pos.y = update_lerp(EASING_LINEAR, (f32)enemy->varTable[2] / 10.0, (f32)enemy->varTable[5] / 10.0, enemy->varTable[7], 8);
-                    npc->pos.z = update_lerp(EASING_LINEAR, (f32)enemy->varTable[3] / 10.0, (f32)enemy->varTable[6] / 10.0, enemy->varTable[7], 8);
+                    npc->pos.x = update_lerp(
+                        EASING_LINEAR, (f32) enemy->varTable[1] / 10.0, (f32) enemy->varTable[4] / 10.0,
+                        enemy->varTable[7], 8
+                    );
+                    npc->pos.y = update_lerp(
+                        EASING_LINEAR, (f32) enemy->varTable[2] / 10.0, (f32) enemy->varTable[5] / 10.0,
+                        enemy->varTable[7], 8
+                    );
+                    npc->pos.z = update_lerp(
+                        EASING_LINEAR, (f32) enemy->varTable[3] / 10.0, (f32) enemy->varTable[6] / 10.0,
+                        enemy->varTable[7], 8
+                    );
                     gPlayerStatusPtr->anim = ANIM_Mario1_TiredStill;
                     npc->duration--;
                     if (npc->duration <= 0) {
@@ -587,7 +619,9 @@ API_CALLABLE(N(RunMinigame)) {
                     if (data->box[i].stateTimer <= 0) {
                         data->box[i].state = BOX_STATE_BOMB_POPUP;
                         sfx_play_sound_at_position(enemy->varTable[8], 0x100000, npc->pos.x, npc->pos.y, npc->pos.z);
-                        get_model_center_and_size(data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ);
+                        get_model_center_and_size(
+                            data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ
+                        );
                         npc->jumpVel = 10.5f;
                         npc->pos.x = centerX;
                         npc->jumpScale = 1.5f;
@@ -624,7 +658,9 @@ API_CALLABLE(N(RunMinigame)) {
                     npc->curAnim = ANIM_Bobomb_WalkLit;
                     data->stunFlags |= (STUN_FLAG_STUNNED | STUN_FLAG_CHANGED);
                     data->box[i].state = BOX_STATE_BOMB_ATTACK;
-                    get_model_center_and_size(data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ);
+                    get_model_center_and_size(
+                        data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ
+                    );
                     npc->pos.x = centerX;
                     npc->pos.y = centerY - 10.0f;
                     npc->pos.z = centerZ + 8.0;
@@ -678,7 +714,9 @@ API_CALLABLE(N(RunMinigame)) {
                     break;
 
                 case BOX_STATE_PEACH_INIT:
-                    get_model_center_and_size(data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ);
+                    get_model_center_and_size(
+                        data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ
+                    );
                     data->box[i].state = BOX_STATE_PEACH_IDLE;
                     data->box[i].stateTimer = rand_int(210);
                     npc->pos.x = centerX;
@@ -690,21 +728,29 @@ API_CALLABLE(N(RunMinigame)) {
                 case BOX_STATE_PEACH_IDLE:
                     data->box[i].stateTimer--;
                     if (data->box[i].stateTimer <= 0) {
-                        get_model_center_and_size(data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ);
+                        get_model_center_and_size(
+                            data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ
+                        );
                         data->box[i].state = BOX_STATE_PEACH_POPUP;
-                        sfx_play_sound_at_position(SOUND_HEART_BOUNCE, SOUND_PARAM_MORE_QUIET | SOUND_SPACE_DEFAULT, npc->pos.x, npc->pos.y, npc->pos.z);
-                        get_model_center_and_size(data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ);
+                        sfx_play_sound_at_position(
+                            SOUND_HEART_BOUNCE, SOUND_PARAM_MORE_QUIET | SOUND_SPACE_DEFAULT, npc->pos.x, npc->pos.y,
+                            npc->pos.z
+                        );
+                        get_model_center_and_size(
+                            data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ
+                        );
                         npc->jumpVel = 10.0f;
                         npc->pos.y = npc->moveToPos.y;
                         npc->jumpScale = 1.1f;
                         data->box[i].stateTimer = 0;
-                        model = get_model_from_list_index(get_model_list_index_from_tree_index(data->box[i].peachPanelModelID));
+                        model = get_model_from_list_index(
+                            get_model_list_index_from_tree_index(data->box[i].peachPanelModelID)
+                        );
                         model->flags &= ~MODEL_FLAG_HIDDEN;
                         if (!(model->flags & MODEL_FLAG_HAS_TRANSFORM)) {
                             guTranslateF(model->userTransformMtx, npc->pos.x, npc->pos.y, npc->pos.z);
                             model->flags |= MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM;
-                        }
-                        else {
+                        } else {
                             guTranslateF(mtx, npc->pos.x, npc->pos.y, npc->pos.z);
                             guMtxCatF(mtx, model->userTransformMtx, model->userTransformMtx);
                         }
@@ -714,7 +760,8 @@ API_CALLABLE(N(RunMinigame)) {
                     data->box[i].stateTimer++;
                     npc->pos.y += npc->jumpVel;
                     npc->jumpVel -= npc->jumpScale;
-                    model = get_model_from_list_index(get_model_list_index_from_tree_index(data->box[i].peachPanelModelID));
+                    model =
+                        get_model_from_list_index(get_model_list_index_from_tree_index(data->box[i].peachPanelModelID));
                     if (!(model->flags & MODEL_FLAG_HAS_TRANSFORM)) {
                         guTranslateF(model->userTransformMtx, npc->pos.x, npc->pos.y, npc->pos.z);
                         model->flags |= MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM;
@@ -736,7 +783,8 @@ API_CALLABLE(N(RunMinigame)) {
                     break;
                 case BOX_STATE_PEACH_HIT:
                     sfx_play_sound(SOUND_APPROVE);
-                    model = get_model_from_list_index(get_model_list_index_from_tree_index(data->box[i].peachPanelModelID));
+                    model =
+                        get_model_from_list_index(get_model_list_index_from_tree_index(data->box[i].peachPanelModelID));
                     enable_npc_shadow(npc);
                     npc->duration = 0;
                     data->box[i].state = BOX_STATE_PEACH_EMERGE;
@@ -744,8 +792,10 @@ API_CALLABLE(N(RunMinigame)) {
                     // fallthrough
                 case BOX_STATE_PEACH_EMERGE:
                     hittingPeachBlock = true;
-                    model = get_model_from_list_index(get_model_list_index_from_tree_index(data->box[i].peachPanelModelID));
-                    centerY = update_lerp(EASING_QUADRATIC_OUT, npc->moveToPos.y, npc->moveToPos.y + 30.0, npc->duration, 30);
+                    model =
+                        get_model_from_list_index(get_model_list_index_from_tree_index(data->box[i].peachPanelModelID));
+                    centerY =
+                        update_lerp(EASING_QUADRATIC_OUT, npc->moveToPos.y, npc->moveToPos.y + 30.0, npc->duration, 30);
                     if (!(model->flags & MODEL_FLAG_HAS_TRANSFORM)) {
                         guTranslateF(model->userTransformMtx, npc->pos.x, centerY, npc->pos.z);
                         model->flags |= MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM;
@@ -828,8 +878,9 @@ API_CALLABLE(N(RunMinigame)) {
             partner_enable_input();
         }
     }
-    if (!hittingPeachBlock && ((data->found == 10) || ((data->timeLeft == 0)
-        && (gPlayerStatusPtr->actionState != ACTION_STATE_HAMMER)))) {
+    if (!hittingPeachBlock
+        && ((data->found == 10) || ((data->timeLeft == 0) && (gPlayerStatusPtr->actionState != ACTION_STATE_HAMMER))))
+    {
         gameFinished = true;
     }
     if (gameFinished) {
@@ -861,8 +912,8 @@ API_CALLABLE(N(UpdateRecords)) {
     s32 seconds, deciseconds;
     s32 outScore;
 
-    seconds = data->timeLeft  / FRAME_RATE;
-    deciseconds = ((f32)(data->timeLeft % FRAME_RATE) * 10.0) / FRAME_RATE;
+    seconds = data->timeLeft / FRAME_RATE;
+    deciseconds = ((f32) (data->timeLeft % FRAME_RATE) * 10.0) / FRAME_RATE;
 
     data->curScore = (seconds * 10) + deciseconds;
     playerData->smashGameTotal += data->curScore;

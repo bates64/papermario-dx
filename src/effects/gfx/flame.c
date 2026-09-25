@@ -9,7 +9,7 @@ INCLUDE_IMG("effects/gfx/D_09000600_3541B0.png", D_09000600_3541B0);
 extern IMG_BIN GeneratedFlameTexture[];
 extern IMG_BIN FlameTextureGenBuffer[];
 
-//#include "effects/gfx/D_09000800_3543B0.gfx.inc.c"
+// #include "effects/gfx/D_09000800_3543B0.gfx.inc.c"
 
 Gfx D_09000800_3543B0[] = {
     gsDPPipeSync(),

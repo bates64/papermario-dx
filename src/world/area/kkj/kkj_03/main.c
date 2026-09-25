@@ -19,8 +19,8 @@ Gfx N(setup_gfx_candle_lights)[] = {
     gsSPEndDisplayList(),
 };
 
-EvtScript N(EVS_ExitDoors_kkj_02_1) = EVT_EXIT_DOUBLE_DOOR(kkj_03_ENTRY_0, "kkj_02", kkj_02_ENTRY_1,
-    COLLIDER_deilit1, MODEL_door1, MODEL_door2);
+EvtScript N(EVS_ExitDoors_kkj_02_1) =
+    EVT_EXIT_DOUBLE_DOOR(kkj_03_ENTRY_0, "kkj_02", kkj_02_ENTRY_1, COLLIDER_deilit1, MODEL_door1, MODEL_door2);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_kkj_02_1)), TRIGGER_WALL_PRESS_A, COLLIDER_deilit1, 1, 0)

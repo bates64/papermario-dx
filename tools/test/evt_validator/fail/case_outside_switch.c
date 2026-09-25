@@ -2,5 +2,5 @@
 
 EvtScript EVS_CaseOutsideSwitch = {
     CaseEq(0)
-    End
+        End
 };

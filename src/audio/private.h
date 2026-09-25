@@ -71,7 +71,7 @@ void au_bgm_player_read_composition(BGMPlayer* player);
 void au_bgm_end_composition_loop(BGMPlayer* player, u32 cmd);
 void au_bgm_load_phrase(BGMPlayer* player, u32 cmd);
 void au_bgm_player_update_stop(BGMPlayer* player);
-void au_bgm_player_update_playing(BGMPlayer *player);
+void au_bgm_player_update_playing(BGMPlayer* player);
 void au_BGMCmd_E0_MasterTempo(BGMPlayer* player, BGMPlayerTrack* track);
 void au_BGMCmd_E1_MasterVolume(BGMPlayer* player, BGMPlayerTrack* track);
 void au_BGMCmd_E2_MasterDetune(BGMPlayer* player, BGMPlayerTrack* track);

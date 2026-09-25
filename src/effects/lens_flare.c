@@ -107,7 +107,7 @@ void lens_flare_render(EffectInstance* effect) {
 }
 
 void lens_flare_appendGfx(void* effect) {
-    LensFlareFXData* data = ((EffectInstance*)effect)->data.lensFlare;
+    LensFlareFXData* data = ((EffectInstance*) effect)->data.lensFlare;
     s32 type = data->type;
     s32 alpha;
     s32 idx;
@@ -116,7 +116,7 @@ void lens_flare_appendGfx(void* effect) {
     Matrix4f mtxShared;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_E0034788[type]);
 
     guTranslateF(mtxTransform, data->pos.x, data->pos.y, data->pos.z);
@@ -135,7 +135,9 @@ void lens_flare_appendGfx(void* effect) {
         idx %= ARRAY_COUNT(D_E0034790);
 
         gDPSetPrimColor(gMainGfxPos++, 0, 0, D_E0034790[idx], D_E0034790[idx + 1], D_E0034790[idx + 2], alpha);
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_E0034780[0]);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }
@@ -155,7 +157,9 @@ void lens_flare_appendGfx(void* effect) {
 
         gDPSetPrimColor(gMainGfxPos++, 0, 0, D_E0034790[idx], D_E0034790[idx + 1], D_E0034790[idx + 2], alpha);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, alpha);
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_E0034780[type]);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

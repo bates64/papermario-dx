@@ -2,8 +2,8 @@
 
 #include "world/common/util/CreateDarkness.inc.c"
 
-EvtScript N(EVS_ExitDoor_kpa_14_1) = EVT_EXIT_SINGLE_DOOR(kpa_01_ENTRY_0, "kpa_14", kpa_14_ENTRY_1,
-    COLLIDER_tte, MODEL_o205, DOOR_SWING_IN);
+EvtScript N(EVS_ExitDoor_kpa_14_1) =
+    EVT_EXIT_SINGLE_DOOR(kpa_01_ENTRY_0, "kpa_14", kpa_14_ENTRY_1, COLLIDER_tte, MODEL_o205, DOOR_SWING_IN);
 
 EvtScript N(EVS_ExitWalk_kpa_03_0) = EVT_EXIT_WALK(60, kpa_01_ENTRY_1, "kpa_03", kpa_03_ENTRY_0);
 

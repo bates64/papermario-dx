@@ -72,7 +72,7 @@ const char* gFPCSRFaultCauses[6] = {
     "Inexact operation",
 };
 
-char crashScreenAssertMessage[0x100] = {0};
+char crashScreenAssertMessage[0x100] = { 0 };
 
 void crash_screen_set_assert_info(const char* message) {
     strncpy(crashScreenAssertMessage, message, sizeof(crashScreenAssertMessage));
@@ -117,7 +117,7 @@ void crash_screen_draw_rect(s32 x, s32 y, s32 width, s32 height) {
 s32 crash_screen_draw_glyph(s32 x, s32 y, s32 glyph) {
     s32 shift = ((glyph % 5) * 6);
     u16 width = gCrashScreen.width;
-    const u32* data = &((u32*)gCrashScreenFont)[glyph / 5 * 7];
+    const u32* data = &((u32*) gCrashScreenFont)[glyph / 5 * 7];
     s32 i;
     s32 j;
     u16 color = gCrashScreenColor;
@@ -176,9 +176,10 @@ s32 crash_screen_draw_glyph(s32 x, s32 y, s32 glyph) {
     }
 
     // Calculate x advance by counting the width of the glyph + 1 pixel of padding
-    if (glyph == GLYPH(2, 15)) return 7; // m - fucked up hack
+    if (glyph == GLYPH(2, 15))
+        return 7; // m - fucked up hack
     s32 xAdvance = 0;
-    data = &((u32*)gCrashScreenFont)[glyph / 5 * 7];
+    data = &((u32*) gCrashScreenFont)[glyph / 5 * 7];
     for (i = 0; i < 7; i++) { // 7 rows
         u32 bit = 0x80000000U >> shift;
         u32 rowMask = *data++;
@@ -210,7 +211,7 @@ s32 crash_screen_printf(s32 x, s32 y, const char* fmt, ...) {
 
     va_start(args, fmt);
 
-    size = _Printf(crash_screen_copy_to_buf, (char*)buf, fmt, args);
+    size = _Printf(crash_screen_copy_to_buf, (char*) buf, fmt, args);
 
     if (size > 0) {
         ptr = buf;
@@ -256,7 +257,7 @@ s32 crash_screen_printf_proportional(s32 x, s32 y, const char* fmt, ...) {
 
     va_start(args, fmt);
 
-    size = _Printf(crash_screen_copy_to_buf, (char*)buf, fmt, args);
+    size = _Printf(crash_screen_copy_to_buf, (char*) buf, fmt, args);
 
     if (size > 0) {
         ptr = buf;
@@ -292,11 +293,11 @@ s32 crash_screen_printf_proportional(s32 x, s32 y, const char* fmt, ...) {
 }
 
 void crash_screen_print_fpr(s32 x, s32 y, s32 regNum, void* addr) {
-    u32 bits = *(u32*)addr;
+    u32 bits = *(u32*) addr;
     s32 exponent = ((bits & 0x7F800000U) >> 0x17) - 0x7F;
 
     if ((exponent >= -0x7E && exponent <= 0x7F) || bits == 0) {
-        crash_screen_printf(x, y, "F%02d:%+.3e", regNum, *(f32*)addr);
+        crash_screen_printf(x, y, "F%02d:%+.3e", regNum, *(f32*) addr);
     } else {
         crash_screen_printf(x, y, "F%02d:---------", regNum);
     }
@@ -340,66 +341,155 @@ static char* crash_screen_disasm(u32 pc, u32 op, char* buf) {
 
     // Load/store instructions
     switch (opcode) {
-        case 0x20: sprintf(buf, "lb    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
-        case 0x21: sprintf(buf, "lh    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
-        case 0x23: sprintf(buf, "lw    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
-        case 0x24: sprintf(buf, "lbu   %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
-        case 0x25: sprintf(buf, "lhu   %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
-        case 0x28: sprintf(buf, "sb    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
-        case 0x29: sprintf(buf, "sh    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
-        case 0x2B: sprintf(buf, "sw    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
-        case 0x31: sprintf(buf, "lwc1  f%lu, %d(%s)", RT(op), IMM(op), sRegNames[RS(op)]); return buf;
-        case 0x39: sprintf(buf, "swc1  f%lu, %d(%s)", RT(op), IMM(op), sRegNames[RS(op)]); return buf;
+        case 0x20:
+            sprintf(buf, "lb    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]);
+            return buf;
+        case 0x21:
+            sprintf(buf, "lh    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]);
+            return buf;
+        case 0x23:
+            sprintf(buf, "lw    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]);
+            return buf;
+        case 0x24:
+            sprintf(buf, "lbu   %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]);
+            return buf;
+        case 0x25:
+            sprintf(buf, "lhu   %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]);
+            return buf;
+        case 0x28:
+            sprintf(buf, "sb    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]);
+            return buf;
+        case 0x29:
+            sprintf(buf, "sh    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]);
+            return buf;
+        case 0x2B:
+            sprintf(buf, "sw    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]);
+            return buf;
+        case 0x31:
+            sprintf(buf, "lwc1  f%lu, %d(%s)", RT(op), IMM(op), sRegNames[RS(op)]);
+            return buf;
+        case 0x39:
+            sprintf(buf, "swc1  f%lu, %d(%s)", RT(op), IMM(op), sRegNames[RS(op)]);
+            return buf;
     }
 
     // ALU immediate
     switch (opcode) {
-        case 0x09: sprintf(buf, "addiu %s, %s, %d", sRegNames[RT(op)], sRegNames[RS(op)], IMM(op)); return buf;
-        case 0x0C: sprintf(buf, "andi  %s, %s, 0x%X", sRegNames[RT(op)], sRegNames[RS(op)], (u16)IMM(op)); return buf;
-        case 0x0D: sprintf(buf, "ori   %s, %s, 0x%X", sRegNames[RT(op)], sRegNames[RS(op)], (u16)IMM(op)); return buf;
-        case 0x0A: sprintf(buf, "slti  %s, %s, %d", sRegNames[RT(op)], sRegNames[RS(op)], IMM(op)); return buf;
-        case 0x0B: sprintf(buf, "sltiu %s, %s, %d", sRegNames[RT(op)], sRegNames[RS(op)], IMM(op)); return buf;
-        case 0x0F: sprintf(buf, "lui   %s, 0x%04X", sRegNames[RT(op)], (u16)IMM(op)); return buf;
+        case 0x09:
+            sprintf(buf, "addiu %s, %s, %d", sRegNames[RT(op)], sRegNames[RS(op)], IMM(op));
+            return buf;
+        case 0x0C:
+            sprintf(buf, "andi  %s, %s, 0x%X", sRegNames[RT(op)], sRegNames[RS(op)], (u16) IMM(op));
+            return buf;
+        case 0x0D:
+            sprintf(buf, "ori   %s, %s, 0x%X", sRegNames[RT(op)], sRegNames[RS(op)], (u16) IMM(op));
+            return buf;
+        case 0x0A:
+            sprintf(buf, "slti  %s, %s, %d", sRegNames[RT(op)], sRegNames[RS(op)], IMM(op));
+            return buf;
+        case 0x0B:
+            sprintf(buf, "sltiu %s, %s, %d", sRegNames[RT(op)], sRegNames[RS(op)], IMM(op));
+            return buf;
+        case 0x0F:
+            sprintf(buf, "lui   %s, 0x%04X", sRegNames[RT(op)], (u16) IMM(op));
+            return buf;
     }
 
     // Branch
     switch (opcode) {
-        case 0x04: sprintf(buf, "beq   %s, %s, 0x%08lX", sRegNames[RS(op)], sRegNames[RT(op)], pc + 4 + (IMM(op) << 2)); return buf;
-        case 0x05: sprintf(buf, "bne   %s, %s, 0x%08lX", sRegNames[RS(op)], sRegNames[RT(op)], pc + 4 + (IMM(op) << 2)); return buf;
-        case 0x06: sprintf(buf, "blez  %s, 0x%08lX", sRegNames[RS(op)], pc + 4 + (IMM(op) << 2)); return buf;
-        case 0x07: sprintf(buf, "bgtz  %s, 0x%08lX", sRegNames[RS(op)], pc + 4 + (IMM(op) << 2)); return buf;
+        case 0x04:
+            sprintf(buf, "beq   %s, %s, 0x%08lX", sRegNames[RS(op)], sRegNames[RT(op)], pc + 4 + (IMM(op) << 2));
+            return buf;
+        case 0x05:
+            sprintf(buf, "bne   %s, %s, 0x%08lX", sRegNames[RS(op)], sRegNames[RT(op)], pc + 4 + (IMM(op) << 2));
+            return buf;
+        case 0x06:
+            sprintf(buf, "blez  %s, 0x%08lX", sRegNames[RS(op)], pc + 4 + (IMM(op) << 2));
+            return buf;
+        case 0x07:
+            sprintf(buf, "bgtz  %s, 0x%08lX", sRegNames[RS(op)], pc + 4 + (IMM(op) << 2));
+            return buf;
     }
 
     // Jump
-    if (opcode == 0x02) { sprintf(buf, "j     0x%08lX", TARGET(op, pc)); return buf; }
-    if (opcode == 0x03) { sprintf(buf, "jal   0x%08lX", TARGET(op, pc)); return buf; }
+    if (opcode == 0x02) {
+        sprintf(buf, "j     0x%08lX", TARGET(op, pc));
+        return buf;
+    }
+    if (opcode == 0x03) {
+        sprintf(buf, "jal   0x%08lX", TARGET(op, pc));
+        return buf;
+    }
 
     // SPECIAL (opcode 0)
     if (opcode == 0x00) {
-        if (op == 0) { sprintf(buf, "nop"); return buf; }
+        if (op == 0) {
+            sprintf(buf, "nop");
+            return buf;
+        }
         switch (func) {
-            case 0x08: sprintf(buf, "jr    %s", sRegNames[RS(op)]); return buf;
-            case 0x09: sprintf(buf, "jalr  %s", sRegNames[RS(op)]); return buf;
+            case 0x08:
+                sprintf(buf, "jr    %s", sRegNames[RS(op)]);
+                return buf;
+            case 0x09:
+                sprintf(buf, "jalr  %s", sRegNames[RS(op)]);
+                return buf;
             case 0x21:
-                if (RT(op) == 0) { sprintf(buf, "move  %s, %s", sRegNames[RD(op)], sRegNames[RS(op)]); return buf; }
-                sprintf(buf, "addu  %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
-            case 0x23: sprintf(buf, "subu  %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
-            case 0x24: sprintf(buf, "and   %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
+                if (RT(op) == 0) {
+                    sprintf(buf, "move  %s, %s", sRegNames[RD(op)], sRegNames[RS(op)]);
+                    return buf;
+                }
+                sprintf(buf, "addu  %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]);
+                return buf;
+            case 0x23:
+                sprintf(buf, "subu  %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]);
+                return buf;
+            case 0x24:
+                sprintf(buf, "and   %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]);
+                return buf;
             case 0x25:
-                if (RT(op) == 0) { sprintf(buf, "move  %s, %s", sRegNames[RD(op)], sRegNames[RS(op)]); return buf; }
-                sprintf(buf, "or    %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
-            case 0x26: sprintf(buf, "xor   %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
-            case 0x27: sprintf(buf, "nor   %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
-            case 0x2A: sprintf(buf, "slt   %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
-            case 0x2B: sprintf(buf, "sltu  %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
-            case 0x00: sprintf(buf, "sll   %s, %s, %lu", sRegNames[RD(op)], sRegNames[RT(op)], SA(op)); return buf;
-            case 0x02: sprintf(buf, "srl   %s, %s, %lu", sRegNames[RD(op)], sRegNames[RT(op)], SA(op)); return buf;
-            case 0x03: sprintf(buf, "sra   %s, %s, %lu", sRegNames[RD(op)], sRegNames[RT(op)], SA(op)); return buf;
-            case 0x18: sprintf(buf, "mult  %s, %s", sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
-            case 0x19: sprintf(buf, "multu %s, %s", sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
-            case 0x1A: sprintf(buf, "div   %s, %s", sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
-            case 0x10: sprintf(buf, "mfhi  %s", sRegNames[RD(op)]); return buf;
-            case 0x12: sprintf(buf, "mflo  %s", sRegNames[RD(op)]); return buf;
+                if (RT(op) == 0) {
+                    sprintf(buf, "move  %s, %s", sRegNames[RD(op)], sRegNames[RS(op)]);
+                    return buf;
+                }
+                sprintf(buf, "or    %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]);
+                return buf;
+            case 0x26:
+                sprintf(buf, "xor   %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]);
+                return buf;
+            case 0x27:
+                sprintf(buf, "nor   %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]);
+                return buf;
+            case 0x2A:
+                sprintf(buf, "slt   %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]);
+                return buf;
+            case 0x2B:
+                sprintf(buf, "sltu  %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]);
+                return buf;
+            case 0x00:
+                sprintf(buf, "sll   %s, %s, %lu", sRegNames[RD(op)], sRegNames[RT(op)], SA(op));
+                return buf;
+            case 0x02:
+                sprintf(buf, "srl   %s, %s, %lu", sRegNames[RD(op)], sRegNames[RT(op)], SA(op));
+                return buf;
+            case 0x03:
+                sprintf(buf, "sra   %s, %s, %lu", sRegNames[RD(op)], sRegNames[RT(op)], SA(op));
+                return buf;
+            case 0x18:
+                sprintf(buf, "mult  %s, %s", sRegNames[RS(op)], sRegNames[RT(op)]);
+                return buf;
+            case 0x19:
+                sprintf(buf, "multu %s, %s", sRegNames[RS(op)], sRegNames[RT(op)]);
+                return buf;
+            case 0x1A:
+                sprintf(buf, "div   %s, %s", sRegNames[RS(op)], sRegNames[RT(op)]);
+                return buf;
+            case 0x10:
+                sprintf(buf, "mfhi  %s", sRegNames[RD(op)]);
+                return buf;
+            case 0x12:
+                sprintf(buf, "mflo  %s", sRegNames[RD(op)]);
+                return buf;
         }
     }
 
@@ -413,11 +503,11 @@ static s32 crash_screen_print_disasm(s32 x, s32 y, u32 pc) {
 
     for (s32 i = -1; i <= 1; i++) {
         u32 addr = pc + (i * 4);
-        u32 phys = 0x80000000 | osVirtualToPhysical((void*)addr);
+        u32 phys = 0x80000000 | osVirtualToPhysical((void*) addr);
         if (phys < 0x80000400 || phys >= 0x80800000 || (addr & 3) != 0) {
             continue;
         }
-        u32 instr = *(u32*)phys;
+        u32 instr = *(u32*) phys;
         crash_screen_disasm(addr, instr, buf);
 
         if (i == 0) {
@@ -500,8 +590,10 @@ static s32 crash_screen_print_error(s32 x, s32 y, OSThread* faultedThread) {
         default: {
             // Fall back to raw cause name
             s16 idx = causeIndex;
-            if (idx == 23) idx = 16;
-            if (idx == 31) idx = 17;
+            if (idx == 23)
+                idx = 16;
+            if (idx == 31)
+                idx = 17;
             y = crash_screen_printf_proportional(x, y, "%s", gFaultCauses[idx]);
             break;
         }
@@ -545,7 +637,7 @@ static s32 crash_screen_print_location(s32 x, s32 y, ResolvedSym* sym) {
 void crash_screen_draw(OSThread* faultedThread) {
     __OSThreadContext* ctx = &faultedThread->context;
     s32 bt[16];
-    s32 max = backtrace_thread((void**)bt, ARRAY_COUNT(bt), faultedThread);
+    s32 max = backtrace_thread((void**) bt, ARRAY_COUNT(bt), faultedThread);
     s32 i = 0;
     ResolvedSym sym;
     b32 isFirstFrame = true;
@@ -571,7 +663,7 @@ void crash_screen_draw(OSThread* faultedThread) {
         extern s32 evt_execute_next_command(Evt*);
         for (; i < max; i++) {
             u32 addr = bt[i];
-            if (addr >= (u32)evt_execute_next_command && addr < (u32)evt_execute_next_command + 0x2000) {
+            if (addr >= (u32) evt_execute_next_command && addr < (u32) evt_execute_next_command + 0x2000) {
                 break;
             }
             backtrace_resolve_addr(addr, &sym, -1);
@@ -589,7 +681,7 @@ void crash_screen_draw(OSThread* faultedThread) {
         // Print EVT script chain (innermost to outermost)
         Evt* s = EvtCurrentScript;
         while (s != nullptr) {
-            backtrace_resolve_addr((u32)s->ptrFirstLine, &sym, s->curLine);
+            backtrace_resolve_addr((u32) s->ptrFirstLine, &sym, s->curLine);
             gCrashScreenColor = COLOR_YELLOW;
             y = crash_screen_printf_proportional(x, y, "%s", sym.name);
             y = crash_screen_print_location(x, y, &sym);
@@ -635,8 +727,8 @@ void crash_screen_thread_entry(void* unused) {
     OSMesg mesg;
     OSThread* faultedThread;
 
-    osSetEventMesg(OS_EVENT_CPU_BREAK, &gCrashScreen.queue, (OSMesg)1);
-    osSetEventMesg(OS_EVENT_FAULT, &gCrashScreen.queue, (OSMesg)2);
+    osSetEventMesg(OS_EVENT_CPU_BREAK, &gCrashScreen.queue, (OSMesg) 1);
+    osSetEventMesg(OS_EVENT_FAULT, &gCrashScreen.queue, (OSMesg) 2);
 
     do {
         osRecvMesg(&gCrashScreen.queue, &mesg, 1);
@@ -646,11 +738,12 @@ void crash_screen_thread_entry(void* unused) {
     osStopThread(faultedThread);
     crash_screen_draw(faultedThread);
 
-    while (true) {}
+    while (true) {
+    }
 }
 
 void crash_screen_set_draw_info(u16* frameBufPtr, s16 width, s16 height) {
-    gCrashScreen.frameBuf = (u16*)((u32)frameBufPtr | 0xA0000000);
+    gCrashScreen.frameBuf = (u16*) ((u32) frameBufPtr | 0xA0000000);
     gCrashScreen.width = width;
     gCrashScreen.height = height;
 }
@@ -658,24 +751,25 @@ void crash_screen_set_draw_info(u16* frameBufPtr, s16 width, s16 height) {
 void crash_screen_init(void) {
     gCrashScreen.width = SCREEN_WIDTH;
     gCrashScreen.height = 16;
-    gCrashScreen.frameBuf = (u16*)((osMemSize | 0xA0000000) - ((SCREEN_WIDTH * SCREEN_HEIGHT) * 2));
+    gCrashScreen.frameBuf = (u16*) ((osMemSize | 0xA0000000) - ((SCREEN_WIDTH * SCREEN_HEIGHT) * 2));
     osCreateMesgQueue(&gCrashScreen.queue, &gCrashScreen.mesg, 1);
-    osCreateThread(&gCrashScreen.thread, THREAD_ID_CRASH, crash_screen_thread_entry, nullptr,
-                   gCrashScreen.stack + sizeof(gCrashScreen.stack), 0x80);
+    osCreateThread(
+        &gCrashScreen.thread, THREAD_ID_CRASH, crash_screen_thread_entry, nullptr,
+        gCrashScreen.stack + sizeof(gCrashScreen.stack), 0x80
+    );
     osStartThread(&gCrashScreen.thread);
 
     // gCrashScreencharToGlyph is hard to modify, so we'll just do it here
-    u8 chars[] =
-        "_[]<>"
-        "|{};,"
-        "\"#$&'"
-        "/=@\\`"
-        "abcde"
-        "fghij"
-        "klmno"
-        "pqrst"
-        "uvwxy"
-        "z";
+    u8 chars[] = "_[]<>"
+                 "|{};,"
+                 "\"#$&'"
+                 "/=@\\`"
+                 "abcde"
+                 "fghij"
+                 "klmno"
+                 "pqrst"
+                 "uvwxy"
+                 "z";
     s32 i;
     for (i = 0; i < ARRAY_COUNT(chars); i++) {
         gCrashScreencharToGlyph[chars[i]] = GLYPH(0, 9) + i;
@@ -692,7 +786,7 @@ void crash_screen_printf_with_bg(s16 x, s16 y, const char* fmt, ...) {
 
     va_start(args, fmt);
 
-    size = _Printf(crash_screen_copy_to_buf, (char*)buf, fmt, args);
+    size = _Printf(crash_screen_copy_to_buf, (char*) buf, fmt, args);
 
     if (size > 0) {
         crash_screen_draw_rect(x - 6, y - 6, (size + 2) * 6, 19);

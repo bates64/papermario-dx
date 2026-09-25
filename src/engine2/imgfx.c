@@ -148,7 +148,7 @@ Gfx DefaultImgFXSetupGfx[] = {
     gsSPEndDisplayList(),
 };
 
-//TODO figure out bits
+// TODO figure out bits
 ImgFXRenderMode ImgFXRenderModes[] = {
     [IMGFX_RENDER_DEFAULT]               = { 0x00441208, 0x00111208, 0 },
     [IMGFX_RENDER_MULTIPLY_RGB]          = { 0x00441208, 0x00111208, 0 },
@@ -221,7 +221,7 @@ void imgfx_make_mesh(ImgFXState* state);
 void imgfx_appendGfx_mesh(ImgFXState* state, Matrix4f mtx);
 void imgfx_mesh_make_strip(ImgFXState* state);
 void imgfx_mesh_make_grid(ImgFXState* state);
-//ImgFXAnimHeader* imgfx_load_anim(ImgFXState* state);
+// ImgFXAnimHeader* imgfx_load_anim(ImgFXState* state);
 void imgfx_mesh_anim_update(ImgFXState* state);
 void imgfx_appendGfx_mesh_basic(ImgFXState*, Matrix4f mtx);
 void imgfx_appendGfx_mesh_grid(ImgFXState*, Matrix4f mtx);
@@ -529,20 +529,17 @@ void imgfx_update(s32 idx, ImgFXType type, s32 imgfxArg1, s32 imgfxArg2, s32 img
             return;
         case IMGFX_OVERLAY:
         case IMGFX_OVERLAY_XLU:
-            if (type == state->lastColorCmd
-                && imgfxArg1 == (s32) state->ints.overlay.pattern
-                && imgfxArg2 == state->ints.overlay.alpha
-            ) {
+            if (type == state->lastColorCmd && imgfxArg1 == (s32) state->ints.overlay.pattern
+                && imgfxArg2 == state->ints.overlay.alpha)
+            {
                 // no paramaters have changed
                 return;
             }
             break;
         case IMGFX_SET_ANIM:
-            if (state->lastAnimCmd == type
-                && state->ints.anim.type == imgfxArg1
-                && state->ints.anim.interval == imgfxArg2
-                && state->ints.anim.step == imgfxArg3
-            ) {
+            if (state->lastAnimCmd == type && state->ints.anim.type == imgfxArg1
+                && state->ints.anim.interval == imgfxArg2 && state->ints.anim.step == imgfxArg3)
+            {
                 // no paramaters have changed
                 return;
             }
@@ -710,10 +707,10 @@ s32 imgfx_appendGfx_component(s32 idx, ImgFXTexture* ifxImg, u32 flagBits, Matri
         return IMGFX_RENDER_RESULT_NO;
     }
 
-    ImgFXCurrentTexture.tex.raster  = ifxImg->raster;
+    ImgFXCurrentTexture.tex.raster = ifxImg->raster;
     ImgFXCurrentTexture.tex.palette = ifxImg->palette;
-    ImgFXCurrentTexture.tex.width   = ifxImg->width;
-    ImgFXCurrentTexture.tex.height  = ifxImg->height;
+    ImgFXCurrentTexture.tex.width = ifxImg->width;
+    ImgFXCurrentTexture.tex.height = ifxImg->height;
     ImgFXCurrentTexture.tex.xOffset = ifxImg->xOffset;
     ImgFXCurrentTexture.tex.yOffset = ifxImg->yOffset;
     ImgFXCurrentTexture.alphaMultiplier = ifxImg->alpha;
@@ -853,7 +850,7 @@ void imgfx_appendGfx_mesh(ImgFXState* state, Matrix4f mtx) {
                     break;
             }
             primAlpha = state->ints.color.a * ifxImgAlpha;
-            //TODO figure out bits
+            // TODO figure out bits
             mode1 = 0x404B40;
             mode2 = 0x104B40;
             skipModeChange = true;
@@ -886,8 +883,7 @@ void imgfx_appendGfx_mesh(ImgFXState* state, Matrix4f mtx) {
                 // color: texture * prim
                 // alpha: texture
                 gDPSetCombineMode(gMainGfxPos++, G_CC_MODULATEIDECALA_PRIM, G_CC_MODULATEIDECALA_PRIM);
-                gDPSetPrimColor(gMainGfxPos++, 0, 0, state->ints.color.r, state->ints.color.g,
-                                state->ints.color.b, 0);
+                gDPSetPrimColor(gMainGfxPos++, 0, 0, state->ints.color.r, state->ints.color.g, state->ints.color.b, 0);
                 break;
             case IMGFX_RENDER_MULTIPLY_ALPHA:
                 // color: texture
@@ -905,15 +901,15 @@ void imgfx_appendGfx_mesh(ImgFXState* state, Matrix4f mtx) {
                     return;
                 }
                 gDPSetCombineMode(gMainGfxPos++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-                gDPSetPrimColor(gMainGfxPos++, 0, 0, state->ints.color.r, state->ints.color.g,
-                                state->ints.color.b, primAlpha);
+                gDPSetPrimColor(
+                    gMainGfxPos++, 0, 0, state->ints.color.r, state->ints.color.g, state->ints.color.b, primAlpha
+                );
                 break;
             case IMGFX_RENDER_MODULATE_PRIM_RGB:
                 // color: lerp from prim color to 1 based on texture intensity
                 // alpha: texture
                 gDPSetCombineMode(gMainGfxPos++, PM_CC_5B, PM_CC_5B);
-                gDPSetPrimColor(gMainGfxPos++, 0, 0, state->ints.color.r, state->ints.color.g,
-                                state->ints.color.b, 0);
+                gDPSetPrimColor(gMainGfxPos++, 0, 0, state->ints.color.r, state->ints.color.g, state->ints.color.b, 0);
                 break;
             case IMGFX_RENDER_MODULATE_PRIM_RGBA:
                 // color: lerp from prim color to 1 based on texture intensity
@@ -922,8 +918,9 @@ void imgfx_appendGfx_mesh(ImgFXState* state, Matrix4f mtx) {
                     return;
                 }
                 gDPSetCombineMode(gMainGfxPos++, PM_CC_5C, PM_CC_5C);
-                gDPSetPrimColor(gMainGfxPos++, 0, 0, state->ints.color.r, state->ints.color.g,
-                                state->ints.color.b, primAlpha);
+                gDPSetPrimColor(
+                    gMainGfxPos++, 0, 0, state->ints.color.r, state->ints.color.g, state->ints.color.b, primAlpha
+                );
                 break;
             case IMGFX_RENDER_MULTIPLY_SHADE_RGB:
                 // color: modulate vtx color by texture intensity
@@ -986,11 +983,10 @@ void imgfx_appendGfx_mesh(ImgFXState* state, Matrix4f mtx) {
                     // color: blend texure and noise
                     // alpha: texure * prim
                     gDPSetCombineMode(gMainGfxPos++, PM_CC_IMGFX_HOLOGRAM, PM_CC_IMGFX_HOLOGRAM);
-                    gDPSetPrimColor(gMainGfxPos++, 0, 0,
-                                    state->ints.hologram.noiseAmt,
-                                    state->ints.hologram.noiseAmt,
-                                    state->ints.hologram.noiseAmt,
-                                    primAlpha);
+                    gDPSetPrimColor(
+                        gMainGfxPos++, 0, 0, state->ints.hologram.noiseAmt, state->ints.hologram.noiseAmt,
+                        state->ints.hologram.noiseAmt, primAlpha
+                    );
                 } else if (state->ints.hologram.mode == IMGFX_HOLOGRAM_DITHER) {
                     primAlpha = state->ints.hologram.alphaAmt * ifxImgAlpha;
                     // color: texture
@@ -1017,8 +1013,7 @@ void imgfx_appendGfx_mesh(ImgFXState* state, Matrix4f mtx) {
                 // color: prim
                 // alpha: texture
                 gDPSetCombineMode(gMainGfxPos++, PM_CC_IMGFX_COLOR_FILL, PM_CC_IMGFX_COLOR_FILL);
-                gDPSetPrimColor(gMainGfxPos++, 0, 0, state->ints.color.r, state->ints.color.g,
-                                state->ints.color.b, 0);
+                gDPSetPrimColor(gMainGfxPos++, 0, 0, state->ints.color.r, state->ints.color.g, state->ints.color.b, 0);
                 break;
             case IMGFX_RENDER_DEFAULT:
             case IMGFX_RENDER_OVERLAY_RGB:
@@ -1223,7 +1218,7 @@ ImgFXAnimHeader* imgfx_load_anim(ImgFXState* state) {
         state->gfxBufs[0] = heap_malloc(anim->gfxCount * sizeof(Gfx));
         state->gfxBufs[1] = heap_malloc(anim->gfxCount * sizeof(Gfx));
 
-        romStart = imgfx_data_ROM_START + (s32)anim->gfxOffset;
+        romStart = imgfx_data_ROM_START + (s32) anim->gfxOffset;
         romEnd = romStart + anim->gfxCount * sizeof(Gfx);
         dma_copy(romStart, romEnd, state->gfxBufs[0]);
         dma_copy(romStart, romEnd, state->gfxBufs[1]);
@@ -1245,8 +1240,8 @@ ImgFXAnimHeader* imgfx_load_anim(ImgFXState* state) {
                 if (cmd == G_VTX) {
                     // ImgFXVtx structs are 0xC bytes while Vtx are 0x10, so we need a (4/3) scaling factor
                     // to compute a new, equivalent Vtx[i] address for an existing ImgFXVtx[i] address.
-                    offset = (s32) gfxBuffer[j-1].words.w1 - (s32) anim->keyframesOffset;
-                    gfxBuffer[j-1].words.w1 = (s32) state->vtxBufs[i] + ((offset * sizeof(Vtx)) / sizeof(ImgFXVtx));
+                    offset = (s32) gfxBuffer[j - 1].words.w1 - (s32) anim->keyframesOffset;
+                    gfxBuffer[j - 1].words.w1 = (s32) state->vtxBufs[i] + ((offset * sizeof(Vtx)) / sizeof(ImgFXVtx));
                 }
             } while (cmd != G_ENDDL);
         }
@@ -1305,11 +1300,13 @@ void imgfx_mesh_anim_update(ImgFXState* state) {
 
     // find the current + next keyframe vertex data
     curKeyframe = heap_malloc(header->vtxCount * sizeof(ImgFXVtx));
-    romStart = (u8*)((s32)imgfx_data_ROM_START + (s32) header->keyframesOffset + curKeyIdx * header->vtxCount * sizeof(ImgFXVtx));
+    romStart = (u8*) ((s32) imgfx_data_ROM_START + (s32) header->keyframesOffset
+                      + curKeyIdx * header->vtxCount * sizeof(ImgFXVtx));
     dma_copy(romStart, romStart + header->vtxCount * sizeof(ImgFXVtx), curKeyframe);
     if (keyframeInterval > 1) {
         nextKeyframe = heap_malloc(header->vtxCount * sizeof(*nextKeyframe));
-        romStart = (u8*)((s32)imgfx_data_ROM_START + (s32) header->keyframesOffset + nextKeyIdx * header->vtxCount * sizeof(ImgFXVtx));
+        romStart = (u8*) ((s32) imgfx_data_ROM_START + (s32) header->keyframesOffset
+                          + nextKeyIdx * header->vtxCount * sizeof(ImgFXVtx));
         dma_copy(romStart, romStart + header->vtxCount * sizeof(ImgFXVtx), nextKeyframe);
     }
 
@@ -1322,23 +1319,36 @@ void imgfx_mesh_anim_update(ImgFXState* state) {
         if (keyframeInterval > 1) {
             // get vertex position, interpolated between keyframes
             if (header->flags & IMGFX_ANIM_FLAG_ABSOLUTE_COORDS) {
-                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[0] = (s16)(curKeyframe[i].ob[0] + (nextKeyframe[i].ob[0] - curKeyframe[i].ob[0]) * lerpAlpha);
-                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[1] = (s16)(curKeyframe[i].ob[1] + (nextKeyframe[i].ob[1] - curKeyframe[i].ob[1]) * lerpAlpha);
-                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[2] = (s16)(curKeyframe[i].ob[2] + (nextKeyframe[i].ob[2] - curKeyframe[i].ob[2]) * lerpAlpha);
+                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[0] =
+                    (s16) (curKeyframe[i].ob[0] + (nextKeyframe[i].ob[0] - curKeyframe[i].ob[0]) * lerpAlpha);
+                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[1] =
+                    (s16) (curKeyframe[i].ob[1] + (nextKeyframe[i].ob[1] - curKeyframe[i].ob[1]) * lerpAlpha);
+                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[2] =
+                    (s16) (curKeyframe[i].ob[2] + (nextKeyframe[i].ob[2] - curKeyframe[i].ob[2]) * lerpAlpha);
             } else {
-                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[0] = (s16)(curKeyframe[i].ob[0] + (nextKeyframe[i].ob[0] - curKeyframe[i].ob[0]) * lerpAlpha) * 0.01 * ImgFXCurrentTexture.tex.width;
-                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[1] = (s16)(curKeyframe[i].ob[1] + (nextKeyframe[i].ob[1] - curKeyframe[i].ob[1]) * lerpAlpha) * 0.01 * ImgFXCurrentTexture.tex.height;
-                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[2] = (s16)(curKeyframe[i].ob[2] + (nextKeyframe[i].ob[2] - curKeyframe[i].ob[2]) * lerpAlpha) * 0.01 * ((ImgFXCurrentTexture.tex.width + ImgFXCurrentTexture.tex.height) / 2);
+                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[0] =
+                    (s16) (curKeyframe[i].ob[0] + (nextKeyframe[i].ob[0] - curKeyframe[i].ob[0]) * lerpAlpha) * 0.01
+                    * ImgFXCurrentTexture.tex.width;
+                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[1] =
+                    (s16) (curKeyframe[i].ob[1] + (nextKeyframe[i].ob[1] - curKeyframe[i].ob[1]) * lerpAlpha) * 0.01
+                    * ImgFXCurrentTexture.tex.height;
+                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[2] =
+                    (s16) (curKeyframe[i].ob[2] + (nextKeyframe[i].ob[2] - curKeyframe[i].ob[2]) * lerpAlpha) * 0.01
+                    * ((ImgFXCurrentTexture.tex.width + ImgFXCurrentTexture.tex.height) / 2);
             }
             // get vertex color
             if (state->flags & (IMGFX_FLAG_USE_LIGHTING | IMGFX_FLAG_UNUSED_B)) {
-                state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[0] = (s16)(curKeyframe[i].cn[0] + (nextKeyframe[i].cn[0] - curKeyframe[i].cn[0]) * lerpAlpha);
-                state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[1] = (s16)(curKeyframe[i].cn[1] + (nextKeyframe[i].cn[1] - curKeyframe[i].cn[1]) * lerpAlpha);
-                state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[2] = (s16)(curKeyframe[i].cn[2] + (nextKeyframe[i].cn[2] - curKeyframe[i].cn[2]) * lerpAlpha);
+                state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[0] =
+                    (s16) (curKeyframe[i].cn[0] + (nextKeyframe[i].cn[0] - curKeyframe[i].cn[0]) * lerpAlpha);
+                state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[1] =
+                    (s16) (curKeyframe[i].cn[1] + (nextKeyframe[i].cn[1] - curKeyframe[i].cn[1]) * lerpAlpha);
+                state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[2] =
+                    (s16) (curKeyframe[i].cn[2] + (nextKeyframe[i].cn[2] - curKeyframe[i].cn[2]) * lerpAlpha);
             } else {
                 state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[0] =
-                state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[1] =
-                state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[2] = 240.0 - (curKeyframe[i].tc[0] + curKeyframe[i].tc[1]) * 1.2;
+                    state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[1] =
+                        state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[2] =
+                            240.0 - (curKeyframe[i].tc[0] + curKeyframe[i].tc[1]) * 1.2;
             }
         } else {
             // get vertex position
@@ -1347,9 +1357,12 @@ void imgfx_mesh_anim_update(ImgFXState* state) {
                 state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[1] = curKeyframe[i].ob[1];
                 state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[2] = curKeyframe[i].ob[2];
             } else {
-                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[0] = curKeyframe[i].ob[0] * 0.01 * ImgFXCurrentTexture.tex.width;
-                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[1] = curKeyframe[i].ob[1] * 0.01 * ImgFXCurrentTexture.tex.height;
-                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[2] = curKeyframe[i].ob[2] * 0.01 * ((ImgFXCurrentTexture.tex.width + ImgFXCurrentTexture.tex.height) / 2);
+                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[0] =
+                    curKeyframe[i].ob[0] * 0.01 * ImgFXCurrentTexture.tex.width;
+                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[1] =
+                    curKeyframe[i].ob[1] * 0.01 * ImgFXCurrentTexture.tex.height;
+                state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[2] = curKeyframe[i].ob[2] * 0.01
+                    * ((ImgFXCurrentTexture.tex.width + ImgFXCurrentTexture.tex.height) / 2);
             }
             // get vertex color
             if (state->flags & (IMGFX_FLAG_USE_LIGHTING | IMGFX_FLAG_UNUSED_B)) {
@@ -1358,8 +1371,9 @@ void imgfx_mesh_anim_update(ImgFXState* state) {
                 state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[2] = curKeyframe[i].cn[2];
             } else {
                 state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[0] =
-                state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[1] =
-                state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[2] = 240.0 - (curKeyframe[i].tc[0] + curKeyframe[i].tc[1]) * 1.2;
+                    state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[1] =
+                        state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[2] =
+                            240.0 - (curKeyframe[i].tc[0] + curKeyframe[i].tc[1]) * 1.2;
             }
         }
         // get vertex tex coords
@@ -1367,8 +1381,10 @@ void imgfx_mesh_anim_update(ImgFXState* state) {
             state->vtxBufs[gCurrentDisplayContextIndex][i].v.tc[0] = (curKeyframe[i].tc[0] + 256) * 32;
             state->vtxBufs[gCurrentDisplayContextIndex][i].v.tc[1] = (curKeyframe[i].tc[1] + 256) * 32;
         } else {
-            state->vtxBufs[gCurrentDisplayContextIndex][i].v.tc[0] = ((s32)(curKeyframe[i].tc[0] * 0.01 * ImgFXCurrentTexture.tex.width) + 256) * 32;
-            state->vtxBufs[gCurrentDisplayContextIndex][i].v.tc[1] = ((s32)(curKeyframe[i].tc[1] * 0.01 * ImgFXCurrentTexture.tex.height) + 256) * 32;
+            state->vtxBufs[gCurrentDisplayContextIndex][i].v.tc[0] =
+                ((s32) (curKeyframe[i].tc[0] * 0.01 * ImgFXCurrentTexture.tex.width) + 256) * 32;
+            state->vtxBufs[gCurrentDisplayContextIndex][i].v.tc[1] =
+                ((s32) (curKeyframe[i].tc[1] * 0.01 * ImgFXCurrentTexture.tex.height) + 256) * 32;
         }
     }
 
@@ -1474,27 +1490,27 @@ void imgfx_appendGfx_mesh_basic(ImgFXState* state, Matrix4f mtx) {
         s32 alpha2;
 
         if (!(state->flags & IMGFX_FLAG_SKIP_TEX_SETUP)) {
-            if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED)
-                && (state->arrayIdx != 0)
+            if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED) && (state->arrayIdx != 0)
                 && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE))
-                && (   state->renderType == IMGFX_RENDER_DEFAULT
-                    || state->renderType == IMGFX_RENDER_MULTIPLY_ALPHA
+                && (state->renderType == IMGFX_RENDER_DEFAULT || state->renderType == IMGFX_RENDER_MULTIPLY_ALPHA
                     || state->renderType == IMGFX_RENDER_OVERLAY_RGBA
-                    || state->renderType == IMGFX_RENDER_MULTIPLY_SHADE_ALPHA)
-            ) {
-                gDPScrollMultiTile2_4b(gMainGfxPos++,
-                    ImgFXCurrentTexture.tex.raster, G_IM_FMT_CI,
-                    ImgFXCurrentTexture.tex.width, ImgFXCurrentTexture.tex.height, // img size
+                    || state->renderType == IMGFX_RENDER_MULTIPLY_SHADE_ALPHA))
+            {
+                gDPScrollMultiTile2_4b(
+                    gMainGfxPos++, ImgFXCurrentTexture.tex.raster, G_IM_FMT_CI, ImgFXCurrentTexture.tex.width,
+                    ImgFXCurrentTexture.tex.height, // img size
                     uls, ult, // top left
                     lrs - 1, lrt - 1, // bottom right
                     0, // palette
                     G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, // clamp wrap mirror
                     8, 8, // mask
                     G_TX_NOLOD, G_TX_NOLOD, // shift,
-                    0x100, 0x100); // scroll
-                gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x100, 2, 0,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP,
-                            G_TX_NOMASK, G_TX_NOLOD);
+                    0x100, 0x100
+                ); // scroll
+                gDPSetTile(
+                    gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x100, 2, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                    G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD
+                );
                 gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 252, 0);
 
                 alpha = 255;
@@ -1515,9 +1531,8 @@ void imgfx_appendGfx_mesh_basic(ImgFXState* state, Matrix4f mtx) {
 
                 if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT)
                     // && (ImgFXInstances[0].arrayIdx != 0) -- (?) verify this is OK
-                    && state->arrayIdx != 0
-                    && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE))
-                ) {
+                    && state->arrayIdx != 0 && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE)))
+                {
                     cam = &gCameras[gCurrentCamID];
 
                     if (gGameStatusPtr->context == CONTEXT_PAUSE) {
@@ -1541,21 +1556,21 @@ void imgfx_appendGfx_mesh_basic(ImgFXState* state, Matrix4f mtx) {
                 }
                 create_shading_palette(mtx, uls, ult, lrs, lrt, alpha, state->otherModeL);
             } else {
-                gDPScrollTextureTile_4b(gMainGfxPos++,
-                    ImgFXCurrentTexture.tex.raster, G_IM_FMT_CI,
-                    ImgFXCurrentTexture.tex.width, ImgFXCurrentTexture.tex.height, // img size
+                gDPScrollTextureTile_4b(
+                    gMainGfxPos++, ImgFXCurrentTexture.tex.raster, G_IM_FMT_CI, ImgFXCurrentTexture.tex.width,
+                    ImgFXCurrentTexture.tex.height, // img size
                     uls, ult, // top left
                     lrs - 1, lrt - 1, // bottom right
                     0, // palette
                     G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, // clamp wrap mirror
                     8, 8, // mask
                     G_TX_NOLOD, G_TX_NOLOD, // shift,
-                    0x100, 0x100); // scroll
+                    0x100, 0x100
+                ); // scroll
 
-                if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT)
-                    && state->arrayIdx != 0
-                    && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE))
-                ) {
+                if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT) && state->arrayIdx != 0
+                    && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE)))
+                {
                     alpha2 = 255;
                     cam = &gCameras[gCurrentCamID];
 
@@ -1614,9 +1629,8 @@ void imgfx_appendGfx_mesh_basic(ImgFXState* state, Matrix4f mtx) {
 
         if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT)
             // && ImgFXInstances[0].arrayIdx != 0 -- (?) verify this is OK
-            && state->arrayIdx != 0
-            && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE))
-        ) {
+            && state->arrayIdx != 0 && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE)))
+        {
             cam = &gCameras[gCurrentCamID];
             if (gGameStatusPtr->context == CONTEXT_PAUSE) {
                 gSPViewport(gMainGfxPos++, &D_8014EE40);
@@ -1656,25 +1670,30 @@ void imgfx_appendGfx_mesh_grid(ImgFXState* state, Matrix4f mtx) {
             s32 lrIdx = firstVtxIdx + (i + 1) * (state->subdivX + 1) + j + 1;
             if (!(state->flags & IMGFX_FLAG_SKIP_TEX_SETUP)) {
                 if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED)
-                    // (?) bugfix: was ImgFXInstances[0].arrayIdx != 0, chaning this lets Kolorado on kzn_17 recieve sprite shading
-                    && state->arrayIdx != 0
-                    && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE))
-                    && (state->renderType == IMGFX_RENDER_DEFAULT
-                        || state->renderType == IMGFX_RENDER_MULTIPLY_ALPHA
-                        || state->renderType == IMGFX_RENDER_MULTIPLY_SHADE_ALPHA)
-                ) {
+                    // (?) bugfix: was ImgFXInstances[0].arrayIdx != 0, chaning this lets Kolorado on kzn_17 recieve
+                    // sprite shading
+                    && state->arrayIdx != 0 && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE))
+                    && (state->renderType == IMGFX_RENDER_DEFAULT || state->renderType == IMGFX_RENDER_MULTIPLY_ALPHA
+                        || state->renderType == IMGFX_RENDER_MULTIPLY_SHADE_ALPHA))
+                {
                     s32 alpha = 255;
-                    gDPScrollMultiTile2_4b(gMainGfxPos++,
-                        ImgFXCurrentTexture.tex.raster, G_IM_FMT_CI,
-                        ImgFXCurrentTexture.tex.width, ImgFXCurrentTexture.tex.height, // img size
-                        (FrameVtxBuf[ulIdx].v.tc[0] >> 5) - 0x100, (FrameVtxBuf[ulIdx].v.tc[1] >> 5) - 0x100, // top left
-                        (FrameVtxBuf[lrIdx].v.tc[0] >> 5) - 0x100 - 1, (FrameVtxBuf[lrIdx].v.tc[1] >> 5) - 0x100 - 1, // bottom right
+                    gDPScrollMultiTile2_4b(
+                        gMainGfxPos++, ImgFXCurrentTexture.tex.raster, G_IM_FMT_CI, ImgFXCurrentTexture.tex.width,
+                        ImgFXCurrentTexture.tex.height, // img size
+                        (FrameVtxBuf[ulIdx].v.tc[0] >> 5) - 0x100,
+                        (FrameVtxBuf[ulIdx].v.tc[1] >> 5) - 0x100, // top left
+                        (FrameVtxBuf[lrIdx].v.tc[0] >> 5) - 0x100 - 1,
+                        (FrameVtxBuf[lrIdx].v.tc[1] >> 5) - 0x100 - 1, // bottom right
                         0, // palette
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, // clamp wrap mirror
                         8, 8, // mask
                         G_TX_NOLOD, G_TX_NOLOD, // shift,
-                        0x100, 0x100); // scroll
-                    gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
+                        0x100, 0x100
+                    ); // scroll
+                    gDPSetTile(
+                        gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD
+                    );
                     gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 63 << 2, 0);
                     switch (state->renderType) {
                         case IMGFX_RENDER_DEFAULT:
@@ -1690,21 +1709,25 @@ void imgfx_appendGfx_mesh_grid(ImgFXState* state, Matrix4f mtx) {
                             printf("imgfx: unhandled render type %d for shading palette\n", state->renderType);
                             break;
                     }
-                    create_shading_palette(mtx,
-                                           (FrameVtxBuf[ulIdx].v.tc[0] >> 5) - 0x100, (FrameVtxBuf[ulIdx].v.tc[1] >> 5) - 0x100,
-                                           (FrameVtxBuf[lrIdx].v.tc[0] >> 5) - 0x100, (FrameVtxBuf[lrIdx].v.tc[1] >> 5) - 0x100,
-                                           alpha, state->otherModeL);
+                    create_shading_palette(
+                        mtx, (FrameVtxBuf[ulIdx].v.tc[0] >> 5) - 0x100, (FrameVtxBuf[ulIdx].v.tc[1] >> 5) - 0x100,
+                        (FrameVtxBuf[lrIdx].v.tc[0] >> 5) - 0x100, (FrameVtxBuf[lrIdx].v.tc[1] >> 5) - 0x100, alpha,
+                        state->otherModeL
+                    );
                 } else {
-                    gDPScrollTextureTile_4b(gMainGfxPos++,
-                        ImgFXCurrentTexture.tex.raster, G_IM_FMT_CI,
-                        ImgFXCurrentTexture.tex.width, ImgFXCurrentTexture.tex.height, // img size
-                        (FrameVtxBuf[ulIdx].v.tc[0] >> 5) - 0x100, (FrameVtxBuf[ulIdx].v.tc[1] >> 5) - 0x100, // top left
-                        (FrameVtxBuf[lrIdx].v.tc[0] >> 5) - 0x100 - 1, (FrameVtxBuf[lrIdx].v.tc[1] >> 5) - 0x100 - 1, // bottom right
+                    gDPScrollTextureTile_4b(
+                        gMainGfxPos++, ImgFXCurrentTexture.tex.raster, G_IM_FMT_CI, ImgFXCurrentTexture.tex.width,
+                        ImgFXCurrentTexture.tex.height, // img size
+                        (FrameVtxBuf[ulIdx].v.tc[0] >> 5) - 0x100,
+                        (FrameVtxBuf[ulIdx].v.tc[1] >> 5) - 0x100, // top left
+                        (FrameVtxBuf[lrIdx].v.tc[0] >> 5) - 0x100 - 1,
+                        (FrameVtxBuf[lrIdx].v.tc[1] >> 5) - 0x100 - 1, // bottom right
                         0, // palette
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, // clamp wrap mirror
                         8, 8, // mask
                         G_TX_NOLOD, G_TX_NOLOD, // shift,
-                        0x100, 0x100); // scroll
+                        0x100, 0x100
+                    ); // scroll
                 }
             }
 
@@ -1718,31 +1741,36 @@ void imgfx_appendGfx_mesh_grid(ImgFXState* state, Matrix4f mtx) {
 }
 
 void imgfx_appendGfx_mesh_anim(ImgFXState* state, Matrix4f mtx) {
-    if (state->vtxBufs[gCurrentDisplayContextIndex] == nullptr || state->gfxBufs[gCurrentDisplayContextIndex] == nullptr) {
+    if (state->vtxBufs[gCurrentDisplayContextIndex] == nullptr
+        || state->gfxBufs[gCurrentDisplayContextIndex] == nullptr)
+    {
         return;
     }
 
     guScale(&gDisplayContext->matrixStack[gMatrixListPos], 0.1f, 0.1f, 0.1f);
-    gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+    );
 
     if (!(state->flags & IMGFX_FLAG_SKIP_TEX_SETUP)) {
         gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
         gDPLoadTLUT_pal16(gMainGfxPos++, 0, ImgFXCurrentTexture.tex.palette);
         if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED)
             && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE))
-            && (state->renderType == IMGFX_RENDER_DEFAULT
-                || state->renderType == IMGFX_RENDER_MULTIPLY_ALPHA
-                || state->renderType == IMGFX_RENDER_MULTIPLY_SHADE_ALPHA
-                || state->renderType == IMGFX_RENDER_ANIM)
-        ) {
+            && (state->renderType == IMGFX_RENDER_DEFAULT || state->renderType == IMGFX_RENDER_MULTIPLY_ALPHA
+                || state->renderType == IMGFX_RENDER_MULTIPLY_SHADE_ALPHA || state->renderType == IMGFX_RENDER_ANIM))
+        {
             s32 alpha = 255;
-            gDPScrollMultiTile2_4b(gMainGfxPos++, ImgFXCurrentTexture.tex.raster, G_IM_FMT_CI,
-                                    ImgFXCurrentTexture.tex.width, ImgFXCurrentTexture.tex.height,
-                                    0, 0, ImgFXCurrentTexture.tex.width - 1, ImgFXCurrentTexture.tex.height - 1, 0,
-                                    G_TX_CLAMP, G_TX_CLAMP, 8, 8, G_TX_NOLOD, G_TX_NOLOD,
-                                    256, 256);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0,
-                            G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
+            gDPScrollMultiTile2_4b(
+                gMainGfxPos++, ImgFXCurrentTexture.tex.raster, G_IM_FMT_CI, ImgFXCurrentTexture.tex.width,
+                ImgFXCurrentTexture.tex.height, 0, 0, ImgFXCurrentTexture.tex.width - 1,
+                ImgFXCurrentTexture.tex.height - 1, 0, G_TX_CLAMP, G_TX_CLAMP, 8, 8, G_TX_NOLOD, G_TX_NOLOD, 256, 256
+            );
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0, G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD,
+                G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD
+            );
             gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 252, 0);
 
             switch (state->renderType) {
@@ -1760,13 +1788,15 @@ void imgfx_appendGfx_mesh_anim(ImgFXState* state, Matrix4f mtx) {
                     printf("imgfx: unhandled render type %d for shading palette\n", state->renderType);
                     break;
             }
-            create_shading_palette(mtx, 0, 0, ImgFXCurrentTexture.tex.width, ImgFXCurrentTexture.tex.height, alpha, state->otherModeL);
+            create_shading_palette(
+                mtx, 0, 0, ImgFXCurrentTexture.tex.width, ImgFXCurrentTexture.tex.height, alpha, state->otherModeL
+            );
         } else {
-            gDPScrollTextureTile_4b(gMainGfxPos++, ImgFXCurrentTexture.tex.raster, G_IM_FMT_CI,
-                                    ImgFXCurrentTexture.tex.width, ImgFXCurrentTexture.tex.height,
-                                    0, 0, ImgFXCurrentTexture.tex.width - 1, ImgFXCurrentTexture.tex.height - 1, 0,
-                                    G_TX_CLAMP, G_TX_CLAMP, 8, 8, G_TX_NOLOD, G_TX_NOLOD,
-                                    256, 256);
+            gDPScrollTextureTile_4b(
+                gMainGfxPos++, ImgFXCurrentTexture.tex.raster, G_IM_FMT_CI, ImgFXCurrentTexture.tex.width,
+                ImgFXCurrentTexture.tex.height, 0, 0, ImgFXCurrentTexture.tex.width - 1,
+                ImgFXCurrentTexture.tex.height - 1, 0, G_TX_CLAMP, G_TX_CLAMP, 8, 8, G_TX_NOLOD, G_TX_NOLOD, 256, 256
+            );
         }
     }
     gSPDisplayList(gMainGfxPos++, state->gfxBufs[gCurrentDisplayContextIndex]);
@@ -1780,8 +1810,14 @@ void imgfx_appendGfx_mesh_strip(ImgFXState* state, Matrix4f mtx) {
     s32 uls, ult;
     s32 lrs, lrt;
 
-    guScale(&gDisplayContext->matrixStack[gMatrixListPos], (f32)ImgFXCurrentTexture.tex.width / 100.0, (f32)ImgFXCurrentTexture.tex.height / 100.0, 1.0f);
-    gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    guScale(
+        &gDisplayContext->matrixStack[gMatrixListPos], (f32) ImgFXCurrentTexture.tex.width / 100.0,
+        (f32) ImgFXCurrentTexture.tex.height / 100.0, 1.0f
+    );
+    gSPMatrix(
+        gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+    );
     gDPSetRenderMode(gMainGfxPos++, G_RM_ZB_XLU_DECAL, G_RM_ZB_XLU_DECAL2);
 
     if (state->renderType == IMGFX_RENDER_OVERLAY_RGBA) {
@@ -1793,10 +1829,10 @@ void imgfx_appendGfx_mesh_strip(ImgFXState* state, Matrix4f mtx) {
     }
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
     gDPLoadTLUT_pal16(gMainGfxPos++, 0, ufs->palette);
-    gDPScrollTextureTile_4b(gMainGfxPos++, ufs->raster, G_IM_FMT_CI, ufs->width, ufs->height,
-                          0, 0, ufs->width - 1, ufs->height - 1, 0,
-                          G_TX_WRAP, G_TX_WRAP, shifts, shiftt, G_TX_NOLOD, G_TX_NOLOD,
-                          256, 256);
+    gDPScrollTextureTile_4b(
+        gMainGfxPos++, ufs->raster, G_IM_FMT_CI, ufs->width, ufs->height, 0, 0, ufs->width - 1, ufs->height - 1, 0,
+        G_TX_WRAP, G_TX_WRAP, shifts, shiftt, G_TX_NOLOD, G_TX_NOLOD, 256, 256
+    );
 
     uls = state->floats.overlay.posX;
     ult = state->floats.overlay.posY;
@@ -1804,8 +1840,8 @@ void imgfx_appendGfx_mesh_strip(ImgFXState* state, Matrix4f mtx) {
     lrt = ufs->height * 4 + state->floats.overlay.posY;
     gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, uls, ult, lrs, lrt);
 
-    state->floats.overlay.posX = (s32)(state->floats.overlay.posX + ufs->offsetX) % (ufs->width * 4);
-    state->floats.overlay.posY = (s32)(state->floats.overlay.posY + ufs->offsetY) % (ufs->height * 4);
+    state->floats.overlay.posX = (s32) (state->floats.overlay.posX + ufs->offsetX) % (ufs->width * 4);
+    state->floats.overlay.posY = (s32) (state->floats.overlay.posY + ufs->offsetY) % (ufs->height * 4);
     gSPDisplayList(gMainGfxPos++, ufs->displayList);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
@@ -1844,7 +1880,7 @@ void imgfx_mesh_make_wavy(ImgFXState* state) {
     state->floats.wavy.phase3 = phaseZ;
 
     if (state->floats.wavy.phase1 >= 360.0) {
-        state->floats.wavy.phase1-= 360.0;
+        state->floats.wavy.phase1 -= 360.0;
     }
 
     if (state->floats.wavy.phase2 >= 360.0) {
@@ -1874,7 +1910,7 @@ void imgfx_mesh_make_wavy(ImgFXState* state) {
 }
 
 void imgfx_mesh_load_colors(ImgFXState* state) {
-    f32 alpha = (f32)ImgFXCurrentTexture.alphaMultiplier / 255.0;
+    f32 alpha = (f32) ImgFXCurrentTexture.alphaMultiplier / 255.0;
     s32 vtxCount = state->lastVtxIdx - state->firstVtxIdx;
     s32 i;
 

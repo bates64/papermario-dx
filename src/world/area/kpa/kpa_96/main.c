@@ -1,6 +1,7 @@
 #include "kpa_96.h"
 
-EvtScript N(EVS_ExitDoors_kpa_32_3) = EVT_EXIT_DOUBLE_DOOR(kpa_96_ENTRY_0, "kpa_32", kpa_32_ENTRY_3, COLLIDER_deilittw, MODEL_o881, MODEL_o882);
+EvtScript N(EVS_ExitDoors_kpa_32_3) =
+    EVT_EXIT_DOUBLE_DOOR(kpa_96_ENTRY_0, "kpa_32", kpa_32_ENTRY_3, COLLIDER_deilittw, MODEL_o881, MODEL_o882);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_kpa_32_3)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)

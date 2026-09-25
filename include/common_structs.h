@@ -9,7 +9,7 @@
 
 struct Evt;
 
-typedef ApiStatus(*ApiFunc)(struct Evt*, s32);
+typedef ApiStatus (*ApiFunc)(struct Evt*, s32);
 
 typedef Bytecode EvtScript[];
 
@@ -1522,15 +1522,15 @@ typedef struct GameStatus {
 typedef union PartnerAnimations {
     /* 0x00 */ s32 anims[9]; // see enum PartnerAnimIndices
     struct {
-    /* 0x00 */ s32 still;
-    /* 0x04 */ s32 walk;
-    /* 0x08 */ s32 jump;
-    /* 0x0C */ s32 fall;
-    /* 0x10 */ s32 fly;
-    /* 0x14 */ s32 idle;
-    /* 0x18 */ s32 run;
-    /* 0x1C */ s32 talk;
-    /* 0x20 */ s32 hurt;
+        /* 0x00 */ s32 still;
+        /* 0x04 */ s32 walk;
+        /* 0x08 */ s32 jump;
+        /* 0x0C */ s32 fall;
+        /* 0x10 */ s32 fly;
+        /* 0x14 */ s32 idle;
+        /* 0x18 */ s32 run;
+        /* 0x1C */ s32 talk;
+        /* 0x20 */ s32 hurt;
     };
 } PartnerAnimations; // size = 0x24
 
@@ -1806,7 +1806,8 @@ typedef struct LavaReset {
 
 typedef struct BombTrigger {
     /* 0x00 */ Vec3f pos;
-    /* 0x0C */ f32 diameter; // effective 'size' of the object, usually set to zero because bombettes explosion radius is large enough
+    /* 0x0C */ f32 diameter; // effective 'size' of the object, usually set to zero because bombettes explosion radius
+                             // is large enough
 } BombTrigger; // size = 0x10;
 
 typedef struct AnimatedModel {
@@ -1886,14 +1887,14 @@ typedef struct ActorState { // TODO: Make the first field of this an ActorMoveme
     /* 0x68 */ PAD(3);
     /* 0x6B */ u8 jumpPartIndex;
     /* 0x6C */ union {
-    /*      */     s32 functionTemp[4];
-    /*      */     f32 functionTempF[4];
-    /*      */     void* functionTempPtr[4];
+        /*      */ s32 functionTemp[4];
+        /*      */ f32 functionTempF[4];
+        /*      */ void* functionTempPtr[4];
     /* 0x6C */ };
     /* 0x7C */ union {
-    /*      */     s32 varTable[16];
-    /*      */     f32 varTableF[16];
-    /*      */     void* varTablePtr[16];
+        /*      */ s32 varTable[16];
+        /*      */ f32 varTableF[16];
+        /*      */ void* varTablePtr[16];
     /* 0x7C */ };
 } ActorState; // size = 0xBC;
 
@@ -2171,15 +2172,18 @@ typedef union {
     WindowStyleCustom* customStyle;
 } WindowStyle TRANSPARENT_UNION;
 
-typedef void WindowUpdateCallback(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY, f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
+typedef void WindowUpdateCallback(
+    s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
+);
 
 typedef union {
     int i;
     WindowUpdateCallback* func;
 } WindowUpdateFunc TRANSPARENT_UNION;
 
-typedef void MenuPanelDrawContentFunc(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
+typedef void
+MenuPanelDrawContentFunc(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
 
 typedef struct MenuWindowBP {
     /* 0x00 */ s8 windowID;
@@ -2199,7 +2203,8 @@ typedef struct MenuWindowBP {
     /* 0x20 */ WindowStyle style;
 } MenuWindowBP; // size = 0x24;
 
-typedef void WindowDrawContentFunc(void* userData, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
+typedef void
+WindowDrawContentFunc(void* userData, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
 
 typedef struct {
     /* 0x00 */ u8 flags;
@@ -2269,7 +2274,8 @@ typedef struct TweesterPhysics {
 typedef struct PartnerStatus {
     /* 0x000 */ s8 partnerActionState;
     /* 0x001 */ b8 shouldResumeAbility;
-    /* 0x002 */ b8 moveWithoutInput;   // part of the scrapped multiplayer, lets the partner be auto-controlled until player 2 presses a button
+    /* 0x002 */ b8 moveWithoutInput;   // part of the scrapped multiplayer, lets the partner be auto-controlled until
+                                       // player 2 presses a button
     /* 0x003 */ s8 actingPartner;
     /* 0x004 */ s16 stickX;
     /* 0x006 */ s16 stickY;
@@ -2516,7 +2522,7 @@ typedef struct SpeechBubbleData {
     /* 0x10 */ f32 yaw;
     /* 0x14 */ f32 scale;
     /* 0x18 */ s32 unk_18;
-    /* 0x1C */ f32 unk_1C; //lastPosY?
+    /* 0x1C */ f32 unk_1C; // lastPosY?
     /* 0x20 */ s32 holdTime;
     /* 0x24 */ PAD(6);
     /* 0x2A */ u8 state;

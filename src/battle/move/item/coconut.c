@@ -10,7 +10,6 @@
 #include "battle/common/move/ItemRefund.inc.c"
 #include "battle/common/move/UseItem.inc.c"
 
-
 #include "battle/move/item/coconut.png.h"
 INCLUDE_IMG("battle/move/item/coconut.png", battle_item_coconut_png);
 INCLUDE_PAL("battle/move/item/coconut.pal", battle_item_coconut_pal);

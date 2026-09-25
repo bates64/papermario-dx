@@ -20,10 +20,12 @@ API_CALLABLE(N(NpcOrbitPlayerPos)) {
             npc->pos.x = playerStatus->pos.x;
             npc->pos.y = playerStatus->pos.y;
             npc->pos.z = playerStatus->pos.z;
-            npc->moveToPos.x =  script->functionTemp[3] * 3;
+            npc->moveToPos.x = script->functionTemp[3] * 3;
             npc->moveToPos.y = 3.0f;
-            add_vec2D_polar(&npc->pos.x, &npc->pos.z, 70.0f, npc->moveToPos.x + (script->functionTemp[2] * 51) + 153.0f);
-            if ((script->functionTemp[3] + script->functionTemp[2]) % 13 == 0)  {
+            add_vec2D_polar(
+                &npc->pos.x, &npc->pos.z, 70.0f, npc->moveToPos.x + (script->functionTemp[2] * 51) + 153.0f
+            );
+            if ((script->functionTemp[3] + script->functionTemp[2]) % 13 == 0) {
                 fx_sparkles(3, npc->pos.x, npc->pos.y + 10.0f, npc->pos.z, 10.0f);
             }
             if (script->functionTemp[3] > 350) {
@@ -38,9 +40,7 @@ API_CALLABLE(N(NpcOrbitPlayerPos)) {
             npc->moveToPos.x = script->functionTemp[3] * 3;
             npc->moveToPos.y = 3.0f;
             add_vec2D_polar(
-                &npc->pos.x,
-                &npc->pos.z,
-                (((190 - script->functionTemp[3]) / 190.0f) * 67.0f) + 3.0f,
+                &npc->pos.x, &npc->pos.z, (((190 - script->functionTemp[3]) / 190.0f) * 67.0f) + 3.0f,
                 npc->moveToPos.x + (script->functionTemp[2] * 51) + 153.0f
             );
             if ((script->functionTemp[3] + script->functionTemp[2]) % 13 == 0) {

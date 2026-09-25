@@ -46,4 +46,3 @@ Stage NAMESPACE = {
     .postBattle = &N(EVS_PostBattle),
     .foregroundModelList = N(ForegroundModels),
 };
-

@@ -201,7 +201,7 @@ void stat_change_update(EffectInstance* effect) {
             part->scaleY = 0.0f;
         } else {
             part->unk_24 = D_E00AC83C[oldUnk18].unk_00;
-            part->scaleY = (f32)D_E00AC83C[oldUnk18].unk_01 * 0.01;
+            part->scaleY = (f32) D_E00AC83C[oldUnk18].unk_01 * 0.01;
             part->scaleX = 1.0f - part->scaleY + 1.0f;
         }
     } else {
@@ -211,7 +211,7 @@ void stat_change_update(EffectInstance* effect) {
             part->scaleY = 0.0f;
         } else {
             part->unk_24 = D_E00AC7F8[oldUnk18].unk_00;
-            part->scaleX = (f32)D_E00AC7F8[oldUnk18].unk_01 * 0.01;
+            part->scaleX = (f32) D_E00AC7F8[oldUnk18].unk_01 * 0.01;
             part->scaleY = 1.0f - part->scaleX + 1.0f;
         }
     }
@@ -241,15 +241,25 @@ void func_E00AC2A4(EffectInstance* effect) {
 
     if (data->scaleX != 0.0f && data->scaleY != 0.0f) {
         gDPPipeSync(gMainGfxPos++);
-        gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+        gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
-        guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->scale, data->pos.x, data->pos.y, data->pos.z);
+        guPositionF(
+            sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->scale, data->pos.x, data->pos.y, data->pos.z
+        );
         guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
 
         if (data->unk_24 == 255) {
-            gDPSetRenderMode(gMainGfxPos++, AA_EN | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM), AA_EN | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM));
+            gDPSetRenderMode(
+                gMainGfxPos++,
+                AA_EN | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA
+                    | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM),
+                AA_EN | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA
+                    | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM)
+            );
             gDPSetCombineMode(gMainGfxPos++, G_CC_MODULATEIDECALA, G_CC_MODULATEIDECALA);
         } else {
             gDPSetRenderMode(gMainGfxPos++, G_RM_CLD_SURF, G_RM_CLD_SURF2);
@@ -261,7 +271,9 @@ void func_E00AC2A4(EffectInstance* effect) {
         guMtxCatF(sp60, sp20, sp20);
         guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_E00AC7B0[arrowType]);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, data->unk_24);
         gSPDisplayList(gMainGfxPos++, D_E00AC7BC[arrowType]);
@@ -271,7 +283,9 @@ void func_E00AC2A4(EffectInstance* effect) {
         guTranslateF(sp20, 0.0f, data->unk_3C, 0.0f);
         guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
 
         if (arrowValue < 0) {
             idx = -arrowValue;

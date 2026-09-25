@@ -62,19 +62,14 @@ void ai_try_set_state(Evt* script, s32 state);
 
 static ALWAYS_INLINE b32 is_point_outside_wander_territory(EnemyTerritoryWander* wander, f32 pointX, f32 pointZ) {
     return is_point_outside_territory(
-        wander->wanderShape,
-        wander->centerPos.x, wander->centerPos.z,
-        pointX, pointZ,
-        wander->wanderSize.x, wander->wanderSize.z
+        wander->wanderShape, wander->centerPos.x, wander->centerPos.z, pointX, pointZ, wander->wanderSize.x,
+        wander->wanderSize.z
     );
 }
 
 static ALWAYS_INLINE b32 is_point_outside_detect_volume(EnemyDetectVolume* detect, f32 pointX, f32 pointZ) {
     return is_point_outside_territory(
-        detect->shape,
-        detect->pointX, detect->pointZ,
-        pointX, pointZ,
-        detect->sizeX, detect->sizeZ
+        detect->shape, detect->pointX, detect->pointZ, pointX, pointZ, detect->sizeX, detect->sizeZ
     );
 }
 

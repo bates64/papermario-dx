@@ -52,13 +52,13 @@ API_CALLABLE(N(CheckPlayerInSight)) {
         z = npc->pos.z;
         centerOffset = dist2D(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
 
-        ignoreFlags = COLLISION_IGNORE_ENTITIES
-            | COLLIDER_FLAG_IGNORE_NPC
-            | COLLIDER_FLAG_IGNORE_PLAYER
+        ignoreFlags = COLLISION_IGNORE_ENTITIES | COLLIDER_FLAG_IGNORE_NPC | COLLIDER_FLAG_IGNORE_PLAYER
             | COLLIDER_FLAG_IGNORE_SHELL;
-        if (npc_test_move_taller_with_slipping(ignoreFlags, &x, &y, &z, centerOffset,
-                    atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z),
-                    npc->collisionDiameter, npc->collisionHeight))
+        if (npc_test_move_taller_with_slipping(
+                ignoreFlags, &x, &y, &z, centerOffset,
+                atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z), npc->collisionDiameter,
+                npc->collisionHeight
+            ))
         {
             playerDetected = false;
         }
@@ -147,9 +147,11 @@ API_CALLABLE(N(UpdateSearchlight)) {
         z = npc->pos.z;
 
         dist = dist2D(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
-        if (npc_test_move_taller_with_slipping(0, &x, &y, &z, dist,
-                atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z),
-                npc->collisionDiameter, npc->collisionHeight)) {
+        if (npc_test_move_taller_with_slipping(
+                0, &x, &y, &z, dist, atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z),
+                npc->collisionDiameter, npc->collisionHeight
+            ))
+        {
             outVal = 0;
         }
     }

@@ -72,7 +72,9 @@ void damage_indicator_render(EffectInstance* effect);
 void damage_indicator_render_ui(EffectInstance* effect);
 void damage_indicator_render_impl(EffectInstance* effect);
 
-void damage_indicator_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f32 starsRadius, f32 starsAngle, s32 damageAmt, EffectInstance** effectOut) {
+void damage_indicator_main(
+    s32 arg0, f32 posX, f32 posY, f32 posZ, f32 starsRadius, f32 starsAngle, s32 damageAmt, EffectInstance** effectOut
+) {
     EffectBlueprint bp;
     EffectBlueprint* bpPtr = &bp;
     EffectInstance* effect;
@@ -177,7 +179,7 @@ void damage_indicator_update(EffectInstance* effect) {
         part->basePos.z += part->relPos.z;
 
         if (temp_t0 <= 40) {
-            part->scale = (f32)D_E003CCD0[temp_a2] * 0.01;
+            part->scale = (f32) D_E003CCD0[temp_a2] * 0.01;
         } else {
             part->scale = 0.0f;
         }
@@ -222,7 +224,7 @@ void damage_indicator_render_impl(EffectInstance* effect) {
         gDPSetCombineMode(gMainGfxPos++, PM_CC_DAMAGE_INDICATOR, PM_CC_DAMAGE_INDICATOR);
     }
 
-    for(i = 1; i < effect->numParts; i++, part--) {
+    for (i = 1; i < effect->numParts; i++, part--) {
         s32 rIdx = ((i + spA0) % 12) * 3;
 
         gDPSetPrimColor(gMainGfxPos++, 0, 0, D_E003CCF8[rIdx], D_E003CCF8[rIdx + 1], D_E003CCF8[rIdx + 2], part->alpha);
@@ -232,17 +234,21 @@ void damage_indicator_render_impl(EffectInstance* effect) {
             guPositionF(mtxTransform, 0.0f, 0.0f, 0.0f, part->scale, part->curPos.x, part->curPos.y, part->curPos.z);
             guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, D_09002150_352370);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 
-            guPositionF(mtxTransform, 0.0f, 0.0f, 0.0f, part->scale,
-                (part->curPos.x + part->basePos.x) * 0.5,
-                (part->curPos.y + part->basePos.y) * 0.5,
-                (part->curPos.z + part->basePos.z) * 0.5);
+            guPositionF(
+                mtxTransform, 0.0f, 0.0f, 0.0f, part->scale, (part->curPos.x + part->basePos.x) * 0.5,
+                (part->curPos.y + part->basePos.y) * 0.5, (part->curPos.z + part->basePos.z) * 0.5
+            );
             guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, D_09002160_352380);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         }
@@ -252,12 +258,16 @@ void damage_indicator_render_impl(EffectInstance* effect) {
         guTranslateF(mtxTransform, part->basePos.x, part->basePos.y, part->basePos.z);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
 
         guScaleF(mtxTransform, part->scale, part->scale, 1.0f);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
 
         if (i == lastPartIdx) {
             gSPDisplayList(gMainGfxPos++, D_09002170_352390);

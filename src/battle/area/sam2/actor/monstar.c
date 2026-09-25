@@ -158,7 +158,7 @@ ImgFXOverlayTexture N(MonstarDetailTexture) = {
 };
 
 API_CALLABLE(N(UpdateMonstarImgFX)) {
-    #define RGBA_BUF_SIZE 20
+#define RGBA_BUF_SIZE 20
     ActorPart* part = get_actor_part(get_actor(script->owner1.actorID), 1);
     s32 i;
     u8 colR[RGBA_BUF_SIZE];
@@ -172,7 +172,7 @@ API_CALLABLE(N(UpdateMonstarImgFX)) {
         set_npc_imgfx_comp(part->spriteInstanceID, 0, IMGFX_ALLOC_COLOR_BUF, RGBA_BUF_SIZE, 0, 0, 255, 0);
     }
 
-    set_npc_imgfx_comp(part->spriteInstanceID, 1, IMGFX_OVERLAY, (s32)&N(MonstarDetailTexture), 255, 0, 255, 0);
+    set_npc_imgfx_comp(part->spriteInstanceID, 1, IMGFX_OVERLAY, (s32) &N(MonstarDetailTexture), 255, 0, 255, 0);
     script->functionTemp[1] += 10;
     if (script->functionTemp[1] >= 360) {
         script->functionTemp[1] %= 360;
@@ -185,12 +185,15 @@ API_CALLABLE(N(UpdateMonstarImgFX)) {
     }
 
     for (i = 0; i < RGBA_BUF_SIZE; i++) {
-        set_npc_imgfx_comp(part->spriteInstanceID, 0, IMGFX_COLOR_BUF_SET_MODULATE, i, colR[i] << 0x18 | colG[i] << 0x10 | colB[i] << 8 | 255, 0, 255, 0);
+        set_npc_imgfx_comp(
+            part->spriteInstanceID, 0, IMGFX_COLOR_BUF_SET_MODULATE, i,
+            colR[i] << 0x18 | colG[i] << 0x10 | colB[i] << 8 | 255, 0, 255, 0
+        );
     }
 
     return ApiStatus_BLOCK;
 
-    #undef RGBA_BUF_SIZE
+#undef RGBA_BUF_SIZE
 }
 
 #include "common/UnkBackgroundFunc3.inc.c"

@@ -106,13 +106,13 @@ void rising_bubble_render(EffectInstance* effect) {
 }
 
 void rising_bubble_appendGfx(void* effect) {
-    RisingBubbleFXData* data = ((EffectInstance*)effect)->data.risingBubble;
+    RisingBubbleFXData* data = ((EffectInstance*) effect)->data.risingBubble;
     s32 lifeTime = data->lifeTime;
     Matrix4f sp20;
     Matrix4f sp60;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     if (data->pos.y >= data->unk_24) {
         s32 uls;
@@ -124,9 +124,7 @@ void rising_bubble_appendGfx(void* effect) {
         uls = 0;
         ult = data->unk_20;
 
-        gDPSetTileSize(gMainGfxPos++, 1,
-            (uls     ) * 4, (ult     ) * 4,
-            (uls + 32) * 4, (ult + 32) * 4);
+        gDPSetTileSize(gMainGfxPos++, 1, (uls) * 4, (ult) * 4, (uls + 32) * 4, (ult + 32) * 4);
 
         guTranslateF(sp20, data->pos.x, data->pos.y, data->pos.z);
         guScaleF(sp60, data->unk_10, 1.0f, data->unk_10);
@@ -136,7 +134,9 @@ void rising_bubble_appendGfx(void* effect) {
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, data->unk_14);
         gDPSetEnvColor(gMainGfxPos++, 128, 128, 255, data->unk_14);
 
-        guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->unk_10, data->pos.x, data->pos.y, data->pos.z);
+        guPositionF(
+            sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->unk_10, data->pos.x, data->pos.y, data->pos.z
+        );
     }
 
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);

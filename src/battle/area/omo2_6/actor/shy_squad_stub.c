@@ -234,8 +234,8 @@ EvtScript N(EVS_Init) = {
     Call(SetPartMovementVar, ACTOR_SELF, PRT_MEMBER_08, HOME_OFFSET_X, 50)
     Call(SetPartMovementVar, ACTOR_SELF, PRT_MEMBER_08, HOME_OFFSET_Z, 10)
     LOOP_MEMBERS(LVar0)
-        Call(SetPartPos, ACTOR_SELF, LVar0, 185, 0, 47)
-        Add(LVar0, 1)
+    Call(SetPartPos, ACTOR_SELF, LVar0, 185, 0, 47)
+    Add(LVar0, 1)
     EndLoop
     Call(ForceHomePos, ACTOR_SELF, 20, 0, -10)
     Call(HPBarToHome, ACTOR_SELF)

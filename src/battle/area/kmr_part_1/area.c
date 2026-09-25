@@ -1,6 +1,5 @@
 #include "area.h"
 
-
 extern Stage A(kmr_02);
 extern Stage A(kmr_03);
 extern Stage A(kmr_04);

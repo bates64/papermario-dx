@@ -8,12 +8,12 @@
 
 // GameFlag for super block availability
 #ifndef SUPER_BLOCK_GAMEFLAG
-    #error SUPER_BLOCK_GAMEFLAG is not defined!
+#error SUPER_BLOCK_GAMEFLAG is not defined!
 #endif
 
 // MapVar for super block entity ID
 #ifndef SUPER_BLOCK_MAPVAR
-    #error SUPER_BLOCK_MAPVAR  is not defined!
+#error SUPER_BLOCK_MAPVAR  is not defined!
 #endif
 
 // ----------------------------------------------------------------
@@ -201,14 +201,15 @@ API_CALLABLE(N(SuperBlock_StartGlowEffect)) {
     s32 entityIdx = evt_get_variable(script, *args++);
     Entity* entity = get_entity_by_index(entityIdx);
     s32 effectPtrOutVar = *args++;
-    EffectInstance* effectInst = fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_GREEN_ORB, entity->pos.x, entity->pos.y + 12.5f, entity->pos.z, 0.7f, 0);
+    EffectInstance* effectInst =
+        fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_GREEN_ORB, entity->pos.x, entity->pos.y + 12.5f, entity->pos.z, 0.7f, 0);
 
     evt_set_variable(script, effectPtrOutVar, (s32) effectInst);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(SuperBlock_EndGlowEffect)) {
-    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, *script->ptrReadPos);
+    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *script->ptrReadPos);
 
     effect->flags |= FX_INSTANCE_FLAG_DISMISS;
     return ApiStatus_DONE2;
@@ -255,14 +256,16 @@ API_CALLABLE(N(SuperBlock_AnimateEnergyOrbs)) {
     sin_cos_deg(gCameras[gCurrentCameraID].curYaw, &sinTheta, &cosTheta);
 
     if (isInitialCall) {
-        script->userData = (EnergyOrbSet*)general_heap_malloc(sizeof(EnergyOrbSet));
-        userData = (EnergyOrbSet*)script->userData;
+        script->userData = (EnergyOrbSet*) general_heap_malloc(sizeof(EnergyOrbSet));
+        userData = (EnergyOrbSet*) script->userData;
 
         userData->superBlock = get_entity_by_index(evt_get_variable(script, *args++));
 
         for (i = 0; i < SUPER_BLOCK_NUM_ORBS; i++) {
-            userData->orbEffects[i] = fx_motion_blur_flame(0, userData->superBlock->pos.x,
-                userData->superBlock->pos.y + 12.5f, userData->superBlock->pos.z, 1.0f, -1);
+            userData->orbEffects[i] = fx_motion_blur_flame(
+                0, userData->superBlock->pos.x, userData->superBlock->pos.y + 12.5f, userData->superBlock->pos.z, 1.0f,
+                -1
+            );
             t1 = 0.0f;
             userData->posZ[i] = t1;
             userData->posY[i] = t1;
@@ -289,7 +292,7 @@ API_CALLABLE(N(SuperBlock_AnimateEnergyOrbs)) {
         }
     }
 
-    userData = (EnergyOrbSet*)script->userData;
+    userData = (EnergyOrbSet*) script->userData;
     switch (userData->scatterState) {
         case 0:
             t1 = update_lerp(EASING_CUBIC_OUT, 0.0f, 50.0f, userData->scatterStateTime, 20 * DT);
@@ -301,7 +304,7 @@ API_CALLABLE(N(SuperBlock_AnimateEnergyOrbs)) {
             }
 
             userData->scatterStateTime++;
-            if (userData->scatterStateTime >= (s32)(21 * DT)) {
+            if (userData->scatterStateTime >= (s32) (21 * DT)) {
                 userData->scatterState = 1;
                 userData->scatterStateTime = 0;
             }
@@ -316,14 +319,14 @@ API_CALLABLE(N(SuperBlock_AnimateEnergyOrbs)) {
             }
 
             userData->scatterStateTime++;
-            if (userData->scatterStateTime > (s32)(15 * DT)) {
+            if (userData->scatterStateTime > (s32) (15 * DT)) {
                 userData->scatterStateTime = 15 * DT;
                 userData->scatterState = 2;
             }
             break;
         case 2:
             userData->scatterStateTime++;
-            if (userData->scatterStateTime > (s32)(30 * DT)) {
+            if (userData->scatterStateTime > (s32) (30 * DT)) {
                 for (i = 0; i < SUPER_BLOCK_NUM_ORBS; i++) {
                     userData->orbEffects[i]->flags |= FX_INSTANCE_FLAG_DISMISS;
                 }
@@ -335,20 +338,26 @@ API_CALLABLE(N(SuperBlock_AnimateEnergyOrbs)) {
     switch (userData->gatherState) {
         case 0:
             userData->gatherStateTime++;
-            if (userData->gatherStateTime > (s32)(15 * DT)) {
+            if (userData->gatherStateTime > (s32) (15 * DT)) {
                 userData->gatherState = 1;
                 userData->gatherStateTime = 0;
             }
             break;
         case 1:
             for (i = 0; i < SUPER_BLOCK_NUM_ORBS; i++) {
-                userData->posX[i] += update_lerp(EASING_QUADRATIC_IN, 0.0f, userData->partnerPosX[i], userData->gatherStateTime, 20 * DT);
-                userData->posY[i] += update_lerp(EASING_QUADRATIC_IN, 0.0f, userData->partnerPosY[i], userData->gatherStateTime, 20 * DT);
-                userData->posZ[i] += update_lerp(EASING_QUADRATIC_IN, 0.0f, userData->partnerPosZ[i], userData->gatherStateTime, 20 * DT);
+                userData->posX[i] += update_lerp(
+                    EASING_QUADRATIC_IN, 0.0f, userData->partnerPosX[i], userData->gatherStateTime, 20 * DT
+                );
+                userData->posY[i] += update_lerp(
+                    EASING_QUADRATIC_IN, 0.0f, userData->partnerPosY[i], userData->gatherStateTime, 20 * DT
+                );
+                userData->posZ[i] += update_lerp(
+                    EASING_QUADRATIC_IN, 0.0f, userData->partnerPosZ[i], userData->gatherStateTime, 20 * DT
+                );
             }
 
             userData->gatherStateTime++;
-            if (userData->gatherStateTime > (s32)(20 * DT)) {
+            if (userData->gatherStateTime > (s32) (20 * DT)) {
                 userData->gatherState = 2;
                 userData->gatherStateTime = 0;
             }
@@ -425,7 +434,9 @@ API_CALLABLE(N(SuperBlock_PartnerSparkles4)) {
 
 API_CALLABLE(N(SuperBlock_WaitForPlayerToLand)) {
     script->varTable[0] = false;
-    if ((gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) && (gPartnerStatus.actingPartner == PARTNER_BOMBETTE)) {
+    if ((gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE)
+        && (gPartnerStatus.actingPartner == PARTNER_BOMBETTE))
+    {
         script->varTable[0] = true;
     }
     return ApiStatus_DONE2;

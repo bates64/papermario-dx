@@ -11,7 +11,7 @@
 BSS CreditsData N(CreditsData);
 BSS CreditsData* N(CreditsDataPtr);
 #if !VERSION_IQUE
-BSS s32 N(BSS_PAD_1)[2];
+BSS s32 N( BSS_PAD_1)[2];
 #endif
 BSS u8 N(CreditsMessageBuffers)[CREDITS_MESSAGE_BUFFER_COUNT][256];
 BSS Mtx N(CreditsProjMatrices)[2];
@@ -121,18 +121,22 @@ void N(CharAnim_FadeIn_0)(CreditsLine* line, CreditsChar* chr) {
 
     posX += (glyphPtr->charWidth * 0.5);
     guTranslateF(transformMtx, posX, -posY, 0.0f);
-    guMtxF2L (transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
-        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
+    gSPMatrix(
+        gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
-    ifxImg.raster  = glyphPtr->raster;
+    ifxImg.raster = glyphPtr->raster;
     ifxImg.palette = glyphPtr->palette;
-    ifxImg.width   = glyphPtr->texSize.x;
-    ifxImg.height  = glyphPtr->texSize.y;
+    ifxImg.width = glyphPtr->texSize.x;
+    ifxImg.height = glyphPtr->texSize.y;
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
-    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_UNUSED_C | IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_NO_ZBUFFER, transformMtx);
+    imgfx_appendGfx_component(
+        0, &ifxImg, IMGFX_FLAG_UNUSED_C | IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_NO_ZBUFFER, transformMtx
+    );
 
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
@@ -165,18 +169,22 @@ void N(CharAnim_FadeIn_1)(CreditsLine* line, CreditsChar* chr) {
 
     posX += (glyphPtr->charWidth * 0.5);
     guTranslateF(transformMtx, posX, -posY, 0.0f);
-    guMtxF2L (transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
-        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
+    gSPMatrix(
+        gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
-    ifxImg.raster  = glyphPtr->raster;
+    ifxImg.raster = glyphPtr->raster;
     ifxImg.palette = glyphPtr->palette;
-    ifxImg.width   = glyphPtr->texSize.x;
-    ifxImg.height  = glyphPtr->texSize.y;
+    ifxImg.width = glyphPtr->texSize.x;
+    ifxImg.height = glyphPtr->texSize.y;
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
-    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_UNUSED_C | IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_NO_ZBUFFER, transformMtx);
+    imgfx_appendGfx_component(
+        0, &ifxImg, IMGFX_FLAG_UNUSED_C | IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_NO_ZBUFFER, transformMtx
+    );
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
@@ -209,13 +217,15 @@ void N(CharAnim_FadeIn_2)(CreditsLine* line, CreditsChar* chr) {
         guMtxCatF(tempMtx, transformMtx, transformMtx);
     }
     guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
-        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
-    ifxImg.raster  = glyphPtr->raster;
+    ifxImg.raster = glyphPtr->raster;
     ifxImg.palette = glyphPtr->palette;
-    ifxImg.width   = glyphPtr->texSize.x;
-    ifxImg.height  = glyphPtr->texSize.y;
+    ifxImg.width = glyphPtr->texSize.x;
+    ifxImg.height = glyphPtr->texSize.y;
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
@@ -253,13 +263,15 @@ void N(CharAnim_FadeIn_3)(CreditsLine* line, CreditsChar* chr) {
         guMtxCatF(tempMtx, transformMtx, transformMtx);
     }
     guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
-        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
-    ifxImg.raster  = glyphPtr->raster;
+    ifxImg.raster = glyphPtr->raster;
     ifxImg.palette = glyphPtr->palette;
-    ifxImg.width   = glyphPtr->texSize.x;
-    ifxImg.height  = glyphPtr->texSize.y;
+    ifxImg.width = glyphPtr->texSize.x;
+    ifxImg.height = glyphPtr->texSize.y;
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
@@ -303,16 +315,18 @@ void N(CharAnim_FadeIn_4)(CreditsLine* line, CreditsChar* chr) {
     guTranslateF(transformMtx, posX, -posY, 0.0f);
     guRotateF(tempMtx, rotAngle, 0.0f, 1.0f, 0.2f);
     guMtxCatF(tempMtx, transformMtx, transformMtx);
-    guScaleF (tempMtx, scaleAmt, scaleAmt, 1.0f);
+    guScaleF(tempMtx, scaleAmt, scaleAmt, 1.0f);
     guMtxCatF(tempMtx, transformMtx, transformMtx);
-    guMtxF2L (transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
-        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
+    gSPMatrix(
+        gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
-    ifxImg.raster  = glyphPtr->raster;
+    ifxImg.raster = glyphPtr->raster;
     ifxImg.palette = glyphPtr->palette;
-    ifxImg.width   = glyphPtr->texSize.x;
-    ifxImg.height  = glyphPtr->texSize.y;
+    ifxImg.width = glyphPtr->texSize.x;
+    ifxImg.height = glyphPtr->texSize.y;
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
@@ -331,9 +345,10 @@ void N(CharAnim_FadeIn_5)(CreditsLine* line, CreditsChar* chr) {
     alpha = update_lerp(EASING_LINEAR, 0.0f, 255.0f, chr->fadeInTime, line->appearTime);
     msg_get_glyph(chr->font, chr->variation, chr->charIndex, chr->palette, glyphPtr);
 
-    draw_ci_image_with_clipping(glyphPtr->raster, glyphPtr->texSize.x, glyphPtr->texSize.y,
-        G_IM_FMT_CI, G_IM_SIZ_4b, glyphPtr->palette, posX, posY,
-        10, 20, SCREEN_WIDTH - 20, SCREEN_HEIGHT - 40, alpha);
+    draw_ci_image_with_clipping(
+        glyphPtr->raster, glyphPtr->texSize.x, glyphPtr->texSize.y, G_IM_FMT_CI, G_IM_SIZ_4b, glyphPtr->palette, posX,
+        posY, 10, 20, SCREEN_WIDTH - 20, SCREEN_HEIGHT - 40, alpha
+    );
 }
 
 // unused
@@ -347,19 +362,23 @@ void N(CharAnim_HoldClearImgFX)(CreditsLine* line, CreditsChar* chr) {
 
     imgfx_update(0, IMGFX_CLEAR, 0, 0, 0, 0, 0);
     guTranslateF(transformMtx, posX, -posY, 0.0f);
-    guMtxF2L (transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
-        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
+    gSPMatrix(
+        gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     msg_get_glyph(chr->font, chr->variation, chr->charIndex, chr->palette, glyphPtr);
 
-    ifxImg.raster  = glyphPtr->raster;
+    ifxImg.raster = glyphPtr->raster;
     ifxImg.palette = glyphPtr->palette;
-    ifxImg.width   = glyphPtr->texSize.x;
-    ifxImg.height  = glyphPtr->texSize.y;
+    ifxImg.width = glyphPtr->texSize.x;
+    ifxImg.height = glyphPtr->texSize.y;
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
-    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_UNUSED_C | IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_NO_ZBUFFER, transformMtx);
+    imgfx_appendGfx_component(
+        0, &ifxImg, IMGFX_FLAG_UNUSED_C | IMGFX_FLAG_NO_FILTERING | IMGFX_FLAG_NO_ZBUFFER, transformMtx
+    );
 
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
@@ -371,9 +390,10 @@ void N(CharAnim_Hold)(CreditsLine* line, CreditsChar* chr) {
     f32 posY = chr->posY;
 
     msg_get_glyph(chr->font, chr->variation, chr->charIndex, chr->palette, glyphPtr);
-    draw_ci_image_with_clipping(glyphPtr->raster, glyphPtr->texSize.x, glyphPtr->texSize.y,
-        G_IM_FMT_CI, G_IM_SIZ_4b, glyphPtr->palette, posX, posY,
-        10, 20, SCREEN_WIDTH - 20, SCREEN_HEIGHT - 40, 255);
+    draw_ci_image_with_clipping(
+        glyphPtr->raster, glyphPtr->texSize.x, glyphPtr->texSize.y, G_IM_FMT_CI, G_IM_SIZ_4b, glyphPtr->palette, posX,
+        posY, 10, 20, SCREEN_WIDTH - 20, SCREEN_HEIGHT - 40, 255
+    );
 }
 
 // unused
@@ -393,14 +413,16 @@ void N(CharAnim_FadeOut_0)(CreditsLine* line, CreditsChar* chr) {
 
     posX += (glyphPtr->charWidth * 0.5);
     guTranslateF(transformMtx, posX, -posY, 0.0f);
-    guMtxF2L (transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
-        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
+    gSPMatrix(
+        gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
-    ifxImg.raster  = glyphPtr->raster;
+    ifxImg.raster = glyphPtr->raster;
     ifxImg.palette = glyphPtr->palette;
-    ifxImg.width   = glyphPtr->texSize.x;
-    ifxImg.height  = glyphPtr->texSize.y;
+    ifxImg.width = glyphPtr->texSize.x;
+    ifxImg.height = glyphPtr->texSize.y;
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
@@ -428,14 +450,16 @@ void N(CharAnim_FadeOut_1)(CreditsLine* line, CreditsChar* chr) {
     guTranslateF(transformMtx, posX, -posY, 0.0f);
     guScaleF(tempMtx, scaleAmt, scaleAmt, 1.0f);
     guMtxCatF(tempMtx, transformMtx, transformMtx);
-    guMtxF2L (transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
-        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
+    gSPMatrix(
+        gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
-    ifxImg.raster  = glyphPtr->raster;
+    ifxImg.raster = glyphPtr->raster;
     ifxImg.palette = glyphPtr->palette;
-    ifxImg.width   = glyphPtr->texSize.x;
-    ifxImg.height  = glyphPtr->texSize.y;
+    ifxImg.width = glyphPtr->texSize.x;
+    ifxImg.height = glyphPtr->texSize.y;
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
@@ -463,14 +487,16 @@ void N(CharAnim_FadeOut_2)(CreditsLine* line, CreditsChar* chr) {
     guTranslateF(transformMtx, posX, -posY, 0.0f);
     guRotateF(tempMtx, rotAngle, 0.0f, 1.0f, 0.0f);
     guMtxCatF(tempMtx, transformMtx, transformMtx);
-    guMtxF2L (transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
-        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
+    gSPMatrix(
+        gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
-    ifxImg.raster  = glyphPtr->raster;
+    ifxImg.raster = glyphPtr->raster;
     ifxImg.palette = glyphPtr->palette;
-    ifxImg.width   = glyphPtr->texSize.x;
-    ifxImg.height  = glyphPtr->texSize.y;
+    ifxImg.width = glyphPtr->texSize.x;
+    ifxImg.height = glyphPtr->texSize.y;
     ifxImg.xOffset = -(glyphPtr->charWidth * 0.5);
     ifxImg.yOffset = 0;
     ifxImg.alpha = 255;
@@ -487,9 +513,10 @@ void N(CharAnim_FadeOut_3)(CreditsLine* line, CreditsChar* chr) {
     f32 alpha = update_lerp(EASING_SIN_OUT, 255.0f, 0.0f, chr->fadeInTime, line->vanishTime);
 
     msg_get_glyph(chr->font, chr->variation, chr->charIndex, chr->palette, glyphPtr);
-    draw_ci_image_with_clipping(glyphPtr->raster, glyphPtr->texSize.x, glyphPtr->texSize.y,
-        G_IM_FMT_CI, G_IM_SIZ_4b, glyphPtr->palette, posX, posY,
-        10, 20, SCREEN_WIDTH - 20, SCREEN_HEIGHT - 40, alpha);
+    draw_ci_image_with_clipping(
+        glyphPtr->raster, glyphPtr->texSize.x, glyphPtr->texSize.y, G_IM_FMT_CI, G_IM_SIZ_4b, glyphPtr->palette, posX,
+        posY, 10, 20, SCREEN_WIDTH - 20, SCREEN_HEIGHT - 40, alpha
+    );
 }
 
 void N(credits_update_line)(CreditsLine* line) {
@@ -732,7 +759,10 @@ void N(worker_draw_credits)(void) {
     guOrtho(projMtx, 0.0f, 320.0f, -240.0f, 0.0f, -100.0f, 100.0f, 1.0f);
     gSPMatrix(gMainGfxPos++, OS_PHYSICAL_TO_K0(projMtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gDPPipeSync(gMainGfxPos++);
-    gSPClearGeometryMode(gMainGfxPos++, G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
+    gSPClearGeometryMode(
+        gMainGfxPos++,
+        G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH
+    );
     gSPSetGeometryMode(gMainGfxPos++, G_SHADE | G_SHADING_SMOOTH);
 
     for (i = 0; i < ARRAY_COUNT(data->lines); i++) {
@@ -770,24 +800,24 @@ void N(credits_load_message)(CreditsEntry* entry) {
             line->message = (u8*) entry->msgID;
         }
         get_msg_properties((s32) line->message, nullptr, nullptr, &maxLineChars, nullptr, nullptr, &numSpaces, 0);
-        line->posX            = entry->posX;
-        line->posY            = entry->posY;
-        line->palette         = entry->palette;
-        line->appearMode      = entry->appearMode;
-        line->appearTime      = entry->appearTime;
-        line->holdMode        = entry->holdMode;
-        line->holdTime        = entry->holdTime;
+        line->posX = entry->posX;
+        line->posY = entry->posY;
+        line->palette = entry->palette;
+        line->appearMode = entry->appearMode;
+        line->appearTime = entry->appearTime;
+        line->holdMode = entry->holdMode;
+        line->holdTime = entry->holdTime;
         if (entry->perCharDelayIn != 0) {
             line->holdTime = entry->holdTime - ((maxLineChars - 1) - numSpaces) * entry->perCharDelayIn;
             if (line->holdTime < 0) {
                 line->holdTime = 0;
             }
         }
-        line->vanishMode      = entry->vanishMode;
-        line->vanishTime      = entry->vanishTime;
-        line->perCharDelayIn  = entry->perCharDelayIn;
+        line->vanishMode = entry->vanishMode;
+        line->vanishTime = entry->vanishTime;
+        line->perCharDelayIn = entry->perCharDelayIn;
         line->perCharDelayOut = entry->perCharDelayOut;
-        line->flags           = entry->flags | CREDITS_LINE_FLAG_1 | CREDITS_LINE_FLAG_2;
+        line->flags = entry->flags | CREDITS_LINE_FLAG_1 | CREDITS_LINE_FLAG_2;
     }
 }
 

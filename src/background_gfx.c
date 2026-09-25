@@ -47,7 +47,7 @@ void gfx_frame_filter_pass_0(const u16* frameBuffer0, const u16* frameBuffer1, s
 }
 
 void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u16* out) {
-    #define RGBA_BUF_SIZE 32
+#define RGBA_BUF_SIZE 32
     Color_RGBA8 sp0;
     Color_RGBA8 sp8;
     Color_RGBA8 final;
@@ -154,11 +154,11 @@ void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u1
     final.b = ((filterBuf1.b * filterBuf1.a) + (final.b * (8 - filterBuf1.a))) >> 3;
 
     *out = (final.r << 11) + (final.g << 6) + (final.b << 1) + 1;
-    #undef RGBA_BUF_SIZE
+#undef RGBA_BUF_SIZE
 }
 
 void func_80027600(Color_RGBA8* arg0, u16* out) {
-    #define RGBA_BUF_SIZE 32
+#define RGBA_BUF_SIZE 32
     Color_RGBA8 final;
     u8 rs[RGBA_BUF_SIZE];
     u8 gs[RGBA_BUF_SIZE];
@@ -206,7 +206,7 @@ void func_80027600(Color_RGBA8* arg0, u16* out) {
     final.b = i;
 
     *out = (final.r << 11) + (final.g << 6) + (final.b << 1) + 1;
-    #undef RGBA_BUF_SIZE
+#undef RGBA_BUF_SIZE
 }
 
 void func_80027774(u16* frameBuffer0, u16* frameBuffer1, u16* zBuffer) {
@@ -222,19 +222,18 @@ void func_80027774(u16* frameBuffer0, u16* frameBuffer1, u16* zBuffer) {
                .x.
                ...
             */
-            if (
-                (((frameBuffer1[(SCREEN_WIDTH * y) + x - 1] >> 2) & 0xF) < 8) ||
-                (((frameBuffer1[(SCREEN_WIDTH * y) + x + 0] >> 2) & 0xF) < 8) ||
-                (((frameBuffer1[(SCREEN_WIDTH * y) + x + 1] >> 2) & 0xF) < 8))
+            if ((((frameBuffer1[(SCREEN_WIDTH * y) + x - 1] >> 2) & 0xF) < 8)
+                || (((frameBuffer1[(SCREEN_WIDTH * y) + x + 0] >> 2) & 0xF) < 8)
+                || (((frameBuffer1[(SCREEN_WIDTH * y) + x + 1] >> 2) & 0xF) < 8))
             {
                 gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y - 1, x - 1, &filterBuf0[0]);
-                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y - 1, x,     &filterBuf0[1]);
+                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y - 1, x, &filterBuf0[1]);
                 gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y - 1, x + 1, &filterBuf0[2]);
-                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y    , x - 1, &filterBuf0[3]);
-                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y    , x,     &filterBuf0[4]);
-                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y    , x + 1, &filterBuf0[5]);
+                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y, x - 1, &filterBuf0[3]);
+                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y, x, &filterBuf0[4]);
+                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y, x + 1, &filterBuf0[5]);
                 gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y + 1, x - 1, &filterBuf0[6]);
-                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y + 1, x,     &filterBuf0[7]);
+                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y + 1, x, &filterBuf0[7]);
                 gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y + 1, x + 1, &filterBuf0[8]);
                 func_80027600(filterBuf0, &zBuffer[(SCREEN_WIDTH * y) + x]);
             } else {
@@ -254,29 +253,29 @@ void gfx_transfer_frame_to_depth(u16* frameBuffer0, u16* frameBuffer1, u16* zBuf
             s32 pixel = SCREEN_WIDTH * y + x;
 
             /*
-            The application of gfx_frame_filter_pass_0 is done to the following pixels, where x is the current pixel.
-               . .
-              . x .
-               . .
-            */
-            //TODO emulator test -- find which ones have bad performance here
-            #if !DX_PAUSE_LAG_FIX
+The application of gfx_frame_filter_pass_0 is done to the following pixels, where x is the current pixel.
+   . .
+  . x .
+   . .
+*/
+            // TODO emulator test -- find which ones have bad performance here
+#if !DX_PAUSE_LAG_FIX
             if (((frameBuffer1[pixel] >> 2) & 0xF) < 8) {
                 gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y - 1, x - 1, &filterBuf0[0]);
                 gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y - 1, x + 1, &filterBuf0[1]);
-                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y,     x - 2, &filterBuf0[2]);
-                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y,     x + 2, &filterBuf0[3]);
+                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y, x - 2, &filterBuf0[2]);
+                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y, x + 2, &filterBuf0[3]);
                 gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y + 1, x - 1, &filterBuf0[4]);
                 gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y + 1, x + 1, &filterBuf0[5]);
-                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y,     x,     &filterBuf1);
+                gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y, x, &filterBuf1);
                 gfx_frame_filter_pass_1(filterBuf0, filterBuf1, &zBuffer[pixel]);
             } else {
                 // Don't apply any filters to the edges of the screen
                 zBuffer[pixel] = frameBuffer0[pixel] | 1;
             }
-            #else
+#else
             zBuffer[pixel] = frameBuffer0[pixel] | 1;
-            #endif
+#endif
         }
     }
 }
@@ -295,9 +294,11 @@ void func_80027BAC(s32 arg0, s32 arg1) {
     gDPSetTextureFilter(gMainGfxPos++, G_TF_POINT);
 
     for (i = 0; i < 40; i++) {
-        gDPLoadTextureTile(gMainGfxPos++, arg0 + (0xF00 * i), G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH,
-                           SCREEN_HEIGHT, 0, 0, SCREEN_WIDTH - 1, 5, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureTile(
+            gMainGfxPos++, arg0 + (0xF00 * i), G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0,
+            SCREEN_WIDTH - 1, 5, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+            G_TX_NOLOD, G_TX_NOLOD
+        );
         gSPTextureRectangle(gMainGfxPos++, 0, i * temp, 0x04FC, (i * 24) + 20, G_TX_RENDERTILE, 0, 0, 0x1000, 0x0400);
         gDPPipeSync(gMainGfxPos++);
     }
@@ -349,7 +350,8 @@ void gfx_draw_background(void) {
             gGameStatusPtr->backgroundFlags |= BACKGROUND_RENDER_STATE_SHOW_PAUSED;
             // fallthrough
         case BACKGROUND_RENDER_STATE_SHOW_PAUSED:
-            // Draw the saved framebuffer to the background, fading in at a rate of 16 opacity per frame until reaching 128 opacity
+            // Draw the saved framebuffer to the background, fading in at a rate of 16 opacity per frame until reaching
+            // 128 opacity
             gPauseBackgroundFade += 16;
             if (gPauseBackgroundFade > 128) {
                 gPauseBackgroundFade = 128;
@@ -366,33 +368,40 @@ void gfx_draw_background(void) {
             gDPSetTexturePersp(gMainGfxPos++, G_TP_NONE);
             gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
             gDPSetRenderMode(gMainGfxPos++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
-            /// @bug In 1-cycle mode, the two combiner cycles should be identical. Using Texel1 here in the second cycle,
-            /// which is the actual cycle of the combiner used on hardware in 1-cycle mode, actually samples the next
-            /// pixel's texel value instead of the current pixel's. This results in a one-pixel offset.
+            /// @bug In 1-cycle mode, the two combiner cycles should be identical. Using Texel1 here in the second
+            /// cycle, which is the actual cycle of the combiner used on hardware in 1-cycle mode, actually samples the
+            /// next pixel's texel value instead of the current pixel's. This results in a one-pixel offset.
             gDPSetCombineMode(gMainGfxPos++, PM_CC_43, PM_CC_44);
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 40, 40, 40, gPauseBackgroundFade);
             gDPSetTextureFilter(gMainGfxPos++, G_TF_POINT);
 
             for (i = 0; i < 40; i++) {
-                gDPLoadTextureTile(gMainGfxPos++, nuGfxZBuffer + (i * SCREEN_WIDTH * SCREEN_COPY_TILE_HEIGHT), G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH,
-                                   SCREEN_HEIGHT, 0, 0, SCREEN_WIDTH - 1, SCREEN_COPY_TILE_HEIGHT - 1, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                                   G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                /// @bug Due to the previous issue with the incorrect second cycle combiner, the devs added a 1-pixel offset to texture coordinates
-                /// in this texrect to compensate for the combiner error.
-                gSPTextureRectangle(gMainGfxPos++,
-                                    // ulx, uly, lrx, lry
-                                    0 << 2, i * a, SCREEN_WIDTH << 2, a + (i * (SCREEN_COPY_TILE_HEIGHT << 2)),
-                                    // tile
-                                    G_TX_RENDERTILE,
-                                    // s, t, dsdx, dtdy
-                                    -(1 << 5), 0 << 5, 1 << 10, 1 << 10);
+                gDPLoadTextureTile(
+                    gMainGfxPos++, nuGfxZBuffer + (i * SCREEN_WIDTH * SCREEN_COPY_TILE_HEIGHT), G_IM_FMT_RGBA,
+                    G_IM_SIZ_16b, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, SCREEN_WIDTH - 1, SCREEN_COPY_TILE_HEIGHT - 1, 0,
+                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                    G_TX_NOLOD
+                );
+                /// @bug Due to the previous issue with the incorrect second cycle combiner, the devs added a 1-pixel
+                /// offset to texture coordinates in this texrect to compensate for the combiner error.
+                gSPTextureRectangle(
+                    gMainGfxPos++,
+                    // ulx, uly, lrx, lry
+                    0 << 2, i * a, SCREEN_WIDTH << 2, a + (i * (SCREEN_COPY_TILE_HEIGHT << 2)),
+                    // tile
+                    G_TX_RENDERTILE,
+                    // s, t, dsdx, dtdy
+                    -(1 << 5), 0 << 5, 1 << 10, 1 << 10
+                );
                 gDPPipeSync(gMainGfxPos++);
             }
             break;
         default:
             // Draw the scene's background as normal
             if (gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME) {
-                gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxCfb_ptr));
+                gDPSetColorImage(
+                    gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxCfb_ptr)
+                );
                 return;
             }
 
@@ -403,8 +412,12 @@ void gfx_draw_background(void) {
             gDPSetFillColor(gMainGfxPos++, PACK_FILL_DEPTH(G_MAXFBZ, 0));
             gDPFillRectangle(gMainGfxPos++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
             gDPPipeSync(gMainGfxPos++);
-            gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxCfb_ptr));
-            gDPSetFillColor(gMainGfxPos++, PACK_FILL_COLOR(camera->bgColor[0], camera->bgColor[1], camera->bgColor[2], 1));
+            gDPSetColorImage(
+                gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxCfb_ptr)
+            );
+            gDPSetFillColor(
+                gMainGfxPos++, PACK_FILL_COLOR(camera->bgColor[0], camera->bgColor[1], camera->bgColor[2], 1)
+            );
 
             backgroundMinX = gGameStatusPtr->backgroundMinX;
             backgroundMaxX = backgroundMinX + gGameStatusPtr->backgroundMaxX;

@@ -24,7 +24,9 @@ extern AnimScript Entity_SimpleSpring_AnimIdle;
 void entity_ScriptSpring_idle(Entity* entity) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
-    if (playerStatus->actionState != ACTION_STATE_RIDE && (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR)) {
+    if (playerStatus->actionState != ACTION_STATE_RIDE
+        && (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR))
+    {
         playerStatus->camResetDelay = 5;
         playerStatus->flags &= ~PS_FLAG_FALLING;
         playerStatus->flags |= PS_FLAG_SCRIPTED_FALL;
@@ -41,7 +43,9 @@ void entity_SimpleSpring_idle(Entity* entity) {
     SimpleSpringData* data = entity->dataBuf.simpleSpring;
     PlayerStatus* playerStatus = &gPlayerStatus;
 
-    if (playerStatus->actionState != ACTION_STATE_RIDE && (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR)) {
+    if (playerStatus->actionState != ACTION_STATE_RIDE
+        && (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR))
+    {
         if (data->launchVel >= 70) {
             playerStatus->camResetDelay = 5;
         }

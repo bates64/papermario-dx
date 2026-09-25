@@ -166,13 +166,16 @@ void N(update)(void) {
             if (battleStatus->curButtonsPressed & BUTTON_A) {
                 switch (acs->variation) {
                     case ACV_BOMB_BASIC:
-                        acs->meterFillLevel += SCALE_BY_PCT(BASIC_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
+                        acs->meterFillLevel +=
+                            SCALE_BY_PCT(BASIC_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
                         break;
                     case ACV_BOMB_SUPER:
-                        acs->meterFillLevel += SCALE_BY_PCT(SUPER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
+                        acs->meterFillLevel +=
+                            SCALE_BY_PCT(SUPER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
                         break;
                     case ACV_BOMB_ULTRA:
-                        acs->meterFillLevel += SCALE_BY_PCT(ULTRA_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
+                        acs->meterFillLevel +=
+                            SCALE_BY_PCT(ULTRA_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
                         break;
                 }
             }

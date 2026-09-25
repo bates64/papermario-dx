@@ -4,8 +4,8 @@
 
 EvtScript N(EVS_ExitWalk_tik_20_1) = EVT_EXIT_WALK(60, tik_21_ENTRY_0, "tik_20", tik_20_ENTRY_1);
 
-EvtScript N(EVS_ExitDoors_tik_22_0) = EVT_EXIT_DOUBLE_DOOR(tik_21_ENTRY_1, "tik_22", tik_22_ENTRY_0,
-    COLLIDER_tte, MODEL_o46, MODEL_o47);
+EvtScript N(EVS_ExitDoors_tik_22_0) =
+    EVT_EXIT_DOUBLE_DOOR(tik_21_ENTRY_1, "tik_22", tik_22_ENTRY_0, COLLIDER_tte, MODEL_o46, MODEL_o47);
 
 EvtScript N(EVS_GotoMap_tik_14_0) = {
     Call(GotoMap, Ref("tik_14"), tik_14_ENTRY_0)

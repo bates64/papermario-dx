@@ -35,15 +35,7 @@ void static_status_update(EffectInstance* effect);
 void static_status_render(EffectInstance* effect);
 void static_status_appendGfx(void* effect);
 
-EffectInstance* static_status_main(
-    s32 type,
-    f32 x,
-    f32 y,
-    f32 z,
-    f32 scale,
-    s32 numBolts,
-    s32 duration)
-{
+EffectInstance* static_status_main(s32 type, f32 x, f32 y, f32 z, f32 scale, s32 numBolts, s32 duration) {
     EffectBlueprint bp;
     EffectInstance* effect;
     StaticStatusFXData* part;
@@ -188,7 +180,7 @@ void func_E00E651C(void) {
 }
 
 void static_status_appendGfx(void* effect) {
-    StaticStatusFXData* part = ((EffectInstance*)effect)->data.staticStatus;
+    StaticStatusFXData* part = ((EffectInstance*) effect)->data.staticStatus;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 unk_30 = part->alpha;
     s32 unk_00 = part->type;
@@ -197,24 +189,28 @@ void static_status_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(mtxTransform, part->pos.x, part->pos.y, part->pos.z);
     guScaleF(mtxTemp, part->scale, part->scale, part->scale);
     guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
     guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gSPDisplayList(gMainGfxPos++, D_E00E6888[unk_00]);
 
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         if (part->frame >= 0) {
             guPositionF(mtxTransform, 0.0f, 0.0f, part->rot, part->scale, part->pos.x, part->pos.y, 0.0f);
             guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, (unk_30 * part->alpha) >> 8);
             gSPDisplayList(gMainGfxPos++, D_E00E6880[unk_00]);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);

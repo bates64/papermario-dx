@@ -17,9 +17,11 @@ API_CALLABLE(N(CosInterpAbsMinMax)) {
         evt_set_variable(script, outVarTime, duration);
     }
 
-    evt_set_float_variable(script, outValue,
+    evt_set_float_variable(
+        script, outValue,
         (min + delta) // average value
-        - (delta * cos_rad(((time * PI) / duration) + phaseOffset))); // perturbation
+            - (delta * cos_rad(((time * PI) / duration) + phaseOffset))
+    ); // perturbation
 
     return ApiStatus_DONE2;
 }

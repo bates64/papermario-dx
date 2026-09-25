@@ -15,7 +15,7 @@ API_CALLABLE(N(LoadPartyImage)) {
     static PartyImage img;
     static MessageImageData image;
 
-    const char* assetName = (const char*)evt_get_variable(script, *script->ptrReadPos);
+    const char* assetName = (const char*) evt_get_variable(script, *script->ptrReadPos);
     u32 decompressedSize;
     void* compressed = load_asset_by_name(assetName, &decompressedSize);
 

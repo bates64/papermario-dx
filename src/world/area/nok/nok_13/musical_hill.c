@@ -36,8 +36,9 @@ void N(musical_hill_orbit_listener)(PlayerOrbitState* orbit, s32 event) {
             script->varTable[0] = SONG_CANDY_CANES;
             break;
         case PLAYER_ORBIT_COMPLETE_ROTATION:
-            make_item_entity_nodelay(ITEM_HEART, orbit->pos.x, orbit->pos.y, orbit->pos.z,
-                ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS, 0);
+            make_item_entity_nodelay(
+                ITEM_HEART, orbit->pos.x, orbit->pos.y, orbit->pos.z, ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS, 0
+            );
             break;
         case PLAYER_ORBIT_CHANGE_DIRECTION:
         case PLAYER_ORBIT_LEFT_REGION:
@@ -45,7 +46,6 @@ void N(musical_hill_orbit_listener)(PlayerOrbitState* orbit, s32 event) {
             script->varTable[0] = SONG_PLEASANT_PATH;
             break;
     }
-
 }
 
 PlayerOrbitTarget N(RunAroundTarget) = {

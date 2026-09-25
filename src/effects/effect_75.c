@@ -88,7 +88,7 @@ void effect_75_update(EffectInstance* effect) {
     }
 
     data->lifetime++;
-    if (data->lifetime > 30*60*60) {
+    if (data->lifetime > 30 * 60 * 60) {
         data->lifetime = 0;
     }
 
@@ -147,7 +147,8 @@ void effect_75_update(EffectInstance* effect) {
 
     data->curPrimAlpha = data->minPrimAlpha
         + (sin_deg(lifetime * 20) * (data->maxPrimAlpha - data->minPrimAlpha)
-        + (data->maxPrimAlpha - data->minPrimAlpha)) * 0.5;
+           + (data->maxPrimAlpha - data->minPrimAlpha))
+            * 0.5;
 }
 
 void effect_75_render(EffectInstance* effect) {
@@ -161,9 +162,10 @@ void effect_75_render(EffectInstance* effect) {
     f32 outZ;
     f32 outS;
 
-    transform_point(gCameras[gCurrentCameraID].mtxPerspective,
-        data->pos.x, data->pos.y, data->pos.z, 1.0f,
-        &outX, &outY, &outZ, &outS);
+    transform_point(
+        gCameras[gCurrentCameraID].mtxPerspective, data->pos.x, data->pos.y, data->pos.z, 1.0f, &outX, &outY, &outZ,
+        &outS
+    );
 
     outDist = outZ + 5000;
     if (outDist < 0) {
@@ -189,7 +191,7 @@ void func_E00EA664(void) {
 }
 
 void effect_75_appendGfx(void* effect) {
-    StarWarpFXData* data = ((EffectInstance*)effect)->data.starWarp;
+    StarWarpFXData* data = ((EffectInstance*) effect)->data.starWarp;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 variation = data->type;
     s32 uls0 = data->texPanMain.x * 4.0f;
@@ -200,7 +202,7 @@ void effect_75_appendGfx(void* effect) {
     Matrix4f mtxTemp;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(mtxTransfrom, data->pos.x, data->pos.y, data->pos.z);
     guScaleF(mtxTemp, data->scale, data->scale, data->scale);
@@ -211,11 +213,14 @@ void effect_75_appendGfx(void* effect) {
     }
     guMtxF2L(mtxTransfrom, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, data->primCol.r, data->primCol.g, data->primCol.b, data->curPrimAlpha);
-    gDPSetEnvColor(gMainGfxPos++, data->envCol.r, data->envCol.g, data->envCol.b,
-        data->fadeAlpha * data->masterAlpha / 255);
+    gDPSetEnvColor(
+        gMainGfxPos++, data->envCol.r, data->envCol.g, data->envCol.b, data->fadeAlpha * data->masterAlpha / 255
+    );
     gSPDisplayList(gMainGfxPos++, D_E00EAA58[0]);
     gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, uls0, ult0, uls0 + 252, ult0 + 252);
     gDPSetTileSize(gMainGfxPos++, G_TX_EXTRA_TILE, uls1, ult1, uls1 + 252, ult1 + 252);

@@ -1,7 +1,7 @@
 #include "jan_15.h"
 #include "foliage.h"
 
-FoliageModelList N(Tree1_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o73, MODEL_o74, MODEL_o75);
+FoliageModelList N(Tree1_LeafModels) = FOLIAGE_MODEL_LIST(MODEL_o73, MODEL_o74, MODEL_o75);
 FoliageModelList N(Tree1_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o72);
 
 FoliageVectorList N(Tree1_Effects) = {
@@ -23,7 +23,7 @@ BombTrigger N(BombPos_Tree1) = {
     .diameter = 0.0f
 };
 
-FoliageModelList N(Tree2_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o65, MODEL_o66, MODEL_o67);
+FoliageModelList N(Tree2_LeafModels) = FOLIAGE_MODEL_LIST(MODEL_o65, MODEL_o66, MODEL_o67);
 FoliageModelList N(Tree2_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o64);
 
 FoliageDropList N(Tree2_Drops) = {

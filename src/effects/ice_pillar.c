@@ -94,12 +94,8 @@ void ice_pillar_update(EffectInstance* effect) {
             EffectInstance* iceShard;
 
             iceShard = ice_shard_main(
-                (i % 2) + 2,
-                (data->pos.x + rand_int(20)) - 10.0f,
-                data->pos.y + (rand_int(40) * data->scale),
-                data->pos.z + 3.0f,
-                (data->scale * ((rand_int(10) * 0.7 * 0.1) + 0.3)),
-                i + 30
+                (i % 2) + 2, (data->pos.x + rand_int(20)) - 10.0f, data->pos.y + (rand_int(40) * data->scale),
+                data->pos.z + 3.0f, (data->scale * ((rand_int(10) * 0.7 * 0.1) + 0.3)), i + 30
             );
             iceShard->data.iceShard->animFrame = rand_int(10) * 0.1;
             iceShard->data.iceShard->animRate = (rand_int(30) * 0.01) + 0.1;
@@ -152,13 +148,13 @@ void ice_pillar_render(EffectInstance* effect) {
 }
 
 void ice_pillar_appendGfx(void* effect) {
-    IcePillarFXData* data = ((EffectInstance*)effect)->data.icePillar;
+    IcePillarFXData* data = ((EffectInstance*) effect)->data.icePillar;
     s32 alpha = data->prim.a;
     Matrix4f sp10, sp50;
     Camera* camera;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     camera = &gCameras[gCurrentCameraID];
     guTranslateF(sp10, data->pos.x, data->pos.y, data->pos.z);
@@ -166,8 +162,9 @@ void ice_pillar_appendGfx(void* effect) {
     guMtxCatF(sp50, sp10, sp10);
     guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, data->prim.r, data->prim.g, data->prim.b, alpha);
     gDPSetEnvColor(gMainGfxPos++, data->env.r, data->env.g, data->env.b, data->env.a);

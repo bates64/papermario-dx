@@ -170,7 +170,7 @@ void entity_BlueWarpPipe_setupGfx(s32 entityIndex) {
 void entity_init_BlueWarpPipe(Entity* entity) {
     BlueWarpPipeData* data;
     s32 entryID = CreateEntityVarArgBuffer[0];
-    EvtScript* enterPipeEvt = (EvtScript*)CreateEntityVarArgBuffer[1];
+    EvtScript* enterPipeEvt = (EvtScript*) CreateEntityVarArgBuffer[1];
     s32 flagIndex = CreateEntityVarArgBuffer[2];
 
     entity->renderSetupFunc = &entity_BlueWarpPipe_setupGfx;
@@ -198,7 +198,8 @@ EntityScript Entity_BlueWarpPipe_Script = {
     es_End
 };
 
-EntityModelScript Entity_BlueWarpPipe_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_BlueWarpPipe_RenderPipe, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_BlueWarpPipe_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_BlueWarpPipe_RenderPipe, RENDER_MODE_SURFACE_OPA);
 
 EntityBlueprint Entity_BlueWarpPipe = {
     .flags = 0,

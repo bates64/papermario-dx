@@ -41,7 +41,7 @@ typedef u8* WaveData;
 #define AU_MAX_BUS_VOLUME       0x8000
 
 #define ALIGN16_(val) (((val) + 0xF) & 0xFFF0)
-#define AU_FILE_RELATIVE(base,offset) ((void*)((s32)(offset) + (s32)(base)))
+#define AU_FILE_RELATIVE(base, offset) ((void*)((s32)(offset) + (s32)(base)))
 
 #if VERSION_PAL
 #define VIDEO_FRAMES_PER_SECOND 50
@@ -571,8 +571,8 @@ typedef struct AuFxBus {
 
  // ALDMAproc in PM has an extra arg added for bypassing DMA transfers for static audio data
  // (which is always available in RAM), so we have ALDMAproc2 and ALDMANew2.
-typedef s32 (*ALDMAproc2)(s32 addr, s32 len, void *state, u8 arg3);
-typedef ALDMAproc2 (*ALDMANew2)(void *state);
+typedef s32 (*ALDMAproc2)(s32 addr, s32 len, void* state, u8 arg3);
+typedef ALDMAproc2 (*ALDMANew2)(void* state);
 
 // based on ALLoadFilter
 typedef struct AuLoadFilter {
@@ -648,7 +648,8 @@ typedef struct AuSynDriver {
 
 typedef struct SoundRequest {
     /* 0x0 */ u16 soundID;
-    /* 0x2 */ u16 toReplaceID; // if nonzero, the new sound will prefer stealing a voice from any player with this soundID
+    /* 0x2 */ u16
+        toReplaceID; // if nonzero, the new sound will prefer stealing a voice from any player with this soundID
     /* 0x4 */ s16 volume;
     /* 0x6 */ s16 pitchShift;
     /* 0x8 */ s8 pan;
@@ -767,11 +768,11 @@ typedef struct SoundPlayer {
 
 typedef struct SoundManagerMusicEvent {
     union {
-    /* 0x0 */ s32 raw;
+        /* 0x0 */ s32 raw;
         struct {
-    /* 0x0 */ u8 index;
-    /* 0x1 */ PAD(2);
-    /* 0x3 */ u8 volume;
+            /* 0x0 */ u8 index;
+            /* 0x1 */ PAD(2);
+            /* 0x3 */ u8 volume;
         };
     };
 } SoundManagerMusicEvent; // size = 4
@@ -808,7 +809,8 @@ typedef struct SoundManager {
     /* 0x0BF */ u8 curVoiceIndex;
     /* 0x0C0 */ u8 state;
     /* 0x0C1 */ PAD(1);
-    /* 0x0C2 */ SoundRequest soundQueue[SFX_QUEUE_SIZE]; ///< Lock-free ring buffer for queueing sound effects from game thread
+    /* 0x0C2 */ SoundRequest
+        soundQueue[SFX_QUEUE_SIZE]; ///< Lock-free ring buffer for queueing sound effects from game thread
     /* 0x162 */ s8 unused_162;
     /* 0x163 */ u8 sfxQueueReadPos; ///< Read index for the soundQueue ring buffer (audio thread)
     /* 0x164 */ u8 sfxQueueWritePos; ///< Write index for the soundQueue ring buffer (game thread)
@@ -909,20 +911,20 @@ typedef struct BGMInstrumentInfo {
 } BGMInstrumentInfo; // size = 0x8
 
 typedef struct AUFileMetadata {
-    /* 0x00 */ s32 signature;   // file type identifer: 'SBN ', 'SEF ', etc
-    /* 0x04 */ s32 size;        // full file size, including header and data
+    /* 0x00 */ s32 signature; // file type identifer: 'SBN ', 'SEF ', etc
+    /* 0x04 */ s32 size; // full file size, including header and data
 } AUFileMetadata;
 
 typedef struct SBNFileEntry {
     /* 0x0 */ s32 offset;
     union {
-    /* 0x4 */ u32 data;
-    //TODO try replacing the data field with these
-    struct {
-    /* 0x4 */ s8 fmt;
-    /* 0x5 */ PAD(1);
-    /* 0x6 */ s16 size;
-    };
+        /* 0x4 */ u32 data;
+        // TODO try replacing the data field with these
+        struct {
+            /* 0x4 */ s8 fmt;
+            /* 0x5 */ PAD(1);
+            /* 0x6 */ s16 size;
+        };
     };
 } SBNFileEntry; // size = 0x8
 
@@ -1037,7 +1039,8 @@ typedef struct AuGlobals {
     /* 0x0030 */ s32 songListLength;
     /* 0x0034 */ s32 bkFileListOffset;
     /* 0x0038 */ s32 bkListLength;
-    /* 0x003C */ u16* extraFileList; /// copied from INIT to the audio heap, seems to exist only to find SEF, PER, and PRG
+    /* 0x003C */ u16*
+        extraFileList; /// copied from INIT to the audio heap, seems to exist only to find SEF, PER, and PRG
     /* 0x0040 */ AuEffectChange effectChanges[4]; ///< set this to change the effect on an effect bus
     /* 0x0050 */ u8 channelDelayPending;
     /* 0x0051 */ u8 channelDelayBusID;
@@ -1091,7 +1094,8 @@ typedef struct BGMPlayerTrack {
     /* 0x30 */ s16_16 proxVolumeStep;
     /* 0x34 */ s16 proxVolumeTarget;
     /* 0x36 */ s16 proxVolumeTicks;
-    /* 0x38 */ s16 detune; /// live track detune, independent of instrument, instantly affects all active voices and subsequent notes played
+    /* 0x38 */ s16 detune; /// live track detune, independent of instrument, instantly affects all active voices and
+                           /// subsequent notes played
     /* 0x3A */ s16 tremoloDelay;
     /* 0x3C */ PAD(2);
     /* 0x3E */ s16 detourLength;
@@ -1116,7 +1120,8 @@ typedef struct BGMPlayerTrack {
     /* 0x57 */ u8 randomPanAmount;
     /* 0x58 */ u8 isDrumTrack;
     /* 0x59 */ u8 linkedTrackID;
-    /* 0x5A */ u8 muted; /// prevents notes from this track from being assigned voices, implemented for linked track pairs
+    /* 0x5A */ u8
+        muted; /// prevents notes from this track from being assigned voices, implemented for linked track pairs
     /* 0x5B */ s8 busID;
     /* 0x5C */ u8 index;
     /* 0x5D */ PAD(3);
@@ -1210,7 +1215,8 @@ typedef struct BGMPlayer {
     /* 0x234 */ u8 priority;
     /* 0x235 */ u8 busID;
     /* 0x236 */ PAD(2);
-    /* 0x238 */ s32 cmdBufData[8]; /// Buffer for an unused (legacy) system for controlling the BGMPlayer from the main thread
+    /* 0x238 */ s32
+        cmdBufData[8]; /// Buffer for an unused (legacy) system for controlling the BGMPlayer from the main thread
     /* 0x258 */ u8 cmdBufPending;
     /* 0x259 */ u8 cmdBufReadPos;
     /* 0x25A */ u8 cmdBufWritePos;
@@ -1318,10 +1324,10 @@ typedef struct AmbienceSavedVoice {
  */
 typedef union AmbVoiceStateInfo {
     struct {
-        u8 playerIndex;     /// Index of the owning ambience player
-        u8 trackIndex;      ///< Track index within the player (0–9)
-        u8 tune;            ///< Note or drum ID used to differentiate voices on the same track
-        u8 released;        ///< Set to true when the voice should be released/stopped
+        u8 playerIndex; /// Index of the owning ambience player
+        u8 trackIndex; ///< Track index within the player (0–9)
+        u8 tune; ///< Note or drum ID used to differentiate voices on the same track
+        u8 released; ///< Set to true when the voice should be released/stopped
     };
     s32 all;
 } AmbVoiceStateInfo;

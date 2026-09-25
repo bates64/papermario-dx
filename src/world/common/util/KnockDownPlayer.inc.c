@@ -11,9 +11,10 @@ void N(worker_draw_knocked_down_player)(void) {
 
     gDPPipeSync(gMainGfxPos++);
     gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
-    gSPClearGeometryMode(gMainGfxPos++,
-                         G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD |
-                         G_SHADING_SMOOTH);
+    gSPClearGeometryMode(
+        gMainGfxPos++,
+        G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH
+    );
     gSPSetGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_SHADING_SMOOTH);
     gSPTexture(gMainGfxPos++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTextureLOD(gMainGfxPos++, G_TL_TILE);
@@ -35,9 +36,10 @@ void N(worker_draw_knocked_down_player)(void) {
     guScaleF(sp80, data->scale.x, data->scale.y, data->scale.z);
     guMtxCatF(sp80, sp40, sp40);
     guMtxF2L(sp40, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++,
-              OS_K0_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
-              G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, OS_K0_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     spr_get_player_raster_info(&rasterInfo, data->spriteIndex, data->rasterIndex);
     ifxImg.raster = rasterInfo.raster;

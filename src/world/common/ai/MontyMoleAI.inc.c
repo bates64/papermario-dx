@@ -33,7 +33,11 @@ s32 N(MontyMoleAI_CanAttack)(Evt* script, EnemyDetectVolume* detect, f32 radius,
     } else {
         angle = 270.0f;
     }
-    if (fabsf(get_clamped_angle_diff(angle, atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z))) > 60.0) {
+    if (fabsf(get_clamped_angle_diff(
+            angle, atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z)
+        ))
+        > 60.0)
+    {
         retVal = false;
     }
     // check for overlap with player
@@ -75,7 +79,8 @@ void N(MontyMoleAI_Wander)(Evt* script, MobileAISettings* settings, EnemyDetectV
     f32 hitDepth;
 
     if (is_point_outside_wander_territory(&enemy->territory->wander, npc->pos.x, npc->pos.z)) {
-        npc->yaw = atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
+        npc->yaw =
+            atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
     }
     posX = npc->pos.x;
     posY = npc->pos.y + 1.0f;
@@ -213,7 +218,7 @@ API_CALLABLE(N(MontyMoleAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args++);
     EnemyDetectVolume detectVolume;
     EnemyDetectVolume* detect = &detectVolume;
 

@@ -4,11 +4,11 @@
 #define ASTRINGIFY(x) ASTRINGIFY_(x)
 
 #ifdef MODERN_COMPILER
-#  define PUSHSECTION(SECTION) ".pushsection " SECTION "\n"
-#  define POPSECTION ".popsection\n"
+#define PUSHSECTION(SECTION) ".pushsection " SECTION "\n"
+#define POPSECTION ".popsection\n"
 #else
-#  define PUSHSECTION(SECTION) SECTION "\n"
-#  define POPSECTION
+#define PUSHSECTION(SECTION) SECTION "\n"
+#define POPSECTION
 #endif
 
 #define _INCLUDE_IMG(FILENAME, SYMBOLNAME) \

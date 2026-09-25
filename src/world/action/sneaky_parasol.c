@@ -219,7 +219,8 @@ void action_update_parasol(void) {
                     disguiseNpc->yawCamOffset = disguiseNpc->yaw;
                 }
             }
-            playerStatus->spriteFacingAngle = clamp_angle(playerStatus->spriteFacingAngle + transformation->playerYawOffset);
+            playerStatus->spriteFacingAngle =
+                clamp_angle(playerStatus->spriteFacingAngle + transformation->playerYawOffset);
             playerStatus->targetYaw = clamp_angle((cam->curYaw - playerStatus->spriteFacingAngle) - 90);
             break;
         case SUBSTATE_DISGUISE_DONE:
@@ -300,7 +301,8 @@ void action_update_parasol(void) {
                     PrevPlayerCamRelativeYaw = playerStatus->curYaw;
                 }
             }
-            playerStatus->spriteFacingAngle = clamp_angle(playerStatus->spriteFacingAngle + transformation->playerYawOffset);
+            playerStatus->spriteFacingAngle =
+                clamp_angle(playerStatus->spriteFacingAngle + transformation->playerYawOffset);
             playerStatus->targetYaw = clamp_angle(cam->curYaw - playerStatus->spriteFacingAngle - 90);
             break;
         case SUBSTATE_REVERT_DONE:
@@ -343,11 +345,7 @@ void action_update_parasol(void) {
             transformation->pos.y = playerStatus->pos.y - 20;
         }
         if (transformation->disguiseTime <= 10 && transformation->disguiseTime & 1) {
-            fx_sparkles(FX_SPARKLES_3,
-                transformation->pos.x - 8,
-                transformation->pos.y + 50,
-                transformation->pos.z,
-                2);
+            fx_sparkles(FX_SPARKLES_3, transformation->pos.x - 8, transformation->pos.y + 50, transformation->pos.z, 2);
 
             angle = DEG_TO_RAD((cam->curYaw + playerStatus->spriteFacingAngle) - 90);
             transformation->pos.x += (10.0 * sin_rad(angle));
@@ -356,11 +354,10 @@ void action_update_parasol(void) {
     } else if (transformation->disguiseTime == 0) {
         transformation->disguiseTime = -1;
         if (transformation->npc != nullptr) {
-            fx_pink_sparkles(playerStatus->availableDisguiseType - 1,
-                transformation->npc->pos.x,
-                transformation->npc->pos.y,
-                transformation->npc->pos.z,
-                1, transformation->npc->yawCamOffset);
+            fx_pink_sparkles(
+                playerStatus->availableDisguiseType - 1, transformation->npc->pos.x, transformation->npc->pos.y,
+                transformation->npc->pos.z, 1, transformation->npc->yawCamOffset
+            );
         }
     }
     if (transformation->revertTime != 0) {
@@ -369,11 +366,7 @@ void action_update_parasol(void) {
                 sfx_play_sound_at_player(SOUND_SNEAKY_PARASOL_TRANSFORM, SOUND_SPACE_DEFAULT);
             }
             if ((transformation->revertTime & 3) == 0) {
-                fx_stars_shimmer(4,
-                    playerStatus->pos.x,
-                    playerStatus->pos.y,
-                    playerStatus->pos.z,
-                    50, 50, 40, 30);
+                fx_stars_shimmer(4, playerStatus->pos.x, playerStatus->pos.y, playerStatus->pos.z, 50, 50, 40, 30);
             }
         }
         transformation->revertTime--;

@@ -1,6 +1,5 @@
 #include "osr_02.h"
 
-
 #include "world/common/enemy/Clubba/idle.inc.c"
 
 AnimID N(LimitAnims_Clubba)[] = {

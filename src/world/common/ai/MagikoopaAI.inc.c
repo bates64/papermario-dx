@@ -150,7 +150,7 @@ void N(MagikoopaAI_Appear)(Evt* script, MobileAISettings* settings, EnemyDetectV
 
     npc->scale.x = (npc->duration * 0.1) + 0.4;
     if (npc->scale.x > 1.0) {
-       npc->scale.x = 1.0f;
+        npc->scale.x = 1.0f;
     }
     npc->scale.y = npc->scale.x;
     npc->scale.z = npc->scale.x;

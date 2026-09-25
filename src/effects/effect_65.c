@@ -13,14 +13,7 @@ extern Gfx D_09000400_3D15E0[];
 
 Gfx* D_E00CACB0[] = { D_09000400_3D15E0, D_09000400_3D15E0, D_09000400_3D15E0, D_09000400_3D15E0 };
 
-EffectInstance* effect_65_main(
-    s32 variation,
-    f32 posX,
-    f32 posY,
-    f32 posZ,
-    f32 scale,
-    s32 duration
-) {
+EffectInstance* effect_65_main(s32 variation, f32 posX, f32 posY, f32 posZ, f32 scale, s32 duration) {
     EffectBlueprint bp;
     EffectInstance* effect;
     Effect65FXData* data;
@@ -208,7 +201,7 @@ void effect_65_render(EffectInstance* effect) {
 }
 
 void effect_65_appendGfx(void* effect) {
-    Effect65FXData* data = ((EffectInstance*)effect)->data.unk_65;
+    Effect65FXData* data = ((EffectInstance*) effect)->data.unk_65;
     Matrix4f mtx;
     s32 lifeTime;
     s32 variation;
@@ -248,12 +241,14 @@ void effect_65_appendGfx(void* effect) {
     scale = data->scale;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(mtx, 0.0f, 0.0f, 0.0f);
     guMtxF2L(mtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPDisplayList(gMainGfxPos++, D_E00CACB0[variation]);
 
     if (variation >= 2) {
@@ -266,7 +261,7 @@ void effect_65_appendGfx(void* effect) {
     gMainGfxPos++;
 
     // reserve space in the display list for the vertices
-    vtxBuffer = (Vtx_t*)gMainGfxPos;
+    vtxBuffer = (Vtx_t*) gMainGfxPos;
     gMainGfxPos += VTX_BUF_SIZE;
 
     firstPointIdx = -1;

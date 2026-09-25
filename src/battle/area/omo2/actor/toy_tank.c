@@ -51,7 +51,7 @@ enum N(ActorParams) {
 };
 
 API_CALLABLE(N(UpdateBulbGlowPos)) {
-    Bytecode *args = script->ptrReadPos;
+    Bytecode* args = script->ptrReadPos;
 
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -911,4 +911,3 @@ Formation N(RightShyStackFormation) = {
 Formation N(ShySquadReduxFormation) = {
     ACTOR_BY_POS(b_area_omo2_5_shy_squad_redux, N(SummonPos), 95)
 };
-

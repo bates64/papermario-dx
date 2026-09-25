@@ -278,7 +278,9 @@ void N(update)(void) {
                         hid = acs->hudElemIDs[acs->tidalWave.inputCount];
                         hud_element_set_script(hid, HudButtonsDown[acs->tidalWave.prevButton]);
                         hud_element_set_scale(hid, 0.5f);
-                        hud_element_set_render_pos(hid, acs->hudPosX + ((acs->tidalWave.inputCount - 1) * 20), acs->hudPosY + 7);
+                        hud_element_set_render_pos(
+                            hid, acs->hudPosX + ((acs->tidalWave.inputCount - 1) * 20), acs->hudPosY + 7
+                        );
                         acs->tidalWave.inputCount++;
                         acs->meterFillLevel += battleStatus->actionCmdDifficultyTable[acs->difficulty] * 18;
                         if (acs->meterFillLevel > MAX_MASH_UNITS) {

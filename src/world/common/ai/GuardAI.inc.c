@@ -36,7 +36,9 @@ void N(GuardAI_Idle)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* 
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
-    if (settings->playerSearchInterval >= 0 && basic_ai_check_player_dist(detect, enemy, settings->chaseRadius, settings->chaseOffsetDist, false)) {
+    if (settings->playerSearchInterval >= 0
+        && basic_ai_check_player_dist(detect, enemy, settings->chaseRadius, settings->chaseOffsetDist, false))
+    {
         fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
         ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
         npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
@@ -168,7 +170,9 @@ void N(GuardAI_ReturnHome)(Evt* script, GuardAISettings* settings, EnemyDetectVo
         script->functionTemp[1]--;
     }
 
-    if (dist2D(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z) < npc->moveSpeed) {
+    if (dist2D(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z)
+        < npc->moveSpeed)
+    {
         npc->pos.x = enemy->territory->wander.centerPos.x;
         npc->pos.z = enemy->territory->wander.centerPos.z;
         // NOTE: initial yaw is stored HERE
@@ -177,7 +181,8 @@ void N(GuardAI_ReturnHome)(Evt* script, GuardAISettings* settings, EnemyDetectVo
     }
 
     if (npc->turnAroundYawAdjustment == 0) {
-        npc->yaw = atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
+        npc->yaw =
+            atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
         npc_move_heading(npc, npc->moveSpeed, npc->yaw);
     }
 }
@@ -186,7 +191,7 @@ API_CALLABLE(N(GuardAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    GuardAISettings* settings = (GuardAISettings*)evt_get_variable(script, *args++);
+    GuardAISettings* settings = (GuardAISettings*) evt_get_variable(script, *args++);
     EnemyDetectVolume detectVolume;
     EnemyDetectVolume* detect = &detectVolume;
 

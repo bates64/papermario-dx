@@ -27,16 +27,13 @@ void N(add_tongue_deformation)(Vtx* src, Vtx* dest, s32 numVertices, s32 time) {
         dz = vd->ob[2] - player->pos.z;
         offset = ((dx * dx) + (dz * dz)) / 100;
         if (offset > 10) {
-          offset = 10;
+            offset = 10;
         }
         offset /= 2;
 
         // space-based and time-based undulations are the second component of the y-offset
         // reuse of the pct variable is not ideal, but required to match
-        pct = 2.0f + 2.0f * sin_rad(
-            (f32)vd->ob[0] * 0.06 +
-            (f32)vd->ob[2] * 0.03f +
-            time * 0.01f);
+        pct = 2.0f + 2.0f * sin_rad((f32) vd->ob[0] * 0.06 + (f32) vd->ob[2] * 0.03f + time * 0.01f);
         offset += pct;
 
         // modulate y-offset based on vertex x-position
@@ -44,10 +41,10 @@ void N(add_tongue_deformation)(Vtx* src, Vtx* dest, s32 numVertices, s32 time) {
         // more prominent closer toward the tip of the tongue
         pct = 200 - vd->ob[0];
         if (pct < 0) {
-          pct = 0;
+            pct = 0;
         }
         if (pct > 100) {
-          pct = 100;
+            pct = 100;
         }
         offset = offset * pct / 100;
 
@@ -72,16 +69,15 @@ void N(make_tongue_gfx)(s32 index) {
 // in Var0. this value is the offset from a neutral position used for collision,
 // ignoring minor undulations and deformation imposed by the player.
 API_CALLABLE(N(GetEffectiveTongueOffset)) {
-    f32 amplitude = 2.0f * sin_rad(
-        (f32)script->varTable[0] * 0.06 +
-        (f32)script->varTable[2] * 0.03f +
-        (f32)N(TongueWiggleTime) * 0.01f);
+    f32 amplitude = 2.0f
+        * sin_rad((f32) script->varTable[0] * 0.06 + (f32) script->varTable[2] * 0.03f
+                  + (f32)N(TongueWiggleTime) * 0.01f);
 
-    f32 percent = 200.0f - (f32)script->varTable[0];
-    if (percent < 0.0f){
+    f32 percent = 200.0f - (f32) script->varTable[0];
+    if (percent < 0.0f) {
         percent = 0.0f;
     }
-    if (percent > 100.0f){
+    if (percent > 100.0f) {
         percent = 100.0f;
     }
     amplitude = (amplitude * percent) / 100.0f;

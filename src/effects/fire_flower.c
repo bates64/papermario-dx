@@ -200,7 +200,7 @@ void fire_flower_render(EffectInstance* effect) {
 }
 
 void fire_flower_appendGfx(void* effect) {
-    FireFlowerFXData* part = ((EffectInstance*)effect)->data.fireFlower;
+    FireFlowerFXData* part = ((EffectInstance*) effect)->data.fireFlower;
     s32 unk_34 = part->unk_34;
     f32 unk_30 = part->unk_30;
     s32 unk_04 = part->unk_04;
@@ -211,14 +211,16 @@ void fire_flower_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp18, part->pos.x, part->pos.y, part->pos.z);
     guRotateF(sp58, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
     guMtxCatF(sp58, sp18, sp18);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 0, 0, part->unk_3C);
     gDPSetEnvColor(gMainGfxPos++, 255, 0, 0, part->unk_38);
 
@@ -226,18 +228,23 @@ void fire_flower_appendGfx(void* effect) {
         guTranslateF(sp18, 0.0f, 16.0f, 0.0f);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_09000DE0_381180);
 
         part++;
-        for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+        for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
             if (part->unk_40.z == 0) {
                 guRotateF(sp18, part->unk_24, 0.0f, 0.0f, 1.0f);
                 guTranslateF(sp58, part->pos.x, part->pos.y, part->pos.z);
                 guMtxCatF(sp58, sp18, sp18);
                 guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-                gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+                gSPMatrix(
+                    gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
+                    G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+                );
                 gSPDisplayList(gMainGfxPos++, part->unk_00 != 0 ? D_09000ED8_381278 : D_09000EB8_381258);
                 gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
             }
@@ -248,15 +255,13 @@ void fire_flower_appendGfx(void* effect) {
 
     gSPDisplayList(gMainGfxPos++, D_09000D40_3810E0);
     gDPLoadTextureTile_4b(
-        gMainGfxPos++, D_09000000_3803A0[3 - unk_34],
-        G_IM_FMT_CI, 32, 0, 0, 0, 31, 31, 0,
-        G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP,
-        5, 5, G_TX_NOLOD, G_TX_NOLOD);
+        gMainGfxPos++, D_09000000_3803A0[3 - unk_34], G_IM_FMT_CI, 32, 0, 0, 0, 31, 31, 0, G_TX_MIRROR | G_TX_WRAP,
+        G_TX_MIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD
+    );
     gDPLoadMultiTile_4b(
-        gMainGfxPos++, D_09000000_3803A0[2 - unk_34],
-        0x0080, 1, G_IM_FMT_CI, 32, 0, 0, 0, 31, 31, 0,
-        G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP,
-        5, 5, G_TX_NOLOD, G_TX_NOLOD);
+        gMainGfxPos++, D_09000000_3803A0[2 - unk_34], 0x0080, 1, G_IM_FMT_CI, 32, 0, 0, 0, 31, 31, 0,
+        G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD
+    );
 
     guTranslateF(sp18, unk_2C, 0.0f, 0.0f);
     guScaleF(sp58, unk_30, unk_30, unk_30);

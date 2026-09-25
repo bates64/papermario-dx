@@ -63,7 +63,7 @@ void drop_leaves_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, s32 arg4) {
 void drop_leaves_init(EffectInstance* effect) {
 }
 
-void drop_leaves_update(EffectInstance *effect) {
+void drop_leaves_update(EffectInstance* effect) {
     DropLeavesFXData* part = effect->data.dropLeaves;
     s32 unk_00;
     s32 unk_28;
@@ -127,13 +127,13 @@ void drop_leaves_render(EffectInstance* effect) {
 }
 
 void drop_leaves_appendGfx(void* effect) {
-    DropLeavesFXData* part = ((EffectInstance*)effect)->data.dropLeaves;
+    DropLeavesFXData* part = ((EffectInstance*) effect)->data.dropLeaves;
     Matrix4f sp18;
     Matrix4f sp58;
     Matrix4f sp98;
     s32 i;
 
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_09001180_33E790);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 20, 100, 20, part->unk_24);
 
@@ -142,7 +142,7 @@ void drop_leaves_appendGfx(void* effect) {
     guMtxCatF(sp58, sp18, sp98);
 
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         guTranslateF(sp58, part->unk_04, part->unk_08, part->unk_0C);
         guMtxCatF(sp58, sp98, sp18);
         guRotateF(sp58, part->unk_18, 0.0f, 0.0f, 1.0f);
@@ -151,7 +151,9 @@ void drop_leaves_appendGfx(void* effect) {
         guMtxCatF(sp58, sp18, sp18);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_09001230_33E840);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

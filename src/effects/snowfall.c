@@ -184,7 +184,7 @@ void snowfall_appendGfx(void* effect) {
 
         if (unk_28 != 0) {
             gDPPipeSync(gMainGfxPos++);
-            gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+            gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
             gSPDisplayList(gMainGfxPos++, D_09000C00_38DC70);
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, unk_28);
@@ -200,10 +200,11 @@ void snowfall_appendGfx(void* effect) {
                     guTranslateF(sp18, data->unk_08, data->unk_0C, data->unk_10);
                     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-                    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                              G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                    gSPMatrix(gMainGfxPos++, mtx,
-                              G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+                    gSPMatrix(
+                        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
+                        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+                    );
+                    gSPMatrix(gMainGfxPos++, mtx, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
                     gSPDisplayList(gMainGfxPos++, dlist);
                     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
                 }

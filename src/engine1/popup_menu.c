@@ -235,13 +235,11 @@ void destroy_popup_menu(void) {
         hud_element_free(PopupMenu_TitleIconHID);
     }
 
-    if ((gPopupMenu->popupType <= POPUP_TYPE_USE_ITEM ||
-         gPopupMenu->popupType == POPUP_TYPE_SWITCH_PARTNER ||
-         gPopupMenu->popupType == POPUP_TYPE_THROW_AWAY_ITEM ||
-         gPopupMenu->popupType == POPUP_TYPE_TRADE_FOR_BADGE ||
-         gPopupMenu->popupType == POPUP_TYPE_UPGRADE_PARTNER ||
-         gPopupMenu->popupType == POPUP_TYPE_USE_KEY
-        ) && gGameStatusPtr->context == CONTEXT_WORLD) {
+    if ((gPopupMenu->popupType <= POPUP_TYPE_USE_ITEM || gPopupMenu->popupType == POPUP_TYPE_SWITCH_PARTNER
+         || gPopupMenu->popupType == POPUP_TYPE_THROW_AWAY_ITEM || gPopupMenu->popupType == POPUP_TYPE_TRADE_FOR_BADGE
+         || gPopupMenu->popupType == POPUP_TYPE_UPGRADE_PARTNER || gPopupMenu->popupType == POPUP_TYPE_USE_KEY)
+        && gGameStatusPtr->context == CONTEXT_WORLD)
+    {
         if (!PopupMenu_WasStatusBarIgnoringChanges) {
             status_bar_respond_to_changes();
         }
@@ -357,7 +355,6 @@ s32 popup_menu_update(void) {
     s32 msgID;
     s32 i;
 
-
     switch (gPopupState) {
         case POPUP_STATE_INIT:
 #if VERSION_JP
@@ -461,13 +458,17 @@ s32 popup_menu_update(void) {
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                 hud_element_set_tint(hid, 255, 255, 255);
             }
-            if (gPopupMenu->popupType == POPUP_MENU_TRADE_FOR_BADGE || gPopupMenu->popupType == POPUP_MENU_UPGRADE_PARTNER) {
+            if (gPopupMenu->popupType == POPUP_MENU_TRADE_FOR_BADGE
+                || gPopupMenu->popupType == POPUP_MENU_UPGRADE_PARTNER)
+            {
                 PopupMenu_TimesHID = hud_element_create(HES_MenuTimes);
                 hid = PopupMenu_TimesHID;
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                 hud_element_set_tint(hid, 255, 255, 255);
             }
-            if (gPopupMenu->popupType == POPUP_MENU_SWITCH_PARTNER || gPopupMenu->popupType == POPUP_MENU_UPGRADE_PARTNER) {
+            if (gPopupMenu->popupType == POPUP_MENU_SWITCH_PARTNER
+                || gPopupMenu->popupType == POPUP_MENU_UPGRADE_PARTNER)
+            {
                 PopupMenu_PartnerLevelHID = hud_element_create(D_80109890[0]);
                 hid = PopupMenu_PartnerLevelHID;
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
@@ -590,16 +591,22 @@ s32 popup_menu_update(void) {
                 posX2 = (var_s5 - width2) / 2;
                 gPopupMenu->unk_334 = (80 - msgWidth) / 2;
             }
-            set_window_properties(WIN_POPUP_CONTENT, posX, posY, var_s6, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
-                                  WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
+            set_window_properties(
+                WIN_POPUP_CONTENT, posX, posY, var_s6, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+            );
             if (gPopupMenu->unk_338 == 0) {
-                set_window_properties(WIN_POPUP_TITLE_A, posX2, -6, width2, 16, WINDOW_PRIORITY_21,
-                                      popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                set_window_properties(
+                    WIN_POPUP_TITLE_A, posX2, -6, width2, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                    WIN_POPUP_CONTENT
+                );
                 set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_SHOW);
                 set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_HIDE);
             } else {
-                set_window_properties(WIN_POPUP_TITLE_B, posX2, -6, width2, 16, WINDOW_PRIORITY_21,
-                                      popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                set_window_properties(
+                    WIN_POPUP_TITLE_B, posX2, -6, width2, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                    WIN_POPUP_CONTENT
+                );
                 set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_HIDE);
                 set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_SHOW);
             }
@@ -611,56 +618,110 @@ s32 popup_menu_update(void) {
                 case POPUP_MENU_CLAIM_ITEM:
                 case POPUP_MENU_TAKE_FROM_CHEST:
                 case POPUP_MENU_USEKEY:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 130, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_A, 12, -6, 106, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 130, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_A, 12, -6, 106, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_SHOW);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_HIDE);
                     break;
                 case POPUP_MENU_SWITCH_PARTNER:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 104, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_B, 14, -6, 72, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 104, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_B, 14, -6, 72, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_HIDE);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_SHOW);
                     break;
                 case POPUP_MENU_TRADE_FOR_BADGE:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 152, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_A, 12, -6, 106, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 152, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_A, 12, -6, 106, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_SHOW);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_HIDE);
                     break;
                 case POPUP_MENU_UPGRADE_PARTNER:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 126, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_B, 12, -6, 66, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 126, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_B, 12, -6, 66, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_HIDE);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_SHOW);
                     break;
                 case POPUP_MENU_SELL_ITEM:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 152, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_A, 12, -6, 106, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 152, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_A, 12, -6, 106, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_SHOW);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_HIDE);
                     break;
                 case POPUP_MENU_READ_LETTER:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 120, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_A, 24, -6, 72, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 120, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_A, 24, -6, 72, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_SHOW);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_HIDE);
                     break;
                 case POPUP_MENU_READ_DIARY_PAGE:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 108, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_A, 12, -6, 84, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 108, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_A, 12, -6, 84, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_SHOW);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_HIDE);
                     break;
                 case POPUP_MENU_READ_POSTCARD:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 124, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_A, 12, -6, 100, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 124, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_A, 12, -6, 100, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_SHOW);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_HIDE);
                     break;
                 case POPUP_MENU_POST_OFFICE:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 96, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_B, 10, -6, 72, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 96, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_B, 10, -6, 72, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_HIDE);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_SHOW);
                     break;
@@ -672,66 +733,129 @@ s32 popup_menu_update(void) {
                 case POPUP_MENU_CHECK_ITEM:
                 case POPUP_MENU_CLAIM_ITEM:
                 case POPUP_MENU_USEKEY:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 145, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 145, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
                     if (gPopupMenu->dipMode == 0) {
-                        set_window_properties(WIN_POPUP_TITLE_A, 25, -6, 95, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                        set_window_properties(
+                            WIN_POPUP_TITLE_A, 25, -6, 95, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                            WIN_POPUP_CONTENT
+                        );
                     } else {
-                        set_window_properties(WIN_POPUP_TITLE_A, 12, -6, 121, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                        set_window_properties(
+                            WIN_POPUP_TITLE_A, 12, -6, 121, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                            WIN_POPUP_CONTENT
+                        );
                     }
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_SHOW);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_HIDE);
                     break;
                 case POPUP_MENU_SWITCH_PARTNER:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 139, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_B, 13, -6, 114, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 139, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_B, 13, -6, 114, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_HIDE);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_SHOW);
                     break;
                 case POPUP_MENU_TRADE_FOR_BADGE:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 162, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_A, 17, -6, 96, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 162, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_A, 17, -6, 96, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_SHOW);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_HIDE);
                     break;
                 case POPUP_MENU_UPGRADE_PARTNER:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 146, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_B, 12, -6, 114, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 146, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_B, 12, -6, 114, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_HIDE);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_SHOW);
                     break;
                 case POPUP_MENU_SELL_ITEM:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 167, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_A, 22, -6, 95, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 167, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_A, 22, -6, 95, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_SHOW);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_HIDE);
                     break;
                 case POPUP_MENU_READ_LETTER:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 170, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_A, 32, -6, 104, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 170, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_A, 32, -6, 104, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_SHOW);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_HIDE);
                     break;
                 case POPUP_MENU_TAKE_FROM_CHEST:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 145, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_A, 12, -6, 121, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 145, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_A, 12, -6, 121, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_SHOW);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_HIDE);
                     break;
                 case POPUP_MENU_READ_DIARY_PAGE:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 128, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_A, 12, -6, 104, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 128, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_A, 12, -6, 104, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_SHOW);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_HIDE);
                     break;
                 case POPUP_MENU_READ_POSTCARD:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 149, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_A, 6, -6, 139, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 149, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_A, 6, -6, 139, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_SHOW);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_HIDE);
                     break;
                 case POPUP_MENU_POST_OFFICE:
-                    set_window_properties(WIN_POPUP_CONTENT, posX, posY, 131, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26, WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1);
-                    set_window_properties(WIN_POPUP_TITLE_B, 10, -6, 114, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_CONTENT, posX, posY, 131, (PopupMenu_DisplayedEntryCount * LINE_HEIGHT) + 26,
+                        WINDOW_PRIORITY_20, popup_draw_menu_content, nullptr, -1
+                    );
+                    set_window_properties(
+                        WIN_POPUP_TITLE_B, 10, -6, 114, 16, WINDOW_PRIORITY_21, popup_draw_title_content, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     set_window_update(WIN_POPUP_TITLE_A, WINDOW_UPDATE_HIDE);
                     set_window_update(WIN_POPUP_TITLE_B, WINDOW_UPDATE_SHOW);
                     break;
@@ -741,22 +865,37 @@ s32 popup_menu_update(void) {
 #if VERSION_JP
             switch (gPopupMenu->popupType) {
                 case POPUP_MENU_UPGRADE_PARTNER:
-                    set_window_properties(WIN_PARTNER_COST, 84, -6, 40, 16, WINDOW_PRIORITY_21, popup_draw_cost_icon, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_PARTNER_COST, 84, -6, 40, 16, WINDOW_PRIORITY_21, popup_draw_cost_icon, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     break;
                 case POPUP_MENU_TRADE_FOR_BADGE:
-                    set_window_properties(WIN_POPUP_COST, 116, -14, 32, 32, WINDOW_PRIORITY_21, popup_draw_cost_icon, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_COST, 116, -14, 32, 32, WINDOW_PRIORITY_21, popup_draw_cost_icon, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     break;
                 case POPUP_MENU_SELL_ITEM:
-                    set_window_properties(WIN_POPUP_COST, 116, -14, 32, 32, WINDOW_PRIORITY_21, popup_draw_cost_icon, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_COST, 116, -14, 32, 32, WINDOW_PRIORITY_21, popup_draw_cost_icon, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     break;
             }
 #else
             switch (gPopupMenu->popupType) {
                 case POPUP_MENU_TRADE_FOR_BADGE:
-                    set_window_properties(WIN_POPUP_COST, 126, -14, 32, 32, WINDOW_PRIORITY_21, popup_draw_cost_icon, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_COST, 126, -14, 32, 32, WINDOW_PRIORITY_21, popup_draw_cost_icon, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     break;
                 case POPUP_MENU_SELL_ITEM:
-                    set_window_properties(WIN_POPUP_COST, 131, -14, 32, 32, WINDOW_PRIORITY_21, popup_draw_cost_icon, nullptr, WIN_POPUP_CONTENT);
+                    set_window_properties(
+                        WIN_POPUP_COST, 131, -14, 32, 32, WINDOW_PRIORITY_21, popup_draw_cost_icon, nullptr,
+                        WIN_POPUP_CONTENT
+                    );
                     break;
             }
 #endif
@@ -764,7 +903,10 @@ s32 popup_menu_update(void) {
             if (gPopupMenu->popupType == POPUP_MENU_TRADE_FOR_BADGE) {
                 posX = PopupMenu_StarPieceCounterPosX;
                 posY = PopupMenu_StarPieceCounterPosY;
-                set_window_properties(WIN_CURRENCY_COUNTER, posX, posY, 64, 20, WINDOW_PRIORITY_21, popup_draw_star_pieces_content, nullptr, -1);
+                set_window_properties(
+                    WIN_CURRENCY_COUNTER, posX, posY, 64, 20, WINDOW_PRIORITY_21, popup_draw_star_pieces_content,
+                    nullptr, -1
+                );
             }
 
             do {
@@ -789,7 +931,10 @@ s32 popup_menu_update(void) {
             {
                 posX = PopupDescX;
                 posY = PopupDescY;
-                set_window_properties(WIN_POPUP_DESC, posX, posY, WINDOW_KEY_WIDTH, 32, WINDOW_PRIORITY_20, popup_draw_desc_content, nullptr, -1);
+                set_window_properties(
+                    WIN_POPUP_DESC, posX, posY, WINDOW_KEY_WIDTH, 32, WINDOW_PRIORITY_20, popup_draw_desc_content,
+                    nullptr, -1
+                );
             }
 
             posX = PopupPromptX;
@@ -800,7 +945,10 @@ s32 popup_menu_update(void) {
             if (get_msg_lines(gPopupMenu->unk_33C) == 2) {
                 height = 40;
             }
-            set_window_properties(WIN_POPUP_PROMPT, posX, posY, gPopupMenu->unk_340 + 144, height, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr, -1);
+            set_window_properties(
+                WIN_POPUP_PROMPT, posX, posY, gPopupMenu->unk_340 + 144, height, WINDOW_PRIORITY_20,
+                popup_draw_prompt_content, nullptr, -1
+            );
 #else
             switch (gPopupMenu->popupType) {
 #if VERSION_JP
@@ -817,24 +965,42 @@ s32 popup_menu_update(void) {
                 case POPUP_MENU_POST_OFFICE:
                     switch (gPopupMenu->dipMode) {
                         case 0:
-                            set_window_properties(WIN_POPUP_PROMPT, PopupPromptX, PopupPromptY, 152, 32, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr, -1);
+                            set_window_properties(
+                                WIN_POPUP_PROMPT, PopupPromptX, PopupPromptY, 152, 32, WINDOW_PRIORITY_20,
+                                popup_draw_prompt_content, nullptr, -1
+                            );
                             break;
                         case 1:
-                            set_window_properties(WIN_POPUP_PROMPT, PopupPromptX, PopupPromptY, 152, 32, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr, -1);
+                            set_window_properties(
+                                WIN_POPUP_PROMPT, PopupPromptX, PopupPromptY, 152, 32, WINDOW_PRIORITY_20,
+                                popup_draw_prompt_content, nullptr, -1
+                            );
                             break;
                         case 2:
-                            set_window_properties(WIN_POPUP_PROMPT, PopupPromptX, PopupPromptY, 152, 32, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr, -1);
+                            set_window_properties(
+                                WIN_POPUP_PROMPT, PopupPromptX, PopupPromptY, 152, 32, WINDOW_PRIORITY_20,
+                                popup_draw_prompt_content, nullptr, -1
+                            );
                             break;
                     }
                     break;
                 case POPUP_MENU_TRADE_FOR_BADGE:
-                    set_window_properties(WIN_POPUP_PROMPT, PopupPromptX, PopupPromptY, 136, 32, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr, -1);
+                    set_window_properties(
+                        WIN_POPUP_PROMPT, PopupPromptX, PopupPromptY, 136, 32, WINDOW_PRIORITY_20,
+                        popup_draw_prompt_content, nullptr, -1
+                    );
                     break;
                 case POPUP_MENU_UPGRADE_PARTNER:
-                    set_window_properties(WIN_POPUP_PROMPT, PopupPromptX, PopupPromptY, 136, 48, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr, -1);
+                    set_window_properties(
+                        WIN_POPUP_PROMPT, PopupPromptX, PopupPromptY, 136, 48, WINDOW_PRIORITY_20,
+                        popup_draw_prompt_content, nullptr, -1
+                    );
                     break;
                 case POPUP_MENU_SELL_ITEM:
-                    set_window_properties(WIN_POPUP_PROMPT, PopupPromptX, PopupPromptY, 120, 32, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr, -1);
+                    set_window_properties(
+                        WIN_POPUP_PROMPT, PopupPromptX, PopupPromptY, 120, 32, WINDOW_PRIORITY_20,
+                        popup_draw_prompt_content, nullptr, -1
+                    );
                     break;
 #else
                 case POPUP_MENU_USE_ITEM:
@@ -842,26 +1008,44 @@ s32 popup_menu_update(void) {
                 case POPUP_MENU_CLAIM_ITEM:
                 case POPUP_MENU_TAKE_FROM_CHEST:
                 case POPUP_MENU_USEKEY:
-                    set_window_properties(WIN_POPUP_PROMPT, posX, posY, 144, 32, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr, -1);
+                    set_window_properties(
+                        WIN_POPUP_PROMPT, posX, posY, 144, 32, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr,
+                        -1
+                    );
                     break;
                 case POPUP_MENU_SWITCH_PARTNER:
                 case POPUP_MENU_THROW_AWAY_ITEM:
                 case POPUP_MENU_POST_OFFICE:
-                    set_window_properties(WIN_POPUP_PROMPT, posX, posY, 144, 40, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr, -1);
+                    set_window_properties(
+                        WIN_POPUP_PROMPT, posX, posY, 144, 40, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr,
+                        -1
+                    );
                     break;
                 case POPUP_MENU_TRADE_FOR_BADGE:
                 case POPUP_MENU_READ_DIARY_PAGE:
                 case POPUP_MENU_READ_POSTCARD:
-                    set_window_properties(WIN_POPUP_PROMPT, posX, posY, 128, 40, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr, -1);
+                    set_window_properties(
+                        WIN_POPUP_PROMPT, posX, posY, 128, 40, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr,
+                        -1
+                    );
                     break;
                 case POPUP_MENU_UPGRADE_PARTNER:
-                    set_window_properties(WIN_POPUP_PROMPT, posX, posY, 136, 40, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr, -1);
+                    set_window_properties(
+                        WIN_POPUP_PROMPT, posX, posY, 136, 40, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr,
+                        -1
+                    );
                     break;
                 case POPUP_MENU_READ_LETTER:
-                    set_window_properties(WIN_POPUP_PROMPT, posX, posY, 112, 40, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr, -1);
+                    set_window_properties(
+                        WIN_POPUP_PROMPT, posX, posY, 112, 40, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr,
+                        -1
+                    );
                     break;
                 case POPUP_MENU_SELL_ITEM:
-                    set_window_properties(WIN_POPUP_PROMPT, posX, posY, 120, 32, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr, -1);
+                    set_window_properties(
+                        WIN_POPUP_PROMPT, posX, posY, 120, 32, WINDOW_PRIORITY_20, popup_draw_prompt_content, nullptr,
+                        -1
+                    );
                     break;
 #endif
             }
@@ -903,20 +1087,20 @@ s32 popup_menu_update(void) {
                     case POPUP_MENU_READ_LETTER:
                     case POPUP_MENU_TAKE_FROM_CHEST:
                     case POPUP_MENU_USEKEY:
-                        set_window_update(WIN_POPUP_CONTENT, (s32)basic_window_update);
+                        set_window_update(WIN_POPUP_CONTENT, (s32) basic_window_update);
                         sfx_play_sound(SOUND_OPEN_POPUP_1);
-                        set_window_update(WIN_POPUP_DESC, (s32)basic_window_update);
+                        set_window_update(WIN_POPUP_DESC, (s32) basic_window_update);
                         break;
                     case POPUP_MENU_SWITCH_PARTNER:
                     case POPUP_MENU_UPGRADE_PARTNER:
-                        set_window_update(WIN_POPUP_CONTENT, (s32)basic_window_update);
+                        set_window_update(WIN_POPUP_CONTENT, (s32) basic_window_update);
                         sfx_play_sound(SOUND_OPEN_POPUP_2);
-                        set_window_update(WIN_POPUP_DESC, (s32)basic_window_update);
+                        set_window_update(WIN_POPUP_DESC, (s32) basic_window_update);
                         break;
                     case POPUP_MENU_READ_DIARY_PAGE:
                     case POPUP_MENU_READ_POSTCARD:
                     case POPUP_MENU_POST_OFFICE:
-                        set_window_update(WIN_POPUP_CONTENT, (s32)basic_window_update);
+                        set_window_update(WIN_POPUP_CONTENT, (s32) basic_window_update);
                         sfx_play_sound(SOUND_OPEN_POPUP_1);
                         break;
                 }
@@ -924,14 +1108,14 @@ s32 popup_menu_update(void) {
             }
 
             if (gPopupMenu->popupType == POPUP_MENU_TRADE_FOR_BADGE) {
-                set_window_update(WIN_POPUP_COST, (s32)basic_window_update);
-                set_window_update(WIN_CURRENCY_COUNTER, (s32)basic_window_update);
+                set_window_update(WIN_POPUP_COST, (s32) basic_window_update);
+                set_window_update(WIN_CURRENCY_COUNTER, (s32) basic_window_update);
             }
             if (gPopupMenu->popupType == POPUP_MENU_UPGRADE_PARTNER) {
-                set_window_update(WIN_PARTNER_COST, (s32)basic_window_update);
+                set_window_update(WIN_PARTNER_COST, (s32) basic_window_update);
             }
             if (gPopupMenu->popupType == POPUP_MENU_SELL_ITEM) {
-                set_window_update(WIN_POPUP_COST, (s32)basic_window_update);
+                set_window_update(WIN_POPUP_COST, (s32) basic_window_update);
             }
             gPopupState = POPUP_STATE_CHOOSING;
             break;
@@ -942,15 +1126,17 @@ s32 popup_menu_update(void) {
                 PopupMenu_PrevSelectedIndex = PopupMenu_SelectedIndex;
 
                 // change selection on up input
-                if (gGameStatusPtr->heldButtons[0] & (BUTTON_STICK_UP | BUTTON_Z) &&
-                    (PopupMenu_SelectedIndex > 0 || (gGameStatusPtr->pressedButtons[0] & (BUTTON_STICK_UP | BUTTON_Z))))
+                if (gGameStatusPtr->heldButtons[0] & (BUTTON_STICK_UP | BUTTON_Z)
+                    && (PopupMenu_SelectedIndex > 0
+                        || (gGameStatusPtr->pressedButtons[0] & (BUTTON_STICK_UP | BUTTON_Z))))
                 {
                     PopupMenu_SelectedIndex--;
                 }
 
                 // change selection on down input
-                if (gGameStatusPtr->heldButtons[0] & (BUTTON_STICK_DOWN | BUTTON_R) &&
-                    ((PopupMenu_SelectedIndex < gPopupMenu->numEntries - 1) || (gGameStatusPtr->pressedButtons[0] & (BUTTON_STICK_DOWN | BUTTON_R))))
+                if (gGameStatusPtr->heldButtons[0] & (BUTTON_STICK_DOWN | BUTTON_R)
+                    && ((PopupMenu_SelectedIndex < gPopupMenu->numEntries - 1)
+                        || (gGameStatusPtr->pressedButtons[0] & (BUTTON_STICK_DOWN | BUTTON_R))))
                 {
                     PopupMenu_SelectedIndex++;
                 }
@@ -1027,7 +1213,10 @@ s32 popup_menu_update(void) {
                                 gPopupState = POPUP_STATE_ALREADY_HAVE_PARTNER_BEGIN;
                                 break;
                             }
-                            if (PopupNotBattle && (gPopupMenu->popupType == POPUP_MENU_USE_ITEM || gPopupMenu->popupType == POPUP_MENU_TRADE_FOR_BADGE)) {
+                            if (PopupNotBattle
+                                && (gPopupMenu->popupType == POPUP_MENU_USE_ITEM
+                                    || gPopupMenu->popupType == POPUP_MENU_TRADE_FOR_BADGE))
+                            {
                                 sfx_play_sound(SOUND_MENU_ERROR);
                             }
                             break;
@@ -1120,7 +1309,9 @@ s32 popup_menu_update(void) {
                 hud_element_set_tint(PopupMenu_TitleIconHID, 160, 160, 160);
                 hud_element_set_tint(PopupMenu_TimesHID, 160, 160, 160);
             }
-            if (gPopupMenu->popupType == POPUP_MENU_SWITCH_PARTNER || gPopupMenu->popupType == POPUP_MENU_UPGRADE_PARTNER) {
+            if (gPopupMenu->popupType == POPUP_MENU_SWITCH_PARTNER
+                || gPopupMenu->popupType == POPUP_MENU_UPGRADE_PARTNER)
+            {
                 hud_element_set_tint(PopupMenu_PartnerLevelHID, 160, 160, 160);
             }
             if (gPopupMenu->popupType == POPUP_MENU_SELL_ITEM) {
@@ -1208,10 +1399,16 @@ s32 popup_menu_update(void) {
             } else {
                 posY = 72;
             }
-            set_window_properties(WIN_BTL_POPUP, 160 - (width / 2), posY, width, 40, WINDOW_PRIORITY_20, popup_draw_already_have_partner, nullptr, -1);
+            set_window_properties(
+                WIN_BTL_POPUP, 160 - (width / 2), posY, width, 40, WINDOW_PRIORITY_20, popup_draw_already_have_partner,
+                nullptr, -1
+            );
 #else
             width = get_msg_width(MSG_Menus_006B, 0) + 23;
-            set_window_properties(WIN_BTL_POPUP, 160 - (width / 2), 80, width, ALREADY_PARTNER_HEIGHT, WINDOW_PRIORITY_20, popup_draw_already_have_partner, nullptr, -1);
+            set_window_properties(
+                WIN_BTL_POPUP, 160 - (width / 2), 80, width, ALREADY_PARTNER_HEIGHT, WINDOW_PRIORITY_20,
+                popup_draw_already_have_partner, nullptr, -1
+            );
 #endif
             set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             PopupDelayTime = 60;
@@ -1250,7 +1447,9 @@ s32 popup_menu_update(void) {
                 hud_element_set_tint(PopupMenu_TitleIconHID, 160, 160, 160);
                 hud_element_set_tint(PopupMenu_TimesHID, 160, 160, 160);
             }
-            if (gPopupMenu->popupType == POPUP_MENU_SWITCH_PARTNER || gPopupMenu->popupType == POPUP_MENU_UPGRADE_PARTNER) {
+            if (gPopupMenu->popupType == POPUP_MENU_SWITCH_PARTNER
+                || gPopupMenu->popupType == POPUP_MENU_UPGRADE_PARTNER)
+            {
                 hud_element_set_tint(PopupMenu_PartnerLevelHID, 160, 160, 160);
             }
             if (gPopupMenu->popupType == POPUP_MENU_SELL_ITEM) {
@@ -1297,10 +1496,16 @@ s32 popup_menu_update(void) {
                 height = 40;
                 posY = 72;
             }
-            set_window_properties(WIN_POPUP_PROMPT, 160 - (width / 2), posY, width, height, WINDOW_PRIORITY_19, popup_draw_dip_query_content, nullptr, -1);
+            set_window_properties(
+                WIN_POPUP_PROMPT, 160 - (width / 2), posY, width, height, WINDOW_PRIORITY_19,
+                popup_draw_dip_query_content, nullptr, -1
+            );
 #else
             width = get_msg_width(msgID, 0) + 23;
-            set_window_properties(WIN_POPUP_PROMPT, 160 - (width / 2), 76, width, 32, WINDOW_PRIORITY_19, popup_draw_dip_query_content, nullptr, -1);
+            set_window_properties(
+                WIN_POPUP_PROMPT, 160 - (width / 2), 76, width, 32, WINDOW_PRIORITY_19, popup_draw_dip_query_content,
+                nullptr, -1
+            );
 #endif
             set_window_update(WIN_POPUP_PROMPT, WINDOW_UPDATE_SHOW);
             D_8010D6A0 = msg_get_printer_for_msg(MSG_Choice_001D, &D_8010D6A4);
@@ -1337,7 +1542,9 @@ s32 popup_menu_update(void) {
                 hud_element_set_tint(PopupMenu_TitleIconHID, 160, 160, 160);
                 hud_element_set_tint(PopupMenu_TimesHID, 160, 160, 160);
             }
-            if (gPopupMenu->popupType == POPUP_MENU_SWITCH_PARTNER || gPopupMenu->popupType == POPUP_MENU_UPGRADE_PARTNER) {
+            if (gPopupMenu->popupType == POPUP_MENU_SWITCH_PARTNER
+                || gPopupMenu->popupType == POPUP_MENU_UPGRADE_PARTNER)
+            {
                 hud_element_set_tint(PopupMenu_PartnerLevelHID, 160, 160, 160);
             }
             if (gPopupMenu->popupType == POPUP_MENU_SELL_ITEM) {
@@ -1598,10 +1805,16 @@ void popup_draw_menu_content(s32* userData, s32 baseX, s32 baseY, s32 width, s32
                     }
                     break;
                 case POPUP_MENU_TRADE_FOR_BADGE:
-                    draw_number(gPopupMenu->value[t], x + BADGE_PRICE_X, y, 1, msgPal, PopupMenu_Alpha, DRAW_NUMBER_STYLE_MONOSPACE_RIGHT);
+                    draw_number(
+                        gPopupMenu->value[t], x + BADGE_PRICE_X, y, 1, msgPal, PopupMenu_Alpha,
+                        DRAW_NUMBER_STYLE_MONOSPACE_RIGHT
+                    );
                     break;
                 case POPUP_MENU_SELL_ITEM:
-                    draw_number(gPopupMenu->value[t], x + ITEM_PRICE_X, y, 1, msgPal, PopupMenu_Alpha, DRAW_NUMBER_STYLE_MONOSPACE_RIGHT);
+                    draw_number(
+                        gPopupMenu->value[t], x + ITEM_PRICE_X, y, 1, msgPal, PopupMenu_Alpha,
+                        DRAW_NUMBER_STYLE_MONOSPACE_RIGHT
+                    );
                     break;
             }
             y += LINE_HEIGHT;
@@ -1821,7 +2034,10 @@ void popup_draw_menu_content(s32* userData, s32 baseX, s32 baseY, s32 width, s32
 
 #if VERSION_PAL
 void popup_draw_title_content(s32* userData, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
-    draw_msg(gPopupMenu->unk_330, baseX + gPopupMenu->unk_334, baseY + 2, PopupMenu_Alpha, gPopupMenu->unk_338 == 0 ? MSG_PAL_32 : MSG_PAL_34, DRAW_MSG_STYLE_MENU);
+    draw_msg(
+        gPopupMenu->unk_330, baseX + gPopupMenu->unk_334, baseY + 2, PopupMenu_Alpha,
+        gPopupMenu->unk_338 == 0 ? MSG_PAL_32 : MSG_PAL_34, DRAW_MSG_STYLE_MENU
+    );
 
     switch (gPopupMenu->popupType) {
         case POPUP_MENU_USE_ITEM:
@@ -1831,17 +2047,25 @@ void popup_draw_title_content(s32* userData, s32 baseX, s32 baseY, s32 width, s3
         case POPUP_MENU_CLAIM_ITEM:
             switch (gPopupMenu->dipMode) {
                 case 1:
-                    draw_number(gPopupMenu->titleNumber, baseX + 94, baseY + 2, 1, MSG_PAL_32, PopupMenu_Alpha,
-                                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
-                    draw_number(2, baseX + 114, baseY + 2, 1, MSG_PAL_32, PopupMenu_Alpha,
-                                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+                    draw_number(
+                        gPopupMenu->titleNumber, baseX + 94, baseY + 2, 1, MSG_PAL_32, PopupMenu_Alpha,
+                        DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+                    );
+                    draw_number(
+                        2, baseX + 114, baseY + 2, 1, MSG_PAL_32, PopupMenu_Alpha,
+                        DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+                    );
                     draw_msg(MSG_MenuTip_0034, baseX + 94, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU);
                     break;
                 case 2:
-                    draw_number(gPopupMenu->titleNumber, baseX + 94, baseY + 2, 1, MSG_PAL_32, PopupMenu_Alpha,
-                                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
-                    draw_number(3, baseX + 114, baseY + 2, 1, MSG_PAL_32, PopupMenu_Alpha,
-                                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+                    draw_number(
+                        gPopupMenu->titleNumber, baseX + 94, baseY + 2, 1, MSG_PAL_32, PopupMenu_Alpha,
+                        DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+                    );
+                    draw_number(
+                        3, baseX + 114, baseY + 2, 1, MSG_PAL_32, PopupMenu_Alpha,
+                        DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+                    );
                     draw_msg(MSG_MenuTip_0034, baseX + 94, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU);
                     break;
             }
@@ -1872,9 +2096,7 @@ void popup_draw_title_content(s32* userData, s32 baseX, s32 baseY, s32 width, s3
 #define POPUP_POSTOFFICE_X      8
 #endif
 
-void popup_draw_title_content(
-    s32* userData, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening)
-{
+void popup_draw_title_content(s32* userData, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
     switch (gPopupMenu->popupType) {
         case POPUP_MENU_USE_ITEM:
         case POPUP_MENU_THROW_AWAY_ITEM:
@@ -1884,28 +2106,50 @@ void popup_draw_title_content(
             switch (gPopupMenu->dipMode) {
                 case 0:
 #if VERSION_JP
-                    draw_msg(MSG_Menus_JP_004F, baseX + POPUP_ITEM_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU);
+                    draw_msg(
+                        MSG_Menus_JP_004F, baseX + POPUP_ITEM_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_32,
+                        DRAW_MSG_STYLE_MENU
+                    );
 #else
-                    draw_msg(MSG_Menus_Items, baseX + POPUP_ITEM_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU);
+                    draw_msg(
+                        MSG_Menus_Items, baseX + POPUP_ITEM_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_32,
+                        DRAW_MSG_STYLE_MENU
+                    );
 #endif
                     break;
                 case 1:
-                    draw_msg(MSG_Menus_DoubleDip, baseX + 4, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU);
-                    draw_number(gPopupMenu->titleNumber, baseX + POPUP_ITEMDIP_NUMBER_X, baseY + 2, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_32,
-                                PopupMenu_Alpha, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
-                    draw_number(2, baseX + POPUP_ITEMDIP_X, baseY + 2, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_32, PopupMenu_Alpha, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+                    draw_msg(
+                        MSG_Menus_DoubleDip, baseX + 4, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU
+                    );
+                    draw_number(
+                        gPopupMenu->titleNumber, baseX + POPUP_ITEMDIP_NUMBER_X, baseY + 2, DRAW_NUMBER_CHARSET_THIN,
+                        MSG_PAL_32, PopupMenu_Alpha, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+                    );
+                    draw_number(
+                        2, baseX + POPUP_ITEMDIP_X, baseY + 2, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_32, PopupMenu_Alpha,
+                        DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+                    );
                     break;
                 case 2:
-                    draw_msg(MSG_Menus_TripleDip, baseX + POPUP_TRIPLE_DIP_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU);
-                    draw_number(gPopupMenu->titleNumber, baseX + POPUP_ITEMDIP_NUMBER_X, baseY + 2, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_32,
-                                PopupMenu_Alpha, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
-                    draw_number(3, baseX + POPUP_ITEMDIP_X, baseY + 2, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_32, PopupMenu_Alpha,
-                                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+                    draw_msg(
+                        MSG_Menus_TripleDip, baseX + POPUP_TRIPLE_DIP_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_32,
+                        DRAW_MSG_STYLE_MENU
+                    );
+                    draw_number(
+                        gPopupMenu->titleNumber, baseX + POPUP_ITEMDIP_NUMBER_X, baseY + 2, DRAW_NUMBER_CHARSET_THIN,
+                        MSG_PAL_32, PopupMenu_Alpha, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+                    );
+                    draw_number(
+                        3, baseX + POPUP_ITEMDIP_X, baseY + 2, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_32, PopupMenu_Alpha,
+                        DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+                    );
                     break;
             }
             break;
         case POPUP_MENU_TRADE_FOR_BADGE:
-            draw_msg(MSG_MenuTip_0032, baseX + POPUP_BADGE_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU);
+            draw_msg(
+                MSG_MenuTip_0032, baseX + POPUP_BADGE_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU
+            );
             break;
 #if VERSION_JP
         case POPUP_MENU_UPGRADE_PARTNER:
@@ -1916,19 +2160,28 @@ void popup_draw_title_content(
             draw_msg(MSG_MenuTip_0033, baseX + 23, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU);
             break;
         case POPUP_MENU_TAKE_FROM_CHEST:
-            draw_msg(MSG_Menus_00D7, baseX + POPUP_CHEST_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU);
+            draw_msg(
+                MSG_Menus_00D7, baseX + POPUP_CHEST_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU
+            );
             break;
         case POPUP_MENU_READ_DIARY_PAGE:
             draw_msg(MSG_Menus_00CE, baseX + 8, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU);
             break;
         case POPUP_MENU_READ_POSTCARD:
-            draw_msg(MSG_Menus_00D0, baseX + POPUP_POSTCARD_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU);
+            draw_msg(
+                MSG_Menus_00D0, baseX + POPUP_POSTCARD_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU
+            );
             break;
         case POPUP_MENU_USEKEY:
 #if VERSION_JP
-            draw_msg(MSG_Menus_KeyItems, baseX + POPUP_ITEM_KEY_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU);
+            draw_msg(
+                MSG_Menus_KeyItems, baseX + POPUP_ITEM_KEY_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_32,
+                DRAW_MSG_STYLE_MENU
+            );
 #else
-            draw_msg(MSG_Menus_Items, baseX + POPUP_ITEM_KEY_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU);
+            draw_msg(
+                MSG_Menus_Items, baseX + POPUP_ITEM_KEY_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_32, DRAW_MSG_STYLE_MENU
+            );
 #endif
             break;
         case POPUP_MENU_SWITCH_PARTNER:
@@ -1936,7 +2189,10 @@ void popup_draw_title_content(
         case POPUP_MENU_UPGRADE_PARTNER:
 #endif
         case POPUP_MENU_POST_OFFICE:
-            draw_msg(MSG_Menus_PartyMember, baseX + POPUP_POSTOFFICE_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_34, DRAW_MSG_STYLE_MENU);
+            draw_msg(
+                MSG_Menus_PartyMember, baseX + POPUP_POSTOFFICE_X, baseY + 2, PopupMenu_Alpha, MSG_PAL_34,
+                DRAW_MSG_STYLE_MENU
+            );
             break;
     }
 }
@@ -2209,7 +2465,10 @@ void popup_draw_star_pieces_content(s32* userData, s32 x, s32 y) {
 
     type = gPopupMenu->popupType;
     if (type == POPUP_TYPE_TRADE_FOR_BADGE) {
-        draw_number(playerData->starPieces, x + 58, y + 4, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_STANDARD, PopupMenu_Alpha, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+        draw_number(
+            playerData->starPieces, x + 58, y + 4, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_STANDARD, PopupMenu_Alpha,
+            DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+        );
     }
 }
 
@@ -2264,7 +2523,7 @@ void create_standard_popup_menu(PopupMenu* popup) {
     PopupMenu_Alpha = 255;
     D_8010D691 = 4;
     PopupDelayLength = 6;
-    gPopupWorker = create_worker_frontUI((void (*) (void)) popup_menu_update, nullptr);
+    gPopupWorker = create_worker_frontUI((void (*)(void)) popup_menu_update, nullptr);
 }
 
 void create_shop_popup_menu(PopupMenu* popup) {
@@ -2309,7 +2568,7 @@ void create_shop_popup_menu(PopupMenu* popup) {
     PopupMenu_Alpha = 255;
     D_8010D691 = 4;
     PopupDelayLength = 6;
-    gPopupWorker = create_worker_frontUI((void (*) (void)) popup_menu_update, nullptr);
+    gPopupWorker = create_worker_frontUI((void (*)(void)) popup_menu_update, nullptr);
 }
 
 void create_battle_popup_menu(PopupMenu* popup) {
@@ -2353,7 +2612,7 @@ void create_battle_popup_menu(PopupMenu* popup) {
     PopupMenu_Alpha = 255;
     D_8010D691 = 9;
     PopupDelayLength = 2;
-    gPopupWorker = create_worker_frontUI((void (*) (void)) popup_menu_update, nullptr);
+    gPopupWorker = create_worker_frontUI((void (*)(void)) popup_menu_update, nullptr);
 }
 
 // forces an update step for the popup menu

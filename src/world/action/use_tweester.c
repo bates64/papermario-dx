@@ -25,7 +25,8 @@ void action_update_use_tweester(void) {
         suggest_player_anim_allow_backward(ANIM_MarioW2_FlailArms);
         playerStatus->actionSubstate = SUBSTATE_LAUNCH;
         mem_clear(PlayerTweesterPhysicsPtr, sizeof(*PlayerTweesterPhysicsPtr));
-        PlayerTweesterPhysicsPtr->radius = fabsf(dist2D(playerStatus->pos.x, playerStatus->pos.z, entity->pos.x, entity->pos.z));
+        PlayerTweesterPhysicsPtr->radius =
+            fabsf(dist2D(playerStatus->pos.x, playerStatus->pos.z, entity->pos.x, entity->pos.z));
         PlayerTweesterPhysicsPtr->angle = atan2(entity->pos.x, entity->pos.z, playerStatus->pos.x, playerStatus->pos.z);
         PlayerTweesterPhysicsPtr->angularVel = 6.0f;
         PlayerTweesterPhysicsPtr->liftoffVelPhase = 50.0f;
@@ -40,7 +41,8 @@ void action_update_use_tweester(void) {
             playerStatus->pos.x = entity->pos.x + (sinAngle * PlayerTweesterPhysicsPtr->radius);
             playerStatus->pos.z = entity->pos.z - (cosAngle * PlayerTweesterPhysicsPtr->radius);
 
-            PlayerTweesterPhysicsPtr->angle = clamp_angle(PlayerTweesterPhysicsPtr->angle - PlayerTweesterPhysicsPtr->angularVel);
+            PlayerTweesterPhysicsPtr->angle =
+                clamp_angle(PlayerTweesterPhysicsPtr->angle - PlayerTweesterPhysicsPtr->angularVel);
 
             if (PlayerTweesterPhysicsPtr->radius > 20.0f) {
                 PlayerTweesterPhysicsPtr->radius--;
@@ -48,7 +50,7 @@ void action_update_use_tweester(void) {
                 PlayerTweesterPhysicsPtr->radius++;
             }
 
-            liftoffVelocity = sin_rad(DEG_TO_RAD(PlayerTweesterPhysicsPtr->liftoffVelPhase))  * 3.0f;
+            liftoffVelocity = sin_rad(DEG_TO_RAD(PlayerTweesterPhysicsPtr->liftoffVelPhase)) * 3.0f;
             PlayerTweesterPhysicsPtr->liftoffVelPhase += 3.0f;
             if (PlayerTweesterPhysicsPtr->liftoffVelPhase > 150.0f) {
                 PlayerTweesterPhysicsPtr->liftoffVelPhase = 150.0f;
@@ -76,4 +78,3 @@ void action_update_use_tweester(void) {
             break;
     }
 }
-

@@ -33,10 +33,8 @@ s16 SoftResetOverlayAlpha = 0;
 s16 SoftResetState = 0;
 
 Mtx MasterIdentityMtx = RDP_MATRIX(
-    1.000000, 0.000000, 0.000000, 0.000000,
-    0.000000, 1.000000, 0.000000, 0.000000,
-    0.000000, 0.000000, 1.000000, 0.000000,
-    0.000000, 0.000000, 0.000000, 1.000000
+    1.000000, 0.000000, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000, 0.000000, 0.000000, 0.000000, 1.000000,
+    0.000000, 0.000000, 0.000000, 0.000000, 1.000000
 );
 
 u16 gMatrixListPos = 0;
@@ -50,7 +48,7 @@ void step_game_loop(void) {
     profiler_frame_setup();
 
     PlayerData* playerData = &gPlayerData;
-    const int MAX_GAME_TIME = (1000*60*60*60) - 1; // 1000 hours minus one frame at 60 fps
+    const int MAX_GAME_TIME = (1000 * 60 * 60 * 60) - 1; // 1000 hours minus one frame at 60 fps
 
     update_input();
     profiler_update(PROFILER_TIME_CONTROLLERS, 0);
@@ -65,7 +63,7 @@ void step_game_loop(void) {
     update_max_rumble_duration();
 
     if (gGameStepDelayCount != 0) {
-        gGameStepDelayCount-- ;
+        gGameStepDelayCount--;
         if (gGameStepDelayCount == 0) {
             gGameStepDelayCount = gGameStepDelayAmount;
         } else {
@@ -210,13 +208,14 @@ void gfx_draw_frame(void) {
 
     GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_BACK_UI, PROFILER_TIME_SUB_GFX_FRONT_UI);
 
-    if (!(gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD) && gGameStatusPtr->debugScripts == DEBUG_SCRIPTS_NONE) {
+    if (!(gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD) && gGameStatusPtr->debugScripts == DEBUG_SCRIPTS_NONE)
+    {
         render_frame(true);
     }
 
     if (!(gOverrideFlags & GLOBAL_OVERRIDES_MESSAGES_OVER_CURTAINS)
-        && !(gOverrideFlags & GLOBAL_OVERRIDES_MESSAGES_OVER_FRONTUI)
-    ) {
+        && !(gOverrideFlags & GLOBAL_OVERRIDES_MESSAGES_OVER_FRONTUI))
+    {
         render_messages();
     }
 
@@ -225,8 +224,8 @@ void gfx_draw_frame(void) {
     render_screen_overlay_frontUI();
 
     if (!(gOverrideFlags & GLOBAL_OVERRIDES_MESSAGES_OVER_CURTAINS)
-        && (gOverrideFlags & GLOBAL_OVERRIDES_MESSAGES_OVER_FRONTUI)
-    ) {
+        && (gOverrideFlags & GLOBAL_OVERRIDES_MESSAGES_OVER_FRONTUI))
+    {
         render_messages();
     }
 
@@ -256,9 +255,9 @@ void gfx_draw_frame(void) {
     profiler_gfx_completed();
     profiler_print_times();
 
-    #if DX_DEBUG_MENU
+#if DX_DEBUG_MENU
     dx_debug_console_main();
-    #endif
+#endif
 
     gDPFullSync(gMainGfxPos++);
     gSPEndDisplayList(gMainGfxPos++);
@@ -266,14 +265,14 @@ void gfx_draw_frame(void) {
     gfxCount = gMainGfxPos - gDisplayContext->mainGfx;
     gfxCapacity = ARRAY_COUNT(gDisplayContext->mainGfx);
 
-    ASSERT_MSG(gfxCount <= gfxCapacity,
-        "gMainGfxPos overflow: %0.1fkiB (%ld%%%%)",
-        (gfxCount - gfxCapacity) * (s32)sizeof(Gfx) / 1024.0f,
-        (long)(gfxCount * 100 / gfxCapacity)
+    ASSERT_MSG(
+        gfxCount <= gfxCapacity, "gMainGfxPos overflow: %0.1fkiB (%ld%%%%)",
+        (gfxCount - gfxCapacity) * (s32) sizeof(Gfx) / 1024.0f, (long) (gfxCount * 100 / gfxCapacity)
     );
 
-    nuGfxTaskStart(gDisplayContext->mainGfx, gfxCount * sizeof(Gfx), NU_GFX_UCODE_F3DEX2,
-        NU_SC_TASK_LODABLE | NU_SC_SWAPBUFFER);
+    nuGfxTaskStart(
+        gDisplayContext->mainGfx, gfxCount * sizeof(Gfx), NU_GFX_UCODE_F3DEX2, NU_SC_TASK_LODABLE | NU_SC_SWAPBUFFER
+    );
 
     gCurrentDisplayContextIndex ^= 1;
     crash_screen_set_draw_info(nuGfxCfb_ptr, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -355,7 +354,9 @@ void set_time_freeze_mode(s32 mode) {
     switch (mode) {
         case TIME_FREEZE_NONE:
             gTimeFreezeMode = mode;
-            gOverrideFlags &= ~(GLOBAL_OVERRIDES_800 | GLOBAL_OVERRIDES_400 | GLOBAL_OVERRIDES_200 | GLOBAL_OVERRIDES_DISABLE_BATTLES);
+            gOverrideFlags &=
+                ~(GLOBAL_OVERRIDES_800 | GLOBAL_OVERRIDES_400 | GLOBAL_OVERRIDES_200
+                  | GLOBAL_OVERRIDES_DISABLE_BATTLES);
             resume_all_group(EVT_GROUP_FLAG_INTERACT | EVT_GROUP_FLAG_MENUS);
             break;
         case TIME_FREEZE_PARTIAL:
@@ -378,7 +379,8 @@ void set_time_freeze_mode(s32 mode) {
             break;
         case TIME_FREEZE_EXIT:
             gTimeFreezeMode = mode;
-            gOverrideFlags |= GLOBAL_OVERRIDES_800 | GLOBAL_OVERRIDES_400 | GLOBAL_OVERRIDES_200 | GLOBAL_OVERRIDES_DISABLE_BATTLES;
+            gOverrideFlags |=
+                GLOBAL_OVERRIDES_800 | GLOBAL_OVERRIDES_400 | GLOBAL_OVERRIDES_200 | GLOBAL_OVERRIDES_DISABLE_BATTLES;
             break;
     }
 }

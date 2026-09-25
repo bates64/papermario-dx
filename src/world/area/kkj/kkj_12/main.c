@@ -10,11 +10,10 @@ API_CALLABLE(N(DisableSpotlightSources)) {
     return ApiStatus_DONE2;
 }
 
-
-EvtScript N(EVS_ExitDoors_kkj_11_1) = EVT_EXIT_DOUBLE_DOOR(kkj_12_ENTRY_0, "kkj_11", kkj_11_ENTRY_1,
-    COLLIDER_deilit1, MODEL_door1, MODEL_door2);
-EvtScript N(EVS_ExitDoors_kkj_13_0) = EVT_EXIT_DOUBLE_DOOR(kkj_12_ENTRY_1, "kkj_13", kkj_13_ENTRY_0,
-    COLLIDER_deilit2, MODEL_door4, MODEL_door3);
+EvtScript N(EVS_ExitDoors_kkj_11_1) =
+    EVT_EXIT_DOUBLE_DOOR(kkj_12_ENTRY_0, "kkj_11", kkj_11_ENTRY_1, COLLIDER_deilit1, MODEL_door1, MODEL_door2);
+EvtScript N(EVS_ExitDoors_kkj_13_0) =
+    EVT_EXIT_DOUBLE_DOOR(kkj_12_ENTRY_1, "kkj_13", kkj_13_ENTRY_0, COLLIDER_deilit2, MODEL_door4, MODEL_door3);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_kkj_11_1)), TRIGGER_WALL_PRESS_A, COLLIDER_deilit1, 1, 0)

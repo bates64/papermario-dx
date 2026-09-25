@@ -144,16 +144,16 @@ API_CALLABLE(SpawnFoliageDrops) {
         FoliageDrop* drop = &list->drops[i];
 
         if (drop->spawnFlag == 0) {
-            make_item_entity_nodelay(drop->itemID,
-                drop->pos.x, drop->pos.y, drop->pos.z,
-                drop->spawnMode, drop->pickupFlag);
+            make_item_entity_nodelay(
+                drop->itemID, drop->pos.x, drop->pos.y, drop->pos.z, drop->spawnMode, drop->pickupFlag
+            );
         } else {
             b32 alreadySpawned = evt_get_variable(script, drop->spawnFlag);
             if (!alreadySpawned) {
                 evt_set_variable(script, drop->spawnFlag, true);
-                make_item_entity_nodelay(drop->itemID,
-                    drop->pos.x, drop->pos.y, drop->pos.z,
-                    drop->spawnMode, drop->pickupFlag);
+                make_item_entity_nodelay(
+                    drop->itemID, drop->pos.x, drop->pos.y, drop->pos.z, drop->spawnMode, drop->pickupFlag
+                );
             }
         }
     }
@@ -173,7 +173,7 @@ API_CALLABLE(SpawnShakeTreeFX) {
     for (s32 i = 0; i < list->count; i++) {
         Vec3i* pos = &list->vectors[i];
 
-        switch(treeType) {
+        switch (treeType) {
             case TREE_TYPE_STANDARD:
                 fx_drop_leaves(0, pos->x, pos->y, pos->z, 100);
                 break;

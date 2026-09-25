@@ -7,8 +7,10 @@ export s32 N(map_init)(void) {
     return false;
 }
 
-EvtScript N(EVS_ExitDoors_kpa_32_2) = EVT_EXIT_DOUBLE_DOOR(kpa_51_ENTRY_0, "kpa_32", kpa_32_ENTRY_2, COLLIDER_ttw, MODEL_o321, MODEL_o323);
-EvtScript N(EVS_ExitDoors_kpa_133_0) = EVT_EXIT_DOUBLE_DOOR(kpa_51_ENTRY_1, "kpa_133", kpa_133_ENTRY_0, COLLIDER_tte, MODEL_o324, MODEL_o322);
+EvtScript N(EVS_ExitDoors_kpa_32_2) =
+    EVT_EXIT_DOUBLE_DOOR(kpa_51_ENTRY_0, "kpa_32", kpa_32_ENTRY_2, COLLIDER_ttw, MODEL_o321, MODEL_o323);
+EvtScript N(EVS_ExitDoors_kpa_133_0) =
+    EVT_EXIT_DOUBLE_DOOR(kpa_51_ENTRY_1, "kpa_133", kpa_133_ENTRY_0, COLLIDER_tte, MODEL_o324, MODEL_o322);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_kpa_32_2)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)

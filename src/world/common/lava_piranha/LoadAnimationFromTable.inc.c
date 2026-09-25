@@ -6,27 +6,27 @@ API_CALLABLE(N(LoadAnimationFromTable)) {
     switch (type) {
         case VINE_0:
             dma_copy(
-                (u8*) N(VineAnimationsDmaTable)[3 * index + 0],
-                (u8*) N(VineAnimationsDmaTable)[3 * index + 1],
-                (void*) VINE_0_BASE);
+                (u8*) N(VineAnimationsDmaTable)[3 * index + 0], (u8*) N(VineAnimationsDmaTable)[3 * index + 1],
+                (void*) VINE_0_BASE
+            );
             break;
         case VINE_1:
             dma_copy(
-                (u8*) N(VineAnimationsDmaTable)[3 * index + 0],
-                (u8*) N(VineAnimationsDmaTable)[3 * index + 1],
-                (void*) VINE_1_BASE);
+                (u8*) N(VineAnimationsDmaTable)[3 * index + 0], (u8*) N(VineAnimationsDmaTable)[3 * index + 1],
+                (void*) VINE_1_BASE
+            );
             break;
         case VINE_2:
             dma_copy(
-                (u8*) N(VineAnimationsDmaTable)[3 * index + 0],
-                (u8*) N(VineAnimationsDmaTable)[3 * index + 1],
-                (void*) VINE_2_BASE);
+                (u8*) N(VineAnimationsDmaTable)[3 * index + 0], (u8*) N(VineAnimationsDmaTable)[3 * index + 1],
+                (void*) VINE_2_BASE
+            );
             break;
         case VINE_3:
             dma_copy(
-                (u8*) N(VineAnimationsDmaTable)[3 * index + 0],
-                (u8*) N(VineAnimationsDmaTable)[3 * index + 1],
-                (void*) VINE_3_BASE);
+                (u8*) N(VineAnimationsDmaTable)[3 * index + 0], (u8*) N(VineAnimationsDmaTable)[3 * index + 1],
+                (void*) VINE_3_BASE
+            );
             break;
     }
     return ApiStatus_DONE2;

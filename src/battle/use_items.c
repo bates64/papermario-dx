@@ -181,7 +181,7 @@ API_CALLABLE(LoadMysteryItemScript) {
 
     itemPtr = &ItemKeys[0];
     for (i = 0; *itemPtr != ITEM_NONE; i++, itemPtr++) {
-        if (*itemPtr == battleStatus->moveArgument){
+        if (*itemPtr == battleStatus->moveArgument) {
             break;
         }
     }

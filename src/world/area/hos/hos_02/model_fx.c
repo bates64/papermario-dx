@@ -6,10 +6,11 @@ u16 N(HaloScalePhaseAngle) = 0;
 void N(build_gfx_lamp_halos)(void) {
     f32 scale = ((sins(N(HaloScalePhaseAngle)) * (1.0f / 0x8000)) * 0.5 * 0.5) + 1.05;
 
-    N(HaloScalePhaseAngle) += (s32)RAD_TO_BINANG(25.1720);
+    N(HaloScalePhaseAngle) += (s32) RAD_TO_BINANG(25.1720);
     guScale(&gDisplayContext->matrixStack[gMatrixListPos], scale, scale, scale);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW
+    );
 }
 
 u16 N(YellowStarPhaseAngle) = 0;
@@ -29,12 +30,14 @@ void N(build_gfx_yellow_stars)(void) {
         colors[0] = temp1 * 155 / 0x8000 + 100;
         colors[1] = temp1 * 155 / 0x8000 + 100;
 
-        temp3 = sins(N(YellowStarPhaseAngle) / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(YellowStarPhaseAngle) / 0x4000 * 0x8000 + i) + 0x8000;
+        temp3 =
+            sins(N(YellowStarPhaseAngle) / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(YellowStarPhaseAngle) / 0x4000 * 0x8000 + i)
+            + 0x8000;
         colors[2] = colors[0] * temp3 / 0x10000;
     }
 
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_0));
-    N(YellowStarPhaseAngle) += (s32)RAD_TO_BINANG(25.1898);
+    N(YellowStarPhaseAngle) += (s32) RAD_TO_BINANG(25.1898);
 }
 
 u16 N(BlueStarPhaseAngle) = 0;
@@ -54,12 +57,13 @@ void N(build_gfx_blue_stars)(void) {
         colors[0] = temp1 * 155 / 0x8000 + 48.62745098039216;
         colors[1] = temp1 * 155 / 0x8000 + 89.41176470588236;
 
-        temp3 = sins(N(BlueStarPhaseAngle) / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(BlueStarPhaseAngle) / 0x4000 * 0x8000 + i) + 0x8000;
+        temp3 = sins(N(BlueStarPhaseAngle) / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(BlueStarPhaseAngle) / 0x4000 * 0x8000 + i)
+            + 0x8000;
         colors[2] = colors[0] * temp3 / 0x10000 + 99.6078431372549;
     }
 
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_1));
-    N(BlueStarPhaseAngle) += (s32)RAD_TO_BINANG(25.1898);
+    N(BlueStarPhaseAngle) += (s32) RAD_TO_BINANG(25.1898);
 }
 
 u16 N(GreenStarPhaseAngle) = 0;
@@ -79,12 +83,14 @@ void N(build_gfx_green_stars)(void) {
         colors[0] = temp1 * 155 / 0x8000 + 67.45098039215686;
         colors[1] = temp1 * 155 / 0x8000 + 100.0;
 
-        temp3 = sins(N(GreenStarPhaseAngle) / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(GreenStarPhaseAngle) / 0x4000 * 0x8000 + i) + 0x8000;
+        temp3 =
+            sins(N(GreenStarPhaseAngle) / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(GreenStarPhaseAngle) / 0x4000 * 0x8000 + i)
+            + 0x8000;
         colors[2] = colors[0] * temp3 / 0x10000 + 59.21568627450981;
     }
 
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_2));
-    N(GreenStarPhaseAngle) += (s32)RAD_TO_BINANG(25.1898);
+    N(GreenStarPhaseAngle) += (s32) RAD_TO_BINANG(25.1898);
 }
 
 u16 N(PinkStarPhaseAngle) = 0;
@@ -104,12 +110,13 @@ void N(build_gfx_pink_stars)(void) {
         colors[0] = temp1 * 155 / 0x8000 + 100.0;
         colors[1] = temp1 * 155 / 0x8000 + 80.3921568627451;
 
-        temp3 = sins(N(PinkStarPhaseAngle) / 0x8000 * (((i / 2) % 3 + 1) << 15)  + N(PinkStarPhaseAngle) / 0x4000 * 0x8000 + i) + 0x8000;
+        temp3 = sins(N(PinkStarPhaseAngle) / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(PinkStarPhaseAngle) / 0x4000 * 0x8000 + i)
+            + 0x8000;
         colors[2] = colors[0] * temp3 / 0x10000 + 96.07843137254902;
     }
 
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_3));
-    N(PinkStarPhaseAngle) += (s32)RAD_TO_BINANG(25.1898);
+    N(PinkStarPhaseAngle) += (s32) RAD_TO_BINANG(25.1898);
 }
 
 API_CALLABLE(N(SetStarWarpIdleParams)) {

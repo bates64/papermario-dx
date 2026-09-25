@@ -4,7 +4,9 @@ API_CALLABLE(N(CanPlayerLoseAction)) {
     Bytecode* args = script->ptrReadPos;
 
     if (get_actor(script->owner1.actorID)->debuff != STATUS_KEY_SHRINK) {
-        if (gBattleStatus.hammerLossTurns == -1 || gBattleStatus.jumpLossTurns == -1 || gBattleStatus.itemLossTurns == -1) {
+        if (gBattleStatus.hammerLossTurns == -1 || gBattleStatus.jumpLossTurns == -1
+            || gBattleStatus.itemLossTurns == -1)
+        {
             evt_set_variable(script, *args++, 0);
             return ApiStatus_DONE2;
         } else {

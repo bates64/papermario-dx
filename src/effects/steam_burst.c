@@ -12,14 +12,7 @@ void steam_burst_update(EffectInstance* effect);
 void steam_burst_render(EffectInstance* effect);
 void steam_burst_appendGfx(void* effect);
 
-void steam_burst_main(
-    s32 arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    s32 arg5
-) {
+void steam_burst_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
     EffectBlueprint bp;
     EffectInstance* effect;
     SteamBurstFXData* part;
@@ -108,7 +101,7 @@ void steam_burst_render(EffectInstance* effect) {
 }
 
 void steam_burst_appendGfx(void* effect) {
-    SteamBurstFXData* part = ((EffectInstance*)effect)->data.steamBurst;
+    SteamBurstFXData* part = ((EffectInstance*) effect)->data.steamBurst;
     s32 unk_30_s32 = part->unk_30;
     s32 envAlpha = (part->unk_30 - unk_30_s32) * 256.0f;
     s32 cond = (unk_30_s32 == 6);
@@ -120,7 +113,7 @@ void steam_burst_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, dlist2);
 
     guTranslateF(sp18, part->unk_04, part->unk_08, part->unk_0C);
@@ -131,26 +124,22 @@ void steam_burst_appendGfx(void* effect) {
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 230, 222, 222, 130);
     gDPSetEnvColor(gMainGfxPos++, 0, 0, 0, envAlpha);
-    gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE,
-        (unk_30_s32 * 32     ) * 4, 0,
-        (unk_30_s32 * 32 + 32) * 4, 32 * 4);
+    gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, (unk_30_s32 * 32) * 4, 0, (unk_30_s32 * 32 + 32) * 4, 32 * 4);
 
     if (cond) {
-        gDPSetTileSize(gMainGfxPos++, 1,
-            (unk_30_s32 * 32 + 32) * 4, 32 * 4,
-            (unk_30_s32 * 32 + 64) * 4, 64 * 4);
+        gDPSetTileSize(gMainGfxPos++, 1, (unk_30_s32 * 32 + 32) * 4, 32 * 4, (unk_30_s32 * 32 + 64) * 4, 64 * 4);
     } else {
-        gDPSetTileSize(gMainGfxPos++, 1,
-            (unk_30_s32 * 32 + 32) * 4, 0,
-            (unk_30_s32 * 32 + 64) * 4, 32 * 4);
+        gDPSetTileSize(gMainGfxPos++, 1, (unk_30_s32 * 32 + 32) * 4, 0, (unk_30_s32 * 32 + 64) * 4, 32 * 4);
     }
 
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         guTranslateF(sp18, part->unk_04, part->unk_08, part->unk_0C);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, dlist);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

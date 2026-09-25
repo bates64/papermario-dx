@@ -75,9 +75,10 @@ void N(ClubbaNappingAI_Sleep)(Evt* script, MobileAISettings* settings, EnemyDete
     }
 
     // wake up if bombette explodes or goombario speaks too closely
-    if (((gPlayerData.curPartner == PARTNER_GOOMBARIO) && (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE)) ||
-        ((gPlayerData.curPartner == PARTNER_BOMBETTE) && (gPartnerStatus.partnerActionState == PARTNER_ACTION_BOMBETTE_BLAST))
-    ) {
+    if (((gPlayerData.curPartner == PARTNER_GOOMBARIO) && (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE))
+        || ((gPlayerData.curPartner == PARTNER_BOMBETTE)
+            && (gPartnerStatus.partnerActionState == PARTNER_ACTION_BOMBETTE_BLAST)))
+    {
         if (dist2D(npc->pos.x, npc->pos.z, gPartnerNpc->pos.x, gPartnerNpc->pos.z) <= 80.0f) {
             shouldWakeUp = true;
         }
@@ -185,8 +186,11 @@ void N(ClubbaNappingAI_ReturnHome)(Evt* script, MobileAISettings* settings, Enem
     if (basic_ai_check_player_dist(detect, enemy, settings->chaseRadius, settings->chaseOffsetDist, false)) {
         npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
         script->AI_TEMP_STATE = AI_STATE_CHASE_INIT;
-    } else if (dist2D(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x,
-                      enemy->territory->wander.centerPos.z) <= npc->moveSpeed) {
+    } else if (dist2D(
+                   npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z
+               )
+               <= npc->moveSpeed)
+    {
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->duration = 15;
         enemy->varTable[AI_VAR_NEXT_STATE] = AI_STATE_NAPPING_CLUBBA_FALL_ASLEEP;
@@ -195,7 +199,8 @@ void N(ClubbaNappingAI_ReturnHome)(Evt* script, MobileAISettings* settings, Enem
         currentYaw = npc->yaw;
         ai_check_fwd_collisions(npc, 5.0f, &currentYaw, nullptr, nullptr, nullptr);
         npc->yaw = currentYaw;
-        npc->yaw = atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
+        npc->yaw =
+            atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
         npc_move_heading(npc, npc->moveSpeed, npc->yaw);
     }
 }
@@ -217,7 +222,7 @@ API_CALLABLE(N(ClubbaNappingAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args++);
     EnemyDetectVolume detectVolume;
     EnemyDetectVolume* detect = &detectVolume;
 
@@ -254,11 +259,9 @@ API_CALLABLE(N(ClubbaNappingAI_Main)) {
     }
 
     // begin an attack, if able
-    if (script->AI_TEMP_STATE >= AI_STATE_ALERT_INIT
-            && script->AI_TEMP_STATE < AI_STATE_MELEE_ATTACK_INIT
-            && enemy->varTable[AI_VAR_MELEE_STATUS] == MELEE_ATTACK_PHASE_NONE
-            && N(MeleeHitbox_CanTargetPlayer)(script)
-    ) {
+    if (script->AI_TEMP_STATE >= AI_STATE_ALERT_INIT && script->AI_TEMP_STATE < AI_STATE_MELEE_ATTACK_INIT
+        && enemy->varTable[AI_VAR_MELEE_STATUS] == MELEE_ATTACK_PHASE_NONE && N(MeleeHitbox_CanTargetPlayer)(script))
+    {
         script->AI_TEMP_STATE = AI_STATE_MELEE_ATTACK_INIT;
     }
 

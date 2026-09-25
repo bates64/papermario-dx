@@ -42,11 +42,11 @@ API_CALLABLE(N(TryOpenIngredientWindows)) {
 
 void N(worker_update_ingredient_windows)(void) {
     if (N(IngredientWindowsOpen)) {
-        set_window_update(WIN_SHOP_ITEM_NAME, (s32)basic_window_update);
-        set_window_update(WIN_SHOP_ITEM_DESC, (s32)basic_window_update);
+        set_window_update(WIN_SHOP_ITEM_NAME, (s32) basic_window_update);
+        set_window_update(WIN_SHOP_ITEM_DESC, (s32) basic_window_update);
     } else {
-        set_window_update(WIN_SHOP_ITEM_NAME, (s32)basic_hidden_window_update);
-        set_window_update(WIN_SHOP_ITEM_DESC, (s32)basic_hidden_window_update);
+        set_window_update(WIN_SHOP_ITEM_NAME, (s32) basic_hidden_window_update);
+        set_window_update(WIN_SHOP_ITEM_DESC, (s32) basic_hidden_window_update);
     }
 
     if (N(IngredientWindowsDismissTime) > 0) {
@@ -57,10 +57,7 @@ void N(worker_update_ingredient_windows)(void) {
 }
 
 void N(draw_content_ingredient_name)(
-    MenuPanel* menu,
-    s32 baseX, s32 baseY,
-    s32 width, s32 height,
-    s32 opacity, s32 darkening
+    MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening
 ) {
     IngredientSouce* ingredient = &N(IngredientSources)[N(IngredientWindowsIndex)];
     ItemData* item = &gItemTable[ingredient->itemID];
@@ -70,10 +67,7 @@ void N(draw_content_ingredient_name)(
 }
 
 void N(draw_content_ingredient_desc)(
-    MenuPanel* menu,
-    s32 baseX, s32 baseY,
-    s32 width, s32 height,
-    s32 opacity, s32 darkening
+    MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening
 ) {
     IngredientSouce* ingredient = &N(IngredientSources)[N(IngredientWindowsIndex)];
     ItemData* item = &gItemTable[ingredient->itemID];
@@ -148,7 +142,9 @@ API_CALLABLE(N(CreateIngredientInfoWindows)) {
     setup_pause_menu_tab(N(IngredientWindows), ARRAY_COUNT(N(IngredientWindows)));
 
     for (i = 0; i < ARRAY_COUNT(N(IngredientSources)); i++) {
-        bind_trigger_1(&N(EVS_TouchFloor_IngredientStation), TRIGGER_FLOOR_TOUCH, N(IngredientSources)[i].colliderID, i, 0, 3);
+        bind_trigger_1(
+            &N(EVS_TouchFloor_IngredientStation), TRIGGER_FLOOR_TOUCH, N(IngredientSources)[i].colliderID, i, 0, 3
+        );
     }
 
     return ApiStatus_DONE2;

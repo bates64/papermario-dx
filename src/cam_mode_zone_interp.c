@@ -74,13 +74,10 @@ void apply_fixed_orientation(CameraControlSettings* controller, CameraRig* rig, 
     ((CameraControlSettings*) -1)
 
 void update_camera_from_controller(
-    Camera* camera,
-    CameraRig* prevRig, CameraControlSettings** prevSettingsPtr,
-    CameraRig* newRig, CameraControlSettings** curSettingsPtr,
-    f32 x1, f32 y1, f32 z1,
-    f32 x2, f32 y2, f32 z2,
-    f32* interpAlpha, b32 changingMap, b32 changingZone)
-{
+    Camera* camera, CameraRig* prevRig, CameraControlSettings** prevSettingsPtr, CameraRig* newRig,
+    CameraControlSettings** curSettingsPtr, f32 x1, f32 y1, f32 z1, f32 x2, f32 y2, f32 z2, f32* interpAlpha,
+    b32 changingMap, b32 changingZone
+) {
     CameraControlSettings* prevSettings;
     CameraControlSettings* curSettings;
     CameraRig* curRig;
@@ -93,9 +90,7 @@ void update_camera_from_controller(
     y = y1;
     z = z1;
 
-    if (curSettings != PREV_SETTINGS_FIXED_RIG
-        && curSettings != PREV_SETTINGS_LINE_CONSTRAINT
-    ) {
+    if (curSettings != PREV_SETTINGS_FIXED_RIG && curSettings != PREV_SETTINGS_LINE_CONSTRAINT) {
         if (curSettings == nullptr) {
             curRig->targetPos.x = x;
             curRig->targetPos.y = y;
@@ -132,43 +127,41 @@ void update_camera_from_controller(
                         curRig->targetPos.z = z;
                     }
                     break;
-                case CAM_CONTROL_CONSTAIN_BETWEEN_POINTS:
-                    {
-                        f32 Ax = curSettings->points.two.Ax;
-                        f32 Az = curSettings->points.two.Az;
-                        f32 Bx = curSettings->points.two.Bx;
-                        f32 Bz = curSettings->points.two.Bz;
+                case CAM_CONTROL_CONSTAIN_BETWEEN_POINTS: {
+                    f32 Ax = curSettings->points.two.Ax;
+                    f32 Az = curSettings->points.two.Az;
+                    f32 Bx = curSettings->points.two.Bx;
+                    f32 Bz = curSettings->points.two.Bz;
 
-                        f32 ABx = Bx - Ax;
-                        f32 ABz = Bz - Az;
+                    f32 ABx = Bx - Ax;
+                    f32 ABz = Bz - Az;
 
-                        // project point onto line
-                        f32 t = (ABx * (x - Ax) + ABz * (z - Az)) / (SQ(ABx) + SQ(ABz));
-                        f32 Px = Ax + t * ABx;
-                        f32 Pz = Az + t * ABz;
+                    // project point onto line
+                    f32 t = (ABx * (x - Ax) + ABz * (z - Az)) / (SQ(ABx) + SQ(ABz));
+                    f32 Px = Ax + t * ABx;
+                    f32 Pz = Az + t * ABz;
 
-                        // vector giving orthogonal part (i.e., x = orthoX + Px)
-                        f32 orthoX = x - Px;
-                        f32 orthoZ = z - Pz;
+                    // vector giving orthogonal part (i.e., x = orthoX + Px)
+                    f32 orthoX = x - Px;
+                    f32 orthoZ = z - Pz;
 
-                        // clamp to end points
-                        if (t < 0.0f) {
-                            Px = Ax;
-                            Pz = Az;
-                        } else if (t > 1.0f) {
-                            Px = Bx;
-                            Pz = Bz;
-                        }
-                        if (!curSettings->flag) {
-                            Px += orthoX;
-                            Pz += orthoZ;
-                        }
-
-                        curRig->targetPos.x = Px;
-                        curRig->targetPos.y = y;
-                        curRig->targetPos.z = Pz;
+                    // clamp to end points
+                    if (t < 0.0f) {
+                        Px = Ax;
+                        Pz = Az;
+                    } else if (t > 1.0f) {
+                        Px = Bx;
+                        Pz = Bz;
                     }
-                    break;
+                    if (!curSettings->flag) {
+                        Px += orthoX;
+                        Pz += orthoZ;
+                    }
+
+                    curRig->targetPos.x = Px;
+                    curRig->targetPos.y = y;
+                    curRig->targetPos.z = Pz;
+                } break;
                 case CAM_CONTROL_LOOK_AT_POINT:
                     if (curSettings->flag) {
                         f32 Ax = curSettings->points.two.Ax;
@@ -222,27 +215,25 @@ void update_camera_from_controller(
                 curRig->targetPos.y = y;
                 curRig->targetPos.z = z;
                 break;
-            case CAM_CONTROL_FIXED_POS_AND_ORIENTATION:
-                {
-                    f32 Ax = curSettings->points.two.Ax;
-                    f32 Az = curSettings->points.two.Az;
-                    f32 Bx = curSettings->points.two.Bx;
-                    f32 By = curSettings->points.two.By;
-                    f32 Bz = curSettings->points.two.Bz;
+            case CAM_CONTROL_FIXED_POS_AND_ORIENTATION: {
+                f32 Ax = curSettings->points.two.Ax;
+                f32 Az = curSettings->points.two.Az;
+                f32 Bx = curSettings->points.two.Bx;
+                f32 By = curSettings->points.two.By;
+                f32 Bz = curSettings->points.two.Bz;
 
-                    f32 ABx = Bx - Ax;
-                    f32 ABz = Bz - Az;
+                f32 ABx = Bx - Ax;
+                f32 ABz = Bz - Az;
 
-                    curRig->boomLength = fabsf(curSettings->boomLength);
-                    curRig->boomYaw = atan2(0.0f, 0.0f, ABx, ABz);
-                    curRig->boomPitch = curSettings->boomPitch;
-                    curRig->viewPitch = curSettings->viewPitch;
-                    curRig->targetPos.x = Bx;
-                    curRig->targetPos.y = By;
-                    curRig->targetPos.z = Bz;
-                    *prevSettingsPtr = PREV_SETTINGS_FIXED_RIG;
-                }
-                break;
+                curRig->boomLength = fabsf(curSettings->boomLength);
+                curRig->boomYaw = atan2(0.0f, 0.0f, ABx, ABz);
+                curRig->boomPitch = curSettings->boomPitch;
+                curRig->viewPitch = curSettings->viewPitch;
+                curRig->targetPos.x = Bx;
+                curRig->targetPos.y = By;
+                curRig->targetPos.z = Bz;
+                *prevSettingsPtr = PREV_SETTINGS_FIXED_RIG;
+            } break;
             case CAM_CONTROL_FIXED_ORIENTATION:
                 dx = curSettings->points.two.Bx - curSettings->points.two.Ax;
                 dz = curSettings->points.two.Bz - curSettings->points.two.Az;
@@ -276,285 +267,275 @@ void update_camera_from_controller(
                 if (changingZone) {
                     if (*interpAlpha != 1.0f) {
                         prevSettings = *prevSettingsPtr;
-                        if ((prevSettings != PREV_SETTINGS_FIXED_RIG
-                                && prevSettings != PREV_SETTINGS_LINE_CONSTRAINT
-                                && prevSettings != nullptr)
+                        if ((prevSettings != PREV_SETTINGS_FIXED_RIG && prevSettings != PREV_SETTINGS_LINE_CONSTRAINT
+                             && prevSettings != nullptr)
                             && prevSettings->type == curSettings->type
                             && prevSettings->boomLength == curSettings->boomLength
                             && prevSettings->boomPitch == curSettings->boomPitch
                             && prevSettings->viewPitch == curSettings->viewPitch
-                            && prevSettings->flag != curSettings->flag
-                        ) {
+                            && prevSettings->flag != curSettings->flag)
+                        {
                             *interpAlpha = 1.0f;
                         }
                     }
                 }
                 break;
-            case CAM_CONTROL_CONSTAIN_BETWEEN_POINTS:
-                {
-                    f32 Ax = curSettings->points.two.Ax;
-                    f32 Az = curSettings->points.two.Az;
-                    f32 Bx = curSettings->points.two.Bx;
-                    f32 Bz = curSettings->points.two.Bz;
+            case CAM_CONTROL_CONSTAIN_BETWEEN_POINTS: {
+                f32 Ax = curSettings->points.two.Ax;
+                f32 Az = curSettings->points.two.Az;
+                f32 Bx = curSettings->points.two.Bx;
+                f32 Bz = curSettings->points.two.Bz;
 
-                    f32 ABx = Bx - Ax;
-                    f32 ABz = Bz - Az;
+                f32 ABx = Bx - Ax;
+                f32 ABz = Bz - Az;
 
-                    curRig->boomLength = fabsf(curSettings->boomLength);
-                    curRig->boomYaw = atan2(0.0f, 0.0f, ABz, -ABx);
-                    curRig->boomPitch = curSettings->boomPitch;
-                    curRig->viewPitch = curSettings->viewPitch;
+                curRig->boomLength = fabsf(curSettings->boomLength);
+                curRig->boomYaw = atan2(0.0f, 0.0f, ABz, -ABx);
+                curRig->boomPitch = curSettings->boomPitch;
+                curRig->viewPitch = curSettings->viewPitch;
 
-                    // project point onto line
-                    f32 t = (ABx * (x - Ax) + ABz * (z - Az)) / (SQ(ABx) + SQ(ABz));
-                    f32 Px = Ax + t * ABx;
-			        f32 Pz = Az + t * ABz;
+                // project point onto line
+                f32 t = (ABx * (x - Ax) + ABz * (z - Az)) / (SQ(ABx) + SQ(ABz));
+                f32 Px = Ax + t * ABx;
+                f32 Pz = Az + t * ABz;
 
-                    // vector giving orthogonal part (i.e., x = orthoX + Px)
-                    f32 orthoX = x - Px;
-                    f32 orthoZ = z - Pz;
+                // vector giving orthogonal part (i.e., x = orthoX + Px)
+                f32 orthoX = x - Px;
+                f32 orthoZ = z - Pz;
 
-                    // clamp to end points
-                    if (t < 0.0f) {
-                        Px = Ax;
-                        Pz = Az;
-                    } else if (t > 1.0f) {
-                        Px = Bx;
-                        Pz = Bz;
+                // clamp to end points
+                if (t < 0.0f) {
+                    Px = Ax;
+                    Pz = Az;
+                } else if (t > 1.0f) {
+                    Px = Bx;
+                    Pz = Bz;
+                }
+                if (!curSettings->flag) {
+                    Px += orthoX;
+                    Pz += orthoZ;
+                }
+
+                curRig->targetPos.x = Px;
+                curRig->targetPos.y = y;
+                curRig->targetPos.z = Pz;
+
+                if (changingZone) {
+                    if (*interpAlpha != 1.0f) {
+                        prevSettings = *prevSettingsPtr;
+                        if ((prevSettings != PREV_SETTINGS_FIXED_RIG && prevSettings != PREV_SETTINGS_LINE_CONSTRAINT
+                             && prevSettings != nullptr)
+                            && (prevSettings->type == curSettings->type)
+                            && (prevSettings->boomLength == curSettings->boomLength)
+                            && (prevSettings->boomPitch == curSettings->boomPitch)
+                            && (prevSettings->viewPitch == curSettings->viewPitch)
+                            && (prevSettings->flag != curSettings->flag))
+                        {
+                            *interpAlpha = 1.0f;
+                        }
                     }
-                    if (!curSettings->flag) {
-                        Px += orthoX;
-                        Pz += orthoZ;
+                }
+            } break;
+            case CAM_CONTROL_LOOK_AT_POINT: {
+                f32 Ax = curSettings->points.two.Ax;
+                f32 Az = curSettings->points.two.Az;
+                f32 Bx = curSettings->points.two.Bx;
+                f32 Bz = curSettings->points.two.Bz;
+
+                f32 ABx = Bx - Ax;
+                f32 ABz = Bz - Az;
+                f32 camRadius = sqrtf(SQ(ABx) + SQ(ABz));
+                f32 curRadius, dx, dz;
+
+                if (curSettings->boomLength < 0.0f) {
+                    // negative boom length means look *away* from point
+                    dx = x - Ax;
+                    dz = z - Az;
+                    curRig->boomLength = -curSettings->boomLength;
+                } else {
+                    dx = Ax - x;
+                    dz = Az - z;
+                    curRig->boomLength = curSettings->boomLength;
+                }
+                curRig->boomYaw = atan2(0.0f, 0.0f, dx, dz);
+                curRig->boomPitch = curSettings->boomPitch;
+                curRig->viewPitch = curSettings->viewPitch;
+
+                if (curSettings->flag) {
+                    // find radius of a circle containing the sample point centered on point A
+                    dx = x - Ax;
+                    dz = z - Az;
+                    curRadius = sqrtf(SQ(dx) + SQ(dz));
+
+                    if (curRadius != 0.0f) {
+                        // rescale the radius to equal the length of segment AB
+                        curRig->targetPos.x = Ax + dx * (camRadius / curRadius);
+                        curRig->targetPos.y = y;
+                        curRig->targetPos.z = Az + dz * (camRadius / curRadius);
                     }
+                } else {
+                    curRig->targetPos.x = x;
+                    curRig->targetPos.y = y;
+                    curRig->targetPos.z = z;
+                }
+
+                if (changingZone) {
+                    if (*interpAlpha != 1.0f) {
+                        prevSettings = *prevSettingsPtr;
+                        if ((prevSettings != PREV_SETTINGS_FIXED_RIG && prevSettings != PREV_SETTINGS_LINE_CONSTRAINT
+                             && prevSettings != nullptr)
+                            && (prevSettings->type == curSettings->type)
+                            && (prevSettings->boomLength == curSettings->boomLength)
+                            && (prevSettings->boomPitch == curSettings->boomPitch)
+                            && (prevSettings->viewPitch == curSettings->viewPitch)
+                            && (prevSettings->flag != curSettings->flag)
+                            && (prevSettings->points.two.Ax == curSettings->points.two.Ax)
+                            && (prevSettings->points.two.Az == curSettings->points.two.Az))
+                        {
+                            *interpAlpha = 1.0f;
+                        }
+                    }
+                }
+            } break;
+            case CAM_CONTROL_CONSTRAIN_TO_LINE: {
+                const f32 ax = curSettings->points.three.Ax;
+                const f32 az = curSettings->points.three.Az;
+                const f32 bx = curSettings->points.three.Bx;
+                const f32 bz = curSettings->points.three.Bz;
+                const f32 cx = curSettings->points.three.Cx;
+                const f32 cz = curSettings->points.three.Cz;
+
+                if (!curSettings->flag) {
+                    f32 Tx, Tz;
+                    f32 BAx, BAz;
+                    f32 BCx, BCz;
+
+                    if (ax == bx && az == bz) {
+                        BAx = bx - cx;
+                        BAz = bz - cz;
+                    } else {
+                        BAx = bx - ax;
+                        BAz = bz - az;
+                    }
+
+                    BCx = bx - cx;
+                    BCz = bz - cz;
+
+                    if (BCx == 0.0f) {
+                        f32 Q = BAz + BCx * BAx / BCz;
+                        f32 V = (x - bx) + (bz - z) * BCx / BCz;
+
+                        Tx = x - BAz * V / Q;
+                        Tz = z + BAx * V / Q;
+                    } else {
+                        f32 Q = -BAx - BAz * BCz / BCx;
+                        f32 V = (z - bz) + (bx - x) * BCz / BCx;
+
+                        Tx = x - BAz * V / Q;
+                        Tz = z + BAx * V / Q;
+                    }
+
+                    curRig->targetPos.x = Tx;
+                    curRig->targetPos.y = y;
+                    curRig->targetPos.z = Tz;
+
+                    if (changingMap) {
+                        dx = bx - ax;
+                        dz = bz - az;
+                        curRig->boomLength = fabsf(curSettings->boomLength);
+                        curRig->boomYaw = atan2(0.0f, 0.0f, dx, dz);
+                        curRig->boomPitch = curSettings->boomPitch;
+                        curRig->viewPitch = curSettings->viewPitch;
+                    }
+                } else {
+                    if (changingMap) {
+                        dx = bx - ax;
+                        dz = bz - az;
+                        curRig->boomLength = fabsf(curSettings->boomLength);
+                        curRig->boomYaw = atan2(0.0f, 0.0f, dx, dz);
+                        curRig->boomPitch = curSettings->boomPitch;
+                        curRig->viewPitch = curSettings->viewPitch;
+                        curRig->targetPos.x = bx;
+                        curRig->targetPos.z = bz;
+                    } else if (changingZone) {
+                        curRig->targetPos.x = prevRig->targetPos.x;
+                        curRig->targetPos.z = prevRig->targetPos.z;
+                    }
+
+                    curRig->targetPos.y = y;
+                }
+                *prevSettingsPtr = PREV_SETTINGS_LINE_CONSTRAINT;
+            } break;
+            case CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE: {
+                // target position is projected onto a line defined by BC, while the yaw faces point A
+                f32 Ax = curSettings->points.three.Ax;
+                f32 Az = curSettings->points.three.Az;
+                f32 Bx = curSettings->points.three.Bx;
+                f32 Bz = curSettings->points.three.Bz;
+                f32 Cx = curSettings->points.three.Cx;
+                f32 Cz = curSettings->points.three.Cz;
+
+                if (!curSettings->flag) {
+                    f32 CBx = Bx - Cx;
+                    f32 CBz = Bz - Cz;
+                    f32 dist2 = SQ(CBx) + SQ(CBz);
+                    f32 t = (CBx * (x - Cx) + CBz * (z - Cz)) / dist2;
+                    f32 Px = Cx + t * CBx;
+                    f32 Pz = Cz + t * CBz;
 
                     curRig->targetPos.x = Px;
                     curRig->targetPos.y = y;
                     curRig->targetPos.z = Pz;
 
-                    if (changingZone) {
-                        if (*interpAlpha != 1.0f) {
-                            prevSettings = *prevSettingsPtr;
-                            if ((prevSettings != PREV_SETTINGS_FIXED_RIG
-                                    && prevSettings != PREV_SETTINGS_LINE_CONSTRAINT
-                                    && prevSettings != nullptr)
-                                && (prevSettings->type == curSettings->type)
-                                && (prevSettings->boomLength == curSettings->boomLength)
-                                && (prevSettings->boomPitch == curSettings->boomPitch)
-                                && (prevSettings->viewPitch == curSettings->viewPitch)
-                                && (prevSettings->flag != curSettings->flag)
-                            ) {
-                                *interpAlpha = 1.0f;
-                            }
-                        }
-                    }
-                }
-                break;
-            case CAM_CONTROL_LOOK_AT_POINT:
-                {
-                    f32 Ax = curSettings->points.two.Ax;
-                    f32 Az = curSettings->points.two.Az;
-                    f32 Bx = curSettings->points.two.Bx;
-                    f32 Bz = curSettings->points.two.Bz;
-
-                    f32 ABx = Bx - Ax;
-                    f32 ABz = Bz - Az;
-                    f32 camRadius = sqrtf(SQ(ABx) + SQ(ABz));
-                    f32 curRadius, dx, dz;
-
                     if (curSettings->boomLength < 0.0f) {
-                        // negative boom length means look *away* from point
-                        dx = x - Ax;
-                        dz = z - Az;
+                        dx = Px - Ax;
+                        dz = Pz - Az;
                         curRig->boomLength = -curSettings->boomLength;
                     } else {
-                        dx = Ax - x;
-                        dz = Az - z;
+                        dx = Ax - Px;
+                        dz = Az - Pz;
                         curRig->boomLength = curSettings->boomLength;
                     }
                     curRig->boomYaw = atan2(0.0f, 0.0f, dx, dz);
                     curRig->boomPitch = curSettings->boomPitch;
                     curRig->viewPitch = curSettings->viewPitch;
-
-                    if (curSettings->flag) {
-                        // find radius of a circle containing the sample point centered on point A
-                        dx = x - Ax;
-                        dz = z - Az;
-                        curRadius = sqrtf(SQ(dx) + SQ(dz));
-
-                        if (curRadius != 0.0f) {
-                            // rescale the radius to equal the length of segment AB
-                            curRig->targetPos.x = Ax + dx * (camRadius / curRadius);
-                            curRig->targetPos.y = y;
-                            curRig->targetPos.z = Az + dz * (camRadius / curRadius);
-                        }
-                    } else {
-                        curRig->targetPos.x = x;
-                        curRig->targetPos.y = y;
-                        curRig->targetPos.z = z;
-                    }
-
-                    if (changingZone) {
-                        if (*interpAlpha != 1.0f) {
-                            prevSettings = *prevSettingsPtr;
-                            if ((prevSettings != PREV_SETTINGS_FIXED_RIG
-                                    && prevSettings != PREV_SETTINGS_LINE_CONSTRAINT
-                                    && prevSettings != nullptr)
-                                && (prevSettings->type == curSettings->type)
-                                && (prevSettings->boomLength == curSettings->boomLength)
-                                && (prevSettings->boomPitch == curSettings->boomPitch)
-                                && (prevSettings->viewPitch == curSettings->viewPitch)
-                                && (prevSettings->flag != curSettings->flag)
-                                && (prevSettings->points.two.Ax == curSettings->points.two.Ax)
-                                && (prevSettings->points.two.Az == curSettings->points.two.Az)
-                            ) {
-                                *interpAlpha = 1.0f;
-                            }
-                        }
-                    }
-                }
-                break;
-            case CAM_CONTROL_CONSTRAIN_TO_LINE:
-                {
-                    const f32 ax = curSettings->points.three.Ax;
-                    const f32 az = curSettings->points.three.Az;
-                    const f32 bx = curSettings->points.three.Bx;
-                    const f32 bz = curSettings->points.three.Bz;
-                    const f32 cx = curSettings->points.three.Cx;
-                    const f32 cz = curSettings->points.three.Cz;
-
-                    if (!curSettings->flag) {
-                        f32 Tx, Tz;
-                        f32 BAx, BAz;
-                        f32 BCx, BCz;
-
-                        if (ax == bx && az == bz) {
-                            BAx = bx - cx;
-                            BAz = bz - cz;
-                        } else {
-                            BAx = bx - ax;
-                            BAz = bz - az;
-                        }
-
-                        BCx = bx - cx;
-                        BCz = bz - cz;
-
-                        if (BCx == 0.0f) {
-                            f32 Q = BAz + BCx * BAx / BCz;
-                            f32 V = (x - bx) + (bz - z) * BCx / BCz;
-
-                            Tx = x - BAz * V / Q;
-                            Tz = z + BAx * V / Q;
-                        } else {
-                            f32 Q = -BAx - BAz * BCz / BCx;
-                            f32 V = (z - bz) + (bx - x) * BCz / BCx;
-
-                            Tx = x - BAz * V / Q;
-                            Tz = z + BAx * V / Q;
-                        }
-
-                        curRig->targetPos.x = Tx;
-                        curRig->targetPos.y = y;
-                        curRig->targetPos.z = Tz;
-
-                        if (changingMap) {
-                            dx = bx - ax;
-                            dz = bz - az;
-                            curRig->boomLength = fabsf(curSettings->boomLength);
-                            curRig->boomYaw = atan2(0.0f, 0.0f, dx, dz);
-                            curRig->boomPitch = curSettings->boomPitch;
-                            curRig->viewPitch = curSettings->viewPitch;
-                        }
-                    } else {
-                        if (changingMap) {
-                            dx = bx - ax;
-                            dz = bz - az;
-                            curRig->boomLength = fabsf(curSettings->boomLength);
-                            curRig->boomYaw = atan2(0.0f, 0.0f, dx, dz);
-                            curRig->boomPitch = curSettings->boomPitch;
-                            curRig->viewPitch = curSettings->viewPitch;
-                            curRig->targetPos.x = bx;
-                            curRig->targetPos.z = bz;
-                        } else if (changingZone) {
-                            curRig->targetPos.x = prevRig->targetPos.x;
-                            curRig->targetPos.z = prevRig->targetPos.z;
-                        }
-
-                        curRig->targetPos.y = y;
-                    }
-                    *prevSettingsPtr = PREV_SETTINGS_LINE_CONSTRAINT;
-                }
-                break;
-            case CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE:
-                {
-                    // target position is projected onto a line defined by BC, while the yaw faces point A
-                    f32 Ax = curSettings->points.three.Ax;
-                    f32 Az = curSettings->points.three.Az;
-                    f32 Bx = curSettings->points.three.Bx;
-                    f32 Bz = curSettings->points.three.Bz;
-                    f32 Cx = curSettings->points.three.Cx;
-                    f32 Cz = curSettings->points.three.Cz;
-
-                    if (!curSettings->flag) {
-                        f32 CBx = Bx - Cx;
-                        f32 CBz = Bz - Cz;
-                        f32 dist2 = SQ(CBx) + SQ(CBz);
-                        f32 t = (CBx * (x - Cx) + CBz * (z - Cz)) / dist2;
-                        f32 Px = Cx + t * CBx;
-                        f32 Pz = Cz + t * CBz;
-
-                        curRig->targetPos.x = Px;
-                        curRig->targetPos.y = y;
-                        curRig->targetPos.z = Pz;
-
+                } else {
+                    if (changingMap) {
                         if (curSettings->boomLength < 0.0f) {
-                            dx = Px - Ax;
-                            dz = Pz - Az;
+                            dx = Bx - Ax;
+                            dz = Bz - Az;
                             curRig->boomLength = -curSettings->boomLength;
                         } else {
-                            dx = Ax - Px;
-                            dz = Az - Pz;
+                            dx = Ax - Bx;
+                            dz = Az - Bz;
                             curRig->boomLength = curSettings->boomLength;
                         }
                         curRig->boomYaw = atan2(0.0f, 0.0f, dx, dz);
                         curRig->boomPitch = curSettings->boomPitch;
                         curRig->viewPitch = curSettings->viewPitch;
-                    } else {
-                        if (changingMap) {
-                            if (curSettings->boomLength < 0.0f) {
-                                dx = Bx - Ax;
-                                dz = Bz - Az;
-                                curRig->boomLength = -curSettings->boomLength;
-                            } else {
-                                dx = Ax - Bx;
-                                dz = Az - Bz;
-                                curRig->boomLength = curSettings->boomLength;
-                            }
-                            curRig->boomYaw = atan2(0.0f, 0.0f, dx, dz);
-                            curRig->boomPitch = curSettings->boomPitch;
-                            curRig->viewPitch = curSettings->viewPitch;
-                            curRig->targetPos.x = Bx;
-                            curRig->targetPos.z = Bz;
-                        } else if (changingZone) {
-                            curRig->targetPos.x = Bx;
-                            curRig->targetPos.z = Bz;
-                        }
-                        curRig->targetPos.y = y;
+                        curRig->targetPos.x = Bx;
+                        curRig->targetPos.z = Bz;
+                    } else if (changingZone) {
+                        curRig->targetPos.x = Bx;
+                        curRig->targetPos.z = Bz;
                     }
-                    *prevSettingsPtr = PREV_SETTINGS_LINE_CONSTRAINT;
+                    curRig->targetPos.y = y;
                 }
-                break;
+                *prevSettingsPtr = PREV_SETTINGS_LINE_CONSTRAINT;
+            } break;
         }
 
         if (changingZone
-            && ((curSettings->type == CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE) || (prevRig->boomYaw != newRig->boomYaw))
+            && ((curSettings->type == CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE)
+                || (prevRig->boomYaw != newRig->boomYaw))
             && (fabsf(prevRig->boomYaw - newRig->boomYaw) < 3.0f)
             && (fabsf(prevRig->boomLength - newRig->boomLength) < 10.0f)
             && (fabsf(prevRig->boomPitch - newRig->boomPitch) < 1.0f)
             && (fabsf(prevRig->viewPitch - newRig->viewPitch) < 1.0f)
             && (fabsf(prevRig->targetPos.x - newRig->targetPos.x) < 10.0f)
             && (fabsf(prevRig->targetPos.y - newRig->targetPos.y) < 10.0f)
-            && (fabsf(prevRig->targetPos.z - newRig->targetPos.z) < 10.0f)
-        ) {
+            && (fabsf(prevRig->targetPos.z - newRig->targetPos.z) < 10.0f))
+        {
             *interpAlpha = 1.0f;
         }
     }
@@ -748,12 +729,9 @@ void update_camera_zone_interp(Camera* camera) {
     // determine current y-position
     interp_camera_y_position(camera, targetY);
 
-    if (camera->panActive
-        || camera->prevTargetPos.x != targetX
-        || camera->prevTargetPos.y != targetY
-        || camera->prevTargetPos.z != targetZ
-        || camera->needsReinit
-    ) {
+    if (camera->panActive || camera->prevTargetPos.x != targetX || camera->prevTargetPos.y != targetY
+        || camera->prevTargetPos.z != targetZ || camera->needsReinit)
+    {
         if (camera->useOverrideSettings) {
             nextSettings = &camera->overrideSettings;
         } else {
@@ -762,21 +740,17 @@ void update_camera_zone_interp(Camera* camera) {
 
         allParamsMatch = false;
         curSettings = camera->curSettings;
-        if (nextSettings != nullptr
-            && curSettings != nullptr
-            && nextSettings->type == curSettings->type
-            && nextSettings->flag == curSettings->flag
-            && nextSettings->boomLength == curSettings->boomLength
-            && nextSettings->boomPitch == curSettings->boomPitch
-            && nextSettings->viewPitch == curSettings->viewPitch
-        ) {
+        if (nextSettings != nullptr && curSettings != nullptr && nextSettings->type == curSettings->type
+            && nextSettings->flag == curSettings->flag && nextSettings->boomLength == curSettings->boomLength
+            && nextSettings->boomPitch == curSettings->boomPitch && nextSettings->viewPitch == curSettings->viewPitch)
+        {
             switch (nextSettings->type) {
                 case CAM_CONTROL_FIXED_ORIENTATION:
                     if (nextSettings->points.two.Ax == curSettings->points.two.Ax
                         && nextSettings->points.two.Az == curSettings->points.two.Az
                         && nextSettings->points.two.Bx == curSettings->points.two.Bx
-                        && nextSettings->points.two.Bz == curSettings->points.two.Bz
-                    ) {
+                        && nextSettings->points.two.Bz == curSettings->points.two.Bz)
+                    {
                         allParamsMatch = true;
                     }
                     break;
@@ -785,14 +759,14 @@ void update_camera_zone_interp(Camera* camera) {
                         if (nextSettings->points.two.Ax == curSettings->points.two.Ax
                             && nextSettings->points.two.Az == curSettings->points.two.Az
                             && nextSettings->points.two.Bx == curSettings->points.two.Bx
-                            && nextSettings->points.two.Bz == curSettings->points.two.Bz
-                        ) {
+                            && nextSettings->points.two.Bz == curSettings->points.two.Bz)
+                        {
                             allParamsMatch = true;
                         }
                     } else {
                         if (nextSettings->points.two.Ax == curSettings->points.two.Ax
-                            && nextSettings->points.two.Az == curSettings->points.two.Az
-                        ) {
+                            && nextSettings->points.two.Az == curSettings->points.two.Az)
+                        {
                             allParamsMatch = true;
                         }
                     }
@@ -803,8 +777,8 @@ void update_camera_zone_interp(Camera* camera) {
                         && nextSettings->points.two.Ay == curSettings->points.two.Ay
                         && nextSettings->points.two.By == curSettings->points.two.By
                         && nextSettings->points.two.Bx == curSettings->points.two.Bx
-                        && nextSettings->points.two.Bz == curSettings->points.two.Bz
-                    ) {
+                        && nextSettings->points.two.Bz == curSettings->points.two.Bz)
+                    {
                         allParamsMatch = true;
                     }
                     break;
@@ -871,10 +845,10 @@ void update_camera_zone_interp(Camera* camera) {
         tZ = targetZ;
     }
 
-    update_camera_from_controller(camera,
-        &camera->prevRig, &camera->prevSettings, &camera->nextRig, &camera->curSettings,
-        posX, posY, posZ, tX, tY, tZ,
-        &camera->interpAlpha, camera->needsReinit, changingZone);
+    update_camera_from_controller(
+        camera, &camera->prevRig, &camera->prevSettings, &camera->nextRig, &camera->curSettings, posX, posY, posZ, tX,
+        tY, tZ, &camera->interpAlpha, camera->needsReinit, changingZone
+    );
 
     if (camera->needsReinit) {
         camera->prevRig = camera->nextRig;
@@ -920,7 +894,7 @@ void update_camera_zone_interp(Camera* camera) {
 
     // interpolate rig parameters between prevRig and nextRig, storing them in InterpolatedCamRig
 
-    #define CAM_INTERP(field) InterpolatedCamRig.field = \
+#define CAM_INTERP(field) InterpolatedCamRig.field = \
         (camera->prevRig.field  * (1.0f - camera->interpAlpha)) + (camera->nextRig.field  * camera->interpAlpha)
 
     CAM_INTERP(boomYaw);
@@ -931,7 +905,7 @@ void update_camera_zone_interp(Camera* camera) {
     CAM_INTERP(targetPos.y);
     CAM_INTERP(targetPos.z);
 
-    #undef CAM_INTERP
+#undef CAM_INTERP
 
     InterpolatedCamRig.boomLength *= (camera->params.world.zoomPercent / 100.0f);
 

@@ -234,8 +234,7 @@ API_CALLABLE(N(GetBadgeHint)) {
     // check for all badges obtainable outside Merlow's shop
     script->varTable[1] = 0;
     for (i = 0, hint = N(BadgeHintData); i < ARRAY_COUNT(N(BadgeHintData)); i++, hint++) {
-        if (storyProgress >= hint->requiredProgress
-            && !N(PlayerHasBadge)(hint->itemID)
+        if (storyProgress >= hint->requiredProgress && !N(PlayerHasBadge)(hint->itemID)
             && !evt_get_variable(nullptr, AF_HOS06_BadgeHints + i))
         {
             count++;
@@ -249,8 +248,7 @@ API_CALLABLE(N(GetBadgeHint)) {
         count = 0;
 
         for (i = 0; i < ARRAY_COUNT(N(BadgeHintData)); i++, hint++) {
-            if (storyProgress >= hint->requiredProgress
-                && !N(PlayerHasBadge)(hint->itemID)
+            if (storyProgress >= hint->requiredProgress && !N(PlayerHasBadge)(hint->itemID)
                 && !evt_get_variable(nullptr, AF_HOS06_BadgeHints + i))
             {
                 if (count == selectedIdx) {
@@ -266,8 +264,7 @@ API_CALLABLE(N(GetBadgeHint)) {
 
     // if no obtainable badges are found, check for badges obtained via Merlow's shop
     for (i = 0, hint = N(BadgeHintData); i < ARRAY_COUNT(N(BadgeHintData)); i++, hint++) {
-        if (hint->requiredProgress == BADGE_REQ_MERLOW_SHOP
-            && !N(PlayerHasBadge)(hint->itemID)
+        if (hint->requiredProgress == BADGE_REQ_MERLOW_SHOP && !N(PlayerHasBadge)(hint->itemID)
             && !evt_get_variable(nullptr, AF_HOS06_BadgeHints + i))
         {
             count++;
@@ -282,8 +279,7 @@ API_CALLABLE(N(GetBadgeHint)) {
         i = 0;
 
         for (; i < ARRAY_COUNT(N(BadgeHintData)); i++, hint++) {
-            if (hint->requiredProgress == BADGE_REQ_MERLOW_SHOP
-                && !N(PlayerHasBadge)(hint->itemID)
+            if (hint->requiredProgress == BADGE_REQ_MERLOW_SHOP && !N(PlayerHasBadge)(hint->itemID)
                 && !evt_get_variable(nullptr, AF_HOS06_BadgeHints + i))
             {
                 if (count == selectedIdx) {
@@ -310,8 +306,7 @@ API_CALLABLE(N(GetSuperBlockHint)) {
     // count unused super blocks
     hint = N(SuperBlockHintData);
     for (i = 0; i < ARRAY_COUNT(N(SuperBlockHintData)); i++, hint++) {
-        if (storyProgress >= hint->requiredProgress
-            && !evt_get_variable(nullptr, hint->doneFlag)
+        if (storyProgress >= hint->requiredProgress && !evt_get_variable(nullptr, hint->doneFlag)
             && !evt_get_variable(nullptr, AF_HOS06_SuperBlocksHints + i))
         {
             count++;
@@ -325,8 +320,7 @@ API_CALLABLE(N(GetSuperBlockHint)) {
         count = 0;
 
         for (i = 0; i < ARRAY_COUNT(N(SuperBlockHintData)); i++, hint++) {
-            if (storyProgress >= hint->requiredProgress
-                && !evt_get_variable(nullptr, hint->doneFlag)
+            if (storyProgress >= hint->requiredProgress && !evt_get_variable(nullptr, hint->doneFlag)
                 && !evt_get_variable(nullptr, AF_HOS06_SuperBlocksHints + i))
             {
                 if (count == selectedIdx) {
@@ -353,8 +347,7 @@ API_CALLABLE(N(GetStarPieceHint)) {
     // count unobtained star pieces
     hint = N(StarPieceHintData);
     for (i = 0; i < ARRAY_COUNT(N(StarPieceHintData)); i++, hint++) {
-        if (storyProgress >= hint->requiredProgress
-            && !evt_get_variable(nullptr, hint->doneFlag)
+        if (storyProgress >= hint->requiredProgress && !evt_get_variable(nullptr, hint->doneFlag)
             && !evt_get_variable(nullptr, AF_HOS06_StarPieceHints + i))
         {
             count++;
@@ -368,8 +361,7 @@ API_CALLABLE(N(GetStarPieceHint)) {
         count = 0;
 
         for (i = 0; i < ARRAY_COUNT(N(StarPieceHintData)); i++, hint++) {
-            if (storyProgress >= hint->requiredProgress
-                && !evt_get_variable(nullptr, hint->doneFlag)
+            if (storyProgress >= hint->requiredProgress && !evt_get_variable(nullptr, hint->doneFlag)
                 && !evt_get_variable(nullptr, AF_HOS06_StarPieceHints + i))
             {
                 if (count == selectedIdx) {
@@ -415,13 +407,27 @@ API_CALLABLE(N(RefundHintCoins)) {
 
 API_CALLABLE(N(FortuneRitualDarkenModels)) {
     if (isInitialCall) {
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o98)),  CUSTOM_GFX_NONE, ENV_TINT_REMAP);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o76)),  CUSTOM_GFX_NONE, ENV_TINT_REMAP);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o84)),  CUSTOM_GFX_NONE, ENV_TINT_REMAP);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o85)),  CUSTOM_GFX_NONE, ENV_TINT_REMAP);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o89)),  CUSTOM_GFX_NONE, ENV_TINT_REMAP);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o104)), CUSTOM_GFX_NONE, ENV_TINT_REMAP);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o78)),  CUSTOM_GFX_NONE, ENV_TINT_REMAP);
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o98)), CUSTOM_GFX_NONE, ENV_TINT_REMAP
+        );
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o76)), CUSTOM_GFX_NONE, ENV_TINT_REMAP
+        );
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o84)), CUSTOM_GFX_NONE, ENV_TINT_REMAP
+        );
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o85)), CUSTOM_GFX_NONE, ENV_TINT_REMAP
+        );
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o89)), CUSTOM_GFX_NONE, ENV_TINT_REMAP
+        );
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o104)), CUSTOM_GFX_NONE, ENV_TINT_REMAP
+        );
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o78)), CUSTOM_GFX_NONE, ENV_TINT_REMAP
+        );
         mdl_set_remap_tint_params(255, 255, 255, 0, 0, 0);
         script->functionTemp[0] = 255;
     }
@@ -466,8 +472,8 @@ API_CALLABLE(N(FortuneRitualPulseModels)) {
         }
     }
     mdl_set_remap_tint_params(
-        script->functionTemp[0], script->functionTemp[0], script->functionTemp[0],
-        script->functionTemp[2], script->functionTemp[2], script->functionTemp[2]
+        script->functionTemp[0], script->functionTemp[0], script->functionTemp[0], script->functionTemp[2],
+        script->functionTemp[2], script->functionTemp[2]
     );
     if (script->functionTemp[0] == 64 && script->functionTemp[2] == 0) {
         return ApiStatus_DONE2;
@@ -487,13 +493,27 @@ API_CALLABLE(N(FortuneRitualRestoreModels)) {
     mdl_set_remap_tint_params(script->functionTemp[0], script->functionTemp[0], script->functionTemp[0], 0, 0, 0);
 
     if (script->functionTemp[0] == 255) {
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o98)),  CUSTOM_GFX_NONE, ENV_TINT_NONE);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o76)),  CUSTOM_GFX_NONE, ENV_TINT_NONE);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o84)),  CUSTOM_GFX_NONE, ENV_TINT_NONE);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o85)),  CUSTOM_GFX_NONE, ENV_TINT_NONE);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o89)),  CUSTOM_GFX_NONE, ENV_TINT_NONE);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o104)), CUSTOM_GFX_NONE, ENV_TINT_NONE);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o78)),  CUSTOM_GFX_NONE, ENV_TINT_NONE);
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o98)), CUSTOM_GFX_NONE, ENV_TINT_NONE
+        );
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o76)), CUSTOM_GFX_NONE, ENV_TINT_NONE
+        );
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o84)), CUSTOM_GFX_NONE, ENV_TINT_NONE
+        );
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o85)), CUSTOM_GFX_NONE, ENV_TINT_NONE
+        );
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o89)), CUSTOM_GFX_NONE, ENV_TINT_NONE
+        );
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o104)), CUSTOM_GFX_NONE, ENV_TINT_NONE
+        );
+        set_mdl_custom_gfx_set(
+            get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o78)), CUSTOM_GFX_NONE, ENV_TINT_NONE
+        );
         return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;

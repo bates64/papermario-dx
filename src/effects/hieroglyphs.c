@@ -113,7 +113,7 @@ void func_E00E2210(void) {
 }
 
 void hieroglyphs_appendGfx(void* effect) {
-    HieroglyphsFXData* data = ((EffectInstance*)effect)->data.hieroglyphs;
+    HieroglyphsFXData* data = ((EffectInstance*) effect)->data.hieroglyphs;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 lifeTime = data->lifeTime;
     s32 unk_24 = data->unk_24;
@@ -123,14 +123,16 @@ void hieroglyphs_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp20, data->pos.x, data->pos.y, data->pos.z);
     guScaleF(sp60, data->unk_38, data->unk_38, data->unk_38);
     guMtxCatF(sp60, sp20, sp20);
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, data->unk_18, data->unk_1C, data->unk_20, unk_24);
     gDPSetEnvColor(gMainGfxPos++, data->unk_28, data->unk_2C, data->unk_30, data->unk_34);
@@ -139,9 +141,7 @@ void hieroglyphs_appendGfx(void* effect) {
 
     savedGfxPos = gMainGfxPos + 1;
 
-    gDPSetTileSize(savedGfxPos, G_TX_RENDERTILE,
-        (lifeTime * 2      ) * 4, 0,
-        (lifeTime * 2 + 127) * 4, 31 * 4);
+    gDPSetTileSize(savedGfxPos, G_TX_RENDERTILE, (lifeTime * 2) * 4, 0, (lifeTime * 2 + 127) * 4, 31 * 4);
     gMainGfxPos += 2;
 
     guRotateF(sp20, 20.0f, 1.0f, 0.0f, 0.0f);
@@ -157,15 +157,15 @@ void hieroglyphs_appendGfx(void* effect) {
         guPositionF(sp20, 0.0f, sin_deg(angle) * 30.0f, 6.0f, (f32) i * 0.01 + 1.0, 8.0f, 0.0f, 0.0f);
         guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPVertex(gMainGfxPos++, &D_090010A8_3DDDF8[i * 2], 2, i * 2);
     }
 
     for (i = 0; i < 15; i++) {
         s32 i2 = i * 2;
-        gSP2Triangles(gMainGfxPos++,
-            i2    , i2 + 2, i2 + 1, i2,
-            i2 + 1, i2 + 2, i2 + 3, i2);
+        gSP2Triangles(gMainGfxPos++, i2, i2 + 2, i2 + 1, i2, i2 + 1, i2 + 2, i2 + 3, i2);
     }
 
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
@@ -177,7 +177,9 @@ void hieroglyphs_appendGfx(void* effect) {
         guPositionF(sp20, 0.0f, 0.0f, -0x11A + i * 0x24, 1.0f, 0.0f, 0.0f, 0.0f);
         guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gDPSetPrimColor(gMainGfxPos++, 0, 0, D_E00E29F4[idx], D_E00E2A08[idx], D_E00E2A1C[idx], data->unk_24);
         gDPSetEnvColor(gMainGfxPos++, 255, 255, 255, 0);
         gSPDisplayList(gMainGfxPos++, savedGfxPos);

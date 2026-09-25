@@ -17,8 +17,8 @@ API_CALLABLE(N(FadeScreenToRedAndWhite)) {
         TEMP_FADE_TO_WHITE  = 1,
         TEMP_FADE_COMPLETE  = 2,
     };
-    #define FT_state  functionTemp[2]
-    #define FT_alpha  functionTemp[1]
+#define FT_state  functionTemp[2]
+#define FT_alpha  functionTemp[1]
 
     if (isInitialCall) {
         script->FT_alpha = 0;
@@ -40,12 +40,7 @@ API_CALLABLE(N(FadeScreenToRedAndWhite)) {
             }
             break;
         case TEMP_FADE_TO_WHITE:
-            set_screen_overlay_color(
-                0,
-                208,
-                (script->FT_alpha * 208) / 255,
-                (script->FT_alpha * 208) / 255
-            );
+            set_screen_overlay_color(0, 208, (script->FT_alpha * 208) / 255, (script->FT_alpha * 208) / 255);
             set_screen_overlay_params_front(OVERLAY_VIEWPORT_COLOR, 255.0f);
             if (script->FT_alpha == 255) {
                 script->FT_state = TEMP_FADE_COMPLETE;
@@ -62,8 +57,8 @@ API_CALLABLE(N(FadeScreenToRedAndWhite)) {
         return ApiStatus_BLOCK;
     }
 
-    #undef FT_state
-    #undef FT_alpha
+#undef FT_state
+#undef FT_alpha
 }
 
 API_CALLABLE(N(FadeScreenFromWhite)) {
@@ -88,7 +83,10 @@ API_CALLABLE(N(FadeScreenFromWhite)) {
 API_CALLABLE(N(SpawnStarsOrbitingBowser)) {
     EffectInstance* effect;
 
-    fx_stars_orbiting(0, script->varTable[0], script->varTable[1], script->varTable[2], script->varTable[3], script->varTable[4], &effect);
+    fx_stars_orbiting(
+        0, script->varTable[0], script->varTable[1], script->varTable[2], script->varTable[3], script->varTable[4],
+        &effect
+    );
     script->varTablePtr[0] = effect;
 
     return ApiStatus_DONE2;

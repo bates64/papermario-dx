@@ -12,8 +12,8 @@ EvtScript N(EVS_EndPeachChapter2) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_kkj_11_2) = EVT_EXIT_SINGLE_DOOR(kkj_16_ENTRY_0, "kkj_11", kkj_11_ENTRY_2,
-    COLLIDER_tte, MODEL_o43, DOOR_SWING_IN);
+EvtScript N(EVS_ExitDoor_kkj_11_2) =
+    EVT_EXIT_SINGLE_DOOR(kkj_16_ENTRY_0, "kkj_11", kkj_11_ENTRY_2, COLLIDER_tte, MODEL_o43, DOOR_SWING_IN);
 
 EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)

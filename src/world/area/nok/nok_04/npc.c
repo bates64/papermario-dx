@@ -20,7 +20,7 @@ typedef struct FuzzyThread {
     /* 0x3C */ f32 angleStep;
     /* 0x40 */ Npc* frontNpc;
     /* 0x44 */ Npc* backNpc;
-} FuzzyThread; //size = 0x48
+} FuzzyThread; // size = 0x48
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 #include "world/common/util/LoadPartyImage.inc.c"
@@ -128,9 +128,9 @@ API_CALLABLE(N(SetThreadTargetLengthAngle)) {
     s32 temp_s0_3 = evt_get_variable(script, *args++);
     s32 duration = evt_get_variable(script, *args++);
 
-    FuzzyThread* thread = &N(ThreadData); //needed to match
+    FuzzyThread* thread = &N(ThreadData); // needed to match
     N(ThreadData).targetAngle = temp_s0_3 / NUM_THREAD_SEGMENTS;
-    N(ThreadData).targetLength = (f32)goal / NUM_THREAD_SEGMENTS;
+    N(ThreadData).targetLength = (f32) goal / NUM_THREAD_SEGMENTS;
     N(ThreadData).duration = duration;
     N(ThreadData).time = 0.0f;
 
@@ -180,7 +180,7 @@ API_CALLABLE(N(AttachThreadBackNpc)) {
 }
 
 API_CALLABLE(N(GetTreeHidingSpotPos)) {
-    Bytecode *args = script->ptrReadPos;
+    Bytecode* args = script->ptrReadPos;
     s32 treeIdx = evt_get_variable(script, *args++) * 3;
     s32 outVarX = *args++;
     s32 outVarY = *args++;
@@ -275,7 +275,8 @@ void N(build_gfx_thread)(void) {
             N(ThreadData).overshootVel += (N(ThreadData).targetLength - N(ThreadData).curLength) * 0.5f;
         }
         N(ThreadData).time += 1.0f;
-        N(ThreadData).overshootAngleVel = (N(ThreadData).overshootAngleVel + (N(ThreadData).targetAngle - N(ThreadData).curAngle) / 10.0f) * 0.92;
+        N(ThreadData).overshootAngleVel =
+            (N(ThreadData).overshootAngleVel + (N(ThreadData).targetAngle - N(ThreadData).curAngle) / 10.0f) * 0.92;
         N(ThreadData).curAngle += N(ThreadData).angleStep;
         if (N(ThreadData).duration <= N(ThreadData).time) {
             N(ThreadData).duration = 0.0f;
@@ -286,31 +287,41 @@ void N(build_gfx_thread)(void) {
         if (N(ThreadData).targetLength < N(ThreadData).curLength) {
             N(ThreadData).overshootVel += (N(ThreadData).targetLength - N(ThreadData).curLength) * 0.5f;
         }
-        N(ThreadData).overshootAngleVel = (N(ThreadData).overshootAngleVel + (N(ThreadData).targetAngle - N(ThreadData).curAngle) / 10.0f) * 0.92;
+        N(ThreadData).overshootAngleVel =
+            (N(ThreadData).overshootAngleVel + (N(ThreadData).targetAngle - N(ThreadData).curAngle) / 10.0f) * 0.92;
         N(ThreadData).curAngle += N(ThreadData).overshootAngleVel;
     }
     N(ThreadData).overshootVel *= 0.5;
 
     gSPDisplayList(gMainGfxPos++, N(ThreadGfx));
-    guTranslate(&gDisplayContext->matrixStack[gMatrixListPos], N(ThreadData).anchorPos.x, N(ThreadData).anchorPos.y, N(ThreadData).anchorPos.z);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    guTranslate(
+        &gDisplayContext->matrixStack[gMatrixListPos], N(ThreadData).anchorPos.x, N(ThreadData).anchorPos.y,
+        N(ThreadData).anchorPos.z
+    );
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     segAngle = N(ThreadData).curAngle;
     segLength = -N(ThreadData).curLength;
     x += -segLength * sin_rad(N(ThreadData).curAngle * 0 / 180.0f * PI);
-    y +=  segLength * cos_rad(N(ThreadData).curAngle * 0 / 180.0f * PI);
+    y += segLength * cos_rad(N(ThreadData).curAngle * 0 / 180.0f * PI);
 
     guPosition(&gDisplayContext->matrixStack[gMatrixListPos], 0.0f, 0.0f, segAngle, 1.0f, 0.0f, segLength, 0.0f);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW
+    );
 
     for (i = 1; i < NUM_THREAD_SEGMENTS; i++) {
         segAngle = N(ThreadData).curAngle;
         segLength = -N(ThreadData).curLength;
         x += -segLength * sin_rad(N(ThreadData).curAngle * i / 180.0f * PI);
-        y +=  segLength * cos_rad(N(ThreadData).curAngle * i / 180.0f * PI);
+        y += segLength * cos_rad(N(ThreadData).curAngle * i / 180.0f * PI);
         gSPVertex(gMainGfxPos++, N(ThreadSegmentVertices), 2, 0);
         guPosition(&gDisplayContext->matrixStack[gMatrixListPos], 0.0f, 0.0f, segAngle, 1.0f, 0.0f, segLength, 0.0f);
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPVertex(gMainGfxPos++, N(ThreadSegmentVertices), 2, 2);
         gSP2Triangles(gMainGfxPos++, 0, 2, 1, 0, 2, 3, 1, 0);
     }

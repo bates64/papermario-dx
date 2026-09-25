@@ -23,6 +23,6 @@
         Set(LVar9, (main_init_u)) \
         Set(LVarA, (main_init_v)) \
         Set(LVarB, (aux_init_u)) \
-        Set(LVarC, (aux_init_v)) \
+        Set(LVarC, (aux_init_v))
 
 extern EvtScript EVS_UpdateTexturePan;

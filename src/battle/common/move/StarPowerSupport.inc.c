@@ -323,4 +323,3 @@ EvtScript N(EVS_StarPower_EndWish) = {
     Return
     End
 };
-

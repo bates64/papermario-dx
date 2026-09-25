@@ -1,7 +1,6 @@
 #include "kkj_16.h"
 #include "sprite/player.h"
 
-
 EvtScript N(EVS_CapturePeach_Early) = {
     Call(DisablePlayerInput, true)
     SetGroup(EVT_GROUP_NEVER_PAUSE)

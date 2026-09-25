@@ -33,11 +33,11 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
 #endif
     Call(EnableModel, MODEL_power, true)
     Set(MV_StarWarpState, 1)
-        Label(10)
-        IfNe(MV_StarWarpState, 2)
-            Wait(1)
-            Goto(10)
-        EndIf
+    Label(10)
+    IfNe(MV_StarWarpState, 2)
+        Wait(1)
+        Goto(10)
+    EndIf
     Call(UseSettingsFrom, CAM_DEFAULT, -100, 245, 0)
     Call(SetPanTarget, CAM_DEFAULT, -100, 245, 0)
     Call(SetCamDistance, CAM_DEFAULT, 600)

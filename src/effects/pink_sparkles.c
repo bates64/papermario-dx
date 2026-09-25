@@ -158,9 +158,7 @@ EffectInstance* pink_sparkles_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
     }
 
     for (; count < numParts; count++, part++) {
-        part->unk_04 = part->unk_08 = part->unk_0C =
-            part->unk_10 = part->unk_14 = part->unk_18 =
-            part->unk_24 = 0.0f;
+        part->unk_04 = part->unk_08 = part->unk_0C = part->unk_10 = part->unk_14 = part->unk_18 = part->unk_24 = 0.0f;
         part->unk_1C = -1;
         part->unk_20 = 0;
     };
@@ -226,7 +224,7 @@ void pink_sparkles_render(EffectInstance* effect) {
 }
 
 void pink_sparkles_appendGfx(void* effect) {
-    PinkSparklesFXData* part = ((EffectInstance*)effect)->data.pinkSparkles;
+    PinkSparklesFXData* part = ((EffectInstance*) effect)->data.pinkSparkles;
     s32 primR;
     s32 primG;
     s32 primB;
@@ -240,7 +238,7 @@ void pink_sparkles_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_09000F20_338EE0);
 
     colorIdx = (part->unk_20 - 1) * 3;
@@ -250,7 +248,7 @@ void pink_sparkles_appendGfx(void* effect) {
     guMtxCatF(sp58, sp98, sp98);
 
     part++;
-    for (i = 0; i < ((EffectInstance*)effect)->numParts - 1; i++, part++) {
+    for (i = 0; i < ((EffectInstance*) effect)->numParts - 1; i++, part++) {
         s32 unk_28 = part->unk_28;
 
         if (unk_28 >= 0) {
@@ -280,7 +278,9 @@ void pink_sparkles_appendGfx(void* effect) {
             }
 
             gDPSetPrimColor(gMainGfxPos++, 0, 0, primR, primG, primB, 255);
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, D_E01248A0[unk_28 & 7]);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         }

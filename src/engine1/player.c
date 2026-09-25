@@ -10,8 +10,6 @@ PlayerData gPlayerData;
 
 extern s32 WorldTattleInteractionID;
 
-
-
 void phys_update_standard(void);
 void phys_update_lava_reset(void);
 void update_player_blink(void);
@@ -35,12 +33,12 @@ void update_player(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     CollisionStatus* collisionStatus = &gCollisionStatus;
 
-    #if DX_DEBUG_MENU
+#if DX_DEBUG_MENU
     if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_SPEED_MODE)) {
         gPlayerStatus.walkSpeed = 6.0f;
         gPlayerStatus.runSpeed = 12.0f;
     }
-    #endif
+#endif
 
     update_partner_timers();
 
@@ -132,10 +130,9 @@ void check_input_use_partner(void) {
     if (!(playerStatus->animFlags & PA_FLAG_8BIT_MARIO)
         && (playerStatus->animFlags & PA_FLAG_FORCE_USE_PARTNER || playerStatus->inputDisabledCount == 0)
         && (playerStatus->pressedButtons & BUTTON_C_DOWN && !(playerStatus->flags & PS_FLAG_NO_PARTNER_USAGE))
-        && !(playerStatus->pressedButtons & BUTTON_B)
-        && !(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS)
-        && actionState <= ACTION_STATE_RUN
-    ) {
+        && !(playerStatus->pressedButtons & BUTTON_B) && !(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS)
+        && actionState <= ACTION_STATE_RUN)
+    {
         if (playerData->curPartner == PARTNER_GOOMBARIO) {
             WorldTattleInteractionID = playerStatus->interactingWithID;
         }
@@ -149,12 +146,12 @@ void phys_update_standard(void) {
     check_input_use_partner();
     phys_update_action_state();
 
-    #if DX_DEBUG_MENU
-        if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_FLY) && playerStatus->curButtons & BUTTON_L) {
-            playerStatus->pos.y += 5.0f;
-            playerStatus->flags |= PS_FLAG_JUMPING;
-        }
-    #endif
+#if DX_DEBUG_MENU
+    if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_FLY) && playerStatus->curButtons & BUTTON_L) {
+        playerStatus->pos.y += 5.0f;
+        playerStatus->flags |= PS_FLAG_JUMPING;
+    }
+#endif
 
     if (!(playerStatus->flags & PS_FLAG_FLYING)) {
         if (playerStatus->flags & PS_FLAG_JUMPING) {
@@ -174,16 +171,15 @@ void phys_update_standard(void) {
         collision_main_lateral();
         collision_check_player_overlaps();
 
-        if (collision_main_above() <= NO_COLLIDER
-            && playerStatus->timeInAir == 0
-            && playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS
-        ) {
+        if (collision_main_above() <= NO_COLLIDER && playerStatus->timeInAir == 0
+            && playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS)
+        {
             collision_lateral_peach();
         }
 
         if (playerStatus->actionState != ACTION_STATE_ENEMY_FIRST_STRIKE
-            && playerStatus->actionState != ACTION_STATE_STEP_UP
-        ) {
+            && playerStatus->actionState != ACTION_STATE_STEP_UP)
+        {
             phys_main_collision_below();
         }
     }
@@ -223,8 +219,8 @@ void player_reset_data(void) {
     mem_clear(playerStatus, sizeof(PlayerStatus));
     playerStatus->flags = PS_FLAG_HAS_REFLECTION;
     reset_player_status();
-    playerStatus->shadowID = create_shadow_type(SHADOW_VARYING_CIRCLE,
-        playerStatus->pos.x, playerStatus->pos.y, playerStatus->pos.z);
+    playerStatus->shadowID =
+        create_shadow_type(SHADOW_VARYING_CIRCLE, playerStatus->pos.x, playerStatus->pos.y, playerStatus->pos.z);
     clear_world_menus();
     clear_interact_prompt();
     clear_conversation_prompt();
@@ -233,12 +229,11 @@ void player_reset_data(void) {
 }
 
 b32 is_player_dismounted(void) {
-    if (gPartnerStatus.partnerActionState == PARTNER_ACTION_USE &&
-        (gPartnerStatus.actingPartner == PARTNER_WATT
-        || gPartnerStatus.actingPartner == PARTNER_BOW
-        || gPartnerStatus.actingPartner == PARTNER_SUSHIE
-        || gPartnerStatus.actingPartner == PARTNER_PARAKARRY
-        || gPartnerStatus.actingPartner == PARTNER_LAKILESTER)) {
+    if (gPartnerStatus.partnerActionState == PARTNER_ACTION_USE
+        && (gPartnerStatus.actingPartner == PARTNER_WATT || gPartnerStatus.actingPartner == PARTNER_BOW
+            || gPartnerStatus.actingPartner == PARTNER_SUSHIE || gPartnerStatus.actingPartner == PARTNER_PARAKARRY
+            || gPartnerStatus.actingPartner == PARTNER_LAKILESTER))
+    {
         return false;
     }
     return true;
@@ -248,10 +243,9 @@ s32 get_overriding_player_anim(s32 anim) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PartnerStatus* partnerStatus = &gPartnerStatus;
 
-    if (playerStatus->actionState == ACTION_STATE_USE_SPINNING_FLOWER
-        && anim != ANIM_Mario1_Flail
-        && anim != ANIM_Mario1_Jump
-    ) {
+    if (playerStatus->actionState == ACTION_STATE_USE_SPINNING_FLOWER && anim != ANIM_Mario1_Flail
+        && anim != ANIM_Mario1_Jump)
+    {
         return -1;
     }
 
@@ -260,11 +254,9 @@ s32 get_overriding_player_anim(s32 anim) {
             anim = ANIM_MarioW2_RideLaki;
         }
 
-        if (partnerStatus->partnerActionState != PARTNER_ACTION_NONE
-            && partnerStatus->actingPartner == PARTNER_BOW
-            && anim != ANIM_Mario1_Crouch
-            && anim != ANIM_Mario1_Idle
-        ) {
+        if (partnerStatus->partnerActionState != PARTNER_ACTION_NONE && partnerStatus->actingPartner == PARTNER_BOW
+            && anim != ANIM_Mario1_Crouch && anim != ANIM_Mario1_Idle)
+        {
             return -1;
         }
     }
@@ -286,8 +278,8 @@ s32 get_overriding_player_anim(s32 anim) {
         }
     } else if (playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS) {
         if (playerStatus->peachItemHeld != PEACH_BAKING_NONE
-            && (anim == ANIM_Peach2_RaiseArms || anim == ANIM_Peach2_Talk || anim == ANIM_Peach2_LowerArms)
-        ) {
+            && (anim == ANIM_Peach2_RaiseArms || anim == ANIM_Peach2_Talk || anim == ANIM_Peach2_LowerArms))
+        {
             anim = ANIM_Peach3_PresentCompleteCake;
         }
     }

@@ -165,7 +165,9 @@ void action_update_step_down(void) {
     posZ = playerStatus->pos.z;
     height = playerStatus->colliderHeight;
 
-    colliderID = player_raycast_below_cam_relative(playerStatus, &posX, &posY, &posZ, &height, &hitRx, &hitRz, &hitDirX, &hitDirZ);
+    colliderID = player_raycast_below_cam_relative(
+        playerStatus, &posX, &posY, &posZ, &height, &hitRx, &hitRz, &hitDirX, &hitDirZ
+    );
     surfaceType = get_collider_flags(colliderID) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
     if (!(surfaceType == SURFACE_TYPE_SPIKES || surfaceType == SURFACE_TYPE_LAVA) && check_input_jump()) {
         set_action_state(ACTION_STATE_JUMP);

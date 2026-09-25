@@ -48,11 +48,13 @@ API_CALLABLE(N(BetaBlasterAI_AwaitPlayerAhead)) {
 
             if (npc->duration == 0) {
                 // use 3D distance
-                if (sqrtf(SQ((playerStatus->pos.x - npc->pos.x)) +
-                        SQ((playerStatus->pos.y - npc->pos.y)) +
-                        SQ((playerStatus->pos.z - npc->pos.z))) <= npc->planarFlyDist) {
-                    playerDirection = atan2(npc->pos.x, npc->pos.z,
-                        playerStatus->pos.x, playerStatus->pos.z);
+                if (sqrtf(
+                        SQ((playerStatus->pos.x - npc->pos.x)) + SQ((playerStatus->pos.y - npc->pos.y))
+                        + SQ((playerStatus->pos.z - npc->pos.z))
+                    )
+                    <= npc->planarFlyDist)
+                {
+                    playerDirection = atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
                     facingDirection = script->functionTemp[1] == -1 ? npc->yaw : script->functionTemp[1];
 
                     if (fabsf(get_clamped_angle_diff(facingDirection, playerDirection)) < script->functionTemp[2]) {
@@ -63,8 +65,7 @@ API_CALLABLE(N(BetaBlasterAI_AwaitPlayerAhead)) {
             } else {
                 // use planar distance
                 if (dist2D(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z) <= npc->planarFlyDist) {
-                    playerDirection = atan2(npc->pos.x, npc->pos.z,
-                        playerStatus->pos.x, playerStatus->pos.z);
+                    playerDirection = atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
                     facingDirection = script->functionTemp[1] == -1 ? npc->yaw : script->functionTemp[1];
 
                     if (fabsf(get_clamped_angle_diff(facingDirection, playerDirection)) < script->functionTemp[2]) {

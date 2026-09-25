@@ -15,10 +15,8 @@ void fire_breath_render(EffectInstance* effect);
 void fire_breath_appendGfx(void* effect);
 
 EffectInstance* fire_breath_main(
-    s32 type,
-    f32 startX, f32 startY, f32 startZ,
-    f32 endX, f32 endY, f32 endZ,
-    s32 numExtra, s32 spawnDelay, s32 duration
+    s32 type, f32 startX, f32 startY, f32 startZ, f32 endX, f32 endY, f32 endZ, s32 numExtra, s32 spawnDelay,
+    s32 duration
 ) {
     EffectBlueprint bp;
     FireBreathFXData* data;
@@ -179,15 +177,15 @@ void fire_breath_render(EffectInstance* effect) {
 void fire_breath_appendGfx(void* effect) {
     Matrix4f transformMtx;
     Matrix4f tempMtx;
-    FireBreathFXData* data = ((EffectInstance*)effect)->data.fireBreath;
+    FireBreathFXData* data = ((EffectInstance*) effect)->data.fireBreath;
     s32 type = data->type;
-    s32 envAlpha = (data->animTime - (s32)data->animTime) * 256.0f;
+    s32 envAlpha = (data->animTime - (s32) data->animTime) * 256.0f;
     Gfx* dlist = D_E006EC00[type];
     Gfx* dlist2 = D_E006EC0C[type];
     s32 imgFrame = data->animTime;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     if (type == FIRE_BREATH_SMALL) {
         guTranslateF(transformMtx, data->initPos.x, data->initPos.y, data->initPos.z);
@@ -195,8 +193,9 @@ void fire_breath_appendGfx(void* effect) {
         guMtxCatF(tempMtx, transformMtx, transformMtx);
         guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                  G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_09000C20_374000);
         gSPDisplayList(gMainGfxPos++, D_09000C00_373FE0);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
@@ -205,8 +204,8 @@ void fire_breath_appendGfx(void* effect) {
     gSPDisplayList(gMainGfxPos++, dlist2);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, data->primR, data->primG, data->primB, data->alpha);
     gDPSetEnvColor(gMainGfxPos++, data->envR, data->envG, data->envB, envAlpha);
-    gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, ((imgFrame * 32) + 0)  * 4, 0, ((imgFrame * 32) + 32) * 4, 128);
-    gDPSetTileSize(gMainGfxPos++, 1,               ((imgFrame * 32) + 32) * 4, 0, ((imgFrame * 32) + 64) * 4, 128);
+    gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, ((imgFrame * 32) + 0) * 4, 0, ((imgFrame * 32) + 32) * 4, 128);
+    gDPSetTileSize(gMainGfxPos++, 1, ((imgFrame * 32) + 32) * 4, 0, ((imgFrame * 32) + 64) * 4, 128);
 
     guTranslateF(transformMtx, data->pos.x, data->pos.y, data->pos.z);
     guRotateF(tempMtx, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
@@ -215,8 +214,7 @@ void fire_breath_appendGfx(void* effect) {
     guMtxCatF(tempMtx, transformMtx, transformMtx);
     guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gSPDisplayList(gMainGfxPos++, dlist);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }

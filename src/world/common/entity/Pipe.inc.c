@@ -75,10 +75,10 @@ API_CALLABLE(N(Pipe_GetEntryPos)) {
     MapSettings* mapSettings = get_current_map_settings();
     s32 index = evt_get_variable(script, LVar0);
 
-    evt_set_variable(script, LVar1, ((Vec4f*)*mapSettings->entryList)[index].x);
-    evt_set_variable(script, LVar2, ((Vec4f*)*mapSettings->entryList)[index].y);
-    evt_set_variable(script, LVar3, ((Vec4f*)*mapSettings->entryList)[index].z);
-    evt_set_variable(script, LVar4, ((Vec4f*)*mapSettings->entryList)[index].yaw);
+    evt_set_variable(script, LVar1, ((Vec4f*) *mapSettings->entryList)[index].x);
+    evt_set_variable(script, LVar2, ((Vec4f*) *mapSettings->entryList)[index].y);
+    evt_set_variable(script, LVar3, ((Vec4f*) *mapSettings->entryList)[index].z);
+    evt_set_variable(script, LVar4, ((Vec4f*) *mapSettings->entryList)[index].yaw);
 
     return ApiStatus_DONE2;
 }

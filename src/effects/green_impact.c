@@ -129,7 +129,7 @@ void green_impact_render(EffectInstance* effect) {
 }
 
 void green_impact_appendGfx(void* effect) {
-    GreenImpactFXData* part = ((EffectInstance*)effect)->data.greenImpact;
+    GreenImpactFXData* part = ((EffectInstance*) effect)->data.greenImpact;
     Gfx* dlist = D_E0064A60[part->unk_00];
     Gfx* dlist2;
     s32 alpha;
@@ -159,7 +159,7 @@ void green_impact_appendGfx(void* effect) {
     envB = part->unk_53.b;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, dlist);
 
     guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, part->unk_04, part->unk_08, part->unk_0C);
@@ -180,7 +180,7 @@ void green_impact_appendGfx(void* effect) {
     savedGfxPos2 = gMainGfxPos;
 
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         if (part->unk_4C >= 0) {
             guTranslateF(sp20, part->unk_04, part->unk_08, part->unk_0C);
             guRotateF(sp60, part->unk_34, 0.0f, 0.0f, 1.0f);
@@ -195,7 +195,9 @@ void green_impact_appendGfx(void* effect) {
 
             gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, 0, (s32) part->unk_3C, 252, (s32) part->unk_3C + 124);
             gDPSetTileSize(gMainGfxPos++, 1, 0, (s32) part->unk_44, 124, (s32) part->unk_44 + 124);
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, dlist2);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         }

@@ -2,9 +2,12 @@
 #include "kpa_33.h"
 
 EvtScript N(EVS_ExitWalk_kpa_94_1) = EVT_EXIT_WALK(60, kpa_33_ENTRY_0, "kpa_94", kpa_94_ENTRY_1);
-EvtScript N(EVS_ExitDoors_kpa_61_1) = EVT_EXIT_DOUBLE_DOOR(kpa_33_ENTRY_1, "kpa_61", kpa_61_ENTRY_1, COLLIDER_tt3, MODEL_o1250, MODEL_b3_doa);
-EvtScript N(EVS_ExitDoors_kpa_52_0) = EVT_EXIT_DOUBLE_DOOR(kpa_33_ENTRY_2, "kpa_52", kpa_52_ENTRY_0, COLLIDER_tte, MODEL_o1252, MODEL_o1253);
-EvtScript N(EVS_ExitDoors_kpa_09_1) = EVT_EXIT_DOUBLE_DOOR(kpa_33_ENTRY_3, "kpa_09", kpa_09_ENTRY_1, COLLIDER_tt4, MODEL_o1258, MODEL_o1259);
+EvtScript N(EVS_ExitDoors_kpa_61_1) =
+    EVT_EXIT_DOUBLE_DOOR(kpa_33_ENTRY_1, "kpa_61", kpa_61_ENTRY_1, COLLIDER_tt3, MODEL_o1250, MODEL_b3_doa);
+EvtScript N(EVS_ExitDoors_kpa_52_0) =
+    EVT_EXIT_DOUBLE_DOOR(kpa_33_ENTRY_2, "kpa_52", kpa_52_ENTRY_0, COLLIDER_tte, MODEL_o1252, MODEL_o1253);
+EvtScript N(EVS_ExitDoors_kpa_09_1) =
+    EVT_EXIT_DOUBLE_DOOR(kpa_33_ENTRY_3, "kpa_09", kpa_09_ENTRY_1, COLLIDER_tt4, MODEL_o1258, MODEL_o1259);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_kpa_94_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

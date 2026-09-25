@@ -229,8 +229,10 @@ void _render_transition_stencil(u8 stencilType, f32 progress, ScreenOverlay* ove
             gDPSetCombineMode(gMainGfxPos++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
             gDPSetPrimColor(gMainGfxPos++, 0, 0, colR, colG, colB, progress);
             gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-            gDPFillRectangle(gMainGfxPos++, camera->viewportStartX, camera->viewportStartY,
-                             camera->viewportStartX + camera->viewportW, camera->viewportStartY + camera->viewportH);
+            gDPFillRectangle(
+                gMainGfxPos++, camera->viewportStartX, camera->viewportStartY,
+                camera->viewportStartX + camera->viewportW, camera->viewportStartY + camera->viewportH
+            );
             gDPSetColorDither(gMainGfxPos++, G_CD_DISABLE);
             return;
     }
@@ -241,19 +243,29 @@ void _render_transition_stencil(u8 stencilType, f32 progress, ScreenOverlay* ove
     switch (stencilType) {
         case OVERLAY_VIEWPORT_MARIO:
             gSPDisplayList(gMainGfxPos++, Gfx_LoadStencilTex_Mario);
-            appendGfx_screen_transition_stencil(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, progress, colR, colG, colB, progress * alpha / 255.0f, gCurrentCameraID);
+            appendGfx_screen_transition_stencil(
+                SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, progress, colR, colG, colB, progress * alpha / 255.0f,
+                gCurrentCameraID
+            );
             break;
         case OVERLAY_SCREEN_MARIO:
             gSPDisplayList(gMainGfxPos++, Gfx_LoadStencilTex_Mario);
-            appendGfx_screen_transition_stencil(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, progress, colR, colG, colB, progress * alpha / 255.0f, -1);
+            appendGfx_screen_transition_stencil(
+                SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, progress, colR, colG, colB, progress * alpha / 255.0f, -1
+            );
             break;
         case OVERLAY_VIEWPORT_STAR:
             gSPDisplayList(gMainGfxPos++, Gfx_LoadStencilTex_Star);
-            appendGfx_screen_transition_stencil(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, progress, colR, colG, colB, progress * alpha / 255.0f, gCurrentCameraID);
+            appendGfx_screen_transition_stencil(
+                SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, progress, colR, colG, colB, progress * alpha / 255.0f,
+                gCurrentCameraID
+            );
             break;
         case OVERLAY_SCREEN_STAR:
             gSPDisplayList(gMainGfxPos++, Gfx_LoadStencilTex_Star);
-            appendGfx_screen_transition_stencil(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, progress, colR, colG, colB, progress * alpha / 255.0f, -1);
+            appendGfx_screen_transition_stencil(
+                SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, progress, colR, colG, colB, progress * alpha / 255.0f, -1
+            );
             break;
         case OVERLAY_VIEWPORT_SPOTLIGHT:
             gSPDisplayList(gMainGfxPos++, Gfx_LoadStencilTex_SharpCircle);
@@ -322,7 +334,7 @@ void _render_transition_stencil(u8 stencilType, f32 progress, ScreenOverlay* ove
             gSPMatrix(gMainGfxPos++, &matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             guScale(&matrixStack[gMatrixListPos], (1.0f - s0 / 255.0f) * 0.8, (1.0f - s0 / 255.0f) * 0.8, 1.0f);
             gSPMatrix(gMainGfxPos++, &matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-            guRotate(&matrixStack[gMatrixListPos], (f32)(-s0) * 0.5, 0.0f, 0.0f, 1.0f);
+            guRotate(&matrixStack[gMatrixListPos], (f32) (-s0) * 0.5, 0.0f, 0.0f, 1.0f);
             gSPMatrix(gMainGfxPos++, &matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
             gSPDisplayList(gMainGfxPos++, D_8014E8F0);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
@@ -354,7 +366,9 @@ void _render_transition_stencil(u8 stencilType, f32 progress, ScreenOverlay* ove
             break;
     }
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCameraID], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCameraID], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+    );
 }
 
 void set_screen_overlay_params_front(u8 type, f32 zoom) {
@@ -452,9 +466,9 @@ void clear_screen_overlays(void) {
     s32 i;
 
     screen_overlay_frontType = OVERLAY_NONE;
-    screen_overlay_backType  = OVERLAY_NONE;
+    screen_overlay_backType = OVERLAY_NONE;
     screen_overlay_frontProgress = OVERLAY_RENDER_OFF;
-    screen_overlay_backProgress  = OVERLAY_RENDER_OFF;
+    screen_overlay_backProgress = OVERLAY_RENDER_OFF;
 
     for (it = &ScreenOverlays[0], i = 0; i < ARRAY_COUNT(ScreenOverlays); i++, it++) {
         it->color.b = 0;
@@ -473,19 +487,17 @@ void reset_back_screen_overlay_progress(void) {
 }
 
 void render_screen_overlay_frontUI(void) {
-    if (screen_overlay_frontType != OVERLAY_NONE
-        && screen_overlay_frontProgress != OVERLAY_RENDER_OFF
-        && gGameStatusPtr->context != CONTEXT_PAUSE
-    ) {
+    if (screen_overlay_frontType != OVERLAY_NONE && screen_overlay_frontProgress != OVERLAY_RENDER_OFF
+        && gGameStatusPtr->context != CONTEXT_PAUSE)
+    {
         _render_transition_stencil(screen_overlay_frontType, screen_overlay_frontProgress, &ScreenOverlays[0]);
     }
 }
 
 void render_screen_overlay_backUI(void) {
-    if (screen_overlay_backType != OVERLAY_NONE
-        && screen_overlay_backProgress != OVERLAY_RENDER_OFF
-        && gGameStatusPtr->context != CONTEXT_PAUSE
-    ) {
+    if (screen_overlay_backType != OVERLAY_NONE && screen_overlay_backProgress != OVERLAY_RENDER_OFF
+        && gGameStatusPtr->context != CONTEXT_PAUSE)
+    {
         _render_transition_stencil(screen_overlay_backType, screen_overlay_backProgress, &ScreenOverlays[1]);
     }
 }

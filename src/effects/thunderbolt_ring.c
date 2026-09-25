@@ -52,7 +52,7 @@ EffectInstance* thunderbolt_ring_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f3
 void thunderbolt_ring_init(EffectInstance* effect) {
 }
 
-void thunderbolt_ring_update(EffectInstance *effect) {
+void thunderbolt_ring_update(EffectInstance* effect) {
     ThunderboltRingFXData* data = effect->data.thunderboltRing;
     s32 lifeTime;
     s32 timeLeft;
@@ -96,7 +96,7 @@ void thunderbolt_ring_render(EffectInstance* effect) {
 }
 
 void thunderbolt_ring_appendGfx(void* effect) {
-    ThunderboltRingFXData* data = ((EffectInstance*)effect)->data.thunderboltRing;
+    ThunderboltRingFXData* data = ((EffectInstance*) effect)->data.thunderboltRing;
     s32 lifeTime = data->lifeTime;
     s32 unk_24 = data->unk_24;
     f32 scaleY = 1.0f;
@@ -107,12 +107,16 @@ void thunderbolt_ring_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
-    guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->unk_28, data->pos.x, data->pos.y, data->pos.z);
+    guPositionF(
+        sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->unk_28, data->pos.x, data->pos.y, data->pos.z
+    );
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPDisplayList(gMainGfxPos++, D_09000000_3B46A0);
 
     savedGfxPos = gMainGfxPos++;
@@ -126,7 +130,9 @@ void thunderbolt_ring_appendGfx(void* effect) {
         guMtxCatF(sp60, sp20, sp20);
         guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_090000C8_3B4768);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }
@@ -143,7 +149,9 @@ void thunderbolt_ring_appendGfx(void* effect) {
         guPositionF(sp20, 0.0f, 0.0f, i * 36, temp * data->unk_2C, 0.0f, 0.0f, 0.0f);
         guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, savedGfxPos2);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

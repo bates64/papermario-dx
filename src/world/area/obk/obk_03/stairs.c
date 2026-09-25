@@ -123,7 +123,7 @@ EvtScript N(EVS_Cam_ResetFocus) = {
     Set(LVar0, dist) \
     Set(LVar1, 2 * DT) \
     Set(LVar2, modelID) \
-    ExecWait(N(EVS_DropStep)) \
+    ExecWait(N(EVS_DropStep))
 
 EvtScript N(EVS_Scene_DropSteps) = {
     Call(DisablePlayerInput, true)

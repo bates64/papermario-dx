@@ -283,4 +283,3 @@ NpcGroupList N(DefaultNPCs) = {
     NPC_GROUP(N(NpcData_CrystalKing_01), BTL_PRA2_FORMATION_00),
     {}
 };
-

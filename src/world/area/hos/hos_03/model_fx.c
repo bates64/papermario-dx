@@ -13,7 +13,9 @@ void N(build_gfx_swaying_yellow_stars)(void) {
     f32 angle = sins(N(SwayingStarMotionPhase)) * (1.0f / 32768.0f) * 45.0f;
     N(SwayingStarMotionPhase) += 0x400;
     guRotate(&gDisplayContext->matrixStack[gMatrixListPos], angle, 0.0f, 1.0f, 0.0f);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW
+    );
 
     mdl_get_copied_vertices(VTX_COPY_1, &firstVertex, &copiedVertices, &numVertices);
 
@@ -23,8 +25,11 @@ void N(build_gfx_swaying_yellow_stars)(void) {
         colors[0] = brightness * 155 / 0x8000 + 100;
         colors[1] = brightness * 155 / 0x8000 + 100;
 
-        blueScale = sins(N(SwayingStarColorPhase) / 0x8000 * (((i / 2) % 3 + 1) << 15)
-            + N(SwayingStarColorPhase) / 0x4000 * 0x8000 + i) + 0x8000;
+        blueScale =
+            sins(
+                N(SwayingStarColorPhase) / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(SwayingStarColorPhase) / 0x4000 * 0x8000 + i
+            )
+            + 0x8000;
         colors[2] = colors[0] * blueScale / 0x10000;
     }
 
@@ -50,8 +55,9 @@ void N(build_gfx_yellow_stars)(void) {
         colors[0] = brightness * 155 / 0x8000 + 100;
         colors[1] = brightness * 155 / 0x8000 + 100;
 
-        blueScale = sins(N(YellowStarPhaseAngle) / 0x8000 * (((i / 2) % 3 + 1) << 15)
-            + N(YellowStarPhaseAngle) / 0x4000 * 0x8000 + i) + 0x8000;
+        blueScale =
+            sins(N(YellowStarPhaseAngle) / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(YellowStarPhaseAngle) / 0x4000 * 0x8000 + i)
+            + 0x8000;
         colors[2] = colors[0] * blueScale / 0x10000;
     }
 
@@ -85,10 +91,11 @@ u16 N(HaloScalePhaseAngle) = 0;
 void N(build_gfx_lamp_halos)(void) {
     f32 scale = ((sins(N(HaloScalePhaseAngle)) * (1.0f / 0x8000)) * 0.5 * 0.5) + 1.05;
 
-    N(HaloScalePhaseAngle) += (s32)RAD_TO_BINANG(25.1720);
+    N(HaloScalePhaseAngle) += (s32) RAD_TO_BINANG(25.1720);
     guScale(&gDisplayContext->matrixStack[gMatrixListPos], scale, scale, scale);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW
+    );
 }
 
 API_CALLABLE(N(GetEntryID)) {

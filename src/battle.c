@@ -27,7 +27,7 @@ BSS Battle* gCurrentBattlePtr;
     .dmaDest = battle_area_##id##_VRAM, \
     .battles = &b_area_##id##_Formations, \
     .stages = &b_area_##id##_Stages, \
-} \
+}
 
 // extended battle area with a dmaTable, used by kzn2 for lava piranha animations
 #define BTL_AREA_DMA(id, jpName) { \
@@ -38,7 +38,7 @@ BSS Battle* gCurrentBattlePtr;
     .battles = &b_area_##id##_Formations, \
     .stages = &b_area_##id##_Stages, \
     .dmaTable = b_area_##id##_dmaTable, \
-} \
+}
 
 // auxiliary battle area for omo which contains only additional enemy data
 #define BTL_AREA_AUX(id, jpName) { \
@@ -46,7 +46,7 @@ BSS Battle* gCurrentBattlePtr;
     .dmaStart = battle_area_##id##_ROM_START, \
     .dmaEnd = battle_area_##id##_ROM_END, \
     .dmaDest = battle_area_##id##_VRAM, \
-} \
+}
 
 /// When updating this, make sure you also update:
 /// - the length of gBattleAreas in battle.h

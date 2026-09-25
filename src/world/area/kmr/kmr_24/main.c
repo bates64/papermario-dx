@@ -25,19 +25,19 @@ API_CALLABLE(N(ExitGame)) {
 
 API_CALLABLE(N(SaveAndContinue)) {
     // push current map
-    s16 curArea  = gGameStatusPtr->areaID;
-    s16 curMap   = gGameStatusPtr->mapID;
+    s16 curArea = gGameStatusPtr->areaID;
+    s16 curMap = gGameStatusPtr->mapID;
     s16 curEntry = gGameStatusPtr->entryID;
     // save with map being osr_03, entry 4
     s16 areaID, mapID;
     get_map_IDs_by_name_checked("osr_03", &areaID, &mapID);
-    gGameStatusPtr->areaID  = areaID;
-    gGameStatusPtr->mapID   = mapID;
+    gGameStatusPtr->areaID = areaID;
+    gGameStatusPtr->mapID = mapID;
     gGameStatusPtr->entryID = osr_03_ENTRY_4;
     fio_save_game(gGameStatusPtr->saveSlot);
     // and continue
-    gGameStatusPtr->areaID  = curArea;
-    gGameStatusPtr->mapID   = curMap;
+    gGameStatusPtr->areaID = curArea;
+    gGameStatusPtr->mapID = curMap;
     gGameStatusPtr->entryID = curEntry;
     return ApiStatus_DONE2;
 }

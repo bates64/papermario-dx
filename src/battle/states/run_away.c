@@ -50,12 +50,9 @@ void btl_state_update_run_away(void) {
                         if (!(enemy->flags & ACTOR_FLAG_NO_DMG_APPLY)) {
                             f32 escapeChance = enemy->actorBlueprint->escapeChance;
 
-                            if (enemy->debuff == STATUS_KEY_UNUSED ||
-                                enemy->debuff == STATUS_KEY_DIZZY ||
-                                enemy->debuff == STATUS_KEY_PARALYZE ||
-                                enemy->debuff == STATUS_KEY_SLEEP ||
-                                enemy->debuff == STATUS_KEY_FROZEN ||
-                                enemy->debuff == STATUS_KEY_STOP)
+                            if (enemy->debuff == STATUS_KEY_UNUSED || enemy->debuff == STATUS_KEY_DIZZY
+                                || enemy->debuff == STATUS_KEY_PARALYZE || enemy->debuff == STATUS_KEY_SLEEP
+                                || enemy->debuff == STATUS_KEY_FROZEN || enemy->debuff == STATUS_KEY_STOP)
                             {
                                 escapeChance = 100.0f;
                             }
@@ -167,8 +164,8 @@ void btl_state_update_run_away(void) {
             }
             if (!is_bound_script_running(&player->scripts.takeTurn)
                 && (partner == nullptr || !is_bound_script_running(&partner->scripts.takeTurn))
-                && battleStatus->stateFreezeCount == 0
-            ) {
+                && battleStatus->stateFreezeCount == 0)
+            {
                 btl_set_state(BATTLE_STATE_TRANSFER_TURN);
             }
             break;

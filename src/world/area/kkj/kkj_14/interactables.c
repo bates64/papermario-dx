@@ -2,7 +2,6 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-
 EvtScript N(EVS_Inspect_Fireplace) = {
     Call(DisablePlayerInput, true)
     Switch(GB_StoryProgress)

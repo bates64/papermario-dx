@@ -2,9 +2,13 @@
 
 MSG_BIN dx_ascii_char_to_msg(char in) {
     switch (in) {
-        case '\0': return MSG_CHAR_READ_END;
-        case ' ': case '\t': return MSG_CHAR_READ_SPACE;
-        case '\n': return MSG_CHAR_READ_ENDL;
+        case '\0':
+            return MSG_CHAR_READ_END;
+        case ' ':
+        case '\t':
+            return MSG_CHAR_READ_SPACE;
+        case '\n':
+            return MSG_CHAR_READ_ENDL;
         default:
             if (in < 0x20) {
                 return MSG_CHAR_NOTE;

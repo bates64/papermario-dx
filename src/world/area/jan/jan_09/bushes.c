@@ -4,14 +4,13 @@
 #include "../common/MoveBush.inc.c"
 #include "../common/MoveBushTemplates.h"
 
-EvtScript N(EVS_MoveBush_RightShore) = EVT_MOVE_BUSHES(COLLIDER_o84,
-    MODEL_o83, MODEL_o84, MV_RightShoreBushOffsetL, MV_RightShoreBushOffsetR);
+EvtScript N(EVS_MoveBush_RightShore) =
+    EVT_MOVE_BUSHES(COLLIDER_o84, MODEL_o83, MODEL_o84, MV_RightShoreBushOffsetL, MV_RightShoreBushOffsetR);
 
-EvtScript N(EVS_MoveBush_CliffTop1) = EVT_MOVE_BUSH(COLLIDER_o82,
-    MODEL_o82, MV_CliffTopBush1OffsetR);
+EvtScript N(EVS_MoveBush_CliffTop1) = EVT_MOVE_BUSH(COLLIDER_o82, MODEL_o82, MV_CliffTopBush1OffsetR);
 
-EvtScript N(EVS_MoveBush_CliffTop2) = EVT_MOVE_BUSHES(COLLIDER_o88,
-    MODEL_o88, MODEL_o81, MV_CliffTopBush2OffsetL, MV_CliffTopBush2OffsetR);
+EvtScript N(EVS_MoveBush_CliffTop2) =
+    EVT_MOVE_BUSHES(COLLIDER_o88, MODEL_o88, MODEL_o81, MV_CliffTopBush2OffsetL, MV_CliffTopBush2OffsetR);
 
 EvtScript N(EVS_Inspect_MoveBush_RightShore) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o84, COLLIDER_FLAGS_UPPER_MASK)

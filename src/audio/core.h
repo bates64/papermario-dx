@@ -5,17 +5,17 @@
 // core/system.c
 // ----------------------------------------------------------------------------------
 void create_audio_system(void);
-//void nuAuPreNMIFuncSet(NUAuPreNMIFunc func);
+// void nuAuPreNMIFuncSet(NUAuPreNMIFunc func);
 void nuAuMgr(void* arg);
-s32 nuAuDmaCallBack(s32 addr, s32 len, void *state, u8 useDma);
-//ALDMAproc nuAuDmaNew(NUDMAState** state);
-//void nuAuCleanDMABuffers(void);
-//void nuAuPreNMIProc(NUScMsg mesg_type, u32 frameCounter);
-//void alLink(ALLink* element, ALLink* after);
-//void alUnlink(ALLink* element);
+s32 nuAuDmaCallBack(s32 addr, s32 len, void* state, u8 useDma);
+// ALDMAproc nuAuDmaNew(NUDMAState** state);
+// void nuAuCleanDMABuffers(void);
+// void nuAuPreNMIProc(NUScMsg mesg_type, u32 frameCounter);
+// void alLink(ALLink* element, ALLink* after);
+// void alUnlink(ALLink* element);
 
 // ----------------------------------------------------------------------------------
-//core/engine.c
+// core/engine.c
 // ----------------------------------------------------------------------------------
 void au_release_voice(u8 index);
 void au_engine_init(s32 outputRate);
@@ -65,7 +65,9 @@ void au_load_PER(AuGlobals* globals, s32 romAddr);
 void au_load_PRG(AuGlobals* arg0, s32 romAddr);
 InstrumentBank* au_get_BK_instruments(BankSet bankSet, u32 bankIndex);
 BKFileBuffer* au_load_BK_to_bank(s32 bkFileOffset, BKFileBuffer* bkFile, s32 bankIndex, BankSet bankSet);
-void au_swizzle_BK_instruments(s32 bkFileOffset, BKFileBuffer* bkFile, InstrumentBank instruments, u32 instrumentCount, u8 arg4);
+void au_swizzle_BK_instruments(
+    s32 bkFileOffset, BKFileBuffer* bkFile, InstrumentBank instruments, u32 instrumentCount, u8 arg4
+);
 BKFileBuffer* au_load_static_BK_to_bank(s32* bkFileOffset, void* vaddr, s32 bankIndex, BankSet bankSet);
 s32 au_load_aux_bank(s32 bkFileOffset, s32 bankIndex);
 void au_clear_instrument_group(s32 bankIndex, BankSet bankSet);
@@ -82,7 +84,7 @@ void au_copy_words(void* src, void* dst, s32 size);
 // ----------------------------------------------------------------------------------
 void au_driver_init(AuSynDriver* driver, ALConfig* config);
 void au_driver_release(void);
-//Acmd* alAudioFrame(Acmd* cmdList, s32* cmdLen, s16* outBuf, s32 outLen);
+// Acmd* alAudioFrame(Acmd* cmdList, s32* cmdLen, s16* outBuf, s32 outLen);
 void au_use_global_volume(void);
 void au_set_global_volume(s16 arg0);
 s16 au_get_global_volume(void);
@@ -94,7 +96,9 @@ void au_bus_set_fx_params(u8 busID, s16 arg1, s16 arg2, s32 arg3);
 void au_pvoice_set_bus(u8 voiceIdx, s8 busID);
 void au_syn_stop_voice(u8 voiceIdx);
 void au_syn_start_voice(u8 index);
-void au_syn_start_voice_params(u8 index, u8 reverbType, Instrument* table, f32 pitch, s16 vol, u8 pan, u8 fxMix, s32 delta);
+void au_syn_start_voice_params(
+    u8 index, u8 reverbType, Instrument* table, f32 pitch, s16 vol, u8 pan, u8 fxMix, s32 delta
+);
 void au_syn_set_wavetable(u8 voiceIdx, Instrument* table);
 void au_syn_set_pitch(u8 voiceIdx, f32 pitchRatio);
 void au_syn_set_mixer_params(u8 voiceIdx, s16 volume, s32 arg2, u8 arg3, u8 arg4);
@@ -115,8 +119,8 @@ void au_delay_left_channel(u8 arg0);
 void au_delay_right_channel(u8 arg0);
 void au_disable_channel_delay(void);
 void au_init_delay_channel(s16 arg0);
-//void alHeapInit(ALHeap* hp, u8* base, s32 len);
-//void alCopy(void* src, void* dst, s32 size);
+// void alHeapInit(ALHeap* hp, u8* base, s32 len);
+// void alCopy(void* src, void* dst, s32 size);
 #undef alHeapAlloc
 void* alHeapAlloc(ALHeap* heap, s32 count, s32 size);
 

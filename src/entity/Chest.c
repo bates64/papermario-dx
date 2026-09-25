@@ -63,7 +63,7 @@ EvtScript Entity_Chest_ResetCam_Default = {
     End
 };
 
-//TODO hardcoded area IDs
+// TODO hardcoded area IDs
 void entity_Chest_adjust_camera(Entity* entity) {
     s16 areaID;
     EvtScript* script;
@@ -82,7 +82,7 @@ void entity_Chest_adjust_camera(Entity* entity) {
     }
 }
 
-//TODO hardcoded area IDs
+// TODO hardcoded area IDs
 void entity_Chest_reset_camera(Entity* entity) {
     s16 areaID;
     EvtScript* script;
@@ -133,12 +133,15 @@ void entity_Chest_idle(Entity* entity) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     rotation = clamp_angle(180.0f - entity->rot.y);
-    angle = fabsf(rotation - clamp_angle(atan2(entity->pos.x, entity->pos.z, playerStatus->pos.x, playerStatus->pos.z)));
-    if ((!(playerStatus->animFlags & PA_FLAG_USING_WATT)) &&
-        (!(entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR)) &&
-        ((angle <= 40.0f) || (angle >= 320.0f))) {
+    angle =
+        fabsf(rotation - clamp_angle(atan2(entity->pos.x, entity->pos.z, playerStatus->pos.x, playerStatus->pos.z)));
+    if ((!(playerStatus->animFlags & PA_FLAG_USING_WATT))
+        && (!(entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR)) && ((angle <= 40.0f) || (angle >= 320.0f)))
+    {
         entity->flags |= ENTITY_FLAG_SHOWS_INSPECT_PROMPT;
-        if ((playerStatus->animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE) && (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_WALL)) {
+        if ((playerStatus->animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE)
+            && (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_WALL))
+        {
             exec_entity_commandlist(entity);
             data = entity->dataBuf.chest;
             data->state = 0;
@@ -215,7 +218,6 @@ void entity_Chest_open(Entity* entity) {
             break;
         case 5:
             break;
-
     }
 }
 
@@ -284,7 +286,9 @@ void entity_GiantChest_open(Entity* entity) {
     f32 radius;
 
     if (chest->itemID != 0) {
-        set_item_entity_position(chest->itemEntityIndex, chest->itemEntityPos.x, chest->itemEntityPos.y, chest->itemEntityPos.z);
+        set_item_entity_position(
+            chest->itemEntityIndex, chest->itemEntityPos.x, chest->itemEntityPos.y, chest->itemEntityPos.z
+        );
     }
     entity_Chest_open(entity);
 
@@ -317,7 +321,8 @@ void entity_GiantChest_open(Entity* entity) {
                 chest->itemEntityPos.y -= dy;
             }
             giveItemLerpAlpha = sin_rad(DEG_TO_RAD(chest->giveItemRadiusInterpPhase));
-            theta = intermediateTheta = clamp_angle(atan2(entity->pos.x, entity->pos.z, playerStatus->pos.x, playerStatus->pos.z));
+            theta = intermediateTheta =
+                clamp_angle(atan2(entity->pos.x, entity->pos.z, playerStatus->pos.x, playerStatus->pos.z));
 
             // hardcoded areaID
             if (gGameStatusPtr->areaID == AREA_KZN) {
@@ -335,7 +340,7 @@ void entity_GiantChest_open(Entity* entity) {
                 chest->giveItemRadiusInterpPhase = 180.0f;
             }
             chest->giveItemHeightInterpPhase += 13.0f;
-            if (chest->giveItemHeightInterpPhase >= 180.0f){
+            if (chest->giveItemHeightInterpPhase >= 180.0f) {
                 chest->giveItemTimer = 7;
                 chest->giveItemHeightInterpPhase = 180.0f;
                 chest->state++;
@@ -345,12 +350,19 @@ void entity_GiantChest_open(Entity* entity) {
                     sin_cos_rad(DEG_TO_RAD(180.0f - gCameras[CAM_DEFAULT].curYaw), &sinFwd, &cosFwd);
                     horizontalOffset = 0.0f;
                     depthOffset = 4.0f;
-                    //RadialFlowOut
-                    fx_radial_shimmer(0, chest->itemEntityPos.x + horizontalOffset * sinRight - depthOffset * sinFwd,
-                              chest->itemEntityPos.y + 12.0f, chest->itemEntityPos.z - cosRight * horizontalOffset + cosFwd * depthOffset, 1.0f, 0x64);
-                    //GotItemOutline
-                    fx_got_item_outline(0, chest->itemEntityPos.x + horizontalOffset * sinRight - sinFwd * depthOffset,
-                              chest->itemEntityPos.y + 12.0f, chest->itemEntityPos.z - cosRight * horizontalOffset + cosFwd * depthOffset, 1.0f, &chest->gotItemEffect);
+                    // RadialFlowOut
+                    fx_radial_shimmer(
+                        0, chest->itemEntityPos.x + horizontalOffset * sinRight - depthOffset * sinFwd,
+                        chest->itemEntityPos.y + 12.0f,
+                        chest->itemEntityPos.z - cosRight * horizontalOffset + cosFwd * depthOffset, 1.0f, 0x64
+                    );
+                    // GotItemOutline
+                    fx_got_item_outline(
+                        0, chest->itemEntityPos.x + horizontalOffset * sinRight - sinFwd * depthOffset,
+                        chest->itemEntityPos.y + 12.0f,
+                        chest->itemEntityPos.z - cosRight * horizontalOffset + cosFwd * depthOffset, 1.0f,
+                        &chest->gotItemEffect
+                    );
                 }
             }
             break;
@@ -395,9 +407,10 @@ void entity_GiantChest_give_equipment(Entity* entity) {
         data->itemEntityPos.x = entity->pos.x + (sin_rad(angle) * 10.0f);
         data->itemEntityPos.y = entity->pos.y;
         data->itemEntityPos.z = entity->pos.z + (cos_rad(angle) * 10.0f);
-        data->itemEntityIndex = make_item_entity_nodelay(data->itemID,
-            data->itemEntityPos.x, data->itemEntityPos.y, data->itemEntityPos.z,
-            ITEM_SPAWN_MODE_DECORATION, -1);
+        data->itemEntityIndex = make_item_entity_nodelay(
+            data->itemID, data->itemEntityPos.x, data->itemEntityPos.y, data->itemEntityPos.z,
+            ITEM_SPAWN_MODE_DECORATION, -1
+        );
     }
 
     flagIndex = data->gameFlagIndex;
@@ -494,7 +507,8 @@ EntityScript Entity_Chest_Script = {
     es_Restart
     es_End
 };
-EntityModelScript Entity_Chest_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_Chest_RenderBox, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_Chest_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_Chest_RenderBox, RENDER_MODE_SURFACE_OPA);
 
 EntityBlueprint Entity_GiantChest = {
     .flags = ENTITY_FLAG_4000,

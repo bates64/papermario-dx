@@ -1,11 +1,13 @@
 #include "dgb_14.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_ExitDoors_dgb_03_3) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_14_ENTRY_1, "dgb_03", dgb_03_ENTRY_3,
-    COLLIDER_deilittse, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_dgb_03_3) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    dgb_14_ENTRY_1, "dgb_03", dgb_03_ENTRY_3, COLLIDER_deilittse, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY
+);
 
-EvtScript N(EVS_ExitDoors_dgb_15_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_14_ENTRY_0, "dgb_15", dgb_15_ENTRY_0,
-    COLLIDER_deilittne, MODEL_o31, MODEL_o30, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_dgb_15_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    dgb_14_ENTRY_0, "dgb_15", dgb_15_ENTRY_0, COLLIDER_deilittne, MODEL_o31, MODEL_o30, DOOR_SOUNDS_CREAKY
+);
 
 EvtScript N(EVS_EnterMap) = {
     Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)

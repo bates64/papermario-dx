@@ -29,7 +29,9 @@ void N(setup_gfx_geyser)(void) {
     f32 scale = temp_f20 + temp_f21;
 
     guScale(&gDisplayContext->matrixStack[gMatrixListPos], (scale * 0.3) + 0.5, scale, (scale * 0.3) + 0.5);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW
+    );
     N(GeyserAnimPhase)++;
 }
 
@@ -46,7 +48,10 @@ API_CALLABLE(N(AdjustEnvSoundPosition)) {
         script->functionTemp[0] = evt_get_variable(script, *args++);
         script->functionTemp[1] = evt_get_variable(script, *args++);
         script->functionTemp[2] = evt_get_variable(script, *args++);
-        sfx_adjust_env_sound_pos(SOUND_LRAW_JAN_SMALL_GEYSER, SOUND_SPACE_DEFAULT, script->functionTemp[0], script->functionTemp[1], script->functionTemp[2]);
+        sfx_adjust_env_sound_pos(
+            SOUND_LRAW_JAN_SMALL_GEYSER, SOUND_SPACE_DEFAULT, script->functionTemp[0], script->functionTemp[1],
+            script->functionTemp[2]
+        );
     }
     return ApiStatus_DONE2;
 }

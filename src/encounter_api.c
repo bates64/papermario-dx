@@ -57,7 +57,7 @@ API_CALLABLE(RemoveNpc) {
     Enemy* enemy = script->owner1.enemy;
     s32 npcID = evt_get_variable(script, *args++);
 
-    if ((s32)enemy != NPC_SELF && npcID == NPC_SELF) {
+    if ((s32) enemy != NPC_SELF && npcID == NPC_SELF) {
         npcID = enemy->npcID;
     }
 
@@ -71,7 +71,7 @@ API_CALLABLE(RemoveEncounter) {
     Enemy* enemy = script->owner1.enemy;
     s32 id = evt_get_variable(script, *args++);
 
-    if ((s32)enemy != NPC_SELF && id == NPC_SELF) {
+    if ((s32) enemy != NPC_SELF && id == NPC_SELF) {
         id = enemy->npcID;
     }
 
@@ -251,11 +251,11 @@ API_CALLABLE(BindNpcAI) {
     Bytecode* args = script->ptrReadPos;
     Enemy* enemy = script->owner1.enemy;
     s32 npcID = evt_get_variable(script, *args++);
-    EvtScript* newScriptSource = (EvtScript*)evt_get_variable(script, *args++);
+    EvtScript* newScriptSource = (EvtScript*) evt_get_variable(script, *args++);
     Evt* newScript;
     s32 groupFlags;
 
-    if ((s32)enemy != NPC_SELF && npcID == NPC_SELF) {
+    if ((s32) enemy != NPC_SELF && npcID == NPC_SELF) {
         npcID = enemy->npcID;
     } else {
         enemy = get_enemy(npcID);
@@ -281,7 +281,7 @@ API_CALLABLE(BindNpcIdle) {
     Bytecode* args = script->ptrReadPos;
     Enemy* enemy = script->owner1.enemy;
     s32 npcID = evt_get_variable(script, *args++);
-    EvtScript* aiBytecode = (EvtScript*)evt_get_variable(script, *args++);
+    EvtScript* aiBytecode = (EvtScript*) evt_get_variable(script, *args++);
 
     if (npcID == NPC_SELF) {
         npcID = enemy->npcID;
@@ -347,10 +347,10 @@ API_CALLABLE(SetNpcAux) {
     Bytecode* args = script->ptrReadPos;
     Enemy* enemy = script->owner1.enemy;
     s32 npcID = evt_get_variable(script, *args++);
-    EvtScript* newScriptSource = (EvtScript*)evt_get_variable(script, *args++);
+    EvtScript* newScriptSource = (EvtScript*) evt_get_variable(script, *args++);
     Evt* newScript;
 
-    if ((s32)enemy != NPC_SELF && npcID == NPC_SELF) {
+    if ((s32) enemy != NPC_SELF && npcID == NPC_SELF) {
         npcID = enemy->npcID;
     } else {
         enemy = get_enemy(npcID);
@@ -373,7 +373,7 @@ API_CALLABLE(BindNpcAux) {
     Bytecode* args = script->ptrReadPos;
     Enemy* enemy = script->owner1.enemy;
     s32 npcID = evt_get_variable(script, *args++);
-    EvtScript* auxBytecode = (EvtScript*)evt_get_variable(script, *args++);
+    EvtScript* auxBytecode = (EvtScript*) evt_get_variable(script, *args++);
 
     if (npcID == NPC_SELF) {
         npcID = enemy->npcID;
@@ -439,7 +439,7 @@ API_CALLABLE(BindNpcInteract) {
     Bytecode* args = script->ptrReadPos;
     Enemy* enemy = script->owner1.enemy;
     s32 npcID = evt_get_variable(script, *args++);
-    EvtScript* interactSource = (EvtScript*)evt_get_variable(script, *args++);
+    EvtScript* interactSource = (EvtScript*) evt_get_variable(script, *args++);
 
     if (npcID == NPC_SELF) {
         npcID = enemy->npcID;
@@ -457,7 +457,7 @@ API_CALLABLE(BindNpcHit) {
     Bytecode* args = script->ptrReadPos;
     Enemy* enemy = script->owner1.enemy;
     s32 npcID = evt_get_variable(script, *args++);
-    EvtScript* hitBytecode = (EvtScript*)evt_get_variable(script, *args++);
+    EvtScript* hitBytecode = (EvtScript*) evt_get_variable(script, *args++);
 
     if (npcID == NPC_SELF) {
         npcID = enemy->npcID;
@@ -475,7 +475,7 @@ API_CALLABLE(BindNpcDefeat) {
     Bytecode* args = script->ptrReadPos;
     Enemy* enemy = script->owner1.enemy;
     s32 npcID = evt_get_variable(script, *args++);
-    EvtScript* defeatBytecode = (EvtScript*)evt_get_variable(script, *args++);
+    EvtScript* defeatBytecode = (EvtScript*) evt_get_variable(script, *args++);
 
     if (npcID == NPC_SELF) {
         npcID = enemy->npcID;
@@ -723,7 +723,9 @@ API_CALLABLE(OnPlayerFled) {
             fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 0.0f, -20.0f, 40, &emoteEffect);
         }
 
-        if ((npc->flags & (NPC_FLAG_GRAVITY | NPC_FLAG_JUMPING | NPC_FLAG_FLYING)) == (NPC_FLAG_JUMPING | NPC_FLAG_FLYING)) {
+        if ((npc->flags & (NPC_FLAG_GRAVITY | NPC_FLAG_JUMPING | NPC_FLAG_FLYING))
+            == (NPC_FLAG_JUMPING | NPC_FLAG_FLYING))
+        {
             f32 x = npc->pos.x;
             f32 y = npc->pos.y + npc->collisionHeight;
             f32 z = npc->pos.z;

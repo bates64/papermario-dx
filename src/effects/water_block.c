@@ -103,7 +103,7 @@ EffectInstance* water_block_main(s32 type, f32 x, f32 y, f32 z, f32 arg4, s32 du
     data->unk_30 = 0.0f;
     data->unk_34 = 0.0f;
 
-    for (i = NUM_WATER_BLOCK_COMPONENTS - 1, var_a1 = -13; i >= 0;  var_a1 += 4, i--) {
+    for (i = NUM_WATER_BLOCK_COMPONENTS - 1, var_a1 = -13; i >= 0; var_a1 += 4, i--) {
         data->unk_88[i] = var_a1;
     }
     return effect;
@@ -115,7 +115,7 @@ void water_block_init(EffectInstance* effect) {
 EFFECT_DEF_WATER_SPLASH(water_splash_main);
 
 void water_block_update(EffectInstance* effect) {
-    WaterBlockFXData *data;
+    WaterBlockFXData* data;
     f32 temp_f20;
     s32 type;
     s32 time;
@@ -170,8 +170,9 @@ void water_block_update(EffectInstance* effect) {
     }
 
     data->color.g = sin_deg((time * 6) + time) * 32.0f + 127.0f;
-    temp_f20 = (f32)time * 0.01;
-    data->unk_30 = (sin_deg(temp_f20 * 6.0f) * 32.0f * sin_deg(temp_f20)) + 256.0f + (cos_deg(2.0f * temp_f20) * 32.0f) + (cos_deg(temp_f20) * 32.0f);
+    temp_f20 = (f32) time * 0.01;
+    data->unk_30 = (sin_deg(temp_f20 * 6.0f) * 32.0f * sin_deg(temp_f20)) + 256.0f + (cos_deg(2.0f * temp_f20) * 32.0f)
+        + (cos_deg(temp_f20) * 32.0f);
     data->unk_34 += 0.2;
     if (data->unk_34 >= 128.0f) {
         data->unk_34 = 0.0f;
@@ -216,7 +217,7 @@ void func_E00B4574(void) {
 
 void water_block_appendGfx(void* effect) {
     Matrix4f sp20;
-    WaterBlockFXData* data = ((EffectInstance*)effect)->data.waterBlock;
+    WaterBlockFXData* data = ((EffectInstance*) effect)->data.waterBlock;
     s32 alpha = data->color.a;
     Vtx* vtxBase;
     EffectInstance* effectTemp = effect;
@@ -230,10 +231,12 @@ void water_block_appendGfx(void* effect) {
     guTranslateF(sp20, data->pos.x, data->pos.y, data->pos.z);
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     gSPBranchList(gMainGfxPos, &gMainGfxPos[81]);
-    vtxBase = (Vtx*)++gMainGfxPos;
+    vtxBase = (Vtx*) ++gMainGfxPos;
     gMainGfxPos = &gMainGfxPos[80];
 
     timePhase = gGameStatusPtr->frameCounter * 4;
@@ -277,7 +280,9 @@ void water_block_appendGfx(void* effect) {
         if (data->unk_88[i] >= 0) {
             guPositionF(sp20, 0.0f, 0.0f, 0.0f, data->unk_78[i], data->unk_38[i], data->unk_48[i], 0.0f);
             guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, D_090004A0_3B7090);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         }
@@ -294,7 +299,6 @@ void water_block_appendGfx(void* effect) {
 
     gSPVertex(gMainGfxPos++, &vtxBase[28], 12, 0);
 
-    gSPDisplayList(gMainGfxPos++, D_09000538_3B7128)
-    gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
+    gSPDisplayList(gMainGfxPos++, D_09000538_3B7128) gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }

@@ -84,7 +84,9 @@ void action_update_sliding(void) {
             posZ = playerStatus->pos.z;
             D_802B6794 = D_802B6798;
             posY = playerStatus->pos.y + (playerStatus->colliderHeight * 0.5f);
-            hitID = player_raycast_below_cam_relative(playerStatus, &posX, &posY, &posZ, &depth, &hitRx, &hitRy, &hitDirX, &hitDirZ);
+            hitID = player_raycast_below_cam_relative(
+                playerStatus, &posX, &posY, &posZ, &depth, &hitRx, &hitRy, &hitDirX, &hitDirZ
+            );
             D_802B6798 = hitRy;
             if (hitID > NO_COLLIDER) {
                 collisionStatus = &gCollisionStatus;
@@ -112,7 +114,9 @@ void action_update_sliding(void) {
             depth = 50.0f;
             posZ = playerStatus->pos.z;
             posY = playerStatus->pos.y + (playerStatus->colliderHeight * 0.5f);
-            hitID = player_raycast_below_cam_relative(playerStatus, &posX, &posY, &posZ, &depth, &hitRx, &hitRy, &hitDirX, &hitDirZ);
+            hitID = player_raycast_below_cam_relative(
+                playerStatus, &posX, &posY, &posZ, &depth, &hitRx, &hitRy, &hitDirX, &hitDirZ
+            );
             if (hitID > NO_COLLIDER) {
                 speed = playerStatus->curSpeed / 3.0f;
                 if (speed < 0.01) {

@@ -198,8 +198,10 @@ void func_E0090444(EffectInstance* effect) {
             guScaleF(mtxB, scale, scale, 1.0f);
             guMtxCatF(mtxB, mtxA, mtxA);
             guMtxF2L(mtxA, &gDisplayContext->matrixStack[gMatrixListPos]);
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                      G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
+                G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+            );
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, data->alpha);
             gSPDisplayList(gMainGfxPos++, D_090015A8_391978);
             gSPDisplayList(gMainGfxPos++, D_E0090A40[data->unk_04]);
@@ -207,17 +209,17 @@ void func_E0090444(EffectInstance* effect) {
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         } else {
             type -= 5;
-            gDPSetPrimColor(gMainGfxPos++, 0, 0, D_E0090A78[type][0], D_E0090A78[type][1], D_E0090A78[type][2], data->alpha);
+            gDPSetPrimColor(
+                gMainGfxPos++, 0, 0, D_E0090A78[type][0], D_E0090A78[type][1], D_E0090A78[type][2], data->alpha
+            );
             gDPSetEnvColor(gMainGfxPos++, D_E0090A78[type][3], D_E0090A78[type][4], D_E0090A78[type][5], 0);
             gSPDisplayList(gMainGfxPos++, D_09001500_3918D0);
             gSPDisplayList(gMainGfxPos++, D_E0090A40[data->unk_04]);
 
-            gSPScisTextureRectangle(gMainGfxPos++,
-                data->pos.x * 4.0f,
-                data->pos.y * 4.0f,
-                (data->pos.x + 128.0f) * 4.0f,
-                (data->pos.y + 64.0f) * 4.0f,
-                G_TX_RENDERTILE, 0, 1024, 512, 65024);
+            gSPScisTextureRectangle(
+                gMainGfxPos++, data->pos.x * 4.0f, data->pos.y * 4.0f, (data->pos.x + 128.0f) * 4.0f,
+                (data->pos.y + 64.0f) * 4.0f, G_TX_RENDERTILE, 0, 1024, 512, 65024
+            );
         }
         gDPPipeSync(gMainGfxPos++);
         gDPSetDepthSource(gMainGfxPos++, G_ZS_PIXEL);

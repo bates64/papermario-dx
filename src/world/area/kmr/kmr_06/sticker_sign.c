@@ -38,8 +38,10 @@ void N(appendGfx_sticker)(void* renderData) {
     guScaleF(mtxTemp, sticker->scale.x, sticker->scale.y, sticker->scale.z);
     guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
     guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
-        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     ifxImg.raster = img;
     ifxImg.palette = pal;
@@ -99,13 +101,12 @@ API_CALLABLE(N(CreateSticker)) {
 
     sticker->duration = 0;
     dma_copy(
-        (u8*) (iconBase + gItemIconRasterOffsets[itemID]),
-        (u8*) (iconImgEnd + gItemIconRasterOffsets[itemID]),
-        iconImg);
+        (u8*) (iconBase + gItemIconRasterOffsets[itemID]), (u8*) (iconImgEnd + gItemIconRasterOffsets[itemID]), iconImg
+    );
     dma_copy(
-        (u8*) (iconBase + gItemIconPaletteOffsets[itemID]),
-        (u8*) (iconPalEnd + gItemIconPaletteOffsets[itemID]),
-        iconPal);
+        (u8*) (iconBase + gItemIconPaletteOffsets[itemID]), (u8*) (iconPalEnd + gItemIconPaletteOffsets[itemID]),
+        iconPal
+    );
 
     sticker->imgfxIdx = imgfx_get_free_instances(1);
     sticker->workerID = create_worker_scene(nullptr, N(worker_render_sticker));

@@ -11,11 +11,9 @@ void btl_merlee_on_start_turn(void) {
     EncounterStatus* currentEncounter = &gCurrentEncounter;
     PlayerData* playerData = &gPlayerData;
 
-    if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)
-        && battleStatus->nextMerleeSpellType != MERLEE_SPELL_EXP_BOOST
-        && battleStatus->nextMerleeSpellType != MERLEE_SPELL_COIN_BOOST
-        && playerData->merleeCastsLeft > 0
-    ) {
+    if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) && battleStatus->nextMerleeSpellType != MERLEE_SPELL_EXP_BOOST
+        && battleStatus->nextMerleeSpellType != MERLEE_SPELL_COIN_BOOST && playerData->merleeCastsLeft > 0)
+    {
         if (playerData->merleeTurnCount <= 0) {
             s32 temp = rand_int(100);
 
@@ -67,10 +65,8 @@ void btl_merlee_on_first_strike(void) {
     EncounterStatus* currentEncounter = &gCurrentEncounter;
     PlayerData* playerData = &gPlayerData;
 
-    if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)
-        && battleStatus->nextMerleeSpellType != MERLEE_SPELL_EXP_BOOST
-        && battleStatus->nextMerleeSpellType != MERLEE_SPELL_COIN_BOOST
-        && playerData->merleeCastsLeft > 0)
+    if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) && battleStatus->nextMerleeSpellType != MERLEE_SPELL_EXP_BOOST
+        && battleStatus->nextMerleeSpellType != MERLEE_SPELL_COIN_BOOST && playerData->merleeCastsLeft > 0)
     {
         if (playerData->merleeTurnCount <= 0) {
             s32 temp = rand_int(100);
@@ -112,7 +108,9 @@ void btl_merlee_on_first_strike(void) {
             playerData->merleeTurnCount = temp;
         }
 
-        if (playerData->merleeSpellType == MERLEE_SPELL_EXP_BOOST || playerData->merleeSpellType == MERLEE_SPELL_COIN_BOOST) {
+        if (playerData->merleeSpellType == MERLEE_SPELL_EXP_BOOST
+            || playerData->merleeSpellType == MERLEE_SPELL_COIN_BOOST)
+        {
             if (playerData->merleeTurnCount >= 2) {
                 playerData->merleeTurnCount--;
             } else {

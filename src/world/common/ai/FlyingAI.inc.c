@@ -51,7 +51,8 @@ void N(FlyingAI_WanderInit)(Evt* script, MobileAISettings* settings, EnemyDetect
 
     npc->duration = settings->moveTime / 2 + rand_int(settings->moveTime / 2 + 1);
     if (is_point_outside_wander_territory(&enemy->territory->wander, npc->pos.x, npc->pos.z)) {
-        npc->yaw = atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
+        npc->yaw =
+            atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
     } else {
         npc->yaw = clamp_angle((npc->yaw + rand_int(60)) - 30.0f);
     }
@@ -98,7 +99,9 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* settings, EnemyDetectVolu
         }
     }
 
-    if ((enemy->varTable[AI_VAR_FLYING_FLAGS] & AI_FLYING_FLAG_MASK) == (AI_FLYING_FLAG_INTERPY | AI_FLYING_FLAG_INTERPOLATING)) {
+    if ((enemy->varTable[AI_VAR_FLYING_FLAGS] & AI_FLYING_FLAG_MASK)
+        == (AI_FLYING_FLAG_INTERPY | AI_FLYING_FLAG_INTERPOLATING))
+    {
         f32 targetY;
 
         if (npc->flags & NPC_FLAG_FLYING) {
@@ -148,8 +151,8 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* settings, EnemyDetectVolu
         if (settings->playerSearchInterval >= 0) {
             if (script->functionTemp[1] <= 0) {
                 script->functionTemp[1] = settings->playerSearchInterval;
-                if (gPlayerStatusPtr->pos.y < (npc->pos.y + npc->collisionHeight) + 10.0 &&
-                    basic_ai_check_player_dist(detect, enemy, settings->alertRadius, settings->alertOffsetDist, 0))
+                if (gPlayerStatusPtr->pos.y < (npc->pos.y + npc->collisionHeight) + 10.0
+                    && basic_ai_check_player_dist(detect, enemy, settings->alertRadius, settings->alertOffsetDist, 0))
                 {
                     fx_emote(EMOTE_EXCLAMATION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, nullptr);
                     npc->moveToPos.y = npc->pos.y;
@@ -170,9 +173,12 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* settings, EnemyDetectVolu
     }
 
     if (is_point_outside_wander_territory(&enemy->territory->wander, npc->pos.x, npc->pos.z)) {
-        hitDepth = dist2D(enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z, npc->pos.x, npc->pos.z);
+        hitDepth =
+            dist2D(enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z, npc->pos.x, npc->pos.z);
         if (npc->moveSpeed < hitDepth) {
-            npc->yaw = atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
+            npc->yaw = atan2(
+                npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z
+            );
             shouldReturn = true;
         }
     }
@@ -249,7 +255,8 @@ void N(FlyingAI_Loiter)(Evt* script, MobileAISettings* settings, EnemyDetectVolu
     // try player detection
     if (enemy->varTable[AI_VAR_FLYING_DETECT_COOLDOWN] <= 0) {
         if ((gPlayerStatusPtr->pos.y < npc->pos.y + npc->collisionHeight + 10.0)
-            && basic_ai_check_player_dist(detect, enemy, settings->chaseRadius, settings->chaseOffsetDist, true)) {
+            && basic_ai_check_player_dist(detect, enemy, settings->chaseRadius, settings->chaseOffsetDist, true))
+        {
             fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, nullptr);
             npc->moveToPos.y = npc->pos.y;
             ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);

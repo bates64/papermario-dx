@@ -69,7 +69,7 @@ void btl_state_update_end_demo_battle(void) {
                 break;
             }
             gBattleSubState = BTL_SUBSTATE_CLEANUP;
-            //fallthrough
+            // fallthrough
         case BTL_SUBSTATE_CLEANUP:
             kill_all_scripts();
 

@@ -14,8 +14,8 @@ enum {
 #include "../common/MoveBush.inc.c"
 #include "../common/MoveBushTemplates.h"
 
-EvtScript N(EVS_MoveBushes_Separate) = EVT_MOVE_BUSHES(COLLIDER_o12,
-    MODEL_o40, MODEL_o54, MV_BushOffsetL, MV_BushOffsetR);
+EvtScript
+N(EVS_MoveBushes_Separate) = EVT_MOVE_BUSHES(COLLIDER_o12, MODEL_o40, MODEL_o54, MV_BushOffsetL, MV_BushOffsetR);
 
 EvtScript N(EVS_MoveBushes) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o12, COLLIDER_FLAGS_UPPER_MASK)

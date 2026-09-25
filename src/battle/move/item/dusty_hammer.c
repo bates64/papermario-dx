@@ -10,7 +10,6 @@
 #include "battle/common/move/ItemRefund.inc.c"
 #include "battle/common/move/UseItem.inc.c"
 
-
 #include "battle/move/item/dusty_hammer.png.h"
 INCLUDE_IMG("battle/move/item/dusty_hammer.png", battle_item_dusty_hammer_png);
 INCLUDE_PAL("battle/move/item/dusty_hammer.pal", battle_item_dusty_hammer_pal);

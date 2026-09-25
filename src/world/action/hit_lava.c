@@ -123,12 +123,17 @@ void action_update_hit_lava(void) {
             playerStatus->actionSubstate++;
             break;
         case SUBSTATE_RETURN_INIT:
-            ReturnAngle = atan2(playerStatus->pos.x, playerStatus->pos.z, playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z);
-            playerStatus->curSpeed = get_xz_dist_to_player(playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z) / 18.0f;
+            ReturnAngle = atan2(
+                playerStatus->pos.x, playerStatus->pos.z, playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z
+            );
+            playerStatus->curSpeed =
+                get_xz_dist_to_player(playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z) / 18.0f;
             playerStatus->actionSubstate++;
             break;
         case SUBSTATE_RETURN_MOTION:
-            ReturnAngle = atan2(playerStatus->pos.x, playerStatus->pos.z, playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z);
+            ReturnAngle = atan2(
+                playerStatus->pos.x, playerStatus->pos.z, playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z
+            );
             returnRadians = DEG_TO_RAD(ReturnAngle);
             // update motion along x axis
             componentSpeed = playerStatus->curSpeed * sin_rad(returnRadians);

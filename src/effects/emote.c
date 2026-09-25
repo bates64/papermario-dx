@@ -233,7 +233,7 @@ void emote_render(EffectInstance* effect) {
 }
 
 void emote_appendGfx(void* effect) {
-    EmoteFXData* part = ((EffectInstance*)effect)->data.emote;
+    EmoteFXData* part = ((EffectInstance*) effect)->data.emote;
     s32 type = part->type;
     s32 frame;
     Gfx* gfxSetupTex;
@@ -249,7 +249,7 @@ void emote_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     if (type != EMOTE_SHOCK) {
         guTranslateF(sp18, part->pos.x, part->pos.y, part->pos.z);
@@ -265,7 +265,9 @@ void emote_appendGfx(void* effect) {
         guMtxCatF(sp58, sp18, sp18);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_09002170_336DE0);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     } else {
@@ -281,7 +283,10 @@ void emote_appendGfx(void* effect) {
                 guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
                 gDPSetPrimColor(gMainGfxPos++, 0, 0, 235, 28, 0, 255);
-                gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPMatrix(
+                    gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
+                    G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+                );
                 gSPDisplayList(gMainGfxPos++, D_09002578_3371E8);
                 gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
             }
@@ -317,7 +322,10 @@ void emote_appendGfx(void* effect) {
             uls = 128 - frame * 32;
             ult = 0;
             idx = part->timeLeft % ARRAY_COUNT(EmoteFrustrationColors);
-            gDPSetPrimColor(gMainGfxPos++, 0, 0, EmoteFrustrationColors[idx].r, EmoteFrustrationColors[idx].g, EmoteFrustrationColors[idx].b, 255);
+            gDPSetPrimColor(
+                gMainGfxPos++, 0, 0, EmoteFrustrationColors[idx].r, EmoteFrustrationColors[idx].g,
+                EmoteFrustrationColors[idx].b, 255
+            );
             break;
         case EMOTE_ELLIPSIS:
             w = 32;

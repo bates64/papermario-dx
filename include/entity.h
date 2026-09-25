@@ -249,7 +249,7 @@ typedef struct HiddenPanelData {
     /* 0x74 */ u16 modelID;
     /* 0x76 */ PAD(2);
     /* 0x78 */ Gfx* renderDList;
-}   HiddenPanelData; // size = 0x7C
+} HiddenPanelData; // size = 0x7C
 
 typedef struct SignpostData {
     /* 0x00 */ PAD(8);

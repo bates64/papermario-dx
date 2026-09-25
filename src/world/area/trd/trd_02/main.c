@@ -6,10 +6,14 @@ extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(DefaultNPCs);
 
-EvtScript N(EVS_ExitDoors_trd_01_1) = EVT_EXIT_DOUBLE_DOOR(trd_02_ENTRY_0, "trd_01", trd_01_ENTRY_1, COLLIDER_ttw, MODEL_o6, MODEL_o7);
-EvtScript N(EVS_ExitDoors_trd_03_0) = EVT_EXIT_DOUBLE_DOOR(trd_02_ENTRY_1, "trd_03", trd_03_ENTRY_0, COLLIDER_tte, MODEL_o9, MODEL_o8);
-EvtScript N(EVS_ExitDoors_trd_01_2) = EVT_EXIT_DOUBLE_DOOR(trd_02_ENTRY_2, "trd_01", trd_01_ENTRY_2, COLLIDER_ttw2, MODEL_o13, MODEL_o12);
-EvtScript N(EVS_ExitDoors_trd_03_2) = EVT_EXIT_DOUBLE_DOOR(trd_02_ENTRY_3, "trd_03", trd_03_ENTRY_2, COLLIDER_tte2, MODEL_o10, MODEL_o11);
+EvtScript N(EVS_ExitDoors_trd_01_1) =
+    EVT_EXIT_DOUBLE_DOOR(trd_02_ENTRY_0, "trd_01", trd_01_ENTRY_1, COLLIDER_ttw, MODEL_o6, MODEL_o7);
+EvtScript N(EVS_ExitDoors_trd_03_0) =
+    EVT_EXIT_DOUBLE_DOOR(trd_02_ENTRY_1, "trd_03", trd_03_ENTRY_0, COLLIDER_tte, MODEL_o9, MODEL_o8);
+EvtScript N(EVS_ExitDoors_trd_01_2) =
+    EVT_EXIT_DOUBLE_DOOR(trd_02_ENTRY_2, "trd_01", trd_01_ENTRY_2, COLLIDER_ttw2, MODEL_o13, MODEL_o12);
+EvtScript N(EVS_ExitDoors_trd_03_2) =
+    EVT_EXIT_DOUBLE_DOOR(trd_02_ENTRY_3, "trd_03", trd_03_ENTRY_2, COLLIDER_tte2, MODEL_o10, MODEL_o11);
 EvtScript N(EVS_ExitWalk_trd_03_4) = EVT_EXIT_WALK(40, trd_02_ENTRY_4, "trd_03", trd_03_ENTRY_4);
 
 EvtScript N(EVS_BindExitTriggers) = {

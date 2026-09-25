@@ -184,17 +184,18 @@ void N(update)(void) {
 
                 if (!(battleStatus->curButtonsDown & BUTTON_STICK_LEFT)) {
                     if (acs->airRaid.holdingLeft) {
-                        acs->meterFillLevel += SCALE_BY_PCT(METER_FILL_RATE, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
+                        acs->meterFillLevel +=
+                            SCALE_BY_PCT(METER_FILL_RATE, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
                         acs->airRaid.holdingLeft = false;
                     }
                 }
 
                 // right stick inputs actively drain the meter
                 if (battleStatus->curButtonsPressed & BUTTON_STICK_RIGHT) {
-                    acs->meterFillLevel -= SCALE_BY_PCT(METER_FILL_RATE, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
+                    acs->meterFillLevel -=
+                        SCALE_BY_PCT(METER_FILL_RATE, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
                 }
             }
-
 
             if (acs->meterFillLevel < 0) {
                 acs->meterFillLevel = 0;
@@ -219,7 +220,9 @@ void N(update)(void) {
                         battleStatus->resultTier++;
                     }
 
-                    if (battleStatus->resultTier > 0 && battleStatus->actionProgress < N(BasicThresholds)[battleStatus->resultTier - 1]) {
+                    if (battleStatus->resultTier > 0
+                        && battleStatus->actionProgress < N(BasicThresholds)[battleStatus->resultTier - 1])
+                    {
                         battleStatus->resultTier--;
                     }
                     break;
@@ -227,7 +230,9 @@ void N(update)(void) {
                     if (battleStatus->actionProgress >= N(SuperThresholds)[battleStatus->resultTier]) {
                         battleStatus->resultTier++;
                     }
-                    if (battleStatus->resultTier > 0 && battleStatus->actionProgress < N(SuperThresholds)[battleStatus->resultTier - 1]) {
+                    if (battleStatus->resultTier > 0
+                        && battleStatus->actionProgress < N(SuperThresholds)[battleStatus->resultTier - 1])
+                    {
                         battleStatus->resultTier--;
                     }
                     break;
@@ -235,7 +240,9 @@ void N(update)(void) {
                     if (battleStatus->actionProgress >= N(UltraThresholds)[battleStatus->resultTier]) {
                         battleStatus->resultTier++;
                     }
-                    if (battleStatus->resultTier > 0 && battleStatus->actionProgress < N(UltraThresholds)[battleStatus->resultTier - 1]) {
+                    if (battleStatus->resultTier > 0
+                        && battleStatus->actionProgress < N(UltraThresholds)[battleStatus->resultTier - 1])
+                    {
                         battleStatus->resultTier--;
                     }
                     break;

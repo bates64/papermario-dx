@@ -81,7 +81,9 @@ void N(MeleeAttacker_Swing)(Evt* script) {
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->duration = enemy->varTable[AI_VAR_MELEE_POST_TIME];
         if (npc->duration >= 8) {
-            fx_emote(EMOTE_FRUSTRATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, npc->duration - 1, nullptr);
+            fx_emote(
+                EMOTE_FRUSTRATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, npc->duration - 1, nullptr
+            );
         }
         script->AI_TEMP_STATE = AI_STATE_MELEE_ATTACK_POST;
     }
@@ -106,7 +108,9 @@ b32 N(MeleeHitbox_CanTargetPlayer)(Evt* script) {
     f32 angle;
     b32 ret = true;
 
-    if (dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z) > hitboxEnemy->varTable[AI_VAR_HITBOX_SIGHT_RANGE]) {
+    if (dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z)
+        > hitboxEnemy->varTable[AI_VAR_HITBOX_SIGHT_RANGE])
+    {
         ret = false;
     }
 
@@ -116,8 +120,11 @@ b32 N(MeleeHitbox_CanTargetPlayer)(Evt* script) {
         angle = 270.0f;
     }
 
-    if (fabsf(get_clamped_angle_diff(angle, atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x,
-                                     gPlayerStatusPtr->pos.z))) > hitboxEnemy->varTable[AI_VAR_HITBOX_SIGHT_ANGLE]) {
+    if (fabsf(get_clamped_angle_diff(
+            angle, atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z)
+        ))
+        > hitboxEnemy->varTable[AI_VAR_HITBOX_SIGHT_ANGLE])
+    {
         ret = false;
     }
 
@@ -179,7 +186,8 @@ API_CALLABLE(N(MeleeHitbox_Main)) {
                 hitboxNpc->pos.z = posZ;
                 hitboxEnemy->attackOriginPos.z = hitboxNpc->pos.z;
 
-                hitboxNpc->yaw = atan2(hitboxNpc->pos.x, hitboxNpc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
+                hitboxNpc->yaw =
+                    atan2(hitboxNpc->pos.x, hitboxNpc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
                 hitboxEnemy->flags &= ~ENEMY_INTANGIBLE_FLAGS;
                 hitboxNpc->duration = 0;
                 script->AI_TEMP_STATE = AI_STATE_HITBOX_ACTIVE;

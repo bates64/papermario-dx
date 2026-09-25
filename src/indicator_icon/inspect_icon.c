@@ -1,7 +1,7 @@
 #include "common.h"
 #include "include_asset.h"
 
-extern s32 D_8010C950; //TODO never read, consider removing
+extern s32 D_8010C950; // TODO never read, consider removing
 
 #define NAMESPACE inspect_icon
 
@@ -47,8 +47,8 @@ void interact_inspect_setup(void) {
         mem_clear(InspectIconPtr, sizeof(*InspectIconPtr));
         D_8010C950 = -1;
         InspectIconPtr->pos.x = playerStatus->pos.x;
-        InspectIconPtr->pos.y = playerStatus->pos.y + playerStatus->colliderHeight +
-                                   (!(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS) ? 8.0f : 2.0f);
+        InspectIconPtr->pos.y = playerStatus->pos.y + playerStatus->colliderHeight
+            + (!(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS) ? 8.0f : 2.0f);
         InspectIconPtr->pos.z = playerStatus->pos.z;
         InspectIconPtr->scale = 0.4f;
         InspectIconPtr->state = INSPECT_ICON_APPEAR;
@@ -71,21 +71,23 @@ void appendGfx_interact_prompt(void) {
         guMtxCatF(sp38, sp78, sp78);
         guMtxF2L(sp78, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                  G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, &inspect_icon_gfx);
 
-        ifxImg.raster  = inspect_icon_img;
+        ifxImg.raster = inspect_icon_img;
         ifxImg.palette = inspect_icon_pal;
-        ifxImg.width   = inspect_icon_img_width;
-        ifxImg.height  = inspect_icon_img_height;
+        ifxImg.width = inspect_icon_img_width;
+        ifxImg.height = inspect_icon_img_height;
         ifxImg.xOffset = -16;
         ifxImg.yOffset = 26;
         ifxImg.alpha = 255;
         imgfx_update(0, IMGFX_CLEAR, 0, 0, 0, 0, IMGFX_FLAG_ALPHA_CVG | IMGFX_FLAG_NO_ZBUFFER);
-        imgfx_update(0, IMGFX_SET_COLOR,
-                    InspectIconPtr->brightness, InspectIconPtr->brightness, InspectIconPtr->brightness, 255,
-                    IMGFX_FLAG_ALPHA_CVG | IMGFX_FLAG_NO_ZBUFFER);
+        imgfx_update(
+            0, IMGFX_SET_COLOR, InspectIconPtr->brightness, InspectIconPtr->brightness, InspectIconPtr->brightness, 255,
+            IMGFX_FLAG_ALPHA_CVG | IMGFX_FLAG_NO_ZBUFFER
+        );
         imgfx_appendGfx_component(0, &ifxImg, 0, sp78);
 
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
@@ -116,10 +118,9 @@ s32 should_continue_inspect(void) {
                     break;
             }
         } else if (!(playerStatus->flags & PS_FLAG_INPUT_DISABLED)
-            && (playerStatus->flags & PS_FLAG_HAS_CONVERSATION_NPC)
-            && (npc != nullptr)
-            && (npc->flags & NPC_FLAG_USE_INSPECT_ICON)
-        ) {
+                   && (playerStatus->flags & PS_FLAG_HAS_CONVERSATION_NPC) && (npc != nullptr)
+                   && (npc->flags & NPC_FLAG_USE_INSPECT_ICON))
+        {
             curInteraction = npc->npcID | COLLISION_WITH_NPC_BIT;
             if (playerStatus->interactingWithID == curInteraction) {
                 return true;
@@ -248,18 +249,15 @@ void interact_inspect_update(void) {
     InspectIconPtr->brightness = brightness;
 
     actionState = playerStatus->actionState;
-    if (!should_continue_inspect()
-        || (playerStatus->inputDisabledCount != 0)
-        || (playerStatus->flags & PS_FLAG_PAUSED)
-        || !(actionState == ACTION_STATE_IDLE || actionState == ACTION_STATE_WALK || actionState == ACTION_STATE_RUN)
-    ) {
+    if (!should_continue_inspect() || (playerStatus->inputDisabledCount != 0) || (playerStatus->flags & PS_FLAG_PAUSED)
+        || !(actionState == ACTION_STATE_IDLE || actionState == ACTION_STATE_WALK || actionState == ACTION_STATE_RUN))
+    {
         InspectIconPtr->state = INSPECT_ICON_VANISH;
     }
 
-    if ((playerStatus->interactingWithID >= 0)
-        && (playerStatus->interactingWithID & COLLISION_WITH_ENTITY_BIT)
-        && !(get_entity_by_index(playerStatus->interactingWithID)->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT)
-    ) {
+    if ((playerStatus->interactingWithID >= 0) && (playerStatus->interactingWithID & COLLISION_WITH_ENTITY_BIT)
+        && !(get_entity_by_index(playerStatus->interactingWithID)->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT))
+    {
         InspectIconPtr->state = INSPECT_ICON_VANISH;
     }
 }

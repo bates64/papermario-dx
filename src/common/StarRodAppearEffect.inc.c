@@ -63,8 +63,9 @@ API_CALLABLE(N(StarRodAppearEffect)) {
         if (effectState->delay > 0) {
             effectState->delay--;
             if (effectState->delay <= 0) {
-                effectState->effect = fx_star_outline(0, effectState->pos.x, effectState->pos.y, effectState->pos.z,
-                                                        effectState->unk_18, -1);
+                effectState->effect = fx_star_outline(
+                    0, effectState->pos.x, effectState->pos.y, effectState->pos.z, effectState->unk_18, -1
+                );
                 effectState->effect->data.starOutline->unk_3C.x = effectState->unk_2C;
                 effectState->effect->data.starOutline->unk_3C.y = effectState->unk_30;
                 effectState->effect->data.starOutline->unk_3C.z = effectState->unk_34;
@@ -74,7 +75,8 @@ API_CALLABLE(N(StarRodAppearEffect)) {
             endedCount++;
         } else {
             effectState->unk_34 += 9.0f;
-            effectState->unk_18 = fabsf(effectState->unk_10 - effectState->unk_14) * effectState->duration / 40.0f + effectState->unk_14;
+            effectState->unk_18 =
+                fabsf(effectState->unk_10 - effectState->unk_14) * effectState->duration / 40.0f + effectState->unk_14;
 
             if (effectState->duration <= 10) {
                 effectState->unk_24 = (effectState->duration / 2 * 0.1f + 0.5f) * 255.0f;

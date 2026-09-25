@@ -14,10 +14,10 @@ API_CALLABLE(N(UpdateLavaRoomDarkness)) {
         script->functionTemp[1] = false;
     }
 
-    set_screen_overlay_center_worldpos(SCREEN_LAYER_BACK, 1,
-        playerStatus->pos.x,  playerStatus->pos.y + 8.0f, playerStatus->pos.z);
-    mdl_get_depth_tint_params(&primR, &primG, &primB, &primA,
-        &fogR, &fogG, &fogB, &fogStart, &fogEnd);
+    set_screen_overlay_center_worldpos(
+        SCREEN_LAYER_BACK, 1, playerStatus->pos.x, playerStatus->pos.y + 8.0f, playerStatus->pos.z
+    );
+    mdl_get_depth_tint_params(&primR, &primG, &primB, &primA, &fogR, &fogG, &fogB, &fogStart, &fogEnd);
 
     alpha = (((995 - fogStart) - 70.0f) * 255.0f) / 30.0f;
     if (alpha > 255.0f) {

@@ -77,14 +77,7 @@ void func_E006A0BC(LightRaysFXData* part, s32 beamIdx) {
     part->unk_90 = 0;
 }
 
-void light_rays_main(
-    s32 type,
-    f32 posX,
-    f32 posY,
-    f32 posZ,
-    f32 scale,
-    EffectInstance** outEffect
-) {
+void light_rays_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 scale, EffectInstance** outEffect) {
     EffectBlueprint bp;
     EffectBlueprint* bpPtr = &bp;
     EffectInstance* effect;
@@ -278,7 +271,7 @@ void func_E006A85C(LightRaysFXData* part) {
 }
 
 void light_rays_appendGfx(void* effect) {
-    LightRaysFXData* part = ((EffectInstance*)effect)->data.lightRays;
+    LightRaysFXData* part = ((EffectInstance*) effect)->data.lightRays;
     s32 type = part->type;
     Gfx* dlist = D_E006ADF0[type];
     Gfx* dlist2 = D_E006AE00[type];
@@ -288,13 +281,13 @@ void light_rays_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, dlist2);
 
     guTranslateF(mtxTranslate, part->pos.x, part->pos.y, part->pos.z);
 
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         f32 temp = part->alpha / 255.0f;
         f32 angleZ;
         f32 scaleX;
@@ -358,7 +351,9 @@ void light_rays_appendGfx(void* effect) {
 
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, dlist);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

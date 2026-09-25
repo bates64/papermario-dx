@@ -40,8 +40,9 @@ s32 PushBlockFallCallback_Gravity(Entity* block, Evt* source) {
     block->pos.y = source->varTable[0] - (PushBlockFallPositions[source->functionTemp[0]] * BLOCK_GRID_SIZE);
 
     if (source->functionTemp[0] == 0) {
-        sfx_play_sound_at_position(SOUND_PUSH_BLOCK_FALL, SOUND_SPACE_DEFAULT,
-                                   block->pos.x, block->pos.y, block->pos.z);
+        sfx_play_sound_at_position(
+            SOUND_PUSH_BLOCK_FALL, SOUND_SPACE_DEFAULT, block->pos.x, block->pos.y, block->pos.z
+        );
     }
 
     if ((source->functionTemp[0] > 4) && (source->functionTemp[0] & 1)) {
@@ -231,8 +232,7 @@ API_CALLABLE(FetchPushedBlockProperties) {
         return ApiStatus_DONE2;
     }
 
-    if (cellX < grid->numCellsX && cellX >= 0
-        && cellZ < grid->numCellsZ && cellZ >= 0
+    if (cellX < grid->numCellsX && cellX >= 0 && cellZ < grid->numCellsZ && cellZ >= 0
         && grid->cells[cellX + (cellZ * grid->numCellsX)] == PUSH_GRID_EMPTY
         && gCollisionStatus.pushingAgainstWall != NO_COLLIDER)
     {
@@ -249,8 +249,8 @@ API_CALLABLE(ClearPushedBlockFromGrid) {
     s32 ip, jp; // prev grid pos (i,j)
     s32 in, jn; // next grid pos (i,j)
 
-    ip = ((s32)block->pos.x - grid->centerPos.x) / BLOCK_GRID_SIZE;
-    jp = ((s32)block->pos.z - grid->centerPos.z) / BLOCK_GRID_SIZE;
+    ip = ((s32) block->pos.x - grid->centerPos.x) / BLOCK_GRID_SIZE;
+    jp = ((s32) block->pos.z - grid->centerPos.z) / BLOCK_GRID_SIZE;
     in = ip + script->varTable[6];
     jn = jp + script->varTable[8];
 
@@ -265,9 +265,8 @@ API_CALLABLE(CanPlayerPushBlock) {
     s32 blockCollider = script->varTable[11] + COLLISION_WITH_ENTITY_BIT;
 
     if ((gCollisionStatus.pushingAgainstWall == blockCollider)
-        && (playerStatus->actionState == ACTION_STATE_PUSHING_BLOCK
-        || playerStatus->actionState == ACTION_STATE_WALK
-        || playerStatus->actionState == ACTION_STATE_RUN)
+        && (playerStatus->actionState == ACTION_STATE_PUSHING_BLOCK || playerStatus->actionState == ACTION_STATE_WALK
+            || playerStatus->actionState == ACTION_STATE_RUN)
         && !(playerStatus->animFlags & PA_FLAG_USING_WATT))
     {
         script->varTable[13] = true;
@@ -290,7 +289,7 @@ API_CALLABLE(CheckPlayerActionState) {
 API_CALLABLE(IsEventForSourceRunning) {
     Bytecode* args = script->ptrReadPos;
     Bytecode outVar = *args++;
-    Bytecode* sourceToFind = (Bytecode*)evt_get_variable(script, *args++);
+    Bytecode* sourceToFind = (Bytecode*) evt_get_variable(script, *args++);
 
     s32 foundScript = false;
     s32 i;
@@ -340,12 +339,12 @@ EvtScript EVS_PushWall_PushBlock = {
         IfEq(LVarD, true)
             Goto(1)
         EndIf
-            Call(GetPlayerActionState, LVarD)
-            IfEq(LVarD, ACTION_STATE_JUMP)
-                Return
-            EndIf
-            Call(SetPlayerActionState, ACTION_STATE_IDLE)
+        Call(GetPlayerActionState, LVarD)
+        IfEq(LVarD, ACTION_STATE_JUMP)
             Return
+        EndIf
+        Call(SetPlayerActionState, ACTION_STATE_IDLE)
+        Return
         Label(1)
         Call(SetPlayerActionState, ACTION_STATE_PUSHING_BLOCK)
         Call(MovePlayerTowardBlock)
@@ -390,15 +389,15 @@ API_CALLABLE(CreatePushBlockGrid) {
 
     wPushBlockGrids[blockSystemID] = blockGrid = general_heap_malloc(sizeof(*blockGrid));
 
-    blockGrid->cells = general_heap_malloc(sizeNx*sizeNz);
+    blockGrid->cells = general_heap_malloc(sizeNx * sizeNz);
 
     if (inputGridData == nullptr) {
-        for (i = 0; i < sizeNx*sizeNz; i++) {
+        for (i = 0; i < sizeNx * sizeNz; i++) {
             blockGrid->cells[i] = 0;
         }
     } else {
         dataToCopy = inputGridData;
-        for (i = 0; i < sizeNx*sizeNz; i++) {
+        for (i = 0; i < sizeNx * sizeNz; i++) {
             blockGrid->cells[i] = dataToCopy[i];
         }
     }
@@ -433,7 +432,10 @@ API_CALLABLE(SetPushBlock) {
         s32 posY = blockGrid->centerPos.y;
         s32 posZ = blockGrid->centerPos.z + (gridZ * BLOCK_GRID_SIZE) + (BLOCK_GRID_SIZE / 2);
         blockEntityID = create_entity(&Entity_PushBlock, posX, posY, posZ, 0, 0, 0, 0, MAKE_ENTITY_END);
-        bind_trigger_1(&EVS_PushWall_PushBlock, TRIGGER_WALL_PUSH, blockEntityID + EVT_ENTITY_ID_BIT, (s32)blockGrid, blockEntityID, 3);
+        bind_trigger_1(
+            &EVS_PushWall_PushBlock, TRIGGER_WALL_PUSH, blockEntityID + EVT_ENTITY_ID_BIT, (s32) blockGrid,
+            blockEntityID, 3
+        );
         script->varTable[0] = blockEntityID;
     }
 
@@ -463,7 +465,10 @@ API_CALLABLE(FillPushBlockX) {
             s32 posY = blockGrid->centerPos.y;
             s32 posZ = blockGrid->centerPos.z + (gridZ * BLOCK_GRID_SIZE) + (BLOCK_GRID_SIZE / 2);
             blockEntityID = create_entity(&Entity_PushBlock, posX, posY, posZ, 0, 0, 0, 0, MAKE_ENTITY_END);
-            bind_trigger_1(&EVS_PushWall_PushBlock, TRIGGER_WALL_PUSH, blockEntityID + EVT_ENTITY_ID_BIT, (s32)blockGrid, blockEntityID, 3);
+            bind_trigger_1(
+                &EVS_PushWall_PushBlock, TRIGGER_WALL_PUSH, blockEntityID + EVT_ENTITY_ID_BIT, (s32) blockGrid,
+                blockEntityID, 3
+            );
             script->varTable[0] = blockEntityID;
         }
     }
@@ -495,7 +500,10 @@ API_CALLABLE(FillPushBlockZ) {
             s32 posY = blockGrid->centerPos.y;
             s32 posZ = blockGrid->centerPos.z + (gridZ * BLOCK_GRID_SIZE) + (BLOCK_GRID_SIZE / 2);
             blockEntityID = create_entity(&Entity_PushBlock, posX, posY, posZ, 0, 0, 0, 0, MAKE_ENTITY_END);
-            bind_trigger_1(&EVS_PushWall_PushBlock, TRIGGER_WALL_PUSH, blockEntityID + EVT_ENTITY_ID_BIT, (s32)blockGrid, blockEntityID, 3);
+            bind_trigger_1(
+                &EVS_PushWall_PushBlock, TRIGGER_WALL_PUSH, blockEntityID + EVT_ENTITY_ID_BIT, (s32) blockGrid,
+                blockEntityID, 3
+            );
             script->varTable[0] = blockEntityID;
         }
     }
@@ -550,7 +558,7 @@ API_CALLABLE(GetGridIndexFromPos) {
 API_CALLABLE(SetPushBlockFallEffect) {
     Bytecode* args = script->ptrReadPos;
     s32 blockSystemID = evt_get_variable(script, *args++);
-    PushBlockFallCallback fallCallback = (PushBlockFallCallback)evt_get_variable(script, *args++);
+    PushBlockFallCallback fallCallback = (PushBlockFallCallback) evt_get_variable(script, *args++);
 
     wPushBlockGrids[blockSystemID]->dropCallback = fallCallback;
 

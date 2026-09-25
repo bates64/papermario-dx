@@ -130,11 +130,15 @@ void N(update)(void) {
             // check for meter-filling input
             if (!acs->berserkerEnabled) {
                 if (battleStatus->curButtonsPressed & BUTTON_A) {
-                    acs->meterFillLevel += SCALE_BY_PCT(METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
+                    acs->meterFillLevel +=
+                        SCALE_BY_PCT(METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
                 }
             } else {
-                acs->meterFillLevel += SCALE_BY_PCT(METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]) / 6;
-                acs->meterFillLevel += rand_int(SCALE_BY_PCT(METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]) / 6);
+                acs->meterFillLevel +=
+                    SCALE_BY_PCT(METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]) / 6;
+                acs->meterFillLevel += rand_int(
+                    SCALE_BY_PCT(METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]) / 6
+                );
             }
             battleStatus->actionProgress = acs->meterFillLevel / ONE_PCT_MASH;
 

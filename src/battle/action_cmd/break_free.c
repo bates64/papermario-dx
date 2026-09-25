@@ -199,12 +199,14 @@ void N(update)(void) {
                         inputBufPos -= ARRAY_COUNT(battleStatus->pushInputBuffer);
                     }
                     if (battleStatus->pushInputBuffer[inputBufPos] & BUTTON_A) {
-                        acs->meterFillLevel += SCALE_BY_PCT(METER_FILL_RATE, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
+                        acs->meterFillLevel +=
+                            SCALE_BY_PCT(METER_FILL_RATE, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
                     }
                 }
             } else {
                 acs->meterFillLevel += SCALE_BY_PCT(25, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
-                acs->meterFillLevel += rand_int(SCALE_BY_PCT(25, battleStatus->actionCmdDifficultyTable[acs->difficulty]));
+                acs->meterFillLevel +=
+                    rand_int(SCALE_BY_PCT(25, battleStatus->actionCmdDifficultyTable[acs->difficulty]));
             }
 
             battleStatus->actionQuality = acs->meterFillLevel / ONE_PCT_MASH;
@@ -213,7 +215,8 @@ void N(update)(void) {
                 break;
             }
 
-            if (battleStatus->actionQuality >= acs->mashMeterCutoffs[acs->mashMeterNumIntervals] - acs->escapeThreshold) {
+            if (battleStatus->actionQuality >= acs->mashMeterCutoffs[acs->mashMeterNumIntervals] - acs->escapeThreshold)
+            {
                 battleStatus->actionResult = ACTION_RESULT_SUCCESS;
                 battleStatus->actionQuality = 1;
             } else {

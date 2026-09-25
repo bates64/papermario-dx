@@ -2,7 +2,6 @@
 #include "effects.h"
 #include "entity.h"
 
-
 EvtScript N(EVS_OnBreakBlock) = {
     Set(GF_KZN06_Hammer3Block, true)
     Return

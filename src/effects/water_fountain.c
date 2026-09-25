@@ -204,7 +204,7 @@ void water_fountain_render(EffectInstance* effect) {
 }
 
 void water_fountain_appendGfx(void* effect) {
-    WaterFountainFXData* data = ((EffectInstance*)effect)->data.waterFountain;
+    WaterFountainFXData* data = ((EffectInstance*) effect)->data.waterFountain;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 lifetime = data->lifetime;
     s32 timeLeft = data->timeLeft;
@@ -230,14 +230,16 @@ void water_fountain_appendGfx(void* effect) {
     }
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp18, data->pos.x, data->pos.y, data->pos.z);
     guScaleF(sp58, data->scale, data->scale, data->scale);
     guMtxCatF(sp58, sp18, sp18);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gSPDisplayList(gMainGfxPos++, D_09000280_3B8AE0);
 
@@ -251,8 +253,7 @@ void water_fountain_appendGfx(void* effect) {
 
     currentFrame = lifetime % numFrames;
     if (timeLeft >= numFrames - (currentFrame + 1)) {
-        gDPSetPrimColor(gMainGfxPos++, 0, 0,
-            data->primColor.r, data->primColor.g, data->primColor.b, alpha);
+        gDPSetPrimColor(gMainGfxPos++, 0, 0, data->primColor.r, data->primColor.g, data->primColor.b, alpha);
         gSPDisplayList(gMainGfxPos++, D_09000348_3B8BA8);
     }
 
@@ -263,25 +264,27 @@ void water_fountain_appendGfx(void* effect) {
 
             if (lifetime * 5 >= frameIdx) {
                 if (timeLeft >= numFrames - (frameIdx + 1)) {
-                    guTranslateF(sp18,
-                        (f32) burstFrame[frameIdx].offsetX,
-                        (f32) burstFrame[frameIdx].offsetY + 10.0f,
-                        0.0f);
-                    guScaleF(sp58,
-                        (f32) burstFrame[frameIdx].scaleX * 0.01,
-                        (f32) burstFrame[frameIdx].scaleY * 0.01,
-                        1.0f);
+                    guTranslateF(
+                        sp18, (f32) burstFrame[frameIdx].offsetX, (f32) burstFrame[frameIdx].offsetY + 10.0f, 0.0f
+                    );
+                    guScaleF(
+                        sp58, (f32) burstFrame[frameIdx].scaleX * 0.01, (f32) burstFrame[frameIdx].scaleY * 0.01, 1.0f
+                    );
                     guMtxCatF(sp58, sp18, sp18);
-                    guRotateF(sp58,
-                        (f32) burstFrame[frameIdx].angleOffset + N(DropletAngles)[(j + i) & 7],
-                        0.0f, 0.0f, 1.0f);
+                    guRotateF(
+                        sp58, (f32) burstFrame[frameIdx].angleOffset + N(DropletAngles)[(j + i) & 7], 0.0f, 0.0f, 1.0f
+                    );
                     guMtxCatF(sp58, sp18, sp18);
                     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-                    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-                    gDPSetPrimColor(gMainGfxPos++, 0, 0,
-                        data->primColor.r, data->primColor.g, data->primColor.b,
-                        (alpha * burstFrame[frameIdx].alpha) >> 8);
+                    gSPMatrix(
+                        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
+                        G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+                    );
+                    gDPSetPrimColor(
+                        gMainGfxPos++, 0, 0, data->primColor.r, data->primColor.g, data->primColor.b,
+                        (alpha * burstFrame[frameIdx].alpha) >> 8
+                    );
                     gSPDisplayList(gMainGfxPos++, D_09000328_3B8B88);
                     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
                 }

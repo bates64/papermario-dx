@@ -883,11 +883,11 @@ HudScript HES_ElectrifiedLoop = {
     hs_SetVisible
     hs_SetCustomSize( 16, 16)
     hs_Loop
-        hs_SetCI(24,ui_battle_status_static_0)
+        hs_SetCI(24, ui_battle_status_static_0)
         hs_SetCI(1, ui_battle_status_static_1)
         hs_SetCI(1, ui_battle_status_static_0)
         hs_SetCI(1, ui_battle_status_static_1)
-        hs_SetCI(49,ui_battle_status_static_0)
+        hs_SetCI(49, ui_battle_status_static_0)
         hs_SetCI(1, ui_battle_status_static_1)
         hs_SetCI(1, ui_battle_status_static_0)
         hs_SetCI_Explicit(1, ui_battle_status_static_1, ui_battle_status_static_0)
@@ -931,11 +931,11 @@ HudScript HES_ElectrifiedBegin = {
     hs_SetTexelOffset(0, 0)
     hs_SetCI(1, ui_battle_status_static_0)
     hs_Loop
-        hs_SetCI(24,ui_battle_status_static_0)
+        hs_SetCI(24, ui_battle_status_static_0)
         hs_SetCI(1, ui_battle_status_static_1)
         hs_SetCI(1, ui_battle_status_static_0)
         hs_SetCI(1, ui_battle_status_static_1)
-        hs_SetCI(49,ui_battle_status_static_0)
+        hs_SetCI(49, ui_battle_status_static_0)
         hs_SetCI(1, ui_battle_status_static_1)
         hs_SetCI(1, ui_battle_status_static_0)
         hs_SetCI_Explicit(1, ui_battle_status_static_1, ui_battle_status_static_0)
@@ -985,11 +985,11 @@ HudScript HES_ParalyzedLoop = {
     hs_SetVisible
     hs_SetCustomSize(16, 16)
     hs_Loop
-        hs_SetCI(24,ui_battle_status_paralyze_0)
+        hs_SetCI(24, ui_battle_status_paralyze_0)
         hs_SetCI(1, ui_battle_status_paralyze_1)
         hs_SetCI(1, ui_battle_status_paralyze_0)
         hs_SetCI(1, ui_battle_status_paralyze_1)
-        hs_SetCI(49,ui_battle_status_paralyze_0)
+        hs_SetCI(49, ui_battle_status_paralyze_0)
         hs_SetCI(1, ui_battle_status_paralyze_1)
         hs_SetCI(1, ui_battle_status_paralyze_0)
         hs_SetCI_Explicit(1, ui_battle_status_paralyze_1, ui_battle_status_paralyze_0)
@@ -1033,11 +1033,11 @@ HudScript HES_ParalyzedBegin = {
     hs_SetTexelOffset(0, 0)
     hs_SetCI(1, ui_battle_status_paralyze_0)
     hs_Loop
-        hs_SetCI(24,ui_battle_status_paralyze_0)
+        hs_SetCI(24, ui_battle_status_paralyze_0)
         hs_SetCI(1, ui_battle_status_paralyze_1)
         hs_SetCI(1, ui_battle_status_paralyze_0)
         hs_SetCI(1, ui_battle_status_paralyze_1)
-        hs_SetCI(49,ui_battle_status_paralyze_0)
+        hs_SetCI(49, ui_battle_status_paralyze_0)
         hs_SetCI(1, ui_battle_status_paralyze_1)
         hs_SetCI(1, ui_battle_status_paralyze_0)
         hs_SetCI_Explicit(1, ui_battle_status_paralyze_1, ui_battle_status_paralyze_0)
@@ -2102,11 +2102,11 @@ HudScript HES_StatusCoin = {
     hs_End
 };
 
-HudScript HES_CoinSparkleA = HES_COIN_SPARKLE(-8,  0);
-HudScript HES_CoinSparkleB = HES_COIN_SPARKLE( 8,  8);
-HudScript HES_CoinSparkleC = HES_COIN_SPARKLE(-4,  8);
-HudScript HES_CoinSparkleD = HES_COIN_SPARKLE( 6, -6);
-HudScript HES_CoinSparkleE = HES_COIN_SPARKLE( 1, -8);
+HudScript HES_CoinSparkleA = HES_COIN_SPARKLE(-8, 0);
+HudScript HES_CoinSparkleB = HES_COIN_SPARKLE(8, 8);
+HudScript HES_CoinSparkleC = HES_COIN_SPARKLE(-4, 8);
+HudScript HES_CoinSparkleD = HES_COIN_SPARKLE(6, -6);
+HudScript HES_CoinSparkleE = HES_COIN_SPARKLE(1, -8);
 
 HudScript HES_StatusCoinSparkle = {
         hs_SetVisible

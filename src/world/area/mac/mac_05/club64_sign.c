@@ -75,7 +75,7 @@ void N(gfx_build_club_64)(s32 index) {
 
     for (i = 0; i < numCopied; i++) {
         u8* colors = copied[i].v.cn;
-        f32 hue = N(Club64SignAlphaModulus) + (f32)i / (f32)numCopied;
+        f32 hue = N(Club64SignAlphaModulus) + (f32) i / (f32) numCopied;
         if (hue >= 1.0) {
             hue -= 1.0;
         }

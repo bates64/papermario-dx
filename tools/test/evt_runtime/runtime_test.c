@@ -429,8 +429,8 @@ static API_CALLABLE(VerifyMemLoads) {
     CHECK(evt_get_variable(script, LVar1) == -100);
     CHECK(evt_get_variable(script, LVar2) == 60000);
     CHECK(evt_get_variable(script, LVar3) == -20000);
-    CHECK((u32)script->varTable[4] == 0x89ABCDEF);
-    CHECK((u32)evt_get_variable(script, LVar4) == 0x89ABCDEF);
+    CHECK((u32) script->varTable[4] == 0x89ABCDEF);
+    CHECK((u32) evt_get_variable(script, LVar4) == 0x89ABCDEF);
     CHECK(evt_get_variable(script, LVar5) == -123456789);
     check_float(evt_get_float_variable(script, LVar6), 1.25f);
     return ApiStatus_DONE2;
@@ -528,7 +528,7 @@ EvtScript EVS_NaturalChild = {
     ChildThread
         Finally
             Call(Record, 'C')
-        EndChildThread
+    EndChildThread
     End
 };
 
@@ -536,7 +536,7 @@ EvtScript EVS_NaturalBoth = {
     ChildThread
         Finally
             Call(Record, 'C')
-        EndChildThread
+    EndChildThread
     Finally
         Call(Record, 'P')
     End
@@ -546,7 +546,7 @@ EvtScript EVS_EarlyReturnBoth = {
     ChildThread
         Finally
             Call(Record, 'C')
-        EndChildThread
+    EndChildThread
     Return
     Finally
         Call(Record, 'P')
@@ -576,7 +576,7 @@ EvtScript EVS_ForcedChild = {
         Wait(100)
         Finally
             Call(Record, 'C')
-        EndChildThread
+    EndChildThread
     Wait(100)
     End
 };
@@ -586,7 +586,7 @@ EvtScript EVS_ForcedBoth = {
         Wait(100)
         Finally
             Call(Record, 'C')
-        EndChildThread
+    EndChildThread
     Wait(100)
     Finally
         Call(Record, 'P')
@@ -655,7 +655,7 @@ EvtScript EVS_ChildKillsParent = {
             Call(Record, 'C')
             KillScript(LVar0)
             Call(Record, 'c')
-        EndChildThread
+    EndChildThread
     Wait(100)
     Finally
         Call(Record, 'P')
@@ -668,7 +668,7 @@ EvtScript EVS_ChildKillsParentNoFinally = {
             Call(Record, 'C')
             KillScript(LVar0)
             Call(Record, 'c')
-        EndChildThread
+    EndChildThread
     Wait(100)
     End
 };
@@ -712,13 +712,13 @@ EvtScript EVS_SiblingCleanup = {
             Call(Record, 'A')
             Call(KillSibling)
             Call(Record, 'a')
-        EndChildThread
+    EndChildThread
     ChildThread
         Wait(100)
         Finally
             Call(Record, 'B')
             Call(Record, 'b')
-        EndChildThread
+    EndChildThread
     Wait(100)
     Finally
         Call(Record, 'P')
@@ -794,7 +794,7 @@ EvtScript EVS_DeleteEnemyOwner = {
         Wait(100)
         Finally
             Call(VerifyEnemyOwner, 'C')
-        EndChildThread
+    EndChildThread
     Call(DeleteEnemyOwner)
     Call(Record, 'X')
     Finally
@@ -841,7 +841,7 @@ EvtScript EVS_DeleteActorOwner = {
         Wait(100)
         Finally
             Call(VerifyActorOwner, 'C')
-        EndChildThread
+    EndChildThread
     Call(DeleteActorOwner)
     Call(Record, 'X')
     Finally
@@ -981,7 +981,7 @@ EvtScript EVS_TestControlFlow = {
         CaseOrEq(0)
         CaseOrEq(1)
             Set(LVar6, 9)
-            EndCaseGroup
+        EndCaseGroup
         CaseDefault
             Set(LVar6, 100)
     EndSwitch
@@ -1998,13 +1998,13 @@ static void test_kill_frees_args(void) {
 
 static void test_interpreter_behavior(void) {
     EvtScript* scripts[] = {
-        &EVS_TestArithmetic,
-        &EVS_TestControlFlow,
-        &EVS_TestLoopControlSwitches,
-        &EVS_TestStorage,
-        &EVS_TestMemory,
-        &EVS_TestEval,
-        &EVS_TestArgsParent,
+    &EVS_TestArithmetic,
+    &EVS_TestControlFlow,
+    &EVS_TestLoopControlSwitches,
+    &EVS_TestStorage,
+    &EVS_TestMemory,
+    &EVS_TestEval,
+    &EVS_TestArgsParent,
     };
     s32 i;
 

@@ -53,14 +53,7 @@ void tubba_heart_attack_update(EffectInstance* effect);
 void tubba_heart_attack_render(EffectInstance* effect);
 void tubba_heart_attack_appendGfx(void* effect);
 
-EffectInstance* tubba_heart_attack_main(
-    s32 type,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    s32 duration
-) {
+EffectInstance* tubba_heart_attack_main(s32 type, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 duration) {
     EffectBlueprint bp;
     EffectInstance* effect;
     TubbaHeartAttackFXData* data;
@@ -236,7 +229,8 @@ void tubba_heart_attack_update(EffectInstance* effect) {
                 break;
             case HEART_STATE_SQUEEZE:
                 factor = SqueezeInterpPct[data->stateTime[i]] * 0.01;
-                angle = i * 1080 / TUBBA_MINI_HEART_COUNT + (1.0f - factor) * 1080.0f * 0.5 * cos_deg(i * 180 / TUBBA_MINI_HEART_COUNT);
+                angle = i * 1080 / TUBBA_MINI_HEART_COUNT
+                    + (1.0f - factor) * 1080.0f * 0.5 * cos_deg(i * 180 / TUBBA_MINI_HEART_COUNT);
                 sin = sin_deg(angle);
                 cos = cos_deg(angle);
 
@@ -276,7 +270,9 @@ void tubba_heart_attack_update(EffectInstance* effect) {
                 guTranslateF(tempMtx, data->posX[i], data->posY[i], data->posZ[i]);
                 guMtxCatF(tempMtx, mtx, mtx);
 
-                puffEffect = floating_cloud_puff_main(0, data->centerX + mtx[3][0], data->centerY + mtx[3][1], data->centerZ + mtx[3][2], 1.0f, 16);
+                puffEffect = floating_cloud_puff_main(
+                    0, data->centerX + mtx[3][0], data->centerY + mtx[3][1], data->centerZ + mtx[3][2], 1.0f, 16
+                );
                 puffEffect->data.floatingCloudPuff->unk_28 = 100;
                 puffEffect->data.floatingCloudPuff->unk_2C = 0;
                 puffEffect->data.floatingCloudPuff->unk_30 = 0;
@@ -304,7 +300,7 @@ void func_E00CC9C8(void) {
 }
 
 void tubba_heart_attack_appendGfx(void* effect) {
-    TubbaHeartAttackFXData* data = ((EffectInstance*)effect)->data.tubbaHeartAttack;
+    TubbaHeartAttackFXData* data = ((EffectInstance*) effect)->data.tubbaHeartAttack;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 alpha = data->primA;
     Matrix4f sp18;
@@ -312,14 +308,16 @@ void tubba_heart_attack_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp18, data->centerX, data->centerY, data->centerZ);
     guScaleF(sp58, data->overallScale, data->overallScale, data->overallScale);
     guMtxCatF(sp58, sp18, sp18);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gDPSetPrimColor(gMainGfxPos++, 0, 0, data->primR, data->primG, data->primB, alpha);
     gDPSetEnvColor(gMainGfxPos++, 0, 0, 0, 0);
     gSPDisplayList(gMainGfxPos++, D_09000400_3D2980);
@@ -337,7 +335,9 @@ void tubba_heart_attack_appendGfx(void* effect) {
             guMtxCatF(sp58, sp18, sp18);
             guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
             gSPDisplayList(gMainGfxPos++, D_09000518_3D2A98);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);

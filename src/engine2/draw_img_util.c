@@ -1,10 +1,14 @@
 #include "common.h"
 
-s32 draw_image_with_clipping(IMG_PTR raster, u32 width, u32 height, s32 fmt, s32 bitDepth, s16 posX, s16 posY,
-                             u16 clipX, u16 clipY, u16 clipWidth, u16 clipHeight);
+s32 draw_image_with_clipping(
+    IMG_PTR raster, u32 width, u32 height, s32 fmt, s32 bitDepth, s16 posX, s16 posY, u16 clipX, u16 clipY,
+    u16 clipWidth, u16 clipHeight
+);
 
-s32 draw_ci_image_with_clipping(IMG_PTR raster, s32 width, s32 height, s32 fmt, s32 bitDepth, PAL_PTR palette, s16 posX,
-                                s16 posY, u16 clipULx, u16 clipULy, u16 clipLRx, u16 clipRLy, u8 opacity) {
+s32 draw_ci_image_with_clipping(
+    IMG_PTR raster, s32 width, s32 height, s32 fmt, s32 bitDepth, PAL_PTR palette, s16 posX, s16 posY, u16 clipULx,
+    u16 clipULy, u16 clipLRx, u16 clipRLy, u8 opacity
+) {
     s32 ret = 1;
 
     gDPPipeSync(gMainGfxPos++);
@@ -33,7 +37,8 @@ s32 draw_ci_image_with_clipping(IMG_PTR raster, s32 width, s32 height, s32 fmt, 
     } else {
         gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
     }
-    ret = draw_image_with_clipping(raster, width, height, fmt, bitDepth, posX, posY, clipULx, clipULy, clipLRx, clipRLy);
+    ret =
+        draw_image_with_clipping(raster, width, height, fmt, bitDepth, posX, posY, clipULx, clipULy, clipLRx, clipRLy);
     gDPPipeSync(gMainGfxPos++);
     return ret;
 }
@@ -45,10 +50,10 @@ typedef struct Rect2b {
     /* 0x06 */ s16 lry;
 } Rect2b; // size = 0x08
 
-s32 draw_image_with_clipping(IMG_PTR raster, u32 width, u32 height, s32 fmt, s32 bitDepth,
-                     s16 posX, s16 posY,
-                     u16 clipX, u16 clipY,
-                     u16 clipWidth, u16 clipHeight) {
+s32 draw_image_with_clipping(
+    IMG_PTR raster, u32 width, u32 height, s32 fmt, s32 bitDepth, s16 posX, s16 posY, u16 clipX, u16 clipY,
+    u16 clipWidth, u16 clipHeight
+) {
     Rect2b texRect;
     Rect2b drawRect;
     u8 stopDrawing;
@@ -59,10 +64,10 @@ s32 draw_image_with_clipping(IMG_PTR raster, u32 width, u32 height, s32 fmt, s32
     if (posX >= clipX + clipWidth || posY >= clipY + clipHeight) {
         return false;
     }
-    if (clipX >= (s16)(posX + width)) {
+    if (clipX >= (s16) (posX + width)) {
         return false;
     }
-    if (clipY >= (s16)(posY + height)) {
+    if (clipY >= (s16) (posY + height)) {
         return false;
     }
 
@@ -136,21 +141,26 @@ s32 draw_image_with_clipping(IMG_PTR raster, u32 width, u32 height, s32 fmt, s32
             }
 
             if (bitDepth == G_IM_SIZ_4b) {
-                gDPLoadTextureTile_4b(gMainGfxPos++, raster, fmt, width, height,
-                                texRect.ulx, texRect.uly, texRect.lrx, texRect.lry, 0,
-                                G_TX_WRAP, G_TX_WRAP, 6, 5, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureTile_4b(
+                    gMainGfxPos++, raster, fmt, width, height, texRect.ulx, texRect.uly, texRect.lrx, texRect.lry, 0,
+                    G_TX_WRAP, G_TX_WRAP, 6, 5, G_TX_NOLOD, G_TX_NOLOD
+                );
             } else if (bitDepth == G_IM_SIZ_16b) {
-                gDPLoadTextureTile(gMainGfxPos++, raster, fmt, G_IM_SIZ_16b, width, height,
-                                texRect.ulx, texRect.uly, texRect.lrx, texRect.lry, 0,
-                                G_TX_WRAP, G_TX_WRAP, 6, 5, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureTile(
+                    gMainGfxPos++, raster, fmt, G_IM_SIZ_16b, width, height, texRect.ulx, texRect.uly, texRect.lrx,
+                    texRect.lry, 0, G_TX_WRAP, G_TX_WRAP, 6, 5, G_TX_NOLOD, G_TX_NOLOD
+                );
             } else if (bitDepth == G_IM_SIZ_8b) {
-                gDPLoadTextureTile(gMainGfxPos++, raster, fmt, G_IM_SIZ_8b, width, height,
-                                texRect.ulx, texRect.uly, texRect.lrx, texRect.lry, 0,
-                                G_TX_WRAP, G_TX_WRAP, 6, 5, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureTile(
+                    gMainGfxPos++, raster, fmt, G_IM_SIZ_8b, width, height, texRect.ulx, texRect.uly, texRect.lrx,
+                    texRect.lry, 0, G_TX_WRAP, G_TX_WRAP, 6, 5, G_TX_NOLOD, G_TX_NOLOD
+                );
             }
 
-            gSPTextureRectangle(gMainGfxPos++, drawRect.ulx * 4, drawRect.uly * 4, drawRect.lrx * 4, drawRect.lry * 4,
-                                0, texOffsetX * 32, texOffsetY * 32, 1024, 1024);
+            gSPTextureRectangle(
+                gMainGfxPos++, drawRect.ulx * 4, drawRect.uly * 4, drawRect.lrx * 4, drawRect.lry * 4, 0,
+                texOffsetX * 32, texOffsetY * 32, 1024, 1024
+            );
 
             if (stopDrawingLine) {
                 break;
@@ -169,10 +179,10 @@ s32 draw_image_with_clipping(IMG_PTR raster, u32 width, u32 height, s32 fmt, s32
     return true;
 }
 
-s32 draw_tiled_image(IMG_PTR raster, u32 width, u32 height, u8 fmt, u8 bitDepth,
-                     s16 posX, s16 posY,
-                     u16 clipX, u16 clipY, u16 clipWidth, u16 clipHeight,
-                     f32 scaleX, f32 scaleY) {
+s32 draw_tiled_image(
+    IMG_PTR raster, u32 width, u32 height, u8 fmt, u8 bitDepth, s16 posX, s16 posY, u16 clipX, u16 clipY, u16 clipWidth,
+    u16 clipHeight, f32 scaleX, f32 scaleY
+) {
     Rect texRect;
     Rect drawRect;
     s32 dsdx, dtdy;
@@ -184,15 +194,15 @@ s32 draw_tiled_image(IMG_PTR raster, u32 width, u32 height, u8 fmt, u8 bitDepth,
         return 0;
     }
 
-    if (posX >= clipX + clipWidth  || posY >= clipY + clipHeight) {
+    if (posX >= clipX + clipWidth || posY >= clipY + clipHeight) {
         return 0;
     }
 
-    if (clipX >= (s16)(posX + width * scaleX)) {
+    if (clipX >= (s16) (posX + width * scaleX)) {
         return 0;
     }
 
-    if (clipY >= (s16)(posY + height * scaleY)) {
+    if (clipY >= (s16) (posY + height * scaleY)) {
         return 0;
     }
 
@@ -219,10 +229,10 @@ s32 draw_tiled_image(IMG_PTR raster, u32 width, u32 height, u8 fmt, u8 bitDepth,
             texOffsetY = abs(posY - clipY) / scaleY * 32.0f;
         }
 
-        if ((u32)(texRect.lry + 1) >= height) {
+        if ((u32) (texRect.lry + 1) >= height) {
             texRect.lry = height - 1;
             stopDrawing = 1;
-            drawRect.lry = posY + (s16)(texRect.lry * scaleY);
+            drawRect.lry = posY + (s16) (texRect.lry * scaleY);
             drawRect.lry += scaleY;
         }
 
@@ -256,10 +266,10 @@ s32 draw_tiled_image(IMG_PTR raster, u32 width, u32 height, u8 fmt, u8 bitDepth,
                 texOffsetX = abs(posX - clipX) / scaleX * 32.0f;
             }
 
-            if ((u32)(texRect.lrx + 1) >= width) {
+            if ((u32) (texRect.lrx + 1) >= width) {
                 texRect.lrx = width - 1;
                 stopDrawingLine = true;
-                drawRect.lrx = posX + (s16)(texRect.lrx * scaleX);
+                drawRect.lrx = posX + (s16) (texRect.lrx * scaleX);
                 drawRect.lrx = drawRect.lrx + scaleX + 0.3;
             }
 
@@ -269,17 +279,21 @@ s32 draw_tiled_image(IMG_PTR raster, u32 width, u32 height, u8 fmt, u8 bitDepth,
             }
 
             if (bitDepth == G_IM_SIZ_16b) {
-                gDPLoadTextureTile(gMainGfxPos++, raster, fmt, G_IM_SIZ_16b, width, height,
-                                texRect.ulx, texRect.uly, texRect.lrx, texRect.lry, 0,
-                                G_TX_WRAP, G_TX_WRAP, 6, 5, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureTile(
+                    gMainGfxPos++, raster, fmt, G_IM_SIZ_16b, width, height, texRect.ulx, texRect.uly, texRect.lrx,
+                    texRect.lry, 0, G_TX_WRAP, G_TX_WRAP, 6, 5, G_TX_NOLOD, G_TX_NOLOD
+                );
             } else if (bitDepth == G_IM_SIZ_4b) {
-                gDPLoadTextureTile_4b(gMainGfxPos++, raster, fmt, width, height,
-                                texRect.ulx, texRect.uly, texRect.lrx, texRect.lry, 0,
-                                G_TX_WRAP, G_TX_WRAP, 6, 5, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureTile_4b(
+                    gMainGfxPos++, raster, fmt, width, height, texRect.ulx, texRect.uly, texRect.lrx, texRect.lry, 0,
+                    G_TX_WRAP, G_TX_WRAP, 6, 5, G_TX_NOLOD, G_TX_NOLOD
+                );
             }
 
-            gSPTextureRectangle(gMainGfxPos++, drawRect.ulx * 4, drawRect.uly * 4, (drawRect.lrx - stopDrawingLine) * 4, drawRect.lry * 4,
-                                0, texOffsetX, texOffsetY, dsdx, dtdy);
+            gSPTextureRectangle(
+                gMainGfxPos++, drawRect.ulx * 4, drawRect.uly * 4, (drawRect.lrx - stopDrawingLine) * 4,
+                drawRect.lry * 4, 0, texOffsetX, texOffsetY, dsdx, dtdy
+            );
 
             if (stopDrawingLine) {
                 break;
@@ -312,10 +326,10 @@ s32 integer_log(s32 number, u32 base) {
     }
 }
 
-s32 draw_adjustable_tiled_image(IMG_PTR raster, u32 width, u32 height, u8 fmt, u8 bitDepth,
-                     s16 posX, s16 posY,
-                     u16 clipX, u16 clipY, u16 clipWidth, u16 clipHeight,
-                     f32 scaleX, f32 scaleY) {
+s32 draw_adjustable_tiled_image(
+    IMG_PTR raster, u32 width, u32 height, u8 fmt, u8 bitDepth, s16 posX, s16 posY, u16 clipX, u16 clipY, u16 clipWidth,
+    u16 clipHeight, f32 scaleX, f32 scaleY
+) {
     Rect texRect;
     Rect drawRect;
     u16 overlap;
@@ -338,11 +352,11 @@ s32 draw_adjustable_tiled_image(IMG_PTR raster, u32 width, u32 height, u8 fmt, u
         return 0;
     }
 
-    if (clipX >= (s16)(posX + width * scaleX)) {
+    if (clipX >= (s16) (posX + width * scaleX)) {
         return 0;
     }
 
-    if (clipY >= (s16)(posY + height * scaleY)) {
+    if (clipY >= (s16) (posY + height * scaleY)) {
         return 0;
     }
     if (bitDepth == G_IM_SIZ_4b) {
@@ -407,7 +421,7 @@ s32 draw_adjustable_tiled_image(IMG_PTR raster, u32 width, u32 height, u8 fmt, u
         texRect.lrx = width - 1;
         texRect.lry = texRect.uly + lineHeight - 1;
         drawRect.lry = drawRect.uly + lineHeight * scaleY;
-        drawRect.lrx = (s16)(drawRect.ulx + width * scaleX);
+        drawRect.lrx = (s16) (drawRect.ulx + width * scaleX);
 
         texOffsetX = texOffsetY = 0;
 
@@ -426,7 +440,7 @@ s32 draw_adjustable_tiled_image(IMG_PTR raster, u32 width, u32 height, u8 fmt, u
             temp /= scaleY;
             texOffsetY = temp * 32.0f;
         }
-        if (texRect.lry + 1 == height){
+        if (texRect.lry + 1 == height) {
             stopDrawing = 1;
         } else if (height < texRect.lry + 1) {
             s32 temp;
@@ -455,24 +469,30 @@ s32 draw_adjustable_tiled_image(IMG_PTR raster, u32 width, u32 height, u8 fmt, u
         }
 
         if (bitDepth == G_IM_SIZ_4b) {
-            gDPLoadTextureTile_4b(gMainGfxPos++, raster, fmt, width, height,
-                                  texRect.ulx, texRect.uly, texRect.lrx, texRect.lry, 0,
-                                  G_TX_WRAP, G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureTile_4b(
+                gMainGfxPos++, raster, fmt, width, height, texRect.ulx, texRect.uly, texRect.lrx, texRect.lry, 0,
+                G_TX_WRAP, G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD
+            );
         } else if (bitDepth == G_IM_SIZ_8b) {
-            gDPLoadTextureTile(gMainGfxPos++, raster, fmt, G_IM_SIZ_8b, width, height,
-                                  texRect.ulx, texRect.uly, texRect.lrx, texRect.lry, 0,
-                                  G_TX_WRAP, G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureTile(
+                gMainGfxPos++, raster, fmt, G_IM_SIZ_8b, width, height, texRect.ulx, texRect.uly, texRect.lrx,
+                texRect.lry, 0, G_TX_WRAP, G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD
+            );
         } else if (bitDepth == G_IM_SIZ_16b) {
-            gDPLoadTextureTile(gMainGfxPos++, raster, fmt, G_IM_SIZ_16b, width, height,
-                                  texRect.ulx, texRect.uly, texRect.lrx, texRect.lry, 0,
-                                  G_TX_WRAP, G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureTile(
+                gMainGfxPos++, raster, fmt, G_IM_SIZ_16b, width, height, texRect.ulx, texRect.uly, texRect.lrx,
+                texRect.lry, 0, G_TX_WRAP, G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD
+            );
         } else if (bitDepth == G_IM_SIZ_32b) {
-            gDPLoadTextureTile(gMainGfxPos++, raster, fmt, G_IM_SIZ_32b, width, height,
-                                  texRect.ulx, texRect.uly, texRect.lrx, texRect.lry, 0,
-                                  G_TX_WRAP, G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureTile(
+                gMainGfxPos++, raster, fmt, G_IM_SIZ_32b, width, height, texRect.ulx, texRect.uly, texRect.lrx,
+                texRect.lry, 0, G_TX_WRAP, G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD
+            );
         }
-        gSPTextureRectangle(gMainGfxPos++, drawRect.ulx * 4, drawRect.uly * 4, drawRect.lrx * 4, drawRect.lry * 4,
-                            0, texOffsetX, texOffsetY, dsdx, dtdy);
+        gSPTextureRectangle(
+            gMainGfxPos++, drawRect.ulx * 4, drawRect.uly * 4, drawRect.lrx * 4, drawRect.lry * 4, 0, texOffsetX,
+            texOffsetY, dsdx, dtdy
+        );
 
         if (stopDrawing) {
             break;

@@ -195,7 +195,7 @@ void state_step_change_map(void) {
                 set_game_mode(GAME_MODE_WORLD);
             }
             break;
-        }
+    }
 }
 
 void state_drawUI_change_map(void) {

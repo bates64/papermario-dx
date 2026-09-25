@@ -4,5 +4,5 @@ EvtScript EVS_ElseWithoutEndIf = {
     IfEq(0, 0)
     Else
         Wait(1)
-    End
+        End
 };

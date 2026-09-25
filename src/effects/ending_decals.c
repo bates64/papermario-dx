@@ -130,7 +130,7 @@ void ending_decals_render(EffectInstance* effect) {
 }
 
 void ending_decals_appendGfx(void* effect) {
-    EndingDecalsFXData* data = ((EffectInstance*)effect)->data.endingDecals;
+    EndingDecalsFXData* data = ((EffectInstance*) effect)->data.endingDecals;
     Gfx* dlist1;
     Gfx* dlist2;
     u32 unk_20;
@@ -143,9 +143,11 @@ void ending_decals_appendGfx(void* effect) {
     dlist2 = D_E00685B0[data->type];
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
-    guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->scale, data->pos.x, data->pos.y, data->pos.z);
+    guPositionF(
+        sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->scale, data->pos.x, data->pos.y, data->pos.z
+    );
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);

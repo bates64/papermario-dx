@@ -7,15 +7,15 @@
 
 s32 N(NearLeftDoorModelsL)[] = { MODEL_o1012, MODEL_o1013, -1 };
 s32 N(NearLeftDoorModelsR)[] = { MODEL_o1014, MODEL_o1015, -1 };
-s32 N(FarLeftDoorModelsL)[]  = { MODEL_o1010, MODEL_o1011, -1 };
-s32 N(FarLeftDoorModelsR)[]  = { MODEL_o1008, MODEL_o1009, -1 };
+s32 N(FarLeftDoorModelsL)[] = { MODEL_o1010, MODEL_o1011, -1 };
+s32 N(FarLeftDoorModelsR)[] = { MODEL_o1008, MODEL_o1009, -1 };
 s32 N(BothLeftDoorModelsL)[] = { MODEL_o1012, MODEL_o1013, MODEL_o1010, MODEL_o1011, -1 };
 s32 N(BothLeftDoorModelsR)[] = { MODEL_o1014, MODEL_o1015, MODEL_o1008, MODEL_o1009, -1 };
 
 s32 N(NearRightDoorModelsL)[] = { MODEL_o874, MODEL_o875, -1 };
 s32 N(NearRightDoorModelsR)[] = { MODEL_o876, MODEL_o877, -1 };
-s32 N(FarRightDoorModelsL)[]  = { MODEL_o880, MODEL_o881, -1 };
-s32 N(FarRightDoorModelsR)[]  = { MODEL_o878, MODEL_o879, -1 };
+s32 N(FarRightDoorModelsL)[] = { MODEL_o880, MODEL_o881, -1 };
+s32 N(FarRightDoorModelsR)[] = { MODEL_o878, MODEL_o879, -1 };
 s32 N(BothRightDoorModelsL)[] = { MODEL_o874, MODEL_o875, MODEL_o880, MODEL_o881, -1 };
 s32 N(BothRightDoorModelsR)[] = { MODEL_o876, MODEL_o877, MODEL_o878, MODEL_o879, -1 };
 

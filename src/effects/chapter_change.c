@@ -165,12 +165,10 @@ void chapter_change_draw_texture_pieces(ChapterChangeFXData* data, s32 useEndOfP
             tileX = time * 4 - (piece->x - 384);
             tileZ = time * 4 - (piece->x + 511);
             gDPSetTileSize(gMainGfxPos++, 1, tileX * 4, 0, tileZ * 4, 0);
-            gSPScisTextureRectangle(gMainGfxPos++,
-                (posX + piece->x) * 4,
-                (posY + piece->y) * 4,
-                (posX + piece->x + piece->width) * 4,
-                (posY + piece->y + piece->height) * 4,
-                G_TX_RENDERTILE, 0, 0, 1024, 1024);
+            gSPScisTextureRectangle(
+                gMainGfxPos++, (posX + piece->x) * 4, (posY + piece->y) * 4, (posX + piece->x + piece->width) * 4,
+                (posY + piece->y + piece->height) * 4, G_TX_RENDERTILE, 0, 0, 1024, 1024
+            );
         }
 
         gDPPipeSync(gMainGfxPos++);
@@ -265,14 +263,14 @@ void chapter_change_render(EffectInstance* effect) {
 }
 
 void chapter_change_appendGfx(void* effect) {
-    ChapterChangeFXData* data = ((EffectInstance*)effect)->data.chapterChange;
+    ChapterChangeFXData* data = ((EffectInstance*) effect)->data.chapterChange;
     s32 alpha = data->primCol.a;
     u32 type = data->type;
     TexturePiece* ptr0;
     TexturePiece* ptr1;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     switch (type) {
         case 1:

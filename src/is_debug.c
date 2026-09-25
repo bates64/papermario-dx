@@ -9,7 +9,7 @@ typedef struct {
     /* 0x08 */ PAD(12);
     /* 0x14 */ u32 put;
     /* 0x18 */ PAD(8);
-    /* 0x20 */ char data[0x10000-0x20];
+    /* 0x20 */ char data[0x10000 - 0x20];
 } ISVDbg;
 
 #define gISVDbgPrnAdrs ((ISVDbg*) 0xb3ff0000)
@@ -32,7 +32,7 @@ int printf(const char* restrict fmt, ...) {
 int __printf_chk(int flag, const char* restrict fmt, ...) {
     va_list args;
     va_start(args, fmt);
-    (void)flag;
+    (void) flag;
 
     return _Printf(is_debug_print, nullptr, fmt, args);
 }
@@ -89,7 +89,7 @@ char* is_debug_print(char* arg0, const char* str, size_t count) {
             s32 shift = ((3 - (start & 3)) * 8);
 
             osEPiReadIo(nuPiCartHandle, addr, &data);
-            osEPiWriteIo(nuPiCartHandle, addr, (data & ~(0xff << shift)) | ((u8)*str << shift));
+            osEPiWriteIo(nuPiCartHandle, addr, (data & ~(0xff << shift)) | ((u8) *str << shift));
 
             start++;
             if (start >= 0xffe0) {
@@ -99,13 +99,13 @@ char* is_debug_print(char* arg0, const char* str, size_t count) {
         count--;
         str++;
     }
-    osEPiWriteIo(nuPiCartHandle, (u32)&gISVDbgPrnAdrs->put, start);
+    osEPiWriteIo(nuPiCartHandle, (u32) &gISVDbgPrnAdrs->put, start);
     return (char*) 1;
 }
 
 void is_debug_panic(const char* message) {
     crash_screen_set_assert_info(message);
     // Crash so we can see the crash screen
-    *(volatile u32*)0 = 0; // NOLINT(clang-analyzer-core.NullDereference)
+    *(volatile u32*) 0 = 0; // NOLINT(clang-analyzer-core.NullDereference)
     __builtin_unreachable();
 }

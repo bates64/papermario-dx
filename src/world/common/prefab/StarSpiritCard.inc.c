@@ -56,7 +56,8 @@ typedef struct StarSpiritData {
     /* 0x48 */ s16 spinMode;
     /* 0x4A */ s16 cardFloatState;
     /* 0x4C */ s16 cardFloatTime;
-    /* 0x4E */ s16 notifyValue; // user scripts can watch this to monitor animation progress, see: SpiritCardNotifyValues
+    /* 0x4E */ s16
+        notifyValue; // user scripts can watch this to monitor animation progress, see: SpiritCardNotifyValues
     /* 0x50 */ EffectInstance* energyEffect;
     /* 0x54 */ EffectInstance* cardEffect;
 } StarSpiritData; // size = 0x58
@@ -173,8 +174,12 @@ API_CALLABLE(N(UpdateSpiritCardSpawn)) {
         case SPIRIT_CARD_FLOAT_HOVER:
             ptr->pos.y = ptr->cardHoverY + (2.0f * (sin_deg(ptr->cardFloatTime) + 1.0f));
             ptr->cardFloatTime = clamp_angle(ptr->cardFloatTime + 8);
-            if (!(dist3D(playerStatus->pos.x, playerStatus->pos.y + 20.0f, playerStatus->pos.z,
-                         ptr->pos.x, ptr->pos.y, ptr->pos.z) > 30.0f)) {
+            if (!(dist3D(
+                      playerStatus->pos.x, playerStatus->pos.y + 20.0f, playerStatus->pos.z, ptr->pos.x, ptr->pos.y,
+                      ptr->pos.z
+                  )
+                  > 30.0f))
+            {
                 ptr->notifyValue = SPIRIT_CARD_NOTIFY_PLAYER_TOUCH;
             }
             break;

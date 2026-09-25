@@ -71,8 +71,10 @@ HudScriptPtr gPauseTabsHudScripts[][6] = {
 
 u8 gPauseTabsGridData[] = { 0, 1, 2, 3, 4, 5 };
 u8 gPauseTabsPanelIDs[] = { 1, 2, 3, 4, 5, 6 };
-u8 gPauseTabsWindowIDs[] = { WIN_PAUSE_TAB_STATS, WIN_PAUSE_TAB_BADGES, WIN_PAUSE_TAB_ITEMS, WIN_PAUSE_TAB_PARTY, WIN_PAUSE_TAB_SPIRITS, WIN_PAUSE_TAB_MAP };
-u8 gPauseTabsPageWindowIDs[] = { WIN_PAUSE_STATS, WIN_PAUSE_BADGES, WIN_PAUSE_ITEMS, WIN_PAUSE_PARTNERS, WIN_PAUSE_SPIRITS, WIN_PAUSE_MAP };
+u8 gPauseTabsWindowIDs[] = { WIN_PAUSE_TAB_STATS, WIN_PAUSE_TAB_BADGES,  WIN_PAUSE_TAB_ITEMS,
+                             WIN_PAUSE_TAB_PARTY, WIN_PAUSE_TAB_SPIRITS, WIN_PAUSE_TAB_MAP };
+u8 gPauseTabsPageWindowIDs[] = { WIN_PAUSE_STATS,    WIN_PAUSE_BADGES,  WIN_PAUSE_ITEMS,
+                                 WIN_PAUSE_PARTNERS, WIN_PAUSE_SPIRITS, WIN_PAUSE_MAP };
 MenuWindowBP gPauseTabsWindowBPs[] = {
     {
         .windowID = WIN_PAUSE_TAB_STATS,
@@ -383,7 +385,7 @@ void pause_tabs_update(MenuPanel* tab) {
     s32 sgn;
 
     deltaBefore = tab->col * 300 - gPauseTabsHorizScrollPos;
-    absValue = abs((s32)deltaBefore);
+    absValue = abs((s32) deltaBefore);
     sgn = sign(deltaBefore);
 
     if (absValue >= 16) {
@@ -398,7 +400,9 @@ void pause_tabs_update(MenuPanel* tab) {
 
     gPauseTabsHorizScrollPos += delta;
 
-    if ((gPauseTabsPreviousTab != 0 || tab->col != 5) && (gPauseTabsPreviousTab < tab->col || (gPauseTabsPreviousTab == 5 && tab->col == 0))) {
+    if ((gPauseTabsPreviousTab != 0 || tab->col != 5)
+        && (gPauseTabsPreviousTab < tab->col || (gPauseTabsPreviousTab == 5 && tab->col == 0)))
+    {
         fpUpdateActive = pause_update_page_active_next;
         fpUpdateInactive = pause_update_page_inactive_next;
     } else {
@@ -418,26 +422,27 @@ void pause_tabs_update(MenuPanel* tab) {
         for (i = 0; i < ARRAY_COUNT(gPauseTabsPanelIDs); i++) {
             if (gPausePanels[gPauseTabsPanelIDs[i]]->initialized) {
                 fpUpdate = gWindows[gPauseTabsPageWindowIDs[i]].fpUpdate;
-                if (i != tab->col && (fpUpdate.func == pause_update_page_active_next ||
-                                      fpUpdate.func == pause_update_page_active_prev ||
-                                      fpUpdate.func == basic_window_update ||
-                                      fpUpdate.i == 1)) {
-                    set_window_update(gPauseTabsPageWindowIDs[i], (s32)fpUpdateInactive);
+                if (i != tab->col
+                    && (fpUpdate.func == pause_update_page_active_next || fpUpdate.func == pause_update_page_active_prev
+                        || fpUpdate.func == basic_window_update || fpUpdate.i == 1))
+                {
+                    set_window_update(gPauseTabsPageWindowIDs[i], (s32) fpUpdateInactive);
                     flag = true;
                 }
             }
         }
 
         if (!flag) {
-            if (gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.func == pause_update_page_inactive_next ||
-                gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.func == pause_update_page_inactive_prev ||
-                gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.i == 2) {
+            if (gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.func == pause_update_page_inactive_next
+                || gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.func == pause_update_page_inactive_prev
+                || gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.i == 2)
+            {
                 if (gPauseDoBasicWindowUpdate) {
                     fpUpdateActive = &basic_window_update;
                     gPauseDoBasicWindowUpdate = false;
                 }
 
-                set_window_update(gPauseTabsPageWindowIDs[tab->col], (s32)fpUpdateActive);
+                set_window_update(gPauseTabsPageWindowIDs[tab->col], (s32) fpUpdateActive);
             }
         }
     }

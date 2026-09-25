@@ -52,8 +52,8 @@ void btl_state_update_enemy_striking_first(void) {
                     s32 iVal = enemyIDs[i];
                     s32 jVal = enemyIDs[j];
 
-                    if (battleStatus->enemyActors[iVal & 0xFF]->turnPriority <
-                        battleStatus->enemyActors[jVal & 0xFF]->turnPriority)
+                    if (battleStatus->enemyActors[iVal & 0xFF]->turnPriority
+                        < battleStatus->enemyActors[jVal & 0xFF]->turnPriority)
                     {
                         enemyIDs[i] = jVal;
                         enemyIDs[j] = iVal;

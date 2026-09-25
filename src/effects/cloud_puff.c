@@ -125,15 +125,17 @@ void cloud_puff_appendGfx(void* effect) {
 
     for (i = 0; i < effectTemp->numParts; i++, part++) {
         if (part->alive) {
-            guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f,
-                             part->pos.x, part->pos.y, part->pos.z);
+            guPositionF(
+                sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, part->pos.x, part->pos.y, part->pos.z
+            );
             guScaleF(sp60, part->scale.x, part->scale.y, part->scale.z);
             guMtxCatF(sp60, sp20, sp20);
             guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 112, 96, 24, part->alpha);
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                        G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, D_090001B8_32EE08);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         }

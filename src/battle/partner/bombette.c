@@ -94,11 +94,15 @@ API_CALLABLE(N(SlowDown)) {
     add_xz_vec3f(&partnerActorMovement->curPos, partnerActor->state.speed, partnerActor->state.angle);
 
     if (partnerActor->state.speed < 4.0f) {
-        play_movement_dust_effects(0, partnerActor->state.curPos.x, partnerActor->state.curPos.y,
-                                   partnerActor->state.curPos.z, partnerActor->state.angle);
+        play_movement_dust_effects(
+            0, partnerActor->state.curPos.x, partnerActor->state.curPos.y, partnerActor->state.curPos.z,
+            partnerActor->state.angle
+        );
     } else {
-        play_movement_dust_effects(1, partnerActor->state.curPos.x, partnerActor->state.curPos.y,
-                                   partnerActor->state.curPos.z, partnerActor->state.angle);
+        play_movement_dust_effects(
+            1, partnerActor->state.curPos.x, partnerActor->state.curPos.y, partnerActor->state.curPos.z,
+            partnerActor->state.angle
+        );
     }
 
     partnerActorMovement->speed /= 1.5;

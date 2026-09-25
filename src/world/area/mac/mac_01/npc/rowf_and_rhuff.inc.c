@@ -586,8 +586,7 @@ API_CALLABLE(N(RowfShop_SetBadgePos)) {
     s32 idx = evt_get_variable(script, *args++);
 
     set_item_entity_position(
-        gGameStatusPtr->shopItemEntities[idx].index,
-        script->varTable[0], script->varTable[1], script->varTable[2] + 6
+        gGameStatusPtr->shopItemEntities[idx].index, script->varTable[0], script->varTable[1], script->varTable[2] + 6
     );
     return ApiStatus_DONE2;
 }

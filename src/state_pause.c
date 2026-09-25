@@ -71,7 +71,6 @@ void state_step_pause(void) {
                 gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
                 gGameStatusPtr->backgroundFlags &= ~BACKGROUND_RENDER_STATE_MASK;
                 gGameStatusPtr->backgroundFlags |= BACKGROUND_RENDER_STATE_BEGIN_PAUSED;
-
             }
             break;
         case 2:
@@ -195,8 +194,9 @@ void state_step_unpause(void) {
                         load_map_bg(wMapBgName);
                         set_background(&gBackgroundImage);
                     } else {
-                        set_background_size(SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN,
-                            SCREEN_INSET_X, SCREEN_INSET_Y);
+                        set_background_size(
+                            SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN, SCREEN_INSET_X, SCREEN_INSET_Y
+                        );
                     }
 
                     gGameStatusPtr->backgroundDarkness = gGameStatusPtr->savedBackgroundDarkness;

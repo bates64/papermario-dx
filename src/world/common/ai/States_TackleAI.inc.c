@@ -105,7 +105,10 @@ void N(TackleAI_Tackle)(Evt* script, MobileAISettings* settings, EnemyDetectVolu
     posY = npc->pos.y;
     posZ = npc->pos.z;
 
-    hit = npc_test_move_simple_with_slipping(npc->collisionChannel, &posX, &posY, &posZ, npc->moveSpeed, npc->yaw, npc->collisionHeight, npc->collisionDiameter);
+    hit = npc_test_move_simple_with_slipping(
+        npc->collisionChannel, &posX, &posY, &posZ, npc->moveSpeed, npc->yaw, npc->collisionHeight,
+        npc->collisionDiameter
+    );
     if (!hit) {
         npc_move_heading(npc, npc->moveSpeed, npc->yaw);
 

@@ -5,11 +5,11 @@ API_CALLABLE(N(AddPlayerHandsOffset)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     s32 xVar = *args++;
-    f32 x = (f32)evt_get_variable(script, xVar);
+    f32 x = (f32) evt_get_variable(script, xVar);
     s32 yVar = *args++;
-    f32 y = (f32)evt_get_variable(script, yVar);
+    f32 y = (f32) evt_get_variable(script, yVar);
     s32 zVar = *args++;
-    f32 z = (f32)evt_get_variable(script, zVar);
+    f32 z = (f32) evt_get_variable(script, zVar);
     f32 cameraYaw;
 
     cameraYaw = gCameras[gCurrentCameraID].curYaw;

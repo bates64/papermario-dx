@@ -74,7 +74,6 @@ extern NpcGroupList N(DefaultNPCs);
 extern API_CALLABLE(N(SetWanderTerritory));
 extern EvtScript N(EVS_NpcIdle_SwitchedWander);
 
-
 #include "world/common/npc/Goombaria/wander.h"
 #include "world/common/npc/Goombario/wander.h"
 #include "world/common/npc/Gooma/wander.h"

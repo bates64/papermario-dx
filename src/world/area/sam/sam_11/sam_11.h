@@ -82,7 +82,7 @@ extern NpcGroupList N(AfterNPCs);
 extern StaticAnimatorNode* N(ShatterPondSkeleton)[];
 extern AnimScript N(AS_ShatterPond);
 
-//TODO sort these into an include somewhere
+// TODO sort these into an include somewhere
 API_CALLABLE(InitAnimatedModels);
 API_CALLABLE(DeleteAnimatedModel);
 API_CALLABLE(SetAnimatedModelRenderMode);

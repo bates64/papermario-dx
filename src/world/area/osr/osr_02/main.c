@@ -1,11 +1,13 @@
 #include "osr_02.h"
 #include "effects.h"
 
-EvtScript N(EVS_ExitDoor_kpa_121_1) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(osr_02_ENTRY_0, "kpa_121", kpa_121_ENTRY_1,
-    COLLIDER_tt1, MODEL_o570, DOOR_SWING_IN, DOOR_SOUNDS_METAL);
+EvtScript N(EVS_ExitDoor_kpa_121_1) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
+    osr_02_ENTRY_0, "kpa_121", kpa_121_ENTRY_1, COLLIDER_tt1, MODEL_o570, DOOR_SWING_IN, DOOR_SOUNDS_METAL
+);
 
-EvtScript N(EVS_ExitDoor_kkj_10_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(osr_02_ENTRY_1, "kkj_10", kkj_10_ENTRY_0,
-    COLLIDER_tt2, MODEL_d2, MODEL_d1, DOOR_SOUNDS_LARGE);
+EvtScript N(EVS_ExitDoor_kkj_10_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    osr_02_ENTRY_1, "kkj_10", kkj_10_ENTRY_0, COLLIDER_tt2, MODEL_d2, MODEL_d1, DOOR_SOUNDS_LARGE
+);
 
 EvtScript N(EVS_KeepPeachFromBowsersCastle) = {
     Call(DisablePlayerInput, true)

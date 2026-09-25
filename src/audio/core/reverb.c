@@ -13,17 +13,17 @@ static Acmd* _loadDelayLineBuffer(AuFX* fx, s16* oldPos, s32 buff, s32 count, Ac
 static f32 updateTriangleModulation(AuDelay* delay, s32 rsdelta);
 
 /*
-* the following constant is derived from:
-*
-*      ratio = 2^(cents/1200)
-*
-* and therefore for hundredths of a cent
-*                     x
-*      ln(ratio) = ---------------
-*              (120,000)/ln(2)
-* where
-*      120,000/ln(2) = 173123.40...
-*/
+ * the following constant is derived from:
+ *
+ *      ratio = 2^(cents/1200)
+ *
+ * and therefore for hundredths of a cent
+ *                     x
+ *      ln(ratio) = ---------------
+ *              (120,000)/ln(2)
+ * where
+ *      120,000/ln(2) = 173123.40...
+ */
 #define CONVERT 173123.404906676
 
 #define SCALE 16384
@@ -127,9 +127,9 @@ static void _init_lpfilter(AuLowPass* filter) {
 
     // ith value is 16384 * (timeConstant / 16384)^(i-7)
     // ex: i = 9 --> timeConstant^2 / 16384
-    attenuation = ((f64)timeConstant / SCALE);
+    attenuation = ((f64) timeConstant / SCALE);
     for (i = 9; i < ARRAY_COUNT(filter->fccoef); i++) {
-        attenuation *= ((f64)timeConstant / SCALE);
+        attenuation *= ((f64) timeConstant / SCALE);
         filter->fccoef[i] = attenuation * SCALE;
     }
 }
@@ -182,7 +182,7 @@ void au_fx_load_preset(AuFX* fx, u8 effectType) {
     s32* params;
     s32* clr;
     s32 i, j;
-    clr = (s32*)fx->base;
+    clr = (s32*) fx->base;
 
     switch (effectType) {
         case AU_FX_SMALLROOM:
@@ -225,21 +225,21 @@ void au_fx_load_preset(AuFX* fx, u8 effectType) {
     fx->length = params[j++] * AUDIO_SAMPLES;
     fx->input = fx->base;
 
-    for (i = 0; i < AU_FX_LENGTH/2; i++) {
+    for (i = 0; i < AU_FX_LENGTH / 2; i++) {
         *clr++ = 0;
     }
 
     for (i = 0; i < fx->delayCount; i++) {
         AuDelay* delay = &fx->delays[i];
-        delay->input  = params[j++] * AUDIO_SAMPLES;
+        delay->input = params[j++] * AUDIO_SAMPLES;
         delay->output = params[j++] * AUDIO_SAMPLES;
         delay->fbcoef = (u16) params[j++];
         delay->ffcoef = (u16) params[j++];
-        delay->gain   = (u16) params[j++];
+        delay->gain = (u16) params[j++];
 
         if (params[j]) {
             delay->rsinc = (2.0 * (params[j++] / 1000.0f)) / gActiveSynDriverPtr->outputRate;
-            delay->rsgain = ((f32)params[j++] / CONVERT) * (delay->output - delay->input);
+            delay->rsgain = ((f32) params[j++] / CONVERT) * (delay->output - delay->input);
             delay->rsval = 1.0f;
             delay->rsdelta = 0.0f;
             delay->activeResampler = delay->resamplerTemplate;
@@ -286,9 +286,9 @@ Acmd* au_pull_fx(AuFX* fx, Acmd* ptr, s16 wetDmem, s16 tempDmem) {
     s16* outPtr;
 
     // DMEM temp buffer layout:
-    s16 inputTapBuffer  = tempDmem;
+    s16 inputTapBuffer = tempDmem;
     s16 outputTapBuffer = tempDmem + 2 * AUDIO_SAMPLES;
-    s16 resampleBuffer  = tempDmem + 4 * AUDIO_SAMPLES;
+    s16 resampleBuffer = tempDmem + 4 * AUDIO_SAMPLES;
 
     s16* prevOutPtr = 0;
     s16 outDmem = wetDmem;
@@ -334,7 +334,7 @@ Acmd* au_pull_fx(AuFX* fx, Acmd* ptr, s16 wetDmem, s16 tempDmem) {
             length = delay->output - delay->input;
             delta = updateTriangleModulation(delay, AUDIO_SAMPLES);
             delta /= length;
-            delta = (s32)(delta * fUnityPitch);
+            delta = (s32) (delta * fUnityPitch);
             delta = delta / UNITY_PITCH;
 
             fratio = 1.0 - delta;
@@ -358,8 +358,10 @@ Acmd* au_pull_fx(AuFX* fx, Acmd* ptr, s16 wetDmem, s16 tempDmem) {
             // process resampler
             ratio = fratio * fUnityPitch;
             tmp = outputTapBuffer >> 8;
-            n_aResample(cmdBufPos++, osVirtualToPhysical(delay->activeResampler->state),
-                delay->activeResampler->first, ratio, resampleBuffer + (ramAlign<<1), tmp);
+            n_aResample(
+                cmdBufPos++, osVirtualToPhysical(delay->activeResampler->state), delay->activeResampler->first, ratio,
+                resampleBuffer + (ramAlign << 1), tmp
+            );
             delay->activeResampler->first = false;
             delay->rsdelta += count - AUDIO_SAMPLES;
         } else {
@@ -369,7 +371,7 @@ Acmd* au_pull_fx(AuFX* fx, Acmd* ptr, s16 wetDmem, s16 tempDmem) {
 
         // feedforward: input -> output
         if (delay->ffcoef) {
-            aMix(cmdBufPos++, 0, (u16)delay->ffcoef, inputTapBuffer, outputTapBuffer);
+            aMix(cmdBufPos++, 0, (u16) delay->ffcoef, inputTapBuffer, outputTapBuffer);
 
             // save output if no additional processing needed
             if (delay->activeResampler == nullptr && delay->activeLowpass == nullptr) {
@@ -379,7 +381,7 @@ Acmd* au_pull_fx(AuFX* fx, Acmd* ptr, s16 wetDmem, s16 tempDmem) {
 
         // feedback: output -> input
         if (delay->fbcoef) {
-            aMix(cmdBufPos++, 0, (u16)delay->fbcoef, outputTapBuffer, inputTapBuffer);
+            aMix(cmdBufPos++, 0, (u16) delay->fbcoef, outputTapBuffer, inputTapBuffer);
             n_aSaveBuffer(cmdBufPos++, 2 * AUDIO_SAMPLES, inputTapBuffer, osVirtualToPhysical(inPtr));
         }
 
@@ -388,7 +390,10 @@ Acmd* au_pull_fx(AuFX* fx, Acmd* ptr, s16 wetDmem, s16 tempDmem) {
             // modified _n_filterBuffer
             s16 alignedBuffer = outputTapBuffer >> 8;
             n_aLoadADPCM(cmdBufPos++, 32, osVirtualToPhysical(delay->activeLowpass->fccoef));
-            n_aPoleFilter(cmdBufPos++, delay->activeLowpass->first, delay->activeLowpass->fgain, alignedBuffer, osVirtualToPhysical(delay->activeLowpass->fstate));
+            n_aPoleFilter(
+                cmdBufPos++, delay->activeLowpass->first, delay->activeLowpass->fgain, alignedBuffer,
+                osVirtualToPhysical(delay->activeLowpass->fstate)
+            );
             delay->activeLowpass->first = 0;
         }
 
@@ -399,7 +404,7 @@ Acmd* au_pull_fx(AuFX* fx, Acmd* ptr, s16 wetDmem, s16 tempDmem) {
 
         // mix input from this delay into wet output buffer
         if (delay->gain) {
-            aMix(cmdBufPos++, 0, (u16)delay->gain, outputTapBuffer, outDmem);
+            aMix(cmdBufPos++, 0, (u16) delay->gain, outputTapBuffer, outDmem);
         }
         prevOutPtr = &fx->input[delay->output];
     }
@@ -415,33 +420,33 @@ Acmd* au_pull_fx(AuFX* fx, Acmd* ptr, s16 wetDmem, s16 tempDmem) {
 
 s32 au_fx_param_hdl(AuFX* fx, s16 index, s16 paramID, s32 value) {
     switch (paramID) {
-    case INPUT_PARAM:
-        fx->delays[index].input = value & 0xFFFFFFF8;
-        break;
-    case OUTPUT_PARAM:
-        fx->delays[index].output = value & 0xFFFFFFF8;
-        break;
-    case FFCOEF_PARAM:
-        fx->delays[index].ffcoef = value;
-        break;
-    case FBCOEF_PARAM:
-        fx->delays[index].fbcoef = value;
-        break;
-    case GAIN_PARAM:
-        fx->delays[index].gain = value;
-        break;
-    case CHORUSRATE_PARAM:
-        fx->delays[index].rsinc = (2.0 * (value / 1000.0f)) / gActiveSynDriverPtr->outputRate;
-        break;
-    case CHORUSDEPTH_PARAM:
-        fx->delays[index].rsgain = ((f32)value / CONVERT) * (fx->delays[index].output - fx->delays[index].input);
-        break;
-    case LPFILT_PARAM:
-        if (fx->delays[index].activeLowpass) {
-            fx->delays[index].activeLowpass->fc = value;
-            _init_lpfilter(fx->delays[index].activeLowpass);
-        }
-        break;
+        case INPUT_PARAM:
+            fx->delays[index].input = value & 0xFFFFFFF8;
+            break;
+        case OUTPUT_PARAM:
+            fx->delays[index].output = value & 0xFFFFFFF8;
+            break;
+        case FFCOEF_PARAM:
+            fx->delays[index].ffcoef = value;
+            break;
+        case FBCOEF_PARAM:
+            fx->delays[index].fbcoef = value;
+            break;
+        case GAIN_PARAM:
+            fx->delays[index].gain = value;
+            break;
+        case CHORUSRATE_PARAM:
+            fx->delays[index].rsinc = (2.0 * (value / 1000.0f)) / gActiveSynDriverPtr->outputRate;
+            break;
+        case CHORUSDEPTH_PARAM:
+            fx->delays[index].rsgain = ((f32) value / CONVERT) * (fx->delays[index].output - fx->delays[index].input);
+            break;
+        case LPFILT_PARAM:
+            if (fx->delays[index].activeLowpass) {
+                fx->delays[index].activeLowpass->fc = value;
+                _init_lpfilter(fx->delays[index].activeLowpass);
+            }
+            break;
     }
     return 0;
 }
@@ -451,17 +456,17 @@ s32 au_fx_param_hdl(AuFX* fx, s16 index, s16 paramID, s32 value) {
  * Used to prepare samples for resampling or filtering.
  */
 static Acmd* _loadDelayLineBuffer(AuFX* fx, s16* oldPos, s32 buf, s32 count, Acmd* cmdBufPos) {
-    Acmd *ptr = cmdBufPos;
+    Acmd* ptr = cmdBufPos;
     s16* newPos = oldPos + count;
     s16* delayEnd = &fx->base[fx->length];
 
     if (delayEnd < newPos) {
         s32 before = delayEnd - oldPos;
         s32 after = newPos - delayEnd;
-        n_aLoadBuffer(ptr++, before<<1, buf, osVirtualToPhysical(oldPos));
-        n_aLoadBuffer(ptr++, after<<1, buf + (before<<1), osVirtualToPhysical(fx->base));
+        n_aLoadBuffer(ptr++, before << 1, buf, osVirtualToPhysical(oldPos));
+        n_aLoadBuffer(ptr++, after << 1, buf + (before << 1), osVirtualToPhysical(fx->base));
     } else {
-        n_aLoadBuffer(ptr++, count<<1, buf, osVirtualToPhysical(oldPos));
+        n_aLoadBuffer(ptr++, count << 1, buf, osVirtualToPhysical(oldPos));
     }
 
     return ptr;

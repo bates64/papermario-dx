@@ -27,7 +27,9 @@ void btl_state_update_end_battle(void) {
             if (gGameStatusPtr->debugEnemyContact == DEBUG_CONTACT_DIE_ON_TOUCH) {
                 BattleScreenFadeAmt = 255;
             }
-            if (encounterStatus->battleOutcome == OUTCOME_PLAYER_LOST && !(gBattleStatus.flags1 & BS_FLAGS1_NO_GAME_OVER)) {
+            if (encounterStatus->battleOutcome == OUTCOME_PLAYER_LOST
+                && !(gBattleStatus.flags1 & BS_FLAGS1_NO_GAME_OVER))
+            {
                 btl_cam_unfreeze();
                 btl_cam_use_preset(BTL_CAM_INTERRUPT);
                 set_screen_overlay_color(SCREEN_LAYER_FRONT, 0, 0, 0);
@@ -100,8 +102,8 @@ void btl_state_update_end_battle(void) {
             }
 
             if (encounterStatus->battleOutcome == OUTCOME_PLAYER_LOST
-                && !(gBattleStatus.flags1 & BS_FLAGS1_NO_GAME_OVER)
-            ) {
+                && !(gBattleStatus.flags1 & BS_FLAGS1_NO_GAME_OVER))
+            {
                 btl_set_state(BATTLE_STATE_NONE);
                 gLastDrawBattleState = gBattleState;
                 get_map_IDs_by_name_checked("gv_01", &areaID, &mapID);

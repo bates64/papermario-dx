@@ -183,12 +183,16 @@ void lil_oink_appendGfx(void* effect) {
 
     for (i = 0; i < MAX_LIL_OINKS; i++) {
         if (data->flags[i] & LIL_OINK_FLAG_VISIBLE) {
-            guPositionF(mtxTransform, 0.0f, 180.0f - data->rot[i], 0.0f, 1.0f,
-                             data->x[i], data->y[i] + data->jumpOffset[i], data->z[i]);
+            guPositionF(
+                mtxTransform, 0.0f, 180.0f - data->rot[i], 0.0f, 1.0f, data->x[i], data->y[i] + data->jumpOffset[i],
+                data->z[i]
+            );
             guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                      G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
+                G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, D_E0114718[data->type[i]]);
             if (data->type[i] == LIL_OINK_TYPE_SILVER || data->type[i] == LIL_OINK_TYPE_GOLD) {
                 f32 shineVariation = sin_deg(angle) * 63.0f;

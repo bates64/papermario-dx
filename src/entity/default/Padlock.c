@@ -43,7 +43,9 @@ void entity_Padlock_setupGfx(s32 entityIndex) {
     guMtxCatF(sp18, sp58, sp58);
     guMtxF2L(sp58, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPDisplayList(gMainGfxPos++, data->shackleGfx);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
@@ -180,7 +182,9 @@ void entity_Padlock_idle(Entity* entity) {
             break;
     }
 
-    if (data->state == 2 || data->state == 3 || data->state == 4 || data->state == 5 || data->state == 6 || data->state == 7 || data->state == 8) {
+    if (data->state == 2 || data->state == 3 || data->state == 4 || data->state == 5 || data->state == 6
+        || data->state == 7 || data->state == 8)
+    {
         data->blinkCounter++;
         if (data->blinkCounter & 1) {
             entity->flags |= ENTITY_FLAG_HIDDEN;
@@ -232,10 +236,14 @@ EntityScript Entity_Padlock_Script = {
     es_End
 };
 
-EntityModelScript Entity_Padlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_Padlock_Render, RENDER_MODE_SURFACE_OPA);
-EntityModelScript Entity_PadlockRedFrame_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_PadlockRedFrame_Render, RENDER_MODE_SURFACE_OPA);
-EntityModelScript Entity_PadlockRedFace_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_PadlockRedFace_Render, RENDER_MODE_SURFACE_OPA);
-EntityModelScript Entity_PadlockBlueFace_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_PadlockBlueFace_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_Padlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_Padlock_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_PadlockRedFrame_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_PadlockRedFrame_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_PadlockRedFace_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_PadlockRedFace_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_PadlockBlueFace_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_PadlockBlueFace_Render, RENDER_MODE_SURFACE_OPA);
 
 EntityBlueprint Entity_Padlock = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_400 | ENTITY_FLAG_HAS_SHADOW,
@@ -274,7 +282,7 @@ EntityBlueprint Entity_PadlockRedFace = {
     { .dma = ENTITY_ROM(PadlockRedFace) },
     .entityType = ENTITY_TYPE_PADLOCK_RED_FACE,
     .aabbSize = { 30, 175, 10 }
- };
+};
 
 EntityBlueprint Entity_PadlockBlueFace = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_400 | ENTITY_FLAG_HAS_SHADOW,

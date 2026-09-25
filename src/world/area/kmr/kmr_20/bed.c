@@ -16,7 +16,9 @@ API_CALLABLE(N(SetAmbienceVolumeHalf_Bed)) {
 
 API_CALLABLE(N(WaitForPlayerToLand)) {
     script->varTable[0] = false;
-    if ((gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) && (gPartnerStatus.actingPartner == PARTNER_BOMBETTE)) {
+    if ((gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE)
+        && (gPartnerStatus.actingPartner == PARTNER_BOMBETTE))
+    {
         script->varTable[0] = true;
     }
     return ApiStatus_DONE2;

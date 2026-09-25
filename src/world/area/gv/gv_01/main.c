@@ -268,7 +268,7 @@ API_CALLABLE(N(FadeToTitleScreen)) {
         set_curtain_fade(0);
     }
 
-    script->functionTemp[0] += (s32)(5 / DT);
+    script->functionTemp[0] += (s32) (5 / DT);
     if (script->functionTemp[0] > 255) {
         script->functionTemp[0] = 255;
     }

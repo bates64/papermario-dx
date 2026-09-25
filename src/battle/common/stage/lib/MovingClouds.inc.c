@@ -27,10 +27,10 @@ API_CALLABLE(N(InterpCloudTransform)) {
     if (interpAngleDeg > 90.0f && interpAngleDeg < 270.0f) {
         outAngle = 180;
     }
-    if ((s32)fabsf(90.0f - interpAngleDeg) < 45) {
+    if ((s32) fabsf(90.0f - interpAngleDeg) < 45) {
         outAngle = 2.0f * (interpAngleDeg - 45.0f);
     }
-    if ((s32)fabsf(270.0f - interpAngleDeg) < 45) {
+    if ((s32) fabsf(270.0f - interpAngleDeg) < 45) {
         outAngle = 2.0f * (interpAngleDeg - 225.0f) + 180.0f;
     }
     evt_set_variable(script, outVarAngle, outAngle);

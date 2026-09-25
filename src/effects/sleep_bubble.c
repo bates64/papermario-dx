@@ -93,8 +93,8 @@ void sleep_bubble_update(EffectInstance* effect) {
         *xPtr = temp2 * sin_deg(angle);
         *yPtr = -temp2 * cos_deg(angle);
 
-        *xPtr += sin_deg((f32)unk_20 * (sin_deg(xAngle) * 0.1 + 2.0) + (i + 5.0f) * 30.0f) * 1.5;
-        *yPtr += cos_deg((f32)unk_20 * (cos_deg(yAngle) * 0.1 + 2.0) + (i + 5.0f) * 50.0f) * 1.5;
+        *xPtr += sin_deg((f32) unk_20 * (sin_deg(xAngle) * 0.1 + 2.0) + (i + 5.0f) * 30.0f) * 1.5;
+        *yPtr += cos_deg((f32) unk_20 * (cos_deg(yAngle) * 0.1 + 2.0) + (i + 5.0f) * 50.0f) * 1.5;
 
         xAngle += 53;
         yAngle += 36;
@@ -125,13 +125,13 @@ void sleep_bubble_render(EffectInstance* effect) {
 }
 
 void sleep_bubble_appendGfx(void* effect) {
-    SleepBubbleFXData* data = ((EffectInstance*)effect)->data.sleepBubble;
+    SleepBubbleFXData* data = ((EffectInstance*) effect)->data.sleepBubble;
     Matrix4f sp18, sp58;
     s32 timeLeft;
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     timeLeft = data->timeLeft;
     if (timeLeft == 0) {
@@ -145,28 +145,30 @@ void sleep_bubble_appendGfx(void* effect) {
     guTranslateF(sp18, data->pos.x, data->pos.y, data->pos.z);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPVertex(gMainGfxPos++, &D_09000180_35D690[1], 1, 0);
 
     guRotateF(sp18, data->unk_10, 0.0f, 0.0f, 1.0f);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW
+    );
     guRotateF(sp18, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
     guTranslateF(sp58, data->unk_C4, data->unk_C8, 0.0f);
     guMtxCatF(sp58, sp18, sp18);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gSPVertex(gMainGfxPos++, &D_09000180_35D690[0], 1, 1);
 
     for (i = 0; i < ARRAY_COUNT(data->points); i++) {
         guTranslateF(sp18, data->points[i].x, data->points[i].y, 0.0f);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                  G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPVertex(gMainGfxPos++, &D_09000180_35D690[i + 2], 1, i + 2);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

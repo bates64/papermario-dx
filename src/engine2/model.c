@@ -589,10 +589,8 @@ u8 RemapTintMinG = 0;
 u8 RemapTintMinB = 0;
 
 Mtx ReferenceIdentityMtx = RDP_MATRIX(
-    1.000000, 0.000000, 0.000000, 0.000000,
-    0.000000, 1.000000, 0.000000, 0.000000,
-    0.000000, 0.000000, 1.000000, 0.000000,
-    0.000000, 0.000000, 0.000000, 1.000000
+    1.000000, 0.000000, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000, 0.000000, 0.000000, 0.000000, 1.000000,
+    0.000000, 0.000000, 0.000000, 0.000000, 1.000000
 );
 
 // The depth buffer contains values encoded in a custom 18-bit floating-point format.
@@ -1062,8 +1060,8 @@ Gfx Gfx_RM2_CLOUD_NO_ZB[] = {
 // ----------------------------------------------------------------------------
 // RENDER_CLASS_FOG+, basic AA variants
 
-// RENDER_MODE_IDX_1F: RENDER_MODE_SURFACE_OPA, RENDER_CLASS_FOG / RENDER_CLASS_FOG_SHROUD / RENDER_CLASS_1CYC_SHROUD / RENDER_CLASS_1CYC_DEPTH
-// used by entity models
+// RENDER_MODE_IDX_1F: RENDER_MODE_SURFACE_OPA, RENDER_CLASS_FOG / RENDER_CLASS_FOG_SHROUD / RENDER_CLASS_1CYC_SHROUD /
+// RENDER_CLASS_1CYC_DEPTH used by entity models
 Gfx Gfx_RM3_SURFACE_OPA[] = {
     gsDPSetRenderMode(G_RM_FOG_SHADE_A, G_RM_AA_ZB_OPA_SURF2),
     gsDPSetCycleType(G_CYC_2CYCLE),
@@ -1072,8 +1070,8 @@ Gfx Gfx_RM3_SURFACE_OPA[] = {
     gsSPEndDisplayList(),
 };
 
-// RENDER_MODE_IDX_21: RENDER_MODE_DECAL_OPA, RENDER_CLASS_FOG / RENDER_CLASS_FOG_SHROUD / RENDER_CLASS_1CYC_SHROUD / RENDER_CLASS_1CYC_DEPTH
-// used by entity models
+// RENDER_MODE_IDX_21: RENDER_MODE_DECAL_OPA, RENDER_CLASS_FOG / RENDER_CLASS_FOG_SHROUD / RENDER_CLASS_1CYC_SHROUD /
+// RENDER_CLASS_1CYC_DEPTH used by entity models
 Gfx Gfx_RM3_DECAL_OPA[] = {
     gsDPSetRenderMode(G_RM_FOG_SHADE_A, G_RM_AA_ZB_OPA_DECAL2),
     gsDPSetCycleType(G_CYC_2CYCLE),
@@ -1082,8 +1080,8 @@ Gfx Gfx_RM3_DECAL_OPA[] = {
     gsSPEndDisplayList(),
 };
 
-// RENDER_MODE_IDX_23: RENDER_MODE_INTERSECTING_OPA, RENDER_CLASS_FOG / RENDER_CLASS_FOG_SHROUD / RENDER_CLASS_1CYC_SHROUD / RENDER_CLASS_1CYC_DEPTH
-// used by entity models
+// RENDER_MODE_IDX_23: RENDER_MODE_INTERSECTING_OPA, RENDER_CLASS_FOG / RENDER_CLASS_FOG_SHROUD /
+// RENDER_CLASS_1CYC_SHROUD / RENDER_CLASS_1CYC_DEPTH used by entity models
 Gfx Gfx_RM3_INTERSECTING_OPA[] = {
     gsDPSetRenderMode(G_RM_FOG_SHADE_A, G_RM_AA_ZB_OPA_INTER2),
     gsDPSetCycleType(G_CYC_2CYCLE),
@@ -1092,8 +1090,8 @@ Gfx Gfx_RM3_INTERSECTING_OPA[] = {
     gsSPEndDisplayList(),
 };
 
-// RENDER_MODE_IDX_25: RENDER_MODE_ALPHATEST, RENDER_CLASS_FOG / RENDER_CLASS_FOG_SHROUD / RENDER_CLASS_1CYC_SHROUD / RENDER_CLASS_1CYC_DEPTH
-// used by entity models
+// RENDER_MODE_IDX_25: RENDER_MODE_ALPHATEST, RENDER_CLASS_FOG / RENDER_CLASS_FOG_SHROUD / RENDER_CLASS_1CYC_SHROUD /
+// RENDER_CLASS_1CYC_DEPTH used by entity models
 Gfx Gfx_RM3_ALPHATEST[] = {
     gsDPSetRenderMode(G_RM_FOG_SHADE_A, G_RM_AA_ZB_TEX_EDGE2),
     gsDPSetCycleType(G_CYC_2CYCLE),
@@ -1135,7 +1133,7 @@ Gfx Gfx_RM3_INTERSECTING_XLU[] = {
 // ----------------------------------------------------------------------------
 // RENDER_CLASS_FOG+, basic NO_AA variants
 
-//RENDER_MODE_IDX_20: RENDER_MODE_SURFACE_OPA_NO_AA, RENDER_CLASS_FOG / RENDER_CLASS_FOG_SHROUD
+// RENDER_MODE_IDX_20: RENDER_MODE_SURFACE_OPA_NO_AA, RENDER_CLASS_FOG / RENDER_CLASS_FOG_SHROUD
 Gfx Gfx_RM3_SURFACE_OPA_NO_AA[] = {
     gsDPSetRenderMode(G_RM_FOG_SHADE_A, G_RM_ZB_OPA_SURF2),
     gsDPSetCycleType(G_CYC_2CYCLE),
@@ -1235,7 +1233,8 @@ Gfx Gfx_RM3_SURFACE_XLU_NO_ZB[] = {
     gsSPEndDisplayList(),
 };
 
-// RENDER_MODE_IDX_3B: RENDER_MODE_CLOUD, RENDER_CLASS_FOG / RENDER_CLASS_FOG_SHROUD / RENDER_CLASS_1CYC_SHROUD / RENDER_CLASS_1CYC_DEPTH
+// RENDER_MODE_IDX_3B: RENDER_MODE_CLOUD, RENDER_CLASS_FOG / RENDER_CLASS_FOG_SHROUD / RENDER_CLASS_1CYC_SHROUD /
+// RENDER_CLASS_1CYC_DEPTH
 Gfx Gfx_RM3_CLOUD[] = {
     gsDPSetRenderMode(G_RM_FOG_SHADE_A, G_RM_ZB_CLD_SURF2),
     gsDPSetCycleType(G_CYC_2CYCLE),
@@ -1244,7 +1243,8 @@ Gfx Gfx_RM3_CLOUD[] = {
     gsSPEndDisplayList(),
 };
 
-// RENDER_MODE_IDX_3C: RENDER_MODE_CLOUD_NO_ZB, RENDER_CLASS_FOG / RENDER_CLASS_FOG_SHROUD / RENDER_CLASS_1CYC_SHROUD / RENDER_CLASS_1CYC_DEPTH
+// RENDER_MODE_IDX_3C: RENDER_MODE_CLOUD_NO_ZB, RENDER_CLASS_FOG / RENDER_CLASS_FOG_SHROUD / RENDER_CLASS_1CYC_SHROUD /
+// RENDER_CLASS_1CYC_DEPTH
 Gfx Gfx_RM3_CLOUD_NO_ZB[] = {
     gsDPSetRenderMode(G_RM_FOG_SHADE_A, G_RM_CLD_SURF2),
     gsDPSetCycleType(G_CYC_2CYCLE),
@@ -1360,7 +1360,9 @@ void func_80117D00(Model* model);
 void appendGfx_model_group(void* model);
 void appendGfx_transform_group_node(ModelNode* node);
 void appendGfx_transform_group(void* group);
-void make_texture_gfx(TextureHeader*, Gfx**, IMG_PTR raster, PAL_PTR palette, IMG_PTR auxRaster, PAL_PTR auxPalette, u8, u8, u16, u16);
+void make_texture_gfx(
+    TextureHeader*, Gfx**, IMG_PTR raster, PAL_PTR palette, IMG_PTR auxRaster, PAL_PTR auxPalette, u8, u8, u16, u16
+);
 void load_model_transforms(ModelNode* model, ModelNode* parent, Matrix4f mdlTxMtx, s32 treeDepth);
 s32 is_identity_fixed_mtx(Mtx* mtx);
 void build_custom_gfx(void);
@@ -1434,7 +1436,7 @@ void appendGfx_model(void* data) {
     }
 
     // if a model has a tint applied, set it up now
-    switch ((u32)(model->customGfxIndex >> 4)) {
+    switch ((u32) (model->customGfxIndex >> 4)) {
         case ENV_TINT_SHROUD:
             renderClass += (RENDER_CLASS_1CYC_SHROUD - RENDER_CLASS_1CYC);
             tintCombineType = TINT_COMBINE_SHROUD;
@@ -1499,11 +1501,11 @@ void appendGfx_model(void* data) {
                     s32 shift = prop->data.s;
                     u16 offsetS = prop->dataType;
                     s32 offsetT = prop->dataType;
-                    make_texture_gfx(textureHeader, gfxPos,
-                        textureHandle->raster, textureHandle->palette,
-                        textureHandle->auxRaster, textureHandle->auxPalette,
-                        (shift >> 12) & 0xF, (shift >> 16) & 0xF,
-                        offsetS & 0xFFF, (offsetT >> 12) & 0xFFF);
+                    make_texture_gfx(
+                        textureHeader, gfxPos, textureHandle->raster, textureHandle->palette, textureHandle->auxRaster,
+                        textureHandle->auxPalette, (shift >> 12) & 0xF, (shift >> 16) & 0xF, offsetS & 0xFFF,
+                        (offsetT >> 12) & 0xFFF
+                    );
 
                 } else {
                     gSPDisplayList((*gfxPos)++, textureHandle->gfx);
@@ -1521,10 +1523,9 @@ void appendGfx_model(void* data) {
     }
 
     // setup combine modes for main/aux texture blending when fog or tint is enabled
-    if (tintCombineType != TINT_COMBINE_NONE
-        || renderMode == RENDER_MODE_ALPHATEST
-        || renderMode == RENDER_MODE_ALPHATEST_ONESIDED
-    ) {
+    if (tintCombineType != TINT_COMBINE_NONE || renderMode == RENDER_MODE_ALPHATEST
+        || renderMode == RENDER_MODE_ALPHATEST_ONESIDED)
+    {
         u32 texCombineType = TEX_COMBINE_NOTEX;
 
         // only the following aux combine modes are ever used:
@@ -1748,7 +1749,9 @@ void appendGfx_model(void* data) {
                     break;
             }
             gSPDisplayList((*gfxPos)++, ModelRenderModes[renderModeIdx]);
-            gDPSetFogColor((*gfxPos)++, gFogSettings->color.r, gFogSettings->color.g, gFogSettings->color.b, gFogSettings->color.a);
+            gDPSetFogColor(
+                (*gfxPos)++, gFogSettings->color.r, gFogSettings->color.g, gFogSettings->color.b, gFogSettings->color.a
+            );
             gSPFogPosition((*gfxPos)++, gFogSettings->startDistance, gFogSettings->endDistance);
             break;
         case RENDER_CLASS_1CYC_SHROUD:
@@ -1816,7 +1819,9 @@ void appendGfx_model(void* data) {
                     gDPSetRenderMode(gMainGfxPos++, PM_RM_SHROUD, G_RM_CLD_SURF2);
                     break;
             }
-            gDPSetFogColor((*gfxPos)++, gFogSettings->color.r, gFogSettings->color.g, gFogSettings->color.b, ShroudTintAmt);
+            gDPSetFogColor(
+                (*gfxPos)++, gFogSettings->color.r, gFogSettings->color.g, gFogSettings->color.b, ShroudTintAmt
+            );
             gDPSetBlendColor((*gfxPos)++, ShroudTintR, ShroudTintG, ShroudTintB, 255);
             gSPFogPosition((*gfxPos)++, 970, 1000);
             break;
@@ -1962,15 +1967,30 @@ void appendGfx_model(void* data) {
 
             switch (extraTileType) {
                 case EXTRA_TILE_AUX_SAME_AS_MAIN:
-                    gDPSetTileSize((*gfxPos)++, G_TX_RENDERTILE, panMainU, panMainV, (textureHeader->mainW - 1) * 4 + panMainU, (textureHeader->mainH / 2 - 1) * 4 + panMainV);
-                    gDPSetTileSize((*gfxPos)++, G_TX_RENDERTILE + 1, panAuxU, panAuxV, (textureHeader->mainW - 1) * 4 + panAuxU, (textureHeader->mainH / 2 - 1) * 4 + panAuxV);
+                    gDPSetTileSize(
+                        (*gfxPos)++, G_TX_RENDERTILE, panMainU, panMainV, (textureHeader->mainW - 1) * 4 + panMainU,
+                        (textureHeader->mainH / 2 - 1) * 4 + panMainV
+                    );
+                    gDPSetTileSize(
+                        (*gfxPos)++, G_TX_RENDERTILE + 1, panAuxU, panAuxV, (textureHeader->mainW - 1) * 4 + panAuxU,
+                        (textureHeader->mainH / 2 - 1) * 4 + panAuxV
+                    );
                     break;
                 case EXTRA_TILE_AUX_INDEPENDENT:
-                    gDPSetTileSize((*gfxPos)++, G_TX_RENDERTILE, panMainU, panMainV, (textureHeader->mainW - 1) * 4 + panMainU, (textureHeader->mainH - 1) * 4 + panMainV);
-                    gDPSetTileSize((*gfxPos)++, G_TX_RENDERTILE + 1, panAuxU, panAuxV, (textureHeader->auxW - 1) * 4 + panAuxU, (textureHeader->auxH - 1) * 4 + panAuxV);
+                    gDPSetTileSize(
+                        (*gfxPos)++, G_TX_RENDERTILE, panMainU, panMainV, (textureHeader->mainW - 1) * 4 + panMainU,
+                        (textureHeader->mainH - 1) * 4 + panMainV
+                    );
+                    gDPSetTileSize(
+                        (*gfxPos)++, G_TX_RENDERTILE + 1, panAuxU, panAuxV, (textureHeader->auxW - 1) * 4 + panAuxU,
+                        (textureHeader->auxH - 1) * 4 + panAuxV
+                    );
                     break;
                 default:
-                    gDPSetTileSize((*gfxPos)++, G_TX_RENDERTILE, panMainU, panMainV, (textureHeader->mainW - 1) * 4 + panMainU, (textureHeader->mainH - 1) * 4 + panMainV);
+                    gDPSetTileSize(
+                        (*gfxPos)++, G_TX_RENDERTILE, panMainU, panMainV, (textureHeader->mainW - 1) * 4 + panMainU,
+                        (textureHeader->mainH - 1) * 4 + panMainV
+                    );
                     break;
             }
         }
@@ -2006,7 +2026,10 @@ void appendGfx_model(void* data) {
     gDPPipeSync((*gfxPos)++);
 }
 
-void load_texture_impl(u32 romOffset, TextureHandle* handle, TextureHeader* header, s32 mainSize, s32 mainPalSize, s32 auxSize, s32 auxPalSize) {
+void load_texture_impl(
+    u32 romOffset, TextureHandle* handle, TextureHeader* header, s32 mainSize, s32 mainPalSize, s32 auxSize,
+    s32 auxPalSize
+) {
     Gfx** temp;
 
     // load main img + palette to texture heap
@@ -2038,14 +2061,17 @@ void load_texture_impl(u32 romOffset, TextureHandle* handle, TextureHeader* head
     // copy header data and create a display list for the texture
     handle->gfx = (Gfx*) TextureHeapPos;
     memcpy(&handle->header, header, sizeof(*header));
-    make_texture_gfx(header, (Gfx**) &TextureHeapPos, handle->raster, handle->palette, handle->auxRaster, handle->auxPalette, 0, 0, 0, 0);
+    make_texture_gfx(
+        header, (Gfx**) &TextureHeapPos, handle->raster, handle->palette, handle->auxRaster, handle->auxPalette, 0, 0,
+        0, 0
+    );
 
     temp = (Gfx**) &TextureHeapPos;
     gSPEndDisplayList((*temp)++);
 }
 
 void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 size) {
-    char* textureName = (char*)propertyName->data.p;
+    char* textureName = (char*) propertyName->data.p;
     u32 startOffset = romOffset;
     s32 textureIdx = 0;
     u32 paletteSize = 0;
@@ -2062,7 +2088,7 @@ void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 si
     }
 
     while (romOffset < startOffset + size) {
-        dma_copy((u8*)romOffset, (u8*)romOffset + sizeof(gCurrentTextureHeader), &gCurrentTextureHeader);
+        dma_copy((u8*) romOffset, (u8*) romOffset + sizeof(gCurrentTextureHeader), &gCurrentTextureHeader);
         header = &gCurrentTextureHeader;
 
         rasterSize = header->mainW * header->mainH;
@@ -2165,7 +2191,10 @@ void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 si
 
     if (textureHandle->gfx == nullptr) {
         load_texture_impl(romOffset, textureHandle, header, rasterSize, paletteSize, auxRasterSize, auxPaletteSize);
-        load_texture_variants(romOffset + rasterSize + paletteSize + auxRasterSize + auxPaletteSize, (*gCurrentModelTreeNodeInfo)[TreeIterPos].textureID, startOffset, size);
+        load_texture_variants(
+            romOffset + rasterSize + paletteSize + auxRasterSize + auxPaletteSize,
+            (*gCurrentModelTreeNodeInfo)[TreeIterPos].textureID, startOffset, size
+        );
     }
 }
 
@@ -2183,7 +2212,7 @@ void load_texture_variants(u32 romOffset, s32 textureID, s32 baseOffset, s32 siz
     s32 currentTextureID = textureID;
 
     for (offset = romOffset; offset < baseOffset + size;) {
-        dma_copy((u8*)offset, (u8*)offset + sizeof(iterTextureHeader), &iterTextureHeader);
+        dma_copy((u8*) offset, (u8*) offset + sizeof(iterTextureHeader), &iterTextureHeader);
         header = &iterTextureHeader;
 
         if (strcmp(header->name, "end_of_textures") == 0) {
@@ -2274,7 +2303,9 @@ void load_texture_variants(u32 romOffset, s32 textureID, s32 baseOffset, s32 siz
         textureID++;
         currentTextureID = textureID;
         textureHandle = &TextureHandles[currentTextureID];
-        load_texture_impl(offset + sizeof(*header), textureHandle, header, rasterSize, paletteSize, auxRasterSize, auxPaletteSize);
+        load_texture_impl(
+            offset + sizeof(*header), textureHandle, header, rasterSize, paletteSize, auxRasterSize, auxPaletteSize
+        );
 
         mainSize = rasterSize + paletteSize + sizeof(*header);
         offset += mainSize;
@@ -2459,7 +2490,8 @@ void mdl_calculate_model_sizes(void) {
         Model* model = (*gCurrentModels)[i];
 
         if (model != nullptr) {
-            ModelBoundingBox* bb = (ModelBoundingBox*)get_model_property(model->modelNode, MODEL_PROP_KEY_BOUNDING_BOX);
+            ModelBoundingBox* bb =
+                (ModelBoundingBox*) get_model_property(model->modelNode, MODEL_PROP_KEY_BOUNDING_BOX);
 
             bb->halfSizeX = (bb->maxX - bb->minX) * 0.5;
             bb->halfSizeY = (bb->maxY - bb->minY) * 0.5;
@@ -2488,12 +2520,10 @@ void mdl_create_model(ModelBlueprint* bp, s32 unused) {
                 ModelBoundingBox* bb = (ModelBoundingBox*) prop;
                 EffectInstance* effect;
 
-                fx_flame(replaceWithFlame - 1,
-                    (bb->minX + bb->maxX) * 0.5f,
-                    bb->minY,
-                    (bb->minZ + bb->maxZ) * 0.5f,
-                    1.0f,
-                    &effect);
+                fx_flame(
+                    replaceWithFlame - 1, (bb->minX + bb->maxX) * 0.5f, bb->minY, (bb->minZ + bb->maxZ) * 0.5f, 1.0f,
+                    &effect
+                );
                 return;
             }
         }
@@ -2901,11 +2931,7 @@ void render_models(void) {
         yComp = transformGroup->center.y;
         zComp = transformGroup->center.z;
 
-        transform_point(
-            camera->mtxPerspective,
-            xComp, yComp, zComp, 1.0f,
-            &outX, &outY, &outZ, &outW
-        );
+        transform_point(camera->mtxPerspective, xComp, yComp, zComp, 1.0f, &outX, &outY, &outZ, &outW);
         if (outW == 0.0f) {
             outW = 1.0f;
         }
@@ -3061,7 +3087,10 @@ void appendGfx_transform_group(void* data) {
     (x) <= 256 ? 8 : \
     (x) <= 512 ? 9 : 10)
 
-void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_PTR palette, IMG_PTR auxRaster, PAL_PTR auxPalette, u8 auxShiftS, u8 auxShiftT, u16 auxOffsetS, u16 auxOffsetT) {
+void make_texture_gfx(
+    TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_PTR palette, IMG_PTR auxRaster, PAL_PTR auxPalette,
+    u8 auxShiftS, u8 auxShiftT, u16 auxOffsetS, u16 auxOffsetT
+) {
     s32 mainWidth, mainHeight;
     s32 auxWidth, auxHeight;
     s32 mainFmt;
@@ -3165,24 +3194,28 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
             gSPTexture((*gfxPos)++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
             switch (mainBitDepth) {
                 case G_IM_SIZ_4b:
-                    gDPLoadTextureBlock_4b((*gfxPos)++, raster, mainFmt,
-                                           mainWidth, mainHeight, 0,
-                                           mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD);
+                    gDPLoadTextureBlock_4b(
+                        (*gfxPos)++, raster, mainFmt, mainWidth, mainHeight, 0, mainWrapW, mainWrapH, mainMasks,
+                        mainMaskt, G_TX_NOLOD, G_TX_NOLOD
+                    );
                     break;
                 case G_IM_SIZ_8b:
-                    gDPLoadTextureBlock((*gfxPos)++, raster, mainFmt, G_IM_SIZ_8b,
-                                        mainWidth, mainHeight, 0,
-                                        mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD);
+                    gDPLoadTextureBlock(
+                        (*gfxPos)++, raster, mainFmt, G_IM_SIZ_8b, mainWidth, mainHeight, 0, mainWrapW, mainWrapH,
+                        mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD
+                    );
                     break;
                 case G_IM_SIZ_16b:
-                    gDPLoadTextureBlock((*gfxPos)++, raster, mainFmt, G_IM_SIZ_16b,
-                                        mainWidth, mainHeight, 0,
-                                        mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD);
+                    gDPLoadTextureBlock(
+                        (*gfxPos)++, raster, mainFmt, G_IM_SIZ_16b, mainWidth, mainHeight, 0, mainWrapW, mainWrapH,
+                        mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD
+                    );
                     break;
                 case 3:
-                    gDPLoadTextureBlock((*gfxPos)++, raster, mainFmt, G_IM_SIZ_32b,
-                                        mainWidth, mainHeight, 0,
-                                        mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD);
+                    gDPLoadTextureBlock(
+                        (*gfxPos)++, raster, mainFmt, G_IM_SIZ_32b, mainWidth, mainHeight, 0, mainWrapW, mainWrapH,
+                        mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD
+                    );
                     break;
             }
             break;
@@ -3194,10 +3227,12 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
                          mainWidth / lodDivisor * 4 >= 64 && mainHeight / lodDivisor != 0;
                          rasterPtr += mainWidth / lodDivisor * mainHeight / lodDivisor / 2, lodDivisor *= 2, lod++)
                     {
-                        gDPLoadMultiTile_4b((*gfxPos)++, rasterPtr, (u32)(rasterPtr - raster) >> 3, lod, mainFmt,
-                                            mainWidth / lodDivisor, mainHeight / lodDivisor,
-                                            0, 0, mainWidth / lodDivisor - 1, mainHeight / lodDivisor - 1, 0,
-                                            mainWrapW, mainWrapH, mainMasks - lod, mainMaskt - lod, lod, lod);
+                        gDPLoadMultiTile_4b(
+                            (*gfxPos)++, rasterPtr, (u32) (rasterPtr - raster) >> 3, lod, mainFmt,
+                            mainWidth / lodDivisor, mainHeight / lodDivisor, 0, 0, mainWidth / lodDivisor - 1,
+                            mainHeight / lodDivisor - 1, 0, mainWrapW, mainWrapH, mainMasks - lod, mainMaskt - lod, lod,
+                            lod
+                        );
                     }
                     break;
                 case G_IM_SIZ_8b:
@@ -3205,10 +3240,12 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
                          mainWidth / lodDivisor * 8 >= 64 && mainHeight / lodDivisor != 0;
                          rasterPtr += mainWidth / lodDivisor * mainHeight / lodDivisor, lodDivisor *= 2, lod++)
                     {
-                        gDPLoadMultiTile((*gfxPos)++, rasterPtr, ((u32)(rasterPtr - raster)) >> 3, lod, mainFmt, G_IM_SIZ_8b,
-                                         mainWidth / lodDivisor, mainHeight / lodDivisor,
-                                         0, 0, mainWidth / lodDivisor - 1, mainHeight / lodDivisor - 1, 0,
-                                         mainWrapW, mainWrapH, mainMasks - lod, mainMaskt - lod, lod, lod);
+                        gDPLoadMultiTile(
+                            (*gfxPos)++, rasterPtr, ((u32) (rasterPtr - raster)) >> 3, lod, mainFmt, G_IM_SIZ_8b,
+                            mainWidth / lodDivisor, mainHeight / lodDivisor, 0, 0, mainWidth / lodDivisor - 1,
+                            mainHeight / lodDivisor - 1, 0, mainWrapW, mainWrapH, mainMasks - lod, mainMaskt - lod, lod,
+                            lod
+                        );
                     }
                     break;
                 case G_IM_SIZ_16b:
@@ -3216,10 +3253,12 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
                          mainWidth / lodDivisor * 16 >= 64 && mainHeight / lodDivisor != 0;
                          rasterPtr += mainWidth / lodDivisor * mainHeight / lodDivisor * 2, lodDivisor *= 2, lod++)
                     {
-                        gDPLoadMultiTile((*gfxPos)++, rasterPtr, ((u32)(rasterPtr - raster)) >> 3, lod, mainFmt, G_IM_SIZ_16b,
-                                         mainWidth / lodDivisor, mainHeight / lodDivisor,
-                                         0, 0, mainWidth / lodDivisor - 1, mainHeight / lodDivisor - 1, 0,
-                                         mainWrapW, mainWrapH, mainMasks - lod, mainMaskt - lod, lod, lod);
+                        gDPLoadMultiTile(
+                            (*gfxPos)++, rasterPtr, ((u32) (rasterPtr - raster)) >> 3, lod, mainFmt, G_IM_SIZ_16b,
+                            mainWidth / lodDivisor, mainHeight / lodDivisor, 0, 0, mainWidth / lodDivisor - 1,
+                            mainHeight / lodDivisor - 1, 0, mainWrapW, mainWrapH, mainMasks - lod, mainMaskt - lod, lod,
+                            lod
+                        );
                     }
                     break;
                 case G_IM_SIZ_32b:
@@ -3227,10 +3266,12 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
                          mainWidth / lodDivisor * 32 >= 64 && mainHeight / lodDivisor != 0;
                          rasterPtr += mainWidth / lodDivisor * mainHeight / lodDivisor * 4, lodDivisor *= 2, lod++)
                     {
-                        gDPLoadMultiTile((*gfxPos)++, rasterPtr, ((u32)(rasterPtr - raster)) >> 4, lod, mainFmt, G_IM_SIZ_32b,
-                                         mainWidth / lodDivisor, mainHeight / lodDivisor,
-                                         0, 0, mainWidth / lodDivisor - 1, mainHeight / lodDivisor - 1, 0,
-                                         mainWrapW, mainWrapH, mainMasks - lod, mainMaskt - lod, lod, lod);
+                        gDPLoadMultiTile(
+                            (*gfxPos)++, rasterPtr, ((u32) (rasterPtr - raster)) >> 4, lod, mainFmt, G_IM_SIZ_32b,
+                            mainWidth / lodDivisor, mainHeight / lodDivisor, 0, 0, mainWidth / lodDivisor - 1,
+                            mainHeight / lodDivisor - 1, 0, mainWrapW, mainWrapH, mainMasks - lod, mainMaskt - lod, lod,
+                            lod
+                        );
                     }
                     break;
             }
@@ -3242,24 +3283,28 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
             lodMode = G_TL_TILE;
             switch (mainBitDepth) {
                 case G_IM_SIZ_4b:
-                    gDPScrollTextureBlockHalfHeight_4b((*gfxPos)++, raster, mainFmt, mainWidth, mainHeight, 0,
-                                                       mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD,
-                                                       auxOffsetS, auxOffsetT, auxShiftS, auxShiftT);
+                    gDPScrollTextureBlockHalfHeight_4b(
+                        (*gfxPos)++, raster, mainFmt, mainWidth, mainHeight, 0, mainWrapW, mainWrapH, mainMasks,
+                        mainMaskt, G_TX_NOLOD, G_TX_NOLOD, auxOffsetS, auxOffsetT, auxShiftS, auxShiftT
+                    );
                     break;
                 case G_IM_SIZ_8b:
-                    gDPScrollTextureBlockHalfHeight((*gfxPos)++, raster, mainFmt, G_IM_SIZ_8b, mainWidth, mainHeight, 0,
-                                                    mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD,
-                                                    auxOffsetS, auxOffsetT, auxShiftS, auxShiftT);
+                    gDPScrollTextureBlockHalfHeight(
+                        (*gfxPos)++, raster, mainFmt, G_IM_SIZ_8b, mainWidth, mainHeight, 0, mainWrapW, mainWrapH,
+                        mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD, auxOffsetS, auxOffsetT, auxShiftS, auxShiftT
+                    );
                     break;
                 case G_IM_SIZ_16b:
-                    gDPScrollTextureBlockHalfHeight((*gfxPos)++, raster, mainFmt, G_IM_SIZ_16b, mainWidth, mainHeight, 0,
-                                                    mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD,
-                                                    auxOffsetS, auxOffsetT, auxShiftS, auxShiftT);
+                    gDPScrollTextureBlockHalfHeight(
+                        (*gfxPos)++, raster, mainFmt, G_IM_SIZ_16b, mainWidth, mainHeight, 0, mainWrapW, mainWrapH,
+                        mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD, auxOffsetS, auxOffsetT, auxShiftS, auxShiftT
+                    );
                     break;
                 case G_IM_SIZ_32b:
-                    gDPScrollTextureBlockHalfHeight((*gfxPos)++, raster, mainFmt, G_IM_SIZ_32b, mainWidth, mainHeight, 0,
-                                                    mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD,
-                                                    auxOffsetS, auxOffsetT, auxShiftS, auxShiftT);
+                    gDPScrollTextureBlockHalfHeight(
+                        (*gfxPos)++, raster, mainFmt, G_IM_SIZ_32b, mainWidth, mainHeight, 0, mainWrapW, mainWrapH,
+                        mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD, auxOffsetS, auxOffsetT, auxShiftS, auxShiftT
+                    );
                     break;
             }
             break;
@@ -3268,59 +3313,67 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
             lodMode = G_TL_TILE;
             switch (mainBitDepth) {
                 case G_IM_SIZ_4b:
-                    gDPLoadTextureTile_4b((*gfxPos)++, raster, mainFmt, mainWidth, mainHeight,
-                                          0, 0, mainWidth - 1, mainHeight - 1, 0,
-                                          mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD);
-                    lodDivisor = (((mainWidth * mainHeight) >> 1) + 7)>>3; // required to use lodDivisor here
+                    gDPLoadTextureTile_4b(
+                        (*gfxPos)++, raster, mainFmt, mainWidth, mainHeight, 0, 0, mainWidth - 1, mainHeight - 1, 0,
+                        mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD
+                    );
+                    lodDivisor = (((mainWidth * mainHeight) >> 1) + 7) >> 3; // required to use lodDivisor here
                     break;
                 case G_IM_SIZ_8b:
-                    gDPLoadTextureTile((*gfxPos)++, raster, mainFmt, G_IM_SIZ_8b, mainWidth, mainHeight,
-                                       0, 0, mainWidth - 1, mainHeight - 1, 0,
-                                       mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD);
-                    lodDivisor = ((mainWidth * mainHeight) + 7)>>3;
+                    gDPLoadTextureTile(
+                        (*gfxPos)++, raster, mainFmt, G_IM_SIZ_8b, mainWidth, mainHeight, 0, 0, mainWidth - 1,
+                        mainHeight - 1, 0, mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD
+                    );
+                    lodDivisor = ((mainWidth * mainHeight) + 7) >> 3;
                     break;
                 case G_IM_SIZ_16b:
-                    gDPLoadTextureTile((*gfxPos)++, raster, mainFmt, G_IM_SIZ_16b, mainWidth, mainHeight,
-                                       0, 0, mainWidth - 1, mainHeight - 1, 0,
-                                       mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD);
-                    lodDivisor = ((mainWidth * mainHeight) * 2 + 7)>>3;
+                    gDPLoadTextureTile(
+                        (*gfxPos)++, raster, mainFmt, G_IM_SIZ_16b, mainWidth, mainHeight, 0, 0, mainWidth - 1,
+                        mainHeight - 1, 0, mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD
+                    );
+                    lodDivisor = ((mainWidth * mainHeight) * 2 + 7) >> 3;
                     break;
                 case G_IM_SIZ_32b:
-                    gDPLoadTextureTile((*gfxPos)++, raster, mainFmt, G_IM_SIZ_32b, mainWidth, mainHeight,
-                                       0, 0, mainWidth - 1, mainHeight - 1, 0,
-                                       mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD);
-                    lodDivisor = ((mainWidth * mainHeight / 2) * 2 + 7)>>3;
+                    gDPLoadTextureTile(
+                        (*gfxPos)++, raster, mainFmt, G_IM_SIZ_32b, mainWidth, mainHeight, 0, 0, mainWidth - 1,
+                        mainHeight - 1, 0, mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD
+                    );
+                    lodDivisor = ((mainWidth * mainHeight / 2) * 2 + 7) >> 3;
                     break;
             }
 
             switch (auxBitDepth) {
                 case G_IM_SIZ_4b:
-                    gDPScrollMultiTile_4b((*gfxPos)++, auxRaster, lodDivisor, 1, auxFmt, auxWidth, auxHeight,
-                                          0, 0, auxWidth - 1, auxHeight - 1, auxPaletteIndex,
-                                          auxWrapW, auxWrapH, auxMasks, auxMaskt,
-                                          auxShiftS, auxShiftT, auxOffsetS, auxOffsetT);
+                    gDPScrollMultiTile_4b(
+                        (*gfxPos)++, auxRaster, lodDivisor, 1, auxFmt, auxWidth, auxHeight, 0, 0, auxWidth - 1,
+                        auxHeight - 1, auxPaletteIndex, auxWrapW, auxWrapH, auxMasks, auxMaskt, auxShiftS, auxShiftT,
+                        auxOffsetS, auxOffsetT
+                    );
                     break;
                 case G_IM_SIZ_8b:
-                    gDPScrollMultiTile((*gfxPos)++, auxRaster, lodDivisor, 1, auxFmt, G_IM_SIZ_8b, auxWidth, auxHeight,
-                                       0, 0, auxWidth - 1, auxHeight - 1, auxPaletteIndex,
-                                       auxWrapW, auxWrapH, auxMasks, auxMaskt,
-                                       auxShiftS, auxShiftT, auxOffsetS, auxOffsetT);
+                    gDPScrollMultiTile(
+                        (*gfxPos)++, auxRaster, lodDivisor, 1, auxFmt, G_IM_SIZ_8b, auxWidth, auxHeight, 0, 0,
+                        auxWidth - 1, auxHeight - 1, auxPaletteIndex, auxWrapW, auxWrapH, auxMasks, auxMaskt, auxShiftS,
+                        auxShiftT, auxOffsetS, auxOffsetT
+                    );
                     break;
                 case G_IM_SIZ_16b:
-                    gDPScrollMultiTile((*gfxPos)++, auxRaster, lodDivisor, 1, auxFmt, G_IM_SIZ_16b, auxWidth, auxHeight,
-                                       0, 0, auxWidth - 1, auxHeight - 1, auxPaletteIndex,
-                                       auxWrapW, auxWrapH, auxMasks, auxMaskt,
-                                       auxShiftS, auxShiftT, auxOffsetS, auxOffsetT);
+                    gDPScrollMultiTile(
+                        (*gfxPos)++, auxRaster, lodDivisor, 1, auxFmt, G_IM_SIZ_16b, auxWidth, auxHeight, 0, 0,
+                        auxWidth - 1, auxHeight - 1, auxPaletteIndex, auxWrapW, auxWrapH, auxMasks, auxMaskt, auxShiftS,
+                        auxShiftT, auxOffsetS, auxOffsetT
+                    );
                     break;
                 case G_IM_SIZ_32b:
-                    gDPScrollMultiTile((*gfxPos)++, auxRaster, lodDivisor, 1, auxFmt, G_IM_SIZ_32b, auxWidth, auxHeight,
-                                       0, 0, auxWidth - 1, auxHeight - 1, auxPaletteIndex,
-                                       auxWrapW, auxWrapH, auxMasks, auxMaskt,
-                                       auxShiftS, auxShiftT, auxOffsetS, auxOffsetT);
+                    gDPScrollMultiTile(
+                        (*gfxPos)++, auxRaster, lodDivisor, 1, auxFmt, G_IM_SIZ_32b, auxWidth, auxHeight, 0, 0,
+                        auxWidth - 1, auxHeight - 1, auxPaletteIndex, auxWrapW, auxWrapH, auxMasks, auxMaskt, auxShiftS,
+                        auxShiftT, auxOffsetS, auxOffsetT
+                    );
                     break;
             }
     }
-    gSPSetOtherMode((*gfxPos)++, G_SETOTHERMODE_H, 4, 16, filteringMode | G_TC_FILT | lutMode | lodMode | G_TP_PERSP );
+    gSPSetOtherMode((*gfxPos)++, G_SETOTHERMODE_H, 4, 16, filteringMode | G_TC_FILT | lutMode | lodMode | G_TP_PERSP);
 }
 
 Model* get_model_from_list_index(s32 listIndex) {
@@ -3371,9 +3424,10 @@ void load_model_transforms(ModelNode* model, ModelNode* parent, Matrix4f mdlTran
 
         if (model->type != SHAPE_TYPE_GROUP || groupType == GROUP_TYPE_0) {
             for (i = 0; i < model->groupData->numChildren; i++) {
-                load_model_transforms(model->groupData->childList[i], model,
-                                      model->groupData->transformMatrix != nullptr ? combinedMtx : mdlTransformMtx,
-                                      treeDepth + 1);
+                load_model_transforms(
+                    model->groupData->childList[i], model,
+                    model->groupData->transformMatrix != nullptr ? combinedMtx : mdlTransformMtx, treeDepth + 1
+                );
             }
 
             (*gCurrentModelTreeNodeInfo)[TreeIterPos].modelIndex = -1;
@@ -3410,7 +3464,7 @@ s32 get_model_list_index_from_tree_index(s32 treeIndex) {
     if (treeIndex < MAX_MODELS) {
         u8 modelIndex = (*gCurrentModelTreeNodeInfo)[treeIndex].modelIndex;
 
-        if (modelIndex != (u8)-1) {
+        if (modelIndex != (u8) -1) {
             return modelIndex;
         }
     }
@@ -3440,7 +3494,9 @@ s32 get_transform_group_index(s32 modelID) {
     return -1;
 }
 
-void get_model_center_and_size(u16 modelID, f32* centerX, f32* centerY, f32* centerZ, f32* sizeX, f32* sizeY, f32* sizeZ) {
+void get_model_center_and_size(
+    u16 modelID, f32* centerX, f32* centerY, f32* centerZ, f32* sizeX, f32* sizeY, f32* sizeZ
+) {
     Model* model = get_model_from_list_index(get_model_list_index_from_tree_index(modelID));
     ModelNode* node = model->modelNode;
     ModelBoundingBox* bb;
@@ -3449,7 +3505,7 @@ void get_model_center_and_size(u16 modelID, f32* centerX, f32* centerY, f32* cen
     *centerY = model->center.y;
     *centerZ = model->center.z;
 
-    bb = (ModelBoundingBox*)get_model_property(node, MODEL_PROP_KEY_BOUNDING_BOX);
+    bb = (ModelBoundingBox*) get_model_property(node, MODEL_PROP_KEY_BOUNDING_BOX);
 
     if (bb != nullptr) {
         *sizeX = bb->halfSizeX;
@@ -3574,7 +3630,7 @@ void mdl_make_transform_group(u16 modelID) {
             newMtg->renderMode = RENDER_MODE_SURFACE_OPA;
         }
 
-        bb = (ModelBoundingBox*)get_model_property(node, MODEL_PROP_KEY_BOUNDING_BOX);
+        bb = (ModelBoundingBox*) get_model_property(node, MODEL_PROP_KEY_BOUNDING_BOX);
         if (bb != nullptr) {
             x = (bb->minX + bb->maxX) * 0.5f;
             y = (bb->minY + bb->maxY) * 0.5f;
@@ -3902,7 +3958,7 @@ void build_custom_gfx(void) {
 // weird temps necessary to match
 /// Returns true if mtx is nullptr or identity.
 s32 is_identity_fixed_mtx(Mtx* mtx) {
-    s32* mtxIt = (s32*)mtx;
+    s32* mtxIt = (s32*) mtx;
     s32* identityIt;
     s32 i;
 
@@ -3910,7 +3966,7 @@ s32 is_identity_fixed_mtx(Mtx* mtx) {
         return true;
     }
 
-    identityIt = (s32*)&ReferenceIdentityMtx;
+    identityIt = (s32*) &ReferenceIdentityMtx;
 
     for (i = 0; i < 16; i++, mtxIt++, identityIt++) {
         if (*mtxIt != *identityIt) {
@@ -3935,7 +3991,9 @@ void mdl_get_shroud_tint_params(u8* r, u8* g, u8* b, u8* a) {
     *a = ShroudTintAmt;
 }
 
-void mdl_set_depth_tint_params(u8 primR, u8 primG, u8 primB, u8 primA, u8 fogR, u8 fogG, u8 fogB, s32 fogStart, s32 fogEnd) {
+void mdl_set_depth_tint_params(
+    u8 primR, u8 primG, u8 primB, u8 primA, u8 fogR, u8 fogG, u8 fogB, s32 fogStart, s32 fogEnd
+) {
     DepthTintBaseR = primR;
     DepthTintBaseG = primG;
     DepthTintBaseB = primB;
@@ -3947,8 +4005,9 @@ void mdl_set_depth_tint_params(u8 primR, u8 primG, u8 primB, u8 primA, u8 fogR, 
     DepthTintEnd = fogEnd;
 }
 
-void mdl_get_depth_tint_params(u8* primR, u8* primG, u8* primB, u8* primA, u8* fogR, u8* fogG, u8* fogB,
-                                    s32* fogStart, s32* fogEnd) {
+void mdl_get_depth_tint_params(
+    u8* primR, u8* primG, u8* primB, u8* primA, u8* fogR, u8* fogG, u8* fogB, s32* fogStart, s32* fogEnd
+) {
     *primR = DepthTintBaseR;
     *primG = DepthTintBaseG;
     *primB = DepthTintBaseB;
@@ -4000,14 +4059,14 @@ void mdl_get_vertex_count(Gfx* gfx, s32* numVertices, Vtx** baseVtx, s32* gfxCou
         do {
             w0 = gfx->words.w0;
             w1 = gfx->words.w1;
-            cmd = _SHIFTR(w0,24,8);
+            cmd = _SHIFTR(w0, 24, 8);
 
             if (cmd == G_VTX) {
                 vtxStartAddr = w1;
                 if (baseAddr != nullptr) {
-                    vtxStartAddr = (vtxStartAddr & 0xFFFF) + (s32)baseAddr;
+                    vtxStartAddr = (vtxStartAddr & 0xFFFF) + (s32) baseAddr;
                 }
-                vtxCount = _SHIFTR(w0,12,8);
+                vtxCount = _SHIFTR(w0, 12, 8);
                 if (minVtx == 0) {
                     minVtx = vtxStartAddr;
                     maxVtx = vtxStartAddr + (vtxCount * sizeof(Vtx));
@@ -4024,23 +4083,23 @@ void mdl_get_vertex_count(Gfx* gfx, s32* numVertices, Vtx** baseVtx, s32* gfxCou
         } while (cmd != G_ENDDL);
 
         *numVertices = (maxVtx - minVtx) >> 4;
-        *baseVtx = (Vtx*)minVtx;
+        *baseVtx = (Vtx*) minVtx;
         *gfxCount = gfx - baseGfx;
         w1 = 64; // TODO required to match -- can be any operation that stores w1
     }
 }
 
-void mdl_local_gfx_update_vtx_pointers(Gfx *nodeDlist, Vtx *baseVtx, Gfx *arg2, Vtx *arg3) {
+void mdl_local_gfx_update_vtx_pointers(Gfx* nodeDlist, Vtx* baseVtx, Gfx* arg2, Vtx* arg3) {
     u32 w0;
     Vtx* w1;
     do {
-        w0 = (*((unsigned long long*)nodeDlist)) >> 0x20; // TODO required to match
-        w1 = (Vtx*)nodeDlist->words.w1;
+        w0 = (*((unsigned long long*) nodeDlist)) >> 0x20; // TODO required to match
+        w1 = (Vtx*) nodeDlist->words.w1;
         if (w0 >> 0x18 == G_VTX) {
             w1 = arg3 + (w1 - baseVtx);
         }
         arg2->words.w0 = w0;
-        arg2->words.w1 = (u32)w1;
+        arg2->words.w1 = (u32) w1;
         nodeDlist++;
         arg2++;
     } while (w0 >> 0x18 != G_ENDDL);
@@ -4050,7 +4109,7 @@ void mdl_local_gfx_copy_vertices(Vtx* src, s32 num, Vtx* dest) {
     u32 i;
 
     for (i = 0; i < num * sizeof(*src); i++) {
-        ((u8*)dest)[i] = ((u8*)src)[i];
+        ((u8*) dest)[i] = ((u8*) src)[i];
     }
 }
 
@@ -4162,7 +4221,7 @@ void mdl_project_tex_coords(s32 modelID, Gfx* outGfx, Matrix4f arg2, Vtx* arg3) 
             break;
         }
         if (cmd == G_VTX) {
-            baseVtx = (Vtx*)dlist->words.w1;
+            baseVtx = (Vtx*) dlist->words.w1;
             break;
         }
         dlist++;
@@ -4309,7 +4368,9 @@ s32 is_model_center_visible(u16 modelID, s32 depthQueryID, f32* screenX, f32* sc
         return false;
     }
     // Transform the model's center into clip space.
-    transform_point(camera->mtxPerspective, model->center.x, model->center.y, model->center.z, 1.0f, &outX, &outY, &outZ, &outW);
+    transform_point(
+        camera->mtxPerspective, model->center.x, model->center.y, model->center.z, 1.0f, &outX, &outY, &outZ, &outW
+    );
     if (outW == 0.0f) {
         *screenX = 0.0f;
         *screenY = 0.0f;
@@ -4330,8 +4391,8 @@ s32 is_model_center_visible(u16 modelID, s32 depthQueryID, f32* screenX, f32* sc
     // Convert depth from (-1, 1) to (0, 1).
     outZ = (outZ + 1.0f) * 0.5;
     // Write out the calculated x and y values.
-    *screenX = (s32)outX;
-    *screenY = (s32)outY;
+    *screenX = (s32) outX;
+    *screenY = (s32) outY;
     // If a depth query wasn't requested, simply check if the point is within the view frustum.
     if (depthQueryID < 0) {
         if (outZ > 0.0f) {
@@ -4343,18 +4404,18 @@ s32 is_model_center_visible(u16 modelID, s32 depthQueryID, f32* screenX, f32* sc
     if (outX >= 0.0f && outY >= 0.0f && outX < 320.0f && outY < 240.0f) {
         gDPPipeSync(gMainGfxPos++);
         // Load a 4x1 pixel tile of the depth buffer
-        gDPLoadTextureTile(gMainGfxPos++, osVirtualToPhysical(&nuGfxZBuffer[(s32) outY * SCREEN_WIDTH]), G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, 1,
-            (s32) outX, 0, (s32) outX + 3, 0,
-            0,
-            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
-            9, G_TX_NOMASK,
-            G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureTile(
+            gMainGfxPos++, osVirtualToPhysical(&nuGfxZBuffer[(s32) outY * SCREEN_WIDTH]), G_IM_FMT_RGBA, G_IM_SIZ_16b,
+            SCREEN_WIDTH, 1, (s32) outX, 0, (s32) outX + 3, 0, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+            9, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+        );
         gDPPipeSync(gMainGfxPos++);
         // Set the current color image to the buffer where copied depth values are stored.
         gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, DepthCopyBuffer);
         gDPPipeSync(gMainGfxPos++);
         // Set up 1 cycle mode and all other relevant othermode params.
-        // One cycle mode must be used here because only one pixel is copied, and copy mode only supports multiples of 4 pixels.
+        // One cycle mode must be used here because only one pixel is copied, and copy mode only supports multiples of 4
+        // pixels.
         gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
         gDPSetRenderMode(gMainGfxPos++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
         gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
@@ -4367,15 +4428,22 @@ s32 is_model_center_visible(u16 modelID, s32 depthQueryID, f32* screenX, f32* sc
         // Adjust the scissor to only draw to the specified pixel.
         gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, depthQueryID, 0, depthQueryID + 1, 1);
         // Draw a texrect to copy one pixel of the loaded depth tile to the output buffer.
-        gSPTextureRectangle(gMainGfxPos++, depthQueryID << 2, 0 << 2, 4 << 2, 1 << 2, G_TX_RENDERTILE, (s32) outX << 5, 0, 1 << 10, 1 << 10);
+        gSPTextureRectangle(
+            gMainGfxPos++, depthQueryID << 2, 0 << 2, 4 << 2, 1 << 2, G_TX_RENDERTILE, (s32) outX << 5, 0, 1 << 10,
+            1 << 10
+        );
         // Sync and swap the color image back to the current framebuffer.
         gDPPipeSync(gMainGfxPos++);
         gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxCfb_ptr));
         gDPPipeSync(gMainGfxPos++);
         // Reconfigure the frame's normal scissor.
-        gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, camera->viewportStartX, camera->viewportStartY, camera->viewportStartX + camera->viewportW, camera->viewportStartY + camera->viewportH);
+        gDPSetScissor(
+            gMainGfxPos++, G_SC_NON_INTERLACE, camera->viewportStartX, camera->viewportStartY,
+            camera->viewportStartX + camera->viewportW, camera->viewportStartY + camera->viewportH
+        );
 
-        // The following code will use last frame's depth value, since the copy that was just written won't be executed until the current frame is drawn.
+        // The following code will use last frame's depth value, since the copy that was just written won't be executed
+        // until the current frame is drawn.
 
         // Extract the exponent and mantissa from the depth buffer value.
         depthExponent = DepthCopyBuffer[depthQueryID] >> DEPTH_EXPONENT_SHIFT;
@@ -4449,18 +4517,18 @@ OPTIMIZE_OFAST b32 is_point_visible(f32 x, f32 y, f32 z, s32 depthQueryID, f32* 
     if (outX >= 0.0f && outY >= 0.0f && outX < 320.0f && outY < 240.0f) {
         gDPPipeSync(gMainGfxPos++);
         // Load a 4x1 pixel tile of the depth buffer
-        gDPLoadTextureTile(gMainGfxPos++, osVirtualToPhysical(&nuGfxZBuffer[(s32) outY * SCREEN_WIDTH]), G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, 1,
-            (s32) outX, 0, (s32) outX + 3, 0,
-            0,
-            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
-            9, G_TX_NOMASK,
-            G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureTile(
+            gMainGfxPos++, osVirtualToPhysical(&nuGfxZBuffer[(s32) outY * SCREEN_WIDTH]), G_IM_FMT_RGBA, G_IM_SIZ_16b,
+            SCREEN_WIDTH, 1, (s32) outX, 0, (s32) outX + 3, 0, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+            9, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+        );
         gDPPipeSync(gMainGfxPos++);
         // Set the current color image to the buffer where copied depth values are stored.
         gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, DepthCopyBuffer);
         gDPPipeSync(gMainGfxPos++);
         // Set up 1 cycle mode and all other relevant othermode params.
-        // One cycle mode must be used here because only one pixel is copied, and copy mode only supports multiples of 4 pixels.
+        // One cycle mode must be used here because only one pixel is copied, and copy mode only supports multiples of 4
+        // pixels.
         gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
         gDPSetRenderMode(gMainGfxPos++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
         gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
@@ -4473,15 +4541,22 @@ OPTIMIZE_OFAST b32 is_point_visible(f32 x, f32 y, f32 z, s32 depthQueryID, f32* 
         // Adjust the scissor to only draw to the specified pixel.
         gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, depthQueryID, 0, depthQueryID + 1, 1);
         // Draw a texrect to copy one pixel of the loaded depth tile to the output buffer.
-        gSPTextureRectangle(gMainGfxPos++, depthQueryID << 2, 0 << 2, (depthQueryID + 1) << 2, 1 << 2, G_TX_RENDERTILE, (s32) outX << 5, 0, 1 << 10, 1 << 10);
+        gSPTextureRectangle(
+            gMainGfxPos++, depthQueryID << 2, 0 << 2, (depthQueryID + 1) << 2, 1 << 2, G_TX_RENDERTILE, (s32) outX << 5,
+            0, 1 << 10, 1 << 10
+        );
         // Sync and swap the color image back to the current framebuffer.
         gDPPipeSync(gMainGfxPos++);
         gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxCfb_ptr));
         gDPPipeSync(gMainGfxPos++);
         // Reconfigure the frame's normal scissor.
-        gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, camera->viewportStartX, camera->viewportStartY, camera->viewportStartX + camera->viewportW, camera->viewportStartY + camera->viewportH);
+        gDPSetScissor(
+            gMainGfxPos++, G_SC_NON_INTERLACE, camera->viewportStartX, camera->viewportStartY,
+            camera->viewportStartX + camera->viewportW, camera->viewportStartY + camera->viewportH
+        );
 
-        // The following code will use last frame's depth value, since the copy that was just written won't be executed until the current frame is drawn.
+        // The following code will use last frame's depth value, since the copy that was just written won't be executed
+        // until the current frame is drawn.
 
         // Extract the exponent and mantissa from the depth buffer value.
         depthExponent = DepthCopyBuffer[depthQueryID] >> DEPTH_EXPONENT_SHIFT;
@@ -4565,8 +4640,10 @@ void clear_render_tasks(void) {
 RenderTask* queue_render_task(RenderTask* task) {
     s32 dist = RenderTaskBasePriorities[task->renderMode] - task->dist;
     s32 listIdx = RENDER_TASK_LIST_MID;
-    if (dist >= 3000000) listIdx = RENDER_TASK_LIST_FAR;
-    else if (dist < 800000) listIdx = RENDER_TASK_LIST_NEAR;
+    if (dist >= 3000000)
+        listIdx = RENDER_TASK_LIST_FAR;
+    else if (dist < 800000)
+        listIdx = RENDER_TASK_LIST_NEAR;
 
     RenderTask* ret = RenderTaskLists[listIdx];
 
@@ -4623,7 +4700,8 @@ OPTIMIZE_OFAST void execute_render_tasks(void) {
 #undef LESS
 #undef SWAP
 
-    gLastRenderTaskCount = RenderTaskCount[RENDER_TASK_LIST_MID] + RenderTaskCount[RENDER_TASK_LIST_FAR] + RenderTaskCount[RENDER_TASK_LIST_NEAR];
+    gLastRenderTaskCount = RenderTaskCount[RENDER_TASK_LIST_MID] + RenderTaskCount[RENDER_TASK_LIST_FAR]
+        + RenderTaskCount[RENDER_TASK_LIST_NEAR];
     if (gOverrideFlags & GLOBAL_OVERRIDES_ENABLE_FLOOR_REFLECTION) {
         Mtx* dispMtx;
         Gfx* savedGfxPos = nullptr;
@@ -4648,7 +4726,10 @@ OPTIMIZE_OFAST void execute_render_tasks(void) {
                     gSPDisplayList(gMainGfxPos++, savedGfxPos + 1);
                     gSPMatrix(gMainGfxPos++, dispMtx, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
                     gSPDisplayList(gMainGfxPos++, savedGfxPos + 1);
-                    gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+                    gSPMatrix(
+                        gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID],
+                        G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+                    );
                 }
             }
         }

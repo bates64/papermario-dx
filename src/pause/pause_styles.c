@@ -6,7 +6,7 @@ extern u8 pause_image_1439F0_png[];
 extern u8 pause_image_143BF0_png[];
 extern u8 pause_image_143FF0_png[];
 
-//TODO replace with array when pause_stats_draw_contents is matched
+// TODO replace with array when pause_stats_draw_contents is matched
 WindowStyleCustom gPauseWS_0 = {
     .background = {
         .imgData = nullptr,

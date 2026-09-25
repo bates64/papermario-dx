@@ -7,9 +7,8 @@ API_CALLABLE(N(IsPlayerPushingCollider)) {
     CollisionStatus* collisionStatus = &gCollisionStatus;
 
     if ((collisionStatus->pushingAgainstWall != colliderID && playerStatus->actionState == ACTION_STATE_PUSHING_BLOCK)
-        || playerStatus->enableCollisionOverlapsCheck != 0
-        || playerStatus->inputDisabledCount != 0
-    ) {
+        || playerStatus->enableCollisionOverlapsCheck != 0 || playerStatus->inputDisabledCount != 0)
+    {
         set_action_state(ACTION_STATE_IDLE);
         script->varTable[0] = false;
         return ApiStatus_DONE2;
@@ -17,10 +16,8 @@ API_CALLABLE(N(IsPlayerPushingCollider)) {
 
     if (collisionStatus->pushingAgainstWall != colliderID) {
         script->varTable[0] = false;
-    } else if (
-        (playerStatus->actionState != ACTION_STATE_PUSHING_BLOCK) &&
-        (playerStatus->actionState != ACTION_STATE_WALK) &&
-        (playerStatus->actionState != ACTION_STATE_RUN))
+    } else if ((playerStatus->actionState != ACTION_STATE_PUSHING_BLOCK)
+               && (playerStatus->actionState != ACTION_STATE_WALK) && (playerStatus->actionState != ACTION_STATE_RUN))
     {
         script->varTable[0] = false;
     } else if (playerStatus->animFlags & PA_FLAG_USING_WATT) {

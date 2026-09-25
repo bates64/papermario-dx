@@ -26,7 +26,7 @@ API_CALLABLE(N(SwooperAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args++);
     EnemyDetectVolume detectVolume;
     EnemyDetectVolume* detect = &detectVolume;
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -73,7 +73,10 @@ API_CALLABLE(N(SwooperAI_Main)) {
             if (settings->playerSearchInterval >= 0) {
                 if (script->functionTemp[1] <= 0) {
                     script->functionTemp[1] = settings->playerSearchInterval;
-                    if (basic_ai_check_player_dist(detect, enemy, settings->alertRadius, settings->alertOffsetDist, false)) {
+                    if (basic_ai_check_player_dist(
+                            detect, enemy, settings->alertRadius, settings->alertOffsetDist, false
+                        ))
+                    {
                         ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
                         script->AI_TEMP_STATE = AI_STATE_SWOOPER_DETACH_INIT;
                     }
@@ -109,7 +112,11 @@ API_CALLABLE(N(SwooperAI_Main)) {
                 x = npc->pos.x;
                 y = npc->pos.y;
                 z = npc->pos.z;
-                if (npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, npc->moveSpeed, npc->yaw, npc->collisionHeight, npc->collisionDiameter)) {
+                if (npc_test_move_simple_with_slipping(
+                        npc->collisionChannel, &x, &y, &z, npc->moveSpeed, npc->yaw, npc->collisionHeight,
+                        npc->collisionDiameter
+                    ))
+                {
                     npc->moveSpeed = 0.0f;
                 }
                 npc->yaw = atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
@@ -164,8 +171,10 @@ API_CALLABLE(N(SwooperAI_Main)) {
                 x = npc->pos.x;
                 y = npc->pos.y;
                 z = npc->pos.z;
-                if (npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, npc->moveSpeed, npc->yaw,
-                                                       npc->collisionHeight, npc->collisionDiameter))
+                if (npc_test_move_simple_with_slipping(
+                        npc->collisionChannel, &x, &y, &z, npc->moveSpeed, npc->yaw, npc->collisionHeight,
+                        npc->collisionDiameter
+                    ))
                 {
                     npc->moveSpeed = 0.0f;
                 } else if (npc->jumpVel < -2.5) {

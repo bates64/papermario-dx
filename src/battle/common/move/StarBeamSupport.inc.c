@@ -119,9 +119,14 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
                     } else {
                         N(MiscParticlesTimeLeft)[i] = 20;
                         if (N(SpiritsFlyDelay)[i] <= 0) {
-                            fx_misc_particles(4, spirit->lockedPos.x, spirit->lockedPos.y, spirit->lockedPos.z, 20.0f, 20.0f, 1.0f, 10, 20);
+                            fx_misc_particles(
+                                4, spirit->lockedPos.x, spirit->lockedPos.y, spirit->lockedPos.z, 20.0f, 20.0f, 1.0f,
+                                10, 20
+                            );
                         } else {
-                            fx_misc_particles(4, spirit->pos.x, spirit->pos.y, spirit->pos.z, 20.0f, 20.0f, 1.0f, 10, 20);
+                            fx_misc_particles(
+                                4, spirit->pos.x, spirit->pos.y, spirit->pos.z, 20.0f, 20.0f, 1.0f, 10, 20
+                            );
                         }
                     }
                 }
@@ -137,9 +142,14 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
                     } else {
                         N(MiscParticlesTimeLeft)[i] = 20;
                         if (N(SpiritsFlyAwayDelay)[i] <= 0) {
-                            fx_misc_particles(4, spirit->lockedPos.x, spirit->lockedPos.y, spirit->lockedPos.z, 20.0f, 20.0f, 1.0f, 10, 20);
+                            fx_misc_particles(
+                                4, spirit->lockedPos.x, spirit->lockedPos.y, spirit->lockedPos.z, 20.0f, 20.0f, 1.0f,
+                                10, 20
+                            );
                         } else {
-                            fx_misc_particles(4, spirit->pos.x, spirit->pos.y, spirit->pos.z, 20.0f, 20.0f, 1.0f, 10, 20);
+                            fx_misc_particles(
+                                4, spirit->pos.x, spirit->pos.y, spirit->pos.z, 20.0f, 20.0f, 1.0f, 10, 20
+                            );
                         }
                     }
                 }
@@ -346,7 +356,9 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
             if (script->functionTemp[FT_DELAY] == 0) {
                 N(StarBeamStage) = 1;
                 if (!script->functionTemp[FT_IS_PEACH_BEAM] && player->targetListLength == 1) {
-                    if (get_actor_part(get_actor(player->targetActorID), player->targetPartID)->eventFlags & ACTOR_EVENT_FLAG_STAR_ROD_ENCHANTED) {
+                    if (get_actor_part(get_actor(player->targetActorID), player->targetPartID)->eventFlags
+                        & ACTOR_EVENT_FLAG_STAR_ROD_ENCHANTED)
+                    {
                         script->functionTemp[FT_STATE] = PEACH_STAR_BEAM_IMMUNE;
                     } else {
                         script->functionTemp[FT_DELAY] = 15;
@@ -450,7 +462,7 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
         case PEACH_STAR_BEAM_SPIRITS_SCATTER:
             cond = false;
             effectData = N(BeamEffect)->data.peachStarBeam;
-            for (i = 0; i < ARRAY_COUNT(effectData->spirits);  i++) {
+            for (i = 0; i < ARRAY_COUNT(effectData->spirits); i++) {
                 if (script->functionTemp[FT_IS_PEACH_BEAM] || i != 0) {
                     spirit = &effectData->spirits[i];
                     if (N(SpiritsFlyDelay)[i] < 0) {

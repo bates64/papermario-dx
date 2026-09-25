@@ -22,8 +22,8 @@ s32 N(ShouldPauseConveyor)(void) {
         return true;
     }
 
-    if (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE &&
-        (playerData->curPartner == PARTNER_GOOMBARIO || playerData->curPartner == PARTNER_SUSHIE))
+    if (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE
+        && (playerData->curPartner == PARTNER_GOOMBARIO || playerData->curPartner == PARTNER_SUSHIE))
     {
         return true;
     }
@@ -60,9 +60,8 @@ API_CALLABLE(N(AddConveyorPush)) {
             y = playerStatus->pos.y;
             z = playerStatus->pos.z;
             outLength = 1000.0f;
-            hit = player_raycast_below_cam_relative(playerStatus,
-                &x, &y, &z, &outLength,
-                &hitRx, &hitRz, &hitDirX, &hitDirZ
+            hit = player_raycast_below_cam_relative(
+                playerStatus, &x, &y, &z, &outLength, &hitRx, &hitRz, &hitDirX, &hitDirZ
             );
 
             for (i = 0; i < ARRAY_COUNT(N(ConveyorColliders)); i++) {
@@ -76,20 +75,19 @@ API_CALLABLE(N(AddConveyorPush)) {
         }
     }
 
-    if (partnerStatus->actingPartner != PARTNER_LAKILESTER ||
-        partnerStatus->partnerActionState == PARTNER_ACTION_NONE)
+    if (partnerStatus->actingPartner != PARTNER_LAKILESTER || partnerStatus->partnerActionState == PARTNER_ACTION_NONE)
     {
         for (i = 0; i < ARRAY_COUNT(N(ConveyorColliders)); i++) {
-            if (gCollisionStatus.curFloor == N(ConveyorColliders)[i] ||
-                gCollisionStatus.lastTouchedFloor == N(ConveyorColliders)[i])
+            if (gCollisionStatus.curFloor == N(ConveyorColliders)[i]
+                || gCollisionStatus.lastTouchedFloor == N(ConveyorColliders)[i])
             {
                 playerStatus->pushVel.x = N(ConveyorPushVels)[i].x;
                 playerStatus->pushVel.z = N(ConveyorPushVels)[i].z;
             }
 
-            if (partner->curFloor == N(ConveyorColliders)[i] &&
-                ((partnerStatus->actingPartner != PARTNER_KOOPER) ||
-                 (partnerStatus->partnerActionState == PARTNER_ACTION_NONE)))
+            if (partner->curFloor == N(ConveyorColliders)[i]
+                && ((partnerStatus->actingPartner != PARTNER_KOOPER)
+                    || (partnerStatus->partnerActionState == PARTNER_ACTION_NONE)))
             {
                 partner->pos.x += N(ConveyorPushVels)[i].x;
                 partner->pos.z += N(ConveyorPushVels)[i].z;

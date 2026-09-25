@@ -27,12 +27,8 @@ void shape_spell_init(EffectInstance* effect);
 void shape_spell_update(EffectInstance* effect);
 void shape_spell_render(EffectInstance* effect);
 
-EffectInstance* shape_spell_main(
-    s32 isChild,
-    f32 startX, f32 startY, f32 startZ,
-    f32 endX, f32 endY, f32 endZ,
-    s32 duration
-) {
+EffectInstance*
+shape_spell_main(s32 isChild, f32 startX, f32 startY, f32 startZ, f32 endX, f32 endY, f32 endZ, s32 duration) {
     EffectBlueprint bp;
     EffectBlueprint* bpPtr = &bp;
     EffectInstance* effect;
@@ -106,12 +102,10 @@ void shape_spell_update(EffectInstance* effect) {
     if (!isChild && data->timeLeft == 0) {
         // parent projectiles leave a short radial burst at the endpoint.
         ShapeSpellFXData* newPart = shape_spell_main(
-            1,
-            data->pos.x + data->offset.x,
-            data->pos.y + data->offset.y,
-            data->pos.z + data->offset.z,
-            0.0f, 0.0f, 0.0f, 24
-        )->data.shapeSpell;
+                                        1, data->pos.x + data->offset.x, data->pos.y + data->offset.y,
+                                        data->pos.z + data->offset.z, 0.0f, 0.0f, 0.0f, 24
+        )
+                                        ->data.shapeSpell;
         newPart->scale = data->scale;
     }
 
@@ -140,17 +134,17 @@ void shape_spell_render(EffectInstance* effect) {
 s32 shape_spell_get_env_component(s32 base, s32 phase) {
     s32 absTime = gGameStatusPtr->frameCounter * 32;
 
-    return (f32)(base + (sin_deg(absTime + phase) * (255 - base) + (255 - base)) * 0.5f);
+    return (f32) (base + (sin_deg(absTime + phase) * (255 - base) + (255 - base)) * 0.5f);
 }
 
 s32 shape_spell_get_prim_component(s32 base, s32 phase) {
     s32 absTime = gGameStatusPtr->frameCounter * 32;
 
-    return (f32)(base - (sin_deg(absTime + phase + 180) * base + base) * 0.5f);
+    return (f32) (base - (sin_deg(absTime + phase + 180) * base + base) * 0.5f);
 }
 
 void shape_spell_appendGfx(void* effect) {
-    ShapeSpellFXData* data = ((EffectInstance*)effect)->data.shapeSpell;
+    ShapeSpellFXData* data = ((EffectInstance*) effect)->data.shapeSpell;
     s32 isChild;
     Gfx* inlineGfxPos;
     Gfx* branchGfxPos;
@@ -170,7 +164,7 @@ void shape_spell_appendGfx(void* effect) {
     s32 j;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_09001080_33AFE0);
 
     // reserve a spot for the branch
@@ -214,27 +208,23 @@ void shape_spell_appendGfx(void* effect) {
         guPositionF(sp20, 0.0f, yaw, 0.0f, scale, offsetX, offsetY, offsetZ);
         guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
 
-        guTranslateF(sp20,
-            sin_deg(angle) * orbitRadius,
-            cos_deg(angle) * orbitRadius, 0.0f);
+        guTranslateF(sp20, sin_deg(angle) * orbitRadius, cos_deg(angle) * orbitRadius, 0.0f);
 
         angle += 120.0f;
         orbitMtx[0] = &gDisplayContext->matrixStack[gMatrixListPos++];
 
         guMtxF2L(sp20, orbitMtx[0]);
-        guTranslateF(sp20,
-            sin_deg(angle) * orbitRadius,
-            cos_deg(angle) * orbitRadius, 0.0f);
+        guTranslateF(sp20, sin_deg(angle) * orbitRadius, cos_deg(angle) * orbitRadius, 0.0f);
 
         angle += 120.0f;
         orbitMtx[1] = &gDisplayContext->matrixStack[gMatrixListPos++];
 
         guMtxF2L(sp20, orbitMtx[1]);
-        guTranslateF(sp20,
-            sin_deg(angle) * orbitRadius,
-            cos_deg(angle) * orbitRadius, 0.0f);
+        guTranslateF(sp20, sin_deg(angle) * orbitRadius, cos_deg(angle) * orbitRadius, 0.0f);
 
         orbitMtx[2] = &gDisplayContext->matrixStack[gMatrixListPos++];
 
@@ -242,16 +232,16 @@ void shape_spell_appendGfx(void* effect) {
 
         for (j = 0; j < 3; j++) {
             gSPMatrix(gMainGfxPos++, orbitMtx[j], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-            gDPSetPrimColor(gMainGfxPos++, 0, 0,
-                shape_spell_get_prim_component(D_E0024CC0[j].color.r, D_E0024CC0[j].phase),
+            gDPSetPrimColor(
+                gMainGfxPos++, 0, 0, shape_spell_get_prim_component(D_E0024CC0[j].color.r, D_E0024CC0[j].phase),
                 shape_spell_get_prim_component(D_E0024CC0[j].color.g, D_E0024CC0[j].phase),
-                shape_spell_get_prim_component(D_E0024CC0[j].color.b, D_E0024CC0[j].phase),
-                primA);
-            gDPSetEnvColor(gMainGfxPos++,
-                shape_spell_get_env_component(D_E0024CC0[j].color.r, D_E0024CC0[j].phase),
+                shape_spell_get_prim_component(D_E0024CC0[j].color.b, D_E0024CC0[j].phase), primA
+            );
+            gDPSetEnvColor(
+                gMainGfxPos++, shape_spell_get_env_component(D_E0024CC0[j].color.r, D_E0024CC0[j].phase),
                 shape_spell_get_env_component(D_E0024CC0[j].color.g, D_E0024CC0[j].phase),
-                shape_spell_get_env_component(D_E0024CC0[j].color.b, D_E0024CC0[j].phase),
-                255);
+                shape_spell_get_env_component(D_E0024CC0[j].color.b, D_E0024CC0[j].phase), 255
+            );
             gSPDisplayList(gMainGfxPos++, isChild ? D_E0024CC0[j].childGfx : D_E0024CC0[j].parentGfx);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         }

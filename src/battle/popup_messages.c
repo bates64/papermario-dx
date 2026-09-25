@@ -389,7 +389,7 @@ void show_immune_bonk(f32 x, f32 y, f32 z, s32 numStars, s32 startupTime, s32 an
     popup->messageIndex = 1;
     popup->active |= 0x10;
     bonkData = popup->data.bonk = heap_malloc(numStars * sizeof(*popup->data.bonk));
-    ASSERT (popup->data.bonk != nullptr);
+    ASSERT(popup->data.bonk != nullptr);
 
     for (i = 0; i < numStars; i++) {
         bonkData->alive = true;
@@ -402,7 +402,7 @@ void show_immune_bonk(f32 x, f32 y, f32 z, s32 numStars, s32 startupTime, s32 an
         bonkPosIdx = animDir % 8;
         animDir++;
 
-        bonkData->accel.x = BonkAnimAccel[bonkPosIdx].x * timescale * sign ;
+        bonkData->accel.x = BonkAnimAccel[bonkPosIdx].x * timescale * sign;
         bonkData->accel.y = BonkAnimAccel[bonkPosIdx].y * timescale;
         bonkData->accel.z = BonkAnimAccel[bonkPosIdx].z * timescale;
         bonkData->vel.x = 2.0 * bonkData->accel.x;
@@ -640,10 +640,9 @@ void btl_message_unlock_box_pos(void) {
 void close_action_command_instruction_popup(void) {
     PopupMessage* popup = bPopupMessage;
 
-    if (popup != nullptr
-        && popup->messageIndex <= BTL_MSG_LAST_ACTION_TIP
-        && popup->messageIndex >= BTL_MSG_FIRST_ACTION_TIP
-    ) {
+    if (popup != nullptr && popup->messageIndex <= BTL_MSG_LAST_ACTION_TIP
+        && popup->messageIndex >= BTL_MSG_FIRST_ACTION_TIP)
+    {
         popup->duration = 0;
     }
 }
@@ -772,12 +771,16 @@ void btl_update_message_popup(void* data) {
                     switch (popup->messageIndex) {
                         case BTL_MSG_ACTION_TIP_MASH_LEFT:
                             HID_BattleMessage1 = hud_element_create(HES_StickNeutral);
-                            hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_HOLD_LEFT_TIMED:
                             HID_BattleMessage1 = hud_element_create(HES_StickNeutral);
-                            hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
 
                             HID_BattleMessage2 = hud_element_create(HES_TimingReady);
@@ -786,17 +789,23 @@ void btl_update_message_popup(void* data) {
                             break;
                         case BTL_MSG_ACTION_TIP_HOLD_LEFT_AIM:
                             HID_BattleMessage1 = hud_element_create(HES_StickNeutral);
-                            hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
 
                             HID_BattleMessage2 = hud_element_create(HES_AimTarget);
-                            hud_element_set_flags(HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage2, -100, -100);
                             hud_element_create_transform_B(HID_BattleMessage2);
                             break;
                         case BTL_MSG_ACTION_TIP_UNUSED_1:
                             HID_BattleMessage1 = hud_element_create(HES_CUpButton);
-                            hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
 
                             HID_BattleMessage2 = hud_element_create(HES_CDownButton);
@@ -813,25 +822,35 @@ void btl_update_message_popup(void* data) {
                             break;
                         case BTL_MSG_ACTION_TIP_UNUSED_2:
                             HID_BattleMessage1 = hud_element_create(HES_StickNeutral);
-                            hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_PRESS_BUTTONS_SHOWN:
                             HID_BattleMessage1 = hud_element_create(HES_AButton);
-                            hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
 
                             HID_BattleMessage2 = hud_element_create(HES_BButton);
-                            hud_element_set_flags(HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage2, -100, -100);
 
                             HID_BattleMessage3 = hud_element_create(HES_CDownButton);
-                            hud_element_set_flags(HID_BattleMessage3, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage3, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage3, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_NOT_USED_1:
                             HID_BattleMessage1 = hud_element_create(HES_StickNeutral);
-                            hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_PRESS_WITH_TIMING:
@@ -840,24 +859,34 @@ void btl_update_message_popup(void* data) {
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
 
                             HID_BattleMessage2 = hud_element_create(HES_AButton);
-                            hud_element_set_flags(HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage2, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_NOT_USED_2:
                             HID_BattleMessage1 = hud_element_create(HES_AButton);
-                            hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             HID_BattleMessage2 = hud_element_create(HES_BButton);
-                            hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_MASH_BOTH:
                             HID_BattleMessage1 = hud_element_create(HES_AButton);
-                            hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
 
                             HID_BattleMessage2 = hud_element_create(HES_BButton);
-                            hud_element_set_flags(HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage2, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_HOLD_THEN_RELEASE:
@@ -866,28 +895,38 @@ void btl_update_message_popup(void* data) {
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
 
                             HID_BattleMessage2 = hud_element_create(HES_AButtonDown);
-                            hud_element_set_flags(HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage2, -100, -100);
                             break;
                         case BTL_MSG_ACTION_TIP_MOVE_TO_AIM:
                             HID_BattleMessage1 = hud_element_create(HES_StickNeutral);
-                            hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
 
                             HID_BattleMessage2 = hud_element_create(HES_AimTarget);
-                            hud_element_set_flags(HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage2, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage2, -100, -100);
                             hud_element_create_transform_B(HID_BattleMessage2);
 
                             HID_BattleMessage3 = hud_element_create(HES_AimReticle);
-                            hud_element_set_flags(HID_BattleMessage3, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage3, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage3, -100, -100);
                             hud_element_create_transform_B(HID_BattleMessage3);
                             break;
                         case BTL_MSG_ACTION_TIP_BREAK_FREE:
                         case BTL_MSG_ACTION_TIP_REDUCE_DAMAGE:
                             HID_BattleMessage1 = hud_element_create(HES_AButton);
-                            hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             // fallthrough
                         case BTL_MSG_ACTION_TIP_PRESS_BEFORE_LANDING:
@@ -898,7 +937,9 @@ void btl_update_message_popup(void* data) {
                         case BTL_MSG_ACTION_TIP_UNUSED_4:
                         case BTL_MSG_ACTION_TIP_NOT_USED_3:
                             HID_BattleMessage1 = hud_element_create(HES_AButton);
-                            hud_element_set_flags(HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
+                            hud_element_set_flags(
+                                HID_BattleMessage1, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER
+                            );
                             hud_element_set_render_pos(HID_BattleMessage1, -100, -100);
                             break;
                     }
@@ -913,9 +954,7 @@ void btl_update_message_popup(void* data) {
                         break;
                     }
 
-                    if (!(gBattleStatus.flags1 & BS_FLAGS1_4000)
-                        && (actionCommandMode != AC_MODE_TUTORIAL)
-                    ) {
+                    if (!(gBattleStatus.flags1 & BS_FLAGS1_4000) && (actionCommandMode != AC_MODE_TUTORIAL)) {
                         set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW_TRANSPARENT);
                         switch (popup->messageIndex) {
                             case BTL_MSG_ACTION_TIP_MASH_BUTTON:
@@ -993,9 +1032,7 @@ void btl_update_message_popup(void* data) {
                     }
                     break;
                 case BTL_MSG_STATE_ACTION_TIP_DISPOSE:
-                    if ((actionCommandMode != AC_MODE_TUTORIAL)
-                        || (gBattleStatus.flags1 & BS_FLAGS1_10000)
-                    ) {
+                    if ((actionCommandMode != AC_MODE_TUTORIAL) || (gBattleStatus.flags1 & BS_FLAGS1_10000)) {
                         if (BattleMessage_CurBoxPosY < 192) {
                             if (!BattleMessage_BoxPosLocked) {
                                 BattleMessage_CurBoxPosY += 10;
@@ -1660,11 +1697,15 @@ void btl_show_message_popup(void* data) {
         case BTL_MSG_CANT_SELECT_NOW_ALT:
             if (popup->needsInit) {
                 popup->needsInit = false;
-                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0) + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
+                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0)
+                    + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
                 posX = 160 - (msgWidth / 2);
                 width = msgWidth;
                 height = 28 + D_8028374C_1BA13C[popup->messageIndex][1];
-                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_properties(
+                    WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup,
+                    -1
+                );
                 set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
@@ -1674,11 +1715,15 @@ void btl_show_message_popup(void* data) {
         case BTL_MSG_CANT_SWITCH:
             if (popup->needsInit) {
                 popup->needsInit = false;
-                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0) + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
+                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0)
+                    + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
                 posX = 160 - (msgWidth / 2);
                 width = msgWidth;
                 height = 45 + D_8028374C_1BA13C[popup->messageIndex][1];
-                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_properties(
+                    WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup,
+                    -1
+                );
                 set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
@@ -1705,7 +1750,8 @@ void btl_show_message_popup(void* data) {
         case BTL_MSG_ACTION_TIP_NOT_USED_3:
             if (popup->needsInit) {
                 popup->needsInit = false;
-                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0) + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
+                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0)
+                    + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
                 posX = 160 - (msgWidth / 2);
                 width = msgWidth;
                 posY = 192;
@@ -1716,7 +1762,10 @@ void btl_show_message_popup(void* data) {
                 }
                 BattleMessage_CurBoxPosY = posY;
 
-                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_properties(
+                    WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup,
+                    -1
+                );
                 if (popup->messageIndex == BTL_MSG_ACTION_TIP_UNUSED_3) {
                     set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
                 } else {
@@ -1733,11 +1782,15 @@ void btl_show_message_popup(void* data) {
         case BTL_MSG_ITEMS_DISABLED:
             if (popup->needsInit) {
                 popup->needsInit = false;
-                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0) + (55 + D_8028374C_1BA13C[popup->messageIndex][0]);
+                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0)
+                    + (55 + D_8028374C_1BA13C[popup->messageIndex][0]);
                 posX = 160 - (msgWidth / 2);
                 width = msgWidth;
                 height = 40 + D_8028374C_1BA13C[popup->messageIndex][1];
-                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_properties(
+                    WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup,
+                    -1
+                );
                 set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
@@ -1751,7 +1804,8 @@ void btl_show_message_popup(void* data) {
         case BTL_MSG_PLAYER_TRANSPARENT:
             if (popup->needsInit) {
                 popup->needsInit = false;
-                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0) + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
+                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0)
+                    + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
                 posX = 160 - (msgWidth / 2);
                 width = msgWidth;
                 if (D_80283B88_1BA578[popup->messageIndex - 10] != 0) {
@@ -1760,7 +1814,10 @@ void btl_show_message_popup(void* data) {
                     height = 28 + D_8028374C_1BA13C[popup->messageIndex][1];
                 }
 
-                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_properties(
+                    WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup,
+                    -1
+                );
                 set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
@@ -1774,7 +1831,8 @@ void btl_show_message_popup(void* data) {
         case BTL_MSG_ENEMY_CANT_MOVE:
             if (popup->needsInit) {
                 popup->needsInit = false;
-                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0) + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
+                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0)
+                    + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
                 posX = 160 - (msgWidth / 2);
                 width = msgWidth;
                 if (D_80283BA8_1BA598[popup->messageIndex - 18] != 0) {
@@ -1783,7 +1841,10 @@ void btl_show_message_popup(void* data) {
                     height = 28 + D_8028374C_1BA13C[popup->messageIndex][1];
                 }
 
-                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_properties(
+                    WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup,
+                    -1
+                );
                 set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
@@ -1807,7 +1868,10 @@ void btl_show_message_popup(void* data) {
                 posX = 160 - (msgWidth / 2);
                 width = msgWidth;
                 height = 28 + D_8028374C_1BA13C[popup->messageIndex][1];
-                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_properties(
+                    WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup,
+                    -1
+                );
                 set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
@@ -1822,7 +1886,10 @@ void btl_show_message_popup(void* data) {
                 posX = 160 - (msgWidth / 2);
                 width = msgWidth;
                 height = 28 + D_8028374C_1BA13C[popup->messageIndex][1];
-                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_properties(
+                    WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup,
+                    -1
+                );
                 set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
@@ -1885,7 +1952,10 @@ void btl_show_message_popup(void* data) {
                 width = msgWidth;
                 numLines = get_msg_lines(messageID) - 1;
                 height = BattleMessage_BoxSizesY[numLines];
-                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_properties(
+                    WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup,
+                    -1
+                );
                 set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
@@ -1902,7 +1972,10 @@ void btl_show_message_popup(void* data) {
                 posX = 160 - (msgWidth / 2);
                 width = msgWidth;
                 height = 40;
-                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_properties(
+                    WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup,
+                    -1
+                );
                 set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
@@ -1927,7 +2000,10 @@ void btl_show_message_popup(void* data) {
                 width = msgWidth;
                 numLines = get_msg_lines(messageID) - 1;
                 height = BattleMessage_BoxSizesY[numLines];
-                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_properties(
+                    WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup,
+                    -1
+                );
                 set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
@@ -1943,7 +2019,10 @@ void btl_show_message_popup(void* data) {
                 width = msgWidth;
                 numLines = get_msg_lines(messageID) - 1;
                 height = BattleMessage_BoxSizesY[numLines];
-                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_properties(
+                    WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup,
+                    -1
+                );
                 set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
@@ -1987,7 +2066,10 @@ void btl_show_message_popup(void* data) {
                 BattleMessage_CurBoxOffsetY = BattleMessage_BoxOffsetsY[numLines];
 
                 posY = BattleMessage_CurBoxPosY + BattleMessage_CurBoxOffsetY;
-                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_properties(
+                    WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup,
+                    -1
+                );
                 if (popup->messageIndex == BTL_MSG_ACTION_TIP_UNUSED_3) {
                     set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
                 } else {
@@ -2056,10 +2138,9 @@ void apply_shock_effect(Actor* actor) {
     ActorPart* part = actor->partsTable;
 
     while (part != nullptr) {
-        if (!(part->flags & ACTOR_PART_FLAG_INVISIBLE)
-            && part->idleAnimations != nullptr
-            && !(part->flags & ACTOR_PART_FLAG_SKIP_SHOCK_EFFECT)
-        ) {
+        if (!(part->flags & ACTOR_PART_FLAG_INVISIBLE) && part->idleAnimations != nullptr
+            && !(part->flags & ACTOR_PART_FLAG_SKIP_SHOCK_EFFECT))
+        {
             f32 x = part->curPos.x;
             f32 y = part->curPos.y + (actor->size.y / 10);
             f32 z = part->curPos.z;

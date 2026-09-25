@@ -147,8 +147,8 @@ API_CALLABLE(PlayerMoveTo) {
         playerStatus->targetYaw = atan2(playerStatus->pos.x, playerStatus->pos.z, targetX, targetZ);
 
         if (script->functionTemp[0] == 0) {
-            script->functionTemp[0] = dist2D(playerStatus->pos.x, playerStatus->pos.z, targetX,
-                                               targetZ) / playerNpc->moveSpeed;
+            script->functionTemp[0] =
+                dist2D(playerStatus->pos.x, playerStatus->pos.z, targetX, targetZ) / playerNpc->moveSpeed;
             moveSpeed = playerNpc->moveSpeed;
         } else {
             moveSpeed = dist2D(playerStatus->pos.x, playerStatus->pos.z, targetX, targetZ) / script->functionTemp[0];
@@ -201,9 +201,11 @@ API_CALLABLE(func_802D1380) {
         playerStatus->targetYaw = atan2(playerStatus->pos.x, playerStatus->pos.z, targetX, targetZ);
 
         if (playerNpc->duration != 0) {
-            playerNpc->moveSpeed = dist2D(playerStatus->pos.x, playerStatus->pos.z, targetX, targetZ) / (f32) playerNpc->duration;
+            playerNpc->moveSpeed =
+                dist2D(playerStatus->pos.x, playerStatus->pos.z, targetX, targetZ) / (f32) playerNpc->duration;
         } else {
-            playerNpc->duration = dist2D(playerStatus->pos.x, playerStatus->pos.z, targetX, targetZ) / playerNpc->moveSpeed;
+            playerNpc->duration =
+                dist2D(playerStatus->pos.x, playerStatus->pos.z, targetX, targetZ) / playerNpc->moveSpeed;
             if (playerNpc->duration == 0) {
                 playerNpc->duration = 1;
             }
@@ -404,7 +406,7 @@ API_CALLABLE(PlayerFaceNpc) {
         if (npcID == NPC_SELF) {
             npc = get_npc_safe(script->owner2.npcID);
         } else if (npcID < EVT_LIMIT) {
-            npc = (Npc*)npcID;
+            npc = (Npc*) npcID;
         } else {
             npc = get_npc_safe(npcID);
             if (npc == nullptr) {
@@ -587,7 +589,8 @@ API_CALLABLE(UseExitHeading) {
         }
 
         sin_cos_deg(clamp_angle(entryYaw + 180.0f), &sinTheta, &cosTheta);
-        gGameStatusPtr->exitTangent = (cosTheta * (playerStatus->pos.x - entryX)) - (sinTheta * (entryZ - playerStatus->pos.z));
+        gGameStatusPtr->exitTangent =
+            (cosTheta * (playerStatus->pos.x - entryX)) - (sinTheta * (entryZ - playerStatus->pos.z));
         exitTangentOffset = gGameStatusPtr->exitTangent * 0.3f;
         script->varTable[1] = (playerStatus->pos.x + (walkDistance * sinTheta)) - (exitTangentOffset * cosTheta);
         script->varTable[3] = (playerStatus->pos.z - (walkDistance * cosTheta)) - (exitTangentOffset * sinTheta);
@@ -852,9 +855,7 @@ API_CALLABLE(Disable8bitMario) {
     } else {
         playerStatus->colliderHeight = 19;
         playerStatus->colliderDiameter = 26;
-        playerStatus->animFlags |= PA_FLAG_8BIT_MARIO
-            | PA_FLAG_INTERRUPT_SPIN
-            | PA_FLAG_INTERRUPT_USE_PARTNER;
+        playerStatus->animFlags |= PA_FLAG_8BIT_MARIO | PA_FLAG_INTERRUPT_SPIN | PA_FLAG_INTERRUPT_USE_PARTNER;
     }
 
     return ApiStatus_DONE2;

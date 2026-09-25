@@ -92,7 +92,9 @@ API_CALLABLE(N(AnimateIceShattering)) {
         }
 
         model->flags |= MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM;
-        guTranslateF(mtxTransform, it->pos.x - it->initialPos.x, it->pos.y - it->initialPos.y, it->pos.z - it->initialPos.z);
+        guTranslateF(
+            mtxTransform, it->pos.x - it->initialPos.x, it->pos.y - it->initialPos.y, it->pos.z - it->initialPos.z
+        );
         it->rot.x += it->rotVel.x;
         it->rot.y += it->rotVel.y;
         it->rot.z += it->rotVel.z;
@@ -123,8 +125,8 @@ API_CALLABLE(N(AwaitPlayerNotPoundingFloor)) {
     s32 floor2 = evt_get_variable(script, *args++);
 
     if (gCollisionStatus.curFloor == floor1 || gCollisionStatus.curFloor == floor2) {
-        if (playerStatus->actionState == ACTION_STATE_SPIN_POUND ||
-            playerStatus->actionState == ACTION_STATE_TORNADO_POUND)
+        if (playerStatus->actionState == ACTION_STATE_SPIN_POUND
+            || playerStatus->actionState == ACTION_STATE_TORNADO_POUND)
         {
             return ApiStatus_BLOCK;
         }

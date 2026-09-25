@@ -50,7 +50,7 @@ API_CALLABLE(N(CreateConsumableItemList)) {
     // count number of consumables
     for (itemID = 0; itemID < NUM_ITEMS; itemID++) {
         if (item_is_consumable(itemID)) {
-           count++;
+            count++;
         }
     }
 
@@ -60,7 +60,7 @@ API_CALLABLE(N(CreateConsumableItemList)) {
     // populate the array
     for (itemID = 0; itemID < NUM_ITEMS; itemID++) {
         if (item_is_consumable(itemID)) {
-           array[pos++] = itemID;
+            array[pos++] = itemID;
         }
     }
     array[pos] = ITEM_NONE;

@@ -9,8 +9,9 @@ export s32 N(map_init)(void) {
 
 EvtScript N(EVS_ExitWalk_arn_04_1) = EVT_EXIT_WALK(60, dgb_00_ENTRY_0, "arn_04", arn_04_ENTRY_1);
 
-EvtScript N(EVS_ExitDoors_dgb_01_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_00_ENTRY_1, "dgb_01", dgb_01_ENTRY_0,
-    COLLIDER_deiliwt, MODEL_d1, MODEL_d2, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_dgb_01_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    dgb_00_ENTRY_1, "dgb_01", dgb_01_ENTRY_0, COLLIDER_deiliwt, MODEL_d1, MODEL_d2, DOOR_SOUNDS_CREAKY
+);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_arn_04_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)

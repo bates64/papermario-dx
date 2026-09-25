@@ -6,8 +6,9 @@ API_CALLABLE(N(DarkRoomUpdate)) {
         script->functionTemp[1] = false;
     }
 
-    set_screen_overlay_center_worldpos(SCREEN_LAYER_BACK, 1,
-        gPlayerStatus.pos.x, gPlayerStatus.pos.y + 8.0f, gPlayerStatus.pos.z);
+    set_screen_overlay_center_worldpos(
+        SCREEN_LAYER_BACK, 1, gPlayerStatus.pos.x, gPlayerStatus.pos.y + 8.0f, gPlayerStatus.pos.z
+    );
 
     if (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) {
         if (gPlayerData.curPartner == PARTNER_WATT) {

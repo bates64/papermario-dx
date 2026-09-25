@@ -24,7 +24,6 @@ API_CALLABLE(N(func_802A123C_71CF1C)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-
 #include "battle/move/item/egg_missile1.png.h"
 INCLUDE_IMG("battle/move/item/egg_missile1.png", battle_item_egg_missile1_png);
 INCLUDE_PAL("battle/move/item/egg_missile1.pal", battle_item_egg_missile1_pal);

@@ -91,15 +91,17 @@ void N(FlyingMagikoopaAI_SwoopInit)(Evt* script, MobileAISettings* settings, Ene
 
     if (is_point_outside_wander_territory(&enemy->territory->wander, npc->pos.x, npc->pos.z)) {
         // return toward center if outside detect
-        npc->yaw = atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
-        returnDist = dist2D(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
+        npc->yaw =
+            atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
+        returnDist =
+            dist2D(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
         if (swoopDist > returnDist) {
             swoopDist = returnDist;
         }
     } else {
         // initially choose a swoop direction toward the player
         npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatus.pos.x, gPlayerStatus.pos.z);
-        if (npc->yaw  < 180.0) {
+        if (npc->yaw < 180.0) {
             baseYaw = (rand_int(10) + 90.0) - 5.0;
         } else {
             baseYaw = (rand_int(10) + 270.0) - 5.0;
@@ -120,9 +122,10 @@ void N(FlyingMagikoopaAI_SwoopInit)(Evt* script, MobileAISettings* settings, Ene
             posX = npc->pos.x;
             posY = npc->pos.y;
             posZ = npc->pos.z;
-            if (npc_test_move_taller_with_slipping(0, &posX, &posY, &posZ,
-                swoopDist, npc->yaw, npc->collisionHeight, npc->collisionDiameter)
-            ) {
+            if (npc_test_move_taller_with_slipping(
+                    0, &posX, &posY, &posZ, swoopDist, npc->yaw, npc->collisionHeight, npc->collisionDiameter
+                ))
+            {
                 hitDist = dist2D(npc->pos.x, npc->pos.z, posX, posZ);
                 if (hitDist > 160.0) {
                     if (hitDist < swoopDist) {
@@ -199,7 +202,7 @@ void N(FlyingMagikoopaAI_Swoop)(Evt* script, MobileAISettings* settings, EnemyDe
     npc->pos.z = lerpZ;
 
     // height dips 25 units below swoop starting Y in a sinusoid over the swoop
-    npc->pos.y = startY + 25.0f * sin_deg(180.0f * (1.0f + (f32)npc->duration / swoopTime));
+    npc->pos.y = startY + 25.0f * sin_deg(180.0f * (1.0f + (f32) npc->duration / swoopTime));
 
     npc->duration++;
     if (npc->duration == swoopTime - 8) {
@@ -212,7 +215,8 @@ void N(FlyingMagikoopaAI_Swoop)(Evt* script, MobileAISettings* settings, EnemyDe
     } else if (npc->duration >= swoopTime) {
         if (enemy->varTable[AI_VAR_FLYMAGI_BOB_PHASE] >= 180.0) {
             if (enemy->varTable[AI_VAR_FLYMAGI_BOB_PHASE] < 270.0) {
-                enemy->varTable[AI_VAR_FLYMAGI_BOB_PHASE] = clamp_angle(540 - enemy->varTable[AI_VAR_FLYMAGI_BOB_PHASE]);
+                enemy->varTable[AI_VAR_FLYMAGI_BOB_PHASE] =
+                    clamp_angle(540 - enemy->varTable[AI_VAR_FLYMAGI_BOB_PHASE]);
             }
         }
         script->AI_TEMP_STATE = AI_STATE_FLYMAGI_HOVER_INIT;
@@ -242,7 +246,9 @@ void N(FlyingMagikoopaAI_Targeting)(Evt* script, MobileAISettings* settings, Ene
         return;
     }
 
-    if ((N(MagikoopaAI_CanShootSpell)(script, settings->chaseRadius, settings->chaseOffsetDist, detect) == 1) && (npc->turnAroundYawAdjustment == 0)) {
+    if ((N(MagikoopaAI_CanShootSpell)(script, settings->chaseRadius, settings->chaseOffsetDist, detect) == 1)
+        && (npc->turnAroundYawAdjustment == 0))
+    {
         ai_enemy_play_sound(npc, SOUND_SPELL_CAST1, 0);
         npc->curAnim = enemy->animList[AI_ANIM_FLYMAGI_CAST];
         posX = npc->pos.x;
@@ -321,7 +327,7 @@ API_CALLABLE(N(FlyingMagikoopaAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args++);
     EnemyDetectVolume detectVolume;
     EnemyDetectVolume* detect = &detectVolume;
 

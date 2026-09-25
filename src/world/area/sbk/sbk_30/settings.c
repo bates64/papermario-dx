@@ -7,7 +7,7 @@ s32 N(get_tattle)(void) {
     } else {
         tattle = MSG_MapTattle_sbk_30_before;
     }
-    return  tattle;
+    return tattle;
 }
 
 EntryList N(Entrances) = {

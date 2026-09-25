@@ -85,7 +85,7 @@ void sun_update(EffectInstance* effect) {
     }
 
     data->lifeTime++;
-    if (data->lifeTime > 90*60*60) {
+    if (data->lifeTime > 90 * 60 * 60) {
         data->lifeTime = 256;
     }
     if (data->timeLeft < 0) {
@@ -119,9 +119,8 @@ void sun_update(EffectInstance* effect) {
     }
 
     for (i = 0; i < ARRAY_COUNT(data->texScrollAmt); i++) {
-        data->texScrollAmt[i] -= 4.0
-            * ((sin_deg((time * 2 + (20 * i))) * 0.01) + 0.05)
-            * sin_deg(((f32) time * 0.25) + (SQ(i) * 20));
+        data->texScrollAmt[i] -=
+            4.0 * ((sin_deg((time * 2 + (20 * i))) * 0.01) + 0.05) * sin_deg(((f32) time * 0.25) + (SQ(i) * 20));
 
         if (data->texScrollAmt[i] < 0.0f) {
             data->texScrollAmt[i] += 256.0f;
@@ -169,12 +168,14 @@ void sun_appendGfx(void* argEffect) {
         }
 
         guMtxF2L(mtx, &gDisplayContext->matrixStack[gMatrixListPos]);
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-            G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+        );
         guTranslateF(mtx, 0.0f, 0.0f, 0.0f);
         guMtxF2L(mtx, &gDisplayContext->matrixStack[gMatrixListPos]);
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-            G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
 
         gDPSetPrimColor(gMainGfxPos++, 0, 0, data->primColor.r, data->primColor.g, data->primColor.b, alpha >> 1);
         gDPSetEnvColor(gMainGfxPos++, data->envColor.r, data->envColor.g, data->envColor.b, data->envColor.a);
@@ -186,8 +187,10 @@ void sun_appendGfx(void* argEffect) {
             gSPDisplayList(gMainGfxPos++, D_E0120780[i]);
         }
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCameraID],
-            G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCameraID],
+            G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+        );
         gDPPipeSync(gMainGfxPos++);
     }
 }

@@ -59,9 +59,7 @@ void falling_leaves_update(EffectInstance* effect) {
     f32 temp;
     s32 i;
 
-    if (part->unk_2C >= 5 && part->unk_2C <= 14 &&
-        unk_00 == 0 && gPlayerStatus.actionState == ACTION_STATE_IDLE)
-    {
+    if (part->unk_2C >= 5 && part->unk_2C <= 14 && unk_00 == 0 && gPlayerStatus.actionState == ACTION_STATE_IDLE) {
         return;
     }
 
@@ -122,13 +120,13 @@ void falling_leaves_render(EffectInstance* effect) {
 }
 
 void falling_leaves_appendGfx(void* effect) {
-    FallingLeavesFXData* part = ((EffectInstance*)effect)->data.fallingLeaves;
+    FallingLeavesFXData* part = ((EffectInstance*) effect)->data.fallingLeaves;
     Matrix4f sp18;
     Matrix4f sp58;
     Matrix4f sp98;
     s32 i;
 
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_09001100_3601E0);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 20, 100, 20, part->unk_24);
 
@@ -137,7 +135,7 @@ void falling_leaves_appendGfx(void* effect) {
     guMtxCatF(sp58, sp18, sp98);
 
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         guTranslateF(sp58, part->unk_04, part->unk_08, part->unk_0C);
         guMtxCatF(sp58, sp98, sp18);
         guRotateF(sp58, part->unk_18, 0.0f, 0.0f, 1.0f);
@@ -146,7 +144,9 @@ void falling_leaves_appendGfx(void* effect) {
         guMtxCatF(sp58, sp18, sp18);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, D_090011B0_360290);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

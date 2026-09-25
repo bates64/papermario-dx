@@ -3,10 +3,9 @@
 
 #include "ultra64.h"
 
-#define	gDPScrollMultiTile2_4b(pkt, timg, fmt, width, height,	\
-		uls, ult, lrs, lrt, pal,				\
-		cms, cmt, masks, maskt, shifts, shiftt,\
-    scrolls, scrollt)			\
+#define gDPScrollMultiTile2_4b( \
+    pkt, timg, fmt, width, height, uls, ult, lrs, lrt, pal, cms, cmt, masks, maskt, shifts, shiftt, scrolls, scrollt \
+)			\
 {									\
 	gDPSetTextureImage(pkt, fmt, G_IM_SIZ_8b, ((width)>>1), timg);	\
 	gDPSetTile(pkt, fmt, G_IM_SIZ_8b, 			        \
@@ -35,11 +34,9 @@
 		   shifts);						\
 }
 
-
-#define	gDPScrollTextureTile_4b(pkt, timg, fmt, width, height,	\
-		uls, ult, lrs, lrt, pal,				\
-		cms, cmt, masks, maskt, shifts, shiftt, \
-    scrolls, scrollt)			\
+#define gDPScrollTextureTile_4b( \
+    pkt, timg, fmt, width, height, uls, ult, lrs, lrt, pal, cms, cmt, masks, maskt, shifts, shiftt, scrolls, scrollt \
+)			\
 							\
 	gDPSetTextureImage(pkt, fmt, G_IM_SIZ_8b, ((width)>>1), timg);	\
 	gDPSetTile(pkt, fmt, G_IM_SIZ_8b, 			        \
@@ -61,11 +58,11 @@
 			(uls + scrolls)<<G_TEXTURE_IMAGE_FRAC,			\
 			(ult + scrollt)<<G_TEXTURE_IMAGE_FRAC,			\
 			(lrs + scrolls)<<G_TEXTURE_IMAGE_FRAC,			\
-			(lrt + scrollt)<<G_TEXTURE_IMAGE_FRAC)			\
+			(lrt + scrollt)<<G_TEXTURE_IMAGE_FRAC)
 
-
-#define	gDPScrollTextureBlock_4b(pkt, timg, fmt, width, height,		\
-		pal, cms, cmt, masks, maskt, shifts, shiftt, scrolls, scrollt)		\
+#define gDPScrollTextureBlock_4b( \
+    pkt, timg, fmt, width, height, pal, cms, cmt, masks, maskt, shifts, shiftt, scrolls, scrollt \
+)		\
 {									\
 	gDPSetTextureImage(pkt, fmt, G_IM_SIZ_16b, 1, timg);		\
 	gDPSetTile(pkt, fmt, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0,	\
@@ -85,10 +82,10 @@
 		((height)-1 + scrollt) << G_TEXTURE_IMAGE_FRAC)			\
 }
 
-#define	gDPScrollMultiTile_4b(pkt, timg, tmem, rtile, fmt, width, height,	\
-		uls, ult, lrs, lrt, pal,				\
-		cms, cmt, masks, maskt, shifts, shiftt,\
-    scrolls, scrollt)			\
+#define gDPScrollMultiTile_4b( \
+    pkt, timg, tmem, rtile, fmt, width, height, uls, ult, lrs, lrt, pal, cms, cmt, masks, maskt, shifts, shiftt, \
+    scrolls, scrollt \
+)			\
 {									\
 	gDPSetTextureImage(pkt, fmt, G_IM_SIZ_8b, ((width)>>1), timg);	\
 	gDPSetTile(pkt, fmt, G_IM_SIZ_8b, 			        \
@@ -113,9 +110,10 @@
 			((lrt)<<G_TEXTURE_IMAGE_FRAC) + scrollt);      \
 }
 
-#define	gDPScrollMultiTile(pkt, timg, tmem, rtile, fmt, siz, width, height,\
-		uls, ult, lrs, lrt, pal,				\
-		cms, cmt, masks, maskt, shifts, shiftt, scrolls, scrollt)			\
+#define gDPScrollMultiTile( \
+    pkt, timg, tmem, rtile, fmt, siz, width, height, uls, ult, lrs, lrt, pal, cms, cmt, masks, maskt, shifts, shiftt, \
+    scrolls, scrollt \
+)			\
 {									\
 	gDPSetTextureImage(pkt, fmt, siz, width, timg);			\
 	gDPSetTile(pkt, fmt, siz,					\
@@ -140,8 +138,10 @@
 			((lrt)<<G_TEXTURE_IMAGE_FRAC) + scrollt);      \
 }
 
-#define	gDPScrollTextureBlockHalfHeight(pkt, timg, fmt, siz, width, height,		\
-		pal, cms, cmt, masks, maskt, shifts, shiftt, scrolls, scrollt, shifts2, shiftt2)		\
+#define gDPScrollTextureBlockHalfHeight( \
+    pkt, timg, fmt, siz, width, height, pal, cms, cmt, masks, maskt, shifts, shiftt, scrolls, scrollt, shifts2, \
+    shiftt2 \
+)		\
 {									\
 	gDPSetTextureImage(pkt, fmt, siz##_LOAD_BLOCK, 1, timg);	\
 	gDPSetTile(pkt, fmt, siz##_LOAD_BLOCK, 0, 0, G_TX_LOADTILE, 	\
@@ -170,8 +170,9 @@
 		((((height) >> 1)-1) << G_TEXTURE_IMAGE_FRAC)  + (scrollt)	);		\
 }
 
-#define	gDPScrollTextureBlockHalfHeight_4b(pkt, timg, fmt, width, height,		\
-		pal, cms, cmt, masks, maskt, shifts, shiftt, scrolls, scrollt, shifts2, shiftt2)		\
+#define gDPScrollTextureBlockHalfHeight_4b( \
+    pkt, timg, fmt, width, height, pal, cms, cmt, masks, maskt, shifts, shiftt, scrolls, scrollt, shifts2, shiftt2 \
+)		\
 {									\
 	gDPSetTextureImage(pkt, fmt, G_IM_SIZ_16b, 1, timg);		\
 	gDPSetTile(pkt, fmt, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0,	\

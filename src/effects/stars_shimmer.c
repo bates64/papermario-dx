@@ -280,7 +280,7 @@ void stars_shimmer_render(EffectInstance* effect) {
 
 void stars_shimmer_appendGfx(void* effect) {
     Matrix4f sp18, sp58, sp98;
-    StarsShimmerFXData* data = ((EffectInstance*)effect)->data.starsShimmer;
+    StarsShimmerFXData* data = ((EffectInstance*) effect)->data.starsShimmer;
     s32 state;
     s32 temp_s4;
     s32 unk_28;
@@ -291,7 +291,7 @@ void stars_shimmer_appendGfx(void* effect) {
     state = data->state;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_09000F20_338EE0);
 
     temp_s4 = (data->lifeTime - 1) * 3;
@@ -330,7 +330,7 @@ void stars_shimmer_appendGfx(void* effect) {
     }
 
     data++;
-    for (i = 0; i < ((EffectInstance*)effect)->numParts - 1; i++, data++) {
+    for (i = 0; i < ((EffectInstance*) effect)->numParts - 1; i++, data++) {
         unk_28 = data->unk_28;
         if (unk_28 >= 0) {
             guTranslateF(sp58, data->pos.x, data->pos.y, data->pos.z);
@@ -353,8 +353,9 @@ void stars_shimmer_appendGfx(void* effect) {
                 b = 255;
             }
             gDPSetPrimColor(gMainGfxPos++, 0, 0, r, g, b, 255);
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                      G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, D_E0044DB0[unk_28 & 7]);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         }

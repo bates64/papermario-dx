@@ -44,15 +44,7 @@ void misc_particles_render(EffectInstance* effect);
 void misc_particles_appendGfx(void* effect);
 
 EffectInstance* misc_particles_main(
-    s32 variation,
-    f32 posX,
-    f32 posY,
-    f32 posZ,
-    f32 scaleX,
-    f32 scaleY,
-    f32 arg6,
-    s32 numParticles,
-    s32 duration
+    s32 variation, f32 posX, f32 posY, f32 posZ, f32 scaleX, f32 scaleY, f32 arg6, s32 numParticles, s32 duration
 ) {
     EffectBlueprint bp;
     EffectInstance* effect;
@@ -135,7 +127,7 @@ EffectInstance* misc_particles_main(
 
     // set initial delay for each particle after the first
     for (i = 1; i < numParticles; i++, part++) {
-        part->animTime = (s32)(-1.0f * i * interval) - 1;
+        part->animTime = (s32) (-1.0f * i * interval) - 1;
     }
 
     return effect;
@@ -299,35 +291,44 @@ void func_E00E4954(void) {
 }
 
 void misc_particles_appendGfx(void* effect) {
-    MiscParticlesFXData* particle = ((EffectInstance*)effect)->data.miscParticles;
+    MiscParticlesFXData* particle = ((EffectInstance*) effect)->data.miscParticles;
     s32 variation = particle->variation;
     f32 alphaScale = (particle->innerColor.a / 255.0f) * particle->scale;
     Matrix4f mtxTransform;
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
-    gDPSetEnvColor(gMainGfxPos++, particle->glowColor.r, particle->glowColor.g, particle->glowColor.b, particle->glowColor.a);
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
+    gDPSetEnvColor(
+        gMainGfxPos++, particle->glowColor.r, particle->glowColor.g, particle->glowColor.b, particle->glowColor.a
+    );
     gSPDisplayList(gMainGfxPos++, D_E00E4DA8[variation]);
 
     particle++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, particle++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, particle++) {
         if (particle->animTime >= 0) {
-            guPositionF(mtxTransform, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, particle->scale * alphaScale, particle->pos.x, particle->pos.y, particle->pos.z);
+            guPositionF(
+                mtxTransform, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, particle->scale * alphaScale,
+                particle->pos.x, particle->pos.y, particle->pos.z
+            );
             guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-            gDPSetPrimColor(gMainGfxPos++, 0, 80 - particle->animTime, particle->innerColor.r, particle->innerColor.g, particle->innerColor.b, alphaScale * particle->innerColor.a);
-            gDPSetTileSize(gMainGfxPos++, 1,
-                (s32) particle->unk_5C * 4,
-                (s32) particle->unk_60 * 4,
-                ((s32) particle->unk_5C + 15) * 4,
-                ((s32) particle->unk_60 + 15) * 4);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
+            gDPSetPrimColor(
+                gMainGfxPos++, 0, 80 - particle->animTime, particle->innerColor.r, particle->innerColor.g,
+                particle->innerColor.b, alphaScale * particle->innerColor.a
+            );
+            gDPSetTileSize(
+                gMainGfxPos++, 1, (s32) particle->unk_5C * 4, (s32) particle->unk_60 * 4,
+                ((s32) particle->unk_5C + 15) * 4, ((s32) particle->unk_60 + 15) * 4
+            );
 
             if (variation == 2) {
-                gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE,
-                    ((i & 0x1F) * 32     ) * 4, 31 * 4,
-                    ((i & 0x1F) * 32 + 31) * 4, 31 * 4);
+                gDPSetTileSize(
+                    gMainGfxPos++, G_TX_RENDERTILE, ((i & 0x1F) * 32) * 4, 31 * 4, ((i & 0x1F) * 32 + 31) * 4, 31 * 4
+                );
             }
 
             gSPDisplayList(gMainGfxPos++, D_E00E4D90[variation]);

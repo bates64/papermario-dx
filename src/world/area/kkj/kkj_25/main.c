@@ -1,6 +1,7 @@
 #include "kkj_25.h"
 
-EvtScript N(EVS_ExitDoors_kkj_24_1) = EVT_EXIT_DOUBLE_DOOR(kkj_25_ENTRY_0, "kkj_24", kkj_24_ENTRY_1, COLLIDER_ttw, MODEL_o84, MODEL_o85);
+EvtScript N(EVS_ExitDoors_kkj_24_1) =
+    EVT_EXIT_DOUBLE_DOOR(kkj_25_ENTRY_0, "kkj_24", kkj_24_ENTRY_1, COLLIDER_ttw, MODEL_o84, MODEL_o85);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_kkj_24_1)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)

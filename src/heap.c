@@ -20,7 +20,7 @@ s32 general_heap_free(void* data) {
 }
 
 s32 battle_heap_create(void) {
-    if ((s32)_heap_create(&heap_battleHead, BATTLE_HEAP_SIZE) == -1) {
+    if ((s32) _heap_create(&heap_battleHead, BATTLE_HEAP_SIZE) == -1) {
         return -1;
     } else {
         return 0;
@@ -44,7 +44,7 @@ s32 heap_free(void* data) {
 }
 
 s32 collision_heap_create(void) {
-    if ((s32)_heap_create(&heap_collisionHead, COLLISION_HEAP_SIZE) == -1) {
+    if ((s32) _heap_create(&heap_collisionHead, COLLISION_HEAP_SIZE) == -1) {
         return -1;
     }
     return 0;

@@ -1,6 +1,7 @@
 #include "kpa_111.h"
 
-EvtScript N(EVS_ExitDoors_kpa_130_1) = EVT_EXIT_DOUBLE_DOOR(kpa_111_ENTRY_0, "kpa_130", kpa_130_ENTRY_1, COLLIDER_deiliwtt, MODEL_o119, MODEL_o118);
+EvtScript N(EVS_ExitDoors_kpa_130_1) =
+    EVT_EXIT_DOUBLE_DOOR(kpa_111_ENTRY_0, "kpa_130", kpa_130_ENTRY_1, COLLIDER_deiliwtt, MODEL_o119, MODEL_o118);
 EvtScript N(EVS_ExitDoors_kpa_112_0) = EVT_EXIT_WALK(40, kpa_111_ENTRY_1, "kpa_112", kpa_112_ENTRY_0);
 
 EvtScript N(EVS_BindExitTriggers) = {

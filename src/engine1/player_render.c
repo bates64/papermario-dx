@@ -2,8 +2,10 @@
 #include "sprite.h"
 #include "sprite/player.h"
 
-HitID player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* outZ, f32* outLength,
-    f32* hitRx, f32* hitRz, f32* hitDirX, f32* hitDirZ);
+HitID player_raycast_below(
+    f32 yaw, f32 diameter, f32* outX, f32* outY, f32* outZ, f32* outLength, f32* hitRx, f32* hitRz, f32* hitDirX,
+    f32* hitDirZ
+);
 
 s32 get_player_back_anim(s32 arg0);
 void appendGfx_player(void* data);
@@ -72,16 +74,16 @@ void player_update_sprite(void) {
         if (playerStatus->actionState == ACTION_STATE_TORNADO_JUMP || playerStatus->flags & PS_FLAG_ROTATION_LOCKED) {
             if (!(playerStatus->flags & PS_FLAG_FACE_FORWARD)
                 && (sprIndex == SPR_Mario1 || sprIndex == SPR_MarioW1 || sprIndex == SPR_Peach1)
-                && playerStatus->spriteFacingAngle < 350.0f && playerStatus->spriteFacingAngle > 190.0f
-            ) {
+                && playerStatus->spriteFacingAngle < 350.0f && playerStatus->spriteFacingAngle > 190.0f)
+            {
                 trueAnim = get_player_back_anim(trueAnim);
             }
         } else {
             playerStatus->spriteFacingAngle = angle;
             if (!(playerStatus->flags & PS_FLAG_FACE_FORWARD)
                 && (sprIndex == SPR_Mario1 || sprIndex == SPR_MarioW1 || sprIndex == SPR_Peach1)
-                && fabsf(get_clamped_angle_diff(cameraYaw, playerStatus->curYaw)) < 60.0f
-            ) {
+                && fabsf(get_clamped_angle_diff(cameraYaw, playerStatus->curYaw)) < 60.0f)
+            {
                 trueAnim = get_player_back_anim(trueAnim);
             }
             playerStatus->curYaw = playerStatus->targetYaw;
@@ -96,7 +98,8 @@ void player_update_sprite(void) {
     if (playerStatus->flags & PS_FLAG_TIME_STOPPED) {
         timescale = 0.0f;
     }
-    playerStatus->animNotifyValue = spr_update_player_sprite(PLAYER_SPRITE_MAIN, playerStatus->trueAnimation, timescale);
+    playerStatus->animNotifyValue =
+        spr_update_player_sprite(PLAYER_SPRITE_MAIN, playerStatus->trueAnimation, timescale);
     playerStatus->flags |= PS_FLAG_SPRITE_REDRAW;
 }
 
@@ -161,8 +164,7 @@ void render_player_model(void) {
 
     if (playerStatus->flags & PS_FLAG_SPRITE_REDRAW) {
         playerStatus->flags &= ~PS_FLAG_SPRITE_REDRAW;
-        get_screen_coords(gCurrentCamID, playerStatus->pos.x, playerStatus->pos.y,
-                          playerStatus->pos.z, &x, &y, &z);
+        get_screen_coords(gCurrentCamID, playerStatus->pos.x, playerStatus->pos.y, playerStatus->pos.z, &x, &y, &z);
         if (!(playerStatus->flags & PS_FLAG_SPINNING)) {
             if (playerStatus->curAlpha != playerStatus->prevAlpha) {
                 if (playerStatus->curAlpha < 254) {
@@ -367,8 +369,9 @@ void update_player_shadow(void) {
     y = playerStatus->pos.y + (playerStatus->colliderHeight / 3.5f);
     z = playerZ;
     shadowScale = 1024.0f;
-    gCollisionStatus.floorBelow = player_raycast_below(raycastYaw, playerStatus->colliderDiameter, &x, &y, &z,
-                                                       &shadowScale, &hitRx, &hitRz, &hitDirX, &hitDirZ);
+    gCollisionStatus.floorBelow = player_raycast_below(
+        raycastYaw, playerStatus->colliderDiameter, &x, &y, &z, &shadowScale, &hitRx, &hitRz, &hitDirX, &hitDirZ
+    );
     shadow->rot.x = hitRx;
     shadow->rot.z = hitRz;
     shadow->rot.y = clamp_angle(-camera->curYaw);
@@ -381,13 +384,13 @@ void update_player_shadow(void) {
         s32 angleTemp = clamp_angle((-90.0f - tan) + get_player_normal_yaw());
 
         if (gGameStatusPtr->playerGroundTraceNormal.y != 0.0f) {
-            y -= sqrtf(SQ(gGameStatusPtr->playerGroundTraceNormal.x) + SQ(gGameStatusPtr->playerGroundTraceNormal.z)) /
-                       gGameStatusPtr->playerGroundTraceNormal.y * dist * sin_deg(angleTemp);
+            y -= sqrtf(SQ(gGameStatusPtr->playerGroundTraceNormal.x) + SQ(gGameStatusPtr->playerGroundTraceNormal.z))
+                / gGameStatusPtr->playerGroundTraceNormal.y * dist * sin_deg(angleTemp);
         }
     }
 
     shadow->pos.y = y;
-    shadow->alpha = (f64)playerStatus->curAlpha / 2;
+    shadow->alpha = (f64) playerStatus->curAlpha / 2;
 
     if (gGameStatusPtr->peachFlags & PEACH_FLAG_IS_PEACH) {
         set_peach_shadow_scale(shadow, shadowScale);

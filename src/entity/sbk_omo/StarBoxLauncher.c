@@ -51,7 +51,10 @@ void entity_StarBoxLauncher_setupGfx(s32 entityIndex) {
     gDPSetCombineMode(gfxPos++, G_CC_MODULATEIA, G_CC_MODULATEIA);
     gDPSetTextureDetail(gfxPos++, G_TD_CLAMP);
     gDPSetTextureLOD(gfxPos++, G_TL_TILE);
-    gDPLoadTextureBlock_4b(gfxPos++, D_0A000508_E55F48, G_IM_FMT_CI, 128, 32, 0, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 7, 5, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureBlock_4b(
+        gfxPos++, D_0A000508_E55F48, G_IM_FMT_CI, 128, 32, 0, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 7, 5,
+        G_TX_NOLOD, G_TX_NOLOD
+    );
     gDPSetTexturePersp(gfxPos++, G_TP_PERSP);
     gDPSetTextureFilter(gfxPos++, G_TF_BILERP);
     gDPSetTileSize(gfxPos++, G_TX_RENDERTILE, data->faceTexOffset * 4, 0, (data->faceTexOffset + 124) * 4, 31 * 4);
@@ -64,10 +67,12 @@ void entity_StarBoxLauncher_check_launch(Entity* entity) {
     StarBoxLauncherData* data = entity->dataBuf.starBoxLauncher;
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 actionState = playerStatus->actionState;
-    f32 x,y,z,hitDepth;
+    f32 x, y, z, hitDepth;
     s32 result = 0;
 
-    if ((currentFloor & COLLISION_WITH_ENTITY_BIT) && (currentFloor & 0xFF) == entity->listIndex && actionState == ACTION_STATE_HAMMER) {
+    if ((currentFloor & COLLISION_WITH_ENTITY_BIT) && (currentFloor & 0xFF) == entity->listIndex
+        && actionState == ACTION_STATE_HAMMER)
+    {
         x = playerStatus->pos.x;
         y = playerStatus->pos.y + 5.0f;
         z = playerStatus->pos.z;
@@ -79,7 +84,9 @@ void entity_StarBoxLauncher_check_launch(Entity* entity) {
                 result = get_entity_type(NpcHitQueryColliderID) == ENTITY_TYPE_STAR_BOX_LAUNCHER;
             }
         }
-    } else if ((entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) && (actionState == ACTION_STATE_SPIN_POUND || actionState == ACTION_STATE_TORNADO_POUND)) {
+    } else if ((entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR)
+               && (actionState == ACTION_STATE_SPIN_POUND || actionState == ACTION_STATE_TORNADO_POUND))
+    {
         result = 1;
     } else if (entity->collisionFlags & ENTITY_COLLISION_PLAYER_HAMMER) {
         result = -1;
@@ -258,7 +265,8 @@ EntityScript Entity_StarBoxLauncher_Script = {
     es_End
 };
 
-EntityModelScript Entity_StarBoxLauncher_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_StarBoxLauncher_RenderTop, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_StarBoxLauncher_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_StarBoxLauncher_RenderTop, RENDER_MODE_SURFACE_OPA);
 
 EntityBlueprint Entity_StarBoxLauncher = {
     .flags = ENTITY_FLAG_8000,

@@ -47,4 +47,3 @@ Gfx Entity_BrickBlock_Render[] = {
     gsSPDisplayList(Entity_BrickBlock_RenderFaces),
     gsSPEndDisplayList(),
 };
-

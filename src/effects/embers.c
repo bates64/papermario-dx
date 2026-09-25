@@ -20,17 +20,7 @@ void embers_render(EffectInstance* effect);
 void embers_appendGfx(void* effect);
 
 EffectInstance* embers_main(
-    s32 arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    f32 arg5,
-    f32 arg6,
-    s32 arg7,
-    s32 arg8,
-    f32 arg9,
-    f32 argA
+    s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, s32 arg7, s32 arg8, f32 arg9, f32 argA
 ) {
     EffectBlueprint bp;
     EffectInstance* effect;
@@ -185,7 +175,7 @@ void func_E00E05F8(void) {
 }
 
 void embers_appendGfx(void* effect) {
-    EmbersFXData* part = ((EffectInstance*)effect)->data.embers;
+    EmbersFXData* part = ((EffectInstance*) effect)->data.embers;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 unk_2C = part->unk_2C;
     Matrix4f sp10;
@@ -193,28 +183,35 @@ void embers_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp10, part->unk_04, part->unk_08, part->unk_0C);
     guScaleF(sp50, part->unk_40, part->unk_40, part->unk_40);
     guMtxCatF(sp50, sp10, sp10);
     guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, part->unk_20, part->unk_24, part->unk_28, unk_2C);
     gDPSetEnvColor(gMainGfxPos++, part->unk_30, part->unk_34, part->unk_38, part->unk_3C);
     gSPDisplayList(gMainGfxPos++, D_E00E0A40[1]);
 
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         if (part->unk_64 >= 0) {
             guTranslateF(sp10, part->unk_04, part->unk_08, part->unk_0C);
             guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, 0, (i % 4) * 16 * 4, 15 * 4, ((i % 4) * 16 + 15) * 4);
-            gDPSetTileSize(gMainGfxPos++, 1, (s32) part->unk_5C * 4, (s32) part->unk_60 * 4, ((s32) part->unk_5C + 15) * 4, ((s32) part->unk_60 + 15) * 4);
+            gDPSetTileSize(
+                gMainGfxPos++, 1, (s32) part->unk_5C * 4, (s32) part->unk_60 * 4, ((s32) part->unk_5C + 15) * 4,
+                ((s32) part->unk_60 + 15) * 4
+            );
             gSPDisplayList(gMainGfxPos++, D_E00E0A40[0]);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         }

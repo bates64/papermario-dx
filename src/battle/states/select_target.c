@@ -54,7 +54,9 @@ void btl_state_update_select_target(void) {
                 targetIndexList = actor->targetIndexList;
                 for (i = 0; i < targetListLength; i++) {
                     target = &actor->targetData[targetIndexList[i]];
-                    if (get_actor_part(get_actor(target->actorID), target->partID)->flags & ACTOR_PART_FLAG_DEFAULT_TARGET) {
+                    if (get_actor_part(get_actor(target->actorID), target->partID)->flags
+                        & ACTOR_PART_FLAG_DEFAULT_TARGET)
+                    {
                         actor->selectedTargetIndex = i;
                         break;
                     }
@@ -369,8 +371,10 @@ void btl_state_draw_select_target(void) {
     }
 
     // draw target name box
-    draw_box(0, WINDOW_STYLE_4, screenX + BattleMenu_TargetNameOffsetX, screenY, 0, nameWidth, 20, 255, 0,
-                0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+    draw_box(
+        0, WINDOW_STYLE_4, screenX + BattleMenu_TargetNameOffsetX, screenY, 0, nameWidth, 20, 255, 0, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr
+    );
 
     // draw target name text
     screenX += 4;
@@ -380,7 +384,9 @@ void btl_state_draw_select_target(void) {
         if (actorID == ACTOR_PLAYER) {
             draw_msg(MSG_Menus_Battle_TargetMario, screenX + BattleMenu_TargetNameOffsetX, screenY, 255, MSG_PAL_36, 0);
         } else if (actorID == ACTOR_PARTNER) {
-            draw_msg(PartnerNameMessages[currentPartner], screenX + BattleMenu_TargetNameOffsetX, screenY, 255, MSG_PAL_36, 0);
+            draw_msg(
+                PartnerNameMessages[currentPartner], screenX + BattleMenu_TargetNameOffsetX, screenY, 255, MSG_PAL_36, 0
+            );
         } else {
             target = &choosingActor->targetData[targetIndexList[selectedTargetIndex]];
             enemyActor = get_actor(target->actorID);
@@ -396,9 +402,13 @@ void btl_state_draw_select_target(void) {
         if (actorID == ACTOR_PLAYER) {
             draw_msg(MSG_Menus_Battle_TargetMario, screenX + BattleMenu_TargetNameOffsetX, screenY, 255, MSG_PAL_36, 0);
         } else if (actorID == ACTOR_PARTNER) {
-            draw_msg(PartnerNameMessages[currentPartner], screenX + BattleMenu_TargetNameOffsetX, screenY, 255, MSG_PAL_36, 0);
+            draw_msg(
+                PartnerNameMessages[currentPartner], screenX + BattleMenu_TargetNameOffsetX, screenY, 255, MSG_PAL_36, 0
+            );
         } else {
-            draw_msg(MSG_Menus_Battle_TargetAllEnemies, screenX + BattleMenu_TargetNameOffsetX, screenY, 255, MSG_PAL_36, 0);
+            draw_msg(
+                MSG_Menus_Battle_TargetAllEnemies, screenX + BattleMenu_TargetNameOffsetX, screenY, 255, MSG_PAL_36, 0
+            );
         }
     }
 }

@@ -32,7 +32,9 @@ static s32 get_entity_below_spinning_flower(void) {
     posZ = gPlayerStatus.pos.z;
     height = gPlayerStatus.colliderHeight;
     posY = gPlayerStatus.pos.y + (height * 0.5);
-    return player_raycast_below_cam_relative(&gPlayerStatus, &posX, &posY, &posZ, &height, &hitRx, &hitRz, &hitDirX, &hitDirZ);
+    return player_raycast_below_cam_relative(
+        &gPlayerStatus, &posX, &posY, &posZ, &height, &hitRx, &hitRz, &hitDirX, &hitDirZ
+    );
 }
 
 void action_update_use_spinning_flower(void) {
@@ -64,7 +66,7 @@ void action_update_use_spinning_flower(void) {
         gCollisionStatus.curFloor = -1;
 #endif
 
-        if (entityID >= 0){
+        if (entityID >= 0) {
             if (entityID & COLLISION_WITH_ENTITY_BIT) {
                 SpinningFlower_EntityIndex = entityID & 0x3FF;
             } else {
@@ -94,8 +96,10 @@ void action_update_use_spinning_flower(void) {
             playerStatus->pos.y = D_802B6EF4 + sin_rad(DEG_TO_RAD(clamp_angle(D_802B6EE8))) * 4.0f;
             if (SpinningFlower_EntityIndex >= 0) {
                 entityByIndex = get_entity_by_index(SpinningFlower_EntityIndex);
-                distToCenter = dist2D(entityByIndex->pos.x, entityByIndex->pos.z, playerStatus->pos.x, playerStatus->pos.z);
-                SpinningFlower_AngleToCenter = atan2(entityByIndex->pos.x, entityByIndex->pos.z, playerStatus->pos.x, playerStatus->pos.z);
+                distToCenter =
+                    dist2D(entityByIndex->pos.x, entityByIndex->pos.z, playerStatus->pos.x, playerStatus->pos.z);
+                SpinningFlower_AngleToCenter =
+                    atan2(entityByIndex->pos.x, entityByIndex->pos.z, playerStatus->pos.x, playerStatus->pos.z);
                 if (distToCenter > 4.0f) {
                     distToCenter--;
                 }
@@ -103,7 +107,7 @@ void action_update_use_spinning_flower(void) {
                 playerStatus->pos.x = entityByIndex->pos.x + (dx * distToCenter);
                 playerStatus->pos.z = entityByIndex->pos.z - (dz * distToCenter);
                 sin_cos_rad(DEG_TO_RAD(SpinningFlower_AngleToCenter - 91.0f), &dx, &dz);
-                D_802B6ED4 =  dx * D_802B6EDC;
+                D_802B6ED4 = dx * D_802B6EDC;
                 D_802B6ED8 = -dz * D_802B6EDC;
             }
             game_input_to_move_vector(&inputAngle, &inputMagnitude);
@@ -128,8 +132,9 @@ void action_update_use_spinning_flower(void) {
                 D_802B6EF0 = 1.6f;
                 playerStatus->flags |= PS_FLAG_SCRIPTED_FALL;
             }
-            if (gGameStatusPtr->pressedButtons[0] & BUTTON_Z &&
-                !(playerStatus->animFlags & (PA_FLAG_USING_WATT | PA_FLAG_WATT_IN_HANDS))) {
+            if (gGameStatusPtr->pressedButtons[0] & BUTTON_Z
+                && !(playerStatus->animFlags & (PA_FLAG_USING_WATT | PA_FLAG_WATT_IN_HANDS)))
+            {
                 suggest_player_anim_always_forward(ANIM_Mario1_Jump);
                 playerStatus->actionSubstate = SUBSTATE_SPIN_UP;
                 playerStatus->curStateTime = 30;
@@ -148,7 +153,7 @@ void action_update_use_spinning_flower(void) {
             sin_cos_rad(DEG_TO_RAD(SpinningFlower_AngleToCenter - 60.0f), &dx, &dz);
             D_802B6EDC += 0.2;
             D_802B6EF0 -= 0.72;
-            D_802B6ED4 =  dx * D_802B6EDC;
+            D_802B6ED4 = dx * D_802B6EDC;
             D_802B6ED8 = -dz * D_802B6EDC;
             playerStatus->pos.x += D_802B6ED4;
             playerStatus->pos.z += D_802B6ED8;
@@ -172,8 +177,10 @@ void action_update_use_spinning_flower(void) {
         case SUBSTATE_SPIN_UP:
             if (SpinningFlower_EntityIndex >= 0) {
                 entityByIndex = get_entity_by_index(SpinningFlower_EntityIndex);
-                distToCenter = dist2D(entityByIndex->pos.x, entityByIndex->pos.z, playerStatus->pos.x, playerStatus->pos.z);
-                SpinningFlower_AngleToCenter = atan2(entityByIndex->pos.x, entityByIndex->pos.z, playerStatus->pos.x, playerStatus->pos.z);
+                distToCenter =
+                    dist2D(entityByIndex->pos.x, entityByIndex->pos.z, playerStatus->pos.x, playerStatus->pos.z);
+                SpinningFlower_AngleToCenter =
+                    atan2(entityByIndex->pos.x, entityByIndex->pos.z, playerStatus->pos.x, playerStatus->pos.z);
                 if (distToCenter > 4.0f) {
                     distToCenter -= 1.0f;
                 }
@@ -181,7 +188,7 @@ void action_update_use_spinning_flower(void) {
                 playerStatus->pos.x = entityByIndex->pos.x + (dx * distToCenter);
                 playerStatus->pos.z = entityByIndex->pos.z - (dz * distToCenter);
                 sin_cos_rad(DEG_TO_RAD(SpinningFlower_AngleToCenter - 91.0f), &dx, &dz);
-                D_802B6ED4 =  dx * D_802B6EDC;
+                D_802B6ED4 = dx * D_802B6EDC;
                 D_802B6ED8 = -dz * D_802B6EDC;
             }
             D_802B6EE8 += 8.0f;
@@ -219,11 +226,13 @@ void action_update_use_spinning_flower(void) {
             gCameras[CAM_DEFAULT].targetPos.x = playerStatus->pos.x;
             gCameras[CAM_DEFAULT].targetPos.y = playerStatus->pos.y;
             gCameras[CAM_DEFAULT].targetPos.z = playerStatus->pos.z;
-            distToCenter = fabsf(dist2D(FlowerGoalPosition.x, FlowerGoalPosition.z, playerStatus->pos.x, playerStatus->pos.z));
+            distToCenter =
+                fabsf(dist2D(FlowerGoalPosition.x, FlowerGoalPosition.z, playerStatus->pos.x, playerStatus->pos.z));
             if (distToCenter > 40.0f) {
                 if (FlowerGoalPosition.y + 30 < playerStatus->pos.y) {
                     playerStatus->actionSubstate++; // SUBSTATE_ASCEND_B
-                    inputAngle = atan2(playerStatus->pos.x, playerStatus->pos.z, FlowerGoalPosition.x, FlowerGoalPosition.z);
+                    inputAngle =
+                        atan2(playerStatus->pos.x, playerStatus->pos.z, FlowerGoalPosition.x, FlowerGoalPosition.z);
                     sin_cos_rad(DEG_TO_RAD(inputAngle), &dx, &dz);
                     playerStatus->curStateTime = 64;
                     SpinningFlower_AngleToCenter = inputAngle;

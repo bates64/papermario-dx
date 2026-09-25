@@ -599,7 +599,7 @@ EvtScript N(EVS_Attack_GroundSmash) = {
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
             Return
-    EndCaseGroup
+        EndCaseGroup
     EndSwitch
     // damage *could* depend on size of the Pokey, but all DMG values are the same, so it doesn't
     Call(GetActorVar, ACTOR_SELF, AVAR_PartsThrown, LVar0)
@@ -1164,7 +1164,7 @@ EvtScript N(EVS_Attack_SinglePartLeap) = {
             Call(SetActorJumpGravity, ACTOR_SELF, Float(2.0))
             ExecWait(EVS_Enemy_HopToPos)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Pokey_Idle1)
-    EndCaseGroup
+        EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     Call(UseIdleAnimation, ACTOR_SELF, true)

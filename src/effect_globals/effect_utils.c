@@ -76,36 +76,48 @@ void func_E02000AC(s32 arg0, s32 arg1) {
         newVar = x + width;
         var_t3 = i * 6;
         gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 80, nuGfxCfb_ptr);
-        gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                  6, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, 7, G_TX_NOLOD);
+        gDPSetTile(
+            gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_WRAP, 6,
+            G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, 7, G_TX_NOLOD
+        );
         gDPLoadSync(gMainGfxPos++);
         gDPLoadTile(gMainGfxPos++, G_TX_LOADTILE, 0, s1, 0x013C, s2);
         gDPPipeSync(gMainGfxPos++);
-        gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 0x0000, G_TX_RENDERTILE, 0,
-                   G_TX_NOMIRROR | G_TX_WRAP, 6, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, 7, G_TX_NOLOD);
-        gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, arg0 << G_TEXTURE_IMAGE_FRAC,
-                       (arg1 + var_t3) << G_TEXTURE_IMAGE_FRAC, (arg0 + 79) << G_TEXTURE_IMAGE_FRAC,
-                       ((arg1 + var_t3) + 5) << G_TEXTURE_IMAGE_FRAC);
-        gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE + 1, arg0 << G_TEXTURE_IMAGE_FRAC,
-                       (arg1 + var_t3) << G_TEXTURE_IMAGE_FRAC, (arg0 + 79) << G_TEXTURE_IMAGE_FRAC,
-                       ((arg1 + var_t3) + 5) << G_TEXTURE_IMAGE_FRAC);
+        gDPSetTile(
+            gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 0x0000, G_TX_RENDERTILE, 0, G_TX_NOMIRROR | G_TX_WRAP, 6,
+            G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, 7, G_TX_NOLOD
+        );
+        gDPSetTileSize(
+            gMainGfxPos++, G_TX_RENDERTILE, arg0 << G_TEXTURE_IMAGE_FRAC, (arg1 + var_t3) << G_TEXTURE_IMAGE_FRAC,
+            (arg0 + 79) << G_TEXTURE_IMAGE_FRAC, ((arg1 + var_t3) + 5) << G_TEXTURE_IMAGE_FRAC
+        );
+        gDPSetTileSize(
+            gMainGfxPos++, G_TX_RENDERTILE + 1, arg0 << G_TEXTURE_IMAGE_FRAC, (arg1 + var_t3) << G_TEXTURE_IMAGE_FRAC,
+            (arg0 + 79) << G_TEXTURE_IMAGE_FRAC, ((arg1 + var_t3) + 5) << G_TEXTURE_IMAGE_FRAC
+        );
 
         for (j = 0; j < 1; j++) {
             gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, nuGfxCfb_ptr);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                       ((((((x + width) - 1) - x) + 1) * G_IM_SIZ_16b_TILE_BYTES) + 7) >> 3, 0x100, G_TX_LOADTILE, 0,
-                       G_TX_WRAP, 6, G_TX_NOLOD, G_TX_WRAP, 7, G_TX_NOLOD);
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b,
+                ((((((x + width) - 1) - x) + 1) * G_IM_SIZ_16b_TILE_BYTES) + 7) >> 3, 0x100, G_TX_LOADTILE, 0,
+                G_TX_WRAP, 6, G_TX_NOLOD, G_TX_WRAP, 7, G_TX_NOLOD
+            );
             gDPLoadSync(gMainGfxPos++);
-            gDPLoadTile(gMainGfxPos++, G_TX_LOADTILE, x << G_TEXTURE_IMAGE_FRAC,
-                        (arg1 + var_t3) << G_TEXTURE_IMAGE_FRAC,
-                        ((newVar) - 1) << G_TEXTURE_IMAGE_FRAC,
-                        ((arg1 + var_t3) + 5) << G_TEXTURE_IMAGE_FRAC);
+            gDPLoadTile(
+                gMainGfxPos++, G_TX_LOADTILE, x << G_TEXTURE_IMAGE_FRAC, (arg1 + var_t3) << G_TEXTURE_IMAGE_FRAC,
+                ((newVar) -1) << G_TEXTURE_IMAGE_FRAC, ((arg1 + var_t3) + 5) << G_TEXTURE_IMAGE_FRAC
+            );
             gDPPipeSync(gMainGfxPos++);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                       ((((((x + width) - 1) - x) + 1) * G_IM_SIZ_16b_TILE_BYTES) + 7) >> 3, 0x100, G_TX_RENDERTILE + 1,
-                       0, G_TX_WRAP, 6, G_TX_NOLOD, G_TX_WRAP, 7, G_TX_NOLOD);
-            gSPTextureRectangle(gMainGfxPos++, x * 4, (arg1 + var_t3) * 4, (x + width) * 4, ((arg1 + var_t3) + 6) * 4,
-                                0, x * 32, (arg1 + (i * 6)) * 32, 0x400, 0x400);
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b,
+                ((((((x + width) - 1) - x) + 1) * G_IM_SIZ_16b_TILE_BYTES) + 7) >> 3, 0x100, G_TX_RENDERTILE + 1, 0,
+                G_TX_WRAP, 6, G_TX_NOLOD, G_TX_WRAP, 7, G_TX_NOLOD
+            );
+            gSPTextureRectangle(
+                gMainGfxPos++, x * 4, (arg1 + var_t3) * 4, (x + width) * 4, ((arg1 + var_t3) + 6) * 4, 0, x * 32,
+                (arg1 + (i * 6)) * 32, 0x400, 0x400
+            );
         }
         gDPPipeSync(gMainGfxPos++);
     }

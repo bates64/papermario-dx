@@ -25,7 +25,7 @@ s32 N(ChestItems)[] = {
 
 // this file is mostly the same as in kkj_17
 API_CALLABLE(N(ChestItemPrompt)) {
-    PopupMenu *menu;
+    PopupMenu* menu;
     s32 menuIdx;
     s32 selectIdx;
     s32 canUseItem;

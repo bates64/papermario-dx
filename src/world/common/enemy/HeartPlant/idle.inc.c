@@ -9,8 +9,10 @@ API_CALLABLE(N(HeartPlant_SpawnHeart)) {
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     if ((enemy->varTable[EVAR_USE_COUNT] < 5) && (rand_int(1000) > 300)) {
-        make_item_entity_nodelay(ITEM_HEART, npc->pos.x, npc->pos.y + npc->collisionHeight, npc->pos.z + 5.0,
-            ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS, 0);
+        make_item_entity_nodelay(
+            ITEM_HEART, npc->pos.x, npc->pos.y + npc->collisionHeight, npc->pos.z + 5.0,
+            ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS, 0
+        );
         enemy->varTable[EVAR_USE_COUNT]++;
     }
     return ApiStatus_DONE2;

@@ -52,10 +52,8 @@ API_CALLABLE(func_802D7690) {
     sinA = sin_rad(DEG_TO_RAD(angle));
     cosA = cos_rad(DEG_TO_RAD(angle));
     fx_cloud_trail(
-        posX + ((sinA * magnitude * script->functionTemp[0]) / duration) + offsetX,
-        posY + 15.5f + offsetY,
-        posZ + ((-cosA * magnitude * script->functionTemp[0]) / duration) + offsetZ,
-        0.0f
+        posX + ((sinA * magnitude * script->functionTemp[0]) / duration) + offsetX, posY + 15.5f + offsetY,
+        posZ + ((-cosA * magnitude * script->functionTemp[0]) / duration) + offsetZ, 0.0f
     );
 
     script->functionTemp[0]++;
@@ -85,7 +83,7 @@ API_CALLABLE(ShowEmote) {
     switch (emoterType) {
         case EMOTER_PLAYER:
             // show emote from player
-            npc = (Npc*)-1;
+            npc = (Npc*) -1;
             x = 0.0f;
             y = (gPlayerStatus.colliderHeight * 2) / 3;
             z = 0.0f;
@@ -119,13 +117,13 @@ API_CALLABLE(ShowEmote) {
 API_CALLABLE(RemoveEffect) {
     Bytecode* args = script->ptrReadPos;
 
-    remove_effect((EffectInstance*)evt_get_variable(script, *args++));
+    remove_effect((EffectInstance*) evt_get_variable(script, *args++));
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(DismissEffect) {
     Bytecode* args = script->ptrReadPos;
-    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, *args++);
+    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
     effect->flags |= FX_INSTANCE_FLAG_DISMISS;
     return ApiStatus_DONE2;
@@ -133,7 +131,7 @@ API_CALLABLE(DismissEffect) {
 
 API_CALLABLE(DismissItemOutline) {
     Bytecode* args = script->ptrReadPos;
-    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, *args++);
+    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
     effect->data.gotItemOutline->timeLeft = 10;
     return ApiStatus_DONE2;
@@ -293,13 +291,13 @@ API_CALLABLE(ShowSleepBubble) {
     }
 
     fx_sleep_bubble(type, x, y, z, r, pitch, &effectHandle);
-    evt_set_variable(script, outVar, (s32)effectHandle);
+    evt_set_variable(script, outVar, (s32) effectHandle);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(SetSleepBubbleTimeLeft) {
     Bytecode* args = script->ptrReadPos;
-    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, *args++);
+    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
     s32 value = evt_get_variable(script, *args++);
 
     effect->data.sleepBubble->timeLeft = value;

@@ -27,8 +27,9 @@ void N(worker_render_player_reflection)(void) {
         entityModel = get_entity_model(get_shadow_by_index(playerStatus->shadowID)->entityModelID);
         entityModel->flags |= ENTITY_MODEL_FLAG_REFLECT;
 
-        get_screen_coords(gCurrentCamID, playerStatus->pos.x, playerStatus->pos.y, -playerStatus->pos.z,
-                          &screenX, &screenY, &screenZ);
+        get_screen_coords(
+            gCurrentCamID, playerStatus->pos.x, playerStatus->pos.y, -playerStatus->pos.z, &screenX, &screenY, &screenZ
+        );
 
         renderTaskPtr->renderMode = playerStatus->renderMode;
         renderTaskPtr->appendGfxArg = playerStatus;

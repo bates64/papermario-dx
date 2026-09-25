@@ -57,20 +57,23 @@ void appendGfx_speech_bubble(void) {
         guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                  G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, &speech_bubble_gfx);
 
-        ifxImg.raster  = speech_bubble_img;
+        ifxImg.raster = speech_bubble_img;
         ifxImg.palette = speech_bubble_pal;
-        ifxImg.width   = speech_bubble_img_width;
-        ifxImg.height  = speech_bubble_img_height;
+        ifxImg.width = speech_bubble_img_width;
+        ifxImg.height = speech_bubble_img_height;
         ifxImg.xOffset = -16;
         ifxImg.yOffset = 26;
         ifxImg.alpha = 255;
         imgfx_update(0, IMGFX_CLEAR, 0, 0, 0, 0, IMGFX_FLAG_ALPHA_CVG | IMGFX_FLAG_NO_ZBUFFER);
-        imgfx_update(0, IMGFX_SET_COLOR,
-                    SpeechBubblePtr->brightness, SpeechBubblePtr->brightness, SpeechBubblePtr->brightness, 255, 0x440);
+        imgfx_update(
+            0, IMGFX_SET_COLOR, SpeechBubblePtr->brightness, SpeechBubblePtr->brightness, SpeechBubblePtr->brightness,
+            255, 0x440
+        );
         imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_NO_ZBUFFER, mtxTransform);
 
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
@@ -84,12 +87,10 @@ void interact_speech_update(void) {
     Npc* npc;
 
     if (((playerStatus->flags & (PS_FLAG_HAS_CONVERSATION_NPC | PS_FLAG_ENTERING_BATTLE | PS_FLAG_PAUSED))
-            != PS_FLAG_HAS_CONVERSATION_NPC)
-        || gEncounterState == ENCOUNTER_STATE_CONVERSATION
-        || playerStatus->animFlags & PA_FLAG_USING_WATT
-        || playerStatus->inputDisabledCount != 0
-        || playerStatus->animFlags & PA_FLAG_SPINNING
-    ) {
+         != PS_FLAG_HAS_CONVERSATION_NPC)
+        || gEncounterState == ENCOUNTER_STATE_CONVERSATION || playerStatus->animFlags & PA_FLAG_USING_WATT
+        || playerStatus->inputDisabledCount != 0 || playerStatus->animFlags & PA_FLAG_SPINNING)
+    {
         SpeechBubblePtr->state = 3;
     }
 

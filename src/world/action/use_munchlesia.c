@@ -42,7 +42,9 @@ void action_update_use_munchlesia(void) {
         case SUBSTATE_EJECT:
             playerStatus->pos.y += Munchlesia_LaunchVelocity;
             Munchlesia_LaunchVelocity -= Munchlesia_LaunchAccel;
-            add_vec2D_polar(&playerStatus->pos.x, &playerStatus->pos.z, Munchlesia_LateralVelocity, Munchlesia_LaunchYaw);
+            add_vec2D_polar(
+                &playerStatus->pos.x, &playerStatus->pos.z, Munchlesia_LateralVelocity, Munchlesia_LaunchYaw
+            );
             gCameras[CAM_DEFAULT].targetPos.x = playerStatus->pos.x;
             gCameras[CAM_DEFAULT].targetPos.y = playerStatus->pos.y;
             gCameras[CAM_DEFAULT].targetPos.z = playerStatus->pos.z;
@@ -53,7 +55,9 @@ void action_update_use_munchlesia(void) {
         case SUBSTATE_FALL:
             playerStatus->pos.y += Munchlesia_LaunchVelocity;
             Munchlesia_LaunchVelocity -= Munchlesia_LaunchAccel;
-            add_vec2D_polar(&playerStatus->pos.x, &playerStatus->pos.z, Munchlesia_LateralVelocity, Munchlesia_LaunchYaw);
+            add_vec2D_polar(
+                &playerStatus->pos.x, &playerStatus->pos.z, Munchlesia_LateralVelocity, Munchlesia_LaunchYaw
+            );
             gCameras[CAM_DEFAULT].targetPos.x = playerStatus->pos.x;
             gCameras[CAM_DEFAULT].targetPos.y = playerStatus->pos.y;
             gCameras[CAM_DEFAULT].targetPos.z = playerStatus->pos.z;

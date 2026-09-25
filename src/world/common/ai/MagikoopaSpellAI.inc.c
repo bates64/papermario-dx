@@ -81,9 +81,10 @@ API_CALLABLE(N(MagikoopaSpellAI_Main)) {
     if (isInitialCall || (enemy->aiFlags & AI_FLAG_SUSPEND)) {
         script->AI_TEMP_STATE = AI_STATE_SPELL_INIT;
         spellNpc->duration = 0;
-        spellNpc->flags |= NPC_FLAG_FLIP_INSTANTLY | NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_INVISIBLE;
-        enemy->flags |= ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_IGNORE_JUMP |
-                        ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_PROJECTILE;
+        spellNpc->flags |= NPC_FLAG_FLIP_INSTANTLY | NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION
+            | NPC_FLAG_INVISIBLE;
+        enemy->flags |= ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_IGNORE_JUMP
+            | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_PROJECTILE;
         spellNpc->scale.x = 0.4f;
         spellNpc->scale.y = 0.4f;
         if (enemy->aiFlags & AI_FLAG_SUSPEND) {
@@ -125,8 +126,10 @@ API_CALLABLE(N(MagikoopaSpellAI_Main)) {
             angle = atan2(0.0f, spellNpc->pos.y, dx, (gPlayerStatusPtr->pos.y + 10.0)) - 90.0;
             spellNpc->jumpVel = cosine(angle) * spellNpc->moveSpeed;
             spellNpc->yaw = atan2(spellNpc->pos.x, spellNpc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
-            dist = dist3D(spellNpc->pos.x, spellNpc->pos.y, spellNpc->pos.z,
-                gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.y + 10.0, gPlayerStatusPtr->pos.z);
+            dist = dist3D(
+                spellNpc->pos.x, spellNpc->pos.y, spellNpc->pos.z, gPlayerStatusPtr->pos.x,
+                gPlayerStatusPtr->pos.y + 10.0, gPlayerStatusPtr->pos.z
+            );
 
             moveTime = dist / spellNpc->moveSpeed;
             if (moveTime <= 0) {
@@ -134,10 +137,10 @@ API_CALLABLE(N(MagikoopaSpellAI_Main)) {
             }
 
             // create the effect
-            enemy->varTablePtr[AI_VAR_SPELL_FX_PTR] = fx_shape_spell(0,
-                spellNpc->pos.x, spellNpc->pos.y + 14.0f, spellNpc->pos.z,
-                gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.y + 10.0f + 14.0f, gPlayerStatusPtr->pos.z,
-                moveTime);
+            enemy->varTablePtr[AI_VAR_SPELL_FX_PTR] = fx_shape_spell(
+                0, spellNpc->pos.x, spellNpc->pos.y + 14.0f, spellNpc->pos.z, gPlayerStatusPtr->pos.x,
+                gPlayerStatusPtr->pos.y + 10.0f + 14.0f, gPlayerStatusPtr->pos.z, moveTime
+            );
 
             spellNpc->duration = moveTime;
             script->AI_TEMP_STATE = AI_STATE_SPELL_FIRED;

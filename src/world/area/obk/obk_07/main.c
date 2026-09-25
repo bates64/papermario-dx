@@ -10,8 +10,9 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_ExitDoors_obk_01_3) = EVT_EXIT_SPLIT_SINGLE_DOOR(obk_07_ENTRY_0, "obk_01", obk_01_ENTRY_3,
-    COLLIDER_tt1, MODEL_door_1, MODEL_door1b, DOOR_SWING_OUT);
+EvtScript N(EVS_ExitDoors_obk_01_3) = EVT_EXIT_SPLIT_SINGLE_DOOR(
+    obk_07_ENTRY_0, "obk_01", obk_01_ENTRY_3, COLLIDER_tt1, MODEL_door_1, MODEL_door1b, DOOR_SWING_OUT
+);
 
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOOS_MANSION)

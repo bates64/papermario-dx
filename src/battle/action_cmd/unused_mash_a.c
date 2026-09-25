@@ -155,7 +155,8 @@ void N(update)(void) {
 
             // check for meter-filling input
             if (battleStatus->curButtonsPressed & BUTTON_A) {
-                acs->meterFillLevel += SCALE_BY_PCT(METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
+                acs->meterFillLevel +=
+                    SCALE_BY_PCT(METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
             }
 
             // handle meter reaching 100%

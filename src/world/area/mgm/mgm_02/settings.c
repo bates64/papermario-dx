@@ -1,7 +1,7 @@
 #include "mgm_02.h"
 
 #if VERSION_PAL
-s32 N(get_tattle)(void) {
+s32 N( get_tattle)(void) {
     s32 msgID = MSG_MapTattle_mgm_02;
     if (N(pal_variable) != 0) {
         msgID = MSG_NONE;

@@ -74,7 +74,9 @@ void entity_base_block_play_vanish_effect(Entity* entity) {
 
 void entity_block_hit_init_scale(Entity* entity) {
     s32 type = get_entity_type(entity->listIndex);
-    if (type == ENTITY_TYPE_HAMMER1_BLOCK_TINY || type == ENTITY_TYPE_HAMMER2_BLOCK_TINY || type == ENTITY_TYPE_HAMMER3_BLOCK_TINY) {
+    if (type == ENTITY_TYPE_HAMMER1_BLOCK_TINY || type == ENTITY_TYPE_HAMMER2_BLOCK_TINY
+        || type == ENTITY_TYPE_HAMMER3_BLOCK_TINY)
+    {
         entity->scale.y = 0.23f;
         entity->scale.x = 1.04f;
         entity->scale.z = 1.04f;
@@ -89,7 +91,9 @@ void entity_block_hit_init_scale(Entity* entity) {
 
 void entity_block_hit_animate_scale(Entity* entity) {
     s32 type = get_entity_type(entity->listIndex);
-    if (type == ENTITY_TYPE_HAMMER1_BLOCK_TINY || type == ENTITY_TYPE_HAMMER2_BLOCK_TINY || type == ENTITY_TYPE_HAMMER3_BLOCK_TINY) {
+    if (type == ENTITY_TYPE_HAMMER1_BLOCK_TINY || type == ENTITY_TYPE_HAMMER2_BLOCK_TINY
+        || type == ENTITY_TYPE_HAMMER3_BLOCK_TINY)
+    {
         entity->scale.x -= 0.09;
         entity->scale.z -= 0.09;
         entity->scale.y += 0.045;
@@ -231,7 +235,7 @@ void entity_inactive_block_hit_anim(Entity* entity) {
 
     entity_MulticoinBlock_update_timer(entity);
     currentY = entity->pos.y;
-    entity->pos.y = currentY + ((f64)sin_rad(DEG_TO_RAD(data->recoilInterpPhase)) * 2);
+    entity->pos.y = currentY + ((f64) sin_rad(DEG_TO_RAD(data->recoilInterpPhase)) * 2);
     data->recoilInterpPhase += 60.0f;
     if (data->recoilInterpPhase > 450.0f) {
         data->recoilInterpPhase = clamp_angle(data->recoilInterpPhase);
@@ -245,7 +249,7 @@ void entity_inactive_block_recoil_anim(Entity* entity) {
 
     entity_MulticoinBlock_update_timer(entity);
     currentY = entity->pos.y;
-    entity->pos.y = currentY + ((f64)sin_rad(DEG_TO_RAD(data->recoilInterpPhase)));
+    entity->pos.y = currentY + ((f64) sin_rad(DEG_TO_RAD(data->recoilInterpPhase)));
     data->recoilInterpPhase += 60.0f;
     if (data->recoilInterpPhase >= 360.0f) {
         data->recoilInterpPhase = 0.0f;
@@ -277,16 +281,21 @@ void entity_MulticoinBlock_spawn_coin(Entity* entity) {
             itemSpawnMode = ITEM_SPAWN_MODE_ITEM_BLOCK_SPAWN_ALWAYS;
             flagIndex = 0;
         }
-        make_item_entity_nodelay(ITEM_COIN, entity->pos.x, entity->pos.y + 28.0, entity->pos.z,
-            itemSpawnMode, flagIndex);
+        make_item_entity_nodelay(
+            ITEM_COIN, entity->pos.x, entity->pos.y + 28.0, entity->pos.z, itemSpawnMode, flagIndex
+        );
         data->coinsLeft--;
     }
 
     if ((data->coinsLeft == 0) || (data->timeLeft == 0)) {
         data->empty = true;
-        set_entity_commandlist(get_entity_by_index(create_entity(&Entity_InertYellowBlock,
-            (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z,
-            (s32)entity->rot.y, MAKE_ENTITY_END)), Entity_CreatedInertBlock_Script);
+        set_entity_commandlist(
+            get_entity_by_index(create_entity(
+                &Entity_InertYellowBlock, (s32) entity->pos.x, (s32) entity->pos.y, (s32) entity->pos.z,
+                (s32) entity->rot.y, MAKE_ENTITY_END
+            )),
+            Entity_CreatedInertBlock_Script
+        );
         entity->flags |= (ENTITY_FLAG_DISABLE_COLLISION | ENTITY_FLAG_PENDING_INSTANCE_DELETE);
     }
 }
@@ -315,7 +324,10 @@ void entity_MulticoinBlock_idle(Entity* entity) {
     entity_MulticoinBlock_update_timer(entity);
     entity_base_block_idle(entity);
     if (data->empty) {
-        create_entity(&Entity_InertYellowBlock, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, (s32)entity->rot.y, MAKE_ENTITY_END);
+        create_entity(
+            &Entity_InertYellowBlock, (s32) entity->pos.x, (s32) entity->pos.y, (s32) entity->pos.z,
+            (s32) entity->rot.y, MAKE_ENTITY_END
+        );
         entity->flags |= (ENTITY_FLAG_DISABLE_COLLISION | ENTITY_FLAG_PENDING_INSTANCE_DELETE);
     }
 }
@@ -325,7 +337,10 @@ void entity_MulticoinBlock_check_if_inactive(Entity* entity) {
 
     if (data->gameFlagIndex != 0xFFFF) {
         if (get_global_flag(data->gameFlagIndex) != 0) {
-            create_entity(&Entity_InertYellowBlock, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, (s32)entity->rot.y, MAKE_ENTITY_END);
+            create_entity(
+                &Entity_InertYellowBlock, (s32) entity->pos.x, (s32) entity->pos.y, (s32) entity->pos.z,
+                (s32) entity->rot.y, MAKE_ENTITY_END
+            );
             entity->flags |= (ENTITY_FLAG_DISABLE_COLLISION | ENTITY_FLAG_PENDING_INSTANCE_DELETE);
         }
     }
@@ -365,7 +380,9 @@ s32 entity_block_handle_collision(Entity* entity) {
                 case ENTITY_TYPE_HAMMER1_BLOCK:
                 case ENTITY_TYPE_HAMMER1_BLOCK_TINY:
                     set_entity_commandlist(entity, Entity_BreakingBlock_Script);
-                    sfx_play_sound_at_position(SOUND_SMASH_HAMER_BLOCK_1, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_SMASH_HAMER_BLOCK_1, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z
+                    );
                     return true;
             }
         }
@@ -375,11 +392,15 @@ s32 entity_block_handle_collision(Entity* entity) {
 
     breakBlock = false;
     if (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) {
-        if (playerStatus->actionState == ACTION_STATE_SPIN_JUMP || playerStatus->actionState == ACTION_STATE_TORNADO_JUMP) {
+        if (playerStatus->actionState == ACTION_STATE_SPIN_JUMP
+            || playerStatus->actionState == ACTION_STATE_TORNADO_JUMP)
+        {
             return false;
         }
 
-        if (playerStatus->actionState == ACTION_STATE_SPIN_POUND || playerStatus->actionState == ACTION_STATE_TORNADO_POUND) {
+        if (playerStatus->actionState == ACTION_STATE_SPIN_POUND
+            || playerStatus->actionState == ACTION_STATE_TORNADO_POUND)
+        {
             breakBlock = true;
         } else {
             return true;
@@ -418,7 +439,9 @@ s32 entity_block_handle_collision(Entity* entity) {
                 return true;
             }
             set_entity_commandlist(entity, Entity_BreakingBlock_Script);
-            sfx_play_sound_at_position(SOUND_SMASH_HAMER_BLOCK_1, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z);
+            sfx_play_sound_at_position(
+                SOUND_SMASH_HAMER_BLOCK_1, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z
+            );
             break;
         case ENTITY_TYPE_HAMMER2_BLOCK:
         case ENTITY_TYPE_HAMMER2_BLOCK_TINY:
@@ -433,7 +456,9 @@ s32 entity_block_handle_collision(Entity* entity) {
                 return true;
             }
             set_entity_commandlist(entity, Entity_BreakingBlock_Script);
-            sfx_play_sound_at_position(SOUND_SMASH_HAMER_BLOCK_2, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z);
+            sfx_play_sound_at_position(
+                SOUND_SMASH_HAMER_BLOCK_2, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z
+            );
             break;
         case ENTITY_TYPE_HAMMER3_BLOCK:
         case ENTITY_TYPE_HAMMER3_BLOCK_TINY:
@@ -441,7 +466,9 @@ s32 entity_block_handle_collision(Entity* entity) {
                 return true;
             }
             set_entity_commandlist(entity, Entity_BreakingBlock_Script);
-            sfx_play_sound_at_position(SOUND_SMASH_HAMER_BLOCK_3, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z);
+            sfx_play_sound_at_position(
+                SOUND_SMASH_HAMER_BLOCK_3, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z
+            );
             break;
         case ENTITY_TYPE_MULTI_TRIGGER_BLOCK:
         case ENTITY_TYPE_HEALING_BLOCK:
@@ -557,23 +584,32 @@ EntityScript Entity_MulticoinBlock_Script = {
     es_End
 };
 
-EntityModelScript Entity_InertYellowBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_InertYellowBlock_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_InertYellowBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_InertYellowBlock_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityModelScript Entity_InertRedBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_InertRedBlock_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_InertRedBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_InertRedBlock_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityModelScript Entity_MulticoinBrick_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_BrickBlock_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_MulticoinBrick_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_BrickBlock_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityModelScript Entity_Hammer1Block_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_Hammer1Block_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_Hammer1Block_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_Hammer1Block_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityModelScript Entity_Hammer2Block_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_Hammer2Block_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_Hammer2Block_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_Hammer2Block_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityModelScript Entity_Hammer3Block_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_Hammer3Block_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_Hammer3Block_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_Hammer3Block_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityModelScript Entity_PushBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_PushBlock_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_PushBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_PushBlock_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityModelScript Entity_BrickBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_BrickBlock_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_BrickBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_BrickBlock_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityModelScript Entity_PowBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_PowBlock_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_PowBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_PowBlock_Render, RENDER_MODE_SURFACE_OPA);
 
 EntityBlueprint Entity_InertYellowBlock = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,

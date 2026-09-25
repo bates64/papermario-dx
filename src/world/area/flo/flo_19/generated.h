@@ -3,4 +3,3 @@
 
 // type: MapProperties
 #define GEN_MAP_LOCATION LOCATION_GOOMBA_ROAD
-

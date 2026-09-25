@@ -59,7 +59,7 @@ API_CALLABLE(N(OrbitMansionRevealCamera)) {
     angle2 = atan2(89.0f, 84.0f, 245.0f, 85.0f);
     moveAngle = (((angle2 - angle1) / 40.0f) * script->functionTemp[1]) + angle1;
     cam->movePos.x = (s32) (sin_deg(moveAngle) * 100.0f) + 89;
-    cam->movePos.z = (s32)(-cos_deg(moveAngle) * 100.0f) + 84;
+    cam->movePos.z = (s32) (-cos_deg(moveAngle) * 100.0f) + 84;
     cam->panActive = true;
 
     script->functionTemp[1]++;
@@ -150,8 +150,9 @@ EvtScript N(EVS_ExitWalk_mim_07_3) = {
 
 EvtScript N(EVS_ExitWalk_mim_12_0) = EVT_EXIT_WALK(60, mim_11_ENTRY_1, "mim_12", mim_12_ENTRY_0);
 
-EvtScript N(EVS_ExitWalk_obk_01_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(mim_11_ENTRY_2, "obk_01", obk_01_ENTRY_0,
-    COLLIDER_ttd, MODEL_doa, MODEL_o166, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitWalk_obk_01_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    mim_11_ENTRY_2, "obk_01", obk_01_ENTRY_0, COLLIDER_ttd, MODEL_doa, MODEL_o166, DOOR_SOUNDS_CREAKY
+);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_mim_07_3)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

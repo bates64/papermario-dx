@@ -10,8 +10,8 @@ static HeapNode* heap;
 
 static void ensure_heap(void) {
     if (!heapCreated) {
-        heap = (HeapNode*)&heaps3_VRAM_END;
-        u32 size = RAM_END - (u32)heap;
+        heap = (HeapNode*) &heaps3_VRAM_END;
+        u32 size = RAM_END - (u32) heap;
         _heap_create(heap, size);
         heapCreated = true;
     }
@@ -69,6 +69,8 @@ void operator delete[](void* ptr, size_t) noexcept {
 }
 
 extern "C" {
-    void* __dso_handle = nullptr;
-    int __cxa_atexit(void (*)(void*), void*, void*) { return 0; }
+void* __dso_handle = nullptr;
+int __cxa_atexit(void (*)(void*), void*, void*) {
+    return 0;
+}
 }

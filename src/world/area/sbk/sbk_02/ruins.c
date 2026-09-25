@@ -2,9 +2,8 @@
 #include "effects.h"
 #include "model.h"
 
-
 API_CALLABLE(N(HideSun)) {
-    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, MV_Effect_Sun);
+    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, MV_Effect_Sun);
 
     effect->data.sun->targetAlpha = 0;
     return ApiStatus_DONE2;

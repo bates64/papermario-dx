@@ -109,12 +109,16 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
             targetDataList->actorID = ACTOR_PARTNER;
             targetDataList->partID = 1;
             if (!targetHomePos) {
-                targetDataList->truePos.x = partnerActor->curPos.x + partnerActor->size.x * 0.1 * partnerActor->scalingFactor;
-                targetDataList->truePos.y = partnerActor->curPos.y + partnerActor->size.y * 0.8 * partnerActor->scalingFactor;
+                targetDataList->truePos.x =
+                    partnerActor->curPos.x + partnerActor->size.x * 0.1 * partnerActor->scalingFactor;
+                targetDataList->truePos.y =
+                    partnerActor->curPos.y + partnerActor->size.y * 0.8 * partnerActor->scalingFactor;
                 targetDataList->truePos.z = partnerActor->curPos.z;
             } else {
-                targetDataList->truePos.x = partnerActor->homePos.x + partnerActor->size.x * 0.1 * partnerActor->scalingFactor;
-                targetDataList->truePos.y = partnerActor->homePos.y + partnerActor->size.y * 0.8 * partnerActor->scalingFactor;
+                targetDataList->truePos.x =
+                    partnerActor->homePos.x + partnerActor->size.x * 0.1 * partnerActor->scalingFactor;
+                targetDataList->truePos.y =
+                    partnerActor->homePos.y + partnerActor->size.y * 0.8 * partnerActor->scalingFactor;
                 targetDataList->truePos.z = partnerActor->homePos.z;
             }
             targetDataList->priorityOffset = -50;
@@ -129,7 +133,9 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
         if (targetActor == nullptr) {
             continue;
         }
-        if ((battleStatus->curTargetListFlags & TARGET_FLAG_PARTNER) || (battleStatus->curTargetListFlags & TARGET_FLAG_PLAYER)) {
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_PARTNER)
+            || (battleStatus->curTargetListFlags & TARGET_FLAG_PLAYER))
+        {
             // skip adding enemies if either player or partner targeting is set
             break;
         }
@@ -183,7 +189,9 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
                 targetDataList->truePos.z = targetZ;
                 targetDataList->priorityOffset = 0;
 
-                if ((targetActor->flags & ACTOR_FLAG_TARGET_ONLY) && !(targetActor->flags & ACTOR_FLAG_LOW_PRIORITY_TARGET)) {
+                if ((targetActor->flags & ACTOR_FLAG_TARGET_ONLY)
+                    && !(targetActor->flags & ACTOR_FLAG_LOW_PRIORITY_TARGET))
+                {
                     targetDataList->priorityOffset = 100;
                 }
                 targetDataList->priorityOffset += targetPart->targetPriorityOffset;
@@ -267,10 +275,9 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
 
         // skip targets not designated as the primary target for this actor
         if (battleStatus->curTargetListFlags & TARGET_FLAG_PRIMARY_ONLY) {
-            if (!(targetPart->flags & ACTOR_PART_FLAG_PRIMARY_TARGET)
-                || targetActor->flags & ACTOR_FLAG_MINOR_TARGET
-                || targetPart->flags & ACTOR_PART_FLAG_MINOR_TARGET
-            ) {
+            if (!(targetPart->flags & ACTOR_PART_FLAG_PRIMARY_TARGET) || targetActor->flags & ACTOR_FLAG_MINOR_TARGET
+                || targetPart->flags & ACTOR_PART_FLAG_MINOR_TARGET)
+            {
                 removeTarget = true;
                 goto FIRST_PASS_REMOVE;
             }
@@ -279,7 +286,7 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
         // target passed all checks, do not remove
         removeTarget = false;
 
-        FIRST_PASS_REMOVE:
+    FIRST_PASS_REMOVE:
         if (removeTarget) {
             for (j = i; j < numTargets - 1; j++) {
                 actor->targetData[j] = actor->targetData[j + 1];
@@ -301,15 +308,21 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
         if (target->actorID == ACTOR_PLAYER || target->actorID == ACTOR_PARTNER) {
             continue;
         }
-        if ((battleStatus->curTargetListFlags & TARGET_FLAG_JUMP_LIKE) && (targetPart->targetFlags & ACTOR_PART_TARGET_NO_JUMP)) {
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_JUMP_LIKE)
+            && (targetPart->targetFlags & ACTOR_PART_TARGET_NO_JUMP))
+        {
             removeTarget = true;
             goto SECOND_PASS_REMOVE;
         }
-        if ((battleStatus->curTargetListFlags & TARGET_FLAG_SMASH_LIKE) && (targetPart->targetFlags & ACTOR_PART_TARGET_NO_SMASH)) {
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_SMASH_LIKE)
+            && (targetPart->targetFlags & ACTOR_PART_TARGET_NO_SMASH))
+        {
             removeTarget = true;
             goto SECOND_PASS_REMOVE;
         }
-        if ((battleStatus->curTargetListFlags & TARGET_FLAG_TATTLE) && ((targetActor->flags & ACTOR_FLAG_NO_TATTLE) || (targetPart->flags & ACTOR_PART_FLAG_NO_TATTLE))) {
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_TATTLE)
+            && ((targetActor->flags & ACTOR_FLAG_NO_TATTLE) || (targetPart->flags & ACTOR_PART_FLAG_NO_TATTLE)))
+        {
             removeTarget = true;
             goto SECOND_PASS_REMOVE;
         }
@@ -317,11 +330,15 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
             removeTarget = true;
             goto SECOND_PASS_REMOVE;
         }
-        if (!(battleStatus->curTargetListFlags & TARGET_FLAG_ALLOW_TARGET_ONLY) && (targetActor->flags & ACTOR_FLAG_TARGET_ONLY)) {
+        if (!(battleStatus->curTargetListFlags & TARGET_FLAG_ALLOW_TARGET_ONLY)
+            && (targetActor->flags & ACTOR_FLAG_TARGET_ONLY))
+        {
             removeTarget = true;
             goto SECOND_PASS_REMOVE;
         }
-        if ((battleStatus->curTargetListFlags & TARGET_FLAG_NO_CEILING) && (targetActor->flags & ACTOR_FLAG_UPSIDE_DOWN)) {
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_NO_CEILING)
+            && (targetActor->flags & ACTOR_FLAG_UPSIDE_DOWN))
+        {
             removeTarget = true;
             goto SECOND_PASS_REMOVE;
         }
@@ -339,8 +356,8 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
         }
 
         if ((battleStatus->curTargetListFlags & TARGET_FLAG_NOT_BELOW)
-            && !(targetPart->flags & ACTOR_PART_FLAG_IGNORE_BELOW_CHECK)
-        ) {
+            && !(targetPart->flags & ACTOR_PART_FLAG_IGNORE_BELOW_CHECK))
+        {
             // search the target list for any targets below the current target (same column, higher row)
             // skip the current target if any are found
             s32 foundAbove = false;
@@ -348,10 +365,9 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
             for (j = 0; j < numTargets; j++) {
                 otherTarget = &targetDataList[j];
                 if (target != otherTarget) {
-                    if (target->layer == otherTarget->layer
-                        && target->column == otherTarget->column
-                        && target->row < otherTarget->row
-                    ) {
+                    if (target->layer == otherTarget->layer && target->column == otherTarget->column
+                        && target->row < otherTarget->row)
+                    {
                         foundAbove = true;
                         break;
                     }
@@ -372,10 +388,9 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
             for (j = 0; j < numTargets; j++) {
                 otherTarget = &targetDataList[j];
                 if (target != otherTarget) {
-                    if (target->layer == otherTarget->layer
-                        && target->row == otherTarget->row
-                        && target->column > otherTarget->column
-                    ) {
+                    if (target->layer == otherTarget->layer && target->row == otherTarget->row
+                        && target->column > otherTarget->column)
+                    {
                         foundInFront = true;
                         break;
                     }
@@ -428,7 +443,7 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
         // target passed all checks, do not remove
         removeTarget = false;
 
-        SECOND_PASS_REMOVE:
+    SECOND_PASS_REMOVE:
         if (removeTarget) {
             for (j = i; j < numTargets - 1; j++) {
                 actor->targetData[j] = actor->targetData[j + 1];
@@ -460,7 +475,9 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
             s32 index2 = targetIndexList[j];
             target = &targetDataList[index1];
             otherTarget = &targetDataList[index2];
-            if (target->truePos.x + target->priorityOffset * 10 > otherTarget->truePos.x + otherTarget->priorityOffset * 10) {
+            if (target->truePos.x + target->priorityOffset * 10
+                > otherTarget->truePos.x + otherTarget->priorityOffset * 10)
+            {
                 targetIndexList[i] = targetIndexList[j];
                 targetIndexList[j] = index1;
             }
@@ -628,7 +645,7 @@ s32 btl_are_all_enemies_defeated(void) {
     for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
         enemy = battleStatus->enemyActors[i];
         if (enemy != nullptr) {
-            if(!(enemy->flags & (ACTOR_FLAG_NO_DMG_APPLY | ACTOR_FLAG_TARGET_ONLY))) {
+            if (!(enemy->flags & (ACTOR_FLAG_NO_DMG_APPLY | ACTOR_FLAG_TARGET_ONLY))) {
                 enemiesStillAlive = true;
             }
         }
@@ -896,12 +913,7 @@ void play_movement_dust_effects(s32 var0, f32 xPos, f32 yPos, f32 zPos, f32 angl
         sinTheta = sin_rad(theta);
         cosTheta = cos_rad(theta);
         fx_walking_dust(
-            0,
-            xPos + (sinTheta * 24.0f * 0.2f),
-            yPos + 1.5f,
-            zPos + (cosTheta * 24.0f * 0.2f),
-            sinTheta,
-            cosTheta
+            0, xPos + (sinTheta * 24.0f * 0.2f), yPos + 1.5f, zPos + (cosTheta * 24.0f * 0.2f), sinTheta, cosTheta
         );
     }
 }
@@ -942,7 +954,9 @@ void load_player_actor(void) {
     player->actorBlueprint = &bPlayerActorBlueprint;
     player->actorType = bPlayerActorBlueprint.type;
 
-    if ((gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) || (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_PARTNER_ACTING)) {
+    if ((gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)
+        || (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_PARTNER_ACTING))
+    {
         player->homePos.x = player->curPos.x = -130.0f;
         player->homePos.y = player->curPos.y = 0.0f;
         player->homePos.z = player->curPos.z = -10.0f;
@@ -1159,7 +1173,9 @@ void load_partner_actor(void) {
         ASSERT(actorBP != nullptr);
 
         nuPiReadRom(partnerData->dmaStart, partnerData->dmaDest, partnerData->dmaEnd - partnerData->dmaStart);
-        if ((gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) || (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_PARTNER_ACTING)) {
+        if ((gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)
+            || (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_PARTNER_ACTING))
+        {
             x = -95.0f;
             y = partnerData->posY;
             z = 0.0f;
@@ -1317,7 +1333,7 @@ void load_partner_actor(void) {
                 DecorationTable* decorations;
                 s32 j;
 
-                part->decorationTable  = heap_malloc(sizeof(*decorations));
+                part->decorationTable = heap_malloc(sizeof(*decorations));
                 decorations = part->decorationTable;
 
                 ASSERT(decorations != nullptr);
@@ -1373,7 +1389,9 @@ void load_partner_actor(void) {
             part->nextPart = nullptr;
         }
 
-        partnerActor->shadow.id = create_shadow_type(SHADOW_VARYING_CIRCLE, partnerActor->curPos.x, partnerActor->curPos.y, partnerActor->curPos.z);
+        partnerActor->shadow.id = create_shadow_type(
+            SHADOW_VARYING_CIRCLE, partnerActor->curPos.x, partnerActor->curPos.y, partnerActor->curPos.z
+        );
         partnerActor->shadowScale = partnerActor->size.x / 24.0;
         partnerActor->hudElementDataIndex = create_status_icon_set();
         partnerActor->disableEffect = fx_disable_x(0, -142.0f, 34.0f, 1.0f, 0);
@@ -1616,7 +1634,6 @@ Actor* create_actor(Formation formation) {
                 decorations->effect[k] = nullptr;
                 decorations->type[k] = 0;
             }
-
         }
 
         if (!(part->flags & ACTOR_PART_FLAG_SKIP_MOVEMENT_ALLOC)) {
@@ -1817,8 +1834,10 @@ s32 inflict_status(Actor* target, s32 statusTypeKey, s32 duration) {
         case STATUS_KEY_STOP:
         case STATUS_KEY_POISON:
         case STATUS_KEY_SHRINK:
-            if (target->actorID != ACTOR_PLAYER || (!is_ability_active(ABILITY_FEELING_FINE) &&
-                !is_ability_active(ABILITY_BERSERKER) && battleStatus->hustleTurns == 0)) {
+            if (target->actorID != ACTOR_PLAYER
+                || (!is_ability_active(ABILITY_FEELING_FINE) && !is_ability_active(ABILITY_BERSERKER)
+                    && battleStatus->hustleTurns == 0))
+            {
 
                 if (target->actorID != ACTOR_PARTNER) {
                     if (target->debuff != statusTypeKey) {
@@ -1827,7 +1846,7 @@ s32 inflict_status(Actor* target, s32 statusTypeKey, s32 duration) {
                     target->disableEffect->data.disableX->koDuration = 0;
                     target->debuff = statusTypeKey;
                     target->debuffDuration = duration;
-                    if ((s8)duration > 9) {
+                    if ((s8) duration > 9) {
                         target->debuffDuration = 9;
                     }
 
@@ -1838,8 +1857,8 @@ s32 inflict_status(Actor* target, s32 statusTypeKey, s32 duration) {
                                 if (effect != nullptr) {
                                     effect->flags |= FX_INSTANCE_FLAG_DISMISS;
                                 }
-                                target->icePillarEffect = fx_ice_pillar(0, target->curPos.x, target->curPos.y,
-                                                            target->curPos.z, 1.0f, 0);
+                                target->icePillarEffect =
+                                    fx_ice_pillar(0, target->curPos.x, target->curPos.y, target->curPos.z, 1.0f, 0);
                                 create_status_debuff(target->hudElementDataIndex, STATUS_KEY_FROZEN);
                             }
                             return true;
@@ -1876,7 +1895,7 @@ s32 inflict_status(Actor* target, s32 statusTypeKey, s32 duration) {
             if (target->actorID != ACTOR_PARTNER) {
                 target->staticStatus = statusTypeKey;
                 target->staticDuration = duration;
-                if ((s8)duration > 9) {
+                if ((s8) duration > 9) {
                     target->staticDuration = 9;
                 }
                 target->statusAfflicted = STATUS_KEY_STATIC;
@@ -1888,7 +1907,7 @@ s32 inflict_status(Actor* target, s32 statusTypeKey, s32 duration) {
             if (target->actorID != ACTOR_PARTNER) {
                 target->stoneStatus = STATUS_KEY_STONE;
                 target->stoneDuration = duration;
-                if ((s8)duration > 9) {
+                if ((s8) duration > 9) {
                     target->stoneDuration = 9;
                 }
                 target->statusAfflicted = STATUS_KEY_STONE;
@@ -1898,7 +1917,7 @@ s32 inflict_status(Actor* target, s32 statusTypeKey, s32 duration) {
             if (target->koStatus < statusTypeKey) {
                 target->koStatus = STATUS_KEY_KO;
                 target->koDuration = duration;
-                if ((s8)duration > 9) {
+                if ((s8) duration > 9) {
                     target->koDuration = 9;
                 }
                 target->statusAfflicted = STATUS_KEY_KO;
@@ -1908,7 +1927,7 @@ s32 inflict_status(Actor* target, s32 statusTypeKey, s32 duration) {
             if (target->actorID != ACTOR_PARTNER) {
                 target->transparentStatus = STATUS_KEY_TRANSPARENT;
                 target->transparentDuration = duration;
-                if ((s8)duration > 9) {
+                if ((s8) duration > 9) {
                     target->transparentDuration = 9;
                 }
                 target->statusAfflicted = STATUS_KEY_TRANSPARENT;
@@ -1945,13 +1964,13 @@ s32 get_defense(Actor* actor, s32* defenseTable, s32 elementFlags) {
 
     if (defenseTable != nullptr) {
 
-        #define CHECK_DEFENSE(element) \
+#define CHECK_DEFENSE(element) \
         if (elementFlags & DAMAGE_TYPE_##element) { \
             elemDefense = lookup_defense(defenseTable, ELEMENT_##element); \
             if (elemDefense < minDefense) { \
                 minDefense = elemDefense; \
             } \
-        } \
+        }
 
         CHECK_DEFENSE(FIRE);
         CHECK_DEFENSE(WATER);
@@ -1965,7 +1984,7 @@ s32 get_defense(Actor* actor, s32* defenseTable, s32 elementFlags) {
         CHECK_DEFENSE(QUAKE);
         CHECK_DEFENSE(THROW);
 
-        #undef CHECK_DEFENSE
+#undef CHECK_DEFENSE
     }
 
     // If no element flags were set, fall back to normal defense.
@@ -2293,7 +2312,6 @@ s32 try_inflict_status(Actor* actor, s32 statusTypeKey, s32 statusTurnsKey) {
             inflict_status(actor, statusTypeKey, duration);
         } else {
             inflict_status(actor, statusTypeKey, duration);
-
         }
     } else {
         duration = 0;
@@ -2329,10 +2347,9 @@ void set_part_pal_adjustment(ActorPart* part, s32 palAdjust) {
 
 void set_actor_pal_adjustment(Actor* actor, s32 palAdjust) {
     for (ActorPart* part = actor->partsTable; part != nullptr; part = part->nextPart) {
-        if (!(part->flags & ACTOR_PART_FLAG_INVISIBLE)
-            && (part->idleAnimations != nullptr)
-            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
-        ) {
+        if (!(part->flags & ACTOR_PART_FLAG_INVISIBLE) && (part->idleAnimations != nullptr)
+            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS))
+        {
             set_part_pal_adjustment(part, palAdjust);
         }
     }
@@ -2348,14 +2365,12 @@ void clear_actor_static_pal_adjustments(Actor* actor) {
     for (ActorPart* part = actor->partsTable; part != nullptr; part = part->nextPart) {
         DecorationTable* decorations = part->decorationTable;
 
-        if (!(part->flags & ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION)
-            && !(part->flags & ACTOR_PART_FLAG_INVISIBLE)
-            && (part->idleAnimations != nullptr)
-            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
-        ) {
+        if (!(part->flags & ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION) && !(part->flags & ACTOR_PART_FLAG_INVISIBLE)
+            && (part->idleAnimations != nullptr) && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS))
+        {
             if (decorations->paletteAdjustment != ACTOR_PAL_ADJUST_BLEND_PALETTES_UNIFORM_INTERVALS
-             && decorations->paletteAdjustment != ACTOR_PAL_ADJUST_BLEND_PALETTES_VARYING_INTERVALS
-            ) {
+                && decorations->paletteAdjustment != ACTOR_PAL_ADJUST_BLEND_PALETTES_VARYING_INTERVALS)
+            {
                 decorations->paletteAdjustment = ACTOR_PAL_ADJUST_NONE;
             }
         }
@@ -2377,9 +2392,8 @@ void set_part_glow_pal(ActorPart* part, s32 glowState) {
 void set_actor_glow_pal(Actor* actor, s32 glowState) {
     for (ActorPart* part = actor->partsTable; part != nullptr; part = part->nextPart) {
         if (!(part->flags & (ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION | ACTOR_PART_FLAG_INVISIBLE))
-            && (part->idleAnimations != nullptr)
-            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
-        ) {
+            && (part->idleAnimations != nullptr) && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS))
+        {
             set_part_glow_pal(part, glowState);
         }
     }
@@ -2396,9 +2410,8 @@ void clear_actor_glow_pal(Actor* actor) {
         DecorationTable* decorations = part->decorationTable;
 
         if (!(part->flags & (ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION | ACTOR_PART_FLAG_INVISIBLE))
-            && part->idleAnimations != nullptr
-            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
-        ) {
+            && part->idleAnimations != nullptr && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS))
+        {
             decorations->glowState = GLOW_PAL_OFF;
         }
     }
@@ -2419,10 +2432,9 @@ void set_part_flash_mode(ActorPart* part, s32 flashState) {
 void set_actor_flash_mode(Actor* actor, s32 flashState) {
     for (ActorPart* part = actor->partsTable; part != nullptr; part = part->nextPart) {
         if (!(part->flags & (ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION))
-            && part->decorationTable != nullptr
-            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
-            && part->idleAnimations != nullptr
-        ) {
+            && part->decorationTable != nullptr && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
+            && part->idleAnimations != nullptr)
+        {
             set_part_flash_mode(part, flashState);
         }
     }
@@ -2435,13 +2447,12 @@ void clear_part_flash_mode(ActorPart* part) {
 }
 
 void clear_actor_flash_mode(Actor* actor) {
-   for (ActorPart* part = actor->partsTable; part != nullptr; part = part->nextPart) {
+    for (ActorPart* part = actor->partsTable; part != nullptr; part = part->nextPart) {
         DecorationTable* decorations = part->decorationTable;
 
         if (!(part->flags & (ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION | ACTOR_PART_FLAG_INVISIBLE))
-            && (part->idleAnimations != nullptr)
-            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
-        ) {
+            && (part->idleAnimations != nullptr) && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS))
+        {
             decorations->flashState = 0;
         }
     }
@@ -2461,10 +2472,9 @@ void add_part_decoration(ActorPart* part, s32 decorationIndex, s32 decorationTyp
 
 void add_actor_decoration(Actor* actor, s32 decorationIndex, s32 decorationType) {
     for (ActorPart* part = actor->partsTable; part != nullptr; part = part->nextPart) {
-        if (!(part->flags & (ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION))
-            && part->idleAnimations
-            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
-        ) {
+        if (!(part->flags & (ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION)) && part->idleAnimations
+            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS))
+        {
             add_part_decoration(part, decorationIndex, decorationType);
         }
     }
@@ -2477,9 +2487,8 @@ void remove_part_decoration(ActorPart* part, s32 decorationIndex) {
 void remove_actor_decoration(Actor* actor, s32 decorationIndex) {
     for (ActorPart* part = actor->partsTable; part != nullptr; part = part->nextPart) {
         if (!(part->flags & (ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION))
-            && part->idleAnimations != nullptr
-            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
-        ) {
+            && part->idleAnimations != nullptr && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS))
+        {
             remove_part_decoration(part, decorationIndex);
         }
     }
@@ -2564,7 +2573,9 @@ void remove_player_buffs(s32 buffs) {
         battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_WATER_BLOCK].turnsLeft = 0;
         battleStatus->waterBlockEffect->flags |= FX_INSTANCE_FLAG_DISMISS;
 
-        fx_water_block(FX_WATER_BLOCK_DESTROY, player->curPos.x, player->curPos.y + 18.0f, player->curPos.z + 5.0f, 1.5f, 10);
+        fx_water_block(
+            FX_WATER_BLOCK_DESTROY, player->curPos.x, player->curPos.y + 18.0f, player->curPos.z + 5.0f, 1.5f, 10
+        );
         fx_water_splash(0, player->curPos.x - 10.0f, player->curPos.y + 5.0f, player->curPos.z + 5.0f, 1.0f, 24);
         fx_water_splash(0, player->curPos.x - 15.0f, player->curPos.y + 32.0f, player->curPos.z + 5.0f, 1.0f, 24);
         fx_water_splash(1, player->curPos.x + 15.0f, player->curPos.y + 22.0f, player->curPos.z + 5.0f, 1.0f, 24);
@@ -2726,7 +2737,6 @@ void hide_foreground_models(void) {
                 Model* model = get_model_from_list_index(get_model_list_index_from_tree_index(id));
                 model->flags |= MODEL_FLAG_HIDDEN;
             }
-
         }
     }
 }

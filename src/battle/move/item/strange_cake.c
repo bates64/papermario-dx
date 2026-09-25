@@ -10,7 +10,6 @@
 #include "battle/common/move/ItemRefund.inc.c"
 #include "battle/common/move/UseItem.inc.c"
 
-
 #include "battle/move/item/strange_cake1.png.h"
 INCLUDE_IMG("battle/move/item/strange_cake1.png", battle_item_strange_cake1_png);
 INCLUDE_PAL("battle/move/item/strange_cake1.pal", battle_item_strange_cake1_pal);
@@ -51,7 +50,10 @@ void N(func_802A123C_73153C(void)) {
 
     if (D_802A2DEC < 6) {
         if (D_802A2DEC > 0) {
-            draw_box(0, WINDOW_STYLE_7, 106, 86, 0, 36, 36, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+            draw_box(
+                0, WINDOW_STYLE_7, 106, 86, 0, 36, 36, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr,
+                SCREEN_WIDTH, SCREEN_HEIGHT, nullptr
+            );
             gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 108, 90, 139, 118);
 
             for (i = 0; i < ARRAY_COUNT(D_802A2DD8); i++) {

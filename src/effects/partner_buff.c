@@ -183,9 +183,11 @@ void func_E011A3A0(EffectInstance* effect) {
 
 void func_E011A3BC(s16 alpha) {
     if (alpha == 255) {
-        gDPSetRenderMode(gMainGfxPos++, AA_EN | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA |
-            GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM),
-            GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM));
+        gDPSetRenderMode(
+            gMainGfxPos++,
+            AA_EN | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM),
+            GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM)
+        );
         gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
     } else {
         gDPSetRenderMode(gMainGfxPos++, G_RM_CLD_SURF, G_RM_CLD_SURF2);
@@ -195,16 +197,9 @@ void func_E011A3BC(s16 alpha) {
 }
 
 void func_E011A48C(s32 posX, s32 posY, s32 tile, f32 scale) {
-    gSPScisTextureRectangle(gMainGfxPos++,
-        posX * 4,
-        posY * 4,
-        (posX + 32) * 4,
-        (posY + 32) * 4,
-        tile,
-        0,
-        1024,
-        scale,
-        -scale);
+    gSPScisTextureRectangle(
+        gMainGfxPos++, posX * 4, posY * 4, (posX + 32) * 4, (posY + 32) * 4, tile, 0, 1024, scale, -scale
+    );
     gDPPipeSync(gMainGfxPos++);
 }
 
@@ -222,7 +217,7 @@ void func_E011A700(EffectInstance* effect) {
 
     if (data->visible) {
         gDPPipeSync(gMainGfxPos++);
-        gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+        gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
         gSPDisplayList(gMainGfxPos++, D_E011AC20[0]);
 
@@ -292,11 +287,9 @@ void func_E011A700(EffectInstance* effect) {
             }
         }
 
-        gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE,
-            camera->viewportStartX,
-            camera->viewportStartY,
-            camera->viewportStartX + camera->viewportW,
-            camera->viewportStartY + camera->viewportH
+        gDPSetScissor(
+            gMainGfxPos++, G_SC_NON_INTERLACE, camera->viewportStartX, camera->viewportStartY,
+            camera->viewportStartX + camera->viewportW, camera->viewportStartY + camera->viewportH
         );
         gDPPipeSync(gMainGfxPos++);
     }

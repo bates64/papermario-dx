@@ -1,7 +1,9 @@
 #include "kkj_22.h"
 
-EvtScript N(EVS_ExitDoor_kkj_13_1) = EVT_EXIT_DOUBLE_DOOR(kkj_22_ENTRY_0, "kkj_13", kkj_13_ENTRY_1, COLLIDER_ttw, MODEL_o51, MODEL_o52);
-EvtScript N(EVS_ExitDoor_kkj_23_0) = EVT_EXIT_DOUBLE_DOOR(kkj_22_ENTRY_1, "kkj_23", kkj_23_ENTRY_0, COLLIDER_ttnw, MODEL_o94, MODEL_o95);
+EvtScript N(EVS_ExitDoor_kkj_13_1) =
+    EVT_EXIT_DOUBLE_DOOR(kkj_22_ENTRY_0, "kkj_13", kkj_13_ENTRY_1, COLLIDER_ttw, MODEL_o51, MODEL_o52);
+EvtScript N(EVS_ExitDoor_kkj_23_0) =
+    EVT_EXIT_DOUBLE_DOOR(kkj_22_ENTRY_1, "kkj_23", kkj_23_ENTRY_0, COLLIDER_ttnw, MODEL_o94, MODEL_o95);
 
 EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)

@@ -28,8 +28,7 @@ void N(AvoidPlayerAI_ChaseInit)(Evt* script, MobileAISettings* settings, EnemyDe
     detectedPlayer = false;
 
     // get a heading directly away from the player
-    yawFwd = clamp_angle(atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x,
-                                 gPlayerStatusPtr->pos.z) + 180.0f);
+    yawFwd = clamp_angle(atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z) + 180.0f);
     deltaYaw = get_clamped_angle_diff(npc->yaw, yawFwd);
     if (settings->chaseTurnRate < fabsf(deltaYaw)) {
         if (deltaYaw < 0.0f) {
@@ -50,18 +49,22 @@ void N(AvoidPlayerAI_ChaseInit)(Evt* script, MobileAISettings* settings, EnemyDe
     distCW = 0.0f;
     distCCW = 0.0f;
 
-    if (npc_test_move_simple_without_slipping(npc->collisionChannel,
-            &posXFwd, &posYFwd, &posZFwd, npc->moveSpeed * 4.5,
-            yawFwd, npc->collisionHeight, npc->collisionDiameter)) {
+    if (npc_test_move_simple_without_slipping(
+            npc->collisionChannel, &posXFwd, &posYFwd, &posZFwd, npc->moveSpeed * 4.5, yawFwd, npc->collisionHeight,
+            npc->collisionDiameter
+        ))
+    {
         distFwd = dist2D(npc->pos.x, npc->pos.z, posXFwd, posZFwd);
 
         // check 'whisker' 35 degrees CW
         posXCW = npc->pos.x;
         posYCW = npc->pos.y;
         posZCW = npc->pos.z;
-        if (npc_test_move_simple_without_slipping(npc->collisionChannel,
-                &posXCW, &posYCW, &posZCW, npc->moveSpeed * 4.5,
-                clamp_angle(yawFwd + 35.0f), npc->collisionHeight, npc->collisionDiameter)) {
+        if (npc_test_move_simple_without_slipping(
+                npc->collisionChannel, &posXCW, &posYCW, &posZCW, npc->moveSpeed * 4.5, clamp_angle(yawFwd + 35.0f),
+                npc->collisionHeight, npc->collisionDiameter
+            ))
+        {
             distCW = dist2D(npc->pos.x, npc->pos.z, posXCW, posZCW);
         }
 
@@ -69,14 +72,17 @@ void N(AvoidPlayerAI_ChaseInit)(Evt* script, MobileAISettings* settings, EnemyDe
         posXCCW = npc->pos.x;
         posYCCW = npc->pos.y;
         posZCCW = npc->pos.z;
-        if (npc_test_move_simple_without_slipping(npc->collisionChannel,
-                &posXCCW, &posYCCW, &posZCCW, npc->moveSpeed * 4.5,
-                clamp_angle(yawFwd - 35.0f), npc->collisionHeight, npc->collisionDiameter)) {
+        if (npc_test_move_simple_without_slipping(
+                npc->collisionChannel, &posXCCW, &posYCCW, &posZCCW, npc->moveSpeed * 4.5, clamp_angle(yawFwd - 35.0f),
+                npc->collisionHeight, npc->collisionDiameter
+            ))
+        {
             distCCW = dist2D(npc->pos.x, npc->pos.z, posXCCW, posZCCW);
         }
 
-        if ((distFwd < npc->moveSpeed * 1.5) && (distCW < npc->moveSpeed * 1.5) && (distCCW < npc->moveSpeed * 1.5) &&
-            (basic_ai_check_player_dist(detect, enemy, settings->alertRadius, settings->alertOffsetDist, false))) {
+        if ((distFwd < npc->moveSpeed * 1.5) && (distCW < npc->moveSpeed * 1.5) && (distCCW < npc->moveSpeed * 1.5)
+            && (basic_ai_check_player_dist(detect, enemy, settings->alertRadius, settings->alertOffsetDist, false)))
+        {
             detectedPlayer = true;
         }
 
@@ -153,7 +159,7 @@ API_CALLABLE(N(AvoidPlayerAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args++);
     EnemyDetectVolume detectVolume;
     EnemyDetectVolume* detect = &detectVolume;
 
@@ -227,4 +233,3 @@ API_CALLABLE(N(AvoidPlayerAI_Main)) {
 
     return ApiStatus_BLOCK;
 }
-

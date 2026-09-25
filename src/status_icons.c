@@ -263,8 +263,10 @@ void draw_merlee_message_string(PopupMessage* popup, s32 posX, s32 posY) {
     posX += 11;
     posY += 6;
 
-    if (popup->messageIndex >= ARRAY_COUNT(D_80078168)) return;
-    if (popup->messageIndex < 0) return;
+    if (popup->messageIndex >= ARRAY_COUNT(D_80078168))
+        return;
+    if (popup->messageIndex < 0)
+        return;
 
     messageID = D_80078168[popup->messageIndex];
     draw_msg(messageID, posX, posY, 255, MSG_PAL_0F, 0);
@@ -296,7 +298,9 @@ void draw_merlee_message(void* data) {
                 width = get_msg_width(messageID, 0) + 23;
                 xPos = 160 - (width / 2);
                 height = 45;
-                set_window_properties(WIN_BTL_POPUP, xPos, 80, width, height, WINDOW_PRIORITY_0, draw_merlee_message_string, popup, -1);
+                set_window_properties(
+                    WIN_BTL_POPUP, xPos, 80, width, height, WINDOW_PRIORITY_0, draw_merlee_message_string, popup, -1
+                );
                 set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
@@ -308,7 +312,9 @@ void draw_merlee_message(void* data) {
                 width = get_msg_width(messageID, 0) + 23;
                 xPos = 160 - (width / 2);
                 height = 28;
-                set_window_properties(WIN_BTL_POPUP, xPos, 80, width, height, WINDOW_PRIORITY_0, draw_merlee_message_string, popup, -1);
+                set_window_properties(
+                    WIN_BTL_POPUP, xPos, 80, width, height, WINDOW_PRIORITY_0, draw_merlee_message_string, popup, -1
+                );
                 set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
@@ -324,7 +330,10 @@ void draw_merlee_message(void* data) {
         messageID = D_80078168[popup->messageIndex];
         width = get_msg_width(messageID, 0) + 30;
         xPos = 160 - (width / 2);
-        set_window_properties(WIN_BTL_POPUP, xPos, 80, width, D_80078160[get_msg_lines(messageID) - 1], 0, draw_merlee_message_string, popup, -1);
+        set_window_properties(
+            WIN_BTL_POPUP, xPos, 80, width, D_80078160[get_msg_lines(messageID) - 1], 0, draw_merlee_message_string,
+            popup, -1
+        );
         set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
     }
 #endif
@@ -633,8 +642,8 @@ void draw_all_status_icons(void* data) {
         }
 
         if (icon->status1.removingTask == STATUS_ICON_TASK_DRAW
-            && (icon->flags & STATUS_ICON_FLAG_BATTLE || gGameStatusPtr->context != CONTEXT_BATTLE)
-        ) {
+            && (icon->flags & STATUS_ICON_FLAG_BATTLE || gGameStatusPtr->context != CONTEXT_BATTLE))
+        {
             hud_element_clear_flags(icon->status1.removingElementHID, HUD_ELEMENT_FLAG_DISABLED);
 
             if (isActiveDrawn == 0) {
@@ -680,8 +689,8 @@ void draw_all_status_icons(void* data) {
         }
 
         if (icon->status2.removingTask == STATUS_ICON_TASK_DRAW
-            && (icon->flags & STATUS_ICON_FLAG_BATTLE || gGameStatusPtr->context != CONTEXT_BATTLE)
-        ) {
+            && (icon->flags & STATUS_ICON_FLAG_BATTLE || gGameStatusPtr->context != CONTEXT_BATTLE))
+        {
             hud_element_clear_flags(icon->status2.removingElementHID, HUD_ELEMENT_FLAG_DISABLED);
 
             offsetY = 0;
@@ -713,7 +722,8 @@ void draw_all_status_icons(void* data) {
                 offsetY = 0;
                 if (iconCounter == 1) {
                     offsetY = -17;
-                } if (iconCounter == 0) {
+                }
+                if (iconCounter == 0) {
                     offsetY = -34;
                 }
 
@@ -732,8 +742,8 @@ void draw_all_status_icons(void* data) {
         }
 
         if (icon->status3.removingTask == STATUS_ICON_TASK_DRAW
-            && (icon->flags & STATUS_ICON_FLAG_BATTLE || gGameStatusPtr->context != CONTEXT_BATTLE)
-        ) {
+            && (icon->flags & STATUS_ICON_FLAG_BATTLE || gGameStatusPtr->context != CONTEXT_BATTLE))
+        {
             hud_element_clear_flags(icon->status3.removingElementHID, HUD_ELEMENT_FLAG_DISABLED);
 
             offsetY = 0;
@@ -791,8 +801,8 @@ void draw_all_status_icons(void* data) {
         }
 
         if (icon->status4.removingTask == STATUS_ICON_TASK_DRAW
-            && (icon->flags & STATUS_ICON_FLAG_BATTLE || gGameStatusPtr->context != CONTEXT_BATTLE)
-        ) {
+            && (icon->flags & STATUS_ICON_FLAG_BATTLE || gGameStatusPtr->context != CONTEXT_BATTLE))
+        {
             hud_element_clear_flags(icon->status4.removingElementHID, HUD_ELEMENT_FLAG_DISABLED);
 
             offsetY = 0;
@@ -830,7 +840,9 @@ void draw_all_status_icons(void* data) {
                     x = icon->worldPos.x;
                     z = icon->worldPos.z;
 
-                    get_screen_coords(gCurrentCameraID, x, icon->worldPos.y + icon->offsetY, z, &screenX, &screenY, &screenZ);
+                    get_screen_coords(
+                        gCurrentCameraID, x, icon->worldPos.y + icon->offsetY, z, &screenX, &screenY, &screenZ
+                    );
                     elementId = icon->boostJump.activeElementID;
                     hud_element_set_render_pos(elementId, screenX + 2, screenY - 12);
                     hud_element_draw_next(elementId);
@@ -860,7 +872,9 @@ void draw_all_status_icons(void* data) {
                     x = icon->worldPos.x;
                     z = icon->worldPos.z;
 
-                    get_screen_coords(gCurrentCameraID, x, icon->worldPos.y + icon->offsetY, z, &screenX, &screenY, &screenZ);
+                    get_screen_coords(
+                        gCurrentCameraID, x, icon->worldPos.y + icon->offsetY, z, &screenX, &screenY, &screenZ
+                    );
                     elementId = icon->boostHammer.activeElementID;
                     hud_element_set_render_pos(elementId, screenX + 2, screenY - 12);
                     hud_element_draw_next(elementId);
@@ -890,7 +904,9 @@ void draw_all_status_icons(void* data) {
                     x = icon->worldPos.x;
                     z = icon->worldPos.z;
 
-                    get_screen_coords(gCurrentCameraID, x, icon->worldPos.y + icon->offsetY, z, &screenX, &screenY, &screenZ);
+                    get_screen_coords(
+                        gCurrentCameraID, x, icon->worldPos.y + icon->offsetY, z, &screenX, &screenY, &screenZ
+                    );
                     elementId = icon->boostPartner.activeElementID;
                     hud_element_set_render_pos(elementId, screenX + 2, screenY - 12);
                     hud_element_draw_next(elementId);
@@ -908,7 +924,9 @@ void draw_all_status_icons(void* data) {
                     x = icon->worldPos.x;
                     z = icon->worldPos.z;
 
-                    get_screen_coords(gCurrentCameraID, x, icon->worldPos.y + icon->offsetY, z, &screenX, &screenY, &screenZ);
+                    get_screen_coords(
+                        gCurrentCameraID, x, icon->worldPos.y + icon->offsetY, z, &screenX, &screenY, &screenZ
+                    );
                     elementId = icon->surprise.activeElementID;
                     hud_element_set_render_pos(elementId, screenX + 2, screenY - 15);
                     hud_element_draw_next(elementId);
@@ -926,7 +944,9 @@ void draw_all_status_icons(void* data) {
                     x = icon->worldPos.x;
                     z = icon->worldPos.z;
 
-                    get_screen_coords(gCurrentCameraID, x, icon->worldPos.y + icon->offsetY, z, &screenX, &screenY, &screenZ);
+                    get_screen_coords(
+                        gCurrentCameraID, x, icon->worldPos.y + icon->offsetY, z, &screenX, &screenY, &screenZ
+                    );
                     elementId = icon->peril.activeElementID;
                     hud_element_set_render_pos(elementId, screenX + 2, screenY - 16);
                     hud_element_draw_next(elementId);
@@ -944,7 +964,9 @@ void draw_all_status_icons(void* data) {
                     x = icon->worldPos.x;
                     z = icon->worldPos.z;
 
-                    get_screen_coords(gCurrentCameraID, x, icon->worldPos.y + icon->offsetY, z, &screenX, &screenY, &screenZ);
+                    get_screen_coords(
+                        gCurrentCameraID, x, icon->worldPos.y + icon->offsetY, z, &screenX, &screenY, &screenZ
+                    );
                     elementId = icon->danger.activeElementID;
                     hud_element_set_render_pos(elementId, screenX + 2, screenY - 16);
                     hud_element_draw_next(elementId);

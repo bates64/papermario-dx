@@ -50,10 +50,8 @@ Gfx Entity_StarBoxLauncher_LoadTextureBox[] = {
 };
 
 Mtx Entity_StarBoxLauncher_mtx = RDP_MATRIX(
-    1.000000, 0.000000, 0.000000, 0.000000,
-    0.000000, 1.000000, 0.000000, 0.000000,
-    0.000000, 0.000000, 1.000000, 0.000000,
-    0.000000, 0.000000, 0.000000, 1.000000
+    1.000000, 0.000000, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000, 0.000000, 0.000000, 0.000000, 1.000000,
+    0.000000, 0.000000, 0.000000, 0.000000, 1.000000
 );
 
 Gfx Entity_StarBoxLauncher_RenderChain[] = {
@@ -121,4 +119,3 @@ Gfx Entity_StarBoxLauncher_RenderBottom[] = {
     gsSPDisplayList(Entity_StarBoxLauncher_RenderBox),
     gsSPEndDisplayList(),
 };
-

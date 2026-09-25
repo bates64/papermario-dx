@@ -90,9 +90,9 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     ASSERT_MSG(mapID < gAreas[areaID].mapCount, "Invalid map ID %d in %s", mapID, gAreas[areaID].id);
     mapId = gAreas[areaID].maps[mapID];
 
-    #if DX_DEBUG_MENU
+#if DX_DEBUG_MENU
     dx_debug_set_map_info(mapId, gGameStatus.entryID);
-    #endif
+#endif
 
     sprintf(wMapShapeName, "%s_shape", mapId);
     sprintf(wMapHitName, "%s_hit", mapId);
@@ -201,8 +201,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     if (gMapSettings.bgName != nullptr) {
         set_background(&gBackgroundImage);
     } else {
-        set_background_size(SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN,
-            SCREEN_INSET_X, SCREEN_INSET_Y);
+        set_background_size(SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN, SCREEN_INSET_X, SCREEN_INSET_Y);
     }
 
     gCurrentCameraID = CAM_DEFAULT;
@@ -220,7 +219,8 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     initialize_status_bar();
     gGameStatusPtr->unk_90 = 1000;
     gGameStatusPtr->unk_92 = 1000;
-    gGameStatusPtr->mainScriptID = start_script_in_group(gMapSettings.main, EVT_PRIORITY_0, 0, EVT_GROUP_NEVER_PAUSE)->id;
+    gGameStatusPtr->mainScriptID =
+        start_script_in_group(gMapSettings.main, EVT_PRIORITY_0, 0, EVT_GROUP_NEVER_PAUSE)->id;
 }
 
 MapSettings* get_current_map_settings(void) {
@@ -283,8 +283,10 @@ void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
     }
     *decompressedSize = curAsset->decompressedLength;
     ret = general_heap_malloc(curAsset->compressedLength);
-    dma_copy((u8*) ASSET_TABLE_FIRST_ENTRY + curAsset->offset,
-             (u8*) ASSET_TABLE_FIRST_ENTRY + curAsset->offset + curAsset->compressedLength, ret);
+    dma_copy(
+        (u8*) ASSET_TABLE_FIRST_ENTRY + curAsset->offset,
+        (u8*) ASSET_TABLE_FIRST_ENTRY + curAsset->offset + curAsset->compressedLength, ret
+    );
     heap_free(assetTableBuffer);
     return ret;
 }

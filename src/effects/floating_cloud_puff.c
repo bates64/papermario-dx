@@ -12,14 +12,7 @@ void floating_cloud_puff_update(EffectInstance* effect);
 void floating_cloud_puff_render(EffectInstance* effect);
 void floating_cloud_puff_appendGfx(void* effect);
 
-EffectInstance* floating_cloud_puff_main(
-    s32 arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    s32 arg5
-) {
+EffectInstance* floating_cloud_puff_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
     EffectBlueprint bp;
     EffectInstance* effect;
     FloatingCloudPuffFXData* data;
@@ -114,7 +107,7 @@ void func_E00D227C(void) {
 }
 
 void floating_cloud_puff_appendGfx(void* effect) {
-    FloatingCloudPuffFXData* data = ((EffectInstance*)effect)->data.floatingCloudPuff;
+    FloatingCloudPuffFXData* data = ((EffectInstance*) effect)->data.floatingCloudPuff;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 unk_24 = data->unk_24;
     f32 scale = data->unk_34 * data->unk_38;
@@ -122,14 +115,16 @@ void floating_cloud_puff_appendGfx(void* effect) {
     Matrix4f sp50;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp10, data->unk_04, data->unk_08, data->unk_0C);
     guScaleF(sp50, scale, scale, scale);
     guMtxCatF(sp50, sp10, sp10);
     guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, data->unk_18, data->unk_1C, data->unk_20, unk_24);
     gDPSetEnvColor(gMainGfxPos++, data->unk_28, data->unk_2C, data->unk_30, 0);

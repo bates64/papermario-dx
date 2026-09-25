@@ -17,8 +17,9 @@ Gfx* D_E00C8710[2] = { D_09000800_3D02F0, D_090008D8_3D03C8 };
 u8 D_E00C8718[8] = { 110, 150, 130, 110, 100, 95, 100, 0 };
 u8 D_E00C8720[8] = { 80, 60, 80, 100, 120, 110, 100, 0 };
 
-//during spiny surge
-EffectInstance* throw_spiny_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, s32 time) {
+// during spiny surge
+EffectInstance*
+throw_spiny_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, s32 time) {
     EffectBlueprint bp;
     EffectBlueprint* bpPtr = &bp;
     EffectInstance* effect;
@@ -48,7 +49,7 @@ EffectInstance* throw_spiny_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg
 
     temp_f8 = arg5 - arg2;
     temp_f4 = time;
-    gravity = (temp_f8 / temp_f4) - (time * -0.10000000149011612); //TODO: fix this weird number
+    gravity = (temp_f8 / temp_f4) - (time * -0.10000000149011612); // TODO: fix this weird number
     spinyObject->timeUntilFall = time;
     spinyObject->rgba = 255;
     spinyObject->unk_10 = arg1;
@@ -160,13 +161,13 @@ void throw_spiny_appendGfx(void* effect) {
     Matrix4f sp18;
     Matrix4f sp58;
     Camera* camera = &gCameras[gCurrentCameraID];
-    ThrowSpinyFXData* data = ((EffectInstance*)effect)->data.throwSpiny;
+    ThrowSpinyFXData* data = ((EffectInstance*) effect)->data.throwSpiny;
     s32 temp_s5 = data->rgba;
     s32 temp_s6 = data->unk_00;
     f32 scale = data->unk_40 * SPRITE_WORLD_SCALE_D;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp18, data->pos.x, data->pos.y, data->pos.z);
     guScaleF(sp58, scale * data->xScale, scale * data->yScale, scale);
@@ -175,7 +176,9 @@ void throw_spiny_appendGfx(void* effect) {
     guMtxCatF(sp58, sp18, sp18);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, data->unk_30, data->unk_34, data->unk_38, temp_s5);
     gSPDisplayList(gMainGfxPos++, D_E00C8710[temp_s6]);

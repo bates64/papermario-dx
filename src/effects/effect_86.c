@@ -110,20 +110,22 @@ void effect_86_render(EffectInstance* effect) {
 void effect_86_appendGfx(void* effect) {
     Matrix4f sp10;
     Matrix4f sp50;
-    Effect86FXData* part = ((EffectInstance*)effect)->data.unk_86;
+    Effect86FXData* part = ((EffectInstance*) effect)->data.unk_86;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 primAlpha = part->unk_24;
     s32 dlistIdx = part->unk_00;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp10, part->unk_04, part->unk_08, part->unk_0C);
     guScaleF(sp50, part->unk_34, part->unk_34, part->unk_34);
     guMtxCatF(sp50, sp10, sp10);
     guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, part->unk_18, part->unk_1C, part->unk_20, primAlpha);
     gDPSetEnvColor(gMainGfxPos++, part->unk_28, part->unk_2C, part->unk_30, 0);

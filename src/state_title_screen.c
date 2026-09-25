@@ -139,11 +139,12 @@ void state_init_title_screen(void) {
     decode_yay0(titleData, titleDataDst);
     general_heap_free(titleData);
 
-    TitleScreen_ImgList_Logo = (s32*)(TitleScreen_ImgList->logo + (s32) TitleScreen_ImgList);
-    TitleScreen_ImgList_Copyright = (u8 (*)[COPYRIGHT_WIDTH]) ((s32*)(TitleScreen_ImgList->copyright + (s32) TitleScreen_ImgList));
-    TitleScreen_ImgList_PressStart = (s32*)(TitleScreen_ImgList->pressStart + (s32) TitleScreen_ImgList);
+    TitleScreen_ImgList_Logo = (s32*) (TitleScreen_ImgList->logo + (s32) TitleScreen_ImgList);
+    TitleScreen_ImgList_Copyright =
+        (u8 (*)[COPYRIGHT_WIDTH])((s32*) (TitleScreen_ImgList->copyright + (s32) TitleScreen_ImgList));
+    TitleScreen_ImgList_PressStart = (s32*) (TitleScreen_ImgList->pressStart + (s32) TitleScreen_ImgList);
 #if VERSION_JP
-    TitleScreen_ImgList_CopyrightPalette = (s32*)(TitleScreen_ImgList->copyrightPalette + (s32) TitleScreen_ImgList);
+    TitleScreen_ImgList_CopyrightPalette = (s32*) (TitleScreen_ImgList->copyrightPalette + (s32) TitleScreen_ImgList);
 #endif
 
     create_cameras();
@@ -235,10 +236,10 @@ void state_step_title_screen(void) {
             break;
         case TITLE_STATE_HOLD:
 
-            #if DX_SKIP_DEMO && DX_SKIP_STORY
+#if DX_SKIP_DEMO && DX_SKIP_STORY
             // play neither demo nor story
             TitleScreen_TimeLeft = 200;
-            #elif DX_SKIP_DEMO
+#elif DX_SKIP_DEMO
             // only the story may play
             if (TitleScreen_TimeLeft == 120) {
                 bgm_set_song(0, -1, 0, 3900, 8);
@@ -248,14 +249,14 @@ void state_step_title_screen(void) {
                 TitleScreenNextState = NEXT_STATE_INTRO;
                 return;
             }
-            #elif DX_SKIP_STORY
+#elif DX_SKIP_STORY
             // only the demo may play
             if (TitleScreen_TimeLeft == 0) {
                 gGameStatusPtr->startupState = TITLE_STATE_BEGIN_DISMISS;
                 TitleScreenNextState = NEXT_STATE_DEMO;
                 return;
             }
-            #else
+#else
             // allow either demo or story to play
             if (PlayIntroNext && TitleScreen_TimeLeft == 120) {
                 bgm_set_song(0, -1, 0, 3900, 8);
@@ -270,7 +271,7 @@ void state_step_title_screen(void) {
                 PlayIntroNext ^= 1;
                 return;
             }
-            #endif
+#endif
             if (pressedButtons & (BUTTON_A | BUTTON_START)) {
                 gGameStatusPtr->startupState = TITLE_STATE_BEGIN_DISMISS;
                 TitleScreenNextState = NEXT_STATE_FILE_SELECT;
@@ -345,7 +346,7 @@ void state_step_title_screen(void) {
                     break;
                 case NEXT_STATE_FILE_SELECT:
                     gGameStatusPtr->areaID = AREA_KMR;
-                    gGameStatusPtr->mapID = 0xB; //TODO hardcoded map IDs
+                    gGameStatusPtr->mapID = 0xB; // TODO hardcoded map IDs
                     gGameStatusPtr->entryID = 0;
                     set_game_mode(GAME_MODE_FILE_SELECT);
                     break;
@@ -411,8 +412,11 @@ void appendGfx_title_screen(void) {
     gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
     gDPPipeSync(gMainGfxPos++);
-    gSPClearGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING |
-                            G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
+    gSPClearGeometryMode(
+        gMainGfxPos++,
+        G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD
+            | G_SHADING_SMOOTH
+    );
     gSPSetGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_LIGHTING | G_SHADING_SMOOTH);
     gSPSetLights1(gMainGfxPos++, D_80077A38);
 
@@ -444,20 +448,24 @@ void title_screen_draw_logo(f32 moveAlpha) {
 
     for (i = 0; i < TITLE_NUM_TILES; i++) {
         // Load a tile from the logo texture
-        gDPLoadTextureTile(gMainGfxPos++, &TitleScreen_ImgList_Logo[i * TITLE_TILE_PIXELS], G_IM_FMT_RGBA, G_IM_SIZ_32b,
-                           TITLE_WIDTH, TITLE_TILE_HEIGHT, // width, height
-                           0, 0, (TITLE_WIDTH - 1), (TITLE_TILE_HEIGHT - 1), // uls, ult, lrs, lrt
-                           0, // pal
-                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, // cms, cmt
-                           G_TX_NOMASK, G_TX_NOMASK, // masks, maskt
-                           G_TX_NOLOD, G_TX_NOLOD); // shifts, shiftt
+        gDPLoadTextureTile(
+            gMainGfxPos++, &TitleScreen_ImgList_Logo[i * TITLE_TILE_PIXELS], G_IM_FMT_RGBA, G_IM_SIZ_32b, TITLE_WIDTH,
+            TITLE_TILE_HEIGHT, // width, height
+            0, 0, (TITLE_WIDTH - 1), (TITLE_TILE_HEIGHT - 1), // uls, ult, lrs, lrt
+            0, // pal
+            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, // cms, cmt
+            G_TX_NOMASK, G_TX_NOMASK, // masks, maskt
+            G_TX_NOLOD, G_TX_NOLOD
+        ); // shifts, shiftt
         // Draw a scissored texture rectangle with the loaded tile
-        gSPScisTextureRectangle(gMainGfxPos++,
-            (TITLE_POS_LEFT)                                                      << 2, // ulx
-            (TITLE_POS_TOP + TITLE_TILE_HEIGHT * i + yOffset)                     << 2, // uly
-            (TITLE_POS_LEFT + TITLE_WIDTH)                                        << 2, // lrx
+        gSPScisTextureRectangle(
+            gMainGfxPos++,
+            (TITLE_POS_LEFT) << 2, // ulx
+            (TITLE_POS_TOP + TITLE_TILE_HEIGHT * i + yOffset) << 2, // uly
+            (TITLE_POS_LEFT + TITLE_WIDTH) << 2, // lrx
             (TITLE_POS_TOP + TITLE_TILE_HEIGHT + TITLE_TILE_HEIGHT * i + yOffset) << 2, // lry
-            G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+            G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10
+        );
     }
 
     gDPPipeSync(gMainGfxPos++);
@@ -502,9 +510,10 @@ void title_screen_draw_press_start(void) {
     gDPSetCombineMode(gMainGfxPos++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 248, 240, 152, PressStart_Alpha);
     gDPPipeSync(gMainGfxPos++);
-    gDPLoadTextureBlock(gMainGfxPos++, TitleScreen_ImgList_PressStart, G_IM_FMT_IA, G_IM_SIZ_8b, 128, VAR_1, 0,
-                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
-                        G_TX_NOLOD);
+    gDPLoadTextureBlock(
+        gMainGfxPos++, TitleScreen_ImgList_PressStart, G_IM_FMT_IA, G_IM_SIZ_8b, 128, VAR_1, 0,
+        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+    );
     gSPTextureRectangle(gMainGfxPos++, 384, 548, 896, VAR_2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
     gDPPipeSync(gMainGfxPos++);
 }
@@ -546,22 +555,23 @@ void title_screen_draw_copyright(f32 moveAlpha) {
 
 #if VERSION_JP
     gDPLoadTLUT_pal16(gMainGfxPos++, 0, TitleScreen_ImgList_CopyrightPalette);
-    gDPLoadTextureTile_4b(gMainGfxPos++, TitleScreen_ImgList_Copyright, G_IM_FMT_CI,
-                          COPYRIGHT_WIDTH, 0, 0, 0, 127, 31, 0,
-                          G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
-                          G_TX_NOLOD);
-    gSPTextureRectangle(gMainGfxPos++, 388, YL_BASE, 900, 892, G_TX_RENDERTILE,
-                        0, 0, 0x0400, 0x0400);
+    gDPLoadTextureTile_4b(
+        gMainGfxPos++, TitleScreen_ImgList_Copyright, G_IM_FMT_CI, COPYRIGHT_WIDTH, 0, 0, 0, 127, 31, 0,
+        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+    );
+    gSPTextureRectangle(gMainGfxPos++, 388, YL_BASE, 900, 892, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 #else
     for (i = 0; i < COPYRIGHT_TEX_CHUNKS; i++) {
         alpha = 0; // TODO figure out why this is needed
 
-        gDPLoadTextureTile(gMainGfxPos++, COPYRIGHT_IMG(k, i), G_IM_FMT_IA, G_IM_SIZ_8b,
-                           COPYRIGHT_WIDTH, 32, 0, 0, 143, LTT_LRT, 0,
-                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
-                           G_TX_NOLOD);
-        gSPTextureRectangle(gMainGfxPos++, 356, YL_BASE + (RECT_SIZE * i), 932, YH_BASE + (RECT_SIZE * i),
-                            G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
+        gDPLoadTextureTile(
+            gMainGfxPos++, COPYRIGHT_IMG(k, i), G_IM_FMT_IA, G_IM_SIZ_8b, COPYRIGHT_WIDTH, 32, 0, 0, 143, LTT_LRT, 0,
+            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+        );
+        gSPTextureRectangle(
+            gMainGfxPos++, 356, YL_BASE + (RECT_SIZE * i), 932, YH_BASE + (RECT_SIZE * i), G_TX_RENDERTILE, 0, 0,
+            0x0400, 0x0400
+        );
     }
 #endif
     gDPPipeSync(gMainGfxPos++);

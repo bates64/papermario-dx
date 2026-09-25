@@ -1,11 +1,14 @@
 #include "common.h"
 #include "model.h"
 
-
-s32 test_ray_zones(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX, f32* hitY, f32* hitZ,
-                   f32* hitDepth, f32* nx, f32* ny, f32* nz);
-s32 test_ray_colliders(s32 ignoreFlags, f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX,
-                       f32* hitY, f32* hitZ, f32* hitDepth, f32* hitNx, f32* hitNy, f32* hitNz);
+s32 test_ray_zones(
+    f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX, f32* hitY, f32* hitZ, f32* hitDepth,
+    f32* nx, f32* ny, f32* nz
+);
+s32 test_ray_colliders(
+    s32 ignoreFlags, f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX, f32* hitY, f32* hitZ,
+    f32* hitDepth, f32* hitNx, f32* hitNy, f32* hitNz
+);
 
 /// Test a general ray from a given starting position and direction against all entities.
 /// If one is hit, returns the position and normal of the hit and the length along the ray
@@ -17,5 +20,7 @@ s32 test_ray_colliders(s32 ignoreFlags, f32 startX, f32 startY, f32 startZ, f32 
 /// to the hit).
 ///
 /// Returns entity index or `NO_COLLIDER` if none is hit.
-s32 test_ray_entities(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX, f32* hitY, f32* hitZ,
-                      f32* hitDepth, f32* hitNx, f32* hitNy, f32* hitNz);
+s32 test_ray_entities(
+    f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX, f32* hitY, f32* hitZ, f32* hitDepth,
+    f32* hitNx, f32* hitNy, f32* hitNz
+);

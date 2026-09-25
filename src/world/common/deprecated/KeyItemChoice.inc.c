@@ -44,7 +44,7 @@ API_CALLABLE(N(ItemChoice_SaveSelected)) {
 
 API_CALLABLE(N(BuildKeyItemChoiceList)) {
     Bytecode* args = script->ptrReadPos;
-    s32* allowedItemList = (s32*)evt_get_variable(script, *args++);
+    s32* allowedItemList = (s32*) evt_get_variable(script, *args++);
     s32 i;
 
     if (allowedItemList != nullptr) {

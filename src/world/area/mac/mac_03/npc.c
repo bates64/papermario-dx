@@ -9,7 +9,6 @@
 #include "world/common/npc/ToadKid/wander.inc.c"
 #include "world/common/npc/TrainToad/idle.inc.c"
 
-
 #include "world/common/enemy/ShyGuy/base.h"
 
 NpcSettings N(NpcSettings_ShyGuy) = {
@@ -46,7 +45,7 @@ API_CALLABLE(N(SetLilOinkTransform)) {
     effect->data.lilOink->x[index] = x;
     effect->data.lilOink->y[index] = y;
     effect->data.lilOink->z[index] = z;
-    effect->data.lilOink->rot[index] =  yaw;
+    effect->data.lilOink->rot[index] = yaw;
     return ApiStatus_DONE2;
 }
 

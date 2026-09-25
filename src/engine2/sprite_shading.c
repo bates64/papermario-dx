@@ -11,11 +11,10 @@ BSS SpriteShadingProfile wSpriteShadingProfileAux;
 BSS SpriteShadingProfile bSpriteShadingProfileAux;
 BSS PAL_BIN SpriteShadingPalette[16];
 
-void appendGfx_shading_palette(Matrix4f mtx, s32 uls, s32 ult, s32 lrs, s32 lrt, s32 alpha,
-                             f32 shadowX, f32 shadowY, f32 shadowZ,
-                             s32 shadowR, s32 shadowG, s32 shadowB,
-                             s32 highlightR, s32 highlightG, s32 highlightB,
-                             s32 ambientPower, s32 otherModeLBits);
+void appendGfx_shading_palette(
+    Matrix4f mtx, s32 uls, s32 ult, s32 lrs, s32 lrt, s32 alpha, f32 shadowX, f32 shadowY, f32 shadowZ, s32 shadowR,
+    s32 shadowG, s32 shadowB, s32 highlightR, s32 highlightG, s32 highlightB, s32 ambientPower, s32 otherModeLBits
+);
 
 void clear_sprite_shading_data(void) {
     s32 i;
@@ -28,11 +27,13 @@ void clear_sprite_shading_data(void) {
     }
 
     gSpriteShadingProfile->flags = 0;
-    gSpriteShadingProfile->ambientColor.r = gSpriteShadingProfile->ambientColor.g = gSpriteShadingProfile->ambientColor.b = 50;
+    gSpriteShadingProfile->ambientColor.r = gSpriteShadingProfile->ambientColor.g =
+        gSpriteShadingProfile->ambientColor.b = 50;
     gSpriteShadingProfile->ambientPower = 10;
 
     gAuxSpriteShadingProfile->flags = 0;
-    gAuxSpriteShadingProfile->ambientColor.r = gAuxSpriteShadingProfile->ambientColor.g = gAuxSpriteShadingProfile->ambientColor.b = 50;
+    gAuxSpriteShadingProfile->ambientColor.r = gAuxSpriteShadingProfile->ambientColor.g =
+        gAuxSpriteShadingProfile->ambientColor.b = 50;
     gAuxSpriteShadingProfile->ambientPower = 20;
 }
 
@@ -203,7 +204,7 @@ void create_shading_palette(Matrix4f mtx, s32 uls, s32 ult, s32 lrs, s32 lrt, s3
             temp_f16 = wx * dx + wy * dy + wz * dz;
 
             shadowIntensity = intensityScale * fabsf(temp_f10);
-            lightIntensity  = intensityScale * fabsf(temp_f16);
+            lightIntensity = intensityScale * fabsf(temp_f16);
             if (temp_f10 > 0.0f) {
                 commonColorR += lightSource->rgb.r * shadowIntensity;
                 commonColorG += lightSource->rgb.g * shadowIntensity;
@@ -246,42 +247,27 @@ void create_shading_palette(Matrix4f mtx, s32 uls, s32 ult, s32 lrs, s32 lrt, s3
 
     if (qx * shadowDirX + qy * shadowDirY + qz * shadowDirZ > 0.0f) {
         appendGfx_shading_palette(
-            mtx,
-            uls, ult, lrs, lrt,
-            alpha,
-            shadowDirX, shadowDirY, shadowDirZ,
-            shadowColorR, shadowColorG, shadowColorB,
-            gSpriteShadingProfile->ambientColor.r + commonColorR + backColorR,
+            mtx, uls, ult, lrs, lrt, alpha, shadowDirX, shadowDirY, shadowDirZ, shadowColorR, shadowColorG,
+            shadowColorB, gSpriteShadingProfile->ambientColor.r + commonColorR + backColorR,
             gSpriteShadingProfile->ambientColor.g + commonColorG + backColorG,
-            gSpriteShadingProfile->ambientColor.b + commonColorB + backColorB,
-            gSpriteShadingProfile->ambientPower,
+            gSpriteShadingProfile->ambientColor.b + commonColorB + backColorB, gSpriteShadingProfile->ambientPower,
             otherModeLBits
         );
     } else {
         appendGfx_shading_palette(
-            mtx,
-            uls, ult, lrs, lrt,
-            alpha,
-            shadowDirX, shadowDirY, shadowDirZ,
-            shadowColorR, shadowColorG, shadowColorB,
-            gSpriteShadingProfile->ambientColor.r + commonColorR + frontColorR,
+            mtx, uls, ult, lrs, lrt, alpha, shadowDirX, shadowDirY, shadowDirZ, shadowColorR, shadowColorG,
+            shadowColorB, gSpriteShadingProfile->ambientColor.r + commonColorR + frontColorR,
             gSpriteShadingProfile->ambientColor.g + commonColorG + frontColorG,
-            gSpriteShadingProfile->ambientColor.b + commonColorB + frontColorB,
-            gSpriteShadingProfile->ambientPower,
+            gSpriteShadingProfile->ambientColor.b + commonColorB + frontColorB, gSpriteShadingProfile->ambientPower,
             otherModeLBits
         );
     }
 }
 
 void appendGfx_shading_palette(
-    Matrix4f mtx,
-    s32 uls, s32 ult, s32 lrs, s32 lrt,
-    s32 alpha,
-    f32 shadowX, f32 shadowY, f32 shadowZ,
-    s32 shadowR, s32 shadowG, s32 shadowB,
-    s32 highlightR, s32 highlightG, s32 highlightB,
-    s32 ambientPower, s32 renderMode)
-{
+    Matrix4f mtx, s32 uls, s32 ult, s32 lrs, s32 lrt, s32 alpha, f32 shadowX, f32 shadowY, f32 shadowZ, s32 shadowR,
+    s32 shadowG, s32 shadowB, s32 highlightR, s32 highlightG, s32 highlightB, s32 ambientPower, s32 renderMode
+) {
     Camera* camera = &gCameras[gCurrentCameraID];
     f32 Mxy, Myy, Mzy;
     f32 Mxz, Mzz;
@@ -358,9 +344,11 @@ void appendGfx_shading_palette(
     gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, SpriteShadingPalette);
     gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 16, 1);
 
-    gSPSetOtherMode(gMainGfxPos++, G_SETOTHERMODE_H, 4, 18,
-                    G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_POINT | G_TT_NONE | G_TL_TILE |
-                    G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE);
+    gSPSetOtherMode(
+        gMainGfxPos++, G_SETOTHERMODE_H, 4, 18,
+        G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_POINT | G_TT_NONE | G_TL_TILE | G_TD_CLAMP
+            | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE
+    );
 
     gDPSetRenderMode(gMainGfxPos++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
 
@@ -372,18 +360,17 @@ void appendGfx_shading_palette(
     gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxCfb_ptr));
 
     gDPSetScissor(
-        gMainGfxPos++, 0,
-        camera->viewportStartX,
-        camera->viewportStartY,
-        camera->viewportStartX + camera->viewportW,
+        gMainGfxPos++, 0, camera->viewportStartX, camera->viewportStartY, camera->viewportStartX + camera->viewportW,
         camera->viewportStartY + camera->viewportH
     );
 
     gDPLoadTLUT_pal16(gMainGfxPos++, 1, SpriteShadingPalette);
 
-    gSPSetOtherMode(gMainGfxPos++, G_SETOTHERMODE_H, 4, 18,
-                    G_AD_DISABLE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_RGBA16 | G_TL_TILE |
-                    G_TD_CLAMP | G_TP_PERSP | G_CYC_2CYCLE | G_PM_NPRIMITIVE);
+    gSPSetOtherMode(
+        gMainGfxPos++, G_SETOTHERMODE_H, 4, 18,
+        G_AD_DISABLE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_RGBA16 | G_TL_TILE | G_TD_CLAMP
+            | G_TP_PERSP | G_CYC_2CYCLE | G_PM_NPRIMITIVE
+    );
 
     gDPSetRenderMode(gMainGfxPos++, G_RM_PASS, renderMode);
     gDPSetEnvColor(gMainGfxPos++, 100, 100, 100, 255);
@@ -395,12 +382,8 @@ void appendGfx_shading_palette(
     }
 
     gDPSetTileSize(
-        gMainGfxPos++,
-        0,
-        ((uls + 0x100) << 2) + (s32)(offsetX * facingDir),
-        ((ult + 0x100) << 2) + (s32)offsetY,
-        ((lrs + 0x100 - 1) << 2) + (s32)(offsetX * facingDir),
-        ((lrt + 0x100 - 1) << 2) + (s32)offsetY
+        gMainGfxPos++, 0, ((uls + 0x100) << 2) + (s32) (offsetX * facingDir), ((ult + 0x100) << 2) + (s32) offsetY,
+        ((lrs + 0x100 - 1) << 2) + (s32) (offsetX * facingDir), ((lrt + 0x100 - 1) << 2) + (s32) offsetY
     );
 }
 

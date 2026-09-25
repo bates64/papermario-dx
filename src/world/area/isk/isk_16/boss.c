@@ -1,7 +1,6 @@
 #include "isk_16.h"
 #include "sprite/player.h"
 
-
 EvtScript N(EVS_Scene_TutankoopaAppears) = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)

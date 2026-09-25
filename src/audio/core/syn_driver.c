@@ -53,7 +53,7 @@ void au_driver_init(AuSynDriver* driver, ALConfig* config) {
         voice->decoder.dmaFunc = gSynDriverPtr->dmaNew(&voice->decoder.dmaState);
         voice->decoder.lastsam = 0;
         voice->decoder.first = 1;
-        voice->decoder.memin = (s32)nullptr;
+        voice->decoder.memin = (s32) nullptr;
         voice->resampler.state = alHeapAlloc(heap, 1, sizeof(*voice->resampler.state));
         voice->resampler.delta = 0;
         voice->resampler.first = true;
@@ -205,10 +205,26 @@ Acmd* alAudioFrame(Acmd* cmdList, s32* cmdLen, s16* outBuf, s32 outLen) {
                             break;
                     }
                     if (mainOut != -1) {
-                        n_aSaveBuffer(cmdListPos++, 2 * AUDIO_SAMPLES, mainOut, osVirtualToPhysical(AuDelayBufferMain + (AuDelayCounter % AuDelayCount) * AUDIO_SAMPLES));
-                        n_aLoadBuffer(cmdListPos++, 2 * AUDIO_SAMPLES, mainOut, osVirtualToPhysical(AuDelayBufferMain + ((AuDelayCounter + 1) % AuDelayCount) * AUDIO_SAMPLES));
-                        n_aSaveBuffer(cmdListPos++, 2 * AUDIO_SAMPLES, auxOut, osVirtualToPhysical(AuDelayBufferAux + (AuDelayCounter % AuDelayCount) * AUDIO_SAMPLES));
-                        n_aLoadBuffer(cmdListPos++, 2 * AUDIO_SAMPLES, auxOut, osVirtualToPhysical(AuDelayBufferAux + ((AuDelayCounter + 1) % AuDelayCount) * AUDIO_SAMPLES));
+                        n_aSaveBuffer(
+                            cmdListPos++, 2 * AUDIO_SAMPLES, mainOut,
+                            osVirtualToPhysical(AuDelayBufferMain + (AuDelayCounter % AuDelayCount) * AUDIO_SAMPLES)
+                        );
+                        n_aLoadBuffer(
+                            cmdListPos++, 2 * AUDIO_SAMPLES, mainOut,
+                            osVirtualToPhysical(
+                                AuDelayBufferMain + ((AuDelayCounter + 1) % AuDelayCount) * AUDIO_SAMPLES
+                            )
+                        );
+                        n_aSaveBuffer(
+                            cmdListPos++, 2 * AUDIO_SAMPLES, auxOut,
+                            osVirtualToPhysical(AuDelayBufferAux + (AuDelayCounter % AuDelayCount) * AUDIO_SAMPLES)
+                        );
+                        n_aLoadBuffer(
+                            cmdListPos++, 2 * AUDIO_SAMPLES, auxOut,
+                            osVirtualToPhysical(
+                                AuDelayBufferAux + ((AuDelayCounter + 1) % AuDelayCount) * AUDIO_SAMPLES
+                            )
+                        );
                     }
                 }
 
@@ -218,12 +234,16 @@ Acmd* alAudioFrame(Acmd* cmdList, s32* cmdLen, s16* outBuf, s32 outLen) {
                     aClearBuffer(cmdListPos++, N_AL_TEMP_0, 4 * AUDIO_SAMPLES);
                 } else {
                     // load accumulation buffer from DRAM
-                    n_aLoadBuffer(cmdListPos++, 4 * AUDIO_SAMPLES, N_AL_TEMP_0, osVirtualToPhysical(gSynDriverPtr->wetAccumBuffer));
+                    n_aLoadBuffer(
+                        cmdListPos++, 4 * AUDIO_SAMPLES, N_AL_TEMP_0, osVirtualToPhysical(gSynDriverPtr->wetAccumBuffer)
+                    );
                 }
                 aMix(cmdListPos++, 0, fxBus->gain, N_AL_AUX_L_OUT, N_AL_TEMP_0);
                 aMix(cmdListPos++, 0, fxBus->gain, N_AL_AUX_R_OUT, N_AL_TEMP_1);
                 // save accumulation buffer to DRAM
-                n_aSaveBuffer(cmdListPos++, 4 * AUDIO_SAMPLES, N_AL_TEMP_0, osVirtualToPhysical(gSynDriverPtr->wetAccumBuffer));
+                n_aSaveBuffer(
+                    cmdListPos++, 4 * AUDIO_SAMPLES, N_AL_TEMP_0, osVirtualToPhysical(gSynDriverPtr->wetAccumBuffer)
+                );
 
                 // dry mix down for this bus
                 if (firstBus) {
@@ -232,18 +252,24 @@ Acmd* alAudioFrame(Acmd* cmdList, s32* cmdLen, s16* outBuf, s32 outLen) {
                     firstBus = false;
                 } else {
                     // load accumulation buffer from DRAM
-                    n_aLoadBuffer(cmdListPos++, 4 * AUDIO_SAMPLES, N_AL_TEMP_0, osVirtualToPhysical(gSynDriverPtr->dryAccumBuffer));
+                    n_aLoadBuffer(
+                        cmdListPos++, 4 * AUDIO_SAMPLES, N_AL_TEMP_0, osVirtualToPhysical(gSynDriverPtr->dryAccumBuffer)
+                    );
                 }
                 aMix(cmdListPos++, 0, fxBus->gain, N_AL_MAIN_L_OUT, N_AL_TEMP_0);
                 aMix(cmdListPos++, 0, fxBus->gain, N_AL_MAIN_R_OUT, N_AL_TEMP_1);
                 // save accumulation buffer to DRAM
-                n_aSaveBuffer(cmdListPos++, 4 * AUDIO_SAMPLES, N_AL_TEMP_0, osVirtualToPhysical(gSynDriverPtr->dryAccumBuffer));
+                n_aSaveBuffer(
+                    cmdListPos++, 4 * AUDIO_SAMPLES, N_AL_TEMP_0, osVirtualToPhysical(gSynDriverPtr->dryAccumBuffer)
+                );
             }
         }
 
         // final output mix stage
         aDMEMMove(cmdListPos++, 0, N_AL_MAIN_L_OUT, 4 * AUDIO_SAMPLES);
-        n_aLoadBuffer(cmdListPos++, 4 * AUDIO_SAMPLES, N_AL_AUX_L_OUT, osVirtualToPhysical(gSynDriverPtr->wetAccumBuffer));
+        n_aLoadBuffer(
+            cmdListPos++, 4 * AUDIO_SAMPLES, N_AL_AUX_L_OUT, osVirtualToPhysical(gSynDriverPtr->wetAccumBuffer)
+        );
         aMix(cmdListPos++, 0, 0x7FFF, N_AL_AUX_L_OUT, N_AL_MAIN_L_OUT);
         aMix(cmdListPos++, 0, 0x7FFF, N_AL_AUX_R_OUT, N_AL_MAIN_R_OUT);
 
@@ -333,13 +359,13 @@ void au_syn_stop_voice(u8 voiceIdx) {
     decoder->first = true;
     decoder->sample = 0;
     if (decoder->instrument != nullptr) {
-        decoder->memin = (s32)decoder->instrument->wavData;
+        decoder->memin = (s32) decoder->instrument->wavData;
         if (decoder->instrument->type == AL_ADPCM_WAVE) {
-            if (decoder->instrument->loopEnd != 0){
+            if (decoder->instrument->loopEnd != 0) {
                 decoder->loop.count = decoder->instrument->loopCount;
             }
         } else if (decoder->instrument->type == AL_RAW16_WAVE) {
-            if (decoder->instrument->loopEnd != 0){
+            if (decoder->instrument->loopEnd != 0) {
                 decoder->loop.count = decoder->instrument->loopCount;
             }
         }
@@ -354,7 +380,9 @@ void au_syn_start_voice(u8 voiceIdx) {
 }
 
 // based on n_alSynStartVoiceParams
-void au_syn_start_voice_params(u8 voiceIdx, u8 busID, Instrument* instrument, f32 pitchRatio, s16 vol, u8 pan, u8 fxMix, s32 delta) {
+void au_syn_start_voice_params(
+    u8 voiceIdx, u8 busID, Instrument* instrument, f32 pitchRatio, s16 vol, u8 pan, u8 fxMix, s32 delta
+) {
     AuPVoice* pvoice = &gSynDriverPtr->pvoices[voiceIdx];
     AuLoadFilter* decoder = &pvoice->decoder;
     AuEnvMixer* envMixer = &pvoice->envMixer;
@@ -363,7 +391,7 @@ void au_syn_start_voice_params(u8 voiceIdx, u8 busID, Instrument* instrument, f3
     pvoice->busID = busID;
     decoder->instrument = instrument;
 
-    pvoice->decoder.memin = (s32)decoder->instrument->wavData;
+    pvoice->decoder.memin = (s32) decoder->instrument->wavData;
     pvoice->decoder.sample = 0;
 
     switch (decoder->instrument->type) {
@@ -422,7 +450,7 @@ void au_syn_set_wavetable(u8 voiceIdx, Instrument* instrument) {
     AuLoadFilter* decoder = &pvoice->decoder;
 
     pvoice->decoder.instrument = instrument;
-    pvoice->decoder.memin = (s32)decoder->instrument->wavData;
+    pvoice->decoder.memin = (s32) decoder->instrument->wavData;
     pvoice->decoder.sample = 0;
 
     switch (decoder->instrument->type) {
@@ -618,31 +646,31 @@ s32 au_syn_get_playing(u8 voiceIdx) {
 }
 
 s32 au_syn_get_bus(u8 voiceIdx) {
-    AuPVoice* pvoice =  &gSynDriverPtr->pvoices[voiceIdx];
+    AuPVoice* pvoice = &gSynDriverPtr->pvoices[voiceIdx];
 
     return pvoice->busID;
 }
 
 f32 au_syn_get_pitch(u8 voiceIdx) {
-    AuPVoice* pvoice =  &gSynDriverPtr->pvoices[voiceIdx];
+    AuPVoice* pvoice = &gSynDriverPtr->pvoices[voiceIdx];
 
     return pvoice->resampler.ratio;
 }
 
 u8 au_syn_get_pan(u8 voiceIdx) {
-    AuPVoice* pvoice =  &gSynDriverPtr->pvoices[voiceIdx];
+    AuPVoice* pvoice = &gSynDriverPtr->pvoices[voiceIdx];
 
     return pvoice->envMixer.pan;
 }
 
 s16 au_syn_get_dryamt(u8 voiceIdx) {
-    AuPVoice* pvoice =  &gSynDriverPtr->pvoices[voiceIdx];
+    AuPVoice* pvoice = &gSynDriverPtr->pvoices[voiceIdx];
 
     return pvoice->envMixer.dryamt;
 }
 
 s16 au_syn_get_wetamt(u8 voiceIdx) {
-    AuPVoice* pvoice =  &gSynDriverPtr->pvoices[voiceIdx];
+    AuPVoice* pvoice = &gSynDriverPtr->pvoices[voiceIdx];
 
     return pvoice->envMixer.wetamt;
 }
@@ -694,8 +722,8 @@ void au_set_delay_time(s32 numFrames) {
 }
 
 void au_delay_left_channel(u8 busID) {
-    s32* mainBuf = (s32*)AuDelayBufferMain;
-    s32* auxBuf = (s32*)AuDelayBufferAux;
+    s32* mainBuf = (s32*) AuDelayBufferMain;
+    s32* auxBuf = (s32*) AuDelayBufferAux;
     s32 i;
 
     for (i = 0; i < 2 * AUDIO_SAMPLES; i++) {
@@ -709,8 +737,8 @@ void au_delay_left_channel(u8 busID) {
 }
 
 void au_delay_right_channel(u8 busID) {
-    s32* mainBuf = (s32*)AuDelayBufferMain;
-    s32* auxBuf = (s32*)AuDelayBufferAux;
+    s32* mainBuf = (s32*) AuDelayBufferMain;
+    s32* auxBuf = (s32*) AuDelayBufferAux;
     s32 i;
 
     for (i = 0; i < 2 * AUDIO_SAMPLES; i++) {
@@ -730,8 +758,8 @@ void au_disable_channel_delay(void) {
 }
 
 void au_init_delay_channel(s16 channel) {
-    s32* mainBuf = (s32*)AuDelayBufferMain;
-    s32* auxBuf = (s32*)AuDelayBufferAux;
+    s32* mainBuf = (s32*) AuDelayBufferMain;
+    s32* auxBuf = (s32*) AuDelayBufferAux;
     s32 i;
 
     for (i = 0; i < 2 * AUDIO_SAMPLES; i++) {
@@ -746,7 +774,7 @@ void au_init_delay_channel(s16 channel) {
 
 void alHeapInit(ALHeap* hp, u8* base, s32 len) {
     u32 i;
-    s32 alignBytes = 0x10 - ((s32)base & 0xF);
+    s32 alignBytes = 0x10 - ((s32) base & 0xF);
 
     if (alignBytes != 0x10) {
         hp->base = base + alignBytes;
@@ -757,8 +785,8 @@ void alHeapInit(ALHeap* hp, u8* base, s32 len) {
     hp->count = 0;
     hp->cur = hp->base;
 
-    for (i = 0; i < (u32)(hp->len) >> 2; i++) {
-        ((u32*)hp->base)[i] = 0;
+    for (i = 0; i < (u32) (hp->len) >> 2; i++) {
+        ((u32*) hp->base)[i] = 0;
     }
 }
 

@@ -46,7 +46,9 @@ void Entity_BoardedFloor_init_fragments(Entity* entity, Gfx** dlists, Mtx* matri
 
 void Entity_BoardedFloor_init(Entity* entity) {
     entity->dataBuf.boardedFloor->inititalY = entity->pos.y;
-    Entity_BoardedFloor_init_fragments(entity, Entity_BoardedFloor_FragmentsRender, Entity_BoardedFloor_FragmentMatrices);
+    Entity_BoardedFloor_init_fragments(
+        entity, Entity_BoardedFloor_FragmentsRender, Entity_BoardedFloor_FragmentMatrices
+    );
 }
 
 void Entity_BoardedFloor_update_fragments(Entity* entity) {
@@ -120,7 +122,10 @@ void Entity_BoardedFloor_update_fragments(Entity* entity) {
             hitX = data->fragmentPosX[i];
             hitY = data->fragmentPosY[i];
             hitZ = data->fragmentPosZ[i];
-            if (npc_test_move_taller_with_slipping(COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, lateralSpeed, yawRad, 8.0f, 8.0f)) {
+            if (npc_test_move_taller_with_slipping(
+                    COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, lateralSpeed, yawRad, 8.0f, 8.0f
+                ))
+            {
                 data->fragmentPosX[i] = hitX;
                 data->fragmentPosY[i] = hitY;
                 data->fragmentPosZ[i] = hitZ;
@@ -130,14 +135,15 @@ void Entity_BoardedFloor_update_fragments(Entity* entity) {
                 lateralSpeed = 8.0f;
                 data->fragmentPosX[i] += lateralSpeed * sin_rad(moveAngle);
                 data->fragmentPosZ[i] += lateralSpeed * cos_rad(moveAngle);
-
             }
 
             hitX = data->fragmentPosX[i];
             hitY = data->fragmentPosY[i];
             hitZ = data->fragmentPosZ[i];
             hitDepth = fabsf(data->fragmentFallSpeed[i]);
-            if (npc_raycast_down_sides(COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, &hitDepth) || hitY < data->inititalY - 200.0f) {
+            if (npc_raycast_down_sides(COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, &hitDepth)
+                || hitY < data->inititalY - 200.0f)
+            {
                 data->fragmentRebounds[i]++;
                 data->fragmentPosY[i] = hitY + fabsf(data->fragmentFallSpeed[i]);
                 data->fragmentFallSpeed[i] = reboundSpeed;
@@ -208,15 +214,18 @@ void Entity_BoardedFloor_idle(Entity* entity) {
 
     if (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) {
         if (playerStatus->actionState == ACTION_STATE_SPIN_POUND
-            || playerStatus->actionState == ACTION_STATE_TORNADO_POUND) {
+            || playerStatus->actionState == ACTION_STATE_TORNADO_POUND)
+        {
             entity_start_script(entity);
             exec_entity_commandlist(entity);
         }
     }
 }
 
-EntityModelScript Entity_BoardedFloor_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_OPA);
-EntityModelScript Entity_BoardedFloor_RenderScriptShattered = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER1);
+EntityModelScript Entity_BoardedFloor_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_BoardedFloor_RenderScriptShattered =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER1);
 
 void Entity_BoardedFloor_shatter(Entity* entity) {
     BoardedFloorData* data = entity->dataBuf.boardedFloor;

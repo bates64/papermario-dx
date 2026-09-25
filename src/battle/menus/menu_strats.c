@@ -209,11 +209,18 @@ s32 btl_submenu_strats_update(void) {
             StratsTextColor = MSG_PAL_STANDARD;
             x = StratsMenuPosX;
             y = StratsMenuPosY;
-            set_window_properties(WIN_BTL_STRATS_MENU, x, y, 144, (StratsMenuLines * MENU_LINE_HEIGHT) + 26, 0, btl_menu_strats_draw_content, nullptr, -1);
-            set_window_properties(WIN_BTL_STRATS_TITLE, x + 18, y - 6, 108, 16, 1, btl_menu_strats_show_title, nullptr, -1);
+            set_window_properties(
+                WIN_BTL_STRATS_MENU, x, y, 144, (StratsMenuLines * MENU_LINE_HEIGHT) + 26, 0,
+                btl_menu_strats_draw_content, nullptr, -1
+            );
+            set_window_properties(
+                WIN_BTL_STRATS_TITLE, x + 18, y - 6, 108, 16, 1, btl_menu_strats_show_title, nullptr, -1
+            );
             x = 20;
             y = 186;
-            set_window_properties(WIN_BTL_DESC_BOX, x, y, 280, 32, WINDOW_PRIORITY_20, btl_menu_strats_show_desc, nullptr, -1);
+            set_window_properties(
+                WIN_BTL_DESC_BOX, x, y, 280, 32, WINDOW_PRIORITY_20, btl_menu_strats_show_desc, nullptr, -1
+            );
             set_window_update(WIN_BTL_STRATS_MENU, WINDOW_UPDATE_SHOW);
             set_window_update(WIN_BTL_STRATS_TITLE, WINDOW_UPDATE_SHOW);
             set_window_update(WIN_BTL_DESC_BOX, WINDOW_UPDATE_SHOW);
@@ -334,7 +341,10 @@ s32 btl_submenu_strats_update(void) {
                     break;
             }
             width = get_msg_width(msgID, 0) + 23;
-            set_window_properties(WIN_BTL_POPUP, (SCREEN_WIDTH / 2) - (width / 2), 80, width, 28, 20, btl_menu_strats_show_error, nullptr, -1);
+            set_window_properties(
+                WIN_BTL_POPUP, (SCREEN_WIDTH / 2) - (width / 2), 80, width, 28, 20, btl_menu_strats_show_error, nullptr,
+                -1
+            );
             set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             StratsErrorTimer = 60;
             StratsMenuState = BTL_SUBMENU_STATE_ERROR_DONE;
@@ -387,14 +397,15 @@ void btl_menu_strats_draw_content(void* data, s32 x, s32 y) {
             // draw option messages
             xPos = x + 33;
             yPos = y + 19 + StratsScrollOffset;
-            #if VERSION_IQUE
+#if VERSION_IQUE
             yPos -= 3;
-            #endif
+#endif
 
             for (i = 0; i < StratsOptionCount; i++) {
                 s32 palette = StratsTextColor;
 
-                if (StratsOptionMenuTypes[i] == BTL_MENU_TYPE_CHANGE_PARTNER && is_ability_active(ABILITY_QUICK_CHANGE)) {
+                if (StratsOptionMenuTypes[i] == BTL_MENU_TYPE_CHANGE_PARTNER && is_ability_active(ABILITY_QUICK_CHANGE))
+                {
                     palette = MSG_PAL_37;
                 }
                 if (!StratsOptionEnabled[i]) {

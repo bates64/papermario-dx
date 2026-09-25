@@ -69,7 +69,7 @@ Gfx N(Gfx_RecordDisplay_Init)[] = {
 #endif
 
 #if VERSION_PAL
-void N(draw_record_display)(RecordDisplayData* data, s32 alpha);
+void N( draw_record_display)(RecordDisplayData* data, s32 alpha);
 INCLUDE_ASM(void, "world/area/mgm/mgm_00/mgm_00_3_scoreboard", mgm_00_draw_record_display);
 #else
 void N(draw_record_display)(RecordDisplayData* data, s32 alpha) {
@@ -79,31 +79,51 @@ void N(draw_record_display)(RecordDisplayData* data, s32 alpha) {
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 16, 120, 24, alpha * 0.65);
         gDPFillRectangle(gMainGfxPos++, 48, 53, 272, 129);
         gDPPipeSync(gMainGfxPos++);
-        msg_draw_frame(45, 50, 230, 82, MSG_STYLE_INSPECT, 0, 1, (s32)(alpha * 0.55), alpha); // cast needed if signature isn't present
+        msg_draw_frame(
+            45, 50, 230, 82, MSG_STYLE_INSPECT, 0, 1, (s32) (alpha * 0.55), alpha
+        ); // cast needed if signature isn't present
         if (data->gameType == MINIGAME_TYPE_JUMP) {
             draw_msg(MSG_MGM_001C, 66, 57, alpha, MSG_PAL_TEAL, 0);
-            draw_number(gPlayerData.jumpGamePlays,   219, 78,  DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, alpha, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
-            draw_number(gPlayerData.jumpGameTotal,   219, 93,  DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, alpha, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
-            draw_number(gPlayerData.jumpGameRecord,  219, 108, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, alpha, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+            draw_number(
+                gPlayerData.jumpGamePlays, 219, 78, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, alpha,
+                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+            );
+            draw_number(
+                gPlayerData.jumpGameTotal, 219, 93, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, alpha,
+                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+            );
+            draw_number(
+                gPlayerData.jumpGameRecord, 219, 108, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, alpha,
+                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+            );
         } else {
             draw_msg(MSG_MGM_001D, 64, 57, alpha, MSG_PAL_TEAL, 0);
-            draw_number(gPlayerData.smashGamePlays,  219, 78,  DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, alpha, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
-            draw_number(gPlayerData.smashGameTotal,  219, 93,  DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, alpha, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
-            draw_number(gPlayerData.smashGameRecord, 219, 108, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, alpha, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+            draw_number(
+                gPlayerData.smashGamePlays, 219, 78, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, alpha,
+                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+            );
+            draw_number(
+                gPlayerData.smashGameTotal, 219, 93, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, alpha,
+                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+            );
+            draw_number(
+                gPlayerData.smashGameRecord, 219, 108, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, alpha,
+                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+            );
         }
 
-        draw_msg(MSG_MGM_001E, 58,  78,  alpha, MSG_PAL_WHITE, DRAW_MSG_STYLE_MENU);
-        draw_msg(MSG_MGM_0023, 223, 78,  alpha, MSG_PAL_WHITE, DRAW_MSG_STYLE_MENU);
-        draw_msg(MSG_MGM_001F, 58,  93,  alpha, MSG_PAL_WHITE, DRAW_MSG_STYLE_MENU);
-        draw_msg(MSG_MGM_0021, 223, 93,  alpha, MSG_PAL_WHITE, DRAW_MSG_STYLE_MENU);
-        draw_msg(MSG_MGM_0020, 58,  108, alpha, MSG_PAL_WHITE, DRAW_MSG_STYLE_MENU);
+        draw_msg(MSG_MGM_001E, 58, 78, alpha, MSG_PAL_WHITE, DRAW_MSG_STYLE_MENU);
+        draw_msg(MSG_MGM_0023, 223, 78, alpha, MSG_PAL_WHITE, DRAW_MSG_STYLE_MENU);
+        draw_msg(MSG_MGM_001F, 58, 93, alpha, MSG_PAL_WHITE, DRAW_MSG_STYLE_MENU);
+        draw_msg(MSG_MGM_0021, 223, 93, alpha, MSG_PAL_WHITE, DRAW_MSG_STYLE_MENU);
+        draw_msg(MSG_MGM_0020, 58, 108, alpha, MSG_PAL_WHITE, DRAW_MSG_STYLE_MENU);
         draw_msg(MSG_MGM_0021, 223, 108, alpha, MSG_PAL_WHITE, DRAW_MSG_STYLE_MENU);
     }
 }
 #endif
 
 void N(appendGfx_record)(void* renderData) {
-    RecordDisplayData* data = (RecordDisplayData*)evt_get_variable(nullptr, MV_RecordDisplayData);
+    RecordDisplayData* data = (RecordDisplayData*) evt_get_variable(nullptr, MV_RecordDisplayData);
 
     switch (data->state) {
         case RECORD_START_SHOW:
@@ -172,7 +192,7 @@ API_CALLABLE(N(UpdateRecordDisplay)) {
         data->alpha = 255;
         data->workerID = create_worker_scene(nullptr, &N(worker_render_record));
         data->gameType = gameType;
-        evt_set_variable(script, MV_RecordDisplayData, (s32)data);
+        evt_set_variable(script, MV_RecordDisplayData, (s32) data);
     }
     data = script->functionTempPtr[0];
     if (data->state == RECORD_STATE_DONE) {

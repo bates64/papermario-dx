@@ -51,8 +51,8 @@ EvtScript N(EVS_EndPeachChapter3) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_kkj_11_3) = EVT_EXIT_SINGLE_DOOR(kkj_15_ENTRY_0, "kkj_11", kkj_11_ENTRY_3,
-    COLLIDER_tte, MODEL_o2, DOOR_SWING_IN);
+EvtScript N(EVS_ExitDoor_kkj_11_3) =
+    EVT_EXIT_SINGLE_DOOR(kkj_15_ENTRY_0, "kkj_11", kkj_11_ENTRY_3, COLLIDER_tte, MODEL_o2, DOOR_SWING_IN);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoor_kkj_11_3)), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)

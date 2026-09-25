@@ -11,9 +11,9 @@ void battle_heap_create_obfuscated(void) {
 }
 #else
 void battle_heap_create_obfuscated(void) {
-    s32(*readFunc)(OSPiHandle*, u32, u32*) = osEPiReadIo;
+    s32 (*readFunc)(OSPiHandle*, u32, u32*) = osEPiReadIo;
     s32 seed = 0x33F50000;
-    s32 (*battle_heap_create)(void) = (s32 (*) (void)) obfuscated_battle_heap_create;
+    s32 (*battle_heap_create)(void) = (s32 (*)(void)) obfuscated_battle_heap_create;
     u32 hash = 0;
     u32 thisInsn;
     u32* it;
@@ -24,7 +24,8 @@ void battle_heap_create_obfuscated(void) {
 
     prevInsn = 0;
 
-    for (it = (u32*) general_heap_create_obfuscated_ROM_START; it < (u32*) general_heap_create_obfuscated_ROM_END; it++) {
+    for (it = (u32*) general_heap_create_obfuscated_ROM_START; it < (u32*) general_heap_create_obfuscated_ROM_END; it++)
+    {
         readFunc(nuPiCartHandle, (u32) it, &thisInsn);
         hash += LOWER(thisInsn) + UPPER(thisInsn);
 
@@ -45,7 +46,7 @@ void battle_heap_create_obfuscated(void) {
     battle_heap_create += seed + 0x291993 - hash;
 
     // If the function's address is 0x8XXXXXXX
-    if (((u32)battle_heap_create >> 0x1C) == 8) {
+    if (((u32) battle_heap_create >> 0x1C) == 8) {
         battle_heap_create();
     } else {
         _heap_create(&heap_battleHead, 0x10000);

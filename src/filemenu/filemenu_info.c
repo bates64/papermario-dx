@@ -56,10 +56,7 @@ MenuPanel filemenu_info_menuBP = {
 };
 
 void filemenu_info_draw_message_contents(
-    MenuPanel* menu,
-    s32 baseX, s32 baseY,
-    s32 width, s32 height,
-    s32 opacity, s32 darkening
+    MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening
 ) {
 #if VERSION_PAL
     s32 xOffset;
@@ -68,66 +65,104 @@ void filemenu_info_draw_message_contents(
         case FM_MESSAGE_DELETED:
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_28), baseX + 10, baseY + 4, 255, 0, 0);
             xOffset = D_filemenu_80250934[gCurrentLanguage] + 10;
-            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_FILE_26), baseX + xOffset, baseY + 4, 255, 0, 0);
+            filemenu_draw_message(
+                filemenu_get_menu_message(FILE_MESSAGE_FILE_26), baseX + xOffset, baseY + 4, 255, 0, 0
+            );
             xOffset += D_filemenu_802508FC[gCurrentLanguage];
             draw_number(filemenu_menus[FILE_MENU_MAIN]->selected + 1, baseX + xOffset, baseY + 6, 0, 0, 255, 3);
             xOffset++;
-            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_HAS_BEEN_DELETED), baseX + xOffset, baseY + 4, 255, 0, 0);
+            filemenu_draw_message(
+                filemenu_get_menu_message(FILE_MESSAGE_HAS_BEEN_DELETED), baseX + xOffset, baseY + 4, 255, 0, 0
+            );
             break;
         case FM_MESSAGE_COPIED:
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_COPY_FROM), baseX + 10, baseY + 4, 255, 0, 0);
             xOffset = D_filemenu_80250948[gCurrentLanguage] + 10;
-            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_FILE_26), baseX + xOffset, baseY + 4, 255, 0, 0);
+            filemenu_draw_message(
+                filemenu_get_menu_message(FILE_MESSAGE_FILE_26), baseX + xOffset, baseY + 4, 255, 0, 0
+            );
             xOffset += D_filemenu_802508FC[gCurrentLanguage];
             draw_number(filemenu_CopyFromFileIdx + 1, baseX + xOffset, baseY + 6, 0, 0, 255, 3);
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_TO), baseX + 10, baseY + 18, 255, 0, 0);
             xOffset = D_filemenu_8025094C[gCurrentLanguage] + 10;
-            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_FILE_26), baseX + xOffset, baseY + 18, 255, 0, 0);
+            filemenu_draw_message(
+                filemenu_get_menu_message(FILE_MESSAGE_FILE_26), baseX + xOffset, baseY + 18, 255, 0, 0
+            );
             xOffset += D_filemenu_802508FC[gCurrentLanguage];
             draw_number(filemenu_CopyToFileIdx + 1, baseX + xOffset, baseY + 0x14, 0, 0, 255, 3);
             xOffset += D_filemenu_80250950[gCurrentLanguage];
-            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_HAS_BEEN_CREATED), baseX + xOffset, baseY + 18, 255, 0, 0);
+            filemenu_draw_message(
+                filemenu_get_menu_message(FILE_MESSAGE_HAS_BEEN_CREATED), baseX + xOffset, baseY + 18, 255, 0, 0
+            );
             break;
         case FM_MESSAGE_CREATED:
             filemenu_draw_message(filemenu_get_menu_message(0x20), baseX + 10, baseY + 4, 255, 0, 0);
             xOffset = D_filemenu_80250968[gCurrentLanguage] + 10;
-            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_FILE_26), baseX + xOffset, baseY + 4, 255, 0, 0);
+            filemenu_draw_message(
+                filemenu_get_menu_message(FILE_MESSAGE_FILE_26), baseX + xOffset, baseY + 4, 255, 0, 0
+            );
             xOffset += D_filemenu_802508FC[gCurrentLanguage];
             draw_number(filemenu_menus[FILE_MENU_MAIN]->selected + 1, baseX + xOffset, baseY + 6, 0, 0, 255, 3);
             xOffset++;
-            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_PAL_UNK1), baseX + xOffset, baseY + 4, 255, 0, 0);
+            filemenu_draw_message(
+                filemenu_get_menu_message(FILE_MESSAGE_PAL_UNK1), baseX + xOffset, baseY + 4, 255, 0, 0
+            );
             break;
     }
 #else
     switch (menu->state) {
         case FM_MESSAGE_DELETED:
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_FILE_26), baseX + 10, baseY + 4, 255, 0, 0);
-            draw_number(filemenu_menus[FILE_MENU_MAIN]->selected + 1, baseX + 48, baseY + 6 + NUMBER_OFFSET_Y, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
-            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_HAS_BEEN_DELETED), baseX + 49, baseY + 4, 255, 0, 0);
+            draw_number(
+                filemenu_menus[FILE_MENU_MAIN]->selected + 1, baseX + 48, baseY + 6 + NUMBER_OFFSET_Y,
+                DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 255,
+                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+            );
+            filemenu_draw_message(
+                filemenu_get_menu_message(FILE_MESSAGE_HAS_BEEN_DELETED), baseX + 49, baseY + 4, 255, 0, 0
+            );
             break;
         case FM_MESSAGE_COPIED:
 #if VERSION_IQUE
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_COPY_FROM), baseX + 10, baseY + 7, 255, 0, 0);
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_FILE_26), baseX + 42, baseY + 7, 255, 0, 0);
-            draw_number(filemenu_CopyFromFileIdx + 1, baseX + 84, baseY + 10, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+            draw_number(
+                filemenu_CopyFromFileIdx + 1, baseX + 84, baseY + 10, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 255,
+                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+            );
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_TO), baseX + 84, baseY + 7, 255, 0, 0);
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_FILE_26), baseX + 100, baseY + 7, 255, 0, 0);
-            draw_number(filemenu_CopyToFileIdx + 1, baseX + 140, baseY + 10, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+            draw_number(
+                filemenu_CopyToFileIdx + 1, baseX + 140, baseY + 10, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 255,
+                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+            );
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_PERIOD_34), baseX + 140, baseY + 7, 255, 0, 0);
 #else
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_COPY_FROM), baseX + 10, baseY + 4, 255, 0, 0);
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_FILE_26), baseX + 84, baseY + 4, 255, 0, 0);
-            draw_number(filemenu_CopyFromFileIdx + 1, baseX + 122, baseY + 6, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+            draw_number(
+                filemenu_CopyFromFileIdx + 1, baseX + 122, baseY + 6, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 255,
+                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+            );
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_TO), baseX + 10, baseY + 18, 255, 0, 0);
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_FILE_26), baseX + 30, baseY + 18, 255, 0, 0);
-            draw_number(filemenu_CopyToFileIdx + 1, baseX + 68, baseY + 20, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+            draw_number(
+                filemenu_CopyToFileIdx + 1, baseX + 68, baseY + 20, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 255,
+                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+            );
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_PERIOD_34), baseX + 65, baseY + 18, 255, 0, 0);
 #endif
             break;
         case FM_MESSAGE_CREATED:
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_FILE_26), baseX + 10, baseY + 4, 255, 0, 0);
-            draw_number(filemenu_menus[FILE_MENU_MAIN]->selected + 1, baseX + CREATE_SUCCESS_NUMBER_X, baseY + 6 + NUMBER_OFFSET_Y, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
-            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_HAS_BEEN_CREATED), baseX + 49, baseY + 4, 255, 0, 0);
+            draw_number(
+                filemenu_menus[FILE_MENU_MAIN]->selected + 1, baseX + CREATE_SUCCESS_NUMBER_X,
+                baseY + 6 + NUMBER_OFFSET_Y, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 255,
+                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+            );
+            filemenu_draw_message(
+                filemenu_get_menu_message(FILE_MESSAGE_HAS_BEEN_CREATED), baseX + 49, baseY + 4, 255, 0, 0
+            );
             break;
     }
 #endif
@@ -154,10 +189,10 @@ void filemenu_info_handle_input(MenuPanel* menu) {
         switch (menu->state) {
             case FILE_MENU_CONFIRM:
                 menu->state = FILE_MENU_MAIN;
-                set_window_update(WIN_FILES_STEREO, (s32)filemenu_update_show_options_left);
-                set_window_update(WIN_FILES_MONO, (s32)filemenu_update_show_options_right);
-                set_window_update(WIN_FILES_OPTION_LEFT, (s32)filemenu_update_show_options_bottom);
-                set_window_update(WIN_FILES_OPTION_RIGHT, (s32)filemenu_update_show_options_bottom);
+                set_window_update(WIN_FILES_STEREO, (s32) filemenu_update_show_options_left);
+                set_window_update(WIN_FILES_MONO, (s32) filemenu_update_show_options_right);
+                set_window_update(WIN_FILES_OPTION_LEFT, (s32) filemenu_update_show_options_bottom);
+                set_window_update(WIN_FILES_OPTION_RIGHT, (s32) filemenu_update_show_options_bottom);
                 filemenu_set_selected(menu, 0, 2);
                 break;
             case FILE_MENU_MESSAGE:
@@ -174,4 +209,3 @@ void filemenu_info_update(MenuPanel* menu) {
 
 void filemenu_info_cleanup(MenuPanel* menu) {
 }
-

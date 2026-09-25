@@ -3,10 +3,10 @@
 
 void shim_guRotateF(float mf[4][4], float a, float x, float y, float z);
 void shim_guTranslateF(float mf[4][4], float x, float y, float z);
-void shim_guTranslate(Mtx *m, float x, float y, float z);
+void shim_guTranslate(Mtx* m, float x, float y, float z);
 void shim_guScaleF(float mf[4][4], float x, float y, float z);
 void shim_guMtxCatF(float m[4][4], float n[4][4], float r[4][4]);
-void shim_guMtxF2L(float mf[4][4], Mtx *m);
+void shim_guMtxF2L(float mf[4][4], Mtx* m);
 RenderTask* shim_queue_render_task(RenderTask* task);
 EffectInstance* shim_create_effect_instance(EffectBlueprint* effectBp);
 void shim_remove_effect(EffectInstance*);
@@ -29,9 +29,9 @@ void shim_guOrthoF(float mf[4][4], float l, float r, float b, float t, float n, 
 void shim_guFrustumF(float mf[4][4], float l, float r, float b, float t, float n, float f, float scale);
 void shim_draw_prev_frame_buffer_at_screen_pos(s32, s32, s32, s32, f32);
 void shim_draw_box(
-    s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s32 width, s32 height, u8 opacity,
-    u8 darkening, f32 scaleX, f32 scaleY, f32 rotX, f32 rotY, f32 rotZ, void (*fpDrawContents)(void*),
-    void* drawContentsArg0, Matrix4f rotScaleMtx, s32 translateX, s32 translateY, f32 (*outMtx)[4]
+    s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s32 width, s32 height, u8 opacity, u8 darkening,
+    f32 scaleX, f32 scaleY, f32 rotX, f32 rotY, f32 rotZ, void (*fpDrawContents)(void*), void* drawContentsArg0,
+    Matrix4f rotScaleMtx, s32 translateX, s32 translateY, f32 (*outMtx)[4]
 );
 void shim_draw_msg(s32, s32, s32, s32, s32, s32);
 s32 shim_get_msg_width(s32, u16);
