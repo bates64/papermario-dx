@@ -4,7 +4,7 @@ extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupReflections);
 
 EntryList N(Entrances) = {
-    [tst_11_ENTRY_0]    {    0.0,    0.0,  100.0,   90.0 },
+    [tst_11_ENTRY_0]    = {    0.0,    0.0,  100.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

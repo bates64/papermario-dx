@@ -5,7 +5,7 @@ export s32 N(map_init)(void) {
 }
 
 EntryList N(Entrances) = {
-    [end_01_ENTRY_0]    {    0.0,    0.0,    0.0,    0.0 },
+    [end_01_ENTRY_0]    = {    0.0,    0.0,    0.0,    0.0 },
 };
 
 export MapSettings N(settings) = {

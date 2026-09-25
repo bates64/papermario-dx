@@ -1,8 +1,8 @@
 #include "kkj_12.h"
 
 EntryList N(Entrances) = {
-    [kkj_12_ENTRY_0]    {  -75.0,    0.0,    0.0,   90.0 },
-    [kkj_12_ENTRY_1]    { 1175.0,  110.0,    0.0,  270.0 },
+    [kkj_12_ENTRY_0]    = {  -75.0,    0.0,    0.0,   90.0 },
+    [kkj_12_ENTRY_1]    = { 1175.0,  110.0,    0.0,  270.0 },
 };
 
 export MapSettings N(settings) = {

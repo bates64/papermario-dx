@@ -1,7 +1,7 @@
 #include "tik_02.h"
 
 EntryList N(Entrances) = {
-    [tik_02_ENTRY_0]    { -360.0,  -10.0,    0.0,   90.0 },
+    [tik_02_ENTRY_0]    = { -360.0,  -10.0,    0.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

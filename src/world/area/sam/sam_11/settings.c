@@ -9,9 +9,9 @@ s32 N(get_tattle)(void) {
 }
 
 EntryList N(Entrances) = {
-    [sam_11_ENTRY_0]    { -480.0,    0.0,    0.0,   90.0 },
-    [sam_11_ENTRY_1]    {  455.0,    0.0,    0.0,  270.0 },
-    [sam_11_ENTRY_2]    {  325.0,    0.0,    0.0,    0.0 },
+    [sam_11_ENTRY_0]    = { -480.0,    0.0,    0.0,   90.0 },
+    [sam_11_ENTRY_1]    = {  455.0,    0.0,    0.0,  270.0 },
+    [sam_11_ENTRY_2]    = {  325.0,    0.0,    0.0,    0.0 },
 };
 
 export MapSettings N(settings) = {

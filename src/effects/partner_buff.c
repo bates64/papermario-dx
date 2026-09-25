@@ -264,7 +264,7 @@ void func_E011A700(EffectInstance* effect) {
 
                     if (buffData->state == BUFF_STATE_DECREMENT_TURNS) {
                         idx = turnsDisplay - 1;
-                    } else if (buffData->state == BUFF_STATE_SET_TURNS) {
+                    } else {
                         idx = turnsDisplay + 1;
                     }
                     dlist = D_E011AC24[idx];

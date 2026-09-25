@@ -298,15 +298,15 @@ u8 BlankMseqData[] = {
 /// Volume steps use squared values so each level represents linear power increase,
 /// matching loudness perception. This makes each step sound evenly spaced.
 u16 PerceptualVolumeLevels[] = {
-    [VOL_LEVEL_MUTE] 0, // 0.0 %
-    [VOL_LEVEL_1] AU_MAX_BUS_VOLUME * SQ(0.125), //  1.5625 %
-    [VOL_LEVEL_2] AU_MAX_BUS_VOLUME * SQ(0.250), //  6.25 %
-    [VOL_LEVEL_3] AU_MAX_BUS_VOLUME * SQ(0.375), // 14.0625 %
-    [VOL_LEVEL_4] AU_MAX_BUS_VOLUME * SQ(0.500), // 25.0 %
-    [VOL_LEVEL_5] AU_MAX_BUS_VOLUME * SQ(0.625), // 39.0625 %
-    [VOL_LEVEL_6] AU_MAX_BUS_VOLUME * SQ(0.750), // 56.25 %
-    [VOL_LEVEL_7] AU_MAX_BUS_VOLUME * SQ(0.875), // 76.5625 %
-    [VOL_LEVEL_FULL] AU_MAX_BUS_VOLUME, // 100.0 %
+    [VOL_LEVEL_MUTE] = 0, // 0.0 %
+    [VOL_LEVEL_1] = AU_MAX_BUS_VOLUME * SQ(0.125), //  1.5625 %
+    [VOL_LEVEL_2] = AU_MAX_BUS_VOLUME * SQ(0.250), //  6.25 %
+    [VOL_LEVEL_3] = AU_MAX_BUS_VOLUME * SQ(0.375), // 14.0625 %
+    [VOL_LEVEL_4] = AU_MAX_BUS_VOLUME * SQ(0.500), // 25.0 %
+    [VOL_LEVEL_5] = AU_MAX_BUS_VOLUME * SQ(0.625), // 39.0625 %
+    [VOL_LEVEL_6] = AU_MAX_BUS_VOLUME * SQ(0.750), // 56.25 %
+    [VOL_LEVEL_7] = AU_MAX_BUS_VOLUME * SQ(0.875), // 76.5625 %
+    [VOL_LEVEL_FULL] = AU_MAX_BUS_VOLUME, // 100.0 %
 };
 
 // TODO: figure out how to make struct properly

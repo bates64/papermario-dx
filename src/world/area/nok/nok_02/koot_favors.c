@@ -11,7 +11,7 @@ typedef struct KootFavor {
 } KootFavor; // size = 0x1C
 
 KootFavor N(KootFavorData)[] = {
-    [KOOT_FAVOR_CH1_1] {
+    [KOOT_FAVOR_CH1_1] = {
         .requestMsg = MSG_KootFavor_0000,
         .minorRewardMsg = MSG_KootFavor_0001,
         .majorRewardMsg = MSG_KootFavor_0002,
@@ -20,7 +20,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor00_Complete,
         .requiredItem = ITEM_KOOT_KOOPA_LEGENDS,
     },
-    [KOOT_FAVOR_CH1_2] {
+    [KOOT_FAVOR_CH1_2] = {
         .requestMsg = MSG_KootFavor_0003,
         .minorRewardMsg = MSG_KootFavor_0004,
         .majorRewardMsg = MSG_KootFavor_0005,
@@ -29,7 +29,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor01_Complete,
         .requiredItem = ITEM_SLEEPY_SHEEP,
     },
-    [KOOT_FAVOR_CH2_1] {
+    [KOOT_FAVOR_CH2_1] = {
         .requestMsg = MSG_KootFavor_0006,
         .minorRewardMsg = MSG_KootFavor_0007,
         .majorRewardMsg = MSG_KootFavor_0008,
@@ -38,7 +38,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor02_Complete,
         .requiredItem = ITEM_KOOT_THE_TAPE,
     },
-    [KOOT_FAVOR_CH2_2] {
+    [KOOT_FAVOR_CH2_2] = {
         .requestMsg = MSG_KootFavor_0009,
         .minorRewardMsg = MSG_KootFavor_000A,
         .majorRewardMsg = MSG_KootFavor_000B,
@@ -47,7 +47,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor03_Complete,
         .requiredItem = ITEM_KOOPA_TEA,
     },
-    [KOOT_FAVOR_CH2_3] {
+    [KOOT_FAVOR_CH2_3] = {
         .requestMsg = MSG_KootFavor_000C,
         .minorRewardMsg = MSG_KootFavor_000D,
         .majorRewardMsg = MSG_KootFavor_000E,
@@ -56,7 +56,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor04_Complete,
         .requiredItem = ITEM_KOOT_LUIGI_AUTOGRAPH,
     },
-    [KOOT_FAVOR_CH3_1] {
+    [KOOT_FAVOR_CH3_1] = {
         .requestMsg = MSG_KootFavor_000F,
         .minorRewardMsg = MSG_KootFavor_0010,
         .majorRewardMsg = MSG_KootFavor_0011,
@@ -65,7 +65,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor05_Complete,
         .requiredItem = ITEM_KOOT_EMPTY_WALLET,
     },
-    [KOOT_FAVOR_CH3_2] {
+    [KOOT_FAVOR_CH3_2] = {
         .requestMsg = MSG_KootFavor_0012,
         .minorRewardMsg = MSG_KootFavor_0013,
         .majorRewardMsg = MSG_KootFavor_0014,
@@ -74,7 +74,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor06_Complete,
         .requiredItem = ITEM_TASTY_TONIC,
     },
-    [KOOT_FAVOR_CH3_3] {
+    [KOOT_FAVOR_CH3_3] = {
         .requestMsg = MSG_KootFavor_0015,
         .minorRewardMsg = MSG_KootFavor_0016,
         .majorRewardMsg = MSG_KootFavor_0017,
@@ -83,7 +83,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor07_Complete,
         .requiredItem = ITEM_KOOT_MERLUVLEE_AUTOGRAPH,
     },
-    [KOOT_FAVOR_CH4_1] {
+    [KOOT_FAVOR_CH4_1] = {
         .requestMsg = MSG_KootFavor_0018,
         .minorRewardMsg = MSG_KootFavor_0019,
         .majorRewardMsg = MSG_KootFavor_001A,
@@ -92,7 +92,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor08_Complete,
         .requiredItem = ITEM_NONE,
     },
-    [KOOT_FAVOR_CH4_2] {
+    [KOOT_FAVOR_CH4_2] = {
         .requestMsg = MSG_KootFavor_001B,
         .minorRewardMsg = MSG_KootFavor_001C,
         .majorRewardMsg = MSG_KootFavor_001D,
@@ -101,7 +101,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor09_Complete,
         .requiredItem = ITEM_LIFE_SHROOM,
     },
-    [KOOT_FAVOR_CH4_3] {
+    [KOOT_FAVOR_CH4_3] = {
         .requestMsg = MSG_KootFavor_001E,
         .minorRewardMsg = MSG_KootFavor_001F,
         .majorRewardMsg = MSG_KootFavor_0020,
@@ -110,7 +110,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor0A_Complete,
         .requiredItem = ITEM_NUTTY_CAKE,
     },
-    [KOOT_FAVOR_CH5_1] {
+    [KOOT_FAVOR_CH5_1] = {
         .requestMsg = MSG_KootFavor_0021,
         .minorRewardMsg = MSG_KootFavor_0022,
         .majorRewardMsg = MSG_KootFavor_0023,
@@ -119,7 +119,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor0B_Complete,
         .requiredItem = ITEM_NONE,
     },
-    [KOOT_FAVOR_CH5_2] {
+    [KOOT_FAVOR_CH5_2] = {
         .requestMsg = MSG_KootFavor_0024,
         .minorRewardMsg = MSG_KootFavor_0025,
         .majorRewardMsg = MSG_KootFavor_0026,
@@ -128,7 +128,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor0C_Complete,
         .requiredItem = ITEM_KOOT_OLD_PHOTO,
     },
-    [KOOT_FAVOR_CH5_3] {
+    [KOOT_FAVOR_CH5_3] = {
         .requestMsg = MSG_KootFavor_0027,
         .minorRewardMsg = MSG_KootFavor_0028,
         .majorRewardMsg = MSG_KootFavor_0029,
@@ -137,7 +137,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor0D_Complete,
         .requiredItem = ITEM_KOOPASTA,
     },
-    [KOOT_FAVOR_CH6_1] {
+    [KOOT_FAVOR_CH6_1] = {
         .requestMsg = MSG_KootFavor_002A,
         .minorRewardMsg = MSG_KootFavor_002B,
         .majorRewardMsg = MSG_KootFavor_002C,
@@ -146,7 +146,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor0E_Complete,
         .requiredItem = ITEM_KOOT_GLASSES,
     },
-    [KOOT_FAVOR_CH6_2] {
+    [KOOT_FAVOR_CH6_2] = {
         .requestMsg = MSG_KootFavor_002D,
         .minorRewardMsg = MSG_KootFavor_002E,
         .majorRewardMsg = MSG_KootFavor_002F,
@@ -155,7 +155,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor0F_Complete,
         .requiredItem = ITEM_LIME,
     },
-    [KOOT_FAVOR_CH6_3] {
+    [KOOT_FAVOR_CH6_3] = {
         .requestMsg = MSG_KootFavor_0030,
         .minorRewardMsg = MSG_KootFavor_0031,
         .majorRewardMsg = MSG_KootFavor_0032,
@@ -164,7 +164,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor10_Complete,
         .requiredItem = ITEM_KOOKY_COOKIE,
     },
-    [KOOT_FAVOR_CH7_1] {
+    [KOOT_FAVOR_CH7_1] = {
         .requestMsg = MSG_KootFavor_0033,
         .minorRewardMsg = MSG_KootFavor_0034,
         .majorRewardMsg = MSG_KootFavor_0035,
@@ -173,7 +173,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor11_Complete,
         .requiredItem = ITEM_KOOT_PACKAGE,
     },
-    [KOOT_FAVOR_CH7_2] {
+    [KOOT_FAVOR_CH7_2] = {
         .requestMsg = MSG_KootFavor_0036,
         .minorRewardMsg = MSG_KootFavor_0037,
         .majorRewardMsg = MSG_KootFavor_0038,
@@ -182,7 +182,7 @@ KootFavor N(KootFavorData)[] = {
         .completeFlag = GF_NOK02_KootFavor12_Complete,
         .requiredItem = ITEM_COCONUT,
     },
-    [KOOT_FAVOR_CH7_3] {
+    [KOOT_FAVOR_CH7_3] = {
         .requestMsg = MSG_KootFavor_0039,
         .minorRewardMsg = MSG_KootFavor_003A,
         .majorRewardMsg = MSG_KootFavor_003B,

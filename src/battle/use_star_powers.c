@@ -42,71 +42,71 @@ BattleMoveEntry StarPowersTable[] = {
 };
 
 s32 PartnerWishAnims[][5] = {
-    [PARTNER_NONE] {
-        [PARTNER_WISH_ANIM_WALK]    ANIM_Mario1_UsePower,
-        [PARTNER_WISH_ANIM_PRAY]    ANIM_Mario1_Pray,
-        [PARTNER_WISH_ANIM_UNUSED]  ANIM_Mario1_LookUp,
-        [PARTNER_WISH_ANIM_RETURN]  ANIM_Mario1_Run,
-        [PARTNER_WISH_ANIM_IDLE]    0,
+    [PARTNER_NONE] = {
+        [PARTNER_WISH_ANIM_WALK]    = ANIM_Mario1_UsePower,
+        [PARTNER_WISH_ANIM_PRAY]    = ANIM_Mario1_Pray,
+        [PARTNER_WISH_ANIM_UNUSED]  = ANIM_Mario1_LookUp,
+        [PARTNER_WISH_ANIM_RETURN]  = ANIM_Mario1_Run,
+        [PARTNER_WISH_ANIM_IDLE]    = 0,
     },
-    [PARTNER_GOOMBARIO] {
-        [PARTNER_WISH_ANIM_WALK]    ANIM_BattleGoombario_Run,
-        [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleGoombario_CloseEyes,
-        [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleGoombario_CloseEyes,
-        [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleGoombario_Run,
-        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleGoombario_Idle,
+    [PARTNER_GOOMBARIO] = {
+        [PARTNER_WISH_ANIM_WALK]    = ANIM_BattleGoombario_Run,
+        [PARTNER_WISH_ANIM_PRAY]    = ANIM_BattleGoombario_CloseEyes,
+        [PARTNER_WISH_ANIM_UNUSED]  = ANIM_BattleGoombario_CloseEyes,
+        [PARTNER_WISH_ANIM_RETURN]  = ANIM_BattleGoombario_Run,
+        [PARTNER_WISH_ANIM_IDLE]    = ANIM_BattleGoombario_Idle,
     },
-    [PARTNER_KOOPER] {
-        [PARTNER_WISH_ANIM_WALK]    ANIM_BattleKooper_Run,
-        [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleKooper_Pray,
-        [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleKooper_Pray,
-        [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleKooper_Run,
-        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleKooper_Idle,
+    [PARTNER_KOOPER] = {
+        [PARTNER_WISH_ANIM_WALK]    = ANIM_BattleKooper_Run,
+        [PARTNER_WISH_ANIM_PRAY]    = ANIM_BattleKooper_Pray,
+        [PARTNER_WISH_ANIM_UNUSED]  = ANIM_BattleKooper_Pray,
+        [PARTNER_WISH_ANIM_RETURN]  = ANIM_BattleKooper_Run,
+        [PARTNER_WISH_ANIM_IDLE]    = ANIM_BattleKooper_Idle,
     },
-   [PARTNER_BOMBETTE] {
-        [PARTNER_WISH_ANIM_WALK]    ANIM_BattleBombette_Run,
-        [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleBombette_Sleep,
-        [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleBombette_Sleep,
-        [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleBombette_Run,
-        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleBombette_Idle,
+   [PARTNER_BOMBETTE] = {
+        [PARTNER_WISH_ANIM_WALK]    = ANIM_BattleBombette_Run,
+        [PARTNER_WISH_ANIM_PRAY]    = ANIM_BattleBombette_Sleep,
+        [PARTNER_WISH_ANIM_UNUSED]  = ANIM_BattleBombette_Sleep,
+        [PARTNER_WISH_ANIM_RETURN]  = ANIM_BattleBombette_Run,
+        [PARTNER_WISH_ANIM_IDLE]    = ANIM_BattleBombette_Idle,
     },
-    [PARTNER_PARAKARRY] {
-        [PARTNER_WISH_ANIM_WALK]    ANIM_BattleParakarry_Run,
-        [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleParakarry_Pray,
-        [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleParakarry_Pray,
-        [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleParakarry_Run,
-        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleParakarry_Idle,
+    [PARTNER_PARAKARRY] = {
+        [PARTNER_WISH_ANIM_WALK]    = ANIM_BattleParakarry_Run,
+        [PARTNER_WISH_ANIM_PRAY]    = ANIM_BattleParakarry_Pray,
+        [PARTNER_WISH_ANIM_UNUSED]  = ANIM_BattleParakarry_Pray,
+        [PARTNER_WISH_ANIM_RETURN]  = ANIM_BattleParakarry_Run,
+        [PARTNER_WISH_ANIM_IDLE]    = ANIM_BattleParakarry_Idle,
     },
-    [PARTNER_GOOMPA] {
+    [PARTNER_GOOMPA] = {
         // no data
     },
-    [PARTNER_WATT] {
-        [PARTNER_WISH_ANIM_WALK]    ANIM_BattleWatt_Run,
-        [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleWatt_Sleep,
-        [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleWatt_Sleep,
-        [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleWatt_Run,
-        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleWatt_Idle,
+    [PARTNER_WATT] = {
+        [PARTNER_WISH_ANIM_WALK]    = ANIM_BattleWatt_Run,
+        [PARTNER_WISH_ANIM_PRAY]    = ANIM_BattleWatt_Sleep,
+        [PARTNER_WISH_ANIM_UNUSED]  = ANIM_BattleWatt_Sleep,
+        [PARTNER_WISH_ANIM_RETURN]  = ANIM_BattleWatt_Run,
+        [PARTNER_WISH_ANIM_IDLE]    = ANIM_BattleWatt_Idle,
     },
-    [PARTNER_SUSHIE] {
-        [PARTNER_WISH_ANIM_WALK]    ANIM_BattleSushie_Run,
-        [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleSushie_Pray,
-        [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleSushie_Pray,
-        [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleSushie_Run,
-        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleSushie_Idle,
+    [PARTNER_SUSHIE] = {
+        [PARTNER_WISH_ANIM_WALK]    = ANIM_BattleSushie_Run,
+        [PARTNER_WISH_ANIM_PRAY]    = ANIM_BattleSushie_Pray,
+        [PARTNER_WISH_ANIM_UNUSED]  = ANIM_BattleSushie_Pray,
+        [PARTNER_WISH_ANIM_RETURN]  = ANIM_BattleSushie_Run,
+        [PARTNER_WISH_ANIM_IDLE]    = ANIM_BattleSushie_Idle,
     },
-    [PARTNER_LAKILESTER] {
-        [PARTNER_WISH_ANIM_WALK]    ANIM_BattleLakilester_Run,
-        [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleLakilester_Pray,
-        [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleLakilester_Pray,
-        [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleLakilester_Run,
-        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleLakilester_Idle,
+    [PARTNER_LAKILESTER] = {
+        [PARTNER_WISH_ANIM_WALK]    = ANIM_BattleLakilester_Run,
+        [PARTNER_WISH_ANIM_PRAY]    = ANIM_BattleLakilester_Pray,
+        [PARTNER_WISH_ANIM_UNUSED]  = ANIM_BattleLakilester_Pray,
+        [PARTNER_WISH_ANIM_RETURN]  = ANIM_BattleLakilester_Run,
+        [PARTNER_WISH_ANIM_IDLE]    = ANIM_BattleLakilester_Idle,
     },
-    [PARTNER_BOW] {
-        [PARTNER_WISH_ANIM_WALK]    ANIM_BattleBow_Run,
-        [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleBow_Pray,
-        [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleBow_Pray,
-        [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleBow_Run,
-        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleBow_Idle,
+    [PARTNER_BOW] = {
+        [PARTNER_WISH_ANIM_WALK]    = ANIM_BattleBow_Run,
+        [PARTNER_WISH_ANIM_PRAY]    = ANIM_BattleBow_Pray,
+        [PARTNER_WISH_ANIM_UNUSED]  = ANIM_BattleBow_Pray,
+        [PARTNER_WISH_ANIM_RETURN]  = ANIM_BattleBow_Run,
+        [PARTNER_WISH_ANIM_IDLE]    = ANIM_BattleBow_Idle,
     },
 };
 

@@ -49,63 +49,63 @@ SimpleWindowUpdateData gSimpleWindowUpdates[] = {
         .darkening = 0,
         .opacity = 0
     },
-    [WINDOW_UPDATE_SHOW] {
+    [WINDOW_UPDATE_SHOW] = {
         .flags = 0,
         .windowFlagsSet = 0,
         .windowFlagsUnset = WINDOW_FLAG_HIDDEN | WINDOW_FLAG_INITIAL_ANIMATION,
         .darkening = 0,
         .opacity = 0
     },
-    [WINDOW_UPDATE_HIDE] {
+    [WINDOW_UPDATE_HIDE] = {
         .flags = 0,
         .windowFlagsSet = WINDOW_FLAG_HIDDEN,
         .windowFlagsUnset = WINDOW_FLAG_INITIAL_ANIMATION,
         .darkening = 0,
         .opacity = 0
     },
-    [WINDOW_UPDATE_HIER_UPDATE] {
+    [WINDOW_UPDATE_HIER_UPDATE] = {
         .flags = SIMPLE_WINDOW_UPDATE_1,
         .windowFlagsSet = 0,
         .windowFlagsUnset = WINDOW_FLAG_INITIAL_ANIMATION,
         .darkening = 0,
         .opacity = 0
     },
-    [WINDOW_UPDATE_DARKENED] {
+    [WINDOW_UPDATE_DARKENED] = {
         .flags = SIMPLE_WINDOW_UPDATE_DARKENING,
         .windowFlagsSet = 0,
         .windowFlagsUnset = WINDOW_FLAG_INITIAL_ANIMATION,
         .darkening = 100,
         .opacity = 0
     },
-    [WINDOW_UPDATE_TRANSPARENT] {
+    [WINDOW_UPDATE_TRANSPARENT] = {
         .flags = SIMPLE_WINDOW_UPDATE_DARKENING,
         .windowFlagsSet = 0,
         .windowFlagsUnset = WINDOW_FLAG_INITIAL_ANIMATION,
         .darkening = 0,
         .opacity = 0
     },
-    [WINDOW_UPDATE_OPAQUE] {
+    [WINDOW_UPDATE_OPAQUE] = {
         .flags = SIMPLE_WINDOW_UPDATE_OPACITY,
         .windowFlagsSet = 0,
         .windowFlagsUnset = WINDOW_FLAG_INITIAL_ANIMATION,
         .darkening = 0,
         .opacity = 184
     },
-    [WINDOW_UPDATE_SHOW_TRANSPARENT] {
+    [WINDOW_UPDATE_SHOW_TRANSPARENT] = {
         .flags = SIMPLE_WINDOW_UPDATE_OPACITY,
         .windowFlagsSet = 0,
         .windowFlagsUnset = WINDOW_FLAG_INITIAL_ANIMATION,
         .darkening = 0,
         .opacity = 255
     },
-    [WINDOW_UPDATE_SHOW_DARKENED] {
+    [WINDOW_UPDATE_SHOW_DARKENED] = {
         .flags = SIMPLE_WINDOW_UPDATE_OPACITY,
         .windowFlagsSet = 0,
         .windowFlagsUnset = WINDOW_FLAG_HIDDEN | WINDOW_FLAG_INITIAL_ANIMATION,
         .darkening = 0,
         .opacity = 184
     },
-    [WINDOW_UPDATE_9] {
+    [WINDOW_UPDATE_9] = {
         .flags = SIMPLE_WINDOW_UPDATE_DARKENING,
         .windowFlagsSet = 0,
         .windowFlagsUnset = WINDOW_FLAG_HIDDEN | WINDOW_FLAG_INITIAL_ANIMATION,
@@ -126,10 +126,10 @@ u8 gWindowDisappearFlags[] = { DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, DRAW_FLAG
                                DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, 0 };
 
 WindowGroup gWindowGroups[] = {
-    [WINDOW_GROUP_ALL]    { WIN_UNUSED_0, WIN_FILES_SLOT4_TITLE },
-    [WINDOW_GROUP_BATTLE] { WIN_BTL_DESC_BOX, WIN_BTL_POPUP },
-    [WINDOW_GROUP_PAUSE]  { WIN_PAUSE_MAIN, WIN_PAUSE_TAB_INVIS },
-    [WINDOW_GROUP_FILES]  { WIN_FILES_MAIN, WIN_FILES_SLOT4_TITLE },
+    [WINDOW_GROUP_ALL]    = { WIN_UNUSED_0, WIN_FILES_SLOT4_TITLE },
+    [WINDOW_GROUP_BATTLE] = { WIN_BTL_DESC_BOX, WIN_BTL_POPUP },
+    [WINDOW_GROUP_PAUSE]  = { WIN_PAUSE_MAIN, WIN_PAUSE_TAB_INVIS },
+    [WINDOW_GROUP_FILES]  = { WIN_FILES_MAIN, WIN_FILES_SLOT4_TITLE },
 };
 
 void clear_windows(void) {

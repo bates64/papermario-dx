@@ -1,7 +1,7 @@
 #include "jan_10.h"
 
 EntryList N(Entrances) = {
-    [jan_10_ENTRY_0]    {  380.0,  -20.0,    0.0,  270.0 },
+    [jan_10_ENTRY_0]    = {  380.0,  -20.0,    0.0,  270.0 },
 };
 
 export MapSettings N(settings) = {

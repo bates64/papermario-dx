@@ -3,7 +3,7 @@
 extern EvtScript N(EVS_Main);
 
 EntryList N(Entrances) = {
-    [tst_20_ENTRY_0]    {    0.0,    0.0,  100.0,   90.0 },
+    [tst_20_ENTRY_0]    = {    0.0,    0.0,  100.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

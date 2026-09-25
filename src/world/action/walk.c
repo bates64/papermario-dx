@@ -3,25 +3,25 @@
 #include "sprite/player.h"
 
 AnimID WalkPeachAnims[] = {
-    [PEACH_BAKING_NONE]                 ANIM_Peach1_Walk,
-    [PEACH_BAKING_CREAM]                ANIM_Peach1_CarryCream,
-    [PEACH_BAKING_STRAWBERRY]           ANIM_Peach1_CarryStrawberry,
-    [PEACH_BAKING_BUTTER]               ANIM_Peach1_CarryButter,
-    [PEACH_BAKING_CLEANSER]             ANIM_Peach1_CarryCleanser,
-    [PEACH_BAKING_WATER]                ANIM_Peach1_CarryWater,
-    [PEACH_BAKING_MILK]                 ANIM_Peach1_CarryMilk,
-    [PEACH_BAKING_FLOUR]                ANIM_Peach1_CarryFlour,
-    [PEACH_BAKING_EGG]                  ANIM_Peach1_CarryEgg,
-    [PEACH_BAKING_COMPLETE_CAKE]        ANIM_Peach1_CarryCompleteCake,
-    [PEACH_BAKING_CAKE_BOWL]            ANIM_Peach1_CarryCakeBowl,
-    [PEACH_BAKING_CAKE_MIXED]           ANIM_Peach1_CarryCakeMixed,
-    [PEACH_BAKING_CAKE_PAN]             ANIM_Peach1_CarryCakePan,
-    [PEACH_BAKING_CAKE_BATTER]          ANIM_Peach1_CarryCakeBatter,
-    [PEACH_BAKING_CAKE_BARE]            ANIM_Peach1_CarryBareCake,
-    [PEACH_BAKING_SALT]                 ANIM_Peach1_CarrySalt,
-    [PEACH_BAKING_SUGAR]                ANIM_Peach1_CarrySugar,
-    [PEACH_BAKING_CAKE_WITH_ICING]      ANIM_Peach1_CarryIcingCake,
-    [PEACH_BAKING_CAKE_WITH_BERRIES]    ANIM_Peach1_CarryBerryCake,
+    [PEACH_BAKING_NONE]                 = ANIM_Peach1_Walk,
+    [PEACH_BAKING_CREAM]                = ANIM_Peach1_CarryCream,
+    [PEACH_BAKING_STRAWBERRY]           = ANIM_Peach1_CarryStrawberry,
+    [PEACH_BAKING_BUTTER]               = ANIM_Peach1_CarryButter,
+    [PEACH_BAKING_CLEANSER]             = ANIM_Peach1_CarryCleanser,
+    [PEACH_BAKING_WATER]                = ANIM_Peach1_CarryWater,
+    [PEACH_BAKING_MILK]                 = ANIM_Peach1_CarryMilk,
+    [PEACH_BAKING_FLOUR]                = ANIM_Peach1_CarryFlour,
+    [PEACH_BAKING_EGG]                  = ANIM_Peach1_CarryEgg,
+    [PEACH_BAKING_COMPLETE_CAKE]        = ANIM_Peach1_CarryCompleteCake,
+    [PEACH_BAKING_CAKE_BOWL]            = ANIM_Peach1_CarryCakeBowl,
+    [PEACH_BAKING_CAKE_MIXED]           = ANIM_Peach1_CarryCakeMixed,
+    [PEACH_BAKING_CAKE_PAN]             = ANIM_Peach1_CarryCakePan,
+    [PEACH_BAKING_CAKE_BATTER]          = ANIM_Peach1_CarryCakeBatter,
+    [PEACH_BAKING_CAKE_BARE]            = ANIM_Peach1_CarryBareCake,
+    [PEACH_BAKING_SALT]                 = ANIM_Peach1_CarrySalt,
+    [PEACH_BAKING_SUGAR]                = ANIM_Peach1_CarrySugar,
+    [PEACH_BAKING_CAKE_WITH_ICING]      = ANIM_Peach1_CarryIcingCake,
+    [PEACH_BAKING_CAKE_WITH_BERRIES]    = ANIM_Peach1_CarryBerryCake,
 };
 
 static void action_update_run_peach(void);
@@ -82,7 +82,7 @@ void action_update_walk(void) {
         return;
     }
 
-    if (fabsf(PrevPlayerCamRelativeYaw - moveAngle) <= 90.0f && abs(moveMag) < 20) {
+    if (fabsf(PrevPlayerCamRelativeYaw - moveAngle) <= 90.0f && abs((s32)moveMag) < 20) {
         if (!(playerStatus->animFlags & PA_FLAG_80000000)) {
             if (moveMag >= 20.0f) {
                 playerStatus->targetYaw = moveAngle;

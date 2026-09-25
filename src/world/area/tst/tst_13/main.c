@@ -6,7 +6,7 @@ extern EvtScript N(EVS_Main);
 extern NpcGroupList N(DefaultNPCs);
 
 EntryList N(Entrances) = {
-    [tst_13_ENTRY_0]    {    0.0,    0.0,  100.0,   90.0 },
+    [tst_13_ENTRY_0]    = {    0.0,    0.0,  100.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

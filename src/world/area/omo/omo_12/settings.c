@@ -1,7 +1,7 @@
 #include "omo_12.h"
 
 EntryList N(Entrances) = {
-    [omo_12_ENTRY_0]    {  260.0,    0.0,   20.0,  270.0 },
+    [omo_12_ENTRY_0]    = {  260.0,    0.0,   20.0,  270.0 },
 };
 
 export MapSettings N(settings) = {

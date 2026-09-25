@@ -11,7 +11,7 @@ s32 N(get_tattle)(void) {
 #endif
 
 EntryList N(Entrances) = {
-    [mgm_02_ENTRY_0]    { -300.0,  200.0,  200.0,   90.0 },
+    [mgm_02_ENTRY_0]    = { -300.0,  200.0,  200.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

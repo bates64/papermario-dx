@@ -1,8 +1,8 @@
 #include "kzn_20.h"
 
 EntryList N(Entrances) = {
-    [kzn_20_ENTRY_0]    { -182.0,    0.0,   36.0,   90.0 },
-    [kzn_20_ENTRY_1]    {  164.0,  150.0,   20.0,  270.0 },
+    [kzn_20_ENTRY_0]    = { -182.0,    0.0,   36.0,   90.0 },
+    [kzn_20_ENTRY_1]    = {  164.0,  150.0,   20.0,  270.0 },
 };
 
 export MapSettings N(settings) = {

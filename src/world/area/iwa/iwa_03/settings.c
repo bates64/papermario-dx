@@ -1,7 +1,7 @@
 #include "iwa_03.h"
 
 EntryList N(Entrances) = {
-    [iwa_03_ENTRY_0]    {   14.0,  -18.0,    7.0,  270.0 },
+    [iwa_03_ENTRY_0]    = {   14.0,  -18.0,    7.0,  270.0 },
 };
 
 export MapSettings N(settings) = {

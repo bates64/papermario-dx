@@ -10,10 +10,10 @@ enum RadioStation {
 };
 
 s16 N(StationMseqMapping)[] = {
-    [RADIO_STATION_ISLAND_SOUNDS]   0,
-    [RADIO_STATION_GOLDEN_OLDIES]   2,
-    [RADIO_STATION_HOT_HITS]        1,
-    [RADIO_STATION_INFORMATION]     4,
+    [RADIO_STATION_ISLAND_SOUNDS]   = 0,
+    [RADIO_STATION_GOLDEN_OLDIES]   = 2,
+    [RADIO_STATION_HOT_HITS]        = 1,
+    [RADIO_STATION_INFORMATION]     = 4,
 };
 
 API_CALLABLE(N(InitializeRadio)) {

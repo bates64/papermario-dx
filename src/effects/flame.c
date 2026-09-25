@@ -18,7 +18,7 @@ extern Gfx D_09000918_3544C8[];
 extern Gfx D_090009E0_354590[];
 
 FlamePreset FlamePresets[] = {
-    [FX_FLAME_BLUE] {
+    [FX_FLAME_BLUE] = {
         .colorScale = { 255, 109, 255 },
         .keyCenter = 92,
         .envColor = { 102, 191, 255 },
@@ -26,7 +26,7 @@ FlamePreset FlamePresets[] = {
         .sizeScale = 50,
         .dlist = D_09000800_3543B0,
     },
-    [FX_FLAME_RED] {
+    [FX_FLAME_RED] = {
         .colorScale = { 255, 255, 255 },
         .keyCenter = 0,
         .envColor = { 255, 32, 0 },
@@ -34,7 +34,7 @@ FlamePreset FlamePresets[] = {
         .sizeScale = 100,
         .dlist = D_09000800_3543B0,
     },
-    [FX_FLAME_SMALL_BLUE] {
+    [FX_FLAME_SMALL_BLUE] = {
         .colorScale = { 255, 0, 255 },
         .keyCenter = 92,
         .envColor = { 107, 168, 255 },
@@ -42,7 +42,7 @@ FlamePreset FlamePresets[] = {
         .sizeScale = 10,
         .dlist = D_09000800_3543B0,
     },
-    [FX_FLAME_PINK] {
+    [FX_FLAME_PINK] = {
         .colorScale = { 255, 255, 255 },
         .keyCenter = 244,
         .envColor = { 247, 175, 175 },

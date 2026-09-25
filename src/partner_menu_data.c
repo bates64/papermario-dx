@@ -29,88 +29,88 @@ s32 PartnerIDFromMenuIndex[] = {
 
 // partnerID -> "change partner" menu position
 s32 MenuIndexFromPartnerID[] = {
-    [PARTNER_NONE]          0,
-    [PARTNER_GOOMBARIO]     1,
-    [PARTNER_KOOPER]        2,
-    [PARTNER_BOMBETTE]      3,
-    [PARTNER_PARAKARRY]     4,
-    [PARTNER_GOOMPA]        0,
-    [PARTNER_WATT]          6,
-    [PARTNER_SUSHIE]        7,
-    [PARTNER_LAKILESTER]    8,
-    [PARTNER_BOW]           5,
-    [PARTNER_GOOMBARIA]     0,
-    [PARTNER_TWINK]         0,
+    [PARTNER_NONE]          = 0,
+    [PARTNER_GOOMBARIO]     = 1,
+    [PARTNER_KOOPER]        = 2,
+    [PARTNER_BOMBETTE]      = 3,
+    [PARTNER_PARAKARRY]     = 4,
+    [PARTNER_GOOMPA]        = 0,
+    [PARTNER_WATT]          = 6,
+    [PARTNER_SUSHIE]        = 7,
+    [PARTNER_LAKILESTER]    = 8,
+    [PARTNER_BOW]           = 5,
+    [PARTNER_GOOMBARIA]     = 0,
+    [PARTNER_TWINK]         = 0,
 };
 
 PartnerPopupProperties gPartnerPopupProperties[] = {
-    [PARTNER_NONE] {
+    [PARTNER_NONE] = {
         (s32) "なし",
         0,
         MSG_NONE,
         MSG_NONE,
     },
-    [PARTNER_GOOMBARIO] {
+    [PARTNER_GOOMBARIO] = {
         MSG_Menus_Party_Goombario,
         2,
         MSG_PartnerDesc_Goombario_World,
         MSG_PartnerDesc_Goombario_Battle,
     },
-    [PARTNER_KOOPER] {
+    [PARTNER_KOOPER] = {
         MSG_Menus_Party_Kooper,
         3,
         MSG_PartnerDesc_Kooper_World,
         MSG_PartnerDesc_Kooper_Battle,
     },
-    [PARTNER_BOMBETTE] {
+    [PARTNER_BOMBETTE] = {
         MSG_Menus_Party_Bombette,
         4,
         MSG_PartnerDesc_Bombette_World,
         MSG_PartnerDesc_Bombette_Battle,
     },
-    [PARTNER_PARAKARRY] {
+    [PARTNER_PARAKARRY] = {
         MSG_Menus_Party_Parakarry,
         5,
         MSG_PartnerDesc_Parakarry_World,
         MSG_PartnerDesc_Parakarry_Battle,
     },
-    [PARTNER_GOOMPA] {
+    [PARTNER_GOOMPA] = {
         MSG_Menus_Party_Goompa,
         1,
         MSG_PartnerDesc_Goompa_World,
         MSG_PartnerDesc_Goompa_Battle,
     },
-    [PARTNER_WATT] {
+    [PARTNER_WATT] = {
         MSG_Menus_Party_Watt,
         7,
         MSG_PartnerDesc_Watt_World,
         MSG_PartnerDesc_Watt_Battle,
     },
-    [PARTNER_SUSHIE] {
+    [PARTNER_SUSHIE] = {
         MSG_Menus_Party_Sushie,
         8,
         MSG_PartnerDesc_Sushie_World,
         MSG_PartnerDesc_Sushie_Battle,
     },
-    [PARTNER_LAKILESTER] {
+    [PARTNER_LAKILESTER] = {
         MSG_Menus_Party_Lakilester,
         9,
         MSG_PartnerDesc_Lakilester_World,
         MSG_PartnerDesc_Lakilester_Battle,
     },
-    [PARTNER_BOW] {
+    [PARTNER_BOW] = {
         MSG_Menus_Party_Bow,
         6,
         MSG_PartnerDesc_Bow_World,
         MSG_PartnerDesc_Bow_Battle,
     },
-    [PARTNER_GOOMBARIA] {
+    [PARTNER_GOOMBARIA] = {
         MSG_Menus_Party_Goombaria,
         1,
         MSG_PartnerDesc_Goombaria_World,
         MSG_PartnerDesc_Goombaria_Battle,
     },
-    [PARTNER_TWINK] {
+    [PARTNER_TWINK] = {
         MSG_Menus_Party_Twink,
         1,
         MSG_PartnerDesc_Twink_World,

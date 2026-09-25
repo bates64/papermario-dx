@@ -5,11 +5,11 @@ extern EvtScript N(EVS_Main);
 extern NpcGroupList N(DefaultNPCs);
 
 EntryList N(Entrances) = {
-    [sbk_32_ENTRY_0]    { -475.0,    0.0,    0.0,   90.0 },
-    [sbk_32_ENTRY_1]    {  475.0,    0.0,    0.0,  270.0 },
-    [sbk_32_ENTRY_2]    {    0.0,    0.0, -475.0,  180.0 },
-    [sbk_32_ENTRY_3]    {    0.0,    0.0,  475.0,    0.0 },
-    [sbk_32_ENTRY_4]    {  157.0,  200.0, -338.0,   90.0 },
+    [sbk_32_ENTRY_0]    = { -475.0,    0.0,    0.0,   90.0 },
+    [sbk_32_ENTRY_1]    = {  475.0,    0.0,    0.0,  270.0 },
+    [sbk_32_ENTRY_2]    = {    0.0,    0.0, -475.0,  180.0 },
+    [sbk_32_ENTRY_3]    = {    0.0,    0.0,  475.0,    0.0 },
+    [sbk_32_ENTRY_4]    = {  157.0,  200.0, -338.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

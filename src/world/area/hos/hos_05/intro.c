@@ -13,13 +13,13 @@ enum {
 };
 
 s32 N(CardIndexForSpirit)[] = {
-    [NPC_Eldstar]   1,
-    [NPC_Mamar]     7,
-    [NPC_Skolar]    3,
-    [NPC_Muskular]  4,
-    [NPC_Misstar]   6,
-    [NPC_Klevar]    2,
-    [NPC_Kalmar]    5,
+    [NPC_Eldstar]   = 1,
+    [NPC_Mamar]     = 7,
+    [NPC_Skolar]    = 3,
+    [NPC_Muskular]  = 4,
+    [NPC_Misstar]   = 6,
+    [NPC_Klevar]    = 2,
+    [NPC_Kalmar]    = 5,
 };
 
 #define CARD_RING_ANGLE_SPACING (360.0f / 7)
@@ -1430,11 +1430,11 @@ s32 N(CurrentStoryPageTime)= 0;
 u32 N(BowserSilhouetteTime) = 0;
 
 s32 N(StoryPageDuration)[] = {
-    [STORY_PAGE_BLANK]          222 * DT,
-    [STORY_PAGE_STARRY_SKY]     338 * DT,
-    [STORY_PAGE_SHRINE_EXT]     338 * DT,
-    [STORY_PAGE_STAR_ROD]       338 * DT,
-    [STORY_PAGE_SHRINE_INT]     622 * DT,
+    [STORY_PAGE_BLANK]          = 222 * DT,
+    [STORY_PAGE_STARRY_SKY]     = 338 * DT,
+    [STORY_PAGE_SHRINE_EXT]     = 338 * DT,
+    [STORY_PAGE_STAR_ROD]       = 338 * DT,
+    [STORY_PAGE_SHRINE_INT]     = 622 * DT,
 };
 
 s32 N(NextPageAnimOffsetsX)[] = {

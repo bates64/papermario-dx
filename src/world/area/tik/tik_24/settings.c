@@ -7,8 +7,8 @@ export s32 N(map_init)(void) {
 }
 
 EntryList N(Entrances) = {
-    [tik_24_ENTRY_0]    { -220.0,  -10.0,    0.0,   90.0 },
-    [tik_24_ENTRY_1]    {  320.0,  -10.0,    0.0,  270.0 },
+    [tik_24_ENTRY_0]    = { -220.0,  -10.0,    0.0,   90.0 },
+    [tik_24_ENTRY_1]    = {  320.0,  -10.0,    0.0,  270.0 },
 };
 
 export MapSettings N(settings) = {

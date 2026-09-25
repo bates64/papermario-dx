@@ -1,7 +1,7 @@
 #include "mac_06.h"
 
 EntryList N(Entrances) = {
-    [mac_06_ENTRY_0]    {    0.0,    0.0,  100.0,   90.0 },
+    [mac_06_ENTRY_0]    = {    0.0,    0.0,  100.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

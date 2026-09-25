@@ -6,8 +6,8 @@ export s32 N(map_init)(void) {
 }
 
 EntryList N(Entrances) = {
-    [osr_02_ENTRY_0]    { -205.0,    0.0,   55.0,  135.0 },
-    [osr_02_ENTRY_1]    {    0.0,   20.0, -290.0,  180.0 },
+    [osr_02_ENTRY_0]    = { -205.0,    0.0,   55.0,  135.0 },
+    [osr_02_ENTRY_1]    = {    0.0,   20.0, -290.0,  180.0 },
 };
 
 export MapSettings N(settings) = {

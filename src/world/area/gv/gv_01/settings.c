@@ -1,7 +1,7 @@
 #include "gv_01.h"
 
 EntryList N(Entrances) = {
-    [gv_01_ENTRY_0]     {    0.0,    0.0,    0.0,   90.0 },
+    [gv_01_ENTRY_0]     = {    0.0,    0.0,    0.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

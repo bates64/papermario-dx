@@ -86,91 +86,91 @@ enum {
 };
 
 AnimID PartnerThinkAnims[] = {
-    [PARTNER_GOOMBARIO]  ANIM_BattleGoombario_Think,
-    [PARTNER_KOOPER]     ANIM_BattleKooper_Think,
-    [PARTNER_BOMBETTE]   ANIM_BattleBombette_Think,
-    [PARTNER_PARAKARRY]  ANIM_BattleParakarry_Think,
-    [PARTNER_GOOMPA]     ANIM_Goompa_Idle,
-    [PARTNER_WATT]       ANIM_BattleWatt_Think,
-    [PARTNER_SUSHIE]     ANIM_BattleSushie_Think,
-    [PARTNER_LAKILESTER] ANIM_BattleLakilester_Run,
-    [PARTNER_BOW]        ANIM_BattleBow_Still,
-    [PARTNER_GOOMBARIA]  0,
-    [PARTNER_TWINK]      0,
+    [PARTNER_GOOMBARIO]  = ANIM_BattleGoombario_Think,
+    [PARTNER_KOOPER]     = ANIM_BattleKooper_Think,
+    [PARTNER_BOMBETTE]   = ANIM_BattleBombette_Think,
+    [PARTNER_PARAKARRY]  = ANIM_BattleParakarry_Think,
+    [PARTNER_GOOMPA]     = ANIM_Goompa_Idle,
+    [PARTNER_WATT]       = ANIM_BattleWatt_Think,
+    [PARTNER_SUSHIE]     = ANIM_BattleSushie_Think,
+    [PARTNER_LAKILESTER] = ANIM_BattleLakilester_Run,
+    [PARTNER_BOW]        = ANIM_BattleBow_Still,
+    [PARTNER_GOOMBARIA]  = 0,
+    [PARTNER_TWINK]      = 0,
 };
 
 AnimID PartnerIdleAnims[] = {
-    [PARTNER_GOOMBARIO]  ANIM_BattleGoombario_Walk,
-    [PARTNER_KOOPER]     ANIM_BattleKooper_Walk,
-    [PARTNER_BOMBETTE]   ANIM_BattleBombette_Walk,
-    [PARTNER_PARAKARRY]  ANIM_BattleParakarry_Walk,
-    [PARTNER_GOOMPA]     ANIM_Goompa_Walk,
-    [PARTNER_WATT]       ANIM_BattleWatt_Walk,
-    [PARTNER_SUSHIE]     ANIM_BattleSushie_Walk,
-    [PARTNER_LAKILESTER] ANIM_BattleLakilester_Walk,
-    [PARTNER_BOW]        ANIM_BattleBow_Walk,
-    [PARTNER_GOOMBARIA]  0,
-    [PARTNER_TWINK]      0,
+    [PARTNER_GOOMBARIO]  = ANIM_BattleGoombario_Walk,
+    [PARTNER_KOOPER]     = ANIM_BattleKooper_Walk,
+    [PARTNER_BOMBETTE]   = ANIM_BattleBombette_Walk,
+    [PARTNER_PARAKARRY]  = ANIM_BattleParakarry_Walk,
+    [PARTNER_GOOMPA]     = ANIM_Goompa_Walk,
+    [PARTNER_WATT]       = ANIM_BattleWatt_Walk,
+    [PARTNER_SUSHIE]     = ANIM_BattleSushie_Walk,
+    [PARTNER_LAKILESTER] = ANIM_BattleLakilester_Walk,
+    [PARTNER_BOW]        = ANIM_BattleBow_Walk,
+    [PARTNER_GOOMBARIA]  = 0,
+    [PARTNER_TWINK]      = 0,
 };
 
 IconHudScriptPair PartnerMoveHudScripts[][5] = {
-    [PARTNER_GOOMBARIO] {
+    [PARTNER_GOOMBARIO] = {
         {HES_Goombario, HES_GoombarioDisabled},
         {HES_MoveDiamond, HES_MoveDiamond_disabled},
         {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
         {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
         {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
-    [PARTNER_KOOPER] {
+    [PARTNER_KOOPER] = {
         {HES_Kooper, HES_KooperDisabled},
         {HES_MoveDiamond, HES_MoveDiamond_disabled},
         {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
         {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
         {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
-    [PARTNER_BOMBETTE] {
+    [PARTNER_BOMBETTE] = {
         {HES_Bombette, HES_BombetteDisabled},
         {HES_MoveDiamond, HES_MoveDiamond_disabled},
         {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
         {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
         {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
-    [PARTNER_PARAKARRY]  {
+    [PARTNER_PARAKARRY]  = {
         {HES_Parakarry, HES_ParakarryDisabled},
         {HES_MoveDiamond, HES_MoveDiamond_disabled},
         {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
         {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
         {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
-    [PARTNER_GOOMPA] {
+    [PARTNER_GOOMPA] = {
         {HES_Partner0, HES_Partner0Disabled},
         {HES_MoveDiamond, HES_MoveDiamond_disabled},
         {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
         {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
         {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
-    [PARTNER_WATT] {
+    [PARTNER_WATT] = {
         {HES_Watt, HES_WattDisabled},
         {HES_MoveDiamond, HES_MoveDiamond_disabled},
         {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
         {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
         {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
-    [PARTNER_SUSHIE] {
+    [PARTNER_SUSHIE] = {
         {HES_Sushie, HES_SushieDisabled},
         {HES_MoveDiamond, HES_MoveDiamond_disabled},
         {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
         {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
         {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
-    [PARTNER_LAKILESTER] {
+    [PARTNER_LAKILESTER] = {
         {HES_Lakilester, HES_LakilesterDisabled},
         {HES_MoveDiamond, HES_MoveDiamond_disabled},
         {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},
         {HES_MoveGreenOrb, HES_MoveGreenOrbDisabled},
         {HES_MoveRedOrb, HES_MoveRedOrbDisabled}
     },
-    [PARTNER_BOW] {
+    [PARTNER_BOW] = {
         {HES_Bow, HES_BowDisabled},
         {HES_MoveDiamond, HES_MoveDiamond_disabled},
         {HES_MoveBlueOrb, HES_MoveBlueOrbDisabled},

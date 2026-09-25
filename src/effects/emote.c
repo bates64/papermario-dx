@@ -13,19 +13,19 @@ extern Gfx D_09002550_3371C0[];
 extern Gfx D_09002578_3371E8[];
 
 Gfx* EmoteGfxDrawModel[] = {
-    [EMOTE_EXCLAMATION] D_090022E0_336F50,
+    [EMOTE_EXCLAMATION] = D_090022E0_336F50,
     [EMOTE_SHOCK]       nullptr,
-    [EMOTE_QUESTION]    D_090023B0_337020,
-    [EMOTE_FRUSTRATION] D_09002480_3370F0,
-    [EMOTE_ELLIPSIS]    D_09002550_3371C0,
+    [EMOTE_QUESTION]    = D_090023B0_337020,
+    [EMOTE_FRUSTRATION] = D_09002480_3370F0,
+    [EMOTE_ELLIPSIS]    = D_09002550_3371C0,
 };
 
 Gfx* EmoteGfxSetupTex[] = {
-    [EMOTE_EXCLAMATION] D_09002238_336EA8,
+    [EMOTE_EXCLAMATION] = D_09002238_336EA8,
     [EMOTE_SHOCK]       nullptr,
-    [EMOTE_QUESTION]    D_09002308_336F78,
-    [EMOTE_FRUSTRATION] D_090023D8_337048,
-    [EMOTE_ELLIPSIS]    D_090024A8_337118,
+    [EMOTE_QUESTION]    = D_09002308_336F78,
+    [EMOTE_FRUSTRATION] = D_090023D8_337048,
+    [EMOTE_ELLIPSIS]    = D_090024A8_337118,
 };
 
 s8 EmoteExclamationFrames[] = {
@@ -63,11 +63,11 @@ s8 EmoteEllipsisFrames[] = {
 };
 
 s8* EmoteAnimFrames[] = {
-    [EMOTE_EXCLAMATION] EmoteExclamationFrames,
-    [EMOTE_SHOCK]       EmoteShockFrames,
-    [EMOTE_QUESTION]    EmoteQuestionFrames,
-    [EMOTE_FRUSTRATION] EmoteFrustrationFrames,
-    [EMOTE_ELLIPSIS]    EmoteEllipsisFrames,
+    [EMOTE_EXCLAMATION] = EmoteExclamationFrames,
+    [EMOTE_SHOCK]       = EmoteShockFrames,
+    [EMOTE_QUESTION]    = EmoteQuestionFrames,
+    [EMOTE_FRUSTRATION] = EmoteFrustrationFrames,
+    [EMOTE_ELLIPSIS]    = EmoteEllipsisFrames,
 };
 
 Color_RGB8 EmoteFrustrationColors[] = {

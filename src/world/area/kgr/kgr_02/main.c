@@ -7,7 +7,7 @@ extern EvtScript N(EVS_MonitorFriendlyFire);
 extern NpcGroupList N(DefaultNPCs);
 
 EntryList N(Entrances) = {
-    [kgr_02_ENTRY_0]    { -175.0,   10.0,    0.0,   90.0 },
+    [kgr_02_ENTRY_0]    = { -175.0,   10.0,    0.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

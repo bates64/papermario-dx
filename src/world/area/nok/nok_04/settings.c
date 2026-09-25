@@ -1,7 +1,7 @@
 #include "nok_04.h"
 
 EntryList N(Entrances) = {
-    [nok_04_ENTRY_0]    { -336.0,    0.0,  356.0,   45.0 },
+    [nok_04_ENTRY_0]    = { -336.0,    0.0,  356.0,   45.0 },
 };
 
 export MapSettings N(settings) = {

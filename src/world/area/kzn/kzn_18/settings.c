@@ -11,9 +11,9 @@ s32 N(get_tattle)(void) {
 }
 
 EntryList N(Entrances) = {
-    [kzn_18_ENTRY_0]    { -405.0,  250.0, -330.0,   90.0 },
-    [kzn_18_ENTRY_1]    {  435.0,  250.0, -350.0,  270.0 },
-    [kzn_18_ENTRY_2]    {  490.0,   25.0,   -5.0,  270.0 },
+    [kzn_18_ENTRY_0]    = { -405.0,  250.0, -330.0,   90.0 },
+    [kzn_18_ENTRY_1]    = {  435.0,  250.0, -350.0,  270.0 },
+    [kzn_18_ENTRY_2]    = {  490.0,   25.0,   -5.0,  270.0 },
 };
 
 export MapSettings N(settings) = {

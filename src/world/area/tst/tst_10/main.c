@@ -5,10 +5,10 @@ extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_MakeEntities);
 
 EntryList N(Entrances) = {
-    [tst_10_ENTRY_0]    {    0.0,    0.0, -480.0,  180.0 },
-    [tst_10_ENTRY_1]    { -480.0,    0.0,    0.0,   90.0 },
-    [tst_10_ENTRY_2]    {    0.0,    0.0,  480.0,    0.0 },
-    [tst_10_ENTRY_3]    {  480.0,    0.0,    0.0,  270.0 },
+    [tst_10_ENTRY_0]    = {    0.0,    0.0, -480.0,  180.0 },
+    [tst_10_ENTRY_1]    = { -480.0,    0.0,    0.0,   90.0 },
+    [tst_10_ENTRY_2]    = {    0.0,    0.0,  480.0,    0.0 },
+    [tst_10_ENTRY_3]    = {  480.0,    0.0,    0.0,  270.0 },
 };
 
 export MapSettings N(settings) = {

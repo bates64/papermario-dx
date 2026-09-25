@@ -1,8 +1,8 @@
 #include "isk_06.h"
 
 EntryList N(Entrances) = {
-    [isk_06_ENTRY_0]    {  471.0,  -80.0, -290.0,  320.0 },
-    [isk_06_ENTRY_1]    {  509.0, -270.0, -318.0,  320.0 },
+    [isk_06_ENTRY_0]    = {  471.0,  -80.0, -290.0,  320.0 },
+    [isk_06_ENTRY_1]    = {  509.0, -270.0, -318.0,  320.0 },
 };
 
 export MapSettings N(settings) = {

@@ -1,8 +1,8 @@
 #include "kpa_09.h"
 
 EntryList N(Entrances) = {
-    [kpa_09_ENTRY_0]    { -483.0,  100.0,  -17.0,   90.0 },
-    [kpa_09_ENTRY_1]    {  202.0,    0.0,  -16.0,  270.0 },
+    [kpa_09_ENTRY_0]    = { -483.0,  100.0,  -17.0,   90.0 },
+    [kpa_09_ENTRY_1]    = {  202.0,    0.0,  -16.0,  270.0 },
 };
 
 export MapSettings N(settings) = {

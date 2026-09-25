@@ -1,7 +1,7 @@
 #include "dgb_12.h"
 
 EntryList N(Entrances) = {
-    [dgb_12_ENTRY_0]    { -500.0,    0.0,  -40.0,    0.0 },
+    [dgb_12_ENTRY_0]    = { -500.0,    0.0,  -40.0,    0.0 },
 };
 
 export MapSettings N(settings) = {

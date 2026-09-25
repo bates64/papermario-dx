@@ -4,8 +4,8 @@ extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_MakeEntities);
 
 EntryList N(Entrances) = {
-    [sbk_99_ENTRY_0]    { -484.0,  100.0,    5.0,   90.0 },
-    [sbk_99_ENTRY_1]    {  346.0,    0.0, -342.0,  220.0 },
+    [sbk_99_ENTRY_0]    = { -484.0,  100.0,    5.0,   90.0 },
+    [sbk_99_ENTRY_1]    = {  346.0,    0.0, -342.0,  220.0 },
 };
 
 export MapSettings N(settings) = {

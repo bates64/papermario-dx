@@ -2,7 +2,7 @@
 #include "model.h"
 
 EntryList N(Entrances) = {
-    [kzn_08_ENTRY_0]    { -315.0,    0.0,   85.0,   90.0 },
+    [kzn_08_ENTRY_0]    = { -315.0,    0.0,   85.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

@@ -1,7 +1,7 @@
 #include "mgm_03.h"
 
 EntryList N(Entrances) = {
-    [mgm_03_ENTRY_0]    {    0.0,  200.0,    0.0,   90.0 },
+    [mgm_03_ENTRY_0]    = {    0.0,  200.0,    0.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

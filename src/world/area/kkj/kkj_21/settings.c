@@ -1,7 +1,7 @@
 #include "kkj_21.h"
 
 EntryList N(Entrances) = {
-    [kkj_21_ENTRY_0]    {  325.0,    0.0,  -30.0,  270.0 },
+    [kkj_21_ENTRY_0]    = {  325.0,    0.0,  -30.0,  270.0 },
 };
 
 export MapSettings N(settings) = {

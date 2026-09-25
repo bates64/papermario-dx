@@ -1,7 +1,7 @@
 #include "kmr_30.h"
 
 EntryList N(Entrances) = {
-    [kmr_30_ENTRY_0]    {    0.0,    0.0,    0.0,    0.0 },
+    [kmr_30_ENTRY_0]    = {    0.0,    0.0,    0.0,    0.0 },
 };
 
 export MapSettings N(settings) = {

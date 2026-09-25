@@ -5,8 +5,8 @@ extern EvtScript N(EVS_StartTongueWiggle);
 extern EvtScript N(EVS_MonitorFriendlyFire);
 
 EntryList N(Entrances) = {
-    [kgr_01_ENTRY_0]    {   -4.0,    8.0,    0.0,   90.0 },
-    [kgr_01_ENTRY_1]    {   80.0,    0.0,   10.0,  270.0 },
+    [kgr_01_ENTRY_0]    = {   -4.0,    8.0,    0.0,   90.0 },
+    [kgr_01_ENTRY_1]    = {   80.0,    0.0,   10.0,  270.0 },
 };
 
 export MapSettings N(settings) = {

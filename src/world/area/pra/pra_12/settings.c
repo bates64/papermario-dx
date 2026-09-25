@@ -1,7 +1,7 @@
 #include "pra_12.h"
 
 EntryList N(Entrances) = {
-    [pra_12_ENTRY_0]    {   13.0,    0.0,   70.0,   90.0 },
+    [pra_12_ENTRY_0]    = {   13.0,    0.0,   70.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

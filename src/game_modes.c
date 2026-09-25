@@ -17,97 +17,97 @@ typedef struct GameModeData {
 } GameModeData; // size = 0x14
 
 const GameModeData GameModeTemplates[] = {
-    [GAME_MODE_STARTUP] {
+    [GAME_MODE_STARTUP] = {
         .init = state_init_startup,
         .step = state_step_startup,
         .renderBackUI = state_drawUI_startup,
         .renderFrontUI = nullptr,
     },
-    [GAME_MODE_LOGOS] {
+    [GAME_MODE_LOGOS] = {
         .init = state_init_logos,
         .step = state_step_logos,
         .renderBackUI = state_drawUI_logos,
         .renderFrontUI = nullptr,
     },
-    [GAME_MODE_TITLE_SCREEN] {
+    [GAME_MODE_TITLE_SCREEN] = {
         .init = state_init_title_screen,
         .step = state_step_title_screen,
         .renderBackUI = state_drawUI_title_screen,
         .renderFrontUI = nullptr,
     },
-    [GAME_MODE_ENTER_DEMO_WORLD] {
+    [GAME_MODE_ENTER_DEMO_WORLD] = {
         .init = state_init_enter_demo,
         .step = state_step_enter_world,
         .renderBackUI = state_drawUI_enter_world,
         .renderFrontUI = nullptr,
     },
-    [GAME_MODE_ENTER_WORLD] {
+    [GAME_MODE_ENTER_WORLD] = {
         .init = state_init_enter_world,
         .step = state_step_enter_world,
         .renderBackUI = state_drawUI_enter_world,
         .renderFrontUI = nullptr,
     },
-    [GAME_MODE_WORLD] {
+    [GAME_MODE_WORLD] = {
         .init = state_init_world,
         .step = state_step_world,
         .renderBackUI = state_drawUI_world,
         .renderFrontUI = nullptr,
     },
-    [GAME_MODE_CHANGE_MAP] {
+    [GAME_MODE_CHANGE_MAP] = {
         .init = state_init_change_map,
         .step = state_step_change_map,
         .renderBackUI = state_drawUI_change_map,
         .renderFrontUI = nullptr,
     },
-    [GAME_MODE_GAME_OVER] {
+    [GAME_MODE_GAME_OVER] = {
         .init = state_init_game_over,
         .step = state_step_game_over,
         .renderBackUI = state_drawUI_game_over,
         .renderFrontUI = nullptr,
     },
-    [GAME_MODE_BATTLE] {
+    [GAME_MODE_BATTLE] = {
         .init = state_init_battle,
         .step = state_step_battle,
         .renderBackUI = state_drawUI_battle,
         .renderFrontUI = nullptr,
     },
-    [GAME_MODE_END_BATTLE] {
+    [GAME_MODE_END_BATTLE] = {
         .init = state_init_end_battle,
         .step = state_step_end_battle,
         .renderBackUI = state_drawUI_end_battle,
         .renderFrontUI = nullptr,
     },
-    [GAME_MODE_PAUSE] {
+    [GAME_MODE_PAUSE] = {
         .init = state_init_pause,
         .step = state_step_pause,
         .renderBackUI = state_drawUI_pause,
         .renderFrontUI = nullptr,
     },
-    [GAME_MODE_UNPAUSE] {
+    [GAME_MODE_UNPAUSE] = {
         .init = state_init_unpause,
         .step = state_step_unpause,
         .renderBackUI = state_drawUI_unpause,
         .renderFrontUI = nullptr,
     },
-    [GAME_MODE_FILE_SELECT] {
+    [GAME_MODE_FILE_SELECT] = {
         .init = state_init_file_select,
         .step = state_step_file_select,
         .renderBackUI = state_drawUI_file_select,
         .renderFrontUI = nullptr,
     },
-    [GAME_MODE_END_FILE_SELECT] {
+    [GAME_MODE_END_FILE_SELECT] = {
         .init = state_init_exit_file_select,
         .step = state_step_exit_file_select,
         .renderBackUI = state_drawUI_exit_file_select,
         .renderFrontUI = nullptr,
     },
-    [GAME_MODE_INTRO] {
+    [GAME_MODE_INTRO] = {
         .init = state_init_intro,
         .step = state_step_intro,
         .renderBackUI = state_drawUI_intro,
         .renderFrontUI = nullptr,
     },
-    [GAME_MODE_DEMO] {
+    [GAME_MODE_DEMO] = {
         .init = state_init_demo,
         .step = state_step_demo,
         .renderBackUI = state_drawUI_demo,
