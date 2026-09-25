@@ -2401,8 +2401,9 @@ if __name__ == "__main__":
             entries = json.loads(compdb.stdout)
             strip_re = re.compile(r"^(-m\S+|-f(?!unsigned-char$)\S+|-g\S+|-G\d+|--warn-\S+)$")
             cross_cc_re = re.compile(r"^(sccache\s+)?mips-linux-gnu-g(cc|\+\+)(?=\s)")
-            # Clang's name for GCC's -Wno-builtin-declaration-mismatch.
-            clang_flags = ["--target=mips-linux-gnu", "-Wno-incompatible-library-redeclaration"]
+            # Clang's name for GCC's -Wno-builtin-declaration-mismatch, and
+            # quiet about the precompiled header being GCC's, which it can't read.
+            clang_flags = ["--target=mips-linux-gnu", "-Wno-incompatible-library-redeclaration", "-Wno-ignored-gch"]
             clang_commands = {
                 "cc": " ".join(["clang"] + clang_flags + cross_include_flags("mips-linux-gnu-gcc", "c")),
                 "++": " ".join(["clang++"] + clang_flags + cross_include_flags("mips-linux-gnu-g++", "c++")),
