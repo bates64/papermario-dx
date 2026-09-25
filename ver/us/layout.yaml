@@ -8,11 +8,13 @@
 # max_size, where given, is the space the segment has to fit in; the build
 # fails if it outgrows it.
 
-# Asset layers, highest priority first.
+# Asset layers, highest priority first, as directories from the root: a mod's
+# own assets, alongside its code in src; DX's changes to the base game; and
+# the base game's assets, split from the baserom.
 asset_stack:
-  - mod
-  - dx
-  - us
+  - src
+  - assets/dx
+  - assets/us
 
 classes:
   action_cmd: { vram: 0x802A9000, follows: [battle_move] }

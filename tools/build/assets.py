@@ -13,6 +13,7 @@ from typing import Dict, List, Tuple
 
 import yaml
 
+from common import layer_relative
 from raster import Png
 
 DIRECTORY_SIDECAR = ".meta"
@@ -32,17 +33,13 @@ def _layers(png_path: Path, asset_stack) -> List[Path]:
     Assets split from the ROM are not version controlled, so their sidecars
     live in a layer that is, and have to be found from there.
     """
-    parts = list(png_path.parts)
-    if len(parts) < 2 or parts[0] != "assets":
+    relative = layer_relative(png_path, asset_stack)
+    if relative is None:
         return [png_path]
-    paths = []
-    for layer in reversed(list(asset_stack)):
-        parts[1] = layer
-        paths.append(Path(*parts))
-    return paths
+    return [Path(layer) / relative for layer in reversed(list(asset_stack))]
 
 
-def metadata(png_path: Path, asset_stack=("us",)) -> Dict:
+def metadata(png_path: Path, asset_stack=("assets/us",)) -> Dict:
     """Sidecar values for an asset, the nearest declaration winning."""
     values: Dict = {}
     for path in _layers(png_path, asset_stack):
@@ -54,7 +51,7 @@ def metadata(png_path: Path, asset_stack=("us",)) -> Dict:
 
 
 class Texture:
-    def __init__(self, path: Path, asset_stack=("us",)):
+    def __init__(self, path: Path, asset_stack=("assets/us",)):
         self.path = path
         self.png = Png(path)
         meta = metadata(path, asset_stack)

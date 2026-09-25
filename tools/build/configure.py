@@ -18,6 +18,7 @@ if sys.platform == 'win32':
     import ntfsutils.junction
 
 import assets
+from common import layer_relative
 import effect_table
 import linker
 from layout import Layout
@@ -93,6 +94,39 @@ def write_shared_sccache_config() -> None:
         print(f"note: couldn't reach shared sccache config ({e}), using a local-only cache", file=sys.stderr)
 
 
+def migrate_mod_assets() -> None:
+    """Move a mod's assets from assets/mod into src, its asset layer now.
+
+    A file already at the same path in src stops configure rather than being
+    overwritten, so neither copy is lost.
+    """
+    old = ROOT / "assets" / "mod"
+    if not old.is_dir():
+        return
+    files = [
+        path
+        for path in sorted(old.rglob("*"))
+        if path.is_file() and path.name not in IGNORED_ASSET_NAMES
+    ]
+    clashes = [
+        path for path in files if (ROOT / "src" / path.relative_to(old)).exists()
+    ]
+    if clashes:
+        raise SystemExit(
+            "configure: a mod's assets go in src now, but these are in both "
+            "assets/mod and src. Keep one of each, then configure again:\n"
+            + "\n".join(f"  {posix(path.relative_to(ROOT))}" for path in clashes)
+        )
+    for path in files:
+        destination = ROOT / "src" / path.relative_to(old)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(path), str(destination))
+    shutil.rmtree(old)
+    if files:
+        plural = "" if len(files) == 1 else "s"
+        print(f"configure: moved {len(files)} file{plural} from assets/mod into src")
+
+
 def _walk_source_file_list():
     """Returns a sorted list of all files and directories under SOURCE_DIRS."""
     file_list = []
@@ -129,6 +163,8 @@ def posix(path) -> str:
 
 # Files a hand-authored asset layer may hold that no build rule reads.
 IGNORED_ASSET_NAMES = {".gitkeep", ".DS_Store", "Thumbs.db"}
+# Files in an asset layer that are code or configuration rather than assets.
+NOT_ASSETS = (".c", ".cpp", ".s", ".h", ".ld", ".yaml", ".md")
 
 
 def _repo_paths(entries) -> List[str]:
@@ -661,7 +697,7 @@ class Configure:
         packed = self.layout.packed_dirs
         found: Dict[str, Path] = {}
         for layer in reversed(self.asset_stack):
-            root = ROOT / "assets" / layer
+            root = ROOT / layer
             if not root.is_dir():
                 continue
             base = str(root)
@@ -735,7 +771,7 @@ class Configure:
         """The image effect animations, across the asset stack."""
         found: Dict[str, Path] = {}
         for layer in reversed(self.asset_stack):
-            for source in (ROOT / "assets" / layer / "imgfx").glob("*.json"):
+            for source in (ROOT / layer / "imgfx").glob("*.json"):
                 found[source.name] = source.relative_to(ROOT)
         return [found[name] for name in sorted(found)]
 
@@ -856,7 +892,7 @@ class Configure:
         message_bins = []
         layer_sizes = []
         for layer in reversed(self.asset_stack):
-            directory = Path("assets") / layer / "msg"
+            directory = Path(layer) / "msg"
             count = 0
             if directory.exists():
                 for source in sorted(directory.glob("*.msg")):
@@ -899,7 +935,7 @@ class Configure:
             for layer in self.asset_stack:
                 found.update(
                     path.name
-                    for path in (ROOT / "assets" / layer / "mapfs" / directory).glob(
+                    for path in (ROOT / layer / "mapfs" / directory).glob(
                         pattern
                     )
                 )
@@ -925,7 +961,8 @@ class Configure:
         object_path = self.build_path() / "assets" / self.version / "mapfs.dat.o"
         # flat list of (uncompressed path, compressed? path) pairs
         bin_yay0s: List[Path] = []
-        src_dir = Path("assets/x") / seg_name
+        # Inputs resolve through the asset stack to the highest layer's file.
+        src_dir = Path(self.asset_stack[-1]) / seg_name
 
         for path in src_paths:
             name = path.stem
@@ -1042,9 +1079,7 @@ class Configure:
             elif name.endswith("_shape_built"):
                 base_name = name[:-6]
                 map_name = base_name[:-6]
-                raw_bin_path = self.resolve_asset_path(
-                    f"assets/x/mapfs/geom/{base_name}.bin"
-                )
+                raw_bin_path = self.find_asset(f"mapfs/geom/{base_name}.bin")
                 bin_path = bin_path.parent / "geom" / (base_name + ".bin")
 
                 if c_maps:
@@ -1070,9 +1105,7 @@ class Configure:
                 else:
                     build(bin_path, [raw_bin_path], "cp")
 
-                xml_path = self.resolve_asset_path(
-                    f"assets/x/mapfs/geom/{map_name}.xml"
-                )
+                xml_path = self.find_asset(f"mapfs/geom/{map_name}.xml")
                 if xml_path.exists():
                     build(
                         self.build_path()
@@ -1087,23 +1120,17 @@ class Configure:
             elif name.endswith("_hit"):
                 base_name = name
                 map_name = base_name[:-4]
-                raw_bin_path = self.resolve_asset_path(
-                    f"assets/x/mapfs/geom/{base_name}.bin"
-                )
+                raw_bin_path = self.find_asset(f"mapfs/geom/{base_name}.bin")
 
                 # TEMP: star rod compatiblity
-                old_raw_bin_path = self.resolve_asset_path(
-                    f"assets/x/mapfs/{base_name}.bin"
-                )
+                old_raw_bin_path = self.find_asset(f"mapfs/{base_name}.bin")
                 if old_raw_bin_path.is_file():
                     raw_bin_path = old_raw_bin_path
 
                 bin_path = bin_path.parent / "geom" / (base_name + ".bin")
                 build(bin_path, [raw_bin_path], "cp")
 
-                xml_path = self.resolve_asset_path(
-                    f"assets/x/mapfs/geom/{map_name}.xml"
-                )
+                xml_path = self.find_asset(f"mapfs/geom/{map_name}.xml")
                 if xml_path.exists():
                     build(
                         self.build_path()
@@ -1135,7 +1162,7 @@ class Configure:
         """The images of one font, across the asset stack."""
         found: Dict[str, Path] = {}
         for layer in reversed(self.asset_stack):
-            root = ROOT / "assets" / layer / "charset" / directory
+            root = ROOT / layer / "charset" / directory
             if root.is_dir():
                 for source in root.glob("*.png"):
                     found[source.name] = source.relative_to(ROOT)
@@ -1372,13 +1399,13 @@ class Configure:
 
         return out
 
-    # Given a directory relative to assets/, return a list of all assets in the directory
-    # for all layers of the asset stack
+    # Given a directory within an asset layer, return a list of all assets in the
+    # directory for all layers of the asset stack
     def get_asset_list(self, asset_dir: str) -> List[str]:
         ret: Dict[Path, Path] = {}
 
         for stack_dir in self.asset_stack:
-            path_stem = f"assets/{stack_dir}/{asset_dir}"
+            path_stem = f"{stack_dir}/{asset_dir}"
 
             for p in Path(path_stem).glob("**/*"):
                 glob_part = p.relative_to(path_stem)
@@ -1389,21 +1416,19 @@ class Configure:
 
     @lru_cache(maxsize=None)
     def resolve_asset_path(self, path: Path) -> Path:
-        # Remove nonsense
+        """The file an asset layer's path stands for: the highest layer's."""
         path = Path(os.path.normpath(path))
+        relative = layer_relative(path, self.asset_stack)
+        return path if relative is None else self.find_asset(relative)
 
-        parts = list(path.parts)
-
-        if parts[0] != "assets":
-            return path
-
-        for asset_dir in self.asset_stack:
-            parts[1] = asset_dir
-            new_path = Path("/".join(parts))
-            if new_path.exists():
-                return new_path
-
-        return path
+    @lru_cache(maxsize=None)
+    def find_asset(self, relative: Union[str, Path]) -> Path:
+        """An asset in the highest layer that has it, or the lowest layer's path."""
+        for layer in self.asset_stack:
+            path = Path(layer) / relative
+            if path.exists():
+                return path
+        return Path(self.asset_stack[-1]) / relative
 
     def _sidecar_target_consumed(
         self, sidecar: Path, layer: str, consumed_assets: Set[str]
@@ -1415,14 +1440,14 @@ class Configure:
         live in a different layer than the sidecar, so resolve it through the
         stack.
         """
-        rel = Path(os.path.relpath(str(sidecar), ROOT / "assets" / layer))
+        rel = Path(os.path.relpath(str(sidecar), ROOT / layer))
         if sidecar.name == assets.DIRECTORY_SIDECAR:
             directory = rel.parent.as_posix()
             directory = "" if directory == "." else directory + "/"
-            prefixes = tuple(f"assets/{name}/{directory}" for name in self.asset_stack)
+            prefixes = tuple(f"{name}/{directory}" for name in self.asset_stack)
             return any(path.startswith(prefixes) for path in consumed_assets)
         target = rel.as_posix()[: -len(assets.SIDECAR_SUFFIX)]
-        resolved = self.resolve_asset_path(Path("assets") / layer / target)
+        resolved = self.find_asset(target)
         return posix(os.path.relpath(str(resolved), ROOT)) in consumed_assets
 
     def check_asset_coverage(
@@ -1434,12 +1459,13 @@ class Configure:
         tools/build/check_assets.py; the earlier layers are hand-authored, so a
         file there that nothing builds is a mistake rather than leftover dump.
         """
-        consumed_assets = {p for p in consumed if p.startswith("assets/")}
-        produced_assets = {p for p in produced if p.startswith("assets/")}
+        layers = tuple(f"{layer}/" for layer in self.asset_stack)
+        consumed_assets = {p for p in consumed if p.startswith(layers)}
+        produced_assets = {p for p in produced if p.startswith(layers)}
 
         orphans: List[str] = []
         for layer in self.asset_stack[:-1]:
-            root = ROOT / "assets" / layer
+            root = ROOT / layer
             if not root.is_dir():
                 continue
             for directory, _subdirs, filenames in os.walk(root):
@@ -1448,7 +1474,8 @@ class Configure:
                     rel = posix(os.path.relpath(str(path), ROOT))
                     if filename in IGNORED_ASSET_NAMES:
                         continue
-                    if filename.endswith((".inc.c", ".inc.cpp")):
+                    # Code and configuration share the src layer with assets.
+                    if filename.endswith(NOT_ASSETS) or filename.startswith("."):
                         continue
                     if rel in consumed_assets or rel in produced_assets:
                         continue
@@ -1616,9 +1643,10 @@ class Configure:
         # exist: otherwise adding the first source to one leaves the table stale.
         gen_areas_stamp = self.build_path() / "gen_areas.stamp"
         area_dirs = []
-        for area_root in [ROOT / "src" / "world" / "area"] + [
-            ROOT / "assets" / d / "world" / "area" for d in self.asset_stack
-        ]:
+        for area_root in dict.fromkeys(
+            [ROOT / "src" / "world" / "area"]
+            + [ROOT / d / "world" / "area" for d in self.asset_stack]
+        ):
             if area_root.is_dir():
                 for area_dir in sorted(area_root.iterdir()):
                     if area_dir.is_dir():
@@ -1832,13 +1860,13 @@ class Configure:
             "world/area/*/*/",
         ]
 
-        # Collect overlays keyed by (type_index, name). Later entries in the
-        # asset stack override earlier ones; src/ is the lowest-priority layer.
+        # Collect overlays keyed by (type_index, name), each layer of the asset
+        # stack overriding the ones below it. src/ holds overlays even when the
+        # stack doesn't list it, beneath every layer.
         found: Dict[Tuple[int, str], Tuple[Path, int]] = {}
 
-        search_dirs = [ROOT / "src"] + [
-            ROOT / "assets" / d for d in reversed(self.asset_stack)
-        ]
+        layers = [ROOT / d for d in reversed(self.asset_stack)]
+        search_dirs = ([] if ROOT / "src" in layers else [ROOT / "src"]) + layers
         for search_dir in search_dirs:
             if not search_dir.exists():
                 continue
@@ -2100,6 +2128,8 @@ if __name__ == "__main__":
     args.non_matching = not args.no_non_matching
     args.sccache = not args.no_sccache
     args.evt_validation = not args.no_evt_validation
+
+    migrate_mod_assets()
 
     if args.incremental:
         stamp = ROOT / "build" / "source_files.stamp"

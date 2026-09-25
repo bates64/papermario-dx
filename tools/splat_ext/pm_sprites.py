@@ -162,7 +162,8 @@ class N64SegPm_sprites(Segment):
 
         # read npc.xml - we can't use self.npc_cfg because nonvanilla asset packs can change it
         # for each sprite, add to src_paths
-        asset_stack = tuple(Path(p) for p in split.config["asset_stack"])
+        # splat.yaml names each layer by its directory under assets/.
+        asset_stack = tuple(Path("assets") / p for p in split.config["asset_stack"])
         orderings_tree = ET.parse(get_asset_path(Path("sprite") / NPC_SPRITE_MEDADATA_XML_FILENAME, asset_stack))
         for sprite_tag in orderings_tree.getroot()[0]:
             name = sprite_tag.attrib["name"]

@@ -497,8 +497,10 @@ def discover_maps(src_dir: Path, asset_stack: List[str]) -> Dict[str, List[str]]
     areas: Dict[str, set] = {}
 
     roots = [src_dir / "area"]
-    for asset_dir in asset_stack:
-        roots.append(Path("assets") / asset_dir / "world" / "area")
+    for layer in asset_stack:
+        roots.append(Path(layer) / "world" / "area")
+    # src/ is one of the layers too, so drop the repeat.
+    roots = list(dict.fromkeys(roots))
 
     for area_root in roots:
         if not area_root.exists():
