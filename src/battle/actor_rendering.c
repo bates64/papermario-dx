@@ -129,7 +129,7 @@ void func_unkB_draw_npc(ActorPart*, s32, Matrix4f);
 void func_unkA_draw_player(ActorPart*, s32, Matrix4f);
 void func_unkB_draw_player(ActorPart*, s32, Matrix4f);
 void part_glow_on(b32 arg0, ActorPart* part, s32 yaw, b32 arg3);
-void part_flash_on(b32 arg0, ActorPart* part, s32 yaw, b32 arg3);
+
 
 void add_part_decor_none(ActorPart*, s32);
 void add_part_decor_golden_flames(ActorPart*, s32);
@@ -1985,7 +1985,6 @@ void render_with_adjusted_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Ma
         default:
             break;
     }
-    return;
 }
 
 void make_flash_palettes(ActorPart* part) {

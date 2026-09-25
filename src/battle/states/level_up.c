@@ -300,7 +300,7 @@ void draw_content_level_up_textbox(void* data, s32 posX, s32 posY);
 void draw_content_cant_increase_popup(void* data, s32 posX, s32 posY);
 
 API_CALLABLE(GetRemainingStarPointsReward) {
-    script->varTable[0] = (s8)gBattleStatus.totalStarPoints;
+    script->varTable[0] = gBattleStatus.totalStarPoints;
     return ApiStatus_DONE2;
 }
 

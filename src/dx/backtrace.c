@@ -306,7 +306,7 @@ int backtrace_thread(void **buffer, int size, OSThread *thread) {
         0,
     };
     u32 sp = (u32)thread->context.sp;
-    u32 pc = (u32)thread->context.pc;
+    u32 pc = thread->context.pc;
     u32 fp = (u32)thread->context.s8;
     backtrace_cb(&ctx, (void*)pc);
     backtrace_foreach_foreign(backtrace_cb, &ctx, (uint32_t*)sp, (uint32_t*)pc, (uint32_t*)fp);

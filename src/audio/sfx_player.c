@@ -1316,7 +1316,7 @@ static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, A
             }
             if (opcode >= 0x78) {
                 // long delay
-                player->delay = (u8)(*player->sefDataReadPos++) + ((opcode & 7) << 8) + 0x78;
+                player->delay = (*player->sefDataReadPos++) + ((opcode & 7) << 8) + 0x78;
             } else {
                 // short delay
                 player->delay = opcode;

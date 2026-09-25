@@ -1,6 +1,5 @@
 #include "common.h"
 #include "include_asset.h"
-#include "include_asset.h"
 
 #include "entity/model/SaveBlock_1.vtx.inc.c"
 #include "entity/model/SaveBlock_2.vtx.inc.c"

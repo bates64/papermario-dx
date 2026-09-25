@@ -35,7 +35,6 @@ typedef struct {
 #define FLAGS_ZERO 16
 typedef char *outfun(char*,const char*,size_t);
 
-int _Printf(outfun prout, char *arg, const char *fmt, va_list args);
 void _Litob(_Pft *args, char type);
 void _Ldtob(_Pft* args, char type);
 

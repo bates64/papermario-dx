@@ -292,7 +292,7 @@ void npc_follow_npc(Npc* npc) {
                 historyPoint = &followData->moveHistory[followData->targetPointIdx];
                 targetX = historyPoint->pos.x;
                 targetZ = historyPoint->pos.z;
-                continue;
+                continue; // NOLINT(readability-redundant-control-flow): GCC lays out the loop differently without it
             }
 
             if (!historyPoint->isAirborne) {

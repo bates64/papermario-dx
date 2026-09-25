@@ -1,6 +1,5 @@
 #include "model.h"
 #include "animation_script.h"
-#include "model.h"
 
 typedef struct DisplayListBufferHandle {
     /* 0x0 */ s32 ttl;

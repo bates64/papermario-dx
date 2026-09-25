@@ -657,7 +657,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                                 printer->stateFlags |= MSG_STATE_FLAG_1;
                             }
                             frameAlpha = -(printer->fadeOutCounter * 46) - 1;
-                            sp8E = ((u8)frameAlpha) * 0.6;
+                            sp8E = (frameAlpha) * 0.6;
                             frameFading = 1;
                             if (sp8E >= 32) {
                                 sp8E -= 32;
@@ -1001,7 +1001,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                                    additionalOffsetY);
 
                         draw_ci_image_with_clipping(msgImageData->raster, msgImageData->width, msgImageData->height, msgImageData->format, msgImageData->bitDepth,
-                                                    msgImageData->palette, imgDrawPosX, imgDrawPosY, (s32) msg_drawState->clipX[0], (s32) msg_drawState->clipY[0],
+                                                    msgImageData->palette, imgDrawPosX, imgDrawPosY, msg_drawState->clipX[0], msg_drawState->clipY[0],
                                                     msg_drawState->clipX[1] - msg_drawState->clipX[0], msg_drawState->clipY[1] - msg_drawState->clipY[0], phi_t5);
                         msg_drawState->printModeFlags |= (MSG_PRINT_FLAG_2 | MSG_PRINT_FLAG_10);
                         msg_drawState->drawBufferPos += 2;
@@ -2322,7 +2322,7 @@ void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 pal
 }
 
 void msg_get_glyph(s32 font, s32 variation, s32 charIndex, s32 palette, MesasgeFontGlyphData* out) {
-    out->raster = &MsgCharsets[font]->rasters[variation].raster[(u16)MsgCharsets[font]->charRasterSize * charIndex];
+    out->raster = &MsgCharsets[font]->rasters[variation].raster[MsgCharsets[font]->charRasterSize * charIndex];
     out->palette = D_802F4560[palette];
     out->texSize.x = MsgCharsets[font]->texSize.x;
     out->texSize.y = MsgCharsets[font]->texSize.y;

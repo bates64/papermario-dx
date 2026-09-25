@@ -348,7 +348,7 @@ void au_syn_stop_voice(u8 voiceIdx) {
 
 // based on n_alSynStartVoice, but without setting new wavetable
 void au_syn_start_voice(u8 voiceIdx) {
-    AuPVoice* pvoice = (AuPVoice*)&gSynDriverPtr->pvoices[voiceIdx];
+    AuPVoice* pvoice = (&gSynDriverPtr->pvoices[voiceIdx]);
 
     pvoice->envMixer.motion = AL_PLAYING;
 }

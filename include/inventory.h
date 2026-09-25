@@ -19,7 +19,6 @@ b32 has_item(s32 itemID);
 
 /// Search player inventory for `itemID` and return first matching array index.
 /// Returns the index of the given item in the player's inventory, or -1 if not found.
-s32 find_item(s32 itemID);
 
 /// Search player inventory for `itemID` and count the number matches.
 /// Returns the number of items matching `itemID`.

@@ -72,7 +72,6 @@ void gather_energy_pink_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 scale, 
         data->unk_4C = -4;
         data->unk_20 = scale * 0.2;
     }
-    return;
 }
 
 void gather_energy_pink_init(EffectInstance* effect) {
