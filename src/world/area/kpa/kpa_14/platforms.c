@@ -17,9 +17,8 @@ API_CALLABLE(N(AddPlatformPushVelocity)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (gCollisionStatus.curFloor == floor || gCollisionStatus.lastTouchedFloor == floor) {
-        if (playerStatus->actionState != ACTION_STATE_TORNADO_JUMP &&
-            playerStatus->actionState != ACTION_STATE_SPIN_JUMP &&
-            temp_a0 == 0)
+        if (playerStatus->actionState != ACTION_STATE_TORNADO_JUMP
+            && playerStatus->actionState != ACTION_STATE_SPIN_JUMP && temp_a0 == 0)
         {
             playerStatus->pushVel.x = velX;
         }

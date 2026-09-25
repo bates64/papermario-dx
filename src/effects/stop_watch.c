@@ -187,7 +187,7 @@ void stop_watch_render(EffectInstance* effect) {
 }
 
 void stop_watch_appendGfx(void* effect) {
-    StopWatchFXData* data = ((EffectInstance*)effect)->data.stopWatch;
+    StopWatchFXData* data = ((EffectInstance*) effect)->data.stopWatch;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 masterAlpha = data->masterAlpha;
     s32 time = data->lifetime;
@@ -198,14 +198,16 @@ void stop_watch_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(transformMtx, data->pos.x, data->pos.y, data->pos.z);
     guScaleF(tempMtx, data->scale, data->scale, data->scale);
     guMtxCatF(tempMtx, transformMtx, transformMtx);
     guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gSPDisplayList(gMainGfxPos++, D_09001000_3CC890);
     gDPSetEnvColor(gMainGfxPos++, 0, 0, 0, data->envAlpha);
@@ -222,7 +224,7 @@ void stop_watch_appendGfx(void* effect) {
     for (i = 0; i < STOP_WATCH_STRIP_VTX_COUNT / 2; i++) {
         Vtx_t* vtx = &vtxBuffer[i * 2];
         s32 xoffset = sin_deg(time * 10 + i * 60) * 500.0f * data->rippleAmplitude; // horizontal waves
-        s32 yoffset = sin_deg(time * 10 + i *  6) * 200.0f * data->rippleAmplitude; // vertical bobbing
+        s32 yoffset = sin_deg(time * 10 + i * 6) * 200.0f * data->rippleAmplitude; // vertical bobbing
 
         vtx[0].ob[0] = xoffset - 3200;
         vtx[0].ob[1] = i * 400 + yoffset - 3000;
@@ -257,9 +259,7 @@ void stop_watch_appendGfx(void* effect) {
 
     for (i = 0; i < 15; i++) {
         s32 i2 = i * 2;
-        gSP2Triangles(gMainGfxPos++,
-            i2    , i2 + 2, i2 + 1, i2,
-            i2 + 1, i2 + 2, i2 + 3, i2);
+        gSP2Triangles(gMainGfxPos++, i2, i2 + 2, i2 + 1, i2, i2 + 1, i2 + 2, i2 + 3, i2);
     }
 
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
@@ -267,11 +267,19 @@ void stop_watch_appendGfx(void* effect) {
 
     // now draw the ten clock glyphs with 10 calls to the drawMesh display list we just inlined
     for (i = 0; i < 10; i++) {
-        guPositionF(transformMtx, data->glyphRotX[i], data->glyphRotY[i], data->glyphRotZ[i], N(GlyphScales)[i % 4] * 0.01, data->glyphPosX[i], data->glyphPosY[i], data->glyphPosZ[i]);
+        guPositionF(
+            transformMtx, data->glyphRotX[i], data->glyphRotY[i], data->glyphRotZ[i], N(GlyphScales)[i % 4] * 0.01,
+            data->glyphPosX[i], data->glyphPosY[i], data->glyphPosZ[i]
+        );
         guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-        gDPSetPrimColor(gMainGfxPos++, 0, 0, N(GlyphColors)[i].r, N(GlyphColors)[i].g, N(GlyphColors)[i].b, masterAlpha * data->glyphAlpha[i] / 255);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
+        gDPSetPrimColor(
+            gMainGfxPos++, 0, 0, N(GlyphColors)[i].r, N(GlyphColors)[i].g, N(GlyphColors)[i].b,
+            masterAlpha * data->glyphAlpha[i] / 255
+        );
         gSPDisplayList(gMainGfxPos++, drawMeshGfxPos);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

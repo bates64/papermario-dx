@@ -30,14 +30,7 @@ EFFECT_DEF_BULB_GLOW(bulb_glow_main);
 EFFECT_DEF_SNAKING_STATIC(snaking_static_main);
 EFFECT_DEF_FLASHING_BOX_SHOCKWAVE(flashing_box_shockwave_main);
 
-EffectInstance* lightning_main(
-    s32 arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    f32 arg5
-) {
+EffectInstance* lightning_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {
     EffectBlueprint bp;
     EffectInstance* effect;
     LightningFXData* data;
@@ -179,8 +172,7 @@ void lightning_update(EffectInstance* effect) {
             data->unk_28 += data->unk_38;
             if (data->unk_28 < 0.0f) {
                 data->unk_28 += 64.0f;
-            }
-            else if (data->unk_28 > 64.0f) {
+            } else if (data->unk_28 > 64.0f) {
                 data->unk_28 -= 64.0f;
             }
         }
@@ -215,7 +207,7 @@ void lightning_render(EffectInstance* effect) {
 }
 
 void lightning_appendGfx(void* effect) {
-    LightningFXData* data = ((EffectInstance*)effect)->data.lightning;
+    LightningFXData* data = ((EffectInstance*) effect)->data.lightning;
     s32 unk_00 = data->unk_00;
     s32 unk_18 = data->unk_18;
     Gfx* dlist = D_E006CB60[unk_00];
@@ -226,7 +218,7 @@ void lightning_appendGfx(void* effect) {
     u16 perspNorm;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     if (unk_00 != 1 || unk_18 >= 18) {
         s32 ult2;
@@ -245,15 +237,23 @@ void lightning_appendGfx(void* effect) {
             case 0:
             case 1:
             case 2:
-                guPerspectiveF(sp20, &perspNorm, 30.0f, (f32) camera->viewportW / (f32) camera->viewportH, 4.0f, 16384.0f, 1.0f);
+                guPerspectiveF(
+                    sp20, &perspNorm, 30.0f, (f32) camera->viewportW / (f32) camera->viewportH, 4.0f, 16384.0f, 1.0f
+                );
                 guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-                gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+                gSPMatrix(
+                    gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
+                    G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+                );
 
                 guTranslateF(sp20, data->unk_04, data->unk_08, -500.0f);
                 guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-                gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPMatrix(
+                    gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
+                    G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+                );
                 gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 47, 198, 255);
                 break;
             default:
@@ -264,7 +264,10 @@ void lightning_appendGfx(void* effect) {
                 guMtxCatF(sp60, sp20, sp20);
                 guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-                gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPMatrix(
+                    gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
+                    G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+                );
                 gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 0, data->unk_10);
                 break;
         }
@@ -276,7 +279,10 @@ void lightning_appendGfx(void* effect) {
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 
         if (unk_00 < 3) {
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCameraID], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCameraID],
+                G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+            );
         }
 
         gDPPipeSync(gMainGfxPos++);

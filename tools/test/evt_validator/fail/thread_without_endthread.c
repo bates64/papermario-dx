@@ -3,5 +3,5 @@
 EvtScript EVS_ThreadWithoutEndThread = {
     Thread
         Wait(1)
-    End
+        End
 };

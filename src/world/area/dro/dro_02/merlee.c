@@ -203,9 +203,7 @@ API_CALLABLE(N(CreateRitualCards)) {
     imgfx_update(imgfxIdx, IMGFX_SET_ANIM, IMGFX_ANIM_FLIP_CARD_3, 1, 1, 0, IMGFX_FLAG_HOLD_DONE);
     evt_set_variable(script, RITUAL_VAR_FLIP3_IMGFX, imgfxIdx);
 
-    evt_set_variable(script, RITUAL_VAR_WORKER, create_worker_scene(
-        N(UpdateRitualCards),
-        N(RenderRitualCards)));
+    evt_set_variable(script, RITUAL_VAR_WORKER, create_worker_scene( N(UpdateRitualCards), N(RenderRitualCards)));
     return ApiStatus_DONE2;
 }
 
@@ -234,10 +232,9 @@ s32 N(AppendGfx_RitualCard)(RitualCard* card, Matrix4f mtxParent) {
 
     gSPDisplayList(gMainGfxPos++, N(card_setup_gfx));
 
-    if (card->drawMode == CARD_DRAW_CARD_AND_PLAYER
-        || card->drawMode == CARD_DRAW_CARD_ONLY
-        || card->drawMode == CARD_DRAW_PLAYER_ONLY
-    ) {
+    if (card->drawMode == CARD_DRAW_CARD_AND_PLAYER || card->drawMode == CARD_DRAW_CARD_ONLY
+        || card->drawMode == CARD_DRAW_PLAYER_ONLY)
+    {
         guTranslateF(mtxTemp, card->pos.x, card->pos.y, card->pos.z);
         guMtxCatF(mtxTemp, mtxParent, mtxTransform);
         guRotateF(mtxTemp, card->yaw, 0.0f, 1.0f, 0.0f);
@@ -245,7 +242,10 @@ s32 N(AppendGfx_RitualCard)(RitualCard* card, Matrix4f mtxParent) {
         guRotateF(mtxTemp, card->pitch, 1.0f, 0.0f, 0.0f);
         guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
-        gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
+            G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
 
         // draw card
         if (card->drawMode == CARD_DRAW_CARD_AND_PLAYER || card->drawMode == CARD_DRAW_CARD_ONLY) {
@@ -257,12 +257,16 @@ s32 N(AppendGfx_RitualCard)(RitualCard* card, Matrix4f mtxParent) {
             spr_get_player_raster_info(&rasterInfo, card->playerSpriteID, card->playerRasterIndex);
             gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
             gDPLoadTLUT_pal16(gMainGfxPos++, 0, rasterInfo.defaultPal);
-            gDPLoadTextureTile_4b(gMainGfxPos++, rasterInfo.raster, G_IM_FMT_CI, rasterInfo.width, rasterInfo.height,
-                                    0, 0, rasterInfo.width - 1, rasterInfo.height - 1, 0,
-                                    G_TX_CLAMP, G_TX_CLAMP, 8, 8, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureTile_4b(
+                gMainGfxPos++, rasterInfo.raster, G_IM_FMT_CI, rasterInfo.width, rasterInfo.height, 0, 0,
+                rasterInfo.width - 1, rasterInfo.height - 1, 0, G_TX_CLAMP, G_TX_CLAMP, 8, 8, G_TX_NOLOD, G_TX_NOLOD
+            );
             guTranslateF(mtxTransform, card->spriteOffsetX + 30 - rasterInfo.width / 2, 0.0f, 0.0f);
             guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
-            gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
+                G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, N(card_2_gfx));
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         }
@@ -275,8 +279,14 @@ s32 N(AppendGfx_RitualCard)(RitualCard* card, Matrix4f mtxParent) {
         guTranslateF(mtxTemp, N(RitualCards)[0].pos.x, N(RitualCards)[0].pos.y, N(RitualCards)[0].pos.z);
         guMtxCatF(mtxTemp, mtxParent, mtxTransform);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
-        gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        animResult = imgfx_appendGfx_component(evt_get_variable(N(CreatorScript), RITUAL_VAR_SHUFFLE_IMGFX), &ifxImg, IMGFX_FLAG_SKIP_GFX_SETUP | IMGFX_FLAG_SKIP_TEX_SETUP, mtxTransform);
+        gSPMatrix(
+            gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
+            G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
+        animResult = imgfx_appendGfx_component(
+            evt_get_variable(N(CreatorScript), RITUAL_VAR_SHUFFLE_IMGFX), &ifxImg,
+            IMGFX_FLAG_SKIP_GFX_SETUP | IMGFX_FLAG_SKIP_TEX_SETUP, mtxTransform
+        );
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         return animResult;
     }
@@ -286,14 +296,26 @@ s32 N(AppendGfx_RitualCard)(RitualCard* card, Matrix4f mtxParent) {
         guTranslateF(mtxTemp, N(RitualCards)[0].pos.x, N(RitualCards)[0].pos.y, N(RitualCards)[0].pos.z);
         guMtxCatF(mtxTemp, mtxParent, mtxTransform);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
-        gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        imgfx_appendGfx_component(evt_get_variable(N(CreatorScript), RITUAL_VAR_FLIP1_IMGFX), &ifxImg, IMGFX_FLAG_SKIP_GFX_SETUP | IMGFX_FLAG_SKIP_TEX_SETUP, mtxTransform);
-        imgfx_appendGfx_component(evt_get_variable(N(CreatorScript), RITUAL_VAR_FLIP2_IMGFX), &ifxImg, IMGFX_FLAG_SKIP_GFX_SETUP | IMGFX_FLAG_SKIP_TEX_SETUP, mtxTransform);
+        gSPMatrix(
+            gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
+            G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
+        imgfx_appendGfx_component(
+            evt_get_variable(N(CreatorScript), RITUAL_VAR_FLIP1_IMGFX), &ifxImg,
+            IMGFX_FLAG_SKIP_GFX_SETUP | IMGFX_FLAG_SKIP_TEX_SETUP, mtxTransform
+        );
+        imgfx_appendGfx_component(
+            evt_get_variable(N(CreatorScript), RITUAL_VAR_FLIP2_IMGFX), &ifxImg,
+            IMGFX_FLAG_SKIP_GFX_SETUP | IMGFX_FLAG_SKIP_TEX_SETUP, mtxTransform
+        );
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         guTranslateF(mtxTemp, N(RitualCards)[0].pos.x, N(RitualCards)[0].pos.y, N(RitualCards)[0].pos.z);
         guMtxCatF(mtxTemp, mtxParent, mtxTransform);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
-        gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
+            G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
         spr_get_player_raster_info(&rasterInfo, card->playerSpriteID, card->playerRasterIndex);
         ifxImg.raster = rasterInfo.raster;
         ifxImg.palette = rasterInfo.defaultPal;
@@ -302,7 +324,9 @@ s32 N(AppendGfx_RitualCard)(RitualCard* card, Matrix4f mtxParent) {
         ifxImg.xOffset = -(rasterInfo.width / 2);
         ifxImg.yOffset = rasterInfo.height / 2;
         ifxImg.alpha = 255;
-        animResult = imgfx_appendGfx_component(evt_get_variable(N(CreatorScript), RITUAL_VAR_FLIP3_IMGFX), &ifxImg, IMGFX_FLAG_SKIP_GFX_SETUP, mtxTransform);
+        animResult = imgfx_appendGfx_component(
+            evt_get_variable(N(CreatorScript), RITUAL_VAR_FLIP3_IMGFX), &ifxImg, IMGFX_FLAG_SKIP_GFX_SETUP, mtxTransform
+        );
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         return animResult;
     }
@@ -316,10 +340,11 @@ void N(GetCardWorldPos)(s32 index, f32* outX, f32* outY, f32* outZ) {
     Matrix4f mtxTemp;
     Matrix4f mtxParent;
 
-    guPositionF(mtxParent, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, SPRITE_WORLD_SCALE_F,
-                evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_X),
-                evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_Y),
-                evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_Z));
+    guPositionF(
+        mtxParent, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, SPRITE_WORLD_SCALE_F,
+        evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_X), evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_Y),
+        evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_Z)
+    );
 
     card = &N(RitualCards)[index];
     guTranslateF(mtxTemp, card->pos.x, card->pos.y, card->pos.z);
@@ -586,10 +611,11 @@ void N(RenderRitualCards)(void) {
     Matrix4f mtx;
     s32 animResult;
 
-    guPositionF(mtx, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, SPRITE_WORLD_SCALE_F,
-                evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_X),
-                evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_Y),
-                evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_Z));
+    guPositionF(
+        mtx, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, SPRITE_WORLD_SCALE_F,
+        evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_X), evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_Y),
+        evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_Z)
+    );
 
     animResult = N(AppendGfx_RitualCard)(&N(RitualCards)[0], mtx);
     N(AppendGfx_RitualCard)(&N(RitualCards)[1], mtx);
@@ -597,13 +623,13 @@ void N(RenderRitualCards)(void) {
 
     // communicate when the ImgFX animations are done to the owner script
     if (N(RitualCards)[0].drawMode == CARD_DRAW_SHUFFLE_ANIM
-        && (animResult == IMGFX_RENDER_RESULT_DONE || animResult == IMGFX_RENDER_RESULT_HOLDING)
-    ) {
+        && (animResult == IMGFX_RENDER_RESULT_DONE || animResult == IMGFX_RENDER_RESULT_HOLDING))
+    {
         evt_set_variable(N(CreatorScript), RITUAL_VAR_STATE, RITUAL_STATE_SPREAD_CARDS);
     }
     if (N(RitualCards)[0].drawMode == CARD_DRAW_MERGE_ANIM
-        && (animResult == IMGFX_RENDER_RESULT_DONE || animResult == IMGFX_RENDER_RESULT_HOLDING)
-    ) {
+        && (animResult == IMGFX_RENDER_RESULT_DONE || animResult == IMGFX_RENDER_RESULT_HOLDING))
+    {
         evt_set_variable(N(CreatorScript), RITUAL_VAR_STATE, RITUAL_STATE_BEGIN_RELEASE_PLAYER);
     }
 }

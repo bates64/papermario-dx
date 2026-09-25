@@ -181,7 +181,9 @@ API_CALLABLE(N(UpdateKeepAwayBoo)) {
             npc->yaw = yaw;
             npc->duration--;
             if (npc->duration == 0) {
-                sfx_play_sound_at_position(SOUND_SEQ_BOO_VANISH, SOUND_SPACE_DEFAULT, npc->pos.x, npc->pos.y, npc->pos.z);
+                sfx_play_sound_at_position(
+                    SOUND_SEQ_BOO_VANISH, SOUND_SPACE_DEFAULT, npc->pos.x, npc->pos.y, npc->pos.z
+                );
                 script->functionTemp[1] = RING_STATE_BOO_FLY_TO_RING;
                 npc->duration = 0;
                 npc->moveToPos.x = npc->pos.x;

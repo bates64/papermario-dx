@@ -157,8 +157,9 @@ void walking_dust_appendGfx(void* effect) {
         guRotateF(sp58, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
         guMtxCatF(sp58, sp18, sp18);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                  G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, dlist2);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

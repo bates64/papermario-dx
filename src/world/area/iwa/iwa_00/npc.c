@@ -19,8 +19,12 @@ API_CALLABLE(N(AnimateWhackaDefeat)) {
         npc->flags |= NPC_FLAG_INVISIBLE;
     }
     if (script->functionTemp[1] == 15) {
-        sfx_play_sound_at_position(SOUND_ACTOR_DEATH, SOUND_SPACE_DEFAULT, npc->pos.x, npc->pos.y + (npc->collisionHeight / 2), npc->pos.z);
-        fx_damage_stars(FX_DAMAGE_STARS_1, npc->pos.x, npc->pos.y + (npc->collisionHeight / 2), npc->pos.z, 0.0f, -1.0f, 0.0f, 10);
+        sfx_play_sound_at_position(
+            SOUND_ACTOR_DEATH, SOUND_SPACE_DEFAULT, npc->pos.x, npc->pos.y + (npc->collisionHeight / 2), npc->pos.z
+        );
+        fx_damage_stars(
+            FX_DAMAGE_STARS_1, npc->pos.x, npc->pos.y + (npc->collisionHeight / 2), npc->pos.z, 0.0f, -1.0f, 0.0f, 10
+        );
     }
 
     if (script->functionTemp[1] == 10) {

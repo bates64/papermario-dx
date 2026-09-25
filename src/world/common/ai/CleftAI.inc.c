@@ -185,8 +185,8 @@ void N(CleftAI_RevUp)(Evt* script, MobileAISettings* settings, EnemyDetectVolume
         enemy->attackOriginPos.z = npc->pos.z;
         enemy->firstStrikeActive = true;
         npc->moveSpeed = settings->chaseSpeed;
-        npc->duration = dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x,
-                               gPlayerStatusPtr->pos.z) / npc->moveSpeed + 0.9;
+        npc->duration =
+            dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z) / npc->moveSpeed + 0.9;
         if (npc->duration < 15) {
             npc->duration = 15;
         }
@@ -210,10 +210,10 @@ void N(CleftAI_Tackle)(Evt* script, MobileAISettings* settings, EnemyDetectVolum
     posX = npc->pos.x;
     posY = npc->pos.y;
     posZ = npc->pos.z;
-    if (npc_test_move_simple_with_slipping(npc->collisionChannel,
-            &posX, &posY, &posZ,
-            1.0f, npc->yaw, npc->collisionHeight, npc->collisionDiameter)
-    ) {
+    if (npc_test_move_simple_with_slipping(
+            npc->collisionChannel, &posX, &posY, &posZ, 1.0f, npc->yaw, npc->collisionHeight, npc->collisionDiameter
+        ))
+    {
         done = true;
     }
 
@@ -250,11 +250,16 @@ void N(CleftAI_ReturnHome)(Evt* script, MobileAISettings* settings, EnemyDetectV
     if (basic_ai_check_player_dist(detect, enemy, settings->chaseRadius, settings->chaseOffsetDist, false)) {
         npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
         script->AI_TEMP_STATE = AI_STATE_CLEFT_CHASE_INIT;
-    } else if (dist2D(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z) <= npc->moveSpeed) {
+    } else if (dist2D(
+                   npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z
+               )
+               <= npc->moveSpeed)
+    {
         npc->duration = 10;
         script->AI_TEMP_STATE = AI_STATE_CLEFT_DISGUISE_INIT;
     } else if (npc->turnAroundYawAdjustment == 0) {
-        npc->yaw = atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
+        npc->yaw =
+            atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
         npc_move_heading(npc, npc->moveSpeed, npc->yaw);
     }
 }
@@ -300,7 +305,7 @@ API_CALLABLE(N(CleftAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args++);
     EnemyDetectVolume detectVolume;
     EnemyDetectVolume* detect = &detectVolume;
 

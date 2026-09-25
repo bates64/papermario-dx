@@ -24,12 +24,8 @@ void action_update_land(void) {
     }
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
-        playerStatus->flags &= ~(
-            PS_FLAG_ACTION_STATE_CHANGED |
-            PS_FLAG_SCRIPTED_FALL |
-            PS_FLAG_ARMS_RAISED |
-            PS_FLAG_AIRBORNE
-        );
+        playerStatus->flags &=
+            ~(PS_FLAG_ACTION_STATE_CHANGED | PS_FLAG_SCRIPTED_FALL | PS_FLAG_ARMS_RAISED | PS_FLAG_AIRBORNE);
         playerStatus->actionSubstate = SUBSTATE_INIT;
         playerStatus->timeInAir = 0;
         playerStatus->peakJumpTime = 0;
@@ -86,12 +82,8 @@ void action_update_step_down_land(void) {
     }
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
-         playerStatus->flags &= ~(
-            PS_FLAG_ACTION_STATE_CHANGED |
-            PS_FLAG_SCRIPTED_FALL |
-            PS_FLAG_ARMS_RAISED |
-            PS_FLAG_AIRBORNE
-        );
+        playerStatus->flags &=
+            ~(PS_FLAG_ACTION_STATE_CHANGED | PS_FLAG_SCRIPTED_FALL | PS_FLAG_ARMS_RAISED | PS_FLAG_AIRBORNE);
         playerStatus->actionSubstate = SUBSTATE_INIT;
         playerStatus->timeInAir = 0;
         playerStatus->peakJumpTime = 0;

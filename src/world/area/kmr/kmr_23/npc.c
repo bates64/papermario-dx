@@ -137,9 +137,10 @@ API_CALLABLE(N(MakeCardFloatUpward)) {
         script->functionTemp[3] = evt_get_variable(script, *args++);
     }
 
-    data->pos.y = update_lerp(script->varTable[0],
-        script->functionTemp[1], script->functionTemp[2],
-        script->functionTemp[0], script->functionTemp[3]);
+    data->pos.y = update_lerp(
+        script->varTable[0], script->functionTemp[1], script->functionTemp[2], script->functionTemp[0],
+        script->functionTemp[3]
+    );
 
     script->functionTemp[0]++;
     if (script->functionTemp[0] < script->functionTemp[3]) {
@@ -193,7 +194,7 @@ API_CALLABLE(N(FlashScreenWhite)) {
         script->functionTemp[0] = FADE_TO_WHITE;
     }
 
-    switch(script->functionTemp[0]) {
+    switch (script->functionTemp[0]) {
         case FADE_TO_WHITE:
             set_screen_overlay_color(SCREEN_LAYER_FRONT, 208, 208, 208);
             set_screen_overlay_params_front(OVERLAY_VIEWPORT_COLOR, data->screenWhiteness);
@@ -229,7 +230,7 @@ API_CALLABLE(N(FlashScreenWhite)) {
                 data->screenWhiteness = 0;
             }
             break;
-        }
+    }
 
     return ApiStatus_BLOCK;
 }
@@ -246,9 +247,9 @@ API_CALLABLE(N(SpinDownStarSpirit)) {
         data->startYaw = data->yaw;
     }
 
-    data->yaw = clamp_angle(update_lerp(EASING_QUADRATIC_OUT,
-        data->startYaw, script->functionTemp[1],
-        script->functionTemp[0], script->functionTemp[2]));
+    data->yaw = clamp_angle(update_lerp(
+        EASING_QUADRATIC_OUT, data->startYaw, script->functionTemp[1], script->functionTemp[0], script->functionTemp[2]
+    ));
 
     script->functionTemp[0]++;
     if (script->functionTemp[0] < script->functionTemp[2]) {
@@ -272,9 +273,10 @@ API_CALLABLE(N(EndOfChapterBounceIn)) {
         script->functionTemp[3] = evt_get_variable(script, *args++);
     }
 
-    posY = update_lerp(EASING_COS_BOUNCE,
-        script->functionTemp[1], script->functionTemp[2],
-        script->functionTemp[0], script->functionTemp[3]);
+    posY = update_lerp(
+        EASING_COS_BOUNCE, script->functionTemp[1], script->functionTemp[2], script->functionTemp[0],
+        script->functionTemp[3]
+    );
     endChatper->chapterChangeEffect->data.chapterChange->chapterPos.x = script->varTable[0];
     endChatper->chapterChangeEffect->data.chapterChange->chapterPos.y = posY;
     endChatper->chapterChangeEffect->data.chapterChange->endOfPos.x = script->varTable[0];
@@ -301,8 +303,12 @@ API_CALLABLE(N(EndOfChapterSplitApart)) {
         script->functionTemp[3] = evt_get_variable(script, *args++);
     }
 
-    leftDx = update_lerp(EASING_LINEAR, 0.0f, (script->functionTemp[2] / 2) + 8, script->functionTemp[0], script->functionTemp[3]);
-    rightDx = update_lerp(EASING_LINEAR, 0.0f, (script->functionTemp[2] / 2), script->functionTemp[0], script->functionTemp[3]);
+    leftDx = update_lerp(
+        EASING_LINEAR, 0.0f, (script->functionTemp[2] / 2) + 8, script->functionTemp[0], script->functionTemp[3]
+    );
+    rightDx = update_lerp(
+        EASING_LINEAR, 0.0f, (script->functionTemp[2] / 2), script->functionTemp[0], script->functionTemp[3]
+    );
     data->chapterChangeEffect->data.chapterChange->chapterPos.x = script->varTable[0] - leftDx;
     data->chapterChangeEffect->data.chapterChange->chapterPos.y = script->functionTemp[1];
     data->chapterChangeEffect->data.chapterChange->endOfPos.x = script->varTable[0] + rightDx;
@@ -399,7 +405,7 @@ void N(draw_narration_window)(void) {
             break;
         case NARRATION_WINDOW_OPEN:
             if (!data->showNarrationWindow) {
-               N(NarrationBoxState) = NARRATION_WINDOW_CLOSING;
+                N(NarrationBoxState) = NARRATION_WINDOW_CLOSING;
             }
             break;
         case NARRATION_WINDOW_CLOSING:
@@ -425,15 +431,11 @@ void N(draw_narration_window)(void) {
         f64 lrx = baseX + (fullWidth * 0.5) + (N(NarrationBoxW) * 0.5);
         f64 lry = baseY + (fullHeight * 0.5) + (N(NarrationBoxH) * 0.5);
         gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, ulx, uly, lrx, lry);
-        draw_box(DRAW_FLAG_NO_CLIP, &N(NarrationWindowStyle),
-            ulx, uly, 0,
-            N(NarrationBoxW), N(NarrationBoxH),
-            180, 0,
-            1.0f, 1.0f,
-            0.0f, 0.0f, 0.0f,
-            nullptr, nullptr, nullptr,
-            320, 240,
-            nullptr);
+        draw_box(
+            DRAW_FLAG_NO_CLIP, &N(NarrationWindowStyle), ulx, uly, 0, N(NarrationBoxW),
+            N(NarrationBoxH), 180, 0, 1.0f, 1.0f,
+            0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, 320, 240, nullptr
+        );
     }
 }
 

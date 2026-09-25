@@ -138,11 +138,9 @@ void star_update(EffectInstance* effect) {
         traceStartZ = data->pos.z - dz;
         length = 64.0f;
 
-        if (data->canBounce
-            && data->vel.y < 0.0f
-            && npc_raycast_down_sides(0, &traceStartX, &traceStartY, &traceStartZ, &length) != 0
-            && length < 42.0f
-        ) {
+        if (data->canBounce && data->vel.y < 0.0f
+            && npc_raycast_down_sides(0, &traceStartX, &traceStartY, &traceStartZ, &length) != 0 && length < 42.0f)
+        {
             data->bounceTime += 1.0f;
             data->vel.y = -data->vel.y * 0.6;
             data->vel.x = data->vel.x * 0.7;
@@ -152,7 +150,9 @@ void star_update(EffectInstance* effect) {
             landing_dust_main(0, data->pos.x, data->pos.y - 5.0f, data->pos.z, 0.0f);
 
             if (gGameStatusPtr->context == CONTEXT_WORLD) {
-                sfx_play_sound_at_position(SOUND_SEQ_SHOOTING_STAR_BOUNCE, SOUND_SPACE_DEFAULT, data->pos.x, data->pos.y, data->pos.z);
+                sfx_play_sound_at_position(
+                    SOUND_SEQ_SHOOTING_STAR_BOUNCE, SOUND_SPACE_DEFAULT, data->pos.x, data->pos.y, data->pos.z
+                );
             }
 
             data->canBounce = false;
@@ -201,7 +201,7 @@ void star_render(EffectInstance* effect) {
 }
 
 void star_appendGfx(void* effect) {
-    StarFXData* data = ((EffectInstance*)effect)->data.star;
+    StarFXData* data = ((EffectInstance*) effect)->data.star;
     f32 scale = data->scale;
     s32 type = data->type;
     s32 primR = data->primR;
@@ -213,7 +213,7 @@ void star_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, scale, data->pos.x, data->pos.y, data->pos.z);
     guRotateF(sp60, data->starAngle, 0.0f, 0.0f, 1.0f);
@@ -251,16 +251,16 @@ void star_appendGfx(void* effect) {
             idx = (baseIdx - i + ARRAY_COUNT(data->trailMatrices)) % ARRAY_COUNT(data->trailMatrices);
             gDisplayContext->matrixStack[gMatrixListPos] = data->trailMatrices[idx];
 
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPVertex(gMainGfxPos++, &D_09001400_333AA0[i * 2], 2, i * 2);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         }
 
         for (i = 0; i < 4; i++) {
             s32 i2 = i * 2;
-            gSP2Triangles(gMainGfxPos++,
-                i2    , i2 + 1, i2 + 2, i2,
-                i2 + 1, i2 + 3, i2 + 2, i2 + 1);
+            gSP2Triangles(gMainGfxPos++, i2, i2 + 1, i2 + 2, i2, i2 + 1, i2 + 3, i2 + 2, i2 + 1);
         }
 
         gDPPipeSync(gMainGfxPos++);

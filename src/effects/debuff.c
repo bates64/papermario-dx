@@ -44,18 +44,18 @@ EffectInstance* debuff_main(s32 type, f32 x, f32 y, f32 z) {
     data->alpha = 255;
 
     if (type == 0) {
-        data->envCol.r  = 20;
+        data->envCol.r = 20;
         data->primCol.r = 20;
-        data->envCol.g  = 21;
+        data->envCol.g = 21;
         data->primCol.g = 21;
-        data->envCol.b  = 242;
+        data->envCol.b = 242;
         data->primCol.b = 242;
     } else {
-        data->envCol.r  = 200;
+        data->envCol.r = 200;
         data->primCol.r = 200;
-        data->envCol.g  = 21;
+        data->envCol.g = 21;
         data->primCol.g = 21;
-        data->envCol.b  = 212;
+        data->envCol.b = 212;
         data->primCol.b = 212;
     }
 
@@ -131,7 +131,7 @@ void debuff_render(EffectInstance* effect) {
 }
 
 void debuff_appendGfx(void* effect) {
-    EffectInstance* eff = (EffectInstance*)effect;
+    EffectInstance* eff = (EffectInstance*) effect;
     DebuffFXData* data = eff->data.debuff;
     Gfx* dlist = D_E00628C0[0];
     Gfx* dlist2 = D_E00628C4[0];
@@ -149,8 +149,7 @@ void debuff_appendGfx(void* effect) {
     guMtxCatF(mtxRotate, mtxTranslate, mtxTransform);
     guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++,
-              &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, data->primCol.r, data->primCol.g, data->primCol.b, data->alpha);
     gDPSetEnvColor(gMainGfxPos++, data->envCol.r, data->envCol.g, data->envCol.b, 0);
 
@@ -163,8 +162,9 @@ void debuff_appendGfx(void* effect) {
         guMtxCatF(mtxRotate, mtxTranslate, mtxTranslate);
         guMtxF2L(mtxTranslate, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++,
-                  &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, dlist);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

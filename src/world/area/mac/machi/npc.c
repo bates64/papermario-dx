@@ -23,21 +23,14 @@ API_CALLABLE(N(InitNpcFollowTest)) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     if (rand_int(1000) < 500) {
-        npc_follow_init(npc,
-            NPC_SELF,
-            &N(GoombariaAnims),
-            rand_int(4) + 1,
-            rand_int(3) + 5,
-            rand_int(50) + 50,
-            rand_int(100) + 100);
+        npc_follow_init(
+            npc, NPC_SELF, &N(GoombariaAnims), rand_int(4) + 1, rand_int(3) + 5, rand_int(50) + 50, rand_int(100) + 100
+        );
     } else {
-        npc_follow_init(npc,
-            rand_int(3) + NPC_Goompa,
-             &N(GoombariaAnims),
-            rand_int(4) + 1,
-            rand_int(3) + 5,
-            rand_int(50) + 50,
-            rand_int(100) + 10);
+        npc_follow_init(
+            npc, rand_int(3) + NPC_Goompa, &N(GoombariaAnims), rand_int(4) + 1, rand_int(3) + 5, rand_int(50) + 50,
+            rand_int(100) + 10
+        );
     }
     return ApiStatus_DONE2;
 }

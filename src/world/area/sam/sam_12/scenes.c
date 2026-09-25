@@ -45,13 +45,8 @@ API_CALLABLE(N(SpawnSleepBubble)) {
     EffectInstance* effect;
 
     fx_sleep_bubble(
-        0,
-        gPlayerStatus.pos.x + x,
-        gPlayerStatus.pos.y + ((gPlayerStatus.colliderHeight * 2) / 3) + y,
-        gPlayerStatus.pos.z + z,
-        (gPlayerStatus.colliderHeight / 3) + t,
-        temp_f26,
-        &effect
+        0, gPlayerStatus.pos.x + x, gPlayerStatus.pos.y + ((gPlayerStatus.colliderHeight * 2) / 3) + y,
+        gPlayerStatus.pos.z + z, (gPlayerStatus.colliderHeight / 3) + t, temp_f26, &effect
     );
     evt_set_variable(script, outVar, (s32) effect);
     return ApiStatus_DONE2;

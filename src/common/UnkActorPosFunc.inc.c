@@ -12,9 +12,13 @@ API_CALLABLE(N(UnkActorPosFunc)) {
 
     add_xz_vec3f(&actorState->curPos, actor->state.speed, actor->state.angle);
     if (actor->state.speed < 4.0f) {
-        play_movement_dust_effects(0, actor->state.curPos.x, actor->state.curPos.y, actor->state.curPos.z, actor->state.angle);
+        play_movement_dust_effects(
+            0, actor->state.curPos.x, actor->state.curPos.y, actor->state.curPos.z, actor->state.angle
+        );
     } else {
-        play_movement_dust_effects(1, actor->state.curPos.x, actor->state.curPos.y, actor->state.curPos.z, actor->state.angle);
+        play_movement_dust_effects(
+            1, actor->state.curPos.x, actor->state.curPos.y, actor->state.curPos.z, actor->state.angle
+        );
     }
 
     actorState->speed /= 1.5;

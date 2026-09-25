@@ -77,7 +77,7 @@ void appendGfx_ispy_icon(void) {
         imgfx_update(0, IMGFX_SET_ALPHA, 255, 255, 255, ISpyPtr->alpha, 0);
 
         ifxImg.raster = ispy_icon_img;
-        ifxImg.width  = ispy_icon_img_width;
+        ifxImg.width = ispy_icon_img_width;
         ifxImg.height = ispy_icon_img_height;
         ifxImg.xOffset = -28;
         ifxImg.yOffset = 46;
@@ -106,16 +106,15 @@ void ispy_notification_update(void) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
     s32 cond;
 
-    ISpyPtr->pos.y +=
-        (playerStatus->pos.y + playerStatus->colliderHeight + 10.0f - ISpyPtr->pos.y) / 1.5f;
+    ISpyPtr->pos.y += (playerStatus->pos.y + playerStatus->colliderHeight + 10.0f - ISpyPtr->pos.y) / 1.5f;
     ISpyPtr->pos.x = playerStatus->pos.x;
     ISpyPtr->pos.z = playerStatus->pos.z;
 
     switch (ISpyPtr->state) {
         case I_SPY_DELAY:
             if (partnerStatus->partnerActionState != PARTNER_ACTION_NONE
-             && partnerStatus->actingPartner == PARTNER_LAKILESTER
-            ) {
+                && partnerStatus->actingPartner == PARTNER_LAKILESTER)
+            {
                 cond = gGameStatusPtr->keepUsingPartnerOnMapChange;
             } else {
                 cond = playerStatus->flags & (PS_FLAG_INPUT_DISABLED | PS_FLAG_NO_STATIC_COLLISION);

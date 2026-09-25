@@ -206,7 +206,7 @@ EvtScript N(EVS_OnHit_CrystalTree) = {
     End
 };
 
-FoliageModelList N(CrystalTree_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o6, MODEL_o7, MODEL_o8);
+FoliageModelList N(CrystalTree_LeafModels) = FOLIAGE_MODEL_LIST(MODEL_o6, MODEL_o7, MODEL_o8);
 FoliageModelList N(CrystalTree_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o5);
 
 ShakeTreeConfig N(ShakeTree_CrystalTree) = {

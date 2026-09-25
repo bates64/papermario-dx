@@ -168,7 +168,7 @@ s32 N(get_darkening)(ActorState* actorState, s32 targetDarkening) {
 
 API_CALLABLE(N(update_effect)) {
     Bytecode* args = script->ptrReadPos;
-    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, *args++);
+    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
     Actor* actor = get_actor(script->owner1.actorID);
     ActorState* actorState;
     ActorPart* actorPart;
@@ -206,8 +206,8 @@ API_CALLABLE(N(update_effect)) {
 
     partY += 20;
 
-    f24 = (f32)partX * SPRITE_WORLD_SCALE_D;
-    f22 = (f32)partY * SPRITE_WORLD_SCALE_D;
+    f24 = (f32) partX * SPRITE_WORLD_SCALE_D;
+    f22 = (f32) partY * SPRITE_WORLD_SCALE_D;
 
     f24 *= cos_deg(rotY);
     f22 *= sin_deg(rotX + 90.0);

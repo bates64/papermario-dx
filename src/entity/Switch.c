@@ -28,7 +28,8 @@ void entity_GreenStompSwitch_idle(Entity* entity) {
 
     if (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) {
         if ((playerStatus->actionState == ACTION_STATE_SPIN_POUND)
-            || (playerStatus->actionState == ACTION_STATE_TORNADO_POUND)) {
+            || (playerStatus->actionState == ACTION_STATE_TORNADO_POUND))
+        {
             exec_entity_commandlist(entity);
             data->greenMotionTimer = 8;
         }
@@ -88,7 +89,8 @@ void entity_HugeBlueSwitch_idle(Entity* entity) {
 
     if (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) {
         if ((playerStatus->actionState == ACTION_STATE_SPIN_POUND)
-            || (playerStatus->actionState == ACTION_STATE_TORNADO_POUND)) {
+            || (playerStatus->actionState == ACTION_STATE_TORNADO_POUND))
+        {
             exec_entity_commandlist(entity);
         }
     }
@@ -528,13 +530,17 @@ EntityScript Entity_GreenStompSwitch_Script = {
     es_Restart
 };
 
-EntityModelScript Entity_BlueSwitch_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_BlueSwitch_Render, RENDER_MODE_SURFACE_XLU_LAYER1);
+EntityModelScript Entity_BlueSwitch_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_BlueSwitch_Render, RENDER_MODE_SURFACE_XLU_LAYER1);
 
-EntityModelScript Entity_HugeBlueSwitch_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_BlueSwitch_Render, RENDER_MODE_SURFACE_XLU_LAYER1);
+EntityModelScript Entity_HugeBlueSwitch_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_BlueSwitch_Render, RENDER_MODE_SURFACE_XLU_LAYER1);
 
-EntityModelScript Entity_RedSwitch_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RedSwitch_Render, RENDER_MODE_SURFACE_XLU_LAYER1);
+EntityModelScript Entity_RedSwitch_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_RedSwitch_Render, RENDER_MODE_SURFACE_XLU_LAYER1);
 
-EntityModelScript Entity_GreenStompSwitch_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_GreenStompSwitch_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_GreenStompSwitch_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_GreenStompSwitch_Render, RENDER_MODE_SURFACE_OPA);
 
 EntityBlueprint Entity_RedSwitch = {
     .flags = ENTITY_FLAG_8000 | ENTITY_FLAG_ALWAYS_FACE_CAMERA,

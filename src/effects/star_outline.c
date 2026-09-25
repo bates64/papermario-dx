@@ -114,14 +114,14 @@ void star_outline_update(EffectInstance* effect) {
         data->unk_24 = 255;
         data->unk_3C.y = (lifeTime * 4.0f * 0.4953);
         data->unk_3C.z = (lifeTime * 4.0f * 0.2234);
-        data->unk_34 = ((sin_deg (lifetimeF * 7.12343)) * 127.0f) + 128.0f;
-        data->unk_18 = ((sin_deg (lifetimeF * 1.231)) * 127.0f) + 215.0f;
-        data->unk_1C = ((sin_deg (lifetimeF * 0.531)) * 127.0f) + 215.0f;
-        data->unk_20 = ((sin_deg (lifetimeF * 3.231)) * 127.0f) + 215.0f;
-        data->unk_28 = ((sin_deg (lifetimeF * 0.298)) * 127.0f) + 188.0f;
-        data->unk_2C = ((sin_deg (lifetimeF * 0.831)) * 127.0f) + 188.0f;
-        data->unk_30 = ((sin_deg (lifetimeF * 2.231)) * 127.0f) + 188.0f;
-        data->unk_38 = ((sin_deg (lifetimeF * 2.044)) * 0.3) + 0.7;
+        data->unk_34 = ((sin_deg(lifetimeF * 7.12343)) * 127.0f) + 128.0f;
+        data->unk_18 = ((sin_deg(lifetimeF * 1.231)) * 127.0f) + 215.0f;
+        data->unk_1C = ((sin_deg(lifetimeF * 0.531)) * 127.0f) + 215.0f;
+        data->unk_20 = ((sin_deg(lifetimeF * 3.231)) * 127.0f) + 215.0f;
+        data->unk_28 = ((sin_deg(lifetimeF * 0.298)) * 127.0f) + 188.0f;
+        data->unk_2C = ((sin_deg(lifetimeF * 0.831)) * 127.0f) + 188.0f;
+        data->unk_30 = ((sin_deg(lifetimeF * 2.231)) * 127.0f) + 188.0f;
+        data->unk_38 = ((sin_deg(lifetimeF * 2.044)) * 0.3) + 0.7;
     }
     if (lifeTime == 1) {
         data->unk_48 = data->unk_3C.x;
@@ -145,7 +145,7 @@ void star_outline_render(EffectInstance* effect) {
 }
 
 void star_outline_appendGfx(void* effect) {
-    StarOutlineFXData* data = ((EffectInstance*)effect)->data.starOutline;
+    StarOutlineFXData* data = ((EffectInstance*) effect)->data.starOutline;
     s32 unk_18 = data->unk_18;
     s32 unk_1C = data->unk_1C;
     s32 unk_20 = data->unk_20;
@@ -207,16 +207,21 @@ void star_outline_appendGfx(void* effect) {
     }
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_E0126BC8[0]);
 
     if (unk_34 != 0) {
-        guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, (f32) ((f64) data->unk_54 * 0.4), data->pos.x, data->pos.y, data->pos.z);
+        guPositionF(
+            sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, (f32) ((f64) data->unk_54 * 0.4), data->pos.x,
+            data->pos.y, data->pos.z
+        );
         guPositionF(sp60, data->unk_48, data->unk_4C, data->unk_50, 1.0f, 0.0f, 0.0f, 0.0f);
         guMtxCatF(sp60, sp20, sp20);
         guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
 
         if (data->unk_00 == 0) {
             gDPSetRenderMode(gMainGfxPos++, G_RM_CLD_SURF, G_RM_CLD_SURF2);
@@ -230,12 +235,16 @@ void star_outline_appendGfx(void* effect) {
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }
 
-    guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->unk_38 * 0.4, data->pos.x, data->pos.y, data->pos.z);
+    guPositionF(
+        sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->unk_38 * 0.4, data->pos.x, data->pos.y, data->pos.z
+    );
     guPositionF(sp60, data->unk_3C.x, data->unk_3C.y, data->unk_3C.z, 1.0f, 0.0f, 0.0f, 0.0f);
     guMtxCatF(sp60, sp20, sp20);
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     if (unk_34 != 0) {
         if (data->unk_00 == 0) {

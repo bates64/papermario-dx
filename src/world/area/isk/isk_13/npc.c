@@ -32,12 +32,15 @@ void N(worker_draw_chomp_ambush)(void) {
     }
     guMtxF2L(cam->mtxPerspective, &gDisplayContext->camPerspMatrix[gCurrentCameraID]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCameraID],
-        G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCameraID], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+    );
     gDPPipeSync(gMainGfxPos++);
     gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
-    gSPClearGeometryMode(gMainGfxPos++, G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING
-        | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
+    gSPClearGeometryMode(
+        gMainGfxPos++,
+        G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH
+    );
     gSPSetGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_SHADING_SMOOTH);
     gSPTexture(gMainGfxPos++, -1, -1, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTextureLOD(gMainGfxPos++, G_TL_TILE);
@@ -59,8 +62,10 @@ void N(worker_draw_chomp_ambush)(void) {
     guScaleF(tempMtx, ambush->scale.x, ambush->scale.y, ambush->scale.z);
     guMtxCatF(tempMtx, transformMtx, transformMtx);
     guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
-        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     if (ambush->useBitingAnim) {
         if ((gGameStatusPtr->frameCounter % 10) < 5) {
@@ -70,15 +75,17 @@ void N(worker_draw_chomp_ambush)(void) {
         }
     }
     spr_get_npc_raster_info(&spriteRaster, ambush->spriteIndex, ambush->rasterIndex);
-    ifxImg.raster  = spriteRaster.raster;
+    ifxImg.raster = spriteRaster.raster;
     ifxImg.palette = spriteRaster.defaultPal;
-    ambush->width = ifxImg.width  = spriteRaster.width;
+    ambush->width = ifxImg.width = spriteRaster.width;
     ambush->height = ifxImg.height = spriteRaster.height;
     ifxImg.xOffset = -(spriteRaster.width / 2);
     ifxImg.yOffset = (spriteRaster.height / 2);
     ifxImg.alpha = 255;
 
-    imgfx_update(ambush->imgfxIdx, IMGFX_SET_TINT, ambush->color.r, ambush->color.g, ambush->color.b, ambush->color.a, 0);
+    imgfx_update(
+        ambush->imgfxIdx, IMGFX_SET_TINT, ambush->color.r, ambush->color.g, ambush->color.b, ambush->color.a, 0
+    );
     imgfx_appendGfx_component(ambush->imgfxIdx, &ifxImg, 0, transformMtx);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }

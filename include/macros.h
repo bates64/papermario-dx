@@ -14,12 +14,12 @@
 #define ALIGNED(x) __attribute__((aligned(x)))
 
 #ifndef BBPLAYER
-# define OSALIGNED(x) ALIGNED(x)
+#define OSALIGNED(x) ALIGNED(x)
 #else
-# define OSALIGNED(x)
+#define OSALIGNED(x)
 #endif
 
-# define BBALIGNED(x) ALIGNED(x)
+#define BBALIGNED(x) ALIGNED(x)
 
 #define ALIGN16(val) (((val) + 0xF) & ~0xF)
 #define ALIGN8(val) (((val) + 0x7) & ~0x7)
@@ -57,7 +57,7 @@
 #define PHYSICAL_TO_VIRTUAL(addr) (void*)((u32)(addr) + 0x80000000)
 #define VIRTUAL_TO_PHYSICAL(addr) ((u32)(addr) - 0x80000000)
 
-//#ifdef DEBUG
+// #ifdef DEBUG
 #define IS_DEBUG_PANIC(statement) is_debug_panic(statement)
 /*#else
 #define IS_DEBUG_PANIC(statement) do {} while(true)
@@ -184,7 +184,7 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
 #define NPC_DISPOSE_POS_Z   0
 
 #define PACK_FILL_COLOR(r, g, b, a) (GPACK_RGBA5551(r, g, b, a) << 0x10) | GPACK_RGBA5551(r, g, b, a)
-#define PACK_FILL_DEPTH(z,dz) (GPACK_ZDZ(z, dz) << 0x10) | GPACK_ZDZ(z, dz)
+#define PACK_FILL_DEPTH(z, dz) (GPACK_ZDZ(z, dz) << 0x10) | GPACK_ZDZ(z, dz)
 
 #define SQ(x) ((x) * (x))
 #define CUBE(x) ((x) * (x) * (x))
@@ -210,7 +210,7 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
     (ptr)[0] =  0.11430f; \
     (ptr)[1] = -0.28710f; \
     (ptr)[2] = -0.18230f; \
-    (ptr)[3] =  0.01152f; \
+    (ptr)[3] =  0.01152f;
 
 #define CLAMP(value, min, max) MIN(MAX((value), (min)), (max))
 
@@ -231,11 +231,7 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
 #define _RDP_PACK_WHOLE(a, b) (_RDP_WHOLE(a) << 16) | _RDP_WHOLE(b)
 #define _RDP_PACK_FRAC(a, b) (_RDP_FRAC(a) << 16) | _RDP_FRAC(b)
 
-#define RDP_MATRIX(  \
-    Ax, Bx, Cx, Dx, \
-    Ay, By, Cy, Dy, \
-    Az, Bz, Cz, Dz, \
-    Aw, Bw, Cw, Dw ) \
+#define RDP_MATRIX(Ax, Bx, Cx, Dx, Ay, By, Cy, Dy, Az, Bz, Cz, Dz, Aw, Bw, Cw, Dw) \
 { \
     .m = { \
         { \
@@ -375,7 +371,7 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
 #define PM_CC2_29        TEXEL0, COMBINED, TEXEL0_ALPHA, TEXEL0, 1, TEXEL0, TEXEL1, TEXEL0
 
 // same as G_CC_INTERFERENCE, except the roles of TEXEL0 and TEXEL1 are swapped
-#define	PM_CC_ALT_INTERFERENCE  \
+#define PM_CC_ALT_INTERFERENCE  \
     TEXEL1, 0, TEXEL0, 0, \
     TEXEL1, 0, TEXEL0, 0
 
@@ -512,7 +508,7 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
 #define PM_CC_CONST_0               0, 0, 0, 0, 0, 0, 0, 0
 #define PM_CC_CONST_1               0, 0, 0, 1, 0, 0, 0, 1
 
-#define	G_TX_EXTRA_TILE 1
+#define G_TX_EXTRA_TILE 1
 
 #ifdef OLD_GCC
 #define VLA 0

@@ -46,4 +46,3 @@
     .animations = SPEAR_GUY_ANIMS, \
     .limitAnimations = N(LimitAnims_SpearGuy_Hitbox), \
 }
-

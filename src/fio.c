@@ -50,7 +50,7 @@ s32 get_spirits_rescued(void) {
 }
 
 s32 fio_calc_globals_checksum(void) {
-    s32* it = (s32*)&gSaveGlobals;
+    s32* it = (s32*) &gSaveGlobals;
     u32 sum = 0;
     u32 i;
 
@@ -97,14 +97,14 @@ b32 fio_save_globals(void) {
     gSaveGlobals.crc1 = checksum;
     gSaveGlobals.crc2 = ~checksum;
     fio_erase_flash(GLOBALS_PAGE_1);
-    fio_write_flash(GLOBALS_PAGE_1, (s8*)&gSaveGlobals, sizeof(gSaveGlobals));
+    fio_write_flash(GLOBALS_PAGE_1, (s8*) &gSaveGlobals, sizeof(gSaveGlobals));
     fio_erase_flash(GLOBALS_PAGE_2);
-    fio_write_flash(GLOBALS_PAGE_2, (s8*)&gSaveGlobals, sizeof(gSaveGlobals));
+    fio_write_flash(GLOBALS_PAGE_2, (s8*) &gSaveGlobals, sizeof(gSaveGlobals));
     return true;
 }
 
 s32 fio_calc_file_checksum(SaveData* saveData) {
-    s32* it = (s32*)saveData;
+    s32* it = (s32*) saveData;
     u32 sum = 0;
     u32 i;
 
@@ -214,7 +214,7 @@ void fio_save_game(s32 saveSlot) {
     gCurrentSaveFile.crc2 = ~gCurrentSaveFile.crc1;
 
     fio_erase_flash(NextAvailablePhysicalSave);
-    fio_write_flash(NextAvailablePhysicalSave, (s8*)&gCurrentSaveFile, sizeof(SaveData));
+    fio_write_flash(NextAvailablePhysicalSave, (s8*) &gCurrentSaveFile, sizeof(SaveData));
 }
 
 void fio_erase_game(s32 saveSlot) {
@@ -237,11 +237,11 @@ b32 fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes) {
     OSIoMesg mb;
     OSMesgQueue mesgQueue;
     OSMesg mesg;
-    s8* buf = (s8*)readBuffer;
+    s8* buf = (s8*) readBuffer;
     s32 amt;
     u16 i;
 
-    ASSERT_MSG(((u32)buf & 7) == 0, "fio_read_flash: dest not 8-byte aligned");
+    ASSERT_MSG(((u32) buf & 7) == 0, "fio_read_flash: dest not 8-byte aligned");
 
     osInvalDCache(buf, numBytes);
     osCreateMesgQueue(&mesgQueue, &mesg, 1);

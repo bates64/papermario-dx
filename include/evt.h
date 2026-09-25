@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _EVT_H_
+#define _EVT_H_
 
 #include "ultra64.h"
 
@@ -237,3 +238,5 @@ enum EventStateFlags {
     EVT_FLAG_THREAD             = 0x40,
     EVT_FLAG_SUSPENDED          = 0x80, ///< doesn't affect child
 };
+
+#endif

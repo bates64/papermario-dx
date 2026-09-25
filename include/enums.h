@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _ENUMS_H_
+#define _ENUMS_H_
 
 #include "ultra64.h"
 #include "types.h"
@@ -3281,7 +3282,8 @@ enum RenderModeIndex {
 };
 
 // predefined configurations for RDP geometry and render modes
-// though these are called "render modes", they do not strictly correspond to the RDP render modes (as supplied to gDPSetRenderMode)
+// though these are called "render modes", they do not strictly correspond to the RDP render modes (as supplied to
+// gDPSetRenderMode)
 enum RenderMode {
     // opaque render modes
     RENDER_MODE_SURF_SOLID_AA_ZB_LAYER0          = 0x00,
@@ -5953,3 +5955,5 @@ enum LandingCamAdjustMode {
     LANDING_CAM_CHECK_SURFACE = 1,  // allow landing cam unless the surface is lava
     LANDING_CAM_ALWAYS_ADJUST = 2,
 };
+
+#endif

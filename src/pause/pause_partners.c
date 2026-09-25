@@ -16,11 +16,21 @@ extern s8 gPauseBufferImg1[15752];
 extern s8 gPauseBufferPal2[512];
 extern s8 gPauseBufferImg2[15752];
 
-void pause_partners_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
-void pause_partners_draw_title(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
-void pause_partners_draw_movelist(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
-void pause_partners_draw_movelist_title(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
-void pause_partners_draw_movelist_flower(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
+void pause_partners_draw_contents(
+    MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening
+);
+void pause_partners_draw_title(
+    MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening
+);
+void pause_partners_draw_movelist(
+    MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening
+);
+void pause_partners_draw_movelist_title(
+    MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening
+);
+void pause_partners_draw_movelist_flower(
+    MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening
+);
 void pause_partners_init(MenuPanel* panel);
 void pause_partners_handle_input(MenuPanel* panel);
 void pause_partners_update(MenuPanel* panel);
@@ -262,7 +272,7 @@ MenuWindowBP gPausePartnersWindowBPs[] = {
         .style = { -1 }
     }
 };
-u8 gPausePartnersPortraitScrollInterpTable[] = {0, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8 };
+u8 gPausePartnersPortraitScrollInterpTable[] = { 0, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8 };
 MenuPanel gPausePanelPartners = {
     .initialized = false,
     .col = 0,
@@ -303,7 +313,9 @@ void pause_partners_load_portrait(s32 index) {
     }
 }
 
-void pause_partners_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+void pause_partners_draw_contents(
+    MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening
+) {
     Matrix4f matrix;
     Matrix4f matrix2;
     PartnerPosition partnerPositions[8];
@@ -322,10 +334,14 @@ void pause_partners_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
     gSPViewport(gMainGfxPos++, &gPausePartnersViewport);
     guOrthoF(matrix, 0.0f, 320.0f, 240.0f, 0.0f, -100.0f, 100.0f, 1.0f);
     guMtxF2L(matrix, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+    );
     guTranslateF(matrix, 0.0f, 0.0f, 0.0f);
     guMtxF2L(matrix, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     for (i = 0; i < gPausePartnersNumPartners; i++) {
         currentPos = cos_deg(i * 360 / gPausePartnersNumPartners - gPausePartnersRotAngle) * 20.0f + 0.0f;
@@ -337,7 +353,7 @@ void pause_partners_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
         }
 
         for (k = gPausePartnersNumPartners - 1; k > j; k--) {
-            partnerPositions[k] = partnerPositions[k-1];
+            partnerPositions[k] = partnerPositions[k - 1];
         }
 
         partnerPositions[j].index = i;
@@ -366,7 +382,9 @@ void pause_partners_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
         } else {
             color = 255.0f - offsetZ * 95.0f * 0.125f;
         }
-        set_npc_imgfx_all(gPausePartnersSpriteIDs[gPausePartnersPartnerIdx[index]], IMGFX_SET_COLOR, color, color, color, 255, 64);
+        set_npc_imgfx_all(
+            gPausePartnersSpriteIDs[gPausePartnersPartnerIdx[index]], IMGFX_SET_COLOR, color, color, color, 255, 64
+        );
         spr_draw_npc_sprite(gPausePartnersSpriteIDs[gPausePartnersPartnerIdx[index]], 0, 0, nullptr, matrix);
     }
 
@@ -424,11 +442,14 @@ void pause_partners_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
                 tileHeight = 106 - 12 * index;
             }
 
-            gDPLoadTextureTile(gMainGfxPos++, gPausePartnersImageBuffers[i], G_IM_FMT_CI, G_IM_SIZ_8b, 150, 0,
-                                0, 12 * index, 149, 12 * index + tileHeight - 1, 0,
-                                G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            pause_draw_rect((baseX + 130 + portraitOffsetX) * 4, (baseY + 24 + 12 * index) * 4, (baseX + 280 + portraitOffsetX) * 4, (baseY + 24 + 12 * index + tileHeight) * 4, 0, 0,
-                            12 * index * 32, 0x400, 0x400);
+            gDPLoadTextureTile(
+                gMainGfxPos++, gPausePartnersImageBuffers[i], G_IM_FMT_CI, G_IM_SIZ_8b, 150, 0, 0, 12 * index, 149,
+                12 * index + tileHeight - 1, 0, G_TX_CLAMP, G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+            );
+            pause_draw_rect(
+                (baseX + 130 + portraitOffsetX) * 4, (baseY + 24 + 12 * index) * 4, (baseX + 280 + portraitOffsetX) * 4,
+                (baseY + 24 + 12 * index + tileHeight) * 4, 0, 0, 12 * index * 32, 0x400, 0x400
+            );
             gDPPipeSync(gMainGfxPos++);
             if (12 * index + 12 >= 105) {
                 break;
@@ -462,18 +483,26 @@ void pause_partners_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
 
         gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, x1, y1, x2, y2);
     }
-    draw_box(0, &gPauseWS_21, baseX + 122, baseY + 16, 0, 166, 121, opacity, darkening, 1.0f, 1.0f, 0, 0, 0, 0, 0, 0, width, height, 0);
+    draw_box(
+        0, &gPauseWS_21, baseX + 122, baseY + 16, 0, 166, 121, opacity, darkening, 1.0f, 1.0f, 0, 0, 0, 0, 0, 0, width,
+        height, 0
+    );
 }
 
-void pause_partners_draw_title(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
-    s32 msgID = gPartnerPopupProperties[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].nameMsg;
-    s32 level = gPlayerData.partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
+void pause_partners_draw_title(
+    MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening
+) {
+    s32 msgID =
+        gPartnerPopupProperties[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]]
+            .nameMsg;
+    s32 level =
+        gPlayerData.partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
     s32 msgWidth = get_msg_width(msgID, 0);
     s32 offset;
 
     if (level == PARTNER_RANK_SUPER) {
         offset = 16;
-    } else  if (level == PARTNER_RANK_ULTRA) {
+    } else if (level == PARTNER_RANK_ULTRA) {
         offset = 20;
     } else {
         offset = 0;
@@ -496,13 +525,16 @@ void pause_partners_draw_title(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
     }
 }
 
-void pause_partners_draw_movelist(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+void pause_partners_draw_movelist(
+    MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening
+) {
     s32 i;
     s32 moveNameID;
     s32 costFP;
     s32 posX, posY;
     s32 style;
-    s32 level = gPlayerData.partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
+    s32 level =
+        gPlayerData.partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
 
     if (level == PARTNER_RANK_ULTRA) {
         level = 4;
@@ -522,20 +554,25 @@ void pause_partners_draw_movelist(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
         style = DRAW_NUMBER_CHARSET_THIN;
 
         if (i == 0) {
-            moveNameID = gMoveTable[gPausePartnersMoveBase[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].nameMsg;
+            moveNameID =
+                gMoveTable[gPausePartnersMoveBase[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].nameMsg;
         } else {
-            moveNameID =  gMoveTable[gPausePartnersMoveBase[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]] + 2 + i].nameMsg;
+            moveNameID =
+                gMoveTable[gPausePartnersMoveBase[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]] + 2 + i]
+                    .nameMsg;
         }
 
         if (i > 0) {
-            costFP = gMoveTable[gPausePartnersMoveBase[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]] + 2 + i].costFP;
+            costFP =
+                gMoveTable[gPausePartnersMoveBase[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]] + 2 + i]
+                    .costFP;
         } else {
             costFP = 0;
         }
 
         draw_msg(moveNameID, posX, posY, 255, MSG_PAL_STANDARD, style);
         hud_element_set_scale(gPausePartnersHIDs[i + 4], 0.5f);
-        //TODO find better match
+        // TODO find better match
         hud_element_set_render_pos(gPausePartnersHIDs[i + 4], 12 - (-baseX), baseY + 28 + i * 13);
         hud_element_draw_without_clipping(gPausePartnersHIDs[i + 4]);
 
@@ -546,10 +583,15 @@ void pause_partners_draw_movelist(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
             xOffset = D_PAL_80271B44[gCurrentLanguage];
 #endif
 
-            draw_number(costFP, baseX + xOffset, baseY + 22 + i * 13, style, MSG_PAL_STANDARD, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+            draw_number(
+                costFP, baseX + xOffset, baseY + 22 + i * 13, style, MSG_PAL_STANDARD, 255,
+                DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+            );
             if (costFP > 0) {
 #if VERSION_PAL
-                hud_element_set_render_pos(gPausePartnersHIDs[0], baseX + D_PAL_80271B44[gCurrentLanguage] + 9, baseY + 29 + i * 13);
+                hud_element_set_render_pos(
+                    gPausePartnersHIDs[0], baseX + D_PAL_80271B44[gCurrentLanguage] + 9, baseY + 29 + i * 13
+                );
 #else
                 hud_element_set_render_pos(gPausePartnersHIDs[0], baseX + 134, baseY + 29 + i * 13);
 #endif
@@ -563,7 +605,9 @@ void pause_partners_draw_movelist(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
     }
 }
 
-void pause_partners_draw_movelist_title(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+void pause_partners_draw_movelist_title(
+    MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening
+) {
     s32 msgID = pause_get_menu_msg(PAUSE_MSG_PARTNER_ABILITIES);
     s32 xOffset;
 
@@ -576,7 +620,9 @@ void pause_partners_draw_movelist_title(MenuPanel* menu, s32 baseX, s32 baseY, s
     draw_msg(msgID, baseX + xOffset, baseY + 1, 255, -1, DRAW_MSG_STYLE_MENU);
 }
 
-void pause_partners_draw_movelist_flower(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+void pause_partners_draw_movelist_flower(
+    MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening
+) {
     hud_element_set_render_pos(gPausePartnersHIDs[1], baseX + 17, baseY + 16);
     hud_element_draw_without_clipping(gPausePartnersHIDs[1]);
 }
@@ -679,7 +725,8 @@ void pause_partners_handle_input(MenuPanel* panel) {
         }
     }
 
-    level = gPlayerData.partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
+    level =
+        gPlayerData.partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
     if (level == PARTNER_RANK_ULTRA) {
         level = 4;
     } else if (level == PARTNER_RANK_SUPER) {
@@ -693,7 +740,9 @@ void pause_partners_handle_input(MenuPanel* panel) {
     if (gPausePartnersLevel == 1) {
         oldPos = gPausePartnersSelectedMove;
 
-        level2 = gPlayerData.partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
+        level2 =
+            gPlayerData.partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]]
+                .level;
         if (level2 == 2) {
             level2 = 4;
         } else if (level2 == 1) {
@@ -745,9 +794,13 @@ void pause_partners_handle_input(MenuPanel* panel) {
     if (gPausePartnersLevel == 0) {
         gPauseCurrentDescMsg = gPausePartnersMessages[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]];
     } else if (gPausePartnersSelectedMove == 0) {
-        gPauseCurrentDescMsg = gMoveTable[gPausePartnersMoveBase[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].fullDescMsg;
+        gPauseCurrentDescMsg =
+            gMoveTable[gPausePartnersMoveBase[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].fullDescMsg;
     } else {
-        gPauseCurrentDescMsg = gMoveTable[gPausePartnersMoveBase[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]] + 2 + gPausePartnersSelectedMove].fullDescMsg;
+        gPauseCurrentDescMsg = gMoveTable
+                                   [gPausePartnersMoveBase[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]
+                                    + 2 + gPausePartnersSelectedMove]
+                                       .fullDescMsg;
     }
 }
 
@@ -759,22 +812,28 @@ void pause_partners_update(MenuPanel* panel) {
     s32 sgn;
 
     deltaBefore = gPausePartnersCurrentPartnerIdx * 360 / gPausePartnersNumPartners - gPausePartnersRotAngle;
-    absValue = abs((s32)deltaBefore);
+    absValue = abs((s32) deltaBefore);
     sgn = sign(deltaBefore);
 
     if (absValue >= 16) {
         delta = deltaBefore * 0.3;
     } else {
         delta = sgn * gPausePartnersPortraitScrollInterpTable[absValue];
-        gPausePartnersRotAngle = (int)gPausePartnersRotAngle;
+        gPausePartnersRotAngle = (int) gPausePartnersRotAngle;
     }
     gPausePartnersRotAngle += delta;
 
     for (i = 0; i < gPausePartnersNumPartners; i++) {
         if (i == gPausePartnersCurrentPartnerIdx) {
-            spr_update_sprite(gPausePartnersSpriteIDs[gPausePartnersPartnerIdx[i]], gPausePartnersSpriteAnims[gPausePartnersPartnerIdx[i]][1], 1.0f);
+            spr_update_sprite(
+                gPausePartnersSpriteIDs[gPausePartnersPartnerIdx[i]],
+                gPausePartnersSpriteAnims[gPausePartnersPartnerIdx[i]][1], 1.0f
+            );
         } else {
-            spr_update_sprite(gPausePartnersSpriteIDs[gPausePartnersPartnerIdx[i]], gPausePartnersSpriteAnims[gPausePartnersPartnerIdx[i]][0], 1.0f);
+            spr_update_sprite(
+                gPausePartnersSpriteIDs[gPausePartnersPartnerIdx[i]],
+                gPausePartnersSpriteAnims[gPausePartnersPartnerIdx[i]][0], 1.0f
+            );
         }
     }
 }

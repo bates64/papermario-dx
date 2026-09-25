@@ -159,7 +159,9 @@ HitResult calc_enemy_test_target(Actor* actor) {
 
     hitResult = HIT_RESULT_HIT;
     target2 = target;
-    if (targetPart->eventFlags & ACTOR_EVENT_FLAG_ILLUSORY || battleStatus->outtaSightActive || target2->transparentStatus == STATUS_KEY_TRANSPARENT) {
+    if (targetPart->eventFlags & ACTOR_EVENT_FLAG_ILLUSORY || battleStatus->outtaSightActive
+        || target2->transparentStatus == STATUS_KEY_TRANSPARENT)
+    {
         if (!(battleStatus->curAttackElement & DAMAGE_TYPE_MAGIC)) {
             hitResult = HIT_RESULT_MISS;
         }
@@ -280,8 +282,9 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
     }
 
     if (target->transparentStatus == STATUS_KEY_TRANSPARENT
-        || ((targetPart->eventFlags & ACTOR_EVENT_FLAG_BURIED) && !(battleStatus->curAttackElement & DAMAGE_TYPE_QUAKE))
-    ) {
+        || ((targetPart->eventFlags & ACTOR_EVENT_FLAG_BURIED)
+            && !(battleStatus->curAttackElement & DAMAGE_TYPE_QUAKE)))
+    {
         return HIT_RESULT_MISS;
     }
 
@@ -297,8 +300,8 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
 
     if (battleStatus->curAttackElement & DAMAGE_TYPE_BLAST) {
         if (!(battleStatus->curAttackElement & DAMAGE_TYPE_NO_CONTACT)
-            && (targetPart->eventFlags & ACTOR_EVENT_FLAG_EXPLODE_ON_IGNITION)
-        ) {
+            && (targetPart->eventFlags & ACTOR_EVENT_FLAG_EXPLODE_ON_IGNITION))
+        {
             play_hit_sound(attacker, state->goalPos.x, state->goalPos.y, state->goalPos.z, 3);
             dispatch_event_general(target, EVENT_EXPLODE_TRIGGER);
             return HIT_RESULT_BACKFIRE;
@@ -423,10 +426,9 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
     switch (actorClass) {
         case ACTOR_CLASS_PLAYER:
             // TODO figure out how to better write target->debuff >= STATUS_KEY_POISON
-            if ((target->debuff == 0 || target->debuff >= STATUS_KEY_POISON)
-                && (target->stoneStatus == 0)
-                && !(battleStatus->curAttackElement & DAMAGE_TYPE_UNBLOCKABLE)
-            ) {
+            if ((target->debuff == 0 || target->debuff >= STATUS_KEY_POISON) && (target->stoneStatus == 0)
+                && !(battleStatus->curAttackElement & DAMAGE_TYPE_UNBLOCKABLE))
+            {
                 s32 blocked;
 
                 if (player_team_is_ability_active(target, ABILITY_BERSERKER)) {
@@ -438,8 +440,12 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
                 if (blocked) {
                     damage--;
                     damage -= player_team_is_ability_active(target, ABILITY_DAMAGE_DODGE);
-                    sfx_play_sound_at_position(SOUND_DAMAGE_STARS, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
-                    show_action_rating(ACTION_RATING_NICE, target, state->goalPos.x, state->goalPos.y, state->goalPos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_DAMAGE_STARS, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z
+                    );
+                    show_action_rating(
+                        ACTION_RATING_NICE, target, state->goalPos.x, state->goalPos.y, state->goalPos.z
+                    );
                     gBattleStatus.flags1 |= BS_FLAGS1_ATK_BLOCKED;
                     break;
                 }
@@ -451,8 +457,13 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
                 if (target->koStatus == 0 && !(battleStatus->curAttackElement & DAMAGE_TYPE_UNBLOCKABLE)) {
                     if (check_block_input(BUTTON_A)) {
                         damage = 0;
-                        sfx_play_sound_at_position(SOUND_DAMAGE_STARS, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
-                        show_action_rating(ACTION_RATING_NICE, target, state->goalPos.x, state->goalPos.y, state->goalPos.z);
+                        sfx_play_sound_at_position(
+                            SOUND_DAMAGE_STARS, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y,
+                            state->goalPos.z
+                        );
+                        show_action_rating(
+                            ACTION_RATING_NICE, target, state->goalPos.x, state->goalPos.y, state->goalPos.z
+                        );
                         gBattleStatus.flags1 |= BS_FLAGS1_ATK_BLOCKED;
                         break;
                     }
@@ -487,9 +498,8 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
         target->hpChangeCounter -= damage;
         battleStatus->lastAttackDamage = 0;
         hitResult = HIT_RESULT_HIT;
-        if (!(targetPart->flags & ACTOR_PART_FLAG_DAMAGE_IMMUNE)
-            && !(gBattleStatus.flags1 & BS_FLAGS1_TUTORIAL_BATTLE)
-        ) {
+        if (!(targetPart->flags & ACTOR_PART_FLAG_DAMAGE_IMMUNE) && !(gBattleStatus.flags1 & BS_FLAGS1_TUTORIAL_BATTLE))
+        {
             if (!(target->flags & ACTOR_FLAG_NO_DMG_APPLY)) {
                 target->curHP -= damage;
             }
@@ -529,8 +539,8 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
 
     if ((gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS)
         && (battleStatus->curAttackElement & (DAMAGE_TYPE_POW | DAMAGE_TYPE_QUAKE | DAMAGE_TYPE_JUMP))
-        && (targetPart->eventFlags & ACTOR_EVENT_FLAG_FLIPABLE)
-    ) {
+        && (targetPart->eventFlags & ACTOR_EVENT_FLAG_FLIPABLE))
+    {
         if (event == EVENT_HIT) {
             event = EVENT_FLIP_TRIGGER;
         }
@@ -541,8 +551,8 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
 
     if (!(gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS)
         && (battleStatus->curAttackElement & (DAMAGE_TYPE_POW | DAMAGE_TYPE_QUAKE | DAMAGE_TYPE_JUMP))
-        && (targetPart->eventFlags & ACTOR_EVENT_FLAG_FLIPABLE)
-    ) {
+        && (targetPart->eventFlags & ACTOR_EVENT_FLAG_FLIPABLE))
+    {
         if (event == EVENT_HIT_COMBO) {
             event = EVENT_FLIP_TRIGGER;
         }
@@ -552,8 +562,8 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
     }
 
     if ((gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS)
-        && (battleStatus->curAttackElement & (DAMAGE_TYPE_FIRE | DAMAGE_TYPE_BLAST | DAMAGE_TYPE_4000))
-    ) {
+        && (battleStatus->curAttackElement & (DAMAGE_TYPE_FIRE | DAMAGE_TYPE_BLAST | DAMAGE_TYPE_4000)))
+    {
         if (event == EVENT_HIT) {
             event = EVENT_BURN_HIT;
         }
@@ -583,52 +593,68 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
 
     // try inflicting status effect
 
-    if (gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS
-        && battleStatus->lastAttackDamage >= 0
-        && event != EVENT_DEATH
-        && event != EVENT_SPIN_SMASH_DEATH
-        && event != EVENT_EXPLODE_TRIGGER
-        && !(gBattleStatus.flags1 & BS_FLAGS1_ATK_BLOCKED)
-        && !(gBattleStatus.flags2 & BS_FLAGS2_IS_FIRST_STRIKE)
+    if (gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS && battleStatus->lastAttackDamage >= 0 && event != EVENT_DEATH
+        && event != EVENT_SPIN_SMASH_DEATH && event != EVENT_EXPLODE_TRIGGER
+        && !(gBattleStatus.flags1 & BS_FLAGS1_ATK_BLOCKED) && !(gBattleStatus.flags2 & BS_FLAGS2_IS_FIRST_STRIKE)
         && !(actorClass == ACTOR_PLAYER && is_ability_active(ABILITY_HEALTHY_HEALTHY) && (rand_int(100) < 50)))
     {
-        if ((battleStatus->curAttackStatus & STATUS_FLAG_SHRINK) && try_inflict_status(target, STATUS_KEY_SHRINK, STATUS_TURN_MOD_SHRINK)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_SHRINK)
+            && try_inflict_status(target, STATUS_KEY_SHRINK, STATUS_TURN_MOD_SHRINK))
+        {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if ((battleStatus->curAttackStatus & STATUS_FLAG_POISON) && try_inflict_status(target, STATUS_KEY_POISON, STATUS_TURN_MOD_POISON)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_POISON)
+            && try_inflict_status(target, STATUS_KEY_POISON, STATUS_TURN_MOD_POISON))
+        {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if ((battleStatus->curAttackStatus & STATUS_FLAG_STONE) && try_inflict_status(target, STATUS_KEY_STONE, STATUS_TURN_MOD_STONE)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_STONE)
+            && try_inflict_status(target, STATUS_KEY_STONE, STATUS_TURN_MOD_STONE))
+        {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if ((battleStatus->curAttackStatus & STATUS_FLAG_SLEEP) && try_inflict_status(target, STATUS_KEY_SLEEP, STATUS_TURN_MOD_SLEEP)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_SLEEP)
+            && try_inflict_status(target, STATUS_KEY_SLEEP, STATUS_TURN_MOD_SLEEP))
+        {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if ((battleStatus->curAttackStatus & STATUS_FLAG_DIZZY) && try_inflict_status(target, STATUS_KEY_DIZZY, STATUS_TURN_MOD_DIZZY)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_DIZZY)
+            && try_inflict_status(target, STATUS_KEY_DIZZY, STATUS_TURN_MOD_DIZZY))
+        {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if ((battleStatus->curAttackStatus & STATUS_FLAG_STOP) && try_inflict_status(target, STATUS_KEY_STOP, STATUS_TURN_MOD_STOP)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_STOP)
+            && try_inflict_status(target, STATUS_KEY_STOP, STATUS_TURN_MOD_STOP))
+        {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if ((battleStatus->curAttackStatus & STATUS_FLAG_STATIC) && try_inflict_status(target, STATUS_KEY_STATIC, STATUS_TURN_MOD_STATIC)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_STATIC)
+            && try_inflict_status(target, STATUS_KEY_STATIC, STATUS_TURN_MOD_STATIC))
+        {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if ((battleStatus->curAttackStatus & STATUS_FLAG_PARALYZE) && try_inflict_status(target, STATUS_KEY_PARALYZE, STATUS_TURN_MOD_PARALYZE)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_PARALYZE)
+            && try_inflict_status(target, STATUS_KEY_PARALYZE, STATUS_TURN_MOD_PARALYZE))
+        {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if ((battleStatus->curAttackStatus & STATUS_FLAG_UNUSED) && try_inflict_status(target, STATUS_KEY_UNUSED, STATUS_TURN_MOD_UNUSED)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_UNUSED)
+            && try_inflict_status(target, STATUS_KEY_UNUSED, STATUS_TURN_MOD_UNUSED))
+        {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if ((battleStatus->curAttackStatus & STATUS_FLAG_FROZEN) && target->debuff != STATUS_KEY_FROZEN && try_inflict_status(target, STATUS_KEY_FROZEN, STATUS_TURN_MOD_FROZEN)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_FROZEN) && target->debuff != STATUS_KEY_FROZEN
+            && try_inflict_status(target, STATUS_KEY_FROZEN, STATUS_TURN_MOD_FROZEN))
+        {
             statusInflicted = true;
             wasSpecialHit = true;
         }
@@ -659,10 +685,8 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
             break;
     }
 
-    if (actorClass == ACTOR_CLASS_PARTNER
-        && battleStatus->lastAttackDamage > 0
-        && gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS
-        && !(target->flags & ACTOR_FLAG_NO_DMG_APPLY))
+    if (actorClass == ACTOR_CLASS_PARTNER && battleStatus->lastAttackDamage > 0
+        && gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS && !(target->flags & ACTOR_FLAG_NO_DMG_APPLY))
     {
         inflict_partner_ko(target, STATUS_KEY_KO, battleStatus->lastAttackDamage);
     }
@@ -676,11 +700,19 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
                         show_immune_bonk(state->goalPos.x, state->goalPos.y, state->goalPos.z, 0, 1, -3);
                     }
                 } else if (battleStatus->curAttackElement & (DAMAGE_TYPE_MULTIPLE_POPUPS | DAMAGE_TYPE_SMASH)) {
-                    show_next_damage_popup(state->goalPos.x, state->goalPos.y, state->goalPos.z, battleStatus->lastAttackDamage, 1);
-                    show_damage_fx(target, state->goalPos.x, state->goalPos.y, state->goalPos.z, battleStatus->lastAttackDamage);
+                    show_next_damage_popup(
+                        state->goalPos.x, state->goalPos.y, state->goalPos.z, battleStatus->lastAttackDamage, 1
+                    );
+                    show_damage_fx(
+                        target, state->goalPos.x, state->goalPos.y, state->goalPos.z, battleStatus->lastAttackDamage
+                    );
                 } else {
-                    show_primary_damage_popup(state->goalPos.x, state->goalPos.y, state->goalPos.z, battleStatus->lastAttackDamage, 1);
-                    show_damage_fx(target, state->goalPos.x, state->goalPos.y, state->goalPos.z, battleStatus->lastAttackDamage);
+                    show_primary_damage_popup(
+                        state->goalPos.x, state->goalPos.y, state->goalPos.z, battleStatus->lastAttackDamage, 1
+                    );
+                    show_damage_fx(
+                        target, state->goalPos.x, state->goalPos.y, state->goalPos.z, battleStatus->lastAttackDamage
+                    );
                     break;
                 }
                 break;
@@ -690,11 +722,19 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
                         show_immune_bonk(state->goalPos.x, state->goalPos.y, state->goalPos.z, 0, 1, 3);
                     }
                 } else if (battleStatus->curAttackElement & (DAMAGE_TYPE_MULTIPLE_POPUPS | DAMAGE_TYPE_SMASH)) {
-                    show_next_damage_popup(state->goalPos.x, state->goalPos.y, state->goalPos.z, battleStatus->lastAttackDamage, 0);
-                    show_damage_fx(target, state->goalPos.x, state->goalPos.y, state->goalPos.z, battleStatus->lastAttackDamage);
+                    show_next_damage_popup(
+                        state->goalPos.x, state->goalPos.y, state->goalPos.z, battleStatus->lastAttackDamage, 0
+                    );
+                    show_damage_fx(
+                        target, state->goalPos.x, state->goalPos.y, state->goalPos.z, battleStatus->lastAttackDamage
+                    );
                 } else {
-                    show_primary_damage_popup(state->goalPos.x, state->goalPos.y, state->goalPos.z, battleStatus->lastAttackDamage, 0);
-                    show_damage_fx(target, state->goalPos.x, state->goalPos.y, state->goalPos.z, battleStatus->lastAttackDamage);
+                    show_primary_damage_popup(
+                        state->goalPos.x, state->goalPos.y, state->goalPos.z, battleStatus->lastAttackDamage, 0
+                    );
+                    show_damage_fx(
+                        target, state->goalPos.x, state->goalPos.y, state->goalPos.z, battleStatus->lastAttackDamage
+                    );
                 }
                 break;
         }
@@ -706,7 +746,9 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
         set_actor_flash_mode(target, 1);
 
         if (attacker->actorTypeData1[5] != SOUND_NONE) {
-            sfx_play_sound_at_position(attacker->actorTypeData1[5], SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
+            sfx_play_sound_at_position(
+                attacker->actorTypeData1[5], SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z
+            );
         }
 
         if (isFire) {
@@ -720,8 +762,12 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
         play_hit_sound(target, state->goalPos.x, state->goalPos.y, state->goalPos.z, hitSound);
     }
 
-    if ((battleStatus->lastAttackDamage < 1 && !wasSpecialHit && !madeElectricContact) || targetPart->flags & ACTOR_PART_FLAG_DAMAGE_IMMUNE) {
-        sfx_play_sound_at_position(SOUND_IMMUNE, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
+    if ((battleStatus->lastAttackDamage < 1 && !wasSpecialHit && !madeElectricContact)
+        || targetPart->flags & ACTOR_PART_FLAG_DAMAGE_IMMUNE)
+    {
+        sfx_play_sound_at_position(
+            SOUND_IMMUNE, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z
+        );
     }
 
     if ((battleStatus->curAttackStatus & STATUS_FLAG_SLEEP) && statusInflicted) {
@@ -729,35 +775,45 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
         script->varTable[0] = state->goalPos.x;
         script->varTable[1] = state->goalPos.y;
         script->varTable[2] = state->goalPos.z;
-        sfx_play_sound_at_position(SOUND_INFLICT_SLEEP, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
+        sfx_play_sound_at_position(
+            SOUND_INFLICT_SLEEP, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z
+        );
     }
     if ((battleStatus->curAttackStatus & STATUS_FLAG_DIZZY) && statusInflicted) {
         script = start_script(&EVS_PlayDizzyHitFX, EVT_PRIORITY_A, 0);
         script->varTable[0] = state->goalPos.x;
         script->varTable[1] = state->goalPos.y;
         script->varTable[2] = state->goalPos.z;
-        sfx_play_sound_at_position(SOUND_INFLICT_STATUS, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
+        sfx_play_sound_at_position(
+            SOUND_INFLICT_STATUS, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z
+        );
     }
     if ((battleStatus->curAttackStatus & STATUS_FLAG_PARALYZE) && statusInflicted) {
         script = start_script(&EVS_PlayParalyzeHitFX, EVT_PRIORITY_A, 0);
         script->varTable[0] = state->goalPos.x;
         script->varTable[1] = state->goalPos.y;
         script->varTable[2] = state->goalPos.z;
-        sfx_play_sound_at_position(SOUND_INFLICT_STATUS, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
+        sfx_play_sound_at_position(
+            SOUND_INFLICT_STATUS, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z
+        );
     }
     if ((battleStatus->curAttackStatus & STATUS_FLAG_POISON) && statusInflicted) {
         script = start_script(&EVS_PlayPoisonHitFX, EVT_PRIORITY_A, 0);
         script->varTable[0] = state->goalPos.x;
         script->varTable[1] = state->goalPos.y;
         script->varTable[2] = state->goalPos.z;
-        sfx_play_sound_at_position(SOUND_INFLICT_STATUS, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
+        sfx_play_sound_at_position(
+            SOUND_INFLICT_STATUS, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z
+        );
     }
     if ((battleStatus->curAttackStatus & STATUS_FLAG_STOP) && statusInflicted) {
         script = start_script(&EVS_PlayStopHitFX, EVT_PRIORITY_A, 0);
         script->varTable[0] = state->goalPos.x;
         script->varTable[1] = state->goalPos.y;
         script->varTable[2] = state->goalPos.z;
-        sfx_play_sound_at_position(SOUND_INFLICT_STATUS, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
+        sfx_play_sound_at_position(
+            SOUND_INFLICT_STATUS, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z
+        );
     }
     if ((battleStatus->curAttackStatus & STATUS_FLAG_FROZEN) && statusInflicted) {
         script = start_script(&EVS_PlayFreezeHitFX, EVT_PRIORITY_A, 0);
@@ -765,7 +821,9 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
         script->varTable[1] = state->goalPos.y;
         script->varTable[2] = state->goalPos.z;
         script->varTablePtr[3] = target;
-        sfx_play_sound_at_position(SOUND_HIT_ICE, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
+        sfx_play_sound_at_position(
+            SOUND_HIT_ICE, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z
+        );
     }
     if ((battleStatus->curAttackStatus & STATUS_FLAG_SHRINK) && statusInflicted) {
         script = start_script(&EVS_PlayShrinkHitFX, EVT_PRIORITY_A, 0);
@@ -773,11 +831,15 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
         script->varTable[1] = state->goalPos.y;
         script->varTable[2] = state->goalPos.z;
         script->varTablePtr[3] = target;
-        sfx_play_sound_at_position(SOUND_INFLICT_STATUS, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
+        sfx_play_sound_at_position(
+            SOUND_INFLICT_STATUS, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z
+        );
     }
 
     if ((battleStatus->curAttackElement & DAMAGE_TYPE_SMASH) && target->actorType == ACTOR_TYPE_GOOMNUT_TREE) {
-        sfx_play_sound_at_position(SOUND_SMACK_TREE, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
+        sfx_play_sound_at_position(
+            SOUND_SMACK_TREE, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z
+        );
     }
 
     show_actor_health_bar(target);
@@ -786,10 +848,11 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
         && (target->staticStatus == STATUS_KEY_STATIC || targetPart->eventFlags & ACTOR_EVENT_FLAG_ELECTRIFIED)
         && !(battleStatus->curAttackElement & DAMAGE_TYPE_NO_CONTACT)
         && !(battleStatus->curAttackEventSuppression & SUPPRESS_EVENT_SHOCK_CONTACT)
-        && (attacker->transparentStatus != STATUS_KEY_TRANSPARENT)
-        && !has_enchanted_part(attacker))
+        && (attacker->transparentStatus != STATUS_KEY_TRANSPARENT) && !has_enchanted_part(attacker))
     {
-        sfx_play_sound_at_position(SOUND_HIT_SHOCK, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
+        sfx_play_sound_at_position(
+            SOUND_HIT_SHOCK, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z
+        );
         apply_shock_effect(attacker);
         dispatch_contact_damage_event_actor(attacker, 1, EVENT_SHOCK_HIT);
         return HIT_RESULT_BACKFIRE;
@@ -845,8 +908,14 @@ s32 dispatch_damage_event_actor(Actor* actor, s32 damageAmount, s32 originalEven
         s32 savedTargetActorID = actor->targetActorID;
 
         if (create_single_actor_target_list(actor, actor) != 0) {
-            show_next_damage_popup(actor->targetData[0].truePos.x, actor->targetData[0].truePos.y, actor->targetData[0].truePos.z, battleStatus->lastAttackDamage, 0);
-            show_damage_fx(actor, actor->targetData[0].truePos.x, actor->targetData[0].truePos.y, actor->targetData[0].truePos.z, battleStatus->lastAttackDamage);
+            show_next_damage_popup(
+                actor->targetData[0].truePos.x, actor->targetData[0].truePos.y, actor->targetData[0].truePos.z,
+                battleStatus->lastAttackDamage, 0
+            );
+            show_damage_fx(
+                actor, actor->targetData[0].truePos.x, actor->targetData[0].truePos.y, actor->targetData[0].truePos.z,
+                battleStatus->lastAttackDamage
+            );
         }
         actor->targetActorID = savedTargetActorID;
 
@@ -1062,7 +1131,9 @@ API_CALLABLE(JumpToGoal) {
             set_actor_anim(actor->actorID, (s8) actor->state.jumpPartIndex, actor->state.animJumpRise);
         }
         if (!(script->functionTemp[3] & 2) && (actor->actorTypeData1[4] != 0)) {
-            sfx_play_sound_at_position(actor->actorTypeData1[4], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
+            sfx_play_sound_at_position(
+                actor->actorTypeData1[4], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z
+            );
         }
         script->functionTemp[0] = 1;
     }
@@ -1093,7 +1164,9 @@ API_CALLABLE(JumpToGoal) {
     }
 
     if (script->functionTemp[3] & 1) {
-        play_movement_dust_effects(2, actorState->goalPos.x, actorState->goalPos.y, actorState->goalPos.z, actorState->angle);
+        play_movement_dust_effects(
+            2, actorState->goalPos.x, actorState->goalPos.y, actorState->goalPos.z, actorState->angle
+        );
     }
     actor->curPos.x = actorState->goalPos.x;
     actor->curPos.y = actorState->goalPos.y;
@@ -1181,7 +1254,9 @@ API_CALLABLE(IdleJumpToGoal) {
     movement->flyTime--;
     if (movement->flyTime <= 0) {
         if (script->functionTemp[3] != 0) {
-            play_movement_dust_effects(2, movement->goalPos.x, movement->goalPos.y, movement->goalPos.z, movement->angle);
+            play_movement_dust_effects(
+                2, movement->goalPos.x, movement->goalPos.y, movement->goalPos.z, movement->angle
+            );
         }
         actor->curPos.x = movement->goalPos.x;
         actor->curPos.y = movement->goalPos.y;
@@ -1248,7 +1323,9 @@ API_CALLABLE(JumpToGoalSimple2) {
         state->vel = ((state->acceleration * state->moveTime) * 0.5f) + (posY / state->moveTime);
         state->speed += moveDist / state->moveTime;
         if (actor->actorTypeData1[4] != 0) {
-            sfx_play_sound_at_position(actor->actorTypeData1[4], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
+            sfx_play_sound_at_position(
+                actor->actorTypeData1[4], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z
+            );
         }
         script->functionTemp[0] = true;
     }
@@ -1336,7 +1413,9 @@ API_CALLABLE(JumpWithBounce) {
         actorState->speed += moveDist / actorState->moveTime;
 
         if (actor->actorTypeData1[4] != 0) {
-            sfx_play_sound_at_position(actor->actorTypeData1[4], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
+            sfx_play_sound_at_position(
+                actor->actorTypeData1[4], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z
+            );
         }
         script->functionTemp[0] = true;
     }
@@ -1473,7 +1552,9 @@ API_CALLABLE(FallToGoal) {
         state->acceleration = (posY / state->moveTime - state->vel) / (-state->moveTime * 0.5);
 
         if (actor->actorTypeData1[4] != 0) {
-            sfx_play_sound_at_position(actor->actorTypeData1[4], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
+            sfx_play_sound_at_position(
+                actor->actorTypeData1[4], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z
+            );
         }
         script->functionTemp[0] = 1;
     }
@@ -1488,7 +1569,9 @@ API_CALLABLE(FallToGoal) {
     actor->state.moveTime--;
 
     if (actor->state.moveTime <= 0) {
-        play_movement_dust_effects(2, actor->state.goalPos.x, actor->state.goalPos.y, actor->state.goalPos.z, actor->state.angle);
+        play_movement_dust_effects(
+            2, actor->state.goalPos.x, actor->state.goalPos.y, actor->state.goalPos.z, actor->state.angle
+        );
         actor->curPos.x = actor->state.goalPos.x;
         actor->curPos.y = actor->state.goalPos.y;
         actor->curPos.z = actor->state.goalPos.z;
@@ -1555,7 +1638,9 @@ API_CALLABLE(RunToGoal) {
             actorState->dist = -(actor->actorTypeData1b[0] + 1);
         }
         if ((actor->actorTypeData1[0] != 0) && (actor->actorTypeData1[1] == 0)) {
-            sfx_play_sound_at_position(actor->actorTypeData1[0], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
+            sfx_play_sound_at_position(
+                actor->actorTypeData1[0], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z
+            );
         }
         script->functionTemp[0] = true;
     }
@@ -1566,9 +1651,13 @@ API_CALLABLE(RunToGoal) {
     add_xz_vec3f(&actorState->curPos, actorState->speed, actorState->angle);
     if (script->functionTemp[2] == 0) {
         if (actorState->speed < 4.0f) {
-            play_movement_dust_effects(0, actorState->curPos.x, actorState->curPos.y, actorState->curPos.z, actorState->angle);
+            play_movement_dust_effects(
+                0, actorState->curPos.x, actorState->curPos.y, actorState->curPos.z, actorState->angle
+            );
         } else {
-            play_movement_dust_effects(1, actorState->curPos.x, actorState->curPos.y, actorState->curPos.z, actorState->angle);
+            play_movement_dust_effects(
+                1, actorState->curPos.x, actorState->curPos.y, actorState->curPos.z, actorState->angle
+            );
         }
     }
     actor->curPos.x = actorState->curPos.x;
@@ -1582,11 +1671,17 @@ API_CALLABLE(RunToGoal) {
                 actorState->dist = 0.0f;
                 if (actor->footStepCounter & 1) {
                     if (actor->actorTypeData1[0] != 0) {
-                        sfx_play_sound_at_position(actor->actorTypeData1[0], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
+                        sfx_play_sound_at_position(
+                            actor->actorTypeData1[0], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y,
+                            actor->curPos.z
+                        );
                     }
                 } else {
                     if (actor->actorTypeData1[1] != 0) {
-                        sfx_play_sound_at_position(actor->actorTypeData1[1], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
+                        sfx_play_sound_at_position(
+                            actor->actorTypeData1[1], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y,
+                            actor->curPos.z
+                        );
                     }
                 }
             }
@@ -1597,11 +1692,17 @@ API_CALLABLE(RunToGoal) {
                 actorState->dist = 0.0f;
                 if (actor->footStepCounter & 1) {
                     if (actor->actorTypeData1[0] != 0) {
-                        sfx_play_sound_at_position(actor->actorTypeData1[0], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
+                        sfx_play_sound_at_position(
+                            actor->actorTypeData1[0], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y,
+                            actor->curPos.z
+                        );
                     }
                 } else {
                     if (actor->actorTypeData1[1] != 0) {
-                        sfx_play_sound_at_position(actor->actorTypeData1[1], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
+                        sfx_play_sound_at_position(
+                            actor->actorTypeData1[1], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y,
+                            actor->curPos.z
+                        );
                     }
                 }
             }
@@ -1774,7 +1875,10 @@ API_CALLABLE(JumpPartTo) {
         movement->moveSpeed += deltaDist / movement->moveTime;
         movement->unk_2C = movement->jumpScale * movement->moveTime * 0.5f + posY / movement->moveTime;
         if (part->partTypeData[4] != 0) {
-            sfx_play_sound_at_position(part->partTypeData[4], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y, part->absolutePos.z);
+            sfx_play_sound_at_position(
+                part->partTypeData[4], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y,
+                part->absolutePos.z
+            );
         }
         script->functionTemp[0] = 1;
     }
@@ -1791,7 +1895,9 @@ API_CALLABLE(JumpPartTo) {
 
     if (movement->moveTime <= 0) {
         if (script->functionTemp[3] != 0) {
-            play_movement_dust_effects(2, movement->goalPos.x, movement->goalPos.y, movement->goalPos.z, movement->angle);
+            play_movement_dust_effects(
+                2, movement->goalPos.x, movement->goalPos.y, movement->goalPos.z, movement->angle
+            );
         }
         part->absolutePos.x = movement->goalPos.x;
         part->absolutePos.y = movement->goalPos.y;
@@ -1865,7 +1971,10 @@ API_CALLABLE(FallPartTo) {
         movement->unk_2C = 0.0f;
         movement->jumpScale = (posY / movement->moveTime - movement->unk_2C) / (-movement->moveTime * 0.5);
         if (part->partTypeData[4] != 0) {
-            sfx_play_sound_at_position(part->partTypeData[4], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y, part->absolutePos.z);
+            sfx_play_sound_at_position(
+                part->partTypeData[4], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y,
+                part->absolutePos.z
+            );
         }
         script->functionTemp[0] = 1;
     }
@@ -1998,7 +2107,10 @@ API_CALLABLE(RunPartTo) {
             movement->dist = -(part->actorTypeData2b[0] + 1);
         }
         if (part->partTypeData[0] != 0 && part->partTypeData[1] == 0) {
-            sfx_play_sound_at_position(part->partTypeData[0], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y, part->absolutePos.z);
+            sfx_play_sound_at_position(
+                part->partTypeData[0], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y,
+                part->absolutePos.z
+            );
         }
         script->functionTemp[0] = 1;
     }
@@ -2009,9 +2121,13 @@ API_CALLABLE(RunPartTo) {
 
     add_xz_vec3f_copy1(&movement->absolutePos, movement->moveSpeed, movement->angle);
     if (movement->moveSpeed < 4.0f) {
-        play_movement_dust_effects(0, movement->absolutePos.x, movement->absolutePos.y, movement->absolutePos.z, movement->angle);
+        play_movement_dust_effects(
+            0, movement->absolutePos.x, movement->absolutePos.y, movement->absolutePos.z, movement->angle
+        );
     } else {
-        play_movement_dust_effects(1, movement->absolutePos.x, movement->absolutePos.y, movement->absolutePos.z, movement->angle);
+        play_movement_dust_effects(
+            1, movement->absolutePos.x, movement->absolutePos.y, movement->absolutePos.z, movement->angle
+        );
     }
     part->absolutePos.x = movement->absolutePos.x;
     part->absolutePos.y = movement->absolutePos.y;
@@ -2025,11 +2141,17 @@ API_CALLABLE(RunPartTo) {
                 movement->dist = 0;
                 if (actor->footStepCounter % 2 != 0) {
                     if (part->partTypeData[0] != 0) {
-                        sfx_play_sound_at_position(part->partTypeData[0], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y, part->absolutePos.z);
+                        sfx_play_sound_at_position(
+                            part->partTypeData[0], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y,
+                            part->absolutePos.z
+                        );
                     }
                 } else {
                     if (part->partTypeData[1] != 0) {
-                        sfx_play_sound_at_position(part->partTypeData[1], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y, part->absolutePos.z);
+                        sfx_play_sound_at_position(
+                            part->partTypeData[1], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y,
+                            part->absolutePos.z
+                        );
                     }
                 }
             }
@@ -2040,11 +2162,17 @@ API_CALLABLE(RunPartTo) {
                 movement->dist = 0;
                 if (actor->footStepCounter % 2 != 0) {
                     if (part->partTypeData[0] != 0) {
-                        sfx_play_sound_at_position(part->partTypeData[0], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y, part->absolutePos.z);
+                        sfx_play_sound_at_position(
+                            part->partTypeData[0], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y,
+                            part->absolutePos.z
+                        );
                     }
                 } else {
                     if (part->partTypeData[1] != 0) {
-                        sfx_play_sound_at_position(part->partTypeData[1], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y, part->absolutePos.z);
+                        sfx_play_sound_at_position(
+                            part->partTypeData[1], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y,
+                            part->absolutePos.z
+                        );
                     }
                 }
             }
@@ -2088,12 +2216,16 @@ f32 update_lerp_battle(s32 easing, f32 start, f32 end, s32 elapsed, s32 duration
             return start + QUART(elapsed) * (end - start) / QUART(duration);
         case EASING_COS_SLOW_OVERSHOOT:
             len1 = end - start;
-            return end - (len1 * cos_rad(((f32)elapsed / duration) * PI_D * 4.0) * (duration - elapsed) *
-                    (duration - elapsed)) / SQ((f32)duration);
+            return end
+                - (len1 * cos_rad(((f32) elapsed / duration) * PI_D * 4.0) * (duration - elapsed)
+                   * (duration - elapsed))
+                / SQ((f32) duration);
         case EASING_COS_FAST_OVERSHOOT:
             len2 = end - start;
-            return end - (len2 * cos_rad((((f32)SQ(elapsed) / duration) * PI_D * 4.0) / 15.0) * (duration - elapsed) *
-                    (duration - elapsed)) / SQ((f32)duration);
+            return end
+                - (len2 * cos_rad((((f32) SQ(elapsed) / duration) * PI_D * 4.0) / 15.0) * (duration - elapsed)
+                   * (duration - elapsed))
+                / SQ((f32) duration);
         case EASING_QUADRATIC_OUT:
             timeLeft = duration - elapsed;
             return start + (end - start) - ((SQ(timeLeft) * (end - start))) / SQ(duration);
@@ -2106,8 +2238,8 @@ f32 update_lerp_battle(s32 easing, f32 start, f32 end, s32 elapsed, s32 duration
             timeLeft = duration - elapsed;
             return start + len4 - ((QUART(timeLeft) * len4)) / QUART(duration);
         case EASING_COS_BOUNCE:
-            absMag = cos_rad((((f32)SQ(elapsed) / duration) * PI_D * 4.0) / 40.0) * (duration - elapsed) *
-                    (duration - elapsed) / SQ((f32)duration);
+            absMag = cos_rad((((f32) SQ(elapsed) / duration) * PI_D * 4.0) / 40.0) * (duration - elapsed)
+                * (duration - elapsed) / SQ((f32) duration);
             if (absMag < 0.0f) {
                 absMag = -absMag;
             }
@@ -2115,14 +2247,14 @@ f32 update_lerp_battle(s32 easing, f32 start, f32 end, s32 elapsed, s32 duration
         case EASING_COS_IN_OUT:
             len5 = end - start;
             start1 = start;
-            return start1 + (len5 * (1.0 - cos_rad(((f32)elapsed * PI_D) / (f32)duration)) / 2);
+            return start1 + (len5 * (1.0 - cos_rad(((f32) elapsed * PI_D) / (f32) duration)) / 2);
         case EASING_SIN_OUT:
             len6 = end - start;
             return start + (len6 * sin_rad((((f32) elapsed) * (PI_D / 2)) / ((f32) duration)));
         case EASING_COS_IN:
             len7 = end - start;
             start2 = start;
-            return start2 + (len7 * (1.0 - cos_rad(((f32)elapsed * (PI_D / 2)) / (f32)duration)));
+            return start2 + (len7 * (1.0 - cos_rad(((f32) elapsed * (PI_D / 2)) / (f32) duration)));
     }
 
     return 0.0f;
@@ -2195,16 +2327,27 @@ API_CALLABLE(FlyToGoal) {
             actorState->vel = -(actor->actorTypeData1b[1] + 1);
         }
         if ((actor->actorTypeData1[2] != 0) && (actor->actorTypeData1[3] == 0)) {
-            sfx_play_sound_at_position(actor->actorTypeData1[2], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
+            sfx_play_sound_at_position(
+                actor->actorTypeData1[2], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z
+            );
         }
     }
 
     actor = script->functionTempPtr[1];
     actorState = &actor->state;
 
-    actorState->curPos.x = update_lerp_battle(script->functionTemp[3], actorState->unk_18.x, actorState->goalPos.x, actorState->bounceDivisor, actorState->moveTime);
-    actorState->curPos.y = update_lerp_battle(script->functionTemp[3], actorState->unk_18.y, actorState->goalPos.y, actorState->bounceDivisor, actorState->moveTime);
-    actorState->curPos.z = update_lerp_battle(script->functionTemp[3], actorState->unk_18.z, actorState->goalPos.z, actorState->bounceDivisor, actorState->moveTime);
+    actorState->curPos.x = update_lerp_battle(
+        script->functionTemp[3], actorState->unk_18.x, actorState->goalPos.x, actorState->bounceDivisor,
+        actorState->moveTime
+    );
+    actorState->curPos.y = update_lerp_battle(
+        script->functionTemp[3], actorState->unk_18.y, actorState->goalPos.y, actorState->bounceDivisor,
+        actorState->moveTime
+    );
+    actorState->curPos.z = update_lerp_battle(
+        script->functionTemp[3], actorState->unk_18.z, actorState->goalPos.z, actorState->bounceDivisor,
+        actorState->moveTime
+    );
     if ((actorState->functionTemp[0]) && (actorState->curPos.y < 0.0f)) {
         actorState->bounceDivisor = actorState->moveTime;
         actorState->goalPos.x = actorState->curPos.x;
@@ -2231,11 +2374,17 @@ API_CALLABLE(FlyToGoal) {
                 actorState->vel = 0.0f;
                 if (actor->footStepCounter & 1) {
                     if (actor->actorTypeData1[2] != 0) {
-                        sfx_play_sound_at_position(actor->actorTypeData1[2], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
+                        sfx_play_sound_at_position(
+                            actor->actorTypeData1[2], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y,
+                            actor->curPos.z
+                        );
                     }
                 } else {
                     if (actor->actorTypeData1[3] != 0) {
-                        sfx_play_sound_at_position(actor->actorTypeData1[3], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
+                        sfx_play_sound_at_position(
+                            actor->actorTypeData1[3], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y,
+                            actor->curPos.z
+                        );
                     }
                 }
             }
@@ -2246,11 +2395,17 @@ API_CALLABLE(FlyToGoal) {
                 actorState->vel = 0.0f;
                 if (actor->footStepCounter & 1) {
                     if (actor->actorTypeData1[2] != 0) {
-                        sfx_play_sound_at_position(actor->actorTypeData1[2], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
+                        sfx_play_sound_at_position(
+                            actor->actorTypeData1[2], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y,
+                            actor->curPos.z
+                        );
                     }
                 } else {
                     if (actor->actorTypeData1[3] != 0) {
-                        sfx_play_sound_at_position(actor->actorTypeData1[3], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
+                        sfx_play_sound_at_position(
+                            actor->actorTypeData1[3], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y,
+                            actor->curPos.z
+                        );
                     }
                 }
             }
@@ -2344,9 +2499,15 @@ API_CALLABLE(IdleFlyToGoal) {
     actor = script->functionTempPtr[1];
     movement = &actor->fly;
 
-    movement->curPos.x = update_lerp_battle(script->functionTemp[3], movement->unk_18.x, movement->goalPos.x, movement->flyElapsed, movement->flyTime);
-    movement->curPos.y = update_lerp_battle(script->functionTemp[3], movement->unk_18.y, movement->goalPos.y, movement->flyElapsed, movement->flyTime);
-    movement->curPos.z = update_lerp_battle(script->functionTemp[3], movement->unk_18.z, movement->goalPos.z, movement->flyElapsed, movement->flyTime);
+    movement->curPos.x = update_lerp_battle(
+        script->functionTemp[3], movement->unk_18.x, movement->goalPos.x, movement->flyElapsed, movement->flyTime
+    );
+    movement->curPos.y = update_lerp_battle(
+        script->functionTemp[3], movement->unk_18.y, movement->goalPos.y, movement->flyElapsed, movement->flyTime
+    );
+    movement->curPos.z = update_lerp_battle(
+        script->functionTemp[3], movement->unk_18.z, movement->goalPos.z, movement->flyElapsed, movement->flyTime
+    );
 
     movement->flyElapsed += 1.0f;
     if (movement->flyTime < movement->flyElapsed) {
@@ -2449,7 +2610,10 @@ API_CALLABLE(FlyPartTo) {
         }
 
         if (part->partTypeData[2] != 0 && part->partTypeData[3] == 0) {
-            sfx_play_sound_at_position(part->partTypeData[2], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y, part->absolutePos.z);
+            sfx_play_sound_at_position(
+                part->partTypeData[2], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y,
+                part->absolutePos.z
+            );
         }
         partMovement->unk_3C = 0;
         partMovement->angle = 0.0f;
@@ -2464,9 +2628,18 @@ API_CALLABLE(FlyPartTo) {
     part = script->functionTempPtr[2];
     actor = script->functionTempPtr[1];
     partMovement = part->movement;
-    partMovement->absolutePos.x = update_lerp_battle(script->functionTemp[3], partMovement->unk_18.x, partMovement->goalPos.x, partMovement->unk_3C, partMovement->moveTime);
-    partMovement->absolutePos.y = update_lerp_battle(script->functionTemp[3], partMovement->unk_18.y, partMovement->goalPos.y, partMovement->unk_3C, partMovement->moveTime);
-    partMovement->absolutePos.z = update_lerp_battle(script->functionTemp[3], partMovement->unk_18.z, partMovement->goalPos.z, partMovement->unk_3C, partMovement->moveTime);
+    partMovement->absolutePos.x = update_lerp_battle(
+        script->functionTemp[3], partMovement->unk_18.x, partMovement->goalPos.x, partMovement->unk_3C,
+        partMovement->moveTime
+    );
+    partMovement->absolutePos.y = update_lerp_battle(
+        script->functionTemp[3], partMovement->unk_18.y, partMovement->goalPos.y, partMovement->unk_3C,
+        partMovement->moveTime
+    );
+    partMovement->absolutePos.z = update_lerp_battle(
+        script->functionTemp[3], partMovement->unk_18.z, partMovement->goalPos.z, partMovement->unk_3C,
+        partMovement->moveTime
+    );
     partMovement->unk_3C++;
 
     if (partMovement->moveTime < partMovement->unk_3C) {
@@ -2487,11 +2660,17 @@ API_CALLABLE(FlyPartTo) {
                 partMovement->unk_2C = 0;
                 if (actor->footStepCounter % 2 != 0) {
                     if (part->partTypeData[2] != 0) {
-                        sfx_play_sound_at_position(part->partTypeData[2], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y, part->absolutePos.z);
+                        sfx_play_sound_at_position(
+                            part->partTypeData[2], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y,
+                            part->absolutePos.z
+                        );
                     }
                 } else {
                     if (part->partTypeData[3] != 0) {
-                        sfx_play_sound_at_position(part->partTypeData[3], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y, part->absolutePos.z);
+                        sfx_play_sound_at_position(
+                            part->partTypeData[3], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y,
+                            part->absolutePos.z
+                        );
                     }
                 }
             }
@@ -2502,11 +2681,17 @@ API_CALLABLE(FlyPartTo) {
                 partMovement->unk_2C = 0;
                 if (actor->footStepCounter % 2 != 0) {
                     if (part->partTypeData[2] != 0) {
-                        sfx_play_sound_at_position(part->partTypeData[2], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y, part->absolutePos.z);
+                        sfx_play_sound_at_position(
+                            part->partTypeData[2], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y,
+                            part->absolutePos.z
+                        );
                     }
                 } else {
                     if (part->partTypeData[3] != 0) {
-                        sfx_play_sound_at_position(part->partTypeData[3], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y, part->absolutePos.z);
+                        sfx_play_sound_at_position(
+                            part->partTypeData[3], SOUND_SPACE_DEFAULT, part->absolutePos.x, part->absolutePos.y,
+                            part->absolutePos.z
+                        );
                     }
                 }
             }
@@ -2723,8 +2908,9 @@ API_CALLABLE(DropStarPoints) {
         }
 
         for (i = 0; i < numToDrop; i++) {
-            make_item_entity_delayed(ITEM_STAR_POINT,
-                dropper->curPos.x, dropper->curPos.y, dropper->curPos.z, spawnMode, i, 0);
+            make_item_entity_delayed(
+                ITEM_STAR_POINT, dropper->curPos.x, dropper->curPos.y, dropper->curPos.z, spawnMode, i, 0
+            );
         }
 
         battleStatus->incrementStarPointDelay = 40;
@@ -2802,12 +2988,12 @@ API_CALLABLE(EnemyDamageTarget) {
     battleStatus->curAttackDamage = evt_get_variable(script, *args++);
     battleFlagsModifier = *args++;
 
-    #if DX_DEBUG_MENU
+#if DX_DEBUG_MENU
     if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_GOD_MODE)) {
         battleStatus->curAttackDamage = 0;
         battleStatus->curAttackStatus = 0;
     }
-    #endif
+#endif
 
     // BS_FLAGS1_INCLUDE_POWER_UPS and BS_FLAGS1_TRIGGER_EVENTS are mutually exclusive
     if (battleFlagsModifier & BS_FLAGS1_INCLUDE_POWER_UPS) {
@@ -2891,7 +3077,7 @@ API_CALLABLE(EnemyTestTarget) {
     Bytecode* args = script->ptrReadPos;
     BattleStatus* battleStatus = &gBattleStatus;
     s32 actorID = evt_get_variable(script, *args++);
-    Actor *actor;
+    Actor* actor;
     s32 outVar;
     s32 hitResult;
     u8 attackStatus;

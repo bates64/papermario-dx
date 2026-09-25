@@ -257,11 +257,13 @@ API_CALLABLE(BattleCam_Update_FocusMidpointA) {
     camera->lookAtObjTarget.z = LERP(BattleCam_InitialPosZ, subjects.avgPos.z, alpha);
 
     targetBoomLength = BattleCam_BoomLength;
-    targetBoomLength += dist2D(camera->lookAtObjTarget.x, camera->lookAtObjTarget.z, subjects.avgPos.x, subjects.avgPos.z);
-    //NOTE division by 8 here is only difference between this and BattleCam_Update_FocusMidpointB
+    targetBoomLength +=
+        dist2D(camera->lookAtObjTarget.x, camera->lookAtObjTarget.z, subjects.avgPos.x, subjects.avgPos.z);
+    // NOTE division by 8 here is only difference between this and BattleCam_Update_FocusMidpointB
     targetBoomLength += (subjects.actorSizeAvg + subjects.targetSizeAvg) / 8;
     targetBoomLength -= 64.0f;
-    targetBoomLength += 0.5f * dist3D(prevPos.z, prevPos.y, prevPos.z, subjects.targetPos.x, subjects.targetPos.y, subjects.targetPos.z);
+    targetBoomLength += 0.5f
+        * dist3D(prevPos.z, prevPos.y, prevPos.z, subjects.targetPos.x, subjects.targetPos.y, subjects.targetPos.z);
 
     camera->params.basic.dist = LERP(BattleCam_InitialBoomLength, targetBoomLength, alpha);
     camera->params.basic.yaw = LERP(BattleCam_InitialBoomYaw, BattleCam_BoomYaw, alpha);
@@ -341,10 +343,12 @@ API_CALLABLE(BattleCam_Update_FocusMidpointB) {
     camera->lookAtObjTarget.z = LERP(BattleCam_InitialPosZ, subjects.avgPos.z, alpha);
 
     targetBoomLength = BattleCam_BoomLength;
-    targetBoomLength += dist2D(camera->lookAtObjTarget.x, camera->lookAtObjTarget.z, subjects.avgPos.x, subjects.avgPos.z);
+    targetBoomLength +=
+        dist2D(camera->lookAtObjTarget.x, camera->lookAtObjTarget.z, subjects.avgPos.x, subjects.avgPos.z);
     targetBoomLength += subjects.actorSizeAvg - 32.0f;
     targetBoomLength += subjects.targetSizeAvg - 32.0f;
-    targetBoomLength += 0.5f * dist3D(prevPos.z, prevPos.y, prevPos.z, subjects.targetPos.x, subjects.targetPos.y, subjects.targetPos.z);
+    targetBoomLength += 0.5f
+        * dist3D(prevPos.z, prevPos.y, prevPos.z, subjects.targetPos.x, subjects.targetPos.y, subjects.targetPos.z);
 
     camera->params.basic.dist = LERP(BattleCam_InitialBoomLength, targetBoomLength, alpha);
     camera->params.basic.yaw = LERP(BattleCam_InitialBoomYaw, BattleCam_BoomYaw, alpha);
@@ -1940,7 +1944,9 @@ void btl_cam_target_actor_part(s32 actorID, s32 actorPartIndex) {
     }
 }
 
-void btl_cam_set_params(b16 skipRecalc, s16 boomLength, s16 vfovScale, s16 boomPitch, s32 boomYaw, s32 boomZOffset, s32 zoomPercent) {
+void btl_cam_set_params(
+    b16 skipRecalc, s16 boomLength, s16 vfovScale, s16 boomPitch, s32 boomYaw, s32 boomZOffset, s32 zoomPercent
+) {
     Camera* camera = &gCameras[CAM_BATTLE];
 
     if (!BattleCam_IsFrozen) {

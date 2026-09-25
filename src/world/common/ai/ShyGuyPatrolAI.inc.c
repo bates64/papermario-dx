@@ -95,7 +95,7 @@ API_CALLABLE(N(ShyGuyPatrolAI_Main)) {
     detect->halfHeight = 65.0f;
     detect->detectFlags = 0;
 
-   if (isInitialCall || (enemy->aiFlags & AI_FLAG_SUSPEND)) {
+    if (isInitialCall || (enemy->aiFlags & AI_FLAG_SUSPEND)) {
         script->AI_TEMP_STATE = AI_STATE_PATROL_INIT;
         npc->duration = 0;
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];

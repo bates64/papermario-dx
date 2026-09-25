@@ -1,6 +1,5 @@
 #include "dro_02.h"
 
-
 EvtScript N(EVS_ExitWalk_dro_01_1) = EVT_EXIT_WALK(60, dro_02_ENTRY_0, "dro_01", dro_01_ENTRY_1);
 
 EvtScript N(EVS_BindExitTriggers) = {

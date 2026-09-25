@@ -66,8 +66,9 @@ IntroMessage* N(IntroMessages)[] = {
 };
 
 #if VERSION_JP
-void N(curtain_callback_jp_narration)(void) {
-    N(UpdateIntroMessages)(N(JP_IntroMessageLists));
+void N( curtain_callback_jp_narration)(void) {
+    N(
+    UpdateIntroMessages)(N(JP_IntroMessageLists));
 }
 #endif
 

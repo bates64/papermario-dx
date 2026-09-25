@@ -289,19 +289,18 @@ API_CALLABLE(N(Quizmo_CreateStage)) {
     QuizmoStageFXData* stageData;
 
     if (isInitialCall) {
-        N(Quizmo_StageEffect) = fx_quizmo_stage(0,
-            evt_get_variable(script, QUIZ_ARRAY_ORIGIN_X),
-            evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Y),
-            evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Z));
-        N(Quizmo_AudienceEffect) = fx_quizmo_audience(0,
-            evt_get_variable(script, QUIZ_ARRAY_ORIGIN_X),
-            evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Y),
-            evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Z));
-        N(Quizmo_VannaTEffect) = fx_quizmo_assistant(0,
-            evt_get_variable(script, QUIZ_ARRAY_ORIGIN_X),
-            evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Y),
-            evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Z),
-            1.0f, 0);
+        N(Quizmo_StageEffect) = fx_quizmo_stage(
+            0, evt_get_variable(script, QUIZ_ARRAY_ORIGIN_X), evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Y),
+            evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Z)
+        );
+        N(Quizmo_AudienceEffect) = fx_quizmo_audience(
+            0, evt_get_variable(script, QUIZ_ARRAY_ORIGIN_X), evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Y),
+            evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Z)
+        );
+        N(Quizmo_VannaTEffect) = fx_quizmo_assistant(
+            0, evt_get_variable(script, QUIZ_ARRAY_ORIGIN_X), evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Y),
+            evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Z), 1.0f, 0
+        );
 
         stageData = N(Quizmo_StageEffect)->data.quizmoStage;
         stageData->microphoneRaiseAmt = 0;

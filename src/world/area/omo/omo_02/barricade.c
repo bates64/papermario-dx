@@ -121,22 +121,22 @@ API_CALLABLE(N(AnimateBarricadeParts)) {
         model = get_model_from_list_index(get_model_list_index_from_tree_index(part->modelID));
         switch (part->state) {
             case BARRICADE_STATE_FLYING:
-                    add_vec2D_polar(&part->pos.x, &part->pos.z, part->planarVel, part->velocityAngle);
-                    part->verticalVel -= 0.8f;
-                    part->pos.y += part->verticalVel;
-                    if (part->verticalVel <= 0.0f && part->pos.y < part->radius) {
-                        part->pos.y = part->radius;
-                        part->verticalVel *= -0.7f;
-                        if (part->verticalVel < 1.0f) {
-                            part->state = BARRICADE_STATE_CLEANUP;
-                            part->angularVel.x = 0.0f;
-                            part->angularVel.y = 0.0f;
-                            part->angularVel.z = 0.0f;
-                        }
-                        if (i & 1) {
-                            exec_ShakeCam1(0, 0, 1);
-                        }
+                add_vec2D_polar(&part->pos.x, &part->pos.z, part->planarVel, part->velocityAngle);
+                part->verticalVel -= 0.8f;
+                part->pos.y += part->verticalVel;
+                if (part->verticalVel <= 0.0f && part->pos.y < part->radius) {
+                    part->pos.y = part->radius;
+                    part->verticalVel *= -0.7f;
+                    if (part->verticalVel < 1.0f) {
+                        part->state = BARRICADE_STATE_CLEANUP;
+                        part->angularVel.x = 0.0f;
+                        part->angularVel.y = 0.0f;
+                        part->angularVel.z = 0.0f;
                     }
+                    if (i & 1) {
+                        exec_ShakeCam1(0, 0, 1);
+                    }
+                }
                 break;
             case BARRICADE_STATE_CLEANUP:
                 update_collider_transform(part->colliderID);
@@ -154,7 +154,9 @@ API_CALLABLE(N(AnimateBarricadeParts)) {
         }
 
         model->flags |= MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM;
-        guTranslateF(mtxTransform, part->pos.x - part->origin.x, part->pos.y - part->origin.y, part->pos.z - part->origin.z);
+        guTranslateF(
+            mtxTransform, part->pos.x - part->origin.x, part->pos.y - part->origin.y, part->pos.z - part->origin.z
+        );
         part->rot.x += part->angularVel.x;
         part->rot.y += part->angularVel.y;
         part->rot.z += part->angularVel.z;

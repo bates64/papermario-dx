@@ -62,7 +62,7 @@ API_CALLABLE(N(BooPatrolAI_Main)) {
     Npc* npc = get_npc_unsafe(enemy->npcID);
     EnemyDetectVolume territory;
     EnemyDetectVolume* territoryPtr = &territory;
-    MobileAISettings* aiSettings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* aiSettings = (MobileAISettings*) evt_get_variable(script, *args++);
 
     territory.skipPlayerDetectChance = 0;
     territory.shape = enemy->territory->patrol.detectShape;

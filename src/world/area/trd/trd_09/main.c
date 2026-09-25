@@ -6,10 +6,10 @@ extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(DemoNPCs);
 extern NpcGroupList N(DefaultNPCs);
 
-EvtScript N(EVS_ExitDoors_trd_01_3) = EVT_EXIT_DOUBLE_DOOR(trd_09_ENTRY_0, "trd_01", trd_01_ENTRY_3,
-    COLLIDER_tt5, MODEL_o67, MODEL_o63);
-EvtScript N(EVS_ExitDoors_trd_10_0) = EVT_EXIT_DOUBLE_DOOR(trd_09_ENTRY_1, "trd_10", trd_10_ENTRY_0,
-    COLLIDER_tt4, MODEL_o60, MODEL_o65);
+EvtScript N(EVS_ExitDoors_trd_01_3) =
+    EVT_EXIT_DOUBLE_DOOR(trd_09_ENTRY_0, "trd_01", trd_01_ENTRY_3, COLLIDER_tt5, MODEL_o67, MODEL_o63);
+EvtScript N(EVS_ExitDoors_trd_10_0) =
+    EVT_EXIT_DOUBLE_DOOR(trd_09_ENTRY_1, "trd_10", trd_10_ENTRY_0, COLLIDER_tt4, MODEL_o60, MODEL_o65);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_trd_01_3)), TRIGGER_WALL_PRESS_A, COLLIDER_tt5, 1, 0)

@@ -443,10 +443,9 @@ API_CALLABLE(N(SpinyFlipActionCommand)) {
             partnerState->goalPos.x += part->projectileTargetOffset.x;
             partnerState->goalPos.y += part->projectileTargetOffset.y;
             partnerState->goalPos.z = partnerState->goalPos.z; // required to match
-            partnerState->dist = dist2D(partnerState->curPos.x,
-                                            partnerState->curPos.y,
-                                            partnerState->goalPos.x,
-                                            partnerState->goalPos.y);
+            partnerState->dist = dist2D(
+                partnerState->curPos.x, partnerState->curPos.y, partnerState->goalPos.x, partnerState->goalPos.y
+            );
             partnerState->speed = 0.0f;
             partnerState->velStep.x = 0.0f;
             partnerState->velStep.y = 0.0f;
@@ -472,7 +471,7 @@ API_CALLABLE(N(SpinyFlipActionCommand)) {
             if (AimingTime != 0) {
                 AimingTime--;
             } else {
-                AimingTime = (s32)(80 * DT);
+                AimingTime = (s32) (80 * DT);
                 hud_element_set_script(HID_AnalogStick, HES_StickTapRight);
                 sfx_play_sound_at_position(SOUND_AIM_SPINY_FLIP, SOUND_SPACE_DEFAULT, 0.0f, 0.0f, 0.0f);
                 script->functionTemp[0] = SPINY_FLIP_AIMING;
@@ -540,7 +539,7 @@ API_CALLABLE(N(SpinyFlipActionCommand)) {
                 AimingTime = 0;
             }
             if (AimingTime == 60) {
-                set_actor_anim(ACTOR_PARTNER, 0,  ANIM_BattleLakilester_HoldSpiny);
+                set_actor_anim(ACTOR_PARTNER, 0, ANIM_BattleLakilester_HoldSpiny);
             }
             if (AimingTime == 30) {
                 set_actor_anim(ACTOR_PARTNER, 0, ANIM_BattleLakilester_StrainHoldSpiny);
@@ -554,7 +553,9 @@ API_CALLABLE(N(SpinyFlipActionCommand)) {
             script->varTable[7] = partnerState->curPos.x;
             script->varTable[8] = partnerState->curPos.y;
             script->varTable[9] = partnerState->curPos.z;
-            partnerState->dist = dist2D(partnerState->curPos.x, partnerState->curPos.y, partnerState->goalPos.x, partnerState->goalPos.y) / partnerState->unk_24;
+            partnerState->dist =
+                dist2D(partnerState->curPos.x, partnerState->curPos.y, partnerState->goalPos.x, partnerState->goalPos.y)
+                / partnerState->unk_24;
             if (partnerState->dist <= 12.0) {
                 script->varTable[15] = 1;
             }
@@ -570,17 +571,19 @@ API_CALLABLE(N(SpinyFlipActionCommand)) {
             return ApiStatus_DONE2;
     }
 
-    get_screen_coords(gCurrentCameraID,
-                      partnerState->goalPos.x, partnerState->goalPos.y, partnerState->goalPos.z,
-                      &screenX, &screenY, &screenZ);
+    get_screen_coords(
+        gCurrentCameraID, partnerState->goalPos.x, partnerState->goalPos.y, partnerState->goalPos.z, &screenX, &screenY,
+        &screenZ
+    );
     hid = HID_AimTarget;
     hud_element_set_render_pos(hid, screenX, screenY);
     hud_element_set_transform_rotation(hid, 0.0f, 0.0f, TargetMarkRotation);
     TargetMarkRotation -= 10;
     TargetMarkRotation = clamp_angle(TargetMarkRotation);
-    get_screen_coords(gCurrentCameraID,
-                      partnerState->curPos.x, partnerState->curPos.y, partnerState->curPos.z,
-                      &screenX, &screenY, &screenZ);
+    get_screen_coords(
+        gCurrentCameraID, partnerState->curPos.x, partnerState->curPos.y, partnerState->curPos.z, &screenX, &screenY,
+        &screenZ
+    );
     hud_element_set_render_pos(HID_AimReticle, screenX, screenY);
 
     // show analog stick hud element
@@ -603,7 +606,10 @@ API_CALLABLE(N(SpinyFlipActionCommand)) {
             playerState->curPos.y = partnerState->curPos.y;
             playerState->curPos.z = partnerState->curPos.z;
             for (i = 0; i < ARRAY_COUNT(N(AimDotHudScripts)); i++) {
-                get_screen_coords(gCurrentCameraID, playerState->curPos.x, playerState->curPos.y, playerState->curPos.z, &screenX, &screenY, &screenZ);
+                get_screen_coords(
+                    gCurrentCameraID, playerState->curPos.x, playerState->curPos.y, playerState->curPos.z, &screenX,
+                    &screenY, &screenZ
+                );
                 hid = hudAim[i];
                 hud_element_set_render_pos(hid, screenX, screenY);
             }
@@ -699,7 +705,9 @@ API_CALLABLE(N(SpawnCloudNineFX)) {
     switch (script->functionTemp[0]) {
         case 0:
             sCounter = 0.1f;
-            fx_ending_decals(0, actor->curPos.x, actor->curPos.y, actor->curPos.z, 0.1f, &battleStatus->cloudNineEffect);
+            fx_ending_decals(
+                0, actor->curPos.x, actor->curPos.y, actor->curPos.z, 0.1f, &battleStatus->cloudNineEffect
+            );
             script->functionTemp[0] = 1;
             break;
         case 1:
@@ -717,7 +725,8 @@ API_CALLABLE(N(ApplyCloudNine)) {
     if (gBattleStatus.cloudNineTurnsLeft < script->varTable[10]) {
         gBattleStatus.cloudNineTurnsLeft = script->varTable[10];
         gBattleStatus.cloudNineDodgeChance = 50;
-        gBattleStatus.buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_CLOUD_NINE].turnsLeft = gBattleStatus.cloudNineTurnsLeft;
+        gBattleStatus.buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_CLOUD_NINE].turnsLeft =
+            gBattleStatus.cloudNineTurnsLeft;
     }
 
     return ApiStatus_DONE2;
@@ -1484,7 +1493,10 @@ API_CALLABLE(N(ProcessHurricane)) {
             sHuffPuffBreathEffect->data.huffPuffBreath->pos.z = NPC_DISPOSE_POS_Z;
 
             if (script->functionTemp[2] != 0) {
-                sfx_play_sound_at_position(SOUND_LAKILESTER_HURRICANE_INHALE, SOUND_SPACE_DEFAULT, partner->curPos.x, partner->curPos.y, partner->curPos.z);
+                sfx_play_sound_at_position(
+                    SOUND_LAKILESTER_HURRICANE_INHALE, SOUND_SPACE_DEFAULT, partner->curPos.x, partner->curPos.y,
+                    partner->curPos.z
+                );
             }
             script->functionTemp[2] = 0;
 
@@ -1507,7 +1519,10 @@ API_CALLABLE(N(ProcessHurricane)) {
             sHuffPuffBreathEffect->data.huffPuffBreath->speedX = 2.0f;
 
             if (script->functionTemp[2] == 0) {
-                sfx_play_sound_at_position(SOUND_LAKILESTER_HURRICANE_EXHALE, SOUND_SPACE_DEFAULT, partner->curPos.x, partner->curPos.y, partner->curPos.z);
+                sfx_play_sound_at_position(
+                    SOUND_LAKILESTER_HURRICANE_EXHALE, SOUND_SPACE_DEFAULT, partner->curPos.x, partner->curPos.y,
+                    partner->curPos.z
+                );
             }
             script->functionTemp[2] = 1;
 

@@ -23,10 +23,13 @@ API_CALLABLE(N(PlayLakiluluFlightSounds)) {
     }
 
     if (script->functionTemp[0] % 5 == 0) {
-        sfx_get_spatialized_sound_params(npc->pos.x, npc->pos.y, npc->pos.z,
-            &volume, &pan, SOUND_PARAM_MORE_QUIET | SOUND_SPACE_FULL);
-        sfx_play_sound_with_params(SOUND_FLIGHT, volume, pan,
-            update_lerp(EASING_LINEAR, 500.0f, 0.0f, script->functionTemp[0], script->functionTemp[1]));
+        sfx_get_spatialized_sound_params(
+            npc->pos.x, npc->pos.y, npc->pos.z, &volume, &pan, SOUND_PARAM_MORE_QUIET | SOUND_SPACE_FULL
+        );
+        sfx_play_sound_with_params(
+            SOUND_FLIGHT, volume, pan,
+            update_lerp(EASING_LINEAR, 500.0f, 0.0f, script->functionTemp[0], script->functionTemp[1])
+        );
     }
 
     script->functionTemp[0]++;
@@ -48,10 +51,12 @@ API_CALLABLE(N(PlayLakilesterFlightSounds)) {
     }
 
     if (script->functionTemp[0] % 5 == 0) {
-        sfx_get_spatialized_sound_params(npc->pos.x, npc->pos.y, npc->pos.z,
-            &volume, &pan, SOUND_PARAM_MORE_QUIET | SOUND_SPACE_FULL);
-        sfx_play_sound_with_params(SOUND_FLIGHT, volume, pan,
-            update_lerp(EASING_LINEAR, 500.0f, 0.0f, script->functionTemp[0], 80));
+        sfx_get_spatialized_sound_params(
+            npc->pos.x, npc->pos.y, npc->pos.z, &volume, &pan, SOUND_PARAM_MORE_QUIET | SOUND_SPACE_FULL
+        );
+        sfx_play_sound_with_params(
+            SOUND_FLIGHT, volume, pan, update_lerp(EASING_LINEAR, 500.0f, 0.0f, script->functionTemp[0], 80)
+        );
     }
 
     script->functionTemp[0]++;

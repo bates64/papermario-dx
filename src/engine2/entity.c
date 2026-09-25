@@ -164,7 +164,8 @@ void update_entities(void) {
                         if (entity->scriptDelay != 0) {
                             entity->scriptDelay--;
                             if (entity->scriptDelay == 0) {
-                                while (step_entity_commandlist(entity));
+                                while (step_entity_commandlist(entity))
+                                    ;
                             }
                         }
                     }
@@ -255,7 +256,7 @@ s32 step_entity_commandlist(Entity* entity) {
             ret = false;
             break;
         case ENTITY_SCRIPT_OP_Jump:
-            entity->scriptReadPos = (EntityScriptPos)*args;
+            entity->scriptReadPos = (EntityScriptPos) *args;
             entity->scriptDelay = 1;
             entity->savedReadPos[0] = entity->scriptReadPos;
             ret = true;
@@ -314,7 +315,8 @@ s32 step_entity_commandlist(Entity* entity) {
 }
 
 void exec_entity_commandlist(Entity* entity) {
-    while (step_entity_commandlist(entity));
+    while (step_entity_commandlist(entity))
+        ;
 }
 
 void func_8010FD98(void* arg0, s32 alpha) {
@@ -332,7 +334,7 @@ void func_8010FE44(void* arg0) {
 }
 
 void entity_model_set_shadow_color(void* data) {
-    s32 alpha = (s32)data;
+    s32 alpha = (s32) data;
 
     gDPSetCombineMode(gMainGfxPos++, PM_CC1_SHADOW, PM_CC2_SHADOW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, alpha);
@@ -346,13 +348,9 @@ void render_entities(void) {
 
         if (entity != nullptr) {
             if (gGameStatusPtr->context == CONTEXT_WORLD) {
-                if (gEntityHideMode != ENTITY_HIDE_MODE_0 &&
-                    !(entity->flags & ENTITY_FLAG_IGNORE_DISTANCE_CULLING) &&
-                    dist2D(gPlayerStatusPtr->pos.x,
-                           gPlayerStatusPtr->pos.z,
-                           entity->pos.x,
-                           entity->pos.z) > 200.0f
-                ) {
+                if (gEntityHideMode != ENTITY_HIDE_MODE_0 && !(entity->flags & ENTITY_FLAG_IGNORE_DISTANCE_CULLING)
+                    && dist2D(gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z, entity->pos.x, entity->pos.z) > 200.0f)
+                {
                     continue;
                 }
 
@@ -372,49 +370,47 @@ void render_entities(void) {
                     if (D_8014AFB0 == 255) {
                         if (entity->renderSetupFunc != nullptr) {
                             set_animator_render_callback(
-                                entity->virtualModelIndex,
-                                (void*)(u32) entity->listIndex,
+                                entity->virtualModelIndex, (void*) (u32) entity->listIndex,
                                 (void (*)(void*)) entity->renderSetupFunc
                             );
                         }
                     } else {
                         set_animator_render_callback(
-                            entity->virtualModelIndex,
-                            (void*)(u32) entity->listIndex,
-                            func_8010FE44
+                            entity->virtualModelIndex, (void*) (u32) entity->listIndex, func_8010FE44
                         );
                     }
 
                     if (entity->gfxBaseAddr == nullptr) {
                         render_animated_model(entity->virtualModelIndex, &entity->transformMatrix);
                     } else {
-                        render_animated_model_with_vertices(entity->virtualModelIndex,
-                                      &entity->transformMatrix,
-                                      entity->vertexSegment,
-                                      entity->gfxBaseAddr);
+                        render_animated_model_with_vertices(
+                            entity->virtualModelIndex, &entity->transformMatrix, entity->vertexSegment,
+                            entity->gfxBaseAddr
+                        );
                     }
                 } else {
                     if (D_8014AFB0 == 255) {
                         if (entity->renderSetupFunc != nullptr) {
                             bind_entity_model_setupGfx(
-                                entity->virtualModelIndex,
-                                (void*)(u32) entity->listIndex,
+                                entity->virtualModelIndex, (void*) (u32) entity->listIndex,
                                 (void (*)(void*)) entity->renderSetupFunc
                             );
                         } else {
                             get_entity_model(entity->virtualModelIndex)->fpSetupGfxCallback = nullptr;
                         }
                     } else {
-                        bind_entity_model_setupGfx(entity->virtualModelIndex, (void*)(u32)entity->listIndex, func_8010FE44);
+                        bind_entity_model_setupGfx(
+                            entity->virtualModelIndex, (void*) (u32) entity->listIndex, func_8010FE44
+                        );
                     }
 
                     if (entity->gfxBaseAddr == nullptr) {
                         draw_entity_model_A(entity->virtualModelIndex, &entity->transformMatrix);
                     } else {
-                        draw_entity_model_B(entity->virtualModelIndex,
-                                               &entity->transformMatrix,
-                                               entity->vertexSegment,
-                                               entity->gfxBaseAddr);
+                        draw_entity_model_B(
+                            entity->virtualModelIndex, &entity->transformMatrix, entity->vertexSegment,
+                            entity->gfxBaseAddr
+                        );
                     }
                 }
             }
@@ -442,28 +438,28 @@ void render_shadows(void) {
                 if (shadow->vertexArray == nullptr) {
                     render_animated_model(shadow->entityModelID, &shadow->transformMatrix);
                 } else {
-                    render_animated_model_with_vertices(shadow->entityModelID,
-                                  &shadow->transformMatrix,
-                                  shadow->vertexSegment,
-                                  shadow->vertexArray);
+                    render_animated_model_with_vertices(
+                        shadow->entityModelID, &shadow->transformMatrix, shadow->vertexSegment, shadow->vertexArray
+                    );
                 }
             } else {
                 if (shadow->flags & ENTITY_FLAG_FADING_AWAY) {
                     shadow->alpha -= 20;
                     if (shadow->alpha <= 20) {
-                        shadow->flags |=  ENTITY_FLAG_PENDING_INSTANCE_DELETE;
+                        shadow->flags |= ENTITY_FLAG_PENDING_INSTANCE_DELETE;
                     }
                 }
 
-                bind_entity_model_setupGfx(shadow->entityModelID, (void*)(u32)shadow->alpha, entity_model_set_shadow_color);
+                bind_entity_model_setupGfx(
+                    shadow->entityModelID, (void*) (u32) shadow->alpha, entity_model_set_shadow_color
+                );
 
                 if (shadow->vertexArray == nullptr) {
                     draw_entity_model_A(shadow->entityModelID, &shadow->transformMatrix);
                 } else {
-                    draw_entity_model_B(shadow->entityModelID,
-                                           &shadow->transformMatrix,
-                                           shadow->vertexSegment,
-                                           shadow->vertexArray);
+                    draw_entity_model_B(
+                        shadow->entityModelID, &shadow->transformMatrix, shadow->vertexSegment, shadow->vertexArray
+                    );
                 }
             }
         }
@@ -645,32 +641,34 @@ s32 entity_get_collision_flags(Entity* entity) {
     }
 
     flag = gCollisionStatus.curFloor;
-    if (flag != -1 && (flag & COLLISION_WITH_ENTITY_BIT) && listIndex == (u8)flag) {
+    if (flag != -1 && (flag & COLLISION_WITH_ENTITY_BIT) && listIndex == (u8) flag) {
         entityFlags |= ENTITY_COLLISION_PLAYER_TOUCH_FLOOR;
     }
 
     flag = gCollisionStatus.lastTouchedFloor;
-    if (flag != -1 && (flag & COLLISION_WITH_ENTITY_BIT) && listIndex == (u8)flag) {
+    if (flag != -1 && (flag & COLLISION_WITH_ENTITY_BIT) && listIndex == (u8) flag) {
         entityFlags |= ENTITY_COLLISION_PLAYER_LAST_FLOOR;
     }
 
     flag = gCollisionStatus.curCeiling;
-    if (flag != -1 && (flag & COLLISION_WITH_ENTITY_BIT) && listIndex == (u8)flag) {
+    if (flag != -1 && (flag & COLLISION_WITH_ENTITY_BIT) && listIndex == (u8) flag) {
         entityFlags |= ENTITY_COLLISION_PLAYER_TOUCH_CEILING;
     }
 
     flag = gCollisionStatus.pushingAgainstWall;
-    if (flag != -1 && (flag & COLLISION_WITH_ENTITY_BIT) && listIndex == (u8)flag) {
+    if (flag != -1 && (flag & COLLISION_WITH_ENTITY_BIT) && listIndex == (u8) flag) {
         entityFlags |= ENTITY_COLLISION_PLAYER_PUSHING_AGAINST;
     }
 
     flag = gCollisionStatus.lastWallHammered;
-    if (flag != -1 && (flag & COLLISION_WITH_ENTITY_BIT) && listIndex == (u8)flag) {
+    if (flag != -1 && (flag & COLLISION_WITH_ENTITY_BIT) && listIndex == (u8) flag) {
         entityFlags |= ENTITY_COLLISION_PLAYER_HAMMER;
     }
 
     flag = gCollisionStatus.curWall;
-    if (flag != -1 && (flag & COLLISION_WITH_ENTITY_BIT) && listIndex == (u8)flag && gPlayerStatusPtr->pressedButtons & BUTTON_A) {
+    if (flag != -1 && (flag & COLLISION_WITH_ENTITY_BIT) && listIndex == (u8) flag
+        && gPlayerStatusPtr->pressedButtons & BUTTON_A)
+    {
         entityFlags |= ENTITY_COLLISION_PLAYER_TOUCH_WALL;
     }
 
@@ -708,7 +706,7 @@ s32 entity_try_partner_interaction_trigger(s32 entityIdx) {
             }
             break;
         case PARTNER_KOOPER:
-             switch (entityType) {
+            switch (entityType) {
                 default:
                     return false;
                 case ENTITY_TYPE_BLUE_SWITCH:
@@ -773,7 +771,7 @@ void entity_reset_collision(Entity* entity) {
 }
 
 void load_area_specific_entity_data(void) {
-    //TODO hardcoded map and area IDs, connect these to MapTable.xml eventually
+    // TODO hardcoded map and area IDs, connect these to MapTable.xml eventually
     if (!isAreaSpecificEntityDataLoaded) {
         if (gGameStatusPtr->areaID == AREA_JAN || gGameStatusPtr->areaID == AREA_IWA) {
             DMA_COPY_SEGMENT(entity_jan_iwa);
@@ -878,28 +876,28 @@ void reload_world_entity_data(void) {
             void* gfxData;
 
             dataLength = ((bp->dma.end - bp->dma.start) >> 2);
-            gfxData = (void*)(gEntityHeapBase - totalSize * 4 - dataLength * 4);
+            gfxData = (void*) (gEntityHeapBase - totalSize * 4 - dataLength * 4);
             totalSize += dma_copy(bp->dma.start, bp->dma.end, gfxData) >> 2;
         } else {
             DmaEntry* dmaList = bp->dmaList;
 
             if (bp->entityType == ENTITY_TYPE_RESET_MUNCHLESIA) {
-                gfxData = (void*)gEntityHeapBottom;
+                gfxData = (void*) gEntityHeapBottom;
                 temp1 = dma_copy(dmaList[0].start, dmaList[0].end, gfxData) >> 2;
-                dma_copy(dmaList[1].start, dmaList[1].end, (void*)(gEntityHeapBottom + temp1 * 4));
-                animData = (void*)(gEntityHeapBottom + temp1 * 4);
+                dma_copy(dmaList[1].start, dmaList[1].end, (void*) (gEntityHeapBottom + temp1 * 4));
+                animData = (void*) (gEntityHeapBottom + temp1 * 4);
                 entity_swizzle_anim_pointers(bp, animData, gfxData);
             } else {
                 s32 q;
 
                 dataLength = ((dmaList[0].end - dmaList[0].start) >> 2);
                 q = gEntityHeapBase - totalSize * 4;
-                gfxData = (void*)(q - dataLength * 4);
+                gfxData = (void*) (q - dataLength * 4);
                 totalSize += dma_copy(dmaList[0].start, dmaList[0].end, gfxData) >> 2;
 
                 dataLength = ((dmaList[1].end - dmaList[1].start) >> 2);
                 q = gEntityHeapBase - totalSize * 4;
-                animData = (void*)(q - dataLength * 4);
+                animData = (void*) (q - dataLength * 4);
                 totalSize += dma_copy(dmaList[1].start, dmaList[1].end, animData) >> 2;
 
                 entity_swizzle_anim_pointers(bp, animData, gfxData);
@@ -910,36 +908,36 @@ void reload_world_entity_data(void) {
 
 void entity_swizzle_anim_pointers(EntityBlueprint* entityData, void* baseAnim, void* baseGfx) {
     StaticAnimatorNode* node;
-    s32* ptr = (s32*)((s32)baseAnim + (s32)entityData->modelAnimationNodes);
+    s32* ptr = (s32*) ((s32) baseAnim + (s32) entityData->modelAnimationNodes);
 
     while (true) {
         if (*ptr == -1) {
             *ptr = 0;
             return;
         }
-        node = (StaticAnimatorNode*)((s32)baseAnim + ((*ptr) & 0xFFFF));
-        *ptr++ = (s32)node;
+        node = (StaticAnimatorNode*) ((s32) baseAnim + ((*ptr) & 0xFFFF));
+        *ptr++ = (s32) node;
 
-        if ((s32)node->displayList != -1) {
-            node->displayList = (Gfx*)((s32)baseGfx + ((s32)(node->displayList) & 0xFFFF));
+        if ((s32) node->displayList != -1) {
+            node->displayList = (Gfx*) ((s32) baseGfx + ((s32) (node->displayList) & 0xFFFF));
         } else {
             node->displayList = nullptr;
         }
 
-        if ((s32)node->sibling != -1) {
-            node->sibling = (StaticAnimatorNode*)((s32)baseAnim + ((s32)(node->sibling) & 0xFFFF));
+        if ((s32) node->sibling != -1) {
+            node->sibling = (StaticAnimatorNode*) ((s32) baseAnim + ((s32) (node->sibling) & 0xFFFF));
         } else {
             node->sibling = nullptr;
         }
 
-        if ((s32)node->child != -1) {
-            node->child = (StaticAnimatorNode*)((s32)baseAnim + ((s32)(node->child) & 0xFFFF));
+        if ((s32) node->child != -1) {
+            node->child = (StaticAnimatorNode*) ((s32) baseAnim + ((s32) (node->child) & 0xFFFF));
         } else {
             node->child = nullptr;
         }
 
-        if ((s32)node->vtxList != -1) {
-            node->vtxList = (Vtx*)((s32)baseGfx + ((s32)(node->vtxList) & 0xFFFFF));
+        if ((s32) node->vtxList != -1) {
+            node->vtxList = (Vtx*) ((s32) baseGfx + ((s32) (node->vtxList) & 0xFFFFF));
         } else {
             node->vtxList = nullptr;
         }
@@ -1026,12 +1024,12 @@ void load_simple_entity_data(Entity* entity, EntityBlueprint* bp, s32 listIndex)
             PANIC();
         }
         entitySize = (bp->dma.end - bp->dma.start) >> 2;
-        entity->gfxBaseAddr = (void*)(gEntityHeapBase - totalSize * 4 - entitySize * 4);
+        entity->gfxBaseAddr = (void*) (gEntityHeapBase - totalSize * 4 - entitySize * 4);
         totalSize += dma_copy(bp->dma.start, bp->dma.end, entity->gfxBaseAddr) >> 2;
         get_entity_type(entity->listIndex);
     } else {
         entitySize = (bp->dma.end - bp->dma.start) >> 2;
-        entity->gfxBaseAddr = (void*)(gEntityHeapBase - loadedStart * 4 - entitySize * 4);
+        entity->gfxBaseAddr = (void*) (gEntityHeapBase - loadedStart * 4 - entitySize * 4);
         get_entity_type(entity->listIndex);
     }
 
@@ -1082,10 +1080,10 @@ void load_split_entity_data(Entity* entity, EntityBlueprint* entityData, s32 lis
             }
             specialSize -= 0x1000;
 
-            dma1size = dma_copy(dmaList[0].start, dmaList[0].end, (void*)(gEntityHeapBottom + specialSize * 4)) / 4;
-            entity->gfxBaseAddr = (void*)(gEntityHeapBottom + specialSize * 4);
-            dma_copy(dmaList[1].start, dmaList[1].end, (void*)(gEntityHeapBottom + specialSize * 4 + dma1size * 4));
-            animBaseAddr = (void*)(gEntityHeapBottom + specialSize * 4 + dma1size * 4);
+            dma1size = dma_copy(dmaList[0].start, dmaList[0].end, (void*) (gEntityHeapBottom + specialSize * 4)) / 4;
+            entity->gfxBaseAddr = (void*) (gEntityHeapBottom + specialSize * 4);
+            dma_copy(dmaList[1].start, dmaList[1].end, (void*) (gEntityHeapBottom + specialSize * 4 + dma1size * 4));
+            animBaseAddr = (void*) (gEntityHeapBottom + specialSize * 4 + dma1size * 4);
             swizzlePointers = true;
         } else if (is_entity_data_loaded(entity, entityData, &loadedStart, &loadedEnd)) {
             if (gGameStatusPtr->context == CONTEXT_WORLD) {
@@ -1104,12 +1102,20 @@ void load_split_entity_data(Entity* entity, EntityBlueprint* entityData, s32 lis
                 PANIC();
             }
 
-            dma2size1 = dma_copy(dmaList[0].start, dmaList[0].end, dmaList[0].start + ((gEntityHeapBase - totalLoaded * 4 - (s32)dmaList[0].end) >> 2) * 4) >> 2;
-            entity->gfxBaseAddr = (void*)(gEntityHeapBase - totalLoaded * 4 - dma2size1 * 4);
+            dma2size1 = dma_copy(
+                            dmaList[0].start, dmaList[0].end,
+                            dmaList[0].start + ((gEntityHeapBase - totalLoaded * 4 - (s32) dmaList[0].end) >> 2) * 4
+                        )
+                >> 2;
+            entity->gfxBaseAddr = (void*) (gEntityHeapBase - totalLoaded * 4 - dma2size1 * 4);
             totalLoaded += dma2size1;
 
-            dma2size2 = dma_copy(dmaList[1].start, dmaList[1].end, dmaList[1].start + ((gEntityHeapBase - totalLoaded * 4 - (s32)dmaList[1].end) >> 2) * 4) >> 2;
-            animBaseAddr = (void*)(gEntityHeapBase - totalLoaded * 4 - dma2size2 * 4);
+            dma2size2 = dma_copy(
+                            dmaList[1].start, dmaList[1].end,
+                            dmaList[1].start + ((gEntityHeapBase - totalLoaded * 4 - (s32) dmaList[1].end) >> 2) * 4
+                        )
+                >> 2;
+            animBaseAddr = (void*) (gEntityHeapBase - totalLoaded * 4 - dma2size2 * 4);
             totalLoaded += dma2size2;
             get_entity_type(entity->listIndex);
 
@@ -1121,9 +1127,9 @@ void load_split_entity_data(Entity* entity, EntityBlueprint* entityData, s32 lis
             swizzlePointers = true;
         } else {
             u32 temp = (dmaList[0].end - dmaList[0].start) >> 2;
-            entity->gfxBaseAddr = (void*)(gEntityHeapBase - loadedStart * 4 - temp * 4);
+            entity->gfxBaseAddr = (void*) (gEntityHeapBase - loadedStart * 4 - temp * 4);
             temp = (dmaList[1].end - dmaList[1].start) >> 2;
-            animBaseAddr = (void*)(gEntityHeapBase - loadedEnd * 4 - temp * 4);
+            animBaseAddr = (void*) (gEntityHeapBase - loadedEnd * 4 - temp * 4);
             get_entity_type(entity->listIndex);
         }
     } else {
@@ -1133,7 +1139,7 @@ void load_split_entity_data(Entity* entity, EntityBlueprint* entityData, s32 lis
         return;
     }
     animationScript = entityData->animScript;
-    animationNodes = (StaticAnimatorNode**)((s32)animBaseAddr + (s32)entityData->modelAnimationNodes);
+    animationNodes = (StaticAnimatorNode**) ((s32) animBaseAddr + (s32) entityData->modelAnimationNodes);
     if (swizzlePointers) {
         entity_swizzle_anim_pointers(entityData, animBaseAddr, entity->gfxBaseAddr);
     }
@@ -1282,7 +1288,9 @@ s32 create_entity(EntityBlueprint* bp, ...) {
         load_split_entity_data(entity, bp, listIndex);
     }
 
-    if (bp->entityType != ENTITY_TYPE_SHADOW && (entity->flags & (ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_SHADOW))) {
+    if (bp->entityType != ENTITY_TYPE_SHADOW
+        && (entity->flags & (ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_SHADOW)))
+    {
         create_entity_shadow(entity, x, y, z);
     }
 
@@ -1358,7 +1366,7 @@ API_CALLABLE(MakeEntity) {
         return ApiStatus_DONE2;
     }
 
-    entityData = (EntityBlueprint*)evt_get_variable(script, *args++);
+    entityData = (EntityBlueprint*) evt_get_variable(script, *args++);
     x = evt_get_variable(script, *args++);
     y = evt_get_variable(script, *args++);
     z = evt_get_variable(script, *args++);
@@ -1376,8 +1384,10 @@ API_CALLABLE(MakeEntity) {
         CreateEntityVarArgBuffer[idx] = nextArg;
     }
 
-    entityIndex = create_entity(entityData, x, y, z, flags,
-        CreateEntityVarArgBuffer[0], CreateEntityVarArgBuffer[1], CreateEntityVarArgBuffer[2], MAKE_ENTITY_END);
+    entityIndex = create_entity(
+        entityData, x, y, z, flags, CreateEntityVarArgBuffer[0], CreateEntityVarArgBuffer[1],
+        CreateEntityVarArgBuffer[2], MAKE_ENTITY_END
+    );
     gLastCreatedEntityIndex = entityIndex;
     script->varTable[0] = entityIndex;
     return ApiStatus_DONE2;
@@ -1395,8 +1405,8 @@ API_CALLABLE(SetEntityCullMode) {
     } else if (mode == 2) {
         entity->flags |= ENTITY_FLAG_DRAW_IF_CLOSE_HIDE_MODE2 | ENTITY_FLAG_DRAW_IF_CLOSE_HIDE_MODE1;
     } else {
-        entity->flags |= ENTITY_FLAG_IGNORE_DISTANCE_CULLING | ENTITY_FLAG_DRAW_IF_CLOSE_HIDE_MODE2 |
-                         ENTITY_FLAG_DRAW_IF_CLOSE_HIDE_MODE1;
+        entity->flags |= ENTITY_FLAG_IGNORE_DISTANCE_CULLING | ENTITY_FLAG_DRAW_IF_CLOSE_HIDE_MODE2
+            | ENTITY_FLAG_DRAW_IF_CLOSE_HIDE_MODE1;
     }
     return ApiStatus_DONE2;
 }
@@ -1422,7 +1432,7 @@ API_CALLABLE(AssignScript) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall == true) {
-        EvtScript* toBind = (EvtScript*)evt_get_variable(script, *args++);
+        EvtScript* toBind = (EvtScript*) evt_get_variable(script, *args++);
 
         get_entity_by_index(gLastCreatedEntityIndex)->script.source = toBind;
         return ApiStatus_DONE2;
@@ -1651,7 +1661,7 @@ void update_entity_shadow_position(Entity* entity) {
             shadow->flags &= ~ENTITY_FLAG_SKIP_UPDATE;
         }
 
-        shadow->flags = (shadow->flags & ~ENTITY_FLAG_HIDDEN) | ((u16)entity->flags & ENTITY_FLAG_HIDDEN);
+        shadow->flags = (shadow->flags & ~ENTITY_FLAG_HIDDEN) | ((u16) entity->flags & ENTITY_FLAG_HIDDEN);
         if (!(entity->flags & ENTITY_FLAG_400) && origHitLength == 0.0f) {
             shadow->flags |= ENTITY_FLAG_HIDDEN;
         }
@@ -1673,12 +1683,16 @@ b32 entity_raycast_down(f32* x, f32* y, f32* z, f32* hitYaw, f32* hitPitch, f32*
 
     entityID = test_ray_entities(*x, *y, *z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz);
 
-    if ((entityID > NO_COLLIDER) && ((get_entity_type(entityID) != ENTITY_TYPE_PUSH_BLOCK) || (hitNx == 0.0f && hitNz == 0.0f && hitNy == 1.0))) {
+    if ((entityID > NO_COLLIDER)
+        && ((get_entity_type(entityID) != ENTITY_TYPE_PUSH_BLOCK) || (hitNx == 0.0f && hitNz == 0.0f && hitNy == 1.0)))
+    {
         hitID = entityID | COLLISION_WITH_ENTITY_BIT;
     }
 
-    colliderID = test_ray_colliders(COLLIDER_FLAG_IGNORE_PLAYER, *x, *y, *z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &hitNx,
-                                    &hitNy, &hitNz);
+    colliderID = test_ray_colliders(
+        COLLIDER_FLAG_IGNORE_PLAYER, *x, *y, *z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy,
+        &hitNz
+    );
     if (colliderID > NO_COLLIDER) {
         hitID = colliderID;
     }

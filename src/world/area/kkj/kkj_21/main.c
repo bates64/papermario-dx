@@ -1,7 +1,7 @@
 #include "kkj_21.h"
 
-EvtScript N(EVS_ExitDoor_kkj_10_2) = EVT_EXIT_SINGLE_DOOR(kkj_21_ENTRY_0, "kkj_10", kkj_10_ENTRY_2,
-    COLLIDER_tte, MODEL_o57, DOOR_SWING_IN);
+EvtScript N(EVS_ExitDoor_kkj_10_2) =
+    EVT_EXIT_SINGLE_DOOR(kkj_21_ENTRY_0, "kkj_10", kkj_10_ENTRY_2, COLLIDER_tte, MODEL_o57, DOOR_SWING_IN);
 
 EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)

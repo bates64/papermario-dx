@@ -53,8 +53,8 @@ API_CALLABLE(N(CheckForUnreadLetters)) {
 
     for (i = 0; i < ARRAY_COUNT(N(PostOfficeLetters)); i++) {
         if (gPlayerData.partners[N(PostOfficeLetters)[i].partnerID].enabled
-            && evt_get_variable(nullptr, GF_MAC01_UnlockedLetter_00 + i)
-        ) {
+            && evt_get_variable(nullptr, GF_MAC01_UnlockedLetter_00 + i))
+        {
             if (!evt_get_variable(nullptr, GF_MAC01_ReadLetter_00 + i)) {
                 // at least one partner has a letter available
                 result = HAS_LETTER_UNREAD;
@@ -80,9 +80,7 @@ s32 N(get_partner_letter_status)(s32 partner) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(N(PostOfficeLetters)); i++) {
-        if (N(PostOfficeLetters)[i].partnerID == partner
-            && evt_get_variable(nullptr, GF_MAC01_UnlockedLetter_00 + i)
-        ) {
+        if (N(PostOfficeLetters)[i].partnerID == partner && evt_get_variable(nullptr, GF_MAC01_UnlockedLetter_00 + i)) {
             if (ret == PARTNER_LETTER_NONE) {
                 // at least one letter for this partner is available
                 ret = PARTNER_LETTER_READ;

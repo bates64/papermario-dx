@@ -33,11 +33,9 @@ API_CALLABLE(N(AdjustFog)) {
     }
 
     if (mode) {
-        mdl_set_shroud_tint_params(colR, colG, colB,
-            (script->functionTemp[0] * 255) / duration);
+        mdl_set_shroud_tint_params(colR, colG, colB, (script->functionTemp[0] * 255) / duration);
     } else {
-        mdl_set_shroud_tint_params(colR, colG, colB,
-            255 - ((script->functionTemp[0] * 255) / duration));
+        mdl_set_shroud_tint_params(colR, colG, colB, 255 - ((script->functionTemp[0] * 255) / duration));
     }
 
     script->functionTemp[0]--;

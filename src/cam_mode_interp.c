@@ -11,7 +11,7 @@
 // pitch -- rising angle of the boom arm, up toward the y-axis
 // yaw -- yaw angle for the boom arm in the xz-plane
 // offsetY -- offset of the base of the boom arm above the target point
-void update_camera_interp_pos(Camera *camera) {
+void update_camera_interp_pos(Camera* camera) {
     f32 pitchAngle, sinPitch, cosPitch;
     f32 yawAngle, sinYaw, cosYaw;
     f32 x, y, z, dx, dy, dz, dr;

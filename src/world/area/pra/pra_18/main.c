@@ -7,8 +7,8 @@
 
 s32 N(NearRightDoorModelsL)[] = { MODEL_o772, -1 };
 s32 N(NearRightDoorModelsR)[] = { MODEL_o768, -1 };
-s32 N(FarRightDoorModelsL)[]  = { MODEL_o859, -1 };
-s32 N(FarRightDoorModelsR)[]  = { MODEL_o861, -1 };
+s32 N(FarRightDoorModelsL)[] = { MODEL_o859, -1 };
+s32 N(FarRightDoorModelsR)[] = { MODEL_o861, -1 };
 s32 N(BothRightDoorModelsL)[] = { MODEL_o772, MODEL_o859, -1 };
 s32 N(BothRightDoorModelsR)[] = { MODEL_o768, MODEL_o861, -1 };
 

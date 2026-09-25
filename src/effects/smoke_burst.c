@@ -73,7 +73,7 @@ void smoke_burst_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f32 arg4, s32 time
 void smoke_burst_init(EffectInstance* effect) {
 }
 
-void smoke_burst_update(EffectInstance *effect) {
+void smoke_burst_update(EffectInstance* effect) {
     SmokeBurstFXData* data = effect->data.smokeBurst;
 
     data->unk_20 = (data->lifeTime * 8.0f) / data->unk_1C;
@@ -99,7 +99,7 @@ void smoke_burst_render(EffectInstance* effect) {
 }
 
 void smoke_burst_appendGfx(void* effect) {
-    SmokeBurstFXData* data = ((EffectInstance*)effect)->data.smokeBurst;
+    SmokeBurstFXData* data = ((EffectInstance*) effect)->data.smokeBurst;
     s32 unk_20_s32 = data->unk_20;
     s32 envAlpha = (data->unk_20 - unk_20_s32) * 256.0f;
     s32 cond = (unk_20_s32 == 7);
@@ -110,10 +110,12 @@ void smoke_burst_appendGfx(void* effect) {
     Matrix4f sp60;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, dlist2);
 
-    guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->unk_10, data->pos.x, data->pos.y, data->pos.z);
+    guPositionF(
+        sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->unk_10, data->pos.x, data->pos.y, data->pos.z
+    );
     guRotateF(sp60, 20.0f, 0.0f, 0.0f, 1.0f);
     guMtxCatF(sp60, sp20, sp20);
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
@@ -122,20 +124,14 @@ void smoke_burst_appendGfx(void* effect) {
     gDPSetPrimColor(gMainGfxPos++, 0, 0, data->rgba.r, data->rgba.g, data->rgba.b, data->rgba.a);
     gDPSetEnvColor(gMainGfxPos++, 0, 0, 0, envAlpha);
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_DITHER);
-    gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE,
-        (unk_20_s32 * 32     ) * 4, 0,
-        (unk_20_s32 * 32 + 31) * 4, 31 * 4);
+    gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, (unk_20_s32 * 32) * 4, 0, (unk_20_s32 * 32 + 31) * 4, 31 * 4);
 
     temp_a1 = unk_20_s32 * 32 + 32;
 
     if (cond) {
-        gDPSetTileSize(gMainGfxPos++, 1,
-            (temp_a1     ) * 4, 32 * 4,
-            (temp_a1 + 31) * 4, 63 * 4);
+        gDPSetTileSize(gMainGfxPos++, 1, (temp_a1) * 4, 32 * 4, (temp_a1 + 31) * 4, 63 * 4);
     } else {
-        gDPSetTileSize(gMainGfxPos++, 1,
-            (temp_a1     ) * 4, 0,
-            (temp_a1 + 31) * 4, 31 * 4);
+        gDPSetTileSize(gMainGfxPos++, 1, (temp_a1) * 4, 0, (temp_a1 + 31) * 4, 31 * 4);
     }
 
     gSPDisplayList(gMainGfxPos++, dlist);

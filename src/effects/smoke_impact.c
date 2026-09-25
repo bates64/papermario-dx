@@ -18,16 +18,7 @@ void smoke_impact_update(EffectInstance* effect);
 void smoke_impact_render(EffectInstance* effect);
 void smoke_impact_appendGfx(void* effect);
 
-void smoke_impact_main(
-    s32 arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    s32 arg5,
-    f32 arg6,
-    s32 arg7
-) {
+void smoke_impact_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5, f32 arg6, s32 arg7) {
     EffectBlueprint bp;
     EffectInstance* effect;
     SmokeImpactFXData* part;
@@ -117,7 +108,7 @@ void smoke_impact_render(EffectInstance* effect) {
 }
 
 void smoke_impact_appendGfx(void* effect) {
-    SmokeImpactFXData* part = ((EffectInstance*)effect)->data.smokeImpact;
+    SmokeImpactFXData* part = ((EffectInstance*) effect)->data.smokeImpact;
     s32 unk_00 = part->unk_00;
     f32 unk_30 = part->unk_30;
     s32 unk_30_s32 = unk_30;
@@ -131,7 +122,7 @@ void smoke_impact_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, dlist2);
 
     guTranslateF(sp18, part->unk_04, part->unk_08, part->unk_0C);
@@ -149,26 +140,22 @@ void smoke_impact_appendGfx(void* effect) {
     }
 
     gDPSetEnvColor(gMainGfxPos++, 0, 0, 0, envAlpha);
-    gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE,
-        (unk_30_s32 * 32     ) * 4, 0,
-        (unk_30_s32 * 32 + 32) * 4, 32 * 4);
+    gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, (unk_30_s32 * 32) * 4, 0, (unk_30_s32 * 32 + 32) * 4, 32 * 4);
 
     if (cond) {
-        gDPSetTileSize(gMainGfxPos++, 1,
-            (unk_30_s32 * 32 + 32) * 4, 32 * 4,
-            (unk_30_s32 * 32 + 64) * 4, 64 * 4);
+        gDPSetTileSize(gMainGfxPos++, 1, (unk_30_s32 * 32 + 32) * 4, 32 * 4, (unk_30_s32 * 32 + 64) * 4, 64 * 4);
     } else {
-        gDPSetTileSize(gMainGfxPos++, 1,
-            (unk_30_s32 * 32 + 32) * 4, 0,
-            (unk_30_s32 * 32 + 64) * 4, 32 * 4);
+        gDPSetTileSize(gMainGfxPos++, 1, (unk_30_s32 * 32 + 32) * 4, 0, (unk_30_s32 * 32 + 64) * 4, 32 * 4);
     }
 
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         guTranslateF(sp18, part->unk_04, part->unk_08, part->unk_0C);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, dlist);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

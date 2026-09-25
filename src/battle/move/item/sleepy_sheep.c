@@ -170,7 +170,6 @@ API_CALLABLE(N(func_802A1848_71EE98)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-
 #include "battle/move/item/sleepy_sheep1.png.h"
 INCLUDE_IMG("battle/move/item/sleepy_sheep1.png", battle_item_sleepy_sheep1_png);
 INCLUDE_PAL("battle/move/item/sleepy_sheep1.pal", battle_item_sleepy_sheep1_pal);
@@ -268,10 +267,10 @@ EntityModelScript N(modelCommandList) = {
 
 EntityModelScript N(modelCommandList2) = {
     ems_SetRenderMode(RENDER_MODE_ALPHATEST)
-    ems_Draw(N(frame2_displayList),3)
-    ems_Draw(N(frame1_displayList),2)
-    ems_Draw(N(frame3_displayList),2)
-    ems_Draw(N(frame1_displayList),2)
+    ems_Draw(N(frame2_displayList), 3)
+    ems_Draw(N(frame1_displayList), 2)
+    ems_Draw(N(frame3_displayList), 2)
+    ems_Draw(N(frame1_displayList), 2)
     ems_Restart
     ems_End
 };

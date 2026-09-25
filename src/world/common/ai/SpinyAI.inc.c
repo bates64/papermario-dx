@@ -96,8 +96,8 @@ API_CALLABLE(N(SpinyAI_Main)) {
 
     get_screen_coords(CAM_DEFAULT, npc->pos.x, npc->pos.y, npc->pos.z, &screenX, &screenY, &screenZ);
     if (script->AI_TEMP_STATE < AI_STATE_SPINY_HOLD_READY
-            && (screenX < -DESPAWN_SCREEN_DIST || screenX > SCREEN_WIDTH + DESPAWN_SCREEN_DIST)
-        ) {
+        && (screenX < -DESPAWN_SCREEN_DIST || screenX > SCREEN_WIDTH + DESPAWN_SCREEN_DIST))
+    {
         script->AI_TEMP_STATE = AI_STATE_SPINY_RESET_INIT;
     }
 
@@ -179,9 +179,11 @@ API_CALLABLE(N(SpinyAI_Main)) {
                 x = npc->pos.x;
                 y = npc->pos.y;
                 z = npc->pos.z;
-                if (!npc_test_move_simple_with_slipping(npc->collisionChannel,
-                    &x, &y, &z, npc->moveSpeed, npc->yaw, npc->collisionHeight, npc->collisionDiameter)
-                ) {
+                if (!npc_test_move_simple_with_slipping(
+                        npc->collisionChannel, &x, &y, &z, npc->moveSpeed, npc->yaw, npc->collisionHeight,
+                        npc->collisionDiameter
+                    ))
+                {
                     npc_move_heading(npc, npc->moveSpeed, npc->yaw);
                 } else {
                     npc->moveSpeed = 0.0f;
@@ -193,8 +195,8 @@ API_CALLABLE(N(SpinyAI_Main)) {
                 z = npc->pos.z;
                 hitDepth = fabsf(npc->jumpVel) + 16.0;
                 if (npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &hitDepth)
-                    && (hitDepth <= (fabsf(npc->jumpVel) + 13.0))
-                ) {
+                    && (hitDepth <= (fabsf(npc->jumpVel) + 13.0)))
+                {
                     npc->pos.y = y;
                     enemy->territory->wander.centerPos.x = npc->pos.x;
                     enemy->territory->wander.centerPos.y = npc->pos.y;
@@ -264,4 +266,3 @@ API_CALLABLE(N(SpinyAI_Main)) {
     }
     return ApiStatus_BLOCK;
 }
-

@@ -63,9 +63,7 @@ API_CALLABLE(N(TacklePatrolAI_Main)) {
     if (enemy->varTable[AI_VAR_TACKLE_CHANGE_TIME] > 0) {
         enemy->varTable[AI_VAR_TACKLE_CHANGE_TIME]--;
         if (enemy->varTable[AI_VAR_TACKLE_CHANGE_TIME] == 0) {
-            if (npc->curAnim == ANIM_BonyBeetle_ExtendSpikes ||
-                npc->curAnim == ANIM_BonyBeetle_RetractSpikes)
-            {
+            if (npc->curAnim == ANIM_BonyBeetle_ExtendSpikes || npc->curAnim == ANIM_BonyBeetle_RetractSpikes) {
                 npc->curAnim = ANIM_BonyBeetle_Walk;
             }
         } else {

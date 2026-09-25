@@ -192,12 +192,12 @@ void hud_element_load_script(HudElement* hudElement, HudScriptPtr script) {
                             capacity = HudElemCacheCapacity / 2;
                         }
                         ASSERT(capacity > *gHudElementCacheSize + HudElemSizes[preset].size);
-                        nuPiReadRom((s32)icon_ROM_START + raster, entry->data, HudElemSizes[preset].size);
+                        nuPiReadRom((s32) icon_ROM_START + raster, entry->data, HudElemSizes[preset].size);
                         *gHudElementCacheSize += HudElemSizes[preset].size;
                         if (gGameStatusPtr->context == CONTEXT_WORLD) {
                             *pos = i;
                         } else {
-                            *pos = (u16)(*pos) | (i << 16);
+                            *pos = (u16) (*pos) | (i << 16);
                         }
                         i++;
                         break;
@@ -205,7 +205,7 @@ void hud_element_load_script(HudElement* hudElement, HudScriptPtr script) {
                         if (gGameStatusPtr->context == CONTEXT_WORLD) {
                             *pos = i;
                         } else {
-                            *pos = (u16)(*pos) | (i << 16);
+                            *pos = (u16) (*pos) | (i << 16);
                         }
                         break;
                     }
@@ -228,12 +228,12 @@ void hud_element_load_script(HudElement* hudElement, HudScriptPtr script) {
                             capacity = HudElemCacheCapacity / 2;
                         }
                         ASSERT(capacity > *gHudElementCacheSize + 32);
-                        nuPiReadRom((s32)icon_ROM_START + palette, entry->data, 32);
+                        nuPiReadRom((s32) icon_ROM_START + palette, entry->data, 32);
                         *gHudElementCacheSize += 32;
                         if (gGameStatusPtr->context == CONTEXT_WORLD) {
                             *pos = i;
                         } else {
-                            *pos = (u16)(*pos) | (i << 16);
+                            *pos = (u16) (*pos) | (i << 16);
                         }
                         i++;
                         break;
@@ -241,7 +241,7 @@ void hud_element_load_script(HudElement* hudElement, HudScriptPtr script) {
                         if (gGameStatusPtr->context == CONTEXT_WORLD) {
                             *pos = i;
                         } else {
-                            *pos = (u16)(*pos) | (i << 16);
+                            *pos = (u16) (*pos) | (i << 16);
                         }
                         break;
                     }
@@ -257,8 +257,10 @@ void hud_element_load_script(HudElement* hudElement, HudScriptPtr script) {
 }
 
 // render a basic rect for a non-transformed hud element
-void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s16 drawSizeX, s16 drawSizeY,
-                           s16 offsetX, s16 offsetY, s32 clamp, s32 dropShadow) {
+void hud_element_draw_rect(
+    HudElement* hudElement, s16 texSizeX, s16 texSizeY, s16 drawSizeX, s16 drawSizeY, s16 offsetX, s16 offsetY,
+    s32 clamp, s32 dropShadow
+) {
     s32 flipX, flipY;
     s32 fmt;
     s32 widthScale, heightScale;
@@ -414,7 +416,7 @@ void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s
                 texStartX = 0;
             }
 
-            if (lrx < 0  || ulx > SCREEN_WIDTH) {
+            if (lrx < 0 || ulx > SCREEN_WIDTH) {
                 break;
             }
 
@@ -462,11 +464,17 @@ void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s
                     }
 
                     if (!flipX && !flipY) {
-                        gDPLoadTextureTile(gMainGfxPos++, imageAddr, G_IM_FMT_RGBA, G_IM_SIZ_32b, texSizeX, texSizeY, uls, ult, lrs, lrt, 0,
-                                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+                        gDPLoadTextureTile(
+                            gMainGfxPos++, imageAddr, G_IM_FMT_RGBA, G_IM_SIZ_32b, texSizeX, texSizeY, uls, ult, lrs,
+                            lrt, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD,
+                            G_TX_NOLOD
+                        );
                     } else {
-                        gDPLoadTextureTile(gMainGfxPos++, imageAddr, G_IM_FMT_RGBA, G_IM_SIZ_32b, texSizeX, texSizeY, uls, ult, lrs, lrt, 0,
-                                            G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+                        gDPLoadTextureTile(
+                            gMainGfxPos++, imageAddr, G_IM_FMT_RGBA, G_IM_SIZ_32b, texSizeX, texSizeY, uls, ult, lrs,
+                            lrt, 0, G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD,
+                            G_TX_NOLOD
+                        );
                     }
                     break;
                 case 1:
@@ -478,9 +486,14 @@ void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s
                         }
 
                         if (hudElement->flags & HUD_ELEMENT_FLAG_TRANSPARENT) {
-                            gDPSetPrimColor(gMainGfxPos++, 0, 0, hudElement->tint.r, hudElement->tint.g, hudElement->tint.b, hudElement->opacity);
+                            gDPSetPrimColor(
+                                gMainGfxPos++, 0, 0, hudElement->tint.r, hudElement->tint.g, hudElement->tint.b,
+                                hudElement->opacity
+                            );
                         } else {
-                            gDPSetPrimColor(gMainGfxPos++, 0, 0, hudElement->tint.r, hudElement->tint.g, hudElement->tint.b, 255);
+                            gDPSetPrimColor(
+                                gMainGfxPos++, 0, 0, hudElement->tint.r, hudElement->tint.g, hudElement->tint.b, 255
+                            );
                         }
                     } else {
                         gDPSetRenderMode(gMainGfxPos++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
@@ -490,72 +503,115 @@ void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s
 
                     if (!flipX && !flipY) {
                         if (!clamp) {
-                            gDPLoadTextureTile_4b(gMainGfxPos++, imageAddr, G_IM_FMT_CI, texSizeX, texSizeY, uls, ult, lrs, lrt, 0,
-                                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+                            gDPLoadTextureTile_4b(
+                                gMainGfxPos++, imageAddr, G_IM_FMT_CI, texSizeX, texSizeY, uls, ult, lrs, lrt, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD,
+                                G_TX_NOLOD
+                            );
                         } else {
                             switch (tileMode) {
                                 case 0:
-                                    gDPLoadTextureTile_4b(gMainGfxPos++, imageAddr, G_IM_FMT_CI, texSizeX, texSizeY, uls, ult, lrs, lrt, 0,
-                                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+                                    gDPLoadTextureTile_4b(
+                                        gMainGfxPos++, imageAddr, G_IM_FMT_CI, texSizeX, texSizeY, uls, ult, lrs, lrt,
+                                        0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks, maskt,
+                                        G_TX_NOLOD, G_TX_NOLOD
+                                    );
                                     break;
                                 case 1:
-                                    gDPLoadTextureTile_4b(gMainGfxPos++, imageAddr, G_IM_FMT_CI, texSizeX, texSizeY, uls, ult, lrs, lrt, 0,
-                                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+                                    gDPLoadTextureTile_4b(
+                                        gMainGfxPos++, imageAddr, G_IM_FMT_CI, texSizeX, texSizeY, uls, ult, lrs, lrt,
+                                        0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks, maskt,
+                                        G_TX_NOLOD, G_TX_NOLOD
+                                    );
                                     break;
                                 case 2:
-                                    gDPLoadTextureTile_4b(gMainGfxPos++, imageAddr, G_IM_FMT_CI, texSizeX, texSizeY, uls, ult, lrs, lrt, 0,
-                                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+                                    gDPLoadTextureTile_4b(
+                                        gMainGfxPos++, imageAddr, G_IM_FMT_CI, texSizeX, texSizeY, uls, ult, lrs, lrt,
+                                        0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks, maskt,
+                                        G_TX_NOLOD, G_TX_NOLOD
+                                    );
                                     break;
                                 case 3:
-                                    gDPLoadTextureTile_4b(gMainGfxPos++, imageAddr, G_IM_FMT_CI, texSizeX, texSizeY, uls, ult, lrs, lrt, 0,
-                                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+                                    gDPLoadTextureTile_4b(
+                                        gMainGfxPos++, imageAddr, G_IM_FMT_CI, texSizeX, texSizeY, uls, ult, lrs, lrt,
+                                        0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks, maskt,
+                                        G_TX_NOLOD, G_TX_NOLOD
+                                    );
                                     break;
                             }
                         }
                     } else {
-                        gDPLoadTextureTile_4b(gMainGfxPos++, imageAddr, G_IM_FMT_CI, texSizeX, texSizeY, uls, ult, lrs, lrt, 0,
-                                            G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+                        gDPLoadTextureTile_4b(
+                            gMainGfxPos++, imageAddr, G_IM_FMT_CI, texSizeX, texSizeY, uls, ult, lrs, lrt, 0,
+                            G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD
+                        );
                     }
                     break;
                 case 2:
                     gDPSetCombineMode(gMainGfxPos++, PM_CC_47, PM_CC_47);
-                    gDPSetPrimColor(gMainGfxPos++, 0, 0, hudElement->tint.r, hudElement->tint.g, hudElement->tint.b, hudElement->opacity);
+                    gDPSetPrimColor(
+                        gMainGfxPos++, 0, 0, hudElement->tint.r, hudElement->tint.g, hudElement->tint.b,
+                        hudElement->opacity
+                    );
 
                     if (!flipX && !flipY) {
                         if (!clamp) {
                             switch (tileMode) {
                                 case 0:
-                                    gDPLoadTextureTile(gMainGfxPos++, imageAddr, G_IM_FMT_IA, G_IM_SIZ_8b, texSizeX, texSizeY, uls, ult, lrs, lrt, 0,
-                                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+                                    gDPLoadTextureTile(
+                                        gMainGfxPos++, imageAddr, G_IM_FMT_IA, G_IM_SIZ_8b, texSizeX, texSizeY, uls,
+                                        ult, lrs, lrt, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks,
+                                        maskt, G_TX_NOLOD, G_TX_NOLOD
+                                    );
                                     break;
                                 case 1:
-                                    gDPLoadTextureTile(gMainGfxPos++, imageAddr, G_IM_FMT_IA, G_IM_SIZ_8b, texSizeX, texSizeY, uls, ult, lrs, lrt, 0,
-                                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+                                    gDPLoadTextureTile(
+                                        gMainGfxPos++, imageAddr, G_IM_FMT_IA, G_IM_SIZ_8b, texSizeX, texSizeY, uls,
+                                        ult, lrs, lrt, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks,
+                                        maskt, G_TX_NOLOD, G_TX_NOLOD
+                                    );
                                     break;
                                 case 2:
-                                    gDPLoadTextureTile(gMainGfxPos++, imageAddr, G_IM_FMT_IA, G_IM_SIZ_8b, texSizeX, texSizeY, uls, ult, lrs, lrt, 0,
-                                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+                                    gDPLoadTextureTile(
+                                        gMainGfxPos++, imageAddr, G_IM_FMT_IA, G_IM_SIZ_8b, texSizeX, texSizeY, uls,
+                                        ult, lrs, lrt, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks,
+                                        maskt, G_TX_NOLOD, G_TX_NOLOD
+                                    );
                                     break;
                                 case 3:
-                                    gDPLoadTextureTile(gMainGfxPos++, imageAddr, G_IM_FMT_IA, G_IM_SIZ_8b, texSizeX, texSizeY, uls, ult, lrs, lrt, 0,
-                                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+                                    gDPLoadTextureTile(
+                                        gMainGfxPos++, imageAddr, G_IM_FMT_IA, G_IM_SIZ_8b, texSizeX, texSizeY, uls,
+                                        ult, lrs, lrt, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks,
+                                        maskt, G_TX_NOLOD, G_TX_NOLOD
+                                    );
                                     break;
                             }
                         } else {
-                            gDPLoadTextureTile(gMainGfxPos++, imageAddr, G_IM_FMT_IA, G_IM_SIZ_8b, texSizeX, texSizeY, uls, ult, lrs, lrt, 0,
-                                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+                            gDPLoadTextureTile(
+                                gMainGfxPos++, imageAddr, G_IM_FMT_IA, G_IM_SIZ_8b, texSizeX, texSizeY, uls, ult, lrs,
+                                lrt, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, masks, maskt,
+                                G_TX_NOLOD, G_TX_NOLOD
+                            );
                         }
                     } else {
-                        gDPLoadTextureTile(gMainGfxPos++, imageAddr, G_IM_FMT_IA, G_IM_SIZ_8b, texSizeX, texSizeY, uls, ult, lrs, lrt, 0,
-                                            G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
+                        gDPLoadTextureTile(
+                            gMainGfxPos++, imageAddr, G_IM_FMT_IA, G_IM_SIZ_8b, texSizeX, texSizeY, uls, ult, lrs, lrt,
+                            0, G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, masks, maskt, G_TX_NOLOD, G_TX_NOLOD
+                        );
                     }
                     break;
             }
 
             if (hudElement->flags & HUD_ELEMENT_FLAG_FILTER_TEX) {
-                gSPScisTextureRectangle(gMainGfxPos++, ulx * 4, uly * 4, lrx * 4, lry * 4, 0, texStartX * 32 + 16, texStartY * 32 + 16, widthScale, heightScale);
+                gSPScisTextureRectangle(
+                    gMainGfxPos++, ulx * 4, uly * 4, lrx * 4, lry * 4, 0, texStartX * 32 + 16, texStartY * 32 + 16,
+                    widthScale, heightScale
+                );
             } else {
-                gSPScisTextureRectangle(gMainGfxPos++, ulx * 4, uly * 4, lrx * 4, lry * 4, 0, texStartX * 32, texStartY * 32, widthScale, heightScale);
+                gSPScisTextureRectangle(
+                    gMainGfxPos++, ulx * 4, uly * 4, lrx * 4, lry * 4, 0, texStartX * 32, texStartY * 32, widthScale,
+                    heightScale
+                );
             }
             if (isLastTileX) {
                 break;
@@ -735,7 +791,8 @@ HudElemID hud_element_create(HudScriptPtr script) {
     }
 
     hud_element_load_script(hudElement, script);
-    while (hud_element_update(hudElement) != 0);
+    while (hud_element_update(hudElement) != 0)
+        ;
 
     return id;
 }
@@ -763,7 +820,8 @@ void update_hud_elements(void) {
         // update the current element
         elem->updateTimer--;
         if (elem->updateTimer == 0) {
-            while (hud_element_update(elem) != 0);
+            while (hud_element_update(elem) != 0)
+                ;
         }
         if (elem->flags & HUD_ELEMENT_FLAG_RESIZING) {
             elem->dynamicSize.x += elem->deltaSize.x;
@@ -824,7 +882,7 @@ s32 hud_element_update(HudElement* hudElement) {
             return true;
         case HUD_ELEMENT_OP_SetRGBA:
             hudElement->updateTimer = *nextPos++;
-            hudElement->imageAddr = (u8*)*nextPos++;
+            hudElement->imageAddr = (u8*) *nextPos++;
             hudElement->readPos = nextPos;
 
             if (hudElement->flags & HUD_ELEMENT_FLAG_MEMOFFSET) {
@@ -850,21 +908,21 @@ s32 hud_element_update(HudElement* hudElement) {
                     hudElement->flags &= ~HUD_ELEMENT_FLAG_RESIZE_DIR;
                     hudElement->dynamicSize.x = drawWidth;
                     hudElement->dynamicSize.y = drawHeight;
-                    hudElement->deltaSize.x = ((f32)imageWidth - (f32)drawWidth) / (f32)hudElement->updateTimer;
-                    hudElement->deltaSize.y = ((f32)imageHeight - (f32)drawHeight) / (f32)hudElement->updateTimer;
+                    hudElement->deltaSize.x = ((f32) imageWidth - (f32) drawWidth) / (f32) hudElement->updateTimer;
+                    hudElement->deltaSize.y = ((f32) imageHeight - (f32) drawHeight) / (f32) hudElement->updateTimer;
                 } else {
                     hudElement->flags |= HUD_ELEMENT_FLAG_RESIZE_DIR;
                     hudElement->dynamicSize.x = imageWidth;
                     hudElement->dynamicSize.y = imageHeight;
-                    hudElement->deltaSize.x = ((f32)drawWidth - (f32)imageWidth) / (f32)hudElement->updateTimer;
-                    hudElement->deltaSize.y = ((f32)drawHeight - (f32)imageHeight) / (f32)hudElement->updateTimer;
+                    hudElement->deltaSize.x = ((f32) drawWidth - (f32) imageWidth) / (f32) hudElement->updateTimer;
+                    hudElement->deltaSize.y = ((f32) drawHeight - (f32) imageHeight) / (f32) hudElement->updateTimer;
                 }
             }
             break;
         case HUD_ELEMENT_OP_SetCI:
             hudElement->updateTimer = *nextPos++;
-            hudElement->imageAddr = (IMG_PTR)*nextPos++;
-            hudElement->paletteAddr = (PAL_PTR)*nextPos++;
+            hudElement->imageAddr = (IMG_PTR) *nextPos++;
+            hudElement->paletteAddr = (PAL_PTR) *nextPos++;
             hudElement->readPos = nextPos;
 
             if (hudElement->flags & HUD_ELEMENT_FLAG_MEMOFFSET) {
@@ -891,14 +949,14 @@ s32 hud_element_update(HudElement* hudElement) {
                     hudElement->flags &= ~HUD_ELEMENT_FLAG_RESIZE_DIR;
                     hudElement->dynamicSize.x = drawWidth;
                     hudElement->dynamicSize.y = drawHeight;
-                    hudElement->deltaSize.x = ((f32)imageWidth - (f32)drawWidth) / (f32)hudElement->updateTimer;
-                    hudElement->deltaSize.y = ((f32)imageHeight - (f32)drawHeight) / (f32)hudElement->updateTimer;
+                    hudElement->deltaSize.x = ((f32) imageWidth - (f32) drawWidth) / (f32) hudElement->updateTimer;
+                    hudElement->deltaSize.y = ((f32) imageHeight - (f32) drawHeight) / (f32) hudElement->updateTimer;
                 } else {
                     hudElement->flags |= HUD_ELEMENT_FLAG_RESIZE_DIR;
                     hudElement->dynamicSize.x = imageWidth;
                     hudElement->dynamicSize.y = imageHeight;
-                    hudElement->deltaSize.x = ((f32)drawWidth - (f32)imageWidth) / (f32)hudElement->updateTimer;
-                    hudElement->deltaSize.y = ((f32)drawHeight - (f32)imageHeight) / (f32)hudElement->updateTimer;
+                    hudElement->deltaSize.x = ((f32) drawWidth - (f32) imageWidth) / (f32) hudElement->updateTimer;
+                    hudElement->deltaSize.y = ((f32) drawHeight - (f32) imageHeight) / (f32) hudElement->updateTimer;
                 }
             }
             break;
@@ -954,14 +1012,14 @@ s32 hud_element_update(HudElement* hudElement) {
                     hudElement->flags &= ~HUD_ELEMENT_FLAG_RESIZE_DIR;
                     hudElement->dynamicSize.x = drawWidth;
                     hudElement->dynamicSize.y = drawHeight;
-                    hudElement->deltaSize.x = ((f32)imageWidth - (f32)drawWidth) / (f32)hudElement->updateTimer;
-                    hudElement->deltaSize.y = ((f32)imageHeight - (f32)drawHeight) / (f32)hudElement->updateTimer;
+                    hudElement->deltaSize.x = ((f32) imageWidth - (f32) drawWidth) / (f32) hudElement->updateTimer;
+                    hudElement->deltaSize.y = ((f32) imageHeight - (f32) drawHeight) / (f32) hudElement->updateTimer;
                 } else {
                     hudElement->flags |= HUD_ELEMENT_FLAG_RESIZE_DIR;
                     hudElement->dynamicSize.x = imageWidth;
                     hudElement->dynamicSize.y = imageHeight;
-                    hudElement->deltaSize.x = ((f32)drawWidth - (f32)imageWidth) / (f32)hudElement->updateTimer;
-                    hudElement->deltaSize.y = ((f32)drawHeight - (f32)imageHeight) / (f32)hudElement->updateTimer;
+                    hudElement->deltaSize.x = ((f32) drawWidth - (f32) imageWidth) / (f32) hudElement->updateTimer;
+                    hudElement->deltaSize.y = ((f32) drawHeight - (f32) imageHeight) / (f32) hudElement->updateTimer;
                 }
             }
             break;
@@ -1055,7 +1113,7 @@ s32 hud_element_update(HudElement* hudElement) {
             hudElement->readPos = nextPos;
             return true;
         case HUD_ELEMENT_OP_SetScale:
-            uniformScale = (f32)*nextPos++;
+            uniformScale = (f32) *nextPos++;
             uniformScale /= 65536;
             hudElement->uniformScale = uniformScale;
             if (hudElement->flags & HUD_ELEMENT_FLAG_CUSTOM_SIZE) {
@@ -1121,7 +1179,7 @@ s32 hud_element_update(HudElement* hudElement) {
             return true;
         case HUD_ELEMENT_OP_RandomBranch:
             s1 = *nextPos++;
-            newReadPos = (HudScriptPos)nextPos[rand_int(s1 - 1)];
+            newReadPos = (HudScriptPos) nextPos[rand_int(s1 - 1)];
             hudElement->readPos = newReadPos;
             hud_element_load_script(hudElement, newReadPos);
             return true;
@@ -1241,7 +1299,9 @@ void render_hud_elements_backUI(void) {
 
             if (elem->flags & HUD_ELEMENT_FLAG_REPEATED) {
                 if (elem->flags & HUD_ELEMENT_FLAG_DROP_SHADOW) {
-                    hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, true);
+                    hud_element_draw_rect(
+                        elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, true
+                    );
                 }
                 hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, false);
             } else {
@@ -1369,7 +1429,9 @@ void render_hud_elements_frontUI(void) {
 
             if (elem->flags & HUD_ELEMENT_FLAG_REPEATED) {
                 if (elem->flags & HUD_ELEMENT_FLAG_DROP_SHADOW) {
-                    hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, true);
+                    hud_element_draw_rect(
+                        elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, true
+                    );
                 }
                 hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, false);
             } else {
@@ -1465,14 +1527,14 @@ void render_complex_hud_element(HudElement* elem) {
     guTranslateF(mtxPivotOn, transform->pivot.x, -transform->pivot.y, 0.0f);
     guTranslateF(mtxPivotOff, -transform->pivot.x, transform->pivot.y, 0.0f);
     guTranslateF(
-        mtxTrans,
-        transform->pos.x + elem->worldPosOffset.x + elem->renderPosX + elem->screenPosOffset.x,
+        mtxTrans, transform->pos.x + elem->worldPosOffset.x + elem->renderPosX + elem->screenPosOffset.x,
         transform->pos.y + elem->worldPosOffset.y - elem->renderPosY - elem->screenPosOffset.y,
         transform->pos.z - (elem->worldPosOffset.z / 10.0)
     );
-    guScaleF(mtxScale, elem->uniformScale * xScaleFactor * transform->scale.x,
-                    elem->uniformScale * yScaleFactor * transform->scale.y,
-                    transform->scale.z);
+    guScaleF(
+        mtxScale, elem->uniformScale * xScaleFactor * transform->scale.x,
+        elem->uniformScale * yScaleFactor * transform->scale.y, transform->scale.z
+    );
     guRotateF(mtxRotX, transform->rot.x, 1.0f, 0.0f, 0.0f);
     guRotateF(mtxRotY, transform->rot.y, 0.0f, 1.0f, 0.0f);
     guRotateF(mtxRotZ, transform->rot.z, 0.0f, 0.0f, 1.0f);
@@ -1485,8 +1547,10 @@ void render_complex_hud_element(HudElement* elem) {
     // add translation
     guMtxCatF(mtxTemp, mtxTrans, mtxOut);
     guMtxF2L(mtxOut, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
-              G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     mode = 0;
     if (elem->flags & HUD_ELEMENT_FLAG_FMT_CI4) {
@@ -1581,9 +1645,10 @@ void render_complex_hud_element(HudElement* elem) {
                 }
             }
 
-            gDPLoadTextureBlock(gMainGfxPos++, elem->imageAddr, G_IM_FMT_IA, G_IM_SIZ_8b, width, height, 0,
-                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                                G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureBlock(
+                gMainGfxPos++, elem->imageAddr, G_IM_FMT_IA, G_IM_SIZ_8b, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+            );
 
             gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
             gSPVertex(gMainGfxPos++, &transform->quadBuffers[FrameQuadIndex], 4, 0);
@@ -1596,8 +1661,7 @@ void render_complex_hud_element(HudElement* elem) {
     gDPPipeSync(gMainGfxPos++);
 }
 
-s32 gather_and_sort_hud_elements(s32* sortedElements, b32 isBattle)
-{
+s32 gather_and_sort_hud_elements(s32* sortedElements, b32 isBattle) {
     HudElement* elem;
     s32 el1, el2;
     s32 count;
@@ -1672,12 +1736,20 @@ void render_transformed_hud_elements(void) {
         if (count != 0) {
             gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, SCREEN_XMIN, SCREEN_YMIN, SCREEN_XMAX, SCREEN_YMAX);
             gDPPipeSync(gMainGfxPos++);
-            gSPClearGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
+            gSPClearGeometryMode(
+                gMainGfxPos++,
+                G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD
+                    | G_SHADING_SMOOTH
+            );
             gSPSetGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_LIGHTING | G_SHADING_SMOOTH);
             gSPSetLights1(gMainGfxPos++, HudElemLights);
             gSPTexture(gMainGfxPos++, -1, -1, 0, G_TX_RENDERTILE, G_ON);
             gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
-            gSPSetOtherMode(gMainGfxPos++, G_SETOTHERMODE_H, G_MDSFT_ALPHADITHER, 18, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE | G_TD_CLAMP | G_TP_PERSP | G_CYC_1CYCLE);
+            gSPSetOtherMode(
+                gMainGfxPos++, G_SETOTHERMODE_H, G_MDSFT_ALPHADITHER, 18,
+                G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE | G_TD_CLAMP
+                    | G_TP_PERSP | G_CYC_1CYCLE
+            );
 
             for (i = 0; i < count; i++) {
                 render_complex_hud_element((*gHudElements)[sortedElements[i]]);
@@ -1691,12 +1763,20 @@ void render_transformed_hud_elements(void) {
         if (count != 0) {
             gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, SCREEN_XMIN, SCREEN_YMIN, SCREEN_XMAX, SCREEN_YMAX);
             gDPPipeSync(gMainGfxPos++);
-            gSPClearGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
+            gSPClearGeometryMode(
+                gMainGfxPos++,
+                G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD
+                    | G_SHADING_SMOOTH
+            );
             gSPSetGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_LIGHTING | G_SHADING_SMOOTH);
             gSPSetLights1(gMainGfxPos++, HudElemLights);
             gSPTexture(gMainGfxPos++, -1, -1, 0, G_TX_RENDERTILE, G_ON);
             gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
-            gSPSetOtherMode(gMainGfxPos++, G_SETOTHERMODE_H, G_MDSFT_ALPHADITHER, 18, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE | G_TD_CLAMP | G_TP_PERSP | G_CYC_1CYCLE);
+            gSPSetOtherMode(
+                gMainGfxPos++, G_SETOTHERMODE_H, G_MDSFT_ALPHADITHER, 18,
+                G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE | G_TD_CLAMP
+                    | G_TP_PERSP | G_CYC_1CYCLE
+            );
 
             for (i = 0; i < count; i++) {
                 render_complex_hud_element((*gHudElements)[sortedElements[i]]);
@@ -1716,8 +1796,10 @@ void immediately_render_complex_hud_element(s32 elemID, b32 includeSetup, s32 ca
         gCurrentCamID = camID;
 
         gSPViewport(gMainGfxPos++, &camera->vp);
-        gSPClearGeometryMode(gMainGfxPos++, G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
-                                                G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
+        gSPClearGeometryMode(
+            gMainGfxPos++,
+            G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH
+        );
         gSPTexture(gMainGfxPos++, 0, 0, 0, G_TX_RENDERTILE, G_OFF);
         gDPPipelineMode(gMainGfxPos++, G_PM_NPRIMITIVE);
         gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
@@ -1726,13 +1808,14 @@ void immediately_render_complex_hud_element(s32 elemID, b32 includeSetup, s32 ca
         gDPSetRenderMode(gMainGfxPos++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
         gSPClipRatio(gMainGfxPos++, FRUSTRATIO_2);
         gDPPipeSync(gMainGfxPos++);
-        //clear Z buffer inside camera viewport
+        // clear Z buffer inside camera viewport
         gDPSetCycleType(gMainGfxPos++, G_CYC_FILL);
         gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxZBuffer));
-        gDPSetFillColor(gMainGfxPos++, GPACK_ZDZ(G_MAXFBZ, 0)<<16 | GPACK_ZDZ(G_MAXFBZ, 0));
-        gDPFillRectangle(gMainGfxPos++, camera->viewportStartX, camera->viewportStartY,
-                         camera->viewportStartX + camera->viewportW - 1,
-                         camera->viewportStartY + camera->viewportH - 1);
+        gDPSetFillColor(gMainGfxPos++, GPACK_ZDZ(G_MAXFBZ, 0) << 16 | GPACK_ZDZ(G_MAXFBZ, 0));
+        gDPFillRectangle(
+            gMainGfxPos++, camera->viewportStartX, camera->viewportStartY,
+            camera->viewportStartX + camera->viewportW - 1, camera->viewportStartY + camera->viewportH - 1
+        );
         gDPPipeSync(gMainGfxPos++);
 
         gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxCfb_ptr));
@@ -1741,14 +1824,18 @@ void immediately_render_complex_hud_element(s32 elemID, b32 includeSetup, s32 ca
         guOrthoF(camera->mtxPerspective, 0.0f, 320.0f, -240.0f, 0.0f, -1000.0f, 1000.0f, 1.0f);
         guMtxF2L(camera->mtxPerspective, &gDisplayContext->camPerspMatrix[gCurrentCamID]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID], G_MTX_NOPUSH | G_MTX_LOAD |
-                                                                                    G_MTX_PROJECTION);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+        );
         // scissor to insets
         gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, SCREEN_XMIN, SCREEN_YMIN, SCREEN_XMAX, SCREEN_YMAX);
         gDPPipeSync(gMainGfxPos++);
         gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
-        gSPClearGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING |
-                                                G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
+        gSPClearGeometryMode(
+            gMainGfxPos++,
+            G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD
+                | G_SHADING_SMOOTH
+        );
         gSPSetGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_LIGHTING | G_SHADING_SMOOTH);
         gSPSetLights1(gMainGfxPos++, HudElemLights);
         gSPTexture(gMainGfxPos++, -1, -1, 0, G_TX_RENDERTILE, G_ON);
@@ -1869,7 +1956,9 @@ void draw_hud_element_internal(s32 id, s32 clipMode) {
 
             if (elem->flags & HUD_ELEMENT_FLAG_REPEATED) {
                 if (elem->flags & HUD_ELEMENT_FLAG_DROP_SHADOW) {
-                    hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, true);
+                    hud_element_draw_rect(
+                        elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, true
+                    );
                 }
                 hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, false);
             } else {
@@ -1943,10 +2032,13 @@ void hud_element_set_script(s32 id, HudScriptPtr script) {
     hudElement->worldPosOffset.y = 0;
     hudElement->flags &= ~HUD_ELEMENT_FLAG_ANIMATION_FINISHED;
     hudElement->uniformScale = 1.0f;
-    hudElement->flags &= ~(HUD_ELEMENT_FLAG_SCALED | HUD_ELEMENT_FLAG_TRANSPARENT | HUD_ELEMENT_FLAG_RESIZING | HUD_ELEMENT_FLAG_REPEATED);
+    hudElement->flags &=
+        ~(HUD_ELEMENT_FLAG_SCALED | HUD_ELEMENT_FLAG_TRANSPARENT | HUD_ELEMENT_FLAG_RESIZING
+          | HUD_ELEMENT_FLAG_REPEATED);
     hud_element_load_script(hudElement, script);
 
-    while (hud_element_update(hudElement) != 0) {}
+    while (hud_element_update(hudElement) != 0) {
+    }
 }
 
 HudScriptPtr hud_element_get_script(s32 id) {
@@ -2229,11 +2321,12 @@ void hud_element_set_transform_rotation_pivot(s32 id, s32 dx, s32 dy) {
 }
 
 void copy_world_hud_element_ref_to_battle(s32 worldID, s32 battleID) {
-    gHudElementsBattle[battleID & ~HUD_ELEMENT_BATTLE_ID_MASK] = gHudElementsWorld[worldID & ~HUD_ELEMENT_BATTLE_ID_MASK];
+    gHudElementsBattle[battleID & ~HUD_ELEMENT_BATTLE_ID_MASK] =
+        gHudElementsWorld[worldID & ~HUD_ELEMENT_BATTLE_ID_MASK];
 }
 
 void hud_element_set_aux_cache(void* base, s32 size) {
-    HudElemAuxCache = (u8*)base;
+    HudElemAuxCache = (u8*) base;
     if (base == nullptr) {
         HudElemCacheCapacity = 0x11000;
     } else {

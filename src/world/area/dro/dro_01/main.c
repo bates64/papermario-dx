@@ -2,7 +2,6 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-
 EvtScript N(EVS_ExitWalk_sbk_36_1) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Set(GF_DRO01_HeardHintAboutSpinningRoof, 0)

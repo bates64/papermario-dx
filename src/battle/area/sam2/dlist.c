@@ -39,4 +39,3 @@ Gfx N(dlist)[] = {
     gsSP2Triangles(14, 16, 9, 0, 15, 16, 10, 0),
     gsSPEndDisplayList(),
 };
-

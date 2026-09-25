@@ -39,17 +39,15 @@ Quad SpriteQuadTemplate = {
     }
 };
 
-Vp SpritePauseVp = {{
-        { 640, 480, 511, 0 },
-        { 640, 480, 511, 0 },
-    }
-};
+Vp SpritePauseVp = { {
+    { 640, 480, 511, 0 },
+    { 640, 480, 511, 0 },
+} };
 
-Vp SpritePauseVpAlt = {{
-        { 640, 480, 511, 0 },
-        { 640, 480, 512, 0 },
-    }
-};
+Vp SpritePauseVpAlt = { {
+    { 640, 480, 511, 0 },
+    { 640, 480, 512, 0 },
+} };
 
 Gfx OpaqueSpriteGfx[] = {
     gsSPClearGeometryMode(G_CULL_BOTH | G_LIGHTING),
@@ -93,7 +91,7 @@ f32 SpriteAnimUpdateTimescale = 1.0f;
 
 #define MARIO_SPRITE_COMMON_BITS \
       1 << SPR_Mario1 \
-    | 1 << SPR_Mario1_Back \
+    | 1 << SPR_Mario1_Back
 
 #define MARIO_SPRITE_WORLD_BITS \
     MARIO_SPRITE_COMMON_BITS \
@@ -112,7 +110,7 @@ f32 SpriteAnimUpdateTimescale = 1.0f;
       1 << SPR_Peach1 \
     | 1 << SPR_Peach1_Back \
     | 1 << SPR_Peach2 \
-    | 1 << SPR_Peach3 \
+    | 1 << SPR_Peach3
 
 // TODO(player raster splat header generation):
 // - macroify rasterSize based on the biggest raster
@@ -221,20 +219,18 @@ void spr_clear_quad_cache(void) {
 }
 
 void spr_appendGfx_component_flat(
-    Quad* vertices,
-    IMG_PTR raster, PAL_PTR palette,
-    s32 width, s32 height,
-    f32 arg5,
-    Matrix4f mtx,
-    s32 alpha
+    Quad* vertices, IMG_PTR raster, PAL_PTR palette, s32 width, s32 height, f32 arg5, Matrix4f mtx, s32 alpha
 ) {
     gDPLoadTLUT_pal16(gMainGfxPos++, 0, palette);
     if (gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED) {
-        gDPScrollMultiTile2_4b(gMainGfxPos++, raster, G_IM_FMT_CI, width, height,
-                              0, 0, width - 1, height - 1, 0,
-                              G_TX_CLAMP, G_TX_CLAMP, 8, 8, G_TX_NOLOD, G_TX_NOLOD,
-                              256, 256);
-        gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0, G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
+        gDPScrollMultiTile2_4b(
+            gMainGfxPos++, raster, G_IM_FMT_CI, width, height, 0, 0, width - 1, height - 1, 0, G_TX_CLAMP, G_TX_CLAMP,
+            8, 8, G_TX_NOLOD, G_TX_NOLOD, 256, 256
+        );
+        gDPSetTile(
+            gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0, G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_WRAP,
+            G_TX_NOMASK, G_TX_NOLOD
+        );
         gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 63 << 2, 0);
         if (gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT) {
             Camera* camera = &gCameras[gCurrentCamID];
@@ -245,9 +241,11 @@ void spr_appendGfx_component_flat(
             }
 
             if (alpha == 255) {
-                gDPSetRenderMode(gMainGfxPos++, AA_EN | Z_CMP | Z_UPD | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA |
-                                 G_RM_PASS, AA_EN | Z_CMP | Z_UPD | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA |
-                                 GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM));
+                gDPSetRenderMode(
+                    gMainGfxPos++, AA_EN | Z_CMP | Z_UPD | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA | G_RM_PASS,
+                    AA_EN | Z_CMP | Z_UPD | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA
+                        | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM)
+                );
             } else {
                 gDPSetRenderMode(gMainGfxPos++, G_RM_PASS, G_RM_ZB_CLD_SURF2);
             }
@@ -258,20 +256,29 @@ void spr_appendGfx_component_flat(
             gSP2Triangles(gMainGfxPos++, 0, 2, 1, 0, 0, 3, 2, 0);
             gDPPipeSync(gMainGfxPos++);
         }
-        create_shading_palette(mtx, 0, 0, width, height, alpha, alpha == 255 ? 0x111238 : 0x104B50); // TODO make macro for render mode
+        create_shading_palette(
+            mtx, 0, 0, width, height, alpha, alpha == 255 ? 0x111238 : 0x104B50
+        ); // TODO make macro for render mode
     } else {
-        gDPScrollTextureBlock_4b(gMainGfxPos++, raster, G_IM_FMT_CI, width, height, 0,
-                                 G_TX_CLAMP, G_TX_CLAMP, 8, 8, G_TX_NOLOD, G_TX_NOLOD,
-                                 256, 256);
+        gDPScrollTextureBlock_4b(
+            gMainGfxPos++, raster, G_IM_FMT_CI, width, height, 0, G_TX_CLAMP, G_TX_CLAMP, 8, 8, G_TX_NOLOD, G_TX_NOLOD,
+            256, 256
+        );
         if (gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT) {
-            Camera* camera =  &gCameras[gCurrentCamID];
+            Camera* camera = &gCameras[gCurrentCamID];
             if (gGameStatusPtr->context == CONTEXT_PAUSE) {
                 gSPViewport(gMainGfxPos++, &SpritePauseVpAlt);
             } else {
                 gSPViewport(gMainGfxPos++, &camera->vpAlt);
             }
             if (alpha == 255) {
-                gDPSetRenderMode(gMainGfxPos++, AA_EN | Z_CMP | Z_UPD | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA | ALPHA_CVG_SEL | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM), AA_EN | Z_CMP | Z_UPD | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA | ALPHA_CVG_SEL | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM));
+                gDPSetRenderMode(
+                    gMainGfxPos++,
+                    AA_EN | Z_CMP | Z_UPD | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA | ALPHA_CVG_SEL
+                        | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM),
+                    AA_EN | Z_CMP | Z_UPD | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA | ALPHA_CVG_SEL
+                        | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM)
+                );
             } else {
                 gDPSetRenderMode(gMainGfxPos++, G_RM_ZB_CLD_SURF, G_RM_ZB_CLD_SURF2);
             }
@@ -283,10 +290,13 @@ void spr_appendGfx_component_flat(
             gDPPipeSync(gMainGfxPos++);
 
             if (alpha == 255) {
-                gDPSetRenderMode(gMainGfxPos++, AA_EN | Z_CMP | Z_UPD | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA |
-                                 GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM),
-                                 AA_EN | Z_CMP | Z_UPD | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA |
-                                 GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM));
+                gDPSetRenderMode(
+                    gMainGfxPos++,
+                    AA_EN | Z_CMP | Z_UPD | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA
+                        | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM),
+                    AA_EN | Z_CMP | Z_UPD | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA
+                        | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM)
+                );
             } else {
                 gDPSetRenderMode(gMainGfxPos++, G_RM_ZB_CLD_SURF, G_RM_ZB_CLD_SURF2);
             }
@@ -299,7 +309,7 @@ void spr_appendGfx_component_flat(
     }
 
     if (gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT) {
-        Camera* camera =  &gCameras[gCurrentCamID];
+        Camera* camera = &gCameras[gCurrentCamID];
 
         if (gGameStatusPtr->context == CONTEXT_PAUSE) {
             gSPViewport(gMainGfxPos++, &SpritePauseVp);
@@ -316,12 +326,9 @@ void spr_appendGfx_component_flat(
 }
 
 void spr_appendGfx_component(
-    SpriteRasterEntry* cache,
-    f32 dx, f32 dy, f32 dz,
-    f32 rotX, f32 rotY, f32 rotZ,
-    f32 scaleX, f32 scaleY, f32 scaleZ,
-    s32 drawOpts, PAL_PTR palette, Matrix4f mtx)
-{
+    SpriteRasterEntry* cache, f32 dx, f32 dy, f32 dz, f32 rotX, f32 rotY, f32 rotZ, f32 scaleX, f32 scaleY, f32 scaleZ,
+    s32 drawOpts, PAL_PTR palette, Matrix4f mtx
+) {
     Matrix4f mtxTransform;
     Matrix4f mtxTemp;
     ImgFXTexture ifxImg;
@@ -355,8 +362,10 @@ void spr_appendGfx_component(
     }
 
     guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
-              G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     if (gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED) {
         if (alpha == 255) {
@@ -386,10 +395,10 @@ void spr_appendGfx_component(
         spr_appendGfx_component_flat(quad, cache->image, palette, width, height, rotY, mtxTransform, (u8) drawOpts);
     } else {
         s32 animResult;
-        ifxImg.raster  = cache->image;
+        ifxImg.raster = cache->image;
         ifxImg.palette = palette;
-        ifxImg.width   = width;
-        ifxImg.height  = height;
+        ifxImg.width = width;
+        ifxImg.height = height;
         ifxImg.xOffset = -(width / 2);
         ifxImg.yOffset = height;
         ifxImg.alpha = drawOpts;
@@ -432,8 +441,10 @@ void spr_transform_point(s32 rotX, s32 rotY, s32 rotZ, f32 inX, f32 inY, f32 inZ
     }
 }
 
-void spr_draw_component(s32 drawOpts, SpriteComponent* component, SpriteAnimComponent* anim,
-        SpriteRasterEntry** cache, PAL_PTR* palettes, f32 zscale, Matrix4f mtx) {
+void spr_draw_component(
+    s32 drawOpts, SpriteComponent* component, SpriteAnimComponent* anim, SpriteRasterEntry** cache, PAL_PTR* palettes,
+    f32 zscale, Matrix4f mtx
+) {
     SpriteRasterEntry* cacheEntry;
     s32 paletteIdx;
     PAL_PTR pal;
@@ -459,15 +470,8 @@ void spr_draw_component(s32 drawOpts, SpriteComponent* component, SpriteAnimComp
         pal = palettes[paletteIdx];
 
         spr_appendGfx_component(
-            cacheEntry,
-            dx, dy, dz,
-            rotX + component->rot.x,
-            rotY + component->rot.y,
-            rotZ + component->rot.z,
-            component->scale.x,
-            component->scale.y,
-            component->scale.z,
-            drawOpts, pal, mtx
+            cacheEntry, dx, dy, dz, rotX + component->rot.x, rotY + component->rot.y, rotZ + component->rot.z,
+            component->scale.x, component->scale.y, component->scale.z, drawOpts, pal, mtx
         );
         component->imgfxIdx = CurSpriteImgFX;
     }
@@ -677,9 +681,9 @@ void spr_component_update_commands(SpriteComponent* comp, SpriteAnimComponent* a
     }
 }
 
-void spr_component_update_finish(SpriteComponent* comp, SpriteComponent** compList,
-                                 SpriteRasterEntry** rasterCacheEntry, s32 overridePalette)
-{
+void spr_component_update_finish(
+    SpriteComponent* comp, SpriteComponent** compList, SpriteRasterEntry** rasterCacheEntry, s32 overridePalette
+) {
     SpriteComponent* listComp;
     SpriteRasterEntry* cache;
 
@@ -707,8 +711,10 @@ void spr_component_update_finish(SpriteComponent* comp, SpriteComponent** compLi
     }
 }
 
-s32 spr_component_update(s32 curNotifyValue, SpriteComponent** compList, SpriteAnimComponent** animList,
-        SpriteRasterEntry** rasterCache, s32 overridePalette) {
+s32 spr_component_update(
+    s32 curNotifyValue, SpriteComponent** compList, SpriteAnimComponent** animList, SpriteRasterEntry** rasterCache,
+    s32 overridePalette
+) {
     SpriteComponent** compListIt;
 
     SpriteUpdateNotifyValue = curNotifyValue;
@@ -799,8 +805,9 @@ void spr_init_sprites(s32 playerSpriteSet) {
     }
 
     loadedFlags = (&PlayerSpriteSets[playerSpriteSet])->initiallyLoaded;
-    spr_init_player_raster_cache((&PlayerSpriteSets[playerSpriteSet])->cacheSize,
-                  (&PlayerSpriteSets[playerSpriteSet])->rasterSize);
+    spr_init_player_raster_cache(
+        (&PlayerSpriteSets[playerSpriteSet])->cacheSize, (&PlayerSpriteSets[playerSpriteSet])->rasterSize
+    );
 
     for (i = 1; i <= SPR_Peach3; i++) {
         if ((loadedFlags >> i) & 1) {
@@ -866,8 +873,8 @@ s32 spr_update_player_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     animList = spriteData->animListStart[SPR_UNPACK_ANIM(animID)];
 
     spr_set_anim_timescale(timeScale);
-    if ((spriteInstanceID & DRAW_SPRITE_OVERRIDE_ALPHA) ||
-        (animID & ~SPRITE_ID_BACK_FACING) != (CurPlayerAnimInfo[instanceIdx].animID & ~SPRITE_ID_BACK_FACING))
+    if ((spriteInstanceID & DRAW_SPRITE_OVERRIDE_ALPHA)
+        || (animID & ~SPRITE_ID_BACK_FACING) != (CurPlayerAnimInfo[instanceIdx].animID & ~SPRITE_ID_BACK_FACING))
     {
         spr_init_anim_state(compList, animList);
         CurPlayerAnimInfo[instanceIdx].notifyValue = 0;
@@ -876,8 +883,8 @@ s32 spr_update_player_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     CurPlayerAnimInfo[instanceIdx].animID = animID;
 
     if (!(spriteInstanceID & DRAW_SPRITE_OVERRIDE_YAW)) {
-        CurPlayerAnimInfo[instanceIdx].notifyValue = spr_component_update(CurPlayerAnimInfo[instanceIdx].notifyValue,
-                compList, animList, rasterList, 0);
+        CurPlayerAnimInfo[instanceIdx].notifyValue =
+            spr_component_update(CurPlayerAnimInfo[instanceIdx].notifyValue, compList, animList, rasterList, 0);
     }
     return CurPlayerAnimInfo[instanceIdx].notifyValue;
 }
@@ -960,7 +967,9 @@ s32 spr_draw_player_sprite(s32 spriteInstanceID, s32 yaw, s32 alphaIn, PAL_PTR* 
     }
 
     while (*compList != PTR_LIST_END) {
-        spr_draw_component(alpha | DRAW_SPRITE_USE_PLAYER_RASTERS, *compList++, *animList, rasterList, palettes, zscale, mtx);
+        spr_draw_component(
+            alpha | DRAW_SPRITE_USE_PLAYER_RASTERS, *compList++, *animList, rasterList, palettes, zscale, mtx
+        );
         if (*animList != PTR_LIST_END) {
             animList++;
         }
@@ -973,7 +982,9 @@ s32 func_802DDEC4(s32 spriteIdx) {
     return CurPlayerAnimInfo[spriteIdx].notifyValue;
 }
 
-void set_player_imgfx_comp(s32 spriteIdx, s32 compIdx, ImgFXType imgfx, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 flags) {
+void set_player_imgfx_comp(
+    s32 spriteIdx, s32 compIdx, ImgFXType imgfx, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 flags
+) {
     SpriteComponent** compList;
     SpriteComponent* comp;
     s32 i;
@@ -999,7 +1010,9 @@ void set_player_imgfx_comp(s32 spriteIdx, s32 compIdx, ImgFXType imgfx, s32 imgf
 }
 
 // applied to all components
-void set_player_imgfx_all(s32 animID, ImgFXType imgfxType, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 flags) {
+void set_player_imgfx_all(
+    s32 animID, ImgFXType imgfxType, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 flags
+) {
     set_player_imgfx_comp(PLAYER_SPRITE_MAIN, -1, imgfxType, imgfxArg1, imgfxArg2, imgfxArg3, imgfxArg4, flags);
 }
 
@@ -1037,7 +1050,7 @@ s32 spr_load_npc_sprite(s32 animID, AnimID* limitAnimList) {
     s32 i;
 
     s32 spriteIndex = (animID >> 0x10) & 0x7FFF;
-    s32 useTailAlloc = (u32)animID >> 0x1F;
+    s32 useTailAlloc = (u32) animID >> 0x1F;
 
     for (i = 0; i < ARRAY_COUNT(SpriteInstances); i++) {
         if (SpriteInstances[i].spriteIndex == 0) {
@@ -1096,15 +1109,16 @@ s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
 
     palID = SPR_UNPACK_PAL(animID);
     spr_set_anim_timescale(timeScale);
-    if ((spriteInstanceID & DRAW_SPRITE_OVERRIDE_ALPHA) || (SPR_UNPACK_ANIM(SpriteInstances[i].curAnimID) != animIndex)) {
+    if ((spriteInstanceID & DRAW_SPRITE_OVERRIDE_ALPHA) || (SPR_UNPACK_ANIM(SpriteInstances[i].curAnimID) != animIndex))
+    {
         ASSERT_MSG(animList != (SpriteAnimComponent**) -1, "Anim %lX is not loaded", animID);
         spr_init_anim_state(compList, animList);
         SpriteInstances[i].curAnimID = (palID << 8) | animIndex;
         SpriteInstances[i].notifyValue = 0;
     }
     if (!(spriteInstanceID & DRAW_SPRITE_OVERRIDE_YAW)) {
-        SpriteInstances[i].notifyValue = spr_component_update(SpriteInstances[i].notifyValue,
-            compList, animList, rasterList, palID);
+        SpriteInstances[i].notifyValue =
+            spr_component_update(SpriteInstances[i].notifyValue, compList, animList, rasterList, palID);
     }
     return SpriteInstances[i].notifyValue;
 }
@@ -1227,7 +1241,9 @@ s32 get_npc_comp_imgfx_idx(s32 spriteIdx, s32 compIdx) {
     }
 }
 
-void set_npc_imgfx_comp(s32 spriteIdx, s32 compIdx, ImgFXType imgfx, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 flags) {
+void set_npc_imgfx_comp(
+    s32 spriteIdx, s32 compIdx, ImgFXType imgfx, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 flags
+) {
     SpriteComponent** compList;
     SpriteComponent* comp;
     s32 i;
@@ -1253,7 +1269,9 @@ void set_npc_imgfx_comp(s32 spriteIdx, s32 compIdx, ImgFXType imgfx, s32 imgfxAr
 }
 
 // applied to all components
-void set_npc_imgfx_all(s32 spriteIdx, ImgFXType imgfxType, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 flags) {
+void set_npc_imgfx_all(
+    s32 spriteIdx, ImgFXType imgfxType, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 flags
+) {
     set_npc_imgfx_comp(spriteIdx, -1, imgfxType, imgfxArg1, imgfxArg2, imgfxArg3, imgfxArg4, flags);
 }
 

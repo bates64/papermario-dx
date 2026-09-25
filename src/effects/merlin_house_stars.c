@@ -130,7 +130,7 @@ void func_E00A639C(void) {
 #define PM_CC2_MERLIN_STARS     0, 0, 0, COMBINED, COMBINED, 0, ENVIRONMENT, 0
 
 void merlin_house_stars_appendGfx(void* effect) {
-    MerlinHouseStarsFXData* data = ((EffectInstance*)effect)->data.merlinHouseStars;
+    MerlinHouseStarsFXData* data = ((EffectInstance*) effect)->data.merlinHouseStars;
     s32 envAlpha = data->alpha;
     Matrix4f sp10;
     Matrix4f sp50;
@@ -138,14 +138,16 @@ void merlin_house_stars_appendGfx(void* effect) {
     s32 ult;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp10, data->unk_0C, data->unk_10, data->unk_14);
     guScaleF(sp50, 0.96f, 0.96f, 0.96f);
     guMtxCatF(sp50, sp10, sp10);
     guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, 127);
     gDPSetEnvColor(gMainGfxPos++, 0, 0, 0, envAlpha);
     gDPSetCombineMode(gMainGfxPos++, PM_CC1_MERLIN_STARS, PM_CC2_MERLIN_STARS);

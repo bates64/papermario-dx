@@ -53,8 +53,9 @@ void appendGfx_animator_node(ModelAnimator*, AnimatorNode*, Matrix4f);
 
 // copy Vtx array from node->fcData.vtxList, but overwrite xyz coordinates with ones from buffer
 // if animator has own vertexArray, buffer is offset within it
-Vtx* animator_copy_vertices_to_buffer(ModelAnimator* animator, AnimatorNode* node, Vec3s* buffer, s32 vtxCount,
-                                      s32 overhead, s32 vtxIdx) {
+Vtx* animator_copy_vertices_to_buffer(
+    ModelAnimator* animator, AnimatorNode* node, Vec3s* buffer, s32 vtxCount, s32 overhead, s32 vtxIdx
+) {
     DisplayListBufferHandle* handle;
     Vtx* bufferMem;
     Vtx* nodeVtxList;
@@ -78,8 +79,8 @@ Vtx* animator_copy_vertices_to_buffer(ModelAnimator* animator, AnimatorNode* nod
     nodeVtxList = &node->fcData.vtxList[vtxIdx];
 
     if (animator->baseAddr != nullptr) {
-        i = ((s32)buffer & 0xFFFFFF); // needed to match
-        buffer = (Vec3s*)(i + (s32)animator->baseAddr);
+        i = ((s32) buffer & 0xFFFFFF); // needed to match
+        buffer = (Vec3s*) (i + (s32) animator->baseAddr);
     }
 
     for (i = 0; i < vtxCount; i++) {
@@ -146,7 +147,7 @@ AnimatorNode* get_animator_child_with_id_helper(AnimatorNode* node, s32 id) {
 }
 
 AnimatorNode* get_animator_child_with_id(ModelAnimator* animator, s32 id) {
-    AnimatorNode *node = animator->rootNode;
+    AnimatorNode* node = animator->rootNode;
     s32 i;
 
     if (animator->nodeCache[id] != nullptr && animator->nodeCache[id]->uniqueIndex == id) {
@@ -164,7 +165,6 @@ AnimatorNode* get_animator_child_with_id(ModelAnimator* animator, s32 id) {
                 animator->nodeCache[id] = child;
                 return child;
             }
-
         }
     }
 
@@ -185,7 +185,6 @@ AnimatorNode* get_animator_child_for_model(AnimatorNode* node, s32 modelId) {
             if (child != nullptr) {
                 return child;
             }
-
         }
     }
 
@@ -204,7 +203,7 @@ void free_animator_nodes_helper(AnimatorNode* node) {
 }
 
 void free_animator_nodes(ModelAnimator* animator) {
-    AnimatorNode *root = animator->rootNode;
+    AnimatorNode* root = animator->rootNode;
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(animator->nodeCache); i++) {
@@ -331,7 +330,8 @@ s32 create_model_animator(AnimScriptPtr animScript) {
 
     ASSERT(animator != nullptr);
 
-    animator->flags = MODEL_ANIMATOR_FLAG_UPDATE_PENDING | MODEL_ANIMATOR_FLAG_ENABLED | MODEL_ANIMATOR_FLAG_CAM_2 | MODEL_ANIMATOR_FLAG_CAM_1 | MODEL_ANIMATOR_FLAG_CAM_0;
+    animator->flags = MODEL_ANIMATOR_FLAG_UPDATE_PENDING | MODEL_ANIMATOR_FLAG_ENABLED | MODEL_ANIMATOR_FLAG_CAM_2
+        | MODEL_ANIMATOR_FLAG_CAM_1 | MODEL_ANIMATOR_FLAG_CAM_0;
     animator->renderMode = RENDER_MODE_ALPHATEST;
     animator->nextUpdateTime = 1.0f;
     animator->timeScale = 1.0f;
@@ -380,7 +380,8 @@ s32 create_mesh_animator(AnimScriptPtr animScript, AnimScriptPtr animBuffer) {
 
     ASSERT(animator != nullptr);
 
-    animator->flags = MODEL_ANIMATOR_FLAG_UPDATE_PENDING | MODEL_ANIMATOR_FLAG_ENABLED | MODEL_ANIMATOR_FLAG_CAM_2 | MODEL_ANIMATOR_FLAG_CAM_1 | MODEL_ANIMATOR_FLAG_CAM_0;
+    animator->flags = MODEL_ANIMATOR_FLAG_UPDATE_PENDING | MODEL_ANIMATOR_FLAG_ENABLED | MODEL_ANIMATOR_FLAG_CAM_2
+        | MODEL_ANIMATOR_FLAG_CAM_1 | MODEL_ANIMATOR_FLAG_CAM_0;
     animator->renderMode = RENDER_MODE_ALPHATEST;
     animator->baseAddr = nullptr;
     animator->fpRenderCallback = nullptr;
@@ -389,7 +390,7 @@ s32 create_mesh_animator(AnimScriptPtr animScript, AnimScriptPtr animBuffer) {
     animator->animationBuffer = animBuffer;
     animator->nextUpdateTime = 1.0f;
     animator->timeScale = 1.0f;
-    animPos = (AnimScriptPos)(((s32)animScript & 0xFFFFFF) + (s32)animator->animationBuffer);
+    animPos = (AnimScriptPos) (((s32) animScript & 0xFFFFFF) + (s32) animator->animationBuffer);
     animator->animReadPos = animPos;
     animator->animSavedPos = animPos;
 
@@ -653,9 +654,9 @@ s32 step_model_animator(ModelAnimator* animator) {
             return 1;
         case AS_SET_ROTATION:
             nodeId = animator->staticNodeIDs[*args++ - 1];
-            x = (f32)*args++ * 180.0 / 32767.0;
-            y = (f32)*args++ * 180.0 / 32767.0;
-            z = (f32)*args++ * 180.0 / 32767.0;
+            x = (f32) *args++ * 180.0 / 32767.0;
+            y = (f32) *args++ * 180.0 / 32767.0;
+            z = (f32) *args++ * 180.0 / 32767.0;
             animator->animReadPos = args;
 
             node = get_animator_child_with_id(animator, nodeId);
@@ -666,9 +667,9 @@ s32 step_model_animator(ModelAnimator* animator) {
             return 1;
         case AS_ADD_ROTATION:
             nodeId = animator->staticNodeIDs[*args++ - 1];
-            x = (f32)*args++ * 180.0 / 32767.0;
-            y = (f32)*args++ * 180.0 / 32767.0;
-            z = (f32)*args++ * 180.0 / 32767.0;
+            x = (f32) *args++ * 180.0 / 32767.0;
+            y = (f32) *args++ * 180.0 / 32767.0;
+            z = (f32) *args++ * 180.0 / 32767.0;
             animator->animReadPos = args;
 
             node = get_animator_child_with_id(animator, nodeId);
@@ -691,9 +692,9 @@ s32 step_model_animator(ModelAnimator* animator) {
             return 1;
         case AS_SET_SCALE:
             nodeId = animator->staticNodeIDs[*args++ - 1];
-            x = (f32)*args++ * 180.0 / 32767.0;
-            y = (f32)*args++ * 180.0 / 32767.0;
-            z = (f32)*args++ * 180.0 / 32767.0;
+            x = (f32) *args++ * 180.0 / 32767.0;
+            y = (f32) *args++ * 180.0 / 32767.0;
+            z = (f32) *args++ * 180.0 / 32767.0;
             animator->animReadPos = args;
 
             node = get_animator_child_with_id(animator, nodeId);
@@ -710,7 +711,9 @@ void animator_update_model_transforms(ModelAnimator* animator, Mtx* rootTransfor
     Matrix4f flipMtx;
 
     if (animator->rootNode != nullptr) {
-        switch (animator->flags & (MODEL_ANIMATOR_FLAG_FLIP_Z | MODEL_ANIMATOR_FLAG_FLIP_Y | MODEL_ANIMATOR_FLAG_FLIP_X)) {
+        switch (animator->flags
+                & (MODEL_ANIMATOR_FLAG_FLIP_Z | MODEL_ANIMATOR_FLAG_FLIP_Y | MODEL_ANIMATOR_FLAG_FLIP_X))
+        {
             case MODEL_ANIMATOR_FLAG_FLIP_Z:
                 animator_make_mirrorZ(flipMtx);
                 break;
@@ -728,14 +731,17 @@ void animator_update_model_transforms(ModelAnimator* animator, Mtx* rootTransfor
     }
 }
 
-void animator_node_update_model_transform(ModelAnimator* animator, f32 (*flipMtx)[4], AnimatorNode* node,
-                                          Mtx* rootTransform) {
+void animator_node_update_model_transform(
+    ModelAnimator* animator, f32 (*flipMtx)[4], AnimatorNode* node, Mtx* rootTransform
+) {
     Matrix4f sp10;
     s32 i;
 
     guRotateRPYF(gAnimRotMtx, clamp_angle(node->rot.x), clamp_angle(node->rot.y), clamp_angle(node->rot.z));
     guScaleF(gAnimScaleMtx, node->scale.x, node->scale.y, node->scale.z);
-    guTranslateF(gAnimTranslateMtx, node->basePos.x + node->pos.x, node->basePos.y + node->pos.y, node->basePos.z + node->pos.z);
+    guTranslateF(
+        gAnimTranslateMtx, node->basePos.x + node->pos.x, node->basePos.y + node->pos.y, node->basePos.z + node->pos.z
+    );
     guMtxCatF(gAnimScaleMtx, gAnimRotMtx, gAnimRotScaleMtx);
     guMtxCatF(gAnimRotScaleMtx, gAnimTranslateMtx, sp10);
 
@@ -777,14 +783,13 @@ void render_animated_model(s32 animatorID, Mtx* rootTransform) {
         return;
     }
 
-    if (!(animator->flags & MODEL_ANIMATOR_FLAG_UPDATE_PENDING)
-        && animator->flags & (1 << gCurrentCamID)
-        && !(animator->flags & MODEL_ANIMATOR_FLAG_HIDDEN)
-    ) {
+    if (!(animator->flags & MODEL_ANIMATOR_FLAG_UPDATE_PENDING) && animator->flags & (1 << gCurrentCamID)
+        && !(animator->flags & MODEL_ANIMATOR_FLAG_HIDDEN))
+    {
         animator->mtx = *rootTransform;
         animator->baseAddr = nullptr;
         rtPtr->appendGfxArg = animator;
-        rtPtr->appendGfx = (void (*)(void*))appendGfx_animator;
+        rtPtr->appendGfx = (void (*)(void*)) appendGfx_animator;
         rtPtr->dist = 0;
         rtPtr->renderMode = animator->renderMode;
         queue_render_task(rtPtr);
@@ -807,15 +812,14 @@ void render_animated_model_with_vertices(s32 animatorID, Mtx* rootTransform, s32
         return;
     }
 
-    if (!(animator->flags & MODEL_ANIMATOR_FLAG_UPDATE_PENDING)
-        && animator->flags & (1 << gCurrentCamID)
-        && !(animator->flags & MODEL_ANIMATOR_FLAG_HIDDEN)
-    ) {
+    if (!(animator->flags & MODEL_ANIMATOR_FLAG_UPDATE_PENDING) && animator->flags & (1 << gCurrentCamID)
+        && !(animator->flags & MODEL_ANIMATOR_FLAG_HIDDEN))
+    {
         animator->mtx = *rootTransform;
         gAnimVtxSegment = segment;
         animator->baseAddr = baseAddr;
         rtPtr->appendGfxArg = animator;
-        rtPtr->appendGfx = (void (*)(void*))appendGfx_animator;
+        rtPtr->appendGfx = (void (*)(void*)) appendGfx_animator;
         rtPtr->dist = 0;
         rtPtr->renderMode = animator->renderMode;
         queue_render_task(rtPtr);
@@ -830,10 +834,12 @@ void appendGfx_animator(ModelAnimator* animator) {
     }
 
     gDisplayContext->matrixStack[gMatrixListPos] = animator->mtx;
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
-    //TODO find better match
-    switch ((s32)(gAnimModelFogEnabled != 0)) {
+    // TODO find better match
+    switch ((s32) (gAnimModelFogEnabled != 0)) {
         case false:
             switch (animator->renderMode) {
                 case RENDER_MODE_SURFACE_OPA:
@@ -896,7 +902,7 @@ void appendGfx_animator(ModelAnimator* animator) {
 
 void appendGfx_animator_node(ModelAnimator* animator, AnimatorNode* node, Matrix4f mtx) {
     DisplayListBufferHandle* bufferHandle;
-    u32 w0,w1;
+    u32 w0, w1;
     s32 cmd;
     s32 i;
 
@@ -912,7 +918,9 @@ void appendGfx_animator_node(ModelAnimator* animator, AnimatorNode* node, Matrix
 
     guMtxCatF(node->mtx, mtx, node->mtx);
     guMtxF2L(node->mtx, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gDPPipeSync(gMainGfxPos++);
 
     gSPTexture(gMainGfxPos++, 0, 0, 0, G_TX_RENDERTILE, G_OFF);
@@ -948,7 +956,7 @@ void appendGfx_animator_node(ModelAnimator* animator, AnimatorNode* node, Matrix
                 Gfx* gfxPtr = node->displayList;
                 s32 endDL = G_ENDDL;
 
-                for(;; j++) {
+                for (;; j++) {
                     w0 = gfxPtr->words.w0;
                     gfxPtr++;
                     cmd = w0 >> 0x18;
@@ -974,36 +982,32 @@ void appendGfx_animator_node(ModelAnimator* animator, AnimatorNode* node, Matrix
             dlIdx = 0;
 
             do {
-                w0 = ((s32*)node->displayList)[dlIdx++];
-                w1 = ((s32*)node->displayList)[dlIdx++];
+                w0 = ((s32*) node->displayList)[dlIdx++];
+                w1 = ((s32*) node->displayList)[dlIdx++];
                 cmd = w0 >> 0x18;
                 if (cmd == G_ENDDL) {
                     break;
                 }
                 if (cmd == G_VTX) {
-                    s32 startIdx = _SHIFTR(w0,1,7);
-                    s32 vtxCount = _SHIFTR(w0,12,8);
+                    s32 startIdx = _SHIFTR(w0, 1, 7);
+                    s32 vtxCount = _SHIFTR(w0, 12, 8);
                     Vtx* newBuffer;
 
                     startIdx -= vtxCount;
 
                     if (node->fcData.vtxList == nullptr) {
-                        newBuffer = &((Vtx*)w1)[node->vertexStartOffset + vtxIdx];
+                        newBuffer = &((Vtx*) w1)[node->vertexStartOffset + vtxIdx];
                         gSPVertex(gfxPos++, newBuffer, vtxCount, startIdx);
                     } else {
                         newBuffer = animator_copy_vertices_to_buffer(
-                            animator,
-                            node,
-                            (Vec3s*)(w1 + (node->vertexStartOffset + vtxIdx) * 0x6),
-                            vtxCount,
-                            startIdx,
-                            vtxIdx
+                            animator, node, (Vec3s*) (w1 + (node->vertexStartOffset + vtxIdx) * 0x6), vtxCount,
+                            startIdx, vtxIdx
                         );
                         gSPVertex(gfxPos++, newBuffer, vtxCount, startIdx);
                     }
                     vtxIdx += vtxCount;
                 } else {
-                    Gfx* temp[1] = {gfxPos++}; // required to match
+                    Gfx* temp[1] = { gfxPos++ }; // required to match
                     temp[0]->words.w0 = w0;
                     temp[0]->words.w1 = w1;
                 }
@@ -1104,7 +1108,8 @@ void play_model_animation(s32 index, AnimScriptPtr animScript) {
     AnimScriptPos animPos = animScript;
 
     if (animator->animationBuffer != nullptr) {
-        animPos = (AnimScriptPos) (((s32)animScript & 0xFFFFFF) + (s32)animator->animationBuffer); // TODO: array access? / cleanup
+        animPos = (AnimScriptPos) (((s32) animScript & 0xFFFFFF)
+                                   + (s32) animator->animationBuffer); // TODO: array access? / cleanup
     }
     animator->animReadPos = animPos;
     animator->animSavedPos = animPos;
@@ -1119,7 +1124,8 @@ void play_model_animation_starting_from(s32 index, AnimScriptPtr animScript, s32
     s32 i;
 
     if (animator->animationBuffer != nullptr) {
-        animPos = (AnimScriptPos) (((s32)animScript & 0xFFFFFF) + (s32)animator->animationBuffer); // TODO: array access? / cleanup
+        animPos = (AnimScriptPos) (((s32) animScript & 0xFFFFFF)
+                                   + (s32) animator->animationBuffer); // TODO: array access? / cleanup
     }
 
     animator->animReadPos = animPos;
@@ -1132,7 +1138,9 @@ void play_model_animation_starting_from(s32 index, AnimScriptPtr animScript, s32
     }
 }
 
-void load_model_animator_node(StaticAnimatorNode* node, ModelAnimator* animator, s32 parentNodeID, s32* treeIndexToNodeIDs) {
+void load_model_animator_node(
+    StaticAnimatorNode* node, ModelAnimator* animator, s32 parentNodeID, s32* treeIndexToNodeIDs
+) {
     AnimatorNodeBlueprint bp;
     AnimatorNodeBlueprint* bpPtr = &bp;
     AnimatorNode* newNode;
@@ -1184,7 +1192,9 @@ void load_model_animator_tree(s32 index, StaticAnimatorNode** tree) {
     set_animator_tree_to_node_map(animator, nodeIDs, ARRAY_COUNT(animator->staticNodeIDs));
 }
 
-void load_mesh_animator_node(StaticAnimatorNode* node, ModelAnimator* animator, s32 parentNodeID, s32* treeIndexToNodeIDs) {
+void load_mesh_animator_node(
+    StaticAnimatorNode* node, ModelAnimator* animator, s32 parentNodeID, s32* treeIndexToNodeIDs
+) {
     if (node != nullptr) {
         if (node->child != nullptr && parentNodeID == 0) {
             load_mesh_animator_node(node->child, animator, 0, treeIndexToNodeIDs);
@@ -1226,7 +1236,9 @@ void load_mesh_animator_tree(s32 index, StaticAnimatorNode** tree) {
     animator->flags |= MODEL_ANIMATOR_FLAG_MESH;
 }
 
-void reload_mesh_animator_node(StaticAnimatorNode* node, ModelAnimator* animator, s32 parentNodeID, s32* treeIndexToNodeIDs) {
+void reload_mesh_animator_node(
+    StaticAnimatorNode* node, ModelAnimator* animator, s32 parentNodeID, s32* treeIndexToNodeIDs
+) {
     AnimatorNodeBlueprint bp;
     AnimatorNodeBlueprint* bpPtr = &bp;
     AnimatorNode* newNode;
@@ -1329,9 +1341,9 @@ s32 step_mesh_animator(ModelAnimator* animator) {
             return 1;
         case AS_SET_ROTATION:
             nodeId = animator->staticNodeIDs[*args++ - 1];
-            x = (f32)*args++ * 180.0 / 32767.0;
-            y = (f32)*args++ * 180.0 / 32767.0;
-            z = (f32)*args++ * 180.0 / 32767.0;
+            x = (f32) *args++ * 180.0 / 32767.0;
+            y = (f32) *args++ * 180.0 / 32767.0;
+            z = (f32) *args++ * 180.0 / 32767.0;
             animator->animReadPos = args;
             if (nodeId != 0xFF) {
                 node = get_animator_child_with_id(animator, nodeId);
@@ -1349,9 +1361,9 @@ s32 step_mesh_animator(ModelAnimator* animator) {
             return 1;
         case AS_ADD_ROTATION:
             nodeId = animator->staticNodeIDs[*args++ - 1];
-            x = (f32)*args++ * 180.0 / 32767.0;
-            y = (f32)*args++ * 180.0 / 32767.0;
-            z = (f32)*args++ * 180.0 / 32767.0;
+            x = (f32) *args++ * 180.0 / 32767.0;
+            y = (f32) *args++ * 180.0 / 32767.0;
+            z = (f32) *args++ * 180.0 / 32767.0;
             animator->animReadPos = args;
             if (nodeId != 0xFF) {
                 node = get_animator_child_with_id(animator, nodeId);
@@ -1389,9 +1401,9 @@ s32 step_mesh_animator(ModelAnimator* animator) {
             return 1;
         case AS_SET_SCALE:
             nodeId = animator->staticNodeIDs[*args++ - 1];
-            x = (f32)*args++ * 180.0 / 32767.0;
-            y = (f32)*args++ * 180.0 / 32767.0;
-            z = (f32)*args++ * 180.0 / 32767.0;
+            x = (f32) *args++ * 180.0 / 32767.0;
+            y = (f32) *args++ * 180.0 / 32767.0;
+            z = (f32) *args++ * 180.0 / 32767.0;
             animator->animReadPos = args;
             if (nodeId != 0xFF) {
                 node = get_animator_child_with_id(animator, nodeId);

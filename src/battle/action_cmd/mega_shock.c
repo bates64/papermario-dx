@@ -1,6 +1,5 @@
 #include "common.h"
 
-
 #include "audio.h"
 #include "battle/action_cmd.h"
 

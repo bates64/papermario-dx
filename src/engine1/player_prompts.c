@@ -31,8 +31,7 @@ void check_for_ispy(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (gCurrentHiddenPanels.activateISpy && ISpyNotificationCallback == nullptr) {
-        if (!(playerStatus->animFlags &
-            (PA_FLAG_SPEECH_PROMPT_AVAILABLE | PA_FLAG_INTERACT_PROMPT_AVAILABLE))) {
+        if (!(playerStatus->animFlags & (PA_FLAG_SPEECH_PROMPT_AVAILABLE | PA_FLAG_INTERACT_PROMPT_AVAILABLE))) {
             DMA_COPY_SEGMENT(i_spy);
             ISpyNotificationCallback = ispy_notification_setup;
         }
@@ -117,7 +116,9 @@ s32 has_valid_conversation_npc(void) {
 }
 
 void check_for_conversation_prompt(void) {
-    if (gPlayerStatus.animFlags & PA_FLAG_ISPY_VISIBLE || InteractNotificationCallback || PulseStoneNotificationCallback != nullptr) {
+    if (gPlayerStatus.animFlags & PA_FLAG_ISPY_VISIBLE || InteractNotificationCallback
+        || PulseStoneNotificationCallback != nullptr)
+    {
         return;
     }
 
@@ -166,11 +167,9 @@ s32 func_800E06D8(void) {
     if (gCollisionStatus.curWall == NO_COLLIDER) {
         return false;
     }
-    if (playerStatus->flags & PS_FLAG_HAS_CONVERSATION_NPC
-        && !(playerStatus->flags & PS_FLAG_INPUT_DISABLED)
-        && playerStatus->encounteredNPC != nullptr
-        && playerStatus->encounteredNPC->flags & NPC_FLAG_USE_INSPECT_ICON
-    ) {
+    if (playerStatus->flags & PS_FLAG_HAS_CONVERSATION_NPC && !(playerStatus->flags & PS_FLAG_INPUT_DISABLED)
+        && playerStatus->encounteredNPC != nullptr && playerStatus->encounteredNPC->flags & NPC_FLAG_USE_INSPECT_ICON)
+    {
         playerStatus->interactingWithID = NO_COLLIDER;
         return true;
     }
@@ -204,7 +203,9 @@ void check_for_interactables(void) {
     Npc* npc = gPlayerStatus.encounteredNPC;
     b32 collidingWithEntity = false;
 
-    if ((playerStatus->animFlags & PA_FLAG_ISPY_VISIBLE) || TalkNotificationCallback || PulseStoneNotificationCallback != nullptr) {
+    if ((playerStatus->animFlags & PA_FLAG_ISPY_VISIBLE) || TalkNotificationCallback
+        || PulseStoneNotificationCallback != nullptr)
+    {
         return;
     }
 
@@ -239,12 +240,10 @@ void check_for_interactables(void) {
                         curInteraction = NO_COLLIDER;
                         break;
                 }
-            } else if (
-                (!(playerStatus->flags & PS_FLAG_INPUT_DISABLED))
-                && (playerStatus->flags & PS_FLAG_HAS_CONVERSATION_NPC)
-                && (npc != nullptr)
-                && (npc->flags & NPC_FLAG_USE_INSPECT_ICON)
-            ) {
+            } else if ((!(playerStatus->flags & PS_FLAG_INPUT_DISABLED))
+                       && (playerStatus->flags & PS_FLAG_HAS_CONVERSATION_NPC) && (npc != nullptr)
+                       && (npc->flags & NPC_FLAG_USE_INSPECT_ICON))
+            {
                 curInteraction = npc->npcID | COLLISION_WITH_NPC_BIT;
                 if (playerStatus->interactingWithID == curInteraction) {
                     return;
@@ -281,8 +280,13 @@ void check_for_interactables(void) {
         }
 
         playerStatus->interactingWithID = curInteraction;
-        if (!collidingWithEntity || (curInteraction > NO_COLLIDER && get_entity_by_index(curInteraction)->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT)) {
-            if (playerStatus->actionState == ACTION_STATE_IDLE || playerStatus->actionState == ACTION_STATE_WALK || playerStatus->actionState == ACTION_STATE_RUN) {
+        if (!collidingWithEntity
+            || (curInteraction > NO_COLLIDER
+                && get_entity_by_index(curInteraction)->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT))
+        {
+            if (playerStatus->actionState == ACTION_STATE_IDLE || playerStatus->actionState == ACTION_STATE_WALK
+                || playerStatus->actionState == ACTION_STATE_RUN)
+            {
                 playerStatus->animFlags |= PA_FLAG_INTERACT_PROMPT_AVAILABLE;
                 partner_set_forced_follow_mode(2);
             }
@@ -298,7 +302,6 @@ void check_for_interactables(void) {
     if (InteractNotificationCallback == nullptr) {
         DMA_COPY_SEGMENT(inspect_icon);
         InteractNotificationCallback = interact_inspect_setup;
-
     }
 
     if (InteractNotificationCallback != nullptr) {
@@ -315,7 +318,8 @@ void suppress_current_interact_prompt(void) {
 void appendGfx_interact_prompt(void);
 
 void render_interact_prompt(void) {
-    if ((gPlayerStatusPtr->animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE) && (InteractNotificationCallback != nullptr)) {
+    if ((gPlayerStatusPtr->animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE) && (InteractNotificationCallback != nullptr))
+    {
         appendGfx_interact_prompt();
     }
 }

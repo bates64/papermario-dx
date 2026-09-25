@@ -1,7 +1,7 @@
 #ifndef _HUFF_N_PUFF_COMMON_H_
 #define _HUFF_N_PUFF_COMMON_H_
 
-enum N(BattleCommon) {  
+enum N(BattleCommon) {
     ACTOR_HUFF_N_PUFF           = ACTOR_ENEMY0,
     AVAR_TREE_DELAY             = 6,
     AVAR_HuffNPuff_Flags        = 2,

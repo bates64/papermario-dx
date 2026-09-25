@@ -1,7 +1,8 @@
 #include "kpa_133.h"
 #include "effects.h"
 
-EvtScript N(EVS_ExitDoors_kpa_51_1) = EVT_EXIT_DOUBLE_DOOR(kpa_133_ENTRY_0, "kpa_51", kpa_51_ENTRY_1, COLLIDER_ttw, MODEL_o486, MODEL_o485);
+EvtScript N(EVS_ExitDoors_kpa_51_1) =
+    EVT_EXIT_DOUBLE_DOOR(kpa_133_ENTRY_0, "kpa_51", kpa_51_ENTRY_1, COLLIDER_ttw, MODEL_o486, MODEL_o485);
 EvtScript N(EVS_ExitWalk_kpa_134_0) = EVT_EXIT_WALK(40, kpa_133_ENTRY_1, "kpa_134", kpa_134_ENTRY_0);
 EvtScript N(EVS_ExitWalk_kpa_134_2) = EVT_EXIT_WALK(40, kpa_133_ENTRY_2, "kpa_134", kpa_134_ENTRY_2);
 EvtScript N(EVS_ExitWalk_kpa_134_3) = EVT_EXIT_WALK(40, kpa_133_ENTRY_3, "kpa_134", kpa_134_ENTRY_3);

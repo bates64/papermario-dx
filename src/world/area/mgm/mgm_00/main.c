@@ -31,8 +31,8 @@ EvtScript N(EVS_GotoMap_JumpAttack) = {
     End
 };
 
-EvtScript N(EVS_OnEnterPipe_JumpAttack) = EVT_EXIT_PIPE_VERTICAL(
-    mgm_00_ENTRY_1, COLLIDER_deili2, N(EVS_GotoMap_JumpAttack));
+EvtScript
+N(EVS_OnEnterPipe_JumpAttack) = EVT_EXIT_PIPE_VERTICAL(mgm_00_ENTRY_1, COLLIDER_deili2, N(EVS_GotoMap_JumpAttack));
 
 EvtScript N(EVS_GotoMap_SmashAttack) = {
     Call(GotoMap, Ref("mgm_02"), mgm_02_ENTRY_0)

@@ -5,7 +5,7 @@
 #define NAMESPACE A(kkj_02)
 
 API_CALLABLE(N(SetLightningBoltPurple)) {
-    EffectInstance* effect = (EffectInstance*)script->varTable[15];
+    EffectInstance* effect = (EffectInstance*) script->varTable[15];
 
     effect->data.lightningBolt->outerColor.r = 85;
     effect->data.lightningBolt->outerColor.g = 42;

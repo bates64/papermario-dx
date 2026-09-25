@@ -223,21 +223,15 @@ void btl_init_menu_partner(void) {
     battleStatus->submenuMoveCount = partner->actorBlueprint->level + 2;
 
     // Select rank-appropriate basic move from offsets 0, 1, or 2
-    battleStatus->submenuMoves[0] =
-        (playerData->curPartner - 1) * 6
-        + MOVE_HEADBONK1
-        + partner->actorBlueprint->level;
+    battleStatus->submenuMoves[0] = (playerData->curPartner - 1) * 6 + MOVE_HEADBONK1 + partner->actorBlueprint->level;
 
     // Add rank-unlocked special moves from offsets 3, 4, and 5
     for (i = 1; i < battleStatus->submenuMoveCount; i++) {
-        battleStatus->submenuMoves[i] =
-            (playerData->curPartner - 1) * 6
-            + MOVE_TATTLE
-            + (i - 1);
+        battleStatus->submenuMoves[i] = (playerData->curPartner - 1) * 6 + MOVE_TATTLE + (i - 1);
     }
 
     hasAnyBadgeMoves = false;
-    for (i = 0; i < battleStatus->submenuMoveCount; i++){
+    for (i = 0; i < battleStatus->submenuMoveCount; i++) {
         MoveData* move = &gMoveTable[battleStatus->submenuMoves[i]];
 
         fpCost = move->costFP;
@@ -254,7 +248,7 @@ void btl_init_menu_partner(void) {
         battleStatus->curTargetListFlags = move->flags;
         create_current_pos_target_list(partner);
 
-        if (partner->targetListLength != 0){
+        if (partner->targetListLength != 0) {
             hasAnyBadgeMoves = true;
             battleStatus->submenuStatus[i] = BATTLE_SUBMENU_STATUS_ENABLED;
         }
@@ -318,10 +312,14 @@ void btl_state_update_partner_menu(void) {
 
     if (gBattleSubState == BTL_SUBSTATE_PERFORM_SWAP) {
         if (partnerActor->state.moveTime != 0) {
-            partnerActor->curPos.x += (partnerActor->state.goalPos.x - partnerActor->curPos.x) / partnerActor->state.moveTime;
-            partnerActor->curPos.z += (partnerActor->state.goalPos.z - partnerActor->curPos.z) / partnerActor->state.moveTime;
-            playerActor->curPos.x += (partnerActor->state.curPos.x - playerActor->curPos.x) / partnerActor->state.moveTime;
-            playerActor->curPos.z += (partnerActor->state.curPos.z - playerActor->curPos.z) / partnerActor->state.moveTime;
+            partnerActor->curPos.x +=
+                (partnerActor->state.goalPos.x - partnerActor->curPos.x) / partnerActor->state.moveTime;
+            partnerActor->curPos.z +=
+                (partnerActor->state.goalPos.z - partnerActor->curPos.z) / partnerActor->state.moveTime;
+            playerActor->curPos.x +=
+                (partnerActor->state.curPos.x - playerActor->curPos.x) / partnerActor->state.moveTime;
+            playerActor->curPos.z +=
+                (partnerActor->state.curPos.z - playerActor->curPos.z) / partnerActor->state.moveTime;
         }
         partnerActor->curPos.z += sin_rad(DEG_TO_RAD(partnerActor->state.angle)) * 16.0f;
         partnerActor->yaw = clamp_angle(-partnerActor->state.angle);
@@ -440,10 +438,13 @@ void btl_state_update_partner_menu(void) {
 
             if (BattleMenu_SwapDelay != 0) {
                 BattleMenu_SwapDelay--;
-            } else if (!(gBattleStatus.flags1 & BS_FLAGS1_TUTORIAL_BATTLE) && (gGameStatusPtr->pressedButtons[0] & BUTTON_Z)) {
+            } else if (!(gBattleStatus.flags1 & BS_FLAGS1_TUTORIAL_BATTLE)
+                       && (gGameStatusPtr->pressedButtons[0] & BUTTON_Z))
+            {
                 if (btl_player_can_act()) {
                     sfx_play_sound(SOUND_PARTNER_SWAP_BATTLE_POS);
-                    battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_MAIN] = WheelOptionSubmenu[BattleMenu_CurPos + BattleMenu_HomePos];
+                    battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_MAIN] =
+                        WheelOptionSubmenu[BattleMenu_CurPos + BattleMenu_HomePos];
                     btl_main_menu_destroy();
                     btl_set_state(BATTLE_STATE_SWITCH_TO_PLAYER);
                 } else {
@@ -460,7 +461,8 @@ void btl_state_update_partner_menu(void) {
 
             if (entryIdx != 0) {
                 set_actor_anim(ACTOR_PARTNER, 0, PartnerIdleAnims[playerData->curPartner]);
-                battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_MAIN] = battleStatus->curPartnerSubmenu = WheelOptionSubmenu[entryIdx - 1];
+                battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_MAIN] = battleStatus->curPartnerSubmenu =
+                    WheelOptionSubmenu[entryIdx - 1];
                 switch (battleStatus->curPartnerSubmenu) {
                     case BTL_MENU_TYPE_STRATEGIES:
                         gBattleSubState = BTL_SUBSTATE_STRATEGIES_BUILD_MENU;
@@ -496,641 +498,645 @@ void btl_state_update_partner_menu(void) {
                 }
             }
             break;
-    case BTL_SUBSTATE_MAIN_HANDOVER:
-        entryIdx = btl_main_menu_update();
-        if ((battleStatus->curButtonsPressed & BUTTON_B) && entryIdx == 0) {
-            btl_main_menu_restore_choose();
-            gBattleSubState = BTL_SUBSTATE_MAIN_REOPEN_MENU;
-            return;
-        }
-        if (entryIdx != 0) {
-            battleStatus->moveCategory = BTL_MENU_TYPE_STAR_POWERS;
-            battleStatus->selectedMoveID = MOVE_FOCUS;
-            battleStatus->moveArgument = 0;
-            battleStatus->curTargetListFlags = gMoveTable[MOVE_FOCUS].flags;
-            btl_set_state(BATTLE_STATE_SELECT_TARGET);
-            return;
-        }
-        break;
-    case BTL_SUBSTATE_MAIN_REOPEN_MENU:
-        if (btl_main_menu_update() != 0) {
-            BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
-            BattleMenu_SwapDelay = 4;
-            gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
-        }
-        break;
-    case BTL_SUBSTATE_MAIN_TARGET_CANCEL:
-        btl_main_menu_restore_choose();
-        gBattleSubState = BTL_SUBSTATE_MAIN_REOPEN_MENU;
-        break;
-    case BTL_SUBSTATE_MAIN_TARGET_CHOSEN:
-        btl_main_menu_destroy();
-        break;
-    case BTL_SUBSTATE_MAIN_SHOW_CANT_SWAP:
-        if (!btl_player_can_act()) {
-            btl_show_variable_battle_message(BTL_MSG_CANT_MOVE, 60, 0);
-        } else {
-            btl_show_variable_battle_message(BTL_MSG_CANT_SWITCH, 60, 0);
-        }
-        ShowingErrorMessage = true;
-        gBattleSubState = BTL_SUBSTATE_MAIN_AWAIT_CANT_SWAP;
-        break;
-    case BTL_SUBSTATE_MAIN_AWAIT_CANT_SWAP:
-        if (btl_is_popup_displayed()) {
+        case BTL_SUBSTATE_MAIN_HANDOVER:
+            entryIdx = btl_main_menu_update();
+            if ((battleStatus->curButtonsPressed & BUTTON_B) && entryIdx == 0) {
+                btl_main_menu_restore_choose();
+                gBattleSubState = BTL_SUBSTATE_MAIN_REOPEN_MENU;
+                return;
+            }
+            if (entryIdx != 0) {
+                battleStatus->moveCategory = BTL_MENU_TYPE_STAR_POWERS;
+                battleStatus->selectedMoveID = MOVE_FOCUS;
+                battleStatus->moveArgument = 0;
+                battleStatus->curTargetListFlags = gMoveTable[MOVE_FOCUS].flags;
+                btl_set_state(BATTLE_STATE_SELECT_TARGET);
+                return;
+            }
             break;
-        }
-        ShowingErrorMessage = false;
-        BattleMenu_ChooseDelay = 0;
-        BattleMenu_SwapDelay = 4;
-        gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
-        break;
-    case BTL_SUBSTATE_ABILITIES_BUILD_MENU:
-        for (i = 0; i < battleStatus->submenuMoveCount; i++) {
-            moveData = &gMoveTable[battleStatus->submenuMoves[i]];
-
-            MovesOptionError[i] = 0;
-            if (battleStatus->submenuStatus[i] == 0) {
-                MovesOptionError[i] = 0;
-            }
-            if (battleStatus->submenuStatus[i] == -1) {
-                battleStatus->submenuStatus[i] = 0;
-                MovesOptionError[i] = BTL_MSG_CANT_SELECT_NOW;
-            }
-            if (battleStatus->submenuStatus[i] == -2) {
-                battleStatus->submenuStatus[i] = 0;
-                MovesOptionError[i] = BTL_MSG_CANT_SELECT_NOW;
-            }
-            MovesOptionHudScripts[i] = PartnerMoveHudScripts[playerData->curPartner][i + 1].enabled;
-            if (battleStatus->submenuStatus[i] == 0) {
-                MovesOptionHudScripts[i] = PartnerMoveHudScripts[playerData->curPartner][i + 1].disabled;
-            }
-            MovesOptionIndices[i] = battleStatus->submenuMoves[i];
-            MovesOptionEnabled[i] = battleStatus->submenuStatus[i];
-            MovesOptionNames[i] = moveData->nameMsg;
-            MovesOptionDesc[i] = moveData->shortDescMsg;
-            MovesOptionDisplayCosts[i] = moveData->costFP;
-            MovesOptionBPCosts[i] = moveData->costBP;
-            MovesOptionSortPriority[i] = i;
-
-            MovesOptionDiscounts[i] = 0;
-            MovesOptionDiscountColors[i] = 0;
-            if (player_team_is_ability_active(playerActor, ABILITY_FLOWER_SAVER)) {
-                MovesOptionDiscounts[i] += player_team_is_ability_active(playerActor, ABILITY_FLOWER_SAVER);
-                MovesOptionDiscountColors[i] = 1;
-            }
-            if (player_team_is_ability_active(playerActor, ABILITY_FLOWER_FANATIC)) {
-                MovesOptionDiscounts[i] += player_team_is_ability_active(playerActor, ABILITY_FLOWER_FANATIC) * 2;
-                MovesOptionDiscountColors[i] = 2;
-            }
-        }
-        if (battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_ABILITY] < 0) {
-            battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_ABILITY] = 0;
-        }
-        UsingSpiritsSubmenu = false;
-        MovesOptionCount = battleStatus->submenuMoveCount;
-        initialPos = battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_ABILITY];
-        MovesPrevSelected = initialPos;
-        btl_submenu_moves_init();
-        gBattleSubState = BTL_SUBSTATE_ABILITIES_CHOOSING;
-        break;
-    case BTL_SUBSTATE_ABILITIES_CHOOSING:
-        entryIdx = btl_submenu_moves_update();
-        switch (entryIdx) {
-            case POPUP_RESULT_CHOOSING:
-                // do nothing while player is choosing from popup menu
-                break;
-            case POPUP_RESULT_INVALID:
-                gBattleSubState = BTL_SUBSTATE_ABILITIES_SHOW_ERROR;
-                break;
-            case POPUP_RESULT_CANCEL:
-                btl_main_menu_resume_choose();
+        case BTL_SUBSTATE_MAIN_REOPEN_MENU:
+            if (btl_main_menu_update() != 0) {
                 BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
                 BattleMenu_SwapDelay = 4;
                 gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
-                btl_state_update_partner_menu();
-                btl_state_update_partner_menu();
+            }
+            break;
+        case BTL_SUBSTATE_MAIN_TARGET_CANCEL:
+            btl_main_menu_restore_choose();
+            gBattleSubState = BTL_SUBSTATE_MAIN_REOPEN_MENU;
+            break;
+        case BTL_SUBSTATE_MAIN_TARGET_CHOSEN:
+            btl_main_menu_destroy();
+            break;
+        case BTL_SUBSTATE_MAIN_SHOW_CANT_SWAP:
+            if (!btl_player_can_act()) {
+                btl_show_variable_battle_message(BTL_MSG_CANT_MOVE, 60, 0);
+            } else {
+                btl_show_variable_battle_message(BTL_MSG_CANT_SWITCH, 60, 0);
+            }
+            ShowingErrorMessage = true;
+            gBattleSubState = BTL_SUBSTATE_MAIN_AWAIT_CANT_SWAP;
+            break;
+        case BTL_SUBSTATE_MAIN_AWAIT_CANT_SWAP:
+            if (btl_is_popup_displayed()) {
                 break;
-            default:
-                battleStatus->lastPartnerPowerSelection = entryIdx - 1;
-                btl_submenu_moves_hide();
-                btl_main_menu_hide();
-                gBattleSubState = BTL_SUBSTATE_ABILITIES_HANDOVER;
-                break;
-        }
-        break;
-    case BTL_SUBSTATE_ABILITIES_HANDOVER:
-        entryIdx = btl_submenu_moves_update();
-        if ((battleStatus->curButtonsPressed & BUTTON_B) && entryIdx == 0) {
+            }
+            ShowingErrorMessage = false;
+            BattleMenu_ChooseDelay = 0;
+            BattleMenu_SwapDelay = 4;
+            gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
+            break;
+        case BTL_SUBSTATE_ABILITIES_BUILD_MENU:
+            for (i = 0; i < battleStatus->submenuMoveCount; i++) {
+                moveData = &gMoveTable[battleStatus->submenuMoves[i]];
+
+                MovesOptionError[i] = 0;
+                if (battleStatus->submenuStatus[i] == 0) {
+                    MovesOptionError[i] = 0;
+                }
+                if (battleStatus->submenuStatus[i] == -1) {
+                    battleStatus->submenuStatus[i] = 0;
+                    MovesOptionError[i] = BTL_MSG_CANT_SELECT_NOW;
+                }
+                if (battleStatus->submenuStatus[i] == -2) {
+                    battleStatus->submenuStatus[i] = 0;
+                    MovesOptionError[i] = BTL_MSG_CANT_SELECT_NOW;
+                }
+                MovesOptionHudScripts[i] = PartnerMoveHudScripts[playerData->curPartner][i + 1].enabled;
+                if (battleStatus->submenuStatus[i] == 0) {
+                    MovesOptionHudScripts[i] = PartnerMoveHudScripts[playerData->curPartner][i + 1].disabled;
+                }
+                MovesOptionIndices[i] = battleStatus->submenuMoves[i];
+                MovesOptionEnabled[i] = battleStatus->submenuStatus[i];
+                MovesOptionNames[i] = moveData->nameMsg;
+                MovesOptionDesc[i] = moveData->shortDescMsg;
+                MovesOptionDisplayCosts[i] = moveData->costFP;
+                MovesOptionBPCosts[i] = moveData->costBP;
+                MovesOptionSortPriority[i] = i;
+
+                MovesOptionDiscounts[i] = 0;
+                MovesOptionDiscountColors[i] = 0;
+                if (player_team_is_ability_active(playerActor, ABILITY_FLOWER_SAVER)) {
+                    MovesOptionDiscounts[i] += player_team_is_ability_active(playerActor, ABILITY_FLOWER_SAVER);
+                    MovesOptionDiscountColors[i] = 1;
+                }
+                if (player_team_is_ability_active(playerActor, ABILITY_FLOWER_FANATIC)) {
+                    MovesOptionDiscounts[i] += player_team_is_ability_active(playerActor, ABILITY_FLOWER_FANATIC) * 2;
+                    MovesOptionDiscountColors[i] = 2;
+                }
+            }
+            if (battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_ABILITY] < 0) {
+                battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_ABILITY] = 0;
+            }
+            UsingSpiritsSubmenu = false;
+            MovesOptionCount = battleStatus->submenuMoveCount;
+            initialPos = battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_ABILITY];
+            MovesPrevSelected = initialPos;
+            btl_submenu_moves_init();
+            gBattleSubState = BTL_SUBSTATE_ABILITIES_CHOOSING;
+            break;
+        case BTL_SUBSTATE_ABILITIES_CHOOSING:
+            entryIdx = btl_submenu_moves_update();
+            switch (entryIdx) {
+                case POPUP_RESULT_CHOOSING:
+                // do nothing while player is choosing from popup menu
+                    break;
+                case POPUP_RESULT_INVALID:
+                    gBattleSubState = BTL_SUBSTATE_ABILITIES_SHOW_ERROR;
+                    break;
+                case POPUP_RESULT_CANCEL:
+                    btl_main_menu_resume_choose();
+                    BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
+                    BattleMenu_SwapDelay = 4;
+                    gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
+                    btl_state_update_partner_menu();
+                    btl_state_update_partner_menu();
+                    break;
+                default:
+                    battleStatus->lastPartnerPowerSelection = entryIdx - 1;
+                    btl_submenu_moves_hide();
+                    btl_main_menu_hide();
+                    gBattleSubState = BTL_SUBSTATE_ABILITIES_HANDOVER;
+                    break;
+            }
+            break;
+        case BTL_SUBSTATE_ABILITIES_HANDOVER:
+            entryIdx = btl_submenu_moves_update();
+            if ((battleStatus->curButtonsPressed & BUTTON_B) && entryIdx == 0) {
+                btl_submenu_moves_restore_choose();
+                btl_main_menu_restore_submenu();
+                gBattleSubState = BTL_SUBSTATE_ABILITIES_REOPEN_MENU;
+            } else if (btl_main_menu_update() != 0) {
+                battleStatus->moveCategory = BTL_MENU_TYPE_ABILITY;
+                battleStatus->selectedMoveID = MovesOptionIndices[battleStatus->lastPartnerPowerSelection];
+                battleStatus->curTargetListFlags = gMoveTable[battleStatus->selectedMoveID].flags;
+                battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_ABILITY] = SelectedMovesIndex;
+                battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_ABILITIES_TARGET_CANCEL;
+                battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_ABILITIES_TARGET_CHOSEN;
+                btl_set_state(BATTLE_STATE_SELECT_TARGET);
+            }
+            break;
+        case BTL_SUBSTATE_ABILITIES_REOPEN_MENU:
+            btl_submenu_moves_update();
+            if (btl_main_menu_update() != 0) {
+                gBattleSubState = BTL_SUBSTATE_ABILITIES_CHOOSING;
+            }
+            break;
+        case BTL_SUBSTATE_ABILITIES_TARGET_CANCEL:
             btl_submenu_moves_restore_choose();
             btl_main_menu_restore_submenu();
             gBattleSubState = BTL_SUBSTATE_ABILITIES_REOPEN_MENU;
-        } else if (btl_main_menu_update() != 0) {
-            battleStatus->moveCategory = BTL_MENU_TYPE_ABILITY;
-            battleStatus->selectedMoveID = MovesOptionIndices[battleStatus->lastPartnerPowerSelection];
-            battleStatus->curTargetListFlags = gMoveTable[battleStatus->selectedMoveID].flags;
-            battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_ABILITY] = SelectedMovesIndex;
-            battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_ABILITIES_TARGET_CANCEL;
-            battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_ABILITIES_TARGET_CHOSEN;
-            btl_set_state(BATTLE_STATE_SELECT_TARGET);
-        }
-        break;
-    case BTL_SUBSTATE_ABILITIES_REOPEN_MENU:
-        btl_submenu_moves_update();
-        if (btl_main_menu_update() != 0) {
-            gBattleSubState = BTL_SUBSTATE_ABILITIES_CHOOSING;
-        }
-        break;
-    case BTL_SUBSTATE_ABILITIES_TARGET_CANCEL:
-        btl_submenu_moves_restore_choose();
-        btl_main_menu_restore_submenu();
-        gBattleSubState = BTL_SUBSTATE_ABILITIES_REOPEN_MENU;
-        break;
-    case BTL_SUBSTATE_ABILITIES_TARGET_CHOSEN:
-        btl_submenu_moves_destroy();
-        btl_main_menu_destroy();
-        break;
-    case BTL_SUBSTATE_ABILITIES_SHOW_ERROR:
-        if (btl_submenu_moves_update() != -1) {
-            gBattleSubState = BTL_SUBSTATE_ABILITIES_CHOOSING;
-        }
-        break;
-    case BTL_SUBSTATE_ITEMS_BUILD_MENU:
-        popupIndex = 0;
-        for (i = 0; i < ARRAY_COUNT(playerData->invItems); i++) {
-            ItemData* item;
-            HudScriptPtr* hudScript;
-            if (playerData->invItems[i] == ITEM_NONE) {
-                continue;
+            break;
+        case BTL_SUBSTATE_ABILITIES_TARGET_CHOSEN:
+            btl_submenu_moves_destroy();
+            btl_main_menu_destroy();
+            break;
+        case BTL_SUBSTATE_ABILITIES_SHOW_ERROR:
+            if (btl_submenu_moves_update() != -1) {
+                gBattleSubState = BTL_SUBSTATE_ABILITIES_CHOOSING;
             }
-            item = &gItemTable[playerData->invItems[i]];
-            hudScript = &gItemHudScripts[item->hudElemID].enabled;
+            break;
+        case BTL_SUBSTATE_ITEMS_BUILD_MENU:
+            popupIndex = 0;
+            for (i = 0; i < ARRAY_COUNT(playerData->invItems); i++) {
+                ItemData* item;
+                HudScriptPtr* hudScript;
+                if (playerData->invItems[i] == ITEM_NONE) {
+                    continue;
+                }
+                item = &gItemTable[playerData->invItems[i]];
+                hudScript = &gItemHudScripts[item->hudElemID].enabled;
 
-            if (!(item->typeFlags & ITEM_TYPE_FLAG_BATTLE_USABLE)) {
-                continue;
+                if (!(item->typeFlags & ITEM_TYPE_FLAG_BATTLE_USABLE)) {
+                    continue;
+                }
+                popupMenu->ptrIcon[popupIndex] = hudScript[0];
+                popupMenu->userIndex[popupIndex] = playerData->invItems[i];
+                popupMenu->enabled[popupIndex] = true;
+                popupMenu->nameMsg[popupIndex] = item->nameMsg;
+                popupMenu->descMsg[popupIndex] = item->shortDescMsg;
+                popupIndex++;
             }
-            popupMenu->ptrIcon[popupIndex] = hudScript[0];
-            popupMenu->userIndex[popupIndex] = playerData->invItems[i];
-            popupMenu->enabled[popupIndex] = true;
-            popupMenu->nameMsg[popupIndex] = item->nameMsg;
-            popupMenu->descMsg[popupIndex] = item->shortDescMsg;
-            popupIndex++;
-        }
-        if (battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER_ITEM] < 0) {
-            battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER_ITEM] = 0;
-        }
-        popupMenu->popupType = POPUP_MENU_USE_ITEM;
-        popupMenu->numEntries = popupIndex;
-        popupMenu->dipMode = 0;
-        popupMenu->titleNumber = 0;
-        initialPos = battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER_ITEM];
-        popupMenu->initialPos = initialPos;
-        create_battle_popup_menu(popupMenu);
-        flush_popup_menu();
-        gBattleSubState = BTL_SUBSTATE_ITEMS_CHOOSING;
-        break;
-    case BTL_SUBSTATE_ITEMS_CHOOSING:
-        switch (popupMenu->result) {
-            case POPUP_RESULT_CHOOSING:
-                // do nothing while player is choosing from menu
-                break;
-            case POPUP_RESULT_CANCEL:
-                btl_main_menu_resume_choose();
-                BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
-                BattleMenu_SwapDelay = 4;
-                gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
-                btl_state_update_partner_menu();
-                btl_state_update_partner_menu();
-                break;
-            default: // something has been selected
-                battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_ITEMS_TARGET_CANCEL;
-                battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_ITEMS_TARGET_CHOSEN;
-                battleStatus->lastSelectedItem = popupMenu->userIndex[popupMenu->result - 1];
-                battleStatus->moveCategory = BTL_MENU_TYPE_ITEMS;
-                battleStatus->moveArgument = battleStatus->lastSelectedItem;
-                battleStatus->curTargetListFlags = gItemTable[battleStatus->moveArgument].targetFlags | TARGET_FLAG_PRIMARY_ONLY;
-                battleStatus->curAttackElement = 0;
-                battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER_ITEM] = popupMenu->result - 1;
-                hide_popup_menu();
-                btl_main_menu_hide();
-                gBattleSubState = BTL_SUBSTATE_ITEMS_HANDOVER;
-                break;
-        }
-        break;
-    case BTL_SUBSTATE_ITEMS_REOPEN_MENU:
-        if (btl_main_menu_update() != 0) {
+            if (battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER_ITEM] < 0) {
+                battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER_ITEM] = 0;
+            }
+            popupMenu->popupType = POPUP_MENU_USE_ITEM;
+            popupMenu->numEntries = popupIndex;
+            popupMenu->dipMode = 0;
+            popupMenu->titleNumber = 0;
+            initialPos = battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER_ITEM];
+            popupMenu->initialPos = initialPos;
+            create_battle_popup_menu(popupMenu);
+            flush_popup_menu();
             gBattleSubState = BTL_SUBSTATE_ITEMS_CHOOSING;
-        }
-        break;
-    case BTL_SUBSTATE_ITEMS_HANDOVER:
-        if ((battleStatus->curButtonsPressed & BUTTON_B) && popupMenu->result == POPUP_RESULT_CHOOSING) {
+            break;
+        case BTL_SUBSTATE_ITEMS_CHOOSING:
+            switch (popupMenu->result) {
+                case POPUP_RESULT_CHOOSING:
+                // do nothing while player is choosing from menu
+                    break;
+                case POPUP_RESULT_CANCEL:
+                    btl_main_menu_resume_choose();
+                    BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
+                    BattleMenu_SwapDelay = 4;
+                    gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
+                    btl_state_update_partner_menu();
+                    btl_state_update_partner_menu();
+                    break;
+                default: // something has been selected
+                    battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_ITEMS_TARGET_CANCEL;
+                    battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_ITEMS_TARGET_CHOSEN;
+                    battleStatus->lastSelectedItem = popupMenu->userIndex[popupMenu->result - 1];
+                    battleStatus->moveCategory = BTL_MENU_TYPE_ITEMS;
+                    battleStatus->moveArgument = battleStatus->lastSelectedItem;
+                    battleStatus->curTargetListFlags =
+                        gItemTable[battleStatus->moveArgument].targetFlags | TARGET_FLAG_PRIMARY_ONLY;
+                    battleStatus->curAttackElement = 0;
+                    battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER_ITEM] = popupMenu->result - 1;
+                    hide_popup_menu();
+                    btl_main_menu_hide();
+                    gBattleSubState = BTL_SUBSTATE_ITEMS_HANDOVER;
+                    break;
+            }
+            break;
+        case BTL_SUBSTATE_ITEMS_REOPEN_MENU:
+            if (btl_main_menu_update() != 0) {
+                gBattleSubState = BTL_SUBSTATE_ITEMS_CHOOSING;
+            }
+            break;
+        case BTL_SUBSTATE_ITEMS_HANDOVER:
+            if ((battleStatus->curButtonsPressed & BUTTON_B) && popupMenu->result == POPUP_RESULT_CHOOSING) {
+                show_popup_menu();
+                btl_main_menu_restore_submenu();
+                gBattleSubState = BTL_SUBSTATE_ITEMS_REOPEN_MENU;
+            } else if (btl_main_menu_update() != 0) {
+                btl_set_state(BATTLE_STATE_SELECT_TARGET);
+            }
+            break;
+        case BTL_SUBSTATE_ITEMS_TARGET_CANCEL:
             show_popup_menu();
             btl_main_menu_restore_submenu();
             gBattleSubState = BTL_SUBSTATE_ITEMS_REOPEN_MENU;
-        } else if (btl_main_menu_update() != 0) {
-            btl_set_state(BATTLE_STATE_SELECT_TARGET);
-        }
-        break;
-    case BTL_SUBSTATE_ITEMS_TARGET_CANCEL:
-        show_popup_menu();
-        btl_main_menu_restore_submenu();
-        gBattleSubState = BTL_SUBSTATE_ITEMS_REOPEN_MENU;
-        break;
-    case BTL_SUBSTATE_ITEMS_TARGET_CHOSEN:
-        destroy_popup_menu();
-        btl_main_menu_destroy();
-        break;
-    case BTL_SUBSTATE_UNUSED_CHANGE_BUILD_MENU:
-        popupIndex = 0;
-        for (i = 1; i < ARRAY_COUNT(PartnerIDFromMenuIndex); i++) {
-            s32 partnerId = PartnerIDFromMenuIndex[i];
-            if (playerData->partners[partnerId].enabled) {
-                popupProps = &gPartnerPopupProperties[partnerId];
-                popupMenu->ptrIcon[popupIndex] = PartnerHudScripts[partnerId].enabled;
-                popupMenu->enabled[popupIndex] = true;
-                popupMenu->userIndex[popupIndex] = partnerId;
-                popupMenu->nameMsg[popupIndex] = popupProps->nameMsg;
-                popupMenu->descMsg[popupIndex] = popupProps->battleDescMsg;
-                popupMenu->value[popupIndex] = playerData->partners[partnerId].level;
-                if (playerData->curPartner == partnerId) {
-                    popupMenu->ptrIcon[popupIndex] = PartnerHudScripts[partnerId].disabled;
-                    popupMenu->enabled[popupIndex] = false;
+            break;
+        case BTL_SUBSTATE_ITEMS_TARGET_CHOSEN:
+            destroy_popup_menu();
+            btl_main_menu_destroy();
+            break;
+        case BTL_SUBSTATE_UNUSED_CHANGE_BUILD_MENU:
+            popupIndex = 0;
+            for (i = 1; i < ARRAY_COUNT(PartnerIDFromMenuIndex); i++) {
+                s32 partnerId = PartnerIDFromMenuIndex[i];
+                if (playerData->partners[partnerId].enabled) {
+                    popupProps = &gPartnerPopupProperties[partnerId];
+                    popupMenu->ptrIcon[popupIndex] = PartnerHudScripts[partnerId].enabled;
+                    popupMenu->enabled[popupIndex] = true;
+                    popupMenu->userIndex[popupIndex] = partnerId;
+                    popupMenu->nameMsg[popupIndex] = popupProps->nameMsg;
+                    popupMenu->descMsg[popupIndex] = popupProps->battleDescMsg;
+                    popupMenu->value[popupIndex] = playerData->partners[partnerId].level;
+                    if (playerData->curPartner == partnerId) {
+                        popupMenu->ptrIcon[popupIndex] = PartnerHudScripts[partnerId].disabled;
+                        popupMenu->enabled[popupIndex] = false;
+                    }
+                    popupIndex++;
                 }
-                popupIndex++;
             }
-        }
-        if (battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER] < 0) {
-            battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER] = 0;
-        }
-        popupMenu->popupType = POPUP_MENU_SWITCH_PARTNER;
-        popupMenu->numEntries = popupIndex;
-        popupMenu->initialPos = MenuIndexFromPartnerID[playerData->curPartner] - 1;
-        popupMenu->dipMode = 0;
-        popupMenu->titleNumber = 0;
-        create_battle_popup_menu(popupMenu);
-        flush_popup_menu();
-        gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_CHOOSING;
-        break;
-    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_CHOOSING:
-        switch (popupMenu->result) {
-            case POPUP_RESULT_CHOOSING:
-                // do nothing while player is choosing from popup menu
-                break;
-            case POPUP_RESULT_INVALID:
-                gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_SHOW_ERROR;
-                break;
-            case POPUP_RESULT_CANCEL:
-                btl_main_menu_resume_choose();
-                BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
-                BattleMenu_SwapDelay = 4;
-                gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
-                btl_state_update_partner_menu();
-                btl_state_update_partner_menu();
-                break;
-            default:
-                battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_TARGET_CANCEL;
-                battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_TARGET_CHOSEN;
-                battleStatus->lastSelectedPartner = popupMenu->userIndex[popupMenu->result - 1];
-                battleStatus->moveCategory = BTL_MENU_TYPE_CHANGE_PARTNER;
-                battleStatus->selectedMoveID = MOVE_CHANGE_PARTNER;
-                battleStatus->curTargetListFlags = TARGET_FLAG_2;
-                battleStatus->moveArgument = battleStatus->lastSelectedPartner;
-                battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER] = popupMenu->result - 1;
-                hide_popup_menu();
-                btl_main_menu_hide();
-                gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_HANDOVER;
-                break;
-        }
-        break;
-    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_HANDOVER:
-        if ((battleStatus->curButtonsPressed & BUTTON_B) && (popupMenu->result == POPUP_RESULT_CHOOSING)) {
-            show_popup_menu();
-            btl_main_menu_restore_submenu();
-            gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_REOPEN_MENU;
-        } else if (btl_main_menu_update() != 0) {
-            gBattleSubState = battleStatus->acceptTargetMenuSubstate;
-            btl_state_update_partner_menu();
-            btl_set_state(BATTLE_STATE_CHANGE_PARTNER);
-        }
-        break;
-    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_REOPEN_MENU:
-        if (btl_main_menu_update() != 0) {
+            if (battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER] < 0) {
+                battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER] = 0;
+            }
+            popupMenu->popupType = POPUP_MENU_SWITCH_PARTNER;
+            popupMenu->numEntries = popupIndex;
+            popupMenu->initialPos = MenuIndexFromPartnerID[playerData->curPartner] - 1;
+            popupMenu->dipMode = 0;
+            popupMenu->titleNumber = 0;
+            create_battle_popup_menu(popupMenu);
+            flush_popup_menu();
             gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_CHOOSING;
-        }
-        break;
-    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_TARGET_CANCEL:
-        show_popup_menu();
-        btl_main_menu_restore_submenu();
-        gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_REOPEN_MENU;
-        break;
-    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_TARGET_CHOSEN:
-        destroy_popup_menu();
-        btl_main_menu_destroy();
-        break;
-    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_SHOW_ERROR:
-        if (popupMenu->result != POPUP_RESULT_INVALID) {
-            gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_CHOOSING;
-        }
-        break;
-    case BTL_SUBSTATE_FOCUS_BUILD_MENU:
-        entryIdx = 1;
-        battleStatus->submenuMoveCount = entryIdx;
-        battleStatus->submenuMoves[0] = MOVE_FOCUS;
-        battleStatus->submenuIcons[0] = ITEM_PARTNER_ATTACK;
-        battleStatus->submenuStatus[0] = 1;
-        for (i = 0; i < battleStatus->submenuMoveCount; i++) {
-            moveData = &gMoveTable[battleStatus->submenuMoves[i]];
-            MovesOptionHudScripts[i] = StarPowerMovesHudScripts[STAR_POWER_INDEX(battleStatus->submenuMoves[i])].enabled;
-            if (battleStatus->submenuStatus[i] == 0) {
-                MovesOptionHudScripts[i] = StarPowerMovesHudScripts[STAR_POWER_INDEX(battleStatus->submenuMoves[i])].disabled;
-            }
-            MovesOptionDisplayCosts[i] = moveData->costFP;
-            MovesOptionBPCosts[i] = moveData->costBP;
-            MovesOptionIndices[i] = i;
-            MovesOptionSortPriority[i] = i;
-            MovesOptionEnabled[i] = battleStatus->submenuStatus[i];
-            MovesOptionNames[i] = moveData->nameMsg;
-            MovesOptionDesc[i] = moveData->shortDescMsg;
-            MovesOptionDiscounts[i] = 0;
-            MovesOptionDiscountColors[i] = 0;
-        }
-        if (battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_STAR_POWER] < 0) {
-            battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_STAR_POWER] = 0;
-        }
-        UsingSpiritsSubmenu = true;
-        MovesOptionCount = battleStatus->submenuMoveCount;
-        initialPos = battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_STAR_POWER];
-        MovesPrevSelected = initialPos;
-        btl_submenu_moves_init();
-        gBattleSubState = BTL_SUBSTATE_FOCUS_CHOOSING;
-        break;
-    case BTL_SUBSTATE_FOCUS_CHOOSING:
-        entryIdx = btl_submenu_moves_update();
-        switch (entryIdx) {
-            case POPUP_RESULT_CHOOSING:
+            break;
+        case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_CHOOSING:
+            switch (popupMenu->result) {
+                case POPUP_RESULT_CHOOSING:
                 // do nothing while player is choosing from popup menu
-                break;
-            case POPUP_RESULT_CANCEL:
-                btl_main_menu_resume_choose();
-                BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
-                BattleMenu_SwapDelay = 4;
-                gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
-                btl_state_update_partner_menu();
-                btl_state_update_partner_menu();
-                break;
-            default:
-                battleStatus->lastPartnerPowerSelection = MovesOptionIndices[entryIdx - 1];
-                btl_submenu_moves_hide();
-                btl_main_menu_hide();
-                gBattleSubState = BTL_SUBSTATE_FOCUS_HANDOVER;
-                break;
-        }
-        break;
-    case BTL_SUBSTATE_FOCUS_HANDOVER:
-        entryIdx = btl_submenu_moves_update();
-        if ((battleStatus->curButtonsPressed & BUTTON_B) && (entryIdx == 0)) {
-            btl_submenu_moves_restore_choose();
-            btl_main_menu_restore_submenu();
-            gBattleSubState = BTL_SUBSTATE_FOCUS_REOPEN_MENU;
-        } else if (btl_main_menu_update() != 0) {
-            battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_FOCUS_CANCELED;
-            battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_FOCUS_SELECTED;
-            battleStatus->moveCategory = BTL_MENU_TYPE_STAR_POWERS;
-            battleStatus->selectedMoveID = battleStatus->submenuMoves[battleStatus->lastPartnerPowerSelection];
-            battleStatus->curTargetListFlags = gMoveTable[battleStatus->submenuMoves[battleStatus->lastPartnerPowerSelection]].flags;
-            battleStatus->moveArgument = battleStatus->lastPartnerPowerSelection;
-            battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_STAR_POWER] = SelectedMovesIndex;
-            btl_set_state(BATTLE_STATE_SELECT_TARGET);
-        }
-        break;
-    case BTL_SUBSTATE_FOCUS_REOPEN_MENU:
-        btl_submenu_moves_update();
-        if (btl_main_menu_update() != 0) {
-            gBattleSubState = BTL_SUBSTATE_FOCUS_CHOOSING;
-        }
-        break;
-    case BTL_SUBSTATE_FOCUS_CANCELED:
-        btl_submenu_moves_restore_choose();
-        btl_main_menu_restore_submenu();
-        gBattleSubState = BTL_SUBSTATE_FOCUS_REOPEN_MENU;
-        break;
-    case BTL_SUBSTATE_FOCUS_SELECTED:
-        btl_submenu_moves_destroy();
-        btl_main_menu_destroy();
-        break;
-    case BTL_SUBSTATE_STRATEGIES_BUILD_MENU:
-        popupIndex = 0;
-        btl_check_can_change_partner();
-
-        // add 'Change Member' command
-        if (battleStatus->changePartnerAllowed >= 0) {
-            StratsOptionMenuTypes[popupIndex] = BTL_MENU_TYPE_CHANGE_PARTNER;
-            StratsOptionNames[popupIndex] = LeftJustMenuMessages[BTL_MENU_TYPE_CHANGE_PARTNER];
-            StratsOptionHudScripts[popupIndex] = PartnerHudScripts[playerData->curPartner].enabled;
-            StratsOptionMessage[popupIndex] = MSG_Menus_Action_ChangePartner;
-            StratsOptionEnabled[popupIndex] = true;
-            if (battleStatus->changePartnerAllowed <= 0) {
-                StratsOptionHudScripts[popupIndex] = PartnerHudScripts[playerData->curPartner].disabled;
-                StratsOptionEnabled[popupIndex] = false;
-                StratsOptionError[popupIndex] = 0;
-            }
-            popupIndex++;
-        }
-
-        // add 'Do Nothing' command
-        StratsOptionMenuTypes[popupIndex] = BTL_MENU_TYPE_DO_NOTHING;
-        StratsOptionNames[popupIndex] = LeftJustMenuMessages[BTL_MENU_TYPE_DO_NOTHING];
-        StratsOptionHudScripts[popupIndex] = DoNothingHudScripts.enabled;
-        StratsOptionMessage[popupIndex] = MSG_Menus_Action_DoNothing;
-        StratsOptionEnabled[popupIndex] = true;
-        popupIndex++;
-
-        if (battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_STRATEGY] < 0) {
-            battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_STRATEGY] = 0;
-        }
-        StratsOptionCount = popupIndex;
-        initialPos = battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_STRATEGY];
-        StratsPrevSelected = initialPos;
-        btl_menu_strats_init();
-        gBattleSubState = BTL_SUBSTATE_STRATEGIES_CHOOSING;
-        break;
-    case BTL_SUBSTATE_STRATEGIES_CHOOSING:
-        entryIdx = btl_submenu_strats_update();
-        switch (entryIdx) {
-            case POPUP_RESULT_CHOOSING:
-                // do nothing while player is selecting an entry
-                break;
-            case POPUP_RESULT_CANCEL:
-                btl_main_menu_resume_choose();
-                BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
-                BattleMenu_SwapDelay = 4;
-                gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
-                btl_state_update_partner_menu();
-                btl_state_update_partner_menu();
-                break;
-            default:
-                battleStatus->curPartnerSubmenu = StratsOptionMenuTypes[entryIdx - 1];
-                battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_STRATEGY] = entryIdx - 1;
-                if (battleStatus->curPartnerSubmenu == BTL_MENU_TYPE_CHANGE_PARTNER) {
-                    gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_BUILD_MENU;
+                    break;
+                case POPUP_RESULT_INVALID:
+                    gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_SHOW_ERROR;
+                    break;
+                case POPUP_RESULT_CANCEL:
+                    btl_main_menu_resume_choose();
+                    BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
+                    BattleMenu_SwapDelay = 4;
+                    gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
                     btl_state_update_partner_menu();
                     btl_state_update_partner_menu();
-                } else {
-                    btl_submenu_strats_hide();
+                    break;
+                default:
+                    battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_TARGET_CANCEL;
+                    battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_TARGET_CHOSEN;
+                    battleStatus->lastSelectedPartner = popupMenu->userIndex[popupMenu->result - 1];
+                    battleStatus->moveCategory = BTL_MENU_TYPE_CHANGE_PARTNER;
+                    battleStatus->selectedMoveID = MOVE_CHANGE_PARTNER;
+                    battleStatus->curTargetListFlags = TARGET_FLAG_2;
+                    battleStatus->moveArgument = battleStatus->lastSelectedPartner;
+                    battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER] = popupMenu->result - 1;
+                    hide_popup_menu();
                     btl_main_menu_hide();
-                    gBattleSubState = BTL_SUBSTATE_STRATEGIES_HANDOVER;
-                }
-                break;
-        }
-        break;
-    case BTL_SUBSTATE_STRATEGIES_HANDOVER:
-        entryIdx = btl_submenu_strats_update();
-        if ((battleStatus->curButtonsPressed & BUTTON_B) && entryIdx == POPUP_RESULT_CHOOSING) {
-            btl_submenu_strats_restore_choose();
-            btl_main_menu_restore_submenu();
-            gBattleSubState = BTL_SUBSTATE_STRATEGIES_REOPEN_MENU;
-        } else if (btl_main_menu_update() != 0) {
-            battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_STRATEGIES_TARGET_CANCEL;
-            battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN;
-            switch (battleStatus->curPartnerSubmenu) {
-                case BTL_MENU_TYPE_DO_NOTHING:
-                    gBattleSubState = BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN;
-                    btl_state_update_partner_menu();
-                    btl_set_state(BATTLE_STATE_END_PARTNER_TURN);
-                    break;
-                case BTL_MENU_TYPE_RUN_AWAY:
-                    gBattleSubState = BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN;
-                    btl_state_update_partner_menu();
-                    battleStatus->moveCategory = BTL_MENU_TYPE_RUN_AWAY;
-                    battleStatus->selectedMoveID = MOVE_RUN_AWAY;
-                    btl_set_state(BATTLE_STATE_RUN_AWAY);
-                    break;
-                case BTL_MENU_TYPE_ACT_LATER:
-                    gBattleSubState = BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN;
-                    btl_state_update_partner_menu();
-                    btl_set_state(BATTLE_STATE_SWITCH_TO_PLAYER);
+                    gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_HANDOVER;
                     break;
             }
-        }
-        break;
-    case BTL_SUBSTATE_STRATEGIES_REOPEN_MENU:
-        btl_submenu_strats_update();
-        if (btl_main_menu_update() != 0) {
-            BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
-            BattleMenu_SwapDelay = 4;
-            gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
-        }
-        break;
-    case BTL_SUBSTATE_STRATEGIES_TARGET_CANCEL:
-        btl_submenu_strats_restore_choose();
-        btl_main_menu_restore_submenu();
-        gBattleSubState = BTL_SUBSTATE_STRATEGIES_REOPEN_MENU;
-        break;
-    case BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN:
-        btl_submenu_strats_destroy();
-        btl_main_menu_destroy();
-        break;
-    case BTL_SUBSTATE_CHANGE_PARTNER_BUILD_MENU:
-        popupIndex = 0;
-        for (i = 1; i < ARRAY_COUNT(PartnerIDFromMenuIndex); i++) {
-            s32 partnerId = PartnerIDFromMenuIndex[i];
-            if (playerData->partners[partnerId].enabled) {
-                popupProps = &gPartnerPopupProperties[partnerId];
-                popupMenu->ptrIcon[popupIndex] = PartnerHudScripts[partnerId].enabled;
-                popupMenu->enabled[popupIndex] = true;
-                popupMenu->userIndex[popupIndex] = partnerId;
-                popupMenu->nameMsg[popupIndex] = popupProps->nameMsg;
-                popupMenu->descMsg[popupIndex] = popupProps->battleDescMsg;
-                popupMenu->value[popupIndex] = playerData->partners[partnerId].level;
-                if (playerData->curPartner == partnerId) {
-                    popupMenu->ptrIcon[popupIndex] = PartnerHudScripts[partnerId].disabled;
-                    popupMenu->enabled[popupIndex] = false;
-                }
-                popupIndex++;
-            }
-        }
-        if (battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER] < 0) {
-            battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER] = 0;
-        }
-        popupMenu->popupType = POPUP_MENU_SWITCH_PARTNER;
-        popupMenu->numEntries = popupIndex;
-        popupMenu->initialPos = MenuIndexFromPartnerID[playerData->curPartner] - 1;
-        popupMenu->dipMode = 0;
-        popupMenu->titleNumber = 0;
-        create_battle_popup_menu(popupMenu);
-        flush_popup_menu();
-        gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_CHOOSING;
-        break;
-    case BTL_SUBSTATE_CHANGE_PARTNER_CHOOSING:
-        switch (popupMenu->result) {
-            case POPUP_RESULT_CHOOSING:
-                // do nothing while player is choosing from popup menu
-                break;
-            case POPUP_RESULT_INVALID:
-                gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_ERROR;
-                break;
-            case POPUP_RESULT_CANCEL:
-                btl_submenu_strats_resume_choose();
-                gBattleSubState = BTL_SUBSTATE_STRATEGIES_CHOOSING;
-                btl_state_update_partner_menu();
-                btl_state_update_partner_menu();
-                break;
-            default:
-                battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_CHANGE_PARTNER_TARGET_CANCEL;
-                battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_CHANGE_PARTNER_TARGET_CHOSEN;
-                battleStatus->lastSelectedPartner = popupMenu->userIndex[popupMenu->result - 1];
-                battleStatus->moveCategory = BTL_MENU_TYPE_CHANGE_PARTNER;
-                battleStatus->selectedMoveID = MOVE_CHANGE_PARTNER;
-                battleStatus->curTargetListFlags = TARGET_FLAG_2;
-                battleStatus->moveArgument = battleStatus->lastSelectedPartner;
-                battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER] = popupMenu->result - 1;
-                hide_popup_menu();
-                btl_submenu_strats_hide();
-                btl_main_menu_hide();
-                gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_HANDOVER;
-                break;
-        }
-        break;
-    case BTL_SUBSTATE_CHANGE_PARTNER_HANDOVER:
-        if ((battleStatus->curButtonsPressed & BUTTON_B) && popupMenu->result == POPUP_RESULT_CHOOSING) {
-            show_popup_menu();
-            btl_submenu_strats_restore_locked();
-            btl_main_menu_restore_submenu();
-            gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_REOPEN_MENU;
-        } else {
-            btl_submenu_strats_update();
-            if (btl_main_menu_update() != 0) {
+            break;
+        case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_HANDOVER:
+            if ((battleStatus->curButtonsPressed & BUTTON_B) && (popupMenu->result == POPUP_RESULT_CHOOSING)) {
+                show_popup_menu();
+                btl_main_menu_restore_submenu();
+                gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_REOPEN_MENU;
+            } else if (btl_main_menu_update() != 0) {
                 gBattleSubState = battleStatus->acceptTargetMenuSubstate;
                 btl_state_update_partner_menu();
                 btl_set_state(BATTLE_STATE_CHANGE_PARTNER);
             }
-        }
-        break;
-    case BTL_SUBSTATE_CHANGE_PARTNER_REOPEN_MENU:
-        btl_submenu_strats_update();
-        if (btl_main_menu_update() != 0) {
+            break;
+        case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_REOPEN_MENU:
+            if (btl_main_menu_update() != 0) {
+                gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_CHOOSING;
+            }
+            break;
+        case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_TARGET_CANCEL:
+            show_popup_menu();
+            btl_main_menu_restore_submenu();
+            gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_REOPEN_MENU;
+            break;
+        case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_TARGET_CHOSEN:
+            destroy_popup_menu();
+            btl_main_menu_destroy();
+            break;
+        case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_SHOW_ERROR:
+            if (popupMenu->result != POPUP_RESULT_INVALID) {
+                gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_CHOOSING;
+            }
+            break;
+        case BTL_SUBSTATE_FOCUS_BUILD_MENU:
+            entryIdx = 1;
+            battleStatus->submenuMoveCount = entryIdx;
+            battleStatus->submenuMoves[0] = MOVE_FOCUS;
+            battleStatus->submenuIcons[0] = ITEM_PARTNER_ATTACK;
+            battleStatus->submenuStatus[0] = 1;
+            for (i = 0; i < battleStatus->submenuMoveCount; i++) {
+                moveData = &gMoveTable[battleStatus->submenuMoves[i]];
+                MovesOptionHudScripts[i] =
+                    StarPowerMovesHudScripts[STAR_POWER_INDEX(battleStatus->submenuMoves[i])].enabled;
+                if (battleStatus->submenuStatus[i] == 0) {
+                    MovesOptionHudScripts[i] =
+                        StarPowerMovesHudScripts[STAR_POWER_INDEX(battleStatus->submenuMoves[i])].disabled;
+                }
+                MovesOptionDisplayCosts[i] = moveData->costFP;
+                MovesOptionBPCosts[i] = moveData->costBP;
+                MovesOptionIndices[i] = i;
+                MovesOptionSortPriority[i] = i;
+                MovesOptionEnabled[i] = battleStatus->submenuStatus[i];
+                MovesOptionNames[i] = moveData->nameMsg;
+                MovesOptionDesc[i] = moveData->shortDescMsg;
+                MovesOptionDiscounts[i] = 0;
+                MovesOptionDiscountColors[i] = 0;
+            }
+            if (battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_STAR_POWER] < 0) {
+                battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_STAR_POWER] = 0;
+            }
+            UsingSpiritsSubmenu = true;
+            MovesOptionCount = battleStatus->submenuMoveCount;
+            initialPos = battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_STAR_POWER];
+            MovesPrevSelected = initialPos;
+            btl_submenu_moves_init();
+            gBattleSubState = BTL_SUBSTATE_FOCUS_CHOOSING;
+            break;
+        case BTL_SUBSTATE_FOCUS_CHOOSING:
+            entryIdx = btl_submenu_moves_update();
+            switch (entryIdx) {
+                case POPUP_RESULT_CHOOSING:
+                // do nothing while player is choosing from popup menu
+                    break;
+                case POPUP_RESULT_CANCEL:
+                    btl_main_menu_resume_choose();
+                    BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
+                    BattleMenu_SwapDelay = 4;
+                    gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
+                    btl_state_update_partner_menu();
+                    btl_state_update_partner_menu();
+                    break;
+                default:
+                    battleStatus->lastPartnerPowerSelection = MovesOptionIndices[entryIdx - 1];
+                    btl_submenu_moves_hide();
+                    btl_main_menu_hide();
+                    gBattleSubState = BTL_SUBSTATE_FOCUS_HANDOVER;
+                    break;
+            }
+            break;
+        case BTL_SUBSTATE_FOCUS_HANDOVER:
+            entryIdx = btl_submenu_moves_update();
+            if ((battleStatus->curButtonsPressed & BUTTON_B) && (entryIdx == 0)) {
+                btl_submenu_moves_restore_choose();
+                btl_main_menu_restore_submenu();
+                gBattleSubState = BTL_SUBSTATE_FOCUS_REOPEN_MENU;
+            } else if (btl_main_menu_update() != 0) {
+                battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_FOCUS_CANCELED;
+                battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_FOCUS_SELECTED;
+                battleStatus->moveCategory = BTL_MENU_TYPE_STAR_POWERS;
+                battleStatus->selectedMoveID = battleStatus->submenuMoves[battleStatus->lastPartnerPowerSelection];
+                battleStatus->curTargetListFlags =
+                    gMoveTable[battleStatus->submenuMoves[battleStatus->lastPartnerPowerSelection]].flags;
+                battleStatus->moveArgument = battleStatus->lastPartnerPowerSelection;
+                battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_STAR_POWER] = SelectedMovesIndex;
+                btl_set_state(BATTLE_STATE_SELECT_TARGET);
+            }
+            break;
+        case BTL_SUBSTATE_FOCUS_REOPEN_MENU:
+            btl_submenu_moves_update();
+            if (btl_main_menu_update() != 0) {
+                gBattleSubState = BTL_SUBSTATE_FOCUS_CHOOSING;
+            }
+            break;
+        case BTL_SUBSTATE_FOCUS_CANCELED:
+            btl_submenu_moves_restore_choose();
+            btl_main_menu_restore_submenu();
+            gBattleSubState = BTL_SUBSTATE_FOCUS_REOPEN_MENU;
+            break;
+        case BTL_SUBSTATE_FOCUS_SELECTED:
+            btl_submenu_moves_destroy();
+            btl_main_menu_destroy();
+            break;
+        case BTL_SUBSTATE_STRATEGIES_BUILD_MENU:
+            popupIndex = 0;
+            btl_check_can_change_partner();
+
+        // add 'Change Member' command
+            if (battleStatus->changePartnerAllowed >= 0) {
+                StratsOptionMenuTypes[popupIndex] = BTL_MENU_TYPE_CHANGE_PARTNER;
+                StratsOptionNames[popupIndex] = LeftJustMenuMessages[BTL_MENU_TYPE_CHANGE_PARTNER];
+                StratsOptionHudScripts[popupIndex] = PartnerHudScripts[playerData->curPartner].enabled;
+                StratsOptionMessage[popupIndex] = MSG_Menus_Action_ChangePartner;
+                StratsOptionEnabled[popupIndex] = true;
+                if (battleStatus->changePartnerAllowed <= 0) {
+                    StratsOptionHudScripts[popupIndex] = PartnerHudScripts[playerData->curPartner].disabled;
+                    StratsOptionEnabled[popupIndex] = false;
+                    StratsOptionError[popupIndex] = 0;
+                }
+                popupIndex++;
+            }
+
+        // add 'Do Nothing' command
+            StratsOptionMenuTypes[popupIndex] = BTL_MENU_TYPE_DO_NOTHING;
+            StratsOptionNames[popupIndex] = LeftJustMenuMessages[BTL_MENU_TYPE_DO_NOTHING];
+            StratsOptionHudScripts[popupIndex] = DoNothingHudScripts.enabled;
+            StratsOptionMessage[popupIndex] = MSG_Menus_Action_DoNothing;
+            StratsOptionEnabled[popupIndex] = true;
+            popupIndex++;
+
+            if (battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_STRATEGY] < 0) {
+                battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_STRATEGY] = 0;
+            }
+            StratsOptionCount = popupIndex;
+            initialPos = battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_STRATEGY];
+            StratsPrevSelected = initialPos;
+            btl_menu_strats_init();
+            gBattleSubState = BTL_SUBSTATE_STRATEGIES_CHOOSING;
+            break;
+        case BTL_SUBSTATE_STRATEGIES_CHOOSING:
+            entryIdx = btl_submenu_strats_update();
+            switch (entryIdx) {
+                case POPUP_RESULT_CHOOSING:
+                // do nothing while player is selecting an entry
+                    break;
+                case POPUP_RESULT_CANCEL:
+                    btl_main_menu_resume_choose();
+                    BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
+                    BattleMenu_SwapDelay = 4;
+                    gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
+                    btl_state_update_partner_menu();
+                    btl_state_update_partner_menu();
+                    break;
+                default:
+                    battleStatus->curPartnerSubmenu = StratsOptionMenuTypes[entryIdx - 1];
+                    battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_STRATEGY] = entryIdx - 1;
+                    if (battleStatus->curPartnerSubmenu == BTL_MENU_TYPE_CHANGE_PARTNER) {
+                        gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_BUILD_MENU;
+                        btl_state_update_partner_menu();
+                        btl_state_update_partner_menu();
+                    } else {
+                        btl_submenu_strats_hide();
+                        btl_main_menu_hide();
+                        gBattleSubState = BTL_SUBSTATE_STRATEGIES_HANDOVER;
+                    }
+                    break;
+            }
+            break;
+        case BTL_SUBSTATE_STRATEGIES_HANDOVER:
+            entryIdx = btl_submenu_strats_update();
+            if ((battleStatus->curButtonsPressed & BUTTON_B) && entryIdx == POPUP_RESULT_CHOOSING) {
+                btl_submenu_strats_restore_choose();
+                btl_main_menu_restore_submenu();
+                gBattleSubState = BTL_SUBSTATE_STRATEGIES_REOPEN_MENU;
+            } else if (btl_main_menu_update() != 0) {
+                battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_STRATEGIES_TARGET_CANCEL;
+                battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN;
+                switch (battleStatus->curPartnerSubmenu) {
+                    case BTL_MENU_TYPE_DO_NOTHING:
+                        gBattleSubState = BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN;
+                        btl_state_update_partner_menu();
+                        btl_set_state(BATTLE_STATE_END_PARTNER_TURN);
+                        break;
+                    case BTL_MENU_TYPE_RUN_AWAY:
+                        gBattleSubState = BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN;
+                        btl_state_update_partner_menu();
+                        battleStatus->moveCategory = BTL_MENU_TYPE_RUN_AWAY;
+                        battleStatus->selectedMoveID = MOVE_RUN_AWAY;
+                        btl_set_state(BATTLE_STATE_RUN_AWAY);
+                        break;
+                    case BTL_MENU_TYPE_ACT_LATER:
+                        gBattleSubState = BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN;
+                        btl_state_update_partner_menu();
+                        btl_set_state(BATTLE_STATE_SWITCH_TO_PLAYER);
+                        break;
+                }
+            }
+            break;
+        case BTL_SUBSTATE_STRATEGIES_REOPEN_MENU:
+            btl_submenu_strats_update();
+            if (btl_main_menu_update() != 0) {
+                BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
+                BattleMenu_SwapDelay = 4;
+                gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
+            }
+            break;
+        case BTL_SUBSTATE_STRATEGIES_TARGET_CANCEL:
+            btl_submenu_strats_restore_choose();
+            btl_main_menu_restore_submenu();
+            gBattleSubState = BTL_SUBSTATE_STRATEGIES_REOPEN_MENU;
+            break;
+        case BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN:
+            btl_submenu_strats_destroy();
+            btl_main_menu_destroy();
+            break;
+        case BTL_SUBSTATE_CHANGE_PARTNER_BUILD_MENU:
+            popupIndex = 0;
+            for (i = 1; i < ARRAY_COUNT(PartnerIDFromMenuIndex); i++) {
+                s32 partnerId = PartnerIDFromMenuIndex[i];
+                if (playerData->partners[partnerId].enabled) {
+                    popupProps = &gPartnerPopupProperties[partnerId];
+                    popupMenu->ptrIcon[popupIndex] = PartnerHudScripts[partnerId].enabled;
+                    popupMenu->enabled[popupIndex] = true;
+                    popupMenu->userIndex[popupIndex] = partnerId;
+                    popupMenu->nameMsg[popupIndex] = popupProps->nameMsg;
+                    popupMenu->descMsg[popupIndex] = popupProps->battleDescMsg;
+                    popupMenu->value[popupIndex] = playerData->partners[partnerId].level;
+                    if (playerData->curPartner == partnerId) {
+                        popupMenu->ptrIcon[popupIndex] = PartnerHudScripts[partnerId].disabled;
+                        popupMenu->enabled[popupIndex] = false;
+                    }
+                    popupIndex++;
+                }
+            }
+            if (battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER] < 0) {
+                battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER] = 0;
+            }
+            popupMenu->popupType = POPUP_MENU_SWITCH_PARTNER;
+            popupMenu->numEntries = popupIndex;
+            popupMenu->initialPos = MenuIndexFromPartnerID[playerData->curPartner] - 1;
+            popupMenu->dipMode = 0;
+            popupMenu->titleNumber = 0;
+            create_battle_popup_menu(popupMenu);
+            flush_popup_menu();
             gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_CHOOSING;
-        }
-        break;
-    case BTL_SUBSTATE_CHANGE_PARTNER_TARGET_CANCEL:
-        show_popup_menu();
-        btl_submenu_strats_restore_locked();
-        btl_main_menu_restore_submenu();
-        gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_REOPEN_MENU;
-        break;
-    case BTL_SUBSTATE_CHANGE_PARTNER_TARGET_CHOSEN:
-        destroy_popup_menu();
-        btl_submenu_strats_destroy();
-        btl_main_menu_destroy();
-        break;
-    case BTL_SUBSTATE_CHANGE_PARTNER_ERROR:
-        set_window_update(WIN_BTL_STRATS_MENU, WINDOW_UPDATE_HIDE);
-        set_window_update(WIN_BTL_STRATS_TITLE, WINDOW_UPDATE_HIDE);
-        if (popupMenu->result != POPUP_RESULT_INVALID) {
-            set_window_update(WIN_BTL_STRATS_MENU, WINDOW_UPDATE_9);
-            set_window_update(WIN_BTL_STRATS_TITLE, WINDOW_UPDATE_9);
-            gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_CHOOSING;
-        }
-        break;
+            break;
+        case BTL_SUBSTATE_CHANGE_PARTNER_CHOOSING:
+            switch (popupMenu->result) {
+                case POPUP_RESULT_CHOOSING:
+                // do nothing while player is choosing from popup menu
+                    break;
+                case POPUP_RESULT_INVALID:
+                    gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_ERROR;
+                    break;
+                case POPUP_RESULT_CANCEL:
+                    btl_submenu_strats_resume_choose();
+                    gBattleSubState = BTL_SUBSTATE_STRATEGIES_CHOOSING;
+                    btl_state_update_partner_menu();
+                    btl_state_update_partner_menu();
+                    break;
+                default:
+                    battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_CHANGE_PARTNER_TARGET_CANCEL;
+                    battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_CHANGE_PARTNER_TARGET_CHOSEN;
+                    battleStatus->lastSelectedPartner = popupMenu->userIndex[popupMenu->result - 1];
+                    battleStatus->moveCategory = BTL_MENU_TYPE_CHANGE_PARTNER;
+                    battleStatus->selectedMoveID = MOVE_CHANGE_PARTNER;
+                    battleStatus->curTargetListFlags = TARGET_FLAG_2;
+                    battleStatus->moveArgument = battleStatus->lastSelectedPartner;
+                    battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER] = popupMenu->result - 1;
+                    hide_popup_menu();
+                    btl_submenu_strats_hide();
+                    btl_main_menu_hide();
+                    gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_HANDOVER;
+                    break;
+            }
+            break;
+        case BTL_SUBSTATE_CHANGE_PARTNER_HANDOVER:
+            if ((battleStatus->curButtonsPressed & BUTTON_B) && popupMenu->result == POPUP_RESULT_CHOOSING) {
+                show_popup_menu();
+                btl_submenu_strats_restore_locked();
+                btl_main_menu_restore_submenu();
+                gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_REOPEN_MENU;
+            } else {
+                btl_submenu_strats_update();
+                if (btl_main_menu_update() != 0) {
+                    gBattleSubState = battleStatus->acceptTargetMenuSubstate;
+                    btl_state_update_partner_menu();
+                    btl_set_state(BATTLE_STATE_CHANGE_PARTNER);
+                }
+            }
+            break;
+        case BTL_SUBSTATE_CHANGE_PARTNER_REOPEN_MENU:
+            btl_submenu_strats_update();
+            if (btl_main_menu_update() != 0) {
+                gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_CHOOSING;
+            }
+            break;
+        case BTL_SUBSTATE_CHANGE_PARTNER_TARGET_CANCEL:
+            show_popup_menu();
+            btl_submenu_strats_restore_locked();
+            btl_main_menu_restore_submenu();
+            gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_REOPEN_MENU;
+            break;
+        case BTL_SUBSTATE_CHANGE_PARTNER_TARGET_CHOSEN:
+            destroy_popup_menu();
+            btl_submenu_strats_destroy();
+            btl_main_menu_destroy();
+            break;
+        case BTL_SUBSTATE_CHANGE_PARTNER_ERROR:
+            set_window_update(WIN_BTL_STRATS_MENU, WINDOW_UPDATE_HIDE);
+            set_window_update(WIN_BTL_STRATS_TITLE, WINDOW_UPDATE_HIDE);
+            if (popupMenu->result != POPUP_RESULT_INVALID) {
+                set_window_update(WIN_BTL_STRATS_MENU, WINDOW_UPDATE_9);
+                set_window_update(WIN_BTL_STRATS_TITLE, WINDOW_UPDATE_9);
+                gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_CHOOSING;
+            }
+            break;
     }
 }
 

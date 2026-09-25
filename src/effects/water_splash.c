@@ -11,15 +11,15 @@ Gfx* D_E00BEAF0[] = {
     D_09000268_3BCCF8, D_09000288_3BCD18, D_09000268_3BCCF8, D_090002A8_3BCD38
 };
 
-void water_splash_init(EffectInstance *effect);
-void water_splash_render(EffectInstance *effect);
-void water_splash_update(EffectInstance *effect);
+void water_splash_init(EffectInstance* effect);
+void water_splash_render(EffectInstance* effect);
+void water_splash_update(EffectInstance* effect);
 void water_splash_appendGfx(void* effect);
 
 EffectInstance* water_splash_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
     EffectBlueprint bp;
     EffectBlueprint* bpPtr = &bp;
-    EffectInstance *effect;
+    EffectInstance* effect;
     WaterSplashFXData* part;
     s32 i;
     s32 numParts;
@@ -102,8 +102,8 @@ EffectInstance* water_splash_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 ar
 void water_splash_init(EffectInstance* effect) {
 }
 
-void water_splash_update(EffectInstance *effect) {
-    WaterSplashFXData *part;
+void water_splash_update(EffectInstance* effect) {
+    WaterSplashFXData* part;
     s32 temp_a1_3;
     s32 temp_a2;
     s32 i;
@@ -168,7 +168,7 @@ void func_E00BE5B4(void) {
 void water_splash_appendGfx(void* effect) {
     Matrix4f sp10;
     Matrix4f sp50;
-    WaterSplashFXData* data = ((EffectInstance*)effect)->data.waterSplash;
+    WaterSplashFXData* data = ((EffectInstance*) effect)->data.waterSplash;
     s32 sp90 = data->unk_30;
     s32 sp94 = data->unk_04.x;
     s32 temp_fp = data->unk_04.y;
@@ -176,19 +176,21 @@ void water_splash_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, OS_K0_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, OS_K0_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     guTranslateF(sp10, sp94, temp_fp, data->unk_04.z);
     guScaleF(sp50, data->unk_34, data->unk_34, data->unk_34);
     guMtxCatF(sp50, sp10, sp10);
     guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, currentCamera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gSPDisplayList(gMainGfxPos++, D_09000100_3BCB90);
 
     data++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, data++) {
-        s32 temp_t2 = (s32)data->unk_04.x + sp94;
-        s32 temp_t3 = (s32)data->unk_04.y + temp_fp;
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, data++) {
+        s32 temp_t2 = (s32) data->unk_04.x + sp94;
+        s32 temp_t3 = (s32) data->unk_04.y + temp_fp;
 
         if (temp_t2 < 0) {
             temp_t2 = -(temp_t2 & 0x7F);
@@ -202,15 +204,19 @@ void water_splash_appendGfx(void* effect) {
             temp_t3 = temp_t3 & 0x3F;
         }
 
-        gDPLoadMultiTile(gMainGfxPos++, OS_K0_TO_PHYSICAL(nuGfxCfb_ptr), 0x100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, 0,
-                         temp_t2 + 0xA0, temp_t3 + 0x78, temp_t2 + 0xBF, temp_t3 + 0x97, 0,
-                         G_TX_WRAP, G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadMultiTile(
+            gMainGfxPos++, OS_K0_TO_PHYSICAL(nuGfxCfb_ptr), 0x100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, 0,
+            temp_t2 + 0xA0, temp_t3 + 0x78, temp_t2 + 0xBF, temp_t3 + 0x97, 0, G_TX_WRAP, G_TX_WRAP, 5, 5, G_TX_NOLOD,
+            G_TX_NOLOD
+        );
 
         guTranslateF(sp10, data->unk_04.x, data->unk_04.y, data->unk_04.z);
         guScaleF(sp50, data->unk_34, data->unk_34, data->unk_34);
         guMtxCatF(sp50, sp10, sp10);
         guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 200, 255, 255, (sp90 * data->unk_30) / 255);
         gDPSetEnvColor(gMainGfxPos++, 0, 32, 32, 0);
         gSPDisplayList(gMainGfxPos++, D_E00BEAF0[(i + (gGameStatusPtr->frameCounter / 2)) & 3]);

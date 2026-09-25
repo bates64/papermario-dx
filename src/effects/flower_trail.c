@@ -179,8 +179,9 @@ void flower_trail_appendGfx(void* argEffect) {
 
             gDPPipeSync(gMainGfxPos++);
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 112, 96, 24, part->primAlpha);
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                        G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, dlist);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         }

@@ -2,14 +2,17 @@
 
 ITEM_LIST(N(KeyList), ITEM_TUBBA_CASTLE_KEY);
 
-EvtScript N(EVS_ExitDoors_dgb_14_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_15_ENTRY_0, "dgb_14", dgb_14_ENTRY_1,
-    COLLIDER_deilittw, MODEL_o135, MODEL_o136, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_dgb_14_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    dgb_15_ENTRY_0, "dgb_14", dgb_14_ENTRY_1, COLLIDER_deilittw, MODEL_o135, MODEL_o136, DOOR_SOUNDS_CREAKY
+);
 
-EvtScript N(EVS_ExitDoors_dgb_17_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_15_ENTRY_1, "dgb_17", dgb_17_ENTRY_0,
-    COLLIDER_deilitte, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_dgb_17_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    dgb_15_ENTRY_1, "dgb_17", dgb_17_ENTRY_0, COLLIDER_deilitte, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY
+);
 
-EvtScript N(EVS_ExitDoors_dgb_16_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(dgb_15_ENTRY_2, "dgb_16", dgb_16_ENTRY_0,
-    COLLIDER_deilittne, MODEL_o123, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
+EvtScript N(EVS_ExitDoors_dgb_16_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
+    dgb_15_ENTRY_2, "dgb_16", dgb_16_ENTRY_0, COLLIDER_deilittne, MODEL_o123, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
+);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_dgb_14_1)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)

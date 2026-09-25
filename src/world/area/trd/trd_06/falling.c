@@ -27,7 +27,10 @@ void N(worker_draw_falling_sprite)(void) {
 
     gDPPipeSync(gMainGfxPos++);
     gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
-    gSPClearGeometryMode(gMainGfxPos++, G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
+    gSPClearGeometryMode(
+        gMainGfxPos++,
+        G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH
+    );
     gSPSetGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_SHADING_SMOOTH);
     gSPTexture(gMainGfxPos++, -1, -1, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTextureLOD(gMainGfxPos++, G_TL_TILE);
@@ -48,10 +51,12 @@ void N(worker_draw_falling_sprite)(void) {
     guScaleF(mtxTemp, falling->scale.x, falling->scale.y, falling->scale.z);
     guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
     guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
-    gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
-        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
+        G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
-    //TODO use SPR_RASTER_Mario8_XYZ here once they are defined
+    // TODO use SPR_RASTER_Mario8_XYZ here once they are defined
     if (!falling->animationEnabled) {
         falling->playerSpriteID = SPR_MarioW2;
         animFrame = gGameStatusPtr->frameCounter % 4;
@@ -69,7 +74,7 @@ void N(worker_draw_falling_sprite)(void) {
     spr_get_player_raster_info(&rasterInfo, falling->playerSpriteID, falling->rasterID);
     ifxImg.raster = rasterInfo.raster;
     ifxImg.palette = rasterInfo.defaultPal;
-    falling->width  = ifxImg.width = rasterInfo.width;
+    falling->width = ifxImg.width = rasterInfo.width;
     falling->height = ifxImg.height = rasterInfo.height;
     ifxImg.xOffset = -(rasterInfo.width / 2);
     ifxImg.yOffset = rasterInfo.height / 2;
@@ -83,7 +88,7 @@ API_CALLABLE(N(InitializeFallingSprite)) {
     falling->animationEnabled = false;
     falling->rasterID = 0;
     falling->playerSpriteID = 1;
-    falling->width  = gPlayerStatus.colliderHeight;
+    falling->width = gPlayerStatus.colliderHeight;
     falling->height = gPlayerStatus.colliderDiameter;
     falling->pos.x = gPlayerStatus.pos.x;
     falling->pos.y = gPlayerStatus.pos.y + (falling->height * SPRITE_WORLD_SCALE_D * 0.5);

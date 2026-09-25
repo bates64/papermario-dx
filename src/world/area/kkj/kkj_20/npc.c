@@ -6,7 +6,6 @@
 #include "world/common/prefab/ToadHouse.inc.c"
 #include "world/common/prefab/ToadHouse.data.inc.c"
 
-
 EvtScript N(EVS_OpenDresserDoors) = {
     Call(PlaySoundAtCollider, COLLIDER_o80, SOUND_WOODEN_DOOR_OPEN, 0)
     Call(MakeLerp, 0, 80, 14, EASING_QUADRATIC_OUT)

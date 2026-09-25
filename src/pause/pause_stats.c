@@ -113,13 +113,11 @@ StatsEntryData gStatsMenuEntries[] = {
 s32 D_pause_80253814[] = { 0, -16, -7, -19 };
 #endif
 
-HudScriptList gPauseStatsSPIncElements = { HES_StatusSPIncrement1, HES_StatusSPIncrement3,
-                                          HES_StatusSPIncrement2, HES_StatusSPIncrement4,
-                                          HES_StatusSPIncrement5, HES_StatusSPIncrement6,
-                                          HES_StatusSPIncrement7 };
-HudScriptList gPauseStatsStarElements = { HES_StatusStar1, HES_StatusStar3, HES_StatusStar2,
-                                         HES_StatusStar4, HES_StatusStar5, HES_StatusStar6,
-                                         HES_StatusStar7 };
+HudScriptList gPauseStatsSPIncElements = { HES_StatusSPIncrement1, HES_StatusSPIncrement3, HES_StatusSPIncrement2,
+                                           HES_StatusSPIncrement4, HES_StatusSPIncrement5, HES_StatusSPIncrement6,
+                                           HES_StatusSPIncrement7 };
+HudScriptList gPauseStatsStarElements = { HES_StatusStar1, HES_StatusStar3, HES_StatusStar2, HES_StatusStar4,
+                                          HES_StatusStar5, HES_StatusStar6, HES_StatusStar7 };
 s32 D_8024F46C[] = { -1, 1, 2, 4, 5, 7, 8 };
 
 MenuWindowBP gStatsMenuWindowBPs[] = {
@@ -157,7 +155,9 @@ MenuPanel gPausePanelStats = {
 #if VERSION_PAL
 INCLUDE_ASM(void, "pause/pause_stats", pause_stats_draw_contents);
 #else
-void pause_stats_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+void pause_stats_draw_contents(
+    MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening
+) {
     PlayerData* playerData;
     s16 bootsLevel;
     s16 hammerLevel;
@@ -220,8 +220,8 @@ void pause_stats_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
     draw_msg(pause_get_menu_msg(PAUSE_MSG_LBL_BP), baseX + COL_A_X, baseY + ROW_4_Y, 255, MSG_PAL_WHITE, 1);
     draw_number(gPlayerData.maxBP, baseX + 78, baseY + 119, 1, MSG_PAL_WHITE, 255, 3);
 
-    #define MINUTE (60 * 60)
-    #define HOUR   (MINUTE * 60)
+#define MINUTE (60 * 60)
+#define HOUR   (MINUTE * 60)
 
     // draw play time
     hud_element_set_render_pos(gPauseStatsIconIDs[STAT_ICON_CLOCK], baseX + 143, baseY + 140);
@@ -232,18 +232,25 @@ void pause_stats_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
         frameCount = (100 * HOUR) - 1;
     }
     // draw hours
-    draw_number((frameCount / (10 * HOUR)) % 10, baseX + 237, baseY + 133 + NUMBER_OFFSET_Y, 1, MSG_PAL_STANDARD, 255, 2);
+    draw_number(
+        (frameCount / (10 * HOUR)) % 10, baseX + 237, baseY + 133 + NUMBER_OFFSET_Y, 1, MSG_PAL_STANDARD, 255, 2
+    );
     draw_number((frameCount / HOUR) % 10, baseX + 246, baseY + 133 + NUMBER_OFFSET_Y, 1, MSG_PAL_STANDARD, 255, 2);
     draw_msg(pause_get_menu_msg(PAUSE_MSG_DOT), baseX + 257, baseY + 132, 255, MSG_PAL_STANDARD, 1);
     draw_msg(pause_get_menu_msg(PAUSE_MSG_DOT), baseX + 257, baseY + 127, 255, MSG_PAL_STANDARD, 1);
     // draw minutes
-    draw_number((frameCount / (10 * MINUTE)) % 6, baseX + 264, baseY + 133 + NUMBER_OFFSET_Y, 1, MSG_PAL_STANDARD, 255, 2);
+    draw_number(
+        (frameCount / (10 * MINUTE)) % 6, baseX + 264, baseY + 133 + NUMBER_OFFSET_Y, 1, MSG_PAL_STANDARD, 255, 2
+    );
     draw_number((frameCount / MINUTE) % 10, baseX + 273, baseY + 133 + NUMBER_OFFSET_Y, 1, MSG_PAL_STANDARD, 255, 2);
 
     bootsLevel = gPlayerData.bootsLevel;
     hammerLevel = gPlayerData.hammerLevel;
     level = gPlayerData.level;
-    draw_box(4, &gPauseWS_10, baseX + 7, baseY + 12, 0, level >= 10 ? 121 : 113, 17, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+    draw_box(
+        4, &gPauseWS_10, baseX + 7, baseY + 12, 0, level >= 10 ? 121 : 113, 17, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr
+    );
 
     // draw level
 #if !VERSION_IQUE
@@ -270,7 +277,7 @@ void pause_stats_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
         hammerLevel = 3;
     }
 
-    pause_draw_menu_label(PAUSE_LBL_BOOTS,  baseX + 137, baseY + 10);
+    pause_draw_menu_label(PAUSE_LBL_BOOTS, baseX + 137, baseY + 10);
     pause_draw_menu_label(PAUSE_LBL_HAMMER, baseX + 137, baseY + 35);
 
     // draw boots
@@ -283,10 +290,12 @@ void pause_stats_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
     hud_element_set_script(gPauseStatsIconIDs[STAT_ICON_HAMMER], gStatsHammerElements[hammerLevel]);
     hud_element_set_render_pos(gPauseStatsIconIDs[STAT_ICON_HAMMER], baseX + 163, baseY + 54);
     hud_element_draw_without_clipping(gPauseStatsIconIDs[STAT_ICON_HAMMER]);
-    draw_msg(pause_get_menu_msg(gPauseStatsHammerMessages[hammerLevel]), baseX + 176, baseY + 48, 255, MSG_PAL_WHITE, 1);
+    draw_msg(
+        pause_get_menu_msg(gPauseStatsHammerMessages[hammerLevel]), baseX + 176, baseY + 48, 255, MSG_PAL_WHITE, 1
+    );
 
     // draw star power bar
-    pause_draw_menu_label(PAUSE_LBL_STATS,  baseX + 130, baseY + 69);
+    pause_draw_menu_label(PAUSE_LBL_STATS, baseX + 130, baseY + 69);
     pause_draw_menu_label(PAUSE_LBL_ENERGY, baseX + 138, baseY + 60);
 
     drawingFirst = true;

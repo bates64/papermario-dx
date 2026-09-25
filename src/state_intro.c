@@ -44,7 +44,7 @@ void state_init_intro(void) {
 
             // hos_05 (Star Sanctuary)
             gGameStatusPtr->areaID = AREA_HOS;
-            gGameStatusPtr->mapID = 5; //TODO hard-coded map ID
+            gGameStatusPtr->mapID = 5; // TODO hard-coded map ID
             gGameStatusPtr->entryID = 3;
             break;
         case INTRO_PART_1:
@@ -61,7 +61,7 @@ void state_init_intro(void) {
 
             // hos_04 (Outside the Sanctuary)
             gGameStatusPtr->areaID = AREA_HOS;
-            gGameStatusPtr->mapID = 4; //TODO hard-coded map ID
+            gGameStatusPtr->mapID = 4; // TODO hard-coded map ID
             gGameStatusPtr->entryID = 4;
             break;
         default:
@@ -94,28 +94,28 @@ void state_step_intro(void) {
     u32 pressedButtons = gGameStatusPtr->pressedButtons[0];
     s32 i;
 
-    #if DX_SKIP_STORY
+#if DX_SKIP_STORY
     // immediately quit out of the state when skipping story
     pressedButtons = BUTTON_START;
-    #endif
+#endif
 
     if (gGameStatusPtr->introPart != INTRO_PART_NONE) {
         if (D_800A0964 == 0 && pressedButtons & (BUTTON_A | BUTTON_B | BUTTON_START | BUTTON_Z)) {
             D_800A0964 = 1;
         }
 
-        if (D_800A0964 == 1 && (gGameStatusPtr->startupState == INTRO_INIT ||
-                                gGameStatusPtr->startupState == INTRO_DISABLE_DRAW_FRAME ||
-                                gGameStatusPtr->startupState == INTRO_FADE_IN))
+        if (D_800A0964 == 1
+            && (gGameStatusPtr->startupState == INTRO_INIT || gGameStatusPtr->startupState == INTRO_DISABLE_DRAW_FRAME
+                || gGameStatusPtr->startupState == INTRO_FADE_IN))
         {
             gGameStatusPtr->introPart = INTRO_PART_100;
             state_init_intro();
             return;
         }
 
-        if (D_800A0964 == 2 && (gGameStatusPtr->startupState == INTRO_INIT ||
-                                gGameStatusPtr->startupState == INTRO_DISABLE_DRAW_FRAME ||
-                                gGameStatusPtr->startupState == INTRO_FADE_IN))
+        if (D_800A0964 == 2
+            && (gGameStatusPtr->startupState == INTRO_INIT || gGameStatusPtr->startupState == INTRO_DISABLE_DRAW_FRAME
+                || gGameStatusPtr->startupState == INTRO_FADE_IN))
         {
             gGameStatusPtr->introPart++;
             state_init_intro();

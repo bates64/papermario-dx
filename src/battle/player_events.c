@@ -51,12 +51,9 @@ void btl_set_player_idle_anims(void) {
 
 API_CALLABLE(IsPlayerImmobile) {
     Actor* playerActor = gBattleStatus.playerActor;
-    s32 isImmobile = playerActor->debuff == STATUS_KEY_UNUSED
-        || playerActor->debuff == STATUS_KEY_DIZZY
-        || playerActor->debuff == STATUS_KEY_PARALYZE
-        || playerActor->debuff == STATUS_KEY_SLEEP
-        || playerActor->debuff == STATUS_KEY_FROZEN
-        || playerActor->debuff == STATUS_KEY_STOP;
+    s32 isImmobile = playerActor->debuff == STATUS_KEY_UNUSED || playerActor->debuff == STATUS_KEY_DIZZY
+        || playerActor->debuff == STATUS_KEY_PARALYZE || playerActor->debuff == STATUS_KEY_SLEEP
+        || playerActor->debuff == STATUS_KEY_FROZEN || playerActor->debuff == STATUS_KEY_STOP;
 
     if (playerActor->stoneStatus == STATUS_KEY_STONE) {
         isImmobile = true;
@@ -84,13 +81,10 @@ API_CALLABLE(TryPlayerLucky) {
     sfx_play_sound(SOUND_LUCKY);
 
     script->varTable[0] = false;
-    if (player->debuff == STATUS_KEY_UNUSED
-        || player->debuff == STATUS_KEY_DIZZY
-        || player->debuff == STATUS_KEY_PARALYZE
-        || player->debuff == STATUS_KEY_SLEEP
-        || player->debuff == STATUS_KEY_FROZEN
-        || player->debuff == STATUS_KEY_STOP
-    ) {
+    if (player->debuff == STATUS_KEY_UNUSED || player->debuff == STATUS_KEY_DIZZY
+        || player->debuff == STATUS_KEY_PARALYZE || player->debuff == STATUS_KEY_SLEEP
+        || player->debuff == STATUS_KEY_FROZEN || player->debuff == STATUS_KEY_STOP)
+    {
         script->varTable[0] = true;
     }
     return ApiStatus_DONE2;
@@ -404,8 +398,10 @@ API_CALLABLE(BattleMerleeUpdateFX) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
         BattleMerleeBasePosY = merlee->pos.y;
-        BattleMerleeOrbEffect = fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_GREEN_ORB, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.4f, 0);
-        BattleMerleeWaveEffect = fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_GREEN_WAVE, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.00001f, 0);
+        BattleMerleeOrbEffect =
+            fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_GREEN_ORB, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.4f, 0);
+        BattleMerleeWaveEffect =
+            fx_energy_orb_wave(FX_ENERGY_ORB_WAVE_GREEN_WAVE, merlee->pos.x, merlee->pos.y, merlee->pos.z, 0.00001f, 0);
         BattleMerleeEffectsState = MERLEE_EFFECTS_HOLD;
         BattleMerleeEffectsTime = 12;
         sfx_play_sound(SOUND_MAGIC_ASCENDING);
@@ -631,8 +627,7 @@ API_CALLABLE(PlayerGatherAbilityItem) {
             item->pos.y += deltaY / interpAmt;
             item->pos.z += deltaZ / interpAmt;
 
-            item->pos.y += dist2D(item->pos.x, item->pos.y, player->curPos.x,
-                                       player->curPos.y + 12.0f) / 5.0f;
+            item->pos.y += dist2D(item->pos.x, item->pos.y, player->curPos.x, player->curPos.y + 12.0f) / 5.0f;
 
             if (script->functionTemp[1] == 1) {
                 script->functionTemp[0] = 1;

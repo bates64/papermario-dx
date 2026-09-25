@@ -20,7 +20,7 @@ EvtScript N(EVS_OnShakeTree1) = {
     End
 };
 
-FoliageModelList N(Tree1_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o95, MODEL_o96, MODEL_o97, MODEL_o98, MODEL_o99);
+FoliageModelList N(Tree1_LeafModels) = FOLIAGE_MODEL_LIST(MODEL_o95, MODEL_o96, MODEL_o97, MODEL_o98, MODEL_o99);
 FoliageModelList N(Tree1_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o94);
 
 FoliageVectorList N(Tree1_Effects) = {
@@ -43,7 +43,7 @@ BombTrigger N(BombPos_Tree1) = {
     .diameter = 0.0f
 };
 
-FoliageModelList N(Tree2_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o89, MODEL_o90, MODEL_o91, MODEL_o92, MODEL_o93);
+FoliageModelList N(Tree2_LeafModels) = FOLIAGE_MODEL_LIST(MODEL_o89, MODEL_o90, MODEL_o91, MODEL_o92, MODEL_o93);
 FoliageModelList N(Tree2_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o88);
 
 FoliageDropList N(Tree2_Drops) = {
@@ -78,7 +78,7 @@ BombTrigger N(BombPos_Tree2) = {
     .diameter = 0.0f
 };
 
-FoliageModelList N(Tree3_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o83, MODEL_o84, MODEL_o85, MODEL_o86, MODEL_o87);
+FoliageModelList N(Tree3_LeafModels) = FOLIAGE_MODEL_LIST(MODEL_o83, MODEL_o84, MODEL_o85, MODEL_o86, MODEL_o87);
 FoliageModelList N(Tree3_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o34);
 
 FoliageVectorList N(Tree3_Effects) = {

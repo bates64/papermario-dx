@@ -22,4 +22,3 @@ extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_SetupMusicalHill);
 extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(DefaultNPCs);
-

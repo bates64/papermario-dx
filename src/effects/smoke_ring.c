@@ -118,7 +118,7 @@ void smoke_ring_render(EffectInstance* effect) {
 }
 
 void smoke_ring_appendGfx(void* effect) {
-    SmokeRingFXData* part = ((EffectInstance*)effect)->data.smokeRing;
+    SmokeRingFXData* part = ((EffectInstance*) effect)->data.smokeRing;
     s32 temp_s5 = part->unk_40 & 7;
     s32 envAlpha = (part->unk_40 & 0x38) * 4;
     s32 spD8 = part->unk_40 & 0x40;
@@ -136,7 +136,7 @@ void smoke_ring_appendGfx(void* effect) {
     }
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_09002950_32B7F0);
 
     guTranslateF(sp18, part->unk_04, part->unk_08, part->unk_0C);
@@ -147,28 +147,24 @@ void smoke_ring_appendGfx(void* effect) {
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 238, 220, 215, 160);
     gDPSetEnvColor(gMainGfxPos++, 0, 0, 0, envAlpha);
-    gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE,
-        (temp_s5 * 32       ) * 4, 0,
-        (temp_s5 * 32 + 0x1F) * 4, 31 * 4);
+    gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, (temp_s5 * 32) * 4, 0, (temp_s5 * 32 + 0x1F) * 4, 31 * 4);
 
     temp_a3 = temp_s5 * 32 + 32;
 
     if (spD8 != 0) {
-        gDPSetTileSize(gMainGfxPos++, 1,
-            (temp_a3     ) * 4, 32 * 4,
-            (temp_a3 + 31) * 4, 63 * 4);
+        gDPSetTileSize(gMainGfxPos++, 1, (temp_a3) * 4, 32 * 4, (temp_a3 + 31) * 4, 63 * 4);
     } else {
-        gDPSetTileSize(gMainGfxPos++, 1,
-            (temp_a3     ) * 4, 0,
-            (temp_a3 + 31) * 4, 31 * 4);
+        gDPSetTileSize(gMainGfxPos++, 1, (temp_a3) * 4, 0, (temp_a3 + 31) * 4, 31 * 4);
     }
 
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         guTranslateF(sp18, part->unk_04, part->unk_08, part->unk_0C);
         guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, dlist);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

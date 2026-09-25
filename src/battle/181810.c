@@ -237,7 +237,7 @@ API_CALLABLE(EndActorSpeech) {
 
         x = actor->curPos.x + actor->headOffset.x;
         if (!(gSpeakingActor->flags & ACTOR_FLAG_HALF_HEIGHT)) {
-            y = actor->curPos.y + actor->headOffset.y + actor->size.y ;
+            y = actor->curPos.y + actor->headOffset.y + actor->size.y;
         } else {
             y = actor->curPos.y + actor->headOffset.y + actor->size.y / 2;
         }

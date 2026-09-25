@@ -133,7 +133,7 @@ typedef struct ModelBlueprint {
     /* 0xC */ Mtx* mtx;
 } ModelBlueprint; // size = 0x10
 
-typedef void(*ModelCustomGfxBuilderFunc)(s32 index);
+typedef void (*ModelCustomGfxBuilderFunc)(s32 index);
 
 typedef Gfx* ModelCustomGfxList[32];
 typedef ModelCustomGfxBuilderFunc ModelCustomGfxBuilderList[32];
@@ -193,7 +193,9 @@ extern "C" {
 extern ModelTreeInfoList* gCurrentModelTreeNodeInfo;
 extern ModelList* gCurrentModels;
 
-void mdl_set_depth_tint_params(u8 primR, u8 primG, u8 primB, u8 primA, u8 fogR, u8 fogG, u8 fogB, s32 fogStart, s32 fogEnd);
+void mdl_set_depth_tint_params(
+    u8 primR, u8 primG, u8 primB, u8 primA, u8 fogR, u8 fogG, u8 fogB, s32 fogStart, s32 fogEnd
+);
 void mdl_set_remap_tint_params(u8 primR, u8 primG, u8 primB, u8 envR, u8 envG, u8 envB);
 void mdl_get_remap_tint_params(u8* primR, u8* primG, u8* primB, u8* envR, u8* envG, u8* envB);
 
@@ -208,8 +210,9 @@ AnimatorNode* get_animator_node_for_tree_index(ModelAnimator* animator, s32 tree
 AnimatorNode* get_animator_node_with_id(ModelAnimator* animator, s32 id);
 void animator_update_model_transforms(ModelAnimator* animator, Mtx* rootTransform);
 void render_animated_model(s32 animatorID, Mtx* rootTransform);
-void animator_node_update_model_transform(ModelAnimator* animator, f32 (*flipMtx)[4], AnimatorNode* node,
-                                          Mtx* rootTransform);
+void animator_node_update_model_transform(
+    ModelAnimator* animator, f32 (*flipMtx)[4], AnimatorNode* node, Mtx* rootTransform
+);
 void init_worker_list(void);
 ModelAnimator* get_animator_by_index(s32 animModelID);
 void reset_animator_list(void);

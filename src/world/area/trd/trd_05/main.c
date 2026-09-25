@@ -11,10 +11,13 @@ API_CALLABLE(N(SetMapChangeFadeRate)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ExitDoors_trd_04_1) = EVT_EXIT_DOUBLE_DOOR(trd_05_ENTRY_0, "trd_04", trd_04_ENTRY_1, COLLIDER_ttw, MODEL_doa2, MODEL_doa1);
-EvtScript N(EVS_ExitDoors_trd_00_2) = EVT_EXIT_DOUBLE_DOOR(trd_05_ENTRY_1, "trd_00", trd_00_ENTRY_2, COLLIDER_ttse, MODEL_doa4, MODEL_doa6);
+EvtScript N(EVS_ExitDoors_trd_04_1) =
+    EVT_EXIT_DOUBLE_DOOR(trd_05_ENTRY_0, "trd_04", trd_04_ENTRY_1, COLLIDER_ttw, MODEL_doa2, MODEL_doa1);
+EvtScript N(EVS_ExitDoors_trd_00_2) =
+    EVT_EXIT_DOUBLE_DOOR(trd_05_ENTRY_1, "trd_00", trd_00_ENTRY_2, COLLIDER_ttse, MODEL_doa4, MODEL_doa6);
 EvtScript N(EVS_ExitWalk_trd_00_3) = EVT_EXIT_WALK(60, trd_05_ENTRY_2, "trd_00", trd_00_ENTRY_3);
-EvtScript N(EVS_ExitDoors_trd_04_3) = EVT_EXIT_DOUBLE_DOOR(trd_05_ENTRY_3, "trd_04", trd_04_ENTRY_3, COLLIDER_ttw2, MODEL_doa7, MODEL_doa8);
+EvtScript N(EVS_ExitDoors_trd_04_3) =
+    EVT_EXIT_DOUBLE_DOOR(trd_05_ENTRY_3, "trd_04", trd_04_ENTRY_3, COLLIDER_ttw2, MODEL_doa7, MODEL_doa8);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_trd_04_1)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)

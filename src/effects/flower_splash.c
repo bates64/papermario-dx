@@ -157,8 +157,9 @@ void flower_splash_appendGfx(void* effect) {
             gDisplayContext->matrixStack[gMatrixListPos] = data->transformMtx;
 
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 112, 96, 24, data->primAlpha);
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                        G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, dlist);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         }

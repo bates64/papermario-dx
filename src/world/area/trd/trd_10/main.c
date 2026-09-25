@@ -107,8 +107,8 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_ExitDoors_trd_09_1) = EVT_EXIT_DOUBLE_DOOR(trd_10_ENTRY_0, "trd_09", trd_09_ENTRY_1,
-    COLLIDER_ttw, MODEL_o192, MODEL_o191);
+EvtScript N(EVS_ExitDoors_trd_09_1) =
+    EVT_EXIT_DOUBLE_DOOR(trd_10_ENTRY_0, "trd_09", trd_09_ENTRY_1, COLLIDER_ttw, MODEL_o192, MODEL_o191);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_trd_09_1)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)

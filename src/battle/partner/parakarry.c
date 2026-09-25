@@ -227,7 +227,8 @@ API_CALLABLE(N(ShellShotActionCommand)) {
             } else {
                 if (shellShotTimer == 0) {
                     targetActor = get_actor(parakarry->targetActorID);
-                    aimAngle = fabsf(get_clamped_angle_diff(state->angle, state->bounceDivisor)) / state->unk_24 * targetActor->scalingFactor;
+                    aimAngle = fabsf(get_clamped_angle_diff(state->angle, state->bounceDivisor)) / state->unk_24
+                        * targetActor->scalingFactor;
 
                     if (aimAngle < 3.0f) {
                         script->functionTemp[0] = 3;
@@ -311,7 +312,9 @@ API_CALLABLE(N(ShellShotActionCommand)) {
         }
     }
 
-    get_screen_coords(gCurrentCameraID, state->goalPos.x, state->goalPos.y, state->goalPos.z, &screenX, &screenY, &screenZ);
+    get_screen_coords(
+        gCurrentCameraID, state->goalPos.x, state->goalPos.y, state->goalPos.z, &screenX, &screenY, &screenZ
+    );
     hid = hudTarget;
     hud_element_set_render_pos(hid, screenX, screenY);
     hud_element_set_transform_rotation(hid, 0.0f, 0.0f, hudTargetRotation);
@@ -434,12 +437,16 @@ API_CALLABLE(N(CarryAway)) {
             parakarry->state.curPos.x += parakarry->state.speed;
             *animationRatePtr = 1.0f;
             y = parakarry->state.curPos.y;
-            parakarry->state.curPos.y = y + (sin_rad(2.0f * sin_rad(DEG_TO_RAD(parakarry->state.moveTime)) * PI_S) * 1.4 + 0.5);
+            parakarry->state.curPos.y =
+                y + (sin_rad(2.0f * sin_rad(DEG_TO_RAD(parakarry->state.moveTime)) * PI_S) * 1.4 + 0.5);
             parakarry->state.moveTime += 6;
             parakarry->state.moveTime = clamp_angle(parakarry->state.moveTime);
 
             if (gGameStatusPtr->frameCounter % 10 == 0) {
-                sfx_play_sound_at_position(SOUND_PARAKARRY_FLAP, SOUND_SPACE_DEFAULT, parakarry->state.curPos.x, parakarry->state.curPos.y, parakarry->state.curPos.z);
+                sfx_play_sound_at_position(
+                    SOUND_PARAKARRY_FLAP, SOUND_SPACE_DEFAULT, parakarry->state.curPos.x, parakarry->state.curPos.y,
+                    parakarry->state.curPos.z
+                );
             }
 
             if (parakarry->state.curPos.x > 240.0f) {
@@ -502,9 +509,15 @@ API_CALLABLE(N(FlyAround)) {
                 }
 
                 if (script->functionTemp[3] != 0) {
-                    sfx_play_sound_at_position(SOUND_PARAKARRY_AIR_RAID_1, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_PARAKARRY_AIR_RAID_1, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y,
+                        state->curPos.z
+                    );
                 } else {
-                    sfx_play_sound_at_position(SOUND_PARAKARRY_AIR_RAID_2, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_PARAKARRY_AIR_RAID_2, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y,
+                        state->curPos.z
+                    );
                 }
                 script->functionTemp[3] = 1 - script->functionTemp[3];
             }
@@ -524,9 +537,15 @@ API_CALLABLE(N(FlyAround)) {
                 } while (0); // TODO macro?
 
                 if (script->functionTemp[3] != 0) {
-                    sfx_play_sound_at_position(SOUND_PARAKARRY_AIR_RAID_1, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_PARAKARRY_AIR_RAID_1, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y,
+                        state->curPos.z
+                    );
                 } else {
-                    sfx_play_sound_at_position(SOUND_PARAKARRY_AIR_RAID_2, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_PARAKARRY_AIR_RAID_2, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y,
+                        state->curPos.z
+                    );
                 }
                 script->functionTemp[3] = 1 - script->functionTemp[3];
             }
@@ -546,9 +565,15 @@ API_CALLABLE(N(FlyAround)) {
                 } while (0); // TODO macro?
 
                 if (script->functionTemp[3] != 0) {
-                    sfx_play_sound_at_position(SOUND_PARAKARRY_AIR_RAID_1, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_PARAKARRY_AIR_RAID_1, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y,
+                        state->curPos.z
+                    );
                 } else {
-                    sfx_play_sound_at_position(SOUND_PARAKARRY_AIR_RAID_2, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_PARAKARRY_AIR_RAID_2, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y,
+                        state->curPos.z
+                    );
                 }
                 script->functionTemp[3] = 1 - script->functionTemp[3];
             }
@@ -568,9 +593,15 @@ API_CALLABLE(N(FlyAround)) {
                 } while (0); // TODO macro?
 
                 if (script->functionTemp[3] != 0) {
-                    sfx_play_sound_at_position(SOUND_PARAKARRY_AIR_RAID_1, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_PARAKARRY_AIR_RAID_1, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y,
+                        state->curPos.z
+                    );
                 } else {
-                    sfx_play_sound_at_position(SOUND_PARAKARRY_AIR_RAID_2, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_PARAKARRY_AIR_RAID_2, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y,
+                        state->curPos.z
+                    );
                 }
                 script->functionTemp[3] = 1 - script->functionTemp[3];
             }

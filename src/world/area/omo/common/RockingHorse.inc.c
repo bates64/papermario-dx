@@ -46,8 +46,12 @@ API_CALLABLE(N(UpdateRockingHorses)) {
         rockAngle = sin_deg(horse->rockPhase) * 20.0f;
         offsetY = SQ(rockAngle) / 90.0f;
         if (i == 0) {
-            if ((horse->lastRockAngle >= 0.0f && rockAngle < 0.0f) || (horse->lastRockAngle < 0.0f && rockAngle >= 0.0f)) {
-                sfx_play_sound_at_position(SOUND_CREAKY_ROCKING, SOUND_SPACE_DEFAULT, horse->soundPos.x, horse->soundPos.y, horse->soundPos.z);
+            if ((horse->lastRockAngle >= 0.0f && rockAngle < 0.0f)
+                || (horse->lastRockAngle < 0.0f && rockAngle >= 0.0f))
+            {
+                sfx_play_sound_at_position(
+                    SOUND_CREAKY_ROCKING, SOUND_SPACE_DEFAULT, horse->soundPos.x, horse->soundPos.y, horse->soundPos.z
+                );
             }
             horse->lastRockAngle = rockAngle;
         }

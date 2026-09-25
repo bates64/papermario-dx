@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _BATTLE_NAMES_H_
+#define _BATTLE_NAMES_H_
 
 enum BattleNames {
     BTL_KMR_1_FORMATION_00     = 0x0000,
@@ -565,3 +566,5 @@ enum BattleNames {
     BTL_DIG_FORMATION_08       = 0x2708,
     BTL_DIG_FORMATION_09       = 0x2709,
 };
+
+#endif

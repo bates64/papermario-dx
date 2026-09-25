@@ -99,13 +99,9 @@ API_CALLABLE(N(RegisterPartnerToCopy)) {
     for (i = 0; i < ARRAY_COUNT(PartnerCopyHistory); i++) {
         partnerId = randomPartnerMap[i];
 
-        if (playerData->partners[partnerId].enabled
-            && partnerId != PARTNER_GOOMPA
-            && partnerId != PARTNER_GOOMBARIA
-            && partnerId != PARTNER_TWINK
-            && partnerId != currentPartner
-            && !PartnerCopyHistory[partnerId]
-        ) {
+        if (playerData->partners[partnerId].enabled && partnerId != PARTNER_GOOMPA && partnerId != PARTNER_GOOMBARIA
+            && partnerId != PARTNER_TWINK && partnerId != currentPartner && !PartnerCopyHistory[partnerId])
+        {
             break;
         }
     }

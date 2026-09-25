@@ -17,7 +17,7 @@ DItype __moddi3(DItype u, DItype v) {
         vv.ll = __negdi2(vv.ll);
     }
 
-    __udivmoddi4 (uu.ll, vv.ll, &w);
+    __udivmoddi4(uu.ll, vv.ll, &w);
     if (c) {
         w = __negdi2(w);
     }

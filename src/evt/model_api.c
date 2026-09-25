@@ -258,7 +258,7 @@ API_CALLABLE(SetAnimatorFlags) {
 void reset_model_animators(void) {
     s32 i;
 
-    if (gGameStatusPtr->context == CONTEXT_WORLD ) {
+    if (gGameStatusPtr->context == CONTEXT_WORLD) {
         gCurrentMeshAnimationListPtr = &gWorldMeshAnimationList;
     } else {
         gCurrentMeshAnimationListPtr = &gBattleMeshAnimationList;

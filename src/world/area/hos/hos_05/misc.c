@@ -1,6 +1,5 @@
 #include "hos_05.h"
 
-
 API_CALLABLE(N(AwaitScriptComplete)) {
     Bytecode* args = script->ptrReadPos;
     s32 waitingScriptID = evt_get_variable(script, *args++);
@@ -35,7 +34,7 @@ API_CALLABLE(N(InitFallingStarParams)) {
     script->varTable[10] = FLOAT_TO_FIXED(magnitude * cos_rad(angle));
     script->varTable[11] = FLOAT_TO_FIXED(rand_int(15) + 5);
     script->varTable[12] = FLOAT_TO_FIXED(magnitude * sin_rad(angle));
-    script->varTable[13] = FLOAT_TO_FIXED((f32)(rand_int(10) + 10) * -0.05);
+    script->varTable[13] = FLOAT_TO_FIXED((f32) (rand_int(10) + 10) * -0.05);
 
     return ApiStatus_DONE2;
 }

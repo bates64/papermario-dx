@@ -84,7 +84,7 @@ void ring_blast_render(EffectInstance* effect) {
 }
 
 void ring_blast_appendGfx(void* effect) {
-    RingBlastFXData* data = ((EffectInstance*)effect)->data.ringBlast;
+    RingBlastFXData* data = ((EffectInstance*) effect)->data.ringBlast;
     s32 unk_00 = data->unk_00;
     s32 unk_20_s32 = data->unk_20;
     s32 envAlpha = (data->unk_20 - unk_20_s32) * 256.0f;
@@ -95,10 +95,12 @@ void ring_blast_appendGfx(void* effect) {
     Matrix4f sp60;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, dlist2);
 
-    guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->unk_10, data->pos.x, data->pos.y, data->pos.z);
+    guPositionF(
+        sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->unk_10, data->pos.x, data->pos.y, data->pos.z
+    );
     guRotateF(sp60, data->unk_24, 0.0f, 0.0f, 1.0f);
     guMtxCatF(sp60, sp20, sp20);
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
@@ -126,18 +128,12 @@ void ring_blast_appendGfx(void* effect) {
         gDPSetEnvColor(gMainGfxPos++, 255, 255, 139, envAlpha);
     }
 
-    gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE,
-        (unk_20_s32 * 32     ) * 4, 0,
-        (unk_20_s32 * 32 + 32) * 4, 32 * 4);
+    gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, (unk_20_s32 * 32) * 4, 0, (unk_20_s32 * 32 + 32) * 4, 32 * 4);
 
     if (cond) {
-        gDPSetTileSize(gMainGfxPos++, 1,
-            (unk_20_s32 * 32 + 32) * 4, 32 * 4,
-            (unk_20_s32 * 32 + 64) * 4, 64 * 4);
+        gDPSetTileSize(gMainGfxPos++, 1, (unk_20_s32 * 32 + 32) * 4, 32 * 4, (unk_20_s32 * 32 + 64) * 4, 64 * 4);
     } else {
-        gDPSetTileSize(gMainGfxPos++, 1,
-            (unk_20_s32 * 32 + 32) * 4, 0,
-            (unk_20_s32 * 32 + 64) * 4, 32 * 4);
+        gDPSetTileSize(gMainGfxPos++, 1, (unk_20_s32 * 32 + 32) * 4, 0, (unk_20_s32 * 32 + 64) * 4, 32 * 4);
     }
 
     gSPDisplayList(gMainGfxPos++, dlist);

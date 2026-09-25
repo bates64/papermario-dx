@@ -12,17 +12,8 @@ void moving_cloud_update(EffectInstance* effect);
 void moving_cloud_render(EffectInstance* effect);
 void moving_cloud_appendGfx(void* effect);
 
-EffectInstance* moving_cloud_main(
-    s32 arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    f32 arg5,
-    f32 arg6,
-    f32 arg7,
-    f32 arg8
-) {
+EffectInstance*
+moving_cloud_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8) {
     EffectBlueprint bp;
     EffectInstance* effect;
     MovingCloudFXData* data;
@@ -177,21 +168,23 @@ void moving_cloud_render(EffectInstance* effect) {
 }
 
 void moving_cloud_appendGfx(void* effect) {
-    MovingCloudFXData* data = ((EffectInstance*)effect)->data.movingCloud;
+    MovingCloudFXData* data = ((EffectInstance*) effect)->data.movingCloud;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 unk_30 = data->unk_30;
     Matrix4f sp10;
     Matrix4f sp50;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp10, data->unk_04, data->unk_08, data->unk_0C);
     guScaleF(sp50, data->unk_44, data->unk_44, data->unk_44);
     guMtxCatF(sp50, sp10, sp10);
     guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPMatrix(gMainGfxPos++, camera->mtxBillboard, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, data->unk_24, data->unk_28, data->unk_2C, unk_30);
     gDPSetEnvColor(gMainGfxPos++, data->unk_34, data->unk_38, data->unk_3C, data->unk_40);

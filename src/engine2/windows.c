@@ -119,11 +119,12 @@ SimpleWindowUpdateData gSimpleWindowUpdates[] = {
 };
 
 u8 gWindowAppearScales[] = { 50, 80, 100, 105, 100 };
-u8 gWindowAppearFlags[] = { DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, 0};
+u8 gWindowAppearFlags[] = { DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, 0 };
 u8 gWindowDisappearScales[] = { 105, 100, 77, 57, 40, 27, 16, 8, 3, 0 };
-u8 gWindowDisappearFlags[] = { DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE,
-                               DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE,
-                               DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, 0 };
+u8 gWindowDisappearFlags[] = {
+    DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE,
+    DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, DRAW_FLAG_ROTSCALE, 0
+};
 
 WindowGroup gWindowGroups[] = {
     [WINDOW_GROUP_ALL]    = { WIN_UNUSED_0, WIN_FILES_SLOT4_TITLE },
@@ -158,8 +159,10 @@ void update_windows(void) {
     }
 }
 
-void basic_window_update(s32 windowID, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                        f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity) {
+void basic_window_update(
+    s32 windowID, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
+) {
     Window* window = &gWindows[windowID];
     s32 counter = window->updateCounter;
 
@@ -169,8 +172,8 @@ void basic_window_update(s32 windowID, s32* flags, s32* posX, s32* posY, s32* po
 
     if (counter <= 4) {
         *flags = gWindowAppearFlags[counter];
-        *scaleX = (f32)gWindowAppearScales[counter] * 0.01;
-        *scaleY = (f32)gWindowAppearScales[counter] * 0.01;
+        *scaleX = (f32) gWindowAppearScales[counter] * 0.01;
+        *scaleY = (f32) gWindowAppearScales[counter] * 0.01;
         *rotZ = (4 - counter) * 3;
     } else {
         *flags = gWindowAppearFlags[4];
@@ -181,15 +184,17 @@ void basic_window_update(s32 windowID, s32* flags, s32* posX, s32* posY, s32* po
     }
 }
 
-void basic_hidden_window_update(s32 windowID, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                        f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity) {
+void basic_hidden_window_update(
+    s32 windowID, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
+) {
     Window* window = &gWindows[windowID];
     s32 counter = window->updateCounter;
 
     if (counter <= 9) {
         *flags = gWindowDisappearFlags[counter];
-        *scaleX = (f32)gWindowDisappearScales[counter] * 0.01;
-        *scaleY = (f32)gWindowDisappearScales[counter] * 0.01;
+        *scaleX = (f32) gWindowDisappearScales[counter] * 0.01;
+        *scaleY = (f32) gWindowDisappearScales[counter] * 0.01;
         *rotZ = -counter;
     } else {
         *flags = gWindowDisappearFlags[9];
@@ -201,8 +206,10 @@ void basic_hidden_window_update(s32 windowID, s32* flags, s32* posX, s32* posY, 
     }
 }
 
-void main_menu_window_update(s32 windowID, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                        f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity) {
+void main_menu_window_update(
+    s32 windowID, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
+) {
     Window* window = &gWindows[windowID];
     s32 counter = window->updateCounter;
 
@@ -214,7 +221,9 @@ void main_menu_window_update(s32 windowID, s32* flags, s32* posX, s32* posY, s32
     }
 }
 
-void render_windows(s32* windowsArray, s32 parent, s32 flags, s32 baseX, s32 baseY, s32 opacity, s32 darkening, f32 (*rotScaleMtx)[4]) {
+void render_windows(
+    s32* windowsArray, s32 parent, s32 flags, s32 baseX, s32 baseY, s32 opacity, s32 darkening, f32 (*rotScaleMtx)[4]
+) {
     Window* window;
     Window* childWindow;
     s32 i;
@@ -231,8 +240,10 @@ void render_windows(s32* windowsArray, s32 parent, s32 flags, s32 baseX, s32 bas
     s32 boxTranslateY;
     s32 fpUpdateIdx;
     s32 width, height;
-    s32 (*fpUpdateFunc)(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                                 f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
+    s32 (*fpUpdateFunc)(
+        s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+        f32* rotZ, s32* darkening, s32* opacity
+    );
     WindowStyle windowStyle;
     void* fpDrawContents;
     void* drawContentsArg0;
@@ -282,10 +293,15 @@ void render_windows(s32* windowsArray, s32 parent, s32 flags, s32 baseX, s32 bas
                 childOpacity = updateData->opacity;
             }
         } else {
-            //type conversion needed for matching
-            fpUpdateFunc = (s32 (*)(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                                 f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity))(childWindow->fpUpdate.func);
-            fpUpdateFunc(childWindowID, &childFlags, &posX, &posY, &posZ, &scaleX, &scaleY, &rotX, &rotY, &rotZ, &childDarkening, &childOpacity);
+            // type conversion needed for matching
+            fpUpdateFunc =
+                (s32 (*)(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity))(
+                    childWindow->fpUpdate.func
+                );
+            fpUpdateFunc(
+                childWindowID, &childFlags, &posX, &posY, &posZ, &scaleX, &scaleY, &rotX, &rotY, &rotZ, &childDarkening,
+                &childOpacity
+            );
         }
 
         if (childWindow->fpUpdate.i) {
@@ -330,15 +346,20 @@ void render_windows(s32* windowsArray, s32 parent, s32 flags, s32 baseX, s32 bas
             boxFlags |= DRAW_FLAG_ANIMATED_BACKGROUND;
         }
 
-        if (draw_box(boxFlags, windowStyle, posX, posY, posZ, width, height, childOpacity, childDarkening,
-                    scaleX, scaleY, rotX, rotY, rotZ, fpDrawContents, drawContentsArg0, rotScaleMtx,
-                    boxTranslateX, boxTranslateY, outMtx) == 0) {
+        if (draw_box(
+                boxFlags, windowStyle, posX, posY, posZ, width, height, childOpacity, childDarkening, scaleX, scaleY,
+                rotX, rotY, rotZ, fpDrawContents, drawContentsArg0, rotScaleMtx, boxTranslateX, boxTranslateY, outMtx
+            )
+            == 0)
+        {
             if (childFlags == 0 && rotScaleMtx == 0) {
                 outMtx = nullptr;
             }
 
             if (childWindow->flags & WINDOW_FLAG_HAS_CHILDREN) {
-                render_windows(windowsArray, childWindowID, childFlags, posX, posY, childOpacity, childDarkening, outMtx);
+                render_windows(
+                    windowsArray, childWindowID, childFlags, posX, posY, childOpacity, childDarkening, outMtx
+                );
             }
         }
     }
@@ -363,14 +384,21 @@ void render_window_root(void) {
     gDPPipelineMode(gMainGfxPos++, G_PM_NPRIMITIVE);
     gDPSetCombineMode(gMainGfxPos++, G_CC_SHADE, G_CC_SHADE);
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
-    gSPSetOtherMode(gMainGfxPos++, G_SETOTHERMODE_H, G_MDSFT_ALPHADITHER, 16, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE | G_TD_CLAMP | G_TP_NONE);
+    gSPSetOtherMode(
+        gMainGfxPos++, G_SETOTHERMODE_H, G_MDSFT_ALPHADITHER, 16,
+        G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE | G_TD_CLAMP
+            | G_TP_NONE
+    );
     gSPClipRatio(gMainGfxPos++, FRUSTRATIO_2);
     gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxCfb_ptr));
     gDPPipeSync(gMainGfxPos++);
     render_windows(priorityArray, WIN_NONE, 0, 0, 0, 255, 0, nullptr);
 }
 
-void set_window_properties(s32 windowID, s32 posX, s32 posY, s32 width, s32 height, u8 priority, void* fpDrawContents, void* drawContentsArg0, s8 parent) {
+void set_window_properties(
+    s32 windowID, s32 posX, s32 posY, s32 width, s32 height, u8 priority, void* fpDrawContents, void* drawContentsArg0,
+    s8 parent
+) {
     Window* window = &gWindows[windowID];
     u8 priorityCopy = priority;
 
@@ -462,8 +490,10 @@ void setup_pause_menu_tab(MenuWindowBP* bp, s32 count) {
     s32 i;
 
     for (i = 0; i < count; i++) {
-        set_window_properties(bp->windowID, bp->pos.x, bp->pos.y, bp->width, bp->height, bp->priority,
-                              bp->fpDrawContents, bp->tab, bp->parentID);
+        set_window_properties(
+            bp->windowID, bp->pos.x, bp->pos.y, bp->width, bp->height, bp->priority, bp->fpDrawContents, bp->tab,
+            bp->parentID
+        );
         if (bp->style.defaultStyleID != -1) {
             gWindowStyles[bp->windowID] = bp->style;
         }
@@ -472,4 +502,3 @@ void setup_pause_menu_tab(MenuWindowBP* bp, s32 count) {
         bp++;
     }
 }
-

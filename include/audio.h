@@ -8,7 +8,7 @@
 // ----------------------------------------------------------------------------------
 void snd_notify_engine_ready(ALHeap* heap);
 void snd_legacy_sound_dispatch(u32 id);
-//void snd_bgm_clear_legacy_commands(BGMPlayer* player);
+// void snd_bgm_clear_legacy_commands(BGMPlayer* player);
 void snd_bgm_enqueue_legacy_command(u32 cmd);
 void snd_start_sound(s32 soundID, u8 volume, u8 pan);
 void snd_start_sound_with_shift(s32 soundID, u8 volume, u8 pan, s16 pitchShift);
@@ -50,7 +50,7 @@ AuResult snd_song_request_unpause(s32 songName);
 AuResult snd_song_set_volume_quiet(s32 songName);
 AuResult snd_song_set_volume_full(s32 songName);
 AuResult snd_song_set_linked_mode(s32 songName, b32 mode);
-//AuResult snd_song_get_playing_info(s32 songName, BGMHeader** outTrackData, BGMPlayer** outPlayer);
+// AuResult snd_song_get_playing_info(s32 songName, BGMHeader** outTrackData, BGMPlayer** outPlayer);
 AuResult snd_song_set_playback_rate(s32 songName, f32 arg1);
 /*
 AuResult snd_song_set_detune(s32 songName, s32 arg1);
@@ -67,7 +67,7 @@ void snd_song_poll_music_events(MusicEventTrigger** arg0, s32* arg1);
 void snd_song_flush_music_events(void);
 void snd_song_trigger_music_event(s32 playerID, s32 trackIndex, s32 eventInfo);
 void snd_song_clear_music_events(void);
-//void snd_register_callback(AuCallback func, s32 index);
+// void snd_register_callback(AuCallback func, s32 index);
 void snd_set_stereo(void);
 void snd_set_mono(void);
 void snd_set_bgm_volume(VolumeLevels volume);
@@ -109,7 +109,7 @@ void sfx_update_env_sound_params(void);
 void sfx_set_reverb_mode(s32 arg0);
 s32 sfx_get_reverb_mode(void);
 void sfx_stop_env_sounds(void);
-//SoundInstance* sfx_get_env_sound_instance(s32 soundID);
+// SoundInstance* sfx_get_env_sound_instance(s32 soundID);
 void sfx_play_sound_looping(s32 soundID, u8 volume, u8 pan, s16 pitchShift);
 void sfx_register_looping_sound_at_position(s32 soundID, s32 flags, f32 x, f32 y, f32 z);
 s32 sfx_adjust_env_sound_pos(s32 soundID, s32 sourceFlags, f32 x, f32 y, f32 z);

@@ -8,8 +8,6 @@
 
 #define NAMESPACE A(groove_guy)
 
-
-
 extern EvtScript N(EVS_Init);
 extern EvtScript N(EVS_Idle);
 extern EvtScript N(EVS_TakeTurn);

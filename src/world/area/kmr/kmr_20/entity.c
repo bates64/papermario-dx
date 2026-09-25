@@ -1,7 +1,7 @@
 #include "kmr_20.h"
 #include "entity.h"
 
-API_CALLABLE(N(SetAmbienceVolumeHalf_Entity)){
+API_CALLABLE(N(SetAmbienceVolumeHalf_Entity)) {
     snd_ambient_set_volume(0, 1000, 63);
     return ApiStatus_DONE2;
 }

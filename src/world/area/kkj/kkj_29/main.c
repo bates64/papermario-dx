@@ -12,8 +12,8 @@ EvtScript N(EVS_EndPeachChapter5) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_kkj_10_2) = EVT_EXIT_SINGLE_DOOR(kkj_29_ENTRY_0, "kkj_10", kkj_10_ENTRY_2,
-    COLLIDER_tte, MODEL_o57, DOOR_SWING_IN);
+EvtScript N(EVS_ExitDoor_kkj_10_2) =
+    EVT_EXIT_SINGLE_DOOR(kkj_29_ENTRY_0, "kkj_10", kkj_10_ENTRY_2, COLLIDER_tte, MODEL_o57, DOOR_SWING_IN);
 
 EvtScript N(EVS_EnterMap) = {
     IfEq(GB_StoryProgress, STORY_CH5_BEGAN_PEACH_MISSION)

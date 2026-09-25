@@ -133,23 +133,28 @@ void breaking_junk_render(EffectInstance* effect) {
 
 void breaking_junk_appendGfx(void* effect) {
     Matrix4f sp20, sp60;
-    BreakingJunkFXData* data = ((EffectInstance*)effect)->data.breakingJunk;
+    BreakingJunkFXData* data = ((EffectInstance*) effect)->data.breakingJunk;
     s32 alpha = data->primA;
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_E01187C0[0]);
 
-    for (i = 0; i < ((EffectInstance*)effect)->numParts; i++, data++) {
-        guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->scale * 0.5, data->pos.x, data->pos.y, data->pos.z);
+    for (i = 0; i < ((EffectInstance*) effect)->numParts; i++, data++) {
+        guPositionF(
+            sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->scale * 0.5, data->pos.x, data->pos.y,
+            data->pos.z
+        );
         guRotateF(sp60, data->rot, 0.0f, 0.0f, 1.0f);
         guMtxCatF(sp60, sp20, sp20);
         guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
         gDPSetPrimColor(gMainGfxPos++, 0, 0, data->primR, data->primG, data->primB, alpha);
         gDPSetEnvColor(gMainGfxPos++, data->envR, data->envG, data->envB, data->envA);
-        gSPDisplayList(gMainGfxPos++, D_E01187B0[(u32)i % ARRAY_COUNT(D_E01187B0)]);
+        gSPDisplayList(gMainGfxPos++, D_E01187B0[(u32) i % ARRAY_COUNT(D_E01187B0)]);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }
 

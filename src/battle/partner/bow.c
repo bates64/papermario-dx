@@ -1207,4 +1207,3 @@ EvtScript N(EVS_Attack_FanSmack) = {
     Return
     End
 };
-

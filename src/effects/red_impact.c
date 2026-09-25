@@ -141,7 +141,7 @@ void red_impact_render(EffectInstance* effect) {
 }
 
 void red_impact_appendGfx(void* effect) {
-    RedImpactFXData* part = ((EffectInstance*)effect)->data.redImpact;
+    RedImpactFXData* part = ((EffectInstance*) effect)->data.redImpact;
     Gfx* dlist = D_E00D0B10[part->unk_00];
     Gfx* dlist2;
     f32 temp_1C = part->unk_1C * 0.3;
@@ -167,7 +167,7 @@ void red_impact_appendGfx(void* effect) {
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, dlist);
 
     guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, part->unk_04, part->unk_08, part->unk_0C);
@@ -188,7 +188,7 @@ void red_impact_appendGfx(void* effect) {
     savedGfxPos2 = savedGfxPos + 1;
 
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         if (part->unk_4C >= 0) {
             guTranslateF(sp20, part->unk_04, part->unk_08, part->unk_0C);
             guRotateF(sp60, part->unk_34, 0.0f, 0.0f, 1.0f);
@@ -203,7 +203,9 @@ void red_impact_appendGfx(void* effect) {
 
             gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, 0, (s32) part->unk_3C, 0x00FC, (s32) part->unk_3C + 0x7C);
             gDPSetTileSize(gMainGfxPos++, 1, 0, (s32) part->unk_44, 0x007C, (s32) part->unk_44 + 0x7C);
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, dlist2);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         }

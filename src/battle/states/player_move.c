@@ -196,16 +196,16 @@ void btl_state_update_player_move(void) {
             if ((battleStatus->moveCategory == BTL_MENU_TYPE_SMASH)
                 && (battleStatus->selectedMoveID != MOVE_SMASH_CHARGE0)
                 && (battleStatus->selectedMoveID != MOVE_SMASH_CHARGE)
-                && (battleStatus->selectedMoveID != MOVE_SUPER_SMASH_CHARGE)
-            ) {
+                && (battleStatus->selectedMoveID != MOVE_SUPER_SMASH_CHARGE))
+            {
                 gBattleStatus.flags1 &= ~BS_FLAGS1_HAMMER_CHARGED;
             }
 
             if ((battleStatus->moveCategory == BTL_MENU_TYPE_JUMP)
                 && (battleStatus->selectedMoveID != MOVE_JUMP_CHARGE0)
                 && (battleStatus->selectedMoveID != MOVE_JUMP_CHARGE)
-                && (battleStatus->selectedMoveID != MOVE_SUPER_JUMP_CHARGE)
-            ) {
+                && (battleStatus->selectedMoveID != MOVE_SUPER_JUMP_CHARGE))
+            {
                 gBattleStatus.flags1 &= ~BS_FLAGS1_JUMP_CHARGED;
             }
 

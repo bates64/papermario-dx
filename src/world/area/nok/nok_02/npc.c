@@ -28,7 +28,6 @@ LetterDelivery N(LetterDelivery_Kolorado) = {
     .reward = ITEM_STAR_PIECE,
 };
 
-
 EvtScript N(EVS_DoNothing) = {
     Return
     End
@@ -146,9 +145,9 @@ EvtScript N(EVS_NpcInteract_Kooper) = {
         Call(BindNpcInteract, NPC_Kooper, Ref(N(EVS_NpcInteract_Kooper)))
         Thread
 #if VERSION_PAL
-        Call(ResetCam, CAM_DEFAULT, Float(3.0 / DT))
+            Call(ResetCam, CAM_DEFAULT, Float(3.0 / DT))
 #else
-        Call(ResetCam, CAM_DEFAULT, 3)
+            Call(ResetCam, CAM_DEFAULT, 3)
 #endif
         EndThread
         Return

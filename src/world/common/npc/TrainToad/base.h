@@ -121,4 +121,3 @@
     .anim_E = ANIM_TrainToad_White_Idle, \
     .anim_F = ANIM_TrainToad_White_Idle, \
 }
-

@@ -24,8 +24,8 @@ API_CALLABLE(N(GetRollingCapsulePosition)) {
     f32 angle = script->varTable[2] + EVT_FIXED_OFFSET;
 
     angle = clamp_angle(angle * (1.0f / 1024.0f));
-    script->varTable[2] =  167.0f  + (sin_deg(angle) * 110.0f);
-    script->varTable[3] =   85.0f;
+    script->varTable[2] = 167.0f + (sin_deg(angle) * 110.0f);
+    script->varTable[3] = 85.0f;
     script->varTable[4] = -343.75f - (cos_deg(angle) * 110.0f);
     return ApiStatus_DONE2;
 }

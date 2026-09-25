@@ -130,8 +130,8 @@ EvtScript N(EVS_RespawnStarCard) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_arn_08_0) = EVT_EXIT_SINGLE_DOOR(arn_07_ENTRY_0, "arn_08", arn_08_ENTRY_0,
-    COLLIDER_tt3, MODEL_o39, DOOR_SWING_OUT);
+EvtScript N(EVS_ExitDoor_arn_08_0) =
+    EVT_EXIT_SINGLE_DOOR(arn_07_ENTRY_0, "arn_08", arn_08_ENTRY_0, COLLIDER_tt3, MODEL_o39, DOOR_SWING_OUT);
 
 EvtScript N(EVS_ExitWalk_arn_03_0) = EVT_EXIT_WALK(60, arn_07_ENTRY_1, "arn_03", arn_03_ENTRY_0);
 EvtScript N(EVS_ExitWalk_mim_12_1) = EVT_EXIT_WALK(60, arn_07_ENTRY_2, "mim_12", mim_12_ENTRY_1);

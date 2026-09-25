@@ -222,7 +222,7 @@ API_CALLABLE(N(GetPlayerPushDirection)) {
     DinoPuzzleData* puzzle = (DinoPuzzleData*) evt_get_variable(script, MV_PuzzleDataPtr);
     DinoData* dino = &puzzle->dinos[idx];
 
-    switch ((s32)dino->angle) {
+    switch ((s32) dino->angle) {
         case 0:
             script->varTable[0] = 180;
             break;
@@ -246,7 +246,7 @@ API_CALLABLE(N(GetPlayerPushLerpValues)) {
     DinoPuzzleData* puzzle = (DinoPuzzleData*) evt_get_variable(script, MV_PuzzleDataPtr);
     DinoData* dino = &puzzle->dinos[idx];
 
-    switch ((s32)dino->angle) {
+    switch ((s32) dino->angle) {
         case 0:
             script->varTable[3] = playerStatus->pos.z;
             script->varTable[4] = playerStatus->pos.z + DINO_CELL_SIZE;

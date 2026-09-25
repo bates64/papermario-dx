@@ -29,4 +29,3 @@ extern EvtScript N(EVS_SetupGates);
 extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_SetupFlowerHints);
 extern NpcGroupList N(DefaultNPCs);
-

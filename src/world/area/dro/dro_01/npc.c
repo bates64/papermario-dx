@@ -70,7 +70,7 @@ EvtScript N(EVS_NpcInit_Dryite_01) = {
 };
 
 EvtScript N(EVS_NpcInteract_Dryite_02) = {
-     //@bug this dialogue was probably supposed to cycle 0 --> 1 --> 2 --> 3 --> 0 ...
+    //@bug this dialogue was probably supposed to cycle 0 --> 1 --> 2 --> 3 --> 0 ...
     Switch(AB_DRO01_DialogueState_Dryite2)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_0068)

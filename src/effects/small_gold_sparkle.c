@@ -9,7 +9,8 @@ extern Gfx D_090003F0_392830[];
 extern Gfx D_09000430_392870[];
 extern Gfx D_09000470_3928B0[];
 
-static Gfx* sDlists[] = { D_09000430_392870, D_090003F0_392830, D_090003B0_3927F0, D_09000370_3927B0, D_09000330_392770 };
+static Gfx* sDlists[] = { D_09000430_392870, D_090003F0_392830, D_090003B0_3927F0, D_09000370_3927B0,
+                          D_09000330_392770 };
 
 static s32 sPartParams[4 * 5] = {
     1, 0, 0, 0, 100,
@@ -110,7 +111,7 @@ void small_gold_sparkle_render(EffectInstance* effect) {
 }
 
 void small_gold_sparkle_appendGfx(void* effect) {
-    SmallGoldSparkleFXData* part = ((EffectInstance*)effect)->data.smallGoldSparkle;
+    SmallGoldSparkleFXData* part = ((EffectInstance*) effect)->data.smallGoldSparkle;
     Matrix4f sp18;
     Matrix4f sp58;
     Matrix4f sp98;
@@ -121,16 +122,18 @@ void small_gold_sparkle_appendGfx(void* effect) {
     guMtxF2L(sp98, &gDisplayContext->matrixStack[gMatrixListPos]);
     spD8 = &gDisplayContext->matrixStack[gMatrixListPos++];
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     guTranslateF(sp18, part->unk_08, part->unk_0C, part->unk_10);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPDisplayList(gMainGfxPos++, D_090002C0_392700);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 15, 255);
 
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < ((EffectInstance*) effect)->numParts; i++, part++) {
         if (part->unk_20 == 0) {
             f32 temp_f20 = part->unk_1C;
 
@@ -140,8 +143,9 @@ void small_gold_sparkle_appendGfx(void* effect) {
                 guMtxCatF(sp58, sp18, sp18);
             }
             guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                      G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPMatrix(gMainGfxPos++, spD8, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
             gSPDisplayList(gMainGfxPos++, sDlists[part->unk_04 >> 1]);
             gSPDisplayList(gMainGfxPos++, D_09000470_3928B0);

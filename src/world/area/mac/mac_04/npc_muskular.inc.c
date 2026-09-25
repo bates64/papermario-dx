@@ -185,7 +185,7 @@ EvtScript N(EVS_Scene_RescuedMuskular) = {
 #if VERSION_PAL
     Call(SetNpcSpeed, NPC_Twink, Float(4.8))
 #else
-Call(SetNpcSpeed, NPC_Twink, 4)
+    Call(SetNpcSpeed, NPC_Twink, 4)
 #endif
     Call(NpcFlyTo, NPC_Twink, -480, 40, 270, 0, 10, EASING_LINEAR)
     Call(SpeakToPlayer, NPC_Twink, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_MAC_Housing_00D0)

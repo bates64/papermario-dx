@@ -67,9 +67,9 @@ API_CALLABLE(N(StoneChompFXB)) {
     for (i = 0; i < 8; i++, blurData++) {
         childNpc = blurData->npc;
         if (dist3D(childNpc->pos.x, childNpc->pos.y, childNpc->pos.z, posX, posY, posZ) >= 10.0) {
-            invDist = 10.0 / dist3D(
-                ((childNpc->pos.x - posX) * 0.8f) + posX, childNpc->pos.y, ((childNpc->pos.z - posZ) * 0.8f) + posZ,
-                posX, posY,posZ);
+            invDist = 10.0
+                / dist3D(((childNpc->pos.x - posX) * 0.8f) + posX, childNpc->pos.y,
+                         ((childNpc->pos.z - posZ) * 0.8f) + posZ, posX, posY, posZ);
 
             nextX = posX = ((childNpc->pos.x - posX) * 0.8f * invDist) + posX;
             nextY = posY = ((childNpc->pos.y - posY) * invDist) + posY;

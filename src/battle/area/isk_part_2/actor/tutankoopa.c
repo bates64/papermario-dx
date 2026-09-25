@@ -660,7 +660,7 @@ EvtScript N(EVS_Attack_ThrowShell) = {
             Call(RunToGoal, ACTOR_SELF, 10, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Tutankoopa_Idle)
             Return
-    EndCaseGroup
+        EndCaseGroup
     EndSwitch
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Tutankoopa_Toss)
     Call(SetPartMoveSpeed, ACTOR_SELF, LVar9, Float(14.0))
@@ -761,7 +761,7 @@ EvtScript N(EVS_Attack_DropDebris) = {
         CaseEq(0)
             Call(SetActorVar, ACTOR_SELF, AVAR_DebrisDropState, 1)
             ExecWait(N(EVS_DropDebris_Players))
-        // second use: target self if damage is survivable
+            // second use: target self if damage is survivable
         CaseEq(1)
             Call(GetActorHP, ACTOR_SELF, LVar0)
             Call(SetActorVar, ACTOR_SELF, AVAR_DebrisDropState, 2)
@@ -770,7 +770,7 @@ EvtScript N(EVS_Attack_DropDebris) = {
             Else
                 ExecWait(N(EVS_DropDebris_Players))
             EndIf
-        // subsequent use: 50% chance to target player or target self while damage is survivable
+            // subsequent use: 50% chance to target player or target self while damage is survivable
         CaseDefault
             Call(RandInt, 2, LVar0)
             IfEq(LVar0, 0)
@@ -1100,7 +1100,7 @@ EvtScript N(EVS_Move_SummonChomp) = {
             IfNe(LVar0, 0)
                 Goto(40)
             EndIf
-        EndThread
+    EndThread
     Call(PlaySound, SOUND_LARGE_GATE_OPEN)
     Label(50)
         Call(GetActorVar, ACTOR_SELF, AVAR_GateOpenAmount, LVarD)

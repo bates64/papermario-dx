@@ -13,14 +13,7 @@ void ice_shard_update(EffectInstance* effect);
 void ice_shard_render(EffectInstance* effect);
 void ice_shard_appendGfx(void* effect);
 
-EffectInstance* ice_shard_main(
-    s32 type,
-    f32 posX,
-    f32 posY,
-    f32 posZ,
-    f32 scale,
-    s32 duration
-) {
+EffectInstance* ice_shard_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 scale, s32 duration) {
     EffectBlueprint bp;
     EffectInstance* effect;
     IceShardFXData* data;
@@ -131,7 +124,7 @@ void ice_shard_render(EffectInstance* effect) {
 }
 
 void ice_shard_appendGfx(void* effect) {
-    IceShardFXData* data = ((EffectInstance*)effect)->data.iceShard;
+    IceShardFXData* data = ((EffectInstance*) effect)->data.iceShard;
     s32 alpha = data->primCol.a;
     s32 type = data->type;
     s32 texCoordS;
@@ -140,12 +133,16 @@ void ice_shard_appendGfx(void* effect) {
     Matrix4f sp20;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
-    guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->scale, data->pos.x, data->pos.y, data->pos.z);
+    guPositionF(
+        sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->scale, data->pos.x, data->pos.y, data->pos.z
+    );
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     guRotateF(sp20, data->rot, 0.0f, 0.0f, 1.0f);
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
@@ -157,12 +154,10 @@ void ice_shard_appendGfx(void* effect) {
     texCoordT = (s32) (data->animFrame * 4.0f) * 32;
     envAlpha = (data->animFrame * 4.0f - (s32) data->animFrame * 4) * 256.0f;
 
-    gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE,
-        (texCoordS     ) * 4, (texCoordT     ) * 4,
-        (texCoordS + 31) * 4, (texCoordT + 31) * 4);
-    gDPSetTileSize(gMainGfxPos++, 1,
-        (texCoordS     ) * 4, (texCoordT + 32) * 4,
-        (texCoordS + 31) * 4, (texCoordT + 63) * 4);
+    gDPSetTileSize(
+        gMainGfxPos++, G_TX_RENDERTILE, (texCoordS) * 4, (texCoordT) * 4, (texCoordS + 31) * 4, (texCoordT + 31) * 4
+    );
+    gDPSetTileSize(gMainGfxPos++, 1, (texCoordS) * 4, (texCoordT + 32) * 4, (texCoordS + 31) * 4, (texCoordT + 63) * 4);
 
     gDPSetPrimColor(gMainGfxPos++, 0, 0, data->primCol.r, data->primCol.g, data->primCol.b, alpha);
     gDPSetEnvColor(gMainGfxPos++, data->envCol.r, data->envCol.g, data->envCol.b, envAlpha);

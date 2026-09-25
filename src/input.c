@@ -65,9 +65,8 @@ void update_input(void) {
 
     if (gGameStatusPtr->demoState != DEMO_STATE_NONE) {
         if (gGameStatusPtr->demoState < DEMO_STATE_CHANGE_MAP
-            && (contData->button & (BUTTON_A | BUTTON_B | BUTTON_Z | BUTTON_START))
-            && hasInput
-        ) {
+            && (contData->button & (BUTTON_A | BUTTON_B | BUTTON_Z | BUTTON_START)) && hasInput)
+        {
             gGameStatusPtr->demoState = DEMO_STATE_CHANGE_MAP;
         }
         contData->button = gGameStatusPtr->demoButtonInput;
@@ -143,8 +142,7 @@ void update_input(void) {
                 StickExtremeX = stickX;
             }
         } else {
-            if (StickExtremeX < stickX)
-            {
+            if (StickExtremeX < stickX) {
                 StickExtremeX = stickX;
             }
         }

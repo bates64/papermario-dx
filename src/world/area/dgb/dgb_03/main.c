@@ -1,21 +1,26 @@
 #include "dgb_03.h"
 
-EvtScript N(EVS_ExitDoors_dgb_02_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_03_ENTRY_1, "dgb_02", dgb_02_ENTRY_0,
-    COLLIDER_deilittse, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_dgb_02_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    dgb_03_ENTRY_1, "dgb_02", dgb_02_ENTRY_0, COLLIDER_deilittse, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY
+);
 
-EvtScript N(EVS_ExitDoors_dgb_09_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_03_ENTRY_4, "dgb_09", dgb_09_ENTRY_0,
-    COLLIDER_deilittne, MODEL_o106, MODEL_o105, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_dgb_09_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    dgb_03_ENTRY_4, "dgb_09", dgb_09_ENTRY_0, COLLIDER_deilittne, MODEL_o106, MODEL_o105, DOOR_SOUNDS_CREAKY
+);
 
-EvtScript N(EVS_ExitDoors_dgb_04_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_03_ENTRY_0, "dgb_04", dgb_04_ENTRY_0,
-    COLLIDER_deilittsw, MODEL_o30, MODEL_o31, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_dgb_04_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    dgb_03_ENTRY_0, "dgb_04", dgb_04_ENTRY_0, COLLIDER_deilittsw, MODEL_o30, MODEL_o31, DOOR_SOUNDS_CREAKY
+);
 
 EvtScript N(EVS_ExitWalk_dgb_13_0) = EVT_EXIT_WALK(26, dgb_03_ENTRY_2, "dgb_13", dgb_13_ENTRY_0);
 
-EvtScript N(EVS_ExitDoors_dgb_05_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(dgb_03_ENTRY_2, "dgb_05", dgb_05_ENTRY_0,
-    COLLIDER_deilitts, MODEL_o76, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
+EvtScript N(EVS_ExitDoors_dgb_05_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
+    dgb_03_ENTRY_2, "dgb_05", dgb_05_ENTRY_0, COLLIDER_deilitts, MODEL_o76, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
+);
 
-EvtScript N(EVS_ExitDoors_dgb_14_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_03_ENTRY_3, "dgb_14", dgb_14_ENTRY_0,
-    COLLIDER_deilittnw, MODEL_o103, MODEL_o104, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_dgb_14_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    dgb_03_ENTRY_3, "dgb_14", dgb_14_ENTRY_0, COLLIDER_deilittnw, MODEL_o103, MODEL_o104, DOOR_SOUNDS_CREAKY
+);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_dgb_13_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)

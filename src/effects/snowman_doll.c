@@ -61,14 +61,7 @@ void snowman_doll_update(EffectInstance* effect);
 void snowman_doll_render(EffectInstance* effect);
 void snowman_doll_appendGfx(void* effect);
 
-EffectInstance* snowman_doll_main(
-    s32 arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    s32 arg5
-) {
+EffectInstance* snowman_doll_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
     EffectBlueprint bp;
     EffectInstance* effect;
     SnowmanDollFXData* data;
@@ -259,17 +252,15 @@ void snowman_doll_update(EffectInstance* effect) {
 
     if ((unk_14 & 7) == 1) {
         load_effect(EFFECT_COLD_BREATH);
-        cold_breath_main(2,
-            data->unk_04 + data->unk_30 + rand_int(60) - 30.0f,
-            data->unk_08 + data->unk_34 + rand_int(100) + 50.0f,
-            data->unk_0C + data->unk_38,
-            4.0f, 40);
+        cold_breath_main(
+            2, data->unk_04 + data->unk_30 + rand_int(60) - 30.0f, data->unk_08 + data->unk_34 + rand_int(100) + 50.0f,
+            data->unk_0C + data->unk_38, 4.0f, 40
+        );
         load_effect(EFFECT_MISC_PARTICLES);
-        misc_particles_main(1,
-            data->unk_04 + data->unk_30,
-            data->unk_08 + data->unk_34 + 10.0f,
-            data->unk_0C + data->unk_38 + 60.0f,
-            60.0f, 100.0f, 2.0f, 10, 30);
+        misc_particles_main(
+            1, data->unk_04 + data->unk_30, data->unk_08 + data->unk_34 + 10.0f, data->unk_0C + data->unk_38 + 60.0f,
+            60.0f, 100.0f, 2.0f, 10, 30
+        );
     }
 }
 
@@ -290,20 +281,22 @@ void func_E00C0758(void) {
 }
 
 void snowman_doll_appendGfx(void* effect) {
-    SnowmanDollFXData* data = ((EffectInstance*)effect)->data.snowmanDoll;
+    SnowmanDollFXData* data = ((EffectInstance*) effect)->data.snowmanDoll;
     s32 unk_24 = data->unk_24;
     Matrix4f sp18;
     Matrix4f sp58;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp18, data->unk_04, data->unk_08, data->unk_0C);
     guScaleF(sp58, data->unk_28, data->unk_28, data->unk_28);
     guMtxCatF(sp58, sp18, sp18);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     guTranslateF(sp18, data->unk_30, data->unk_34, data->unk_38);
     guScaleF(sp58, data->unk_48, data->unk_4C, data->unk_48);

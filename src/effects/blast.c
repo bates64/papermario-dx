@@ -101,7 +101,7 @@ void blast_appendGfx(void* effect) {
     s32 envAlpha = (data->unk_20 - unk_20) * 256.0f;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_09001300_37ECD0);
     gSPDisplayList(gMainGfxPos++, D_E007C510[unk_20]);
 
@@ -114,8 +114,7 @@ void blast_appendGfx(void* effect) {
     guMtxCatF(sp18, sp98, sp98);
     guMtxF2L(sp98, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
 
     if (data->unk_20 > 4.0f) {
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, 127);

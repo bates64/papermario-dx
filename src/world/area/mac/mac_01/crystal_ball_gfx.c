@@ -11,13 +11,11 @@ void N(gfx_build_crystal_ball_pre)(void) {
     LookAt sp90;
 
     N(CrystallBallRenderCounter)++;
-    guLookAtHiliteF(sp50, &sp90, &gDisplayContext->hilite,
-                    camera->lookAtEye.x, camera->lookAtEye.y, camera->lookAtEye.z,
-                    camera->lookAtObj.x, camera->lookAtObj.y, camera->lookAtObj.z,
-                    0.0f, 1.0f, 0.0f,
-                    -50.0f, 63.0f, 95.0f,
-                    31.0f, 63.0f, 95.0f,
-                    64, 64);
+    guLookAtHiliteF(
+        sp50, &sp90, &gDisplayContext->hilite, camera->lookAtEye.x, camera->lookAtEye.y, camera->lookAtEye.z,
+        camera->lookAtObj.x, camera->lookAtObj.y, camera->lookAtObj.z, 0.0f, 1.0f, 0.0f, -50.0f, 63.0f, 95.0f, 31.0f,
+        63.0f, 95.0f, 64, 64
+    );
     gSPLookAtX(gMainGfxPos++, &gDisplayContext->lookAt.l[0]);
     gSPLookAtY(gMainGfxPos++, &gDisplayContext->lookAt.l[1]);
     gDPSetHilite1Tile(gMainGfxPos++, G_TX_RENDERTILE, &gDisplayContext->hilite, 64, 64);
@@ -85,7 +83,10 @@ void N(gfx_build_inside_crystal_ball)(void) {
     f22 += camera->viewportStartY;
 
     gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
-    gDPSetRenderMode(gMainGfxPos++, Z_CMP | CVG_DST_CLAMP | ZMODE_OPA | FORCE_BL | G_RM_PASS, Z_CMP | CVG_DST_CLAMP | ZMODE_OPA | FORCE_BL | GBL_c2(G_BL_CLR_IN, G_BL_0, G_BL_CLR_IN, G_BL_1));
+    gDPSetRenderMode(
+        gMainGfxPos++, Z_CMP | CVG_DST_CLAMP | ZMODE_OPA | FORCE_BL | G_RM_PASS,
+        Z_CMP | CVG_DST_CLAMP | ZMODE_OPA | FORCE_BL | GBL_c2(G_BL_CLR_IN, G_BL_0, G_BL_CLR_IN, G_BL_1)
+    );
     gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxZBuffer));
     gDPSetCombineMode(gMainGfxPos++, PM_CC_PRIM_NO_ALPHA, PM_CC_PRIM_NO_ALPHA);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 248, 240, 240, 0);
@@ -107,12 +108,16 @@ void N(gfx_build_inside_crystal_ball)(void) {
     ulx = f20 / 32.0f * 32.0f - 8.0f;
     uly = f22 / 32.0f * 32.0f - 8.0f;
     if (ulx >= 0 && uly >= 0 && ulx + 40 < SCREEN_WIDTH && uly + 40 < SCREEN_HEIGHT) {
-        gDPLoadTextureTile(gMainGfxPos++, osVirtualToPhysical(nuGfxCfb_ptr), G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                           SCREEN_WIDTH, SCREEN_HEIGHT, ulx, uly, ulx + 31, uly + 31, 0,
-                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureTile(
+            gMainGfxPos++, osVirtualToPhysical(nuGfxCfb_ptr), G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, SCREEN_HEIGHT,
+            ulx, uly, ulx + 31, uly + 31, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD,
+            G_TX_NOLOD
+        );
         gDPSetCombineMode(gMainGfxPos++, PM_CC_0E, PM_CC_0E);
-        gSPScisTextureRectangle(gMainGfxPos++, (ulx - 8) * 4, (uly - 8) * 4, (ulx + 24) * 4, (uly + 24) * 4,
-                                G_TX_RENDERTILE, (ulx & 0x1F) << 5, (uly & 0x1F) << 5, 700, 700);
+        gSPScisTextureRectangle(
+            gMainGfxPos++, (ulx - 8) * 4, (uly - 8) * 4, (ulx + 24) * 4, (uly + 24) * 4, G_TX_RENDERTILE,
+            (ulx & 0x1F) << 5, (uly & 0x1F) << 5, 700, 700
+        );
     }
 
     gDPPipeSync(gMainGfxPos++);

@@ -109,7 +109,7 @@ EffectInstance* confetti_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, 
 
     effect = create_effect_instance(bpPtr);
     effect->numParts = numParts;
-    data = effect->data.confetti = (ConfettiFXData*)general_heap_malloc(numParts * sizeof(*data));
+    data = effect->data.confetti = (ConfettiFXData*) general_heap_malloc(numParts * sizeof(*data));
     ASSERT(effect->data.confetti != nullptr);
 
     data->unk_04 = arg1;
@@ -243,7 +243,7 @@ void confetti_render(EffectInstance* effect) {
 }
 
 void confetti_appendGfx(void* effect) {
-    ConfettiFXData* part = ((EffectInstance*)effect)->data.confetti; //s3
+    ConfettiFXData* part = ((EffectInstance*) effect)->data.confetti; // s3
     Matrix4f sp18;
     Matrix4f sp58;
     s32 i;
@@ -264,7 +264,7 @@ void confetti_appendGfx(void* effect) {
     spA0 = D_E0088CC0[part->unk_00];
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_09000940_38C4E0);
 
     guTranslateF(sp18, part->unk_04, part->unk_08, part->unk_0C);
@@ -272,7 +272,9 @@ void confetti_appendGfx(void* effect) {
     guMtxCatF(sp58, sp18, sp18);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     savedGfxPos = gMainGfxPos++;
 
     part++;
@@ -298,9 +300,13 @@ void confetti_appendGfx(void* effect) {
             }
             uly = ((i + D_E0088D00[unk_24 % 6]) & 0xF) * 16;
 
-            gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, ulx << 2, uly << 2,
-                           (ulx << 2) + ((width >> 1) << 1), (uly << 2) + height);
-            gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+            gDPSetTileSize(
+                gMainGfxPos++, G_TX_RENDERTILE, ulx << 2, uly << 2, (ulx << 2) + ((width >> 1) << 1),
+                (uly << 2) + height
+            );
+            gSPMatrix(
+                gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+            );
             gSPDisplayList(gMainGfxPos++, spA0);
             gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         }

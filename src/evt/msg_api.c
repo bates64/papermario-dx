@@ -84,23 +84,26 @@ s32 _show_message(Evt* script, s32 isInitialCall, s32 mode) {
         }
 
         if (speakerNpcID == NPC_PLAYER) {
-            get_screen_coords(gCurrentCameraID, playerStatus->pos.x,
-                              playerStatus->pos.y + playerStatus->colliderHeight, playerStatus->pos.z,
-                              &screenX, &screenY, &screenZ);
+            get_screen_coords(
+                gCurrentCameraID, playerStatus->pos.x, playerStatus->pos.y + playerStatus->colliderHeight,
+                playerStatus->pos.z, &screenX, &screenY, &screenZ
+            );
             script->functionTemp[3] = playerStatus->anim;
             speakerNpc = (Npc*) NPC_PLAYER;
             script->varTable[15] = playerStatus->targetYaw;
         } else {
             speakerNpc = resolve_npc(script, speakerNpcID);
-            get_screen_coords(gCurrentCameraID, speakerNpc->pos.x, speakerNpc->pos.y + speakerNpc->collisionHeight, speakerNpc->pos.z,
-                              &screenX, &screenY, &screenZ);
+            get_screen_coords(
+                gCurrentCameraID, speakerNpc->pos.x, speakerNpc->pos.y + speakerNpc->collisionHeight, speakerNpc->pos.z,
+                &screenX, &screenY, &screenZ
+            );
             script->functionTemp[3] = speakerNpc->curAnim;
             script->varTable[15] = speakerNpc->yaw;
         }
 
-        msg_printer_set_origin_pos(gCurrentPrintContext,
-            screenX + ShowMessageScreenOffsetX,
-            screenY + ShowMessageScreenOffsetY);
+        msg_printer_set_origin_pos(
+            gCurrentPrintContext, screenX + ShowMessageScreenOffsetX, screenY + ShowMessageScreenOffsetY
+        );
         script->varTablePtr[12] = speakerNpc;
 
         if (speakerNpc != (Npc*) NPC_PLAYER) {
@@ -141,7 +144,10 @@ s32 _show_message(Evt* script, s32 isInitialCall, s32 mode) {
 
     speakerNpc = script->varTablePtr[12];
     if (speakerNpc != (Npc*) NPC_PLAYER) {
-        get_screen_coords(gCurrentCameraID, speakerNpc->pos.x, speakerNpc->pos.y + speakerNpc->collisionHeight, speakerNpc->pos.z, &screenX, &screenY, &screenZ);
+        get_screen_coords(
+            gCurrentCameraID, speakerNpc->pos.x, speakerNpc->pos.y + speakerNpc->collisionHeight, speakerNpc->pos.z,
+            &screenX, &screenY, &screenZ
+        );
         animID = script->varTable[13];
         if (animID != -1) {
             if (!(gCurrentPrintContext->stateFlags & MSG_STATE_FLAG_SPEAKING)) {
@@ -150,7 +156,10 @@ s32 _show_message(Evt* script, s32 isInitialCall, s32 mode) {
             set_npc_animation(speakerNpc, animID);
         }
     } else {
-        get_screen_coords(gCurrentCameraID, playerStatus->pos.x, playerStatus->pos.y + playerStatus->colliderHeight, playerStatus->pos.z, &screenX, &screenY, &screenZ);
+        get_screen_coords(
+            gCurrentCameraID, playerStatus->pos.x, playerStatus->pos.y + playerStatus->colliderHeight,
+            playerStatus->pos.z, &screenX, &screenY, &screenZ
+        );
         if (script->varTable[13] != -1) {
             if (gCurrentPrintContext->stateFlags & MSG_STATE_FLAG_SPEAKING) {
                 playerStatus->anim = script->varTable[13];
@@ -161,7 +170,9 @@ s32 _show_message(Evt* script, s32 isInitialCall, s32 mode) {
     }
 
     if (!(script->functionTemp[1] & SPEECH_FLAG_200)) {
-        msg_printer_set_origin_pos(gCurrentPrintContext, screenX + ShowMessageScreenOffsetX, screenY + ShowMessageScreenOffsetY);
+        msg_printer_set_origin_pos(
+            gCurrentPrintContext, screenX + ShowMessageScreenOffsetX, screenY + ShowMessageScreenOffsetY
+        );
     }
 
     if (gCurrentPrintContext->stateFlags & MSG_STATE_FLAG_40) {

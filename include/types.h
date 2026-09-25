@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _TYPES_H_
+#define _TYPES_H_
 
 #include "ultra64.h"
 
@@ -21,3 +22,5 @@ typedef s32 HitID;
 typedef u32 AnimID;
 typedef s32 HudElemID;
 typedef s32 MsgID;
+
+#endif

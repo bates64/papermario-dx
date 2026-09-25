@@ -98,7 +98,11 @@ void action_update_state_23(void) {
     outY = playerStatus->pos.y;
     outZ = playerStatus->pos.z;
     outLength = 5.0f;
-    if (player_raycast_below_cam_relative(playerStatus, &outX, &outY, &outZ, &outLength, &hitRx, &hitRz, &hitDirX, &hitDirZ) >= 0) {
+    if (player_raycast_below_cam_relative(
+            playerStatus, &outX, &outY, &outZ, &outLength, &hitRx, &hitRz, &hitDirX, &hitDirZ
+        )
+        >= 0)
+    {
         playerStatus->pos.y = outY;
     }
 

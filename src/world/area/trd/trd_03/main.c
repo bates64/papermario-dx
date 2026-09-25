@@ -27,10 +27,14 @@ API_CALLABLE(N(GetFrameCounter)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ExitDoors_trd_02_1) = EVT_EXIT_DOUBLE_DOOR(trd_03_ENTRY_0, "trd_02", trd_02_ENTRY_1, COLLIDER_ttw, MODEL_d1, MODEL_d2);
-EvtScript N(EVS_ExitDoors_trd_04_0) = EVT_EXIT_DOUBLE_DOOR(trd_03_ENTRY_1, "trd_04", trd_04_ENTRY_0, COLLIDER_tte, MODEL_d3, MODEL_d4);
-EvtScript N(EVS_ExitDoors_trd_02_3) = EVT_EXIT_DOUBLE_DOOR(trd_03_ENTRY_2, "trd_02", trd_02_ENTRY_3, COLLIDER_ttwo, MODEL_o33, MODEL_o34);
-EvtScript N(EVS_ExitDoors_trd_04_2) = EVT_EXIT_DOUBLE_DOOR(trd_03_ENTRY_3, "trd_04", trd_04_ENTRY_2, COLLIDER_tteo, MODEL_o31, MODEL_o32);
+EvtScript N(EVS_ExitDoors_trd_02_1) =
+    EVT_EXIT_DOUBLE_DOOR(trd_03_ENTRY_0, "trd_02", trd_02_ENTRY_1, COLLIDER_ttw, MODEL_d1, MODEL_d2);
+EvtScript N(EVS_ExitDoors_trd_04_0) =
+    EVT_EXIT_DOUBLE_DOOR(trd_03_ENTRY_1, "trd_04", trd_04_ENTRY_0, COLLIDER_tte, MODEL_d3, MODEL_d4);
+EvtScript N(EVS_ExitDoors_trd_02_3) =
+    EVT_EXIT_DOUBLE_DOOR(trd_03_ENTRY_2, "trd_02", trd_02_ENTRY_3, COLLIDER_ttwo, MODEL_o33, MODEL_o34);
+EvtScript N(EVS_ExitDoors_trd_04_2) =
+    EVT_EXIT_DOUBLE_DOOR(trd_03_ENTRY_3, "trd_04", trd_04_ENTRY_2, COLLIDER_tteo, MODEL_o31, MODEL_o32);
 EvtScript N(EVS_ExitDoors_trd_02_4) = EVT_EXIT_WALK(40, trd_03_ENTRY_4, "trd_02", trd_02_ENTRY_4);
 
 EvtScript N(EVS_BindExitTriggers) = {
@@ -150,10 +154,10 @@ EvtScript N(EVS_HiddenDoor) = {
                     IfLt(LVarC, -3)
                         Set(LVarD, 8)
                     EndIf
-                // pushing right on COLLIDER_o85
+                    // pushing right on COLLIDER_o85
                 CaseEq(2)
                     Set(LVarD, -8)
-                // not pushing
+                    // not pushing
                 CaseDefault
                     Set(LVarB, 0)
                     IfLt(LVarC, 0)

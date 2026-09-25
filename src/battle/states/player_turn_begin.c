@@ -38,7 +38,8 @@ void update_water_block(void) {
 
             // decrement buff duration by 1 turn
             battleStatus->waterBlockTurnsLeft--;
-            battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_WATER_BLOCK].turnsLeft = battleStatus->waterBlockTurnsLeft;
+            battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_WATER_BLOCK].turnsLeft =
+                battleStatus->waterBlockTurnsLeft;
             if (battleStatus->waterBlockTurnsLeft > 0) {
                 gBattleSubState = BTL_SUBSTATE_CHECK_CLOUD_NINE;
                 return;
@@ -46,7 +47,9 @@ void update_water_block(void) {
 
             // buff has ended
             battleStatus->waterBlockEffect->flags |= FX_INSTANCE_FLAG_DISMISS;
-            fx_water_block(FX_WATER_BLOCK_DESTROY, player->curPos.x, player->curPos.y + 18.0f, player->curPos.z + 5.0f, 1.5f, 10);
+            fx_water_block(
+                FX_WATER_BLOCK_DESTROY, player->curPos.x, player->curPos.y + 18.0f, player->curPos.z + 5.0f, 1.5f, 10
+            );
             fx_water_splash(0, player->curPos.x - 10.0f, player->curPos.y + 5.0f, player->curPos.z + 5.0f, 1.0f, 24);
             fx_water_splash(0, player->curPos.x - 15.0f, player->curPos.y + 32.0f, player->curPos.z + 5.0f, 1.0f, 24);
             fx_water_splash(1, player->curPos.x + 15.0f, player->curPos.y + 22.0f, player->curPos.z + 5.0f, 1.0f, 24);
@@ -80,7 +83,8 @@ void update_cloud_nine(void) {
 
             // decrement buff duration by 1 turn
             battleStatus->cloudNineTurnsLeft--;
-            battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_CLOUD_NINE].turnsLeft = battleStatus->cloudNineTurnsLeft;
+            battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_CLOUD_NINE].turnsLeft =
+                battleStatus->cloudNineTurnsLeft;
             if (battleStatus->cloudNineTurnsLeft > 0) {
                 gBattleSubState = BTL_SUBSTATE_CHECK_TURBO_CHARGE;
                 return;
@@ -124,7 +128,8 @@ void update_turbo_charge(void) {
 
             // decrement buff duration by 1 turn
             battleStatus->turboChargeTurnsLeft--;
-            battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_TURBO_CHARGE].turnsLeft = battleStatus->turboChargeTurnsLeft;
+            battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_TURBO_CHARGE].turnsLeft =
+                battleStatus->turboChargeTurnsLeft;
             if (battleStatus->turboChargeTurnsLeft > 0) {
                 gBattleSubState = BTL_SUBSTATE_TRY_STATUS_DAMAGE;
                 return;
@@ -415,7 +420,7 @@ void btl_state_update_begin_player_turn(void) {
             if (BattleSkipActorTurn) {
                 btl_set_state(BATTLE_STATE_BEGIN_PARTNER_TURN);
                 gBattleStatus.flags2 |= BS_FLAGS2_PLAYER_TURN_USED;
-            } else{
+            } else {
                 btl_set_state(BATTLE_STATE_SWITCH_TO_PLAYER);
             }
         }

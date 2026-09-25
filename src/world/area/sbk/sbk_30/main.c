@@ -1,7 +1,6 @@
 #include "sbk_30.h"
 #include "effects.h"
 
-
 EvtScript N(EVS_ExitWalk_sbk_99_1) = EVT_EXIT_WALK(60, sbk_30_ENTRY_0, "sbk_99", sbk_99_ENTRY_1);
 EvtScript N(EVS_ExitWalk_sbk_31_0) = EVT_EXIT_WALK(60, sbk_30_ENTRY_1, "sbk_31", sbk_31_ENTRY_0);
 EvtScript N(EVS_ExitWalk_sbk_20_3) = EVT_EXIT_WALK(60, sbk_30_ENTRY_2, "sbk_20", sbk_20_ENTRY_3);

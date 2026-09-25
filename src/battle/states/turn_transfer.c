@@ -80,13 +80,10 @@ void btl_state_update_transfer_turn(void) {
             actor->flags &= ~ACTOR_FLAG_SKIP_TURN;
 
             if (actor->debuff != 0) {
-                if (actor->debuff == STATUS_KEY_UNUSED
-                    || actor->debuff == STATUS_KEY_DIZZY
-                    || actor->debuff == STATUS_KEY_PARALYZE
-                    || actor->debuff == STATUS_KEY_SLEEP
-                    || actor->debuff == STATUS_KEY_FROZEN
-                    || actor->debuff == STATUS_KEY_STOP
-                ) {
+                if (actor->debuff == STATUS_KEY_UNUSED || actor->debuff == STATUS_KEY_DIZZY
+                    || actor->debuff == STATUS_KEY_PARALYZE || actor->debuff == STATUS_KEY_SLEEP
+                    || actor->debuff == STATUS_KEY_FROZEN || actor->debuff == STATUS_KEY_STOP)
+                {
                     actor->flags |= ACTOR_FLAG_SKIP_TURN;
                 }
                 actor->debuffDuration--;

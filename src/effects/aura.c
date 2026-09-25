@@ -197,7 +197,7 @@ void aura_update(EffectInstance* effect) {
     }
 
     data->lifeTime++;
-    if (data->lifeTime > 90*60*60) {
+    if (data->lifeTime > 90 * 60 * 60) {
         data->lifeTime = 256;
     }
 
@@ -318,7 +318,9 @@ void aura_appendGfx(void* argEffect) {
     }
     guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPDisplayList(gMainGfxPos++, D_E0076EC0[type]);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 
@@ -337,7 +339,9 @@ void aura_appendGfx(void* argEffect) {
     }
     guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPDisplayList(gMainGfxPos++, D_E0076EB0[type]);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 

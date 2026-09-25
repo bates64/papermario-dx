@@ -609,7 +609,7 @@ EvtScript N(EVS_TakeTurn) = {
                 Set(LVar0, 0)
                 Goto(10)
             EndIf
-             // cant steal coins if player is stone
+            // cant steal coins if player is stone
             Call(GetStatusFlags, ACTOR_PLAYER, LVar0)
             IfFlag(LVar0, STATUS_FLAG_STONE)
                 Set(LVar0, 0)

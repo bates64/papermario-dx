@@ -177,7 +177,10 @@ void scan_script_structure(Evt* script) {
                 ASSERT(labelCount < ARRAY_COUNT(script->labelValuePtrs));
 
                 for (i = 0; i < labelCount; i++) {
-                    ASSERT_MSG(!evt_label_values_match(label, *script->labelValuePtrs[i]), "Duplicate Label value: 0x%08lX", (u32) label);
+                    ASSERT_MSG(
+                        !evt_label_values_match(label, *script->labelValuePtrs[i]), "Duplicate Label value: 0x%08lX",
+                        (u32) label
+                    );
                 }
 
                 script->labelValuePtrs[labelCount++] = args;
@@ -218,9 +221,9 @@ void clear_script_list(void) {
         gMapFlags[i] = 0;
     }
 
-    #if DX_DEBUG_MENU
+#if DX_DEBUG_MENU
     dx_debug_evt_reset();
-    #endif
+#endif
 
     clear_virtual_entity_list();
     reset_model_animators();
@@ -284,9 +287,9 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
     newScript->curOpcode = EVT_OP_INTERNAL_FETCH;
     newScript->priority = priority;
     newScript->id = UniqueScriptCounter++;
-    newScript->ptrNextLine = (Bytecode*)source;
-    newScript->ptrFirstLine = (Bytecode*)source;
-    newScript->ptrCurLine = (Bytecode*)source;
+    newScript->ptrNextLine = (Bytecode*) source;
+    newScript->ptrFirstLine = (Bytecode*) source;
+    newScript->ptrCurLine = (Bytecode*) source;
     newScript->userData = nullptr;
     newScript->argVars = nullptr;
     newScript->argCount = 0;
@@ -356,9 +359,9 @@ Evt* start_script_in_group(EvtScript* source, u8 priority, u8 flags, u8 groupFla
     newScript->curOpcode = EVT_OP_INTERNAL_FETCH;
     newScript->priority = priority;
     newScript->id = UniqueScriptCounter++;
-    newScript->ptrNextLine = (Bytecode*)source;
-    newScript->ptrFirstLine = (Bytecode*)source;
-    newScript->ptrCurLine = (Bytecode*)source;
+    newScript->ptrNextLine = (Bytecode*) source;
+    newScript->ptrFirstLine = (Bytecode*) source;
+    newScript->ptrCurLine = (Bytecode*) source;
     newScript->userData = nullptr;
     newScript->argVars = nullptr;
     newScript->argCount = 0;
@@ -432,7 +435,7 @@ Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 flags) {
     parentScript->blockingChild = child;
     parentScript->stateFlags |= EVT_FLAG_BLOCKED_BY_CHILD;
     child->stateFlags = flags | EVT_FLAG_ACTIVE;
-    child->ptrCurLine = child->ptrFirstLine = child->ptrNextLine = (Bytecode*)source;
+    child->ptrCurLine = child->ptrFirstLine = child->ptrNextLine = (Bytecode*) source;
 
     child->curOpcode = EVT_OP_INTERNAL_FETCH;
     child->userData = nullptr;
@@ -589,9 +592,9 @@ Evt* replace_script(Evt* script, Bytecode* source, s32 flags) {
     script->stateFlags |= flags;
     script->timeScale = 1.0f;
 
-    #if DX_DEBUG_MENU
+#if DX_DEBUG_MENU
     dx_debug_evt_force_detach(script);
-    #endif
+#endif
 
     if (script->userData != nullptr) {
         heap_free(script->userData);
@@ -656,12 +659,10 @@ void update_scripts(void) {
     for (i = 0; i < gScriptListCount; i++) {
         Evt* script = (*gCurrentScriptListPtr)[gScriptIndexList[i]];
 
-        if (script != nullptr
-            && script->id == gScriptIdList[i]
-            && script->stateFlags != 0
+        if (script != nullptr && script->id == gScriptIdList[i] && script->stateFlags != 0
             && script->terminationState == EVT_TERMINATION_NONE
-            && !(script->stateFlags & (EVT_FLAG_SUSPENDED | EVT_FLAG_BLOCKED_BY_CHILD | EVT_FLAG_PAUSED))
-        ) {
+            && !(script->stateFlags & (EVT_FLAG_SUSPENDED | EVT_FLAG_BLOCKED_BY_CHILD | EVT_FLAG_PAUSED)))
+        {
             b32 stop = false;
             s32 status;
 
@@ -738,10 +739,9 @@ void kill_script_children(Evt* script) {
     for (i = 0; i < MAX_SCRIPTS; i++) {
         Evt* candidate = (*gCurrentScriptListPtr)[i];
 
-        if (candidate != nullptr
-            && candidate->threadParent == script
-            && candidate->terminationState == EVT_TERMINATION_NONE
-        ) {
+        if (candidate != nullptr && candidate->threadParent == script
+            && candidate->terminationState == EVT_TERMINATION_NONE)
+        {
             kill_script(candidate);
         }
     }
@@ -836,10 +836,10 @@ void evt_terminate_script(Evt* script) {
             script->terminationState = EVT_TERMINATION_AWAITING_CHILDREN;
             script->blocked = false;
 
-            #if DX_DEBUG_MENU
+#if DX_DEBUG_MENU
             script->debugPaused = false;
             script->debugStep = DEBUG_EVT_STEP_NONE;
-            #endif
+#endif
             break;
         case EVT_TERMINATION_FINALIZING:
             // End has finished the Finally block
@@ -900,9 +900,9 @@ void evt_destroy_script(Evt* script) {
         }
     }
 
-    #if DX_DEBUG_MENU
+#if DX_DEBUG_MENU
     dx_debug_evt_force_detach(script);
-    #endif
+#endif
 
     // free resources owned directly by the script
     if (script->userData != nullptr) {
@@ -1022,8 +1022,9 @@ void set_script_group(Evt* script, s32 groupFlags) {
     script->groupFlags = groupFlags;
 }
 
-Trigger* bind_trigger(EvtScript* script, s32 flags, s32 triggerFlagIndex, s32 triggerVar0, s32 triggerVar1,
-                      s32 priority, s32 arg6) {
+Trigger* bind_trigger(
+    EvtScript* script, s32 flags, s32 triggerFlagIndex, s32 triggerVar0, s32 triggerVar1, s32 priority, s32 arg6
+) {
     Trigger* trigger;
     TriggerBlueprint bp;
 
@@ -1042,8 +1043,8 @@ Trigger* bind_trigger(EvtScript* script, s32 flags, s32 triggerFlagIndex, s32 tr
     return trigger;
 }
 
-Trigger* bind_trigger_1(EvtScript* script, s32 flags, s32 triggerFlagIndex, s32 triggerVar0, s32 triggerVar1,
-                        s32 priority) {
+Trigger*
+bind_trigger_1(EvtScript* script, s32 flags, s32 triggerFlagIndex, s32 triggerVar0, s32 triggerVar1, s32 priority) {
     return bind_trigger(script, flags, triggerFlagIndex, triggerVar0, triggerVar1, priority, 1);
 }
 

@@ -456,16 +456,16 @@ EvtScript N(EVS_Init) = {
     Add(LVar2, -50)
     Call(SetActorPos, ACTOR_SELF, LVar0, 0, LVar2)
     LOOP_MEMBERS(LVar1)
-        Call(RandInt, 100, LVar0)
-        Add(LVar0, 190)
-        Call(RandInt, 100, LVar2)
-        Add(LVar2, -50)
-        Call(SetPartPos, ACTOR_SELF, LVar1, LVar0, 0, LVar2)
-        Add(LVar1, 1)
+    Call(RandInt, 100, LVar0)
+    Add(LVar0, 190)
+    Call(RandInt, 100, LVar2)
+    Add(LVar2, -50)
+    Call(SetPartPos, ACTOR_SELF, LVar1, LVar0, 0, LVar2)
+    Add(LVar1, 1)
     EndLoop
     LOOP_MEMBERS(LVar0)
-        Call(CreatePartShadow, ACTOR_SELF, LVar0)
-        Add(LVar0, 1)
+    Call(CreatePartShadow, ACTOR_SELF, LVar0)
+    Add(LVar0, 1)
     EndLoop
     Call(SetActorSize, ACTOR_SELF, EVT_IGNORE_ARG, 72)
     Call(SetPartSize, ACTOR_SELF, PRT_MAIN, 24, 24)
@@ -483,8 +483,8 @@ EvtScript N(EVS_HandlePhase) = {
             IfEq(LVar0, 0)
                 Call(SetActorVar, ACTOR_SELF, AVAR_SquadArrived, true)
                 LOOP_MEMBERS(LVar0)
-                    Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_Run)
-                    Add(LVar0, 1)
+                Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_Run)
+                Add(LVar0, 1)
                 EndLoop
                 Call(SetHomePos, ACTOR_SELF, 65, 0, -10)
                 Call(HPBarToHome, ACTOR_SELF)
@@ -502,14 +502,14 @@ EvtScript N(EVS_HandlePhase) = {
                 Call(EnableBattleStatusBar, false)
                 Call(ActorSpeak, MSG_CH4_0065, ACTOR_SELF, PRT_MEMBER_08, ANIM_ShySquadGuy_Excited, ANIM_ShySquadGuy_Excited)
                 LOOP_MEMBERS(LVar0)
-                    Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_Jump)
-                    Add(LVar0, 1)
+                Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_Jump)
+                Add(LVar0, 1)
                 EndLoop
                 Call(EndActorSpeech, ACTOR_SELF, PRT_MAIN, -1, -1)
                 Call(EnableBattleStatusBar, true)
                 LOOP_MEMBERS(LVar0)
-                    Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_Idle)
-                    Add(LVar0, 1)
+                Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_Idle)
+                Add(LVar0, 1)
                 EndLoop
             EndIf
         CaseEq(PHASE_ENEMY_BEGIN)
@@ -567,25 +567,25 @@ EvtScript N(EVS_MoveMemberToPos) = {
 
 EvtScript N(EVS_MoveSquadHome) = {
     LOOP_MEMBERS(LVar0)
-        Thread
-            Call(SetGoalToHome, ACTOR_SELF)
-            Call(GetGoalPos, ACTOR_SELF, LVar2, LVar4, LVar3)
-            Call(GetPartMovementVar, ACTOR_SELF, LVar0, HOME_OFFSET_X, LVar4)
-            Add(LVar2, LVar4)
-            Call(GetPartMovementVar, ACTOR_SELF, LVar0, HOME_OFFSET_Z, LVar4)
-            Add(LVar3, LVar4)
-            Set(LVar4, Float(6.0))
-            Set(LVar5, 0)
-            ExecWait(N(EVS_MoveMemberToPos))
-            Set(LVarA, 2)
-            Call(GetActorVar, ACTOR_SELF, AVAR_NumDefeated, LVarB)
-            Add(LVarA, LVarB)
-            IfGe(LVar0, LVarA)
-                Call(SetPartYaw, ACTOR_SELF, LVar0, 0)
-                Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_Idle)
-            EndIf
-        EndThread
-        Add(LVar0, 1)
+    Thread
+        Call(SetGoalToHome, ACTOR_SELF)
+        Call(GetGoalPos, ACTOR_SELF, LVar2, LVar4, LVar3)
+        Call(GetPartMovementVar, ACTOR_SELF, LVar0, HOME_OFFSET_X, LVar4)
+        Add(LVar2, LVar4)
+        Call(GetPartMovementVar, ACTOR_SELF, LVar0, HOME_OFFSET_Z, LVar4)
+        Add(LVar3, LVar4)
+        Set(LVar4, Float(6.0))
+        Set(LVar5, 0)
+        ExecWait(N(EVS_MoveMemberToPos))
+        Set(LVarA, 2)
+        Call(GetActorVar, ACTOR_SELF, AVAR_NumDefeated, LVarB)
+        Add(LVarA, LVarB)
+        IfGe(LVar0, LVarA)
+            Call(SetPartYaw, ACTOR_SELF, LVar0, 0)
+            Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_Idle)
+        EndIf
+    EndThread
+    Add(LVar0, 1)
     EndLoop
     Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
     Call(SetGoalToHome, ACTOR_SELF)
@@ -851,13 +851,13 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar1, ANIM_ShySquadGuy_BurnHurt)
             ExecWait(N(EVS_ReduceCrowdSize))
             LOOP_MEMBERS(LVar0)
-                Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_BurnHurt)
-                Add(LVar0, 1)
+            Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_BurnHurt)
+            Add(LVar0, 1)
             EndLoop
             Wait(20)
             LOOP_MEMBERS(LVar0)
-                Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_BurnStill)
-                Add(LVar0, 1)
+            Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_BurnStill)
+            Add(LVar0, 1)
             EndLoop
             Wait(15)
         CaseEq(EVENT_BURN_DEATH)
@@ -865,13 +865,13 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar1, ANIM_ShySquadGuy_BurnHurt)
             ExecWait(N(EVS_ReduceCrowdSize))
             LOOP_MEMBERS(LVar0)
-                Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_BurnHurt)
-                Add(LVar0, 1)
+            Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_BurnHurt)
+            Add(LVar0, 1)
             EndLoop
             Wait(20)
             LOOP_MEMBERS(LVar0)
-                Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_BurnStill)
-                Add(LVar0, 1)
+            Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_BurnStill)
+            Add(LVar0, 1)
             EndLoop
             Wait(15)
             Wait(10)
@@ -1169,21 +1169,21 @@ EvtScript N(EVS_Attack_Swarm) = {
     Call(SetGoalPos, ACTOR_SELF, LVar2, 0, LVar3)
     Call(RunToGoal, ACTOR_SELF, 30, true)
     LOOP_MEMBERS(LVar0)
-        Call(GetActorPos, ACTOR_PLAYER, LVar4, LVar5, LVar6)
-        Call(GetPartOffset, ACTOR_SELF, LVar0, LVar1, LVar2, LVar3)
-        IfLt(LVar1, LVar4)
-            Call(SetPartYaw, ACTOR_SELF, LVar0, 180)
-        Else
-            Call(SetPartYaw, ACTOR_SELF, LVar0, 0)
-        EndIf
-        Call(RandInt, 100, LVar7)
-        IfLt(LVar7, 50)
-            Set(LVar7, ANIM_ShySquadGuy_Hurt)
-        Else
-            Set(LVar7, ANIM_ShySquadGuy_Excited)
-        EndIf
-        Call(SetAnimation, ACTOR_SELF, LVar0, LVar7)
-        Add(LVar0, 1)
+    Call(GetActorPos, ACTOR_PLAYER, LVar4, LVar5, LVar6)
+    Call(GetPartOffset, ACTOR_SELF, LVar0, LVar1, LVar2, LVar3)
+    IfLt(LVar1, LVar4)
+        Call(SetPartYaw, ACTOR_SELF, LVar0, 180)
+    Else
+        Call(SetPartYaw, ACTOR_SELF, LVar0, 0)
+    EndIf
+    Call(RandInt, 100, LVar7)
+    IfLt(LVar7, 50)
+        Set(LVar7, ANIM_ShySquadGuy_Hurt)
+    Else
+        Set(LVar7, ANIM_ShySquadGuy_Excited)
+    EndIf
+    Call(SetAnimation, ACTOR_SELF, LVar0, LVar7)
+    Add(LVar0, 1)
     EndLoop
     Call(EnemyTestTarget, ACTOR_SELF, LVarA, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
     Switch(LVarA)
@@ -1298,8 +1298,8 @@ EvtScript N(EVS_TakeTurn) = {
 EvtScript N(EVS_Flee) = {
     Call(EnableBattleStatusBar, false)
     LOOP_MEMBERS(LVar0)
-        Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_Panic)
-        Add(LVar0, 1)
+    Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_ShySquadGuy_Panic)
+    Add(LVar0, 1)
     EndLoop
     Call(UseBattleCamPreset, BTL_CAM_ACTOR)
     Call(BattleCamTargetActor, ACTOR_SELF)

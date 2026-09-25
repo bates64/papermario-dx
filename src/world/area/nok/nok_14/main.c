@@ -13,8 +13,8 @@ API_CALLABLE(N(UpdateEnounterStages)) {
     s32 stage = stageWithoutBridge;
     s32 i;
 
-    if (xMin <= playerStatus->pos.x && playerStatus->pos.x <= xMax &&
-        zMin <= playerStatus->pos.z && playerStatus->pos.z <= zMax)
+    if (xMin <= playerStatus->pos.x && playerStatus->pos.x <= xMax && zMin <= playerStatus->pos.z
+        && playerStatus->pos.z <= zMax)
     {
         stage = stageWithBridge;
     }

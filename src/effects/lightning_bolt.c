@@ -44,16 +44,8 @@ void lightning_bolt_render(EffectInstance* effect);
 void lightning_bolt_appendGfx(void* effect);
 
 EffectInstance* lightning_bolt_main(
-    s32 type,
-    f32 startX,
-    f32 startY,
-    f32 startZ,
-    f32 endX,
-    f32 endY,
-    f32 endZ,
-    f32 scale,
-    s32 duration)
-{
+    s32 type, f32 startX, f32 startY, f32 startZ, f32 endX, f32 endY, f32 endZ, f32 scale, s32 duration
+) {
     EffectBlueprint bp;
     EffectInstance* effect;
     LightningBoltFXData* data;
@@ -113,7 +105,7 @@ void lightning_bolt_init(EffectInstance* effect) {
 }
 
 f32 lightning_bolt_get_rand_symmetric(f32 interval) {
-    return (f32)rand_int(interval) - interval * 0.5;
+    return (f32) rand_int(interval) - interval * 0.5;
 }
 
 void lightning_bolt_update(EffectInstance* effect) {
@@ -147,7 +139,7 @@ void lightning_bolt_update(EffectInstance* effect) {
     }
 }
 
-void lightning_bolt_render(EffectInstance *effect) {
+void lightning_bolt_render(EffectInstance* effect) {
     LightningBoltFXData* data = effect->data.lightningBolt;
     RenderTask renderTask;
     RenderTask* retTask;
@@ -194,7 +186,7 @@ void lightning_bolt_appendGfx(void* effect) {
     Vtx_t* vtx;
     f32 edgeDeltaZ;
     f32 deltaX, deltaY, deltaZ;
-    LightningBoltFXData* data = ((EffectInstance*)effect)->data.lightningBolt;
+    LightningBoltFXData* data = ((EffectInstance*) effect)->data.lightningBolt;
     Matrix4f sp10;
     s32 i;
     f32 edgeLength;
@@ -205,12 +197,14 @@ void lightning_bolt_appendGfx(void* effect) {
     widthScale = data->widthScale;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guScaleF(sp10, 0.1f, 0.1f, 0.1f);
     guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gDPSetPrimColor(gMainGfxPos++, 0, 0, data->outerColor.r, data->outerColor.g, data->outerColor.b, alpha);
     gDPSetEnvColor(gMainGfxPos++, data->innerColor.r, data->innerColor.g, data->innerColor.b, 128);
     gSPDisplayList(gMainGfxPos++, D_09001000_3BBEA0);
@@ -257,14 +251,22 @@ void lightning_bolt_appendGfx(void* effect) {
     for (i = 0; i < ARRAY_COUNT(data->boltVertexPosX); i++) {
         if (i == 0) {
             edgeLength = 8.0f;
-            edgeAngle = -atan2(data->boltVertexPosY[1], -data->boltVertexPosX[1], data->boltVertexPosY[0], -data->boltVertexPosX[0]);
+            edgeAngle = -atan2(
+                data->boltVertexPosY[1], -data->boltVertexPosX[1], data->boltVertexPosY[0], -data->boltVertexPosX[0]
+            );
         } else {
             edgeLength = 8.0f;
             if (i == ARRAY_COUNT(data->boltVertexPosX) - 1) {
                 edgeAngle = -90.0f;
             } else {
-                nextAngle = -atan2(data->boltVertexPosY[i + 1], -data->boltVertexPosX[i + 1], data->boltVertexPosY[i], -data->boltVertexPosX[i]);
-                prevAngle = -atan2(data->boltVertexPosY[i], -data->boltVertexPosX[i], data->boltVertexPosY[i - 1], -data->boltVertexPosX[i - 1]);
+                nextAngle = -atan2(
+                    data->boltVertexPosY[i + 1], -data->boltVertexPosX[i + 1], data->boltVertexPosY[i],
+                    -data->boltVertexPosX[i]
+                );
+                prevAngle = -atan2(
+                    data->boltVertexPosY[i], -data->boltVertexPosX[i], data->boltVertexPosY[i - 1],
+                    -data->boltVertexPosX[i - 1]
+                );
                 if (prevAngle - nextAngle > 180.0f) {
                     nextAngle += 360.0f;
                 } else if (prevAngle - nextAngle < -180.0f) {
@@ -282,7 +284,7 @@ void lightning_bolt_appendGfx(void* effect) {
 
         edgeLength *= (widthScale * data->edgeLength[i]);
         texOffsetX = (128 - i * 12) * 32;
-        edgeDeltaX = edgeLength  * sin_deg(edgeAngle);
+        edgeDeltaX = edgeLength * sin_deg(edgeAngle);
         edgeDeltaY = edgeLength * cos_deg(edgeAngle);
         edgeDeltaZ = 0.0f;
 
@@ -313,8 +315,7 @@ void lightning_bolt_appendGfx(void* effect) {
     gSPClearGeometryMode(gMainGfxPos++, G_SHADING_SMOOTH);
 
     for (i = 0; i < quadCount - 1; i++) {
-        gSP2Triangles(gMainGfxPos++, i * 2 + 1, i * 2 + 0, i * 2 + 2, 0,
-                                       i * 2 + 1, i * 2 + 2, i * 2 + 3, 0);
+        gSP2Triangles(gMainGfxPos++, i * 2 + 1, i * 2 + 0, i * 2 + 2, 0, i * 2 + 1, i * 2 + 2, i * 2 + 3, 0);
     }
 
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);

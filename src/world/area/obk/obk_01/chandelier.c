@@ -209,7 +209,9 @@ API_CALLABLE(N(UpdateChandelier)) {
     if (!script->functionTemp[2]) {
         // is chain moving?
         if (chandelier->dropDistance != lastDropDistance) {
-            sfx_play_sound_at_position(SOUND_LOOP_OBK_LOWER_CHAIN, SOUND_SPACE_DEFAULT, 440.0f, chandelier->dropDistance, 271.0f);
+            sfx_play_sound_at_position(
+                SOUND_LOOP_OBK_LOWER_CHAIN, SOUND_SPACE_DEFAULT, 440.0f, chandelier->dropDistance, 271.0f
+            );
             script->functionTemp[2] = true;
         }
     } else {
@@ -255,7 +257,8 @@ API_CALLABLE(N(UpdateChandelier)) {
 
     if (chandelier->flags & CHANDELIER_FLAG_TETHER_PLAYER) {
         playerStatus->pos.x = (-sin_deg(chandelier->swingAngle) * (chandelier->dropDistance - 300.0f)) + 445.0f;
-        playerStatus->pos.y = ((cos_deg(chandelier->swingAngle) * (chandelier->dropDistance - 300.0f)) - 135.0f) + 300.0f;
+        playerStatus->pos.y =
+            ((cos_deg(chandelier->swingAngle) * (chandelier->dropDistance - 300.0f)) - 135.0f) + 300.0f;
         playerStatus->pos.z = 279.0f;
     }
     return ApiStatus_BLOCK;

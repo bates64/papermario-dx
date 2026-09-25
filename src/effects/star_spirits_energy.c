@@ -359,21 +359,23 @@ void star_spirits_energy_render(EffectInstance* effect) {
 }
 
 void star_spirits_energy_appendGfx(void* effect) {
-    StarSpiritsEnergyFXData* data = ((EffectInstance*)effect)->data.starSpiritsEnergy;
+    StarSpiritsEnergyFXData* data = ((EffectInstance*) effect)->data.starSpiritsEnergy;
     s32 type = data->type;
     s32 alpha;
     Matrix4f sp20;
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
-    guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f,
-                     data->scale, data->pos.x, data->pos.y, data->pos.z);
+    guPositionF(
+        sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->scale, data->pos.x, data->pos.y, data->pos.z
+    );
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPDisplayList(gMainGfxPos++, D_09004E00_412090);
     gDPSetEnvColor(gMainGfxPos++, data->envColor.r, data->envColor.g, data->envColor.b, data->envColor.a);
 
@@ -383,10 +385,13 @@ void star_spirits_energy_appendGfx(void* effect) {
                 guPositionF(sp20, 0.0f, 0.0f, 0.0f, data->layerScale[i], 0.0f, 0.0f, 0.0f);
                 guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-                gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                          G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-                gDPSetPrimColor(gMainGfxPos++, 0, 0,
-                    data->primColor.r, data->primColor.g, data->primColor.b, data->layerAlpha[i]);
+                gSPMatrix(
+                    gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
+                    G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+                );
+                gDPSetPrimColor(
+                    gMainGfxPos++, 0, 0, data->primColor.r, data->primColor.g, data->primColor.b, data->layerAlpha[i]
+                );
                 gSPDisplayList(gMainGfxPos++, EnergyLayerGfx[i]);
                 gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
             }
@@ -398,9 +403,9 @@ void star_spirits_energy_appendGfx(void* effect) {
     if (type == 2 || type == 3) {
         alpha = 0;
 
-        if ((data->state == STAR_SPIRITS_ENERGY_STATE_EXPAND
-                || data->state == STAR_SPIRITS_ENERGY_STATE_EXPAND_LONG)
-            && data->stateTime > 2 && data->stateTime < 11) {
+        if ((data->state == STAR_SPIRITS_ENERGY_STATE_EXPAND || data->state == STAR_SPIRITS_ENERGY_STATE_EXPAND_LONG)
+            && data->stateTime > 2 && data->stateTime < 11)
+        {
             alpha = 255 - (data->stateTime - 2) * 30;
         }
 

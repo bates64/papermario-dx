@@ -67,8 +67,9 @@ void state_step_battle(void) {
         currentBattleArea = UNPACK_BTL_AREA(gCurrentBattleID);
         currentBattleIndex = UNPACK_BTL_INDEX(gCurrentBattleID);
 
-        if (gGameStatusPtr->peachFlags & PEACH_FLAG_IS_PEACH ||
-            (currentBattleArea == BTL_AREA_KKJ && currentBattleIndex == 0)) {
+        if (gGameStatusPtr->peachFlags & PEACH_FLAG_IS_PEACH
+            || (currentBattleArea == BTL_AREA_KKJ && currentBattleIndex == 0))
+        {
             gGameStatusPtr->peachFlags |= PEACH_FLAG_IS_PEACH;
             spr_init_sprites(PLAYER_SPRITES_PEACH_BATTLE);
         } else {
@@ -181,8 +182,9 @@ void state_step_end_battle(void) {
                     load_map_bg(wMapBgName);
                     set_background(&gBackgroundImage);
                 } else {
-                    set_background_size(SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN,
-                        SCREEN_INSET_X, SCREEN_INSET_Y);
+                    set_background_size(
+                        SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN, SCREEN_INSET_X, SCREEN_INSET_Y
+                    );
                 }
 
                 mdl_load_all_textures(mapSettings->modelTreeRoot, get_asset_offset(wMapTexName, &sizeTemp), sizeTemp);

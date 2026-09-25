@@ -105,7 +105,6 @@ API_CALLABLE(N(start)) {
     return ApiStatus_DONE2;
 }
 
-
 void N(update)(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
@@ -210,7 +209,9 @@ void N(update)(void) {
                     if (battleStatus->actionProgress >= N(BasicThresholds)[battleStatus->resultTier]) {
                         battleStatus->resultTier++;
                     }
-                    if (battleStatus->resultTier > 0 && (battleStatus->actionProgress < N(BasicThresholds)[battleStatus->resultTier - 1])) {
+                    if (battleStatus->resultTier > 0
+                        && (battleStatus->actionProgress < N(BasicThresholds)[battleStatus->resultTier - 1]))
+                    {
                         battleStatus->resultTier--;
                     }
                     break;
@@ -218,7 +219,9 @@ void N(update)(void) {
                     if (battleStatus->actionProgress >= N(SuperThresholds)[battleStatus->resultTier]) {
                         battleStatus->resultTier++;
                     }
-                    if (battleStatus->resultTier > 0 && (battleStatus->actionProgress < N(SuperThresholds)[battleStatus->resultTier - 1])) {
+                    if (battleStatus->resultTier > 0
+                        && (battleStatus->actionProgress < N(SuperThresholds)[battleStatus->resultTier - 1]))
+                    {
                         battleStatus->resultTier--;
                     }
                     break;
@@ -226,7 +229,9 @@ void N(update)(void) {
                     if (battleStatus->actionProgress >= N(UltraThresholds)[battleStatus->resultTier]) {
                         battleStatus->resultTier++;
                     }
-                    if (battleStatus->resultTier > 0 && (battleStatus->actionProgress < N(UltraThresholds)[battleStatus->resultTier - 1])) {
+                    if (battleStatus->resultTier > 0
+                        && (battleStatus->actionProgress < N(UltraThresholds)[battleStatus->resultTier - 1]))
+                    {
                         battleStatus->resultTier--;
                     }
                     break;

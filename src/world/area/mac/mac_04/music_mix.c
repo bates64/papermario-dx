@@ -1,6 +1,5 @@
 #include "mac_04.h"
 
-
 MusicProximityTrigger N(MusicMixTrigger) = {
     .pos = { -480.0f, 220.0f },
     .innerDist = 100.0f,

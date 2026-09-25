@@ -112,7 +112,7 @@ EvtScript N(EVS_OpenGoombaRoadGate) = {
 };
 
 API_CALLABLE(N(SetMapChangeFadeSlowest)) {
-    set_map_change_fade_rate(1); //normally 20
+    set_map_change_fade_rate(1); // normally 20
     return ApiStatus_DONE2;
 }
 

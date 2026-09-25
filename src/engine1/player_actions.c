@@ -43,7 +43,9 @@ s32 phys_adjust_cam_on_landing(void) {
         } else {
             gCameras[CAM_DEFAULT].moveFlags &= ~CAMERA_MOVE_IGNORE_PLAYER_Y;
         }
-    } else if (gPartnerStatus.actingPartner == PARTNER_PARAKARRY && gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) {
+    } else if (gPartnerStatus.actingPartner == PARTNER_PARAKARRY
+               && gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE)
+    {
         gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_NO_INTERP_Y;
     } else {
         gCameras[CAM_DEFAULT].moveFlags &= ~CAMERA_MOVE_NO_INTERP_Y;
@@ -144,7 +146,9 @@ void phys_update_action_state(void) {
                 cond = false;
             }
 
-            if ((gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE) && !(playerStatus->flags & PS_FLAG_PAUSED) && cond) {
+            if ((gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE) && !(playerStatus->flags & PS_FLAG_PAUSED)
+                && cond)
+            {
                 set_action_state(ACTION_STATE_TALK);
             }
             check_input_spin();
@@ -264,8 +268,7 @@ void set_action_state(s32 actionState) {
 void update_locomotion_state(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
-    if (!is_ability_active(ABILITY_SLOW_GO) &&
-        SQ(playerStatus->stickAxis[0]) + SQ(playerStatus->stickAxis[1]) > SQ(55))
+    if (!is_ability_active(ABILITY_SLOW_GO) && SQ(playerStatus->stickAxis[0]) + SQ(playerStatus->stickAxis[1]) > SQ(55))
     {
         set_action_state(ACTION_STATE_RUN);
     } else {
@@ -333,14 +336,13 @@ b32 check_input_jump(void) {
         return false;
     }
 
-    surfaceType = get_collider_flags((u16)gCollisionStatus.curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
+    surfaceType = get_collider_flags((u16) gCollisionStatus.curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
     if ((surfaceType == SURFACE_TYPE_SLIDE) && phys_should_player_be_sliding()) {
         return false;
     }
 
-    if (collisionStatus->touchingWallTrigger != 0 ||
-        (playerStatus->animFlags & (PA_FLAG_SPEECH_PROMPT_AVAILABLE |
-                                    PA_FLAG_INTERACT_PROMPT_AVAILABLE)))
+    if (collisionStatus->touchingWallTrigger != 0
+        || (playerStatus->animFlags & (PA_FLAG_SPEECH_PROMPT_AVAILABLE | PA_FLAG_INTERACT_PROMPT_AVAILABLE)))
     {
         return false;
     }
@@ -350,9 +352,8 @@ b32 check_input_jump(void) {
 
         if (entity->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT) {
             if ((entity->script.source == nullptr) || (entity->flags & ENTITY_FLAG_4000)) {
-                if (entity->type == ENTITY_TYPE_PINK_FLOWER ||
-                    entity->type == ENTITY_TYPE_BELLBELL_PLANT ||
-                    entity->type == ENTITY_TYPE_TRUMPET_PLANT)
+                if (entity->type == ENTITY_TYPE_PINK_FLOWER || entity->type == ENTITY_TYPE_BELLBELL_PLANT
+                    || entity->type == ENTITY_TYPE_TRUMPET_PLANT)
                 {
                     return false;
                 }
@@ -371,10 +372,10 @@ void check_input_spin(void) {
     PlayerSpinState* spinState = &gPlayerSpinState;
     PlayerSpinState* temp2 = spinState;
 
-    if (!((playerStatus->flags & (PS_FLAG_NO_STATIC_COLLISION | PS_FLAG_CUTSCENE_MOVEMENT)) ||
-          (playerStatus->animFlags & PA_FLAG_USING_WATT) ||
-          (playerStatus->curButtons & BUTTON_C_DOWN) ||
-          is_ability_active(ABILITY_SLOW_GO))) {
+    if (!((playerStatus->flags & (PS_FLAG_NO_STATIC_COLLISION | PS_FLAG_CUTSCENE_MOVEMENT))
+          || (playerStatus->animFlags & PA_FLAG_USING_WATT) || (playerStatus->curButtons & BUTTON_C_DOWN)
+          || is_ability_active(ABILITY_SLOW_GO)))
+    {
 
         s32 actionState = playerStatus->actionState;
         s32 btnPressed = playerStatus->pressedButtons & Z_TRIG;

@@ -18,11 +18,13 @@ API_CALLABLE(N(GetWaveAmplitude)) {
         evt_set_variable(script, timeVar, duration);
     }
 
-    evt_set_float_variable(script, outVar,
+    evt_set_float_variable(
+        script, outVar,
         // average value
         (min + diff)
         // modify
-        - diff * cos_deg(((time * 180.0f) / duration) + phaseOffset));
+            - diff * cos_deg(((time * 180.0f) / duration) + phaseOffset)
+    );
     return ApiStatus_DONE2;
 }
 
@@ -57,18 +59,18 @@ EvtScript N(EVS_Main) = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, mac_06_ENTRY_0)
         Thread
-        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
-        TEX_PAN_PARAMS_STEP(  400,  150,  200,  -60)
-        TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
-        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+            TEX_PAN_PARAMS_ID(TEX_PANNER_1)
+            TEX_PAN_PARAMS_STEP(  400,  150,  200,  -60)
+            TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
+            TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
             Exec(EVS_UpdateTexturePan)
         EndThread
     Else
         Thread
-        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
-        TEX_PAN_PARAMS_STEP( -400, -150, -200,   60)
-        TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
-        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+            TEX_PAN_PARAMS_ID(TEX_PANNER_1)
+            TEX_PAN_PARAMS_STEP( -400, -150, -200,   60)
+            TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
+            TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
             Exec(EVS_UpdateTexturePan)
         EndThread
     EndIf

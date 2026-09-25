@@ -98,7 +98,8 @@ void process_partner_commands(void) {
                     disable_player_input();
                     sfx_play_sound(SOUND_PARTNER_PUT_AWAY);
                     kill_script_by_ID(PartnerCurrentScriptID);
-                    PartnerCurrentScript = start_script(ActivePartner->putAway, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    PartnerCurrentScript =
+                        start_script(ActivePartner->putAway, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     PartnerCurrentScript->owner2.npc = gPartnerNpc;
                     PartnerCurrentScriptID = PartnerCurrentScript->id;
                     PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -118,7 +119,8 @@ void process_partner_commands(void) {
                     CommandSubstate = 2;
                     // fallthrough
                 case 2: // take out new partner
-                    PartnerCurrentScript = start_script(ActivePartner->takeOut, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    PartnerCurrentScript =
+                        start_script(ActivePartner->takeOut, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     PartnerCurrentScript->owner2.npc = gPartnerNpc;
                     PartnerCurrentScriptID = PartnerCurrentScript->id;
                     PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -129,7 +131,8 @@ void process_partner_commands(void) {
                     if (does_script_exist(PartnerCurrentScriptID)) {
                         break;
                     }
-                    PartnerCurrentScript = start_script(ActivePartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    PartnerCurrentScript =
+                        start_script(ActivePartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     PartnerCurrentScript->owner2.npc = gPartnerNpc;
                     PartnerCurrentScriptID = PartnerCurrentScript->id;
                     PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -164,7 +167,8 @@ void process_partner_commands(void) {
                     CommandSubstate = 3;
                     break;
                 case 3:
-                    PartnerCurrentScript = start_script(ActivePartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    PartnerCurrentScript =
+                        start_script(ActivePartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     PartnerCurrentScript->owner2.npc = gPartnerNpc;
                     PartnerCurrentScriptID = PartnerCurrentScript->id;
                     PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -178,7 +182,8 @@ void process_partner_commands(void) {
                     disable_player_input();
                     sfx_play_sound(SOUND_PARTNER_PUT_AWAY);
                     kill_script_by_ID(PartnerCurrentScriptID);
-                    PartnerCurrentScript = start_script(ActivePartner->putAway, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    PartnerCurrentScript =
+                        start_script(ActivePartner->putAway, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     PartnerCurrentScript->owner2.npc = gPartnerNpc;
                     PartnerCurrentScriptID = PartnerCurrentScript->id;
                     PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -214,7 +219,8 @@ void process_partner_commands(void) {
                     CommandSubstate = 1;
                     // fallthrough
                 case 1: // take out new partner
-                    PartnerCurrentScript = start_script(ActivePartner->takeOut, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    PartnerCurrentScript =
+                        start_script(ActivePartner->takeOut, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     PartnerCurrentScript->owner2.npc = gPartnerNpc;
                     PartnerCurrentScriptID = PartnerCurrentScript->id;
                     PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -224,7 +230,8 @@ void process_partner_commands(void) {
                     if (does_script_exist(PartnerCurrentScriptID)) {
                         break;
                     }
-                    PartnerCurrentScript = start_script(ActivePartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    PartnerCurrentScript =
+                        start_script(ActivePartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     PartnerCurrentScript->owner2.npc = gPartnerNpc;
                     PartnerCurrentScriptID = PartnerCurrentScript->id;
                     PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -251,7 +258,8 @@ void process_partner_commands(void) {
                     CommandSubstate = 1;
                     break;
                 case 1:
-                    PartnerCurrentScript = start_script(ActivePartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    PartnerCurrentScript =
+                        start_script(ActivePartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     PartnerCurrentScript->owner2.npc = gPartnerNpc;
                     PartnerCurrentScriptID = PartnerCurrentScript->id;
                     PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -265,7 +273,8 @@ void process_partner_commands(void) {
             switch (CommandSubstate) {
                 case 0:
                     kill_script_by_ID(PartnerCurrentScriptID);
-                    PartnerCurrentScript = start_script(ActivePartner->useAbility, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    PartnerCurrentScript =
+                        start_script(ActivePartner->useAbility, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     PartnerCurrentScript->owner2.npc = gPartnerNpc;
                     PartnerCurrentScriptID = PartnerCurrentScript->id;
                     PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -275,7 +284,8 @@ void process_partner_commands(void) {
                     if (does_script_exist(PartnerCurrentScriptID)) {
                         break;
                     }
-                    PartnerCurrentScript = start_script(ActivePartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    PartnerCurrentScript =
+                        start_script(ActivePartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     PartnerCurrentScript->owner2.npc = gPartnerNpc;
                     PartnerCurrentScriptID = PartnerCurrentScript->id;
                     PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -299,7 +309,8 @@ void process_partner_commands(void) {
                         SavedPartnerPos.x = playerStatus->pos.x;
                         SavedPartnerPos.y = playerStatus->pos.y;
                         SavedPartnerPos.z = playerStatus->pos.z;
-                        PartnerCurrentScript = start_script(ActivePartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                        PartnerCurrentScript =
+                            start_script(ActivePartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                         PartnerCurrentScript->owner2.npc = gPartnerNpc;
                         PartnerCurrentScriptID = PartnerCurrentScript->id;
                         PartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -388,8 +399,7 @@ void partner_switch_to_partner_instant(s32 partnerID) {
 s32 partner_use_ability(void) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
 
-    if (!is_starting_conversation()
-        && ActivePartner != nullptr
+    if (!is_starting_conversation() && ActivePartner != nullptr
         && (ActivePartner->canUseAbility == nullptr || ActivePartner->canUseAbility(gPartnerNpc)))
     {
         if (gGameStatusPtr->multiplayerEnabled && (partnerStatus->curButtons & BUTTON_B)) {
@@ -405,10 +415,9 @@ s32 partner_use_ability(void) {
 }
 
 s32 partner_can_open_world_menus(void) {
-    if (ActivePartner != nullptr
-        && ActivePartner->canPlayerOpenMenus != nullptr
-        && !ActivePartner->canPlayerOpenMenus(gPartnerNpc)
-    ) {
+    if (ActivePartner != nullptr && ActivePartner->canPlayerOpenMenus != nullptr
+        && !ActivePartner->canPlayerOpenMenus(gPartnerNpc))
+    {
         return false;
     }
     return true;

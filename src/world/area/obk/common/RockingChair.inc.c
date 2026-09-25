@@ -147,7 +147,7 @@ API_CALLABLE(N(UpdateRockingChair)) {
                 physics->rightAccum += physics->accumRate * physics->counterWeight;
             }
             // mitigate accumulator secular drift
-            if ((physics->leftAccum > 100.0f) && ( physics->rightAccum > 100.0f)) {
+            if ((physics->leftAccum > 100.0f) && (physics->rightAccum > 100.0f)) {
                 physics->leftAccum -= 100.0f;
                 physics->rightAccum -= 100.0f;
             }

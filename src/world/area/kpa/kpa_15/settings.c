@@ -1,7 +1,7 @@
 #include "kpa_15.h"
 
 #if VERSION_JP
-s32 N(get_tattle)(void) {
+s32 N( get_tattle)(void) {
     if (!evt_get_variable(nullptr, GF_KPA16_ShutOffLava)) {
         return MSG_MapTattle_kpa_15_before;
     } else {

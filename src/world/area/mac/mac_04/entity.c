@@ -26,9 +26,9 @@ void N(worker_render_shrunk_player)(void) {
     RenderTask renderTask;
     s32 screenX, screenY, screenZ;
 
-    get_screen_coords(gCurrentCamID,
-        gPlayerStatus.pos.x, gPlayerStatus.pos.y, gPlayerStatus.pos.z,
-        &screenX, &screenY, &screenZ);
+    get_screen_coords(
+        gCurrentCamID, gPlayerStatus.pos.x, gPlayerStatus.pos.y, gPlayerStatus.pos.z, &screenX, &screenY, &screenZ
+    );
 
     renderTask.appendGfxArg = &gPlayerStatus;
     renderTask.appendGfx = N(appendGfx_shrunk_player);
@@ -45,7 +45,10 @@ void N(appendGfx_shrunk_player)(void* data) {
     Matrix4f tempMtx;
 
     guRotateF(transformMtx, playerStatus->spriteFacingAngle, 0.0f, 1.0f, 0.0f);
-    guScaleF(tempMtx, shrinkScale * SPRITE_WORLD_SCALE_D, shrinkScale * SPRITE_WORLD_SCALE_D, shrinkScale * SPRITE_WORLD_SCALE_D);
+    guScaleF(
+        tempMtx, shrinkScale * SPRITE_WORLD_SCALE_D, shrinkScale * SPRITE_WORLD_SCALE_D,
+        shrinkScale * SPRITE_WORLD_SCALE_D
+    );
     guMtxCatF(transformMtx, tempMtx, transformMtx);
     guTranslateF(tempMtx, playerStatus->pos.x, playerStatus->pos.y, playerStatus->pos.z);
     guMtxCatF(transformMtx, tempMtx, transformMtx);

@@ -691,28 +691,28 @@ EvtScript N(EVS_ManageImpostersScene) = {
     Set(LVar3, NPC_FakeGoompa)
     Exec(N(EVS_Imposter_HopTwice))
     Call(SpeakToPlayer, NPC_FakeGoompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH7_0154)
-     // goomba imposter speaks
+    // goomba imposter speaks
     Call(GetNpcPos, NPC_FakeKooper, LVar0, LVar1, LVar2)
     SetF(LVarA, Float(3.0))
     ExecWait(N(EVS_FocusCam_OnPosition))
     Set(LVar3, NPC_FakeKooper)
     Exec(N(EVS_Imposter_HopTwice))
     Call(SpeakToPlayer, NPC_FakeKooper, ANIM_WorldKooper_Talk, ANIM_WorldKooper_Idle, 0, MSG_CH7_0155)
-     // goomba imposter speaks
+    // goomba imposter speaks
     Call(GetNpcPos, NPC_FakeKoopaKoot, LVar0, LVar1, LVar2)
     SetF(LVarA, Float(3.0))
     ExecWait(N(EVS_FocusCam_OnPosition))
     Set(LVar3, NPC_FakeKoopaKoot)
     Exec(N(EVS_Imposter_HopTwice))
     Call(SpeakToPlayer, NPC_FakeKoopaKoot, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH7_0156)
-     // luigi imposter speaks
+    // luigi imposter speaks
     Call(GetNpcPos, NPC_FakeLuigi, LVar0, LVar1, LVar2)
     SetF(LVarA, Float(3.0))
     ExecWait(N(EVS_FocusCam_OnPosition))
     Set(LVar3, NPC_FakeLuigi)
     Exec(N(EVS_Imposter_HopTwice))
     Call(SpeakToPlayer, NPC_FakeLuigi, ANIM_Luigi_Talk, ANIM_Luigi_Idle, 0, MSG_CH7_0157)
-     // follow-up dialogue
+    // follow-up dialogue
     Call(GetNpcPos, NPC_FakeKolorado, LVar0, LVar1, LVar2)
     SetF(LVarA, Float(3.0))
     ExecWait(N(EVS_FocusCam_OnPosition))

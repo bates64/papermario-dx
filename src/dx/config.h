@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _DX_CONFIG_H_
+#define _DX_CONFIG_H_
 
 /// Creates the version string that appears on the file select menu.
 /// Also used to sign save files created with this mod.
@@ -19,7 +20,7 @@
 
 /// Quick launch into this battle.
 /// Comment out to disable,
-//#define DX_QUICK_LAUNCH_BATTLE BTL_NOK_FORMATION_00, BTL_NOK_STAGE_00
+// #define DX_QUICK_LAUNCH_BATTLE BTL_NOK_FORMATION_00, BTL_NOK_STAGE_00
 
 /// Skips logos (Nintendo, Intelligent Systems, etc.).
 #define DX_SKIP_LOGOS 1
@@ -45,3 +46,5 @@
 
 /// Skip laggy blur operations when opening the pause menu on emulator
 #define DX_PAUSE_LAG_FIX 1
+
+#endif

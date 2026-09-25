@@ -181,17 +181,22 @@ void N(update)(void) {
                     if (acs->smack.holdingLeft) {
                         if (acs->variation == ACV_SMACK_HAND) {
                             // regular smack
-                            acs->meterFillLevel += SCALE_BY_PCT(HAND_METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
+                            acs->meterFillLevel += SCALE_BY_PCT(
+                                HAND_METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]
+                            );
                         } else {
                             // fan smack
-                            acs->meterFillLevel += SCALE_BY_PCT(FAN_METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
+                            acs->meterFillLevel += SCALE_BY_PCT(
+                                FAN_METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]
+                            );
                         }
                         acs->smack.holdingLeft = false;
                     }
                 }
                 // right stick inputs actively drain the meter
                 if (battleStatus->curButtonsPressed & BUTTON_STICK_RIGHT) {
-                    acs->meterFillLevel -= SCALE_BY_PCT(FAIL_METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
+                    acs->meterFillLevel -=
+                        SCALE_BY_PCT(FAIL_METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
                 }
             }
 
