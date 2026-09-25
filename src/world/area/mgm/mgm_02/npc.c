@@ -103,8 +103,8 @@ typedef struct SmashGameData {
     /* 0x008 */ s32 timeLeft; // num frames at 30fps
     /* 0x00C */ HudElemID buttonHID;
     /* 0x010 */ HudElemID meterHID;
-    /* 0x014 */ s32 windowA_posX;
-    /* 0x018 */ s32 windowB_posX;
+    /* 0x014 */ s32 windowAPosX;
+    /* 0x018 */ s32 windowBPosX;
     /* 0x01C */ s32 signpostEntity;
     /* 0x020 */ s32 curScore;
     /* 0x024 */ s32 mashProgress;
@@ -141,54 +141,54 @@ void N(appendGfx_score_display)(void* renderData) {
     }
 
    if (scorekeeper->varTable[3] == 0 || scorekeeper->varTable[3] >= 4) {
-        if (data->windowA_posX > -80) {
-            data->windowA_posX -= 10;
-            if (data->windowA_posX < -80) {
-                data->windowA_posX = -80;
+        if (data->windowAPosX > -80) {
+            data->windowAPosX -= 10;
+            if (data->windowAPosX < -80) {
+                data->windowAPosX = -80;
             }
         }
     } else {
-        if (data->windowA_posX < 23) {
-            data->windowA_posX += 10;
-            if (data->windowA_posX > 23) {
-                data->windowA_posX = 23;
+        if (data->windowAPosX < 23) {
+            data->windowAPosX += 10;
+            if (data->windowAPosX > 23) {
+                data->windowAPosX = 23;
             }
         }
     }
 
     if (scorekeeper->varTable[3] == 0) {
-        if (data->windowB_posX < SCREEN_WIDTH) {
-            data->windowB_posX += 10;
-            if (data->windowB_posX > SCREEN_WIDTH) {
-                data->windowB_posX = SCREEN_WIDTH;
+        if (data->windowBPosX < SCREEN_WIDTH) {
+            data->windowBPosX += 10;
+            if (data->windowBPosX > SCREEN_WIDTH) {
+                data->windowBPosX = SCREEN_WIDTH;
             }
         }
     } else {
-        if (data->windowB_posX > 225) {
-            data->windowB_posX -= 10;
-            if (data->windowB_posX < 225) {
-                data->windowB_posX = 225;
+        if (data->windowBPosX > 225) {
+            data->windowBPosX -= 10;
+            if (data->windowBPosX < 225) {
+                data->windowBPosX = 225;
             }
         }
     }
 
-    draw_box(0, WINDOW_STYLE_9, data->windowA_posX, 23, 0, 80, 38, 180, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
-    draw_msg(MSG_MGM_0047, data->windowA_posX + 42, TEXT_POS_Y, 255, MSG_PAL_WHITE, 0);
-    draw_number(NUM_PANELS - data->found, data->windowA_posX + 65, COUNT_POS_Y, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+    draw_box(0, WINDOW_STYLE_9, data->windowAPosX, 23, 0, 80, 38, 180, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+    draw_msg(MSG_MGM_0047, data->windowAPosX + 42, TEXT_POS_Y, 255, MSG_PAL_WHITE, 0);
+    draw_number(NUM_PANELS - data->found, data->windowAPosX + 65, COUNT_POS_Y, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
     draw_ci_image_with_clipping(&N(panel_peach_img), 32, 32, G_IM_FMT_CI, G_IM_SIZ_4b, &N(panel_peach_pal),
-        data->windowA_posX + 5, 26, 10, 20, 300, 200, 255);
+        data->windowAPosX + 5, 26, 10, 20, 300, 200, 255);
 
     timeLeft = MIN(data->timeLeft, PLAY_TIME);
     deciseconds = ((f32)(timeLeft % FRAME_RATE) * 10.0) / FRAME_RATE;
     seconds = timeLeft / FRAME_RATE;
 
-    draw_box(0, WINDOW_STYLE_11, data->windowB_posX, 27, 0, 60, 20, 180, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+    draw_box(0, WINDOW_STYLE_11, data->windowBPosX, 27, 0, 60, 20, 180, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
     // draw whole seconds
-    draw_number(seconds, data->windowB_posX + 29, 31, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+    draw_number(seconds, data->windowBPosX + 29, 31, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
     // draw tenths of seconds
-    draw_number(deciseconds, data->windowB_posX + 40, 31, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, 0);
+    draw_number(deciseconds, data->windowBPosX + 40, 31, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, 0);
     // draw dot
-    draw_msg(MSG_MGM_0024, data->windowB_posX + 30, 29, 255, MSG_PAL_WHITE, 0);
+    draw_msg(MSG_MGM_0024, data->windowBPosX + 30, 29, 255, MSG_PAL_WHITE, 0);
 }
 
 void N(worker_render_score)(void) {
@@ -984,8 +984,8 @@ API_CALLABLE(N(CreateMinigame)) {
     SmashGameData* data = heap_malloc(sizeof(*data));
     scorekeeper->varTablePtr[SMASH_DATA_VAR_IDX] = data;
 
-    data->windowA_posX = -80;
-    data->windowB_posX = SCREEN_WIDTH;
+    data->windowAPosX = -80;
+    data->windowBPosX = SCREEN_WIDTH;
     data->timeLeft = PLAY_TIME;
 
     status_bar_ignore_changes();

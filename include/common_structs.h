@@ -851,9 +851,9 @@ typedef struct Camera {
     /* 0x032 */ Vec3s targetScreenCoords; // screen coords corresponding to targetPos
     /* 0x038 */ u16 perspNorm;
     /* 0x03A */ PAD(2);
-    /* 0x03C */ Vec3f lookAt_eye; // used to construct the view matrix
-    /* 0x048 */ Vec3f lookAt_obj; // used to construct the view matrix
-    /* 0x054 */ Vec3f lookAt_obj_target;
+    /* 0x03C */ Vec3f lookAtEye; // used to construct the view matrix
+    /* 0x048 */ Vec3f lookAtObj; // used to construct the view matrix
+    /* 0x054 */ Vec3f lookAtObjTarget;
     /* 0x060 */ Vec3f targetPos; // target for camera rig, often but not necessarily the player position
     /* 0x06C */ f32 curYaw;
     /* 0x070 */ f32 interpYaw; // no camera mode actually uses this for interpolation
@@ -862,8 +862,8 @@ typedef struct Camera {
     /* 0x07C */ f32 curBoomYaw;
     /* 0x080 */ f32 targetOffsetY;
     /* 0x084 */ f32 targetBoomYaw; // only used by CAM_UPDATE_UNUSED_RADIAL
-    /* 0x088 */ f32 lookAt_yaw;
-    /* 0x08C */ f32 lookAt_pitch;
+    /* 0x088 */ f32 lookAtYaw;
+    /* 0x08C */ f32 lookAtPitch;
     /* 0x090 */ Vp vp;
     /* 0x0A0 */ Vp vpAlt;
     /* 0x0B0 */ Matrix4f mtxPerspective;
@@ -2484,7 +2484,7 @@ typedef struct PartnerDMAData {
     /* 0x00 */ u32 dmaStart;
     /* 0x04 */ u32 dmaEnd;
     /* 0x08 */ void* dmaDest;
-    /* 0x0C */ struct ActorBlueprint* ActorBlueprint;
+    /* 0x0C */ struct ActorBlueprint* actorBlueprint;
     /* 0x10 */ s32 posY;
 } PartnerDMAData; // size = 0x14
 
