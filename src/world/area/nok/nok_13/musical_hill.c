@@ -46,7 +46,6 @@ void N(musical_hill_orbit_listener)(PlayerOrbitState* orbit, s32 event) {
             break;
     }
 
-    return;
 }
 
 PlayerOrbitTarget N(RunAroundTarget) = {

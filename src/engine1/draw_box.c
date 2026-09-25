@@ -406,7 +406,7 @@ s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s
 
         quads = nullptr;
         sp154 = nullptr;
-        cornersSizes = (Vec2bu*)&corners->size1;
+        cornersSizes = (&corners->size1);
         cornersFmt = corners->fmt;
         cornersBitDepth = corners->bitDepth;
 

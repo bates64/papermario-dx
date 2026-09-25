@@ -10,7 +10,7 @@ void N(worker_update_test_partner_reflection)(void);
 
 // identical to final version
 API_CALLABLE(N(EnableWallReflectionTest)) {
-    script->array[0] = (s32) create_worker_frontUI(nullptr, N(worker_render_test_reflection_wall));
+    script->array[0] = create_worker_frontUI(nullptr, N(worker_render_test_reflection_wall));
     return ApiStatus_DONE2;
 }
 
@@ -61,7 +61,7 @@ void N(appendGfx_test_reflection_wall)(void* data) {
 }
 
 API_CALLABLE(N(EnableFloorReflectionTest)) {
-    script->array[0] = (s32) create_worker_frontUI(nullptr, &N(worker_render_test_reflection_floor));
+    script->array[0] = create_worker_frontUI(nullptr, &N(worker_render_test_reflection_floor));
     return ApiStatus_DONE2;
 }
 

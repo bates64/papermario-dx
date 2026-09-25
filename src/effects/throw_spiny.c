@@ -33,7 +33,7 @@ EffectInstance* throw_spiny_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_THROW_SPINY;
 
-    effect = (EffectInstance*)create_effect_instance(bpPtr);
+    effect = create_effect_instance(bpPtr);
     effect->numParts = numParts;
     spinyObject = effect->data.throwSpiny = general_heap_malloc(numParts * sizeof(*spinyObject));
     ASSERT(effect->data.throwSpiny != nullptr);

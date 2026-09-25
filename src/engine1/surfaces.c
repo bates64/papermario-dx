@@ -189,7 +189,6 @@ void player_surface_spawn_basic_fx(void) {
 
     // reset the delay
     PlayerDustSpawnDelay = 4;
-    return;
 }
 
 void player_surface_spawn_flower_fx(void) {
@@ -234,7 +233,6 @@ void player_surface_spawn_flower_fx(void) {
     }
 
     PlayerFlowerTrailDelay = 0;
-    return;
 }
 
 void player_surface_spawn_cloud_fx(void) {
@@ -288,7 +286,6 @@ void player_surface_spawn_cloud_fx(void) {
         );
 
     }
-    return;
 }
 
 void player_surface_spawn_snow_fx(void) {
@@ -316,7 +313,6 @@ void player_surface_spawn_snow_fx(void) {
     }
 
     PlayerSnowSpawnDelay = 4;
-    return;
 }
 
 void player_surface_spawn_hedges_fx(void) {
@@ -342,7 +338,6 @@ void player_surface_spawn_hedges_fx(void) {
     }
 
     PlayerHedgeSpawnDelay = 4;
-    return;
 }
 
 void player_surface_spawn_water_fx(void) {
@@ -369,7 +364,6 @@ void player_surface_spawn_water_fx(void) {
     }
 
     PlayerWaterSpawnDelay = 4;
-    return;
 }
 
 s16 NpcDustSpawnDelay = 4;

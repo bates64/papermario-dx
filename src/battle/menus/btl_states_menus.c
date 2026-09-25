@@ -21,18 +21,18 @@ enum BattleMenuStates {
     BTL_MENU_STATE_ERROR_DONE           = 101,
 };
 
-extern HudScript HES_YellowArrow;
 
-extern HudScript HES_MenuFlee;
-extern HudScript HES_MenuFleeDisabled;
-extern HudScript HES_MenuDefend;
-extern HudScript HES_MenuDefendDisabled;
-extern HudScript HES_MenuStrategies;
-extern HudScript HES_MenuStrategiesDisabled;
-extern HudScript HES_MenuPouch;
-extern HudScript HES_MenuPouchDisabled;
-extern HudScript HES_MenuDoNothing;
-extern HudScript HES_MenuDoNothingDisabled;
+
+
+
+
+
+
+
+
+
+
+
 
 extern HudScript HES_Kooper;
 extern HudScript HES_Bombette;
@@ -106,13 +106,13 @@ extern HudScript HES_MoveRedOrbDisabled;
 extern HudScript HES_HandPointDownLoop;
 extern HudScript HES_HandPointLeftLoop;
 
-extern HudScript HES_ProjectorBeam;
-extern HudScript HES_ProjectorReel;
-extern HudScript HES_ProjectorSpot;
-extern HudScript HES_SwapArrowLeft;
-extern HudScript HES_SwapArrowRight;
-extern HudScript HES_SwapBackground;
-extern HudScript HES_SwapZ;
+
+
+
+
+
+
+
 
 IconHudScriptPair ItemsHudScripts = { HES_MenuItem, HES_MenuItemDisabled };
 

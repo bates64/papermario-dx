@@ -10,7 +10,7 @@ PlayerData gPlayerData;
 
 extern s32 WorldTattleInteractionID;
 
-extern DisguiseAnims BasicPeachDisguiseAnims[];
+
 
 void phys_update_standard(void);
 void phys_update_lava_reset(void);
