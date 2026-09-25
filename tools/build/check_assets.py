@@ -16,8 +16,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from assets import Texture
+from layout import Layout
 
 ROOT = Path(__file__).parents[2]
+ASSET_STACK = tuple(Layout(ROOT / "ver/us/layout.yaml").asset_stack)
 
 
 def declared_images():
@@ -59,7 +61,7 @@ def main() -> int:
     mismatches = []
     images = declared_images()
     for path, declared in sorted(images.items()):
-        texture = Texture(path.relative_to(ROOT), ("mod", "dx", "us"))
+        texture = Texture(path.relative_to(ROOT), ASSET_STACK)
         found = {
             "format": texture.format,
             "width": texture.width,
