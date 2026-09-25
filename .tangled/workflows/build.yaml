@@ -80,3 +80,6 @@ steps:
 
   - name: "Run clang-tidy"
     command: nix develop --command tools/clang_tidy_all.sh
+
+  - name: "Check struct offset comments"
+    command: nix develop --command python3 tools/audit_struct_layout.py --all

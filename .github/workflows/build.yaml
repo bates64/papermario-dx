@@ -91,6 +91,10 @@ jobs:
         shell: bash
         run: nix develop --command tools/clang_tidy_all.sh
 
+      - name: Check struct offset comments
+        if: ${{ !cancelled() && steps.build.outcome != 'skipped' }}
+        run: nix develop --command python3 tools/audit_struct_layout.py --all
+
   windows-toolchain:
     name: Windows Toolchain
     runs-on: ubuntu-latest
