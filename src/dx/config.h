@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _DX_CONFIG_H_
+#define _DX_CONFIG_H_
 
 /// Creates the version string that appears on the file select menu.
 /// Also used to sign save files created with this mod.
@@ -45,3 +46,5 @@
 
 /// Skip laggy blur operations when opening the pause menu on emulator
 #define DX_PAUSE_LAG_FIX 1
+
+#endif
