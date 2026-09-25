@@ -60,6 +60,21 @@ class BlockKind(Enum):
 
 INDENT = "    "
 
+# Paths left unformatted, relative to the repository root: generated map
+# headers, vendored libultra and nusys, animation data (which clang-format can
+# take gigabytes of memory to format), and a vendored host tool.
+EXCLUDED_PATHS = (
+    "include/mapfs/",
+    "include/PR/",
+    "include/nu/",
+    "src/os/",
+    "src/world/model_anim/",
+    "src/battle/area/omo2/actor/animation.inc.c",
+    "src/world/area/dgb/dgb_01/smash_bridges/anim.inc.c",
+    "src/world/area/kmr/kmr_11/fortress_animation.c",
+    "tools/build/rom/n64crc.c",
+)
+
 SWITCH_MACROS = {"Switch", "SwitchConst"}
 
 CASE_MACROS = {
@@ -537,8 +552,11 @@ def main():
             sys.stdout.write(result)
         return
 
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     any_changed = False
     for path in args.files:
+        if os.path.relpath(os.path.abspath(path), repo_root).replace(os.sep, "/").startswith(EXCLUDED_PATHS):
+            continue
         with open(path, "r", encoding="utf-8") as f:
             source = f.read()
         result = format_source(source, path)
