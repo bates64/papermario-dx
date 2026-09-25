@@ -72,7 +72,7 @@ API_CALLABLE(N(GetPlayerPosOutsideKeepAwayRing)) {
     f32 dist = dist2D(gPlayerStatus.pos.x, gPlayerStatus.pos.z, 0.0f, 0.0f);
     f32 posX, posY, posZ, yaw;
 
-    if ((dist > 90.0f) || (dist < 150.0f)) {
+    if ((dist > 90.0f) || (dist < 150.0f)) { // NOLINT(clang-diagnostic-tautological-overlap-compare): @bug always true
         yaw = atan2(gPlayerStatus.pos.x, gPlayerStatus.pos.z, 0.0f, 0.0f) + 180.0f;
         posX = 0.0f;
         posY = 0.0f;
