@@ -46,11 +46,16 @@ CheckOptions:
 
   - key: readability-identifier-naming.ParameterCase
     value: camelBack
+  - key: readability-identifier-naming.ParameterIgnoredRegexp
+    value: '^[A-Z]{1,2}[0-9]?[a-z]{0,2}$'
 
+  # Members may keep decomp placeholder names, the animation slots anim_8 to
+  # anim_F, whose purpose varies by NPC, and short math names.
   - key: readability-identifier-naming.MemberCase
     value: camelBack
   - key: readability-identifier-naming.MemberIgnoredRegexp
-    value: '^(unk|pad|unused)_.*'
+    value: '^((unk|pad|unused)_.*|anim_[0-9A-F]|[A-Z]{1,2}[0-9]?[a-z]{0,2})$'
 
 # Ignore include/PR/ (libultra) and include/nu/ (nusys)
-HeaderFilterRegex: '(src|include)/(?!PR/|nu/).*\.h'
+HeaderFilterRegex: '(src|include)/.*\.h'
+ExcludeHeaderFilterRegex: 'include/(PR|nu)/'

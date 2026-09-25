@@ -492,8 +492,8 @@ void au_bgm_restore_copied_player(AuGlobals* globals) {
         }
         for (k = 0; k < ARRAY_COUNT(player->effectIndices); k++) {
             if (player->effectIndices[k] != 0xFF) {
-                player->seqCmdArgs.MasterEffect.index = player->effectIndices[k];
-                player->seqCmdArgs.MasterEffect.value = player->effectValues[k];
+                player->seqCmdArgs.masterEffect.index = player->effectIndices[k];
+                player->seqCmdArgs.masterEffect.value = player->effectValues[k];
                 au_BGMCmd_E6_MasterEffect(player, track);
             }
         }
@@ -1078,8 +1078,8 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                     break;
                 }
                 track = &player->tracks[i - 1];
-                player->seqCmdArgs.TrackVolumeFade.time = 48;
-                player->seqCmdArgs.TrackVolumeFade.value = *(player->trackVolsConfig++);
+                player->seqCmdArgs.trackVolumeFade.time = 48;
+                player->seqCmdArgs.trackVolumeFade.value = *(player->trackVolsConfig++);
                 if (track->bgmReadPos != 0) {
                     au_BGMCmd_F6_InstrumentVolumeLerp(player, track);
                 }
@@ -1094,9 +1094,9 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                     break;
                 }
                 track = &player->tracks[i - 1];
-                player->seqCmdArgs.TrackVolumeFade.time = 48;
+                player->seqCmdArgs.trackVolumeFade.time = 48;
                 player->trackVolsConfig++; // ignore arg
-                player->seqCmdArgs.TrackVolumeFade.value = 0;
+                player->seqCmdArgs.trackVolumeFade.value = 0;
                 if (track->bgmReadPos != 0) {
                     au_BGMCmd_F6_InstrumentVolumeLerp(player, track);
                 }
@@ -1503,7 +1503,7 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
 
 
 void au_BGMCmd_E0_MasterTempo(BGMPlayer* player, BGMPlayerTrack* track) {
-    u32 bpm = player->seqCmdArgs.MasterTempo.value;
+    u32 bpm = player->seqCmdArgs.masterTempo.value;
     s32 tempo;
 
     player->masterTempoBPM = bpm;
@@ -1531,7 +1531,7 @@ static s32 au_bgm_bpm_to_tempo(BGMPlayer* player, u32 tempo) {
 }
 
 void au_BGMCmd_E1_MasterVolume(BGMPlayer* player, BGMPlayerTrack* track) {
-    s8_24 volume = player->seqCmdArgs.MasterVolume.value & 0x7F;
+    s8_24 volume = player->seqCmdArgs.masterVolume.value & 0x7F;
 
     if (volume != 0) {
         volume = volume << 24;
@@ -1546,30 +1546,30 @@ void au_BGMCmd_E1_MasterVolume(BGMPlayer* player, BGMPlayerTrack* track) {
 }
 
 void au_BGMCmd_E2_MasterDetune(BGMPlayer* player, BGMPlayerTrack* track) {
-    player->masterPitchShift = (s8)player->seqCmdArgs.MasterPitchShift.cent * 100;
+    player->masterPitchShift = (s8)player->seqCmdArgs.masterPitchShift.cent * 100;
 }
 
 void au_BGMCmd_E3(BGMPlayer* player, BGMPlayerTrack* track) {
-    player->globals->effectChanges[player->busID].type = player->seqCmdArgs.UnkCmdE3.effectType;
+    player->globals->effectChanges[player->busID].type = player->seqCmdArgs.unkCmdE3.effectType;
     player->globals->effectChanges[player->busID].changed = true;
 }
 
 void au_BGMCmd_E6_MasterEffect(BGMPlayer* player, BGMPlayerTrack* track) {
-    u8 index = player->seqCmdArgs.MasterEffect.index;
+    u8 index = player->seqCmdArgs.masterEffect.index;
     u32 busID = player->effectIndices[index];
 
     if ((index < 4) && (busID < 0x80)) {
-        if (player->globals->effectChanges[busID].type != player->seqCmdArgs.MasterEffect.value) {
-            player->globals->effectChanges[busID].type = player->seqCmdArgs.MasterEffect.value;
+        if (player->globals->effectChanges[busID].type != player->seqCmdArgs.masterEffect.value) {
+            player->globals->effectChanges[busID].type = player->seqCmdArgs.masterEffect.value;
             player->globals->effectChanges[busID].changed = true;
         }
-        player->effectValues[index] = player->seqCmdArgs.MasterEffect.value;
+        player->effectValues[index] = player->seqCmdArgs.masterEffect.value;
     }
 }
 
 void au_BGMCmd_E4_MasterTempoFade(BGMPlayer* player, BGMPlayerTrack* track) {
-    s32 time = player->seqCmdArgs.MasterTempoFade.time;
-    s32 tempo = au_bgm_bpm_to_tempo(player, player->seqCmdArgs.MasterTempoFade.value);
+    s32 time = player->seqCmdArgs.masterTempoFade.time;
+    s32 tempo = au_bgm_bpm_to_tempo(player, player->seqCmdArgs.masterTempoFade.value);
 
     if (time <= 0) {
         time = 1;
@@ -1581,8 +1581,8 @@ void au_BGMCmd_E4_MasterTempoFade(BGMPlayer* player, BGMPlayerTrack* track) {
 }
 
 void au_BGMCmd_E5_MasterVolumeFade(BGMPlayer* player, BGMPlayerTrack* track) {
-    s32 time = player->seqCmdArgs.MasterVolumeFade.time;
-    s8_24 volume = player->seqCmdArgs.MasterVolumeFade.value & 0x7F;
+    s32 time = player->seqCmdArgs.masterVolumeFade.time;
+    s8_24 volume = player->seqCmdArgs.masterVolumeFade.value & 0x7F;
 
     if (volume != 0) {
         volume = volume << 24;
@@ -1598,12 +1598,12 @@ void au_BGMCmd_E5_MasterVolumeFade(BGMPlayer* player, BGMPlayerTrack* track) {
 }
 
 void au_BGMCmd_E8_TrackOverridePatch(BGMPlayer* player, BGMPlayerTrack* track) {
-    track->patch = player->seqCmdArgs.OverridePatch.patch;
-    track->instrument = au_get_instrument(player->globals, player->seqCmdArgs.OverridePatch.bank, track->patch, &track->envelope);
+    track->patch = player->seqCmdArgs.overridePatch.patch;
+    track->instrument = au_get_instrument(player->globals, player->seqCmdArgs.overridePatch.bank, track->patch, &track->envelope);
 }
 
 void au_BGMCmd_E9_InstrumentVolume(BGMPlayer* arg0, BGMPlayerTrack* track) {
-    s8_24 volume = arg0->seqCmdArgs.InstrumentVolume.value & 0x7F;
+    s8_24 volume = arg0->seqCmdArgs.instrumentVolume.value & 0x7F;
 
     if (volume != 0) {
         volume = volume << 24;
@@ -1614,8 +1614,8 @@ void au_BGMCmd_E9_InstrumentVolume(BGMPlayer* arg0, BGMPlayerTrack* track) {
 }
 
 void au_BGMCmd_F6_InstrumentVolumeLerp(BGMPlayer* player, BGMPlayerTrack* track) {
-    s32 time = player->seqCmdArgs.TrackVolumeFade.time;
-    s8_24 volume = player->seqCmdArgs.TrackVolumeFade.value & 0x7F;
+    s32 time = player->seqCmdArgs.trackVolumeFade.time;
+    s8_24 volume = player->seqCmdArgs.trackVolumeFade.value & 0x7F;
 
     if (volume != 0) {
         volume = volume << 24;
@@ -1633,46 +1633,46 @@ void au_BGMCmd_F6_InstrumentVolumeLerp(BGMPlayer* player, BGMPlayerTrack* track)
 }
 
 void au_BGMCmd_EA_InstrumentPan(BGMPlayer* player, BGMPlayerTrack* track) {
-    track->insPan = player->seqCmdArgs.InstrumentPan.value & 0x7F;
+    track->insPan = player->seqCmdArgs.instrumentPan.value & 0x7F;
     track->randomPanAmount = 0;
     track->changed.pan = true;
 }
 
 void au_BGMCmd_EB_InstrumentReverb(BGMPlayer* player, BGMPlayerTrack* track) {
-    track->insReverb = player->seqCmdArgs.InstrumentReverb.value & 0x7F;
+    track->insReverb = player->seqCmdArgs.instrumentReverb.value & 0x7F;
     track->changed.reverb = true;
 }
 
 void au_BGMCmd_EC_TrackVolume(BGMPlayer* player, BGMPlayerTrack* track) {
-    track->volume = player->seqCmdArgs.TrackVolume.value & 0x7F;
+    track->volume = player->seqCmdArgs.trackVolume.value & 0x7F;
     track->changed.volume = true;
 }
 
 void au_BGMCmd_ED_InstrumentCoarseTune(BGMPlayer* player, BGMPlayerTrack* track) {
-    track->insCoarseDetune = player->seqCmdArgs.InstrumentCoarseTune.semitone * AU_SEMITONE_CENTS;
+    track->insCoarseDetune = player->seqCmdArgs.instrumentCoarseTune.semitone * AU_SEMITONE_CENTS;
 }
 
 void au_BGMCmd_EE_InstrumentFineTune(BGMPlayer* player, BGMPlayerTrack* track) {
-    track->insFineDetune = player->seqCmdArgs.InstrumentFineTune.cent;
+    track->insFineDetune = player->seqCmdArgs.instrumentFineTune.cent;
 }
 
 void au_BGMCmd_EC_TrackDetune(BGMPlayer* player, BGMPlayerTrack* track) {
-    track->detune = player->seqCmdArgs.TrackDetune.cents;
+    track->detune = player->seqCmdArgs.trackDetune.cents;
     track->changed.tune = true;
 }
 
 void au_BGMCmd_F0_TrackTremolo(BGMPlayer* player, BGMPlayerTrack* track) {
-    track->tremoloDelay = player->seqCmdArgs.TrackTremolo.delay;
-    track->tremoloRate = player->seqCmdArgs.TrackTremolo.speed;
-    track->tremoloDepth = player->seqCmdArgs.TrackTremolo.depth;
+    track->tremoloDelay = player->seqCmdArgs.trackTremolo.delay;
+    track->tremoloRate = player->seqCmdArgs.trackTremolo.speed;
+    track->tremoloDepth = player->seqCmdArgs.trackTremolo.depth;
 }
 
 void au_BGMCmd_F1_TrackTremoloRate(BGMPlayer* player, BGMPlayerTrack* track) {
-    track->tremoloRate = player->seqCmdArgs.TrackTremoloRate.value;
+    track->tremoloRate = player->seqCmdArgs.trackTremoloRate.value;
 }
 
 void au_BGMCmd_F2_TrackTremoloDepth(BGMPlayer* player, BGMPlayerTrack* track) {
-    track->tremoloDepth = player->seqCmdArgs.TrackTremoloDepth.value;
+    track->tremoloDepth = player->seqCmdArgs.trackTremoloDepth.value;
 }
 
 void au_BGMCmd_F3_TrackTremoloStop(BGMPlayer* player, BGMPlayerTrack* track) {
@@ -1680,8 +1680,8 @@ void au_BGMCmd_F3_TrackTremoloStop(BGMPlayer* player, BGMPlayerTrack* track) {
 }
 
 void au_BGMCmd_F4_SubTrackRandomPan(BGMPlayer* player, BGMPlayerTrack* track) {
-    track->insPan = player->seqCmdArgs.RandomPan.pan0 & 0x7F;
-    track->randomPanAmount = player->seqCmdArgs.RandomPan.pan1 & 0x7F;
+    track->insPan = player->seqCmdArgs.randomPan.pan0 & 0x7F;
+    track->randomPanAmount = player->seqCmdArgs.randomPan.pan1 & 0x7F;
 }
 
 void au_BGMCmd_F5_UseInstrument(BGMPlayer* player, BGMPlayerTrack* track) {
@@ -1691,7 +1691,7 @@ void au_BGMCmd_F5_UseInstrument(BGMPlayer* player, BGMPlayerTrack* track) {
     u32 patch;
     u32 bank;
 
-    insIndex = player->seqCmdArgs.UseInstrument.index;
+    insIndex = player->seqCmdArgs.useInstrument.index;
     if (insIndex < BGM_MAX_INSTRUMNETS) {
         if (insIndex < player->bgmInstrumentCount) {
             instrument = &player->instrumentsInfo[insIndex];
@@ -1723,7 +1723,7 @@ void au_BGMCmd_F5_UseInstrument(BGMPlayer* player, BGMPlayerTrack* track) {
 }
 
 void au_BGMCmd_F7_ReverbType(BGMPlayer* player, BGMPlayerTrack* track) {
-    u8 index = player->seqCmdArgs.ReverbType.index;
+    u8 index = player->seqCmdArgs.reverbType.index;
     s8 busID = player->effectIndices[index];
 
     if ((index < ARRAY_COUNT(player->effectIndices)) && (busID >= 0)) {
@@ -1734,14 +1734,14 @@ void au_BGMCmd_F7_ReverbType(BGMPlayer* player, BGMPlayerTrack* track) {
 }
 
 void au_BGMCmd_FD_EventTrigger(BGMPlayer* player, BGMPlayerTrack* track) {
-    snd_song_trigger_music_event(player->priority, track->index, player->seqCmdArgs.EventTrigger.eventInfo >> 8);
+    snd_song_trigger_music_event(player->priority, track->index, player->seqCmdArgs.eventTrigger.eventInfo >> 8);
 }
 
 // jump to another part of the track and return after a specified read length
 void au_BGMCmd_FE_Detour(BGMPlayer* player, BGMPlayerTrack* track) {
-    AuFilePos readPos = AU_FILE_RELATIVE(player->bgmFile, player->seqCmdArgs.Detour.offset);
+    AuFilePos readPos = AU_FILE_RELATIVE(player->bgmFile, player->seqCmdArgs.detour.offset);
 
-    track->detourLength = player->seqCmdArgs.Detour.length;
+    track->detourLength = player->seqCmdArgs.detour.length;
     track->savedPos = track->bgmReadPos;
     track->bgmReadPos = readPos;
 }
@@ -1752,8 +1752,8 @@ void au_BGMCmd_FC_Branch(BGMPlayer* player, BGMPlayerTrack* track) {
     u32 i;
 
     // get jump table
-    args = AU_FILE_RELATIVE(player->bgmFile, player->seqCmdArgs.Branch.offset);
-    if (player->proxMixID < player->seqCmdArgs.Branch.tableCount) {
+    args = AU_FILE_RELATIVE(player->bgmFile, player->seqCmdArgs.branch.offset);
+    if (player->proxMixID < player->seqCmdArgs.branch.tableCount) {
         args += player->proxMixID * 3;
     }
     // read new position from jump table
@@ -1792,9 +1792,9 @@ void au_BGMCmd_FF_Special(BGMPlayer* player, BGMPlayerTrack* track) {
     u8 delayTime;
     u32 i;
 
-    u32 type = player->seqCmdArgs.Special.type;
-    u32 arg1 = player->seqCmdArgs.Special.arg1;
-    u32 arg2 = player->seqCmdArgs.Special.arg2;
+    u32 type = player->seqCmdArgs.special.type;
+    u32 arg1 = player->seqCmdArgs.special.arg1;
+    u32 arg2 = player->seqCmdArgs.special.arg2;
 
     switch (type) {
         case BGM_SPECIAL_SET_STEREO_DELAY:
@@ -2024,8 +2024,8 @@ void au_bgm_change_track_volume(BGMPlayer* player, s32 trackIdx, s16 time, u8 vo
     BGMPlayerTrack* track = &player->tracks[trackIdx];
 
     if (track->bgmReadPos != 0) {
-        player->seqCmdArgs.TrackVolumeFade.time = time;
-        player->seqCmdArgs.TrackVolumeFade.value = volume;
+        player->seqCmdArgs.trackVolumeFade.time = time;
+        player->seqCmdArgs.trackVolumeFade.value = volume;
         au_BGMCmd_F6_InstrumentVolumeLerp(player, track);
     }
 }
@@ -2101,8 +2101,8 @@ AuResult au_bgm_set_linked_tracks(SongSwapLinkedRequest* request) {
                                 oldVolume = track->insVolume >> 24;
                                 au_BGMCmd_E9_InstrumentVolume(player, track);
                                 player->seqCmdArgs.raw[0] = 0;
-                                player->seqCmdArgs.TrackVolumeFade.time = 96;
-                                player->seqCmdArgs.TrackVolumeFade.value = oldVolume;
+                                player->seqCmdArgs.trackVolumeFade.time = 96;
+                                player->seqCmdArgs.trackVolumeFade.value = oldVolume;
                                 au_BGMCmd_F6_InstrumentVolumeLerp(player, track);
                             }
                         } else {
@@ -2121,8 +2121,8 @@ AuResult au_bgm_set_linked_tracks(SongSwapLinkedRequest* request) {
                                 oldVolume = linkTrack->insVolume >> 24;
                                 au_BGMCmd_E9_InstrumentVolume(player, linkTrack);
                                 player->seqCmdArgs.raw[0] = 0;
-                                player->seqCmdArgs.TrackVolumeFade.time = 96;
-                                player->seqCmdArgs.TrackVolumeFade.value = oldVolume;
+                                player->seqCmdArgs.trackVolumeFade.time = 96;
+                                player->seqCmdArgs.trackVolumeFade.value = oldVolume;
                                 au_BGMCmd_F6_InstrumentVolumeLerp(player, linkTrack);
                             }
                         }

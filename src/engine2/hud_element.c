@@ -676,9 +676,9 @@ void hud_element_setup_cam(void) {
     gCameras[CAM_HUD].params.interp.offsetY = 0;
     gCameras[CAM_HUD].params.interp.dist = 15551;
 
-    gCameras[CAM_HUD].lookAt_obj_target.x = SCREEN_WIDTH / 2.0f;
-    gCameras[CAM_HUD].lookAt_obj_target.y = -(SCREEN_HEIGHT / 2.0f);
-    gCameras[CAM_HUD].lookAt_obj_target.z = 0;
+    gCameras[CAM_HUD].lookAtObjTarget.x = SCREEN_WIDTH / 2.0f;
+    gCameras[CAM_HUD].lookAtObjTarget.y = -(SCREEN_HEIGHT / 2.0f);
+    gCameras[CAM_HUD].lookAtObjTarget.z = 0;
 
     gCameras[CAM_HUD].bgColor[0] = 0;
     gCameras[CAM_HUD].bgColor[1] = 0;

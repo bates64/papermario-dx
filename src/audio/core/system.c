@@ -42,8 +42,8 @@ void create_audio_system(void) {
     nuAuTaskStop = NU_AU_TASK_RUN;
     nuAuPreNMI = 0;
     alHeapInit(&nuAuHeap, AuHeapBase, AUDIO_HEAP_SIZE);
-    config.num_pvoice = 24;
-    config.num_bus = 4;
+    config.numPvoice = 24;
+    config.numBus = 4;
     outputRate = osAiSetFrequency(HARDWARE_OUTPUT_RATE);
     frameSize = (nusched.retraceCount * outputRate + (VIDEO_FRAMES_PER_SECOND - 1)) / VIDEO_FRAMES_PER_SECOND;
     config.outputRate = outputRate;
@@ -316,11 +316,11 @@ void nuAuCleanDMABuffers(void) {
 }
 
 /// Handles global audio fade-out during system resets (NMI).
-void nuAuPreNMIProc(NUScMsg mesg_type, u32 frameCounter) {
+void nuAuPreNMIProc(NUScMsg mesgType, u32 frameCounter) {
     s16 maxVol;
     s32 vol;
 
-    switch (mesg_type) {
+    switch (mesgType) {
         case NU_SC_PRENMI_MSG:
             AuInitialGlobalVolume = au_get_global_volume();
             au_use_global_volume();

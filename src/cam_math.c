@@ -19,7 +19,7 @@ CameraControlSettings* test_ray_zone(f32 posX, f32 posY, f32 posZ, Collider** zo
     }
 }
 
-s32 calculate_segment_intersection(f32 A1x, f32 A1z, f32 A2x, f32 A2z, f32 B1x, f32 B1z, f32 B2x, f32 B2z, f32* interX, f32* interZ, f32* squared_dist) {
+s32 calculate_segment_intersection(f32 A1x, f32 A1z, f32 A2x, f32 A2z, f32 B1x, f32 B1z, f32 B2x, f32 B2z, f32* interX, f32* interZ, f32* squaredDist) {
     f32 b1Side;
     f32 b2Side;
     f32 disc;
@@ -115,11 +115,11 @@ s32 calculate_segment_intersection(f32 A1x, f32 A1z, f32 A2x, f32 A2z, f32 B1x, 
     *interX = Px;
     *interZ = Pz;
     // distance between P and B1
-    *squared_dist = SQ(Px - B1x) + SQ(Pz - B1z);
+    *squaredDist = SQ(Px - B1x) + SQ(Pz - B1z);
     return true;
 }
 
-s32 calculate_line_segment_intersection(f32 A1x, f32 A1z, f32 A2x, f32 A2z, f32 B1x, f32 B1z, f32 B2x, f32 B2z, f32* interX, f32* interZ, f32* squared_dist) {
+s32 calculate_line_segment_intersection(f32 A1x, f32 A1z, f32 A2x, f32 A2z, f32 B1x, f32 B1z, f32 B2x, f32 B2z, f32* interX, f32* interZ, f32* squaredDist) {
     f32 b1Side;
     f32 b2Side;
     f32 disc;
@@ -182,7 +182,7 @@ s32 calculate_line_segment_intersection(f32 A1x, f32 A1z, f32 A2x, f32 A2z, f32 
 
     *interX = Px;
     *interZ = Pz;
-    *squared_dist = SQ(Px - B1x) + SQ(Pz - B1z);
+    *squaredDist = SQ(Px - B1x) + SQ(Pz - B1z);
     return true;
 }
 
@@ -474,9 +474,9 @@ void apply_constraints_to_lead_amount(Camera* camera) {
 }
 
 void create_camera_leadplayer_matrix(Camera* camera) {
-    f32 dx = camera->lookAt_eye.x - camera->lookAt_obj.x;
-    f32 dy = camera->lookAt_eye.y - camera->lookAt_obj.y;
-    f32 dz = camera->lookAt_eye.z - camera->lookAt_obj.z;
+    f32 dx = camera->lookAtEye.x - camera->lookAtObj.x;
+    f32 dy = camera->lookAtEye.y - camera->lookAtObj.y;
+    f32 dz = camera->lookAtEye.z - camera->lookAtObj.z;
     f32 dist = sqrtf(SQ(dx) + SQ(dy) + SQ(dz));
     f32 theta = ((camera->vfov * 0.5f) / 180.0f) * PI;
     f32 distTanTheta = dist * (sin_rad(theta) / cos_rad(theta));

@@ -1154,7 +1154,7 @@ void load_partner_actor(void) {
 
     if (currentPartner != PARTNER_NONE) {
         partnerData = &bPartnerDmaTable[currentPartner];
-        actorBP = partnerData->ActorBlueprint;
+        actorBP = partnerData->actorBlueprint;
 
         ASSERT(actorBP != nullptr);
 

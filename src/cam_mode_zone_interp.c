@@ -671,34 +671,34 @@ void set_camera_from_rig(Camera* camera, CameraRig* rig) {
     f32 sinBoomPitch = sin_deg(rig->boomPitch);
 
     if (!(camera->moveFlags & CAMERA_MOVE_NO_INTERP_Y)) {
-        camera->lookAt_eye.y = rig->targetPos.y + (rig->boomLength * sinBoomPitch);
+        camera->lookAtEye.y = rig->targetPos.y + (rig->boomLength * sinBoomPitch);
     }
 
-    camera->lookAt_eye.x = rig->targetPos.x - (sinBoomYaw * rig->boomLength * cosBoomPitch);
-    camera->lookAt_eye.z = rig->targetPos.z + (cosBoomYaw * rig->boomLength * cosBoomPitch);
+    camera->lookAtEye.x = rig->targetPos.x - (sinBoomYaw * rig->boomLength * cosBoomPitch);
+    camera->lookAtEye.z = rig->targetPos.z + (cosBoomYaw * rig->boomLength * cosBoomPitch);
     f32 cosViewPitch = cos_deg(rig->viewPitch);
     f32 sinViewPitch = sin_deg(rig->viewPitch);
 
-    f32 dx = rig->targetPos.x - camera->lookAt_eye.x;
-    f32 dy = rig->targetPos.y - camera->lookAt_eye.y;
-    f32 dz = rig->targetPos.z - camera->lookAt_eye.z;
+    f32 dx = rig->targetPos.x - camera->lookAtEye.x;
+    f32 dy = rig->targetPos.y - camera->lookAtEye.y;
+    f32 dz = rig->targetPos.z - camera->lookAtEye.z;
     f32 dr = SQ(dx) + SQ(dz);
     if (dr != 0.0f) {
         dr = sqrtf(dr);
     }
     if (!(camera->moveFlags & CAMERA_MOVE_NO_INTERP_Y)) {
-        camera->lookAt_obj.y = camera->lookAt_eye.y + (dy * cosViewPitch) - (dr * sinViewPitch);
+        camera->lookAtObj.y = camera->lookAtEye.y + (dy * cosViewPitch) - (dr * sinViewPitch);
     }
     f32 projectedRadius = (dy * sinViewPitch) + (dr * cosViewPitch);
-    camera->lookAt_obj.x = camera->lookAt_eye.x + (sinBoomYaw * projectedRadius);
-    camera->lookAt_obj.z = camera->lookAt_eye.z - (cosBoomYaw * projectedRadius);
+    camera->lookAtObj.x = camera->lookAtEye.x + (sinBoomYaw * projectedRadius);
+    camera->lookAtObj.z = camera->lookAtEye.z - (cosBoomYaw * projectedRadius);
 
-    camera->lookAt_yaw = -rig->boomYaw;
-    camera->lookAt_pitch = -rig->boomPitch - rig->viewPitch;
+    camera->lookAtYaw = -rig->boomYaw;
+    camera->lookAtPitch = -rig->boomPitch - rig->viewPitch;
 
-    camera->lookAt_obj_target.x = camera->lookAt_obj.x;
-    camera->lookAt_obj_target.y = camera->lookAt_obj.y;
-    camera->lookAt_obj_target.z = camera->lookAt_obj.z;
+    camera->lookAtObjTarget.x = camera->lookAtObj.x;
+    camera->lookAtObjTarget.y = camera->lookAtObj.y;
+    camera->lookAtObjTarget.z = camera->lookAtObj.z;
 }
 
 // implements CAM_UPDATE_FROM_ZONE

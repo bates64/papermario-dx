@@ -3,7 +3,7 @@
 
 // implements CAM_UPDATE_UNUSED_CONFINED
 // this camera tracks targetPos, clamped within the rectangular region given by ± xLimit and ± zLimit
-// y-position is drawn from lookAt_obj_target
+// y-position is drawn from lookAtObjTarget
 // does not use easing or interpolation
 // uses a boom arm, but pitch and yaw are always zero
 //
@@ -26,7 +26,7 @@ void update_camera_unused_confined(Camera* camera) {
     if (targetX < -camera->params.confined.xLimit) {
         targetX = -camera->params.confined.xLimit;
     }
-    camera->lookAt_obj_target.x = targetX;
+    camera->lookAtObjTarget.x = targetX;
 
     targetZ = camera->targetPos.z;
     if (targetZ > camera->params.confined.zLimit) {
@@ -35,7 +35,7 @@ void update_camera_unused_confined(Camera* camera) {
     if (targetZ < -camera->params.confined.zLimit) {
         targetZ = -camera->params.confined.zLimit;
     }
-    camera->lookAt_obj_target.z = targetZ;
+    camera->lookAtObjTarget.z = targetZ;
 
     camera->interpYaw = 0.0f;
     camera->curBoomPitch = 0.0f;
@@ -46,9 +46,9 @@ void update_camera_unused_confined(Camera* camera) {
     if (camera->needsInit) {
         camera->needsInit = false;
 
-        camera->lookAt_obj.x = camera->lookAt_obj_target.x;
-        camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetOffsetY;
-        camera->lookAt_obj.z = camera->lookAt_obj_target.z;
+        camera->lookAtObj.x = camera->lookAtObjTarget.x;
+        camera->lookAtObj.y = camera->lookAtObjTarget.y + camera->targetOffsetY;
+        camera->lookAtObj.z = camera->lookAtObjTarget.z;
 
         pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
         sinPitch = sin_rad(pitchAngle);
@@ -62,14 +62,14 @@ void update_camera_unused_confined(Camera* camera) {
         dx = camera->curBoomLength * cosPitch * -sinYaw;
         dz = camera->curBoomLength * cosPitch * cosYaw;
 
-        camera->lookAt_eye.x = camera->lookAt_obj.x + dx;
-        camera->lookAt_eye.y = camera->lookAt_obj.y + dy;
-        camera->lookAt_eye.z = camera->lookAt_obj.z + dz;
+        camera->lookAtEye.x = camera->lookAtObj.x + dx;
+        camera->lookAtEye.y = camera->lookAtObj.y + dy;
+        camera->lookAtEye.z = camera->lookAtObj.z + dz;
     }
 
-    camera->lookAt_obj.x = camera->lookAt_obj_target.x;
-    camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetOffsetY;
-    camera->lookAt_obj.z = camera->lookAt_obj_target.z;
+    camera->lookAtObj.x = camera->lookAtObjTarget.x;
+    camera->lookAtObj.y = camera->lookAtObjTarget.y + camera->targetOffsetY;
+    camera->lookAtObj.z = camera->lookAtObjTarget.z;
 
     pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
     sinPitch = sin_rad(pitchAngle);
@@ -83,16 +83,16 @@ void update_camera_unused_confined(Camera* camera) {
     dx = camera->curBoomLength * cosPitch * -sinYaw;
     dz = camera->curBoomLength * cosPitch * cosYaw;
 
-    camera->lookAt_eye.x = camera->lookAt_obj.x + dx;
-    camera->lookAt_eye.y = camera->lookAt_obj.y + dy;
-    camera->lookAt_eye.z = camera->lookAt_obj.z + dz;
+    camera->lookAtEye.x = camera->lookAtObj.x + dx;
+    camera->lookAtEye.y = camera->lookAtObj.y + dy;
+    camera->lookAtEye.z = camera->lookAtObj.z + dz;
 
-    dx = camera->lookAt_obj.x - camera->lookAt_eye.x;
-    dy = camera->lookAt_obj.y - camera->lookAt_eye.y;
-    dz = camera->lookAt_obj.z - camera->lookAt_eye.z;
+    dx = camera->lookAtObj.x - camera->lookAtEye.x;
+    dy = camera->lookAtObj.y - camera->lookAtEye.y;
+    dz = camera->lookAtObj.z - camera->lookAtEye.z;
     dr = sqrtf(SQ(dx) + SQ(dz));
 
-    camera->lookAt_yaw = -atan2(0.0f, 0.0f, dx, dz);
-    camera->lookAt_pitch = atan2(0.0f, 0.0f, dy, -dr);
-    camera->curYaw = atan2(camera->lookAt_eye.x, camera->lookAt_eye.z, camera->lookAt_obj.x, camera->lookAt_obj.z);
+    camera->lookAtYaw = -atan2(0.0f, 0.0f, dx, dz);
+    camera->lookAtPitch = atan2(0.0f, 0.0f, dy, -dr);
+    camera->curYaw = atan2(camera->lookAtEye.x, camera->lookAtEye.z, camera->lookAtObj.x, camera->lookAtObj.z);
 }

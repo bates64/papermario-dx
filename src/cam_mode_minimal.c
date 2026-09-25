@@ -2,7 +2,7 @@
 #include "camera.h"
 
 // implements CAM_UPDATE_MINIMAL
-// simple camera based on lookAt_eye and lookAt_obj with no blending or interpolation
+// simple camera based on lookAtEye and lookAtObj with no blending or interpolation
 // control this camera by directly setting these positions
 //
 // no control parameters
@@ -12,21 +12,21 @@ void update_camera_minimal(Camera* camera) {
     if (camera->needsInit) {
         camera->needsInit = false;
 
-        camera->lookAt_obj.x = 0.0f;
-        camera->lookAt_obj.y = 0.0f;
-        camera->lookAt_obj.z = 0.0f;
+        camera->lookAtObj.x = 0.0f;
+        camera->lookAtObj.y = 0.0f;
+        camera->lookAtObj.z = 0.0f;
 
-        camera->lookAt_eye.x = camera->lookAt_obj.x;
-        camera->lookAt_eye.y = camera->lookAt_obj.y;
-        camera->lookAt_eye.z = camera->lookAt_obj.z - (1000.0f / CamLengthScale);
+        camera->lookAtEye.x = camera->lookAtObj.x;
+        camera->lookAtEye.y = camera->lookAtObj.y;
+        camera->lookAtEye.z = camera->lookAtObj.z - (1000.0f / CamLengthScale);
     }
 
-    dx = camera->lookAt_obj.x - camera->lookAt_eye.x;
-    dy = camera->lookAt_obj.y - camera->lookAt_eye.y;
-    dz = camera->lookAt_obj.z - camera->lookAt_eye.z;
+    dx = camera->lookAtObj.x - camera->lookAtEye.x;
+    dy = camera->lookAtObj.y - camera->lookAtEye.y;
+    dz = camera->lookAtObj.z - camera->lookAtEye.z;
     dr = sqrtf(SQ(dx) + SQ(dz));
 
-    camera->lookAt_yaw = -atan2(0.0f, 0.0f, dx, dz);
-    camera->lookAt_pitch = atan2(0.0f, 0.0f, dy, -dr);
-    camera->curYaw = atan2(camera->lookAt_eye.x, camera->lookAt_eye.z, camera->lookAt_obj.x, camera->lookAt_obj.z);
+    camera->lookAtYaw = -atan2(0.0f, 0.0f, dx, dz);
+    camera->lookAtPitch = atan2(0.0f, 0.0f, dy, -dr);
+    camera->curYaw = atan2(camera->lookAtEye.x, camera->lookAtEye.z, camera->lookAtObj.x, camera->lookAtObj.z);
 }

@@ -53,7 +53,7 @@ void update_cameras(void) {
                 break;
         }
 
-        guLookAtReflectF(cam->mtxViewPlayer, &gDisplayContext->lookAt, cam->lookAt_eye.x, cam->lookAt_eye.y, cam->lookAt_eye.z, cam->lookAt_obj.x, cam->lookAt_obj.y, cam->lookAt_obj.z, 0, 1.0f, 0);
+        guLookAtReflectF(cam->mtxViewPlayer, &gDisplayContext->lookAt, cam->lookAtEye.x, cam->lookAtEye.y, cam->lookAtEye.z, cam->lookAtObj.x, cam->lookAtObj.y, cam->lookAtObj.z, 0, 1.0f, 0);
 
         if (!(cam->flags & CAMERA_FLAG_ORTHO)) {
             if (cam->flags & CAMERA_FLAG_LEAD_PLAYER) {
@@ -323,12 +323,12 @@ Camera* initialize_next_camera(CameraInitData* initData) {
 
     camera->flags = initData->flags | CAMERA_FLAG_INITIALIZED | CAMERA_FLAG_LEAD_PLAYER;
     camera->moveFlags = 0;
-    camera->lookAt_eye.x = 0;
-    camera->lookAt_eye.y = 0;
-    camera->lookAt_eye.z = 0;
-    camera->lookAt_obj.x = 0;
-    camera->lookAt_obj.y = 0;
-    camera->lookAt_obj.z = -100.0f;
+    camera->lookAtEye.x = 0;
+    camera->lookAtEye.y = 0;
+    camera->lookAtEye.z = 0;
+    camera->lookAtObj.x = 0;
+    camera->lookAtObj.y = 0;
+    camera->lookAtObj.z = -100.0f;
     camera->curYaw = 0.0f;
     camera->curBoomLength = 0;
     camera->targetOffsetY = 0;
@@ -344,9 +344,9 @@ Camera* initialize_next_camera(CameraInitData* initData) {
     camera->bgColor[0] = 0;
     camera->bgColor[1] = 0;
     camera->bgColor[2] = 0;
-    camera->lookAt_obj_target.x = 0;
-    camera->lookAt_obj_target.y = 0;
-    camera->lookAt_obj_target.z = 0;
+    camera->lookAtObjTarget.x = 0;
+    camera->lookAtObjTarget.y = 0;
+    camera->lookAtObjTarget.z = 0;
     camera->targetPos.x = 0;
     camera->targetPos.y = 0;
     camera->targetPos.z = 0;

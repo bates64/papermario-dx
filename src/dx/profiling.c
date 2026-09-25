@@ -34,11 +34,11 @@ u32 audio_subset_starts[AUDIO_SUBSET_SIZE];
 u32 audio_subset_tallies[AUDIO_SUBSET_SIZE];
 #endif
 
-static void buffer_update(ProfileTimeData* data, u32 new, int buffer_index) {
-    u32 old = data->counts[buffer_index];
+static void buffer_update(ProfileTimeData* data, u32 new, int bufferIndex) {
+    u32 old = data->counts[bufferIndex];
     data->total -= old;
     data->total += new;
-    data->counts[buffer_index] = new;
+    data->counts[bufferIndex] = new;
 }
 
 void profiler_update(enum ProfilerTime which, u32 delta) {
