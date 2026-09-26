@@ -1,8 +1,8 @@
 #include "flo_09.h"
 
 EntryList N(Entrances) = {
-    [flo_09_ENTRY_0]    { -520.0,    0.0,    0.0,   90.0 },
-    [flo_09_ENTRY_1]    {  520.0,    0.0,    0.0,  270.0 },
+    [flo_09_ENTRY_0]    = { -520.0,    0.0,    0.0,   90.0 },
+    [flo_09_ENTRY_1]    = {  520.0,    0.0,    0.0,  270.0 },
 };
 
 export MapSettings N(settings) = {

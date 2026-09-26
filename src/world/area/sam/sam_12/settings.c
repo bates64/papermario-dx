@@ -1,7 +1,7 @@
 #include "sam_12.h"
 
 EntryList N(Entrances) = {
-    [sam_12_ENTRY_0]    { -372.0,   15.0,    0.0,   90.0 },
+    [sam_12_ENTRY_0]    = { -372.0,   15.0,    0.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

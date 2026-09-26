@@ -10,7 +10,7 @@ void N(worker_update_partner_reflection)(void);
 static s32 N(Animator);
 
 API_CALLABLE(N(EnablePlayerReflection)) {
-    script->array[0] = (s32) create_worker_frontUI(nullptr, &N(worker_render_player_reflection));
+    script->array[0] = create_worker_frontUI(nullptr, &N(worker_render_player_reflection));
     return ApiStatus_DONE2;
 }
 

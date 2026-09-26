@@ -14,9 +14,9 @@ Gfx* D_E008AA50[] = { D_09000D50_38DDC0, D_09000D50_38DDC0 };
 void func_E008A000(SnowfallFXData* data) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
-    data->unk_08 = (camera->lookAt_eye.x + effect_rand_int(2000)) - 1000.0f;
-    data->unk_0C = (camera->lookAt_eye.y + effect_rand_int(2000)) - 1000.0f;
-    data->unk_10 = (camera->lookAt_eye.z + effect_rand_int(2000)) - 1000.0f;
+    data->unk_08 = (camera->lookAtEye.x + effect_rand_int(2000)) - 1000.0f;
+    data->unk_0C = (camera->lookAtEye.y + effect_rand_int(2000)) - 1000.0f;
+    data->unk_10 = (camera->lookAtEye.z + effect_rand_int(2000)) - 1000.0f;
     data->unk_14 = (effect_rand_int(20) - 10.0f) * 0.05;
     data->unk_18 = -1.2 - (effect_rand_int(80) * 0.01);
     data->unk_1C = (effect_rand_int(20) - 10.0f) * 0.05;
@@ -67,9 +67,9 @@ void func_E008A290(SnowfallFXData* data, s32 arg1, s32 arg2, s32 arg3) {
     f32 unk_08 = data->unk_08;
     f32 unk_0C = data->unk_0C;
     f32 unk_10 = data->unk_10;
-    f32 lookX = camera->lookAt_obj.x;
-    f32 lookY = camera->lookAt_obj.y;
-    f32 lookZ = camera->lookAt_obj.z;
+    f32 lookX = camera->lookAtObj.x;
+    f32 lookY = camera->lookAtObj.y;
+    f32 lookZ = camera->lookAtObj.z;
     s32 temp_f12;
     s32 temp_f12_2;
     s32 temp_f12_3;

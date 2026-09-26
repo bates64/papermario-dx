@@ -66,7 +66,7 @@
         starRodJar = import ./tools/star-rod.nix { starRod = star-rod; inherit system; };
 
         windowsToolchain = import ./tools/windows {
-          inherit pkgs nixpkgs-binutils-2_39 baseRom;
+          inherit pkgs nixpkgs-binutils-2_39 baseRom llvmVersion;
           mipsCrossGcc = pkgsCross.stdenv.cc;
           src = self;
           # Windows-toolchain is only ever built from the x86_64-linux branch
@@ -83,7 +83,7 @@
         evtValidatePkg = pkgs.callPackage ./tools/evt_validate.nix { };
 
         unixToolchain = import ./tools/unix {
-          inherit pkgs nixpkgs-binutils-2_39 mipsGdb starRodJar;
+          inherit pkgs nixpkgs-binutils-2_39 mipsGdb starRodJar llvmTools;
           mipsCrossGcc = pkgsCross.stdenv.cc;
         };
         linuxRom = pkgs.runCommand "papermario-linux-rom" {
@@ -130,31 +130,9 @@
         '';
 
         # clangd only loads indexes built by the same version of clangd-indexer.
-        clangdVersion = "21.1.8";
-        clangdIndexingTools = pkgs.callPackage ./tools/clangd.nix { version = clangdVersion; archive = "clangd_indexing_tools"; };
-        clangdUnwrapped = pkgs.callPackage ./tools/clangd.nix { version = clangdVersion; archive = "clangd"; };
-        # compile_commands.json names the host `cc`, and the prebuilt clangd
-        # only searches /usr/include for its headers, which Nix doesn't have.
-        # Point it at the host libc and libstdc++ headers, as clang-tools'
-        # wrapper does.
-        clangdPkg = pkgs.runCommand "clangd-${clangdVersion}" {
-          nativeBuildInputs = [ pkgs.makeWrapper ];
-        } ''
-          includePath() {
-            local path=
-            while (( $# )); do
-              case $1 in
-                -isystem|-cxx-isystem|-idirafter) shift; path=$path''${path:+:}$1 ;;
-              esac
-              shift
-            done
-            echo "$path"
-          }
-          support=${pkgs.llvmPackages.clang}/nix-support
-          makeWrapper ${clangdUnwrapped}/bin/clangd $out/bin/clangd \
-            --prefix C_INCLUDE_PATH : "$(includePath $(< $support/libc-cflags))" \
-            --prefix CPLUS_INCLUDE_PATH : "$(includePath $(< $support/libcxx-cxxflags) $(< $support/libc-cflags))"
-        '';
+        llvmVersion = "21.1.8";
+        llvmTools = pkgs.callPackage ./tools/llvm.nix { version = llvmVersion; };
+        clangdIndexingTools = pkgs.callPackage ./tools/clangd.nix { version = llvmVersion; archive = "clangd_indexing_tools"; };
         clangdIndex = pkgs.runCommand "papermario-dx-clangd-index" {
           nativeBuildInputs = [
             pkgsCross.stdenv.cc
@@ -250,7 +228,7 @@
             (writeShellScriptBin "star-rod" ''
               exec ${jdk17}/bin/java -jar ${starRodJar}/share/java/StarRod.jar "$@"
             '')
-            clang-tools
+            llvmTools
             treefmt
           ] ++ [ mipsGdb ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
           shellHook = ''
@@ -260,9 +238,6 @@
             export SCCACHE_CONF="$PWD/.dx/sccache-config.toml"
             export AWS_SHARED_CREDENTIALS_FILE="$PWD/.dx/sccache-credentials"
             export SCCACHE_BASEDIRS="$PWD"
-
-            # Shadows clang-tools' clangd.
-            export PATH="${clangdPkg}/bin:$PATH"
 
             virtualenv venv --quiet
             source venv/bin/activate

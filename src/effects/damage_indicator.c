@@ -117,7 +117,7 @@ void damage_indicator_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f32 starsRadi
         part->curPos.x = part->basePos.x;
         part->curPos.y = part->basePos.y;
         part->curPos.z = part->basePos.z;
-        angle = starsAngle + (((s32) ((((i % 2) * 2) - 1) * i) / 2) * (30.0f - damageAmt));
+        angle = starsAngle + ((((((i % 2) * 2) - 1) * i) / 2) * (30.0f - damageAmt));
         part->scale = 0.2f;
         part->relPos.x = -sin_deg(angle) * starsRadius * 1.5;
         part->relPos.y = cos_deg(angle) * starsRadius * 1.5;

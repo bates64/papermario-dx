@@ -45,11 +45,23 @@ steps:
   - name: "Build shell"
     command: nix develop --profile ./dev-profile --command true
 
+  - name: "Push to Attic"
+    # Attic skips pushing paths already signed by an "upstream cache" (e.g.
+    # cache.nixos.org) by default, on the assumption that re-hosting them
+    # is wasted disk space. Since the whole point here is a local copy that
+    # avoids re-fetching those same paths from the internet, override that.
+    command: |
+      attic login spindle "https://spindle-nix-cache.starhaven.dev" "$ATTIC_TOKEN"
+      attic push --ignore-upstream-cache-filter spindle:papermario-dx ./dev-profile
+
+  - name: "Push to Cachix"
+    command: cachix push papermario-dx ./dev-profile
+
   - name: "Configure"
     command: nix develop --command ./tools/configure.sh
 
   - name: "Build game"
-    command: nix develop --command ninja
+    command: nix develop --command tools/build_without_warnings.sh
 
   - name: "Check formatting"
     # spindle's checkout is a single-commit shallow clone with no shared
@@ -67,23 +79,7 @@ steps:
       fi
 
   - name: "Run clang-tidy"
-    command: |
-      if [ "$TANGLED_PIPELINE_KIND" = "pull_request" ]; then
-        git fetch origin "$TANGLED_PIPELINE_TARGET_BRANCH"
-        files=$(git diff --name-only "origin/$TANGLED_PIPELINE_TARGET_BRANCH" HEAD -- '*.c' '*.cpp' '*.h' '*.hpp')
-        if [ -n "$files" ]; then
-          nix develop --command bash -c 'echo "$1" | xargs clang-tidy -p . --quiet' _ "$files" || true
-        fi
-      fi
+    command: nix develop --command tools/clang_tidy_all.sh
 
-  - name: "Push to Attic"
-    # Attic skips pushing paths already signed by an "upstream cache" (e.g.
-    # cache.nixos.org) by default, on the assumption that re-hosting them
-    # is wasted disk space. Since the whole point here is a local copy that
-    # avoids re-fetching those same paths from the internet, override that.
-    command: |
-      attic login spindle "https://spindle-nix-cache.starhaven.dev" "$ATTIC_TOKEN"
-      attic push --ignore-upstream-cache-filter spindle:papermario-dx ./dev-profile
-
-  - name: "Push to Cachix"
-    command: cachix push papermario-dx ./dev-profile
+  - name: "Check struct offset comments"
+    command: nix develop --command python3 tools/audit_struct_layout.py --all

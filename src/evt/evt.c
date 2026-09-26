@@ -217,9 +217,9 @@ ApiStatus evt_handle_end_loop(Evt* script) {
     if (loopCounter >= -10000000) {
         script->loopCounterTable[loopDepth] = --loopCounter;
     } else {
-        s32 var = evt_get_variable(script, loopCounter) - 1;
-        evt_set_variable(script, loopCounter, var);
-        loopCounter = var;
+        s32 newCount = evt_get_variable(script, loopCounter) - 1;
+        evt_set_variable(script, loopCounter, newCount);
+        loopCounter = newCount;
     }
 
     if (loopCounter != 0) {
@@ -1794,35 +1794,35 @@ s32 evt_count_script_args(Bytecode* args, s32 argCount) {
     return logicalArgCount;
 }
 
-void evt_set_script_args(Evt* script, Evt* caller, Bytecode* args, s32 argCount) {
+void evt_set_script_args(Evt* newScript, Evt* caller, Bytecode* args, s32 argCount) {
     Bytecode arg;
     s32 execArgCount;
     s32 i;
 
     ASSERT(argCount >= 0);
     execArgCount = evt_count_script_args(args, argCount);
-    script->argCount = execArgCount;
-    script->argVars = nullptr;
+    newScript->argCount = execArgCount;
+    newScript->argVars = nullptr;
 
     if (execArgCount == 0) {
         return;
     }
 
-    script->argVars = heap_malloc(execArgCount * sizeof(*script->argVars));
-    ASSERT(script->argVars != nullptr);
+    newScript->argVars = heap_malloc(execArgCount * sizeof(*newScript->argVars));
+    ASSERT(newScript->argVars != nullptr);
 
     for (i = 0; i < execArgCount; i++) {
         arg = *args++;
 
         switch (arg) {
             case EVT_ARG_INT_MARKER:
-                script->argVars[i] = evt_get_variable(caller, *args++);
+                newScript->argVars[i] = evt_get_variable(caller, *args++);
                 break;
             case EVT_ARG_FLOAT_MARKER:
-                script->argVars[i] = evt_float_to_fixed_var(evt_get_float_variable(caller, *args++));
+                newScript->argVars[i] = evt_float_to_fixed_var(evt_get_float_variable(caller, *args++));
                 break;
             default:
-                script->argVars[i] = arg;
+                newScript->argVars[i] = arg;
                 break;
         }
     }

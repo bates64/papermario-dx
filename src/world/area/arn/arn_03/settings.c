@@ -1,8 +1,8 @@
 #include "arn_03.h"
 
 EntryList N(Entrances) = {
-    [arn_03_ENTRY_0]    {  -76.0,  165.0,  150.0,   90.0 },
-    [arn_03_ENTRY_1]    {  576.0,  225.0,  150.0,  270.0 },
+    [arn_03_ENTRY_0]    = {  -76.0,  165.0,  150.0,   90.0 },
+    [arn_03_ENTRY_1]    = {  576.0,  225.0,  150.0,  270.0 },
 };
 
 export MapSettings N(settings) = {

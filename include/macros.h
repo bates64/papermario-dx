@@ -4,7 +4,12 @@
 #include "types.h"
 
 #define BSS __attribute__ ((nocommon, section (".bss")))
+// C++ has no transparent unions.
+#ifdef __cplusplus
+#define TRANSPARENT_UNION
+#else
 #define TRANSPARENT_UNION __attribute__ ((__transparent_union__))
+#endif
 
 #define ALIGNED(x) __attribute__((aligned(x)))
 
@@ -574,8 +579,9 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
 #define OPTIMIZE_OS
 #endif
 
-// Use Ofast when compiling the function.
-#ifdef __GNUC__
+// Use Ofast when compiling the function. clang, which analyzes the code but
+// doesn't build it, has no optimize attribute.
+#if defined(__GNUC__) && !defined(__clang__)
 #define OPTIMIZE_OFAST __attribute__((optimize("Ofast")))
 #else
 #define OPTIMIZE_OFAST

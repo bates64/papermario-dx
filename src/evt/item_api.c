@@ -358,7 +358,7 @@ API_CALLABLE(SetItemPos) {
     y = evt_get_variable(script, *args++);
     z = evt_get_variable(script, *args++);
 
-    itemEntity = (ItemEntity*) get_item_entity(itemEntityIndex);
+    itemEntity = get_item_entity(itemEntityIndex);
     itemEntity->pos.x = x;
     itemEntity->pos.y = y;
     itemEntity->pos.z = z;
@@ -376,7 +376,7 @@ API_CALLABLE(GetItemPos) {
     outY = *args++;
     outZ = *args++;
 
-    itemEntity = (ItemEntity*) get_item_entity(itemEntityIndex);
+    itemEntity = get_item_entity(itemEntityIndex);
     evt_set_variable(script, outX, itemEntity->pos.x);
     evt_set_variable(script, outY, itemEntity->pos.y);
     evt_set_variable(script, outZ, itemEntity->pos.z);

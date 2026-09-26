@@ -302,6 +302,10 @@ s32 dx_debug_menu_nav_1D_horizontal(s32 cur, s32 min, s32 max, b32 flip) {
 }
 
 s32 dx_debug_menu_nav_2D(s32 cur, s32 max, s32 nrows) {
+    if (nrows <= 0) {
+        return cur;
+    }
+
     s32 ncols = max / nrows;
     if ((max % nrows) != 0) {
         ncols++;
@@ -491,8 +495,6 @@ void dx_debug_update_sound_player();
 void dx_debug_update_select_sound();
 void dx_debug_update_edit_partners();
 void dx_debug_update_edit_inventory();
-void dx_debug_update_edit_items();
-void dx_debug_update_edit_items();
 void dx_debug_update_edit_items();
 void dx_debug_update_edit_gear();
 void dx_debug_update_edit_stats();
@@ -920,19 +922,19 @@ enum DebugBattleValues {
 };
 
 s32 DebugBattleNum[] = {
-    [DEBUG_BATTLE_AREA_TENS]        0,
-    [DEBUG_BATTLE_AREA_ONES]        0,
-    [DEBUG_BATTLE_FORMATION_TENS]   0,
-    [DEBUG_BATTLE_FORMATION_ONES]   0,
-    [DEBUG_BATTLE_STAGE]            -1,
+    [DEBUG_BATTLE_AREA_TENS]        = 0,
+    [DEBUG_BATTLE_AREA_ONES]        = 0,
+    [DEBUG_BATTLE_FORMATION_TENS]   = 0,
+    [DEBUG_BATTLE_FORMATION_ONES]   = 0,
+    [DEBUG_BATTLE_STAGE]            = -1,
 };
 
 s32 BattleDigitOffsets[] = {
-    [DEBUG_BATTLE_AREA_TENS]        10,
-    [DEBUG_BATTLE_AREA_ONES]        17,
-    [DEBUG_BATTLE_FORMATION_TENS]   35,
-    [DEBUG_BATTLE_FORMATION_ONES]   42,
-    [DEBUG_BATTLE_STAGE]            63,
+    [DEBUG_BATTLE_AREA_TENS]        = 10,
+    [DEBUG_BATTLE_AREA_ONES]        = 17,
+    [DEBUG_BATTLE_FORMATION_TENS]   = 35,
+    [DEBUG_BATTLE_FORMATION_ONES]   = 42,
+    [DEBUG_BATTLE_STAGE]            = 63,
 };
 
 s32 DebugBattleColumn = 0;
@@ -1853,10 +1855,10 @@ enum {
 };
 
 s32 DebugGearValues[] = {
-    [DEBUG_GEAR_BOOTS]          0,
-    [DEBUG_GEAR_HAMMER]         0,
-    [DEBUG_GEAR_LUCKY_STAR]     0,
-    [DEBUG_GEAR_STAR_BEAM]      0,
+    [DEBUG_GEAR_BOOTS]          = 0,
+    [DEBUG_GEAR_HAMMER]         = 0,
+    [DEBUG_GEAR_LUCKY_STAR]     = 0,
+    [DEBUG_GEAR_STAR_BEAM]      = 0,
 };
 s32 DebugGearPos = 0;
 
@@ -1947,11 +1949,11 @@ enum {
 };
 
 s32 DebugStatValues[] = {
-    [DEBUG_STAT_HP]         0,
-    [DEBUG_STAT_FP]         0,
-    [DEBUG_STAT_BP]         0,
-    [DEBUG_STAT_LEVEL]      0,
-    [DEBUG_STAT_SPIRITS]    0,
+    [DEBUG_STAT_HP]         = 0,
+    [DEBUG_STAT_FP]         = 0,
+    [DEBUG_STAT_BP]         = 0,
+    [DEBUG_STAT_LEVEL]      = 0,
+    [DEBUG_STAT_SPIRITS]    = 0,
 };
 s32 DebugStatPos = 0;
 
@@ -2137,14 +2139,14 @@ enum {
 };
 
 DebugCollisionEntry DebugCollisionMenu[] = {
-    [DBC_SHOW_COLLISION]  { "Show Collision",  false },
-    [DBC_CULL_BACK]       { "Cull Back",       true },
-    [DBC_SHOW_DISABLED]   { "Show Disabled",   true },
-    [DBC_HIDE_MODELS]     { "Hide Models",     false },
-    [DBC_EXTRUDE_FACES]   { "Extrude Faces",   false },
-    [DBC_HIGHLIGHT_FLOOR] { "Highlight Floor", false },
-    [DBC_HIGHLIGHT_WALL]  { "Highlight Wall",  false },
-    [DBC_FADE_DIST]       { "Near Fade Dist",  1 },
+    [DBC_SHOW_COLLISION]  = { "Show Collision",  false },
+    [DBC_CULL_BACK]       = { "Cull Back",       true },
+    [DBC_SHOW_DISABLED]   = { "Show Disabled",   true },
+    [DBC_HIDE_MODELS]     = { "Hide Models",     false },
+    [DBC_EXTRUDE_FACES]   = { "Extrude Faces",   false },
+    [DBC_HIGHLIGHT_FLOOR] = { "Highlight Floor", false },
+    [DBC_HIGHLIGHT_WALL]  = { "Highlight Wall",  false },
+    [DBC_FADE_DIST]       = { "Near Fade Dist",  1 },
 };
 
 s32 DebugCollisionPos = 0;
@@ -2375,11 +2377,11 @@ typedef struct DebugCheatEntry {
 } DebugCheatEntry;
 
 DebugCheatEntry DebugCheatMenu[] = {
-    [DEBUG_CHEAT_GOD_MODE]      { "God Mode",   false },
-    [DEBUG_CHEAT_SPEED_MODE]    { "Speed Mode", false },
-    [DEBUG_CHEAT_FLY]           { "Fly With L", false },
-    [DEBUG_CHEAT_HIGH_JUMP]     { "High Jump", false },
-    [DEBUG_CHEAT_IGNORE_WALLS]  { "Ignore Walls", false },
+    [DEBUG_CHEAT_GOD_MODE]      = { "God Mode",   false },
+    [DEBUG_CHEAT_SPEED_MODE]    = { "Speed Mode", false },
+    [DEBUG_CHEAT_FLY]           = { "Fly With L", false },
+    [DEBUG_CHEAT_HIGH_JUMP]     = { "High Jump", false },
+    [DEBUG_CHEAT_IGNORE_WALLS]  = { "Ignore Walls", false },
 };
 
 s32 DebugCheatPos = 0;
@@ -2490,123 +2492,123 @@ typedef struct DebugOpcode {
 } DebugOpcode;
 
 DebugOpcode DebugOps[] = {
-    [EVT_OP_END]                { "End" },
-    [EVT_OP_RETURN]             { "Return" },
-    [EVT_OP_LABEL]              { "Label" },
-    [EVT_OP_GOTO]               { "Goto" },
-    [EVT_OP_LOOP]               { "Loop" },
-    [EVT_OP_END_LOOP]           { "EndLoop" },
-    [EVT_OP_BREAK_LOOP]         { "BreakLoop" },
-    [EVT_OP_CONTINUE_LOOP]      { "ContinueLoop" },
-    [EVT_OP_RETRY_LOOP]         { "RetryLoop" },
-    [EVT_OP_WAIT_FRAMES]        { "Wait" },
-    [EVT_OP_WAIT_SECS]          { "WaitSecs" },
-    [EVT_OP_IF_EQ]              { "If EQ" },
-    [EVT_OP_IF_NE]              { "If NE" },
-    [EVT_OP_IF_LT]              { "If LT" },
-    [EVT_OP_IF_GT]              { "If GT" },
-    [EVT_OP_IF_LE]              { "If LE" },
-    [EVT_OP_IF_GE]              { "If GE" },
-    [EVT_OP_IF_RANGE]           { "IfRange" },
-    [EVT_OP_IF_NOT_RANGE]       { "IfNotRange" },
-    [EVT_OP_IF_FLAG]            { "If AND" },
-    [EVT_OP_IF_NOT_FLAG]        { "If NAND" },
-    [EVT_OP_ELSE]               { "Else" },
-    [EVT_OP_END_IF]             { "EndIf" },
-    [EVT_OP_SWITCH]             { "Switch" },
-    [EVT_OP_SWITCH_CONST]       { "SwitchConst" },
-    [EVT_OP_CASE_EQ]            { "Case EQ" },
-    [EVT_OP_CASE_NE]            { "Case NE" },
-    [EVT_OP_CASE_LT]            { "Case LT" },
-    [EVT_OP_CASE_GT]            { "Case GT" },
-    [EVT_OP_CASE_LE]            { "Case LE" },
-    [EVT_OP_CASE_GE]            { "Case GE" },
-    [EVT_OP_CASE_DEFAULT]       { "Default" },
-    [EVT_OP_CASE_OR_EQ]         { "CaseOR EQ" },
-    [EVT_OP_CASE_AND_EQ]        { "CaseAND EQ" },
-    [EVT_OP_CASE_FLAG]          { "Case AND" },
-    [EVT_OP_END_CASE_GROUP]     { "EndCaseGroup" },
-    [EVT_OP_CASE_RANGE]         { "Case Range" },
-    [EVT_OP_BREAK_SWITCH]       { "BreakSwitch" },
-    [EVT_OP_END_SWITCH]         { "EndSwitch" },
-    [EVT_OP_SET]                { "Set" },
-    [EVT_OP_SET_CONST]          { "SetConst" },
-    [EVT_OP_SETF]               { "SetF" },
-    [EVT_OP_ADD]                { "Add" },
-    [EVT_OP_SUB]                { "Sub" },
-    [EVT_OP_MUL]                { "Mul" },
-    [EVT_OP_DIV]                { "Div" },
-    [EVT_OP_MOD]                { "Mod" },
-    [EVT_OP_ADDF]               { "AddF" },
-    [EVT_OP_SUBF]               { "SubF" },
-    [EVT_OP_MULF]               { "MulF" },
-    [EVT_OP_DIVF]               { "DivF" },
-    [EVT_OP_NEG]                { "Neg" },
-    [EVT_OP_NEGF]               { "NegF" },
-    [EVT_OP_ABS]                { "Abs" },
-    [EVT_OP_ABSF]               { "AbsF" },
-    [EVT_OP_SIGN]               { "Sign" },
-    [EVT_OP_SIGNF]              { "SignF" },
-    [EVT_OP_MIN]                { "Min" },
-    [EVT_OP_MINF]               { "MinF" },
-    [EVT_OP_MAX]                { "Max" },
-    [EVT_OP_MAXF]               { "MaxF" },
-    [EVT_OP_CLAMP]              { "Clamp" },
-    [EVT_OP_CLAMPF]             { "ClampF" },
-    [EVT_OP_USE_BUF]            { "UseBuf" },
-    [EVT_OP_BUF_READ]           { "BufRead" },
-    [EVT_OP_BUF_PEEK]           { "BufPeek" },
-    [EVT_OP_USE_FBUF]           { "UseFBuf" },
-    [EVT_OP_FBUF_READ]          { "FBufRead" },
-    [EVT_OP_FBUF_PEEK]          { "FBufPeek" },
-    [EVT_OP_MEM_GET]            { "MemGet" },
-    [EVT_OP_MEM_SET]            { "MemSet" },
-    [EVT_OP_USE_ARRAY]          { "UseArray" },
-    [EVT_OP_USE_FLAGS]          { "UseFlags" },
-    [EVT_OP_MALLOC_ARRAY]       { "MallocArray" },
-    [EVT_OP_BITWISE_AND]        { "AND" },
-    [EVT_OP_BITWISE_AND_CONST]  { "AND Const" },
-    [EVT_OP_BITWISE_OR]         { "OR" },
-    [EVT_OP_BITWISE_OR_CONST]   { "OR Const" },
-    [EVT_OP_CALL]               { "Call" },
-    [EVT_OP_EXEC]               { "Exec" },
-    [EVT_OP_EXEC_GET_ID]        { "ExecGetID" },
-    [EVT_OP_EXEC_WAIT]          { "ExecWait" },
-    [EVT_OP_BIND_TRIGGER]       { "BindTrigger" },
-    [EVT_OP_UNBIND]             { "Unbind" },
-    [EVT_OP_KILL_SCRIPT]        { "KillScript" },
-    [EVT_OP_JUMP]               { "Jump" },
-    [EVT_OP_SET_PRIORITY]       { "SetPriority" },
-    [EVT_OP_SET_TIMESCALE]      { "SetTimescale" },
-    [EVT_OP_SET_GROUP]          { "SetGroup" },
-    [EVT_OP_BIND_ITEM_PROMPT]   { "BindItemPrompt" },
-    [EVT_OP_SUSPEND_GROUP]      { "SuspendGroup" },
-    [EVT_OP_RESUME_GROUP]       { "ResumeGroup" },
-    [EVT_OP_SUSPEND_OTHERS]     { "SuspendOthers" },
-    [EVT_OP_RESUME_OTHERS]      { "ResumeOthers" },
-    [EVT_OP_SUSPEND_SCRIPT]     { "SuspendScript" },
-    [EVT_OP_RESUME_SCRIPT]      { "ResumeScript" },
-    [EVT_OP_IS_SCRIPT_RUNNING]  { "IsScriptRunning" },
-    [EVT_OP_THREAD]             { "Thread" },
-    [EVT_OP_END_THREAD]         { "EndThread" },
-    [EVT_OP_CHILD_THREAD]       { "ChildThread" },
-    [EVT_OP_END_CHILD_THREAD]   { "EndChildThread" },
-    [EVT_OP_AWAIT_CHILDREN]     { "AwaitChildren" },
-    [EVT_OP_AWAIT_SCRIPT]       { "AwaitScript" },
-    [EVT_OP_DEBUG_PRINT_VAR]    { "PrintVar" },
-    [EVT_OP_DEBUG_BREAKPOINT]   { "Breakpoint" },
-    [EVT_OP_EXPECT_ARGS]        { "ExpectArgs" },
-    [EVT_OP_FINALLY]            { "Finally" },
-    [EVT_OP_EVAL]               { "Eval" },
-    [EVT_OP_EVALF]              { "EvalF" },
-    [EVT_OP_INVOKE]             { "Invoke" },
-    [EVT_OP_INVOKEF]            { "InvokeF" },
-    [EVT_OP_IF_EVAL]            { "IfEval" },
-    [EVT_OP_IF_NOT_EVAL]        { "IfNotEval" },
-    [EVT_OP_IF_EVALF]           { "IfEvalF" },
-    [EVT_OP_IF_NOT_EVALF]       { "IfNotEvalF" },
-    [EVT_OP_LERP]               { "Lerp" },
-    [EVT_OP_END_LERP]           { "EndLerp" },
+    [EVT_OP_END]                = { "End" },
+    [EVT_OP_RETURN]             = { "Return" },
+    [EVT_OP_LABEL]              = { "Label" },
+    [EVT_OP_GOTO]               = { "Goto" },
+    [EVT_OP_LOOP]               = { "Loop" },
+    [EVT_OP_END_LOOP]           = { "EndLoop" },
+    [EVT_OP_BREAK_LOOP]         = { "BreakLoop" },
+    [EVT_OP_CONTINUE_LOOP]      = { "ContinueLoop" },
+    [EVT_OP_RETRY_LOOP]         = { "RetryLoop" },
+    [EVT_OP_WAIT_FRAMES]        = { "Wait" },
+    [EVT_OP_WAIT_SECS]          = { "WaitSecs" },
+    [EVT_OP_IF_EQ]              = { "If EQ" },
+    [EVT_OP_IF_NE]              = { "If NE" },
+    [EVT_OP_IF_LT]              = { "If LT" },
+    [EVT_OP_IF_GT]              = { "If GT" },
+    [EVT_OP_IF_LE]              = { "If LE" },
+    [EVT_OP_IF_GE]              = { "If GE" },
+    [EVT_OP_IF_RANGE]           = { "IfRange" },
+    [EVT_OP_IF_NOT_RANGE]       = { "IfNotRange" },
+    [EVT_OP_IF_FLAG]            = { "If AND" },
+    [EVT_OP_IF_NOT_FLAG]        = { "If NAND" },
+    [EVT_OP_ELSE]               = { "Else" },
+    [EVT_OP_END_IF]             = { "EndIf" },
+    [EVT_OP_SWITCH]             = { "Switch" },
+    [EVT_OP_SWITCH_CONST]       = { "SwitchConst" },
+    [EVT_OP_CASE_EQ]            = { "Case EQ" },
+    [EVT_OP_CASE_NE]            = { "Case NE" },
+    [EVT_OP_CASE_LT]            = { "Case LT" },
+    [EVT_OP_CASE_GT]            = { "Case GT" },
+    [EVT_OP_CASE_LE]            = { "Case LE" },
+    [EVT_OP_CASE_GE]            = { "Case GE" },
+    [EVT_OP_CASE_DEFAULT]       = { "Default" },
+    [EVT_OP_CASE_OR_EQ]         = { "CaseOR EQ" },
+    [EVT_OP_CASE_AND_EQ]        = { "CaseAND EQ" },
+    [EVT_OP_CASE_FLAG]          = { "Case AND" },
+    [EVT_OP_END_CASE_GROUP]     = { "EndCaseGroup" },
+    [EVT_OP_CASE_RANGE]         = { "Case Range" },
+    [EVT_OP_BREAK_SWITCH]       = { "BreakSwitch" },
+    [EVT_OP_END_SWITCH]         = { "EndSwitch" },
+    [EVT_OP_SET]                = { "Set" },
+    [EVT_OP_SET_CONST]          = { "SetConst" },
+    [EVT_OP_SETF]               = { "SetF" },
+    [EVT_OP_ADD]                = { "Add" },
+    [EVT_OP_SUB]                = { "Sub" },
+    [EVT_OP_MUL]                = { "Mul" },
+    [EVT_OP_DIV]                = { "Div" },
+    [EVT_OP_MOD]                = { "Mod" },
+    [EVT_OP_ADDF]               = { "AddF" },
+    [EVT_OP_SUBF]               = { "SubF" },
+    [EVT_OP_MULF]               = { "MulF" },
+    [EVT_OP_DIVF]               = { "DivF" },
+    [EVT_OP_NEG]                = { "Neg" },
+    [EVT_OP_NEGF]               = { "NegF" },
+    [EVT_OP_ABS]                = { "Abs" },
+    [EVT_OP_ABSF]               = { "AbsF" },
+    [EVT_OP_SIGN]               = { "Sign" },
+    [EVT_OP_SIGNF]              = { "SignF" },
+    [EVT_OP_MIN]                = { "Min" },
+    [EVT_OP_MINF]               = { "MinF" },
+    [EVT_OP_MAX]                = { "Max" },
+    [EVT_OP_MAXF]               = { "MaxF" },
+    [EVT_OP_CLAMP]              = { "Clamp" },
+    [EVT_OP_CLAMPF]             = { "ClampF" },
+    [EVT_OP_USE_BUF]            = { "UseBuf" },
+    [EVT_OP_BUF_READ]           = { "BufRead" },
+    [EVT_OP_BUF_PEEK]           = { "BufPeek" },
+    [EVT_OP_USE_FBUF]           = { "UseFBuf" },
+    [EVT_OP_FBUF_READ]          = { "FBufRead" },
+    [EVT_OP_FBUF_PEEK]          = { "FBufPeek" },
+    [EVT_OP_MEM_GET]            = { "MemGet" },
+    [EVT_OP_MEM_SET]            = { "MemSet" },
+    [EVT_OP_USE_ARRAY]          = { "UseArray" },
+    [EVT_OP_USE_FLAGS]          = { "UseFlags" },
+    [EVT_OP_MALLOC_ARRAY]       = { "MallocArray" },
+    [EVT_OP_BITWISE_AND]        = { "AND" },
+    [EVT_OP_BITWISE_AND_CONST]  = { "AND Const" },
+    [EVT_OP_BITWISE_OR]         = { "OR" },
+    [EVT_OP_BITWISE_OR_CONST]   = { "OR Const" },
+    [EVT_OP_CALL]               = { "Call" },
+    [EVT_OP_EXEC]               = { "Exec" },
+    [EVT_OP_EXEC_GET_ID]        = { "ExecGetID" },
+    [EVT_OP_EXEC_WAIT]          = { "ExecWait" },
+    [EVT_OP_BIND_TRIGGER]       = { "BindTrigger" },
+    [EVT_OP_UNBIND]             = { "Unbind" },
+    [EVT_OP_KILL_SCRIPT]        = { "KillScript" },
+    [EVT_OP_JUMP]               = { "Jump" },
+    [EVT_OP_SET_PRIORITY]       = { "SetPriority" },
+    [EVT_OP_SET_TIMESCALE]      = { "SetTimescale" },
+    [EVT_OP_SET_GROUP]          = { "SetGroup" },
+    [EVT_OP_BIND_ITEM_PROMPT]   = { "BindItemPrompt" },
+    [EVT_OP_SUSPEND_GROUP]      = { "SuspendGroup" },
+    [EVT_OP_RESUME_GROUP]       = { "ResumeGroup" },
+    [EVT_OP_SUSPEND_OTHERS]     = { "SuspendOthers" },
+    [EVT_OP_RESUME_OTHERS]      = { "ResumeOthers" },
+    [EVT_OP_SUSPEND_SCRIPT]     = { "SuspendScript" },
+    [EVT_OP_RESUME_SCRIPT]      = { "ResumeScript" },
+    [EVT_OP_IS_SCRIPT_RUNNING]  = { "IsScriptRunning" },
+    [EVT_OP_THREAD]             = { "Thread" },
+    [EVT_OP_END_THREAD]         = { "EndThread" },
+    [EVT_OP_CHILD_THREAD]       = { "ChildThread" },
+    [EVT_OP_END_CHILD_THREAD]   = { "EndChildThread" },
+    [EVT_OP_AWAIT_CHILDREN]     = { "AwaitChildren" },
+    [EVT_OP_AWAIT_SCRIPT]       = { "AwaitScript" },
+    [EVT_OP_DEBUG_PRINT_VAR]    = { "PrintVar" },
+    [EVT_OP_DEBUG_BREAKPOINT]   = { "Breakpoint" },
+    [EVT_OP_EXPECT_ARGS]        = { "ExpectArgs" },
+    [EVT_OP_FINALLY]            = { "Finally" },
+    [EVT_OP_EVAL]               = { "Eval" },
+    [EVT_OP_EVALF]              = { "EvalF" },
+    [EVT_OP_INVOKE]             = { "Invoke" },
+    [EVT_OP_INVOKEF]            = { "InvokeF" },
+    [EVT_OP_IF_EVAL]            = { "IfEval" },
+    [EVT_OP_IF_NOT_EVAL]        = { "IfNotEval" },
+    [EVT_OP_IF_EVALF]           = { "IfEvalF" },
+    [EVT_OP_IF_NOT_EVALF]       = { "IfNotEvalF" },
+    [EVT_OP_LERP]               = { "Lerp" },
+    [EVT_OP_END_LERP]           = { "EndLerp" },
 };
 
 // main menu options for evt debugger
@@ -2703,13 +2705,13 @@ s32 dx_debug_scroll_to_line(s32 drawnLine, s32 selectedLine, s32 maxLine, s32 ma
 void dx_debug_draw_evt_list() {
     s32 i;
 
-    const s32 BoxStartX = EvtDebugInfoX - BoxOutsetX;
-    const s32 BoxStartY = EvtDebugInfoY - BoxOutsetY;
-    const s32 BoxHeight = BoxOutsetY + 10 * RowHeight + BoxOutsetY;
-    const s32 BoxWidth = 212;
+    const s32 boxStartX = EvtDebugInfoX - BoxOutsetX;
+    const s32 boxStartY = EvtDebugInfoY - BoxOutsetY;
+    const s32 boxHeight = BoxOutsetY + 10 * RowHeight + BoxOutsetY;
+    const s32 boxWidth = 212;
 
     // script list box
-    dx_debug_draw_box(BoxStartX, BoxStartY, BoxWidth, BoxHeight, WINDOW_STYLE_20, 192);
+    dx_debug_draw_box(boxStartX, boxStartY, boxWidth, boxHeight, WINDOW_STYLE_20, 192);
 
     dx_debug_draw_ascii("Grp", DefaultColor, EvtDebugInfoX - 3, EvtDebugInfoY);
     dx_debug_draw_ascii("Start", DefaultColor, EvtDebugInfoX + 20 + 8, EvtDebugInfoY);
@@ -3380,7 +3382,8 @@ void dx_debug_console_main() {
 
 #define LESS(i, j) DebugConsole[i]->timeLeft > DebugConsole[j]->timeLeft
 #define SWAP(i, j) temp = DebugConsole[i], DebugConsole[i] = DebugConsole[j], DebugConsole[j] = temp
-    QSORT(ARRAY_COUNT(DebugConsole), LESS, SWAP);
+    s32 count = ARRAY_COUNT(DebugConsole);
+    QSORT(count, LESS, SWAP);
 #undef LESS
 #undef SWAP
 

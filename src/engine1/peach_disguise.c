@@ -51,7 +51,7 @@ AnimID KoopatrolDisguiseLimitAnims[] = {
 };
 
 DisguiseAnims BasicPeachDisguiseAnims[] = {
-    [PEACH_DISGUISE_NONE] {
+    [PEACH_DISGUISE_NONE] = {
         ANIM_WorldKoopatrol_Idle,
         ANIM_WorldKoopatrol_Walk,
         ANIM_WorldKoopatrol_Run,
@@ -59,7 +59,7 @@ DisguiseAnims BasicPeachDisguiseAnims[] = {
         ANIM_WorldKoopatrol_Still,
         ANIM_WorldKoopatrol_GotItem
     },
-    [PEACH_DISGUISE_KOOPATROL] {
+    [PEACH_DISGUISE_KOOPATROL] = {
         ANIM_WorldKoopatrol_Idle,
         ANIM_WorldKoopatrol_Walk,
         ANIM_WorldKoopatrol_Run,
@@ -67,7 +67,7 @@ DisguiseAnims BasicPeachDisguiseAnims[] = {
         ANIM_WorldKoopatrol_Still,
         ANIM_WorldKoopatrol_GotItem
     },
-    [PEACH_DISGUISE_HAMMER_BROS] {
+    [PEACH_DISGUISE_HAMMER_BROS] = {
         ANIM_HammerBros_IdleDisarmed,
         ANIM_HammerBros_WalkDisarmed,
         ANIM_HammerBros_RunDisarmed,
@@ -75,7 +75,7 @@ DisguiseAnims BasicPeachDisguiseAnims[] = {
         ANIM_HammerBros_Still,
         ANIM_HammerBros_GotItem
     },
-    [PEACH_DISGUISE_CLUBBA] {
+    [PEACH_DISGUISE_CLUBBA] = {
         ANIM_WorldClubba_Idle,
         ANIM_WorldClubba_Walk,
         ANIM_WorldClubba_Run,
@@ -86,10 +86,10 @@ DisguiseAnims BasicPeachDisguiseAnims[] = {
 };
 
 AnimID* PeachDisguiseLimitAnims[] = {
-    [PEACH_DISGUISE_NONE] KoopatrolDisguiseLimitAnims,
-    [PEACH_DISGUISE_KOOPATROL] KoopatrolDisguiseLimitAnims,
-    [PEACH_DISGUISE_HAMMER_BROS] HammerBroDisguiseLimitAnims,
-    [PEACH_DISGUISE_CLUBBA] ClubbaDisguiseLimitAnims
+    [PEACH_DISGUISE_NONE] = KoopatrolDisguiseLimitAnims,
+    [PEACH_DISGUISE_KOOPATROL] = KoopatrolDisguiseLimitAnims,
+    [PEACH_DISGUISE_HAMMER_BROS] = HammerBroDisguiseLimitAnims,
+    [PEACH_DISGUISE_CLUBBA] = ClubbaDisguiseLimitAnims
 };
 
 void peach_set_disguise_anim(AnimID anim) {

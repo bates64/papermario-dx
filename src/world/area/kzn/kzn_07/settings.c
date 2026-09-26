@@ -1,7 +1,7 @@
 #include "kzn_07.h"
 
 EntryList N(Entrances) = {
-    [kzn_07_ENTRY_0]    {  290.0,    0.0,   70.0,  270.0 },
+    [kzn_07_ENTRY_0]    = {  290.0,    0.0,   70.0,  270.0 },
 };
 
 export MapSettings N(settings) = {

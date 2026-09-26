@@ -72,7 +72,7 @@ API_CALLABLE(N(HideBehindTree)) {
         f32 curAngle = clamp_angle(atan2(-210.0f, -183.0f, npc->pos.x, npc->pos.z));
         f32 targetAngle = clamp_angle(atan2(-210.0f, -183.0f, posX, posZ));
         f32 deltaAngle = curAngle - targetAngle;
-        if (abs(deltaAngle) > 20) {
+        if (abs((s32)deltaAngle) > 20) {
             angle = deltaAngle;
             if (angle >= 180.0f) {
                 angle -= 360.0f;

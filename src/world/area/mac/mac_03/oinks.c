@@ -344,19 +344,19 @@ EvtScript N(EVS_UseMachinePrompt) = {
 };
 
 LilOinkReward N(LilOinkPrizes)[] = {
-    [LIL_OINK_TYPE_BLACK]       { .itemID = ITEM_DRIED_SHROOM,  .quantity = 1, .chance = 100 },
-    [LIL_OINK_TYPE_WHITE]       { .itemID = ITEM_SUPER_SHROOM,  .quantity = 1, .chance = 100 },
-    [LIL_OINK_TYPE_PINK]        { .itemID = ITEM_FIRE_FLOWER,   .quantity = 1, .chance = 100 },
-    [LIL_OINK_TYPE_PIKACHU]     { .itemID = ITEM_THUNDER_RAGE,  .quantity = 1, .chance = 100 },
-    [LIL_OINK_TYPE_SHROOM]      { .itemID = ITEM_LIFE_SHROOM,   .quantity = 1, .chance = 100 },
-    [LIL_OINK_TYPE_FLOWER]      { .itemID = ITEM_MAPLE_SYRUP,   .quantity = 1, .chance = 100 },
-    [LIL_OINK_TYPE_STAR]        { .itemID = ITEM_SHOOTING_STAR, .quantity = 1, .chance = 100 },
-    [LIL_OINK_TYPE_QUESTION]    { .itemID = ITEM_REPEL_GEL,     .quantity = 1, .chance = 100 },
-    [LIL_OINK_TYPE_SILVER]      { .itemID = ITEM_JAMMIN_JELLY,  .quantity = 1, .chance = 100 },
+    [LIL_OINK_TYPE_BLACK]       = { .itemID = ITEM_DRIED_SHROOM,  .quantity = 1, .chance = 100 },
+    [LIL_OINK_TYPE_WHITE]       = { .itemID = ITEM_SUPER_SHROOM,  .quantity = 1, .chance = 100 },
+    [LIL_OINK_TYPE_PINK]        = { .itemID = ITEM_FIRE_FLOWER,   .quantity = 1, .chance = 100 },
+    [LIL_OINK_TYPE_PIKACHU]     = { .itemID = ITEM_THUNDER_RAGE,  .quantity = 1, .chance = 100 },
+    [LIL_OINK_TYPE_SHROOM]      = { .itemID = ITEM_LIFE_SHROOM,   .quantity = 1, .chance = 100 },
+    [LIL_OINK_TYPE_FLOWER]      = { .itemID = ITEM_MAPLE_SYRUP,   .quantity = 1, .chance = 100 },
+    [LIL_OINK_TYPE_STAR]        = { .itemID = ITEM_SHOOTING_STAR, .quantity = 1, .chance = 100 },
+    [LIL_OINK_TYPE_QUESTION]    = { .itemID = ITEM_REPEL_GEL,     .quantity = 1, .chance = 100 },
+    [LIL_OINK_TYPE_SILVER]      = { .itemID = ITEM_JAMMIN_JELLY,  .quantity = 1, .chance = 100 },
 #if VERSION_JP
     [LIL_OINK_TYPE_GOLD]        { .itemID = ITEM_JELLY_SHROOM,  .quantity = 1, .chance = 100 },
 #else
-    [LIL_OINK_TYPE_GOLD]        { .itemID = ITEM_ULTRA_SHROOM,  .quantity = 1, .chance = 100 },
+    [LIL_OINK_TYPE_GOLD]        = { .itemID = ITEM_ULTRA_SHROOM,  .quantity = 1, .chance = 100 },
 #endif
 };
 

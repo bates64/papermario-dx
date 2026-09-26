@@ -1,7 +1,7 @@
 #include "isk_14.h"
 
 EntryList N(Entrances) = {
-    [isk_14_ENTRY_0]    { -538.0, -780.0, -217.0,   29.0 },
+    [isk_14_ENTRY_0]    = { -538.0, -780.0, -217.0,   29.0 },
 };
 
 export MapSettings N(settings) = {

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import argparse
+import contextlib
+import io
 import os
 import re
 import struct
@@ -104,6 +106,24 @@ def parse_pad_size(decl: str) -> int | None:
     return int(match.group(1), 0)
 
 
+# Versions the probe is compiled for, which decides the #if VERSION_* branches.
+PROBE_VERSION = "VERSION_US"
+VERSION_IF_RE = re.compile(r"#\s*(if|ifdef|ifndef|elif)\s+(!\s*)?(?:defined\s*\(\s*)?(VERSION_\w+)\s*\)?\s*$")
+
+
+def version_branch_holds(line: str) -> bool | None:
+    """Whether a #if/#ifdef/#ifndef/#elif line on a VERSION_* macro holds for
+    the probe's version, or None if the line tests something else."""
+    match = VERSION_IF_RE.match(line.strip())
+    if not match:
+        return None
+    directive, negated, macro = match.groups()
+    holds = macro == PROBE_VERSION
+    if directive == "ifndef":
+        holds = not holds
+    return holds != bool(negated)
+
+
 def parse_structs(path: Path) -> list[StructInfo]:
     text = path.read_text(errors="ignore").splitlines()
     structs: list[StructInfo] = []
@@ -146,8 +166,30 @@ def parse_structs(path: Path) -> list[StructInfo]:
         fields: list[Field] = []
         depth = 1
         item = 0
+        # For each open #if: whether this branch is compiled, and whether an
+        # earlier branch already was. Only VERSION_* conditions are evaluated.
+        branches: list[list[bool]] = []
         while item < len(body):
             line_num, line = body[item]
+            directive = line.strip()
+            if directive.startswith("#"):
+                holds = version_branch_holds(directive)
+                word = directive[1:].strip().split(" ")[0].split("(")[0]
+                if word in ("if", "ifdef", "ifndef"):
+                    active = True if holds is None else holds
+                    branches.append([active, active])
+                elif word == "elif" and branches:
+                    active = (True if holds is None else holds) and not branches[-1][1]
+                    branches[-1] = [active, branches[-1][1] or active]
+                elif word == "else" and branches:
+                    branches[-1] = [not branches[-1][1], True]
+                elif word == "endif" and branches:
+                    branches.pop()
+                item += 1
+                continue
+            if not all(branch[0] for branch in branches):
+                item += 1
+                continue
             offset_match = offset_re.search(line)
 
             if depth == 1:
@@ -240,6 +282,9 @@ def compile_probe(
                 continue
             labels.append(f"{info.name}.{field.name}")
             code.append(f"    (unsigned)offsetof({info.c_name}, {field.name}),")
+            # A flexible array member, written [] or [VLA], has no size.
+            if re.search(r"\[\s*(VLA)?\s*\]\s*;", strip_comments(field.text)):
+                continue
             labels.append(f"{info.name}.{field.name}.__sizeof")
             code.append(f"    (unsigned)sizeof(((const {info.c_name}*)0)->{field.name}),")
             labels.append(f"{info.name}.{field.name}.__alignof")
@@ -406,15 +451,70 @@ def print_struct(info: StructInfo, values: dict[str, int], compare: bool) -> tup
     return bad_count, warning_count
 
 
+# Vendored headers, whose comments come from their SDKs.
+AUDIT_ALL_EXCLUDED = ("include/PR/", "include/nu/")
+
+
+def audit_all(args) -> int:
+    """Audit the annotated structs of each header, in a probe of its own."""
+    bad_count = 0
+    warning_count = 0
+    for path in source_paths():
+        rel = path.relative_to(root_dir).as_posix()
+        if path.suffix != ".h" or rel.startswith(AUDIT_ALL_EXCLUDED):
+            continue
+        infos = []
+        names = set()
+        for info in parse_structs(path):
+            annotated = info.size_annotation is not None or any(f.annotation is not None for f in info.fields)
+            if annotated and info.name not in names:
+                names.add(info.name)
+                infos.append(info)
+        if not infos:
+            continue
+
+        try:
+            values = compile_probe(infos, args.include, args.cc, args.objcopy)
+        except SystemExit:
+            print(f"{rel}: the layout probe doesn't compile")
+            bad_count += 1
+            continue
+
+        for info in infos:
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                struct_bad_count, struct_warning_count = print_struct(info, values, True)
+            bad_count += struct_bad_count
+            warning_count += struct_warning_count
+            if struct_bad_count:
+                print(output.getvalue(), end="")
+
+    if bad_count:
+        print(f"{bad_count} layout error(s) detected, and {warning_count} warning(s).")
+        return 2
+    print(f"No layout errors detected, and {warning_count} warning(s).")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Audit struct sizeof and offsetof values with the MIPS compiler.")
-    parser.add_argument("struct", nargs="+", help="struct typedef/tag name to audit, e.g. Camera")
+    parser.add_argument("struct", nargs="*", help="struct typedef/tag name to audit, e.g. Camera")
+    parser.add_argument(
+        "--all",
+        action="store_true",
+        help="audit every struct with offset or size comments in a header, printing only problems",
+    )
     parser.add_argument("--include", action="append", default=[], help="extra file to include in the probe")
     parser.add_argument("--file", action="append", default=[], help="source/header file to search instead of all include/src files")
     parser.add_argument("--no-compare", action="store_true", help="only print compiler layout values")
     parser.add_argument("--cc", default="mips-linux-gnu-gcc", help="compiler to use")
     parser.add_argument("--objcopy", default="mips-linux-gnu-objcopy", help="objcopy to use")
     args = parser.parse_args()
+
+    if args.all:
+        return audit_all(args)
+    if not args.struct:
+        parser.error("name a struct to audit, or pass --all")
 
     paths = [root_dir / path for path in args.file] if args.file else source_paths()
     found = find_structs(args.struct, paths)

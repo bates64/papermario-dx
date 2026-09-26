@@ -298,15 +298,15 @@ u8 BlankMseqData[] = {
 /// Volume steps use squared values so each level represents linear power increase,
 /// matching loudness perception. This makes each step sound evenly spaced.
 u16 PerceptualVolumeLevels[] = {
-    [VOL_LEVEL_MUTE] 0, // 0.0 %
-    [VOL_LEVEL_1] AU_MAX_BUS_VOLUME * SQ(0.125), //  1.5625 %
-    [VOL_LEVEL_2] AU_MAX_BUS_VOLUME * SQ(0.250), //  6.25 %
-    [VOL_LEVEL_3] AU_MAX_BUS_VOLUME * SQ(0.375), // 14.0625 %
-    [VOL_LEVEL_4] AU_MAX_BUS_VOLUME * SQ(0.500), // 25.0 %
-    [VOL_LEVEL_5] AU_MAX_BUS_VOLUME * SQ(0.625), // 39.0625 %
-    [VOL_LEVEL_6] AU_MAX_BUS_VOLUME * SQ(0.750), // 56.25 %
-    [VOL_LEVEL_7] AU_MAX_BUS_VOLUME * SQ(0.875), // 76.5625 %
-    [VOL_LEVEL_FULL] AU_MAX_BUS_VOLUME, // 100.0 %
+    [VOL_LEVEL_MUTE] = 0, // 0.0 %
+    [VOL_LEVEL_1] = AU_MAX_BUS_VOLUME * SQ(0.125), //  1.5625 %
+    [VOL_LEVEL_2] = AU_MAX_BUS_VOLUME * SQ(0.250), //  6.25 %
+    [VOL_LEVEL_3] = AU_MAX_BUS_VOLUME * SQ(0.375), // 14.0625 %
+    [VOL_LEVEL_4] = AU_MAX_BUS_VOLUME * SQ(0.500), // 25.0 %
+    [VOL_LEVEL_5] = AU_MAX_BUS_VOLUME * SQ(0.625), // 39.0625 %
+    [VOL_LEVEL_6] = AU_MAX_BUS_VOLUME * SQ(0.750), // 56.25 %
+    [VOL_LEVEL_7] = AU_MAX_BUS_VOLUME * SQ(0.875), // 76.5625 %
+    [VOL_LEVEL_FULL] = AU_MAX_BUS_VOLUME, // 100.0 %
 };
 
 // TODO: figure out how to make struct properly
@@ -1277,7 +1277,7 @@ static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, A
     u8 opcode;
     u32 playLength;
     s32 startedNewVoice;
-    void (**CmdHandlers)(SoundManager*, SoundPlayer*);
+    void (**cmdHandlers)(SoundManager*, SoundPlayer*);
 
     startedNewVoice = false;
     if (player->state == SND_PLAYER_STATE_INIT) {
@@ -1301,7 +1301,7 @@ static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, A
     }
     player->delay--;
     while (player->delay == 0) {
-        CmdHandlers = SefCmdHandlers;
+        cmdHandlers = SefCmdHandlers;
         opcode = *player->sefDataReadPos++;
         if (opcode < 0x80) {
             if (opcode == 0) {
@@ -1316,7 +1316,7 @@ static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, A
             }
             if (opcode >= 0x78) {
                 // long delay
-                player->delay = (u8)(*player->sefDataReadPos++) + ((opcode & 7) << 8) + 0x78;
+                player->delay = (*player->sefDataReadPos++) + ((opcode & 7) << 8) + 0x78;
             } else {
                 // short delay
                 player->delay = opcode;
@@ -1374,7 +1374,7 @@ static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, A
             }
         } else {
             s32 index = opcode - 0xE0;
-            CurrentSefCmdHandler = CmdHandlers[index];
+            CurrentSefCmdHandler = cmdHandlers[index];
             CurrentSefCmdHandler(manager, player);
         }
     }

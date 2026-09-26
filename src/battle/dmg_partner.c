@@ -1127,7 +1127,7 @@ API_CALLABLE(PartnerAfflictEnemy) {
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
     Actor* actor = get_actor(script->owner1.actorID);
-    s32 returnValue = *args++;
+    s32 outVar = *args++;
     s32 flags;
     u8 statusChance;
     s32 hitResult;
@@ -1187,7 +1187,7 @@ API_CALLABLE(PartnerAfflictEnemy) {
     battleStatus->statusDuration = (battleStatus->curAttackStatus & 0xF00) >> 8;
     hitResult = calc_partner_damage_enemy();
     if (hitResult >= 0) {
-        evt_set_variable(script, returnValue, hitResult);
+        evt_set_variable(script, outVar, hitResult);
     }
     return ApiStatus_DONE2;
 }
@@ -1196,7 +1196,7 @@ API_CALLABLE(PartnerPowerBounceEnemy) {
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
     Actor* actor = get_actor(script->owner1.actorID);
-    s32 returnValue = *args++;
+    s32 outVar = *args++;
     s32 flags;
     u8 statusChance;
     s32 hitResult;
@@ -1255,7 +1255,7 @@ API_CALLABLE(PartnerPowerBounceEnemy) {
     battleStatus->statusDuration = (battleStatus->curAttackStatus & 0xF00) >> 8;
     hitResult = calc_partner_damage_enemy();
     if (hitResult >= 0) {
-        evt_set_variable(script, returnValue, hitResult);
+        evt_set_variable(script, outVar, hitResult);
     }
     return ApiStatus_DONE2;
 }

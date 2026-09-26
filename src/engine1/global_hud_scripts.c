@@ -2,7 +2,6 @@
 #include "hud_element.h"
 #include "sparkle_script.h"
 #include "include_asset.h"
-#include "include_asset.h"
 
 INCLUDE_IMG("ui/input/a_button_unpressed.png", ui_input_a_button_unpressed_png);
 INCLUDE_PAL("ui/input/a_button_unpressed.pal", ui_input_a_button_unpressed_pal);

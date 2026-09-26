@@ -32,8 +32,8 @@ void interp_lookat_pos(Camera* camera, f32 interpAmtXZ, f32 maxDeltaXZ, s16 lock
     f32 pitchAngle, sinPitch, cosPitch;
     f32 deltaX, deltaZ;
 
-    deltaX = (camera->lookAt_obj_target.x - camera->lookAt_obj.x) * interpAmtXZ;
-    deltaZ = (camera->lookAt_obj_target.z - camera->lookAt_obj.z) * interpAmtXZ;
+    deltaX = (camera->lookAtObjTarget.x - camera->lookAtObj.x) * interpAmtXZ;
+    deltaZ = (camera->lookAtObjTarget.z - camera->lookAtObj.z) * interpAmtXZ;
 
     if (deltaX < -maxDeltaXZ) {
         deltaX = -maxDeltaXZ;
@@ -42,19 +42,19 @@ void interp_lookat_pos(Camera* camera, f32 interpAmtXZ, f32 maxDeltaXZ, s16 lock
         deltaX = maxDeltaXZ;
     }
 
-    camera->lookAt_obj.x += deltaX;
-    camera->lookAt_obj.z += deltaZ;
+    camera->lookAtObj.x += deltaX;
+    camera->lookAtObj.z += deltaZ;
 
     pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
     sinPitch = sin_rad(pitchAngle);
     cosPitch = cos_rad(pitchAngle);
 
-    camera->lookAt_eye.x = camera->lookAt_obj.x;
-    camera->lookAt_eye.z = camera->lookAt_obj.z + (camera->curBoomLength * cosPitch);
+    camera->lookAtEye.x = camera->lookAtObj.x;
+    camera->lookAtEye.z = camera->lookAtObj.z + (camera->curBoomLength * cosPitch);
 
     if (!lockPosY) {
-        camera->lookAt_obj.y += (camera->lookAt_obj_target.y - camera->lookAt_obj.y) * 0.125f;
-        camera->lookAt_eye.y = camera->lookAt_obj.y + (camera->curBoomLength * sinPitch);
+        camera->lookAtObj.y += (camera->lookAtObjTarget.y - camera->lookAtObj.y) * 0.125f;
+        camera->lookAtEye.y = camera->lookAtObj.y + (camera->curBoomLength * sinPitch);
     }
 }
 
@@ -77,17 +77,17 @@ void update_camera_unused_leading(Camera* camera) {
         camera->unusedLeadCounter = 0;
         camera->interpYaw = 0.0f;
         camera->curBoomYaw = 0.0f;
-        camera->lookAt_obj.x = camera->targetPos.x;
-        camera->lookAt_obj.y = camera->targetPos.y + camera->targetOffsetY;
-        camera->lookAt_obj.z = camera->targetPos.z;
+        camera->lookAtObj.x = camera->targetPos.x;
+        camera->lookAtObj.y = camera->targetPos.y + camera->targetOffsetY;
+        camera->lookAtObj.z = camera->targetPos.z;
         interp_lookat_pos(camera, 0.0f, 0.0f, false);
     } else {
         f32 maxInterpSpeed = (gPlayerStatus.curSpeed * 1.5f) + 1.0f;
         f32 interpRate = (gPlayerStatus.curSpeed * 0.05f) + 0.05f;
 
-        camera->lookAt_obj_target.x = camera->targetPos.x + camera->unusedLeadAmt;
-        camera->lookAt_obj_target.y = camera->targetPos.y + camera->targetOffsetY;
-        camera->lookAt_obj_target.z = camera->targetPos.z;
+        camera->lookAtObjTarget.x = camera->targetPos.x + camera->unusedLeadAmt;
+        camera->lookAtObjTarget.y = camera->targetPos.y + camera->targetOffsetY;
+        camera->lookAtObjTarget.z = camera->targetPos.z;
         update_unused_lead_amt(camera);
         if (camera->moveFlags & CAMERA_MOVE_IGNORE_PLAYER_Y) {
             interp_lookat_pos(camera, interpRate, maxInterpSpeed, true);
@@ -96,13 +96,13 @@ void update_camera_unused_leading(Camera* camera) {
         }
     }
 
-    dx = camera->lookAt_obj.x - camera->lookAt_eye.x;
-    dy = camera->lookAt_obj.y - camera->lookAt_eye.y;
-    dz = camera->lookAt_obj.z - camera->lookAt_eye.z;
+    dx = camera->lookAtObj.x - camera->lookAtEye.x;
+    dy = camera->lookAtObj.y - camera->lookAtEye.y;
+    dz = camera->lookAtObj.z - camera->lookAtEye.z;
     dr = sqrtf(SQ(dx) + SQ(dz));
 
-    camera->lookAt_yaw = -atan2(0.0f, 0.0f, dx, dz);
-    camera->lookAt_pitch = atan2(0.0f, 0.0f, dy, -dr);
-    camera->curYaw = atan2(camera->lookAt_eye.x, camera->lookAt_eye.z, camera->lookAt_obj.x, camera->lookAt_obj.z);
+    camera->lookAtYaw = -atan2(0.0f, 0.0f, dx, dz);
+    camera->lookAtPitch = atan2(0.0f, 0.0f, dy, -dr);
+    camera->curYaw = atan2(camera->lookAtEye.x, camera->lookAtEye.z, camera->lookAtObj.x, camera->lookAtObj.z);
 }
 

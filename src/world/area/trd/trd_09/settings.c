@@ -3,9 +3,9 @@
 extern EvtScript N(EVS_Main);
 
 EntryList N(Entrances) = {
-    [trd_09_ENTRY_0]    { -565.0,   60.0,   10.0,   90.0 },
-    [trd_09_ENTRY_1]    { 1515.0,   60.0,    0.0,  270.0 },
-    [trd_09_ENTRY_2]    { -340.0,    0.0,   50.0,   90.0 },
+    [trd_09_ENTRY_0]    = { -565.0,   60.0,   10.0,   90.0 },
+    [trd_09_ENTRY_1]    = { 1515.0,   60.0,    0.0,  270.0 },
+    [trd_09_ENTRY_2]    = { -340.0,    0.0,   50.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

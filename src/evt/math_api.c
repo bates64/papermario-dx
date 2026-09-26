@@ -379,7 +379,7 @@ f32 sin_lookup_table[] = {
 
 u32 calc_vector_rot_impl(f32 dx, f32 dy) {
     // use trig identity to get sin(theta) = dy / hypot
-    f32 sinAngle = abs(dy) / length2D(dx, dy);
+    f32 sinAngle = abs((s32)dy) / length2D(dx, dy);
     u16 minAngle = 0;
     u16 maxAngle = 90;
     u16 ret;

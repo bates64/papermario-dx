@@ -4253,14 +4253,14 @@ enum CameraMoveFlags {
 };
 
 enum CameraUpdateMode {
-    // simple camera based on lookAt_eye and lookAt_obj with no blending or interpolation
+    // simple camera based on lookAtEye and lookAtObj with no blending or interpolation
     // control this camera by directly setting these positions
     // has no other control parameters
     CAM_UPDATE_MINIMAL              = 0,
 
-    // this camera uses a set of control parameters to calculate its target lookAt_obj and lookAt_eye positions,
+    // this camera uses a set of control parameters to calculate its target lookAtObj and lookAtEye positions,
     // then interpolates current positions toward those targets, moving up to half the remaining distance each frame
-    // the ultimate target is given by lookAt_obj_target
+    // the ultimate target is given by lookAtObjTarget
     // mostly used for CAM_HUD
     CAM_UPDATE_INTERP_POS           = 2,
 
@@ -4272,18 +4272,18 @@ enum CameraUpdateMode {
     // this is the camera used during world gameplay
     CAM_UPDATE_FROM_ZONE            = 3,
 
-    // this camera uses a set of control parameters to calculate its lookAt_obj and lookAt_eye positions,
+    // this camera uses a set of control parameters to calculate its lookAtObj and lookAtEye positions,
     // which are only updated if skipRecalc = false
-    // the ultimate target is given by lookAt_obj_target, with an offset given by targetPos (?!)
+    // the ultimate target is given by lookAtObjTarget, with an offset given by targetPos (?!)
     // in practice, this is used for CAM_BATTLE and CAM_TATTLE, with skipRecalc almost always set to false
     CAM_UPDATE_NO_INTERP            = 6,
 
-    // this camera tracks lookAt_obj_target in a circular region centered on targetPos. the camera does not update
-    // unless lookAt_obj_target is greater than a minimum distance from targetPos to prevent wild movements.
+    // this camera tracks lookAtObjTarget in a circular region centered on targetPos. the camera does not update
+    // unless lookAtObjTarget is greater than a minimum distance from targetPos to prevent wild movements.
     CAM_UPDATE_UNUSED_RADIAL        = 1,
 
     // this camera tracks targetPos, clamped within the rectangular region given by ± xLimit and ± zLimit
-    // y-position is drawn from lookAt_obj_target
+    // y-position is drawn from lookAtObjTarget
     // does not use easing or interpolation
     CAM_UPDATE_UNUSED_CONFINED      = 4,
 

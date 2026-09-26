@@ -34,31 +34,31 @@ u32 audio_subset_starts[AUDIO_SUBSET_SIZE];
 u32 audio_subset_tallies[AUDIO_SUBSET_SIZE];
 #endif
 
-static void buffer_update(ProfileTimeData* data, u32 new, int buffer_index) {
-    u32 old = data->counts[buffer_index];
+static void buffer_update(ProfileTimeData* data, u32 new, int bufferIndex) {
+    u32 old = data->counts[bufferIndex];
     data->total -= old;
     data->total += new;
-    data->counts[buffer_index] = new;
+    data->counts[bufferIndex] = new;
 }
 
 void profiler_update(enum ProfilerTime which, u32 delta) {
-    u32 cur_time = osGetCount();
+    u32 curTime = osGetCount();
     u32 diff;
-    ProfileTimeData* cur_data = &all_profiling_data[which];
+    ProfileTimeData* curData = &all_profiling_data[which];
 
-    diff = cur_time - prev_time - delta;
+    diff = curTime - prev_time - delta;
 
     u32 saved = __osDisableInt();
-    u32 cur_preempted_time = preempted_time;
+    u32 curPreemptedTime = preempted_time;
     preempted_time = 0;
     __osRestoreInt(saved);
-    if (cur_preempted_time > 0) {
-        diff -= cur_preempted_time;
-        cur_start += cur_preempted_time;
+    if (curPreemptedTime > 0) {
+        diff -= curPreemptedTime;
+        cur_start += curPreemptedTime;
     }
 
-    buffer_update(cur_data, diff, profile_buffer_index);
-    prev_time = cur_time;
+    buffer_update(curData, diff, profile_buffer_index);
+    prev_time = curTime;
 }
 
 void profiler_rsp_started(enum ProfilerRSPTime which) {
@@ -66,17 +66,17 @@ void profiler_rsp_started(enum ProfilerRSPTime which) {
 }
 
 void profiler_rsp_completed(enum ProfilerRSPTime which) {
-    ProfileTimeData* cur_data = &all_profiling_data[PROFILER_TIME_RSP_GFX + which];
-    int cur_index = rsp_buffer_indices[which];
+    ProfileTimeData* curData = &all_profiling_data[PROFILER_TIME_RSP_GFX + which];
+    int curIndex = rsp_buffer_indices[which];
     u32 time = osGetCount() - rsp_pending_times[which];
     rsp_pending_times[which] = 0;
 
-    buffer_update(cur_data, time, cur_index);
-    cur_index++;
-    if (cur_index >= PROFILING_BUFFER_SIZE) {
-        cur_index = 0;
+    buffer_update(curData, time, curIndex);
+    curIndex++;
+    if (curIndex >= PROFILING_BUFFER_SIZE) {
+        curIndex = 0;
     }
-    rsp_buffer_indices[which] = cur_index;
+    rsp_buffer_indices[which] = curIndex;
 }
 
 void profiler_rsp_resumed() {
@@ -138,38 +138,38 @@ u32 profiler_get_delta(enum ProfilerDeltaTime which) {
 }
 
 void profiler_gfx_completed() {
-    ProfileTimeData* cur_data = &all_profiling_data[PROFILER_TIME_GFX];
+    ProfileTimeData* curData = &all_profiling_data[PROFILER_TIME_GFX];
     u32 time = osGetCount();
-    u32 cur_index = gfx_buffer_index;
+    u32 curIndex = gfx_buffer_index;
 
     preempted_time = time - gfx_start;
-    buffer_update(cur_data, time - gfx_start, cur_index);
+    buffer_update(curData, time - gfx_start, curIndex);
 
 #ifdef GFX_PROFILING
     gfx_subset_tallies[PROFILER_TIME_SUB_GFX_UPDATE - PROFILER_TIME_SUB_GFX_START] += time - gfx_subset_starts[PROFILER_TIME_SUB_GFX_UPDATE - PROFILER_TIME_SUB_GFX_START];
 
     for (s32 i = 0; i < GFX_SUBSET_SIZE; i++) {
-        cur_data = &all_profiling_data[i + PROFILER_TIME_SUB_GFX_START];
-        buffer_update(cur_data, gfx_subset_tallies[i], cur_index);
+        curData = &all_profiling_data[i + PROFILER_TIME_SUB_GFX_START];
+        buffer_update(curData, gfx_subset_tallies[i], curIndex);
     }
 #endif
 
-    cur_index++;
-    if (cur_index >= PROFILING_BUFFER_SIZE) {
-        cur_index = 0;
+    curIndex++;
+    if (curIndex >= PROFILING_BUFFER_SIZE) {
+        curIndex = 0;
     }
 
-    gfx_buffer_index = cur_index;
+    gfx_buffer_index = curIndex;
 }
 
 
 void profiler_audio_completed() {
-    ProfileTimeData* cur_data = &all_profiling_data[PROFILER_TIME_AUDIO];
+    ProfileTimeData* curData = &all_profiling_data[PROFILER_TIME_AUDIO];
     u32 time = osGetCount();
-    u32 cur_index = audio_buffer_index;
+    u32 curIndex = audio_buffer_index;
 
     preempted_time = time - audio_start;
-    buffer_update(cur_data, time - audio_start, cur_index);
+    buffer_update(curData, time - audio_start, curIndex);
 
 #ifdef AUDIO_PROFILING
     audio_subset_tallies[PROFILER_TIME_SUB_AUDIO_UPDATE - PROFILER_TIME_SUB_AUDIO_START] += time - audio_subset_starts[PROFILER_TIME_SUB_AUDIO_UPDATE - PROFILER_TIME_SUB_AUDIO_START];
@@ -180,12 +180,12 @@ void profiler_audio_completed() {
     }
 #endif
 
-    cur_index++;
-    if (cur_index >= PROFILING_BUFFER_SIZE) {
-        cur_index = 0;
+    curIndex++;
+    if (curIndex >= PROFILING_BUFFER_SIZE) {
+        curIndex = 0;
     }
 
-    audio_buffer_index = cur_index;
+    audio_buffer_index = curIndex;
 }
 
 static void update_fps_timer() {
@@ -197,11 +197,11 @@ static void update_fps_timer() {
 
 static void update_total_timer() {
     u32 saved = __osDisableInt();
-    u32 cur_preempted_time = preempted_time;
+    u32 curPreemptedTime = preempted_time;
     preempted_time = 0;
     __osRestoreInt(saved);
 
-    prev_time = cur_start + cur_preempted_time;
+    prev_time = cur_start + curPreemptedTime;
     profiler_update(PROFILER_TIME_TOTAL, PROFILER_TIME_PUPPYPRINT1 + PROFILER_DELTA_PUPPYPRINT2);
 }
 
@@ -229,53 +229,53 @@ float profiler_get_fps() {
 }
 
 u32 profiler_get_cpu_cycles() {
-    u32 cpu_normal_time = all_profiling_data[PROFILER_TIME_TOTAL].total / PROFILING_BUFFER_SIZE;
-    u32 cpu_audio_time = all_profiling_data[PROFILER_TIME_AUDIO].total / PROFILING_BUFFER_SIZE;
-    return cpu_normal_time + cpu_audio_time * 2;
+    u32 cpuNormalTime = all_profiling_data[PROFILER_TIME_TOTAL].total / PROFILING_BUFFER_SIZE;
+    u32 cpuAudioTime = all_profiling_data[PROFILER_TIME_AUDIO].total / PROFILING_BUFFER_SIZE;
+    return cpuNormalTime + cpuAudioTime * 2;
 }
 
 u32 profiler_get_rsp_cycles() {
-    u32 rsp_graphics_time = all_profiling_data[PROFILER_TIME_RSP_GFX].total / PROFILING_BUFFER_SIZE;
-    u32 rsp_audio_time = all_profiling_data[PROFILER_TIME_RSP_AUDIO].total / PROFILING_BUFFER_SIZE;
-    return rsp_graphics_time + rsp_audio_time;
+    u32 rspGraphicsTime = all_profiling_data[PROFILER_TIME_RSP_GFX].total / PROFILING_BUFFER_SIZE;
+    u32 rspAudioTime = all_profiling_data[PROFILER_TIME_RSP_AUDIO].total / PROFILING_BUFFER_SIZE;
+    return rspGraphicsTime + rspAudioTime;
 }
 
 u32 profiler_get_rdp_cycles() {
-    u32 rdp_pipe_cycles = all_profiling_data[PROFILER_TIME_PIPE].total;
-    u32 rdp_tmem_cycles = all_profiling_data[PROFILER_TIME_TMEM].total;
-    u32 rdp_cmd_cycles = all_profiling_data[PROFILER_TIME_CMD].total;
+    u32 rdpPipeCycles = all_profiling_data[PROFILER_TIME_PIPE].total;
+    u32 rdpTmemCycles = all_profiling_data[PROFILER_TIME_TMEM].total;
+    u32 rdpCmdCycles = all_profiling_data[PROFILER_TIME_CMD].total;
 
-    u32 rdp_max_cycles = MAX(MAX(rdp_pipe_cycles, rdp_tmem_cycles), rdp_cmd_cycles);
+    u32 rdpMaxCycles = MAX(MAX(rdpPipeCycles, rdpTmemCycles), rdpCmdCycles);
 
-    return rdp_max_cycles / PROFILING_BUFFER_SIZE;
+    return rdpMaxCycles / PROFILING_BUFFER_SIZE;
 }
 
 u32 profiler_get_cpu_microseconds() {
-    u32 cpu_normal_time = OS_CYCLES_TO_USEC(all_profiling_data[PROFILER_TIME_TOTAL].total / PROFILING_BUFFER_SIZE);
-    u32 cpu_audio_time = OS_CYCLES_TO_USEC(all_profiling_data[PROFILER_TIME_AUDIO].total / PROFILING_BUFFER_SIZE);
-    return cpu_normal_time + cpu_audio_time * 2;
+    u32 cpuNormalTime = OS_CYCLES_TO_USEC(all_profiling_data[PROFILER_TIME_TOTAL].total / PROFILING_BUFFER_SIZE);
+    u32 cpuAudioTime = OS_CYCLES_TO_USEC(all_profiling_data[PROFILER_TIME_AUDIO].total / PROFILING_BUFFER_SIZE);
+    return cpuNormalTime + cpuAudioTime * 2;
 }
 
 u32 profiler_get_rsp_microseconds() {
-    u32 rsp_graphics_time = OS_CYCLES_TO_USEC(all_profiling_data[PROFILER_TIME_RSP_GFX].total / PROFILING_BUFFER_SIZE);
-    u32 rsp_audio_time = OS_CYCLES_TO_USEC(all_profiling_data[PROFILER_TIME_RSP_AUDIO].total / PROFILING_BUFFER_SIZE);
-    return rsp_graphics_time + rsp_audio_time;
+    u32 rspGraphicsTime = OS_CYCLES_TO_USEC(all_profiling_data[PROFILER_TIME_RSP_GFX].total / PROFILING_BUFFER_SIZE);
+    u32 rspAudioTime = OS_CYCLES_TO_USEC(all_profiling_data[PROFILER_TIME_RSP_AUDIO].total / PROFILING_BUFFER_SIZE);
+    return rspGraphicsTime + rspAudioTime;
 }
 
 u32 profiler_get_rdp_microseconds() {
-    u32 rdp_pipe_cycles = all_profiling_data[PROFILER_TIME_PIPE].total;
-    u32 rdp_tmem_cycles = all_profiling_data[PROFILER_TIME_TMEM].total;
-    u32 rdp_cmd_cycles = all_profiling_data[PROFILER_TIME_CMD].total;
+    u32 rdpPipeCycles = all_profiling_data[PROFILER_TIME_PIPE].total;
+    u32 rdpTmemCycles = all_profiling_data[PROFILER_TIME_TMEM].total;
+    u32 rdpCmdCycles = all_profiling_data[PROFILER_TIME_CMD].total;
 
-    u32 rdp_max_cycles = MAX(MAX(rdp_pipe_cycles, rdp_tmem_cycles), rdp_cmd_cycles);
+    u32 rdpMaxCycles = MAX(MAX(rdpPipeCycles, rdpTmemCycles), rdpCmdCycles);
 
-    return RDP_CYCLE_CONV(rdp_max_cycles / PROFILING_BUFFER_SIZE);
+    return RDP_CYCLE_CONV(rdpMaxCycles / PROFILING_BUFFER_SIZE);
 }
 
 void profiler_print_times() {
     u32 microseconds[PROFILER_TIME_COUNT];
-    char text_buffer_labels[196];
-    char text_buffer_time[196];
+    char textBufferLabels[196];
+    char textBufferTime[196];
 
     update_fps_timer();
     update_total_timer();
@@ -302,14 +302,14 @@ void profiler_print_times() {
         }
 
         // audio time is removed from the main thread profiling, so add it back here
-        u32 total_cpu = microseconds[PROFILER_TIME_TOTAL] + microseconds[PROFILER_TIME_AUDIO] * 2;
+        u32 totalCpu = microseconds[PROFILER_TIME_TOTAL] + microseconds[PROFILER_TIME_AUDIO] * 2;
 #ifndef GFX_PROFILING
         u32 total_rsp = microseconds[PROFILER_TIME_RSP_GFX] + microseconds[PROFILER_TIME_RSP_AUDIO] * 2;
         u32 max_rdp  = MAX(MAX(microseconds[PROFILER_TIME_TMEM], microseconds[PROFILER_TIME_CMD]), microseconds[PROFILER_TIME_PIPE]);
 #endif
 
-        s32 text_buffer_labels_len = sprintf(
-            text_buffer_labels,
+        s32 textBufferLabelsLen = sprintf(
+            textBufferLabels,
             "    " // space for prepend
             "FPS: %5.2f\n"
             "CPU\t\t%lu (%lu%%)\n"
@@ -323,10 +323,10 @@ void profiler_print_times() {
             " Gfx\n"
             " Audio\n",
             1000000.0f / microseconds[PROFILER_TIME_FPS],
-            total_cpu, total_cpu / 333
+            totalCpu, totalCpu / 333
         );
-        s32 text_buffer_time_len = sprintf(
-            text_buffer_time,
+        s32 textBufferTimeLen = sprintf(
+            textBufferTime,
             "    " // space for prepend
             "\n"
             "\n"
@@ -352,7 +352,7 @@ void profiler_print_times() {
 
         switch (get_game_mode()) {
             case GAME_MODE_WORLD:
-                sprintf(&text_buffer_labels[text_buffer_labels_len],
+                sprintf(&textBufferLabels[textBufferLabelsLen],
                     " Encounters\n"
                     " NPCs\n"
                     " Player\n"
@@ -360,7 +360,7 @@ void profiler_print_times() {
                     " Effects\n"
                     " Cameras\n"
                 );
-                sprintf(&text_buffer_time[text_buffer_time_len],
+                sprintf(&textBufferTime[textBufferTimeLen],
                     "%lu\n"
                     "%lu\n"
                     "%lu\n"
@@ -376,29 +376,29 @@ void profiler_print_times() {
                 );
                 break;
             default:
-                sprintf(&text_buffer_labels[text_buffer_labels_len],
+                sprintf(&textBufferLabels[textBufferLabelsLen],
                     " Game mode step\n"
                 );
-                sprintf(&text_buffer_time[text_buffer_time_len],
+                sprintf(&textBufferTime[textBufferTimeLen],
                     "%lu\n",
                     microseconds[PROFILER_TIME_STEP_GAME_MODE]
                 );
                 break;
         }
 
-        dx_string_to_msg((MSG_PTR)text_buffer_labels, text_buffer_labels);
-        dx_string_to_msg((MSG_PTR)text_buffer_time, text_buffer_time);
-        text_buffer_labels[0] = text_buffer_time[0] = MSG_CHAR_READ_FUNCTION;
-        text_buffer_labels[1] = text_buffer_time[1] = MSG_READ_FUNC_SIZE;
-        text_buffer_labels[2] = text_buffer_time[2] = 14;
-        text_buffer_labels[3] = text_buffer_time[3] = 14;
-        draw_msg((s32)&text_buffer_labels, 3, 0, 255, 0, 0);
-        draw_msg((s32)&text_buffer_time, 110, 0, 255, 0, 0);
+        dx_string_to_msg((MSG_PTR)textBufferLabels, textBufferLabels);
+        dx_string_to_msg((MSG_PTR)textBufferTime, textBufferTime);
+        textBufferLabels[0] = textBufferTime[0] = MSG_CHAR_READ_FUNCTION;
+        textBufferLabels[1] = textBufferTime[1] = MSG_READ_FUNC_SIZE;
+        textBufferLabels[2] = textBufferTime[2] = 14;
+        textBufferLabels[3] = textBufferTime[3] = 14;
+        draw_msg((s32)&textBufferLabels, 3, 0, 255, 0, 0);
+        draw_msg((s32)&textBufferTime, 110, 0, 255, 0, 0);
 
 #ifdef GFX_PROFILING
-        s32 time_offset = 100;
+        s32 timeOffset = 100;
         sprintf(
-            text_buffer_labels,
+            textBufferLabels,
             "    " // space for prepend
             "\n"
             "Gfx breakdown\n"
@@ -414,7 +414,7 @@ void profiler_print_times() {
             " Front UI\n"
         );
         sprintf(
-            text_buffer_time,
+            textBufferTime,
             "    " // space for prepend
             "\n"
             "\n"
@@ -473,14 +473,14 @@ void profiler_print_times() {
             microseconds[PROFILER_TIME_RSP_AUDIO] * 2
         );
 #endif
-        dx_string_to_msg((MSG_PTR)text_buffer_labels, text_buffer_labels);
-        dx_string_to_msg((MSG_PTR)text_buffer_time, text_buffer_time);
-        text_buffer_labels[0] = text_buffer_time[0] = MSG_CHAR_READ_FUNCTION;
-        text_buffer_labels[1] = text_buffer_time[1] = MSG_READ_FUNC_SIZE;
-        text_buffer_labels[2] = text_buffer_time[2] = 14;
-        text_buffer_labels[3] = text_buffer_time[3] = 14;
-        draw_msg((s32)&text_buffer_labels, SCREEN_WIDTH/2, 0, 255, 0, 0);
-        draw_msg((s32)&text_buffer_time, SCREEN_WIDTH/2 + time_offset, 0, 255, 0, 0);
+        dx_string_to_msg((MSG_PTR)textBufferLabels, textBufferLabels);
+        dx_string_to_msg((MSG_PTR)textBufferTime, textBufferTime);
+        textBufferLabels[0] = textBufferTime[0] = MSG_CHAR_READ_FUNCTION;
+        textBufferLabels[1] = textBufferTime[1] = MSG_READ_FUNC_SIZE;
+        textBufferLabels[2] = textBufferTime[2] = 14;
+        textBufferLabels[3] = textBufferTime[3] = 14;
+        draw_msg((s32)&textBufferLabels, SCREEN_WIDTH/2, 0, 255, 0, 0);
+        draw_msg((s32)&textBufferTime, SCREEN_WIDTH/2 + timeOffset, 0, 255, 0, 0);
     }
 }
 

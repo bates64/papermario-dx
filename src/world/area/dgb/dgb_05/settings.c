@@ -1,7 +1,7 @@
 #include "dgb_05.h"
 
 EntryList N(Entrances) = {
-    [dgb_05_ENTRY_0]    {  515.0,    0.0,  310.0,    0.0 },
+    [dgb_05_ENTRY_0]    = {  515.0,    0.0,  310.0,    0.0 },
 };
 
 export MapSettings N(settings) = {

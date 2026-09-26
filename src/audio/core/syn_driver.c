@@ -30,8 +30,8 @@ void au_driver_init(AuSynDriver* driver, ALConfig* config) {
         return;
     }
 
-    driver->num_pvoice = config->num_pvoice;
-    driver->num_bus = config->num_bus;
+    driver->numPvoice = config->numPvoice;
+    driver->numBus = config->numBus;
     driver->curSamples = 0;
     driver->unused_04 = 0;
     driver->outputRate = config->outputRate;
@@ -43,10 +43,10 @@ void au_driver_init(AuSynDriver* driver, ALConfig* config) {
     AuGlobalVolume = AU_MAX_VOLUME_16;
     AuSynStereoDirty = true;
 
-    gSynDriverPtr->pvoices = alHeapAlloc(heap, config->num_pvoice, sizeof(*gSynDriverPtr->pvoices));
+    gSynDriverPtr->pvoices = alHeapAlloc(heap, config->numPvoice, sizeof(*gSynDriverPtr->pvoices));
 
     // this is inlined alN_PVoiceNew
-    for (i = 0; i < config->num_pvoice; i++) {
+    for (i = 0; i < config->numPvoice; i++) {
         AuPVoice* voice = &gSynDriverPtr->pvoices[i];
         voice->decoder.state = alHeapAlloc(heap, 1, sizeof(*voice->decoder.state));
         voice->decoder.lstate = alHeapAlloc(heap, 1, sizeof(*voice->decoder.lstate));
@@ -81,9 +81,9 @@ void au_driver_init(AuSynDriver* driver, ALConfig* config) {
         voice->index = i;
     }
 
-    gSynDriverPtr->fxBus = alHeapAlloc(heap, config->num_bus, sizeof(*gSynDriverPtr->fxBus));
+    gSynDriverPtr->fxBus = alHeapAlloc(heap, config->numBus, sizeof(*gSynDriverPtr->fxBus));
 
-    for (i = 0; i < config->num_bus; i++) {
+    for (i = 0; i < config->numBus; i++) {
         AuFxBus* fxBus = &gSynDriverPtr->fxBus[i];
         fxBus->head = nullptr;
         fxBus->tail = nullptr;
@@ -136,7 +136,7 @@ Acmd* alAudioFrame(Acmd* cmdList, s32* cmdLen, s16* outBuf, s32 outLen) {
 
     // reapply panning if dirty
     if (AuSynStereoDirty) {
-        for (busID = 0; busID < gSynDriverPtr->num_pvoice; busID++) {
+        for (busID = 0; busID < gSynDriverPtr->numPvoice; busID++) {
             pvoice = &gSynDriverPtr->pvoices[busID];
             if (pvoice->envMixer.motion == AL_PLAYING) {
                 au_syn_set_pan(busID, pvoice->envMixer.pan);
@@ -150,10 +150,10 @@ Acmd* alAudioFrame(Acmd* cmdList, s32* cmdLen, s16* outBuf, s32 outLen) {
         au_update_clients_for_audio_frame();
 
         // organize all voices by which FX bus they send to
-        for (busID = 0; busID < gSynDriverPtr->num_pvoice; busID++) {
+        for (busID = 0; busID < gSynDriverPtr->numPvoice; busID++) {
             pvoice = &gSynDriverPtr->pvoices[busID];
 
-            if ((pvoice->busID != 0xFF) && (pvoice->busID < gSynDriverPtr->num_bus)) {
+            if ((pvoice->busID != 0xFF) && (pvoice->busID < gSynDriverPtr->numBus)) {
                 fxBus = &gSynDriverPtr->fxBus[pvoice->busID];
                 if (fxBus->tail != nullptr) {
                     fxBus->tail->next = pvoice;
@@ -166,7 +166,7 @@ Acmd* alAudioFrame(Acmd* cmdList, s32* cmdLen, s16* outBuf, s32 outLen) {
 
         // render each effects bus
         firstBus = true;
-        for (busID = 0; busID < gSynDriverPtr->num_bus; busID++) {
+        for (busID = 0; busID < gSynDriverPtr->numBus; busID++) {
             fxBus = &gSynDriverPtr->fxBus[busID];
             if (fxBus->head != nullptr) {
                 // clear all main and aux outputs (each is 2 * AUDIO_SAMPLES long, starting at N_AL_MAIN_L_OUT)
@@ -348,7 +348,7 @@ void au_syn_stop_voice(u8 voiceIdx) {
 
 // based on n_alSynStartVoice, but without setting new wavetable
 void au_syn_start_voice(u8 voiceIdx) {
-    AuPVoice* pvoice = (AuPVoice*)&gSynDriverPtr->pvoices[voiceIdx];
+    AuPVoice* pvoice = (&gSynDriverPtr->pvoices[voiceIdx]);
 
     pvoice->envMixer.motion = AL_PLAYING;
 }

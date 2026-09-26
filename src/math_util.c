@@ -90,8 +90,8 @@ void* _heap_malloc(HeapNode* head, u32 size) {
     u32 curBlockLength;
     HeapNode* curHeapNode;
     u32 smallestBlockFound;
-    u16 HeapEntryID;
-    u16 HeapEntryID2;
+    u16 heapEntryId;
+    u16 heapEntryID2;
 
     // must allocate 16 bytes or more at minimum or fail
     size = ALIGN16(size);
@@ -129,10 +129,10 @@ void* _heap_malloc(HeapNode* head, u32 size) {
             pPrevHeapNode->length = size;
 
             // update the entry id on allocation
-            HeapEntryID = heap_nextMallocID;
+            heapEntryId = heap_nextMallocID;
             pPrevHeapNode->allocated = true;
-            heap_nextMallocID = HeapEntryID + 1;
-            pPrevHeapNode->entryID = HeapEntryID;
+            heap_nextMallocID = heapEntryId + 1;
+            pPrevHeapNode->entryID = heapEntryId;
 
             // setup the new heap block entry
             curHeapNode = pPrevHeapNode->next;
@@ -146,10 +146,10 @@ void* _heap_malloc(HeapNode* head, u32 size) {
 
             // update the entry id on allocation
             // note, usage of a single ID from above will result in wrong code
-            HeapEntryID2 = heap_nextMallocID;
+            heapEntryID2 = heap_nextMallocID;
             pPrevHeapNode->allocated = true;
-            heap_nextMallocID = HeapEntryID2 + 1;
-            pPrevHeapNode->entryID = HeapEntryID2;
+            heap_nextMallocID = heapEntryID2 + 1;
+            pPrevHeapNode->entryID = heapEntryID2;
         }
         return (u8*)pPrevHeapNode + sizeof(HeapNode);
     }

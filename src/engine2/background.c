@@ -188,7 +188,7 @@ void appendGfx_background_texture(void) {
     theta = clamp_angle(-cam->curBoomYaw);
     sinTheta = sin_deg(theta);
     cosTheta = cos_deg(theta);
-    f5 = cosTheta * cam->lookAt_obj.x - sinTheta * cam->lookAt_obj.z + cam->leadAmount;
+    f5 = cosTheta * cam->lookAtObj.x - sinTheta * cam->lookAtObj.z + cam->leadAmount;
     scrollValue = -f5 * 0.25f;
     scrollValue += gGameStatusPtr->backgroundMaxX * theta * (1 / 90.0f);
 

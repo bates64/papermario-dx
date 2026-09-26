@@ -125,8 +125,8 @@ void func_802BC17C_E2EAAC(Entity* entity) {
     add_vec2D_polar(&gPlayerStatus.pos.x, &gPlayerStatus.pos.z, data->unk_18, data->unk_14);
 }
 
-s32 entity_Munchlesia_create_child(Entity* entity, EntityBlueprint* EntityBlueprint) {
-    return create_entity(EntityBlueprint, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, (s32)entity->rot.y);
+s32 entity_Munchlesia_create_child(Entity* entity, EntityBlueprint* blueprint) {
+    return create_entity(blueprint, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, (s32)entity->rot.y);
 }
 
 void func_802BC220_E2EB50(Entity* entity) {

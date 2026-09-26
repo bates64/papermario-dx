@@ -24,6 +24,7 @@
   mipsCrossGcc,
   mipsGdb,
   starRodJar,
+  llvmTools,
 }:
 
 let
@@ -97,7 +98,7 @@ let
     pkgs.python3
     jre
     starRodJar
-    pkgs.llvmPackages.clang-unwrapped
+    llvmTools
   ];
   closure = pkgs.closureInfo { rootPaths = closureRoots; };
 

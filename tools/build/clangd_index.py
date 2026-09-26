@@ -85,8 +85,8 @@ def _update_clangd_config(root: Path, idx_path: Path):
 
     default_header = (
         "CompileFlags:\n"
-        "  Add: [-Wno-unknown-warning-option, --target=mips-unknown-elf]\n"
-        "  Remove: [-m*, -f*, -g*]\n"
+        "  Add: -Wno-unknown-warning-option\n"
+        "  Remove: [-m*, -g*]\n"
         "InlayHints:\n"
         "  Designators: No\n"
         "Diagnostics:\n"
@@ -102,6 +102,20 @@ def _update_clangd_config(root: Path, idx_path: Path):
 
     if not existing_lines:
         existing_lines = [l + "\n" for l in default_header.splitlines()]
+
+    # Bring a config written from an earlier default header up to date,
+    # keeping any other settings in it. clangd's include analysis doesn't fit
+    # this codebase: files get common.h through the precompiled header, and
+    # use what it includes rather than what it declares.
+    replaced_defaults = {
+        "  Add: [-Wno-unknown-warning-option, --target=mips-unknown-elf]\n": "  Add: -Wno-unknown-warning-option\n",
+        "  Remove: [-m*, -f*, -g*]\n": "  Remove: [-m*, -g*]\n",
+    }
+    existing_lines = [replaced_defaults.get(line, line) for line in existing_lines]
+    if not any(line.rstrip() == "Diagnostics:" for line in existing_lines):
+        if not existing_lines[-1].endswith("\n"):
+            existing_lines[-1] += "\n"
+        existing_lines += ["Diagnostics:\n", "  UnusedIncludes: None\n", "  MissingIncludes: None\n"]
 
     # Remove any existing Index section
     filtered = []

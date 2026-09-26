@@ -11,7 +11,7 @@ s32 N(get_tattle)(void) {
 #endif
 
 EntryList N(Entrances) = {
-    [kpa_15_ENTRY_0]    {   12.0,    0.0,  -97.0,   90.0 },
+    [kpa_15_ENTRY_0]    = {   12.0,    0.0,  -97.0,   90.0 },
 };
 
 export MapSettings N(settings) = {

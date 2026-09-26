@@ -385,7 +385,7 @@ void gfx_draw_background(void) {
                                     // tile
                                     G_TX_RENDERTILE,
                                     // s, t, dsdx, dtdy
-                                    -1 << 5, 0 << 5, 1 << 10, 1 << 10);
+                                    -(1 << 5), 0 << 5, 1 << 10, 1 << 10);
                 gDPPipeSync(gMainGfxPos++);
             }
             break;

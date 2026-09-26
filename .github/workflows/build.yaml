@@ -44,7 +44,14 @@ jobs:
         run: nix develop --command "./tools/configure.sh"
       - uses: root-project/gcc-problem-matcher-improved@v0.0.1-alpha.1
       - name: Build game
-        run: nix develop --command "ninja"
+        id: build
+        # Objects restored from the build cache don't recompile, so their
+        # warnings wouldn't show. Deleting them makes ninja recompile them,
+        # which sccache keeps fast and which replays each compile's warnings.
+        shell: bash
+        run: |
+          find ver/us/build \( -name '*.c.o' -o -name '*.cpp.o' \) -delete
+          nix develop --command tools/build_without_warnings.sh
       - name: Build patch file
         run: nix develop --command ninja ver/us/build/papermario.bps
       - name: Get repository name
@@ -79,20 +86,14 @@ jobs:
           nix develop --command bash -c 'echo "$1" | xargs python3 tools/format.py --check' _ "${{ steps.changed.outputs.files }}"
 
       - name: Run clang-tidy
-        if: github.event_name == 'pull_request' && steps.changed.outputs.files != ''
-        continue-on-error: true
-        run: |
-          nix develop --command bash -c '
-            echo "$1" | xargs clang-tidy -p . --quiet 2>&1 | while IFS= read -r line; do
-              if echo "$line" | grep -qE "^[^:]+\.(c|cpp|h|hpp):[0-9]+:[0-9]+: (warning|error):"; then
-                file=$(echo "$line" | cut -d: -f1)
-                lineno=$(echo "$line" | cut -d: -f2)
-                col=$(echo "$line" | cut -d: -f3)
-                rest=$(echo "$line" | cut -d: -f4-)
-                echo "::warning file=$file,line=$lineno,col=$col::$rest"
-              fi
-            done
-          ' _ "${{ steps.changed.outputs.files }}"
+        # Runs even if the build failed on warnings, so both sets show.
+        if: ${{ !cancelled() && steps.build.outcome != 'skipped' }}
+        shell: bash
+        run: nix develop --command tools/clang_tidy_all.sh
+
+      - name: Check struct offset comments
+        if: ${{ !cancelled() && steps.build.outcome != 'skipped' }}
+        run: nix develop --command python3 tools/audit_struct_layout.py --all
 
   windows-toolchain:
     name: Windows Toolchain

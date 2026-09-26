@@ -771,8 +771,8 @@ void au_load_INIT(AuGlobals* globals, s32 romAddr, ALHeap* heap) {
         entry++;
     }
 
-    if (sbnHeader.INIToffset != 0) {
-        initBase = *romPtr + sbnHeader.INIToffset;
+    if (sbnHeader.initOffset != 0) {
+        initBase = *romPtr + sbnHeader.initOffset;
         au_read_rom(initBase, &initHeader, sizeof(initHeader));
 
         songListOffset = initBase + initHeader.songListOffset;
