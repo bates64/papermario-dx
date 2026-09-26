@@ -1,6 +1,7 @@
 #include "audio/audio.h"
 #include "audio/core.h"
 #include "ld_addrs.h"
+#include "dx/mamar.h"
 
 AuCallback BeginSoundUpdateCallback;
 BGMPlayer* gBGMPlayerA;
@@ -573,6 +574,10 @@ AuResult au_load_song_files(u32 songID, BGMHeader* bgmFile, BGMPlayer* player) {
     BGMPlayer* playerCopy;
     BGMHeader* fileCopy;
     s32 cond;
+
+    if (dx_mamar_load_song(bgmFile, player, &status)) {
+        return status;
+    }
 
     // needed to match
     cond = songID < globals->songListLength;

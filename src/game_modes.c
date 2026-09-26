@@ -1,4 +1,5 @@
 #include "game_modes.h"
+#include "dx/mamar.h"
 
 enum GameModeFlags {
     MODE_FLAG_NONE          = 0,
@@ -111,6 +112,12 @@ const GameModeData GameModeTemplates[] = {
         .init = state_init_demo,
         .step = state_step_demo,
         .renderBackUI = state_drawUI_demo,
+        .renderFrontUI = nullptr,
+    },
+    [GAME_MODE_MAMAR] {
+        .init = state_init_mamar,
+        .step = state_step_mamar,
+        .renderBackUI = state_drawUI_mamar,
         .renderFrontUI = nullptr,
     },
 };
