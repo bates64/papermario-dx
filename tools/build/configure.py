@@ -164,7 +164,7 @@ def posix(path) -> str:
 # Files a hand-authored asset layer may hold that no build rule reads.
 IGNORED_ASSET_NAMES = {".gitkeep", ".DS_Store", "Thumbs.db"}
 # Files in an asset layer that are code or configuration rather than assets.
-NOT_ASSETS = (".c", ".cpp", ".s", ".h", ".ld", ".yaml", ".md")
+NOT_ASSETS = (".c", ".cpp", ".s", ".h", ".hpp", ".ld", ".yaml", ".md")
 
 
 def _repo_paths(entries) -> List[str]:
