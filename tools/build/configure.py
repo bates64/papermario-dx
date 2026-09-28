@@ -1923,7 +1923,7 @@ class Configure:
                     if not c_file.name.endswith(".inc.c"):
                         c_files.append(c_file)
                 for c_file in sorted(src_path.glob("*.cpp"), key=lambda p: p.name):
-                    if not c_file.name.endswith(".inc.c"):
+                    if not c_file.name.endswith(".inc.cpp"):
                         c_files.append(c_file)
             else:
                 c_files.append(src_path)
