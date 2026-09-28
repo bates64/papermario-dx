@@ -27,10 +27,6 @@ void boot_main(void* data);
 void is_debug_init(void);
 NORETURN void is_debug_panic(const char* message);
 
-// TODO: migrate to vsnprintf on modern libc
-typedef char *outfun(char*,const char*,size_t);
-int _Printf(outfun prout, char *arg, const char *fmt, va_list args);
-
 f32 signF(f32 val);
 
 void load_obfuscation_shims(void);

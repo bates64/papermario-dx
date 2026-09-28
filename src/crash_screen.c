@@ -1,4 +1,5 @@
 #include "common.h"
+#include "libc/xstdio.h"
 #include <stdarg.h>
 #include "PR/os_internal_thread.h"
 #include <stdio.h>

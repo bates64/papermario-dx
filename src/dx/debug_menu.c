@@ -1,5 +1,6 @@
 // #include "dx/debug_menu.h"
 #include "common.h"
+#include "libc/xstdio.h"
 #if DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE)
 #include "game_modes.h"
 #include "battle/battle.h"

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "libc/xstdio.h"
 #include <stdarg.h>
 #include "nu/nusys.h"
 
