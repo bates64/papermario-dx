@@ -1865,6 +1865,11 @@ class Configure:
         # stack doesn't list it, beneath every layer.
         found: Dict[Tuple[int, str], Tuple[Path, int]] = {}
 
+        def is_source(path: Path) -> bool:
+            return path.suffix in (".c", ".cpp") and not path.name.endswith(
+                (".inc.c", ".inc.cpp")
+            )
+
         layers = [ROOT / d for d in reversed(self.asset_stack)]
         search_dirs = ([] if ROOT / "src" in layers else [ROOT / "src"]) + layers
         for search_dir in search_dirs:
@@ -1875,16 +1880,13 @@ class Configure:
                     search_dir.glob(glob_str, case_sensitive=True),
                     key=lambda p: p.as_posix(),
                 ):
-                    if match.name.endswith(".inc.c") or match.name.endswith(".inc.cpp"):
-                        continue
-                    # Skip asset directories that contain no compilable source files
-                    # (only .inc.c/.inc.cpp), so they don't shadow src/ overlays
-                    if match.is_dir() and not any(
-                        f.suffix in (".c", ".cpp")
-                        and not f.name.endswith(".inc.c")
-                        and not f.name.endswith(".inc.cpp")
-                        for f in match.iterdir()
-                    ):
+                    # Skip headers beside an overlay, and asset directories that
+                    # contain no compilable source files (only .inc.c/.inc.cpp), so
+                    # they don't shadow src/ overlays
+                    if match.is_dir():
+                        if not any(is_source(f) for f in match.iterdir()):
+                            continue
+                    elif not is_source(match):
                         continue
                     found[(type_index, match.stem)] = (match, type_index)
 
