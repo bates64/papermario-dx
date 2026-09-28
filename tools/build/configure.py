@@ -1631,6 +1631,12 @@ class Configure:
                             # Not the forwarder, which would pick up the
                             # previous build of this precompiled header.
                             pch_header = Path("include") / pch.stem
+                            # sccache keys on preprocessed output, which hides
+                            # line endings and comments, but the precompiled
+                            # header records each header's exact bytes to honor
+                            # `#pragma once`. A cached one built from other
+                            # bytes would let sources include headers twice.
+                            variables = {**variables, "sccache": ""}
                         else:
                             pch_header = pch.with_suffix("")
                             implicit.append(posix(pch))
