@@ -257,7 +257,6 @@ let
 
     # Embeddable Python with pre-installed packages
     cp -rL ${python-windows}/* $dir/python/
-    rm -f $dir/python/get-pip.py
     mkdir -p $dir/python/Lib/site-packages
     for whl in ${pythonDepsWindows}/*.whl; do
       unzip -o -q "$whl" -d $dir/python/Lib/site-packages

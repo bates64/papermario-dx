@@ -12,10 +12,6 @@ let
     url = "https://www.python.org/ftp/python/${version}/python-${version}-embed-amd64.zip";
     sha256 = "14vvl9i0ihr7x24i4f4w4ddgggjijsrsxsiczafzdjs0n483d00y";
   };
-  getPip = fetchurl {
-    url = "https://bootstrap.pypa.io/get-pip.py";
-    sha256 = "0g6azgrhc2w37cr06qwn3pg9vvn90b0r63dl76sy2nzlgmlirfpy";
-  };
 in
 stdenvNoCC.mkDerivation {
   pname = "python-embed-windows";
@@ -33,8 +29,5 @@ stdenvNoCC.mkDerivation {
     # the python dir and python313.zip, which prevents the script directory
     # (e.g. tools/build/) from being added to sys.path when running scripts.
     rm $out/python313._pth
-
-    # Include get-pip.py for bootstrapping pip on first use.
-    cp ${getPip} $out/get-pip.py
   '';
 }
