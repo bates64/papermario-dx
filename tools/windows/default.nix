@@ -62,78 +62,32 @@ let
   # MIPS glibc headers from the native cross-compiler, needed for string.h etc.
   mipsGlibcDev = mipsCrossGcc.libc.dev;
 
-  requirements = ../requirements.txt;
+  # Python packages for every platform, for offline installation (used by wineRom).
+  pythonDeps = pkgs.callPackage ../python-packages.nix {};
 
-  # Both wheel sets below are fixed-output derivations, so their store path
-  # depends only on the name and outputHash. Including the requirements digest
-  # in the name means editing requirements.txt without also updating outputHash
-  # fails with a hash mismatch instead of silently reusing the cached wheels
-  # from the previous requirements.
-  requirementsDigest = builtins.substring 0 8 (builtins.hashFile "sha256" requirements);
-
-  # ntfsutils is required by tools/build/configure.py on Windows, but its
-  # "sys_platform == 'win32'" marker in requirements.txt makes pip skip it when
-  # resolving wheels on Linux, so fetch the wheel directly. It is pure Python
-  # with no dependencies.
-  ntfsutilsWheel = pkgs.fetchurl {
-    url = "https://files.pythonhosted.org/packages/c2/fe/458d97505f51e88cf90d7ea88a76fb1ef2d345332bb8f70e5eea91ae4a22/ntfsutils-0.1.5-py3-none-any.whl";
-    hash = "sha256-I/fSdIfDsng4saDomCXjwXC9CNCLqeTIb8M19fpzoOI=";
-  };
-
-  # Download all Python build dependencies for offline installation (Linux, used by wineRom).
-  pythonDeps = pkgs.stdenvNoCC.mkDerivation {
-    name = "papermario-python-deps-${requirementsDigest}";
-    outputHashMode = "recursive";
-    outputHashAlgo = "sha256";
-    outputHash = "sha256-aQ8C7a9o0hsYmOOcAN/lDSSFED7eqnLsbrrdhiBOoh8=";
-    nativeBuildInputs = [ pkgs.python3 pkgs.python3Packages.pip pkgs.cacert ];
-    buildCommand = ''
-      export SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
-      pip download -r ${requirements} setuptools wheel -d $out
-    '';
-  };
-
-  # Download Windows-compatible wheels for pre-installation into the toolchain.
-  # Some packages (e.g. ninja_syntax) only have sdists on PyPI, so we can't use
-  # --platform win_amd64 --only-binary=:all: for everything. Instead we build
-  # all wheels first (which creates universal wheels from sdists), then replace
-  # any Linux-specific wheels with their Windows counterparts.
-  pythonDepsWindows = pkgs.stdenvNoCC.mkDerivation {
-    name = "papermario-python-deps-windows-${requirementsDigest}";
-    outputHashMode = "recursive";
-    outputHashAlgo = "sha256";
-    outputHash = "sha256-+tTQ/XnvfEWQAIxtK8d8GKZhGsIqI6ZmAa5G2VRKTzg=";
+  # Wheels to unpack into the toolchain's embedded Python. Packages published
+  # only as source are pure Python, so they're built into py3-none-any wheels
+  # here.
+  pythonDepsWindows = pkgs.runCommand "papermario-python-wheels-windows" {
     nativeBuildInputs = [
       pkgs.python3
       pkgs.python3Packages.pip
       pkgs.python3Packages.setuptools
       pkgs.python3Packages.wheel
-      pkgs.cacert
     ];
-    buildCommand = ''
-      export SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
-      export HOME=$(mktemp -d)
-      mkdir -p $out
-
-      # Build wheels for all packages including transitive dependencies.
-      # Pure Python sdist-only packages (e.g. ninja_syntax) become py3-none-any wheels.
-      pip wheel -r ${requirements} setuptools -w /tmp/all-wheels --quiet
-
-      for whl in /tmp/all-wheels/*.whl; do
-        name=$(basename "$whl")
-        if echo "$name" | grep -qE '(linux|manylinux|macosx)'; then
-          # Platform-specific wheel: download Windows version instead
-          pkg=$(echo "$name" | sed 's/-[0-9].*//')
-          pip download \
-            --platform win_amd64 --python-version 3.13 --implementation cp --abi cp313 \
-            --only-binary=:all: --no-deps \
-            "$pkg" -d $out --quiet
-        else
-          cp "$whl" $out/
-        fi
-      done
-    '';
-  };
+  } ''
+    export HOME=$(mktemp -d)
+    mkdir -p $out
+    pip download --quiet --no-deps --no-index --find-links=${pythonDeps} \
+      --platform win_amd64 --python-version ${pkgs.lib.versions.majorMinor python-windows.version} --implementation cp \
+      -r ${pythonDeps.requirements} -d files
+    for file in files/*; do
+      case "$file" in
+        *.whl) cp "$file" $out/ ;;
+        *) pip wheel --no-deps --no-build-isolation --no-index "$file" -w $out --quiet ;;
+      esac
+    done
+  '';
 
   # Build the ROM using wine-wrapped Windows tools with native Linux
   # Python and ninja. Produces the ROM as output for comparison.
@@ -261,7 +215,6 @@ let
     for whl in ${pythonDepsWindows}/*.whl; do
       unzip -o -q "$whl" -d $dir/python/Lib/site-packages
     done
-    unzip -o -q ${ntfsutilsWheel} -d $dir/python/Lib/site-packages
 
     # Star Rod: bundled JRE + jar, launched via a small .bat wrapper
     mkdir -p $dir/jre $dir/share/java

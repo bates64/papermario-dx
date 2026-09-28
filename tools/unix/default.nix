@@ -190,7 +190,7 @@ let
       mkdir -p $gccPrefix/mips-linux-gnu/include/c++/$gccVersion
       cp -rL ${mipsCrossGcc.cc}/include/c++/*/* $gccPrefix/mips-linux-gnu/include/c++/$gccVersion/
 
-      # Python packages (requirements.txt + requirements_extra.txt), found via
+      # Python packages (requirements.txt), found via
       # PYTHONPATH rather than baked into the interpreter's own store copy.
       mkdir -p $dir/python
       cp -rL --no-preserve=ownership ${python-packages}/* $dir/python/
