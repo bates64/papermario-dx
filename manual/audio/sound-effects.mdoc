@@ -1,0 +1,115 @@
+---
+title: Add a sound effect
+description: Add a one-shot or sequenced sound effect to your mod and play it with a SOUND constant.
+sidebar:
+  order: 2
+---
+
+A sound effect is an entry in `audio/sound_effects.xml`. It either plays one sample (a one-shot) or runs a short script that plays several notes (a sequence). In this guide, you add one of each using samples that the game already has, then play them from code. To use your own recording, first [add an instrument to a sound bank](/papermario-dx/audio/instruments).
+
+## Add a one-shot
+
+1. Create `audio/sound_effects.xml` if it doesn't exist, and add a `Sound` entry. The file lists only your entries, and the build merges it with the game's.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Sounds>
+	<Sound name="ShopBell">
+		<Routing allocation="dynamic" maxPlayer="7" priority="0"/>
+		<OneShot wav="open_popup" volume="70" lockVolume="true" lockPitch="true"/>
+	</Sound>
+</Sounds>
+```
+
+2. Rebuild. The build gives the entry the constant `SOUND_SHOP_BELL`, which you use as described in [Play the sound](#play-the-sound).
+
+The entry uses these attributes:
+
+| Attribute | Meaning |
+| --- | --- |
+| `name` | Becomes the `SOUND_SHOP_BELL` constant. |
+| `wav` | The sample to play. It's the name of an instrument in a bank listed in `audio/banks.xml`, without `.wav`. |
+| `volume` | The volume in hexadecimal, from `00` to `FF`. |
+| `lockVolume`, `lockPitch` | Keep your values when game code plays the sound with its own volume or pitch. `lockPan` and `lockReverb` work the same way. |
+| `pan`, `reverb`, `pitch`, `randomPitch`, `envelope` | Optional. If you leave them out, the defaults apply. |
+
+`Routing` decides which of the eight sound effect players can play the sound and how it competes with sounds that are already playing:
+
+| Attribute | Meaning |
+| --- | --- |
+| `allocation="dynamic"` | The engine picks a player when the sound starts. Use `allocation="fixed"` with a `player` value to always use one player. |
+| `maxPlayer` | The highest player number the engine can pick, from `0` to `7`. |
+| `priority` | From `0` (lowest) to `3` (highest). A sound can replace a playing sound of equal or lower priority. |
+
+If you copy the `Routing` line from a similar sound in the game's `audio/sound_effects.xml`, the new sound behaves the same way.
+
+## Add a sequence
+
+Use a sequence when the sound needs several notes, timing, loops, or more than one track.
+
+1. Add a `Sound` entry to `audio/sound_effects.xml` that points to a file in `audio/sfx/`. A sequence needs a `Routing` element.
+
+```xml
+	<Sound name="ShopJingle" src="sfx/shop_jingle.xml">
+		<Routing allocation="dynamic" maxPlayer="7" priority="0"/>
+	</Sound>
+```
+
+Add this entry inside the `Sounds` element, next to `ShopBell`. The path must have the form `sfx/<name>.xml`.
+
+2. Create `audio/sfx/shop_jingle.xml`.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<SoundEffect>
+	<Tracks>
+		<Track slot="0">
+			<Sequence lockVolume="true" lockPitch="true">
+				<SetVolume volume="69"/>
+				<SetReverb reverb="5"/>
+				<SetInstrument wav="menu_show_choice"/>
+				<Play pitch="60" velocity="110" length="4"/>
+				<Delay ticks="12"/>
+				<Play pitch="64" velocity="110" length="4"/>
+				<Delay ticks="12"/>
+				<Play pitch="67" velocity="110" length="19"/>
+				<Delay ticks="48"/>
+				<End/>
+			</Sequence>
+		</Track>
+	</Tracks>
+</SoundEffect>
+```
+
+3. Rebuild. The build gives the entry the constant `SOUND_SHOP_JINGLE`.
+
+`Play` starts a note. `pitch` is a note number, `velocity` runs from `0` to `127`, and `length` is in ticks. `Delay` waits for the given number of ticks before the next command. `End` finishes the sequence. The game's sequences in `audio/sfx/` show the other commands, such as `StartLoop`, `EndLoop`, and `PitchSweep`. Copy one that behaves like the sound you want, such as the game's `audio/sfx/menu_show_choice.xml`, and change it.
+
+## Play the sound
+
+Use the constant anywhere you play a sound.
+
+In C:
+
+```c
+sfx_play_sound(SOUND_SHOP_BELL);
+```
+
+In an EVT script:
+
+```c
+Call(PlaySound, SOUND_SHOP_BELL)
+```
+
+Rebuild, then run the code in the game to hear the sound. The Audio Booth in [Star Rod](/papermario-dx/star-rod) also previews a sound effect from its source files.
+
+## Replace or remove a game sound
+
+To replace a sound, add an entry with the same `name`. Your entry replaces the game's entry whole and keeps its ID, so existing code plays your version.
+
+To remove a sound, add `<Sound name="ChimeBeginAmbush" delete="true"/>`. The constant `SOUND_CHIME_BEGIN_AMBUSH` then no longer exists, so remove or change the code that uses it first.
+
+## Related pages
+
+- [Custom audio](/papermario-dx/audio) explains how layers merge and how names become constants.
+- [Fix audio build errors](/papermario-dx/audio/troubleshooting) lists common `audio/sound_effects.xml` errors.

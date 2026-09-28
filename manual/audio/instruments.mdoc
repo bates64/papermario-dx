@@ -1,0 +1,158 @@
+---
+title: Add an instrument or a sound bank
+description: Add your own samples to the game by adding an instrument to a sound bank, or by creating a new bank.
+sidebar:
+  order: 3
+---
+
+A **sound bank** holds up to 16 instruments. Each instrument is a mono WAV sample plus its tuning, an optional loop, and an envelope that shapes its volume. Sound effects, ambient sequences, and songs play samples through the instruments in banks.
+
+In this guide, you add a new sound bank with one instrument and then play it from a sound effect. Later sections show how to add an instrument to one of the game's banks and how to replace a sample.
+
+## Prepare the WAV file
+
+Export your sample with these settings:
+
+- Mono
+- 16-bit PCM, uncompressed
+- Any sample rate. The build reads the rate from the file, and lower rates make smaller ROM files.
+
+Name the file after the sample, in snake case, such as `chime.wav`. The sample name must be unique across all banks.
+
+## Choose a bank
+
+You have two options:
+
+- **Create a new bank.** Your bank has its own folder and doesn't touch the game's banks. Choose this unless you have a reason not to.
+- **Add to an existing bank.** You ship a changed `sound_bank.xml` and your new WAV file. You don't copy the bank's other samples. See [Add an instrument to a game bank](#add-an-instrument-to-a-game-bank).
+
+The engine loads banks in two ways:
+
+| Kind | How you set it up | When it's loaded |
+| --- | --- | --- |
+| Always-loaded | List the bank in `audio/banks.xml` | When the game starts |
+| Song bank | Name the bank in `bk1`, `bk2`, or `bk3` of a `Song` entry, without listing it in `audio/banks.xml` | When that song loads |
+
+Sound effects and ambient sequences look up samples in the always-loaded banks, so a sample must be in one of those banks to play from them. Use a song bank for samples that only one song needs.
+
+## Create a bank
+
+1. Create the folder `audio/bank/MOD1`. The folder name is the bank name, and it can have four characters at most.
+
+2. Copy your WAV file into the folder as `audio/bank/MOD1/chime.wav`.
+
+3. Create `audio/bank/MOD1/sound_bank.xml`.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<SoundBank>
+	<Instruments>
+		<Instrument wav="chime" envName="env1" keyBase="4800"/>
+	</Instruments>
+	<Envelopes>
+		<Envelope envName="env1">
+			<Commands>
+				<Press>
+					<Point duration="0" volume="7F"/>
+					<End/>
+				</Press>
+				<Release>
+					<Point duration="120ms" volume="00"/>
+					<End/>
+				</Release>
+			</Commands>
+		</Envelope>
+	</Envelopes>
+</SoundBank>
+```
+
+The `Instrument` attributes are:
+
+| Attribute | Meaning |
+| --- | --- |
+| `wav` | The file name without `.wav`. Sound effects, ambient sequences, and songs use this name to refer to the instrument. |
+| `envName` | An envelope in the same file. `env1` holds the volume at full while a note is on and fades it out in 120 milliseconds. |
+| `keyBase` | The pitch at which the sample plays unchanged, in cents (hundredths of a note). `4800` is note 48, which is the default pitch of a one-shot sound effect. Required. |
+| `loop`, `loopCount` | Optional. See [Loop a sample](#loop-a-sample). |
+
+The order of instruments is their index in the bank, so add new instruments at the end of an existing bank.
+
+4. Create `audio/banks.xml` and list the bank as always loaded.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<BankList>
+	<Bank name="MOD1.bk"/>
+</BankList>
+```
+
+The build puts the bank in the first free slot. To choose the slot yourself, add both `group` (from `2` to `6`) and `index` (from `0` to `F`). The engine loads at most 79 always-loaded banks.
+
+5. Rebuild the ROM. The build log shows the encoding step.
+
+```text
+encoded MOD1/chime: new codebook
+```
+
+That line means the build compressed your sample into the game's audio format.
+
+6. Use the instrument in a sound effect. Add this entry to `audio/sound_effects.xml`, as described in [Add a sound effect](/papermario-dx/audio/sound-effects).
+
+```xml
+	<Sound name="ShopBell">
+		<Routing allocation="dynamic" maxPlayer="7" priority="0"/>
+		<OneShot wav="chime" volume="70" lockVolume="true" lockPitch="true"/>
+	</Sound>
+```
+
+Rebuild, play `SOUND_SHOP_BELL` in the game, and check that you hear your sample. The Audio Booth in [Star Rod](/papermario-dx/star-rod) also previews samples.
+
+## Add an instrument to a game bank
+
+Each file in a bank resolves on its own, so a bank in your layer needs only the files you add or change. The game's other samples stay exactly as they are.
+
+1. Copy the game's `audio/bank/SYS2/sound_bank.xml` to `audio/bank/SYS2/sound_bank.xml` in your layer. Your copy replaces the game's file, so it must list every instrument of the bank. Keep the `Encoding` element of each existing instrument.
+
+2. Add your instrument at the end of the `Instruments` element. The game's `SYS2` bank has 12 instruments, so it has room for four more.
+
+```xml
+		<Instrument wav="shop_bell" envName="env1" keyBase="4800"/>
+```
+
+3. Copy your WAV file to `audio/bank/SYS2/shop_bell.wav`.
+
+4. Rebuild. Only the new sample is encoded, and the game's other samples in `SYS2` are unchanged.
+
+Sound effects and ambient sequences can use the instrument if the bank is always loaded, as `SYS2` is.
+
+## Replace a sample
+
+To change how an existing sample sounds, copy your WAV file to the same path as the game's file, such as `audio/bank/SYS1/open_popup.wav`. You don't need a `sound_bank.xml` file.
+
+The build keeps the encoding of every sample you didn't change. It encodes the replaced sample again and logs that it did:
+
+```text
+re-encoded SYS1/open_popup: new codebook
+```
+
+## Loop a sample
+
+A looping instrument uses two WAV files: one for the attack and one that repeats, named `<sample>_loop.wav`. Both files must have the same sample rate.
+
+```xml
+<Instrument wav="hum" loop="hum_loop" envName="env1" keyBase="4800"/>
+```
+
+The loop repeats forever. To repeat it a fixed number of times, add `loopCount`. The build ignores loop points stored inside a WAV file, so trim the two files where you want the loop to start and end.
+
+## Limits
+
+- A bank holds 16 instruments at most.
+- A sample name can appear in only one bank.
+- A bank that a song loads with `bk1`, `bk2`, or `bk3` can hold fewer instruments and envelopes than an always-loaded bank. The build reports an error if the bank is too big.
+- Your audio must fit in the space the engine can address. The build reports an error if it doesn't. Use shorter samples or lower sample rates.
+
+## Related pages
+
+- [Add a song](/papermario-dx/audio/songs) shows how to load a song bank.
+- [Fix audio build errors](/papermario-dx/audio/troubleshooting) lists common bank and WAV errors.

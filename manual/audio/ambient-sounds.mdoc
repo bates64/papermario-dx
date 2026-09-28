@@ -1,0 +1,72 @@
+---
+title: Add an ambient sound
+description: Edit an ambient sequence, or add a new ambient sound to your mod, and play it with an AMBIENT constant.
+sidebar:
+  order: 5
+---
+
+An ambient sound is a looping background sequence, such as wind or birdsong, that maps play with `PlayAmbientSounds`. Each one is an MSEQ file in `audio/mseq/` plus an entry in `audio/ambient_sounds.xml`.
+
+## Edit an ambient sequence
+
+To change how a game ambient sound plays, replace its MSEQ file. The game's `audio/ambient_sounds.xml` shows which file each sound uses. The `Spooky` sound uses `spooky`, which is the file `audio/mseq/spooky.xml`.
+
+1. Copy the game's `audio/mseq/spooky.xml` to `audio/mseq/spooky.xml` in your layer.
+
+2. In your copy, change the `volume` of the first `PlaySound` command from `6D` to `40`.
+
+3. Rebuild the ROM and load a map that plays `AMBIENT_SPOOKY`. The first sound is quieter.
+
+Your file replaces the game's file at the same path, so you don't change any table.
+
+An MSEQ file has a header and a list of commands:
+
+```xml
+<Mseq code="501" firstVoice="13">
+	<TrackRamps/>
+	<Commands>
+		<SetInstrument track="1" wav="crow"/>
+		<SetVolume track="1" volume="7F"/>
+		<PlaySound track="1" pitch="176" volume="6D"/>
+		<Delay duration="10"/>
+		<StopSound track="1" pitch="176"/>
+	</Commands>
+</Mseq>
+```
+
+- `SetInstrument` picks a sample by name for a track. The sample must be in an always-loaded bank.
+- `PlaySound` and `StopSound` start and stop a note. `Delay` waits for `duration` ticks.
+- `StartLoop` and `EndLoop` repeat the commands between them. An `EndLoop` with `count="0"` repeats forever, and the loop must contain a `Delay`.
+- `SetVolume`, `SetPan`, and `SetReverb` set values for a track. `volume` is in hexadecimal.
+
+The game's files in `audio/mseq/` show every command. Copy the one closest to what you want.
+
+## Add a new ambient sound
+
+1. Copy one of the game's MSEQ files to `audio/mseq/rain.xml` and edit it. Set its `code` to a label of one to four characters, such as `RN1`.
+
+2. Create `audio/ambient_sounds.xml` if it doesn't exist, and add the entry. The file lists only your entries, and the build merges it with the game's.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<AmbientSounds>
+	<AmbientSound name="Rain" mseq="rain"/>
+</AmbientSounds>
+```
+
+The `mseq` value is the file name in `audio/mseq/`, without the extension.
+
+3. Rebuild the ROM. The build gives the entry the constant `AMBIENT_RAIN`. New ambient sounds get IDs after the game's own, so you don't need to delete anything to make room.
+
+4. Play the sound from a map script:
+
+```c
+Call(PlayAmbientSounds, AMBIENT_RAIN)
+```
+
+To replace a game ambient sound, keep its `name` and point `mseq` at your file. The entry keeps the original ID, so maps that play it use your version.
+
+## Related pages
+
+- [Add an instrument or a sound bank](/papermario-dx/audio/instruments) shows how to add samples for your sequence.
+- [Fix audio build errors](/papermario-dx/audio/troubleshooting) lists common ambient sound errors.
