@@ -522,13 +522,14 @@ enum EasingType {
 
 enum SoundIDBits {
     SOUND_ID_STOP                   = 0x00008000,
-    SOUND_ID_LOWER                  = 0x000023FF,
+    SOUND_ID_LOWER                  = 0x000063FF,
+    SOUND_ID_EXT                    = 0x00004000, // sounds belonging to extended sections 8-15
     SOUND_ID_UNK                    = 0x00002000, // sounds belonging to special large section
     SOUND_ID_ADJUST                 = 0x00001000,
     SOUND_ID_TRIGGER_MASK           = 0x00000C00,
     SOUND_ID_TRIGGER_CHANGE_VOLUME  = 0x00000800,
     SOUND_ID_TRIGGER_CHANGE_SOUND   = 0x00000400,
-    SOUND_ID_SECTION_MASK           = 0x00000300, // corresponds to sections 0-3 for indices < 0xC0 and 4-7 for those above
+    SOUND_ID_SECTION_MASK           = 0x00000300, // corresponds to sections 0-3 for indices < 0xC0 and 4-7 for those above (add 8 with SOUND_ID_EXT)
     SOUND_ID_INDEX_MASK             = 0x000000FF,
     SOUND_ID_UNK_INDEX_MASK         = 0x000001FF, // indices for the special large section
 

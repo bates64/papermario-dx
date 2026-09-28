@@ -784,39 +784,39 @@ typedef struct SoundManager {
     /* 0x000 */ struct AuGlobals* globals;
     /* 0x004 */ struct AuVoice* curVoice;
     /* 0x008 */ u8* sefData;
-    /* 0x00C */ s32* normalSounds[8];
-    /* 0x02C */ s32* extraSounds;
-    /* 0x030 */ s32 frameCounter; ///< Number of video frame updates, used to update random numnber
-    /* 0x034 */ s32 nextUpdateStep;
-    /* 0x038 */ s32 nextUpdateInterval;
-    /* 0x03C */ s32 nextUpdateCounter;
-    /* 0x040 */ Fade fadeInfo;
-    /* 0x05C */ s32 busVolume;
-    /* 0x060 */ s32 randomValue;
-    /* 0x064 */ s32* customReverbParams[8];
-    /* 0x084 */ s8 customReverbAmounts[8];
-    /* 0x08C */ u8 lastCustomEffectIdx;
-    /* 0x08D */ s8 defaultReverbAmt;
-    /* 0x08E */ u16 extraSoundCount; ///< Number of entries in the extra section
-    /* 0x090 */ SoundManagerMusicEvent bgmSounds[4];
-    /* 0x0A0 */ SoundManagerCustomCmdList customCmdList[4];
-    /* 0x0B8 */ u16 baseVolume;
-    /* 0x0BA */ s16 prevUpdateResult; ///< Unused, may indicate error status
-    /* 0x0BC */ u8 priority;
-    /* 0x0BD */ u8 firstVoice;
-    /* 0x0BE */ u8 busID;
-    /* 0x0BF */ u8 curVoiceIndex;
-    /* 0x0C0 */ u8 state;
-    /* 0x0C1 */ PAD(1);
-    /* 0x0C2 */ SoundRequest soundQueue[SFX_QUEUE_SIZE]; ///< Lock-free ring buffer for queueing sound effects from game thread
-    /* 0x162 */ s8 unused_162;
-    /* 0x163 */ u8 sfxQueueReadPos; ///< Read index for the soundQueue ring buffer (audio thread)
-    /* 0x164 */ u8 sfxQueueWritePos; ///< Write index for the soundQueue ring buffer (game thread)
-    /* 0x165 */ s8 unused_165;
-    /* 0x166 */ PAD(2);
-    /* 0x168 */ s32 resetPending;
-    /* 0x16C */ SoundPlayer players[8];
-} SoundManager; // size = 0x6CC
+    /* 0x00C */ s32* normalSounds[16]; ///< Sections 0-7, then extended sections 8-15 (null when absent)
+    /* 0x04C */ s32* extraSounds;
+    /* 0x050 */ s32 frameCounter; ///< Number of video frame updates, used to update random numnber
+    /* 0x054 */ s32 nextUpdateStep;
+    /* 0x058 */ s32 nextUpdateInterval;
+    /* 0x05C */ s32 nextUpdateCounter;
+    /* 0x060 */ Fade fadeInfo;
+    /* 0x07C */ s32 busVolume;
+    /* 0x080 */ s32 randomValue;
+    /* 0x084 */ s32* customReverbParams[8];
+    /* 0x0A4 */ s8 customReverbAmounts[8];
+    /* 0x0AC */ u8 lastCustomEffectIdx;
+    /* 0x0AD */ s8 defaultReverbAmt;
+    /* 0x0AE */ u16 extraSoundCount; ///< Number of entries in the extra section
+    /* 0x0B0 */ SoundManagerMusicEvent bgmSounds[4];
+    /* 0x0C0 */ SoundManagerCustomCmdList customCmdList[4];
+    /* 0x0D8 */ u16 baseVolume;
+    /* 0x0DA */ s16 prevUpdateResult; ///< Unused, may indicate error status
+    /* 0x0DC */ u8 priority;
+    /* 0x0DD */ u8 firstVoice;
+    /* 0x0DE */ u8 busID;
+    /* 0x0DF */ u8 curVoiceIndex;
+    /* 0x0E0 */ u8 state;
+    /* 0x0E1 */ PAD(1);
+    /* 0x0E2 */ SoundRequest soundQueue[SFX_QUEUE_SIZE]; ///< Lock-free ring buffer for queueing sound effects from game thread
+    /* 0x182 */ s8 unused_162;
+    /* 0x183 */ u8 sfxQueueReadPos; ///< Read index for the soundQueue ring buffer (audio thread)
+    /* 0x184 */ u8 sfxQueueWritePos; ///< Write index for the soundQueue ring buffer (game thread)
+    /* 0x185 */ s8 unused_165;
+    /* 0x186 */ PAD(2);
+    /* 0x188 */ s32 resetPending;
+    /* 0x18C */ SoundPlayer players[8];
+} SoundManager; // size = 0x6EC
 
 typedef struct SoundInstance {
     /* 0x00 */ s32 flags;
@@ -947,7 +947,8 @@ typedef struct SEFHeader {
     /* 0x0F */ PAD(1);
     /* 0x10 */ u16 sections[8];
     /* 0x20 */ u16 section2000;
-} SEFHeader; // size = 0x24
+    /* 0x22 */ u16 extSections[8]; ///< Sections 8-15, only when hasExtraSection == 2
+} SEFHeader; // size = 0x34
 
 typedef struct INITHeader {
     /* 0x00 */ AUFileMetadata mdata; // uses identifer 'INIT'
