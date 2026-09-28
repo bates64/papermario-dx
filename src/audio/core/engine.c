@@ -82,7 +82,7 @@ void au_engine_init(s32 outputRate) {
         globals->snapshots[i].bgmPlayer = alHeapAlloc(alHeap, 1, sizeof(BGMPlayer));
     }
 
-    globals->dataSEF = alHeapAlloc(alHeap, 1, 0x5200);
+    globals->dataSEF = alHeapAlloc(alHeap, 1, AUDIO_SEF_SIZE);
     globals->defaultInstrument = alHeapAlloc(alHeap, 1, sizeof(Instrument));
     globals->dataPER = alHeapAlloc(alHeap, 1, 6 * sizeof(PEREntry));
     globals->dataPRG = alHeapAlloc(alHeap, 1, PRG_MAX_COUNT * sizeof(BGMInstrumentInfo));
