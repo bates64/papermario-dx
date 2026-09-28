@@ -1033,12 +1033,12 @@ typedef struct AuGlobals {
     /* 0x001C */ s32 baseRomOffset;
     /* 0x0020 */ SBNFileEntry* sbnFileList; /// copied from SBN to the audio heap
     /* 0x0024 */ s32 fileListLength;
-    /* 0x0028 */ PAD(4);
+    /* 0x0028 */ s32 extraFileListLength; /// number of entries in extraFileList
     /* 0x002C */ InitSongEntry* songList; /// copied from INIT to the audio heap
     /* 0x0030 */ s32 songListLength;
     /* 0x0034 */ s32 bkFileListOffset;
     /* 0x0038 */ s32 bkListLength;
-    /* 0x003C */ u16* extraFileList; /// copied from INIT to the audio heap, seems to exist only to find SEF, PER, and PRG
+    /* 0x003C */ u16* extraFileList; /// copied from INIT to the audio heap, resource list holding SEF, PER, PRG, ambient MSEQs, and the radio bank
     /* 0x0040 */ AuEffectChange effectChanges[4]; ///< set this to change the effect on an effect bus
     /* 0x0050 */ u8 channelDelayPending;
     /* 0x0051 */ u8 channelDelayBusID;
@@ -1403,7 +1403,6 @@ extern s32 CUSTOM_ECHO_PARAMS_1[];
 extern s32 CUSTOM_ECHO_PARAMS_3[];
 extern s32 CUSTOM_ECHO_PARAMS_2[];
 extern EnvelopePreset DummyInstrumentEnvelope;
-extern u8 AmbientSoundIDtoMSEQFileIndex[];
 extern s32 AuEnvelopeIntervals[];
 extern s32 PreventBGMPlayerUpdate;
 extern u16 AmbienceRadioChannel;
