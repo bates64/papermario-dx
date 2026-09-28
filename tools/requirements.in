@@ -1,0 +1,15 @@
+# Python packages the tools use directly. After editing, pin them and their
+# dependencies into requirements.txt, then update the hash in
+# tools/python-packages.nix from the mismatch a build reports:
+#
+#   nix run --inputs-from . nixpkgs#uv -- pip compile --universal --python-version 3.12 --no-annotate tools/requirements.in -o tools/requirements.txt
+splat64[mips]==0.41.1
+msgpack
+ninja_syntax
+requests
+ntfsutils; sys_platform == 'win32'
+levenshtein
+ahocorasick-rs
+# Builds the packages above that are only published as source.
+setuptools
+wheel

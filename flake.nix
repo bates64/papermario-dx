@@ -282,7 +282,7 @@
             CC=${pkgs.stdenv.cc}/bin/cc pip install ${
               pkgs.lib.optionalString (pkgs.stdenv.hostPlatform.isLinux && pkgs.stdenv.hostPlatform.isAarch64)
                 "--no-binary pygfxd"
-            } -r ${./tools/requirements.txt} -r ${./tools/requirements_extra.txt} --quiet
+            } -r ${./tools/requirements.txt} --quiet
           '';
         };
       }
