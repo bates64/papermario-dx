@@ -120,7 +120,9 @@ void state_init_mamar(void) {
 void state_step_mamar(void) {
     MusicControlData* music = &gMusicControlData[0];
 
-    if (MamarRequest != PlayingRequest) {
+    // A song requested while paused waits until Mamar unpauses. Starting it and
+    // then pausing it can pause the song it replaces instead, leaving it playing.
+    if (MamarRequest != PlayingRequest && !MamarPaused) {
         PlayingRequest = MamarRequest;
         PlayingSongID = PlayingSongID == 0 ? 1 : 0;
         IsPlaying = true;

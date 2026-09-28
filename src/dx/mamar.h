@@ -30,7 +30,8 @@ enum MamarTrackMute {
 //      MAMAR_BGM_MAX_SIZE bytes.
 //   3. Write the encoded BGM there, then MamarBGMSize, MamarVariation, and
 //      MamarBankSong.
-//   4. Increment MamarRequest to play it from its start.
+//   4. Increment MamarRequest to play it from its start. A song requested while
+//      MamarPaused is set waits until it's cleared.
 // The other inputs take effect on the next frame.
 
 extern b32 MamarEnabled;
