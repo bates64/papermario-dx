@@ -1,31 +1,10 @@
 #include "nok_13.h"
 
-EvtScript N(EVS_ExitWalk_nok_12_1) = {
-    Call(UseExitHeading, 60, nok_13_ENTRY_0)
-    Exec(ExitWalk)
-    Call(GotoMap, Ref("nok_12"), nok_12_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitWalk_nok_12_1) = EVT_EXIT_WALK(60, nok_13_ENTRY_0, "nok_12", nok_12_ENTRY_1);
 
-EvtScript N(EVS_ExitWalk_nok_01_0) = {
-    Call(UseExitHeading, 60, nok_13_ENTRY_1)
-    Exec(ExitWalk)
-    Call(GotoMap, Ref("nok_01"), nok_01_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitWalk_nok_01_0) = EVT_EXIT_WALK(60, nok_13_ENTRY_1, "nok_01", nok_01_ENTRY_0);
 
-EvtScript N(EVS_ExitWalk_nok_14_0) = {
-    Call(UseExitHeading, 60, nok_13_ENTRY_2)
-    Exec(ExitWalk)
-    Call(GotoMap, Ref("nok_14"), nok_14_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitWalk_nok_14_0) = EVT_EXIT_WALK(60, nok_13_ENTRY_2, "nok_14", nok_14_ENTRY_0);
 
 EvtScript N(EVS_SetupTexPan) = {
     // flowers

@@ -1,6 +1,7 @@
 #include "nok_01.h"
 
 EvtScript N(EVS_ExitWalk_nok_13_1) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
     IfEq(GB_KootFavor_State, KOOT_FAVOR_STATE_2)
         Set(GF_KootFavor_LeftKoopaVillage, true)
     EndIf
@@ -15,6 +16,7 @@ EvtScript N(EVS_ExitWalk_nok_13_1) = {
 };
 
 EvtScript N(EVS_ExitWalk_nok_02_0) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
     Call(N(StopAllRadioStations))
     Call(ClearAmbientSounds, 250)
     Call(UseExitHeading, 60, nok_01_ENTRY_1)
