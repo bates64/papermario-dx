@@ -1067,14 +1067,14 @@ typedef struct AuGlobals {
     /* 0x05EC */ InstrumentBank bankSet2[16];
     /* 0x09EC */ InstrumentBank bankSet4[16];
     /* 0x0DEC */ InstrumentBank bankSet5[16];
-    /* 0x11EC */ InstrumentBank bankSet6[4];
-    /* 0x12EC */ InstrumentBank* bankSets[8];
-    /* 0x130C */ u8 channelDelayState;
-    /* 0x130D */ PAD(3);
-    /* 0x1310 */ BKFileBuffer* auxBanks[3];
-    /* 0x131C */ PAD(4);
-    /* 0x1320 */ AuVoice voices[24];
-} AuGlobals; // size = 0x19E0
+    /* 0x11EC */ InstrumentBank bankSet6[16];
+    /* 0x15EC */ InstrumentBank* bankSets[8];
+    /* 0x160C */ u8 channelDelayState;
+    /* 0x160D */ PAD(3);
+    /* 0x1610 */ BKFileBuffer* auxBanks[3];
+    /* 0x161C */ PAD(4);
+    /* 0x1620 */ AuVoice voices[24];
+} AuGlobals; // size = 0x1CE0
 
 typedef struct BGMPlayerTrack {
     /* 0x00 */ AuFilePos bgmReadPos;
