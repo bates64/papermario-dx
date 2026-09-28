@@ -370,7 +370,7 @@ def old_map_source_file(name: str) -> str:
 
 
 def star_rod_version() -> str:
-    """Star Rod's VERSION and COMMIT lines. The map dump is redone when they change."""
+    """Star Rod's VERSION and COMMIT lines. The map and audio dumps are redone when they change."""
     result = subprocess.run(
         [star_rod(), "-Version"], stdout=subprocess.PIPE, text=True, check=True, cwd=ROOT
     )
@@ -737,10 +737,21 @@ def write_ninja_rules(
         command=f"$python {BUILD_TOOLS}/effects.py $in_yaml $out_dir",
     )
 
+    # Star Rod writes audio.sbn and the generated headers into $out_dir, and
+    # lists the files it read in audio.d.
     ninja.rule(
-        "pm_sbn",
-        description="Packing audio",
-        command=f"$python {BUILD_TOOLS}/audio/sbn.py $out $asset_stack",
+        "audio",
+        description="Building audio",
+        command=f'"{star_rod()}" -BuildAudio $out_dir',
+        depfile="$out_dir/audio.d",
+        deps="gcc",
+        restat=True,
+    )
+
+    ninja.rule(
+        "check_audio",
+        description="Verifying audio against the baserom",
+        command=f'$python {BUILD_TOOLS}/verify_audio.py "{star_rod()}" $splat $baserom $in $out',
     )
 
     ninja.rule(
@@ -820,6 +831,9 @@ class Configure:
         stamp = self.dump_stamp()
         return not stamp.exists() or stamp.read_text() != self.splat_hash()
 
+    def audio_dump_stamp(self) -> Path:
+        return self.build_path() / "audio_dumped.stamp"
+
     def load(self) -> None:
         """Read the version's configuration and scan what it points at."""
         self.layout = Layout(self.version_path / "layout.yaml", ROOT)
@@ -866,7 +880,6 @@ class Configure:
                     "pm_effect_loads",
                     "pm_sprite_shading_profiles",
                     "pm_imgfx_data",
-                    "pm_sbn",
                 ]
             )
         if code:
@@ -883,6 +896,7 @@ class Configure:
         self.dump_stamp().write_text(self.splat_hash())
         if assets:
             self.dump_maps()
+            self.dump_audio()
 
     def dump_maps(self) -> None:
         """Decompile the dumped map binaries into map sources, replacing any earlier dump.
@@ -983,6 +997,22 @@ class Configure:
             )
             or parts[:2] == ("world", "area") and len(parts) >= 5
         )
+
+    def dump_audio(self) -> None:
+        """Split the audio out of the baserom, replacing any earlier dump.
+
+        Star Rod does the splitting, so this is redone whenever its version
+        changes. splat's cache would skip the segment, so it is bypassed.
+        """
+        import splat.scripts.split as split
+
+        split.main(
+            [self.version_path / "splat.yaml"],
+            ["ld", "pm_sbn"],
+            verbose=False,
+            use_cache=False,
+        )
+        self.audio_dump_stamp().write_text(star_rod_version())
 
     def textures(self) -> Dict[Path, Path]:
         """Every standalone texture, keyed by its path relative to the assets root.
@@ -1112,14 +1142,40 @@ class Configure:
             implicit_outputs=[shading_header],
         )
 
-        audio = version_assets / "audio"
-        packed(
-            "audio.sbn",
-            "pm_sbn",
-            [audio],
-            variables={"asset_stack": asset_stack},
-            asset_deps=[audio],
+        # Adding a file or directory changes a directory's mtime, which audio.d
+        # can't list ahead of time, so every one under audio/ is a dependency.
+        audio_dir = self.build_path() / "include" / "audio"
+        audio_sources = [
+            posix(path)
+            for layer in self.asset_stack
+            for path in [Path(layer) / "audio", *(Path(layer) / "audio").glob("**/*")]
+            if path.exists()
+        ]
+        audio_sbn = audio_dir / "audio.sbn"
+        build(
+            audio_sbn,
+            [],
+            "audio",
+            variables={"out_dir": posix(audio_dir)},
+            implicit_outputs=[
+                posix(audio_dir / header) for header in ["song_ids.h", "ambient_ids.h", "audio_config.h"]
+            ],
+            implicit_deps=audio_sources,
         )
+        audio_obj = self.build_path() / version_assets / "audio.sbn.o"
+        build(audio_obj, [audio_sbn], "bin")
+        self.register_asset(audio_obj)
+        build(
+            self.build_path() / "audio_verified.stamp",
+            [audio_sbn],
+            "check_audio",
+            variables={
+                "splat": posix(self.version_path / "splat.yaml"),
+                "baserom": posix(self.baserom_path()),
+            },
+        )
+        # Only an unmodified build's audio matches the baserom's.
+        ninja.build("verify_audio", "phony", posix(self.build_path() / "audio_verified.stamp"))
 
         # Each animation is reached by name from a table in the engine, so the
         # order these are emitted in only decides where they sit.
@@ -2877,11 +2933,12 @@ if __name__ == "__main__":
         configure.move_old_map_sources()
         if args.dump or configure.dump_is_stale():
             configure.dump(not args.no_split_assets, args.split_code)
-        elif not args.no_split_assets and (
-            not configure.maps_dump_stamp().exists()
-            or configure.maps_dump_stamp().read_text() != star_rod_version()
-        ):
-            configure.dump_maps()
+        elif not args.no_split_assets:
+            version = star_rod_version()
+            if not configure.maps_dump_stamp().exists() or configure.maps_dump_stamp().read_text() != version:
+                configure.dump_maps()
+            if not configure.audio_dump_stamp().exists() or configure.audio_dump_stamp().read_text() != version:
+                configure.dump_audio()
         if not args.no_split_assets:
             configure.refresh_common_graphics()
         configure.check_names()
