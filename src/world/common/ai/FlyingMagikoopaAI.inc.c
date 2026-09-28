@@ -243,7 +243,7 @@ void N(FlyingMagikoopaAI_Targeting)(Evt* script, MobileAISettings* settings, Ene
     }
 
     if ((N(MagikoopaAI_CanShootSpell)(script, settings->chaseRadius, settings->chaseOffsetDist, detect) == 1) && (npc->turnAroundYawAdjustment == 0)) {
-        ai_enemy_play_sound(npc, SOUND_SPELL_CAST1, 0);
+        ai_enemy_play_sound(npc, SOUND_SPELL_CAST_1, 0);
         npc->curAnim = enemy->animList[AI_ANIM_FLYMAGI_CAST];
         posX = npc->pos.x;
         posY = npc->pos.y + 29.0f;
@@ -274,7 +274,7 @@ void N(FlyingMagikoopaAI_Firing)(Evt* script, MobileAISettings* settings, EnemyD
     npc->duration--;
     if (npc->duration <= 0) {
         if (N(MagikoopaAI_CanShootSpell)(script, settings->chaseRadius, settings->chaseOffsetDist, detect) == 1) {
-            ai_enemy_play_sound(npc, SOUND_SPELL_CAST2, 0);
+            ai_enemy_play_sound(npc, SOUND_SPELL_CAST_2, 0);
             get_enemy(enemy->npcID + 1)->varTable[AI_VAR_SPELL_STATUS] = SPELL_STATUS_REQUESTED;
             npc->duration = 20;
             script->AI_TEMP_STATE = AI_STATE_FLYMAGI_POST_CAST;

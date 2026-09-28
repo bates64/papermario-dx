@@ -229,7 +229,7 @@ EvtScript N(EVS_Scene_BeginGame) = {
     Call(NpcFlyTo, NPC_Scene_Parakarry, 430, 20, -165, 60 * DT, -10, EASING_LINEAR)
     Call(InterpNpcYaw, NPC_Scene_Parakarry, 45, 10)
     Wait(20 * DT)
-    Call(PlaySoundAtNpc, NPC_Scene_Parakarry, SOUNC_CHECK_MAILBOX, SOUND_SPACE_DEFAULT)
+    Call(PlaySoundAtNpc, NPC_Scene_Parakarry, SOUND_CHECK_MAILBOX, SOUND_SPACE_DEFAULT)
     Thread
         Call(TranslateModel, MODEL_o222, 2, 0, 0)
         Call(TranslateModel, MODEL_o223, 2, 0, 0)
@@ -268,7 +268,7 @@ EvtScript N(EVS_Scene_BeginGame) = {
     Call(SetNpcAnimation, NPC_Scene_Luigi, ANIM_Luigi_Idle)
     KillThread(LVarA)
     Wait(20 * DT)
-    Call(PlaySoundAtNpc, NPC_Scene_Luigi, SOUNC_CHECK_MAILBOX, SOUND_SPACE_DEFAULT)
+    Call(PlaySoundAtNpc, NPC_Scene_Luigi, SOUND_CHECK_MAILBOX, SOUND_SPACE_DEFAULT)
     Thread
         Call(TranslateModel, MODEL_o222, 1, 0, 0)
         Call(TranslateModel, MODEL_o223, 1, 0, 0)

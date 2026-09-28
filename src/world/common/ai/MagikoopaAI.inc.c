@@ -205,7 +205,7 @@ void N(MagikoopaAI_Targeting)(Evt* script, MobileAISettings* settings, EnemyDete
     }
 
     if (N(MagikoopaAI_CanShootSpell)(script, settings->chaseRadius, settings->chaseOffsetDist, detect) == 1) {
-        ai_enemy_play_sound(npc, SOUND_SPELL_CAST1, 0);
+        ai_enemy_play_sound(npc, SOUND_SPELL_CAST_1, 0);
         npc->curAnim = enemy->animList[AI_ANIM_MAGIKOOPA_CAST];
         posX = npc->pos.x;
         posY = npc->pos.y + 32.0f;
@@ -236,7 +236,7 @@ void N(MagikoopaAI_Firing)(Evt* script, MobileAISettings* settings, EnemyDetectV
     npc->duration--;
     if (npc->duration <= 0) {
         if (N(MagikoopaAI_CanShootSpell)(script, settings->chaseRadius, settings->chaseOffsetDist, detect) == 1) {
-            ai_enemy_play_sound(npc, SOUND_SPELL_CAST2, 0);
+            ai_enemy_play_sound(npc, SOUND_SPELL_CAST_2, 0);
             get_enemy(enemy->npcID + 1)->varTable[AI_VAR_SPELL_STATUS] = SPELL_STATUS_REQUESTED;
             npc->duration = 20;
             script->AI_TEMP_STATE = AI_STATE_MAGIKOOPA_POST_CAST;

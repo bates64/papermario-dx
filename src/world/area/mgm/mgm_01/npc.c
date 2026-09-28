@@ -793,9 +793,9 @@ EvtScript N(EVS_ManageMinigame) = {
     EndThread
     Switch(LVarB)
         CaseEq(1)
-            Call(PlaySoundWithVolume, SOUND_BOMBETTE_BLAST_LV2, 0)
+            Call(PlaySoundWithVolume, SOUND_BOMBETTE_BLAST_LV_2, 0)
             Wait(10)
-            Call(PlaySoundWithVolume, SOUND_BOMBETTE_BLAST_LV2, 0)
+            Call(PlaySoundWithVolume, SOUND_BOMBETTE_BLAST_LV_2, 0)
             Wait(10)
             Call(N(EndBowserPanelAnimation))
             Call(TranslateModel, LVar1, LVar5, LVar6, LVar7)

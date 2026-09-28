@@ -559,7 +559,7 @@ EvtScript N(EVS_Attack_DarkSwarm) = {
     Call(SetBattleCamOffsetY, 0)
     Call(MoveBattleCamOver, 20)
     Wait(20)
-    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST1)
+    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_1)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_TubbasHeart_Enraged)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(GetStatusFlags, ACTOR_SELF, LVar3)

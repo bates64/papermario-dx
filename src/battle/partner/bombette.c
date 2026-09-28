@@ -53,7 +53,7 @@ API_CALLABLE(N(PlayExplosionFX)) {
             } else {
                 fx_explosion(0, x, y + 20, z);
             }
-            sfx_play_sound(SOUND_BOMBETTE_BLAST_LV1);
+            sfx_play_sound(SOUND_BOMBETTE_BLAST_LV_1);
             break;
         case MOVE_POWER_BOMB:
             if (script->varTable[10] > 0) {
@@ -61,7 +61,7 @@ API_CALLABLE(N(PlayExplosionFX)) {
             } else {
                 fx_explosion(0, x, y + 20, z);
             }
-            sfx_play_sound(SOUND_BOMBETTE_BLAST_LV2);
+            sfx_play_sound(SOUND_BOMBETTE_BLAST_LV_2);
             break;
         case MOVE_MEGA_BOMB:
             if (script->varTable[10] > 0) {
@@ -69,11 +69,11 @@ API_CALLABLE(N(PlayExplosionFX)) {
             } else {
                 fx_explosion(1, x, y + 20, z);
             }
-            sfx_play_sound(SOUND_BOMBETTE_BLAST_LV2);
+            sfx_play_sound(SOUND_BOMBETTE_BLAST_LV_2);
             break;
         default:
             fx_explosion(0, x, y + 20, z);
-            sfx_play_sound(SOUND_BOMBETTE_BLAST_LV1);
+            sfx_play_sound(SOUND_BOMBETTE_BLAST_LV_1);
             break;
     }
 
@@ -1234,7 +1234,7 @@ EvtScript N(EVS_Attack_Bomb) = {
     Switch(LVar2)
         CaseEq(MOVE_BOMB)
             Call(SetGoalToTarget, ACTOR_PARTNER)
-            Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_BOMBETTE_BLAST_LV1)
+            Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_BOMBETTE_BLAST_LV_1)
             Call(PartnerTestEnemy, LVar0, 0, SUPPRESS_EVENT_SPIKY_FRONT | SUPPRESS_EVENT_BURN_CONTACT, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
             IfEq(LVar0, 6)
                 BreakSwitch
@@ -1249,7 +1249,7 @@ EvtScript N(EVS_Attack_Bomb) = {
                     Call(PartnerDamageEnemy, LVar0, DAMAGE_TYPE_BLAST | DAMAGE_TYPE_NO_CONTACT, 0, 0, LVarF, BS_FLAGS1_TRIGGER_EVENTS | BS_FLAGS1_INCLUDE_POWER_UPS)
             EndSwitch
         CaseEq(MOVE_POWER_BOMB)
-            Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_BOMBETTE_BLAST_LV1)
+            Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_BOMBETTE_BLAST_LV_1)
             Label(5)
                 Call(SetGoalToTarget, ACTOR_PARTNER)
                 Call(PartnerTestEnemy, LVar0, 0, SUPPRESS_EVENT_SPIKY_FRONT | SUPPRESS_EVENT_BURN_CONTACT, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
@@ -1271,7 +1271,7 @@ EvtScript N(EVS_Attack_Bomb) = {
                     Goto(5)
                 EndIf
         CaseEq(MOVE_MEGA_BOMB)
-            Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_BOMBETTE_BLAST_LV3)
+            Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_BOMBETTE_BLAST_LV_3)
             Label(10)
                 Call(SetGoalToTarget, ACTOR_PARTNER)
                 Call(PartnerTestEnemy, LVar0, 0, SUPPRESS_EVENT_SPIKY_FRONT | SUPPRESS_EVENT_BURN_CONTACT, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
@@ -1381,7 +1381,7 @@ EvtScript N(EVS_Attack_FirstStrike) = {
         Call(ShakeCam, CAM_BATTLE, 0, 6, Float(0.45))
         Call(ShakeCam, CAM_BATTLE, 0, 8, Float(0.15))
     EndThread
-    Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_BOMBETTE_BLAST_LV1)
+    Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_BOMBETTE_BLAST_LV_1)
     Call(PartnerTestEnemy, LVar0, 0, SUPPRESS_EVENT_SPIKY_FRONT | SUPPRESS_EVENT_BURN_CONTACT, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
     IfEq(LVar0, HIT_RESULT_MISS)
         Goto(10)

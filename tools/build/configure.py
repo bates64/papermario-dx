@@ -951,7 +951,7 @@ class Configure:
             "audio",
             variables={"out_dir": posix(audio_dir)},
             implicit_outputs=[
-                posix(audio_dir / header) for header in ["song_ids.h", "ambient_ids.h", "audio_config.h"]
+                posix(audio_dir / header) for header in ["song_ids.h", "ambient_ids.h", "sound_ids.h", "audio_config.h"]
             ],
             implicit_deps=audio_sources,
         )
