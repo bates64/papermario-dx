@@ -1,3 +1,5 @@
+* text=auto eol=lf
+
 *.h linguist-language=C
 
 # suppress asm/nonmatchings/ in GitHub diffs
