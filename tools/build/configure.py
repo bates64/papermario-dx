@@ -286,7 +286,7 @@ def write_ninja_rules(
 
     # Keeps debug paths portable across machines sharing the cache.
     # SCCACHE_BASEDIRS strips the checkout path from this flag before hashing.
-    prefix_map = f"-ffile-prefix-map={os.getcwd()}=/papermario-dx"
+    prefix_map = f'"-ffile-prefix-map={os.getcwd()}=/papermario-dx"'
 
     modern_flags = f"-c -G0 -O2 -g1 -gdwarf -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {prefix_map}"
     cflags_modern = f"{modern_flags} {extra_cflags}"
