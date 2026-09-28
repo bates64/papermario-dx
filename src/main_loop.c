@@ -6,6 +6,7 @@
 #include "overlay.h"
 #include "game_modes.h"
 #include "dx/profiling.h"
+#include "dx/mamar.h"
 
 s32 gOverrideFlags;
 s32 gTimeFreezeMode;
@@ -84,6 +85,7 @@ void step_game_loop(void) {
     profiler_update(PROFILER_TIME_MESSAGES, 0);
     update_hud_elements();
     profiler_update(PROFILER_TIME_HUD_ELEMENTS, 0);
+    dx_mamar_update();
     step_game_mode();
     profiler_update(PROFILER_TIME_STEP_GAME_MODE, 0);
     update_entities();
