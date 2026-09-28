@@ -797,7 +797,7 @@ typedef struct SoundManager {
     /* 0x084 */ s8 customReverbAmounts[8];
     /* 0x08C */ u8 lastCustomEffectIdx;
     /* 0x08D */ s8 defaultReverbAmt;
-    /* 0x08E */ PAD(2);
+    /* 0x08E */ u16 extraSoundCount; ///< Number of entries in the extra section
     /* 0x090 */ SoundManagerMusicEvent bgmSounds[4];
     /* 0x0A0 */ SoundManagerCustomCmdList customCmdList[4];
     /* 0x0B8 */ u16 baseVolume;
@@ -943,7 +943,7 @@ typedef struct SEFHeader {
     /* 0x00 */ AUFileMetadata mdata; // uses identifer 'SEF '
     /* 0x08 */ s32 name;
     /* 0x0C */ PAD(2);
-    /* 0x0E */ u8 hasExtraSection; // always 1
+    /* 0x0E */ u8 hasExtraSection; // 1 = extra section has 0x140 entries, 2 = extra section has up to 0x200 entries
     /* 0x0F */ PAD(1);
     /* 0x10 */ u16 sections[8];
     /* 0x20 */ u16 section2000;

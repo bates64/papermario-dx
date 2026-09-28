@@ -555,6 +555,7 @@ void au_sfx_load_groups_from_SEF(SoundManager* manager) {
     u32 i;
 
     manager->sefData = (u8*)sefData;
+    manager->extraSoundCount = 0;
 
     for (i = 0; i < sections; i++) {
         if (sefData->sections[i] != 0) {
@@ -562,9 +563,10 @@ void au_sfx_load_groups_from_SEF(SoundManager* manager) {
         }
     }
 
-    if (sefData->hasExtraSection == 1) {
+    if (sefData->hasExtraSection == 1 || sefData->hasExtraSection == 2) {
         if (sefData->section2000 != 0) {
             manager->extraSounds = AU_FILE_RELATIVE(sefData, sefData->section2000);
+            manager->extraSoundCount = (sefData->hasExtraSection == 2) ? SOUND_ID_UNK_INDEX_MASK + 1 : 0x140;
         }
     }
 }
@@ -767,7 +769,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
     if (soundID & SOUND_ID_UNK) {
         // sound from extra section
         soundIndex = (request->soundID - 1) & SOUND_ID_UNK_INDEX_MASK;
-        if (soundIndex < 0x140) {
+        if (soundIndex < manager->extraSoundCount) {
             cmdList = (u16*)&manager->extraSounds[soundIndex];
             if (*cmdList != 0) {
                 // check if any player is playing this sound
