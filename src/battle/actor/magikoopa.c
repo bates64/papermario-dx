@@ -821,7 +821,7 @@ EvtScript EVS_Move_HealOne = {
         Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_FlyingMagikoopa_Shout)
     EndIf
     Wait(5)
-    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST1)
+    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_1)
     Call(GetActorFlags, ACTOR_SELF, LVar0)
     IfNotFlag(LVar0, ACTOR_FLAG_FLYING)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -901,7 +901,7 @@ EvtScript EVS_Move_HealAll = {
         Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_FlyingMagikoopa_Shout)
     EndIf
     Wait(5)
-    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST1)
+    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_1)
     Call(GetActorFlags, ACTOR_SELF, LVar0)
     IfNotFlag(LVar0, ACTOR_FLAG_FLYING)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -1008,7 +1008,7 @@ EvtScript EVS_Attack_MagicBlast = {
         Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
         Call(MoveBattleCamOver, 10)
     EndIf
-    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST1)
+    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_1)
     IfEq(LFlag1, false)
         IfEq(LFlag0, true)
             Call(SetAnimation, LVarA, 1, ANIM_Magikoopa_Shout)
@@ -1054,9 +1054,9 @@ EvtScript EVS_Attack_MagicBlast = {
         CaseOrEq(HIT_RESULT_MISS)
         CaseOrEq(HIT_RESULT_LUCKY)
             IfEq(LFlag0, true)
-                Call(PlaySoundAtActor, LVarA, SOUND_SPELL_CAST2)
+                Call(PlaySoundAtActor, LVarA, SOUND_SPELL_CAST_2)
             EndIf
-            Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST2)
+            Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_2)
             IfEq(LFlag1, false)
                 IfEq(LFlag0, true)
                     Call(SetAnimation, LVarA, 1, ANIM_Magikoopa_CastSpell)
@@ -1122,9 +1122,9 @@ EvtScript EVS_Attack_MagicBlast = {
         EndCaseGroup
     EndSwitch
     IfEq(LFlag0, true)
-        Call(PlaySoundAtActor, LVarA, SOUND_SPELL_CAST2)
+        Call(PlaySoundAtActor, LVarA, SOUND_SPELL_CAST_2)
     EndIf
-    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST2)
+    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_2)
     IfEq(LFlag1, false)
         IfEq(LFlag0, true)
             Call(SetAnimation, LVarA, 1, ANIM_Magikoopa_CastSpell)
@@ -1449,7 +1449,7 @@ EvtScript EVS_Move_MakeClone = {
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(MoveBattleCamOver, 25)
     Wait(25)
-    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST3)
+    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_3)
     IfEq(LFlag0, false)
         Call(SetAnimation, ACTOR_SELF, PRT_GROUND, ANIM_Magikoopa_Shout)
         Call(SetAnimation, LVarA, 1, ANIM_Magikoopa_Shout)
@@ -1473,8 +1473,8 @@ EvtScript EVS_Move_MakeClone = {
     Wait(15)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 30)
-    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST4)
-    Call(PlaySoundAtActor, LVar9, SOUND_SPELL_CAST4)
+    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_4)
+    Call(PlaySoundAtActor, LVar9, SOUND_SPELL_CAST_4)
     Call(SetPartFlagBits, LVar9, 1, ACTOR_PART_FLAG_PRIMARY_TARGET, false)
     Call(RandInt, 1000, LVar0)
     IfLt(LVar0, 500)
@@ -1572,7 +1572,7 @@ EvtScript EVS_Move_TryBoostAttack = {
         Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_FlyingMagikoopa_Shout)
     EndIf
     Wait(5)
-    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST1)
+    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_1)
     Call(GetActorFlags, ACTOR_SELF, LVar0)
     IfNotFlag(LVar0, ACTOR_FLAG_FLYING)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -1685,7 +1685,7 @@ EvtScript EVS_Move_TryBoostDefense = {
         Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_FlyingMagikoopa_Shout)
     EndIf
     Wait(5)
-    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST1)
+    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_1)
     Call(GetActorFlags, ACTOR_SELF, LVar0)
     IfNotFlag(LVar0, ACTOR_FLAG_FLYING)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -1916,7 +1916,7 @@ EvtScript EVS_Move_TryTransparent = {
         Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_FlyingMagikoopa_Shout)
     EndIf
     Wait(5)
-    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST1)
+    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_1)
     Call(GetActorFlags, ACTOR_SELF, LVar0)
     IfNotFlag(LVar0, ACTOR_FLAG_FLYING)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)

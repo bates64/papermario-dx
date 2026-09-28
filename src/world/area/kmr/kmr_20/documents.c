@@ -442,7 +442,7 @@ EvtScript EVS_Inspect_LuigisDiary = {
 };
 
 EvtScript EVS_Shake_Mailbox = {
-    Call(PlaySoundAtCollider, COLLIDER_o305, SOUNC_CHECK_MAILBOX, SOUND_SPACE_DEFAULT)
+    Call(PlaySoundAtCollider, COLLIDER_o305, SOUND_CHECK_MAILBOX, SOUND_SPACE_DEFAULT)
     Call(TranslateModel, MODEL_o222, 2, 0, 0)
     Call(TranslateModel, MODEL_o223, 3, 0, 0)
     Call(TranslateModel, MODEL_o224, 1, 0, 0)
