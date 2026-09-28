@@ -28,7 +28,7 @@ EvtScript N(EVS_802442C4) = {
 };
 
 EvtScript N(EVS_802442E8) = {
-    Call(SetMusic, 0, SONG_CLUB64, 0, VOL_LEVEL_FULL)
+    Call(SetMusic, 0, SONG_CLUB_64, 0, VOL_LEVEL_FULL)
     Return
     End
 };

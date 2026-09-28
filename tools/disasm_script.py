@@ -207,6 +207,9 @@ def get_constants():
     browse_header(valid_enums, enums)
     enums = Path(include_path / "effects.h").read_text().splitlines()
     browse_header(valid_enums, enums)
+    audio_path = include_path.parent / "ver" / "current" / "build" / "include" / "audio"
+    for header in ["song_ids.h", "ambient_ids.h"]:
+        browse_header(valid_enums, (audio_path / header).read_text().splitlines())
 
     include_path = Path(Path(__file__).resolve().parent.parent / "src" / "battle")
     enums = Path(include_path / "battle.h").read_text().splitlines()
