@@ -3,6 +3,7 @@
 import json
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -2466,8 +2467,7 @@ if __name__ == "__main__":
         )
         if compdb.returncode == 0:
             entries = json.loads(compdb.stdout)
-            strip_re = re.compile(r"^(-m\S+|-f(?!unsigned-char$)\S+|-g\S+|-G\d+|--warn-\S+)$")
-            cross_cc_re = re.compile(r"^(sccache\s+)?mips-linux-gnu-g(cc|\+\+)(?=\s)")
+            strip_re = re.compile(r"-m.+|-f(?!unsigned-char$).+|-g.+|-G\d+|--warn-.+")
             # Clang's name for GCC's -Wno-builtin-declaration-mismatch, quiet
             # about the precompiled header being GCC's, which it can't read, and
             # accept GCC's `[index] value` array designators.
@@ -2477,21 +2477,26 @@ if __name__ == "__main__":
                 "-Wno-ignored-gch",
                 "-Wno-gnu-designator",
             ]
-            clang_commands = {
-                "cc": " ".join(["clang"] + clang_flags + cross_include_flags("mips-linux-gnu-gcc", "c")),
-                "++": " ".join(["clang++"] + clang_flags + cross_include_flags("mips-linux-gnu-g++", "c++")),
+            clang_args = {
+                "mips-linux-gnu-gcc": ["clang"] + clang_flags + cross_include_flags("mips-linux-gnu-gcc", "c"),
+                "mips-linux-gnu-g++": ["clang++"] + clang_flags + cross_include_flags("mips-linux-gnu-g++", "c++"),
             }
             # Keep only C and C++ compiles. clangd would otherwise borrow other
-            # tools' commands, or the assembler's, for nearby headers.
-            entries = [
-                entry
-                for entry in entries
-                if cross_cc_re.match(entry["command"]) and entry["file"].endswith((".c", ".cpp"))
-            ]
+            # tools' commands, or the assembler's, for nearby headers. Each
+            # command is written as an argument list, so paths containing
+            # spaces stay whole.
+            clang_entries = []
             for entry in entries:
-                entry["command"] = cross_cc_re.sub(lambda m: clang_commands[m[2]], entry["command"])
-                parts = entry["command"].split()
-                entry["command"] = " ".join(p for p in parts if not strip_re.match(p))
+                if not entry["file"].endswith((".c", ".cpp")):
+                    continue
+                args = shlex.split(entry.pop("command"))
+                if args[:1] == ["sccache"]:
+                    args = args[1:]
+                if not args or args[0] not in clang_args:
+                    continue
+                entry["arguments"] = clang_args[args[0]] + [a for a in args[1:] if not strip_re.fullmatch(a)]
+                clang_entries.append(entry)
+            entries = clang_entries
             (ROOT / "compile_commands.json").write_text(
                 json.dumps(entries, indent=2) + "\n"
             )
