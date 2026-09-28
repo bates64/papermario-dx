@@ -254,6 +254,8 @@ enum PurchaseDialogState {
     PURCHASE_DIALOG_STATE_WAIT_FOR_SPEECH   = 100,
 };
 
+static MessagePrintState* ShopChoicePrintState;
+
 API_CALLABLE(ShowShopPurchaseDialog) {
     s32 shopItemSlot = script->varTable[0];
     Shop* shop = gGameStatusPtr->mapShop;
@@ -261,7 +263,6 @@ API_CALLABLE(ShowShopPurchaseDialog) {
     ItemData* shopItem = &gItemTable[shopInventory->itemID];
     s32 bpCost;
 
-    static MessagePrintState* ShopChoicePrintState;
     static Evt* wShopBuyCallbackScript;
     static s32 wShopSelectedItem;
     static s32 wShopBuyResult;
@@ -474,10 +475,10 @@ s32 shop_get_sell_price(s32 itemID) {
     return gItemTable[itemID].sellValue;
 }
 
+static MessagePrintState* ShopOwnerPrintState;
+
 API_CALLABLE(ShowShopOwnerDialog) {
     Shop* shop = gGameStatus.mapShop;
-
-    static MessagePrintState* ShopOwnerPrintState;
 
     enum {
         DIALOG_STATE_DONE_INSTRUCTIONS          = 0,

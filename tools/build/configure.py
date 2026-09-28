@@ -3,6 +3,7 @@
 import json
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -257,6 +258,38 @@ def exec_shell(command: List[str]) -> str:
         command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
     )
     return ret.stdout
+
+
+def cross_include_flags(compiler: str, language: str) -> List[str]:
+    """Flags that give clang the cross-compiler's header search path.
+
+    GCC's own built-in headers (lib/gcc/<target>/<version>/) are left out, since
+    clang has its own. Directories before them (libstdc++) are searched first,
+    and directories after them (the C library) last, as GCC does.
+    """
+    try:
+        output = subprocess.run(
+            [compiler, f"-x{language}", "-E", "-v", os.devnull],
+            capture_output=True,
+            text=True,
+        ).stderr
+    except FileNotFoundError:
+        return []
+    lines = output.splitlines()
+    try:
+        start = lines.index("#include <...> search starts here:") + 1
+        end = lines.index("End of search list.", start)
+    except ValueError:
+        return []
+    flags = []
+    flag = "-isystem"
+    for line in lines[start:end]:
+        path = os.path.normpath(line.strip())
+        if "/lib/gcc/" in posix(path):
+            flag = "-idirafter"
+            continue
+        flags += [flag, posix(path)]
+    return flags
 
 
 def write_ninja_rules(
@@ -606,12 +639,14 @@ def write_ninja_rules(
     )
 
     # A debugger loads this alongside the engine's ELF, offset to wherever the
-    # game loaded the overlay. Calls into the engine resolve against its ELF.
+    # game loaded the overlay. Calls into the engine resolve against the
+    # symbols in $syms_script, which names each symbol once, where the engine's
+    # ELF also holds libgcc's unused copies of symbols the game defines itself.
     # Some overlays define a global twice, which the overlay linker tolerates.
     ninja.rule(
         "ovl_debug_elf",
         description="Linking overlay debug ELF $ovl_src",
-        command=f"{ld} -T $script --just-symbols=$engine_elf --no-check-sections --allow-multiple-definition -o $out $in",
+        command=f"{ld} -T $script --no-check-sections --allow-multiple-definition -o $out $in $syms_script",
     )
 
     ninja.rule(
@@ -1386,6 +1421,9 @@ class Configure:
     def syms_path(self) -> Path:
         return self.build_path() / "syms.pkl"
 
+    def syms_script_path(self) -> Path:
+        return self.build_path() / "syms.ld"
+
     def embedded_asset_deps(self, src: Path) -> List[str]:
         """Build outputs that a source embeds with `.incbin`.
 
@@ -1864,7 +1902,7 @@ class Configure:
         )
 
         ninja.build(
-            posix(self.syms_path()),
+            [posix(self.syms_path()), posix(self.syms_script_path())],
             "syms",
             posix(self.elf_path()),
         )
@@ -2023,16 +2061,16 @@ class Configure:
                 },
             )
 
-            # Depends on the engine through syms.pkl, which only changes when
+            # Depends on the engine through syms.ld, which only changes when
             # its symbols do, rather than on every rebuild of the engine's ELF.
             ninja.build(
                 posix(debug_elf_path),
                 "ovl_debug_elf",
                 objects,
-                implicit=[posix(debug_script_path), posix(self.syms_path())],
+                implicit=[posix(debug_script_path), posix(self.syms_script_path())],
                 variables={
                     "script": posix(debug_script_path),
-                    "engine_elf": posix(self.elf_path()),
+                    "syms_script": posix(self.syms_script_path()),
                     "ovl_src": posix(src_path.relative_to(ROOT)),
                 },
             )
@@ -2366,7 +2404,7 @@ if __name__ == "__main__":
     ninja.build("all", "phony", all)
     ninja.default("all")
 
-    # Fetch pre-built clangd index from the matching dx-* GitHub release.
+    # Download the pre-built clangd index that .clangd points at.
     try:
         from clangd_index import fetch_clangd_index
 
@@ -2419,8 +2457,8 @@ if __name__ == "__main__":
     ninja.close()
     os.replace(partial_build_ninja, build_ninja_path)
 
-    # Generate compile_commands.json with MIPS cross-compiler flags stripped,
-    # so clangd and clang-tidy can parse the compile commands.
+    # Generate compile_commands.json for clang targeting MIPS, with GCC-only
+    # flags stripped, so clangd and clang-tidy can parse the compile commands.
     try:
         compdb = subprocess.run(
             ["ninja", "-t", "compdb"],
@@ -2429,12 +2467,36 @@ if __name__ == "__main__":
         )
         if compdb.returncode == 0:
             entries = json.loads(compdb.stdout)
-            strip_re = re.compile(r"^(-m\S+|-f\S+|-g\S+|-G\d+|--warn-\S+)$")
-            cross_cc_re = re.compile(r"^(sccache\s+)?mips-linux-gnu-g(cc|\+\+)(?=\s)")
+            strip_re = re.compile(r"-m.+|-f(?!unsigned-char$).+|-g.+|-G\d+|--warn-.+")
+            # Clang's name for GCC's -Wno-builtin-declaration-mismatch, quiet
+            # about the precompiled header being GCC's, which it can't read, and
+            # accept GCC's `[index] value` array designators.
+            clang_flags = [
+                "--target=mips-linux-gnu",
+                "-Wno-incompatible-library-redeclaration",
+                "-Wno-ignored-gch",
+                "-Wno-gnu-designator",
+            ]
+            clang_args = {
+                "mips-linux-gnu-gcc": ["clang"] + clang_flags + cross_include_flags("mips-linux-gnu-gcc", "c"),
+                "mips-linux-gnu-g++": ["clang++"] + clang_flags + cross_include_flags("mips-linux-gnu-g++", "c++"),
+            }
+            # Keep only C and C++ compiles. clangd would otherwise borrow other
+            # tools' commands, or the assembler's, for nearby headers. Each
+            # command is written as an argument list, so paths containing
+            # spaces stay whole.
+            clang_entries = []
             for entry in entries:
-                entry["command"] = cross_cc_re.sub("cc", entry["command"])
-                parts = entry["command"].split()
-                entry["command"] = " ".join(p for p in parts if not strip_re.match(p))
+                if not entry["file"].endswith((".c", ".cpp")):
+                    continue
+                args = shlex.split(entry.pop("command"))
+                if args[:1] == ["sccache"]:
+                    args = args[1:]
+                if not args or args[0] not in clang_args:
+                    continue
+                entry["arguments"] = clang_args[args[0]] + [a for a in args[1:] if not strip_re.fullmatch(a)]
+                clang_entries.append(entry)
+            entries = clang_entries
             (ROOT / "compile_commands.json").write_text(
                 json.dumps(entries, indent=2) + "\n"
             )

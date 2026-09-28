@@ -57,8 +57,6 @@ void sleep_bubble_init(EffectInstance* effect) {
 // seems extremely fake
 void sleep_bubble_update(EffectInstance* effect) {
     SleepBubbleFXData* part = effect->data.sleepBubble;
-    f32* xPtr = &part->points->x;
-    f32* yPtr;
     s32 xAngle, yAngle, i, timeLeft, unk_20;
     f32 angle, temp1, temp2;
 
@@ -83,24 +81,19 @@ void sleep_bubble_update(EffectInstance* effect) {
     part->unk_18 = temp1;
     temp2 = temp1 + (temp1 * sin_deg(unk_20 * 3)) * 0.1;
 
-    i = 0;
-    yPtr = &part->points->y;
-    xAngle = yAngle = i;
+    xAngle = yAngle = 0;
 
     for (i = 0; i < ARRAY_COUNT(part->points); i++) {
         angle = i * 360.0f / 21.0f + 17.0f;
 
-        *xPtr = temp2 * sin_deg(angle);
-        *yPtr = -temp2 * cos_deg(angle);
+        part->points[i].x = temp2 * sin_deg(angle);
+        part->points[i].y = -temp2 * cos_deg(angle);
 
-        *xPtr += sin_deg((f32)unk_20 * (sin_deg(xAngle) * 0.1 + 2.0) + (i + 5.0f) * 30.0f) * 1.5;
-        *yPtr += cos_deg((f32)unk_20 * (cos_deg(yAngle) * 0.1 + 2.0) + (i + 5.0f) * 50.0f) * 1.5;
+        part->points[i].x += sin_deg((f32)unk_20 * (sin_deg(xAngle) * 0.1 + 2.0) + (i + 5.0f) * 30.0f) * 1.5;
+        part->points[i].y += cos_deg((f32)unk_20 * (cos_deg(yAngle) * 0.1 + 2.0) + (i + 5.0f) * 50.0f) * 1.5;
 
         xAngle += 53;
         yAngle += 36;
-
-        xPtr += 2;
-        yPtr += 2;
     }
 
     part->unk_C4 = 0.0f;

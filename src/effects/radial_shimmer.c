@@ -37,7 +37,7 @@ EffectInstance* radial_shimmer_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 
     EffectInstance* effect;
     RadialShimmerFXData* data;
     s32 numParts = 1;
-    s32 arg5_2 = arg5;
+    s32 arg52 = arg5;
 
     bp.init = radial_shimmer_init;
     bp.update = radial_shimmer_update;
@@ -52,7 +52,7 @@ EffectInstance* radial_shimmer_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 
     ASSERT(effect->data.radialShimmer != nullptr);
 
     data->unk_00 = arg0;
-    data->timeLeft = arg5_2;
+    data->timeLeft = arg52;
     data->unk_24 = data->lifeTime = 0;
     data->unk_10 = arg1;
     data->unk_14 = arg2;
@@ -82,7 +82,7 @@ EffectInstance* radial_shimmer_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 
         case 0:
         case 1:
             data->unk_40 = 128.0f;
-            data->unk_44 = 128.0f / arg5_2;
+            data->unk_44 = 128.0f / arg52;
             data->unk_60 = 70.0f;
             data->unk_64 = -100.0f;
             break;
@@ -150,7 +150,7 @@ EffectInstance* radial_shimmer_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 
             break;
         case 9:
             data->unk_40 = 128.0f;
-            data->unk_44 = 128.0f / arg5_2;
+            data->unk_44 = 128.0f / arg52;
             data->unk_64 = -100.0f;
             break;
         case 10:

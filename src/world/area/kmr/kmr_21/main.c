@@ -1,9 +1,9 @@
 #include "kmr_21.h"
 
 typedef struct TitleDataFile {
-    /* 0x00 */ s32 img_offset_title;
-    /* 0x04 */ s32 img_offset_copyright;
-    /* 0x08 */ s32 img_offset_press_start;
+    /* 0x00 */ s32 imgOffsetTitle;
+    /* 0x04 */ s32 imgOffsetCopyright;
+    /* 0x08 */ s32 imgOffsetPressStart;
     /* 0x0C */ PAD(4);
     // end of header
     /* 0x10 */ s8 data[VLA];
@@ -81,7 +81,7 @@ API_CALLABLE(N(LoadTitleImage)) {
 
     decode_yay0(compressed, TitleData);
     general_heap_free(compressed);
-    TitleImage = (IMG_PTR)(TitleData->img_offset_title + (s32)TitleData);
+    TitleImage = (IMG_PTR)(TitleData->imgOffsetTitle + (s32)TitleData);
     create_worker_frontUI(nullptr, worker_draw_title_image);
     return ApiStatus_DONE2;
 }

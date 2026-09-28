@@ -360,7 +360,7 @@ API_CALLABLE(N(UseAbility)) {
     f32 x, y, z, dist;
     f32 angle, speed;
     f32 sinAngle, cosAngle;
-    s32 collider;
+    s32 collider = NO_COLLIDER;
 
     #define USE_STATE functionTemp[0]
     enum {

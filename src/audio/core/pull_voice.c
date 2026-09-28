@@ -322,7 +322,7 @@ static Acmd* _decodeChunk(Acmd* cmdBufPos, AuLoadFilter* filter, s32 tsam, s32 n
     s32 paddedSize;
 
     if (nbytes > 0) {
-        endAddr = filter->dmaFunc((s32) filter->memin, nbytes, filter->dmaState, filter->instrument->useDma);
+        endAddr = filter->dmaFunc( filter->memin, nbytes, filter->dmaState, filter->instrument->useDma);
         endAlign = endAddr & 7;
         nbytes += endAlign;
         paddedSize = nbytes + 8 - (nbytes & 7);
@@ -347,9 +347,9 @@ static s16 _getRate(f64 vol, f64 tgt, s32 count, u16* ratel) {
     f64 inv;
     f64 a;
     f64 b;
-    s16 c_int;
-    s16 a_int;
-    s16 b_int;
+    s16 cInt;
+    s16 aInt;
+    s16 bInt;
 
     if (count == 0) {
         if (tgt >= vol) {
@@ -370,13 +370,13 @@ static s16 _getRate(f64 vol, f64 tgt, s32 count, u16* ratel) {
     }
 
     a = (tgt - vol) * inv * 8.0;
-    a_int = a;
-    c_int = (a_int - 1);
+    aInt = a;
+    cInt = (aInt - 1);
 
-    b = (a - a_int) + 1.0;
-    b_int = b;
-    c_int += b_int;
+    b = (a - aInt) + 1.0;
+    bInt = b;
+    cInt += bInt;
 
-    *ratel = (b - b_int) * 0xFFFF;
-    return c_int;
+    *ratel = (b - bInt) * 0xFFFF;
+    return cInt;
 }

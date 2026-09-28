@@ -1154,7 +1154,7 @@ void load_partner_actor(void) {
 
     if (currentPartner != PARTNER_NONE) {
         partnerData = &bPartnerDmaTable[currentPartner];
-        actorBP = partnerData->ActorBlueprint;
+        actorBP = partnerData->actorBlueprint;
 
         ASSERT(actorBP != nullptr);
 
@@ -1264,16 +1264,16 @@ void load_partner_actor(void) {
         ASSERT(part != nullptr);
 
         for (i = 0; i < partCount; i++) {
-            ActorPartBlueprint* ActorPartBlueprint = &actorBP->partsData[i];
+            ActorPartBlueprint* actorPartBlueprint = &actorBP->partsData[i];
             part->decorationTable = nullptr;
-            part->staticData = ActorPartBlueprint;
+            part->staticData = actorPartBlueprint;
 
-            part->flags = ActorPartBlueprint->flags | ACTOR_PART_FLAG_NO_SHADOW;
+            part->flags = actorPartBlueprint->flags | ACTOR_PART_FLAG_NO_SHADOW;
             part->targetFlags = 0;
 
-            part->partOffsetFloat.x = part->partOffset.x = ActorPartBlueprint->posOffset.x;
-            part->partOffsetFloat.y = part->partOffset.y = ActorPartBlueprint->posOffset.y;
-            part->partOffsetFloat.z = part->partOffset.z = ActorPartBlueprint->posOffset.z;
+            part->partOffsetFloat.x = part->partOffset.x = actorPartBlueprint->posOffset.x;
+            part->partOffsetFloat.y = part->partOffset.y = actorPartBlueprint->posOffset.y;
+            part->partOffsetFloat.z = part->partOffset.z = actorPartBlueprint->posOffset.z;
 
             part->visualOffset.x = 0;
             part->visualOffset.y = 0;
@@ -1281,16 +1281,16 @@ void load_partner_actor(void) {
             part->absolutePos.x = 0.0f;
             part->absolutePos.y = 0.0f;
             part->absolutePos.z = 0.0f;
-            part->defenseTable = ActorPartBlueprint->defenseTable;
-            part->idleAnimations = ActorPartBlueprint->idleAnimations;
-            part->eventFlags = ActorPartBlueprint->eventFlags;
-            part->elementalImmunities = ActorPartBlueprint->elementImmunityFlags;
-            part->opacity = ActorPartBlueprint->opacity;
+            part->defenseTable = actorPartBlueprint->defenseTable;
+            part->idleAnimations = actorPartBlueprint->idleAnimations;
+            part->eventFlags = actorPartBlueprint->eventFlags;
+            part->elementalImmunities = actorPartBlueprint->elementImmunityFlags;
+            part->opacity = actorPartBlueprint->opacity;
             part->size.y = partnerActor->size.y;
             part->size.x = partnerActor->size.x;
             part->yaw = 0.0f;
-            part->targetOffset.x = ActorPartBlueprint->targetOffset.x;
-            part->targetOffset.y = ActorPartBlueprint->targetOffset.y;
+            part->targetOffset.x = actorPartBlueprint->targetOffset.x;
+            part->targetOffset.y = actorPartBlueprint->targetOffset.y;
             part->targetPriorityOffset = 0;
             part->rotPivotOffset.x = 0;
             part->rotPivotOffset.y = 0;
@@ -1750,6 +1750,10 @@ s32 get_player_anim_for_status(s32 statusKey) {
 s32 lookup_defense(s32* defenseTable, s32 elementKey) {
     s32 normalDefense = 0;
 
+    if (defenseTable == nullptr) {
+        return normalDefense;
+    }
+
     while (defenseTable[DICTIONARY_KEY] != ELEMENT_END) {
         if (defenseTable[DICTIONARY_KEY] == ELEMENT_NORMAL) {
             normalDefense = defenseTable[DICTIONARY_VALUE];
@@ -1787,6 +1791,10 @@ s32 lookup_status_chance(s32* statusTable, s32 statusKey) {
 
 s32 lookup_status_duration_mod(s32* statusTable, s32 statusKey) {
     s32 defaultTurnMod = 0;
+
+    if (statusTable == nullptr) {
+        return defaultTurnMod;
+    }
 
     while (statusTable[DICTIONARY_KEY] != ELEMENT_END) {
         if (statusTable[DICTIONARY_KEY] == STATUS_TURN_MOD_DEFAULT) {
@@ -2083,7 +2091,7 @@ void show_damage_fx(Actor* actor, f32 x, f32 y, f32 z, s32 damage) {
 void show_action_rating(s32 rating, Actor* actor, f32 x, f32 y, f32 z) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player;
-    s32 new_var; // TODO required to match
+    s32 newVar; // TODO required to match
     s32 type;
 
     actor->attackResultEffect = actor->attackResultEffect; // TODO required to match
@@ -2122,12 +2130,12 @@ void show_action_rating(s32 rating, Actor* actor, f32 x, f32 y, f32 z) {
         }
         actor->attackResultEffect = fx_attack_result_text(type, x, y, z - 10.0f, 12.0f, 90);
         actor->actionRatingTime = 80;
-        new_var = 2; // TODO required to match
+        newVar = 2; // TODO required to match
     } else {
         actor->attackResultEffect->data.attackResultText->timeLeft = 0;
         type = actor->actionRatingCombo;
-        new_var = rating; // TODO required to match
-        switch (new_var) { // TODO required to match
+        newVar = rating; // TODO required to match
+        switch (newVar) { // TODO required to match
             case ACTION_RATING_NICE:
                 actor->actionRatingCombo++;
                 if (actor->actionRatingCombo > 2) {

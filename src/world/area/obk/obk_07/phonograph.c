@@ -303,17 +303,14 @@ void N(worker_draw_phonograph_hud)(void) {
 }
 
 API_CALLABLE(N(GetSelectedRecordIndex)) {
-    s32 outVal = 0;
-    s32* record = N(RecordList);
+    s32 outVal = -1;
+    s32 i;
 
-    while (true) {
-        if (*record == 0) {
-            outVal = -1;
-        } else if (*record++ != script->varTable[0]) {
-            outVal++;
-            continue;
+    for (i = 0; i < ARRAY_COUNT(N(RecordList)) && N(RecordList)[i] != ITEM_NONE; i++) {
+        if (N(RecordList)[i] == script->varTable[0]) {
+            outVal = i;
+            break;
         }
-        break;
     }
     script->varTable[0] = outVal;
     return ApiStatus_DONE2;

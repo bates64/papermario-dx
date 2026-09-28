@@ -67,13 +67,13 @@ void state_init_file_select(void) {
     gCameras[CAM_DEFAULT].params.basic.dist = 40;
     gCameras[CAM_DEFAULT].params.basic.fovScale = 100;
 
-    gCameras[CAM_DEFAULT].lookAt_eye.x = 500.0f;
-    gCameras[CAM_DEFAULT].lookAt_eye.y = 1000.0f;
-    gCameras[CAM_DEFAULT].lookAt_eye.z = 1500.0f;
+    gCameras[CAM_DEFAULT].lookAtEye.x = 500.0f;
+    gCameras[CAM_DEFAULT].lookAtEye.y = 1000.0f;
+    gCameras[CAM_DEFAULT].lookAtEye.z = 1500.0f;
 
-    gCameras[CAM_DEFAULT].lookAt_obj_target.x = 25.0f;
-    gCameras[CAM_DEFAULT].lookAt_obj_target.y = 25.0f;
-    gCameras[CAM_DEFAULT].lookAt_obj_target.z = 150.0f;
+    gCameras[CAM_DEFAULT].lookAtObjTarget.x = 25.0f;
+    gCameras[CAM_DEFAULT].lookAtObjTarget.y = 25.0f;
+    gCameras[CAM_DEFAULT].lookAtObjTarget.z = 150.0f;
 
     gCameras[CAM_DEFAULT].bgColor[0] = 0;
     gCameras[CAM_DEFAULT].bgColor[1] = 0;

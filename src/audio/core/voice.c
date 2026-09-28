@@ -58,7 +58,7 @@ void au_update_voices(AuGlobals* globals) {
             // client released the key
             voice->envelopeFlags &= ~AU_VOICE_ENV_FLAG_KEY_RELEASED;
             voice->envelopeFlags |= AU_VOICE_ENV_FLAG_RELEASING;
-            voice->cmdPtr = (u8*)voice->envelope.cmdListRelease;
+            voice->cmdPtr = voice->envelope.cmdListRelease;
 
             // the key can be released before the press envelope is complete
             if (voice->envTimeLeft > AU_FRAME_USEC) {

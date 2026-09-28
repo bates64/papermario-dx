@@ -111,14 +111,14 @@ void gather_magic_update(EffectInstance* effect) {
         f32 unk_20 = part->unk_20;
         f32 unk_2C = part->unk_2C;
         f32 unk_24 = part->unk_24;
-        f32 sin_20 = sin_deg(unk_20);
-        f32 cos_20 = cos_deg(unk_20);
-        f32 sin_24 = sin_deg(unk_24);
-        f32 cos_24 = cos_deg(unk_24);
+        f32 sin20 = sin_deg(unk_20);
+        f32 cos20 = cos_deg(unk_20);
+        f32 sin24 = sin_deg(unk_24);
+        f32 cos24 = cos_deg(unk_24);
 
-        part->unk_08 = unk_2C * sin_20 * cos_24;
-        part->unk_0C = unk_2C * cos_20 * cos_24;
-        part->unk_10 = unk_2C * sin_24;
+        part->unk_08 = unk_2C * sin20 * cos24;
+        part->unk_0C = unk_2C * cos20 * cos24;
+        part->unk_10 = unk_2C * sin24;
 
         part->unk_14 = ((100.0f - part->unk_2C) * 255.0f * 2.0f) / 100.0f;
         if (part->unk_14 >= 256) {

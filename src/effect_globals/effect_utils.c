@@ -63,7 +63,7 @@ void func_E02000AC(s32 arg0, s32 arg1) {
     s32 j;
     s32 width;
     s32 x;
-    s32 new_var;
+    s32 newVar;
     s32 var_t3;
     s32 s2 = 20;
     s32 s1 = 0;
@@ -73,7 +73,7 @@ void func_E02000AC(s32 arg0, s32 arg1) {
 
     for (i = 0; i < 10; i++, s1 = i * 24, s2 = i * 24 + 20) {
         x = arg0;
-        new_var = x + width;
+        newVar = x + width;
         var_t3 = i * 6;
         gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 80, nuGfxCfb_ptr);
         gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_WRAP,
@@ -98,7 +98,7 @@ void func_E02000AC(s32 arg0, s32 arg1) {
             gDPLoadSync(gMainGfxPos++);
             gDPLoadTile(gMainGfxPos++, G_TX_LOADTILE, x << G_TEXTURE_IMAGE_FRAC,
                         (arg1 + var_t3) << G_TEXTURE_IMAGE_FRAC,
-                        ((new_var) - 1) << G_TEXTURE_IMAGE_FRAC,
+                        ((newVar) - 1) << G_TEXTURE_IMAGE_FRAC,
                         ((arg1 + var_t3) + 5) << G_TEXTURE_IMAGE_FRAC);
             gDPPipeSync(gMainGfxPos++);
             gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b,

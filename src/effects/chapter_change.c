@@ -218,7 +218,7 @@ EffectInstance* chapter_change_main(s32 type, f32 posX, f32 posY, f32 arg3, f32 
     } else {
         data->envCol.a = 255;
     }
-    data->msgID = N(SubtitleMsg)[type];
+    data->msgID = (type >= 0 && type < ARRAY_COUNT(N(SubtitleMsg))) ? N(SubtitleMsg)[type] : -1;
     if (data->msgID >= 0) {
         data->msgPos.x = 160;
         data->msgPos.y = 160;

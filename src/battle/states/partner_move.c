@@ -27,7 +27,7 @@ void btl_state_update_partner_move(void) {
         case BTL_SUBSTATE_INIT:
             if (partner == nullptr) {
                 btl_set_state(BATTLE_STATE_TRANSFER_TURN);
-                break;
+                return;
             }
             battleStatus->stateFreezeCount = 0;
             battleStatus->actionResult = ACTION_RESULT_NONE;

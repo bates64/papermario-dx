@@ -78,7 +78,7 @@ void btl_state_update_end_training_battle(void) {
             gBattleStatus.flags2 &= ~BS_FLAGS2_OVERRIDE_INACTIVE_PLAYER;
             gBattleStatus.flags2 &= ~BS_FLAGS2_OVERRIDE_INACTIVE_PARTNER;
 
-            if (!battleStatus->outtaSightActive) {
+            if (!battleStatus->outtaSightActive || partner == nullptr) {
                 gBattleSubState = BTL_SUBSTATE_RESET_CAM;
             } else {
                 battleStatus->battlePhase = PHASE_ENEMY_BEGIN;

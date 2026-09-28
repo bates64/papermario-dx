@@ -20,42 +20,42 @@ _Static_assert(sizeof(OverlayDirectoryEntry) == 80, "DirectoryEntry size must ma
 
 /// File layout (offsets implicit from sizes):
 ///   [header (padded to 16)]
-///   [text+data: load_size]
+///   [text+data: loadSize]
 ///   [exports | strtab (4-padded) | dtors]
 ///   [r32 | r26 | hi16 (offset,addr) | lo16 | ctors]
 typedef struct {
     u32 magic;
-    u32 load_size;     // text + data
-    u32 text_size;
-    u32 bss_size;
-    u32 export_count;
-    u32 strtab_size;   // unpadded; 4-padded in file
-    u32 dtor_count;
-    u32 r32_count;
-    u32 r26_count;
-    u32 hi16_count;    // entries: (offset, original_addr)
-    u32 lo16_count;    // standalone offsets
-    u32 ctor_count;
+    u32 loadSize;     // text + data
+    u32 textSize;
+    u32 bssSize;
+    u32 exportCount;
+    u32 strtabSize;   // unpadded; 4-padded in file
+    u32 dtorCount;
+    u32 r32Count;
+    u32 r26Count;
+    u32 hi16Count;    // entries: (offset, original_addr)
+    u32 lo16Count;    // standalone offsets
+    u32 ctorCount;
 } OverlayHeader;
 
 _Static_assert(sizeof(OverlayHeader) == 48, "OverlayHeader size must match overlay.py");
 
 typedef struct {
     u32 offset;
-    u32 name_offset;
+    u32 nameOffset;
 } OverlayExport;
 
 struct Overlay {
     char name[64]; ///< "" means empty slot.
     OverlayType type;
     u8* base; ///< Where the text/data/bss/meta is.
-    u32 text_size;
-    u32 load_size; ///< text + data
+    u32 textSize;
+    u32 loadSize; ///< text + data
     OverlayExport* exports;
-    u32 export_count;
+    u32 exportCount;
     const char* strtab;
     u32* dtors;
-    u32 dtor_count;
+    u32 dtorCount;
     u32 debugRomStart;
     u32 debugRomEnd;
 };
@@ -82,48 +82,48 @@ static void apply_relocs(u8* base, OverlayHeader* hdr, u32 rom) {
     u32 load = (u32)base;
     u32 delta = load - RELOCATABLE_LINK_ADDR;
 
-    if (hdr->r32_count > 0) {
-        ALIGNED(8) u32 r32[hdr->r32_count];
-        dma_copy((u8*)rom, (u8*)(rom + hdr->r32_count * sizeof(u32)), r32);
-        for (u32 i = 0; i < hdr->r32_count; i++) {
+    if (hdr->r32Count > 0) {
+        ALIGNED(8) u32 r32[hdr->r32Count];
+        dma_copy((u8*)rom, (u8*)(rom + hdr->r32Count * sizeof(u32)), r32);
+        for (u32 i = 0; i < hdr->r32Count; i++) {
             *(u32*)(load + r32[i]) += delta;
         }
     }
-    rom += hdr->r32_count * sizeof(u32);
+    rom += hdr->r32Count * sizeof(u32);
 
-    if (hdr->r26_count > 0) {
-        ALIGNED(8) u32 r26[hdr->r26_count];
-        dma_copy((u8*)rom, (u8*)(rom + hdr->r26_count * sizeof(u32)), r26);
-        for (u32 i = 0; i < hdr->r26_count; i++) {
+    if (hdr->r26Count > 0) {
+        ALIGNED(8) u32 r26[hdr->r26Count];
+        dma_copy((u8*)rom, (u8*)(rom + hdr->r26Count * sizeof(u32)), r26);
+        for (u32 i = 0; i < hdr->r26Count; i++) {
             u32* loc = (u32*)(load + r26[i]);
             u32 target = (((*loc & 0x03FFFFFFu) << 2) + delta);
             *loc = (*loc & 0xFC000000u) | ((target & 0x0FFFFFFCu) >> 2);
         }
     }
-    rom += hdr->r26_count * sizeof(u32);
+    rom += hdr->r26Count * sizeof(u32);
 
-    if (hdr->hi16_count > 0) {
-        ALIGNED(8) u32 hi16[hdr->hi16_count * 2];
-        dma_copy((u8*)rom, (u8*)(rom + hdr->hi16_count * 2 * sizeof(u32)), hi16);
-        for (u32 i = 0; i < hdr->hi16_count; i++) {
-            u32* hi_loc = (u32*)(load + hi16[i * 2]);
+    if (hdr->hi16Count > 0) {
+        ALIGNED(8) u32 hi16[hdr->hi16Count * 2];
+        dma_copy((u8*)rom, (u8*)(rom + hdr->hi16Count * 2 * sizeof(u32)), hi16);
+        for (u32 i = 0; i < hdr->hi16Count; i++) {
+            u32* hiLoc = (u32*)(load + hi16[i * 2]);
             u32 addr = hi16[i * 2 + 1] + delta;
-            u16 new_hi = (u16)(addr >> 16);
-            if (addr & 0x8000u) new_hi++;
-            *hi_loc = (*hi_loc & 0xFFFF0000u) | new_hi;
+            u16 newHi = (u16)(addr >> 16);
+            if (addr & 0x8000u) newHi++;
+            *hiLoc = (*hiLoc & 0xFFFF0000u) | newHi;
         }
     }
-    rom += hdr->hi16_count * 2 * sizeof(u32);
+    rom += hdr->hi16Count * 2 * sizeof(u32);
 
-    if (hdr->lo16_count > 0) {
-        ALIGNED(8) u32 lo16[hdr->lo16_count];
-        dma_copy((u8*)rom, (u8*)(rom + hdr->lo16_count * sizeof(u32)), lo16);
-        for (u32 i = 0; i < hdr->lo16_count; i++) {
-            u32* lo_loc = (u32*)(load + lo16[i]);
-            *lo_loc = (*lo_loc & 0xFFFF0000u) | (u16)((*lo_loc & 0xFFFF) + (u16)delta);
+    if (hdr->lo16Count > 0) {
+        ALIGNED(8) u32 lo16[hdr->lo16Count];
+        dma_copy((u8*)rom, (u8*)(rom + hdr->lo16Count * sizeof(u32)), lo16);
+        for (u32 i = 0; i < hdr->lo16Count; i++) {
+            u32* loLoc = (u32*)(load + lo16[i]);
+            *loLoc = (*loLoc & 0xFFFF0000u) | (u16)((*loLoc & 0xFFFF) + (u16)delta);
         }
     }
-    rom += hdr->lo16_count * sizeof(u32);
+    rom += hdr->lo16Count * sizeof(u32);
 }
 
 static b32 find_in_directory(OverlayType type, const char* name, OverlayDirectoryEntry* out) {
@@ -177,58 +177,58 @@ Overlay* ovl_load(const char* name, OverlayType type) {
     ASSERT_MSG(hdr.magic == MOD_MAGIC, "Invalid overlay %s", name);
 
     // Compute file offsets
-    u32 load_off = (sizeof(OverlayHeader) + 15) & ~15;
-    u32 strtab_padded = (hdr.strtab_size + 3) & ~3;
-    u32 meta_sz = hdr.export_count * sizeof(OverlayExport) + strtab_padded + hdr.dtor_count * sizeof(u32);
-    u32 meta_off = load_off + hdr.load_size;
-    u32 reloc_off = meta_off + meta_sz;
-    u32 ctor_off = reloc_off
-                   + hdr.r32_count * sizeof(u32)
-                   + hdr.r26_count * sizeof(u32)
-                   + hdr.hi16_count * 2 * sizeof(u32)
-                   + hdr.lo16_count * sizeof(u32);
+    u32 loadOff = (sizeof(OverlayHeader) + 15) & ~15;
+    u32 strtabPadded = (hdr.strtabSize + 3) & ~3;
+    u32 metaSz = hdr.exportCount * sizeof(OverlayExport) + strtabPadded + hdr.dtorCount * sizeof(u32);
+    u32 metaOff = loadOff + hdr.loadSize;
+    u32 relocOff = metaOff + metaSz;
+    u32 ctorOff = relocOff
+                   + hdr.r32Count * sizeof(u32)
+                   + hdr.r26Count * sizeof(u32)
+                   + hdr.hi16Count * 2 * sizeof(u32)
+                   + hdr.lo16Count * sizeof(u32);
 
     // Allocate: [text+data][bss][exports|strtab|dtors]
-    u32 footprint = hdr.load_size + hdr.bss_size + meta_sz;
+    u32 footprint = hdr.loadSize + hdr.bssSize + metaSz;
     ovl->base = (u8*)link_addr(type);
     if ((u32)ovl->base == RELOCATABLE_LINK_ADDR) {
         ovl->base = (u8*)malloc(footprint);
     }
 
     // DMA text+data
-    dma_copy((u8*)(entry.romStart + load_off),
-             (u8*)(entry.romStart + load_off + hdr.load_size), ovl->base);
+    dma_copy((u8*)(entry.romStart + loadOff),
+             (u8*)(entry.romStart + loadOff + hdr.loadSize), ovl->base);
 
     // Zero BSS
-    if (hdr.bss_size > 0) {
-        memset(ovl->base + hdr.load_size, 0, hdr.bss_size);
+    if (hdr.bssSize > 0) {
+        memset(ovl->base + hdr.loadSize, 0, hdr.bssSize);
     }
 
     // DMA exports+strtab+dtors after BSS
-    u8* meta_base = ovl->base + hdr.load_size + hdr.bss_size;
-    if (meta_sz > 0) {
-        dma_copy((u8*)(entry.romStart + meta_off),
-                 (u8*)(entry.romStart + meta_off + meta_sz), meta_base);
+    u8* metaBase = ovl->base + hdr.loadSize + hdr.bssSize;
+    if (metaSz > 0) {
+        dma_copy((u8*)(entry.romStart + metaOff),
+                 (u8*)(entry.romStart + metaOff + metaSz), metaBase);
     }
 
     // Set up pointers into loaded region
-    ovl->text_size = hdr.text_size;
-    ovl->load_size = hdr.load_size;
-    ovl->export_count = hdr.export_count;
-    ovl->exports = (OverlayExport*)meta_base;
-    ovl->strtab = (const char*)(meta_base + hdr.export_count * sizeof(OverlayExport));
-    ovl->dtor_count = hdr.dtor_count;
-    ovl->dtors = (u32*)((u8*)ovl->strtab + strtab_padded);
+    ovl->textSize = hdr.textSize;
+    ovl->loadSize = hdr.loadSize;
+    ovl->exportCount = hdr.exportCount;
+    ovl->exports = (OverlayExport*)metaBase;
+    ovl->strtab = (const char*)(metaBase + hdr.exportCount * sizeof(OverlayExport));
+    ovl->dtorCount = hdr.dtorCount;
+    ovl->dtors = (u32*)((u8*)ovl->strtab + strtabPadded);
 
     // Apply relocations
     osWritebackDCache(ovl->base, footprint);
-    apply_relocs(ovl->base, &hdr, entry.romStart + reloc_off);
+    apply_relocs(ovl->base, &hdr, entry.romStart + relocOff);
     osWritebackDCache(ovl->base, footprint);
     osInvalICache(ovl->base, footprint);
 
     // Pre-adjust destructors with delta
     u32 delta = (u32)ovl->base - link_addr(type);
-    for (u32 i = 0; i < hdr.dtor_count; i++) {
+    for (u32 i = 0; i < hdr.dtorCount; i++) {
         ovl->dtors[i] += delta;
     }
 
@@ -236,11 +236,11 @@ Overlay* ovl_load(const char* name, OverlayType type) {
     ovl_debug_changed();
 
     // Run constructors
-    if (hdr.ctor_count > 0) {
-        ALIGNED(8) u32 ctors[hdr.ctor_count];
-        dma_copy((u8*)(entry.romStart + ctor_off),
-                 (u8*)(entry.romStart + ctor_off + hdr.ctor_count * sizeof(u32)), ctors);
-        for (u32 i = 0; i < hdr.ctor_count; i++) {
+    if (hdr.ctorCount > 0) {
+        ALIGNED(8) u32 ctors[hdr.ctorCount];
+        dma_copy((u8*)(entry.romStart + ctorOff),
+                 (u8*)(entry.romStart + ctorOff + hdr.ctorCount * sizeof(u32)), ctors);
+        for (u32 i = 0; i < hdr.ctorCount; i++) {
             void (*fn)(void) = (void (*)(void))(ctors[i] + delta);
             fn();
         }
@@ -255,7 +255,7 @@ void ovl_unload(Overlay* ovl) {
     printf("ovl_unload %s\n", ovl->name);
 
     // Run destructors
-    for (u32 i = 0; i < ovl->dtor_count; i++) {
+    for (u32 i = 0; i < ovl->dtorCount; i++) {
         void (*fn)(void) = (void (*)(void))ovl->dtors[i];
         fn();
     }
@@ -277,8 +277,8 @@ void ovl_unload_type(OverlayType type) {
 }
 
 void* ovl_import(const Overlay* ovl, const char* name) {
-    for (u32 i = 0; i < ovl->export_count; i++) {
-        if (strcmp(ovl->strtab + ovl->exports[i].name_offset, name) == 0) {
+    for (u32 i = 0; i < ovl->exportCount; i++) {
+        if (strcmp(ovl->strtab + ovl->exports[i].nameOffset, name) == 0) {
             return ovl->base + ovl->exports[i].offset;
         }
     }
@@ -289,12 +289,12 @@ static const char* name_for_addr(const Overlay* ovl, u32 addr) {
     u32 off = addr - (u32)ovl->base;
 
     const char* best = nullptr;
-    u32 best_off = 0;
+    u32 bestOff = 0;
 
-    for (u32 i = 0; i < ovl->export_count; i++) {
-        if (ovl->exports[i].offset <= off && ovl->exports[i].offset >= best_off) {
-            best_off = ovl->exports[i].offset;
-            best = ovl->strtab + ovl->exports[i].name_offset;
+    for (u32 i = 0; i < ovl->exportCount; i++) {
+        if (ovl->exports[i].offset <= off && ovl->exports[i].offset >= bestOff) {
+            bestOff = ovl->exports[i].offset;
+            best = ovl->strtab + ovl->exports[i].nameOffset;
         }
     }
     return best;
@@ -303,7 +303,7 @@ static const char* name_for_addr(const Overlay* ovl, u32 addr) {
 static b32 contains(const Overlay* ovl, u32 addr) {
     if (ovl->name[0] == '\0') return false;
     u32 b = (u32)ovl->base;
-    return addr >= b && addr < b + ovl->load_size;
+    return addr >= b && addr < b + ovl->loadSize;
 }
 
 const char* ovl_resolve_addr(u32 addr, const char** outOverlayName,

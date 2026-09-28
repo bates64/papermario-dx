@@ -5,7 +5,6 @@
 #include "pause/image_143BF0.png.h"
 #include "pause/image_143FF0.png.h"
 #include "pause/world_map.png.h"
-#include "pause/world_map.png.h"
 #include "pause/spirits_bg.png.h"
 #include "pause/orbs.png.h"
 #include "pause/map_location.png.h"

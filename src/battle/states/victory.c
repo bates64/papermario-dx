@@ -27,7 +27,7 @@ void btl_state_update_victory(void) {
             }
 
             battleStatus->stateFreezeCount = 0;
-            if (battleStatus->outtaSightActive == 0) {
+            if (battleStatus->outtaSightActive == 0 || partner == nullptr) {
                 gBattleSubState = BTL_SUBSTATE_RECOVER_STATUS;
             } else {
                 battleStatus->battlePhase = PHASE_ENEMY_BEGIN;

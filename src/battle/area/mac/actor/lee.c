@@ -595,7 +595,9 @@ API_CALLABLE(N(AdjustFormationPriority)) {
             formation = A(LeeLakilesterFormation);
             break;
     }
-    formation->priority = actor->turnPriority + 10;
+    if (formation != nullptr) {
+        formation->priority = actor->turnPriority + 10;
+    }
     return ApiStatus_DONE2;
 }
 
