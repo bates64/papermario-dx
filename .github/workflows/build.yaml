@@ -57,6 +57,20 @@ jobs:
         with:
           name: ${{ steps.repo-name.outputs.repository-name }}.bps
           path: ver/us/build/papermario.bps
+      - name: Publish for Mamar
+        # Mamar's website plays songs in this build by patching a vanilla ROM
+        # with papermario.bps and writing to the addresses in symbols.json
+        # (see src/dx/mamar.h). The patch goes first: symbols.json holds its
+        # hash, so a reader between the two uploads sees a mismatch.
+        if: github.event_name == 'push' && github.repository == 'bates64/papermario-dx'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          S3_ENDPOINT: https://fsn1.your-objectstorage.com
+        run: |
+          nix develop --command python3 tools/mamar_symbols.py ver/us/build/papermario.elf ver/us/build/papermario.bps symbols.json
+          aws s3 cp ver/us/build/papermario.bps s3://starhaven/mamar/papermario.bps --cache-control no-cache --endpoint-url "$S3_ENDPOINT"
+          aws s3 cp symbols.json s3://starhaven/mamar/symbols.json --cache-control no-cache --content-type application/json --endpoint-url "$S3_ENDPOINT"
       - name: Compute ROM SHA256
         id: rom-sha
         run: echo "sha256=$(sha256sum ver/us/build/papermario.z64 | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
