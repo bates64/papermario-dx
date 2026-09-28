@@ -15,9 +15,13 @@ BSS b32 MamarPaused;
 s32 MamarAmbience = AMBIENT_SILENCE;
 BSS s32 MamarTrackMute[16];
 BSS s32 MamarTempo;
+BSS s32 MamarStartSegment;
+BSS s32 MamarStartTick;
+BSS s32 MamarSegment;
+BSS s32 MamarTick;
+BSS u32 MamarPlayingRequest;
+BSS u32 MamarNotesStarted;
 
-/// The request the playing song answers.
-BSS static u32 PlayingRequest;
 /// Which of two song IDs Mamar's song plays as, alternating so that
 /// bgm_set_song treats each request as a new song. Both load Mamar's BGM.
 BSS static s32 PlayingSongID;
@@ -56,6 +60,8 @@ b32 dx_mamar_load_song(BGMHeader* bgmFile, BGMPlayer* player, AuResult* result) 
         }
     }
 
+    player->seekPhrase = MamarStartSegment;
+    player->seekTicks = MamarStartTick;
     player->songID = PlayingSongID;
     player->bgmFile = bgmFile;
     player->bgmFileIndex = 0;
@@ -112,7 +118,7 @@ void state_init_mamar(void) {
         MamarBGM = general_heap_malloc(MAMAR_BGM_MAX_SIZE);
     }
 
-    PlayingRequest = MamarRequest;
+    MamarPlayingRequest = MamarRequest;
     IsPlaying = false;
     bgm_set_song(0, -1, 0, 0, 8);
 }
@@ -122,8 +128,8 @@ void state_step_mamar(void) {
 
     // A song requested while paused waits until Mamar unpauses. Starting it and
     // then pausing it can pause the song it replaces instead, leaving it playing.
-    if (MamarRequest != PlayingRequest && !MamarPaused) {
-        PlayingRequest = MamarRequest;
+    if (MamarRequest != MamarPlayingRequest && !MamarPaused) {
+        MamarPlayingRequest = MamarRequest;
         PlayingSongID = PlayingSongID == 0 ? 1 : 0;
         IsPlaying = true;
         IsSongPaused = false;
@@ -146,6 +152,15 @@ void state_step_mamar(void) {
     play_ambient_sounds(MamarPaused ? AMBIENT_SILENCE : MamarAmbience, 0);
     update_track_mutes();
     MamarTempo = gBGMPlayerA->masterTempo * 100 / BGM_TEMPO_SCALE;
+    // The song a request replaces keeps playing until the requested one starts.
+    if (gBGMPlayerA->songID == PlayingSongID && gBGMPlayerA->phrasePos != nullptr) {
+        MamarSegment = gBGMPlayerA->phrasePos - gBGMPlayerA->compStartPos;
+        MamarNotesStarted = gBGMPlayerA->notesStarted;
+    } else {
+        MamarSegment = -1;
+        MamarNotesStarted = 0;
+    }
+    MamarTick = gBGMPlayerA->phraseTicks;
 }
 
 void state_drawUI_mamar(void) {

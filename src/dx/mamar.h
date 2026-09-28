@@ -28,9 +28,9 @@ enum MamarTrackMute {
 //   2. Set MamarEnabled. The game switches to GAME_MODE_MAMAR, where it only
 //      plays Mamar's song, and points MamarBGM at a buffer of
 //      MAMAR_BGM_MAX_SIZE bytes.
-//   3. Write the encoded BGM there, then MamarBGMSize, MamarVariation, and
-//      MamarBankSong.
-//   4. Increment MamarRequest to play it from its start. A song requested while
+//   3. Write the encoded BGM there, then MamarBGMSize, MamarVariation,
+//      MamarBankSong, MamarStartSegment, and MamarStartTick.
+//   4. Increment MamarRequest to play it. A song requested while
 //      MamarPaused is set waits until it's cleared.
 // The other inputs take effect on the next frame.
 
@@ -49,6 +49,26 @@ extern s32 MamarTrackMute[16];
 /// Tempo of the song playing in hundredths of a beat per minute, written by
 /// the game every frame.
 extern s32 MamarTempo;
+
+/// Where Mamar's song starts playing: the index of a segment in its
+/// variation, and the ticks into that segment. The song plays silently up to
+/// there without repeating loops.
+extern s32 MamarStartSegment;
+extern s32 MamarStartTick;
+
+/// Where the song playing is, written by the game every frame: the index of
+/// the segment playing in its variation, or -1 if none, and the ticks that
+/// segment has played.
+extern s32 MamarSegment;
+extern s32 MamarTick;
+
+/// The value of MamarRequest the song playing answers. A newer request's song
+/// hasn't started yet.
+extern u32 MamarPlayingRequest;
+
+/// Notes the song playing has started since it began, written by the game
+/// every frame. Muted tracks and the notes a start position skips don't count.
+extern u32 MamarNotesStarted;
 
 void dx_mamar_update(void);
 b32 dx_mamar_load_song(BGMHeader* bgmFile, BGMPlayer* player, AuResult* result);

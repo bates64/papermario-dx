@@ -537,6 +537,9 @@ void au_bgm_player_init(BGMPlayer* player, s32 priority, s32 busID, AuGlobals* g
     player->compReadPos = nullptr;
     player->compStartPos = nullptr;
     player->phraseStartPos = 0;
+    player->phrasePos = nullptr;
+    player->seekPhrase = -1;
+    player->seeking = false;
     player->masterTempoTicks = 0;
     player->masterTempoTarget = 0;
     player->masterTempoStep = 0;
@@ -658,6 +661,47 @@ void au_bgm_update_bus_volumes(BGMPlayer* player) {
     }
 }
 
+static b32 au_bgm_phrase_has_tracks(BGMPlayer* player) {
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(player->tracks); i++) {
+        if (player->tracks[i].bgmReadPos != nullptr) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// Plays the composition silently from its start, without repeating loops, until it reaches the phrase and tick the
+/// player seeks to. A song that ends before then stops.
+static void au_bgm_player_seek(BGMPlayer* player) {
+    SegData* target = player->compStartPos + player->seekPhrase;
+
+    player->seekPhrase = -1;
+    player->seeking = true;
+    while (true) {
+        if (player->masterState == BGM_PLAY_STATE_FETCH) {
+            au_bgm_player_read_composition(player);
+        } else if (player->masterState == BGM_PLAY_STATE_ACTIVE) {
+            if (player->phrasePos == target && player->phraseTicks >= player->seekTicks) {
+                break;
+            }
+            // The target isn't a phrase, or its phrase ended before the tick.
+            if (player->phrasePos > target) {
+                break;
+            }
+            // A phrase without tracks never ends, so nothing after it plays.
+            if (player->phraseTicks == 0 && !au_bgm_phrase_has_tracks(player)) {
+                break;
+            }
+            au_bgm_player_update_playing(player);
+        } else {
+            break;
+        }
+    }
+    player->seeking = false;
+}
+
 s32 au_bgm_player_audio_frame_update(BGMPlayer* player) {
     u16 hasMore = true;
     s32 retVal = false;
@@ -681,7 +725,11 @@ s32 au_bgm_player_audio_frame_update(BGMPlayer* player) {
                 }
                 break;
             case BGM_PLAY_STATE_FETCH:
-                au_bgm_player_read_composition(player);
+                if (player->seekPhrase >= 0) {
+                    au_bgm_player_seek(player);
+                } else {
+                    au_bgm_player_read_composition(player);
+                }
                 break;
             case BGM_PLAY_STATE_INIT:
                 au_bgm_player_initialize(player);
@@ -795,6 +843,8 @@ void au_bgm_player_initialize(BGMPlayer* player) {
 
     player->paused = false;
     player->songPlayingCounter = 0;
+    player->phrasePos = nullptr;
+    player->notesStarted = 0;
     for (i = 0; i < ARRAY_COUNT(player->compLoopStartLabels); i++) {
         player->compLoopStartLabels[i] = player->compReadPos;
     }
@@ -881,15 +931,17 @@ void au_bgm_player_read_composition(BGMPlayer* player) {
                     continueReading = false;
                     break;
                 case BGM_COMP_END_LOOP << 16:
-                    au_bgm_end_composition_loop(player, cmd);
+                    if (!player->seeking) {
+                        au_bgm_end_composition_loop(player, cmd);
+                    }
                     break;
                 case BGM_COMP_END_COND_LOOP_FALSE << 16:
-                    if (!(player->conditionalLoopFlags & 1)) {
+                    if (!player->seeking && !(player->conditionalLoopFlags & 1)) {
                         au_bgm_end_composition_loop(player, cmd);
                     }
                     break;
                 case BGM_COMP_END_COND_LOOP_TRUE << 16:
-                    if (player->conditionalLoopFlags & 1) {
+                    if (!player->seeking && (player->conditionalLoopFlags & 1)) {
                         au_bgm_end_composition_loop(player, cmd);
                     }
                     break;
@@ -948,6 +1000,8 @@ void au_bgm_load_phrase(BGMPlayer* player, u32 cmd) {
 
     curVoice = 0;
     bFoundLinkedTrack = false;
+    player->phrasePos = player->compReadPos - 1;
+    player->phraseTicks = 0;
     player->phraseStartPos = AU_FILE_RELATIVE(player->compStartPos, (cmd & 0xFFFF) << 2);
     trackList = player->phraseStartPos;
     for (i = 0; i < ARRAY_COUNT(player->tracks); i++) {
@@ -1007,6 +1061,7 @@ void au_bgm_player_update_stop(BGMPlayer* player) {
     player->pushSongName = 0;
     player->unk_58 = 0;
     player->unk_5A = 0;
+    player->phrasePos = nullptr;
     for (i = 0; i < ARRAY_COUNT(player->tracks); i++) {
         player->tracks[i].bgmReadPos = nullptr;
     }
@@ -1172,7 +1227,7 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                 POST_BGM_READ();
                             }
                             bAcquiredVoiceIdx = false;
-                            if (!track->muted) {
+                            if (!track->muted && !player->seeking) {
                                 // find first free voice
                                 for (voiceIdx = sp1F; voiceIdx < track->lastVoice; voiceIdx++) {
                                     voice = &player->globals->voices[voiceIdx];
@@ -1246,6 +1301,7 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                 }
                             }
                             if (bAcquiredVoiceIdx) {
+                                player->notesStarted++;
                                 note = &player->notes[voiceIdx];
                                 note->tremoloDepth = 0;
                                 if (noteVelocity > 0) {
@@ -1496,6 +1552,7 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
         }
     }
 
+    player->phraseTicks++;
     if (bFinished) {
         player->masterState = BGM_PLAY_STATE_FETCH;
     }
@@ -1734,6 +1791,9 @@ void au_BGMCmd_F7_ReverbType(BGMPlayer* player, BGMPlayerTrack* track) {
 }
 
 void au_BGMCmd_FD_EventTrigger(BGMPlayer* player, BGMPlayerTrack* track) {
+    if (player->seeking) {
+        return;
+    }
     snd_song_trigger_music_event(player->priority, track->index, player->seqCmdArgs.eventTrigger.eventInfo >> 8);
 }
 
@@ -1847,7 +1907,7 @@ void au_BGMCmd_FF_Special(BGMPlayer* player, BGMPlayerTrack* track) {
             }
             break;
         case BGM_SPECIAL_TRIGGER_SOUND:
-            if (player->soundManager != nullptr) {
+            if (player->soundManager != nullptr && !player->seeking) {
                 for (i = 0; i < ARRAY_COUNT(player->soundManager->bgmSounds); i++) {
                     if ((player->soundManager->bgmSounds[i].index) == 0) {
                         player->soundManager->bgmSounds[i].index = arg1;
