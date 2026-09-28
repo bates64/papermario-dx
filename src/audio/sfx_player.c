@@ -563,6 +563,13 @@ void au_sfx_load_groups_from_SEF(SoundManager* manager) {
         }
     }
 
+    for (i = 0; i < ARRAY_COUNT(sefData->extSections); i++) {
+        manager->normalSounds[ARRAY_COUNT(sefData->sections) + i] = nullptr;
+        if (sefData->hasExtraSection == 2 && sefData->extSections[i] != 0) {
+            manager->normalSounds[ARRAY_COUNT(sefData->sections) + i] = AU_FILE_RELATIVE(sefData, sefData->extSections[i]);
+        }
+    }
+
     if (sefData->hasExtraSection == 1 || sefData->hasExtraSection == 2) {
         if (sefData->section2000 != 0) {
             manager->extraSounds = AU_FILE_RELATIVE(sefData, sefData->section2000);
@@ -759,6 +766,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
     u32 priority, polyphonyMode, useSpecificPlayerMode;
     s32 v1;
     s32* normalSounds;
+    s32 extSectionBase = (request->soundID & SOUND_ID_EXT) ? 8 : 0;
 
     #define NEXT_POLY_TRACK trackCount--; if (trackCount <= 0 ) { break; } cmdList += 2;
 
@@ -802,8 +810,11 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
             if (customSEF != nullptr) {
                 cmdList = (u16*)customSEF;
             } else {
-                sectionIndex = ((soundIDLower - 1) >> 8) + 4;
+                sectionIndex = (((soundIDLower - 1) >> 8) & 3) + 4 + extSectionBase;
                 normalSounds = manager->normalSounds[sectionIndex];
+                if (normalSounds == nullptr) {
+                    return;
+                }
                 v1 = soundIndex - 0xC0;
                 cmdList = (u16*)&manager->normalSounds[sectionIndex][v1];
             }
@@ -837,7 +848,10 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
             if (customSEF != nullptr) {
                 cmdList = (u16*)customSEF;
             } else {
-                sectionIndex = ((soundID) >> 8) & 3;
+                sectionIndex = (((soundID) >> 8) & 3) + extSectionBase;
+                if (manager->normalSounds[sectionIndex] == nullptr) {
+                    return;
+                }
                 cmdList = (u16*)&manager->normalSounds[sectionIndex][soundIndex];
             }
 
