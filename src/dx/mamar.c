@@ -2,6 +2,7 @@
 #include "audio/core.h"
 #include "audio/private.h"
 #include "game_modes.h"
+#include <string.h>
 
 BSS b32 MamarEnabled;
 BSS u32 MamarReady;
@@ -37,7 +38,7 @@ b32 dx_mamar_load_song(BGMHeader* bgmFile, BGMPlayer* player, AuResult* result) 
         return true;
     }
 
-    au_copy_bytes(MamarBGM, bgmFile, CLAMP(MamarBGMSize, 0, MAMAR_BGM_MAX_SIZE));
+    memcpy(bgmFile, MamarBGM, CLAMP(MamarBGMSize, 0, MAMAR_BGM_MAX_SIZE));
 
     if (MamarBankSong >= 0 && MamarBankSong < globals->songListLength) {
         bankSong = &globals->songList[MamarBankSong];
