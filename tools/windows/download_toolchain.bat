@@ -99,8 +99,15 @@ if exist "%DX_DIR%\windows-hash" (
 if "%NEED_DOWNLOAD%"=="1" (
     echo Downloading toolchain for commit %COMMIT%...
 
-    :: Clean up old toolchain
+    :: Clean up old toolchain. The sccache server outlives the build and holds
+    :: its exe open, which would stop the directory from being deleted.
+    if exist "%TOOLCHAIN_DIR%\bin\sccache.exe" "%TOOLCHAIN_DIR%\bin\sccache.exe" --stop-server >nul 2>nul
     if exist "%TOOLCHAIN_DIR%" rmdir /s /q "%TOOLCHAIN_DIR%"
+    if exist "%TOOLCHAIN_DIR%" (
+        echo Error: could not delete the old toolchain at %TOOLCHAIN_DIR%.
+        echo Close any programs using it, such as a running build, and try again.
+        exit /b 1
+    )
     if exist "%TOOLCHAIN_ZIP%" del "%TOOLCHAIN_ZIP%"
 
     :: Download from S3
@@ -133,7 +140,20 @@ if "%NEED_DOWNLOAD%"=="1" (
             exit /b 1
         )
     )
-    ren "%DX_DIR%\papermario-dx-windows" windows
+    :: Antivirus and sync tools briefly hold newly extracted files open, which
+    :: makes renaming the directory fail, so retry for a few seconds. ping
+    :: waits about a second and, unlike timeout, works without a console.
+    for /l %%N in (1,1,10) do (
+        if exist "%DX_DIR%\papermario-dx-windows" (
+            ren "%DX_DIR%\papermario-dx-windows" windows 2>nul
+            if exist "%DX_DIR%\papermario-dx-windows" ping -n 2 127.0.0.1 >nul
+        )
+    )
+    if not exist "%TOOLCHAIN_DIR%" (
+        echo Error: could not rename %DX_DIR%\papermario-dx-windows to windows.
+        echo Another program, such as antivirus or OneDrive, might be using it. Try again in a minute.
+        exit /b 1
+    )
     del "%TOOLCHAIN_ZIP%"
 
     :: Record the content hash so we can detect updates
