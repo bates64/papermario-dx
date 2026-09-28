@@ -20,10 +20,10 @@ classes:
   action_cmd: { vram: 0x802A9000, follows: [battle_move] }
   area_entities: { vram: 0x802BAE00, vram_symbol: model_clear_render_tasks_VRAM_END }
   battle_area: { vram: 0x80218000, vram_symbol: heaps_VRAM_END }
-  battle_area2: { vram: 0x80231000, vram_symbol: Vine1Base }
+  battle_area2: { vram: 0x80231000, vram_symbol: battle_area_omo2_VRAM_END }
   battle: { vram: 0x8023E000, follows: [battle_partner] }
   battle_move: { vram: 0x802A1000, follows: [battle] }
-  battle_partner: { vram: 0x80238000, follows: [battle_area] }
+  battle_partner: { vram: 0x80238000, follows: [battle_area, battle_area2] }
   dgb_01_smash_bridges: { vram: 0x80200000, vram_symbol: D_80200000 }
   effect_gfx: { vram: 0x9000000 }
   engine1: { vram: 0x800DC500, vram_symbol: overlays_start }
