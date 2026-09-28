@@ -2152,7 +2152,7 @@ void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 si
         romOffset += auxRasterSize + auxPaletteSize;
     }
 
-    if (romOffset >= startOffset + 0x40000) {
+    if (romOffset >= startOffset + size) {
         // did not find the texture with `textureName`
         printf("could not find texture '%s'\n", textureName);
         (*gCurrentModelTreeNodeInfo)[TreeIterPos].textureID = 0;
@@ -2573,15 +2573,17 @@ void mdl_create_model(ModelBlueprint* bp, s32 unused) {
     model->center.z = z;
 
     bb = (ModelBoundingBox*) prop;
-    x = bb->maxX - bb->minX;
-    y = bb->maxY - bb->minY;
-    z = bb->maxZ - bb->minZ;
-    bb->halfSizeX = x * 0.5;
-    bb->halfSizeY = y * 0.5;
-    bb->halfSizeZ = z * 0.5;
+    if (bb != nullptr) {
+        x = bb->maxX - bb->minX;
+        y = bb->maxY - bb->minY;
+        z = bb->maxZ - bb->minZ;
+        bb->halfSizeX = x * 0.5;
+        bb->halfSizeY = y * 0.5;
+        bb->halfSizeZ = z * 0.5;
 
-    if (model->bakedMtx == nullptr && x < 100.0f && y < 100.0f && z < 100.0f) {
-        model->flags |= MODEL_FLAG_DO_BOUNDS_CULLING;
+        if (model->bakedMtx == nullptr && x < 100.0f && y < 100.0f && z < 100.0f) {
+            model->flags |= MODEL_FLAG_DO_BOUNDS_CULLING;
+        }
     }
     (*gCurrentModelTreeNodeInfo)[TreeIterPos].modelIndex = modelIdx;
 }
@@ -3386,7 +3388,7 @@ void load_model_transforms(ModelNode* model, ModelNode* parent, Matrix4f mdlTran
     guMtxF2L(mdlTransformMtx, &sp50);
     modelBPptr->flags = 0;
     modelBPptr->mdlNode = model;
-    modelBPptr->groupData = parent->groupData;
+    modelBPptr->groupData = parent != nullptr ? parent->groupData : nullptr;
     modelBPptr->mtx = &sp50;
 
     if (model->type == SHAPE_TYPE_GROUP) {
@@ -4589,6 +4591,8 @@ RenderTask* queue_render_task(RenderTask* task) {
 OPTIMIZE_OFAST void execute_render_tasks(void) {
     s32 i, j;
     s32 sorteds[NUM_RENDER_TASK_LISTS][ARRAY_COUNT(*ClearRenderTaskLists)];
+    // Only the tasks that were sorted are drawn, even if drawing queues more.
+    s32 taskCount[NUM_RENDER_TASK_LISTS];
     s32* sorted;
     RenderTask* taskList;
     RenderTask* task;
@@ -4597,7 +4601,8 @@ OPTIMIZE_OFAST void execute_render_tasks(void) {
     s32 tmp;
 
     for (s32 j = 0; j < ARRAY_COUNT(RenderTaskCount); j++) {
-        for (i = 0; i < RenderTaskCount[j]; i++) {
+        taskCount[j] = RenderTaskCount[j];
+        for (i = 0; i < taskCount[j]; i++) {
             sorteds[j][i] = i;
         }
     }
@@ -4632,7 +4637,7 @@ OPTIMIZE_OFAST void execute_render_tasks(void) {
         guMtxF2L(mtxFlipY, &gDisplayContext->matrixStack[gMatrixListPos]);
         dispMtx = &gDisplayContext->matrixStack[gMatrixListPos++];
         for (j = 0; j < NUM_RENDER_TASK_LISTS; j++) {
-            for (i = 0; i < RenderTaskCount[j]; i++) {
+            for (i = 0; i < taskCount[j]; i++) {
                 task = &RenderTaskLists[j][sorteds[j][i]];
                 appendGfx = task->appendGfx;
 
@@ -4654,7 +4659,7 @@ OPTIMIZE_OFAST void execute_render_tasks(void) {
         }
     } else {
         for (j = 0; j < NUM_RENDER_TASK_LISTS; j++) {
-            for (i = 0; i < RenderTaskCount[j]; i++) {
+            for (i = 0; i < taskCount[j]; i++) {
                 task = &RenderTaskLists[j][sorteds[j][i]];
                 appendGfx = task->appendGfx;
                 appendGfx(task->appendGfxArg);

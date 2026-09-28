@@ -1520,10 +1520,6 @@ void appendGfx_player_actor(void* arg0) {
                 effect->data.icePillar->pos.y = NPC_DISPOSE_POS_Y;
                 effect->data.icePillar->pos.z = NPC_DISPOSE_POS_Z;
             }
-        } else {
-            effect->data.icePillar->pos.x = NPC_DISPOSE_POS_X;
-            effect->data.icePillar->pos.y = NPC_DISPOSE_POS_Y;
-            effect->data.icePillar->pos.z = NPC_DISPOSE_POS_Z;
         }
     } else {
         effect = player->icePillarEffect;
@@ -2264,7 +2260,8 @@ void render_with_static_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matr
         paletteType = StaticPalettesAnim[decorations->palAnimState];
         decorations->nextPalTime--;
     } else {
-        paletteType = StaticPalettesAnim[decorations->palAnimState];
+        // palAnimState is -2 until the first animated frame.
+        paletteType = StaticPalettesAnim[MAX(decorations->palAnimState, 0)];
     }
 
     switch (paletteType) {
@@ -2652,8 +2649,8 @@ void render_with_watt_idle_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, M
         brightnessLevel = bWattIdlePalettesAnim[decorations->palAnimState];
         decorations->nextPalTime--;
     } else {
-        //@bug if only called with skipAnimation set, palAnimPos will always be -2 and the array access is OOB
-        brightnessLevel = bWattIdlePalettesAnim[decorations->palAnimState];
+        // palAnimState is -2 until the first animated frame.
+        brightnessLevel = bWattIdlePalettesAnim[MAX(decorations->palAnimState, 0)];
     }
 
     switch (brightnessLevel) {
@@ -2761,8 +2758,8 @@ void render_with_watt_attack_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw,
         brightness = WattAttackPalettesAnim[decorations->palAnimState];
         decorations->nextPalTime--;
     } else {
-        //@bug if only called with skipAnimation set, palAnimPos will always be -2 and the array access is OOB
-        brightness = WattAttackPalettesAnim[decorations->palAnimState];
+        // palAnimState is -2 until the first animated frame.
+        brightness = WattAttackPalettesAnim[MAX(decorations->palAnimState, 0)];
     }
 
     switch (brightness) {
@@ -2900,6 +2897,9 @@ void render_with_player_debuff_palettes(b32 isNpcSprite, ActorPart* part, s32 ya
                 }
                 color1 = decorations->originalPalettesList[decorations->spriteColorVariations * STANDARD_PAL_DIZZY + i];
                 palOut = decorations->copiedPalettes[0][i];
+                if (color2 == nullptr || color1 == nullptr) {
+                    continue;
+                }
 
                 for (j = 0; j < SPR_PAL_SIZE; j++) {
                     u8 r2 = UNPACK_PAL_R(*color2);

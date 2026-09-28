@@ -267,7 +267,7 @@ void func_E011A700(EffectInstance* effect) {
                     } else {
                         idx = turnsDisplay + 1;
                     }
-                    dlist = D_E011AC24[idx];
+                    dlist = (idx >= 0 && idx < ARRAY_COUNT(D_E011AC24)) ? D_E011AC24[idx] : nullptr;
                     if (dlist != nullptr) {
                         gSPDisplayList(gMainGfxPos++, dlist);
                         scale = D_E011AC4C[stateTimer] * 0.01f;

@@ -306,7 +306,7 @@ void pause_partners_load_portrait(s32 index) {
 void pause_partners_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
     Matrix4f matrix;
     Matrix4f matrix2;
-    PartnerPosition partnerPositions[8];
+    PartnerPosition partnerPositions[8] = {};
     s32 i, j, k, index;
     s32 x1, y1, x2, y2;
     f32 currentPos, angle, scale;

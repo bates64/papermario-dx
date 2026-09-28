@@ -14,7 +14,7 @@ typedef struct HudElementSize {
 u8* HudElemAuxCache = nullptr;
 s32 HudElemCacheCapacity = 0x11000;
 
-HudScript HES_Empty = {
+static const HudScriptCode HES_Empty[] = {
     hs_End
 };
 
@@ -706,7 +706,7 @@ HudElemID hud_element_create(HudScriptPtr script) {
 
     hudElement->flags = HUD_ELEMENT_FLAG_INITIALIZED;
     if (script == nullptr) {
-        script = HES_Empty;
+        script = (HudScriptPtr) HES_Empty;
     }
     hudElement->source = script;
     hudElement->readPos = script;
@@ -1928,7 +1928,7 @@ void hud_element_set_script(s32 id, HudScriptPtr script) {
     HudElement* hudElement = (*gHudElements)[id & ~HUD_ELEMENT_BATTLE_ID_MASK];
 
     if (script == nullptr) {
-        script = HES_Empty;
+        script = (HudScriptPtr) HES_Empty;
     }
 
     hudElement->updateTimer = 1;

@@ -1750,6 +1750,10 @@ s32 get_player_anim_for_status(s32 statusKey) {
 s32 lookup_defense(s32* defenseTable, s32 elementKey) {
     s32 normalDefense = 0;
 
+    if (defenseTable == nullptr) {
+        return normalDefense;
+    }
+
     while (defenseTable[DICTIONARY_KEY] != ELEMENT_END) {
         if (defenseTable[DICTIONARY_KEY] == ELEMENT_NORMAL) {
             normalDefense = defenseTable[DICTIONARY_VALUE];
@@ -1787,6 +1791,10 @@ s32 lookup_status_chance(s32* statusTable, s32 statusKey) {
 
 s32 lookup_status_duration_mod(s32* statusTable, s32 statusKey) {
     s32 defaultTurnMod = 0;
+
+    if (statusTable == nullptr) {
+        return defaultTurnMod;
+    }
 
     while (statusTable[DICTIONARY_KEY] != ELEMENT_END) {
         if (statusTable[DICTIONARY_KEY] == STATUS_TURN_MOD_DEFAULT) {

@@ -37,7 +37,7 @@ API_CALLABLE(N(GetSectionPosOffsets)) {
             break;
         }
     }
-    index = i - 1;
+    index = MAX(i - 1, 0);
 
     for (i = 0; i < NUM_SECTIONS; i++) {
         script->varTable[i + 5] = N(SectionOffsets)[index][i + 1];

@@ -76,7 +76,7 @@ void state_init_logos(void) {
 
     romEnd = logos_ROM_END;
     romStart = logos_ROM_START;
-    gLogosImages = heap_malloc(romEnd - romStart);
+    gLogosImages = heap_malloc((u32)romEnd - (u32)romStart);
     dma_copy(romStart, romEnd, gLogosImages);
 
     gLogosImage1 = gLogosImages + 0x0;

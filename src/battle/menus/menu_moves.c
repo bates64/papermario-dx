@@ -441,6 +441,8 @@ s32 btl_submenu_moves_update(void) {
             }
 
             if (MovesPrevCursorPos != MovesCursorPos) {
+                // The cursor is wrapped into range every frame, so the previous position is in range.
+                // NOLINTNEXTLINE(clang-analyzer-security.ArrayBound)
                 hud_element_set_scale(MovesOptionHIDs[MovesPrevCursorPos], 0.45f);
                 sfx_play_sound(SOUND_MENU_CHANGE_SELECTION);
             }

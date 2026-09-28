@@ -1184,6 +1184,9 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                                                 break;
                                         }
                                         break;
+                                    default:
+                                        a0 = 0;
+                                        break;
                                 }
                             } else {
                                 sp10[0] = argQ;
@@ -1682,7 +1685,6 @@ void get_msg_properties(s32 msgID, s32* height, s32* width, s32* maxLineChars, s
     s32 functionCode;
     u8 packedScaleY;
     f32 scale;
-    s32 temp;
 
     u16 lineWidths[32];
     u16 lineCharNumbers[32];
@@ -1822,9 +1824,8 @@ void get_msg_properties(s32 msgID, s32* height, s32* width, s32* maxLineChars, s
                     case MSG_READ_FUNC_CUSTOM_VOICE:
                         i++;
                         // fallthrough
-                    temp = 4;
                     case MSG_READ_FUNC_IMAGE:
-                        i += temp;
+                        i += 4;
                         // fallthrough
                     case MSG_READ_FUNC_ANIM_SPRITE:
                     case MSG_READ_FUNC_ANIM_DELAY:
@@ -2253,9 +2254,10 @@ void draw_number(s32 value, s32 x, s32 y, s32 charset, s32 palette, s32 opacity,
         }
 
         digit = valueStr[i] - '0';
-        if (digit < 10){
-            digits[i] = digit;
+        if (digit >= 10) {
+            break;
         }
+        digits[i] = digit;
     }
     posX = x;
     count = i;

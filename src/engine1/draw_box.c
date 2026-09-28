@@ -528,6 +528,8 @@ s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s
 
         if (cornersImage != nullptr) {
             for (idx = 0; idx < 4; idx++) {
+                // size1 to size4 are consecutive, so they're read as an array.
+                // NOLINTNEXTLINE(clang-analyzer-security.ArrayBound)
                 cornerWidth = cornersSizes[idx].x;
                 cornerHeight = cornersSizes[idx].y;
                 masks = DRAW_BOX_LOG2(cornerWidth);

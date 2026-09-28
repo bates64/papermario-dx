@@ -1,5 +1,6 @@
 InheritParentConfig: true
 Checks: >
+  -clang-analyzer-*,
   -readability-identifier-naming,
   -readability-redundant-casting,
   -readability-redundant-control-flow,

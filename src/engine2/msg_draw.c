@@ -1774,6 +1774,7 @@ void msg_draw_char(MessagePrintState* printer, MessageDrawState* drawState, s32 
 
     if (drawState->printModeFlags & (MSG_PRINT_FLAG_10 | MSG_PRINT_FLAG_1)) {
         drawState->printModeFlags &= ~(MSG_PRINT_FLAG_10 | MSG_PRINT_FLAG_1);
+        ASSERT(palette >= 0 && palette < ARRAY_COUNT(D_802F4560));
         gDPLoadTLUT_pal16(gMainGfxPos++, 0, D_802F4560[palette]);
     }
 

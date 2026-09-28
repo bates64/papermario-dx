@@ -1173,7 +1173,7 @@ void load_model_animator_node(StaticAnimatorNode* node, ModelAnimator* animator,
 
 void load_model_animator_tree(s32 index, StaticAnimatorNode** tree) {
     ModelAnimator* animator = (*gCurrentAnimMeshListPtr)[index & ~BATTLE_ID_BIT];
-    s32 nodeIDs[ARRAY_COUNT(animator->staticNodeIDs)];
+    s32 nodeIDs[ARRAY_COUNT(animator->staticNodeIDs)] = {};
 
     if (animator == nullptr || animator->flags == 0) {
         return;

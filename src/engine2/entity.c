@@ -948,6 +948,7 @@ void entity_swizzle_anim_pointers(EntityBlueprint* entityData, void* baseAnim, v
 
 s32 is_entity_data_loaded(Entity* entity, EntityBlueprint* blueprint, s32* loadedStart, s32* loadedEnd) {
     EntityBlueprint** blueprints;
+    s32 numSlots;
     s32 i;
     s32 ret;
     DmaEntry* entDmaList;
@@ -956,13 +957,16 @@ s32 is_entity_data_loaded(Entity* entity, EntityBlueprint* blueprint, s32* loade
     *loadedEnd = 0;
     ret = false;
 
+    // A new blueprint is followed by a nullptr terminator, so the last slot stays free.
     if (gGameStatusPtr->context == CONTEXT_WORLD) {
         blueprints = wEntityBlueprint;
+        numSlots = ARRAY_COUNT(wEntityBlueprint) - 1;
     } else {
         blueprints = bEntityBlueprint;
+        numSlots = ARRAY_COUNT(bEntityBlueprint) - 1;
     }
 
-    for (i = 0; i < MAX_ENTITIES; i++, blueprints++) {
+    for (i = 0; i < numSlots; i++, blueprints++) {
         EntityBlueprint* bp = *blueprints;
         if (bp == nullptr) {
             blueprints[0] = blueprint;
@@ -1170,7 +1174,7 @@ void entity_free_static_data(EntityBlueprint* data) {
         }
     }
 
-    if (freeSlot < MAX_ENTITIES) {
+    if (freeSlot > 0 && freeSlot < MAX_ENTITIES) {
         bp = wEntityBlueprint[freeSlot - 1];
         if (bp == data) {
             if (bp->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL) {

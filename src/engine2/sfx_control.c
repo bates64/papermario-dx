@@ -554,6 +554,7 @@ void sfx_get_spatialized_sound_params(f32 x, f32 y, f32 z, s16* volume, s16* pan
 
     switch (spaceMode) {
         case SOUND_SPACE_DEFAULT:
+        default:
             sfx_compute_spatialized_sound_params_ignore_depth(x, y, z, volume, pan);
             break;
         case SOUND_SPACE_WITH_DEPTH:

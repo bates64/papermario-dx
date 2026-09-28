@@ -125,6 +125,9 @@ b32 get_cam_subject_properties(CamSubjects* subjects, b32 usePart) {
     subjects->avgPos.z = (subjects->actorPos.z + subjects->targetPos.z) / 2;
     deltaY = subjects->actorPos.y - subjects->targetPos.y;
 
+    // Modes without a case for this actor class center on the actor.
+    subjects->avgPos.y = subjects->actorPos.y;
+
     switch (actorClass) {
         case ACTOR_CLASS_PLAYER:
             switch (BattleCam_AdjustTargetYMode) {

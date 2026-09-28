@@ -1,13 +1,13 @@
-# The static analyzer runs only on dx and mod code (see src/dx/.clang-tidy and
-# assets/.clang-tidy). In the decompiled code, it mostly flags paths that the
-# game's invariants rule out.
-#
 # readability-redundant-preprocessor is off because nested version #ifs hold
 # decompiled code for versions that still use INCLUDE_ASM, so they stay until
 # that code replaces the assembly.
 Checks: >
   -*,
   clang-diagnostic-*,
+  clang-analyzer-core.*,
+  -clang-analyzer-core.FixedAddressDereference,
+  clang-analyzer-security.*,
+  -clang-analyzer-security.insecureAPI.*,
   bugprone-suspicious-semicolon,
   bugprone-suspicious-missing-comma,
   bugprone-bool-pointer-implicit-conversion,

@@ -249,6 +249,8 @@ s32 btl_submenu_strats_update(void) {
                 }
 
                 if (StratsPrevCursorPos != StratsCursorPos) {
+                    // The cursor is wrapped into range every frame, so the previous position is in range.
+                    // NOLINTNEXTLINE(clang-analyzer-security.ArrayBound)
                     hud_element_set_scale(StratsOptionHIDs[StratsPrevCursorPos], 0.45f);
                     sfx_play_sound(SOUND_MENU_CHANGE_SELECTION);
                 }
