@@ -1,12 +1,16 @@
-"""Download and configure a pre-built clangd index from GitHub releases."""
+"""Download the pre-built clangd index published for dx's main branch."""
 
 import shutil
 import subprocess
+import urllib.parse
 import urllib.request
 import urllib.error
-from pathlib import Path
+from pathlib import Path, PurePath
 
 from rewrite_index_paths import rewrite_paths
+
+CANONICAL_URL = "https://github.com/bates64/papermario-dx.git"
+S3_BASE = "https://fsn1.your-objectstorage.com/starhaven/papermario-dx"
 
 
 def exec_shell(command, cwd=None):
@@ -14,60 +18,74 @@ def exec_shell(command, cwd=None):
     return ret.stdout
 
 
-def resolve_dx_tag(root: Path):
-    """Find the nearest dx-* tag (current commit or ancestor) and the commit
-    hash it points to, preferring jj if this is a jj repo and falling back to
-    git. Returns (None, None) if neither is available or no tag is found."""
-    if (root / ".jj").is_dir() and shutil.which("jj"):
-        revset = 'latest(tags(glob:"dx-*") & ::@)'
-        tag = exec_shell(["jj", "log", "-r", revset, "--no-graph", "-T", 'self.tags().join("\n")'], cwd=root).strip().splitlines()
-        tag = tag[0] if tag else ""
-        tag_hash = exec_shell(["jj", "log", "-r", revset, "--no-graph", "-T", "commit_id"], cwd=root).strip()
-    elif shutil.which("git"):
-        tag = exec_shell(["git", "describe", "--tags", "--abbrev=0", "--match", "dx-*"], cwd=root).strip()
-        tag_hash = exec_shell(["git", "rev-parse", f"{tag}^{{}}"], cwd=root).strip() if tag else ""
-    else:
-        return None, None
+def uri_path(path: PurePath) -> str:
+    """The path part of the file:// URI clangd writes for an absolute path.
 
-    return (tag, tag_hash) if tag else (None, None)
+    Windows paths like C:\\dx become /C:/dx, and anything other than letters,
+    digits, and -_.~/: is percent-encoded.
+    """
+    posix = path.as_posix()
+    if not posix.startswith("/"):
+        posix = "/" + posix
+    return urllib.parse.quote(posix, safe="/:")
+
+
+def candidate_commits(root: Path):
+    """Commits that might have a published index, newest first.
+
+    Indexes are only published for commits on dx's main branch, so this starts
+    where the current history meets main and walks back up to 20 commits, in
+    case CI failed for some of them. Mirrors tools/unix/download_toolchain.sh.
+    """
+    if (root / ".jj").is_dir() and shutil.which("jj"):
+        remotes = exec_shell(["jj", "git", "remote", "list"], cwd=root).splitlines()
+        remote = next((r.split()[0] for r in remotes if "bates64/papermario-dx" in r), None)
+        revset = "@"
+        if remote:
+            exec_shell(["jj", "git", "fetch", "--quiet", "--remote", f"exact:{remote}", "--branch", "main"], cwd=root)
+            revset = f'fork_point(@ | remote_bookmarks(exact:"main", exact:"{remote}"))'
+        return exec_shell(
+            ["jj", "log", "--no-graph", "-r", f"ancestors({revset}, 20)", "-T", 'commit_id ++ "\n"'], cwd=root
+        ).split()
+    if shutil.which("git"):
+        base = exec_shell(["git", "rev-parse", "HEAD"], cwd=root).strip()
+        exec_shell(["git", "fetch", "--quiet", CANONICAL_URL, "main"], cwd=root)
+        main = exec_shell(["git", "rev-parse", "FETCH_HEAD"], cwd=root).strip()
+        if main:
+            base = exec_shell(["git", "merge-base", base, main], cwd=root).strip() or base
+        return exec_shell(["git", "log", "--format=%H", "-n", "20", base], cwd=root).split()
+    return []
 
 
 def fetch_clangd_index(root: Path):
-    """Fetch the clangd index for the nearest dx-* tag."""
-    tag, tag_hash = resolve_dx_tag(root)
-    if not tag:
+    """Download the clangd index for the nearest published commit, if it's newer."""
+    index_hash = None
+    for commit in candidate_commits(root):
+        try:
+            with urllib.request.urlopen(f"{S3_BASE}/commits/{commit}/clangd-index") as response:
+                index_hash = response.read().decode().strip()
+            break
+        except urllib.error.HTTPError:
+            continue
+    if not index_hash:
         return
 
     dx_dir = root / ".dx"
     dx_dir.mkdir(exist_ok=True)
     idx_path = dx_dir / "papermario-dx.idx"
-    tag_file = dx_dir / "configure-tag"
+    hash_file = dx_dir / "clangd-index-hash"
 
-    # Check if we already have the index for this tag
-    need_download = True
-    if idx_path.exists() and tag_file.exists():
-        current_tag = tag_file.read_text().strip()
-        if current_tag == tag_hash:
-            need_download = False
+    if idx_path.exists() and hash_file.exists() and hash_file.read_text().strip() == index_hash:
+        return
 
-    if need_download:
-        repo = "bates64/papermario-dx"
-        url = f"https://github.com/{repo}/releases/download/{tag}/papermario-dx.idx"
-        print(f"configure: downloading clangd index for {tag}...")
-        try:
-            urllib.request.urlretrieve(url, str(idx_path))
-            # Rewrite $$ROOT$$ paths in the RIFF string table
-            abs_root = str(root.resolve())
-            idx_bytes = idx_path.read_bytes()
-            idx_bytes = rewrite_paths(
-                idx_bytes,
-                b"$$ROOT$$",
-                abs_root.encode(),
-            )
-            idx_path.write_bytes(idx_bytes)
-            tag_file.write_text(tag_hash + "\n")
-            print("configure: clangd index downloaded")
-        except urllib.error.HTTPError as e:
-            print(f"configure: clangd index not available for {tag} ({e.code}), skipping")
-        except Exception as e:
-            print(f"configure: failed to download clangd index: {e}")
+    print(f"configure: downloading clangd index for commit {commit}...")
+    try:
+        with urllib.request.urlopen(f"{S3_BASE}/toolchains/{index_hash}.idx") as response:
+            idx_bytes = response.read()
+        # The index refers to files by URIs like file://$$ROOT$$/src/main.c.
+        idx_bytes = rewrite_paths(idx_bytes, b"file://$$ROOT$$", b"file://" + uri_path(root.resolve()).encode())
+        idx_path.write_bytes(idx_bytes)
+        hash_file.write_text(index_hash + "\n")
+        print("configure: clangd index downloaded")
+    except Exception as e:
+        print(f"configure: failed to download clangd index: {e}")

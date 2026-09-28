@@ -2404,7 +2404,7 @@ if __name__ == "__main__":
     ninja.build("all", "phony", all)
     ninja.default("all")
 
-    # Fetch pre-built clangd index from the matching dx-* GitHub release.
+    # Download the pre-built clangd index that .clangd points at.
     try:
         from clangd_index import fetch_clangd_index
 
