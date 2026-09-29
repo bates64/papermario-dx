@@ -168,13 +168,15 @@ let
       fi
       ln -sf "$(realpath --relative-to="$dir/bin" "$gdb")" "$dir/bin/gdb"
 
-      # Star Rod: bundled jar + a wrapper script, launched via bin/java.
+      # Star Rod: bundled jar + a wrapper script, launched via bin/java. The
+      # jar's entry point only checks for Java 17 and then starts Star Rod in a
+      # second JVM, so the wrapper starts Star Rod directly.
       mkdir -p $dir/share/java
       cp -L "$(find "$dir/store" -path '*/share/java/StarRod.jar' | head -n1)" $dir/share/java/StarRod.jar
       cat > $dir/bin/star-rod << 'STARROD_EOF'
       #!/bin/sh
       DIR="$(cd "$(dirname "$0")/.." && pwd)"
-      exec "$DIR/bin/java" -jar "$DIR/share/java/StarRod.jar" "$@"
+      exec "$DIR/bin/java" -cp "$DIR/share/java/StarRod.jar" app.StarRodMain "$@"
       STARROD_EOF
       chmod +x $dir/bin/star-rod
 

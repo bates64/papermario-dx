@@ -19,7 +19,7 @@ if sys.platform == 'win32':
     import ntfsutils.junction
 
 import assets
-from common import layer_relative
+from common import layer_relative, star_rod
 import effect_table
 import linker
 from layout import Layout
@@ -169,7 +169,8 @@ def posix(path) -> str:
 
 
 # Files a hand-authored asset layer may hold that no build rule reads.
-IGNORED_ASSET_NAMES = {".gitkeep", ".DS_Store", "Thumbs.db"}
+# Star Rod's map editor keeps crash and backup copies beside a map's source.
+IGNORED_ASSET_NAMES = {".gitkeep", ".DS_Store", "Thumbs.db", "map.crash.xml", "map.backup.xml"}
 # Files in an asset layer that are code or configuration rather than assets.
 NOT_ASSETS = (".c", ".cpp", ".s", ".h", ".hpp", ".ld", ".yaml", ".md")
 
@@ -251,6 +252,29 @@ class NinjaWriter(ninja_syntax.Writer):
         return super().build(
             outputs, rule, inputs, implicit, order_only, variables, implicit_outputs
         )
+
+
+def map_source_dir(name: str) -> Path:
+    """Where Star Rod keeps a map's source within a layer: the path of the map's code under src.
+
+    Stages are named like kzn_bt05. A map is found in whichever area holds its
+    code, else in the area its name begins with.
+    """
+    area = name[:3].rstrip("_")
+    if "_bt" in name:
+        return Path("battle/common/stage") / f"area_{area}" / name
+    for code in (ROOT / "src/world/area").glob(f"*/{name}"):
+        if code.is_dir():
+            return code.relative_to(ROOT / "src")
+    return Path("world/area") / area / name
+
+
+def star_rod_version() -> str:
+    """Star Rod's VERSION and COMMIT lines. The map dump is redone when they change."""
+    result = subprocess.run(
+        [star_rod(), "-Version"], stdout=subprocess.PIPE, text=True, check=True, cwd=ROOT
+    )
+    return result.stdout
 
 
 def exec_shell(command: List[str]) -> str:
@@ -349,18 +373,6 @@ def write_ninja_rules(
         "ld",
         description="Linking engine",
         command=f"{ld} {ld_args}",
-    )
-
-    ninja.rule(
-        "shape_ld",
-        description="Linking map shape $out",
-        command=f"{ld} -T src/map_shape.ld $in -o $out",
-    )
-
-    ninja.rule(
-        "shape_objcopy",
-        description="Extracting map shape binary $out",
-        command=f"{cross}objcopy $in $out -O binary",
     )
 
     z64_debug_flags = ""
@@ -561,10 +573,19 @@ def write_ninja_rules(
         command=f"$python {BUILD_TOOLS}/mapfs/pack_title_data.py $version $out $in",
     )
 
+    # One Star Rod process compiles every map that changed, writing each one's
+    # shape and collision with a header of model, collider, and zone indices,
+    # and lists the files it read in a depfile. Starting it once per map would
+    # cost far more than the compiling.
     ninja.rule(
-        "map_header",
-        description="Generating map header for $in",
-        command=f"$python {BUILD_TOOLS}/mapfs/map_header.py $in $out",
+        "maps",
+        description="Compiling maps",
+        command=f'"{star_rod()}" -BuildMaps $out_dir $out_dir/maps.rsp',
+        rspfile="$out_dir/maps.rsp",
+        rspfile_content="$in_newline",
+        depfile="$out_dir/maps.d",
+        deps="gcc",
+        restat=True,
     )
 
     ninja.rule(
@@ -593,12 +614,6 @@ def write_ninja_rules(
         "imgfx_data",
         description="Generating image effects data",
         command=f"$python {BUILD_TOOLS}/imgfx/imgfx_data.py $in $out",
-    )
-
-    ninja.rule(
-        "shape",
-        description="Converting map shape $in",
-        command=f"$python {BUILD_TOOLS}/mapfs/shape.py $in $out",
     )
 
     ninja.rule(
@@ -674,6 +689,9 @@ class Configure:
     def dump_stamp(self) -> Path:
         return self.build_path() / "assets_dumped.stamp"
 
+    def maps_dump_stamp(self) -> Path:
+        return self.build_path() / "maps_dumped.stamp"
+
     def load(self) -> None:
         """Read the version's configuration and scan what it points at."""
         self.layout = Layout(self.version_path / "layout.yaml")
@@ -727,6 +745,17 @@ class Configure:
         )
         self.dump_stamp().parent.mkdir(parents=True, exist_ok=True)
         self.dump_stamp().write_text("")
+        if assets:
+            self.dump_maps()
+
+    def dump_maps(self) -> None:
+        """Decompile the dumped map binaries into map sources, replacing any earlier dump.
+
+        Star Rod does the decompiling, so this is redone whenever its version
+        changes.
+        """
+        subprocess.run([star_rod(), "-DumpMaps"], check=True, cwd=ROOT)
+        self.maps_dump_stamp().write_text(star_rod_version())
 
     def textures(self) -> Dict[Path, Path]:
         """Every standalone texture, keyed by its path relative to the assets root.
@@ -988,19 +1017,65 @@ class Configure:
             return sorted(found)
 
         contents = []
-        for shape in names("geom", "*_shape.bin"):
-            name = shape[: -len("_shape.bin")]
-            # The shape is rebuilt before packing; the collision is packed as is.
-            contents.append(mapfs / "geom" / f"{name}_shape_built.bin")
-            contents.append(mapfs / "geom" / f"{name}_hit.bin")
+        for name in self.map_sources():
+            contents.append(self.map_build_dir() / f"{name}_shape.bin")
+            contents.append(self.map_build_dir() / f"{name}_hit.bin")
         contents += [mapfs / "tex" / f"{n[:-5]}.bin" for n in names("tex", "*_tex.json")]
         contents += [mapfs / "bg" / n for n in names("bg", "*_bg.png")]
         contents.append(mapfs / "title_data.bin")
         contents += [mapfs / "party" / n for n in names("party", "*.png")]
         return contents
 
-    def write_mapfs_rules(self, build, c_maps) -> None:
+    def map_sources(self) -> Dict[str, Path]:
+        """Every map's source, keyed by map name, from the highest layer holding it.
+
+        A map's source sits at the path of its code under src, as in
+        world/area/kmr/kmr_02/map.xml.
+        """
+        found: Dict[str, Path] = {}
+        for layer in self.asset_stack:
+            for pattern in ["world/area/*/*/map.xml", "battle/common/stage/*/*/map.xml"]:
+                for path in (ROOT / layer).glob(pattern):
+                    name = path.parent.name
+                    if name not in found and not assets.is_deleted(path, self.asset_stack):
+                        found[name] = path.relative_to(ROOT)
+        return dict(sorted(found.items()))
+
+    def move_old_map_sources(self) -> None:
+        """Move map sources from mapfs/geom/<map>.xml to where Star Rod keeps them.
+
+        Only hand-authored layers are moved; the dumped layer is redumped
+        instead. Star Rod's crash and backup copies, <map>.crash.xml and
+        <map>.backup.xml, move with the map as map.crash.xml and map.backup.xml.
+        """
+        for layer in self.asset_stack[:-1]:
+            for old in sorted((ROOT / layer / "mapfs" / "geom").glob("*.xml")):
+                name, _, copy = old.stem.partition(".")
+                new = ROOT / layer / map_source_dir(name) / ".".join(["map", copy, "xml"] if copy else ["map", "xml"])
+                if new.exists():
+                    print(f"warning: not moving {posix(old.relative_to(ROOT))}: {posix(new.relative_to(ROOT))} exists")
+                    continue
+                new.parent.mkdir(parents=True, exist_ok=True)
+                old.rename(new)
+                print(f"Moved {posix(old.relative_to(ROOT))} to {posix(new.relative_to(ROOT))}")
+
+    def map_build_dir(self) -> Path:
+        """Where compiled maps and their headers go, on the include path as mapfs/."""
+        return self.build_path() / "include" / "mapfs"
+
+    def write_mapfs_rules(self, build) -> None:
         """Build the map filesystem."""
+        sources = self.map_sources()
+        build(
+            [self.map_build_dir() / f"{name}_{part}" for name in sources for part in ["shape.bin", "hit.bin"]],
+            list(sources.values()),
+            "maps",
+            variables={"out_dir": posix(self.map_build_dir())},
+            implicit_outputs=[
+                posix(self.map_build_dir() / f"{name}_{part}.h") for name in sources for part in ["shape", "hit"]
+            ],
+        )
+
         src_paths = self.mapfs_contents()
 
         seg_name = "mapfs"
@@ -1122,69 +1197,10 @@ class Configure:
                     },
                     asset_deps=[f"mapfs/tex/{name}"],
                 )
-            elif name.endswith("_shape_built"):
-                base_name = name[:-6]
-                map_name = base_name[:-6]
-                raw_bin_path = self.find_asset(f"mapfs/geom/{base_name}.bin")
-                bin_path = bin_path.parent / "geom" / (base_name + ".bin")
-
-                if c_maps:
-                    # raw bin -> c -> o -> elf -> objcopy -> final bin file
-                    c_file_path = (
-                        bin_path.parent / "geom" / base_name
-                    ).with_suffix(".c")
-                    o_path = bin_path.parent / "geom" / (base_name + ".o")
-                    elf_path = bin_path.parent / "geom" / (base_name + ".elf")
-
-                    build(c_file_path, [raw_bin_path], "shape")
-                    build(
-                        o_path,
-                        [c_file_path],
-                        "cc_modern",
-                        variables={
-                            "cflags": "",
-                            "cppflags": f"-DVERSION_{self.version.upper()}",
-                        },
-                    )
-                    build(elf_path, [o_path], "shape_ld")
-                    build(bin_path, [elf_path], "shape_objcopy")
-                else:
-                    build(bin_path, [raw_bin_path], "cp")
-
-                xml_path = self.find_asset(f"mapfs/geom/{map_name}.xml")
-                if xml_path.exists():
-                    build(
-                        self.build_path()
-                        / "include/mapfs"
-                        / (base_name + ".h"),
-                        [xml_path],
-                        "map_header",
-                    )
-
+            elif name.endswith("_shape"):
                 compress = True
+                bin_path = path
                 out_dir = out_dir / "geom"
-            elif name.endswith("_hit"):
-                base_name = name
-                map_name = base_name[:-4]
-                raw_bin_path = self.find_asset(f"mapfs/geom/{base_name}.bin")
-
-                # TEMP: star rod compatiblity
-                old_raw_bin_path = self.find_asset(f"mapfs/{base_name}.bin")
-                if old_raw_bin_path.is_file():
-                    raw_bin_path = old_raw_bin_path
-
-                bin_path = bin_path.parent / "geom" / (base_name + ".bin")
-                build(bin_path, [raw_bin_path], "cp")
-
-                xml_path = self.find_asset(f"mapfs/geom/{map_name}.xml")
-                if xml_path.exists():
-                    build(
-                        self.build_path()
-                        / "include/mapfs"
-                        / (base_name + ".h"),
-                        [xml_path],
-                        "map_header",
-                    )
             else:
                 compress = True
                 bin_path = path
@@ -1553,7 +1569,6 @@ class Configure:
         ninja: NinjaWriter,
         skip_outputs: Set[str],
         non_matching: bool,
-        c_maps: bool = False,
         evt_validation: bool = True,
     ) -> List[str]:
 
@@ -1811,7 +1826,7 @@ class Configure:
         self.write_effect_stub_rules(build)
         self.write_blob_rules(build)
         self.write_packer_rules(build, ninja, skip_outputs)
-        self.write_mapfs_rules(build, c_maps)
+        self.write_mapfs_rules(build)
         self.write_charset_rules(build)
         self.write_texture_rules(build)
 
@@ -2189,11 +2204,6 @@ if __name__ == "__main__":
         help="Exit early if no source files were added or deleted (used by generator rule)",
     )
     parser.add_argument(
-        "--c-maps",
-        action="store_true",
-        help="Convert map binaries to C as part of the build process",
-    )
-    parser.add_argument(
         "--no-evt-validation",
         action="store_true",
         help="Disable static EvtScript bytecode validation",
@@ -2367,11 +2377,17 @@ if __name__ == "__main__":
         sys.path.append(str((ROOT / "tools/splat_ext").resolve()))
 
         configure.load()
+        configure.move_old_map_sources()
         if args.dump or not configure.dump_stamp().exists():
             configure.dump(not args.no_split_assets, args.split_code)
+        elif not args.no_split_assets and (
+            not configure.maps_dump_stamp().exists()
+            or configure.maps_dump_stamp().read_text() != star_rod_version()
+        ):
+            configure.dump_maps()
         evt_validation_stamps.extend(
             configure.write_ninja(
-                ninja, skip_files, non_matching, args.c_maps, args.evt_validation
+                ninja, skip_files, non_matching, args.evt_validation
             )
         )
 

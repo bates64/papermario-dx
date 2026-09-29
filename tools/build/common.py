@@ -1,11 +1,26 @@
 from functools import lru_cache
 from itertools import zip_longest
 import os
+import shutil
+import sys
 from pathlib import Path
 from typing import Iterable, Optional, Tuple
 
 ROOT = Path(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 ASSETS_DIR = ROOT / "assets"
+
+
+def star_rod() -> str:
+    """The path of the program that runs Star Rod: the one on PATH, else the repo's wrapper.
+
+    It is a full path because Windows only finds star-rod.bat by name through
+    a shell. The wrapper fetches the toolchain when it is missing. Run it from
+    the root.
+    """
+    found = shutil.which("star-rod")
+    if found:
+        return found
+    return "tools\\star-rod.bat" if sys.platform == "win32" else "tools/star-rod.sh"
 
 
 def layer_relative(path: Path, asset_stack: Iterable) -> Optional[Path]:
