@@ -81,6 +81,11 @@
 
         sccachePkg = pkgs.callPackage ./tools/sccache.nix { };
         evtValidatePkg = pkgs.callPackage ./tools/evt_validate.nix { };
+        # The jar's entry point only checks for Java 17 and then starts
+        # Star Rod in a second JVM, so this starts Star Rod directly.
+        starRodPkg = pkgs.writeShellScriptBin "star-rod" ''
+          exec ${pkgs.jdk17}/bin/java -cp ${starRodJar}/share/java/StarRod.jar app.StarRodMain "$@"
+        '';
 
         unixToolchain = import ./tools/unix {
           inherit pkgs nixpkgs-binutils-2_39 mipsGdb starRodJar llvmTools;
@@ -101,6 +106,7 @@
             (pkgs.callPackage ./tools/pigment64.nix {})
             (pkgs.callPackage ./tools/crunch64.nix {})
             evtValidatePkg
+            starRodPkg
           ] ++ pkgs.lib.optional pkgs.stdenv.isLinux pkgs.flips;
           # Disable nixpkgs hardening flags (zerocallusedregs, fortify, etc.)
           # that the cross-compiler wrapper injects. The build system manages
@@ -148,6 +154,7 @@
             (pkgs.callPackage ./tools/pigment64.nix {})
             (pkgs.callPackage ./tools/crunch64.nix {})
             evtValidatePkg
+            starRodPkg
             clangdIndexingTools
           ];
           NIX_HARDENING_ENABLE = "";
@@ -225,11 +232,7 @@
             (callPackage ./tools/pigment64.nix {})
             (callPackage ./tools/crunch64.nix {})
             evtValidatePkg
-            # The jar's entry point only checks for Java 17 and then starts
-            # Star Rod in a second JVM, so this starts Star Rod directly.
-            (writeShellScriptBin "star-rod" ''
-              exec ${jdk17}/bin/java -cp ${starRodJar}/share/java/StarRod.jar app.StarRodMain "$@"
-            '')
+            starRodPkg
             llvmTools
             treefmt
           ] ++ [ mipsGdb ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
