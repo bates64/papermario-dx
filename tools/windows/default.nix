@@ -224,14 +224,16 @@ let
       unzip -o -q "$whl" -d $dir/python/Lib/site-packages
     done
 
-    # Star Rod: bundled JRE + jar, launched via a small .bat wrapper
+    # Star Rod: bundled JRE + jar, launched via a small .bat wrapper. The jar's
+    # entry point only checks for Java 17 and then starts Star Rod in a second
+    # JVM, so the wrapper starts Star Rod directly.
     mkdir -p $dir/jre $dir/share/java
     cp -rL ${jre-windows}/* $dir/jre/
     cp -L ${starRodJar}/share/java/StarRod.jar $dir/share/java/StarRod.jar
     cat > $dir/bin/star-rod.bat << 'STARROD_EOF'
     @echo off
     set "TOOLCHAIN_DIR=%~dp0..\"
-    "%TOOLCHAIN_DIR%jre\bin\java.exe" -jar "%TOOLCHAIN_DIR%share\java\StarRod.jar" %*
+    "%TOOLCHAIN_DIR%jre\bin\java.exe" -cp "%TOOLCHAIN_DIR%share\java\StarRod.jar" app.StarRodMain %*
     STARROD_EOF
 
     cat > $dir/shell.bat << 'SHELL_EOF'

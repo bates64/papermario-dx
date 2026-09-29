@@ -225,8 +225,10 @@
             (callPackage ./tools/pigment64.nix {})
             (callPackage ./tools/crunch64.nix {})
             evtValidatePkg
+            # The jar's entry point only checks for Java 17 and then starts
+            # Star Rod in a second JVM, so this starts Star Rod directly.
             (writeShellScriptBin "star-rod" ''
-              exec ${jdk17}/bin/java -jar ${starRodJar}/share/java/StarRod.jar "$@"
+              exec ${jdk17}/bin/java -cp ${starRodJar}/share/java/StarRod.jar app.StarRodMain "$@"
             '')
             llvmTools
             treefmt
