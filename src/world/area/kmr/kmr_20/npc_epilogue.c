@@ -216,7 +216,7 @@ EvtScript N(EVS_Scene_EpilogueGetLetter) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(35)
-    Call(PlaySoundAt, SOUNC_CHECK_MAILBOX, SOUND_SPACE_DEFAULT, 430, 0, -185)
+    Call(PlaySoundAt, SOUND_CHECK_MAILBOX, SOUND_SPACE_DEFAULT, 430, 0, -185)
     Wait(25)
     Call(PlaySoundAtPlayer, SOUND_EMOTE_QUESTION, SOUND_SPACE_DEFAULT)
     Call(ShowEmote, 0, EMOTE_QUESTION, 0, 20, EMOTER_PLAYER, 0, 0, 0, 0)

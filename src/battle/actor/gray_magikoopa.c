@@ -550,7 +550,7 @@ EvtScript N(EVS_Attack_MagicBlast) = {
         Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
         Call(MoveBattleCamOver, 10)
     EndIf
-    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST1)
+    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_1)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(GetStatusFlags, ACTOR_SELF, LVarA)
     IfFlag(LVarA, STATUS_FLAG_SHRINK)
@@ -568,7 +568,7 @@ EvtScript N(EVS_Attack_MagicBlast) = {
         CaseOrEq(HIT_RESULT_MISS)
         CaseOrEq(HIT_RESULT_LUCKY)
             Set(LVarA, LVar0)
-            Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST2)
+            Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_2)
             Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_FlyingMagikoopa_Gray_CastSpell)
             Wait(5)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -599,7 +599,7 @@ EvtScript N(EVS_Attack_MagicBlast) = {
             Return
         EndCaseGroup
     EndSwitch
-    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST2)
+    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_2)
     Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_FlyingMagikoopa_Gray_CastSpell)
     Wait(5)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -851,7 +851,7 @@ EvtScript N(EVS_TakeTurn) = {
         Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_FlyingMagikoopa_Gray_Shout)
     EndIf
     Wait(5)
-    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST1)
+    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_1)
     Call(GetActorFlags, ACTOR_SELF, LVar0)
     IfNotFlag(LVar0, ACTOR_FLAG_FLYING)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)

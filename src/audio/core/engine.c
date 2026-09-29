@@ -38,6 +38,20 @@ void au_release_voice(u8 index) {
     voice->priority = AU_PRIORITY_FREE;
 }
 
+// entries of the INIT resource list
+enum {
+    RESOURCE_AMBIENT_FIRST  = 3,    // one MSEQ per ambient ID below AMBIENT_RADIO
+    RESOURCE_RADIO_FIRST    = 0x13, // four MSEQs followed by a bank
+    RESOURCE_AMBIENT_EXTRA  = 0x18, // one MSEQ per ambient ID above AMBIENT_RADIO
+};
+
+static AuResult au_fetch_resource_file(u32 resourceIdx, AuFileFormat format, SBNFileEntry* outEntry) {
+    if (resourceIdx >= (u32)gSoundGlobals->extraFileListLength) {
+        return AU_ERROR_SBN_INDEX_OUT_OF_RANGE;
+    }
+    return au_fetch_SBN_file(gSoundGlobals->extraFileList[resourceIdx], format, outEntry);
+}
+
 void au_engine_init(s32 outputRate) {
     AuGlobals* globals;
     ALHeap* alHeap;
@@ -68,7 +82,7 @@ void au_engine_init(s32 outputRate) {
         globals->snapshots[i].bgmPlayer = alHeapAlloc(alHeap, 1, sizeof(BGMPlayer));
     }
 
-    globals->dataSEF = alHeapAlloc(alHeap, 1, 0x5200);
+    globals->dataSEF = alHeapAlloc(alHeap, 1, AUDIO_SEF_SIZE);
     globals->defaultInstrument = alHeapAlloc(alHeap, 1, sizeof(Instrument));
     globals->dataPER = alHeapAlloc(alHeap, 1, 6 * sizeof(PEREntry));
     globals->dataPRG = alHeapAlloc(alHeap, 1, PRG_MAX_COUNT * sizeof(BGMInstrumentInfo));
@@ -133,14 +147,14 @@ void au_engine_init(s32 outputRate) {
     au_mseq_manager_init(gAuAmbienceManager, AU_PRIORITY_MSEQ_MANAGER, FX_BUS_SOUND, globals);
     au_init_voices(globals);
     au_load_BK_headers(globals, alHeap);
-    if (au_fetch_SBN_file(globals->extraFileList[0], AU_FMT_SEF, &fileEntry) == AU_RESULT_OK) {
+    if (au_fetch_resource_file(0, AU_FMT_SEF, &fileEntry) == AU_RESULT_OK) {
         au_read_rom(fileEntry.offset, globals->dataSEF, fileEntry.data & 0xFFFFFF);
     }
     au_sfx_load_groups_from_SEF(gSoundManager);
-    if (au_fetch_SBN_file(globals->extraFileList[1], AU_FMT_PER, &fileEntry) == AU_RESULT_OK) {
+    if (au_fetch_resource_file(1, AU_FMT_PER, &fileEntry) == AU_RESULT_OK) {
         au_load_PER(globals, fileEntry.offset);
     }
-    if (au_fetch_SBN_file(globals->extraFileList[2], AU_FMT_PRG, &fileEntry) == AU_RESULT_OK) {
+    if (au_fetch_resource_file(2, AU_FMT_PRG, &fileEntry) == AU_RESULT_OK) {
         au_load_PRG(globals, fileEntry.offset);
     }
 
@@ -665,8 +679,6 @@ BGMPlayer* au_get_snapshot_by_index(s32 index) {
     return nullptr;
 }
 
-#define SBN_EXTRA_LOOKUP(i,fmt,e) (au_fetch_SBN_file(globals->extraFileList[AmbientSoundIDtoMSEQFileIndex[i]], fmt, &e))
-
 AuResult au_ambient_load(u32 ambSoundID) {
     AmbienceManager* manager;
     SBNFileEntry fileEntry;
@@ -676,19 +688,23 @@ AuResult au_ambient_load(u32 ambSoundID) {
 
     globals = gSoundGlobals;
     manager = gAuAmbienceManager;
-    if (ambSoundID < AMBIENT_RADIO) {
+    if (ambSoundID != AMBIENT_RADIO) {
         if (manager->players[0].mseqName == 0) {
-            if (SBN_EXTRA_LOOKUP(ambSoundID, AU_FMT_MSEQ, fileEntry) == AU_RESULT_OK) {
+            u32 resourceIdx = ambSoundID < AMBIENT_RADIO
+                ? RESOURCE_AMBIENT_FIRST + ambSoundID
+                : RESOURCE_AMBIENT_EXTRA + (ambSoundID - AMBIENT_RADIO - 1);
+
+            manager->numActivePlayers = 0;
+            for (i = 0; i < ARRAY_COUNT(manager->mseqFiles); i++) {
+                manager->mseqFiles[i] = nullptr;
+            }
+            if (au_fetch_resource_file(resourceIdx, AU_FMT_MSEQ, &fileEntry) == AU_RESULT_OK) {
                 au_read_rom(fileEntry.offset, globals->dataMSEQ[0], fileEntry.data & 0xFFFFFF);
                 manager->mseqFiles[0] = globals->dataMSEQ[0];
-                for (i = 1; i < ARRAY_COUNT(manager->mseqFiles); i++) {
-                    manager->mseqFiles[i] = nullptr;
-                }
                 manager->numActivePlayers = 1;
             }
         }
-    } else if (ambSoundID == AMBIENT_RADIO
-            && manager->players[0].mseqName == 0
+    } else if (manager->players[0].mseqName == 0
             && manager->players[1].mseqName == 0
             && manager->players[2].mseqName == 0
     ) {
@@ -698,27 +714,27 @@ AuResult au_ambient_load(u32 ambSoundID) {
         }
 
         mseqFile = globals->dataMSEQ[1];
-        if (SBN_EXTRA_LOOKUP(ambSoundID, AU_FMT_MSEQ, fileEntry) == AU_RESULT_OK) {
+        if (au_fetch_resource_file(RESOURCE_RADIO_FIRST, AU_FMT_MSEQ, &fileEntry) == AU_RESULT_OK) {
             au_read_rom(fileEntry.offset, mseqFile, fileEntry.data & 0xFFFFFF);
             manager->mseqFiles[0] = mseqFile;
 
             mseqFile = AU_FILE_RELATIVE(mseqFile, (fileEntry.data + 0x40) & 0xFFFFFF);
-            if (SBN_EXTRA_LOOKUP(ambSoundID + 1, AU_FMT_MSEQ, fileEntry) == AU_RESULT_OK) {
+            if (au_fetch_resource_file(RESOURCE_RADIO_FIRST + 1, AU_FMT_MSEQ, &fileEntry) == AU_RESULT_OK) {
                 au_read_rom(fileEntry.offset, mseqFile, fileEntry.data & 0xFFFFFF);
                 manager->mseqFiles[1] = mseqFile;
 
                 mseqFile = AU_FILE_RELATIVE(mseqFile, (fileEntry.data + 0x40) & 0xFFFFFF);
-                if (SBN_EXTRA_LOOKUP(ambSoundID + 2, AU_FMT_MSEQ, fileEntry) == AU_RESULT_OK) {
+                if (au_fetch_resource_file(RESOURCE_RADIO_FIRST + 2, AU_FMT_MSEQ, &fileEntry) == AU_RESULT_OK) {
                     au_read_rom(fileEntry.offset, mseqFile, fileEntry.data & 0xFFFFFF);
                     manager->mseqFiles[2] = mseqFile;
 
                     mseqFile = AU_FILE_RELATIVE(mseqFile, (fileEntry.data + 0x40) & 0xFFFFFF);
-                    if (SBN_EXTRA_LOOKUP(ambSoundID + 3, AU_FMT_MSEQ, fileEntry) == AU_RESULT_OK) {
+                    if (au_fetch_resource_file(RESOURCE_RADIO_FIRST + 3, AU_FMT_MSEQ, &fileEntry) == AU_RESULT_OK) {
                         au_read_rom(fileEntry.offset, mseqFile, fileEntry.data & 0xFFFFFF);
                         manager->mseqFiles[3] = mseqFile;
 
                         manager->numActivePlayers = 4;
-                        if (SBN_EXTRA_LOOKUP(ambSoundID + 4, AU_FMT_BK, fileEntry) == AU_RESULT_OK) {
+                        if (au_fetch_resource_file(RESOURCE_RADIO_FIRST + 4, AU_FMT_BK, &fileEntry) == AU_RESULT_OK) {
                             // @bug perhaps meant to be 3?
                             // the index here corresponds to an entry in gSoundGlobals->banks
                             // 0-2 are used for the extra banks which may be loaded for BGM files
@@ -789,6 +805,7 @@ void au_load_INIT(AuGlobals* globals, s32 romAddr, ALHeap* heap) {
         size = ALIGN16_(initHeader.mseqListSize);
         globals->extraFileList = alHeapAlloc(heap, 1, size);
         au_read_rom(mseqListOffset, globals->extraFileList, size);
+        globals->extraFileListLength = initHeader.mseqListSize / sizeof(u16);
 
         globals->bkFileListOffset = initBase + initHeader.bankListOffset;
         globals->bkListLength = ALIGN16_(initHeader.bankListSize);

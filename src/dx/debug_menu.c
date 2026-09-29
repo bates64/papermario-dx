@@ -881,7 +881,7 @@ void dx_debug_update_select_entry() {
         gGameStatusPtr->entryID = SelectedEntryValue;
         set_map_transition_effect(TRANSITION_STANDARD);
         set_game_mode(GAME_MODE_CHANGE_MAP);
-        play_ambient_sounds(AMBIENT_SILENCE, 1);
+        play_ambient_sounds(AMBIENT_SILENT_LAVA, 1);
         DebugMenuState = DBM_NONE;
     }
 

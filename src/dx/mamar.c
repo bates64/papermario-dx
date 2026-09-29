@@ -12,7 +12,7 @@ BSS s32 MamarVariation;
 s32 MamarBankSong = -1;
 BSS u32 MamarRequest;
 BSS b32 MamarPaused;
-s32 MamarAmbience = AMBIENT_SILENCE;
+s32 MamarAmbience = AMBIENT_SILENT_LAVA;
 BSS s32 MamarTrackMute[16];
 BSS s32 MamarTempo;
 BSS s32 MamarStartSegment;
@@ -149,7 +149,7 @@ void state_step_mamar(void) {
         }
     }
 
-    play_ambient_sounds(MamarPaused ? AMBIENT_SILENCE : MamarAmbience, 0);
+    play_ambient_sounds(MamarPaused ? AMBIENT_SILENT_LAVA : MamarAmbience, 0);
     update_track_mutes();
     MamarTempo = gBGMPlayerA->masterTempo * 100 / BGM_TEMPO_SCALE;
     // The song a request replaces keeps playing until the requested one starts.

@@ -53,6 +53,8 @@ jobs:
         run: |
           find ver/us/build \( -name '*.c.o' -o -name '*.cpp.o' \) -delete
           nix develop --command tools/build_without_warnings.sh
+      - name: Verify audio matches the base ROM
+        run: nix develop --command ninja verify_audio
       - name: Build patch file
         run: nix develop --command ninja ver/us/build/papermario.bps
       - name: Get repository name

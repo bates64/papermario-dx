@@ -99,7 +99,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_01_Normal) = {
             Call(SetNpcAnimation, NPC_SELF, ANIM_WorldBobomb_Red_Idle)
             Wait(3)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-            Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
+            Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV_1, SOUND_SPACE_DEFAULT)
             Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
     EndSwitch
     Return
@@ -133,7 +133,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_02_Normal) = {
                 Call(SetNpcAnimation, NPC_SELF, ANIM_WorldBobomb_Red_Idle)
                 Wait(3)
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-                Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
+                Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV_1, SOUND_SPACE_DEFAULT)
                 Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
                 Wait(30)
                 Call(PutPartnerAway)
@@ -145,7 +145,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_02_Normal) = {
                 Call(SetNpcAnimation, NPC_SELF, ANIM_WorldBobomb_Red_Idle)
                 Wait(3)
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-                Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
+                Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV_1, SOUND_SPACE_DEFAULT)
                 Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
             EndIf
         CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
@@ -156,7 +156,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_02_Normal) = {
             Call(SetNpcAnimation, NPC_SELF, ANIM_WorldBobomb_Red_Idle)
             Wait(3)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-            Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
+            Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV_1, SOUND_SPACE_DEFAULT)
             Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
         CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
             Call(NpcFacePlayer, NPC_SELF, 0)
@@ -166,7 +166,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_02_Normal) = {
             Call(SetNpcAnimation, NPC_SELF, ANIM_WorldBobomb_Red_Idle)
             Wait(3)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-            Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
+            Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV_1, SOUND_SPACE_DEFAULT)
             Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
     EndSwitch
     Return
@@ -192,7 +192,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_03_Normal) = {
                     Call(SetNpcAnimation, NPC_Bobomb_02, ANIM_WorldBobomb_Red_Idle)
                     Wait(3)
                     Call(GetNpcPos, NPC_Bobomb_02, LVar0, LVar1, LVar2)
-                    Call(PlaySoundAtNpc, NPC_Bobomb_02, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
+                    Call(PlaySoundAtNpc, NPC_Bobomb_02, SOUND_BOMBETTE_BLAST_LV_1, SOUND_SPACE_DEFAULT)
                     Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
                 EndThread
                 Wait(20)
@@ -203,7 +203,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_03_Normal) = {
                     Call(SetNpcAnimation, NPC_Bobomb_01, ANIM_WorldBobomb_Red_Idle)
                     Wait(3)
                     Call(GetNpcPos, NPC_Bobomb_01, LVar0, LVar1, LVar2)
-                    Call(PlaySoundAtNpc, NPC_Bobomb_01, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
+                    Call(PlaySoundAtNpc, NPC_Bobomb_01, SOUND_BOMBETTE_BLAST_LV_1, SOUND_SPACE_DEFAULT)
                     Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
                 EndThread
                 Wait(20)
@@ -214,7 +214,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_03_Normal) = {
                     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldBobomb_Red_Idle)
                     Wait(3)
                     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-                    Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
+                    Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV_1, SOUND_SPACE_DEFAULT)
                     Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
                 EndThread
             Else
