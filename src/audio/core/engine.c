@@ -574,6 +574,10 @@ AuResult au_load_song_files(u32 songID, BGMHeader* bgmFile, BGMPlayer* player) {
     BGMHeader* fileCopy;
     s32 cond;
 
+    if (dx_mamar_load_song(bgmFile, player, &status)) {
+        return status;
+    }
+
     // needed to match
     cond = songID < globals->songListLength;
     playerCopy = player;
