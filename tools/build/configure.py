@@ -63,7 +63,11 @@ BUILD_JSON_URL = os.environ.get(
 
 # Ninja can't set per-command environment variables portably, so the build
 # environment exports SCCACHE_CONF and AWS_SHARED_CREDENTIALS_FILE pointing at
-# these files instead.
+# these files instead. It also exports SCCACHE_SKIP_CACHE_CHECK, because
+# otherwise the sccache server refuses to start, failing every compile, when
+# the bucket is slow or unreachable. With the check skipped, a failed bucket
+# lookup is a cache miss, and the local disk cache in front of the bucket
+# keeps working offline.
 SCCACHE_CONFIG_PATH = ROOT / ".dx/sccache-config.toml"
 SCCACHE_CREDENTIALS_PATH = ROOT / ".dx/sccache-credentials"
 
@@ -78,6 +82,14 @@ def write_shared_sccache_config() -> None:
 
         SCCACHE_CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
         SCCACHE_CONFIG_PATH.write_text(
+            "[cache.multilevel]\n"
+            'chain = ["disk", "s3"]\n'
+            "\n"
+            "[cache.disk]\n"
+            # Preprocessor cache mode keys objects differently, so they'd
+            # miss the bucket's entries.
+            "preprocessor_cache_mode = { use_preprocessor_cache_mode = false }\n"
+            "\n"
             "[cache.s3]\n"
             f'bucket = "{config["bucket"]}"\n'
             f'endpoint = "{endpoint}"\n'
@@ -92,6 +104,8 @@ def write_shared_sccache_config() -> None:
         )
         SCCACHE_CREDENTIALS_PATH.chmod(0o600)
     except (OSError, ValueError, KeyError) as e:
+        SCCACHE_CONFIG_PATH.unlink(missing_ok=True)
+        SCCACHE_CREDENTIALS_PATH.unlink(missing_ok=True)
         print(f"note: couldn't reach shared sccache config ({e}), using a local-only cache", file=sys.stderr)
 
 

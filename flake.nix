@@ -243,6 +243,7 @@
             export SCCACHE_CONF="$PWD/.dx/sccache-config.toml"
             export AWS_SHARED_CREDENTIALS_FILE="$PWD/.dx/sccache-credentials"
             export SCCACHE_BASEDIRS="$PWD"
+            export SCCACHE_SKIP_CACHE_CHECK=1
 
             virtualenv venv --quiet
             source venv/bin/activate

@@ -12,6 +12,7 @@ for %%I in ("%~dp0..") do set "ROOT=%%~fI"
 set "SCCACHE_CONF=%ROOT%\.dx\sccache-config.toml"
 set "AWS_SHARED_CREDENTIALS_FILE=%ROOT%\.dx\sccache-credentials"
 set "SCCACHE_BASEDIRS=%ROOT%"
+set "SCCACHE_SKIP_CACHE_CHECK=1"
 
 :: Set up PATH
 set "PATH=%TOOLCHAIN_DIR%\bin;%TOOLCHAIN_DIR%\python;%PATH%"
