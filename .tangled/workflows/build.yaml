@@ -10,7 +10,6 @@ dependencies:
     - nix
     - cachix
     - attic-client
-    - awscli2
 
 
 steps:
@@ -63,21 +62,6 @@ steps:
 
   - name: "Build game"
     command: nix develop --command tools/build_without_warnings.sh
-
-  - name: "Publish for Mamar"
-    # Mamar's website plays songs in this build by patching a vanilla ROM with
-    # papermario.bps and writing to the addresses in symbols.json (see
-    # src/dx/mamar.h). The patch goes first: symbols.json holds its hash, so a
-    # reader between the two uploads sees a mismatch.
-    command: |
-      if [ "$TANGLED_PIPELINE_KIND" != "pull_request" ]; then
-        set -e
-        endpoint="https://fsn1.your-objectstorage.com"
-        nix develop --command ninja ver/us/build/papermario.bps
-        nix develop --command python3 tools/mamar_symbols.py ver/us/build/papermario.elf ver/us/build/papermario.bps symbols.json
-        aws s3 cp ver/us/build/papermario.bps s3://starhaven/mamar/papermario.bps --cache-control no-cache --endpoint-url "$endpoint"
-        aws s3 cp symbols.json s3://starhaven/mamar/symbols.json --cache-control no-cache --content-type application/json --endpoint-url "$endpoint"
-      fi
 
   - name: "Check formatting"
     # spindle's checkout is a single-commit shallow clone with no shared

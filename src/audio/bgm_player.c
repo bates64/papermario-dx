@@ -844,7 +844,6 @@ void au_bgm_player_initialize(BGMPlayer* player) {
     player->paused = false;
     player->songPlayingCounter = 0;
     player->phrasePos = nullptr;
-    player->notesStarted = 0;
     for (i = 0; i < ARRAY_COUNT(player->compLoopStartLabels); i++) {
         player->compLoopStartLabels[i] = player->compReadPos;
     }
@@ -1301,7 +1300,6 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                 }
                             }
                             if (bAcquiredVoiceIdx) {
-                                player->notesStarted++;
                                 note = &player->notes[voiceIdx];
                                 note->tremoloDepth = 0;
                                 if (noteVelocity > 0) {

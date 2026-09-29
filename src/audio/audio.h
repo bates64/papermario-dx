@@ -1222,8 +1222,7 @@ typedef struct BGMPlayer {
     /* 0xAA4 */ s32 seekPhrase; /// Index in the composition of the phrase the next song starts at, or -1 for its start
     /* 0xAA8 */ s32 seekTicks; /// Ticks into that phrase the next song starts at
     /* 0xAAC */ b32 seeking;
-    /* 0xAB0 */ u32 notesStarted; /// Notes the song has started voices for since it began
-} BGMPlayer; // size = 0xAB4
+} BGMPlayer; // size = 0xAB0
 
 // all Song*Request structs are probably one struct with a union for args 0/1/2/3 at offsets 0x10-0x1C
 // keeping them separated lets us type-check the arguments to functions which accept them
