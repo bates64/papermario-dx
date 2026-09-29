@@ -183,8 +183,16 @@ def posix(path) -> str:
 
 
 # Files a hand-authored asset layer may hold that no build rule reads.
-# Star Rod's map editor keeps crash and backup copies beside a map's source.
-IGNORED_ASSET_NAMES = {".gitkeep", ".DS_Store", "Thumbs.db", "map.crash.xml", "map.backup.xml"}
+# Star Rod's map editor saves each map's markers and settings to features.json
+# beside the map's code, and keeps crash and backup copies of its source there.
+IGNORED_ASSET_NAMES = {
+    ".gitkeep",
+    ".DS_Store",
+    "Thumbs.db",
+    "features.json",
+    "map.crash.xml",
+    "map.backup.xml",
+}
 # Files in an asset layer that are code or configuration rather than assets.
 NOT_ASSETS = (".c", ".cpp", ".s", ".h", ".hpp", ".ld", ".yaml", ".md")
 
