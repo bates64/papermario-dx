@@ -33,7 +33,7 @@ pkgs.stdenv.mkDerivation {
 
   buildPhase = ''
     export GRADLE_USER_HOME="$TMPDIR/gradle-home"
-    gradle createReleaseZip -I ${gradleInit} --offline --full-stacktrace
+    gradle createReleaseZip -I ${gradleInit} -PbuildCommit=${starRod.rev} --offline --full-stacktrace
   '';
 
   installPhase = ''

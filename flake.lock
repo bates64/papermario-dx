@@ -71,8 +71,8 @@
     "nixpkgs_2": {
       "locked": {
         "lastModified": 0,
-        "narHash": "sha256-FVZKU8VYNST8+LKQBt1Nij9FAXEDufXGgFbg26wqmZk=",
-        "path": "/nix/store/fgwbzb1zisl9kjfqnbhkpyk71xfsg6qa-source",
+        "narHash": "sha256-PwQASeL2cGVmrtQYlrBur0U20Xy07uSWVnFup2PHnDs=",
+        "path": "/nix/store/z88hhaq46sdqzkm0zas1sn284h7w87k9-source",
         "type": "path"
       },
       "original": {
@@ -110,18 +110,18 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1737918690,
-        "narHash": "sha256-ZWuKG9rHsxCEcV2z7fy4PrIWhLSIZNsPi9caT2ZRhxI=",
-        "owner": "z64a",
-        "repo": "star-rod",
-        "rev": "9339cb4e867514267ff8ab404b00b53e5a5e67dd",
-        "type": "github"
+        "lastModified": 1790680935,
+        "narHash": "sha256-X01ZphgxTQSDczekb3eFA4SZdrn0ktfNXcNvWkFxYFw=",
+        "ref": "refs/heads/main",
+        "rev": "aefc6543ceb126bbbfc02cf424d9ed6bce12c75e",
+        "revCount": 79,
+        "type": "git",
+        "url": "https://tangled.org/starhaven.dev/star-rod"
       },
       "original": {
-        "owner": "z64a",
-        "repo": "star-rod",
-        "rev": "9339cb4e867514267ff8ab404b00b53e5a5e67dd",
-        "type": "github"
+        "rev": "aefc6543ceb126bbbfc02cf424d9ed6bce12c75e",
+        "type": "git",
+        "url": "https://tangled.org/starhaven.dev/star-rod"
       }
     },
     "systems": {
