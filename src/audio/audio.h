@@ -709,12 +709,21 @@ typedef struct SoundLerp {
 typedef struct SoundPlayChange {
     union {
         u32 all;
+#ifdef MAMAR_WASM
+        struct {
+            u8 reverb;
+            u8 pan;
+            u8 volume;
+            u8 tune;
+        };
+#else
         struct {
             u8 tune;
             u8 volume;
             u8 pan;
             u8 reverb;
         };
+#endif
     };
 } SoundPlayChange;
 
@@ -1222,8 +1231,7 @@ typedef struct BGMPlayer {
     /* 0xAA4 */ s32 seekPhrase; /// Index in the composition of the phrase the next song starts at, or -1 for its start
     /* 0xAA8 */ s32 seekTicks; /// Ticks into that phrase the next song starts at
     /* 0xAAC */ b32 seeking;
-    /* 0xAB0 */ u32 notesStarted; /// Notes the song has started voices for since it began
-} BGMPlayer; // size = 0xAB4
+} BGMPlayer; // size = 0xAB0
 
 // all Song*Request structs are probably one struct with a union for args 0/1/2/3 at offsets 0x10-0x1C
 // keeping them separated lets us type-check the arguments to functions which accept them
@@ -1323,12 +1331,21 @@ typedef struct AmbienceSavedVoice {
  * and command execution (e.g. stop or pitch/volume changes).
  */
 typedef union AmbVoiceStateInfo {
+#ifdef MAMAR_WASM
+    struct {
+        u8 released;
+        u8 tune;
+        u8 trackIndex;
+        u8 playerIndex;
+    };
+#else
     struct {
         u8 playerIndex;     /// Index of the owning ambience player
         u8 trackIndex;      ///< Track index within the player (0–9)
         u8 tune;            ///< Note or drum ID used to differentiate voices on the same track
         u8 released;        ///< Set to true when the voice should be released/stopped
     };
+#endif
     s32 all;
 } AmbVoiceStateInfo;
 

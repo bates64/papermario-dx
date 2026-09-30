@@ -844,7 +844,6 @@ void au_bgm_player_initialize(BGMPlayer* player) {
     player->paused = false;
     player->songPlayingCounter = 0;
     player->phrasePos = nullptr;
-    player->notesStarted = 0;
     for (i = 0; i < ARRAY_COUNT(player->compLoopStartLabels); i++) {
         player->compLoopStartLabels[i] = player->compReadPos;
     }
@@ -1227,7 +1226,7 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                 POST_BGM_READ();
                             }
                             bAcquiredVoiceIdx = false;
-                            if (!track->muted && !player->seeking) {
+                            if (!track->muted && !player->seeking && !dx_mamar_is_track_muted(player, track->index)) {
                                 // find first free voice
                                 for (voiceIdx = sp1F; voiceIdx < track->lastVoice; voiceIdx++) {
                                     voice = &player->globals->voices[voiceIdx];
@@ -1301,7 +1300,6 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                 }
                             }
                             if (bAcquiredVoiceIdx) {
-                                player->notesStarted++;
                                 note = &player->notes[voiceIdx];
                                 note->tremoloDepth = 0;
                                 if (noteVelocity > 0) {
@@ -1434,6 +1432,9 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                 POST_BGM_READ();
                             }
                             bgm_args_done:
+#ifdef MAMAR_WASM
+                            dx_mamar_swap_seq_args(&player->seqCmdArgs, opcode);
+#endif
                             CurrentSeqCmdHandler = SeqCmdHandlers[opcode - 0xE0];
                             CurrentSeqCmdHandler(player, track);
                         }

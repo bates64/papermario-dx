@@ -198,4 +198,16 @@ void au_fx_load_preset(AuFX* fx, u8 effectType);
 Acmd* au_pull_fx(AuFX* fx, Acmd* cmdBusPos, s16, s16);
 s32 au_fx_param_hdl(AuFX* fx, s16 index, s16 paramID, s32 value);
 
+#ifdef MAMAR_WASM // Enabled when Mamar builds audio code as WebAssembly for its preview feature
+/// Loads the song Mamar is playing into `bgmFile` for `player`, returning whether it did.
+b32 dx_mamar_load_song(BGMHeader* bgmFile, BGMPlayer* player, AuResult* result);
+/// Whether Mamar has muted the track at `trackIndex` of `player`, so it starts no notes.
+b32 dx_mamar_is_track_muted(BGMPlayer* player, s32 trackIndex);
+/// Swaps a sequence command's arguments from the big-endian order they're read in.
+void dx_mamar_swap_seq_args(SeqArgs* args, u8 opcode);
+#else
+#define dx_mamar_load_song(bgmFile, player, result) false
+#define dx_mamar_is_track_muted(player, trackIndex) false
+#endif
+
 #endif
