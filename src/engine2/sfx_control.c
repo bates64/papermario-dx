@@ -124,16 +124,16 @@ s32 LoopingSounds[] = {
 };
 
 // all sound IDs for alternating sounds
-s32 FireBar0Sounds[] = { SOUND_FIRE_BAR_0_A, SOUND_FIRE_BAR_0_B };
-s32 FireBar1Sounds[] = { SOUND_FIRE_BAR_1_A, SOUND_FIRE_BAR_1_B };
-s32 FireBar2Sounds[] = { SOUND_FIRE_BAR_2_A, SOUND_FIRE_BAR_2_B };
-s32 FireBar3Sounds[] = { SOUND_FIRE_BAR_3_A, SOUND_FIRE_BAR_3_B };
-s32 FireBar4Sounds[] = { SOUND_FIRE_BAR_4_A, SOUND_FIRE_BAR_4_B };
-s32 FireBar5Sounds[] = { SOUND_FIRE_BAR_5_A, SOUND_FIRE_BAR_5_B };
-s32 FireBar6Sounds[] = { SOUND_FIRE_BAR_6_A, SOUND_FIRE_BAR_6_B };
-s32 FireBar7Sounds[] = { SOUND_FIRE_BAR_7_A, SOUND_FIRE_BAR_7_B };
-s32 FireBar8Sounds[] = { SOUND_FIRE_BAR_8_A, SOUND_FIRE_BAR_8_B };
-s32 FireBar9Sounds[] = { SOUND_FIRE_BAR_9_A, SOUND_FIRE_BAR_9_B };
+s32 FireBar0Sounds[] = { SOUND_FIRE_BAR_0A, SOUND_FIRE_BAR_0B };
+s32 FireBar1Sounds[] = { SOUND_FIRE_BAR_1A, SOUND_FIRE_BAR_1B };
+s32 FireBar2Sounds[] = { SOUND_FIRE_BAR_2A, SOUND_FIRE_BAR_2B };
+s32 FireBar3Sounds[] = { SOUND_FIRE_BAR_3A, SOUND_FIRE_BAR_3B };
+s32 FireBar4Sounds[] = { SOUND_FIRE_BAR_4A, SOUND_FIRE_BAR_4B };
+s32 FireBar5Sounds[] = { SOUND_FIRE_BAR_5A, SOUND_FIRE_BAR_5B };
+s32 FireBar6Sounds[] = { SOUND_FIRE_BAR_6A, SOUND_FIRE_BAR_6B };
+s32 FireBar7Sounds[] = { SOUND_FIRE_BAR_7A, SOUND_FIRE_BAR_7B };
+s32 FireBar8Sounds[] = { SOUND_FIRE_BAR_8A, SOUND_FIRE_BAR_8B };
+s32 FireBar9Sounds[] = { SOUND_FIRE_BAR_9A, SOUND_FIRE_BAR_9B };
 s32 FireBarDeadSounds[] = { SOUND_FIRE_BAR_DEAD, SOUND_FIRE_BAR_DEAD };
 s32 AlertSounds[] = { SOUND_AI_ALERT_A, SOUND_AI_ALERT_B };
 s32 SnoreInhaleSounds[] = { SOUND_SNORE_INHALE_A, SOUND_SNORE_INHALE_B };

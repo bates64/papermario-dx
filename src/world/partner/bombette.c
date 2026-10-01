@@ -367,9 +367,9 @@ API_CALLABLE(N(UseAbility)) {
             // play walking sounds
             if (!(script->functionTemp[1] & 3)) {
                 if (gGameStatusPtr->frameCounter & 1) {
-                    sfx_play_sound_at_npc(SOUND_STEP_NORMAL1, SOUND_SPACE_DEFAULT, NPC_PARTNER);
+                    sfx_play_sound_at_npc(SOUND_STEP_NORMAL_1, SOUND_SPACE_DEFAULT, NPC_PARTNER);
                 } else {
-                    sfx_play_sound_at_npc(SOUND_STEP_NORMAL2, SOUND_SPACE_DEFAULT, NPC_PARTNER);
+                    sfx_play_sound_at_npc(SOUND_STEP_NORMAL_2, SOUND_SPACE_DEFAULT, NPC_PARTNER);
                 }
             }
 
@@ -415,13 +415,13 @@ API_CALLABLE(N(UseAbility)) {
             fx_explosion(gPlayerData.partners[gPlayerData.curPartner].level, npc->pos.x, npc->pos.y + (npc->collisionHeight * 0.5f), npc->pos.z);
             switch (gPlayerData.partners[gPlayerData.curPartner].level) {
                 case PARTNER_RANK_NORMAL:
-                    sfx_play_sound_at_npc(SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT, NPC_PARTNER);
+                    sfx_play_sound_at_npc(SOUND_BOMBETTE_BLAST_LV_1, SOUND_SPACE_DEFAULT, NPC_PARTNER);
                     break;
                 case PARTNER_RANK_SUPER:
-                    sfx_play_sound_at_npc(SOUND_BOMBETTE_BLAST_LV2, SOUND_SPACE_DEFAULT, NPC_PARTNER);
+                    sfx_play_sound_at_npc(SOUND_BOMBETTE_BLAST_LV_2, SOUND_SPACE_DEFAULT, NPC_PARTNER);
                     break;
                 case PARTNER_RANK_ULTRA:
-                    sfx_play_sound_at_npc(SOUND_BOMBETTE_BLAST_LV3, SOUND_SPACE_DEFAULT, NPC_PARTNER);
+                    sfx_play_sound_at_npc(SOUND_BOMBETTE_BLAST_LV_3, SOUND_SPACE_DEFAULT, NPC_PARTNER);
                     break;
             }
             exec_ShakeCam1(0, 0, 20);

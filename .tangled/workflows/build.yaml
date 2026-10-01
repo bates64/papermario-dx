@@ -63,6 +63,9 @@ steps:
   - name: "Build game"
     command: nix develop --command tools/build_without_warnings.sh
 
+  - name: "Verify audio"
+    command: nix develop --command ninja verify_audio
+
   - name: "Check formatting"
     # spindle's checkout is a single-commit shallow clone with no shared
     # history with the target branch, so this diffs trees directly (two-dot)

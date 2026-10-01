@@ -41,7 +41,7 @@ EvtScript N(EVS_DropDoor_Club64) = {
 EvtScript N(EVS_RoomListener_Club64) = {
     Switch(LVar0)
         CaseEq(0)
-            Call(SetMusic, 0, SONG_CLUB64, 0, VOL_LEVEL_FULL)
+            Call(SetMusic, 0, SONG_CLUB_64, 0, VOL_LEVEL_FULL)
             Call(StopSound, SOUND_LOOP_MAC_HARBOR_WATER)
             Call(StopTrackingSoundPos, SOUND_LRAW_MAC_HARBOR_WATER)
             Call(EnableGroup, MODEL_bar_inn, true)

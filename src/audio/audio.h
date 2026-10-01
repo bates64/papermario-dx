@@ -46,11 +46,17 @@ typedef u8* WaveData;
 #if VERSION_PAL
 #define VIDEO_FRAMES_PER_SECOND 50
 #define AUDIO_HEAP_SIZE 0x5B000
+#define AUDIO_SEF_SIZE 0x5200
 #define AUDIO_MAX_SAMPLES   (AUDIO_SAMPLES * 2)
 #define AUDIO_COMMAND_LIST_BUFFER_SIZE 0x5558
 #else
 #define VIDEO_FRAMES_PER_SECOND 60
+#if VERSION_US
+#include "audio/audio_config.h"
+#else
 #define AUDIO_HEAP_SIZE 0x56000
+#define AUDIO_SEF_SIZE 0x5200
+#endif
 #define AUDIO_MAX_SAMPLES   AUDIO_SAMPLES
 #define AUDIO_COMMAND_LIST_BUFFER_SIZE 0x4000
 #endif
@@ -793,39 +799,39 @@ typedef struct SoundManager {
     /* 0x000 */ struct AuGlobals* globals;
     /* 0x004 */ struct AuVoice* curVoice;
     /* 0x008 */ u8* sefData;
-    /* 0x00C */ s32* normalSounds[8];
-    /* 0x02C */ s32* extraSounds;
-    /* 0x030 */ s32 frameCounter; ///< Number of video frame updates, used to update random numnber
-    /* 0x034 */ s32 nextUpdateStep;
-    /* 0x038 */ s32 nextUpdateInterval;
-    /* 0x03C */ s32 nextUpdateCounter;
-    /* 0x040 */ Fade fadeInfo;
-    /* 0x05C */ s32 busVolume;
-    /* 0x060 */ s32 randomValue;
-    /* 0x064 */ s32* customReverbParams[8];
-    /* 0x084 */ s8 customReverbAmounts[8];
-    /* 0x08C */ u8 lastCustomEffectIdx;
-    /* 0x08D */ s8 defaultReverbAmt;
-    /* 0x08E */ PAD(2);
-    /* 0x090 */ SoundManagerMusicEvent bgmSounds[4];
-    /* 0x0A0 */ SoundManagerCustomCmdList customCmdList[4];
-    /* 0x0B8 */ u16 baseVolume;
-    /* 0x0BA */ s16 prevUpdateResult; ///< Unused, may indicate error status
-    /* 0x0BC */ u8 priority;
-    /* 0x0BD */ u8 firstVoice;
-    /* 0x0BE */ u8 busID;
-    /* 0x0BF */ u8 curVoiceIndex;
-    /* 0x0C0 */ u8 state;
-    /* 0x0C1 */ PAD(1);
-    /* 0x0C2 */ SoundRequest soundQueue[SFX_QUEUE_SIZE]; ///< Lock-free ring buffer for queueing sound effects from game thread
-    /* 0x162 */ s8 unused_162;
-    /* 0x163 */ u8 sfxQueueReadPos; ///< Read index for the soundQueue ring buffer (audio thread)
-    /* 0x164 */ u8 sfxQueueWritePos; ///< Write index for the soundQueue ring buffer (game thread)
-    /* 0x165 */ s8 unused_165;
-    /* 0x166 */ PAD(2);
-    /* 0x168 */ s32 resetPending;
-    /* 0x16C */ SoundPlayer players[8];
-} SoundManager; // size = 0x6CC
+    /* 0x00C */ s32* normalSounds[16]; ///< Sections 0-7, then extended sections 8-15 (null when absent)
+    /* 0x04C */ s32* extraSounds;
+    /* 0x050 */ s32 frameCounter; ///< Number of video frame updates, used to update random numnber
+    /* 0x054 */ s32 nextUpdateStep;
+    /* 0x058 */ s32 nextUpdateInterval;
+    /* 0x05C */ s32 nextUpdateCounter;
+    /* 0x060 */ Fade fadeInfo;
+    /* 0x07C */ s32 busVolume;
+    /* 0x080 */ s32 randomValue;
+    /* 0x084 */ s32* customReverbParams[8];
+    /* 0x0A4 */ s8 customReverbAmounts[8];
+    /* 0x0AC */ u8 lastCustomEffectIdx;
+    /* 0x0AD */ s8 defaultReverbAmt;
+    /* 0x0AE */ u16 extraSoundCount; ///< Number of entries in the extra section
+    /* 0x0B0 */ SoundManagerMusicEvent bgmSounds[4];
+    /* 0x0C0 */ SoundManagerCustomCmdList customCmdList[4];
+    /* 0x0D8 */ u16 baseVolume;
+    /* 0x0DA */ s16 prevUpdateResult; ///< Unused, may indicate error status
+    /* 0x0DC */ u8 priority;
+    /* 0x0DD */ u8 firstVoice;
+    /* 0x0DE */ u8 busID;
+    /* 0x0DF */ u8 curVoiceIndex;
+    /* 0x0E0 */ u8 state;
+    /* 0x0E1 */ PAD(1);
+    /* 0x0E2 */ SoundRequest soundQueue[SFX_QUEUE_SIZE]; ///< Lock-free ring buffer for queueing sound effects from game thread
+    /* 0x182 */ s8 unused_162;
+    /* 0x183 */ u8 sfxQueueReadPos; ///< Read index for the soundQueue ring buffer (audio thread)
+    /* 0x184 */ u8 sfxQueueWritePos; ///< Write index for the soundQueue ring buffer (game thread)
+    /* 0x185 */ s8 unused_165;
+    /* 0x186 */ PAD(2);
+    /* 0x188 */ s32 resetPending;
+    /* 0x18C */ SoundPlayer players[8];
+} SoundManager; // size = 0x6EC
 
 typedef struct SoundInstance {
     /* 0x00 */ s32 flags;
@@ -952,11 +958,12 @@ typedef struct SEFHeader {
     /* 0x00 */ AUFileMetadata mdata; // uses identifer 'SEF '
     /* 0x08 */ s32 name;
     /* 0x0C */ PAD(2);
-    /* 0x0E */ u8 hasExtraSection; // always 1
+    /* 0x0E */ u8 hasExtraSection; // 1 = extra section has 0x140 entries, 2 = extra section has up to 0x200 entries
     /* 0x0F */ PAD(1);
     /* 0x10 */ u16 sections[8];
     /* 0x20 */ u16 section2000;
-} SEFHeader; // size = 0x24
+    /* 0x22 */ u16 extSections[8]; ///< Sections 8-15, only when hasExtraSection == 2
+} SEFHeader; // size = 0x34
 
 typedef struct INITHeader {
     /* 0x00 */ AUFileMetadata mdata; // uses identifer 'INIT'
@@ -1041,12 +1048,12 @@ typedef struct AuGlobals {
     /* 0x001C */ s32 baseRomOffset;
     /* 0x0020 */ SBNFileEntry* sbnFileList; /// copied from SBN to the audio heap
     /* 0x0024 */ s32 fileListLength;
-    /* 0x0028 */ PAD(4);
+    /* 0x0028 */ s32 extraFileListLength; /// number of entries in extraFileList
     /* 0x002C */ InitSongEntry* songList; /// copied from INIT to the audio heap
     /* 0x0030 */ s32 songListLength;
     /* 0x0034 */ s32 bkFileListOffset;
     /* 0x0038 */ s32 bkListLength;
-    /* 0x003C */ u16* extraFileList; /// copied from INIT to the audio heap, seems to exist only to find SEF, PER, and PRG
+    /* 0x003C */ u16* extraFileList; /// copied from INIT to the audio heap, resource list holding SEF, PER, PRG, ambient MSEQs, and the radio bank
     /* 0x0040 */ AuEffectChange effectChanges[4]; ///< set this to change the effect on an effect bus
     /* 0x0050 */ u8 channelDelayPending;
     /* 0x0051 */ u8 channelDelayBusID;
@@ -1076,14 +1083,14 @@ typedef struct AuGlobals {
     /* 0x05EC */ InstrumentBank bankSet2[16];
     /* 0x09EC */ InstrumentBank bankSet4[16];
     /* 0x0DEC */ InstrumentBank bankSet5[16];
-    /* 0x11EC */ InstrumentBank bankSet6[4];
-    /* 0x12EC */ InstrumentBank* bankSets[8];
-    /* 0x130C */ u8 channelDelayState;
-    /* 0x130D */ PAD(3);
-    /* 0x1310 */ BKFileBuffer* auxBanks[3];
-    /* 0x131C */ PAD(4);
-    /* 0x1320 */ AuVoice voices[24];
-} AuGlobals; // size = 0x19E0
+    /* 0x11EC */ InstrumentBank bankSet6[16];
+    /* 0x15EC */ InstrumentBank* bankSets[8];
+    /* 0x160C */ u8 channelDelayState;
+    /* 0x160D */ PAD(3);
+    /* 0x1610 */ BKFileBuffer* auxBanks[3];
+    /* 0x161C */ PAD(4);
+    /* 0x1620 */ AuVoice voices[24];
+} AuGlobals; // size = 0x1CE0
 
 typedef struct BGMPlayerTrack {
     /* 0x00 */ AuFilePos bgmReadPos;
@@ -1419,7 +1426,6 @@ extern s32 CUSTOM_ECHO_PARAMS_1[];
 extern s32 CUSTOM_ECHO_PARAMS_3[];
 extern s32 CUSTOM_ECHO_PARAMS_2[];
 extern EnvelopePreset DummyInstrumentEnvelope;
-extern u8 AmbientSoundIDtoMSEQFileIndex[];
 extern s32 AuEnvelopeIntervals[];
 extern s32 PreventBGMPlayerUpdate;
 extern u16 AmbienceRadioChannel;

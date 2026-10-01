@@ -292,9 +292,6 @@ u8 BlankMseqData[] = {
     0x00, 0x00, 0x00, 0x00
 };
 
-// --------------------------------------------
-// the following are only referenced in audio/core/engine
-
 /// Volume steps use squared values so each level represents linear power increase,
 /// matching loudness perception. This makes each step sound evenly spaced.
 u16 PerceptualVolumeLevels[] = {
@@ -339,16 +336,6 @@ s8 BgmCustomEnvLookup[] = {
     0x33, 0x31, 0x2F, 0x2D, 0x2B, 0x29, 0x27, 0x26,
     0x25, 0x23, 0x21, 0x20, 0x1F, 0x1E, 0x1D, 0x1C,
     0x1B, 0x1A, 0x19, 0x18, 0x17, 0x16, 0x15, 0x14
-};
-
-// --------------------------------------------
-// the following are only referenced in audio/core/engine
-
-u8 AmbientSoundIDtoMSEQFileIndex[] = {
-    0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A,
-    0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12,
-    0x13, 0x14, 0x15, 0x16, 0x17, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
 // --------------------------------------------
@@ -555,6 +542,7 @@ void au_sfx_load_groups_from_SEF(SoundManager* manager) {
     u32 i;
 
     manager->sefData = (u8*)sefData;
+    manager->extraSoundCount = 0;
 
     for (i = 0; i < sections; i++) {
         if (sefData->sections[i] != 0) {
@@ -562,9 +550,17 @@ void au_sfx_load_groups_from_SEF(SoundManager* manager) {
         }
     }
 
-    if (sefData->hasExtraSection == 1) {
+    for (i = 0; i < ARRAY_COUNT(sefData->extSections); i++) {
+        manager->normalSounds[ARRAY_COUNT(sefData->sections) + i] = nullptr;
+        if (sefData->hasExtraSection == 2 && sefData->extSections[i] != 0) {
+            manager->normalSounds[ARRAY_COUNT(sefData->sections) + i] = AU_FILE_RELATIVE(sefData, sefData->extSections[i]);
+        }
+    }
+
+    if (sefData->hasExtraSection == 1 || sefData->hasExtraSection == 2) {
         if (sefData->section2000 != 0) {
             manager->extraSounds = AU_FILE_RELATIVE(sefData, sefData->section2000);
+            manager->extraSoundCount = (sefData->hasExtraSection == 2) ? SOUND_ID_UNK_INDEX_MASK + 1 : 0x140;
         }
     }
 }
@@ -757,6 +753,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
     u32 priority, polyphonyMode, useSpecificPlayerMode;
     s32 v1;
     s32* normalSounds;
+    s32 extSectionBase = (request->soundID & SOUND_ID_EXT) ? 8 : 0;
 
     #define NEXT_POLY_TRACK trackCount--; if (trackCount <= 0 ) { break; } cmdList += 2;
 
@@ -767,7 +764,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
     if (soundID & SOUND_ID_UNK) {
         // sound from extra section
         soundIndex = (request->soundID - 1) & SOUND_ID_UNK_INDEX_MASK;
-        if (soundIndex < 0x140) {
+        if (soundIndex < manager->extraSoundCount) {
             cmdList = (u16*)&manager->extraSounds[soundIndex];
             if (*cmdList != 0) {
                 // check if any player is playing this sound
@@ -800,8 +797,11 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
             if (customSEF != nullptr) {
                 cmdList = (u16*)customSEF;
             } else {
-                sectionIndex = ((soundIDLower - 1) >> 8) + 4;
+                sectionIndex = (((soundIDLower - 1) >> 8) & 3) + 4 + extSectionBase;
                 normalSounds = manager->normalSounds[sectionIndex];
+                if (normalSounds == nullptr) {
+                    return;
+                }
                 v1 = soundIndex - 0xC0;
                 cmdList = (u16*)&manager->normalSounds[sectionIndex][v1];
             }
@@ -835,7 +835,10 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
             if (customSEF != nullptr) {
                 cmdList = (u16*)customSEF;
             } else {
-                sectionIndex = ((soundID) >> 8) & 3;
+                sectionIndex = (((soundID) >> 8) & 3) + extSectionBase;
+                if (manager->normalSounds[sectionIndex] == nullptr) {
+                    return;
+                }
                 cmdList = (u16*)&manager->normalSounds[sectionIndex][soundIndex];
             }
 

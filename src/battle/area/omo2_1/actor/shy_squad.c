@@ -491,7 +491,7 @@ EvtScript N(EVS_HandlePhase) = {
                 Call(SetActorYaw, ACTOR_SELF, 0)
                 Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
                 Set(LVar1, ANIM_ShySquadGuy_Run)
-                Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SHY_GUY_SCREAMS1)
+                Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SHY_GUY_SCREAMS_1)
                 ExecWait(N(EVS_MoveSquadHome))
                 Wait(10)
                 Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
@@ -1340,9 +1340,9 @@ EvtScript N(EVS_Flee) = {
             Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK, SOUND_ACTOR_STEP_A, SOUND_ACTOR_STEP_B)
             Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK_INCREMENT, 10, 0)
         CaseLt(4)
-            Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SHY_GUY_SCREAMS3)
+            Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SHY_GUY_SCREAMS_3)
         CaseDefault
-            Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SHY_GUY_SCREAMS2)
+            Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SHY_GUY_SCREAMS_2)
     EndSwitch
     Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
     Call(SetActorYaw, ACTOR_SELF, 180)

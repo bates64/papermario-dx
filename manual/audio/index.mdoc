@@ -1,0 +1,78 @@
+---
+title: Custom audio
+description: How Paper Mario DX organizes audio files, how your mod overrides them, and how names in those files become constants in your code.
+sidebar:
+  order: 1
+---
+
+You add or replace sound effects, instruments, songs, and ambient sounds by putting files in your mod's `audio` folder. When you build, DX combines your files with the game's audio, and gives each sound, song, and ambient sound a constant, such as `SOUND_SHOP_BELL`, that your code uses to play it.
+
+## What is in the audio folder
+
+The game's own audio is split from your ROM the first time you build, as source files you can read and copy. Your mod uses the same layout.
+
+| Path | What it holds |
+| --- | --- |
+| `audio/sound_effects.xml` | Every sound effect, either as a one-shot or as a pointer to a file in `audio/sfx/` |
+| `audio/songs.xml` | Every song, with its `.bgm` file and up to three extra sound banks to load with it |
+| `audio/ambient_sounds.xml` | The ambient sounds and the radio |
+| `audio/banks.xml` | The sound banks that are always loaded |
+| `audio/presets.xml`, `audio/drums.xml` | Instruments and drums that songs select by ID |
+| `audio/songs/` | The songs, as `.bgm` files that you edit in [Mamar](https://mamar.bates64.com) |
+| `audio/bank/NAME/` | A sound bank: a `sound_bank.xml` file and a WAV file for each sample |
+| `audio/sfx/` | Sequenced sound effects, and `envelopes.xml` with the envelopes they share |
+| `audio/mseq/` | Ambient sequences |
+
+The XML files that list entries (`audio/sound_effects.xml`, `audio/songs.xml`, `audio/ambient_sounds.xml`, `audio/banks.xml`, `audio/presets.xml`, `audio/drums.xml`, and `audio/sfx/envelopes.xml`) are called **tables**. Each entry in a table has a `name`, such as `MenuShowChoice`.
+
+[Star Rod](/papermario-dx/star-rod) has an Audio Booth that previews samples, sound effects, and ambient sequences, including the ones your mod adds.
+
+## How your files override the game's
+
+Audio uses the layers that [Project structure](/papermario-dx/project-structure) describes. Paths on these pages are relative to the layers, and the files you create go in your mod's layer, which takes priority over the game's. Audio follows four rules.
+
+**Tables merge by entry.** Your table file lists only the entries you add or change. Entries match by `name`, and an entry in your layer replaces the whole entry of the same name in the game's table. It doesn't inherit attributes from the entry it replaces.
+
+**`delete="true"` removes an entry.** The entry's constant no longer exists, and its ID becomes free.
+
+```xml
+<Sounds>
+	<Sound name="ChimeBeginAmbush" delete="true"/>
+</Sounds>
+```
+
+If code still uses the constant of a deleted entry, the build fails with a compiler error. See [Fix audio build errors](/papermario-dx/audio/troubleshooting#compiler-errors-after-a-deletion).
+
+**Every other file is replaced by path.** If you create `audio/mseq/spooky.xml`, it replaces the game's file at the same path. Files in bank folders are replaced one at a time, so you can replace one sample without copying the rest of its bank. See [Add an instrument or a sound bank](/papermario-dx/audio/instruments).
+
+**A `.meta` file can delete a file or directory.** Put `delete: true` in `<file>.meta` next to a file, or in `.meta` inside a directory.
+
+```yaml
+# audio/sfx/chime_begin_ambush.xml.meta
+delete: true
+```
+
+A `.meta` file can't delete a table file. Delete entries with `delete="true"` instead.
+
+## Names, IDs, and constants
+
+Every sound, song, and ambient sound has a numeric ID. Entries in the game's tables keep their IDs. A new entry without an `id` attribute gets the lowest free ID, and the build assigns them in name order, so an ID can change when you add another entry. Use the constants instead of numbers. Add `id="..."` (in hexadecimal, without `0x`) only when something outside the build needs a fixed number.
+
+The build turns an entry's PascalCase name into a constant by splitting it into words and numbers, uppercasing it, and adding a prefix:
+
+| Table | Prefix | Example |
+| --- | --- | --- |
+| `sound_effects.xml` | `SOUND_` | `CoinPickup` becomes `SOUND_COIN_PICKUP` |
+| `songs.xml` | `SONG_` | `ToadTown` becomes `SONG_TOAD_TOWN` |
+| `ambient_sounds.xml` | `AMBIENT_` | `Lava1` becomes `AMBIENT_LAVA_1` |
+
+Names must start with a letter and use only letters, digits, and underscores. If two names produce the same constant, the build fails.
+
+## Next steps
+
+- [Add a sound effect](/papermario-dx/audio/sound-effects)
+- [Add an instrument or a sound bank](/papermario-dx/audio/instruments)
+- [Add a song](/papermario-dx/audio/songs)
+- [Add an ambient sound](/papermario-dx/audio/ambient-sounds)
+- [Fix audio build errors](/papermario-dx/audio/troubleshooting)
+- [Audio functions](/develop/reference/audio) lists the C functions that play sounds and songs

@@ -395,7 +395,7 @@ EvtScript N(EVS_TakeTurn) = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(SetAnimation, ACTOR_SELF, PRT_BASE, ANIM_MageJrTroopa_RaiseStaff)
     Wait(8)
-    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST1)
+    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_1)
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
         Set(LVar3, 0)
@@ -417,7 +417,7 @@ EvtScript N(EVS_TakeTurn) = {
     Switch(LVarA)
         CaseOrEq(HIT_RESULT_MISS)
         CaseOrEq(HIT_RESULT_LUCKY)
-            Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST2)
+            Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_2)
             Call(GetActorPos, ACTOR_PLAYER, LVar3, LVar4, LVar5)
             Sub(LVar3, 120)
             Add(LVar4, 20)
@@ -444,7 +444,7 @@ EvtScript N(EVS_TakeTurn) = {
             Return
         EndCaseGroup
     EndSwitch
-    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST2)
+    Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST_2)
     Call(GetActorPos, ACTOR_PLAYER, LVar3, LVar4, LVar5)
     Add(LVar4, 20)
     Call(GetStatusFlags, ACTOR_SELF, LVar0)

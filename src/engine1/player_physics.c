@@ -1101,11 +1101,11 @@ void try_player_footstep_sounds(s32 interval) {
         s32 soundID, altSoundID;
 
         if (surfaceType == SURFACE_TYPE_FLOWERS || surfaceType == SURFACE_TYPE_HEDGES) {
-            soundID = SOUND_STEP_CRUNCHY1;
-            altSoundID = SOUND_STEP_CRUNCHY2;
+            soundID = SOUND_STEP_CRUNCHY_1;
+            altSoundID = SOUND_STEP_CRUNCHY_2;
         } else {
-            soundID = SOUND_STEP_NORMAL1;
-            altSoundID = SOUND_STEP_NORMAL2;
+            soundID = SOUND_STEP_NORMAL_1;
+            altSoundID = SOUND_STEP_NORMAL_2;
         }
 
         if (FootstepSoundSelector == 0) {
