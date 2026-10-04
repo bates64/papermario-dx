@@ -289,7 +289,7 @@ void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
     return ret;
 }
 
-s32 get_asset_offset(char* assetName, u32* compressedSize) {
+s32 get_asset_offset(const char* assetName, u32* compressedSize) {
     AssetHeader firstHeader;
     AssetHeader* assetTableBuffer;
     AssetHeader* curAsset;

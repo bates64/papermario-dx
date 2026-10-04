@@ -11,9 +11,9 @@ f32 gBackroundWavePhase = 0.0f;
 BSS PAL_BIN gBackgroundPalette[256];
 BSS f32 gBackroundLastScrollValue;
 
-void load_map_bg(char* optAssetName) {
+void load_map_bg(const char* optAssetName) {
     if (optAssetName != nullptr) {
-        char* assetName = optAssetName;
+        const char* assetName = optAssetName;
         void* compressedData;
         u32 assetSize;
 
