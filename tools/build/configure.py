@@ -1096,6 +1096,8 @@ class Configure:
             implicit_outputs=[
                 posix(self.map_build_dir() / f"{name}_{part}.h") for name in sources for part in ["shape", "hit"]
             ],
+            # Star Rod checks battle stages against SHAPE_SIZE_LIMIT in model.h.
+            implicit_deps=[Path("include/model.h")],
         )
 
         src_paths = self.mapfs_contents()
