@@ -1,6 +1,10 @@
 #pragma once
 #include "common.h"
 
+#ifdef _LANGUAGE_C_PLUS_PLUS
+extern "C" {
+#endif
+
 #define AI_TEMP_STATE                  functionTemp[0]
 #define AI_TEMP_STATE_AFTER_SUSPEND    functionTemp[1]
 
@@ -92,3 +96,7 @@ AIStateHandler(basic_ai_chase);
 AIStateHandler(basic_ai_lose_player);
 
 API_CALLABLE(BasicAI_Main);
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+} // extern "C"
+#endif

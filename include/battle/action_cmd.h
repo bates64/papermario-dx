@@ -4,6 +4,10 @@
 #include "common.h"
 #include "hud_element.h"
 #include "battle/battle.h"
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+extern "C" {
+#endif
 #include "battle/action_cmd/jump.h"
 #include "battle/action_cmd/hammer.h"
 #include "battle/action_cmd/flee.h"
@@ -225,5 +229,9 @@ API_CALLABLE(GetActionProgress);
 API_CALLABLE(SetActionProgress);
 API_CALLABLE(GetActionResultTier);
 API_CALLABLE(SetActionResultTier);
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+} // extern "C"
+#endif
 
 #endif
