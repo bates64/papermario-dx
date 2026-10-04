@@ -19,7 +19,7 @@
         ".align 3\n" \
         ".type " #SYMBOLNAME", @object\n" \
         #SYMBOLNAME":\n" \
-        ".incbin \"ver/"ASTRINGIFY(VERSION)"/build/" FILENAME ".bin\"\n" \
+        ".incbin \"ver/" ASTRINGIFY(VERSION) "/build/" FILENAME ".bin\"\n" \
         POPSECTION \
     )
 
@@ -35,7 +35,7 @@
         ".align 3\n" \
         ".type " #SYMBOLNAME", @object\n" \
         #SYMBOLNAME":\n" \
-        ".incbin \"ver/"ASTRINGIFY(VERSION)"/build/" FILENAME ".bin\"\n" \
+        ".incbin \"ver/" ASTRINGIFY(VERSION) "/build/" FILENAME ".bin\"\n" \
         POPSECTION \
     )
 
@@ -47,6 +47,6 @@
         ".align 3\n" \
         ".type " #SYMBOLNAME", @object\n" \
         #SYMBOLNAME":\n" \
-        ".incbin \"ver/"ASTRINGIFY(VERSION)"/build/assets/"ASTRINGIFY(VERSION)"/" FILENAME "\"\n" \
+        ".incbin \"ver/" ASTRINGIFY(VERSION) "/build/assets/" ASTRINGIFY(VERSION) "/" FILENAME "\"\n" \
         POPSECTION \
     )

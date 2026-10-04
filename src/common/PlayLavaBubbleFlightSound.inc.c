@@ -20,6 +20,6 @@ API_CALLABLE(N(PlayLavaBubbleFlightSound)) {
         return ApiStatus_BLOCK;
     }
 
-    sfx_play_sound_at_position(SOUND_EMBER_FLY | SOUND_ID_TRIGGER_CHANGE_SOUND, SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
+    sfx_play_sound_at_position(SOUND_EMBER_FLY | (s32) SOUND_ID_TRIGGER_CHANGE_SOUND, SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
     return ApiStatus_DONE2;
 }
