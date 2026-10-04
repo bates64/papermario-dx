@@ -409,21 +409,24 @@ class TexImage:
         out_pal = bytearray()
         if fmt_str == "CI4" or fmt_str == "CI8":
             img = png.Reader(img_file)
-            img.preamble(True)
+            _, _, rows, _ = img.read()
+            used = {index for row in rows for index in row}
             palette = img.palette(alpha="force")
 
             # load_texture_by_name assumes palettes have a particular length
             palette_count = (0x20 if fmt_str == "CI4" else 0x200) // 2
-            if len(palette) > palette_count:
-                palette = palette[:palette_count]
-                print(f"warning: {self.img_name} has more than {palette_count} colors, truncating")
-            elif len(palette) < palette_count:
+            if max(used) >= palette_count:
+                print(f"warning: {self.img_name} uses more than {palette_count} colors, truncating")
+            palette = palette[:palette_count]
+            if len(palette) < palette_count:
                 palette += [(0, 0, 0, 0)] * (palette_count - len(palette))
 
-            for rgba in palette:
-                if rgba[3] not in (0, 0xFF):
+            for index in sorted(used):
+                if index < palette_count and palette[index][3] not in (0, 0xFF):
                     print(f"warning: alpha mask mode but {self.img_name} has translucent pixels")
+                    break
 
+            for rgba in palette:
                 color = pack_color(*rgba)
                 out_pal += color.to_bytes(2, byteorder="big")
 
