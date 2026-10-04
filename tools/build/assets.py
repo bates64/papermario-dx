@@ -101,6 +101,10 @@ INCLUDE_MACRO = re.compile(
 )
 
 
+def _sources(src_root: Path) -> List[Path]:
+    return sorted([*src_root.rglob("*.c"), *src_root.rglob("*.cpp")])
+
+
 def include_symbols(src_root: Path) -> Dict[str, str]:
     """Asset path to the C symbol its generated header should define.
 
@@ -110,7 +114,7 @@ def include_symbols(src_root: Path) -> Dict[str, str]:
     """
     symbols: Dict[str, str] = {}
     seen = set()
-    for source in sorted(src_root.rglob("*.c")):
+    for source in _sources(src_root):
         for asset, symbol in INCLUDE_MACRO.findall(source.read_text()):
             # An _OFFSET symbol addresses the asset's place in ROM rather
             # than naming the image.
@@ -130,7 +134,7 @@ def included_palettes(src_root: Path) -> set:
     An indexed PNG only needs its palette split out if something asks for it.
     """
     palettes = set()
-    for source in sorted(src_root.rglob("*.c")):
+    for source in _sources(src_root):
         for match in re.finditer(r'INCLUDE_PAL\(\s*"([^"]+)"', source.read_text()):
             palettes.add(Path(match.group(1)).with_suffix(".png").as_posix())
     return palettes
