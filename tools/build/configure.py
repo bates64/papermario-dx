@@ -2012,7 +2012,6 @@ class Configure:
 
         overlays = self.find_overlays()
         c_precompiled_header_path = self.build_path() / "pch" / "common.h.gch"
-        cxx_precompiled_header_path = self.build_path() / "pch" / "common.hpp.gch"
 
         manifest_entries = []
         evt_validation_stamps = []
@@ -2043,15 +2042,20 @@ class Configure:
             for c_file in c_files:
                 if c_file.suffix == ".cpp":
                     task = "cxx_modern"
-                    pch = cxx_precompiled_header_path
+                    # The C++ precompiled header is built without -fvisibility=hidden,
+                    # so the types it declares would be more visible than the overlay's
+                    # own, which GCC warns about in C++. Include the header as text.
+                    pch_header = Path("include") / "common.hpp"
+                    pch_deps = []
                 else:
                     task = "cc_modern"
-                    pch = c_precompiled_header_path
+                    pch_header = c_precompiled_header_path.with_suffix("")
+                    pch_deps = [posix(c_precompiled_header_path)]
                 obj_path = build_dir / (c_file.name + ".o")
                 embedded = self.embedded_asset_deps(c_file)
                 variables = {
                     "version": self.version,
-                    "pch_header": posix(pch.with_suffix("")),
+                    "pch_header": posix(pch_header),
                     "cflags": "-fno-common -fvisibility=hidden",
                     "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
                 }
@@ -2065,7 +2069,7 @@ class Configure:
                     posix(obj_path),
                     task,
                     posix(c_file),
-                    implicit=[posix(pch)] + embedded,
+                    implicit=pch_deps + embedded,
                     order_only=[
                         "generated_code_" + self.version,
                         "inc_img_bins_" + self.version,
