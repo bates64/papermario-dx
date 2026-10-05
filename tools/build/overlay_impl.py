@@ -240,8 +240,15 @@ def collect_relocs(elf):
     return relocs
 
 
+def export_name(symbol_name):
+    """The name ovl_import finds a symbol by: unqualified, without C++ namespaces or parameters."""
+    name = itanium_demangle(symbol_name).split("(", 1)[0]
+    return name.rsplit("::", 1)[-1]
+
+
 def collect_exports(elf):
     exports = []
+    symbol_names = {}
     for sym in elf.symbols:
         if sym.binding != STB_GLOBAL:
             continue
@@ -256,7 +263,12 @@ def collect_exports(elf):
         if not sym.name:
             continue
 
-        exports.append((sym.value, sym.name))
+        name = export_name(sym.name)
+        if name in symbol_names:
+            print(f"error: exports '{symbol_names[name]}' and '{sym.name}' are both named '{name}'", file=sys.stderr)
+            sys.exit(1)
+        symbol_names[name] = sym.name
+        exports.append((sym.value, name))
 
     exports.sort(key=lambda e: e[0])
     return exports
