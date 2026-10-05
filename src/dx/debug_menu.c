@@ -1,5 +1,6 @@
 // #include "dx/debug_menu.h"
 #include "common.h"
+#include "libc/xstdio.h"
 #if DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE)
 #include "game_modes.h"
 #include "battle/battle.h"
@@ -302,6 +303,10 @@ s32 dx_debug_menu_nav_1D_horizontal(s32 cur, s32 min, s32 max, b32 flip) {
 }
 
 s32 dx_debug_menu_nav_2D(s32 cur, s32 max, s32 nrows) {
+    if (nrows <= 0) {
+        return cur;
+    }
+
     s32 ncols = max / nrows;
     if ((max % nrows) != 0) {
         ncols++;
@@ -478,6 +483,7 @@ f32 ArrowAnimOffset = 0;
 f32 DebugArrowPhase = 0.0f;
 #define DEBUG_ARROW_ANIM_RATE 6
 
+void dx_debug_force_end_battle();
 void dx_debug_update_banner();
 void dx_debug_update_main_menu();
 void dx_debug_update_quick_save();
@@ -490,8 +496,6 @@ void dx_debug_update_sound_player();
 void dx_debug_update_select_sound();
 void dx_debug_update_edit_partners();
 void dx_debug_update_edit_inventory();
-void dx_debug_update_edit_items();
-void dx_debug_update_edit_items();
 void dx_debug_update_edit_items();
 void dx_debug_update_edit_gear();
 void dx_debug_update_edit_stats();
@@ -665,6 +669,7 @@ void dx_debug_exec_quick_save() {
 }
 
 void dx_debug_exec_quick_load() {
+    dx_debug_force_end_battle();
     fio_load_game(gGameStatus.saveSlot);
     set_map_transition_effect(TRANSITION_STANDARD);
     set_game_mode(GAME_MODE_ENTER_WORLD);
@@ -870,6 +875,7 @@ void dx_debug_update_select_entry() {
     if (RELEASED(BUTTON_L)) {
         DebugMenuState = DBM_SELECT_MAP;
     } else if (RELEASED(BUTTON_R)) {
+        dx_debug_force_end_battle();
         gGameStatusPtr->areaID = SelectAreaMenuPos;
         gGameStatusPtr->mapID = SelectMapMenuPos;
         gGameStatusPtr->entryID = SelectedEntryValue;
@@ -1178,6 +1184,22 @@ void dx_debug_load_battle_preview(s32 areaID, s32 formationID) {
     }
 }
 
+// Ends the current battle immediately, as if the player had just won, so
+// debug actions that assume world context (starting another battle, warping
+// to a map, quick-loading) don't stack on top of a still-live battle.
+void dx_debug_force_end_battle(void) {
+    s32 i;
+
+    if (gGameStatusPtr->context != CONTEXT_BATTLE) {
+        return;
+    }
+
+    state_init_end_battle();
+    for (i = 0; i < 8; i++) {
+        state_step_end_battle();
+    }
+}
+
 EnemyDrops DebugDummyDrops = NO_DROPS;
 
 Enemy DebugDummyEnemy = {
@@ -1195,6 +1217,8 @@ Encounter DebugDummyEncounter = {
 
 void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage) {
     EncounterStatus* es = &gCurrentEncounter;
+
+    dx_debug_force_end_battle();
 
     DebugDummyEncounter.battle = battle;
     DebugDummyEncounter.stage = stage;
@@ -2691,13 +2715,13 @@ s32 dx_debug_scroll_to_line(s32 drawnLine, s32 selectedLine, s32 maxLine, s32 ma
 void dx_debug_draw_evt_list() {
     s32 i;
 
-    const s32 BoxStartX = EvtDebugInfoX - BoxOutsetX;
-    const s32 BoxStartY = EvtDebugInfoY - BoxOutsetY;
-    const s32 BoxHeight = BoxOutsetY + 10 * RowHeight + BoxOutsetY;
-    const s32 BoxWidth = 212;
+    const s32 boxStartX = EvtDebugInfoX - BoxOutsetX;
+    const s32 boxStartY = EvtDebugInfoY - BoxOutsetY;
+    const s32 boxHeight = BoxOutsetY + 10 * RowHeight + BoxOutsetY;
+    const s32 boxWidth = 212;
 
     // script list box
-    dx_debug_draw_box(BoxStartX, BoxStartY, BoxWidth, BoxHeight, WINDOW_STYLE_20, 192);
+    dx_debug_draw_box(boxStartX, boxStartY, boxWidth, boxHeight, WINDOW_STYLE_20, 192);
 
     dx_debug_draw_ascii("Grp", DefaultColor, EvtDebugInfoX - 3, EvtDebugInfoY);
     dx_debug_draw_ascii("Start", DefaultColor, EvtDebugInfoX + 20 + 8, EvtDebugInfoY);
@@ -3463,7 +3487,8 @@ void dx_debug_console_main() {
 
 #define LESS(i, j) DebugConsole[i]->timeLeft > DebugConsole[j]->timeLeft
 #define SWAP(i, j) temp = DebugConsole[i], DebugConsole[i] = DebugConsole[j], DebugConsole[j] = temp
-    QSORT(ARRAY_COUNT(DebugConsole), LESS, SWAP);
+    s32 count = ARRAY_COUNT(DebugConsole);
+    QSORT(count, LESS, SWAP);
 #undef LESS
 #undef SWAP
 

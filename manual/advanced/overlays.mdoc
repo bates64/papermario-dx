@@ -18,7 +18,7 @@ dynamically. Some other N64 games such as Ocarina of Time do use dynamic linking
 ## Usage
 
 ```c
-// Load the overlay src/battle/actor/my_actor
+// Load the overlay battle/actor/my_actor
 Overlay* ovl = ovl_load("my_actor", OVL_ACTOR);
 
 // Run an exported function
@@ -46,7 +46,7 @@ For example, `src/world/area/kmr/kmr_02/` is a directory matching `src/world/are
 becomes an [OVL_MAP] overlay named `kmr_02`. `src/battle/actor/goomba.c` matches
 `src/battle/actor/*`, so it becomes an [OVL_ACTOR] overlay named `goomba`.
 
-Source files are sourced from both `src` and `assets` subdirectories.
+Source files are resolved through the same `asset_stack` layers as other build inputs.
 
 ## Importing and exporting
 

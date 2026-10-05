@@ -2,6 +2,7 @@
 #include "effects.h"
 #include "model.h"
 #include "hud_element.h"
+#include "inventory.h"
 #include "script_api/battle.h"
 #include "sprite/npc/Twink.h"
 #include "sprite/npc/BattleMerlee.h"

@@ -163,7 +163,7 @@ void func_E008042C(EffectInstance* effect) {
 }
 
 void func_E0080448(EffectInstance* effect) {
-    RecoverFXData* part = ((EffectInstance*)effect)->data.recover;
+    RecoverFXData* part = (effect)->data.recover;
     s32 i;
     s32 type;
     s32 unk_40;
@@ -186,7 +186,7 @@ void func_E0080448(EffectInstance* effect) {
     unk_40 = part->unk_40;
 
     part++;
-    for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
+    for (i = 1; i < (effect)->numParts; i++, part++) {
         if (part->unk_34 <= 0) {
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, part->alpha);
 

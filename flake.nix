@@ -7,8 +7,11 @@
 
     flake-utils.url = "github:numtide/flake-utils";
 
-    star-rod.url = "github:z64a/star-rod/9339cb4e867514267ff8ab404b00b53e5a5e67dd";
-    star-rod.inputs.nixpkgs.follows = "nixpkgs";
+    # Not `follows`-ed to our nixpkgs: tools/star-rod.nix rebuilds star-rod's
+    # jar using its own pinned nixpkgs/Gradle, since its offline dependency
+    # resolution (gradle/verification-metadata.xml) is pinned to that exact
+    # Gradle version.
+    star-rod.url = "git+https://tangled.org/starhaven.dev/star-rod?rev=388d85512eeb3742773e16f863777d4ab6aa48d8";
   };
   nixConfig = {
     extra-substituters = [
@@ -56,15 +59,36 @@
           '';
           sha256 = "9ec6d2a5c2fca81ab86312328779fd042b5f3b920bf65df9f6b87b376883cb5b";
         };
+        # Plain platform-independent bytecode; rebuilt per-system (like the
+        # rest of the toolchain) rather than cross-referencing a single
+        # build, since CI's aarch64-darwin runner can't build/substitute an
+        # x86_64-linux derivation.
+        starRodJar = import ./tools/star-rod.nix { starRod = star-rod; inherit system; };
+
         windowsToolchain = import ./tools/windows {
-          inherit pkgs nixpkgs-binutils-2_39 baseRom;
+          inherit pkgs nixpkgs-binutils-2_39 baseRom llvmVersion;
           mipsCrossGcc = pkgsCross.stdenv.cc;
           src = self;
+          # Windows-toolchain is only ever built from the x86_64-linux branch
+          # below, so this is always that same system's starRodJar.
+          inherit starRodJar;
         };
         pythonDeps = windowsToolchain.passthru.pythonDeps;
 
+        # Runs on this machine and debugs MIPS, so it comes from the cross
+        # package set's build packages rather than pkgs.
+        mipsGdb = pkgsCross.buildPackages.gdb;
+
+        sccachePkg = pkgs.callPackage ./tools/sccache.nix { };
+        evtValidatePkg = pkgs.callPackage ./tools/evt_validate.nix { };
+        # The jar's entry point only checks for Java 17 and then starts
+        # Star Rod in a second JVM, so this starts Star Rod directly.
+        starRodPkg = pkgs.writeShellScriptBin "star-rod" ''
+          exec ${pkgs.jdk17}/bin/java -cp ${starRodJar}/share/java/StarRod.jar app.StarRodMain "$@"
+        '';
+
         unixToolchain = import ./tools/unix {
-          inherit pkgs nixpkgs-binutils-2_39;
+          inherit pkgs nixpkgs-binutils-2_39 mipsGdb starRodJar llvmTools;
           mipsCrossGcc = pkgsCross.stdenv.cc;
         };
         linuxRom = pkgs.runCommand "papermario-linux-rom" {
@@ -81,6 +105,8 @@
             pkgs.iconv
             (pkgs.callPackage ./tools/pigment64.nix {})
             (pkgs.callPackage ./tools/crunch64.nix {})
+            evtValidatePkg
+            starRodPkg
           ] ++ pkgs.lib.optional pkgs.stdenv.isLinux pkgs.flips;
           # Disable nixpkgs hardening flags (zerocallusedregs, fortify, etc.)
           # that the cross-compiler wrapper injects. The build system manages
@@ -97,10 +123,10 @@
 
           virtualenv venv --quiet
           source venv/bin/activate
-          pip install --no-index --find-links=${pythonDeps} -r requirements.txt --quiet
+          pip install --no-index --find-links=${pythonDeps} -r tools/requirements.txt --quiet
 
           export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
-          python3 tools/build/configure.py --no-ccache
+          python3 tools/build/configure.py --no-sccache
           ninja
 
           mkdir -p $out
@@ -109,7 +135,10 @@
             "flips --create --bps ${baseRom} ver/us/build/papermario.z64 $out/papermario.bps"}
         '';
 
-        clangdIndexingTools = pkgs.callPackage ./tools/clangd-indexing-tools.nix {};
+        # clangd only loads indexes built by the same version of clangd-indexer.
+        llvmVersion = "21.1.8";
+        llvmTools = pkgs.callPackage ./tools/llvm.nix { version = llvmVersion; };
+        clangdIndexingTools = pkgs.callPackage ./tools/clangd.nix { version = llvmVersion; archive = "clangd_indexing_tools"; };
         clangdIndex = pkgs.runCommand "papermario-dx-clangd-index" {
           nativeBuildInputs = [
             pkgsCross.stdenv.cc
@@ -124,6 +153,8 @@
             pkgs.iconv
             (pkgs.callPackage ./tools/pigment64.nix {})
             (pkgs.callPackage ./tools/crunch64.nix {})
+            evtValidatePkg
+            starRodPkg
             clangdIndexingTools
           ];
           NIX_HARDENING_ENABLE = "";
@@ -138,10 +169,10 @@
 
           virtualenv venv --quiet
           source venv/bin/activate
-          pip install --no-index --find-links=${pythonDeps} -r requirements.txt --quiet
+          pip install --no-index --find-links=${pythonDeps} -r tools/requirements.txt --quiet
 
           export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
-          python3 tools/build/configure.py --no-ccache
+          python3 tools/build/configure.py --no-sccache
           ninja
 
           # Build binary RIFF index with a known path prefix.
@@ -194,23 +225,45 @@
             libyaml
             python3
             python3Packages.virtualenv
-            ccache
+            sccachePkg
             git
             iconv
             gcc # for n64crc
             (callPackage ./tools/pigment64.nix {})
             (callPackage ./tools/crunch64.nix {})
-            star-rod.packages.${system}.default
-            clang-tools
+            evtValidatePkg
+            starRodPkg
+            llvmTools
             treefmt
-          ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
+          ] ++ [ mipsGdb ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
           shellHook = ''
             rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64
             export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
 
+            export SCCACHE_CONF="$PWD/.dx/sccache-config.toml"
+            export AWS_SHARED_CREDENTIALS_FILE="$PWD/.dx/sccache-credentials"
+            export SCCACHE_BASEDIRS="$PWD"
+            export SCCACHE_SKIP_CACHE_CHECK=1
+
             virtualenv venv --quiet
             source venv/bin/activate
-            pip install -r ${./requirements.txt} -r ${./requirements_extra.txt} --quiet
+            # This shell's CC is the MIPS o32 cross-compiler (for the game
+            # itself), not a host compiler. pip normally never notices,
+            # since it only needs one to build pygfxd's C extension from
+            # source - but that means whenever it does, it silently uses
+            # the cross-compiler and produces a 32-bit MIPS .so that the
+            # host Python can't load. Point it at a real host compiler for
+            # this one install so a from-source build is possible at all.
+            #
+            # pygfxd also has no manylinux aarch64 wheel on PyPI (only
+            # x86_64), so on that platform pip would otherwise silently
+            # install the incompatible x86_64 build; force a source build
+            # there. Elsewhere the prebuilt wheel is already correct and
+            # faster to install.
+            CC=${pkgs.stdenv.cc}/bin/cc pip install ${
+              pkgs.lib.optionalString (pkgs.stdenv.hostPlatform.isLinux && pkgs.stdenv.hostPlatform.isAarch64)
+                "--no-binary pygfxd"
+            } -r ${./tools/requirements.txt} --quiet
           '';
         };
       }

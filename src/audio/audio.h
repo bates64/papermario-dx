@@ -408,97 +408,97 @@ typedef union SeqArgs {
     u8 raw[4];
     struct { // cmd E0
         u16 value;
-    } MasterTempo;
+    } masterTempo;
     struct { // cmd E1
         u8 value;
-    } MasterVolume;
+    } masterVolume;
     struct { // cmd E2
         u8 cent;
-    } MasterPitchShift;
+    } masterPitchShift;
     struct { // cmd E3
         u8 effectType;
-    } UnkCmdE3;
+    } unkCmdE3;
     struct { // cmd E4
         u16 time;
         u16 value;
-    } MasterTempoFade;
+    } masterTempoFade;
     struct { // cmd E5
         u16 time;
         u8 value;
-    } MasterVolumeFade;
+    } masterVolumeFade;
     struct { // cmd E6
         u8 index;
         u8 value;
-    } MasterEffect;
+    } masterEffect;
     // command E7 unused
     struct { // cmd E8
         u8 bank;
         u8 patch;
-    } OverridePatch;
+    } overridePatch;
     struct { // cmd E9
         u8 value;
-    } InstrumentVolume;
+    } instrumentVolume;
     struct { // cmd EA
         u8 value;
-    } InstrumentPan;
+    } instrumentPan;
     struct { // cmd EB
         u8 value;
-    } InstrumentReverb;
+    } instrumentReverb;
     struct { // cmd EC
         u8 value;
-    } TrackVolume;
+    } trackVolume;
     struct { // cmd ED
         s8 semitone;
-    } InstrumentCoarseTune;
+    } instrumentCoarseTune;
     struct { // cmd EE
         s8 cent;
-    } InstrumentFineTune;
+    } instrumentFineTune;
     struct { // cmd EF
         s16 cents;
-    } TrackDetune;
+    } trackDetune;
     struct { // cmd F0
         u8 delay;
         u8 speed;
         u8 depth;
-    } TrackTremolo;
+    } trackTremolo;
     struct { // cmd F1
         u8 value;
-    } TrackTremoloRate;
+    } trackTremoloRate;
     struct { // cmd F2
         u8 value;
-    } TrackTremoloDepth;
+    } trackTremoloDepth;
     // no args for F3 (TrackTremoloStop)
     struct { // cmd F4
         u8 pan0;
         u8 pan1;
-    } RandomPan;
+    } randomPan;
     struct { // cmd F5
         u8 index;
-    } UseInstrument;
+    } useInstrument;
     struct { // cmd F6
         u16 time;
         u8 value;
-    } TrackVolumeFade;
+    } trackVolumeFade;
     struct { // cmd F7
         u8 index;
-    } ReverbType;
+    } reverbType;
     // commands F8-FB unused
     struct { // cmd FC
         u16 offset;
         u8 tableCount;
-    } Branch;
+    } branch;
     struct { // cmd FD
         u32 eventInfo;
-    } EventTrigger;
+    } eventTrigger;
     struct { // cmd FE
         u16 offset;
         u8 length;
-    } Detour;
+    } detour;
     struct { // cmd FF
         u8 type;
         u8 arg1;
         u8 arg2;
-    } Special;
+    } special;
 } SeqArgs;
 
 /// Structure for volume fading for SFX and BGM. Has independent controls for base and envelope volumes.
@@ -636,8 +636,8 @@ typedef struct AuSynDriver {
     /* 0x00 */ s32 curSamples;
     /* 0x04 */ s32 unused_04;
     /* 0x08 */ s32 outputRate;
-    /* 0x0C */ s32 num_pvoice;
-    /* 0x10 */ s32 num_bus;
+    /* 0x0C */ s32 numPvoice;
+    /* 0x10 */ s32 numBus;
     /* 0x14 */ ALDMANew2 dmaNew; // pointer to nuAuDmaNew
     /* 0x18 */ ALHeap* heap;
     /* 0x1C */ AuPVoice* pvoices;
@@ -709,12 +709,21 @@ typedef struct SoundLerp {
 typedef struct SoundPlayChange {
     union {
         u32 all;
+#ifdef MAMAR_WASM
+        struct {
+            u8 reverb;
+            u8 pan;
+            u8 volume;
+            u8 tune;
+        };
+#else
         struct {
             u8 tune;
             u8 volume;
             u8 pan;
             u8 reverb;
         };
+#endif
     };
 } SoundPlayChange;
 
@@ -934,7 +943,7 @@ typedef struct SBNHeader {
     /* 0x18 */ s32 fullFileSize; // full size of the SBN file (unread)
     /* 0x1C */ s32 versionOffset;
     /* 0x20 */ PAD(4);
-    /* 0x24 */ s32 INIToffset;
+    /* 0x24 */ s32 initOffset;
     /* 0x28 */ PAD(0x18);
     /* 0x40 */ SBNFileEntry entries[0];
 } SBNHeader; // size = 0x40
@@ -1217,7 +1226,12 @@ typedef struct BGMPlayer {
     /* 0x25B */ u8 cmdBufOverflows;
     /* 0x25C */ BGMPlayerTrack tracks[16];
     /* 0x85C */ SeqNote notes[24]; /// Currently playing notes
-} BGMPlayer; // size = 0xA9C
+    /* 0xA9C */ SegData* phrasePos; /// Composition command of the phrase playing
+    /* 0xAA0 */ s32 phraseTicks; /// Ticks the phrase playing has played
+    /* 0xAA4 */ s32 seekPhrase; /// Index in the composition of the phrase the next song starts at, or -1 for its start
+    /* 0xAA8 */ s32 seekTicks; /// Ticks into that phrase the next song starts at
+    /* 0xAAC */ b32 seeking;
+} BGMPlayer; // size = 0xAB0
 
 // all Song*Request structs are probably one struct with a union for args 0/1/2/3 at offsets 0x10-0x1C
 // keeping them separated lets us type-check the arguments to functions which accept them
@@ -1317,12 +1331,21 @@ typedef struct AmbienceSavedVoice {
  * and command execution (e.g. stop or pitch/volume changes).
  */
 typedef union AmbVoiceStateInfo {
+#ifdef MAMAR_WASM
+    struct {
+        u8 released;
+        u8 tune;
+        u8 trackIndex;
+        u8 playerIndex;
+    };
+#else
     struct {
         u8 playerIndex;     /// Index of the owning ambience player
         u8 trackIndex;      ///< Track index within the player (0–9)
         u8 tune;            ///< Note or drum ID used to differentiate voices on the same track
         u8 released;        ///< Set to true when the voice should be released/stopped
     };
+#endif
     s32 all;
 } AmbVoiceStateInfo;
 
@@ -1377,8 +1400,8 @@ typedef struct AmbienceManager {
 } AmbienceManager;
 
 typedef struct ALConfig {
-    /* 0x00 */ s32 num_pvoice;
-    /* 0x04 */ s32 num_bus;
+    /* 0x00 */ s32 numPvoice;
+    /* 0x04 */ s32 numBus;
     /* 0x08 */ s32 outputRate; /// hardware sample output rate
     /* 0x0C */ u8 unused_0C;
     /* 0x0D */ PAD(3);

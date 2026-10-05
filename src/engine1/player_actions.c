@@ -173,6 +173,7 @@ void phys_update_action_state(void) {
             check_input_spin();
         }
 
+        ASSERT(gPlayerStatus.actionState >= 0 && gPlayerStatus.actionState < ARRAY_COUNT(PlayerActionsTable));
         Action* action = &PlayerActionsTable[gPlayerStatus.actionState];
 
         if ((playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) || CurrentActionOverlay == nullptr) {

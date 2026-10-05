@@ -11,9 +11,9 @@ f32 gBackroundWavePhase = 0.0f;
 BSS PAL_BIN gBackgroundPalette[256];
 BSS f32 gBackroundLastScrollValue;
 
-void load_map_bg(char* optAssetName) {
+void load_map_bg(const char* optAssetName) {
     if (optAssetName != nullptr) {
-        char* assetName = optAssetName;
+        const char* assetName = optAssetName;
         void* compressedData;
         u32 assetSize;
 
@@ -62,9 +62,9 @@ u16 blend_background_channel(u16 arg0, s32 arg1, s32 alpha) {
 void appendGfx_background_texture(void) {
     Camera* cam = &gCameras[gCurrentCameraID];
     u16 flags = 0;
-    s32 fogR, fogG, fogB, fogA;
+    s32 fogR = 0, fogG = 0, fogB = 0, fogA = 0;
     u8 r1, g1, b1, a1;
-    u8 r2, g2, b2;
+    u8 r2 = 0, g2 = 0, b2 = 0;
     u16 blendedR, blendedG, blendedB;
     s32 i;
 
@@ -188,7 +188,7 @@ void appendGfx_background_texture(void) {
     theta = clamp_angle(-cam->curBoomYaw);
     sinTheta = sin_deg(theta);
     cosTheta = cos_deg(theta);
-    f5 = cosTheta * cam->lookAt_obj.x - sinTheta * cam->lookAt_obj.z + cam->leadAmount;
+    f5 = cosTheta * cam->lookAtObj.x - sinTheta * cam->lookAtObj.z + cam->leadAmount;
     scrollValue = -f5 * 0.25f;
     scrollValue += gGameStatusPtr->backgroundMaxX * theta * (1 / 90.0f);
 

@@ -1,6 +1,7 @@
 #include "nok_11.h"
 
 EvtScript N(EVS_ExitWalk_mac_01_1) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
     IfEq(GB_KootFavor_State, KOOT_FAVOR_STATE_2)
         Set(GF_KootFavor_LeftKoopaArea, true)
     EndIf

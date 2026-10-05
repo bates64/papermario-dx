@@ -4,7 +4,12 @@
 #include "types.h"
 
 #define BSS __attribute__ ((nocommon, section (".bss")))
+// C++ has no transparent unions.
+#ifdef __cplusplus
+#define TRANSPARENT_UNION
+#else
 #define TRANSPARENT_UNION __attribute__ ((__transparent_union__))
+#endif
 
 #define ALIGNED(x) __attribute__((aligned(x)))
 
@@ -63,7 +68,7 @@
     do { \
         char panicMsg[0x100]; \
         sprintf(panicMsg, msg, ##args); \
-        IS_DEBUG_PANIC(msg); \
+        IS_DEBUG_PANIC(panicMsg); \
     } while (0)
 #define ASSERT(condition) \
     if (!(condition)) { \
@@ -529,7 +534,8 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
 #define NODISCARD
 #endif
 
-// Mark a symbol as exported from an overlay, making it visible to ovl_import.
+/// Marks a symbol as exported from an overlay, making it visible to ovl_import by its unqualified name,
+/// without any C++ namespaces.
 #define export __attribute__((visibility("default")))
 
 // Avoid compiler warnings for unused variables.
@@ -574,8 +580,9 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
 #define OPTIMIZE_OS
 #endif
 
-// Use Ofast when compiling the function.
-#ifdef __GNUC__
+// Use Ofast when compiling the function. clang, which analyzes the code but
+// doesn't build it, has no optimize attribute.
+#if defined(__GNUC__) && !defined(__clang__)
 #define OPTIMIZE_OFAST __attribute__((optimize("Ofast")))
 #else
 #define OPTIMIZE_OFAST

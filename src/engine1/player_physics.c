@@ -495,7 +495,7 @@ void collision_main_lateral(void) {
     f32 playerX, playerY, playerZ;
     f32 test1X, test1Y, test1Z;
     f32 test2X, test2Y, test2Z;
-    f32 yaw;
+    f32 yaw = 0.0f;
     f32 yaw2;
     f32 speed;
     f32 sinTheta;

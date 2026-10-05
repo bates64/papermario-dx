@@ -70,8 +70,8 @@ void entity_MunchlesiaGrab_pull_player(Entity* entity) {
         data->playerPullDistance, data->playerPullAngle);
 }
 
-s32 entity_Munchlesia_create_child(Entity* entity, EntityBlueprint* entityBlueprint) {
-    return create_entity(entityBlueprint, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, (s32)entity->rot.y);
+s32 entity_Munchlesia_create_child(Entity* entity, EntityBlueprint* blueprint) {
+    return create_entity(blueprint, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, (s32)entity->rot.y);
 }
 
 void entity_Munchlesia_spawn_reset(Entity* entity) {

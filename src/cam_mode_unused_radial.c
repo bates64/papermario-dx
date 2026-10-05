@@ -5,14 +5,14 @@
 #define LEN_SCALE (100 / CamLengthScale)
 
 // implements CAM_UPDATE_UNUSED_RADIAL
-// this camera tracks lookAt_obj_target in a circular region centered on targetPos. the camera does not update
-// unless lookAt_obj_target is greater than a minimum distance from targetPos to prevent wild movements.
+// this camera tracks lookAtObjTarget in a circular region centered on targetPos. the camera does not update
+// unless lookAtObjTarget is greater than a minimum distance from targetPos to prevent wild movements.
 //
 // control parameters:
 // dist -- length of the camera boom arm
 // pitch -- rising angle of the boom arm, up toward the y-axis
 // offsetY -- offset of the base of the boom arm above the target point
-// minRadius -- do not update camera if lookAt_obj_target is closer than this distance from targetPos
+// minRadius -- do not update camera if lookAtObjTarget is closer than this distance from targetPos
 void update_camera_unused_radial(Camera* camera) {
     f32 yawAngle, sinYaw, cosYaw;
     f32 pitchAngle, sinPitch, cosPitch;
@@ -23,8 +23,8 @@ void update_camera_unused_radial(Camera* camera) {
     if (camera->needsInit) {
         camera->needsInit = false;
 
-        x1 = camera->lookAt_obj_target.x;
-        z1 = camera->lookAt_obj_target.z;
+        x1 = camera->lookAtObjTarget.x;
+        z1 = camera->lookAtObjTarget.z;
         x2 = camera->targetPos.x;
         z2 = camera->targetPos.z;
 
@@ -39,9 +39,9 @@ void update_camera_unused_radial(Camera* camera) {
         }
         camera->targetBoomYaw = camera->curBoomYaw;
 
-        camera->lookAt_obj.x = camera->lookAt_obj_target.x;
-        camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetOffsetY;
-        camera->lookAt_obj.z = camera->lookAt_obj_target.z;
+        camera->lookAtObj.x = camera->lookAtObjTarget.x;
+        camera->lookAtObj.y = camera->lookAtObjTarget.y + camera->targetOffsetY;
+        camera->lookAtObj.z = camera->lookAtObjTarget.z;
 
         pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
         sinPitch = sin_rad(pitchAngle);
@@ -55,25 +55,25 @@ void update_camera_unused_radial(Camera* camera) {
         dx = camera->curBoomLength * cosPitch * -sinYaw;
         dz = camera->curBoomLength * cosPitch * cosYaw;
 
-        camera->lookAt_eye.x = camera->lookAt_obj.x + dx;
-        camera->lookAt_eye.y = camera->lookAt_obj.y + dy;
-        camera->lookAt_eye.z = camera->lookAt_obj.z + dz;
+        camera->lookAtEye.x = camera->lookAtObj.x + dx;
+        camera->lookAtEye.y = camera->lookAtObj.y + dy;
+        camera->lookAtEye.z = camera->lookAtObj.z + dz;
     }
 
     camera->curBoomPitch = camera->params.radial.pitch;
     camera->curBoomLength = camera->params.radial.dist * LEN_SCALE;
     camera->targetOffsetY = camera->params.radial.offsetY * YSCALE * LEN_SCALE;
 
-    dx = camera->lookAt_obj_target.x - camera->lookAt_obj.x;
-    dy = camera->lookAt_obj_target.y - camera->lookAt_obj.y + camera->targetOffsetY;
-    dz = camera->lookAt_obj_target.z - camera->lookAt_obj.z;
+    dx = camera->lookAtObjTarget.x - camera->lookAtObj.x;
+    dy = camera->lookAtObjTarget.y - camera->lookAtObj.y + camera->targetOffsetY;
+    dz = camera->lookAtObjTarget.z - camera->lookAtObj.z;
 
-    camera->lookAt_obj.x += dx * 0.5f;
-    camera->lookAt_obj.y += dy * YSCALE * 0.5f;
-    camera->lookAt_obj.z += dz * 0.5f;
+    camera->lookAtObj.x += dx * 0.5f;
+    camera->lookAtObj.y += dy * YSCALE * 0.5f;
+    camera->lookAtObj.z += dz * 0.5f;
 
-    x1 = camera->lookAt_obj_target.x;
-    z1 = camera->lookAt_obj_target.z;
+    x1 = camera->lookAtObjTarget.x;
+    z1 = camera->lookAtObjTarget.z;
     x2 = camera->targetPos.x;
     z2 = camera->targetPos.z;
 
@@ -96,16 +96,16 @@ void update_camera_unused_radial(Camera* camera) {
     dx = camera->curBoomLength * cosPitch * -sinYaw;
     dz = camera->curBoomLength * cosPitch * cosYaw;
 
-    camera->lookAt_eye.x = camera->lookAt_obj.x + dx;
-    camera->lookAt_eye.y = camera->lookAt_obj.y + dy;
-    camera->lookAt_eye.z = camera->lookAt_obj.z + dz;
+    camera->lookAtEye.x = camera->lookAtObj.x + dx;
+    camera->lookAtEye.y = camera->lookAtObj.y + dy;
+    camera->lookAtEye.z = camera->lookAtObj.z + dz;
 
-    dx = camera->lookAt_obj.x - camera->lookAt_eye.x;
-    dy = camera->lookAt_obj.y - camera->lookAt_eye.y;
-    dz = camera->lookAt_obj.z - camera->lookAt_eye.z;
+    dx = camera->lookAtObj.x - camera->lookAtEye.x;
+    dy = camera->lookAtObj.y - camera->lookAtEye.y;
+    dz = camera->lookAtObj.z - camera->lookAtEye.z;
     dr = sqrtf(SQ(dx) + SQ(dz));
 
-    camera->lookAt_yaw = -atan2(0.0f, 0.0f, dx, dz);
-    camera->lookAt_pitch = atan2(0.0f, 0.0f, dy, -dr);
-    camera->curYaw = atan2(camera->lookAt_eye.x, camera->lookAt_eye.z, camera->lookAt_obj.x, camera->lookAt_obj.z);
+    camera->lookAtYaw = -atan2(0.0f, 0.0f, dx, dz);
+    camera->lookAtPitch = atan2(0.0f, 0.0f, dy, -dr);
+    camera->curYaw = atan2(camera->lookAtEye.x, camera->lookAtEye.z, camera->lookAtObj.x, camera->lookAtObj.z);
 }

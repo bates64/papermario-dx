@@ -6,7 +6,7 @@ sidebar:
 
 In the battle system, the characters on screen are called **actors**. This includes enemies, bosses, and even objects like Gulpit Rocks. The name comes from the theatre metaphor: battles take place on a **stage**, and the characters that perform on it are actors.
 
-Each actor is defined in its own C file under `src/battle/actor/`. These files are compiled as [overlays](/papermario-dx/advanced/overlays), meaning they're loaded into memory only when needed. An actor file exports a `blueprint` that defines the actor's stats and appearance, along with four scripts that control its behaviour:
+Each actor is defined in its own C file under `battle/actor/`. These files are compiled as [overlays](/papermario-dx/advanced/overlays), meaning they're loaded into memory only when needed. An actor file exports a `blueprint` that defines the actor's stats and appearance, along with four scripts that control its behaviour:
 
 - **EVS_Init** — runs when the actor spawns, binds the other three scripts
 - **EVS_Idle** — runs continuously while the actor is waiting for its turn
@@ -17,7 +17,7 @@ This page walks through creating a simple enemy called `frost_goomba`.
 
 ## Creating the actor file
 
-Create a new file at `src/battle/actor/frost_goomba.c`. Every actor file needs a few key pieces: a defense table, a status table, parts, animations, the blueprint, and four scripts.
+Create a new file at `battle/actor/frost_goomba.c`. Every actor file needs a few key pieces: a defense table, a status table, parts, animations, the blueprint, and four scripts.
 
 Here's a minimal template:
 
@@ -192,7 +192,7 @@ EvtScript EVS_TakeTurn = {
 };
 ```
 
-This template creates a working actor with 5 HP that deals 1 damage. For a much more complete example with real attack animations, idle shuffling, and full event handling, see `src/battle/actor/gloomba.c`.
+This template creates a working actor with 5 HP that deals 1 damage. For a much more complete example with real attack animations, idle shuffling, and full event handling, see `battle/actor/gloomba.c`.
 
 {% aside %}
 The `export` keyword on the blueprint is what makes the actor loadable as an overlay. It tells the linker to export the `blueprint` symbol so the battle system can find it.

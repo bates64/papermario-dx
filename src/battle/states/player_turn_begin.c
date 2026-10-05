@@ -373,7 +373,7 @@ void btl_state_update_begin_player_turn(void) {
                 BattleSkipActorTurn = false;
                 BattleStatusUpdateDelay = 0;
 
-                if (battleStatus->outtaSightActive != 0) {
+                if (battleStatus->outtaSightActive != 0 && partner != nullptr) {
                     battleStatus->battlePhase = PHASE_ENEMY_BEGIN;
                     script = start_script(partner->scripts.handlePhase.source, EVT_PRIORITY_A, 0);
                     assign_bound_script(&partner->scripts.handlePhase, script);

@@ -1,6 +1,7 @@
 # EVT Validator Tests
 
-This directory contains focused fixtures for `tools/build/evt_validate_obj.py`.
+This directory contains focused fixtures for the `evt_validate` binary
+(`tools/evt_validate`).
 
 Layout:
 

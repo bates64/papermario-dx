@@ -1,4 +1,5 @@
 #include "common.h"
+#include "libc/xstdio.h"
 #include <stdarg.h>
 #include "PR/os_internal_thread.h"
 #include <stdio.h>
@@ -199,6 +200,14 @@ char* crash_screen_copy_to_buf(char* dest, const char* src, size_t size) {
     return dest + size;
 }
 
+/// Copies a line of crash screen text to the IS-Viewer, so it can be read without seeing the screen.
+static void crash_screen_log(const u8* buf, s32 size) {
+    if (size <= 0) {
+        return;
+    }
+    printf("%.*s%s", (int)size, buf, buf[size - 1] == '\n' ? "" : "\n");
+}
+
 /// Returns y advance.
 s32 crash_screen_printf(s32 x, s32 y, const char* fmt, ...) {
     u8* ptr;
@@ -211,6 +220,7 @@ s32 crash_screen_printf(s32 x, s32 y, const char* fmt, ...) {
     va_start(args, fmt);
 
     size = _Printf(crash_screen_copy_to_buf, (char*)buf, fmt, args);
+    crash_screen_log(buf, size);
 
     if (size > 0) {
         ptr = buf;
@@ -257,6 +267,7 @@ s32 crash_screen_printf_proportional(s32 x, s32 y, const char* fmt, ...) {
     va_start(args, fmt);
 
     size = _Printf(crash_screen_copy_to_buf, (char*)buf, fmt, args);
+    crash_screen_log(buf, size);
 
     if (size > 0) {
         ptr = buf;
@@ -445,7 +456,7 @@ static s32 crash_screen_print_error(s32 x, s32 y, OSThread* faultedThread) {
         return y;
     }
 
-    u32 badvaddr = (u32)ctx->badvaddr;
+    u32 badvaddr = ctx->badvaddr;
 
     switch (causeIndex) {
         case 1: // TLB modification
@@ -476,7 +487,7 @@ static s32 crash_screen_print_error(s32 x, s32 y, OSThread* faultedThread) {
             y = crash_screen_printf_proportional(x, y, "Bus error at 0x%08lX", badvaddr);
             break;
         case 10: // Reserved instruction
-            y = crash_screen_printf_proportional(x, y, "Invalid instruction at 0x%08lX", (u32)ctx->pc);
+            y = crash_screen_printf_proportional(x, y, "Invalid instruction at 0x%08lX", ctx->pc);
             break;
         case 12: // Arithmetic overflow
             y = crash_screen_printf_proportional(x, y, "Integer overflow");
@@ -580,7 +591,7 @@ void crash_screen_draw(OSThread* faultedThread) {
             y = crash_screen_print_location(x, y, &sym);
             if (isFirstFrame && crashScreenAssertMessage[0] == '\0') {
                 y += 5;
-                y = crash_screen_print_disasm(x, y, (u32)ctx->pc);
+                y = crash_screen_print_disasm(x, y, ctx->pc);
                 y += 5;
                 isFirstFrame = false;
             }
@@ -603,7 +614,7 @@ void crash_screen_draw(OSThread* faultedThread) {
             y = crash_screen_print_location(x, y, &sym);
             if (isFirstFrame && crashScreenAssertMessage[0] == '\0') {
                 y += 5;
-                y = crash_screen_print_disasm(x, y, (u32)ctx->pc);
+                y = crash_screen_print_disasm(x, y, ctx->pc);
                 y += 5;
                 isFirstFrame = false;
             }

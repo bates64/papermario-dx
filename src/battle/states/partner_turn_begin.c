@@ -72,10 +72,8 @@ void btl_state_update_begin_partner_turn(void) {
 
     switch (gBattleSubState) {
         case BTL_SUBSTATE_AWAIT_RECOVER_DONE:
-            if (partner != nullptr) {
-                if (is_bound_script_running(&partner->scripts.handleEvent)) {
-                    break;
-                }
+            if (is_bound_script_running(&partner->scripts.handleEvent)) {
+                break;
             }
 
             gBattleStatus.flags2 &= ~BS_FLAGS2_OVERRIDE_INACTIVE_PLAYER;

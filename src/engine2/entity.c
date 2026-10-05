@@ -923,6 +923,7 @@ void entity_swizzle_anim_pointers(EntityImplementation* entityData, void* baseAn
 
 s32 is_entity_data_loaded(Entity* entity, EntityImplementation* implementation, s32* loadedStart, s32* loadedEnd) {
     EntityImplementation** implementations;
+    s32 numSlots;
     s32 i;
     s32 ret;
     DmaEntry* entDmaList;
@@ -933,11 +934,14 @@ s32 is_entity_data_loaded(Entity* entity, EntityImplementation* implementation, 
 
     if (gGameStatusPtr->context == CONTEXT_WORLD) {
         implementations = wEntityImplementations;
+        numSlots = ARRAY_COUNT(wEntityImplementations) - 1;
     } else {
         implementations = bEntityImplementations;
+        numSlots = ARRAY_COUNT(bEntityImplementations) - 1;
     }
 
-    for (i = 0; i < MAX_ENTITIES; i++, implementations++) {
+    // A new implementation is followed by a nullptr terminator, so the last slot stays free.
+    for (i = 0; i < numSlots; i++, implementations++) {
         EntityImplementation* bp = *implementations;
         if (bp == nullptr) {
             implementations[0] = implementation;
@@ -1025,8 +1029,8 @@ void load_split_entity_data(Entity* entity, EntityImplementation* entityData, s3
     StaticAnimatorNode** animationNodes;
     s32 specialSize;
     s32 dma1size;
-    s32 dma2size_1;
-    s32 dma2size_2;
+    s32 dma2size1;
+    s32 dma2size2;
     s32 totalLoaded;
 
     if (entityData->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL) {
@@ -1079,13 +1083,13 @@ void load_split_entity_data(Entity* entity, EntityImplementation* entityData, s3
                 PANIC();
             }
 
-            dma2size_1 = dma_copy(dmaList[0].start, dmaList[0].end, dmaList[0].start + ((gEntityHeapBase - totalLoaded * 4 - (s32)dmaList[0].end) >> 2) * 4) >> 2;
-            entity->gfxBaseAddr = (void*)(gEntityHeapBase - totalLoaded * 4 - dma2size_1 * 4);
-            totalLoaded += dma2size_1;
+            dma2size1 = dma_copy(dmaList[0].start, dmaList[0].end, dmaList[0].start + ((gEntityHeapBase - totalLoaded * 4 - (s32)dmaList[0].end) >> 2) * 4) >> 2;
+            entity->gfxBaseAddr = (void*)(gEntityHeapBase - totalLoaded * 4 - dma2size1 * 4);
+            totalLoaded += dma2size1;
 
-            dma2size_2 = dma_copy(dmaList[1].start, dmaList[1].end, dmaList[1].start + ((gEntityHeapBase - totalLoaded * 4 - (s32)dmaList[1].end) >> 2) * 4) >> 2;
-            animBaseAddr = (void*)(gEntityHeapBase - totalLoaded * 4 - dma2size_2 * 4);
-            totalLoaded += dma2size_2;
+            dma2size2 = dma_copy(dmaList[1].start, dmaList[1].end, dmaList[1].start + ((gEntityHeapBase - totalLoaded * 4 - (s32)dmaList[1].end) >> 2) * 4) >> 2;
+            animBaseAddr = (void*)(gEntityHeapBase - totalLoaded * 4 - dma2size2 * 4);
+            totalLoaded += dma2size2;
             get_entity_type(entity->listIndex);
 
             if (gGameStatusPtr->context == CONTEXT_WORLD) {
@@ -1145,7 +1149,7 @@ void entity_free_static_data(EntityImplementation* data) {
         }
     }
 
-    if (freeSlot < MAX_ENTITIES) {
+    if (freeSlot > 0 && freeSlot < MAX_ENTITIES) {
         bp = wEntityImplementations[freeSlot - 1];
         if (bp == data) {
             if (bp->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL) {

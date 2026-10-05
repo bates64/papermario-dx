@@ -27,10 +27,6 @@ void boot_main(void* data);
 void is_debug_init(void);
 NORETURN void is_debug_panic(const char* message);
 
-// TODO: migrate to vsnprintf on modern libc
-typedef char *outfun(char*,const char*,size_t);
-int _Printf(outfun prout, char *arg, const char *fmt, va_list args);
-
 f32 signF(f32 val);
 
 void load_obfuscation_shims(void);
@@ -532,7 +528,6 @@ void update_triggers(void);
 void update_scripts(void);
 void update_messages(void);
 void update_entities(void);
-void bgm_update_music_control(void);
 void update_ambient_sounds(void);
 void update_windows(void);
 void player_render_interact_prompts(void);
@@ -547,12 +542,8 @@ void render_curtains(void);
 void fio_init_flash(void);
 void clear_input(void);
 void clear_screen_overlays(void);
-void bgm_reset_sequence_players(void);
 void reset_ambient_sounds(void);
 void poll_rumble(void);
-void bgm_pop_song(void);
-void bgm_push_song(s32 songID, s32 variation);
-void bgm_pop_battle_song(void);
 s32 play_ambient_sounds(s32 fadeInTime, s32 fadeOutTime);
 s32 get_fortress_key_count(void);
 s32 subtract_fortress_keys(s32 amt);
@@ -627,7 +618,6 @@ void remove_status_static(s32);
 void remove_status_transparent(s32);
 void remove_all_status_icons(s32);
 s32 create_status_icon_set(void);
-s32 find_item(s32);
 
 void enable_background_wave(void);
 
@@ -712,7 +702,7 @@ s32 create_worker_scene(VoidCallback updateFunc, VoidCallback renderFunc);
 
 void init_entity_models(void);
 f32 phys_get_spin_history(s32 lag, s32* x, s32* y, s32* z);
-void imgfx_update(s32, ImgFXType, s32, s32, s32, s32, s32);
+void imgfx_update(s32 idx, ImgFXType type, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 flags);
 s32 imgfx_appendGfx_component(s32, ImgFXTexture*, u32, Matrix4f);
 void imgfx_update_cache(void);
 s32 imgfx_get_free_instances(s32);
@@ -831,7 +821,6 @@ void collision_check_player_overlaps(void);
 void update_player_input(void);
 void phys_update_action_state(void);
 void collision_main_lateral(void);
-void player_surface_spawn_fx(void);
 void check_input_open_menus(void);
 void check_input_status_bar(void);
 
@@ -913,7 +902,7 @@ void render_entities(void);
 void render_player(void);
 void render_workers_scene(void);
 void render_effects_scene(void);
-s32 get_asset_offset(char*, u32*);
+s32 get_asset_offset(const char*, u32*);
 void initialize_status_bar(void);
 void status_bar_start_blinking_fp(void);
 s32 is_status_bar_visible(void);
@@ -943,7 +932,7 @@ void update_encounters_neutral(void);
 void update_encounters_pre_battle(void);
 void update_encounters_conversation(void);
 void update_encounters_post_battle(void);
-void load_map_bg(char* optAssetName);
+void load_map_bg(const char* optAssetName);
 void reset_background_settings(void);
 void reset_back_screen_overlay_progress(void);
 void cancel_action_rating_combo(Actor*);

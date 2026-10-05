@@ -252,90 +252,87 @@ void appendGfx_entity_model(EntityModel* model) {
             gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
             gSPSetOtherMode(gMainGfxPos++, G_SETOTHERMODE_H, G_MDSFT_ALPHADITHER, 18, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_POINT | G_TT_NONE | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE);
 
-            switch (entity_fog_enabled && !(model->flags & ENTITY_MODEL_FLAG_FOG_DISABLED)) {
-                case false:
-                    switch (model->renderMode) {
-                        case RENDER_MODE_SURFACE_OPA:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_OPA);
-                            break;
-                        case RENDER_MODE_DECAL_OPA:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM1_DECAL_OPA);
-                            break;
-                        case RENDER_MODE_INTERSECTING_OPA:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM1_INTERSECTING_OPA);
-                            break;
-                        case RENDER_MODE_ALPHATEST:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM1_ALPHATEST);
-                            break;
-                        case RENDER_MODE_SURFACE_XLU_LAYER1:
-                        case RENDER_MODE_SURFACE_XLU_LAYER2:
-                        case RENDER_MODE_SURFACE_XLU_LAYER3:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_XLU);
-                            break;
-                        case RENDER_MODE_SURFACE_XLU_NO_AA:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_XLU_NO_AA);
-                            break;
-                        case RENDER_MODE_DECAL_XLU:
-                        case RENDER_MODE_DECAL_XLU_AHEAD:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM1_DECAL_XLU);
-                            break;
-                        case RENDER_MODE_DECAL_XLU_NO_AA:
-                        case RENDER_MODE_SHADOW:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM1_DECAL_XLU_NO_AA);
-                            break;
-                        case RENDER_MODE_INTERSECTING_XLU:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM1_INTERSECTING_XLU);
-                            break;
-                        case RENDER_MODE_PASS_THROUGH:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM1_PASS_THROUGH);
-                            break;
-                        case RENDER_MODE_ALPHATEST_ONESIDED:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM1_ALPHATEST_ONESIDED);
-                            break;
-                        case RENDER_MODE_SURFACE_OPA_NO_ZB:
-                        case RENDER_MODE_SURFACE_OPA_NO_ZB_BEHIND:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_OPA_NO_ZB);
-                            break;
-                        case RENDER_MODE_ALPHATEST_NO_ZB:
-                        case RENDER_MODE_ALPHATEST_NO_ZB_BEHIND:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM1_ALPHATEST_NO_ZB);
-                            break;
-                        case RENDER_MODE_SURFACE_XLU_NO_ZB:
-                        case RENDER_MODE_SURFACE_XLU_NO_ZB_BEHIND:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_XLU_NO_ZB);
-                            break;
-                        case RENDER_MODE_CLOUD_NO_ZCMP:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM1_CLOUD_NO_ZCMP);
-                            break;
-                    }
-                    break;
-                case true:
-                    switch (model->renderMode) {
-                        case RENDER_MODE_SURFACE_OPA:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM3_SURFACE_OPA);
-                            break;
-                        case RENDER_MODE_DECAL_OPA:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM3_DECAL_OPA);
-                            break;
-                        case RENDER_MODE_INTERSECTING_OPA:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM3_INTERSECTING_OPA);
-                            break;
-                        case RENDER_MODE_ALPHATEST:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM3_ALPHATEST);
-                            break;
-                        case RENDER_MODE_SURFACE_XLU_LAYER1:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM3_SURFACE_XLU);
-                            break;
-                        case RENDER_MODE_DECAL_XLU:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM3_DECAL_XLU);
-                            break;
-                        case RENDER_MODE_INTERSECTING_XLU:
-                            gSPDisplayList(gMainGfxPos++, Gfx_RM3_INTERSECTING_XLU);
-                            break;
-                    }
-                    gDPSetFogColor(gMainGfxPos++, entity_fog_red, entity_fog_green, entity_fog_blue, entity_fog_alpha);
-                    gSPFogPosition(gMainGfxPos++, entity_fog_dist_min, entity_fog_dist_max);
-                    break;
+            if (entity_fog_enabled && !(model->flags & ENTITY_MODEL_FLAG_FOG_DISABLED)) {
+                switch (model->renderMode) {
+                    case RENDER_MODE_SURFACE_OPA:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM3_SURFACE_OPA);
+                        break;
+                    case RENDER_MODE_DECAL_OPA:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM3_DECAL_OPA);
+                        break;
+                    case RENDER_MODE_INTERSECTING_OPA:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM3_INTERSECTING_OPA);
+                        break;
+                    case RENDER_MODE_ALPHATEST:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM3_ALPHATEST);
+                        break;
+                    case RENDER_MODE_SURFACE_XLU_LAYER1:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM3_SURFACE_XLU);
+                        break;
+                    case RENDER_MODE_DECAL_XLU:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM3_DECAL_XLU);
+                        break;
+                    case RENDER_MODE_INTERSECTING_XLU:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM3_INTERSECTING_XLU);
+                        break;
+                }
+                gDPSetFogColor(gMainGfxPos++, entity_fog_red, entity_fog_green, entity_fog_blue, entity_fog_alpha);
+                gSPFogPosition(gMainGfxPos++, entity_fog_dist_min, entity_fog_dist_max);
+            } else {
+                switch (model->renderMode) {
+                    case RENDER_MODE_SURFACE_OPA:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_OPA);
+                        break;
+                    case RENDER_MODE_DECAL_OPA:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_DECAL_OPA);
+                        break;
+                    case RENDER_MODE_INTERSECTING_OPA:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_INTERSECTING_OPA);
+                        break;
+                    case RENDER_MODE_ALPHATEST:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_ALPHATEST);
+                        break;
+                    case RENDER_MODE_SURFACE_XLU_LAYER1:
+                    case RENDER_MODE_SURFACE_XLU_LAYER2:
+                    case RENDER_MODE_SURFACE_XLU_LAYER3:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_XLU);
+                        break;
+                    case RENDER_MODE_SURFACE_XLU_NO_AA:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_XLU_NO_AA);
+                        break;
+                    case RENDER_MODE_DECAL_XLU:
+                    case RENDER_MODE_DECAL_XLU_AHEAD:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_DECAL_XLU);
+                        break;
+                    case RENDER_MODE_DECAL_XLU_NO_AA:
+                    case RENDER_MODE_SHADOW:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_DECAL_XLU_NO_AA);
+                        break;
+                    case RENDER_MODE_INTERSECTING_XLU:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_INTERSECTING_XLU);
+                        break;
+                    case RENDER_MODE_PASS_THROUGH:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_PASS_THROUGH);
+                        break;
+                    case RENDER_MODE_ALPHATEST_ONESIDED:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_ALPHATEST_ONESIDED);
+                        break;
+                    case RENDER_MODE_SURFACE_OPA_NO_ZB:
+                    case RENDER_MODE_SURFACE_OPA_NO_ZB_BEHIND:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_OPA_NO_ZB);
+                        break;
+                    case RENDER_MODE_ALPHATEST_NO_ZB:
+                    case RENDER_MODE_ALPHATEST_NO_ZB_BEHIND:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_ALPHATEST_NO_ZB);
+                        break;
+                    case RENDER_MODE_SURFACE_XLU_NO_ZB:
+                    case RENDER_MODE_SURFACE_XLU_NO_ZB_BEHIND:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_XLU_NO_ZB);
+                        break;
+                    case RENDER_MODE_CLOUD_NO_ZCMP:
+                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_CLOUD_NO_ZCMP);
+                        break;
+                }
             }
             gSPClearGeometryMode(gMainGfxPos++, G_LIGHTING);
             if (!entity_fog_enabled || (model->flags & ENTITY_MODEL_FLAG_FOG_DISABLED)) {
@@ -565,90 +562,87 @@ void draw_entity_model_E(s32 modelIdx, Mtx* transformMtx) {
     gDisplayContext->matrixStack[gMatrixListPos] = model->transform;
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     if (!(model->flags & ENTITY_MODEL_FLAG_USE_IMAGE)) {
-        switch (entity_fog_enabled && !(model->flags & ENTITY_MODEL_FLAG_FOG_DISABLED)) {
-            case false:
-                switch (model->renderMode) {
-                    case RENDER_MODE_SURFACE_OPA:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_OPA);
-                        break;
-                    case RENDER_MODE_DECAL_OPA:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_DECAL_OPA);
-                        break;
-                    case RENDER_MODE_INTERSECTING_OPA:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_INTERSECTING_OPA);
-                        break;
-                    case RENDER_MODE_ALPHATEST:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_ALPHATEST);
-                        break;
-                    case RENDER_MODE_SURFACE_XLU_LAYER1:
-                    case RENDER_MODE_SURFACE_XLU_LAYER2:
-                    case RENDER_MODE_SURFACE_XLU_LAYER3:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_XLU);
-                        break;
-                    case RENDER_MODE_SURFACE_XLU_NO_AA:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_XLU_NO_AA);
-                        break;
-                    case RENDER_MODE_DECAL_XLU:
-                    case RENDER_MODE_DECAL_XLU_AHEAD:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_DECAL_XLU);
-                        break;
-                    case RENDER_MODE_DECAL_XLU_NO_AA:
-                    case RENDER_MODE_SHADOW:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_DECAL_XLU_NO_AA);
-                        break;
-                    case RENDER_MODE_INTERSECTING_XLU:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_INTERSECTING_XLU);
-                        break;
-                    case RENDER_MODE_PASS_THROUGH:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_PASS_THROUGH);
-                        break;
-                    case RENDER_MODE_ALPHATEST_ONESIDED:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_ALPHATEST_ONESIDED);
-                        break;
-                    case RENDER_MODE_SURFACE_OPA_NO_ZB:
-                    case RENDER_MODE_SURFACE_OPA_NO_ZB_BEHIND:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_OPA_NO_ZB);
-                        break;
-                    case RENDER_MODE_ALPHATEST_NO_ZB:
-                    case RENDER_MODE_ALPHATEST_NO_ZB_BEHIND:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_ALPHATEST_NO_ZB);
-                        break;
-                    case RENDER_MODE_SURFACE_XLU_NO_ZB:
-                    case RENDER_MODE_SURFACE_XLU_NO_ZB_BEHIND:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_XLU_NO_ZB);
-                        break;
-                    case RENDER_MODE_CLOUD_NO_ZCMP:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM1_CLOUD_NO_ZCMP);
-                        break;
-                }
-                break;
-            case true:
-                switch (model->renderMode) {
-                    case RENDER_MODE_SURFACE_OPA:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM3_SURFACE_OPA);
-                        break;
-                    case RENDER_MODE_DECAL_OPA:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM3_DECAL_OPA);
-                        break;
-                    case RENDER_MODE_INTERSECTING_OPA:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM3_INTERSECTING_OPA);
-                        break;
-                    case RENDER_MODE_ALPHATEST:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM3_ALPHATEST);
-                        break;
-                    case RENDER_MODE_SURFACE_XLU_LAYER1:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM3_SURFACE_XLU);
-                        break;
-                    case RENDER_MODE_DECAL_XLU:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM3_DECAL_XLU);
-                        break;
-                    case RENDER_MODE_INTERSECTING_XLU:
-                        gSPDisplayList(gMainGfxPos++, Gfx_RM3_INTERSECTING_XLU);
-                        break;
-                }
-                gDPSetFogColor(gMainGfxPos++, entity_fog_red, entity_fog_green, entity_fog_blue, entity_fog_alpha);
-                gSPFogPosition(gMainGfxPos++, entity_fog_dist_min, entity_fog_dist_max);
-                break;
+        if (entity_fog_enabled && !(model->flags & ENTITY_MODEL_FLAG_FOG_DISABLED)) {
+            switch (model->renderMode) {
+                case RENDER_MODE_SURFACE_OPA:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM3_SURFACE_OPA);
+                    break;
+                case RENDER_MODE_DECAL_OPA:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM3_DECAL_OPA);
+                    break;
+                case RENDER_MODE_INTERSECTING_OPA:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM3_INTERSECTING_OPA);
+                    break;
+                case RENDER_MODE_ALPHATEST:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM3_ALPHATEST);
+                    break;
+                case RENDER_MODE_SURFACE_XLU_LAYER1:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM3_SURFACE_XLU);
+                    break;
+                case RENDER_MODE_DECAL_XLU:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM3_DECAL_XLU);
+                    break;
+                case RENDER_MODE_INTERSECTING_XLU:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM3_INTERSECTING_XLU);
+                    break;
+            }
+            gDPSetFogColor(gMainGfxPos++, entity_fog_red, entity_fog_green, entity_fog_blue, entity_fog_alpha);
+            gSPFogPosition(gMainGfxPos++, entity_fog_dist_min, entity_fog_dist_max);
+        } else {
+            switch (model->renderMode) {
+                case RENDER_MODE_SURFACE_OPA:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_OPA);
+                    break;
+                case RENDER_MODE_DECAL_OPA:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM1_DECAL_OPA);
+                    break;
+                case RENDER_MODE_INTERSECTING_OPA:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM1_INTERSECTING_OPA);
+                    break;
+                case RENDER_MODE_ALPHATEST:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM1_ALPHATEST);
+                    break;
+                case RENDER_MODE_SURFACE_XLU_LAYER1:
+                case RENDER_MODE_SURFACE_XLU_LAYER2:
+                case RENDER_MODE_SURFACE_XLU_LAYER3:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_XLU);
+                    break;
+                case RENDER_MODE_SURFACE_XLU_NO_AA:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_XLU_NO_AA);
+                    break;
+                case RENDER_MODE_DECAL_XLU:
+                case RENDER_MODE_DECAL_XLU_AHEAD:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM1_DECAL_XLU);
+                    break;
+                case RENDER_MODE_DECAL_XLU_NO_AA:
+                case RENDER_MODE_SHADOW:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM1_DECAL_XLU_NO_AA);
+                    break;
+                case RENDER_MODE_INTERSECTING_XLU:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM1_INTERSECTING_XLU);
+                    break;
+                case RENDER_MODE_PASS_THROUGH:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM1_PASS_THROUGH);
+                    break;
+                case RENDER_MODE_ALPHATEST_ONESIDED:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM1_ALPHATEST_ONESIDED);
+                    break;
+                case RENDER_MODE_SURFACE_OPA_NO_ZB:
+                case RENDER_MODE_SURFACE_OPA_NO_ZB_BEHIND:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_OPA_NO_ZB);
+                    break;
+                case RENDER_MODE_ALPHATEST_NO_ZB:
+                case RENDER_MODE_ALPHATEST_NO_ZB_BEHIND:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM1_ALPHATEST_NO_ZB);
+                    break;
+                case RENDER_MODE_SURFACE_XLU_NO_ZB:
+                case RENDER_MODE_SURFACE_XLU_NO_ZB_BEHIND:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM1_SURFACE_XLU_NO_ZB);
+                    break;
+                case RENDER_MODE_CLOUD_NO_ZCMP:
+                    gSPDisplayList(gMainGfxPos++, Gfx_RM1_CLOUD_NO_ZCMP);
+                    break;
+            }
         }
         gSPClearGeometryMode(gMainGfxPos++, G_LIGHTING);
         if (!entity_fog_enabled || (model->flags & ENTITY_MODEL_FLAG_FOG_DISABLED)) {

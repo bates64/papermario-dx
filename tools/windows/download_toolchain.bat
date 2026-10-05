@@ -1,10 +1,11 @@
 @echo off
 
+set "CANONICAL_URL=https://github.com/bates64/papermario-dx.git"
+set "S3_BASE=https://fsn1.your-objectstorage.com/starhaven/papermario-dx"
+
 :: Ensure .dx directory exists
 if not exist "%DX_DIR%" mkdir "%DX_DIR%"
 
-:: Get the nearest dx-* tag (current commit or ancestor): prefer jj if this
-:: is a jj repo, otherwise fall back to git.
 set "HAVE_JJ=0"
 if exist ".jj" (
     where jj >nul 2>nul
@@ -14,57 +15,103 @@ set "HAVE_GIT=0"
 where git >nul 2>nul
 if not errorlevel 1 set "HAVE_GIT=1"
 
-if "%HAVE_JJ%"=="0" if "%HAVE_GIT%"=="0" (
+:: Toolchains are only published for commits on dx's main branch. Since
+:: users branch away from main, walking back from the current commit alone
+:: would just walk through their own commits, none of which are published.
+:: Fetching main and taking the merge-base finds the point where their
+:: history actually meets dx's, wherever they've branched from. From there,
+:: list up to 20 commits to try - a commit's build can be missing if CI
+:: failed for it.
+set "CANDIDATES_FILE=%DX_DIR%\candidates.txt"
+if exist "%CANDIDATES_FILE%" del "%CANDIDATES_FILE%"
+if "%HAVE_JJ%"=="1" (
+    rem jj can only fetch from a named remote, so use whichever one points at dx.
+    set "REMOTE="
+    for /f "usebackq tokens=1,2" %%A in (`jj git remote list 2^>nul`) do (
+        if not defined REMOTE (
+            echo %%B | findstr /c:"bates64/papermario-dx" >nul && set "REMOTE=%%A"
+        )
+    )
+    set "REVSET=@"
+    if defined REMOTE (
+        jj git fetch --quiet --remote "exact:!REMOTE!" --branch main >nul 2>nul
+        set "REVSET=fork_point(@ | remote_bookmarks(exact:main, exact:!REMOTE!))"
+    )
+    jj log --no-graph -r "ancestors(!REVSET!, 20)" -T "commit_id ++ \"\n\"" > "%CANDIDATES_FILE%" 2>nul
+) else if "%HAVE_GIT%"=="1" (
+    set "CURRENT="
+    for /f "usebackq delims=" %%C in (`git rev-parse HEAD 2^>nul`) do set "CURRENT=%%C"
+    set "BASE=!CURRENT!"
+    git fetch --quiet "%CANONICAL_URL%" main >nul 2>nul
+    set "MAIN_HASH="
+    for /f "usebackq delims=" %%M in (`git rev-parse FETCH_HEAD 2^>nul`) do set "MAIN_HASH=%%M"
+    if defined MAIN_HASH (
+        for /f "usebackq delims=" %%B in (`git merge-base "!CURRENT!" "!MAIN_HASH!" 2^>nul`) do set "BASE=%%B"
+    )
+    if defined BASE git log --format^=%%H -n 20 "!BASE!" > "%CANDIDATES_FILE%" 2>nul
+) else (
     echo Error: this needs jj or git to find the toolchain version to download.
-    echo Install jj: https://jj-vcs.github.io/jj/latest/install-and-setup/
-    echo Or install git: https://git-scm.com/ ^(or: winget install Git.Git^)
+    echo Install jj ^(https://jj-vcs.github.io/jj/latest/install-and-setup/^) or git ^(https://git-scm.com/^).
     exit /b 1
 )
 
-set "TAG="
-set "TAG_HASH="
-if "%HAVE_JJ%"=="1" (
-    for /f "usebackq delims=" %%T in (`jj log -r "latest(tags(glob:'dx-*') & ::@)" --no-graph -T "self.tags().join('|')" 2^>nul`) do if not defined TAG set "TAG=%%T"
-    if defined TAG (
-        for /f "usebackq delims=" %%H in (`jj log -r "latest(tags(glob:'dx-*') & ::@)" --no-graph -T "commit_id" 2^>nul`) do set "TAG_HASH=%%H"
-    )
-) else (
-    git describe --tags --abbrev=0 --match dx-* > "%TEMP%\dx-tag.txt" 2>nul
-    set /p TAG=<"%TEMP%\dx-tag.txt"
-    del "%TEMP%\dx-tag.txt" 2>nul
-    if defined TAG (
-        :: Get the commit hash the tag points to (detects force-moved tags like dx-nightly)
-        git rev-parse "!TAG!^{}" > "%TEMP%\dx-tag-hash.txt" 2>nul
-        set /p TAG_HASH=<"%TEMP%\dx-tag-hash.txt"
-        del "%TEMP%\dx-tag-hash.txt" 2>nul
-    )
+set "BASE="
+if exist "%CANDIDATES_FILE%" set /p BASE=<"%CANDIDATES_FILE%"
+if not defined BASE (
+    echo Error: could not determine the current commit.
+    exit /b 1
 )
 
-if not defined TAG (
-    echo Error: no dx-* tag found in the commit history.
-    echo The Windows build requires a tagged release with a pre-built toolchain.
+set "HASH="
+set "COMMIT="
+for /f "usebackq delims=" %%L in ("%CANDIDATES_FILE%") do (
+    if not defined HASH (
+        set "CANDIDATE="
+        curl -fsL -o "%TEMP%\dx-manifest.txt" "%S3_BASE%/commits/%%L/windows" 2>nul
+        if not errorlevel 1 (
+            set /p CANDIDATE=<"%TEMP%\dx-manifest.txt"
+            if defined CANDIDATE (
+                set "HASH=!CANDIDATE!"
+                set "COMMIT=%%L"
+            )
+        )
+        del "%TEMP%\dx-manifest.txt" 2>nul
+    )
+)
+del "%CANDIDATES_FILE%"
+
+if not defined HASH (
+    echo Error: no published windows toolchain found near commit %BASE%.
+    echo The downloadable toolchain requires a build published from dx's main branch.
     exit /b 1
 )
 
 :: Check if toolchain needs downloading
 set "NEED_DOWNLOAD=0"
 if not exist "%TOOLCHAIN_DIR%\bin\ninja.exe" set "NEED_DOWNLOAD=1"
-if exist "%DX_DIR%\windows-tag" (
-    set /p CURRENT_TAG=<"%DX_DIR%\windows-tag"
-    if not "!CURRENT_TAG!"=="%TAG_HASH%" set "NEED_DOWNLOAD=1"
+if exist "%DX_DIR%\windows-hash" (
+    set /p CURRENT_HASH=<"%DX_DIR%\windows-hash"
+    if not "!CURRENT_HASH!"=="%HASH%" set "NEED_DOWNLOAD=1"
 ) else (
     if exist "%TOOLCHAIN_DIR%" set "NEED_DOWNLOAD=1"
 )
 
 if "%NEED_DOWNLOAD%"=="1" (
-    echo Downloading toolchain for %TAG%...
+    echo Downloading toolchain for commit %COMMIT%...
 
-    :: Clean up old toolchain
+    :: Clean up old toolchain. The sccache server outlives the build and holds
+    :: its exe open, which would stop the directory from being deleted.
+    if exist "%TOOLCHAIN_DIR%\bin\sccache.exe" "%TOOLCHAIN_DIR%\bin\sccache.exe" --stop-server >nul 2>nul
     if exist "%TOOLCHAIN_DIR%" rmdir /s /q "%TOOLCHAIN_DIR%"
+    if exist "%TOOLCHAIN_DIR%" (
+        echo Error: could not delete the old toolchain at %TOOLCHAIN_DIR%.
+        echo Close any programs using it, such as a running build, and try again.
+        exit /b 1
+    )
     if exist "%TOOLCHAIN_ZIP%" del "%TOOLCHAIN_ZIP%"
 
-    :: Download from GitHub release
-    set "URL=https://github.com/%REPO%/releases/download/%TAG%/papermario-dx-windows.zip"
+    :: Download from S3
+    set "URL=%S3_BASE%/toolchains/%HASH%.zip"
     curl -L -o "%TOOLCHAIN_ZIP%" "!URL!"
     if errorlevel 1 (
         echo Error: failed to download toolchain from !URL!
@@ -73,7 +120,7 @@ if "%NEED_DOWNLOAD%"=="1" (
 
     :: Extract
     echo Extracting toolchain...
-    
+
     where unzip >nul 2>nul
     if not errorlevel 1 (
         :: mingw/git bash's tar command works differently to windows' builtin one so we're using unzip instead
@@ -82,7 +129,7 @@ if "%NEED_DOWNLOAD%"=="1" (
         :: Using windows' tar command
         where tar >nul 2>nul
         if errorlevel 1 (
-            echo msgbox "tar is not available on this system (Windows 7)." ^& vbCrLf ^& vbCrLf ^& "Please manually extract:" ^& vbCrLf ^& "%TOOLCHAIN_ZIP%" ^& vbCrLf ^& vbCrLf ^& "To the following directory:" ^& vbCrLf ^& "%DX_DIR%\windows" ^& vbCrLf ^& vbCrLf ^& "Then run build.bat again.", vbOKOnly, "papermario-dx" > "%TEMP%\dx-notar.vbs"
+            echo msgbox "tar is not available on this system (Windows 7)." ^& vbCrLf ^& vbCrLf ^& "Please manually extract:" ^& vbCrLf ^& "%TOOLCHAIN_ZIP%" ^& vbCrLf ^& vbCrLf ^& "To the following directory:" ^& vbCrLf ^& "%DX_DIR%\windows" ^& vbCrLf ^& vbCrLf ^& "Then run tools\build.bat again.", vbOKOnly, "papermario-dx" > "%TEMP%\dx-notar.vbs"
             wscript "%TEMP%\dx-notar.vbs"
             del "%TEMP%\dx-notar.vbs"
             exit /b 1
@@ -93,9 +140,22 @@ if "%NEED_DOWNLOAD%"=="1" (
             exit /b 1
         )
     )
-    ren "%DX_DIR%\papermario-dx-windows" windows
+    :: Antivirus and sync tools briefly hold newly extracted files open, which
+    :: makes renaming the directory fail, so retry for a few seconds. ping
+    :: waits about a second and, unlike timeout, works without a console.
+    for /l %%N in (1,1,10) do (
+        if exist "%DX_DIR%\papermario-dx-windows" (
+            ren "%DX_DIR%\papermario-dx-windows" windows 2>nul
+            if exist "%DX_DIR%\papermario-dx-windows" ping -n 2 127.0.0.1 >nul
+        )
+    )
+    if not exist "%TOOLCHAIN_DIR%" (
+        echo Error: could not rename %DX_DIR%\papermario-dx-windows to windows.
+        echo Another program, such as antivirus or OneDrive, might be using it. Try again in a minute.
+        exit /b 1
+    )
     del "%TOOLCHAIN_ZIP%"
 
-    :: Record the tag commit hash so we can detect updates (including force-moved tags)
-    echo %TAG_HASH%> "%DX_DIR%\windows-tag"
+    :: Record the content hash so we can detect updates
+    echo %HASH%> "%DX_DIR%\windows-hash"
 )

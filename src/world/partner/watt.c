@@ -552,7 +552,7 @@ void N(update_player_carry_anim)(void) {
 
 void N(sync_held_position)(void) {
     Npc* partnerNPC;
-    Npc* new_var2;
+    Npc* newVar2;
     Camera* camera = gCameras;
     PlayerStatus* playerStatus;
     f32 offsetScale, angle;
@@ -585,9 +585,9 @@ void N(sync_held_position)(void) {
         partnerNPC = gPartnerNpc;
         partnerNPC->pos.x = playerStatus->pos.x + (sin_rad(angle) * gPlayerStatusPtr->colliderDiameter * offsetScale);
 
-        new_var2 = gPartnerNpc;
+        newVar2 = gPartnerNpc;
         playerStatus = gPlayerStatusPtr;
-        partnerNPC = new_var2;
+        partnerNPC = newVar2;
         partnerNPC->pos.z = playerStatus->pos.z - (cos_rad(angle) * gPlayerStatusPtr->colliderDiameter * offsetScale);
 
         gPartnerNpc->yaw = gPlayerStatusPtr->targetYaw;

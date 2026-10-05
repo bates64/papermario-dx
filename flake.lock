@@ -71,13 +71,29 @@
     "nixpkgs_2": {
       "locked": {
         "lastModified": 0,
-        "narHash": "sha256-FVZKU8VYNST8+LKQBt1Nij9FAXEDufXGgFbg26wqmZk=",
-        "path": "/nix/store/fgwbzb1zisl9kjfqnbhkpyk71xfsg6qa-source",
+        "narHash": "sha256-PwQASeL2cGVmrtQYlrBur0U20Xy07uSWVnFup2PHnDs=",
+        "path": "/nix/store/z88hhaq46sdqzkm0zas1sn284h7w87k9-source",
         "type": "path"
       },
       "original": {
         "id": "nixpkgs",
         "type": "indirect"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1735563628,
+        "narHash": "sha256-OnSAY7XDSx7CtDoqNh8jwVwh4xNL/2HaJxGjryLWzX8=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "b134951a4c9f3c995fd7be05f3243f8ecd65d798",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-24.05",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "root": {
@@ -91,23 +107,21 @@
     "star-rod": {
       "inputs": {
         "gradle-dot-nix": "gradle-dot-nix",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1737918690,
-        "narHash": "sha256-ZWuKG9rHsxCEcV2z7fy4PrIWhLSIZNsPi9caT2ZRhxI=",
-        "owner": "z64a",
-        "repo": "star-rod",
-        "rev": "9339cb4e867514267ff8ab404b00b53e5a5e67dd",
-        "type": "github"
+        "lastModified": 1791132694,
+        "narHash": "sha256-unV0SBdWvPpTgpHj0+zhlThJX4sWjnrF5bUgRxoqIcs=",
+        "ref": "refs/heads/main",
+        "rev": "388d85512eeb3742773e16f863777d4ab6aa48d8",
+        "revCount": 83,
+        "type": "git",
+        "url": "https://tangled.org/starhaven.dev/star-rod"
       },
       "original": {
-        "owner": "z64a",
-        "repo": "star-rod",
-        "rev": "9339cb4e867514267ff8ab404b00b53e5a5e67dd",
-        "type": "github"
+        "rev": "388d85512eeb3742773e16f863777d4ab6aa48d8",
+        "type": "git",
+        "url": "https://tangled.org/starhaven.dev/star-rod"
       }
     },
     "systems": {

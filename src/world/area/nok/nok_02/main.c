@@ -2,16 +2,10 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript N(EVS_ExitWalk_nok_01_1) = {
-    Call(UseExitHeading, 60, nok_02_ENTRY_0)
-    Exec(ExitWalk)
-    Call(GotoMap, Ref("nok_01"), nok_01_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitWalk_nok_01_1) = EVT_EXIT_WALK(60, nok_02_ENTRY_0, "nok_01", nok_01_ENTRY_1);
 
 EvtScript N(EVS_ExitWalk_nok_03_0) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
     IfEq(GB_KootFavor_State, KOOT_FAVOR_STATE_2)
         Set(GF_KootFavor_LeftKoopaVillage, true)
     EndIf

@@ -4,11 +4,11 @@ sidebar:
   order: 50
 ---
 
-The title screen is the first thing players see. You can customise the text, images, and behaviour through `src/dx/config.h` and by replacing asset files.
+The title screen is the first thing players see. You can customise the text, images, and behaviour through `dx/config.h` and by replacing asset files.
 
 ## Mod name and version
 
-Set the name and version that appear on the file select menu in `src/dx/config.h`:
+Set the name and version that appear on the file select menu in `dx/config.h`:
 
 ```c
 #define DX_MOD_NAME "My Cool Mod"
@@ -31,7 +31,7 @@ These options control what happens when the player starts a new game:
 
 ## Skipping intros
 
-By default, DX skips the logo screens, storybook, and demo reel to speed up development. You can change these in `src/dx/config.h`:
+By default, DX skips the logo screens, storybook, and demo reel to speed up development. You can change these in `dx/config.h`:
 
 | Option | Default | Effect |
 |--------|---------|--------|
@@ -43,7 +43,7 @@ Set these to `0` before releasing your mod so players see the full intro sequenc
 
 ## Replacing title screen assets
 
-The title screen images are in `assets/us/mapfs/title/`. To replace them, create overrides in `assets/mod/mapfs/title/`:
+The title screen images are in `mapfs/title/`. To replace one, [override it](/papermario-dx/project-structure#the-assets-folder) with a file at the same path:
 
 | File | Description |
 |------|-------------|
@@ -51,14 +51,12 @@ The title screen images are in `assets/us/mapfs/title/`. To replace them, create
 | `press_start.png` | The "PRESS START" text (128x32, grayscale+alpha) |
 | `copyright.png` | The copyright notice text |
 
-The title screen background is at `assets/us/mapfs/bg/title_bg.png`. Override it at `assets/mod/mapfs/bg/title_bg.png`.
+The title screen background is at `mapfs/bg/title_bg.png`.
 
-Additional background layers and decorative elements are in `assets/us/title/`:
+Additional background layers and decorative elements are in `title/`:
 
 | File | Description |
 |------|-------------|
 | `bg_1.png` through `bg_4.png` | Background layers |
 | `bowser_silhouette.png` | Bowser silhouette |
 | `tape.png` | Decorative tape element |
-
-Override these at `assets/mod/title/`.

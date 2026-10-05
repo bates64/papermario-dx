@@ -1,0 +1,15 @@
+CompileFlags:
+  Add: -Wno-unknown-warning-option
+InlayHints:
+  Designators: No
+# clangd's include analysis doesn't fit this codebase: files get common.h
+# through the precompiled header, and use what it includes rather than what it
+# declares.
+Diagnostics:
+  UnusedIncludes: None
+  MissingIncludes: None
+# configure downloads this from the release for the nearest dx-* tag. If it's
+# missing, clangd logs an error and works without it.
+Index:
+  External:
+    File: .dx/papermario-dx.idx

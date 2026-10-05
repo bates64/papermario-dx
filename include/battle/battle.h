@@ -140,12 +140,12 @@ typedef struct FormationRow {
 typedef FormationRow Formation[];
 
 typedef struct Stage {
-    /* 0x00 */ char* texture;
+    /* 0x00 */ const char* texture;
     /* 0x04 */ const char* shape;
     /* 0x08 */ const char* hit;
     /* 0x0C */ EvtScript* preBattle;        // sets BattleStatus::controlScript on battle start
     /* 0x10 */ EvtScript* postBattle;       // sets BattleStatus::controlScript on battle end
-    /* 0x14 */ char* bg;
+    /* 0x14 */ const char* bg;
     /* 0x18 */ s32* foregroundModelList;
     /* 0x1C */ s32 stageEnemyCount;         // number of enemies in the stageFormation
     /* 0x20 */ Formation* stageFormation;   // extra enemies native to this stage

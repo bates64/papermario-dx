@@ -3,9 +3,11 @@
 import json
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
+import urllib.request
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
@@ -17,6 +19,7 @@ if sys.platform == 'win32':
     import ntfsutils.junction
 
 import assets
+from common import layer_relative, star_rod
 import linker
 from action_data import actions_from_yaml
 from effect_data import effects_from_yaml
@@ -78,6 +81,91 @@ BATTLE_MENU_SOURCES = (
     "battle/states/select_target.c",
 )
 
+# Serves the shared sccache bucket's config and credentials. Overridable for
+# self-hosted caches.
+BUILD_JSON_URL = os.environ.get(
+    "PAPERMARIO_BUILD_JSON_URL", "https://papermario-dx.starhaven.dev/build.json"
+)
+
+# Ninja can't set per-command environment variables portably, so the build
+# environment exports SCCACHE_CONF and AWS_SHARED_CREDENTIALS_FILE pointing at
+# these files instead. It also exports SCCACHE_SKIP_CACHE_CHECK, because
+# otherwise the sccache server refuses to start, failing every compile, when
+# the bucket is slow or unreachable. With the check skipped, a failed bucket
+# lookup is a cache miss, and the local disk cache in front of the bucket
+# keeps working offline.
+SCCACHE_CONFIG_PATH = ROOT / ".dx/sccache-config.toml"
+SCCACHE_CREDENTIALS_PATH = ROOT / ".dx/sccache-credentials"
+
+
+def write_shared_sccache_config() -> None:
+    try:
+        with urllib.request.urlopen(BUILD_JSON_URL, timeout=3) as resp:
+            config = json.load(resp)["sccache"]
+        endpoint: str = config["endpoint"]
+        use_ssl = not endpoint.startswith("http://")
+        endpoint = endpoint.removeprefix("https://").removeprefix("http://")
+
+        SCCACHE_CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
+        SCCACHE_CONFIG_PATH.write_text(
+            "[cache.multilevel]\n"
+            'chain = ["disk", "s3"]\n'
+            "\n"
+            "[cache.disk]\n"
+            # Preprocessor cache mode keys objects differently, so they'd
+            # miss the bucket's entries.
+            "preprocessor_cache_mode = { use_preprocessor_cache_mode = false }\n"
+            "\n"
+            "[cache.s3]\n"
+            f'bucket = "{config["bucket"]}"\n'
+            f'endpoint = "{endpoint}"\n'
+            'region = "auto"\n'
+            f"use_ssl = {str(use_ssl).lower()}\n"
+            "no_credentials = false\n"
+        )
+        SCCACHE_CREDENTIALS_PATH.write_text(
+            "[default]\n"
+            f'aws_access_key_id = {config["accessKey"]}\n'
+            f'aws_secret_access_key = {config["secretKey"]}\n'
+        )
+        SCCACHE_CREDENTIALS_PATH.chmod(0o600)
+    except (OSError, ValueError, KeyError) as e:
+        SCCACHE_CONFIG_PATH.unlink(missing_ok=True)
+        SCCACHE_CREDENTIALS_PATH.unlink(missing_ok=True)
+        print(f"note: couldn't reach shared sccache config ({e}), using a local-only cache", file=sys.stderr)
+
+
+def migrate_mod_assets() -> None:
+    """Move a mod's assets from assets/mod into src, its asset layer now.
+
+    A file already at the same path in src stops configure rather than being
+    overwritten, so neither copy is lost.
+    """
+    old = ROOT / "assets" / "mod"
+    if not old.is_dir():
+        return
+    files = [
+        path
+        for path in sorted(old.rglob("*"))
+        if path.is_file() and path.name not in IGNORED_ASSET_NAMES
+    ]
+    clashes = [
+        path for path in files if (ROOT / "src" / path.relative_to(old)).exists()
+    ]
+    if clashes:
+        raise SystemExit(
+            "configure: a mod's assets go in src now, but these are in both "
+            "assets/mod and src. Keep one of each, then configure again:\n"
+            + "\n".join(f"  {posix(path.relative_to(ROOT))}" for path in clashes)
+        )
+    for path in files:
+        destination = ROOT / "src" / path.relative_to(old)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(path), str(destination))
+    shutil.rmtree(old)
+    if files:
+        plural = "" if len(files) == 1 else "s"
+        print(f"configure: moved {len(files)} file{plural} from assets/mod into src")
 
 def _walk_source_file_list():
     """Returns a sorted list of all files and directories under SOURCE_DIRS."""
@@ -96,6 +184,12 @@ def _walk_source_file_list():
             file_list.append(str(rel) + "/")
             for f in sorted(filenames):
                 file_list.append(str(rel / f))
+                # Deleting an asset through its sidecar removes it as surely
+                # as deleting the file.
+                if f.endswith(assets.SIDECAR_SUFFIX) and assets.sidecar_deletes(
+                    Path(dirpath) / f
+                ):
+                    file_list[-1] += " (delete)"
     return file_list
 
 
@@ -114,7 +208,18 @@ def posix(path) -> str:
 
 
 # Files a hand-authored asset layer may hold that no build rule reads.
-IGNORED_ASSET_NAMES = {".gitkeep", ".DS_Store", "Thumbs.db"}
+# Star Rod's map editor saves each map's markers and settings to features.json
+# beside the map's code, and keeps crash and backup copies of its source there.
+IGNORED_ASSET_NAMES = {
+    ".gitkeep",
+    ".DS_Store",
+    "Thumbs.db",
+    "features.json",
+    "map.crash.xml",
+    "map.backup.xml",
+}
+# Files in an asset layer that are code or configuration rather than assets.
+NOT_ASSETS = (".c", ".cpp", ".s", ".h", ".hpp", ".ld", ".yaml", ".md")
 
 
 def _repo_paths(entries) -> List[str]:
@@ -202,11 +307,66 @@ class NinjaWriter(ninja_syntax.Writer):
         )
 
 
+def map_source_dir(name: str) -> Path:
+    """Where Star Rod keeps a map's source within a layer: the path of the map's code under src.
+
+    Stages are named like kzn_bt05. A map is found in whichever area holds its
+    code, else in the area its name begins with.
+    """
+    area = name[:3].rstrip("_")
+    if "_bt" in name:
+        return Path("battle/common/stage") / f"area_{area}" / name
+    for code in (ROOT / "src/world/area").glob(f"*/{name}"):
+        if code.is_dir():
+            return code.relative_to(ROOT / "src")
+    return Path("world/area") / area / name
+
+
+def star_rod_version() -> str:
+    """Star Rod's VERSION and COMMIT lines. The map dump is redone when they change."""
+    result = subprocess.run(
+        [star_rod(), "-Version"], stdout=subprocess.PIPE, text=True, check=True, cwd=ROOT
+    )
+    return result.stdout
+
+
 def exec_shell(command: List[str]) -> str:
     ret = subprocess.run(
         command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
     )
     return ret.stdout
+
+
+def cross_include_flags(compiler: str, language: str) -> List[str]:
+    """Flags that give clang the cross-compiler's header search path.
+
+    GCC's own built-in headers (lib/gcc/<target>/<version>/) are left out, since
+    clang has its own. Directories before them (libstdc++) are searched first,
+    and directories after them (the C library) last, as GCC does.
+    """
+    try:
+        output = subprocess.run(
+            [compiler, f"-x{language}", "-E", "-v", os.devnull],
+            capture_output=True,
+            text=True,
+        ).stderr
+    except FileNotFoundError:
+        return []
+    lines = output.splitlines()
+    try:
+        start = lines.index("#include <...> search starts here:") + 1
+        end = lines.index("End of search list.", start)
+    except ValueError:
+        return []
+    flags = []
+    flag = "-isystem"
+    for line in lines[start:end]:
+        path = os.path.normpath(line.strip())
+        if "/lib/gcc/" in posix(path):
+            flag = "-idirafter"
+            continue
+        flags += [flag, posix(path)]
+    return flags
 
 
 def write_ninja_rules(
@@ -215,22 +375,17 @@ def write_ninja_rules(
     extra_cppflags: str,
     extra_cflags: str,
     extra_cxxflags: str,
-    use_ccache: bool,
+    use_sccache: bool,
     shift: bool,
     debug: bool,
 ):
     # platform-specific
 
-    ccache = ""
+    sccache = ""
 
-    if use_ccache:
-        ccache = "ccache "
-        try:
-            subprocess.call(
-                ["ccache"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-            )
-        except FileNotFoundError:
-            ccache = ""
+    if use_sccache and shutil.which("sccache"):
+        write_shared_sccache_config()
+        sccache = "sccache "
 
     cross = "mips-linux-gnu-"
     cc_modern = f"{cross}gcc"
@@ -245,11 +400,20 @@ def write_ninja_rules(
 
     CPPFLAGS = CPPFLAGS_COMMON
 
-    modern_flags = "-c -G0 -O2 -g1 -gdwarf -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch"
+    # Keeps debug paths portable across machines sharing the cache.
+    # SCCACHE_BASEDIRS strips the checkout path from this flag before hashing.
+    prefix_map = f'"-ffile-prefix-map={os.getcwd()}=/papermario-dx"'
+
+    modern_flags = f"-c -G0 -O2 -g1 -gdwarf -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {prefix_map}"
     cflags_modern = f"{modern_flags} {extra_cflags}"
     cxxflags_modern = f"{modern_flags} {extra_cxxflags}"
 
     ninja.variable("python", f'"{sys.executable}"')
+    # sccache keys on the preprocessed source, which leaves out files pulled in
+    # by `.incbin`, so edges that embed assets clear this to compile uncached.
+    # The trailing space lives in the value because Windows fails to start a
+    # command that begins with one.
+    ninja.variable("sccache", sccache)
 
     ld_args = f"-T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Map $mapfile --no-check-sections --whole-archive -T $in -o $out"
     ld = (
@@ -262,18 +426,6 @@ def write_ninja_rules(
         "ld",
         description="Linking engine",
         command=f"{ld} {ld_args}",
-    )
-
-    ninja.rule(
-        "shape_ld",
-        description="Linking map shape $out",
-        command=f"{ld} -T src/map_shape.ld $in -o $out",
-    )
-
-    ninja.rule(
-        "shape_objcopy",
-        description="Extracting map shape binary $out",
-        command=f"{cross}objcopy $in $out -O binary",
     )
 
     z64_debug_flags = ""
@@ -307,7 +459,7 @@ def write_ninja_rules(
     ninja.rule(
         "cc_modern",
         description="Compiling $in",
-        command=f"{ccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.h -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
+        command=f"${{sccache}}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include $pch_header -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -315,15 +467,15 @@ def write_ninja_rules(
     ninja.rule(
         "cxx_modern",
         description="Compiling $in",
-        command=f"{ccache}{cxx_modern} {cxxflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.hpp -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
+        command=f"${{sccache}}{cxx_modern} {cxxflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include $pch_header -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
 
     ninja.rule(
-        "evt_validate_obj",
+        "evt_validate",
         description="Validating scripts in $evt_target",
-        command=f"$python {BUILD_TOOLS}/evt_validate_obj.py --effects-yaml src/registry/effects.yaml --object-list $out.rsp --out $out",
+        command="evt_validate --effects-yaml src/registry/effects.yaml --object-list $out.rsp --out $out",
         rspfile="$out.rsp",
         rspfile_content="$in_newline",
     )
@@ -483,10 +635,19 @@ def write_ninja_rules(
         command=f"$python {BUILD_TOOLS}/mapfs/pack_title_data.py $version $out $in",
     )
 
+    # One Star Rod process compiles every map that changed, writing each one's
+    # shape and collision with a header of model, collider, and zone indices,
+    # and lists the files it read in a depfile. Starting it once per map would
+    # cost far more than the compiling.
     ninja.rule(
-        "map_header",
-        description="Generating map header for $in",
-        command=f"$python {BUILD_TOOLS}/mapfs/map_header.py $in $out",
+        "maps",
+        description="Compiling maps",
+        command=f'"{star_rod()}" -BuildMaps $out_dir $out_dir/maps.rsp',
+        rspfile="$out_dir/maps.rsp",
+        rspfile_content="$in_newline",
+        depfile="$out_dir/maps.d",
+        deps="gcc",
+        restat=True,
     )
 
     ninja.rule(
@@ -518,12 +679,6 @@ def write_ninja_rules(
     )
 
     ninja.rule(
-        "shape",
-        description="Converting map shape $in",
-        command=f"$python {BUILD_TOOLS}/mapfs/shape.py $in $out",
-    )
-
-    ninja.rule(
         "effect_data",
         description="Generating effect data",
         command=f"$python {BUILD_TOOLS}/effects.py $in_yaml $out_dir",
@@ -550,20 +705,31 @@ def write_ninja_rules(
     ninja.rule(
         "syms",
         description="Reading engine symbols for overlays",
-        command=f"$python {BUILD_TOOLS}/overlay.py gen-syms $elf $out $symbol_files",
+        command=f"$python {BUILD_TOOLS}/overlay_cli.py gen-syms $elf $syms $syms_script $symbol_files",
         restat=True,
     )
 
     ninja.rule(
         "ovl_link_convert",
         description="Linking overlay $ovl_src",
-        command=f"$python {BUILD_TOOLS}/overlay.py link $syms $out $link_addr $force_export $max_loaded_size $require_resolved $in",
+        command=f"$python {BUILD_TOOLS}/overlay_cli.py link $syms $out $link_addr $force_export $max_loaded_size $require_resolved $in",
+    )
+
+    # A debugger loads this alongside the engine's ELF, offset to wherever the
+    # game loaded the overlay. Calls into the engine resolve against the
+    # symbols in $syms_script, which names each symbol once, where the engine's
+    # ELF also holds libgcc's unused copies of symbols the game defines itself.
+    # Some overlays define a global twice, which the overlay linker tolerates.
+    ninja.rule(
+        "ovl_debug_elf",
+        description="Linking overlay debug ELF $ovl_src",
+        command=f"{ld} -T $script --no-check-sections --allow-multiple-definition -o $out $in $syms_script",
     )
 
     ninja.rule(
         "ovl_apply",
         description="Applying overlays",
-        command=f"$python {BUILD_TOOLS}/overlay.py apply-all $in $out $syms $manifest",
+        command=f"$python {BUILD_TOOLS}/overlay_cli.py apply-all $in $out $syms $manifest",
     )
 
 
@@ -584,6 +750,9 @@ class Configure:
 
     def dump_stamp(self) -> Path:
         return self.build_path() / "assets_dumped.stamp"
+
+    def maps_dump_stamp(self) -> Path:
+        return self.build_path() / "maps_dumped.stamp"
 
     def load(self) -> None:
         """Read the version's configuration and scan what it points at."""
@@ -645,6 +814,17 @@ class Configure:
         )
         self.dump_stamp().parent.mkdir(parents=True, exist_ok=True)
         self.dump_stamp().write_text("")
+        if assets:
+            self.dump_maps()
+
+    def dump_maps(self) -> None:
+        """Decompile the dumped map binaries into map sources, replacing any earlier dump.
+
+        Star Rod does the decompiling, so this is redone whenever its version
+        changes.
+        """
+        subprocess.run([star_rod(), "-DumpMaps"], check=True, cwd=ROOT)
+        self.maps_dump_stamp().write_text(star_rod_version())
 
     @staticmethod
     def source_relative_path(path: Path) -> Union[Path, None]:
@@ -721,7 +901,7 @@ class Configure:
         packed = self.layout.packed_dirs
         found: Dict[str, Path] = {}
         for layer in reversed(self.asset_stack):
-            root = ROOT / "assets" / layer
+            root = ROOT / layer
             if not root.is_dir():
                 continue
             base = str(root)
@@ -734,7 +914,11 @@ class Configure:
                 for filename in filenames:
                     if filename.endswith(".png"):
                         found[prefix + filename] = Path(directory) / filename
-        return {Path(name): found[name] for name in sorted(found)}
+        return {
+            Path(name): found[name]
+            for name in sorted(found)
+            if not assets.is_deleted(found[name], self.asset_stack)
+        }
 
     def register_asset(self, object_path: Path) -> None:
         """Record an object so the linker script can place it in its segment."""
@@ -797,7 +981,7 @@ class Configure:
         """The image effect animations, across the asset stack."""
         found: Dict[str, Path] = {}
         for layer in reversed(self.asset_stack):
-            for source in (ROOT / "assets" / layer / "imgfx").glob("*.json"):
+            for source in (ROOT / layer / "imgfx").glob("*.json"):
                 found[source.name] = source.relative_to(ROOT)
         return [found[name] for name in sorted(found)]
 
@@ -846,9 +1030,9 @@ class Configure:
 
         # Each animation is reached by name from a table in the engine, so the
         # order these are emitted in only decides where they sit.
-        imgfx_c = version_assets / "imgfx" / "imgfx_data.c"
+        imgfx_c = self.build_path() / version_assets / "imgfx" / "imgfx_data.c"
         build(imgfx_c, self.imgfx_animations(), "imgfx_data")
-        imgfx_obj = self.build_path() / (posix(imgfx_c) + ".o")
+        imgfx_obj = Path(posix(imgfx_c) + ".o")
         build(
             imgfx_obj,
             [imgfx_c],
@@ -918,7 +1102,7 @@ class Configure:
         message_bins = []
         layer_sizes = []
         for layer in reversed(self.asset_stack):
-            directory = Path("assets") / layer / "msg"
+            directory = Path(layer) / "msg"
             count = 0
             if directory.exists():
                 for source in sorted(directory.glob("*.msg")):
@@ -961,33 +1145,83 @@ class Configure:
             for layer in self.asset_stack:
                 found.update(
                     path.name
-                    for path in (ROOT / "assets" / layer / "mapfs" / directory).glob(
+                    for path in (ROOT / layer / "mapfs" / directory).glob(
                         pattern
                     )
+                    if not assets.is_deleted(path, self.asset_stack)
                 )
             return sorted(found)
 
         contents = []
-        for shape in names("geom", "*_shape.bin"):
-            name = shape[: -len("_shape.bin")]
-            # The shape is rebuilt before packing; the collision is packed as is.
-            contents.append(mapfs / "geom" / f"{name}_shape_built.bin")
-            contents.append(mapfs / "geom" / f"{name}_hit.bin")
+        for name in self.map_sources():
+            contents.append(self.map_build_dir() / f"{name}_shape.bin")
+            contents.append(self.map_build_dir() / f"{name}_hit.bin")
         contents += [mapfs / "tex" / f"{n[:-5]}.bin" for n in names("tex", "*_tex.json")]
         contents += [mapfs / "bg" / n for n in names("bg", "*_bg.png")]
         contents.append(mapfs / "title_data.bin")
         contents += [mapfs / "party" / n for n in names("party", "*.png")]
         return contents
 
-    def write_mapfs_rules(self, build, c_maps) -> None:
+    def map_sources(self) -> Dict[str, Path]:
+        """Every map's source, keyed by map name, from the highest layer holding it.
+
+        A map's source sits at the path of its code under src, as in
+        world/area/kmr/kmr_02/map.xml.
+        """
+        found: Dict[str, Path] = {}
+        for layer in self.asset_stack:
+            for pattern in ["world/area/*/*/map.xml", "battle/common/stage/*/*/map.xml"]:
+                for path in (ROOT / layer).glob(pattern):
+                    name = path.parent.name
+                    if name not in found and not assets.is_deleted(path, self.asset_stack):
+                        found[name] = path.relative_to(ROOT)
+        return dict(sorted(found.items()))
+
+    def move_old_map_sources(self) -> None:
+        """Move map sources from mapfs/geom/<map>.xml to where Star Rod keeps them.
+
+        Only hand-authored layers are moved; the dumped layer is redumped
+        instead. Star Rod's crash and backup copies, <map>.crash.xml and
+        <map>.backup.xml, move with the map as map.crash.xml and map.backup.xml.
+        """
+        for layer in self.asset_stack[:-1]:
+            for old in sorted((ROOT / layer / "mapfs" / "geom").glob("*.xml")):
+                name, _, copy = old.stem.partition(".")
+                new = ROOT / layer / map_source_dir(name) / ".".join(["map", copy, "xml"] if copy else ["map", "xml"])
+                if new.exists():
+                    print(f"warning: not moving {posix(old.relative_to(ROOT))}: {posix(new.relative_to(ROOT))} exists")
+                    continue
+                new.parent.mkdir(parents=True, exist_ok=True)
+                old.rename(new)
+                print(f"Moved {posix(old.relative_to(ROOT))} to {posix(new.relative_to(ROOT))}")
+
+    def map_build_dir(self) -> Path:
+        """Where compiled maps and their headers go, on the include path as mapfs/."""
+        return self.build_path() / "include" / "mapfs"
+
+    def write_mapfs_rules(self, build) -> None:
         """Build the map filesystem."""
+        sources = self.map_sources()
+        build(
+            [self.map_build_dir() / f"{name}_{part}" for name in sources for part in ["shape.bin", "hit.bin"]],
+            list(sources.values()),
+            "maps",
+            variables={"out_dir": posix(self.map_build_dir())},
+            implicit_outputs=[
+                posix(self.map_build_dir() / f"{name}_{part}.h") for name in sources for part in ["shape", "hit"]
+            ],
+            # Star Rod checks battle stages against SHAPE_SIZE_LIMIT in model.h.
+            implicit_deps=[Path("include/model.h")],
+        )
+
         src_paths = self.mapfs_contents()
 
         seg_name = "mapfs"
         object_path = self.build_path() / "assets" / self.version / "mapfs.dat.o"
         # flat list of (uncompressed path, compressed? path) pairs
         bin_yay0s: List[Path] = []
-        src_dir = Path("assets/x") / seg_name
+        # Inputs resolve through the asset stack to the highest layer's file.
+        src_dir = Path(self.asset_stack[-1]) / seg_name
 
         for path in src_paths:
             name = path.stem
@@ -1101,79 +1335,10 @@ class Configure:
                     },
                     asset_deps=[f"mapfs/tex/{name}"],
                 )
-            elif name.endswith("_shape_built"):
-                base_name = name[:-6]
-                map_name = base_name[:-6]
-                raw_bin_path = self.resolve_asset_path(
-                    f"assets/x/mapfs/geom/{base_name}.bin"
-                )
-                bin_path = bin_path.parent / "geom" / (base_name + ".bin")
-
-                if c_maps:
-                    # raw bin -> c -> o -> elf -> objcopy -> final bin file
-                    c_file_path = (
-                        bin_path.parent / "geom" / base_name
-                    ).with_suffix(".c")
-                    o_path = bin_path.parent / "geom" / (base_name + ".o")
-                    elf_path = bin_path.parent / "geom" / (base_name + ".elf")
-
-                    build(c_file_path, [raw_bin_path], "shape")
-                    build(
-                        o_path,
-                        [c_file_path],
-                        "cc_modern",
-                        variables={
-                            "cflags": "",
-                            "cppflags": f"-DVERSION_{self.version.upper()}",
-                        },
-                    )
-                    build(elf_path, [o_path], "shape_ld")
-                    build(bin_path, [elf_path], "shape_objcopy")
-                else:
-                    build(bin_path, [raw_bin_path], "cp")
-
-                xml_path = self.resolve_asset_path(
-                    f"assets/x/mapfs/geom/{map_name}.xml"
-                )
-                if xml_path.exists():
-                    build(
-                        self.build_path()
-                        / "include/mapfs"
-                        / (base_name + ".h"),
-                        [xml_path],
-                        "map_header",
-                    )
-
+            elif name.endswith("_shape"):
                 compress = True
+                bin_path = path
                 out_dir = out_dir / "geom"
-            elif name.endswith("_hit"):
-                base_name = name
-                map_name = base_name[:-4]
-                raw_bin_path = self.resolve_asset_path(
-                    f"assets/x/mapfs/geom/{base_name}.bin"
-                )
-
-                # TEMP: star rod compatiblity
-                old_raw_bin_path = self.resolve_asset_path(
-                    f"assets/x/mapfs/{base_name}.bin"
-                )
-                if old_raw_bin_path.is_file():
-                    raw_bin_path = old_raw_bin_path
-
-                bin_path = bin_path.parent / "geom" / (base_name + ".bin")
-                build(bin_path, [raw_bin_path], "cp")
-
-                xml_path = self.resolve_asset_path(
-                    f"assets/x/mapfs/geom/{map_name}.xml"
-                )
-                if xml_path.exists():
-                    build(
-                        self.build_path()
-                        / "include/mapfs"
-                        / (base_name + ".h"),
-                        [xml_path],
-                        "map_header",
-                    )
             else:
                 compress = True
                 bin_path = path
@@ -1197,7 +1362,7 @@ class Configure:
         """The images of one font, across the asset stack."""
         found: Dict[str, Path] = {}
         for layer in reversed(self.asset_stack):
-            root = ROOT / "assets" / layer / "charset" / directory
+            root = ROOT / layer / "charset" / directory
             if root.is_dir():
                 for source in root.glob("*.png"):
                     found[source.name] = source.relative_to(ROOT)
@@ -1249,6 +1414,12 @@ class Configure:
         """Convert each texture to the binary and header the game includes."""
         symbols = assets.include_symbols(ROOT / "src")
         wanted_palettes = assets.included_palettes(ROOT / "src")
+        for included in sorted(symbols):
+            if assets.is_deleted(Path("assets", self.version, included), self.asset_stack):
+                raise SystemExit(
+                    f"configure: {included} is included by the code, "
+                    "but its .meta sets delete: true"
+                )
         for relative, png in self.textures().items():
             texture = assets.Texture(png.relative_to(ROOT), self.asset_stack)
             stem = relative.with_suffix("")
@@ -1411,6 +1582,25 @@ class Configure:
     def syms_path(self) -> Path:
         return self.build_path() / "syms.pkl"
 
+    def syms_script_path(self) -> Path:
+        return self.build_path() / "syms.ld"
+
+    def embedded_asset_deps(self, src: Path) -> List[str]:
+        """Build outputs that a source embeds with `.incbin`.
+
+        Paths without a build rule belong to other versions, such as the
+        Japanese fonts, and are left out.
+        """
+        deps = []
+        for macro, asset in assets.embedded_assets(ROOT / src):
+            if macro == "RAW":
+                path = self.build_path() / "assets" / self.version / asset
+            else:
+                path = self.build_path() / (asset + ".bin")
+            if posix(path) in self.inc_img_bins:
+                deps.append(posix(path))
+        return deps
+
     def resolve_src_paths(self, src_paths: List[Path]) -> List[str]:
         out = []
 
@@ -1425,13 +1615,13 @@ class Configure:
 
         return out
 
-    # Given a directory relative to assets/, return a list of all assets in the directory
-    # for all layers of the asset stack
+    # Given a directory within an asset layer, return a list of all assets in the
+    # directory for all layers of the asset stack
     def get_asset_list(self, asset_dir: str) -> List[str]:
         ret: Dict[Path, Path] = {}
 
         for stack_dir in self.asset_stack:
-            path_stem = f"assets/{stack_dir}/{asset_dir}"
+            path_stem = f"{stack_dir}/{asset_dir}"
 
             for p in Path(path_stem).glob("**/*"):
                 glob_part = p.relative_to(path_stem)
@@ -1442,21 +1632,23 @@ class Configure:
 
     @lru_cache(maxsize=None)
     def resolve_asset_path(self, path: Path) -> Path:
-        # Remove nonsense
+        """The file an asset layer's path stands for: the highest layer's."""
         path = Path(os.path.normpath(path))
+        relative = layer_relative(path, self.asset_stack)
+        return path if relative is None else self.find_asset(relative)
 
-        parts = list(path.parts)
-
-        if parts[0] != "assets":
-            return path
-
-        for asset_dir in self.asset_stack:
-            parts[1] = asset_dir
-            new_path = Path("/".join(parts))
-            if new_path.exists():
-                return new_path
-
-        return path
+    @lru_cache(maxsize=None)
+    def find_asset(self, relative: Union[str, Path]) -> Path:
+        """An asset in the highest layer that has it, or the lowest layer's path."""
+        for layer in self.asset_stack:
+            path = Path(layer) / relative
+            if path.exists():
+                if assets.is_deleted(path, self.asset_stack):
+                    raise SystemExit(
+                        f"configure: {path} is used, but its .meta sets delete: true"
+                    )
+                return path
+        return Path(self.asset_stack[-1]) / relative
 
     def _sidecar_target_consumed(
         self, sidecar: Path, layer: str, consumed_assets: Set[str]
@@ -1468,14 +1660,14 @@ class Configure:
         live in a different layer than the sidecar, so resolve it through the
         stack.
         """
-        rel = Path(os.path.relpath(str(sidecar), ROOT / "assets" / layer))
+        rel = Path(os.path.relpath(str(sidecar), ROOT / layer))
         if sidecar.name == assets.DIRECTORY_SIDECAR:
             directory = rel.parent.as_posix()
             directory = "" if directory == "." else directory + "/"
-            prefixes = tuple(f"assets/{name}/{directory}" for name in self.asset_stack)
+            prefixes = tuple(f"{name}/{directory}" for name in self.asset_stack)
             return any(path.startswith(prefixes) for path in consumed_assets)
         target = rel.as_posix()[: -len(assets.SIDECAR_SUFFIX)]
-        resolved = self.resolve_asset_path(Path("assets") / layer / target)
+        resolved = self.find_asset(target)
         return posix(os.path.relpath(str(resolved), ROOT)) in consumed_assets
 
     def check_asset_coverage(
@@ -1487,12 +1679,13 @@ class Configure:
         tools/build/check_assets.py; the earlier layers are hand-authored, so a
         file there that nothing builds is a mistake rather than leftover dump.
         """
-        consumed_assets = {p for p in consumed if p.startswith("assets/")}
-        produced_assets = {p for p in produced if p.startswith("assets/")}
+        layers = tuple(f"{layer}/" for layer in self.asset_stack)
+        consumed_assets = {p for p in consumed if p.startswith(layers)}
+        produced_assets = {p for p in produced if p.startswith(layers)}
 
         orphans: List[str] = []
         for layer in self.asset_stack[:-1]:
-            root = ROOT / "assets" / layer
+            root = ROOT / layer
             if not root.is_dir():
                 continue
             for directory, _subdirs, filenames in os.walk(root):
@@ -1501,13 +1694,17 @@ class Configure:
                     rel = posix(os.path.relpath(str(path), ROOT))
                     if filename in IGNORED_ASSET_NAMES:
                         continue
-                    if filename.endswith((".inc.c", ".inc.cpp")):
+                    # Code and configuration share the src layer with assets.
+                    if filename.endswith(NOT_ASSETS) or filename.startswith("."):
                         continue
                     if rel in consumed_assets or rel in produced_assets:
                         continue
-                    if filename.endswith(assets.SIDECAR_SUFFIX) and (
-                        self._sidecar_target_consumed(path, layer, consumed_assets)
-                    ):
+                    if filename.endswith(assets.SIDECAR_SUFFIX):
+                        if assets.sidecar_deletes(path) or (
+                            self._sidecar_target_consumed(path, layer, consumed_assets)
+                        ):
+                            continue
+                    elif assets.is_deleted(Path(rel), self.asset_stack):
                         continue
                     orphans.append(rel)
         return sorted(orphans)
@@ -1517,16 +1714,27 @@ class Configure:
         ninja: NinjaWriter,
         skip_outputs: Set[str],
         non_matching: bool,
-        c_maps: bool = False,
         evt_validation: bool = True,
     ) -> List[str]:
 
         built_objects = set()
         evt_validation_stamps = []
         generated_code = []
-        inc_img_bins = []
-        precompiled_header_path = Path("include/common.h.gch")
-        cxx_precompiled_header_path = Path("include/common.hpp.gch")
+        self.inc_img_bins: Set[str] = set()
+        # Sources force-include the header beside each precompiled header,
+        # which includes the real one so sccache can still preprocess them.
+        # The directory stays off the include path: GCC would otherwise match
+        # the `.gch` again for a source's own `#include "common.h"`.
+        precompiled_header_path = self.build_path() / "pch" / "common.h.gch"
+        cxx_precompiled_header_path = self.build_path() / "pch" / "common.hpp.gch"
+        for pch in [precompiled_header_path, cxx_precompiled_header_path]:
+            forwarder = ROOT / pch.with_suffix("")
+            target = os.path.relpath(ROOT / "include" / forwarder.name, forwarder.parent)
+            text = f'#include "{posix(target)}"\n'
+            # Rewriting it unchanged would rebuild every object on each reconfigure.
+            if not forwarder.exists() or forwarder.read_text() != text:
+                forwarder.parent.mkdir(parents=True, exist_ok=True)
+                forwarder.write_text(text)
 
         def build(
             object_paths: Union[Path, List[Path]],
@@ -1554,7 +1762,7 @@ class Configure:
                 elif object_path.name.endswith(
                     (".png.bin", ".pal.bin", ".dat")
                 ):
-                    inc_img_bins.append(obj_posix)
+                    self.inc_img_bins.add(obj_posix)
 
                 # don't rebuild objects if we've already seen all of them
                 if obj_posix not in skip_outputs:
@@ -1573,11 +1781,32 @@ class Configure:
                 if task in ["cc", "cxx", "cc_modern", "cxx_modern"]:
                     order_only.append("generated_code_" + self.version)
                     order_only.append("inc_img_bins_" + self.version)
-                    if object_paths[0].suffixes[-1] != ".gch":
-                        if task == "cc_modern":
-                            implicit.append(posix(precompiled_header_path))
-                        elif task == "cxx_modern":
-                            implicit.append(posix(cxx_precompiled_header_path))
+                    if task in ["cc_modern", "cxx_modern"]:
+                        pch = (
+                            precompiled_header_path
+                            if task == "cc_modern"
+                            else cxx_precompiled_header_path
+                        )
+                        if object_paths[0] == pch:
+                            # Not the forwarder, which would pick up the
+                            # previous build of this precompiled header.
+                            pch_header = Path("include") / pch.stem
+                            # sccache keys on preprocessed output, which hides
+                            # line endings and comments, but the precompiled
+                            # header records each header's exact bytes to honor
+                            # `#pragma once`. A cached one built from other
+                            # bytes would let sources include headers twice.
+                            variables = {**variables, "sccache": ""}
+                        else:
+                            pch_header = pch.with_suffix("")
+                            implicit.append(posix(pch))
+                        variables = {**variables, "pch_header": posix(pch_header)}
+                    embedded = [
+                        dep for src in src_paths for dep in self.embedded_asset_deps(src)
+                    ]
+                    if embedded:
+                        implicit.extend(embedded)
+                        variables = {**variables, "sccache": ""}
 
                 inputs = self.resolve_src_paths(src_paths)
                 for dir in asset_deps:
@@ -1609,19 +1838,15 @@ class Configure:
                         evt_target = evt_validation_display_path(object_path)
                     ninja.build(
                         evt_validation_stamp,
-                        "evt_validate_obj",
+                        "evt_validate",
                         [posix(object_path)],
-                        implicit=[
-                            posix(BUILD_TOOLS / "evt_validate_obj.py"),
-                            posix(BUILD_TOOLS / "effect_data.py"),
-                            "src/registry/effects.yaml",
-                        ],
+                        implicit=["src/registry/effects.yaml"],
                         variables={"evt_target": evt_target},
                     )
 
         # Effect data includes
         effect_yaml = ROOT / "src/registry/effects.yaml"
-        effect_data_outdir = ROOT / "assets" / version / "effects"
+        effect_data_outdir = self.build_path() / "include" / "effects"
         effect_defs_path = effect_data_outdir / "effect_defs.h"
         effect_table_path = effect_data_outdir / "effect_table.c"
 
@@ -1650,13 +1875,16 @@ class Configure:
         # exist: otherwise adding the first source to one leaves the table stale.
         gen_areas_stamp = self.build_path() / "gen_areas.stamp"
         area_dirs = []
-        for area_root in [ROOT / "src" / "world" / "area"] + [
-            ROOT / "assets" / d / "world" / "area" for d in self.asset_stack
-        ]:
+        for area_root in dict.fromkeys(
+            [ROOT / "src" / "world" / "area"]
+            + [ROOT / d / "world" / "area" for d in self.asset_stack]
+        ):
             if area_root.is_dir():
                 for area_dir in sorted(area_root.iterdir()):
                     if area_dir.is_dir():
                         for map_dir in sorted(area_dir.iterdir()):
+                            if assets.is_deleted(map_dir, self.asset_stack):
+                                continue
                             if map_dir.is_dir() and any(
                                 f.suffix in (".c", ".cpp")
                                 and not f.name.endswith((".inc.c", ".inc.cpp"))
@@ -1748,14 +1976,22 @@ class Configure:
                 "actor_types",
             )
 
-        build([precompiled_header_path], [Path("include/common.h")], "cc_modern")
-        build([cxx_precompiled_header_path], [Path("include/common.hpp")], "cxx_modern")
+        build(
+            [precompiled_header_path],
+            [precompiled_header_path.with_suffix("")],
+            "cc_modern",
+        )
+        build(
+            [cxx_precompiled_header_path],
+            [cxx_precompiled_header_path.with_suffix("")],
+            "cxx_modern",
+        )
 
         self.asset_objects: Dict[str, List[Path]] = {}
         self.write_effect_stub_rules(build)
         self.write_blob_rules(build)
         self.write_packer_rules(build, ninja, skip_outputs)
-        self.write_mapfs_rules(build, c_maps)
+        self.write_mapfs_rules(build)
         self.write_charset_rules(build)
         self.write_texture_rules(build)
 
@@ -1855,21 +2091,24 @@ class Configure:
         )
 
         ninja.build(
-            posix(self.syms_path()),
+            [posix(self.syms_path()), posix(self.syms_script_path())],
             "syms",
             posix(self.elf_path()),
             implicit=[
                 posix(self.version_path / "symbol_addrs.txt"),
-                posix(BUILD_TOOLS / "overlay.py"),
+                posix(BUILD_TOOLS / "overlay_cli.py"),
+                posix(BUILD_TOOLS / "overlay_impl.py"),
             ],
             variables={
                 "elf": posix(self.elf_path()),
+                "syms": posix(self.syms_path()),
+                "syms_script": posix(self.syms_script_path()),
                 "symbol_files": posix(self.version_path / "symbol_addrs.txt"),
             },
         )
 
         ninja.build("generated_code_" + self.version, "phony", generated_code)
-        ninja.build("inc_img_bins_" + self.version, "phony", inc_img_bins)
+        ninja.build("inc_img_bins_" + self.version, "phony", sorted(self.inc_img_bins))
         return evt_validation_stamps
 
     def get_segment_max_sizes(self):
@@ -1896,12 +2135,16 @@ class Configure:
         ]
 
         # Collect overlays keyed by (type_index, name). Later entries in the
-        # asset stack override earlier ones; src/ is the lowest-priority layer.
+        # asset stack override earlier ones.
         found: Dict[Tuple[int, str], Tuple[str, Path, List[Path], int]] = {}
 
-        search_dirs = [ROOT / "src"] + [
-            ROOT / "assets" / d for d in reversed(self.asset_stack)
-        ]
+        def is_source(path: Path) -> bool:
+            return path.suffix in (".c", ".cpp") and not path.name.endswith(
+                (".inc.c", ".inc.cpp")
+            )
+
+        layers = [ROOT / d for d in reversed(self.asset_stack)]
+        search_dirs = ([] if ROOT / "src" in layers else [ROOT / "src"]) + layers
         for search_dir in search_dirs:
             if not search_dir.exists():
                 continue
@@ -1910,7 +2153,12 @@ class Configure:
                     search_dir.glob(glob_str, case_sensitive=True),
                     key=lambda p: p.as_posix(),
                 ):
-                    if match.name.endswith(".inc.c") or match.name.endswith(".inc.cpp"):
+                    # Skip headers beside an overlay, and directories that contain
+                    # no compilable source files, so they don't shadow lower layers.
+                    if match.is_dir():
+                        if not any(is_source(f) for f in match.iterdir()):
+                            continue
+                    elif not is_source(match):
                         continue
                     if type_index == OVL_TYPE_EFFECT and match.name == "effect_table.c":
                         continue
@@ -1918,23 +2166,6 @@ class Configure:
                         continue
                     if type_index == OVL_TYPE_ENTITY and match.name == "ShatteringBlock_common.c":
                         continue
-                    # Skip asset directories that contain no compilable source files
-                    # (only .inc.c/.inc.cpp), so they don't shadow src/ overlays
-                    if match.is_dir() and not any(
-                        f.suffix in (".c", ".cpp")
-                        and not f.name.endswith(".inc.c")
-                        and not f.name.endswith(".inc.cpp")
-                        for f in match.iterdir()
-                    ):
-                        continue
-                    if match.is_dir():
-                        sources = [
-                            path for path in sorted(match.iterdir())
-                            if path.suffix in (".c", ".cpp")
-                            and not path.name.endswith((".inc.c", ".inc.cpp"))
-                        ]
-                    else:
-                        sources = [match]
                     if (
                         type_index == OVL_TYPE_BATTLE_SCRIPT
                         and match.name == "attack.c"
@@ -1943,7 +2174,17 @@ class Configure:
                         name = f"battle_move_{match.parent.name}_attack"
                     else:
                         name = name_prefix + match.stem
-                    found[(type_index, name)] = (
+                    key = (type_index, name)
+                    if assets.is_deleted(match, self.asset_stack):
+                        found.pop(key, None)
+                        continue
+                    if match.is_dir():
+                        sources = [
+                            path for path in sorted(match.iterdir()) if is_source(path)
+                        ]
+                    else:
+                        sources = [match]
+                    found[key] = (
                         name,
                         match,
                         sources,
@@ -1961,17 +2202,8 @@ class Configure:
         # can override only the files it supplies.
         menu_sources = []
         for relative_path in BATTLE_MENU_SOURCES:
-            source = None
-            for stack_dir in self.asset_stack:
-                candidate = ROOT / "assets" / stack_dir / relative_path
-                if candidate.is_file():
-                    source = candidate
-                    break
-            if source is None:
-                candidate = ROOT / "src" / relative_path
-                if candidate.is_file():
-                    source = candidate
-            if source is None:
+            source = ROOT / self.find_asset(relative_path)
+            if not source.is_file():
                 raise FileNotFoundError(
                     f"missing battle-menu overlay source: {relative_path}"
                 )
@@ -2038,8 +2270,7 @@ class Configure:
         if errors:
             raise ValueError("invalid overlay configuration\n  " + "\n  ".join(errors))
 
-        c_precompiled_header_path = Path("include/common.h.gch")
-        cxx_precompiled_header_path = Path("include/common.hpp.gch")
+        c_precompiled_header_path = self.build_path() / "pch" / "common.h.gch"
 
         manifest_entries = []
         evt_validation_stamps = []
@@ -2051,16 +2282,31 @@ class Configure:
             build_dir = self.build_path() / "ovl" / str(type_index) / name
             ovl_path = build_dir / f"{name}.ovl"
             debug_syms_path = build_dir / f"{name}.ovl.debug_syms"
+            debug_script_path = build_dir / f"{name}.ovl.ld"
+            debug_elf_path = build_dir / f"{name}.ovl.elf"
             objects = []
             overlay_evt_validation_stamps = []
             for c_file in c_files:
                 if c_file.suffix == ".cpp":
                     task = "cxx_modern"
-                    pch = cxx_precompiled_header_path
+                    # The C++ precompiled header is built without -fvisibility=hidden,
+                    # so the types it declares would be more visible than the overlay's
+                    # own, which GCC warns about in C++. Include the header as text.
+                    pch_header = Path("include") / "common.hpp"
+                    pch_deps = []
                 else:
                     task = "cc_modern"
-                    pch = c_precompiled_header_path
+                    pch_header = c_precompiled_header_path.with_suffix("")
+                    pch_deps = [posix(c_precompiled_header_path)]
                 obj_path = build_dir / (c_file.name + ".o")
+                embedded = self.embedded_asset_deps(c_file)
+                variables = {
+                    "version": self.version,
+                    "pch_header": posix(pch_header),
+                    "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
+                }
+                if embedded:
+                    variables["sccache"] = ""
                 evt_stamps = (
                     [evt_validation_stamp_path(obj_path)] if evt_validation else []
                 )
@@ -2071,32 +2317,25 @@ class Configure:
                     effect_cflags = self.effect_cflags(c_file)
                     if effect_cflags:
                         cflags = f"{effect_cflags} {cflags}"
+                variables["cflags"] = cflags
                 ninja.build(
                     posix(obj_path),
                     task,
                     posix(c_file),
-                    implicit=[posix(pch)],
+                    implicit=pch_deps + embedded,
                     order_only=[
                         "generated_code_" + self.version,
                         "inc_img_bins_" + self.version,
                     ],
-                    variables={
-                        "version": self.version,
-                        "cflags": cflags,
-                        "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
-                    },
+                    variables=variables,
                     validations=evt_stamps,
                 )
                 for evt_validation_stamp in evt_stamps:
                     ninja.build(
                         evt_validation_stamp,
-                        "evt_validate_obj",
+                        "evt_validate",
                         [posix(obj_path)],
-                        implicit=[
-                            posix(BUILD_TOOLS / "evt_validate_obj.py"),
-                            posix(BUILD_TOOLS / "effect_data.py"),
-                            "src/registry/effects.yaml",
-                        ],
+                        implicit=["src/registry/effects.yaml"],
                         variables={"evt_target": posix(c_file)},
                     )
                 objects.append(posix(obj_path))
@@ -2146,14 +2385,15 @@ class Configure:
 
             overlay_link_deps = [
                 posix(self.syms_path()),
-                posix(BUILD_TOOLS / "overlay.py"),
+                posix(BUILD_TOOLS / "overlay_cli.py"),
+                posix(BUILD_TOOLS / "overlay_impl.py"),
             ] + overlay_evt_validation_stamps
             ninja.build(
                 posix(ovl_path),
                 "ovl_link_convert",
                 objects,
                 implicit=overlay_link_deps,
-                implicit_outputs=[posix(debug_syms_path)],
+                implicit_outputs=[posix(debug_syms_path), posix(debug_script_path)],
                 variables={
                     "syms": posix(self.syms_path()),
                     "link_addr": link_addr,
@@ -2161,6 +2401,20 @@ class Configure:
                     "force_export": force_export,
                     "max_loaded_size": max_loaded_size,
                     "require_resolved": require_resolved,
+                },
+            )
+
+            # Depends on the engine through syms.ld, which only changes when
+            # its symbols do, rather than on every rebuild of the engine's ELF.
+            ninja.build(
+                posix(debug_elf_path),
+                "ovl_debug_elf",
+                objects,
+                implicit=[posix(debug_script_path), posix(self.syms_script_path())],
+                variables={
+                    "script": posix(debug_script_path),
+                    "syms_script": posix(self.syms_script_path()),
+                    "ovl_src": posix(src_path.relative_to(ROOT)),
                 },
             )
 
@@ -2173,13 +2427,15 @@ class Configure:
                 }
             )
             implicit_deps.append(posix(ovl_path))
+            implicit_deps.append(posix(debug_elf_path))
 
         manifest_path = self.build_path() / "ovl" / "manifest.json"
         manifest_path.parent.mkdir(parents=True, exist_ok=True)
         with open(manifest_path, "w", encoding="utf-8") as f:
             json.dump(manifest_entries, f)
 
-        implicit_deps.append(posix(BUILD_TOOLS / "overlay.py"))
+        implicit_deps.append(posix(BUILD_TOOLS / "overlay_cli.py"))
+        implicit_deps.append(posix(BUILD_TOOLS / "overlay_impl.py"))
         ninja.build(
             posix(self.rom_path()),
             "ovl_apply",
@@ -2258,7 +2514,7 @@ if __name__ == "__main__":
         action="store_true",
         help="Use modern GCC instead of the original compiler",
     )
-    parser.add_argument("--no-ccache", action="store_true", help="Use ccache")
+    parser.add_argument("--no-sccache", action="store_true", help="Use sccache")
     parser.add_argument(
         "--dump",
         action="store_true",
@@ -2270,11 +2526,6 @@ if __name__ == "__main__":
         help="Exit early if no source files were added or deleted (used by generator rule)",
     )
     parser.add_argument(
-        "--c-maps",
-        action="store_true",
-        help="Convert map binaries to C as part of the build process",
-    )
-    parser.add_argument(
         "--no-evt-validation",
         action="store_true",
         help="Disable static EvtScript bytecode validation",
@@ -2282,8 +2533,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
     args.shift = not args.no_shift
     args.non_matching = not args.no_non_matching
-    args.ccache = not args.no_ccache
+    args.sccache = not args.no_sccache
     args.evt_validation = not args.no_evt_validation
+
+    migrate_mod_assets()
 
     if args.incremental:
         stamp = ROOT / "build" / "source_files.stamp"
@@ -2415,7 +2668,7 @@ if __name__ == "__main__":
         extra_cppflags,
         extra_cflags,
         extra_cxxflags,
-        args.ccache,
+        args.sccache,
         args.shift,
         args.debug,
     )
@@ -2444,11 +2697,17 @@ if __name__ == "__main__":
         sys.path.append(str((ROOT / "tools/splat_ext").resolve()))
 
         configure.load()
+        configure.move_old_map_sources()
         if args.dump or not configure.dump_stamp().exists():
             configure.dump(not args.no_split_assets, args.split_code)
+        elif not args.no_split_assets and (
+            not configure.maps_dump_stamp().exists()
+            or configure.maps_dump_stamp().read_text() != star_rod_version()
+        ):
+            configure.dump_maps()
         evt_validation_stamps.extend(
             configure.write_ninja(
-                ninja, skip_files, non_matching, args.c_maps, args.evt_validation
+                ninja, skip_files, non_matching, args.evt_validation
             )
         )
 
@@ -2487,7 +2746,7 @@ if __name__ == "__main__":
     ninja.build("all", "phony", all)
     ninja.default("all")
 
-    # Fetch pre-built clangd index from the matching dx-* GitHub release.
+    # Download the pre-built clangd index that .clangd points at.
     try:
         from clangd_index import fetch_clangd_index
 
@@ -2512,14 +2771,23 @@ if __name__ == "__main__":
     configure_deps = configure_input_paths(versions)
 
     for top in ["src", "include", "assets"]:
-        for dirpath, dirnames, _ in os.walk(ROOT / top):
-            configure_deps.append(
-                str(
-                    Path(dirpath).relative_to(ROOT)
-                    if Path(dirpath).is_absolute()
-                    else dirpath
-                )
+        for dirpath, dirnames, filenames in os.walk(ROOT / top):
+            directory = posix(
+                Path(dirpath).relative_to(ROOT)
+                if Path(dirpath).is_absolute()
+                else dirpath
             )
+            configure_deps.append(directory)
+            # A phony edge with no inputs is out of date once its path is
+            # missing, so deleting the directory reconfigures instead of
+            # failing for want of a rule to make it.
+            ninja.build(directory, "phony")
+            # A sidecar can delete assets, which changes what gets built. Like
+            # a directory, it gets a phony edge so removing it reconfigures.
+            for name in filenames:
+                if name.endswith(assets.SIDECAR_SUFFIX):
+                    configure_deps.append(f"{directory}/{name}")
+                    ninja.build(f"{directory}/{name}", "phony")
 
     ninja.build(
         "build.ninja",
@@ -2531,8 +2799,8 @@ if __name__ == "__main__":
     ninja.close()
     os.replace(partial_build_ninja, build_ninja_path)
 
-    # Generate compile_commands.json with MIPS cross-compiler flags stripped,
-    # so clangd and clang-tidy can parse the compile commands.
+    # Generate compile_commands.json for clang targeting MIPS, with GCC-only
+    # flags stripped, so clangd and clang-tidy can parse the compile commands.
     try:
         compdb = subprocess.run(
             ["ninja", "-t", "compdb"],
@@ -2541,12 +2809,36 @@ if __name__ == "__main__":
         )
         if compdb.returncode == 0:
             entries = json.loads(compdb.stdout)
-            strip_re = re.compile(r"^(-m\S+|-f\S+|-g\S+|-G\d+|--warn-\S+)$")
-            cross_cc_re = re.compile(r"^(ccache\s+)?mips-linux-gnu-g(cc|\+\+)(?=\s)")
+            strip_re = re.compile(r"-m.+|-f(?!unsigned-char$).+|-g.+|-G\d+|--warn-.+")
+            # Clang's name for GCC's -Wno-builtin-declaration-mismatch, quiet
+            # about the precompiled header being GCC's, which it can't read, and
+            # accept GCC's `[index] value` array designators.
+            clang_flags = [
+                "--target=mips-linux-gnu",
+                "-Wno-incompatible-library-redeclaration",
+                "-Wno-ignored-gch",
+                "-Wno-gnu-designator",
+            ]
+            clang_args = {
+                "mips-linux-gnu-gcc": ["clang"] + clang_flags + cross_include_flags("mips-linux-gnu-gcc", "c"),
+                "mips-linux-gnu-g++": ["clang++"] + clang_flags + cross_include_flags("mips-linux-gnu-g++", "c++"),
+            }
+            # Keep only C and C++ compiles. clangd would otherwise borrow other
+            # tools' commands, or the assembler's, for nearby headers. Each
+            # command is written as an argument list, so paths containing
+            # spaces stay whole.
+            clang_entries = []
             for entry in entries:
-                entry["command"] = cross_cc_re.sub(r"\1cc", entry["command"])
-                parts = entry["command"].split()
-                entry["command"] = " ".join(p for p in parts if not strip_re.match(p))
+                if not entry["file"].endswith((".c", ".cpp")):
+                    continue
+                args = shlex.split(entry.pop("command"))
+                if args[:1] == ["sccache"]:
+                    args = args[1:]
+                if not args or args[0] not in clang_args:
+                    continue
+                entry["arguments"] = clang_args[args[0]] + [a for a in args[1:] if not strip_re.fullmatch(a)]
+                clang_entries.append(entry)
+            entries = clang_entries
             (ROOT / "compile_commands.json").write_text(
                 json.dumps(entries, indent=2) + "\n"
             )

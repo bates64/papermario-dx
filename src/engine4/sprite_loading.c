@@ -241,7 +241,7 @@ void spr_npc_unload_unused_assets(SpriteAnimData* spriteData, AnimID* limitAnimL
         animComponents = spriteData->animListStart[animID & 0xFF];
         while ((animComponent = *animComponents++) != PTR_LIST_END) {
             cmdReadPos = animComponent->cmdList;
-            cmdsRemaining = (s16) animComponent->cmdListSize / 2;
+            cmdsRemaining = animComponent->cmdListSize / 2;
             while (cmdsRemaining > 0) {
                 animCmd = *cmdReadPos++;
                 cmdsRemaining--;

@@ -8,8 +8,6 @@
 PlayerStatus gPlayerStatus;
 PlayerData gPlayerData;
 
-extern DisguiseAnims BasicPeachDisguiseAnims[];
-
 void phys_update_standard(void);
 void phys_update_lava_reset(void);
 void update_player_blink(void);

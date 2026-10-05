@@ -383,7 +383,7 @@ void pause_tabs_update(MenuPanel* tab) {
     s32 sgn;
 
     deltaBefore = tab->col * 300 - gPauseTabsHorizScrollPos;
-    absValue = abs(deltaBefore);
+    absValue = abs((s32)deltaBefore);
     sgn = sign(deltaBefore);
 
     if (absValue >= 16) {

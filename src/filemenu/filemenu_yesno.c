@@ -87,39 +87,12 @@ void filemenu_yesno_draw_options_contents(
     s32 width, s32 height,
     s32 opacity, s32 darkening
 ) {
-    s32 xOffset1;
-    s32 yOffset1;
-    s32 xOffset2;
-    s32 yOffset2;
+    s32 xOffset1 = 28;
+    s32 yOffset1 = 4;
+    s32 xOffset2 = 28;
+    s32 yOffset2 = 21;
     s32 cursorGoalXOffset;
     s32 cursorGoalYOffset;
-
-    switch (menu->state) {
-        case FM_CONFIRM_DELETE:
-            xOffset1 = 28;
-            yOffset1 = 4;
-            xOffset2 = 28;
-            yOffset2 = 21;
-            break;
-        case FM_CONFIRM_CREATE:
-            xOffset1 = 28;
-            yOffset1 = 4;
-            xOffset2 = 28;
-            yOffset2 = 21;
-            break;
-        case FM_CONFIRM_COPY:
-            xOffset1 = 28;
-            yOffset1 = 4;
-            xOffset2 = 28;
-            yOffset2 = 21;
-            break;
-        case FM_CONFIRM_START:
-            xOffset1 = 28;
-            yOffset1 = 4;
-            xOffset2 = 28;
-            yOffset2 = 21;
-            break;
-    }
 
     filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_YES), baseX + xOffset1, baseY + yOffset1, 255, MSG_PAL_WHITE, 0);
     filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_NO), baseX + xOffset2, baseY + yOffset2, 255, MSG_PAL_WHITE, 0);

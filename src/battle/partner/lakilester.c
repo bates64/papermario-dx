@@ -1360,6 +1360,8 @@ enum {
 #define HURRICANE_UNUSED_TIME 177
 #endif
 
+static EffectInstance* sHuffPuffBreathEffect;
+
 API_CALLABLE(N(ProcessHurricane)) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* partner = battleStatus->partnerActor;
@@ -1376,7 +1378,6 @@ API_CALLABLE(N(ProcessHurricane)) {
     f32 totalPower;
     f64 tempF64;
 
-    static EffectInstance* sHuffPuffBreathEffect;
     static HurricaneState sHurricaneState;
     static s32 sUnusedAngle;
     static s32 sHurricaneIntensity;

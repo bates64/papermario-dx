@@ -26,7 +26,6 @@ build.ninja.partial
 .ninja*
 .n2_db
 ver/*/*.ld
-!src/map_shape.ld
 *.elf
 *.z64
 *.v64
@@ -67,8 +66,11 @@ build/
 
 # clangd
 .cache/clangd/
-.clangd
 # compile_commands.json requires hardcoded paths, so it can't be committed
 compile_commands.json
 # DX ephemeral data (clangd index, configure cache, etc.)
 /.dx/
+
+# Star Rod map editor recovery copies
+map.crash.xml
+map.backup.xml

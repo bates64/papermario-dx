@@ -803,13 +803,13 @@ s32 dispatch_damage_event_actor(Actor* actor, s32 damageAmount, s32 originalEven
     ActorState* state = &actor->state;
     s32 dispatchEvent = originalEvent;
     s32 hpChange;
-    s32 new_var;
+    s32 newVar;
 
     battleStatus->curAttackDamage = damageAmount;
     hpChange = (s16) damageAmount;
     actor->hpChangeCounter += hpChange;
-    new_var = actor->hpChangeCounter;
-    hpChange = new_var;
+    newVar = actor->hpChangeCounter;
+    hpChange = newVar;
     actor->damageCounter += hpChange;
     actor->hpChangeCounter -= hpChange;
     battleStatus->lastAttackDamage = 0;

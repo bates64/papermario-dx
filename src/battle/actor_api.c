@@ -2105,6 +2105,8 @@ API_CALLABLE(SummonEnemy) {
                 }
                 if (script->functionTemp[2] == 0) {
                     for (i = numEnemies; i >= battleStatus->nextEnemyIndex; i--) {
+                        // nextEnemyIndex is at least 1 in this branch.
+                        // NOLINTNEXTLINE(clang-analyzer-security.ArrayBound)
                         battleStatus->enemyIDs[i] = battleStatus->enemyIDs[i - 1];
                     }
                     battleStatus->enemyIDs[battleStatus->nextEnemyIndex - 1] = actor2->actorID;

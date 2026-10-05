@@ -1,7 +1,6 @@
 # Builds a downloadable, self-contained toolchain for the current system
-# (one of x86_64-linux, aarch64-linux, aarch64-darwin - x86_64-darwin is
-# unsupported since nixpkgs-unstable dropped it), analogous to tools/windows
-# for Windows.
+# (one of x86_64-linux, aarch64-linux, x86_64-darwin, aarch64-darwin),
+# analogous to tools/windows for Windows.
 #
 # Unlike the Windows toolchain (a Canadian cross that produces binaries with
 # no /nix/store dependency by construction), these binaries are built
@@ -23,6 +22,9 @@
   pkgs,
   nixpkgs-binutils-2_39,
   mipsCrossGcc,
+  mipsGdb,
+  starRodJar,
+  llvmTools,
 }:
 
 let
@@ -32,6 +34,7 @@ let
   platformTag = {
     "x86_64-linux" = "linux-x86_64";
     "aarch64-linux" = "linux-aarch64";
+    "x86_64-darwin" = "macos-x86_64";
     "aarch64-darwin" = "macos-aarch64";
   }.${system} or (throw "tools/unix: unsupported system ${system}");
 
@@ -73,7 +76,10 @@ let
   n64crc = import ./n64crc.nix { stdenv = pkgs.stdenv; };
   pigment64-native = pkgs.callPackage ../pigment64.nix { };
   crunch64-native = pkgs.callPackage ../crunch64.nix { };
+  sccache-native = pkgs.callPackage ../sccache.nix { };
+  evt-validate-native = pkgs.callPackage ../evt_validate.nix { };
   python-packages = import ./python.nix { inherit pkgs; };
+  jre = import ./jre.nix { inherit pkgs; };
 
   # MIPS glibc headers, borrowed from the reference native cross-compiler for
   # the same target (this build only compiles `all-gcc`, not target libs).
@@ -82,18 +88,23 @@ let
   closureRoots = [
     mips-binutils
     mips-gcc
+    mipsGdb
     n64crc
     pigment64-native
     crunch64-native
     pkgs.ninja
-    pkgs.ccache
+    sccache-native
+    evt-validate-native
     pkgs.python3
+    jre
+    starRodJar
+    llvmTools
   ];
   closure = pkgs.closureInfo { rootPaths = closureRoots; };
 
-  zip = pkgs.runCommand "papermario-dx-${platformTag}-toolchain"
+  archive = pkgs.runCommand "papermario-dx-${platformTag}-toolchain"
     {
-      nativeBuildInputs = [ pkgs.zip pkgs.unzip pkgs.coreutils ]
+      nativeBuildInputs = [ pkgs.gnutar pkgs.xz pkgs.coreutils ]
         ++ pkgs.lib.optional (!isDarwin) pkgs.pkgsStatic.patchelf;
     }
     ''
@@ -101,17 +112,37 @@ let
       mkdir -p $dir/store $dir/bin $dir/lib
 
       # Copy the whole runtime closure, preserving each package's own layout.
+      # Symlinks are kept, so a library isn't stored once per name it goes by
+      # (libLLVM alone has three), and any that point into another store path
+      # are redirected to its copy here.
       while read -r p; do
-        cp -rL --no-preserve=ownership "$p" "$dir/store/$(basename "$p")"
+        cp -r --no-preserve=ownership "$p" "$dir/store/$(basename "$p")"
       done < ${closure}/store-paths
-      # /nix/store paths are read-only; make our copies writable for
-      # patchelf/install_name_tool later, without disturbing the executable
-      # bits that --no-preserve=mode would otherwise reset.
+      # The copies are as read-only as the originals; the steps below edit them.
       chmod -R u+w "$dir/store"
+      find "$dir/store" -type l | while read -r l; do
+        target=$(readlink "$l")
+        case "$target" in
+          /nix/store/*)
+            ln -sfn "$(realpath -s --relative-to="$(dirname "$l")" "$dir/store/''${target#/nix/store/}")" "$l"
+            ;;
+        esac
+      done
+
+      # Static libraries are only used for linking, and the only thing this
+      # toolchain links is MIPS code, so drop the host ones (about 1 GB, most
+      # of it LLVM's).
+      find "$dir/store" -name '*.a' -not -path "$dir/store/*mips*" -delete
 
       # Flatten every shared library into lib/ as relative symlinks, so every
-      # binary can share a single RPATH pointing at lib/.
-      find "$dir/store" -type f \( -name '*.so' -o -name '*.so.*' -o -name '*.dylib' \) | while read -r f; do
+      # binary can share a single RPATH pointing at lib/. The closure also
+      # holds libraries built for the MIPS target, some with the same name as
+      # a host library (such as libc.so.6 and libstdc++.so.6); skip them. They
+      # are big-endian ELF (EI_DATA = 2), and every supported host is
+      # little-endian. Sorted, so which copy a name ends up pointing at
+      # doesn't depend on the order the filesystem lists them in.
+      find "$dir/store" \( -type f -o -type l \) \( -name '*.so' -o -name '*.so.*' -o -name '*.dylib' \) | sort | while read -r f; do
+        [ "$(od -An -tx1 -j5 -N1 "$f" | tr -d ' ')" = "02" ] && continue
         ln -sf "$(realpath --relative-to="$dir/lib" "$f")" "$dir/lib/$(basename "$f")"
       done
 
@@ -122,10 +153,32 @@ let
       }
       for tool in mips-linux-gnu-gcc mips-linux-gnu-g++ mips-linux-gnu-cpp mips-linux-gnu-ld mips-linux-gnu-as \
                   mips-linux-gnu-ar mips-linux-gnu-nm mips-linux-gnu-objcopy mips-linux-gnu-objdump \
-                  mips-linux-gnu-ranlib mips-linux-gnu-strip \
-                  ninja ccache pigment64 crunch64 n64crc python3; do
+                  mips-linux-gnu-ranlib mips-linux-gnu-readelf mips-linux-gnu-strip \
+                  ninja sccache evt_validate pigment64 crunch64 n64crc python3 java clang-format clang-tidy clangd; do
         link_bin "$tool"
       done
+
+      # The debugger an editor attaches to ares' GDB stub with. Its package is
+      # named for the bare-metal triple rather than the compiler's, so link it
+      # under a stable name instead of deriving one.
+      gdb=$(find "$dir/store/$(basename ${mipsGdb})/bin" -name '*gdb' | head -n1)
+      if [ -z "$gdb" ]; then
+        echo "tools/unix: no gdb binary in ${mipsGdb}" >&2
+        exit 1
+      fi
+      ln -sf "$(realpath --relative-to="$dir/bin" "$gdb")" "$dir/bin/gdb"
+
+      # Star Rod: bundled jar + a wrapper script, launched via bin/java. The
+      # jar's entry point only checks for Java 17 and then starts Star Rod in a
+      # second JVM, so the wrapper starts Star Rod directly.
+      mkdir -p $dir/share/java
+      cp -L "$(find "$dir/store" -path '*/share/java/StarRod.jar' | head -n1)" $dir/share/java/StarRod.jar
+      cat > $dir/bin/star-rod << 'STARROD_EOF'
+      #!/bin/sh
+      DIR="$(cd "$(dirname "$0")/.." && pwd)"
+      exec "$DIR/bin/java" -cp "$DIR/share/java/StarRod.jar" app.StarRodMain "$@"
+      STARROD_EOF
+      chmod +x $dir/bin/star-rod
 
       # MIPS glibc headers (string.h, stdio.h, etc.) in the sysroot.
       mkdir -p $dir/mips-linux-gnu/sys-include
@@ -140,14 +193,60 @@ let
       mkdir -p $gccPrefix/mips-linux-gnu/include/c++/$gccVersion
       cp -rL ${mipsCrossGcc.cc}/include/c++/*/* $gccPrefix/mips-linux-gnu/include/c++/$gccVersion/
 
-      # Python packages (requirements.txt + requirements_extra.txt), found via
+      # Python packages (requirements.txt), found via
       # PYTHONPATH rather than baked into the interpreter's own store copy.
       mkdir -p $dir/python
       cp -rL --no-preserve=ownership ${python-packages}/* $dir/python/
-      chmod -R u+w $dir/python
+
+      # Everything copied above came from read-only /nix/store paths. Make the
+      # whole tree writable, without disturbing the executable bits that
+      # --no-preserve=mode would otherwise reset: activation rewrites the
+      # binaries in place, and a read-only directory anywhere in here would
+      # also stop download_toolchain.sh removing the toolchain to update it.
+      chmod -R u+w "$dir"
+
+      # sccache identifies the compiler and the assembler it runs by their
+      # file contents, but activate.sh writes the install path into every
+      # binary, so no two installs would share a cache entry. Put a wrapper
+      # script in front of each instead: it's byte-identical wherever the
+      # toolchain is installed, and names its target's store path, so it
+      # still changes whenever the target does.
+      wrap() {
+        target=$(realpath -s --relative-to="$(dirname "$dir/$1")" "$dir/$2")
+        rm -f "$dir/$1"
+        printf '#!/bin/sh\nexec "$(dirname "$0")/%s" "$@"\n' "$target" > "$dir/$1"
+        chmod +x "$dir/$1"
+      }
+      gccStore=store/$(basename ${mips-gcc})
+      binutilsStore=store/$(basename ${mips-binutils})
+      wrap bin/mips-linux-gnu-gcc $gccStore/bin/mips-linux-gnu-gcc
+      wrap bin/mips-linux-gnu-g++ $gccStore/bin/mips-linux-gnu-g++
+      wrap $gccStore/mips-linux-gnu/bin/as $binutilsStore/bin/mips-linux-gnu-as
 
       ${pkgs.lib.optionalString (!isDarwin) ''
         cp ${pkgs.pkgsStatic.patchelf}/bin/patchelf $dir/bin/.patchelf
+
+        # Find the files activate.sh has to patch now, rather than having it
+        # probe each of the toolchain's thousands of files one at a time.
+        # Only host binaries need patching, and every supported host is
+        # little-endian (EI_DATA = 1), unlike the MIPS target's libraries.
+        # Static-PIE binaries (like sccache) have a dynamic section but no
+        # interpreter or DT_NEEDED, and setting an RPATH on them corrupts them.
+        (
+          cd $dir
+          touch .activate-interp .activate-rpath
+          find store python -type f | sort | while read -r f; do
+            case "$(od -An -tx1 -N6 "$f" | tr -d ' \n')" in
+              7f454c46??01) ;;
+              *) continue ;;
+            esac
+            if patchelf --print-interpreter "$f" >/dev/null 2>&1; then
+              echo "$f" >> .activate-interp
+            elif [ -n "$(patchelf --print-needed "$f" 2>/dev/null)" ]; then
+              echo "$f" >> .activate-rpath
+            fi
+          done
+        )
       ''}
 
       cat > $dir/activate.sh << 'ACTIVATE_EOF'
@@ -183,21 +282,20 @@ let
         done
       '' else ''
         PATCHELF="$DIR/bin/.patchelf"
-        find "$DIR/store" -type f | while read -r f; do
-          if "$PATCHELF" --print-rpath "$f" >/dev/null 2>&1; then
-            "$PATCHELF" --set-rpath "$DIR/lib" "$f" || true
-            if "$PATCHELF" --print-interpreter "$f" >/dev/null 2>&1; then
-              "$PATCHELF" --set-interpreter "$DIR/lib/${interpName}" "$f" || true
-            fi
-          fi
-        done
+        cd "$DIR"
+        tr '\n' '\0' < .activate-interp | xargs -0 "$PATCHELF" --set-rpath "$DIR/lib" --set-interpreter "$DIR/lib/${interpName}"
+        tr '\n' '\0' < .activate-rpath | xargs -0 "$PATCHELF" --set-rpath "$DIR/lib"
       ''}
       ACTIVATE_EOF2
       chmod +x $dir/activate.sh
 
       mkdir -p $out
-      cd $dir/..
-      zip -yr $out/papermario-dx-${platformTag}.zip $dir
+      # xz rather than zip: it's about half the size, and any tar on macOS or
+      # Linux can extract it. Fixed file order, times, and owners keep the
+      # archive the same when its contents are, so the publish step stores
+      # an unchanged toolchain only once.
+      tar --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner -c $dir \
+        | xz -9 -T0 > $out/papermario-dx-${platformTag}.tar.xz
     '';
 in
-zip
+archive

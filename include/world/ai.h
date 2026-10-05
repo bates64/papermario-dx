@@ -1,6 +1,10 @@
 #pragma once
 #include "common.h"
 
+#ifdef _LANGUAGE_C_PLUS_PLUS
+extern "C" {
+#endif
+
 #define AI_TEMP_STATE                  functionTemp[0]
 #define AI_TEMP_STATE_AFTER_SUSPEND    functionTemp[1]
 
@@ -81,14 +85,18 @@ static ALWAYS_INLINE b32 is_point_outside_detect_volume(EnemyDetectVolume* detec
 // function signature used for state handlers in AI main functions
 typedef void AIStateHandler(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect);
 
-AIStateHandler(basic_ai_wander_init);
-AIStateHandler(basic_ai_wander);
-AIStateHandler(basic_ai_loiter_init);
-AIStateHandler(basic_ai_loiter);
-AIStateHandler(basic_ai_found_player_jump_init);
-AIStateHandler(basic_ai_found_player_jump);
-AIStateHandler(basic_ai_chase_init);
-AIStateHandler(basic_ai_chase);
-AIStateHandler(basic_ai_lose_player);
+AIStateHandler basic_ai_wander_init;
+AIStateHandler basic_ai_wander;
+AIStateHandler basic_ai_loiter_init;
+AIStateHandler basic_ai_loiter;
+AIStateHandler basic_ai_found_player_jump_init;
+AIStateHandler basic_ai_found_player_jump;
+AIStateHandler basic_ai_chase_init;
+AIStateHandler basic_ai_chase;
+AIStateHandler basic_ai_lose_player;
 
 API_CALLABLE(BasicAI_Main);
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+} // extern "C"
+#endif

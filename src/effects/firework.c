@@ -13,8 +13,6 @@ Gfx* D_E0086AA0[] = {
     D_09000A60_38ADB0, D_09000A80_38ADD0
 };
 
-Gfx* D_E0086AB4[] = { D_09000940_38AC90, D_09000940_38AC90, D_09000940_38AC90 };
-
 u8 D_E0086AC0[] = { 0x0D, 0x0D, 0x0D, 0x00 };
 
 u8 D_E0086AC4[] = {
@@ -249,7 +247,7 @@ void func_E00863B4(EffectInstance* effect) {
         }
 
         savedGfxPos = gMainGfxPos++;
-        gSPDisplayList(gMainGfxPos++, D_E0086AB4[unk_00]);
+        gSPDisplayList(gMainGfxPos++, D_09000940_38AC90);
 
         part++;
 
@@ -258,7 +256,7 @@ void func_E00863B4(EffectInstance* effect) {
         }
 
         for (i = 1; i < effect->numParts; i++, part++) {
-            gSPDisplayList(gMainGfxPos++, D_E0086AB4[part->unk_00]);
+            gSPDisplayList(gMainGfxPos++, D_09000940_38AC90);
 
             guRotateF(sp20, part->unk_1C, 0.0f, 0.0f, 1.0f);
             guRotateF(sp60, part->unk_24, 0.0f, 1.0f, 0.0f);

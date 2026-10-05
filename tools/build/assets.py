@@ -3,16 +3,18 @@
 A texture's format and size come from the PNG (see raster.py), so most assets
 need no declaration at all. The handful whose intent the file cannot express
 carry a sidecar: `<name>.png.meta` for one asset, or `.meta` in a directory
-for every asset in it.
+for every asset in it. Any asset can set `delete: true` in one to leave itself
+out of the build.
 """
 
 import re
 from functools import lru_cache
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 import yaml
 
+from common import ROOT, layer_relative
 from raster import Png
 
 DIRECTORY_SIDECAR = ".meta"
@@ -32,17 +34,13 @@ def _layers(png_path: Path, asset_stack) -> List[Path]:
     Assets split from the ROM are not version controlled, so their sidecars
     live in a layer that is, and have to be found from there.
     """
-    parts = list(png_path.parts)
-    if len(parts) < 2 or parts[0] != "assets":
+    relative = layer_relative(png_path, asset_stack)
+    if relative is None:
         return [png_path]
-    paths = []
-    for layer in reversed(list(asset_stack)):
-        parts[1] = layer
-        paths.append(Path(*parts))
-    return paths
+    return [Path(layer) / relative for layer in reversed(list(asset_stack))]
 
 
-def metadata(png_path: Path, asset_stack=("us",)) -> Dict:
+def metadata(png_path: Path, asset_stack=("assets/us",)) -> Dict:
     """Sidecar values for an asset, the nearest declaration winning."""
     values: Dict = {}
     for path in _layers(png_path, asset_stack):
@@ -53,8 +51,27 @@ def metadata(png_path: Path, asset_stack=("us",)) -> Dict:
     return values
 
 
+def sidecar_deletes(sidecar: Path) -> bool:
+    """Whether a sidecar itself sets `delete: true`."""
+    return _sidecar(sidecar).get("delete") is True
+
+
+def is_deleted(path: Path, asset_stack) -> bool:
+    """Whether a sidecar sets `delete: true`, leaving an asset out of the build.
+
+    A directory stands for everything in it, so the `.meta` inside it deletes
+    it whole. The same path is checked in every layer, src/ included, so a
+    map's code goes with its assets.
+    """
+    if path.is_absolute():
+        path = path.relative_to(ROOT)
+    if (ROOT / path).is_dir():
+        path = path / DIRECTORY_SIDECAR
+    return metadata(path, tuple(asset_stack)).get("delete") is True
+
+
 class Texture:
-    def __init__(self, path: Path, asset_stack=("us",)):
+    def __init__(self, path: Path, asset_stack=("assets/us",)):
         self.path = path
         self.png = Png(path)
         meta = metadata(path, asset_stack)
@@ -84,6 +101,10 @@ INCLUDE_MACRO = re.compile(
 )
 
 
+def _sources(src_root: Path) -> List[Path]:
+    return sorted([*src_root.rglob("*.c"), *src_root.rglob("*.cpp")])
+
+
 def include_symbols(src_root: Path) -> Dict[str, str]:
     """Asset path to the C symbol its generated header should define.
 
@@ -93,7 +114,7 @@ def include_symbols(src_root: Path) -> Dict[str, str]:
     """
     symbols: Dict[str, str] = {}
     seen = set()
-    for source in sorted(src_root.rglob("*.c")):
+    for source in _sources(src_root):
         for asset, symbol in INCLUDE_MACRO.findall(source.read_text()):
             # An _OFFSET symbol addresses the asset's place in ROM rather
             # than naming the image.
@@ -113,7 +134,32 @@ def included_palettes(src_root: Path) -> set:
     An indexed PNG only needs its palette split out if something asks for it.
     """
     palettes = set()
-    for source in sorted(src_root.rglob("*.c")):
+    for source in _sources(src_root):
         for match in re.finditer(r'INCLUDE_PAL\(\s*"([^"]+)"', source.read_text()):
             palettes.add(Path(match.group(1)).with_suffix(".png").as_posix())
     return palettes
+
+
+EMBED_MACRO = re.compile(r'INCLUDE_(IMG|PAL|RAW)\(\s*"([^"]+)"')
+LOCAL_INCLUDE = re.compile(r'^\s*#\s*include\s+"([^"]+)"', re.MULTILINE)
+
+
+def embedded_assets(source: Path) -> List[Tuple[str, str]]:
+    """The (macro, path) pairs a source embeds with INCLUDE_IMG, INCLUDE_PAL or INCLUDE_RAW.
+
+    The compiler's dependency output leaves out files pulled in by `.incbin`,
+    so the build has to find them itself. Includes that resolve next to the
+    including file are followed, since that is how `.inc.c` files are pulled in.
+    """
+    found: List[Tuple[str, str]] = []
+    seen = set()
+    pending = [source]
+    while pending:
+        path = pending.pop()
+        if path in seen or not path.is_file():
+            continue
+        seen.add(path)
+        text = path.read_text()
+        found.extend(EMBED_MACRO.findall(text))
+        pending.extend(path.parent / name for name in LOCAL_INCLUDE.findall(text))
+    return found

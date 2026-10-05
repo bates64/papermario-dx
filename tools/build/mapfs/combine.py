@@ -72,10 +72,10 @@ def build_mapfs(out_bin, assets, version, pre_write_assets):
 
             asset_idx += 1
 
-        # end_data
+        # the table ends with an entry that has an empty name
         toc_entry_pos = 0x20 + asset_idx * 0x1C
 
-        last_name_entry = "end_data\0"
+        last_name_entry = "\0"
         f.seek(toc_entry_pos)
         lastname = last_name_entry + lastname[len(last_name_entry) :]
         f.write(lastname.encode("ascii"))
