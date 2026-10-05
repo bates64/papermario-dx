@@ -12,22 +12,22 @@ s8 set_global_byte(s32 index, s32 value);
 s32 get_global_byte(s32 index);
 
 /// Store a short in two consecutive saved game bytes. `index` can be either a global byte
-/// reference (`GB_*`) or index to the lowest byte.
+/// reference (`GB_*`) or index of the first byte.
 /// Returns previous value of the saved short.
 s16 set_global_short(s32 index, s32 value);
 
 /// Retrieve a short from two consecutive saved game bytes. `index` can be either a global byte
-/// reference (`GB_*`) or index to the lowest byte.
+/// reference (`GB_*`) or index of the first byte.
 /// Returns value of the saved short.
 s16 get_global_short(s32 index);
 
 /// Store a word in four consecutive saved game bytes. `index` can be either a global byte
-/// reference (`GB_*`) or index to the lowest byte.
+/// reference (`GB_*`) or index of the first byte.
 /// Returns previous value of the saved word.
 s32 set_global_word(s32 index, s32 value);
 
 /// Retrieve a word from four consecutive saved game bytes. `index` can be either a global byte
-/// reference (`GB_*`) or index to the lowest byte.
+/// reference (`GB_*`) or index of the first byte.
 /// Returns value of the saved word.
 s32 get_global_word(s32 index);
 

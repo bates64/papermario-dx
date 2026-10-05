@@ -128,12 +128,12 @@ s16 set_global_short(s32 index, s32 value) {
         index = EVT_INDEX_OF_GAME_BYTE(index);
     }
 
-    s32 b1 = gCurrentSaveFile.globalBytes[index] & 0xFF;
-    s32 b2 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
-    s16 ret = (b2 << 8) | b1;
+    u8 b0 = gCurrentSaveFile.globalBytes[index];
+    u8 b1 = gCurrentSaveFile.globalBytes[index + 1];
+    s16 ret = (b0 << 8) | b1;
 
-    gCurrentSaveFile.globalBytes[index] = value & 0xFF;
-    gCurrentSaveFile.globalBytes[index + 1] = (value >> 8) & 0xFF;
+    gCurrentSaveFile.globalBytes[index] = value >> 8;
+    gCurrentSaveFile.globalBytes[index + 1] = value;
     return ret;
 }
 
@@ -142,10 +142,9 @@ s16 get_global_short(s32 index) {
         index = EVT_INDEX_OF_GAME_BYTE(index);
     }
 
-    s32 b1 = gCurrentSaveFile.globalBytes[index] & 0xFF;
-    s32 b2 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
-
-    return (b2 << 8) | b1;
+    u8 b0 = gCurrentSaveFile.globalBytes[index];
+    u8 b1 = gCurrentSaveFile.globalBytes[index + 1];
+    return (b0 << 8) | b1;
 }
 
 s32 set_global_word(s32 index, s32 value) {
@@ -153,16 +152,16 @@ s32 set_global_word(s32 index, s32 value) {
         index = EVT_INDEX_OF_GAME_BYTE(index);
     }
 
-    s32 b1 = gCurrentSaveFile.globalBytes[index] & 0xFF;
-    s32 b2 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
-    s32 b3 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
-    s32 b4 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
-    s16 ret = (b4 << 24) | (b3 << 16) | (b2 << 8) | b1;
+    u8 b0 = gCurrentSaveFile.globalBytes[index];
+    u8 b1 = gCurrentSaveFile.globalBytes[index + 1];
+    u8 b2 = gCurrentSaveFile.globalBytes[index + 2];
+    u8 b3 = gCurrentSaveFile.globalBytes[index + 3];
+    s32 ret = ((u32) b0 << 24) | (b1 << 16) | (b2 << 8) | b3;
 
-    gCurrentSaveFile.globalBytes[index] = value & 0xFF;
-    gCurrentSaveFile.globalBytes[index + 1] = (value >> 8) & 0xFF;
-    gCurrentSaveFile.globalBytes[index + 2] = (value >> 16) & 0xFF;
-    gCurrentSaveFile.globalBytes[index + 3] = (value >> 24) & 0xFF;
+    gCurrentSaveFile.globalBytes[index] = value >> 24;
+    gCurrentSaveFile.globalBytes[index + 1] = value >> 16;
+    gCurrentSaveFile.globalBytes[index + 2] = value >> 8;
+    gCurrentSaveFile.globalBytes[index + 3] = value;
     return ret;
 }
 
@@ -171,12 +170,11 @@ s32 get_global_word(s32 index) {
         index = EVT_INDEX_OF_GAME_BYTE(index);
     }
 
-    s32 b1 = gCurrentSaveFile.globalBytes[index] & 0xFF;
-    s32 b2 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
-    s32 b3 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
-    s32 b4 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
-
-    return (b4 << 24) | (b3 << 16) | (b2 << 8) | b1;
+    u8 b0 = gCurrentSaveFile.globalBytes[index];
+    u8 b1 = gCurrentSaveFile.globalBytes[index + 1];
+    u8 b2 = gCurrentSaveFile.globalBytes[index + 2];
+    u8 b3 = gCurrentSaveFile.globalBytes[index + 3];
+    return ((u32) b0 << 24) | (b1 << 16) | (b2 << 8) | b3;
 }
 
 s32 clear_area_flag(s32 index) {
