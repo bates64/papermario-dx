@@ -534,8 +534,14 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
 #define NODISCARD
 #endif
 
-// Mark a symbol as exported from an overlay, making it visible to ovl_import.
+#ifdef __cplusplus
+/// Marks a symbol as exported from an overlay, making it visible to ovl_import.
+/// It gets C linkage, so ovl_import finds it by its unqualified name.
+#define export extern "C" __attribute__((visibility("default")))
+#else
+/// Marks a symbol as exported from an overlay, making it visible to ovl_import.
 #define export __attribute__((visibility("default")))
+#endif
 
 // Avoid compiler warnings for unused variables.
 #ifdef __GNUC__
