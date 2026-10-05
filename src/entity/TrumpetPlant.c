@@ -73,7 +73,7 @@ EntityScript Entity_TrumpetPlant_Script = {
     es_End
 };
 
-DmaEntry Entity_TrumpetPlant_dma[] = { ENTITY_ROM(TrumpetPlant_gfx), ENTITY_ROM(TrumpetPlant_anim) };
+DmaEntry Entity_TrumpetPlant_dma[] = { ENTITY_ROM(TrumpetPlant), ENTITY_ANIM_ROM(TrumpetPlant) };
 
 ENTITY_IMPLEMENTATION(TrumpetPlant) = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_HAS_ANIMATED_MODEL,

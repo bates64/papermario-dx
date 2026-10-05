@@ -111,7 +111,7 @@ EntityScript Entity_CymbalPlant_Update = {
     es_End
 };
 
-DmaEntry Entity_CymbalPlant_dma[] = { ENTITY_ROM(CymbalPlant_gfx), ENTITY_ROM(CymbalPlant_anim) };
+DmaEntry Entity_CymbalPlant_dma[] = { ENTITY_ROM(CymbalPlant), ENTITY_ANIM_ROM(CymbalPlant) };
 
 ENTITY_IMPLEMENTATION(CymbalPlant) = {
     .flags = ENTITY_FLAG_CIRCULAR_SHADOW | ENTITY_FLAG_400 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,

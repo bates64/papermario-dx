@@ -25,7 +25,7 @@ EntityScript Entity_BellbellPlant_Script = {
     es_End
 };
 
-DmaEntry Entity_BellbellPlant_dma[] = { ENTITY_ROM(BellbellPlant_gfx), ENTITY_ROM(BellbellPlant_anim) };
+DmaEntry Entity_BellbellPlant_dma[] = { ENTITY_ROM(BellbellPlant), ENTITY_ANIM_ROM(BellbellPlant) };
 
 ENTITY_IMPLEMENTATION(BellbellPlant) = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_CIRCULAR_SHADOW | ENTITY_FLAG_400 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,

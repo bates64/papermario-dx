@@ -2,8 +2,8 @@
 #
 # Segments are laid out in the order listed, each starting where the previous
 # one ended. A segment's VRAM address comes from its class, so segments sharing
-# a class overlay one another in RAM. Adding a segment means adding a line here;
-# adding a source file to an existing segment does not.
+# a class overlay one another in RAM. A segment may be declared directly or by
+# expanding a per-source family from sources.each below.
 #
 # max_size, where given, is the space the segment has to fit in; the build
 # fails if it outgrows it.
@@ -81,118 +81,7 @@ segments:
   - { name: battle_heap_create_obfuscated, vram: 0x802AE000 }
   - { name: obfuscation_shims, vram: 0x802B2000 }
   - { name: world_use_item, class: world_use_item }
-  - { name: effect_gfx_big_smoke_puff, class: effect_gfx }
-  - { name: effect_gfx_landing_dust, class: effect_gfx }
-  - { name: effect_gfx_flower_splash_trail, class: effect_gfx }
-  - { name: effect_gfx_cloud_puff_trail, class: effect_gfx }
-  - { name: effect_gfx_footprint, class: effect_gfx }
-  - { name: effect_gfx_floating_flower, class: effect_gfx }
-  - { name: effect_gfx_snowflake, class: effect_gfx }
-  - { name: effect_gfx_star, class: effect_gfx }
-  - { name: effect_gfx_emote, class: effect_gfx }
-  - { name: effect_gfx_sparkles, class: effect_gfx }
-  - { name: effect_gfx_shape_spell, class: effect_gfx }
-  - { name: effect_gfx_gather_energy_pink, class: effect_gfx }
-  - { name: effect_gfx_drop_leaves, class: effect_gfx }
-  - { name: effect_gfx_dust, class: effect_gfx }
-  - { name: effect_gfx_shattering_stones, class: effect_gfx }
-  - { name: effect_gfx_damage_stars, class: effect_gfx }
-  - { name: effect_gfx_explosion, class: effect_gfx }
-  - { name: effect_gfx_lens_flare, class: effect_gfx }
-  - { name: effect_gfx_got_item_outline, class: effect_gfx }
-  - { name: effect_gfx_spiky_white_aura, class: effect_gfx }
-  - { name: effect_gfx_damage_indicator, class: effect_gfx }
-  - { name: effect_gfx_purple_ring, class: effect_gfx }
-  - { name: effect_gfx_flame, class: effect_gfx }
-  - { name: effect_gfx_rising_bubble, class: effect_gfx }
-  - { name: effect_gfx_ring_blast, class: effect_gfx }
-  - { name: effect_gfx_shockwave, class: effect_gfx }
-  - { name: effect_gfx_music_note, class: effect_gfx }
-  - { name: effect_gfx_sweat, class: effect_gfx }
-  - { name: effect_gfx_sleep_bubble, class: effect_gfx }
-  - { name: effect_gfx_falling_leaves, class: effect_gfx }
-  - { name: effect_gfx_stars_spread, class: effect_gfx }
-  - { name: effect_gfx_steam_burst, class: effect_gfx }
-  - { name: effect_gfx_stars_orbiting, class: effect_gfx }
-  - { name: effect_gfx_big_snowflakes, class: effect_gfx }
-  - { name: effect_gfx_debuff, class: effect_gfx }
-  - { name: effect_gfx_green_impact, class: effect_gfx }
-  - { name: effect_gfx_radial_shimmer, class: effect_gfx }
-  - { name: effect_gfx_ending_decals, class: effect_gfx }
-  - { name: effect_gfx_light_rays, class: effect_gfx }
-  - { name: effect_gfx_lightning, class: effect_gfx }
-  - { name: effect_gfx_fire_breath, class: effect_gfx }
-  - { name: effect_gfx_energy_shockwave, class: effect_gfx }
-  - { name: effect_gfx_aura, class: effect_gfx }
-  - { name: effect_gfx_bulb_glow, class: effect_gfx }
-  - { name: effect_gfx_effect_3D, class: effect_gfx }
-  - { name: effect_gfx_blast, class: effect_gfx }
-  - { name: effect_gfx_fire_flower, class: effect_gfx }
-  - { name: effect_gfx_recover, class: effect_gfx }
-  - { name: effect_gfx_disable_x, class: effect_gfx }
-  - { name: effect_gfx_firework, class: effect_gfx }
-  - { name: effect_gfx_confetti, class: effect_gfx }
-  - { name: effect_gfx_snowfall, class: effect_gfx }
-  - { name: effect_gfx_effect_46, class: effect_gfx }
-  - { name: effect_gfx_gather_magic, class: effect_gfx }
-  - { name: effect_gfx_attack_result_text, class: effect_gfx }
-  - { name: effect_gfx_small_gold_sparkle, class: effect_gfx }
-  - { name: effect_gfx_flashing_box_shockwave, class: effect_gfx }
-  - { name: effect_gfx_balloon, class: effect_gfx }
-  - { name: effect_gfx_floating_rock, class: effect_gfx }
-  - { name: effect_gfx_chomp_drop, class: effect_gfx }
-  - { name: effect_gfx_quizmo_stage, class: effect_gfx }
-  - { name: effect_gfx_radiating_energy_orb, class: effect_gfx }
-  - { name: effect_gfx_quizmo_answer, class: effect_gfx }
-  - { name: effect_gfx_motion_blur_flame, class: effect_gfx }
-  - { name: effect_gfx_energy_orb_wave, class: effect_gfx }
-  - { name: effect_gfx_merlin_house_stars, class: effect_gfx }
-  - { name: effect_gfx_quizmo_audience, class: effect_gfx }
-  - { name: effect_gfx_butterflies, class: effect_gfx }
-  - { name: effect_gfx_stat_change, class: effect_gfx }
-  - { name: effect_gfx_snaking_static, class: effect_gfx }
-  - { name: effect_gfx_thunderbolt_ring, class: effect_gfx }
-  - { name: effect_gfx_squirt, class: effect_gfx }
-  - { name: effect_gfx_water_block, class: effect_gfx }
-  - { name: effect_gfx_waterfall, class: effect_gfx }
-  - { name: effect_gfx_water_fountain, class: effect_gfx }
-  - { name: effect_gfx_underwater, class: effect_gfx }
-  - { name: effect_gfx_lightning_bolt, class: effect_gfx }
-  - { name: effect_gfx_water_splash, class: effect_gfx }
-  - { name: effect_gfx_snowman_doll, class: effect_gfx }
-  - { name: effect_gfx_fright_jar, class: effect_gfx }
-  - { name: effect_gfx_stop_watch, class: effect_gfx }
-  - { name: effect_gfx_effect_63, class: effect_gfx }
-  - { name: effect_gfx_throw_spiny, class: effect_gfx }
-  - { name: effect_gfx_effect_65, class: effect_gfx }
-  - { name: effect_gfx_tubba_heart_attack, class: effect_gfx }
-  - { name: effect_gfx_whirlwind, class: effect_gfx }
-  - { name: effect_gfx_floating_cloud_puff, class: effect_gfx }
-  - { name: effect_gfx_energy_in_out, class: effect_gfx }
-  - { name: effect_gfx_tattle_window, class: effect_gfx }
-  - { name: effect_gfx_shiny_flare, class: effect_gfx }
-  - { name: effect_gfx_huff_puff_breath, class: effect_gfx }
-  - { name: effect_gfx_cold_breath, class: effect_gfx }
-  - { name: effect_gfx_embers, class: effect_gfx }
-  - { name: effect_gfx_hieroglyphs, class: effect_gfx }
-  - { name: effect_gfx_misc_particles, class: effect_gfx }
-  - { name: effect_gfx_static_status, class: effect_gfx }
-  - { name: effect_gfx_moving_cloud, class: effect_gfx }
-  - { name: effect_gfx_effect_75, class: effect_gfx }
-  - { name: effect_gfx_firework_rocket, class: effect_gfx }
-  - { name: effect_gfx_peach_star_beam, class: effect_gfx }
-  - { name: effect_gfx_chapter_change, class: effect_gfx }
-  - { name: effect_gfx_ice_shard, class: effect_gfx }
-  - { name: effect_gfx_spirit_card, class: effect_gfx }
-  - { name: effect_gfx_lil_oink, class: effect_gfx }
-  - { name: effect_gfx_breaking_junk, class: effect_gfx }
-  - { name: effect_gfx_partner_buff, class: effect_gfx }
-  - { name: effect_gfx_quizmo_assistant, class: effect_gfx }
-  - { name: effect_gfx_ice_pillar, class: effect_gfx }
-  - { name: effect_gfx_sun, class: effect_gfx }
-  - { name: effect_gfx_star_spirits_energy, class: effect_gfx }
-  - { name: effect_gfx_star_outline, class: effect_gfx }
-  - { name: effect_gfx_effect_86, class: effect_gfx }
+  - { each: src/effects/gfx, class: effect_gfx }
   - { name: battle/area/kmr_part_1, class: battle_area }
   - { name: battle/area/kmr_part_2, class: battle_area }
   - { name: battle/area/kmr_part_3, class: battle_area }
@@ -236,43 +125,7 @@ segments:
   - { name: battle/area/dig, class: battle_area }
   - { name: level_up, class: battle_move }
   - { name: starpoint, class: battle_move }
-  - { name: world_model_anim_kzn_01, class: world_model_anim }
-  - { name: world_model_anim_kzn_00, class: world_model_anim }
-  - { name: world_model_anim_kzn_04, class: world_model_anim }
-  - { name: world_model_anim_kzn_05, class: world_model_anim }
-  - { name: world_model_anim_kzn_06, class: world_model_anim }
-  - { name: world_model_anim_kzn_07, class: world_model_anim }
-  - { name: world_model_anim_kzn_08, class: world_model_anim }
-  - { name: world_model_anim_kzn_09, class: world_model_anim }
-  - { name: world_model_anim_kzn_0A, class: world_model_anim }
-  - { name: world_model_anim_kzn_0B, class: world_model_anim }
-  - { name: world_model_anim_kzn_0C, class: world_model_anim }
-  - { name: world_model_anim_kzn_0D, class: world_model_anim }
-  - { name: world_model_anim_kzn_0E, class: world_model_anim }
-  - { name: world_model_anim_kzn_02, class: world_model_anim }
-  - { name: world_model_anim_kzn_03, class: world_model_anim }
-  - { name: world_model_anim_kzn_0F, class: world_model_anim }
-  - { name: world_model_anim_kzn_10, class: world_model_anim }
-  - { name: world_model_anim_kzn_11, class: world_model_anim }
-  - { name: world_model_anim_kzn_12, class: world_model_anim }
-  - { name: world_model_anim_kzn_13, class: world_model_anim }
-  - { name: world_model_anim_kzn_14, class: world_model_anim }
-  - { name: world_model_anim_kzn_15, class: world_model_anim }
-  - { name: world_model_anim_kzn_16, class: world_model_anim }
-  - { name: world_model_anim_kzn_17, class: world_model_anim }
-  - { name: world_model_anim_kzn_18, class: world_model_anim }
-  - { name: world_model_anim_kzn_19, class: world_model_anim }
-  - { name: world_model_anim_kzn_1A, class: world_model_anim }
-  - { name: world_model_anim_kzn_1B, class: world_model_anim }
-  - { name: world_model_anim_kzn_1C, class: world_model_anim }
-  - { name: world_model_anim_kzn_1D, class: world_model_anim }
-  - { name: world_model_anim_kzn_1E, class: world_model_anim }
-  - { name: world_model_anim_kzn_1F, class: world_model_anim }
-  - { name: world_model_anim_kzn_20, class: world_model_anim }
-  - { name: world_model_anim_kzn_21, class: world_model_anim }
-  - { name: world_model_anim_kzn_22, class: world_model_anim }
-  - { name: world_model_anim_kzn_23, class: world_model_anim }
-  - { name: world_model_anim_kzn_24, class: world_model_anim }
+  - { each: src/world/model_anim/kzn, class: world_model_anim }
   - { name: world_script_api, class: world_script_api }
   - { name: texture_memory, class: texture_memory }
   - { name: dgb_01_smash_bridges, class: dgb_01_smash_bridges }
@@ -282,78 +135,8 @@ segments:
   - { name: pulse_stone, class: indicator_icon }
   - { name: i_spy, class: indicator_icon }
   - { name: model_clear_render_tasks, class: model_clear_render_tasks }
-  - { name: entity_model_Hammer1Block, class: entity_model }
-  - { name: entity_model_Hammer2Block, class: entity_model }
-  - { name: entity_model_Hammer3Block, class: entity_model }
-  - { name: entity_model_ShatteringHammer1Block, class: entity_model }
-  - { name: entity_model_ShatteringHammer2Block, class: entity_model }
-  - { name: entity_model_ShatteringHammer3Block, class: entity_model }
-  - { name: entity_model_YellowBlock, class: entity_model }
-  - { name: entity_model_RedBlock, class: entity_model }
-  - { name: entity_model_UnusedBlock, class: entity_model }
-  - { name: entity_model_PushBlock, class: entity_model }
-  - { name: entity_model_BrickBlock, class: entity_model }
-  - { name: entity_model_ShatteringBrickBlock, class: entity_model }
-  - { name: entity_model_InertYellowBlock, class: entity_model }
-  - { name: entity_model_InertRedBlock, class: entity_model }
-  - { name: entity_model_HeartBlock, class: entity_model }
-  - { name: entity_model_PowBlock, class: entity_model }
-  - { name: entity_model_SuperBlock, class: entity_model }
-  - { name: entity_model_UltraBlock, class: entity_model }
-  - { name: entity_model_HitYellowBlock_gfx, class: entity_model }
-  - { name: entity_model_HitYellowBlock_anim, class: entity_model_anim }
-  - { name: entity_model_HitFloatingYellowBlock_gfx, class: entity_model }
-  - { name: entity_model_HitFloatingYellowBlock_anim, class: entity_model_anim }
-  - { name: entity_model_HitRedBlock_gfx, class: entity_model }
-  - { name: entity_model_HitRedBlock_anim, class: entity_model_anim }
-  - { name: entity_model_HeartBlockContent, class: entity_model }
-  - { name: entity_model_SuperBlockContent, class: entity_model }
-  - { name: entity_model_UltraBlockContent, class: entity_model }
-  - { name: entity_model_SaveBlock, class: entity_model }
-  - { name: entity_model_BoardedFloor, class: entity_model }
-  - { name: entity_model_WoodenCrate, class: entity_model }
-  - { name: entity_model_StarBoxLauncher, class: entity_model }
-  - { name: entity_model_HiddenPanel, class: entity_model }
-  - { name: entity_model_Tweester, class: entity_model }
-  - { name: entity_model_BlueWarpPipe, class: entity_model }
-  - { name: entity_model_Signpost, class: entity_model }
-  - { name: entity_model_ArrowSign, class: entity_model }
-  - { name: entity_model_Padlock, class: entity_model }
-  - { name: entity_model_PadlockRedFrame, class: entity_model }
-  - { name: entity_model_PadlockRedFace, class: entity_model }
-  - { name: entity_model_PadlockBlueFace, class: entity_model }
-  - { name: entity_model_GreenStompSwitch, class: entity_model }
-  - { name: entity_model_RedSwitch, class: entity_model }
-  - { name: entity_model_BlueSwitch, class: entity_model }
-  - { name: entity_model_Chest, class: entity_model }
-  - { name: entity_model_ScriptSpring_gfx, class: entity_model }
-  - { name: entity_model_ScriptSpring_anim, class: entity_model_anim }
-  - { name: entity_model_SimpleSpring_gfx, class: entity_model }
-  - { name: entity_model_SimpleSpring_anim, class: entity_model_anim }
-  - { name: entity_model_BellbellPlant_gfx, class: entity_model }
-  - { name: entity_model_BellbellPlant_anim, class: entity_model_anim }
-  - { name: entity_model_TrumpetPlant_gfx, class: entity_model }
-  - { name: entity_model_TrumpetPlant_anim, class: entity_model_anim }
-  - { name: entity_model_MunchlesiaReset_gfx, class: entity_model }
-  - { name: entity_model_MunchlesiaReset_anim, class: entity_model_anim }
-  - { name: entity_model_MunchlesiaGrab_gfx, class: entity_model }
-  - { name: entity_model_MunchlesiaGrab_anim, class: entity_model_anim }
-  - { name: entity_model_MunchlesiaEnvelop_gfx, class: entity_model }
-  - { name: entity_model_MunchlesiaEnvelop_anim, class: entity_model_anim }
-  - { name: entity_model_MunchlesiaBeginChew_gfx, class: entity_model }
-  - { name: entity_model_MunchlesiaBeginChew_anim, class: entity_model_anim }
-  - { name: entity_model_MunchlesiaChewing_gfx, class: entity_model }
-  - { name: entity_model_MunchlesiaChewing_anim, class: entity_model_anim }
-  - { name: entity_model_MunchlesiaSpitOut_gfx, class: entity_model }
-  - { name: entity_model_MunchlesiaSpitOut_anim, class: entity_model_anim }
-  - { name: entity_model_MunchlesiaReset1_gfx, class: entity_model }
-  - { name: entity_model_MunchlesiaReset1_anim, class: entity_model_anim }
-  - { name: entity_model_CymbalPlant_anim, class: entity_model_anim }
-  - { name: entity_model_CymbalPlant_gfx, class: entity_model }
-  - { name: entity_model_PinkFlower_anim, class: entity_model_anim }
-  - { name: entity_model_PinkFlower_gfx, class: entity_model }
-  - { name: entity_model_SpinningFlower, class: entity_model }
-  - { name: entity_model_BombableRock, class: entity_model }
+  - { each: src/entity/model, class: entity_model }
+  - { each: src/entity/anim, class: entity_model_anim }
   - { name: sbn }
   - { name: copy_1942C40 }
   - { name: sprites }
@@ -428,9 +211,11 @@ sources:
     src/world/area/dgb: dgb_01_smash_bridges
 
   # Directories where every source is its own segment, named <prefix><stem>.
+  # Entries in the segment list may expand these families with `each`.
   each:
     src/battle/overlay: ''
     src/effects/gfx: effect_gfx_
+    src/entity/anim: entity_anim_
     src/entity/model: entity_model_
     src/heaps: ''
     src/indicator_icon: ''

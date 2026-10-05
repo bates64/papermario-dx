@@ -61,6 +61,7 @@ enum {
 
 #define ENTITY_ADDR(entity, type, data) (type)((s32)(entity->gfxBaseAddr) + ((s32)(data) & 0xFFFF))
 #define ENTITY_ROM(name) { entity_model_##name##_ROM_START, entity_model_##name##_ROM_END }
+#define ENTITY_ANIM_ROM(name) { entity_anim_##name##_ROM_START, entity_anim_##name##_ROM_END }
 
 /// Define the runtime descriptor exported by an entity implementation overlay.
 /// The corresponding resident manifest is named Entity_<name>.

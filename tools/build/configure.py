@@ -587,7 +587,7 @@ class Configure:
 
     def load(self) -> None:
         """Read the version's configuration and scan what it points at."""
-        self.layout = Layout(self.version_path / "layout.yaml")
+        self.layout = Layout(self.version_path / "layout.yaml", ROOT)
         self.asset_stack: List[str] = self.layout.asset_stack
         self.sources_config = SegmentMap(self.layout, ROOT / "src")
         self.all_sources = self.sources_config.scan()
@@ -685,6 +685,7 @@ class Configure:
         return (
             relative.suffix in (".c", ".cpp")
             and "model" not in entity_relative.parts
+            and entity_relative.parts[:1] != ("anim",)
             and entity_relative.name not in ("Shadow.c", "blueprints.inc.c")
         )
 

@@ -7,18 +7,18 @@
 #include "model.h"
 
 #if VERSION_JP // TODO remove once segments are split
-extern Addr entity_model_HitFloatingYellowBlock_anim_ROM_END;
-extern Addr entity_model_HitFloatingYellowBlock_anim_ROM_START;
-extern Addr entity_model_HitFloatingYellowBlock_gfx_ROM_END;
-extern Addr entity_model_HitFloatingYellowBlock_gfx_ROM_START;
-extern Addr entity_model_HitRedBlock_anim_ROM_END;
-extern Addr entity_model_HitRedBlock_anim_ROM_START;
-extern Addr entity_model_HitRedBlock_gfx_ROM_END;
-extern Addr entity_model_HitRedBlock_gfx_ROM_START;
-extern Addr entity_model_HitYellowBlock_anim_ROM_END;
-extern Addr entity_model_HitYellowBlock_anim_ROM_START;
-extern Addr entity_model_HitYellowBlock_gfx_ROM_END;
-extern Addr entity_model_HitYellowBlock_gfx_ROM_START;
+extern Addr entity_anim_HitFloatingYellowBlock_ROM_END;
+extern Addr entity_anim_HitFloatingYellowBlock_ROM_START;
+extern Addr entity_model_HitFloatingYellowBlock_ROM_END;
+extern Addr entity_model_HitFloatingYellowBlock_ROM_START;
+extern Addr entity_anim_HitRedBlock_ROM_END;
+extern Addr entity_anim_HitRedBlock_ROM_START;
+extern Addr entity_model_HitRedBlock_ROM_END;
+extern Addr entity_model_HitRedBlock_ROM_START;
+extern Addr entity_anim_HitYellowBlock_ROM_END;
+extern Addr entity_anim_HitYellowBlock_ROM_START;
+extern Addr entity_model_HitYellowBlock_ROM_END;
+extern Addr entity_model_HitYellowBlock_ROM_START;
 extern Addr entity_model_RedBlock_ROM_END;
 extern Addr entity_model_RedBlock_ROM_START;
 extern Addr entity_model_YellowBlock_ROM_END;
@@ -346,9 +346,9 @@ EntityScript Entity_TriggerBlock_Script = {
     es_End
 };
 
-DmaEntry Entity_HitYellowBlock_dma[] = { ENTITY_ROM(HitYellowBlock_gfx), ENTITY_ROM(HitYellowBlock_anim) };
-DmaEntry Entity_HitFloatinYellowBlock_dma[] = { ENTITY_ROM(HitFloatingYellowBlock_gfx), ENTITY_ROM(HitFloatingYellowBlock_anim) };
-DmaEntry Entity_HitRedBlock_dma[] = { ENTITY_ROM(HitRedBlock_gfx), ENTITY_ROM(HitRedBlock_anim) };
+DmaEntry Entity_HitYellowBlock_dma[] = { ENTITY_ROM(HitYellowBlock), ENTITY_ANIM_ROM(HitYellowBlock) };
+DmaEntry Entity_HitFloatinYellowBlock_dma[] = { ENTITY_ROM(HitFloatingYellowBlock), ENTITY_ANIM_ROM(HitFloatingYellowBlock) };
+DmaEntry Entity_HitRedBlock_dma[] = { ENTITY_ROM(HitRedBlock), ENTITY_ANIM_ROM(HitRedBlock) };
 
 EntityModelScript Entity_YellowBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_YellowBlock_Render, RENDER_MODE_SURFACE_OPA);
 EntityModelScript Entity_HiddenYellowBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_YellowBlock_Render, RENDER_MODE_SURFACE_XLU_LAYER2);

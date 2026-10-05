@@ -231,13 +231,13 @@ EntityScript Entity_MunchlesiaReset2_Script = {
     es_End
 };
 
-DmaEntry Entity_MunchlesiaReset_dma[] = { ENTITY_ROM(MunchlesiaReset_gfx), ENTITY_ROM(MunchlesiaReset_anim) };
-DmaEntry Entity_MunchlesiaGrab_dma[] = { ENTITY_ROM(MunchlesiaGrab_gfx), ENTITY_ROM(MunchlesiaGrab_anim) };
-DmaEntry Entity_MunchlesiaEnvelop_dma[] = { ENTITY_ROM(MunchlesiaEnvelop_gfx), ENTITY_ROM(MunchlesiaEnvelop_anim) };
-DmaEntry Entity_MunchlesiaBeginChew_dma[] = { ENTITY_ROM(MunchlesiaBeginChew_gfx), ENTITY_ROM(MunchlesiaBeginChew_anim) };
-DmaEntry Entity_MunchlesiaChewing_dma[] = { ENTITY_ROM(MunchlesiaChewing_gfx), ENTITY_ROM(MunchlesiaChewing_anim) };
-DmaEntry Entity_MunchlesiaSpitOut_dma[] = { ENTITY_ROM(MunchlesiaSpitOut_gfx), ENTITY_ROM(MunchlesiaSpitOut_anim) };
-DmaEntry Entity_MunchlesiaReset1_dma[] = { ENTITY_ROM(MunchlesiaReset1_gfx), ENTITY_ROM(MunchlesiaReset1_anim) };
+DmaEntry Entity_MunchlesiaReset_dma[] = { ENTITY_ROM(MunchlesiaReset), ENTITY_ANIM_ROM(MunchlesiaReset) };
+DmaEntry Entity_MunchlesiaGrab_dma[] = { ENTITY_ROM(MunchlesiaGrab), ENTITY_ANIM_ROM(MunchlesiaGrab) };
+DmaEntry Entity_MunchlesiaEnvelop_dma[] = { ENTITY_ROM(MunchlesiaEnvelop), ENTITY_ANIM_ROM(MunchlesiaEnvelop) };
+DmaEntry Entity_MunchlesiaBeginChew_dma[] = { ENTITY_ROM(MunchlesiaBeginChew), ENTITY_ANIM_ROM(MunchlesiaBeginChew) };
+DmaEntry Entity_MunchlesiaChewing_dma[] = { ENTITY_ROM(MunchlesiaChewing), ENTITY_ANIM_ROM(MunchlesiaChewing) };
+DmaEntry Entity_MunchlesiaSpitOut_dma[] = { ENTITY_ROM(MunchlesiaSpitOut), ENTITY_ANIM_ROM(MunchlesiaSpitOut) };
+DmaEntry Entity_MunchlesiaReset1_dma[] = { ENTITY_ROM(MunchlesiaReset1), ENTITY_ANIM_ROM(MunchlesiaReset1) };
 
 ENTITY_IMPLEMENTATION(Munchlesia) = {
     .flags = ENTITY_FLAG_CIRCULAR_SHADOW | ENTITY_FLAG_400 | ENTITY_FLAG_FIXED_SHADOW_SIZE,

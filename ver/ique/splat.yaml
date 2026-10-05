@@ -13519,7 +13519,7 @@ segments:
     vram: 0x0A000000
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, HitYellowBlock_gfx]
+    - [auto, c, HitYellowBlock]
     - start: 0xE8E430
       type: .data
       name: HitYellowBlock_gfx
@@ -13530,12 +13530,12 @@ segments:
       - [0xE8E850, rgba16, HitYellowBlock_face1, 32, 32]
       - [0xE8F050, rgba16, HitYellowBlock_face2, 32, 32]
   - name: entity_model_HitYellowBlock_anim
-    dir: entity/model
+    dir: entity/anim
     type: code
     start: 0xE8F850
     vram: 0x00000000
     subsegments:
-    - [auto, c, HitYellowBlock_anim]
+    - [auto, c, HitYellowBlock]
   - name: entity_model_HitFloatingYellowBlock_gfx
     dir: entity/model
     type: code
@@ -13543,7 +13543,7 @@ segments:
     vram: 0x0A000000
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, HitFloatingYellowBlock_gfx]
+    - [auto, c, HitFloatingYellowBlock]
     - start: 0xE8FAF0
       type: .data
       name: HitFloatingYellowBlock_gfx
@@ -13554,12 +13554,12 @@ segments:
       - [0xE8FF30, rgba16, HitFloatingYellowBlock_face1, 32, 32]
       - [0xE90730, rgba16, HitFloatingYellowBlock_face2, 32, 32]
   - name: entity_model_HitFloatingYellowBlock_anim
-    dir: entity/model
+    dir: entity/anim
     type: code
     start: 0xE90F30
     vram: 0x00000000
     subsegments:
-    - [auto, c, HitFloatingYellowBlock_anim]
+    - [auto, c, HitFloatingYellowBlock]
   - name: entity_model_HitRedBlock_gfx
     dir: entity/model
     type: code
@@ -13567,7 +13567,7 @@ segments:
     vram: 0x0A000000
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, HitRedBlock_gfx]
+    - [auto, c, HitRedBlock]
     - start: 0xE911C0
       type: .data
       name: HitRedBlock_gfx
@@ -13578,12 +13578,12 @@ segments:
       - [0xE91620, rgba16, HitRedBlock_face1, 32, 32]
       - [0xE91E20, rgba16, HitRedBlock_face2, 32, 32]
   - name: entity_model_HitRedBlock_anim
-    dir: entity/model
+    dir: entity/anim
     type: code
     start: 0xE92620
     vram: 0x00000000
     subsegments:
-    - [auto, c, HitRedBlock_anim]
+    - [auto, c, HitRedBlock]
   - name: entity_model_HeartBlockContent
     dir: entity/model
     type: code
@@ -13998,7 +13998,7 @@ segments:
     vram: 0x0A000000
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, ScriptSpring_gfx]
+    - [auto, c, ScriptSpring]
     - start: 0xEAE1E0
       type: .data
       name: ScriptSpring_gfx
@@ -14020,12 +14020,12 @@ segments:
       - [0xEAF590, palette, ScriptSpring_star]
       - [0xEAF790]
   - name: entity_model_ScriptSpring_anim
-    dir: entity/model
+    dir: entity/anim
     type: code
     start: 0xEAFB60
     vram: 0x00000000
     subsegments:
-    - [auto, c, ScriptSpring_anim]
+    - [auto, c, ScriptSpring]
   - name: entity_model_SimpleSpring_gfx
     dir: entity/model
     type: code
@@ -14033,7 +14033,7 @@ segments:
     vram: 0x0A000000
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, SimpleSpring_gfx]
+    - [auto, c, SimpleSpring]
     - start: 0xEB0FC0
       type: .data
       name: SimpleSpring_gfx
@@ -14053,12 +14053,12 @@ segments:
       - [0xEB21C0, palette, SimpleSpring_star]
       - [0xEB23C0]
   - name: entity_model_SimpleSpring_anim
-    dir: entity/model
+    dir: entity/anim
     type: code
     start: 0xEB2790
     vram: 0x00000000
     subsegments:
-    - [auto, c, SimpleSpring_anim]
+    - [auto, c, SimpleSpring]
   - name: entity_model_BellbellPlant_gfx
     dir: entity/model
     type: code
@@ -14066,7 +14066,7 @@ segments:
     vram: 0x0A000000
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, BellbellPlant_gfx]
+    - [auto, c, BellbellPlant]
     - start: 0xEB3BF0
       type: .data
       name: BellbellPlant_gfx
@@ -14079,12 +14079,12 @@ segments:
       - [0xEB46E0]
       - [0xEB4C80, rgba16, BellbellPlant, 16, 16]
   - name: entity_model_BellbellPlant_anim
-    dir: entity/model
+    dir: entity/anim
     type: code
     start: 0xEB4E80
     vram: 0x00000000
     subsegments:
-    - [auto, c, BellbellPlant_anim]
+    - [auto, c, BellbellPlant]
   - name: entity_model_TrumpetPlant_gfx
     dir: entity/model
     type: code
@@ -14092,7 +14092,7 @@ segments:
     vram: 0x0A000000
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, TrumpetPlant_gfx]
+    - [auto, c, TrumpetPlant]
     - start: 0xEB5DD0
       type: .data
       name: TrumpetPlant_gfx
@@ -14102,12 +14102,12 @@ segments:
       - [0xEB6780]
       - [0xEB6B10, rgba16, TrumpetPlant, 16, 16]
   - name: entity_model_TrumpetPlant_anim
-    dir: entity/model
+    dir: entity/anim
     type: code
     start: 0xEB6D10
     vram: 0x00000000
     subsegments:
-    - [auto, c, TrumpetPlant_anim]
+    - [auto, c, TrumpetPlant]
   - name: entity_model_MunchlesiaReset_gfx
     dir: entity/model
     type: code
@@ -14115,7 +14115,7 @@ segments:
     vram: 0x0A000000
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, MunchlesiaReset_gfx]
+    - [auto, c, MunchlesiaReset]
     - start: 0xEB70A0
       type: .data
       name: MunchlesiaReset_gfx
@@ -14124,12 +14124,12 @@ segments:
       - [0xEB8990]
       - [0xEBCF88, rgba16, MunchlesiaReset, 16, 16]
   - name: entity_model_MunchlesiaReset_anim
-    dir: entity/model
+    dir: entity/anim
     type: code
     start: 0xEBD190
     vram: 0x00000000
     subsegments:
-    - [auto, c, MunchlesiaReset_anim]
+    - [auto, c, MunchlesiaReset]
   - name: entity_model_MunchlesiaGrab_gfx
     dir: entity/model
     type: code
@@ -14137,7 +14137,7 @@ segments:
     vram: 0x0A000000
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, MunchlesiaGrab_gfx]
+    - [auto, c, MunchlesiaGrab]
     - start: 0xEBD610
       type: .data
       name: MunchlesiaGrab_gfx
@@ -14146,12 +14146,12 @@ segments:
       - [0xEBEF00]
       - [0xEC34F8, rgba16, MunchlesiaGrab, 16, 16]
   - name: entity_model_MunchlesiaGrab_anim
-    dir: entity/model
+    dir: entity/anim
     type: code
     start: 0xEC3700
     vram: 0x00000000
     subsegments:
-    - [auto, c, MunchlesiaGrab_anim]
+    - [auto, c, MunchlesiaGrab]
   - name: entity_model_MunchlesiaEnvelop_gfx
     dir: entity/model
     type: code
@@ -14159,7 +14159,7 @@ segments:
     vram: 0x0A000000
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, MunchlesiaEnvelop_gfx]
+    - [auto, c, MunchlesiaEnvelop]
     - start: 0xEC3B20
       type: .data
       name: MunchlesiaEnvelop_gfx
@@ -14168,12 +14168,12 @@ segments:
       - [0xEC5410]
       - [0xEC9A08, rgba16, MunchlesiaEnvelop, 16, 16]
   - name: entity_model_MunchlesiaEnvelop_anim
-    dir: entity/model
+    dir: entity/anim
     type: code
     start: 0xEC9C10
     vram: 0x00000000
     subsegments:
-    - [auto, c, MunchlesiaEnvelop_anim]
+    - [auto, c, MunchlesiaEnvelop]
   - name: entity_model_MunchlesiaBeginChew_gfx
     dir: entity/model
     type: code
@@ -14181,7 +14181,7 @@ segments:
     vram: 0x0A000000
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, MunchlesiaBeginChew_gfx]
+    - [auto, c, MunchlesiaBeginChew]
     - start: 0xECA030
       type: .data
       name: MunchlesiaBeginChew_gfx
@@ -14190,12 +14190,12 @@ segments:
       - [0xECB920]
       - [0xED0870, rgba16, MunchlesiaBeginChew, 16, 16]
   - name: entity_model_MunchlesiaBeginChew_anim
-    dir: entity/model
+    dir: entity/anim
     type: code
     start: 0xED0A70
     vram: 0x00000000
     subsegments:
-    - [auto, c, MunchlesiaBeginChew_anim]
+    - [auto, c, MunchlesiaBeginChew]
   - name: entity_model_MunchlesiaChewing_gfx
     dir: entity/model
     type: code
@@ -14203,7 +14203,7 @@ segments:
     vram: 0x0A000000
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, MunchlesiaChewing_gfx]
+    - [auto, c, MunchlesiaChewing]
     - start: 0xED0EE0
       type: .data
       name: MunchlesiaChewing_gfx
@@ -14212,12 +14212,12 @@ segments:
       - [0xED27D0]
       - [0xED2C50, rgba16, MunchlesiaChewing, 16, 16]
   - name: entity_model_MunchlesiaChewing_anim
-    dir: entity/model
+    dir: entity/anim
     type: code
     start: 0xED2E50
     vram: 0x00000000
     subsegments:
-    - [auto, c, MunchlesiaChewing_anim]
+    - [auto, c, MunchlesiaChewing]
   - name: entity_model_MunchlesiaSpitOut_gfx
     dir: entity/model
     type: code
@@ -14225,7 +14225,7 @@ segments:
     vram: 0x0A000000
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, MunchlesiaSpitOut_gfx]
+    - [auto, c, MunchlesiaSpitOut]
     - start: 0xED3420
       type: .data
       name: MunchlesiaSpitOut_gfx
@@ -14234,12 +14234,12 @@ segments:
       - [0xED4D10]
       - [0xED9C60, rgba16, MunchlesiaSpitOut, 16, 16]
   - name: entity_model_MunchlesiaSpitOut_anim
-    dir: entity/model
+    dir: entity/anim
     type: code
     start: 0xED9E60
     vram: 0x00000000
     subsegments:
-    - [auto, c, MunchlesiaSpitOut_anim]
+    - [auto, c, MunchlesiaSpitOut]
   - name: entity_model_MunchlesiaReset1_gfx
     dir: entity/model
     type: code
@@ -14247,7 +14247,7 @@ segments:
     vram: 0x0A000000
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, MunchlesiaReset1_gfx]
+    - [auto, c, MunchlesiaReset1]
     - start: 0xEDA2D0
       type: .data
       name: MunchlesiaReset1_gfx
@@ -14256,19 +14256,19 @@ segments:
       - [0xEDBBC0]
       - [0xEE0B10, rgba16, MunchlesiaReset1, 16, 16]
   - name: entity_model_MunchlesiaReset1_anim
-    dir: entity/model
+    dir: entity/anim
     type: code
     start: 0xEE0D10
     vram: 0x00000000
     subsegments:
-    - [auto, c, MunchlesiaReset1_anim]
+    - [auto, c, MunchlesiaReset1]
   - name: entity_model_CymbalPlant_anim
-    dir: entity/model
+    dir: entity/anim
     type: code
     start: 0xEE1180
     vram: 0x00000000
     subsegments:
-    - [auto, c, CymbalPlant_anim]
+    - [auto, c, CymbalPlant]
   - name: entity_model_CymbalPlant_gfx
     dir: entity/model
     type: code
@@ -14276,7 +14276,7 @@ segments:
     vram: 0x0A000000
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, CymbalPlant_gfx]
+    - [auto, c, CymbalPlant]
     - start: 0xEE1D30
       type: .data
       name: CymbalPlant_gfx
@@ -14294,12 +14294,12 @@ segments:
       - [0xEE2C58, vtx, CymbalPlant_8]
       - [0xEE2DA8]
   - name: entity_model_PinkFlower_anim
-    dir: entity/model
+    dir: entity/anim
     type: code
     start: 0xEE33D0
     vram: 0x00000000
     subsegments:
-    - [auto, c, PinkFlower_anim]
+    - [auto, c, PinkFlower]
   - name: entity_model_PinkFlower_gfx
     dir: entity/model
     type: code
@@ -14307,7 +14307,7 @@ segments:
     vram: 0x0A000000
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, PinkFlower_gfx]
+    - [auto, c, PinkFlower]
     - start: 0xEE3F40
       type: .data
       name: PinkFlower_gfx
