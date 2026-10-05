@@ -9,7 +9,6 @@
 
 #define NAMESPACE b_area_omo2_general_guy
 
-extern ActorBlueprint b_area_omo2_1_shy_squad;
 extern AnimScript AS_ToyTank_CloseHatch;
 extern AnimScript AS_ToyTank_OpenHatch;
 
@@ -174,7 +173,6 @@ EvtScript N(EVS_Init) = {
     Call(SetActorVar, ACTOR_SELF, AVAR_General_DoingTankPhase, false)
     Call(SetActorVar, ACTOR_SELF, AVAR_General_Flags, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_General_WavesDefeated, 0)
-    Call(LoadBattleSection, BTL_AREA_OMO2_1)
     Call(SummonEnemy, Ref(N(ShySquadFormation)), true)
     Return
     End
@@ -583,5 +581,5 @@ EvtScript N(EVS_Attack_ShootLightning) = {
 Vec3i N(SummonPos) = { 240, 0, 0 };
 
 Formation N(ShySquadFormation) = {
-    ACTOR_BY_POS(b_area_omo2_1_shy_squad, N(SummonPos), 100)
+    OVL_ACTOR_BY_POS("shy_squad", N(SummonPos), 100)
 };

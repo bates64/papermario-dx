@@ -3,7 +3,7 @@
 #include "effects.h"
 #include "sprite/npc/MarshalGuy.h"
 
-#define NAMESPACE b_area_omo2_4_signal_guy
+#define NAMESPACE A(signal_guy)
 
 extern s32 N(DefaultAnims)[];
 
@@ -61,7 +61,7 @@ ActorPartBlueprint N(ActorParts)[] = {
     },
 };
 
-ActorBlueprint NAMESPACE = {
+export ActorBlueprint blueprint = {
     .flags = ACTOR_FLAG_NO_DMG_POPUP,
     .type = ACTOR_TYPE_SIGNAL_GUY,
     .level = ACTOR_LEVEL_SIGNAL_GUY,

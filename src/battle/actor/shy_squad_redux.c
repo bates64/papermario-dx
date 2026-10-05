@@ -5,7 +5,7 @@
 
 #include "battle/area/omo2/actor/boss_common.h"
 
-#define NAMESPACE b_area_omo2_5_shy_squad_redux
+#define NAMESPACE A(shy_squad_redux)
 
 extern s32 N(DarkAnims)[];
 extern EvtScript N(EVS_Init);
@@ -296,7 +296,7 @@ ActorPartBlueprint N(ActorParts)[] = {
     },
 };
 
-ActorBlueprint NAMESPACE = {
+export ActorBlueprint blueprint = {
     .flags = ACTOR_FLAG_NO_SHADOW,
     .type = ACTOR_TYPE_SHY_SQUAD_REDUX,
     .level = ACTOR_LEVEL_SHY_SQUAD_REDUX,

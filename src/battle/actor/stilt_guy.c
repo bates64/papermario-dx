@@ -7,7 +7,7 @@
 
 #include "battle/area/omo2/actor/boss_common.h"
 
-#define NAMESPACE b_area_omo2_2_stilt_guy
+#define NAMESPACE A(stilt_guy)
 
 extern s32 N(ShyGuyAnims)[];
 extern EvtScript N(EVS_Init);
@@ -235,7 +235,7 @@ ActorPartBlueprint N(ActorParts)[] = {
     },
 };
 
-ActorBlueprint NAMESPACE = {
+export ActorBlueprint blueprint = {
     .flags = 0,
     .type = ACTOR_TYPE_STILT_GUY,
     .level = ACTOR_LEVEL_STILT_GUY,

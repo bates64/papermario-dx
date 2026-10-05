@@ -9,7 +9,7 @@
 
 #include "battle/area/omo2/actor/boss_common.h"
 
-#define NAMESPACE b_area_omo2_3_shy_stack
+#define NAMESPACE A(shy_stack)
 
 extern s32 N(FourStackAnims)[];
 extern s32 N(RockAnims)[];
@@ -275,7 +275,7 @@ ActorPartBlueprint N(ActorParts)[] = {
     },
 };
 
-ActorBlueprint NAMESPACE = {
+export ActorBlueprint blueprint = {
     .flags = 0,
     .type = ACTOR_TYPE_SHY_STACK,
     .level = ACTOR_LEVEL_SHY_STACK,

@@ -30,22 +30,14 @@ BSS Battle* gCurrentBattlePtr;
 } \
 
 // extended battle area with a dmaTable, used by kzn2 for lava piranha animations
-#define BTL_AREA_DMA(id, jpName) { \
-    .name = jpName, \
+#define BTL_AREA_DMA(id, debugName) { \
+    .name = debugName, \
     .dmaStart = battle_area_##id##_ROM_START, \
     .dmaEnd = battle_area_##id##_ROM_END, \
     .dmaDest = battle_area_##id##_VRAM, \
     .battles = &b_area_##id##_Formations, \
     .stages = &b_area_##id##_Stages, \
     .dmaTable = b_area_##id##_dmaTable, \
-} \
-
-// auxiliary battle area for omo which contains only additional enemy data
-#define BTL_AREA_AUX(id, jpName) { \
-    .name = jpName, \
-    .dmaStart = battle_area_##id##_ROM_START, \
-    .dmaEnd = battle_area_##id##_ROM_END, \
-    .dmaDest = battle_area_##id##_VRAM, \
 } \
 
 /// When updating this, make sure you also update:
@@ -55,51 +47,45 @@ BSS Battle* gCurrentBattlePtr;
 /// - battle_tables.h
 BattleArea gBattleAreas[] = {
     BTL_AREA(kmr_part_1, "KMR Part 1"),
-    BTL_AREA(kmr_part_2, "エリア ＫＭＲ その２"),
-    BTL_AREA(kmr_part_3, "エリア ＫＭＲ その３"),
-    BTL_AREA(mac, "エリア ＭＡＣ"),
-    BTL_AREA(hos, "エリア ＨＯＳ"),
-    BTL_AREA(nok, "エリア ＮＯＫ"),
-    BTL_AREA(trd_part_1, "エリア ＴＲＤ その１"),
-    BTL_AREA(trd_part_2, "エリア ＴＲＤ その２"),
-    BTL_AREA(trd_part_3, "エリア ＴＲＤ その３"),
-    BTL_AREA(iwa, "エリア ＩＷＡ"),
-    BTL_AREA(sbk, "エリア ＳＢＫ"),
-    BTL_AREA(isk_part_1, "エリア ＩＳＫ その１"),
-    BTL_AREA(isk_part_2, "エリア ＩＳＫ その２"),
-    BTL_AREA(mim, "エリア ＭＩＭ"),
-    BTL_AREA(arn, "エリア ＡＲＮ"),
-    BTL_AREA(dgb, "エリア ＤＧＢ"),
-    BTL_AREA(omo, "エリア ＯＭＯ"),
-    BTL_AREA(omo2, "エリア ＯＭＯ２"),
-    BTL_AREA(omo3, "エリア ＯＭＯ３"),
-    BTL_AREA(kgr, "エリア ＫＧＲ"),
-    BTL_AREA(jan, "エリア ＪＡＮ"),
-    BTL_AREA(jan2, "エリア ＪＡＮ２"),
-    BTL_AREA(kzn, "エリア ＫＺＮ"),
-    BTL_AREA_DMA(kzn2, "エリア ＫＺＮ２"),
-    BTL_AREA(flo, "エリア ＦＬＯ"),
-    BTL_AREA(flo2, "エリア ＦＬＯ２"),
-    BTL_AREA(tik, "エリア ＴＩＫ"),
-    BTL_AREA(tik2, "エリア ＴＩＫ２"),
-    BTL_AREA(tik3, "エリア ＴＩＫ３"),
-    BTL_AREA(sam, "エリア ＳＡＭ"),
-    BTL_AREA(sam2, "エリア ＳＡＭ２"),
-    BTL_AREA(pra, "エリア ＰＲＡ"),
-    BTL_AREA(pra2, "エリア ＰＲＡ２"),
-    BTL_AREA(pra3, "エリア ＰＲＡ３"),
-    BTL_AREA(kpa, "エリア ＫＰＡ"),
-    BTL_AREA(kpa2, "エリア ＫＰＡ２"),
-    BTL_AREA(kpa3, "エリア ＫＰＡ３"),
-    BTL_AREA(kpa4, "エリア ＫＰＡ４"),
-    BTL_AREA(kkj, "エリア ＫＫＪ"),
-    BTL_AREA(dig, "エリア ＤＩＧ"),
-    BTL_AREA_AUX(omo2_1, "エリア ＯＭＯ２＿１"),
-    BTL_AREA_AUX(omo2_2, "エリア ＯＭＯ２＿２"),
-    BTL_AREA_AUX(omo2_3, "エリア ＯＭＯ２＿３"),
-    BTL_AREA_AUX(omo2_4, "エリア ＯＭＯ２＿４"),
-    BTL_AREA_AUX(omo2_5, "エリア ＯＭＯ２＿５"),
-    BTL_AREA_AUX(omo2_6, "エリア ＯＭＯ２＿６"),
+    BTL_AREA(kmr_part_2, "KMR Part 2"),
+    BTL_AREA(kmr_part_3, "KMR Part 3"),
+    BTL_AREA(mac, "MAC"),
+    BTL_AREA(hos, "HOS"),
+    BTL_AREA(nok, "NOK"),
+    BTL_AREA(trd_part_1, "TRD Part 1"),
+    BTL_AREA(trd_part_2, "TRD Part 2"),
+    BTL_AREA(trd_part_3, "TRD Part 3"),
+    BTL_AREA(iwa, "IWA"),
+    BTL_AREA(sbk, "SBK"),
+    BTL_AREA(isk_part_1, "ISK Part 1"),
+    BTL_AREA(isk_part_2, "ISK Part 2"),
+    BTL_AREA(mim, "MIM"),
+    BTL_AREA(arn, "ARN"),
+    BTL_AREA(dgb, "DGB"),
+    BTL_AREA(omo, "OMO"),
+    BTL_AREA(omo2, "OMO2"),
+    BTL_AREA(omo3, "OMO3"),
+    BTL_AREA(kgr, "KGR"),
+    BTL_AREA(jan, "JAN"),
+    BTL_AREA(jan2, "JAN2"),
+    BTL_AREA(kzn, "KZN"),
+    BTL_AREA_DMA(kzn2, "KZN2"),
+    BTL_AREA(flo, "FLO"),
+    BTL_AREA(flo2, "FLO2"),
+    BTL_AREA(tik, "TIK"),
+    BTL_AREA(tik2, "TIK2"),
+    BTL_AREA(tik3, "TIK3"),
+    BTL_AREA(sam, "SAM"),
+    BTL_AREA(sam2, "SAM2"),
+    BTL_AREA(pra, "PRA"),
+    BTL_AREA(pra2, "PRA2"),
+    BTL_AREA(pra3, "PRA3"),
+    BTL_AREA(kpa, "KPA"),
+    BTL_AREA(kpa2, "KPA2"),
+    BTL_AREA(kpa3, "KPA3"),
+    BTL_AREA(kpa4, "KPA4"),
+    BTL_AREA(kkj, "KKJ"),
+    BTL_AREA(dig, "DIG"),
 };
 
 void reset_battle_status(void) {

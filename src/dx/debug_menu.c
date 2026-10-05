@@ -1396,11 +1396,11 @@ void dx_debug_update_select_battle() {
         && (stageID == -1 || (stageID >= 0 && stageID < DebugBattlePreviewStageCount));
 
     // draw
-    dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 104, 2 * RowHeight + 8, WINDOW_STYLE_20, 192);
-    dx_debug_draw_ascii("Start Battle:", DefaultColor, SubmenuPosX, SubmenuPosY + 1 * RowHeight);
-    dx_debug_draw_ascii("-", DefaultColor, SubmenuPosX + 26, SubmenuPosY + 2 * RowHeight);
-    dx_debug_draw_ascii("(", DefaultColor, SubmenuPosX + 55, SubmenuPosY + 2 * RowHeight);
-    dx_debug_draw_ascii(")", DefaultColor, SubmenuPosX + 77, SubmenuPosY + 2 * RowHeight);
+    dx_debug_draw_box(SubBoxPosX, SubBoxPosY, 104, 3 * RowHeight + 8, WINDOW_STYLE_20, 192);
+    dx_debug_draw_ascii("Start Battle:", DefaultColor, SubmenuPosX, SubmenuPosY);
+    dx_debug_draw_ascii("-", DefaultColor, SubmenuPosX + 26, SubmenuPosY + RowHeight);
+    dx_debug_draw_ascii("(", DefaultColor, SubmenuPosX + 55, SubmenuPosY + RowHeight);
+    dx_debug_draw_ascii(")", DefaultColor, SubmenuPosX + 77, SubmenuPosY + RowHeight);
 
     for (idx = 0; idx < 5; idx++) {
         b32 isInvalid;
@@ -1429,7 +1429,16 @@ void dx_debug_update_select_battle() {
             }
         }
 
-        dx_debug_draw_number(DebugBattleNum[idx] & 0xFF, fmt, color, 255, SubmenuPosX + offset, SubmenuPosY + 2 * RowHeight);
+        dx_debug_draw_number(DebugBattleNum[idx] & 0xFF, fmt, color, 255, SubmenuPosX + offset, SubmenuPosY + RowHeight);
+    }
+
+    if (isAreaValid) {
+        dx_debug_draw_ascii(
+            gBattleAreas[areaID].name,
+            DefaultColor,
+            SubmenuPosX + BattleDigitOffsets[DEBUG_BATTLE_AREA_TENS],
+            SubmenuPosY + 2 * RowHeight
+        );
     }
 
     dx_debug_draw_box(

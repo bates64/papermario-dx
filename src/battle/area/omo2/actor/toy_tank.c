@@ -10,11 +10,6 @@
 
 #define NAMESPACE b_area_omo2_toy_tank
 
-extern ActorBlueprint b_area_omo2_4_signal_guy;
-extern ActorBlueprint b_area_omo2_2_stilt_guy;
-extern ActorBlueprint b_area_omo2_3_shy_stack;
-extern ActorBlueprint b_area_omo2_5_shy_squad_redux;
-
 extern EvtScript N(EVS_Init);
 extern EvtScript N(EVS_Idle);
 extern EvtScript N(EVS_TakeTurn);
@@ -501,7 +496,6 @@ EvtScript N(EVS_BeginWave_StiltGuys) = {
     Else // shy squad has fled
         Call(ActorSpeak, MSG_CH4_006A, ACTOR_GENERAL, PRT_MAIN, ANIM_GeneralGuy_Talk, ANIM_GeneralGuy_Idle)
     EndIf
-    Call(LoadBattleSection, BTL_AREA_OMO2_4)
     Call(SummonEnemy, Ref(N(SignalGuyFormation)), true)
     Wait(60)
     Call(PlaySoundAtPart, ACTOR_GENERAL, PRT_MAIN, SOUND_TOY_TANK_MOVE1)
@@ -550,7 +544,6 @@ EvtScript N(EVS_BeginWave_ShyStacks) = {
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 30)
     Wait(10)
-    Call(LoadBattleSection, BTL_AREA_OMO2_3)
     Call(SummonEnemy, Ref(N(LeftShyStackFormation)), true)
     Wait(124)
     Call(SummonEnemy, Ref(N(RightShyStackFormation)), true)
@@ -624,7 +617,6 @@ EvtScript N(EVS_SummonStiltGuys) = {
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 30)
     Wait(10)
-    Call(LoadBattleSection, BTL_AREA_OMO2_2)
     Call(SummonEnemy, Ref(N(LeftStiltGuyFormation)), true)
     Wait(60)
     Call(SummonEnemy, Ref(N(RightStiltGuyFormation)), true)
@@ -688,7 +680,6 @@ EvtScript N(EVS_BeginWave_ShySquadRedux) = {
     Call(MoveBattleCamOver, 20)
     Wait(30)
     Call(SetAnimation, ACTOR_GENERAL, PRT_MAIN, ANIM_GeneralGuy_Idle)
-    Call(LoadBattleSection, BTL_AREA_OMO2_5)
     Call(SummonEnemy, Ref(N(ShySquadReduxFormation)), true)
     Wait(155)
     Call(UseBattleCamPreset, BTL_CAM_ACTOR)
@@ -889,26 +880,26 @@ EvtScript N(EVS_IncreaseDarknessAmt) = {
 Vec3i N(SummonPos) = { 240, 0, 0 };
 
 Formation N(SignalGuyFormation) = {
-    ACTOR_BY_POS(b_area_omo2_4_signal_guy, N(SummonPos), 95)
+    OVL_ACTOR_BY_POS("signal_guy", N(SummonPos), 95)
 };
 
 Formation N(LeftStiltGuyFormation) = {
-    ACTOR_BY_POS(b_area_omo2_2_stilt_guy, N(SummonPos), 95, 0)
+    OVL_ACTOR_BY_POS("stilt_guy", N(SummonPos), 95, 0)
 };
 
 Formation N(RightStiltGuyFormation) = {
-    ACTOR_BY_POS(b_area_omo2_2_stilt_guy, N(SummonPos), 90, 1)
+    OVL_ACTOR_BY_POS("stilt_guy", N(SummonPos), 90, 1)
 };
 
 Formation N(LeftShyStackFormation) = {
-    ACTOR_BY_POS(b_area_omo2_3_shy_stack, N(SummonPos), 95, 0)
+    OVL_ACTOR_BY_POS("shy_stack", N(SummonPos), 95, 0)
 };
 
 Formation N(RightShyStackFormation) = {
-    ACTOR_BY_POS(b_area_omo2_3_shy_stack, N(SummonPos), 90, 1)
+    OVL_ACTOR_BY_POS("shy_stack", N(SummonPos), 90, 1)
 };
 
 Formation N(ShySquadReduxFormation) = {
-    ACTOR_BY_POS(b_area_omo2_5_shy_squad_redux, N(SummonPos), 95)
+    OVL_ACTOR_BY_POS("shy_squad_redux", N(SummonPos), 95)
 };
 
