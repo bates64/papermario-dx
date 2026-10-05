@@ -125,6 +125,11 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
                 }
                 // FALLTHROUGH!
             case BT_FUNCTION:
+                if (!is_valid_address((uint32_t)sp + func.raOffset) ||
+                    (func.fpOffset && !is_valid_address((uint32_t)sp + func.fpOffset))) {
+                    debugf("backtrace: interrupted because of invalid stack frame at %p\n", ra);
+                    return;
+                }
                 if (func.fpOffset)
                     fp = *(uint32_t**)((uint32_t)sp + func.fpOffset);
                 ra = *(uint32_t**)((uint32_t)sp + func.raOffset) - 2;
@@ -248,6 +253,11 @@ static void backtrace_foreach_foreign(void (*cb)(void *arg, void *ptr), void *ar
                 }
                 // FALLTHROUGH!
             case BT_FUNCTION:
+                if (!is_valid_address((uint32_t)sp + func.raOffset) ||
+                    (func.fpOffset && !is_valid_address((uint32_t)sp + func.fpOffset))) {
+                    debugf("backtrace: interrupted because of invalid stack frame at %p\n", ra);
+                    return;
+                }
                 if (func.fpOffset)
                     fp = *(uint32_t**)((uint32_t)sp + func.fpOffset);
                 ra = *(uint32_t**)((uint32_t)sp + func.raOffset) - 2;
