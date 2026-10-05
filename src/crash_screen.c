@@ -200,6 +200,14 @@ char* crash_screen_copy_to_buf(char* dest, const char* src, size_t size) {
     return dest + size;
 }
 
+/// Copies a line of crash screen text to the IS-Viewer, so it can be read without seeing the screen.
+static void crash_screen_log(const u8* buf, s32 size) {
+    if (size <= 0) {
+        return;
+    }
+    printf("%.*s%s", (int)size, buf, buf[size - 1] == '\n' ? "" : "\n");
+}
+
 /// Returns y advance.
 s32 crash_screen_printf(s32 x, s32 y, const char* fmt, ...) {
     u8* ptr;
@@ -212,6 +220,7 @@ s32 crash_screen_printf(s32 x, s32 y, const char* fmt, ...) {
     va_start(args, fmt);
 
     size = _Printf(crash_screen_copy_to_buf, (char*)buf, fmt, args);
+    crash_screen_log(buf, size);
 
     if (size > 0) {
         ptr = buf;
@@ -258,6 +267,7 @@ s32 crash_screen_printf_proportional(s32 x, s32 y, const char* fmt, ...) {
     va_start(args, fmt);
 
     size = _Printf(crash_screen_copy_to_buf, (char*)buf, fmt, args);
+    crash_screen_log(buf, size);
 
     if (size > 0) {
         ptr = buf;
