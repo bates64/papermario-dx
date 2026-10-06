@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import hashlib
 import json
 import os
 import re
@@ -245,10 +246,20 @@ def _repo_paths(entries) -> List[str]:
     return paths
 
 
+def splat_extension_paths() -> List[Path]:
+    """Every file of the splat extensions that split the baserom's assets."""
+    return [
+        path.relative_to(ROOT)
+        for path in sorted((ROOT / "tools/splat_ext").rglob("*"))
+        if path.is_file() and "__pycache__" not in path.parts
+    ]
+
+
 def configure_input_paths(versions: List[str]) -> List[str]:
     """Every file configure reads to decide what build.ninja should contain."""
     paths = [posix(BUILD_TOOLS / module) for module in CONFIGURE_MODULES]
     paths.extend(posix(path) for path in COMMON_GRAPHICS_GENERATORS)
+    paths.extend(posix(path) for path in splat_extension_paths())
     for version in versions:
         paths.append(f"ver/{version}/layout.yaml")
         paths.append(f"ver/{version}/splat.yaml")
@@ -764,6 +775,19 @@ class Configure:
     def maps_dump_stamp(self) -> Path:
         return self.build_path() / "maps_dumped.stamp"
 
+    def splat_hash(self) -> str:
+        """A hash of splat.yaml and splat_ext, which the dump stamp records."""
+        digest = hashlib.sha256()
+        for path in [*splat_extension_paths(), self.version_path.relative_to(ROOT) / "splat.yaml"]:
+            digest.update(posix(path).encode())
+            digest.update((ROOT / path).read_bytes())
+        return digest.hexdigest()
+
+    def dump_is_stale(self) -> bool:
+        """Whether the assets on disk were split with a different splat.yaml or splat_ext, or not at all."""
+        stamp = self.dump_stamp()
+        return not stamp.exists() or stamp.read_text() != self.splat_hash()
+
     def load(self) -> None:
         """Read the version's configuration and scan what it points at."""
         self.layout = Layout(self.version_path / "layout.yaml", ROOT)
@@ -783,7 +807,8 @@ class Configure:
         """Split the assets out of the baserom.
 
         This is all splat is needed for, and only until the assets are on disk,
-        so configure skips it once they have been dumped.
+        so configure skips it once they have been dumped, until splat.yaml or
+        splat_ext changes.
         """
         import splat.scripts.split as split
 
@@ -823,7 +848,7 @@ class Configure:
             verbose=False,
         )
         self.dump_stamp().parent.mkdir(parents=True, exist_ok=True)
-        self.dump_stamp().write_text("")
+        self.dump_stamp().write_text(self.splat_hash())
         if assets:
             self.dump_maps()
 
@@ -2744,7 +2769,7 @@ if __name__ == "__main__":
 
         configure.load()
         configure.move_old_map_sources()
-        if args.dump or not configure.dump_stamp().exists():
+        if args.dump or configure.dump_is_stale():
             configure.dump(not args.no_split_assets, args.split_code)
         elif not args.no_split_assets and (
             not configure.maps_dump_stamp().exists()

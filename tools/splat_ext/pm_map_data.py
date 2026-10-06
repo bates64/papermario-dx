@@ -1,5 +1,6 @@
 from math import ceil
 import os
+import shutil
 import struct
 from pathlib import Path
 
@@ -106,10 +107,15 @@ class N64SegPm_map_data(Segment):
                     name = file
                     self.files[name] = {"name": name}
 
+    def cache(self):
+        return (*super().cache(), self.files)
+
     def split(self, rom_bytes):
         assert isinstance(self.rom_start, int)
 
         fs_dir = options.opts.asset_path / self.dir / self.name
+        # An earlier split may have written files under names mapfs.yaml no longer gives them
+        shutil.rmtree(fs_dir, ignore_errors=True)
         (fs_dir / "title").mkdir(parents=True, exist_ok=True)
         (fs_dir / "party").mkdir(parents=True, exist_ok=True)
         (fs_dir / "bg").mkdir(parents=True, exist_ok=True)
