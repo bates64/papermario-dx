@@ -1157,6 +1157,7 @@ void dx_debug_begin_battle_with_ref(const char* battle, const char* stage) {
     static char stageName[OVL_NAME_MAX];
     char areaName[BATTLE_KEY_MAX];
     EncounterStatus* es = &gCurrentEncounter;
+    b32 restarting = gGameStatusPtr->context == CONTEXT_BATTLE;
 
     ASSERT(split_battle_ref(battle, areaName) != nullptr);
     ASSERT(stage == nullptr || strlen(stage) < sizeof(stageName));
@@ -1183,11 +1184,23 @@ void dx_debug_begin_battle_with_ref(const char* battle, const char* stage) {
     es->fadeOutAmount = 0;
     es->substateDelay = 0;
 
-    disable_player_input();
-    partner_disable_input();
+    // A replacement battle inherits the encounter's existing input locks.
+    // The final post-battle cleanup releases them once for the whole chain.
+    if (!restarting) {
+        disable_player_input();
+        partner_disable_input();
+    }
 
     gEncounterState = ENCOUNTER_STATE_PRE_BATTLE;
     gEncounterSubState = ENCOUNTER_SUBSTATE_PRE_BATTLE_INIT;
+    if (restarting) {
+        // Restoring world resources is necessary for teardown, but there is no
+        // need to show the world or push its music again between battles.
+        gEncounterSubState = ENCOUNTER_SUBSTATE_PRE_BATTLE_RESTART;
+        es->fadeOutAmount = 255;
+        set_screen_overlay_color(SCREEN_LAYER_FRONT, 0, 0, 0);
+        set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, 255.0f);
+    }
     EncounterStateChanged = true;
 }
 
@@ -3008,15 +3021,33 @@ void dx_debug_update_banner() {
             dx_debug_draw_ascii("(GOD MODE)", MSG_PAL_YELLOW, 151, BottomRowY);
         }
     } else if (gGameStatus.context == CONTEXT_BATTLE) {
-        sprintf(fmtBuf, "%.24s", LastBattleName);
-        dx_debug_draw_ascii(fmtBuf, DefaultColor, 176, BottomRowY);
+        char* separator;
+        s32 right;
+        s32 length;
 
-        sprintf(fmtBuf, "Stage:  %.15s", LastStageName);
-        dx_debug_draw_ascii(fmtBuf, DefaultColor, 20, BottomRowY);
+        sprintf(fmtBuf, "%.15s", LastStageName);
+        right = SCREEN_XMAX - dx_debug_get_ascii_width(fmtBuf);
+        dx_debug_draw_ascii(fmtBuf, DefaultColor, right, BottomRowY);
 
         if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_GOD_MODE)) {
-            dx_debug_draw_ascii("(GOD MODE)", MSG_PAL_YELLOW, 128, BottomRowY);
+            right -= dx_debug_get_ascii_width("(GOD MODE)") + 8;
+            dx_debug_draw_ascii("(GOD MODE)", MSG_PAL_YELLOW, right, BottomRowY);
         }
+
+        // Leave room for the message header and the display-only spaces.
+        strncpy(fmtBuf, LastBattleName, sizeof(fmtBuf) - 7);
+        fmtBuf[sizeof(fmtBuf) - 7] = '\0';
+        separator = strchr(fmtBuf, ':');
+        if (separator != nullptr) {
+            memmove(separator + 3, separator + 1, strlen(separator + 1) + 1);
+            memcpy(separator, " : ", 3);
+        }
+        length = strlen(fmtBuf);
+        while (dx_debug_get_ascii_width(fmtBuf) > right - SCREEN_XMIN - 8 && length > 3) {
+            length--;
+            strcpy(&fmtBuf[length - 3], "...");
+        }
+        dx_debug_draw_ascii(fmtBuf, DefaultColor, SCREEN_XMIN, BottomRowY);
     }
 }
 
