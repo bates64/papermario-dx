@@ -1003,7 +1003,8 @@
 - omo_tex
 - end_tex
 - mgm_tex
-- gv__tex
+- name: gv__tex
+  out_name: gv_tex # the game looks up an area's textures as <area>_tex
 - kmr_bg
 - nok_bg
 - name: sbk_bg
