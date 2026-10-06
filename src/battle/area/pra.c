@@ -45,7 +45,7 @@ static Formation swoopula_3_yellow_magikoopa_flying_1 = {
     OVL_ACTOR_BY_POS("swoopula", pos_swoopula_3[0], 10, 0xFFFFFFFF),
     OVL_ACTOR_BY_POS("swoopula", pos_swoopula_3[1], 9, 0xFFFFFFFF),
     OVL_ACTOR_BY_POS("swoopula", pos_swoopula_3[2], 8, 0xFFFFFFFF),
-    OVL_ACTOR_NAMED_BY_POS("yellow_magikoopa", flying, pos_magikoopa, 7),
+    OVL_ACTOR_BY_POS("yellow_magikoopa:flying", pos_magikoopa, 7),
 };
 
 static Formation white_clubba_1 = {
@@ -104,7 +104,7 @@ static Formation white_clubba_2_mixed_0d = {
     OVL_ACTOR_BY_IDX("white_clubba", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("white_clubba", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("green_magikoopa", BTL_POS_GROUND_C, 8),
-    OVL_ACTOR_NAMED_BY_IDX("white_magikoopa", flying, BTL_POS_AIR_D, 7),
+    OVL_ACTOR_BY_IDX("white_magikoopa:flying", BTL_POS_AIR_D, 7),
 };
 
 static Formation albino_dino_1 = {

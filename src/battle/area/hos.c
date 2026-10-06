@@ -17,7 +17,7 @@ static Formation ember_3 = {
 };
 
 static Formation magikoopa_miniboss = {
-    OVL_ACTOR_NAMED_BY_IDX("magikoopa_boss", flying, BTL_POS_AIR_B, 10),
+    OVL_ACTOR_BY_IDX("magikoopa_boss:flying", BTL_POS_AIR_B, 10),
 };
 
 static BattleList Formations = {

@@ -9,9 +9,9 @@ static Vec3i CrystalBitPos3 = {  42, 85, -10 };
 
 static Formation crystal_king = {
     OVL_ACTOR_BY_POS("crystal_king", KingPos, 10),
-    OVL_ACTOR_BY_POS("crystal_bit", CrystalBitPos1, 9),
-    OVL_ACTOR_NAMED_BY_POS("crystal_bit", sphere, CrystalBitPos2, 8),
-    OVL_ACTOR_NAMED_BY_POS("crystal_bit", prism, CrystalBitPos3, 7),
+    OVL_ACTOR_BY_POS("crystal_bit:cube", CrystalBitPos1, 9),
+    OVL_ACTOR_BY_POS("crystal_bit:sphere", CrystalBitPos2, 8),
+    OVL_ACTOR_BY_POS("crystal_bit:prism", CrystalBitPos3, 7),
 };
 
 static BattleList Formations = {

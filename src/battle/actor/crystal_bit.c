@@ -143,7 +143,7 @@ ActorPartBlueprint PrismParts[] = {
     },
 };
 
-OVL_DEF_ACTOR() = {
+OVL_DEF_ACTOR(cube) = {
     .flags = ACTOR_FLAG_FLYING | ACTOR_FLAG_NO_ATTACK,
     .type = ACTOR_TYPE_CRYSTAL_BIT,
     .level = ACTOR_LEVEL_CRYSTAL_BIT,

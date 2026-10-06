@@ -1,9 +1,9 @@
 #include "battle/battle.h"
 
 static Formation anti_guy_3 = {
-    OVL_ACTOR_NAMED_BY_IDX("anti_guy", trio, BTL_POS_GROUND_A, 10),
-    OVL_ACTOR_NAMED_BY_IDX("anti_guy", trio, BTL_POS_GROUND_B, 9),
-    OVL_ACTOR_NAMED_BY_IDX("anti_guy", trio, BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("anti_guy:trio", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("anti_guy:trio", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("anti_guy:trio", BTL_POS_GROUND_C, 8),
 };
 
 static Formation duplighost_2 = {

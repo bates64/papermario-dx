@@ -1021,24 +1021,24 @@ void dx_debug_load_battle_preview(s32 areaIndex, s32 formationIndex) {
     }
     for (i = 0; i < actorRows; i++) {
         const FormationRow* actor = &(*battle->formation)[i];
+        char overlayName[ACTOR_KEY_MAX];
         const char* actorName = actor->overlay;
+        s32 nameLength;
+        s32 copyLength;
 
         if (actorName == nullptr) {
             actorName = "(anonymous)";
-        } else if (actor->blueprint != nullptr
-            && strcmp(actor->blueprint, ACTOR_BLUEPRINT_EXPORT_NAME) != 0
-        ) {
-            const char* prefix = ACTOR_BLUEPRINT_EXPORT_NAME "_";
-            s32 prefixLength = strlen(prefix);
+        } else {
+            const char* variant = split_actor_ref(actorName, overlayName);
 
-            actorName = actor->blueprint;
-            if (strncmp(actorName, prefix, prefixLength) == 0 && actorName[prefixLength] != '\0') {
-                actorName += prefixLength;
-            }
+            ASSERT_MSG(variant != nullptr, "Invalid actor reference '%.127s'", actorName);
+            actorName = variant[0] != '\0' ? variant : overlayName;
         }
-        strncpy(DebugBattlePreviewNames[i], actorName, DEBUG_BATTLE_PREVIEW_NAME_LEN - 1);
-        DebugBattlePreviewNames[i][DEBUG_BATTLE_PREVIEW_NAME_LEN - 1] = '\0';
-        if (strlen(actorName) >= DEBUG_BATTLE_PREVIEW_NAME_LEN) {
+        nameLength = strlen(actorName);
+        copyLength = MIN(nameLength, DEBUG_BATTLE_PREVIEW_NAME_LEN - 1);
+        memcpy(DebugBattlePreviewNames[i], actorName, copyLength);
+        DebugBattlePreviewNames[i][copyLength] = '\0';
+        if (nameLength >= DEBUG_BATTLE_PREVIEW_NAME_LEN) {
             strcpy(&DebugBattlePreviewNames[i][DEBUG_BATTLE_PREVIEW_NAME_LEN - 4], "...");
         }
     }

@@ -55,6 +55,45 @@ void reset_battle_status(void) {
     gOverrideBattlePtr = nullptr;
 }
 
+const char* split_actor_ref(const char* ref, char overlay[ACTOR_KEY_MAX]) {
+    const char* separator;
+    const char* variant;
+    const char* p;
+    s32 overlayLength;
+
+    if (ref == nullptr) {
+        return nullptr;
+    }
+    separator = strchr(ref, ':');
+    overlayLength = separator != nullptr ? separator - ref : strlen(ref);
+    if (overlayLength == 0 || overlayLength >= ACTOR_KEY_MAX) {
+        return nullptr;
+    }
+    for (p = ref; p < ref + overlayLength; p++) {
+        if (!((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z')
+            || (*p >= '0' && *p <= '9') || *p == '_')) {
+            return nullptr;
+        }
+    }
+    variant = ref + overlayLength;
+    if (separator != nullptr) {
+        variant = separator + 1;
+        if (variant[0] == '\0' || strlen(variant) >= ACTOR_KEY_MAX
+            || (variant[0] >= '0' && variant[0] <= '9')) {
+            return nullptr;
+        }
+        for (p = variant; *p != '\0'; p++) {
+            if (!((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z')
+                || (*p >= '0' && *p <= '9') || *p == '_')) {
+                return nullptr;
+            }
+        }
+    }
+    memcpy(overlay, ref, overlayLength);
+    overlay[overlayLength] = '\0';
+    return variant;
+}
+
 const char* split_battle_ref(const char* ref, char area[BATTLE_KEY_MAX]) {
     const char* separator;
     const char* p;

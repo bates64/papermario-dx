@@ -149,7 +149,7 @@ static Formation bzzap_3 = {
 static Formation bzzap_2_green_magikoopa_flying_1 = {
     OVL_ACTOR_BY_IDX("bzzap", BTL_POS_AIR_A, 10),
     OVL_ACTOR_BY_IDX("bzzap", BTL_POS_AIR_B, 9),
-    OVL_ACTOR_NAMED_BY_IDX("green_magikoopa", flying, BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("green_magikoopa:flying", BTL_POS_AIR_C, 8),
 };
 
 static Formation bzzap_1_ruff_puff_1 = {
@@ -212,7 +212,7 @@ static Formation ruff_puff_2_crazee_dayzee_1 = {
 static Formation ruff_puff_2_yellow_magikoopa_flying_1 = {
     OVL_ACTOR_BY_IDX("ruff_puff", BTL_POS_AIR_A, 10),
     OVL_ACTOR_BY_IDX("ruff_puff", BTL_POS_AIR_B, 9),
-    OVL_ACTOR_NAMED_BY_IDX("yellow_magikoopa", flying, BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("yellow_magikoopa:flying", BTL_POS_AIR_C, 8),
 };
 
 static BattleList Formations = {

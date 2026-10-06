@@ -35,13 +35,13 @@ static Formation lava_bubble_2_medi_guy_1 = {
 static Formation lava_bubble_2_red_magikoopa_1 = {
     OVL_ACTOR_BY_IDX("lava_bubble", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("lava_bubble", BTL_POS_GROUND_B, 9),
-    OVL_ACTOR_NAMED_BY_IDX("red_magikoopa", flying, BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("red_magikoopa:flying", BTL_POS_AIR_C, 8),
 };
 
 static Formation lava_bubble_2_white_magikoopa_1 = {
     OVL_ACTOR_BY_IDX("lava_bubble", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("lava_bubble", BTL_POS_GROUND_B, 9),
-    OVL_ACTOR_NAMED_BY_IDX("white_magikoopa", flying, BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("white_magikoopa:flying", BTL_POS_AIR_C, 8),
 };
 
 static Formation lava_bubble_2_spike_top_1 = {

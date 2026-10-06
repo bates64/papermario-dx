@@ -85,15 +85,14 @@ typedef struct ActorBlueprint {
 #define _OVL_DEF_ACTOR_SYMBOL(...) blueprint ## __VA_OPT__(_) ## __VA_ARGS__
 
 #define ACTOR_BLUEPRINT_EXPORT_NAME "blueprint"
-#define ACTOR_BLUEPRINT_NAMED_EXPORT_NAME(name) _ACTOR_BLUEPRINT_NAMED_EXPORT_NAME(name)
-#define _ACTOR_BLUEPRINT_NAMED_EXPORT_NAME(name) "blueprint_" #name
+#define ACTOR_KEY_MAX 64
+
+/// Split overlay[:variant], returning the variant (empty for the default) or nullptr if malformed.
+const char* split_actor_ref(const char* ref, char overlay[ACTOR_KEY_MAX]);
 
 typedef struct FormationRow {
-    /* 0x00 */ union {
-    /*      */     ActorBlueprint* actor; ///< Direct blueprint when `overlay` is nullptr.
-    /*      */     const char* blueprint; ///< Export name when `overlay` is set; nullptr selects the default.
-    /*      */ };
-    /* 0x04 */ const char* overlay; ///< Non-nullptr selects an actor overlay instead of a direct blueprint.
+    /* 0x00 */ ActorBlueprint* actor; ///< Direct blueprint when `overlay` is nullptr.
+    /* 0x04 */ const char* overlay; ///< Actor reference: overlay or overlay:variant; nullptr selects a direct blueprint.
     /* 0x08 */ union {
     /*      */     s32    index;
     /*      */     Vec3i* vec;
@@ -163,21 +162,21 @@ typedef struct BattleArea {
 const char* split_battle_ref(const char* ref, char area[BATTLE_KEY_MAX]);
 
 const BattleArea* get_loaded_battle_area(void);
+
 // Like the stage, the area must outlive all battle scripts, actors, and rendering.
 void unload_battle_area(void);
 
 #define BATTLE(formation, stage) { #formation, ARRAY_COUNT(formation), (Formation*) formation, stage }
 #define BATTLE_WITH_SCRIPT(formation, stage, script) { #formation, ARRAY_COUNT(formation), (Formation*) formation, stage, &script }
 
+/// Formation entry for an actor located in an overlay
+/// Select OVL_DEF_ACTOR() with "overlay", or OVL_DEF_ACTOR(name) with "overlay:name"
+#define OVL_ACTOR_BY_IDX(_ref, _idx, _priority, args...) { .overlay = _ref, .home = { .index = _idx }, .priority = _priority, args }
+#define OVL_ACTOR_BY_POS(_ref, _pos, _priority, args...) { .overlay = _ref, .home = { .vec = &_pos }, .priority = _priority, args }
+
+/// Formation entry for an internal actor in the current overlay (e.g., "hole" in monty_mole)
 #define RAW_ACTOR_BY_IDX(_name, _idx, _priority, args...) { .actor = &_name, .home = { .index = _idx }, .priority = _priority, args }
 #define RAW_ACTOR_BY_POS(_name, _pos, _priority, args...) { .actor = &_name, .home = { .vec = &_pos }, .priority = _priority, args }
-
-#define OVL_ACTOR_BY_IDX(_name, _idx, _priority, args...) { .overlay = _name, .home = { .index = _idx }, .priority = _priority, args }
-#define OVL_ACTOR_BY_POS(_name, _pos, _priority, args...) { .overlay = _name, .home = { .vec = &_pos }, .priority = _priority, args }
-
-/// Select a public variant or encounter member defined with OVL_DEF_ACTOR(name).
-#define OVL_ACTOR_NAMED_BY_IDX(_name, _blueprint, _idx, _priority, args...) { .blueprint = ACTOR_BLUEPRINT_NAMED_EXPORT_NAME(_blueprint), .overlay = _name, .home = { .index = _idx }, .priority = _priority, args }
-#define OVL_ACTOR_NAMED_BY_POS(_name, _blueprint, _pos, _priority, args...) { .blueprint = ACTOR_BLUEPRINT_NAMED_EXPORT_NAME(_blueprint), .overlay = _name, .home = { .vec = &_pos }, .priority = _priority, args }
 
 typedef struct ActorSounds {
     /* 0x00 */ s32 walk[2];

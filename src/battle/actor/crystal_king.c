@@ -1413,15 +1413,15 @@ EvtScript EVS_Move_MakeClones = {
 };
 
 Formation CubeBitFormation = {
-    OVL_ACTOR_BY_POS("crystal_bit", CloneSummonPos, 0),
+    OVL_ACTOR_BY_POS("crystal_bit:cube", CloneSummonPos, 0),
 };
 
 Formation SphereBitFormation = {
-    OVL_ACTOR_NAMED_BY_POS("crystal_bit", sphere, CloneSummonPos, 0),
+    OVL_ACTOR_BY_POS("crystal_bit:sphere", CloneSummonPos, 0),
 };
 
 Formation PrismBitFormation = {
-    OVL_ACTOR_NAMED_BY_POS("crystal_bit", prism, CloneSummonPos, 0),
+    OVL_ACTOR_BY_POS("crystal_bit:prism", CloneSummonPos, 0),
 };
 
 s32 CubeBitSummonData[16] = {};
