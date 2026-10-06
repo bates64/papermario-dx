@@ -145,18 +145,15 @@ typedef Battle BattleList[];
 typedef struct BattleArea {
     /* 0x00 */ BattleList* battles;
     /* 0x04 */ s32 battleCount;
-    /* 0x08 */ DmaTable* dmaTable;
-    /* 0x0C */ s32 dmaCount;
-} BattleArea; // size = 0x10
+} BattleArea; // size = 0x08
 
 #define BATTLE_AREA_EXPORT_NAME "gBattleArea"
 
-/// Define a battle-area descriptor from its BattleList and optional DMA array, without terminators.
-#define OVL_DEF_BATTLE_AREA(battleList, ...) \
+/// Define a battle-area descriptor from its BattleList, without a terminator.
+#define OVL_DEF_BATTLE_AREA(battleList) \
     export const BattleArea gBattleArea = { \
         .battles = &(battleList), \
         .battleCount = ARRAY_COUNT(battleList), \
-        __VA_OPT__(.dmaTable = (__VA_ARGS__), .dmaCount = ARRAY_COUNT(__VA_ARGS__),) \
     }
 
 #define BATTLE_REF_MAX 128

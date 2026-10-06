@@ -34,21 +34,12 @@ enum ActorParams {
 
 static s32 unusedArray[64];
 
-extern u8 Vine3Base[0x2000];
-extern u8 Vine2Base[0x3000];
-extern u8 Vine1Base[0x3000];
-extern u8 Vine0Base[0x4000];
-
-#define VINE_1_BASE (s32) Vine1Base
-#define VINE_2_BASE (s32) Vine2Base
-
 #define EVT_LOAD_BUD_ANIM(whichVine, anim) \
     IfEq(whichVine, VINE_1) \
-        Call(OverrideBattleDmaDest, VINE_1_BASE) \
+        Call(LoadVineAnim, anim, VINE_1) \
     Else \
-        Call(OverrideBattleDmaDest, VINE_2_BASE) \
-    EndIf \
-    Call(LoadBattleDmaData, anim)
+        Call(LoadVineAnim, anim, VINE_2) \
+    EndIf
 
 static s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_LavaBud_Idle,

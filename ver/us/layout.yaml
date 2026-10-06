@@ -41,7 +41,7 @@ classes:
   model_clear_render_tasks: { vram: 0x802B7E00, follows: [indicator_icon] }
   texture_memory: { vram: 0x8028E000, follows: [battle, world_script_api] }
   menu_hud_scripts: { vram: 0x8023E000, vram_symbol: battle_CLASS_VRAM }
-  world_model_anim: { vram: 0x80234000, vram_symbol: Vine0Base }
+  world_model_anim: { vram: 0x80234000 }
   world_script_api: { vram: 0x80280000, follows: [heaps2] }
   world_use_item: { vram: 0x802C0000, follows: [model_clear_render_tasks] }
 

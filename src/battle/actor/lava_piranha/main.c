@@ -274,14 +274,82 @@ enum {
     VINE_RENDER_STATE_OK        = 1,
 };
 
-extern Addr Vine3Base;
-extern Addr Vine2Base;
-extern Addr Vine1Base;
-extern Addr Vine0Base;
-#define VINE_0_BASE (s32) Vine0Base
-#define VINE_1_BASE (s32) Vine1Base
-#define VINE_2_BASE (s32) Vine2Base
-#define VINE_3_BASE (s32) Vine3Base
+// These DMA buffers live as long as the actor overlay and its battle animators.
+BSS u8 Vine3Base[0x2000] ALIGNED(8);
+BSS u8 Vine2Base[0x3000] ALIGNED(8);
+BSS u8 Vine1Base[0x3000] ALIGNED(8);
+BSS u8 Vine0Base[0x4000] ALIGNED(8);
+
+static const struct {
+    u8* data;
+    u32 capacity;
+} VineBuffers[NUM_VINES] = {
+    [VINE_0] = { Vine0Base, sizeof(Vine0Base) },
+    [VINE_1] = { Vine1Base, sizeof(Vine1Base) },
+    [VINE_2] = { Vine2Base, sizeof(Vine2Base) },
+    [VINE_3] = { Vine3Base, sizeof(Vine3Base) },
+};
+
+#define VINE_ANIM_ENTRY(name) { world_model_anim_kzn_##name##_ROM_START, world_model_anim_kzn_##name##_ROM_END }
+
+static const struct {
+    u8* start;
+    u8* end;
+} VineAnims[] = {
+    [VINE_ANIM_BOSS_IDLE]                   VINE_ANIM_ENTRY(00),
+    [VINE_ANIM_BOSS_TWITCH]                 VINE_ANIM_ENTRY(01),
+    [VINE_ANIM_BOSS_ATTACK]                 VINE_ANIM_ENTRY(02),
+    [VINE_ANIM_BOSS_POST_ATTACK]            VINE_ANIM_ENTRY(03),
+    [VINE_ANIM_BOSS_STUNNED_HEAVY_HIT]      VINE_ANIM_ENTRY(04),
+    [VINE_ANIM_BOSS_STUNNED_LIGHT_HIT]      VINE_ANIM_ENTRY(05),
+    [VINE_ANIM_BOSS_HEAVY_HIT]              VINE_ANIM_ENTRY(06),
+    [VINE_ANIM_BOSS_LIGHT_HIT]              VINE_ANIM_ENTRY(07),
+    [VINE_ANIM_BOSS_STUNNED_DEATH_BEGIN]    VINE_ANIM_ENTRY(08),
+    [VINE_ANIM_BOSS_DEATH_BEGIN]            VINE_ANIM_ENTRY(09),
+    [VINE_ANIM_BOSS_DEATH_MIDDLE]           VINE_ANIM_ENTRY(0A),
+    [VINE_ANIM_BOSS_DEATH_COLLAPSE]         VINE_ANIM_ENTRY(0B),
+    [VINE_ANIM_BOSS_EMERGE]                 VINE_ANIM_ENTRY(0C),
+    [VINE_ANIM_BOSS_STUN]                   VINE_ANIM_ENTRY(0D),
+    [VINE_ANIM_BOSS_RECOVER]                VINE_ANIM_ENTRY(0E),
+    [VINE_ANIM_BOSS_DUP_EMERGE]             VINE_ANIM_ENTRY(0F),
+    [VINE_ANIM_BOSS_SINK_AWAY]              VINE_ANIM_ENTRY(10),
+    [VINE_ANIM_BOSS_TALK]                   VINE_ANIM_ENTRY(11),
+    [VINE_ANIM_BUD_ATTACK]                  VINE_ANIM_ENTRY(12),
+    [VINE_ANIM_BUD_STUNNED_HEAVY_HIT]       VINE_ANIM_ENTRY(13),
+    [VINE_ANIM_BUD_STUNNED_LIGHT_HIT]       VINE_ANIM_ENTRY(14),
+    [VINE_ANIM_BUD_HEAVY_HIT]               VINE_ANIM_ENTRY(15),
+    [VINE_ANIM_BUD_LIGHT_HIT]               VINE_ANIM_ENTRY(16),
+    [VINE_ANIM_BUD_STUNNED_DEATH_BEGIN]     VINE_ANIM_ENTRY(17),
+    [VINE_ANIM_BUD_DEATH_BEGIN]             VINE_ANIM_ENTRY(18),
+    [VINE_ANIM_BUD_DEATH_MIDDLE]            VINE_ANIM_ENTRY(19),
+    [VINE_ANIM_BUD_DEATH_COLLAPSE]          VINE_ANIM_ENTRY(1A),
+    [VINE_ANIM_BUD_STUN]                    VINE_ANIM_ENTRY(1B),
+    [VINE_ANIM_BUD_EMERGE]                  VINE_ANIM_ENTRY(1C),
+    [VINE_ANIM_BUD_RECOVER]                 VINE_ANIM_ENTRY(1D),
+    [VINE_ANIM_BUD_TWITCH]                  VINE_ANIM_ENTRY(1E),
+    [VINE_ANIM_BUD_IDLE]                    VINE_ANIM_ENTRY(1F),
+    [VINE_ANIM_BUD_DUP_EMERGE]              VINE_ANIM_ENTRY(20),
+    [VINE_ANIM_BUD_SINK_AWAY]               VINE_ANIM_ENTRY(21),
+    [VINE_ANIM_EXTRA_IDLE]                  VINE_ANIM_ENTRY(22),
+    [VINE_ANIM_EXTRA_DEATH]                 VINE_ANIM_ENTRY(23),
+    [VINE_ANIM_EXTRA_EMERGE]                VINE_ANIM_ENTRY(24),
+};
+
+API_CALLABLE(LoadVineAnim) {
+    Bytecode* args = script->ptrReadPos;
+    s32 animIndex = evt_get_variable(script, *args++);
+    s32 vineIndex = evt_get_variable(script, *args++);
+    u32 size;
+
+    ASSERT_MSG((u32)animIndex < ARRAY_COUNT(VineAnims), "Invalid vine animation %ld", animIndex);
+    ASSERT_MSG((u32)vineIndex < ARRAY_COUNT(VineBuffers), "Invalid vine buffer %ld", vineIndex);
+    size = (u32)VineAnims[animIndex].end - (u32)VineAnims[animIndex].start;
+    ASSERT_MSG(size > 0 && size <= VineBuffers[vineIndex].capacity,
+        "Vine animation %ld (%lu bytes) does not fit buffer %ld", animIndex, size, vineIndex);
+
+    dma_copy(VineAnims[animIndex].start, VineAnims[animIndex].end, VineBuffers[vineIndex].data);
+    return ApiStatus_DONE2;
+}
 
 static BSS LavaPiranhaVine VineData[NUM_VINES];
 static BSS s32 VineRenderState;
@@ -545,26 +613,22 @@ static EvtScript EVS_Init = {
     Call(SetActorVar, ACTOR_SELF, AVAR_Common_UnkAnim2, ANIM_LavaPiranha_Hurt)
     Call(ForceHomePos, ACTOR_SELF, 61, 61, 0)
     Call(LoadAnimatedModel, VINE_0, Ref(MainHeadVineModel))
-    Call(OverrideBattleDmaDest, VINE_0_BASE)
-    Call(LoadBattleDmaData, VINE_ANIM_BOSS_IDLE)
+    Call(LoadVineAnim, VINE_ANIM_BOSS_IDLE, VINE_0)
     Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
     Call(SetAnimatedModelRootPosition, VINE_0, 0, 0, 0)
     Call(SetAnimatorFlags, VINE_0, MODEL_ANIMATOR_FLAG_HIDDEN, 1)
     Call(LoadAnimatedModel, VINE_1, Ref(SideHeadVineModel))
-    Call(OverrideBattleDmaDest, VINE_1_BASE)
-    Call(LoadBattleDmaData, VINE_ANIM_BUD_IDLE)
+    Call(LoadVineAnim, VINE_ANIM_BUD_IDLE, VINE_1)
     Call(PlayModelAnimation, VINE_1, VINE_1_BASE)
     Call(SetAnimatedModelRootPosition, VINE_1, 0, 0, 0)
     Call(SetAnimatorFlags, VINE_1, MODEL_ANIMATOR_FLAG_HIDDEN, 1)
     Call(LoadAnimatedModel, VINE_2, Ref(SideHeadVineModel))
-    Call(OverrideBattleDmaDest, VINE_2_BASE)
-    Call(LoadBattleDmaData, VINE_ANIM_BUD_IDLE)
+    Call(LoadVineAnim, VINE_ANIM_BUD_IDLE, VINE_2)
     Call(PlayModelAnimation, VINE_2, VINE_2_BASE)
     Call(SetAnimatedModelRootPosition, VINE_2, 50, 14, 20)
     Call(SetAnimatorFlags, VINE_2, MODEL_ANIMATOR_FLAG_HIDDEN, 1)
     Call(LoadAnimatedModel, VINE_3, Ref(ExtraVineModel))
-    Call(OverrideBattleDmaDest, VINE_3_BASE)
-    Call(LoadBattleDmaData, VINE_ANIM_EXTRA_IDLE)
+    Call(LoadVineAnim, VINE_ANIM_EXTRA_IDLE, VINE_3)
     Call(PlayModelAnimation, VINE_3, VINE_3_BASE)
     Call(SetAnimatedModelRootPosition, VINE_3, 0, 0, 3)
     Call(SetAnimatorFlags, VINE_3, MODEL_ANIMATOR_FLAG_HIDDEN, 1)
@@ -615,8 +679,7 @@ static EvtScript EVS_Idle = {
         EndIf
         Set(LVar0, 30)
         Call(SetActorVar, ACTOR_SELF, AVAR_Common_NextTwitchTime, LVar0)
-        Call(OverrideBattleDmaDest, VINE_0_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_BOSS_TWITCH)
+        Call(LoadVineAnim, VINE_ANIM_BOSS_TWITCH, VINE_0)
         Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
         Label(99)
         Wait(1)
@@ -1079,8 +1142,7 @@ static EvtScript EVS_BurnHit = {
     IfTrue(LVar0)
         Call(GetActorVar, ACTOR_SELF, AVAR_Common_PiranhaState, LVar0)
         IfEq(LVar0, PIRANHA_STATE_STUNNED)
-            Call(OverrideBattleDmaDest, VINE_0_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BOSS_RECOVER)
+            Call(LoadVineAnim, VINE_ANIM_BOSS_RECOVER, VINE_0)
             Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
             Call(SetActorVar, ACTOR_SELF, AVAR_Common_UnkAnim1, ANIM_LavaPiranha_Idle)
             Call(SetActorVar, ACTOR_SELF, AVAR_Common_UnkAnim2, ANIM_LavaPiranha_Hurt)
@@ -1089,8 +1151,7 @@ static EvtScript EVS_BurnHit = {
             Call(SetDefenseTable, ACTOR_SELF, PRT_TARGET, Ref(FieryDefense))
             Thread
                 Wait(14)
-                Call(OverrideBattleDmaDest, VINE_0_BASE)
-                Call(LoadBattleDmaData, VINE_ANIM_BOSS_IDLE)
+                Call(LoadVineAnim, VINE_ANIM_BOSS_IDLE, VINE_0)
                 Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
             EndThread
         EndIf
@@ -1125,8 +1186,7 @@ static EvtScript EVS_TakeTurn = {
                     Call(MoveBattleCamOver, 30)
                     Wait(30)
                     Loop(10)
-                        Call(OverrideBattleDmaDest, VINE_0_BASE)
-                        Call(LoadBattleDmaData, VINE_ANIM_BOSS_TWITCH)
+                        Call(LoadVineAnim, VINE_ANIM_BOSS_TWITCH, VINE_0)
                         Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
                         Wait(4)
                     EndLoop
@@ -1136,12 +1196,10 @@ static EvtScript EVS_TakeTurn = {
                     Set(LVar0, ACTOR_BOSS)
                     ExecWait(EVS_Ignite)
                     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaPiranha_TongueWag)
-                    Call(OverrideBattleDmaDest, VINE_0_BASE)
-                    Call(LoadBattleDmaData, VINE_ANIM_BOSS_RECOVER)
+                    Call(LoadVineAnim, VINE_ANIM_BOSS_RECOVER, VINE_0)
                     Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
                     Wait(14)
-                    Call(OverrideBattleDmaDest, VINE_0_BASE)
-                    Call(LoadBattleDmaData, VINE_ANIM_BOSS_IDLE)
+                    Call(LoadVineAnim, VINE_ANIM_BOSS_IDLE, VINE_0)
                     Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
                     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
                 EndIf
@@ -1175,8 +1233,7 @@ static EvtScript EVS_Attack_SpitFire = {
         Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
         Call(MoveBattleCamOver, 15)
     EndThread
-    Call(OverrideBattleDmaDest, VINE_0_BASE)
-    Call(LoadBattleDmaData, VINE_ANIM_BOSS_ATTACK)
+    Call(LoadVineAnim, VINE_ANIM_BOSS_ATTACK, VINE_0)
     Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
     Wait(14)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaPiranha_SpitFireIn)
@@ -1196,8 +1253,7 @@ static EvtScript EVS_Attack_SpitFire = {
     Wait(19)
     Call(GetGoalPos, ACTOR_SELF, LVar3, LVar4, LVar5)
     PlayEffect(EFFECT_EMBERS, 0, LVar3, 0, LVar5, 50, 50, Float(1.0), 40, 55, Float(1.0), Float(1.0))
-    Call(OverrideBattleDmaDest, VINE_0_BASE)
-    Call(LoadBattleDmaData, VINE_ANIM_BOSS_POST_ATTACK)
+    Call(LoadVineAnim, VINE_ANIM_BOSS_POST_ATTACK, VINE_0)
     Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
     Call(EnemyTestTarget, ACTOR_SELF, LVarA, DAMAGE_TYPE_FIRE, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
     Switch(LVarA)
@@ -1205,8 +1261,7 @@ static EvtScript EVS_Attack_SpitFire = {
         CaseOrEq(HIT_RESULT_LUCKY)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaPiranha_Idle)
             Wait(19)
-            Call(OverrideBattleDmaDest, VINE_0_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BOSS_IDLE)
+            Call(LoadVineAnim, VINE_ANIM_BOSS_IDLE, VINE_0)
             Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
@@ -1228,8 +1283,7 @@ static EvtScript EVS_Attack_SpitFire = {
         CaseOrEq(HIT_RESULT_10)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaPiranha_Idle)
             Wait(19)
-            Call(OverrideBattleDmaDest, VINE_0_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BOSS_IDLE)
+            Call(LoadVineAnim, VINE_ANIM_BOSS_IDLE, VINE_0)
             Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
             IfEq(LVarF, 10)
                 Return
@@ -1257,8 +1311,7 @@ static EvtScript EVS_Attack_FireBreath = {
         Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
         Call(MoveBattleCamOver, 15)
     EndThread
-    Call(OverrideBattleDmaDest, VINE_0_BASE)
-    Call(LoadBattleDmaData, VINE_ANIM_BOSS_ATTACK)
+    Call(LoadVineAnim, VINE_ANIM_BOSS_ATTACK, VINE_0)
     Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
     Wait(14)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaPiranha_Talk)
@@ -1283,14 +1336,12 @@ static EvtScript EVS_Attack_FireBreath = {
         CaseOrEq(HIT_RESULT_MISS)
         CaseOrEq(HIT_RESULT_LUCKY)
             Wait(20)
-            Call(OverrideBattleDmaDest, VINE_0_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BOSS_POST_ATTACK)
+            Call(LoadVineAnim, VINE_ANIM_BOSS_POST_ATTACK, VINE_0)
             Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaPiranha_FireBreathIn)
             Wait(19)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaPiranha_TongueWag)
-            Call(OverrideBattleDmaDest, VINE_0_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BOSS_IDLE)
+            Call(LoadVineAnim, VINE_ANIM_BOSS_IDLE, VINE_0)
             Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
@@ -1306,14 +1357,12 @@ static EvtScript EVS_Attack_FireBreath = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_FIRE, SUPPRESS_EVENT_ALL, 0, DMG_FIRE_BREATH, BS_FLAGS1_TRIGGER_EVENTS)
     Wait(20)
-    Call(OverrideBattleDmaDest, VINE_0_BASE)
-    Call(LoadBattleDmaData, VINE_ANIM_BOSS_POST_ATTACK)
+    Call(LoadVineAnim, VINE_ANIM_BOSS_POST_ATTACK, VINE_0)
     Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaPiranha_FireBreathIn)
     Wait(19)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaPiranha_TongueWag)
-    Call(OverrideBattleDmaDest, VINE_0_BASE)
-    Call(LoadBattleDmaData, VINE_ANIM_BOSS_IDLE)
+    Call(LoadVineAnim, VINE_ANIM_BOSS_IDLE, VINE_0)
     Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
     IfEq(LVarF, 10)
         Return
@@ -1398,19 +1447,15 @@ static EvtScript EVS_Death = {
         Call(SetBattleCamDist, 360)
         Call(SetBattleCamOffsetY, 0)
         Call(MoveBattleCamOver, 240)
-        Call(OverrideBattleDmaDest, VINE_0_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_BOSS_DEATH_BEGIN)
+        Call(LoadVineAnim, VINE_ANIM_BOSS_DEATH_BEGIN, VINE_0)
         Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
-        Call(OverrideBattleDmaDest, VINE_3_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_EXTRA_DEATH)
+        Call(LoadVineAnim, VINE_ANIM_EXTRA_DEATH, VINE_3)
         Call(PlayModelAnimation, VINE_3, VINE_3_BASE)
         Wait(10)
-        Call(OverrideBattleDmaDest, VINE_1_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_BUD_DEATH_BEGIN)
+        Call(LoadVineAnim, VINE_ANIM_BUD_DEATH_BEGIN, VINE_1)
         Call(PlayModelAnimation, VINE_1, VINE_1_BASE)
         Wait(5)
-        Call(OverrideBattleDmaDest, VINE_2_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_BUD_DEATH_BEGIN)
+        Call(LoadVineAnim, VINE_ANIM_BUD_DEATH_BEGIN, VINE_2)
         Call(PlayModelAnimation, VINE_2, VINE_2_BASE)
         Wait(4)
         Thread
@@ -1423,8 +1468,7 @@ static EvtScript EVS_Death = {
         Call(HideHealthBar, ACTOR_BUD_1)
         Call(HideHealthBar, ACTOR_BUD_2)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaPiranha_PlayDead)
-        Call(OverrideBattleDmaDest, VINE_0_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_BOSS_DEATH_MIDDLE)
+        Call(LoadVineAnim, VINE_ANIM_BOSS_DEATH_MIDDLE, VINE_0)
         Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
         Thread
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LAVA_PIRANHA_DEFEAT)
@@ -1445,8 +1489,7 @@ static EvtScript EVS_Death = {
         EndThread
         Wait(10)
         Call(SetAnimation, ACTOR_BUD_1, PRT_MAIN, ANIM_LavaBud_PlayDead)
-        Call(OverrideBattleDmaDest, VINE_1_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_BUD_DEATH_MIDDLE)
+        Call(LoadVineAnim, VINE_ANIM_BUD_DEATH_MIDDLE, VINE_1)
         Call(PlayModelAnimation, VINE_1, VINE_1_BASE)
         Thread
             Wait(45)
@@ -1466,8 +1509,7 @@ static EvtScript EVS_Death = {
         EndThread
         Wait(5)
         Call(SetAnimation, ACTOR_BUD_2, PRT_MAIN, ANIM_LavaBud_PlayDead)
-        Call(OverrideBattleDmaDest, VINE_2_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_BUD_DEATH_MIDDLE)
+        Call(LoadVineAnim, VINE_ANIM_BUD_DEATH_MIDDLE, VINE_2)
         Call(PlayModelAnimation, VINE_2, VINE_2_BASE)
         Thread
             Wait(45)
@@ -1631,40 +1673,32 @@ static EvtScript EVS_Death = {
             Wait(45)
             Call(DeleteAnimatedModel, SHATTER_GROUND)
         EndThread
-        Call(OverrideBattleDmaDest, VINE_0_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_BOSS_EMERGE)
+        Call(LoadVineAnim, VINE_ANIM_BOSS_EMERGE, VINE_0)
         Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
         Call(SetAnimatedModelRootPosition, VINE_0, 0, 0, 0)
         Wait(5)
         Call(SetAnimatedModelRootPosition, VINE_2, 50, 14, 20)
-        Call(OverrideBattleDmaDest, VINE_2_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_BUD_EMERGE)
+        Call(LoadVineAnim, VINE_ANIM_BUD_EMERGE, VINE_2)
         Call(PlayModelAnimation, VINE_2, VINE_2_BASE)
         Wait(10)
         Call(SetAnimatedModelRootPosition, VINE_1, 0, 0, 0)
-        Call(OverrideBattleDmaDest, VINE_1_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_BUD_EMERGE)
+        Call(LoadVineAnim, VINE_ANIM_BUD_EMERGE, VINE_1)
         Call(PlayModelAnimation, VINE_1, VINE_1_BASE)
         Wait(45)
         Call(SetAnimatedModelRootPosition, VINE_3, 0, 0, 0)
-        Call(OverrideBattleDmaDest, VINE_3_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_EXTRA_EMERGE)
+        Call(LoadVineAnim, VINE_ANIM_EXTRA_EMERGE, VINE_3)
         Call(PlayModelAnimation, VINE_3, VINE_3_BASE)
-        Call(OverrideBattleDmaDest, VINE_0_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_BOSS_IDLE)
+        Call(LoadVineAnim, VINE_ANIM_BOSS_IDLE, VINE_0)
         Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaPiranha_Talk)
         Wait(5)
-        Call(OverrideBattleDmaDest, VINE_2_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_BUD_IDLE)
+        Call(LoadVineAnim, VINE_ANIM_BUD_IDLE, VINE_2)
         Call(PlayModelAnimation, VINE_2, VINE_2_BASE)
         Wait(10)
-        Call(OverrideBattleDmaDest, VINE_1_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_BUD_IDLE)
+        Call(LoadVineAnim, VINE_ANIM_BUD_IDLE, VINE_1)
         Call(PlayModelAnimation, VINE_1, VINE_1_BASE)
         Wait(30)
-        Call(OverrideBattleDmaDest, VINE_3_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_EXTRA_IDLE)
+        Call(LoadVineAnim, VINE_ANIM_EXTRA_IDLE, VINE_3)
         Call(PlayModelAnimation, VINE_3, VINE_3_BASE)
         Call(GetEnemyMaxHP, ACTOR_BUD_1, LVar0)
         Call(SetEnemyHP, ACTOR_BUD_1, LVar0)
@@ -1680,8 +1714,7 @@ static EvtScript EVS_Death = {
         ExecWait(EVS_RemovePetitPiranha)
         Set(LVar0, ACTOR_PETIT_2)
         ExecWait(EVS_RemovePetitPiranha)
-        Call(OverrideBattleDmaDest, VINE_3_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_EXTRA_DEATH)
+        Call(LoadVineAnim, VINE_ANIM_EXTRA_DEATH, VINE_3)
         Call(PlayModelAnimation, VINE_3, VINE_3_BASE)
         Thread
             Call(PlaySound, SOUND_LRAW_RUMBLE)
@@ -1694,18 +1727,15 @@ static EvtScript EVS_Death = {
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LAVA_PIRANHA_WRITHE)
             Call(GetActorVar, ACTOR_SELF, AVAR_Common_PiranhaState, LVar0)
             IfEq(LVar0, PIRANHA_STATE_STUNNED)
-                Call(OverrideBattleDmaDest, VINE_0_BASE)
-                Call(LoadBattleDmaData, VINE_ANIM_BOSS_STUNNED_DEATH_BEGIN)
+                Call(LoadVineAnim, VINE_ANIM_BOSS_STUNNED_DEATH_BEGIN, VINE_0)
                 Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
             Else
-                Call(OverrideBattleDmaDest, VINE_0_BASE)
-                Call(LoadBattleDmaData, VINE_ANIM_BOSS_DEATH_BEGIN)
+                Call(LoadVineAnim, VINE_ANIM_BOSS_DEATH_BEGIN, VINE_0)
                 Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
             EndIf
             Wait(19)
             Call(HideHealthBar, ACTOR_SELF)
-            Call(OverrideBattleDmaDest, VINE_0_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BOSS_DEATH_MIDDLE)
+            Call(LoadVineAnim, VINE_ANIM_BOSS_DEATH_MIDDLE, VINE_0)
             Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
             Call(GetActorVar, ACTOR_SELF, AVAR_Common_PiranhaState, LVar0)
             IfEq(LVar0, PIRANHA_STATE_FIERY)
@@ -1714,8 +1744,7 @@ static EvtScript EVS_Death = {
             Wait(121)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LAVA_PIRANHA_COLLAPSE)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaPiranha_Sleep)
-            Call(OverrideBattleDmaDest, VINE_0_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BOSS_DEATH_COLLAPSE)
+            Call(LoadVineAnim, VINE_ANIM_BOSS_DEATH_COLLAPSE, VINE_0)
             Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
             Wait(30)
             Call(GetActorVar, ACTOR_SELF, AVAR_Common_FlameSize, LVar0)
@@ -1733,25 +1762,21 @@ static EvtScript EVS_Death = {
             Wait(12)
             Call(GetActorVar, ACTOR_BUD_1, AVAR_Common_PiranhaState, LVar0)
             IfEq(LVar0, PIRANHA_STATE_STUNNED)
-                Call(OverrideBattleDmaDest, VINE_1_BASE)
-                Call(LoadBattleDmaData, VINE_ANIM_BUD_STUNNED_DEATH_BEGIN)
+                Call(LoadVineAnim, VINE_ANIM_BUD_STUNNED_DEATH_BEGIN, VINE_1)
                 Call(PlayModelAnimation, VINE_1, VINE_1_BASE)
             Else
-                Call(OverrideBattleDmaDest, VINE_1_BASE)
-                Call(LoadBattleDmaData, VINE_ANIM_BUD_DEATH_BEGIN)
+                Call(LoadVineAnim, VINE_ANIM_BUD_DEATH_BEGIN, VINE_1)
                 Call(PlayModelAnimation, VINE_1, VINE_1_BASE)
             EndIf
             Wait(19)
-            Call(OverrideBattleDmaDest, VINE_1_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BUD_DEATH_MIDDLE)
+            Call(LoadVineAnim, VINE_ANIM_BUD_DEATH_MIDDLE, VINE_1)
             Call(PlayModelAnimation, VINE_1, VINE_1_BASE)
             Call(GetActorVar, ACTOR_BUD_1, AVAR_Common_PiranhaState, LVar0)
             IfEq(LVar0, PIRANHA_STATE_FIERY)
                 PlayEffect(EFFECT_EMBERS, 0, 67, 30, 2, 50, 40, Float(1.3), 30, 70, Float(1.2), Float(1.2))
             EndIf
             Wait(96)
-            Call(OverrideBattleDmaDest, VINE_1_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BUD_DEATH_COLLAPSE)
+            Call(LoadVineAnim, VINE_ANIM_BUD_DEATH_COLLAPSE, VINE_1)
             Call(PlayModelAnimation, VINE_1, VINE_1_BASE)
             Wait(30)
             Call(GetActorVar, ACTOR_BUD_1, AVAR_Common_FlameSize, LVar0)
@@ -1769,25 +1794,21 @@ static EvtScript EVS_Death = {
             Wait(5)
             Call(GetActorVar, ACTOR_BUD_2, AVAR_Common_PiranhaState, LVar0)
             IfEq(LVar0, PIRANHA_STATE_STUNNED)
-                Call(OverrideBattleDmaDest, VINE_2_BASE)
-                Call(LoadBattleDmaData, VINE_ANIM_BUD_STUNNED_DEATH_BEGIN)
+                Call(LoadVineAnim, VINE_ANIM_BUD_STUNNED_DEATH_BEGIN, VINE_2)
                 Call(PlayModelAnimation, VINE_2, VINE_2_BASE)
             Else
-                Call(OverrideBattleDmaDest, VINE_2_BASE)
-                Call(LoadBattleDmaData, VINE_ANIM_BUD_DEATH_BEGIN)
+                Call(LoadVineAnim, VINE_ANIM_BUD_DEATH_BEGIN, VINE_2)
                 Call(PlayModelAnimation, VINE_2, VINE_2_BASE)
             EndIf
             Wait(19)
-            Call(OverrideBattleDmaDest, VINE_2_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BUD_DEATH_MIDDLE)
+            Call(LoadVineAnim, VINE_ANIM_BUD_DEATH_MIDDLE, VINE_2)
             Call(PlayModelAnimation, VINE_2, VINE_2_BASE)
             Call(GetActorVar, ACTOR_BUD_2, AVAR_Common_PiranhaState, LVar0)
             IfEq(LVar0, PIRANHA_STATE_FIERY)
                 PlayEffect(EFFECT_EMBERS, 0, 120, 35, 5, 50, 40, Float(1.3), 30, 70, Float(1.2), Float(1.2))
             EndIf
             Wait(96)
-            Call(OverrideBattleDmaDest, VINE_2_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BUD_DEATH_COLLAPSE)
+            Call(LoadVineAnim, VINE_ANIM_BUD_DEATH_COLLAPSE, VINE_2)
             Call(PlayModelAnimation, VINE_2, VINE_2_BASE)
             Wait(30)
             Call(GetActorVar, ACTOR_BUD_2, AVAR_Common_FlameSize, LVar0)
@@ -1997,11 +2018,9 @@ static EvtScript EVS_ComboHit = {
     IfEq(LVar0, PIRANHA_STATE_DEAD)
         Call(GetLastDamage, ACTOR_SELF, LVar0)
         IfLt(LVar0, 4)
-            Call(OverrideBattleDmaDest, VINE_0_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BOSS_STUNNED_LIGHT_HIT)
+            Call(LoadVineAnim, VINE_ANIM_BOSS_STUNNED_LIGHT_HIT, VINE_0)
         Else
-            Call(OverrideBattleDmaDest, VINE_0_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BOSS_STUNNED_HEAVY_HIT)
+            Call(LoadVineAnim, VINE_ANIM_BOSS_STUNNED_HEAVY_HIT, VINE_0)
         EndIf
         Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
         Wait(29)
@@ -2009,11 +2028,9 @@ static EvtScript EVS_ComboHit = {
     Else
         Call(GetLastDamage, ACTOR_SELF, LVar0)
         IfLt(LVar0, 4)
-            Call(OverrideBattleDmaDest, VINE_0_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BOSS_LIGHT_HIT)
+            Call(LoadVineAnim, VINE_ANIM_BOSS_LIGHT_HIT, VINE_0)
         Else
-            Call(OverrideBattleDmaDest, VINE_0_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BOSS_HEAVY_HIT)
+            Call(LoadVineAnim, VINE_ANIM_BOSS_HEAVY_HIT, VINE_0)
         EndIf
         Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
         Wait(29)
@@ -2037,11 +2054,9 @@ static EvtScript EVS_Hit_Inner = {
     IfFalse(LVar0)
         Call(GetLastDamage, ACTOR_SELF, LVar0)
         IfLt(LVar0, 4)
-            Call(OverrideBattleDmaDest, VINE_0_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BOSS_LIGHT_HIT)
+            Call(LoadVineAnim, VINE_ANIM_BOSS_LIGHT_HIT, VINE_0)
         Else
-            Call(OverrideBattleDmaDest, VINE_0_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BOSS_HEAVY_HIT)
+            Call(LoadVineAnim, VINE_ANIM_BOSS_HEAVY_HIT, VINE_0)
         EndIf
         Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
         Wait(29)
@@ -2054,19 +2069,16 @@ static EvtScript EVS_Hit_Inner = {
         IfEq(LVar0, PIRANHA_STATE_STUNNED)
             Call(GetLastDamage, ACTOR_SELF, LVar0)
             IfLt(LVar0, 4)
-                Call(OverrideBattleDmaDest, VINE_0_BASE)
-                Call(LoadBattleDmaData, VINE_ANIM_BOSS_STUNNED_LIGHT_HIT)
+                Call(LoadVineAnim, VINE_ANIM_BOSS_STUNNED_LIGHT_HIT, VINE_0)
             Else
-                Call(OverrideBattleDmaDest, VINE_0_BASE)
-                Call(LoadBattleDmaData, VINE_ANIM_BOSS_STUNNED_HEAVY_HIT)
+                Call(LoadVineAnim, VINE_ANIM_BOSS_STUNNED_HEAVY_HIT, VINE_0)
             EndIf
             Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
             Wait(29)
             Wait(14)
         Else
             Call(SetActorVar, ACTOR_SELF, AVAR_Common_StunTurnsLeft, 2)
-            Call(OverrideBattleDmaDest, VINE_0_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BOSS_HEAVY_HIT)
+            Call(LoadVineAnim, VINE_ANIM_BOSS_HEAVY_HIT, VINE_0)
             Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
             Call(GetActorVar, ACTOR_SELF, AVAR_Common_FlameEffect, LVar0)
             IfNe(LVar0, nullptr)
@@ -2084,8 +2096,7 @@ static EvtScript EVS_Hit_Inner = {
             Call(SetPartEventBits, ACTOR_SELF, PRT_TARGET, ACTOR_EVENT_FLAG_FIREY, false)
             Wait(29)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LAVA_PIRANHA_WITHER)
-            Call(OverrideBattleDmaDest, VINE_0_BASE)
-            Call(LoadBattleDmaData, VINE_ANIM_BOSS_STUN)
+            Call(LoadVineAnim, VINE_ANIM_BOSS_STUN, VINE_0)
             Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
             Wait(14)
             Call(SetActorVar, ACTOR_SELF, AVAR_Common_PiranhaState, PIRANHA_STATE_STUNNED)
@@ -2095,11 +2106,9 @@ static EvtScript EVS_Hit_Inner = {
         IfEq(LVar0, PIRANHA_STATE_STUNNED)
             Call(GetLastDamage, ACTOR_SELF, LVar0)
             IfLt(LVar0, 4)
-                Call(OverrideBattleDmaDest, VINE_0_BASE)
-                Call(LoadBattleDmaData, VINE_ANIM_BOSS_STUNNED_LIGHT_HIT)
+                Call(LoadVineAnim, VINE_ANIM_BOSS_STUNNED_LIGHT_HIT, VINE_0)
             Else
-                Call(OverrideBattleDmaDest, VINE_0_BASE)
-                Call(LoadBattleDmaData, VINE_ANIM_BOSS_STUNNED_HEAVY_HIT)
+                Call(LoadVineAnim, VINE_ANIM_BOSS_STUNNED_HEAVY_HIT, VINE_0)
             EndIf
             Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
             Wait(29)
@@ -2107,11 +2116,9 @@ static EvtScript EVS_Hit_Inner = {
         Else
             Call(GetLastDamage, ACTOR_SELF, LVar0)
             IfLt(LVar0, 4)
-                Call(OverrideBattleDmaDest, VINE_0_BASE)
-                Call(LoadBattleDmaData, VINE_ANIM_BOSS_LIGHT_HIT)
+                Call(LoadVineAnim, VINE_ANIM_BOSS_LIGHT_HIT, VINE_0)
             Else
-                Call(OverrideBattleDmaDest, VINE_0_BASE)
-                Call(LoadBattleDmaData, VINE_ANIM_BOSS_HEAVY_HIT)
+                Call(LoadVineAnim, VINE_ANIM_BOSS_HEAVY_HIT, VINE_0)
             EndIf
             Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
             PlayEffect(EFFECT_EMBERS, 0, 80, 50, 0, 60, 50, Float(1.5), 36, 42, Float(0.8), Float(0.8))
@@ -2128,19 +2135,16 @@ static EvtScript EVS_PlayIdleAnimation = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, LVar0)
     Call(GetActorVar, ACTOR_SELF, AVAR_Boss_IsSecondPhase, LVar0)
     IfFalse(LVar0)
-        Call(OverrideBattleDmaDest, VINE_0_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_BOSS_IDLE)
+        Call(LoadVineAnim, VINE_ANIM_BOSS_IDLE, VINE_0)
         Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
         Return
     EndIf
     Call(GetActorVar, ACTOR_SELF, AVAR_Common_PiranhaState, LVar0)
     IfEq(LVar0, PIRANHA_STATE_STUNNED)
-        Call(OverrideBattleDmaDest, VINE_0_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_BOSS_TWITCH)
+        Call(LoadVineAnim, VINE_ANIM_BOSS_TWITCH, VINE_0)
         Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
     Else
-        Call(OverrideBattleDmaDest, VINE_0_BASE)
-        Call(LoadBattleDmaData, VINE_ANIM_BOSS_IDLE)
+        Call(LoadVineAnim, VINE_ANIM_BOSS_IDLE, VINE_0)
         Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
     EndIf
     Return
