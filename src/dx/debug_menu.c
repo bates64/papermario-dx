@@ -3054,8 +3054,8 @@ void dx_debug_update_banner() {
 // ----------------------------------------------------------------------------
 // console printing
 
-#define DEBUG_CONSOLE_DEFAULT_TIMELEFT 60
-#define DEBUG_CONSOLE_MSG_BUF_SIZE 85
+#define DEBUG_CONSOLE_DEFAULT_TIMELEFT 120
+#define DEBUG_CONSOLE_MSG_BUF_SIZE 128
 
 typedef struct DebugConsoleLine {
     u32 hash;
@@ -3101,7 +3101,13 @@ u32 dx_debug_hash_location(const char* filename, s32 line) {
     return hash;
 }
 
+static char* DebugPrintEnd;
+
+// Stops at DebugPrintEnd, so a long message is cut short instead of overflowing.
 static char *proutSprintf(char *dst, const char *src, size_t count) {
+    if (count > (size_t)(DebugPrintEnd - dst)) {
+        count = DebugPrintEnd - dst;
+    }
     return (char *)memcpy((u8 *)dst, (u8 *)src, count) + count;
 }
 
@@ -3152,12 +3158,20 @@ static void dx_debug_string_to_msg(u8* msg, s32 msgSize, const char* str) {
 }
 
 static void dx_debug_vprintf(const char* filename, s32 line, b32 deduplicate, const char* fmt, va_list args) {
-    char fmtBuf[128];
+    char fmtBuf[DEBUG_CONSOLE_MSG_BUF_SIZE];
+    DebugPrintEnd = &fmtBuf[ARRAY_COUNT(fmtBuf) - 1];
     s32 len = _Printf(&proutSprintf, fmtBuf, fmt, args);
+    // leave room for the console line's four-byte header and terminator
+    if (len > DEBUG_CONSOLE_MSG_BUF_SIZE - 5) {
+        printf("warning: debug_printf too long: %ld / %d\n", len, DEBUG_CONSOLE_MSG_BUF_SIZE - 5);
+        len = DEBUG_CONSOLE_MSG_BUF_SIZE - 5;
+    }
     if (len >= 0) {
         fmtBuf[len] = 0;
     }
-    ASSERT(len <= DEBUG_CONSOLE_MSG_BUF_SIZE - 5);
+
+    // Also print to serial
+    printf("%s\n", fmtBuf);
 
     u32 hash = 0;
     s32 matchedLine = -1;
