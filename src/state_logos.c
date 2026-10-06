@@ -58,10 +58,6 @@ Gfx D_80077908[] = {
     gsSPEndDisplayList(),
 };
 
-extern Addr logos_logo_n64_png;
-extern Addr logos_logo_is_png;
-extern Addr logos_logo_nintendo_png;
-
 BSS u8* gLogosImages;
 BSS u8* gLogosImage3;
 BSS u8* gLogosImage1;
