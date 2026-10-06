@@ -427,6 +427,6 @@ NpcData NpcData_SpyGuy[] = {
 NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_ShyGuy_Loner),
     NPC_GROUP(NpcData_ShyGuy_Crowd),
-    NPC_GROUP(NpcData_SpyGuy, BTL_OMO_FORMATION_1B, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_SpyGuy, "omo:spy_guy_1_pyro_guy_1_groove_guy_1_medi_guy_1", "omo_01"),
     {}
 };

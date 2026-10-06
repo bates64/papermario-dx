@@ -4,32 +4,21 @@
 
 static Vec3i lava_piranha_pos = { 60, 60, 0 };
 
-static Formation Formation_00 = {
+static Formation lava_piranha = {
     OVL_ACTOR_BY_POS("lava_piranha", lava_piranha_pos, 60),
 };
 
 static Vec3i petit_piranha_pos1 = { 40, 60, 0 };
 static Vec3i petit_piranha_pos2 = { 80, 60, 0 };
 
-static Formation Formation_01 = {
+static Formation petit_piranha = {
     OVL_ACTOR_BY_POS("petit_piranha", petit_piranha_pos1, 10),
     OVL_ACTOR_BY_POS("petit_piranha", petit_piranha_pos2, 10),
 };
 
 static BattleList Formations = {
-    BATTLE(Formation_00, "kzn_05", "Lava Piranha"),
-    BATTLE(Formation_01, "kzn_05", "Petit Piranha"),
-    {},
-};
-
-static StageList Stages = {
-    STAGE("kzn_01",  "kzn_01"),
-    STAGE("kzn_01b", "kzn_01b"),
-    STAGE("kzn_02",  "kzn_02"),
-    STAGE("kzn_04",  "kzn_04"),
-    STAGE("kzn_04b", "kzn_04b"),
-    STAGE("kzn_04c", "kzn_04c"),
-    STAGE("kzn_05",  "kzn_05"),
+    BATTLE(lava_piranha, "kzn_05"),
+    BATTLE(petit_piranha, "kzn_05"),
     {},
 };
 
@@ -80,9 +69,7 @@ static DmaTable dmaTable[] = {
 
 BATTLE_AREA_ENTRY = {
     .battles = &Formations,
-    .stages = &Stages,
     .battleCount = ARRAY_COUNT(Formations) - 1,
-    .stageCount = ARRAY_COUNT(Stages) - 1,
     .dmaTable = dmaTable,
     .dmaCount = ARRAY_COUNT(dmaTable),
 };

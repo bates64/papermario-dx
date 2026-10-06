@@ -72,8 +72,8 @@ NpcData NpcData_Ember_03 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Ember, BTL_HOS_FORMATION_01, BTL_HOS_STAGE_01),
-    NPC_GROUP(NpcData_Ember_02, BTL_HOS_FORMATION_01, BTL_HOS_STAGE_01),
-    NPC_GROUP(NpcData_Ember_03, BTL_HOS_FORMATION_01, BTL_HOS_STAGE_01),
+    NPC_GROUP(NpcData_Ember, "hos:ember_2", "hos_01"),
+    NPC_GROUP(NpcData_Ember_02, "hos:ember_2", "hos_01"),
+    NPC_GROUP(NpcData_Ember_03, "hos:ember_2", "hos_01"),
     {}
 };

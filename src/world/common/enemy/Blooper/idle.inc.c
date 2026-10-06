@@ -7,10 +7,10 @@ NpcSettings NpcSettings_Blooper = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-s32 BlooperBattles[] = {
-    BTL_TIK2_FORMATION_00,
-    BTL_TIK2_FORMATION_01,
-    BTL_TIK2_FORMATION_02,
+static const char* BlooperBattles[] = {
+    "tik2:blooper",
+    "tik2:electro_blooper",
+    "tik2:super_blooper",
 };
 
 API_CALLABLE(GetBlooperBattleID) {

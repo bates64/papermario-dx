@@ -325,6 +325,6 @@ NpcData NpcData_Guards[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Guards, BTL_KPA_FORMATION_1D, BTL_KPA_STAGE_02),
+    NPC_GROUP(NpcData_Guards, "kpa:koopatrol_3_magikoopa_1", "kpa_02"),
     {}
 };

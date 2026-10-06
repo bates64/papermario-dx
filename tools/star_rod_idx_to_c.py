@@ -876,15 +876,14 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
                     out += "    {},\n"
                 else:
                     formation = symbol_map[ptr][0][1]
-                    debug_name = symbol_map[name][0][1]
                     stage = symbol_map[stage_ptr][0][1]
                     if not stage.startswith('"'):
                         stage = json.dumps(stage)
                     if script_ptr:
                         script = symbol_map[script_ptr][0][1]
-                        out += f"    BATTLE_WITH_SCRIPT({formation}, {stage}, {script}, {debug_name}),\n"
+                        out += f"    BATTLE_WITH_SCRIPT({formation}, {stage}, {script}),\n"
                     else:
-                        out += f"    BATTLE({formation}, {stage}, {debug_name}),\n"
+                        out += f"    BATTLE({formation}, {stage}),\n"
 
             out += f"}};\n"
         elif struct["type"] == "StageTable":

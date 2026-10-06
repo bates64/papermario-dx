@@ -1,149 +1,149 @@
 #include "battle/battle.h"
 
-static Formation Formation_00 = {
+static Formation dark_koopa_2 = {
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_01 = {
+static Formation dark_koopa_3 = {
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_02 = {
+static Formation dark_koopa_4 = {
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_C, 8),
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_D, 7),
 };
 
-static Formation Formation_03 = {
+static Formation dark_koopa_1_dark_paratroopa_2 = {
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("dark_paratroopa", BTL_POS_AIR_B, 9),
     OVL_ACTOR_BY_IDX("dark_paratroopa", BTL_POS_AIR_C, 8),
 };
 
-static Formation Formation_04 = {
+static Formation dark_koopa_1_spike_top_2 = {
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_05 = {
+static Formation dark_koopa_1_spike_top_1_dark_koopa_1 = {
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_06 = {
+static Formation dark_koopa_1_spiny_2 = {
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_07 = {
+static Formation dark_koopa_1_spiny_1_dark_koopa_1_spiny_1 = {
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_C, 8),
     OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_D, 7),
 };
 
-static Formation Formation_08 = {
+static Formation dark_paratroopa_2 = {
     OVL_ACTOR_BY_IDX("dark_paratroopa", BTL_POS_AIR_B, 10),
     OVL_ACTOR_BY_IDX("dark_paratroopa", BTL_POS_AIR_C, 9),
 };
 
-static Formation Formation_09 = {
+static Formation dark_paratroopa_3 = {
     OVL_ACTOR_BY_IDX("dark_paratroopa", BTL_POS_AIR_A, 10),
     OVL_ACTOR_BY_IDX("dark_paratroopa", BTL_POS_AIR_B, 9),
     OVL_ACTOR_BY_IDX("dark_paratroopa", BTL_POS_AIR_C, 8),
 };
 
-static Formation Formation_0A = {
+static Formation gloomba_2 = {
     OVL_ACTOR_BY_IDX("gloomba", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("gloomba", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_0B = {
+static Formation gloomba_4 = {
     OVL_ACTOR_BY_IDX("gloomba", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("gloomba", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("gloomba", BTL_POS_GROUND_C, 8),
     OVL_ACTOR_BY_IDX("gloomba", BTL_POS_GROUND_D, 7),
 };
 
-static Formation Formation_0C = {
+static Formation paragloomba_3 = {
     OVL_ACTOR_BY_IDX("paragloomba", BTL_POS_AIR_A, 10),
     OVL_ACTOR_BY_IDX("paragloomba", BTL_POS_AIR_B, 9),
     OVL_ACTOR_BY_IDX("paragloomba", BTL_POS_AIR_C, 8),
 };
 
-static Formation Formation_0D = {
+static Formation paragloomba_1_spiked_gloomba_1 = {
     OVL_ACTOR_BY_IDX("paragloomba", BTL_POS_AIR_B, 10),
     OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_0E = {
+static Formation spiked_gloomba_2 = {
     OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_0F = {
+static Formation spiked_gloomba_1_gloomba_2 = {
     OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("gloomba", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("gloomba", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_10 = {
+static Formation spiked_gloomba_1_buzzy_beetle_2 = {
     OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("buzzy_beetle", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("buzzy_beetle", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_11 = {
+static Formation spiked_gloomba_1_mixed_11 = {
     OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("buzzy_beetle", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_C, 8),
     OVL_ACTOR_BY_IDX("buzzy_beetle", BTL_POS_GROUND_D, 7),
 };
 
-static Formation Formation_12 = {
+static Formation spiked_gloomba_1_mixed_12 = {
     OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("buzzy_beetle", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("paragloomba", BTL_POS_AIR_C, 8),
     OVL_ACTOR_BY_IDX("buzzy_beetle", BTL_POS_GROUND_D, 7),
 };
 
-static Formation Formation_13 = {
+static Formation spike_top_4 = {
     OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_C, 8),
     OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_D, 7),
 };
 
-static Formation Formation_14 = {
+static Formation spike_top_2 = {
     OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_15 = {
+static Formation buzzy_beetle_1_spiked_gloomba_1_buzzy_beetle_1 = {
     OVL_ACTOR_BY_IDX("buzzy_beetle", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("buzzy_beetle", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_16 = {
+static Formation spiny_2 = {
     OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_17 = {
+static Formation spiny_3 = {
     OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_18 = {
+static Formation spiny_4 = {
     OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_C, 8),
@@ -151,46 +151,35 @@ static Formation Formation_18 = {
 };
 
 static BattleList Formations = {
-    BATTLE(Formation_00, "tik_01", "Dark Koopa x2"),
-    BATTLE(Formation_01, "tik_01", "Dark Koopa x3"),
-    BATTLE(Formation_02, "tik_01", "Dark Koopa x4"),
-    BATTLE(Formation_03, "tik_01", "Dark Koopa, Dark Paratroopa x2"),
-    BATTLE(Formation_04, "tik_01", "Dark Koopa, Spike Top x2"),
-    BATTLE(Formation_05, "tik_01", "Dark Koopa, Spike Top, Dark Koopa"),
-    BATTLE(Formation_06, "tik_01", "Dark Koopa, Spiny x2"),
-    BATTLE(Formation_07, "tik_01", "Dark Koopa, Spiny, Dark Koopa, Spiny"),
-    BATTLE(Formation_08, "tik_01", "Dark Paratroopa x2"),
-    BATTLE(Formation_09, "tik_01", "Dark Paratroopa x3"),
-    BATTLE(Formation_0A, "tik_01", "Gloomba x2"),
-    BATTLE(Formation_0B, "tik_01", "Gloomba x4"),
-    BATTLE(Formation_0C, "tik_01", "Paragloomba x3"),
-    BATTLE(Formation_0D, "tik_01", "Paragloomba, Spiked Gloomba"),
-    BATTLE(Formation_0E, "tik_01", "Spiked Gloomba x2"),
-    BATTLE(Formation_0F, "tik_01", "Spiked Gloomba, Gloomba x2"),
-    BATTLE(Formation_10, "tik_01", "Spiked Gloomba, Buzzy Beetle x2"),
-    BATTLE(Formation_11, "tik_01", "Spiked Gloomba, Buzzy Beetle, Spiked Gloomba, Buzzy Beetle"),
-    BATTLE(Formation_12, "tik_01", "Spiked Gloomba, Buzzy Beetle, Paragloomba, Buzzy Beetle"),
-    BATTLE(Formation_13, "tik_01", "Spike Top x4"),
-    BATTLE(Formation_14, "tik_01", "Spike Top x2"),
-    BATTLE(Formation_15, "tik_01", "Buzzy Beetle, Spiked Gloomba, Buzzy Beetle"),
-    BATTLE(Formation_16, "tik_01", "Spiny x2"),
-    BATTLE(Formation_17, "tik_01", "Spiny x3"),
-    BATTLE(Formation_18, "tik_01", "Spiny x4"),
-    {},
-};
-
-static StageList Stages = {
-    STAGE("tik_01", "tik_01"),
-    STAGE("tik_02", "tik_02"),
-    STAGE("tik_03", "tik_03"),
-    STAGE("tik_04", "tik_04"),
-    STAGE("tik_05", "tik_05"),
+    BATTLE(dark_koopa_2, "tik_01"),
+    BATTLE(dark_koopa_3, "tik_01"),
+    BATTLE(dark_koopa_4, "tik_01"),
+    BATTLE(dark_koopa_1_dark_paratroopa_2, "tik_01"),
+    BATTLE(dark_koopa_1_spike_top_2, "tik_01"),
+    BATTLE(dark_koopa_1_spike_top_1_dark_koopa_1, "tik_01"),
+    BATTLE(dark_koopa_1_spiny_2, "tik_01"),
+    BATTLE(dark_koopa_1_spiny_1_dark_koopa_1_spiny_1, "tik_01"),
+    BATTLE(dark_paratroopa_2, "tik_01"),
+    BATTLE(dark_paratroopa_3, "tik_01"),
+    BATTLE(gloomba_2, "tik_01"),
+    BATTLE(gloomba_4, "tik_01"),
+    BATTLE(paragloomba_3, "tik_01"),
+    BATTLE(paragloomba_1_spiked_gloomba_1, "tik_01"),
+    BATTLE(spiked_gloomba_2, "tik_01"),
+    BATTLE(spiked_gloomba_1_gloomba_2, "tik_01"),
+    BATTLE(spiked_gloomba_1_buzzy_beetle_2, "tik_01"),
+    BATTLE(spiked_gloomba_1_mixed_11, "tik_01"),
+    BATTLE(spiked_gloomba_1_mixed_12, "tik_01"),
+    BATTLE(spike_top_4, "tik_01"),
+    BATTLE(spike_top_2, "tik_01"),
+    BATTLE(buzzy_beetle_1_spiked_gloomba_1_buzzy_beetle_1, "tik_01"),
+    BATTLE(spiny_2, "tik_01"),
+    BATTLE(spiny_3, "tik_01"),
+    BATTLE(spiny_4, "tik_01"),
     {},
 };
 
 BATTLE_AREA_ENTRY = {
     .battles = &Formations,
-    .stages = &Stages,
     .battleCount = ARRAY_COUNT(Formations) - 1,
-    .stageCount = ARRAY_COUNT(Stages) - 1,
 };

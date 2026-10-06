@@ -1,133 +1,126 @@
 #include "battle/battle.h"
 
-static Formation Formation_00 = {
+static Formation pokey_1 = {
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_B, 10),
 };
 
-static Formation Formation_01 = {
+static Formation pokey_2 = {
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_02 = {
+static Formation pokey_3 = {
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_03 = {
+static Formation pokey_4 = {
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_C, 8),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_D, 7),
 };
 
-static Formation Formation_04 = {
+static Formation pokey_1_bandit_1 = {
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_05 = {
+static Formation pokey_2_bandit_1 = {
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_06 = {
+static Formation pokey_2_bandit_2 = {
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_C, 8),
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_D, 7),
 };
 
-static Formation Formation_07 = {
+static Formation pokey_1_bandit_1_pokey_1 = {
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_08 = {
+static Formation pokey_2_bandit_1_pokey_1 = {
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_C, 8),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_D, 7),
 };
 
-static Formation Formation_09 = {
+static Formation bandit_1 = {
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_B, 10),
 };
 
-static Formation Formation_0A = {
+static Formation bandit_2 = {
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_0B = {
+static Formation bandit_3 = {
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_0C = {
+static Formation bandit_4 = {
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_C, 8),
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_D, 7),
 };
 
-static Formation Formation_0D = {
+static Formation bandit_1_pokey_1 = {
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_0E = {
+static Formation bandit_2_pokey_1 = {
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_0F = {
+static Formation bandit_2_pokey_2 = {
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_C, 8),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_D, 7),
 };
 
-static Formation Formation_10 = {
+static Formation bandit_1_pokey_1_bandit_1 = {
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_C, 8),
 };
 
 static BattleList Formations = {
-    BATTLE(Formation_00, "sbk_02", "Pokey"),
-    BATTLE(Formation_01, "sbk_02", "Pokey x2"),
-    BATTLE(Formation_02, "sbk_02", "Pokey x3"),
-    BATTLE(Formation_03, "sbk_02", "Yellow Pokey x4"),
-    BATTLE(Formation_04, "sbk_02", "Pokey, Bandit"),
-    BATTLE(Formation_05, "sbk_02", "Pokey x2, Bandit"),
-    BATTLE(Formation_06, "sbk_02", "Pokey x2, Bandit x2"),
-    BATTLE(Formation_07, "sbk_02", "Pokey, Bandit, Pokey"),
-    BATTLE(Formation_08, "sbk_02", "Pokey x2, Bandit, Pokey"),
-    BATTLE(Formation_09, "sbk_02", "Bandit"),
-    BATTLE(Formation_0A, "sbk_02", "Bandit x2"),
-    BATTLE(Formation_0B, "sbk_02", "Bandit x3"),
-    BATTLE(Formation_0C, "sbk_02", "Bandit x4"),
-    BATTLE(Formation_0D, "sbk_02", "Bandit, Pokey"),
-    BATTLE(Formation_0E, "sbk_02", "Bandit x2, Pokey"),
-    BATTLE(Formation_0F, "sbk_02", "Bandit x2, Pokey x2"),
-    BATTLE(Formation_10, "sbk_02", "Bandit, Pokey, Bandit"),
-    {},
-};
-
-static StageList Stages = {
-    STAGE("sbk_01", "sbk_02"),
+    BATTLE(pokey_1, "sbk_02"),
+    BATTLE(pokey_2, "sbk_02"),
+    BATTLE(pokey_3, "sbk_02"),
+    BATTLE(pokey_4, "sbk_02"),
+    BATTLE(pokey_1_bandit_1, "sbk_02"),
+    BATTLE(pokey_2_bandit_1, "sbk_02"),
+    BATTLE(pokey_2_bandit_2, "sbk_02"),
+    BATTLE(pokey_1_bandit_1_pokey_1, "sbk_02"),
+    BATTLE(pokey_2_bandit_1_pokey_1, "sbk_02"),
+    BATTLE(bandit_1, "sbk_02"),
+    BATTLE(bandit_2, "sbk_02"),
+    BATTLE(bandit_3, "sbk_02"),
+    BATTLE(bandit_4, "sbk_02"),
+    BATTLE(bandit_1_pokey_1, "sbk_02"),
+    BATTLE(bandit_2_pokey_1, "sbk_02"),
+    BATTLE(bandit_2_pokey_2, "sbk_02"),
+    BATTLE(bandit_1_pokey_1_bandit_1, "sbk_02"),
     {},
 };
 
 BATTLE_AREA_ENTRY = {
     .battles = &Formations,
-    .stages = &Stages,
     .battleCount = ARRAY_COUNT(Formations) - 1,
-    .stageCount = ARRAY_COUNT(Stages) - 1,
 };

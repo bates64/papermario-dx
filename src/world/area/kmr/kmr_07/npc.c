@@ -255,6 +255,6 @@ NpcData NpcData_GoombaBros_Red[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_GoombaBros_Red, BTL_KMR_2_FORMATION_00, BTL_KMR_2_STAGE_01),
+    NPC_GROUP(NpcData_GoombaBros_Red, "kmr_part_2:goomba_bros", "kmr_03"),
     {}
 };

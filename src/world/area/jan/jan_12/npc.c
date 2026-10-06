@@ -28,6 +28,6 @@ NpcData NpcData_SpearGuy[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_SpearGuy, BTL_JAN_FORMATION_06, BTL_JAN_STAGE_06),
+    NPC_GROUP(NpcData_SpearGuy, "jan:spear_guy_1_jungle_fuzzy_1_spear_guy_1_jungle_fuzzy_1", "jan_04"),
     {}
 };

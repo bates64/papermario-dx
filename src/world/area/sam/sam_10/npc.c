@@ -29,6 +29,6 @@ NpcData NpcData_Clubba[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Clubba, BTL_SAM_FORMATION_0C, BTL_SAM_STAGE_02),
+    NPC_GROUP(NpcData_Clubba, "sam:white_clubba_1_mixed_0c", "sam_02b"),
     {}
 };

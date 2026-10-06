@@ -1328,8 +1328,7 @@ void update_encounters_pre_battle(void) {
             sfx_stop_sound(SOUND_SPIN_ATTACK);
             sfx_stop_sound(SOUND_SPEEDY_SPIN_ATTACK);
             set_battle_formation(nullptr);
-            set_battle_stage(encounter->stage);
-            load_battle(encounter->battle);
+            load_battle(encounter->battle, encounter->stage);
             currentEncounter->unk_07 = 1;
             currentEncounter->battleTransitionState = BATTLE_TRANSITION_STATE_STARTED;
             currentEncounter->hasMerleeCoinBonus = false;
@@ -2382,7 +2381,7 @@ void create_encounters(void) {
                 ASSERT(encounter != nullptr);
                 encounter->count = groupNpcCount;
                 encounter->battle = groupList->battle;
-                encounter->stage = groupList->stage - 1;
+                encounter->stage = groupList->stage;
                 encounter->encounterID = totalNpcCount;
                 for (i = 0; i < groupNpcCount; i++) {
                     if (get_defeated(mapID, encounter->encounterID + i)) {

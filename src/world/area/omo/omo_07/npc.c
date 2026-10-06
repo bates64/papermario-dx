@@ -543,40 +543,40 @@ NpcData NpcData_Kammy = {
 };
 
 NpcGroupList FuzzyAmbushNPCs = {
-    NPC_GROUP(NpcData_ShyGuy, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(NpcData_ShyGuy_02, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(NpcData_ShyGuy_03, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(NpcData_ShyGuy_04, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(NpcData_SkyGuy_01, BTL_OMO_FORMATION_14, BTL_OMO_STAGE_00),
-    NPC_GROUP(NpcData_SkyGuy_02, BTL_OMO_FORMATION_12, BTL_OMO_STAGE_00),
-    NPC_GROUP(NpcData_Fuzzy, BTL_OMO3_FORMATION_05, BTL_OMO3_STAGE_05),
+    NPC_GROUP(NpcData_ShyGuy, "omo3:shy_guy_1", "omo_02"),
+    NPC_GROUP(NpcData_ShyGuy_02, "omo3:shy_guy_1", "omo_02"),
+    NPC_GROUP(NpcData_ShyGuy_03, "omo3:shy_guy_1", "omo_02"),
+    NPC_GROUP(NpcData_ShyGuy_04, "omo3:shy_guy_1", "omo_02"),
+    NPC_GROUP(NpcData_SkyGuy_01, "omo:sky_guy_1_groove_guy_1_medi_guy_1", "omo_01"),
+    NPC_GROUP(NpcData_SkyGuy_02, "omo:sky_guy_1_green_shy_guy_1_medi_guy_1", "omo_01"),
+    NPC_GROUP(NpcData_Fuzzy, "omo3:fuzzy_4", "omo_05"),
     {}
 };
 
 NpcGroupList HammerBrosAmbushNPCs = {
-    NPC_GROUP(NpcData_ShyGuy, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(NpcData_ShyGuy_02, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(NpcData_ShyGuy_03, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(NpcData_ShyGuy_04, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(NpcData_SkyGuy_01, BTL_OMO_FORMATION_14, BTL_OMO_STAGE_00),
-    NPC_GROUP(NpcData_SkyGuy_02, BTL_OMO_FORMATION_12, BTL_OMO_STAGE_00),
-    NPC_GROUP(NpcData_HammerBros, BTL_OMO3_FORMATION_07, BTL_OMO3_STAGE_05),
+    NPC_GROUP(NpcData_ShyGuy, "omo3:shy_guy_1", "omo_02"),
+    NPC_GROUP(NpcData_ShyGuy_02, "omo3:shy_guy_1", "omo_02"),
+    NPC_GROUP(NpcData_ShyGuy_03, "omo3:shy_guy_1", "omo_02"),
+    NPC_GROUP(NpcData_ShyGuy_04, "omo3:shy_guy_1", "omo_02"),
+    NPC_GROUP(NpcData_SkyGuy_01, "omo:sky_guy_1_groove_guy_1_medi_guy_1", "omo_01"),
+    NPC_GROUP(NpcData_SkyGuy_02, "omo:sky_guy_1_green_shy_guy_1_medi_guy_1", "omo_01"),
+    NPC_GROUP(NpcData_HammerBros, "omo3:hammer_bro_1", "omo_05"),
     {}
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_ShyGuy, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(NpcData_ShyGuy_02, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(NpcData_ShyGuy_03, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(NpcData_ShyGuy_04, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(NpcData_SkyGuy_01, BTL_OMO_FORMATION_14, BTL_OMO_STAGE_00),
-    NPC_GROUP(NpcData_SkyGuy_02, BTL_OMO_FORMATION_12, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_ShyGuy, "omo3:shy_guy_1", "omo_02"),
+    NPC_GROUP(NpcData_ShyGuy_02, "omo3:shy_guy_1", "omo_02"),
+    NPC_GROUP(NpcData_ShyGuy_03, "omo3:shy_guy_1", "omo_02"),
+    NPC_GROUP(NpcData_ShyGuy_04, "omo3:shy_guy_1", "omo_02"),
+    NPC_GROUP(NpcData_SkyGuy_01, "omo:sky_guy_1_groove_guy_1_medi_guy_1", "omo_01"),
+    NPC_GROUP(NpcData_SkyGuy_02, "omo:sky_guy_1_green_shy_guy_1_medi_guy_1", "omo_01"),
     {}
 };
 
 NpcGroupList KammySceneNPCs = {
     NPC_GROUP(NpcData_Kammy),
-    NPC_GROUP(NpcData_Fuzzy, BTL_OMO3_FORMATION_05, BTL_OMO3_STAGE_05),
-    NPC_GROUP(NpcData_HammerBros, BTL_OMO3_FORMATION_07, BTL_OMO3_STAGE_05),
+    NPC_GROUP(NpcData_Fuzzy, "omo3:fuzzy_4", "omo_05"),
+    NPC_GROUP(NpcData_HammerBros, "omo3:hammer_bro_1", "omo_05"),
     {}
 };

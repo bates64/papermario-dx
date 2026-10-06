@@ -327,11 +327,11 @@ NpcData NpcData_MBush = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_JungleFuzzy, BTL_JAN_FORMATION_0A, BTL_JAN_STAGE_01),
-    NPC_GROUP(NpcData_SpearGuy, BTL_JAN_FORMATION_00, BTL_JAN_STAGE_01),
+    NPC_GROUP(NpcData_JungleFuzzy, "jan:jungle_fuzzy_2", "jan_01"),
+    NPC_GROUP(NpcData_SpearGuy, "jan:spear_guy_2", "jan_01"),
     NPC_GROUP(NpcData_HeartPlant),
-    NPC_GROUP(NpcData_HurtPlant, BTL_JAN_FORMATION_08, BTL_JAN_STAGE_01),
-    NPC_GROUP(NpcData_MBush, BTL_JAN_FORMATION_0E, BTL_JAN_STAGE_01),
+    NPC_GROUP(NpcData_HurtPlant, "jan:hurt_plant_2", "jan_01"),
+    NPC_GROUP(NpcData_MBush, "jan:m_bush_2", "jan_01"),
     NPC_GROUP(NpcData_YoshiKid),
     {}
 };

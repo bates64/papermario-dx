@@ -8,6 +8,8 @@ extern "C" {
 
 typedef struct Overlay Overlay;
 
+#define OVL_NAME_MAX 64
+
 #define EFFECT_OVERLAY_SLOT_COUNT 16
 #define EFFECT_OVERLAY_SLOT_SIZE 0x1000
 
@@ -22,7 +24,7 @@ typedef enum {
     OVL_MAP,            ///< `world/area/*/*` -- only one loaded at a time
     OVL_ACTION,         ///< `world/action/*` -- only one loaded at a time
     OVL_PARTNER,        ///< `world/partner/*`
-    OVL_BATTLE_AREA,    ///< `battle/area/*` -- tables and bundled actors, retained through battle teardown
+    OVL_BATTLE_AREA,    ///< `battle/area/*` -- formation tables, retained through battle teardown
     OVL_STAGE,          ///< `battle/stage/*` -- retained through battle teardown
     OVL_ACTOR,          ///< `battle/actor/*`
     OVL_BATTLE_PARTNER, ///< `battle/partner/*` -- only one loaded at a time
@@ -44,6 +46,10 @@ typedef enum {
 __attribute__((returns_nonnull))
 Overlay* ovl_load(const char* name, OverlayType type);
 
+/// Enumerate the ROM catalog without loading overlays. Names are copied to the caller.
+s32 ovl_get_count(OverlayType type);
+b32 ovl_get_name(OverlayType type, s32 index, char name[OVL_NAME_MAX]);
+
 /// Unload an overlay. No-op if not loaded.
 void ovl_unload(Overlay* ovl);
 
@@ -64,7 +70,7 @@ void* ovl_import(const Overlay* ovl, const char* name);
     ((__typeof__(&(symbol)))ovl_import((overlay), #symbol))
 
 /// Searches all loaded overlays for the symbol nearest to `addr`.
-/// Returns an empty string (not NULL) if the address is in an overlay but has
+/// Returns an empty string (not nullptr) if the address is in an overlay but has
 /// no matching export, so the caller can still use the debug symbol table.
 /// Returns nullptr if the address is not in any loaded overlay.
 const char* ovl_resolve_addr(u32 addr, const char** outOverlayName,

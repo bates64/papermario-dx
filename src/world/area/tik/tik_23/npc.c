@@ -72,8 +72,8 @@ NpcData NpcData_Spiny_03 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Spiny_01, BTL_TIK_FORMATION_16, BTL_TIK_STAGE_03),
-    NPC_GROUP(NpcData_Spiny_02, BTL_TIK_FORMATION_17, BTL_TIK_STAGE_03),
-    NPC_GROUP(NpcData_Spiny_03, BTL_TIK_FORMATION_16, BTL_TIK_STAGE_03),
+    NPC_GROUP(NpcData_Spiny_01, "tik:spiny_2", "tik_04"),
+    NPC_GROUP(NpcData_Spiny_02, "tik:spiny_3", "tik_04"),
+    NPC_GROUP(NpcData_Spiny_03, "tik:spiny_2", "tik_04"),
     {}
 };

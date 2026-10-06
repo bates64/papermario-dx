@@ -1,65 +1,65 @@
 #include "battle/battle.h"
 
-static Formation Formation_00 = {
+static Formation cleft_1 = {
     OVL_ACTOR_BY_IDX("cleft", BTL_POS_GROUND_B, 10),
 };
 
-static Formation Formation_01 = {
+static Formation cleft_2 = {
     OVL_ACTOR_BY_IDX("cleft", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("cleft", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_02 = {
+static Formation cleft_3 = {
     OVL_ACTOR_BY_IDX("cleft", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("cleft", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("cleft", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_03 = {
+static Formation cleft_1_monty_mole_1 = {
     OVL_ACTOR_BY_IDX("cleft", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_04 = {
+static Formation cleft_1_monty_mole_2 = {
     OVL_ACTOR_BY_IDX("cleft", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_05 = {
+static Formation monty_mole_1 = {
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_B, 10),
 };
 
-static Formation Formation_06 = {
+static Formation monty_mole_2 = {
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_07 = {
+static Formation monty_mole_3 = {
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_08 = {
+static Formation monty_mole_4 = {
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_C, 8),
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_D, 7),
 };
 
-static Formation Formation_09 = {
+static Formation monty_mole_1_cleft_1 = {
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("cleft", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_0A = {
+static Formation monty_mole_2_cleft_1 = {
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("cleft", BTL_POS_GROUND_C, 8),
 };
 
-static Formation Formation_0B = {
+static Formation monty_mole_1_cleft_1_monty_mole_1 = {
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("cleft", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_C, 8),
@@ -67,44 +67,35 @@ static Formation Formation_0B = {
 
 static Vec3i BossPos = { 90, 70, 0 };
 
-static Formation Formation_0C = {
+static Formation buzzar = {
     OVL_ACTOR_BY_POS("buzzar", BossPos, 10),
 };
 
-static Formation Formation_0D = {
+static Formation whacka = {
     OVL_ACTOR_BY_IDX("cleft", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("whacka", BTL_POS_GROUND_C, 8),
 };
 
 static BattleList Formations = {
-    BATTLE(Formation_00, "iwa_01", "Cleft"),
-    BATTLE(Formation_01, "iwa_01", "Cleft x2"),
-    BATTLE(Formation_02, "iwa_01", "Cleft x3"),
-    BATTLE(Formation_03, "iwa_01", "Cleft, Monty Mole"),
-    BATTLE(Formation_04, "iwa_01", "Cleft, Monty Mole x2"),
-    BATTLE(Formation_05, "iwa_01", "Monty Mole"),
-    BATTLE(Formation_06, "iwa_01", "Monty Mole x2"),
-    BATTLE(Formation_07, "iwa_01", "Monty Mole x3"),
-    BATTLE(Formation_08, "iwa_01", "Monty Mole x4"),
-    BATTLE(Formation_09, "iwa_01", "Monty Mole, Cleft"),
-    BATTLE(Formation_0A, "iwa_01", "Monty Mole x2, Cleft"),
-    BATTLE(Formation_0B, "iwa_01", "Monty Mole, Cleft, Monty Mole"),
-    BATTLE(Formation_0C, "iwa_02", "Buzzar"),
-    BATTLE(Formation_0D, "iwa_02", "Whacka"),
-    {},
-};
-
-static StageList Stages = {
-    STAGE("iwa_01", "iwa_01"),
-    STAGE("iwa_01b", "iwa_01b"),
-    STAGE("iwa_02", "iwa_02"),
+    BATTLE(cleft_1, "iwa_01"),
+    BATTLE(cleft_2, "iwa_01"),
+    BATTLE(cleft_3, "iwa_01"),
+    BATTLE(cleft_1_monty_mole_1, "iwa_01"),
+    BATTLE(cleft_1_monty_mole_2, "iwa_01"),
+    BATTLE(monty_mole_1, "iwa_01"),
+    BATTLE(monty_mole_2, "iwa_01"),
+    BATTLE(monty_mole_3, "iwa_01"),
+    BATTLE(monty_mole_4, "iwa_01"),
+    BATTLE(monty_mole_1_cleft_1, "iwa_01"),
+    BATTLE(monty_mole_2_cleft_1, "iwa_01"),
+    BATTLE(monty_mole_1_cleft_1_monty_mole_1, "iwa_01"),
+    BATTLE(buzzar, "iwa_02"),
+    BATTLE(whacka, "iwa_02"),
     {},
 };
 
 BATTLE_AREA_ENTRY = {
     .battles = &Formations,
-    .stages = &Stages,
     .battleCount = ARRAY_COUNT(Formations) - 1,
-    .stageCount = ARRAY_COUNT(Stages) - 1,
 };

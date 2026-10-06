@@ -276,9 +276,9 @@ NpcData NpcData_Twink_Npc1 = {
 };
 
 NpcGroupList InitialNpcs = {
-    NPC_GROUP(NpcData_Bowser_Npc1, BTL_KPA2_FORMATION_03),
+    NPC_GROUP(NpcData_Bowser_Npc1, "kpa2:bowser_final_1"),
     NPC_GROUP(NpcData_Peach_Npc1),
-    NPC_GROUP(NpcData_Kammy_Npc1, BTL_KKJ_FORMATION_00),
+    NPC_GROUP(NpcData_Kammy_Npc1, "kkj:kammy_koopa"),
     NPC_GROUP(NpcData_Twink_Npc1),
     {}
 };

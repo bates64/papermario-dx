@@ -150,7 +150,7 @@ NpcData NpcData_ChainChomp = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Tutankoopa, BTL_ISK_2_FORMATION_00, BTL_ISK_2_STAGE_01),
+    NPC_GROUP(NpcData_Tutankoopa, "isk_part_2:tutankoopa", "isk_01"),
     NPC_GROUP(NpcData_ChainChomp),
     {}
 };

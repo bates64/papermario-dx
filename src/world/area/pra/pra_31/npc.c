@@ -200,6 +200,6 @@ NpcData NpcData_AlbinoDinos[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_AlbinoDinos, BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_01),
+    NPC_GROUP(NpcData_AlbinoDinos, "pra3:duplighost_1", "pra_02"),
     {}
 };

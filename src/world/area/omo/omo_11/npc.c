@@ -49,7 +49,7 @@ NpcData NpcData_PyroGuy_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_PyroGuy_01, BTL_OMO_FORMATION_22, BTL_OMO_STAGE_07),
-    NPC_GROUP(NpcData_PyroGuy_02, BTL_OMO_FORMATION_24, BTL_OMO_STAGE_07),
+    NPC_GROUP(NpcData_PyroGuy_01, "omo:pyro_guy_1_spy_guy_1_groove_guy_1", "omo_06"),
+    NPC_GROUP(NpcData_PyroGuy_02, "omo:pyro_guy_2_spy_guy_1", "omo_06"),
     {}
 };

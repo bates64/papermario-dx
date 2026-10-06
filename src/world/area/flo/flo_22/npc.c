@@ -128,7 +128,7 @@ NpcData NpcData_Dayzee = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Bzzap, BTL_FLO_FORMATION_17, BTL_FLO_STAGE_02),
-    NPC_GROUP(NpcData_Dayzee, BTL_FLO_FORMATION_0F, BTL_FLO_STAGE_01),
+    NPC_GROUP(NpcData_Bzzap, "flo:bzzap_2", "flo_01c"),
+    NPC_GROUP(NpcData_Dayzee, "flo:crazee_dayzee_1", "flo_01b"),
     {}
 };

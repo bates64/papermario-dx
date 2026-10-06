@@ -2,19 +2,19 @@
 
 #include "sprite/player.h"
 
-s32 DojoBattleIDs[] = {
-    BTL_MAC_FORMATION_00,
-    BTL_MAC_FORMATION_01,
-    BTL_MAC_FORMATION_02,
-    BTL_MAC_FORMATION_03,
-    BTL_MAC_FORMATION_04
+static const char* DojoBattles[] = {
+    "mac:chan",
+    "mac:lee",
+    "mac:master_1",
+    "mac:master_2",
+    "mac:master_3"
 };
 
 API_CALLABLE(SetDojoBattle) {
     Enemy* enemy = script->owner1.enemy;
     s32 battleIndex = evt_get_variable(script, GB_MAC00_DojoRank);
 
-    gCurrentEncounter.encounterList[enemy->encounterIndex]->battle = DojoBattleIDs[battleIndex];
+    gCurrentEncounter.encounterList[enemy->encounterIndex]->battle = DojoBattles[battleIndex];
     return ApiStatus_DONE2;
 }
 

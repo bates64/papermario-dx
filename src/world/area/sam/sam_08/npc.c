@@ -246,8 +246,8 @@ NpcData NpcData_FrostClubba[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Ambush, BTL_SAM_FORMATION_00, BTL_SAM_STAGE_04),
-    NPC_GROUP(NpcData_Hittable, BTL_SAM_FORMATION_00, BTL_SAM_STAGE_04),
-    NPC_GROUP(NpcData_FrostClubba, BTL_SAM_FORMATION_0B, BTL_SAM_STAGE_04),
+    NPC_GROUP(NpcData_Ambush, "sam:duplighost_2", "sam_02d"),
+    NPC_GROUP(NpcData_Hittable, "sam:duplighost_2", "sam_02d"),
+    NPC_GROUP(NpcData_FrostClubba, "sam:white_clubba_2", "sam_02d"),
     {}
 };

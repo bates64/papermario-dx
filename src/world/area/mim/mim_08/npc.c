@@ -101,8 +101,8 @@ NpcData NpcData_PiranhaPlant_02[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Bzzap, BTL_MIM_FORMATION_10, BTL_MIM_STAGE_00),
-    NPC_GROUP(NpcData_PiranhaPlant_01, BTL_MIM_FORMATION_0F, BTL_MIM_STAGE_00),
-    NPC_GROUP(NpcData_PiranhaPlant_02, BTL_MIM_FORMATION_09, BTL_MIM_STAGE_00),
+    NPC_GROUP(NpcData_Bzzap, "mim:bzzap_2", "mim_01"),
+    NPC_GROUP(NpcData_PiranhaPlant_01, "mim:piranha_plant_1_forest_fuzzy_1_piranha_plant_1", "mim_01"),
+    NPC_GROUP(NpcData_PiranhaPlant_02, "mim:piranha_plant_2", "mim_01"),
     {}
 };

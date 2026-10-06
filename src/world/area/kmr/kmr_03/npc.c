@@ -128,6 +128,6 @@ NpcData NpcData_GoombaFamily = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_GoombaFamily, BTL_KMR_1_FORMATION_02),
+    NPC_GROUP(NpcData_GoombaFamily, "kmr_part_1:goomba_3"),
     {}
 };

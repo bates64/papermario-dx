@@ -79,24 +79,27 @@ s32 HighlightColor;
 // data grabbed during map or battle load
 
 char LastMapName[16];
-char LastStageName[16];
+char LastStageName[OVL_NAME_MAX];
 s32 LastMapEntry;
-s32 LastBattleID;
+char LastBattleName[BATTLE_REF_MAX];
 
 void dx_debug_set_map_info(const char* mapName, s32 entryID) {
     strcpy(LastMapName, mapName);
     LastMapEntry = entryID;
 }
 
-void dx_debug_set_battle_info(s32 battleID, const char* stageName) {
-    s32 len = strlen(stageName);
+void dx_debug_set_battle_info(const char* battle, const char* stageName) {
+    s32 len;
 
-    strcpy(LastStageName, stageName);
-    if (len > 6) {
+    strncpy(LastStageName, stageName, sizeof(LastStageName) - 1);
+    LastStageName[sizeof(LastStageName) - 1] = '\0';
+    len = strlen(LastStageName);
+    if (len > 6 && strcmp(LastStageName + len - 6, "_shape") == 0) {
         // trim "_shape" from name
         LastStageName[len - 6] = '\0';
     }
-    LastBattleID = battleID;
+    strncpy(LastBattleName, battle, sizeof(LastBattleName) - 1);
+    LastBattleName[sizeof(LastBattleName) - 1] = '\0';
 }
 
 // input
@@ -928,42 +931,33 @@ void dx_debug_update_select_entry() {
 // ----------------------------------------------------------------------------
 // battle select
 
-enum DebugBattleValues {
-    DEBUG_BATTLE_AREA_TENS,
-    DEBUG_BATTLE_AREA_ONES,
-    DEBUG_BATTLE_FORMATION_TENS,
-    DEBUG_BATTLE_FORMATION_ONES,
+enum DebugBattleRows {
+    DEBUG_BATTLE_AREA,
+    DEBUG_BATTLE_FORMATION,
     DEBUG_BATTLE_STAGE,
+    DEBUG_BATTLE_ROW_COUNT,
 };
 
-s32 DebugBattleNum[] = {
-    [DEBUG_BATTLE_AREA_TENS]        0,
-    [DEBUG_BATTLE_AREA_ONES]        0,
-    [DEBUG_BATTLE_FORMATION_TENS]   0,
-    [DEBUG_BATTLE_FORMATION_ONES]   0,
-    [DEBUG_BATTLE_STAGE]            -1,
-};
-
-s32 BattleDigitOffsets[] = {
-    [DEBUG_BATTLE_AREA_TENS]        10,
-    [DEBUG_BATTLE_AREA_ONES]        17,
-    [DEBUG_BATTLE_FORMATION_TENS]   35,
-    [DEBUG_BATTLE_FORMATION_ONES]   42,
-    [DEBUG_BATTLE_STAGE]            63,
-};
-
-s32 DebugBattleColumn = 0;
+s32 DebugBattleRow = DEBUG_BATTLE_AREA;
+// Areas and stages follow the alphabetically generated overlay catalog.
+// Formations follow their area's BattleList; -1 selects its default stage.
+s32 DebugBattleAreaIndex = 0;
+s32 DebugBattleFormationIndex = 0;
+s32 DebugBattleStageIndex = -1;
 
 #define DEBUG_BATTLE_PREVIEW_ROWS       6
 #define DEBUG_BATTLE_PREVIEW_NAME_LEN   64
-#define DEBUG_BATTLE_PREVIEW_MIN_WIDTH  104
+#define DEBUG_BATTLE_MIN_WIDTH          104
 s32 DebugBattlePreviewBattleCount;
-s32 DebugBattlePreviewStageCount;
 s32 DebugBattlePreviewLineCount;
 char DebugBattlePreviewNames[DEBUG_BATTLE_PREVIEW_ROWS][DEBUG_BATTLE_PREVIEW_NAME_LEN];
+char DebugBattlePreviewRef[BATTLE_REF_MAX];
+static char DebugBattlePreviewAreaName[OVL_NAME_MAX];
+static char DebugBattlePreviewFormationName[BATTLE_KEY_MAX];
+static char DebugBattlePreviewDefaultStage[OVL_NAME_MAX];
 static b32 DebugBattlePreviewCached;
-static s32 DebugBattlePreviewAreaID;
-static s32 DebugBattlePreviewFormationID;
+static s32 DebugBattlePreviewAreaIndex;
+static s32 DebugBattlePreviewFormationIndex;
 static b32 DebugDiscardFrame;
 
 b32 dx_debug_consume_discard_frame(void) {
@@ -974,43 +968,49 @@ b32 dx_debug_consume_discard_frame(void) {
 
 // Copy only display data out of a temporary area overlay. Borrow the running
 // battle's module when selected, and never unload it on the preview's behalf.
-void dx_debug_load_battle_preview(s32 areaID, s32 formationID) {
+void dx_debug_load_battle_preview(s32 areaIndex, s32 formationIndex) {
     Overlay* overlay;
     const BattleArea* area;
     const Battle* battle;
     s32 actorRows;
     s32 i;
 
-    if (DebugBattlePreviewCached && areaID == DebugBattlePreviewAreaID
-        && formationID == DebugBattlePreviewFormationID
+    if (DebugBattlePreviewCached && areaIndex == DebugBattlePreviewAreaIndex
+        && formationIndex == DebugBattlePreviewFormationIndex
     ) {
         return;
     }
     DebugBattlePreviewCached = true;
-    DebugBattlePreviewAreaID = areaID;
-    DebugBattlePreviewFormationID = formationID;
+    DebugBattlePreviewAreaIndex = areaIndex;
+    DebugBattlePreviewFormationIndex = formationIndex;
     DebugBattlePreviewBattleCount = 0;
-    DebugBattlePreviewStageCount = 0;
     DebugBattlePreviewLineCount = 1;
-    if (areaID < 0 || areaID >= ARRAY_COUNT(gBattleAreas)) {
+    DebugBattlePreviewRef[0] = '\0';
+    DebugBattlePreviewFormationName[0] = '\0';
+    DebugBattlePreviewDefaultStage[0] = '\0';
+    if (!ovl_get_name(OVL_BATTLE_AREA, areaIndex, DebugBattlePreviewAreaName)) {
         strcpy(DebugBattlePreviewNames[0], "(invalid battle)");
         return;
     }
 
-    overlay = ovl_load(gBattleAreas[areaID].overlay, OVL_BATTLE_AREA);
+    overlay = ovl_load(DebugBattlePreviewAreaName, OVL_BATTLE_AREA);
     area = ovl_import(overlay, BATTLE_AREA_EXPORT_NAME);
     if (area == nullptr) {
         strcpy(DebugBattlePreviewNames[0], "(unavailable)");
         goto done;
     }
     DebugBattlePreviewBattleCount = area->battleCount;
-    DebugBattlePreviewStageCount = area->stageCount;
-    if (formationID < 0 || formationID >= area->battleCount) {
+    if (formationIndex < 0 || formationIndex >= area->battleCount) {
         strcpy(DebugBattlePreviewNames[0], "(invalid battle)");
         goto done;
     }
 
-    battle = &(*area->battles)[formationID];
+    battle = &(*area->battles)[formationIndex];
+    ASSERT(strlen(battle->name) < BATTLE_KEY_MAX);
+    strcpy(DebugBattlePreviewFormationName, battle->name);
+    sprintf(DebugBattlePreviewRef, "%s:%s", DebugBattlePreviewAreaName, battle->name);
+    ASSERT(strlen(battle->stage) < sizeof(DebugBattlePreviewDefaultStage));
+    strcpy(DebugBattlePreviewDefaultStage, battle->stage);
     if (battle->formationSize <= 0) {
         strcpy(DebugBattlePreviewNames[0], "(empty formation)");
         goto done;
@@ -1057,7 +1057,7 @@ done:
 
 void dx_debug_draw_battle_preview(void) {
     char names[DEBUG_BATTLE_PREVIEW_ROWS][DEBUG_BATTLE_PREVIEW_NAME_LEN];
-    s32 boxWidth = DEBUG_BATTLE_PREVIEW_MIN_WIDTH;
+    s32 boxWidth = DEBUG_BATTLE_MIN_WIDTH;
     s32 maxTextWidth = SCREEN_WIDTH - 4 * BoxOutsetX;
     s32 boxX;
     s32 i;
@@ -1081,7 +1081,7 @@ void dx_debug_draw_battle_preview(void) {
     boxX = MIN(SubBoxPosX, SCREEN_WIDTH - BoxOutsetX - boxWidth);
     dx_debug_draw_box(
         boxX,
-        SubBoxPosY + 4 * RowHeight,
+        SubBoxPosY + 5 * RowHeight,
         boxWidth,
         DebugBattlePreviewLineCount * RowHeight + 8,
         WINDOW_STYLE_20,
@@ -1092,7 +1092,7 @@ void dx_debug_draw_battle_preview(void) {
             names[i],
             DefaultColor,
             boxX + BoxOutsetX,
-            SubmenuPosY + (i + 4) * RowHeight
+            SubmenuPosY + (i + 5) * RowHeight
         );
     }
 }
@@ -1148,17 +1148,29 @@ Encounter DebugDummyEncounter = {
     .encounterID = DX_DEBUG_DUMMY_ID,
     .enemy = { &DebugDummyEnemy },
     .count = 0,
-    .battle = 0,
-    .stage = 0,
+    .battle = nullptr,
+    .stage = nullptr,
 };
 
-void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage) {
+void dx_debug_begin_battle_with_ref(const char* battle, const char* stage) {
+    static char battleRef[BATTLE_REF_MAX];
+    static char stageName[OVL_NAME_MAX];
+    char areaName[BATTLE_KEY_MAX];
     EncounterStatus* es = &gCurrentEncounter;
 
+    ASSERT(split_battle_ref(battle, areaName) != nullptr);
+    ASSERT(stage == nullptr || strlen(stage) < sizeof(stageName));
+    // The inputs can belong to the battle being torn down below.
+    memmove(battleRef, battle, strlen(battle) + 1);
+    if (stage != nullptr) {
+        memmove(stageName, stage, strlen(stage) + 1);
+    } else {
+        stageName[0] = '\0';
+    }
     dx_debug_force_end_battle();
 
-    DebugDummyEncounter.battle = battle;
-    DebugDummyEncounter.stage = stage;
+    DebugDummyEncounter.battle = battleRef;
+    DebugDummyEncounter.stage = stageName[0] == '\0' ? nullptr : stageName;
 
     es->curEncounter = &DebugDummyEncounter;
     es->curEnemy = &DebugDummyEnemy;
@@ -1180,228 +1192,99 @@ void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage) {
 }
 
 void dx_debug_begin_battle() {
-    s16 battle = (DebugBattleNum[DEBUG_BATTLE_AREA_TENS] & 0xF) << 12
-        | (DebugBattleNum[DEBUG_BATTLE_AREA_ONES] & 0xF) << 8
-        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] & 0xF) << 4
-        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_ONES] & 0xF);
-    s16 stage = DebugBattleNum[DEBUG_BATTLE_STAGE] & 0xFFFF;
+    char stageName[OVL_NAME_MAX];
 
-    dx_debug_begin_battle_with_IDs(battle, stage);
+    dx_debug_load_battle_preview(DebugBattleAreaIndex, DebugBattleFormationIndex);
+    if (DebugBattlePreviewRef[0] == '\0') {
+        return;
+    }
+    if (DebugBattleStageIndex >= 0 && !ovl_get_name(OVL_STAGE, DebugBattleStageIndex, stageName)) {
+        return;
+    }
+    dx_debug_begin_battle_with_ref(DebugBattlePreviewRef, DebugBattleStageIndex < 0 ? nullptr : stageName);
 }
 
-// returns the number of contiguous battle areas which contain formations
-s32 dx_debug_get_battle_area_count() {
-    s32 i;
+static void dx_debug_draw_battle_option(s32 row, const char* value, b32 valid, s32 boxWidth) {
+    char text[OVL_NAME_MAX + sizeof("(auto) ")];
+    s32 maxTextWidth = boxWidth - 2 * BoxOutsetX;
+    s32 y = SubmenuPosY + (row + 1) * RowHeight;
+    s32 color = row == DebugBattleRow ? HighlightColor : DefaultColor;
+    s32 length;
 
-    for (i = 0; i < ARRAY_COUNT(gBattleAreas); i++) {
-        if (gBattleAreas[i].overlay == nullptr) {
-            return i;
-        }
+    if (!valid) {
+        color = row == DebugBattleRow ? MSG_PAL_YELLOW : MSG_PAL_RED;
     }
-    return ARRAY_COUNT(gBattleAreas);
-}
-
-void dx_debug_set_battle_area(s32 areaID) {
-    DebugBattleNum[DEBUG_BATTLE_AREA_TENS] = (areaID >> 4) & 0xF;
-    DebugBattleNum[DEBUG_BATTLE_AREA_ONES] = areaID & 0xF;
-}
-
-void dx_debug_set_battle_formation(s32 formationID) {
-    DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] = (formationID >> 4) & 0xF;
-    DebugBattleNum[DEBUG_BATTLE_FORMATION_ONES] = formationID & 0xF;
-}
-
-// edits one hex digit while keeping an ID between zero and its maximum
-s32 dx_debug_nav_battle_id(s32 id, s32 maxID, b32 editUpperDigit, s32 direction) {
-    s32 digit;
-
-    if (maxID <= 0) {
-        return 0;
+    strncpy(text, value, sizeof(text) - 1);
+    text[sizeof(text) - 1] = '\0';
+    length = strlen(text);
+    // Elide only the display copy; launching always uses the complete key.
+    while (dx_debug_get_ascii_width(text) > maxTextWidth && length > 3) {
+        length--;
+        strcpy(&text[length - 3], "...");
     }
-    if (id > maxID) {
-        if (direction > 0) {
-            return 0;
-        } else {
-            return maxID;
-        }
-    }
-    if (id == maxID && direction > 0) {
-        return 0;
-    }
-    if (id == 0 && direction < 0) {
-        return maxID;
-    }
-
-    if (editUpperDigit) {
-        digit = dx_debug_wrap(((id >> 4) & 0xF) + direction, 0, 0xF);
-        id = (digit << 4) | (id & 0xF);
-    } else {
-        digit = dx_debug_wrap((id & 0xF) + direction, 0, 0xF);
-        id = (id & 0xF0) | digit;
-    }
-
-    if (id > maxID) {
-        return maxID;
-    }
-    return id;
-}
-
-// cycles through the default stage and every stage in the selected area
-s32 dx_debug_nav_battle_stage(s32 stageID, s32 stageCount, s32 direction) {
-    s32 maxID = stageCount - 1;
-
-    if (stageCount <= 0) {
-        return -1;
-    }
-    if (stageID < -1 || stageID > maxID) {
-        if (direction > 0) {
-            return -1;
-        } else {
-            return maxID;
-        }
-    }
-    if (stageID == maxID && direction > 0) {
-        return -1;
-    }
-    if (stageID == -1 && direction < 0) {
-        return maxID;
-    }
-    return stageID + direction;
+    dx_debug_draw_ascii(text, color, SubmenuPosX, y);
 }
 
 void dx_debug_update_select_battle() {
-    s32 idx;
-    s32 areaCount = dx_debug_get_battle_area_count();
-    s32 areaID;
-    s32 formationID;
-    s32 stageID;
-    s32 loadedAreaID;
-    s32 loadedFormationID;
-    s32 direction = 0;
-    b32 isAreaValid;
-    b32 isFormationValid;
-    b32 isStageValid;
+    char stageName[OVL_NAME_MAX + sizeof("(auto) ")];
+    const char* values[DEBUG_BATTLE_ROW_COUNT];
+    b32 valid[DEBUG_BATTLE_ROW_COUNT];
+    s32 areaCount = ovl_get_count(OVL_BATTLE_AREA);
+    s32 stageCount = ovl_get_count(OVL_STAGE);
+    s32 previousArea = DebugBattleAreaIndex;
+    s32 boxWidth;
+    s32 row;
 
-    areaID = (DebugBattleNum[DEBUG_BATTLE_AREA_TENS] & 0xF) << 4
-        | (DebugBattleNum[DEBUG_BATTLE_AREA_ONES] & 0xF);
-    formationID = (DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] & 0xF) << 4
-        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_ONES] & 0xF);
-    stageID = DebugBattleNum[DEBUG_BATTLE_STAGE];
-    dx_debug_load_battle_preview(areaID, formationID);
-    loadedAreaID = areaID;
-    loadedFormationID = formationID;
-    isAreaValid = areaID < areaCount;
-    isFormationValid = isAreaValid && formationID < DebugBattlePreviewBattleCount;
-    isStageValid = isAreaValid
-        && (stageID == -1 || (stageID >= 0 && stageID < DebugBattlePreviewStageCount));
-
-    // handle input
     if (RELEASED(BUTTON_L)) {
         DebugMenuState = DBM_MAIN_MENU;
-    } else if (RELEASED(BUTTON_R) && isFormationValid && isStageValid) {
+        return;
+    }
+
+    DebugBattleRow = dx_debug_menu_nav_1D_vertical(DebugBattleRow, 0, DEBUG_BATTLE_ROW_COUNT - 1, false);
+    if (DebugBattleRow == DEBUG_BATTLE_AREA && areaCount > 0) {
+        DebugBattleAreaIndex = dx_debug_menu_nav_1D_horizontal(DebugBattleAreaIndex, 0, areaCount - 1, false);
+    }
+    if (DebugBattleAreaIndex != previousArea) {
+        DebugBattleFormationIndex = 0;
+    }
+    dx_debug_load_battle_preview(DebugBattleAreaIndex, DebugBattleFormationIndex);
+    if (DebugBattleRow == DEBUG_BATTLE_FORMATION && DebugBattlePreviewBattleCount > 0) {
+        DebugBattleFormationIndex = dx_debug_menu_nav_1D_horizontal(
+            DebugBattleFormationIndex, 0, DebugBattlePreviewBattleCount - 1, false);
+        dx_debug_load_battle_preview(DebugBattleAreaIndex, DebugBattleFormationIndex);
+    }
+    if (DebugBattleRow == DEBUG_BATTLE_STAGE) {
+        DebugBattleStageIndex = dx_debug_menu_nav_1D_horizontal(DebugBattleStageIndex, -1, stageCount - 1, false);
+    }
+
+    valid[DEBUG_BATTLE_AREA] = DebugBattleAreaIndex >= 0 && DebugBattleAreaIndex < areaCount;
+    valid[DEBUG_BATTLE_FORMATION] = DebugBattlePreviewRef[0] != '\0';
+    if (DebugBattleStageIndex == -1) {
+        valid[DEBUG_BATTLE_STAGE] = valid[DEBUG_BATTLE_FORMATION] && stageCount > 0;
+        sprintf(stageName, "(auto) %s", DebugBattlePreviewDefaultStage);
+    } else {
+        valid[DEBUG_BATTLE_STAGE] = ovl_get_name(OVL_STAGE, DebugBattleStageIndex, stageName);
+    }
+    if (RELEASED(BUTTON_R) && valid[DEBUG_BATTLE_FORMATION] && valid[DEBUG_BATTLE_STAGE]) {
         dx_debug_begin_battle();
         DebugMenuState = DBM_NONE;
+        return;
     }
 
-    DebugBattleColumn = dx_debug_menu_nav_1D_horizontal(DebugBattleColumn, 0, 4, false);
-    if (NAV_UP) {
-        direction = 1;
-    } else if (NAV_DOWN) {
-        direction = -1;
+    values[DEBUG_BATTLE_AREA] = valid[DEBUG_BATTLE_AREA] ? DebugBattlePreviewAreaName : "(none)";
+    values[DEBUG_BATTLE_FORMATION] = valid[DEBUG_BATTLE_FORMATION] ? DebugBattlePreviewFormationName : "(none)";
+    values[DEBUG_BATTLE_STAGE] = valid[DEBUG_BATTLE_STAGE] ? stageName : "(none)";
+    boxWidth = MAX(DEBUG_BATTLE_MIN_WIDTH, dx_debug_get_ascii_width("Start Battle:") + 2 * BoxOutsetX);
+    for (row = 0; row < DEBUG_BATTLE_ROW_COUNT; row++) {
+        boxWidth = MAX(boxWidth, dx_debug_get_ascii_width(values[row]) + 2 * BoxOutsetX);
     }
-    if (direction != 0) {
-        if (DebugBattleColumn == DEBUG_BATTLE_STAGE) {
-            if (isAreaValid) {
-                DebugBattleNum[DEBUG_BATTLE_STAGE] = dx_debug_nav_battle_stage(
-                    stageID,
-                    DebugBattlePreviewStageCount,
-                    direction
-                );
-            }
-        } else if (DebugBattleColumn == DEBUG_BATTLE_AREA_TENS
-            || DebugBattleColumn == DEBUG_BATTLE_AREA_ONES
-        ) {
-            areaID = dx_debug_nav_battle_id(
-                areaID,
-                areaCount - 1,
-                DebugBattleColumn == DEBUG_BATTLE_AREA_TENS,
-                direction
-            );
-            dx_debug_set_battle_area(areaID);
-        } else if (DebugBattleColumn == DEBUG_BATTLE_FORMATION_TENS
-            || DebugBattleColumn == DEBUG_BATTLE_FORMATION_ONES
-        ) {
-            if (isAreaValid) {
-                formationID = dx_debug_nav_battle_id(
-                    formationID,
-                    DebugBattlePreviewBattleCount - 1,
-                    DebugBattleColumn == DEBUG_BATTLE_FORMATION_TENS,
-                    direction
-                );
-                dx_debug_set_battle_formation(formationID);
-            }
-        }
-    }
-
-    areaID = (DebugBattleNum[DEBUG_BATTLE_AREA_TENS] & 0xF) << 4
-        | (DebugBattleNum[DEBUG_BATTLE_AREA_ONES] & 0xF);
-    formationID = (DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] & 0xF) << 4
-        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_ONES] & 0xF);
-    if (areaID != loadedAreaID || formationID != loadedFormationID) {
-        dx_debug_load_battle_preview(areaID, formationID);
-    }
-    isAreaValid = areaID < areaCount;
-    isFormationValid = isAreaValid && formationID < DebugBattlePreviewBattleCount;
-    stageID = DebugBattleNum[DEBUG_BATTLE_STAGE];
-    isStageValid = isAreaValid
-        && (stageID == -1 || (stageID >= 0 && stageID < DebugBattlePreviewStageCount));
-
-    // draw
-    dx_debug_draw_box(SubBoxPosX, SubBoxPosY, 104, 3 * RowHeight + 8, WINDOW_STYLE_20, 192);
+    // Keep the right margin equal to the main menu's left margin.
+    boxWidth = MIN(boxWidth, SCREEN_WIDTH - SubBoxPosX - MainBoxPosX);
+    dx_debug_draw_box(SubBoxPosX, SubBoxPosY, boxWidth, 4 * RowHeight + 8, WINDOW_STYLE_20, 192);
     dx_debug_draw_ascii("Start Battle:", DefaultColor, SubmenuPosX, SubmenuPosY);
-    dx_debug_draw_ascii("-", DefaultColor, SubmenuPosX + 26, SubmenuPosY + RowHeight);
-    dx_debug_draw_ascii("(", DefaultColor, SubmenuPosX + 55, SubmenuPosY + RowHeight);
-    dx_debug_draw_ascii(")", DefaultColor, SubmenuPosX + 77, SubmenuPosY + RowHeight);
-
-    for (idx = 0; idx < 5; idx++) {
-        b32 isInvalid;
-        s32 color = DefaultColor;
-        s32 offset = BattleDigitOffsets[idx];
-        char* fmt = "%X";
-
-        if (DebugBattleColumn == idx) {
-            color = HighlightColor;
-        }
-        if (idx == DEBUG_BATTLE_STAGE) {
-            fmt = "%02X";
-        }
-
-        isInvalid = (idx <= DEBUG_BATTLE_AREA_ONES && !isAreaValid)
-            || (idx >= DEBUG_BATTLE_FORMATION_TENS
-                && idx <= DEBUG_BATTLE_FORMATION_ONES
-                && !isFormationValid)
-            || (idx == DEBUG_BATTLE_STAGE && !isStageValid);
-
-        if (isInvalid) {
-            if (DebugBattleColumn == idx) {
-                color = MSG_PAL_YELLOW;
-            } else {
-                color = MSG_PAL_RED;
-            }
-        }
-
-        dx_debug_draw_number(DebugBattleNum[idx] & 0xFF, fmt, color, 255, SubmenuPosX + offset, SubmenuPosY + RowHeight);
+    for (row = 0; row < DEBUG_BATTLE_ROW_COUNT; row++) {
+        dx_debug_draw_battle_option(row, values[row], valid[row], boxWidth);
     }
-
-    if (isAreaValid) {
-        dx_debug_draw_ascii(
-            gBattleAreas[areaID].name,
-            DefaultColor,
-            SubmenuPosX + BattleDigitOffsets[DEBUG_BATTLE_AREA_TENS],
-            SubmenuPosY + 2 * RowHeight
-        );
-    }
-
     dx_debug_draw_battle_preview();
 }
 
@@ -3125,14 +3008,10 @@ void dx_debug_update_banner() {
             dx_debug_draw_ascii("(GOD MODE)", MSG_PAL_YELLOW, 151, BottomRowY);
         }
     } else if (gGameStatus.context == CONTEXT_BATTLE) {
-        s32 areaID = (LastBattleID >> 24) & 0xFF;
-        s32 battleID = (LastBattleID >> 16) & 0xFF;
-        s32 stageID = LastBattleID & 0xFFFF;
+        sprintf(fmtBuf, "%.24s", LastBattleName);
+        dx_debug_draw_ascii(fmtBuf, DefaultColor, 176, BottomRowY);
 
-        sprintf(fmtBuf, "Battle:  %02lX-%02lX (%lX)", areaID, battleID, stageID);
-        dx_debug_draw_ascii(fmtBuf, DefaultColor, 200, BottomRowY);
-
-        sprintf(fmtBuf, "Stage:  %-15s", LastStageName);
+        sprintf(fmtBuf, "Stage:  %.15s", LastStageName);
         dx_debug_draw_ascii(fmtBuf, DefaultColor, 20, BottomRowY);
 
         if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_GOD_MODE)) {

@@ -780,7 +780,7 @@ NpcData NpcData_RuffPuffs[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_HuffNPuff, BTL_FLO2_FORMATION_00, BTL_FLO2_STAGE_07),
-    NPC_GROUP(NpcData_RuffPuffs, BTL_FLO_FORMATION_1F, BTL_FLO_STAGE_07),
+    NPC_GROUP(NpcData_HuffNPuff, "flo2:huff_n_puff", "flo_04"),
+    NPC_GROUP(NpcData_RuffPuffs, "flo:ruff_puff_2", "flo_04"),
     {}
 };

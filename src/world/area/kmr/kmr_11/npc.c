@@ -398,7 +398,7 @@ NpcData NpcData_Kammy = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Enemies, BTL_KMR_2_FORMATION_01),
+    NPC_GROUP(NpcData_Enemies, "kmr_part_2:goomba_king"),
     NPC_GROUP(NpcData_Kammy),
     {}
 };

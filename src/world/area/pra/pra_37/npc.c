@@ -36,6 +36,6 @@ NpcData NpcData_FrostClubba[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_FrostClubba, BTL_PRA_FORMATION_0D, BTL_PRA_STAGE_00),
+    NPC_GROUP(NpcData_FrostClubba, "pra:white_clubba_2_mixed_0d", "pra_01"),
     {}
 };

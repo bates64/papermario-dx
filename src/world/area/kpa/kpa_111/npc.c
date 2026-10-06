@@ -57,7 +57,7 @@ NpcData NpcData_DryBones_02[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_DryBones, BTL_KPA_FORMATION_07, BTL_KPA_STAGE_0C),
-    NPC_GROUP(NpcData_DryBones_02, BTL_KPA_FORMATION_0C, BTL_KPA_STAGE_0C),
+    NPC_GROUP(NpcData_DryBones, "kpa:dry_bones_2", "kpa_13"),
+    NPC_GROUP(NpcData_DryBones_02, "kpa:dry_bones_1_koopatrol_2", "kpa_13"),
     {}
 };

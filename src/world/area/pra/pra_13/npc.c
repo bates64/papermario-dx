@@ -254,7 +254,7 @@ NpcData NpcData_Imposters[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_FakeMario, BTL_PRA3_FORMATION_02, BTL_PRA3_STAGE_00),
-    NPC_GROUP(NpcData_Imposters, BTL_PRA3_FORMATION_02, BTL_PRA3_STAGE_00),
+    NPC_GROUP(NpcData_FakeMario, "pra3:duplighost_2", "pra_01"),
+    NPC_GROUP(NpcData_Imposters, "pra3:duplighost_2", "pra_01"),
     {}
 };

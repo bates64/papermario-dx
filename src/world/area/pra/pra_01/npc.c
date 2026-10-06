@@ -190,6 +190,6 @@ NpcData NpcData_Kalmar = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Kalmar, BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_00),
+    NPC_GROUP(NpcData_Kalmar, "pra3:duplighost_1", "pra_01"),
     {}
 };

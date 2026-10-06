@@ -528,7 +528,7 @@ NpcData NpcData_Yakkey = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Tubba, BTL_DGB_FORMATION_04),
+    NPC_GROUP(NpcData_Tubba, "dgb:tubba_blubba"),
     NPC_GROUP(NpcData_Yakkey),
     {}
 };

@@ -160,11 +160,11 @@ NpcData NpcData_Clubba_06[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Clubba_01, BTL_DGB_FORMATION_03, BTL_DGB_STAGE_02),
-    NPC_GROUP(NpcData_Clubba_02, BTL_DGB_FORMATION_00, BTL_DGB_STAGE_02),
-    NPC_GROUP(NpcData_Clubba_03, BTL_DGB_FORMATION_00, BTL_DGB_STAGE_02),
-    NPC_GROUP(NpcData_Clubba_04, BTL_DGB_FORMATION_00, BTL_DGB_STAGE_02),
-    NPC_GROUP(NpcData_Clubba_05, BTL_DGB_FORMATION_01, BTL_DGB_STAGE_02),
-    NPC_GROUP(NpcData_Clubba_06, BTL_DGB_FORMATION_01, BTL_DGB_STAGE_02),
+    NPC_GROUP(NpcData_Clubba_01, "dgb:clubba_4", "dgb_03"),
+    NPC_GROUP(NpcData_Clubba_02, "dgb:clubba_1", "dgb_03"),
+    NPC_GROUP(NpcData_Clubba_03, "dgb:clubba_1", "dgb_03"),
+    NPC_GROUP(NpcData_Clubba_04, "dgb:clubba_1", "dgb_03"),
+    NPC_GROUP(NpcData_Clubba_05, "dgb:clubba_2", "dgb_03"),
+    NPC_GROUP(NpcData_Clubba_06, "dgb:clubba_2", "dgb_03"),
     {}
 };

@@ -457,17 +457,17 @@ NpcData NpcData_Clubba_Unused = {
 };
 
 NpcGroupList BeforeNPCs = {
-    NPC_GROUP(NpcData_Clubba_Unused, BTL_DGB_FORMATION_02, BTL_DGB_STAGE_02),
-    NPC_GROUP(NpcData_Clubba_01, BTL_DGB_FORMATION_02, BTL_DGB_STAGE_02),
-    NPC_GROUP(NpcData_Clubba_02, BTL_DGB_FORMATION_02, BTL_DGB_STAGE_02),
-    NPC_GROUP(NpcData_Clubba_03, BTL_DGB_FORMATION_03, BTL_DGB_STAGE_02),
+    NPC_GROUP(NpcData_Clubba_Unused, "dgb:clubba_3", "dgb_03"),
+    NPC_GROUP(NpcData_Clubba_01, "dgb:clubba_3", "dgb_03"),
+    NPC_GROUP(NpcData_Clubba_02, "dgb:clubba_3", "dgb_03"),
+    NPC_GROUP(NpcData_Clubba_03, "dgb:clubba_4", "dgb_03"),
     NPC_GROUP(NpcData_Sentinel_01),
     NPC_GROUP(NpcData_Sentinel_02),
     {}
 };
 
 NpcGroupList TubbaNPCs = {
-    NPC_GROUP(NpcData_Tubba, BTL_DGB_FORMATION_04, BTL_DGB_STAGE_00),
+    NPC_GROUP(NpcData_Tubba, "dgb:tubba_blubba", "dgb_01"),
     {}
 };
 

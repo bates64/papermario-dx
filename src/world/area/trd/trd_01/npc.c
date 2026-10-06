@@ -238,9 +238,9 @@ NpcData NpcData_Bobomb = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_KoopaTroopa_01, BTL_TRD_1_FORMATION_03, BTL_TRD_1_STAGE_02),
-    NPC_GROUP(NpcData_KoopaTroopa_02, BTL_TRD_1_FORMATION_01, BTL_TRD_1_STAGE_07),
-    NPC_GROUP(NpcData_KoopaTroopa_03, BTL_TRD_1_FORMATION_00, BTL_TRD_1_STAGE_07),
-    NPC_GROUP(NpcData_Bobomb, BTL_TRD_1_FORMATION_10, BTL_TRD_1_STAGE_07),
+    NPC_GROUP(NpcData_KoopaTroopa_01, "trd_part_1:koopa_troopa_1_bob_omb_1", "trd_02"),
+    NPC_GROUP(NpcData_KoopaTroopa_02, "trd_part_1:koopa_troopa_2", "trd_04"),
+    NPC_GROUP(NpcData_KoopaTroopa_03, "trd_part_1:koopa_troopa_1", "trd_04"),
+    NPC_GROUP(NpcData_Bobomb, "trd_part_1:bob_omb_2", "trd_04"),
     {}
 };

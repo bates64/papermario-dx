@@ -410,9 +410,9 @@ NpcData NpcData_Kalmar_Npc2 = {
 };
 
 NpcGroupList MidpointNpcs = {
-    NPC_GROUP(NpcData_Bowser_Npc2, BTL_KPA2_FORMATION_04),
+    NPC_GROUP(NpcData_Bowser_Npc2, "kpa2:bowser_final_2"),
     NPC_GROUP(NpcData_Peach_Npc2),
-    NPC_GROUP(NpcData_Kammy_Npc2, BTL_KKJ_FORMATION_00),
+    NPC_GROUP(NpcData_Kammy_Npc2, "kkj:kammy_koopa"),
     NPC_GROUP(NpcData_Twink_Npc2),
     NPC_GROUP(NpcData_Eldstar_Npc2),
     NPC_GROUP(NpcData_Mamar_Npc2),

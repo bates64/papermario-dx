@@ -384,6 +384,6 @@ NpcData NpcData_Imposter[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Imposter, BTL_KPA3_FORMATION_02, BTL_KPA3_STAGE_00),
+    NPC_GROUP(NpcData_Imposter, "kpa3:duplighost_4", "kpa_01"),
     {}
 };

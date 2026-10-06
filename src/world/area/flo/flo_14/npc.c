@@ -106,6 +106,6 @@ NpcData NpcData_Bzzap = {
 
 NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_BubbleFlower),
-    NPC_GROUP(NpcData_Bzzap, BTL_FLO_FORMATION_19, BTL_FLO_STAGE_00),
+    NPC_GROUP(NpcData_Bzzap, "flo:bzzap_2_green_magikoopa_flying_1", "flo_01"),
     {}
 };

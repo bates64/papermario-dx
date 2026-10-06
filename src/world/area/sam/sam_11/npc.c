@@ -1049,30 +1049,30 @@ NpcData NpcData_ChuckQuizmo = {
 };
 
 NpcGroupList BeforeNPCs = {
-    NPC_GROUP(NpcData_Townsfolk, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
-    NPC_GROUP(NpcData_PondPenginsBefore, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
-    NPC_GROUP(NpcData_Tourists, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+    NPC_GROUP(NpcData_Townsfolk),
+    NPC_GROUP(NpcData_PondPenginsBefore),
+    NPC_GROUP(NpcData_Tourists),
     NPC_GROUP(NpcData_ChuckQuizmo),
     {}
 };
 
 NpcGroupList MysteryNPCs = {
     //@bug loads 7 NPCs when the group only has 6
-    NPC_GROUP_EXPLICIT_SIZE(NpcData_Townsfolk, NPC_PenguinPatrol, 7, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
-    NPC_GROUP(NpcData_Tourists, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+    NPC_GROUP_EXPLICIT_SIZE(NpcData_Townsfolk, NPC_PenguinPatrol, 7),
+    NPC_GROUP(NpcData_Tourists),
     NPC_GROUP(NpcData_ChuckQuizmo),
     {}
 };
 
 NpcGroupList AfterNPCs = {
-    NPC_GROUP(NpcData_Townsfolk, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
-    NPC_GROUP(NpcData_PondPenginsAfter, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
-    NPC_GROUP(NpcData_Tourists, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+    NPC_GROUP(NpcData_Townsfolk),
+    NPC_GROUP(NpcData_PondPenginsAfter),
+    NPC_GROUP(NpcData_Tourists),
     NPC_GROUP(NpcData_ChuckQuizmo),
     {}
 };
 
 NpcGroupList EpilogueNPCs = {
-    NPC_GROUP(NpcData_Epilogue, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+    NPC_GROUP(NpcData_Epilogue),
     {}
 };

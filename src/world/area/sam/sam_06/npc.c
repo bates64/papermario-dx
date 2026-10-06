@@ -1042,6 +1042,6 @@ NpcData NpcData_Merle[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Merle, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+    NPC_GROUP(NpcData_Merle),
     {}
 };

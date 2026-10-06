@@ -372,9 +372,9 @@ NpcData NpcData_JungleFuzzy_04 = {
 
 NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_Kolorado),
-    NPC_GROUP(NpcData_JungleFuzzy_01, BTL_JAN_FORMATION_0A, BTL_JAN_STAGE_00),
-    NPC_GROUP(NpcData_JungleFuzzy_02, BTL_JAN_FORMATION_0A, BTL_JAN_STAGE_00),
-    NPC_GROUP(NpcData_JungleFuzzy_03, BTL_JAN_FORMATION_0B, BTL_JAN_STAGE_00),
-    NPC_GROUP(NpcData_JungleFuzzy_04, BTL_JAN_FORMATION_0A, BTL_JAN_STAGE_00),
+    NPC_GROUP(NpcData_JungleFuzzy_01, "jan:jungle_fuzzy_2", "jan_00"),
+    NPC_GROUP(NpcData_JungleFuzzy_02, "jan:jungle_fuzzy_2", "jan_00"),
+    NPC_GROUP(NpcData_JungleFuzzy_03, "jan:jungle_fuzzy_3", "jan_00"),
+    NPC_GROUP(NpcData_JungleFuzzy_04, "jan:jungle_fuzzy_2", "jan_00"),
     {}
 };

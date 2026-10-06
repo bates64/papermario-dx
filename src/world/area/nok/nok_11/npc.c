@@ -606,18 +606,18 @@ NpcData NpcData_KentCKoopa[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_KoopaTroopa, BTL_NOK_FORMATION_08, BTL_NOK_STAGE_00),
-    NPC_GROUP(NpcData_Paragoomba, BTL_NOK_FORMATION_02, BTL_NOK_STAGE_00),
-    NPC_GROUP(NpcData_SpikedGoomba, BTL_NOK_FORMATION_03, BTL_NOK_STAGE_01),
+    NPC_GROUP(NpcData_KoopaTroopa, "nok:koopa_troopa_1_goomba_1", "nok_01"),
+    NPC_GROUP(NpcData_Paragoomba, "nok:paragoomba_2", "nok_01"),
+    NPC_GROUP(NpcData_SpikedGoomba, "nok:spiked_goomba_1_paragoomba_1", "nok_02"),
     {}
 };
 
 NpcGroupList JrTroopaNPCs = {
-    NPC_GROUP(NpcData_JrTroopa, BTL_KMR_3_FORMATION_03),
+    NPC_GROUP(NpcData_JrTroopa, "kmr_part_3:jr_troopa_2"),
     {}
 };
 
 NpcGroupList KentCKoopaNPCs = {
-    NPC_GROUP(NpcData_KentCKoopa, BTL_NOK_FORMATION_18, BTL_NOK_STAGE_00),
+    NPC_GROUP(NpcData_KentCKoopa, "nok:kent_c_koopa", "nok_01"),
     {}
 };

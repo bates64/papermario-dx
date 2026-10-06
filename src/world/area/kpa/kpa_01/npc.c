@@ -47,7 +47,7 @@ NpcData NpcData_BonyBeetle_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_BonyBeetle_01, BTL_KPA_FORMATION_00, BTL_KPA_STAGE_03),
-    NPC_GROUP(NpcData_BonyBeetle_02, BTL_KPA_FORMATION_01, BTL_KPA_STAGE_03),
+    NPC_GROUP(NpcData_BonyBeetle_01, "kpa:bony_beetle_2", "kpa_03"),
+    NPC_GROUP(NpcData_BonyBeetle_02, "kpa:bony_beetle_3", "kpa_03"),
     {}
 };

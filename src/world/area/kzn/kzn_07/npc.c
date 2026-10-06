@@ -50,7 +50,7 @@ NpcData NpcData_LavaBubble_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_LavaBubble_01, BTL_KZN_FORMATION_05, BTL_KZN_STAGE_01),
-    NPC_GROUP(NpcData_LavaBubble_02, BTL_KZN_FORMATION_06, BTL_KZN_STAGE_01),
+    NPC_GROUP(NpcData_LavaBubble_01, "kzn:lava_bubble_2_red_magikoopa_1", "kzn_01b"),
+    NPC_GROUP(NpcData_LavaBubble_02, "kzn:lava_bubble_2_white_magikoopa_1", "kzn_01b"),
     {}
 };

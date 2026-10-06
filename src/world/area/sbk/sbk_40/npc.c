@@ -49,7 +49,7 @@ NpcData NpcData_Bandit_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Bandit_01, BTL_SBK_FORMATION_0B, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Bandit_02, BTL_SBK_FORMATION_0B, BTL_SBK_STAGE_00),
+    NPC_GROUP(NpcData_Bandit_01, "sbk:bandit_3", "sbk_02"),
+    NPC_GROUP(NpcData_Bandit_02, "sbk:bandit_3", "sbk_02"),
     {}
 };

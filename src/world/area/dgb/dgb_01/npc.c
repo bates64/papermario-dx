@@ -440,7 +440,7 @@ NpcGroupList ThirdFloorEscapeNPCs = {
     NPC_GROUP(NpcData_Sentinel_02),
     NPC_GROUP(NpcData_Sentinel_03),
     NPC_GROUP(NpcData_Sentinel_04),
-    NPC_GROUP(NpcData_Tubba_Floor3, BTL_DGB_FORMATION_04),
+    NPC_GROUP(NpcData_Tubba_Floor3, "dgb:tubba_blubba"),
     {}
 };
 
@@ -449,7 +449,7 @@ NpcGroupList SecondFloorEscapeNPCs = {
     NPC_GROUP(NpcData_Sentinel_02),
     NPC_GROUP(NpcData_Sentinel_03),
     NPC_GROUP(NpcData_Sentinel_04),
-    NPC_GROUP(NpcData_Tubba_Floor2, BTL_DGB_FORMATION_04, BTL_DGB_STAGE_00),
+    NPC_GROUP(NpcData_Tubba_Floor2, "dgb:tubba_blubba", "dgb_01"),
     {}
 };
 
@@ -458,6 +458,6 @@ NpcGroupList FirstFloorEscapeNPCs = {
     NPC_GROUP(NpcData_Sentinel_02),
     NPC_GROUP(NpcData_Sentinel_03),
     NPC_GROUP(NpcData_Sentinel_04),
-    NPC_GROUP(NpcData_Tubba_Floor1, BTL_DGB_FORMATION_04, BTL_DGB_STAGE_00),
+    NPC_GROUP(NpcData_Tubba_Floor1, "dgb:tubba_blubba", "dgb_01"),
     {}
 };
